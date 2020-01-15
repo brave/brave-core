@@ -23,3 +23,5 @@ const char kBraveUITipURL[] = "chrome://tip/";
 const char kBraveUISyncURL[] = "chrome://sync/";
 const char kBraveUIWalletURL[] = "chrome://wallet/";
 const char kWalletHost[] = "wallet";
+const char kPlaylistsHost[] = "playlists";
+const char kBraveUIPlaylistsURL[] = "chrome://playlists/";

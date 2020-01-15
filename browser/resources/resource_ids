@@ -96,4 +96,8 @@
   "<(ROOT_GEN_DIR)/brave/web-ui-webcompat_reporter/webcompat_reporter.grd": {
     "includes": [45000],
   },
+  # This file is generated during the build.
+  "<(ROOT_GEN_DIR)/brave/web-ui-playlists/playlists.grd": {
+    "includes": [45500],
+  },
 }

@@ -16,6 +16,7 @@
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
+#include "brave/components/playlists/browser/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -54,15 +55,13 @@ BraveBrowserCommandController::BraveBrowserCommandController(Browser* browser)
 }
 
 bool BraveBrowserCommandController::SupportsCommand(int id) const {
-  return IsBraveCommands(id)
-      ? brave_command_updater_.SupportsCommand(id)
-      : BrowserCommandController::SupportsCommand(id);
+  return IsBraveCommands(id) ? brave_command_updater_.SupportsCommand(id)
+                             : BrowserCommandController::SupportsCommand(id);
 }
 
 bool BraveBrowserCommandController::IsCommandEnabled(int id) const {
-  return IsBraveCommands(id)
-      ? brave_command_updater_.IsCommandEnabled(id)
-      : BrowserCommandController::IsCommandEnabled(id);
+  return IsBraveCommands(id) ? brave_command_updater_.IsCommandEnabled(id)
+                             : BrowserCommandController::IsCommandEnabled(id);
 }
 
 bool BraveBrowserCommandController::ExecuteCommandWithDisposition(
@@ -76,14 +75,16 @@ bool BraveBrowserCommandController::ExecuteCommandWithDisposition(
 }
 
 void BraveBrowserCommandController::AddCommandObserver(
-    int id, CommandObserver* observer) {
+    int id,
+    CommandObserver* observer) {
   IsBraveCommands(id)
       ? brave_command_updater_.AddCommandObserver(id, observer)
       : BrowserCommandController::AddCommandObserver(id, observer);
 }
 
 void BraveBrowserCommandController::RemoveCommandObserver(
-    int id, CommandObserver* observer) {
+    int id,
+    CommandObserver* observer) {
   IsBraveCommands(id)
       ? brave_command_updater_.RemoveCommandObserver(id, observer)
       : BrowserCommandController::RemoveCommandObserver(id, observer);
@@ -97,8 +98,8 @@ void BraveBrowserCommandController::RemoveCommandObserver(
 
 bool BraveBrowserCommandController::UpdateCommandEnabled(int id, bool state) {
   return IsBraveCommands(id)
-      ? brave_command_updater_.UpdateCommandEnabled(id, state)
-      : BrowserCommandController::UpdateCommandEnabled(id, state);
+             ? brave_command_updater_.UpdateCommandEnabled(id, state)
+             : BrowserCommandController::UpdateCommandEnabled(id, state);
 }
 
 void BraveBrowserCommandController::InitBraveCommandState() {
@@ -122,6 +123,9 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandForWebcompatReporter();
 #if BUILDFLAG(ENABLE_TOR)
   UpdateCommandForTor();
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_PLAYLISTS)
+  UpdateCommandForBravePlaylists();
 #endif
   UpdateCommandEnabled(IDC_ADD_NEW_PROFILE, !is_guest_session);
   UpdateCommandEnabled(IDC_OPEN_GUEST_PROFILE, !is_guest_session);
@@ -157,6 +161,10 @@ void BraveBrowserCommandController::UpdateCommandForBraveWallet() {
   UpdateCommandEnabled(
       IDC_SHOW_BRAVE_WALLET,
       browser_->profile()->GetPrefs()->GetBoolean(kBraveWalletEnabled));
+}
+
+void BraveBrowserCommandController::UpdateCommandForBravePlaylists() {
+  UpdateCommandEnabled(IDC_SHOW_BRAVE_PLAYLISTS, true);
 }
 
 bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
@@ -206,6 +214,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_SHOW_BRAVE_WALLET:
       brave::ShowBraveWallet(browser_);
+      break;
+    case IDC_SHOW_BRAVE_PLAYLISTS:
+      brave::ShowBravePlaylists(browser_);
       break;
     case IDC_ADD_NEW_PROFILE:
       brave::AddNewProfile();

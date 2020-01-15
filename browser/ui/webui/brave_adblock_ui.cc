@@ -6,7 +6,6 @@
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
 
 #include "brave/browser/brave_browser_process_impl.h"
-#include "brave/browser/ui/webui/brave_playlists_source.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_adblock/resources/grit/brave_adblock_generated_map.h"
@@ -124,10 +123,6 @@ BraveAdblockUI::BraveAdblockUI(content::WebUI* web_ui, const std::string& name)
       kAdsBlocked,
       base::Bind(&BraveAdblockUI::OnPreferenceChanged, base::Unretained(this)));
   web_ui->AddMessageHandler(std::make_unique<AdblockDOMHandler>());
-  // Set up the playlists URL data source for thumbnail images
-  VLOG(1) << "registering playlists URLDataSource in " << __func__;
-  content::URLDataSource::Add(profile,
-                              std::make_unique<BravePlaylistsSource>(profile));
 }
 
 BraveAdblockUI::~BraveAdblockUI() {}

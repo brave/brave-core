@@ -18,6 +18,10 @@
       <!-- TODO: move to brave_adblock_ui component -->
       <include name="IDR_BRAVE_ADBLOCK_HTML" file="../brave_adblock_ui/brave_adblock.html" type="BINDATA" />
 
+      <!-- WebUI playlists resources -->
+      <!-- TODO: move to brave_playlists_ui component -->
+      <include name="IDR_BRAVE_PLAYLISTS_HTML" file="../brave_playlists_ui/brave_playlists.html" type="BINDATA" />
+
       <!-- WebUI webcompat reporter resources -->
       <!-- TODO: move to webcompat_reporter_ui component -->
       <include name="IDR_WEBCOMPAT_REPORTER_HTML" file="../webcompat_reporter/ui/webcompat_reporter.html" type="BINDATA" />

@@ -9,8 +9,8 @@ import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
+import("//brave/components/playlists/browser/buildflags/buildflags.gni")
 import("//components/gcm_driver/config.gni")
-import("//brave/components/playlists/buildflags.gni")
 import("//testing/test.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
@@ -632,7 +632,7 @@ test("brave_browser_tests") {
     ]
   }
 
-  if (playlists_enabled) {
+  if (enable_brave_playlists) {
      sources += [
       "//brave/browser/playlists/playlists_browsertest.cc",
       "//brave/browser/extensions/brave_playlists_apitest.cc",

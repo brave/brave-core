@@ -14,4 +14,3 @@ pack_web_resources("generated_resources") {
     ":brave_wallet_ui"
   ]
 }
-

@@ -4,7 +4,7 @@ import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
-import("//brave/components/playlists/buildflags.gni")
+import("//brave/components/playlists/browser/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//components/gcm_driver/config.gni")
 import("//chrome/common/features.gni")
@@ -200,6 +200,7 @@ source_set("ui") {
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_sync/buildflags:buildflags",
     "//brave/components/brave_wallet/browser/buildflags:buildflags",
+    "//brave/components/playlists/browser/buildflags:buildflags",
     "//brave/components/brave_welcome_ui:generated_resources",
     "//brave/components/p3a:buildflags",
     "//chrome/app:command_ids",
@@ -343,10 +344,15 @@ source_set("ui") {
     deps += [ "//brave/components/brave_wallet_ui:generated_resources" ]
   }
 
-  if (playlists_enabled) {
+  if (enable_brave_playlists) {
     sources += [
       "webui/brave_playlists_source.cc",
       "webui/brave_playlists_source.h",
+      "webui/brave_playlists_ui.cc",
+      "webui/brave_playlists_ui.h",
+    ]
+    deps += [
+      "//brave/components/brave_playlists_ui:generated_resources",
     ]
   }
 

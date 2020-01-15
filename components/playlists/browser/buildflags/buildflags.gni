@@ -1,0 +1,6 @@
+import("//brave/build/config.gni")
+import("//build/config/features.gni")
+
+declare_args() {
+  enable_brave_playlists = (brave_channel == "development" || brave_channel == "nightly") && (is_mac || is_linux || is_win)
+}

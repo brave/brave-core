@@ -16,8 +16,8 @@
     "contexts": ["webui"],
     "matches": [
         "chrome://newtab/*",
-        "chrome://adblock/*",
-        "brave://adblock/*"
+        "chrome://playlists/*",
+        "brave://playlists/*"
     ]
   }]
 }

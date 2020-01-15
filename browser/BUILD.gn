@@ -6,7 +6,7 @@ import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
-import("//brave/components/playlists/buildflags.gni")
+import("//brave/components/playlists/browser/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 import("//chrome/common/features.gni")
@@ -137,6 +137,7 @@ source_set("browser_process") {
     "//brave/components/content_settings/core/browser",
     "//brave/components/greaselion/browser/buildflags",
     "//brave/components/ntp_sponsored_images/browser",
+    "//brave/components/playlists/browser/buildflags",
     "//brave/components/ntp_tiles",
     "//brave/components/p3a",
     "//brave/components/resources",
@@ -246,7 +247,7 @@ source_set("browser_process") {
     ]
   }
 
-  if (playlists_enabled) {
+  if (enable_brave_playlists) {
     sources += [
       "playlists/playlists_service_factory.cc",
       "playlists/playlists_service_factory.h",

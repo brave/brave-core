@@ -1,3 +1,5 @@
+import("//brave/build/config.gni")
+
 source_set("browser") {
   sources = [
     "playlists_constants.cc",
@@ -24,5 +26,9 @@ source_set("browser") {
     "//services/network/public/cpp",
     "//third_party/leveldatabase",
     "//url",
+  ]
+
+  public_deps = [
+    "buildflags"
   ]
 }
