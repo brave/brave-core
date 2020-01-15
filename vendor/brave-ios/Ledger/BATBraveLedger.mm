@@ -90,7 +90,7 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
 @property (nonatomic, copy) NSString *storagePath;
 @property (nonatomic) BATWalletProperties *walletInfo;
 @property (nonatomic) BATBalance *balance;
-@property (nonatomic) NSMutableDictionary<BATExternalWalletType, BATExternalWallet *> *mExternalWallets;
+@property (nonatomic) NSMutableDictionary<BATWalletType, BATExternalWallet *> *mExternalWallets;
 @property (nonatomic) dispatch_queue_t fileWriteThread;
 @property (nonatomic) NSMutableDictionary<NSString *, NSString *> *state;
 @property (nonatomic) BATCommonOperations *commonOps;
@@ -367,12 +367,12 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 #pragma mark - User Wallets
 
-- (NSDictionary<BATExternalWalletType, BATExternalWallet *> *)externalWallets
+- (NSDictionary<BATWalletType, BATExternalWallet *> *)externalWallets
 {
   return [self.mExternalWallets copy];
 }
 
-- (void)fetchExternalWalletForType:(BATExternalWalletType)walletType
+- (void)fetchExternalWalletForType:(BATWalletType)walletType
                         completion:(void (^)(BATExternalWallet * _Nullable wallet))completion
 {
   ledger->GetExternalWallet(walletType.UTF8String, ^(ledger::Result result, ledger::ExternalWalletPtr walletPtr) {
@@ -386,7 +386,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   });
 }
 
-- (void)disconnectWalletOfType:(BATExternalWalletType)walletType
+- (void)disconnectWalletOfType:(BATWalletType)walletType
                     completion:(nullable void (^)(BATResult result))completion
 {
   ledger->DisconnectWallet(walletType.UTF8String, ^(ledger::Result result){
@@ -402,7 +402,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   });
 }
 
-- (void)authorizeExternalWalletOfType:(BATExternalWalletType)walletType
+- (void)authorizeExternalWalletOfType:(BATWalletType)walletType
                            queryItems:(NSDictionary<NSString *, NSString *> *)queryItems
                            completion:(void (^)(BATResult result, NSURL * _Nullable redirectURL))completion
 {
