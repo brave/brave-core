@@ -23,6 +23,8 @@
 using ::testing::_;
 using ::testing::Invoke;
 
+using std::placeholders::_1;
+
 namespace confirmations {
 
 class ConfirmationsUnblindedTokensTest : public ::testing::Test {
@@ -77,7 +79,13 @@ class ConfirmationsUnblindedTokensTest : public ::testing::Test {
               callback(SUCCESS);
             }));
 
-    confirmations_->Initialize();
+    auto callback = std::bind(
+        &ConfirmationsUnblindedTokensTest::OnInitialize, this, _1);
+    confirmations_->Initialize(callback);
+  }
+
+  void OnInitialize(const bool success) {
+    EXPECT_EQ(true, success);
   }
 
   void TearDown() override {

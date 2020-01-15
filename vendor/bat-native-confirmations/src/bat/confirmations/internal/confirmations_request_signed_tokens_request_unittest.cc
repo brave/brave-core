@@ -18,6 +18,8 @@
 
 // npm run test -- brave_unit_tests --filter=Confirmations*
 
+using std::placeholders::_1;
+
 namespace confirmations {
 
 class ConfirmationsRequestSignedTokensRequestTest : public ::testing::Test {
@@ -45,7 +47,13 @@ class ConfirmationsRequestSignedTokensRequestTest : public ::testing::Test {
   void SetUp() override {
     // Code here will be called immediately after the constructor (right before
     // each test)
-    confirmations_->Initialize();
+    auto callback = std::bind(
+        &ConfirmationsRequestSignedTokensRequestTest::OnInitialize, this, _1);
+    confirmations_->Initialize(callback);
+  }
+
+  void OnInitialize(const bool success) {
+    EXPECT_EQ(true, success);
   }
 
   void TearDown() override {

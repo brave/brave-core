@@ -17,7 +17,7 @@ WalletInfo::WalletInfo(const WalletInfo& info) :
 
 WalletInfo::~WalletInfo() = default;
 
-bool WalletInfo::IsValid() {
+bool WalletInfo::IsValid() const {
   return !payment_id.empty() && !private_key.empty();
 }
 
