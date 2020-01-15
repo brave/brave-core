@@ -157,6 +157,7 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
     if (self.walletCreated) {
       [self fetchWalletDetails:nil];
       [self fetchBalance:nil];
+      [self fetchExternalWalletForType:BATWalletTypeUphold completion:nil];
     }
 
     [self readNotificationsFromDisk];
@@ -373,15 +374,19 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 }
 
 - (void)fetchExternalWalletForType:(BATWalletType)walletType
-                        completion:(void (^)(BATExternalWallet * _Nullable wallet))completion
+                        completion:(nullable void (^)(BATExternalWallet * _Nullable wallet))completion
 {
   ledger->GetExternalWallet(walletType.UTF8String, ^(ledger::Result result, ledger::ExternalWalletPtr walletPtr) {
     if (result == ledger::Result::LEDGER_OK && walletPtr.get() != nullptr) {
       const auto bridgedWallet = [[BATExternalWallet alloc] initWithExternalWallet:*walletPtr];
       self.mExternalWallets[walletType] = bridgedWallet;
-      completion(bridgedWallet);
+      if (completion) {
+        completion(bridgedWallet);
+      }
     } else {
-      completion(nil);
+      if (completion) {
+        completion(nil);
+      }
     }
   });
 }
