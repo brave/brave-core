@@ -49,7 +49,7 @@ TEST_F(ProxyResolutionServiceTest, TorProxy) {
 
   ProxyInfo info;
   TestCompletionCallback callback;
-  BoundTestNetLog log;
+  RecordingBoundTestNetLog log;
   std::unique_ptr<ProxyResolutionService::Request> request;
   int rv = service->ResolveProxy(site_url, std::string(), &info,
                                  callback.callback(), &request, log.bound());
