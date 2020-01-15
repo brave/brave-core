@@ -2378,7 +2378,7 @@ public class BraveSyncWorker {
                         mBookmarkItems.add(bookmarkItem);
                     } else if (mAction.equals(DELETE_RECORD)) {
                         long defaultFolderId = (null != mDefaultFolder ? mDefaultFolder.getId() : 0);
-                        mBookmarkItems.add(BookmarkBridge.createBookmarkItem(id, BookmarkType.NORMAL, "", "", false,
+                        mBookmarkItems.add(BraveBookmarkModel.createBookmarkItem(id, BookmarkType.NORMAL, "", "", false,
                             defaultFolderId, BookmarkType.NORMAL, true, true));
                     }
                 }
