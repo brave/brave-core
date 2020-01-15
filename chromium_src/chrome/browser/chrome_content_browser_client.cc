@@ -13,12 +13,6 @@
 #define ChromeBrowserMainPartsMac BraveBrowserMainPartsMac
 #endif
 
-#if defined(OS_LINUX)
-#include "brave/browser/ui/views/brave_browser_main_extra_parts_views_linux.h"
-#define ChromeBrowserMainExtraPartsViewsLinux \
-  BraveBrowserMainExtraPartsViewsLinux  // NOLINT
-#endif
-
 #define HandleNewTabURLRewrite HandleNewTabURLRewrite_ChromiumImpl
 #define HandleNewTabURLReverseRewrite HandleNewTabURLReverseRewrite_ChromiumImpl
 
@@ -35,7 +29,3 @@ bool HandleNewTabURLReverseRewrite(GURL* url, content::BrowserContext* bc) {
 
 #undef HandleNewTabURLRewrite
 #undef HandleNewTabURLReverseRewrite_ChromiumImpl
-
-#if defined(OS_LINUX)
-#undef ChromeBrowserMainExtraPartsViewsLinux
-#endif
