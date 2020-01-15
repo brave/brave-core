@@ -89,7 +89,7 @@ def is_nightly(channel):
     return config.channel_names[0] == channel
 
 
-# given something like "0.60.2", return branch version ("0.60.x")
+# given something like "1.5.2", return branch version ("1.5.x")
 def get_current_version_branch(version):
     version = str(version)
     if version[0] == 'v':
@@ -99,7 +99,7 @@ def get_current_version_branch(version):
     return '.'.join(parts)
 
 
-# given something like "0.60.x", get previous version ("0.59.x")
+# given something like "1.6.x", get previous version ("1.5.x")
 def get_previous_version_branch(version):
     version = str(version)
     if version[0] == 'v':
