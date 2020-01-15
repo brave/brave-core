@@ -12,13 +12,10 @@
 #include "base/memory/ref_counted_memory.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
+#include "brave/components/ntp_sponsored_images/url_constants.h"
 #include "content/public/browser/browser_thread.h"
 
 namespace {
-constexpr char kBrandedWallpaperHost[] = "branded-wallpaper";
-constexpr char kLogoPath[] = "logo.png";
-constexpr char kWallpaperPathPrefix[] = "wallpaper-";
-
 base::Optional<std::string> ReadFileToString(const base::FilePath& path) {
   std::string contents;
   if (!base::ReadFileToString(path, &contents))
