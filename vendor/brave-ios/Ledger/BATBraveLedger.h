@@ -104,7 +104,7 @@ NS_SWIFT_NAME(BraveLedger)
 @property (nonatomic, readonly) NSDictionary<BATWalletType, BATExternalWallet *> *externalWallets;
 
 - (void)fetchExternalWalletForType:(BATWalletType)walletType
-                        completion:(void (^)(BATExternalWallet * _Nullable wallet))completion;
+                        completion:(nullable void (^)(BATExternalWallet * _Nullable wallet))completion;
 
 - (void)disconnectWalletOfType:(BATWalletType)walletType
                     completion:(nullable void (^)(BATResult result))completion;
