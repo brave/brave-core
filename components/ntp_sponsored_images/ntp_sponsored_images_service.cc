@@ -10,7 +10,7 @@ NTPSponsoredImagesService::NTPSponsoredImagesService(
     NTPSponsoredImagesComponentManager* manager)
     : browser_context_(browser_context),
       manager_(manager) {
-  manager_->AddDataSources(browser_context_);
+  manager_->AddDataSource(browser_context_);
   manager_->AddObserver(this);
 }
 
@@ -20,5 +20,5 @@ NTPSponsoredImagesService::~NTPSponsoredImagesService() {
 }
 
 void NTPSponsoredImagesService::OnUpdated(const NTPSponsoredImagesData& data) {
-  manager_->AddDataSources(browser_context_);
+  manager_->AddDataSource(browser_context_);
 }

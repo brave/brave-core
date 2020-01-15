@@ -29,10 +29,6 @@ TEST(NTPSponsoredImagesComponentManagerTest, BasicTest) {
 
   // By default manager doesn't have data.
   EXPECT_FALSE(manager.GetLatestSponsoredImagesData());
-  EXPECT_FALSE(
-      manager.IsValidImage(NTPSponsoredImageSource::Type::TYPE_LOGO, 0));
-  EXPECT_FALSE(
-      manager.IsValidImage(NTPSponsoredImageSource::Type::TYPE_WALLPAPER, 0));
 }
 
 TEST(NTPSponsoredImagesComponentManagerTest, InternalDataTest) {
@@ -61,18 +57,10 @@ TEST(NTPSponsoredImagesComponentManagerTest, InternalDataTest) {
      "}";
   manager.ResetInternalImagesDataForTest();
   manager.OnGetPhotoJsonData(test_json_string);
-  // Only wall paper at index 3 failed because json has only 3 wallpaers.
-  EXPECT_TRUE(manager.GetLatestSponsoredImagesData());
-  EXPECT_TRUE(
-      manager.IsValidImage(NTPSponsoredImageSource::Type::TYPE_LOGO, 0));
-  EXPECT_TRUE(
-      manager.IsValidImage(NTPSponsoredImageSource::Type::TYPE_WALLPAPER, 0));
-  EXPECT_TRUE(
-      manager.IsValidImage(NTPSponsoredImageSource::Type::TYPE_WALLPAPER, 1));
-  EXPECT_TRUE(
-      manager.IsValidImage(NTPSponsoredImageSource::Type::TYPE_WALLPAPER, 2));
-  EXPECT_FALSE(
-      manager.IsValidImage(NTPSponsoredImageSource::Type::TYPE_WALLPAPER, 3));
+  auto images_data = manager.GetLatestSponsoredImagesData();
+  EXPECT_TRUE(images_data);
+  // Above json data has 3 wallpapers.
+  EXPECT_EQ(3, images_data->wallpaper_image_count);
   observer.called_ = false;
   manager.NotifyObservers();
   EXPECT_TRUE(observer.called_);

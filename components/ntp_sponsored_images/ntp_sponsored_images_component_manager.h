@@ -56,12 +56,9 @@ NTPSponsoredImagesComponentManager
   void RemoveObserver(Observer* observer);
 
   // This should be called by client because this service is context neutral.
-  void AddDataSources(content::BrowserContext* browser_context);
+  void AddDataSource(content::BrowserContext* browser_context);
 
   base::Optional<NTPSponsoredImagesData> GetLatestSponsoredImagesData() const;
-
-  bool IsValidImage(NTPSponsoredImageSource::Type type,
-                    size_t wallpaper_index) const;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(NTPSponsoredImagesComponentManagerTest,

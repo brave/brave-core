@@ -93,7 +93,7 @@ void NTPSponsoredImagesComponentManager::RemoveObserver(Observer* observer) {
   observer_list_.RemoveObserver(observer);
 }
 
-void NTPSponsoredImagesComponentManager::AddDataSources(
+void NTPSponsoredImagesComponentManager::AddDataSource(
     content::BrowserContext* browser_context) {
   if (!internal_images_data_)
     return;
@@ -101,22 +101,7 @@ void NTPSponsoredImagesComponentManager::AddDataSources(
   if (!internal_images_data_->logo_image_file.empty()) {
     content::URLDataSource::Add(
         browser_context,
-        std::make_unique<NTPSponsoredImageSource>(
-            weak_factory_.GetWeakPtr(),
-            internal_images_data_->logo_image_file,
-            0,
-            NTPSponsoredImageSource::Type::TYPE_LOGO));
-  }
-
-  size_t count = internal_images_data_->wallpaper_image_files.size();
-  for (size_t i = 0; i < count; ++i) {
-    content::URLDataSource::Add(
-        browser_context,
-        std::make_unique<NTPSponsoredImageSource>(
-            weak_factory_.GetWeakPtr(),
-            internal_images_data_->wallpaper_image_files[i],
-            i,
-            NTPSponsoredImageSource::Type::TYPE_WALLPAPER));
+        std::make_unique<NTPSponsoredImageSource>(*internal_images_data_));
   }
 }
 
@@ -126,21 +111,6 @@ NTPSponsoredImagesComponentManager::GetLatestSponsoredImagesData() const {
     return NTPSponsoredImagesData(*internal_images_data_);
 
   return base::nullopt;
-}
-
-bool NTPSponsoredImagesComponentManager::IsValidImage(
-    NTPSponsoredImageSource::Type type,
-    size_t wallpaper_index) const {
-  if (!internal_images_data_)
-    return false;
-
-  if (type == NTPSponsoredImageSource::Type::TYPE_LOGO)
-    return !internal_images_data_->logo_image_file.empty();
-
-  // If |wallpaper_index| is bigger than url vector size, it's invalid one.
-  const size_t wallpaper_image_files_count =
-      internal_images_data_->wallpaper_image_files.size();
-  return wallpaper_image_files_count > wallpaper_index;
 }
 
 void NTPSponsoredImagesComponentManager::ReadPhotoJsonFileAndNotify() {

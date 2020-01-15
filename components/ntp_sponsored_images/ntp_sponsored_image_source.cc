@@ -12,12 +12,12 @@
 #include "base/memory/ref_counted_memory.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
-#include "brave/components/ntp_sponsored_images/ntp_sponsored_images_component_manager.h"
-#include "brave/components/ntp_sponsored_images/url_constants.h"
 #include "content/public/browser/browser_thread.h"
 
 namespace {
-constexpr char kInvalidSource[] = "";
+constexpr char kBrandedWallpaperHost[] = "branded-wallpaper";
+constexpr char kLogoPath[] = "logo.png";
+constexpr char kWallpaperPathPrefix[] = "wallpaper-";
 
 base::Optional<std::string> ReadFileToString(const base::FilePath& path) {
   std::string contents;
@@ -29,24 +29,15 @@ base::Optional<std::string> ReadFileToString(const base::FilePath& path) {
 }  // namespace
 
 NTPSponsoredImageSource::NTPSponsoredImageSource(
-    base::WeakPtr<NTPSponsoredImagesComponentManager> manager,
-    const base::FilePath& image_file_path,
-    size_t wallpaper_index,
-    Type type)
-    : manager_(manager),
-      image_file_path_(image_file_path),
-      wallpaper_index_(wallpaper_index),
-      type_(type),
+    const NTPSponsoredImagesInternalData& internal_images_data)
+    : images_data_(internal_images_data),
       weak_factory_(this) {
 }
 
 NTPSponsoredImageSource::~NTPSponsoredImageSource() = default;
 
 std::string NTPSponsoredImageSource::GetSource() {
-  if (!manager_ || !manager_->IsValidImage(type_, wallpaper_index_))
-    return kInvalidSource;
-
-  return IsLogoType() ? kBrandedLogoPath : GetWallpaperPath();
+  return kBrandedWallpaperHost;
 }
 
 void NTPSponsoredImageSource::StartDataRequest(
@@ -54,9 +45,25 @@ void NTPSponsoredImageSource::StartDataRequest(
     const content::WebContents::Getter& wc_getter,
     const GotDataCallback& callback) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  if (!IsValidPath(path)) {
+    scoped_refptr<base::RefCountedMemory> bytes;
+    std::move(callback).Run(std::move(bytes));
+    return;
+  }
+
+  base::FilePath image_file_path;
+  if (IsLogoPath(path)) {
+    image_file_path = images_data_.logo_image_file;
+  } else {
+    DCHECK(IsWallpaperPath(path));
+    image_file_path =
+        images_data_.wallpaper_image_files[GetWallpaperIndexFromPath(path)];
+  }
+
   base::PostTaskAndReplyWithResult(
       FROM_HERE, {base::ThreadPool(), base::MayBlock()},
-      base::BindOnce(&ReadFileToString, image_file_path_),
+      base::BindOnce(&ReadFileToString, image_file_path),
       base::BindOnce(&NTPSponsoredImageSource::OnGotImageFile,
                      weak_factory_.GetWeakPtr(),
                      callback));
@@ -75,16 +82,38 @@ void NTPSponsoredImageSource::OnGotImageFile(
 }
 
 std::string NTPSponsoredImageSource::GetMimeType(const std::string& path) {
-  return IsLogoType() ? "image/png" : "image/jpg";
+  if (IsLogoPath(path))
+    return "image/png";
+  return "image/jpg";
 }
 
-bool NTPSponsoredImageSource::IsLogoType() const {
-  return type_ == Type::TYPE_LOGO;
+bool NTPSponsoredImageSource::IsValidPath(const std::string& path) const {
+  if (IsLogoPath(path))
+    return true;
+
+  if (IsWallpaperPath(path))
+    return true;
+
+  return false;
 }
 
-std::string NTPSponsoredImageSource::GetWallpaperPath() const {
-  DCHECK_NE(type_, Type::TYPE_LOGO);
-  // Assemble path like branded-wallpaper-2.jpg
-  return base::StringPrintf("%s%zu.jpg",
-                            kBrandedWallpaperPathPrefix, wallpaper_index_);
+bool NTPSponsoredImageSource::IsWallpaperPath(const std::string& path) const {
+  return GetWallpaperIndexFromPath(path) != -1;
+}
+
+bool NTPSponsoredImageSource::IsLogoPath(const std::string& path) const {
+  return path.compare(kLogoPath) == 0;
+}
+
+int NTPSponsoredImageSource::GetWallpaperIndexFromPath(
+    const std::string& path) const {
+  const int wallpaper_count = images_data_.wallpaper_image_files.size();
+  for (int i = 0; i < wallpaper_count; ++i) {
+    const std::string generated_path =
+        base::StringPrintf("%s%d.jpg", kWallpaperPathPrefix, i);
+    if (path.compare(generated_path) == 0)
+      return i;
+  }
+
+  return -1;
 }

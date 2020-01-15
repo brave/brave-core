@@ -31,8 +31,6 @@ source_set("ntp_sponsored_images_impl") {
     "ntp_sponsored_images_service.h",
     "ntp_sponsored_image_source.cc",
     "ntp_sponsored_image_source.h",
-    "url_constants.cc",
-    "url_constants.h",
   ]
 
   deps = [
