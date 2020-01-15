@@ -9,13 +9,8 @@
 #include <string>
 #include <unordered_map>
 
-#include "base/values.h"
 #include "base/memory/singleton.h"
-
-namespace base {
-  template <typename T>
-  struct DefaultSingletonTraits;
-}
+#include "base/values.h"
 
 namespace brave_perf_predictor {
 

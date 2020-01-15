@@ -3,11 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_perf_predictor/browser/third_party_extractor.h"
+
 #include <fstream>
 #include <streambuf>
 
 #include "base/files/file_path.h"
-#include "brave/components/brave_perf_predictor/browser/third_party_extractor.h"
+#include "base/files/file_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_perf_predictor {
@@ -28,11 +30,6 @@ const char test_mapping[] = R"(
     "domains":["www.facebook.com","connect.facebook.net","staticxx.facebook.com","static.xx.fbcdn.net","m.facebook.com","atlassbx.com","fbcdn-photos-e-a.akamaihd.net","23.62.3.183","akamai.net","akamaiedge.net","akamaitechnologies.com","akamaitechnologies.fr","akamaized.net","edgefcs.net","edgekey.net","edgesuite.net","srip.net","cquotient.com","demandware.net","platform-lookaside.fbsbx.com"]
 }
 ])";
-
-// Test data directory, relative to source root
-const base::FilePath::CharType kTestDataRelativePath[] =
-  FILE_PATH_LITERAL("brave/components/brave_perf_predictor/resources");
-
 
 class ThirdPartyExtractorTest : public ::testing::Test {
  protected:
@@ -58,20 +55,21 @@ class ThirdPartyExtractorTest : public ::testing::Test {
   }
 
   // Objects declared here can be used by all tests in the test case
-  std::string LoadFile(const std::string& filename) {
-    base::FilePath path(kTestDataRelativePath);
-    path = path.Append(filename);
+  std::string LoadFile() {
+    auto path =
+        base::FilePath(FILE_PATH_LITERAL("brave"))
+            .Append(FILE_PATH_LITERAL("components"))
+            .Append(FILE_PATH_LITERAL("brave_perf_predictor"))
+            .Append(FILE_PATH_LITERAL("resources"))
+            .Append(FILE_PATH_LITERAL("entities-httparchive-nostats.json"));
 
-    std::ifstream ifs(path.value());
-    if (ifs.fail()) {
+    std::string value;
+    bool read = ReadFileToString(path, &value);
+    if (read) {
+      return value;
+    } else {
       return "";
     }
-
-    std::stringstream stream;
-    stream << ifs.rdbuf();
-    std::string value = stream.str();
-
-    return value;
   }
 };
 
@@ -95,14 +93,14 @@ TEST_F(ThirdPartyExtractorTest, HandlesInvalidJSON) {
 
 TEST_F(ThirdPartyExtractorTest, HandlesFullDataset) {
   ThirdPartyExtractor* extractor = ThirdPartyExtractor::GetInstance();
-  auto dataset = LoadFile("entities-httparchive-nostats.json");
+  auto dataset = LoadFile();
   bool parsed = extractor->load_entities(dataset);
   EXPECT_TRUE(parsed);
 }
 
 TEST_F(ThirdPartyExtractorTest, ExtractsThirdPartyURLTest) {
   ThirdPartyExtractor* extractor = ThirdPartyExtractor::GetInstance();
-  auto dataset = LoadFile("entities-httparchive-nostats.json");
+  auto dataset = LoadFile();
   extractor->load_entities(dataset);
 
   auto entity = extractor->get_entity("https://google-analytics.com/ga.js");
@@ -112,7 +110,7 @@ TEST_F(ThirdPartyExtractorTest, ExtractsThirdPartyURLTest) {
 
 TEST_F(ThirdPartyExtractorTest, ExtractsThirdPartyHostnameTest) {
   ThirdPartyExtractor* extractor = ThirdPartyExtractor::GetInstance();
-  auto dataset = LoadFile("entities-httparchive-nostats.json");
+  auto dataset = LoadFile();
   extractor->load_entities(dataset);
   auto entity = extractor->get_entity("google-analytics.com");
   ASSERT_TRUE(entity.has_value());
@@ -121,7 +119,7 @@ TEST_F(ThirdPartyExtractorTest, ExtractsThirdPartyHostnameTest) {
 
 TEST_F(ThirdPartyExtractorTest, ExtractsThirdPartyRootDomainTest) {
   ThirdPartyExtractor* extractor = ThirdPartyExtractor::GetInstance();
-  auto dataset = LoadFile("entities-httparchive-nostats.json");
+  auto dataset = LoadFile();
   extractor->load_entities(dataset);
   auto entity = extractor->get_entity("https://test.m.facebook.com");
   ASSERT_TRUE(entity.has_value());
@@ -130,7 +128,7 @@ TEST_F(ThirdPartyExtractorTest, ExtractsThirdPartyRootDomainTest) {
 
 TEST_F(ThirdPartyExtractorTest, HandlesUnrecognisedThirdPartyTest) {
   ThirdPartyExtractor* extractor = ThirdPartyExtractor::GetInstance();
-  auto dataset = LoadFile("entities-httparchive-nostats.json");
+  auto dataset = LoadFile();
   extractor->load_entities(dataset);
   auto entity = extractor->get_entity("example.com");
   EXPECT_TRUE(!entity.has_value());

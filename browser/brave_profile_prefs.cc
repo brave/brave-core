@@ -8,12 +8,13 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/common/brave_wallet_constants.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_perf_predictor/browser/buildflags/buildflags.h"
+#include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
+#include "brave/components/p3a/buildflags.h"
 #include "chrome/browser/net/prediction_options.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/common/pref_names.h"
@@ -54,7 +55,9 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
-#include "brave/components/brave_perf_predictor/browser/perf_predictor_p3a.h"
+#if BUILDFLAG(BRAVE_P3A_ENABLED)
+#include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
+#endif
 #endif
 
 using extensions::FeatureSwitch;
@@ -79,9 +82,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       registry);
 
 #if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
-  brave_perf_predictor::PerfPredictorTabHelper::RegisterProfilePrefs(
-      registry);
-  brave_perf_predictor::BandwidthSavingsTracker::RegisterPrefs(registry);
+  brave_perf_predictor::PerfPredictorTabHelper::RegisterProfilePrefs(registry);
+#if BUILDFLAG(BRAVE_P3A_ENABLED)
+  brave_perf_predictor::P3ABandwidthSavingsTracker::RegisterPrefs(registry);
+#endif
 #endif
 
   // appearance
@@ -103,9 +107,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // > advanced view is defaulted to true for EXISTING users; false for new
   bool is_new_user = false;
 
-  #if !defined(OS_ANDROID)
+#if !defined(OS_ANDROID)
   is_new_user = first_run::IsChromeFirstRun();
-  #endif
+#endif
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   // PushMessaging

@@ -5,64 +5,72 @@
 
 #include "brave/components/brave_perf_predictor/browser/predictor.h"
 
-#include <numeric>
-#include <cmath>
-#include <utility>
 #include <algorithm>
+#include <cmath>
+#include <numeric>
+#include <utility>
+
+#include "base/logging.h"
 
 namespace brave_perf_predictor {
 
+namespace {
+
 bool standardise_feats_no_outliers(
     std::array<double, standardise_feat_count>* features,
-    const std::array<double, standardise_feat_count> &means,
-    const std::array<double, standardise_feat_count> &scale) {
+    const std::array<double, standardise_feat_count>& means,
+    const std::array<double, standardise_feat_count>& scale) {
   for (unsigned int i = 0; i < standardise_feat_count; i++) {
-    features->at(i) = (features->at(i) - means[i])/scale[i];
+    features->at(i) = (features->at(i) - means[i]) / scale[i];
   }
-  double outlier_threshold = 3;
+  double outlier_threshold = 6;
   for (unsigned int i = 0; i < standardise_feat_count; i++) {
     if (features->at(i) > outlier_threshold ||
-        features->at(i) < -outlier_threshold)
+        features->at(i) < -outlier_threshold) {
+      VLOG(2) << "Outlier feature " << feature_sequence.at(i) << " with value "
+              << features->at(i);
       return true;
+    }
   }
   return false;
 }
 
-double predict(const std::array<double, feature_count> &features) {
+}  // namespace
+
+double predict(const std::array<double, feature_count>& features) {
   // Standardise numeric features
   std::array<double, standardise_feat_count> numeric_features;
   std::copy(features.begin(), features.begin() + standardise_feat_count,
-    numeric_features.begin());
+            numeric_features.begin());
   bool has_outliers = standardise_feats_no_outliers(
-    &numeric_features,
-    standardise_feat_means,
-    standardise_feat_scale);
+      &numeric_features, standardise_feat_means, standardise_feat_scale);
   if (has_outliers) {
+    VLOG(2) << "Feature set has outliers, return 0";
     return 0;
   }
 
   // Create a new feature vector to include all features
   std::array<double, feature_count> standardised_features;
   std::move(numeric_features.begin(), numeric_features.end(),
-    standardised_features.begin());
+            standardised_features.begin());
   // Just copy the rest of the features as-is
   std::copy(features.begin() + standardise_feat_count, features.end(),
-    standardised_features.begin() + standardise_feat_count);
+            standardised_features.begin() + standardise_feat_count);
 
   // Calculate the prediction
-  double log_prediction = std::inner_product(standardised_features.begin(),
-    standardised_features.end(), model_coefficients.begin(), model_intercept);
+  double log_prediction = std::inner_product(
+      standardised_features.begin(), standardised_features.end(),
+      model_coefficients.begin(), model_intercept);
   // We know the target is log-scaled but care about the absolute value
   return std::pow(10, log_prediction);
 }
 
-double predict(const std::unordered_map<std::string, double> &features) {
+double predict(const std::unordered_map<std::string, double>& features) {
   std::array<double, feature_count> feature_vector{};
   for (unsigned int i = 0; i < feature_count; i++) {
     auto it = features.find(feature_sequence[i]);
-    if (it != features.end()) {
+    if (it != features.end())
       feature_vector[i] = it->second;
-    }
   }
   return predict(feature_vector);
 }

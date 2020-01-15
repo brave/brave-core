@@ -1,4 +1,5 @@
 import("//brave/build/config.gni")
+import("//brave/components/p3a/buildflags.gni")
 
 source_set("browser") {
   public_deps = [
@@ -8,8 +9,6 @@ source_set("browser") {
   sources = [
     "bandwidth_savings_predictor.cc",
     "bandwidth_savings_predictor.h",
-    "perf_predictor_p3a.cc",
-    "perf_predictor_p3a.h",
     "perf_predictor_page_metrics_observer.cc",
     "perf_predictor_page_metrics_observer.h",
     "perf_predictor_tab_helper.cc",
@@ -23,7 +22,7 @@ source_set("browser") {
 
   deps = [
     "//base",
-    "//brave/common:pref_names",
+    "//brave/components/brave_perf_predictor/common",
     "//components/page_load_metrics/browser",
     "//components/page_load_metrics/common",
     "//components/prefs",
@@ -36,4 +35,13 @@ source_set("browser") {
     "//third_party/re2",
     "//url"
   ]
+
+  if (brave_p3a_enabled) {
+    sources += [
+      "p3a_bandwidth_savings_tracker.cc",
+      "p3a_bandwidth_savings_tracker.h",
+      "p3a_bandwidth_savings_permanent_state.cc",
+      "p3a_bandwidth_savings_permanent_state.h",
+    ]
+  }
 }

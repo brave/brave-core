@@ -13,8 +13,7 @@ namespace brave_perf_predictor {
 
 PerfPredictorPageMetricsObserver::PerfPredictorPageMetricsObserver() = default;
 
-PerfPredictorPageMetricsObserver::
-    ~PerfPredictorPageMetricsObserver() = default;
+PerfPredictorPageMetricsObserver::~PerfPredictorPageMetricsObserver() = default;
 
 page_load_metrics::PageLoadMetricsObserver::ObservePolicy
 PerfPredictorPageMetricsObserver::OnCommit(
@@ -22,16 +21,17 @@ PerfPredictorPageMetricsObserver::OnCommit(
     ukm::SourceId source_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // Skip if off the record
-  if (navigation_handle->GetWebContents()->
-      GetBrowserContext()->IsOffTheRecord()) {
+  if (navigation_handle->GetWebContents()
+          ->GetBrowserContext()
+          ->IsOffTheRecord())
     return STOP_OBSERVING;
-  }
 
   navigation_id_ = navigation_handle->GetNavigationId();
   // We'll be forwarding all performance metrics to the observer
   observer_ = PerfPredictorTabHelper::FromWebContents(
-        navigation_handle->GetWebContents());
+      navigation_handle->GetWebContents());
   if (!observer_) {
+    VLOG(2) << navigation_id_ << " could not get PerfPredictorTabHelper";
     return STOP_OBSERVING;
   }
   return CONTINUE_OBSERVING;
@@ -51,22 +51,20 @@ void PerfPredictorPageMetricsObserver::OnFirstContentfulPaintInPage(
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (observer_) {
     observer_->OnPageLoadTimingUpdated(timing);
+  } else {
+    VLOG(2) << "PerfPredictorTabHelper not ready for timing updates";
   }
-  VLOG(2) << navigation_id_ << " paint timing "
-    << "NavigationToFirstContentfulPaint "
-    << timing.paint_timing->first_contentful_paint.value();
 }
 
 void PerfPredictorPageMetricsObserver::
-  OnFirstMeaningfulPaintInMainFrameDocument(
-    const page_load_metrics::mojom::PageLoadTiming& timing) {
+    OnFirstMeaningfulPaintInMainFrameDocument(
+        const page_load_metrics::mojom::PageLoadTiming& timing) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (observer_) {
     observer_->OnPageLoadTimingUpdated(timing);
+  } else {
+    VLOG(2) << "PerfPredictorTabHelper not ready for timing updates";
   }
-  VLOG(2) << navigation_id_ << " paint timing "
-    << "NavigationToFirstMeaningfulPaint "
-    << timing.paint_timing->first_meaningful_paint.value();
 }
 
 void PerfPredictorPageMetricsObserver::OnLoadEventStart(
@@ -74,10 +72,9 @@ void PerfPredictorPageMetricsObserver::OnLoadEventStart(
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (observer_) {
     observer_->OnPageLoadTimingUpdated(timing);
+  } else {
+    VLOG(2) << "PerfPredictorTabHelper not ready for timing updates";
   }
-  VLOG(2) << navigation_id_ << " document timing "
-    << "NavigationToLoadEventFired "
-    << timing.document_timing->load_event_start.value();
 }
 
 }  // namespace brave_perf_predictor

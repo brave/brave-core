@@ -9,7 +9,6 @@
 #include <string>
 #include <unordered_map>
 
-#include "brave/components/brave_perf_predictor/browser/third_party_extractor.h"
 #include "components/page_load_metrics/common/page_load_metrics.mojom.h"
 #include "content/public/common/resource_load_info.mojom.h"
 
@@ -17,20 +16,19 @@ namespace brave_perf_predictor {
 
 class BandwidthSavingsPredictor {
  public:
-  explicit BandwidthSavingsPredictor(
-    ThirdPartyExtractor* third_party_extractor);
+  explicit BandwidthSavingsPredictor();
   ~BandwidthSavingsPredictor();
 
   void OnPageLoadTimingUpdated(
-    const page_load_metrics::mojom::PageLoadTiming& timing);
+      const page_load_metrics::mojom::PageLoadTiming& timing);
   void OnSubresourceBlocked(const std::string& resource_url);
-  void OnResourceLoadComplete(const GURL& main_frame_url,
-    const content::mojom::ResourceLoadInfo& resource_load_info);
+  void OnResourceLoadComplete(
+      const GURL& main_frame_url,
+      const content::mojom::ResourceLoadInfo& resource_load_info);
   double predict();
   void Reset();
 
  private:
-  ThirdPartyExtractor* third_party_extractor_ = nullptr;
   GURL main_frame_url_;
   std::unordered_map<std::string, double> feature_map_;
 };

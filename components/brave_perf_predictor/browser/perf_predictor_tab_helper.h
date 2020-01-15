@@ -6,13 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_PERF_PREDICTOR_BROWSER_PERF_PREDICTOR_TAB_HELPER_H_
 #define BRAVE_COMPONENTS_BRAVE_PERF_PREDICTOR_BROWSER_PERF_PREDICTOR_TAB_HELPER_H_
 
-#include <string>
 #include <memory>
+#include <string>
 
 #include "base/macros.h"
 #include "brave/components/brave_perf_predictor/browser/bandwidth_savings_predictor.h"
-#include "brave/components/brave_perf_predictor/browser/perf_predictor_p3a.h"
-#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
+#include "brave/components/p3a/buildflags.h"
 #include "components/page_load_metrics/common/page_load_metrics.mojom.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "content/public/browser/navigation_handle.h"
@@ -23,10 +22,15 @@
 #include "content/public/common/resource_load_info.mojom.h"
 #include "url/gurl.h"
 
+#if BUILDFLAG(BRAVE_P3A_ENABLED)
+#include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
+#endif
+
 namespace brave_perf_predictor {
 
-class PerfPredictorTabHelper : public content::WebContentsObserver,
-    public content::WebContentsUserData<PerfPredictorTabHelper> {
+class PerfPredictorTabHelper
+    : public content::WebContentsObserver,
+      public content::WebContentsUserData<PerfPredictorTabHelper> {
  public:
   explicit PerfPredictorTabHelper(content::WebContents*);
   ~PerfPredictorTabHelper() override;
@@ -36,7 +40,7 @@ class PerfPredictorTabHelper : public content::WebContentsObserver,
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
  protected:
-  void RecordSaving();
+  void RecordSavings();
 
   // content::WebContentsObserver overrides.
   void DidStartNavigation(
@@ -57,7 +61,9 @@ class PerfPredictorTabHelper : public content::WebContentsObserver,
   int64_t navigation_id_;
   GURL main_frame_url_;
   std::unique_ptr<BandwidthSavingsPredictor> bandwidth_predictor_;
-  std::unique_ptr<BandwidthSavingsTracker> bandwidth_tracker_;
+#if BUILDFLAG(BRAVE_P3A_ENABLED)
+  std::unique_ptr<P3ABandwidthSavingsTracker> bandwidth_tracker_;
+#endif
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
   DISALLOW_COPY_AND_ASSIGN(PerfPredictorTabHelper);
