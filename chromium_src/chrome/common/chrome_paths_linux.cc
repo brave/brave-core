@@ -2,6 +2,8 @@
 + * License, v. 2.0. If a copy of the MPL was not distributed with this file,
 + * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "chrome/common/chrome_paths_internal.h"
+
 #define GetDefaultUserDataDirectory GetDefaultUserDataDirectory_Disabled
 #include "../../../../chrome/common/chrome_paths_linux.cc"
 #undef GetDefaultUserDataDirectory
