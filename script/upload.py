@@ -28,8 +28,8 @@ if os.environ.get('DEBUG_HTTP_HEADERS') == 'true':
         from httplib import HTTPConnection  # python2
 
 
-def get_zip_name(name, version, target_arch='x64', suffix=''):
-    arch = target_arch
+def get_zip_name(name, version, target_arch, suffix=''):
+    arch = 'ia32' if (target_arch == 'x86') else target_arch
     if arch == 'arm':
         arch += 'v7l'
     zip_name = '{0}-{1}-{2}-{3}'.format(name, version, get_platform_key(),
@@ -37,12 +37,6 @@ def get_zip_name(name, version, target_arch='x64', suffix=''):
     if suffix:
         zip_name += '-' + suffix
     return zip_name + '.zip'
-
-
-DIST_NAME = get_zip_name(project_name(), get_brave_version())
-SYMBOLS_NAME = get_zip_name(project_name(), get_brave_version(), 'symbols')
-DSYM_NAME = get_zip_name(project_name(), get_brave_version(), 'dsym')
-PDB_NAME = get_zip_name(project_name(), get_brave_version(), 'pdb')
 
 
 def main():
@@ -67,46 +61,34 @@ def main():
               "release for this upload")
         release = create_release_draft(repo, tag)
 
+    d_dir = dist_dir(args.target_os, args.target_arch)
+    o_dir = output_dir(args.target_os, args.target_arch)
+
+    DIST_NAME = get_zip_name(project_name(), get_brave_version(), args.target_arch)
+    SYMBOLS_NAME = get_zip_name(project_name(), get_brave_version(), args.target_arch, 'symbols')
+    DSYM_NAME = get_zip_name(project_name(), get_brave_version(), args.target_arch, 'dsym')
+    PDB_NAME = get_zip_name(project_name(), get_brave_version(), args.target_arch, 'pdb')
+
     print('[INFO] Uploading release {}'.format(release['tag_name']))
     # Upload Brave with GitHub Releases API.
-    upload_brave(repo, release, os.path.join(dist_dir, DIST_NAME), force=args.force)
-    upload_brave(repo, release, os.path.join(dist_dir, SYMBOLS_NAME), force=args.force)
-    # if PLATFORM == 'darwin':
-    #     upload_brave(repo, release, os.path.join(dist_dir, DSYM_NAME))
-    # elif PLATFORM == 'win32':
-    #     upload_brave(repo, release, os.path.join(dist_dir, PDB_NAME))
-
-    out_dir = output_dir(args.target_os, args.target_arch)
-    dist_dir = dist_dir(args.target_os, args.target_arch)
-    pkgs = get_brave_packages(out_dir, release_channel(), get_raw_version(), args.target_os, args.target_arch, args.target_apk_base)
-
-    if PLATFORM == 'darwin':
-        for pkg in pkgs:
-            upload_brave(repo, release, os.path.join(out_dir, pkg), force=args.force)
-    elif PLATFORM == 'win32':
-        if args.target_arch == 'x64':
-            upload_brave(repo, release, os.path.join(out_dir, 'brave_installer.exe'),
-                         'brave_installer-x64.exe', force=args.force)
-            for pkg in pkgs:
-                upload_brave(repo, release, os.path.join(out_dir, pkg), force=args.force)
-        else:
-            upload_brave(repo, release, os.path.join(out_dir, 'brave_installer.exe'),
-                         'brave_installer-ia32.exe', force=args.force)
-            for pkg in pkgs:
-                upload_brave(repo, release, os.path.join(out_dir, pkg), force=args.force)
+    if args.target_os != 'android':
+        upload_brave(repo, release, os.path.join(d_dir, DIST_NAME), force=args.force)
+        upload_brave(repo, release, os.path.join(d_dir, SYMBOLS_NAME), force=args.force)
     else:
-        if args.target_os == 'android':
-            for pkg in pkgs:
-                upload_brave(repo, release, os.path.join(out_dir, pkg), force=args.force)
-        if args.target_arch == 'x64':
-            for pkg in pkgs:
-                upload_brave(repo, release, os.path.join(out_dir, pkg), force=args.force)
-        else:
-            upload_brave(repo, release, os.path.join(out_dir, 'brave-i386.rpm'), force=args.force)
-            upload_brave(repo, release, os.path.join(out_dir, 'brave-i386.deb'), force=args.force)
+        o_dir = o_dir + '/apks'
+    # if PLATFORM == 'darwin':
+    #     upload_brave(repo, release, os.path.join(d_dir, DSYM_NAME))
+    # elif PLATFORM == 'win32':
+    #     upload_brave(repo, release, os.path.join(d_dir, PDB_NAME))
 
-    # mksnapshot = get_zip_name('mksnapshot', get_brave_version())
-    # upload_brave(repo, release, os.path.join(dist_dir, mksnapshot))
+    pkgs = get_brave_packages(o_dir, release_channel(), get_raw_version(),
+                              args.target_os, args.target_arch, args.target_apk_base)
+
+    for pkg in pkgs:
+        upload_brave(repo, release, os.path.join(o_dir, pkg), force=args.force)
+
+    # mksnapshot = get_zip_name('mksnapshot', get_brave_version(), args.target_arch)
+    # upload_brave(repo, release, os.path.join(d_dir, mksnapshot))
 
     # if PLATFORM == 'win32' and not tag_exists:
     #     # Upload PDBs to Windows symbol server.
@@ -209,7 +191,11 @@ def get_brave_packages(dir, channel, version, target_os, target_arch='x64', targ
                     elif target_arch == 'x64':
                         if file == 'BraveMonox64.apk':
                             pkgs.append(file)
+                    else:
+                        if re.match(r'Brave.*.apk$', file):
+                            pkgs.append(file)
             elif PLATFORM == 'win32':
+                target_arch = 'ia32' if (target_arch == 'x86') else target_arch
                 arch = '32' if (target_arch == 'ia32') else ''
                 channel_arch_extension = channel_capitalized + 'Setup' + arch + '.exe'
                 file_stub = 'BraveBrowser' + channel_arch_extension
@@ -218,6 +204,7 @@ def get_brave_packages(dir, channel, version, target_os, target_arch='x64', targ
                 file_stn = 'BraveBrowserStandalone' + channel_arch_extension
                 file_stn_silent = 'BraveBrowserStandaloneSilent' + channel_arch_extension
                 file_stn_untagged = 'BraveBrowserStandaloneUntagged' + channel_arch_extension
+                file_installer = 'brave_installer-' + target_arch + '.exe'
 
                 if re.match(r'BraveBrowser' + channel_capitalized + r'Setup' + arch + r'_.*\.exe', file):
                     filecopy(file_path, file_stub)
@@ -239,6 +226,9 @@ def get_brave_packages(dir, channel, version, target_os, target_arch='x64', targ
                               r'_.*\.exe', file):
                     filecopy(file_path, file_stn_untagged)
                     pkgs.append(file_stn_untagged)
+                elif re.match(r'brave_installer.exe', file):
+                    filecopy(file_path, file_installer)
+                    pkgs.append(file_installer)
 
     return sorted(list(set(pkgs)))
 
@@ -255,11 +245,11 @@ def parse_args():
                         help='Specify the target OS',
                         default='')
     parser.add_argument('--target_arch',
-                        help='Specify the target OS',
-                        default='x64')
+                        help='Specify the target arch',
+                        default='')
     parser.add_argument('--target_apk_base',
                         help='Specify the target APK base',
-                        default='classic')
+                        default='')
     return parser.parse_args()
 
 

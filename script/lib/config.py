@@ -45,7 +45,7 @@ def output_dir(target_os, target_arch):
     elif target_arch != 'x64':
         target_arch_suffix = '_' + target_arch
     else:
-        target_os_prefix = ''
+        target_arch_suffix = ''
 
     return os.path.join(CHROMIUM_ROOT, 'out', target_os_prefix + 'Release' + target_arch_suffix)
 
