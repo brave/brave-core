@@ -102,11 +102,15 @@ void MakeStubResponse(const base::Optional<std::string>& data_url,
   if (data_url.has_value() && !data_url->empty()) {
     std::string charset;
     std::string mime_type;
+    std::string url_data;
     if (!net::DataURL::Parse(GURL(data_url.value()), &mime_type, &charset,
-                             data)) {
+                             &url_data)) {
       LOG(ERROR) << "Could not parse ad-block data URL: " << data_url.value();
-    } else if (!mime_type.empty() && data_url.value().find("data:,") != 0) {
-      response->mime_type = mime_type;
+    } else {
+      *data = std::move(url_data);
+      if (!mime_type.empty() && data_url.value().find("data:,") != 0) {
+        response->mime_type = mime_type;
+      }
     }
   }
 
