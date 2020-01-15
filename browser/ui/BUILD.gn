@@ -255,6 +255,12 @@ source_set("ui") {
     ]
   }
 
+  if (enable_extensions) {
+    deps += [
+      "//brave/components/ntp_sponsored_images",
+    ]
+  }
+
   if (enable_extensions && toolkit_views) {
     sources += [
       "brave_actions/brave_action_icon_with_badge_image_source.cc",
