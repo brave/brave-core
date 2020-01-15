@@ -14,6 +14,7 @@
 #include "base/values.h"
 #include "brave/components/ntp_sponsored_images/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_sponsored_images/ntp_sponsored_images_internal_data.h"
+#include "brave/components/ntp_sponsored_images/switches.h"
 #include "content/public/browser/browser_context.h"
 
 namespace {
@@ -34,6 +35,8 @@ struct RegionalComponentData {
 
 base::Optional<RegionalComponentData> GetRegionalComponentData(
     const std::string& locale) {
+  LOG(ERROR) << "NTP component region: " << locale;
+
   // TODO(simonhong): Fill all regional components infos.
   static const RegionalComponentData regional_data[] = {
       { "en-US",
@@ -70,6 +73,18 @@ NTPSponsoredImagesComponentManager::NTPSponsoredImagesComponentManager(
   // Early return for test.
   if (!cus)
     return;
+
+  // Flag override for testing or demo purposes
+  base::FilePath forced_local_path(
+      base::CommandLine::ForCurrentProcess()->GetSwitchValueNative(
+          switches::kNTPBrandedDataPathForTesting));
+  if (!forced_local_path.empty()) {
+    LOG(ERROR) <<
+    "NTP Sponsored Image package will be loaded from local path at: " <<
+    forced_local_path.LossyDisplayName();
+    OnComponentReady("", forced_local_path, "");
+    return;
+  }
 
   if (const auto& data = GetRegionalComponentData(locale)) {
     Register(kComponentName,
