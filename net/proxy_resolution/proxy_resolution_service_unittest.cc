@@ -51,8 +51,9 @@ TEST_F(ProxyResolutionServiceTest, TorProxy) {
   TestCompletionCallback callback;
   RecordingBoundTestNetLog log;
   std::unique_ptr<ProxyResolutionService::Request> request;
-  int rv = service->ResolveProxy(site_url, std::string(), &info,
-                                 callback.callback(), &request, log.bound());
+  int rv =
+      service->ResolveProxy(site_url, std::string(), NetworkIsolationKey(),
+                            &info, callback.callback(), &request, log.bound());
   EXPECT_THAT(rv, IsOk());
 
   ProxyServer server = info.proxy_server();
