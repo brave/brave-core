@@ -6,7 +6,7 @@ import styled from 'brave-ui/theme'
 
 export const StyledStatsItemContainer = styled<{}, 'ul'>('ul')`
   -webkit-font-smoothing: antialiased;
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
   justify-content: var(--ntp-item-justify, start);
   align-items: start;

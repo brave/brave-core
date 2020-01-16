@@ -12,7 +12,7 @@ interface WidgetContainerProps extends WidgetPositionProps {
 }
 
 export const StyledWidgetContainer = styled<WidgetContainerProps, 'div'>('div')`
-  display: flex;
+  display: inline-flex;
   /* For debug: */
   /* outline: 1px solid rgba(0, 185, 0, .6); */
   align-items: center;
@@ -27,7 +27,7 @@ interface WidgetVisibilityProps {
 
 export const StyledWidget = styled<WidgetVisibilityProps, 'div'>('div')`
   padding: 24px;
-  width: 100%;
+  max-width: 100%;
 
   ${StyledWidgetContainer}:hover & {
     border-radius: 16px;
