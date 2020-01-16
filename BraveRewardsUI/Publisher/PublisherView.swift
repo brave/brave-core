@@ -11,7 +11,7 @@ class PublisherView: UIStackView {
     verifiedLabelStackView.isHidden = hidden
   }
   
-  func setStatus(_ status: PublisherStatus) {
+  func setStatus(_ status: PublisherStatus, externalWalletStatus: WalletStatus, hasBraveFunds: Bool) {
     if status != .notVerified {
       verificationSymbolImageView.image = UIImage(frameworkResourceNamed: "icn-verify")
       verifiedLabel.text = Strings.verified
@@ -19,8 +19,20 @@ class PublisherView: UIStackView {
       verificationSymbolImageView.image = UIImage(frameworkResourceNamed: "icn-unverified")
       verifiedLabel.text = Strings.notYetVerified
     }
-    // Shows if the publisher is also .connected
-    unverifiedDisclaimerView.isHidden = status == .verified
+    if hasBraveFunds {
+      // Use that balance first, therefore not showing any differently
+      unverifiedDisclaimerView.isHidden = status != .notVerified
+    } else {
+      if externalWalletStatus == .notConnected {
+        unverifiedDisclaimerView.isHidden = status != .notVerified
+      } else {
+        unverifiedDisclaimerView.isHidden = status == .verified
+        if status == .connected {
+          unverifiedDisclaimerView.text = "\(Strings.connectedPublisherDisclaimer) \(Strings.disclaimerLearnMore)"
+          unverifiedDisclaimerView.setURLInfo([Strings.disclaimerLearnMore: "learn-more"])
+        }
+      }
+    }
   }
   
   func updatePublisherName(_ name: String, provider: String) {

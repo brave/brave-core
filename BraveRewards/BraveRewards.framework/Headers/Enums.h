@@ -13,7 +13,9 @@ typedef NS_ENUM(NSInteger, BATLogLevel) {
   BATLogLevelLogResponse = 6
 } NS_SWIFT_NAME(LogLevel);
 
-typedef NSString *BATExternalWalletType NS_STRING_ENUM;
+typedef NSString *BATWalletType NS_SWIFT_NAME(WalletType) NS_STRING_ENUM;
 
-static BATExternalWalletType const BATExternalWalletTypeUphold = @"uphold";
+static BATWalletType const BATWalletTypeUphold = @"uphold";
+static BATWalletType const BATWalletTypeAnonymous = @"anonymous";
+static BATWalletType const BATWalletTypeUnblindedTokens = @"blinded";
 

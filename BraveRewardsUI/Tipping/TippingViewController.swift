@@ -129,8 +129,21 @@ class TippingViewController: UIViewController, UIViewControllerTransitioningDele
           self.tippingView.overviewView.socialStackView.addArrangedSubview(UIImageView(image: UIImage(frameworkResourceNamed: $0.iconName)))
         })
       }
-      
-      self.tippingView.overviewView.disclaimerView.isHidden = banner.status == .verified
+    
+      if state.ledger.walletContainsBraveFunds {
+        // Use that balance first, therefore not showing any differently
+        tippingView.overviewView.disclaimerView.isHidden = banner.status != .notVerified
+      } else {
+        if state.ledger.upholdWalletStatus == .notConnected {
+          tippingView.overviewView.disclaimerView.isHidden = banner.status != .notVerified
+        } else {
+          tippingView.overviewView.disclaimerView.isHidden = banner.status == .verified
+          if banner.status == .connected {
+            tippingView.overviewView.disclaimerView.text = "\(Strings.tippingNotConnectedDisclaimer) \(Strings.disclaimerLearnMore)"
+            tippingView.overviewView.disclaimerView.setURLInfo([Strings.disclaimerLearnMore: "learn-more"])
+          }
+        }
+      }
       
       let bannerAmounts = banner.amounts.isEmpty ?
         TippingViewController.defaultTippingAmounts :

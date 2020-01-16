@@ -11,6 +11,25 @@ private let log = Logger.rewardsLogger
 
 extension BraveLedger {
   
+  var walletBalances: [WalletType: Double] {
+    guard let wallets = balance?.wallets else { return [:] }
+    var balances: [WalletType: Double] = [:]
+    for wallet in wallets {
+      balances[WalletType(rawValue: wallet.key)] = wallet.value.doubleValue
+    }
+    return balances
+  }
+  
+  var walletContainsBraveFunds: Bool {
+    let balances = walletBalances
+    return (balances[.anonymous] ?? 0) > 0 || (balances[.unblindedTokens] ?? 0) > 0
+  }
+  
+  var upholdWalletStatus: WalletStatus {
+    guard let userWallet = externalWallets[.uphold] else { return .notConnected }
+    return userWallet.status
+  }
+  
   /// The total balance or 0 if the balance hasn't been loaded yet
   fileprivate var balanceTotal: Double {
     return balance?.total ?? 0
