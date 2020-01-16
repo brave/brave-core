@@ -12,9 +12,12 @@
 #include "base/json/json_reader.h"
 #include "base/task/post_task.h"
 #include "base/values.h"
+#include "brave/components/brave_ads/browser/locale_helper.h"
 #include "brave/components/ntp_sponsored_images/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_sponsored_images/ntp_sponsored_images_internal_data.h"
+#include "brave/components/ntp_sponsored_images/regional_component_data.h"
 #include "brave/components/ntp_sponsored_images/switches.h"
+#include "brave/vendor/bat-native-ads/src/bat/ads/internal/locale_helper.h"
 #include "content/public/browser/browser_context.h"
 
 namespace {
@@ -26,31 +29,6 @@ constexpr char kLogoAltTextKey[] = "logoAltText";
 constexpr char kLogoCompanyNameKey[] = "logoCompanyName";
 constexpr char kLogoDestinationURLKey[] = "logoDestinationUrl";
 constexpr char kWallpaperImageURLsKey[] = "wallpaperImageUrls";
-
-struct RegionalComponentData {
-  std::string locale;
-  std::string component_base64_public_key;
-  std::string component_id;
-};
-
-base::Optional<RegionalComponentData> GetRegionalComponentData(
-    const std::string& locale) {
-  LOG(ERROR) << "NTP component region: " << locale;
-
-  // TODO(simonhong): Fill all regional components infos.
-  static const RegionalComponentData regional_data[] = {
-      { "en-US",
-        "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwnu+bh/TJ1+SvCtc4aRHC92fjS167f5uZKwgZ/YcvRK0y5BDiiWu/owQYIgcDLBYvBrJbpRg+3jyEYMdMYsCgoj6l+OZXeTGHXKGG3HeBHpu4mXArj3ohG3ce3P4SlpuuOI4qhtDsu1t7n/fP4Jm+vPMviaeJCfxVMVQEllol7ReMFpmVcpqUmiFMoF6Oop2IuZ7iSv+r/OU8dhWPO+0ghZ9b8S1D8Yr8P3ZrywUcO4vi26e5Hw8jHD1OdOuNbNYiwnqCzR4TaI4eRpPrMYBJ5MpQGKR/sxjByvdyE4iR7+4CCHXcaADY8VRcxlzjWsK7ZcSqpAdWxL5wEnWjnwe9QIDAQAB",  // NOLINT
-        "jfmhfclplhdedolodknnpdpjedaojkgj" },
-  };
-
-  for (const auto& data : regional_data) {
-    if (data.locale == locale)
-      return data;
-  }
-
-  return base::nullopt;
-}
 
 std::string ReadPhotoJsonData(const base::FilePath& photo_json_file_path) {
   std::string contents;
@@ -66,8 +44,7 @@ std::string ReadPhotoJsonData(const base::FilePath& photo_json_file_path) {
 
 NTPSponsoredImagesComponentManager::NTPSponsoredImagesComponentManager(
     BraveComponent::Delegate* delegate,
-    component_updater::ComponentUpdateService* cus,
-    const std::string& locale)
+    component_updater::ComponentUpdateService* cus)
     : BraveComponent(delegate),
       weak_factory_(this) {
   // Early return for test.
@@ -79,14 +56,17 @@ NTPSponsoredImagesComponentManager::NTPSponsoredImagesComponentManager(
       base::CommandLine::ForCurrentProcess()->GetSwitchValueNative(
           switches::kNTPBrandedDataPathForTesting));
   if (!forced_local_path.empty()) {
-    LOG(ERROR) <<
-    "NTP Sponsored Image package will be loaded from local path at: " <<
-    forced_local_path.LossyDisplayName();
+    LOG(ERROR)
+        << "NTP Sponsored Image package will be loaded from local path at: "
+        << forced_local_path.LossyDisplayName();
     OnComponentReady("", forced_local_path, "");
     return;
   }
 
-  if (const auto& data = GetRegionalComponentData(locale)) {
+  const std::string locale =
+      brave_ads::LocaleHelper::GetInstance()->GetLocale();
+  if (const auto& data = GetRegionalComponentData(
+          helper::Locale::GetRegionCode(locale))) {
     Register(kComponentName,
              data->component_id,
              data->component_base64_public_key);

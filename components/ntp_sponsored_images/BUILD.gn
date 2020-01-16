@@ -33,13 +33,17 @@ source_set("ntp_sponsored_images_impl") {
     "ntp_sponsored_image_source.h",
     "switches.cc",
     "switches.h",
+    "regional_component_data.cc",
+    "regional_component_data.h",
     "url_constants.cc",
     "url_constants.h",
   ]
 
   deps = [
     "//base",
+    "//brave/components/brave_ads/browser",
     "//brave/components/brave_component_updater/browser",
+    "//brave/vendor/bat-native-ads",
     "//components/component_updater",
     "//components/keyed_service/core",
     "//content/public/browser",

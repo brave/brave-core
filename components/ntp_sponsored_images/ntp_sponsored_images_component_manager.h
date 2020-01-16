@@ -43,8 +43,7 @@ NTPSponsoredImagesComponentManager
 
   NTPSponsoredImagesComponentManager(
       BraveComponent::Delegate* delegate,
-      component_updater::ComponentUpdateService* cus,
-      const std::string& locale);
+      component_updater::ComponentUpdateService* cus);
   ~NTPSponsoredImagesComponentManager() override;
 
   NTPSponsoredImagesComponentManager(
