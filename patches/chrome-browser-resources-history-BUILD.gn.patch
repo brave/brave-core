@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/history/BUILD.gn b/chrome/browser/resources/history/BUILD.gn
+index fef23d8ad5010a7c2200854e1b34d44c67724865..fca813c5db18c788acfeff30695145dc8582fdcf 100644
+--- a/chrome/browser/resources/history/BUILD.gn
++++ b/chrome/browser/resources/history/BUILD.gn
+@@ -29,6 +29,7 @@ if (optimize_webui) {
+ 
+     deps = [
+       ":unpak",
++      "//brave/ui/webui/resources:modulize",
+     ]
+     excludes = [
+       "chrome://resources/html/util.html",

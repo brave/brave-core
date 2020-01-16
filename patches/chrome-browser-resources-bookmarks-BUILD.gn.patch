@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/bookmarks/BUILD.gn b/chrome/browser/resources/bookmarks/BUILD.gn
+index a0b0f5d230dd2041b79ae37a52613f4646843827..70fd8d82e9472bdf49c7884b9edd6258587ec06e 100644
+--- a/chrome/browser/resources/bookmarks/BUILD.gn
++++ b/chrome/browser/resources/bookmarks/BUILD.gn
+@@ -21,6 +21,7 @@ if (optimize_webui) {
+     deps = [
+       ":unpak",
+       "../../../../ui/webui/resources:modulize",
++      "//brave/ui/webui/resources:modulize",
+     ]
+     excludes = [ "chrome://resources/js/cr.m.js" ]
+   }

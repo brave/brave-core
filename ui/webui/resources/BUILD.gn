@@ -1,5 +1,6 @@
 import("//tools/grit/grit_rule.gni")
 import("//ui/webui/webui_features.gni")
+import("//tools/polymer/polymer.gni")
 
 grit("resources") {
   defines = [ "optimize_webui=$optimize_webui" ]
@@ -20,5 +21,11 @@ grit("resources") {
   grit_flags = [
     "-E",
     "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
+  ]
+}
+
+group("modulize") {
+  deps = [
+    "br_elements:polymer3_elements",
   ]
 }
