@@ -327,11 +327,7 @@ void BraveProfileSyncServiceImpl::GetSettingsAndDevices(
 void BraveProfileSyncServiceImpl::GetSyncWords() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   Uint8Array seed = Uint8ArrayFromString(brave_sync_prefs_->GetSeed());
-  if (!seed.empty()) {
-    NotifyHaveSyncWords(crypto::PassphraseFromBytes32(seed));
-  } else {
-    NotifyHaveSyncWords("TEST DEBUG");
-  }
+  NotifyHaveSyncWords(crypto::PassphraseFromBytes32(seed));
 }
 
 std::string BraveProfileSyncServiceImpl::GetSeed() {
