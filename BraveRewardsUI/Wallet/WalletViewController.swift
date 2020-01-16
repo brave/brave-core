@@ -235,7 +235,11 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
         let updateStates = {
           publisherView.setCheckAgainIsLoading(false)
           publisherView.checkAgainButton.isHidden = true
-          publisherView.setStatus(status)
+          publisherView.setStatus(
+            status,
+            externalWalletStatus: self.state.ledger.upholdWalletStatus,
+            hasBraveFunds: self.state.ledger.walletContainsBraveFunds
+          )
         }
 
         // Create an artificial delay so user sees something is happening
@@ -288,14 +292,22 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
       
       guard let publisher = publisher else {
         publisherView.updatePublisherName(state.dataSource?.displayString(for: state.url) ?? "", provider: "")
-        publisherView.setStatus(.notVerified)
+        publisherView.setStatus(
+          .notVerified,
+          externalWalletStatus: state.ledger.upholdWalletStatus,
+          hasBraveFunds: state.ledger.walletContainsBraveFunds
+        )
         return
       }
       
       let provider = " \(publisher.provider.isEmpty ? "" : String(format: Strings.onProviderText, publisher.providerDisplayString))"
       publisherView.updatePublisherName(publisher.name, provider: provider)
       
-      publisherView.setStatus(publisher.status)
+      publisherView.setStatus(
+        publisher.status,
+        externalWalletStatus: state.ledger.upholdWalletStatus,
+        hasBraveFunds: state.ledger.walletContainsBraveFunds
+      )
       publisherView.checkAgainButton.isHidden = publisher.status != .notVerified
       
       self.publisherSummaryView.setAutoContribute(enabled:
@@ -629,6 +641,13 @@ extension WalletViewController {
       crypto: Strings.walletBalanceType,
       dollarValue: state.ledger.usdBalanceString
     )
+    if let publisher = publisher {
+      publisherSummaryView.publisherView.setStatus(
+        publisher.status,
+        externalWalletStatus: self.state.ledger.upholdWalletStatus,
+        hasBraveFunds: self.state.ledger.walletContainsBraveFunds
+      )
+    }
     if let wallet = state.ledger.externalWallets[.uphold] {
       switch wallet.status {
       case .notConnected:
