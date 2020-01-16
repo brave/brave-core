@@ -46,7 +46,8 @@ platform :ios do
         "ClientTests/TabSessionTests",
         "ClientTests/ContentBlockerTests",
         "ClientTests/ClientTests/testUserAgent",
-        "DataTests/DeviceTests"
+        "DataTests/DeviceTests",
+        "DataTests/DomainTests/testAllShieldsOff"
       ]
     )
   end
