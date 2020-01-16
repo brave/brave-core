@@ -641,6 +641,7 @@ extension WalletViewController {
       crypto: Strings.walletBalanceType,
       dollarValue: state.ledger.usdBalanceString
     )
+    #if REWARDS_USER_WALLET
     if let publisher = publisher {
       publisherSummaryView.publisherView.setStatus(
         publisher.status,
@@ -665,16 +666,19 @@ extension WalletViewController {
       }
       self.walletView.headerView.addFundsButton.isHidden = wallet.status != .verified
     }
+    #endif
   }
   
   /// Fetch an updated external wallet from ledger if the user isn't in JP
   func updateExternalWallet() {
+    #if REWARDS_USER_WALLET
     if Preferences.Rewards.isUsingBAP.value == true { return }
     
     // If we can show Uphold, grab verification status of the wallet
     state.ledger.fetchExternalWallet(forType: .uphold) { _ in
       self.updateWalletHeader()
     }
+    #endif
   }
   
   func setupLedgerObservers() {
