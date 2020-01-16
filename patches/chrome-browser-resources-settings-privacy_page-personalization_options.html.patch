@@ -1,50 +1,64 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index 4a02d7329cb2aca4a890afce3acc3d1348974845..5ded7e0d3f64417722e13682de3a05237be33c38 100644
+index 4a02d7329cb2aca4a890afce3acc3d1348974845..1acacf2a60ceed457b4a52c38de93ed7cc24f518 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-@@ -13,6 +13,9 @@
- <link rel="import" href="../settings_shared_css.html">
- <link rel="import" href="passwords_leak_detection_toggle.html">
- <link rel="import" href="privacy_page_browser_proxy.html">
+@@ -17,6 +17,9 @@
+ <if expr="not chromeos">
+ <link rel="import" href="chrome://resources/cr_elements/cr_toast/cr_toast.html">
+ </if>
 +<if expr="not _google_chrome">
 +<link rel="import" href="../brave_privacy_page/brave_personalization_options.html">
 +</if>
  
+ <!--
+  * Note: If a synced pref is added/removed from this file, the method
+@@ -37,6 +40,7 @@
+         border-top: none;
+       }
+     </style>
++<if expr="_google_chrome">
  <if expr="not chromeos">
- <link rel="import" href="chrome://resources/cr_elements/cr_toast/cr_toast.html">
-@@ -54,10 +57,12 @@
+     <template is="dom-if" if="[[privacySettingsRedesignEnabled_]]">
+       <settings-toggle-button id="signinAllowedToggle"
+@@ -49,21 +53,25 @@
+       </settings-toggle-button>
+     </template>
+ </if><!-- not chromeos -->
++</if>
+     <settings-toggle-button hidden="[[!pageVisibility.searchPrediction]]"
+         pref="{{prefs.search.suggest_enabled}}"
          label="$i18n{searchSuggestPref}"
          sub-label="$i18n{searchSuggestPrefDesc}">
      </settings-toggle-button>
-+    <if expr="_google_chrome">
++<if expr="_google_chrome">
      <settings-toggle-button pref="{{prefs.alternate_error_pages.enabled}}"
          label="$i18n{linkDoctorPref}"
          sub-label="$i18n{linkDoctorPrefDesc}">
      </settings-toggle-button>
-+    </if>
++</if>
      <template is="dom-if" if="[[!privacySettingsRedesignEnabled_]]">
        <settings-toggle-button id="safeBrowsingToggle"
            pref="{{prefs.safebrowsing.enabled}}"
-@@ -71,6 +76,10 @@
-             sync-status="[[syncStatus]]">
-         </settings-passwords-leak-detection-toggle>
-       </template>
-+    <if expr="not _google_chrome">
-+      <settings-brave-personalization-options prefs="{{prefs}}"></settings-brave-personalization-options>
-+    </if>
-+    <if expr="_google_chrome">
-       <settings-toggle-button id="safeBrowsingReportingToggle"
-           pref="[[safeBrowsingReportingPref_]]" no-set-pref
-           label="$i18n{safeBrowsingEnableExtendedReporting}"
-@@ -80,6 +89,7 @@
+           label="$i18n{safeBrowsingEnableProtection}"
+           sub-label="$i18n{safeBrowsingEnableProtectionDesc}">
+       </settings-toggle-button>
++<if expr="_google_chrome">
+       <template is="dom-if" if="[[passwordsLeakDetectionEnabled_]]">
+         <settings-passwords-leak-detection-toggle
+             id="passwordsLeakDetectionToggle"
+@@ -79,7 +87,11 @@
+           on-settings-boolean-control-change=
                "onSafeBrowsingReportingToggleChange_">
        </settings-toggle-button>
++</if>
      </template>
-+    </if>
++<if expr="not _google_chrome">
++      <settings-brave-personalization-options prefs="{{prefs}}"></settings-brave-personalization-options>
++</if>
  <if expr="_google_chrome">
  <if expr="chromeos">
      <settings-toggle-button pref="{{prefs.cros.metrics.reportingEnabled}}"
-@@ -87,6 +97,8 @@
+@@ -87,6 +99,8 @@
          sub-label="$i18n{enableLoggingDesc}">
      </settings-toggle-button>
  </if><!-- chromeos -->
@@ -53,12 +67,35 @@ index 4a02d7329cb2aca4a890afce3acc3d1348974845..5ded7e0d3f64417722e13682de3a0523
  <if expr="not chromeos">
      <settings-toggle-button id="metricsReportingControl"
          pref="[[metricsReportingPref_]]" label="$i18n{enableLogging}"
-@@ -100,7 +112,7 @@
+@@ -100,12 +114,14 @@
        </template>
      </settings-toggle-button>
  </if><!-- not chromeos -->
 -</if><!-- _google_chrome -->
 +</if><!-- _chromium -->
++<if expr="_google_chrome">
      <settings-toggle-button
          pref="{{prefs.url_keyed_anonymized_data_collection.enabled}}"
          label="$i18n{urlKeyedAnonymizedDataCollection}"
+         sub-label="$i18n{urlKeyedAnonymizedDataCollectionDesc}">
+     </settings-toggle-button>
++</if>
+ <if expr="_google_chrome">
+     <settings-toggle-button id="spellCheckControl"
+         pref="{{prefs.spellcheck.use_spelling_service}}"
+@@ -124,6 +140,7 @@
+       </settings-toggle-button>
+     </template>
+ 
++<if expr="_google_chrome">
+     <template is="dom-if" if="[[privacySettingsRedesignEnabled_]]">
+       <template is="dom-if" if="[[showSignoutDialog_]]" restamp>
+         <settings-signout-dialog sync-status="[[syncStatus]]"
+@@ -137,6 +154,7 @@
+       <div>$i18n{restartToApplyChanges}</div>
+       <cr-button on-click="onRestartTap_">$i18n{restart}</cr-button>
+     </cr-toast>
++</if>
+ </if>
+   </template>
+   <script src="personalization_options.js"></script>

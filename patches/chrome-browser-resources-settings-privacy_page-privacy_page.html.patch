@@ -1,24 +1,54 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-index 2c75fd1b08e469e50599eaecde719b100ab093e6..03675136d6cfa286326ebcc08b2fdeca86ab2dfe 100644
+index 2c75fd1b08e469e50599eaecde719b100ab093e6..8e84c30d4ebd4f55f0e9371d14070cf1d698a44a 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.html
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-@@ -127,6 +127,7 @@
+@@ -29,6 +29,9 @@
+ <link rel="import" href="chrome://resources/cr_elements/cr_toast/cr_toast.html">
+ </if>
+ <link rel="import" href="privacy_page_browser_proxy.html">
++<if expr="not _google_chrome">
++<link rel="import" href="personalization_options.html">
++</if>
+ 
+ <dom-module id="settings-privacy-page">
+   <template>
+@@ -76,6 +79,11 @@
+     <settings-animated-pages id="pages" section="privacy"
+         focus-config="[[focusConfig_]]">
+       <div route-path="default">
++<if expr="not _google_chrome">
++       <settings-personalization-options prefs="{{prefs}}">
++       </settings-personalization-options>
++</if>
++<if expr="_google_chrome">
+         <template is="dom-if" if="[[!privacySettingsRedesignEnabled_]]">
+           <cr-link-row id="syncLinkRow"
+               label="$i18n{syncAndNonPersonalizedServices}"
+@@ -83,6 +91,7 @@
+               on-click="onSyncAndGoogleServicesClick_">
+           </cr-link-row>
+         </template>
++</if>
+         <cr-link-row id="clearBrowsingData"
+             class="hr"
+             label="$i18n{clearBrowsingData}"
+@@ -127,6 +136,7 @@
              </settings-toggle-button>
            </template>
  <if expr="not chromeos">
-+<!--
++<if expr="_google_chrome">
          <template is="dom-if" if="[[!privacySettingsRedesignEnabled_]]">
            <settings-toggle-button id="signinAllowedToggle"
                pref="{{prefs.signin.allowed_on_next_startup}}"
-@@ -136,6 +137,7 @@
+@@ -136,6 +146,7 @@
                no-set-pref>
            </settings-toggle-button>
          </template>
-+-->
++</if>
  </if><!-- not chromeos -->
            <settings-toggle-button id="doNotTrack"
                pref="{{prefs.enable_do_not_track}}" label="$i18n{doNotTrack}"
-@@ -242,6 +244,7 @@
+@@ -242,6 +253,7 @@
            </category-setting-exceptions>
          </settings-subpage>
        </template>
@@ -26,7 +56,7 @@ index 2c75fd1b08e469e50599eaecde719b100ab093e6..03675136d6cfa286326ebcc08b2fdeca
        <template is="dom-if" route-path="/content/backgroundSync" no-search>
          <settings-subpage page-title="$i18n{siteSettingsBackgroundSync}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
-@@ -259,6 +262,7 @@
+@@ -259,6 +271,7 @@
            </category-setting-exceptions>
          </settings-subpage>
        </template>
@@ -34,7 +64,7 @@ index 2c75fd1b08e469e50599eaecde719b100ab093e6..03675136d6cfa286326ebcc08b2fdeca
        <template is="dom-if" route-path="/content/camera" no-search>
          <settings-subpage page-title="$i18n{siteSettingsCategoryCamera}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
-@@ -287,11 +291,13 @@
+@@ -287,11 +300,13 @@
                sub-option-label="$i18n{deleteDataPostSession}"
                sub-option-mode="cookies-session-only">
            </category-default-setting>
@@ -48,7 +78,7 @@ index 2c75fd1b08e469e50599eaecde719b100ab093e6..03675136d6cfa286326ebcc08b2fdeca
            <cr-link-row id="site-data-trigger" class="hr"
                on-click="onSiteDataTap_" label="$i18n{siteSettingsCookieLink}">
            </cr-link-row>
-@@ -381,11 +387,13 @@
+@@ -381,11 +396,13 @@
          <settings-subpage page-title="$i18n{siteSettingsCategoryJavascript}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
              search-term="{{searchFilter_}}">
@@ -62,10 +92,11 @@ index 2c75fd1b08e469e50599eaecde719b100ab093e6..03675136d6cfa286326ebcc08b2fdeca
            <category-setting-exceptions
                category="{{ContentSettingsTypes.JAVASCRIPT}}"
                block-header="$i18n{siteSettingsBlock}"
-@@ -484,6 +492,19 @@
+@@ -484,6 +501,21 @@
            </category-setting-exceptions>
          </settings-subpage>
        </template>
++<if expr="not _google_chrome">
 +      <template is="dom-if" route-path="/content/autoplay" no-search>
 +        <settings-subpage page-title="$i18n{siteSettingsCategoryAutoplay}">
 +          <category-default-setting
@@ -79,6 +110,7 @@ index 2c75fd1b08e469e50599eaecde719b100ab093e6..03675136d6cfa286326ebcc08b2fdeca
 +          </category-setting-exceptions>
 +        </settings-subpage>
 +      </template>
++</if>
        <template is="dom-if" route-path="/content/flash" no-search>
          <settings-subpage page-title="$i18n{siteSettingsFlash}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
