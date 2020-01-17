@@ -8,51 +8,45 @@
 
 #include <list>
 
-#include "base/macros.h"
-#include "base/timer/timer.h"
+#include "base/time/time.h"
+#include "base/values.h"
 
 class PrefService;
 
 namespace brave_perf_predictor {
 
-// Note: append-only enumeration! Never remove any existing values, as this enum
-// is used to bucket a UMA histogram, and removing values breaks that.
-constexpr std::array<uint64_t, 7> BandwidthSavingsBuckets{
-    0,    // 0
-    50,   // >0-50mb
-    100,  // 51-100mb
-    200,  // 101-200mb
-    400,  // 201-400mb
-    700,  // 401-700mb
-    1500  // 701-1500mb
-          // >1501 => bucket 7
-};
-
-constexpr size_t kNumOfSavedDailyUptimes = 7;
-constexpr char kSavingsDailyUMAHistogramName[] =
-    "Brave.Savings.BandwidthSavingsMB";
-
+// This class accumulates savings reported via |AddSavings| over time in
+// |PrefService| User Preferences for persistency and returns those for the last
+// full period available when queried via |GetFullPeriodSavingsBytes|.
+//
+// Time interval to accumulate data for is defined internally and
+// |GetFullPeriodSavingsBytes| returns 0 if there aren't enough readings to
+// cover a full period.
 class P3ABandwidthSavingsPermanentState {
  public:
   explicit P3ABandwidthSavingsPermanentState(PrefService* user_prefs);
   ~P3ABandwidthSavingsPermanentState();
+  P3ABandwidthSavingsPermanentState(const P3ABandwidthSavingsPermanentState&) =
+      delete;
+  P3ABandwidthSavingsPermanentState& operator=(
+      const P3ABandwidthSavingsPermanentState&) = delete;
 
   void AddSavings(uint64_t delta);
-  uint64_t GetSavingsTotal() const;
+  base::Optional<uint64_t> GetFullPeriodSavingsBytes();
 
  private:
   struct DailySaving {
     base::Time day;
     uint64_t saving;
+    // DailySaving(base::Time day, uint64_t saving): day(day), saving(saving) {}
   };
   void LoadSavingsDaily();
   void SaveSavingsDaily();
   void RecordSavingsTotal();
+  uint64_t GetSavingsTotal() const;
 
   std::list<DailySaving> daily_savings_;
   PrefService* user_prefs_ = nullptr;
-
-  DISALLOW_COPY_AND_ASSIGN(P3ABandwidthSavingsPermanentState);
 };
 
 }  // namespace brave_perf_predictor

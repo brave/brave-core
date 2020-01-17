@@ -13,8 +13,8 @@ namespace prefs {
 extern const char kBandwidthSavedBytes[];
 extern const char kBandwidthSavedDailyBytes[];
 
-#endif  // BRAVE_COMPONENTS_BRAVE_PERF_PREDICTOR_COMMON_PREF_NAMES_H_
-
 }  // namespace prefs
 
 }  // namespace brave_perf_predictor
+
+#endif  // BRAVE_COMPONENTS_BRAVE_PERF_PREDICTOR_COMMON_PREF_NAMES_H_

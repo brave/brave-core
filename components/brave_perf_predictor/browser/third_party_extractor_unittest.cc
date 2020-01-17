@@ -21,116 +21,102 @@ const char test_mapping[] = R"(
     "company":"Google",
     "homepage":"https://www.google.com/analytics/analytics/",
     "categories":["analytics"],
-    "domains":["www.google-analytics.com","ssl.google-analytics.com","google-analytics.com","urchin.com"]
+    "domains":["www.google-analytics.com","ssl.google-analytics.com",
+      "google-analytics.com","urchin.com"]
 },
 {
     "name":"Facebook",
     "homepage":"https://www.facebook.com",
     "categories":["social"],
-    "domains":["www.facebook.com","connect.facebook.net","staticxx.facebook.com","static.xx.fbcdn.net","m.facebook.com","atlassbx.com","fbcdn-photos-e-a.akamaihd.net","23.62.3.183","akamai.net","akamaiedge.net","akamaitechnologies.com","akamaitechnologies.fr","akamaized.net","edgefcs.net","edgekey.net","edgesuite.net","srip.net","cquotient.com","demandware.net","platform-lookaside.fbsbx.com"]
+    "domains":["www.facebook.com","connect.facebook.net",
+      "staticxx.facebook.com","static.xx.fbcdn.net","m.facebook.com",
+      "atlassbx.com","fbcdn-photos-e-a.akamaihd.net","23.62.3.183",
+      "akamai.net","akamaiedge.net","akamaitechnologies.com",
+      "akamaitechnologies.fr","akamaized.net","edgefcs.net",
+      "edgekey.net","edgesuite.net","srip.net","cquotient.com",
+      "demandware.net","platform-lookaside.fbsbx.com"]
 }
 ])";
 
-class ThirdPartyExtractorTest : public ::testing::Test {
- protected:
-  ThirdPartyExtractorTest() {
-    // You can do set-up work for each test here
+namespace {
+
+std::string LoadFile() {
+  auto path =
+      base::FilePath(FILE_PATH_LITERAL("brave"))
+          .Append(FILE_PATH_LITERAL("components"))
+          .Append(FILE_PATH_LITERAL("brave_perf_predictor"))
+          .Append(FILE_PATH_LITERAL("resources"))
+          .Append(FILE_PATH_LITERAL("entities-httparchive-nostats.json"));
+
+  std::string value;
+  bool read = ReadFileToString(path, &value);
+  if (read) {
+    return value;
+  } else {
+    return "";
   }
+}
 
-  ~ThirdPartyExtractorTest() override {
-    // You can do clean-up work that doesn't throw exceptions here
-  }
+}  // namespace
 
-  // If the constructor and destructor are not enough for setting up and
-  // cleaning up each test, you can use the following methods
-
-  void SetUp() override {
-    // Code here will be called immediately after the constructor (right before
-    // each test)
-  }
-
-  void TearDown() override {
-    // Code here will be called immediately after each test (right before the
-    // destructor)
-  }
-
-  // Objects declared here can be used by all tests in the test case
-  std::string LoadFile() {
-    auto path =
-        base::FilePath(FILE_PATH_LITERAL("brave"))
-            .Append(FILE_PATH_LITERAL("components"))
-            .Append(FILE_PATH_LITERAL("brave_perf_predictor"))
-            .Append(FILE_PATH_LITERAL("resources"))
-            .Append(FILE_PATH_LITERAL("entities-httparchive-nostats.json"));
-
-    std::string value;
-    bool read = ReadFileToString(path, &value);
-    if (read) {
-      return value;
-    } else {
-      return "";
-    }
-  }
-};
-
-TEST_F(ThirdPartyExtractorTest, HandlesEmptyJSON) {
+TEST(ThirdPartyExtractorTest, HandlesEmptyJSON) {
   ThirdPartyExtractor* extractor = ThirdPartyExtractor::GetInstance();
-  bool parsed = extractor->load_entities("");
+  bool parsed = extractor->LoadEntities("");
   EXPECT_TRUE(!parsed);
 }
 
-TEST_F(ThirdPartyExtractorTest, ParsesJSON) {
+TEST(ThirdPartyExtractorTest, ParsesJSON) {
   ThirdPartyExtractor* extractor = ThirdPartyExtractor::GetInstance();
-  bool parsed = extractor->load_entities(test_mapping);
+  bool parsed = extractor->LoadEntities(test_mapping);
   EXPECT_TRUE(parsed);
 }
 
-TEST_F(ThirdPartyExtractorTest, HandlesInvalidJSON) {
+TEST(ThirdPartyExtractorTest, HandlesInvalidJSON) {
   ThirdPartyExtractor* extractor = ThirdPartyExtractor::GetInstance();
-  bool parsed = extractor->load_entities(R"([{"name":"Google Analytics")");
+  bool parsed = extractor->LoadEntities(R"([{"name":"Google Analytics")");
   EXPECT_TRUE(!parsed);
 }
 
-TEST_F(ThirdPartyExtractorTest, HandlesFullDataset) {
+TEST(ThirdPartyExtractorTest, HandlesFullDataset) {
   ThirdPartyExtractor* extractor = ThirdPartyExtractor::GetInstance();
   auto dataset = LoadFile();
-  bool parsed = extractor->load_entities(dataset);
+  bool parsed = extractor->LoadEntities(dataset);
   EXPECT_TRUE(parsed);
 }
 
-TEST_F(ThirdPartyExtractorTest, ExtractsThirdPartyURLTest) {
+TEST(ThirdPartyExtractorTest, ExtractsThirdPartyURLTest) {
   ThirdPartyExtractor* extractor = ThirdPartyExtractor::GetInstance();
   auto dataset = LoadFile();
-  extractor->load_entities(dataset);
+  extractor->LoadEntities(dataset);
 
-  auto entity = extractor->get_entity("https://google-analytics.com/ga.js");
+  auto entity = extractor->GetEntity("https://google-analytics.com/ga.js");
   ASSERT_TRUE(entity.has_value());
   EXPECT_EQ(entity.value(), "Google Analytics");
 }
 
-TEST_F(ThirdPartyExtractorTest, ExtractsThirdPartyHostnameTest) {
+TEST(ThirdPartyExtractorTest, ExtractsThirdPartyHostnameTest) {
   ThirdPartyExtractor* extractor = ThirdPartyExtractor::GetInstance();
   auto dataset = LoadFile();
-  extractor->load_entities(dataset);
-  auto entity = extractor->get_entity("google-analytics.com");
+  extractor->LoadEntities(dataset);
+  auto entity = extractor->GetEntity("google-analytics.com");
   ASSERT_TRUE(entity.has_value());
   EXPECT_EQ(entity.value(), "Google Analytics");
 }
 
-TEST_F(ThirdPartyExtractorTest, ExtractsThirdPartyRootDomainTest) {
+TEST(ThirdPartyExtractorTest, ExtractsThirdPartyRootDomainTest) {
   ThirdPartyExtractor* extractor = ThirdPartyExtractor::GetInstance();
   auto dataset = LoadFile();
-  extractor->load_entities(dataset);
-  auto entity = extractor->get_entity("https://test.m.facebook.com");
+  extractor->LoadEntities(dataset);
+  auto entity = extractor->GetEntity("https://test.m.facebook.com");
   ASSERT_TRUE(entity.has_value());
   EXPECT_EQ(entity.value(), "Facebook");
 }
 
-TEST_F(ThirdPartyExtractorTest, HandlesUnrecognisedThirdPartyTest) {
+TEST(ThirdPartyExtractorTest, HandlesUnrecognisedThirdPartyTest) {
   ThirdPartyExtractor* extractor = ThirdPartyExtractor::GetInstance();
   auto dataset = LoadFile();
-  extractor->load_entities(dataset);
-  auto entity = extractor->get_entity("example.com");
+  extractor->LoadEntities(dataset);
+  auto entity = extractor->GetEntity("example.com");
   EXPECT_TRUE(!entity.has_value());
 }
 

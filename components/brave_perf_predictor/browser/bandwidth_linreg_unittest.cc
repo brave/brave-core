@@ -3,28 +3,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_perf_predictor/browser/predictor.h"
+#include "brave/components/brave_perf_predictor/browser/bandwidth_linreg.h"
 
+#include "base/containers/flat_map.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_perf_predictor {
 
-class BraveSavingsPredictorTest : public ::testing::Test {
- protected:
-  BraveSavingsPredictorTest() {}
-
-  ~BraveSavingsPredictorTest() {}
-};
-
-TEST_F(BraveSavingsPredictorTest, FeatureArrayGetsPrediction) {
-  std::array<double, feature_count> features{};
-  double result = predict(features);
+TEST(BraveSavingsPredictorTest, FeatureArrayGetsPrediction) {
+  const std::array<double, feature_count> features{};
+  double result = LinregPredictVector(features);
   EXPECT_NE(result, 0);
 }
 
-TEST_F(BraveSavingsPredictorTest, HandlesSpecificVectorExample) {
+TEST(BraveSavingsPredictorTest, HandlesSpecificVectorExample) {
   // This test needs to be updated for any change in the model
-  std::array<double, feature_count> sample = {
+  const std::array<double, feature_count> sample = {
       20, 129, 225, 225, 142, 925,    5, 34662, 3,  317818,  9,  1702888,
       0,  0,   1,   324, 32,  238315, 9, 90131, 54, 2367498, 59, 2384138,
       0,  1,   0,   0,   0,   0,      0, 0,     0,  1,       0,  0,
@@ -44,32 +38,33 @@ TEST_F(BraveSavingsPredictorTest, HandlesSpecificVectorExample) {
       0,  0,   0,   0,   0,   0,      0, 0,     0,  0,       0,  0,
       0,  0,   0,   0,   0,   0,      0, 0,     0,  0};
 
-  double result = brave_perf_predictor::predict(sample);
-  EXPECT_EQ((int)result / 1000, 794);  // Equal on the order of thousands
+  double result = LinregPredictVector(sample);
+  EXPECT_EQ(static_cast<int>(result / 1000),
+            794);  // Equal on the order of thousands
 }
 
-TEST_F(BraveSavingsPredictorTest, HandlesEmptyFeatureset) {
-  std::unordered_map<std::string, double> features{};
-  double result = predict(features);
-  std::array<double, feature_count> features_array{};
-  double array_result = predict(features_array);
+TEST(BraveSavingsPredictorTest, HandlesEmptyFeatureset) {
+  const base::flat_map<std::string, double> features{};
+  double result = LinregPredictNamed(features);
+  const std::array<double, feature_count> features_array{};
+  double array_result = LinregPredictVector(features_array);
   EXPECT_EQ(result, array_result);
 }
 
-TEST_F(BraveSavingsPredictorTest, HandlesCompleteFeatureset) {
-  std::unordered_map<std::string, double> features;
+TEST(BraveSavingsPredictorTest, HandlesCompleteFeatureset) {
+  base::flat_map<std::string, double> features;
   for (unsigned int i = 0; i < feature_count; i++) {
     features[feature_sequence[i]] = 0;
   }
-  double result = predict(features);
-  std::array<double, feature_count> array_features{};
-  double array_result = predict(array_features);
+  double result = LinregPredictNamed(features);
+  const std::array<double, feature_count> array_features{};
+  double array_result = LinregPredictVector(array_features);
   EXPECT_EQ(result, array_result);
 }
 
-TEST_F(BraveSavingsPredictorTest, HandesSpecificFeaturemapExample) {
+TEST(BraveSavingsPredictorTest, HandesSpecificFeaturemapExample) {
   // This test needs to be updated for any change in the model
-  std::unordered_map<std::string, double> featuremap = {
+  const base::flat_map<std::string, double> featuremap = {
       {"thirdParties.Google Analytics.blocked", 0},
       {"thirdParties.Facebook.blocked", 1},
       {"thirdParties.Google CDN.blocked", 0},
@@ -285,8 +280,9 @@ TEST_F(BraveSavingsPredictorTest, HandesSpecificFeaturemapExample) {
       {"resources.total.requestCount", 59},
       {"resources.total.size", 238413},
   };
-  double result = predict(featuremap);
-  EXPECT_EQ((int)result / 1000, 794);  // Equal on the order of thousands
+  double result = LinregPredictNamed(featuremap);
+  EXPECT_EQ(static_cast<int>(result / 1000),
+            794);  // Equal on the order of thousands
 }
 
 }  // namespace brave_perf_predictor

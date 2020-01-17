@@ -6,11 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_PERF_PREDICTOR_BROWSER_P3A_BANDWIDTH_SAVINGS_TRACKER_H_
 #define BRAVE_COMPONENTS_BRAVE_PERF_PREDICTOR_BROWSER_P3A_BANDWIDTH_SAVINGS_TRACKER_H_
 
-#include <array>
-#include <list>
-
-#include "base/macros.h"
-#include "base/timer/timer.h"
+#include <cstdint>
 
 class PrefRegistrySimple;
 class PrefService;
@@ -21,13 +17,16 @@ class P3ABandwidthSavingsTracker {
  public:
   explicit P3ABandwidthSavingsTracker(PrefService* user_prefs);
   ~P3ABandwidthSavingsTracker();
+  P3ABandwidthSavingsTracker(const P3ABandwidthSavingsTracker&) = delete;
+  P3ABandwidthSavingsTracker& operator=(const P3ABandwidthSavingsTracker&) =
+      delete;
+
   static void RegisterPrefs(PrefRegistrySimple* registry);
   void RecordSavings(uint64_t savings);
 
  private:
   PrefService* user_prefs_;
-
-  DISALLOW_COPY_AND_ASSIGN(P3ABandwidthSavingsTracker);
+  void StoreSavingsHistogram(uint64_t savings_bytes);
 };
 
 }  // namespace brave_perf_predictor

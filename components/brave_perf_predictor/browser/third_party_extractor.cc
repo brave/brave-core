@@ -8,15 +8,19 @@
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/values.h"
+#include "components/grit/brave_components_resources.h"
 #include "third_party/re2/src/re2/re2.h"
+#include "ui/base/resource/resource_bundle.h"
 
 namespace brave_perf_predictor {
+
+namespace {
 
 RE2 DOMAIN_IN_URL_REGEX(":\\/\\/(.*?)(\\/|$)");
 RE2 DOMAIN_CHARACTERS("([a-z0-9.-]+\\.[a-z0-9]+)");
 RE2 ROOT_DOMAIN_REGEX("([^.]+\\.([^.]+|(gov|com|co|ne)\\.\\w{2})$)");
 
-base::Optional<std::string> get_domain_from_origin_or_url(
+base::Optional<std::string> GetDomainFromOriginOrUrl(
     const std::string& origin_or_url) {
   std::string domain;
   if (RE2::PartialMatch(origin_or_url, DOMAIN_IN_URL_REGEX, &domain))
@@ -26,7 +30,7 @@ base::Optional<std::string> get_domain_from_origin_or_url(
   return base::nullopt;
 }
 
-std::string get_root_domain(const std::string& domain) {
+std::string GetRootDomain(const std::string& domain) {
   std::string root_domain;
   if (RE2::PartialMatch(domain, ROOT_DOMAIN_REGEX, &root_domain)) {
     return root_domain;
@@ -35,9 +39,25 @@ std::string get_root_domain(const std::string& domain) {
   }
 }
 
+}  // namespace
+
 ThirdPartyExtractor::ThirdPartyExtractor() = default;
 
-bool ThirdPartyExtractor::load_entities(const std::string& entities) {
+bool ThirdPartyExtractor::InitializeFromResource() {
+  const auto resource_id = IDR_THIRD_PARTY_ENTITIES;
+
+  auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
+  std::string data_resource;
+  if (resource_bundle.IsGzipped(resource_id)) {
+    data_resource = resource_bundle.DecompressDataResource(resource_id);
+  } else {
+    data_resource = resource_bundle.GetRawDataResource(resource_id).as_string();
+  }
+
+  return LoadEntities(data_resource);
+}
+
+bool ThirdPartyExtractor::LoadEntities(const std::string& entities) {
   // Reset previous mappings
   entity_by_domain_.clear();
   entity_by_root_domain_.clear();
@@ -78,7 +98,7 @@ bool ThirdPartyExtractor::load_entities(const std::string& entities) {
         LOG(ERROR) << "Duplicate domain " << entity_domain_string;
       } else {
         entity_by_domain_.emplace(entity_domain_string, entity_name_string);
-        auto root_domain = get_root_domain(entity_domain_string);
+        auto root_domain = GetRootDomain(entity_domain_string);
 
         auto root_entity_entry = entity_by_root_domain_.find(root_domain);
         if (root_entity_entry != entity_by_root_domain_.end() &&
@@ -97,27 +117,26 @@ bool ThirdPartyExtractor::load_entities(const std::string& entities) {
   return true;
 }
 
-ThirdPartyExtractor::ThirdPartyExtractor(const std::string& entities) {
-  load_entities(entities);
-}
-
 ThirdPartyExtractor::~ThirdPartyExtractor() = default;
 
 // static
 ThirdPartyExtractor* ThirdPartyExtractor::GetInstance() {
-  return base::Singleton<ThirdPartyExtractor>::get();
+  auto* extractor = base::Singleton<ThirdPartyExtractor>::get();
+  // By default initialize from packaged resources
+  if (!extractor->IsInitialized())
+    extractor->InitializeFromResource();
+  return extractor;
 }
 
-base::Optional<std::string> ThirdPartyExtractor::get_entity(
-    const std::string& origin_or_url) {
-  base::Optional<std::string> domain =
-      get_domain_from_origin_or_url(origin_or_url);
+base::Optional<std::string> ThirdPartyExtractor::GetEntity(
+    const std::string& origin_or_url) const {
+  base::Optional<std::string> domain = GetDomainFromOriginOrUrl(origin_or_url);
   if (domain.has_value()) {
     auto domain_entry = entity_by_domain_.find(domain.value());
     if (domain_entry != entity_by_domain_.end())
       return domain_entry->second;
 
-    auto root_domain = get_root_domain(domain.value());
+    auto root_domain = GetRootDomain(domain.value());
     auto root_domain_entry = entity_by_root_domain_.find(root_domain);
     if (root_domain_entry != entity_by_root_domain_.end())
       return root_domain_entry->second;

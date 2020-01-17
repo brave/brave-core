@@ -1,4 +1,4 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
+/* Copyright 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -12,7 +12,6 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_page_metrics_observer.h"
-using brave_perf_predictor::PerfPredictorPageMetricsObserver;
 #endif
 
 namespace chrome {
@@ -44,7 +43,9 @@ void BravePageLoadMetricsEmbedder::RegisterEmbedderObservers(
   PageLoadMetricsEmbedder::RegisterEmbedderObservers(tracker);
 
 #if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
-  tracker->AddObserver(std::make_unique<PerfPredictorPageMetricsObserver>());
+  tracker->AddObserver(
+      std::make_unique<
+          brave_perf_predictor::PerfPredictorPageMetricsObserver>());
 #endif
 }
 

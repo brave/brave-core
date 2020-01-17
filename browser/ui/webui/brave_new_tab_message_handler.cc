@@ -77,8 +77,8 @@ base::DictionaryValue GetStatsDictionary(PrefService* prefs) {
     prefs->GetUint64(kFingerprintingBlocked));
 #if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
   stats_data.SetInteger(
-    "bandwidthSavedStat",
-    prefs->GetUint64(brave_perf_predictor::prefs::kBandwidthSavedBytes));
+      "bandwidthSavedStat",
+      prefs->GetUint64(brave_perf_predictor::prefs::kBandwidthSavedBytes));
 #endif
   return stats_data;
 }

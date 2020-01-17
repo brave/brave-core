@@ -8,14 +8,18 @@
 #include <numeric>
 #include <utility>
 
-#include "base/logging.h"
-#include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
 namespace brave_perf_predictor {
+
+namespace {
+
+constexpr size_t kNumOfSavedDailyUptimes = 7;
+
+}  // namespace
 
 P3ABandwidthSavingsPermanentState::P3ABandwidthSavingsPermanentState(
     PrefService* user_prefs)
@@ -36,15 +40,23 @@ void P3ABandwidthSavingsPermanentState::AddSavings(uint64_t delta) {
 
   if (now_midnight - last_saved_midnight > base::TimeDelta()) {
     // Day changed.
-    daily_savings_.push_front({now_midnight, delta});
+    daily_savings_.emplace_front(DailySaving{now_midnight, delta});
     if (daily_savings_.size() > kNumOfSavedDailyUptimes)
       daily_savings_.pop_back();
   } else {
     daily_savings_.front().saving += delta;
   }
 
-  RecordSavingsTotal();
   SaveSavingsDaily();
+}
+
+base::Optional<uint64_t>
+P3ABandwidthSavingsPermanentState::GetFullPeriodSavingsBytes() {
+  if (daily_savings_.size() == kNumOfSavedDailyUptimes) {
+    return static_cast<uint64_t>(GetSavingsTotal() / 1024 / 1024);
+  } else {
+    return base::nullopt;
+  }
 }
 
 uint64_t P3ABandwidthSavingsPermanentState::GetSavingsTotal() const {
@@ -78,8 +90,9 @@ void P3ABandwidthSavingsPermanentState::LoadSavingsDaily() {
       continue;
     if (daily_savings_.size() == kNumOfSavedDailyUptimes)
       break;
-    daily_savings_.push_back({base::Time::FromDoubleT(day->GetDouble()),
-                              (uint64_t)saving->GetDouble()});
+    daily_savings_.emplace_back(
+        DailySaving{base::Time::FromDoubleT(day->GetDouble()),
+                    (uint64_t)saving->GetDouble()});
   }
 }
 
@@ -96,22 +109,6 @@ void P3ABandwidthSavingsPermanentState::SaveSavingsDaily() {
     value.SetKey("saving", base::Value(static_cast<double>(u.saving)));
     list->GetList().push_back(std::move(value));
   }
-}
-
-void P3ABandwidthSavingsPermanentState::RecordSavingsTotal() {
-  int answer = 0;
-  if (daily_savings_.size() == kNumOfSavedDailyUptimes) {
-    const uint64_t total =
-        static_cast<uint64_t>(GetSavingsTotal() / 1024 / 1024);
-    DCHECK_GE(total, 0ULL);
-    int counter = 0;
-    for (auto* it = BandwidthSavingsBuckets.begin();
-         it != BandwidthSavingsBuckets.end(); ++it, ++counter) {
-      if (total > *it)
-        answer = counter + 1;
-    }
-  }
-  UMA_HISTOGRAM_EXACT_LINEAR(kSavingsDailyUMAHistogramName, answer, 6);
 }
 
 }  // namespace brave_perf_predictor

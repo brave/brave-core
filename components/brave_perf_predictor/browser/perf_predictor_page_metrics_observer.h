@@ -9,21 +9,34 @@
 #include <cstdint>
 #include <string>
 
-#include "base/macros.h"
-#include "base/sequence_checker.h"
-#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "components/page_load_metrics/browser/page_load_metrics_observer.h"
-#include "components/page_load_metrics/common/page_load_metrics.mojom.h"
-#include "content/public/browser/navigation_handle.h"
 #include "services/metrics/public/cpp/ukm_source_id.h"
 
+namespace content {
+class NavigationHandle;
+}  // namespace content
+
+namespace page_load_metrics {
+namespace mojom {
+class PageLoadTiming;
+}  // namespace mojom
+}  // namespace page_load_metrics
+
 namespace brave_perf_predictor {
+
+class PerfPredictorTabHelper;
+
 // Observer responsible for recording per site performance metrics.
 class PerfPredictorPageMetricsObserver
     : public page_load_metrics::PageLoadMetricsObserver {
  public:
   PerfPredictorPageMetricsObserver();
   ~PerfPredictorPageMetricsObserver() override;
+
+  PerfPredictorPageMetricsObserver(const PerfPredictorPageMetricsObserver&) =
+      delete;
+  PerfPredictorPageMetricsObserver& operator=(
+      const PerfPredictorPageMetricsObserver&) = delete;
 
   void OnFirstContentfulPaintInPage(
       const page_load_metrics::mojom::PageLoadTiming& timing) override;
@@ -43,9 +56,6 @@ class PerfPredictorPageMetricsObserver
 
   // The browser context this navigation is operating in.
   PerfPredictorTabHelper* observer_ = nullptr;
-
-  SEQUENCE_CHECKER(sequence_checker_);
-  DISALLOW_COPY_AND_ASSIGN(PerfPredictorPageMetricsObserver);
 };
 
 }  // namespace brave_perf_predictor

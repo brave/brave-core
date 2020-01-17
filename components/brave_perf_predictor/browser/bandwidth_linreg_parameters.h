@@ -10,7 +10,6 @@
 
 #include <string>
 #include <map>
-#include <vector>
 #include <array>
 
 namespace brave_perf_predictor {

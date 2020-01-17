@@ -6,9 +6,10 @@
 #include "brave/components/brave_perf_predictor/browser/bandwidth_savings_predictor.h"
 
 #include "base/logging.h"
-#include "brave/components/brave_perf_predictor/browser/predictor.h"
-#include "brave/components/brave_perf_predictor/browser/third_parties.h"
+#include "brave/components/brave_perf_predictor/browser/bandwidth_linreg.h"
 #include "brave/components/brave_perf_predictor/browser/third_party_extractor.h"
+#include "components/page_load_metrics/common/page_load_metrics.mojom.h"
+#include "content/public/common/resource_load_info.mojom.h"
 #include "content/public/common/resource_type.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
@@ -51,13 +52,12 @@ void BandwidthSavingsPredictor::OnSubresourceBlocked(
     const std::string& resource_url) {
   feature_map_["adblockRequests"] += 1;
 
-  ThirdPartyExtractor* extractor = ThirdPartyExtractor::GetInstance();
-  if (!extractor->is_initialized())
-    extractor->load_entities(static_third_party_config);
-
-  auto entity_name = extractor->get_entity(resource_url);
-  if (entity_name.has_value())
-    feature_map_["thirdParties." + entity_name.value() + ".blocked"] = 1;
+  const ThirdPartyExtractor* extractor = ThirdPartyExtractor::GetInstance();
+  if (extractor) {
+    const auto entity_name = extractor->GetEntity(resource_url);
+    if (entity_name.has_value())
+      feature_map_["thirdParties." + entity_name.value() + ".blocked"] = 1;
+  }
 }
 
 void BandwidthSavingsPredictor::OnResourceLoadComplete(
@@ -71,9 +71,10 @@ void BandwidthSavingsPredictor::OnResourceLoadComplete(
   }
   main_frame_url_ = main_frame_url;
 
-  bool is_third_party = !net::registry_controlled_domains::SameDomainOrHost(
-      main_frame_url, resource_load_info.url,
-      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  const bool is_third_party =
+      !net::registry_controlled_domains::SameDomainOrHost(
+          main_frame_url, resource_load_info.url,
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 
   if (is_third_party) {
     feature_map_["resources.third-party.requestCount"] += 1;
@@ -117,33 +118,30 @@ void BandwidthSavingsPredictor::OnResourceLoadComplete(
       resource_load_info.raw_body_bytes;
 }
 
-double BandwidthSavingsPredictor::predict() {
-  if (main_frame_url_.is_empty() || !main_frame_url_.has_host() ||
+double BandwidthSavingsPredictor::PredictSavingsBytes() const {
+  if (!main_frame_url_.is_valid() || !main_frame_url_.has_host() ||
       !main_frame_url_.SchemeIsHTTPOrHTTPS()) {
-    Reset();
     return 0;
   }
-  if (feature_map_["transfer.total.size"] > 0) {
-    VLOG(2) << main_frame_url_ << " total download size "
-            << feature_map_["transfer.total.size"] << " bytes";
+  const auto total_size = feature_map_.find("transfer.total.size");
+  if (total_size != feature_map_.end() && total_size->second > 0) {
+    VLOG(2) << main_frame_url_ << " total download size " << total_size->second
+            << " bytes";
   }
 
   // Short-circuit if nothing got blocked
-  if (feature_map_["adblockRequests"] < 1) {
-    Reset();
+  const auto adblock_requests = feature_map_.find("transfer.total.size");
+  if (adblock_requests == feature_map_.end() || adblock_requests->second < 1) {
     return 0;
   }
   if (VLOG_IS_ON(3)) {
-    VLOG(2) << "Predicting on feature map:";
-    auto it = feature_map_.begin();
-    while (it != feature_map_.end()) {
-      VLOG(2) << it->first << " :: " << it->second;
-      it++;
+    VLOG(3) << "Predicting on feature map:";
+    for (const auto& feature : feature_map_) {
+      VLOG(3) << feature.first << " :: " << feature.second;
     }
   }
-  double prediction = ::brave_perf_predictor::predict(feature_map_);
+  double prediction = ::brave_perf_predictor::LinregPredictNamed(feature_map_);
   VLOG(2) << main_frame_url_ << " estimated saving " << prediction << " bytes";
-  Reset();
   return prediction;
 }
 

@@ -13,9 +13,9 @@ source_set("browser") {
     "perf_predictor_page_metrics_observer.h",
     "perf_predictor_tab_helper.cc",
     "perf_predictor_tab_helper.h",
-    "predictor.cc",
-    "predictor.h",
-    "predictor_parameters.h",
+    "bandwidth_linreg.cc",
+    "bandwidth_linreg.h",
+    "bandwidth_linreg_parameters.h",
     "third_party_extractor.cc",
     "third_party_extractor.h",
   ]
@@ -23,6 +23,7 @@ source_set("browser") {
   deps = [
     "//base",
     "//brave/components/brave_perf_predictor/common",
+    "//brave/components/resources",
     "//components/page_load_metrics/browser",
     "//components/page_load_metrics/common",
     "//components/prefs",
@@ -33,6 +34,7 @@ source_set("browser") {
     "//net/base/registry_controlled_domains",
     "//services/metrics/public/cpp:metrics_cpp",
     "//third_party/re2",
+    "//ui/base",
     "//url"
   ]
 

@@ -9,22 +9,33 @@
 #include <memory>
 #include <string>
 
-#include "base/macros.h"
 #include "brave/components/brave_perf_predictor/browser/bandwidth_savings_predictor.h"
 #include "brave/components/p3a/buildflags.h"
-#include "components/page_load_metrics/common/page_load_metrics.mojom.h"
-#include "components/prefs/pref_registry_simple.h"
-#include "content/public/browser/navigation_handle.h"
-#include "content/public/browser/render_frame_host.h"
-#include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
-#include "content/public/common/resource_load_info.mojom.h"
 #include "url/gurl.h"
 
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
 #endif
+
+class PrefRegistrySimple;
+
+namespace content {
+class NavigationHandle;
+class RenderFrameHost;
+class WebContents;
+
+namespace mojom {
+class ResourceLoadInfo;
+}  // namespace mojom
+}  // namespace content
+
+namespace page_load_metrics {
+namespace mojom {
+class PageLoadTiming;
+}  // namespace mojom
+}  // namespace page_load_metrics
 
 namespace brave_perf_predictor {
 
@@ -34,12 +45,16 @@ class PerfPredictorTabHelper
  public:
   explicit PerfPredictorTabHelper(content::WebContents*);
   ~PerfPredictorTabHelper() override;
+  // disallow copying
+  PerfPredictorTabHelper(const PerfPredictorTabHelper&) = delete;
+  PerfPredictorTabHelper& operator=(const PerfPredictorTabHelper&) = delete;
+
   void OnBlockedSubresource(const std::string& subresource);
   void OnPageLoadTimingUpdated(
       const page_load_metrics::mojom::PageLoadTiming& timing);
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
- protected:
+ private:
   void RecordSavings();
 
   // content::WebContentsObserver overrides.
@@ -56,7 +71,6 @@ class PerfPredictorTabHelper
   void DidAttachInterstitialPage() override;
   void WebContentsDestroyed() override;
 
- private:
   friend class content::WebContentsUserData<PerfPredictorTabHelper>;
   int64_t navigation_id_;
   GURL main_frame_url_;
@@ -66,7 +80,6 @@ class PerfPredictorTabHelper
 #endif
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
-  DISALLOW_COPY_AND_ASSIGN(PerfPredictorTabHelper);
 };
 
 }  // namespace brave_perf_predictor

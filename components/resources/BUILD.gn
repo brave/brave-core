@@ -1,3 +1,4 @@
+import("//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
@@ -33,6 +34,10 @@ grit("static_resources") {
       ]
     }
   }
+
+  defines = [
+    "enable_brave_perf_predictor=$enable_brave_perf_predictor",
+  ]
 
   grit_flags = [
     "-E",

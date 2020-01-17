@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_perf_predictor/browser/predictor.h"
+#include "brave/components/brave_perf_predictor/browser/bandwidth_linreg.h"
 
 #include <algorithm>
 #include <cmath>
@@ -11,12 +11,13 @@
 #include <utility>
 
 #include "base/logging.h"
+#include "brave/components/brave_perf_predictor/browser/bandwidth_linreg_parameters.h"
 
 namespace brave_perf_predictor {
 
 namespace {
 
-bool standardise_feats_no_outliers(
+bool StandardiseFeatsNoOutliers(
     std::array<double, standardise_feat_count>* features,
     const std::array<double, standardise_feat_count>& means,
     const std::array<double, standardise_feat_count>& scale) {
@@ -37,12 +38,12 @@ bool standardise_feats_no_outliers(
 
 }  // namespace
 
-double predict(const std::array<double, feature_count>& features) {
+double LinregPredictVector(const std::array<double, feature_count>& features) {
   // Standardise numeric features
   std::array<double, standardise_feat_count> numeric_features;
   std::copy(features.begin(), features.begin() + standardise_feat_count,
             numeric_features.begin());
-  bool has_outliers = standardise_feats_no_outliers(
+  bool has_outliers = StandardiseFeatsNoOutliers(
       &numeric_features, standardise_feat_means, standardise_feat_scale);
   if (has_outliers) {
     VLOG(2) << "Feature set has outliers, return 0";
@@ -65,14 +66,14 @@ double predict(const std::array<double, feature_count>& features) {
   return std::pow(10, log_prediction);
 }
 
-double predict(const std::unordered_map<std::string, double>& features) {
+double LinregPredictNamed(const base::flat_map<std::string, double>& features) {
   std::array<double, feature_count> feature_vector{};
   for (unsigned int i = 0; i < feature_count; i++) {
     auto it = features.find(feature_sequence[i]);
     if (it != features.end())
       feature_vector[i] = it->second;
   }
-  return predict(feature_vector);
+  return LinregPredictVector(feature_vector);
 }
 
 }  // namespace brave_perf_predictor
