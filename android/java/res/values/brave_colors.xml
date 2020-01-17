@@ -35,4 +35,24 @@
     <!-- Theme colors -->
     <color name="brave_theme_color">#fb542b</color>
     <color name="brave_rewards_theme_color">#392DD1</color>
+
+    <!-- Incognito mode colors -->
+    <color name="ntp_bg_incognito">@color/incognito_modern_primary_color</color>
+
+    <!-- Incognito background and branding colors -->
+    <color name="incognito_modern_primary_color">#210950</color>
+
+    <color name="toolbar_background_primary_incognito">#1B0C32</color>
+    <color name="toolbar_text_box_background_incognito">#3D2742</color>
+
+    <color name="tab_back_incognito">@color/toolbar_background_primary_incognito</color>
+
+    <color name="compositor_background_tab_bg_incognito">@color/toolbar_background_primary_incognito</color>
+    <color name="compositor_background_tab_outline_incognito">@color/toolbar_background_primary_incognito</color>
+    <color name="compositor_tab_title_bar_text_incognito">@android:color/white</color>
+
+    <!-- Incognito NTP Colors. -->
+    <color name="incognito_emphasis">@android:color/white</color>
+
+    <color name="find_in_page_query_incognito_hint_color">@color/white_alpha_70</color>
 </resources>

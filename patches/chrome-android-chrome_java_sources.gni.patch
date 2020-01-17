@@ -1,0 +1,10 @@
+diff --git a/chrome/android/chrome_java_sources.gni b/chrome/android/chrome_java_sources.gni
+index 84e610e90e28c7a938f22645eead5408c5d51dde..8130c9a069d1c212dba07d1f82c3888f194d87fc 100644
+--- a/chrome/android/chrome_java_sources.gni
++++ b/chrome/android/chrome_java_sources.gni
+@@ -1844,3 +1844,4 @@ chrome_java_sources = [
+   "java/src/org/chromium/chrome/browser/widget/tile/TileView.java",
+   "java/src/org/chromium/chrome/browser/widget/tile/TileWithTextView.java",
+ ]
++chrome_java_sources -= ["java/src/org/chromium/chrome/browser/ntp/IncognitoNewTabPageView.java",]
+\ No newline at end of file
