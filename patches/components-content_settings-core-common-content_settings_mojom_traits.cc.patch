@@ -1,12 +1,12 @@
 diff --git a/components/content_settings/core/common/content_settings_mojom_traits.cc b/components/content_settings/core/common/content_settings_mojom_traits.cc
-index 7db7683e5a8544f29772c2676a4298230494ab53..4b92ecfb450e02c73cb3a90fcae9c57679f0e8b5 100644
+index 7db7683e5a8544f29772c2676a4298230494ab53..863e78557ba5cb2fd91a9c7596921d4aa3288c13 100644
 --- a/components/content_settings/core/common/content_settings_mojom_traits.cc
 +++ b/components/content_settings/core/common/content_settings_mojom_traits.cc
 @@ -99,7 +99,10 @@ bool StructTraits<content_settings::mojom::RendererContentSettingRulesDataView,
           RendererContentSettingRules* out) {
    return data.ReadImageRules(&out->image_rules) &&
           data.ReadScriptRules(&out->script_rules) &&
-+         data.ReadScriptRules(&out->autoplay_rules) &&
++         data.ReadAutoplayRules(&out->autoplay_rules) &&
           data.ReadClientHintsRules(&out->client_hints_rules) &&
 +         data.ReadFingerprintingRules(&out->fingerprinting_rules) &&
 +         data.ReadBraveShieldsRules(&out->brave_shields_rules) &&

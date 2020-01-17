@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/html/media/autoplay_policy.cc b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
-index ad5f2bf069270b6ed411e937e762d4d87580a9a7..0b6758efcc1ac6a331150e75ad4ff4ae75ceebce 100644
+index ad5f2bf069270b6ed411e937e762d4d87580a9a7..6db3153ed8329ebb96ecb7ab2c0a8e8d1de2edb2 100644
 --- a/third_party/blink/renderer/core/html/media/autoplay_policy.cc
 +++ b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
 @@ -7,6 +7,7 @@
@@ -42,7 +42,7 @@ index ad5f2bf069270b6ed411e937e762d4d87580a9a7..0b6758efcc1ac6a331150e75ad4ff4ae
 +  if (!frame)
 +    return false;
 +  if (auto* settings_client = frame->GetContentSettingsClient())
-+    return settings_client->AllowAutoplay(true /* default_value */);
++    return settings_client->AllowAutoplay(false /* default_value */);
 +  return true;
 +}
 +
