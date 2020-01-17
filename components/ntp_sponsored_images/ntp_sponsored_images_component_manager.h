@@ -9,7 +9,6 @@
 #include <memory>
 #include <string>
 
-#include "base/component_export.h"
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
@@ -28,8 +27,7 @@ class BrowserContext;
 // NOTE: Client should call AddDataSource() before requesting image sources.
 // When component is updated, Client also should call AddDataSource() for add
 // proper |URLDataSource|s.
-class COMPONENT_EXPORT(BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES)
-NTPSponsoredImagesComponentManager
+class NTPSponsoredImagesComponentManager
     : public brave_component_updater::BraveComponent,
       public component_updater::ServiceObserver  {
  public:

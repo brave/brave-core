@@ -1,24 +1,5 @@
-if (is_component_build) {
-  component("ntp_sponsored_images_component") {
-    public_deps = [ ":ntp_sponsored_images_impl" ]
-  }
-}
-
-group("ntp_sponsored_images") {
-  if (is_component_build) {
-    public_deps = [ ":ntp_sponsored_images_component" ]
-  } else {
-    public_deps = [ ":ntp_sponsored_images_impl" ]
-  }
-}
-
-source_set("ntp_sponsored_images_impl") {
-  visibility = [ ":*" ]
+source_set("ntp_sponsored_images") {
   assert_no_deps = [ "//chrome/*" ]
-
-  if (is_component_build) {
-    defines = [ "IS_BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_IMPL" ]
-  }
 
   sources = [
     "ntp_sponsored_images_component_manager.cc",

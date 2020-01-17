@@ -9,13 +9,11 @@
 #include <string>
 #include <vector>
 
-#include "base/component_export.h"
 #include "base/files/file_path.h"
 
 struct NTPSponsoredImagesInternalData;
 
-struct COMPONENT_EXPORT(BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES)
-NTPSponsoredImagesData {
+struct NTPSponsoredImagesData {
   NTPSponsoredImagesData();
   explicit NTPSponsoredImagesData(
       const NTPSponsoredImagesInternalData& internal_data);

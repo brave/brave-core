@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_NTP_SPONSORED_IMAGES_SERVICE_H_
 #define BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_NTP_SPONSORED_IMAGES_SERVICE_H_
 
-#include "base/component_export.h"
 #include "brave/components/ntp_sponsored_images/ntp_sponsored_images_component_manager.h"
 #include "components/keyed_service/core/keyed_service.h"
 
@@ -14,8 +13,7 @@ namespace content {
 class BrowserContext;
 }  // namespace content
 
-class COMPONENT_EXPORT(BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES)
-NTPSponsoredImagesService
+class NTPSponsoredImagesService
     : public KeyedService,
       public NTPSponsoredImagesComponentManager::Observer {
  public:
