@@ -16,11 +16,13 @@ namespace {
 // Please keep this list sorted and synced with |DoHistogramBravezation|.
 constexpr const char* kBravezationHistograms[] = {
     "Bookmarks.Count.OnProfileLoad",
+    "DefaultBrowser.State",
     "Extensions.LoadExtension",
     "Tabs.TabCount",
     "Tabs.WindowCount",
 };
 
+// TODO(iefremov): Replace a bunch of 'if's with something more elegant.
 // Records the given sample using the proper Brave way.
 void DoHistogramBravezation(base::StringPiece histogram_name,
                             base::HistogramBase::Sample sample) {
@@ -38,6 +40,25 @@ void DoHistogramBravezation(base::StringPiece histogram_name,
     UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.BookmarksCountOnProfileLoad", answer,
                                3);
     return;
+  }
+
+  if ("DefaultBrowser.State" == histogram_name) {
+    int answer = 0;
+    switch (sample) {
+      case 0:  // Not default.
+      case 1:  // Default.
+        answer = sample;
+        break;
+      case 2:  // Unknown, merging to "Not default".
+        answer = 0;
+        break;
+      case 3:  // Other mode is default, merging to "Default".
+        answer = 1;
+        break;
+    default:
+      NOTREACHED();
+    }
+    UMA_HISTOGRAM_BOOLEAN("Brave.Core.IsDefault", answer);
   }
 
   if ("Extensions.LoadExtension" == histogram_name) {

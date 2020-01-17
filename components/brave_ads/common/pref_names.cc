@@ -13,7 +13,11 @@ namespace prefs {
 const char kEnabled[] = "brave.brave_ads.enabled";
 
 // Stores whether ads were disabled at least once
-const char kBraveAdsWereDisabled[] = "brave.brave_ads.were_disabled";
+const char kAdsWereDisabled[] = "brave.brave_ads.were_disabled";
+
+// Indicates whether we have any initial state of the ads status metric, besides
+// "No Wallet".
+const char kHasAdsP3AState[] = "brave.brave_ads.has_p3a_state";
 
 // Stores the maximum amount of ads per hour
 const char kAdsPerHour[] = "brave.brave_ads.ads_per_hour";
