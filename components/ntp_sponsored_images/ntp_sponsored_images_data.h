@@ -17,7 +17,8 @@ struct NTPSponsoredImagesData {
   NTPSponsoredImagesData();
   explicit NTPSponsoredImagesData(
       const NTPSponsoredImagesInternalData& internal_data);
-  explicit NTPSponsoredImagesData(const NTPSponsoredImagesData& data);
+  NTPSponsoredImagesData(const NTPSponsoredImagesData& data);
+  NTPSponsoredImagesData(NTPSponsoredImagesData&& data);
   ~NTPSponsoredImagesData();
 
   std::string logo_alt_text;

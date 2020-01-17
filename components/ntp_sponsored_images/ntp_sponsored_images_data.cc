@@ -17,6 +17,8 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
   logo_company_name = internal_data.logo_company_name;
   wallpaper_image_count = internal_data.wallpaper_image_files.size();
 }
+NTPSponsoredImagesData::NTPSponsoredImagesData(
+    NTPSponsoredImagesData&& data) = default;
 
 NTPSponsoredImagesData::NTPSponsoredImagesData(
     const NTPSponsoredImagesData& data) = default;
