@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/webui/webui_util.cc b/chrome/browser/ui/webui/webui_util.cc
+index fa4038374f7125ad2cb308234fbd8a2afed96bda..95530742da8295c04f6d4b61abef398c887bb6a5 100644
+--- a/chrome/browser/ui/webui/webui_util.cc
++++ b/chrome/browser/ui/webui/webui_util.cc
+@@ -15,7 +15,7 @@ namespace {
+ 
+ void SetupPolymer3Defaults(content::WebUIDataSource* source) {
+   source->OverrideContentSecurityPolicyScriptSrc(
+-      "script-src chrome://resources chrome://test 'self';");
++      "script-src chrome://resources chrome://brave-resources chrome://test 'self';");
+   source->UseStringsJs();
+   source->EnableReplaceI18nInJS();
+   source->AddResourcePath("test_loader.js", IDR_WEBUI_JS_TEST_LOADER);
