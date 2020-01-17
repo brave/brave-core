@@ -18,6 +18,7 @@ struct NTPSponsoredImagesData {
   explicit NTPSponsoredImagesData(
       const NTPSponsoredImagesInternalData& internal_data);
   NTPSponsoredImagesData(const NTPSponsoredImagesData& data);
+  NTPSponsoredImagesData& operator=(const NTPSponsoredImagesData& data);
   NTPSponsoredImagesData(NTPSponsoredImagesData&& data);
   ~NTPSponsoredImagesData();
 
