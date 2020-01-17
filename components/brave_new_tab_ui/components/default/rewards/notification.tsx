@@ -8,7 +8,6 @@ import {
   Title,
   SubTitle,
   CloseIcon,
-  Content,
   NotificationWrapper,
   NotificationButton
 } from './style'
@@ -37,12 +36,12 @@ export default class RewardsNotification extends React.PureComponent<Notificatio
     return (
       <NotificationWrapper
         style={styleVars}
+        isGrant={true}
       >
         <CloseIcon onClick={this.dismissNotification}>
           <CloseStrokeIcon />
         </CloseIcon>
-        <Content>
-          <Title>
+          <Title isGrant={true}>
             {getLocale('rewardsWidgetNotificationTitle')}
           </Title>
           <SubTitle>
@@ -55,7 +54,6 @@ export default class RewardsNotification extends React.PureComponent<Notificatio
           <NotificationButton onClick={this.onNotificationAction}>
             {getLocale('rewardsWidgetClaimMyRewards')}
           </NotificationButton>
-        </Content>
       </NotificationWrapper>
     )
   }

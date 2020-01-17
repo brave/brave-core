@@ -18,6 +18,7 @@ const defaultState: NewTab.State = {
   showRewards: false,
   brandedWallpaperOptIn: false,
   dismissedBrandedWallpaperNotification: false,
+  dismissedPreOptInBrandedWallpaperNotification: false,
   topSites: [],
   ignoredTopSites: [],
   pinnedTopSites: [],
@@ -71,7 +72,8 @@ const getPersistentData = (state: NewTab.State): NewTab.PersistentState => {
     showEmptyPage: state.showEmptyPage,
     bookmarks: state.bookmarks,
     rewardsState: state.rewardsState,
-    dismissedBrandedWallpaperNotification: state.dismissedBrandedWallpaperNotification
+    dismissedBrandedWallpaperNotification: state.dismissedBrandedWallpaperNotification,
+    dismissedPreOptInBrandedWallpaperNotification: state.dismissedPreOptInBrandedWallpaperNotification
   }
 
   return peristantState

@@ -65,6 +65,7 @@ declare namespace NewTab {
     bookmarks: Record<string, Bookmark>
     rewardsState: RewardsWidgetState
     dismissedBrandedWallpaperNotification: boolean
+    dismissedPreOptInBrandedWallpaperNotification: boolean
   }
 
   export interface EphemeralState {

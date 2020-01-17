@@ -9,68 +9,96 @@ import {
   SubTitle,
   SubTitleLink,
   CloseIcon,
-  Content,
   NotificationWrapper,
-  NotificationAction
+  OrphanedNotificationWrapper,
+  NotificationAction,
+  NotificationButton
 } from './style'
 import { CloseStrokeIcon } from 'brave-ui/components/icons'
-import { getLocale } from '../../../../common/locale'
+import { getLocale, splitStringForTag } from '../../../../common/locale'
 
 interface NotificationProps {
   onDismissNotification: (id: string) => void
   brandedWallpaperData?: NewTab.BrandedWallpaper
-  onNotificationAction: () => void
+  isOrphan?: boolean
+  onEnableAds?: () => void
+  onHideSponsoredImages: () => void
   order: number
 }
 
-export default class RewardsNotification extends React.PureComponent<NotificationProps, {}> {
+export default class BrandedWallpaperRewardsNotification extends React.PureComponent<NotificationProps, {}> {
 
   dismissNotification = () => {
-    this.props.onDismissNotification('brandedWallpaper')
+    const notificationType = this.props.onEnableAds
+      ? 'brandedWallpaperPreOptIn'
+      : 'brandedWallpaper'
+    this.props.onDismissNotification(notificationType)
+  }
+
+  renderPostAdsOptInContent () {
+    const text = getLocale('rewardsWidgetBrandedNotificationDescription')
+    const { beforeTag, duringTag, afterTag } = splitStringForTag(text, '$1', '$2')
+    return (
+      <>
+        <Title>
+          {getLocale('rewardsWidgetBrandedNotificationTitle')}
+        </Title>
+        <SubTitle>
+          {beforeTag}
+          <SubTitleLink href='https://brave.com/brave-rewards/'>
+            {duringTag}
+          </SubTitleLink>
+          {afterTag}
+        </SubTitle>
+        <NotificationAction onClick={this.props.onHideSponsoredImages}>
+          {getLocale('rewardsWidgetBrandedNotificationHideAction')}
+        </NotificationAction>
+      </>
+    )
+  }
+
+  renderPreAdsOptInContent () {
+    const text = getLocale('rewardsWidgetEnableBrandedWallpaperSubTitle')
+    const { beforeTag, duringTag, afterTag } = splitStringForTag(text, '$1', '$2')
+    return (
+      <>
+        <Title>
+          {getLocale('rewardsWidgetEnableBrandedWallpaperTitle')}
+        </Title>
+        <SubTitle>
+          {beforeTag}
+          <SubTitleLink onClick={this.props.onHideSponsoredImages}>
+            {duringTag}
+          </SubTitleLink>
+          {afterTag}
+        </SubTitle>
+        <NotificationButton onClick={this.props.onEnableAds}>
+          {getLocale('rewardsWidgetTurnOnAds')}
+        </NotificationButton>
+      </>
+    )
   }
 
   render () {
-    const { brandedWallpaperData } = this.props
+    const { brandedWallpaperData, isOrphan } = this.props
     if (!brandedWallpaperData) {
       console.error('Asked to render a branded wallpaper but there was no data!')
       return null
     }
-
-    const text = getLocale('rewardsWidgetBrandedNotificationText')
-    const companyNameIndex: number = text.indexOf('$1')
-    const beforeLinkText = text.substring(0, companyNameIndex)
-    const afterLinkText = text.substring(companyNameIndex + 2)
-    const subTitleText = (
-      <>
-        {beforeLinkText}
-        <SubTitleLink href={brandedWallpaperData.logo.destinationUrl}>
-          {brandedWallpaperData.logo.companyName}
-        </SubTitleLink>
-        {afterLinkText}
-      </>
-    )
-
     const styleVars = { '--notification-counter': this.props.order } as React.CSSProperties
-
+    const Wrapper = isOrphan ? OrphanedNotificationWrapper : NotificationWrapper
     return (
-      <NotificationWrapper
+      <Wrapper
         style={styleVars}
       >
         <CloseIcon onClick={this.dismissNotification}>
           <CloseStrokeIcon />
         </CloseIcon>
-        <Content>
-          <Title>
-            {getLocale('rewardsWidgetBrandedNotificationTitle')}
-          </Title>
-          <SubTitle>
-            {subTitleText}
-          </SubTitle>
-          <NotificationAction onClick={this.props.onNotificationAction}>
-            {getLocale('rewardsWidgetBrandedNotificationAction')}
-          </NotificationAction>
-        </Content>
-      </NotificationWrapper>
+          { this.props.onEnableAds
+              ? this.renderPreAdsOptInContent()
+              : this.renderPostAdsOptInContent()
+          }
+      </Wrapper>
     )
   }
 }

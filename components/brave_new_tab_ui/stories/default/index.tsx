@@ -46,6 +46,7 @@ interface Props {
   textDirection: string
   showBrandedWallpaper: boolean
   showTopSitesNotification: boolean
+  isAdsOn: boolean
 }
 
 export default class NewTabPage extends React.PureComponent<Props, State> {
@@ -147,7 +148,6 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
   render () {
     const { showSettingsMenu, showBackgroundImage, showClock, showStats, showTopSites, showRewards } = this.state
     const {
-      enabledAds,
       enabledMain,
       adsEstimatedEarnings,
       walletCorrupted,
@@ -159,6 +159,8 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
       totalContribution
     } = this.state
     const { textDirection } = this.props
+
+    const enabledAds = this.state.enabledAds && this.props.isAdsOn
 
     const hasImage = showBackgroundImage
     let imageSource
@@ -223,9 +225,10 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
             />
           </S.GridItemNotification>
           }
-          {showRewards &&
+          {(showRewards || showBrandedWallpaper) &&
           <S.GridItemRewards>
             <Rewards
+              adsSupported={true}
               promotions={promotions}
               balance={balance}
               enabledAds={enabledAds}
@@ -246,6 +249,8 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
               showBrandedWallpaperNotification={showBrandedWallpaper}
               brandedWallpaperData={this.state.brandedWallpaper}
               isShowingBrandedWallpaper={showBrandedWallpaper}
+              isNotification={!showRewards}
+              preventFocus={!showRewards}
               onDisableBrandedWallpaper={this.doNothing.bind(this, 'onDisableBrandedWallpaper')}
             />
           </S.GridItemRewards>

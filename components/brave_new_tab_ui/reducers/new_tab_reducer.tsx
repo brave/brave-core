@@ -341,6 +341,8 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
 
       if (payload.id === 'brandedWallpaper') {
         state.dismissedBrandedWallpaperNotification = true
+      } else if (payload.id === 'brandedWallpaperPreOptIn') {
+        state.dismissedPreOptInBrandedWallpaperNotification = true
       }
 
       const dismissedNotifications = state.rewardsState.dismissedNotifications
