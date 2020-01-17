@@ -225,6 +225,12 @@ void RedeemToken::OnFetchPaymentToken(
     return;
   }
 
+  if (response_status_code == net::HTTP_BAD_REQUEST) {
+    BLOG(WARNING) << "Credential is invalid";
+    OnRedeem(FAILED, confirmation, false);
+    return;
+  }
+
   if (response_status_code != net::HTTP_OK) {
     BLOG(ERROR) << "Failed to fetch payment token";
     OnRedeem(FAILED, confirmation);
