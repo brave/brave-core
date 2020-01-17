@@ -23,17 +23,19 @@ export const StyledWidgetContainer = styled<WidgetContainerProps, 'div'>('div')`
 
 interface WidgetVisibilityProps {
   widgetMenuPersist: boolean
+  preventFocus?: boolean
 }
 
 export const StyledWidget = styled<WidgetVisibilityProps, 'div'>('div')`
   padding: 24px;
   max-width: 100%;
   position: relative;
-
-  ${StyledWidgetContainer}:hover & {
-    border-radius: 16px;
-    background: rgba(33, 37, 41, 0.48);
-  }
+  ${p => !p.preventFocus && css`
+    ${StyledWidgetContainer}:hover & {
+      border-radius: 16px;
+      background: rgba(33, 37, 41, 0.48);
+    }
+  `}
 
   // Also hover when menu button has been clicked
   ${ p => p.widgetMenuPersist && `

@@ -11,6 +11,7 @@ type HideWidgetFunction = () => void
 export interface WidgetProps {
   menuPosition: 'right' | 'left'
   hideWidget?: HideWidgetFunction
+  preventFocus?: boolean
   textDirection: string
 }
 
@@ -36,7 +37,7 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
     }
 
     render () {
-      const { menuPosition, hideWidget, textDirection } = this.props
+      const { menuPosition, hideWidget, textDirection, preventFocus } = this.props
       const { widgetMenuPersist } = this.state
 
       return (
@@ -44,10 +45,13 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
           menuPosition={menuPosition}
           textDirection={textDirection}
         >
-          <StyledWidget widgetMenuPersist={widgetMenuPersist}>
+          <StyledWidget
+            widgetMenuPersist={widgetMenuPersist}
+            preventFocus={preventFocus}
+          >
               <WrappedComponent {...this.props as P}/>
           </StyledWidget>
-          {hideWidget &&
+          {hideWidget && !preventFocus &&
           <WidgetMenu
             widgetMenuPersist={widgetMenuPersist}
             toggleWidgetHover={this.toggleWidgetHover}
