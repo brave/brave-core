@@ -25,6 +25,24 @@ export const formatConverted = (converted: string, currency: string = 'USD'): st
   return `${converted} ${currency}`
 }
 
+export const handleContributionAmount = (amount: string) => {
+  let result = '0.0'
+  const amountSplit = amount.split('.')
+  if (amountSplit && amountSplit[0].length > 18) {
+    const result = new BigNumber(amount).dividedBy('1e18').toFixed(1, BigNumber.ROUND_UP)
+
+    return result
+  } else {
+    result = parseFloat(amount).toFixed(1)
+  }
+
+  if (result === 'NaN') {
+    return '0.0'
+  }
+
+  return result
+}
+
 export const convertProbiToFixed = (probi: string, places: number = 1) => {
   const result = new BigNumber(probi).dividedBy('1e18').toFixed(places, BigNumber.ROUND_DOWN)
 
