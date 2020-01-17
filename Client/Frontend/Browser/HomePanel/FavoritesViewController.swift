@@ -174,13 +174,6 @@ class FavoritesViewController: UIViewController, Themeable {
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongGesture(gesture:)))
         collection.addGestureRecognizer(longPressGesture)
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(gesture:)))
-        // Adding a clear background for tap gestures, otherwise impossible to tap other buttons / icons on NTP
-        let background = UIView()
-        background.backgroundColor = .clear
-        background.addGestureRecognizer(tapGesture)
-        collection.backgroundView = background
-        
         view.addSubview(collection)
         collection.dataSource = dataSource
         dataSource.collectionView = collection
@@ -188,6 +181,8 @@ class FavoritesViewController: UIViewController, Themeable {
         dataSource.favoriteDeletedHandler = { [weak self] in
             self?.favoritesOverflowButton.isHidden = self?.dataSource.hasOverflow == false
         }
+        
+        collection.bounces = false
         
         // Could setup as section header but would need to use flow layout,
         // Auto-layout subview within collection doesn't work properly,
@@ -203,7 +198,7 @@ class FavoritesViewController: UIViewController, Themeable {
         collection.addSubview(braveShieldStatsView)
         collection.addSubview(favoritesOverflowButton)
         collection.addSubview(ddgButton)
-        collection.addSubview(imageCreditButton)
+        view.addSubview(imageCreditButton)
         
         ddgButton.addSubview(ddgLogo)
         ddgButton.addSubview(ddgLabel)
@@ -228,6 +223,10 @@ class FavoritesViewController: UIViewController, Themeable {
     }
     
     private var collectionContentSizeObservation: NSKeyValueObservation?
+    
+    override func viewWillLayoutSubviews() {
+        updateConstraints()
+    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -268,7 +267,6 @@ class FavoritesViewController: UIViewController, Themeable {
         switch gesture.state {
         case .began:
             guard let selectedIndexPath = collection.indexPathForItem(at: gesture.location(in: collection)) else {
-                handleLongGestureForBackground(gesture: gesture)
                 break
             }
             
@@ -281,21 +279,6 @@ class FavoritesViewController: UIViewController, Themeable {
         default:
             collection.cancelInteractiveMovement()
         }
-    }
-    
-    @objc func handleTapGesture(gesture: UITapGestureRecognizer) {
-        // Tap gesture only actionable with sponsored images.
-        if gesture.state == .ended && backgroundImage.info?.isSponsored == true {
-            showImageCredit()
-        }
-    }
-    
-    /// Handles long press gesture for background credit
-    func handleLongGestureForBackground(gesture: UILongPressGestureRecognizer) {
-        if gesture.state != .began {
-            return
-        }
-        showImageCredit()
     }
     
     @objc fileprivate func showImageCredit() {
@@ -375,8 +358,30 @@ class FavoritesViewController: UIViewController, Themeable {
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        
+
+        updateConstraints()
         collection.collectionViewLayout.invalidateLayout()
+    }
+    
+    private func updateConstraints() {
+        let isIpad = UIDevice.isIpad
+        let isLandscape = view.frame.width > view.frame.height
+        
+        var right: ConstraintRelatableTarget = self.view.safeAreaLayoutGuide
+        var left: ConstraintRelatableTarget = self.view.safeAreaLayoutGuide
+        if isLandscape {
+            if isIpad {
+                right = self.view.snp.centerX
+            } else {
+                left = self.view.snp.centerX
+            }
+        }
+        
+        collection.snp.remakeConstraints { make in
+            make.right.equalTo(right)
+            make.left.equalTo(left)
+            make.top.bottom.equalTo(self.view)
+        }
     }
     
     private func setupImageCredit() {
@@ -574,12 +579,5 @@ extension FavoritesViewController: FavoriteCellDelegate {
 extension FavoritesViewController: PreferencesObserver {
     func preferencesDidChange(for key: String) {
         self.resetBackground()
-    }
-}
-
-extension CGSize {
-    public func widthLargerOrEqualThanHalfIPad() -> Bool {
-        let halfIPadSize: CGFloat = 507
-        return width >= halfIPadSize
     }
 }

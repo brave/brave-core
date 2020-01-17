@@ -41,36 +41,24 @@ class FavoritesDataSource: NSObject, UICollectionViewDataSource {
     
     /// The number of times that each row contains
     var columnsPerRow: Int {
-        guard let size = collectionView?.bounds.size,
-            let traitCollection = collectionView?.traitCollection else {
-                return 0
+        guard let collection = collectionView else {
+            return 0
         }
         
-        var cols = 0
-        if traitCollection.horizontalSizeClass == .compact {
-            // Landscape iPhone
-            if traitCollection.verticalSizeClass == .compact {
-                cols = 5
-            }
-                // Split screen iPad width
-            else if size.widthLargerOrEqualThanHalfIPad() {
-                cols = 4
-            }
-                // iPhone portrait
-            else {
-                cols = 3
-            }
-        } else {
-            // Portrait iPad
-            if size.height > size.width {
-                cols = 4
-            }
-                // Landscape iPad
-            else {
-                cols = 5
-            }
+        /// Two considerations:
+        /// 1. icon size minimum
+        /// 2. trait collection
+        
+        let icons = (less: 4, more: 6)
+        let minIconPoints: CGFloat = 80
+        
+        // If icons fall below a certain size, then use less icons.
+        if (collection.frame.width / CGFloat(icons.more)) < minIconPoints {
+            return icons.less
         }
-        return cols + 1
+        
+        let cols = collection.traitCollection.horizontalSizeClass == .compact ? icons.less : icons.more
+        return cols
     }
     
     /// If there are more favorites than are being shown
