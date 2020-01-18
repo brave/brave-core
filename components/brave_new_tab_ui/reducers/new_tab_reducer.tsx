@@ -282,6 +282,9 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
     case types.ON_ENABLED_MAIN:
       state = { ...state }
       state.rewardsState.enabledMain = payload.enabledMain
+      if (payload.enabledAds !== undefined) {
+        state.rewardsState.enabledAds = payload.enabledAds
+      }
       break
 
     case types.ON_WALLET_INITIALIZED: {
@@ -308,17 +311,6 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
       break
     }
-
-    case types.ON_REWARDS_SETTING_SAVE:
-      const key = action.payload.key
-      const value = action.payload.value
-
-      if (key) {
-        state = { ...state }
-        state.rewardsState[key] = !!value
-        chrome.braveRewards.saveSetting(key, value)
-      }
-      break
 
     case types.ON_ADS_ENABLED:
       state = { ...state }

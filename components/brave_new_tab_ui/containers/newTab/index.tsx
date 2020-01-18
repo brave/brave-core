@@ -174,7 +174,7 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   enableRewards = () => {
-    this.props.actions.onRewardsSettingSave('enabledMain', '1')
+    chrome.braveRewards.saveSetting('enabledMain', '1')
   }
 
   createWallet = () => {

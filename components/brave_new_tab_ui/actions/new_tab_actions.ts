@@ -77,17 +77,13 @@ export const setInitialData = (initialData: InitialData) =>
 
 export const createWallet = () => action(types.CREATE_WALLET, {})
 
-export const onEnabledMain = (enabledMain: boolean) => action(types.ON_ENABLED_MAIN, {
-  enabledMain
+export const onEnabledMain = (enabledMain: boolean, enabledAds?: boolean) => action(types.ON_ENABLED_MAIN, {
+  enabledMain,
+  enabledAds
 })
 
 export const onAdsEnabled = (enabled: boolean) => action(types.ON_ADS_ENABLED, {
   enabled
-})
-
-export const onRewardsSettingSave = (key: string, value: any) => action(types.ON_REWARDS_SETTING_SAVE, {
-  key,
-  value
 })
 
 export const onWalletInitialized = (result: NewTab.RewardsResult) => action(types.ON_WALLET_INITIALIZED, {
