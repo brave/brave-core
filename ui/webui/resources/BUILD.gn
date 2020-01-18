@@ -6,6 +6,8 @@ grit("resources") {
   defines = [ "optimize_webui=$optimize_webui" ]
   source = "brave_webui_resources.grd"
 
+  deps = [ ":modulize" ]
+
   # The .grd contains references to generated files.
   source_is_generated = true
 

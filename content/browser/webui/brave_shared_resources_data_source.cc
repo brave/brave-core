@@ -46,7 +46,9 @@ const std::map<std::string, std::string> CreatePathPrefixAliasesMap() {
   // GRD:../../resources/web/blah/X.
   // See chromium's SharedResourcesDataSource for an example
   // Format is {"../../somewhere/in/src/tree/", "request/path" }
-  std::map<std::string, std::string> aliases = { };
+  std::map<std::string, std::string> aliases = {
+      {"@out_folder@/gen/brave/ui/webui/resources/", ""},
+  };
   return aliases;
 }
 
