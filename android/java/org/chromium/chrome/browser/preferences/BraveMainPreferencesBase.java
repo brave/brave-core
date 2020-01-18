@@ -123,7 +123,10 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
         findPreference(MainPreferences.PREF_LANGUAGES).setOrder(++order);
         findPreference(MainPreferences.PREF_DATA_REDUCTION).setOrder(++order);
         findPreference(MainPreferences.PREF_DOWNLOADS).setOrder(++order);
-        findPreference(MainPreferences.PREF_DEVELOPER).setOrder(++order);
+        // Not exist by default in Release mode
+        if (findPreference(MainPreferences.PREF_DEVELOPER) != null) {
+            findPreference(MainPreferences.PREF_DEVELOPER).setOrder(++order);
+        }
         findPreference(PREF_ABOUT_CHROME).setOrder(++order);
     }
 
