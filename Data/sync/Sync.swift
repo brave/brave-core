@@ -161,9 +161,11 @@ public class Sync: JSInjector {
         self.maximumDelayAttempts = 15
         self.delayLengthInSeconds = Int64(3.0)
         
-        webView = WKWebView(frame: CGRect(x: 30, y: 30, width: 300, height: 500), configuration: webConfig)
-        // Attempt sync setup
-        initializeSync()
+        DispatchQueue.main.async {
+            self.webView = WKWebView(frame: CGRect(x: 30, y: 30, width: 300, height: 500), configuration: self.webConfig)
+            // Attempt sync setup
+            self.initializeSync()
+        }
     }
     
     public func leaveSyncGroup(sendToSync: Bool = true) {

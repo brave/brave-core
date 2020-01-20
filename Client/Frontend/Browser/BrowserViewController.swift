@@ -575,8 +575,10 @@ class BrowserViewController: UIViewController {
         present(alert, animated: true, completion: nil)
         #endif
         
-        sync.webView.alpha = 0.01
-        UIApplication.shared.keyWindow?.insertSubview(Sync.shared.webView, at: 0)
+        DispatchQueue.main.async {
+            sync.webView.alpha = 0.01
+            UIApplication.shared.keyWindow?.insertSubview(Sync.shared.webView, at: 0)
+        }
     }
     
     fileprivate func setupTabs() {
