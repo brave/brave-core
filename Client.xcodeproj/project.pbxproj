@@ -5226,6 +5226,7 @@
 					5DE7688B20B3456E00FF5533 = {
 						LastSwiftMigration = 1010;
 						ProvisioningStyle = Automatic;
+						TestTargetID = F84B21BD1A090F8100AAB793;
 					};
 					E6F9650B1B2F1CF20034B023 = {
 						CreatedOnToolsVersion = 6.3.2;
