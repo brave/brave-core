@@ -44,29 +44,29 @@ TEST(NTPSponsoredImagesComponentManagerTest, InternalDataTest) {
   EXPECT_TRUE(observer.called_);
   EXPECT_TRUE(observer.data_.logo_alt_text.empty());
 
-  const std::string  test_json_string =
-      "{"
-          "\"logo\": {"
-            "\"imageUrl\":  \"logo.png\","
-            "\"alt\": \"Technikke: For music lovers\","
-            "\"destinationUrl\": \"https://www.brave.com/\","
-            "\"companyName\": \"Technikke\""
-          "},"
-          "\"wallpapers\": ["
-              "{"
-                "\"imageUrl\": \"background-1.jpg\","
-                "\"focalPoint\": {}"
-              "},"
-              "{"
-                "\"imageUrl\": \"background-2.jpg\","
-                "\"focalPoint\": {}"
-              "},"
-              "{"
-                "\"imageUrl\": \"background-3.jpg\","
-                "\"focalPoint\": {}"
-              "}"
-          "]"
-      "}";
+  const std::string  test_json_string = R"(
+      {
+          "logo": {
+            "imageUrl":  "logo.png",
+            "alt": "Technikke: For music lovers",
+            "destinationUrl": "https://www.brave.com/",
+            "companyName": "Technikke"
+          },
+          "wallpapers": [
+              {
+                "imageUrl": "background-1.jpg",
+                "focalPoint": {}
+              },
+              {
+                "imageUrl": "background-2.jpg",
+                "focalPoint": {}
+              },
+              {
+                "imageUrl": "background-3.jpg",
+                "focalPoint": {}
+              }
+          ]
+      })";
   manager.ResetInternalImagesDataForTest();
   manager.OnGetPhotoJsonData(test_json_string);
   auto images_data = manager.GetLatestSponsoredImagesData();
