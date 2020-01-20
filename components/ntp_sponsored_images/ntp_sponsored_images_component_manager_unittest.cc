@@ -36,25 +36,37 @@ TEST(NTPSponsoredImagesComponentManagerTest, InternalDataTest) {
   NTPSponsoredImagesComponentManager manager(nullptr, nullptr);
   manager.AddObserver(&observer);
 
+  // Check with json file with empty object.
   manager.ResetInternalImagesDataForTest();
-  manager.OnGetPhotoJsonData("");
-  EXPECT_FALSE(manager.GetLatestSponsoredImagesData());
+  manager.OnGetPhotoJsonData("{}");
+  EXPECT_TRUE(manager.GetLatestSponsoredImagesData());
   manager.NotifyObservers();
   EXPECT_TRUE(observer.called_);
   EXPECT_TRUE(observer.data_.logo_alt_text.empty());
 
   const std::string  test_json_string =
       "{"
-          "\"logoImageUrl\":  \"logo.png\","
-          "\"logoAltText\": \"Technikke: For music lovers\","
-          "\"logoDestinationUrl\": \"https://www.brave.com/\","
-          "\"logoCompanyName\": \"Technikke\","
-          "\"wallpaperImageUrls\": ["
-              "\"background-1.jpg\","
-              "\"background-2.jpg\","
-              "\"background-3.jpg\""
-         "]"
-     "}";
+          "\"logo\": {"
+            "\"imageUrl\":  \"logo.png\","
+            "\"alt\": \"Technikke: For music lovers\","
+            "\"destinationUrl\": \"https://www.brave.com/\","
+            "\"companyName\": \"Technikke\""
+          "},"
+          "\"wallpapers\": ["
+              "{"
+                "\"imageUrl\": \"background-1.jpg\","
+                "\"focalPoint\": {}"
+              "},"
+              "{"
+                "\"imageUrl\": \"background-2.jpg\","
+                "\"focalPoint\": {}"
+              "},"
+              "{"
+                "\"imageUrl\": \"background-3.jpg\","
+                "\"focalPoint\": {}"
+              "}"
+          "]"
+      "}";
   manager.ResetInternalImagesDataForTest();
   manager.OnGetPhotoJsonData(test_json_string);
   auto images_data = manager.GetLatestSponsoredImagesData();

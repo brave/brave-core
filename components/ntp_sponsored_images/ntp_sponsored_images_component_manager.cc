@@ -24,11 +24,13 @@ namespace {
 
 constexpr char kPhotoJsonFilename[] = "photo.json";
 constexpr char kComponentName[] = "NTP sponsored images";
-constexpr char kLogoImageURLKey[] = "logoImageUrl";
-constexpr char kLogoAltTextKey[] = "logoAltText";
-constexpr char kLogoCompanyNameKey[] = "logoCompanyName";
-constexpr char kLogoDestinationURLKey[] = "logoDestinationUrl";
-constexpr char kWallpaperImageURLsKey[] = "wallpaperImageUrls";
+
+constexpr char kLogoImageURLPath[] = "logo.imageUrl";
+constexpr char kLogoAltPath[] = "logo.alt";
+constexpr char kLogoCompanyNamePath[] = "logo.companyName";
+constexpr char kLogoDestinationURLPath[] = "logo.destinationUrl";
+constexpr char kWallpapersPath[] = "wallpapers";
+constexpr char kWallpaperImageURLPath[] = "imageUrl";
 
 std::string ReadPhotoJsonData(const base::FilePath& photo_json_file_path) {
   std::string contents;
@@ -151,30 +153,31 @@ void NTPSponsoredImagesComponentManager::ParseAndCachePhotoJsonData(
     // Resources are stored with json file in the same directory.
     base::FilePath base_dir = photo_json_file_path_.DirName();
 
-    if (auto* logo_image_url = photo_value->FindStringPath(kLogoImageURLKey)) {
+    if (auto* logo_image_url = photo_value->FindStringPath(kLogoImageURLPath)) {
       internal_images_data_->logo_image_file =
           base_dir.AppendASCII(*logo_image_url);
     }
 
-    if (auto* logo_alt_text = photo_value->FindStringPath(kLogoAltTextKey)) {
+    if (auto* logo_alt_text = photo_value->FindStringPath(kLogoAltPath)) {
       internal_images_data_->logo_alt_text = *logo_alt_text;
     }
 
     if (auto* logo_company_name =
-            photo_value->FindStringPath(kLogoCompanyNameKey)) {
+            photo_value->FindStringPath(kLogoCompanyNamePath)) {
       internal_images_data_->logo_company_name = *logo_company_name;
     }
 
     if (auto* logo_destination_url =
-            photo_value->FindStringPath(kLogoDestinationURLKey)) {
+            photo_value->FindStringPath(kLogoDestinationURLPath)) {
       internal_images_data_->logo_destination_url = *logo_destination_url;
     }
 
     if (auto* wallpaper_image_urls =
-            photo_value->FindListPath(kWallpaperImageURLsKey)) {
+            photo_value->FindListPath(kWallpapersPath)) {
       for (const auto& value : wallpaper_image_urls->GetList()) {
         internal_images_data_->wallpaper_image_files.push_back(
-            base_dir.AppendASCII(value.GetString()));
+            base_dir.AppendASCII(
+                *value.FindStringPath(kWallpaperImageURLPath)));
       }
     }
   }
