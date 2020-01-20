@@ -30,6 +30,19 @@ action("sign_app") {
   ]
 }
 
+action("collect_objs_app") {
+  script = "//brave/build/android/collect_obj_files.py"
+
+  deps = []
+  target_obj_files_name = "//out/Default$target_cpu$target_apk_base"
+
+  outputs = [ "$root_out_dir/$target_obj_files_name" ]
+  args = [
+    rebase_path("$root_out_dir", "$root_out_dir"),
+    rebase_path(target_obj_files_name, root_out_dir),
+  ]
+}
+
 copy("brave") {
   visibility = [ "*" ]
   deps = []
