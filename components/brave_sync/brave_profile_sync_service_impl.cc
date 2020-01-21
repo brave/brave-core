@@ -513,7 +513,7 @@ void BraveProfileSyncServiceImpl::OnSyncReadyBookmarksModelLoaded() {
     ProfileSyncService::GetUserSettings()->SetSyncRequested(true);
   }
 
-  BraveMigrateOtherNode(model_);
+  BraveMigrateOtherNodeFolder(model_);
 }
 
 syncer::ModelTypeSet BraveProfileSyncServiceImpl::GetPreferredDataTypes()
