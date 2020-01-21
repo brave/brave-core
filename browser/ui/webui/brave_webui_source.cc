@@ -91,6 +91,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "c168145d6bf1abf2c0322636366f7dbe.svg", IDR_BRAVE_PRIVATE_TAB_TOR_IMG },               // NOLINT
         { "dbdc336ccc651b8a7c925b3482d6e65a.svg", IDR_BRAVE_PRIVATE_TAB_IMG }
       }
+#endif
 #if !defined(OS_ANDROID)
     }, {
       std::string("rewards"), {
