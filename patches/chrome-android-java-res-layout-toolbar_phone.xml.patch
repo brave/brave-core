@@ -1,8 +1,24 @@
 diff --git a/chrome/android/java/res/layout/toolbar_phone.xml b/chrome/android/java/res/layout/toolbar_phone.xml
-index fe66549d3ac660c12186e0c9c78c7ed525f2015d..9f2fad8590812ececbf1b9d04ec493c2ed7da425 100644
+index fe66549d3ac660c12186e0c9c78c7ed525f2015d..2d2bc7cced94c0a6c18ae08d8e13579bd33f9568 100644
 --- a/chrome/android/java/res/layout/toolbar_phone.xml
 +++ b/chrome/android/java/res/layout/toolbar_phone.xml
-@@ -31,6 +31,7 @@
+@@ -13,6 +13,7 @@
+     android:layout_width="match_parent"
+     android:layout_height="@dimen/toolbar_height_no_shadow" >
+ 
++<!--
+     <org.chromium.chrome.browser.toolbar.HomeButton
+         android:id="@+id/home_button"
+         style="@style/ToolbarButton"
+@@ -20,6 +21,7 @@
+         android:contentDescription="@string/accessibility_toolbar_btn_home"
+         android:visibility="gone"
+         app:tint="@color/standard_mode_tint" />
++-->
+ 
+     <org.chromium.chrome.browser.omnibox.LocationBarPhone
+         android:id="@+id/location_bar"
+@@ -31,6 +33,7 @@
          android:orientation="horizontal"
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
@@ -10,7 +26,7 @@ index fe66549d3ac660c12186e0c9c78c7ed525f2015d..9f2fad8590812ececbf1b9d04ec493c2
          android:layout_gravity="top|end" >
  
          <ViewStub
-@@ -40,6 +41,7 @@
+@@ -40,6 +43,7 @@
              style="@style/ToolbarButton"
              android:paddingStart="12dp"
              android:visibility="gone" />

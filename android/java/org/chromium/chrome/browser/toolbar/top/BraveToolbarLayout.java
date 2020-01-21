@@ -352,6 +352,12 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       }
       mBraveShieldsButton.setImageResource(
           isShieldsOnForTab(tab) ? R.drawable.btn_brave : R.drawable.btn_brave_off);
+
+      if (isIncognito()) {
+          mRewardsLayout.setVisibility(View.GONE);
+      } else {
+          mRewardsLayout.setVisibility(View.VISIBLE);
+      }
   }
 
   private boolean isShieldsOnForTab(Tab tab) {
