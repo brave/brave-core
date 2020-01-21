@@ -50,21 +50,6 @@ class BraveWalletGetWalletSeedFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveWallet.getWalletSeed", UNKNOWN)
 
-  static std::string GetEthereumRemoteClientSeedFromRootSeed(
-      const std::string& seed);
-  static bool SealSeed(const std::string& seed, const std::string& key,
-      const std::string& nonce, std::string* cipher_seed);
-  static bool OpenSeed(const std::string& cipher_seed,
-      const std::string& key, const std::string& nonce, std::string* seed);
-  static void SaveToPrefs(Profile *, const std::string& cipher_seed,
-      const std::string& nonce);
-  static bool LoadFromPrefs(Profile *, std::string* cipher_seed,
-      std::string* nonce);
-  static std::string GetRandomNonce();
-  static std::string GetRandomSeed();
-  static const size_t kNonceByteLength;
-  static const size_t kSeedByteLength;
-
  protected:
   ~BraveWalletGetWalletSeedFunction() override {}
 
@@ -77,6 +62,16 @@ class BraveWalletGetProjectIDFunction : public ExtensionFunction {
 
  protected:
   ~BraveWalletGetProjectIDFunction() override {}
+
+  ResponseAction Run() override;
+};
+
+class BraveWalletResetWalletFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveWallet.resetWallet", UNKNOWN)
+
+ protected:
+  ~BraveWalletResetWalletFunction() override {}
 
   ResponseAction Run() override;
 };
