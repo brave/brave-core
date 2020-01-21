@@ -2,4 +2,5 @@
 
 set -euo pipefail
 
-tar cfz - $1 $2
+mkdir -p dist
+tar -czvf $1 --ignore-failed-read *.so apks android_clang_* lib.unstripped android_chrome_versions.txt

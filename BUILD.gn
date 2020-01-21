@@ -171,9 +171,16 @@ copy("theme_files") {
 }
 
 group("create_dist") {
-  deps = [
-    ":create_dist_zips"
-  ]
+  deps = []
+  if (is_android) {
+    deps += [
+      "app/$target_os:create_dist_zips"
+    ]
+  } else {
+    deps += [
+      ":create_dist_zips"
+    ]
+  }
   if (is_win) {
     deps += [
       "//chrome/installer/mini_installer",
