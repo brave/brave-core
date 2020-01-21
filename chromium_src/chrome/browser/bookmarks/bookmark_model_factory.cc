@@ -7,6 +7,4 @@
 
 #define GetBrowserContextRedirectedInIncognito \
   GetBrowserContextRedirectedInIncognitoOverride
-#define ChromeBookmarkClient BraveBookmarkClient
 #include "../../../../../chrome/browser/bookmarks/bookmark_model_factory.cc"
-#undef ChromeBookmarkClient

@@ -57,8 +57,6 @@ source_set("ui") {
       "bookmark/bookmark_prefs_service.h",
       "bookmark/bookmark_prefs_service_factory.cc",
       "bookmark/bookmark_prefs_service_factory.h",
-      "bookmark/recently_used_folders_combo_model.cc",
-      "bookmark/recently_used_folders_combo_model.h",
       "brave_browser_command_controller.cc",
       "brave_browser_command_controller.h",
       "brave_browser_content_setting_bubble_model_delegate.cc",
