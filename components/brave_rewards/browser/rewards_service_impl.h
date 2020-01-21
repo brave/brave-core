@@ -308,6 +308,8 @@ class RewardsServiceImpl : public RewardsService,
   void MaybeShowNotificationAddFundsForTesting(
       base::OnceCallback<void(bool)> callback);
   void CheckInsufficientFundsForTesting();
+  ledger::TransferFeeList GetTransferFeesForTesting(
+      const std::string& wallet_type);
 
  private:
   friend class ::BraveRewardsBrowserTest;

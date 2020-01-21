@@ -3072,6 +3072,11 @@ void RewardsServiceImpl::CheckInsufficientFundsForTesting() {
   MaybeShowNotificationAddFunds();
 }
 
+ledger::TransferFeeList RewardsServiceImpl::GetTransferFeesForTesting(
+    const std::string& wallet_type) {
+  return GetTransferFees(wallet_type);
+}
+
 void RewardsServiceImpl::GetEnvironment(
     const GetEnvironmentCallback& callback) {
   bat_ledger_service_->GetEnvironment(callback);
@@ -3912,7 +3917,7 @@ void RewardsServiceImpl::SetTransferFee(
     new_wallet = wallet->Clone();
   }
 
-  auto* fees = wallet->FindListKey("transfer_fees");
+  auto* fees = wallet->FindDictKey("transfer_fees");
   base::Value new_fees(base::Value::Type::DICTIONARY);
   if (fees) {
     new_fees = fees->Clone();
