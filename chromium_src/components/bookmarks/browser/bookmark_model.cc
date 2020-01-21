@@ -7,22 +7,25 @@
 
 namespace bookmarks {
 
-// Move bookmarks under "Other Bookmarks" permanent node to a same name folder
-// at the end of "Bookmark Bar" permanent node
-void BraveMigrateOtherNode(BookmarkModel* model) {
+// Move bookmarks under "Other Bookmarks" folder from
+// https://github.com/brave/brave-core/pull/3620 to original permanent node
+void BraveMigrateOtherNodeFolder(BookmarkModel* model) {
   CHECK(model);
   CHECK(model->loaded());
   // Model must be loaded at this point
-  if (!model->other_node()->children().empty()) {
-    const bookmarks::BookmarkNode* new_other_node =
-        model->AddFolder(model->bookmark_bar_node(),
-                         model->bookmark_bar_node()->children().size(),
-                         model->other_node()->GetTitledUrlNodeTitle());
-    size_t children_size = model->other_node()->children().size();
+  if (!model->bookmark_bar_node()->children().size())
+    return;
+  const bookmarks::BookmarkNode* possible_other_node_folder =
+    model->bookmark_bar_node()->children().back().get();
+  if (possible_other_node_folder->is_folder() &&
+      (possible_other_node_folder->GetTitledUrlNodeTitle() ==
+      model->other_node()->GetTitledUrlNodeTitle())) {
+    size_t children_size = possible_other_node_folder->children().size();
     for (size_t i = 0; i < children_size; ++i) {
-      model->Move(model->other_node()->children().front().get(), new_other_node,
-                  i);
+      model->Move(possible_other_node_folder->children().front().get(),
+                  model->other_node(), i);
     }
+    model->Remove(possible_other_node_folder);
   }
 }
 
