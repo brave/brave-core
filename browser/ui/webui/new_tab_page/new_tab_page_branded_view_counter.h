@@ -52,6 +52,7 @@ class NewTabPageBrandedViewCounter : public KeyedService,
   std::unique_ptr<BrandedWallpaper> current_wallpaper_ = nullptr;
   size_t current_wallpaper_image_index_ = -1;
   bool has_user_opted_in_;
+  bool is_supported_locale_;
   int count_to_branded_wallpaper_;
   PrefChangeRegistrar pref_change_registrar_;
   Profile* profile_;

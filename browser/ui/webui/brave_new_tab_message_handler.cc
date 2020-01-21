@@ -16,6 +16,8 @@
 #include "brave/browser/ui/webui/new_tab_page/branded_wallpaper.h"
 #include "brave/browser/ui/webui/new_tab_page/new_tab_page_branded_view_counter.h" //  NOLINT
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_features.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -108,9 +110,20 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
   // Initial Values
   // Should only contain data that is static
   //
+  auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile);
+  // For safety, default |is_ads_supported_locale_| to true. Better to have
+  // false positive than falsen egative,
+  // in which case we would not show "opt out" toggle.
+  bool is_ads_supported_locale_ = true;
+  if (!ads_service_) {
+    LOG(ERROR) << "Ads service is not initialized!";
+  } else {
+    is_ads_supported_locale_ = ads_service_->IsSupportedLocale();
+  }
   source->AddBoolean(
       "featureFlagBraveNTPBrandedWallpaper",
-      base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaper));
+      base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaper) &&
+      is_ads_supported_locale_);
   // Private Tab info
   if (IsPrivateNewTab(profile)) {
     source->AddBoolean(

@@ -199,6 +199,7 @@ source_set("ui") {
     "//brave/components/brave_adblock_ui:generated_resources",
     "//brave/components/webcompat_reporter/ui:generated_resources",
     "//brave/components/brave_new_tab_ui:generated_resources",
+    "//brave/components/brave_ads/browser",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/resources",
     "//brave/components/brave_shields/browser",

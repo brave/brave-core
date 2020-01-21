@@ -12,6 +12,8 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/ui/webui/new_tab_page/new_tab_page_branded_view_counter.h" //  NOLINT
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/ntp_sponsored_images/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_sponsored_images/url_constants.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
@@ -143,6 +145,12 @@ NewTabPageBrandedViewCounter::NewTabPageBrandedViewCounter(Profile* profile)
   pref_change_registrar_.Add(kNewTabPageShowBrandedBackgroundImage,
       base::Bind(&NewTabPageBrandedViewCounter::SetShouldShowFromPreferences,
       base::Unretained(this)));
+  auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile);
+  if (!ads_service_) {
+    LOG(ERROR) << "Ads service is not initialized!";
+  } else {
+    is_supported_locale_ = ads_service_->IsSupportedLocale();
+  }
 }
 
 NewTabPageBrandedViewCounter::~NewTabPageBrandedViewCounter() { }
@@ -187,7 +195,8 @@ bool NewTabPageBrandedViewCounter::IsBrandedWallpaperActive() {
   if (!base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaper)) {
     return false;
   }
-  return (current_wallpaper_ != nullptr && has_user_opted_in_ == true);
+  return (is_supported_locale_ && has_user_opted_in_ &&
+     current_wallpaper_ != nullptr);
 }
 
 bool NewTabPageBrandedViewCounter::ShouldShowBrandedWallpaper() {
