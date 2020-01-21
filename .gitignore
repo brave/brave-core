@@ -6,7 +6,7 @@
 /components/brave_sync/extension/brave-sync/
 /components/brave_sync/extension/brave-crypto/
 /components/third_party/adblock/LICENSE
-/components/third_party/local-data/LICENSE
+/components/third_party/local_data/LICENSE
 /dist/
 /out/
 /vendor/*
