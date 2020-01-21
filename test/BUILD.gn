@@ -231,7 +231,6 @@ test("brave_unit_tests") {
       "//brave/browser/extensions/api/brave_extensions_api_client_unittest.cc",
       "//chrome/browser/extensions/extension_service_test_base.cc",
       "//chrome/browser/extensions/extension_service_test_base.h",
-      "//chrome/browser/extensions/api/bookmarks/bookmarks_api_unittest.cc",
     ]
 
     deps += [
