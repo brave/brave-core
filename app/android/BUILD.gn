@@ -1,4 +1,30 @@
 import("//brave/build/config.gni")
 
 group("symbol_dist_resources") {}
-group("dist_resources") {}
+group("dist_resources") {
+  deps = [
+    ":create_symbol_archive"
+  ]
+}
+
+action("create_symbol_archive") {
+  script = "//build/gn_run_binary.py"
+  shell_script = "//brave/build/android/makeArchive7z.sh"
+
+  deps = [ "//brave/build/android:brave" ]
+  target_obj_files_name = "$root_out_dir/dist/Default$target_cpu$target_apk_base"
+
+  inputs = [
+    script,
+    shell_script,
+    brave_apk_output,
+  ]
+
+  outputs = [ target_obj_files_name ]
+
+  args = [
+    rebase_path(shell_script, root_build_dir),
+    rebase_path(root_out_dir, root_out_dir),
+    rebase_path(target_obj_files_name, root_out_dir),
+  ]
+}
