@@ -249,6 +249,10 @@ class BraveProfileSyncServiceImpl
   void SaveSyncEntityInfo(const jslib::SyncRecord* record);
   void LoadSyncEntityInfo(jslib::SyncRecord* record);
 
+  bool IsOtherBookmarksFolder(const jslib::SyncRecord* record) const;
+  void ProcessOtherBookmarksFolder(const jslib::SyncRecord* record);
+  void ProcessOtherBookmarksChildren(jslib::SyncRecord* record);
+
   void CreateResolveList(
       const std::vector<std::unique_ptr<jslib::SyncRecord>>& records,
       SyncRecordAndExistingList* records_and_existing_objects);

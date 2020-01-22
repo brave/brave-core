@@ -30,6 +30,7 @@ SyncerError PostBraveCommit(sync_pb::ClientToServerMessage* message,
 #include "brave/components/brave_sync/jslib_const.h"
 #include "brave/components/brave_sync/jslib_messages.h"
 #include "brave/components/brave_sync/jslib_messages_fwd.h"
+#include "brave/components/brave_sync/tools.h"
 #include "components/sync/base/time.h"
 #include "components/sync/base/unique_position.h"
 
@@ -37,7 +38,8 @@ namespace syncer {
 namespace {
 using brave_sync::jslib::MetaInfo;
 using brave_sync::jslib::SyncRecord;
-const char kBookmarkBarTag[] = "bookmark_bar";
+// from components/sync_bookmarks/bookmark_model_merger.cc
+const char kOtherBookmarksTag[] = "other_bookmarks";
 
 void CreateSuccessfulCommitResponse(
     const sync_pb::SyncEntity& entity,
@@ -54,6 +56,28 @@ void CreateSuccessfulCommitResponse(
     response->set_id_string(new_object_id);
 }
 
+std::unique_ptr<SyncRecord> CreateOtherBookmarksRecord(SyncRecord* child) {
+  auto record = std::make_unique<SyncRecord>();
+  record->objectData = brave_sync::jslib_const::SyncObjectData_BOOKMARK;
+  auto bookmark = std::make_unique<brave_sync::jslib::Bookmark>();
+  bookmark->site.title = brave_sync::tools::GetOtherNodeName();
+  bookmark->site.customTitle = brave_sync::tools::GetOtherNodeName();
+  // Special order reserved for "Other Bookmarks" folder, it only has effect on
+  // mobile. On desktop, it is used to distinguish "Other Bookmarks" from normal
+  // same name folder
+  bookmark->order = brave_sync::tools::kOtherNodeOrder;
+  bookmark->site.creationTime = child->GetBookmark().site.creationTime;
+  bookmark->isFolder = true;
+
+  DCHECK(child->has_bookmark());
+  record->objectId = child->GetBookmark().parentFolderObjectId;
+  record->action = brave_sync::jslib::SyncRecord::Action::A_CREATE;
+  record->syncTimestamp = child->syncTimestamp;
+  record->SetBookmark(std::move(bookmark));
+
+  return record;
+}
+
 brave_sync::RecordsListPtr ConvertCommitsToBraveRecords(
     sync_pb::ClientToServerMessage* message,
     sync_pb::ClientToServerResponse* response) {
@@ -61,6 +85,7 @@ brave_sync::RecordsListPtr ConvertCommitsToBraveRecords(
       std::make_unique<brave_sync::RecordsList>();
   const sync_pb::CommitMessage& commit_message = message->commit();
   const std::string cache_guid = commit_message.cache_guid();
+  bool other_bookmarks_record_created = false;
   for (int i = 0; i < commit_message.entries_size(); ++i) {
     sync_pb::SyncEntity entity = commit_message.entries(i);
     std::string new_object_id;
@@ -79,8 +104,8 @@ brave_sync::RecordsListPtr ConvertCommitsToBraveRecords(
           ProtoTimeToTime(bm_specifics.creation_time_us());
       bookmark->site.favicon = bm_specifics.icon_url();
       bookmark->isFolder = entity.folder();
-      // only mattters for direct children of permanent nodes
-      bookmark->hideInToolbar = entity.parent_id_string() != kBookmarkBarTag;
+      // only matters for direct children of permanent nodes
+      bookmark->hideInToolbar = entity.parent_id_string() == kOtherBookmarksTag;
 
       bool skip_record = false;
       for (int i = 0; i < bm_specifics.meta_info_size(); ++i) {
@@ -126,6 +151,12 @@ brave_sync::RecordsListPtr ConvertCommitsToBraveRecords(
       bookmark->metaInfo.push_back(metaInfo);
 
       record->SetBookmark(std::move(bookmark));
+
+      if (!other_bookmarks_record_created &&
+          entity.parent_id_string() == kOtherBookmarksTag) {
+        record_list->push_back(CreateOtherBookmarksRecord(record.get()));
+        other_bookmarks_record_created = true;
+      }
       if (!skip_record)
         record_list->push_back(std::move(record));
     }

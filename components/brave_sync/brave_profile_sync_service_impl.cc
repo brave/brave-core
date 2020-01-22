@@ -579,6 +579,13 @@ void BraveProfileSyncServiceImpl::OnResolvedSyncRecords(
     OnResolvedPreferences(*records.get());
   } else if (category_name == kBookmarks) {
     for (auto& record : *records) {
+      if (IsOtherBookmarksFolder(record.get())) {
+          ProcessOtherBookmarksFolder(record.get());
+          // We don't process "Other Bookmarks" folder in syncer
+          std::move(record);
+          continue;
+      }
+      ProcessOtherBookmarksChildren(record.get());
       LoadSyncEntityInfo(record.get());
       // We have to cache records when this function is triggered during
       // non-PollCycle (ex. compaction update) and wait for next available poll
@@ -713,13 +720,14 @@ void BraveProfileSyncServiceImpl::SetPermanentNodesOrder(
   std::string order;
   model_->bookmark_bar_node()->GetMetaInfo("order", &order);
   if (order.empty()) {
-    model_->SetNodeMetaInfo(model_->bookmark_bar_node(), "order",
-                            base_order + "1");
+    tools::AsMutable(model_->bookmark_bar_node())
+      ->SetMetaInfo("order", base_order + "1");
   }
   order.clear();
   model_->other_node()->GetMetaInfo("order", &order);
   if (order.empty()) {
-    model_->SetNodeMetaInfo(model_->other_node(), "order", base_order + "2");
+    tools::AsMutable(model_->other_node())
+      ->SetMetaInfo("order", base_order + "2");
   }
   brave_sync_prefs_->SetMigratedBookmarksVersion(2);
 }
@@ -741,10 +749,8 @@ BraveProfileSyncServiceImpl::BookmarkNodeToSyncBookmark(
   // bookmark->site.lastAccessedTime - ignored
   bookmark->site.creationTime = node->date_added();
   bookmark->site.favicon = node->icon_url() ? node->icon_url()->spec() : "";
-  // Url may have type OTHER_NODE if it is in Deleted Bookmarks
-  bookmark->isFolder = (node->type() != bookmarks::BookmarkNode::URL &&
-                        node->type() != bookmarks::BookmarkNode::OTHER_NODE);
-  bookmark->hideInToolbar = node->parent() != model_->bookmark_bar_node();
+  bookmark->isFolder = node->type() != bookmarks::BookmarkNode::URL;
+  bookmark->hideInToolbar = node->parent() == model_->other_node();
 
   std::string object_id;
   node->GetMetaInfo("object_id", &object_id);
@@ -787,9 +793,11 @@ void BraveProfileSyncServiceImpl::SaveSyncEntityInfo(
         int64_t version;
         bool result = base::StringToInt64(meta_info.value, &version);
         DCHECK(result);
-        model_->SetNodeMetaInfo(node, meta_info.key, std::to_string(++version));
+        tools::AsMutable(node)
+          ->SetMetaInfo(meta_info.key, std::to_string(++version));
       } else {
-        model_->SetNodeMetaInfo(node, meta_info.key, meta_info.value);
+        tools::AsMutable(node)
+        ->SetMetaInfo(meta_info.key, meta_info.value);
       }
     }
   }
@@ -809,6 +817,65 @@ void BraveProfileSyncServiceImpl::LoadSyncEntityInfo(
     metaInfo.key = "version";
     metaInfo.value = "0";
     bookmark->metaInfo.push_back(metaInfo);
+  }
+}
+
+bool BraveProfileSyncServiceImpl::IsOtherBookmarksFolder(
+    const jslib::SyncRecord* record) const {
+  std::string other_node_object_id;
+  if (model_->other_node()->GetMetaInfo("object_id", &other_node_object_id) &&
+      record->objectId == other_node_object_id)
+    return true;
+
+  auto bookmark = record->GetBookmark();
+  if (bookmark.order == tools::kOtherNodeOrder &&
+      bookmark.site.title == tools::GetOtherNodeName() &&
+      bookmark.site.customTitle == tools::GetOtherNodeName()) {
+    return true;
+  }
+
+  return false;
+}
+
+void BraveProfileSyncServiceImpl::ProcessOtherBookmarksFolder(
+    const jslib::SyncRecord* record) {
+  std::string other_node_object_id;
+    // Save object_id for late joined desktop to catch up with currecnt id
+    // iteration
+  if (model_->other_node()->GetMetaInfo("object_id", &other_node_object_id)) {
+    // DELETE won't reach here, because [DELETE, null] => [] in
+    // resolve-sync-objects but children records will go through. And we don't
+    // need to regenerate new object id for it.
+
+    // Handle MOVE, RENAME, REORDER
+    // Update will be resolved as Create because [UPDATE, null] => [CREATE]
+    auto bookmark = record->GetBookmark();
+    if (bookmark.order != tools::kOtherNodeOrder ||
+        bookmark.site.title != tools::GetOtherNodeName() ||
+        bookmark.site.customTitle != tools::GetOtherNodeName()) {
+      // This is to compensate mobile couldn't make "Other Bookmarks" a
+      // read-only folder.
+      // Remove remote "Other Bookmarks" folder
+      RecordsListPtr records = std::make_unique<RecordsList>();
+      records->push_back(
+          CreateDeleteBookmarkByObjectId(brave_sync_prefs_.get(),
+                                         record->objectId));
+      brave_sync_client_->SendSyncRecords(jslib_const::SyncRecordType_BOOKMARKS,
+                                          *records);
+      // Remove all local children of other_node
+      while (model_->other_node()->children().size()) {
+        model_->Remove(model_->other_node()->children().front().get());
+      }
+    }
+  }
+}
+
+void BraveProfileSyncServiceImpl::ProcessOtherBookmarksChildren(
+    jslib::SyncRecord* record) {
+  std::string other_node_object_id;
+  if (model_->other_node()->GetMetaInfo("object_id", &other_node_object_id) &&
+      record->GetBookmark().parentFolderObjectId == other_node_object_id) {
+    record->mutable_bookmark()->hideInToolbar = true;
   }
 }
 
