@@ -70,7 +70,7 @@ export default class DeviceTypeModal extends React.PureComponent<Props, State> {
     const { viewSyncCode, scanCode } = this.state
 
     return (
-      <Modal id='deviceTypeModal' displayCloseButton={false} size='small'>
+      <Modal id='deviceTypeModal' displayCloseButton={true} onClose={onClose} size='small'>
         {
           syncData.error === 'ERR_SYNC_INIT_FAILED'
           ? <AlertBox okString={getLocale('ok')} onClickOk={this.onUserNoticedError}>
