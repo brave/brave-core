@@ -88,9 +88,7 @@ interface BatLedger {
   GetPublisherBanner(string publisher_id) =>
       (ledger.mojom.PublisherBanner? banner);
 
-  DoDirectTip(string publisher_id,
-              double amount,
-              string currency) => (ledger.mojom.Result result);
+  DoTip(string publisher_id, double amount, ledger.mojom.PublisherInfo? info, bool recurring) => (ledger.mojom.Result result);
 
   RemoveRecurringTip(string publisher_key) => (ledger.mojom.Result result);
   GetBootStamp() => (uint64 boot_stamp);

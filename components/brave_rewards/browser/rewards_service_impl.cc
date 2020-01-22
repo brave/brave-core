@@ -2188,49 +2188,35 @@ void RewardsServiceImpl::OnPublisherBanner(
   std::move(callback).Run(std::move(new_banner));
 }
 
-void RewardsServiceImpl::OnTipPublisherInfoSaved(
-    const ledger::Result result,
-    ledger::PublisherInfoPtr info,
+void RewardsServiceImpl::OnTip(
+    const std::string& publisher_key,
+    const double amount,
     const bool recurring,
-    const double amount) {
-  if (!info) {
-    return;
-  }
-
-  if (recurring) {
-    SaveRecurringTipUI(info->id, amount, base::DoNothing());
-    return;
-  }
-
-  bat_ledger_->DoDirectTip(info->id, amount, "BAT", base::DoNothing());
-}
-
-void RewardsServiceImpl::OnTip(const std::string& publisher_key,
-                               double amount,
-                               bool recurring,
-                               ledger::PublisherInfoPtr publisher_info) {
-  // TODO(https://github.com/brave/brave-browser/issues/7217):
-  //  this needs to be wired through ledger code
-  if (publisher_info) {
-    // TODO
-//    SavePublisherInfo(std::move(publisher_info),
-//        std::bind(&RewardsServiceImpl::OnTipPublisherInfoSaved,
-//            this,
-//            _1,
-//            _2,
-//            recurring,
-//            amount));
-    return;
-  } else if (recurring) {
-    SaveRecurringTipUI(publisher_key, amount, base::DoNothing());
-    return;
-  }
-
+    ledger::PublisherInfoPtr publisher_info) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->DoDirectTip(publisher_key, amount, "BAT", base::DoNothing());
+  bat_ledger_->DoTip(
+      publisher_key,
+      amount,
+      std::move(publisher_info),
+      recurring,
+      base::BindOnce(&RewardsServiceImpl::OnDoTip, AsWeakPtr(), recurring));
+}
+
+void RewardsServiceImpl::OnDoTip(
+    const bool recurring,
+    const ledger::Result result) {
+  if (!recurring) {
+    return;
+  }
+
+  bool success = result == ledger::Result::LEDGER_OK;
+
+  for (auto& observer : observers_) {
+    observer.OnRecurringTipSaved(this, success);
+  }
 }
 
 ledger::Result SaveContributionInfoOnFileTaskRunner(
@@ -2289,7 +2275,7 @@ void RewardsServiceImpl::SaveRecurringTipUI(
 }
 
 void RewardsServiceImpl::OnRecurringTipSaved(
-    ledger::SaveRecurringTipCallback callback,
+    ledger::ResultCallback callback,
     const bool success) {
   if (!Connected()) {
     return;
@@ -2310,7 +2296,7 @@ bool SaveRecurringTipOnFileTaskRunner(
 
 void RewardsServiceImpl::SaveRecurringTip(
     ledger::RecurringTipPtr info,
-    ledger::SaveRecurringTipCallback callback) {
+    ledger::ResultCallback callback) {
   if (!info) {
     callback(ledger::Result::NOT_FOUND);
     return;
@@ -2800,9 +2786,12 @@ void RewardsServiceImpl::GetRewardsInternalsInfo(
 
 void RewardsServiceImpl::OnTip(
     const std::string& publisher_key,
-    double amount,
-    bool recurring) {
-  OnTip(publisher_key, amount, recurring,
+    const double amount,
+    const bool recurring) {
+  OnTip(
+      publisher_key,
+      amount,
+      recurring,
       static_cast<ledger::PublisherInfoPtr>(nullptr));
 }
 

@@ -88,9 +88,7 @@ class Publisher : public ledger::LedgerCallbackHandler {
 
   bool getPublisherAllowVideos() const;
 
-  void OnPublisherInfoSaved(
-      ledger::Result result,
-      ledger::PublisherInfoPtr);
+  void OnPublisherInfoSaved(const ledger::Result result);
 
   std::string GetBalanceReportName(ledger::ActivityMonth month, int year);
 

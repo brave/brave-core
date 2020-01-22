@@ -398,8 +398,8 @@ void BatLedgerImpl::GetContributionAmount(
   std::move(callback).Run(ledger_->GetContributionAmount());
 }
 
-void BatLedgerImpl::OnDoDirectTip(
-    CallbackHolder<DoDirectTipCallback>* holder,
+void BatLedgerImpl::OnDoTip(
+    CallbackHolder<DoTipCallback>* holder,
     const ledger::Result result) {
   DCHECK(holder);
   if (holder->is_valid())
@@ -407,15 +407,21 @@ void BatLedgerImpl::OnDoDirectTip(
   delete holder;
 }
 
-void BatLedgerImpl::DoDirectTip(const std::string& publisher_id,
-                                double amount,
-                                const std::string& currency,
-                                DoDirectTipCallback callback) {
-  // deleted in OnDoDirectTip
-  auto* holder = new CallbackHolder<DoDirectTipCallback>(
+void BatLedgerImpl::DoTip(
+    const std::string& publisher_key,
+    const double amount,
+    ledger::PublisherInfoPtr info,
+    const bool recurring,
+    DoTipCallback callback) {
+  // deleted in OnDoTip
+  auto* holder = new CallbackHolder<DoTipCallback>(
     AsWeakPtr(), std::move(callback));
-  ledger_->DoDirectTip(publisher_id, amount, currency,
-    std::bind(BatLedgerImpl::OnDoDirectTip, holder, _1));
+  ledger_->DoTip(
+      publisher_key,
+      amount,
+      std::move(info),
+      recurring,
+      std::bind(BatLedgerImpl::OnDoTip, holder, _1));
 }
 
 // static

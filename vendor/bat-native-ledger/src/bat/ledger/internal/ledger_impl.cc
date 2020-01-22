@@ -470,26 +470,16 @@ std::string LedgerImpl::URIEncode(const std::string& value) {
   return ledger_client_->URIEncode(value);
 }
 
-void LedgerImpl::OnPublisherInfoSavedInternal(
-    const ledger::Result result,
-    ledger::PublisherInfoPtr info) {
-  bat_publisher_->OnPublisherInfoSaved(result, std::move(info));
+void LedgerImpl::SavePublisherInfo(
+    ledger::PublisherInfoPtr info,
+    ledger::ResultCallback callback) {
+  bat_database_->SavePublisherInfo(info->Clone(), callback);
 }
 
-void LedgerImpl::SavePublisherInfo(ledger::PublisherInfoPtr info) {
-  bat_database_->SavePublisherInfo(
-      info->Clone(),
-      [](const ledger::Result){});
-  // TODO fix to call OnPublisherInfoSavedInternal as a callback
-  OnPublisherInfoSavedInternal(ledger::Result::LEDGER_OK, info->Clone());
-}
-
-void LedgerImpl::SaveActivityInfo(ledger::PublisherInfoPtr info) {
-  // TODO fix to call OnPublisherInfoSavedInternal as a callback
-  bat_database_->SaveActivityInfo(
-      info->Clone(),
-      [](const ledger::Result){});
-  OnPublisherInfoSavedInternal(ledger::Result::LEDGER_OK, info->Clone());
+void LedgerImpl::SaveActivityInfo(
+    ledger::PublisherInfoPtr info,
+    ledger::ResultCallback callback) {
+  bat_database_->SaveActivityInfo(info->Clone(), callback);
 }
 
 void LedgerImpl::SetMediaPublisherInfo(const std::string& media_key,
@@ -807,11 +797,18 @@ void LedgerImpl::SaveUnverifiedContribution(
   ledger_client_->SavePendingContribution(std::move(list), callback);
 }
 
-void LedgerImpl::DoDirectTip(const std::string& publisher_key,
-                             double amount,
-                             const std::string& currency,
-                             ledger::DoDirectTipCallback callback) {
-  bat_contribution_->DoDirectTip(publisher_key, amount, currency, callback);
+void LedgerImpl::DoTip(
+    const std::string& publisher_key,
+    const double amount,
+    ledger::PublisherInfoPtr info,
+    const bool recurring,
+    ledger::ResultCallback callback) {
+  bat_contribution_->DoTip(
+      publisher_key,
+      amount,
+      std::move(info),
+      recurring,
+      callback);
 }
 
 void LedgerImpl::OnTimer(uint32_t timer_id) {
@@ -826,7 +823,7 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
 
 void LedgerImpl::SaveRecurringTip(
     ledger::RecurringTipPtr info,
-    ledger::SaveRecurringTipCallback callback) {
+    ledger::ResultCallback callback) {
   ledger_client_->SaveRecurringTip(
       std::move(info),
       callback);

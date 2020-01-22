@@ -56,9 +56,13 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD2(CreateWallet,
       void(const std::string&, ledger::CreateWalletCallback));
 
-  MOCK_METHOD1(SavePublisherInfo, void(ledger::PublisherInfoPtr));
+  MOCK_METHOD2(SavePublisherInfo, void(
+      ledger::PublisherInfoPtr,
+      ledger::ResultCallback));
 
-  MOCK_METHOD1(SaveActivityInfo, void(ledger::PublisherInfoPtr));
+  MOCK_METHOD2(SaveActivityInfo, void(
+      ledger::PublisherInfoPtr,
+      ledger::ResultCallback));
 
   MOCK_METHOD2(GetPublisherInfo,
       void(const std::string&, ledger::PublisherInfoCallback));
@@ -81,11 +85,12 @@ class MockLedgerImpl : public LedgerImpl {
           ledger::ActivityInfoFilterPtr,
           ledger::PublisherInfoListCallback));
 
-  MOCK_METHOD4(DoDirectTip,
-      void(const std::string&,
-          double,
-          const std::string&,
-          ledger::DoDirectTipCallback));
+  MOCK_METHOD5(DoTip, void(
+      const std::string&,
+      const double,
+      ledger::PublisherInfoPtr,
+      const bool,
+      ledger::ResultCallback));
 
   MOCK_METHOD1(SetRewardsMainEnabled, void(bool));
 
@@ -266,7 +271,7 @@ class MockLedgerImpl : public LedgerImpl {
           const uint32_t));
 
   MOCK_METHOD2(SaveRecurringTip,
-      void(ledger::RecurringTipPtr, ledger::SaveRecurringTipCallback));
+      void(ledger::RecurringTipPtr, ledger::ResultCallback));
 
   MOCK_METHOD1(GetRecurringTips, void(ledger::PublisherInfoListCallback));
 

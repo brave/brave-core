@@ -14,7 +14,7 @@
 - (void)getOneTimeTips:(ledger::PublisherInfoListCallback)callback;
 - (void)getPendingContributions:(ledger::PendingContributionInfoListCallback)callback;
 - (void)getPendingContributionsTotal:(ledger::PendingContributionsTotalCallback)callback;
-- (void)saveRecurringTip:(ledger::RecurringTipPtr)info callback:(ledger::SaveRecurringTipCallback)callback;
+- (void)saveRecurringTip:(ledger::RecurringTipPtr)info callback:(ledger::ResultCallback)callback;
 - (void)getRecurringTips:(ledger::PublisherInfoListCallback)callback;
 - (void)killTimer:(const uint32_t)timer_id;
 - (void)loadLedgerState:(ledger::OnLoadCallback)callback;
