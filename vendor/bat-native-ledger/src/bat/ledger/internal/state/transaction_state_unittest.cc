@@ -93,10 +93,10 @@ TEST(TransactionStateTest, FromJsonDeserialization) {
 TEST(TransactionStateTest, FromJsonResponseDeserialization) {
   // Arrange
   TransactionProperties transaction_properties;
-  transaction_properties.contribution_probi = "ContributionProbi";
-  transaction_properties.submission_timestamp = "SubmissionTimestamp";
+  transaction_properties.contribution_probi = "Probi";
+  transaction_properties.submission_timestamp = "1579627546681";
 
-  const std::string json = "{\"contribution_probi\":\"ContributionProbi\",\"submissionStamp\":\"SubmissionTimestamp\"}";  // NOLINT
+  const std::string json = "{\"probi\":\"Probi\",\"paymentStamp\":1579627546681}";  // NOLINT
 
   // Act
   TransactionProperties expected_transaction_properties;
