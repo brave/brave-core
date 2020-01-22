@@ -62,7 +62,6 @@ using GetExternalWalletsCallback =
     std::function<void(std::map<std::string, ledger::ExternalWalletPtr>)>;
 using ShowNotificationCallback = std::function<void(const Result)>;
 using SavePendingContributionCallback = std::function<void(const Result)>;
-using SaveRecurringTipCallback = std::function<void(const Result)>;
 using ClearAndInsertServerPublisherListCallback =
     std::function<void(const Result)>;
 using GetServerPublisherInfoCallback =
@@ -139,7 +138,7 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void SaveRecurringTip(
       ledger::RecurringTipPtr info,
-      ledger::SaveRecurringTipCallback callback) = 0;
+      ledger::ResultCallback callback) = 0;
 
   virtual void GetRecurringTips(
       ledger::PublisherInfoListCallback callback) = 0;

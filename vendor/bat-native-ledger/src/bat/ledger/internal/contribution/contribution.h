@@ -184,11 +184,12 @@ class Contribution {
 
   void StartPhaseTwo(const std::string& viewing_id);
 
-  void DoDirectTip(
+  void DoTip(
       const std::string& publisher_key,
-      double amount,
-      const std::string& currency,
-      ledger::DoDirectTipCallback callback);
+      const double amount,
+      ledger::PublisherInfoPtr info,
+      const bool recurring,
+      ledger::ResultCallback callback);
 
  private:
   void CheckContributionQueue();
@@ -243,6 +244,13 @@ class Contribution {
       ledger::BalancePtr properties,
       ledger::HasSufficientBalanceToReconcileCallback callback);
 
+  void ProcessTip(
+      const ledger::Result result,
+      const std::string& publisher_key,
+      const double amount,
+      const bool recurring,
+      ledger::ResultCallback callback);
+
   void SavePendingContribution(
       const std::string& publisher_key,
       double amount,
@@ -250,11 +258,10 @@ class Contribution {
       ledger::SavePendingContributionCallback callback);
 
   void OnDoDirectTipServerPublisher(
-    ledger::ServerPublisherInfoPtr server_info,
-    const std::string& publisher_key,
-    double amount,
-    const std::string& currency,
-    ledger::DoDirectTipCallback callback);
+      ledger::ServerPublisherInfoPtr server_info,
+      const std::string& publisher_key,
+      double amount,
+      ledger::ResultCallback callback);
 
   bool HaveReconcileEnoughFunds(
       ledger::ContributionQueuePtr contribution,

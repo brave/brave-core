@@ -300,7 +300,11 @@ void Publisher::SaveVisitInternal(
        verified_new)) {
     panel_info = publisher_info->Clone();
 
-    ledger_->SavePublisherInfo(std::move(publisher_info));
+    auto callback = std::bind(&Publisher::OnPublisherInfoSaved,
+        this,
+        _1);
+
+    ledger_->SavePublisherInfo(std::move(publisher_info), callback);
   } else if (!excluded &&
              ledger_->GetAutoContribute() &&
              min_duration_ok &&
@@ -312,7 +316,11 @@ void Publisher::SaveVisitInternal(
 
     panel_info = publisher_info->Clone();
 
-    ledger_->SaveActivityInfo(std::move(publisher_info));
+    auto callback = std::bind(&Publisher::OnPublisherInfoSaved,
+        this,
+        _1);
+
+    ledger_->SaveActivityInfo(std::move(publisher_info), callback);
   }
 
   if (panel_info) {
@@ -359,14 +367,16 @@ void Publisher::onFetchFavIconDBResponse(
   if (result == ledger::Result::LEDGER_OK && !favicon_url.empty()) {
     info->favicon_url = favicon_url;
 
-    ledger::PublisherInfoPtr panel_info = info->Clone();
+    auto callback = std::bind(&Publisher::OnPublisherInfoSaved,
+        this,
+        _1);
 
-    ledger_->SavePublisherInfo(std::move(info));
+    ledger_->SavePublisherInfo(info->Clone(), callback);
 
     if (window_id > 0) {
       ledger::VisitData visit_data;
       OnPanelPublisherInfo(ledger::Result::LEDGER_OK,
-                          std::move(panel_info),
+                          std::move(info),
                           window_id,
                           visit_data);
     }
@@ -376,10 +386,8 @@ void Publisher::onFetchFavIconDBResponse(
   }
 }
 
-void Publisher::OnPublisherInfoSaved(
-    ledger::Result result,
-    ledger::PublisherInfoPtr info) {
-  if (result != ledger::Result::LEDGER_OK || !info) {
+void Publisher::OnPublisherInfoSaved(const ledger::Result result) {
+  if (result != ledger::Result::LEDGER_OK) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
       "Publisher info was not saved!";
   }
@@ -418,7 +426,11 @@ void Publisher::OnSetPublisherExclude(
   }
 
   publisher_info->excluded = exclude;
-  ledger_->SavePublisherInfo(publisher_info->Clone());
+
+  auto save_callback = std::bind(&Publisher::OnPublisherInfoSaved,
+      this,
+      _1);
+  ledger_->SavePublisherInfo(publisher_info->Clone(), save_callback);
   if (exclude == ledger::PublisherExclude::EXCLUDED) {
     ledger_->DeleteActivityInfo(
       publisher_info->id,

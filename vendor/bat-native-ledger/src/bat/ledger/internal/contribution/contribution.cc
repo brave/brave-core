@@ -647,26 +647,61 @@ void Contribution::StartPhaseTwo(const std::string& viewing_id) {
   phase_two_->Start(viewing_id);
 }
 
-void Contribution::DoDirectTip(
+void Contribution::DoTip(
     const std::string& publisher_key,
-    double amount,
-    const std::string& currency,
-    ledger::DoDirectTipCallback callback) {
+    const double amount,
+    ledger::PublisherInfoPtr info,
+    const bool recurring,
+    ledger::ResultCallback callback) {
   if (publisher_key.empty()) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-      "Failed direct donation due to missing publisher id";
+      "Failed to do tip due to missing publisher key";
     callback(ledger::Result::NOT_FOUND);
+    return;
+  }
+
+  if (info) {
+    auto save_callback = std::bind(&Contribution::ProcessTip,
+        this,
+        _1,
+        publisher_key,
+        amount,
+        recurring,
+        callback);
+    ledger_->SavePublisherInfo(std::move(info), save_callback);
+    return;
+  }
+
+  ProcessTip(
+      ledger::Result::LEDGER_OK,
+      publisher_key,
+      amount,
+      recurring,
+      callback);
+}
+
+void Contribution::ProcessTip(
+    const ledger::Result result,
+    const std::string& publisher_key,
+    const double amount,
+    const bool recurring,
+    ledger::ResultCallback callback) {
+  if (recurring) {
+    auto info = ledger::RecurringTip::New();
+    info->publisher_key = publisher_key;
+    info->amount = amount;
+    info->created_at = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+    ledger_->SaveRecurringTip(std::move(info), callback);
     return;
   }
 
   const auto server_callback =
     std::bind(&Contribution::OnDoDirectTipServerPublisher,
-              this,
-              _1,
-              publisher_key,
-              amount,
-              currency,
-              callback);
+        this,
+        _1,
+        publisher_key,
+        amount,
+        callback);
 
   ledger_->GetServerPublisherInfo(publisher_key, server_callback);
 }
@@ -693,8 +728,7 @@ void Contribution::OnDoDirectTipServerPublisher(
     ledger::ServerPublisherInfoPtr server_info,
     const std::string& publisher_key,
     double amount,
-    const std::string& currency,
-    ledger::DoDirectTipCallback callback) {
+    ledger::ResultCallback callback) {
   auto status = ledger::PublisherStatus::NOT_VERIFIED;
   if (server_info) {
     status =  server_info->status;

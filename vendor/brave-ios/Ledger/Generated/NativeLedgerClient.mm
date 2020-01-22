@@ -29,7 +29,7 @@ void NativeLedgerClient::GetPendingContributions(ledger::PendingContributionInfo
 void NativeLedgerClient::GetPendingContributionsTotal(ledger::PendingContributionsTotalCallback callback) {
   [bridge_ getPendingContributionsTotal:callback];
 }
-void NativeLedgerClient::SaveRecurringTip(ledger::RecurringTipPtr info, ledger::SaveRecurringTipCallback callback) {
+void NativeLedgerClient::SaveRecurringTip(ledger::RecurringTipPtr info, ledger::ResultCallback callback) {
   [bridge_ saveRecurringTip:std::move(info) callback:callback];
 }
 void NativeLedgerClient::GetRecurringTips(ledger::PublisherInfoListCallback callback) {

@@ -302,14 +302,15 @@ void BatLedgerClientMojoProxy::FetchFavIcon(const std::string& url,
       base::BindOnce(&OnFetchFavIcon, std::move(callback)));
 }
 
-void OnSaveRecurringTip(const ledger::SaveRecurringTipCallback& callback,
-                        const ledger::Result result) {
+void OnSaveRecurringTip(
+    const ledger::ResultCallback& callback,
+    const ledger::Result result) {
   callback(result);
 }
 
 void BatLedgerClientMojoProxy::SaveRecurringTip(
     ledger::RecurringTipPtr info,
-    ledger::SaveRecurringTipCallback callback) {
+    ledger::ResultCallback callback) {
   if (!Connected()) {
     callback(ledger::Result::LEDGER_ERROR);
     return;

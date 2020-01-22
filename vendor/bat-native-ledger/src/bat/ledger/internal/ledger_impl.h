@@ -88,10 +88,13 @@ class LedgerImpl : public ledger::Ledger,
   void CreateWallet(const std::string& safetynet_token,
                     ledger::CreateWalletCallback callback) override;
 
-  void SavePublisherInfo(ledger::PublisherInfoPtr publisher_info);
+  void SavePublisherInfo(
+      ledger::PublisherInfoPtr publisher_info,
+      ledger::ResultCallback callback);
 
   void SaveActivityInfo(
-      ledger::PublisherInfoPtr publisher_info);
+      ledger::PublisherInfoPtr publisher_info,
+      ledger::ResultCallback callback);
 
   void GetPublisherInfo(
       const std::string& publisher_key,
@@ -116,10 +119,12 @@ class LedgerImpl : public ledger::Ledger,
 
   void GetExcludedList(ledger::PublisherInfoListCallback callback) override;
 
-  void DoDirectTip(const std::string& publisher_key,
-                   double amount,
-                   const std::string& currency,
-                   ledger::DoDirectTipCallback callback) override;
+  void DoTip(
+      const std::string& publisher_key,
+      const double amount,
+      ledger::PublisherInfoPtr info,
+      const bool recurring,
+      ledger::ResultCallback callback) override;
 
   void SetRewardsMainEnabled(bool enabled) override;
 
@@ -301,7 +306,7 @@ class LedgerImpl : public ledger::Ledger,
 
   void SaveRecurringTip(
       ledger::RecurringTipPtr info,
-      ledger::SaveRecurringTipCallback callback) override;
+      ledger::ResultCallback callback) override;
 
   void GetRecurringTips(ledger::PublisherInfoListCallback callback) override;
 
@@ -718,10 +723,6 @@ class LedgerImpl : public ledger::Ledger,
                            ledger::InitializeCallback callback) override;
 
   void RefreshPromotions(bool retryAfterError);
-
-  void OnPublisherInfoSavedInternal(
-      const ledger::Result result,
-      ledger::PublisherInfoPtr info);
 
   void DownloadPublisherList(
       ledger::LoadURLCallback callback);

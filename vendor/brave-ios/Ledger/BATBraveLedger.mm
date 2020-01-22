@@ -154,7 +154,7 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
     
     self.databaseQueue = dispatch_queue_create("com.rewards.db-transactions", DISPATCH_QUEUE_SERIAL);
     
-    const auto dbPath = [self.storagePath stringByAppendingPathComponent:@"Rewards.db"].UTF8String;
+    const auto* dbPath = [self.storagePath stringByAppendingPathComponent:@"Rewards.db"].UTF8String;
     rewardsDatabase = new brave_rewards::RewardsDatabase(base::FilePath(dbPath));
 
     ledgerClient = new NativeLedgerClient(self);
@@ -721,7 +721,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)tipPublisherDirectly:(BATPublisherInfo *)publisher amount:(double)amount currency:(NSString *)currency completion:(void (^)(BATResult result))completion
 {
-  ledger->DoDirectTip(std::string(publisher.id.UTF8String), amount, std::string(currency.UTF8String), ^(ledger::Result result) {
+  ledger->DoTip(std::string(publisher.id.UTF8String), amount, nullptr, false, ^(ledger::Result result) {
     completion(static_cast<BATResult>(result));
   });
 }
@@ -1744,7 +1744,7 @@ BATLedgerBridge(BOOL,
   [self handlePublisherListing:publishers start:0 limit:0 callback:callback];
 }
 
-- (void)saveRecurringTip:(ledger::RecurringTipPtr)info callback:(ledger::SaveRecurringTipCallback)callback
+- (void)saveRecurringTip:(ledger::RecurringTipPtr)info callback:(ledger::ResultCallback)callback
 {
   [BATLedgerDatabase insertOrUpdateRecurringTipWithPublisherID:[NSString stringWithUTF8String:info->publisher_key.c_str()]
                                                         amount:info->amount
