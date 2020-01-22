@@ -6,21 +6,21 @@ import Foundation
 
 /// Ledger uses different types to represent BAT values.
 /// This structure helps parsing and converting it.
-struct BATValue: DisplayableOption {
+public struct BATValue: DisplayableOption {
   private let value: Double
   
   static let probiMultiplier = pow(10, 18) as NSDecimalNumber
   
-  init?(_ stringValue: String) {
+  public init?(_ stringValue: String) {
     guard let doubleFromString = Double(stringValue) else { return nil }
     value = doubleFromString
   }
   
-  init(_ doubleValue: Double) {
+  public init(_ doubleValue: Double) {
     value = doubleValue
   }
   
-  init?(probi probiValue: String, precision: Int16 = 1) {
+  public init?(probi probiValue: String, precision: Int16 = 1) {
     let decimalNumber = NSDecimalNumber(string: probiValue)
     
     if decimalNumber == NSDecimalNumber.notANumber { return nil }
@@ -37,7 +37,7 @@ struct BATValue: DisplayableOption {
     return value
   }
   
-  var displayString: String {
+  public var displayString: String {
     return String(format: "%.1f", value)
   }
   

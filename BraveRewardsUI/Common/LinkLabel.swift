@@ -5,16 +5,16 @@
 import Foundation
 
 /// A Label that allows clickable links (or data-detectors)
-final class LinkLabel: UITextView {
+final public class LinkLabel: UITextView {
   
   /// Called when a link is tapped
-  var onLinkedTapped: ((URL) -> Void)?
+  public var onLinkedTapped: ((URL) -> Void)?
   
-  func setURLInfo(_ urlInfo: [String: String]) {
+  public func setURLInfo(_ urlInfo: [String: String]) {
     self.updateText(urlInfo: urlInfo)
   }
   
-  override var textAlignment: NSTextAlignment {
+  override public var textAlignment: NSTextAlignment {
     didSet {
       guard let text = self.attributedText.mutableCopy() as? NSMutableAttributedString else { return }
       let range = NSRange(location: 0, length: text.length)
@@ -25,7 +25,7 @@ final class LinkLabel: UITextView {
     }
   }
   
-  override var font: UIFont? {
+  override public var font: UIFont? {
     didSet {
       self.linkTextAttributes = [
         .font: self.linkFont ?? self.font ?? UIFont.systemFont(ofSize: 12.0),
@@ -42,7 +42,7 @@ final class LinkLabel: UITextView {
     }
   }
   
-  override var textColor: UIColor? {
+  override public var textColor: UIColor? {
     didSet {
       guard let text = self.attributedText.mutableCopy() as? NSMutableAttributedString else { return }
       let range = NSRange(location: 0, length: text.length)
@@ -57,7 +57,7 @@ final class LinkLabel: UITextView {
     }
   }
   
-  var linkColor: UIColor? {
+  public var linkColor: UIColor? {
     didSet {
       self.linkTextAttributes = [
         .font: self.linkFont ?? self.font ?? UIFont.systemFont(ofSize: 12.0),
@@ -168,12 +168,12 @@ final class LinkLabel: UITextView {
 
 extension LinkLabel: UITextViewDelegate {
   
-  func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+  public func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
     onLinkedTapped?(URL)
     return false
   }
   
-  override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+  override public func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
     /// Detect if we're tapping on a link.. otherwise make everything else NOT selectable.
     /// This also fixes a bug where you tap on the "side" of a link and it still triggers.
     guard let pos = closestPosition(to: point) else { return false }

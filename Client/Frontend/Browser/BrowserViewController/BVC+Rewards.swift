@@ -150,6 +150,10 @@ extension BrowserViewController {
                 }
         }
     }
+    
+    @objc func resetNTPNotification() {
+        Preferences.NewTabPage.brandedImageShowed.value = false
+    }
 }
 
 extension BrowserViewController: RewardsUIDelegate {
