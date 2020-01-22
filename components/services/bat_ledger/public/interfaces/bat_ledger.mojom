@@ -299,4 +299,13 @@ interface BatLedgerClient {
 
   GetContributionReport(ledger.mojom.ActivityMonth month, int32 year) => (array<ledger.mojom.ContributionReportInfo> list);
 
+  GetIncompleteContributions() => (array<ledger.mojom.ContributionInfo> list);
+
+  GetContributionInfo(string contribution_id) => (ledger.mojom.ContributionInfo info);
+
+  UpdateContributionInfoStepAndCount(string contribution_id, ledger.mojom.ContributionStep step, int32 retry_count) => (ledger.mojom.Result result);
+
+  UpdateContributionInfoContributedAmount(string contribution_id, string publisher_key) => (ledger.mojom.Result result);
+
+  ReconcileStampReset();
 };
