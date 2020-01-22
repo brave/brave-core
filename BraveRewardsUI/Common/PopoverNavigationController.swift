@@ -18,13 +18,23 @@ public class PopoverNavigationController: UINavigationController {
     }
   }
   
+  private class Toolbar: UIToolbar {
+    override var frame: CGRect {
+      get { return super.frame.with { $0.size.height = 44 } }
+      set { super.frame = newValue }
+    }
+    override var barPosition: UIBarPosition {
+      return .bottom
+    }
+  }
+  
   init() {
-    super.init(navigationBarClass: NavigationBar.self, toolbarClass: nil)
+    super.init(navigationBarClass: NavigationBar.self, toolbarClass: Toolbar.self)
     modalPresentationStyle = .currentContext
   }
   
   public override init(rootViewController: UIViewController) {
-    super.init(navigationBarClass: NavigationBar.self, toolbarClass: nil)
+    super.init(navigationBarClass: NavigationBar.self, toolbarClass: Toolbar.self)
     modalPresentationStyle = .currentContext
     viewControllers = [rootViewController]
   }

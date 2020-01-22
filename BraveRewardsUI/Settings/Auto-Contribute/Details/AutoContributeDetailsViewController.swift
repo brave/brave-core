@@ -12,9 +12,8 @@ class AutoContributeDetailViewController: UIViewController {
   }
   
   // Just copy pasted this in, needs design specific for auto-contribute
-  private static let pageSize = 10
-  private var publishers: [PublisherInfo] = []
-  private var hasMoreContent = true
+  private var publishersCount: UInt = 0
+  private var excludedPublishersCount: UInt = 0
   private let state: RewardsState
   
   init(state: RewardsState) {
@@ -23,6 +22,15 @@ class AutoContributeDetailViewController: UIViewController {
     state.ledger.add(ledgerObserver)
     super.init(nibName: nil, bundle: nil)
     setupLedgerObservers()
+  }
+  
+  func setupLedgerObservers() {
+    ledgerObserver.excludedSitesChanged = { [weak self] _, _ in
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+        // TODO: Remove this delay after DB migration
+        self?.reloadData()
+      }
+    }
   }
   
   @available(*, unavailable)
@@ -40,93 +48,12 @@ class AutoContributeDetailViewController: UIViewController {
     contentView.tableView.dataSource = self
     
     title = Strings.autoContribute
-    
-    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(tappedEditButton))
-    
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    
     reloadData()
-  }
-  
-  func reloadData() {
-    loadPublishers(start: 0) {[weak self] publishersList in
-      guard let self = self else { return }
-      self.publishers = publishersList
-      self.hasMoreContent = publishersList.count == AutoContributeDetailViewController.pageSize
-      self.contentView.tableView.reloadData()
-      if !self.contentView.tableView.isEditing {
-        self.navigationItem.rightBarButtonItem?.isEnabled = !self.publishers.isEmpty
-      }
-    }
-  }
-  
-  private func loadPublishers(start: Int, limit: Int = AutoContributeDetailViewController.pageSize, completion: @escaping ([PublisherInfo]) -> Void) {
-    let sort = ActivityInfoFilterOrderPair().then {
-      $0.propertyName = "percent"
-      $0.ascending = false
-    }
-    let filter = ActivityInfoFilter().then {
-      $0.id = ""
-      $0.excluded = .filterAllExceptExcluded
-      $0.percent = 1 //exclude 0% sites.
-      $0.orderBy = [sort]
-      $0.nonVerified = state.ledger.allowUnverifiedPublishers
-      $0.reconcileStamp = state.ledger.autoContributeProps.reconcileStamp
-    }
-    
-    state.ledger.listActivityInfo(fromStart: UInt32(start), limit: UInt32(limit), filter: filter) { publishersList in
-      completion(publishersList)
-    }
-  }
-  
-  private func totalSitesAttributedString(from total: Int) -> NSAttributedString {
-    let format = String(format: Strings.totalSites, total)
-    let s = NSMutableAttributedString(string: format)
-    guard let range = format.range(of: String(total)) else { return s }
-    s.addAttribute(.font, value: UIFont.systemFont(ofSize: 14.0, weight: .semibold), range: NSRange(range, in: format))
-    return s
-  }
-  
-  private let headerView = TableHeaderRowView(
-    columns: [
-      TableHeaderRowView.Column(
-        title: Strings.site.uppercased(),
-        width: .percentage(0.7)
-      ),
-      TableHeaderRowView.Column(
-        title: Strings.attention.uppercased(),
-        width: .percentage(0.3),
-        align: .right
-      ),
-    ],
-    tintColor: BraveUX.autoContributeTintColor
-  )
-  
-  enum SummaryRows: Int, CaseIterable {
-    case settings
-    case monthlyPayment
-    case nextContribution
-    case supportedSites
-    case excludedSites
-    
-    func dequeuedCell(from tableView: UITableView, indexPath: IndexPath) -> TableViewCell {
-      switch self {
-      case .monthlyPayment, .supportedSites:
-        return tableView.dequeueReusableCell(for: indexPath) as Value1TableViewCell
-      case .nextContribution, .settings, .excludedSites:
-        return tableView.dequeueReusableCell(for: indexPath) as TableViewCell
-      }
-    }
-    
-    static func numberOfRows(_ isExcludingSites: Bool) -> Int {
-      var cases = Set<SummaryRows>(SummaryRows.allCases)
-      if !isExcludingSites {
-        cases.remove(.excludedSites)
-      }
-      return cases.count
-    }
   }
   
   private var nextContributionDateView: LabelAccessoryView {
@@ -140,37 +67,88 @@ class AutoContributeDetailViewController: UIViewController {
     return view
   }
   
-  // MARK: - Actions
-  
-  @objc private func tappedEditButton() {
-    contentView.tableView.setEditing(true, animated: true)
-    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(tappedDoneButton))
-  }
-  
-  @objc private func tappedDoneButton() {
-    contentView.tableView.setEditing(false, animated: true)
-    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(tappedEditButton))
-    navigationItem.rightBarButtonItem?.isEnabled = !self.publishers.isEmpty
+  private func reloadData() {
+    let filter = state.ledger.supportedPublishersFilter
+    state.ledger.listActivityInfo(fromStart: 0, limit: 0, filter: filter) { pubs in
+      self.publishersCount = UInt(pubs.count)
+      self.contentView.tableView.reloadData()
+    }
+    excludedPublishersCount = state.ledger.numberOfExcludedPublishers
+    contentView.tableView.reloadData()
   }
 }
 
 extension AutoContributeDetailViewController: UITableViewDataSource, UITableViewDelegate {
   private enum Section: Int, CaseIterable {
     case summary
-    case contributions
+    case sites
+    case settings
+  }
+  
+  private enum SummaryRows: Int, CaseIterable {
+    case monthlyPayment
+    case nextContribution
+    
+    func dequeuedCell(from tableView: UITableView, indexPath: IndexPath) -> TableViewCell {
+      switch self {
+      case .monthlyPayment:
+        return tableView.dequeueReusableCell(for: indexPath) as Value1TableViewCell
+      case .nextContribution:
+        return tableView.dequeueReusableCell(for: indexPath) as TableViewCell
+      }
+    }
+  }
+  
+  private enum SitesRows: Int, CaseIterable {
+    case supportedSites
+    case excludedSites
+    
+    func dequeuedCell(from tableView: UITableView, indexPath: IndexPath) -> TableViewCell {
+      return tableView.dequeueReusableCell(for: indexPath) as Value1TableViewCell
+    }
+  }
+  
+  private enum SettingsRows: Int, CaseIterable {
+    case minimumLength
+    case minimumVisits
+    case allowUnverifiedContributions
+    case allowVideoContributions
+    
+    func dequeuedCell(from tableView: UITableView, indexPath: IndexPath) -> TableViewCell {
+      switch self {
+      case .minimumLength, .minimumVisits:
+        return tableView.dequeueReusableCell(for: indexPath) as Value1TableViewCell
+      default:
+        return tableView.dequeueReusableCell(for: indexPath) as TableViewCell
+      }
+    }
+    var accessoryType: UITableViewCell.AccessoryType {
+      switch self {
+      case .minimumLength, .minimumVisits:
+        return .disclosureIndicator
+      default:
+        return .none
+      }
+    }
+  }
+  
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    return CGFloat.leastNormalMagnitude
+  }
+  
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    return UIView()
   }
   
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
     
-    switch indexPath.section {
-    case Section.summary.rawValue:
-      switch indexPath.row {
-      case SummaryRows.settings.rawValue:
-        // Settings
-        let controller = AutoContributeSettingsViewController(ledger: state.ledger)
-        navigationController?.pushViewController(controller, animated: true)
-      case SummaryRows.monthlyPayment.rawValue:
+    guard let section = Section(rawValue: indexPath.section) else { return }
+    switch section {
+    case .summary:
+      guard let row = SummaryRows(rawValue: indexPath.row) else { return }
+      switch row {
+      case .monthlyPayment:
         // Monthly payment
         guard let wallet = state.ledger.walletInfo else { break }
         let monthlyPayment = state.ledger.contributionAmount
@@ -191,29 +169,53 @@ extension AutoContributeDetailViewController: UITableViewDataSource, UITableView
         }
         controller.title = Strings.autoContributeMonthlyPaymentTitle
         navigationController?.pushViewController(controller, animated: true)
-      case SummaryRows.excludedSites.rawValue:
-        let numberOfExcludedSites = state.ledger.numberOfExcludedPublishers
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        if let presenter = alert.popoverPresentationController, let cell = tableView.cellForRow(at: indexPath) {
-          presenter.sourceView = cell
-          presenter.sourceRect = cell.bounds
-          presenter.permittedArrowDirections = [.up, .down]
-        }
-        alert.addAction(UIAlertAction(title: String(format: Strings.autoContributeRestoreExcludedSites, numberOfExcludedSites), style: .default, handler: { _ in
-          self.state.ledger.restoreAllExcludedPublishers()
-        }))
-        alert.addAction(UIAlertAction(title: Strings.cancel, style: .cancel, handler: nil))
-        present(alert, animated: true)
       default:
         break
       }
-    case Section.contributions.rawValue:
-      if !publishers.isEmpty, let url = URL(string: publishers[indexPath.row].url) {
-        state.delegate?.loadNewTabWithURL(url)
+    case .sites:
+      guard let row = SitesRows(rawValue: indexPath.row) else { return }
+      switch row {
+      case .supportedSites:
+        let supportedList = AutoContributeSupportedListController(state: state)
+        navigationController?.pushViewController(supportedList, animated: true)
+      case .excludedSites:
+        let exclusionList = AutoContributeExclusionListController(state: state)
+        navigationController?.pushViewController(exclusionList, animated: true)
       }
-      
-    default:
-      break
+    case .settings:
+      guard let row = SettingsRows(rawValue: indexPath.row) else { return }
+      switch row {
+      case .minimumLength:
+        let choices = BraveLedger.MinimumVisitDurationOptions.allCases.map { $0.rawValue }
+        let selectedIndex = choices.firstIndex(of: state.ledger.minimumVisitDuration) ?? 0
+        let controller = OptionsSelectionViewController(
+          options: BraveLedger.MinimumVisitDurationOptions.allCases,
+          selectedOptionIndex: selectedIndex) { [weak self] (selectedIndex) in
+            guard let self = self else { return }
+            if selectedIndex < choices.count {
+              self.state.ledger.minimumVisitDuration = choices[selectedIndex]
+            }
+            self.navigationController?.popViewController(animated: true)
+        }
+        controller.title = Strings.autoContributeMinimumLength
+        navigationController?.pushViewController(controller, animated: true)
+      case .minimumVisits:
+        let choices = BraveLedger.MinimumVisitsOptions.allCases.map { $0.rawValue }
+        let selectedIndex = choices.firstIndex(of: state.ledger.minimumNumberOfVisits) ?? 0
+        let controller = OptionsSelectionViewController(
+          options: BraveLedger.MinimumVisitsOptions.allCases,
+          selectedOptionIndex: selectedIndex) { [weak self] (selectedIndex) in
+            guard let self = self else { return }
+            if selectedIndex < choices.count {
+              self.state.ledger.minimumNumberOfVisits = choices[selectedIndex]
+            }
+            self.navigationController?.popViewController(animated: true)
+        }
+        controller.title = Strings.autoContributeMinimumVisits
+        navigationController?.pushViewController(controller, animated: true)
+      default:
+        break
+      }
     }
   }
   
@@ -221,49 +223,15 @@ extension AutoContributeDetailViewController: UITableViewDataSource, UITableView
     return Section.allCases.count
   }
   
-  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    guard let typedSection = Section(rawValue: section), typedSection == .contributions else { return nil }
-    return headerView
-  }
-  
-  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    guard let typedSection = Section(rawValue: section), typedSection == .contributions else { return 0.0 }
-    return headerView.systemLayoutSizeFitting(
-      CGSize(width: tableView.bounds.width, height: tableView.bounds.height),
-      withHorizontalFittingPriority: .required,
-      verticalFittingPriority: .fittingSizeLevel
-    ).height
-  }
-  
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     guard let typedSection = Section(rawValue: section) else { return 0 }
     switch typedSection {
     case .summary:
-      let isExcludingSites = state.ledger.numberOfExcludedPublishers > 0
-      return SummaryRows.numberOfRows(isExcludingSites)
-    case .contributions:
-      return publishers.isEmpty ? 1 : publishers.count
-    }
-  }
-  
-  func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-    guard Section(rawValue: indexPath.section) == .contributions, !publishers.isEmpty else { return false }
-    return true
-  }
-  
-  func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-    guard Section(rawValue: indexPath.section) == .contributions, !publishers.isEmpty else { return .none }
-    return .delete
-  }
-  
-  func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
-    return Strings.exclude
-  }
-  
-  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-    guard Section(rawValue: indexPath.section) == .contributions else { return }
-    if let publisher = publishers[safe: indexPath.row] {
-      state.ledger.updatePublisherExclusionState(withId: publisher.id, state: .excluded)
+      return SummaryRows.allCases.count
+    case .sites:
+      return SitesRows.allCases.count
+    case .settings:
+      return SettingsRows.allCases.count
     }
   }
   
@@ -285,12 +253,6 @@ extension AutoContributeDetailViewController: UITableViewDataSource, UITableView
       cell.accessoryType = .none
       cell.selectionStyle = .none
       switch row {
-      case .settings:
-        cell.label.text = Strings.settings
-        cell.imageView?.image = UIImage(frameworkResourceNamed: "settings").alwaysTemplate
-        cell.imageView?.tintColor = BraveUX.autoContributeTintColor
-        cell.accessoryType = .disclosureIndicator
-        cell.selectionStyle = .default
       case .monthlyPayment:
         cell.label.text = Strings.autoContributeMonthlyPayment
         cell.accessoryType = .disclosureIndicator
@@ -302,59 +264,55 @@ extension AutoContributeDetailViewController: UITableViewDataSource, UITableView
       case .nextContribution:
         cell.label.text = Strings.autoContributeNextDate
         cell.accessoryView = nextContributionDateView
+      }
+      return cell
+    case .sites:
+      guard let row = SitesRows(rawValue: indexPath.row) else { return UITableViewCell() }
+      let cell = row.dequeuedCell(from: tableView, indexPath: indexPath)
+      cell.manualSeparators = []
+      cell.label.font = SettingsUX.bodyFont
+      cell.label.appearanceTextColor = .black
+      cell.label.numberOfLines = 0
+      cell.accessoryLabel?.appearanceTextColor = Colors.grey100
+      cell.accessoryLabel?.font = UIFont.monospacedDigitSystemFont(ofSize: 14.0, weight: .semibold)
+      cell.accessoryType = .disclosureIndicator
+      cell.selectionStyle = .default
+      switch row {
       case .supportedSites:
         cell.label.text = Strings.autoContributeSupportedSites
-        cell.accessoryLabel?.attributedText = totalSitesAttributedString(from: publishers.count)
+        cell.accessoryLabel?.text = "\(publishersCount)"
       case .excludedSites:
-        let numberOfExcludedSites = state.ledger.numberOfExcludedPublishers
-        cell.label.text = String(format: Strings.autoContributeRestoreExcludedSites, numberOfExcludedSites)
-        cell.label.appearanceTextColor = Colors.blurple400
-        cell.selectionStyle = .default
+        cell.label.text = Strings.exclusionListTitle
+        cell.accessoryLabel?.text = "\(excludedPublishersCount)"
       }
       return cell
-    case .contributions:
-      if publishers.isEmpty {
-        let cell = tableView.dequeueReusableCell(for: indexPath) as EmptyTableCell
-        cell.label.text = Strings.emptyAutoContribution
-        return cell
+    case .settings:
+      guard let row = SettingsRows(rawValue: indexPath.row) else { return UITableViewCell() }
+      let cell = row.dequeuedCell(from: tableView, indexPath: indexPath)
+      cell.manualSeparators = []
+      cell.label.font = SettingsUX.bodyFont
+      cell.label.numberOfLines = 0
+      cell.label.lineBreakMode = .byWordWrapping
+      cell.accessoryLabel?.appearanceTextColor = Colors.grey100
+      cell.accessoryLabel?.font = SettingsUX.bodyFont
+      cell.accessoryType = row.accessoryType
+      switch row {
+      case .minimumLength:
+        cell.label.text = Strings.autoContributeMinimumLengthMessage
+        cell.accessoryLabel?.text = BraveLedger.MinimumVisitDurationOptions(rawValue: state.ledger.minimumVisitDuration)?.displayString
+      case .minimumVisits:
+        cell.label.text = Strings.autoContributeMinimumVisitsMessage
+        cell.accessoryLabel?.text = BraveLedger.MinimumVisitsOptions(rawValue: state.ledger.minimumNumberOfVisits)?.displayString
+      case .allowUnverifiedContributions:
+        cell.label.text = Strings.autoContributeToUnverifiedSites
+        cell.accessoryView = contentView.allowUnverifiedContributionsSwitch
+        cell.selectionStyle = .none
+      case .allowVideoContributions:
+        cell.label.text = Strings.autoContributeToVideos
+        cell.accessoryView = contentView.allowVideoContributionsSwitch
+        cell.selectionStyle = .none
       }
-      guard let publisher = publishers[safe: indexPath.row] else {
-        assertionFailure("No Publisher found at index: \(indexPath.row)")
-        return UITableViewCell()
-      }
-      let cell = tableView.dequeueReusableCell(for: indexPath) as AutoContributeCell
-      cell.selectionStyle = .none
-      
-      if let url = URL(string: publisher.url) {
-        state.dataSource?.retrieveFavicon(for: url, faviconURL: URL(string: publisher.faviconUrl)) { data in
-          cell.siteImageView.image = data?.image ?? UIImage(frameworkResourceNamed: "defaultFavicon")
-          cell.siteImageView.backgroundColor = data?.backgroundColor
-        }
-      }
-      
-      cell.verifiedStatusImageView.isHidden = publisher.status == .notVerified
-      let provider = " \(publisher.provider.isEmpty ? "" : String(format: Strings.onProviderText, publisher.providerDisplayString))"
-      let attrName = NSMutableAttributedString(string: publisher.name).then {
-        $0.append(NSMutableAttributedString(string: provider, attributes: [.font: UIFont.boldSystemFont(ofSize: 14.0),
-                                                                           .foregroundColor: UIColor.gray]))
-      }
-      cell.siteNameLabel.attributedText = attrName
-      cell.attentionAmount = CGFloat(publisher.percent)
       return cell
-    }
-  }
-  
-  func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-    if indexPath.section == Section.contributions.rawValue,
-      hasMoreContent && indexPath.row == publishers.count - 2 {
-      
-      loadPublishers(start: publishers.count) {[weak self] publisherList in
-        guard let self = self else { return }
-        self.publishers.append(contentsOf: publisherList)
-        self.hasMoreContent = publisherList.count == AutoContributeDetailViewController.pageSize
-        // TODO: Animate this update
-        tableView.reloadData()
-      }
     }
   }
 }
@@ -362,6 +320,13 @@ extension AutoContributeDetailViewController: UITableViewDataSource, UITableView
 extension AutoContributeDetailViewController {
   class View: UIView {
     let tableView = UITableView(frame: .zero, style: .grouped)
+    let allowUnverifiedContributionsSwitch = UISwitch().then {
+      $0.onTintColor = BraveUX.braveOrange
+    }
+    
+    let allowVideoContributionsSwitch = UISwitch().then {
+      $0.onTintColor = BraveUX.braveOrange
+    }
     
     override init(frame: CGRect) {
       super.init(frame: frame)
@@ -371,7 +336,6 @@ extension AutoContributeDetailViewController {
       }
       tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNormalMagnitude))
       tableView.separatorInset = .zero
-      tableView.register(AutoContributeCell.self)
       tableView.register(TableViewCell.self)
       tableView.register(Value1TableViewCell.self)
       tableView.register(EmptyTableCell.self)
@@ -387,32 +351,6 @@ extension AutoContributeDetailViewController {
     @available(*, unavailable)
     required init(coder: NSCoder) {
       fatalError()
-    }
-  }
-}
-
-/// Ledger Observers
-extension AutoContributeDetailViewController {
-  func setupLedgerObservers() {
-    ledgerObserver.excludedSitesChanged = { [weak self] key, exclude -> Void in
-      guard let self = self, self.isViewLoaded else {
-        return
-      }
-      let tableView = self.contentView.tableView
-      switch exclude {
-      case .all:
-        tableView.reloadData()
-      case .excluded:
-        //The delay is to ensure the db is updated. This is just a fail safe.
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
-          self.loadPublishers(start: 0, limit: self.publishers.count, completion: { info in
-            self.publishers = info
-            tableView.reloadData()
-          })
-        })
-      default:
-        return
-      }
     }
   }
 }
