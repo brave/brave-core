@@ -10,12 +10,13 @@
   </outputs>
   <release seq="1">
     <structures>
-      <structure name="IDR_EXTENSIONS_BRAVE_ITEM_LIST_MORE_ITEMS_JS" file="brave_item_list_more_items.js" type="chrome_html" preprocess="true" />
-      <structure name="IDR_EXTENSIONS_BRAVE_ITEM_LIST_MORE_ITEMS_HTML" file="brave_item_list_more_items.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
       <!-- included in chromium_src/chrome/browser/ui/webui/print_preview/print_preview_ui.cc -->
       <structure name="IDR_BRAVE_PDF_VIEWPORT_JS" file="js_override/pdf/viewport.js" preprocess="true" type="chrome_html" />
     </structures>
     <includes>
+      <include name="IDR_EXTENSIONS_BRAVE_ITEM_LIST_MORE_ITEMS_JS"
+               file="${root_gen_dir}/brave/browser/resources/extensions/brave_item_list_more_items.js"
+               use_base_dir="false" type ="BINDATA" />
       <include name="IDR_EXTENSIONS_BRAVE_STAMP" file="brave_unpack.stamp" type="BINDATA" />
     </includes>
   </release>
