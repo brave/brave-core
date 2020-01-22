@@ -2002,4 +2002,29 @@ BATLedgerBridge(BOOL,
   // TODO please implement
 }
 
+- (void)getIncompleteContributions:(ledger::GetIncompleteContributionsCallback)callback
+{
+  // TODO please implement
+}
+
+- (void)getContributionInfo:(const std::string&)contribution_id callback:(ledger::GetContributionInfoCallback)callback
+{
+  // TODO please implement
+}
+
+- (void)updateContributionInfoStepAndCount:(const std::string&)contribution_id step:(const ledger::ContributionStep)step retry_count:(const int32_t)retry_count callback:(ledger::ResultCallback)callback
+{
+  // TODO please implement
+}
+
+- (void)updateContributionInfoContributedAmount:(const std::string&)contribution_id publisher_key:(const std::string&)publisher_key callback:(ledger::ResultCallback)callback
+{
+  // TODO please implement
+}
+
+- (void)reconcileStampReset
+{
+  // TODO please implement
+}
+
 @end

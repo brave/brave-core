@@ -251,6 +251,8 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnUnblindedTokensReady(
     brave_rewards::RewardsService* rewards_service) override;
 
+  void ReconcileStampReset() override;
+
   // RewardsNotificationsServiceObserver implementation
   void OnNotificationAdded(
       brave_rewards::RewardsNotificationService* rewards_notification_service,
@@ -1698,6 +1700,14 @@ void RewardsDOMHandler::OnUnblindedTokensReady(
   }
 
   web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.unblindedTokensReady");
+}
+
+void RewardsDOMHandler::ReconcileStampReset() {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.reconcileStampReset");
 }
 
 }  // namespace

@@ -38,6 +38,25 @@ class DatabaseContributionInfo: public DatabaseTable {
       const ledger::ActivityMonth month,
       const int year);
 
+  bool GetNotCompletedRecords(
+      sql::Database* db,
+      ledger::ContributionInfoList* list);
+
+  ledger::ContributionInfoPtr GetRecord(
+      sql::Database* db,
+      const std::string& contribution_id);
+
+  bool UpdateStepAndCount(
+      sql::Database* db,
+      const std::string& contribution_id,
+      const ledger::ContributionStep step,
+      const int32_t retry_count);
+
+  bool UpdateContributedAmount(
+      sql::Database* db,
+      const std::string& contribution_id,
+      const std::string& publisher_key);
+
  private:
   const char* table_name_ = "contribution_info";
   const int minimum_version_ = 2;

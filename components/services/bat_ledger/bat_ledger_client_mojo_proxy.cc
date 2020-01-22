@@ -1044,4 +1044,70 @@ void BatLedgerClientMojoProxy::UnblindedTokensReady() {
   bat_ledger_client_->UnblindedTokensReady();
 }
 
+void OnGetNotCompletedContributions(
+    ledger::GetIncompleteContributionsCallback callback,
+    ledger::ContributionInfoList list) {
+  callback(std::move(list));
+}
+
+void BatLedgerClientMojoProxy::GetIncompleteContributions(
+    ledger::GetIncompleteContributionsCallback callback) {
+  bat_ledger_client_->GetIncompleteContributions(
+      base::BindOnce(&OnGetNotCompletedContributions, std::move(callback)));
+}
+
+void OnGetContributionInfo(
+    ledger::GetContributionInfoCallback callback,
+    ledger::ContributionInfoPtr info) {
+  callback(std::move(info));
+}
+
+void BatLedgerClientMojoProxy::GetContributionInfo(
+    const std::string& contribution_id,
+    ledger::GetContributionInfoCallback callback) {
+  bat_ledger_client_->GetContributionInfo(
+      contribution_id,
+      base::BindOnce(&OnGetContributionInfo, std::move(callback)));
+}
+
+void OnUpdateContributionInfoStepAndCount(
+    ledger::ResultCallback callback,
+    const ledger::Result result) {
+  callback(result);
+}
+
+void BatLedgerClientMojoProxy::UpdateContributionInfoStepAndCount(
+    const std::string& contribution_id,
+    const ledger::ContributionStep step,
+    const int32_t retry_count,
+    ledger::ResultCallback callback) {
+  bat_ledger_client_->UpdateContributionInfoStepAndCount(
+      contribution_id,
+      step,
+      retry_count,
+      base::BindOnce(&OnUpdateContributionInfoStepAndCount,
+          std::move(callback)));
+}
+
+void OnUpdateContributionInfoContributedAmount(
+    ledger::ResultCallback callback,
+    const ledger::Result result) {
+  callback(result);
+}
+
+void BatLedgerClientMojoProxy::UpdateContributionInfoContributedAmount(
+    const std::string& contribution_id,
+    const std::string& publisher_key,
+    ledger::ResultCallback callback) {
+  bat_ledger_client_->UpdateContributionInfoContributedAmount(
+      contribution_id,
+      publisher_key,
+      base::BindOnce(&OnUpdateContributionInfoContributedAmount,
+          std::move(callback)));
+}
+
+void BatLedgerClientMojoProxy::ReconcileStampReset() {
+  bat_ledger_client_->ReconcileStampReset();
+}
+
 }  // namespace bat_ledger

@@ -119,8 +119,12 @@ bool DatabaseContributionInfoPublishers::InsertOrUpdate(
     return false;
   }
 
-  const std::string query = base::StringPrintf(
-    "INSERT OR REPLACE INTO %s "
+  const std::string query_delete = base::StringPrintf(
+    "DELETE FROM %s WHERE contribution_id = ? AND publisher_key = ?",
+    table_name_);
+
+  const std::string query_insert = base::StringPrintf(
+    "INSERT INTO %s "
     "(contribution_id, publisher_key, total_amount, contributed_amount) "
     "VALUES (?, ?, ?, ?)",
     table_name_);
@@ -131,14 +135,20 @@ bool DatabaseContributionInfoPublishers::InsertOrUpdate(
   }
 
   for (const auto& publisher : info->publishers) {
-    sql::Statement statement(
-      db->GetCachedStatement(SQL_FROM_HERE, query.c_str()));
+    sql::Statement statement_delete(
+        db->GetUniqueStatement(query_delete.c_str()));
 
-    statement.BindString(0, publisher->contribution_id);
-    statement.BindString(1, publisher->publisher_key);
-    statement.BindDouble(2, publisher->total_amount);
-    statement.BindDouble(3, publisher->contributed_amount);
-    statement.Run();
+    statement_delete.BindString(0, publisher->contribution_id);
+    statement_delete.BindString(1, publisher->publisher_key);
+    statement_delete.Run();
+
+    sql::Statement statement_insert(
+        db->GetUniqueStatement(query_insert.c_str()));
+    statement_insert.BindString(0, publisher->contribution_id);
+    statement_insert.BindString(1, publisher->publisher_key);
+    statement_insert.BindDouble(2, publisher->total_amount);
+    statement_insert.BindDouble(3, publisher->contributed_amount);
+    statement_insert.Run();
   }
 
   return transaction.Commit();
@@ -173,6 +183,32 @@ bool DatabaseContributionInfoPublishers::GetRecords(
   }
 
   return true;
+}
+
+bool DatabaseContributionInfoPublishers::UpdateContributedAmount(
+    sql::Database* db,
+    const std::string& contribution_id,
+    const std::string& publisher_key) {
+  DCHECK(db);
+  if (!db || contribution_id.empty() || publisher_key.empty()) {
+    return false;
+  }
+
+  const std::string query = base::StringPrintf(
+    "UPDATE %s SET contributed_amount="
+    "(SELECT total_amount WHERE contribution_id = ? AND publisher_key = ?) "
+    "WHERE contribution_id = ? AND publisher_key = ?;",
+    table_name_);
+
+  sql::Statement statement(
+      db->GetCachedStatement(SQL_FROM_HERE, query.c_str()));
+
+  statement.BindString(0, contribution_id);
+  statement.BindString(1, publisher_key);
+  statement.BindString(2, contribution_id);
+  statement.BindString(3, publisher_key);
+
+  return statement.Run();
 }
 
 }  // namespace brave_rewards

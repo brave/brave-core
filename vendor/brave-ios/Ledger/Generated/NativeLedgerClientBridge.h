@@ -90,5 +90,10 @@
 - (void)unblindedTokensReady;
 - (void)getAllPromotions:(ledger::GetAllPromotionsCallback)callback;
 - (void)deleteUnblindedTokensForPromotion:(const std::string&)promotion_id callback:(ledger::ResultCallback)callback;
+- (void)getIncompleteContributions:(ledger::GetIncompleteContributionsCallback)callback;
+- (void)getContributionInfo:(const std::string&)contribution_id callback:(ledger::GetContributionInfoCallback)callback;
+- (void)updateContributionInfoStepAndCount:(const std::string&)contribution_id step:(const ledger::ContributionStep)step retry_count:(const int32_t)retry_count callback:(ledger::ResultCallback)callback;
+- (void)updateContributionInfoContributedAmount:(const std::string&)contribution_id publisher_key:(const std::string&)publisher_key callback:(ledger::ResultCallback)callback;
+- (void)reconcileStampReset;
 
 @end
