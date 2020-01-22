@@ -116,4 +116,15 @@ extension String {
     public var capitalizeFirstLetter: String {
         return prefix(1).capitalized + dropFirst()
     }
+    
+    public func attributedText(stringToChange: String, font: UIFont, color: UIColor = .black) -> NSAttributedString {
+        let attributedString =
+            NSMutableAttributedString(string: self,
+                                      attributes: [NSAttributedString.Key.font: font,
+                                                   NSAttributedString.Key.foregroundColor: color])
+        let boldFontAttribute: [NSAttributedString.Key: Any] = [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: font.pointSize)]
+        let range = (self as NSString).range(of: stringToChange)
+        attributedString.addAttributes(boldFontAttribute, range: range)
+        return attributedString
+    }
 }

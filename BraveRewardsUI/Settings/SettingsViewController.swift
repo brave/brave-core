@@ -4,6 +4,7 @@
 
 import UIKit
 import BraveRewards
+import Shared
 
 class SettingsViewController: UIViewController {
   
@@ -134,6 +135,9 @@ class SettingsViewController: UIViewController {
   @objc private func adsToggleValueChanged() {
     state.ads.isEnabled = settingsView.adsSection.toggleSwitch.isOn
     updateVisualStateOfSections(animated: true)
+    // This is to notify BVC that ad setting was toggled.
+    // At the moment there is no ledger observer for ads status, must use notification.
+    NotificationCenter.default.post(name: .adsToggled, object: nil)
   }
   
   @objc private func autoContributeToggleValueChanged() {

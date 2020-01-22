@@ -35,6 +35,8 @@ public struct BraveUX {
     public static let greyI = UIColor(rgb: 0x484B4E)
     public static let greyJ = UIColor(rgb: 0x222326)
     
+    public static let blurple400 = UIColor(rgb: 0x4C54D2)
+    
     public static let braveButtonMessageInUrlBarColor = braveOrange
     public static let braveButtonMessageInUrlBarShowTime = 0.5
     public static let braveButtonMessageInUrlBarFadeTime = 0.7

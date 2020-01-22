@@ -9,13 +9,15 @@ import Storage
 import Deferred
 import Data
 import SnapKit
+import BraveRewards
 
 private let log = Logger.browserLogger
 
-protocol TopSitesDelegate: AnyObject {
+protocol FavoritesDelegate: AnyObject {
     func didSelect(input: String)
     func didTapDuckDuckGoCallout()
     func didTapShowMoreFavorites()
+    func openBrandedImageCallout(state: BrandedImageCalloutState?)
 }
 
 class FavoritesViewController: UIViewController, Themeable {
@@ -25,7 +27,7 @@ class FavoritesViewController: UIViewController, Themeable {
         static let searchEngineCalloutPadding: CGFloat = 120.0
     }
     
-    weak var delegate: TopSitesDelegate?
+    weak var delegate: FavoritesDelegate?
     
     // MARK: - Favorites collection view properties
     private (set) internal lazy var collection: UICollectionView = {
@@ -134,9 +136,26 @@ class FavoritesViewController: UIViewController, Themeable {
     
     private let profile: Profile
     
-    init(profile: Profile, dataSource: FavoritesDataSource = FavoritesDataSource()) {
+    /// Whether the view was called from tapping on address bar or not.
+    private let fromOverlay: Bool
+    
+    /// Different types of notifications can be presented to users.
+    enum NTPNotificationType {
+        /// Notification to inform the user about branded images program.
+        case brandedImages(state: BrandedImageCalloutState)
+        /// Informs the user that there is a grant that can be claimed.
+        case claimRewards
+    }
+    
+    private var ntpNotificationShowing = false
+    private var rewards: BraveRewards?
+    
+    init(profile: Profile, dataSource: FavoritesDataSource = FavoritesDataSource(), fromOverlay: Bool,
+         rewards: BraveRewards?) {
         self.profile = profile
         self.dataSource = dataSource
+        self.fromOverlay = fromOverlay
+        self.rewards = rewards
         
         super.init(nibName: nil, bundle: nil)
         NotificationCenter.default.do {
@@ -161,6 +180,9 @@ class FavoritesViewController: UIViewController, Themeable {
             $0.removeObserver(self, name: .topSitesConversion, object: nil)
             $0.removeObserver(self, name: .privacyModeChanged, object: nil)
         }
+        
+        // Navigating away from NTP counts the current notification as showed.
+        Preferences.NewTabPage.brandedImageShowed.value = true
     }
     
     override func viewDidLoad() {
@@ -213,6 +235,89 @@ class FavoritesViewController: UIViewController, Themeable {
             self?.updateDuckDuckGoButtonLayout()
         }
         updateDuckDuckGoVisibility()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        guard let notificationType = ntpNotificationToShow else {
+            return
+        }
+        
+        showNTPNotification(for: notificationType)
+    }
+    
+    /// Returns nil if not applicable or no notification should be shown.
+    private var ntpNotificationToShow: FavoritesViewController.NTPNotificationType? {
+        if fromOverlay || PrivateBrowsingManager.shared.isPrivateBrowsing || ntpNotificationShowing {
+            return nil
+        }
+        
+        guard let rewards = (UIApplication.shared.delegate as? AppDelegate)?
+            .browserViewController.rewards else { return nil }
+        
+        let rewardsEnabled = rewards.ledger.isEnabled
+        let adsEnabled = rewards.ads.isEnabled
+        
+        let showClaimRewards = Preferences.NewTabPage.attemptToShowClaimRewardsNotification.value
+            && rewardsEnabled
+            && rewards.ledger.pendingPromotions.first?.type == .ads
+        
+        if showClaimRewards { return .claimRewards }
+        
+        let adsAvailableInRegion = BraveAds.isCurrentLocaleSupported()
+        
+        // Don't show notifications if background images are disabled.
+        guard let bgImageInfo = backgroundImage.info else { return nil }
+        
+        let state = BrandedImageCalloutState
+            .getState(rewardsEnabled: rewardsEnabled,
+                      adsEnabled: adsEnabled,
+                      adsAvailableInRegion: adsAvailableInRegion,
+                      isSponsoredImage: bgImageInfo.isSponsored)
+        
+        return .brandedImages(state: state)
+    }
+    
+    private func showNTPNotification(for type: NTPNotificationType) {
+        var vc: UIViewController?
+        
+        guard let rewards = rewards else { return }
+        
+        switch type {
+        case .brandedImages(let state):
+            guard let notificationVC = NTPNotificationViewController(state: state, rewards: rewards) else { return }
+            
+            notificationVC.closeHandler = { [weak self] in
+                self?.ntpNotificationShowing = false
+            }
+            
+            notificationVC.learnMoreHandler = { [weak self] in
+                self?.delegate?.openBrandedImageCallout(state: state)
+            }
+            
+            vc = notificationVC
+        case .claimRewards:
+            if !Preferences.NewTabPage.attemptToShowClaimRewardsNotification.value { return }
+            
+            let claimRewardsVC = ClaimRewardsNTPNotificationViewController(rewards: rewards)
+            claimRewardsVC.closeHandler = { [weak self] in
+                Preferences.NewTabPage.attemptToShowClaimRewardsNotification.value = false
+                self?.ntpNotificationShowing = false
+            }
+            
+            vc = claimRewardsVC
+        }
+        
+        guard let viewController = vc else { return }
+
+        ntpNotificationShowing = true
+        addChild(viewController)
+        view.addSubview(viewController.view)
+        viewController.view.snp.remakeConstraints {
+            $0.right.left.equalToSuperview()
+            $0.bottom.equalTo(view)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

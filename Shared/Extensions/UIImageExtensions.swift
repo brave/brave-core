@@ -84,6 +84,14 @@ extension UIImage {
         
         return scaledImage
     }
+    
+    public func withAlpha(_ alpha: CGFloat) -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(size, false, scale)
+        draw(at: .zero, blendMode: .normal, alpha: alpha)
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage
+    }
 
     // TESTING ONLY: not for use in release/production code.
     // PNG comparison can return false negatives, be very careful using for non-equal comparison.
