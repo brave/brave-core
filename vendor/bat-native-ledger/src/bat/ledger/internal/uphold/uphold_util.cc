@@ -56,9 +56,17 @@ std::string GetVerifyUrl(const std::string& state) {
 
   return base::StringPrintf(
       "%s/authorize/%s"
-      "?scope=cards:read cards:write user:read transactions:read "
+      "?scope="
+      "accounts:read "
+      "accounts:write "
+      "cards:read "
+      "cards:write "
+      "user:read "
+      "transactions:deposit "
+      "transactions:read "
       "transactions:transfer:application "
-      "transactions:transfer:others&intention=kyc&"
+      "transactions:transfer:others"
+      "&intention=kyc&"
       "state=%s",
       url.c_str(),
       id.c_str(),
