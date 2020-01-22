@@ -34,10 +34,6 @@ source_set("ui") {
     "webui/webcompat_reporter_ui.h",
     "webui/brave_new_tab_message_handler.cc",
     "webui/brave_new_tab_message_handler.h",
-    "webui/new_tab_page/branded_wallpaper.cc",
-    "webui/new_tab_page/branded_wallpaper.h",
-    "webui/new_tab_page/new_tab_page_branded_view_counter.cc",
-    "webui/new_tab_page/new_tab_page_branded_view_counter.h",
     "webui/brave_new_tab_ui.cc",
     "webui/brave_new_tab_ui.h",
     "webui/brave_web_ui_controller_factory.cc",
@@ -253,12 +249,6 @@ source_set("ui") {
       "//brave/app:brave_generated_resources_grit",
       "//brave/browser:version_info",
       "//third_party/blink/public/common",
-    ]
-  }
-
-  if (enable_extensions) {
-    deps += [
-      "//brave/components/ntp_sponsored_images",
     ]
   }
 

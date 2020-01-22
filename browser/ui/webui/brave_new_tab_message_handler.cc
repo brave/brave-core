@@ -13,8 +13,8 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
-#include "brave/browser/ui/webui/new_tab_page/branded_wallpaper.h"
-#include "brave/browser/ui/webui/new_tab_page/new_tab_page_branded_view_counter.h" //  NOLINT
+#include "brave/browser/ntp_sponsored_images/branded_wallpaper.h"
+#include "brave/browser/ntp_sponsored_images/new_tab_page_branded_view_counter.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"

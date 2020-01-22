@@ -1,16 +1,16 @@
-// Copyright (c) 2019 The Brave Authors. All rights reserved.
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_UI_WEBUI_NEW_TAB_PAGE_NEW_TAB_PAGE_BRANDED_VIEW_COUNTER_H_
-#define BRAVE_BROWSER_UI_WEBUI_NEW_TAB_PAGE_NEW_TAB_PAGE_BRANDED_VIEW_COUNTER_H_
+#ifndef BRAVE_BROWSER_NTP_SPONSORED_IMAGES_NEW_TAB_PAGE_BRANDED_VIEW_COUNTER_H_
+#define BRAVE_BROWSER_NTP_SPONSORED_IMAGES_NEW_TAB_PAGE_BRANDED_VIEW_COUNTER_H_
 
 #include <memory>
 
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
-#include "brave/browser/ui/webui/new_tab_page/branded_wallpaper.h"
+#include "brave/browser/ntp_sponsored_images/branded_wallpaper.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/ntp_sponsored_images/ntp_sponsored_images_component_manager.h"
 
@@ -21,6 +21,7 @@ class NewTabPageBrandedViewCounter : public KeyedService,
                           public NTPSponsoredImagesComponentManager::Observer,
                           public brave_rewards::RewardsServiceObserver {
  public:
+  static void EnsureBrowserContextKeyedServiceFactoriesBuilt();
   static NewTabPageBrandedViewCounter* GetForProfile(Profile* profile);
 
   explicit NewTabPageBrandedViewCounter(Profile* profile);
@@ -74,4 +75,4 @@ class NewTabPageBrandedViewCounter : public KeyedService,
   DISALLOW_COPY_AND_ASSIGN(NewTabPageBrandedViewCounter);
 };
 
-#endif  // BRAVE_BROWSER_UI_WEBUI_NEW_TAB_PAGE_NEW_TAB_PAGE_BRANDED_VIEW_COUNTER_H_
+#endif  // BRAVE_BROWSER_NTP_SPONSORED_IMAGES_NEW_TAB_PAGE_BRANDED_VIEW_COUNTER_H_

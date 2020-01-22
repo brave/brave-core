@@ -12,13 +12,14 @@
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
+#include "brave/browser/ntp_sponsored_images/ntp_sponsored_images_service_factory.h"
+#include "brave/browser/ntp_sponsored_images/new_tab_page_branded_view_counter.h"
 
 #if BUILDFLAG(ENABLE_GREASELION)
 #include "brave/browser/greaselion/greaselion_service_factory.h"
 #endif
 
 #if !defined(OS_ANDROID)
-#include "brave/browser/ntp_sponsored_images/ntp_sponsored_images_service_factory.h"
 #include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
 #endif
 
@@ -34,10 +35,12 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #endif
   TorProfileServiceFactory::GetInstance();
   SearchEngineProviderServiceFactory::GetInstance();
+  NTPSponsoredImagesServiceFactory::GetInstance();
+  NewTabPageBrandedViewCounter::
+      EnsureBrowserContextKeyedServiceFactoriesBuilt();
 
 #if !defined(OS_ANDROID)
   BookmarkPrefsServiceFactory::GetInstance();
-  NTPSponsoredImagesServiceFactory::GetInstance();
 #endif
 }
 

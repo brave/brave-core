@@ -1,4 +1,4 @@
-// Copyright (c) 2019 The Brave Authors. All rights reserved.
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
@@ -10,7 +10,7 @@
 #include "base/no_destructor.h"
 #include "base/strings/stringprintf.h"
 #include "brave/browser/brave_browser_process_impl.h"
-#include "brave/browser/ui/webui/new_tab_page/new_tab_page_branded_view_counter.h" //  NOLINT
+#include "brave/browser/ntp_sponsored_images/new_tab_page_branded_view_counter.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
@@ -24,7 +24,7 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/common/url_constants.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
-#include "components/keyed_service/content/browser_context_keyed_service_factory.h" //  NOLINT
+#include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
@@ -112,6 +112,9 @@ class NewTabPageBrandedViewCounterFactory
     registry->RegisterBooleanPref(
         kNewTabPageShowBrandedBackgroundImage, true);
   }
+  bool ServiceIsCreatedWithBrowserContext() const override {
+    return true;
+  }
 
   DISALLOW_COPY_AND_ASSIGN(NewTabPageBrandedViewCounterFactory);
 };
@@ -119,6 +122,11 @@ class NewTabPageBrandedViewCounterFactory
 }  // namespace
 
 // static
+void  NewTabPageBrandedViewCounter::
+    EnsureBrowserContextKeyedServiceFactoriesBuilt() {
+  NewTabPageBrandedViewCounterFactory::GetInstance();
+}
+
 NewTabPageBrandedViewCounter* NewTabPageBrandedViewCounter::GetForProfile(
     Profile* profile) {
   return NewTabPageBrandedViewCounterFactory::GetForProfile(profile);

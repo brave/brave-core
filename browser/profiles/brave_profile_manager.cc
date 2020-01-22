@@ -15,6 +15,7 @@
 #include "brave/browser/tor/tor_profile_service.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
+#include "brave/browser/ntp_sponsored_images/new_tab_page_branded_view_counter.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/tor/pref_names.h"
 #include "brave/common/tor/tor_constants.h"
