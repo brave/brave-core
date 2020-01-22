@@ -8,13 +8,17 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_sync/bookmark_order_util.h"
 #include "brave/components/brave_sync/tools.h"
-#include "components/bookmarks/browser/bookmark_model.h"
+#include "components/bookmarks/browser/bookmark_node.h"
 
 namespace brave_sync {
 namespace {
 
-void SetOrder(bookmarks::BookmarkModel* model,
-              const bookmarks::BookmarkNode* node,
+// Get mutable node to prevent BookmarkMetaInfoChanged from being triggered
+bookmarks::BookmarkNode* AsMutable(const bookmarks::BookmarkNode* node) {
+  return const_cast<bookmarks::BookmarkNode*>(node);
+}
+
+void SetOrder(const bookmarks::BookmarkNode* node,
               const std::string& parent_order) {
   DCHECK(!parent_order.empty());
   int index = node->parent()->GetIndexOf(node);
@@ -37,74 +41,48 @@ void SetOrder(bookmarks::BookmarkModel* model,
 
   std::string order =
       brave_sync::GetOrder(prev_order, next_order, parent_order);
-  model->SetNodeMetaInfo(node, "order", order);
-}
-
-size_t GetIndexByOrder(const std::string& record_order) {
-  size_t index = 0;
-  size_t last_dot_index = record_order.rfind(".");
-  DCHECK(last_dot_index != std::string::npos);
-  std::string last_digit = record_order.substr(last_dot_index + 1);
-  bool result = base::StringToSizeT(last_digit, &index);
-  DCHECK(result);
-  DCHECK_GE(index, 1u);
-  --index;
-  return index;
+  AsMutable(node)->SetMetaInfo("order", order);
 }
 
 }  // namespace
 
-size_t GetIndexByCompareOrderStartFrom(const bookmarks::BookmarkNode* parent,
-                                       const bookmarks::BookmarkNode* src,
-                                       size_t index) {
-  std::string src_order;
-  src->GetMetaInfo("order", &src_order);
-  DCHECK(!src_order.empty());
-  bool use_order = true;  // If false use object_id
-  std::string src_object_id;
-  while (index < parent->children().size()) {
-    const bookmarks::BookmarkNode* node = parent->children()[index].get();
-    if (src->id() == node->id()) {
-      // We reached ourselves, no sense to go further, because we know all
-      // unsorted elements are in the end
-      return index;
-    }
-
-    if (use_order) {
-      std::string node_order;
-      node->GetMetaInfo("order", &node_order);
-      if (!node_order.empty() &&
-          brave_sync::CompareOrder(src_order, node_order)) {
-        return index;
-      }
-
-      if (src_order == node_order) {
-        use_order = false;
+size_t GetIndex(const bookmarks::BookmarkNode* parent,
+                const std::string& order,
+                const std::string& object_id) {
+  DCHECK(!order.empty());
+  DCHECK(!object_id.empty());
+  for (size_t i = 0; i < parent->children().size(); ++i) {
+    const bookmarks::BookmarkNode* child = parent->children()[i].get();
+    std::string child_order;
+    child->GetMetaInfo("order", &child_order);
+    if (!child_order.empty() &&
+        brave_sync::CompareOrder(order, child_order)) {
+      return i;
+    } else if (order == child_order) {
+      std::string child_object_id;
+      child->GetMetaInfo("object_id", &child_object_id);
+      if (object_id <= child_object_id) {
+        return i;
       }
     }
-
-    if (!use_order) {
-      if (src_object_id.empty()) {
-        src->GetMetaInfo("object_id", &src_object_id);
-      }
-
-      std::string node_object_id;
-      node->GetMetaInfo("object_id", &node_object_id);
-
-      if (src_object_id < node_object_id) {
-        return index;
-      }
-    }
-    ++index;
   }
-  return index;
+  return parent->children().size();
 }
 
-void AddBraveMetaInfo(const bookmarks::BookmarkNode* node,
-                      bookmarks::BookmarkModel* model) {
+size_t GetIndex(const bookmarks::BookmarkNode* parent,
+                const bookmarks::BookmarkNode* node) {
+  std::string order;
+  node->GetMetaInfo("order", &order);
+  std::string object_id;
+  node->GetMetaInfo("object_id", &object_id);
+
+  return GetIndex(parent, order, object_id);
+}
+
+void AddBraveMetaInfo(const bookmarks::BookmarkNode* node) {
   std::string parent_order;
   node->parent()->GetMetaInfo("order", &parent_order);
-  SetOrder(model, node, parent_order);
+  SetOrder(node, parent_order);
 
   std::string object_id;
   node->GetMetaInfo("object_id", &object_id);
@@ -112,42 +90,19 @@ void AddBraveMetaInfo(const bookmarks::BookmarkNode* node,
   if (object_id.empty()) {
     object_id = tools::GenerateObjectId();
   }
-  model->SetNodeMetaInfo(node, "object_id", object_id);
+  AsMutable(node)->SetMetaInfo("object_id", object_id);
 
   std::string parent_object_id;
   node->parent()->GetMetaInfo("object_id", &parent_object_id);
-  model->SetNodeMetaInfo(node, "parent_object_id", parent_object_id);
+  AsMutable(node)->SetMetaInfo("parent_object_id", parent_object_id);
 
   std::string sync_timestamp;
   node->GetMetaInfo("sync_timestamp", &sync_timestamp);
   if (sync_timestamp.empty()) {
     sync_timestamp = std::to_string(base::Time::Now().ToJsTime());
-    model->SetNodeMetaInfo(node, "sync_timestamp", sync_timestamp);
+    AsMutable(node)->SetMetaInfo("sync_timestamp", sync_timestamp);
   }
   DCHECK(!sync_timestamp.empty());
-}
-
-size_t GetIndex(const bookmarks::BookmarkNode* parent,
-                const bookmarks::BookmarkNode* src) {
-  DCHECK(parent);
-  DCHECK(src);
-  size_t index = 0;
-  std::string src_order;
-  src->GetMetaInfo("order", &src_order);
-  DCHECK(!src_order.empty());
-  index = GetIndexByOrder(src_order);
-  if (index < parent->children().size()) {
-    const bookmarks::BookmarkNode* node = parent->children()[index].get();
-    if (node) {
-      std::string node_order;
-      node->GetMetaInfo("order", &node_order);
-
-      DCHECK(!node_order.empty());
-      if (CompareOrder(node_order, src_order))
-        return index + 1;
-    }
-  }
-  return index;
 }
 
 }  // namespace brave_sync
