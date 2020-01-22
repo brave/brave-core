@@ -24,6 +24,8 @@ const char kSurveyorIdKey[] = "surveyorId";
 const char kSurveyorIdsKey[] = "surveyorIds";
 const char kViewingIdKey[] = "viewingId";
 const char kVoteCountKey[] = "votes";
+const char kProbiKey[] = "probi";
+const char kPaymentTimestampKey[] = "paymentStamp";
 
 }  // namespace
 
@@ -80,7 +82,7 @@ bool TransactionState::FromJsonResponse(
 
   // Contribution Probi
   const auto* contribution_probi =
-      dictionary->FindStringKey(kContributionProbiKey);
+      dictionary->FindStringKey(kProbiKey);
   if (!contribution_probi) {
     NOTREACHED();
     return false;
@@ -88,13 +90,14 @@ bool TransactionState::FromJsonResponse(
   transaction_properties.contribution_probi = *contribution_probi;
 
   // Submission Timestamp
-  const auto* submission_timestamp =
-      dictionary->FindStringKey(kSubmissionTimestampKey);
+  const auto submission_timestamp =
+      dictionary->FindDoubleKey(kPaymentTimestampKey);
   if (!submission_timestamp) {
     NOTREACHED();
     return false;
   }
-  transaction_properties.submission_timestamp = *submission_timestamp;
+  transaction_properties.submission_timestamp =
+      std::to_string(static_cast<uint64_t>(*submission_timestamp));
 
   *properties = transaction_properties;
 
