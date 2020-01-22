@@ -137,10 +137,19 @@ class Contribution {
 
   // Does final stage in contribution
   // Sets reports and contribution info
+  // DEPRECATED
   void ReconcileSuccess(
       const std::string& viewing_id,
       const double amount,
       const bool delete_reconcile);
+
+  // Does final stage in contribution
+  // Sets reports and contribution info
+  void ContributionCompleted(
+      const std::string& contribution_id,
+      const ledger::RewardsType type,
+      const double amount,
+      const ledger::Result result);
 
   void HasSufficientBalance(
     ledger::HasSufficientBalanceToReconcileCallback callback);
@@ -154,10 +163,16 @@ class Contribution {
 
   void SetTimer(uint32_t* timer_id, uint64_t start_timer_in = 0);
 
+  // DEPRECATED
   void AddRetry(
     ledger::ContributionRetry step,
     const std::string& viewing_id,
     ledger::CurrentReconcileProperties reconcile = {});
+
+  void UpdateContributionStepAndCount(
+      const std::string& contribution_id,
+      const ledger::ContributionStep step,
+      const int32_t retry_count);
 
   // Resets reconcile stamps
   void ResetReconcileStamp();
@@ -204,13 +219,18 @@ class Contribution {
       const ledger::Result result,
       ledger::BalancePtr info);
 
+  // DEPRECATED
   uint64_t GetRetryTimer(ledger::ContributionRetry step,
                          const std::string& viewing_id,
                          ledger::CurrentReconcileProperties* reconcile);
 
+  // DEPRECATED
   int GetRetryPhase(ledger::ContributionRetry step);
 
+  // DEPRECATED
   void DoRetry(const std::string& viewing_id);
+
+  void CheckStep(const std::string& contribution_id);
 
   void OnHasSufficientBalance(
       const ledger::PublisherInfoList& publisher_list,

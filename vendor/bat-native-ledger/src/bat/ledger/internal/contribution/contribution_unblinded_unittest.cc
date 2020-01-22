@@ -16,6 +16,10 @@
 using ::testing::_;
 using ::testing::Invoke;
 
+namespace {
+  const char contribution_id[] = "60770beb-3cfb-4550-a5db-deccafb5c790";
+}  // namespace
+
 namespace braveledger_contribution {
 
 class UnblindedTest : public ::testing::Test {
@@ -35,44 +39,48 @@ class UnblindedTest : public ::testing::Test {
   }
 
   void SetUp() override {
-    ON_CALL(*mock_ledger_impl_, GetReconcileById(_))
-      .WillByDefault(
-        Invoke([](const std::string& viewing_id) {
-          ledger::CurrentReconcileProperties reconcile;
-          reconcile.fee = 1.0;
-          return reconcile;
-        }));
+    ON_CALL(*mock_ledger_impl_, GetContributionInfo(contribution_id, _))
+    .WillByDefault(
+      Invoke([](
+          const std::string& id,
+          ledger::GetContributionInfoCallback callback) {
+        auto info = ledger::ContributionInfo::New();
+        info->contribution_id = contribution_id;
+        info->amount = 5.0;
+        info->type = ledger::RewardsType::ONE_TIME_TIP;
+        info->step = ledger::ContributionStep::STEP_NO;
+        info->retry_count = -1;
+
+        callback(std::move(info));
+      }));
   }
 };
 
 TEST_F(UnblindedTest, NotEnoughFunds) {
-  const std::string viewing_id = "some_id";
   EXPECT_CALL(*mock_ledger_impl_,
-      ReconcileComplete(ledger::Result::NOT_ENOUGH_FUNDS, _, _, _, _));
+      ContributionCompleted(ledger::Result::NOT_ENOUGH_FUNDS, _, _, _));
 
   ON_CALL(*mock_ledger_impl_, GetAllUnblindedTokens(_))
     .WillByDefault(
       Invoke([](ledger::GetAllUnblindedTokensCallback callback) {
         ledger::UnblindedTokenList list;
 
-          auto info = ledger::UnblindedToken::New();
-          info->id = 1;
-          info->token_value = "asdfasdfasdfsad=";
-          info->value = 0.25;
-          info->expires_at = 32574133178;
-          list.push_back(info->Clone());
+        auto info = ledger::UnblindedToken::New();
+        info->id = 1;
+        info->token_value = "asdfasdfasdfsad=";
+        info->value = 2;
+        info->expires_at = 1574133178;
+        list.push_back(info->Clone());
 
         callback(std::move(list));
       }));
 
-  unblinded_->Start(viewing_id);
+  unblinded_->Start(contribution_id);
 }
 
 TEST_F(UnblindedTest, PromotionExpiredDeleteToken) {
-  const std::string viewing_id = "some_id";
   EXPECT_CALL(*mock_ledger_impl_,
-      ReconcileComplete(ledger::Result::NOT_ENOUGH_FUNDS, _, _, _, _))
-      .Times(0);
+      ContributionCompleted(ledger::Result::LEDGER_OK, _, _, _));
 
   std::vector<std::string> delete_list;
   delete_list.push_back("1");
@@ -109,13 +117,12 @@ TEST_F(UnblindedTest, PromotionExpiredDeleteToken) {
           callback(std::move(list));
         }));
 
-  unblinded_->Start(viewing_id);
+  unblinded_->Start(contribution_id);
 }
 
 TEST_F(UnblindedTest, PromotionExpiredDeleteTokensNotEnoughFunds) {
-  const std::string viewing_id = "some_id";
   EXPECT_CALL(*mock_ledger_impl_,
-      ReconcileComplete(ledger::Result::NOT_ENOUGH_FUNDS, _, _, _, _));
+      ContributionCompleted(ledger::Result::NOT_ENOUGH_FUNDS, _, _, _));
 
   std::vector<std::string> delete_list;
   delete_list.push_back("1");
@@ -140,7 +147,7 @@ TEST_F(UnblindedTest, PromotionExpiredDeleteTokensNotEnoughFunds) {
           callback(std::move(list));
         }));
 
-  unblinded_->Start(viewing_id);
+  unblinded_->Start(contribution_id);
 }
 
 }  // namespace braveledger_contribution

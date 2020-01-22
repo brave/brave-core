@@ -194,6 +194,12 @@ class MockLedgerImpl : public LedgerImpl {
           const ledger::RewardsType,
           const bool));
 
+  MOCK_METHOD4(ContributionCompleted, void(
+      const ledger::Result,
+      const double,
+      const std::string&,
+      const ledger::RewardsType));
+
   MOCK_METHOD1(URIEncode, std::string(const std::string&));
 
   MOCK_METHOD5(SaveMediaVisit,
@@ -568,6 +574,10 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD2(DeleteUnblindedTokensForPromotion,
       void(const std::string& promotion_id, ledger::ResultCallback));
+
+  MOCK_METHOD2(GetContributionInfo, void(
+      const std::string& contribution_id,
+      ledger::GetContributionInfoCallback callback));
 };
 
 }  // namespace bat_ledger

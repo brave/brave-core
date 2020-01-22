@@ -242,6 +242,10 @@ window.cr.define('brave_rewards', function () {
     getActions().onMonthlyReport(properties)
   }
 
+  function reconcileStampReset () {
+    getActions().onReconcileStampReset()
+  }
+
   return {
     initialize,
     walletCreated,
@@ -286,7 +290,8 @@ window.cr.define('brave_rewards', function () {
     disconnectWallet,
     onlyAnonWallet,
     unblindedTokensReady,
-    monthlyReport
+    monthlyReport,
+    reconcileStampReset
   }
 })
 

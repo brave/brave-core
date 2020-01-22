@@ -323,3 +323,5 @@ export const onMonthlyReport = (properties: { result: number, month: number, yea
   year: properties.year,
   report: properties.report
 })
+
+export const onReconcileStampReset = () => action(types.ON_RECONCILE_STAMP_RESET)

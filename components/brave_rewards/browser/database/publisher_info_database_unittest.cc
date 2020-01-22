@@ -161,7 +161,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateContributionInfo) {
   info->contribution_id = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   info->amount = 5.0;
   info->type = ledger::RewardsType::AUTO_CONTRIBUTE;
-  info->step = -1;
+  info->step = ledger::ContributionStep::STEP_COMPLETED;
   info->retry_count = -1;
   info->created_at = base::Time::Now().ToJsTime();
 
@@ -179,7 +179,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateContributionInfo) {
   EXPECT_EQ(info_sql.ColumnString(0), info->contribution_id);
   EXPECT_EQ(info_sql.ColumnDouble(1), info->amount);
   EXPECT_EQ(info_sql.ColumnInt(2), static_cast<int>(info->type));
-  EXPECT_EQ(info_sql.ColumnInt(3), info->step);
+  EXPECT_EQ(info_sql.ColumnInt(3), static_cast<int>(info->step));
   EXPECT_EQ(info_sql.ColumnInt(4), info->retry_count);
   EXPECT_EQ(info_sql.ColumnInt64(5), static_cast<int64_t>(info->created_at));
 }

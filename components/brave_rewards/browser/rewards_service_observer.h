@@ -85,6 +85,7 @@ class RewardsServiceObserver : public base::CheckedObserver {
       const std::string& wallet_type) {}
   virtual void OnUnblindedTokensReady(
       brave_rewards::RewardsService* rewards_service) {}
+  virtual void ReconcileStampReset() {}
   // DO NOT ADD ANY MORE METHODS HERE UNLESS IT IS A BROADCAST NOTIFICATION
   // RewardsServiceObserver should not be used to return responses to the
   // caller. Method calls on RewardsService should use callbacks to return
