@@ -217,7 +217,6 @@
 		271DECFB234CC7EF009DAC37 /* TipsSummaryTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC88234CC7EF009DAC37 /* TipsSummaryTableCell.swift */; };
 		271DECFC234CC7EF009DAC37 /* SettingsTipsSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC89234CC7EF009DAC37 /* SettingsTipsSectionView.swift */; };
 		271DED01234CC7EF009DAC37 /* SettingsUX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC8F234CC7EF009DAC37 /* SettingsUX.swift */; };
-		271DED02234CC7EF009DAC37 /* AutoContributeSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC92234CC7EF009DAC37 /* AutoContributeSettingsViewController.swift */; };
 		271DED03234CC7EF009DAC37 /* AutoContributeDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC94234CC7EF009DAC37 /* AutoContributeDetailsViewController.swift */; };
 		271DED04234CC7EF009DAC37 /* AutoContributeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC95234CC7EF009DAC37 /* AutoContributeCell.swift */; };
 		271DED05234CC7EF009DAC37 /* SettingsAutoContributeSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC96234CC7EF009DAC37 /* SettingsAutoContributeSectionView.swift */; };
@@ -288,6 +287,9 @@
 		27A586E1214C0DDD000CAE3C /* PreferencesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A586E0214C0DDD000CAE3C /* PreferencesTest.swift */; };
 		27AC169323834175004BE19C /* MonthlyAdsGrantReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AC168F23833A16004BE19C /* MonthlyAdsGrantReminder.swift */; };
 		27AC169823834510004BE19C /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27AC169623834510004BE19C /* UserNotifications.framework */; };
+		27B0C7B523D24BAA00B9EA3D /* AutoContributeExclusionListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B0C7B323D24BAA00B9EA3D /* AutoContributeExclusionListController.swift */; };
+		27B0C7B823D2555C00B9EA3D /* ExclusionListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B0C7B623D2555C00B9EA3D /* ExclusionListCell.swift */; };
+		27B0C7BC23D604C500B9EA3D /* AutoContributeSupportedListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B0C7BA23D604C500B9EA3D /* AutoContributeSupportedListController.swift */; };
 		27B1E26D235E58190062E86F /* LocaleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B1E26C235E58190062E86F /* LocaleExtensions.swift */; };
 		27C461DE211B76500088A441 /* ShieldsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C461DD211B76500088A441 /* ShieldsView.swift */; };
 		27C46201211CD8D20088A441 /* DeferredTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A176323020CF2A6000126F25 /* DeferredTestUtils.swift */; };
@@ -1459,7 +1461,6 @@
 		271DEC88234CC7EF009DAC37 /* TipsSummaryTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TipsSummaryTableCell.swift; sourceTree = "<group>"; };
 		271DEC89234CC7EF009DAC37 /* SettingsTipsSectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTipsSectionView.swift; sourceTree = "<group>"; };
 		271DEC8F234CC7EF009DAC37 /* SettingsUX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsUX.swift; sourceTree = "<group>"; };
-		271DEC92234CC7EF009DAC37 /* AutoContributeSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoContributeSettingsViewController.swift; sourceTree = "<group>"; };
 		271DEC94234CC7EF009DAC37 /* AutoContributeDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoContributeDetailsViewController.swift; sourceTree = "<group>"; };
 		271DEC95234CC7EF009DAC37 /* AutoContributeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoContributeCell.swift; sourceTree = "<group>"; };
 		271DEC96234CC7EF009DAC37 /* SettingsAutoContributeSectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsAutoContributeSectionView.swift; sourceTree = "<group>"; };
@@ -1529,6 +1530,9 @@
 		27A586E0214C0DDD000CAE3C /* PreferencesTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesTest.swift; sourceTree = "<group>"; };
 		27AC168F23833A16004BE19C /* MonthlyAdsGrantReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyAdsGrantReminder.swift; sourceTree = "<group>"; };
 		27AC169623834510004BE19C /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
+		27B0C7B323D24BAA00B9EA3D /* AutoContributeExclusionListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoContributeExclusionListController.swift; sourceTree = "<group>"; };
+		27B0C7B623D2555C00B9EA3D /* ExclusionListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExclusionListCell.swift; sourceTree = "<group>"; };
+		27B0C7BA23D604C500B9EA3D /* AutoContributeSupportedListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoContributeSupportedListController.swift; sourceTree = "<group>"; };
 		27B1E26C235E58190062E86F /* LocaleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocaleExtensions.swift; sourceTree = "<group>"; };
 		27C461DD211B76500088A441 /* ShieldsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldsView.swift; sourceTree = "<group>"; };
 		27D114D32358FBBF00166534 /* BraveRewardsSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveRewardsSettingsViewController.swift; sourceTree = "<group>"; };
@@ -3155,26 +3159,18 @@
 		271DEC90234CC7EF009DAC37 /* Auto-Contribute */ = {
 			isa = PBXGroup;
 			children = (
-				271DEC91234CC7EF009DAC37 /* Settings */,
+				27B0C7B923D604B600B9EA3D /* Supported List */,
+				27B0C7B123D24B9400B9EA3D /* Exclusion List */,
 				271DEC93234CC7EF009DAC37 /* Details */,
 				271DEC96234CC7EF009DAC37 /* SettingsAutoContributeSectionView.swift */,
 			);
 			path = "Auto-Contribute";
 			sourceTree = "<group>";
 		};
-		271DEC91234CC7EF009DAC37 /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				271DEC92234CC7EF009DAC37 /* AutoContributeSettingsViewController.swift */,
-			);
-			path = Settings;
-			sourceTree = "<group>";
-		};
 		271DEC93234CC7EF009DAC37 /* Details */ = {
 			isa = PBXGroup;
 			children = (
 				271DEC94234CC7EF009DAC37 /* AutoContributeDetailsViewController.swift */,
-				271DEC95234CC7EF009DAC37 /* AutoContributeCell.swift */,
 			);
 			path = Details;
 			sourceTree = "<group>";
@@ -3270,6 +3266,24 @@
 				27AC168F23833A16004BE19C /* MonthlyAdsGrantReminder.swift */,
 			);
 			path = Rewards;
+			sourceTree = "<group>";
+		};
+		27B0C7B123D24B9400B9EA3D /* Exclusion List */ = {
+			isa = PBXGroup;
+			children = (
+				27B0C7B323D24BAA00B9EA3D /* AutoContributeExclusionListController.swift */,
+				27B0C7B623D2555C00B9EA3D /* ExclusionListCell.swift */,
+			);
+			path = "Exclusion List";
+			sourceTree = "<group>";
+		};
+		27B0C7B923D604B600B9EA3D /* Supported List */ = {
+			isa = PBXGroup;
+			children = (
+				27B0C7BA23D604C500B9EA3D /* AutoContributeSupportedListController.swift */,
+				271DEC95234CC7EF009DAC37 /* AutoContributeCell.swift */,
+			);
+			path = "Supported List";
 			sourceTree = "<group>";
 		};
 		27F443962135E11200296C58 /* BraveShareTo */ = {
@@ -5620,6 +5634,7 @@
 				271DED13234CC7EF009DAC37 /* LinkLabel.swift in Sources */,
 				271DED21234CC7EF009DAC37 /* BasicAnimationController.swift in Sources */,
 				271DED26234CC7EF009DAC37 /* BraveLedgerExtensions.swift in Sources */,
+				27B0C7BC23D604C500B9EA3D /* AutoContributeSupportedListController.swift in Sources */,
 				271DECD8234CC7EF009DAC37 /* TippingConfirmationView.swift in Sources */,
 				271DED22234CC7EF009DAC37 /* DismissButton.swift in Sources */,
 				271DED29234CC7EF009DAC37 /* PublisherInfoExtensions.swift in Sources */,
@@ -5649,7 +5664,6 @@
 				271DECC4234CC7EF009DAC37 /* PublisherAttentionView.swift in Sources */,
 				27253973236CE6B100D06EF1 /* GrantClaimedViewController.swift in Sources */,
 				271DED23234CC7EF009DAC37 /* UITableViewExtensions.swift in Sources */,
-				271DED02234CC7EF009DAC37 /* AutoContributeSettingsViewController.swift in Sources */,
 				271DECD1234CC7EF009DAC37 /* AdView.swift in Sources */,
 				271DECE9234CC7EF009DAC37 /* BATValue.swift in Sources */,
 				271DECCB234CC7EF009DAC37 /* CreateWalletViewController.swift in Sources */,
@@ -5710,6 +5724,7 @@
 				271DED1D234CC7EF009DAC37 /* Colors.swift in Sources */,
 				271DED24234CC7EF009DAC37 /* ArrayExtensions.swift in Sources */,
 				271DECD7234CC7EF009DAC37 /* TippingViewController.swift in Sources */,
+				27B0C7B823D2555C00B9EA3D /* ExclusionListCell.swift in Sources */,
 				271DECF5234CC7EF009DAC37 /* SettingsGrantSectionView.swift in Sources */,
 				271DECE2234CC7EF009DAC37 /* WalletViewController.swift in Sources */,
 				271DED1F234CC7EF009DAC37 /* FaviconData.swift in Sources */,
@@ -5718,6 +5733,7 @@
 				271DECE0234CC7EF009DAC37 /* WalletHeaderView.swift in Sources */,
 				271DECEE234CC7EF009DAC37 /* RewardsSummaryView.swift in Sources */,
 				271DECC7234CC7EF009DAC37 /* RewardsDisabledView.swift in Sources */,
+				27B0C7B523D24BAA00B9EA3D /* AutoContributeExclusionListController.swift in Sources */,
 				271DECE8234CC7EF009DAC37 /* RewardsNotificationViewBuilder.swift in Sources */,
 				271DECEB234CC7EF009DAC37 /* GrantsListViewController.swift in Sources */,
 				271DECE4234CC7EF009DAC37 /* WalletView.swift in Sources */,

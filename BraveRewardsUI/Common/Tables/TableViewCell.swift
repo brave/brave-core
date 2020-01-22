@@ -108,7 +108,7 @@ class TableViewCell: UITableViewCell, TableViewReusable {
         if accessoryType == .none {
           $0.trailing.equalToSuperview().inset(layoutMargins.right)
         } else {
-          $0.trailing.equalToSuperview()
+          $0.trailing.equalToSuperview().inset(6)
         }
         $0.centerY.equalToSuperview()
       }

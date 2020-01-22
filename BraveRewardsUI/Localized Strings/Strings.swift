@@ -290,5 +290,9 @@ internal extension Strings {
   static let userWalletNotificationWalletDisconnectedBody = NSLocalizedString("UserWalletNotificationWalletDisconnectedBody", bundle: .rewardsUI, value: "No worries. This can happen for a variety of security reasons. Reconnecting your wallet will solve this issue.", comment: "The message you receive when your user wallet is unreachable/disconnected")
   static let userWalletNotificationNowVerifiedTitle = NSLocalizedString("UserWalletNotificationNowVerifiedTitle", bundle: .rewardsUI, value: "Your wallet is verified!", comment: "The message you receive when your user wallet has been verified")
   static let userWalletNotificationNowVerifiedBody = NSLocalizedString("UserWalletNotificationNowVerifiedBody", bundle: .rewardsUI, value: "Congrats! Your %@ wallet was successfully verified and ready to add and withdraw funds.", comment: "The message you receive when your user wallet has been verified (%@ = The user wallet name, such as \"Uphold\")")
+  static let exclusionListTitle = NSLocalizedString("ExclusionListTitle", bundle: .rewardsUI, value: "Excluded sites", comment: "The title of the screen that shows a list of excluded sites for Auto-Contribute")
+  static let restoreAllSitesToolbarButtonTitle = NSLocalizedString("ExclusionListRestoreAllButton", bundle: .rewardsUI, value: "Restore All Sites", comment: "The button that restores all excluded publishers while on the Auto-Contribute excluson list")
+  static let restore = NSLocalizedString("ExclusionListRestore", bundle: .rewardsUI, value: "Restore", comment: "The swipe-to-delete title when restoring a single item in the Auto-Contribute exclusion list")
+  static let emptyExclusionList = NSLocalizedString("EmptyExclusionList", bundle: .rewardsUI, value: "No publishers excluded", comment: "The copy the user sees when they are viewing an empty Auto-Contribute exclusion list.")
 }
 

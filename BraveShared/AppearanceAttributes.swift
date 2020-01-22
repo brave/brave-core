@@ -63,6 +63,13 @@ public extension UINavigationBar {
     }
 }
 
+public extension UIToolbar {
+    @objc dynamic var appearanceBarTintColor: UIColor? {
+        get { return self.barTintColor }
+        set { self.barTintColor = newValue }
+    }
+}
+
 public extension UIButton {
     @objc dynamic var appearanceTextColor: UIColor! {
         get { return self.titleColor(for: .normal) }
