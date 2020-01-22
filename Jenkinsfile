@@ -9,11 +9,12 @@ pipeline {
     parameters {
         choice(name: "BUILD_TYPE", choices: ["Release", "Debug"], description: "")
         choice(name: "CHANNEL", choices: ["nightly", "dev", "beta", "release", "development"], description: "")
-        booleanParam(name: "OFFICIAL_BUILD", defaultValue: true, description: "")
+        string(name: "SLACK_BUILDS_CHANNEL", defaultValue: "#build-downloads-bot", description: "The Slack channel to send the list of artifact download links to. Leave blank to skip sending the message.")
         booleanParam(name: "SKIP_SIGNING", defaultValue: true, description: "")
         booleanParam(name: "WIPE_WORKSPACE", defaultValue: false, description: "")
         booleanParam(name: "SKIP_INIT", defaultValue: false, description: "")
         booleanParam(name: "DISABLE_SCCACHE", defaultValue: false, description: "")
+        booleanParam(name: "DCHECK_ALWAYS_ON", defaultValue: true, description: "")
         booleanParam(name: "DEBUG", defaultValue: false, description: "")
     }
     environment {
@@ -28,11 +29,12 @@ pipeline {
                 script {
                     BUILD_TYPE = params.BUILD_TYPE
                     CHANNEL = params.CHANNEL
-                    OFFICIAL_BUILD = params.OFFICIAL_BUILD
+                    SLACK_BUILDS_CHANNEL = params.SLACK_BUILDS_CHANNEL
                     SKIP_SIGNING = params.SKIP_SIGNING
                     WIPE_WORKSPACE = params.WIPE_WORKSPACE
                     SKIP_INIT = params.SKIP_INIT
                     DISABLE_SCCACHE = params.DISABLE_SCCACHE
+                    DCHECK_ALWAYS_ON = params.DCHECK_ALWAYS_ON
                     DEBUG = params.DEBUG
                     SKIP = false
                     BRANCH = env.BRANCH_NAME
@@ -188,11 +190,12 @@ def startBraveBrowserBuild() {
     params = [
         string(name: "BUILD_TYPE", value: BUILD_TYPE),
         string(name: "CHANNEL", value: CHANNEL),
-        booleanParam(name: "OFFICIAL_BUILD", value: OFFICIAL_BUILD),
+        string(name: "SLACK_BUILDS_CHANNEL", value: SLACK_BUILDS_CHANNEL),
         booleanParam(name: "SKIP_SIGNING", value: SKIP_SIGNING),
         booleanParam(name: "WIPE_WORKSPACE", value: WIPE_WORKSPACE),
         booleanParam(name: "SKIP_INIT", value: SKIP_INIT),
         booleanParam(name: "DISABLE_SCCACHE", value: DISABLE_SCCACHE),
+        booleanParam(name: "DCHECK_ALWAYS_ON", value: DCHECK_ALWAYS_ON),
         booleanParam(name: "DEBUG", value: DEBUG)
     ]
     currentBuild.result = build(job: "brave-browser-build-pr/" + refToBuild, parameters: params, propagate: false).result
