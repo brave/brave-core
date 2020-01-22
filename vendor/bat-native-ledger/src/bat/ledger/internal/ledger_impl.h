@@ -215,12 +215,19 @@ class LedgerImpl : public ledger::Ledger,
       const ledger::UrlMethod method,
       ledger::LoadURLCallback callback);
 
-  virtual void ReconcileComplete(
+  // DEPRECATED
+  void ReconcileComplete(
       const ledger::Result result,
       const double amount,
       const std::string& viewing_id,
       const ledger::RewardsType type,
       const bool delete_reconcile = true);
+
+  virtual void ContributionCompleted(
+      const ledger::Result result,
+      const double amount,
+      const std::string& contribution_id,
+      const ledger::RewardsType type);
 
   std::string URIEncode(const std::string& value) override;
 
@@ -271,7 +278,7 @@ class LedgerImpl : public ledger::Ledger,
       const ledger::ReportType type,
       const double amount);
 
-  virtual ledger::CurrentReconcileProperties GetReconcileById(
+  ledger::CurrentReconcileProperties GetReconcileById(
       const std::string& viewingId);
 
   void RemoveReconcileById(const std::string& viewingId);
@@ -608,6 +615,24 @@ class LedgerImpl : public ledger::Ledger,
       const ledger::ActivityMonth month,
       const int year,
       ledger::GetContributionReportCallback callback) override;
+
+  void GetIncompleteContributions(
+      ledger::GetIncompleteContributionsCallback callback);
+
+  virtual void GetContributionInfo(
+      const std::string& contribution_id,
+      ledger::GetContributionInfoCallback callback);
+
+  void UpdateContributionInfoStepAndCount(
+      const std::string& contribution_id,
+      const ledger::ContributionStep step,
+      const int32_t retry_count,
+      ledger::ResultCallback callback);
+
+  void UpdateContributionInfoContributedAmount(
+      const std::string& contribution_id,
+      const std::string& publisher_key,
+      ledger::ResultCallback callback);
 
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,

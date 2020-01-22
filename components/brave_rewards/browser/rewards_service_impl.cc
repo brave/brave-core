@@ -4574,4 +4574,139 @@ void RewardsServiceImpl::OnGetContributionReport(
   callback(std::move(list));
 }
 
+
+
+ledger::ContributionInfoList GetNotCompletedContributionsOnFileTaskRunner(
+    PublisherInfoDatabase* backend) {
+  DCHECK(backend);
+  if (!backend) {
+    return {};
+  }
+
+  ledger::ContributionInfoList list;
+  backend->GetIncompleteContributions(&list);
+  return list;
+}
+
+void RewardsServiceImpl::GetIncompleteContributions(
+    ledger::GetIncompleteContributionsCallback callback) {
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::BindOnce(&GetNotCompletedContributionsOnFileTaskRunner,
+        publisher_info_backend_.get()),
+    base::BindOnce(&RewardsServiceImpl::OnGetNotCompletedContributions,
+        AsWeakPtr(),
+        callback));
+}
+
+void RewardsServiceImpl::OnGetNotCompletedContributions(
+    ledger::GetIncompleteContributionsCallback callback,
+    ledger::ContributionInfoList list) {
+  callback(std::move(list));
+}
+
+ledger::ContributionInfoPtr GetContributionInfoOnFileTaskRunner(
+    PublisherInfoDatabase* backend,
+    const std::string& contribution_id) {
+  DCHECK(backend);
+  if (!backend) {
+    return {};
+  }
+
+  return backend->GetContributionInfo(contribution_id);
+}
+
+void RewardsServiceImpl::GetContributionInfo(
+    const std::string& contribution_id,
+    ledger::GetContributionInfoCallback callback) {
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::BindOnce(&GetContributionInfoOnFileTaskRunner,
+        publisher_info_backend_.get(),
+        contribution_id),
+    base::BindOnce(&RewardsServiceImpl::OnGetContributionInfo,
+        AsWeakPtr(),
+        callback));
+}
+
+void RewardsServiceImpl::OnGetContributionInfo(
+    ledger::GetContributionInfoCallback callback,
+    ledger::ContributionInfoPtr info) {
+  callback(std::move(info));
+}
+
+ledger::Result UpdateContributionInfoStepAndCountOnFileTaskRunner(
+    PublisherInfoDatabase* backend,
+    const std::string& contribution_id,
+    const ledger::ContributionStep step,
+    const int32_t retry_count) {
+  DCHECK(backend);
+  if (!backend) {
+    return {};
+  }
+
+  const bool success = backend->UpdateContributionInfoStepAndCount(
+      contribution_id,
+      step,
+      retry_count);
+  return success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR;
+}
+
+void RewardsServiceImpl::UpdateContributionInfoStepAndCount(
+    const std::string& contribution_id,
+    const ledger::ContributionStep step,
+    const int32_t retry_count,
+    ledger::ResultCallback callback) {
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::BindOnce(&UpdateContributionInfoStepAndCountOnFileTaskRunner,
+        publisher_info_backend_.get(),
+        contribution_id,
+        step,
+        retry_count),
+    base::BindOnce(&RewardsServiceImpl::OnResult,
+        AsWeakPtr(),
+        callback));
+}
+
+ledger::Result UpdateContributionInfoContributedAmountOnFileTaskRunner(
+    PublisherInfoDatabase* backend,
+    const std::string& contribution_id,
+    const std::string& publisher_key) {
+  DCHECK(backend);
+  if (!backend) {
+    return {};
+  }
+
+  const bool success = backend->UpdateContributionInfoContributedAmount(
+      contribution_id,
+      publisher_key);
+  return success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR;
+}
+
+void RewardsServiceImpl::UpdateContributionInfoContributedAmount(
+    const std::string& contribution_id,
+    const std::string& publisher_key,
+    ledger::ResultCallback callback) {
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::BindOnce(&UpdateContributionInfoContributedAmountOnFileTaskRunner,
+        publisher_info_backend_.get(),
+        contribution_id,
+        publisher_key),
+    base::BindOnce(&RewardsServiceImpl::OnResult,
+        AsWeakPtr(),
+        callback));
+}
+
+void RewardsServiceImpl::ReconcileStampReset() {
+  for (auto& observer : observers_) {
+    observer.ReconcileStampReset();
+  }
+}
+
 }  // namespace brave_rewards

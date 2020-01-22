@@ -36,6 +36,7 @@ using ClientInfoPtr = mojom::ClientInfoPtr;
 
 using ContributionInfo = mojom::ContributionInfo;
 using ContributionInfoPtr = mojom::ContributionInfoPtr;
+using ContributionInfoList = std::vector<ContributionInfoPtr>;
 
 using ContributionPublisher = mojom::ContributionPublisher;
 using ContributionPublisherPtr = mojom::ContributionPublisherPtr;
@@ -57,6 +58,8 @@ using ContributionQueuePublisherList =
     std::vector<ContributionQueuePublisherPtr>;
 
 using ContributionRetry = mojom::ContributionRetry;
+
+using ContributionStep = mojom::ContributionStep;
 
 using Environment = ledger::mojom::Environment;
 
