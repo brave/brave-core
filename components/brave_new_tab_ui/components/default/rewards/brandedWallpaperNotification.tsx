@@ -18,7 +18,7 @@ import { CloseStrokeIcon } from 'brave-ui/components/icons'
 import { getLocale, splitStringForTag } from '../../../../common/locale'
 
 interface NotificationProps {
-  onDismissNotification: (id: string) => void
+  onDismissNotification: () => void
   brandedWallpaperData?: NewTab.BrandedWallpaper
   isOrphan?: boolean
   onEnableAds?: () => void
@@ -27,13 +27,6 @@ interface NotificationProps {
 }
 
 export default class BrandedWallpaperRewardsNotification extends React.PureComponent<NotificationProps, {}> {
-
-  dismissNotification = () => {
-    const notificationType = this.props.onEnableAds
-      ? 'brandedWallpaperPreOptIn'
-      : 'brandedWallpaper'
-    this.props.onDismissNotification(notificationType)
-  }
 
   renderPostAdsOptInContent () {
     const text = getLocale('rewardsWidgetBrandedNotificationDescription')
@@ -91,7 +84,7 @@ export default class BrandedWallpaperRewardsNotification extends React.PureCompo
       <Wrapper
         style={styleVars}
       >
-        <CloseIcon onClick={this.dismissNotification}>
+        <CloseIcon onClick={this.props.onDismissNotification}>
           <CloseStrokeIcon />
         </CloseIcon>
           { this.props.onEnableAds

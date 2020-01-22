@@ -14,6 +14,8 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
+#include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/ntp_sponsored_images/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_sponsored_images/url_constants.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
@@ -23,6 +25,7 @@
 #include "content/public/common/url_constants.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h" //  NOLINT
+#include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 
@@ -81,9 +84,13 @@ class NewTabPageBrandedViewCounterFactory
     static base::NoDestructor<NewTabPageBrandedViewCounterFactory> instance;
     return instance.get();
   }
+
   NewTabPageBrandedViewCounterFactory() : BrowserContextKeyedServiceFactory(
         "NewTabPageBrandedViewCounter",
-        BrowserContextDependencyManager::GetInstance()) { }
+        BrowserContextDependencyManager::GetInstance()) {
+    DependsOn(brave_rewards::RewardsServiceFactory::GetInstance());
+    DependsOn(brave_ads::AdsServiceFactory::GetInstance());
+  }
   ~NewTabPageBrandedViewCounterFactory() override { }
 
  private:
@@ -92,14 +99,18 @@ class NewTabPageBrandedViewCounterFactory
       content::BrowserContext* browser_context) const override {
     NewTabPageBrandedViewCounter* instance = new NewTabPageBrandedViewCounter(
         Profile::FromBrowserContext(browser_context));
-    NTPSponsoredImagesComponentManager* manager =
-        g_brave_browser_process->ntp_sponsored_images_component_manager();
-    manager->AddObserver(instance);
     return instance;
   }
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override {
     return chrome::GetBrowserContextRedirectedInIncognito(context);
+  }
+  void RegisterProfilePrefs(
+    user_prefs::PrefRegistrySyncable* registry) override {
+    registry->RegisterBooleanPref(
+        kBrandedWallpaperNotificationDismissed, false);
+    registry->RegisterBooleanPref(
+        kNewTabPageShowBrandedBackgroundImage, true);
   }
 
   DISALLOW_COPY_AND_ASSIGN(NewTabPageBrandedViewCounterFactory);
@@ -124,16 +135,22 @@ NewTabPageBrandedViewCounter::NewTabPageBrandedViewCounter(Profile* profile)
     if (base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo)) {
       current_wallpaper_ = GetDemoWallpaper();
     } else {
+      NTPSponsoredImagesComponentManager* manager =
+          g_brave_browser_process->ntp_sponsored_images_component_manager();
+      manager->AddObserver(this);
       // Check if we have real data
-      const auto optional_data = g_brave_browser_process->
-          ntp_sponsored_images_component_manager()->
+      const auto optional_data = manager->
           GetLatestSponsoredImagesData();
       if (optional_data) {
         current_wallpaper_ = GetWallpaperFromData(*optional_data);
       }
     }
   }
-
+  // Allow notification dismissal pref to be reset when rewards status changes.
+  auto* rewards_service_ =
+      brave_rewards::RewardsServiceFactory::GetForProfile(profile);
+  if (rewards_service_)
+    rewards_service_->AddObserver(this);
   // Observe relevant preferences that affect whether we should show
   // wallpaper or count views.
   SetShouldShowFromPreferences();
@@ -155,6 +172,16 @@ NewTabPageBrandedViewCounter::NewTabPageBrandedViewCounter(Profile* profile)
 
 NewTabPageBrandedViewCounter::~NewTabPageBrandedViewCounter() { }
 
+void NewTabPageBrandedViewCounter::Shutdown() {
+  NTPSponsoredImagesComponentManager* manager =
+          g_brave_browser_process->ntp_sponsored_images_component_manager();
+  manager->RemoveObserver(this);
+  auto* rewards_service_ =
+      brave_rewards::RewardsServiceFactory::GetForProfile(profile_);
+  if (rewards_service_)
+    rewards_service_->RemoveObserver(this);
+}
+
 void NewTabPageBrandedViewCounter::OnUpdated(
     const NTPSponsoredImagesData& data) {
   // Do nothing with real data if we are in 'demo mode'.
@@ -165,6 +192,23 @@ void NewTabPageBrandedViewCounter::OnUpdated(
   // But keep view counter until branded content is seen.
   current_wallpaper_image_index_ = 0;
   current_wallpaper_ = GetWallpaperFromData(data);
+}
+
+void NewTabPageBrandedViewCounter::OnRewardsMainEnabled(
+    brave_rewards::RewardsService* rewards_service, bool rewards_main_enabled) {
+  // Reset notification state
+  ResetNotificationState();
+}
+
+void NewTabPageBrandedViewCounter::OnAdsEnabled(
+    brave_rewards::RewardsService* rewards_service, bool ads_enabled) {
+  // Reset notification state
+  ResetNotificationState();
+}
+
+void NewTabPageBrandedViewCounter::ResetNotificationState() {
+  auto* prefs = profile_->GetPrefs();
+  prefs->SetBoolean(kBrandedWallpaperNotificationDismissed, false);
 }
 
 void NewTabPageBrandedViewCounter::RegisterPageView() {

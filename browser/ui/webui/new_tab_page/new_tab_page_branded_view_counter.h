@@ -11,21 +11,20 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "brave/browser/ui/webui/new_tab_page/branded_wallpaper.h"
+#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/ntp_sponsored_images/ntp_sponsored_images_component_manager.h"
 
 class Profile;
 struct NTPSponsoredImagesData;
 
 class NewTabPageBrandedViewCounter : public KeyedService,
-                          public NTPSponsoredImagesComponentManager::Observer {
+                          public NTPSponsoredImagesComponentManager::Observer,
+                          public brave_rewards::RewardsServiceObserver {
  public:
   static NewTabPageBrandedViewCounter* GetForProfile(Profile* profile);
 
   explicit NewTabPageBrandedViewCounter(Profile* profile);
   ~NewTabPageBrandedViewCounter() override;
-
-  // NTPSponsoredImagesComponentManager::Observer
-  void OnUpdated(const NTPSponsoredImagesData& data) override;
 
   // Lets the counter know that a New Tab Page view has occured.
   // This should always be called as it will evaluate whether the user has
@@ -44,8 +43,23 @@ class NewTabPageBrandedViewCounter : public KeyedService,
   size_t GetWallpaperImageIndexToDisplay();
 
  private:
+  // brave_rewards::RewardsServiceObserver
+  void OnRewardsMainEnabled(
+    brave_rewards::RewardsService* rewards_service,
+    bool rewards_main_enabled) override;
+  void OnAdsEnabled(
+    brave_rewards::RewardsService* rewards_service,
+    bool ads_enabled) override;
+
+  // KeyedService
+  void Shutdown() override;
+
+  // NTPSponsoredImagesComponentManager::Observer
+  void OnUpdated(const NTPSponsoredImagesData& data) override;
+
   bool GetBrandedWallpaperFromDataSource();
   void SetShouldShowFromPreferences();
+  void ResetNotificationState();
 
   // TODO(petemill): Update this when the remote data source
   // receives new data.

@@ -180,7 +180,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // New Tab Page
   registry->RegisterBooleanPref(kNewTabPageShowBackgroundImage, true);
-  registry->RegisterBooleanPref(kNewTabPageShowBrandedBackgroundImage, true);
   registry->RegisterBooleanPref(kNewTabPageShowClock, true);
   registry->RegisterBooleanPref(kNewTabPageShowTopSites, true);
   registry->RegisterBooleanPref(kNewTabPageShowStats, true);

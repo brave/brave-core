@@ -64,8 +64,6 @@ declare namespace NewTab {
     showEmptyPage: boolean
     bookmarks: Record<string, Bookmark>
     rewardsState: RewardsWidgetState
-    dismissedBrandedWallpaperNotification: boolean
-    dismissedPreOptInBrandedWallpaperNotification: boolean
   }
 
   export interface EphemeralState {
@@ -85,6 +83,7 @@ declare namespace NewTab {
     showTopSites: boolean
     showRewards: boolean
     brandedWallpaperOptIn: boolean
+    isBrandedWallpaperNotificationDismissed: boolean
     stats: Stats,
     brandedWallpaperData?: BrandedWallpaper
   }

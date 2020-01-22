@@ -33,6 +33,7 @@ interface Props {
   saveShowStats: (value: boolean) => void
   saveShowRewards: (value: boolean) => void
   saveBrandedWallpaperOptIn: (value: boolean) => void
+  onDismissBrandedWallpaperNotification: () => void
 }
 
 interface State {
@@ -198,19 +199,10 @@ class NewTabPage extends React.Component<Props, State> {
     const {
       rewardsState,
       showRewards: rewardsWidgetOn,
-      dismissedBrandedWallpaperNotification,
-      dismissedPreOptInBrandedWallpaperNotification
+      isBrandedWallpaperNotificationDismissed
     } = newTabData
-    const {
-      enabledAds: adsOn,
-      enabledMain: rewardsOn
-    } = rewardsState
     const isShowingBrandedWallpaper = newTabData.brandedWallpaperData ? true : false
-    const shouldShowBrandedWallpaperNotification = isShowingBrandedWallpaper && (
-      (!adsOn || !rewardsOn)
-        ? !dismissedPreOptInBrandedWallpaperNotification
-        : !dismissedBrandedWallpaperNotification
-    )
+    const shouldShowBrandedWallpaperNotification = isShowingBrandedWallpaper && !isBrandedWallpaperNotificationDismissed
     const shouldShowRewardsWidget = rewardsWidgetOn || shouldShowBrandedWallpaperNotification
     return shouldShowRewardsWidget && (
       <S.GridItemRewards>
@@ -228,6 +220,7 @@ class NewTabPage extends React.Component<Props, State> {
           hideWidget={this.toggleShowRewards}
           isNotification={!rewardsWidgetOn}
           onDismissNotification={this.dismissNotification}
+          onDismissBrandedWallpaperNotification={this.props.onDismissBrandedWallpaperNotification}
           menuPosition={'left'}
         />
       </S.GridItemRewards>

@@ -39,6 +39,7 @@ interface State {
   walletCreating: boolean
   walletCreateFailed: boolean
   walletCorrupted: boolean,
+  isBrandedWallpaperNotificationDismissed: boolean
   brandedWallpaper?: NewTab.BrandedWallpaper
 }
 
@@ -74,7 +75,8 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
       walletCreated: false,
       walletCreating: false,
       walletCreateFailed: false,
-      walletCorrupted: false
+      walletCorrupted: false,
+      isBrandedWallpaperNotificationDismissed: false
     }
   }
 
@@ -124,6 +126,10 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
 
   hideSiteRemovalNotification = () => {
     this.setState({ showTopSitesNotification: false })
+  }
+
+  onDismissBrandedWallpaperNotification = () => {
+    this.setState({ isBrandedWallpaperNotificationDismissed: true })
   }
 
   createWallet = () => {
@@ -231,7 +237,7 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
             />
           </S.GridItemNotification>
           }
-          {(showRewards || showBrandedWallpaper) &&
+          {(showRewards || (showBrandedWallpaper && !this.state.isBrandedWallpaperNotificationDismissed)) &&
           <S.GridItemRewards>
             <Rewards
               adsSupported={true}
@@ -251,8 +257,9 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
               menuPosition={'left'}
               hideWidget={this.toggleShowRewards}
               onDismissNotification={this.doNothing}
+              onDismissBrandedWallpaperNotification={this.onDismissBrandedWallpaperNotification}
               totalContribution={totalContribution}
-              showBrandedWallpaperNotification={showBrandedWallpaper}
+              showBrandedWallpaperNotification={!this.state.isBrandedWallpaperNotificationDismissed}
               brandedWallpaperData={this.state.brandedWallpaper}
               isShowingBrandedWallpaper={showBrandedWallpaper}
               isNotification={!showRewards}
