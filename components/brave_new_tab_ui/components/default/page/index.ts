@@ -12,15 +12,35 @@ const singleColumnSmallViewport = css`
    text-align: center;
  }
 `
+interface PageProps {
+  showClock: boolean
+  showStats: boolean
+  showRewards: boolean
+  showTopSites: boolean
+  showBrandedWallpaper: boolean
+}
 
-export const Page = styled<{}, 'div'>('div')`
+function getItemRowCount (p: PageProps): number {
+  let right = (p.showClock ? 1 : 0) + (p.showRewards ? 2 : 0)
+  let left = (p.showStats ? 1 : 0) + (p.showTopSites ? 1 : 0)
+  // Has space for branded logo to sit next to something on right?
+  if (p.showBrandedWallpaper && left >= right) {
+    left++
+  }
+  return Math.max(left, right) + 1 // extra 1 for footer
+}
+
+export const Page = styled<PageProps, 'div'>('div')`
   /* Increase the explicit row count when adding new widgets
      so that the footer goes in the correct location always,
      yet can still merge upwards to previous rows. */
-  --ntp-page-rows: 4;
+  --ntp-item-row-count: ${getItemRowCount};
+  --ntp-extra-footer-rows: ${p => p.showBrandedWallpaper ? 1 : 0};
+  --ntp-space-rows: 0;
+  --ntp-page-rows: calc(var(--ntp-item-row-count) + var(--ntp-space-rows));
   --ntp-item-justify: start;
   @media screen and (max-width: ${breakpointLargeBlocks}) {
-    --ntp-page-rows: 5;
+    --ntp-space-rows: 1;
   }
   @media screen and (max-width: ${breakpointEveryBlock}) {
     --ntp-item-justify: center;
@@ -86,8 +106,9 @@ export const GridItemNotification = styled('section')`
 
 export const GridItemCredits = styled('section')`
   grid-column: 1 / span 1;
-  grid-row: -3;
-  grid-row-end: span 2;
+  grid-row: calc(-2 - var(--ntp-extra-footer-rows)) / span calc(1 + var(--ntp-extra-footer-rows));
+  /* grid-row: calc(-1 - var(--ntp-left-item-count));
+  grid-row-end: span calc(1 + var(--ntp-left-item-count)); */
   align-self: end;
   margin: 0 0 36px 36px;
   @media screen and (max-width: ${breakpointEveryBlock}) {
@@ -98,7 +119,7 @@ export const GridItemCredits = styled('section')`
 
 export const GridItemNavigation = styled('section')`
   grid-column: 3 / span 1;
-  grid-row-start: -2;
+  grid-row: -2 / span 1;
   align-self: end;
   margin: 0 24px 24px 0;
   @media screen and (max-width: ${breakpointEveryBlock}) {

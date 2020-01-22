@@ -237,7 +237,6 @@ class NewTabPage extends React.Component<Props, State> {
   render () {
     const { newTabData, actions } = this.props
     const { showSettingsMenu } = this.state
-    // const { rewardsState } = newTabData
 
     if (!newTabData) {
       return null
@@ -245,8 +244,8 @@ class NewTabPage extends React.Component<Props, State> {
 
     const hasImage = this.imageSource !== undefined
     const isShowingBrandedWallpaper = newTabData.brandedWallpaperData ? true : false
-
-
+    const showTopSites = !!this.props.newTabData.gridSites.length && newTabData.showTopSites
+    const rewardsContent = this.renderRewardsContent()
 
     return (
       <App dataIsReady={newTabData.initialDataLoaded}>
@@ -263,7 +262,13 @@ class NewTabPage extends React.Component<Props, State> {
             imageHasLoaded={this.state.backgroundHasLoaded}
           />
         }
-        <Page>
+        <Page
+            showClock={newTabData.showClock}
+            showStats={newTabData.showStats}
+            showRewards={!!rewardsContent}
+            showTopSites={showTopSites}
+            showBrandedWallpaper={isShowingBrandedWallpaper}
+        >
           {newTabData.showStats &&
           <S.GridItemStats>
             <Stats
@@ -283,7 +288,7 @@ class NewTabPage extends React.Component<Props, State> {
             />
           </S.GridItemClock>
           }
-          {this.props.newTabData.gridSites.length && newTabData.showTopSites &&
+          {showTopSites &&
           <S.GridItemTopSites><List
             blockNumber={this.props.newTabData.gridSites.length}
             textDirection={newTabData.textDirection}
@@ -318,7 +323,7 @@ class NewTabPage extends React.Component<Props, State> {
               </S.GridItemNotification>
             : null
           }
-            {this.renderRewardsContent()}
+            {rewardsContent}
           <Footer>
             {isShowingBrandedWallpaper && newTabData.brandedWallpaperData &&
              newTabData.brandedWallpaperData.logo &&

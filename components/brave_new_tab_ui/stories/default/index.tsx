@@ -186,7 +186,13 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
             imageHasLoaded={true}
           />
         }
-        <Page>
+        <Page
+          showClock={showClock}
+          showStats={showStats}
+          showRewards={showRewards || showBrandedWallpaper}
+          showTopSites={showTopSites}
+          showBrandedWallpaper={showBrandedWallpaper}
+        >
           {showStats &&
           <S.GridItemStats>
             <Stats
