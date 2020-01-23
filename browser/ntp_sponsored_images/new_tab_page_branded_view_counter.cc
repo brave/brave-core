@@ -16,13 +16,10 @@
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
-#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_data.h"
-#include "brave/components/ntp_sponsored_images/browser/url_constants.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_features.h"
 #include "content/public/browser/browser_context.h"
-#include "content/public/common/url_constants.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "components/pref_registry/pref_registry_syncable.h"
@@ -34,41 +31,17 @@ namespace {
 constexpr int kInitialCountToBrandedWallpaper = 1;
 constexpr int kRegularCountToBrandedWallpaper = 3;
 
-std::unique_ptr<BrandedWallpaper> GetDemoWallpaper() {
-  auto demo = std::make_unique<BrandedWallpaper>();
-  demo->wallpaperImageUrls = {
+std::unique_ptr<NTPSponsoredImagesData> GetDemoWallpaper() {
+  auto demo = std::make_unique<NTPSponsoredImagesData>();
+  demo->wallpaper_image_urls = {
       "ntp-dummy-brandedwallpaper-background-1.jpg",
       "ntp-dummy-brandedwallpaper-background-2.jpg",
       "ntp-dummy-brandedwallpaper-background-3.jpg"};
-  demo->logo = std::make_unique<BrandedWallpaperLogo>();
-  demo->logo->imageUrl = "ntp-dummy-brandedwallpaper-logo.png";
-  demo->logo->altText = "Technikke: For music lovers.";
-  demo->logo->companyName = "Technikke";
-  demo->logo->destinationUrl = "https://brave.com";
+  demo->logo_image_url = "ntp-dummy-brandedwallpaper-logo.png";
+  demo->logo_alt_text = "Technikke: For music lovers.";
+  demo->logo_company_name = "Technikke";
+  demo->logo_destination_url = "https://brave.com";
   return demo;
-}
-
-std::unique_ptr<BrandedWallpaper> GetWallpaperFromData(
-    const NTPSponsoredImagesData& data) {
-  // Validate
-  if (data.wallpaper_image_count <= 0) {
-    return nullptr;
-  }
-  auto wallpaper = std::make_unique<BrandedWallpaper>();
-  wallpaper->logo = std::make_unique<BrandedWallpaperLogo>();
-  wallpaper->logo->altText = data.logo_alt_text;
-  wallpaper->logo->companyName = data.logo_company_name;
-  wallpaper->logo->destinationUrl = data.logo_destination_url;
-  // Construct image urls.
-  const std::string url_prefix = base::StringPrintf("%s://%s/",
-      content::kChromeUIScheme, kBrandedWallpaperHost);
-  wallpaper->logo->imageUrl = url_prefix + kLogoPath;
-  for (int i = 0; i < data.wallpaper_image_count; i++) {
-    const std::string wallpaper_image_url = url_prefix + base::StringPrintf(
-        "%s%d.jpg", kWallpaperPathPrefix, i);
-    wallpaper->wallpaperImageUrls.push_back(wallpaper_image_url);
-  }
-  return wallpaper;
 }
 
 class NewTabPageBrandedViewCounterFactory
@@ -147,10 +120,9 @@ NewTabPageBrandedViewCounter::NewTabPageBrandedViewCounter(Profile* profile)
           g_brave_browser_process->ntp_sponsored_images_component_manager();
       manager->AddObserver(this);
       // Check if we have real data
-      const auto optional_data = manager->
-          GetLatestSponsoredImagesData();
+      const auto optional_data = manager->GetLatestSponsoredImagesData();
       if (optional_data) {
-        current_wallpaper_ = GetWallpaperFromData(*optional_data);
+        current_wallpaper_.reset(new NTPSponsoredImagesData(*optional_data));
       }
     }
   }
@@ -199,7 +171,7 @@ void NewTabPageBrandedViewCounter::OnUpdated(
   // Data is updated, so change our stored data and reset any indexes.
   // But keep view counter until branded content is seen.
   current_wallpaper_image_index_ = 0;
-  current_wallpaper_ = GetWallpaperFromData(data);
+  current_wallpaper_.reset(new NTPSponsoredImagesData(data));
 }
 
 void NewTabPageBrandedViewCounter::OnRewardsMainEnabled(
@@ -236,7 +208,7 @@ void NewTabPageBrandedViewCounter::RegisterPageView() {
     // We select the appropriate image index for the scheduled
     // view of the branded wallpaper.
     current_wallpaper_image_index_++;
-    size_t last_index = current_wallpaper_->wallpaperImageUrls.size() - 1;
+    size_t last_index = current_wallpaper_->wallpaper_image_urls.size() - 1;
     if (current_wallpaper_image_index_ > last_index) {
       current_wallpaper_image_index_ = 0;
     }
@@ -256,7 +228,8 @@ bool NewTabPageBrandedViewCounter::ShouldShowBrandedWallpaper() {
       this->count_to_branded_wallpaper_ == 0);
 }
 
-const BrandedWallpaper& NewTabPageBrandedViewCounter::GetBrandedWallpaper() {
+const NTPSponsoredImagesData&
+    NewTabPageBrandedViewCounter::GetBrandedWallpaper() {
   return *current_wallpaper_;
 }
 

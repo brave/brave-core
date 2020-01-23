@@ -22,10 +22,13 @@ struct NTPSponsoredImagesData {
   NTPSponsoredImagesData(NTPSponsoredImagesData&& data);
   ~NTPSponsoredImagesData();
 
+  bool IsValid() const;
+
+  std::string logo_image_url;
   std::string logo_alt_text;
   std::string logo_destination_url;
   std::string logo_company_name;
-  int wallpaper_image_count;
+  std::vector<std::string> wallpaper_image_urls;
 };
 
 #endif  // BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_NTP_SPONSORED_IMAGES_DATA_H_

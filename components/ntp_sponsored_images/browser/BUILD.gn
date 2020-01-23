@@ -30,5 +30,6 @@ source_set("browser") {
     "//components/component_updater",
     "//components/keyed_service/core",
     "//content/public/browser",
+    "//content/public/common",
   ]
 }

@@ -13,11 +13,11 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
-#include "brave/browser/ntp_sponsored_images/branded_wallpaper.h"
 #include "brave/browser/ntp_sponsored_images/new_tab_page_branded_view_counter.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_data.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_features.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -31,24 +31,24 @@ bool IsPrivateNewTab(Profile* profile) {
 }
 
 base::DictionaryValue GetBrandedWallpaperDictionary(
-    const BrandedWallpaper* wallpaper, size_t wallpaper_image_index) {
+    const NTPSponsoredImagesData& wallpaper, size_t wallpaper_image_index) {
   base::DictionaryValue data;
   size_t valid_wallpaper_image_index = 0;
   if (wallpaper_image_index >= 0 &&
-      (size_t)wallpaper_image_index < wallpaper->wallpaperImageUrls.size()) {
+      (size_t)wallpaper_image_index < wallpaper.wallpaper_image_urls.size()) {
     valid_wallpaper_image_index = (size_t)wallpaper_image_index;
   } else {
     LOG(ERROR) << "Wallpaper image index " << wallpaper_image_index <<
         " was beyond bounds of images available, " <<
-        wallpaper->wallpaperImageUrls.size() - 1 << "!";
+        wallpaper.wallpaper_image_urls.size() - 1 << "!";
   }
   data.SetString("wallpaperImageUrl",
-      wallpaper->wallpaperImageUrls[valid_wallpaper_image_index]);
+      wallpaper.wallpaper_image_urls[valid_wallpaper_image_index]);
   auto logo_data = std::make_unique<base::DictionaryValue>();
-  logo_data->SetString("image", wallpaper->logo->imageUrl);
-  logo_data->SetString("companyName", wallpaper->logo->companyName);
-  logo_data->SetString("alt", wallpaper->logo->altText);
-  logo_data->SetString("destinationUrl", wallpaper->logo->destinationUrl);
+  logo_data->SetString("image", wallpaper.logo_image_url);
+  logo_data->SetString("companyName", wallpaper.logo_company_name);
+  logo_data->SetString("alt", wallpaper.logo_alt_text);
+  logo_data->SetString("destinationUrl", wallpaper.logo_destination_url);
   data.SetDictionary("logo", std::move(logo_data));
   return data;
 }
@@ -332,7 +332,7 @@ void BraveNewTabMessageHandler::HandleGetBrandedWallpaperData(
     return;
   }
   auto data = GetBrandedWallpaperDictionary(
-      &service->GetBrandedWallpaper(),
+      service->GetBrandedWallpaper(),
       service->GetWallpaperImageIndexToDisplay());
   ResolveJavascriptCallback(args->GetList()[0], data);
 }

@@ -71,8 +71,6 @@ source_set("browser_process") {
     "metrics/metrics_reporting_util.h",
     "ntp_sponsored_images/ntp_sponsored_images_service_factory.cc",
     "ntp_sponsored_images/ntp_sponsored_images_service_factory.h",
-    "ntp_sponsored_images/branded_wallpaper.cc",
-    "ntp_sponsored_images/branded_wallpaper.h",
     "ntp_sponsored_images/new_tab_page_branded_view_counter.cc",
     "ntp_sponsored_images/new_tab_page_branded_view_counter.h",
     "search_engines/guest_window_search_engine_provider_service.cc",

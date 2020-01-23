@@ -39,7 +39,9 @@ TEST(NTPSponsoredImagesComponentManagerTest, InternalDataTest) {
   // Check with json file with empty object.
   manager.ResetInternalImagesDataForTest();
   manager.OnGetPhotoJsonData("{}");
-  EXPECT_TRUE(manager.GetLatestSponsoredImagesData());
+  auto data = manager.GetLatestSponsoredImagesData();
+  EXPECT_TRUE(data);
+  EXPECT_FALSE(data->IsValid());
   manager.NotifyObservers();
   EXPECT_TRUE(observer.called_);
   EXPECT_TRUE(observer.data_.logo_alt_text.empty());
@@ -69,10 +71,12 @@ TEST(NTPSponsoredImagesComponentManagerTest, InternalDataTest) {
       })";
   manager.ResetInternalImagesDataForTest();
   manager.OnGetPhotoJsonData(test_json_string);
-  auto images_data = manager.GetLatestSponsoredImagesData();
-  EXPECT_TRUE(images_data);
+  data = manager.GetLatestSponsoredImagesData();
+  EXPECT_TRUE(data);
+  EXPECT_TRUE(data->IsValid());
   // Above json data has 3 wallpapers.
-  EXPECT_EQ(3, images_data->wallpaper_image_count);
+  const size_t image_count = 3;
+  EXPECT_EQ(image_count, data->wallpaper_image_urls.size());
   observer.called_ = false;
   manager.NotifyObservers();
   EXPECT_TRUE(observer.called_);

@@ -10,16 +10,16 @@
 
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
-#include "brave/browser/ntp_sponsored_images/branded_wallpaper.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_component_manager.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_data.h"
 
 class Profile;
-struct NTPSponsoredImagesData;
 
-class NewTabPageBrandedViewCounter : public KeyedService,
-                          public NTPSponsoredImagesComponentManager::Observer,
-                          public brave_rewards::RewardsServiceObserver {
+class NewTabPageBrandedViewCounter
+    : public KeyedService,
+      public NTPSponsoredImagesComponentManager::Observer,
+      public brave_rewards::RewardsServiceObserver {
  public:
   static void EnsureBrowserContextKeyedServiceFactoriesBuilt();
   static NewTabPageBrandedViewCounter* GetForProfile(Profile* profile);
@@ -40,7 +40,7 @@ class NewTabPageBrandedViewCounter : public KeyedService,
   // Gets the current data for branded wallpaper, if there
   // is a wallpaper active. Does not consider user opt-in
   // status, or consider whether the wallpaper should be shown.
-  const BrandedWallpaper& GetBrandedWallpaper();
+  const NTPSponsoredImagesData& GetBrandedWallpaper();
   size_t GetWallpaperImageIndexToDisplay();
 
  private:
@@ -62,9 +62,7 @@ class NewTabPageBrandedViewCounter : public KeyedService,
   void SetShouldShowFromPreferences();
   void ResetNotificationState();
 
-  // TODO(petemill): Update this when the remote data source
-  // receives new data.
-  std::unique_ptr<BrandedWallpaper> current_wallpaper_ = nullptr;
+  std::unique_ptr<NTPSponsoredImagesData> current_wallpaper_ = nullptr;
   size_t current_wallpaper_image_index_ = -1;
   bool has_user_opted_in_;
   bool is_supported_locale_;
