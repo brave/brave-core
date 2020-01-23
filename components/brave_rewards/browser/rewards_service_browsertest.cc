@@ -607,7 +607,7 @@ class BraveRewardsBrowserTest
       {"BraveAdsLocaleIsSupported", "en_US"},
       {"BraveAdsLocaleIsNotSupported", "en_XX"},
       {"BraveAdsLocaleIsNewlySupported", "ja_JP"},
-      {"BraveAdsLocaleIsNewlySupportedForLatestSchemaVersion", "en_VN"},
+      {"BraveAdsLocaleIsNewlySupportedForLatestSchemaVersion", newly_supported_locale_},  // NOLINT
       {"BraveAdsLocaleIsNotNewlySupported", "en_XX"},
       {"PRE_AutoEnableAdsForSupportedLocales", "en_US"},
       {"AutoEnableAdsForSupportedLocales", "en_US"},
@@ -638,14 +638,32 @@ class BraveRewardsBrowserTest
       return;
     }
 
-    const std::string supported_locale_parameter = parameters.at(1);
-    ASSERT_TRUE(!supported_locale_parameter.empty());
+    const ::testing::TestInfo* const test_info =
+        ::testing::UnitTest::GetInstance()->current_test_info();
+    ASSERT_NE(nullptr, test_info);
+    const std::string test_name = test_info->name();
+
+    const std::string newly_supported_locale_parameter = parameters.at(2);
+    ASSERT_TRUE(!newly_supported_locale_parameter.empty());
 
     std::string locale;
-    if (supported_locale_parameter == "ForSupportedLocale") {
-      locale = "en_US";
+    if (test_name.find("PRE_UpgradePath") == 0) {
+      if (newly_supported_locale_parameter == "ForNewlySupportedLocale") {
+        locale = newly_supported_locale_;
+      } else {
+        locale = "en_US";
+      }
     } else {
-      locale = "en_XX";
+      const std::string supported_locale_parameter = parameters.at(1);
+      ASSERT_TRUE(!supported_locale_parameter.empty());
+
+      if (newly_supported_locale_parameter == "ForNewlySupportedLocale") {
+        locale = newly_supported_locale_;
+      } else if (supported_locale_parameter == "ForSupportedLocale") {
+        locale = "en_US";
+      } else {
+        locale = "en_XX";
+      }
     }
 
     MockLocaleHelper(locale);
@@ -712,20 +730,21 @@ class BraveRewardsBrowserTest
     //   1 = Parameters
 
     const std::string name = test_name_components.at(0);
-    if (name != "UpgradePath") {
+    if (name != "UpgradePath" && name != "PRE_UpgradePath") {
       return false;
     }
 
     // parameters:
     //   0 = Preferences
     //   1 = Supported locale
-    //   2 = Rewards enabled
-    //   3 = Ads enabled
-    //   4 = Should show notification
+    //   2 = Newly supported locale
+    //   3 = Rewards enabled
+    //   4 = Ads enabled
+    //   5 = Should show notification
 
     *parameters = base::SplitString(test_name_components.at(1), "_",
         base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
-    EXPECT_EQ(5UL, parameters->size());
+    EXPECT_EQ(6UL, parameters->size());
 
     return true;
   }
@@ -1695,6 +1714,8 @@ class BraveRewardsBrowserTest
   brave_ads::AdsServiceImpl* ads_service_;
 
   std::unique_ptr<brave_ads::LocaleHelperMock> locale_helper_mock_;
+  const std::string newly_supported_locale_ = "cs_CZ";
+
   std::unique_ptr<brave_ads::NotificationHelperMock> notification_helper_mock_;
 
   brave_rewards::Promotion promotion_;
@@ -3371,10 +3392,9 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
     BraveAdsLocaleIsNewlySupportedForLatestSchemaVersion) {
-  // "BraveAdsLocaleIsNewlySupportedForLatestSchemaVersion" key in "const
-  // std::map<std::string, std::string> locale_for_tests" will need the value
-  // updating with a locale from the latest supported regions schema version
-  // defined in "vendor/bat-native-ads/src/bat/ads/internal/static_values.h"
+  // IMPORTANT: When adding new schema versions |newly_supported_locale_| must
+  // be updated in |BraveRewardsBrowserTest| to reflect a locale from the latest
+  // schema version in "bat-native-ads/src/bat/ads/internal/static_values.h"
 
   GetPrefs()->SetInteger(brave_ads::prefs::kSupportedRegionsLastSchemaVersion,
       brave_ads::prefs::kSupportedRegionsSchemaVersionNumber);
@@ -3497,6 +3517,10 @@ struct BraveAdsUpgradePathParamInfo {
   // supported locale; otherwise, should be set to |false|
   bool supported_locale;
 
+  // |newly_supported_locale| should be set to |true| if the locale should be
+  // set to a newly supported locale; otherwise, should be set to |false|
+  bool newly_supported_locale;
+
   // |rewards_enabled| should be set to |true| if Brave rewards should be
   // enabled after upgrade; otherwise, should be set to |false|
   bool rewards_enabled;
@@ -3522,13 +3546,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion062WithRewardsDisabled",
     false, /* supported_locale */
-    false, /* rewards_enabled */
-    false, /* ads_enabled */
-    false  /* should_show_onboarding */
-  },
-  {
-    "PreferencesForVersion062WithRewardsDisabled",
-    true,  /* supported_locale */
+    false, /* newly_supported_locale */
     false, /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3536,13 +3554,39 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion062WithRewardsEnabled",
     false, /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion062WithRewardsDisabled",
+    true,  /* supported_locale */
+    false, /* newly_supported_locale */
+    false, /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
   },
   {
     "PreferencesForVersion062WithRewardsEnabled",
     true,  /* supported_locale */
+    false, /* newly_supported_locale */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    true   /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion062WithRewardsDisabled",
+    true,  /* supported_locale */
+    true,  /* newly_supported_locale */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion062WithRewardsEnabled",
+    true,  /* supported_locale */
+    true,  /* newly_supported_locale */
     true,  /* rewards_enabled */
     false, /* ads_enabled */
     true   /* should_show_onboarding */
@@ -3552,6 +3596,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion063WithRewardsAndAdsDisabled",
     false, /* supported_locale */
+    false, /* newly_supported_locale */
     false, /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3559,6 +3604,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion063WithRewardsEnabledAndAdsDisabled",
     false, /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3566,6 +3612,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion063WithRewardsAndAdsEnabled",
     false, /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3573,6 +3620,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion063WithRewardsAndAdsDisabled",
     true,  /* supported_locale */
+    false, /* newly_supported_locale */
     false, /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3580,6 +3628,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion063WithRewardsEnabledAndAdsDisabled",
     true,  /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
     false, /* ads_enabled */
     true   /* should_show_onboarding */
@@ -3589,15 +3638,41 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   // {
   //   "PreferencesForVersion063WithRewardsAndAdsEnabled",
   //   true,  /* supported_locale */
+  //   false, /* newly_supported_locale */
   //   true,  /* rewards_enabled */
   //   true,  /* ads_enabled */
   //   false  /* should_show_onboarding */
   // },
+  {
+    "PreferencesForVersion063WithRewardsAndAdsDisabled",
+    true,  /* supported_locale */
+    true,  /* newly_supported_locale */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion063WithRewardsEnabledAndAdsDisabled",
+    true,  /* supported_locale */
+    true,  /* newly_supported_locale */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    true   /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion063WithRewardsAndAdsEnabled",
+    true,  /* supported_locale */
+    true,  /* newly_supported_locale */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    true   /* should_show_onboarding */
+  },
 
   // Upgrade from 0.67 to current version
   {
     "PreferencesForVersion067WithRewardsAndAdsDisabled",
     false, /* supported_locale */
+    false, /* newly_supported_locale */
     false, /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3605,6 +3680,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion067WithRewardsEnabledAndAdsDisabled",
     false, /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3612,6 +3688,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion067WithRewardsAndAdsEnabled",
     false, /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3619,6 +3696,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion067WithRewardsAndAdsDisabled",
     true,  /* supported_locale */
+    false, /* newly_supported_locale */
     false, /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3626,6 +3704,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion067WithRewardsEnabledAndAdsDisabled",
     true,  /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
     false, /* ads_enabled */
     true   /* should_show_onboarding */
@@ -3633,15 +3712,41 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion067WithRewardsAndAdsEnabled",
     true,  /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
     true,  /* ads_enabled */
     false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion067WithRewardsAndAdsDisabled",
+    true,  /* supported_locale */
+    true,  /* newly_supported_locale */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion067WithRewardsEnabledAndAdsDisabled",
+    true,  /* supported_locale */
+    true,  /* newly_supported_locale */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    true   /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion067WithRewardsAndAdsEnabled",
+    true,  /* supported_locale */
+    true,  /* newly_supported_locale */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    true   /* should_show_onboarding */
   },
 
   // Upgrade from 0.68 to current version
   {
     "PreferencesForVersion068WithRewardsAndAdsDisabled",
     false, /* supported_locale */
+    false, /* newly_supported_locale */
     false, /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3649,6 +3754,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion068WithRewardsEnabledAndAdsDisabled",
     false, /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3656,6 +3762,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion068WithRewardsAndAdsEnabled",
     false, /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3663,6 +3770,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion068WithRewardsAndAdsDisabled",
     true,  /* supported_locale */
+    false, /* newly_supported_locale */
     false, /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3670,6 +3778,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion068WithRewardsEnabledAndAdsDisabled",
     true,  /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
     false, /* ads_enabled */
     true   /* should_show_onboarding */
@@ -3677,15 +3786,41 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion068WithRewardsAndAdsEnabled",
     true,  /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
     true,  /* ads_enabled */
     false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion068WithRewardsAndAdsDisabled",
+    true,  /* supported_locale */
+    true,  /* newly_supported_locale */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion068WithRewardsEnabledAndAdsDisabled",
+    true,  /* supported_locale */
+    true,  /* newly_supported_locale */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    true   /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion068WithRewardsAndAdsEnabled",
+    true,  /* supported_locale */
+    true,  /* newly_supported_locale */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    true   /* should_show_onboarding */
   },
 
   // Upgrade from 0.69 to current version
   {
     "PreferencesForVersion069WithRewardsAndAdsDisabled",
     false, /* supported_locale */
+    false, /* newly_supported_locale */
     false, /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3693,6 +3828,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion069WithRewardsEnabledAndAdsDisabled",
     false, /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3700,6 +3836,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion069WithRewardsAndAdsEnabled",
     false, /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3707,6 +3844,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion069WithRewardsAndAdsDisabled",
     true,  /* supported_locale */
+    false, /* newly_supported_locale */
     false, /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3714,6 +3852,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion069WithRewardsEnabledAndAdsDisabled",
     true,  /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
     false, /* ads_enabled */
     true   /* should_show_onboarding */
@@ -3721,15 +3860,41 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion069WithRewardsAndAdsEnabled",
     true,  /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
     true,  /* ads_enabled */
     false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion069WithRewardsAndAdsDisabled",
+    true,  /* supported_locale */
+    true,  /* newly_supported_locale */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion069WithRewardsEnabledAndAdsDisabled",
+    true,  /* supported_locale */
+    true,  /* newly_supported_locale */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    true   /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion069WithRewardsAndAdsEnabled",
+    true,  /* supported_locale */
+    true,  /* newly_supported_locale */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    true   /* should_show_onboarding */
   },
 
   // Upgrade from 0.70 to current version
   {
     "PreferencesForVersion070WithRewardsAndAdsDisabled",
     false, /* supported_locale */
+    false, /* newly_supported_locale */
     false, /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3737,6 +3902,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion070WithRewardsEnabledAndAdsDisabled",
     false, /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3744,6 +3910,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion070WithRewardsAndAdsEnabled",
     false, /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3751,6 +3918,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion070WithRewardsAndAdsDisabled",
     true,  /* supported_locale */
+    false, /* newly_supported_locale */
     false, /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3758,6 +3926,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion070WithRewardsEnabledAndAdsDisabled",
     true,  /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
     false, /* ads_enabled */
     true   /* should_show_onboarding */
@@ -3765,15 +3934,41 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion070WithRewardsAndAdsEnabled",
     true,  /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
     true,  /* ads_enabled */
     false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion070WithRewardsAndAdsDisabled",
+    true,  /* supported_locale */
+    true,  /* newly_supported_locale */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion070WithRewardsEnabledAndAdsDisabled",
+    true,  /* supported_locale */
+    true,  /* newly_supported_locale */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    true   /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion070WithRewardsAndAdsEnabled",
+    true,  /* supported_locale */
+    true,  /* newly_supported_locale */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    true   /* should_show_onboarding */
   },
 
   // Upgrade from 0.71 to current version
   {
     "PreferencesForVersion071WithRewardsAndAdsDisabled",
     false, /* supported_locale */
+    false, /* newly_supported_locale */
     false, /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3781,6 +3976,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion071WithRewardsEnabledAndAdsDisabled",
     false, /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3788,6 +3984,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion071WithRewardsAndAdsEnabled",
     false, /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3795,6 +3992,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion071WithRewardsAndAdsDisabled",
     true,  /* supported_locale */
+    false, /* newly_supported_locale */
     false, /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3802,6 +4000,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion071WithRewardsEnabledAndAdsDisabled",
     true,  /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
     false, /* ads_enabled */
     true   /* should_show_onboarding */
@@ -3809,15 +4008,41 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion071WithRewardsAndAdsEnabled",
     true,  /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
     true,  /* ads_enabled */
     false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion071WithRewardsAndAdsDisabled",
+    true,  /* supported_locale */
+    true,  /* newly_supported_locale */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion071WithRewardsEnabledAndAdsDisabled",
+    true,  /* supported_locale */
+    true,  /* newly_supported_locale */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    true   /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion071WithRewardsAndAdsEnabled",
+    true,  /* supported_locale */
+    true,  /* newly_supported_locale */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    true   /* should_show_onboarding */
   },
 
   // Upgrade from 0.72 to current version
   {
     "PreferencesForVersion072WithRewardsAndAdsDisabled",
     false, /* supported_locale */
+    false, /* newly_supported_locale */
     false, /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3825,6 +4050,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion072WithRewardsEnabledAndAdsDisabled",
     false, /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3832,13 +4058,15 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion072WithRewardsAndAdsEnabled",
     false, /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
-    true, /* ads_enabled */
+    false, /* ads_enabled */
     false  /* should_show_onboarding */
   },
   {
     "PreferencesForVersion072WithRewardsAndAdsDisabled",
     true,  /* supported_locale */
+    false, /* newly_supported_locale */
     false, /* rewards_enabled */
     false, /* ads_enabled */
     false  /* should_show_onboarding */
@@ -3846,6 +4074,7 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion072WithRewardsEnabledAndAdsDisabled",
     true,  /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
     false, /* ads_enabled */
     true   /* should_show_onboarding */
@@ -3853,20 +4082,124 @@ const BraveAdsUpgradePathParamInfo kTests[] = {
   {
     "PreferencesForVersion072WithRewardsAndAdsEnabled",
     true,  /* supported_locale */
+    false, /* newly_supported_locale */
     true,  /* rewards_enabled */
     true,  /* ads_enabled */
     false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion072WithRewardsAndAdsDisabled",
+    true,  /* supported_locale */
+    true,  /* newly_supported_locale */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion072WithRewardsEnabledAndAdsDisabled",
+    true,  /* supported_locale */
+    true,  /* newly_supported_locale */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    true   /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion072WithRewardsAndAdsEnabled",
+    true,  /* supported_locale */
+    true,  /* newly_supported_locale */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    true   /* should_show_onboarding */
+  },
+
+  // Upgrade from 1.2 to current version
+  {
+    "PreferencesForVersion12WithRewardsAndAdsDisabled",
+    false, /* supported_locale */
+    false, /* newly_supported_locale */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion12WithRewardsEnabledAndAdsDisabled",
+    false, /* supported_locale */
+    false, /* newly_supported_locale */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion12WithRewardsAndAdsEnabled",
+    false, /* supported_locale */
+    false, /* newly_supported_locale */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion12WithRewardsAndAdsDisabled",
+    true,  /* supported_locale */
+    false, /* newly_supported_locale */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion12WithRewardsEnabledAndAdsDisabled",
+    true,  /* supported_locale */
+    false, /* newly_supported_locale */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion12WithRewardsAndAdsEnabled",
+    true,  /* supported_locale */
+    false, /* newly_supported_locale */
+    true,  /* rewards_enabled */
+    true,  /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion12WithRewardsAndAdsDisabled",
+    true,  /* supported_locale */
+    true,  /* newly_supported_locale */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion12WithRewardsEnabledAndAdsDisabled",
+    true,  /* supported_locale */
+    true,  /* newly_supported_locale */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    true   /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion12WithRewardsAndAdsEnabled",
+    true,  /* supported_locale */
+    true,  /* newly_supported_locale */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    true   /* should_show_onboarding */
   }
 };
+
+IN_PROC_BROWSER_TEST_P(BraveAdsBrowserTest, PRE_UpgradePath) {
+  // Handled in |MaybeMockLocaleHelperForBraveAdsUpgradePath|
+}
 
 IN_PROC_BROWSER_TEST_P(BraveAdsBrowserTest, UpgradePath) {
   BraveAdsUpgradePathParamInfo param(GetParam());
 
+  EXPECT_EQ(IsRewardsEnabled(), param.rewards_enabled);
+
+  EXPECT_EQ(IsAdsEnabled(), param.ads_enabled);
+
   bool is_showing_notification = IsShowingNotificationForType(
       RewardsNotificationType::REWARDS_NOTIFICATION_ADS_ONBOARDING);
-
-  EXPECT_EQ(IsRewardsEnabled(), param.rewards_enabled);
-  EXPECT_EQ(IsAdsEnabled(), param.ads_enabled);
   EXPECT_EQ(is_showing_notification, param.should_show_onboarding);
 }
 
@@ -3879,6 +4212,9 @@ static std::string GetTestCaseName(
   const char* supported_locale = param_info.param.supported_locale ?
       "ForSupportedLocale" : "ForUnsupportedLocale";
 
+  const char* newly_supported_locale = param_info.param.newly_supported_locale ?
+      "ForNewlySupportedLocale" : "ForUnsupportedLocale";
+
   const char* rewards_enabled = param_info.param.rewards_enabled ?
       "RewardsShouldBeEnabled" : "RewardsShouldBeDisabled";
 
@@ -3890,8 +4226,9 @@ static std::string GetTestCaseName(
 
   // NOTE: You should not remove, change the format or reorder the following
   // parameters as they are parsed in |GetUpgradePathParams|
-  return base::StringPrintf("%s_%s_%s_%s_%s", preferences, supported_locale,
-      rewards_enabled, ads_enabled, should_show_onboarding);
+  return base::StringPrintf("%s_%s_%s_%s_%s_%s", preferences, supported_locale,
+      newly_supported_locale, rewards_enabled, ads_enabled,
+          should_show_onboarding);
 }
 
 INSTANTIATE_TEST_SUITE_P(BraveRewardsBrowserTest,

@@ -149,6 +149,10 @@ const std::map<int, std::map<std::string, bool>> kSupportedRegionsSchemas = {
       { "VN", false }   // Vietnam
     }
   }
+
+  // IMPORTANT: When adding new schema versions |newly_supported_locale_| must
+  // be updated in |BraveRewardsBrowserTest| to reflect a locale from the latest
+  // schema version in "bat-native-ads/src/bat/ads/internal/static_values.h"
 };
 
 const char kUntargetedPageClassification[] = "untargeted";
