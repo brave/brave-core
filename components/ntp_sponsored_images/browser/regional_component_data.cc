@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ntp_sponsored_images/regional_component_data.h"
+#include "brave/components/ntp_sponsored_images/browser/regional_component_data.h"
 
 // This list should be synced with the list of generateNTPSponsoredImages.js
 // and packageNTPSponsoredImagesComponents.js in brave-core-crx-packager.

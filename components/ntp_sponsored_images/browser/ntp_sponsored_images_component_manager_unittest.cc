@@ -5,9 +5,9 @@
 
 #include <string>
 
-#include "brave/components/ntp_sponsored_images/ntp_sponsored_images_component_manager.h"
-#include "brave/components/ntp_sponsored_images/ntp_sponsored_images_data.h"
-#include "brave/components/ntp_sponsored_images/ntp_sponsored_images_internal_data.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_component_manager.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_internal_data.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 class TestObserver : public NTPSponsoredImagesComponentManager::Observer {

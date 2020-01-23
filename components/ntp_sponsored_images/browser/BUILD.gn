@@ -1,4 +1,4 @@
-source_set("ntp_sponsored_images") {
+source_set("browser") {
   # TODO(simonhong): Change to //chrome/*
   # Currently, brave_ads component has //chrome/android dependency.
   # assert_no_deps = [ "//chrome/*" ]

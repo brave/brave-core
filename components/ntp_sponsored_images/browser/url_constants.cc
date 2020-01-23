@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ntp_sponsored_images/url_constants.h"
+#include "brave/components/ntp_sponsored_images/browser/url_constants.h"
 
 const char kBrandedWallpaperHost[] = "branded-wallpaper";
 const char kLogoPath[] = "logo.png";

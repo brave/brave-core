@@ -6,7 +6,7 @@
 #include "brave/browser/ntp_sponsored_images/ntp_sponsored_images_service_factory.h"
 
 #include "brave/browser/brave_browser_process_impl.h"
-#include "brave/components/ntp_sponsored_images/ntp_sponsored_images_service.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 

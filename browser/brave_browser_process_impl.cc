@@ -28,7 +28,7 @@
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_shields/browser/referrer_whitelist_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
-#include "brave/components/ntp_sponsored_images/ntp_sponsored_images_component_manager.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_component_manager.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/brave_histogram_rewrite.h"
 #include "brave/components/p3a/brave_p3a_service.h"

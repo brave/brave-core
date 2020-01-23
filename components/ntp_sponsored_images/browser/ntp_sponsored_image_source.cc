@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ntp_sponsored_images/ntp_sponsored_image_source.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_image_source.h"
 
 #include <utility>
 
@@ -12,7 +12,7 @@
 #include "base/memory/ref_counted_memory.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
-#include "brave/components/ntp_sponsored_images/url_constants.h"
+#include "brave/components/ntp_sponsored_images/browser/url_constants.h"
 #include "content/public/browser/browser_thread.h"
 
 namespace {

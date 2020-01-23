@@ -12,7 +12,7 @@
 #include "components/prefs/pref_change_registrar.h"
 #include "brave/browser/ntp_sponsored_images/branded_wallpaper.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-#include "brave/components/ntp_sponsored_images/ntp_sponsored_images_component_manager.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_component_manager.h"
 
 class Profile;
 struct NTPSponsoredImagesData;

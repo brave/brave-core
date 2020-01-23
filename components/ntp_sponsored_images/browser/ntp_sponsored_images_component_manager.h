@@ -14,7 +14,7 @@
 #include "base/observer_list.h"
 #include "base/optional.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
-#include "brave/components/ntp_sponsored_images/ntp_sponsored_image_source.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_image_source.h"
 #include "components/component_updater/component_updater_service.h"
 
 struct NTPSponsoredImagesData;

@@ -11,7 +11,7 @@
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
 #include "base/optional.h"
-#include "brave/components/ntp_sponsored_images/ntp_sponsored_images_internal_data.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_internal_data.h"
 #include "content/public/browser/url_data_source.h"
 
 class NTPSponsoredImagesComponentManager;

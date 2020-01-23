@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ntp_sponsored_images/ntp_sponsored_images_component_manager.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_component_manager.h"
 
 #include <algorithm>
 
@@ -13,10 +13,10 @@
 #include "base/task/post_task.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/browser/locale_helper.h"
-#include "brave/components/ntp_sponsored_images/ntp_sponsored_images_data.h"
-#include "brave/components/ntp_sponsored_images/ntp_sponsored_images_internal_data.h"
-#include "brave/components/ntp_sponsored_images/regional_component_data.h"
-#include "brave/components/ntp_sponsored_images/switches.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_internal_data.h"
+#include "brave/components/ntp_sponsored_images/browser/regional_component_data.h"
+#include "brave/components/ntp_sponsored_images/browser/switches.h"
 #include "brave/vendor/bat-native-ads/src/bat/ads/internal/locale_helper.h"
 #include "content/public/browser/browser_context.h"
 
