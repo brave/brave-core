@@ -90,6 +90,10 @@ void NTPSponsoredImagesComponentManager::RemoveObserver(Observer* observer) {
   observer_list_.RemoveObserver(observer);
 }
 
+bool NTPSponsoredImagesComponentManager::HasObserver(Observer* observer) {
+  return observer_list_.HasObserver(observer);
+}
+
 void NTPSponsoredImagesComponentManager::AddDataSource(
     content::BrowserContext* browser_context) {
   if (!internal_images_data_)

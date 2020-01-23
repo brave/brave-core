@@ -155,7 +155,8 @@ NewTabPageBrandedViewCounter::~NewTabPageBrandedViewCounter() { }
 void NewTabPageBrandedViewCounter::Shutdown() {
   NTPSponsoredImagesComponentManager* manager =
           g_brave_browser_process->ntp_sponsored_images_component_manager();
-  manager->RemoveObserver(this);
+  if (manager->HasObserver(this))
+    manager->RemoveObserver(this);
   auto* rewards_service_ =
       brave_rewards::RewardsServiceFactory::GetForProfile(profile_);
   if (rewards_service_)
@@ -164,10 +165,9 @@ void NewTabPageBrandedViewCounter::Shutdown() {
 
 void NewTabPageBrandedViewCounter::OnUpdated(
     const NTPSponsoredImagesData& data) {
-  // Do nothing with real data if we are in 'demo mode'.
-  if (base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo)) {
-    return;
-  }
+  DCHECK(
+      !base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo));
+
   // Data is updated, so change our stored data and reset any indexes.
   // But keep view counter until branded content is seen.
   current_wallpaper_image_index_ = 0;
@@ -228,8 +228,8 @@ bool NewTabPageBrandedViewCounter::ShouldShowBrandedWallpaper() {
       this->count_to_branded_wallpaper_ == 0);
 }
 
-const NTPSponsoredImagesData&
-    NewTabPageBrandedViewCounter::GetBrandedWallpaper() {
+const
+NTPSponsoredImagesData& NewTabPageBrandedViewCounter::GetBrandedWallpaper() {
   return *current_wallpaper_;
 }
 

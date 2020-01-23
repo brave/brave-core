@@ -51,6 +51,7 @@ class NTPSponsoredImagesComponentManager
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
+  bool HasObserver(Observer* observer);
 
   // This should be called by client because this service is context neutral.
   void AddDataSource(content::BrowserContext* browser_context);
