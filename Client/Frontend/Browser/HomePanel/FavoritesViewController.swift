@@ -181,8 +181,10 @@ class FavoritesViewController: UIViewController, Themeable {
             $0.removeObserver(self, name: .privacyModeChanged, object: nil)
         }
         
-        // Navigating away from NTP counts the current notification as showed.
-        Preferences.NewTabPage.brandedImageShowed.value = true
+        if Preferences.NewTabPage.atleastOneNTPNotificationWasShowed.value {
+            // Navigating away from NTP counts the current notification as showed.
+            Preferences.NewTabPage.brandedImageShowed.value = true
+        }
     }
     
     override func viewDidLoad() {
@@ -297,6 +299,7 @@ class FavoritesViewController: UIViewController, Themeable {
             }
             
             vc = notificationVC
+            Preferences.NewTabPage.atleastOneNTPNotificationWasShowed.value = true
         case .claimRewards:
             if !Preferences.NewTabPage.attemptToShowClaimRewardsNotification.value { return }
             

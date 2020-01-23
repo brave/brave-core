@@ -104,6 +104,10 @@ extension Preferences {
         /// Whether the iOS keyboard auto-opens on a NTP or not
         static let autoOpenKeyboard = Option<Bool>(key: "newtabpage.auto-open-keyboard", default: false)
         
+        /// At least one notification must show before we lock showing subsequent notifications.
+        static let atleastOneNTPNotificationWasShowed = Option<Bool>(key: "newtabpage.one-notificaiton-showed",
+                                                                     default: false)
+        
         /// Whether the callout to use branded image was shown.
         static let brandedImageShowed = Option<Bool>(key: "newtabpage.branded-image-callout-showed",
                                                      default: false)
