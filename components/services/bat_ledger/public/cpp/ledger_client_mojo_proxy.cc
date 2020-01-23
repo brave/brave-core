@@ -207,49 +207,6 @@ void LedgerClientMojoProxy::FetchFavIcon(const std::string& url,
 }
 
 // static
-void LedgerClientMojoProxy::OnSaveRecurringTip(
-    CallbackHolder<SaveRecurringTipCallback>* holder,
-    const ledger::Result result) {
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result);
-  delete holder;
-}
-
-void LedgerClientMojoProxy::SaveRecurringTip(
-    ledger::RecurringTipPtr info,
-    SaveRecurringTipCallback callback) {
-  // deleted in OnSaveRecurringTip
-  auto* holder = new CallbackHolder<SaveRecurringTipCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->SaveRecurringTip(
-      std::move(info),
-      std::bind(LedgerClientMojoProxy::OnSaveRecurringTip,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnGetRecurringTips(
-    CallbackHolder<GetRecurringTipsCallback>* holder,
-    ledger::PublisherInfoList publisher_info_list) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(std::move(publisher_info_list));
-  delete holder;
-}
-
-void LedgerClientMojoProxy::GetRecurringTips(
-    GetRecurringTipsCallback callback) {
-  // deleted in OnGetRecurringTips
-  auto* holder = new CallbackHolder<GetRecurringTipsCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->GetRecurringTips(
-      std::bind(LedgerClientMojoProxy::OnGetRecurringTips,
-                holder,
-                _1));
-}
-
-// static
 void LedgerClientMojoProxy::OnLoadNicewareList(
     CallbackHolder<LoadNicewareListCallback>* holder,
     const ledger::Result result,
@@ -271,25 +228,6 @@ void LedgerClientMojoProxy::LoadNicewareList(
 }
 
 // static
-void LedgerClientMojoProxy::OnRemoveRecurringTip(
-    CallbackHolder<RemoveRecurringTipCallback>* holder,
-    const ledger::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result);
-  delete holder;
-}
-
-void LedgerClientMojoProxy::RemoveRecurringTip(const std::string& publisher_key,
-    RemoveRecurringTipCallback callback) {
-  // deleted in OnRemoveRecurringTip
-  auto* holder = new CallbackHolder<RemoveRecurringTipCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->RemoveRecurringTip(publisher_key,
-      std::bind(LedgerClientMojoProxy::OnRemoveRecurringTip, holder, _1));
-}
-
-// static
 void LedgerClientMojoProxy::OnSaveContributionInfo(
     CallbackHolder<SaveContributionInfoCallback>* holder,
     const ledger::Result result) {
@@ -303,7 +241,7 @@ void LedgerClientMojoProxy::SaveContributionInfo(
     ledger::ContributionInfoPtr info,
     SaveContributionInfoCallback callback) {
     // deleted in OnSaveContributionInfo
-  auto* holder = new CallbackHolder<RemoveRecurringTipCallback>(
+  auto* holder = new CallbackHolder<SaveContributionInfoCallback>(
       AsWeakPtr(), std::move(callback));
   ledger_client_->SaveContributionInfo(
       std::move(info),

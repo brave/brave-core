@@ -70,9 +70,6 @@ PublisherInfoDatabase::PublisherInfoDatabase(
 
   media_publisher_info_ =
       std::make_unique<DatabaseMediaPublisherInfo>(GetCurrentVersion());
-
-  recurring_tip_ =
-      std::make_unique<DatabaseRecurringTip>(GetCurrentVersion());
 }
 
 PublisherInfoDatabase::~PublisherInfoDatabase() {
@@ -227,38 +224,6 @@ PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
   }
 
   return media_publisher_info_->GetRecord(&GetDB(), media_key);
-}
-
-/**
- *
- * RECURRING TIPS
- *
- */
-bool PublisherInfoDatabase::InsertOrUpdateRecurringTip(
-    ledger::RecurringTipPtr info) {
-  if (!IsInitialized()) {
-    return false;
-  }
-
-  return recurring_tip_->InsertOrUpdate(&GetDB(), std::move(info));
-}
-
-void PublisherInfoDatabase::GetRecurringTips(
-    ledger::PublisherInfoList* list) {
-  if (!IsInitialized()) {
-    return;
-  }
-
-  recurring_tip_->GetAllRecords(&GetDB(), list);
-}
-
-bool PublisherInfoDatabase::RemoveRecurringTip(
-    const std::string& publisher_key) {
-  if (!IsInitialized()) {
-    return false;
-  }
-
-  return recurring_tip_->DeleteRecord(&GetDB(), publisher_key);
 }
 
 /**
@@ -589,10 +554,6 @@ bool PublisherInfoDatabase::MigrateV1toV2() {
     return false;
   }
 
-  if (!recurring_tip_->Migrate(&GetDB(), 2)) {
-    return false;
-  }
-
   return true;
 }
 
@@ -756,10 +717,6 @@ bool PublisherInfoDatabase::MigrateV14toV15() {
   }
 
   if (!promotion_->Migrate(&GetDB(), 15)) {
-    return false;
-  }
-
-  if (!recurring_tip_->Migrate(&GetDB(), 15)) {
     return false;
   }
 

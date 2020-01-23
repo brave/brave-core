@@ -47,17 +47,10 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   void FetchFavIcon(const std::string& url, const std::string& favicon_key,
       FetchFavIconCallback callback) override;
-  void SaveRecurringTip(
-      ledger::RecurringTipPtr info,
-      SaveRecurringTipCallback callback) override;
-  void GetRecurringTips(GetRecurringTipsCallback callback) override;
 
   void GetOneTimeTips(GetOneTimeTipsCallback callback) override;
 
   void LoadNicewareList(LoadNicewareListCallback callback) override;
-  void RemoveRecurringTip(
-    const std::string& publisher_key,
-    RemoveRecurringTipCallback callback) override;
 
   void SetTimer(uint64_t time_offset, SetTimerCallback callback) override;
   void KillTimer(const uint32_t timer_id) override;
@@ -313,22 +306,10 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       bool success,
       const std::string& favicon_url);
 
-  static void OnSaveRecurringTip(
-      CallbackHolder<SaveRecurringTipCallback>* holder,
-      const ledger::Result result);
-
-  static void OnGetRecurringTips(
-      CallbackHolder<GetRecurringTipsCallback>* holder,
-      ledger::PublisherInfoList publisher_info_list);
-
   static void OnLoadNicewareList(
       CallbackHolder<LoadNicewareListCallback>* holder,
       const ledger::Result result,
       const std::string& data);
-
-  static void OnRemoveRecurringTip(
-      CallbackHolder<RemoveRecurringTipCallback>* holder,
-      const ledger::Result result);
 
   static void OnSaveContributionInfo(
       CallbackHolder<SaveContributionInfoCallback>* holder,

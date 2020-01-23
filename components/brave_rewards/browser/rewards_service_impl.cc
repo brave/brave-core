@@ -2274,43 +2274,6 @@ void RewardsServiceImpl::SaveRecurringTipUI(
                      std::move(callback)));
 }
 
-void RewardsServiceImpl::OnRecurringTipSaved(
-    ledger::ResultCallback callback,
-    const bool success) {
-  if (!Connected()) {
-    return;
-  }
-
-  callback(success ? ledger::Result::LEDGER_OK
-                   : ledger::Result::LEDGER_ERROR);
-}
-
-bool SaveRecurringTipOnFileTaskRunner(
-    ledger::RecurringTipPtr info,
-    PublisherInfoDatabase* backend) {
-  if (backend && backend->InsertOrUpdateRecurringTip(std::move(info)))
-    return true;
-
-  return false;
-}
-
-void RewardsServiceImpl::SaveRecurringTip(
-    ledger::RecurringTipPtr info,
-    ledger::ResultCallback callback) {
-  if (!info) {
-    callback(ledger::Result::NOT_FOUND);
-    return;
-  }
-
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&SaveRecurringTipOnFileTaskRunner,
-                    std::move(info),
-                    publisher_info_backend_.get()),
-      base::BindOnce(&RewardsServiceImpl::OnRecurringTipSaved,
-                     AsWeakPtr(),
-                     callback));
-}
-
 void RewardsServiceImpl::OnMediaInlineInfoSaved(
     SaveMediaInfoCallback callback,
     const ledger::Result result,
@@ -2341,18 +2304,6 @@ void RewardsServiceImpl::SaveInlineMediaInfo(
                     std::move(callback)));
 }
 
-ledger::PublisherInfoList GetRecurringTipsOnFileTaskRunner(
-    PublisherInfoDatabase* backend) {
-  ledger::PublisherInfoList list;
-  if (!backend) {
-    return list;
-  }
-
-  backend->GetRecurringTips(&list);
-
-  return list;
-}
-
 void RewardsServiceImpl::OnGetRecurringTipsUI(
     GetRecurringTipsCallback callback,
     ledger::PublisherInfoList list) {
@@ -2374,26 +2325,6 @@ void RewardsServiceImpl::GetRecurringTipsUI(
       base::BindOnce(&RewardsServiceImpl::OnGetRecurringTipsUI,
                      AsWeakPtr(),
                      std::move(callback)));
-}
-
-void RewardsServiceImpl::OnGetRecurringTips(
-    const ledger::PublisherInfoListCallback callback,
-    ledger::PublisherInfoList list) {
-  if (!Connected()) {
-    return;
-  }
-
-  callback(std::move(list));
-}
-
-void RewardsServiceImpl::GetRecurringTips(
-    ledger::PublisherInfoListCallback callback) {
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::Bind(&GetRecurringTipsOnFileTaskRunner,
-                 publisher_info_backend_.get()),
-      base::Bind(&RewardsServiceImpl::OnGetRecurringTips,
-                 AsWeakPtr(),
-                 callback));
 }
 
 void RewardsServiceImpl::OnGetOneTimeTipsUI(
@@ -2468,38 +2399,6 @@ void RewardsServiceImpl::RemoveRecurringTipUI(
     publisher_key,
     base::Bind(&RewardsServiceImpl::OnRecurringTipUI,
                AsWeakPtr()));
-}
-
-bool RemoveRecurringTipOnFileTaskRunner(
-    const std::string& publisher_key, PublisherInfoDatabase* backend) {
-  if (!backend) {
-    return false;
-  }
-
-  return backend->RemoveRecurringTip(publisher_key);
-}
-
-void RewardsServiceImpl::OnRemoveRecurringTip(
-    ledger::RemoveRecurringTipCallback callback,
-    const bool success) {
-  if (!Connected()) {
-    return;
-  }
-
-  callback(success ?
-           ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
-}
-
-void RewardsServiceImpl::RemoveRecurringTip(
-  const std::string& publisher_key,
-  ledger::RemoveRecurringTipCallback callback) {
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::Bind(&RemoveRecurringTipOnFileTaskRunner,
-                    publisher_key,
-                    publisher_info_backend_.get()),
-      base::Bind(&RewardsServiceImpl::OnRemoveRecurringTip,
-                 AsWeakPtr(),
-                 callback));
 }
 
 void RewardsServiceImpl::UpdateAdsRewards() const {
@@ -3636,7 +3535,8 @@ void RecordBackendP3AStatsOnFileTaskRunner(PublisherInfoDatabase* backend,
   if (!backend) {
     return;
   }
-  backend->RecordP3AStats(auto_contributions_enabled);
+  // TODO(nejc): we need to get this from native lib now
+  // backend->RecordP3AStats(auto_contributions_enabled);
 }
 
 void RewardsServiceImpl::RecordBackendP3AStats() const {

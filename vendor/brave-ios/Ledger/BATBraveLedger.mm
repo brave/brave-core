@@ -1744,27 +1744,6 @@ BATLedgerBridge(BOOL,
   [self handlePublisherListing:publishers start:0 limit:0 callback:callback];
 }
 
-- (void)saveRecurringTip:(ledger::RecurringTipPtr)info callback:(ledger::ResultCallback)callback
-{
-  [BATLedgerDatabase insertOrUpdateRecurringTipWithPublisherID:[NSString stringWithUTF8String:info->publisher_key.c_str()]
-                                                        amount:info->amount
-                                                     dateAdded:info->created_at
-                                                    completion:^(BOOL success) {
-                                                      if (!success) {
-                                                        callback(ledger::Result::LEDGER_ERROR);
-                                                        return;
-                                                      }
-                                                      callback(ledger::Result::LEDGER_OK);
-                                                    }];
-}
-
-- (void)getRecurringTips:(ledger::PublisherInfoListCallback)callback
-{
-  const auto publishers = [BATLedgerDatabase recurringTips];
-
-  [self handlePublisherListing:publishers start:0 limit:0 callback:callback];
-}
-
 - (void)loadMediaPublisherInfo:(const std::string &)media_key
                       callback:(ledger::PublisherInfoCallback)callback
 {
@@ -1775,14 +1754,6 @@ BATLedgerBridge(BOOL,
   } else {
     callback(ledger::Result::NOT_FOUND, nullptr);
   }
-}
-
-- (void)removeRecurringTip:(const std::string &)publisher_key callback:(ledger::RemoveRecurringTipCallback)callback
-{
-  const auto publisherID = [NSString stringWithUTF8String:publisher_key.c_str()];
-  [BATLedgerDatabase removeRecurringTipWithPublisherID:publisherID completion:^(BOOL success) {
-    callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
-  }];
 }
 
 - (void)saveContributionInfo:(ledger::ContributionInfoPtr)info callback:(ledger::ResultCallback)callback

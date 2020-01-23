@@ -29,12 +29,6 @@ void NativeLedgerClient::GetPendingContributions(ledger::PendingContributionInfo
 void NativeLedgerClient::GetPendingContributionsTotal(ledger::PendingContributionsTotalCallback callback) {
   [bridge_ getPendingContributionsTotal:callback];
 }
-void NativeLedgerClient::SaveRecurringTip(ledger::RecurringTipPtr info, ledger::ResultCallback callback) {
-  [bridge_ saveRecurringTip:std::move(info) callback:callback];
-}
-void NativeLedgerClient::GetRecurringTips(ledger::PublisherInfoListCallback callback) {
-  [bridge_ getRecurringTips:callback];
-}
 void NativeLedgerClient::KillTimer(const uint32_t timer_id) {
   [bridge_ killTimer:timer_id];
 }
@@ -64,9 +58,6 @@ void NativeLedgerClient::OnPanelPublisherInfo(ledger::Result result, ledger::Pub
 }
 void NativeLedgerClient::OnReconcileComplete(ledger::Result result, const std::string & viewing_id, const double amount, const ledger::RewardsType type) {
   [bridge_ onReconcileComplete:result viewingId:viewing_id type:type amount:amount];
-}
-void NativeLedgerClient::RemoveRecurringTip(const std::string & publisher_key, ledger::RemoveRecurringTipCallback callback) {
-  [bridge_ removeRecurringTip:publisher_key callback:callback];
 }
 void NativeLedgerClient::OnWalletProperties(ledger::Result result, ledger::WalletPropertiesPtr arg1) {
   [bridge_ onWalletProperties:result arg1:std::move(arg1)];

@@ -24,7 +24,6 @@
 #include "brave/components/brave_rewards/browser/database/database_media_publisher_info.h"
 #include "brave/components/brave_rewards/browser/database/database_pending_contribution.h"
 #include "brave/components/brave_rewards/browser/database/database_promotion.h"
-#include "brave/components/brave_rewards/browser/database/database_recurring_tip.h"
 #include "brave/components/brave_rewards/browser/database/database_unblinded_token.h"
 #include "brave/components/brave_rewards/browser/pending_contribution.h"
 #include "build/build_config.h"
@@ -60,12 +59,6 @@ class PublisherInfoDatabase {
 
   ledger::PublisherInfoPtr GetMediaPublisherInfo(
       const std::string& media_key);
-
-  bool InsertOrUpdateRecurringTip(ledger::RecurringTipPtr info);
-
-  void GetRecurringTips(ledger::PublisherInfoList* list);
-
-  bool RemoveRecurringTip(const std::string& publisher_key);
 
   bool InsertPendingContribution(ledger::PendingContributionList list);
 
@@ -202,7 +195,6 @@ class PublisherInfoDatabase {
   std::unique_ptr<DatabaseContributionInfo> contribution_info_;
   std::unique_ptr<DatabasePendingContribution> pending_contribution_;
   std::unique_ptr<DatabaseMediaPublisherInfo> media_publisher_info_;
-  std::unique_ptr<DatabaseRecurringTip> recurring_tip_;
 
   SEQUENCE_CHECKER(sequence_checker_);
   DISALLOW_COPY_AND_ASSIGN(PublisherInfoDatabase);

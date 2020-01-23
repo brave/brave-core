@@ -824,13 +824,13 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
 void LedgerImpl::SaveRecurringTip(
     ledger::RecurringTipPtr info,
     ledger::ResultCallback callback) {
-  ledger_client_->SaveRecurringTip(
+  bat_database_->SaveRecurringTip(
       std::move(info),
       callback);
 }
 
 void LedgerImpl::GetRecurringTips(ledger::PublisherInfoListCallback callback) {
-  ledger_client_->GetRecurringTips(callback);
+  bat_database_->GetRecurringTips(callback);
 }
 
 void LedgerImpl::GetOneTimeTips(
@@ -891,27 +891,8 @@ void LedgerImpl::GetPublisherBanner(const std::string& publisher_id,
 
 void LedgerImpl::RemoveRecurringTip(
     const std::string& publisher_key,
-    ledger::RemoveRecurringTipCallback callback) {
-  ledger_client_->RemoveRecurringTip(
-      publisher_key,
-      std::bind(&LedgerImpl::OnRemoveRecurringTip,
-                this,
-                _1,
-                callback));
-}
-
-void LedgerImpl::OnRemoveRecurringTip(
-    const ledger::Result result,
-    ledger::RemoveRecurringTipCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
-    BLOG(this, ledger::LogLevel::LOG_ERROR) <<
-      "Failed to remove recurring tip";
-
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  callback(result);
+    ledger::ResultCallback callback) {
+  bat_database_->RemoveRecurringTip(publisher_key, callback);
 }
 
 ledger::ActivityInfoFilterPtr LedgerImpl::CreateActivityFilter(

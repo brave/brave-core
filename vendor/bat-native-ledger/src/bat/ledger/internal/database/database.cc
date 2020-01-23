@@ -9,6 +9,7 @@
 #include "bat/ledger/internal/database/database_activity_info.h"
 #include "bat/ledger/internal/database/database_initialize.h"
 #include "bat/ledger/internal/database/database_publisher_info.h"
+#include "bat/ledger/internal/database/database_recurring_tip.h"
 #include "bat/ledger/internal/database/database_server_publisher_info.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
@@ -21,6 +22,7 @@ Database::Database(bat_ledger::LedgerImpl* ledger) :
   initialize_ = std::make_unique<DatabaseInitialize>(ledger_);
   activity_info_ = std::make_unique<DatabaseActivityInfo>(ledger_);
   publisher_info_ = std::make_unique<DatabasePublisherInfo>(ledger_);
+  recurring_tip_ = std::make_unique<DatabaseRecurringTip>(ledger_);
   server_publisher_info_ =
       std::make_unique<DatabaseServerPublisherInfo>(ledger_);
 }
@@ -94,6 +96,25 @@ void Database::GetExcludedList(ledger::PublisherInfoListCallback callback) {
 }
 
 /**
+ * RECURRING TIPS
+ */
+void Database::SaveRecurringTip(
+    ledger::RecurringTipPtr info,
+    ledger::ResultCallback callback) {
+  recurring_tip_->InsertOrUpdate(std::move(info), callback);
+}
+
+void Database::GetRecurringTips(ledger::PublisherInfoListCallback callback) {
+  recurring_tip_->GetAllRecords(callback);
+}
+
+void Database::RemoveRecurringTip(
+    const std::string& publisher_key,
+    ledger::ResultCallback callback) {
+  recurring_tip_->DeleteRecord(publisher_key, callback);
+}
+
+/**
  * SERVER PUBLISHER INFO
  */
 void Database::ClearAndInsertServerPublisherList(
@@ -107,7 +128,5 @@ void Database::GetServerPublisherInfo(
     ledger::GetServerPublisherInfoCallback callback) {
   server_publisher_info_->GetRecord(publisher_key, callback);
 }
-
-
 
 }  // namespace braveledger_database
