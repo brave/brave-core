@@ -1,7 +1,7 @@
 {
   "name": "brave-core",
   "version": "1.5.52",
-  "description": "Brave Core is a set of changes, APIs, and scripts used for customizing Chromium to make Brave.",
+  "description": "Brave Core is a set of changes, APIs, and scripts used for customizing Chromium to make Brave",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
