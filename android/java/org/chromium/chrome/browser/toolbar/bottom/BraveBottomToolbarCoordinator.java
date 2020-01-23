@@ -85,7 +85,7 @@ public class BraveBottomToolbarCoordinator
             mHomeButton.setOnLongClickListener(this);
         }
 
-        mBookmarksButton = bottom_toolbar_browsing.findViewById(R.id.share_button);
+        mBookmarksButton = bottom_toolbar_browsing.findViewById(R.id.bottom_share_button);
         if (mBookmarksButton != null) {
             mBookmarksButton.setOnLongClickListener(this);
         }
