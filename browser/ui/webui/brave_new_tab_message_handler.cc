@@ -31,19 +31,14 @@ bool IsPrivateNewTab(Profile* profile) {
 }
 
 base::DictionaryValue GetBrandedWallpaperDictionary(
-    const NTPSponsoredImagesData& wallpaper, size_t wallpaper_image_index) {
+    const NTPSponsoredImagesData& wallpaper,
+    size_t wallpaper_image_index) {
+  DCHECK(wallpaper_image_index >= 0 &&
+         wallpaper_image_index < wallpaper.wallpaper_image_urls.size());
+
   base::DictionaryValue data;
-  size_t valid_wallpaper_image_index = 0;
-  if (wallpaper_image_index >= 0 &&
-      (size_t)wallpaper_image_index < wallpaper.wallpaper_image_urls.size()) {
-    valid_wallpaper_image_index = (size_t)wallpaper_image_index;
-  } else {
-    LOG(ERROR) << "Wallpaper image index " << wallpaper_image_index <<
-        " was beyond bounds of images available, " <<
-        wallpaper.wallpaper_image_urls.size() - 1 << "!";
-  }
   data.SetString("wallpaperImageUrl",
-      wallpaper.wallpaper_image_urls[valid_wallpaper_image_index]);
+      wallpaper.wallpaper_image_urls[wallpaper_image_index]);
   auto logo_data = std::make_unique<base::DictionaryValue>();
   logo_data->SetString("image", wallpaper.logo_image_url);
   logo_data->SetString("companyName", wallpaper.logo_company_name);

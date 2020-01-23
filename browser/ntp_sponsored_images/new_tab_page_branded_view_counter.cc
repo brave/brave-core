@@ -195,20 +195,19 @@ void NewTabPageBrandedViewCounter::RegisterPageView() {
   if (!IsBrandedWallpaperActive()) {
     return;
   }
-  this->count_to_branded_wallpaper_--;
-  if (this->count_to_branded_wallpaper_ < 0) {
-    this->count_to_branded_wallpaper_ = kRegularCountToBrandedWallpaper;
-  } else if (this->count_to_branded_wallpaper_ == 0) {
-    // When count is `0` then UI is free to show
-    // the branded wallpaper, until the next time `RegisterPageView`
-    // is called.
-    // We select the appropriate image index for the scheduled
-    // view of the branded wallpaper.
+
+  // When count is `0` then UI is free to show
+  // the branded wallpaper, until the next time `RegisterPageView`
+  // is called.
+  // We select the appropriate image index for the scheduled
+  // view of the branded wallpaper.
+  count_to_branded_wallpaper_--;
+  if (count_to_branded_wallpaper_ < 0) {
+    // Reset count and increse image index for next time.
+    count_to_branded_wallpaper_ = kRegularCountToBrandedWallpaper;
     current_wallpaper_image_index_++;
-    size_t last_index = current_wallpaper_->wallpaper_image_urls.size() - 1;
-    if (current_wallpaper_image_index_ > last_index) {
-      current_wallpaper_image_index_ = 0;
-    }
+    current_wallpaper_image_index_ %=
+        current_wallpaper_->wallpaper_image_urls.size();
   }
 }
 
@@ -221,8 +220,7 @@ bool NewTabPageBrandedViewCounter::IsBrandedWallpaperActive() {
 }
 
 bool NewTabPageBrandedViewCounter::ShouldShowBrandedWallpaper() {
-  return IsBrandedWallpaperActive() && (
-      this->count_to_branded_wallpaper_ == 0);
+  return IsBrandedWallpaperActive() && (count_to_branded_wallpaper_ == 0);
 }
 
 const

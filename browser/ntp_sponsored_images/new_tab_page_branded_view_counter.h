@@ -63,7 +63,7 @@ class NewTabPageBrandedViewCounter
   void ResetNotificationState();
 
   std::unique_ptr<NTPSponsoredImagesData> current_wallpaper_ = nullptr;
-  size_t current_wallpaper_image_index_ = -1;
+  size_t current_wallpaper_image_index_ = 0;
   bool has_user_opted_in_;
   bool is_supported_locale_;
   int count_to_branded_wallpaper_;
