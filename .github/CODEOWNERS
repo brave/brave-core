@@ -5,6 +5,7 @@ script/uplift.py @bsclifton
 vendor/brave-ios/ @kylehickinson
 /README.md @bsclifton
 Jenkinsfile @mihaiplesa
+/ts* @petemill
 
 # Rewards
 vendor/bat-native-ledger/ @NejcZdovc
@@ -44,6 +45,21 @@ components/brave_wayback_machine @simonhong
 # NTP sponsored images
 browser/ntp_sponsored_images @simonhong @petemill
 components/ntp_sponsored_images @simonhong @petemill
+
+# WebUI
+/components/*_ui/ @petemill @cezaraugusto
+/components/brave_extension/ @cezaraugusto @petemill
+/components/brave_sync/extension/ @cezaraugusto
+/browser/resources/ @petemill @bsclifton
+/ui/webui/ @petemill @bsclifton
+/browser/ui/webui/ @petemill @bsclifton
+
+# Native UI
+/browser/ui/views/ @petemill
+/browser/ui/brave_actions/ @petemill
+/browser/ui/toolbar/ @petemill
+/browser/ui/brave_layout_constants.* @petemill
+/ui/base/ @petemill
 
 # Licensing of third-party components
 common/licenses/ @fmarier
