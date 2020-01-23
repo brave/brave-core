@@ -28,9 +28,6 @@
 
 namespace {
 
-constexpr int kInitialCountToBrandedWallpaper = 1;
-constexpr int kRegularCountToBrandedWallpaper = 3;
-
 std::unique_ptr<NTPSponsoredImagesData> GetDemoWallpaper() {
   auto demo = std::make_unique<NTPSponsoredImagesData>();
   demo->wallpaper_image_urls = {
@@ -105,8 +102,7 @@ NewTabPageBrandedViewCounter* NewTabPageBrandedViewCounter::GetForProfile(
 }
 
 NewTabPageBrandedViewCounter::NewTabPageBrandedViewCounter(Profile* profile)
-    : count_to_branded_wallpaper_(kInitialCountToBrandedWallpaper),
-      profile_(profile) {
+    : profile_(profile) {
   // If we have a wallpaper, store it as private var.
   // Set demo wallpaper if a flag is set.
   if (base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaper)) {
@@ -120,8 +116,11 @@ NewTabPageBrandedViewCounter::NewTabPageBrandedViewCounter(Profile* profile)
       const auto optional_data = manager->GetLatestSponsoredImagesData();
       if (optional_data) {
         current_wallpaper_.reset(new NTPSponsoredImagesData(*optional_data));
-      }
     }
+  }
+  if (current_wallpaper_) {
+    model_.set_total_image_count(
+        current_wallpaper_->wallpaper_image_urls.size());
   }
   // Allow notification dismissal pref to be reset when rewards status changes.
   auto* rewards_service_ =
@@ -167,7 +166,8 @@ void NewTabPageBrandedViewCounter::OnUpdated(
 
   // Data is updated, so change our stored data and reset any indexes.
   // But keep view counter until branded content is seen.
-  current_wallpaper_image_index_ = 0;
+  model_.Reset();
+  model_.set_total_image_count(data.wallpaper_image_urls.size());
   current_wallpaper_.reset(new NTPSponsoredImagesData(data));
 }
 
@@ -192,22 +192,8 @@ void NewTabPageBrandedViewCounter::RegisterPageView() {
   // Don't do any counting if we will never be showing the data
   // since we want the count to start at the point of data being available
   // or the user opt-in status changing.
-  if (!IsBrandedWallpaperActive()) {
-    return;
-  }
-
-  // When count is `0` then UI is free to show
-  // the branded wallpaper, until the next time `RegisterPageView`
-  // is called.
-  // We select the appropriate image index for the scheduled
-  // view of the branded wallpaper.
-  count_to_branded_wallpaper_--;
-  if (count_to_branded_wallpaper_ < 0) {
-    // Reset count and increse image index for next time.
-    count_to_branded_wallpaper_ = kRegularCountToBrandedWallpaper;
-    current_wallpaper_image_index_++;
-    current_wallpaper_image_index_ %=
-        current_wallpaper_->wallpaper_image_urls.size();
+  if (IsBrandedWallpaperActive()) {
+    model_.RegisterPageView();
   }
 }
 
@@ -220,7 +206,8 @@ bool NewTabPageBrandedViewCounter::IsBrandedWallpaperActive() {
 }
 
 bool NewTabPageBrandedViewCounter::ShouldShowBrandedWallpaper() {
-  return IsBrandedWallpaperActive() && (count_to_branded_wallpaper_ == 0);
+  return IsBrandedWallpaperActive() &&
+      model_.ShouldShowBrandedWallpaper();
 }
 
 const
@@ -229,7 +216,7 @@ NTPSponsoredImagesData& NewTabPageBrandedViewCounter::GetBrandedWallpaper() {
 }
 
 size_t NewTabPageBrandedViewCounter::GetWallpaperImageIndexToDisplay() {
-  return current_wallpaper_image_index_;
+  return model_.current_wallpaper_image_index();
 }
 
 void NewTabPageBrandedViewCounter::SetShouldShowFromPreferences() {

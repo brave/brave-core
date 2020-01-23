@@ -10,6 +10,7 @@
 
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
+#include "brave/browser/ntp_sponsored_images/view_counter_model.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_component_manager.h"
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_data.h"
@@ -63,12 +64,11 @@ class NewTabPageBrandedViewCounter
   void ResetNotificationState();
 
   std::unique_ptr<NTPSponsoredImagesData> current_wallpaper_ = nullptr;
-  size_t current_wallpaper_image_index_ = 0;
   bool has_user_opted_in_;
   bool is_supported_locale_;
-  int count_to_branded_wallpaper_;
   PrefChangeRegistrar pref_change_registrar_;
   Profile* profile_;
+  ViewCounterModel model_;
 
   DISALLOW_COPY_AND_ASSIGN(NewTabPageBrandedViewCounter);
 };

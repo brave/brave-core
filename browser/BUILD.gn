@@ -73,6 +73,8 @@ source_set("browser_process") {
     "ntp_sponsored_images/ntp_sponsored_images_service_factory.h",
     "ntp_sponsored_images/new_tab_page_branded_view_counter.cc",
     "ntp_sponsored_images/new_tab_page_branded_view_counter.h",
+    "ntp_sponsored_images/view_counter_model.cc",
+    "ntp_sponsored_images/view_counter_model.h",
     "search_engines/guest_window_search_engine_provider_service.cc",
     "search_engines/guest_window_search_engine_provider_service.h",
     "search_engines/private_window_search_engine_provider_service.cc",
