@@ -25,6 +25,10 @@ class AutoContributeDetailViewController: UIViewController {
   }
   
   func setupLedgerObservers() {
+    ledgerObserver.fetchedBalance = { [weak self] in
+      // Monthly payment options don't exist until after balance is fetched
+      self?.contentView.tableView.reloadData()
+    }
     ledgerObserver.excludedSitesChanged = { [weak self] _, _ in
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
         // TODO: Remove this delay after DB migration
