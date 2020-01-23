@@ -66,8 +66,6 @@ private:
   void GetExternalWallets(ledger::GetExternalWalletsCallback callback) override;
   void SaveExternalWallet(const std::string& wallet_type, ledger::ExternalWalletPtr wallet) override;
   void ShowNotification(const std::string& type, const std::vector<std::string>& args,  ledger::ShowNotificationCallback callback) override;
-  void ClearAndInsertServerPublisherList(ledger::ServerPublisherInfoList list, ledger::ClearAndInsertServerPublisherListCallback callback) override;
-  void GetServerPublisherInfo(const std::string& publisher_key, ledger::GetServerPublisherInfoCallback callback) override;
   void SetTransferFee(const std::string& wallet_type, ledger::TransferFeePtr transfer_fee) override;
   ledger::TransferFeeList GetTransferFees(const std::string& wallet_type) override;
   void RemoveTransferFee(const std::string& wallet_type, const std::string& id) override;

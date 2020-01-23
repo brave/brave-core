@@ -53,9 +53,6 @@ PublisherInfoDatabase::PublisherInfoDatabase(
     testing_current_version_(testing_current_version) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 
-  server_publisher_info_ =
-      std::make_unique<DatabaseServerPublisherInfo>(GetCurrentVersion());
-
   contribution_queue_ =
       std::make_unique<DatabaseContributionQueue>(GetCurrentVersion());
 
@@ -309,29 +306,6 @@ bool PublisherInfoDatabase::RemoveAllPendingContributions() {
   }
 
   return pending_contribution_->DeleteAllRecords(&GetDB());
-}
-
-/**
- *
- * SERVER PUBLISHER
- *
- */
-bool PublisherInfoDatabase::ClearAndInsertServerPublisherList(
-    const ledger::ServerPublisherInfoList& list) {
-  if (!IsInitialized()) {
-    return false;
-  }
-
-  return server_publisher_info_->ClearAndInsertList(&GetDB(), list);
-}
-
-ledger::ServerPublisherInfoPtr PublisherInfoDatabase::GetServerPublisherInfo(
-    const std::string& publisher_key) {
-  if (!IsInitialized()) {
-    return nullptr;
-  }
-
-  return server_publisher_info_->GetRecord(&GetDB(), publisher_key);
 }
 
 /**
@@ -651,16 +625,9 @@ bool PublisherInfoDatabase::MigrateV5toV6() {
 }
 
 bool PublisherInfoDatabase::MigrateV6toV7() {
-  sql::Transaction transaction(&GetDB());
-  if (!transaction.Begin()) {
-    return false;
-  }
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  if (!server_publisher_info_->Migrate(&GetDB(), 7)) {
-    return false;
-  }
-
-  return transaction.Commit();
+  return true;
 }
 
 bool PublisherInfoDatabase::MigrateV7toV8() {
@@ -793,10 +760,6 @@ bool PublisherInfoDatabase::MigrateV14toV15() {
   }
 
   if (!recurring_tip_->Migrate(&GetDB(), 15)) {
-    return false;
-  }
-
-  if (!server_publisher_info_->Migrate(&GetDB(), 15)) {
     return false;
   }
 

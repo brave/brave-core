@@ -9,6 +9,7 @@
 #include "bat/ledger/internal/database/database_activity_info.h"
 #include "bat/ledger/internal/database/database_initialize.h"
 #include "bat/ledger/internal/database/database_publisher_info.h"
+#include "bat/ledger/internal/database/database_server_publisher_info.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
 namespace braveledger_database {
@@ -20,6 +21,8 @@ Database::Database(bat_ledger::LedgerImpl* ledger) :
   initialize_ = std::make_unique<DatabaseInitialize>(ledger_);
   activity_info_ = std::make_unique<DatabaseActivityInfo>(ledger_);
   publisher_info_ = std::make_unique<DatabasePublisherInfo>(ledger_);
+  server_publisher_info_ =
+      std::make_unique<DatabaseServerPublisherInfo>(ledger_);
 }
 
 Database::~Database() = default;
@@ -88,6 +91,21 @@ void Database::RestorePublishers(ledger::ResultCallback callback) {
 
 void Database::GetExcludedList(ledger::PublisherInfoListCallback callback) {
   publisher_info_->GetExcludedList(callback);
+}
+
+/**
+ * SERVER PUBLISHER INFO
+ */
+void Database::ClearAndInsertServerPublisherList(
+    const ledger::ServerPublisherInfoList& list,
+    ledger::ResultCallback callback) {
+  server_publisher_info_->ClearAndInsertList(list, callback);
+}
+
+void Database::GetServerPublisherInfo(
+    const std::string& publisher_key,
+    ledger::GetServerPublisherInfoCallback callback) {
+  server_publisher_info_->GetRecord(publisher_key, callback);
 }
 
 

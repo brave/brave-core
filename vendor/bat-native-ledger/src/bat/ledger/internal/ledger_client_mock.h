@@ -280,14 +280,6 @@ class MockLedgerClient : public LedgerClient {
       const std::vector<std::string>& args,
       ledger::ShowNotificationCallback callback));
 
-  MOCK_METHOD2(ClearAndInsertServerPublisherList, void(
-      ledger::ServerPublisherInfoList list,
-      ledger::ClearAndInsertServerPublisherListCallback callback));
-
-  MOCK_METHOD2(GetServerPublisherInfo, void(
-      const std::string& publisher_key,
-      ledger::GetServerPublisherInfoCallback callback));
-
   MOCK_METHOD2(SetTransferFee, void(
       const std::string& wallet_type,
       ledger::TransferFeePtr transfer_fee));

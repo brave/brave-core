@@ -1939,38 +1939,6 @@ BATLedgerBridge(BOOL,
                      onlyOnce:NO];
 }
 
-- (void)getServerPublisherInfo:(const std::string &)publisher_key callback:(ledger::GetServerPublisherInfoCallback)callback
-{
-  const auto publisherID = [NSString stringWithUTF8String:publisher_key.c_str()];
-  const auto info = [BATLedgerDatabase serverPublisherInfoWithPublisherID:publisherID];
-  if (!info) {
-    callback(nullptr);
-    return;
-  }
-  callback(info.cppObjPtr);
-}
-
-- (void)clearAndInsertServerPublisherList:(ledger::ServerPublisherInfoList)list callback:(ledger::ClearAndInsertServerPublisherListCallback)callback
-{
-  if (self.loadingPublisherList) {
-    return;
-  }
-  const auto list_ = NSArrayFromVector(&list, ^BATServerPublisherInfo *(const ledger::ServerPublisherInfoPtr& info) {
-    return [[BATServerPublisherInfo alloc] initWithServerPublisherInfo:*info];
-  });
-  self.loadingPublisherList = YES;
-  [BATLedgerDatabase clearAndInsertList:list_ completion:^(BOOL success) {
-    self.loadingPublisherList = NO;
-    callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
-    
-    for (BATBraveLedgerObserver *observer in [self.observers copy]) {
-      if (observer.publisherListUpdated) {
-        observer.publisherListUpdated();
-      }
-    }
-  }];
-}
-
 - (void)insertOrUpdateContributionQueue:(ledger::ContributionQueuePtr)info callback:(ledger::ResultCallback)callback
 {
   if (info.get() == nullptr) { return; }

@@ -639,14 +639,6 @@ class RewardsServiceImpl : public RewardsService,
       const std::vector<std::string>& args,
       ledger::ShowNotificationCallback callback) override;
 
-  void ClearAndInsertServerPublisherList(
-      ledger::ServerPublisherInfoList list,
-      ledger::ClearAndInsertServerPublisherListCallback callback) override;
-
-  void GetServerPublisherInfo(
-    const std::string& publisher_key,
-    ledger::GetServerPublisherInfoCallback callback) override;
-
   void SetTransferFee(
       const std::string& wallet_type,
       ledger::TransferFeePtr transfer_fee) override;
@@ -766,14 +758,6 @@ class RewardsServiceImpl : public RewardsService,
       ledger::Result result,
       const std::string& publisher_key,
       const std::string& publisher_name) override;
-
-  void OnClearAndInsertServerPublisherList(
-    ledger::ClearAndInsertServerPublisherListCallback callback,
-    bool result);
-
-  void OnGetServerPublisherInfo(
-    ledger::GetServerPublisherInfoCallback callback,
-    ledger::ServerPublisherInfoPtr info);
 
   bool Connected() const;
   void ConnectionClosed();

@@ -25,7 +25,6 @@
 #include "brave/components/brave_rewards/browser/database/database_pending_contribution.h"
 #include "brave/components/brave_rewards/browser/database/database_promotion.h"
 #include "brave/components/brave_rewards/browser/database/database_recurring_tip.h"
-#include "brave/components/brave_rewards/browser/database/database_server_publisher_info.h"
 #include "brave/components/brave_rewards/browser/database/database_unblinded_token.h"
 #include "brave/components/brave_rewards/browser/pending_contribution.h"
 #include "build/build_config.h"
@@ -78,12 +77,6 @@ class PublisherInfoDatabase {
   bool RemovePendingContributions(const uint64_t id);
 
   bool RemoveAllPendingContributions();
-
-  bool ClearAndInsertServerPublisherList(
-      const ledger::ServerPublisherInfoList& list);
-
-  ledger::ServerPublisherInfoPtr GetServerPublisherInfo(
-      const std::string& publisher_key);
 
   bool InsertOrUpdateContributionQueue(ledger::ContributionQueuePtr info);
 
@@ -203,7 +196,6 @@ class PublisherInfoDatabase {
   int testing_current_version_;
 
   std::unique_ptr<base::MemoryPressureListener> memory_pressure_listener_;
-  std::unique_ptr<DatabaseServerPublisherInfo> server_publisher_info_;
   std::unique_ptr<DatabaseContributionQueue> contribution_queue_;
   std::unique_ptr<DatabasePromotion> promotion_;
   std::unique_ptr<DatabaseUnblindedToken> unblinded_token_;

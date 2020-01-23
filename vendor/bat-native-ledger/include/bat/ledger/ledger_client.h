@@ -62,8 +62,6 @@ using GetExternalWalletsCallback =
     std::function<void(std::map<std::string, ledger::ExternalWalletPtr>)>;
 using ShowNotificationCallback = std::function<void(const Result)>;
 using SavePendingContributionCallback = std::function<void(const Result)>;
-using ClearAndInsertServerPublisherListCallback =
-    std::function<void(const Result)>;
 using GetServerPublisherInfoCallback =
     std::function<void(ledger::ServerPublisherInfoPtr)>;
 using ResultCallback = std::function<void(const Result)>;
@@ -245,14 +243,6 @@ class LEDGER_EXPORT LedgerClient {
       const std::string& type,
       const std::vector<std::string>& args,
       ledger::ShowNotificationCallback callback) = 0;
-
-  virtual void ClearAndInsertServerPublisherList(
-      ledger::ServerPublisherInfoList list,
-      ledger::ClearAndInsertServerPublisherListCallback callback) = 0;
-
-  virtual void GetServerPublisherInfo(
-    const std::string& publisher_key,
-    ledger::GetServerPublisherInfoCallback callback) = 0;
 
   virtual void SetTransferFee(
       const std::string& wallet_type,
