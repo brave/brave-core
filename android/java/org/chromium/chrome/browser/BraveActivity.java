@@ -15,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.ChromeSwitches;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
+import org.chromium.chrome.browser.firstrun.FirstRunStatus;
 import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
 import org.chromium.chrome.browser.onboarding.OnboardingActivity;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
@@ -153,6 +155,16 @@ public abstract class BraveActivity extends ChromeActivity {
         BraveReferrer.getInstance().initReferrer(this);
         createNotificationChannel();
         setupBraveSetDefaultBrowserNotification();
+    }
+
+    @Override
+    protected void initializeStartupMetrics() {
+        super.initializeStartupMetrics();
+
+        // Disable FRE for arm64 builds where ChromeActivity is the one that
+        // triggers FRE instead of ChromeLauncherActivity on arm32 build.
+        CommandLine.getInstance().appendSwitch(ChromeSwitches.DISABLE_FIRST_RUN_EXPERIENCE);
+        FirstRunStatus.setFirstRunFlowComplete(true);
     }
 
     @Override
