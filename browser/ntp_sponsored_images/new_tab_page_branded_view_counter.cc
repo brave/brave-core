@@ -46,7 +46,7 @@ class NewTabPageBrandedViewCounterFactory
  public:
   static NewTabPageBrandedViewCounter* GetForProfile(Profile* profile) {
     return static_cast<NewTabPageBrandedViewCounter*>(
-    GetInstance()->GetServiceForBrowserContext(profile, true));
+        GetInstance()->GetServiceForBrowserContext(profile, true));
   }
 
   static NewTabPageBrandedViewCounterFactory* GetInstance() {
@@ -101,24 +101,25 @@ void  NewTabPageBrandedViewCounter::
 
 NewTabPageBrandedViewCounter* NewTabPageBrandedViewCounter::GetForProfile(
     Profile* profile) {
-  return NewTabPageBrandedViewCounterFactory::GetForProfile(profile);
+  if (base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaper))
+    return NewTabPageBrandedViewCounterFactory::GetForProfile(profile);
+  return nullptr;
 }
 
 NewTabPageBrandedViewCounter::NewTabPageBrandedViewCounter(Profile* profile)
     : profile_(profile) {
   // If we have a wallpaper, store it as private var.
   // Set demo wallpaper if a flag is set.
-  if (base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaper)) {
-    if (base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo)) {
-      current_wallpaper_ = GetDemoWallpaper();
-    } else {
-      NTPSponsoredImagesComponentManager* manager =
-          g_brave_browser_process->ntp_sponsored_images_component_manager();
-      manager->AddObserver(this);
-      // Check if we have real data
-      const auto optional_data = manager->GetLatestSponsoredImagesData();
-      if (optional_data) {
-        current_wallpaper_.reset(new NTPSponsoredImagesData(*optional_data));
+  if (base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo)) {
+    current_wallpaper_ = GetDemoWallpaper();
+  } else {
+    NTPSponsoredImagesComponentManager* manager =
+        g_brave_browser_process->ntp_sponsored_images_component_manager();
+    manager->AddObserver(this);
+    // Check if we have real data
+    const auto optional_data = manager->GetLatestSponsoredImagesData();
+    if (optional_data) {
+      current_wallpaper_.reset(new NTPSponsoredImagesData(*optional_data));
     }
   }
   if (current_wallpaper_) {
@@ -201,9 +202,6 @@ void NewTabPageBrandedViewCounter::RegisterPageView() {
 }
 
 bool NewTabPageBrandedViewCounter::IsBrandedWallpaperActive() {
-  if (!base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaper)) {
-    return false;
-  }
   return (is_supported_locale_ && has_user_opted_in_ &&
      current_wallpaper_ != nullptr);
 }

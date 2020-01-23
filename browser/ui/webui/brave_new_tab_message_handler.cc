@@ -313,8 +313,8 @@ void BraveNewTabMessageHandler::HandleRegisterNewTabPageView(
   AllowJavascript();
   // Decrement original value only if there's actual branded content
 
-  NewTabPageBrandedViewCounter::GetForProfile(profile_)
-      ->RegisterPageView();
+  if (auto* service = NewTabPageBrandedViewCounter::GetForProfile(profile_))
+    service->RegisterPageView();
 }
 
 void BraveNewTabMessageHandler::HandleGetBrandedWallpaperData(
@@ -322,7 +322,7 @@ void BraveNewTabMessageHandler::HandleGetBrandedWallpaperData(
   AllowJavascript();
 
   auto* service = NewTabPageBrandedViewCounter::GetForProfile(profile_);
-  if (!service->ShouldShowBrandedWallpaper()) {
+  if (!service || !service->ShouldShowBrandedWallpaper()) {
     ResolveJavascriptCallback(args->GetList()[0], base::Value());
     return;
   }
