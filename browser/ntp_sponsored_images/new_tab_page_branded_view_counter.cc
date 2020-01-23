@@ -47,7 +47,6 @@ std::unique_ptr<NTPSponsoredImagesData> GetDemoWallpaper() {
 class NewTabPageBrandedViewCounterFactory
     : public BrowserContextKeyedServiceFactory {
  public:
-  // Returns the CaptivePortalService for |profile|.
   static NewTabPageBrandedViewCounter* GetForProfile(Profile* profile) {
     return static_cast<NewTabPageBrandedViewCounter*>(
     GetInstance()->GetServiceForBrowserContext(profile, true));
@@ -109,8 +108,6 @@ NewTabPageBrandedViewCounter::NewTabPageBrandedViewCounter(Profile* profile)
     : count_to_branded_wallpaper_(kInitialCountToBrandedWallpaper),
       profile_(profile) {
   // If we have a wallpaper, store it as private var.
-  // TODO(petemill): Update the private var when the data source gets
-  // new content, when we have a data source!
   // Set demo wallpaper if a flag is set.
   if (base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaper)) {
     if (base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo)) {

@@ -47,6 +47,5 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
 NTPSponsoredImagesData::~NTPSponsoredImagesData() = default;
 
 bool NTPSponsoredImagesData::IsValid() const {
-  LOG(ERROR) << wallpaper_image_urls.size();
   return wallpaper_image_urls.size() > 0;
 }

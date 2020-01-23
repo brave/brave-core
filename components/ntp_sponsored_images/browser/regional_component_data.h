@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_REGIONAL_COMPONENT_DATA_H_
-#define BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_REGIONAL_COMPONENT_DATA_H_
+#ifndef BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_BROWSER_REGIONAL_COMPONENT_DATA_H_
+#define BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_BROWSER_REGIONAL_COMPONENT_DATA_H_
 
 #include <string>
 
@@ -19,4 +19,4 @@ struct RegionalComponentData {
 base::Optional<RegionalComponentData> GetRegionalComponentData(
     const std::string& region);
 
-#endif  // BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_REGIONAL_COMPONENT_DATA_H_
+#endif  // BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_BROWSER_REGIONAL_COMPONENT_DATA_H_
