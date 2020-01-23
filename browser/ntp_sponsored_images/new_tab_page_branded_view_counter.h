@@ -28,6 +28,10 @@ class NewTabPageBrandedViewCounter
   explicit NewTabPageBrandedViewCounter(Profile* profile);
   ~NewTabPageBrandedViewCounter() override;
 
+  NewTabPageBrandedViewCounter(const NewTabPageBrandedViewCounter&) = delete;
+  NewTabPageBrandedViewCounter& operator=(
+      const NewTabPageBrandedViewCounter&) = delete;
+
   // Lets the counter know that a New Tab Page view has occured.
   // This should always be called as it will evaluate whether the user has
   // opted-in or data is available.
@@ -69,8 +73,6 @@ class NewTabPageBrandedViewCounter
   PrefChangeRegistrar pref_change_registrar_;
   Profile* profile_;
   ViewCounterModel model_;
-
-  DISALLOW_COPY_AND_ASSIGN(NewTabPageBrandedViewCounter);
 };
 
 #endif  // BRAVE_BROWSER_NTP_SPONSORED_IMAGES_NEW_TAB_PAGE_BRANDED_VIEW_COUNTER_H_

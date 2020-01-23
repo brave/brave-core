@@ -60,7 +60,12 @@ class NewTabPageBrandedViewCounterFactory
     DependsOn(brave_rewards::RewardsServiceFactory::GetInstance());
     DependsOn(brave_ads::AdsServiceFactory::GetInstance());
   }
-  ~NewTabPageBrandedViewCounterFactory() override { }
+  ~NewTabPageBrandedViewCounterFactory() override = default;
+
+  NewTabPageBrandedViewCounterFactory(
+      const NewTabPageBrandedViewCounterFactory&) = delete;
+  NewTabPageBrandedViewCounterFactory& operator=(
+      const NewTabPageBrandedViewCounterFactory&) = delete;
 
  private:
   // BrowserContextKeyedServiceFactory:
@@ -84,8 +89,6 @@ class NewTabPageBrandedViewCounterFactory
   bool ServiceIsCreatedWithBrowserContext() const override {
     return true;
   }
-
-  DISALLOW_COPY_AND_ASSIGN(NewTabPageBrandedViewCounterFactory);
 };
 
 }  // namespace
@@ -146,7 +149,7 @@ NewTabPageBrandedViewCounter::NewTabPageBrandedViewCounter(Profile* profile)
   }
 }
 
-NewTabPageBrandedViewCounter::~NewTabPageBrandedViewCounter() { }
+NewTabPageBrandedViewCounter::~NewTabPageBrandedViewCounter() = default;
 
 void NewTabPageBrandedViewCounter::Shutdown() {
   NTPSponsoredImagesComponentManager* manager =
