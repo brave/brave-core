@@ -6,7 +6,9 @@
 #ifndef BRAVELEDGER_DATABASE_DATABASE_TABLE_H_
 #define BRAVELEDGER_DATABASE_DATABASE_TABLE_H_
 
+#include <map>
 #include <string>
+#include <vector>
 
 #include "bat/ledger/ledger.h"
 #include "sql/database.h"
@@ -16,6 +18,12 @@ class LedgerImpl;
 }
 
 namespace braveledger_database {
+
+using ServerPublisherLinksCallback =
+    std::function<void(const std::map<std::string, std::string>& links)>;
+
+using ServerPublisherAmountsCallback =
+    std::function<void(const std::vector<double>& amounts)>;
 
 class DatabaseTable {
  public:

@@ -715,54 +715,6 @@ void LedgerClientMojoProxy::ShowNotification(
                 _1));
 }
 
-// static
-void LedgerClientMojoProxy::OnClearAndInsertServerPublisherList(
-    CallbackHolder<ClearAndInsertServerPublisherListCallback>* holder,
-    const ledger::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(result);
-  }
-  delete holder;
-}
-
-void LedgerClientMojoProxy::ClearAndInsertServerPublisherList(
-      ledger::ServerPublisherInfoList list,
-      ClearAndInsertServerPublisherListCallback callback) {
-  auto* holder = new CallbackHolder<ClearAndInsertServerPublisherListCallback>(
-      AsWeakPtr(),
-      std::move(callback));
-  ledger_client_->ClearAndInsertServerPublisherList(
-      std::move(list),
-      std::bind(LedgerClientMojoProxy::OnClearAndInsertServerPublisherList,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnGetServerPublisherInfo(
-    CallbackHolder<GetServerPublisherInfoCallback>* holder,
-    ledger::ServerPublisherInfoPtr info) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(std::move(info));
-  }
-  delete holder;
-}
-
-void LedgerClientMojoProxy::GetServerPublisherInfo(
-    const std::string& publisher_key,
-    GetServerPublisherInfoCallback callback) {
-  auto* holder = new CallbackHolder<GetServerPublisherInfoCallback>(
-      AsWeakPtr(),
-      std::move(callback));
-  ledger_client_->GetServerPublisherInfo(
-      publisher_key,
-      std::bind(LedgerClientMojoProxy::OnGetServerPublisherInfo,
-                holder,
-                _1));
-}
-
 void LedgerClientMojoProxy::GetTransferFees(
     const std::string& wallet_type,
     GetTransferFeesCallback callback) {

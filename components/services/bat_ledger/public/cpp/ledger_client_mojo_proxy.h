@@ -169,14 +169,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       const std::vector<std::string>& args,
       ShowNotificationCallback callback) override;
 
-  void ClearAndInsertServerPublisherList(
-    ledger::ServerPublisherInfoList list,
-    ClearAndInsertServerPublisherListCallback callback) override;
-
-  void GetServerPublisherInfo(
-      const std::string& publisher_key,
-      GetServerPublisherInfoCallback callback) override;
-
   void SetTransferFee(
       const std::string& wallet_type,
       ledger::TransferFeePtr transfer_fee) override;
@@ -391,14 +383,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   static void OnShowNotification(
     CallbackHolder<ShowNotificationCallback>* holder,
     const ledger::Result result);
-
-  static void OnClearAndInsertServerPublisherList(
-      CallbackHolder<ClearAndInsertServerPublisherListCallback>* holder,
-      const ledger::Result result);
-
-  static void OnGetServerPublisherInfo(
-    CallbackHolder<GetServerPublisherInfoCallback>* holder,
-    ledger::ServerPublisherInfoPtr info);
 
   static void OnInsertOrUpdateContributionQueue(
     CallbackHolder<InsertOrUpdateContributionQueueCallback>* holder,

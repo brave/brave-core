@@ -491,10 +491,11 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD2(ClearAndInsertServerPublisherList,
       void(ledger::ServerPublisherInfoList,
-          ledger::ClearAndInsertServerPublisherListCallback));
+          ledger::ResultCallback));
 
-  MOCK_METHOD2(GetServerPublisherInfo,
-      void(const std::string&, ledger::GetServerPublisherInfoCallback));
+  MOCK_METHOD2(GetServerPublisherInfo, void(
+      const std::string&,
+      ledger::GetServerPublisherInfoCallback));
 
   MOCK_METHOD1(IsPublisherConnectedOrVerified,
       bool(const ledger::PublisherStatus));

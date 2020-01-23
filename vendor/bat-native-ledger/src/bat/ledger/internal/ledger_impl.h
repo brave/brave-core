@@ -521,7 +521,7 @@ class LedgerImpl : public ledger::Ledger,
 
   void ClearAndInsertServerPublisherList(
       ledger::ServerPublisherInfoList list,
-      ledger::ClearAndInsertServerPublisherListCallback callback);
+      ledger::ResultCallback callback);
 
   void GetServerPublisherInfo(
     const std::string& publisher_key,

@@ -6,14 +6,10 @@
 #include <map>
 #include <utility>
 
-#include "base/bind.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/database/database_activity_info.h"
-#include "bat/ledger/internal/database/database_table.h"
 #include "bat/ledger/internal/database/database_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "sql/statement.h"
-#include "sql/transaction.h"
 
 using std::placeholders::_1;
 
@@ -568,9 +564,7 @@ void DatabaseActivityInfo::InsertOrUpdateList(
       _1,
       callback);
 
-  ledger_->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseActivityInfo::CreateInsertOrUpdate(
@@ -658,9 +652,7 @@ void DatabaseActivityInfo::GetRecordsList(
       _1,
       callback);
 
-  ledger_->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseActivityInfo::OnGetRecordsList(
@@ -726,9 +718,7 @@ void DatabaseActivityInfo::DeleteRecord(
       _1,
       callback);
 
-  ledger_->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 }  // namespace braveledger_database

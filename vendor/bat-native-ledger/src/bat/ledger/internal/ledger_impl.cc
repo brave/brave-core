@@ -1496,15 +1496,15 @@ void LedgerImpl::DeleteActivityInfo(
 }
 
 void LedgerImpl::ClearAndInsertServerPublisherList(
-      ledger::ServerPublisherInfoList list,
-      ledger::ClearAndInsertServerPublisherListCallback callback) {
-  ledger_client_->ClearAndInsertServerPublisherList(std::move(list), callback);
+    ledger::ServerPublisherInfoList list,
+    ledger::ResultCallback callback) {
+  bat_database_->ClearAndInsertServerPublisherList(std::move(list), callback);
 }
 
 void LedgerImpl::GetServerPublisherInfo(
     const std::string& publisher_key,
     ledger::GetServerPublisherInfoCallback callback) {
-  ledger_client_->GetServerPublisherInfo(publisher_key, callback);
+  bat_database_->GetServerPublisherInfo(publisher_key, callback);
 }
 
 bool LedgerImpl::IsPublisherConnectedOrVerified(

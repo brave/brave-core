@@ -164,12 +164,6 @@ void NativeLedgerClient::SaveExternalWallet(const std::string& wallet_type, ledg
 void NativeLedgerClient::ShowNotification(const std::string& type, const std::vector<std::string>& args, ledger::ShowNotificationCallback callback) {
   [bridge_ showNotification:type args:args callback:callback];
 }
-void NativeLedgerClient::ClearAndInsertServerPublisherList(ledger::ServerPublisherInfoList list, ledger::ClearAndInsertServerPublisherListCallback callback) {
-  [bridge_ clearAndInsertServerPublisherList:std::move(list) callback:callback];
-}
-void NativeLedgerClient::GetServerPublisherInfo(const std::string& publisher_key, ledger::GetServerPublisherInfoCallback callback) {
-  [bridge_ getServerPublisherInfo:publisher_key callback:callback];
-}
 void NativeLedgerClient::SetTransferFee(const std::string& wallet_type, ledger::TransferFeePtr transfer_fee) {
   [bridge_ setTransferFee:wallet_type transfer_fee:std::move(transfer_fee)];
 }

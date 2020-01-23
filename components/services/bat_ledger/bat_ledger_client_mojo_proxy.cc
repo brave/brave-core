@@ -735,35 +735,6 @@ void BatLedgerClientMojoProxy::ShowNotification(
       base::BindOnce(&OnShowNotification, std::move(callback)));
 }
 
-void OnClearAndInsertServerPublisherList(
-  const ledger::ClearAndInsertServerPublisherListCallback& callback,
-  const ledger::Result result) {
-  callback(result);
-}
-
-void BatLedgerClientMojoProxy::ClearAndInsertServerPublisherList(
-    ledger::ServerPublisherInfoList list,
-    ledger::ClearAndInsertServerPublisherListCallback callback) {
-  bat_ledger_client_->ClearAndInsertServerPublisherList(
-      std::move(list),
-      base::BindOnce(&OnClearAndInsertServerPublisherList,
-          std::move(callback)));
-}
-
-void OnGetServerPublisherInfo(
-  const ledger::GetServerPublisherInfoCallback& callback,
-  ledger::ServerPublisherInfoPtr info) {
-  callback(std::move(info));
-}
-
-void BatLedgerClientMojoProxy::GetServerPublisherInfo(
-    const std::string& publisher_key,
-    ledger::GetServerPublisherInfoCallback callback) {
-  bat_ledger_client_->GetServerPublisherInfo(
-      publisher_key,
-      base::BindOnce(&OnGetServerPublisherInfo, std::move(callback)));
-}
-
 void BatLedgerClientMojoProxy::SetTransferFee(
     const std::string& wallet_type,
     ledger::TransferFeePtr transfer_fee) {
