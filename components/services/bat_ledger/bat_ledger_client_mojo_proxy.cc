@@ -302,41 +302,6 @@ void BatLedgerClientMojoProxy::FetchFavIcon(const std::string& url,
       base::BindOnce(&OnFetchFavIcon, std::move(callback)));
 }
 
-void OnSaveRecurringTip(
-    const ledger::ResultCallback& callback,
-    const ledger::Result result) {
-  callback(result);
-}
-
-void BatLedgerClientMojoProxy::SaveRecurringTip(
-    ledger::RecurringTipPtr info,
-    ledger::ResultCallback callback) {
-  if (!Connected()) {
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  bat_ledger_client_->SaveRecurringTip(
-      std::move(info),
-      base::BindOnce(&OnSaveRecurringTip, std::move(callback)));
-}
-
-void OnGetRecurringTips(const ledger::PublisherInfoListCallback& callback,
-                        ledger::PublisherInfoList publisher_info_list) {
-  callback(std::move(publisher_info_list));
-}
-
-void BatLedgerClientMojoProxy::GetRecurringTips(
-    ledger::PublisherInfoListCallback callback) {
-  if (!Connected()) {
-    callback(ledger::PublisherInfoList());
-    return;
-  }
-
-  bat_ledger_client_->GetRecurringTips(
-      base::BindOnce(&OnGetRecurringTips, std::move(callback)));
-}
-
 void OnGetOneTimeTips(const ledger::PublisherInfoListCallback& callback,
                       ledger::PublisherInfoList publisher_info_list) {
   callback(std::move(publisher_info_list));
@@ -369,24 +334,6 @@ void BatLedgerClientMojoProxy::LoadNicewareList(
 
   bat_ledger_client_->LoadNicewareList(
       base::BindOnce(&OnLoadNicewareList, std::move(callback)));
-}
-
-void OnRemoveRecurringTip(
-    const ledger::RemoveRecurringTipCallback& callback,
-    const ledger::Result result) {
-  callback(result);
-}
-
-void BatLedgerClientMojoProxy::RemoveRecurringTip(
-    const std::string& publisher_key,
-    ledger::RemoveRecurringTipCallback callback) {
-  if (!Connected()) {
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  bat_ledger_client_->RemoveRecurringTip(publisher_key,
-      base::BindOnce(&OnRemoveRecurringTip, std::move(callback)));
 }
 
 void OnSaveContributionInfo(

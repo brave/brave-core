@@ -278,7 +278,7 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD1(GetOneTimeTips, void(ledger::PublisherInfoListCallback));
 
   MOCK_METHOD2(RemoveRecurringTip,
-      void(const std::string&, ledger::RemoveRecurringTipCallback));
+      void(const std::string&, ledger::ResultCallback));
 
   MOCK_METHOD6(CreateActivityFilter,
       ledger::ActivityInfoFilterPtr(const std::string&,

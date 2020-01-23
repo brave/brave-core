@@ -21,8 +21,6 @@ private:
   void GetOneTimeTips(ledger::PublisherInfoListCallback callback) override;
   void GetPendingContributions(ledger::PendingContributionInfoListCallback callback) override;
   void GetPendingContributionsTotal(ledger::PendingContributionsTotalCallback callback) override;
-  void SaveRecurringTip(ledger::RecurringTipPtr info, ledger::ResultCallback callback) override;
-  void GetRecurringTips(ledger::PublisherInfoListCallback callback) override;
   void KillTimer(const uint32_t timer_id) override;
   void LoadLedgerState(ledger::OnLoadCallback callback) override;
   void LoadMediaPublisherInfo(const std::string & media_key, ledger::PublisherInfoCallback callback) override;
@@ -33,7 +31,6 @@ private:
   std::unique_ptr<ledger::LogStream> Log(const char * file, int line, const ledger::LogLevel log_level) const override;
   void OnPanelPublisherInfo(ledger::Result result, ledger::PublisherInfoPtr publisher_info, uint64_t windowId) override;
   void OnReconcileComplete(ledger::Result result, const std::string & viewing_id, const double amount, const ledger::RewardsType type) override;
-  void RemoveRecurringTip(const std::string & publisher_key, ledger::RemoveRecurringTipCallback callback) override;
   void OnWalletProperties(ledger::Result result, ledger::WalletPropertiesPtr arg1) override;
   void RemoveAllPendingContributions(ledger::RemovePendingContributionCallback callback) override;
   void RemovePendingContribution(const uint64_t id, ledger::RemovePendingContributionCallback callback) override;

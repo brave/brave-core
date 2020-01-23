@@ -243,7 +243,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void RemoveRecurringTip(
     const std::string& publisher_key,
-    RemoveRecurringTipCallback callback) = 0;
+    ResultCallback callback) = 0;
 
   virtual double GetDefaultContributionAmount() = 0;
 
@@ -269,6 +269,7 @@ class LEDGER_EXPORT Ledger {
   virtual void SaveRecurringTip(
       ledger::RecurringTipPtr info,
       ledger::ResultCallback callback) = 0;
+
   virtual void GetRecurringTips(ledger::PublisherInfoListCallback callback) = 0;
 
   virtual void GetOneTimeTips(ledger::PublisherInfoListCallback callback) = 0;

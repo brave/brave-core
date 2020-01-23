@@ -62,10 +62,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       ledger::ContributionInfoPtr info,
       ledger::ResultCallback callback) override;
 
-  void SaveRecurringTip(
-      ledger::RecurringTipPtr info,
-      ledger::ResultCallback callback) override;
-  void GetRecurringTips(ledger::PublisherInfoListCallback callback) override;
   void GetOneTimeTips(ledger::PublisherInfoListCallback callback) override;
   std::unique_ptr<ledger::LogStream> Log(const char* file,
                                          int line,
@@ -246,9 +242,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   bool Connected() const;
 
   void LoadNicewareList(ledger::GetNicewareListCallback callback) override;
-  void RemoveRecurringTip(
-    const std::string& publisher_key,
-    ledger::RemoveRecurringTipCallback callback) override;
 
   mojom::BatLedgerClientAssociatedPtr bat_ledger_client_;
 

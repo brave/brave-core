@@ -117,19 +117,8 @@ class MockLedgerClient : public LedgerClient {
       ledger::ContributionInfoPtr info,
       ledger::ResultCallback callback));
 
-  MOCK_METHOD2(SaveRecurringTip, void(
-      ledger::RecurringTipPtr info,
-      ledger::ResultCallback callback));
-
-  MOCK_METHOD1(GetRecurringTips, void(
-      ledger::PublisherInfoListCallback callback));
-
   MOCK_METHOD1(GetOneTimeTips, void(
       ledger::PublisherInfoListCallback callback));
-
-  MOCK_METHOD2(RemoveRecurringTip, void(
-      const std::string& publisher_key,
-      ledger::RemoveRecurringTipCallback callback));
 
   MOCK_METHOD2(SetTimer, void(
       uint64_t time_offset,

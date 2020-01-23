@@ -131,6 +131,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/database/database_migration.h",
     "src/bat/ledger/internal/database/database_publisher_info.cc",
     "src/bat/ledger/internal/database/database_publisher_info.h",
+    "src/bat/ledger/internal/database/database_recurring_tip.cc",
+    "src/bat/ledger/internal/database/database_recurring_tip.h",
     "src/bat/ledger/internal/database/database_server_publisher_amounts.cc",
     "src/bat/ledger/internal/database/database_server_publisher_amounts.h",
     "src/bat/ledger/internal/database/database_server_publisher_banner.cc",

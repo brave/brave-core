@@ -167,12 +167,9 @@ interface BatLedgerClient {
                        uint64 window_id);
   FetchFavIcon(string url, string favicon_key) => (bool success,
       string favicon_url);
-  SaveRecurringTip(ledger.mojom.RecurringTip info) => (ledger.mojom.Result result);
-  GetRecurringTips() => (array<ledger.mojom.PublisherInfo> publisher_info_list);
   GetOneTimeTips() => (array<ledger.mojom.PublisherInfo> publisher_info_list);
 
   LoadNicewareList() => (ledger.mojom.Result result, string data);
-  RemoveRecurringTip(string publisher_key) => (ledger.mojom.Result result);
 
   LoadURL(string url, array<string> headers, string content,
       string content_type, ledger.mojom.UrlMethod method) => (int32 status_code, string response,

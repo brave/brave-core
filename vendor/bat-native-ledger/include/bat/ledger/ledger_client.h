@@ -46,7 +46,6 @@ using PublisherInfoListCallback =
     std::function<void(PublisherInfoList)>;
 using GetNicewareListCallback =
     std::function<void(const Result, const std::string&)>;
-using RemoveRecurringTipCallback = std::function<void(const Result)>;
 using FetchIconCallback = std::function<void(bool, const std::string&)>;
 using LoadURLCallback = std::function<void(const int, const std::string&,
     const std::map<std::string, std::string>& headers)>;
@@ -134,19 +133,8 @@ class LEDGER_EXPORT LedgerClient {
       ledger::ContributionInfoPtr info,
       ledger::ResultCallback callback) = 0;
 
-  virtual void SaveRecurringTip(
-      ledger::RecurringTipPtr info,
-      ledger::ResultCallback callback) = 0;
-
-  virtual void GetRecurringTips(
-      ledger::PublisherInfoListCallback callback) = 0;
-
   virtual void GetOneTimeTips(
       ledger::PublisherInfoListCallback callback) = 0;
-
-  virtual void RemoveRecurringTip(
-      const std::string& publisher_key,
-      ledger::RemoveRecurringTipCallback callback) = 0;
 
   // uint64_t time_offset (input): timer offset in seconds.
   // uint32_t timer_id (output) : 0 in case of failure

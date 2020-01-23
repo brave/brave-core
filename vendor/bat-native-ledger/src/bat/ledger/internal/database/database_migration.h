@@ -18,6 +18,7 @@ namespace braveledger_database {
 
 class DatabaseActivityInfo;
 class DatabasePublisherInfo;
+class DatabaseRecurringTip;
 class DatabaseServerPublisherInfo;
 
 class DatabaseMigration {
@@ -34,6 +35,7 @@ class DatabaseMigration {
 
   std::unique_ptr<DatabaseActivityInfo> activity_info_;
   std::unique_ptr<DatabasePublisherInfo> publisher_info_;
+  std::unique_ptr<DatabaseRecurringTip> recurring_tip_;
   std::unique_ptr<DatabaseServerPublisherInfo> server_publisher_info_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
