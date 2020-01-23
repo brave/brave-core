@@ -24,7 +24,7 @@ bool ViewCounterModel::ShouldShowBrandedWallpaper() const {
   return count_to_branded_wallpaper_ == 0;
 }
 
-void ViewCounterModel::Reset() {
+void ViewCounterModel::ResetCurrentWallpaperImageIndex() {
   current_wallpaper_image_index_ = 0;
 }
 

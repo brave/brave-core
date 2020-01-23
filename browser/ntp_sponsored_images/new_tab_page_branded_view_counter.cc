@@ -170,7 +170,7 @@ void NewTabPageBrandedViewCounter::OnUpdated(
 
   // Data is updated, so change our stored data and reset any indexes.
   // But keep view counter until branded content is seen.
-  model_.Reset();
+  model_.ResetCurrentWallpaperImageIndex();
   model_.set_total_image_count(data.wallpaper_image_urls.size());
   current_wallpaper_.reset(new NTPSponsoredImagesData(data));
 }

@@ -22,7 +22,7 @@ class ViewCounterModel {
 
   bool ShouldShowBrandedWallpaper() const;
   void RegisterPageView();
-  void Reset();
+  void ResetCurrentWallpaperImageIndex();
 
  private:
   int current_wallpaper_image_index_ = 0;
