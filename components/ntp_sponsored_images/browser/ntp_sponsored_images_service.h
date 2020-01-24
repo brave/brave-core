@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_BROWSER_NTP_SPONSORED_IMAGES_COMPONENT_MANAGER_H_
-#define BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_BROWSER_NTP_SPONSORED_IMAGES_COMPONENT_MANAGER_H_
+#ifndef BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_BROWSER_NTP_SPONSORED_IMAGES_SERVICE_H_
+#define BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_BROWSER_NTP_SPONSORED_IMAGES_SERVICE_H_
 
 #include <memory>
 #include <string>
@@ -26,8 +26,7 @@ class BrowserContext;
 // NOTE: Client should call AddDataSource() before requesting image sources.
 // When component is updated, Client also should call AddDataSource() for add
 // proper |URLDataSource|s.
-class NTPSponsoredImagesComponentManager
-    : public component_updater::ServiceObserver {
+class NTPSponsoredImagesService : public component_updater::ServiceObserver {
  public:
   class Observer {
    public:
@@ -37,14 +36,13 @@ class NTPSponsoredImagesComponentManager
     virtual ~Observer() {}
   };
 
-  explicit NTPSponsoredImagesComponentManager(
+  explicit NTPSponsoredImagesService(
       component_updater::ComponentUpdateService* cus);
-  ~NTPSponsoredImagesComponentManager() override;
+  ~NTPSponsoredImagesService() override;
 
-  NTPSponsoredImagesComponentManager(
-      const NTPSponsoredImagesComponentManager&) = delete;
-  NTPSponsoredImagesComponentManager& operator=(
-      const NTPSponsoredImagesComponentManager&) = delete;
+  NTPSponsoredImagesService(const NTPSponsoredImagesService&) = delete;
+  NTPSponsoredImagesService& operator=(
+      const NTPSponsoredImagesService&) = delete;
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
@@ -58,10 +56,7 @@ class NTPSponsoredImagesComponentManager
   base::Optional<NTPSponsoredImagesData> GetLatestSponsoredImagesData() const;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(NTPSponsoredImagesComponentManagerTest,
-                           InternalDataTest);
-
-
+  FRIEND_TEST_ALL_PREFIXES(NTPSponsoredImagesServiceTest, InternalDataTest);
 
   // ServiceObserver overrides:
   void OnEvent(Events event, const std::string& id) override;
@@ -78,7 +73,7 @@ class NTPSponsoredImagesComponentManager
   component_updater::ComponentUpdateService* cus_ = nullptr;
   base::ObserverList<Observer>::Unchecked observer_list_;
   std::unique_ptr<NTPSponsoredImagesInternalData> internal_images_data_;
-  base::WeakPtrFactory<NTPSponsoredImagesComponentManager> weak_factory_;
+  base::WeakPtrFactory<NTPSponsoredImagesService> weak_factory_;
 };
 
-#endif  // BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_BROWSER_NTP_SPONSORED_IMAGES_COMPONENT_MANAGER_H_
+#endif  // BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_BROWSER_NTP_SPONSORED_IMAGES_SERVICE_H_

@@ -116,12 +116,11 @@ NewTabPageBrandedViewCounter::NewTabPageBrandedViewCounter(Profile* profile)
   if (base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo)) {
     current_wallpaper_ = GetDemoWallpaper();
   } else {
-    manager_ =
-        g_brave_browser_process->ntp_sponsored_images_component_manager();
-    manager_->AddObserver(this);
-    manager_->AddDataSource(profile_);
+    service_ = g_brave_browser_process->ntp_sponsored_images_service();
+    service_->AddObserver(this);
+    service_->AddDataSource(profile_);
     // Check if we have real data
-    const auto optional_data = manager_->GetLatestSponsoredImagesData();
+    const auto optional_data = service_->GetLatestSponsoredImagesData();
     if (optional_data) {
       current_wallpaper_.reset(new NTPSponsoredImagesData(*optional_data));
     }
@@ -157,8 +156,8 @@ NewTabPageBrandedViewCounter::NewTabPageBrandedViewCounter(Profile* profile)
 NewTabPageBrandedViewCounter::~NewTabPageBrandedViewCounter() = default;
 
 void NewTabPageBrandedViewCounter::Shutdown() {
-  if (manager_ && manager_->HasObserver(this))
-    manager_->RemoveObserver(this);
+  if (service_ && service_->HasObserver(this))
+    service_->RemoveObserver(this);
   auto* rewards_service_ =
       brave_rewards::RewardsServiceFactory::GetForProfile(profile_);
   if (rewards_service_)
@@ -169,14 +168,14 @@ void NewTabPageBrandedViewCounter::OnUpdated(
     const NTPSponsoredImagesData& data) {
   DCHECK(
       !base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo));
-  DCHECK(manager_);
+  DCHECK(service_);
 
   // Data is updated, so change our stored data and reset any indexes.
   // But keep view counter until branded content is seen.
   model_.ResetCurrentWallpaperImageIndex();
   model_.set_total_image_count(data.wallpaper_image_urls.size());
   current_wallpaper_.reset(new NTPSponsoredImagesData(data));
-  manager_->AddDataSource(profile_);
+  service_->AddDataSource(profile_);
 }
 
 void NewTabPageBrandedViewCounter::OnRewardsMainEnabled(

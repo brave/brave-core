@@ -6,12 +6,12 @@ source_set("browser") {
   sources = [
     "ntp_sponsored_images_component_installer.cc",
     "ntp_sponsored_images_component_installer.h",
-    "ntp_sponsored_images_component_manager.cc",
-    "ntp_sponsored_images_component_manager.h",
     "ntp_sponsored_images_data.cc",
     "ntp_sponsored_images_data.h",
     "ntp_sponsored_images_internal_data.cc",
     "ntp_sponsored_images_internal_data.h",
+    "ntp_sponsored_images_service.cc",
+    "ntp_sponsored_images_service.h",
     "ntp_sponsored_image_source.cc",
     "ntp_sponsored_image_source.h",
     "switches.cc",
@@ -28,8 +28,10 @@ source_set("browser") {
     "//brave/components/brave_component_updater/browser",
     "//brave/vendor/bat-native-ads",
     "//components/component_updater",
+    "//components/crx_file",
     "//components/keyed_service/core",
     "//content/public/browser",
     "//content/public/common",
+    "//crypto",
   ]
 }

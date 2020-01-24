@@ -5,12 +5,12 @@
 
 #include <string>
 
-#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_component_manager.h"
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_internal_data.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-class TestObserver : public NTPSponsoredImagesComponentManager::Observer {
+class TestObserver : public NTPSponsoredImagesService::Observer {
  public:
   TestObserver() = default;
   ~TestObserver() override = default;
@@ -24,25 +24,25 @@ class TestObserver : public NTPSponsoredImagesComponentManager::Observer {
   bool called_ = false;
 };
 
-TEST(NTPSponsoredImagesComponentManagerTest, BasicTest) {
-  NTPSponsoredImagesComponentManager manager(nullptr);
+TEST(NTPSponsoredImagesServiceTest, BasicTest) {
+  NTPSponsoredImagesService service(nullptr);
 
   // By default manager doesn't have data.
-  EXPECT_FALSE(manager.GetLatestSponsoredImagesData());
+  EXPECT_FALSE(service.GetLatestSponsoredImagesData());
 }
 
-TEST(NTPSponsoredImagesComponentManagerTest, InternalDataTest) {
+TEST(NTPSponsoredImagesServiceTest, InternalDataTest) {
   TestObserver observer;
-  NTPSponsoredImagesComponentManager manager(nullptr);
-  manager.AddObserver(&observer);
+  NTPSponsoredImagesService service(nullptr);
+  service.AddObserver(&observer);
 
   // Check with json file with empty object.
-  manager.ResetInternalImagesDataForTest();
-  manager.OnGetPhotoJsonData("{}");
-  auto data = manager.GetLatestSponsoredImagesData();
+  service.ResetInternalImagesDataForTest();
+  service.OnGetPhotoJsonData("{}");
+  auto data = service.GetLatestSponsoredImagesData();
   EXPECT_TRUE(data);
   EXPECT_FALSE(data->IsValid());
-  manager.NotifyObservers();
+  service.NotifyObservers();
   EXPECT_TRUE(observer.called_);
   EXPECT_TRUE(observer.data_.logo_alt_text.empty());
 
@@ -69,18 +69,18 @@ TEST(NTPSponsoredImagesComponentManagerTest, InternalDataTest) {
               }
           ]
       })";
-  manager.ResetInternalImagesDataForTest();
-  manager.OnGetPhotoJsonData(test_json_string);
-  data = manager.GetLatestSponsoredImagesData();
+  service.ResetInternalImagesDataForTest();
+  service.OnGetPhotoJsonData(test_json_string);
+  data = service.GetLatestSponsoredImagesData();
   EXPECT_TRUE(data);
   EXPECT_TRUE(data->IsValid());
   // Above json data has 3 wallpapers.
   const size_t image_count = 3;
   EXPECT_EQ(image_count, data->wallpaper_image_urls.size());
   observer.called_ = false;
-  manager.NotifyObservers();
+  service.NotifyObservers();
   EXPECT_TRUE(observer.called_);
   EXPECT_FALSE(observer.data_.logo_alt_text.empty());
 
-  manager.RemoveObserver(&observer);
+  service.RemoveObserver(&observer);
 }

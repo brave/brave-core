@@ -12,14 +12,14 @@
 #include "components/prefs/pref_change_registrar.h"
 #include "brave/browser/ntp_sponsored_images/view_counter_model.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_component_manager.h"
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_service.h"
 
 class Profile;
 
 class NewTabPageBrandedViewCounter
     : public KeyedService,
-      public NTPSponsoredImagesComponentManager::Observer,
+      public NTPSponsoredImagesService::Observer,
       public brave_rewards::RewardsServiceObserver {
  public:
   static void EnsureBrowserContextKeyedServiceFactoriesBuilt();
@@ -60,7 +60,7 @@ class NewTabPageBrandedViewCounter
   // KeyedService
   void Shutdown() override;
 
-  // NTPSponsoredImagesComponentManager::Observer
+  // NTPSponsoredImagesService::Observer
   void OnUpdated(const NTPSponsoredImagesData& data) override;
 
   bool GetBrandedWallpaperFromDataSource();
@@ -68,7 +68,7 @@ class NewTabPageBrandedViewCounter
   void ResetNotificationState();
 
   std::unique_ptr<NTPSponsoredImagesData> current_wallpaper_;
-  NTPSponsoredImagesComponentManager* manager_ = nullptr;
+  NTPSponsoredImagesService* service_ = nullptr;
   bool has_user_opted_in_;
   bool is_supported_locale_;
   PrefChangeRegistrar pref_change_registrar_;

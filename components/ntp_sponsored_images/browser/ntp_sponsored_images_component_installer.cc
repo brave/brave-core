@@ -5,11 +5,15 @@
 
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_component_installer.h"
 
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "base/base64.h"
 #include "base/bind.h"
 #include "base/callback.h"
 #include "brave/components/brave_ads/browser/locale_helper.h"
-#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_component_manager.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_service.h"
 #include "brave/components/ntp_sponsored_images/browser/regional_component_data.h"
 #include "brave/vendor/bat-native-ads/src/bat/ads/internal/locale_helper.h"
 #include "components/component_updater/component_installer.h"
@@ -25,7 +29,7 @@ class NTPSponsoredImagesComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
   explicit NTPSponsoredImagesComponentInstallerPolicy(
-      NTPSponsoredImagesComponentManager* manager);
+      NTPSponsoredImagesService* service);
   ~NTPSponsoredImagesComponentInstallerPolicy() override {}
 
  private:
@@ -47,15 +51,15 @@ class NTPSponsoredImagesComponentInstallerPolicy
   update_client::InstallerAttributes GetInstallerAttributes() const override;
   std::vector<std::string> GetMimeTypes() const override;
 
-  NTPSponsoredImagesComponentManager* manager_;
+  NTPSponsoredImagesService* service_;
 
   DISALLOW_COPY_AND_ASSIGN(NTPSponsoredImagesComponentInstallerPolicy);
 };
 
 NTPSponsoredImagesComponentInstallerPolicy::
     NTPSponsoredImagesComponentInstallerPolicy(
-        NTPSponsoredImagesComponentManager* manager)
-        : manager_(manager) {}
+        NTPSponsoredImagesService* service)
+        : service_(service) {}
 
 bool NTPSponsoredImagesComponentInstallerPolicy::
     SupportsGroupPolicyEnabledComponentUpdates() const {
@@ -80,7 +84,7 @@ void NTPSponsoredImagesComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& path,
     std::unique_ptr<base::DictionaryValue> manifest) {
-  manager_->OnComponentReady(path);
+  service_->OnComponentReady(path);
 }
 
 bool NTPSponsoredImagesComponentInstallerPolicy::VerifyInstallation(
@@ -129,8 +133,8 @@ std::vector<std::string>
 
 void RegisterNTPSponsoredImagesComponent(
     component_updater::ComponentUpdateService* cus,
-    NTPSponsoredImagesComponentManager* manager) {
+    NTPSponsoredImagesService* service) {
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
-      std::make_unique<NTPSponsoredImagesComponentInstallerPolicy>(manager));
+      std::make_unique<NTPSponsoredImagesComponentInstallerPolicy>(service));
   installer->Register(cus, base::OnceClosure());
 }

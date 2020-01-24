@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_component_manager.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_service.h"
 
 #include <algorithm>
 
@@ -44,7 +44,7 @@ std::string ReadPhotoJsonData(const base::FilePath& photo_json_file_path) {
 
 }  // namespace
 
-NTPSponsoredImagesComponentManager::NTPSponsoredImagesComponentManager(
+NTPSponsoredImagesService::NTPSponsoredImagesService(
     component_updater::ComponentUpdateService* cus)
     : weak_factory_(this) {
   // Early return for test.
@@ -75,24 +75,24 @@ NTPSponsoredImagesComponentManager::NTPSponsoredImagesComponentManager(
   }
 }
 
-NTPSponsoredImagesComponentManager::~NTPSponsoredImagesComponentManager() {
+NTPSponsoredImagesService::~NTPSponsoredImagesService() {
   if (cus_)
     cus_->RemoveObserver(this);
 }
 
-void NTPSponsoredImagesComponentManager::AddObserver(Observer* observer) {
+void NTPSponsoredImagesService::AddObserver(Observer* observer) {
   observer_list_.AddObserver(observer);
 }
 
-void NTPSponsoredImagesComponentManager::RemoveObserver(Observer* observer) {
+void NTPSponsoredImagesService::RemoveObserver(Observer* observer) {
   observer_list_.RemoveObserver(observer);
 }
 
-bool NTPSponsoredImagesComponentManager::HasObserver(Observer* observer) {
+bool NTPSponsoredImagesService::HasObserver(Observer* observer) {
   return observer_list_.HasObserver(observer);
 }
 
-void NTPSponsoredImagesComponentManager::AddDataSource(
+void NTPSponsoredImagesService::AddDataSource(
     content::BrowserContext* browser_context) {
   if (!internal_images_data_)
     return;
@@ -105,31 +105,31 @@ void NTPSponsoredImagesComponentManager::AddDataSource(
 }
 
 base::Optional<NTPSponsoredImagesData>
-NTPSponsoredImagesComponentManager::GetLatestSponsoredImagesData() const {
+NTPSponsoredImagesService::GetLatestSponsoredImagesData() const {
   if (internal_images_data_)
     return NTPSponsoredImagesData(*internal_images_data_);
 
   return base::nullopt;
 }
 
-void NTPSponsoredImagesComponentManager::ReadPhotoJsonFileAndNotify() {
+void NTPSponsoredImagesService::ReadPhotoJsonFileAndNotify() {
   // Reset previous data.
   internal_images_data_.reset();
 
   base::PostTaskAndReplyWithResult(
       FROM_HERE, {base::ThreadPool(), base::MayBlock()},
       base::BindOnce(&ReadPhotoJsonData, photo_json_file_path_),
-      base::BindOnce(&NTPSponsoredImagesComponentManager::OnGetPhotoJsonData,
+      base::BindOnce(&NTPSponsoredImagesService::OnGetPhotoJsonData,
                      weak_factory_.GetWeakPtr()));
 }
 
-void NTPSponsoredImagesComponentManager::OnComponentReady(
+void NTPSponsoredImagesService::OnComponentReady(
     const base::FilePath& installed_dir) {
   photo_json_file_path_ = installed_dir.AppendASCII(kPhotoJsonFilename);
   ReadPhotoJsonFileAndNotify();
 }
 
-void NTPSponsoredImagesComponentManager::OnEvent(Events event,
+void NTPSponsoredImagesService::OnEvent(Events event,
                                                  const std::string& id) {
   if (!id.empty() &&
       id == component_id_ &&
@@ -138,13 +138,13 @@ void NTPSponsoredImagesComponentManager::OnEvent(Events event,
   }
 }
 
-void NTPSponsoredImagesComponentManager::OnGetPhotoJsonData(
+void NTPSponsoredImagesService::OnGetPhotoJsonData(
     const std::string& photo_json) {
   ParseAndCachePhotoJsonData(photo_json);
   NotifyObservers();
 }
 
-void NTPSponsoredImagesComponentManager::ParseAndCachePhotoJsonData(
+void NTPSponsoredImagesService::ParseAndCachePhotoJsonData(
     const std::string& photo_json) {
   base::Optional<base::Value> photo_value = base::JSONReader::Read(photo_json);
   if (photo_value) {
@@ -183,7 +183,7 @@ void NTPSponsoredImagesComponentManager::ParseAndCachePhotoJsonData(
   }
 }
 
-void NTPSponsoredImagesComponentManager::NotifyObservers() {
+void NTPSponsoredImagesService::NotifyObservers() {
   for (auto& observer : observer_list_) {
     if (internal_images_data_)
       observer.OnUpdated(NTPSponsoredImagesData(*internal_images_data_));
@@ -192,6 +192,6 @@ void NTPSponsoredImagesComponentManager::NotifyObservers() {
   }
 }
 
-void NTPSponsoredImagesComponentManager::ResetInternalImagesDataForTest() {
+void NTPSponsoredImagesService::ResetInternalImagesDataForTest() {
   internal_images_data_.reset();
 }

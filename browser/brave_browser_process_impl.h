@@ -44,7 +44,7 @@ class ReferrerWhitelistService;
 class TrackingProtectionService;
 }  // namespace brave_shields
 
-class NTPSponsoredImagesComponentManager;
+class NTPSponsoredImagesService;
 
 namespace greaselion {
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -93,7 +93,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   BraveWidevineBundleManager* brave_widevine_bundle_manager();
 #endif
   brave::BraveStatsUpdater* brave_stats_updater();
-  NTPSponsoredImagesComponentManager* ntp_sponsored_images_component_manager();
+  NTPSponsoredImagesService* ntp_sponsored_images_service();
 
  private:
   // BrowserProcessImpl overrides:
@@ -148,8 +148,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   std::unique_ptr<BraveWidevineBundleManager> brave_widevine_bundle_manager_;
 #endif
   scoped_refptr<brave::BraveP3AService> brave_p3a_service_;
-  std::unique_ptr<NTPSponsoredImagesComponentManager>
-      ntp_sponsored_images_component_manager_;
+  std::unique_ptr<NTPSponsoredImagesService> ntp_sponsored_images_service_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 

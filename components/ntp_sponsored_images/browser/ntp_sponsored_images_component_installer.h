@@ -10,10 +10,10 @@ namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
 
-class NTPSponsoredImagesComponentManager;
+class NTPSponsoredImagesService;
 
 void RegisterNTPSponsoredImagesComponent(
     component_updater::ComponentUpdateService* cus,
-    NTPSponsoredImagesComponentManager* manager);
+    NTPSponsoredImagesService* service);
 
 #endif  // BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_BROWSER_NTP_SPONSORED_IMAGES_COMPONENT_INSTALLER_H_
