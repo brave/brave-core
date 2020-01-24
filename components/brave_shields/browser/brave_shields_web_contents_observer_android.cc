@@ -19,6 +19,10 @@ namespace brave_shields {
 void BraveShieldsWebContentsObserver::DispatchBlockedEventForWebContents(
     const std::string& block_type, const std::string& subresource,
     WebContents* web_contents) {
+  if (!web_contents) {
+    return;
+  }
+
   int tabId = 0;
   TabAndroid* tab = TabAndroid::FromWebContents(web_contents);
   DCHECK(tab);
