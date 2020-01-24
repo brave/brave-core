@@ -92,4 +92,17 @@ else
   PARAMS="$PARAMS ${NOTARIZE_ARGS}"
 fi
 
+echo CWD is `pwd`
+search_strings="fileop Autoupdate Autoupdate.app"
+for target in ${search_strings};
+do
+  echo "searching for files named: ${target}"
+  while IFS= read -r -d '' file; do
+    echo codesigning: "${file}"
+    codesign --timestamp --verbose --force --deep -o runtime --sign $MAC_SIGNING_IDENTIFIER "${file}"
+  done < <(find . -type f -name ${target} -print0)
+done
+echo codesigning: 'Brave Browser Nightly.app'
+codesign --timestamp --verbose --force --deep -o runtime --sign $MAC_SIGNING_IDENTIFIER 'Brave Browser Nightly.app'
+
 "${PKG_DIR}/sign_chrome.py" $PARAMS
