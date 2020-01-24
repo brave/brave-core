@@ -24,6 +24,8 @@ class NTPNotificationViewController: TranslucentBottomSheet {
         if state == .dontShow { return nil }
     }
     
+    private var mainView: UIStackView?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,13 +34,37 @@ class NTPNotificationViewController: TranslucentBottomSheet {
             return
         }
         
-        mainView.setCustomSpacing(0, after: mainView.header)
+        self.mainView = mainView
         
+        mainView.setCustomSpacing(0, after: mainView.header)
         view.addSubview(mainView)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        updateMainViewConstraints()
+    }
+    
+    private func updateMainViewConstraints() {
+        guard let mainView = mainView else { return }
+
+        mainView.alignment = isPortraitIphone ? .fill : .center
+
         mainView.snp.remakeConstraints {
             $0.top.equalToSuperview().inset(28)
-            $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
+
+            if isPortraitIphone {
+                $0.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
+            } else {
+                let width = min(view.frame.width, 400)
+                $0.width.equalTo(width)
+                $0.centerX.equalToSuperview()
+            }
         }
+    }
+    
+    private var isPortraitIphone: Bool {
+        traitCollection.userInterfaceIdiom == .phone && UIApplication.shared.statusBarOrientation.isPortrait
     }
     
     override func close(immediately: Bool = false) {
