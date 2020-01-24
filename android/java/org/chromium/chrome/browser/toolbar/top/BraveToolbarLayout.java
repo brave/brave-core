@@ -353,9 +353,14 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       mBraveShieldsButton.setImageResource(
           isShieldsOnForTab(tab) ? R.drawable.btn_brave : R.drawable.btn_brave_off);
 
+      SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
       if (isIncognito()) {
           mRewardsLayout.setVisibility(View.GONE);
-      } else {
+      } else if (isNativeLibraryReady() &&
+              ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) &&
+              !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed() &&
+              !sharedPreferences.getBoolean(
+                      AppearancePreferences.PREF_HIDE_BRAVE_REWARDS_ICON, false)) {
           mRewardsLayout.setVisibility(View.VISIBLE);
       }
   }
