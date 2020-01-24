@@ -78,7 +78,6 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
         removePreferenceIfPresent(MainPreferences.PREF_DATA_REDUCTION);
         removePreferenceIfPresent(MainPreferences.PREF_AUTOFILL_ASSISTANT);
         removePreferenceIfPresent(MainPreferences.PREF_SYNC_AND_SERVICES);
-        removePreferenceIfPresent(MainPreferences.PREF_DEVELOPER);
         removePreferenceIfPresent(MainPreferences.PREF_SEARCH_ENGINE);
         removePreferenceIfPresent(MainPreferences.PREF_UI_THEME);
 
@@ -123,7 +122,7 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
         findPreference(MainPreferences.PREF_LANGUAGES).setOrder(++order);
         findPreference(MainPreferences.PREF_DATA_REDUCTION).setOrder(++order);
         findPreference(MainPreferences.PREF_DOWNLOADS).setOrder(++order);
-        // Not exist by default in Release mode
+        // This preference doesn't exist by default in Release mode
         if (findPreference(MainPreferences.PREF_DEVELOPER) != null) {
             findPreference(MainPreferences.PREF_DEVELOPER).setOrder(++order);
         }

@@ -158,12 +158,12 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     void FetchGrants(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj);
 
-    void GetAddresses(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj);
+    int GetAdsPerHour(JNIEnv* env,
+                      const base::android::JavaParamRef<jobject>& obj);
 
-    base::android::ScopedJavaLocalRef<jstring> GetAddress(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj,
-        const base::android::JavaParamRef<jstring>& jaddress_name);
+    void SetAdsPerHour(JNIEnv* env,
+                       const base::android::JavaParamRef<jobject>& obj,
+                       jint value);
 
     void OnAdsResetTheWholeState(bool sucess);
 
@@ -231,7 +231,6 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
         std::unique_ptr<brave_rewards::Promotion> promotion);
 
  private:
-    void OnGetAddresses(const std::map<std::string, std::string>& addresses);
     void OnBalance(int32_t result,
         std::unique_ptr<brave_rewards::Balance> balance);
     JavaObjectWeakGlobalRef weak_java_brave_rewards_native_worker_;

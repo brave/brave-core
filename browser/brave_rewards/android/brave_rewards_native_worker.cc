@@ -23,6 +23,8 @@
 #include "content/public/browser/url_data_source.h"
 #include "brave/build/android/jni_headers/BraveRewardsNativeWorker_jni.h"
 
+#define DEFAULT_ADS_PER_HOUR 2
+
 namespace chrome {
 namespace android {
 
@@ -673,39 +675,33 @@ void BraveRewardsNativeWorker::OnFetchPromotions(
     weak_java_brave_rewards_native_worker_.get(env));
 }
 
-static void JNI_BraveRewardsNativeWorker_Init(JNIEnv* env,
+int BraveRewardsNativeWorker::GetAdsPerHour(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& obj) {
+  auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(
+      ProfileManager::GetActiveUserProfile()->GetOriginalProfile());
+  if (!ads_service_) {
+    return DEFAULT_ADS_PER_HOUR;
+  }
+  return ads_service_->GetAdsPerHour();
+}
+
+void BraveRewardsNativeWorker::SetAdsPerHour(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& obj,
+    jint value) {
+  auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(
+      ProfileManager::GetActiveUserProfile()->GetOriginalProfile());
+  if (!ads_service_) {
+    return;
+  }
+  ads_service_->SetAdsPerHour(value);
+}
+
+static void JNI_BraveRewardsNativeWorker_Init(
+    JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jcaller) {
   new BraveRewardsNativeWorker(env, jcaller);
-}
-
-void BraveRewardsNativeWorker::OnGetAddresses(
-      const std::map<std::string, std::string>& addresses) {
-  addresses_ = addresses;
-}
-
-void BraveRewardsNativeWorker::GetAddresses(JNIEnv* env,
-    const base::android::JavaParamRef<jobject>& obj) {
-  // TODO(samartnik): find out how to get addresses
-  // if (brave_rewards_service_) {
-  //   brave_rewards_service_->GetAddresses(base::Bind(
-  //         &BraveRewardsNativeWorker::OnGetAddresses,
-  //         weak_factory_.GetWeakPtr()));
-  // }
-}
-
-base::android::ScopedJavaLocalRef<jstring>
-    BraveRewardsNativeWorker::GetAddress(JNIEnv* env,
-      const base::android::JavaParamRef<jobject>& obj,
-      const base::android::JavaParamRef<jstring>& jaddress_name) {
-  base::android::ScopedJavaLocalRef<jstring> res =
-    base::android::ConvertUTF8ToJavaString(env, "");
-  std::string address_name =
-    base::android::ConvertJavaStringToUTF8(env, jaddress_name);
-  if (addresses_.find(address_name) != addresses_.end()) {
-    res = base::android::ConvertUTF8ToJavaString(env,
-      addresses_.at(address_name));
-  }
-  return res;
 }
 
 }  // namespace android
