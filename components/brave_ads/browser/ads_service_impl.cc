@@ -1054,6 +1054,7 @@ void AdsServiceImpl::OnGetAdsHistory(
 
     base::DictionaryValue ad_history_dictionary;
     ad_history_dictionary.SetKey("id", base::Value(entry.uuid));
+    ad_history_dictionary.SetKey("parent_uuid", base::Value(entry.parent_uuid));
     ad_history_dictionary.SetPath("adContent",
         std::move(ad_content_dictionary));
     ad_history_dictionary.SetPath("categoryContent",
