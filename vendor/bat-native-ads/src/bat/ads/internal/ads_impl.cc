@@ -1291,6 +1291,7 @@ bool AdsImpl::ShowAd(
 
   auto notification_info = std::make_unique<NotificationInfo>();
   notification_info->id = base::GenerateGUID();
+  notification_info->parent_id = base::GenerateGUID();
   notification_info->advertiser = ad.advertiser;
   notification_info->category = ad.category;
   notification_info->text = ad.notification_text;
@@ -2093,6 +2094,7 @@ void AdsImpl::GenerateAdsHistoryEntry(
   auto ad_history = std::make_unique<AdHistory>();
   ad_history->timestamp_in_seconds = Time::NowInSeconds();
   ad_history->uuid = base::GenerateGUID();
+  ad_history->parent_uuid = notification_info.parent_id;
   ad_history->ad_content.uuid = notification_info.uuid;
   ad_history->ad_content.creative_set_id = notification_info.creative_set_id;
   ad_history->ad_content.brand = notification_info.advertiser;

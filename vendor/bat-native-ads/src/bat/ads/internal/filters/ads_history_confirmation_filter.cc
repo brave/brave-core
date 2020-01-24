@@ -3,121 +3,73 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
 #include <map>
 #include <string>
 
 #include "bat/ads/internal/filters/ads_history_confirmation_filter.h"
-#include "bat/ads/confirmation_type.h"
 #include "bat/ads/ads_history.h"
 
 namespace ads {
 
-bool IsConfirmationTypeOfInterest(
-    const ConfirmationType& confirmation_type) {
-  bool is_of_interest = false;
-
-  switch (confirmation_type.value()) {
-    case ConfirmationType::Value::CLICK:
-    case ConfirmationType::Value::VIEW:
-    case ConfirmationType::Value::DISMISS: {
-      is_of_interest = true;
-      break;
-    }
-    case ConfirmationType::Value::UNKNOWN:
-    case ConfirmationType::Value::LANDED:
-    case ConfirmationType::Value::FLAG:
-    case ConfirmationType::Value::UPVOTE:
-    case ConfirmationType::Value::DOWNVOTE: {
-      is_of_interest = false;
-      break;
-    }
-  }
-  return is_of_interest;
-}
-
-bool DoesConfirmationTypeATrumpB(
-    const ConfirmationType& confirmation_type_a,
-    const ConfirmationType& confirmation_type_b) {
-  bool does_type_a_trump_type_b = false;
-
-  switch (confirmation_type_a.value()) {
-    case ConfirmationType::Value::CLICK: {
-      switch (confirmation_type_b.value()) {
-        case ConfirmationType::Value::CLICK:
-        case ConfirmationType::Value::VIEW:
-        case ConfirmationType::Value::DISMISS: {
-          does_type_a_trump_type_b = true;
-          break;
-        }
-        default: {
-          break;
-        }
-      }
-      break;
-    }
-    case ConfirmationType::Value::VIEW: {
-      switch (confirmation_type_b.value()) {
-        case ConfirmationType::Value::VIEW:
-        case ConfirmationType::Value::DISMISS: {
-          does_type_a_trump_type_b = true;
-          break;
-        }
-        default: {
-          break;
-        }
-      }
-      break;
-    }
-    case ConfirmationType::Value::DISMISS: {
-      switch (confirmation_type_b.value()) {
-        case ConfirmationType::Value::DISMISS: {
-          does_type_a_trump_type_b = true;
-          break;
-        }
-        default: {
-          break;
-        }
-      }
-      break;
-    }
-  }
-
-  return does_type_a_trump_type_b;
-}
+AdsHistoryConfirmationFilter::AdsHistoryConfirmationFilter() = default;
 
 AdsHistoryConfirmationFilter::~AdsHistoryConfirmationFilter() = default;
 
 std::deque<AdHistory> AdsHistoryConfirmationFilter::Apply(
     const std::deque<AdHistory>& history) const {
+  std::map<std::string, AdHistory> filtered_ads_history_map;
 
-  std::map<std::string, AdHistory> filtered_ad_history;
-
-  for (const AdHistory& entry : history) {
-    if (!IsConfirmationTypeOfInterest(entry.ad_content.ad_action)) {
+  for (const auto& ad : history) {
+    const ConfirmationType ad_action = ad.ad_content.ad_action;
+    if (ShouldFilterAction(ad_action)) {
       continue;
     }
-    if (filtered_ad_history.count(entry.ad_content.uuid) != 0) {
-      const AdHistory& check_entry =
-          filtered_ad_history[entry.ad_content.uuid];
 
-      if (entry.timestamp_in_seconds >= check_entry.timestamp_in_seconds) {
-        if (DoesConfirmationTypeATrumpB(entry.ad_content.ad_action,
-            check_entry.ad_content.ad_action)) {
-          filtered_ad_history[entry.ad_content.uuid] = entry;
-        }
-      }
+    const std::string uuid = ad.parent_uuid;
+
+    const auto it = filtered_ads_history_map.find(uuid);
+    if (it == filtered_ads_history_map.end()) {
+      filtered_ads_history_map.insert({uuid, ad});
     } else {
-      filtered_ad_history[entry.ad_content.uuid] = entry;
+      AdHistory filtered_ad = it->second;
+      if (filtered_ad.ad_content.ad_action.value() > ad_action.value()) {
+        filtered_ads_history_map[uuid] = ad;
+      }
     }
   }
 
-  std::deque<AdHistory> filtered_history;
-
-  for (const auto& ad_history : filtered_ad_history) {
-    filtered_history.push_back(ad_history.second);
+  std::deque<AdHistory> filtered_ads_history;
+  for (const auto& filtered_ad : filtered_ads_history_map) {
+    const AdHistory ad = filtered_ad.second;
+    filtered_ads_history.push_back(ad);
   }
 
-  return filtered_history;
+  return filtered_ads_history;
+}
+
+bool AdsHistoryConfirmationFilter::ShouldFilterAction(
+    const ConfirmationType& confirmation_type) const {
+  bool should_filter;
+
+  switch (confirmation_type.value()) {
+    case ConfirmationType::CLICK:
+    case ConfirmationType::VIEW:
+    case ConfirmationType::DISMISS: {
+      should_filter = false;
+      break;
+    }
+    case ConfirmationType::UNKNOWN:
+    case ConfirmationType::LANDED:
+    case ConfirmationType::FLAG:
+    case ConfirmationType::UPVOTE:
+    case ConfirmationType::DOWNVOTE: {
+      should_filter = true;
+      break;
+    }
+  }
+
+  return should_filter;
 }
 
 }  // namespace ads
