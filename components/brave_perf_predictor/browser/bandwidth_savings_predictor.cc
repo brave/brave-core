@@ -7,7 +7,7 @@
 
 #include "base/logging.h"
 #include "brave/components/brave_perf_predictor/browser/bandwidth_linreg.h"
-#include "brave/components/brave_perf_predictor/browser/third_party_extractor.h"
+#include "brave/components/brave_perf_predictor/browser/named_third_party_registry.h"
 #include "components/page_load_metrics/common/page_load_metrics.mojom.h"
 #include "content/public/common/resource_load_info.mojom.h"
 #include "content/public/common/resource_type.h"
@@ -52,11 +52,12 @@ void BandwidthSavingsPredictor::OnSubresourceBlocked(
     const std::string& resource_url) {
   feature_map_["adblockRequests"] += 1;
 
-  const ThirdPartyExtractor* extractor = ThirdPartyExtractor::GetInstance();
-  if (extractor) {
-    const auto entity_name = extractor->GetEntity(resource_url);
-    if (entity_name.has_value())
-      feature_map_["thirdParties." + entity_name.value() + ".blocked"] = 1;
+  const NamedThirdPartyRegistry* tp_registry =
+      NamedThirdPartyRegistry::GetInstance();
+  if (tp_registry) {
+    const auto tp_name = tp_registry->GetThirdParty(resource_url);
+    if (tp_name.has_value())
+      feature_map_["thirdParties." + tp_name.value() + ".blocked"] = 1;
   }
 }
 
@@ -130,7 +131,7 @@ double BandwidthSavingsPredictor::PredictSavingsBytes() const {
   }
 
   // Short-circuit if nothing got blocked
-  const auto adblock_requests = feature_map_.find("transfer.total.size");
+  const auto adblock_requests = feature_map_.find("adblockRequests");
   if (adblock_requests == feature_map_.end() || adblock_requests->second < 1) {
     return 0;
   }

@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
+#include "base/gtest_prod_util.h"
 #include "url/gurl.h"
 
 namespace page_load_metrics {
@@ -55,6 +56,10 @@ class BandwidthSavingsPredictor {
   void Reset();
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(BandwidthSavingsPredictorTest, FeaturiseBlocked);
+  FRIEND_TEST_ALL_PREFIXES(BandwidthSavingsPredictorTest, FeaturiseTiming);
+  FRIEND_TEST_ALL_PREFIXES(BandwidthSavingsPredictorTest, FeaturiseResourceLoading);
+
   GURL main_frame_url_;
   base::flat_map<std::string, double> feature_map_;
 };

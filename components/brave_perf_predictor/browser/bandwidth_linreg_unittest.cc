@@ -18,7 +18,7 @@ TEST(BraveSavingsPredictorTest, FeatureArrayGetsPrediction) {
 
 TEST(BraveSavingsPredictorTest, HandlesSpecificVectorExample) {
   // This test needs to be updated for any change in the model
-  const std::array<double, feature_count> sample = {
+  constexpr std::array<double, feature_count> sample = {
       20, 129, 225, 225, 142, 925,    5, 34662, 3,  317818,  9,  1702888,
       0,  0,   1,   324, 32,  238315, 9, 90131, 54, 2367498, 59, 2384138,
       0,  1,   0,   0,   0,   0,      0, 0,     0,  1,       0,  0,
@@ -38,16 +38,16 @@ TEST(BraveSavingsPredictorTest, HandlesSpecificVectorExample) {
       0,  0,   0,   0,   0,   0,      0, 0,     0,  0,       0,  0,
       0,  0,   0,   0,   0,   0,      0, 0,     0,  0};
 
-  double result = LinregPredictVector(sample);
+  const double result = LinregPredictVector(sample);
   EXPECT_EQ(static_cast<int>(result / 1000),
             794);  // Equal on the order of thousands
 }
 
 TEST(BraveSavingsPredictorTest, HandlesEmptyFeatureset) {
   const base::flat_map<std::string, double> features{};
-  double result = LinregPredictNamed(features);
+  const double result = LinregPredictNamed(features);
   const std::array<double, feature_count> features_array{};
-  double array_result = LinregPredictVector(features_array);
+  const double array_result = LinregPredictVector(features_array);
   EXPECT_EQ(result, array_result);
 }
 
@@ -56,9 +56,9 @@ TEST(BraveSavingsPredictorTest, HandlesCompleteFeatureset) {
   for (unsigned int i = 0; i < feature_count; i++) {
     features[feature_sequence[i]] = 0;
   }
-  double result = LinregPredictNamed(features);
+  const double result = LinregPredictNamed(features);
   const std::array<double, feature_count> array_features{};
-  double array_result = LinregPredictVector(array_features);
+  const double array_result = LinregPredictVector(array_features);
   EXPECT_EQ(result, array_result);
 }
 

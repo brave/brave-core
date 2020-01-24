@@ -5,4 +5,4 @@ notebooks/.ipynb_checkpoints
 resources/**
 !resources/**/
 !/resources/**/.gitkeep
-!/resources/**/predictor_parameters.h.tpl
+!/resources/**/bandwidth_linreg_parameters.h.tpl

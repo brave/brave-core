@@ -53,14 +53,18 @@ class PerfPredictorTabHelper
   void OnPageLoadTimingUpdated(
       const page_load_metrics::mojom::PageLoadTiming& timing);
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
+  static void DispatchBlockedEvent(
+    const std::string& subresource,
+    int render_process_id,
+    int render_frame_id,
+    int frame_tree_node_id);
 
  private:
+  friend class content::WebContentsUserData<PerfPredictorTabHelper>;
   void RecordSavings();
 
   // content::WebContentsObserver overrides.
   void DidStartNavigation(
-      content::NavigationHandle* navigation_handle) override;
-  void ReadyToCommitNavigation(
       content::NavigationHandle* navigation_handle) override;
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
@@ -71,9 +75,7 @@ class PerfPredictorTabHelper
   void DidAttachInterstitialPage() override;
   void WebContentsDestroyed() override;
 
-  friend class content::WebContentsUserData<PerfPredictorTabHelper>;
-  int64_t navigation_id_;
-  GURL main_frame_url_;
+  int64_t navigation_id_ = -1;
   std::unique_ptr<BandwidthSavingsPredictor> bandwidth_predictor_;
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
   std::unique_ptr<P3ABandwidthSavingsTracker> bandwidth_tracker_;

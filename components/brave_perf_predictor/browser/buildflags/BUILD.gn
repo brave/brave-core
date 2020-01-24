@@ -1,9 +1,0 @@
-import("//build/buildflag_header.gni")
-import("//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
-
-buildflag_header("buildflags") {
-  header = "buildflags.h"
-  flags = [
-    "ENABLE_BRAVE_PERF_PREDICTOR=$enable_brave_perf_predictor",
-  ]
-}

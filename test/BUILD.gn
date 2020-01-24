@@ -419,8 +419,9 @@ test("brave_unit_tests") {
 
   if (enable_brave_perf_predictor) {
     sources += [
-      "//brave/components/brave_perf_predictor/browser/third_party_extractor_unittest.cc",
+      "//brave/components/brave_perf_predictor/browser/named_third_party_registry_unittest.cc",
       "//brave/components/brave_perf_predictor/browser/bandwidth_linreg_unittest.cc",
+      "//brave/components/brave_perf_predictor/browser/bandwidth_savings_predictor_unittest.cc",
     ]
 
     deps += [
@@ -597,6 +598,16 @@ test("brave_browser_tests") {
       "//brave/browser/widevine/widevine_prefs_migration_browsertest.cc",
     ]
     deps += [ "//brave/browser/widevine" ]
+  }
+
+  if (enable_brave_perf_predictor) {
+    sources += [
+      "//brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper_browsertest.cc",
+    ]
+
+    deps += [
+      "//brave/components/brave_perf_predictor/browser",
+    ]
   }
 
   if (enable_greaselion) {

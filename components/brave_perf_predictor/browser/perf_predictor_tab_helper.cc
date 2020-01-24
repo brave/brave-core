@@ -5,17 +5,55 @@
 
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 
-#include "brave/components/brave_perf_predictor/browser/third_party_extractor.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_user_data.h"
 
 namespace brave_perf_predictor {
+
+namespace {
+content::WebContents* GetWebContents(
+    int render_process_id,
+    int render_frame_id,
+    int frame_tree_node_id) {
+  content::WebContents* web_contents =
+      content::WebContents::FromFrameTreeNodeId(frame_tree_node_id);
+  if (!web_contents) {
+    content::RenderFrameHost* rfh =
+        content::RenderFrameHost::FromID(render_process_id, render_frame_id);
+    if (!rfh) {
+      return nullptr;
+    }
+    web_contents =
+        content::WebContents::FromRenderFrameHost(rfh);
+  }
+  return web_contents;
+}
+
+}  // namespace
+
+// static
+void PerfPredictorTabHelper::DispatchBlockedEvent(const std::string& subresource,
+                                                  int render_process_id,
+                                                  int render_frame_id,
+                                                  int frame_tree_node_id) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  content::WebContents* web_contents = GetWebContents(
+      render_process_id, render_frame_id, frame_tree_node_id);
+  PerfPredictorTabHelper* blocking_observer =
+      brave_perf_predictor::PerfPredictorTabHelper::FromWebContents(
+          web_contents);
+  if (blocking_observer) {
+    blocking_observer->OnBlockedSubresource(subresource);
+  }
+}
 
 PerfPredictorTabHelper::PerfPredictorTabHelper(
     content::WebContents* web_contents)
@@ -37,19 +75,8 @@ void PerfPredictorTabHelper::DidStartNavigation(
   if (!handle || !handle->IsInMainFrame() || handle->IsDownload())
     return;
   // Gather prediction of the _previous_ navigation
-  if (navigation_id_ != 0)
+  if (navigation_id_ != handle->GetNavigationId() && navigation_id_ > 0)
     RecordSavings();
-}
-
-void PerfPredictorTabHelper::ReadyToCommitNavigation(
-    content::NavigationHandle* handle) {
-  if (!handle || !handle->IsInMainFrame() || handle->IsDownload())
-    return;
-  // Reset predictor state when we're committed to this navigation
-  if (bandwidth_predictor_)
-    bandwidth_predictor_->Reset();
-  // Record current nevigation ID to know if we're in the same navigation later
-  navigation_id_ = handle->GetNavigationId();
 }
 
 void PerfPredictorTabHelper::DidFinishNavigation(
@@ -57,12 +84,14 @@ void PerfPredictorTabHelper::DidFinishNavigation(
   if (!handle || !handle->IsInMainFrame() || !handle->HasCommitted() ||
       handle->IsDownload())
     return;
-
-  main_frame_url_ = handle->GetURL();
+  // Reset predictor state when we're committed to this navigation
+  bandwidth_predictor_->Reset();
+  // Record current nevigation ID to know if we're in the same navigation later
+  navigation_id_ = handle->GetNavigationId();
 }
 
 void PerfPredictorTabHelper::RecordSavings() {
-  if (bandwidth_predictor_ && web_contents()) {
+  if (web_contents()) {
     const uint64_t savings =
         static_cast<uint64_t>(bandwidth_predictor_->PredictSavingsBytes());
     bandwidth_predictor_->Reset();
@@ -91,22 +120,20 @@ void PerfPredictorTabHelper::ResourceLoadComplete(
     content::RenderFrameHost* render_frame_host,
     const content::GlobalRequestID& request_id,
     const content::mojom::ResourceLoadInfo& resource_load_info) {
-  if (render_frame_host && bandwidth_predictor_)
-    bandwidth_predictor_->OnResourceLoadComplete(main_frame_url_,
+  if (render_frame_host)
+    bandwidth_predictor_->OnResourceLoadComplete(web_contents()->GetURL(),
                                                  resource_load_info);
 }
 
 void PerfPredictorTabHelper::OnBlockedSubresource(
     const std::string& subresource) {
-  if (bandwidth_predictor_)
-    bandwidth_predictor_->OnSubresourceBlocked(subresource);
+  bandwidth_predictor_->OnSubresourceBlocked(subresource);
 }
 
 void PerfPredictorTabHelper::DidAttachInterstitialPage() {
   // web contents unloaded
-  if (bandwidth_predictor_)
-    // Predict to clear the state, but don't save the result
-    bandwidth_predictor_->Reset();
+  // Clear the state, nothing saved on interstitial
+  bandwidth_predictor_->Reset();
 }
 
 void PerfPredictorTabHelper::WebContentsDestroyed() {
@@ -116,8 +143,7 @@ void PerfPredictorTabHelper::WebContentsDestroyed() {
 
 void PerfPredictorTabHelper::OnPageLoadTimingUpdated(
     const page_load_metrics::mojom::PageLoadTiming& timing) {
-  if (bandwidth_predictor_)
-    bandwidth_predictor_->OnPageLoadTimingUpdated(timing);
+  bandwidth_predictor_->OnPageLoadTimingUpdated(timing);
 }
 
 // static

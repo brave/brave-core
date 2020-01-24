@@ -151,7 +151,6 @@ def train_model(print_params=False, reg=REGRESSOR):
 def export_model():
     # Load trained model and predict on test set
     model = joblib.load(MODEL_PATH)
-    # print(model)
     # Export:
     transformers = {
         'standardise': {
@@ -181,8 +180,11 @@ def export_model():
     data = {
         'transformers': transformers,
         'model': {
-            'intercept': model['model'].intercept_, 
+            'intercept': model['model'].intercept_,
             'coefficients': model['model'].coef_
+        },
+        'misc': {
+            'entities': [ feature.replace('thirdParties.', '').replace('.blocked', '') for feature in transformers['passthrough']['features'] if feature.startswith('thirdParties.') ]
         }
     }
     env.get_template(EXPORT_TEMPLATE_NAME).stream(data).dump(EXPORT_OUTPUT_PATH)

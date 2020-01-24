@@ -1,9 +1,18 @@
 import("//brave/build/config.gni")
 import("//brave/components/p3a/buildflags.gni")
+import("//build/buildflag_header.gni")
+import("buildflags/buildflags.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "ENABLE_BRAVE_PERF_PREDICTOR=$enable_brave_perf_predictor",
+  ]
+}
 
 source_set("browser") {
   public_deps = [
-    "buildflags",
+    ":buildflags",
   ]
 
   sources = [
@@ -16,8 +25,8 @@ source_set("browser") {
     "bandwidth_linreg.cc",
     "bandwidth_linreg.h",
     "bandwidth_linreg_parameters.h",
-    "third_party_extractor.cc",
-    "third_party_extractor.h",
+    "named_third_party_registry.cc",
+    "named_third_party_registry.h",
   ]
 
   deps = [
