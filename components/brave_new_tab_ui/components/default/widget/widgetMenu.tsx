@@ -80,7 +80,7 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
             onClick={this.unmountWidget}
           >
             <StyledWidgetIcon><CloseStrokeIcon/></StyledWidgetIcon>
-            <StyledSpan>{getLocale('remove')}</StyledSpan>
+            <StyledSpan>{getLocale('hide')}</StyledSpan>
           </StyledWidgetButton>
         </StyledWidgetMenu>}
       </StyledWidgetMenuContainer>
