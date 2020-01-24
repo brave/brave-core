@@ -77,9 +77,9 @@ class NTPNotificationViewController: TranslucentBottomSheet {
         
         switch state {
         case .getPaidTurnRewardsOn, .getPaidTurnAdsOn:
-            let learnMore = Strings.learnMore
+            let learnMore = Strings.learnMore.withNonBreakingSpace
             config.bodyText =
-                (text: "\(Strings.NTP.getPaidToSeeThisImage)\n\(learnMore)",
+                (text: "\(Strings.NTP.getPaidToSeeThisImage) \(learnMore)",
                     urlInfo: [learnMore: "learn-more"],
                     action: { [weak self] action in
                         self?.learnMoreHandler?()
@@ -100,10 +100,10 @@ class NTPNotificationViewController: TranslucentBottomSheet {
                     self?.close()
                 })
         case .gettingPaidAlready:
-            let learnMore = Strings.learnMore
+            let learnMore = Strings.learnMore.withNonBreakingSpace
             
             config.bodyText =
-                (text: "\(Strings.NTP.youArePaidToSeeThisImage)\n\(learnMore)",
+                (text: "\(Strings.NTP.youArePaidToSeeThisImage) \(learnMore)",
                     urlInfo: [learnMore: "learn-more"],
                     action: { [weak self] action in
                         self?.learnMoreHandler?()

@@ -127,4 +127,8 @@ extension String {
         attributedString.addAttributes(boldFontAttribute, range: range)
         return attributedString
     }
+    
+    public var withNonBreakingSpace: String {
+        self.replacingOccurrences(of: " ", with: "\u{00a0}")
+    }
 }
