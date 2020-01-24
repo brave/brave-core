@@ -8,6 +8,7 @@ import * as React from 'react'
 import { StyledWidgetMenuContainer, StyledWidgetMenu, StyledWidgetButton, StyledWidgetIcon, StyledSpan } from './styles'
 import { IconButton } from '../../default'
 import { CaratCircleODownIcon, CloseStrokeIcon } from 'brave-ui/components/icons'
+import { getLocale } from '../../../../common/locale'
 
 interface Props {
   menuPosition: 'right' | 'left'
@@ -79,7 +80,7 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
             onClick={this.unmountWidget}
           >
             <StyledWidgetIcon><CloseStrokeIcon/></StyledWidgetIcon>
-            <StyledSpan>Remove</StyledSpan>
+            <StyledSpan>{getLocale('remove')}</StyledSpan>
           </StyledWidgetButton>
         </StyledWidgetMenu>}
       </StyledWidgetMenuContainer>
