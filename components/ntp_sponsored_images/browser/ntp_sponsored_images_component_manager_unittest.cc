@@ -25,7 +25,7 @@ class TestObserver : public NTPSponsoredImagesComponentManager::Observer {
 };
 
 TEST(NTPSponsoredImagesComponentManagerTest, BasicTest) {
-  NTPSponsoredImagesComponentManager manager(nullptr, nullptr);
+  NTPSponsoredImagesComponentManager manager(nullptr);
 
   // By default manager doesn't have data.
   EXPECT_FALSE(manager.GetLatestSponsoredImagesData());
@@ -33,7 +33,7 @@ TEST(NTPSponsoredImagesComponentManagerTest, BasicTest) {
 
 TEST(NTPSponsoredImagesComponentManagerTest, InternalDataTest) {
   TestObserver observer;
-  NTPSponsoredImagesComponentManager manager(nullptr, nullptr);
+  NTPSponsoredImagesComponentManager manager(nullptr);
   manager.AddObserver(&observer);
 
   // Check with json file with empty object.

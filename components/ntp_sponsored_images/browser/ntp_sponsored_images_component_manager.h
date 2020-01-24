@@ -13,7 +13,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/optional.h"
-#include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_image_source.h"
 #include "components/component_updater/component_updater_service.h"
 
@@ -28,8 +27,7 @@ class BrowserContext;
 // When component is updated, Client also should call AddDataSource() for add
 // proper |URLDataSource|s.
 class NTPSponsoredImagesComponentManager
-    : public brave_component_updater::BraveComponent,
-      public component_updater::ServiceObserver  {
+    : public component_updater::ServiceObserver {
  public:
   class Observer {
    public:
@@ -39,8 +37,7 @@ class NTPSponsoredImagesComponentManager
     virtual ~Observer() {}
   };
 
-  NTPSponsoredImagesComponentManager(
-      BraveComponent::Delegate* delegate,
+  explicit NTPSponsoredImagesComponentManager(
       component_updater::ComponentUpdateService* cus);
   ~NTPSponsoredImagesComponentManager() override;
 
@@ -56,16 +53,15 @@ class NTPSponsoredImagesComponentManager
   // This should be called by client because this service is context neutral.
   void AddDataSource(content::BrowserContext* browser_context);
 
+  void OnComponentReady(const base::FilePath& installed_dir);
+
   base::Optional<NTPSponsoredImagesData> GetLatestSponsoredImagesData() const;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(NTPSponsoredImagesComponentManagerTest,
                            InternalDataTest);
 
-  // BraveComponent overrides:
-  void OnComponentReady(const std::string& component_id,
-                        const base::FilePath& installed_dir,
-                        const std::string& manifest) override;
+
 
   // ServiceObserver overrides:
   void OnEvent(Events event, const std::string& id) override;
@@ -77,6 +73,7 @@ class NTPSponsoredImagesComponentManager
 
   void ResetInternalImagesDataForTest();
 
+  std::string component_id_;
   base::FilePath photo_json_file_path_;
   component_updater::ComponentUpdateService* cus_ = nullptr;
   base::ObserverList<Observer>::Unchecked observer_list_;

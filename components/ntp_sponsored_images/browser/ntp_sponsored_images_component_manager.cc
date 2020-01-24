@@ -13,6 +13,7 @@
 #include "base/task/post_task.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/browser/locale_helper.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_component_installer.h"
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_internal_data.h"
 #include "brave/components/ntp_sponsored_images/browser/regional_component_data.h"
@@ -23,7 +24,6 @@
 namespace {
 
 constexpr char kPhotoJsonFilename[] = "photo.json";
-constexpr char kComponentName[] = "NTP sponsored images";
 
 constexpr char kLogoImageURLPath[] = "logo.imageUrl";
 constexpr char kLogoAltPath[] = "logo.alt";
@@ -45,10 +45,8 @@ std::string ReadPhotoJsonData(const base::FilePath& photo_json_file_path) {
 }  // namespace
 
 NTPSponsoredImagesComponentManager::NTPSponsoredImagesComponentManager(
-    BraveComponent::Delegate* delegate,
     component_updater::ComponentUpdateService* cus)
-    : BraveComponent(delegate),
-      weak_factory_(this) {
+    : weak_factory_(this) {
   // Early return for test.
   if (!cus)
     return;
@@ -61,17 +59,17 @@ NTPSponsoredImagesComponentManager::NTPSponsoredImagesComponentManager(
     LOG(ERROR)
         << "NTP Sponsored Image package will be loaded from local path at: "
         << forced_local_path.LossyDisplayName();
-    OnComponentReady("", forced_local_path, "");
+    OnComponentReady(forced_local_path);
     return;
   }
+
+  RegisterNTPSponsoredImagesComponent(cus, this);
 
   const std::string locale =
       brave_ads::LocaleHelper::GetInstance()->GetLocale();
   if (const auto& data = GetRegionalComponentData(
           helper::Locale::GetRegionCode(locale))) {
-    Register(kComponentName,
-             data->component_id,
-             data->component_base64_public_key);
+    component_id_ = data->component_id;
     cus_ = cus;
     cus_->AddObserver(this);
   }
@@ -126,9 +124,7 @@ void NTPSponsoredImagesComponentManager::ReadPhotoJsonFileAndNotify() {
 }
 
 void NTPSponsoredImagesComponentManager::OnComponentReady(
-    const std::string& component_id,
-    const base::FilePath& installed_dir,
-    const std::string& manifest) {
+    const base::FilePath& installed_dir) {
   photo_json_file_path_ = installed_dir.AppendASCII(kPhotoJsonFilename);
   ReadPhotoJsonFileAndNotify();
 }
@@ -136,7 +132,7 @@ void NTPSponsoredImagesComponentManager::OnComponentReady(
 void NTPSponsoredImagesComponentManager::OnEvent(Events event,
                                                  const std::string& id) {
   if (!id.empty() &&
-      id == component_id() &&
+      id == component_id_ &&
       event == Events::COMPONENT_UPDATED) {
       ReadPhotoJsonFileAndNotify();
   }

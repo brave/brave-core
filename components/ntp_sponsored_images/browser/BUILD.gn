@@ -4,6 +4,8 @@ source_set("browser") {
   # assert_no_deps = [ "//chrome/*" ]
 
   sources = [
+    "ntp_sponsored_images_component_installer.cc",
+    "ntp_sponsored_images_component_installer.h",
     "ntp_sponsored_images_component_manager.cc",
     "ntp_sponsored_images_component_manager.h",
     "ntp_sponsored_images_data.cc",

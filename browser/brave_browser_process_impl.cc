@@ -213,7 +213,6 @@ BraveBrowserProcessImpl::ntp_sponsored_images_component_manager() {
   if (!ntp_sponsored_images_component_manager_) {
     ntp_sponsored_images_component_manager_ =
         std::make_unique<NTPSponsoredImagesComponentManager>(
-            brave_component_updater_delegate(),
             component_updater());
   }
 
