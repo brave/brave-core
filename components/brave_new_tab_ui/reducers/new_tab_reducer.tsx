@@ -69,15 +69,14 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       // UI render time.
       // We at least schedule to run after the reducer has finished
       // and the resulting new state is available.
-      performSideEffect((state) => {
-        gridAPI.calculateGridSites(state)
-      })
-      // Run side-effects
       performSideEffect(async function (state) {
-        try {
-          await registerViewCount()
-        } catch (e) {
-          console.error('Error calling registerViewCount', e)
+        gridAPI.calculateGridSites(state)
+        if (!state.isIncognito) {
+          try {
+            await registerViewCount()
+          } catch (e) {
+            console.error('Error calling registerViewCount', e)
+          }
         }
       })
       break

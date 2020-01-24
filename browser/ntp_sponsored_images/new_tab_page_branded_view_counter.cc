@@ -11,6 +11,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/ntp_sponsored_images/new_tab_page_branded_view_counter.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
@@ -27,6 +28,10 @@
 #include "components/prefs/pref_service.h"
 
 namespace {
+
+bool IsPrivateNewTab(Profile* profile) {
+  return brave::IsTorProfile(profile) || profile->IsIncognitoProfile();
+}
 
 std::unique_ptr<NTPSponsoredImagesData> GetDemoWallpaper() {
   auto demo = std::make_unique<NTPSponsoredImagesData>();
@@ -71,13 +76,11 @@ class NewTabPageBrandedViewCounterFactory
   // BrowserContextKeyedServiceFactory:
   KeyedService* BuildServiceInstanceFor(
       content::BrowserContext* browser_context) const override {
+    Profile* profile = Profile::FromBrowserContext(browser_context);
+    DCHECK(!IsPrivateNewTab(profile));
     NewTabPageBrandedViewCounter* instance = new NewTabPageBrandedViewCounter(
-        Profile::FromBrowserContext(browser_context));
+        profile);
     return instance;
-  }
-  content::BrowserContext* GetBrowserContextToUse(
-      content::BrowserContext* context) const override {
-    return chrome::GetBrowserContextRedirectedInIncognito(context);
   }
   void RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) override {

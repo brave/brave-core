@@ -30,6 +30,8 @@ export type InitialRewardsData = {
   balance: NewTab.RewardsBalance
 }
 
+const isIncognito: boolean = chrome.extension.inIncognitoContext
+
 // Gets all data required for the first render of the page
 export async function getInitialData (): Promise<InitialData> {
   try {
@@ -45,7 +47,7 @@ export async function getInitialData (): Promise<InitialData> {
       statsAPI.getStats(),
       privateTabDataAPI.getPrivateTabData(),
       topSitesAPI.getTopSites(),
-      brandedWallpaper.getBrandedWallpaper()
+      !isIncognito ? brandedWallpaper.getBrandedWallpaper() : Promise.resolve(undefined)
     ])
     console.timeStamp('Got all initial data.')
     return {
