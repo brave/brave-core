@@ -21,13 +21,13 @@ import android.widget.EditText;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.BravePreferenceFragment;
-// import org.chromium.chrome.browser.ConfigAPIs;
 import org.chromium.chrome.browser.preferences.ChromeSwitchPreference;
 import org.chromium.chrome.browser.preferences.PreferenceUtils;
 
@@ -102,8 +102,8 @@ public class BraveQAPreferences extends BravePreferenceFragment
         DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int button) {
-                if (button != AlertDialog.BUTTON_POSITIVE /*||
-                    !input.getText().toString().equals(ConfigAPIs.QA_CODE)*/) {
+                if (button != AlertDialog.BUTTON_POSITIVE
+                        || !input.getText().toString().equals(BraveConfig.DEVELOPER_OPTIONS_CODE)) {
                     getActivity().finish();
                 }
             }

@@ -18,4 +18,7 @@ brave_chrome_java_deps = [
 # in brave_android_java_enums_srcjar target and add the chromium header file of
 # the enum we're replacing in brave_java_cpp_enum_filter.
 brave_java_cpp_enum_filter = ["//chrome/browser/notifications/notification_handler.h"]
-brave_chrome_java_srcjar_deps = ["//brave/android:brave_android_java_enums_srcjar"]
+brave_chrome_java_srcjar_deps = [
+  "//brave/android:brave_android_java_enums_srcjar",
+  "//brave/android:brave_config_java",
+]
