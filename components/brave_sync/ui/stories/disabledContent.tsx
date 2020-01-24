@@ -20,7 +20,6 @@ import {
 } from '../components'
 
 // Modals
-import DeviceType from './modals/deviceType'
 import EnterSyncCode from './modals/enterSyncCode'
 
 // Images
@@ -57,15 +56,10 @@ export default class SyncDisabledContent extends React.PureComponent<{}, State> 
   }
 
   render () {
-    const { newToSync, existingSyncCode } = this.state
+    const { existingSyncCode } = this.state
     return (
       <DisabledContent>
         <Main>
-          {
-            newToSync
-              ? <DeviceType onClose={this.onClickNewSyncChainButton} />
-              : null
-          }
           {
             existingSyncCode
               ? <EnterSyncCode onClose={this.onClickEnterSyncChainCodeButton} />

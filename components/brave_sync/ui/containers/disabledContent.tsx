@@ -6,6 +6,7 @@ import * as React from 'react'
 
 // Components
 import { Button } from 'brave-ui'
+import { LoaderIcon } from 'brave-ui/components/icons'
 
 // Component-specific components
 import {
@@ -22,7 +23,6 @@ import {
 import { SyncStartIcon } from 'brave-ui/features/sync/images'
 
 // Modals
-import DeviceTypeModal from './modals/deviceType'
 import EnterSyncCodeModal from './modals/enterSyncCode'
 
 // Utils
@@ -49,6 +49,12 @@ export default class SyncDisabledContent extends React.PureComponent<Props, Stat
 
   onClickNewSyncChainButton = () => {
     this.setState({ newToSync: !this.state.newToSync })
+    // once the screen is rendered, create a sync chain.
+    // this allow us to request the qr code and sync words immediately
+    const { thisDeviceName } = this.props.syncData
+    if (thisDeviceName === '') {
+      this.props.actions.onSetupNewToSync('')
+    }
   }
 
   onClickEnterSyncChainCodeButton = () => {
@@ -67,11 +73,6 @@ export default class SyncDisabledContent extends React.PureComponent<Props, Stat
       <DisabledContent>
         <Main>
           {
-            newToSync
-              ? <DeviceTypeModal syncData={syncData} actions={actions} onClose={this.onClickNewSyncChainButton} />
-              : null
-          }
-          {
             existingSyncCode
               ? <EnterSyncCodeModal syncData={syncData} actions={actions} onClose={this.onClickEnterSyncChainCodeButton} />
               : null
@@ -89,6 +90,12 @@ export default class SyncDisabledContent extends React.PureComponent<Props, Stat
                       type='accent'
                       onClick={this.onClickNewSyncChainButton}
                       text={getLocale('startSyncChain')}
+                      icon={{
+                        position: 'before',
+                        image: newToSync === true
+                          ? <LoaderIcon />
+                          : null
+                      }}
                     />
                     <Button
                       level='secondary'
