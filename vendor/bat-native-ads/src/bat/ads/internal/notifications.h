@@ -55,6 +55,9 @@ class Notifications {
   bool GetIdFromDictionary(
       base::DictionaryValue* dictionary,
       std::string* value) const;
+  bool GetParentIdFromDictionary(
+      base::DictionaryValue* dictionary,
+      std::string* value) const;
   bool GetCreativeSetIdFromDictionary(
       base::DictionaryValue* dictionary,
       std::string* value) const;

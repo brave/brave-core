@@ -14,6 +14,7 @@ namespace ads {
 
 NotificationInfo::NotificationInfo() :
     id(""),
+    parent_id(""),
     creative_set_id(""),
     category(""),
     advertiser(""),
@@ -24,6 +25,7 @@ NotificationInfo::NotificationInfo() :
 
 NotificationInfo::NotificationInfo(const NotificationInfo& info) :
     id(info.id),
+    parent_id(info.parent_id),
     creative_set_id(info.creative_set_id),
     category(info.category),
     advertiser(info.advertiser),
@@ -56,6 +58,10 @@ Result NotificationInfo::FromJson(
 
   if (document.HasMember("id")) {
     id = document["id"].GetString();
+  }
+
+  if (document.HasMember("parent_id")) {
+    parent_id = document["parent_id"].GetString();
   }
 
   if (document.HasMember("creative_set_id")) {
@@ -95,6 +101,9 @@ void SaveToJson(JsonWriter* writer, const NotificationInfo& info) {
 
   writer->String("id");
   writer->String(info.id.c_str());
+
+  writer->String("parent_id");
+  writer->String(info.parent_id.c_str());
 
   writer->String("creative_set_id");
   writer->String(info.creative_set_id.c_str());

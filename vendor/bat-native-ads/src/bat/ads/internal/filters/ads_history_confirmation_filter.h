@@ -13,14 +13,19 @@
 namespace ads {
 
 struct AdsHistory;
+class ConfirmationType;
 
 class AdsHistoryConfirmationFilter : public AdsHistoryFilter {
- public :
-  AdsHistoryConfirmationFilter() = default;
+ public:
+  AdsHistoryConfirmationFilter();
   ~AdsHistoryConfirmationFilter() override;
 
   std::deque<AdHistory> Apply(
       const std::deque<AdHistory>& history) const override;
+
+ private:
+  bool ShouldFilterAction(
+    const ConfirmationType& confirmation_type) const;
 };
 
 }  // namespace ads
