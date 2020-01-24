@@ -1,0 +1,20 @@
+source_set("ntp_sponsored_images") {
+  sources = [
+    "new_tab_page_branded_view_counter.cc",
+    "new_tab_page_branded_view_counter.h",
+    "view_counter_model.cc",
+    "view_counter_model.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/keyed_service/core",
+    "//components/prefs",
+    "//components/pref_registry",
+    "//brave/components/brave_rewards/browser",
+    "//brave/components/ntp_sponsored_images/browser",
+    "//brave/common",
+    "//chrome/common",
+    "//content/public/browser",
+  ]
+}
