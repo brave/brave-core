@@ -11,6 +11,7 @@ import BraveRewards
 class ClaimRewardsNTPNotificationViewController: TranslucentBottomSheet {
     
     private let rewards: BraveRewards
+    private var mainView: UIStackView?
     
     init(rewards: BraveRewards) {
         self.rewards = rewards
@@ -20,10 +21,12 @@ class ClaimRewardsNTPNotificationViewController: TranslucentBottomSheet {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        guard let mainView = mainView else {
+        guard let mainView = getMainView else {
             assertionFailure()
             return
         }
+        
+        self.mainView = mainView
         
         // Confetti background
         mainView.setCustomSpacing(0, after: mainView.header)
@@ -34,9 +37,11 @@ class ClaimRewardsNTPNotificationViewController: TranslucentBottomSheet {
                 $0.backgroundColor =  UIColor(patternImage: image)
             }
         }
-        mainView.insertSubview(bgView, at: 0)
+        view.addSubview(bgView)
         bgView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.leading.trailing.bottom.equalToSuperview()
+            // Confetti can obstruct the labels making it less readable.
+            $0.height.equalTo(100)
         }
         
         if let text = mainView.body.text {
@@ -46,14 +51,36 @@ class ClaimRewardsNTPNotificationViewController: TranslucentBottomSheet {
         }
         
         view.addSubview(mainView)
-        
+    }
+    
+    override func viewDidLayoutSubviews() {
+        updateMainViewConstraints()
+    }
+    
+    private func updateMainViewConstraints() {
+        guard let mainView = mainView else { return }
+
+        mainView.alignment = isPortraitIphone ? .fill : .center
+
         mainView.snp.remakeConstraints {
             $0.top.equalToSuperview().inset(28)
-            $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
+
+            if isPortraitIphone {
+                $0.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
+            } else {
+                let width = min(view.frame.width, 400)
+                $0.width.equalTo(width)
+                $0.centerX.equalToSuperview()
+            }
         }
     }
     
-    private var mainView: NTPNotificationView? {
+    private var isPortraitIphone: Bool {
+        traitCollection.userInterfaceIdiom == .phone && UIApplication.shared.statusBarOrientation.isPortrait
+    }
+    
+    private var getMainView: NTPNotificationView? {
         var config = NTPNotificationViewConfig(textColor: .white)
         
         guard let promo = (rewards.ledger.pendingPromotions.filter { $0.type == .ads }.first) else {
