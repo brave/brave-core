@@ -70,6 +70,30 @@ export default class SyncEnabledContent extends React.PureComponent<Props, State
     }
   }
 
+  componentDidMount () {
+    this.shouldShowAddDeviceModal()
+  }
+
+  componentDidUpdate (prevProps: Props) {
+    if (
+      prevProps.syncData.devices.length !==
+      this.props.syncData.devices.length
+    ) {
+      // if devices length changed, users either added
+      // or removed a device. again, check if they are less than 2
+      // so we can remind them again to add a new device
+      this.shouldShowAddDeviceModal()
+    }
+  }
+
+  shouldShowAddDeviceModal = () => {
+    const { syncData } = this.props
+    const hasLessThanTwoDevices: boolean = syncData.devices.length < 2
+    // if only one device is found, remind the user
+    // at every page refresh to add a new device
+    this.setState({ addDevice: hasLessThanTwoDevices })
+  }
+
   getDevicesRows = (devices?: any): Row[] | undefined => {
     if (!devices) {
       return
