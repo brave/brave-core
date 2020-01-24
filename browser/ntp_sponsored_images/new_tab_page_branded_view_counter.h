@@ -67,7 +67,8 @@ class NewTabPageBrandedViewCounter
   void SetShouldShowFromPreferences();
   void ResetNotificationState();
 
-  std::unique_ptr<NTPSponsoredImagesData> current_wallpaper_ = nullptr;
+  std::unique_ptr<NTPSponsoredImagesData> current_wallpaper_;
+  NTPSponsoredImagesComponentManager* manager_ = nullptr;
   bool has_user_opted_in_;
   bool is_supported_locale_;
   PrefChangeRegistrar pref_change_registrar_;

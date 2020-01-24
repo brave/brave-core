@@ -10,8 +10,6 @@ source_set("browser") {
     "ntp_sponsored_images_data.h",
     "ntp_sponsored_images_internal_data.cc",
     "ntp_sponsored_images_internal_data.h",
-    "ntp_sponsored_images_service.cc",
-    "ntp_sponsored_images_service.h",
     "ntp_sponsored_image_source.cc",
     "ntp_sponsored_image_source.h",
     "switches.cc",

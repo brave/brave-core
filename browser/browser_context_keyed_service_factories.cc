@@ -12,7 +12,6 @@
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
-#include "brave/browser/ntp_sponsored_images/ntp_sponsored_images_service_factory.h"
 #include "brave/browser/ntp_sponsored_images/new_tab_page_branded_view_counter.h"
 
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -35,7 +34,6 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #endif
   TorProfileServiceFactory::GetInstance();
   SearchEngineProviderServiceFactory::GetInstance();
-  NTPSponsoredImagesServiceFactory::GetInstance();
   NewTabPageBrandedViewCounter::
       EnsureBrowserContextKeyedServiceFactoriesBuilt();
 
