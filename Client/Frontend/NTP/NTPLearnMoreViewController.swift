@@ -20,6 +20,7 @@ class NTPLearnMoreViewController: BottomSheetViewController {
     
     init(state: BrandedImageCalloutState, rewards: BraveRewards?) {
         self.state = state
+        self.rewards = rewards
         super.init()
     }
     
