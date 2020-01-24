@@ -12,16 +12,11 @@ import Block from './block'
 import FooterInfo from './footerInfo'
 import SiteRemovalNotification from './notification'
 import {
-  Page,
   ClockWidget as Clock,
   ListWidget as List,
-  Footer,
-  App,
-  PosterBackground,
-  Gradient,
   RewardsWidget as Rewards
 } from '../../components/default'
-import * as S from '../../components/default/page'
+import * as Page from '../../components/default/page'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
 
 interface Props {
@@ -205,7 +200,7 @@ class NewTabPage extends React.Component<Props, State> {
     const shouldShowBrandedWallpaperNotification = isShowingBrandedWallpaper && !isBrandedWallpaperNotificationDismissed
     const shouldShowRewardsWidget = rewardsWidgetOn || shouldShowBrandedWallpaperNotification
     return shouldShowRewardsWidget && (
-      <S.GridItemRewards>
+      <Page.GridItemRewards>
         <Rewards
           {...rewardsState}
           preventFocus={!rewardsWidgetOn}
@@ -223,7 +218,7 @@ class NewTabPage extends React.Component<Props, State> {
           onDismissBrandedWallpaperNotification={this.props.onDismissBrandedWallpaperNotification}
           menuPosition={'left'}
         />
-      </S.GridItemRewards>
+      </Page.GridItemRewards>
     )
   }
 
@@ -241,21 +236,21 @@ class NewTabPage extends React.Component<Props, State> {
     const rewardsContent = this.renderRewardsContent()
 
     return (
-      <App dataIsReady={newTabData.initialDataLoaded}>
-        <PosterBackground
+      <Page.App dataIsReady={newTabData.initialDataLoaded}>
+        <Page.PosterBackground
           hasImage={hasImage}
           imageHasLoaded={this.state.backgroundHasLoaded}
         >
           {hasImage &&
             <img src={this.imageSource} />
           }
-        </PosterBackground>
+        </Page.PosterBackground>
         {hasImage &&
-          <Gradient
+          <Page.Gradient
             imageHasLoaded={this.state.backgroundHasLoaded}
           />
         }
-        <Page
+        <Page.Page
             showClock={newTabData.showClock}
             showStats={newTabData.showStats}
             showRewards={!!rewardsContent}
@@ -263,26 +258,26 @@ class NewTabPage extends React.Component<Props, State> {
             showBrandedWallpaper={isShowingBrandedWallpaper}
         >
           {newTabData.showStats &&
-          <S.GridItemStats>
+          <Page.GridItemStats>
             <Stats
               textDirection={newTabData.textDirection}
               stats={newTabData.stats}
               hideWidget={this.toggleShowStats}
               menuPosition={'right'}
             />
-          </S.GridItemStats>
+          </Page.GridItemStats>
           }
           {newTabData.showClock &&
-          <S.GridItemClock>
+          <Page.GridItemClock>
             <Clock
               textDirection={newTabData.textDirection}
               hideWidget={this.toggleShowClock}
               menuPosition={'left'}
             />
-          </S.GridItemClock>
+          </Page.GridItemClock>
           }
           {showTopSites &&
-          <S.GridItemTopSites><List
+          <Page.GridItemTopSites><List
             blockNumber={this.props.newTabData.gridSites.length}
             textDirection={newTabData.textDirection}
             menuPosition={'right'}
@@ -307,26 +302,26 @@ class NewTabPage extends React.Component<Props, State> {
                 />
               )
             }
-          </List></S.GridItemTopSites>
+          </List></Page.GridItemTopSites>
           }
           {
             this.props.newTabData.showSiteRemovalNotification
-            ? <S.GridItemNotification>
+            ? <Page.GridItemNotification>
                 <SiteRemovalNotification actions={actions} />
-              </S.GridItemNotification>
+              </Page.GridItemNotification>
             : null
           }
             {rewardsContent}
-          <Footer>
+          <Page.Footer>
             {isShowingBrandedWallpaper && newTabData.brandedWallpaperData &&
              newTabData.brandedWallpaperData.logo &&
-             <S.GridItemCredits>
+             <Page.GridItemCredits>
               <BrandedWallpaperLogo
                 menuPosition={'right'}
                 textDirection={newTabData.textDirection}
                 data={newTabData.brandedWallpaperData.logo}
               />
-            </S.GridItemCredits>}
+            </Page.GridItemCredits>}
             <FooterInfo
               textDirection={newTabData.textDirection}
               onClickOutside={this.closeSettings}
@@ -348,9 +343,9 @@ class NewTabPage extends React.Component<Props, State> {
               allowBrandedWallpaperUI={newTabData.featureFlagBraveNTPBrandedWallpaper}
               toggleShowRewards={this.toggleShowRewards}
             />
-          </Footer>
-        </Page>
-      </App>
+          </Page.Footer>
+        </Page.Page>
+      </Page.App>
     )
   }
 }

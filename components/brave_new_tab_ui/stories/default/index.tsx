@@ -5,8 +5,8 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Page, App, PosterBackground, Gradient, ClockWidget as Clock, RewardsWidget as Rewards } from '../../components/default'
-import * as S from '../../components/default/page'
+import { ClockWidget as Clock, RewardsWidget as Rewards } from '../../components/default'
+import * as Page from '../../components/default/page'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
 
 import TopSitesList from './topSites/topSitesList'
@@ -178,21 +178,21 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
       this.state.brandedWallpaperOptIn
 
     return (
-      <App dataIsReady={true}>
-        <PosterBackground
+      <Page.App dataIsReady={true}>
+        <Page.PosterBackground
           hasImage={hasImage}
           imageHasLoaded={true}
         >
           {hasImage &&
             <img src={imageSource} />
           }
-        </PosterBackground>
+        </Page.PosterBackground>
         {hasImage &&
-          <Gradient
+          <Page.Gradient
             imageHasLoaded={true}
           />
         }
-        <Page
+        <Page.Page
           showClock={showClock}
           showStats={showStats}
           showRewards={showRewards || showBrandedWallpaper}
@@ -200,34 +200,34 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
           showBrandedWallpaper={showBrandedWallpaper}
         >
           {showStats &&
-          <S.GridItemStats>
+          <Page.GridItemStats>
             <Stats
               textDirection={textDirection}
               menuPosition={'right'}
               hideWidget={this.toggleShowStats}
             />
-          </S.GridItemStats>
+          </Page.GridItemStats>
           }
           {showClock &&
-          <S.GridItemClock>
+          <Page.GridItemClock>
             <Clock
               textDirection={textDirection}
               menuPosition={'left'}
               hideWidget={this.toggleShowClock}
             />
-          </S.GridItemClock>
+          </Page.GridItemClock>
           }
           {showTopSites &&
-          <S.GridItemTopSites>
+          <Page.GridItemTopSites>
             <TopSitesList
               textDirection={textDirection}
               menuPosition={'right'}
               hideWidget={this.toggleShowTopSites}
             />
-          </S.GridItemTopSites>
+          </Page.GridItemTopSites>
           }
           {this.state.showTopSitesNotification &&
-          <S.GridItemNotification>
+          <Page.GridItemNotification>
             <TopSitesNotification
               actions={{
                 undoSiteIgnored: () => { console.log('undo site ignored') },
@@ -235,10 +235,10 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
                 onHideSiteRemovalNotification: () => this.hideSiteRemovalNotification()
               }}
             />
-          </S.GridItemNotification>
+          </Page.GridItemNotification>
           }
           {(showRewards || (showBrandedWallpaper && !this.state.isBrandedWallpaperNotificationDismissed)) &&
-          <S.GridItemRewards>
+          <Page.GridItemRewards>
             <Rewards
               adsSupported={true}
               promotions={promotions}
@@ -266,18 +266,18 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
               preventFocus={!showRewards}
               onDisableBrandedWallpaper={this.doNothing.bind(this, 'onDisableBrandedWallpaper')}
             />
-          </S.GridItemRewards>
+          </Page.GridItemRewards>
           }
-          <S.Footer>
+          <Page.Footer>
             {showBrandedWallpaper && this.state.brandedWallpaper &&
               this.state.brandedWallpaper.logo &&
-            <S.GridItemCredits>
+            <Page.GridItemCredits>
               <BrandedWallpaperLogo
                 menuPosition={'right'}
                 textDirection={textDirection}
                 data={this.state.brandedWallpaper.logo}
               />
-            </S.GridItemCredits>
+            </Page.GridItemCredits>
             }
             <FooterInfo
               textDirection={textDirection}
@@ -299,9 +299,9 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
               showRewards={showRewards}
               brandedWallpaperOptIn={this.state.brandedWallpaperOptIn}
             />
-          </S.Footer>
-        </Page>
-      </App>
+          </Page.Footer>
+        </Page.Page>
+      </Page.App>
     )
   }
 }
