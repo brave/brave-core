@@ -77,7 +77,7 @@ interface TileProps {
 }
 
 export const Tile = styled<TileProps, 'div'>('div')`
-  background-color: ${p => p.isDragging ? 'rgba(255, 255, 255, 0.5)' : 'rgba(255, 255, 255, 0.8)'};
+  background-color: #ffffff;
   position: relative;
   user-select: none;
   margin: 6px;
