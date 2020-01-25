@@ -113,6 +113,14 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getSafetynetCheckFailed();
     }
 
+    public void setUseRewardsStagingServer(boolean enabled) {
+        BravePrefServiceBridgeJni.get().setUseRewardsStagingServer(enabled);
+    }
+
+    public boolean getUseRewardsStagingServer() {
+        return BravePrefServiceBridgeJni.get().getUseRewardsStagingServer();
+    }
+
     @NativeMethods
     interface Natives {
         void setHTTPSEEnabled(boolean enabled);
@@ -142,5 +150,8 @@ public class BravePrefServiceBridge {
 
         void setSafetynetCheckFailed(boolean value);
         boolean getSafetynetCheckFailed();
+
+        void setUseRewardsStagingServer(boolean enabled);
+        boolean getUseRewardsStagingServer();
     }
 }

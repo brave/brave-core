@@ -7,6 +7,7 @@
 
 #include "base/android/jni_string.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "chrome/browser/profiles/profile.h"
@@ -160,6 +161,18 @@ void JNI_BravePrefServiceBridge_SetSafetynetCheckFailed(
 
 jboolean JNI_BravePrefServiceBridge_GetSafetynetCheckFailed(JNIEnv* env) {
   return GetOriginalProfile()->GetPrefs()->GetBoolean(kSafetynetCheckFailed);
+}
+
+void JNI_BravePrefServiceBridge_SetUseRewardsStagingServer(
+    JNIEnv* env,
+    jboolean enabled) {
+  GetOriginalProfile()->GetPrefs()->SetBoolean(
+      brave_rewards::prefs::kUseRewardsStagingServer, enabled);
+}
+
+jboolean JNI_BravePrefServiceBridge_GetUseRewardsStagingServer(JNIEnv* env) {
+  return GetOriginalProfile()->GetPrefs()->GetBoolean(
+      brave_rewards::prefs::kUseRewardsStagingServer);
 }
 
 }  // namespace android
