@@ -1266,7 +1266,8 @@ bool AdsServiceImpl::MigratePrefs(
     {{2, 3}, &AdsServiceImpl::MigratePrefsVersion2To3},
     {{3, 4}, &AdsServiceImpl::MigratePrefsVersion3To4},
     {{4, 5}, &AdsServiceImpl::MigratePrefsVersion4To5},
-    {{5, 6}, &AdsServiceImpl::MigratePrefsVersion5To6}
+    {{5, 6}, &AdsServiceImpl::MigratePrefsVersion5To6},
+    {{6, 7}, &AdsServiceImpl::MigratePrefsVersion6To7}
   };
 
   // Cycle through migration paths, i.e. if upgrading from version 2 to 5 we
@@ -1449,6 +1450,72 @@ void AdsServiceImpl::MigratePrefsVersion5To6() {
   // migrate to the new value
 
   SetUint64Pref(prefs::kAdsPerDay, 20);
+}
+
+void AdsServiceImpl::MigratePrefsVersion6To7() {
+  // Disable ads for newly supported regions due to a bug where ads were enabled
+  // even if the users region was not supported
+
+  const auto locale = GetLocale();
+  const auto region = ads::Ads::GetRegion(locale);
+
+  const std::vector<std::string> legacy_regions = {
+    "US",  // United States of America
+    "CA",  // Canada
+    "GB",  // United Kingdom (Great Britain and Northern Ireland)
+    "DE",  // Germany
+    "FR",  // France
+    "AU",  // Australia
+    "NZ",  // New Zealand
+    "IE",  // Ireland
+    "AR",  // Argentina
+    "AT",  // Austria
+    "BR",  // Brazil
+    "CH",  // Switzerland
+    "CL",  // Chile
+    "CO",  // Colombia
+    "DK",  // Denmark
+    "EC",  // Ecuador
+    "IL",  // Israel
+    "IN",  // India
+    "IT",  // Italy
+    "JP",  // Japan
+    "KR",  // Korea
+    "MX",  // Mexico
+    "NL",  // Netherlands
+    "PE",  // Peru
+    "PH",  // Philippines
+    "PL",  // Poland
+    "SE",  // Sweden
+    "SG",  // Singapore
+    "VE",  // Venezuela
+    "ZA",  // South Africa
+    "KY"   // Cayman Islands
+  };
+
+  const bool is_a_legacy_region = std::find(legacy_regions.begin(),
+      legacy_regions.end(), region) != legacy_regions.end();
+
+  if (is_a_legacy_region) {
+    // Do not disable Brave Ads for legacy regions introduced before version
+    // 1.3.x
+    return;
+  }
+
+  const int last_schema_version =
+      GetIntegerPref(prefs::kSupportedRegionsLastSchemaVersion);
+
+  if (last_schema_version >= 4) {
+    // Do not disable Brave Ads if |prefs::kSupportedRegionsLastSchemaVersion|
+    // is newer than or equal to schema version 4. This can occur if a user is
+    // upgrading from an older version of 1.3.x or above
+    return;
+  }
+
+  SetEnabled(false);
+
+  SetBooleanPref(prefs::kShouldShowOnboarding, true);
+  SetUint64Pref(prefs::kOnboardingTimestamp, 0);
 }
 
 int AdsServiceImpl::GetPrefsVersion() const {
