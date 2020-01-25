@@ -605,7 +605,9 @@ ExtensionFunction::ResponseAction BraveRewardsSaveAdsSettingFunction::Run() {
   AdsService* ads_service_ = AdsServiceFactory::GetForProfile(profile);
   if (ads_service_) {
     if (params->key == "adsEnabled") {
-      ads_service_->SetEnabled(params->value == "true");
+      const auto is_enabled =
+          params->value == "true" && ads_service_->IsSupportedLocale();
+      ads_service_->SetEnabled(is_enabled);
     }
   }
   return RespondNow(NoArguments());

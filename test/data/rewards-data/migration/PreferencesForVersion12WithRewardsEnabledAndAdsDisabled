@@ -1,0 +1,319 @@
+{
+  "account_id_migration_state": 2,
+  "account_tracker_service_last_update": "13223730695621666",
+  "apps": {
+    "shortcuts_version": 6
+  },
+  "autocomplete": {
+    "retention_policy_last_version": 79
+  },
+  "autofill": {
+    "orphan_rows_removed": true
+  },
+  "brave": {
+    "brave_ads": {
+      "ads_per_hour": "2",
+      "enabled": false,
+      "prefs": {
+        "version": 6
+      },
+      "supported_regions_last_schema_version_number": 0,
+      "supported_regions_schema_version_number": 4,
+      "should_show_first_launch_notification": true,
+      "were_disabled": false
+    },
+    "rewards": {
+      "badge_text": "",
+      "enabled": true,
+      "enabled_migrated": true,
+      "external_wallets": {
+        "uphold": {
+          "address": "",
+          "one_time_string": "E632B87C51F7CF75A5A45C0D6C914DE42BE52C15C90F27E84E65F6EC9193EEC4",
+          "status": 0,
+          "token": "",
+          "transferred": false,
+          "user_name": ""
+        }
+      },
+      "notifications": "{\"displayed\":[],\"notifications\":[]}",
+      "server_publisher_list_stamp": "1579257114"
+    }
+  },
+  "browser": {
+    "has_seen_welcome_page": true,
+    "window_placement": {
+      "bottom": 1252,
+      "left": 2876,
+      "maximized": false,
+      "right": 4024,
+      "top": 219,
+      "work_area_bottom": 1440,
+      "work_area_left": 2560,
+      "work_area_right": 5120,
+      "work_area_top": 23
+    }
+  },
+  "countryid_at_install": 16965,
+  "data_reduction": {
+    "daily_original_length": [
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "6743267"
+    ],
+    "daily_received_length": [
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "0",
+      "6743267"
+    ],
+    "last_update_date": "13223692800000000",
+    "network_properties": {},
+    "this_week_number": 2611,
+    "this_week_services_downstream_foreground_kb": {
+      "6019475": 153,
+      "11793316": 1,
+      "47942479": 1,
+      "51242536": 7,
+      "54845618": 6424,
+      "115765598": 1,
+      "119416099": 1
+    }
+  },
+  "default_apps_install_state": 3,
+  "extensions": {
+    "alerts": {
+      "initialized": true
+    },
+    "chrome_url_overrides": {},
+    "last_chrome_version": "79.1.2.42"
+  },
+  "gcm": {
+    "product_category_for_subtypes": "com.brave.macosx"
+  },
+  "google": {
+    "services": {
+      "signin_scoped_device_id": "a9b60c17-2147-4a24-9d9b-2990fa51a00e"
+    }
+  },
+  "http_original_content_length": "6743267",
+  "http_received_content_length": "6743267",
+  "invalidation": {
+    "per_sender_topics_to_handler": {
+      "8181035976": {}
+    }
+  },
+  "invalidator": {
+    "client_id": "WXdMSkOUiITLZaw8tWxkIw=="
+  },
+  "language_model_counters": {
+    "en": 1
+  },
+  "media": {
+    "device_id_salt": "9485B18C0C60A579F2CFA282023B50B7",
+    "engagement": {
+      "schema_version": 4
+    }
+  },
+  "media_router": {
+    "enable_media_router": false
+  },
+  "ntp": {
+    "num_personal_suggestions": 1
+  },
+  "plugins": {
+    "plugins_list": []
+  },
+  "previews": {
+    "litepage": {
+      "user-needs-notification": false
+    },
+    "offline_helper": {
+      "available_pages": {}
+    }
+  },
+  "profile": {
+    "avatar_bubble_tutorial_shown": 2,
+    "avatar_index": 26,
+    "block_third_party_cookies": true,
+    "content_settings": {
+      "exceptions": {
+        "accessibility_events": {},
+        "app_banner": {},
+        "auto_select_certificate": {},
+        "automatic_downloads": {},
+        "autoplay": {},
+        "background_sync": {},
+        "bluetooth_guard": {},
+        "bluetooth_scanning": {},
+        "client_hints": {},
+        "clipboard": {},
+        "cookies": {},
+        "durable_storage": {},
+        "flash_data": {},
+        "geolocation": {},
+        "hid_chooser_data": {},
+        "hid_guard": {},
+        "images": {},
+        "important_site_info": {},
+        "intent_picker_auto_display": {},
+        "javascript": {},
+        "legacy_cookie_access": {},
+        "media_engagement": {},
+        "media_stream_camera": {},
+        "media_stream_mic": {},
+        "midi_sysex": {},
+        "mixed_script": {},
+        "native_file_system_write_guard": {},
+        "notifications": {},
+        "password_protection": {},
+        "payment_handler": {},
+        "permission_autoblocking_data": {},
+        "plugins": {},
+        "popups": {},
+        "ppapi_broker": {},
+        "protocol_handler": {},
+        "sensors": {},
+        "serial_chooser_data": {},
+        "serial_guard": {},
+        "site_engagement": {},
+        "sound": {},
+        "ssl_cert_decisions": {},
+        "subresource_filter": {},
+        "subresource_filter_data": {},
+        "usb_chooser_data": {},
+        "usb_guard": {}
+      },
+      "pref_version": 1
+    },
+    "created_by_version": "79.1.2.42",
+    "default_content_setting_values": {
+      "cookies": 1
+    },
+    "exit_type": "Normal",
+    "exited_cleanly": true,
+    "managed_user_id": "",
+    "name": "Profile 1",
+    "password_manager_onboarding_state": 1
+  },
+  "signin": {
+    "allowed": false
+  },
+  "translate_site_blacklist_with_time": {},
+  "web_apps": {
+    "system_web_app_last_update": "79.1.2.42"
+  }
+}
