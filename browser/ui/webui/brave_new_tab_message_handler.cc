@@ -13,16 +13,22 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
-#include "brave/browser/ntp_sponsored_images/new_tab_page_branded_view_counter.h"
+#include "brave/browser/ntp_sponsored_images/view_counter_service_factory.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
+#include "brave/components/ntp_sponsored_images/browser/features.h"
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_sponsored_images/browser/view_counter_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_features.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
+
+using ntp_sponsored_images::features::kBraveNTPBrandedWallpaper;
+using ntp_sponsored_images::NTPSponsoredImagesData;
+using ntp_sponsored_images::ViewCounterService;
 
 namespace {
 
@@ -31,19 +37,19 @@ bool IsPrivateNewTab(Profile* profile) {
 }
 
 base::DictionaryValue GetBrandedWallpaperDictionary(
-    const NTPSponsoredImagesData& wallpaper,
+    NTPSponsoredImagesData* wallpaper,
     size_t wallpaper_image_index) {
   DCHECK(wallpaper_image_index >= 0 &&
-         wallpaper_image_index < wallpaper.wallpaper_image_urls.size());
+         wallpaper_image_index < wallpaper->wallpaper_image_urls().size());
 
   base::DictionaryValue data;
   data.SetString("wallpaperImageUrl",
-      wallpaper.wallpaper_image_urls[wallpaper_image_index]);
+      wallpaper->wallpaper_image_urls()[wallpaper_image_index]);
   auto logo_data = std::make_unique<base::DictionaryValue>();
-  logo_data->SetString("image", wallpaper.logo_image_url);
-  logo_data->SetString("companyName", wallpaper.logo_company_name);
-  logo_data->SetString("alt", wallpaper.logo_alt_text);
-  logo_data->SetString("destinationUrl", wallpaper.logo_destination_url);
+  logo_data->SetString("image", wallpaper->logo_image_url());
+  logo_data->SetString("companyName", wallpaper->logo_company_name);
+  logo_data->SetString("alt", wallpaper->logo_alt_text);
+  logo_data->SetString("destinationUrl", wallpaper->logo_destination_url);
   data.SetDictionary("logo", std::move(logo_data));
   return data;
 }
@@ -120,7 +126,7 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
   }
   source->AddBoolean(
       "featureFlagBraveNTPBrandedWallpaper",
-      base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaper) &&
+      base::FeatureList::IsEnabled(kBraveNTPBrandedWallpaper) &&
       is_ads_supported_locale_);
   // Private Tab info
   if (IsPrivateNewTab(profile)) {
@@ -311,9 +317,10 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
 void BraveNewTabMessageHandler::HandleRegisterNewTabPageView(
     const base::ListValue* args) {
   AllowJavascript();
-  // Decrement original value only if there's actual branded content
 
-  if (auto* service = NewTabPageBrandedViewCounter::GetForProfile(profile_))
+  // Decrement original value only if there's actual branded content
+  if (auto* service =
+      ntp_sponsored_images::ViewCounterServiceFactory::GetForProfile(profile_))
     service->RegisterPageView();
 }
 
@@ -321,13 +328,14 @@ void BraveNewTabMessageHandler::HandleGetBrandedWallpaperData(
     const base::ListValue* args) {
   AllowJavascript();
 
-  auto* service = NewTabPageBrandedViewCounter::GetForProfile(profile_);
+  auto* service =
+      ntp_sponsored_images::ViewCounterServiceFactory::GetForProfile(profile_);
   if (!service || !service->ShouldShowBrandedWallpaper()) {
     ResolveJavascriptCallback(args->GetList()[0], base::Value());
     return;
   }
   auto data = GetBrandedWallpaperDictionary(
-      service->GetBrandedWallpaper(),
+      service->current_wallpaper(),
       service->GetWallpaperImageIndexToDisplay());
   ResolveJavascriptCallback(args->GetList()[0], data);
 }

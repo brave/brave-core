@@ -6,14 +6,20 @@
 #ifndef BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_BROWSER_NTP_SPONSORED_IMAGES_COMPONENT_INSTALLER_H_
 #define BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_BROWSER_NTP_SPONSORED_IMAGES_COMPONENT_INSTALLER_H_
 
+#include "base/callback.h"
+#include "base/files/file_path.h"
+#include "brave/components/ntp_sponsored_images/browser/regional_component_data.h"
+
 namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
 
-class NTPSponsoredImagesService;
+using OnComponentReadyCallback =
+      base::RepeatingCallback<void(const base::FilePath& install_path)>;
 
 void RegisterNTPSponsoredImagesComponent(
     component_updater::ComponentUpdateService* cus,
-    NTPSponsoredImagesService* service);
+    const RegionalComponentData& regional_component_data,
+    OnComponentReadyCallback callback);
 
 #endif  // BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_BROWSER_NTP_SPONSORED_IMAGES_COMPONENT_INSTALLER_H_

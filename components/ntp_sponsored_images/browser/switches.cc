@@ -7,6 +7,8 @@
 
 #include "base/command_line.h"
 
+namespace ntp_sponsored_images {
+
 namespace switches {
 
 // Allows forcing sponsored images to use a local directory to find
@@ -14,3 +16,5 @@ namespace switches {
 const char kNTPBrandedDataPathForTesting[] = "ntp-branded-data-path";
 
 }  // namespace switches
+
+}  // namespace ntp_sponsored_images

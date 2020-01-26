@@ -9,13 +9,19 @@
 
 #include "base/bind.h"
 #include "base/files/file_util.h"
+#include "base/files/file_path.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_service.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_sponsored_images/browser/url_constants.h"
 #include "content/public/browser/browser_thread.h"
 
+namespace ntp_sponsored_images {
+
 namespace {
+
 base::Optional<std::string> ReadFileToString(const base::FilePath& path) {
   std::string contents;
   if (!base::ReadFileToString(path, &contents))
@@ -26,8 +32,8 @@ base::Optional<std::string> ReadFileToString(const base::FilePath& path) {
 }  // namespace
 
 NTPSponsoredImageSource::NTPSponsoredImageSource(
-    const NTPSponsoredImagesInternalData& internal_images_data)
-    : images_data_(internal_images_data),
+    NTPSponsoredImagesService* service)
+    : service_(service),
       weak_factory_(this) {
 }
 
@@ -49,13 +55,21 @@ void NTPSponsoredImageSource::StartDataRequest(
     return;
   }
 
+  auto* images_data = service_->GetSponsoredImagesData();
+  if (!images_data) {
+    base::PostTask(FROM_HERE,
+        base::BindOnce(std::move(callback),
+                       scoped_refptr<base::RefCountedMemory>()));
+    return;
+  }
+
   base::FilePath image_file_path;
   if (IsLogoPath(path)) {
-    image_file_path = images_data_.logo_image_file;
+    image_file_path = images_data->logo_image_file;
   } else {
     DCHECK(IsWallpaperPath(path));
     image_file_path =
-        images_data_.wallpaper_image_files[GetWallpaperIndexFromPath(path)];
+        images_data->wallpaper_image_files[GetWallpaperIndexFromPath(path)];
   }
 
   base::PostTaskAndReplyWithResult(
@@ -104,7 +118,11 @@ bool NTPSponsoredImageSource::IsLogoPath(const std::string& path) const {
 
 int NTPSponsoredImageSource::GetWallpaperIndexFromPath(
     const std::string& path) const {
-  const int wallpaper_count = images_data_.wallpaper_image_files.size();
+  auto* images_data = service_->GetSponsoredImagesData();
+  if (!images_data)
+    return -1;
+
+  const int wallpaper_count = images_data->wallpaper_image_files.size();
   for (int i = 0; i < wallpaper_count; ++i) {
     const std::string generated_path =
         base::StringPrintf("%s%d.jpg", kWallpaperPathPrefix, i);
@@ -114,3 +132,5 @@ int NTPSponsoredImageSource::GetWallpaperIndexFromPath(
 
   return -1;
 }
+
+}  // namespace ntp_sponsored_images

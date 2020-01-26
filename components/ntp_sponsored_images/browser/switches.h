@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_BROWSER_SWITCHES_H_
 #define BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_BROWSER_SWITCHES_H_
 
+namespace ntp_sponsored_images {
+
 namespace switches {
 
 // Allows forcing sponsored images to use a local directory to find
@@ -13,5 +15,7 @@ namespace switches {
 extern const char kNTPBrandedDataPathForTesting[];
 
 }  // namespace switches
+
+}  // namespace ntp_sponsored_images
 
 #endif  // BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_BROWSER_SWITCHES_H_

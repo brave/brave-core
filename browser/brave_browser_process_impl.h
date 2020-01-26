@@ -44,19 +44,22 @@ class ReferrerWhitelistService;
 class TrackingProtectionService;
 }  // namespace brave_shields
 
-class NTPSponsoredImagesService;
-
 namespace greaselion {
 #if BUILDFLAG(ENABLE_GREASELION)
 class GreaselionDownloadService;
 #endif
 }  // namespace greaselion
 
+namespace ntp_sponsored_images {
+class NTPSponsoredImagesService;
+}  // namespace ntp_sponsored_images
+
 namespace extensions {
 class BraveTorClientUpdater;
 }
 
 using brave_component_updater::BraveComponent;
+using ntp_sponsored_images::NTPSponsoredImagesService;
 
 class BraveBrowserProcessImpl : public BrowserProcessImpl {
  public:

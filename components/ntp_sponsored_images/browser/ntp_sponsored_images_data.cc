@@ -5,47 +5,46 @@
 
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_data.h"
 
-#include "base/logging.h"
 #include "base/strings/stringprintf.h"
-#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_internal_data.h"
 #include "brave/components/ntp_sponsored_images/browser/url_constants.h"
 #include "content/public/common/url_constants.h"
 
-NTPSponsoredImagesData::NTPSponsoredImagesData() = default;
+namespace ntp_sponsored_images {
 
-NTPSponsoredImagesData::NTPSponsoredImagesData(
-    const NTPSponsoredImagesInternalData& internal_data) {
-  logo_alt_text = internal_data.logo_alt_text;
-  logo_destination_url = internal_data.logo_destination_url;
-  logo_company_name = internal_data.logo_company_name;
-  const int wallpaper_image_count = internal_data.wallpaper_image_files.size();
-  const std::string url_prefix = base::StringPrintf("%s://%s/",
-      content::kChromeUIScheme, kBrandedWallpaperHost);
-  logo_image_url = url_prefix + kLogoPath;
-  for (int i = 0; i < wallpaper_image_count; i++) {
-    const std::string wallpaper_image_url = url_prefix + base::StringPrintf(
-        "%s%d.jpg", kWallpaperPathPrefix, i);
-    wallpaper_image_urls.push_back(wallpaper_image_url);
-  }
-}
+namespace {
+const std::string default_url_prefix =  // NOLINT
+    base::StringPrintf("%s://%s/",
+                       content::kChromeUIScheme,
+                       kBrandedWallpaperHost);
+}  // namespace
+
+NTPSponsoredImagesData::NTPSponsoredImagesData()
+    : url_prefix(default_url_prefix) {}
 
 NTPSponsoredImagesData& NTPSponsoredImagesData::operator=(
-    const NTPSponsoredImagesData& data) {
-  logo_image_url = data.logo_image_url;
-  logo_alt_text = data.logo_alt_text;
-  logo_destination_url = data.logo_destination_url;
-  logo_company_name = data.logo_company_name;
-  wallpaper_image_urls = data.wallpaper_image_urls;
-  return *this;
-}
-
+    const NTPSponsoredImagesData& data) = default;
 NTPSponsoredImagesData::NTPSponsoredImagesData(
     NTPSponsoredImagesData&& data) = default;
-
 NTPSponsoredImagesData::NTPSponsoredImagesData(
     const NTPSponsoredImagesData& data) = default;
 NTPSponsoredImagesData::~NTPSponsoredImagesData() = default;
 
 bool NTPSponsoredImagesData::IsValid() const {
-  return wallpaper_image_urls.size() > 0;
+  return wallpaper_image_files.size() > 0;
 }
+
+std::string NTPSponsoredImagesData::logo_image_url() const {
+  return url_prefix + kLogoPath;
+}
+
+std::vector<std::string> NTPSponsoredImagesData::wallpaper_image_urls() const {
+  std::vector<std::string> wallpaper_image_urls;
+  for (size_t i = 0; i < wallpaper_image_files.size(); i++) {
+    const std::string wallpaper_image_url = url_prefix + base::StringPrintf(
+        "%s%zu.jpg", kWallpaperPathPrefix, i);
+    wallpaper_image_urls.push_back(wallpaper_image_url);
+  }
+  return wallpaper_image_urls;
+}
+
+}  // namespace ntp_sponsored_images

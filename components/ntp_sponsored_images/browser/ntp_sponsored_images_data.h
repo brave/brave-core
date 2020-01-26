@@ -11,24 +11,27 @@
 
 #include "base/files/file_path.h"
 
-struct NTPSponsoredImagesInternalData;
+namespace ntp_sponsored_images {
 
 struct NTPSponsoredImagesData {
   NTPSponsoredImagesData();
-  explicit NTPSponsoredImagesData(
-      const NTPSponsoredImagesInternalData& internal_data);
   NTPSponsoredImagesData(const NTPSponsoredImagesData& data);
   NTPSponsoredImagesData& operator=(const NTPSponsoredImagesData& data);
   NTPSponsoredImagesData(NTPSponsoredImagesData&& data);
   ~NTPSponsoredImagesData();
 
   bool IsValid() const;
+  std::string logo_image_url() const;
+  std::vector<std::string> wallpaper_image_urls() const;
 
-  std::string logo_image_url;
+  base::FilePath logo_image_file;
   std::string logo_alt_text;
   std::string logo_destination_url;
   std::string logo_company_name;
-  std::vector<std::string> wallpaper_image_urls;
+  std::vector<base::FilePath> wallpaper_image_files;
+  std::string url_prefix;
 };
+
+}  // namespace ntp_sponsored_images
 
 #endif  // BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_BROWSER_NTP_SPONSORED_IMAGES_DATA_H_

@@ -6,21 +6,23 @@
 #include <string>
 
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_data.h"
-#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_internal_data.h"
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+using ntp_sponsored_images::NTPSponsoredImagesService;
+using ntp_sponsored_images::NTPSponsoredImagesData;
 
 class TestObserver : public NTPSponsoredImagesService::Observer {
  public:
   TestObserver() = default;
   ~TestObserver() override = default;
 
-  void OnUpdated(const NTPSponsoredImagesData& data) override {
+  void OnUpdated(NTPSponsoredImagesData* data) override {
     called_ = true;
     data_ = data;
   }
 
-  NTPSponsoredImagesData data_;
+  NTPSponsoredImagesData* data_;
   bool called_ = false;
 };
 
@@ -28,7 +30,7 @@ TEST(NTPSponsoredImagesServiceTest, BasicTest) {
   NTPSponsoredImagesService service(nullptr);
 
   // By default manager doesn't have data.
-  EXPECT_FALSE(service.GetLatestSponsoredImagesData());
+  EXPECT_EQ(service.GetSponsoredImagesData(), nullptr);
 }
 
 TEST(NTPSponsoredImagesServiceTest, InternalDataTest) {
@@ -37,14 +39,14 @@ TEST(NTPSponsoredImagesServiceTest, InternalDataTest) {
   service.AddObserver(&observer);
 
   // Check with json file with empty object.
-  service.ResetInternalImagesDataForTest();
+  service.ResetImagesDataForTest();
   service.OnGetPhotoJsonData("{}");
-  auto data = service.GetLatestSponsoredImagesData();
-  EXPECT_TRUE(data);
+  auto* data = service.GetSponsoredImagesData();
+  EXPECT_NE(data, nullptr);
   EXPECT_FALSE(data->IsValid());
   service.NotifyObservers();
   EXPECT_TRUE(observer.called_);
-  EXPECT_TRUE(observer.data_.logo_alt_text.empty());
+  EXPECT_TRUE(observer.data_->logo_alt_text.empty());
 
   const std::string  test_json_string = R"(
       {
@@ -69,18 +71,18 @@ TEST(NTPSponsoredImagesServiceTest, InternalDataTest) {
               }
           ]
       })";
-  service.ResetInternalImagesDataForTest();
+  service.ResetImagesDataForTest();
   service.OnGetPhotoJsonData(test_json_string);
-  data = service.GetLatestSponsoredImagesData();
+  data = service.GetSponsoredImagesData();
   EXPECT_TRUE(data);
   EXPECT_TRUE(data->IsValid());
   // Above json data has 3 wallpapers.
   const size_t image_count = 3;
-  EXPECT_EQ(image_count, data->wallpaper_image_urls.size());
+  EXPECT_EQ(image_count, data->wallpaper_image_urls().size());
   observer.called_ = false;
   service.NotifyObservers();
   EXPECT_TRUE(observer.called_);
-  EXPECT_FALSE(observer.data_.logo_alt_text.empty());
+  EXPECT_FALSE(observer.data_->logo_alt_text.empty());
 
   service.RemoveObserver(&observer);
 }

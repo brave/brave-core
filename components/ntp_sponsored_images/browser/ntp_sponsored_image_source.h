@@ -8,20 +8,18 @@
 
 #include <string>
 
-#include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
 #include "base/optional.h"
-#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_internal_data.h"
 #include "content/public/browser/url_data_source.h"
 
-class NTPSponsoredImagesComponentManager;
+namespace ntp_sponsored_images {
+
+class NTPSponsoredImagesService;
 
 // This serves branded image data.
-// This referes with weak ptr because both can have different life cycle.
 class NTPSponsoredImageSource : public content::URLDataSource {
  public:
-  explicit NTPSponsoredImageSource(
-      const NTPSponsoredImagesInternalData& internal_images_data);
+  explicit NTPSponsoredImageSource(NTPSponsoredImagesService* service);
 
   ~NTPSponsoredImageSource() override;
 
@@ -44,8 +42,10 @@ class NTPSponsoredImageSource : public content::URLDataSource {
   bool IsWallpaperPath(const std::string& path) const;
   int GetWallpaperIndexFromPath(const std::string& path) const;
 
-  const NTPSponsoredImagesInternalData images_data_;
+  NTPSponsoredImagesService* service_;  // not owned
   base::WeakPtrFactory<NTPSponsoredImageSource> weak_factory_;
 };
+
+}  // namespace ntp_sponsored_images
 
 #endif  // BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_BROWSER_NTP_SPONSORED_IMAGE_SOURCE_H_

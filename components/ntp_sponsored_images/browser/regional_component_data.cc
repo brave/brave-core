@@ -744,8 +744,6 @@ base::Optional<RegionalComponentData> GetRegionalComponentData(
         "gjnpmnbnfgdhagnnjcnaidipccghdkeo" },
   };
 
-  LOG(ERROR) << "NTP component region: " << region;
-
   for (const auto& data : regional_data) {
     if (data.region == region)
       return data;

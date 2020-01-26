@@ -20,6 +20,7 @@
 #include "brave/browser/tor/buildflags.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
@@ -34,6 +35,7 @@
 #include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/services/network/public/cpp/system_request_handler.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/webui/components_ui.h"
 #include "chrome/common/buildflags.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/component_updater/component_updater_service.h"
@@ -74,6 +76,8 @@
 #else
 #include "chrome/browser/ui/browser.h"
 #endif
+
+using ntp_sponsored_images::NTPSponsoredImagesService;
 
 namespace {
 
@@ -128,6 +132,9 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
 void BraveBrowserProcessImpl::Init() {
   BrowserProcessImpl::Init();
 
+  brave_component_updater::BraveOnDemandUpdater::GetInstance()->
+      RegisterOnDemandUpdateCallback(
+          base::BindRepeating(&ComponentsUI::OnDemandUpdate));
   UpdateBraveDarkMode();
   pref_change_registrar_.Add(
       kBraveDarkMode,

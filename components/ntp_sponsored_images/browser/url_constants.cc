@@ -5,6 +5,10 @@
 
 #include "brave/components/ntp_sponsored_images/browser/url_constants.h"
 
+namespace ntp_sponsored_images {
+
 const char kBrandedWallpaperHost[] = "branded-wallpaper";
 const char kLogoPath[] = "logo.png";
 const char kWallpaperPathPrefix[] = "wallpaper-";
+
+}  // namespace ntp_sponsored_images

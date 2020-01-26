@@ -1,20 +1,18 @@
 source_set("ntp_sponsored_images") {
   sources = [
-    "new_tab_page_branded_view_counter.cc",
-    "new_tab_page_branded_view_counter.h",
-    "view_counter_model.cc",
-    "view_counter_model.h",
+    "view_counter_service_factory.cc",
+    "view_counter_service_factory.h",
   ]
 
   deps = [
     "//base",
-    "//components/keyed_service/core",
-    "//components/prefs",
-    "//components/pref_registry",
-    "//brave/components/brave_rewards/browser",
     "//brave/components/ntp_sponsored_images/browser",
     "//brave/common",
+    "//brave/components/brave_ads/browser",
     "//chrome/common",
     "//content/public/browser",
+    "//components/keyed_service/content",
+    "//components/prefs",
+    "//components/pref_registry",
   ]
 }

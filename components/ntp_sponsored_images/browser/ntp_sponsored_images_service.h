@@ -10,35 +10,39 @@
 #include <string>
 
 #include "base/files/file_path.h"
+#include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
-#include "base/optional.h"
-#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_image_source.h"
-#include "components/component_updater/component_updater_service.h"
 
-struct NTPSponsoredImagesData;
-struct NTPSponsoredImagesInternalData;
+FORWARD_DECLARE_TEST(NTPSponsoredImagesServiceTest, InternalDataTest);
+
+namespace component_updater {
+class ComponentUpdateService;
+}
 
 namespace content {
 class BrowserContext;
 }  // namespace content
 
-// NOTE: Client should call AddDataSource() before requesting image sources.
-// When component is updated, Client also should call AddDataSource() for add
-// proper |URLDataSource|s.
-class NTPSponsoredImagesService : public component_updater::ServiceObserver {
+class NTPSponsoredImagesServiceTest;
+
+namespace ntp_sponsored_images {
+
+struct NTPSponsoredImagesData;
+
+class NTPSponsoredImagesService {
  public:
   class Observer {
    public:
     // Called whenever ntp sponsored images component is updated.
-    virtual void OnUpdated(const NTPSponsoredImagesData& data) = 0;
+    virtual void OnUpdated(NTPSponsoredImagesData* data) = 0;
    protected:
     virtual ~Observer() {}
   };
 
   explicit NTPSponsoredImagesService(
       component_updater::ComponentUpdateService* cus);
-  ~NTPSponsoredImagesService() override;
+  ~NTPSponsoredImagesService();
 
   NTPSponsoredImagesService(const NTPSponsoredImagesService&) = delete;
   NTPSponsoredImagesService& operator=(
@@ -51,29 +55,22 @@ class NTPSponsoredImagesService : public component_updater::ServiceObserver {
   // This should be called by client because this service is context neutral.
   void AddDataSource(content::BrowserContext* browser_context);
 
-  void OnComponentReady(const base::FilePath& installed_dir);
-
-  base::Optional<NTPSponsoredImagesData> GetLatestSponsoredImagesData() const;
+  NTPSponsoredImagesData* GetSponsoredImagesData() const;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(NTPSponsoredImagesServiceTest, InternalDataTest);
+  FRIEND_TEST_ALL_PREFIXES(::NTPSponsoredImagesServiceTest, InternalDataTest);
 
-  // ServiceObserver overrides:
-  void OnEvent(Events event, const std::string& id) override;
-
-  void ReadPhotoJsonFileAndNotify();
+  void OnComponentReady(const base::FilePath& installed_dir);
   void OnGetPhotoJsonData(const std::string& photo_json);
-  void ParseAndCachePhotoJsonData(const std::string& photo_json);
   void NotifyObservers();
 
-  void ResetInternalImagesDataForTest();
+  void ResetImagesDataForTest();
 
-  std::string component_id_;
-  base::FilePath photo_json_file_path_;
-  component_updater::ComponentUpdateService* cus_ = nullptr;
+  base::FilePath photos_manifest_path_;
   base::ObserverList<Observer>::Unchecked observer_list_;
-  std::unique_ptr<NTPSponsoredImagesInternalData> internal_images_data_;
+  std::unique_ptr<NTPSponsoredImagesData> images_data_;
   base::WeakPtrFactory<NTPSponsoredImagesService> weak_factory_;
 };
 
+}  // namespace ntp_sponsored_images
 #endif  // BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_BROWSER_NTP_SPONSORED_IMAGES_SERVICE_H_

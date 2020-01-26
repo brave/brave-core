@@ -1,35 +1,37 @@
-source_set("browser") {
-  # TODO(simonhong): Change to //chrome/*
-  # Currently, brave_ads component has //chrome/android dependency.
-  # assert_no_deps = [ "//chrome/*" ]
-
+static_library("browser") {
   sources = [
+    "features.cc",
+    "features.h",
+    "ntp_sponsored_image_source.cc",
+    "ntp_sponsored_image_source.h",
     "ntp_sponsored_images_component_installer.cc",
     "ntp_sponsored_images_component_installer.h",
     "ntp_sponsored_images_data.cc",
     "ntp_sponsored_images_data.h",
-    "ntp_sponsored_images_internal_data.cc",
-    "ntp_sponsored_images_internal_data.h",
     "ntp_sponsored_images_service.cc",
     "ntp_sponsored_images_service.h",
-    "ntp_sponsored_image_source.cc",
-    "ntp_sponsored_image_source.h",
-    "switches.cc",
-    "switches.h",
     "regional_component_data.cc",
     "regional_component_data.h",
+    "switches.cc",
+    "switches.h",
     "url_constants.cc",
     "url_constants.h",
+    "view_counter_model.cc",
+    "view_counter_model.h",
+    "view_counter_service.cc",
+    "view_counter_service.h",
   ]
 
   deps = [
     "//base",
     "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/common",
+    "//brave/components/brave_rewards/common",
     "//brave/components/brave_component_updater/browser",
-    "//brave/vendor/bat-native-ads",
     "//components/component_updater",
     "//components/crx_file",
     "//components/keyed_service/core",
+    "//components/prefs",
     "//content/public/browser",
     "//content/public/common",
     "//crypto",

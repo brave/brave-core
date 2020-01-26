@@ -4,6 +4,8 @@ source_set("browser") {
   sources = [
     "brave_component.cc",
     "brave_component.h",
+    "brave_on_demand_updater.cc",
+    "brave_on_demand_updater.h",
     "dat_file_util.cc",
     "dat_file_util.h",
     "local_data_files_service.cc",

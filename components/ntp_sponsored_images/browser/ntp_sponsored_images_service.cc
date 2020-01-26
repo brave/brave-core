@@ -8,6 +8,7 @@
 #include <algorithm>
 
 #include "base/bind.h"
+#include "base/command_line.h"
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "base/task/post_task.h"
@@ -15,11 +16,13 @@
 #include "brave/components/brave_ads/browser/locale_helper.h"
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_component_installer.h"
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_data.h"
-#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_internal_data.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_image_source.h"
 #include "brave/components/ntp_sponsored_images/browser/regional_component_data.h"
 #include "brave/components/ntp_sponsored_images/browser/switches.h"
-#include "brave/vendor/bat-native-ads/src/bat/ads/internal/locale_helper.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/url_data_source.h"
+
+namespace ntp_sponsored_images {
 
 namespace {
 
@@ -32,12 +35,12 @@ constexpr char kLogoDestinationURLPath[] = "logo.destinationUrl";
 constexpr char kWallpapersPath[] = "wallpapers";
 constexpr char kWallpaperImageURLPath[] = "imageUrl";
 
-std::string ReadPhotoJsonData(const base::FilePath& photo_json_file_path) {
+std::string ReadPhotosManifest(const base::FilePath& photos_manifest_path) {
   std::string contents;
-  bool success = base::ReadFileToString(photo_json_file_path, &contents);
+  bool success = base::ReadFileToString(photos_manifest_path, &contents);
   if (!success || contents.empty()) {
-    DVLOG(2) << "ReadPhotoJsonData: cannot "
-             << "read photo.json file " << photo_json_file_path;
+    DVLOG(2) << "ReadPhotosManifest: cannot "
+             << "read photo.json file " << photos_manifest_path;
   }
   return contents;
 }
@@ -47,10 +50,6 @@ std::string ReadPhotoJsonData(const base::FilePath& photo_json_file_path) {
 NTPSponsoredImagesService::NTPSponsoredImagesService(
     component_updater::ComponentUpdateService* cus)
     : weak_factory_(this) {
-  // Early return for test.
-  if (!cus)
-    return;
-
   // Flag override for testing or demo purposes
   base::FilePath forced_local_path(
       base::CommandLine::ForCurrentProcess()->GetSwitchValueNative(
@@ -63,22 +62,21 @@ NTPSponsoredImagesService::NTPSponsoredImagesService(
     return;
   }
 
-  RegisterNTPSponsoredImagesComponent(cus, this);
+  // Early return for test.
+  if (!cus)
+    return;
 
   const std::string locale =
       brave_ads::LocaleHelper::GetInstance()->GetLocale();
   if (const auto& data = GetRegionalComponentData(
-          helper::Locale::GetRegionCode(locale))) {
-    component_id_ = data->component_id;
-    cus_ = cus;
-    cus_->AddObserver(this);
+          brave_ads::LocaleHelper::GetCountryCode(locale))) {
+    RegisterNTPSponsoredImagesComponent(cus, data.value(),
+        base::BindRepeating(&NTPSponsoredImagesService::OnComponentReady,
+                            weak_factory_.GetWeakPtr()));
   }
 }
 
-NTPSponsoredImagesService::~NTPSponsoredImagesService() {
-  if (cus_)
-    cus_->RemoveObserver(this);
-}
+NTPSponsoredImagesService::~NTPSponsoredImagesService() {}
 
 void NTPSponsoredImagesService::AddObserver(Observer* observer) {
   observer_list_.AddObserver(observer);
@@ -94,104 +92,77 @@ bool NTPSponsoredImagesService::HasObserver(Observer* observer) {
 
 void NTPSponsoredImagesService::AddDataSource(
     content::BrowserContext* browser_context) {
-  if (!internal_images_data_)
-    return;
-
-  if (!internal_images_data_->logo_image_file.empty()) {
-    content::URLDataSource::Add(
-        browser_context,
-        std::make_unique<NTPSponsoredImageSource>(*internal_images_data_));
-  }
+  content::URLDataSource::Add(browser_context,
+                              std::make_unique<NTPSponsoredImageSource>(this));
 }
 
-base::Optional<NTPSponsoredImagesData>
-NTPSponsoredImagesService::GetLatestSponsoredImagesData() const {
-  if (internal_images_data_)
-    return NTPSponsoredImagesData(*internal_images_data_);
-
-  return base::nullopt;
-}
-
-void NTPSponsoredImagesService::ReadPhotoJsonFileAndNotify() {
-  // Reset previous data.
-  internal_images_data_.reset();
-
-  base::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::ThreadPool(), base::MayBlock()},
-      base::BindOnce(&ReadPhotoJsonData, photo_json_file_path_),
-      base::BindOnce(&NTPSponsoredImagesService::OnGetPhotoJsonData,
-                     weak_factory_.GetWeakPtr()));
+NTPSponsoredImagesData*
+NTPSponsoredImagesService::GetSponsoredImagesData() const {
+  return images_data_.get();
 }
 
 void NTPSponsoredImagesService::OnComponentReady(
     const base::FilePath& installed_dir) {
-  photo_json_file_path_ = installed_dir.AppendASCII(kPhotoJsonFilename);
-  ReadPhotoJsonFileAndNotify();
-}
+  // image list is no longer valid after the component has been updated
+  images_data_.reset();
+  NotifyObservers();
 
-void NTPSponsoredImagesService::OnEvent(Events event,
-                                                 const std::string& id) {
-  if (!id.empty() &&
-      id == component_id_ &&
-      event == Events::COMPONENT_UPDATED) {
-      ReadPhotoJsonFileAndNotify();
-  }
+  photos_manifest_path_ = installed_dir.AppendASCII(kPhotoJsonFilename);
+  base::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::ThreadPool(), base::MayBlock()},
+      base::BindOnce(&ReadPhotosManifest, photos_manifest_path_),
+      base::BindOnce(&NTPSponsoredImagesService::OnGetPhotoJsonData,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void NTPSponsoredImagesService::OnGetPhotoJsonData(
     const std::string& photo_json) {
-  ParseAndCachePhotoJsonData(photo_json);
-  NotifyObservers();
-}
-
-void NTPSponsoredImagesService::ParseAndCachePhotoJsonData(
-    const std::string& photo_json) {
   base::Optional<base::Value> photo_value = base::JSONReader::Read(photo_json);
   if (photo_value) {
-    internal_images_data_.reset(new NTPSponsoredImagesInternalData);
+    images_data_.reset(new NTPSponsoredImagesData);
 
     // Resources are stored with json file in the same directory.
-    base::FilePath base_dir = photo_json_file_path_.DirName();
+    base::FilePath base_dir = photos_manifest_path_.DirName();
 
     if (auto* logo_image_url = photo_value->FindStringPath(kLogoImageURLPath)) {
-      internal_images_data_->logo_image_file =
+      images_data_->logo_image_file =
           base_dir.AppendASCII(*logo_image_url);
     }
 
     if (auto* logo_alt_text = photo_value->FindStringPath(kLogoAltPath)) {
-      internal_images_data_->logo_alt_text = *logo_alt_text;
+      images_data_->logo_alt_text = *logo_alt_text;
     }
 
     if (auto* logo_company_name =
             photo_value->FindStringPath(kLogoCompanyNamePath)) {
-      internal_images_data_->logo_company_name = *logo_company_name;
+      images_data_->logo_company_name = *logo_company_name;
     }
 
     if (auto* logo_destination_url =
             photo_value->FindStringPath(kLogoDestinationURLPath)) {
-      internal_images_data_->logo_destination_url = *logo_destination_url;
+      images_data_->logo_destination_url = *logo_destination_url;
     }
 
     if (auto* wallpaper_image_urls =
             photo_value->FindListPath(kWallpapersPath)) {
       for (const auto& value : wallpaper_image_urls->GetList()) {
-        internal_images_data_->wallpaper_image_files.push_back(
+        images_data_->wallpaper_image_files.push_back(
             base_dir.AppendASCII(
                 *value.FindStringPath(kWallpaperImageURLPath)));
       }
     }
+    NotifyObservers();
   }
 }
 
 void NTPSponsoredImagesService::NotifyObservers() {
   for (auto& observer : observer_list_) {
-    if (internal_images_data_)
-      observer.OnUpdated(NTPSponsoredImagesData(*internal_images_data_));
-    else
-      observer.OnUpdated(NTPSponsoredImagesData());
+    observer.OnUpdated(images_data_.get());
   }
 }
 
-void NTPSponsoredImagesService::ResetInternalImagesDataForTest() {
-  internal_images_data_.reset();
+void NTPSponsoredImagesService::ResetImagesDataForTest() {
+  images_data_.reset();
 }
+
+}  // namespace ntp_sponsored_images

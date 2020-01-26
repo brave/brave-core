@@ -6,8 +6,12 @@
 #ifndef BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_BROWSER_URL_CONSTANTS_H_
 #define BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_BROWSER_URL_CONSTANTS_H_
 
+namespace ntp_sponsored_images {
+
 extern const char kBrandedWallpaperHost[];
 extern const char kLogoPath[];
 extern const char kWallpaperPathPrefix[];
+
+}  // namespace ntp_sponsored_images
 
 #endif  // BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_BROWSER_URL_CONSTANTS_H_

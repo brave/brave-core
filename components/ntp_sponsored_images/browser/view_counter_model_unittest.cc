@@ -3,8 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ntp_sponsored_images/view_counter_model.h"
+#include "brave/components/ntp_sponsored_images/browser/view_counter_model.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+using ntp_sponsored_images::ViewCounterModel;
 
 TEST(ViewCounterTest, BasicTest) {
   ViewCounterModel model;

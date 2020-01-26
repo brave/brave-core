@@ -13,12 +13,15 @@
 #include "base/bind.h"
 #include "base/callback.h"
 #include "brave/components/brave_ads/browser/locale_helper.h"
-#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_service.h"
+#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/ntp_sponsored_images/browser/regional_component_data.h"
-#include "brave/vendor/bat-native-ads/src/bat/ads/internal/locale_helper.h"
 #include "components/component_updater/component_installer.h"
+#include "components/component_updater/component_updater_service.h"
 #include "components/crx_file/id_util.h"
 #include "crypto/sha2.h"
+
+using brave_component_updater::BraveOnDemandUpdater;
+using crx_file::id_util::kIdSize;
 
 namespace {
 
@@ -29,11 +32,11 @@ class NTPSponsoredImagesComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
   explicit NTPSponsoredImagesComponentInstallerPolicy(
-      NTPSponsoredImagesService* service);
-  ~NTPSponsoredImagesComponentInstallerPolicy() override {}
+      const RegionalComponentData& regional_component_data,
+      OnComponentReadyCallback callback);
+  ~NTPSponsoredImagesComponentInstallerPolicy() override;
 
- private:
-  // The following methods override ComponentInstallerPolicy.
+  // component_updater::ComponentInstallerPolicy
   bool SupportsGroupPolicyEnabledComponentUpdates() const override;
   bool RequiresNetworkEncryption() const override;
   update_client::CrxInstaller::Result OnCustomInstall(
@@ -51,15 +54,25 @@ class NTPSponsoredImagesComponentInstallerPolicy
   update_client::InstallerAttributes GetInstallerAttributes() const override;
   std::vector<std::string> GetMimeTypes() const override;
 
-  NTPSponsoredImagesService* service_;
+ private:
+  OnComponentReadyCallback ready_callback_;
+  uint8_t component_hash_[16];
 
   DISALLOW_COPY_AND_ASSIGN(NTPSponsoredImagesComponentInstallerPolicy);
 };
 
 NTPSponsoredImagesComponentInstallerPolicy::
-    NTPSponsoredImagesComponentInstallerPolicy(
-        NTPSponsoredImagesService* service)
-        : service_(service) {}
+NTPSponsoredImagesComponentInstallerPolicy(
+    const RegionalComponentData& data, OnComponentReadyCallback callback)
+    : ready_callback_(callback) {
+  // Generate hash from public key.
+  std::string decoded_public_key;
+  base::Base64Decode(data.component_base64_public_key, &decoded_public_key);
+  crypto::SHA256HashString(decoded_public_key, component_hash_, kIdSize);
+}
+
+NTPSponsoredImagesComponentInstallerPolicy::
+~NTPSponsoredImagesComponentInstallerPolicy() {}
 
 bool NTPSponsoredImagesComponentInstallerPolicy::
     SupportsGroupPolicyEnabledComponentUpdates() const {
@@ -84,7 +97,7 @@ void NTPSponsoredImagesComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& path,
     std::unique_ptr<base::DictionaryValue> manifest) {
-  service_->OnComponentReady(path);
+  ready_callback_.Run(path);
 }
 
 bool NTPSponsoredImagesComponentInstallerPolicy::VerifyInstallation(
@@ -100,19 +113,7 @@ base::FilePath NTPSponsoredImagesComponentInstallerPolicy::
 
 void NTPSponsoredImagesComponentInstallerPolicy::GetHash(
     std::vector<uint8_t>* hash) const {
-  const std::string locale =
-      brave_ads::LocaleHelper::GetInstance()->GetLocale();
-  if (const auto& data = GetRegionalComponentData(
-          helper::Locale::GetRegionCode(locale))) {
-    // Generate hash from public key.
-    std::string decoded_public_key;
-    base::Base64Decode(data->component_base64_public_key, &decoded_public_key);
-    const size_t kIdSize = 32;
-    uint8_t component_hash[kIdSize];
-    crypto::SHA256HashString(decoded_public_key, component_hash, kIdSize);
-    hash->assign(component_hash,
-                 component_hash + kIdSize);
-  }
+  hash->assign(component_hash_, component_hash_ + kIdSize);
 }
 
 std::string NTPSponsoredImagesComponentInstallerPolicy::GetName() const {
@@ -131,10 +132,17 @@ std::vector<std::string>
 
 }  // namespace
 
+void OnRegistered(const std::string& component_id) {
+  BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(component_id);
+}
+
 void RegisterNTPSponsoredImagesComponent(
     component_updater::ComponentUpdateService* cus,
-    NTPSponsoredImagesService* service) {
+    const RegionalComponentData& data,
+    OnComponentReadyCallback callback) {
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
-      std::make_unique<NTPSponsoredImagesComponentInstallerPolicy>(service));
-  installer->Register(cus, base::OnceClosure());
+      std::make_unique<NTPSponsoredImagesComponentInstallerPolicy>(
+          data, callback));
+  installer->Register(cus,
+                      base::BindOnce(&OnRegistered, data.component_id));
 }
