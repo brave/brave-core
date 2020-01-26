@@ -29,7 +29,6 @@ static_library("browser") {
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_component_updater/browser",
     "//components/component_updater",
-    "//components/crx_file",
     "//components/keyed_service/core",
     "//components/prefs",
     "//content/public/browser",

@@ -17,16 +17,15 @@
 #include "brave/components/ntp_sponsored_images/browser/regional_component_data.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
-#include "components/crx_file/id_util.h"
 #include "crypto/sha2.h"
 
 using brave_component_updater::BraveOnDemandUpdater;
-using crx_file::id_util::kIdSize;
 
 namespace {
 
 constexpr char kNTPSponsoredImagesDisplayName[] = "NTP sponsored images";
 constexpr char kNTPSponsoredImagesBaseDirectory[] = "NTPSponsoredImages";
+constexpr size_t kHashSize = 32;
 
 class NTPSponsoredImagesComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
@@ -56,7 +55,7 @@ class NTPSponsoredImagesComponentInstallerPolicy
 
  private:
   OnComponentReadyCallback ready_callback_;
-  uint8_t component_hash_[16];
+  uint8_t component_hash_[kHashSize];
 
   DISALLOW_COPY_AND_ASSIGN(NTPSponsoredImagesComponentInstallerPolicy);
 };
@@ -68,7 +67,7 @@ NTPSponsoredImagesComponentInstallerPolicy(
   // Generate hash from public key.
   std::string decoded_public_key;
   base::Base64Decode(data.component_base64_public_key, &decoded_public_key);
-  crypto::SHA256HashString(decoded_public_key, component_hash_, kIdSize);
+  crypto::SHA256HashString(decoded_public_key, component_hash_, kHashSize);
 }
 
 NTPSponsoredImagesComponentInstallerPolicy::
@@ -113,7 +112,7 @@ base::FilePath NTPSponsoredImagesComponentInstallerPolicy::
 
 void NTPSponsoredImagesComponentInstallerPolicy::GetHash(
     std::vector<uint8_t>* hash) const {
-  hash->assign(component_hash_, component_hash_ + kIdSize);
+  hash->assign(component_hash_, component_hash_ + kHashSize);
 }
 
 std::string NTPSponsoredImagesComponentInstallerPolicy::GetName() const {
