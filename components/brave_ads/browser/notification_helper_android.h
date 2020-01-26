@@ -24,7 +24,9 @@ class NotificationHelperAndroid
   NotificationHelperAndroid();
   ~NotificationHelperAndroid() override;
 
-  bool IsBraveAdsNotificationChannelEnabled() const;
+
+  //foregroundChannel: foreground or background channel
+  bool IsBraveAdsNotificationChannelEnabled(bool foregroundChannel) const;
 
   int GetOperatingSystemVersion() const;
 

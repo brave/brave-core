@@ -37,14 +37,13 @@ bool NotificationHelperAndroid::ShouldShowNotifications() {
   bool is_notifications_enabled = (status == kAppNotificationsStatusEnabled ||
       status == kAppNotificationStatusUndeterminable);
 
-  bool is_notification_channel_enabled = IsBraveAdsNotificationChannelEnabled();
-
-  auto is_foreground = BackgroundHelper::GetInstance()->IsForeground();
-  auto should_show_notifications =
-      CanShowBackgroundNotifications() || is_foreground;
-
-  return is_notifications_enabled && is_notification_channel_enabled &&
-      should_show_notifications;
+  bool is_foreground = BackgroundHelper::GetInstance()->IsForeground();
+  bool is_notification_channel_enabled = IsBraveAdsNotificationChannelEnabled(is_foreground);
+  bool result = is_notifications_enabled && is_notification_channel_enabled;
+  if (!is_foreground) {
+    result = result && CanShowBackgroundNotifications();
+  }
+  return result;
 }
 
 bool NotificationHelperAndroid::ShowMyFirstAdNotification() {
@@ -73,13 +72,14 @@ NotificationHelper* NotificationHelper::GetInstanceImpl() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool NotificationHelperAndroid::IsBraveAdsNotificationChannelEnabled() const {
+bool NotificationHelperAndroid::IsBraveAdsNotificationChannelEnabled(bool foregroundChannel) const {
   if (GetOperatingSystemVersion() < kMinimumVersionForNotificationChannels) {
     return true;
   }
 
   JNIEnv* env = base::android::AttachCurrentThread();
-  auto j_channel_id = Java_BraveAds_getBraveAdsChannelId(env);
+  auto j_channel_id = (foregroundChannel)? Java_BraveAds_getBraveAdsChannelId(env):
+      Java_BraveAds_getBraveAdsBackgroundChannelId(env);
   auto status = static_cast<NotificationChannelStatus>(
       Java_BraveNotificationSettingsBridge_getChannelStatus(
           env, j_channel_id));
