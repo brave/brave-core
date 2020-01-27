@@ -96,16 +96,16 @@ def AddBravePartsForSigning(parts, config):
     parts['helper-app'].entitlements = 'helper-entitlements.plist'
     parts['helper-app'].options = CodeSignOptions.RESTRICT + CodeSignOptions.KILL + CodeSignOptions.HARDENED_RUNTIME
 
-    # Add Sparkle binaries
-    parts['sparkle-framework-fileop'] = CodeSignedProduct(
-        '{.framework_dir}/Versions/{.version}/Frameworks/Sparkle.framework/Versions/A/Resources/Autoupdate.app/Contents/MacOS/fileop'  # noqa: E501
-        .format(config, config),
-        'org.sparkle-project.Sparkle.fileop',
-        verify_options=VerifyOptions.DEEP + VerifyOptions.NO_STRICT)
-    parts['sparkle-framework-fileop'].options = full_hardened_runtime_options
+    # # Add Sparkle binaries
+    # parts['sparkle-framework-fileop'] = CodeSignedProduct(
+    #     '{.framework_dir}/Versions/{.version}/Frameworks/Sparkle.framework/Versions/A/Resources/Autoupdate.app/Contents/MacOS/fileop'  # noqa: E501
+    #     .format(config, config),
+    #     'org.sparkle-project.Sparkle.fileop',
+    #     verify_options=VerifyOptions.DEEP + VerifyOptions.NO_STRICT)
+    # parts['sparkle-framework-fileop'].options = full_hardened_runtime_options
 
     parts['sparkle-framework-Autoupdate'] = CodeSignedProduct(
-        '{.framework_dir}/Versions/{.version}/Frameworks/Sparkle.framework/Versions/A/Resources/Autoupdate.app/Contents/MacOS/Autoupdate'  # noqa: E501
+        '{.framework_dir}/Versions/{.version}/Frameworks/Sparkle.framework/Versions/A/Resources/Autoupdate.app'  # noqa: E501
         .format(config, config),
         'org.sparkle-project.Sparkle.Autoupdate',
         verify_options=VerifyOptions.DEEP + VerifyOptions.NO_STRICT)
