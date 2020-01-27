@@ -59,7 +59,6 @@ void AddBookmarkSpecifics(sync_pb::EntitySpecifics* specifics,
   bm_specifics->set_title(bookmark.site.TryGetNonEmptyTitle());
   bm_specifics->set_creation_time_us(
       TimeToProtoTime(bookmark.site.creationTime));
-  bm_specifics->set_icon_url(bookmark.site.favicon);
   // base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds());
   sync_pb::MetaInfo* meta_info = bm_specifics->add_meta_info();
   meta_info->set_key("order");
