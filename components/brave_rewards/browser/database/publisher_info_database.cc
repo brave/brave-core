@@ -628,28 +628,28 @@ void PublisherInfoDatabase::GetTransactionReport(
   }
 
   auto promotions = promotion_->GetAllRecords(&GetDB());
-  const auto converted_month = static_cast<int>(month);
+  // const auto converted_month = static_cast<int>(month);
 
   for (const auto& promotion : promotions) {
-    if (!promotion.second ||
-        promotion.second->status != ledger::PromotionStatus::FINISHED ||
-        promotion.second->claimed_at == 0) {
-      continue;
-    }
+    // if (!promotion.second ||
+    //     promotion.second->status != ledger::PromotionStatus::FINISHED ||
+    //     promotion.second->claimed_at == 0) {
+    //   continue;
+    // }
 
-    base::Time time = base::Time::FromDoubleT(promotion.second->claimed_at);
-    base::Time::Exploded exploded;
-    time.LocalExplode(&exploded);
-    if (exploded.year != year ||
-        exploded.month != converted_month) {
-      continue;
-    }
+    // base::Time time = base::Time::FromDoubleT(promotion.second->claimed_at);
+    // base::Time::Exploded exploded;
+    // time.LocalExplode(&exploded);
+    // if (exploded.year != year ||
+    //     exploded.month != converted_month) {
+    //   continue;
+    // }
 
     auto report = ledger::TransactionReportInfo::New();
     report->type = ConvertPromotionTypeToReportType(
         static_cast<int>(promotion.second->type));
     report->amount = promotion.second->approximate_value;
-    report->created_at = promotion.second->claimed_at;
+    //report->created_at = promotion.second->claimed_at;
     list->push_back(std::move(report));
   }
 }
