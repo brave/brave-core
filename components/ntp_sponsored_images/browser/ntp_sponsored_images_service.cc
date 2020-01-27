@@ -6,11 +6,13 @@
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_service.h"
 
 #include <algorithm>
+#include <string>
 
 #include "base/bind.h"
 #include "base/command_line.h"
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
+#include "base/optional.h"
 #include "base/task/post_task.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/browser/locale_helper.h"
@@ -34,6 +36,9 @@ constexpr char kLogoCompanyNamePath[] = "logo.companyName";
 constexpr char kLogoDestinationURLPath[] = "logo.destinationUrl";
 constexpr char kWallpapersPath[] = "wallpapers";
 constexpr char kWallpaperImageURLPath[] = "imageUrl";
+constexpr char kSchemaVersionPath[] = "schemaVersion";
+
+constexpr int kExpectedSchemaVersion = 1;
 
 std::string ReadPhotosManifest(const base::FilePath& photos_manifest_path) {
   std::string contents;
@@ -119,10 +124,27 @@ void NTPSponsoredImagesService::OnGetPhotoJsonData(
     const std::string& photo_json) {
   base::Optional<base::Value> photo_value = base::JSONReader::Read(photo_json);
   if (photo_value) {
-    images_data_.reset(new NTPSponsoredImagesData);
-
     // Resources are stored with json file in the same directory.
     base::FilePath base_dir = photos_manifest_path_.DirName();
+
+    base::Optional<int> incomingSchemaVersion =
+        photo_value->FindIntPath(kSchemaVersionPath);
+    const bool schemaVersionIsValid = incomingSchemaVersion &&
+        *incomingSchemaVersion == kExpectedSchemaVersion;
+    if (!schemaVersionIsValid) {
+      LOG(ERROR) <<
+      "Incoming NTP Sponsored images component data was not valid."
+      "Schema version was " <<
+      (incomingSchemaVersion
+          ? std::to_string(*incomingSchemaVersion)
+          : "missing") <<
+      ", but we expected " << kExpectedSchemaVersion;
+      images_data_.reset(nullptr);
+      NotifyObservers();
+      return;
+    }
+
+    images_data_.reset(new NTPSponsoredImagesData);
 
     if (auto* logo_image_url = photo_value->FindStringPath(kLogoImageURLPath)) {
       images_data_->logo_image_file =
