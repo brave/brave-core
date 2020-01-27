@@ -35,6 +35,10 @@ class AutoContributeSupportedListController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    contentView.tableView.register(AutoContributeCell.self)
+    contentView.tableView.register(EmptyTableCell.self)
+    
     contentView.tableView.delegate = self
     contentView.tableView.dataSource = self
     
@@ -175,9 +179,7 @@ extension AutoContributeSupportedListController: UITableViewDataSource {
 }
 
 extension AutoContributeSupportedListController {
-  private class View: UIView {
-    let tableView = UITableView(frame: .zero, style: .grouped)
-    
+  private class View: SettingsTableView {
     fileprivate let headerView = TableHeaderRowView(
       columns: [
         TableHeaderRowView.Column(
@@ -192,29 +194,5 @@ extension AutoContributeSupportedListController {
       ],
       tintColor: BraveUX.autoContributeTintColor
     )
-    
-    override init(frame: CGRect) {
-      super.init(frame: frame)
-      
-      tableView.backgroundView = UIView().then {
-        $0.backgroundColor = SettingsUX.backgroundColor
-      }
-      tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNormalMagnitude))
-      tableView.separatorInset = .zero
-      tableView.register(AutoContributeCell.self)
-      tableView.register(EmptyTableCell.self)
-      tableView.layoutMargins = UIEdgeInsets(top: 15.0, left: 15.0, bottom: 15.0, right: 15.0)
-      tableView.appearanceSeparatorColor = UIColor(white: 0.85, alpha: 1.0)
-      
-      addSubview(tableView)
-      tableView.snp.makeConstraints {
-        $0.edges.equalTo(self)
-      }
-    }
-    
-    @available(*, unavailable)
-    required init(coder: NSCoder) {
-      fatalError()
-    }
   }
 }

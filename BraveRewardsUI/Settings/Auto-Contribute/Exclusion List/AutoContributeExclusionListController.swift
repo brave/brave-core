@@ -22,12 +22,12 @@ final class AutoContributeExclusionListController: UIViewController {
     fatalError()
   }
   
-  private var contentView: View {
-    return view as! View // swiftlint:disable:this force_cast
+  private var contentView: SettingsTableView {
+    return view as! SettingsTableView // swiftlint:disable:this force_cast
   }
   
   override func loadView() {
-    view = View()
+    view = SettingsTableView()
   }
   
   private lazy var editButton = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(tappedEdit))
@@ -36,6 +36,10 @@ final class AutoContributeExclusionListController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    contentView.tableView.register(ExclusionListCell.self)
+    contentView.tableView.register(EmptyTableCell.self)
+
     contentView.tableView.delegate = self
     contentView.tableView.dataSource = self
     
@@ -201,36 +205,6 @@ extension AutoContributeExclusionListController: UITableViewDataSource {
           state: .default
         )
       })
-    }
-  }
-}
-
-extension AutoContributeExclusionListController {
-  private class View: UIView {
-    let tableView = UITableView(frame: .zero, style: .grouped)
-    
-    override init(frame: CGRect) {
-      super.init(frame: frame)
-      
-      tableView.backgroundView = UIView().then {
-        $0.backgroundColor = SettingsUX.backgroundColor
-      }
-      tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNormalMagnitude))
-      tableView.separatorInset = .zero
-      tableView.register(ExclusionListCell.self)
-      tableView.register(EmptyTableCell.self)
-      tableView.layoutMargins = UIEdgeInsets(top: 15.0, left: 15.0, bottom: 15.0, right: 15.0)
-      tableView.appearanceSeparatorColor = UIColor(white: 0.85, alpha: 1.0)
-      
-      addSubview(tableView)
-      tableView.snp.makeConstraints {
-        $0.edges.equalTo(self)
-      }
-    }
-    
-    @available(*, unavailable)
-    required init(coder: NSCoder) {
-      fatalError()
     }
   }
 }

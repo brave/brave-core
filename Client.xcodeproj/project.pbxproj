@@ -302,6 +302,9 @@
 		27C46201211CD8D20088A441 /* DeferredTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A176323020CF2A6000126F25 /* DeferredTestUtils.swift */; };
 		27D114D42358FBBF00166534 /* BraveRewardsSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D114D32358FBBF00166534 /* BraveRewardsSettingsViewController.swift */; };
 		27D114D62358FCA400166534 /* SettingsRowViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D114D52358FCA400166534 /* SettingsRowViews.swift */; };
+		27D3155223D7A95C00219462 /* SettingsMonthlyTipsSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D3155123D7A95C00219462 /* SettingsMonthlyTipsSectionView.swift */; };
+		27D3155523D8B0CE00219462 /* MonthlyTipsDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D3155423D8B0CE00219462 /* MonthlyTipsDetailViewController.swift */; };
+		27D3155723D8B16200219462 /* SettingsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D3155623D8B16200219462 /* SettingsTableView.swift */; };
 		27D87C2E2152B50200FB55C6 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D87C2D2152B50200FB55C6 /* GradientView.swift */; };
 		27F4439F2135E11200296C58 /* BraveShareTo.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 27F443952135E11200296C58 /* BraveShareTo.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		27F443AD2135E25300296C58 /* ShareToBraveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F443AC2135E25300296C58 /* ShareToBraveViewController.swift */; };
@@ -1553,6 +1556,9 @@
 		27C461DD211B76500088A441 /* ShieldsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldsView.swift; sourceTree = "<group>"; };
 		27D114D32358FBBF00166534 /* BraveRewardsSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveRewardsSettingsViewController.swift; sourceTree = "<group>"; };
 		27D114D52358FCA400166534 /* SettingsRowViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRowViews.swift; sourceTree = "<group>"; };
+		27D3155123D7A95C00219462 /* SettingsMonthlyTipsSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMonthlyTipsSectionView.swift; sourceTree = "<group>"; };
+		27D3155423D8B0CE00219462 /* MonthlyTipsDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyTipsDetailViewController.swift; sourceTree = "<group>"; };
+		27D3155623D8B16200219462 /* SettingsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableView.swift; sourceTree = "<group>"; };
 		27D87C2D2152B50200FB55C6 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		27D922B221C9830F00345BF3 /* Model9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model9.xcdatamodel; sourceTree = "<group>"; };
 		27F443952135E11200296C58 /* BraveShareTo.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BraveShareTo.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3115,7 +3121,9 @@
 				271DEC7F234CC7EF009DAC37 /* Grants */,
 				271DEC82234CC7EF009DAC37 /* SettingsViewDetailsButton.swift */,
 				271DEC83234CC7EF009DAC37 /* SettingsSectionView.swift */,
+				27D3155623D8B16200219462 /* SettingsTableView.swift */,
 				271DEC84234CC7EF009DAC37 /* Tips */,
+				27D3154F23D7A94100219462 /* Monthly Tips */,
 				271DEC8A234CC7EF009DAC37 /* Wallet */,
 				271DEC8F234CC7EF009DAC37 /* SettingsUX.swift */,
 				271DEC90234CC7EF009DAC37 /* Auto-Contribute */,
@@ -3316,6 +3324,23 @@
 				271DEC95234CC7EF009DAC37 /* AutoContributeCell.swift */,
 			);
 			path = "Supported List";
+      sourceTree = "<group>";
+    };
+		27D3154F23D7A94100219462 /* Monthly Tips */ = {
+			isa = PBXGroup;
+			children = (
+				27D3155323D8B0C000219462 /* Details */,
+				27D3155123D7A95C00219462 /* SettingsMonthlyTipsSectionView.swift */,
+			);
+			path = "Monthly Tips";
+			sourceTree = "<group>";
+		};
+		27D3155323D8B0C000219462 /* Details */ = {
+			isa = PBXGroup;
+			children = (
+				27D3155423D8B0CE00219462 /* MonthlyTipsDetailViewController.swift */,
+			);
+			path = Details;
 			sourceTree = "<group>";
 		};
 		27F443962135E11200296C58 /* BraveShareTo */ = {
@@ -5716,6 +5741,7 @@
 				271DECF2234CC7EF009DAC37 /* AdsUnsupportedView.swift in Sources */,
 				271DECDA234CC7EF009DAC37 /* TippingView.swift in Sources */,
 				271DECF1234CC7EF009DAC37 /* AdsDetailsViewController.swift in Sources */,
+				27D3155723D8B16200219462 /* SettingsTableView.swift in Sources */,
 				5E77F9AA236B362E00E1649C /* Cryptography.swift in Sources */,
 				271DED0C234CC7EF009DAC37 /* EmptyTableCell.swift in Sources */,
 				2744D6CE239EDCBC00A89EBB /* VerifyUserWalletButton.swift in Sources */,
@@ -5735,12 +5761,14 @@
 				271DED16234CC7EF009DAC37 /* BATUSDPairView.swift in Sources */,
 				271DECD5234CC7EF009DAC37 /* RewardsDataSource.swift in Sources */,
 				271DECE6234CC7EF009DAC37 /* WalletAlertNotificationView.swift in Sources */,
+				27D3155223D7A95C00219462 /* SettingsMonthlyTipsSectionView.swift in Sources */,
 				271DECD6234CC7EF009DAC37 /* QASettingsViewController.swift in Sources */,
 				271DED17234CC7EF009DAC37 /* Then.swift in Sources */,
 				271DED14234CC7EF009DAC37 /* CreateWalletButton.swift in Sources */,
 				271DECCF234CC7EF009DAC37 /* AdsViewController.swift in Sources */,
 				271DED25234CC7EF009DAC37 /* UIStackViewExtensions.swift in Sources */,
 				271DECFC234CC7EF009DAC37 /* SettingsTipsSectionView.swift in Sources */,
+				27D3155523D8B0CE00219462 /* MonthlyTipsDetailViewController.swift in Sources */,
 				271DECDD234CC7EF009DAC37 /* TippingSelectionViewController.swift in Sources */,
 				271DED1C234CC7EF009DAC37 /* SwitchRow.swift in Sources */,
 				271DED06234CC7EF009DAC37 /* SettingsRewardsSectionView.swift in Sources */,

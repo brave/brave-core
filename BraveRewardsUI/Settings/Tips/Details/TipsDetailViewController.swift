@@ -7,8 +7,8 @@ import BraveRewards
 
 class TipsDetailViewController: UIViewController {
   private var ledgerObserver: LedgerObserver
-  private var tipsView: View {
-    return view as! View // swiftlint:disable:this force_cast
+  private var tipsView: SettingsTableView {
+    return view as! SettingsTableView // swiftlint:disable:this force_cast
   }
   
   private var totalBatTips: Double = 0.0
@@ -29,30 +29,23 @@ class TipsDetailViewController: UIViewController {
   }
   
   override func loadView() {
-    self.view = View()
+    self.view = SettingsTableView()
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
     setupLedgerObservers()
-    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(tappedEditButton))
+    
+    tipsView.tableView.register(TipsTableCell.self)
+    tipsView.tableView.register(TipsSummaryTableCell.self)
+    tipsView.tableView.register(TableViewCell.self)
+    tipsView.tableView.register(EmptyTableCell.self)
     
     tipsView.tableView.delegate = self
     tipsView.tableView.dataSource = self
 
     title = Strings.tips
     loadData()
-  }
-  
-  private var nextContributionDateView: LabelAccessoryView {
-    let view = LabelAccessoryView()
-    let dateFormatter = DateFormatter().then {
-      $0.dateFormat = Strings.autoContributeDateFormat
-    }
-    let date = Date(timeIntervalSince1970: TimeInterval(state.ledger.autoContributeProps.reconcileStamp))
-    view.label.text = dateFormatter.string(from: date)
-    view.bounds = CGRect(origin: .zero, size: view.systemLayoutSizeFitting(UIView.layoutFittingExpandedSize))
-    return view
   }
   
   private func loadData() {
@@ -68,17 +61,7 @@ class TipsDetailViewController: UIViewController {
       guard let self = self else { return }
       infoList.forEach({$0.category = Int32(RewardsType.oneTimeTip.rawValue)})
       self.tipsList.append(contentsOf: infoList)
-      (self.view as? View)?.tableView.reloadData()
-    }
-    
-    state.ledger.listRecurringTips {[weak self] infoList in
-      guard let self = self else { return }
-      infoList.forEach({$0.category = Int32(RewardsType.recurringTip.rawValue)})
-      self.tipsList.insert(contentsOf: infoList, at: 0)
-      if !self.tipsView.tableView.isEditing {
-        self.navigationItem.rightBarButtonItem?.isEnabled = !self.tipsList.filter { $0.rewardsCategory == .recurringTip }.isEmpty
-      }
-      (self.view as? View)?.tableView.reloadData()
+      (self.view as? SettingsTableView)?.tableView.reloadData()
     }
   }
   
@@ -96,19 +79,6 @@ class TipsDetailViewController: UIViewController {
     ],
     tintColor: BraveUX.tipsTintColor
   )
-  
-  // MARK: - Actions
-  
-  @objc private func tappedEditButton() {
-    tipsView.tableView.setEditing(true, animated: true)
-    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(tappedDoneButton))
-  }
-  
-  @objc private func tappedDoneButton() {
-    tipsView.tableView.setEditing(false, animated: true)
-    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(tappedEditButton))
-    navigationItem.rightBarButtonItem?.isEnabled = !self.tipsList.filter { $0.rewardsCategory == .recurringTip }.isEmpty
-  }
 }
 
 extension TipsDetailViewController: UITableViewDataSource, UITableViewDelegate {
@@ -139,8 +109,7 @@ extension TipsDetailViewController: UITableViewDataSource, UITableViewDelegate {
     guard let typedSection = Section(rawValue: section) else { return 0 }
     switch typedSection {
     case .summary:
-      let hasRecurringTips = tipsList.contains { $0.rewardsCategory == .recurringTip }
-      return 1 + (hasRecurringTips ? 1 : 0)
+      return 1
     case .tips:
       return tipsList.isEmpty ? 1 : tipsList.count
     }
@@ -162,19 +131,10 @@ extension TipsDetailViewController: UITableViewDataSource, UITableViewDelegate {
     }
     switch section {
     case .summary:
-      if indexPath.row == 0 {
-        let cell = tableView.dequeueReusableCell(for: indexPath) as TipsSummaryTableCell
-        cell.layoutMargins = UIEdgeInsets(top: 25, left: 25, bottom: 25, right: 25)
-        cell.batValueView.amountLabel.text = "\(totalBatTips)"
-        cell.usdValueView.amountLabel.text = state.ledger.dollarStringForBATAmount(totalBatTips, includeCurrencyCode: false)
-        return cell
-      }
-      // Next Contribution Row
-      let cell = tableView.dequeueReusableCell(for: indexPath) as TableViewCell
-      cell.label.font = SettingsUX.bodyFont
-      cell.label.text = Strings.monthlyTippingNextDate
-      cell.accessoryView = nextContributionDateView
-      cell.selectionStyle = .none
+      let cell = tableView.dequeueReusableCell(for: indexPath) as TipsSummaryTableCell
+      cell.layoutMargins = UIEdgeInsets(top: 25, left: 25, bottom: 25, right: 25)
+      cell.batValueView.amountLabel.text = "\(totalBatTips)"
+      cell.usdValueView.amountLabel.text = state.ledger.dollarStringForBATAmount(totalBatTips, includeCurrencyCode: false)
       return cell
     case .tips:
       if tipsList.isEmpty {
@@ -196,79 +156,11 @@ extension TipsDetailViewController: UITableViewDataSource, UITableViewDelegate {
       cell.siteImageView.image = UIImage(frameworkResourceNamed: "defaultFavicon")
       setFavicon(identifier: tip.id, pageURL: tip.url, faviconURL: tip.faviconUrl)
       cell.verifiedStatusImageView.isHidden = tip.status == .notVerified
-      let contribution = tip.weight
-      switch tip.rewardsCategory {
-      case .oneTimeTip:
-        let value = BATValue(probi: "\(contribution)")
-        cell.typeNameLabel.text = Strings.oneTimeText + Date.stringFrom(reconcileStamp: tip.reconcileStamp)
-        cell.tokenView.batContainer.amountLabel.text = value?.displayString
-        cell.tokenView.usdContainer.amountLabel.text = state.ledger.dollarStringForBATAmount(value?.doubleValue ?? 0, includeCurrencyCode: false)
-      case .recurringTip:
-        cell.tokenView.batContainer.amountLabel.text = BATValue(contribution).displayString
-        cell.tokenView.usdContainer.amountLabel.text = state.ledger.dollarStringForBATAmount(contribution, includeCurrencyCode: false)
-        cell.typeNameLabel.text = Strings.recurringText
-      default:
-        cell.tokenView.batContainer.amountLabel.text = ""
-        cell.tokenView.usdContainer.amountLabel.text = ""
-        cell.typeNameLabel.text = ""
-      }
+      let value = BATValue(probi: "\(tip.weight)")
+      cell.typeNameLabel.text = Strings.oneTimeText + Date.stringFrom(reconcileStamp: tip.reconcileStamp)
+      cell.tokenView.batContainer.amountLabel.text = value?.displayString
+      cell.tokenView.usdContainer.amountLabel.text = state.ledger.dollarStringForBATAmount(value?.doubleValue ?? 0, includeCurrencyCode: false)
       return cell
-    }
-  }
-  
-  func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-    guard Section(rawValue: indexPath.section) == .tips &&
-      !tipsList.isEmpty &&
-      tipsList[indexPath.row].rewardsCategory == .recurringTip else { return false }
-    return true
-  }
-  
-  func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-    guard Section(rawValue: indexPath.section) == .tips &&
-      !tipsList.isEmpty &&
-      tipsList[indexPath.row].rewardsCategory == .recurringTip else { return .none }
-    return .delete
-  }
-  
-  func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
-    return Strings.remove
-  }
-  
-  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-    guard Section(rawValue: indexPath.section) == .tips &&
-      !tipsList.isEmpty &&
-      tipsList[indexPath.row].rewardsCategory == .recurringTip else { return }
-    let publisherID = tipsList[indexPath.row].id
-    state.ledger.removeRecurringTip(publisherId: publisherID)
-  }
-}
-
-extension TipsDetailViewController {
-  class View: UIView {
-    let tableView = UITableView(frame: .zero, style: .grouped)
-    
-    override init(frame: CGRect) {
-      super.init(frame: frame)
-      
-      tableView.backgroundView = UIView().then {
-        $0.backgroundColor = SettingsUX.backgroundColor
-      }
-      tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNormalMagnitude))
-      tableView.separatorInset = .zero
-      tableView.register(TipsTableCell.self)
-      tableView.register(TipsSummaryTableCell.self)
-      tableView.register(TableViewCell.self)
-      tableView.register(EmptyTableCell.self)
-      
-      addSubview(tableView)
-      tableView.snp.makeConstraints {
-        $0.edges.equalTo(self)
-      }
-    }
-    
-    @available(*, unavailable)
-    required init(coder: NSCoder) {
-      fatalError()
     }
   }
 }
@@ -297,7 +189,7 @@ extension TipsDetailViewController {
           return
         }
 
-        if let tableView = (self.view as? View)?.tableView {
+        if let tableView = (self.view as? SettingsTableView)?.tableView {
           for index in indices {
             if let cell = tableView.cellForRow(at: IndexPath(row: index, section: Section.tips.rawValue)) as? TipsTableCell {
               cell.siteImageView.image = image
