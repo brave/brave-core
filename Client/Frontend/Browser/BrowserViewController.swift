@@ -284,6 +284,7 @@ class BrowserViewController: UIViewController {
         }
         rewardsObserver.rewardsEnabledStateUpdated = { [weak self] _ in
             self?.resetNTPNotification()
+            self?.updateRewardsButtonState()
         }
     }
     
