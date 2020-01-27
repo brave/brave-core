@@ -90,7 +90,9 @@ chrome.braveRewards.onWalletInitialized.addListener((result: any | NewTab.Reward
 })
 
 chrome.braveRewards.onEnabledMain.addListener((enabledMain: boolean) => {
-  getActions().onEnabledMain(enabledMain)
+  chrome.braveRewards.getAdsEnabled((enabledAds: boolean) => {
+    getActions().onEnabledMain(enabledMain, enabledAds)
+  })
 })
 
 chrome.braveRewards.onAdsEnabled.addListener((enabled: boolean) => {

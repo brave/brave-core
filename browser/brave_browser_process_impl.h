@@ -50,11 +50,16 @@ class GreaselionDownloadService;
 #endif
 }  // namespace greaselion
 
+namespace ntp_sponsored_images {
+class NTPSponsoredImagesService;
+}  // namespace ntp_sponsored_images
+
 namespace extensions {
 class BraveTorClientUpdater;
 }
 
 using brave_component_updater::BraveComponent;
+using ntp_sponsored_images::NTPSponsoredImagesService;
 
 class BraveBrowserProcessImpl : public BrowserProcessImpl {
  public:
@@ -91,6 +96,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   BraveWidevineBundleManager* brave_widevine_bundle_manager();
 #endif
   brave::BraveStatsUpdater* brave_stats_updater();
+  NTPSponsoredImagesService* ntp_sponsored_images_service();
 
  private:
   // BrowserProcessImpl overrides:
@@ -145,6 +151,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   std::unique_ptr<BraveWidevineBundleManager> brave_widevine_bundle_manager_;
 #endif
   scoped_refptr<brave::BraveP3AService> brave_p3a_service_;
+  std::unique_ptr<NTPSponsoredImagesService> ntp_sponsored_images_service_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 

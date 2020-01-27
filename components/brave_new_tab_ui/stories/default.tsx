@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-import { withKnobs, select } from '@storybook/addon-knobs/react'
+import { withKnobs, select, boolean } from '@storybook/addon-knobs/react'
 
 // Components
 import NewTabPage from './default/index'
@@ -15,6 +15,9 @@ storiesOf('New Tab/Default', module)
     return (
       <NewTabPage
         textDirection={select('Text direction', { ltr: 'ltr', rtl: 'rtl' } , 'ltr')}
+        showBrandedWallpaper={boolean('Show branded wallpaper?', false)}
+        showTopSitesNotification={boolean('Show top sites notification?', false)}
+        isAdsOn={boolean('Ads on?', true)}
       />
     )
   })

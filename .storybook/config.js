@@ -32,6 +32,11 @@ addParameters({
 
 function loadStories() {
   initLocale(locale)
+  window.loadTimeData = {
+    getString (key) {
+      return locale[key] || key
+    }
+  }
   const req = require.context('../components/', true, /\/stories\/.*\.tsx$/)
   req.keys().forEach(filename => req(filename))
 }

@@ -5,23 +5,19 @@
 import * as React from 'react'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
-import {
-  Page,
-  Header,
-  ClockWidget as Clock,
-  ListWidget as List,
-  Footer,
-  App,
-  PosterBackground,
-  Gradient,
-  RewardsWidget as Rewards
-} from '../../components/default'
 
 // Components
 import Stats from './stats'
 import Block from './block'
 import FooterInfo from './footerInfo'
 import SiteRemovalNotification from './notification'
+import {
+  ClockWidget as Clock,
+  ListWidget as List,
+  RewardsWidget as Rewards
+} from '../../components/default'
+import * as Page from '../../components/default/page'
+import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
 
 interface Props {
   newTabData: NewTab.State
@@ -31,12 +27,30 @@ interface Props {
   saveShowTopSites: (value: boolean) => void
   saveShowStats: (value: boolean) => void
   saveShowRewards: (value: boolean) => void
+  saveBrandedWallpaperOptIn: (value: boolean) => void
+  onDismissBrandedWallpaperNotification: () => void
 }
 
 interface State {
   onlyAnonWallet: boolean
   showSettingsMenu: boolean
   backgroundHasLoaded: boolean
+}
+
+function GetBackgroundImageSrc (props: Props) {
+  if (!props.newTabData.showBackgroundImage) {
+    return undefined
+  }
+  if (props.newTabData.brandedWallpaperData) {
+    const wallpaperData = props.newTabData.brandedWallpaperData
+    if (wallpaperData && wallpaperData.wallpaperImageUrl) {
+      return wallpaperData.wallpaperImageUrl
+    }
+  }
+  if (props.newTabData.backgroundImage && props.newTabData.backgroundImage.source) {
+    return props.newTabData.backgroundImage.source
+  }
+  return undefined
 }
 
 class NewTabPage extends React.Component<Props, State> {
@@ -46,30 +60,33 @@ class NewTabPage extends React.Component<Props, State> {
     backgroundHasLoaded: false
   }
 
+  imageSource?: string = undefined
+
   componentDidMount () {
     // if a notification is open at component mounting time, close it
     this.props.actions.onHideSiteRemovalNotification()
+    this.imageSource = GetBackgroundImageSrc(this.props)
     this.trackCachedImage()
   }
 
   componentDidUpdate (prevProps: Props) {
-    if (!prevProps.newTabData.showBackgroundImage &&
-          this.props.newTabData.showBackgroundImage) {
+    const oldImageSource = GetBackgroundImageSrc(prevProps)
+    const newImageSource = GetBackgroundImageSrc(this.props)
+    this.imageSource = newImageSource
+    if (newImageSource && oldImageSource !== newImageSource) {
       this.trackCachedImage()
     }
-    if (prevProps.newTabData.showBackgroundImage &&
-      !this.props.newTabData.showBackgroundImage) {
+    if (oldImageSource &&
+      !newImageSource) {
       // reset loaded state
       this.setState({ backgroundHasLoaded: false })
     }
   }
 
   trackCachedImage () {
-    if (this.props.newTabData.showBackgroundImage &&
-        this.props.newTabData.backgroundImage &&
-        this.props.newTabData.backgroundImage.source) {
+    if (this.imageSource) {
       const imgCache = new Image()
-      imgCache.src = this.props.newTabData.backgroundImage.source
+      imgCache.src = this.imageSource
       console.timeStamp('image start loading...')
       imgCache.onload = () => {
         console.timeStamp('image loaded')
@@ -138,12 +155,22 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
+  disableBrandedWallpaper = () => {
+    this.props.saveBrandedWallpaperOptIn(false)
+  }
+
+  toggleShowBrandedWallpaper = () => {
+    this.props.saveBrandedWallpaperOptIn(
+      !this.props.newTabData.brandedWallpaperOptIn
+    )
+  }
+
   enableAds = () => {
     chrome.braveRewards.saveAdsSetting('adsEnabled', 'true')
   }
 
   enableRewards = () => {
-    this.props.actions.onRewardsSettingSave('enabledMain', '1')
+    chrome.braveRewards.saveSetting('enabledMain', '1')
   }
 
   createWallet = () => {
@@ -162,111 +189,163 @@ class NewTabPage extends React.Component<Props, State> {
     this.setState({ showSettingsMenu: !this.state.showSettingsMenu })
   }
 
+  renderRewardsContent () {
+    const { newTabData } = this.props
+    const {
+      rewardsState,
+      showRewards: rewardsWidgetOn,
+      isBrandedWallpaperNotificationDismissed
+    } = newTabData
+    const isShowingBrandedWallpaper = newTabData.brandedWallpaperData ? true : false
+    const shouldShowBrandedWallpaperNotification = isShowingBrandedWallpaper && !isBrandedWallpaperNotificationDismissed
+    const shouldShowRewardsWidget = rewardsWidgetOn || shouldShowBrandedWallpaperNotification
+    return shouldShowRewardsWidget && (
+      <Page.GridItemRewards>
+        <Rewards
+          {...rewardsState}
+          preventFocus={!rewardsWidgetOn}
+          onCreateWallet={this.createWallet}
+          onEnableAds={this.enableAds}
+          onEnableRewards={this.enableRewards}
+          isShowingBrandedWallpaper={isShowingBrandedWallpaper}
+          showBrandedWallpaperNotification={shouldShowBrandedWallpaperNotification}
+          onDisableBrandedWallpaper={this.disableBrandedWallpaper}
+          brandedWallpaperData={newTabData.brandedWallpaperData}
+          textDirection={newTabData.textDirection}
+          hideWidget={this.toggleShowRewards}
+          isNotification={!rewardsWidgetOn}
+          onDismissNotification={this.dismissNotification}
+          onDismissBrandedWallpaperNotification={this.props.onDismissBrandedWallpaperNotification}
+          menuPosition={'left'}
+        />
+      </Page.GridItemRewards>
+    )
+  }
+
   render () {
     const { newTabData, actions } = this.props
     const { showSettingsMenu } = this.state
-    const { rewardsState } = newTabData
 
     if (!newTabData) {
       return null
     }
 
+    const hasImage = this.imageSource !== undefined
+    const isShowingBrandedWallpaper = newTabData.brandedWallpaperData ? true : false
+    const showTopSites = !!this.props.newTabData.gridSites.length && newTabData.showTopSites
+    const rewardsContent = this.renderRewardsContent()
+
     return (
-      <App dataIsReady={newTabData.initialDataLoaded}>
-        <PosterBackground
-          hasImage={newTabData.showBackgroundImage}
+      <Page.App dataIsReady={newTabData.initialDataLoaded}>
+        <Page.PosterBackground
+          hasImage={hasImage}
           imageHasLoaded={this.state.backgroundHasLoaded}
         >
-          {newTabData.showBackgroundImage && newTabData.backgroundImage &&
-            <img src={newTabData.backgroundImage.source} />
+          {hasImage &&
+            <img src={this.imageSource} />
           }
-        </PosterBackground>
-        {newTabData.showBackgroundImage &&
-          <Gradient
+        </Page.PosterBackground>
+        {hasImage &&
+          <Page.Gradient
             imageHasLoaded={this.state.backgroundHasLoaded}
           />
         }
-        <Page>
-          <Header>
+        <Page.Page
+            showClock={newTabData.showClock}
+            showStats={newTabData.showStats}
+            showRewards={!!rewardsContent}
+            showTopSites={showTopSites}
+            showBrandedWallpaper={isShowingBrandedWallpaper}
+        >
+          {newTabData.showStats &&
+          <Page.GridItemStats>
             <Stats
               textDirection={newTabData.textDirection}
               stats={newTabData.stats}
-              showWidget={newTabData.showStats}
               hideWidget={this.toggleShowStats}
               menuPosition={'right'}
             />
+          </Page.GridItemStats>
+          }
+          {newTabData.showClock &&
+          <Page.GridItemClock>
             <Clock
               textDirection={newTabData.textDirection}
-              showWidget={newTabData.showClock}
               hideWidget={this.toggleShowClock}
               menuPosition={'left'}
             />
-            <Rewards
-              {...rewardsState}
-              onCreateWallet={this.createWallet}
-              onEnableAds={this.enableAds}
-              onEnableRewards={this.enableRewards}
-              textDirection={newTabData.textDirection}
-              showWidget={newTabData.showRewards}
-              hideWidget={this.toggleShowRewards}
-              onDismissNotification={this.dismissNotification}
-              menuPosition={'left'}
-            />
-            {this.props.newTabData.gridSites.length ? <List
-              blockNumber={this.props.newTabData.gridSites.length}
-              textDirection={newTabData.textDirection}
-              showWidget={newTabData.showTopSites}
-              menuPosition={'right'}
-              hideWidget={this.toggleShowTopSites}
-            >
-              {
-                this.props.newTabData.gridSites.map((site: NewTab.Site) =>
-                  <Block
-                    key={site.url}
-                    id={site.url}
-                    title={site.title}
-                    href={site.url}
-                    favicon={site.favicon}
-                    style={{ backgroundColor: site.themeColor || site.computedThemeColor }}
-                    onToggleBookmark={this.onToggleBookmark.bind(this, site)}
-                    onPinnedTopSite={this.onTogglePinnedTopSite.bind(this, site)}
-                    onIgnoredTopSite={this.onIgnoredTopSite.bind(this, site)}
-                    onDraggedSite={this.onDraggedSite}
-                    onDragEnd={this.onDragEnd}
-                    isPinned={site.pinned}
-                    isBookmarked={site.bookmarked !== undefined}
-                  />
-                )
-              }
-            </List> : null}
+          </Page.GridItemClock>
+          }
+          {showTopSites &&
+          <Page.GridItemTopSites><List
+            blockNumber={this.props.newTabData.gridSites.length}
+            textDirection={newTabData.textDirection}
+            menuPosition={'right'}
+            hideWidget={this.toggleShowTopSites}
+          >
             {
-              this.props.newTabData.showSiteRemovalNotification
-              ? <SiteRemovalNotification actions={actions} />
-              : null
+              this.props.newTabData.gridSites.map((site: NewTab.Site) =>
+                <Block
+                  key={site.url}
+                  id={site.url}
+                  title={site.title}
+                  href={site.url}
+                  favicon={site.favicon}
+                  style={{ backgroundColor: site.themeColor || site.computedThemeColor }}
+                  onToggleBookmark={this.onToggleBookmark.bind(this, site)}
+                  onPinnedTopSite={this.onTogglePinnedTopSite.bind(this, site)}
+                  onIgnoredTopSite={this.onIgnoredTopSite.bind(this, site)}
+                  onDraggedSite={this.onDraggedSite}
+                  onDragEnd={this.onDragEnd}
+                  isPinned={site.pinned}
+                  isBookmarked={site.bookmarked !== undefined}
+                />
+              )
             }
-          </Header>
-          <Footer>
+          </List></Page.GridItemTopSites>
+          }
+          {
+            this.props.newTabData.showSiteRemovalNotification
+            ? <Page.GridItemNotification>
+                <SiteRemovalNotification actions={actions} />
+              </Page.GridItemNotification>
+            : null
+          }
+            {rewardsContent}
+          <Page.Footer>
+            {isShowingBrandedWallpaper && newTabData.brandedWallpaperData &&
+             newTabData.brandedWallpaperData.logo &&
+             <Page.GridItemCredits>
+              <BrandedWallpaperLogo
+                menuPosition={'right'}
+                textDirection={newTabData.textDirection}
+                data={newTabData.brandedWallpaperData.logo}
+              />
+            </Page.GridItemCredits>}
             <FooterInfo
               textDirection={newTabData.textDirection}
               onClickOutside={this.closeSettings}
               backgroundImageInfo={newTabData.backgroundImage}
               onClickSettings={this.toggleSettings}
               showSettingsMenu={showSettingsMenu}
-              showPhotoInfo={newTabData.showBackgroundImage}
+              showPhotoInfo={!isShowingBrandedWallpaper && newTabData.showBackgroundImage}
               toggleShowBackgroundImage={this.toggleShowBackgroundImage}
               toggleShowClock={this.toggleShowClock}
               toggleShowStats={this.toggleShowStats}
               toggleShowTopSites={this.toggleShowTopSites}
+              toggleBrandedWallpaperOptIn={this.toggleShowBrandedWallpaper}
               showBackgroundImage={newTabData.showBackgroundImage}
               showClock={newTabData.showClock}
               showStats={newTabData.showStats}
               showTopSites={newTabData.showTopSites}
               showRewards={newTabData.showRewards}
+              brandedWallpaperOptIn={newTabData.brandedWallpaperOptIn}
+              allowBrandedWallpaperUI={newTabData.featureFlagBraveNTPBrandedWallpaper}
               toggleShowRewards={this.toggleShowRewards}
             />
-          </Footer>
-        </Page>
-      </App>
+          </Page.Footer>
+        </Page.Page>
+      </Page.App>
     )
   }
 }

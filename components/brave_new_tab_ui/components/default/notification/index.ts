@@ -9,11 +9,11 @@ export const SiteRemovalNotification = styled<{}, 'header'>('header')`
   border-radius: 8px;
   box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
   background-color: #fff;
-  width: 500px;
+  width: 100%;
+  max-width: 500px;
   height: 100px;
   align-items: center;
   padding: 30px 60px;
-  margin: 80px 0 0 0;
   display: flex;
   justify-content: space-between;
 `

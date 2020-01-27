@@ -20,6 +20,9 @@ interface Props {
   newTabData: NewTab.State
 }
 
+const onDismissBrandedWallpaperNotification =
+  PreferencesAPI.saveIsBrandedWallpaperNotificationDismissed.bind(null, true)
+
 class DefaultPage extends React.Component<Props, {}> {
   render () {
     const { newTabData, actions } = this.props
@@ -40,6 +43,8 @@ class DefaultPage extends React.Component<Props, {}> {
           saveShowStats={PreferencesAPI.saveShowStats}
           saveShowTopSites={PreferencesAPI.saveShowTopSites}
           saveShowRewards={PreferencesAPI.saveShowRewards}
+          onDismissBrandedWallpaperNotification={onDismissBrandedWallpaperNotification}
+          saveBrandedWallpaperOptIn={PreferencesAPI.saveBrandedWallpaperOptIn}
         />
       )
   }

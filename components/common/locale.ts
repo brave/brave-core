@@ -26,3 +26,35 @@ export const getLocale = (key: string, replacements?: Record<string, string>) =>
 
   return returnVal
 }
+
+interface SplitStringForTagResult {
+  beforeTag: string
+  duringTag?: string
+  afterTag?: string
+}
+
+/**
+ * Allows an html or xml tag to be injected in to a string by extracting
+ * the components of the string before, during and after the tag.
+ * Usage:
+ *    splitStringForTag('my string with some $1bold text$2', '$1', '$2')
+ *
+ * @export
+ * @param {string} text
+ * @param {string} tagOpenPlaceholder
+ * @param {string} tagClosePlaceholder
+ * @returns {SplitStringForTagResult}
+ */
+export function splitStringForTag (text: string, tagOpenPlaceholder: string, tagClosePlaceholder: string): SplitStringForTagResult {
+  const tagStartIndex: number = text.indexOf(tagOpenPlaceholder)
+  const tagEndIndex: number = text.lastIndexOf(tagClosePlaceholder)
+  const isValid = (tagStartIndex !== -1 && tagEndIndex !== -1)
+  const beforeTag = !isValid ? text : text.substring(0, tagStartIndex)
+  const duringTag = isValid ? text.substring(tagStartIndex + tagOpenPlaceholder.length, tagEndIndex) : undefined
+  const afterTag = isValid ? text.substring(tagEndIndex + tagClosePlaceholder.length) : undefined
+  return {
+    beforeTag,
+    duringTag,
+    afterTag
+  }
+}
