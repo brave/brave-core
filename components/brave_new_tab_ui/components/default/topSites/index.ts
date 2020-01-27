@@ -10,13 +10,12 @@ interface ListProps {
 }
 
 export const List = styled<ListProps, 'div'>('div')`
+  justify-self: start;
+  align-items: normal;
   height: 100%;
   display: grid;
   grid-template-columns: repeat(${p => Math.min(p.blockNumber, 6).toString()}, 92px);
-
-  @media screen and (max-width: 1150px) {
-    justify-content: center;
-  }
+  justify-content: var(--ntp-item-justify, start);
 
   @media screen and (max-width: 700px) {
     grid-template-columns: repeat(${p => Math.min(p.blockNumber, 3).toString()}, 92px);
@@ -102,6 +101,7 @@ export const TileFavicon = styled<{}, 'img'>('img')`
   display: block;
   height: 72px;
   padding: 16px;
+  object-fit: contain;
 `
 
 export const ListWidget = createWidget(List)

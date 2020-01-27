@@ -16,8 +16,8 @@ export const StyledClock = styled<{}, 'div'>('div')`
 
 export const StyledTime = styled<{}, 'span'>('span')`
   box-sizing: border-box;
-  font-size: 90px;
-  font-weight: 200;
+  font-size: 78px;
+  font-weight: 300;
   color: inherit;
   display: inline-flex;
 `

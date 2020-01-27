@@ -2,21 +2,143 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'brave-ui/theme'
+import styled, { css } from 'brave-ui/theme'
 
-export const Page = styled<{}, 'div'>('div')`
+const breakpointLargeBlocks = '980px'
+const breakpointEveryBlock = '870px'
+
+const singleColumnSmallViewport = css`
+ @media screen and (max-width: ${breakpointEveryBlock}) {
+   text-align: center;
+ }
+`
+interface PageProps {
+  showClock: boolean
+  showStats: boolean
+  showRewards: boolean
+  showTopSites: boolean
+  showBrandedWallpaper: boolean
+}
+
+function getItemRowCount (p: PageProps): number {
+  let right = (p.showClock ? 1 : 0) + (p.showRewards ? 2 : 0)
+  let left = (p.showStats ? 1 : 0) + (p.showTopSites ? 1 : 0)
+  // Has space for branded logo to sit next to something on right?
+  if (p.showBrandedWallpaper && left >= right) {
+    left++
+  }
+  return Math.max(left, right) + 1 // extra 1 for footer
+}
+
+export const Page = styled<PageProps, 'div'>('div')`
+  /* Increase the explicit row count when adding new widgets
+     so that the footer goes in the correct location always,
+     yet can still merge upwards to previous rows. */
+  --ntp-item-row-count: ${getItemRowCount};
+  --ntp-extra-footer-rows: ${p => p.showBrandedWallpaper ? 1 : 0};
+  --ntp-space-rows: 0;
+  --ntp-page-rows: calc(var(--ntp-item-row-count) + var(--ntp-space-rows));
+  --ntp-item-justify: start;
+  @media screen and (max-width: ${breakpointLargeBlocks}) {
+    --ntp-space-rows: 1;
+  }
+  @media screen and (max-width: ${breakpointEveryBlock}) {
+    --ntp-item-justify: center;
+  }
+
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
   position: relative;
   z-index: 3;
   top: 0;
   left: 0;
-  display: flex;
+  display: grid;
+  grid-template-rows: repeat(calc(var(--ntp-page-rows) - 1), min-content) auto;
+  grid-template-columns: min-content auto min-content;
+  grid-auto-flow: row dense;
+  padding: 12px;
+  overflow: hidden;
   flex: 1;
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
   min-height: 100vh;
+  align-items: flex-start;
+
+  @media screen and (max-width: ${breakpointEveryBlock}) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+`
+
+export const GridItemStats = styled('section')`
+  grid-column: 1 / span 2;
+  ${singleColumnSmallViewport}
+`
+
+export const GridItemClock = styled('section')`
+  grid-column: 3;
+  justify-self: center;
+  ${singleColumnSmallViewport}
+`
+
+export const GridItemRewards = styled('section')`
+  grid-column: 3 / span 1;
+  grid-row-end: span 2;
+  @media screen and (max-width: ${breakpointLargeBlocks}) {
+    grid-column: 2 / span 2;
+    justify-self: end;
+  }
+`
+
+export const GridItemTopSites = styled('section')`
+  grid-column: 1 / span 2;
+  ${singleColumnSmallViewport}
+`
+
+export const GridItemNotification = styled('section')`
+  position: fixed;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+`
+
+export const GridItemCredits = styled('section')`
+  grid-column: 1 / span 1;
+  grid-row: calc(-2 - var(--ntp-extra-footer-rows)) / span calc(1 + var(--ntp-extra-footer-rows));
+  /* grid-row: calc(-1 - var(--ntp-left-item-count));
+  grid-row-end: span calc(1 + var(--ntp-left-item-count)); */
+  align-self: end;
+  margin: 0 0 36px 36px;
+  @media screen and (max-width: ${breakpointEveryBlock}) {
+    align-self: center;
+    margin: 0;
+  }
+`
+
+export const GridItemNavigation = styled('section')`
+  grid-column: 3 / span 1;
+  grid-row: -2 / span 1;
+  align-self: end;
+  margin: 0 24px 24px 0;
+  @media screen and (max-width: ${breakpointEveryBlock}) {
+    margin: 0;
+    align-self: unset;
+  }
+`
+
+export const Footer = styled<{}, 'footer'>('footer')`
+  display: contents;
+
+  @media screen and (max-width: ${breakpointEveryBlock}) {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+  }
 `
 
 interface ImageLoadProps {
@@ -96,15 +218,19 @@ export const Link = styled<{}, 'a'>('a')`
 `
 
 export const PhotoName = styled<{}, 'div'>('div')`
+  align-self: flex-end;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
   font-size: 12px;
   font-family: Muli, sans-serif;
   color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
 `
 
 export const Navigation = styled<{}, 'nav'>('nav')`
+  align-self: flex-end;
   display: flex;
+  justify-content: flex-end;
 `
 
 interface IconButtonProps {

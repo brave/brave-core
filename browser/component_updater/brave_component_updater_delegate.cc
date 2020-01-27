@@ -10,11 +10,12 @@
 #include "base/sequenced_task_runner.h"
 #include "base/task/post_task.h"
 #include "brave/browser/component_updater/brave_component_installer.h"
-#include "chrome/browser/ui/webui/components_ui.h"
+#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "chrome/browser/browser_process.h"
 #include "components/component_updater/component_updater_service.h"
 
 using brave_component_updater::BraveComponent;
+using brave_component_updater::BraveOnDemandUpdater;
 
 namespace brave {
 
@@ -46,7 +47,7 @@ bool BraveComponentUpdaterDelegate::Unregister(
 
 void BraveComponentUpdaterDelegate::OnDemandUpdate(
     const std::string& component_id) {
-  ComponentsUI::OnDemandUpdate(component_id);
+  BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(component_id);
 }
 
 scoped_refptr<base::SequencedTaskRunner>

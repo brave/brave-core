@@ -1,4 +1,21 @@
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 declare namespace NewTab {
+
+  export type BrandedWallpaperLogo = {
+    image: string
+    companyName: string
+    alt: string
+    destinationUrl: string
+  }
+
+  export interface BrandedWallpaper {
+    wallpaperImageUrl: string
+    logo: BrandedWallpaperLogo
+  }
   export interface ApplicationState {
     newTabData: State | undefined
   }
@@ -52,6 +69,7 @@ declare namespace NewTab {
   export interface EphemeralState {
     initialDataLoaded: boolean
     textDirection: string
+    featureFlagBraveNTPBrandedWallpaper: boolean
     isIncognito: boolean
     useAlternativePrivateSearchEngine: boolean
     isTor: boolean
@@ -64,7 +82,10 @@ declare namespace NewTab {
     showClock: boolean
     showTopSites: boolean
     showRewards: boolean
-    stats: Stats
+    brandedWallpaperOptIn: boolean
+    isBrandedWallpaperNotificationDismissed: boolean
+    stats: Stats,
+    brandedWallpaperData?: BrandedWallpaper
   }
 
   export interface RewardsWidgetState {

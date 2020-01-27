@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { StatsContainer, StatsItem } from './stats'
-import { Header, Main, Footer } from './grid'
 import { SettingsMenu, SettingsRow, SettingsText, SettingsTitle, SettingsWrapper } from './settings'
 import { ListWidget, Tile, TileActionsContainer, TileAction, TileFavicon } from './topSites'
 import { SiteRemovalNotification, SiteRemovalText, SiteRemovalAction } from './notification'
@@ -17,9 +16,6 @@ export * from './page'
 export {
   StatsContainer,
   StatsItem,
-  Header,
-  Main,
-  Footer,
   ListWidget,
   Tile,
   TileActionsContainer,

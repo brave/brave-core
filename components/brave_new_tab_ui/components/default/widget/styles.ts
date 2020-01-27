@@ -2,39 +2,40 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
-interface WidgetContainerProps {
-  showWidget: boolean
+interface WidgetPositionProps {
   menuPosition: 'right' | 'left'
+}
+interface WidgetContainerProps extends WidgetPositionProps {
   textDirection: string
 }
 
 export const StyledWidgetContainer = styled<WidgetContainerProps, 'div'>('div')`
-  display: ${p => p.showWidget ? 'flex' : 'none'};
+  display: inline-flex;
+  /* For debug: */
+  /* outline: 1px solid rgba(0, 185, 0, .6); */
   align-items: center;
   flex-direction: ${p => p.menuPosition === 'right' ? 'row' : 'row-reverse'};
   height: fit-content;
-
-  @media screen and (max-width: 1150px) {
-    flex-direction: row;
-    padding: ${p => p.textDirection === 'ltr'
-    ? `0 0 0 48px`
-    : `0 48px 0 0`}
-  }
+  min-width: 0;
 `
 
 interface WidgetVisibilityProps {
   widgetMenuPersist: boolean
+  preventFocus?: boolean
 }
 
 export const StyledWidget = styled<WidgetVisibilityProps, 'div'>('div')`
   padding: 24px;
-
-  ${StyledWidgetContainer}:hover & {
-    border-radius: 16px;
-    background: rgba(33, 37, 41, 0.48);
-  }
+  max-width: 100%;
+  position: relative;
+  ${p => !p.preventFocus && css`
+    ${StyledWidgetContainer}:hover & {
+      border-radius: 16px;
+      background: rgba(33, 37, 41, 0.48);
+    }
+  `}
 
   // Also hover when menu button has been clicked
   ${ p => p.widgetMenuPersist && `
@@ -44,7 +45,7 @@ export const StyledWidget = styled<WidgetVisibilityProps, 'div'>('div')`
 
 `
 
-export const StyledWidgetMenuContainer = styled<WidgetVisibilityProps, 'div'>('div')`
+export const StyledWidgetMenuContainer = styled<WidgetVisibilityProps & WidgetPositionProps, 'div'>('div')`
   visibility: hidden;
   pointer-events: none;
   position: relative;
@@ -60,6 +61,12 @@ export const StyledWidgetMenuContainer = styled<WidgetVisibilityProps, 'div'>('d
     pointer-events: auto;
   `}
 
+  // Float in gutter
+  ${p => p.menuPosition === 'left' ? css`
+      margin-left: -48px;
+    ` : css`
+      margin-right: -48px;
+    `}
 `
 
 interface WidgetMenuProps {
