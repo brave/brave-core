@@ -23,9 +23,10 @@ std::string PermissionUtil::GetPermissionString(
 }
 
 PermissionRequestType PermissionUtil::GetRequestType(ContentSettingsType type) {
-  if (type == ContentSettingsType::AUTOPLAY)
-      return PermissionRequestType::PERMISSION_AUTOPLAY;
-    return GetRequestType_ChromiumImpl(type);
+  if (type == ContentSettingsType::AUTOPLAY) {
+    return PermissionRequestType::PERMISSION_AUTOPLAY;
+  }
+  return GetRequestType_ChromiumImpl(type);
 }
 
 bool PermissionUtil::GetPermissionType(ContentSettingsType type,

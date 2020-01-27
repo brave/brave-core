@@ -6,7 +6,7 @@
 #ifndef BRAVE_BASE_CONTAINERS_UTILS_H_
 #define BRAVE_BASE_CONTAINERS_UTILS_H_
 
-// The following code used to live in /mojo/public/cpp/bindings/map.h but has 
+// The following code used to live in /mojo/public/cpp/bindings/map.h but has
 // been removed in https://chromium.googlesource.com/chromium/src/+/8d90918
 // because Chromium switched to using base::flat_map instead of std::map in the
 // code that used with mojo. Namespace in the code below has been changed from

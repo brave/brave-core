@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -47,95 +48,89 @@ class PageReloadWaiter {
 
 }  // namespace
 
-class BraveContentSettingsAgentImplFlashBrowserTest : public InProcessBrowserTest {
-  public:
-    void SetUpOnMainThread() override {
-      InProcessBrowserTest::SetUpOnMainThread();
+class BraveContentSettingsAgentImplFlashBrowserTest
+    : public InProcessBrowserTest {
+ public:
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
 
-      content_client_.reset(new ChromeContentClient);
-      content::SetContentClient(content_client_.get());
-      browser_content_client_.reset(new BraveContentBrowserClient());
-      content::SetBrowserClientForTesting(browser_content_client_.get());
+    content_client_.reset(new ChromeContentClient);
+    content::SetContentClient(content_client_.get());
+    browser_content_client_.reset(new BraveContentBrowserClient());
+    content::SetBrowserClientForTesting(browser_content_client_.get());
 
-      host_resolver()->AddRule("*", "127.0.0.1");
-      content::SetupCrossSiteRedirector(embedded_test_server());
+    host_resolver()->AddRule("*", "127.0.0.1");
+    content::SetupCrossSiteRedirector(embedded_test_server());
 
-      brave::RegisterPathProvider();
-      base::FilePath test_data_dir;
-      base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-      embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
+    brave::RegisterPathProvider();
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
 
-      ASSERT_TRUE(embedded_test_server()->Start());
+    ASSERT_TRUE(embedded_test_server()->Start());
 
-      url_ = embedded_test_server()->GetURL("a.com", "/flash.html");
-      top_level_page_pattern_ =
-          ContentSettingsPattern::FromString("http://a.com/*");
-    }
+    url_ = embedded_test_server()->GetURL("a.com", "/flash.html");
+    top_level_page_pattern_ =
+        ContentSettingsPattern::FromString("http://a.com/*");
+  }
 
-    void SetUpCommandLine(base::CommandLine* command_line) override {
-      InProcessBrowserTest::SetUpCommandLine(command_line);
-      ASSERT_TRUE(ppapi::RegisterFlashTestPlugin(command_line));
-      // These tests are for the permission prompt to add and remove Flash from
-      // navigator.plugins. We disable Plugin Power Saver, because its plugin
-      // throttling make it harder to test if Flash was succcessfully enabled.
-      command_line->AppendSwitchASCII(
-          switches::kOverridePluginPowerSaverForTesting, "never");
-    }
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    ASSERT_TRUE(ppapi::RegisterFlashTestPlugin(command_line));
+    // These tests are for the permission prompt to add and remove Flash from
+    // navigator.plugins. We disable Plugin Power Saver, because its plugin
+    // throttling make it harder to test if Flash was succcessfully enabled.
+    command_line->AppendSwitchASCII(
+        switches::kOverridePluginPowerSaverForTesting, "never");
+  }
 
-    void TearDown() override {
-      browser_content_client_.reset();
-      content_client_.reset();
-    }
+  void TearDown() override {
+    browser_content_client_.reset();
+    content_client_.reset();
+  }
 
-    const GURL& url() { return url_; }
+  const GURL& url() { return url_; }
 
-    const ContentSettingsPattern& top_level_page_pattern() {
-      return top_level_page_pattern_;
-    }
+  const ContentSettingsPattern& top_level_page_pattern() {
+    return top_level_page_pattern_;
+  }
 
-    const ContentSettingsPattern& empty_pattern() {
-      return empty_pattern_;
-    }
+  const ContentSettingsPattern& empty_pattern() { return empty_pattern_; }
 
-    HostContentSettingsMap * content_settings() {
-      return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
-    }
+  HostContentSettingsMap* content_settings() {
+    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+  }
 
-    void UnblockFlash() {
-      content_settings()->SetContentSettingCustomScope(
-          top_level_page_pattern_,
-          ContentSettingsPattern::Wildcard(),
-          ContentSettingsType::PLUGINS,
-          std::string(),
-          CONTENT_SETTING_DETECT_IMPORTANT_CONTENT);
-    }
+  void UnblockFlash() {
+    content_settings()->SetContentSettingCustomScope(
+        top_level_page_pattern_, ContentSettingsPattern::Wildcard(),
+        ContentSettingsType::PLUGINS, std::string(),
+        CONTENT_SETTING_DETECT_IMPORTANT_CONTENT);
+  }
 
-    void AllowFlash() {
-      content_settings()->SetContentSettingCustomScope(
-          top_level_page_pattern_,
-          ContentSettingsPattern::Wildcard(),
-          ContentSettingsType::PLUGINS,
-          std::string(),
-          CONTENT_SETTING_ALLOW);
-    }
+  void AllowFlash() {
+    content_settings()->SetContentSettingCustomScope(
+        top_level_page_pattern_, ContentSettingsPattern::Wildcard(),
+        ContentSettingsType::PLUGINS, std::string(), CONTENT_SETTING_ALLOW);
+  }
 
-    content::WebContents* contents() {
-      return browser()->tab_strip_model()->GetActiveWebContents();
-    }
+  content::WebContents* contents() {
+    return browser()->tab_strip_model()->GetActiveWebContents();
+  }
 
-    bool NavigateToURLUntilLoadStop(const GURL& url) {
-      ui_test_utils::NavigateToURL(browser(), url);
-      return WaitForLoadStop(contents());
-    }
+  bool NavigateToURLUntilLoadStop(const GURL& url) {
+    ui_test_utils::NavigateToURL(browser(), url);
+    return WaitForLoadStop(contents());
+  }
 
-  private:
-    GURL url_;
-    ContentSettingsPattern top_level_page_pattern_;
-    ContentSettingsPattern empty_pattern_;
-    std::unique_ptr<ChromeContentClient> content_client_;
-    std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
+ private:
+  GURL url_;
+  ContentSettingsPattern top_level_page_pattern_;
+  ContentSettingsPattern empty_pattern_;
+  std::unique_ptr<ChromeContentClient> content_client_;
+  std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
 
-    base::ScopedTempDir temp_user_data_dir_;
+  base::ScopedTempDir temp_user_data_dir_;
 };
 
 // Flash is blocked by default

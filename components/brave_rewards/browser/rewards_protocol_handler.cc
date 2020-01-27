@@ -6,6 +6,7 @@
 #include "brave/components/brave_rewards/browser/rewards_protocol_handler.h"
 
 #include <string>
+#include <utility>
 
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"

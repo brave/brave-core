@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/webui/brave_rewards_source.h"
 
+#include <utility>
+
 #include "base/memory/ref_counted_memory.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"

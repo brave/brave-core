@@ -5,6 +5,8 @@
 
 #include "brave/browser/content_settings/brave_content_settings_manager_impl.h"
 
+#include <utility>
+
 #include "base/memory/ptr_util.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"

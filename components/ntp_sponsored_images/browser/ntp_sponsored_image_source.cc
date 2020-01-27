@@ -51,7 +51,7 @@ void NTPSponsoredImageSource::StartDataRequest(
 
   std::string path = url.path();
   if (!path.empty()) {
-    path.erase(0,1);
+    path.erase(0, 1);
   }
 
   if (!IsValidPath(path)) {
@@ -74,8 +74,7 @@ void NTPSponsoredImageSource::StartDataRequest(
   } else {
     DCHECK(IsWallpaperPath(path));
     image_file_path =
-        images_data
-            ->wallpaper_image_files[GetWallpaperIndexFromPath(path)];
+        images_data->wallpaper_image_files[GetWallpaperIndexFromPath(path)];
   }
 
   base::PostTaskAndReplyWithResult(

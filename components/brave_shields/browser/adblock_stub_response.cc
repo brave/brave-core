@@ -6,6 +6,7 @@
 #include "brave/components/brave_shields/browser/adblock_stub_response.h"
 
 #include <string>
+#include <utility>
 
 #include "base/compiler_specific.h"
 #include "base/containers/flat_map.h"

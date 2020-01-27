@@ -1,9 +1,13 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_RENDERER_CONTENT_SETTINGS_AGENT_IMPL_H_
-#define BRAVE_RENDERER_CONTENT_SETTINGS_AGENT_IMPL_H_
+#ifndef BRAVE_RENDERER_BRAVE_CONTENT_SETTINGS_AGENT_IMPL_H_
+#define BRAVE_RENDERER_BRAVE_CONTENT_SETTINGS_AGENT_IMPL_H_
+
+#include <string>
+#include <vector>
 
 #include "base/strings/string16.h"
 #include "chrome/renderer/content_settings_agent_impl.h"
@@ -72,4 +76,4 @@ class BraveContentSettingsAgentImpl
   DISALLOW_COPY_AND_ASSIGN(BraveContentSettingsAgentImpl);
 };
 
-#endif  // BRAVE_RENDERER_CONTENT_SETTINGS_AGENT_IMPL_H_
+#endif  // BRAVE_RENDERER_BRAVE_CONTENT_SETTINGS_AGENT_IMPL_H_

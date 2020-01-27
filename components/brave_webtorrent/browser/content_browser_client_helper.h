@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_WEBTORRENT_BROWSER_CONTENT_BROWSER_CLIENT_HELPER_H_
 
 #include <string>
+#include <utility>
 
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
