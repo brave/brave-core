@@ -134,7 +134,7 @@
       <message name="IDS_BRAVE_NEW_TAB_DAY" desc="Displays the number of days.">day</message>
       <message name="IDS_BRAVE_NEW_TAB_DAYS" desc="Displays the number of days.">days</message>
       <message name="IDS_BRAVE_NEW_TAB_PHOTO_BY" desc="Prefix for photographer name">Photo by</message>
-      <message name="IDS_BRAVE_NEW_TAB_REMOVE" desc="Shown as an option for a widget to remove itself">Remove</message>
+      <message name="IDS_BRAVE_NEW_TAB_HIDE" desc="Shown as an option for a widget to hide itself">Hide</message>
       <message name="IDS_BRAVE_NEW_TAB_PREFERENCES_PAGE_TITLE" desc="Title for preferences page">Edit Preferences</message>
       <message name="IDS_BRAVE_NEW_TAB_BOOKMARKS_PAGE_TITLE" desc="Title for bookmarks page">View and Manage Bookmarks</message>
       <message name="IDS_BRAVE_NEW_TAB_HISTORY_PAGE_TITLE" desc="Title for history page">View your browsing history</message>
