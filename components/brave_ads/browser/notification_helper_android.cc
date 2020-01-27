@@ -72,13 +72,14 @@ NotificationHelper* NotificationHelper::GetInstanceImpl() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool NotificationHelperAndroid::IsBraveAdsNotificationChannelEnabled(bool foregroundChannel) const {
+bool NotificationHelperAndroid::IsBraveAdsNotificationChannelEnabled
+    (bool foreground_channel) const {
   if (GetOperatingSystemVersion() < kMinimumVersionForNotificationChannels) {
     return true;
   }
 
   JNIEnv* env = base::android::AttachCurrentThread();
-  auto j_channel_id = (foregroundChannel)? Java_BraveAds_getBraveAdsChannelId(env):
+  auto j_channel_id = (foreground_channel) ? Java_BraveAds_getBraveAdsChannelId(env):
       Java_BraveAds_getBraveAdsBackgroundChannelId(env);
   auto status = static_cast<NotificationChannelStatus>(
       Java_BraveNotificationSettingsBridge_getChannelStatus(
