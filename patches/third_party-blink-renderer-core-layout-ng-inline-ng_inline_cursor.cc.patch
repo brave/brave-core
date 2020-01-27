@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/core/layout/ng/inline/ng_inline_cursor.cc b/third_party/blink/renderer/core/layout/ng/inline/ng_inline_cursor.cc
+index a7a1c313e71221bef31b7efbad764298ba8be20f..2b1923b1c86bfb9999a81de74e5c82a4dba948be 100644
+--- a/third_party/blink/renderer/core/layout/ng/inline/ng_inline_cursor.cc
++++ b/third_party/blink/renderer/core/layout/ng/inline/ng_inline_cursor.cc
+@@ -33,7 +33,7 @@ void NGInlineCursor::SetRoot(const NGFragmentItems& items) {
+ 
+ void NGInlineCursor::SetRoot(const NGPaintFragment& root_paint_fragment) {
+   DCHECK(&root_paint_fragment);
+-  DCHECK(!root_paint_fragment.Parent()) << root_paint_fragment;
++  //DCHECK(!root_paint_fragment.Parent()) << root_paint_fragment;
+   root_paint_fragment_ = &root_paint_fragment;
+   current_paint_fragment_ = root_paint_fragment.FirstChild();
+ }
