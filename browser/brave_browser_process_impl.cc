@@ -20,6 +20,7 @@
 #include "brave/browser/tor/buildflags.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
@@ -28,11 +29,13 @@
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_shields/browser/referrer_whitelist_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/brave_histogram_rewrite.h"
 #include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/services/network/public/cpp/system_request_handler.h"
 #include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/webui/components_ui.h"
 #include "chrome/common/buildflags.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/component_updater/component_updater_service.h"
@@ -73,6 +76,8 @@
 #else
 #include "chrome/browser/ui/browser.h"
 #endif
+
+using ntp_sponsored_images::NTPSponsoredImagesService;
 
 namespace {
 
@@ -127,6 +132,9 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
 void BraveBrowserProcessImpl::Init() {
   BrowserProcessImpl::Init();
 
+  brave_component_updater::BraveOnDemandUpdater::GetInstance()->
+      RegisterOnDemandUpdateCallback(
+          base::BindRepeating(&ComponentsUI::OnDemandUpdate));
   UpdateBraveDarkMode();
   pref_change_registrar_.Add(
       kBraveDarkMode,
@@ -205,6 +213,17 @@ BraveBrowserProcessImpl::ad_block_regional_service_manager() {
         brave_shields::AdBlockRegionalServiceManagerFactory(
             brave_component_updater_delegate());
   return ad_block_regional_service_manager_.get();
+}
+
+NTPSponsoredImagesService*
+BraveBrowserProcessImpl::ntp_sponsored_images_service() {
+  if (!ntp_sponsored_images_service_) {
+    ntp_sponsored_images_service_ =
+        std::make_unique<NTPSponsoredImagesService>(
+            component_updater());
+  }
+
+  return ntp_sponsored_images_service_.get();
 }
 
 brave_shields::AutoplayWhitelistService*

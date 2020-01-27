@@ -55,7 +55,11 @@
       <include name="IDR_BRAVE_NEW_TAB_BACKGROUND14" file="../img/newtab/ntp-14.webp" type="BINDATA" />
       <include name="IDR_BRAVE_NEW_TAB_BACKGROUND15" file="../img/newtab/ntp-15.webp" type="BINDATA" />
       <include name="IDR_BRAVE_NEW_TAB_BACKGROUND16" file="../img/newtab/ntp-16.webp" type="BINDATA" />
-      
+      <include name="IDR_BRAVE_NEW_TAB_DUMMY_BRANDED_WALLPAPER_BG_1" file="../img/newtab/dummy-branded-wallpaper/background-1.jpg" type="BINDATA" />
+      <include name="IDR_BRAVE_NEW_TAB_DUMMY_BRANDED_WALLPAPER_BG_2" file="../img/newtab/dummy-branded-wallpaper/background-2.jpg" type="BINDATA" />
+      <include name="IDR_BRAVE_NEW_TAB_DUMMY_BRANDED_WALLPAPER_BG_3" file="../img/newtab/dummy-branded-wallpaper/background-3.jpg" type="BINDATA" />
+      <include name="IDR_BRAVE_NEW_TAB_DUMMY_BRANDED_WALLPAPER_LOGO" file="../img/newtab/dummy-branded-wallpaper/logo.png" type="BINDATA" />
+
       <!-- WebUI private new tab resources -->
       <!-- TODO: move to brave_new_tab_ui component -->
       <include name="IDR_BRAVE_PRIVATE_TAB_IMG" file="../img/newtab/private-window.svg" type="BINDATA" />

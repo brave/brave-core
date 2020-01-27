@@ -6,6 +6,7 @@ import * as React from 'react'
 
 // Feature-specific components
 import { Link, Navigation, IconLink, PhotoName } from '../../components/default'
+import * as S from '../../components/default/page'
 
 // Icons
 import { SettingsAdvancedIcon, BookmarkBook, HistoryIcon } from 'brave-ui/components/icons'
@@ -26,11 +27,13 @@ interface Props {
   toggleShowStats: () => void
   toggleShowTopSites: () => void
   toggleShowRewards: () => void
+  toggleBrandedWallpaperOptIn: () => void
   showBackgroundImage: boolean
   showClock: boolean
   showStats: boolean
   showTopSites: boolean
   showRewards: boolean
+  brandedWallpaperOptIn: boolean
 }
 
 export default class FooterInfo extends React.PureComponent<Props, {}> {
@@ -48,45 +51,52 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
       toggleShowStats,
       toggleShowTopSites,
       toggleShowRewards,
+      toggleBrandedWallpaperOptIn,
       showBackgroundImage,
       showClock,
       showStats,
       showTopSites,
-      showRewards
+      showRewards,
+      brandedWallpaperOptIn
     } = this.props
 
     return (
       <>
-        <div>
-          {showPhotoInfo &&
+        {showPhotoInfo &&
+        <S.GridItemCredits>
           <PhotoName>
             {`${getLocale('photoBy')} `}
             <Link href={backgroundImageInfo.link} rel='noopener' target='_blank'>
               {backgroundImageInfo.author}
             </Link>
-          </PhotoName>}
-        </div>
-        <Navigation>
-          <Settings
-            textDirection={textDirection}
-            showSettingsMenu={showSettingsMenu}
-            onClickOutside={onClickOutside}
-            onClick={onClickSettings}
-            toggleShowBackgroundImage={toggleShowBackgroundImage}
-            toggleShowClock={toggleShowClock}
-            toggleShowStats={toggleShowStats}
-            toggleShowTopSites={toggleShowTopSites}
-            toggleShowRewards={toggleShowRewards}
-            showBackgroundImage={showBackgroundImage}
-            showClock={showClock}
-            showStats={showStats}
-            showTopSites={showTopSites}
-            showRewards={showRewards}
-          />
-          <IconLink><SettingsAdvancedIcon /></IconLink>
-          <IconLink><BookmarkBook /></IconLink>
-          <IconLink><HistoryIcon /></IconLink>
-        </Navigation>
+          </PhotoName>
+        </S.GridItemCredits>
+        }
+        <S.GridItemNavigation>
+          <Navigation>
+            <Settings
+              textDirection={textDirection}
+              showSettingsMenu={showSettingsMenu}
+              onClickOutside={onClickOutside}
+              onClick={onClickSettings}
+              toggleShowBackgroundImage={toggleShowBackgroundImage}
+              toggleShowClock={toggleShowClock}
+              toggleShowStats={toggleShowStats}
+              toggleShowTopSites={toggleShowTopSites}
+              toggleBrandedWallpaperOptIn={toggleBrandedWallpaperOptIn}
+              toggleShowRewards={toggleShowRewards}
+              showBackgroundImage={showBackgroundImage}
+              showClock={showClock}
+              showStats={showStats}
+              showTopSites={showTopSites}
+              brandedWallpaperOptIn={brandedWallpaperOptIn}
+              showRewards={showRewards}
+            />
+            <IconLink><SettingsAdvancedIcon /></IconLink>
+            <IconLink><BookmarkBook /></IconLink>
+            <IconLink><HistoryIcon /></IconLink>
+          </Navigation>
+        </S.GridItemNavigation>
       </>
     )
   }

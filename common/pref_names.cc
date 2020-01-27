@@ -61,10 +61,14 @@ const char kHideBraveRewardsButton[] = "brave.hide_brave_rewards_button";
 const char kIPFSCompanionEnabled[] = "brave.ipfs_companion_enabled";
 const char kNewTabPageShowBackgroundImage[] =
     "brave.new_tab_page.show_background_image";
+const char kNewTabPageShowBrandedBackgroundImage[] =
+    "brave.new_tab_page.show_branded_background_image";
 const char kNewTabPageShowClock[] = "brave.new_tab_page.show_clock";
 const char kNewTabPageShowTopSites[] = "brave.new_tab_page.show_top_sites";
 const char kNewTabPageShowStats[] = "brave.new_tab_page.show_stats";
 const char kNewTabPageShowRewards[] = "brave.new_tab_page.show_rewards";
+const char kBrandedWallpaperNotificationDismissed[] =
+    "brave.branded_wallpaper_notification_dismissed";
 const char kBraveEnabledMediaRouter[] = "brave.enable_media_router";
 const char kBraveWalletAES256GCMSivNonce[] =
     "brave.wallet.aes_256_gcm_siv_nonce";
