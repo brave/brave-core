@@ -263,6 +263,10 @@ class BrowserViewController: UIViewController {
             guard let self = self, let client = self.deviceCheckClient else { return }
             if result == .walletCreated {
                 self.rewards.ledger.setupDeviceCheckEnrollment(client) { }
+                
+                if self.notificationsHandler?.shouldShowNotifications() == true {
+                    self.displayMyFirstAdIfAvailable()
+                }
             }
         }
         rewardsObserver.fetchedPanelPublisher = { [weak self] publisher, tabId in
