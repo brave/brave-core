@@ -10,6 +10,7 @@ extension SettingsViewController {
     let rewardsToggleSection = SettingsRewardsSectionView()
     let adsSection = SettingsAdSectionView()
     let autoContributeSection = SettingsAutoContributeSectionView()
+    let monthlyTipsSection = SettingsMonthlyTipsSectionView()
     let tipsSection = SettingsTipsSectionView()
     
     var grantsSections: [SettingsGrantSectionView] = [] {
@@ -35,6 +36,7 @@ extension SettingsViewController {
       stackView.addArrangedSubview(rewardsToggleSection)
       stackView.addArrangedSubview(adsSection)
       stackView.addArrangedSubview(autoContributeSection)
+      stackView.addArrangedSubview(monthlyTipsSection)
       stackView.addArrangedSubview(tipsSection)
       
       scrollView.snp.makeConstraints {

@@ -47,6 +47,7 @@ class SettingsViewController: UIViewController {
       $0.rewardsToggleSection.toggleSwitch.addTarget(self, action: #selector(rewardsSwitchValueChanged), for: .valueChanged)
       $0.adsSection.viewDetailsButton.addTarget(self, action: #selector(tappedAdsViewDetails), for: .touchUpInside)
       $0.adsSection.toggleSwitch.addTarget(self, action: #selector(adsToggleValueChanged), for: .valueChanged)
+      $0.monthlyTipsSection.viewDetailsButton.addTarget(self, action: #selector(tappedMonthlyTipsViewDetails), for: .touchUpInside)
       $0.tipsSection.viewDetailsButton.addTarget(self, action: #selector(tappedTipsViewDetails), for: .touchUpInside)
       $0.autoContributeSection.viewDetailsButton.addTarget(self, action: #selector(tappedAutoContributeViewDetails), for: .touchUpInside)
       $0.autoContributeSection.toggleSwitch.addTarget(self, action: #selector(autoContributeToggleValueChanged), for: .valueChanged)
@@ -111,6 +112,12 @@ class SettingsViewController: UIViewController {
   
   @objc private func tappedAdsViewDetails() {
     let controller = AdsDetailsViewController(state: state)
+    controller.preferredContentSize = preferredContentSize
+    navigationController?.pushViewController(controller, animated: true)
+  }
+  
+  @objc private func tappedMonthlyTipsViewDetails() {
+    let controller = MonthlyTipsDetailViewController(state: state)
     controller.preferredContentSize = preferredContentSize
     navigationController?.pushViewController(controller, animated: true)
   }

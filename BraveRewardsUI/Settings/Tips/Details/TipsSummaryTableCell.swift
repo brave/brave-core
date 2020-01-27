@@ -22,18 +22,18 @@ class TipsSummaryTableCell: UITableViewCell, TableViewReusable {
     $0.kindLabel.text = "USD"
   }
   
+  let totalTipsThisMonthLabel = UILabel().then {
+    $0.text = Strings.tipsTotalThisMonth
+    $0.appearanceTextColor = .black
+    $0.font = SettingsUX.bodyFont
+    $0.numberOfLines = 0
+    $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+  }
+  
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
     
     backgroundColor = .white
-    
-    let totalTipsThisMonthLabel = UILabel().then {
-      $0.text = Strings.tipsTotalThisMonth
-      $0.appearanceTextColor = Colors.neutral200
-      $0.font = .systemFont(ofSize: 14.0, weight: .medium)
-      $0.numberOfLines = 0
-      $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-    }
     
     let currenciesStackView = UIStackView().then {
       $0.spacing = 10.0
