@@ -225,8 +225,14 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           return;
       }
       if (mBraveShieldsButton == v && mBraveShieldsButton != null) {
-          if (mMainActivity.getFullscreenManager() != null
-                  && mMainActivity.getFullscreenManager().getPersistentFullscreenMode()) {
+          try {
+              if (mMainActivity.getFullscreenManager() != null
+                      && mMainActivity.getFullscreenManager().getPersistentFullscreenMode()) {
+                  return;
+              }
+          } catch (IllegalStateException exc) {
+              // We are on a finishing or destroying phase right now. Just do
+              // nothing in that case
               return;
           }
           Tab currentTab = mMainActivity.getActivityTab();
