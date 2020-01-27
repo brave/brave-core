@@ -242,10 +242,12 @@ void BraveRewardsNativeWorker::OnWalletProperties(
     wallet_properties_ = *wallet_properties;
   }
   if (error_code == 0) {
-    rewards_service->FetchBalance(
+    if (rewards_service) {
+      rewards_service->FetchBalance(
         base::Bind(
-            &BraveRewardsNativeWorker::OnBalance,
-            weak_factory_.GetWeakPtr()));
+          &BraveRewardsNativeWorker::OnBalance,
+          weak_factory_.GetWeakPtr()));
+    }
   } else {
     JNIEnv* env = base::android::AttachCurrentThread();
     Java_BraveRewardsNativeWorker_OnWalletProperties(env,
@@ -350,6 +352,9 @@ void BraveRewardsNativeWorker::Donate(JNIEnv* env,
 
 void BraveRewardsNativeWorker::GetAllNotifications(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj) {
+  if (!brave_rewards_service_) {
+    return;
+  }
   brave_rewards::RewardsNotificationService* notification_service =
     brave_rewards_service_->GetNotificationService();
   if (notification_service) {
@@ -360,6 +365,9 @@ void BraveRewardsNativeWorker::GetAllNotifications(JNIEnv* env,
 void BraveRewardsNativeWorker::DeleteNotification(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj,
         const base::android::JavaParamRef<jstring>& notification_id) {
+  if (!brave_rewards_service_) {
+    return;
+  }
   brave_rewards::RewardsNotificationService* notification_service =
     brave_rewards_service_->GetNotificationService();
   if (notification_service) {
