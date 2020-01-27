@@ -43,6 +43,10 @@ extension Preferences {
         static let referralCodeDeleteDate = Option<TimeInterval?>(key: "urp.referral.delete-date", default: nil)
     }
     
+    public final class NTP {
+        public static let ntpCheckDate = Option<TimeInterval?>(key: "ntp.next-check-date", default: nil)
+    }
+    
     public final class Review {
         /// Application Launch Count (how many times the application has been launched)
         public static let launchCount = Option<Int>(key: "review.launch-count", default: 0)

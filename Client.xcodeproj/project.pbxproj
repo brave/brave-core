@@ -666,9 +666,11 @@
 		5E612A8E234B7FC8007D12B5 /* OnboardingAdsAvailableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D8C68232BE47A00BDE662 /* OnboardingAdsAvailableView.swift */; };
 		5E612A8F234B7FCA007D12B5 /* OnboardingRewardsAgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D8C6A232BF95200BDE662 /* OnboardingRewardsAgreementViewController.swift */; };
 		5E612A90234B7FCD007D12B5 /* OnboardingRewardsAgreementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D8C6C232BF9C200BDE662 /* OnboardingRewardsAgreementView.swift */; };
+		5E6683A923D61CF7005B3A6C /* NTPDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E6683A823D61CF7005B3A6C /* NTPDownloader.swift */; };
 		5E77F9A8236B362800E1649C /* DeviceCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E856FE7235E083B0094E113 /* DeviceCheck.swift */; };
 		5E77F9AA236B362E00E1649C /* Cryptography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E856FE5235E08110094E113 /* Cryptography.swift */; };
 		5E77F9DD236BB68700E1649C /* AttestationDebugger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E77F9DC236BB68700E1649C /* AttestationDebugger.swift */; };
+		5E8CD8E123D5E3DA00548FC0 /* libarchive.2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E8CD8E023D5E3D100548FC0 /* libarchive.2.tbd */; };
 		5E9288CA22DF864C007BE7A6 /* TabSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9288C922DF864C007BE7A6 /* TabSessionTests.swift */; };
 		5EA8438E234F802C00076A91 /* expired.badssl.com-root-ca.cer in Resources */ = {isa = PBXBuildFile; fileRef = 5EA84389234F802C00076A91 /* expired.badssl.com-root-ca.cer */; };
 		5EA8438F234F802C00076A91 /* expired.badssl.com-intermediate-ca-1.cer in Resources */ = {isa = PBXBuildFile; fileRef = 5EA8438B234F802C00076A91 /* expired.badssl.com-intermediate-ca-1.cer */; };
@@ -2111,9 +2113,11 @@
 		5E46C37B234FB9A700ACA8C1 /* self-signed.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "self-signed.cer"; sourceTree = "<group>"; };
 		5E4845BF22DE381200372022 /* WindowRenderHelper.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = WindowRenderHelper.js; sourceTree = "<group>"; };
 		5E4845C122DE3DF800372022 /* WindowRenderHelperScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowRenderHelperScript.swift; sourceTree = "<group>"; };
+		5E6683A823D61CF7005B3A6C /* NTPDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NTPDownloader.swift; sourceTree = "<group>"; };
 		5E77F9DC236BB68700E1649C /* AttestationDebugger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttestationDebugger.swift; sourceTree = "<group>"; };
 		5E856FE5235E08110094E113 /* Cryptography.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = Cryptography.swift; sourceTree = "<group>"; tabWidth = 2; };
 		5E856FE7235E083B0094E113 /* DeviceCheck.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = DeviceCheck.swift; sourceTree = "<group>"; tabWidth = 2; };
+		5E8CD8E023D5E3D100548FC0 /* libarchive.2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libarchive.2.tbd; path = usr/lib/libarchive.2.tbd; sourceTree = SDKROOT; };
 		5E9288C922DF864C007BE7A6 /* TabSessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabSessionTests.swift; sourceTree = "<group>"; };
 		5EA84389234F802C00076A91 /* expired.badssl.com-root-ca.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "expired.badssl.com-root-ca.cer"; sourceTree = "<group>"; };
 		5EA8438B234F802C00076A91 /* expired.badssl.com-intermediate-ca-1.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "expired.badssl.com-intermediate-ca-1.cer"; sourceTree = "<group>"; };
@@ -2489,6 +2493,7 @@
 				0AC0D39A233E7CAF0091EFA5 /* ObjcExceptionBridging.framework in Frameworks */,
 				0AD9F87D22F0421B008B4D95 /* libadblock.a in Frameworks */,
 				F98E1EA122B6D70E0018AF29 /* libYubiKit.a in Frameworks */,
+				5E8CD8E123D5E3DA00548FC0 /* libarchive.2.tbd in Frameworks */,
 				271DEC2E234CC760009DAC37 /* BraveRewardsUI.framework in Frameworks */,
 				A1AD4BD120BF3F4D007A6EA1 /* Eureka.framework in Frameworks */,
 				E6231C051B90A472005ABB0D /* libxml2.2.tbd in Frameworks */,
@@ -2820,6 +2825,7 @@
 				5DB474F0237F4CC9007B7652 /* ntp-data.json */,
 				5D5374B42388733A00A2B587 /* NTO_Sponsored */,
 				5DB474CE237F4BE9007B7652 /* NTP_Images */,
+				5E6683A823D61CF7005B3A6C /* NTPDownloader.swift */,
 			);
 			path = HomePanel;
 			sourceTree = "<group>";
@@ -4069,6 +4075,7 @@
 		7B604FC11C496005006EEEC3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5E8CD8E023D5E3D100548FC0 /* libarchive.2.tbd */,
 				27AC169623834510004BE19C /* UserNotifications.framework */,
 				27FA2D4F234CC9FB004D5D2D /* BraveRewards.framework */,
 				F926647A234D4EF400359492 /* CoreNFC.framework */,
@@ -6302,6 +6309,7 @@
 				D31F95E91AC226CB005C9F3B /* ScreenshotHelper.swift in Sources */,
 				28EADE5D1AFC3A78007FB2FB /* UIImageViewExtensions.swift in Sources */,
 				D3968F251A38FE8500CEFD3B /* TabManager.swift in Sources */,
+				5E6683A923D61CF7005B3A6C /* NTPDownloader.swift in Sources */,
 				2816F0001B33E05400522243 /* UIConstants.swift in Sources */,
 				4422D56521BFFB7F00BF1855 /* filtered_re2.cc in Sources */,
 				5EC594EF232C68FC00922111 /* OnboardingAdsCountdownViewController.swift in Sources */,
