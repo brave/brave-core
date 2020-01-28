@@ -12,6 +12,7 @@
 #include "brave/components/ntp_sponsored_images/browser/features.h"
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_service.h"
 #include "brave/components/ntp_sponsored_images/browser/view_counter_service.h"
+#include "brave/components/ntp_sponsored_images/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_features.h"
 #include "content/public/browser/browser_context.h"
@@ -68,11 +69,8 @@ KeyedService* ViewCounterServiceFactory::BuildServiceInstanceFor(
 }
 
 void ViewCounterServiceFactory::RegisterProfilePrefs(
-    user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterBooleanPref(
-      kBrandedWallpaperNotificationDismissed, false);
-  registry->RegisterBooleanPref(
-      kNewTabPageShowBrandedBackgroundImage, true);
+     user_prefs::PrefRegistrySyncable* registry) {
+  ViewCounterService::RegisterProfilePrefs(registry);
 }
 
 bool ViewCounterServiceFactory::ServiceIsCreatedWithBrowserContext() const {

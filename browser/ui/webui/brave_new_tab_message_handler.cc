@@ -20,6 +20,7 @@
 #include "brave/components/ntp_sponsored_images/browser/features.h"
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_sponsored_images/browser/view_counter_service.h"
+#include "brave/components/ntp_sponsored_images/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_features.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -78,7 +79,8 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
       prefs->GetBoolean(kNewTabPageShowBackgroundImage));
   pref_data.SetBoolean(
       "brandedWallpaperOptIn",
-      prefs->GetBoolean(kNewTabPageShowBrandedBackgroundImage));
+      prefs->GetBoolean(
+          ntp_sponsored_images::prefs::kNewTabPageShowBrandedBackgroundImage));
   pref_data.SetBoolean(
       "showClock",
       prefs->GetBoolean(kNewTabPageShowClock));
@@ -93,7 +95,8 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
       prefs->GetBoolean(kNewTabPageShowRewards));
   pref_data.SetBoolean(
       "isBrandedWallpaperNotificationDismissed",
-      prefs->GetBoolean(kBrandedWallpaperNotificationDismissed));
+      prefs->GetBoolean(
+          ntp_sponsored_images::prefs::kBrandedWallpaperNotificationDismissed));
   return pref_data;
 }
 
@@ -222,7 +225,8 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   pref_change_registrar_.Add(kNewTabPageShowBackgroundImage,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
-  pref_change_registrar_.Add(kNewTabPageShowBrandedBackgroundImage,
+  pref_change_registrar_.Add(
+    ntp_sponsored_images::prefs::kNewTabPageShowBrandedBackgroundImage,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
   pref_change_registrar_.Add(kNewTabPageShowClock,
@@ -237,7 +241,8 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   pref_change_registrar_.Add(kNewTabPageShowRewards,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
-  pref_change_registrar_.Add(kBrandedWallpaperNotificationDismissed,
+  pref_change_registrar_.Add(
+    ntp_sponsored_images::prefs::kBrandedWallpaperNotificationDismissed,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
 }
@@ -296,7 +301,8 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
   if (settingsKeyInput == "showBackgroundImage") {
     settingsKey = kNewTabPageShowBackgroundImage;
   } else if (settingsKeyInput == "brandedWallpaperOptIn") {
-    settingsKey = kNewTabPageShowBrandedBackgroundImage;
+    settingsKey =
+        ntp_sponsored_images::prefs::kNewTabPageShowBrandedBackgroundImage;
   } else if (settingsKeyInput == "showClock") {
     settingsKey = kNewTabPageShowClock;
   } else if (settingsKeyInput == "showTopSites") {
@@ -306,7 +312,8 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
   } else if (settingsKeyInput == "showRewards") {
     settingsKey = kNewTabPageShowRewards;
   } else if (settingsKeyInput == "isBrandedWallpaperNotificationDismissed") {
-    settingsKey = kBrandedWallpaperNotificationDismissed;
+    settingsKey =
+        ntp_sponsored_images::prefs::kBrandedWallpaperNotificationDismissed;
   } else {
     LOG(ERROR) << "Invalid setting key";
     return;
