@@ -221,6 +221,7 @@ const locale: Record<string, string> = {
   rewardsWidgetAdsOptInDescription: 'Earn tokens by viewing privacy-respecting ads.',
   rewardsWidgetMonthlyTips: 'Tips and contributions this month',
   rewardsWidgetNotificationTitle: 'Way to Go!',
+  rewardsWidgetEnableBrandedWallpaperSubTitle: 'Turn on $3 to claim your share. You can also choose to $1hide sponsored images$2.',
   rewardsWidgetBrandedNotificationTitle: 'You\'re getting paid to view this background image.',
   rewardsWidgetBrandedNotificationDescription: '$1Learn more$2 about sponsored images in Brave Rewards.',
   rewardsWidgetAboutRewards: '$1Learn more$2 about Brave Rewards',

@@ -116,6 +116,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
     if (isShowingBrandedWallpaper) {
       titleText = getLocale('rewardsWidgetEnableBrandedWallpaperTitle')
       const text = getLocale('rewardsWidgetEnableBrandedWallpaperSubTitle')
+        .replace('$3', 'Brave Rewards')
       const { beforeTag, duringTag, afterTag } = splitStringForTag(text, '$1', '$2')
       subTitleText = (
         <>
