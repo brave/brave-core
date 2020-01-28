@@ -113,6 +113,9 @@
 "BraveRewardsCheckAgain" = "새로고침 상태";
 
 /* No comment provided by engineer. */
+"BraveRewardsConnectedPublisherDisclaimer" = "이 Brave 확인 완료 제작자는 아직 계정 구성이 완료되지 않아 Brave 사용자로부터 후원금을 받을 수 없습니다. 보내신 모든 팁은 프로세스가 완료되기 전까지 월렛에 보관됩니다.";
+
+/* No comment provided by engineer. */
 "BraveRewardsContributingToUnverifiedSites" = "아직 가입하지 않아 후원금을 받을 수 없는 제작자에게 %@을(를) 지정하셨습니다. 제작자가 확인되거나 90일이 경과될 때까지 브라우저에서 계속 후원을 시도합니다.";
 
 /* No comment provided by engineer. */
@@ -242,9 +245,6 @@
 "BraveRewardsMinimumVisitsChoices2" = "10회 방문";
 
 /* No comment provided by engineer. */
-"BraveRewardsMonthlyTippingNextDate" = "다음 달 팁 날짜";
-
-/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "월정기 팁";
 
 /* No comment provided by engineer. */
@@ -323,10 +323,13 @@
 "BraveRewardsSettingsAdsTitle" = "Ads";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAutoContributeBody" = "퍼블리셔와 콘텐츠 제작자를 자동으로 후원하는 방법입니다. 매월 결제를 설정하고 평범하게 브라우징하세요. Brave에서 측정한 관심도를 기반으로, 방문하신 사이트에 후원금이 자동 전달됩니다.";
+"BraveRewardsSettingsAutoContributeBody" = "퍼블리셔와 콘텐츠 제작자를 자동으로 후원하는 방법입니다. 매월 결제를 설정하고 평범하게 브라우징하세요. Brave에서 측정한 관심도를 기반으로, 방문하신 Brave 확인 완료 사이트에 후원금이 자동 전달됩니다.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAutoContributeTitle" = "자동 후원";
+
+/* The maximum amount of BAT to auto-contribute. E.g. 'Up to 20.0 BAT' */
+"BraveRewardsSettingsAutoContributeUpToValue" = "최대 %@";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsDisabledBody1" = "기존의 브라우저에서는 광고를 보면서 여러분의 소중한 관심도를 소모해 웹브라우징에 대한 비용을 지불했습니다. 동의 없이 여러분의 귀중한 개인 데이터를 광고주에게 전송하는 침입성 광고 기술을 다운로드하는 데 금쪽같은 시간을 들이기도 했죠.";
@@ -348,9 +351,6 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsGrantTextJapan" = "무료 포인트를 받을 수 있습니다.";
-
-/* No comment provided by engineer. */
-"BraveRewardsSettingsTipsBody" = "브라우징하면서 콘텐츠 제작자에게 직접 팁을 건넵니다. 월정기 팁을 설정하여 사이트를 지속적으로 후원할 수도 있습니다.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsTipsTitle" = "팁";
@@ -384,6 +384,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingMonthlyTitle" = "다음 대상에게 팁을 자동으로 보냅니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingNotConnectedDisclaimer" = "참고: 이 Brave 확인 완료 제작자는 아직 가입하지 않아 Brave 사용자로부터 후원금을 받을 수 없습니다. 제작자가 확인되거나 90일이 경과될 때까지 브라우저에서 계속 후원을 시도합니다.";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingNotEnoughPoints" = "포인트가 부족합니다.";
@@ -464,13 +467,34 @@
 "BraveRewardsWalletHeaderTitleJapan" = "잔액";
 
 /* No comment provided by engineer. */
+"BraveRewardsWithdrawFunds" = "잔액 인출";
+
+/* No comment provided by engineer. */
 "Cancel" = "취소";
 
 /* No comment provided by engineer. */
 "CLAIM" = "받기";
 
+/* Message that is displayed when user disables ads */
+"DisabledAdsMessage" = "수익은 매달 지급됩니다. 원하는 빈도로 설정하여 수익을 증가시키거나 감소시킬 수 있습니다.";
+
+/* Message that is displayed when user disables auto-contribute */
+"DisabledAutoContributeMessage" = "좋아하는 콘텐츠 제작자에게 합당한 보상을 주세요. 내가 방문한 사이트에 월간 결제 금액이 분배됩니다.";
+
 /* No comment provided by engineer. */
 "DisclaimerInformation" = "'Rewards 가입'을 클릭하면 서비스 약관 및 개인정보 취급방침을 읽고 이에 동의한 것으로 간주됩니다.";
+
+/* The copy the user sees when they are viewing an empty Auto-Contribute exclusion list. */
+"EmptyExclusionList" = "제외된 게시자 없음";
+
+/* The swipe-to-delete title when restoring a single item in the Auto-Contribute exclusion list */
+"ExclusionListRestore" = "복원";
+
+/* The button that restores all excluded publishers while on the Auto-Contribute excluson list */
+"ExclusionListRestoreAllButton" = "모든 사이트 복원";
+
+/* The title of the screen that shows a list of excluded sites for Auto-Contribute */
+"ExclusionListTitle" = "제외된 사이트";
 
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "자세히 알아보려면 여기를 탭하세요.";
@@ -567,6 +591,69 @@
 
 /* Prompt to turn on Ads via notification */
 "TurnOnAds" = "광고 켜기";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsAccountButtonTitle" = "내 Uphold 계정으로 이동";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsCompleteVerificationButtonTitle" = "월렛 확인 완료";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsDisconnectButtonTitle" = "Brave Rewards 연결 해제";
+
+/* The title in the navigation bar shown when you click on a connected or verified user wallet button */
+"UserWalletDetailsTitle" = "사용자 월렛";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsVerified" = "확인 완료";
+
+/* No comment provided by engineer. */
+"UserWalletDisconnectedButtonTitle" = "연결 해제됨";
+
+/* The message you receive when your user wallet has been verified (%@ = The user wallet name, such as \"Uphold\") */
+"UserWalletNotificationNowVerifiedBody" = "축하합니다! %@ 월렛이 확인 완료되었으며 이제 자금을 추가하거나 인출할 수 있습니다.";
+
+/* The message you receive when your user wallet has been verified */
+"UserWalletNotificationNowVerifiedTitle" = "월렛이 확인되었습니다!";
+
+/* The message you receive when your user wallet is unreachable/disconnected */
+"UserWalletNotificationWalletDisconnectedBody" = "걱정하지 마세요. 여러 가지 보안 사유로 발생할 수 있는 문제입니다. 월렛을 다시 연결하면 문제가 해결될 수도 있습니다.";
+
+/* The message you receive when your user wallet is unreachable/disconnected */
+"UserWalletNotificationWalletDisconnectedTitle" = "이런. 월렛에 연결할 수 없습니다.";
+
+/* The first benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsOne" = "프라이버시 보호 광고를 보고 획득한 BAT 인출 가능";
+
+/* The third benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsThree" = "Brave Rewards 월렛에 이전에 추가해두었던 BAT 인출 가능";
+
+/* The title above the list of benefits after verifying */
+"UserWalletOnboardingBenefitsTitle" = "확인이 완료되면,";
+
+/* The second benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsTwo" = "신용카드 또는 다른 자금원으로 추가 BAT 구매 가능";
+
+/* No comment provided by engineer. */
+"UserWalletOnboardingPoweredByUphold" = "Brave 월렛 서비스는 Uphold에서 제공합니다.";
+
+/* The word that will be bolded in UserWalletOnboardingPoweredByUphold */
+"UserWalletOnboardingPoweredByUpholdBoldedWord" = "Uphold";
+
+/* The disclosure about Uphold at the bottom of the screen */
+"UserWalletOnboardingUpholdDisclosure" = "요청한 서비스에 따라 Uphold에서 귀하의 신원을 확인해야 하는 경우가 있습니다.\n\nBrave Software Inc.는 귀하가 계정을 만들 때 Uphold에 제공한 어떠한 개인정보도 처리, 저장, 액세스하지 않습니다.";
+
+/* The button that triggers the Uphold auth process */
+"UserWalletOnboardingVerifyButtonTitle" = "월렛 확인";
+
+/* The title of the user wallet onboarding screen */
+"UserWalletTitle" = "월렛 확인은 선택 사항입니다.";
+
+/* No comment provided by engineer. */
+"UserWalletUnverifiedButtonTitle" = "월렛 확인";
+
+/* No comment provided by engineer. */
+"UserWalletVerifiedButtonTitle" = "월렛 확인 완료";
 
 /* No comment provided by engineer. */
 "WalletCreationErrorBody" = "앗! 문제가 발생했습니다. 다시 시도하세요.";

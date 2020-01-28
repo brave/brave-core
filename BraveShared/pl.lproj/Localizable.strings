@@ -97,6 +97,24 @@
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Czy włączyć sugestie wyszukiwania?";
 
+/* No comment provided by engineer. */
+"UserWalletBATNotAllowedLearnMore" = "Dowiedz się więcej";
+
+/* No comment provided by engineer. */
+"UserWalletBATNotAllowedMessage" = "BAT nie jest obecnie obsługiwany w Twoim regionie w oparciu o lokalizację, w której otwarte jest Twoje konto. Wróć później, aby sprawdzić dostępność.";
+
+/* No comment provided by engineer. */
+"UserWalletCloseButtonTitle" = "Zamknij ";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsDisconnectButtonTitle" = "Region nie jest obsługiwany";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorMessage" = "Wystąpił problem z zalogowaniem się na konto Uphold. Spróbuj ponownie";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorTitle" = "Niestety, coś poszło nie tak";
+
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Tak";
 

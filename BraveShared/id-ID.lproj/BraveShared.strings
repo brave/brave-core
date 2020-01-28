@@ -68,7 +68,7 @@
 "AuthenticationLoginsTouchReason" = "Gunakan sidik jari Anda untuk mengakses fungsi Masuk sekarang.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "Terlalu banyak upaya yang gagal. Silakan coba lagi dalam%dmenit.";
+"AuthenticationMaximumAttemptsReached" = "Terlalu banyak upaya yang gagal. Silakan coba lagi dalam %d menit.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
 "AuthenticationMaximumAttemptsReachedNoTime" = "Batas percobaan maksimum telah tercapai. Coba lagi nanti.";
@@ -457,6 +457,12 @@
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Perlindungan Sidik Jari";
 
+/* No comment provided by engineer. */
+"genericErrorBody" = "Ups! Terjadi kesalahan. Silakan coba lagi.";
+
+/* No comment provided by engineer. */
+"genericErrorTitle" = "Kesalahan";
+
 /* Grand camera access */
 "GrantCameraAccess" = "Aktifkan Kamera";
 
@@ -498,6 +504,9 @@
 
 /* DuckDuckGo promotion label. */
 "LearnAboutPrivateSearchrwithDuckDuckGo" = "Pelajari tentang pencarian pribadi \ndengan DuckDuckGo";
+
+/* No comment provided by engineer. */
+"learnMore" = "Pelajari Lebih Lanjut";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Terakhir dimodifikasi %@";
@@ -585,6 +594,51 @@
 
 /* Sync Alert */
 "NotEnoughWordsTitle" = "Kata Tidak Cukup";
+
+/* The placeholder says 'hide sponsored images'. So full sentence goes like: 'You can also choose to hide sponsored images.' */
+"ntp.chooseToHideSponsoredImages" = "Anda juga dapat memilih untuk %@.";
+
+/* No comment provided by engineer. */
+"ntp.claimRewards" = "Klaim penghargaan saya";
+
+/* Placeholder example: 'You earned 42 BAT last month from viewing privacy-respecting ads.' */
+"ntp.earningsReport" = "Anda memperoleh %@ bulan lalu dari menonton iklan tentang menghormati kerahasiaan.";
+
+/* No comment provided by engineer. */
+"ntp.earnTokensByViewingAds" = "Dapatkan token dengan menonton iklan tentang menghormati kerahasiaan.";
+
+/* No comment provided by engineer. */
+"ntp.getPaidForThisImageTurnAds" = "Dapatkan bayaran dengan melihat gambar latar belakang ini. Putar Iklan Brave untuk mengklaim imbalan Anda.";
+
+/* No comment provided by engineer. */
+"ntp.getPaidForThisImageTurnRewards" = "Dapatkan bayaran dengan melihat gambar latar belakang ini. Putar Iklan Brave untuk mengklaim imbalan Anda.";
+
+/* No comment provided by engineer. */
+"ntp.getPaidToSeeThisImage" = "Dapatkan bayaran dengan melihat gambar latar belakang ini.";
+
+/* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
+"ntp.goodJob" = "Berhasil!";
+
+/* This sentence is not capitalized on purpose, it is a part of a bigger sentence which goes like this: 'You can also choose to hide sponsored images.' */
+"ntp.hideSponsoredImages" = "sembunyikan gambar bersponsor";
+
+/* The placeholder says 'Learn more'. So full sentence goes like: 'Learn more about sponsored images in Brave Rewards.' */
+"ntp.learnMoreAboutBrandedImages" = "%@ tentang gambar bersponsor di Brave Reward";
+
+/* No comment provided by engineer. */
+"ntp.supportWebCreatorsWithTokens" = "Anda dapat memberi dukungan kepada para pembuat konten dengan menggunakan token.";
+
+/* No comment provided by engineer. */
+"ntp.turnOnBraveAds" = "Putar Iklan Brave";
+
+/* No comment provided by engineer. */
+"ntp.turnOnBraveRewards" = "Hidupkan Penghargaan";
+
+/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turnin Rewards, you agree to the Terms of Service'. */
+"ntp.turnRewardsTos" = "Dengan menghidupkan Penghargaan, Anda telah menyetujui %@.";
+
+/* No comment provided by engineer. */
+"ntp.youArePaidToSeeThisImage" = "Anda akan mendapatkan bayaran untuk melihat gambar latar belakang ini.";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Buka Semua (%i)";
@@ -838,6 +892,9 @@
 /* Title for sharing url menu item */
 "ShareWithMenuItem" = "Bagikan dengan...";
 
+/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
+"ShieldsDefaults" = "Perisai Bawaan";
+
 /* shields overview message */
 "ShieldsOverview" = "Perisai Situs memungkinkan Anda mengontrol saat iklan dan pelacak diblokir untuk setiap situs yang dikunjungi. Jika memilih untuk melihat iklan pada situs tertentu, Anda dapat mengaktifkannya di sini.";
 
@@ -917,13 +974,13 @@
 "SyncAddDeviceScan" = "Sinkronisasikan Kode QR Kelompok";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "Pada perangkat Anda, navigasilah ke Sinkronisasi di panel Pengaturan, lalu ketuk tombol \"Pindai Kode Sinkronisasi\". Gunakan kamera Anda untuk memindai Kode QR di bawah ini.\nPerlakukan kode ini layaknya kata sandi. Jika seseorang mengetahuinya, mereka dapat membaca dan mengubah data Anda yang telah disinkronisasi.";
+"SyncAddDeviceScanDescription" = "Pada perangkat seluler Anda yang kedua, navigasikan ke Sinkronisasi pada panel Pengaturan dan ketuk tombol \"Pindai Kode Sinkronisasi\". Gunakan kamera Anda untuk memindai kode QR di bawah ini.\n\nPerlakukan kode ini layaknya kata sandi. Jika seseorang mengetahuinya, mereka dapat membaca dan memodifikasi data Anda yang telah tersinkronisasi.";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Masukkan kode sinkronisasi";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Pada perangkat Anda, navigasilah ke Sinkronisasi di panel Pengaturan, lalu ketuk tombol \"%@\". Masukkan kata kode rantai sinkronisasi yang ditampilkan di bawah ini.\nPerlakukan kode ini layaknya kata sandi. Jika seseorang mengetahuinya, mereka dapat membaca dan mengubah data Anda yang telah disinkronisasi.";
+"SyncAddDeviceWordsDescription" = "Pada perangkat Anda, navigasikan ke Sinkronisasi pada panel Pengaturan dan ketuk tombol \"%@\". Masukkan kata kode rantai sinkronisasi yang ditampilkan di bawah ini.\n\nPerlakukan kode ini layaknya kata sandi. Jika seseorang mengetahuinya, mereka dapat membaca dan mengubah data Anda yang telah disinkronisasi. ";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Masukkan Kata Kode";
@@ -1089,6 +1146,9 @@
 
 /* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
 "TabTraySingleTabPositionFormatVoiceOverText" = "Tab %1$@ dari %2$@";
+
+/* No comment provided by engineer. */
+"TermsOfService" = "Persyaratan Layanan";
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Persyaratan Penggunaan";

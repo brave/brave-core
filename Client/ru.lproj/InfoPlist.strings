@@ -1,15 +1,18 @@
 /* (No Comment) */
 "1Password Fill Browser Action" = "Заполнение пароля с помощью 1Password";
 
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+"NFCReaderUsageDescription" = "Приложению требуется доступ к чтению данных NFC, чтобы обмениваться сведениями с вашим электронным ключом YubiKey.";
+
 /* (No Comment) */
 "NSCameraUsageDescription" = "Вы сможете снимать и загружать фото.";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Для доступа к сохраненным учетным данным требуется Face ID.";
 
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* (No Comment) */
 "NSLocationWhenInUseUsageDescription" = "Посещаемые сайты могут запрашивать местоположение.";
 
 /* (No Comment) */

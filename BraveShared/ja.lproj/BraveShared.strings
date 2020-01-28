@@ -68,13 +68,13 @@
 "AuthenticationLoginsTouchReason" = "ログイン情報にアクセスするには指紋認証が必要です。";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "試行回数が上限に達しました。%d 分後にやり直してください。";
+"AuthenticationMaximumAttemptsReached" = "規程回数以上の試行が失敗しました。%d分後に再試行してください。";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
 "AuthenticationMaximumAttemptsReachedNoTime" = "試行回数が上限に達しました。しばらくしてからやり直してください。";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedOneMinute" = "試行回数が上限に達しました。1分後にやり直してください。";
+"AuthenticationMaximumAttemptsReachedOneMinute" = "規程回数以上の試行が失敗しました。1分後にもう一度お試しください。";
 
 /* Label for the Passcode item in Settings */
 "AuthenticationPasscode" = "ログイン情報のパスコード";
@@ -326,7 +326,7 @@
 "DeleteLoginButtonTitle" = "削除";
 
 /* Sync device settings page title. */
-"Devices" = "接続済みデバイス";
+"Devices" = "チェーンに接続されているデバイス";
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "デバイス %1$@ (%2$@)";
@@ -457,6 +457,12 @@
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "フィンガープリント対策";
 
+/* No comment provided by engineer. */
+"genericErrorBody" = "おやっ！うまく行かなかったようです。もう一度やり直してください。";
+
+/* No comment provided by engineer. */
+"genericErrorTitle" = "エラー";
+
 /* Grand camera access */
 "GrantCameraAccess" = "カメラを有効にする";
 
@@ -467,7 +473,7 @@
 "HideRewardsIcon" = "Brave Rewardsのアイコンを非表示にする";
 
 /* Hide the rewards icon explination. */
-"HideRewardsIconSubtitle" = "Brave Rewardsが対応していないページでBrave Rewardsのアイコンを非表示にする";
+"HideRewardsIconSubtitle" = "Brave Rewardsに参加していないページではBrave Rewardsのアイコンを非表示にする";
 
 /* Title for history menu item */
 "HistortMenuItem" = "履歴";
@@ -498,6 +504,9 @@
 
 /* DuckDuckGo promotion label. */
 "LearnAboutPrivateSearchrwithDuckDuckGo" = "DuckDuckGoのプライベート\n検索について詳しく";
+
+/* No comment provided by engineer. */
+"learnMore" = "詳しく";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "最終変更 %@";
@@ -585,6 +594,51 @@
 
 /* Sync Alert */
 "NotEnoughWordsTitle" = "ワードが足りません";
+
+/* The placeholder says 'hide sponsored images'. So full sentence goes like: 'You can also choose to hide sponsored images.' */
+"ntp.chooseToHideSponsoredImages" = "%@も選択可能です。";
+
+/* No comment provided by engineer. */
+"ntp.claimRewards" = "報酬を受け取る";
+
+/* Placeholder example: 'You earned 42 BAT last month from viewing privacy-respecting ads.' */
+"ntp.earningsReport" = "先月、プライバシー重視型の広告を閲覧して%@を獲得しました。";
+
+/* No comment provided by engineer. */
+"ntp.earnTokensByViewingAds" = "プライバシー重視型の広告を表示してトークンを獲得します。";
+
+/* No comment provided by engineer. */
+"ntp.getPaidForThisImageTurnAds" = "この背景画像を表示することで報酬を受け取ることができます。早速Brave Adsをオンにして報酬を受け取りましょう！";
+
+/* No comment provided by engineer. */
+"ntp.getPaidForThisImageTurnRewards" = "この背景画像を表示することで報酬を受け取ることができます。早速Brave Adsをオンにして報酬を受け取りましょう！";
+
+/* No comment provided by engineer. */
+"ntp.getPaidToSeeThisImage" = "この背景画像を表示することで報酬を受け取ることができます。";
+
+/* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
+"ntp.goodJob" = "おめでとうございます！";
+
+/* This sentence is not capitalized on purpose, it is a part of a bigger sentence which goes like this: 'You can also choose to hide sponsored images.' */
+"ntp.hideSponsoredImages" = "スポンサードイメージを非表示にする";
+
+/* The placeholder says 'Learn more'. So full sentence goes like: 'Learn more about sponsored images in Brave Rewards.' */
+"ntp.learnMoreAboutBrandedImages" = "%@ : Brave Rewardsのスポンサードイメージについて";
+
+/* No comment provided by engineer. */
+"ntp.supportWebCreatorsWithTokens" = "クリエイターにウェブ上で直接トークンを送ることができます";
+
+/* No comment provided by engineer. */
+"ntp.turnOnBraveAds" = "Brave Adsを有効にする";
+
+/* No comment provided by engineer. */
+"ntp.turnOnBraveRewards" = "Rewardsを有効にする";
+
+/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turnin Rewards, you agree to the Terms of Service'. */
+"ntp.turnRewardsTos" = "Rewardsを有効にすると、以下に同意したものとみなされます: %@";
+
+/* No comment provided by engineer. */
+"ntp.youArePaidToSeeThisImage" = "この背景画像を表示することで報酬を受け取ることができます。";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "すべて開く (%i)";
@@ -838,6 +892,9 @@
 /* Title for sharing url menu item */
 "ShareWithMenuItem" = "共有";
 
+/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
+"ShieldsDefaults" = "Shieldのデフォルト設定";
+
 /* shields overview message */
 "ShieldsOverview" = "サイトの保護機能では、サイト毎に広告やトラッカーをブロックするか設定することができます。特定のサイトで広告を表示させたい場合、ここで設定することができます。";
 
@@ -887,7 +944,7 @@
 "ShowTabs" = "タブを表示";
 
 /* Setting to show/hide the tabs bar */
-"ShowTabsBar" = "タブバーを表示";
+"ShowTabsBar" = "タブをツールバーに表示";
 
 /* Brave panel topmost title */
 "SiteShieldSettings" = "Shield (保護機能)";
@@ -914,16 +971,16 @@
 "SyncAddComputerTitle" = "コンピュータを追加";
 
 /* Add mobile device to sync with scan */
-"SyncAddDeviceScan" = "同期チェーン用QRコード";
+"SyncAddDeviceScan" = "同期チェーン追加用QRコード";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "他のスマートフォンまたはタブレットでBraveを開き、[設定] > [Brave Sync] > {スキャン} と移動します。\nカメラを使って下のQRコードを読み込んでください。\nこのコードをパスワードのように扱ってください。何者かがコードを手に入れた場合、コードを入手した者はあなたが同期したデータを読んだり、変更を加えたりすることができます。";
+"SyncAddDeviceScanDescription" = "2番目のモバイルデバイスで、「設定」メニューから「同期」に移動し、「同期コードのスキャンまたは入力」をタップしてください。その後、カメラで下のQRコードをスキャンします。\n\nこのコードはパスワードのように大切に保管してください。第三者が手に入れると同期中のデータを閲覧・修正することが可能になります。";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "同期コードを入力";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "他のスマートフォンまたはタブレットでBraveを開き、[設定] > [Brave Sync] > {スキャン} と移動します。\n下に表示されている同期コードを入力してください。\nこのコードをパスワードのように扱ってください。何者かがコードを手に入れた場合、コードを入手した者はあなたが同期したデータを読んだり、変更を加えたりすることができます。";
+"SyncAddDeviceWordsDescription" = "あなたのデバイスで、「設定」パネルの「同期」に移動し、「%@」ボタンをタップしてください。以下の同期チェーンコードワードを入力してください。\nこのコードはパスワードのように大事に保存してください。第三者が手に入れると、同期されたデータを閲覧したり修正したりすることが可能になります。";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "コードを入力";
@@ -992,7 +1049,7 @@
 "SyncRemoveThisDeviceQuestionDesc" = "このデバイスは同期グループから切断され、同期データを受信または送信しなくなります。既存のデータはすべてデバイスに維持されます。";
 
 /* Header title for Sync settings */
-"SyncSettingsHeader" = "以下のデバイスリストは、同期チェーンに含まれる全てのデバイスを表示しています。各デバイスは、他のどのデバイスからでも管理できます。";
+"SyncSettingsHeader" = "現在、同期チェーンには以下のデバイスが接続されています。各デバイスから他のデバイスの追加・削除が可能です。";
 
 /* Switch back to camera button */
 "SyncSwitchBackToCameraButton" = "自分のカメラを使用する...";
@@ -1089,6 +1146,9 @@
 
 /* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
 "TabTraySingleTabPositionFormatVoiceOverText" = "%2$@ 個のタブのうち %1$@ 番目";
+
+/* No comment provided by engineer. */
+"TermsOfService" = "利用規約";
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "利用規約";

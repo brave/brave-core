@@ -1,15 +1,18 @@
 /* (No Comment) */
 "1Password Fill Browser Action" = "Acción de relleno de 1Password en el navegador";
 
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+"NFCReaderUsageDescription" = "La aplicación necesita acceder a la lectura NFC para comunicarse con tu Yubikey.";
+
 /* (No Comment) */
 "NSCameraUsageDescription" = "Esto le permite realizar y subir fotografías.";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Brave requiere Face ID para acceder a sus inicios de sesión guardados.";
 
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* (No Comment) */
 "NSLocationWhenInUseUsageDescription" = "Los sitios webs que visite podrían solicitar su ubicación.";
 
 /* (No Comment) */

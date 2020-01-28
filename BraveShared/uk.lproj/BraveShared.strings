@@ -68,13 +68,13 @@
 "AuthenticationLoginsTouchReason" = "Щоб отримати доступ до «Облікових даних», скористайтеся відбитком пальця.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "Забагато невдалих спроб. Повторіть спробу через %d хв.";
+"AuthenticationMaximumAttemptsReached" = "Забагато невдалих спроб уведення коду доступу.\nПовторіть спробу через %d хв.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
 "AuthenticationMaximumAttemptsReachedNoTime" = "Досягнуто максимальної кількості спроб. Спробуйте ще раз пізніше.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedOneMinute" = "Забагато невдалих спроб. Повторіть спробу через 1 хв.";
+"AuthenticationMaximumAttemptsReachedOneMinute" = "Забагато невдалих спроб уведення коду доступу.\nПовторіть спробу через 1 хвилину.";
 
 /* Label for the Passcode item in Settings */
 "AuthenticationPasscode" = "Код доступу до облікових даних ";
@@ -457,6 +457,12 @@
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Захист за допомогою відбитків пальців";
 
+/* No comment provided by engineer. */
+"genericErrorBody" = "Сталася помилка. Спробуйте ще раз.";
+
+/* No comment provided by engineer. */
+"genericErrorTitle" = "Помилка";
+
 /* Grand camera access */
 "GrantCameraAccess" = "Увімкнути камеру";
 
@@ -498,6 +504,9 @@
 
 /* DuckDuckGo promotion label. */
 "LearnAboutPrivateSearchrwithDuckDuckGo" = "Дізнайтеся більше про конфіденційний пошук\nу DuckDuckGo";
+
+/* No comment provided by engineer. */
+"learnMore" = "Докладніше";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Останні зміни: %@";
@@ -585,6 +594,51 @@
 
 /* Sync Alert */
 "NotEnoughWordsTitle" = "Недостатньо слів";
+
+/* The placeholder says 'hide sponsored images'. So full sentence goes like: 'You can also choose to hide sponsored images.' */
+"ntp.chooseToHideSponsoredImages" = "Також ви можете вибрати параметр «%@».";
+
+/* No comment provided by engineer. */
+"ntp.claimRewards" = "Отримати винагороди";
+
+/* Placeholder example: 'You earned 42 BAT last month from viewing privacy-respecting ads.' */
+"ntp.earningsReport" = "За останній місяць ви отримали %@ за перегляд реклами, що не порушує вашу конфіденційність.";
+
+/* No comment provided by engineer. */
+"ntp.earnTokensByViewingAds" = "Отримуйте токени, переглядаючи рекламу, що не порушує вашу конфіденційність.";
+
+/* No comment provided by engineer. */
+"ntp.getPaidForThisImageTurnAds" = "Заробляйте за перегляд цього фонового зображення. Увімкніть Brave Ads, щоб отримати кошти.";
+
+/* No comment provided by engineer. */
+"ntp.getPaidForThisImageTurnRewards" = "Заробляйте за перегляд цього фонового зображення. Увімкніть Brave Rewards, щоб отримати кошти.";
+
+/* No comment provided by engineer. */
+"ntp.getPaidToSeeThisImage" = "Заробляйте за перегляд цього фонового зображення.";
+
+/* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
+"ntp.goodJob" = "Так тримати!";
+
+/* This sentence is not capitalized on purpose, it is a part of a bigger sentence which goes like this: 'You can also choose to hide sponsored images.' */
+"ntp.hideSponsoredImages" = "приховати рекламні зображення";
+
+/* The placeholder says 'Learn more'. So full sentence goes like: 'Learn more about sponsored images in Brave Rewards.' */
+"ntp.learnMoreAboutBrandedImages" = "%@ про рекламні зображення в Brave Rewards";
+
+/* No comment provided by engineer. */
+"ntp.supportWebCreatorsWithTokens" = "Підтримуйте розробників в Інтернеті токенами.";
+
+/* No comment provided by engineer. */
+"ntp.turnOnBraveAds" = "Увімкнути Brave Ads";
+
+/* No comment provided by engineer. */
+"ntp.turnOnBraveRewards" = "Увімкнути Rewards";
+
+/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turnin Rewards, you agree to the Terms of Service'. */
+"ntp.turnRewardsTos" = "Увімкнувши Rewards, ви приймаєте умови документа %@.";
+
+/* No comment provided by engineer. */
+"ntp.youArePaidToSeeThisImage" = "Ви отримуватимете кошти за перегляд цього фонового зображення.";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Відкрити всі (%i)";
@@ -838,6 +892,9 @@
 /* Title for sharing url menu item */
 "ShareWithMenuItem" = "Поділитися з…";
 
+/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
+"ShieldsDefaults" = "Налаштування захисту за замовчуванням";
+
 /* shields overview message */
 "ShieldsOverview" = "Екрани дозволяють керувати блокуванням реклами або трекерів на кожному сайті, який ви переглядаєте. Для перегляду реклами на сайті увімкніть цей параметр тут.";
 
@@ -917,13 +974,13 @@
 "SyncAddDeviceScan" = "QR-код ланцюга синхронізації";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "На другому мобільному пристрої перейдіть до меню «Синхронізація» в панелі налаштувань і торкніться кнопки «Сканувати код синхронізації». Відскануйте наведений нижче QR-код за допомогою камери.\n Цей код виконує функції пароля. Якщо хтось дізнається його, то зможе переглядати та змінювати ваші синхронізовані дані.";
+"SyncAddDeviceScanDescription" = "На другому мобільному пристрої перейдіть до меню «Синхронізація» на панелі налаштувань і торкніться кнопки «Сканувати код синхронізації». Відскануйте наведений нижче QR-код за допомогою камери.\n\n Цей код виконує функції пароля. Якщо хтось дізнається його, то зможе переглядати та змінювати ваші синхронізовані дані.";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Введіть код синхронізації";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "На вашому пристрої перейдіть до меню «Синхронізація» в панелі налаштувань і торкніться кнопки «%@». Уведіть наведені нижче кодові слова для ланцюжка синхронізації.\n Цей код виконує функції пароля. Якщо хтось дізнається його, то зможе переглядати та змінювати ваші синхронізовані дані.";
+"SyncAddDeviceWordsDescription" = "На вашому пристрої перейдіть до меню «Синхронізація» на панелі налаштувань і торкніться кнопки «%@». Уведіть наведені нижче кодові слова для ланцюжка синхронізації.\n\n Цей код виконує функції пароля. Якщо хтось дізнається його, то зможе переглядати та змінювати ваші синхронізовані дані.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Уведіть кодові слова";
@@ -1089,6 +1146,9 @@
 
 /* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
 "TabTraySingleTabPositionFormatVoiceOverText" = "Вкладки: %1$@ із %2$@";
+
+/* No comment provided by engineer. */
+"TermsOfService" = "Умови обслуговування";
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Умови використання";

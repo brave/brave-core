@@ -10,6 +10,9 @@
 /* Title for the alert modal when a security key with PIN is inserted. */
 "pinTitle" = "PIN-bekreftelse påkrevd";
 
+/* Message for selecting security key. */
+"selectKey" = "Skann eller sett inn sikkerhetsnøkkelen din";
+
 /* Text for touch key modal button. */
 "touchKeyCancel" = "Avbryt";
 

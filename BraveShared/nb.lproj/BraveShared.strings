@@ -68,13 +68,13 @@
 "AuthenticationLoginsTouchReason" = "Bruk fingeravtrykket ditt for å få tilgang til innlogginger nå.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "For mange mislykkede forsøk. Prøv igjen om %d minutter.";
+"AuthenticationMaximumAttemptsReached" = "For mange mislykkede forsøk.\nPrøv igjen om %d minutter.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
 "AuthenticationMaximumAttemptsReachedNoTime" = "Maksimalt antall forsøk nådd. Vennligst prøv igjen senere.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedOneMinute" = "For mange mislykkede forsøk. Prøv igjen om 1 minutt.";
+"AuthenticationMaximumAttemptsReachedOneMinute" = "For mange mislykkede forsøk.\nPrøv igjen om 1 minutt.";
 
 /* Label for the Passcode item in Settings */
 "AuthenticationPasscode" = "Passkode for innlogging";
@@ -457,6 +457,12 @@
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Fingeravtrykkbeskyttelse";
 
+/* No comment provided by engineer. */
+"genericErrorBody" = "Auda! Noe gikk galt. Prøv på nytt.";
+
+/* No comment provided by engineer. */
+"genericErrorTitle" = "Feil";
+
 /* Grand camera access */
 "GrantCameraAccess" = "Aktiver kamera";
 
@@ -498,6 +504,9 @@
 
 /* DuckDuckGo promotion label. */
 "LearnAboutPrivateSearchrwithDuckDuckGo" = "Finn ut mer om private søk \nmed DuckDuckGo";
+
+/* No comment provided by engineer. */
+"learnMore" = "Få mer informasjon";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Sist modifisert %@";
@@ -585,6 +594,51 @@
 
 /* Sync Alert */
 "NotEnoughWordsTitle" = "Ikke nok ord";
+
+/* The placeholder says 'hide sponsored images'. So full sentence goes like: 'You can also choose to hide sponsored images.' */
+"ntp.chooseToHideSponsoredImages" = "Du kan også velge å %@.";
+
+/* No comment provided by engineer. */
+"ntp.claimRewards" = "Gjør krav på mine belønninger";
+
+/* Placeholder example: 'You earned 42 BAT last month from viewing privacy-respecting ads.' */
+"ntp.earningsReport" = "Du tjente %@ sist måned for å se på annonser som respekterer personvernet.";
+
+/* No comment provided by engineer. */
+"ntp.earnTokensByViewingAds" = "Tjene tokens for å se på annonser som respekterer personvernet.";
+
+/* No comment provided by engineer. */
+"ntp.getPaidForThisImageTurnAds" = "Få betalt for å se dette bakgrunnsbildet. Slå på Brave-annonser for å kreve andelen din.";
+
+/* No comment provided by engineer. */
+"ntp.getPaidForThisImageTurnRewards" = "Få betalt for å se dette bakgrunnsbildet. Slå på Brave-annonser for å kreve andelen din.";
+
+/* No comment provided by engineer. */
+"ntp.getPaidToSeeThisImage" = "Få betalt for å se dette bakgrunnsbildet.";
+
+/* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
+"ntp.goodJob" = "Bra jobba!";
+
+/* This sentence is not capitalized on purpose, it is a part of a bigger sentence which goes like this: 'You can also choose to hide sponsored images.' */
+"ntp.hideSponsoredImages" = "skjul sponsede bilder";
+
+/* The placeholder says 'Learn more'. So full sentence goes like: 'Learn more about sponsored images in Brave Rewards.' */
+"ntp.learnMoreAboutBrandedImages" = "%@ om sponsede bilder i Brave Rewards";
+
+/* No comment provided by engineer. */
+"ntp.supportWebCreatorsWithTokens" = "Du kan skape nettskapere med tokens.";
+
+/* No comment provided by engineer. */
+"ntp.turnOnBraveAds" = "Slå på Brave-annonser";
+
+/* No comment provided by engineer. */
+"ntp.turnOnBraveRewards" = "Slå på belønninger";
+
+/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turnin Rewards, you agree to the Terms of Service'. */
+"ntp.turnRewardsTos" = "Ved å slå på belønninger samtykker du i %@.";
+
+/* No comment provided by engineer. */
+"ntp.youArePaidToSeeThisImage" = "Du får betalt for å se dette bakgrunnsbildet.";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Åpne alle (%i)";
@@ -838,6 +892,9 @@
 /* Title for sharing url menu item */
 "ShareWithMenuItem" = "Lagre med...";
 
+/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
+"ShieldsDefaults" = "Shield standardverdier";
+
 /* shields overview message */
 "ShieldsOverview" = "Med Site Shield kan du kontrollere når annonser og sporingsprogrammer blokkeres på hver side du besøker. Hvis du vil se annonser på en bestemt side, kan du aktivere dem her.";
 
@@ -917,13 +974,13 @@
 "SyncAddDeviceScan" = "QR-kode for synkkjede";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "På den andre mobilenheten går du til Sync på panelet Innstillinger på enheten og trykker på knappen «Skann synkkode». Bruk kameraet til å skanne QR-koden som er vist nedenfor.\nDu må behandle koden som et passord. Hvis noen får tak i den, kan de lese og endre de synkroniserte dataene.";
+"SyncAddDeviceScanDescription" = "På den andre mobilenheten går du til Sync på panelet Innstillinger på enheten og trykker på knappen «Skann synkkode». Bruk kameraet til å skanne QR-koden som er vist nedenfor.\n\nDu må behandle koden som et passord. Hvis noen får tak i den, kan de lese og endre de synkroniserte dataene.";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Angi synkkoden";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Naviger til Sync på panelet Innstillinger på enheten, og trykk på knappen «%@». Skriv inn ordene for synkroniseringskoden som er vist nedenfor.\n Du må behandle koden som et passord. Hvis noen får tak i den, kan de lese og endre de synkroniserte dataene.";
+"SyncAddDeviceWordsDescription" = "Naviger til Sync på panelet Innstillinger på enheten, og trykk på knappen «%@». Skriv inn ordene for synkroniseringskoden som er vist nedenfor. \n\nDu må behandle koden som et passord. Hvis noen får tak i den, kan de lese og endre de synkroniserte dataene.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Skriv inn kodeord";
@@ -1089,6 +1146,9 @@
 
 /* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
 "TabTraySingleTabPositionFormatVoiceOverText" = "Fane %1$@ av %2$@";
+
+/* No comment provided by engineer. */
+"TermsOfService" = "Vilkår for bruk";
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Bruksvilkår";

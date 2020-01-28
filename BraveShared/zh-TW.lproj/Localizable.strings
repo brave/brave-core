@@ -97,6 +97,24 @@
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "開啟搜尋建議？";
 
+/* No comment provided by engineer. */
+"UserWalletBATNotAllowedLearnMore" = "了解更多";
+
+/* No comment provided by engineer. */
+"UserWalletBATNotAllowedMessage" = "根據您設立帳戶的地點，您所在地區目前不支援 BAT。 請稍後再回來檢視可用性。";
+
+/* No comment provided by engineer. */
+"UserWalletCloseButtonTitle" = "關閉";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsDisconnectButtonTitle" = "未支援此地區";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorMessage" = "登入您的 Uphold 帳戶時出現問題。請再試一次。";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorTitle" = "抱歉，出現錯誤了。";
+
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "是";
 

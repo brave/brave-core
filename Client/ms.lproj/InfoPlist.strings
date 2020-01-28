@@ -1,15 +1,18 @@
 /* (No Comment) */
 "1Password Fill Browser Action" = "1Tindakan Penyemak Imbas Isian Kata Laluan";
 
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+"NFCReaderUsageDescription" = "Aplikasi ini memerlukan akses kepada bacaan NFC untuk berkomunikasi dengan Yubikey anda.";
+
 /* (No Comment) */
 "NSCameraUsageDescription" = "Ini membolehkan anda mengambil dan memuat naik foto.";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Brave memerlukan ID Muka untuk mengakses log masuk anda yang disimpan.";
 
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* (No Comment) */
 "NSLocationWhenInUseUsageDescription" = "Laman web yang anda lawati boleh meminta lokasi anda.";
 
 /* (No Comment) */

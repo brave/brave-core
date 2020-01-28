@@ -10,6 +10,9 @@
 /* Title for the alert modal when a security key with PIN is inserted. */
 "pinTitle" = "Überprüfung der PIN erforderlich";
 
+/* Message for selecting security key. */
+"selectKey" = "Scannen oder geben Sie Ihren Sicherheitsschlüssel ein für ";
+
 /* Text for touch key modal button. */
 "touchKeyCancel" = "Abbrechen";
 

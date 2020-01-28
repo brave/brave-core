@@ -10,6 +10,9 @@
 /* Title for the alert modal when a security key with PIN is inserted. */
 "pinTitle" = "需要 PIN 碼驗證";
 
+/* Message for selecting security key. */
+"selectKey" = "為...掃描或插入您的安全金鑰 ";
+
 /* Text for touch key modal button. */
 "touchKeyCancel" = "取消";
 

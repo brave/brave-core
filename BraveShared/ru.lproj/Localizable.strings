@@ -97,6 +97,24 @@
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Включить подсказки при поиске?";
 
+/* No comment provided by engineer. */
+"UserWalletBATNotAllowedLearnMore" = "Подробнее";
+
+/* No comment provided by engineer. */
+"UserWalletBATNotAllowedMessage" = "К сожалению, криптовалюта BAT пока не поддерживается в регионе, который вы указали в своем аккаунте. Возможно, она станет доступна позже. Следите за обновлениями.";
+
+/* No comment provided by engineer. */
+"UserWalletCloseButtonTitle" = "Закрыть";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsDisconnectButtonTitle" = "Регион не поддерживается";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorMessage" = "Не удалось войти в аккаунт Uphold. Повторите попытку.";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorTitle" = "Произошла ошибка";
+
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Да";
 

@@ -97,6 +97,24 @@
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Sätt på sökförslag?";
 
+/* No comment provided by engineer. */
+"UserWalletBATNotAllowedLearnMore" = "Lär dig mer";
+
+/* No comment provided by engineer. */
+"UserWalletBATNotAllowedMessage" = "BAT stöds för närvarande inte i din region baserat på den plats där ditt konto har öppnats. Återkom senare för tillgänglighet.";
+
+/* No comment provided by engineer. */
+"UserWalletCloseButtonTitle" = "Stäng";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsDisconnectButtonTitle" = "Regionen stöds inte";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorMessage" = "Det gick inte att logga in på ditt Uphold konto. Vänligen försök igen";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorTitle" = "Ledsen, någonting gick fel";
+
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Ja";
 

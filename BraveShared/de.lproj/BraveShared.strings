@@ -68,13 +68,13 @@
 "AuthenticationLoginsTouchReason" = "Greifen Sie mit Ihrem Fingerabdruck jetzt auf Ihre Anmeldedaten zu.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "Zu viele fehlgeschlagene Versuche. Bitte versuchen Sie es in %d Minuten erneut.";
+"AuthenticationMaximumAttemptsReached" = "Zu viele fehlgeschlagene Versuche. \nBitte versuchen Sie es in %d Minuten erneut.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
 "AuthenticationMaximumAttemptsReachedNoTime" = "Maximale Versuche erreicht. Bitte versuchen Sie es später erneut.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedOneMinute" = "Zu viele fehlgeschlagene Versuche. Bitte versuchen Sie es in 1 Minute erneut.";
+"AuthenticationMaximumAttemptsReachedOneMinute" = "Zu viele fehlgeschlagene Versuche. \nBitte versuchen Sie es in 1 Minute erneut.";
 
 /* Label for the Passcode item in Settings */
 "AuthenticationPasscode" = "Passcode für Anmeldedaten";
@@ -457,6 +457,12 @@
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Fingerabdruck-Schutz";
 
+/* No comment provided by engineer. */
+"genericErrorBody" = "Hoppla! Etwas ist schief gelaufen. Bitte versuchen Sie es erneut.";
+
+/* No comment provided by engineer. */
+"genericErrorTitle" = "Fehler";
+
 /* Grand camera access */
 "GrantCameraAccess" = "Kamera aktivieren";
 
@@ -498,6 +504,9 @@
 
 /* DuckDuckGo promotion label. */
 "LearnAboutPrivateSearchrwithDuckDuckGo" = "Mehr erfahren zur privaten Suche \nmit DuckDuckGo";
+
+/* No comment provided by engineer. */
+"learnMore" = "Mehr erfahren";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Zuletzt geändert: %@";
@@ -585,6 +594,51 @@
 
 /* Sync Alert */
 "NotEnoughWordsTitle" = "Nicht genug Wörter";
+
+/* The placeholder says 'hide sponsored images'. So full sentence goes like: 'You can also choose to hide sponsored images.' */
+"ntp.chooseToHideSponsoredImages" = "Sie können auch %@.";
+
+/* No comment provided by engineer. */
+"ntp.claimRewards" = "Meine Prämien holen";
+
+/* Placeholder example: 'You earned 42 BAT last month from viewing privacy-respecting ads.' */
+"ntp.earningsReport" = "Sie haben letzten Monat %@ für das Ansehen von Ads, die den Datenschutz respektieren, verdient.";
+
+/* No comment provided by engineer. */
+"ntp.earnTokensByViewingAds" = "Verdienen Sie Tokens für das Ansehen von Ads, die den Datenschutz respektieren.";
+
+/* No comment provided by engineer. */
+"ntp.getPaidForThisImageTurnAds" = "Lassen Sie sich dafür bezahlen, dieses Hintergrundbild zu sehen. Aktivieren Sie Brave Ads, um Ihre Freigabe zu erhalten.";
+
+/* No comment provided by engineer. */
+"ntp.getPaidForThisImageTurnRewards" = "Lassen Sie sich dafür bezahlen, dieses Hintergrundbild zu sehen. Aktivieren Sie Brave Rewards, um Ihre Freigabe zu erhalten.";
+
+/* No comment provided by engineer. */
+"ntp.getPaidToSeeThisImage" = "Lassen Sie sich dafür bezahlen, dieses Hintergrundbild zu sehen.";
+
+/* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
+"ntp.goodJob" = "Gut gemacht!";
+
+/* This sentence is not capitalized on purpose, it is a part of a bigger sentence which goes like this: 'You can also choose to hide sponsored images.' */
+"ntp.hideSponsoredImages" = "gesponserte Bilder ausblenden";
+
+/* The placeholder says 'Learn more'. So full sentence goes like: 'Learn more about sponsored images in Brave Rewards.' */
+"ntp.learnMoreAboutBrandedImages" = "%@ über gesponserte Bilder in Brave Rewards";
+
+/* No comment provided by engineer. */
+"ntp.supportWebCreatorsWithTokens" = "Sie können Web-Ersteller mit Tokens unterstützen.";
+
+/* No comment provided by engineer. */
+"ntp.turnOnBraveAds" = "Brave-Ads einschalten";
+
+/* No comment provided by engineer. */
+"ntp.turnOnBraveRewards" = "Rewards einschalten";
+
+/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turnin Rewards, you agree to the Terms of Service'. */
+"ntp.turnRewardsTos" = "Mit der Aktivierung von Rewards erklären Sie sich einverstanden mit den %@.";
+
+/* No comment provided by engineer. */
+"ntp.youArePaidToSeeThisImage" = "Sie werden dafür bezahlt, dieses Hintergrundbild zu sehen.";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Alle (%i) öffnen";
@@ -838,6 +892,9 @@
 /* Title for sharing url menu item */
 "ShareWithMenuItem" = "Teilen mit …";
 
+/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
+"ShieldsDefaults" = "Schutz Standardeinstellungen";
+
 /* shields overview message */
 "ShieldsOverview" = "Mit Site Shields steuern Sie, wann Anzeigen und Tracker der von Ihnen besuchten Websites blockiert werden. Wenn Sie bei einer bestimmten Website Anzeigen sehen möchten, können Sie diese hier aktivieren.";
 
@@ -917,13 +974,13 @@
 "SyncAddDeviceScan" = "Synchroketten-QR-Code";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "Navigieren Sie auf Ihrem zweiten mobilen Gerät im Einstellungsbereich zu Synchronisieren und tippen Sie auf den Button \"Synchronisierungscode scannen\". Scannen Sie den untenstehenden QR-Code mit Ihrer Kamera.\nBehandeln Sie diesen Code wie ein Passwort. Wenn eine Person ihn erfährt, kann sie Ihre synchronisierten Daten lesen und ändern.";
+"SyncAddDeviceScanDescription" = "Navigieren Sie auf Ihrem zweiten mobilen Gerät im Einstellungsbereich zu Synchronisieren und tippen Sie auf den Button \"Synchronisierungscode scannen\". Scannen Sie den untenstehenden QR-Code mit Ihrer Kamera.\n\nBehandeln Sie diesen Code wie ein Passwort. Wenn eine Person ihn erfährt, kann sie Ihre synchronisierten Daten lesen und ändern.";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Geben Sie den Sync-Code ein";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Navigieren Sie auf Ihrem Gerät im Einstellungsbereich zu Synchronisieren und tippen Sie auf den Button \"%@\". Geben Sie die untenstehenden Synchronisierungs-Kettencodewörter ein.\nBehandeln Sie diesen Code wie ein Passwort. Wenn eine Person ihn erfährt, kann sie Ihre synchronisierten Daten lesen und ändern.";
+"SyncAddDeviceWordsDescription" = "Navigieren Sie auf Ihrem Gerät im Einstellungsbereich zu Synchronisieren und tippen Sie auf den Button \"%@\". Geben Sie die untenstehenden Synchronisierungs-Kettencodewörter ein.\n\nBehandeln Sie diesen Code wie ein Passwort. Wenn eine Person ihn erfährt, kann sie Ihre synchronisierten Daten lesen und ändern.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Codewörter eingeben";
@@ -1089,6 +1146,9 @@
 
 /* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
 "TabTraySingleTabPositionFormatVoiceOverText" = "Tab %1$@ von %2$@";
+
+/* No comment provided by engineer. */
+"TermsOfService" = "Allgemeine Geschäftsbedingungen";
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "Nutzungsbedingungen";

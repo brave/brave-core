@@ -113,6 +113,9 @@
 "BraveRewardsCheckAgain" = "Segar Semula Status";
 
 /* No comment provided by engineer. */
+"BraveRewardsConnectedPublisherDisclaimer" = "Pencipta Disahkan Brave ini masih belum mengkonfigurasi akaun mereka untuk menerima sumbangan daripada pengguna Brave. Apa-apa tip yang anda hantar akan kekal dalam dompet anda sehingga mereka melengkapkan proses ini.";
+
+/* No comment provided by engineer. */
 "BraveRewardsContributingToUnverifiedSites" = "Anda telah menetapkan %@ untuk pencipta yang belum mendaftar lagi untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang sehingga mereka mengesahkan atau sehingga 90 hari telah berlalu.";
 
 /* No comment provided by engineer. */
@@ -242,9 +245,6 @@
 "BraveRewardsMinimumVisitsChoices2" = "10 lawatan";
 
 /* No comment provided by engineer. */
-"BraveRewardsMonthlyTippingNextDate" = "Tarikh tip bulanan seterusnya";
-
-/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "Tip Bulanan";
 
 /* No comment provided by engineer. */
@@ -323,10 +323,13 @@
 "BraveRewardsSettingsAdsTitle" = "Iklan";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAutoContributeBody" = "Satu cara automatik untuk menyokong penerbit dan pencipta kandungan. Tetapkan pembayaran bulanan dan layari secara normal. Tapak-tapak yang anda lawati menerima sumbangan anda secara automatik, berdasarkan perhatian anda yang diukur oleh Brave.";
+"BraveRewardsSettingsAutoContributeBody" = "Satu cara automatik untuk menyokong penerbit dan pencipta kandungan. Tetapkan pembayaran bulanan dan layari secara normal. Tapak disahkan Brave yang anda lawati menerima sumbangan anda secara automatik, berdasarkan perhatian anda yang diukur oleh Brave.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAutoContributeTitle" = "Auto-Sumbangan";
+
+/* The maximum amount of BAT to auto-contribute. E.g. 'Up to 20.0 BAT' */
+"BraveRewardsSettingsAutoContributeUpToValue" = "Sehingga %@";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsDisabledBody1" = "Dengan pelayar lama anda, anda membayar untuk melayari web dengan melihat iklan menggunakan perhatian berharga anda. Anda menghabiskan masa berharga anda untuk memuat turun teknologi iklan invasif yang menghantar data peribadi berharga anda kepada pengiklan - tanpa persetujuan anda.";
@@ -348,9 +351,6 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsGrantTextJapan" = "Pemberian poin percuma tersedia.";
-
-/* No comment provided by engineer. */
-"BraveRewardsSettingsTipsBody" = "Berikan tip kepada pencipta kandungan secara langsung semasa anda melayari. Anda juga boleh menetapkan tip bulanan berulang supaya anda boleh menyokong tapak secara berterusan.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsTipsTitle" = "Tip";
@@ -384,6 +384,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingMonthlyTitle" = "Anda menghantar tip secara automatik kepada:";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingNotConnectedDisclaimer" = "NOTA: Pencipta Disahkan Brave ini masih belum mendaftar lagi untuk menerima sumbangan daripada pengguna Brave. Pelayar anda akan terus cuba menyumbang sehingga mereka mengesahkan atau sehingga 90 hari telah berlalu.";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingNotEnoughPoints" = "Mata tidak mencukupi.";
@@ -464,13 +467,34 @@
 "BraveRewardsWalletHeaderTitleJapan" = "Baki anda";
 
 /* No comment provided by engineer. */
+"BraveRewardsWithdrawFunds" = "Keluarkan Dana";
+
+/* No comment provided by engineer. */
 "Cancel" = "Batal";
 
 /* No comment provided by engineer. */
 "CLAIM" = "TUNTUTAN";
 
+/* Message that is displayed when user disables ads */
+"DisabledAdsMessage" = "Pendapatan dibayar setiap bulan. Tetapkan kekerapan yang anda mahu untk meningkatkan atau mengurangkan pendapatan.";
+
+/* Message that is displayed when user disables auto-contribute */
+"DisabledAutoContributeMessage" = "Beri ganjaran kepada pencipta untuk kandungan yang anda suka. Pembayaran bulanan anda akan diedarkan di seluruh tapak yang anda lawati.";
+
 /* No comment provided by engineer. */
 "DisclaimerInformation" = "Dengan mengklik 'Sertai Ganjaran', anda menunjukkan bahawa anda telah membaca dan bersetuju dengan Syarat Perkhidmatan dan Dasar Privasi.";
+
+/* The copy the user sees when they are viewing an empty Auto-Contribute exclusion list. */
+"EmptyExclusionList" = "Tiada penerbit dikecualikan";
+
+/* The swipe-to-delete title when restoring a single item in the Auto-Contribute exclusion list */
+"ExclusionListRestore" = "Pulihkan";
+
+/* The button that restores all excluded publishers while on the Auto-Contribute excluson list */
+"ExclusionListRestoreAllButton" = "Pulihkan Semua Tapak";
+
+/* The title of the screen that shows a list of excluded sites for Auto-Contribute */
+"ExclusionListTitle" = "Tapak dikecualikan";
 
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "Ketik di sini untuk mengetahui lebih lanjut.";
@@ -567,6 +591,69 @@
 
 /* Prompt to turn on Ads via notification */
 "TurnOnAds" = "Hidupkan Iklan";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsAccountButtonTitle" = "Pergi ke akaun Uphold saya";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsCompleteVerificationButtonTitle" = "Lengkapkan pengesahan dompet";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsDisconnectButtonTitle" = "Putuskan sambungan dari Brave Rewards";
+
+/* The title in the navigation bar shown when you click on a connected or verified user wallet button */
+"UserWalletDetailsTitle" = "Dompet Pengguna";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsVerified" = "Disahkan";
+
+/* No comment provided by engineer. */
+"UserWalletDisconnectedButtonTitle" = "Diputuskan sambungan";
+
+/* The message you receive when your user wallet has been verified (%@ = The user wallet name, such as \"Uphold\") */
+"UserWalletNotificationNowVerifiedBody" = "Tahniah! Dompet %@ anda berjaya disahkan dan bersedia untuk menambah dan mengeluarkan dana.";
+
+/* The message you receive when your user wallet has been verified */
+"UserWalletNotificationNowVerifiedTitle" = "Dompet anda disahkan!";
+
+/* The message you receive when your user wallet is unreachable/disconnected */
+"UserWalletNotificationWalletDisconnectedBody" = "Jangan risau. Ini boleh berlaku kerana pelbagai sebab keselamatan. Menyambung semula dompet anda akan menyelesaikan masalah ini.";
+
+/* The message you receive when your user wallet is unreachable/disconnected */
+"UserWalletNotificationWalletDisconnectedTitle" = "Alamak. Dompet anda tidak dapat dicapai.";
+
+/* The first benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsOne" = "Keluarkan BAT yang anda peroleh daripada melihat iklan yang menghormati privasi";
+
+/* The third benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsThree" = "Keluarkan BAT yang anda telah tambah sebelum ini ke dompet Brave Rewards anda";
+
+/* The title above the list of benefits after verifying */
+"UserWalletOnboardingBenefitsTitle" = "Tetapi jika anda mengesahkan, anda dapat...";
+
+/* The second benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsTwo" = "Beli BAT tambahan dengan kad kredit dan sumber lain";
+
+/* No comment provided by engineer. */
+"UserWalletOnboardingPoweredByUphold" = "Perkhidmatan dompet kami disediakan oleh Uphold";
+
+/* The word that will be bolded in UserWalletOnboardingPoweredByUphold */
+"UserWalletOnboardingPoweredByUpholdBoldedWord" = "Uphold";
+
+/* The disclosure about Uphold at the bottom of the screen */
+"UserWalletOnboardingUpholdDisclosure" = "Uphold mungkin memerlukan anda mengesahkan identiti anda berdasarkan perkhidmatan yang diminta.\n\nBrave Software Inc. tidak memproses, menyimpan atau mengakses mana-mana maklumat peribadi yang anda berikan kepada Uphold apabila anda mewujudkan akaun dengan mereka.";
+
+/* The button that triggers the Uphold auth process */
+"UserWalletOnboardingVerifyButtonTitle" = "Sahkan Dompet";
+
+/* The title of the user wallet onboarding screen */
+"UserWalletTitle" = "Mengesahkan dompet anda adalah pilihan";
+
+/* No comment provided by engineer. */
+"UserWalletUnverifiedButtonTitle" = "Sahkan Dompet";
+
+/* No comment provided by engineer. */
+"UserWalletVerifiedButtonTitle" = "Dompet Disahkan";
 
 /* No comment provided by engineer. */
 "WalletCreationErrorBody" = "Oops! Ralat telah berlaku. Sila cuba lagi.";

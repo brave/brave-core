@@ -113,6 +113,9 @@
 "BraveRewardsCheckAgain" = "Обновить статус";
 
 /* No comment provided by engineer. */
+"BraveRewardsConnectedPublisherDisclaimer" = "Этот проверенный создатель еще не настроил свой аккаунт для получения вкладов от пользователей Brave. Все отправляемые платежи останутся в вашем кошельке, пока создатель не завершит настройку.";
+
+/* No comment provided by engineer. */
 "BraveRewardsContributingToUnverifiedSites" = "Вы выделили %@ для создателей, которые еще не зарегистрировались для получения вкладов. Ваш браузер будет пытаться сделать вклад, пока создатель не пройдет проверку или пока не истечет 90 дней.";
 
 /* No comment provided by engineer. */
@@ -242,9 +245,6 @@
 "BraveRewardsMinimumVisitsChoices2" = "10 посещений";
 
 /* No comment provided by engineer. */
-"BraveRewardsMonthlyTippingNextDate" = "Дата следующего ежемесячного платежа";
-
-/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "Ежемесячные платежи";
 
 /* No comment provided by engineer. */
@@ -323,10 +323,13 @@
 "BraveRewardsSettingsAdsTitle" = "Ads";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAutoContributeBody" = "Автоматический способ поддержки издателей и создателей контента. Установите ежемесячный платеж и пользуйтесь Интернетом в обычном режиме. Сайты, которые вы посещаете, будут автоматически получать от вас вклады на основании того, сколько внимания вы им уделили (исходя из расчетов Brave).";
+"BraveRewardsSettingsAutoContributeBody" = "Brave Rewards — это автоматизированный способ поддержки издателей и создателей контента. Установите сумму, которую готовы тратить ежемесячно, и пользуйтесь Интернетом в обычном режиме. Проверенные сайты, которые вы посещаете, будут автоматически получать от вас платежи, размер которых зависит от того, сколько внимания вы уделили каждому сайту (исходя из статистики Brave).";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAutoContributeTitle" = "Автоматический вклад";
+
+/* The maximum amount of BAT to auto-contribute. E.g. 'Up to 20.0 BAT' */
+"BraveRewardsSettingsAutoContributeUpToValue" = "До %@";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsDisabledBody1" = "В своем старом браузере вы платили за пользование Интернетом своим вниманием, просматривая рекламу. Вы тратили свое драгоценное время на загрузку инвазивной рекламы, которая передавала ваши ценные личные данные рекламодателям — без вашего на то согласия.";
@@ -348,9 +351,6 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsGrantTextJapan" = "Доступен бесплатный балл.";
-
-/* No comment provided by engineer. */
-"BraveRewardsSettingsTipsBody" = "Отправляйте платежи создателям контента непосредственно при просмотре сайтов. Также вы можете настроить повторяющиеся ежемесячные платежи, чтобы постоянно поддерживать их.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsTipsTitle" = "Платежи";
@@ -384,6 +384,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingMonthlyTitle" = "Вы автоматически отправляете платежи:";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingNotConnectedDisclaimer" = "ПРИМЕЧАНИЕ. Этот проверенный создатель еще не зарегистрировался для получения платежей от пользователей Brave. Ваш браузер будет пытаться сделать платеж, пока создатель не пройдет регистрацию или пока не истечет 90 дней.";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingNotEnoughPoints" = "Недостаточно баллов.";
@@ -464,13 +467,34 @@
 "BraveRewardsWalletHeaderTitleJapan" = "Ваш баланс";
 
 /* No comment provided by engineer. */
+"BraveRewardsWithdrawFunds" = "Вывести средства";
+
+/* No comment provided by engineer. */
 "Cancel" = "Отмена";
 
 /* No comment provided by engineer. */
 "CLAIM" = "ПОЛУЧИТЬ";
 
+/* Message that is displayed when user disables ads */
+"DisabledAdsMessage" = "Доходы выплачиваются каждый месяц. Их размер зависит от частоты показа рекламных объявлений, которую вы можете регулировать по своему желанию.";
+
+/* Message that is displayed when user disables auto-contribute */
+"DisabledAutoContributeMessage" = "Ваши ежемесячные платежи будут распределяться между сайтами, которые вы посещаете.";
+
 /* No comment provided by engineer. */
 "DisclaimerInformation" = "Нажимая «Присоединиться к сервису Rewards», вы подтверждаете, что ознакомились и согласны с Условиями обслуживания и Политикой конфиденциальности.";
+
+/* The copy the user sees when they are viewing an empty Auto-Contribute exclusion list. */
+"EmptyExclusionList" = "Список исключенных издателей пуст";
+
+/* The swipe-to-delete title when restoring a single item in the Auto-Contribute exclusion list */
+"ExclusionListRestore" = "Восстановить";
+
+/* The button that restores all excluded publishers while on the Auto-Contribute excluson list */
+"ExclusionListRestoreAllButton" = "Восстановить все сайты";
+
+/* The title of the screen that shows a list of excluded sites for Auto-Contribute */
+"ExclusionListTitle" = "Исключенные сайты";
 
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "Коснитесь здесь, чтобы узнать больше.";
@@ -567,6 +591,69 @@
 
 /* Prompt to turn on Ads via notification */
 "TurnOnAds" = "Включить Ads";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsAccountButtonTitle" = "Перейти в аккаунт Uphold";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsCompleteVerificationButtonTitle" = "Завершить подтверждение кошелька";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsDisconnectButtonTitle" = "Отключить кошелек от Brave Rewards";
+
+/* The title in the navigation bar shown when you click on a connected or verified user wallet button */
+"UserWalletDetailsTitle" = "Кошелек пользователя";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsVerified" = "Подтвержден";
+
+/* No comment provided by engineer. */
+"UserWalletDisconnectedButtonTitle" = "Отключен";
+
+/* The message you receive when your user wallet has been verified (%@ = The user wallet name, such as \"Uphold\") */
+"UserWalletNotificationNowVerifiedBody" = "Поздравляем! Ваш кошелек %@ подтвержден. Теперь вы можете вносить и выводить средства из Brave Rewards.";
+
+/* The message you receive when your user wallet has been verified */
+"UserWalletNotificationNowVerifiedTitle" = "Ваш кошелек подтвержден!";
+
+/* The message you receive when your user wallet is unreachable/disconnected */
+"UserWalletNotificationWalletDisconnectedBody" = "Не беспокойтесь. Возможно, сработала система безопасности. Чтобы решить проблему, подключите кошелек еще раз.";
+
+/* The message you receive when your user wallet is unreachable/disconnected */
+"UserWalletNotificationWalletDisconnectedTitle" = "Кошелек недоступен";
+
+/* The first benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsOne" = "Выводить криптовалюту BAT, заработанную за просмотр рекламных объявлений, не нарушающих конфиденциальность.";
+
+/* The third benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsThree" = "Выводить криптовалюту BAT, внесенную на счет кошелка в Brave Rewards.";
+
+/* The title above the list of benefits after verifying */
+"UserWalletOnboardingBenefitsTitle" = "Владельцы подтвержденных кошельков могут:";
+
+/* The second benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsTwo" = "Покупать криптовалюту BAT с помощью банковских карт и других способов оплаты.";
+
+/* No comment provided by engineer. */
+"UserWalletOnboardingPoweredByUphold" = "Обслуживание онлайн-кошельков предоставляет сервис Uphold";
+
+/* The word that will be bolded in UserWalletOnboardingPoweredByUphold */
+"UserWalletOnboardingPoweredByUpholdBoldedWord" = "Uphold";
+
+/* The disclosure about Uphold at the bottom of the screen */
+"UserWalletOnboardingUpholdDisclosure" = "Для доступа ко всем функциям Brave Rewards вам может потребоваться подтвердить данные своего кошелька Uphold.\n\nУ компании Brave Software Inc. нет доступа к вашим персональным данным, которые вы предоставили сервису Uphold во время создания аккаунта. Компания Brave Software Inc. также не занимается обработкой и хранением ваших персональных данных.";
+
+/* The button that triggers the Uphold auth process */
+"UserWalletOnboardingVerifyButtonTitle" = "Подтвердить кошелек";
+
+/* The title of the user wallet onboarding screen */
+"UserWalletTitle" = "Подтверждать кошелек необязательно";
+
+/* No comment provided by engineer. */
+"UserWalletUnverifiedButtonTitle" = "Подтвердить кошелек";
+
+/* No comment provided by engineer. */
+"UserWalletVerifiedButtonTitle" = "Кошелек подтвержден";
 
 /* No comment provided by engineer. */
 "WalletCreationErrorBody" = "Что-то пошло не так. Пожалуйста, попробуйте еще раз.";

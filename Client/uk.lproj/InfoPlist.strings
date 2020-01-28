@@ -1,15 +1,18 @@
 /* (No Comment) */
 "1Password Fill Browser Action" = "Заповнення паролів у браузері за допомогою 1Password";
 
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+"NFCReaderUsageDescription" = "Для підключення до пристрою Yubikey додатку потрібно надати доступ до зчитування NFC-міток.";
+
 /* (No Comment) */
 "NSCameraUsageDescription" = "Це дозволить вам завантажувати фото.";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Щоб надати Brave доступ до збережених облікових даних, уведіть Face ID.";
 
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* (No Comment) */
 "NSLocationWhenInUseUsageDescription" = "Деякі веб-сайти можуть запитати дані щодо вашого місцеположення.";
 
 /* (No Comment) */

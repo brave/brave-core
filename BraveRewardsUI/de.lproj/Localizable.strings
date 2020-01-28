@@ -113,6 +113,9 @@
 "BraveRewardsCheckAgain" = "Status aktualisieren";
 
 /* No comment provided by engineer. */
+"BraveRewardsConnectedPublisherDisclaimer" = "Dieser Brave Verified Creator hat sein Konto noch nicht eingerichtet, um Beiträge von Brave-Benutzern zu erhalten. Alle Trinkgelder, die Sie senden, bleiben in Ihrer Wallet, bis er diesen Vorgang abgeschlossen hat.";
+
+/* No comment provided by engineer. */
 "BraveRewardsContributingToUnverifiedSites" = "Du hast %@ für Ersteller festgelegt, die sich noch nicht angemeldet haben, um Beiträge zu erhalten. Ihr Browser wird weiterhin versuchen, Beiträge zu leisten, bis sie sich verifiziert haben oder bis 90 Tage vergangen sind.";
 
 /* No comment provided by engineer. */
@@ -242,9 +245,6 @@
 "BraveRewardsMinimumVisitsChoices2" = "10 Besuche";
 
 /* No comment provided by engineer. */
-"BraveRewardsMonthlyTippingNextDate" = "Nächster Termin für monatliches Trinkgeld";
-
-/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "Monatliche Trinkgelder";
 
 /* No comment provided by engineer. */
@@ -323,10 +323,13 @@
 "BraveRewardsSettingsAdsTitle" = "Ads";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAutoContributeBody" = "Eine automatische Möglichkeit, Publisher und Content-Ersteller zu unterstützen. Legen Sie eine monatliche Zahlung fest und surfen Sie normal. Die von Ihnen besuchten Websites erhalten Ihre Beiträge automatisch, basierend auf Ihrer Aufmerksamkeit, die von Brave gemessen wird.";
+"BraveRewardsSettingsAutoContributeBody" = "Eine automatische Möglichkeit, Publisher und Content-Ersteller zu unterstützen. Legen Sie eine monatliche Zahlung fest und surfen Sie normal. Die von Ihnen besuchten Brave Verified Websites erhalten Ihre Beiträge automatisch, basierend auf Ihrer Aufmerksamkeit, die von Brave gemessen wird.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAutoContributeTitle" = "Auto-Beitrag";
+
+/* The maximum amount of BAT to auto-contribute. E.g. 'Up to 20.0 BAT' */
+"BraveRewardsSettingsAutoContributeUpToValue" = "Bis zu %@";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsDisabledBody1" = "Mit Ihrem alten Browser haben Sie darauf geachtet, im Internet zu surfen, indem Sie Ads mit Ihrer wertvollen Aufmerksamkeit betrachten. Sie haben Ihre wertvolle Zeit damit verbracht, invasive Werbetechnik herunterzuladen, die Ihre wertvollen privaten Daten an Werbetreibende übermittelt – ohne Ihre Zustimmung.";
@@ -348,9 +351,6 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsGrantTextJapan" = "Ein kostenloser Punkte-Zuschuss ist verfügbar.";
-
-/* No comment provided by engineer. */
-"BraveRewardsSettingsTipsBody" = "Geben Sie den Inhaltserstellern direkt beim Durchsuchen ein Trinkgeld. Sie können auch wiederkehrende monatliche Trinkgelder einrichten, damit Sie Websites kontinuierlich unterstützen können.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsTipsTitle" = "Trinkgelder";
@@ -384,6 +384,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingMonthlyTitle" = "Sie senden automatisch ein Trinkgeld an:";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingNotConnectedDisclaimer" = "HINWEIS: Dieser Brave Verified Creator hat sich noch nicht angemeldet, um Beiträge von Brave-Benutzern zu erhalten. Ihr Browser wird weiterhin versuchen, einen Beitrag zu leisten, bis er sich verifiziert oder bis 90 Tage vergangen sind.";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingNotEnoughPoints" = "Nicht genügend Punkte.";
@@ -464,13 +467,34 @@
 "BraveRewardsWalletHeaderTitleJapan" = "Ihr Guthaben";
 
 /* No comment provided by engineer. */
+"BraveRewardsWithdrawFunds" = "Gelder auszahlen";
+
+/* No comment provided by engineer. */
 "Cancel" = "Abbrechen";
 
 /* No comment provided by engineer. */
 "CLAIM" = "ANFORDERN";
 
+/* Message that is displayed when user disables ads */
+"DisabledAdsMessage" = "Einnahmen werden jeden Monat ausgezahlt. Stellen Sie die gewünschte Häufigkeit ein, um Einnahmen zu erhöhen oder zu verringern.";
+
+/* Message that is displayed when user disables auto-contribute */
+"DisabledAutoContributeMessage" = "Belohnen Sie Ersteller für Content, den Sie lieben. Ihre monatliche Zahlung wird auf die von Ihnen besuchten Websites verteilt.";
+
 /* No comment provided by engineer. */
 "DisclaimerInformation" = "Indem Sie auf \"Rewards beitreten\" klicken, erklären Sie, dass Sie die Allgemeinen Geschäftsbedingungen und die Datenschutzerklärung gelesen haben und damit einverstanden sind.";
+
+/* The copy the user sees when they are viewing an empty Auto-Contribute exclusion list. */
+"EmptyExclusionList" = "Keine Publisher ausgeschlossen";
+
+/* The swipe-to-delete title when restoring a single item in the Auto-Contribute exclusion list */
+"ExclusionListRestore" = "Wiederherstellen";
+
+/* The button that restores all excluded publishers while on the Auto-Contribute excluson list */
+"ExclusionListRestoreAllButton" = "Alle Websites wiederherstellen";
+
+/* The title of the screen that shows a list of excluded sites for Auto-Contribute */
+"ExclusionListTitle" = "Ausgeschlossene Websites";
 
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "Tippen Sie hier, um mehr zu erfahren.";
@@ -567,6 +591,69 @@
 
 /* Prompt to turn on Ads via notification */
 "TurnOnAds" = "Ads einschalten";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsAccountButtonTitle" = "Zu meinem Uphold-Konto gehen";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsCompleteVerificationButtonTitle" = "Wallet-Überprüfung abschließen";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsDisconnectButtonTitle" = "Verbindung zu Brave Rewards aufheben";
+
+/* The title in the navigation bar shown when you click on a connected or verified user wallet button */
+"UserWalletDetailsTitle" = "Benutzer-Wallet";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsVerified" = "Überprüft";
+
+/* No comment provided by engineer. */
+"UserWalletDisconnectedButtonTitle" = "Verbindung aufgehoben";
+
+/* The message you receive when your user wallet has been verified (%@ = The user wallet name, such as \"Uphold\") */
+"UserWalletNotificationNowVerifiedBody" = "Herzlichen Glückwunsch! Ihre %@-Wallet wurde erfolgreich überprüft und Gelder können nun hinzugefügt und abgehoben werden.";
+
+/* The message you receive when your user wallet has been verified */
+"UserWalletNotificationNowVerifiedTitle" = "Ihre Wallet wurde überprüft!";
+
+/* The message you receive when your user wallet is unreachable/disconnected */
+"UserWalletNotificationWalletDisconnectedBody" = "Keine Sorge. Das kann aus verschiedenen Sicherheitsgründen passieren. Die erneute Verbindung Ihrer Wallet behebt dieses Problem.";
+
+/* The message you receive when your user wallet is unreachable/disconnected */
+"UserWalletNotificationWalletDisconnectedTitle" = "Oh je. Ihre Wallet ist nicht erreichbar.";
+
+/* The first benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsOne" = "BAT für das Ansehen von Ads, die den Datenschutz respektieren, abheben.";
+
+/* The third benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsThree" = "Zuvor dem Brave Rewards Wallet hinzugefügte BAT abheben";
+
+/* The title above the list of benefits after verifying */
+"UserWalletOnboardingBenefitsTitle" = "Aber nach einer Überprüfung können Sie …";
+
+/* The second benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsTwo" = "Weitere BAT mit Kreditkarten und anderen Quellen kaufen";
+
+/* No comment provided by engineer. */
+"UserWalletOnboardingPoweredByUphold" = "Unser Wallet-Service wird von Uphold bereitgestellt";
+
+/* The word that will be bolded in UserWalletOnboardingPoweredByUphold */
+"UserWalletOnboardingPoweredByUpholdBoldedWord" = "Uphold";
+
+/* The disclosure about Uphold at the bottom of the screen */
+"UserWalletOnboardingUpholdDisclosure" = "Uphold fordert Sie möglicherweise auf, Ihre Identität basierend auf den angeforderten Diensten zu verifizieren.\n\nBrave Software Inc. verarbeitet, speichert oder greift nicht auf persönliche Daten zu, die Sie Uphold zur Verfügung stellen, wenn Sie ein Konto bei ihnen einrichten.";
+
+/* The button that triggers the Uphold auth process */
+"UserWalletOnboardingVerifyButtonTitle" = "Wallet überprüfen";
+
+/* The title of the user wallet onboarding screen */
+"UserWalletTitle" = "Die Überprüfung Ihrer Wallet ist optional";
+
+/* No comment provided by engineer. */
+"UserWalletUnverifiedButtonTitle" = "Wallet überprüfen";
+
+/* No comment provided by engineer. */
+"UserWalletVerifiedButtonTitle" = "Wallet überprüft";
 
 /* No comment provided by engineer. */
 "WalletCreationErrorBody" = "Hoppla! Etwas ist schief gelaufen. Bitte versuchen Sie es erneut.";

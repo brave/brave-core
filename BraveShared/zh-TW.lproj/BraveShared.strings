@@ -68,13 +68,13 @@
 "AuthenticationLoginsTouchReason" = "立即使用您的指紋登入。";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "已達嘗試次數上限，請 %d 分鐘後再試。";
+"AuthenticationMaximumAttemptsReached" = "已達嘗試次數上限。\n請 %d 分鐘後再試。";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
 "AuthenticationMaximumAttemptsReachedNoTime" = "已達嘗試次數上限，請稍後再試。";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedOneMinute" = "已達嘗試次數上限，請一分鐘後再試。";
+"AuthenticationMaximumAttemptsReachedOneMinute" = "已達嘗試次數上限。\n請 1 分鐘後再試。";
 
 /* Label for the Passcode item in Settings */
 "AuthenticationPasscode" = "登入密碼";
@@ -457,6 +457,12 @@
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "指紋識別防護";
 
+/* No comment provided by engineer. */
+"genericErrorBody" = "糟糕！ 出問題了。 請再試一次。";
+
+/* No comment provided by engineer. */
+"genericErrorTitle" = "錯誤";
+
 /* Grand camera access */
 "GrantCameraAccess" = "啟用相機";
 
@@ -498,6 +504,9 @@
 
 /* DuckDuckGo promotion label. */
 "LearnAboutPrivateSearchrwithDuckDuckGo" = "深入瞭解\nDuckDuckGo 隱私搜尋";
+
+/* No comment provided by engineer. */
+"learnMore" = "了解更多";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "上次修改的時間：%@";
@@ -585,6 +594,51 @@
 
 /* Sync Alert */
 "NotEnoughWordsTitle" = "沒有足够詞語";
+
+/* The placeholder says 'hide sponsored images'. So full sentence goes like: 'You can also choose to hide sponsored images.' */
+"ntp.chooseToHideSponsoredImages" = "您也可選擇 %@。";
+
+/* No comment provided by engineer. */
+"ntp.claimRewards" = "領取我的獎勵";
+
+/* Placeholder example: 'You earned 42 BAT last month from viewing privacy-respecting ads.' */
+"ntp.earningsReport" = "您上個月由觀看尊重隱私的廣告賺取了 %@。";
+
+/* No comment provided by engineer. */
+"ntp.earnTokensByViewingAds" = "觀看尊重隱私的廣告以賺取代幣。";
+
+/* No comment provided by engineer. */
+"ntp.getPaidForThisImageTurnAds" = "查看此背景圖片並獲得報酬。 啟用 Brave Ads 以領取您的部份。";
+
+/* No comment provided by engineer. */
+"ntp.getPaidForThisImageTurnRewards" = "查看此背景圖片並獲得報酬。 啟用 Brave Rewards 以領取您的部份。";
+
+/* No comment provided by engineer. */
+"ntp.getPaidToSeeThisImage" = "查看此背景圖片並獲得報酬。";
+
+/* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
+"ntp.goodJob" = "做得很好！";
+
+/* This sentence is not capitalized on purpose, it is a part of a bigger sentence which goes like this: 'You can also choose to hide sponsored images.' */
+"ntp.hideSponsoredImages" = "隱藏贊助圖片";
+
+/* The placeholder says 'Learn more'. So full sentence goes like: 'Learn more about sponsored images in Brave Rewards.' */
+"ntp.learnMoreAboutBrandedImages" = "%@ 關於 Brave Rewards 中的贊助圖片";
+
+/* No comment provided by engineer. */
+"ntp.supportWebCreatorsWithTokens" = "您可以用代幣來贊助網路創作者。";
+
+/* No comment provided by engineer. */
+"ntp.turnOnBraveAds" = "啟用 Brave Ads";
+
+/* No comment provided by engineer. */
+"ntp.turnOnBraveRewards" = "啟用 Rewards";
+
+/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turnin Rewards, you agree to the Terms of Service'. */
+"ntp.turnRewardsTos" = "啟用 Rewards 代表您同意 %@。";
+
+/* No comment provided by engineer. */
+"ntp.youArePaidToSeeThisImage" = "您查看此背景圖片時將獲得報酬。";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "開啟全部 (%i)";
@@ -838,6 +892,9 @@
 /* Title for sharing url menu item */
 "ShareWithMenuItem" = "與...共享";
 
+/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
+"ShieldsDefaults" = "Shield 預設";
+
 /* shields overview message */
 "ShieldsOverview" = "「網站防護」可控制您在造訪每個網站時，是否直接封鎖網站上的廣告與追踪器。若您希望在特定網站上顯示廣告，可以在這裡啟用廣告。";
 
@@ -917,13 +974,13 @@
 "SyncAddDeviceScan" = "Sync Chain 二維碼";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "在第二部行動裝置上導向至設定面板中的同步並點選「掃描同步代碼」按鈕。使用相機掃描下方的 QR 碼。\n將此代碼視為密碼。如某人取得該密碼，其可讀取並修改您同步的資料。";
+"SyncAddDeviceScanDescription" = "在第二部行動裝置上導向至設定面板中的同步並點選「掃描同步代碼」按鈕。使用相機掃描下方的 QR 碼。\n\n將此代碼視為密碼。如某人取得此密碼，將可讀取並修改您同步的資料。";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "輸入同步代碼";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "在裝置上導向至設定面板中的同步並點選「%@」按鈕。輸入下方顯示的同步鏈代碼字組。\n將此代碼視為密碼。如某人取得該密碼，其可讀取並修改您同步的資料。";
+"SyncAddDeviceWordsDescription" = "在裝置上導向至設定面板中的同步並點選「%@」按鈕。輸入下方顯示的同步鏈代碼字組。\n\n將此代碼視為密碼。如某人取得此密碼，將可讀取並修改您同步的資料。";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "輸入代碼字組";
@@ -1089,6 +1146,9 @@
 
 /* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
 "TabTraySingleTabPositionFormatVoiceOverText" = "分頁 %1$@，共 %2$@ 個";
+
+/* No comment provided by engineer. */
+"TermsOfService" = "服務條款";
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "使用條款";
