@@ -5,6 +5,8 @@
 
 #include "brave/components/playlists/browser/playlists_constants.h"
 
+namespace brave_playlists {
+
 const char kPlaylistsMediaFileUrlKey[] = "mediaFileUrl";
 const char kPlaylistsMediaFileTitleKey[] = "mediaFileTitle";
 
@@ -27,3 +29,5 @@ const char kPlaylistsCreateParamsVideoMediaFilesPathKey[] =
     "createParams.videoMediaFiles";
 const char kPlaylistsCreateParamsAudioMediaFilesPathKey[] =
     "createParams.audioMediaFiles";
+
+}  // namespace brave_playlists

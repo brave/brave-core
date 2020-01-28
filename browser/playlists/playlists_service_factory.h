@@ -9,8 +9,10 @@
 #include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
-class PlaylistsService;
 class Profile;
+
+namespace brave_playlists {
+class PlaylistsService;
 
 class PlaylistsServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
@@ -31,5 +33,7 @@ class PlaylistsServiceFactory : public BrowserContextKeyedServiceFactory {
 
   DISALLOW_COPY_AND_ASSIGN(PlaylistsServiceFactory);
 };
+
+}  // namespace brave_playlists
 
 #endif  // BRAVE_BROWSER_PLAYLISTS_PLAYLISTS_SERVICE_FACTORY_H_

@@ -9,6 +9,8 @@
 #include "base/observer_list_types.h"
 #include "brave/components/playlists/browser/playlists_types.h"
 
+namespace brave_playlists {
+
 class PlaylistsControllerObserver : public base::CheckedObserver {
  public:
   // |initialized| is false when init failed.
@@ -19,5 +21,7 @@ class PlaylistsControllerObserver : public base::CheckedObserver {
  protected:
   ~PlaylistsControllerObserver() override {}
 };
+
+}  // namespace brave_playlists
 
 #endif  // BRAVE_COMPONENTS_PLAYLISTS_BROWSER_PLAYLISTS_CONTROLLER_OBSERVER_H_

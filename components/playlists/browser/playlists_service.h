@@ -24,8 +24,10 @@ namespace content {
 class BrowserContext;
 }  // namespace content
 
-class PlaylistsController;
 class Profile;
+
+namespace brave_playlists {
+class PlaylistsController;
 
 class PlaylistsService : public KeyedService,
                          public PlaylistsControllerObserver {
@@ -57,5 +59,7 @@ class PlaylistsService : public KeyedService,
 
   DISALLOW_COPY_AND_ASSIGN(PlaylistsService);
 };
+
+}  // namespace brave_playlists
 
 #endif  // BRAVE_COMPONENTS_PLAYLISTS_BROWSER_PLAYLISTS_SERVICE_H_

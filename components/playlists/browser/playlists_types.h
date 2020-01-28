@@ -9,6 +9,8 @@
 #include <string>
 #include <vector>
 
+namespace brave_playlists {
+
 // Partial means some source media files are not available.
 struct PlaylistsChangeParams {
   enum class ChangeType {
@@ -68,5 +70,7 @@ struct PlaylistInfo {
 
   CreatePlaylistParams create_params;
 };
+
+}  // namespace brave_playlists
 
 #endif  // BRAVE_COMPONENTS_PLAYLISTS_BROWSER_PLAYLISTS_TYPES_H_

@@ -77,7 +77,7 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
 #endif  // BUILDFLAG(BRAVE_WALLET_ENABLED)
 #if BUILDFLAG(ENABLE_BRAVE_PLAYLISTS)
   } else if (host == kPlaylistsHost) {
-    return new BravePlaylistsUI(web_ui, url.host());
+    return new brave_playlists::BravePlaylistsUI(web_ui, url.host());
 #endif  // BUILDFLAG(BRAVE_PLAYLISTS_ENABLED)
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
   } else if (host == kBraveUISyncHost &&

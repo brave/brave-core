@@ -22,6 +22,8 @@
 #include "chrome/browser/profiles/profile.h"
 #include "url/gurl.h"
 
+namespace brave_playlists {
+
 namespace {
 
 void ThumbnailLoaded(content::URLDataSource::GotDataCallback got_data_callback,
@@ -117,3 +119,5 @@ bool BravePlaylistsSource::ShouldServiceRequest(
   return URLDataSource::ShouldServiceRequest(url, resource_context,
                                              render_process_id);
 }
+
+}  // namespace brave_playlists

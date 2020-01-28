@@ -35,6 +35,8 @@ class SharedURLLoaderFactory;
 class SimpleURLLoader;
 }  // namespace network
 
+namespace brave_playlists {
+
 class PlaylistsControllerObserver;
 class PlaylistsDBController;
 
@@ -166,5 +168,7 @@ class PlaylistsController : PlaylistsMediaFileController::Client {
 
   DISALLOW_COPY_AND_ASSIGN(PlaylistsController);
 };
+
+}  // namespace brave_playlists
 
 #endif  // BRAVE_COMPONENTS_PLAYLISTS_BROWSER_PLAYLISTS_CONTROLLER_H_

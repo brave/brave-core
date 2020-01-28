@@ -15,6 +15,8 @@
 #include "third_party/leveldatabase/src/include/leveldb/slice.h"
 #include "third_party/leveldatabase/src/include/leveldb/status.h"
 
+namespace brave_playlists {
+
 PlaylistsDBController::PlaylistsDBController(const base::FilePath& db_path)
     : db_path_(db_path) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
@@ -117,3 +119,5 @@ bool PlaylistsDBController::Init() {
   VLOG(2) << "Unable to open " << path << ": " << status.ToString();
   return false;
 }
+
+}  // namespace brave_playlists

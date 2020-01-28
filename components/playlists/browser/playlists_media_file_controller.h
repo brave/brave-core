@@ -32,6 +32,8 @@ class SimpleURLLoader;
 
 class GURL;
 
+namespace brave_playlists {
+
 // Handle one Playlist at once.
 class PlaylistsMediaFileController {
  public:
@@ -128,5 +130,7 @@ class PlaylistsMediaFileController {
 };
 
 base::FilePath::StringType GetPlaylistIDDirName(const std::string& playlist_id);
+
+}  // namespace brave_playlists
 
 #endif  // BRAVE_COMPONENTS_PLAYLISTS_BROWSER_PLAYLISTS_MEDIA_FILE_CONTROLLER_H_

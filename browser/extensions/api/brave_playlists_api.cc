@@ -18,6 +18,10 @@
 #include "brave/components/playlists/browser/playlists_types.h"
 #include "chrome/browser/profiles/profile.h"
 
+using brave_playlists::CreatePlaylistParams;
+using brave_playlists::PlaylistsController;
+using brave_playlists::PlaylistsServiceFactory;
+
 namespace CreatePlaylist = extensions::api::brave_playlists::CreatePlaylist;
 namespace GetPlaylist = extensions::api::brave_playlists::GetPlaylist;
 namespace DeletePlaylist = extensions::api::brave_playlists::DeletePlaylist;

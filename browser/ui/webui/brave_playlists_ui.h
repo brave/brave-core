@@ -11,6 +11,8 @@
 
 #include "brave/browser/ui/webui/basic_ui.h"
 
+namespace brave_playlists {
+
 class BravePlaylistsUI : public BasicUI {
  public:
   BravePlaylistsUI(content::WebUI* web_ui, const std::string& host);
@@ -19,5 +21,7 @@ class BravePlaylistsUI : public BasicUI {
  private:
   DISALLOW_COPY_AND_ASSIGN(BravePlaylistsUI);
 };
+
+}  // namespace brave_playlists
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_PLAYLISTS_UI_H_

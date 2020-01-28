@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_PLAYLISTS_BROWSER_PLAYLISTS_CONSTANTS_H_
 #define BRAVE_COMPONENTS_PLAYLISTS_BROWSER_PLAYLISTS_CONSTANTS_H_
 
+namespace brave_playlists {
+
 extern const char kPlaylistsMediaFileUrlKey[];
 extern const char kPlaylistsMediaFileTitleKey[];
 
@@ -25,5 +27,7 @@ extern const char kPlaylistsCreateParamsKey[];
 extern const char kPlaylistsCreateParamsThumbnailUrlPathKey[];
 extern const char kPlaylistsCreateParamsVideoMediaFilesPathKey[];
 extern const char kPlaylistsCreateParamsAudioMediaFilesPathKey[];
+
+}  // namespace brave_playlists
 
 #endif  // BRAVE_COMPONENTS_PLAYLISTS_BROWSER_PLAYLISTS_CONSTANTS_H_

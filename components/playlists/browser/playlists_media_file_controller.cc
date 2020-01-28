@@ -25,6 +25,7 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "url/gurl.h"
 
+namespace brave_playlists {
 namespace {
 
 constexpr unsigned int kRetriesCountOnNetworkChange = 1;
@@ -373,3 +374,5 @@ void PlaylistsMediaFileController::ResetStatus() {
 bool PlaylistsMediaFileController::IsDownloadFinished() {
   return remained_download_files_ == 0;
 }
+
+}  // namespace brave_playlists

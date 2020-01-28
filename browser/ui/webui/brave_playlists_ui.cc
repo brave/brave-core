@@ -18,6 +18,8 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
+namespace brave_playlists {
+
 BravePlaylistsUI::BravePlaylistsUI(content::WebUI* web_ui,
                                    const std::string& name)
     : BasicUI(web_ui,
@@ -32,3 +34,5 @@ BravePlaylistsUI::BravePlaylistsUI(content::WebUI* web_ui,
 }
 
 BravePlaylistsUI::~BravePlaylistsUI() {}
+
+}  // namespace brave_playlists

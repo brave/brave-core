@@ -12,6 +12,8 @@
 #include "chrome/common/chrome_features.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
+namespace brave_playlists {
+
 // static
 PlaylistsServiceFactory* PlaylistsServiceFactory::GetInstance() {
   return base::Singleton<PlaylistsServiceFactory>::get();
@@ -42,3 +44,5 @@ content::BrowserContext* PlaylistsServiceFactory::GetBrowserContextToUse(
     content::BrowserContext* context) const {
   return chrome::GetBrowserContextRedirectedInIncognito(context);
 }
+
+}  // namespace brave_playlists

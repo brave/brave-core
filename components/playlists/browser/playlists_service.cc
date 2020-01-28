@@ -17,6 +17,7 @@
 #include "content/public/browser/browser_context.h"
 #include "extensions/browser/event_router.h"
 
+namespace brave_playlists {
 namespace {
 
 const base::FilePath::StringType kBaseDirName(FILE_PATH_LITERAL("playlists"));
@@ -96,3 +97,5 @@ base::SequencedTaskRunner* PlaylistsService::file_task_runner() {
   }
   return file_task_runner_.get();
 }
+
+}  // namespace brave_playlists

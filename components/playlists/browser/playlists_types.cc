@@ -7,6 +7,8 @@
 
 #include <base/logging.h>
 
+namespace brave_playlists {
+
 std::string PlaylistsChangeParams::GetPlaylistsChangeTypeAsString(
     PlaylistsChangeParams::ChangeType type) {
   switch (type) {
@@ -64,3 +66,5 @@ PlaylistInfo::PlaylistInfo(const PlaylistInfo& rhs) {
   create_params = rhs.create_params;
   partial_ready = rhs.partial_ready;
 }
+
+}  // namespace brave_playlists

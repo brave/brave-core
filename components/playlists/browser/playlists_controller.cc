@@ -31,6 +31,7 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 
+namespace brave_playlists {
 namespace {
 
 constexpr unsigned int kRetriesCountOnNetworkChange = 1;
@@ -858,3 +859,5 @@ base::SequencedTaskRunner* PlaylistsController::io_task_runner() {
   }
   return io_task_runner_.get();
 }
+
+}  // namespace brave_playlists

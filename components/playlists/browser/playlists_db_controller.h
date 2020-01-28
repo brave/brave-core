@@ -19,6 +19,8 @@ namespace leveldb {
 class DB;
 }  // namespace leveldb
 
+namespace brave_playlists {
+
 struct PlaylistInfo;
 
 class PlaylistsDBController {
@@ -42,5 +44,6 @@ class PlaylistsDBController {
   DISALLOW_COPY_AND_ASSIGN(PlaylistsDBController);
 };
 
+}  // namespace brave_playlists
 
 #endif  // BRAVE_COMPONENTS_PLAYLISTS_BROWSER_PLAYLISTS_DB_CONTROLLER_H_

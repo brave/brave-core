@@ -21,6 +21,8 @@ class FilePath;
 class SequencedTaskRunner;
 }  // namespace base
 
+namespace brave_playlists {
+
 // A URL data source for chrome://playlists-image/<playlist-id>
 // resources, for use in webui pages that want to display downloaded
 // playlist thumbnail images
@@ -57,5 +59,7 @@ class BravePlaylistsSource : public content::URLDataSource {
 
   DISALLOW_COPY_AND_ASSIGN(BravePlaylistsSource);
 };
+
+}  // namespace brave_playlists
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_PLAYLISTS_SOURCE_H_
