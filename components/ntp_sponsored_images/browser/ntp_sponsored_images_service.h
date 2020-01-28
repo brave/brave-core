@@ -15,6 +15,16 @@
 #include "base/observer_list.h"
 
 FORWARD_DECLARE_TEST(NTPSponsoredImagesServiceTest, InternalDataTest);
+FORWARD_DECLARE_TEST(NTPSponsoredImagesViewCounterTest,
+    NotActiveInitially);
+FORWARD_DECLARE_TEST(NTPSponsoredImagesViewCounterTest,
+    NotActiveWithBadData);
+FORWARD_DECLARE_TEST(NTPSponsoredImagesViewCounterTest,
+    NotActiveOptedOut);
+FORWARD_DECLARE_TEST(NTPSponsoredImagesViewCounterTest,
+    IsActiveOptedIn);
+FORWARD_DECLARE_TEST(NTPSponsoredImagesViewCounterTest,
+    ActiveInitiallyOptedIn);
 
 namespace component_updater {
 class ComponentUpdateService;
@@ -59,6 +69,17 @@ class NTPSponsoredImagesService {
 
  private:
   FRIEND_TEST_ALL_PREFIXES(::NTPSponsoredImagesServiceTest, InternalDataTest);
+  FRIEND_TEST_ALL_PREFIXES(::NTPSponsoredImagesViewCounterTest,
+      NotActiveInitially);
+  FRIEND_TEST_ALL_PREFIXES(::NTPSponsoredImagesViewCounterTest,
+      NotActiveWithBadData);
+  FRIEND_TEST_ALL_PREFIXES(::NTPSponsoredImagesViewCounterTest,
+      NotActiveOptedOut);
+  FRIEND_TEST_ALL_PREFIXES(::NTPSponsoredImagesViewCounterTest,
+      IsActiveOptedIn);
+  FRIEND_TEST_ALL_PREFIXES(::NTPSponsoredImagesViewCounterTest,
+      ActiveInitiallyOptedIn);
+
 
   void OnComponentReady(const base::FilePath& installed_dir);
   void OnGetPhotoJsonData(const std::string& photo_json);
