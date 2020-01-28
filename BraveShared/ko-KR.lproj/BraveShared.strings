@@ -68,13 +68,13 @@
 "AuthenticationLoginsTouchReason" = "지금 로그인에 액세스하려면 지문을 사용하십시오.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "시도 횟수가 너무 많습니다. %d분 후에 다시 시도해주세요.";
+"AuthenticationMaximumAttemptsReached" = "시도 횟수가 너무 많습니다.\n %d분 후에 다시 시도해주세요.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
 "AuthenticationMaximumAttemptsReachedNoTime" = "최대 시도 횟수에 도달했습니다. 나중에 다시 시도하십시오.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedOneMinute" = "시도 횟수가 너무 많습니다. 1분 후에 다시 시도해주세요.";
+"AuthenticationMaximumAttemptsReachedOneMinute" = "시도 횟수가 너무 많습니다.\n 1분 후에 다시 시도해주세요.";
 
 /* Label for the Passcode item in Settings */
 "AuthenticationPasscode" = "로그인용 암호";
@@ -457,6 +457,12 @@
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "디지털 지문 보호";
 
+/* No comment provided by engineer. */
+"genericErrorBody" = "앗! 문제가 발생했습니다. 다시 시도하세요.";
+
+/* No comment provided by engineer. */
+"genericErrorTitle" = "오류";
+
 /* Grand camera access */
 "GrantCameraAccess" = "카메라 활성화";
 
@@ -498,6 +504,9 @@
 
 /* DuckDuckGo promotion label. */
 "LearnAboutPrivateSearchrwithDuckDuckGo" = "DuckDuckGo의 \n비공개 검색에 대해 알아보기";
+
+/* No comment provided by engineer. */
+"learnMore" = "자세히 알아보기";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "최종 수정 %@";
@@ -585,6 +594,51 @@
 
 /* Sync Alert */
 "NotEnoughWordsTitle" = "단어가 충분하지 않음";
+
+/* The placeholder says 'hide sponsored images'. So full sentence goes like: 'You can also choose to hide sponsored images.' */
+"ntp.chooseToHideSponsoredImages" = "선택 가능한 옵션: %@";
+
+/* No comment provided by engineer. */
+"ntp.claimRewards" = "내 리워드 받기";
+
+/* Placeholder example: 'You earned 42 BAT last month from viewing privacy-respecting ads.' */
+"ntp.earningsReport" = "지난 달 프라이버시 보호 광고를 보고 %@를 획득했습니다.";
+
+/* No comment provided by engineer. */
+"ntp.earnTokensByViewingAds" = "프라이버시 보호 광고를 보고 토큰을 받으세요.";
+
+/* No comment provided by engineer. */
+"ntp.getPaidForThisImageTurnAds" = "이 배경 이미지를 보고 수익을 얻으세요. 본인의 몫을 받으려면 Brave Ads를 켜세요.";
+
+/* No comment provided by engineer. */
+"ntp.getPaidForThisImageTurnRewards" = "이 배경 이미지를 보고 수익을 얻으세요. 본인의 몫을 받으려면 Brave Rewards를 켜세요.";
+
+/* No comment provided by engineer. */
+"ntp.getPaidToSeeThisImage" = "이 배경 이미지를 보고 수익을 얻으세요.";
+
+/* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
+"ntp.goodJob" = "축하합니다!";
+
+/* This sentence is not capitalized on purpose, it is a part of a bigger sentence which goes like this: 'You can also choose to hide sponsored images.' */
+"ntp.hideSponsoredImages" = "스폰서 이미지 숨기기";
+
+/* The placeholder says 'Learn more'. So full sentence goes like: 'Learn more about sponsored images in Brave Rewards.' */
+"ntp.learnMoreAboutBrandedImages" = "Brave Rewards에서의 스폰서 이미지 %@";
+
+/* No comment provided by engineer. */
+"ntp.supportWebCreatorsWithTokens" = "토큰으로 웹 제작자를 지원할 수 있습니다.";
+
+/* No comment provided by engineer. */
+"ntp.turnOnBraveAds" = "Brave Ads 켜기";
+
+/* No comment provided by engineer. */
+"ntp.turnOnBraveRewards" = "Rewards 켜기";
+
+/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turnin Rewards, you agree to the Terms of Service'. */
+"ntp.turnRewardsTos" = "Rewards를 켜면 %@에 동의하는 것으로 간주됩니다.";
+
+/* No comment provided by engineer. */
+"ntp.youArePaidToSeeThisImage" = "이 배경 이미지를 보고 수익을 얻고 있습니다.";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "모두 열기(%i)";
@@ -838,6 +892,9 @@
 /* Title for sharing url menu item */
 "ShareWithMenuItem" = "다음 대상과 공유...";
 
+/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
+"ShieldsDefaults" = "Shield 기본값";
+
 /* shields overview message */
 "ShieldsOverview" = "사이트 차단을 사용하면 방문하는 사이트별로 광고와 트래커를 차단할지 관리할 수 있습니다. 특정 사이트에서 광고를 표시하려면 여기에서 해당 기능을 활성화할 수 있습니다.";
 
@@ -917,13 +974,13 @@
 "SyncAddDeviceScan" = "체인 QR 코드 동기화";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "두 번째 기기에서 설정 패널에 있는 동기화로 이동한 다음 \"동기화 코드 스캔\" 버튼을 탭합니다. 카메라를 사용하여 아래 QR 코드를 스캔합니다.\n 이 코드는 일종의 비밀번호로 취급하십시오. 이 코드를 확보한 사람은 귀하의 동기화 데이터를 읽고 변조할 수 있습니다.";
+"SyncAddDeviceScanDescription" = "두 번째 기기에서 설정 패널에 있는 동기화로 이동한 다음 \"동기화 코드 스캔\" 버튼을 탭합니다. 카메라를 사용하여 아래 QR 코드를 스캔합니다.\n\n 이 코드는 일종의 비밀번호로 취급하십시오. 이 코드를 확보한 사람은 귀하의 동기화 데이터를 읽고 변조할 수 있습니다.";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "동기화 코드 입력";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "기기에서 설정 패널에 있는 동기화로 이동한 다음 \"%@\" 버튼을 탭하고 아래 표시된 동기화 체인 코드 단어를 입력합니다.\n 이 코드는 일종의 비밀번호로 취급하십시오. 이 코드를 확보한 사람은 귀하의 동기화 데이터를 읽고 변조할 수 있습니다.";
+"SyncAddDeviceWordsDescription" = "기기에서 설정 패널에 있는 동기화로 이동한 다음 \"%@\" 버튼을 탭하고 아래 표시된 동기화 체인 코드 단어를 입력합니다.\n\n 이 코드는 일종의 비밀번호로 취급하십시오. 이 코드를 확보한 사람은 귀하의 동기화 데이터를 읽고 변조할 수 있습니다.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "코드 단어 입력";
@@ -1089,6 +1146,9 @@
 
 /* Message spoken by VoiceOver saying the position of the single currently visible tab in Tabs Tray, along with the total number of tabs. E.g. \"Tab 2 of 5\" says that tab 2 is visible (and is the only visible tab), out of 5 tabs total. */
 "TabTraySingleTabPositionFormatVoiceOverText" = "탭 %1$@ / %2$@";
+
+/* No comment provided by engineer. */
+"TermsOfService" = "서비스 약관";
 
 /* Show Brave Browser TOS page from the Privacy section in the settings. */
 "TermsOfUse" = "이용 약관";

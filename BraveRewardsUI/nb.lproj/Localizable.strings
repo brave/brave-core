@@ -113,6 +113,9 @@
 "BraveRewardsCheckAgain" = "Oppdater-status";
 
 /* No comment provided by engineer. */
+"BraveRewardsConnectedPublisherDisclaimer" = "Denne Brave-verifisert skaperen har ennå ikke konfigurert kontoen deres til å motta bidrag fra Brave-brukere. Eventuelle tips du sender vil forbli i lommeboken til de fullfører denne prosessen.";
+
+/* No comment provided by engineer. */
 "BraveRewardsContributingToUnverifiedSites" = "Du har angitt %@ for skapere som ennå ikke har meldt seg på for å motta bidrag. Nettleseren din vil fortsette å prøve å bidra til de bekrefter, eller til 90 dager har gått.";
 
 /* No comment provided by engineer. */
@@ -242,9 +245,6 @@
 "BraveRewardsMinimumVisitsChoices2" = "10 besøk";
 
 /* No comment provided by engineer. */
-"BraveRewardsMonthlyTippingNextDate" = "Neste månedlige tips-dato";
-
-/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "Månedlig tips";
 
 /* No comment provided by engineer. */
@@ -323,10 +323,13 @@
 "BraveRewardsSettingsAdsTitle" = "Ads";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAutoContributeBody" = "En automatisk måte å støtte utgivere og innholdsskapere på. Angi en månedlig betaling og surf normalt. Nettstedene du besøker mottar bidragene dine automatisk, basert på din oppmerksomhet målt av Brave.";
+"BraveRewardsSettingsAutoContributeBody" = "En automatisk måte å støtte utgivere og innholdsskapere på. Angi en månedlig betaling og surf på nettet som normalt. De Brave-verifiserte nettstedene du besøker vil motta bidragene dine automatisk, basert på din oppmerksomhet som målt av Brave.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAutoContributeTitle" = "Auto-bidra";
+
+/* The maximum amount of BAT to auto-contribute. E.g. 'Up to 20.0 BAT' */
+"BraveRewardsSettingsAutoContributeUpToValue" = "Opptil %@";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsDisabledBody1" = "Med den gamle nettleseren din, har du betalt for å surfe på nettet ved å se annonser. Du brukte din verdifulle tid på å laste ned inntrengende annonseteknologi som overførte dine verdifulle private data til annonsører — uten ditt samtykke.";
@@ -348,9 +351,6 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsGrantTextJapan" = "Et gratis poeng-tilskudd er tilgjengelig.";
-
-/* No comment provided by engineer. */
-"BraveRewardsSettingsTipsBody" = "Tips innholdsskapere direkte mens du surfer. Du kan også konfigurere regelmessig månedlig tips slik at du kan støtte sider kontinuerlig.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsTipsTitle" = "Tips";
@@ -384,6 +384,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingMonthlyTitle" = "Du sender automatisk et tips til:";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingNotConnectedDisclaimer" = "MERK: Denne Brave-verifiserte skaperen har ennå ikke registrert seg for å motta bidrag fra Brave-brukere. Nettleseren din vil prøve å bidra til de bekrefter det, eller til det har gått 90 dager.";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingNotEnoughPoints" = "Ikke nok poeng.";
@@ -464,13 +467,34 @@
 "BraveRewardsWalletHeaderTitleJapan" = "Saldoen din";
 
 /* No comment provided by engineer. */
+"BraveRewardsWithdrawFunds" = "Foreta uttak";
+
+/* No comment provided by engineer. */
 "Cancel" = "Avbryt";
 
 /* No comment provided by engineer. */
 "CLAIM" = "KREV";
 
+/* Message that is displayed when user disables ads */
+"DisabledAdsMessage" = "Inntekter utbetales hver måned. Angi ønsket hyppighet for å øke eller redusere inntektene.";
+
+/* Message that is displayed when user disables auto-contribute */
+"DisabledAutoContributeMessage" = "Gi skaperne belønning for innholdet du elsker. Din månedlige betaling blir distribuert over nettstedene du besøker.";
+
 /* No comment provided by engineer. */
 "DisclaimerInformation" = "Ved å klikke på «Bli med i Rewards» angir du at du har lest og godtatt vilkårene for bruk og personvernerklæringen.";
+
+/* The copy the user sees when they are viewing an empty Auto-Contribute exclusion list. */
+"EmptyExclusionList" = "Ingen utgivere utelukket";
+
+/* The swipe-to-delete title when restoring a single item in the Auto-Contribute exclusion list */
+"ExclusionListRestore" = "Gjenopprett";
+
+/* The button that restores all excluded publishers while on the Auto-Contribute excluson list */
+"ExclusionListRestoreAllButton" = "Gjenopprett nettsteder";
+
+/* The title of the screen that shows a list of excluded sites for Auto-Contribute */
+"ExclusionListTitle" = "Ekskluderte nettsteder";
 
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "Trykk her for å få mer informasjon.";
@@ -567,6 +591,69 @@
 
 /* Prompt to turn on Ads via notification */
 "TurnOnAds" = "Slå på annonser";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsAccountButtonTitle" = "Gå til min Uphold-konto";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsCompleteVerificationButtonTitle" = "Fullfør verifisering av lommebok";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsDisconnectButtonTitle" = "Koble fra Brave Rewards";
+
+/* The title in the navigation bar shown when you click on a connected or verified user wallet button */
+"UserWalletDetailsTitle" = "Brukerlommebok";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsVerified" = "Bekreftet";
+
+/* No comment provided by engineer. */
+"UserWalletDisconnectedButtonTitle" = "Frakoblet";
+
+/* The message you receive when your user wallet has been verified (%@ = The user wallet name, such as \"Uphold\") */
+"UserWalletNotificationNowVerifiedBody" = "Gratulerer! Din %@ lommebok ble bekreftet og er klar til å legge til og ta ut midler.";
+
+/* The message you receive when your user wallet has been verified */
+"UserWalletNotificationNowVerifiedTitle" = "Lommeboken din er verifisert!";
+
+/* The message you receive when your user wallet is unreachable/disconnected */
+"UserWalletNotificationWalletDisconnectedBody" = "Ingen bekymringer. Dette kan skje av en rekke sikkerhetsgrunner. Å koble til lommeboken på nytt, vil løse dette problemet.";
+
+/* The message you receive when your user wallet is unreachable/disconnected */
+"UserWalletNotificationWalletDisconnectedTitle" = "Auda. Lommeboken din kunne ikke nås.";
+
+/* The first benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsOne" = "Ta ut BAT som du tjener fra å vise annonser som respekterer personvern";
+
+/* The third benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsThree" = "Ta ut BAT som du kanskje tidligere har lagt til i din Brave Rewards-lommebok";
+
+/* The title above the list of benefits after verifying */
+"UserWalletOnboardingBenefitsTitle" = "Men hvis du bekrefter, kan du ...";
+
+/* The second benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsTwo" = "Kjøp ekstra BAT med kredittkort og andre kilder";
+
+/* No comment provided by engineer. */
+"UserWalletOnboardingPoweredByUphold" = "Vår lommeboktjeneste er levert av Uphold";
+
+/* The word that will be bolded in UserWalletOnboardingPoweredByUphold */
+"UserWalletOnboardingPoweredByUpholdBoldedWord" = "Uphold";
+
+/* The disclosure about Uphold at the bottom of the screen */
+"UserWalletOnboardingUpholdDisclosure" = "Uphold kan kreve at du bekrefter identiteten din basert på forespurte tjenester.\n\nBrave Software Inc. behandler, lagrer eller får ikke tilgang til noen av personopplysningene du gir til Uphold når du oppretter en konto hos dem.";
+
+/* The button that triggers the Uphold auth process */
+"UserWalletOnboardingVerifyButtonTitle" = "Bekreft lommebok";
+
+/* The title of the user wallet onboarding screen */
+"UserWalletTitle" = "Det er valgfritt å bekrefte lommeboken";
+
+/* No comment provided by engineer. */
+"UserWalletUnverifiedButtonTitle" = "Bekreft lommebok";
+
+/* No comment provided by engineer. */
+"UserWalletVerifiedButtonTitle" = "Lommebok bekreftet";
 
 /* No comment provided by engineer. */
 "WalletCreationErrorBody" = "Noe gikk galt da du opprettet lommeboken. Prøv på nytt.";

@@ -97,6 +97,24 @@
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Увімкнути пошукові підказки?";
 
+/* No comment provided by engineer. */
+"UserWalletBATNotAllowedLearnMore" = "Докладніше";
+
+/* No comment provided by engineer. */
+"UserWalletBATNotAllowedMessage" = "Наразі кошти в BAT не підтримуються в регіоні, в якому було відкрито ваш рахунок. Перевірте наявність сервісу пізніше.";
+
+/* No comment provided by engineer. */
+"UserWalletCloseButtonTitle" = "Закрити";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsDisconnectButtonTitle" = "Не підтримується в цьому регіоні";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorMessage" = "Під час входу до акаунту Uphold сталася помилка. Спробуйте пізніше";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorTitle" = "Сталася помилка";
+
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Так";
 

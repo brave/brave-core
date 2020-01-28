@@ -10,6 +10,9 @@
 /* Title for the alert modal when a security key with PIN is inserted. */
 "pinTitle" = "PIN 확인 필요";
 
+/* Message for selecting security key. */
+"selectKey" = "보안 키 스캔 또는 삽입 -";
+
 /* Text for touch key modal button. */
 "touchKeyCancel" = "취소";
 

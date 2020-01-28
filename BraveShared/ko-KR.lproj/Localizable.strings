@@ -97,6 +97,24 @@
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "추천 검색어를 사용하시겠습니까?";
 
+/* No comment provided by engineer. */
+"UserWalletBATNotAllowedLearnMore" = "자세히 알아보기";
+
+/* No comment provided by engineer. */
+"UserWalletBATNotAllowedMessage" = "계정이 개설된 위치를 기반으로 판단한 귀하의 거주 지역에서는 현재 BAT가 지원되지 않습니다. 나중에 사용 가능 여부를 다시 확인해주세요.";
+
+/* No comment provided by engineer. */
+"UserWalletCloseButtonTitle" = "닫기";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsDisconnectButtonTitle" = "지원되지 않는 지역";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorMessage" = "Uphold 계정에 로그인하는 중에 문제가 발생했습니다. 다시 시도하세요.";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorTitle" = "문제가 발생했습니다.";
+
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "예";
 

@@ -113,6 +113,9 @@
 "BraveRewardsCheckAgain" = "Оновити статус";
 
 /* No comment provided by engineer. */
+"BraveRewardsConnectedPublisherDisclaimer" = "Цей перевірений автор Brave ще не налаштував акаунт, щоб отримувати платежі від користувачів Brave. Надіслані платежі залишаться у вашому гаманці, доки автор не завершить налаштування.";
+
+/* No comment provided by engineer. */
 "BraveRewardsContributingToUnverifiedSites" = "Ви призначили %@ для авторів, які ще не зареєструвалися для отримання внесків. Спроби зробити внесок виконуватимуться в браузері, доки ці автори не пройдуть перевірку особи або доки не мине 90 днів.";
 
 /* No comment provided by engineer. */
@@ -242,9 +245,6 @@
 "BraveRewardsMinimumVisitsChoices2" = "10 відвідувань";
 
 /* No comment provided by engineer. */
-"BraveRewardsMonthlyTippingNextDate" = "Дата наступного щомісячного платежу";
-
-/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "Щомісячні платежі";
 
 /* No comment provided by engineer. */
@@ -323,10 +323,13 @@
 "BraveRewardsSettingsAdsTitle" = "Ads";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAutoContributeBody" = "Автоматичний спосіб підтримки осіб, що публікують контент, й авторів. Налаштуйте щомісячний платіж і користуйтесь Інтернетом як зазвичай. Cайти, які ви відвідуєте, автоматично отримуватимуть від вас внески залежно від того, скільки уваги ви їм приділили (за підрахунками Brave).";
+"BraveRewardsSettingsAutoContributeBody" = "Автоматичний спосіб підтримувати осіб, що публікують контент, й авторів. Налаштуйте щомісячний платіж і користуйтесь Інтернетом як зазвичай. Перевірені сайти Brave, які ви відвідуєте, автоматично отримуватимуть від вас внески залежно від того, скільки уваги ви їм приділили (за підрахунками Brave).";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAutoContributeTitle" = "Автовнесок";
+
+/* The maximum amount of BAT to auto-contribute. E.g. 'Up to 20.0 BAT' */
+"BraveRewardsSettingsAutoContributeUpToValue" = "До %@";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsDisabledBody1" = "У старому браузері ви платили за Інтернет своєю увагою, переглядаючи рекламу. Ви витрачали свій цінний час на завантаження нав’язливої реклами, тоді як ваші особисті дані передавалися рекламодавцям без вашої згоди.";
@@ -348,9 +351,6 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsGrantTextJapan" = "Доступні безкоштовні бонусні бали.";
-
-/* No comment provided by engineer. */
-"BraveRewardsSettingsTipsBody" = "Допомагайте авторам, просто користуючись Інтернетом. Також ви можете налаштувати щомісячні платежі, щоб постійно підтримувати певні веб-сайти.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsTipsTitle" = "Платежі";
@@ -384,6 +384,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingMonthlyTitle" = "Особи, яким ви автоматично надсилаєте платежі:";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingNotConnectedDisclaimer" = "ПРИМІТКА: цей перевірений автор Brave ще не підтвердив особу, щоб отримувати платежі від користувачів Brave. Спроби зробити внесок виконуватимуться в браузері, доки цей автор не пройде перевірку особи або доки не мине 90 днів.";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingNotEnoughPoints" = "Недостатньо балів.";
@@ -464,13 +467,34 @@
 "BraveRewardsWalletHeaderTitleJapan" = "Ваш баланс";
 
 /* No comment provided by engineer. */
+"BraveRewardsWithdrawFunds" = "Отримати кошти";
+
+/* No comment provided by engineer. */
 "Cancel" = "Скасувати";
 
 /* No comment provided by engineer. */
 "CLAIM" = "ОТРИМАТИ";
 
+/* Message that is displayed when user disables ads */
+"DisabledAdsMessage" = "Зароблені кошти виплачуються щомісяця. Ви можете встановити бажану частоту виплат, щоб збільшити або зменшити заробіток.";
+
+/* Message that is displayed when user disables auto-contribute */
+"DisabledAutoContributeMessage" = "Винагороджуйте авторів вмісту, що вам подобається. Ваш місячний платіж буде розподілено між сайтами, які ви відвідуєте.";
+
 /* No comment provided by engineer. */
 "DisclaimerInformation" = "Натискаючи «Приєднатися до програми Rewards», ви підтверджуєте, що прочитали та погоджуєтеся з Умовами надання послуг та Політикою конфіденційності.";
+
+/* The copy the user sees when they are viewing an empty Auto-Contribute exclusion list. */
+"EmptyExclusionList" = "Жодного користувача, що публікує вміст, не додано до списку винятків";
+
+/* The swipe-to-delete title when restoring a single item in the Auto-Contribute exclusion list */
+"ExclusionListRestore" = "Відновити";
+
+/* The button that restores all excluded publishers while on the Auto-Contribute excluson list */
+"ExclusionListRestoreAllButton" = "Відновити всі сайти";
+
+/* The title of the screen that shows a list of excluded sites for Auto-Contribute */
+"ExclusionListTitle" = "Сайти, що додано до винятків";
 
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "Торкніться тут, щоб дізнатися більше.";
@@ -567,6 +591,69 @@
 
 /* Prompt to turn on Ads via notification */
 "TurnOnAds" = "Увімкнути сервіс Ads";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsAccountButtonTitle" = "Перейти в акаунт Uphold";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsCompleteVerificationButtonTitle" = "Завершити підтвердження гаманця";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsDisconnectButtonTitle" = "Вимкнути Brave Rewards";
+
+/* The title in the navigation bar shown when you click on a connected or verified user wallet button */
+"UserWalletDetailsTitle" = "Гаманець користувача";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsVerified" = "Підтверджено";
+
+/* No comment provided by engineer. */
+"UserWalletDisconnectedButtonTitle" = "Вимкнено";
+
+/* The message you receive when your user wallet has been verified (%@ = The user wallet name, such as \"Uphold\") */
+"UserWalletNotificationNowVerifiedBody" = "Вітаємо! Гаманець %@ підтверджено. Тепер ви можете додавати на нього кошти й забирати їх.";
+
+/* The message you receive when your user wallet has been verified */
+"UserWalletNotificationNowVerifiedTitle" = "Гаманець підтверджено!";
+
+/* The message you receive when your user wallet is unreachable/disconnected */
+"UserWalletNotificationWalletDisconnectedBody" = "Не хвилюйтеся. Існує багато ситуацій, пов’язаних із захистом безпеки, що можуть спричинити цю помилку. Щоб усунути її, повторно підключіть гаманець.";
+
+/* The message you receive when your user wallet is unreachable/disconnected */
+"UserWalletNotificationWalletDisconnectedTitle" = "Помилка. Гаманець недоступний.";
+
+/* The first benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsOne" = "Отримуйте кошти в BAT, які ви заробили за перегляд реклами, що не порушує вашу конфіденційність";
+
+/* The third benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsThree" = "Отримуйте кошти в BAT, які ви раніше додали до гаманця Brave Rewards";
+
+/* The title above the list of benefits after verifying */
+"UserWalletOnboardingBenefitsTitle" = "Що ви зможете робити після підтвердження";
+
+/* The second benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsTwo" = "Купуйте додаткові кошти в BAT, використовуючи кредитну картку чи інші способи";
+
+/* No comment provided by engineer. */
+"UserWalletOnboardingPoweredByUphold" = "Сервіс гаманців надано компанією Uphold";
+
+/* The word that will be bolded in UserWalletOnboardingPoweredByUphold */
+"UserWalletOnboardingPoweredByUpholdBoldedWord" = "Uphold";
+
+/* The disclosure about Uphold at the bottom of the screen */
+"UserWalletOnboardingUpholdDisclosure" = "Залежно від сервісів, наведених у запиті, можливо, вам потрібно буде підтвердити вашу особу в Uphold.\n\nКомпанія Brave Software Inc. не обробляє, не зберігає та не має доступу до ваших персональних даних, які ви надавали компанії Uphold під час створення рахунку.";
+
+/* The button that triggers the Uphold auth process */
+"UserWalletOnboardingVerifyButtonTitle" = "Підтвердити гаманець";
+
+/* The title of the user wallet onboarding screen */
+"UserWalletTitle" = "Підтверджувати гаманець необов’язково";
+
+/* No comment provided by engineer. */
+"UserWalletUnverifiedButtonTitle" = "Підтвердити гаманець";
+
+/* No comment provided by engineer. */
+"UserWalletVerifiedButtonTitle" = "Гаманець підтверджено";
 
 /* No comment provided by engineer. */
 "WalletCreationErrorBody" = "Сталася помилка. Спробуйте ще раз.";

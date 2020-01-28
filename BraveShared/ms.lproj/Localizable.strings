@@ -97,6 +97,24 @@
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Hidupkan cadangan carian?";
 
+/* No comment provided by engineer. */
+"UserWalletBATNotAllowedLearnMore" = "Ketahui lebih lanjut";
+
+/* No comment provided by engineer. */
+"UserWalletBATNotAllowedMessage" = "BAT tidak disokong di rantau anda pada masa ini berdasarkan lokasi akaun anda dibuka. Semak semula kemudian untuk ketersediaan.";
+
+/* No comment provided by engineer. */
+"UserWalletCloseButtonTitle" = "Tutup";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsDisconnectButtonTitle" = "Rantau tidak disokong";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorMessage" = "Terdapat masalah untuk log masuk ke akaun Uphold anda. Sila cuba lagi";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorTitle" = "Maaf, sesuatu tidak kena";
+
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Ya";
 

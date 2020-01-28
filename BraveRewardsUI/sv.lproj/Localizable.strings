@@ -113,6 +113,9 @@
 "BraveRewardsCheckAgain" = "Uppdatera status";
 
 /* No comment provided by engineer. */
+"BraveRewardsConnectedPublisherDisclaimer" = "Denna modiga verifierade skaparen har ännu inte konfigurerat sitt konto för att få bidrag från modiga användare. Alla tips som du skickar kommer att finnas kvar i din plånbok tills de har slutfört denna process.";
+
+/* No comment provided by engineer. */
 "BraveRewardsContributingToUnverifiedSites" = "Du har satt @% åt sidan till skapare som inte har anmält sig för att ta emot donationer. Din webbläsare kommer fortsätta att försöka donera tills de bekräftar, eller tills 90 dagar har passerat.";
 
 /* No comment provided by engineer. */
@@ -242,9 +245,6 @@
 "BraveRewardsMinimumVisitsChoices2" = "10 besök";
 
 /* No comment provided by engineer. */
-"BraveRewardsMonthlyTippingNextDate" = "Nästa månatliga dricksdatum";
-
-/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "Månatlig dricks";
 
 /* No comment provided by engineer. */
@@ -323,10 +323,13 @@
 "BraveRewardsSettingsAdsTitle" = "Ads";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAutoContributeBody" = "Ett automatiskt sätt att stötta utgivare och innehållsskapare. Ställ in en månatlig betalning och surfa som vanligt. Sajterna du besöker får donationer baserade på din uppmärksamhet automatiskt.";
+"BraveRewardsSettingsAutoContributeBody" = "Ett automatiskt sätt att stödja utgivare och innehållsskapare. Ställ in en månatlig betalning och välj normalt. De Brave verifierade webbplatserna som du besöker får dina bidrag automatiskt, baserat på din uppmärksamhet som är uppmätt av Brave.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAutoContributeTitle" = "Donera automatiskt";
+
+/* The maximum amount of BAT to auto-contribute. E.g. 'Up to 20.0 BAT' */
+"BraveRewardsSettingsAutoContributeUpToValue" = "Upp till %@";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsDisabledBody1" = "I din gamla webbläsare betalade du för att surfa på nätet med din dyrbara tid. Bara genom att vara på nätet laddade du ner snokande annonsteknologi som skickade uppgifter om dig till annonsörer, utan ditt medtycke.";
@@ -348,9 +351,6 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsGrantTextJapan" = "Ett gratis poängbidrag är tillgängligt.";
-
-/* No comment provided by engineer. */
-"BraveRewardsSettingsTipsBody" = "Dricksa innehållsskapare direkt medan du surfar. Du kan även ställa in dricks som betalas automatiskt månatligen för att ge ditt ständiga stöd till sajter.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsTipsTitle" = "Dricks";
@@ -384,6 +384,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingMonthlyTitle" = "Du dricksar automatiskt till:";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingNotConnectedDisclaimer" = "NOTERA: Denna Brave verifierade skaparen har ännu inte registrerat sig för att få bidrag från Brave användare. Din webbläsare fortsätter att försöka bidra tills de är verifierade, eller tills 90 dagar har gått.";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingNotEnoughPoints" = "För lite poäng.";
@@ -464,13 +467,34 @@
 "BraveRewardsWalletHeaderTitleJapan" = "Ditt saldo";
 
 /* No comment provided by engineer. */
+"BraveRewardsWithdrawFunds" = "Ta ut tillgångar";
+
+/* No comment provided by engineer. */
 "Cancel" = "Avbryt";
 
 /* No comment provided by engineer. */
 "CLAIM" = "HÄMTA";
 
+/* Message that is displayed when user disables ads */
+"DisabledAdsMessage" = "Intäkterna betalas varje månad. Ställ in önskad frekvens för att öka eller minska intäkterna.";
+
+/* Message that is displayed when user disables auto-contribute */
+"DisabledAutoContributeMessage" = "Belöna skaparna för det innehåll som du älskar. Din månatliga betalning distribueras över webbplatserna som du besöker.";
+
 /* No comment provided by engineer. */
 "DisclaimerInformation" = "Genom att klicka på \"Gå med i Rewards\" intygar du att du har läst och godkänner tjänstevillkoren och integritetspolicyn.";
+
+/* The copy the user sees when they are viewing an empty Auto-Contribute exclusion list. */
+"EmptyExclusionList" = "Inga utgivare exkluderas";
+
+/* The swipe-to-delete title when restoring a single item in the Auto-Contribute exclusion list */
+"ExclusionListRestore" = "Återställ";
+
+/* The button that restores all excluded publishers while on the Auto-Contribute excluson list */
+"ExclusionListRestoreAllButton" = "Återställ alla sidor";
+
+/* The title of the screen that shows a list of excluded sites for Auto-Contribute */
+"ExclusionListTitle" = "Exkludera sidor";
 
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "Tryck här för att läsa mer.";
@@ -567,6 +591,69 @@
 
 /* Prompt to turn on Ads via notification */
 "TurnOnAds" = "Aktivera annonser";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsAccountButtonTitle" = "Gå till mitt Uphold konto";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsCompleteVerificationButtonTitle" = "Komplett verifiering av plånböcker";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsDisconnectButtonTitle" = "Koppla från Brave Rewards";
+
+/* The title in the navigation bar shown when you click on a connected or verified user wallet button */
+"UserWalletDetailsTitle" = "Användareplånbok";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsVerified" = "Verifierad";
+
+/* No comment provided by engineer. */
+"UserWalletDisconnectedButtonTitle" = "Frånkopplad";
+
+/* The message you receive when your user wallet has been verified (%@ = The user wallet name, such as \"Uphold\") */
+"UserWalletNotificationNowVerifiedBody" = "Gratulerar! Din %@ plånbok verifierades framgångsrikt och redo att lägga till och ta ut pengar.";
+
+/* The message you receive when your user wallet has been verified */
+"UserWalletNotificationNowVerifiedTitle" = "Din plånbok är verifierad!";
+
+/* The message you receive when your user wallet is unreachable/disconnected */
+"UserWalletNotificationWalletDisconnectedBody" = "Inga problem. Detta kan hända av olika säkerhetsskäl. Om du ansluter din plånbok igen löser du problemet.";
+
+/* The message you receive when your user wallet is unreachable/disconnected */
+"UserWalletNotificationWalletDisconnectedTitle" = "Åh nej. Din plånbok kan inte nås.";
+
+/* The first benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsOne" = "Ta ut BAT som du tjänar genom att visa annonser som respekterar sekretess";
+
+/* The third benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsThree" = "Ta ut BAT som du tidigare har lagt till i din Brave Rewards plånbok";
+
+/* The title above the list of benefits after verifying */
+"UserWalletOnboardingBenefitsTitle" = "Men om du verifierar, kan du...";
+
+/* The second benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsTwo" = "Köp ytterligare BAT med kreditkort och andra källor";
+
+/* No comment provided by engineer. */
+"UserWalletOnboardingPoweredByUphold" = "Vår plånbokstjänst tillhandahålls av Uphold";
+
+/* The word that will be bolded in UserWalletOnboardingPoweredByUphold */
+"UserWalletOnboardingPoweredByUpholdBoldedWord" = "Uphold";
+
+/* The disclosure about Uphold at the bottom of the screen */
+"UserWalletOnboardingUpholdDisclosure" = "Uphold kan kräva att du verifierar din identitet baserat på begärda tjänster.\n\nBrave Software Inc. behandlar, lagrar eller får inte tillgång till någon av de personuppgifter som du tillhandahåller till Uphold när du skapar ett konto med dem.";
+
+/* The button that triggers the Uphold auth process */
+"UserWalletOnboardingVerifyButtonTitle" = "Verifiera plånbok";
+
+/* The title of the user wallet onboarding screen */
+"UserWalletTitle" = "Det är valfritt att verifiera din plånbok";
+
+/* No comment provided by engineer. */
+"UserWalletUnverifiedButtonTitle" = "Verifiera plånbok";
+
+/* No comment provided by engineer. */
+"UserWalletVerifiedButtonTitle" = "Plånbok verifierad";
 
 /* No comment provided by engineer. */
 "WalletCreationErrorBody" = "Hoppsan! Någonting gick fel. Försök igen.";

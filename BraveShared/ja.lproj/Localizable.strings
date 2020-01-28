@@ -97,6 +97,24 @@
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "検索候補をオンにしますか？";
 
+/* No comment provided by engineer. */
+"UserWalletBATNotAllowedLearnMore" = "以下について詳しく";
+
+/* No comment provided by engineer. */
+"UserWalletBATNotAllowedMessage" = "BATはお客様がアカウントを作成された地域では現在サポートされていません。また時間をおいてステータスを確認して見てください。";
+
+/* No comment provided by engineer. */
+"UserWalletCloseButtonTitle" = "閉じる";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsDisconnectButtonTitle" = "未対応地域";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorMessage" = "Upholdのアカウントにログインする際に問題が発生しました。後ほど再度お試しください。";
+
+/* No comment provided by engineer. */
+"UserWalletGenericErrorTitle" = "申し訳ございません、うまくいきませんでした。";
+
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "はい";
 

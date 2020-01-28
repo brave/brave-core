@@ -113,6 +113,9 @@
 "BraveRewardsCheckAgain" = "刷新状态";
 
 /* No comment provided by engineer. */
+"BraveRewardsConnectedPublisherDisclaimer" = "该 Brave 认证的创作者尚未配置用于接收 Brave 用户捐赠的账户。您发送的所有酬谢费都会保留在您的钱包中，直到他们完成配置。";
+
+/* No comment provided by engineer. */
 "BraveRewardsContributingToUnverifiedSites" = "您已将 %@ 指定给尚未注册要接收捐款的创建者。您的浏览器会继续尝试进行捐款，直到他们通过验证或直到90天为止。";
 
 /* No comment provided by engineer. */
@@ -242,9 +245,6 @@
 "BraveRewardsMinimumVisitsChoices2" = "访问 10 次";
 
 /* No comment provided by engineer. */
-"BraveRewardsMonthlyTippingNextDate" = "下个月的酬谢费发送日期";
-
-/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "每月酬谢费";
 
 /* No comment provided by engineer. */
@@ -323,10 +323,13 @@
 "BraveRewardsSettingsAdsTitle" = "Ads";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAutoContributeBody" = "一种用来自动支持发布者和内容创建者的方法。设置每月付款并正常浏览。您访问的网站会根据 Brave 测量出的关注度自动获得您的捐款。";
+"BraveRewardsSettingsAutoContributeBody" = "一种用来自动支持发布者和内容创作者的方法。设置每月付款并正常浏览。经 Brave 认证的网站会根据 Brave 测量出的关注度自动获得您的捐款。";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAutoContributeTitle" = "自动捐款";
+
+/* The maximum amount of BAT to auto-contribute. E.g. 'Up to 20.0 BAT' */
+"BraveRewardsSettingsAutoContributeUpToValue" = "最高 %@";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsDisabledBody1" = "使用旧的浏览器时，您需要付费浏览网页并集中注意力来查看广告。您花费了宝贵的时间来下载侵入式广告技术（这种技术会在未经您的同意的情况下将宝贵的私人数据传输给广告商）。";
@@ -348,9 +351,6 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsGrantTextJapan" = "免费赠予的积分现已可用。";
-
-/* No comment provided by engineer. */
-"BraveRewardsSettingsTipsBody" = "可在浏览时直接打赏内容创建者。您还可以设置每月定期打赏，以便可以持续支持网站。";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsTipsTitle" = "酬谢费";
@@ -384,6 +384,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingMonthlyTitle" = "您会自动将酬谢费发送给：";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingNotConnectedDisclaimer" = "注意：该 Brave 认证的创作者尚未注册用于接收 Brave 用户的捐赠。您的浏览器会继续尝试捐款，直到他们通过验证或直到 90 天为止。";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingNotEnoughPoints" = "积分不足。";
@@ -464,13 +467,34 @@
 "BraveRewardsWalletHeaderTitleJapan" = "您的余额";
 
 /* No comment provided by engineer. */
+"BraveRewardsWithdrawFunds" = "资金提现";
+
+/* No comment provided by engineer. */
 "Cancel" = "取消";
 
 /* No comment provided by engineer. */
 "CLAIM" = "领取";
 
+/* Message that is displayed when user disables ads */
+"DisabledAdsMessage" = "收入按月支付。设置偏好频率，提高或减少收入。";
+
+/* Message that is displayed when user disables auto-contribute */
+"DisabledAutoContributeMessage" = "付款打赏您喜欢的内容创作者。您的每月付款会在您访问的网站上分配。";
+
 /* No comment provided by engineer. */
 "DisclaimerInformation" = "点击“加入 Rewards”，即表示您已阅读并同意此服务条款和隐私政策。";
+
+/* The copy the user sees when they are viewing an empty Auto-Contribute exclusion list. */
+"EmptyExclusionList" = "没有排除发布者";
+
+/* The swipe-to-delete title when restoring a single item in the Auto-Contribute exclusion list */
+"ExclusionListRestore" = "恢复";
+
+/* The button that restores all excluded publishers while on the Auto-Contribute excluson list */
+"ExclusionListRestoreAllButton" = "恢复所有站点";
+
+/* The title of the screen that shows a list of excluded sites for Auto-Contribute */
+"ExclusionListTitle" = "已排除站点";
 
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "轻击这里了解更多信息。";
@@ -567,6 +591,69 @@
 
 /* Prompt to turn on Ads via notification */
 "TurnOnAds" = "开启广告";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsAccountButtonTitle" = "转至我的 Uphold 账户";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsCompleteVerificationButtonTitle" = "完成钱包验证";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsDisconnectButtonTitle" = "断开 Brave Rewards 关联";
+
+/* The title in the navigation bar shown when you click on a connected or verified user wallet button */
+"UserWalletDetailsTitle" = "用户钱包";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsVerified" = "已验证";
+
+/* No comment provided by engineer. */
+"UserWalletDisconnectedButtonTitle" = "已断开关联";
+
+/* The message you receive when your user wallet has been verified (%@ = The user wallet name, such as \"Uphold\") */
+"UserWalletNotificationNowVerifiedBody" = "恭喜！您的 %@ 钱包已成功验证，可以添加和提取资金了。";
+
+/* The message you receive when your user wallet has been verified */
+"UserWalletNotificationNowVerifiedTitle" = "您的钱包已验证！";
+
+/* The message you receive when your user wallet is unreachable/disconnected */
+"UserWalletNotificationWalletDisconnectedBody" = "别担心。这可能是由于一系列安全原因产生的。重新关联钱包可解决该问题。";
+
+/* The message you receive when your user wallet is unreachable/disconnected */
+"UserWalletNotificationWalletDisconnectedTitle" = "哎呀。您的钱包无法连接。";
+
+/* The first benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsOne" = "将通过查看尊重隐私之广告赚取的 BAT 提现";
+
+/* The third benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsThree" = "将您先前添加至 Brave Rewards 钱包的 BAT 提现";
+
+/* The title above the list of benefits after verifying */
+"UserWalletOnboardingBenefitsTitle" = "验证后，您就可以...";
+
+/* The second benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsTwo" = "使用信用卡和其他资源购买额外的 BAT";
+
+/* No comment provided by engineer. */
+"UserWalletOnboardingPoweredByUphold" = "我们的钱包服务由 Uphold 提供支持";
+
+/* The word that will be bolded in UserWalletOnboardingPoweredByUphold */
+"UserWalletOnboardingPoweredByUpholdBoldedWord" = "Uphold";
+
+/* The disclosure about Uphold at the bottom of the screen */
+"UserWalletOnboardingUpholdDisclosure" = "Uphold 可能要求您根据请求的服务验证您的身份。\n\n在您注册 Uphold 账户时，Brave Software Inc. 不会处理、存储或访问您向 Uphold 提供的任何个人信息。";
+
+/* The button that triggers the Uphold auth process */
+"UserWalletOnboardingVerifyButtonTitle" = "验证钱包";
+
+/* The title of the user wallet onboarding screen */
+"UserWalletTitle" = "验证钱包是可选操作";
+
+/* No comment provided by engineer. */
+"UserWalletUnverifiedButtonTitle" = "验证钱包";
+
+/* No comment provided by engineer. */
+"UserWalletVerifiedButtonTitle" = "钱包已验证";
 
 /* No comment provided by engineer. */
 "WalletCreationErrorBody" = "糟糕！出问题了。请再试一次。";

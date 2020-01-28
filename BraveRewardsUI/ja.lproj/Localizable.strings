@@ -113,6 +113,9 @@
 "BraveRewardsCheckAgain" = "ステータスを更新";
 
 /* No comment provided by engineer. */
+"BraveRewardsConnectedPublisherDisclaimer" = "Brave認証クリエイターは、Braveユーザーからの支援を受け取る設定が完了していません。クリエイターが設定が完了するまで、送られたチップはあなたのウォレット内に保留されます。";
+
+/* No comment provided by engineer. */
 "BraveRewardsContributingToUnverifiedSites" = "支援の受諾手続きを行なっていないクリエイターに %@を送信しました。クリエイターが手続きを完了するか、または90日間が経過するまで、ブラウザーにより支援の送信が継続されます。";
 
 /* No comment provided by engineer. */
@@ -242,9 +245,6 @@
 "BraveRewardsMinimumVisitsChoices2" = "訪問数: 10";
 
 /* No comment provided by engineer. */
-"BraveRewardsMonthlyTippingNextDate" = "次の毎月定期チップ支払日";
-
-/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "月々のチップ";
 
 /* No comment provided by engineer. */
@@ -328,6 +328,9 @@
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAutoContributeTitle" = "自動支援";
 
+/* The maximum amount of BAT to auto-contribute. E.g. 'Up to 20.0 BAT' */
+"BraveRewardsSettingsAutoContributeUpToValue" = "最大 %@BAT";
+
 /* No comment provided by engineer. */
 "BraveRewardsSettingsDisabledBody1" = "旧来のブラウザでは、 あなたの貴重なアテンションを広告に向けることでウェブ閲覧の支払いをしています。また不要な広告やスクリプトをダウンロードするためにあなたの貴重な時間を消費するだけでなく、個人情報を広告主へ送信しています — あなたの同意もなく。";
 
@@ -348,9 +351,6 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsGrantTextJapan" = "無料のポイントを受け取ることが可能です。";
-
-/* No comment provided by engineer. */
-"BraveRewardsSettingsTipsBody" = "コンテンツ制作者にチップを送りましょう。毎月定期的に支払われるチップを設定することで、継続的にサイトを支援することができます。";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsTipsTitle" = "チップ";
@@ -384,6 +384,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingMonthlyTitle" = "次の宛先に自動的にチップを送信しています: ";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingNotConnectedDisclaimer" = "注: このクリエイターは、まだBraveユーザーからの支援を受け取る登録を行っていません。クリエイター側の設定が完了するか、90日間が経過するまでチップの送信を継続します。";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingNotEnoughPoints" = "ポイントが不足しています。";
@@ -464,13 +467,34 @@
 "BraveRewardsWalletHeaderTitleJapan" = "残高";
 
 /* No comment provided by engineer. */
+"BraveRewardsWithdrawFunds" = "資金を引き出す";
+
+/* No comment provided by engineer. */
 "Cancel" = "キャンセル";
 
 /* No comment provided by engineer. */
 "CLAIM" = "受け取る";
 
+/* Message that is displayed when user disables ads */
+"DisabledAdsMessage" = "広告閲覧の報酬は毎月支払われます。広告頻度を設定すると連動して報酬額が増加/減少します。";
+
+/* Message that is displayed when user disables auto-contribute */
+"DisabledAutoContributeMessage" = "お気に入りのコンテンツクリエイターを応援しましょう。毎月設定された金額が訪れたサイトに分配されます。";
+
 /* No comment provided by engineer. */
 "DisclaimerInformation" = "「Brave Rewardsに参加」をクリックすると、利用規約とプライバシーポリシーに同意したと見なされます。";
+
+/* The copy the user sees when they are viewing an empty Auto-Contribute exclusion list. */
+"EmptyExclusionList" = "除外設定されたパブリッシャーはありません。";
+
+/* The swipe-to-delete title when restoring a single item in the Auto-Contribute exclusion list */
+"ExclusionListRestore" = "復元";
+
+/* The button that restores all excluded publishers while on the Auto-Contribute excluson list */
+"ExclusionListRestoreAllButton" = "全てのサイトを復元";
+
+/* The title of the screen that shows a list of excluded sites for Auto-Contribute */
+"ExclusionListTitle" = "除外サイト";
 
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "詳しくはこちら";
@@ -567,6 +591,69 @@
 
 /* Prompt to turn on Ads via notification */
 "TurnOnAds" = "Brave AdsをOnにする";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsAccountButtonTitle" = "Upholdのアカウントを確認する";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsCompleteVerificationButtonTitle" = "ウォレットの認証を完了する";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsDisconnectButtonTitle" = "Brave Rewardsとの接続を解除する";
+
+/* The title in the navigation bar shown when you click on a connected or verified user wallet button */
+"UserWalletDetailsTitle" = "ユーザウォレット";
+
+/* No comment provided by engineer. */
+"UserWalletDetailsVerified" = "認証済み";
+
+/* No comment provided by engineer. */
+"UserWalletDisconnectedButtonTitle" = "接続が解除された";
+
+/* The message you receive when your user wallet has been verified (%@ = The user wallet name, such as \"Uphold\") */
+"UserWalletNotificationNowVerifiedBody" = "おめでとうございます！ %@ウォレットは正常に認証され、資金を追加および引き出しする準備ができました。";
+
+/* The message you receive when your user wallet has been verified */
+"UserWalletNotificationNowVerifiedTitle" = "あなたのウォレットは認証されました！";
+
+/* The message you receive when your user wallet is unreachable/disconnected */
+"UserWalletNotificationWalletDisconnectedBody" = "ご心配なく。こちらはさまざまなセキュリティ上の理由で発生する可能性があります。 ウォレットを再接続すると問題が解決することがあります。";
+
+/* The message you receive when your user wallet is unreachable/disconnected */
+"UserWalletNotificationWalletDisconnectedTitle" = "おやっ、ウォレットに接続することができませんでした。";
+
+/* The first benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsOne" = "プライバシー重視方の広告を見て獲得したBATを引き出す。";
+
+/* The third benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsThree" = "以前Brave Rewardsウォレットに追加したBATを引き出す";
+
+/* The title above the list of benefits after verifying */
+"UserWalletOnboardingBenefitsTitle" = "認証を完了すれば、以下が可能になります";
+
+/* The second benefit of verifying with Uphold */
+"UserWalletOnboardingBenefitsTwo" = "追加のBATをクレジットカード等で購入する";
+
+/* No comment provided by engineer. */
+"UserWalletOnboardingPoweredByUphold" = "BraveのWallet機能はUpholdから提供されています";
+
+/* The word that will be bolded in UserWalletOnboardingPoweredByUphold */
+"UserWalletOnboardingPoweredByUpholdBoldedWord" = "Uphold";
+
+/* The disclosure about Uphold at the bottom of the screen */
+"UserWalletOnboardingUpholdDisclosure" = "Upholdは必要な機能に応じて本人確認を求めることがあります。\n\nBrave Software Inc.は本人確認のためにUpholdに提供されたあなたの個人情報を処理、保存、アクセスすることはありません。";
+
+/* The button that triggers the Uphold auth process */
+"UserWalletOnboardingVerifyButtonTitle" = "ウォレットを認証する";
+
+/* The title of the user wallet onboarding screen */
+"UserWalletTitle" = "ウォレットの認証は任意です";
+
+/* No comment provided by engineer. */
+"UserWalletUnverifiedButtonTitle" = "ウォレットを認証する";
+
+/* No comment provided by engineer. */
+"UserWalletVerifiedButtonTitle" = "認証済みウォレット";
 
 /* No comment provided by engineer. */
 "WalletCreationErrorBody" = "問題が発生しました。もう一度お試しください。";
