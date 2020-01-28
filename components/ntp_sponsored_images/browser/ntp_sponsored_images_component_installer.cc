@@ -24,7 +24,6 @@ using brave_component_updater::BraveOnDemandUpdater;
 namespace {
 
 constexpr char kNTPSponsoredImagesDisplayName[] = "NTP sponsored images";
-constexpr char kNTPSponsoredImagesBaseDirectory[] = "NTPSponsoredImages";
 constexpr size_t kHashSize = 32;
 
 class NTPSponsoredImagesComponentInstallerPolicy
@@ -54,6 +53,7 @@ class NTPSponsoredImagesComponentInstallerPolicy
   std::vector<std::string> GetMimeTypes() const override;
 
  private:
+  const std::string component_id_;
   OnComponentReadyCallback ready_callback_;
   uint8_t component_hash_[kHashSize];
 
@@ -63,7 +63,8 @@ class NTPSponsoredImagesComponentInstallerPolicy
 NTPSponsoredImagesComponentInstallerPolicy::
 NTPSponsoredImagesComponentInstallerPolicy(
     const RegionalComponentData& data, OnComponentReadyCallback callback)
-    : ready_callback_(callback) {
+    : component_id_(data.component_id),
+      ready_callback_(callback) {
   // Generate hash from public key.
   std::string decoded_public_key;
   base::Base64Decode(data.component_base64_public_key, &decoded_public_key);
@@ -107,7 +108,7 @@ bool NTPSponsoredImagesComponentInstallerPolicy::VerifyInstallation(
 
 base::FilePath NTPSponsoredImagesComponentInstallerPolicy::
     GetRelativeInstallDir() const {
-  return base::FilePath::FromUTF8Unsafe(kNTPSponsoredImagesBaseDirectory);
+  return base::FilePath::FromUTF8Unsafe(component_id_);
 }
 
 void NTPSponsoredImagesComponentInstallerPolicy::GetHash(
