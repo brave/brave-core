@@ -57,6 +57,9 @@ class BrowserViewController: UIViewController {
     fileprivate let alertStackView = UIStackView() // All content that appears above the footer should be added to this view. (Find In Page/SnackBars)
     fileprivate var findInPageBar: FindInPageBar?
     
+    // Single data source used for all favorites vcs
+    fileprivate let backgroundDataSource = NewTabPageBackgroundDataSource()
+    
     var loadQueue = Deferred<Void>()
 
     lazy var mailtoLinkHandler: MailtoLinkHandler = MailtoLinkHandler()
@@ -961,7 +964,8 @@ class BrowserViewController: UIViewController {
         if favoritesViewController == nil {
             let homePanelController = FavoritesViewController(profile: profile,
                                                               fromOverlay: !inline,
-                                                              rewards: rewards)
+                                                              rewards: rewards,
+                                                              backgroundDataSource: backgroundDataSource)
             homePanelController.delegate = self
             homePanelController.view.alpha = 0
             homePanelController.applyTheme(Theme.of(tabManager.selectedTab))

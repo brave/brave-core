@@ -50,7 +50,8 @@ class FavoritesViewController: UIViewController, Themeable {
         return view
     }()
     private let dataSource: FavoritesDataSource
-    
+    private let backgroundDataSource: NewTabPageBackgroundDataSource?
+
     private let braveShieldStatsView = BraveShieldStatsView(frame: CGRect.zero).then {
         $0.autoresizingMask = [.flexibleWidth]
     }
@@ -98,6 +99,11 @@ class FavoritesViewController: UIViewController, Themeable {
         }
     }
     
+    private lazy var imageSponsorButton = UIButton().then {
+        $0.adjustsImageWhenHighlighted = false
+        $0.addTarget(self, action: #selector(showSponsoredSite), for: .touchUpInside)
+    }
+    
     private let ddgLogo = UIImageView(image: #imageLiteral(resourceName: "duckduckgo"))
     
     private let ddgLabel = UILabel().then {
@@ -131,8 +137,24 @@ class FavoritesViewController: UIViewController, Themeable {
     
     // MARK: - Init/lifecycle
     
-    private var backgroundViewInfo: (imageView: UIImageView, portraitCenterConstraint: Constraint)?
-    private var backgroundImage = BackgroundImage()
+    private var backgroundViewInfo: (imageView: UIImageView, portraitCenterConstraint: Constraint, landscapeCenterConstraint: Constraint)?
+    private var background: (wallpaper: NewTabPageBackgroundDataSource.Background, sponsor: NewTabPageBackgroundDataSource.Sponsor?)? {
+        didSet {
+            let noSponsor = background?.sponsor == nil
+            
+            // Image Sponsor
+            imageSponsorButton.setImage(background?.sponsor?.logo.imageLiteral, for: .normal)
+            imageSponsorButton.isHidden = noSponsor
+            
+            // Image Credit
+            imageCreditButton.isHidden = true
+            if noSponsor, let name = background?.wallpaper.credit?.name {
+                let photoByText = String(format: Strings.photoBy, name)
+                imageCreditInternalButton.setTitle(photoByText, for: .normal)
+                imageCreditButton.isHidden = false
+            }
+        }
+    }
     
     private let profile: Profile
     
@@ -151,11 +173,12 @@ class FavoritesViewController: UIViewController, Themeable {
     private var rewards: BraveRewards?
     
     init(profile: Profile, dataSource: FavoritesDataSource = FavoritesDataSource(), fromOverlay: Bool,
-         rewards: BraveRewards?) {
+         rewards: BraveRewards?, backgroundDataSource: NewTabPageBackgroundDataSource?) {
         self.profile = profile
         self.dataSource = dataSource
         self.fromOverlay = fromOverlay
         self.rewards = rewards
+        self.backgroundDataSource = backgroundDataSource
         
         super.init(nibName: nil, bundle: nil)
         NotificationCenter.default.do {
@@ -191,7 +214,7 @@ class FavoritesViewController: UIViewController, Themeable {
         super.viewDidLoad()
         view.clipsToBounds = true
         
-        setupBackgroundImage()
+        resetBackgroundImage()
         // Setup gradient regardless of background image, can internalize to setup background image if only wanted for images.
         view.layer.addSublayer(gradientOverlay())
         
@@ -223,6 +246,7 @@ class FavoritesViewController: UIViewController, Themeable {
         collection.addSubview(favoritesOverflowButton)
         collection.addSubview(ddgButton)
         view.addSubview(imageCreditButton)
+        view.addSubview(imageSponsorButton)
         
         ddgButton.addSubview(ddgLogo)
         ddgButton.addSubview(ddgLabel)
@@ -269,14 +293,14 @@ class FavoritesViewController: UIViewController, Themeable {
         
         let adsAvailableInRegion = BraveAds.isCurrentLocaleSupported()
         
-        // Don't show notifications if background images are disabled.
-        guard let bgImageInfo = backgroundImage.info else { return nil }
+        if !Preferences.NewTabPage.backgroundImages.value { return nil }
         
+        let isSponsoredImage = background?.sponsor != nil
         let state = BrandedImageCalloutState
             .getState(rewardsEnabled: rewardsEnabled,
                       adsEnabled: adsEnabled,
                       adsAvailableInRegion: adsAvailableInRegion,
-                      isSponsoredImage: bgImageInfo.isSponsored)
+                      isSponsoredImage: isSponsoredImage)
         
         return .brandedImages(state: state)
     }
@@ -314,12 +338,11 @@ class FavoritesViewController: UIViewController, Themeable {
         
         guard let viewController = vc else { return }
 
-        ntpNotificationShowing = true
-        addChild(viewController)
-        view.addSubview(viewController.view)
-        viewController.view.snp.remakeConstraints {
-            $0.right.left.equalToSuperview()
-            $0.bottom.equalTo(view)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
+            guard let self = self else { return }
+            self.ntpNotificationShowing = true
+            self.addChild(viewController)
+            self.view.addSubview(viewController.view)
         }
     }
     
@@ -347,6 +370,11 @@ class FavoritesViewController: UIViewController, Themeable {
         if let backgroundImageView = backgroundViewInfo?.imageView, let image = backgroundImageView.image {
             // Need to calculate the sizing difference between `image` and `imageView` to determine the pixel difference ratio
             let sizeRatio = backgroundImageView.frame.size.width / image.size.width
+            let focal = background?.wallpaper.focalPoint
+            // Center as fallback
+            let x = focal?.x ?? image.size.width / 2
+            let y = focal?.y ?? image.size.height / 2
+            let portrait = view.frame.height > view.frame.width
             
             // Center point of image is not center point of view.
             // Take `0` for example, if specying `0`, setting centerX to 0, it is not attempting to place the left
@@ -355,8 +383,13 @@ class FavoritesViewController: UIViewController, Themeable {
             // Therefore specifying `0` should take the imageView's left and pinning it to view's center.
             
             // So basically the movement needs to be "inverted" (hence negation)
-            let imageViewOffset = sizeRatio * -(backgroundImage.info?.center ?? 0)
+            // In landscape, left / right are pegged to superview
+            let imageViewOffset = portrait ? sizeRatio * -x : 0
             backgroundViewInfo?.portraitCenterConstraint.update(offset: imageViewOffset)
+            
+            // If potrait, top / bottom are just pegged to superview
+            let inset = portrait ? 0 : sizeRatio * -y
+            backgroundViewInfo?.landscapeCenterConstraint.update(offset: inset)
         }
     }
     
@@ -390,7 +423,7 @@ class FavoritesViewController: UIViewController, Themeable {
     }
     
     @objc fileprivate func showImageCredit() {
-        guard let credit = backgroundImage.info?.credit else {
+        guard let credit = background?.wallpaper.credit else {
             // No gesture action of no credit available
             return
         }
@@ -412,13 +445,13 @@ class FavoritesViewController: UIViewController, Themeable {
         present(alert, animated: true, completion: nil)
     }
     
+    @objc private func showSponsoredSite() {
+        guard let url = background?.sponsor?.logo.destinationUrl else { return }
+        delegate?.didSelect(input: url)
+    }
+    
     // MARK: - Constraints setup
     fileprivate func makeConstraints() {
-        collection.snp.makeConstraints { make in
-            make.left.right.equalTo(self.view.safeAreaLayoutGuide)
-            make.top.bottom.equalTo(self.view)
-        }
-        
         ddgLogo.snp.makeConstraints { make in
             make.top.left.bottom.equalTo(0)
             make.size.equalTo(38)
@@ -449,9 +482,10 @@ class FavoritesViewController: UIViewController, Themeable {
         }
     }
     
-    // MARK: - Private browsing modde
+    // MARK: - Private browsing mode
     @objc func privateBrowsingModeChanged() {
         updateDuckDuckGoVisibility()
+        resetBackgroundImage()
     }
     
     var themeableChildren: [Themeable?]? {
@@ -472,16 +506,16 @@ class FavoritesViewController: UIViewController, Themeable {
     }
     
     private func updateConstraints() {
-        let isIpad = UIDevice.isIpad
+        let isIphone = UIDevice.isPhone
         let isLandscape = view.frame.width > view.frame.height
         
         var right: ConstraintRelatableTarget = self.view.safeAreaLayoutGuide
         var left: ConstraintRelatableTarget = self.view.safeAreaLayoutGuide
         if isLandscape {
-            if isIpad {
-                right = self.view.snp.centerX
-            } else {
+            if isIphone {
                 left = self.view.snp.centerX
+            } else {
+                right = self.view.snp.centerX
             }
         }
         
@@ -490,29 +524,32 @@ class FavoritesViewController: UIViewController, Themeable {
             make.left.equalTo(left)
             make.top.bottom.equalTo(self.view)
         }
+        
+        imageSponsorButton.snp.remakeConstraints {
+            $0.size.equalTo(170)
+            $0.bottom.equalTo(view.safeArea.bottom).inset(10)
+            
+            if isLandscape && isIphone {
+                $0.left.equalTo(view.safeArea.left).offset(20)
+            } else {
+                $0.centerX.equalToSuperview()
+            }
+        }
     }
     
-    private func setupImageCredit() {
-        var hideImageCredit = true
-        defer {
-            imageCreditButton.isHidden = hideImageCredit
+    private func resetBackgroundImage() {
+        
+        // RESET BACKGROUND
+        self.backgroundViewInfo?.imageView.removeFromSuperview()
+        self.backgroundViewInfo = nil
+        
+        self.background = backgroundDataSource?.newBackground()
+        //
+        
+        guard let image = background?.wallpaper.imageLiteral else {
+            return
         }
         
-        guard let info = backgroundImage.info, let name = info.credit?.name else { return }
-        
-        hideImageCredit = info.isSponsored
-        let photoByText = String(format: Strings.photoBy, name)
-        imageCreditInternalButton.setTitle(photoByText, for: .normal)
-    }
-    
-    private func setupBackgroundImage() {
-        guard var background = backgroundImage.info,
-            let image = background.image else {
-                imageCreditButton.isHidden = true
-                return
-        }
-        
-        setupImageCredit()
         let imageAspectRatio = image.size.width / image.size.height
         let imageView = UIImageView(image: image)
         
@@ -527,11 +564,12 @@ class FavoritesViewController: UIViewController, Themeable {
             // `999` priority is required for landscape, since top/bottom constraints no longer the most important
             //    using `1000` / `required` would cause constraint conflicts (with `centerY` in landscape), and
             //    using `high` is not enough either.
-            $0.top.bottom.equalToSuperview().priority(ConstraintPriority(999))
-            
+            $0.bottom.equalToSuperview().priority(ConstraintPriority(999))
+            $0.top.equalToSuperview().priority(ConstraintPriority(999))
+
             // In portrait `top`/`bottom` is enough, however, when switching to landscape, those constraints
             //  don't force centering, so this is used as a stronger constraint to center in landscape/portrait
-            $0.centerY.equalToSuperview()
+            let landscapeCenterConstraint = $0.top.equalTo(view.snp.centerY).priority(ConstraintPriority.high).constraint
             
             // Width of the image view is determined by the forced height constraint and the literal image ratio
             $0.width.equalTo(imageView.snp.height).multipliedBy(imageAspectRatio)
@@ -544,38 +582,33 @@ class FavoritesViewController: UIViewController, Themeable {
             // the right side cannot drop under `width` (or superview's right side), otherwise whitespace will be shown on right.
             $0.right.greaterThanOrEqualToSuperview()
             
+            // Same as left / right above but necessary for landscape y centering (to prevent overflow)
+            $0.top.lessThanOrEqualToSuperview()
+            $0.bottom.greaterThanOrEqualToSuperview()
+
             // If for some reason the image cannot fill full width (e.g. not a landscape image), then these constraints
             //  will fail. A constraint will be broken, since cannot keep both left and right side's pinned
             //  (due to the width multiplier being < 1
             
             // Using `high` priority so that it will not be applied / broken  if out-of-bounds.
             // Offset updated / calculated during view layout as views are not setup yet.
-            let backgroundConstraint = $0.left.equalTo(view.snp.centerX).priority(ConstraintPriority.high).constraint
-            self.backgroundViewInfo = (imageView, backgroundConstraint)
+            let portraitCenterConstraint = $0.left.equalTo(view.snp.centerX).priority(ConstraintPriority.high).constraint
+            self.backgroundViewInfo = (imageView, portraitCenterConstraint, landscapeCenterConstraint)
         }
-    }
-    
-    fileprivate func resetBackground() {
-        self.backgroundViewInfo?.imageView.removeFromSuperview()
-        self.backgroundViewInfo = nil
-        
-        // Flush background logic, this handles preference adjustments for us, so will update necessary, needed info.
-        backgroundImage = BackgroundImage()
-        
-        setupBackgroundImage()
     }
     
     fileprivate func gradientOverlay() -> CAGradientLayer {
         
         // Fades from half-black to transparent
         let colorTop = UIColor(white: 0.0, alpha: 0.5).cgColor
-        let colorBottom = UIColor(white: 0.0, alpha: 0.0).cgColor
+        let colorMid = UIColor(white: 0.0, alpha: 0.0).cgColor
+        let colorBottom = UIColor(white: 0.0, alpha: 0.3).cgColor
         
         let gl = CAGradientLayer()
-        gl.colors = [colorTop, colorBottom]
+        gl.colors = [colorTop, colorMid, colorBottom]
         
         // Gradient cover percentage
-        gl.locations = [0.0, 0.5]
+        gl.locations = [0.0, 0.5, 0.8]
         
         // Making a squrare to handle rotation events
         let maxSide = max(view.bounds.height, view.bounds.width)
@@ -686,6 +719,6 @@ extension FavoritesViewController: FavoriteCellDelegate {
 
 extension FavoritesViewController: PreferencesObserver {
     func preferencesDidChange(for key: String) {
-        self.resetBackground()
+        self.resetBackgroundImage()
     }
 }

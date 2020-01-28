@@ -1,119 +1,164 @@
 [
   {
-    "image": "anders-jilden.jpg",
-    "center": 1200,
+    "imageUrl": "anders-jilden.jpg",
+    "focalPoint": {
+      "x": 1200,
+      "y": null
+    },
     "credit": {
       "name": "Anders Jildén",
       "url": "https://unsplash.com/@andersjilden?utm_source=unsplash&utm_medium=referral&utm_content=credit"
     }
   },
   {
-    "image": "andreas-gucklhorn.jpg",
-    "center": 1160,
+    "imageUrl": "andreas-gucklhorn.jpg",
+    "focalPoint": {
+      "x": 1160,
+      "y": null
+    },
     "credit": {
       "name": "Andreas Gücklhorn",
       "url": "https://unsplash.com/@draufsicht?utm_source=unsplash&utm_medium=referral&utm_content=credit"
     }
   },
   {
-    "image": "andy-mai.jpg",
-    "center": 988,
+    "imageUrl": "andy-mai.jpg",
+    "focalPoint": {
+      "x": 988,
+      "y": null
+    },
     "credit": {
       "name": "Andy Mai",
       "url": "https://unsplash.com/@veroz?utm_source=unsplash&utm_medium=referral&utm_content=credit"
     }
   },
   {
-    "image": "annie-spratt.jpg",
-    "center": 682,
+    "imageUrl": "annie-spratt.jpg",
+    "focalPoint": {
+      "x": 682,
+      "y": null
+    },
     "credit": {
       "name": "Annie Spratt",
       "url": "https://unsplash.com/@anniespratt?utm_source=unsplash&utm_medium=referral&utm_content=credit"
     }
   },
   {
-    "image": "anton-repponen.jpg",
-    "center": 2185,
+    "imageUrl": "anton-repponen.jpg",
+    "focalPoint": {
+      "x": 2185,
+      "y": null
+    },
     "credit": {
       "name": "Anton Repponen",
       "url": "https://unsplash.com/@repponen?utm_source=unsplash&utm_medium=referral&utm_content=credit"
     }
   },
   {
-    "image": "ben-karpinski.jpg",
-    "center": 815,
+    "imageUrl": "ben-karpinski.jpg",
+    "focalPoint": {
+      "x": 815,
+      "y": null
+    },
     "credit": {
       "name": "Ben Karpinski",
       "url": "http://www.benkarpinski.com/landscapes"
     }
   },
   {
-    "image": "dc-cavalleri.jpg",
-    "center": 480,
+    "imageUrl": "dc-cavalleri.jpg",
+    "focalPoint": {
+      "x": 480,
+      "y": null
+    },
     "credit": {
       "name": "D.C. Cavalleri",
       "url": "https://gradivis.com"
     }
   },
   {
-    "image": "joe-gardner.jpg",
-    "center": 1277,
+    "imageUrl": "joe-gardner.jpg",
+    "focalPoint": {
+      "x": 1277,
+      "y": null
+    },
     "credit": {
       "name": "Joe Gardner",
       "url": "https://unsplash.com/@josephgardnerphotography?utm_source=unsplash&utm_medium=referral&utm_content=credit"
     }
   },
   {
-    "image": "louis-kim.jpg",
-    "center": 300,
+    "imageUrl": "louis-kim.jpg",
+    "focalPoint": {
+      "x": 300,
+      "y": null
+    },
     "credit": {
       "name": "Louis Kim",
       "url": ""
     }
   },
   {
-    "image": "matt-palmer.jpg",
-    "center": 1205,
+    "imageUrl": "matt-palmer.jpg",
+    "focalPoint": {
+      "x": 1205,
+      "y": null
+    },
     "credit": {
       "name": "Matt Palmer",
       "url": "https://unsplash.com/@mattpalmer?utm_source=unsplash&utm_medium=referral&utm_content=credit"
     }
   },
   {
-    "image": "oliwier gesla.jpg",
-    "center": 780,
+    "imageUrl": "oliwier gesla.jpg",
+    "focalPoint": {
+      "x": 780,
+      "y": null
+    },
     "credit": {
       "name": "Oliwier Gesla",
       "url": "https://www.instagram.com/oliwiergesla/"
     }
   },
   {
-    "image": "Svalbard_Jerol_Soibam.jpeg",
-    "center": 1280,
+    "imageUrl": "Svalbard_Jerol_Soibam.jpeg",
+    "focalPoint": {
+      "x": 1280,
+      "y": null
+    },
     "credit": {
       "name": "Jerol Soibam",
       "url": "https://www.instagram.com/jerol_soibam/"
     }
   },
   {
-    "image": "will_christiansen_glacier_peak.jpg",
-    "center": 1630,
+    "imageUrl": "will_christiansen_glacier_peak.jpg",
+    "focalPoint": {
+      "x": 1630,
+      "y": null
+    },
     "credit": {
       "name": "Will Christiansen",
       "url": "http://www.theskyfolk.com/"
     }
   },
   {
-    "image": "will_christiansen_ice.jpg",
-    "center": 1330,
+    "imageUrl": "will_christiansen_ice.jpg",
+    "focalPoint": {
+      "x": 1330,
+      "y": null
+    },
     "credit": {
       "name": "Will Christiansen",
       "url": "http://www.theskyfolk.com/"
     }
   },
   {
-    "image": "xavier-balderas-cejudo.jpg",
-    "center": 1975,
+    "imageUrl": "xavier-balderas-cejudo.jpg",
+    "focalPoint": {
+      "x": 1975,
+      "y": null
+    },
     "credit": {
       "name": "Xavier Balderas Cejudo",
       "url": "https://unsplash.com/@xavibalderas?utm_source=unsplash&utm_medium=referral&utm_content=credit"

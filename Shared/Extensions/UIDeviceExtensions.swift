@@ -66,4 +66,8 @@ public extension UIDevice {
   static var isIpad: Bool {
     return UIDevice.current.userInterfaceIdiom == .pad
   }
+    
+    static var isPhone: Bool {
+        return UIDevice.current.userInterfaceIdiom == .phone
+    }
 }
