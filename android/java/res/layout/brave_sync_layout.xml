@@ -7,6 +7,7 @@
 
 <LinearLayout android:id="@+id/brave_sync_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
@@ -245,7 +246,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/copy_paste"
-                    android:tint="@color/standard_mode_tint"
+                    app:tint="@color/standard_mode_tint"
                     android:background="@android:color/transparent"
                     android:contentDescription="@string/brave_sync_word_count_text"
                     android:gravity="end|center" />
