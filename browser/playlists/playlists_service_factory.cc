@@ -5,9 +5,11 @@
 
 #include "brave/browser/playlists/playlists_service_factory.h"
 
+#include "brave/components/playlists/browser/features.h"
 #include "brave/components/playlists/browser/playlists_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/common/chrome_features.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
 // static
@@ -17,8 +19,11 @@ PlaylistsServiceFactory* PlaylistsServiceFactory::GetInstance() {
 
 // static
 PlaylistsService* PlaylistsServiceFactory::GetForProfile(Profile* profile) {
-  return static_cast<PlaylistsService*>(
-      GetInstance()->GetServiceForBrowserContext(profile, true));
+  if (base::FeatureList::IsEnabled(brave_playlists::features::kBravePlaylists))
+    return static_cast<PlaylistsService*>(
+        GetInstance()->GetServiceForBrowserContext(profile, true));
+
+  return nullptr;
 }
 
 PlaylistsServiceFactory::PlaylistsServiceFactory()

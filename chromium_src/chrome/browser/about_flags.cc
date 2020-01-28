@@ -5,19 +5,26 @@
 
 #include "brave/components/ntp_sponsored_images/browser/features.h"
 #include "chrome/browser/about_flags.h"
+#include "brave/components/playlists/browser/features.h"
 
+using brave_playlists::features::kBravePlaylists;
 using ntp_sponsored_images::features::kBraveNTPBrandedWallpaper;
 using ntp_sponsored_images::features::kBraveNTPBrandedWallpaperDemo;
 
-#define BRAVE_FEATURE_ENTRIES \
-    {"brave-ntp-branded-wallpaper",                                        \
-     flag_descriptions::kBraveNTPBrandedWallpaperName,                     \
-     flag_descriptions::kBraveNTPBrandedWallpaperDescription, kOsAll,      \
-     FEATURE_VALUE_TYPE(kBraveNTPBrandedWallpaper)},                       \
-    {"brave-ntp-branded-wallpaper-demo",                                   \
-     flag_descriptions::kBraveNTPBrandedWallpaperDemoName,                 \
-     flag_descriptions::kBraveNTPBrandedWallpaperDemoDescription, kOsAll,  \
-     FEATURE_VALUE_TYPE(kBraveNTPBrandedWallpaperDemo)},
+#define BRAVE_FEATURE_ENTRIES                                               \
+  {"brave-ntp-branded-wallpaper",                                           \
+   flag_descriptions::kBraveNTPBrandedWallpaperName,                        \
+   flag_descriptions::kBraveNTPBrandedWallpaperDescription, kOsAll,         \
+   FEATURE_VALUE_TYPE(kBraveNTPBrandedWallpaper)},                          \
+      {"brave-ntp-branded-wallpaper-demo",                                  \
+       flag_descriptions::kBraveNTPBrandedWallpaperDemoName,                \
+       flag_descriptions::kBraveNTPBrandedWallpaperDemoDescription, kOsAll, \
+       FEATURE_VALUE_TYPE(kBraveNTPBrandedWallpaperDemo)},                  \
+  {                                                                         \
+    "brave-playlists", flag_descriptions::kBravePlaylistsName,              \
+        flag_descriptions::kBravePlaylistsDescription,                      \
+        kOsMac | kOsWin | kOsLinux, FEATURE_VALUE_TYPE(kBravePlaylists)     \
+  }
 
 #define SetFeatureEntryEnabled SetFeatureEntryEnabled_ChromiumImpl
 #include "../../../../chrome/browser/about_flags.cc"  // NOLINT

@@ -2,6 +2,8 @@ import("//brave/build/config.gni")
 
 source_set("browser") {
   sources = [
+    "features.cc",
+    "features.h",
     "playlists_constants.cc",
     "playlists_constants.h",
     "playlists_controller.cc",

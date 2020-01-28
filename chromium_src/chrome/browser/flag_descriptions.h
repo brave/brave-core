@@ -13,6 +13,8 @@ extern const char kBraveNTPBrandedWallpaperName[];
 extern const char kBraveNTPBrandedWallpaperDescription[];
 extern const char kBraveNTPBrandedWallpaperDemoName[];
 extern const char kBraveNTPBrandedWallpaperDemoDescription[];
-}
+extern const char kBravePlaylistsName[];
+extern const char kBravePlaylistsDescription[];
+}  // namespace flag_descriptions
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_FLAG_DESCRIPTIONS_H_
