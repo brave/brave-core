@@ -18,6 +18,7 @@ storiesOf('New Tab/Default', module)
         showBrandedWallpaper={boolean('Show branded wallpaper?', false)}
         showTopSitesNotification={boolean('Show top sites notification?', false)}
         isAdsOn={boolean('Ads on?', true)}
+        isAdsSupported={boolean('Ads region supported?', true)}
       />
     )
   })
