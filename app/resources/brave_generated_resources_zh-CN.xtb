@@ -167,4 +167,9 @@
         您可以自己阅读一下 <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>有关如何自行下载和构建<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph>用来创建此副本的特定 <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>源代码的说明<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>。</translation>
 <translation id="4474155171896946103">为所有标签页添加书签...</translation>
 <translation id="2336228925368920074">为所有标签页添加书签...</translation>
+<translation id="6696935187608454456">帮助提示</translation>
+<translation id="2775956301559569472">在404页上显示Wayback Machine的提示</translation>
+<translation id="796831669370432378">要为网页添加书签，请点击地址栏旁边的书签按钮</translation>
+<translation id="8762452230727230396">Tor 会在您访问的网站中隐藏您的IP地址。</translation>
+<translation id="8760415064721320867">使用 Tor 的隐私窗口</translation>
 </translationbundle>
