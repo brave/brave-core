@@ -470,11 +470,13 @@ void Contribution::ContributionCompleted(
     const double amount,
     const ledger::Result result) {
   if (result == ledger::Result::LEDGER_OK) {
+    const std::string probi =
+      braveledger_bat_util::ConvertToProbi(std::to_string(amount));
     ledger_->SetBalanceReportItem(
         braveledger_time_util::GetCurrentMonth(),
         braveledger_time_util::GetCurrentYear(),
         GetReportTypeFromRewardsType(type),
-        amount);
+        probi);
   }
 
   ledger_->UpdateContributionInfoStepAndCount(
