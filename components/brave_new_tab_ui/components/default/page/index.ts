@@ -12,6 +12,7 @@ const singleColumnSmallViewport = css`
    text-align: center;
  }
 `
+
 interface PageProps {
   showClock: boolean
   showStats: boolean
@@ -105,16 +106,26 @@ export const GridItemNotification = styled('section')`
 `
 
 export const GridItemCredits = styled('section')`
+  /* Variables for easy inherited override without splitting css rules definition */
+  --ntp-grid-item-credits-bottom-margin-wide: 36px;
+  --ntp-grid-item-credits-left-margin-narrow: 10px;
+  --ntp-grid-item-credits-left-margin-wide: var(--ntp-grid-item-credits-bottom-margin-wide);
   grid-column: 1 / span 1;
   grid-row: calc(-2 - var(--ntp-extra-footer-rows)) / span calc(1 + var(--ntp-extra-footer-rows));
-  /* grid-row: calc(-1 - var(--ntp-left-item-count));
-  grid-row-end: span calc(1 + var(--ntp-left-item-count)); */
   align-self: end;
-  margin: 0 0 36px 36px;
+
+  margin: 0 0 var(--ntp-grid-item-credits-bottom-margin-wide) var(--ntp-grid-item-credits-left-margin-wide);
   @media screen and (max-width: ${breakpointEveryBlock}) {
-    align-self: center;
-    margin: 0;
+    /* Display on left, keeping Navigation on right even on wrapped row. */
+    margin: 0 auto 0 var(--ntp-grid-item-credits-left-margin-narrow);
+    align-self: unset;
   }
+`
+
+export const GridItemBrandedLogo = styled(GridItemCredits)`
+  --ntp-grid-item-credits-left-margin-narrow: 0;
+  --ntp-grid-item-credits-bottom-margin-wide: -8px;
+  --ntp-grid-item-credits-left-margin-wide: 22px;
 `
 
 export const GridItemNavigation = styled('section')`
@@ -124,19 +135,34 @@ export const GridItemNavigation = styled('section')`
   margin: 0 24px 24px 0;
   @media screen and (max-width: ${breakpointEveryBlock}) {
     margin: 0;
-    align-self: unset;
+    align-self: flex-end;
   }
 `
 
 export const Footer = styled<{}, 'footer'>('footer')`
+  /* Child items are primary Grid items and can slot in to free spaces,
+     so this element doesn't do anything on wider viewport widths. */
+  display: contents;
+
+  @media screen and (max-width: ${breakpointEveryBlock}) {
+    width: 100%;
+    /* Take up rest of Page height so that footer is always at bottom */
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+  }
+`
+
+export const FooterContent = styled('div')`
   display: contents;
 
   @media screen and (max-width: ${breakpointEveryBlock}) {
     width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-end;
+    justify-content: flex-end;
+    align-items: center;
     flex-wrap: wrap;
   }
 `
