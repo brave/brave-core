@@ -48,6 +48,7 @@ interface Props {
   showBrandedWallpaper: boolean
   showTopSitesNotification: boolean
   isAdsOn: boolean
+  isAdsSupported: boolean
 }
 
 export default class NewTabPage extends React.PureComponent<Props, State> {
@@ -240,7 +241,7 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
           {(showRewards || (showBrandedWallpaper && !this.state.isBrandedWallpaperNotificationDismissed)) &&
           <Page.GridItemRewards>
             <Rewards
-              adsSupported={true}
+              adsSupported={this.props.isAdsSupported}
               promotions={promotions}
               balance={balance}
               enabledAds={enabledAds}
