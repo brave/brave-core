@@ -204,6 +204,15 @@ NS_SWIFT_NAME(BraveLedger)
                solution:(BATPromotionSolution *)solution
              completion:(nullable void (^)(BATResult result, BATPromotion * _Nullable promotion))completion;
 
+#pragma mark - Pending Contributions
+
+- (void)pendingContributions:(void (^)(NSArray<BATPendingContributionInfo *> *publishers))completion;
+
+- (void)removePendingContribution:(BATPendingContributionInfo *)info
+                       completion:(void (^)(BATResult result))completion;
+
+- (void)deleteAllPendingContributions:(void (^)(BATResult result))completion;
+
 #pragma mark - History
 
 @property (nonatomic, readonly) NSDictionary<NSString *, BATBalanceReportInfo *> *balanceReports;
