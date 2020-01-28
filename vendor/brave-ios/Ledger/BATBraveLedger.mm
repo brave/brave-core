@@ -866,6 +866,38 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   return [[BATAutoContributeProps alloc] initWithAutoContributePropsPtr:std::move(props)];
 }
 
+#pragma mark - Pending Contributions
+
+- (void)pendingContributions:(void (^)(NSArray<BATPendingContributionInfo *> *publishers))completion
+{
+  ledger->GetPendingContributions(^(ledger::PendingContributionInfoList list){
+    const auto convetedList = NSArrayFromVector(&list, ^BATPendingContributionInfo *(const ledger::PendingContributionInfoPtr& info){
+      return [[BATPendingContributionInfo alloc] initWithPendingContributionInfo:*info];
+    });
+    completion(convetedList);
+  });
+}
+
+- (void)removePendingContribution:(BATPendingContributionInfo *)info completion:(void (^)(BATResult result))completion
+{
+  ledger->RemovePendingContribution(info.publisherKey.UTF8String,
+                                    info.viewingId.UTF8String,
+                                    info.addedDate,
+                                    ^(const ledger::Result result){
+    completion(static_cast<BATResult>(result));
+  });
+}
+
+// TODO: After DB migration, rename to `removeAll` instead of `deleteAll`
+// Reason being that right now ledger client already has a method called
+// `removeAllPendingContributions`
+- (void)deleteAllPendingContributions:(void (^)(BATResult result))completion
+{
+  ledger->RemoveAllPendingContributions(^(const ledger::Result result){
+    completion(static_cast<BATResult>(result));
+  });
+}
+
 #pragma mark - Reconcile
 
 - (void)onReconcileComplete:(ledger::Result)result viewingId:(const std::string &)viewing_id type:(const ledger::RewardsType)type amount:(const double)amount
