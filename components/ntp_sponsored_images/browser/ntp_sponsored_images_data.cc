@@ -30,7 +30,7 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
 NTPSponsoredImagesData::~NTPSponsoredImagesData() = default;
 
 bool NTPSponsoredImagesData::IsValid() const {
-  return wallpaper_image_files.size() > 0;
+  return (wallpaper_image_files.size() > 0 && !logo_destination_url.empty());
 }
 
 std::string NTPSponsoredImagesData::logo_image_url() const {

@@ -16,6 +16,10 @@
 
 class PrefService;
 
+namespace user_prefs {
+class PrefRegistrySyncable;
+}  // namespace user_prefs
+
 namespace ntp_sponsored_images {
 
 struct NTPSponsoredImagesData;
@@ -33,6 +37,8 @@ class ViewCounterService
   ViewCounterService(const ViewCounterService&) = delete;
   ViewCounterService& operator=(
       const ViewCounterService&) = delete;
+
+  static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
   // Lets the counter know that a New Tab Page view has occured.
   // This should always be called as it will evaluate whether the user has
