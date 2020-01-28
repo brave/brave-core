@@ -26,8 +26,21 @@ grit("resources") {
   ]
 }
 
+copy("rollup_overrides") {
+  visibility = [ ":*" ]
+
+  sources = [
+    "tools/brave_rollup_overrides.js",
+  ]
+
+  outputs = [
+    "$root_gen_dir/chrome/browser/resources/{{source_file_part}}",
+  ]
+}
+
 group("modulize") {
   deps = [
+    ":rollup_overrides",
     "br_elements:polymer3_elements",
   ]
 }
