@@ -6,6 +6,7 @@ import Foundation
 import Static
 import BraveShared
 import Shared
+import BraveRewards
 
 class NewTabPageTableViewController: TableViewController {
     let sponsoredRow = Row.boolRow(title: Strings.newTabPageSettingsSponsoredImages, option: Preferences.NewTabPage.backgroundSponsoredImages)
@@ -34,21 +35,17 @@ class NewTabPageTableViewController: TableViewController {
                 // If turning off normal background images, turn of sponsored images as well.
                 Preferences.NewTabPage.backgroundSponsoredImages.value = newValue
                 
-                if !newValue {
-                    // Updating the underlying preference does not dynamically update the visuals unfortuantely.
-                    // Updating manually. Only update if disabling.
-                    self.sponsoredSwitch?.isOn = newValue
-                }
+                // Update sponsored switch to both on/off to follow background images.
+                self.sponsoredSwitch?.isOn = newValue
                 
                 // Need to update every time.
                 self.sponsoredSwitch?.isEnabled = newValue
             })
         ]
         
-        if BackgroundImage.showSponsoredSetting {
+        if BraveAds.isCurrentLocaleSupported() {
             rows.append(sponsoredRow)
         }
-        
         rows.append(.boolRow(title: Strings.newTabPageSettingsAutoOpenKeyboard,
                              option: Preferences.NewTabPage.autoOpenKeyboard))
         return Section(rows: rows)

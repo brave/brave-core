@@ -8,30 +8,8 @@ import BraveShared
 
 private let logger = Logger.browserLogger
 
-struct NTPFocalPoint: Codable {
-    let x: Int
-    let y: Int
-}
-
-struct NTPLogo: Codable {
-    let imageUrl: String
-    let alt: String
-    let companyName: String
-    let destinationUrl: URL
-}
-
-struct NTPWallpaper: Codable {
-    let imageUrl: String
-    let focalPoint: NTPFocalPoint?
-}
-
-struct NTPItemInfo: Codable {
-    let logo: NTPLogo
-    let wallpapers: [NTPWallpaper]
-}
-
 protocol NTPDownloaderDelegate: class {
-    func onNTPUpdated(ntpInfo: NTPItemInfo?)
+    func onNTPUpdated(ntpInfo: NewTabPageBackgroundDataSource.Sponsor?)
 }
 
 class NTPDownloader {
@@ -58,7 +36,7 @@ class NTPDownloader {
         self.removeObservers()
     }
     
-    private func getNTPInfo(_ completion: @escaping (NTPItemInfo?) -> Void) {
+    private func getNTPInfo(_ completion: @escaping (NewTabPageBackgroundDataSource.Sponsor?) -> Void) {
         //Load from cache because the time since the last fetch hasn't expired yet..
         if let nextDate = Preferences.NTP.ntpCheckDate.value,
             Date().timeIntervalSince1970 - nextDate < 0 {
@@ -183,7 +161,7 @@ class NTPDownloader {
         }
     }
     
-    private func loadNTPInfo() -> NTPItemInfo? {
+    private func loadNTPInfo() -> NewTabPageBackgroundDataSource.Sponsor? {
         do {
             let metadataFileURL = try self.ntpMetadataFileURL()
             if !FileManager.default.fileExists(atPath: metadataFileURL.path) {
@@ -197,19 +175,22 @@ class NTPDownloader {
             }
             
             let downloadsFolderURL = try self.ntpDownloadsURL()
-            let itemInfo = try JSONDecoder().decode(NTPItemInfo.self, from: metadata)
+            let itemInfo = try JSONDecoder().decode(NewTabPageBackgroundDataSource.Sponsor.self, from: metadata)
             
-            let logo = NTPLogo(imageUrl: downloadsFolderURL.appendingPathComponent(itemInfo.logo.imageUrl).path,
-                               alt: itemInfo.logo.alt,
-                               companyName: itemInfo.logo.companyName,
-                               destinationUrl: itemInfo.logo.destinationUrl)
+            let logo = NewTabPageBackgroundDataSource.Sponsor.Logo(
+                imageUrl: downloadsFolderURL.appendingPathComponent(itemInfo.logo.imageUrl).path,
+                alt: itemInfo.logo.alt,
+                companyName: itemInfo.logo.companyName,
+                destinationUrl: itemInfo.logo.destinationUrl)
             
             let wallpapers = itemInfo.wallpapers.map {
-                NTPWallpaper(imageUrl: downloadsFolderURL.appendingPathComponent($0.imageUrl).path,
-                             focalPoint: $0.focalPoint)
+                NewTabPageBackgroundDataSource.Background(
+                    imageUrl: downloadsFolderURL.appendingPathComponent($0.imageUrl).path,
+                    focalPoint: $0.focalPoint,
+                    credit: nil)
             }
             
-            return NTPItemInfo(logo: logo, wallpapers: wallpapers)
+            return NewTabPageBackgroundDataSource.Sponsor(wallpapers: wallpapers, logo: logo)
         } catch {
             logger.error(error)
         }
@@ -283,7 +264,7 @@ class NTPDownloader {
             }
             
             do {
-                let item = try JSONDecoder().decode(NTPItemInfo.self, from: data)
+                let item = try JSONDecoder().decode(NewTabPageBackgroundDataSource.Sponsor.self, from: data)
                 self.unpackMetadata(item: item) { url, error in
                     completion(url, cacheInfo, error)
                 }
@@ -363,7 +344,7 @@ class NTPDownloader {
     
     // Unpacks NTPItemInfo by downloading all of its assets to a temporary directory
     // and returning the URL to the directory
-    private func unpackMetadata(item: NTPItemInfo, _ completion: @escaping (URL?, NTPError?) -> Void) {
+    private func unpackMetadata(item: NewTabPageBackgroundDataSource.Sponsor, _ completion: @escaping (URL?, NTPError?) -> Void) {
         let tempDirectory = FileManager.default.temporaryDirectory
         let directory = tempDirectory.appendingPathComponent(NTPDownloader.ntpDownloadsFolder)
         

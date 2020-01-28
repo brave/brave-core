@@ -623,9 +623,7 @@
 		5D5374A823846FFC00A2B587 /* annie-spratt.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749923846FFC00A2B587 /* annie-spratt.jpg */; };
 		5D5374A923846FFC00A2B587 /* matt-palmer.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749A23846FFC00A2B587 /* matt-palmer.jpg */; };
 		5D5374AA23846FFC00A2B587 /* andy-mai.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749B23846FFC00A2B587 /* andy-mai.jpg */; };
-		5D5374B723887E7400A2B587 /* ntp-sponsored.json in Resources */ = {isa = PBXBuildFile; fileRef = 5D5374B623887E7400A2B587 /* ntp-sponsored.json */; };
-		5D5374B923887E7D00A2B587 /* EAFF_JA_soccer_Background_final.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D5374B823887E7D00A2B587 /* EAFF_JA_soccer_Background_final.jpg */; };
-		5D5374BB238895B100A2B587 /* BackgroundImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5374BA238895B100A2B587 /* BackgroundImage.swift */; };
+		5D5374BB238895B100A2B587 /* NewTabPageBackgroundDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5374BA238895B100A2B587 /* NewTabPageBackgroundDataSource.swift */; };
 		5D5E2361238C386B00AD6FBD /* NewTabPageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5E2360238C386B00AD6FBD /* NewTabPageTableViewController.swift */; };
 		5D6DDEF3214003A6001FF0AE /* DAU.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6DDEE6214003A6001FF0AE /* DAU.swift */; };
 		5D6DDEFE2141B6A1001FF0AE /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6DDEF62141B6A0001FF0AE /* Preferences.swift */; };
@@ -2074,9 +2072,7 @@
 		5D53749923846FFC00A2B587 /* annie-spratt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "annie-spratt.jpg"; sourceTree = "<group>"; };
 		5D53749A23846FFC00A2B587 /* matt-palmer.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "matt-palmer.jpg"; sourceTree = "<group>"; };
 		5D53749B23846FFC00A2B587 /* andy-mai.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "andy-mai.jpg"; sourceTree = "<group>"; };
-		5D5374B623887E7400A2B587 /* ntp-sponsored.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "ntp-sponsored.json"; sourceTree = "<group>"; };
-		5D5374B823887E7D00A2B587 /* EAFF_JA_soccer_Background_final.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = EAFF_JA_soccer_Background_final.jpg; sourceTree = "<group>"; };
-		5D5374BA238895B100A2B587 /* BackgroundImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundImage.swift; sourceTree = "<group>"; };
+		5D5374BA238895B100A2B587 /* NewTabPageBackgroundDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTabPageBackgroundDataSource.swift; sourceTree = "<group>"; };
 		5D5E2360238C386B00AD6FBD /* NewTabPageTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTabPageTableViewController.swift; sourceTree = "<group>"; };
 		5D6DDEE6214003A6001FF0AE /* DAU.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DAU.swift; sourceTree = "<group>"; };
 		5D6DDEF62141B6A0001FF0AE /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
@@ -2826,12 +2822,10 @@
 				0AADC4CD20D2A6A200FDE368 /* favorites */,
 				0AADC4D620D2B03900FDE368 /* BraveShieldStatsView.swift */,
 				0AADC4C720D2A55A00FDE368 /* FavoritesViewController.swift */,
-				5D5374BA238895B100A2B587 /* BackgroundImage.swift */,
-				5D5374B623887E7400A2B587 /* ntp-sponsored.json */,
-				5DB474F0237F4CC9007B7652 /* ntp-data.json */,
-				5D5374B42388733A00A2B587 /* NTO_Sponsored */,
-				5DB474CE237F4BE9007B7652 /* NTP_Images */,
+				5D5374BA238895B100A2B587 /* NewTabPageBackgroundDataSource.swift */,
 				5E6683A823D61CF7005B3A6C /* NTPDownloader.swift */,
+				5DB474F0237F4CC9007B7652 /* ntp-data.json */,
+				5DB474CE237F4BE9007B7652 /* NTP_Images */,
 			);
 			path = HomePanel;
 			sourceTree = "<group>";
@@ -3324,8 +3318,8 @@
 				271DEC95234CC7EF009DAC37 /* AutoContributeCell.swift */,
 			);
 			path = "Supported List";
-      sourceTree = "<group>";
-    };
+			sourceTree = "<group>";
+		};
 		27D3154F23D7A94100219462 /* Monthly Tips */ = {
 			isa = PBXGroup;
 			children = (
@@ -3976,14 +3970,6 @@
 				7B3631E91C244FEE00D12AF9 /* Theme.swift */,
 			);
 			path = Themes;
-			sourceTree = "<group>";
-		};
-		5D5374B42388733A00A2B587 /* NTO_Sponsored */ = {
-			isa = PBXGroup;
-			children = (
-				5D5374B823887E7D00A2B587 /* EAFF_JA_soccer_Background_final.jpg */,
-			);
-			path = NTO_Sponsored;
 			sourceTree = "<group>";
 		};
 		5D6DDEDF214003A6001FF0AE /* Analytics */ = {
@@ -5539,14 +5525,12 @@
 				E4CD9F541A71506400318571 /* Reader.html in Resources */,
 				C6345ECB2113B3A000CFB983 /* SearchPlugins in Resources */,
 				F930CDAC227000F200A23FE1 /* U2F.js in Resources */,
-				5D5374B923887E7D00A2B587 /* EAFF_JA_soccer_Background_final.jpg in Resources */,
 				5D7001C222249F7B00E576FB /* ShortNameToFileMapping.json in Resources */,
 				4422D55921BFFB7F00BF1855 /* unicode.py in Resources */,
 				7B2142FE1E5E055000CDD3FC /* InfoPlist.strings in Resources */,
 				E69922171B94E3EF007C480D /* Licenses.html in Resources */,
 				5D5374A223846FFC00A2B587 /* anders-jilden.jpg in Resources */,
 				E4CD9F5B1A71506C00318571 /* Reader.css in Resources */,
-				5D5374B723887E7400A2B587 /* ntp-sponsored.json in Resources */,
 				D0FCF8061FE4772D004A7995 /* AllFramesAtDocumentEnd.js in Resources */,
 				27658273217130D900754B2F /* DigiCertHighAssurance.cer in Resources */,
 				E4B7B7611A793CF20022C5E0 /* CharisSILB.ttf in Resources */,
@@ -6312,7 +6296,7 @@
 				4422D50121BFFB7600BF1855 /* repair.cc in Sources */,
 				E660BDD91BB06521009AC090 /* TabsButton.swift in Sources */,
 				4422D55721BFFB7F00BF1855 /* unicode_groups.cc in Sources */,
-				5D5374BB238895B100A2B587 /* BackgroundImage.swift in Sources */,
+				5D5374BB238895B100A2B587 /* NewTabPageBackgroundDataSource.swift in Sources */,
 				4422D55421BFFB7E00BF1855 /* re2_fuzzer.cc in Sources */,
 				2F44FCCB1A9E972E00FD20CC /* SearchEnginePicker.swift in Sources */,
 				C6B81B8C212D989200996084 /* ImageCacheOptions.swift in Sources */,

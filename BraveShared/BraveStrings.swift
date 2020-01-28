@@ -690,7 +690,7 @@ extension Strings {
             NSLocalizedString("ntp.turnRewardsTos",
                 tableName: "BraveShared",
                 bundle: .braveShared,
-                value: "By turning Rewards, you agree to the %@.",
+                value: "By turning on Rewards, you agree to the %@.",
                 comment: "The placeholder says 'Terms of Service'. So full sentence goes like: 'By turnin Rewards, you agree to the Terms of Service'.")
         public static let chooseToHideSponsoredImages =
             NSLocalizedString("ntp.chooseToHideSponsoredImages",
