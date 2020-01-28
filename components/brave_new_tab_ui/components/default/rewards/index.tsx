@@ -220,7 +220,8 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
   renderRewardsInfo = () => {
     const {
       enabledMain,
-      walletCreated
+      walletCreated,
+      adsSupported
     } = this.props
 
     if (!enabledMain || !walletCreated) {
@@ -229,7 +230,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
 
     return (
       <div data-test-id2={'enableMain'}>
-        {this.renderAmountItem(AmountItemType.ADS)}
+        {adsSupported && this.renderAmountItem(AmountItemType.ADS)}
         {this.renderAmountItem(AmountItemType.TIPS)}
       </div>
     )

@@ -194,7 +194,7 @@ export const NotificationButton = styled(CoinsButton)`
 `
 
 export const AmountItem = styled<StyleProps, 'div'>('div')`
-  margin-top: ${p => p.isLast ? 18 : 12}px;
+  margin-top: 18px;
   margin-bottom: ${p => p.isLast ? -10 : 0}px;
   ${p => p.isActionPrompt && css`
     text-align: center;
