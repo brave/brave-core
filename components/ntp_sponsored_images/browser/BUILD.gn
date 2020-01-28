@@ -28,6 +28,7 @@ static_library("browser") {
     "//brave/components/brave_ads/common",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_component_updater/browser",
+    "//brave/components/ntp_sponsored_images/common",
     "//components/component_updater",
     "//components/keyed_service/core",
     "//components/prefs",

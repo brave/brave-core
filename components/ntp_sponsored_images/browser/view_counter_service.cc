@@ -16,6 +16,8 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/ntp_sponsored_images/browser/features.h"
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_sponsored_images/common/pref_names.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 
@@ -39,6 +41,15 @@ NTPSponsoredImagesData* GetDemoWallpaper() {
 
 }  // namespace
 
+// static
+void ViewCounterService::RegisterProfilePrefs(
+    user_prefs::PrefRegistrySyncable* registry) {
+  registry->RegisterBooleanPref(
+      prefs::kBrandedWallpaperNotificationDismissed, false);
+  registry->RegisterBooleanPref(
+      prefs::kNewTabPageShowBrandedBackgroundImage, true);
+}
+
 ViewCounterService::ViewCounterService(
     NTPSponsoredImagesService* service,
     PrefService* prefs,
@@ -49,6 +60,7 @@ ViewCounterService::ViewCounterService(
   // If we have a wallpaper, store it as private var.
   // Set demo wallpaper if a flag is set.
   if (!base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo)) {
+    DCHECK(service_);
     service_->AddObserver(this);
   }
 
@@ -71,9 +83,8 @@ ViewCounterService::~ViewCounterService() = default;
 NTPSponsoredImagesData* ViewCounterService::current_wallpaper() {
   if (base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo)) {
     return GetDemoWallpaper();
-  } else {
-    return service_->GetSponsoredImagesData();
   }
+  return service_->GetSponsoredImagesData();
 }
 
 void ViewCounterService::Shutdown() {
@@ -100,7 +111,7 @@ void ViewCounterService::OnPreferenceChanged(
 }
 
 void ViewCounterService::ResetNotificationState() {
-  prefs_->SetBoolean(kBrandedWallpaperNotificationDismissed, false);
+  prefs_->SetBoolean(prefs::kBrandedWallpaperNotificationDismissed, false);
 }
 
 void ViewCounterService::RegisterPageView() {
@@ -113,7 +124,8 @@ void ViewCounterService::RegisterPageView() {
 }
 
 bool ViewCounterService::IsBrandedWallpaperActive() {
-  return (is_supported_locale_ && IsOptedIn() && current_wallpaper());
+  return (is_supported_locale_ && IsOptedIn() && current_wallpaper() &&
+      current_wallpaper()->IsValid());
 }
 
 bool ViewCounterService::ShouldShowBrandedWallpaper() {
@@ -125,7 +137,7 @@ size_t ViewCounterService::GetWallpaperImageIndexToDisplay() {
 }
 
 bool ViewCounterService::IsOptedIn() {
-  return prefs_->GetBoolean(kNewTabPageShowBrandedBackgroundImage) &&
+  return prefs_->GetBoolean(prefs::kNewTabPageShowBrandedBackgroundImage) &&
          prefs_->GetBoolean(kNewTabPageShowBackgroundImage);
 }
 
