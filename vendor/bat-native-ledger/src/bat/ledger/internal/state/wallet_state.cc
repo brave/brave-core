@@ -75,22 +75,17 @@ bool WalletState::FromDict(
 
   // Fee Amount
   const auto fee_amount = dictionary->FindDoublePath(kFeeBatPath);
-  if (!fee_amount) {
-    NOTREACHED();
-    return false;
+  if (fee_amount) {
+    wallet_properties.fee_amount = *fee_amount;
   }
-  wallet_properties.fee_amount = *fee_amount;
 
   // Choices BAT
   const auto* choices_bat_list = dictionary->FindListPath(kChoicesBatPath);
-  if (!choices_bat_list) {
-    NOTREACHED();
-    return false;
-  }
-
-  for (const auto&choices_bat_value : choices_bat_list->GetList()) {
-    const double bat = choices_bat_value.GetDouble();
-    wallet_properties.parameters_choices.push_back(bat);
+  if (choices_bat_list) {
+    for (const auto& choices_bat_value : choices_bat_list->GetList()) {
+      const double bat = choices_bat_value.GetDouble();
+      wallet_properties.parameters_choices.push_back(bat);
+    }
   }
 
   // Default tip choices
