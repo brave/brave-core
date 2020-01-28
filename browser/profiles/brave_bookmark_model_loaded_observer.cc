@@ -5,8 +5,11 @@
 
 #include "brave/browser/profiles/brave_bookmark_model_loaded_observer.h"
 
+#include "brave/common/pref_names.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sync/profile_sync_service_factory.h"
 #include "components/bookmarks/browser/bookmark_model.h"
+#include "components/prefs/pref_service.h"
 
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
@@ -23,16 +26,19 @@ BraveBookmarkModelLoadedObserver::BraveBookmarkModelLoadedObserver(
 void BraveBookmarkModelLoadedObserver::BookmarkModelLoaded(
     BookmarkModel* model,
     bool ids_reassigned) {
+  if (!profile_->GetPrefs()->GetBoolean(kOtherBookmarksMigrated)) {
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
-  BraveProfileSyncServiceImpl* brave_profile_service =
+    BraveProfileSyncServiceImpl* brave_profile_service =
       static_cast<BraveProfileSyncServiceImpl*>(
           ProfileSyncServiceFactory::GetForProfile(profile_));
-  // When sync is enabled, we need to send migration records to other devices so
-  // it is handled in BraveProfileSyncServiceImpl::OnSyncReady
-  if (brave_profile_service && !brave_profile_service->IsBraveSyncEnabled())
-    BraveMigrateOtherNodeFolder(model);
+    // When sync is enabled, we need to send migration records to other devices
+    // so it is handled in BraveProfileSyncServiceImpl::OnSyncReady
+    if (brave_profile_service && !brave_profile_service->IsBraveSyncEnabled())
+      BraveMigrateOtherNodeFolder(model);
 #else
-  BraveMigrateOtherNodeFolder(model);
+    BraveMigrateOtherNodeFolder(model);
 #endif
+    profile_->GetPrefs()->SetBoolean(kOtherBookmarksMigrated, true);
+  }
   BookmarkModelLoadedObserver::BookmarkModelLoaded(model, ids_reassigned);
 }
