@@ -51,6 +51,9 @@ class AutoContributeDetailViewController: UIViewController {
     contentView.tableView.delegate = self
     contentView.tableView.dataSource = self
     
+    contentView.allowVideoContributionsSwitch.addTarget(self, action: #selector(allowVideoValueChanged), for: .valueChanged)
+    contentView.allowUnverifiedContributionsSwitch.addTarget(self, action: #selector(allowUnverifiedValueChanged), for: .valueChanged)
+    
     title = Strings.autoContribute
   }
   
@@ -72,6 +75,9 @@ class AutoContributeDetailViewController: UIViewController {
   }
   
   private func reloadData() {
+    contentView.allowUnverifiedContributionsSwitch.isOn = state.ledger.allowUnverifiedPublishers
+    contentView.allowVideoContributionsSwitch.isOn = state.ledger.allowVideoContributions
+    
     let filter = state.ledger.supportedPublishersFilter
     state.ledger.listActivityInfo(fromStart: 0, limit: 0, filter: filter) { pubs in
       self.publishersCount = UInt(pubs.count)
@@ -79,6 +85,16 @@ class AutoContributeDetailViewController: UIViewController {
     }
     excludedPublishersCount = state.ledger.numberOfExcludedPublishers
     contentView.tableView.reloadData()
+  }
+  
+  // MARK: - Actions
+  
+  @objc private func allowUnverifiedValueChanged() {
+    state.ledger.allowUnverifiedPublishers = contentView.allowUnverifiedContributionsSwitch.isOn
+  }
+  
+  @objc private func allowVideoValueChanged() {
+    state.ledger.allowVideoContributions = contentView.allowVideoContributionsSwitch.isOn
   }
 }
 
