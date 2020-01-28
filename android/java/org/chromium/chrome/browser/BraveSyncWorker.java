@@ -2908,10 +2908,18 @@ public class BraveSyncWorker {
             String seed = "";
             try {
                 JSONObject data = new JSONObject(result);
-                Iterator<?> keys = data.keys();
-                while(keys.hasNext()) {
-                    String key = (String)keys.next();
-                    String value = data.getString(key);
+                Iterator<String> it = data.keys();
+                // Pick up keys to sort them, as it's not always returned in proper order
+                // We use Integer for proper sorting, as strings are sorted incorrectly
+                ArrayList<Integer> keys = new ArrayList<Integer>();
+                while (it.hasNext()) {
+                    String key = it.next();
+                    keys.add(Integer.parseInt(key));
+                }
+                Collections.sort(keys);
+                // Get data by sorted keys
+                for (Integer key : keys) {
+                    String value = data.getString(Integer.toString(key));
                     if (0 != seed.length()) {
                         seed += ",";
                     }
