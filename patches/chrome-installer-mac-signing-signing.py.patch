@@ -1,8 +1,12 @@
 diff --git a/chrome/installer/mac/signing/signing.py b/chrome/installer/mac/signing/signing.py
-index 18a73509f528e67c29c7ef896eee338e0970b4fa..117f2b88a4322448a4c0bdda797dd7f5d110a35d 100644
+index cd93959385debe65d04c0a4664f638173da54b75..70a1d7741908ee9481bd2026ec1d493c086f7e7d 100644
 --- a/chrome/installer/mac/signing/signing.py
 +++ b/chrome/installer/mac/signing/signing.py
-@@ -11,6 +11,7 @@ import os.path
+@@ -8,9 +8,11 @@ bundle that need to be signed, as well as providing utilities to sign them.
+ 
+ import copy
+ import os.path
++import collections
  
  from . import commands
  from .model import CodeSignOptions, CodeSignedProduct, VerifyOptions
@@ -10,15 +14,18 @@ index 18a73509f528e67c29c7ef896eee338e0970b4fa..117f2b88a4322448a4c0bdda797dd7f5
  
  _PROVISIONPROFILE_EXT = '.provisionprofile'
  _PROVISIONPROFILE_DEST = 'embedded.provisionprofile'
-@@ -136,6 +137,7 @@ def get_parts(config):
+@@ -136,7 +138,9 @@ def get_parts(config):
              library_basename.replace('.dylib', ''),
              verify_options=VerifyOptions.DEEP)
  
-+    AddBravePartsForSigning(parts, config)
-     return parts
+-    return parts
++    ordered_parts = collections.OrderedDict(parts)
++    AddBravePartsForSigning(ordered_parts, config)
++    return ordered_parts
  
  
-@@ -180,7 +182,7 @@ def sign_part(paths, config, part):
+ def get_installer_tools(config):
+@@ -180,7 +184,7 @@ def sign_part(paths, config, part):
          part: The |model.CodeSignedProduct| to sign. The product's |path| must
              be in |paths.work|.
      """
@@ -27,7 +34,7 @@ index 18a73509f528e67c29c7ef896eee338e0970b4fa..117f2b88a4322448a4c0bdda797dd7f5
      if config.notary_user:
          # Assume if the config has notary authentication information that the
          # products will be notarized, which requires a secure timestamp.
-@@ -270,6 +272,7 @@ def sign_chrome(paths, config, sign_framework=False):
+@@ -272,6 +276,7 @@ def sign_chrome(paths, config, sign_framework=False):
                  continue
              sign_part(paths, config, part)
  
