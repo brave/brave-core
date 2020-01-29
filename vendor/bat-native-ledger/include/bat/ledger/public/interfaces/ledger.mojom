@@ -1,13 +1,24 @@
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at http://mozilla.org/MPL/2.0/.
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
 module ledger.mojom;
+
+enum ContributionStep {
+  STEP_AC_TABLE_EMPTY = -4,
+  STEP_NOT_ENOUGH_FUNDS = -3,
+  STEP_FAILED = -2,
+  STEP_COMPLETED = -1,
+  STEP_NO = 0,
+  STEP_START = 1,
+  STEP_SUGGESTIONS = 2
+};
 
 struct ContributionInfo {
   string contribution_id;
   double amount;
   RewardsType type;
-  int32 step;
+  ContributionStep step;
   int32 retry_count;
   uint64 created_at;
 
