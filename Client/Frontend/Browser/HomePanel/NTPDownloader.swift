@@ -18,10 +18,6 @@ class NTPDownloader {
     private static let ntpDownloadsFolder = "NTPDownloads"
     private static let baseURL = "https://brave-ntp-crx-input-dev.s3-us-west-2.amazonaws.com/"
     
-    private let defaultLocale = "US"
-    private let supportedLocales: [String] = []
-    private let currentLocale = Locale.current.regionCode
-    
     private var timer: Timer?
     private var backgroundObserver: NSObjectProtocol?
     private var foregroundObserver: NSObjectProtocol?
@@ -275,23 +271,11 @@ class NTPDownloader {
     }
     
     private func getBaseURL() -> URL? {
-        guard let url = URL(string: NTPDownloader.baseURL) else {
+        guard let url = URL(string: NTPDownloader.baseURL), let region = Locale.current.regionCode else {
             return nil
         }
         
-        return url.appendingPathComponent(getSupportedLocale())
-    }
-    
-    private func getSupportedLocale() -> String {
-        guard let region = Locale.current.regionCode else {
-            return self.defaultLocale
-        }
-        
-        if supportedLocales.contains(region) {
-            return region
-        }
-        
-        return self.defaultLocale
+        return url.appendingPathComponent(region)
     }
     
     //MARK: - Download & Unpacking
