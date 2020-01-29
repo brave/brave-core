@@ -286,7 +286,6 @@ class BrowserViewController: UIViewController {
             self.updateRewardsButtonState()
         }
         rewardsObserver.rewardsEnabledStateUpdated = { [weak self] _ in
-            self?.resetNTPNotification()
             self?.updateRewardsButtonState()
         }
     }
@@ -467,7 +466,7 @@ class BrowserViewController: UIViewController {
             $0.addObserver(self, selector: #selector(appDidEnterBackgroundNotification),
                            name: UIApplication.didEnterBackgroundNotification, object: nil)
             $0.addObserver(self, selector: #selector(resetNTPNotification),
-                           name: .adsToggled, object: nil)
+                           name: .adsOrRewardsToggledInSettings, object: nil)
             
         }
         
