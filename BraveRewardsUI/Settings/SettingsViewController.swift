@@ -137,14 +137,13 @@ class SettingsViewController: UIViewController {
   @objc private func rewardsSwitchValueChanged() {
     state.ledger.isEnabled = settingsView.rewardsToggleSection.toggleSwitch.isOn
     updateVisualStateOfSections(animated: true)
+    NotificationCenter.default.post(name: .adsOrRewardsToggledInSettings, object: nil)
   }
   
   @objc private func adsToggleValueChanged() {
     state.ads.isEnabled = settingsView.adsSection.toggleSwitch.isOn
     updateVisualStateOfSections(animated: true)
-    // This is to notify BVC that ad setting was toggled.
-    // At the moment there is no ledger observer for ads status, must use notification.
-    NotificationCenter.default.post(name: .adsToggled, object: nil)
+    NotificationCenter.default.post(name: .adsOrRewardsToggledInSettings, object: nil)
   }
   
   @objc private func autoContributeToggleValueChanged() {

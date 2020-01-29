@@ -56,5 +56,5 @@ extension Notification.Name {
     public static let topSitesConversion = Notification.Name("TopSitesConversion")
     
     // MARK: - Rewards
-    public static let adsToggled = Notification.Name("adsToggled")
+    public static let adsOrRewardsToggledInSettings = Notification.Name("adsOrRewardsToggledInSettings")
 }
