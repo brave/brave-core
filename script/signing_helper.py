@@ -5,6 +5,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import collections
 import os
 import subprocess
 import sys
@@ -63,6 +64,7 @@ def GenerateBraveWidevineSigFile(paths, config, part):
 
 
 def AddBravePartsForSigning(parts, config):
+    parts = collections.OrderedDict(parts)
     from signing.model import CodeSignedProduct, VerifyOptions, CodeSignOptions
 
     development = True if config.provisioning_profile_basename is None else False
@@ -110,6 +112,8 @@ def AddBravePartsForSigning(parts, config):
     # Overwrite to avoid TeamID mismatch with widevine dylib.
     parts['helper-app'].entitlements = 'helper-entitlements.plist'
     parts['helper-app'].options = CodeSignOptions.RESTRICT + CodeSignOptions.KILL + CodeSignOptions.HARDENED_RUNTIME
+
+    return parts
 
 
 def GetBraveSigningConfig(config_class, development, mac_provisioning_profile=None):
