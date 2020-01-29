@@ -346,7 +346,7 @@ TEST_F(SyncerHelperTest, SameOrderBookmarksSordetByObjectIdFull3) {
   // 1. on device A create bookmarks A1.com and A2.com
   // 2. on device B create bookmarks B1.com and B2.com
   // 3. create sync chain on device A and connect device B with a codephrase
-  // 4. wait for bookmarks will be synchromized between device A and B
+  // 4. wait for bookmarks will be synchronized between device A and B
   // 5. on device A in Add bookmark dialog enter Name A3.com, URL A3.com,
   //    but dont press Save button
   // 6. repeat pt 5 on device B, for B3.com
@@ -372,11 +372,19 @@ TEST_F(SyncerHelperTest, SameOrderBookmarksSordetByObjectIdFull3) {
   // Expect b1 and b2 no need to move
   uint64_t index_to_move_b1 =
     GetIndex(model()->bookmark_bar_node(), node_b1);
-  EXPECT_EQ(index_to_move_b1, 2u);
+  // Expecting index for Move operation 3, after Move position of node will be 2
+  EXPECT_EQ(index_to_move_b1, 3u);
+  RepositionRespectOrder(model(), node_b1);
+  auto title_at_2 = model()->bookmark_bar_node()->children()[2]->GetTitle();
+  EXPECT_EQ(title_at_2, base::ASCIIToUTF16("B1.com"));
 
   uint64_t index_to_move_b2 =
     GetIndex(model()->bookmark_bar_node(), node_b2);
-  EXPECT_EQ(index_to_move_b2, 3u);
+  // Expecting index for Move operation 4, after Move position of node will be 3
+  EXPECT_EQ(index_to_move_b2, 4u);
+  RepositionRespectOrder(model(), node_b2);
+  auto title_at_3 = model()->bookmark_bar_node()->children()[3]->GetTitle();
+  EXPECT_EQ(title_at_3, base::ASCIIToUTF16("B2.com"));
 
   const auto* node_a3 =
       model()->AddURL(model()->bookmark_bar_node(), 4,
@@ -423,19 +431,19 @@ TEST_F(SyncerHelperTest, SameOrderBookmarksSordetByObjectIdFull3) {
 
   RepositionRespectOrder(model(), node_b3);
   //  0  1  2  3       4        5        6
-  // A1 A2 B1 B2  A3(1,2,3)  B3(@@@)  C3(...)
-  // node B3 hadn't moved because it reached itself
+  // A1 A2 B1 B2  A3(1,2,3)  C3(...)  B3(@@@)
+  // node B3 gone after C3 because "..." < "@@@"
   title_at_4 = model()->bookmark_bar_node()->children()[4]->GetTitle();
   EXPECT_EQ(title_at_4, base::ASCIIToUTF16("A3.com"));
   title_at_5 = model()->bookmark_bar_node()->children()[5]->GetTitle();
-  EXPECT_EQ(title_at_5, base::ASCIIToUTF16("B3.com"));
+  EXPECT_EQ(title_at_5, base::ASCIIToUTF16("C3.com"));
   title_at_6 = model()->bookmark_bar_node()->children()[6]->GetTitle();
-  EXPECT_EQ(title_at_6, base::ASCIIToUTF16("C3.com"));
+  EXPECT_EQ(title_at_6, base::ASCIIToUTF16("B3.com"));
 
   RepositionRespectOrder(model(), node_c3);
   //  0  1  2  3     4        5        6
   // A1 A2 B1 B2  C3(...) A3(1,2,3) B3(@@@)
-  // node C3 moved to the correct position, so B3 is on the right place now
+  // node C3 moved to the correct position
 
   title_at_4 = model()->bookmark_bar_node()->children()[4]->GetTitle();
   EXPECT_EQ(title_at_4, base::ASCIIToUTF16("C3.com"));
@@ -443,6 +451,169 @@ TEST_F(SyncerHelperTest, SameOrderBookmarksSordetByObjectIdFull3) {
   EXPECT_EQ(title_at_5, base::ASCIIToUTF16("A3.com"));
   title_at_6 = model()->bookmark_bar_node()->children()[6]->GetTitle();
   EXPECT_EQ(title_at_6, base::ASCIIToUTF16("B3.com"));
+}
+
+TEST_F(SyncerHelperTest, RemoteUpdatesHandlerNeedsMoveBookmark) {
+  // Emulating such STR
+  // 1) Device A
+  // [0] interia.pl     1.0.1.1
+  // [1] youtube.com    1.0.1.2
+  // 2) Device B does change order:
+  // [0] youtube.com    1.0.1.2
+  // [1] interia.pl     1.0.1.3
+  // 3) Device A falls into
+  // [0] interia.pl     1.0.1.3
+  // [1] youtube.com    1.0.1.2
+  // 4) Device A wants to know a new index for Move operation on interia.pl,
+  // which is expected to be 2
+
+  const auto* node_interia_pl = model()->AddURL(
+      model()->bookmark_bar_node(), 0, base::ASCIIToUTF16("interia.pl"),
+      GURL("https://interia.pl/"));
+  AddBraveMetaInfo(node_interia_pl);
+  const auto* node_youtube_com = model()->AddURL(
+      model()->bookmark_bar_node(), 1, base::ASCIIToUTF16("youtube.com"),
+      GURL("https://youtube.com/"));
+  AddBraveMetaInfo(node_youtube_com);
+
+  std::string interia_pl_order;
+  node_interia_pl->GetMetaInfo("order", &interia_pl_order);
+  EXPECT_EQ(interia_pl_order, "1.0.1.1");
+
+  std::string youtube_com_order;
+  node_youtube_com->GetMetaInfo("order", &youtube_com_order);
+  EXPECT_EQ(youtube_com_order, "1.0.1.2");
+
+  const_cast<BookmarkNode*>(node_interia_pl)->SetMetaInfo("order", "1.0.1.3");
+  int index = GetIndex(model()->bookmark_bar_node(), node_interia_pl);
+  EXPECT_EQ(index, 2);
+
+  RepositionRespectOrder(model(), node_interia_pl);
+  auto title_at_1 = model()->bookmark_bar_node()->children()[1]->GetTitle();
+  EXPECT_EQ(title_at_1, base::ASCIIToUTF16("interia.pl"));
+}
+
+TEST_F(SyncerHelperTest, RemoteUpdatesHandlerKeepBookmarkPosition) {
+  // Emulating such STR
+  // 1) Device A
+  // [0] interia.pl     1.0.1.1
+  // [1] youtube.com    1.0.1.2
+  // 2) Device B doesn't change order
+  // 3) Device A falls into
+  // [0] interia.pl     1.0.1.1
+  // [1] youtube.com    1.0.1.2
+  // 4) Device A wants to know a new index for Move operation on interia.pl,
+  // which is expected to be 1, and after Move operation interia.pl will be on
+  // the position 0
+
+  const auto* node_interia_pl = model()->AddURL(
+      model()->bookmark_bar_node(), 0, base::ASCIIToUTF16("interia.pl"),
+      GURL("https://interia.pl/"));
+  AddBraveMetaInfo(node_interia_pl);
+  const auto* node_youtube_com = model()->AddURL(
+      model()->bookmark_bar_node(), 1, base::ASCIIToUTF16("youtube.com"),
+      GURL("https://youtube.com/"));
+  AddBraveMetaInfo(node_youtube_com);
+
+  std::string interia_pl_order;
+  node_interia_pl->GetMetaInfo("order", &interia_pl_order);
+  EXPECT_EQ(interia_pl_order, "1.0.1.1");
+
+  std::string youtube_com_order;
+  node_youtube_com->GetMetaInfo("order", &youtube_com_order);
+  EXPECT_EQ(youtube_com_order, "1.0.1.2");
+
+  int index = GetIndex(model()->bookmark_bar_node(), node_interia_pl);
+  // Expecting index for Move operation 1, after Move position of node will be 0
+  EXPECT_EQ(index, 1);
+
+  RepositionRespectOrder(model(), node_interia_pl);
+  auto title_at_0 = model()->bookmark_bar_node()->children()[0]->GetTitle();
+  EXPECT_EQ(title_at_0, base::ASCIIToUTF16("interia.pl"));
+}
+
+TEST_F(SyncerHelperTest, RemoteUpdatesHandlerBookmarkPositionAmong4) {
+  // Emulating STR we need to move bookmark in the middle
+  // 1) Device A
+  // [0] A.com     1.0.1.1
+  // [1] B.com     1.0.1.2
+  // [2] C.com     1.0.1.3
+  // [3] D.com     1.0.1.4
+
+  // 2) Device B does change order:
+  // [0] A.com     1.0.1.1
+  // [1] C.com     1.0.1.3
+  // [2] B.com     1.0.1.3.1
+  // [3] D.com     1.0.1.4
+
+  // 3) Device A falls into
+  // [0] A.com     1.0.1.1
+  // [1] B.com     1.0.1.3.1
+  // [2] C.com     1.0.1.3
+  // [3] D.com     1.0.1.4
+
+  // 4) Device A wants to know a new index for Move on node B.com,
+  // which is expected to be 3 counting the target node is still in original
+  // position, it will be 2 after move
+
+  // 5) After move we have on device A
+  // [0] A.com     1.0.1.1
+  // [1] C.com     1.0.1.3
+  // [2] B.com     1.0.1.3.1
+  // [3] D.com     1.0.1.4
+
+  const auto* node_a =
+      model()->AddURL(model()->bookmark_bar_node(), 0,
+                      base::ASCIIToUTF16("A.com"), GURL("https://a.com/"));
+  AddBraveMetaInfo(node_a);
+  const auto* node_b =
+      model()->AddURL(model()->bookmark_bar_node(), 1,
+                      base::ASCIIToUTF16("B.com"), GURL("https://b.com/"));
+  AddBraveMetaInfo(node_b);
+  const auto* node_c =
+      model()->AddURL(model()->bookmark_bar_node(), 2,
+                      base::ASCIIToUTF16("C.com"), GURL("https://c.com/"));
+  AddBraveMetaInfo(node_c);
+  const auto* node_d =
+      model()->AddURL(model()->bookmark_bar_node(), 3,
+                      base::ASCIIToUTF16("D.com"), GURL("https://d.com/"));
+  AddBraveMetaInfo(node_d);
+
+  std::string a_order;
+  node_a->GetMetaInfo("order", &a_order);
+  EXPECT_TRUE(!a_order.empty());
+  EXPECT_EQ(a_order, "1.0.1.1");
+
+  std::string b_order;
+  node_b->GetMetaInfo("order", &b_order);
+  EXPECT_TRUE(!b_order.empty());
+  EXPECT_EQ(b_order, "1.0.1.2");
+
+  std::string c_order;
+  node_c->GetMetaInfo("order", &c_order);
+  EXPECT_TRUE(!b_order.empty());
+  EXPECT_EQ(c_order, "1.0.1.3");
+
+  std::string d_order;
+  node_d->GetMetaInfo("order", &d_order);
+  EXPECT_TRUE(!d_order.empty());
+  EXPECT_EQ(d_order, "1.0.1.4");
+
+  const_cast<BookmarkNode*>(node_b)->SetMetaInfo("order", "1.0.1.3.1");
+  int index = GetIndex(model()->bookmark_bar_node(), node_b);
+  // Expecting index for Move operation 3, after Move position of node will be 2
+  EXPECT_EQ(index, 3);
+
+  RepositionRespectOrder(model(), node_b);
+
+  auto title_at_0 = model()->bookmark_bar_node()->children()[0]->GetTitle();
+  EXPECT_EQ(title_at_0, base::ASCIIToUTF16("A.com"));
+  auto title_at_1 = model()->bookmark_bar_node()->children()[1]->GetTitle();
+  EXPECT_EQ(title_at_1, base::ASCIIToUTF16("C.com"));
+  auto title_at_2 = model()->bookmark_bar_node()->children()[2]->GetTitle();
+  EXPECT_EQ(title_at_2, base::ASCIIToUTF16("B.com"));
+  auto title_at_3 = model()->bookmark_bar_node()->children()[3]->GetTitle();
+  EXPECT_EQ(title_at_3, base::ASCIIToUTF16("D.com"));
 }
 
 }  // namespace brave_sync
