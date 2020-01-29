@@ -38,9 +38,18 @@ TEST(NTPSponsoredImagesServiceTest, InternalDataTest) {
   NTPSponsoredImagesService service(nullptr);
   service.AddObserver(&observer);
 
-  // Check with json file with empty object.
+  // Check with json file w/o schema version with empty object.
   service.ResetImagesDataForTest();
   service.OnGetPhotoJsonData("{}");
+  EXPECT_EQ(nullptr, service.GetSponsoredImagesData());
+
+  // Check with json file with empty object.
+  const std::string  test_empty_json_string = R"(
+      {
+          "schemaVersion": 1
+      })";
+  service.ResetImagesDataForTest();
+  service.OnGetPhotoJsonData(test_empty_json_string);
   auto* data = service.GetSponsoredImagesData();
   EXPECT_NE(data, nullptr);
   EXPECT_FALSE(data->IsValid());
@@ -50,6 +59,7 @@ TEST(NTPSponsoredImagesServiceTest, InternalDataTest) {
 
   const std::string  test_json_string = R"(
       {
+          "schemaVersion": 1,
           "logo": {
             "imageUrl":  "logo.png",
             "alt": "Technikke: For music lovers",
@@ -83,6 +93,36 @@ TEST(NTPSponsoredImagesServiceTest, InternalDataTest) {
   service.NotifyObservers();
   EXPECT_TRUE(observer.called_);
   EXPECT_FALSE(observer.data_->logo_alt_text.empty());
+
+  // Invalid schema version
+  const std::string  test_json_string_higher_schema = R"(
+    {
+        "schemaVersion": 2,
+        "logo": {
+          "imageUrl":  "logo.png",
+          "alt": "Technikke: For music lovers",
+          "destinationUrl": "https://www.brave.com/",
+          "companyName": "Technikke"
+        },
+        "wallpapers": [
+            {
+              "imageUrl": "background-1.jpg",
+              "focalPoint": {}
+            },
+            {
+              "imageUrl": "background-2.jpg",
+              "focalPoint": {}
+            },
+            {
+              "imageUrl": "background-3.jpg",
+              "focalPoint": {}
+            }
+        ]
+    })";
+  service.ResetImagesDataForTest();
+  service.OnGetPhotoJsonData(test_json_string_higher_schema);
+  data = service.GetSponsoredImagesData();
+  EXPECT_FALSE(data);
 
   service.RemoveObserver(&observer);
 }
