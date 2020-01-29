@@ -18,6 +18,7 @@ import {
 } from '../../components/default'
 import * as Page from '../../components/default/page'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
+import VisibilityTimer from '../../helpers/visibilityTimer'
 
 interface Props {
   newTabData: NewTab.State
@@ -28,7 +29,6 @@ interface Props {
   saveShowStats: (value: boolean) => void
   saveShowRewards: (value: boolean) => void
   saveBrandedWallpaperOptIn: (value: boolean) => void
-  onDismissBrandedWallpaperNotification: () => void
 }
 
 interface State {
@@ -53,20 +53,37 @@ function GetBackgroundImageSrc (props: Props) {
   return undefined
 }
 
+function GetIsShowingBrandedWallpaper (props: Props) {
+  const { newTabData } = props
+  return newTabData.brandedWallpaperData ? true : false
+}
+
+function GetShouldShowBrandedWallpaperNotification (props: Props) {
+  return GetIsShowingBrandedWallpaper(props) &&
+  !props.newTabData.isBrandedWallpaperNotificationDismissed
+}
+
 class NewTabPage extends React.Component<Props, State> {
   state = {
     onlyAnonWallet: false,
     showSettingsMenu: false,
     backgroundHasLoaded: false
   }
-
   imageSource?: string = undefined
+  timerIdForBrandedWallpaperNotification?: number = undefined
+  onVisiblityTimerExpired = () => {
+    this.dismissBrandedWallpaperNotification(false)
+  }
+  visibilityTimer = new VisibilityTimer(this.onVisiblityTimerExpired, 4000)
 
   componentDidMount () {
     // if a notification is open at component mounting time, close it
     this.props.actions.onHideSiteRemovalNotification()
     this.imageSource = GetBackgroundImageSrc(this.props)
     this.trackCachedImage()
+    if (GetShouldShowBrandedWallpaperNotification(this.props)) {
+      this.trackBrandedWallpaperNotificationAutoDismiss()
+    }
   }
 
   componentDidUpdate (prevProps: Props) {
@@ -81,6 +98,16 @@ class NewTabPage extends React.Component<Props, State> {
       // reset loaded state
       this.setState({ backgroundHasLoaded: false })
     }
+    if (!GetShouldShowBrandedWallpaperNotification(prevProps) &&
+        GetShouldShowBrandedWallpaperNotification(this.props)) {
+      this.trackBrandedWallpaperNotificationAutoDismiss()
+    }
+
+    if (GetShouldShowBrandedWallpaperNotification(prevProps) &&
+        !GetShouldShowBrandedWallpaperNotification(this.props)) {
+      this.stopWaitingForBrandedWallpaperNotificationAutoDismiss()
+    }
+
   }
 
   trackCachedImage () {
@@ -95,6 +122,16 @@ class NewTabPage extends React.Component<Props, State> {
         })
       }
     }
+  }
+
+  trackBrandedWallpaperNotificationAutoDismiss () {
+    // Wait until page has been visible for an uninterupted Y seconds and then
+    // dismiss the notification.
+    this.visibilityTimer.startTracking()
+  }
+
+  stopWaitingForBrandedWallpaperNotificationAutoDismiss () {
+    this.visibilityTimer.stopTracking()
   }
 
   onDraggedSite = (fromUrl: string, toUrl: string, dragRight: boolean) => {
@@ -177,6 +214,10 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.createWallet()
   }
 
+  dismissBrandedWallpaperNotification = (isUserAction: boolean) => {
+    this.props.actions.dismissBrandedWallpaperNotification(isUserAction)
+  }
+
   dismissNotification = (id: string) => {
     this.props.actions.dismissNotification(id)
   }
@@ -193,11 +234,10 @@ class NewTabPage extends React.Component<Props, State> {
     const { newTabData } = this.props
     const {
       rewardsState,
-      showRewards: rewardsWidgetOn,
-      isBrandedWallpaperNotificationDismissed
+      showRewards: rewardsWidgetOn
     } = newTabData
-    const isShowingBrandedWallpaper = newTabData.brandedWallpaperData ? true : false
-    const shouldShowBrandedWallpaperNotification = isShowingBrandedWallpaper && !isBrandedWallpaperNotificationDismissed
+    const isShowingBrandedWallpaper = GetIsShowingBrandedWallpaper(this.props)
+    const shouldShowBrandedWallpaperNotification = GetShouldShowBrandedWallpaperNotification(this.props)
     const shouldShowRewardsWidget = rewardsWidgetOn || shouldShowBrandedWallpaperNotification
     return shouldShowRewardsWidget && (
       <Page.GridItemRewards>
@@ -215,7 +255,7 @@ class NewTabPage extends React.Component<Props, State> {
           hideWidget={this.toggleShowRewards}
           isNotification={!rewardsWidgetOn}
           onDismissNotification={this.dismissNotification}
-          onDismissBrandedWallpaperNotification={this.props.onDismissBrandedWallpaperNotification}
+          onDismissBrandedWallpaperNotification={this.dismissBrandedWallpaperNotification}
           menuPosition={'left'}
         />
       </Page.GridItemRewards>
