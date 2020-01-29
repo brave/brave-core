@@ -38,9 +38,18 @@ TEST(NTPSponsoredImagesServiceTest, InternalDataTest) {
   NTPSponsoredImagesService service(nullptr);
   service.AddObserver(&observer);
 
-  // Check with json file with empty object.
+  // Check with json file w/o schema version with empty object.
   service.ResetImagesDataForTest();
   service.OnGetPhotoJsonData("{}");
+  EXPECT_EQ(nullptr, service.GetSponsoredImagesData());
+
+  // Check with json file with empty object.
+  const std::string  test_empty_json_string = R"(
+      {
+          "schemaVersion": 1
+      })";
+  service.ResetImagesDataForTest();
+  service.OnGetPhotoJsonData(test_empty_json_string);
   auto* data = service.GetSponsoredImagesData();
   EXPECT_NE(data, nullptr);
   EXPECT_FALSE(data->IsValid());
