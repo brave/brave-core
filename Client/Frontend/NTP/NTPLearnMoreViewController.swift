@@ -75,7 +75,12 @@ class NTPLearnMoreViewController: BottomSheetViewController {
                  action: { [weak self] in
                     guard let rewards = self?.rewards else { return }
                     
-                    rewards.ledger.createWalletAndFetchDetails { _ in }
+                    if rewards.ledger.isWalletCreated {
+                        rewards.ledger.isEnabled = true
+                    } else {
+                        rewards.ledger.createWalletAndFetchDetails { _ in }
+                    }
+                    
                     self?.close()
                 })
             
