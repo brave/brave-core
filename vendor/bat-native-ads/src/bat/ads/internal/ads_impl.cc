@@ -1317,13 +1317,47 @@ std::vector<AdInfo> AdsImpl::GetUnseenAdsAndRoundRobinIfNeeded(
     return ads;
   }
 
-  auto unseen_ads = GetUnseenAds(ads);
+  std::vector<AdInfo> ads_for_unseen_advertisers =
+      GetAdsForUnseenAdvertisers(ads);
+  if (ads_for_unseen_advertisers.empty()) {
+    BLOG(INFO) << "All advertisers have been shown, so round robin";
+
+    const bool should_not_show_last_advertiser =
+        client_->GetAdvertisersUUIDSeen().size() > 1 ? true : false;
+
+    client_->ResetAdvertisersUUIDSeen(ads);
+
+    ads_for_unseen_advertisers = GetAdsForUnseenAdvertisers(ads);
+
+    if (should_not_show_last_advertiser) {
+      const auto it = std::remove_if(ads_for_unseen_advertisers.begin(),
+          ads_for_unseen_advertisers.end(), [&](AdInfo& ad) {
+        return ad.advertiser_id == last_shown_ad_info_.advertiser_id;
+      });
+
+      ads_for_unseen_advertisers.erase(it, ads_for_unseen_advertisers.end());
+    }
+  }
+
+  std::vector<AdInfo> unseen_ads = GetUnseenAds(ads_for_unseen_advertisers);
   if (unseen_ads.empty()) {
     BLOG(INFO) << "All ads have been shown, so round robin";
+
+    const bool should_not_show_last_ad =
+        client_->GetAdsUUIDSeen().size() > 1 ? true : false;
 
     client_->ResetAdsUUIDSeen(ads);
 
     unseen_ads = GetUnseenAds(ads);
+
+    if (should_not_show_last_ad) {
+      const auto it = std::remove_if(ads_for_unseen_advertisers.begin(),
+          ads_for_unseen_advertisers.end(), [&](AdInfo& ad) {
+        return ad.uuid == last_shown_ad_info_.uuid;
+      });
+
+      ads_for_unseen_advertisers.erase(it, ads_for_unseen_advertisers.end());
+    }
   }
 
   return unseen_ads;
@@ -1333,10 +1367,27 @@ std::vector<AdInfo> AdsImpl::GetUnseenAds(
     const std::vector<AdInfo>& ads) const {
   auto unseen_ads = ads;
   const auto seen_ads = client_->GetAdsUUIDSeen();
+  const auto seen_advertisers = client_->GetAdvertisersUUIDSeen();
 
   const auto it = std::remove_if(unseen_ads.begin(), unseen_ads.end(),
       [&](AdInfo& ad) {
-    return seen_ads.find(ad.uuid) != seen_ads.end();
+    return seen_ads.find(ad.uuid) != seen_ads.end() &&
+        seen_ads.find(ad.advertiser_id) != seen_advertisers.end();
+  });
+
+  unseen_ads.erase(it, unseen_ads.end());
+
+  return unseen_ads;
+}
+
+std::vector<AdInfo> AdsImpl::GetAdsForUnseenAdvertisers(
+    const std::vector<AdInfo>& ads) const {
+  auto unseen_ads = ads;
+  const auto seen_ads = client_->GetAdvertisersUUIDSeen();
+
+  const auto it = std::remove_if(unseen_ads.begin(), unseen_ads.end(),
+      [&](AdInfo& ad) {
+    return seen_ads.find(ad.advertiser_id) != seen_ads.end();
   });
 
   unseen_ads.erase(it, unseen_ads.end());
@@ -1381,6 +1432,9 @@ bool AdsImpl::ShowAd(
       now_in_seconds);
 
   client_->UpdateAdsUUIDSeen(ad.uuid, 1);
+  client_->UpdateAdvertisersUUIDSeen(ad.advertiser_id, 1);
+
+  last_shown_ad_info_ = ad;
 
   auto notification_info = std::make_unique<NotificationInfo>();
   notification_info->id = base::GenerateGUID();

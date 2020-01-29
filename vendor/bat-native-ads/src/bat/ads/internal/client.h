@@ -55,6 +55,12 @@ class Client {
   void UpdateAdsUUIDSeen(const std::string& uuid, uint64_t value);
   const std::map<std::string, uint64_t> GetAdsUUIDSeen();
   void ResetAdsUUIDSeen(const std::vector<AdInfo>& ads);
+  void UpdateAdvertisersUUIDSeen(
+      const std::string& uuid,
+      const uint64_t value);
+  const std::map<std::string, uint64_t> GetAdvertisersUUIDSeen();
+  void ResetAdvertisersUUIDSeen(
+      const std::vector<AdInfo>& ads);
   void SetNextCheckServeAdTimestampInSeconds(
       const uint64_t timestamp_in_seconds);
   uint64_t GetNextCheckServeAdTimestampInSeconds();

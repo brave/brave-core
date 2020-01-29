@@ -364,6 +364,33 @@ void Client::ResetAdsUUIDSeen(
   SaveState();
 }
 
+void Client::UpdateAdvertisersUUIDSeen(
+    const std::string& uuid,
+    const uint64_t value) {
+  client_state_->advertisers_uuid_seen.insert({uuid, value});
+
+  SaveState();
+}
+
+const std::map<std::string, uint64_t> Client::GetAdvertisersUUIDSeen() {
+  return client_state_->advertisers_uuid_seen;
+}
+
+void Client::ResetAdvertisersUUIDSeen(
+     const std::vector<AdInfo>& ads) {
+  BLOG(INFO) << "Resetting seen advertisers";
+
+  for (const auto& ad : ads) {
+    auto advertiser_uuid_seen =
+        client_state_->advertisers_uuid_seen.find(ad.advertiser_id);
+    if (advertiser_uuid_seen != client_state_->advertisers_uuid_seen.end()) {
+      client_state_->advertisers_uuid_seen.erase(advertiser_uuid_seen);
+    }
+  }
+
+  SaveState();
+}
+
 void Client::SetNextCheckServeAdTimestampInSeconds(
     const uint64_t timestamp_in_seconds) {
   client_state_->next_check_serve_ad_timestamp_in_seconds
