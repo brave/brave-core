@@ -9,7 +9,6 @@
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Logo Brave</translation>
 <translation id="7339898014177206373">Jendela baru</translation>
-<translation id="5935964611177478118">masuk ke Brave</translation>
 <translation id="5516268345616100622">Pengelola Tugas - Brave</translation>
 <translation id="7918740962659365265">Bantu Brave menjadi lebih baik dengan mengirim laporan kerusakan dan <ph name="UMA_LINK"/> ke Brave Software</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
@@ -122,7 +121,6 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="1459786048951724030">Brave OS tidak dapat menyinkronkan data Anda karena kesalahan saat masuk.</translation>
 <translation id="6813094029720377619">Anda menghapus cookie ketika keluar dari Brave. Agar tetap tersinkron, ubah <ph name="COOKIE_SETTINGS_LINK"/> ini.</translation>
 <translation id="3340978935015468852">setelan</translation>
-<translation id="380197516434040304">Buang Dari Brave...</translation>
 <translation id="300669147395456190">Aplikasi Brave</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> mewajibkan Anda membaca dan menyetujui Persyaratan Layanan sebelum menggunakan perangkat ini. Persyaratan ini tidak memperluas, mengubah, atau membatasi Persyaratan Brave OS.</translation>
 <translation id="3293668930608086049">Brave menggunakan kamera dan mikrofon Anda.</translation>
@@ -186,8 +184,6 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="7798069806040634998">Brave memerlukan akses penyimpanan untuk mendownload file</translation>
 <translation id="7685904775439037072">Setelah Brave memiliki akses, situs dapat meminta akses dari Anda.</translation>
 <translation id="1744365871163268756">Harap tunggu selagi Brave memasang pembaruan sistem terkini.</translation>
-<translation id="8000338990735917615">Versi Brave berikutnya akan diinstal secara otomatis.</translation>
-<translation id="2975476470948647918">Versi Brave berikutnya akan diinstal secara otomatis. Saat download ini selesai, Brave akan dimulai ulang dan siap digunakan.</translation>
 <translation id="7808415789955822133">Persyaratan Brave OS</translation>
 <translation id="7207456302801184289">Selamat Datang di Brave</translation>
 <translation id="3507835409099344374">Buka setelan notifikasi Brave</translation>
@@ -219,7 +215,6 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
       setelan browser Brave<ph name="LINK_END"/> Anda</translation>
 <translation id="4459296183696059108">Jika setelan tidak muncul di halaman ini, buka <ph name="LINK_BEGIN"/>
       setelan Brave OS<ph name="LINK_END"/> Anda</translation>
-<translation id="7977435741986383568">Brave dapat mengunakan layanan web agar pengalaman mengakses internet lebih menyenangkan. Anda dapat memilih untuk menonaktifkan layanan ini. <ph name="BEGIN_LINK"/>Pelajari lebih lanjut<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Untuk memperbaiki kesalahan ejaan, Brave mengirimkan teks yang Anda ketik di kolom teks ke Brave Software</translation>
 <translation id="8586264863973514035">Untuk menerapkan perubahan Anda, luncurkan ulang Brave</translation>
 <translation id="7021823858304886493">Izinkan login Brave</translation>

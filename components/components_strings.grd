@@ -134,10 +134,15 @@
 
   </outputs>
   <translations>
+    <file path="strings/components_strings_af.xtb" lang="af" />
     <file path="strings/components_strings_am.xtb" lang="am" />
     <file path="strings/components_strings_ar.xtb" lang="ar" />
+    <file path="strings/components_strings_as.xtb" lang="as" />
+    <file path="strings/components_strings_az.xtb" lang="az" />
+    <file path="strings/components_strings_be.xtb" lang="be" />
     <file path="strings/components_strings_bg.xtb" lang="bg" />
     <file path="strings/components_strings_bn.xtb" lang="bn" />
+    <file path="strings/components_strings_bs.xtb" lang="bs" />
     <file path="strings/components_strings_ca.xtb" lang="ca" />
     <file path="strings/components_strings_cs.xtb" lang="cs" />
     <file path="strings/components_strings_da.xtb" lang="da" />
@@ -147,35 +152,53 @@
     <file path="strings/components_strings_es.xtb" lang="es" />
     <file path="strings/components_strings_es-419.xtb" lang="es-419" />
     <file path="strings/components_strings_et.xtb" lang="et" />
+    <file path="strings/components_strings_eu.xtb" lang="eu" />
     <file path="strings/components_strings_fa.xtb" lang="fa" />
     <file path="strings/components_strings_fi.xtb" lang="fi" />
     <file path="strings/components_strings_fil.xtb" lang="fil" />
     <file path="strings/components_strings_fr.xtb" lang="fr" />
+    <file path="strings/components_strings_fr-CA.xtb" lang="fr-CA" />
+    <file path="strings/components_strings_gl.xtb" lang="gl" />
     <file path="strings/components_strings_gu.xtb" lang="gu" />
     <file path="strings/components_strings_hi.xtb" lang="hi" />
     <file path="strings/components_strings_hr.xtb" lang="hr" />
     <file path="strings/components_strings_hu.xtb" lang="hu" />
+    <file path="strings/components_strings_hy.xtb" lang="hy" />
     <file path="strings/components_strings_id.xtb" lang="id" />
+    <file path="strings/components_strings_is.xtb" lang="is" />
     <file path="strings/components_strings_it.xtb" lang="it" />
     <!-- The translation console uses 'iw' for Hebrew, but we use 'he'. -->
     <file path="strings/components_strings_iw.xtb" lang="he" />
     <file path="strings/components_strings_ja.xtb" lang="ja" />
+    <file path="strings/components_strings_ka.xtb" lang="ka" />
+    <file path="strings/components_strings_kk.xtb" lang="kk" />
+    <file path="strings/components_strings_km.xtb" lang="km" />
     <file path="strings/components_strings_kn.xtb" lang="kn" />
     <file path="strings/components_strings_ko.xtb" lang="ko" />
+    <file path="strings/components_strings_ky.xtb" lang="ky" />
+    <file path="strings/components_strings_lo.xtb" lang="lo" />
     <file path="strings/components_strings_lt.xtb" lang="lt" />
     <file path="strings/components_strings_lv.xtb" lang="lv" />
+    <file path="strings/components_strings_mk.xtb" lang="mk" />
     <file path="strings/components_strings_ml.xtb" lang="ml" />
+    <file path="strings/components_strings_mn.xtb" lang="mn" />
     <file path="strings/components_strings_mr.xtb" lang="mr" />
     <file path="strings/components_strings_ms.xtb" lang="ms" />
+    <file path="strings/components_strings_my.xtb" lang="my" />
+    <file path="strings/components_strings_ne.xtb" lang="ne" />
     <file path="strings/components_strings_nl.xtb" lang="nl" />
     <file path="strings/components_strings_no.xtb" lang="no" />
+    <file path="strings/components_strings_or.xtb" lang="or" />
+    <file path="strings/components_strings_pa.xtb" lang="pa" />
     <file path="strings/components_strings_pl.xtb" lang="pl" />
     <file path="strings/components_strings_pt-BR.xtb" lang="pt-BR" />
     <file path="strings/components_strings_pt-PT.xtb" lang="pt-PT" />
     <file path="strings/components_strings_ro.xtb" lang="ro" />
     <file path="strings/components_strings_ru.xtb" lang="ru" />
+    <file path="strings/components_strings_si.xtb" lang="si" />
     <file path="strings/components_strings_sk.xtb" lang="sk" />
     <file path="strings/components_strings_sl.xtb" lang="sl" />
+    <file path="strings/components_strings_sq.xtb" lang="sq" />
     <file path="strings/components_strings_sr.xtb" lang="sr" />
     <file path="strings/components_strings_sv.xtb" lang="sv" />
     <file path="strings/components_strings_sw.xtb" lang="sw" />
@@ -184,9 +207,13 @@
     <file path="strings/components_strings_th.xtb" lang="th" />
     <file path="strings/components_strings_tr.xtb" lang="tr" />
     <file path="strings/components_strings_uk.xtb" lang="uk" />
+    <file path="strings/components_strings_ur.xtb" lang="ur" />
+    <file path="strings/components_strings_uz.xtb" lang="uz" />
     <file path="strings/components_strings_vi.xtb" lang="vi" />
     <file path="strings/components_strings_zh-CN.xtb" lang="zh-CN" />
+    <file path="strings/components_strings_zh-HK.xtb" lang="zh-HK" />
     <file path="strings/components_strings_zh-TW.xtb" lang="zh-TW" />
+    <file path="strings/components_strings_zu.xtb" lang="zu" />
   </translations>
   <release seq="1" allow_pseudo="false">
     <messages fallback_to_english="true">
@@ -211,6 +238,7 @@
       <part file="ntp_snippets_strings.grdp" />
       <part file="omnibox_strings.grdp" />
       <part file="page_info_strings.grdp" />
+      <part file="paint_preview_strings.grdp" />
       <part file="password_manager_strings.grdp" />
       <part file="payments_strings.grdp" />
       <part file="pdf_strings.grdp" />
@@ -221,6 +249,7 @@
       <part file="safe_browsing_strings.grdp" />
       <part file="security_interstitials_strings.grdp" />
       <part file="security_state_strings.grdp" />
+      <part file="send_tab_to_self_strings.grdp" />
       <part file="ssl_errors_strings.grdp" />
       <part file="sync_ui_strings.grdp" />
       <part file="translate_strings.grdp" />
@@ -258,6 +287,9 @@
       </message>
       <message name="IDS_SAVE" desc="Used on a button to save information you are editing.">
         Save
+      </message>
+      <message name="IDS_MENU" desc="The accessible name for the Menu. This is used as the aria-roledescription for context menus.">
+        Menu
       </message>
       <if expr="is_android">
         <message name="IDS_SHOW" desc="Generic label to show content for a feature. [CHAR-LIMIT=20]" formatter_data="android_java">
@@ -363,6 +395,9 @@
       </message>
       <message name="IDS_ACCNAME_PARTICLE_DISC" desc="The accessible name for the Account Consistency Disc on New Tab Page">
         Brave Account
+      </message>
+      <message name="IDS_ACCNAME_TAB_LIST" desc="The accessible name for the tab strip.">
+        Tab list
       </message>
 
       <message name="IDS_UTILITY_PROCESS_JSON_PARSER_NAME" desc="The name of the utility process used for parsing JSON files.">

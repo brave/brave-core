@@ -9,7 +9,6 @@
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Λογότυπο Brave</translation>
 <translation id="7339898014177206373">Νέο παράθυρο</translation>
-<translation id="5935964611177478118">σύνδεση στο Brave</translation>
 <translation id="5516268345616100622">Διαχείριση Εργασιών - Brave</translation>
 <translation id="7918740962659365265">Βοηθήστε μας να κάνουμε το Brave καλύτερο, αποστέλλωντας αναφορές σφαλμάτων και <ph name="UMA_LINK"/> στη Brave Software</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
@@ -122,7 +121,6 @@
 <translation id="1459786048951724030">Το Brave OS δεν μπόρεσε να συγχρονίσει τα δεδομένα σας λόγω σφάλματος κατά τη σύνδεση.</translation>
 <translation id="6813094029720377619">Τα cookie διαγράφονται κατά τον τερματισμό του Brave. Αλλάξτε τις <ph name="COOKIE_SETTINGS_LINK"/> για να συνεχίσετε τον συγχρονισμό.</translation>
 <translation id="3340978935015468852">ρυθμίσεις</translation>
-<translation id="380197516434040304">Κατάργηση από το Brave…</translation>
 <translation id="300669147395456190">Εφαρμογές Brave</translation>
 <translation id="3421950102518690868">Το <ph name="DOMAIN"/> απαιτεί να διαβάσετε και να αποδεχτείτε τους ακόλουθους Όρους Παροχής Υπηρεσιών πριν από τη χρήση αυτής της συσκευής. Οι συγκεκριμένοι όροι δεν επεκτείνουν, τροποποιούν ή περιορίζουν τους όρους του Brave OS.</translation>
 <translation id="3293668930608086049">Το Brave χρησιμοποιεί την κάμερα και το μικρόφωνό σας.</translation>
@@ -189,8 +187,6 @@
 <translation id="7798069806040634998">Το Brave χρειάζεται πρόσβαση στον αποθηκευτικό χώρο για τη λήψη αρχείων</translation>
 <translation id="7685904775439037072">Όταν το Brave αποκτήσει πρόσβαση, οι ιστότοποι θα μπορούν να σας ζητήσουν πρόσβαση.</translation>
 <translation id="1744365871163268756">Περιμένετε μέχρι να γίνει εγκατάσταση των πιο πρόσφατων ενημερώσεων συστήματος από το Brave.</translation>
-<translation id="8000338990735917615">Οι μελλοντικές εκδόσεις του Brave θα εγκαθίστανται αυτόματα.</translation>
-<translation id="2975476470948647918">Οι μελλοντικές εκδόσεις του Brave θα εγκαθίστανται αυτόματα. Όταν ολοκληρωθεί αυτή η λήψη, θα γίνει επανεκκίνηση του Brave και θα είστε έτοιμοι να το χρησιμοποιήσετε.</translation>
 <translation id="7808415789955822133">Όροι του Brave OS</translation>
 <translation id="7207456302801184289">Καλώς ήρθατε στο Brave</translation>
 <translation id="3507835409099344374">Μετάβαση στις ρυθμίσεις ειδοποιήσεων του Brave</translation>
@@ -222,7 +218,6 @@
       Ρυθμίσεις προγράμματος περιήγησης Brave<ph name="LINK_END"/></translation>
 <translation id="4459296183696059108">Εάν μια ρύθμιση δεν εμφανίζεται σε αυτήν τη σελίδα, αναζητήστε την στις <ph name="LINK_BEGIN"/>
       ρυθμίσεις του Brave OS<ph name="LINK_END"/></translation>
-<translation id="7977435741986383568">Το Brave ενδέχεται να χρησιμοποιεί υπηρεσίες ιστού για να βελτιώσει την εμπειρία περιήγησής σας. Μπορείτε, εάν θέλετε, να απενεργοποιήσετε αυτές τις υπηρεσίες. <ph name="BEGIN_LINK"/>Μάθετε περισσότερα<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Για τη διόρθωση ορθογραφικών λαθών, το Brave στέλνει το κείμενο που πληκτρολογείτε σε πεδία κειμένου στο Brave Software</translation>
 <translation id="8586264863973514035">Για να εφαρμόσετε τις αλλαγές σας, επανεκκινήστε το Brave</translation>
 <translation id="7021823858304886493">Να επιτρέπεται η σύνδεση στο Brave</translation>

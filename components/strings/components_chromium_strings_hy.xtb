@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="hy">
+<translation id="4068928808254189629">Անցեք
+          Brave ընտրացանկ &gt;
+          <ph name="SETTINGS_TITLE"/>
+          &gt;
+          <ph name="ADVANCED_TITLE"/>
+          և ապանշեք «<ph name="NO_PREFETCH_DESCRIPTION"/>»-ը:
+          Եթե խնդիրը չվերանա, խորհուրդ ենք տալիս կրկին ընտրել այս տարբերակը՝
+          արդյունավետությունը բարձրացնելու համար:</translation>
+<translation id="2017237562285586622">Հրապատի կամ հակավիրուսային ծրագրի կարգավորումներում
+       թույլատրեք Brave-ին միանալ ցանցին:</translation>
+<translation id="7460648687895344848">Brave OS-ը չի ավարտել իր նախնական կարգավորումը:</translation>
+<translation id="8187289872471304532">Անցեք
+          Applications &gt; System Preferences &gt; Network &gt; Advanced &gt; Proxies
+          և ապընտեք բոլոր ընտրված պրոքսի-սերվերները:</translation>
+<translation id="8619622797841001082">Անցեք
+          Brave-ի ընտրացանկ &gt;
+          <ph name="SETTINGS_TITLE"/>
+          &gt;
+          <ph name="ADVANCED_TITLE"/>
+          &gt;
+          <ph name="PROXIES_TITLE"/>
+          և համոզվեք, որ ընտրված է «առանց պրոքսի-սերվերի» կամ «անմիջական» կազմաձևումը:</translation>
+<translation id="8746410156982274638">Անցեք
+          Brave-ի ընտրացանկ &gt;
+          <ph name="SETTINGS_TITLE"/>
+          &gt;
+          <ph name="ADVANCED_TITLE"/>
+          &gt;
+          <ph name="PROXIES_TITLE"/>
+          &gt;
+          LAN կարգավորումներ
+          և ապանշեք «Օգտագործել միջնորդ սերվեր LAN-ի համար» նշավանդակը:</translation>
+<translation id="9156965752763025780">Փոփոխություններն ուժի մեջ կմտնեն Brave-ը հաջորդ անգամ գործարկելիս:</translation>
+<translation id="130631256467250065">Ձեր փոփոխություններն ուժի մեջ կմտնեն հաջորդ անգամ, երբ վերագործարկեք սարքը:</translation>
+<translation id="7999989146447764333">Խափանումների մասին հաղորդումը մատչելի չէ Brave-ում:</translation>
+<translation id="7932149101545999102">Brave-ը ստեղծվել է շնորհիվ <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> բաց կոդով նախագծի և այլ <ph name="BEGIN_LINK_OSS"/>բաց կոդով ծրագրակազմերի<ph name="END_LINK_OSS"/>:</translation>
+<translation id="1953231710324290369">Ցուցադրվող Brave էջն անվտանգ է</translation>
+<translation id="2305018990464327944">Brave-ը հաստատել է, որ <ph name="ISSUER"/>-ն է թողարկել վեբկայքի հավաստագիրը:</translation>
+<translation id="88187049159266777">Brave-ը ճիշտ չի փակվել:</translation>
+</translationbundle>

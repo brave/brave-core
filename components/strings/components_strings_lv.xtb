@@ -10,6 +10,7 @@
 <translation id="7791543448312431591">Pievienot</translation>
 <translation id="1181037720776840403">Noņemt</translation>
 <translation id="5317780077021120954">Saglabāt</translation>
+<translation id="3897092660631435901">Izvēlne</translation>
 <translation id="5300589172476337783">Rādīt</translation>
 <translation id="7108338896283013870">Slēpt</translation>
 <translation id="780301667611848630">Nē, paldies</translation>
@@ -19,6 +20,7 @@
 <translation id="1036348656032585052">Izslēgt</translation>
 <translation id="8105368624971345109">Izslēgt</translation>
 <translation id="1175364870820465910">Drukāt...</translation>
+<translation id="129553762522093515">Nesen aizvērtas</translation>
 <translation id="8870413625673593573">Nesen aizvērtas</translation>
 <translation id="385051799172605136">Atpakaļ</translation>
 <translation id="7481312909269577407">Pārsūtīt</translation>
@@ -28,19 +30,23 @@
 <translation id="1201402288615127009">Nākamais</translation>
 <translation id="5713644099811900409">Brave Software konts</translation>
 <translation id="3157931365184549694">Atjaunot</translation>
+<translation id="5040262127954254034">Konfidencialitāte</translation>
 <translation id="3061707000357573562">Ielāpu pakalpojums</translation>
 <translation id="1914326953223720820">Pakalpojums failu izgūšanai no arhīva</translation>
+<translation id="1623104350909869708">Neļaut šai lapai veidot papildu dialoglodziņus</translation>
 <translation id="2677748264148917807">Iziet</translation>
 <translation id="5556459405103347317">Pārlādēt</translation>
 <translation id="2359808026110333948">Turpināt</translation>
-<translation id="5935964611177478118">pierakstieties pārlūkā Brave</translation>
 <translation id="4378154925671717803">Tālrunis</translation>
 <translation id="8131740175452115882">Apstiprināt</translation>
 <translation id="8968766641738584599">Saglabāt karti</translation>
+<translation id="860043288473659153">Bankas kartes īpašnieka vārds</translation>
+<translation id="869891660844655955">Derīguma termiņš</translation>
 <translation id="5457113250005438886">Nederīgs</translation>
 <translation id="6518133107902771759">Pārbaudīt</translation>
 <translation id="8987927404178983737">Mēnesis</translation>
 <translation id="6015796118275082299">Gads</translation>
+<translation id="1581080074034554886">CVC</translation>
 <translation id="9065203028668620118">Labot</translation>
 <translation id="5029568752722684782">Dzēst kopiju</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
@@ -70,6 +76,7 @@
 <translation id="4522570452068850558">Informācija</translation>
 <translation id="3586931643579894722">Slēpt detaļas</translation>
 <translation id="614940544461990577">Veiciet tālāk norādītās darbības.</translation>
+<translation id="4943872375798546930">Nav rezultātu</translation>
 <translation id="8688672835843460752">Pieejams</translation>
 <translation id="4989542687859782284">Nav pieejams</translation>
 <translation id="59174027418879706">Iespējots</translation>
@@ -79,7 +86,10 @@
 <translation id="1838374766361614909">Notīrīt meklēšanas vaicājumu</translation>
 <translation id="495170559598752135">Darbības</translation>
 <translation id="8261506727792406068">Dzēst</translation>
+<translation id="3207960819495026254">Atzīmēts kā grāmatzīme</translation>
 <translation id="3303855915957856445">Netika atrasts neviens meklēšanas rezultāts.</translation>
+<translation id="1209206284964581585">Pagaidām slēpt</translation>
+<translation id="1407135791313364759">Atvērt visas</translation>
 <translation id="4880827082731008257">Meklēšanas vēsture</translation>
 <translation id="4756388243121344051">Vēsture</translation>
 <translation id="1644574205037202324">Vēsture</translation>
@@ -91,11 +101,14 @@
 <translation id="1178581264944972037">Pauzēt</translation>
 <translation id="1232569758102978740">Bez nosaukuma</translation>
 <translation id="7514365320538308">Lejupielādēt</translation>
+<translation id="8041089156583427627">Sūtīt atsauksmes</translation>
 <translation id="7552846755917812628">Izmantojiet tālāk sniegtos padomus.</translation>
+<translation id="3960299545138990065">Restartējiet pārlūku Brave</translation>
 <translation id="4275830172053184480">Ierīces restartēšana</translation>
 <translation id="413544239732274901">Uzzināt vairāk</translation>
 <translation id="7554791636758816595">Jauna cilne</translation>
 <translation id="2079545284768500474">Atsaukt</translation>
+<translation id="17513872634828108">Atvērt cilnes</translation>
 <translation id="981121421437150478">Bezsaistē</translation>
 <translation id="5171045022955879922">Meklējiet vai ievadiet URL.</translation>
 <translation id="803771048473350947">Fails</translation>
@@ -108,12 +121,11 @@
 <translation id="6831043979455480757">Tulkot</translation>
 <translation id="2473195200299095979">Tulkot šo lapu</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>, atbilde, <ph name="ANSWER"/></translation>
-<translation id="9008201768610948239">Ignorēt</translation>
 <translation id="7714464543167945231">Sertifikāts</translation>
 <translation id="4235360514405112390">Derīgs</translation>
 <translation id="6447842834002726250">Sīkfaili</translation>
 <translation id="1919345977826869612">Reklāmas</translation>
-<translation id="410351446219883937">Automātiska atskaņošana</translation>
+<translation id="6612358246767739896">Aizsargāts saturs</translation>
 <translation id="9219103736887031265">Attēli</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">Uznirstošie elem. un novirzīšana</translation>
@@ -128,6 +140,7 @@
 <translation id="7638605456503525968">Seriālie porti</translation>
 <translation id="2215727959747642672">Faila rediģēšana</translation>
 <translation id="6545864417968258051">Bluetooth meklēšana</translation>
+<translation id="534295439873310000">NFC ierīces</translation>
 <translation id="5039804452771397117">Atļaut</translation>
 <translation id="7053983685419859001">Bloķēt</translation>
 <translation id="57838592816432529">Izslēgt skaņu</translation>
@@ -138,13 +151,17 @@
 <translation id="6979440798594660689">Izslēgt skaņu (noklusējums)</translation>
 <translation id="8037357227543935929">Vaicāt (pēc noklusējuma)</translation>
 <translation id="8763927697961133303">USB ierīce</translation>
+<translation id="4165986682804962316">Vietnes iestatījumi</translation>
 <translation id="9011424611726486705">Atveriet vietnes iestatījumus</translation>
 <translation id="5932224571077948991">Vietnē tiek rādītas traucējošas vai maldinošas reklāmas</translation>
 <translation id="7878562273885520351">Iespējams, jūsu parole ir apdraudēta</translation>
 <translation id="1089439967362294234">Nomainīt paroli</translation>
+<translation id="9008201768610948239">Ignorēt</translation>
 <translation id="1186201132766001848">Pārbaudīt paroles</translation>
 <translation id="5979084224081478209">Pārbaudīt paroles</translation>
+<translation id="10614374240317010">Netiek saglabātas</translation>
 <translation id="5869522115854928033">Saglabātās paroles</translation>
+<translation id="230699814587342492">Brave paroles</translation>
 <translation id="5087580092889165836">Pievienot karti</translation>
 <translation id="2154484045852737596">Kartes informācijas rediģēšana</translation>
 <translation id="4923459931733593730">Maksājums</translation>
@@ -193,8 +210,11 @@
 <translation id="1974060860693918893">Papildu</translation>
 <translation id="5308380583665731573">Pievienošana</translation>
 <translation id="2501278716633472235">Doties atpakaļ</translation>
+<translation id="1736420071277903564">Dators</translation>
+<translation id="3906954721959377182">Planšetdators</translation>
 <translation id="7029809446516969842">Paroles</translation>
 <translation id="6596325263575161958">Šifrēšanas opcijas</translation>
+<translation id="8461694314515752532">Šifrējiet sinhronizētos datus, izmantojot savu sinhronizācijas ieejas frāzi</translation>
 <translation id="9050666287014529139">Ieejas frāze</translation>
 <translation id="9095388113577226029">Citas valodas…</translation>
 <translation id="7600965453749440009">Nekad netulkot saturu, kas rakstīts <ph name="LANGUAGE"/> valodā</translation>
@@ -202,6 +222,7 @@
 <translation id="7378627244592794276">Nē</translation>
 <translation id="9137013805542155359">Rādīt oriģinālo</translation>
 <translation id="8725066075913043281">Mēģināt vēlreiz</translation>
+<translation id="5684874026226664614">Hmm... Šo lapu nevarēja iztulkot.</translation>
 <translation id="583281660410589416">Nezināma</translation>
 <translation id="9170848237812810038">&amp;Atsaukt</translation>
 <translation id="2972581237482394796">&amp;Pāratsaukt</translation>

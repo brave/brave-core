@@ -6,7 +6,6 @@
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Logotip de Brave</translation>
 <translation id="7339898014177206373">Finestra nova</translation>
-<translation id="5935964611177478118">Inicia la sessió a Brave</translation>
 <translation id="5516268345616100622">Gestor de tasques: Brave</translation>
 <translation id="7918740962659365265">Ajudeu a millorar Brave; envieu informes d'error i <ph name="UMA_LINK"/> a Brave Software.</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/>: Brave</translation>
@@ -119,7 +118,6 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="1459786048951724030">Brave OS no ha pogut sincronitzar les vostres dades a causa d'un error amb l'inici de sessió.</translation>
 <translation id="6813094029720377619">Has indicat que s'esborrin les galetes en sortir de Brave. Per continuar la sincronització, canvia aquestes <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
 <translation id="3340978935015468852">configuració</translation>
-<translation id="380197516434040304">Suprimeix de Brave...</translation>
 <translation id="300669147395456190">Aplicacions de Brave</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> exigeix que llegiu i accepteu els Termes i condicions següents abans no utilitzeu el dispositiu. Aquestes condicions no amplien, modifiquen ni restringeixen les condicions de Brave OS.</translation>
 <translation id="3293668930608086049">Brave està utilitzant la càmera i el micròfon.</translation>
@@ -180,8 +178,6 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="7798069806040634998">Brave necessita accedir a l'emmagatzematge per baixar fitxers</translation>
 <translation id="7685904775439037072">Un cop Brave tingui accés, els llocs web et podran demanar accés.</translation>
 <translation id="1744365871163268756">Espereu mentre Brave instal·la les darreres actualitzacions del sistema.</translation>
-<translation id="8000338990735917615">Les versions futures de Brave s'instal·laran automàticament.</translation>
-<translation id="2975476470948647918">Les versions futures de Brave s'instal·laran automàticament. Quan finalitzi la baixada, Brave es reiniciarà i ja el podràs utilitzar.</translation>
 <translation id="7808415789955822133">Condicions de Brave OS</translation>
 <translation id="7207456302801184289">Us donem la benvinguda a Brave</translation>
 <translation id="3507835409099344374">Ves a la configuració de notificacions de Brave</translation>
@@ -211,7 +207,6 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="6915252145142862992">Aquesta és una instal·lació secundària de Brave i no pot definir-se com a navegador predeterminat.</translation>
 <translation id="6235873178214143377">Si alguna opció de configuració no es mostra en aquesta pàgina, consulta la <ph name="LINK_BEGIN"/>configuració del navegador Brave<ph name="LINK_END"/>.</translation>
 <translation id="4459296183696059108">Si alguna opció de configuració no es mostra en aquesta pàgina, consulta la <ph name="LINK_BEGIN"/>configuració de Brave OS<ph name="LINK_END"/>.</translation>
-<translation id="7977435741986383568">Brave pot utilitzar serveis web per millorar la navegació, però si vols els pots desactivar. <ph name="BEGIN_LINK"/>Més informació<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Per corregir els errors d'ortografia, Brave envia a Brave Software el que escrius als camps de text</translation>
 <translation id="8586264863973514035">Torna a iniciar Brave perquè s'apliquin els canvis</translation>
 <translation id="7021823858304886493">Permet l'inici de sessió a Brave</translation>

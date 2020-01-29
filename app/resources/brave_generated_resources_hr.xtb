@@ -3,6 +3,7 @@
 <translationbundle lang="hr">
 <translation id="3333887201479867589">Sustav nagrada u pregledniku Brave</translation>
 <translation id="7942180974165298215">Blokiranje oglasa u pregledniku Brave</translation>
+<translation id="4615489450165434530">Prijavi nevaljano mrežno mjesto</translation>
 <translation id="6406506848690869874">Sinkronizacija</translation>
 <translation id="5655621391922317800">Kripto novčanici</translation>
 <translation id="2445484935443597917">Izradi novi profil</translation>
@@ -19,6 +20,7 @@
 <translation id="3699882589215410581">Instaliraj i pokreni Widevine</translation>
 <translation id="8926389886865778422">Više me ne pitaj</translation>
 <translation id="4726634924419692905">Prikazuje se upozorenje kada se mrežnim mjestom želi instalirati aplikacija Widevine na vašem računalu.</translation>
+<translation id="8760415064721320867">Privatni prozor s funkcijom Tor</translation>
 <translation id="8053096063396012732">Instaliraj aplikaciju Widevine</translation>
 <translation id="4840334696217618631">Poništi preglednik za omogućavanje aplikacije Widevine</translation>
 <translation id="8410111618231938546">Widevine tvrtke Google dio je koda za upravljanje digitalnim pravima (DRM) koji tvrtka Brave Software ne posjeduje i ne može pregledati. Kȏd za Googleovo rješenje Widevine učitava se s poslužitelja tvrtke Google, a ne s naših poslužitelja. Učitava se samo kada omogućite tu opciju. Ne preporučujemo uporabu DRM-a, no poštujemo izbor korisnika i prihvaćamo činjenicu da bi neki korisnici preglednika Brave htjeli koristiti usluge koje to zahtijevaju.
@@ -39,6 +41,8 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="2814998458708016836">Upotrijebi široku adresnu traku</translation>
 <translation id="6123134130710658846">Sakrij gumbe za nagrade Brave</translation>
 <translation id="7635711399568194460">Sakrivaju se gumbi za nagrade Brave u lokacijskoj traci kada značajka Nagrade Brave nije omogućena</translation>
+<translation id="1520361618554057102">Uvijek prikaži knjižne oznake na stranici Nova kartica</translation>
+<translation id="5802665280774361839">Prikaži automatsko završavanje u adresnoj traci</translation>
 <translation id="7965178729203412357">Novi identitet za Tor</translation>
 <translation id="8511502469534942133">Nova veza tor za ovo mrežno mjesto</translation>
 <translation id="8784924142044142231">Izađi iz funkcije Tor</translation>
@@ -68,6 +72,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="9075744464571452108">Prepoznavanje uređaja</translation>
 <translation id="3570081523466826008">Nadogradi veze na HTTPS</translation>
 <translation id="4824468494729001999">Blokiraj skripte</translation>
+<translation id="8526521192921341404">Dopusti prijave Googleom</translation>
 <translation id="863171915776379000">Dopusti prijave u društvenu mrežu Facebook i ugrađene objave</translation>
 <translation id="5165042248369837294">Dopusti ugrađene objave na društvenoj mreži Twitter</translation>
 <translation id="958971637207126733">Dopusti ugrađene objave na mreži LinkedIn</translation>
@@ -84,6 +89,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="5825943197137337319">Samo zadano javno sučelje</translation>
 <translation id="1689062823386843231">Onemogući UDP bez korištenja proxyja</translation>
 <translation id="8502234992433094996">Upotrijebi Googleove usluge za prosljeđivanje poruka</translation>
+<translation id="3888068426966679906">Udaljeno uklanjanje problema</translation>
 <translation id="6645631466045614531">Pristupiti sinkronizaciji putem</translation>
 <translation id="1807246157184219062">Svjetlo</translation>
 <translation id="2414886740292270097">Tama</translation>
@@ -153,6 +159,13 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="4394049700291259645">Onemogući</translation>
 <translation id="6469509880167172749">Automatsko šalji u potpunosti privatno analiziranje proizvoda poduzeću Brave</translation>
 <translation id="7090566321964540749">Ovim se anonimnim informacijama omogućava poduzeću Brave procjenjivanje ukupnog korištenja određenim značajkama.</translation>
+<translation id="1200956479506699688">Kriptovalutni su novčanici sada dostupni u pregledniku Brave. Ne možete istovremeno upotrebljavati značajku MetaMask i Kriptovalutne novčanike.</translation>
+<translation id="7583735190612229830">Postavite kriptovalutne novčanike koji ostvaruju interakciju s ovom aplikacijom, a koji se drugima sviđaju.</translation>
+<translation id="8337117349965899723">Upotrijebi kriptovalutne novčanike</translation>
+<translation id="5756155765711979898">Upotrijebi značajku MetaMask</translation>
+<translation id="6754134632841262799">POSTAVLJANJE</translation>
+<translation id="191143826155037518">Preglednik vam se Brave pruža pod <ph name="BEGIN_LINK_MPL">&amp;lt;a target="_blank" href="$1"&amp;gt;</ph>inačicom javne licencije 2.0. društva Mozille<ph name="END_LINK_MPL">&amp;lt;/a&amp;gt;</ph> (MPL) i uključuje <ph name="BEGIN_LINK_OSS">&amp;lt;a target="_blank" href="$2"&amp;gt;</ph>softver otvorenog koda<ph name="END_LINK_OSS">&amp;lt;/a&amp;gt;</ph> pod brojnim drugim licencijama.
+        Možete pročitati <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&amp;lt;a target="_blank" href="$3"&amp;gt;</ph>upute za preuzimanje i vlastito izgrađivanje<ph name="END_LINK_BUILD_INSTRUCTIONS">&amp;lt;/a&amp;gt;</ph> posebnog <ph name="BEGIN_LINK_SOURCE_CODE">&amp;lt;a target="_blank" href="$4"&amp;gt;</ph>izvornog koda koji se upotrebljava za stvaranje ove kopije<ph name="END_LINK_SOURCE_CODE">&amp;lt;/a&amp;gt;</ph>.</translation>
 <translation id="4474155171896946103">Označi sve kartice...</translation>
 <translation id="2336228925368920074">Označi sve kartice...</translation>
 </translationbundle>

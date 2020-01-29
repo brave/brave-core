@@ -1,5 +1,5 @@
 diff --git a/components/search_engines/search_engine_type.h b/components/search_engines/search_engine_type.h
-index 50b5cb896806c9f801cb3eeb27a7df190d482ebc..e5eecb7cc7212d4ede48cfb350ddd891b4207a62 100644
+index ff303b8f304488fd4cda3920b9268f5a8fef996c..cf3b0067baf1ee0f4e5ce43acb6445f2f6b84caa 100644
 --- a/components/search_engines/search_engine_type.h
 +++ b/components/search_engines/search_engine_type.h
 @@ -64,9 +64,7 @@ enum SearchEngineType {
@@ -9,6 +9,6 @@ index 50b5cb896806c9f801cb3eeb27a7df190d482ebc..e5eecb7cc7212d4ede48cfb350ddd891
 -  SEARCH_ENGINE_DUCKDUCKGO,
    SEARCH_ENGINE_PARSIJOO,
 -  SEARCH_ENGINE_QWANT,
- 
-   SEARCH_ENGINE_MAX  // Bounding value needed for UMA histogram macro.
- };
+   SEARCH_ENGINE_GIVERO,
+   SEARCH_ENGINE_GMX,
+   SEARCH_ENGINE_INFO_COM,

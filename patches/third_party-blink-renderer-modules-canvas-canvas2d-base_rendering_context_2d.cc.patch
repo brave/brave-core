@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-index fbbd98d2f7de8a548876fec7a33fb420b575f124..019a31b4ba5290ef6d0f9314ddd4d18cce1a1859 100644
+index 7883321438694881b00363ed26b652dcab71fedd..63be1531a07aae594c604d9b3dca7d5d9a709c32 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 @@ -10,6 +10,7 @@
  
  #include "base/metrics/histogram_functions.h"
  #include "base/numerics/checked_math.h"
-+#include "brave/renderer/brave_content_settings_observer_helper.h"
++#include "brave/renderer/brave_content_settings_agent_impl_helper.h"
  #include "third_party/blink/public/common/features.h"
  #include "third_party/blink/renderer/core/css/cssom/css_url_image_value.h"
  #include "third_party/blink/renderer/core/css/parser/css_parser.h"
@@ -24,7 +24,7 @@ index fbbd98d2f7de8a548876fec7a33fb420b575f124..019a31b4ba5290ef6d0f9314ddd4d18c
    return GetState().LineDash();
  }
  
-@@ -789,16 +795,26 @@ void BaseRenderingContext2D::clip(Path2D* dom_path,
+@@ -772,16 +778,26 @@ void BaseRenderingContext2D::clip(Path2D* dom_path,
    ClipInternal(dom_path->GetPath(), winding_rule_string);
  }
  
@@ -53,7 +53,7 @@ index fbbd98d2f7de8a548876fec7a33fb420b575f124..019a31b4ba5290ef6d0f9314ddd4d18c
    return IsPointInPathInternal(dom_path->GetPath(), x, y, winding_rule_string);
  }
  
-@@ -823,13 +839,23 @@ bool BaseRenderingContext2D::IsPointInPathInternal(
+@@ -806,13 +822,23 @@ bool BaseRenderingContext2D::IsPointInPathInternal(
                         SkFillTypeToWindRule(ParseWinding(winding_rule_string)));
  }
  
@@ -79,7 +79,7 @@ index fbbd98d2f7de8a548876fec7a33fb420b575f124..019a31b4ba5290ef6d0f9314ddd4d18c
    return IsPointInStrokeInternal(dom_path->GetPath(), x, y);
  }
  
-@@ -1533,11 +1559,16 @@ ImageData* BaseRenderingContext2D::createImageData(
+@@ -1517,11 +1543,16 @@ ImageData* BaseRenderingContext2D::createImageData(
  }
  
  ImageData* BaseRenderingContext2D::getImageData(

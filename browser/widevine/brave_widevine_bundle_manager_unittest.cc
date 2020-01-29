@@ -18,7 +18,7 @@
 #include "content/public/common/cdm_info.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/test/test_content_client.h"
-#include "media/base/decrypt_config.h"
+#include "media/base/encryption_scheme.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/widevine/cdm/widevine_cdm_common.h"
 #include "widevine_cdm_version.h"  // NOLINT
@@ -39,7 +39,7 @@ class TestClient : public content::TestContentClient {
     if (empty_cdms_) return;
 
     content::CdmCapability capability;
-    capability.encryption_schemes.insert(media::EncryptionMode::kCenc);
+    capability.encryption_schemes.insert(media::EncryptionScheme::kCenc);
     cdms->push_back(
         content::CdmInfo(std::string(), base::Token(), base::Version(),
                          base::FilePath(), std::string(),

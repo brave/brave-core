@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/appearance_page/appearance_fonts_page.html b/chrome/browser/resources/settings/appearance_page/appearance_fonts_page.html
-index c79e375102d26fcb8530f6ff57767583d7e529dd..f02e2462acf4d94b29ac84ade423e78c068b14f6 100644
+index c9c8b9327fa5c89f6ff2f7241d79a6a8b1a467fd..72d795fba734d95a4e98eeebc8ef1ccde99ff931 100644
 --- a/chrome/browser/resources/settings/appearance_page/appearance_fonts_page.html
 +++ b/chrome/browser/resources/settings/appearance_page/appearance_fonts_page.html
-@@ -132,11 +132,13 @@
+@@ -137,11 +137,13 @@
          $i18n{quickBrownFox}
        </div>
      </div>

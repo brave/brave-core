@@ -182,8 +182,8 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "মাসিক পরামর্শ",
-    "description": "Title for monthly tips section in wallet summary"
+    "message": "মাসিক অবদানসমূহ",
+    "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
     "message": "বন্ধ",
@@ -256,7 +256,7 @@
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
-    "message": "পর্যাপ্ত ফান্ড নেই, তাই স্বতঃ-প্রদান এবং মাসিক টিপগুলির জন্য আপনার সময় নির্ধারিত মাসিক অর্থপ্রদান সম্পূর্ণ করা যায়নি। আমরা 30 দিনের মধ্যে আবার চেষ্টা করব।",
+    "message": "Your scheduled monthly payment for Auto-Contribute and monthly contributions could not be completed due to insufficient funds. We’ll try again in 30 days.",
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
@@ -400,12 +400,12 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "আপনার মাসিক পরামর্শগুলি প্রক্রিয়াভুক্ত করা হয়েছে!",
-    "description": "Message for monthly tips processed notification"
+    "message": "Your monthly contributions have been processed!",
+    "description": "Message for monthly contributions processed notification"
   },
   "contributionTips": {
     "message": "অবদান এবং পরামর্শগুলি",
-    "description": "Title for monthly tips processed notification"
+    "description": "Title for monthly contributions processed notification"
   },
   "serviceTextPanelWelcome": {
     "message": "'পুরষ্কারগুলিতে যোগ দিন' ক্লিক করে আপনি সূচিত করছেন যে আপনি এটি পড়েছেন এবং এর সাথে সম্মত",

@@ -40,7 +40,7 @@
     "description": "Main header title for welcome screen in the panel, new user"
   },
   "yourWallet": {
-    "message": "Tu monedero",
+    "message": "Tu cartera",
     "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
@@ -158,7 +158,7 @@
     }
   },
   "tokenGrantClaimed": {
-    "message": "Vale de concesión reclamado",
+    "message": "Token Reclamados",
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
@@ -182,8 +182,8 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "Propinas Mensuales",
-    "description": "Title for monthly tips section in wallet summary"
+    "message": "Contribuciones Mensuales",
+    "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
     "message": "Apagado",
@@ -232,11 +232,11 @@
     "description": "Notification button text when we ask user to backup wallet"
   },
   "backupWalletTitle": {
-    "message": "Respaldar Monedero",
+    "message": "Respaldar Cartera",
     "description": "Notification title when we ask user to backup wallet"
   },
   "backupWalletNotification": {
-    "message": "Haz una respaldo de tu monedero Brave.",
+    "message": "Haz un respaldo de tu cartera Brave.",
     "description": "Description for backup wallet notification"
   },
   "insufficientFundsNotification": {
@@ -248,7 +248,7 @@
     "description": "Title for insufficient funds notification"
   },
   "braveRewardsCreatingText": {
-    "message": "Creando monedero",
+    "message": "Creando cartera",
     "description": "Used in a button displaying wallet creation process"
   },
   "contributeNotificationError": {
@@ -256,7 +256,7 @@
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
-    "message": "Tu pago mensual programado para Contribución Automática y tus propinas mensuales no han podido realizarse debido a la insuficiencia de fondos. Lo volveremos a intentar en 30 días.",
+    "message": "Tu pago mensual programado para Contribución Automática y contribuciones mensuales no se pudo completar debido a la insuficiencia de fondos. Lo intentaremos de nuevo en 30 días.",
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
@@ -288,7 +288,7 @@
     "description": "Claim text"
   },
   "newTokenGrant": {
-    "message": "Vale de concesión gratis",
+    "message": "Concesión Gratuita de Token",
     "description": "Token grant label"
   },
   "grantExpire": {
@@ -316,7 +316,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Este creador aún no se ha registrado para recibir contribuciones de los usuarios de Brave. Cualquier gratificación que envíe permanecerá en el monedero hasta que se verifique.",
+    "message": "Este creador aún no se ha registrado para recibir contribuciones de usuarios de Brave. Cualquier gratificación que envíes permanecerá en tu cartera hasta que se verifique.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -348,7 +348,7 @@
     "description": "Title for Panel's disabled state"
   },
   "walletFailedTitle": {
-    "message": "Creación de monedero fallida",
+    "message": "Creación de cartera fallida",
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
@@ -400,12 +400,12 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "¡Tus contribuciones económicas mensuales se han procesado!",
-    "description": "Message for monthly tips processed notification"
+    "message": "¡Tus contribuciones mensuales han sido procesadas!",
+    "description": "Message for monthly contributions processed notification"
   },
   "contributionTips": {
     "message": "Contribuciones & Propinas",
-    "description": "Title for monthly tips processed notification"
+    "description": "Title for monthly contributions processed notification"
   },
   "serviceTextPanelWelcome": {
     "message": "Al pulsar “Unirte Recompensas”, confirmas que has leído y aceptas los",
@@ -492,11 +492,11 @@
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "¡Ha ganado una Recompensa de anuncios!",
+    "message": "¡Has ganado una Recompensa de Anuncios!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Tu Recompensa está de camino a tu monedero de Brave Rewards.",
+    "message": "Tu Recompensa está de camino a tu cartera de Brave Rewards.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
@@ -512,11 +512,11 @@
     "description": "CTA status button"
   },
   "walletButtonUnverified":  {
-    "message": "Verificar Monedero",
+    "message": "Verificar Cartera",
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Monedero Verificado",
+    "message": "Cartera Verificada",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -532,11 +532,11 @@
     "description": "Status button that tells user that he is verified"
   },
   "walletVerifiedNotification":  {
-    "message": "¡Se ha verificado tu monedero!",
+    "message": "¡Se ha verificado tu cartera!",
     "description": "Title for notification when wallet becomes verified"
   },
   "walletVerifiedTextNotification":  {
-    "message": "¡Enhorabuena! Tu monedero $name$ se ha verificado correctamente y ya está listo para añadir y retirar fondos.",
+    "message": "¡Enhorabuena! Tu cartera $name$ se ha verificado correctamente y ya está listo para añadir y retirar fondos.",
     "description": "Title for notification when wallet becomes verified",
     "placeholders": {
       "name": {
@@ -546,19 +546,19 @@
     }
   },
   "walletDisconnectedNotification":  {
-    "message": "¡Vaya! Tu monedero no está disponible.",
+    "message": "¡Vaya! Tu cartera no está disponible.",
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
-    "message": "No te preocupes. Esto puede suceder por varios motivos de seguridad. Reconectar tu monedero resolverá este problema.",
+    "message": "No te preocupes. Esto puede suceder por varios motivos de seguridad. Reconectar tu cartera resolverá este problema.",
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Este Editor Verificado de Brave aún no ha configurado su cuenta para recibir contribuciones de los usuarios de Brave. Cualquier propina que envíes permanecerá en tu monedero hasta que completen este proceso.",
+    "message": "Este Editor Verificado de Brave aún no ha configurado su cuenta para recibir contribuciones de los usuarios de Brave. Cualquier propina que envíes permanecerá en tu cartera hasta que completen este proceso.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
-    "message": "Finaliza la verificación de tu monedero",
+    "message": "Finaliza la verificación de tu cartera",
     "description": "CTA for completing wallet verification"
   },
   "set": {

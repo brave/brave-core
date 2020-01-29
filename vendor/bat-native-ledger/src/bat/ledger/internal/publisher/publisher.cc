@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <cmath>
 #include <ctime>
+#include <map>
 #include <utility>
 #include <vector>
 
@@ -18,7 +19,6 @@
 #include "bat/ledger/internal/publisher/publisher_server_list.h"
 #include "bat/ledger/internal/state/publisher_settings_state.h"
 #include "bat/ledger/internal/static_values.h"
-#include "mojo/public/cpp/bindings/map.h"
 
 /* foo.bar.example.com
    QLD = 'bar'

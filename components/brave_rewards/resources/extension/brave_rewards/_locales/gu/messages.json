@@ -40,11 +40,11 @@
     "description": "Main header title for welcome screen in the panel, new user"
   },
   "yourWallet": {
-    "message": "Your wallet",
+    "message": "તમારું વૉલેટ",
     "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
-    "message": "Grants",
+    "message": "અનુદાનો",
     "description": "Title for grant section in wallet summary"
   },
   "details": {
@@ -72,7 +72,7 @@
     "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
-    "message": "Attention",
+    "message": "ધ્યાન આપો",
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
@@ -80,7 +80,7 @@
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
-    "message": "Include in Auto-Contribute",
+    "message": "આપમેળે-ફાળામાં સામેલ કરો",
     "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
   },
   "donateNow": {
@@ -158,7 +158,7 @@
     }
   },
   "tokenGrantClaimed": {
-    "message": "Token Grants Claimed",
+    "message": "ટોકન અનુદાનનો દાવો કરવામાં આવ્યો",
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
@@ -166,11 +166,11 @@
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
-    "message": "Earnings from Ads",
+    "message": "જાહેરાતો દ્વારા કમાણી",
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Auto-Contribute",
+    "message": "આપમેળે-ફાળો",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
@@ -182,8 +182,8 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "Monthly Tips",
-    "description": "Title for monthly tips section in wallet summary"
+    "message": "Monthly Contributions",
+    "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
     "message": "બંધ",
@@ -202,11 +202,11 @@
     "description": "Message used in notification to let users know Ads is available"
   },
   "braveAdsTitle": {
-    "message": "Brave Ads",
+    "message": "Brave જાહેરાતો",
     "description": "Notification title when we display info about ads"
   },
   "braveContributeTitle": {
-    "message": "Auto-Contribute",
+    "message": "આપમેળે-ફાળો",
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
@@ -232,31 +232,31 @@
     "description": "Notification button text when we ask user to backup wallet"
   },
   "backupWalletTitle": {
-    "message": "Backup Wallet",
+    "message": "બૅકઅપ વૉલેટ",
     "description": "Notification title when we ask user to backup wallet"
   },
   "backupWalletNotification": {
-    "message": "Please backup your Brave wallet.",
+    "message": "કૃપયા કરીને તમારા બૅકઅપ વૉલેટનું બૅકઅપ લો.",
     "description": "Description for backup wallet notification"
   },
   "insufficientFundsNotification": {
-    "message": "Your Brave Rewards account is waiting for a deposit.",
+    "message": "તમારું Brave Rewards ખાતું એક ડિપોઝિટની રાહ જોઈ રહ્યું છે.",
     "description": "Description for new insufficient funds notification"
   },
   "insufficientFunds": {
-    "message": "Insufficient Funds",
+    "message": "અપૂરતું ભંડોળ",
     "description": "Title for insufficient funds notification"
   },
   "braveRewardsCreatingText": {
-    "message": "Creating wallet",
+    "message": "વૉલેટ બનાવી રહ્યા છીએ",
     "description": "Used in a button displaying wallet creation process"
   },
   "contributeNotificationError": {
-    "message": "There was a problem processing your contribution.",
+    "message": "તમારા યોગદાન પર પ્રક્રિયા કરવામાં સમસ્યા આવી.",
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
-    "message": "Your scheduled monthly payment for Auto-Contribute and monthly tips could not be completed due to insufficient funds. We’ll try again in 30 days.",
+    "message": "Your scheduled monthly payment for Auto-Contribute and monthly contributions could not be completed due to insufficient funds. We’ll try again in 30 days.",
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
@@ -284,11 +284,11 @@
     "description": "Message upon failing captcha"
   },
   "claim": {
-    "message": "Claim",
+    "message": "દાવો",
     "description": "Claim text"
   },
   "newTokenGrant": {
-    "message": "Free Token Grant",
+    "message": "નિ:શુલ્ક ટોકન અનુદાન",
     "description": "Token grant label"
   },
   "grantExpire": {
@@ -312,7 +312,7 @@
     "description": "Text of link that allows to check verified status of unverified publisher"
   },
   "unVerifiedPublisher": {
-    "message": "Not yet verified",
+    "message": "હજુ સુધી ચકાસાયેલ નથી",
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
@@ -380,7 +380,7 @@
     "description": "Text block for wallet disabled panel"
   },
   "enableRewards": {
-    "message": "Enable Brave Rewards",
+    "message": "Brave પુરસ્કારો સક્ષમ કરો",
     "description": "Subtitle for wallet disabled panel"
   },
   "privacyPolicy": {
@@ -392,7 +392,7 @@
     "description": "Terms of service main text"
   },
   "termsOfService": {
-    "message": "Terms of Service",
+    "message": "સેવાની શરતો",
     "description": "Terms of Service"
   },
   "welcomeBack": {
@@ -400,12 +400,12 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "Your monthly tips have been processed!",
-    "description": "Message for monthly tips processed notification"
+    "message": "Your monthly contributions have been processed!",
+    "description": "Message for monthly contributions processed notification"
   },
   "contributionTips": {
     "message": "Contributions & Tips",
-    "description": "Title for monthly tips processed notification"
+    "description": "Title for monthly contributions processed notification"
   },
   "serviceTextPanelWelcome": {
     "message": "By clicking ‘Join Rewards’, you indicate that you have read and agree to the",
@@ -424,7 +424,7 @@
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
-    "message": "earned from ads",
+    "message": "જાહેરાતો દ્વારા કમાયા",
     "description": "Description text for ad grants in grant details"
   },
   "twitterTipsHoverText": {
@@ -484,7 +484,7 @@
     }
   },
   "grantFinishTokenTitleUGP": {
-    "message": "Free Token Grant",
+    "message": "નિ:શુલ્ક ટોકન અનુદાન",
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {

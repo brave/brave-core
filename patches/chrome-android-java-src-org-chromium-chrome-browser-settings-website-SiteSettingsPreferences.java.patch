@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/website/SiteSettingsPreferences.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/website/SiteSettingsPreferences.java
+index e6a2fc86773619dda911c82f7dd65d31164e129a..1a6fe367ad616ad5ab31a75a63bd7f31c704c776 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/settings/website/SiteSettingsPreferences.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/website/SiteSettingsPreferences.java
+@@ -28,7 +28,7 @@ import java.util.List;
+  * browser-wide.
+  */
+ public class SiteSettingsPreferences
+-        extends PreferenceFragmentCompat implements Preference.OnPreferenceClickListener {
++        extends BraveSiteSettingsPreferencesBase implements Preference.OnPreferenceClickListener {
+     // The keys for each category shown on the Site Settings page
+     // are defined in the SiteSettingsCategory.
+ 

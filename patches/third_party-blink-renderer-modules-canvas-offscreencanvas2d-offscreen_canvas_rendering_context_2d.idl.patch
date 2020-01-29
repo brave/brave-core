@@ -1,11 +1,11 @@
 diff --git a/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl b/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl
-index 5ba66b115815dd871cf3fe0c648602eeeff3e674..acef2afbff20f3e2d3ab74e29419640854d043b6 100644
+index 6555d4c604c365902f73024bb5e3fdbf40a7a057..2f1d6a973f895fa4913d21e36250db809919a83b 100644
 --- a/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl
 +++ b/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl
-@@ -60,10 +60,10 @@
+@@ -62,10 +62,10 @@
      void stroke(Path2D path);
-     void clip();
-     void clip(Path2D path);
+     void clip(optional CanvasFillRule winding);
+     void clip(Path2D path, optional CanvasFillRule winding);
 -    [HighEntropy, MeasureAs=OffscreenCanvasIsPointInPath] boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
 -    [HighEntropy, MeasureAs=OffscreenCanvasIsPointInPath] boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
 -    [HighEntropy, MeasureAs=OffscreenCanvasIsPointInStroke] boolean isPointInStroke(unrestricted double x, unrestricted double y);
@@ -17,7 +17,7 @@ index 5ba66b115815dd871cf3fe0c648602eeeff3e674..acef2afbff20f3e2d3ab74e294196408
  
      // text (see also the CanvasDrawingStyles interface)
      void fillText(DOMString text, unrestricted double x, unrestricted double y, optional unrestricted double maxWidth);
-@@ -78,7 +78,7 @@
+@@ -80,7 +80,7 @@
      // pixel manipulation
      [RaisesException] ImageData createImageData(ImageData imagedata);
      [RaisesException] ImageData createImageData(long sw, long sh);
@@ -26,7 +26,7 @@ index 5ba66b115815dd871cf3fe0c648602eeeff3e674..acef2afbff20f3e2d3ab74e294196408
      [RaisesException] void putImageData(ImageData imagedata, long dx, long dy);
      [RaisesException] void putImageData(ImageData imagedata, long dx, long dy, long dirtyX, long dirtyY, long dirtyWidth, long dirtyHeight);
  
-@@ -96,7 +96,7 @@
+@@ -98,7 +98,7 @@
  
      // dashed lines
      void setLineDash(sequence<unrestricted double> dash);

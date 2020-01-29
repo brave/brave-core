@@ -1,0 +1,24 @@
+import("//tools/polymer/polymer.gni")
+
+# Targets for auto-generating Polymer 3 JS Modules.
+
+polymer_modulizer("shared_style_css") {
+  js_file = "shared_style_css.m.js"
+  html_file = "shared_style_css.html"
+  html_type = "style-module"
+}
+
+polymer_modulizer("shared_vars_css") {
+  js_file = "shared_vars_css.m.js"
+  html_file = "shared_vars_css.html"
+  html_type = "custom-style"
+}
+
+group("polymer3_elements") {
+  deps = [
+    "br_toolbar:br_toolbar_module",
+    "br_toolbar:br_toolbar_search_field_module",
+    ":shared_style_css_module",
+    ":shared_vars_css_module",
+  ]
+}

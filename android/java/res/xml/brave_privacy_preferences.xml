@@ -7,22 +7,22 @@
 <android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <org.chromium.chrome.browser.preferences.ChromeBaseCheckBoxPreference
+    <org.chromium.chrome.browser.settings.ChromeBaseCheckBoxPreference
         android:key="close_tabs_on_exit"
         android:title="@string/close_tabs_on_exit_title"
         android:summary="@string/close_tabs_on_exit_summary"
         android:defaultValue="false" />
-    <org.chromium.chrome.browser.preferences.ChromeBaseCheckBoxPreference
+    <org.chromium.chrome.browser.settings.ChromeBaseCheckBoxPreference
         android:key="httpse"
         android:title="@string/httpse_title"
         android:summary="@string/httpse_summary"
         android:defaultValue="true" />
-    <org.chromium.chrome.browser.preferences.ChromeBaseCheckBoxPreference
+    <org.chromium.chrome.browser.settings.ChromeBaseCheckBoxPreference
         android:key="ad_block"
         android:title="@string/ad_block_title"
         android:summary="@string/ad_block_summary"
         android:defaultValue="true" />
-    <org.chromium.chrome.browser.preferences.ChromeBaseCheckBoxPreference
+    <org.chromium.chrome.browser.settings.ChromeBaseCheckBoxPreference
         android:key="fingerprinting_protection"
         android:title="@string/fingerprinting_protection_title"
         android:summary="@string/fingerprinting_protection_summary"

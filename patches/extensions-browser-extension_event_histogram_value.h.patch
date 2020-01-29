@@ -1,11 +1,11 @@
 diff --git a/extensions/browser/extension_event_histogram_value.h b/extensions/browser/extension_event_histogram_value.h
-index 77e13de501e051658aa06d20fe155c6048ed0bff..b6679a65c54a552ee94f1bd375b60e18fd9112d1 100644
+index 0d56ccd20eb53d8b6f552964e10338617f9a5f1d..b5c2ee197b0da03f9814cfc89b5dbdfeb92f0aba 100644
 --- a/extensions/browser/extension_event_histogram_value.h
 +++ b/extensions/browser/extension_event_histogram_value.h
-@@ -464,6 +464,20 @@ enum HistogramValue {
-   PRINTING_METRICS_ON_PRINT_JOB_FINISHED = 442,
-   AUTOTESTPRIVATE_ON_CLIPBOARD_DATA_CHANGED = 443,
-   AUTOFILL_PRIVATE_ON_PERSONAL_DATA_CHANGED = 444,
+@@ -467,6 +467,20 @@ enum HistogramValue {
+   PRINTING_ON_JOB_STATUS_CHANGED = 445,
+   DECLARATIVE_NET_REQUEST_ON_RULE_MATCHED_DEBUG = 446,
+   TERMINAL_PRIVATE_ON_SETTINGS_CHANGED = 447,
 +
 +  BRAVE_START = 600,
 +  BRAVE_AD_BLOCKED,

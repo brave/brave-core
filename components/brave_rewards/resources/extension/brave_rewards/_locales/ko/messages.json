@@ -182,8 +182,8 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "월간 팁",
-    "description": "Title for monthly tips section in wallet summary"
+    "message": "매월 기부금",
+    "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
     "message": "끄기",
@@ -256,7 +256,7 @@
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
-    "message": "잔고가 부족하여, 자동 기부를 위해 설정된 정기 월간 결제 및 월간 팁을 완료할 수 없습니다. 30일 후, 저희가 다시 시도하겠습니다.",
+    "message": "Your scheduled monthly payment for Auto-Contribute and monthly contributions could not be completed due to insufficient funds. We’ll try again in 30 days.",
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
@@ -400,12 +400,12 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "월간 팁이 처리되었습니다! ",
-    "description": "Message for monthly tips processed notification"
+    "message": "Your monthly contributions have been processed!",
+    "description": "Message for monthly contributions processed notification"
   },
   "contributionTips": {
     "message": "기부금 및 팁",
-    "description": "Title for monthly tips processed notification"
+    "description": "Title for monthly contributions processed notification"
   },
   "serviceTextPanelWelcome": {
     "message": " ‘보상 참여 (Join Rewards)’를 클릭함으로써, 다음을 읽고 동의했음을 나타냅니다",

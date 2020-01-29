@@ -9,7 +9,7 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import org.chromium.chrome.browser.BraveHelper;
-import org.chromium.chrome.browser.util.FeatureUtilities;
+import org.chromium.chrome.browser.flags.FeatureUtilities;
 
 /**
  * Base class for ChromeLauncherActivity

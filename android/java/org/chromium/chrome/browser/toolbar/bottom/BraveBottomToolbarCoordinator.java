@@ -15,27 +15,33 @@ import android.view.ViewStub;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.base.ObservableSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.ThemeColorProvider;
-import org.chromium.chrome.browser.appmenu.AppMenuButtonHelper;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
+import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarNewTabButton;
+import org.chromium.chrome.browser.toolbar.bottom.SearchAccelerator;
+import org.chromium.chrome.browser.toolbar.bottom.ShareButton;
+import org.chromium.chrome.browser.toolbar.HomeButton;
 import org.chromium.chrome.browser.toolbar.IncognitoStateProvider;
 import org.chromium.chrome.browser.toolbar.TabCountProvider;
+import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.ui.widget.Toast;
 
 public class BraveBottomToolbarCoordinator
         extends BottomToolbarCoordinator implements View.OnLongClickListener {
-    private View mHomeButtonWrapper;
-    private View mBookmarksButtonWrapper;
-    private View mSearchAcceleratorWrapper;
-    private View mNewTabButtonWrapper;
+    private HomeButton mHomeButton;
+    private ShareButton mBookmarksButton;
+    private SearchAccelerator mSearchAccelerator;
+    private BottomToolbarNewTabButton mNewTabButton;;
 
     private final Context mContext = ContextUtils.getApplicationContext();
 
     BraveBottomToolbarCoordinator(ViewStub stub, ActivityTabProvider tabProvider,
             OnClickListener homeButtonListener, OnClickListener searchAcceleratorListener,
-            OnClickListener shareButtonListener, OnLongClickListener tabsSwitcherLongClickListner,
+            ObservableSupplier<OnClickListener> shareButtonListener,
+            OnLongClickListener tabsSwitcherLongClickListner,
             ThemeColorProvider themeColorProvider) {
         super(stub, tabProvider, homeButtonListener, searchAcceleratorListener, shareButtonListener,
                 tabsSwitcherLongClickListner, themeColorProvider);
@@ -46,14 +52,14 @@ public class BraveBottomToolbarCoordinator
         String description = "";
         Resources resources = mContext.getResources();
 
-        if (v == mHomeButtonWrapper) {
+        if (v == mHomeButton) {
             description = resources.getString(R.string.accessibility_toolbar_btn_home);
-        } else if (v == mBookmarksButtonWrapper) {
+        } else if (v == mBookmarksButton) {
             description = resources.getString(R.string.accessibility_toolbar_btn_bookmark);
-        } else if (v == mSearchAcceleratorWrapper) {
+        } else if (v == mSearchAccelerator) {
             description =
                     resources.getString(R.string.accessibility_toolbar_btn_search_accelerator);
-        } else if (v == mNewTabButtonWrapper) {
+        } else if (v == mNewTabButton) {
             description = resources.getString(R.string.accessibility_new_tab_page);
         }
 
@@ -74,25 +80,24 @@ public class BraveBottomToolbarCoordinator
         View bottom_toolbar_browsing = root.findViewById(R.id.bottom_toolbar_browsing);
         View bottom_toolbar_buttons = root.findViewById(R.id.bottom_toolbar_buttons);
 
-        mHomeButtonWrapper = bottom_toolbar_browsing.findViewById(R.id.home_button_wrapper);
-        if (mHomeButtonWrapper != null) {
-            mHomeButtonWrapper.setOnLongClickListener(this);
+        mHomeButton = bottom_toolbar_browsing.findViewById(R.id.home_button);
+        if (mHomeButton != null) {
+            mHomeButton.setOnLongClickListener(this);
         }
 
-        mBookmarksButtonWrapper = bottom_toolbar_browsing.findViewById(R.id.share_button_wrapper);
-        if (mBookmarksButtonWrapper != null) {
-            mBookmarksButtonWrapper.setOnLongClickListener(this);
+        mBookmarksButton = bottom_toolbar_browsing.findViewById(R.id.bottom_share_button);
+        if (mBookmarksButton != null) {
+            mBookmarksButton.setOnLongClickListener(this);
         }
 
-        mSearchAcceleratorWrapper =
-                bottom_toolbar_browsing.findViewById(R.id.search_accelerator_wrapper);
-        if (mSearchAcceleratorWrapper != null) {
-            mSearchAcceleratorWrapper.setOnLongClickListener(this);
+        mSearchAccelerator = bottom_toolbar_browsing.findViewById(R.id.search_accelerator);
+        if (mSearchAccelerator != null) {
+            mSearchAccelerator.setOnLongClickListener(this);
         }
 
-        mNewTabButtonWrapper = bottom_toolbar_buttons.findViewById(R.id.new_tab_button_wrapper);
-        if (mNewTabButtonWrapper != null) {
-            mNewTabButtonWrapper.setOnLongClickListener(this);
+        mNewTabButton = bottom_toolbar_buttons.findViewById(R.id.new_tab_button);
+        if (mNewTabButton != null) {
+            mNewTabButton.setOnLongClickListener(this);
         }
     }
 }

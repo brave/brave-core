@@ -10,6 +10,7 @@
 <translation id="7791543448312431591">Lägg till</translation>
 <translation id="1181037720776840403">Ta bort</translation>
 <translation id="5317780077021120954">Spara</translation>
+<translation id="3897092660631435901">Meny</translation>
 <translation id="5300589172476337783">Visa</translation>
 <translation id="7108338896283013870">Dölj</translation>
 <translation id="780301667611848630">Nej tack</translation>
@@ -19,6 +20,7 @@
 <translation id="1036348656032585052">Inaktivera</translation>
 <translation id="8105368624971345109">Inaktivera</translation>
 <translation id="1175364870820465910">Skriv &amp;ut...</translation>
+<translation id="129553762522093515">Nyligen stängda</translation>
 <translation id="8870413625673593573">Nyligen stängda</translation>
 <translation id="385051799172605136">Bakåt</translation>
 <translation id="7481312909269577407">Framåt</translation>
@@ -28,19 +30,23 @@
 <translation id="1201402288615127009">Nästa</translation>
 <translation id="5713644099811900409">Brave Software-konto</translation>
 <translation id="3157931365184549694">Återställ</translation>
+<translation id="5040262127954254034">Sekretess</translation>
 <translation id="3061707000357573562">Tjänst för programkorrigering</translation>
 <translation id="1914326953223720820">Uppackningstjänst</translation>
+<translation id="1623104350909869708">Hindra sidan från att skapa fler dialogrutor</translation>
 <translation id="2677748264148917807">Lämna</translation>
 <translation id="5556459405103347317">Hämta igen</translation>
 <translation id="2359808026110333948">Fortsätt</translation>
-<translation id="5935964611177478118">Logga in i Brave</translation>
 <translation id="4378154925671717803">Mobil</translation>
 <translation id="8131740175452115882">Bekräfta</translation>
 <translation id="8968766641738584599">Spara kortet</translation>
+<translation id="860043288473659153">Namn på kortinnehavare</translation>
+<translation id="869891660844655955">Utgångsdatum</translation>
 <translation id="5457113250005438886">Ogiltig</translation>
 <translation id="6518133107902771759">Verifiera</translation>
 <translation id="8987927404178983737">Månad</translation>
 <translation id="6015796118275082299">År</translation>
+<translation id="1581080074034554886">CVC</translation>
 <translation id="9065203028668620118">Redigera</translation>
 <translation id="5029568752722684782">Ta bort kopia</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
@@ -70,6 +76,7 @@
 <translation id="4522570452068850558">Info</translation>
 <translation id="3586931643579894722">Dölj detaljerad information</translation>
 <translation id="614940544461990577">Testa att</translation>
+<translation id="4943872375798546930">Inga resultat</translation>
 <translation id="8688672835843460752">Tillgängligt</translation>
 <translation id="4989542687859782284">Ej tillgängligt</translation>
 <translation id="59174027418879706">Aktiverat</translation>
@@ -79,7 +86,10 @@
 <translation id="1838374766361614909">Rensa sökning</translation>
 <translation id="495170559598752135">Åtgärder</translation>
 <translation id="8261506727792406068">Radera</translation>
+<translation id="3207960819495026254">Bokmärkt</translation>
 <translation id="3303855915957856445">Inga sökresultat hittades</translation>
+<translation id="1209206284964581585">Dölj för tillfället</translation>
+<translation id="1407135791313364759">Öppna alla</translation>
 <translation id="4880827082731008257">Sök i historiken</translation>
 <translation id="4756388243121344051">&amp;Historik</translation>
 <translation id="1644574205037202324">Historik</translation>
@@ -91,11 +101,14 @@
 <translation id="1178581264944972037">Paus</translation>
 <translation id="1232569758102978740">Namnlös</translation>
 <translation id="7514365320538308">Ladda ned</translation>
+<translation id="8041089156583427627">Skicka feedback</translation>
 <translation id="7552846755917812628">Testa följande tips:</translation>
+<translation id="3960299545138990065">Starta om Brave</translation>
 <translation id="4275830172053184480">Starta om enheten</translation>
 <translation id="413544239732274901">Läs mer</translation>
 <translation id="7554791636758816595">Ny flik</translation>
 <translation id="2079545284768500474">Ångra</translation>
+<translation id="17513872634828108">Öppna flikar</translation>
 <translation id="981121421437150478">Offline</translation>
 <translation id="5171045022955879922">Sök eller ange webbadress</translation>
 <translation id="803771048473350947">Arkiv</translation>
@@ -108,12 +121,11 @@
 <translation id="6831043979455480757">Översätt</translation>
 <translation id="2473195200299095979">Översätt den här sidan</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>, svar, <ph name="ANSWER"/></translation>
-<translation id="9008201768610948239">Ignorera</translation>
 <translation id="7714464543167945231">Certifikat</translation>
 <translation id="4235360514405112390">Giltig</translation>
 <translation id="6447842834002726250">Kakor</translation>
 <translation id="1919345977826869612">Annonser</translation>
-<translation id="410351446219883937">Autospela</translation>
+<translation id="6612358246767739896">Skyddat innehåll</translation>
 <translation id="9219103736887031265">Bilder</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">Popup-fönster och omdirigeringar</translation>
@@ -128,6 +140,7 @@
 <translation id="7638605456503525968">Serieportar</translation>
 <translation id="2215727959747642672">Filredigering</translation>
 <translation id="6545864417968258051">Bluetooth-sökning</translation>
+<translation id="534295439873310000">NFC-enheter</translation>
 <translation id="5039804452771397117">Tillåt</translation>
 <translation id="7053983685419859001">Blockera</translation>
 <translation id="57838592816432529">Stäng av ljudet</translation>
@@ -138,13 +151,17 @@
 <translation id="6979440798594660689">Ljud av (standard)</translation>
 <translation id="8037357227543935929">Fråga (standard)</translation>
 <translation id="8763927697961133303">USB-enhet</translation>
+<translation id="4165986682804962316">Platsinställningar</translation>
 <translation id="9011424611726486705">Öppna webbplatsinställningarna</translation>
 <translation id="5932224571077948991">Påträngande eller vilseledande annonser visas på webbplatsen</translation>
 <translation id="7878562273885520351">Lösenordet kan vara utsatt för risk</translation>
 <translation id="1089439967362294234">Ändra lösenordet</translation>
+<translation id="9008201768610948239">Ignorera</translation>
 <translation id="1186201132766001848">Kontrollera lösenorden</translation>
 <translation id="5979084224081478209">Kontrollera lösenorden</translation>
+<translation id="10614374240317010">Aldrig sparad</translation>
 <translation id="5869522115854928033">Sparade lösenord</translation>
+<translation id="230699814587342492">Lösenord i Brave</translation>
 <translation id="5087580092889165836">Lägg till kort</translation>
 <translation id="2154484045852737596">Redigera kortet</translation>
 <translation id="4923459931733593730">Betalning</translation>
@@ -193,8 +210,11 @@
 <translation id="1974060860693918893">Avancerat</translation>
 <translation id="5308380583665731573">Ansluta</translation>
 <translation id="2501278716633472235">Föregående</translation>
+<translation id="1736420071277903564">Dator</translation>
+<translation id="3906954721959377182">Surfplatta</translation>
 <translation id="7029809446516969842">Lösenord</translation>
 <translation id="6596325263575161958">Krypteringsalternativ</translation>
+<translation id="8461694314515752532">Kryptera synkroniserad data med en egen lösenfras för synkronisering</translation>
 <translation id="9050666287014529139">Lösenfras</translation>
 <translation id="9095388113577226029">Fler språk …</translation>
 <translation id="7600965453749440009">Översätt aldrig från <ph name="LANGUAGE"/></translation>
@@ -202,6 +222,7 @@
 <translation id="7378627244592794276">Nej</translation>
 <translation id="9137013805542155359">Visa original</translation>
 <translation id="8725066075913043281">Försök igen</translation>
+<translation id="5684874026226664614">Det gick inte att översätta sidan.</translation>
 <translation id="583281660410589416">okänt</translation>
 <translation id="9170848237812810038">&amp;Ångra</translation>
 <translation id="2972581237482394796">&amp;Upprepa</translation>

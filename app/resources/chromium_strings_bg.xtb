@@ -6,7 +6,6 @@
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Лого на Brave</translation>
 <translation id="7339898014177206373">Нов прозорец</translation>
-<translation id="5935964611177478118">Влезте в Brave</translation>
 <translation id="5516268345616100622">Диспечер на задачите – Brave</translation>
 <translation id="7918740962659365265">Помогнете ни да подобрим Brave, като ни изпращате <ph name="UMA_LINK"/> му и сигнали за сривове</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
@@ -113,7 +112,6 @@
 <translation id="1459786048951724030">Brave OS не можа да синхронизира данните ви поради грешка при влизане в профила.</translation>
 <translation id="6813094029720377619">„Бисквитките“ ви се изчистват, когато излизате от Brave. За да продължи синхронизирането, променете тази <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
 <translation id="3340978935015468852">настройки</translation>
-<translation id="380197516434040304">Премахване от Brave...</translation>
 <translation id="300669147395456190">Приложения в Brave</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> изисква да прочетете и приемете следните Общи условия, преди да използвате това устройство. Те не разширяват, не променят, нито ограничават Условията на Brave OS.</translation>
 <translation id="3293668930608086049">Brave използва камерата и микрофона ви.</translation>
@@ -174,8 +172,6 @@
 <translation id="7798069806040634998">Brave се нуждае от достъп до хранилището, за да изтегля файлове</translation>
 <translation id="7685904775439037072">След като Brave получи достъп, уебсайтовете ще могат да искат достъп от вас.</translation>
 <translation id="1744365871163268756">Моля, изчакайте, докато Brave инсталира най-новите системни актуализации.</translation>
-<translation id="8000338990735917615">Бъдещите версии на Brave ще се инсталират автоматично.</translation>
-<translation id="2975476470948647918">Бъдещите версии на Brave ще се инсталират автоматично. Когато това изтегляне завърши, Brave ще се рестартира и ще можете да започнете работа.</translation>
 <translation id="7808415789955822133">Общи условия на Brave OS</translation>
 <translation id="7207456302801184289">Добре дошли в Brave</translation>
 <translation id="3507835409099344374">Към настройките за известия в Brave</translation>
@@ -205,7 +201,6 @@
 <translation id="6915252145142862992">Тази инсталация на Brave е алтернативна и не може да се зададе като браузър по подразбиране.</translation>
 <translation id="6235873178214143377">Ако дадена настройка не се показва на тази страница, потърсете в <ph name="LINK_BEGIN"/>настройките на браузъра Brave<ph name="LINK_END"/></translation>
 <translation id="4459296183696059108">Ако дадена настройка не се показва на тази страница, потърсете в <ph name="LINK_BEGIN"/>настройките на Brave OS<ph name="LINK_END"/></translation>
-<translation id="7977435741986383568">Brave може да използва уеб услуги, за да подобри сърфирането ви. Ако искате, можете да ги деактивирате. <ph name="BEGIN_LINK"/>Научете повече<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">С цел поправка на правописни грешки Brave изпраща до Brave Software текста, който въвеждате в текстовите полета</translation>
 <translation id="8586264863973514035">За да приложите промените си, рестартирайте Brave</translation>
 <translation id="7021823858304886493">Разрешаване на влизането в Brave</translation>

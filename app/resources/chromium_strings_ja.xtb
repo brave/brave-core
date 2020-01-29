@@ -9,7 +9,6 @@
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Brave ロゴ</translation>
 <translation id="7339898014177206373">新しいウィンドウ</translation>
-<translation id="5935964611177478118">Brave にログイン</translation>
 <translation id="5516268345616100622">タスク マネージャ - Brave</translation>
 <translation id="7918740962659365265">障害レポートと<ph name="UMA_LINK"/>を Brave Software に自動送信して Brave の機能向上に役立てる</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
@@ -122,7 +121,6 @@
 <translation id="1459786048951724030">ログイン時にエラーが発生したため、Brave OS はデータを同期できませんでした。</translation>
 <translation id="6813094029720377619">Brave の終了時に Cookie を削除するよう設定しています。同期を継続するにはこちらの<ph name="COOKIE_SETTINGS_LINK"/>を変更してください。</translation>
 <translation id="3340978935015468852">設定</translation>
-<translation id="380197516434040304">Brave から削除...</translation>
 <translation id="300669147395456190">Brave アプリ</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> では、このデバイスを使用する前に下記の利用規約を確認しこれに同意していただく必要があります。これらの規約は Brave OS 利用規約を拡張、変更、制限するものではありません。</translation>
 <translation id="3293668930608086049">Brave がカメラとマイクを使用しています。</translation>
@@ -189,8 +187,6 @@
 <translation id="7798069806040634998">ファイルをダウンロードするには、Brave でストレージへのアクセスを許可する必要があります</translation>
 <translation id="7685904775439037072">Brave にアクセスを許可すると、ウェブサイトからアクセスをリクエストできるようになります。</translation>
 <translation id="1744365871163268756">Brave は最新のシステム アップデートをインストールしています。しばらくお待ちください。</translation>
-<translation id="8000338990735917615">Brave の今後のバージョンは自動的にインストールされます。</translation>
-<translation id="2975476470948647918">Brave の今後のバージョンは自動的にインストールされます。このダウンロードが完了すると Brave が再起動し、すぐにお使いいただけます。</translation>
 <translation id="7808415789955822133">Brave OS 利用規約</translation>
 <translation id="7207456302801184289">Brave へようこそ</translation>
 <translation id="3507835409099344374">Brave の通知設定に移動</translation>
@@ -222,7 +218,6 @@
       Brave ブラウザの設定<ph name="LINK_END"/>を確認してください</translation>
 <translation id="4459296183696059108">このページに設定が表示されない場合は、<ph name="LINK_BEGIN"/>
       Brave OS の設定<ph name="LINK_END"/>を確認してください</translation>
-<translation id="7977435741986383568">Brave は、より快適なブラウジングを提供する目的でウェブサービスを使用することがあります。これらのサービスは無効にすることもできます。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">スペルミスを修正するために、テキスト欄に入力したテキストが Brave から Brave Software に送信されます</translation>
 <translation id="8586264863973514035">変更を適用するには Brave を再起動してください</translation>
 <translation id="7021823858304886493">Brave へのログインを許可する</translation>

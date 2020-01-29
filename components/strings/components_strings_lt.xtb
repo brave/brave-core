@@ -10,6 +10,7 @@
 <translation id="7791543448312431591">Pridėti</translation>
 <translation id="1181037720776840403">Pašalinti</translation>
 <translation id="5317780077021120954">Išsaugoti</translation>
+<translation id="3897092660631435901">Meniu</translation>
 <translation id="5300589172476337783">Rodyti</translation>
 <translation id="7108338896283013870">Slėpti</translation>
 <translation id="780301667611848630">Ačiū, ne</translation>
@@ -19,6 +20,7 @@
 <translation id="1036348656032585052">Išjungti</translation>
 <translation id="8105368624971345109">Išjungti</translation>
 <translation id="1175364870820465910">&amp;Spausdinti...</translation>
+<translation id="129553762522093515">Neseniai uždarytas</translation>
 <translation id="8870413625673593573">Neseniai uždaryta</translation>
 <translation id="385051799172605136">Grįžti</translation>
 <translation id="7481312909269577407">Persiųsti</translation>
@@ -28,19 +30,23 @@
 <translation id="1201402288615127009">Toliau</translation>
 <translation id="5713644099811900409">„Brave Software“ paskyra</translation>
 <translation id="3157931365184549694">Atkurti</translation>
+<translation id="5040262127954254034">Privatumas</translation>
 <translation id="3061707000357573562">Pataisos paslauga</translation>
 <translation id="1914326953223720820">Išpakavimo paslauga</translation>
+<translation id="1623104350909869708">Neleisti šiam puslapiui kurti papildomų dialogo langų</translation>
 <translation id="2677748264148917807">Išeiti</translation>
 <translation id="5556459405103347317">Įkelti iš naujo</translation>
 <translation id="2359808026110333948">Tęsti</translation>
-<translation id="5935964611177478118">prisijunkite prie „Brave“</translation>
 <translation id="4378154925671717803">Telefonas</translation>
 <translation id="8131740175452115882">Patvirtinti</translation>
 <translation id="8968766641738584599">Išsaugoti kortelę</translation>
+<translation id="860043288473659153">Kortelės savininko vardas</translation>
+<translation id="869891660844655955">Galiojimo data</translation>
 <translation id="5457113250005438886">Negalioja</translation>
 <translation id="6518133107902771759">Patvirtinti</translation>
 <translation id="8987927404178983737">Mėnuo</translation>
 <translation id="6015796118275082299">Metai</translation>
+<translation id="1581080074034554886">CVC</translation>
 <translation id="9065203028668620118">Redaguoti</translation>
 <translation id="5029568752722684782">Išvalyti kopiją</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
@@ -70,6 +76,7 @@
 <translation id="4522570452068850558">Išsami informacija</translation>
 <translation id="3586931643579894722">Slėpti išsamią informaciją</translation>
 <translation id="614940544461990577">Pabandykite atlikti toliau nurodytus veiksmus.</translation>
+<translation id="4943872375798546930">Rezultatų nėra</translation>
 <translation id="8688672835843460752">Galima</translation>
 <translation id="4989542687859782284">Nepasiekiama</translation>
 <translation id="59174027418879706">Aktyvinta</translation>
@@ -79,7 +86,10 @@
 <translation id="1838374766361614909">Išvalyti paiešką</translation>
 <translation id="495170559598752135">Veiksmai</translation>
 <translation id="8261506727792406068">Ištrinti</translation>
+<translation id="3207960819495026254">Pažymėta</translation>
 <translation id="3303855915957856445">Nerasta jokių paieškos rezultatų</translation>
+<translation id="1209206284964581585">Slėpti dabar</translation>
+<translation id="1407135791313364759">Atidaryti viską</translation>
 <translation id="4880827082731008257">Ieškoti istorijoje</translation>
 <translation id="4756388243121344051">&amp;Istorija</translation>
 <translation id="1644574205037202324">Istorija</translation>
@@ -91,11 +101,14 @@
 <translation id="1178581264944972037">Pristabdyti</translation>
 <translation id="1232569758102978740">Be pavadinimo</translation>
 <translation id="7514365320538308">Atsisiųsti</translation>
+<translation id="8041089156583427627">Siųsti atsiliepimą</translation>
 <translation id="7552846755917812628">Išbandykite toliau pateiktus patarimus.</translation>
+<translation id="3960299545138990065">Iš naujo paleiskite „Brave“</translation>
 <translation id="4275830172053184480">Iš naujo paleisti įrenginį</translation>
 <translation id="413544239732274901">Sužinokite daugiau</translation>
 <translation id="7554791636758816595">Naujas skirtukas</translation>
 <translation id="2079545284768500474">Anuliuoti</translation>
+<translation id="17513872634828108">Atidaryti skirtukai</translation>
 <translation id="981121421437150478">Neprisijungus</translation>
 <translation id="5171045022955879922">Ieškokite ar įveskite URL</translation>
 <translation id="803771048473350947">Failas</translation>
@@ -108,12 +121,11 @@
 <translation id="6831043979455480757">Vertėjas</translation>
 <translation id="2473195200299095979">Išversti šį puslapį</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>, atsakymas, <ph name="ANSWER"/></translation>
-<translation id="9008201768610948239">Nepaisyti</translation>
 <translation id="7714464543167945231">Sertifikatas</translation>
 <translation id="4235360514405112390">Galioja</translation>
 <translation id="6447842834002726250">Slapukai</translation>
 <translation id="1919345977826869612">Reklama</translation>
-<translation id="410351446219883937">Leisti automatiškai</translation>
+<translation id="6612358246767739896">Apsaugotas turinys</translation>
 <translation id="9219103736887031265">Vaizdai</translation>
 <translation id="7521387064766892559">„JavaScript“</translation>
 <translation id="4434045419905280838">Iššok. langai ir peradresavimai</translation>
@@ -128,6 +140,7 @@
 <translation id="7638605456503525968">Nuoseklieji prievadai</translation>
 <translation id="2215727959747642672">Failo redagavimas</translation>
 <translation id="6545864417968258051">„Bluetooth“ nuskaitymas</translation>
+<translation id="534295439873310000">ALR įrenginiai</translation>
 <translation id="5039804452771397117">Leisti</translation>
 <translation id="7053983685419859001">Blokuoti</translation>
 <translation id="57838592816432529">Nutildyti</translation>
@@ -138,13 +151,17 @@
 <translation id="6979440798594660689">Nutildyti (numatytasis)</translation>
 <translation id="8037357227543935929">Klausti (numatytoji parinktis)</translation>
 <translation id="8763927697961133303">USB įrenginys</translation>
+<translation id="4165986682804962316">Svetainės nustatymai</translation>
 <translation id="9011424611726486705">Atidaryti svetainės nustatymus</translation>
 <translation id="5932224571077948991">Svetainėje rodomi nepageidaujami arba klaidinantys skelbimai</translation>
 <translation id="7878562273885520351">Jūsų slaptažodis gali būti pažeistas</translation>
 <translation id="1089439967362294234">Slaptažodžio keitimas</translation>
+<translation id="9008201768610948239">Nepaisyti</translation>
 <translation id="1186201132766001848">Patikrinti slaptažodžius</translation>
 <translation id="5979084224081478209">Patikrinti slaptažodžius</translation>
+<translation id="10614374240317010">Niekada neišsaugota</translation>
 <translation id="5869522115854928033">Išsaugoti slaptažodžiai</translation>
+<translation id="230699814587342492">„Brave“ slaptažodžiai</translation>
 <translation id="5087580092889165836">Pridėti kortelę</translation>
 <translation id="2154484045852737596">Kortelės informacijos redagavimas</translation>
 <translation id="4923459931733593730">Mokėjimas</translation>
@@ -193,8 +210,11 @@
 <translation id="1974060860693918893">Išplėstiniai</translation>
 <translation id="5308380583665731573">Prisijungti</translation>
 <translation id="2501278716633472235">Grįžti</translation>
+<translation id="1736420071277903564">Kompiuteris</translation>
+<translation id="3906954721959377182">Planšetinis kompiuteris</translation>
 <translation id="7029809446516969842">Slaptažodžiai</translation>
 <translation id="6596325263575161958">Šifravimo parinktys</translation>
+<translation id="8461694314515752532">Šifruokite sinchronizuojamus duomenis taikydami savo sinchronizavimo slaptafrazę</translation>
 <translation id="9050666287014529139">Slaptafrazė</translation>
 <translation id="9095388113577226029">Daugiau kalbų...</translation>
 <translation id="7600965453749440009">Niekada neversti <ph name="LANGUAGE"/></translation>
@@ -202,6 +222,7 @@
 <translation id="7378627244592794276">Ne</translation>
 <translation id="9137013805542155359">Rodyti originalą</translation>
 <translation id="8725066075913043281">Bandyti dar kartą</translation>
+<translation id="5684874026226664614">Oi, nepavyko išversti šio puslapio.</translation>
 <translation id="583281660410589416">Nežinoma</translation>
 <translation id="9170848237812810038">&amp;Atšaukti</translation>
 <translation id="2972581237482394796">&amp;Atlikti iš naujo</translation>

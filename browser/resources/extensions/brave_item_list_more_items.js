@@ -3,27 +3,30 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-cr.define('extensions', function() {
-  'use strict';
+import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
+import 'chrome://resources/cr_elements/shared_style_css.m.js'
+import 'chrome://resources/js/cr.m.js'
+import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js';
 
-  const MoreItems = Polymer({
-    is: 'extensions-brave-item-list-more-items',
+Polymer({
+  is: 'extensions-brave-item-list-more-items',
 
-    properties: {
-      /** @type {!Array<!chrome.developerPrivate.ExtensionInfo>} */
-      apps: Array,
+  _template: html`{__html_template__}`,
 
-      /** @type {!Array<!chrome.developerPrivate.ExtensionInfo>} */
-      extensions: Array,
-    },
+  behaviors: [I18nBehavior],
 
-    shouldShowMoreItemsMessage_: function() {
-      if (!this.apps || !this.extensions)
-        return;
+  properties: {
+    /** @type {!Array<!chrome.developerPrivate.ExtensionInfo>} */
+    apps: Array,
 
-      return this.apps.length !== 0 || this.extensions.length !== 0;
-    },
-  });
+    /** @type {!Array<!chrome.developerPrivate.ExtensionInfo>} */
+    extensions: Array,
+  },
 
-  return {MoreItems: MoreItems};
+  shouldShowMoreItemsMessage_: function() {
+    if (!this.apps || !this.extensions)
+      return;
+
+    return this.apps.length !== 0 || this.extensions.length !== 0;
+  },
 });

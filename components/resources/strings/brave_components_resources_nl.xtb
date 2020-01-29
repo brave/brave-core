@@ -77,19 +77,11 @@
 <translation id="438216590634144114">Kies de zoekmachine die je standaard wilt gebruiken bij het zoeken op het web in de adresbalk.</translation>
 <translation id="5804484488647369316">Stel standaard zoekmachine in</translation>
 <translation id="4428458837269935199">Probeer DuckDuckGo voor een meer private zoekervaring.</translation>
-<translation id="513635702954746724">Kies een kleurthema</translation>
-<translation id="6842850080200126305">Stel de kleur van de werkbalk in door de optie voor licht of donker te kiezen in het deelvenster met instellingen.</translation>
-<translation id="5805868144901917207">Selecteer een thema</translation>
-<translation id="8131740175452115882">Bevestigen</translation>
-<translation id="713206503018076063">Systeemthema (standaard)</translation>
-<translation id="1807246157184219062">Licht</translation>
-<translation id="2414886740292270097">Donker</translation>
 <translation id="3829010735958850433">Welkomstour overslaan</translation>
 <translation id="1201402288615127009">Volgende</translation>
 <translation id="7954950242989581218">Blader veilig en wel</translation>
 <translation id="2188651882929633653">Brave Shields blokkeert de enge dingen die je proberen te volgen op het web inclusief de meeste advertenties. Stel Shields in op “down” als een site niet lijkt te werken. Brave gebruikt <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>volledig privé productanalyses<ph name="END_LINK_P3A">&lt;/a&gt;</ph>om het totale gebruik van bepaalde functies te schatten. U kunt dit uitschakelen in  <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Advertenties</translation>
-<translation id="5698387814910197501">Verdien {{currency}} door advertenties te bekijken in Brave. Advertenties worden getoond op basis van je interesses, door analyse van je browsing geschiedenis. Geen persoonlijke data van je browsing geschiedenis zal de browser verlaten.</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
 <translation id="3742599705619405136">Een automatische manier om uitgevers en makers van inhoud te ondersteunen. Stel een maandelijkse betaling in en browse zoals je normaal doet. De dor Brave geverifieerde sites die je bezoekt ontvangen je bijdragen automatisch, op basis van jouw aandacht zoals gemeten door Brave.</translation>
 <translation id="20281847067919078">Geschatte openstaande beloningen</translation>
@@ -97,6 +89,7 @@
 <translation id="319209088187794725">Aantal meldingen van advertenties deze maand ontvangen</translation>
 <translation id="4229016885653790965">Sorry! Ads are not yet available in your region.</translation>
 <translation id="2539279826042558064">Brave Rewards en Ads zijn momenteel niet beschikbaar op uw apparaat.</translation>
+<translation id="5421369907811917952">Andere instellingen</translation>
 <translation id="654711254769318398">Advertentiepagina's bekeken</translation>
 <translation id="2532127066761785857">Maximum aantal advertenties weergegeven</translation>
 <translation id="5171071066587880677">1 advertentie per uur</translation>
@@ -132,7 +125,6 @@
 <translation id="2726674968268546964">tokens</translation>
 <translation id="7286722244752781970">Minimum tijd op pagina voordat een bezoek wordt geregistreerd</translation>
 <translation id="4424486208397124985">Minimum aantal bezoeken voor relevantie uitgever</translation>
-<translation id="5421369907811917952">Andere instellingen</translation>
 <translation id="6248554379744796526">Niet-geverifieerde sites in lijst weergeven</translation>
 <translation id="5875669387851353511">Sta bijdragen aan video's toe</translation>
 <translation id="8933202740471878108">1 bezoek</translation>
@@ -162,7 +154,6 @@
 <translation id="7210234701206674260">Brave Rewards ondervindt problemen. Probeer het later opnieuw.</translation>
 <translation id="570208820610947248">We hebben gezien dat er iets aan de hand is met je wallet. Voordat er transacties kunnen worden verwerkt, moet je de back-up van je wallet herstellen.</translation>
 <translation id="7797604753681168055">Nu herstellen</translation>
-<translation id="5549059668721746831">Volgende maandelijkse tipdatum</translation>
 <translation id="6231182869178328516">Ik heb <ph name="NAME"/> zojuist een fooi gegeven via de Brave Browser. Ontdek meer op https://brave.com/tips.</translation>
 <translation id="8404935570206006581">FooiVanBrave</translation>
 <translation id="2876191400747549936">Er is helaas een probleem opgetreden bij het verwerken van je verzoek. Probeer het opnieuw.</translation>
@@ -261,8 +252,6 @@
 <translation id="4114667046481794032">Bijdragebedrag</translation>
 <translation id="3520817231440482449">Geef deze website Maandelijks een Tip.</translation>
 <translation id="1827184134638345603">Stuur een Tip…</translation>
-<translation id="7928243298881209869">Je eerste maandelijkse tip wordt verzonden op:</translation>
-<translation id="6045860799501892362">Stel maandelijks tippen in.</translation>
 <translation id="8003573781961874199">Download als PDF</translation>
 <translation id="298067735430872465">Inkomsten uit Advertenties</translation>
 <translation id="2266556115441975588">Uw beloningen uit Ads zijn binnen!</translation>
@@ -291,7 +280,6 @@
 <translation id="9115913704608474258">November</translation>
 <translation id="7828956995407538686">Oktober</translation>
 <translation id="5502713021410870035">September</translation>
-<translation id="5737831580668469027">Maandelijkse donaties</translation>
 <translation id="606865182719489911">Er is een gratis token als beloning beschikbaar.</translation>
 <translation id="2487641031722095938">Het is uw geluksdag!</translation>
 <translation id="6255773350565723852">Je gift komt eraan.</translation>
@@ -318,13 +306,8 @@
 <translation id="4923459931733593730">Betaling</translation>
 <translation id="4021593982164260556">Betaling wordt elke {{day}}de dag van de maand uitgevoerd</translation>
 <translation id="6104680658798556671">Betaling niet uitgevoerd</translation>
-<translation id="2834888581291358924">Wanneer je saldo onvoldoende is om het gecombineerde totaal van Auto-Contribute en je terugkerende tips te dekken, dan worden deze betalingen overgeslagen voor deze periode.</translation>
 <translation id="3138528956349114724">Vastgezette sites zijn nu</translation>
-<translation id="2337632028350283479">Hoe werken maandelijkse donaties?</translation>
-<translation id="6457273203091513039">Maandelijkse donaties worden afzonderlijk in rekening gebracht en maken geen deel uit van je Auto-Contribute-betalingen.</translation>
 <translation id="9099396904827413228">Aan elke site wordt maandelijks een vast bedrag betaald.</translation>
-<translation id="5051110132941857169">Maandelijkse donaties worden elke maand allemaal tegelijk uitbetaald. Als je gebruikmaakt van Auto-Contribute, worden donaties tegelijk uitbetaald met je maandelijkse Auto-Contribute-betaling.</translation>
-<translation id="3374483782662414143">Via het deelvenster Donaties kun je sites verwijderen die maandelijkse donaties ontvangen.</translation>
 <translation id="5082474983463379713">Let op:</translation>
 <translation id="1430915738399379752">Afdrukken</translation>
 <translation id="135956957367307069">Je aanvraag wordt nog verwerkt. Een ogenblik geduld.</translation>

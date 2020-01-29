@@ -9,7 +9,6 @@
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Логотип Brave</translation>
 <translation id="7339898014177206373">Новое окно</translation>
-<translation id="5935964611177478118">войдите в Brave</translation>
 <translation id="5516268345616100622">Диспетчер задач – Brave</translation>
 <translation id="7918740962659365265">Помочь улучшить Brave, отправляя в Brave Software отчеты о сбоях и <ph name="UMA_LINK"/></translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
@@ -118,7 +117,6 @@
 <translation id="1459786048951724030">Не удалось синхронизировать данные из-за ошибки входа в аккаунт.</translation>
 <translation id="6813094029720377619">Вы удаляете файлы cookie при выходе из Brave. Чтобы продолжить синхронизацию, измените <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
 <translation id="3340978935015468852">настройках</translation>
-<translation id="380197516434040304">Удалить из Brave</translation>
 <translation id="300669147395456190">Приложения Brave</translation>
 <translation id="3421950102518690868">Прежде чем приступать к работе, ознакомьтесь с Условиями использования на сайте <ph name="DOMAIN"/> и примите их. Эти условия не дополняют, не заменяют и не ограничивают Условий использования Brave OS.</translation>
 <translation id="3293668930608086049">Brave использует камеру и микрофон.</translation>
@@ -185,8 +183,6 @@
 <translation id="7798069806040634998">Для скачивания файлов браузеру Brave требуется доступ к хранилищу.</translation>
 <translation id="7685904775439037072">Когда вы предоставите доступ Brave, веб-сайты также смогут запрашивать у вас доступ.</translation>
 <translation id="1744365871163268756">Подождите, пока Brave устанавливает последние обновления системы</translation>
-<translation id="8000338990735917615">Новые версии Brave будут устанавливаться автоматически.</translation>
-<translation id="2975476470948647918">Новые версии Brave будут устанавливаться автоматически. Когда скачивание завершится, Brave перезапустится и вы сможете продолжить работу.</translation>
 <translation id="7808415789955822133">Условия использования Brave OS</translation>
 <translation id="7207456302801184289">Добро пожаловать в Brave</translation>
 <translation id="3507835409099344374">Открыть настройки уведомлений Brave</translation>
@@ -216,7 +212,6 @@
 <translation id="6915252145142862992">Это дополнительная установка Brave. Его нельзя сделать браузером по умолчанию.</translation>
 <translation id="6235873178214143377">Если нужного параметра нет на этой странице, откройте <ph name="LINK_BEGIN"/>настройки браузера Brave<ph name="LINK_END"/>.</translation>
 <translation id="4459296183696059108">Если нужного параметра нет на этой странице, откройте <ph name="LINK_BEGIN"/>настройки Brave OS<ph name="LINK_END"/>.</translation>
-<translation id="7977435741986383568">Для более качественной работы Brave может использовать веб-сервисы. При необходимости отключите их. <ph name="BEGIN_LINK"/>Подробнее…<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Для проверки правописания Brave отправляет введенный вами текст в Brave Software.</translation>
 <translation id="8586264863973514035">Чтобы изменения вступили в силу, перезапустите Brave.</translation>
 <translation id="7021823858304886493">Разрешить вход в Brave</translation>

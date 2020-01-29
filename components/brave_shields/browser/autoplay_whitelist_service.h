@@ -18,7 +18,7 @@
 #include "url/gurl.h"
 
 class AutoplayWhitelistParser;
-class BraveContentSettingsObserverAutoplayTest;
+class BraveContentSettingsAgentImplAutoplayTest;
 
 using brave_component_updater::LocalDataFilesObserver;
 using brave_component_updater::LocalDataFilesService;
@@ -43,7 +43,7 @@ class AutoplayWhitelistService : public LocalDataFilesObserver {
                         const std::string& manifest) override;
 
  private:
-  friend class ::BraveContentSettingsObserverAutoplayTest;
+  friend class ::BraveContentSettingsAgentImplAutoplayTest;
 
   void OnGetDATFileData(GetDATFileDataResult result);
 

@@ -16,11 +16,13 @@ import android.widget.TextView;
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
+import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
+import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.ThemeColorProvider;
 import org.chromium.chrome.browser.ThemeColorProvider.ThemeColorObserver;
 import org.chromium.chrome.browser.ThemeColorProvider.TintObserver;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
-import org.chromium.chrome.browser.util.FeatureUtilities;
+import org.chromium.chrome.browser.flags.FeatureUtilities;
 import org.chromium.ui.widget.ChromeImageButton;
 
 /**
@@ -101,5 +103,11 @@ public class BookmarksButton extends ChromeImageButton implements ThemeColorObse
 
     public void setActivityTabProvider(ActivityTabProvider activityTabProvider) {
         // sergz: Do nothing here, was added just to avoid extra patching
+    }
+    
+    public void setOverviewModeBehavior(OverviewModeBehavior overviewModeBehavior) {
+    }
+    
+    public void updateButtonEnabledState(Tab tab) {
     }
 }

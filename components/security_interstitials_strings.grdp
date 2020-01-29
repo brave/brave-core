@@ -65,9 +65,13 @@
     Applications that can cause this error include antivirus, firewall, and web-filtering or proxy software.
   </message>
 
+  <message name="IDS_BLOCKED_INTERCEPTION_HEADING" desc="Large heading of the known interception interstitial.">
+    Your activity on <ph name="HOSTNAME">$1<ex>example.com</ex></ph> is being monitored
+  </message>
+
   <!-- Lookalike URL warning -->
   <message name="IDS_LOOKALIKE_URL_TITLE" desc="Tab title. Context: the requested URL might be trying to trick the user since it looks like a more popular URL. This interstitial points the user to the safe site instead.">
-    Did you mean?
+    Safety warning
   </message>
   <message name="IDS_LOOKALIKE_URL_HEADING" desc="Large heading. Context: the error page that's shown when the requested URL might be trying to trick the user since it looks like a more popular URL. This interstitial points the user to the safe site instead.">
     Did you mean &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN">$1<ex>example.com</ex></ph>&lt;/a&gt;?
@@ -450,9 +454,6 @@
   </message>
 
   <!-- Safety Tip summary strings for Android (Desktop is in page_info_strings.grdp) -->
-  <message name="IDS_SAFETY_TIP_ANDROID_IGNORE_BUTTON" desc="Text of button to leave a suspicious page. Shown on the safety tip infobar.">
-    Ignore
-  </message>
   <message name="IDS_SAFETY_TIP_ANDROID_LEAVE_BUTTON" desc="Text of button to ignore the warning on a suspicious page. Shown on the safety tip infobar.">
     Leave site
   </message>
@@ -461,5 +462,39 @@
   </message>
   <message name="IDS_SAFETY_TIP_ANDROID_LOOKALIKE_DESCRIPTION" desc="Body of an infobar warning when the user visits a page that triggered a Safety Tip because the domain looked like another domain.">
     <ph name="LOOKALIKE_DOMAIN">$1<ex>fake-google.com</ex></ph> looks similar to <ph name="SUGGESTED_DOMAIN">$2<ex>google.com</ex></ph>. Attackers sometimes mimic sites by using similar URLs.
+  </message>
+
+  <!-- Known interception disclosure WebUI strings -->
+  <!-- Title of the tab -->
+  <message name="IDS_KNOWN_INTERCEPTION_TITLE" desc="Title of network interception disclosure page.">
+    Monitoring Detected
+  </message>
+
+  <!-- Main message title -->
+  <message name="IDS_KNOWN_INTERCEPTION_HEADER" desc="Title of chrome://connection-monitoring-detected/ page, shows when Brave has detected known network monitoring activity">
+    Your activity on the web is being monitored
+  </message>
+
+  <message name="IDS_KNOWN_INTERCEPTION_BODY1" desc="First body text for the chrome://connection-monitoring-detected/ page">
+    Anything you type, any pages you view, or any other activity on the web is being watched. Content on sites may be changed without your knowledge.
+  </message>
+
+  <if expr="_google_chrome">
+    <message name="IDS_KNOWN_INTERCEPTION_BODY2" desc="Second body text for the chrome://connection-monitoring-detected/ page with more details">
+      This problem happens because of a certificate you or someone else installed on your device. The certificate is known to be used to monitor and intercept networks, and is not trusted by Brave. While some legitimate cases for monitoring do exist, like on a school or company network, Brave wants to make sure you're aware it's happening, even if you can't stop it. Monitoring may happen in any browser or application that accesses the web.
+    </message>
+  </if>
+  <if expr="not _google_chrome">
+    <message name="IDS_KNOWN_INTERCEPTION_BODY2" desc="Second body text for the chrome://connection-monitoring-detected/ page with more details">
+      This problem happens because of a certificate you or someone else installed on your device. The certificate is known to be used to monitor and intercept networks, and is not trusted by Brave. While some legitimate cases for monitoring do exist, like on a school or company network, Brave wants to make sure you're aware it's happening, even if you can't stop it. Monitoring may happen in any browser or application that accesses the web.
+    </message>
+  </if>
+
+  <!-- Known interception disclosure infobar strings -->
+  <message name="IDS_KNOWN_INTERCEPTION_INFOBAR_HEADING" desc="Text of the heading used to alert the user that Brave has detected that their network connnection is being intercepted.">
+    Your activity on the web is being monitored
+  </message>
+  <message name="IDS_KNOWN_INTERCEPTION_INFOBAR_BUTTON_TEXT" desc="Text of the button to close the disclosure infobar and continue using Brave.">
+    OK
   </message>
 </grit-part>
