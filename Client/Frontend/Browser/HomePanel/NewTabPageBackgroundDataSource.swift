@@ -79,15 +79,7 @@ class NewTabPageBackgroundDataSource {
     private var sponsoredBackgroundRotationIndex = 0
 
     private lazy var downloader = NTPDownloader()
-    private lazy var sponsor: Sponsor? = {
-        // This will either be filled on init, or lazily whenever it is needed
-        if downloader.delegate == nil {
-            // Assigning delegate will fill this object at a later point
-            downloader.delegate = self
-        }
-        // Always return `nil`, since it is filled by `downloader` delegation.
-        return nil
-    }()
+    private var sponsor: Sponsor?
     
     private lazy var standardBackgrounds: [Background] = {
         let backgroundFilePath = "ntp-data"
@@ -101,11 +93,11 @@ class NewTabPageBackgroundDataSource {
     }()
     
     init() {
-        if Preferences.NewTabPage.backgroundSponsoredImages.value
-            && BraveAds.isCurrentLocaleSupported() {
+        if Preferences.NewTabPage.backgroundSponsoredImages.value {
             downloader.delegate = self
         }
         
+        Preferences.NewTabPage.backgroundSponsoredImages.observe(from: self)
     }
     
     // This is used to prevent the same handful of backgrounds from being shown.
@@ -124,7 +116,6 @@ class NewTabPageBackgroundDataSource {
             let attemptSponsored = Preferences.NewTabPage.backgroundSponsoredImages.value
                 && backgroundRotationCounter == NewTabPageBackgroundDataSource.sponsorshipShowValue
                 && !PrivateBrowsingManager.shared.isPrivateBrowsing
-                && BraveAds.isCurrentLocaleSupported()
             
             // Sponsor is lazy-loaded so only want to access it if needed.
             if attemptSponsored, let sponsoredWallpapers = sponsor?.wallpapers {
@@ -193,5 +184,25 @@ class NewTabPageBackgroundDataSource {
 extension NewTabPageBackgroundDataSource: NTPDownloaderDelegate {
     func onNTPUpdated(ntpInfo: NewTabPageBackgroundDataSource.Sponsor?) {
         sponsor = ntpInfo
+    }
+}
+
+extension NewTabPageBackgroundDataSource: PreferencesObserver {
+    func preferencesDidChange(for key: String) {
+        let sponsoredPref = Preferences.NewTabPage.backgroundSponsoredImages
+        if sponsoredPref.key == key {
+            if sponsoredPref.value {
+                // Enabled? -> issue download
+                downloader.delegate = self
+
+            } else {
+                downloader.delegate = nil
+                do {
+                    try downloader.removeCampaign()
+                } catch {
+                    Logger.browserLogger.error(error)
+                }
+            }
+        }
     }
 }

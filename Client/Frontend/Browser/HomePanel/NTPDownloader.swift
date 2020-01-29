@@ -24,7 +24,9 @@ class NTPDownloader {
 
     weak var delegate: NTPDownloaderDelegate? {
         didSet {
-            self.notifyObservers()
+            if delegate != nil {
+                self.notifyObservers()
+            }
         }
     }
     
@@ -228,7 +230,7 @@ class NTPDownloader {
         }
     }
     
-    private func removeCampaign() throws {
+    func removeCampaign() throws {
         Preferences.NTP.ntpCheckDate.value = nil
         self.removeObservers()
         
