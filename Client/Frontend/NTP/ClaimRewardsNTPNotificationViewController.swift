@@ -50,7 +50,8 @@ class ClaimRewardsNTPNotificationViewController: TranslucentBottomSheet {
                 text.attributedText(stringToChange: Strings.NTP.goodJob, font: font, color: .white)
         }
         
-        view.insertSubview(mainView, belowSubview: closeButton)
+        view.addSubview(mainView)
+        view.bringSubviewToFront(closeButton)
     }
     
     override func viewDidLayoutSubviews() {
