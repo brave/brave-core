@@ -6,14 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_CONTENT_SETTINGS_CONTENT_SETTINGS_MANAGER_IMPL_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_CONTENT_SETTINGS_CONTENT_SETTINGS_MANAGER_IMPL_H_
 
-#include "brave/components/brave_shields/browser/buildflags/buildflags.h"
-
-#if BUILDFLAG(BRAVE_STP_ENABLED)
 #define CONTENT_SETTINGS_MANAGER_IMPL_H_ \
   friend class BraveContentSettingsManagerImpl;
-#else
-#define CONTENT_SETTINGS_MANAGER_IMPL_H_
-#endif
 
 #include "../../../../../chrome/browser/content_settings/content_settings_manager_impl.h"
 #undef CONTENT_SETTINGS_MANAGER_IMPL_H_
