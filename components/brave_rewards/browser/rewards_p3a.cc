@@ -29,7 +29,7 @@ void RecordWalletBalanceP3A(bool wallet_created, bool rewards_enabled,
       answer = 4;
     }
   }
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.WalletBalance2", answer, 4);
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.WalletBalance.2", answer, 4);
 }
 
 void RecordAutoContributionsState(AutoContributionsP3AState state, int count) {
@@ -59,7 +59,8 @@ void RecordAutoContributionsState(AutoContributionsP3AState state, int count) {
     default:
       NOTREACHED();
   }
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.AutoContributionsState2", answer, 5);
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.AutoContributionsState.2", answer,
+                             5);
 }
 
 void RecordTipsState(bool wallet_created,
@@ -84,11 +85,11 @@ void RecordTipsState(bool wallet_created,
       answer = 4;
     }
   }
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.TipsState2", answer, 5);
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Rewards.TipsState.2", answer, 5);
 }
 
 void RecordAdsState(AdsP3AState state) {
-  UMA_HISTOGRAM_ENUMERATION("Brave.Rewards.AdsState2", state);
+  UMA_HISTOGRAM_ENUMERATION("Brave.Rewards.AdsState.2", state);
 }
 
 void UpdateAdsP3AOnPreferenceChange(PrefService *prefs,
