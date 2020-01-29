@@ -58,7 +58,7 @@ export interface RewardsProps {
   onEnableAds: () => void
   onEnableRewards: () => void
   onDismissNotification: (id: string) => void
-  onDismissBrandedWallpaperNotification: () => void
+  onDismissBrandedWallpaperNotification: (isUserAction: boolean) => void
   onDisableBrandedWallpaper: () => void
 }
 
@@ -301,7 +301,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
         { this.props.showBrandedWallpaperNotification &&
         <BrandedWallpaperNotification
           isOrphan={singleOrphaned}
-          onDismissNotification={this.props.onDismissBrandedWallpaperNotification}
+          onDismissNotification={this.dismissBrandedWallpapernotificationUserAction}
           onEnableAds={enabledAds ? undefined : onEnableAds}
           brandedWallpaperData={this.props.brandedWallpaperData}
           onHideSponsoredImages={this.props.onDisableBrandedWallpaper}
@@ -314,6 +314,14 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
 
   dismissNotification (notificationType: string) {
     this.props.onDismissNotification(notificationType)
+  }
+
+  dismissBrandedWallpapernotificationUserAction = () => {
+    this.props.onDismissBrandedWallpaperNotification(true)
+  }
+
+  dismissBrandedWallpapernotificationAutomatic = () => {
+    this.props.onDismissBrandedWallpaperNotification(false)
   }
 
   render () {
@@ -337,7 +345,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
       <WidgetWrapper isEnabled={enabledMain}>
         <WidgetLayer>
           {isNotification &&
-          <CloseIcon onClick={this.props.onDismissBrandedWallpaperNotification}>
+          <CloseIcon onClick={this.dismissBrandedWallpapernotificationUserAction}>
             <CloseStrokeIcon />
           </CloseIcon>
           }
