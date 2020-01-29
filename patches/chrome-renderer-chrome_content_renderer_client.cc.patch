@@ -1,21 +1,21 @@
 diff --git a/chrome/renderer/chrome_content_renderer_client.cc b/chrome/renderer/chrome_content_renderer_client.cc
-index 0948ebbbd1999adc50dfc64cd9bd5072c977bbbe..eb2c3cca5991266dc0d3b5a5791a644f0e635705 100644
+index ffde51cd276a96ab46c5e47d825d26f5606f9a5e..b2e18b9968811e5a57ebaefd87eff60744159d6d 100644
 --- a/chrome/renderer/chrome_content_renderer_client.cc
 +++ b/chrome/renderer/chrome_content_renderer_client.cc
-@@ -22,6 +22,7 @@
+@@ -23,6 +23,7 @@
  #include "base/strings/utf_string_conversions.h"
  #include "base/time/time.h"
  #include "base/values.h"
-+#include "brave/renderer/brave_content_settings_observer.h"
++#include "brave/renderer/brave_content_settings_agent_impl.h"
  #include "chrome/common/buildflags.h"
  #include "chrome/common/channel_info.h"
  #include "chrome/common/chrome_content_client.h"
-@@ -453,7 +454,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
+@@ -476,7 +477,7 @@ void ChromeContentRendererClient::RenderFrameCreated(
    bool should_whitelist_for_content_settings =
        base::CommandLine::ForCurrentProcess()->HasSwitch(
            switches::kInstantProcess);
--  ContentSettingsObserver* content_settings = new ContentSettingsObserver(
-+  ContentSettingsObserver* content_settings = new BraveContentSettingsObserver(
+-  ContentSettingsAgentImpl* content_settings = new ContentSettingsAgentImpl(
++  ContentSettingsAgentImpl* content_settings = new BraveContentSettingsAgentImpl(
        render_frame, should_whitelist_for_content_settings, registry);
  #if BUILDFLAG(ENABLE_EXTENSIONS)
    content_settings->SetExtensionDispatcher(

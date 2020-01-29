@@ -9,7 +9,6 @@
 <translation id="680297041157509674">Brave 作業系統</translation>
 <translation id="4847979153841887006">Brave 標誌</translation>
 <translation id="7339898014177206373">新視窗</translation>
-<translation id="5935964611177478118">登入 Brave</translation>
 <translation id="5516268345616100622">工作管理員 - Brave</translation>
 <translation id="7918740962659365265">將當機報告和<ph name="UMA_LINK"/>傳送給 Brave Software，助我們一臂之力，讓 Brave 更臻完美</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
@@ -122,7 +121,6 @@ Brave 無法復原你的設定。</translation>
 <translation id="1459786048951724030">登入時發生錯誤，因此 Brave 作業系統無法同步處理你的資料。</translation>
 <translation id="6813094029720377619">當你關閉 Brave 時，系統會清除 Cookie。如要保持同步，請變更這項<ph name="COOKIE_SETTINGS_LINK"/>。</translation>
 <translation id="3340978935015468852">設定</translation>
-<translation id="380197516434040304">從 Brave 中移除...</translation>
 <translation id="300669147395456190">Brave 應用程式</translation>
 <translation id="3421950102518690868">在使用這個裝置前，<ph name="DOMAIN"/> 要求你詳讀並接受下列《服務條款》。這些條款不會擴展、修改或限制《Brave 作業系統條款》。</translation>
 <translation id="3293668930608086049">Brave 正在使用你的攝影機和麥克風。</translation>
@@ -189,8 +187,6 @@ Brave 無法復原你的設定。</translation>
 <translation id="7798069806040634998">Brave 需要儲存空間存取權，才能下載檔案</translation>
 <translation id="7685904775439037072">Brave 取得存取權後，網站將可要求你授予存取權。</translation>
 <translation id="1744365871163268756">請稍候，Brave 正在安裝最新的系統更新。</translation>
-<translation id="8000338990735917615">系統日後將自動安裝新版 Brave。</translation>
-<translation id="2975476470948647918">系統日後將自動安裝新版 Brave。下載完成後，Brave 會重新啟動並自動更新。</translation>
 <translation id="7808415789955822133">Brave 作業系統條款</translation>
 <translation id="7207456302801184289">歡迎使用 Brave</translation>
 <translation id="3507835409099344374">前往 Brave 通知設定</translation>
@@ -222,7 +218,6 @@ Brave 無法復原你的設定。</translation>
       Brave 瀏覽器設定<ph name="LINK_END"/></translation>
 <translation id="4459296183696059108">如果這個頁面上並未顯示你的設定，請檢查 <ph name="LINK_BEGIN"/>
       Brave 作業系統設定<ph name="LINK_END"/></translation>
-<translation id="7977435741986383568">Brave 可能會使用網路服務改善你的瀏覽體驗。不過，你可以選擇停用這些服務。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">為修正拼字錯誤，Brave 會將你在文字欄位輸入的文字傳送給 Brave Software</translation>
 <translation id="8586264863973514035">如要套用變更，請重新啟動 Brave</translation>
 <translation id="7021823858304886493">允許登入 Brave</translation>

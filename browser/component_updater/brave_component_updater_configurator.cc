@@ -172,22 +172,9 @@ bool BraveConfigurator::IsPerUserInstall() const {
   return false;
 }
 
-std::vector<uint8_t> BraveConfigurator::GetRunActionKeyHash() const {
-  return configurator_impl_.GetRunActionKeyHash();
-}
-
-std::string BraveConfigurator::GetAppGuid() const {
-  return configurator_impl_.GetAppGuid();
-}
-
 std::unique_ptr<update_client::ProtocolHandlerFactory>
 BraveConfigurator::GetProtocolHandlerFactory() const {
   return configurator_impl_.GetProtocolHandlerFactory();
-}
-
-update_client::RecoveryCRXElevator BraveConfigurator::GetRecoveryCRXElevator()
-    const {
-  return {};
 }
 
 }  // namespace component_updater

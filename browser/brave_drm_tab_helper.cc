@@ -13,7 +13,7 @@
 #include "content/public/browser/navigation_handle.h"
 
 BraveDrmTabHelper::BraveDrmTabHelper(content::WebContents* contents)
-    : WebContentsObserver(contents), bindings_(contents, this) {}
+    : WebContentsObserver(contents), receivers_(contents, this) {}
 
 BraveDrmTabHelper::~BraveDrmTabHelper() {}
 

@@ -21,6 +21,7 @@ import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
+import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler;
 
 public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegateImpl {
     private Menu mMenu;
@@ -36,8 +37,8 @@ public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegat
     }
 
     @Override
-    public void prepareMenu(Menu menu) {
-        super.prepareMenu(menu);
+    public void prepareMenu(Menu menu, AppMenuHandler handler) {
+        super.prepareMenu(menu, handler);
 
         mMenu = menu;
 

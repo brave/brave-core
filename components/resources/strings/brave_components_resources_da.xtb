@@ -77,19 +77,11 @@
 <translation id="438216590634144114">Vælg den søgemaskine du ønsker at bruge som standard, når du søger på nettet fra adressebjælken.</translation>
 <translation id="5804484488647369316">Indstil standard søgemotor</translation>
 <translation id="4428458837269935199">Prøv DuckDuckGo for en mere privat søgeoplevelse.</translation>
-<translation id="513635702954746724">Vælg dit farvetema</translation>
-<translation id="6842850080200126305">Vælg farven til din værktøjslinje ved at vælge den lyse eller mørke valgmulighed i indstillingspanelet.</translation>
-<translation id="5805868144901917207">Vælg et tema</translation>
-<translation id="8131740175452115882">Bekræft</translation>
-<translation id="713206503018076063">Systemtema (standard)</translation>
-<translation id="1807246157184219062">Lys</translation>
-<translation id="2414886740292270097">Mørk</translation>
 <translation id="3829010735958850433">Spring over velkomsttur</translation>
 <translation id="1201402288615127009">Næste</translation>
 <translation id="7954950242989581218">Brows trygt og sikkert</translation>
 <translation id="2188651882929633653">Brave Shields blokerer de ækle ting, som prøver at spore dig på nettet, herunder de fleste annoncer. Sæt Shields til at være “nede”, hvis en side ikke ser ud til at virke. Brave bruger <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>fuldstændig private produktanalyser<ph name="END_LINK_P3A">&lt;/a&gt;</ph> til at anslå det generelle forbrug af visse funktioner. Du kan slå dette fra under <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Indstillinger<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Reklamer</translation>
-<translation id="5698387814910197501">Optjen {{currency}} ved at se annoncer i Brave. Annoncer præsenteres på baggrund af dine interesser, udledt af din browseradfærd. Ingen personlige data eller browserhistorik forlader nogensinde din browser.</translation>
 <translation id="6112368337882254910">Auto-Bidrag</translation>
 <translation id="3742599705619405136">En automatisk måde at støtte udgivere og indholdsskabere på. Indstil en månedlig betaling og browse som normalt. De Brave-verificerede sider du besøger, vil modtage dine donationer automatisk baseret på din opmærksomhed målt af Brave.</translation>
 <translation id="20281847067919078">Anslåede afventende bonusser</translation>
@@ -97,6 +89,7 @@
 <translation id="319209088187794725">Annoncenotifikationer modtaget i denne måned</translation>
 <translation id="4229016885653790965">Beklager! Annoncer er ikke tilgængelige i din region endnu.</translation>
 <translation id="2539279826042558064">Brave Belønninger er ikke tilgængelig på din enhed</translation>
+<translation id="5421369907811917952">Andre indstillinger</translation>
 <translation id="654711254769318398">Annoncesider set</translation>
 <translation id="2532127066761785857">Maksimum antal af annoncer vist</translation>
 <translation id="5171071066587880677">1 annonce i timen</translation>
@@ -132,7 +125,6 @@
 <translation id="2726674968268546964">poletter</translation>
 <translation id="7286722244752781970">Minimumstid på en side før et besøg logges</translation>
 <translation id="4424486208397124985">Mindstebesøg for udgiver-relevans</translation>
-<translation id="5421369907811917952">Andre indstillinger</translation>
 <translation id="6248554379744796526">Vis ikke-verificerede sider på listen</translation>
 <translation id="5875669387851353511">Tillad bidrag til videoer</translation>
 <translation id="8933202740471878108">1 besøg</translation>
@@ -162,7 +154,6 @@
 <translation id="7210234701206674260">Brave Rewards har et problem. Prøv venligst igen senere.</translation>
 <translation id="570208820610947248">Vi har registreret, at der er noget galt med din tegnebog. Du skal gendanne sikkerhedskopien af din tegnebog, før dine overførsler kan blive behandlet.</translation>
 <translation id="7797604753681168055">Gendan nu!</translation>
-<translation id="5549059668721746831">Næste månedlige drikkepengedato</translation>
 <translation id="6231182869178328516">Jeg har lige givet drikkepenge <ph name="NAME"/> ved hjælp af Brave Browser. Se den på https://brave.com/tips.</translation>
 <translation id="8404935570206006581">BelønMedBrave</translation>
 <translation id="2876191400747549936">Beklager, der opstod et problem med behandling af din anmodning. Prøv igen.</translation>
@@ -261,8 +252,6 @@
 <translation id="4114667046481794032">Bidragsmængde</translation>
 <translation id="3520817231440482449">Doner til denne side månedligt</translation>
 <translation id="1827184134638345603">Send en donation…</translation>
-<translation id="7928243298881209869">Dine første månedlige drikkepenge vil blive sendt:</translation>
-<translation id="6045860799501892362">Fastsæt månedlig donation</translation>
 <translation id="8003573781961874199">Hent som PDF</translation>
 <translation id="298067735430872465">Indtjening fra reklamer</translation>
 <translation id="2266556115441975588">Dine bonusser fra annoncer er kommet!</translation>
@@ -291,7 +280,6 @@
 <translation id="9115913704608474258">November</translation>
 <translation id="7828956995407538686">Oktober</translation>
 <translation id="5502713021410870035">September</translation>
-<translation id="5737831580668469027">Månedlige donationer!</translation>
 <translation id="606865182719489911">En gratis token-uddeling er tilgængelig.</translation>
 <translation id="2487641031722095938">Det er din heldige dag!</translation>
 <translation id="6255773350565723852">Dit token-tilskud er på vej.</translation>
@@ -318,13 +306,8 @@
 <translation id="4923459931733593730">Betaling</translation>
 <translation id="4021593982164260556">Betaling gennemføres hver den {{dag}}. i hver måned.</translation>
 <translation id="6104680658798556671">Betaling ikke gennemført</translation>
-<translation id="2834888581291358924">Når din saldo ikke er tilstrækkelig til at dække det samlede totalbeløb til Auto-Contribute og dine tilbagevendende donationer, bliver disse betalinger sprunget over for denne periode.</translation>
 <translation id="3138528956349114724">Fastgjorte sider er nu</translation>
-<translation id="2337632028350283479">Sådan virker de månedlige donationer:</translation>
-<translation id="6457273203091513039">Månedlige donationer stammer ikke fra dine auto-bidragsbetalinger. De er særskilte.</translation>
 <translation id="9099396904827413228">Hver side får et fast beløb om måneden.</translation>
-<translation id="5051110132941857169">Månedlige donationer betales på en gang, hver måned. Hvis du benytter dig af auto-bidrag, trækkes donationerne samtidigt med dine månedlige auto-bidragsbetalinger.</translation>
-<translation id="3374483782662414143">Du kan fjerne enhver side, der modtager månedlige donationer, indefra donationspanelet.</translation>
 <translation id="5082474983463379713">Bemærk venligst:</translation>
 <translation id="1430915738399379752">Udskriv</translation>
 <translation id="135956957367307069">Din anmodning behandles stadig, vent venligst.</translation>

@@ -6,7 +6,6 @@
 <translation id="680297041157509674">‏سیستم عامل Brave</translation>
 <translation id="4847979153841887006">‏نشان‌واره Brave</translation>
 <translation id="7339898014177206373">پنجرهٔ جدید</translation>
-<translation id="5935964611177478118">‏ورود به سیستم Brave</translation>
 <translation id="5516268345616100622">‏مدیر فعالیت‌ها - Brave</translation>
 <translation id="7918740962659365265">‏با ارسال گزارش‌های خرابی و <ph name="UMA_LINK"/> به Brave Software، به بهبود Brave Software کمک کنید</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
@@ -117,7 +116,6 @@ Brave قادر به بازیابی تنظیمات شما نیست.</translation>
 <translation id="1459786048951724030">‏به دلیل وجود خطا در ورود به سیستم، سیستم‌عامل Brave قادر به همگام‌سازی داده‌های شما نبود.</translation>
 <translation id="6813094029720377619">‏هنگام خروج از Brave، کوکی‌ها را پاک می‌کنید. برای اینکه همگام‌سازی ادامه یابد، این <ph name="COOKIE_SETTINGS_LINK"/> را تغییر دهید.</translation>
 <translation id="3340978935015468852">تنظیمات</translation>
-<translation id="380197516434040304">‏حذف از Brave...</translation>
 <translation id="300669147395456190">‏برنامه‌های Brave</translation>
 <translation id="3421950102518690868">‏<ph name="DOMAIN"/> از شما می‌خواهد قبل از استفاده از دستگاه، شرایط خدمات زیر را خوانده و بپذیرید. این شرایط بسط داده نمی‌شوند، اصلاح نمی‌شوند و شرایط سیستم عامل Brave را محدود نمی‌کنند.</translation>
 <translation id="3293668930608086049">‏Brave درحال استفاده از دوربین و میکروفون شما است.</translation>
@@ -178,8 +176,6 @@ Brave قادر به بازیابی تنظیمات شما نیست.</translation>
 <translation id="7798069806040634998">‏Brave برای بارگیری فایل‌ها باید به حافظه دسترسی داشته باشد</translation>
 <translation id="7685904775439037072">‏وقتی Brave دسترسی داشته باشد، وب‌سایت‌ها می‌توانند مجوز دسترسی درخواست کنند.</translation>
 <translation id="1744365871163268756">‏وقتی Brave جدیدترین به‌روزرسانی‌های سیستم را نصب می‌کند، لطفاً صبر کنید.</translation>
-<translation id="8000338990735917615">‏نسخه‌های آینده Brave به‌طور خودکار نصب خواهند شد.</translation>
-<translation id="2975476470948647918">‏نسخه‌های آینده Brave به‌طور خودکار نصب خواهند شد. وقتی این بارگیری کامل شد، Brave بازراه‌اندازی می‌شود و شما به کار خود ادامه خواهید داد.</translation>
 <translation id="7808415789955822133">‏شرایط Brave OS</translation>
 <translation id="7207456302801184289">‏به Brave خوش آمدید</translation>
 <translation id="3507835409099344374">‏رفتن به تنظیمات اعلان Brave</translation>
@@ -211,7 +207,6 @@ Brave قادر به بازیابی تنظیمات شما نیست.</translation>
       تنظیمات مرورگر Brave<ph name="LINK_END"/> آن را پیدا کنید</translation>
 <translation id="4459296183696059108">‏اگر تنظیمی در این صفحه نشان داده نمی‌شود، در <ph name="LINK_BEGIN"/>
       تنظیمات مرورگر Brave<ph name="LINK_END"/> آن را کنید</translation>
-<translation id="7977435741986383568">‏ممکن است Brave برای بهبود تجربه مرور شما از سرویس‌های وب استفاده کند. می‌توانید به‌صورت اختیاری این سرویس‌ها را غیرفعال کنید. <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">‏برای رفع خطاهای املائی، Brave نوشتاری را که در فیلد نوشتار تایپ می‌کنید، برای Brave Software ارسال می‌کند</translation>
 <translation id="8586264863973514035">‏برای اعمال تغییراتتان، Brave را راه‌اندازی مجدد کنید</translation>
 <translation id="7021823858304886493">‏مجاز کردن ورود به سیستم Brave</translation>

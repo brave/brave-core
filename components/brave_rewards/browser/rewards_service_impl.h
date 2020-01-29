@@ -26,6 +26,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "extensions/buildflags/buildflags.h"
 #include "mojo/public/cpp/bindings/associated_binding.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
 #include "ui/gfx/image/image.h"
@@ -885,7 +886,7 @@ class RewardsServiceImpl : public RewardsService,
   mojo::AssociatedBinding<bat_ledger::mojom::BatLedgerClient>
       bat_ledger_client_binding_;
   bat_ledger::mojom::BatLedgerAssociatedPtr bat_ledger_;
-  bat_ledger::mojom::BatLedgerServicePtr bat_ledger_service_;
+  mojo::Remote<bat_ledger::mojom::BatLedgerService> bat_ledger_service_;
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   std::unique_ptr<ExtensionRewardsServiceObserver>

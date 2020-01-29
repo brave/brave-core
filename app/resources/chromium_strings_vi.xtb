@@ -6,7 +6,6 @@
 <translation id="680297041157509674">Hệ điều hành Brave</translation>
 <translation id="4847979153841887006">Biểu trưng Brave</translation>
 <translation id="7339898014177206373">Cửa sổ mới</translation>
-<translation id="5935964611177478118">đăng nhập vào Brave</translation>
 <translation id="5516268345616100622">Trình quản lý tác vụ - Brave</translation>
 <translation id="7918740962659365265">Giúp cải thiện Brave bằng cách gửi báo cáo sự cố và <ph name="UMA_LINK"/> tới Brave Software</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
@@ -119,7 +118,6 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="1459786048951724030">Brave OS không thể đồng bộ hóa dữ liệu của bạn do lỗi khi đăng nhập.</translation>
 <translation id="6813094029720377619">Bạn xóa cookie khi thoát khỏi Brave. Để tiếp tục đồng bộ hóa, hãy thay đổi <ph name="COOKIE_SETTINGS_LINK"/> này.</translation>
 <translation id="3340978935015468852">cài đặt</translation>
-<translation id="380197516434040304">Xóa khỏi Brave...</translation>
 <translation id="300669147395456190">Ứng dụng Brave</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> yêu cầu bạn đọc và chấp nhận Điều khoản dịch vụ sau đây trước khi sử dụng thiết bị này. Những điều khoản này không mở rộng, sửa đổi hoặc giới hạn Điều khoản Brave OS.</translation>
 <translation id="3293668930608086049">Brave đang sử dụng máy ảnh và micrô của bạn.</translation>
@@ -180,8 +178,6 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="7798069806040634998">Brave cần quyền truy cập vào bộ nhớ để tải tệp xuống</translation>
 <translation id="7685904775439037072">Sau khi Brave có quyền truy cập, các trang web sẽ có thể yêu cầu bạn cấp quyền truy cập.</translation>
 <translation id="1744365871163268756">Vui lòng đợi khi Brave cài đặt các bản cập nhật hệ thống mới nhất.</translation>
-<translation id="8000338990735917615">Các phiên bản Brave trong tương lai sẽ tự động cài đặt.</translation>
-<translation id="2975476470948647918">Các phiên bản Brave trong tương lai sẽ tự động cài đặt. Khi tải xong phiên bản này xuống, Brave sẽ khởi động lại và bạn có thể tiếp tục sử dụng.</translation>
 <translation id="7808415789955822133">Điều khoản Brave OS</translation>
 <translation id="7207456302801184289">Chào mừng bạn đến với Brave</translation>
 <translation id="3507835409099344374">Đi tới cài đặt thông báo của Brave</translation>
@@ -213,7 +209,6 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
       cài đặt trên trình duyệt Brave<ph name="LINK_END"/></translation>
 <translation id="4459296183696059108">Nếu một tùy chọn cài đặt không hiển thị trên trang này, hãy tìm trong mục <ph name="LINK_BEGIN"/>
       cài đặt của Brave OS<ph name="LINK_END"/></translation>
-<translation id="7977435741986383568">Brave có thể sử dụng dịch vụ web để cải thiện trải nghiệm duyệt web của bạn. Bạn có thể tùy ý vô hiệu hóa các dịch vụ này. <ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Để sửa lỗi chính tả, Brave sẽ gửi cho Brave Software nội dung bạn nhập vào các trường văn bản</translation>
 <translation id="8586264863973514035">Để áp dụng các mục thay đổi của bạn, hãy chạy lại Brave</translation>
 <translation id="7021823858304886493">Cho phép đăng nhập vào Brave</translation>

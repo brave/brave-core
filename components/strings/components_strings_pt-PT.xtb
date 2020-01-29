@@ -19,6 +19,7 @@
 <translation id="1036348656032585052">Desativar</translation>
 <translation id="8105368624971345109">Desativar</translation>
 <translation id="1175364870820465910">Im&amp;primir...</translation>
+<translation id="129553762522093515">Fechados recentemente</translation>
 <translation id="8870413625673593573">Fechadas recentemente</translation>
 <translation id="385051799172605136">Anterior</translation>
 <translation id="7481312909269577407">Avançar</translation>
@@ -31,18 +32,20 @@
 <translation id="5040262127954254034">Privacidade</translation>
 <translation id="3061707000357573562">Serviço de patch</translation>
 <translation id="1914326953223720820">Serviço de descompressão de ficheiros</translation>
+<translation id="1623104350909869708">Evitar que esta página crie caixas de diálogo adicionais</translation>
 <translation id="2677748264148917807">Sair</translation>
 <translation id="5556459405103347317">Recarregar</translation>
 <translation id="2359808026110333948">Continuar</translation>
-<translation id="5935964611177478118">inicie sessão no Brave</translation>
 <translation id="4378154925671717803">Telemóvel</translation>
 <translation id="8131740175452115882">Confirmar</translation>
 <translation id="8968766641738584599">Guardar cartão</translation>
 <translation id="860043288473659153">Nome do titular do cartão</translation>
+<translation id="869891660844655955">Data de expiração</translation>
 <translation id="5457113250005438886">Inválido</translation>
 <translation id="6518133107902771759">Verificar</translation>
 <translation id="8987927404178983737">Mês</translation>
 <translation id="6015796118275082299">Ano</translation>
+<translation id="1581080074034554886">Código de segurança</translation>
 <translation id="9065203028668620118">Editar</translation>
 <translation id="5029568752722684782">Limpar cópia</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
@@ -72,6 +75,7 @@
 <translation id="4522570452068850558">Detalhes</translation>
 <translation id="3586931643579894722">Ocultar detalhes</translation>
 <translation id="614940544461990577">Experimente:</translation>
+<translation id="4943872375798546930">Nenhum resultado</translation>
 <translation id="8688672835843460752">Disponível</translation>
 <translation id="4989542687859782284">Indisponível</translation>
 <translation id="59174027418879706">Ativada</translation>
@@ -81,7 +85,10 @@
 <translation id="1838374766361614909">Limpar pesquisa</translation>
 <translation id="495170559598752135">Ações</translation>
 <translation id="8261506727792406068">Eliminar</translation>
+<translation id="3207960819495026254">Adicionado aos marcadores</translation>
 <translation id="3303855915957856445">Não foram encontrados resultados da pesquisa</translation>
+<translation id="1209206284964581585">Ocultar para já</translation>
+<translation id="1407135791313364759">Abrir tudo</translation>
 <translation id="4880827082731008257">Pesquisar histórico</translation>
 <translation id="4756388243121344051">&amp;Histórico</translation>
 <translation id="1644574205037202324">Histórico</translation>
@@ -93,11 +100,14 @@
 <translation id="1178581264944972037">Pausa</translation>
 <translation id="1232569758102978740">Sem nome</translation>
 <translation id="7514365320538308">Transferir</translation>
+<translation id="8041089156583427627">Enviar comentários</translation>
 <translation id="7552846755917812628">Experimente as sugestões seguintes:</translation>
+<translation id="3960299545138990065">Reiniciar o Brave</translation>
 <translation id="4275830172053184480">Reiniciar o dispositivo</translation>
 <translation id="413544239732274901">Aprenda mais</translation>
 <translation id="7554791636758816595">Novo separador</translation>
 <translation id="2079545284768500474">Anular</translation>
+<translation id="17513872634828108">Separadores abertos</translation>
 <translation id="981121421437150478">Offline</translation>
 <translation id="5171045022955879922">Pesquisar ou escrever URL</translation>
 <translation id="803771048473350947">Ficheiro</translation>
@@ -110,12 +120,11 @@
 <translation id="6831043979455480757">Traduzir</translation>
 <translation id="2473195200299095979">Traduzir esta página</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>, resposta, <ph name="ANSWER"/></translation>
-<translation id="9008201768610948239">Ignorar</translation>
 <translation id="7714464543167945231">Certificado</translation>
 <translation id="4235360514405112390">Válido</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="1919345977826869612">Anúncios</translation>
-<translation id="410351446219883937">Reprodução automática</translation>
+<translation id="6612358246767739896">Conteúdo protegido</translation>
 <translation id="9219103736887031265">Imagens</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">Pop-ups e redirecionamentos</translation>
@@ -130,6 +139,7 @@
 <translation id="7638605456503525968">Portas de série</translation>
 <translation id="2215727959747642672">Edição de ficheiros</translation>
 <translation id="6545864417968258051">Procura de Bluetooth</translation>
+<translation id="534295439873310000">Dispositivos NFC</translation>
 <translation id="5039804452771397117">Permitir</translation>
 <translation id="7053983685419859001">Bloquear</translation>
 <translation id="57838592816432529">Desativar som</translation>
@@ -145,6 +155,7 @@
 <translation id="5932224571077948991">O site apresenta anúncios intrusivos ou enganadores.</translation>
 <translation id="7878562273885520351">A palavra-passe pode estar comprometida</translation>
 <translation id="1089439967362294234">Alterar palavra-passe</translation>
+<translation id="9008201768610948239">Ignorar</translation>
 <translation id="1186201132766001848">Verificar palavras-passe</translation>
 <translation id="5979084224081478209">Verificar palavras-passe</translation>
 <translation id="10614374240317010">Nunca guardada</translation>
@@ -197,8 +208,11 @@
 <translation id="1974060860693918893">Avançadas</translation>
 <translation id="5308380583665731573">Ligar</translation>
 <translation id="2501278716633472235">Voltar</translation>
+<translation id="1736420071277903564">Computador</translation>
+<translation id="3906954721959377182">Tablet</translation>
 <translation id="7029809446516969842">Palavras-passe</translation>
 <translation id="6596325263575161958">Opções de encriptação</translation>
+<translation id="8461694314515752532">Encriptar dados sincronizados com a sua própria frase de acesso de sincronização</translation>
 <translation id="9050666287014529139">Frase de acesso</translation>
 <translation id="9095388113577226029">Mais idiomas…</translation>
 <translation id="7600965453749440009">Nunca traduzir do <ph name="LANGUAGE"/></translation>
@@ -206,6 +220,7 @@
 <translation id="7378627244592794276">Não</translation>
 <translation id="9137013805542155359">Mostrar original</translation>
 <translation id="8725066075913043281">Tentar novamente</translation>
+<translation id="5684874026226664614">Ups! Não foi possível traduzir esta página.</translation>
 <translation id="583281660410589416">Desconhecido</translation>
 <translation id="9170848237812810038">An&amp;ular</translation>
 <translation id="2972581237482394796">&amp;Repetir</translation>

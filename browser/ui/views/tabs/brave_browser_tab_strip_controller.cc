@@ -29,6 +29,6 @@ void BraveBrowserTabStripController::ShowContextMenuForTab(
   context_menu_contents_ = std::make_unique<BraveTabContextMenuContents>(
       tab,
       this,
-      browser_view->tabstrip()->GetModelIndexOfTab(tab));
+      browser_view->tabstrip()->GetModelIndexOf(tab));
   context_menu_contents_->RunMenuAt(p, source_type);
 }

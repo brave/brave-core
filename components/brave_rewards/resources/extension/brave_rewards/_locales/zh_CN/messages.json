@@ -182,8 +182,8 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "每月赏金",
-    "description": "Title for monthly tips section in wallet summary"
+    "message": "每月捐款",
+    "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
     "message": "关闭",
@@ -256,7 +256,7 @@
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
-    "message": "由于资金不足，您无法完成预定的每月自动付款和每月打赏。我们会在30天后重试。",
+    "message": "由于资金不足，您安排的对自动捐赠和每月捐赠的每月支付无法完成。我们将会在30天后重试。",
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
@@ -400,12 +400,12 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "您的每月打赏已处理！",
-    "description": "Message for monthly tips processed notification"
+    "message": "您的每月捐赠已处理！",
+    "description": "Message for monthly contributions processed notification"
   },
   "contributionTips": {
     "message": "捐款和打赏",
-    "description": "Title for monthly tips processed notification"
+    "description": "Title for monthly contributions processed notification"
   },
   "serviceTextPanelWelcome": {
     "message": "点击“加入奖励”，即表示您已阅读并同意",

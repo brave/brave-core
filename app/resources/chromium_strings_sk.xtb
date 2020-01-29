@@ -6,7 +6,6 @@
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Logo prehliadača Brave</translation>
 <translation id="7339898014177206373">Nové okno</translation>
-<translation id="5935964611177478118">prihláste sa do prehliadača Brave</translation>
 <translation id="5516268345616100622">Správca úloh – Brave</translation>
 <translation id="7918740962659365265">Pomôcť zlepšiť prehliadač Brave odosielaním správ o zlyhaní a <ph name="UMA_LINK"/> spoločnosti Brave Software</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
@@ -121,7 +120,6 @@ Prehliadač Brave nedokáže obnoviť vaše nastavenia.</translation>
 <translation id="1459786048951724030">Systému OS Brave sa nepodarilo synchronizovať vaše údaje, pretože sa pri prihlasovaní vyskytla chyba.</translation>
 <translation id="6813094029720377619">Po ukončení prehliadača Brave vymažete súbory cookie. Ak chcete aj naďalej synchronizovať, zmeňte nastavenie <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
 <translation id="3340978935015468852">nastavenia</translation>
-<translation id="380197516434040304">Odstrániť z prehliadača Brave...</translation>
 <translation id="300669147395456190">Aplikácie Brave</translation>
 <translation id="3421950102518690868">Stránky <ph name="DOMAIN"/> vyžadujú, aby ste si pred používaním tohto zariadenia prečítali nasledujúce Zmluvné podmienky a vyjadrili s nimi súhlas. Tieto zmluvné podmienky nerozširujú, neupravujú ani neobmedzujú Zmluvné podmienky systému Brave OS.</translation>
 <translation id="3293668930608086049">Brave používa vašu kameru a mikrofón.</translation>
@@ -182,8 +180,6 @@ Prehliadač Brave nedokáže obnoviť vaše nastavenia.</translation>
 <translation id="7798069806040634998">Brave potrebuje na sťahovanie súborov prístup k úložisku</translation>
 <translation id="7685904775439037072">Keď Brave získa prístup, weby vás budú môcť žiadať o prístup.</translation>
 <translation id="1744365871163268756">Počkajte, kým Brave nainštaluje najnovšie aktualizácie systému.</translation>
-<translation id="8000338990735917615">Budúce verzie prehliadača Brave sa budú inštalovať automaticky.</translation>
-<translation id="2975476470948647918">Budúce verzie prehliadača Brave sa budú inštalovať automaticky. Po dokončení sťahovania sa Brave reštartuje a môžete pokračovať.</translation>
 <translation id="7808415789955822133">Zmluvné podmienky systému OS Brave</translation>
 <translation id="7207456302801184289">Vitajte v prehliadači Brave</translation>
 <translation id="3507835409099344374">Prejsť do nastavení upozornení prehliadača Brave</translation>
@@ -213,7 +209,6 @@ Prehliadač Brave nedokáže obnoviť vaše nastavenia.</translation>
 <translation id="6915252145142862992">Toto je sekundárna inštalácia prehliadača Brave – nemôže byť nastavený ako váš predvolený prehliadač.</translation>
 <translation id="6235873178214143377">Ak nie je určité nastavenie zobrazené na tejto stránke, skontrolujte <ph name="LINK_BEGIN"/>nastavenia prehliadača Brave<ph name="LINK_END"/></translation>
 <translation id="4459296183696059108">Ak určité nastavenie nevidíte na tejto stránke, skontrolujte <ph name="LINK_BEGIN"/>nastavenia operačného systému Brave<ph name="LINK_END"/></translation>
-<translation id="7977435741986383568">Brave vám môže uľahčiť prehliadanie pomocou webových služieb. Vybrané webové služby môžete podľa potreby vypnúť. <ph name="BEGIN_LINK"/>Ďalšie informácie<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Brave odošle text zadaný v textových poliach Googlu s cieľom opraviť pravopisné chyby</translation>
 <translation id="8586264863973514035">Ak chcete zmeny použiť, spustite Brave znova</translation>
 <translation id="7021823858304886493">Povoliť prihlásenie do prehliadača Brave</translation>

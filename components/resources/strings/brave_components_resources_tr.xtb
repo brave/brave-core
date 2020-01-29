@@ -77,19 +77,11 @@
 <translation id="438216590634144114">Web’de adres çubuğundan arama yaparken varsayılan olarak kullanmak istediğiniz arama motorunu seçin.</translation>
 <translation id="5804484488647369316">Varsayılan arama moturunu ayarla</translation>
 <translation id="4428458837269935199">Daha kişisel bir arama deneyimi için, DuckDuckGo'yu deneyin.</translation>
-<translation id="513635702954746724">Renk temanızı seçin</translation>
-<translation id="6842850080200126305">Ayarlar panelinden açık veya koyu renk seçeneğini seçerek araç çubuğunuzun rengini ayarlayın.</translation>
-<translation id="5805868144901917207">Bir tema seçin</translation>
-<translation id="8131740175452115882">Onayla</translation>
-<translation id="713206503018076063">Sistem teması (varsayılan)</translation>
-<translation id="1807246157184219062">Açık</translation>
-<translation id="2414886740292270097">Koyu</translation>
 <translation id="3829010735958850433">Hoşgeldin turunu atla</translation>
 <translation id="1201402288615127009">Sonraki</translation>
 <translation id="7954950242989581218">Sağ salim tarayın</translation>
 <translation id="2188651882929633653">Brave Shields, çoğu reklam dâhil olmak üzere sizi webde izlemeye çalışan sinsi şeyleri engeller. Bir site çalışmıyor gibi görünüyorsa, Shields'ı aşağı olarak ayarlayın. Brave, belirli özelliklerin genel kullanımını tahmin etmek için <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>tamamıyla gizli ürün analizi<ph name="END_LINK_P3A">&lt;/a&gt;</ph> kullanır. Bunu <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Ayarlar<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>'da kapatabilirsiniz.</translation>
 <translation id="1919345977826869612">Reklamlar</translation>
-<translation id="5698387814910197501">Brave'de reklam izleyerek {{currency}} kazanın. Gösterilen reklamlar, tarama alışkanlığınızdan esinlenilerek ilgi alanlarınıza göre temellendirilir. Hiçbir kişisel veri ya da tarama geçmişi tarayıcınızdan ayrılmaz.</translation>
 <translation id="6112368337882254910">Otomatik-Katkı</translation>
 <translation id="3742599705619405136">Yayıncıları ve içerik oluşturucuları desteklemenin otomatik bir yolu. Aylık bir ödeme ayarlayın ve normal şekilde gezinin. Ziyaret ettiğiniz Brave Verified siteleri, Brave tarafından ölçülen ilginize bağlı olarak katkılarınızı otomatik olarak alır.</translation>
 <translation id="20281847067919078">Beklemedeki tahmini ödüller</translation>
@@ -97,6 +89,7 @@
 <translation id="319209088187794725">Bu ay alınan reklam bildirimleri</translation>
 <translation id="4229016885653790965">Üzgünüz! Bölgenizde henüz reklamlar kullanılamıyor.</translation>
 <translation id="2539279826042558064">Brave Ödülleri ve Reklamları şu an için cihazınızda kullanılamıyor.</translation>
+<translation id="5421369907811917952">Diğer ayarlar</translation>
 <translation id="654711254769318398">Görüntülenen reklam sayfaları</translation>
 <translation id="2532127066761785857">Görüntülenen maksimum reklam sayısı</translation>
 <translation id="5171071066587880677">Saatte 1 reklam</translation>
@@ -132,7 +125,6 @@
 <translation id="2726674968268546964">tokenler</translation>
 <translation id="7286722244752781970">Bir ziyareti kaydetmeden önce minimum sayfa zamanı</translation>
 <translation id="4424486208397124985">Yayıncı alaka düzeyi için minimum ziyaret sayısı</translation>
-<translation id="5421369907811917952">Diğer ayarlar</translation>
 <translation id="6248554379744796526">Doğrulanmamış siteleri listede göster</translation>
 <translation id="5875669387851353511">Videolara katkıyı etkinleştir</translation>
 <translation id="8933202740471878108">1 ziyaret</translation>
@@ -162,7 +154,6 @@
 <translation id="7210234701206674260">Brave Rewards bir sorun yaşıyor. Lütfen daha sonra tekrar deneyiniz.</translation>
 <translation id="570208820610947248">Cüzdanınızda bir sorun tespit ettik. Herhangi bir işlemin yapılabilmesi için önce yedek cüzdanınızı kurtarmalısınız.</translation>
 <translation id="7797604753681168055">Hemen kurtarın!</translation>
-<translation id="5549059668721746831">Sonraki aylık bahşiş tarihi</translation>
 <translation id="6231182869178328516">Az önce Brave Tarayıcısı'nı kullanarak <ph name="NAME"/>'a bahşiş verdim. https://brave.com/tips 'ten göz at.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">Üzgünüz ki isteminizin işlenmesinde bir sorun oluştu, lütfen tekrar deneyin.</translation>
@@ -261,8 +252,6 @@
 <translation id="4114667046481794032">Katkı miktarı</translation>
 <translation id="3520817231440482449">Bu siteye Aylık bahşiş ver</translation>
 <translation id="1827184134638345603">Bir Bahşiş Gönderin</translation>
-<translation id="7928243298881209869">İlk aylık ipucu gönderilecektir:</translation>
-<translation id="6045860799501892362">Aylık Bahşiş Belirle</translation>
 <translation id="8003573781961874199">PDF olarak indir</translation>
 <translation id="298067735430872465">Reklam Kazançları</translation>
 <translation id="2266556115441975588">Reklamlardan gelen ödülleriniz burada!</translation>
@@ -291,7 +280,6 @@
 <translation id="9115913704608474258">Kasım</translation>
 <translation id="7828956995407538686">Ekim</translation>
 <translation id="5502713021410870035">Eylül</translation>
-<translation id="5737831580668469027">Aylık Bahşişler!</translation>
 <translation id="606865182719489911">Ücretsiz bir belirteç izni kullanılabilir.</translation>
 <translation id="2487641031722095938">Bugün şanslı gününüz!</translation>
 <translation id="6255773350565723852">Token bağışınız yolda.</translation>
@@ -318,13 +306,8 @@
 <translation id="4923459931733593730">Ödeme</translation>
 <translation id="4021593982164260556">Ödeme her ayın {{day}}. günü yapılır.</translation>
 <translation id="6104680658798556671">Ödeme yapılmadı.</translation>
-<translation id="2834888581291358924">Bakiyeniz, Otomatik-Katkı ve süreli bahşişlerinizin toplam miktarını karşılamak için yeterli olmadığında, bu ödemeler bu periyot için atlanır.</translation>
 <translation id="3138528956349114724">Sabitlenmiş siteler şu anda</translation>
-<translation id="2337632028350283479">İşte aylık bahşiş sistemi:</translation>
-<translation id="6457273203091513039">Aylık bahşişler Otomatik Katkı ödemenizden gelmez. Bunlar ayrıdır.</translation>
 <translation id="9099396904827413228">Her siteye aylık sabit bir miktar ödenir.</translation>
-<translation id="5051110132941857169">Aylık bahşişler her ay toplu olarak ödenir. Otomatik Katkı kullanıyorsanız, bahşişler aylık Otomatik Katkı ödemenizle aynı anda gider.</translation>
-<translation id="3374483782662414143">Aylık bahşiş alan siteleri Bahşişler panelinin içinden kaldırabilirsiniz.</translation>
 <translation id="5082474983463379713">Lütfen unutmayın:</translation>
 <translation id="1430915738399379752">Yazdır</translation>
 <translation id="135956957367307069">İsteminiz halen işlenmektedir, lütfen bekleyin.</translation>

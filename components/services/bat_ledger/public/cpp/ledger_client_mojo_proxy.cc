@@ -6,7 +6,7 @@
 #include "brave/components/services/bat_ledger/public/cpp/ledger_client_mojo_proxy.h"
 
 #include "base/logging.h"
-#include "mojo/public/cpp/bindings/map.h"
+#include "brave/base/containers/utils.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -395,7 +395,7 @@ void LedgerClientMojoProxy::OnLoadURL(
   DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get())
-        .Run(response_code, response, mojo::MapToFlatMap(headers));
+        .Run(response_code, response, base::MapToFlatMap(headers));
   delete holder;
 }
 
@@ -830,7 +830,7 @@ void LedgerClientMojoProxy::OnGetExternalWallets(
     std::map<std::string, ledger::ExternalWalletPtr> wallets) {
   DCHECK(holder);
   if (holder->is_valid())
-    std::move(holder->get()).Run(mojo::MapToFlatMap(std::move(wallets)));
+    std::move(holder->get()).Run(base::MapToFlatMap(std::move(wallets)));
   delete holder;
 }
 
@@ -950,7 +950,7 @@ void LedgerClientMojoProxy::GetTransferFees(
     const std::string& wallet_type,
     GetTransferFeesCallback callback) {
   auto list = ledger_client_->GetTransferFees(wallet_type);
-  std::move(callback).Run(mojo::MapToFlatMap(std::move(list)));
+  std::move(callback).Run(base::MapToFlatMap(std::move(list)));
 }
 
 void LedgerClientMojoProxy::SetTransferFee(
@@ -1089,7 +1089,7 @@ void LedgerClientMojoProxy::OnGetAllPromotions(
     ledger::PromotionMap promotions) {
   DCHECK(holder);
   if (holder->is_valid()) {
-    std::move(holder->get()).Run(mojo::MapToFlatMap(std::move(promotions)));
+    std::move(holder->get()).Run(base::MapToFlatMap(std::move(promotions)));
   }
   delete holder;
 }

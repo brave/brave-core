@@ -61,6 +61,11 @@
          =1 {Page 1}
          other {Page #}}
     </message>
+    <message name="IDS_PDF_DOCUMENT_PAGE_COUNT" desc="Accessible name of PDF document. It gives information about the number of pages in the PDF file">
+      PDF document containing {COUNT, plural,
+      =1 {1 page}
+      other {# pages}}
+    </message>
     <if expr="chromeos">
       <message name="IDS_PDF_DISCARD_FORM_CHANGES" desc="Title for a dialog that informs the user that the changes they have made to a form will be lost if they continue">
         Discard changes?
@@ -219,5 +224,9 @@
         Size 20
       </message>
     </if>
+
+    <message name="IDS_AX_ROLE_DESCRIPTION_PDF_HIGHLIGHT" desc="Accessibility role description for PDF highlight">
+      Highlight
+    </message>
   </if>
 </grit-part>

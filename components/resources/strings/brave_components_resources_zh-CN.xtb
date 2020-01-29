@@ -77,19 +77,11 @@
 <translation id="438216590634144114">选择您在通过地址栏搜索时所使用的默认搜索引擎。</translation>
 <translation id="5804484488647369316">设为默认搜索引擎</translation>
 <translation id="4428458837269935199">要获得更私密的搜索体验，请尝试 DuckDuckGo。</translation>
-<translation id="513635702954746724">选择颜色主题</translation>
-<translation id="6842850080200126305">通过在设置面板上选择亮或暗选项设置工具栏的颜色。</translation>
-<translation id="5805868144901917207">选择主题</translation>
-<translation id="8131740175452115882">确认</translation>
-<translation id="713206503018076063">系统主题（默认）</translation>
-<translation id="1807246157184219062">亮</translation>
-<translation id="2414886740292270097">暗</translation>
 <translation id="3829010735958850433">跳过欢迎导览</translation>
 <translation id="1201402288615127009">下一步</translation>
 <translation id="7954950242989581218">Browse 安然无恙</translation>
 <translation id="2188651882929633653">Brave Shields 拦截了尝试在 Web 上跟踪您的大部分恶意内容，包括许多广告。如果某个站点无法正常运行，请将 Shields 设置为“关闭”。Brave 使用 <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>completely private product analytics<ph name="END_LINK_P3A">&lt;/a&gt;</ph>; 估算特定功能的整体使用情况。您可在 <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph> 中将其关闭。</translation>
 <translation id="1919345977826869612">广告</translation>
-<translation id="5698387814910197501">通过在 Brave 上看广告赚取{{currency}}。展示的广告是根据您的兴趣（这是根据您的浏览行为判断出的）选择的。您的浏览器中不会留下私人数据或浏览历史。</translation>
 <translation id="6112368337882254910">自动贡献</translation>
 <translation id="3742599705619405136">这是一种自动支持发布者和内容创建者的方式。设置每月付款并正常地进行浏览。您访问的、经 Brave 验证的网站会根据 Brave 测量出的您的关注度自动收到您的捐款。</translation>
 <translation id="20281847067919078">估计将获得的奖励</translation>
@@ -97,6 +89,7 @@
 <translation id="319209088187794725">本月收到的广告通知</translation>
 <translation id="4229016885653790965">抱歉! 您所在的地区尚未提供广告。</translation>
 <translation id="2539279826042558064">目前无法在您的设备上使用 Brave Rewards 和 Brave Ads 功能。</translation>
+<translation id="5421369907811917952">其他设置</translation>
 <translation id="654711254769318398">广告页面已查看</translation>
 <translation id="2532127066761785857">已显示最大广告个数</translation>
 <translation id="5171071066587880677">每小时 1 条广告</translation>
@@ -132,7 +125,6 @@
 <translation id="2726674968268546964">令牌</translation>
 <translation id="7286722244752781970">登录访问前最短页面时间</translation>
 <translation id="4424486208397124985">发布者相关性的最低访问量</translation>
-<translation id="5421369907811917952">其他设置</translation>
 <translation id="6248554379744796526">显示列表中未经验证的站点</translation>
 <translation id="5875669387851353511">允许对视频付款</translation>
 <translation id="8933202740471878108">访问量为 1 次</translation>
@@ -162,7 +154,7 @@
 <translation id="7210234701206674260">Brave 奖励出现了问题。请稍后再试。</translation>
 <translation id="570208820610947248">我们检测到您的钱包出错了。您必须还原备份钱包，然后方可处理任何交易。</translation>
 <translation id="7797604753681168055">立即还原！</translation>
-<translation id="5549059668721746831">下月每月打赏日期</translation>
+<translation id="5549059668721746831">下一个每月捐赠日期</translation>
 <translation id="6231182869178328516">我最近使用 Brave 浏览器打赏了 <ph name="NAME"/>。快来 https://brave.com/tips 看看吧。</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">抱歉，处理您的请求时出错，请重试。</translation>
@@ -261,8 +253,8 @@
 <translation id="4114667046481794032">捐款金额</translation>
 <translation id="3520817231440482449">每月打赏本站点</translation>
 <translation id="1827184134638345603">发送赏金</translation>
-<translation id="7928243298881209869">您的首月打赏将发送于：</translation>
-<translation id="6045860799501892362">设置每月打赏</translation>
+<translation id="7928243298881209869">你的首个每月捐赠将被发送于:</translation>
+<translation id="6045860799501892362">设定每月捐赠</translation>
 <translation id="8003573781961874199">下载为PDF</translation>
 <translation id="298067735430872465">从广告中赚取的收益</translation>
 <translation id="2266556115441975588">您的广告奖励到了！</translation>
@@ -291,7 +283,7 @@
 <translation id="9115913704608474258">十一月</translation>
 <translation id="7828956995407538686">十月</translation>
 <translation id="5502713021410870035">九月</translation>
-<translation id="5737831580668469027">每月打赏！</translation>
+<translation id="5737831580668469027">每月捐赠!</translation>
 <translation id="606865182719489911">有可用的免费令牌授权。</translation>
 <translation id="2487641031722095938">今天是您的幸运日！</translation>
 <translation id="6255773350565723852">您即将收到代币补助。</translation>
@@ -318,13 +310,13 @@
 <translation id="4923459931733593730">付款</translation>
 <translation id="4021593982164260556">每月的第 {{day}}天付款</translation>
 <translation id="6104680658798556671">未付款。</translation>
-<translation id="2834888581291358924">当您的余额不足以支付自动贡献和定期打赏的总金额时，则会在此期间跳过这些付款。</translation>
+<translation id="2834888581291358924">当你的收支月不足以满足自动捐赠和你的每月捐赠的合计金额时，则会跳过这个期间的支付。</translation>
 <translation id="3138528956349114724">固定的网站现在</translation>
-<translation id="2337632028350283479">每月打赏的原理：</translation>
-<translation id="6457273203091513039">每月打赏与您的自动贡献付款无关。它们互相独立。</translation>
+<translation id="2337632028350283479">这里是每月捐赠工作原理:</translation>
+<translation id="6457273203091513039">每月捐赠和你的自动捐赠付款无关。它们是互相独立的。</translation>
 <translation id="9099396904827413228">每月向每个网站支付固定的金额。</translation>
-<translation id="5051110132941857169">每月打赏在每个月全部一次性支付。如果您使用自动贡献，打赏在每月自动贡献付款的同时支付。</translation>
-<translation id="3374483782662414143">您可以从打赏面板内删除接受每月打赏的任何网站。</translation>
+<translation id="5051110132941857169">每月捐赠在每个月全部一次性支付。如果您使用自动捐赠，打赏会在你的每月自动捐助付款的同时发出。</translation>
+<translation id="3374483782662414143">你可以从打赏面板中移除任何接受每月捐赠的站点。</translation>
 <translation id="5082474983463379713">请注意：</translation>
 <translation id="1430915738399379752">打印</translation>
 <translation id="135956957367307069">您的请求正在处理中，请稍候。</translation>
@@ -348,6 +340,7 @@
 <translation id="4699702339303280827">如果您的浏览器或电脑出现问题，您可以随时使用此密钥找回您的钱包。请妥善保管，取得密钥的人可盗窃您的钱包。最安全的办法是把它记在纸上，或保存在您保管重要信息的地方。</translation>
 <translation id="7354412786785889047">您可以通过打赏支持内容创建者。这’是为了表示对优质内容提供者的感谢。每个月的第一个星期，已验证的创建者将获得他们的赏金。</translation>
 <translation id="972846019534552366">您还可以在“Brave Rewards”面板中设置每月定期捐款。</translation>
+<translation id="121079855621707240">您可以通过设定一个每月捐助来支持这个内容创建者。这是对质内容提供者表示感谢的一种方式。已验证的创建者将会在每个月的第一周获得他们的捐款。</translation>
 <translation id="3074127054582480056">精力</translation>
 <translation id="5010112177773747965">未经您同意。</translation>
 <translation id="7147673045905733351">现在，Brave欢迎您进入新的互联网。</translation>

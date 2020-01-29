@@ -159,7 +159,6 @@ if (skip_signing) {
       rebase_path(packaging_dir),
       is_development,
       rebase_path(provisioning_profile, root_out_dir),
-      keychain_db,
       mac_signing_identifier,
       notarize_argument,
       notary_user,
@@ -310,8 +309,6 @@ if (skip_signing) {
       "$root_out_dir/$mac_notarized_output_prefix/$brave_pkg",
     ]
     args = [
-      "--keychain",
-      keychain_db,
       "--identity",
       mac_signing_identifier,
       "--notary-user",

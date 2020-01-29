@@ -109,7 +109,7 @@ void CookiePrefService::OnContentSettingChanged(
     const std::string& resource_identifier) {
   if (primary_pattern == ContentSettingsPattern::Wildcard() &&
       secondary_pattern == ContentSettingsPattern::Wildcard() &&
-      content_type == CONTENT_SETTINGS_TYPE_PLUGINS &&
+      content_type == ContentSettingsType::PLUGINS &&
       resource_identifier == brave_shields::kCookies) {
     if (lock_.Try()) {
       SetCookiePrefDefaults(host_content_settings_map_, prefs_);

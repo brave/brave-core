@@ -6,7 +6,6 @@
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Brave 로고</translation>
 <translation id="7339898014177206373">새 창</translation>
-<translation id="5935964611177478118">Brave에 로그인</translation>
 <translation id="5516268345616100622">작업 관리자 - Brave</translation>
 <translation id="7918740962659365265">비정상 종료 보고서와 <ph name="UMA_LINK"/>을(를) Brave Software로 전송하여 Brave 개선에 참여합니다.</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
@@ -121,7 +120,6 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="1459786048951724030">로그인 중 오류가 발생하여 Brave OS에서 데이터를 동기화하지 못했습니다.</translation>
 <translation id="6813094029720377619">Brave을 종료할 때 쿠키를 삭제합니다. 동기화를 계속하려면 이 <ph name="COOKIE_SETTINGS_LINK"/>을(를) 변경하세요.</translation>
 <translation id="3340978935015468852">설정</translation>
-<translation id="380197516434040304">Brave에서 제거...</translation>
 <translation id="300669147395456190">Brave 앱</translation>
 <translation id="3421950102518690868">이 기기를 사용하기 전에 <ph name="DOMAIN"/>에서 다음 서비스 약관을 읽고 동의해야 합니다. 이 약관은 Brave OS 약관을 확장, 수정 또는 제한하지 않습니다.</translation>
 <translation id="3293668930608086049">Brave이 카메라와 마이크를 사용 중입니다.</translation>
@@ -182,8 +180,6 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="7798069806040634998">파일을 다운로드하려면 Brave에 저장소 액세스 권한이 있어야 합니다</translation>
 <translation id="7685904775439037072">Brave에 액세스 권한을 부여하면 웹사이트에서 액세스 권한을 요청할 수 있게 됩니다.</translation>
 <translation id="1744365871163268756">Brave에서 최신 시스템 업데이트를 설치하는 동안 잠시 기다려 주세요.</translation>
-<translation id="8000338990735917615">Brave 향후 버전이 자동으로 설치됩니다.</translation>
-<translation id="2975476470948647918">Brave 향후 버전이 자동으로 설치됩니다. 이 다운로드가 완료되면 Brave이 다시 시작되며 계속 작업할 수 있습니다.</translation>
 <translation id="7808415789955822133">Brave OS 용어</translation>
 <translation id="7207456302801184289">Brave에 오신 것을 환영합니다.</translation>
 <translation id="3507835409099344374">Brave 알림 설정으로 이동</translation>
@@ -215,7 +211,6 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
       Brave 브라우저 설정<ph name="LINK_END"/>을 확인해 보세요.</translation>
 <translation id="4459296183696059108">페이지에 표시되지 않는 설정이 있다면 <ph name="LINK_BEGIN"/>
       Brave OS 설정<ph name="LINK_END"/>을 확인해 보세요.</translation>
-<translation id="7977435741986383568">Brave에서 사용자에게 더 나은 인터넷 사용 환경을 제공하기 위해 웹 서비스를 사용할 수 있습니다. 원하는 경우 서비스를 사용 중지하실 수 있습니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">맞춤법 오류를 수정하기 위해 Brave에서 사용자가 입력하는 텍스트를 Brave Software로 전송합니다.</translation>
 <translation id="8586264863973514035">변경사항을 적용하려면 Brave을 다시 실행하세요.</translation>
 <translation id="7021823858304886493">Brave 로그인 허용</translation>

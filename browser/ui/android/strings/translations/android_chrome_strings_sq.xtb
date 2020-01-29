@@ -1,0 +1,1128 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="sq">
+<translation id="6910211073230771657">Fshirë</translation>
+<translation id="6965382102122355670">OK</translation>
+<translation id="5301954838959518834">OK, e mora vesh</translation>
+<translation id="7658239707568436148">Anuloje</translation>
+<translation id="3479552764303398839">Jo tani</translation>
+<translation id="5317780077021120954">Ruaje</translation>
+<translation id="4570913071927164677">Hollësi</translation>
+<translation id="8730621377337864115">U bë</translation>
+<translation id="8261506727792406068">Fshije</translation>
+<translation id="1181037720776840403">Hiqe</translation>
+<translation id="5939518447894949180">Rivendos</translation>
+<translation id="4002066346123236978">Titulli</translation>
+<translation id="5916664084637901428">On</translation>
+<translation id="5860033963881614850">Off</translation>
+<translation id="6165508094623778733">Mësoni më tepër</translation>
+<translation id="6042308850641462728">Më tepër</translation>
+<translation id="6040143037577758943">Mbylle</translation>
+<translation id="780301667611848630">Jo, faleminderit</translation>
+<translation id="1201402288615127009">Pasuesja</translation>
+<translation id="2359808026110333948">Vazhdo</translation>
+<translation id="2653659639078652383">Parashtroje</translation>
+<translation id="2079545284768500474">Zhbëje</translation>
+<translation id="7649070708921625228">Ndihmë</translation>
+<translation id="2148716181193084225">Sot</translation>
+<translation id="7781829728241885113">Dje</translation>
+<translation id="6945221475159498467">Përzgjidhni</translation>
+<translation id="7791543448312431591">Shtoje</translation>
+<translation id="6527303717912515753">Ndaj</translation>
+<translation id="1383876407941801731">Kërko</translation>
+<translation id="3115898365077584848">Shfaq informacionin</translation>
+<translation id="3295602654194328831">Fshih informacionin</translation>
+<translation id="3987993985790029246">Kopjo lidhjen</translation>
+<translation id="2704606927547763573">Kopjuar</translation>
+<translation id="8725066075913043281">Riprovoni</translation>
+<translation id="385051799172605136">Mbrapsht</translation>
+<translation id="8131740175452115882">Ripohojeni</translation>
+<translation id="5300589172476337783">Shfaqe</translation>
+<translation id="1124772482545689468">Përdoruesi</translation>
+<translation id="8609465669617005112">Lëviz lart</translation>
+<translation id="6746124502594467657">Lëviz poshtë</translation>
+<translation id="8249310407154411074">Lëvize në krye</translation>
+<translation id="8428213095426709021">Rregullime</translation>
+<translation id="2498359688066513246">Ndihmë dhe komente</translation>
+<translation id="8378714024927312812">Administruar nga enti juaj</translation>
+<translation id="9019902583201351841">Menaxhuar nga prindërit e tu</translation>
+<translation id="4645575059429386691">Menaxhohet nga prindi yt</translation>
+<translation id="4883854917563148705">Cilësimet e menaxhuara nuk mund të rivendosen</translation>
+<translation id="4307992518367153382">Bazat</translation>
+<translation id="1974060860693918893">Të mëtejshme</translation>
+<translation id="1146678959555564648">Hyr në VR</translation>
+<translation id="987264212798334818">Të përgjithshme</translation>
+<translation id="5186185447130319458">I fshehtë</translation>
+<translation id="4275663329226226506">Media</translation>
+<translation id="4759238208242260848">Shkarkime</translation>
+<translation id="218608176142494674">Ndarja</translation>
+<translation id="8004582292198964060">Shfletuesi</translation>
+<translation id="1105960400813249514">Regjistrimi i ekranit</translation>
+<translation id="4875775213178255010">Sugjerimet e përmbajtjes</translation>
+<translation id="2021896219286479412">Kontrollet e sajtit në ekranin e plotë</translation>
+<translation id="4587589328781138893">Sajtet</translation>
+<translation id="4943703118917034429">Realiteti virtual</translation>
+<translation id="1928696683969751773">Përditësimet</translation>
+<translation id="6064125863973209585">Shkarkimet e përfunduara</translation>
+<translation id="5342314432463739672">Kërkesat për autorizim</translation>
+<translation id="3749259744154402564">Nuk mbështetet</translation>
+<translation id="629730747756840877">Llogaria</translation>
+<translation id="82609232232243542">Hyni në Brave</translation>
+<translation id="7956662517480676674">Sinkron. dhe "Shërbimet e Brave Software"</translation>
+<translation id="5294439808117722387">Aktualisht po personalizon cilësimet e shërbimit të "Sinkronizimit" dhe Brave Software. Për të përfunduar aktivizimin e sinkronizimit, trokit butonin "Konfirmo" pranë fundit të ekranit. Ngjitu lart</translation>
+<translation id="2096012225669085171">Sinkronizo e personalizo përmes pajisjeve</translation>
+<translation id="1692118695553449118">Njëkohësimi është on</translation>
+<translation id="5514904542973294328">Çaktivizuar nga administratori i kësaj pajisjeje</translation>
+<translation id="6447211988989208781">Kontrollet e aktivitetit të Brave Software</translation>
+<translation id="4882831918239250449">Kontrollo se si përdoret historiku i shfletimit për të personalizuar "Kërkimin", reklamat dhe shumë të tjera</translation>
+<translation id="7431991332293347422">Kontrollo se si përdoret historiku i shfletimit për të personalizuar "Kërkimin" dhe shumë të tjera</translation>
+<translation id="6303969859164067831">Dil dhe çaktivizo sinkronizimin</translation>
+<translation id="1125261911132334651">Menaxho "Llogarinë tënde të Brave Software"</translation>
+<translation id="6406506848690869874">Njëkohësim</translation>
+<translation id="714362445477979774">Sinkronizo të dhënat e tua të Brave</translation>
+<translation id="4314815835985389558">Menaxho sinkronizimin</translation>
+<translation id="5428209950370661546">Shërbime e tjera të Brave Software</translation>
+<translation id="7704317875155739195">Plotësimi automatik i kërkimeve dhe i URL-ve</translation>
+<translation id="2000419248597011803">Dërgon disa kuki dhe kërkime nga shiriti i adresës dhe kutia e kërkimit te motori yt i parazgjedhur i kërkimit</translation>
+<translation id="7981313251711023384">Ngarkoji paraprakisht faqet për shfletim dhe kërkim më të shpejtë</translation>
+<translation id="1821253160463689938">Përdor kuki për të kujtuar preferencat e tua, edhe nëse nuk i viziton ato faqe</translation>
+<translation id="6697492270171225480">Lejo sugjerimet për faqet e ngjashme kur nuk mund të gjendet një faqe</translation>
+<translation id="8109318360573330108">Dërgon te Brave Software URL-në e faqes që po përpiqesh të hapësh</translation>
+<translation id="8438566539970814960">Përmirëson kërkimet dhe shfletimin</translation>
+<translation id="284843628681142937">Dërgon te Brave Software URL-të e faqeve që ti viziton</translation>
+<translation id="7222718784508482526">Për cilësime të mëtejshme në lidhje me privatësinë, sigurinë dhe mbledhjen e të dhënave, shih <ph name="BEGIN_LINK"/>Sinkronizimi dhe shërbimet e Brave Software<ph name="END_LINK"/></translation>
+<translation id="918192811481327695">Ndihmo në përmirësimin e funksioneve dhe cilësisë së funksionimit të Brave</translation>
+<translation id="9063160602596686558">Dërgon automatikisht te Brave Software statistika të përdorimit dhe raportet e ndërprerjeve aksidentale</translation>
+<translation id="4824958205181053313">Të anulohet sinkronizimi?</translation>
+<translation id="3058498974290601450">Mund ta aktivizosh sinkronizimin në çdo kohë te cilësimet</translation>
+<translation id="3143515551205905069">Anulo sinkronizimin</translation>
+<translation id="1506061864768559482">Motori i kërkimit</translation>
+<translation id="55737423895878184">Vendndodhja dhe njoftimet janë të lejuara</translation>
+<translation id="3988213473815854515">Vendndodhja nuk lejohet</translation>
+<translation id="32895400574683172">Njoftimet janë të lejuara</translation>
+<translation id="9040142327097499898">Njoftimet janë të lejuara. Vendndodhja është joaktive për këtë pajisje.</translation>
+<translation id="305593374596241526">Vendndodhja është joaktive. Aktivizoje te <ph name="BEGIN_LINK"/>Cilësimet e Android<ph name="END_LINK"/>.</translation>
+<translation id="2989523299700148168">Vizituar së fundi</translation>
+<translation id="6433501201775827830">Zgjidh motorin e kërkimit</translation>
+<translation id="7177466738963138057">Këtë mund ta ndryshosh më vonë te "Cilësimet"</translation>
+<translation id="3478363558367712427">Mund të zgjedhësh motorin tënd të kërkimit</translation>
+<translation id="4910889077668685004">Aplikacionet e pagesës</translation>
+<translation id="5152843274749979095">Nuk është instaluar asnjë aplikacion i mbështetur</translation>
+<translation id="8812260976093120287">Në disa sajte uebi, mund të paguash me aplikacionet e mësipërme të mbështetura të pagesës në pajisjen tënde.</translation>
+<translation id="7764225426217299476">Shtoni Adresë</translation>
+<translation id="5595485650161345191">Përpunoni adresë</translation>
+<translation id="5087580092889165836">Shtoni kartë</translation>
+<translation id="2154484045852737596">Përpunoni kartë</translation>
+<translation id="6140912465461743537">Shteti/rajoni</translation>
+<translation id="5659593005791499971">Email</translation>
+<translation id="4378154925671717803">Telefon</translation>
+<translation id="4807098396393229769">Emër në kartë</translation>
+<translation id="860043288473659153">Emri i mbajtësit të kartës</translation>
+<translation id="2612676031748830579">Numër karte</translation>
+<translation id="869891660844655955">Datë skadimi</translation>
+<translation id="2286841657746966508">Adresa e faturimit</translation>
+<translation id="663059986967017181">Kopjuar në Brave</translation>
+<translation id="7774809984919390718">{PAYMENT_METHOD,plural, =1{<ph name="PAYMENT_METHOD_PREVIEW"/>\u2026 dhe <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> tjetër}other{<ph name="PAYMENT_METHOD_PREVIEW"/>\u2026 dhe <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/> të tjera}}</translation>
+<translation id="6343495912647200061">{SHIPPING_ADDRESS,plural, =1{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 dhe <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> tjetër}other{<ph name="SHIPPING_ADDRESS_PREVIEW"/>\u2026 dhe <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> të tjera}}</translation>
+<translation id="4695891336199304370">{SHIPPING_OPTIONS,plural, =1{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 dhe <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> tjetër}other{<ph name="SHIPPING_OPTION_PREVIEW"/>\u2026 dhe <ph name="NUMBER_OF_ADDITIONAL_SHIPPING_OPTIONS"/> të tjera}}</translation>
+<translation id="6648977384226967773">{CONTACT,plural, =1{<ph name="CONTACT_PREVIEW"/>\u2026 dhe <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> tjetër}other{<ph name="CONTACT_PREVIEW"/>\u2026 dhe <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> të tjera}}</translation>
+<translation id="7029809446516969842">Fjalëkalime</translation>
+<translation id="1943432128510653496">Ruaj fjalëkalimet</translation>
+<translation id="2100273922101894616">Identifikohu automatikisht</translation>
+<translation id="363596933471559332">Identifikohu automatikisht në sajtet e uebit duke përdorur kredencialet e ruajtura. Kur funksioni është i çaktivizuar, do të të kërkohet gjithmonë verifikimi  përpara se të identifikohesh në një sajt uebi.</translation>
+<translation id="6995899638241819463">Të të paralajmërojë nëse fjalëkalimet janë ekspozuar në një nxjerrje të paautorizuar të të dhënave</translation>
+<translation id="1534287762301776620">Kur identifikohesh në "Llogarinë tënde të Brave Software", kjo veçori është e aktivizuar</translation>
+<translation id="10614374240317010">Nuk u ruaj asnjëherë</translation>
+<translation id="3098842761938485917">Shfaq dhe menaxho fjalëkalimet e ruajtura në <ph name="BEGIN_LINK"/>llogarinë tënde të Brave Software<ph name="END_LINK"/></translation>
+<translation id="8562452229998620586">Fjalëkalimet e ruajtura do të shfaqen këtu.</translation>
+<translation id="8084114998886531721">Fjalëkalimi i ruajtur</translation>
+<translation id="2870560284913253234">Sajti</translation>
+<translation id="8503813439785031346">Emri i përdoruesit</translation>
+<translation id="6657585470893396449">Fjalëkalim</translation>
+<translation id="2154710561487035718">Kopjoje URL-në</translation>
+<translation id="1571304935088121812">Kopjo emrin e përdoruesit</translation>
+<translation id="5005498671520578047">Kopjo fjalëkalimin</translation>
+<translation id="3632295766818638029">Shfaq fjalëkalimin</translation>
+<translation id="1513858653616922153">Fshi fjalëkalimin</translation>
+<translation id="543338862236136125">Redakto fjalëkalimin</translation>
+<translation id="4565377596337484307">Fshih fjalëkalimin</translation>
+<translation id="8523928698583292556">Fshi fjalëkalimin e ruajtur</translation>
+<translation id="2898264748040935573">Redakto fjalëkalimin e ruajtur</translation>
+<translation id="5433691172869980887">Emri i përdoruesit u kopjua</translation>
+<translation id="5534640966246046842">Sajti u kopjua</translation>
+<translation id="2625189173221582860">Fjalëkalimi u kopjua</translation>
+<translation id="4550003330909367850">Për të parë ose për të kopjuar fjalëkalimin tënd këtu, vendos kyçjen e ekranit në këtë pajisje.</translation>
+<translation id="6154478581116148741">Aktivizo kyçjen e ekranit te "Cilësimet" për të eksportuar fjalëkalime e tua nga kjo pajisje</translation>
+<translation id="4842092870884894799">Po shfaq dritaren kërcyese të krijimit të fjalëkalimit</translation>
+<translation id="2259659629660284697">Eksporto fjalëkalimet…</translation>
+<translation id="133012818630824069">Eksporto fjalëkalimet e ruajtura me Brave</translation>
+<translation id="6914783257214138813">Fjalëkalimet e tua do të jenë të dukshme për këdo që mund ta shikojë skedarin e eksportuar.</translation>
+<translation id="2321086116217818302">Po përgatit fjalëkalimet…</translation>
+<translation id="8445448999790540984">Fjalëkalimet nuk mund të eksportohen</translation>
+<translation id="3066461326500799725">Mëso se si të përdorësh "Diskun e Brave Software"</translation>
+<translation id="729975465115245577">Pajisja jote nuk ka një aplikacion për të ruajtur skedarin e fjalëkalimeve.</translation>
+<translation id="7682724950699840886">Provoni këshillat e mëposhtme: sigurohu që ka hapësirë ​​të mjaftueshme në pajisjen tënde dhe provo të eksportosh përsëri.</translation>
+<translation id="1129510026454351943">Detajet: <ph name="ERROR_DESCRIPTION"/></translation>
+<translation id="6891726759199484455">Shkyçe për të kopjuar fjalëkalimin</translation>
+<translation id="5515439363601853141">Shkyçe për të parë fjalëkalimin</translation>
+<translation id="6221633008163990886">Shkyç për të eksportuar fjalëkalimet e tua</translation>
+<translation id="230699814587342492">Fjalëkalimet e Brave</translation>
+<translation id="6075798973483050474">Redakto faqen bazë</translation>
+<translation id="854522910157234410">Hape këtë faqe</translation>
+<translation id="2482878487686419369">Njoftime</translation>
+<translation id="6255999984061454636">Sugjerimet e përmbajtjes</translation>
+<translation id="805047784848435650">Bazuar në historikun tënd të shfletimit</translation>
+<translation id="1041308826830691739">Nga sajtet e uebit</translation>
+<translation id="395206256282351086">Sugjerimet e kërkimit dhe të sajtit janë çaktivizuar</translation>
+<translation id="257088987046510401">Tema</translation>
+<translation id="4650364565596261010">Parazgjedhja e sistemit</translation>
+<translation id="7588219262685291874">Aktivizo temën e errët kur "Kursyesi i baterisë" i pajisjes është aktiv</translation>
+<translation id="2760989362628427051">Aktivizo temën e errët kur tema e errët ose "Kursyesi i baterisë" i pajisjes është aktiv</translation>
+<translation id="6381421346744604172">Errëso sajtet e uebit</translation>
+<translation id="5040262127954254034">Privatësi</translation>
+<translation id="4991384657077828949">Ndihmo në përmirësimin e sigurisë së Brave</translation>
+<translation id="1943176487615318915">Për të zbuluar aplikacionet dhe sajtet e rrezikshme, Brave dërgon URL-të e disa faqeve që viziton, informacione të kufizuara të sistemit dhe disa përmbajtje faqesh te Brave Software</translation>
+<translation id="3181954750937456830">"Shfletimi i sigurt" (të mbron ty dhe pajisjen tënde nga sajtet e rrezikshme)</translation>
+<translation id="7315322926489145388">Dërgon URL-të e disa faqeve që viziton te Brave Software, kur siguria jote është në rrezik</translation>
+<translation id="2063713494490388661">Trokit për të kërkuar</translation>
+<translation id="2369463299479365221">Mëso mbi temat në sajtet e uebit pa u larguar nga faqja. "Trokit për të kërkuar" dërgon një fjalë dhe kontekstin e saj rrethues te "Kërko me Brave Software", duke sjellë përkufizime, fotografi, rezultate kërkimi dhe detaje të tjera.
+
+Për të rregulluar termin e kërkimit, bëj një shtypje të gjatë për të zgjedhur. Për ta përsosur kërkimin, rrëshqite panelin lart deri në fund dhe trokit kutinë e kërkimit.</translation>
+<translation id="2930742481329940825">"Trokit për të kërkuar" dërgon fjalën e zgjedhur dhe faqen aktuale si kontekst te "Kërko me Brave Software". Mund ta çaktivizosh te <ph name="BEGIN_LINK"/>Cilësimet<ph name="END_LINK"/>.</translation>
+<translation id="5039804452771397117">Lejoje</translation>
+<translation id="1406000523432664303">"Mos gjurmo"</translation>
+<translation id="6232535412751077445">Aktivizimi i funksionit "Mos gjurmo" do të thotë se në trafikun e shfletimit do të përfshihet një kërkesë. Çdo efekt varet nëse një sajt uebi i përgjigjet kërkesës dhe se si interpretohet kërkesa.
+
+Për shembull, disa sajte uebi mund t'i përgjigjen kësaj kërkese duke të treguar reklama që nuk bazohen në sajtet e tjera të uebit që ke vizituar. Shumë sajte uebi do të mbledhin dhe do të përdorin përsëri të dhënat e tua të shfletimit - për shembull, për të përmirësuar sigurinë, për të ofruar përmbajtje, reklama dhe rekomandime, si dhe për të krijuar statistika raportimi.</translation>
+<translation id="7359002509206457351">Qasu te mënyrat e pagesës</translation>
+<translation id="8026334261755873520">Pastro të dhënat e shfletimit</translation>
+<translation id="1291207594882862231">Pastro historikun, kukit, të dhënat e sajtit, memorien specifike…</translation>
+<translation id="7814200940910057384">Të dhënat e Brave u pastruan</translation>
+<translation id="1664855196866195614">Të dhënat e zgjedhura janë hequr nga Brave dhe nga pajisjet e sinkronizuara.
+
+Llogaria jote e Brave Software mund të ketë forma të tjera të historikut të shfletimit, si kërkimet dhe aktivitetet nga shërbimet e tjera të Brave Software në <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="4699172675775169585">Imazhet dhe skedarët në memorien specifike</translation>
+<translation id="2496180316473517155">Historik shfletimi</translation>
+<translation id="2546283357679194313">Kukit dhe të dhënat e faqes</translation>
+<translation id="8662811608048051533">Të nxjerr nga shumica e sajteve.</translation>
+<translation id="8218628800671693884">Të nxjerr nga shumica e sajteve. Nuk do të dalësh nga llogaria jote e Brave Software.</translation>
+<translation id="2017836877785168846">Pastron historikun dhe plotësimet automatike në shiritin e adresës.</translation>
+<translation id="8096327394278038498">Pastron historikun dhe plotësimet automatike në shiritin e adresës. Llogaria jote e Brave Software mund të ketë forma të tjera të historikut të shfletimit në <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="8122693181154564064">Pastron historikun nga të gjitha pajisjet ku je identifikuar. Llogaria jote e Brave Software mund të ketë forma të tjera të historikut të shfletimit në <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="5869522115854928033">Fjalëkalimet e ruajtura</translation>
+<translation id="6865313869410766144">Vetëfut të dhëna formulari</translation>
+<translation id="7562080006725997899">Të dhënat e pastrimit të shfletimit</translation>
+<translation id="5487521232677179737">Pastro të dhënat</translation>
+<translation id="7498271377022651285">Qëndro në pritje...</translation>
+<translation id="784934925303690534">Shtrirja kohore</translation>
+<translation id="1718835860248848330">Ora e fundit</translation>
+<translation id="7149893636342594995">24 orët e fundit</translation>
+<translation id="5648166631817621825">7 ditët e fundit</translation>
+<translation id="8571213806525832805">4 javët e fundit</translation>
+<translation id="5854790677617711513">Më të vjetra se 30 ditë</translation>
+<translation id="6979737339423435258">Gjatë të gjithë kohës</translation>
+<translation id="982182592107339124">Kjo do të pastrojë të dhënat për të gjitha sajtet, duke përfshirë:</translation>
+<translation id="6643016212128521049">Spastroje</translation>
+<translation id="7641339528570811325">Pastro të dhënat e shfletimit...</translation>
+<translation id="1670399744444387456">Elementare</translation>
+<translation id="3245261285041759672">Llogaria jote e Brave Software mund të ketë forma të tjera të historikut të shfletimit në <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="7274013316676448362">Sajt i bllokuar</translation>
+<translation id="2534155362429831547"><ph name="NUMBER_OF_ITEMS"/> artikuj të fshirë</translation>
+<translation id="6981982820502123353">Qasja</translation>
+<translation id="2387895666653383613">Shkallëzimi i tekstit</translation>
+<translation id="2321958826496381788">Zvarrit rrëshqitësin derisa të arrish ta lexosh këtë pa u munduar. Teksti duhet të duket të paktën kaq i madh pas trokitjes dy herë mbi një paragraf.</translation>
+<translation id="3895926599014793903">Aktivizo me detyrim zmadhimin</translation>
+<translation id="5668404140385795438">Zëvendësoje kërkesën e një sajti uebi për të parandaluar zmadhimin</translation>
+<translation id="4149994727733219643">Pamje e thjeshtuar për faqet e uebit</translation>
+<translation id="9100505651305367705">Ofro shfaqjen e artikujve në pamjen e thjeshtuar, kur mbështetet</translation>
+<translation id="1409426117486808224">Pamje e thjeshtuar për skedat e hapura</translation>
+<translation id="702463548815491781">Rekomandohet kur është aktiv TalkBack ose "Qasja me çelës"</translation>
+<translation id="8284326494547611709">Titrat</translation>
+<translation id="4165986682804962316">Cilësimet e sajtit</translation>
+<translation id="6295158916970320988">Të gjitha sajtet</translation>
+<translation id="8380167699614421159">Ky sajt shfaq reklama ndërhyrëse ose mashtruese</translation>
+<translation id="1919345977826869612">Reklama</translation>
+<translation id="6447842834002726250">Cookies</translation>
+<translation id="6196640612572343990">Blloko kukit e palëve të treta</translation>
+<translation id="6782111308708962316">Parandalo sajtet e uebit të palëve të treta që të ruajnë dhe lexojnë të dhënat e kukive</translation>
+<translation id="7521387064766892559">JavaScript</translation>
+<translation id="4434045419905280838">Dritaret kërcyese dhe ridrejtimet</translation>
+<translation id="534295439873310000">Pajisjet me NFC</translation>
+<translation id="4751476147751820511">Sensorët e lëvizjes ose të dritës</translation>
+<translation id="1717218214683051432">Sensorët e lëvizjes</translation>
+<translation id="2091887806945687916">Tingulli</translation>
+<translation id="2586657967955657006">Kujtesa e fragmenteve</translation>
+<translation id="6320088164292336938">Dridhja</translation>
+<translation id="4226663524361240545">Njoftimet mund të bëjnë që pajisja të dridhet</translation>
+<translation id="1446450296470737166">Lejo kontrollin e plotë të pajisjeve MIDI</translation>
+<translation id="3744111561329211289">Sinkronizimi në sfond</translation>
+<translation id="5649053991847567735">Shkarkimet automatike</translation>
+<translation id="6181444274883918285">Shto përjashtim për sajt</translation>
+<translation id="5313967007315987356">Shto një sajt</translation>
+<translation id="1369915414381695676">Sajti <ph name="SITE_NAME"/> u shtua</translation>
+<translation id="2621115761605608342">Lejo JavaScript për një sajt specifik</translation>
+<translation id="8801436777607969138">Blloko JavaScript për një sajt specifik.</translation>
+<translation id="8372893542064058268">Lejo "Sinkronizimin në sfond" për një sajt specifik.</translation>
+<translation id="358794129225322306">Lejo një sajt të shkarkojë shumë skedarë automatikisht.</translation>
+<translation id="4008040567710660924">Lejo kukit për një sajt specifik.</translation>
+<translation id="8958424370300090006">Blloko kukit për një sajt specifik.</translation>
+<translation id="7882806643839505685">Lejo tingullin për një sajt specifik.</translation>
+<translation id="4468959413250150279">Hiq zërin për një sajt specifik.</translation>
+<translation id="1994173015038366702">URL-ja e sajtit</translation>
+<translation id="8941729603749328384">www.example.com</translation>
+<translation id="5063480226653192405">Përdorimi</translation>
+<translation id="5804241973901381774">Leje</translation>
+<translation id="4278390842282768270">Të lejuara</translation>
+<translation id="5677928146339483299">E bllokuar</translation>
+<translation id="1984937141057606926">Lejohet, përveç palëve të treta</translation>
+<translation id="7423098979219808738">Pyet në fillim</translation>
+<translation id="8116925261070264013">Zëri i çaktivizuar</translation>
+<translation id="8300705686683892304">Menaxhuar nga aplikacioni</translation>
+<translation id="6192792657125177640">Përjashtimet</translation>
+<translation id="257931822824936280">I zgjeruar - kliko për ta palosur.</translation>
+<translation id="5100237604440890931">I palosur - kliko për ta zgjeruar</translation>
+<translation id="857943718398505171">Lejuar (rekomandohet)</translation>
+<translation id="2913331724188855103">Lejo faqet të ruajnë dhe lexojnë të dhënat e kukive (rekomandohet)</translation>
+<translation id="5335288049665977812">Lejoji sajtet të ekzekutojnë JavaScript (rekomandohet)</translation>
+<translation id="5527111080432883924">Pyet përpara se të lejosh sajtet të lexojnë tekstin dhe imazhet nga kujtesa e fragmenteve (rekomandohet)</translation>
+<translation id="6912998170423641340">Blloko sajtet që të mos lexojnë tekstin dhe imazhet nga kujtesa e fragmenteve</translation>
+<translation id="7423538860840206698">Bllokuar për leximin e kujtesës së fragmenteve</translation>
+<translation id="3955193568934677022">Lejo që sajtet të luajnë përmbajtje të mbrojtur (rekomandohet)</translation>
+<translation id="445467742685312942">Lejo sajtet të luajnë përmbajtje të mbrojtura</translation>
+<translation id="2107397443965016585">Pyet përpara se sajtet të lejohen të luajnë përmbajtje të mbrojtura (rekomandohet)</translation>
+<translation id="2910701580606108292">Pyet përpara se sajtet të lejohen të luajnë përmbajtje të mbrojtura</translation>
+<translation id="757524316907819857">Blloko sajtet që të mos luajnë përmbajtje të mbrojtura</translation>
+<translation id="5710871682236653961">Pyet përpara se sajtet të lejohen të dërgojnë dhe të marrin informacione kur troket pajisjet me NFC (rekomandohet)</translation>
+<translation id="7572498721684305250">Blloko sajtet që të mos dërgojnë dhe marrin informacione kur troket pajisjet me NFC</translation>
+<translation id="3277252321222022663">Lejoju faqeve të të hapin sensorët (rekomandohet)</translation>
+<translation id="5048398596102334565">Lejoju faqeve të të hapin sensorët e lëvizjes (rekomandohet)</translation>
+<translation id="8816026460808729765">Bllokojua faqeve hapjen e sensorëve</translation>
+<translation id="169515064810179024">Bllokojua faqeve hapjen e sensorëve të lëvizjes</translation>
+<translation id="1660204651932907780">Lejo që sajtet të luajnë tinguj (rekomandohet)</translation>
+<translation id="3600792891314830896">Hiq zërin për sajtet që luajnë tinguj</translation>
+<translation id="1743802530341753419">Pyet përpara se sajtet të lejohen të lidhen me një pajisje (rekomandohet)</translation>
+<translation id="851751545965956758">Blloko lidhjen e sajteve me pajisjet</translation>
+<translation id="7141896414559753902">Blloko që sajtet të shfaqin dritare kërcyese dhe ridrejtime (rekomandohet)</translation>
+<translation id="5494752089476963479">Blloko reklamat në sajtet që shfaqin reklama ndërhyrëse ose mashtruese</translation>
+<translation id="3123473560110926937">Bllokuar në disa sajte</translation>
+<translation id="965817943346481315">Blloko nëse sajti shfaq reklama ndërhyrëse ose mashtruese (rekomandohet)</translation>
+<translation id="3386292677130313581">Pyet përpara se sajtet të lejohen të dinë vendndodhjen tënde (rekomandohet)</translation>
+<translation id="6270391203985052864">Sajtet mund të kërkojnë të dërgojnë njoftime</translation>
+<translation id="5505264765875738116">Sajtet nuk mund të kërkojnë të dërgojnë njoftime</translation>
+<translation id="6561560012278703671">Përdor mesazhe më të qeta (bllokon kërkesat e njoftimeve që mos të të ndërpresin)</translation>
+<translation id="7302486331832100261">Ti i bllokon zakonisht njoftimet. Për t'i lejuar, trokit te "Detajet".</translation>
+<translation id="4479647676395637221">Pyet përpara se të lejohen sajtet të përdorin kamerën (rekomandohet)</translation>
+<translation id="6992289844737586249">Pyet përpara se sajtet të lejohen të përdorin mikrofonin (rekomandohet)</translation>
+<translation id="2289270750774289114">Pyet kur një sajt dëshiron të zbulojë pajisjet Bluetooth në afërsi (rekomandohet)</translation>
+<translation id="7053983685419859001">Bllokoji</translation>
+<translation id="7128222689758636196">Lejo për motorin aktual të kërkimit</translation>
+<translation id="7589445247086920869">Blloko për motorin aktual të kërkimit</translation>
+<translation id="6388207532828177975">Pastro dhe rivendos</translation>
+<translation id="7999064672810608036">Je i sigurt që dëshiron t'i pastrosh të gjitha të dhënat lokale, duke përfshirë kukit, dhe të rivendosësh të gjitha lejet për këtë sajt uebi?</translation>
+<translation id="2822354292072154809">Je i sigurt që dëshiron t'i rivendosësh të gjitha lejet e sajtit për <ph name="CHOSEN_OBJECT_NAME"/>?</translation>
+<translation id="515227803646670480">Pastro të dhënat e ruajtura</translation>
+<translation id="5902828464777634901">Të gjitha të dhënat e ruajtura në këtë faqe, përfshi kukit, do të fshihen.</translation>
+<translation id="119944043368869598">Pastroji të gjitha</translation>
+<translation id="2490684707762498678">Menaxhuar nga <ph name="APP_NAME"/></translation>
+<translation id="5516455585884385570">Hap cilësimet e njoftimeve</translation>
+<translation id="1404122904123200417">Integruar në <ph name="WEBSITE_URL"/></translation>
+<translation id="129382876167171263">Skedarët e ruajtur nga sajtet e uebit shfaqen këtu</translation>
+<translation id="4181841719683918333">Gjuhë</translation>
+<translation id="2647434099613338025">Shto gjuhën</translation>
+<translation id="1952172573699511566">Sajtet e uebit do ta shfaqin tekstin në gjuhën tënde të preferuar, kur është e mundur.</translation>
+<translation id="8559990750235505898">Ofro që t'i përkthesh faqet në gjuhë të tjera</translation>
+<translation id="4719927025381752090">Ofro që t'i përkthesh</translation>
+<translation id="8156139159503939589">Në çfarë gjuhësh lexon?</translation>
+<translation id="5689516760719285838">Vendndodhje</translation>
+<translation id="2440823041667407902">Qasja e vendndodhjes</translation>
+<translation id="2023546461831060654">Aktivizo lejimet për Brave te <ph name="BEGIN_LINK"/>"Cilësimet" e Android<ph name="END_LINK"/>.</translation>
+<translation id="6665548517310046133">Aktivizo lejimin për Brave te <ph name="BEGIN_LINK"/>"Cilësimet" e Android<ph name="END_LINK"/>.</translation>
+<translation id="2928908108430545745">Që të lejosh që Brave të ketë qasje te vendndodhja jote, aktivizoje vendndodhjen edhe te <ph name="BEGIN_LINK"/>Cilësimet e Android<ph name="END_LINK"/>.</translation>
+<translation id="1028853271388022585">Që të lejosh që Brave të ketë qasje te kamera jote, aktivizoje kamerën edhe te <ph name="BEGIN_LINK"/>Cilësimet e Android<ph name="END_LINK"/>.</translation>
+<translation id="2913721282607281710">Që të lejosh që Brave të të dërgojë njoftime, aktivizoji njoftimet edhe te <ph name="BEGIN_LINK"/>Cilësimet e Android<ph name="END_LINK"/>.</translation>
+<translation id="8753483718490035722">Që të lejosh që Brave të ketë qasje te mikrofoni yt, aktivizoje mikrofonin edhe te <ph name="BEGIN_LINK"/>Cilësimet e Android<ph name="END_LINK"/>.</translation>
+<translation id="1887786770086287077">Qasja te vendndodhja është joaktive për këtë pajisje. Aktivizoje te <ph name="BEGIN_LINK"/>Cilësimet e Android<ph name="END_LINK"/>.</translation>
+<translation id="2570922361219980984">Qasja te vendndodhja është po ashtu joaktive për këtë pajisje. Aktivizoje te <ph name="BEGIN_LINK"/>Cilësimet e Android<ph name="END_LINK"/>.</translation>
+<translation id="1620510694547887537">Kamera</translation>
+<translation id="3227137524299004712">Mikrofon</translation>
+<translation id="1647391597548383849">Qasu te kamera</translation>
+<translation id="945632385593298557">Qasu te mikrofoni</translation>
+<translation id="6612358246767739896">Përmbajtje e mbrojtur</translation>
+<translation id="885701979325669005">Depozitë</translation>
+<translation id="3198916472715691905">Të dhënat e ruajtura <ph name="STORAGE_AMOUNT"/></translation>
+<translation id="8847988622838149491">USB</translation>
+<translation id="8447861592752582886">Revoko lejen e pajisjes</translation>
+<translation id="4962975101802056554">Anulo të gjitha lejet për pajisjen</translation>
+<translation id="6545864417968258051">Skanimi për Bluetooth</translation>
+<translation id="4411535500181276704">Modaliteti i lehtë</translation>
+<translation id="7821588508402923572">Kursimet e të dhënave të tua do të shfaqen këtu</translation>
+<translation id="2131665479022868825"><ph name="DATA"/> të kursyera</translation>
+<translation id="8569404424186215731">që nga data <ph name="DATE"/></translation>
+<translation id="3252158532344029638">Në "Modalitetin e lehtë", Brave i ngarkon faqet më shpejt dhe përdor deri në 60 përqind më pak të dhëna.</translation>
+<translation id="1438581767753657407">Kur "Modaliteti i lehtë" është aktiv, Brave përdor serverët e Brave Software për të bërë që faqet të ngarkohen më shpejt. "Modaliteti i lehtë" i rishkruan faqet shumë të ngadalta për të ngarkuar vetëm përmbajtjen thelbësore. "Modaliteti i lehtë" nuk zbatohet në skedat "e fshehta".</translation>
+<translation id="6159335304067198720">Kursimi i të dhënave: <ph name="PERCENT"/></translation>
+<translation id="7494974237137038751">të dhënat e kursyera</translation>
+<translation id="6111020039983847643">të dhënat e përdorura</translation>
+<translation id="7413229368719586778">Data e fillimit <ph name="DATE"/></translation>
+<translation id="1782483593938241562">Data e mbarimit <ph name="DATE"/></translation>
+<translation id="2728754400939377704">Rendit sipas sajtit</translation>
+<translation id="5864174910718532887">Detajet: Renditur sipas emrit të sajtit</translation>
+<translation id="116280672541001035">TË PËRDORURA</translation>
+<translation id="8349013245300336738">Rendit sipas sasisë së të dhënave të përdorura</translation>
+<translation id="6378173571450987352">Detajet: Renditur sipas sasisë së të dhënave të përdorura</translation>
+<translation id="2631006050119455616">TË KURSYERA</translation>
+<translation id="6643649862576733715">Rendit sipas sasisë së të dhënave të ruajtura</translation>
+<translation id="7302081693174882195">Detajet: Renditur sipas sasisë së të dhënave të ruajtura</translation>
+<translation id="4179980317383591987"><ph name="AMOUNT"/> të përdorura</translation>
+<translation id="5937580074298050696"><ph name="AMOUNT"/> të ruajtura</translation>
+<translation id="2156074688469523661">Sajtet e mbetura (<ph name="NUMBER_OF_SITES"/>)</translation>
+<translation id="7138678301420049075">Tjetër</translation>
+<translation id="4913161338056004800">Rivendos statistikat</translation>
+<translation id="1856325424225101786">Të rivendoset "Modaliteti i lehtë"?</translation>
+<translation id="3658159451045945436">Rivendosja spastron historikun e kursimit të të dhënave, duke përfshirë edhe listën e sajteve të vizituara.</translation>
+<translation id="3295530008794733555">Shfleto më shpejt. Përdor më pak të dhëna.</translation>
+<translation id="7340390500800578919">Në "Modalitetin e lehtë", Brave i ngarkon faqet më shpejt dhe përdor deri në 60 përqind më pak të dhëna. Për të optimizuar faqet që viziton, Brave e dërgon trafikun tënd të uebit te Brave Software. <ph name="BEGIN_LINK"/>Mëso më shumë<ph name="END_LINK"/></translation>
+<translation id="4538018662093857852">Aktivizo "Modalitetin e lehtë"</translation>
+<translation id="4493497663118223949">"Modaliteti i lehtë" është aktiv</translation>
+<translation id="7559975015014302720">"Modaliteti i lehtë" është joaktiv</translation>
+<translation id="7606077192958116810">"Modaliteti i lehtë" është aktiv. Menaxhoje te "Cilësimet".</translation>
+<translation id="4714588616299687897">Kurse deri në 60% të të dhënave të tua</translation>
+<translation id="1006927014032731288">Serverët e Brave Software do të optimizojnë faqet që viziton.</translation>
+<translation id="3257320067425202300">Brave të ka kursyer <ph name="MEGABYTES"/> MB</translation>
+<translation id="5813223329348543512">Brave të ka kursyer <ph name="GIGABYTES"/> GB</translation>
+<translation id="8266862848225348053">Vendndodhja e shkarkimeve</translation>
+<translation id="7077143737582773186">Karta SD</translation>
+<translation id="7762668264895820836">Karta SD <ph name="SD_CARD_NUMBER"/></translation>
+<translation id="6341580099087024258">Pyet ku të ruhen skedarët</translation>
+<translation id="6192333916571137726">Shkarko skedarin</translation>
+<translation id="1672586136351118594">Mos e shfaq përsëri</translation>
+<translation id="2650751991977523696">Të shkarkohet skedari sërish?</translation>
+<translation id="8664979001105139458">Emri i skedarit ekziston tashmë</translation>
+<translation id="488187801263602086">Riemërto skedarin</translation>
+<translation id="5686790454216892815">Emri i skedarit është tepër i gjatë</translation>
+<translation id="7454641608352164238">Nuk ka hapësirë të mjaftueshme</translation>
+<translation id="8972098258593396643">Të shkarkohet në dosjen e parazgjedhur?</translation>
+<translation id="804335162455518893">Karta SD nuk u gjet</translation>
+<translation id="7475688122056506577">Karta SD nuk u gjet. Mund të mungojnë disa nga skedarët e tu.</translation>
+<translation id="4198423547019359126">Nuk ka vendndodhje shkarkimi</translation>
+<translation id="8224471946457685718">Shkarko artikujt për ty në Wi-Fi</translation>
+<translation id="4970824347203572753">Nuk ofrohet në vendndodhjen tënde</translation>
+<translation id="5500777121964041360">Mund të mos ofrohet në vendndodhjen tënde</translation>
+<translation id="1173894706177603556">Riemërtojeni</translation>
+<translation id="1986685561493779662">Emri ekziston tashmë</translation>
+<translation id="6441734959916820584">Emri është tepër i gjatë</translation>
+<translation id="2923908459366352541">Emri është i pavlefshëm</translation>
+<translation id="7290209999329137901">Riemërtimi nuk ofrohet</translation>
+<translation id="3334729583274622784">Do ta ndryshosh prapashtesën e skedarit?</translation>
+<translation id="107147699690128016">Nëse e ndryshon prapashtesën e skedarit, skedari mund të hapet në një aplikacion tjetër dhe mund të jetë një rrezik për pajisjen tënde.</translation>
+<translation id="8541922081612557424">Mbi Brave-in</translation>
+<translation id="5311273890481188673">Të drejtat e autorit <ph name="YEAR"/> Brave Software LLC. Të gjitha të drejtat e rezervuara.</translation>
+<translation id="1416550906796893042">Versioni i aplikacionit</translation>
+<translation id="7493994139787901920"><ph name="VERSION"/> (u përditësua <ph name="TIME_SINCE_UPDATE"/>)</translation>
+<translation id="7596558890252710462">Sistemi operativ</translation>
+<translation id="3968054912784331254">Përditësimet e Brave nuk mbështeten më për këtë version të Android</translation>
+<translation id="7665369617277396874">Shto një llogari</translation>
+<translation id="649070405679044769">U identifikove te Brave Software si</translation>
+<translation id="6234515504547364178">Dil nga Brave</translation>
+<translation id="5324858694974489420">Cilësimet prindërore</translation>
+<translation id="8920114477895755567">Po pret detajet e prindërve.</translation>
+<translation id="5512137114520586844">Kjo llogari menaxhohet nga <ph name="PARENT_NAME"/>.</translation>
+<translation id="2956410042958133412">Kjo llogari menaxhohet nga <ph name="PARENT_NAME_1"/> dhe <ph name="PARENT_NAME_2"/>.</translation>
+<translation id="8168435359814927499">Përmbajtja</translation>
+<translation id="5403644198645076998">Lejo vetëm sajte të caktuara</translation>
+<translation id="8641930654639604085">Përpiqu të bllokosh sajtet për të rriturit</translation>
+<translation id="5639724618331995626">Lejo të gjitha sajtet</translation>
+<translation id="796823723482603597">E mundësuar nga Brave</translation>
+<translation id="6324034347079777476">Sinkronizimi i sistemit Android u çaktivizua</translation>
+<translation id="5127805178023152808">Njëkohësimi është off</translation>
+<translation id="7015203776128479407">Konfigurimi i sinkronizimit fillestar nuk përfundoi. Sinkronizimi është joaktiv.</translation>
+<translation id="2497852260688568942">Sinkronizimi është çaktivizuar nga administratori</translation>
+<translation id="9100610230175265781">Kërkohet shprehja e kalimit</translation>
+<translation id="6108923351542677676">Konfigurimi në vazhdim...</translation>
+<translation id="4062305924942672200">Informacioni ligjor</translation>
+<translation id="4256782883801055595">Licencat me burim të hapur</translation>
+<translation id="1138681184697033370">Kushtet e shërbimit të Brave</translation>
+<translation id="7392539049993970338">Njoftimi i privatësisë së Brave</translation>
+<translation id="2677748264148917807">Braktise</translation>
+<translation id="5556459405103347317">Ringarkoje</translation>
+<translation id="1623104350909869708">Pengoje këtë faqe të krijojë dialogë të tjerë</translation>
+<translation id="2968755619301702150">Shikuesi i certifikatave</translation>
+<translation id="1360432990279830238">Do të dalësh dhe çaktivizosh sinkronizimin?</translation>
+<translation id="8581481290581777242">Të pastrohen të dhënat e tua të Brave nga kjo pajisje?</translation>
+<translation id="1318865768845061710">Faqeshënuesit, historiku, fjalëkalimet dhe të dhënat e tjera të Brave nuk do të sinkronizohen më në "Llogarinë tënde të Brave Software"</translation>
+<translation id="3325020657155065477">Pastro po ashtu të dhënat e tua të Brave nga kjo pajisje</translation>
+<translation id="6136448902816743006">Duke qenë se po del nga një llogari e menaxhuar nga <ph name="DOMAIN_NAME"/>, të dhënat e tua të Brave do të fshihen nga kjo pajisje. Ato do të mbeten në "Llogarinë tënde të Brave Software".</translation>
+<translation id="1853026300647876496">Po kontakton me Brave Software. Kjo mund të zgjasë një minutë...</translation>
+<translation id="2328985652426384049">Nuk mund të identifikohet</translation>
+<translation id="7723158744459952869">Brave Software kërkoi shumë kohë për t'u përgjigjur</translation>
+<translation id="4572422548854449519">Identifikohu në llogarinë e menaxhuar</translation>
+<translation id="2689656545739939160">Po identifikohesh me një llogari të menaxhuar nga <ph name="MANAGED_DOMAIN"/> dhe po i jep administratorit të saj kontroll mbi të dhënat e tua të Brave. Duke dalë nga Brave do të fshihen të dhënat e tua nga kjo pajisje, por do të mbeten të ruajtura në llogarinë tënde të Brave Software.</translation>
+<translation id="1749561566933687563">Sinkronizo faqeshënuesit e tu</translation>
+<translation id="4242533952199664413">Hap rregullimet</translation>
+<translation id="1111673857033749125">Faqeshënuesit e ruajtur në pajisjet e tua të tjera do të shfaqen këtu.</translation>
+<translation id="8636825310635137004">Për të marrë skedat e tua nga pajisjet e tjera, aktivizo sinkronizimin.</translation>
+<translation id="3269956123044984603">Për të marrë skedat e tua nga pajisjet e tjera, aktivizo "Sinkronizo automatikisht të dhënat" në cilësimet e llogarisë së Android.</translation>
+<translation id="5157964048453367290">Skedat që ke hapur në Brave në pajisjet e tjera do të shfaqen këtu.</translation>
+<translation id="4684427112815847243">Sinkronizo gjithçka</translation>
+<translation id="2709516037105925701">Vetëplotësim</translation>
+<translation id="8820817407110198400">Faqerojtës</translation>
+<translation id="1644574205037202324">Historiku</translation>
+<translation id="17513872634828108">Hap skedat</translation>
+<translation id="1320169905922104972">Kartat e kreditit dhe adresat që përdorin Brave Software Pay</translation>
+<translation id="6337234675334993532">Enkriptimi</translation>
+<translation id="6698801883190606802">Menaxho të dhënat e sinkronizuara</translation>
+<translation id="3598578758776312506">Enkripto fjalëkalimet me kredencialet e Brave Software</translation>
+<translation id="7810580217418711046">Enkripto të dhënat e sinkronizuara me fjalëkalimin e Brave Software që nga data <ph name="TIME"/></translation>
+<translation id="8461694314515752532">Enkripto të dhënat e sinkronizuara me frazën tënde të kalimit për sinkronizimin</translation>
+<translation id="2996291259634659425">Krijo një frazë kalimi</translation>
+<translation id="5713644099811900409">Llogari Brave</translation>
+<translation id="8997474919031554666">Enkriptimi i frazës së kalimit nuk përfshin mënyrat e pagesës dhe adresat nga Brave Software Pay. Vetëm dikush me frazën tënde të kalimit mund t'i lexojë të dhënat e enkriptuara. Fraza e kalimit nuk dërgohet te Brave Software dhe as nuk ruhet nga ai. Nëse e harron frazën e kalimit ose dëshiron ta ndryshosh këtë cilësim, do të duhet të rivendosësh sinkronizimin. <ph name="BEGIN_LINK"/>Mëso më shumë<ph name="END_LINK"/></translation>
+<translation id="9050666287014529139">Shprehje kalimi</translation>
+<translation id="7772032839648071052">Konfirmo shprehjen e kalimit</translation>
+<translation id="5304593522240415983">Kjo fushë nuk mund të jetë bosh</translation>
+<translation id="321773570071367578">Nëse e ke harruar frazën e kalimit apo dëshiron të ndryshosh këtë cilësim, <ph name="BEGIN_LINK"/>rivendos sinkronizimin<ph name="END_LINK"/></translation>
+<translation id="3029704984691124060">Frazat e kalimit nuk përputhen</translation>
+<translation id="5149495116300586333">Enkriptimi me frazën e kalimit nuk përfshin mënyrat e pagesës dhe adresat nga Brave Software Pay.
+
+Për të ndryshuar këtë cilësim, <ph name="BEGIN_LINK"/>rivendos sinkronizimin<ph name="END_LINK"/></translation>
+<translation id="7638584964844754484">Shprehje kalimi e pasaktë</translation>
+<translation id="5414836363063783498">Po verifikon…</translation>
+<translation id="6846298663435243399">Po ngarkohet...</translation>
+<translation id="5517095782334947753">Ke faqeshënues, historik, fjalëkalime dhe cilësime të tjera nga <ph name="FROM_ACCOUNT"/>.</translation>
+<translation id="3928666092801078803">Ndërthur të dhënat e mia</translation>
+<translation id="688738109438487280">Shto të dhënat ekzistuese te <ph name="TO_ACCOUNT"/>.</translation>
+<translation id="806745655614357130">Mbaji më vete të dhënat e mia</translation>
+<translation id="1145536944570833626">Fshi të dhënat ekzistuese.</translation>
+<translation id="1993768208584545658"><ph name="SITE"/> dëshiron të çiftohet</translation>
+<translation id="4915549754973153784"><ph name="BEGIN_LINK"/>Kërko ndihmë<ph name="END_LINK"/> gjatë skanimit për pajisje…</translation>
+<translation id="5817918615728894473">Çifto</translation>
+<translation id="7624880197989616768"><ph name="BEGIN_LINK1"/>Kërko ndihmë<ph name="END_LINK1"/> ose <ph name="BEGIN_LINK2"/>skano sërish<ph name="END_LINK2"/></translation>
+<translation id="230115972905494466">Nuk u gjetën pajisje të përputhshme</translation>
+<translation id="3773755127849930740"><ph name="BEGIN_LINK"/>Aktivizo Bluetooth-in<ph name="END_LINK"/> për të lejuar çiftimin</translation>
+<translation id="998321811308652668">Brave nuk mund ta aktivizojë përshtatësin e Bluetooth-it</translation>
+<translation id="3036750288708366620"><ph name="BEGIN_LINK"/>Kërko ndihmë<ph name="END_LINK"/></translation>
+<translation id="8428644385678426438">Brave ka nevojë për qasjen te vendndodhja për të skanuar për pajisje. <ph name="BEGIN_LINK"/>Përditëso lejet<ph name="END_LINK"/></translation>
+<translation id="852740676285943527">Brave ka nevojë për qasjen te vendndodhja për të skanuar për pajisje. Qasja te vendndodhja është <ph name="BEGIN_LINK"/>e çaktivizuar për këtë pajisje<ph name="END_LINK"/>.</translation>
+<translation id="2367014990350929709">Brave ka nevojë për qasjen te vendndodhja për të skanuar për pajisje. <ph name="BEGIN_LINK1"/>Përditëso lejet<ph name="END_LINK1"/>. Qasja te vendndodhja është po ashtu <ph name="BEGIN_LINK2"/>e çaktivizuar për këtë pajisje<ph name="END_LINK2"/>.</translation>
+<translation id="1569387923882100876">Pajisja e lidhur</translation>
+<translation id="8687353297350450808">{N_BARS,plural, =1{Niveli i forcës së sinjalit: # shirit}other{Niveli i forcës së sinjalit: # shirita}}</translation>
+<translation id="5230560987958996918"><ph name="SITE"/> dëshiron të skanojë për pajisje Bluetooth në afërsi. Janë gjetur pajisjet e mëposhtme:</translation>
+<translation id="8368027906805972958">Pajisje e panjohur ose e pambështetur (<ph name="DEVICE_ID"/>)</translation>
+<translation id="7605594153474022051">Njëkohësimi s’po funksionon</translation>
+<translation id="2537178555904266562">Gabim gjatë sinkronizimit të fjalëkalimeve</translation>
+<translation id="1810845389119482123">Konfigurimi i sinkronizimit fillestar nuk ka përfunduar</translation>
+<translation id="3235722914093408050">Hap cilësimet e Android dhe riaktivizo sinkronizimin e sistemit Android për të nisur sinkronizimin e Brave</translation>
+<translation id="3367813778245106622">Identifikohu përsëri për të nisur sinkronizimin</translation>
+<translation id="3701167022068948696">Rregullo tani</translation>
+<translation id="974555521953189084">Fut frazën e kalimit për të nisur sinkronizimin</translation>
+<translation id="2997266899014181325">Për të nisur sinkronizimin, aktivizo "Sinkronizo të dhënat e tua të Brave".</translation>
+<translation id="8260126382462817229">Riprovoni të hyni</translation>
+<translation id="5919204609460789179">Përditëso <ph name="PRODUCT_NAME"/> për të nisur sinkronizimin</translation>
+<translation id="397583555483684758">"Sinkronizimi" ka ndaluar së funksionuari</translation>
+<translation id="1966710179511230534">Përditëso detajet e identifikimit.</translation>
+<translation id="7063006564040364415">Nuk mund të lidhej me serverin e sinkronizimit.</translation>
+<translation id="7942131818088350342"><ph name="PRODUCT_NAME"/> është i vjetruar.</translation>
+<translation id="4170011742729630528">Shërbimi nuk ofrohet. Provo përsëri më vonë.</translation>
+<translation id="7947953824732555851">Pranoje dhe identifikohu</translation>
+<translation id="8583805026567836021">Po pastron të dhënat e llogarisë</translation>
+<translation id="8310344678080805313">Skedat standarde</translation>
+<translation id="2633278372998075009">Skedat "e fshehura"</translation>
+<translation id="5748802427693696783">Kaloi në skedat standarde</translation>
+<translation id="6099151465289169210">Kaloi në skedat "e fshehta"</translation>
+<translation id="7998918019931843664">Rihap skedën e mbyllur</translation>
+<translation id="8853345339104747198"><ph name="TAB_TITLE"/>, skeda</translation>
+<translation id="4452411734226507615">Mbyll skedën <ph name="TAB_TITLE"/></translation>
+<translation id="7243308994586599757">Opsionet janë të disponueshme pranë fundit të ekranit</translation>
+<translation id="4060598801229743805">Opsionet janë të disponueshme pranë kreut të ekranit</translation>
+<translation id="2810645512293415242">Faqe e thjeshtuar për të ruajtur të dhënat dhe për të ngarkuar më shpejt.</translation>
+<translation id="3985215325736559418">Dëshiron që ta shkarkosh përsëri <ph name="FILE_NAME"/>?</translation>
+<translation id="2450083983707403292">Dëshiron që të fillosh ta shkarkosh <ph name="FILE_NAME"/> përsëri?</translation>
+<translation id="7514365320538308">Shkarkoje</translation>
+<translation id="545042621069398927">Po të përshpejtohet shkarkimi.</translation>
+<translation id="7925590027513907933">{FILE_COUNT,plural, =1{Po shkarkohet skedari.}other{Po shkarkohen # skedarë.}}</translation>
+<translation id="543509235395288790">Po shkarkohen <ph name="COUNT"/> skedarë (<ph name="MEGABYTES"/>).</translation>
+<translation id="4988210275050210843">Po shkarkohet skedari (<ph name="MEGABYTES"/>).</translation>
+<translation id="4763829664323285145">{FILE_COUNT,plural, =1{1 shkarkim përfundoi.}other{# shkarkime përfunduan.}}</translation>
+<translation id="5162754098604580781">{FILE_COUNT,plural, =1{1 shkarkim pa sukses.}other{# shkarkime pa sukses.}}</translation>
+<translation id="1141800923049248244">{FILE_COUNT,plural, =1{1 shkarkim në pritje.}other{# shkarkime në pritje.}}</translation>
+<translation id="7396940094317457632"><ph name="FILE_NAME"/>.</translation>
+<translation id="1987739130650180037"><ph name="MESSAGE"/> <ph name="LINK_NAME"/> buton</translation>
+<translation id="3205824638308738187">Pothuajse mbaroi!</translation>
+<translation id="3960299545138990065">Rinis Brave</translation>
+<translation id="3771001275138982843">Përditësimi nuk mund të shkarkohej</translation>
+<translation id="3888648114124182147">Po shkarkon përditësimin e Brave…</translation>
+<translation id="1705567146636171298">Përditëso Brave-in</translation>
+<translation id="6195417478702700398">Për një përvojë më të mirë shfletimi, hape për të përditësuar Brave</translation>
+<translation id="3512968675351418494">Për ta parë uebin në gjuhën tënde, merr versionin e fundit të Brave</translation>
+<translation id="6427112570124116297">Përkthe uebin</translation>
+<translation id="1379423114029199501">Kryej përditësimin për të marrë gjuhën tënde në versionin më të fundit të Brave</translation>
+<translation id="5684874026226664614">Mos! Kjo faqe nuk mund të përkthehej.</translation>
+<translation id="6831043979455480757">Përkthe</translation>
+<translation id="1285320974508926690">Asnjëherë mos e përkthe këtë sajt</translation>
+<translation id="773466115871691567">Përkthe gjithmonë faqet që janë në <ph name="SOURCE_LANGUAGE"/></translation>
+<translation id="1068672505746868501">Mos përkthe asnjëherë faqet që janë në <ph name="SOURCE_LANGUAGE"/></translation>
+<translation id="124116460088058876">Më tepër gjuhë</translation>
+<translation id="290376772003165898">Faqja nuk është në <ph name="LANGUAGE"/>?</translation>
+<translation id="4432792777822557199">Faqet në <ph name="SOURCE_LANGUAGE"/> do të përkthehen në <ph name="TARGET_LANGUAGE"/> nga tani e në vazhdim</translation>
+<translation id="8339163506404995330">Faqet në <ph name="LANGUAGE"/> nuk do të përkthehen</translation>
+<translation id="5447765697759493033">Ky sajt nuk do të përkthehet</translation>
+<translation id="4880127995492972015">Përkthe…</translation>
+<translation id="641643625718530986">Printo…</translation>
+<translation id="8909135823018751308">Ndaj…</translation>
+<translation id="4996978546172906250">Ndaje nëpërmjet</translation>
+<translation id="6333140779060797560">Ndaje nëpërmjet <ph name="APPLICATION"/></translation>
+<translation id="6277522088822131679">Pati një problem me printimin e faqes. Provo përsëri.</translation>
+<translation id="3254409185687681395">Regjistroje këtë faqe në faqeshënues</translation>
+<translation id="497421865427891073">Vazhdo përpara</translation>
+<translation id="813082847718468539">Shiko informacionin rreth faqes</translation>
+<translation id="2532336938189706096">Pamja e uebit</translation>
+<translation id="6005538289190791541">Fjalëkalimi i sugjeruar</translation>
+<translation id="4634124774493850572">Përdor fjalëkalimin</translation>
+<translation id="8285489906452138776">Brave ka nevojë për leje për t'u qasur te kamera jote për këtë sajt.</translation>
+<translation id="320189792589364011">Brave ka nevojë për leje për t'u qasur te mikrofoni yt për këtë sajt.</translation>
+<translation id="7988136689212463100">Brave ka nevojë për leje për t'u qasur te kamera dhe mikrofoni yt për këtë sajt.</translation>
+<translation id="4931190655840828017">Brave ka nevojë për qasje te vendndodhja jote për të ndarë vendndodhjen me këtë sajt.</translation>
+<translation id="3088191967551450609">Brave ka nevojë për qasje te hapësira ruajtëse për të shkarkuar skedarë.</translation>
+<translation id="8942627711005830162">Hap në një dritare tjetër</translation>
+<translation id="4195643157523330669">Hape në skedë të re</translation>
+<translation id="1100066534610197918">Hap në skedë të re në grup</translation>
+<translation id="4243710787042215766">Hape në skedë "të fshehtë"</translation>
+<translation id="4860895144060829044">Telefono</translation>
+<translation id="6896758677409633944">Kopjoje</translation>
+<translation id="8393700583063109961">Dërgo mesazh</translation>
+<translation id="3557336313807607643">Shto te kontaktet</translation>
+<translation id="4269820728363426813">Kopjo adresën e lidhjes</translation>
+<translation id="1206892813135768548">Kopjo tekstin e lidhjes</translation>
+<translation id="1204037785786432551">Lidhja e shkarkimit</translation>
+<translation id="6864459304226931083">Shkarko imazhin</translation>
+<translation id="8209050860603202033">Hape imazhin</translation>
+<translation id="8073388330009372546">Hape imazhin në një skedë të re</translation>
+<translation id="6649642165559792194">Paraafisho imazhin <ph name="BEGIN_NEW"/>E re<ph name="END_NEW"/></translation>
+<translation id="3269093882174072735">Ngarko figurë</translation>
+<translation id="3845332215609790146">Kërko me "Lenten e Brave Software" <ph name="BEGIN_NEW"/>E re<ph name="END_NEW"/></translation>
+<translation id="5578795271662203820">Kërko në <ph name="SEARCH_ENGINE"/> për këtë imazh</translation>
+<translation id="3384347053049321195">Shpërndaje imazhin</translation>
+<translation id="5833984609253377421">Ndaj lidhjen</translation>
+<translation id="6475951671322991020">Shkarko videon</translation>
+<translation id="2317945146070194624">Hape në një skedë të re të Brave</translation>
+<translation id="7975379999046275268">Shiko paraprakisht faqen <ph name="BEGIN_NEW"/>E re<ph name="END_NEW"/></translation>
+<translation id="6112702117600201073">Po rifreskon faqen</translation>
+<translation id="6990079615885386641">Merr aplikacionin nga Dyqani i "Brave Software Play": <ph name="APP_ACTION"/></translation>
+<translation id="2414886740292270097">E errët</translation>
+<translation id="1807246157184219062">E çelët</translation>
+<translation id="4056223980640387499">Sepia</translation>
+<translation id="3927692899758076493">Sans Serif</translation>
+<translation id="5016205925109358554">Serif</translation>
+<translation id="2593272815202181319">Me hapësirë fikse</translation>
+<translation id="9206873250291191720">A</translation>
+<translation id="654446541061731451">Zgjidh një skedë për ta dërguar me rreze</translation>
+<translation id="8719023831149562936">Skeda aktuale nuk dërgohet me rreze</translation>
+<translation id="2139186145475833000">Shtoje te ekrani "Faqja kryesore"</translation>
+<translation id="4616150815774728855">Hap <ph name="WEBAPK_NAME"/></translation>
+<translation id="2122601567107267586">Aplikacioni nuk mund të hapej</translation>
+<translation id="5129038482087801250">Instalo aplikacionin e uebit</translation>
+<translation id="3789841737615482174">Instaloje</translation>
+<translation id="4665282149850138822"><ph name="NAME"/> u shtua në ekranin bazë</translation>
+<translation id="7333031090786104871">Ende po shtohet sajti i mëparshëm</translation>
+<translation id="1036727731225946849">Po shton <ph name="WEBAPK_NAME"/>...</translation>
+<translation id="3778956594442850293">U shtua në ekranin bazë</translation>
+<translation id="2146738493024040262">Hap aplikacionin e çastit</translation>
+<translation id="7016516562562142042">Lejuar për motorin aktual të kërkimit</translation>
+<translation id="6177111841848151710">Bllokuar për motorin aktual të kërkimit</translation>
+<translation id="145097072038377568">E çaktivizuar te "Cilësimet" e Android</translation>
+<translation id="8007176423574883786">E çaktivizuar për këtë pajisje</translation>
+<translation id="164269334534774161">Po shikon një kopje jashtë linje të kësaj faqeje nga <ph name="CREATION_TIME"/></translation>
+<translation id="4594952190837476234">Kjo faqe jashtë linje është nga <ph name="CREATION_TIME"/> dhe mund të ndryshojë nga versioni në linjë.</translation>
+<translation id="8840953339110955557">Kjo faqe mund të ndryshojë nga versioni në linjë.</translation>
+<translation id="6405300764336705484">Kjo përmbajtje është nga <ph name="DOMAIN_NAME"/>, dërguar nga Brave Software.</translation>
+<translation id="1006017844123154345">Hap versionin në linjë</translation>
+<translation id="3326636747541519688">Faqja e lehtë ofrohet nga Brave Software.</translation>
+<translation id="7149158118503947153"><ph name="BEGIN_LINK"/>Ngarko faqen origjinale<ph name="END_LINK"/> nga <ph name="DOMAIN_NAME"/></translation>
+<translation id="7475192538862203634">Nëse e shikon shpesh këtë, provo këto <ph name="BEGIN_LINK"/>sugjerime<ph name="END_LINK"/>.</translation>
+<translation id="8748850008226585750">Përmbajtjet janë të fshehura</translation>
+<translation id="3810973564298564668">Menaxho</translation>
+<translation id="5199929503336119739">Profili i punës</translation>
+<translation id="528192093759286357">Zvarrit nga lart dhe prek butonin e kthimit për të dalë nga ekrani i plotë.</translation>
+<translation id="3967822245660637423">Shkarkim i plotë</translation>
+<translation id="2434158240863470628">Shkarkimi përfundoi <ph name="SEPARATOR"/> <ph name="BYTES_DOWNLOADED"/></translation>
+<translation id="802154636333426148">Shkarkimi dështoi</translation>
+<translation id="1384959399684842514">Shkarkimi u ndërpre</translation>
+<translation id="1671236975893690980">Shkarkimi në pritje...</translation>
+<translation id="5561549206367097665">Në pritje të rrjetit…</translation>
+<translation id="5864419784173784555">Në pritje të një shkarkimi tjetër…</translation>
+<translation id="3110967157686007724">Skeda "e fshehtë"</translation>
+<translation id="6461962085415701688">Skedari nuk mund të hapet</translation>
+<translation id="1178581264944972037">Pauzë</translation>
+<translation id="8200772114523450471">Vazhdo</translation>
+<translation id="1409879593029778104">Shkarkimi i <ph name="FILE_NAME"/> u parandalua sepse skedari ekziston tashmë.</translation>
+<translation id="3387650086002190359">Shkarkimi i <ph name="FILE_NAME"/> dështoi për shkak të gabimeve të sistemit të skedarëve.</translation>
+<translation id="6482749332252372425">Shkarkimi i <ph name="FILE_NAME"/> dështoi për shkak të mungesës së hapësirës ruajtëse.</translation>
+<translation id="7619072057915878432">Shkarkimi i <ph name="FILE_NAME"/> dështoi për shkak të problemeve të rrjetit.</translation>
+<translation id="1477626028522505441">Shkarkimi i <ph name="FILE_NAME"/> dështoi për shkak të problemeve të serverit.</translation>
+<translation id="3692944402865947621">Shkarkimi i skedarit <ph name="FILE_NAME"/> dështoi sepse vendndodhja e hapësirës ruajtëse nuk është e arritshme.</translation>
+<translation id="604996488070107836">Shkarkimi i <ph name="FILE_NAME"/> dështoi për shkak të një gabimi të panjohur.</translation>
+<translation id="6738867403308150051">Po shkarkon...</translation>
+<translation id="7176368934862295254"><ph name="KILOBYTES"/> KB</translation>
+<translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
+<translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
+<translation id="3991845972263764475"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / ?</translation>
+<translation id="1923695749281512248"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / <ph name="FILE_SIZE_WITH_UNITS"/></translation>
+<translation id="3029613699374795922">Janë shkarkuar <ph name="KBS"/> KB</translation>
+<translation id="6416782512398055893">Janë shkarkuar <ph name="MBS"/> MB</translation>
+<translation id="6538442820324228105">Janë shkarkuar <ph name="GBS"/> GB</translation>
+<translation id="9204836675896933765">1 skedar i mbetur</translation>
+<translation id="8186512483418048923"><ph name="FILES"/> skedarë të mbetur</translation>
+<translation id="757855969265046257">{FILES,plural, =1{<ph name="FILES_DOWNLOADED_ONE"/> skedar i shkarkuar}other{<ph name="FILES_DOWNLOADED_MANY"/> skedarë të shkarkuar}}</translation>
+<translation id="8037750541064988519"><ph name="DAYS"/> ditë të mbetura</translation>
+<translation id="8190358571722158785">1 ditë e mbetur</translation>
+<translation id="60923314841986378"><ph name="HOURS"/> orë të mbetura</translation>
+<translation id="510275257476243843">1 orë e mbetur</translation>
+<translation id="970715775301869095"><ph name="MINUTES"/> minuta të mbetura</translation>
+<translation id="3236059992281584593">1 minutë e mbetur</translation>
+<translation id="2777555524387840389"><ph name="SECONDS"/> sekonda të mbetura</translation>
+<translation id="2781151931089541271">1 sekondë e mbetur</translation>
+<translation id="3303414029551471755">Të vazhdohet me shkarkimin e përmbajtjes?</translation>
+<translation id="8617240290563765734">Të hapet URL-ja e sugjeruar në përmbajtjen e shkarkuar?</translation>
+<translation id="1373696734384179344">Memorie e pamjaftueshme për të shkarkuar përmbajtjen e përzgjedhur.</translation>
+<translation id="5271967389191913893">Pajisja nuk mund të hapë përmbajtjen që do të shkarkohet.</translation>
+<translation id="883806473910249246">Ndodhi një gabim gjatë shkarkimit të përmbajtjes.</translation>
+<translation id="5626134646977739690">Emër:</translation>
+<translation id="7963646190083259054">Shitësi:</translation>
+<translation id="3414952576877147120">Madhësia:</translation>
+<translation id="7375125077091615385">Shkruaj:</translation>
+<translation id="5765780083710877561">Përshkrimi:</translation>
+<translation id="4881695831933465202">Hape</translation>
+<translation id="3542235761944717775"><ph name="KILOBYTES"/> KB në dispozicion</translation>
+<translation id="8051695050440594747"><ph name="MEGABYTES"/> MB në dispozicion</translation>
+<translation id="5424588387303617268"><ph name="GIGABYTES"/> GB të disponueshme</translation>
+<translation id="5793665092639000975">Po përdoret <ph name="SPACE_USED"/> nga <ph name="SPACE_AVAILABLE"/></translation>
+<translation id="3587482841069643663">Krejt</translation>
+<translation id="4988526792673242964">Faqet</translation>
+<translation id="3810838688059735925">Video</translation>
+<translation id="3616113530831147358">Audio</translation>
+<translation id="9219103736887031265">Imazhet</translation>
+<translation id="656065428026159829">Shiko më shumë</translation>
+<translation id="8250920743982581267">Dokumentet</translation>
+<translation id="2013642289801508067">{FILE_COUNT,plural, =1{# skedar}other{# skedarë}}</translation>
+<translation id="6444421004082850253">{FILE_COUNT,plural, =1{# imazh}other{# Imazhe}}</translation>
+<translation id="9041669420854607037">{FILE_COUNT,plural, =1{# video}other{# video}}</translation>
+<translation id="2651091186440431324">{FILE_COUNT,plural, =1{# skedar audio}other{# skedarë audio}}</translation>
+<translation id="4921180162323349895">{FILE_COUNT,plural, =1{# faqe}other{# faqe}}</translation>
+<translation id="5456381639095306749">Shkarko faqen</translation>
+<translation id="2394602618534698961">Skedarët që shkarkon shfaqen këtu</translation>
+<translation id="7810647596859435254">Hape me...</translation>
+<translation id="5655963694829536461">Kërko te shkarkimet e tua</translation>
+<translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="1883903952484604915">Skedarët e mi</translation>
+<translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
+<translation id="766587987807204883">Këtu shfaqen artikujt, të cilët mund t'i lexosh edhe kur je jashtë linje</translation>
+<translation id="4034817413553209278">{HOURS,plural, =1{# orë}other{# orë}}</translation>
+<translation id="5853623416121554550">në pauzë</translation>
+<translation id="8965591936373831584">në pritje</translation>
+<translation id="2779651927720337254">dështoi</translation>
+<translation id="2049574241039454490"><ph name="FILE_SIZE_OF_TOTAL"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3445014427084483498">Pikërisht tani</translation>
+<translation id="4000212216660919741">Shtëpia jashtë linje</translation>
+<translation id="9133397713400217035">Eksploro jashtë linje</translation>
+<translation id="968900484120156207">Faqet që viziton shfaqen këtu</translation>
+<translation id="7882131421121961860">Nuk u gjet historik</translation>
+<translation id="3549657413697417275">Kërko në historikun tënd</translation>
+<translation id="4526803704855831732">Skedat "e fshehura"</translation>
+<translation id="7465104139234185284">Mbylli të gjitha skedat "e fshehta"</translation>
+<translation id="6820686453637990663">CVC</translation>
+<translation id="3244271242291266297">MM</translation>
+<translation id="605721222689873409">VV</translation>
+<translation id="724102042129299115">Përvoja e ekzekutimit të parë të Brave</translation>
+<translation id="2700285883409956633">Duke përdorur këtë aplikacion, ti pranon <ph name="BEGIN_LINK1"/>Kushtet e shërbimit<ph name="END_LINK1"/> dhe <ph name="BEGIN_LINK2"/>Politikën e privatësisë<ph name="END_LINK2"/> së Brave.</translation>
+<translation id="1640714894372474981">Duke përdorur këtë aplikacion, ti pranon <ph name="BEGIN_LINK1"/>Kushtet e shërbimit<ph name="END_LINK1"/> dhe <ph name="BEGIN_LINK2"/>Njoftimin e privatësisë<ph name="END_LINK2"/> të Brave dhe <ph name="BEGIN_LINK3"/>Njoftimin e privatësisë për llogaritë e Brave Software të menaxhuara me Family Link<ph name="END_LINK3"/>.</translation>
+<translation id="4218324479468769727"><ph name="APP_NAME"/> do të hapet në Brave. Duke vazhduar, ti pranon <ph name="BEGIN_LINK1"/>Kushtet e shërbimit<ph name="END_LINK1"/> dhe <ph name="BEGIN_LINK2"/>Njoftimin e privatësisë<ph name="END_LINK2"/> së Brave.</translation>
+<translation id="5071615083211946659"><ph name="APP_NAME"/> do të hapet në Brave. Duke vazhduar, ti pranon <ph name="BEGIN_LINK1"/>Kushtet e shërbimit<ph name="END_LINK1"/> dhe <ph name="BEGIN_LINK2"/>Njoftimin e privatësisë<ph name="END_LINK2"/> së Brave dhe <ph name="BEGIN_LINK3"/>Njoftimin e privatësisë për llogaritë e Brave Software të menaxhuara me Family Link<ph name="END_LINK3"/>.</translation>
+<translation id="673197144963363525">Ndihmo në përmirësimin e Brave duke dërguar automatikisht te Brave Software statistika përdorimi dhe raporte të ndërprerjeve aksidentale.</translation>
+<translation id="3518985090088779359">Prano dhe vazhdo</translation>
+<translation id="7207456302801184289">Mirë se vini në Brave</translation>
+<translation id="7189372733857464326">Në pritje që Shërbimet e "Brave Software Play" të përfundojnë përditësimin</translation>
+<translation id="1231733316453485619">Të aktivizohet sinkronizimi?</translation>
+<translation id="5132942445612118989">Sinkronizo fjalëkalimet, historikun etj. në të gjitha pajisjet</translation>
+<translation id="5736731321935944068">Brave Software mund ta përdorë historikun tënd për të personalizuar "Kërko me Brave Software", reklamat dhe shërbime të tjera të Brave Software</translation>
+<translation id="4013614219085422040">Brave Software mund ta përdorë historikun tënd për të personalizuar "Kërko me Brave Software" dhe shërbime të tjera të Brave Software</translation>
+<translation id="5581519193887989363">Mund të zgjedhësh gjithmonë se çfarë do të sinkronizosh te <ph name="BEGIN_LINK1"/>cilësimet<ph name="END_LINK1"/>.</translation>
+<translation id="741204030948306876">Po</translation>
+<translation id="2410754283952462441">Zgjidh një llogari</translation>
+<translation id="2227444325776770048">Vazhdo si <ph name="USER_FULL_NAME"/></translation>
+<translation id="6210748933810148297">Nuk je <ph name="EMAIL"/>?</translation>
+<translation id="8109613176066109935">Për të marrë faqeshënuesit e tu në të gjitha pajisjet e tua, aktivizo sinkronizimin</translation>
+<translation id="2818669890320396765">Për të marrë faqeshënuesit në të gjitha pajisjet e tua, identifikohu dhe aktivizo sinkronizimin</translation>
+<translation id="6003646045106347985">Për të marrë përmbajtje të personalizuar të sugjeruar nga Brave Software, aktivizo sinkronizimin</translation>
+<translation id="8494430740943879273">Për të marrë përmbajtje të personalizuar të sugjeruar nga Brave Software, identifikohu dhe aktivizo sinkronizimin</translation>
+<translation id="5862731021271217234">Për të marrë skedat e tua nga pajisjet e tjera, aktivizo sinkronizimin</translation>
+<translation id="3568688522516854065">Për të marrë skedat nga pajisjet e tjera të tua, identifikohu dhe aktivizo sinkronizimin</translation>
+<translation id="1208340532756947324">Për të sinkronizuar dhe personalizuar mes pajisjeve, aktivizo sinkronizimin</translation>
+<translation id="4472118726404937099">Për të sinkronizuar dhe personalizuar mes pajisjeve, identifikohu dhe aktivizo sinkronizimin</translation>
+<translation id="2426805022920575512">Zgjidh llogari tjetër</translation>
+<translation id="6790428901817661496">Luaje</translation>
+<translation id="1272079795634619415">Ndalo</translation>
+<translation id="2874939134665556319">Kënga e mëparshme</translation>
+<translation id="4046123991198612571">Kënga tjetër</translation>
+<translation id="3859306556332390985">Kërko përpara</translation>
+<translation id="8441146129660941386">Kërko prapa</translation>
+<translation id="6884306546558072722">Vazhdo të eksplorosh jashtë linje</translation>
+<translation id="388596076286380598">Merr artikuj, video dhe përmbajtje të tjera nga sajtet që të pëlqejnë, edhe nëse je jashtë linje ose lidhja jote është e dobët.</translation>
+<translation id="1736419249208073774">Eksploro</translation>
+<translation id="572328651809341494">Skeda së fundi</translation>
+<translation id="8497726226069778601">Ende nuk ka asgjë për të parë këtu</translation>
+<translation id="5423934151118863508">Këtu do të shfaqen faqet më të vizituara</translation>
+<translation id="6127379762771434464">Artikulli u hoq</translation>
+<translation id="4605958867780575332">Artikulli u hoq: <ph name="ITEM_TITLE"/></translation>
+<translation id="1996480094660735607">Logoja alternative e Brave Software: <ph name="DOODLE_DESCRIPTION"/></translation>
+<translation id="7851858861565204677">Pajisjet e tjera</translation>
+<translation id="4738836084190194332">Sinkronizimi i fundit: <ph name="WHEN"/></translation>
+<translation id="4583164079174244168">{MINUTES,plural, =1{# minutë më parë}other{# minuta më parë}}</translation>
+<translation id="5809361687334836369">{HOURS,plural, =1{# orë më parë}other{# orë më parë}}</translation>
+<translation id="4513387527876475750">{DAYS,plural, =1{# ditë më parë}other{# ditë më parë}}</translation>
+<translation id="2762000892062317888">pikërisht tani</translation>
+<translation id="1407135791313364759">Hapi të gjitha</translation>
+<translation id="1209206284964581585">Fshih për momentin</translation>
+<translation id="129553762522093515">Mbyllur së fundi</translation>
+<translation id="8413126021676339697">Shfaq historikun e plotë</translation>
+<translation id="7876243839304621966">Hiqi të gjitha</translation>
+<translation id="8487700953926739672">Mundësohet jashtë linje</translation>
+<translation id="5224771365102442243">Me video</translation>
+<translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Mëso më shumë<ph name="END_LINK"/> mbi përmbajtjen e sugjeruar</translation>
+<translation id="7542481630195938534">Sugjerimet nuk mund të merren</translation>
+<translation id="5013696553129441713">Nuk ka sugjerime të reja</translation>
+<translation id="7444811645081526538">Më shumë kategori</translation>
+<translation id="6709133671862442373">Lajmet</translation>
+<translation id="1264974993859112054">Sport</translation>
+<translation id="9139318394846604261">Blerje</translation>
+<translation id="3912508018559818924">Po gjen më të mirën nga uebi…</translation>
+<translation id="526421993248218238">Kjo faqe nuk mund të ngarkohet</translation>
+<translation id="614940544461990577">Provo:</translation>
+<translation id="3288003805934695103">Të ringarkosh faqen</translation>
+<translation id="2353636109065292463">Po kontrollon lidhjen e internetit</translation>
+<translation id="2858138569776157458">Sajtet kryesore</translation>
+<translation id="8364299278605033898">Shiko sajte uebi të mirënjohura</translation>
+<translation id="1171770572613082465">Shiko sajte uebi të mirënjohura duke trokitur te butoni "Sajtet kryesore"</translation>
+<translation id="5233638681132016545">Skedë e re</translation>
+<translation id="6336451774241870485">Skedë e re e fshehtë</translation>
+<translation id="4521874409998847950">Nga <ph name="PUBLISHER_ORIGIN"/> - <ph name="BEGIN_DEEMPHASIZED"/>dërguar nga Brave Software<ph name="END_DEEMPHASIZED"/></translation>
+<translation id="2587052924345400782">Një version më i ri është i disponueshëm</translation>
+<translation id="4058091506841967397">Brave s'mund të përditësohet</translation>
+<translation id="6316139424528454185">Versioni i Android s'mbështetet</translation>
+<translation id="6989267951144302301">Nuk mund të shkarkohej</translation>
+<translation id="624789221780392884">Përditësimi është gati</translation>
+<translation id="1549000191223877751">Zhvendose te dritarja tjetër</translation>
+<translation id="7481312909269577407">Përpara</translation>
+<translation id="4084682180776658562">Faqeshënuesi</translation>
+<translation id="6437478888915024427">Informacionet e faqes</translation>
+<translation id="7180611975245234373">Rifreskoje</translation>
+<translation id="4913169188695071480">Ndalo rifreskimin</translation>
+<translation id="3234355010754616171">Skedë e re e fshehtë</translation>
+<translation id="1829244130665387512">Gjej në faqe</translation>
+<translation id="6593061639179217415">Sajti për desktop</translation>
+<translation id="9063523880881406963">Çaktivizo "Kërko faqen për desktop"</translation>
+<translation id="2038563949887743358">Aktivizo "Kërko sajtin për desktop"</translation>
+<translation id="2433507940547922241">Dukje</translation>
+<translation id="983192555821071799">Mbyll të gjitha skedat</translation>
+<translation id="6610147964972079463">Mbyll skedat e fshehta</translation>
+<translation id="1310482092992808703">Grupo skedat</translation>
+<translation id="7725024127233776428">Faqet që shënon shfaqen këtu</translation>
+<translation id="4404568932422911380">Nuk ka faqeshënues</translation>
+<translation id="3060635849835183725">{BOOKMARKS_COUNT,plural, =1{<ph name="BOOKMARKS_COUNT_ONE"/> faqeshënues}other{<ph name="BOOKMARKS_COUNT_MANY"/> faqeshënues}}</translation>
+<translation id="3739899004075612870">U shtua si faqeshënues në <ph name="PRODUCT_NAME"/></translation>
+<translation id="3207960819495026254">Regjistruar në faqeshënues</translation>
+<translation id="4452548195519783679">Faqeshënuesi u shtua te <ph name="FOLDER_NAME"/></translation>
+<translation id="8063895661287329888">Shtimi i faqeshënuesit dështoi.</translation>
+<translation id="2842985007712546952">Dosja mëmë</translation>
+<translation id="9065203028668620118">Përpunojeni</translation>
+<translation id="4405224443901389797">Zhvendos te…</translation>
+<translation id="5170568018924773124">Shfaqe në dosje</translation>
+<translation id="8035133914807600019">Dosje e re...</translation>
+<translation id="4532845899244822526">Zgjidh dosjen</translation>
+<translation id="6627583120233659107">Modifiko dosjen</translation>
+<translation id="1197267115302279827">Zhvendos faqeshënuesit</translation>
+<translation id="6963766334940102469">Fshi faqeshënuesit</translation>
+<translation id="4351244548802238354">Mbyll dialogun</translation>
+<translation id="451872707440238414">Kërko te faqeshënuesit</translation>
+<translation id="8901170036886848654">Nuk u gjetën faqeshënues</translation>
+<translation id="6404511346730675251">Përpunoni faqerojtës</translation>
+<translation id="3894427358181296146">Shtoni dosje</translation>
+<translation id="5327248766486351172">Emër</translation>
+<translation id="7400418766976504921">URL</translation>
+<translation id="3527085408025491307">Dosje</translation>
+<translation id="5161254044473106830">Kërkohet titulli</translation>
+<translation id="2996809686854298943">URL-ja e detyrueshme</translation>
+<translation id="2536728043171574184">Po shikon një kopje jashtë linje të kësaj faqeje</translation>
+<translation id="4698034686595694889">Shiko jashtë linje në <ph name="APP_NAME"/></translation>
+<translation id="8316092324682955408"><ph name="DOMAIN_NAME"/> dhe sajte të tjera</translation>
+<translation id="6945986954012067786">{NUM_IN_PROGRESS,plural, =1{Brave do ta ngarkojë faqen tënde kur të jesh gati}other{Brave do të ngarkojë faqet e tua kur të jesh gati}}</translation>
+<translation id="6811034713472274749">Faqja është gati për parje</translation>
+<translation id="4561979708150884304">Nuk ka lidhje</translation>
+<translation id="8274165955039650276">Shiko shkarkimet</translation>
+<translation id="2082238445998314030">Rezultati <ph name="RESULT_NUMBER"/> nga <ph name="TOTAL_RESULTS"/></translation>
+<translation id="4943872375798546930">Asnjë rezultat</translation>
+<translation id="981121421437150478">Jashtë linje</translation>
+<translation id="3298243779924642547">I lehtë</translation>
+<translation id="393697183122708255">Nuk ofrohet kërkimi i aktivizuar me zë</translation>
+<translation id="7191430249889272776">Skeda u hap në sfond.</translation>
+<translation id="8445059357334030806">Hape në Brave</translation>
+<translation id="4720023427747327413">Hape në <ph name="PRODUCT_NAME"/></translation>
+<translation id="7022756207310403729">Hape në shfletues</translation>
+<translation id="1113597929977215864">Shfaq pamjen e thjeshtuar</translation>
+<translation id="1513352483775369820">Faqeshënuesit dhe historiku i uebit</translation>
+<translation id="4939482511480190003">Ndihmo në përmirësimin e Brave. <ph name="BEGIN_LINK"/>Plotëso anketën<ph name="END_LINK"/></translation>
+<translation id="2501278716633472235">Shko mbrapsht</translation>
+<translation id="5596627076506792578">Më shumë opsione</translation>
+<translation id="3522247891732774234">Një përditësim i disponueshëm. Më shumë opsione</translation>
+<translation id="6773423637732432200">Brave nuk mund të përditësohet. Më shumë opsione</translation>
+<translation id="3328801116991980348">Informacionet rreth sajtit</translation>
+<translation id="5391532827096253100">Lidhja jote me këtë faqe nuk është e sigurt. Informacioni i faqes</translation>
+<translation id="6206551242102657620">Lidhja është e sigurt. Informacioni i faqes</translation>
+<translation id="6963642900430330478">Kjo faqe është e rrezikshme. Informacioni i faqes</translation>
+<translation id="9070377983101773829">Nis kërkimin me zë</translation>
+<translation id="8676374126336081632">Pastro hyrjen</translation>
+<translation id="4968908871398201967">Modaliteti "i fshehtë"</translation>
+<translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> skedë e hapur, trokit për të ndërruar skedat}other{<ph name="OPEN_TABS_MANY"/> skeda të hapura, trokit për të ndërruar skedat}}</translation>
+<translation id="2369533728426058518">hap skedat</translation>
+<translation id="7071521146534760487">Menaxho llogarinë</translation>
+<translation id="932327136139879170">Faqja kryesore</translation>
+<translation id="2707726405694321444">Rifresko faqen</translation>
+<translation id="2891154217021530873">Ndalo ngarkimin e faqes</translation>
+<translation id="6710213216561001401">I mëparshmi</translation>
+<translation id="9080642952018487277">Hyr në modalitetin "i fshehtë".</translation>
+<translation id="4883379392681899581">Dil nga modaliteti "i fshehtë"</translation>
+<translation id="6659594942844771486">Skeda</translation>
+<translation id="1933845786846280168">Skeda e zgjedhur</translation>
+<translation id="3377025655491224618">Skeda "e fshehtë"</translation>
+<translation id="584427517463557805">Skeda e zgjedhur "e fshehtë"</translation>
+<translation id="2268044343513325586">Ripërpuno</translation>
+<translation id="7846076177841592234">Anulo zgjedhjen</translation>
+<translation id="6216432067784365534">Opsionet për <ph name="NAME_OF_LIST_ITEM"/></translation>
+<translation id="7087918508125750058"><ph name="ITEM_COUNT"/> të zgjedhura. Opsionet ofrohen pranë kreut të ekranit</translation>
+<translation id="7250468141469952378"><ph name="ITEM_COUNT"/> të zgjedhura</translation>
+<translation id="7353894246028566792">{NUM_SELECTED,plural, =1{Ndaj 1 artikull të zgjedhur}other{Ndaj # artikuj të zgjedhur}}</translation>
+<translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Hiq 1 artikull të zgjedhur}other{Hiq # artikuj të zgjedhur}}</translation>
+<translation id="1283039547216852943">Trokit për të zgjeruar</translation>
+<translation id="5962718611393537961">Trokit për të palosur</translation>
+<translation id="8076492880354921740">Skedat</translation>
+<translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 i zgjedhur}other{# të zgjedhur}}</translation>
+<translation id="6818926723028410516">Zgjidh artikujt</translation>
+<translation id="4797039098279997504">Preke për t'u kthyer te <ph name="URL_OF_THE_CURRENT_TAB"/></translation>
+<translation id="6766758767654711248">Trokit për të shkuar te sajti</translation>
+<translation id="429312253194641664">Një sajt po luan media</translation>
+<translation id="4958708863221495346"><ph name="URL_OF_THE_CURRENT_TAB"/> po ndan ekranin tënd</translation>
+<translation id="8833831881926404480">Një sajt po ndan ekranin tënd</translation>
+<translation id="9086455579313502267">Nuk mund të ketë qasje në rrjet</translation>
+<translation id="938850635132480979">Gabim: <ph name="ERROR_CODE"/></translation>
+<translation id="666731172850799929">Hape në <ph name="APP_NAME"/></translation>
+<translation id="548278423535722844">Hape në aplikacionin e hartave</translation>
+<translation id="7698359219371678927">Krijo mail në <ph name="APP_NAME"/></translation>
+<translation id="7875915731392087153">Krijo mail</translation>
+<translation id="5665379678064389456">Krijo ngjarje në <ph name="APP_NAME"/></translation>
+<translation id="2900528713135656174">Krijo ngjarje</translation>
+<translation id="2111511281910874386">Shko te faqja</translation>
+<translation id="3988466920954086464">Shiko rezultatet e çastit të kërkimit në këtë panel</translation>
+<translation id="2744248271121720757">Trokit një fjalë për të kërkuar në çast ose për të parë veprimet e lidhura</translation>
+<translation id="9155898266292537608">Mund të kërkosh po ashtu me një trokitje të shpejtë te një fjalë</translation>
+<translation id="3232754137068452469">Aplikacioni i uebit</translation>
+<translation id="1430915738399379752">Shtypni</translation>
+<translation id="3775705724665058594">Dërgo te pajisjet e tua</translation>
+<translation id="6364438453358674297">Të hiqet sugjerimi nga historiku?</translation>
+<translation id="213279576345780926"><ph name="TAB_TITLE"/> është mbyllur</translation>
+<translation id="6850830437481525139"><ph name="TAB_COUNT"/> skeda janë mbyllur</translation>
+<translation id="3211426585530211793"><ph name="ITEM_TITLE"/> u fshi</translation>
+<translation id="4663756553811254707"><ph name="NUMBER_OF_BOOKMARKS"/> faqeshënuesë u fshinë</translation>
+<translation id="3819178904835489326">U fshinë <ph name="NUMBER_OF_DOWNLOADS"/> shkarkime</translation>
+<translation id="1248710015876067820">Numër i pambështetur i versioneve të Brave.</translation>
+<translation id="4259722352634471385">Lundrimi është bllokuar: <ph name="URL"/></translation>
+<translation id="8959122750345127698">Lundrimi është i paarritshëm: <ph name="URL"/></translation>
+<translation id="5210365745912300556">Mbyll skedën</translation>
+<translation id="7772375229873196092">Mbyll <ph name="APP_NAME"/></translation>
+<translation id="1227058898775614466">Historiku i navigimit</translation>
+<translation id="9169507124922466868">Historiku i navigimit është gjysmë i hapur</translation>
+<translation id="1327257854815634930">Historiku i navigimit është i hapur</translation>
+<translation id="8788265440806329501">Historiku i navigimit është mbyllur</translation>
+<translation id="7482656565088326534">Skeda e shikimit paraprak</translation>
+<translation id="8427875596167638501">Skeda e shikimit paraprak është gjysmë e hapur</translation>
+<translation id="9102803872260866941">Skeda e shikimit paraprak është e hapur</translation>
+<translation id="2942036813789421260">Skeda e shikimit paraprak është e mbyllur</translation>
+<translation id="6355102470683871794">Hapësira ruajtëse e Brave Software <ph name="APP_NAME"/></translation>
+<translation id="3822502789641063741">Të pastrohet hapësira ruajtëse e sajtit?</translation>
+<translation id="9205995714227143200">Hapësira ruajtëse që Brave nuk e konsideron të rëndësishme (p.sh. sajtet pa cilësime të ruajtura ose ti që nuk i viziton shpesh)</translation>
+<translation id="3997476611815694295">Hapësirë ruajtëse e parëndësishme</translation>
+<translation id="8493948351860045254">Liro hapësirë</translation>
+<translation id="2324920234469020158">Kjo do të pastrojë kukit, memorien e përkohshme dhe të dhënat e tjera të sajteve që Brave nuk i konsideron si të rëndësishme.</translation>
+<translation id="5447201525962359567">Të gjithë hapësirën ruajtëse të sajtit, duke përfshirë kukit dhe të dhënat e tjera të ruajtura lokalisht</translation>
+<translation id="1376578503827013741">Po llogarit...</translation>
+<translation id="583281660410589416">I panjohur</translation>
+<translation id="2323763861024343754">Hapësira ruajtëse e sajtit</translation>
+<translation id="3587672679800759167">Të dhënat gjithsej të përdorura nga Brave, duke përfshirë llogaritë, faqeshënuesit dhe cilësimet e ruajtura</translation>
+<translation id="6545017243486555795">Pastro të gjitha të dhënat</translation>
+<translation id="4095146165863963773">Të fshihen të dhënat e aplikacioneve?</translation>
+<translation id="53119194224775367">Të gjitha të dhënat e aplikacionit të Brave do të fshihen përgjithmonë. Kjo përfshin të gjithë skedarët, cilësimet, llogaritë, bazat e të dhënave etj.</translation>
+<translation id="5307446750509046227">Pastro ruajtjen e sajtit</translation>
+<translation id="300526633675317032">Kjo do të pastrojë të gjitha <ph name="SIZE_IN_KB"/> të hapësirës ruajtëse të sajtit të uebit.</translation>
+<translation id="8068648041423924542">Nuk mund të zgjidhet certifikata.</translation>
+<translation id="2315043854645842844">Përzgjedhja e certifikatës nga ana e klientit nuk mbështetet nga sistemi operativ.</translation>
+<translation id="5011311129201317034"><ph name="SITE"/> dëshiron që të lidhet</translation>
+<translation id="5308380583665731573">Lidh</translation>
+<translation id="868929229000858085">Kërko te kontaktet e tua</translation>
+<translation id="1919950603503897840">Zgjidh kontaktet</translation>
+<translation id="7986741934819883144">Zgjidh një kontakt</translation>
+<translation id="3333961966071413176">Të gjitha kontaktet</translation>
+<translation id="4994033804516042629">Nuk u gjet asnjë kontakt</translation>
+<translation id="5403592356182871684">Emrat</translation>
+<translation id="2903493209154104877">Adresat</translation>
+<translation id="2717722538473713889">Adresat e email-it</translation>
+<translation id="381841723434055211">Numrat e telefonit</translation>
+<translation id="6689172468748959065">Fotografitë e profilit</translation>
+<translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(+ 1 tjetër)}other{(+ # të tjerë)}}</translation>
+<translation id="5197729504361054390">Kontaktet që zgjedh do të ndahen me <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
+<translation id="1779089405699405702">Dekoduesi i imazheve</translation>
+<translation id="8067883171444229417">Luaj videon</translation>
+<translation id="6560414384669816528">Kërko me Sogou</translation>
+<translation id="5406914950576900927">Brave mund të përdorë <ph name="BEGIN_BOLD"/>Sogou<ph name="END_BOLD"/> për kërkimin në Kinë. Mund ta ndryshosh këtë te <ph name="BEGIN_LINK"/>Cilësimet<ph name="END_LINK"/>.</translation>
+<translation id="6456271171669383967">Mbaj Brave Software</translation>
+<translation id="4384468725000734951">Po përdor Sogou për kërkimin</translation>
+<translation id="6103327872225198548">Po përdor Brave Software për kërkimin</translation>
+<translation id="9133703968756164531"><ph name="ITEM_NAME"/> (<ph name="ITEM_ID"/>)</translation>
+<translation id="919933208285147476">Ky aplikacion po ekzekutohet në Brave</translation>
+<translation id="6143689084714664628">Po ekzekutohet në Brave</translation>
+<translation id="7675869148432102528"><ph name="APP_NAME"/> ka gjithashtu të dhëna në Brave</translation>
+<translation id="2734140769649165081">Mund t'i pastrosh të dhënat në "Cilësimet" e Brave</translation>
+<translation id="8232956427053453090">Mbaj të dhënat</translation>
+<translation id="4298388696830689168">Sajtet e lidhura</translation>
+<translation id="5763514718066511291">Trokit për të kopjuar URL-në për këtë aplikacion</translation>
+<translation id="6496823230996795692">Për të përdorur <ph name="APP_NAME"/> për herë të parë, lidhu me internetin.</translation>
+<translation id="751961395872307827">Nuk mund të lidhet me sajtin</translation>
+<translation id="4878404682131129617">Dështoi krijimi i një tuneli përmes serverit përfaqësues</translation>
+<translation id="4749960740855309258">Hap një skedë të re</translation>
+<translation id="8788968922598763114">Hap përsëri skedën e fundit të mbyllur</translation>
+<translation id="2280910239864711607">Hap një skedë të re në "Modalitetin e fshehtë"</translation>
+<translation id="7929962904089429003">Hap menynë</translation>
+<translation id="6039379616847168523">Kalo te skeda tjetër</translation>
+<translation id="5210286577605176222">Kalo te skeda e mëparshme</translation>
+<translation id="124678866338384709">Mbyll skedën aktuale</translation>
+<translation id="3714981814255182093">Hap shiritin e gjetjes</translation>
+<translation id="5441522332038954058">Kalo te shiriti i adresës</translation>
+<translation id="3398320232533725830">Hap menaxherin e faqeshënuesve</translation>
+<translation id="6583199322650523874">Shëno si faqeshënues faqen aktuale</translation>
+<translation id="8489271220582375723">Hap faqen e historikut</translation>
+<translation id="4837753911714442426">Hap opsionet për të printuar faqen</translation>
+<translation id="5726692708398506830">Bëje më të madhe gjithçka në faqe</translation>
+<translation id="3259831549858767975">Bëje më të vogël gjithçka në faqe</translation>
+<translation id="8015452622527143194">Ktheje gjithçka në faqe në madhësinë e parazgjedhur</translation>
+<translation id="3443221991560634068">Ringarko faqen aktuale</translation>
+<translation id="123724288017357924">Ringarko faqen aktuale, duke shpërfillur përmbajtjen në memorien specifike</translation>
+<translation id="305870044889644984">Hap "Qendrën e ndihmës së Brave" në një skedë të re</translation>
+<translation id="3166827708714933426">Shkurtoret e skedës dhe dritares</translation>
+<translation id="3169981355900570544">Shkurtoret e funksioneve të Brave Software Brave</translation>
+<translation id="4558311620361989323">Shkurtoret e faqes së uebit</translation>
+<translation id="1908301351964700579">Brave po përgatitet akoma për VR. Rinise Brave më vonë.</translation>
+<translation id="8970887620466824814">Ndodhi një gabim.</translation>
+<translation id="1875543012935658554">Rihap Brave.</translation>
+<translation id="79859296434321399">Për të parë përmbajtje realiteti të zgjeruar, instalo ARCore</translation>
+<translation id="8558485628462305855">Për të parë përmbajtje realiteti të zgjeruar, përditëso ARCore</translation>
+<translation id="3513704683820682405">Realiteti i zgjeruar</translation>
+<translation id="5475862044948910901">Të fillojë seanca e realitetit të zgjeruar?</translation>
+<translation id="7365126855094612066">Për kohëzgjatjen e kësaj seance, sajti do të ketë mundësi që:
+• të krijojë një hartë 3D të ambientit tënd
+• të gjurmojë lëvizjen e kamerës
+
+Sajti NUK fiton qasje në kamerë. Imazhet e kamerës mund t'i shikosh vetëm ti.</translation>
+<translation id="1188239144602654184">Hyr në AR</translation>
+<translation id="473775607612524610">Përditësoje</translation>
+<translation id="3133489217401741157">Po instalohet <ph name="MODULE"/> për Brave…</translation>
+<translation id="1791662854739702043">I instaluar</translation>
+<translation id="5131234170665854056"><ph name="MODULE"/> nuk mund të instalohet për Brave</translation>
+<translation id="2567385386134582609">IMAZHI</translation>
+<translation id="6395288395575013217">LIDHJA</translation>
+<translation id="7352939065658542140">VIDEO</translation>
+<translation id="4116038641877404294">Shkarko faqet për t'i përdorur ato jashtë linje</translation>
+<translation id="8922289737868596582">Shkarko faqet nga butoni "Më shumë opsione" për t'i përdorur ato jashtë linje</translation>
+<translation id="5958275228015807058">Gjej skedarët dhe faqet e tua te "Shkarkimet"</translation>
+<translation id="5620928963363755975">Gjej skedarët dhe faqet e tua te "Shkarkimet" nga butoni "Më shumë opsione"</translation>
+<translation id="3341058695485821946">Shiko se sa të dhëna kurseve</translation>
+<translation id="3157842584138209013">Shiko se sa të dhëna kurseve nga butoni "Më shumë opsione"</translation>
+<translation id="8218622182176210845">Menaxho llogarinë tënde</translation>
+<translation id="8090895580117672212">Për të menaxhuar "Llogarinë tënde të Brave Software", prek butonin "Menaxho llogarinë"</translation>
+<translation id="8856898588039823173">Faqja e lehtë ofrohet nga Brave Software. Trokit për të ngarkuar faqen origjinale.</translation>
+<translation id="8134317863207426198">Faqja e lehtë ofrohet nga Brave Software. Trokit butonin origjinal të ngarkimit për të ngarkuar faqen origjinale.</translation>
+<translation id="4961107849584082341">Përktheje këtë faqe në çdo gjuhë</translation>
+<translation id="569536719314091526">Përktheje këtë faqe në çdo gjuhë nga butoni "Më shumë opsione"</translation>
+<translation id="1397811292916898096">Kërko me <ph name="PRODUCT_NAME"/></translation>
+<translation id="1792959175193046959">Ndrysho në çdo moment vendndodhjen e parazgjedhur të shkarkimit</translation>
+<translation id="6942665639005891494">Ndrysho në çdo moment vendndodhjen e parazgjedhur të shkarkimit duke përdorur opsionin e menysë "Cilësimet"</translation>
+<translation id="6850409657436465440">Shkarkimi yt është ende në vazhdim</translation>
+<translation id="5817715962196959877">Brave tani i shkarkon skedarët më shpejt</translation>
+<translation id="3976396876660209797">Hiqe këtë shkurtore dhe rikrijoje</translation>
+<translation id="6766622839693428701">Rrëshqit shpejt poshtë për ta mbyllur.</translation>
+<translation id="1028699632127661925">Po dërgohet te <ph name="DEVICE_NAME"/>...</translation>
+<translation id="1303507811548703290"><ph name="DOMAIN"/> - Dërguar nga <ph name="DEVICE_NAME"/></translation>
+<translation id="5357811892247919462">Skeda u mor</translation>
+<translation id="9104217018994036254">Lista e pajisjeve për të ndarë një skedë.</translation>
+<translation id="6767294960381293877">Lista e pajisjeve për të ndarë një skedë e hapur në gjysmë lartësi.</translation>
+<translation id="2904414404539560095">Lista e pajisjeve për të ndarë një skedë e hapur në lartësi të plotë.</translation>
+<translation id="4135200667068010335">Lista e pajisjeve për të ndarë një skedë është e mbyllur.</translation>
+<translation id="5292796745632149097">Dërgo te</translation>
+<translation id="1386674309198842382">Aktiv <ph name="LAST_UPDATED"/> ditë më parë</translation>
+<translation id="7971136598759319605">Aktiv 1 ditë më parë</translation>
+<translation id="1521774566618522728">Aktiv sot</translation>
+<translation id="3631987586758005671">Po ndahet te <ph name="DEVICE_NAME"/></translation>
+<translation id="9028914725102941583">Aktivizo sinkronizimin për të ndarë mes pajisjeve</translation>
+<translation id="6162454065885854378">Për të ndarë diçka nga telefoni yt në një pajisje tjetër, aktivizo sinkronizimin në cilësimet e Brave në të dyja pajisjet</translation>
+<translation id="6084271560289605378">Shko te "Cilësimet" e Brave</translation>
+<translation id="2318045970523081853">Trokit për të bërë një telefonatë</translation>
+<translation id="9209888181064652401">Telefonatat nuk mund të kryhen</translation>
+<translation id="2860954141821109167">Sigurohu që një aplikacion i telefonit të jetë i aktivizuar në këtë pajisje</translation>
+<translation id="2067805253194386918">teksti</translation>
+<translation id="1450753235335490080">Nuk mund të ndahet <ph name="CONTENT_TYPE"/></translation>
+<translation id="1266864766717917324">Nuk mund të ndahet <ph name="CONTENT_TYPE"/></translation>
+<translation id="8287068819750208230">Sigurohu që <ph name="TARGET_DEVICE_NAME"/> të ketë të aktivizuar sinkronizimin në Brave</translation>
+<translation id="3016635187733453316">Sigurohu që kjo pajisje të jetë e lidhur me internetin</translation>
+<translation id="8466613982764129868">Sigurohu që <ph name="TARGET_DEVICE_NAME"/> të jetë lidhur me internetin</translation>
+<translation id="6539092367496845964">Ndodhi një gabim. Provo përsëri më vonë.</translation>
+<translation id="3389286852084373014">Teksti është tepër i madh</translation>
+<translation id="2100314319871056947">Provo ta ndash tekstin në copëza më të vogla</translation>
+<translation id="2987620471460279764">Teksti i ndarë nga pajisje tjetër</translation>
+<translation id="7757787379047923882">Teksti u nda nga <ph name="DEVICE_NAME"/></translation>
+<translation id="5193988420012215838">Kopjuar te kujtesa e fragmenteve</translation>
+<translation id="4696983787092045100">Dërgo tekstin te pajisjet e tua</translation>
+<translation id="5694049548840660018">Kthehu te faqja kryesore me lehtësi</translation>
+<translation id="1122278879166832009">Trokit këtu për të pasur qasje të shpejtë te faqja jote kryesore nga çdo vend</translation>
+<translation id="1260236875608242557">Kërko dhe eksploro</translation>
+<translation id="6369229450655021117">Nga këtu, mund të kërkosh në ueb, të ndash me shokët dhe të shikosh faqet e hapura</translation>
+<translation id="8758557275681689734">Shiko të gjitha skedat e tua të hapura</translation>
+<translation id="8655599981421006542">Trokit këtu për të krijuar skeda të reja dhe për t'u kthyer te skedat e mëparshme</translation>
+<translation id="723171743924126238">Zgjidh imazhet</translation>
+<translation id="8751914237388039244">Zgjidh një imazh</translation>
+<translation id="1989112275319619282">Shfleto</translation>
+<translation id="7055152154916055070">Ridrejtimi u bllokua:</translation>
+<translation id="5524843473235508879">Ridrejtimi u bllokua.</translation>
+<translation id="6573096386450695060">Lejo gjithmonë</translation>
+<translation id="5805364706385912897">Kjo faqe përdor shumë memorie, prandaj Brave e ka vendosur atë në pauzë.</translation>
+<translation id="5138664332909611586">Kjo faqe përdor shumë memorie, ndaj Brave ka hequr disa përmbajtje.</translation>
+<translation id="9137013805542155359">Shfaq origjinalin</translation>
+<translation id="6361779936989026201">"Asistenti i Brave Software" në Brave</translation>
+<translation id="7291387454912369099">Blerja e aktivizuar nga "Asistenti"</translation>
+<translation id="4565206163201411670">Dëshiron të shfaqësh aktivitetin tënd të Brave te "Mirëqenia dixhitale"?</translation>
+<translation id="9055113864158719823">Mund të shikosh sajtet që viziton në Brave dhe të caktosh kohëmatës për to.\n\nBrave Software merr informacion rreth sajteve për të cilat cakton kohëmatës dhe për sa kohë i viziton ato. Ky informacion përdoret për të përmirësuar "Mirëqenien dixhitale".</translation>
+<translation id="4596514158372210596">Hiq aktivitetin tënd të Brave nga "Mirëqenia dixhitale"</translation>
+<translation id="1174893863889683998">Dëshiron të heqësh aktivitetin tënd të Brave nga "Mirëqenia dixhitale"?</translation>
+<translation id="708829030563435351">Sajtet që viziton në Brave nuk do të shfaqen. Të gjithë kohëmatësit e sajtit do të fshihen.</translation>
+<translation id="2056878612599315956">Sajti në pauzë</translation>
+<translation id="671481426037969117">Kohëmatësi <ph name="FQDN"/> përfundoi. Do të fillojë përsëri nesër.</translation>
+<translation id="7479104141328977413">Menaxhimi i skedave</translation>
+<translation id="3524138585025253783">Ndërfaqja e përdoruesit për zhvilluesin</translation>
+<translation id="4732120983431207637">Moduli i zbërthimit të stivës</translation>
+<translation id="6036057147555329831">Moduli shtesë ICU</translation>
+<translation id="2175927920773552910">Kodi QR</translation>
+<translation id="246532703174860178">Ndaj</translation>
+<translation id="2517472476991765520">Skano</translation>
+<translation id="8628973420740315031">Për të ndarë me personat në afërsi, lejoji të skanojnë këtë kod QR</translation>
+<translation id="7339921667754113786">Platforma e njoftimeve të Brave Software</translation>
+<translation id="8516012719330875537">Redaktori i imazheve</translation>
+<translation id="4808319664292298116">Do të hysh në VR nga <ph name="DOMAIN"/>?</translation>
+<translation id="4353114845960720315">Kur je në VR, ky sajt mund të arrijë të mësojë për:</translation>
+<translation id="118069123878619799">- karakteristikat e tua fizike, si gjatësia</translation>
+<translation id="5819762621475381970">- struktura e dhomës</translation>
+</translationbundle>

@@ -1,12 +1,12 @@
 diff --git a/extensions/browser/sandboxed_unpacker.cc b/extensions/browser/sandboxed_unpacker.cc
-index d5515446ad4ff37f19b01fad9fb35a59624150d8..4e3dc2dd6197abafca4bca84630125e2046d1d98 100644
+index ce4df30e47fb48cffbaa0e060b26ba7c76319991..c8cb8ea5d2fdf09572ef0cc9dd0b2062af075c1a 100644
 --- a/extensions/browser/sandboxed_unpacker.cc
 +++ b/extensions/browser/sandboxed_unpacker.cc
-@@ -966,6 +966,7 @@ base::DictionaryValue* SandboxedUnpacker::RewriteManifestFile(
+@@ -955,6 +955,7 @@ base::DictionaryValue* SandboxedUnpacker::RewriteManifestFile(
    DCHECK(!public_key_.empty());
    std::unique_ptr<base::DictionaryValue> final_manifest =
        manifest.CreateDeepCopy();
 +  brave::BraveRewriteManifest(extension_id_, final_manifest.get());
    final_manifest->SetString(manifest_keys::kPublicKey, public_key_);
  
-   std::string manifest_json;
+   {

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/renderer_updater.cc b/chrome/browser/profiles/renderer_updater.cc
-index 07e6f8d726dff0bfac97cb6555c5d735394655c8..3ac959bfdc89ac2646f8ca794a7b002fbb865472 100644
+index ce50c9ee3f9290b50b4a5704e8eec9dc91db3082..e6eed2042f34f13473ae4c71a44d31fec9d08dac 100644
 --- a/chrome/browser/profiles/renderer_updater.cc
 +++ b/chrome/browser/profiles/renderer_updater.cc
-@@ -60,6 +60,16 @@ void GetGuestViewDefaultContentSettingRules(
+@@ -55,6 +55,16 @@ void GetGuestViewDefaultContentSettingRules(
        base::Value::FromUniquePtrValue(
            content_settings::ContentSettingToValue(CONTENT_SETTING_BLOCK)),
        std::string(), incognito));

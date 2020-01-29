@@ -66,8 +66,8 @@ BraveProxyingURLLoaderFactory::InProgressRequest::InProgressRequest(
     const network::ResourceRequest& request,
     content::BrowserContext* browser_context,
     const net::MutableNetworkTrafficAnnotationTag& traffic_annotation,
-    network::mojom::URLLoaderRequest loader_request,
-    network::mojom::URLLoaderClientPtr client)
+    mojo::PendingReceiver<network::mojom::URLLoader> loader_receiver,
+    mojo::PendingRemote<network::mojom::URLLoaderClient> client)
     : factory_(factory),
       request_(request),
       request_id_(request_id),
@@ -78,12 +78,12 @@ BraveProxyingURLLoaderFactory::InProgressRequest::InProgressRequest(
       options_(options),
       browser_context_(browser_context),
       traffic_annotation_(traffic_annotation),
-      proxied_loader_binding_(this, std::move(loader_request)),
+      proxied_loader_receiver_(this, std::move(loader_receiver)),
       target_client_(std::move(client)),
-      proxied_client_binding_(this),
+      proxied_client_receiver_(this),
       weak_factory_(this) {
   // If there is a client error, clean up the request.
-  target_client_.set_connection_error_handler(base::BindOnce(
+  target_client_.set_disconnect_handler(base::BindOnce(
       &BraveProxyingURLLoaderFactory::InProgressRequest::OnRequestError,
       weak_factory_.GetWeakPtr(),
       network::URLLoaderCompletionStatus(net::ERR_ABORTED)));
@@ -134,8 +134,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::RestartInternal() {
     // continue or cancel the request.
     //
     // We pause the binding here to prevent further client message processing.
-    if (proxied_client_binding_.is_bound())
-      proxied_client_binding_.PauseIncomingMethodCallProcessing();
+    if (proxied_client_receiver_.is_bound())
+      proxied_client_receiver_.Pause();
 
     return;
   }
@@ -252,7 +252,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
   // bugs. The latter doesn't know anything about the redirect. Continuing
   // the load with it gives unexpected results. See
   // https://crbug.com/882661#c72.
-  proxied_client_binding_.Close();
+  proxied_client_receiver_.reset();
   target_loader_.reset();
 
   constexpr int kInternalRedirectStatusCode = 307;
@@ -327,8 +327,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     request_.referrer = ctx_->new_referrer;
   }
 
-  if (proxied_client_binding_.is_bound())
-    proxied_client_binding_.ResumeIncomingMethodCallProcessing();
+  if (proxied_client_receiver_.is_bound())
+    proxied_client_receiver_.Resume();
 
   // TODO(iefremov): Shorten
   if (ctx_->blocked_by != brave::kNotBlocked) {
@@ -394,8 +394,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
       // continue or cancel the request.
       //
       // We pause the binding here to prevent further client message processing.
-      if (proxied_client_binding_.is_bound())
-        proxied_client_binding_.PauseIncomingMethodCallProcessing();
+      if (proxied_client_receiver_.is_bound())
+        proxied_client_receiver_.Pause();
       return;
     }
     DCHECK_EQ(net::OK, result);
@@ -411,23 +411,22 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToStartRequest(
     return;
   }
 
-  if (proxied_client_binding_.is_bound())
-    proxied_client_binding_.ResumeIncomingMethodCallProcessing();
+  if (proxied_client_receiver_.is_bound())
+    proxied_client_receiver_.Resume();
 
   if (!target_loader_.is_bound() && factory_->target_factory_.is_bound()) {
     // Nothing has cancelled us up to this point, so it's now OK to
     // initiate the real network request.
-    network::mojom::URLLoaderClientPtr proxied_client;
-    proxied_client_binding_.Bind(mojo::MakeRequest(&proxied_client));
     uint32_t options = options_;
     factory_->target_factory_->CreateLoaderAndStart(
-        mojo::MakeRequest(&target_loader_), routing_id_,
+        target_loader_.BindNewPipeAndPassReceiver(), routing_id_,
         network_service_request_id_, options, request_,
-        std::move(proxied_client), traffic_annotation_);
+        proxied_client_receiver_.BindNewPipeAndPassRemote(),
+        traffic_annotation_);
   }
 
   // From here the lifecycle of this request is driven by subsequent events on
-  // either |proxy_loader_binding_|, |proxy_client_binding_|.
+  // either |proxied_loader_receiver_|, |proxied_client_receiver_|.
 }
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToSendHeaders(
@@ -464,8 +463,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToSendHeaders(
     pending_follow_redirect_params_.reset();
   }
 
-  if (proxied_client_binding_.is_bound())
-    proxied_client_binding_.ResumeIncomingMethodCallProcessing();
+  if (proxied_client_receiver_.is_bound())
+    proxied_client_receiver_.Resume();
   ContinueToStartRequest(net::OK);
 }
 
@@ -499,14 +498,14 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
 
     // These will get re-bound if a new request is initiated by
     // |FollowRedirect()|.
-    proxied_client_binding_.Close();
+    proxied_client_receiver_.reset();
     target_loader_.reset();
 
     ContinueToBeforeRedirect(redirect_info, net::OK);
     return;
   }
 
-  proxied_client_binding_.ResumeIncomingMethodCallProcessing();
+  proxied_client_receiver_.Resume();
   target_client_->OnReceiveResponse(std::move(current_response_));
 }
 
@@ -518,8 +517,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToBeforeRedirect(
     return;
   }
 
-  if (proxied_client_binding_.is_bound())
-    proxied_client_binding_.ResumeIncomingMethodCallProcessing();
+  if (proxied_client_receiver_.is_bound())
+    proxied_client_receiver_.Resume();
 
   target_client_->OnReceiveRedirect(redirect_info,
                                     std::move(current_response_));
@@ -564,7 +563,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
       // continue or cancel the request.
       //
       // We pause the binding here to prevent further client message processing.
-      proxied_client_binding_.PauseIncomingMethodCallProcessing();
+      proxied_client_receiver_.Pause();
       return;
     }
 
@@ -636,12 +635,12 @@ bool BraveProxyingURLLoaderFactory::MaybeProxyRequest(
 }
 
 void BraveProxyingURLLoaderFactory::CreateLoaderAndStart(
-    network::mojom::URLLoaderRequest loader_request,
+    mojo::PendingReceiver<network::mojom::URLLoader> loader_receiver,
     int32_t routing_id,
     int32_t request_id,
     uint32_t options,
     const network::ResourceRequest& request,
-    network::mojom::URLLoaderClientPtr client,
+    mojo::PendingRemote<network::mojom::URLLoaderClient> client,
     const net::MutableNetworkTrafficAnnotationTag& traffic_annotation) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
@@ -654,7 +653,7 @@ void BraveProxyingURLLoaderFactory::CreateLoaderAndStart(
   auto result = requests_.emplace(std::make_unique<InProgressRequest>(
       this, brave_request_id, request_id, routing_id, render_process_id_,
       frame_tree_node_id_, options, request, browser_context_,
-      traffic_annotation, std::move(loader_request), std::move(client)));
+      traffic_annotation, std::move(loader_receiver), std::move(client)));
   (*result.first)->Restart();
 }
 

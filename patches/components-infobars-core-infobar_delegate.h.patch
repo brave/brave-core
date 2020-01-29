@@ -1,11 +1,11 @@
 diff --git a/components/infobars/core/infobar_delegate.h b/components/infobars/core/infobar_delegate.h
-index aeb127a573768ea92c5687e649c3a61c9e731fce..3b29bdc60ab77cede7a88ac2f6db42392dc328e1 100644
+index 5c55e91768dc5dbf49d7a6c82a55422d336aa92e..3f15b488557d95c9639c043b2eb1b5d7b18ab34e 100644
 --- a/components/infobars/core/infobar_delegate.h
 +++ b/components/infobars/core/infobar_delegate.h
-@@ -159,6 +159,7 @@ class InfoBarDelegate {
-     TAB_SHARING_INFOBAR_DELEGATE = 93,
+@@ -160,6 +160,7 @@ class InfoBarDelegate {
      SAFETY_TIP_INFOBAR_DELEGATE = 94,
      SMS_RECEIVER_INFOBAR_DELEGATE = 95,
+     KNOWN_INTERCEPTION_DISCLOSURE_INFOBAR_DELEGATE = 96,
 +    BRAVE_INFOBAR_DELEGATE_IDENTIFIERS
    };
  

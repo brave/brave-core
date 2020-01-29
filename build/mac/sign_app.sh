@@ -3,7 +3,7 @@
 set -euo pipefail
 
 usage() {
-  echo "usage: $0 <input_dir> <output_dir> <packaging_dir> <is_development> <mac_provisioning_profile> <mac_signing_keychain> <mac_signing_identifier> <notarize> <notary_user> <notary_password> <notary_asc_provider>"
+  echo "usage: $0 <input_dir> <output_dir> <packaging_dir> <is_development> <mac_provisioning_profile> <mac_signing_identifier> <notarize> <notary_user> <notary_password> <notary_asc_provider>"
 }
 
 if [[ ${#} -lt "7" ]]; then
@@ -21,19 +21,18 @@ if [[ "${4}" = "True" ]]; then
 else
     MAC_PROVISIONING_PROFILE="${5}"
 fi
-MAC_SIGNING_KEYCHAIN="${6}"
-MAC_SIGNING_IDENTIFIER="${7}"
+MAC_SIGNING_IDENTIFIER="${6}"
 
-if [[ -z ${7} ]]; then
+if [[ -z ${6} ]]; then
   echo "Error: mac_signing_identifier is empty. Cannot sign."
   exit 1
 fi
 
-if [[ ${#} -gt "7" ]]; then
-  if [[ "${8}" = "True" ]]; then
+if [[ ${#} -gt "6" ]]; then
+  if [[ "${7}" = "True" ]]; then
     NOTARIZE="--notarize"
-    NOTARY_USER="${9}"
-    NOTARY_PASSWORD="${10}"
+    NOTARY_USER="${8}"
+    NOTARY_PASSWORD="${9}"
     if [[ -n "${NOTARIZE}" ]]; then
         if [[ ( -z "${NOTARY_USER}" ) || ( -z "${NOTARY_PASSWORD}" ) ]]; then
             echo "Error: when <notarize> is True, both <notary_user> and <notary_password> must be provided. Cannot perform notarization."
@@ -42,8 +41,8 @@ if [[ ${#} -gt "7" ]]; then
         fi
     fi
     NOTARIZE_ARGS="${NOTARIZE} --notary-user $NOTARY_USER --notary-password $NOTARY_PASSWORD"
-    if [[ "${11}" != "" ]]; then
-      NOTARY_ASC_PROVIDER="${11}"
+    if [[ "${10}" != "" ]]; then
+      NOTARY_ASC_PROVIDER="${10}"
       NOTARIZE_ARGS="$NOTARIZE_ARGS --notary-asc-provider ${NOTARY_ASC_PROVIDER}"
     fi
   else
@@ -77,7 +76,7 @@ if [ -d $DEST_DIR ]; then
 fi
 
 # Invoke python script to do the signing.
-PARAMS="--input $SOURCE_DIR --output $DEST_DIR --keychain $MAC_SIGNING_KEYCHAIN --identity $MAC_SIGNING_IDENTIFIER --disable-packaging"
+PARAMS="--input $SOURCE_DIR --output $DEST_DIR --identity $MAC_SIGNING_IDENTIFIER --disable-packaging"
 if [[ -z "${DEVELOPMENT}" ]]; then
   # Copy mac_provisioning_profile to the packaging_dir since that's where the
   # signing scripts expects to find it.

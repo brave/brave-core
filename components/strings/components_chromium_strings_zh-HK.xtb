@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="zh-HK">
+<translation id="4068928808254189629">前往
+        [Brave 選單] &gt;
+        [<ph name="SETTINGS_TITLE"/>]
+        &gt;
+        [<ph name="ADVANCED_TITLE"/>]
+        然後取消勾選 [<ph name="NO_PREFETCH_DESCRIPTION"/>]。
+        如果上述動作仍無法解決問題，建議您重新選取這個選項
+        以改善效能。</translation>
+<translation id="2017237562285586622">在防火牆或防毒軟件設定中允許 Brave 存取
+
+          網絡。</translation>
+<translation id="7460648687895344848">Brave OS 的初始設定尚未完成。</translation>
+<translation id="8187289872471304532">前往
+          [應用程式] &gt; [系統偏好設定] &gt; [網絡] &gt; [進階] &gt; [Proxy]
+          然後取消剔選所有已選取的 Proxy。</translation>
+<translation id="8619622797841001082">前往
+          [Brave 選單] &gt;
+          [<ph name="SETTINGS_TITLE"/>]
+          &gt;
+          [<ph name="ADVANCED_TITLE"/>]
+          &gt;
+          [<ph name="PROXIES_TITLE"/>]
+          並確認您的設定為 [不使用 Proxy] 或 [直接連線]。</translation>
+<translation id="8746410156982274638">前往
+          [Brave 選單] &gt;
+          [<ph name="SETTINGS_TITLE"/>]
+          &gt;
+          [<ph name="ADVANCED_TITLE"/>]
+          &gt;
+          [<ph name="PROXIES_TITLE"/>]
+          &gt;
+          [區域網絡設定]
+          然後取消剔選 [在您的區域網絡使用 Proxy 伺服器] 選框。</translation>
+<translation id="9156965752763025780">您的變更將於下次重新啟動 Brave 時生效。</translation>
+<translation id="130631256467250065">您的變更會在下次重新啟動裝置時生效。</translation>
+<translation id="7999989146447764333">Brave 不支援當機報告功能。</translation>
+<translation id="7932149101545999102">Brave 的開發有賴 <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> 開放原始碼計劃和其他<ph name="BEGIN_LINK_OSS"/>開放原始碼軟件<ph name="END_LINK_OSS"/>。</translation>
+<translation id="1953231710324290369">您正在查看安全的 Brave 頁面</translation>
+<translation id="2305018990464327944">Brave 驗證到由「<ph name="ISSUER"/>」發出的網站憑證。</translation>
+<translation id="88187049159266777">Brave 未正常關閉。</translation>
+</translationbundle>

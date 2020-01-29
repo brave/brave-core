@@ -10,6 +10,7 @@
 <translation id="7791543448312431591">जोड़ें</translation>
 <translation id="1181037720776840403">निकालें</translation>
 <translation id="5317780077021120954">सहेजें</translation>
+<translation id="3897092660631435901">मेनू</translation>
 <translation id="5300589172476337783">दिखाएं</translation>
 <translation id="7108338896283013870">छुपाएं</translation>
 <translation id="780301667611848630">जी नहीं, रहने दें</translation>
@@ -19,6 +20,7 @@
 <translation id="1036348656032585052">बंद करें</translation>
 <translation id="8105368624971345109">बंद करें</translation>
 <translation id="1175364870820465910">&amp;प्रिंट करें...</translation>
+<translation id="129553762522093515">हाल ही में बंद किए गए</translation>
 <translation id="8870413625673593573">हाल ही में बंद किए गए</translation>
 <translation id="385051799172605136">वापस</translation>
 <translation id="7481312909269577407">आगे जाएं</translation>
@@ -28,19 +30,23 @@
 <translation id="1201402288615127009">अगला</translation>
 <translation id="5713644099811900409">Brave Software खाता</translation>
 <translation id="3157931365184549694">पुनर्स्थापित करें</translation>
+<translation id="5040262127954254034">निजता</translation>
 <translation id="3061707000357573562">पैच सेवा</translation>
 <translation id="1914326953223720820">अनज़िप सेवा</translation>
+<translation id="1623104350909869708">इस पेज को अतिरिक्त डॉयलॉग बनाने से रोकें</translation>
 <translation id="2677748264148917807">छोड़ें</translation>
 <translation id="5556459405103347317">फिर लोड करें</translation>
 <translation id="2359808026110333948">जारी रखें</translation>
-<translation id="5935964611177478118">क्रोमियम में साइन इन करें</translation>
 <translation id="4378154925671717803">फ़ोन</translation>
 <translation id="8131740175452115882">दुबारा पूछें</translation>
 <translation id="8968766641738584599">कार्ड सेव करें</translation>
+<translation id="860043288473659153">कार्डधारक का नाम</translation>
+<translation id="869891660844655955">समय समाप्ति तारीख</translation>
 <translation id="5457113250005438886">अमान्य</translation>
 <translation id="6518133107902771759">सत्यापित करें</translation>
 <translation id="8987927404178983737">माह</translation>
 <translation id="6015796118275082299">वर्ष</translation>
+<translation id="1581080074034554886">CVC</translation>
 <translation id="9065203028668620118">संपादित करें</translation>
 <translation id="5029568752722684782">स्‍पष्‍ट कॉपी</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
@@ -70,6 +76,7 @@
 <translation id="4522570452068850558">विवरण</translation>
 <translation id="3586931643579894722">विवरण छुपाएं</translation>
 <translation id="614940544461990577">यह आज़माकर देखें:</translation>
+<translation id="4943872375798546930">कोई परिणाम नहीं</translation>
 <translation id="8688672835843460752">उपलब्ध</translation>
 <translation id="4989542687859782284">अनुपलब्ध है</translation>
 <translation id="59174027418879706">सक्षम किया गया</translation>
@@ -79,7 +86,10 @@
 <translation id="1838374766361614909">खोज साफ़ करें</translation>
 <translation id="495170559598752135">क्रियाएं</translation>
 <translation id="8261506727792406068">हटाएं</translation>
+<translation id="3207960819495026254">बुकमार्क किया गया</translation>
 <translation id="3303855915957856445">कोई खोज परिणाम नहीं मिला</translation>
+<translation id="1209206284964581585">अभी छिपाएं</translation>
+<translation id="1407135791313364759">सभी बुकमार्क खोलें</translation>
 <translation id="4880827082731008257">खोज इतिहास</translation>
 <translation id="4756388243121344051">&amp;इतिहास</translation>
 <translation id="1644574205037202324">इतिहास</translation>
@@ -91,11 +101,14 @@
 <translation id="1178581264944972037">पॉज़ करें</translation>
 <translation id="1232569758102978740">शीर्षक रहित</translation>
 <translation id="7514365320538308">डाउनलोड करें</translation>
+<translation id="8041089156583427627">सुझाव भेजें</translation>
 <translation id="7552846755917812628">ये टिप्स आज़माएं:</translation>
+<translation id="3960299545138990065">Brave को फिर से शुरू करें</translation>
 <translation id="4275830172053184480">अपना डिवाइस पुन: प्रारंभ करें</translation>
 <translation id="413544239732274901">अधिक जानें</translation>
 <translation id="7554791636758816595">नया टैब</translation>
 <translation id="2079545284768500474">अनकिया करें</translation>
+<translation id="17513872634828108">टैब खोलें</translation>
 <translation id="981121421437150478">ऑफ़लाइन</translation>
 <translation id="5171045022955879922">URL खोजें या लिखें</translation>
 <translation id="803771048473350947">फ़ाइल</translation>
@@ -108,12 +121,11 @@
 <translation id="6831043979455480757">अनुवाद करें</translation>
 <translation id="2473195200299095979">इस पेज का अनुवाद करें</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>, उत्तर, <ph name="ANSWER"/></translation>
-<translation id="9008201768610948239">ध्यान न दें</translation>
 <translation id="7714464543167945231">प्रमाणपत्र</translation>
 <translation id="4235360514405112390">मान्य</translation>
 <translation id="6447842834002726250">कुकी</translation>
 <translation id="1919345977826869612">विज्ञापन</translation>
-<translation id="410351446219883937">स्वतः प्ले</translation>
+<translation id="6612358246767739896">सुरक्षित सामग्री</translation>
 <translation id="9219103736887031265">चित्र</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">पॉप-अप और रीडायरेक्ट</translation>
@@ -128,6 +140,7 @@
 <translation id="7638605456503525968">सीरियल पोर्ट</translation>
 <translation id="2215727959747642672">फ़ाइल में बदलाव करना</translation>
 <translation id="6545864417968258051">ब्लूटूथ स्कैन करना</translation>
+<translation id="534295439873310000">NFC डिवाइस</translation>
 <translation id="5039804452771397117">अनुमति दें</translation>
 <translation id="7053983685419859001">ब्लॉक करें</translation>
 <translation id="57838592816432529">म्यूट करें</translation>
@@ -138,13 +151,17 @@
 <translation id="6979440798594660689">म्यूट करें (डिफ़ॉल्ट)</translation>
 <translation id="8037357227543935929">पूछें (डिफ़ॉल्ट)</translation>
 <translation id="8763927697961133303">USB डिवाइस</translation>
+<translation id="4165986682804962316">साइट सेटिंग</translation>
 <translation id="9011424611726486705">साइट सेटिंग खोलें</translation>
 <translation id="5932224571077948991">साइट में तंग करने वाले या गुमराह करने वाले विज्ञापन दिखाई देते हैं</translation>
 <translation id="7878562273885520351">आपके पासवर्ड से छेड़छाड़ की जा सकती है</translation>
 <translation id="1089439967362294234">पासवर्ड बदलें</translation>
+<translation id="9008201768610948239">ध्यान न दें</translation>
 <translation id="1186201132766001848">पासवर्ड जांचें</translation>
 <translation id="5979084224081478209">पासवर्ड जांचें</translation>
+<translation id="10614374240317010">कभी नहीं सेव किया गया</translation>
 <translation id="5869522115854928033">सहेजे गए पासवर्ड</translation>
+<translation id="230699814587342492">Brave पासवर्ड</translation>
 <translation id="5087580092889165836">कार्ड जोड़ें</translation>
 <translation id="2154484045852737596">कार्ड संपादित करें</translation>
 <translation id="4923459931733593730">भुगतान</translation>
@@ -193,8 +210,11 @@
 <translation id="1974060860693918893">उन्नत</translation>
 <translation id="5308380583665731573">कनेक्ट करें</translation>
 <translation id="2501278716633472235">वापस जाएं</translation>
+<translation id="1736420071277903564">कंप्यूटर</translation>
+<translation id="3906954721959377182">टैबलेट</translation>
 <translation id="7029809446516969842">पासवर्ड</translation>
 <translation id="6596325263575161958">सुरक्षित तरीका विकल्प</translation>
+<translation id="8461694314515752532">सिंक किए गए डेटा को अपने खुद के सिंक लंबे पासवर्ड से सुरक्षित करें</translation>
 <translation id="9050666287014529139">पासफ़्रेज़</translation>
 <translation id="9095388113577226029">और भाषाएं...</translation>
 <translation id="7600965453749440009">कभी भी <ph name="LANGUAGE"/> का अनुवाद न करें</translation>
@@ -202,6 +222,7 @@
 <translation id="7378627244592794276">नहीं</translation>
 <translation id="9137013805542155359">मूल दिखाएं</translation>
 <translation id="8725066075913043281">दोबारा कोशिश करें</translation>
+<translation id="5684874026226664614">ओह. इस पेज का अनुवाद नहीं किया जा सका.</translation>
 <translation id="583281660410589416">अज्ञात</translation>
 <translation id="9170848237812810038">&amp;पूर्ववत् करें</translation>
 <translation id="2972581237482394796">&amp;फिर से करें</translation>

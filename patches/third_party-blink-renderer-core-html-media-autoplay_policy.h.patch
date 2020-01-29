@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/html/media/autoplay_policy.h b/third_party/blink/renderer/core/html/media/autoplay_policy.h
+index 683f8e176d7d0b2cd477ae36870f1a3c625e35b2..0c6cba9c8cb1b6ceb61a2eb96191545fe5f709e0 100644
+--- a/third_party/blink/renderer/core/html/media/autoplay_policy.h
++++ b/third_party/blink/renderer/core/html/media/autoplay_policy.h
+@@ -112,6 +112,7 @@ class CORE_EXPORT AutoplayPolicy final
+   void EnsureAutoplayInitiatedSet();
+ 
+   virtual void Trace(Visitor*);
++  BRAVE_AUTOPLAY_POLICY_H
+ 
+  private:
+   friend class AutoplayUmaHelper;

@@ -1,21 +1,12 @@
 diff --git a/components/content_settings/core/common/content_settings_mojom_traits.h b/components/content_settings/core/common/content_settings_mojom_traits.h
-index 13cae3069f606248b2c4850f61a57f2fae51c6e7..61c587170582566737eaf570527bd43e08e24f06 100644
+index d342c755a42eb660b24a5fd514a5254b679471ac..25d15ad3d17eebd8f897e74e8410929f024bca63 100644
 --- a/components/content_settings/core/common/content_settings_mojom_traits.h
 +++ b/components/content_settings/core/common/content_settings_mojom_traits.h
-@@ -150,6 +150,16 @@ struct StructTraits<
-     return r.mixed_content_rules;
-   }
- 
-+  static const std::vector<ContentSettingPatternSource>& fingerprinting_rules(
-+      const RendererContentSettingRules& r) {
-+    return r.fingerprinting_rules;
-+  }
-+
-+  static const std::vector<ContentSettingPatternSource>& brave_shields_rules(
-+      const RendererContentSettingRules& r) {
-+    return r.brave_shields_rules;
-+  }
-+
+@@ -148,6 +148,7 @@ struct StructTraits<
    static bool Read(
        content_settings::mojom::RendererContentSettingRulesDataView data,
        RendererContentSettingRules* out);
++  BRAVE_CONTENT_SETTINGS_MOJOM_TRAITS_H
+ };
+ 
+ }  // namespace mojo

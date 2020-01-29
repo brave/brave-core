@@ -16,6 +16,7 @@
 #include "chrome/common/pref_names.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
+#include "components/password_manager/core/common/password_manager_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/safe_browsing/common/safe_browsing_prefs.h"
 #include "components/signin/public/base/signin_pref_names.h"
@@ -192,6 +193,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // Autocomplete in address bar
   registry->RegisterBooleanPref(kAutocompleteEnabled, true);
+
+  // Password leak detection should be disabled
+  registry->SetDefaultPrefValue(
+      password_manager::prefs::kPasswordLeakDetectionEnabled,
+      base::Value(false));
 
   RegisterProfilePrefsForMigration(registry);
 }

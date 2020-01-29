@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/importer/importer_list.cc b/chrome/browser/importer/importer_list.cc
-index da4c6f6cec37523f59fd6b18e9e1c603c8e6a0df..569bb3a108132454c2213ece7abcb4ff23fcbc3c 100644
+index 706578515dd446dec53285f0466f83d8788fe2bf..569bb3a108132454c2213ece7abcb4ff23fcbc3c 100644
 --- a/chrome/browser/importer/importer_list.cc
 +++ b/chrome/browser/importer/importer_list.cc
 @@ -29,6 +29,9 @@
@@ -12,23 +12,7 @@ index da4c6f6cec37523f59fd6b18e9e1c603c8e6a0df..569bb3a108132454c2213ece7abcb4ff
  namespace {
  
  #if defined(OS_WIN)
-@@ -94,8 +97,13 @@ void DetectFirefoxProfiles(const std::string locale,
-                            std::vector<importer::SourceProfile>* profiles) {
-   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
-                                                 base::BlockingType::MAY_BLOCK);
--
--  base::FilePath profile_path = GetFirefoxProfilePath();
-+#if defined(OS_WIN)
-+  const std::string firefox_install_id =
-+      shell_integration::GetFirefoxProgIdSuffix();
-+#else
-+  const std::string firefox_install_id;
-+#endif  // defined(OS_WIN)
-+  base::FilePath profile_path = GetFirefoxProfilePath(firefox_install_id);
-   if (profile_path.empty())
-     return;
- 
-@@ -145,21 +153,37 @@ std::vector<importer::SourceProfile> DetectSourceProfilesWorker(
+@@ -150,21 +153,37 @@ std::vector<importer::SourceProfile> DetectSourceProfilesWorker(
  #if defined(OS_WIN)
    if (shell_integration::IsFirefoxDefaultBrowser()) {
      DetectFirefoxProfiles(locale, &profiles);

@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/platform/cookie/canonical_cookie.cc b/third_party/blink/renderer/platform/cookie/canonical_cookie.cc
+index ea02c4fc617e6eae0bf5b4c56fd9ce04e379b932..0b77bb5ae1059cfcf4fb5eb1e430629038d8a796 100644
+--- a/third_party/blink/renderer/platform/cookie/canonical_cookie.cc
++++ b/third_party/blink/renderer/platform/cookie/canonical_cookie.cc
+@@ -114,6 +114,7 @@ base::Optional<CanonicalCookie> CanonicalCookie::Create(
+     const WebString& cookie_line,
+     base::Time creation_time) {
+   std::unique_ptr<net::CanonicalCookie> cookie = net::CanonicalCookie::Create(
++      BRAVE_CANONICALCOOKIE_CREATE
+       ToGURL(url), cookie_line.Utf8(), creation_time,
+       base::nullopt /* server_time */);
+   if (!cookie)

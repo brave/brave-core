@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/common/installer.include b/chrome/installer/linux/common/installer.include
-index 27393586fe37f441faa712c3b1388adab51891cf..cdf66268f1a83ad9202235a62b1c2fe66d4a42a7 100644
+index 21ae32901cc38c032e9a40b4949a879e87a4b7fb..e654c2a45121241bd95c68cf3447e8bb75c29c27 100644
 --- a/chrome/installer/linux/common/installer.include
 +++ b/chrome/installer/linux/common/installer.include
 @@ -75,6 +75,7 @@ process_template() (
@@ -36,7 +36,7 @@ index 27393586fe37f441faa712c3b1388adab51891cf..cdf66268f1a83ad9202235a62b1c2fe6
    # ICU data file; Necessary when the GN icu_use_data_file flag is true.
    install -m 644 "${BUILDDIR}/icudtl.dat" "${STAGEDIR}/${INSTALLDIR}/"
  
-@@ -185,7 +205,7 @@ stage_install_common() {
+@@ -184,7 +204,7 @@ stage_install_common() {
    strippedfile="${buildfile}.stripped"
    debugfile="${buildfile}.debug"
    "${BUILDDIR}/installer/common/eu-strip" -o "${strippedfile}" -f "${debugfile}" "${buildfile}"
@@ -45,7 +45,7 @@ index 27393586fe37f441faa712c3b1388adab51891cf..cdf66268f1a83ad9202235a62b1c2fe6
  
    # l10n paks
    install -m 755 -d "${STAGEDIR}/${INSTALLDIR}/locales/"
-@@ -286,11 +306,13 @@ stage_install_common() {
+@@ -285,11 +305,13 @@ stage_install_common() {
  
    # app icons
    local icon_regex=".*product_logo_[0-9]\+\."
@@ -61,7 +61,7 @@ index 27393586fe37f441faa712c3b1388adab51891cf..cdf66268f1a83ad9202235a62b1c2fe6
      fi
    fi
    LOGO_RESOURCES_PNG=$(find "${BUILDDIR}/installer/theme/" \
-@@ -398,6 +420,8 @@ stage_install_common() {
+@@ -397,6 +419,8 @@ stage_install_common() {
        local expected_perms=644
      elif [[ "${file_type}" = *"shell script"* ]]; then
        local expected_perms=755

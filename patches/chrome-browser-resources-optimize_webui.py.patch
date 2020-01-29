@@ -1,31 +1,31 @@
 diff --git a/chrome/browser/resources/optimize_webui.py b/chrome/browser/resources/optimize_webui.py
-index e7804916b41259968fb33a8499c64cd522a5db05..5723d1a552531f0cc18d9d17657bada27f9ab2ca 100755
+index 3055403e032612510b3fb488b3d9478d226f83e4..b333e7585a60a2d9784f63fa9a4a3c20c22b17d2 100755
 --- a/chrome/browser/resources/optimize_webui.py
 +++ b/chrome/browser/resources/optimize_webui.py
-@@ -45,6 +45,8 @@ _POLYMER_PATH = os.path.join(
-     _SRC_PATH, 'third_party', 'polymer', 'v1_0', 'components-chromium')
+@@ -55,6 +55,8 @@ _POLYMER_PATH = os.path.join(
+     '').replace('\\', '/')
  
  
-+_BR_RESOURCES_PATH = os.path.join(_SRC_PATH, 'brave', 'ui', 'webui', 'resources')
++_BR_RESOURCES_PATH = os.path.join(_SRC_PATH, 'brave', 'ui', 'webui', 'resources','').replace('\\', '/')
 +
- _VULCANIZE_BASE_ARGS = [
-   # These files are already combined and minified.
-   '--exclude', 'chrome://resources/html/polymer.html',
-@@ -60,6 +62,8 @@ _VULCANIZE_BASE_ARGS = [
-   '--exclude', 'chrome://resources/css/text_defaults.css',
-   '--exclude', 'chrome://resources/css/text_defaults_md.css',
-   '--exclude', 'chrome://resources/js/load_time_data.js',
-+  '--exclude', 'chrome://brave-resources/fonts/muli.css',
-+  '--exclude', 'chrome://brave-resources/fonts/poppins.css',
+ # These files are already combined and minified.
+ _BASE_EXCLUDES = [
+   # Common excludes for both Polymer 2 and 3.
+@@ -64,6 +66,8 @@ _BASE_EXCLUDES = [
+   'chrome://resources/css/text_defaults.css',
+   'chrome://resources/css/text_defaults_md.css',
+   'chrome://resources/mojo/mojo/public/js/mojo_bindings_lite.html',
++  'chrome://brave-resources/fonts/muli.css',
++  'chrome://brave-resources/fonts/poppins.css'
  
-   '--inline-css',
-   '--inline-scripts',
-@@ -74,7 +78,8 @@ _URL_MAPPINGS = [
-     ('chrome://resources/css/', _CSS_RESOURCES_PATH),
+   # Excludes applying only to Polymer 2.
+   'chrome://resources/html/polymer.html',
+@@ -91,7 +95,8 @@ _URL_MAPPINGS = [
      ('chrome://resources/html/', _HTML_RESOURCES_PATH),
      ('chrome://resources/js/', _JS_RESOURCES_PATH),
--    ('chrome://resources/polymer/v1_0/', _POLYMER_PATH)
-+    ('chrome://resources/polymer/v1_0/', _POLYMER_PATH),
+     ('chrome://resources/polymer/v1_0/', _POLYMER_PATH),
+-    ('chrome://resources/images/', _IMAGES_RESOURCES_PATH)
++    ('chrome://resources/images/', _IMAGES_RESOURCES_PATH),
 +    ('chrome://brave-resources/', _BR_RESOURCES_PATH)
  ]
  

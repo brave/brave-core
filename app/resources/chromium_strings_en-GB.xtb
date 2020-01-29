@@ -6,7 +6,6 @@
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Brave logo</translation>
 <translation id="7339898014177206373">New window</translation>
-<translation id="5935964611177478118">sign in to Brave</translation>
 <translation id="5516268345616100622">Task Manager - Brave</translation>
 <translation id="7918740962659365265">Help make Brave better by sending crash reports and <ph name="UMA_LINK"/> to Brave Software</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
@@ -121,7 +120,6 @@ Brave Software Brave is unable to recover your settings.</translation>
 <translation id="1459786048951724030">Brave OS could not sync your data due to an error signing in.</translation>
 <translation id="6813094029720377619">You clear cookies when you quit Brave. To keep syncing, change this <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
 <translation id="3340978935015468852">settings</translation>
-<translation id="380197516434040304">Remove From Brave...</translation>
 <translation id="300669147395456190">Brave Apps</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> requires that you read and accept the following Terms of Service before using this device. These terms do not expand, modify or limit the Brave OS Terms.</translation>
 <translation id="3293668930608086049">Brave is using your camera and microphone.</translation>
@@ -182,8 +180,6 @@ Brave Software Brave is unable to recover your settings.</translation>
 <translation id="7798069806040634998">Brave needs storage access to download files</translation>
 <translation id="7685904775439037072">Once Brave has access, websites will be able to ask you for access.</translation>
 <translation id="1744365871163268756">Please wait while Brave installs the latest system updates.</translation>
-<translation id="8000338990735917615">Future versions of Brave will install automatically.</translation>
-<translation id="2975476470948647918">Future versions of Brave will install automatically. When this download completes, Brave will restart and you'll be on your way.</translation>
 <translation id="7808415789955822133">Brave OS terms</translation>
 <translation id="7207456302801184289">Welcome to Brave</translation>
 <translation id="3507835409099344374">Go to Brave notification settings</translation>
@@ -215,7 +211,6 @@ Brave Software Brave is unable to recover your settings.</translation>
       Brave browser settings<ph name="LINK_END"/></translation>
 <translation id="4459296183696059108">If a setting doesn't show on this page, look in your <ph name="LINK_BEGIN"/>
       Brave OS settings<ph name="LINK_END"/></translation>
-<translation id="7977435741986383568">Brave may use web services to improve your browsing experience. You may optionally disable these services. <ph name="BEGIN_LINK"/>Find out more<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">To fix spelling errors, Brave sends the text that you type in text fields to Brave Software</translation>
 <translation id="8586264863973514035">To apply your changes, relaunch Brave</translation>
 <translation id="7021823858304886493">Allow Brave sign-in</translation>

@@ -13,11 +13,12 @@
 
 namespace brave_rewards {
 
-bool HandleRewardsProtocol(
-    const GURL& url,
-    content::WebContents::Getter web_contents_getter,
-    ui::PageTransition page_transition,
-    bool has_user_gesture);
+void HandleRewardsProtocol(const GURL& url,
+                           content::WebContents::OnceGetter web_contents_getter,
+                           ui::PageTransition page_transition,
+                           bool has_user_gesture);
+
+bool IsRewardsProtocol(const GURL& url);
 
 }  // namespace brave_rewards
 
