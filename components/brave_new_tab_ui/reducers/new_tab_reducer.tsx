@@ -5,8 +5,7 @@
 import { Reducer } from 'redux'
 
 // Constants
-import { types } from '../constants/new_tab_types'
-import { Preferences } from '../api/preferences'
+import { types, DismissBrandedWallpaperNotificationPayload } from '../constants/new_tab_types'
 import { Stats } from '../api/stats'
 import { PrivateTabData } from '../api/privateTabData'
 
@@ -17,6 +16,7 @@ import { InitialData, InitialRewardsData, PreInitialRewardsData } from '../api/i
 import * as bookmarksAPI from '../api/topSites/bookmarks'
 import * as dndAPI from '../api/topSites/dnd'
 import { registerViewCount } from '../api/brandedWallpaper'
+import * as preferencesAPI from '../api/preferences'
 import * as storage from '../storage'
 import { getTotalContributions } from '../rewards-utils'
 
@@ -251,12 +251,31 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
       break
 
+    case types.NEW_TAB_DISMISS_BRANDED_WALLPAPER_NOTIFICATION:
+      const { isUserAction } = payload as DismissBrandedWallpaperNotificationPayload
+      // Save persisted data.
+      preferencesAPI.saveIsBrandedWallpaperNotificationDismissed(true)
+      // Only change current data if user explicitly took an action (e.g. clicked
+      // on the "Close notification Button" - x).
+      if (isUserAction) {
+        state = {
+          ...state,
+          isBrandedWallpaperNotificationDismissed: true
+        }
+      }
+      break
+
     case types.NEW_TAB_PREFERENCES_UPDATED:
-      const preferences = payload as Preferences
+      const preferences = payload as preferencesAPI.Preferences
       const newState = {
         ...state,
         ...preferences
       }
+      // We don't want to update dismissed status of branded wallpaper notification
+      // since this can happen automatically when the notification is counted as
+      // 'viewed', but we want to keep showing it until the page is navigated away from
+      // or refreshed.
+      newState.isBrandedWallpaperNotificationDismissed = state.isBrandedWallpaperNotificationDismissed
       // Remove branded wallpaper when opting out or turning wallpapers off
       const hasTurnedBrandedWallpaperOff = !preferences.brandedWallpaperOptIn && state.brandedWallpaperData
       const hasTurnedWallpaperOff = !preferences.showBackgroundImage && state.showBackgroundImage
