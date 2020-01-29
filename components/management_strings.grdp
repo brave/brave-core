@@ -157,21 +157,21 @@
     Performance data and crash reports
   </message>
 
-  <!-- Strings related to Brave Enterprise Threat Protection -->
-  <message name="IDS_MANAGEMENT_THREAT_PROTECTION" desc="Title of the Brave Enterprise Threat Protection section of the page">
-    Brave Enterprise Threat Protection
+  <!-- Strings related to Brave Enterprise User Protect -->
+  <message name="IDS_MANAGEMENT_THREAT_PROTECTION" desc="Title of the Brave Enterprise User Protect section of the page">
+    Brave Enterprise User Protect
   </message>
-  <message name="IDS_MANAGEMENT_THREAT_PROTECTION_DESCRIPTION" desc="Description of the Brave Enterprise Threat Protection section of the page">
-    Your administrator has enabled Brave Enterprise Threat Protection on your browser. Brave Enterprise Threat Protection has access to some of your data.
+  <message name="IDS_MANAGEMENT_THREAT_PROTECTION_DESCRIPTION" desc="Description of the Brave Enterprise User Protect section of the page">
+    Your administrator has enabled Brave Enterprise User Protect on your browser. Brave Enterprise User Protect has access to some of your data.
   </message>
-  <message name="IDS_MANAGEMENT_THREAT_PROTECTION_DESCRIPTION_BY" desc="Description of the Brave Enterprise Threat Protection section of the page">
-    <ph name="ENROLLMENT_DOMAIN">$1<ex>example.com</ex></ph> has enabled Brave Enterprise Threat Protection on your browser. Brave Enterprise Threat Protection has access to some of your data.
+  <message name="IDS_MANAGEMENT_THREAT_PROTECTION_DESCRIPTION_BY" desc="Description of the Brave Enterprise User Protect section of the page">
+    <ph name="ENROLLMENT_DOMAIN">$1<ex>example.com</ex></ph> has enabled Brave Enterprise User Protect on your browser. Brave Enterprise User Protect has access to some of your data.
   </message>
   <message name="IDS_MANAGEMENT_DATA_LOSS_PREVENTION_NAME" desc="Name for the data loss prevention feature">
     Data Loss Prevention
   </message>
   <message name="IDS_MANAGEMENT_DATA_LOSS_PREVENTION_PERMISSIONS" desc="Permissions description for the data loss prevention feature">
-    Scan the contents of the cache and files that you download or upload in Brave.
+    Scan the contents of the files that you download or upload in Brave.
   </message>
   <message name="IDS_MANAGEMENT_MALWARE_SCANNING_NAME" desc="Name for the malware scanning feature">
     Malware Scanning
@@ -183,6 +183,6 @@
     Enterprise Reporting
   </message>
   <message name="IDS_MANAGEMENT_ENTERPRISE_REPORTING_PERMISSIONS" desc="Permissions description for the enterprise reporting feature">
-    Share data about security events that have been flagged by Brave Enterprise Threat Protection with your Administrator. These may include page urls, file name and file metadata, your device username and Brave username.
+    Share data about security events that have been flagged by Brave Enterprise User Protect with your Administrator. This may include URLs of pages you visit, file names or metadata, and the username you use to sign in to your device and Brave.
   </message>
 </grit-part>

@@ -1,10 +1,10 @@
 diff --git a/content/public/browser/permission_type.h b/content/public/browser/permission_type.h
-index df741d4618e2c49cc5c66a7a4a7ea6c41fcdd25a..5d544aecf3965eae17ce68b9c96624659ca3f6a4 100644
+index b2934c2992e2188e122d63d3f2745f85b5c6d076..b9444831e4bd969cff93fe31506e060c055501d0 100644
 --- a/content/public/browser/permission_type.h
 +++ b/content/public/browser/permission_type.h
-@@ -40,6 +40,7 @@ enum class PermissionType {
-   WAKE_LOCK_SCREEN = 20,
+@@ -41,6 +41,7 @@ enum class PermissionType {
    WAKE_LOCK_SYSTEM = 21,
+   NFC = 22,
  
 +  AUTOPLAY,
    // Always keep this at the end.

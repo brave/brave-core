@@ -182,8 +182,8 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "Contributions Mensuelles",
-    "description": "Title for monthly tips section in wallet summary"
+    "message": "Contributions mensuelles\n",
+    "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
     "message": "Désactivé",
@@ -256,7 +256,7 @@
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
-    "message": "Votre paiement mensuel de vos contributions automatiques et de vos dons mensuels n'a pas pu être réalisé en raison de l'insuffisance de vos fonds. Nous réessaierons dans 30 jours.",
+    "message": "Your scheduled monthly payment for Auto-Contribute and monthly contributions could not be completed due to insufficient funds. We’ll try again in 30 days.",
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
@@ -400,12 +400,12 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "Vos dons mensuels ont été traités !",
-    "description": "Message for monthly tips processed notification"
+    "message": "Your monthly contributions have been processed!",
+    "description": "Message for monthly contributions processed notification"
   },
   "contributionTips": {
     "message": "Contributions et dons",
-    "description": "Title for monthly tips processed notification"
+    "description": "Title for monthly contributions processed notification"
   },
   "serviceTextPanelWelcome": {
     "message": "En cliquant sur « Rejoindre Rewards », vous indiquez avoir lu et accepté les",

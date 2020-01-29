@@ -21,14 +21,12 @@ SkColor GetAuraColor(NativeTheme::ColorId color_id,
                     const NativeTheme* base_theme,
                     NativeTheme::ColorScheme color_scheme) {
   if (color_scheme == NativeTheme::ColorScheme::kDefault)
-    color_scheme = base_theme->GetSystemColorScheme();
+    color_scheme = base_theme->GetDefaultSystemColorScheme();
   const bool is_dark = (color_scheme == NativeTheme::ColorScheme::kDark);
   switch (color_id) {
     case NativeTheme::kColorId_ButtonEnabledColor:
       return is_dark ? SK_ColorWHITE
                     : SkColorSetRGB(0x3b, 0x3e, 0x4f);
-    case NativeTheme::kColorId_ButtonHoverColor:
-      return kBraveColorBrand;
     case NativeTheme::kColorId_ButtonPressedShade:
       return SkColorSetA(kBraveColorBrand, is_dark ? 0x2b : 0x23);
     case NativeTheme::kColorId_ProminentButtonColor:

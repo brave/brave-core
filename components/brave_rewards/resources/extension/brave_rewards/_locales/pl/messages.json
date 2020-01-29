@@ -182,8 +182,8 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "Podsumowanie mesięcznych napiwków",
-    "description": "Title for monthly tips section in wallet summary"
+    "message": "Miesięczne wkłady",
+    "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
     "message": "Wył.",
@@ -256,7 +256,7 @@
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
-    "message": "Twoje zaplanowane miesięczne płatności, w celu realizacji automatycznego wsparcia i comiesięcznych napiwków nie mogły zostać przetworzone, ponieważ w Twoim portfelu brakuje środków. Spróbujemy ponownie za 30 dni.",
+    "message": "Twoje zaplanowane miesięczne płatności, w celu realizacji automatycznego wsparcia nie mogły zostać przetworzone, ponieważ w Twoim portfelu brakuje środków. Spróbujemy ponownie za 30 dni.",
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
@@ -400,12 +400,12 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "Twoje miesięczne napiwki zostały przetworzone!",
-    "description": "Message for monthly tips processed notification"
+    "message": "Twoje miesięczne wsparcie zostało przetworzone!",
+    "description": "Message for monthly contributions processed notification"
   },
   "contributionTips": {
     "message": "Wspieranie i napiwki",
-    "description": "Title for monthly tips processed notification"
+    "description": "Title for monthly contributions processed notification"
   },
   "serviceTextPanelWelcome": {
     "message": "Klikając \"Dołącz do nagród\", zaznaczasz, że przeczytałeś i zgadzasz się na",

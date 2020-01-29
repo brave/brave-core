@@ -182,8 +182,8 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "Maandelijkse tips",
-    "description": "Title for monthly tips section in wallet summary"
+    "message": "Maandelijkse bijdrages",
+    "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
     "message": "Uit",
@@ -256,7 +256,7 @@
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
-    "message": "Je geplande maandelijkse bijdrage voor Auto-Contribute en maandelijkse tips kon wegens onvoldoende saldo niet worden geïnd. We zullen het over 30 dagen opnieuw proberen.",
+    "message": "Your scheduled monthly payment for Auto-Contribute and monthly contributions could not be completed due to insufficient funds. We’ll try again in 30 days.",
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
@@ -400,12 +400,12 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "Uw maandelijkse fooien zijn verwerkt!",
-    "description": "Message for monthly tips processed notification"
+    "message": "Your monthly contributions have been processed!",
+    "description": "Message for monthly contributions processed notification"
   },
   "contributionTips": {
     "message": "Bijdragen en fooien",
-    "description": "Title for monthly tips processed notification"
+    "description": "Title for monthly contributions processed notification"
   },
   "serviceTextPanelWelcome": {
     "message": "Door te klikken op 'Beloningen voor lid worden' geeft u aan dat u het volgende hebt gelezen en ermee akkoord gaat:",

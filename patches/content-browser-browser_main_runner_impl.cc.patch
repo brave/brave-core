@@ -1,8 +1,8 @@
 diff --git a/content/browser/browser_main_runner_impl.cc b/content/browser/browser_main_runner_impl.cc
-index b9b31076a8cac05cf4726de4c2c8c16c63043df6..abb7675556bf66633b6270ed5a61b535df0b4f83 100644
+index 4b59e815be0a8ae8b8ef1f8586b6bc3862fd67b9..34ec2c5bbdb17f1f854d2a6283e1713e1e9d5b80 100644
 --- a/content/browser/browser_main_runner_impl.cc
 +++ b/content/browser/browser_main_runner_impl.cc
-@@ -17,6 +17,7 @@
+@@ -16,6 +16,7 @@
  #include "base/time/time.h"
  #include "base/trace_event/heap_profiler_allocation_context_tracker.h"
  #include "base/trace_event/trace_event.h"
@@ -10,7 +10,7 @@ index b9b31076a8cac05cf4726de4c2c8c16c63043df6..abb7675556bf66633b6270ed5a61b535
  #include "build/build_config.h"
  #include "components/tracing/common/trace_startup_config.h"
  #include "components/tracing/common/tracing_switches.h"
-@@ -95,8 +96,8 @@ int BrowserMainRunnerImpl::Initialize(const MainFunctionParams& parameters) {
+@@ -94,8 +95,8 @@ int BrowserMainRunnerImpl::Initialize(const MainFunctionParams& parameters) {
  
      gfx::InitializeFonts();
  

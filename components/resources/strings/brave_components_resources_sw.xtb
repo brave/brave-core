@@ -77,19 +77,11 @@
 <translation id="438216590634144114">Chagua kisakuzi ambacho ungependa kutumia kama chaguo msingi wakati ukivinjari kwenye tovuti kutoka kwenye upao wa anwani.</translation>
 <translation id="5804484488647369316">Chagua kivinjari chaguomsingi</translation>
 <translation id="4428458837269935199">Kwa uzoefu wa utafutaji wa faragha zaidi, jaribu DuckDuckGo.</translation>
-<translation id="513635702954746724">Chagua rangi ya thimu yako</translation>
-<translation id="6842850080200126305">Pangilia rangi ya upaozana wako kwa kuchagua chaguo la nyeupe au nyeusi kutoka kwenye paneli la mipangilio.</translation>
-<translation id="5805868144901917207">Teua mandhari</translation>
-<translation id="8131740175452115882">Thibitisha</translation>
-<translation id="713206503018076063">Mandhari ya mfumo (chaguo-msingi)</translation>
-<translation id="1807246157184219062">Mwanga</translation>
-<translation id="2414886740292270097">Giza</translation>
 <translation id="3829010735958850433">Ruka ziara ya ukaribisho</translation>
 <translation id="1201402288615127009">Inayofuata</translation>
 <translation id="7954950242989581218">Vinjari salama na kwa uzuri</translation>
 <translation id="2188651882929633653">Ngao ya Brave huzuia vitu vibaya vinavyojaribu kukufuatilia kwenye mtandao ikiwa ni pamoja na matangazo mengi. Weka Ngao kuwa chini ikiwa tovuti inaonekana haifanyi kazi. Brave hutumia <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>uchanganuzi wa bidhaa wa faragha kabisa<ph name="END_LINK_P3A">&lt;/a&gt;</ph> kukadiria matumiz ya jumla ya vipengele fulani. Unaweza kuzima hii kwenye <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Mipangilio<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Matangazo</translation>
-<translation id="5698387814910197501">Pata {{currency}} kwa kutazama matangazo katika Brave. Matangazo yanayowasilishwa yanalingana na mambo yanayokuvutia, kutokana na mwenendo wa kuvinjari kwako. Hakuna data binafsi wala historia ya kuvinjari inayotoka kwenye kivinjari chako.</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
 <translation id="3742599705619405136">Njia ya kiotomatiki ya kuwasaidia wachapishaji na watengenezaji wa maudhui. Weka malipo ya kila mwezi na usakure kwa kawaida. Tovuti unazotembelea zilizoidhinishwa na Brave hupokea michango yako kiotomatiki, kulingana na umakini wako kama unavyopimwa na Brave.</translation>
 <translation id="20281847067919078">Zawadi zilizokadiriwa zilizowekwa pembeni</translation>
@@ -97,6 +89,7 @@
 <translation id="319209088187794725">Arifa za matangazo zilizopokelewa mwezi huu</translation>
 <translation id="4229016885653790965">Samahani! Matangazo hayapatikani kwenye eneo lako.</translation>
 <translation id="2539279826042558064">Brave Rewards na Matangazo havipatikanai kwenye kifaa chako kwa sasa.</translation>
+<translation id="5421369907811917952">Mipangilio mingine</translation>
 <translation id="654711254769318398">Kurasa za tangazo zilizotazamwa</translation>
 <translation id="2532127066761785857">Idadi ya juu ya matangazo yaliyoonyeshwa</translation>
 <translation id="5171071066587880677">Tangazo 1 kwa saa</translation>
@@ -132,7 +125,6 @@
 <translation id="2726674968268546964">vianzio</translation>
 <translation id="7286722244752781970">Muda wa chini wa ukurasa kabla ya kuandika ziara</translation>
 <translation id="4424486208397124985">Ziara za kiwango cha chini kwa ufaafu w mchapishaji</translation>
-<translation id="5421369907811917952">Mipangilio mingine</translation>
 <translation id="6248554379744796526">Onyesha tovuti zisizoidhinishwa katika orodha</translation>
 <translation id="5875669387851353511">Ruhusu michango ya video</translation>
 <translation id="8933202740471878108">Ziara 1</translation>
@@ -162,7 +154,6 @@
 <translation id="7210234701206674260">Kuna tatizo kwenye Zawadi za Brave. Tafadhali jaribu tena baadaye.</translation>
 <translation id="570208820610947248">Tumegundua kwamba kuna kitu hakiko sawa kwenye waleti yako. Unapaswa kurejesha waleti yako ya mbadala kabla ya miamala yoyote haijachakatwa.</translation>
 <translation id="7797604753681168055">Rejesha sasa!</translation>
-<translation id="5549059668721746831">Zawadi inayofuata ya kila mwezi.</translation>
 <translation id="6231182869178328516">Nimemzawadia <ph name="NAME"/> kwa kutumia Kisakuzi cha Brave. Angalia kwenye https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">Samahani, kulikuwa na tatizo wakati wa kuchakata ombi lako, tafadhali jaribu tena.</translation>
@@ -261,8 +252,6 @@
 <translation id="4114667046481794032">Kiwango cha mchango</translation>
 <translation id="3520817231440482449">Changia tovuti hii kila mwezi</translation>
 <translation id="1827184134638345603">Tuma Mchango…</translation>
-<translation id="7928243298881209869">Zawadi yako ya kwanza wa kila mwezi itatumwa mnamo:</translation>
-<translation id="6045860799501892362">Pangilia zawadi ya kila mwezi</translation>
 <translation id="8003573781961874199">Pakua kama PDF</translation>
 <translation id="298067735430872465">Mapato kutokana na Matangazo</translation>
 <translation id="2266556115441975588">Zawadi zako kutoka kwenye Matangazo zipo hapa!</translation>
@@ -291,7 +280,6 @@
 <translation id="9115913704608474258">Novemba</translation>
 <translation id="7828956995407538686">Oktoba</translation>
 <translation id="5502713021410870035">Septemba</translation>
-<translation id="5737831580668469027">Zawadi za Kila Mwezi!</translation>
 <translation id="606865182719489911">Ruzuku ya bure ya kianzio inapatikana.</translation>
 <translation id="2487641031722095938">Ni siku yako yenye bahati!</translation>
 <translation id="6255773350565723852">Ruzuku yako ya kianzio ipo njiani.</translation>
@@ -318,13 +306,8 @@
 <translation id="4923459931733593730">Malipo</translation>
 <translation id="4021593982164260556">Malipo hufanywa kila siku ya {{day}} kila mwezi.</translation>
 <translation id="6104680658798556671">Malipo hayakufanyika.</translation>
-<translation id="2834888581291358924">Salio lako linapokuwa halitoshi kuweza kumudu jumla ya pamoja ya Auto-Contribute na michango inayojirudia, malipo haya yanarukwa kwa kipindi.</translation>
 <translation id="3138528956349114724">Tovuti zilizobanwa sasa</translation>
-<translation id="2337632028350283479">Hivi ndivyo zawadi za kila mwezi zinazvyofanya kazi:</translation>
-<translation id="6457273203091513039">Zawadi za kila mwezi hazitokani na malipo yako ya Auto Contribute. Ni tofauti.</translation>
 <translation id="9099396904827413228">Kila tovuti inalipwa kiasi mahususi kila mwezi.</translation>
-<translation id="5051110132941857169">Zawadi za kila mwezi zote zinalipwa mara moja kila mwezi. Ikiwa unatumia Auto Contribute, zawadi zinakwisha muda ule ule kama ilivyo kwa malipo yako ya kila mwezi ya Auto Contribute.</translation>
-<translation id="3374483782662414143">Unaweza kuiondoa tovuti yoyote inayopokea zawadi za kila mwezi kutoka ndani ya paneli la Zawadi.</translation>
 <translation id="5082474983463379713">Tafadhali zingatia:</translation>
 <translation id="1430915738399379752">Chapisha</translation>
 <translation id="135956957367307069">Ombi lako bado linachakatwa, tafadhali subiri.</translation>

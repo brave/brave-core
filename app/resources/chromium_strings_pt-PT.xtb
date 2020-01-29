@@ -6,7 +6,6 @@
 <translation id="680297041157509674">SO Brave</translation>
 <translation id="4847979153841887006">Logótipo do Brave</translation>
 <translation id="7339898014177206373">Nova janela</translation>
-<translation id="5935964611177478118">inicie sessão no Brave</translation>
 <translation id="5516268345616100622">Gestor de Tarefas - Brave</translation>
 <translation id="7918740962659365265">Ajudar a melhorar o Brave ao enviar relatórios de falhas e <ph name="UMA_LINK"/> à Brave Software</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
@@ -119,7 +118,6 @@ O Brave não consegue recuperar as suas definições.</translation>
 <translation id="1459786048951724030">O Brave não conseguiu sincronizar os dados devido a um erro no início de sessão.</translation>
 <translation id="6813094029720377619">Os cookies são eliminados quando sai do Brave. Para continuar a sincronizar, altere <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
 <translation id="3340978935015468852">definições</translation>
-<translation id="380197516434040304">Remover do Brave...</translation>
 <translation id="300669147395456190">Aplicações do Brave</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> obriga-o a ler e aceitar os seguintes Termos de Utilização antes de utilizar este dispositivo. Estes termos não ampliam, modificam nem limitam os Termos do SO Brave.</translation>
 <translation id="3293668930608086049">O Brave está a utilizar a câmara e o microfone.</translation>
@@ -180,8 +178,6 @@ O Brave não consegue recuperar as suas definições.</translation>
 <translation id="7798069806040634998">O Brave necessita de acesso ao armazenamento para transferir ficheiros.</translation>
 <translation id="7685904775439037072">Assim que o Brave tiver acesso, os Websites poderão solicitar-lhe o acesso.</translation>
 <translation id="1744365871163268756">Aguarde até que o Brave instale as atualizações do sistema mais recentes.</translation>
-<translation id="8000338990735917615">As versões futuras do Brave serão instaladas automaticamente.</translation>
-<translation id="2975476470948647918">As versões futuras do Brave serão instaladas automaticamente. Quando esta transferência estiver concluída, o Brave irá reiniciar e o processo estará terminado.</translation>
 <translation id="7808415789955822133">Termos do SO Brave</translation>
 <translation id="7207456302801184289">Bem-vindo ao Brave</translation>
 <translation id="3507835409099344374">Aceder às definições de notificação do Brave</translation>
@@ -213,7 +209,6 @@ O Brave não consegue recuperar as suas definições.</translation>
       Definições do navegador Brave<ph name="LINK_END"/>.</translation>
 <translation id="4459296183696059108">Se não encontrar uma definição nesta página, procure nas <ph name="LINK_BEGIN"/>
       Definições do Brave OS<ph name="LINK_END"/>.</translation>
-<translation id="7977435741986383568">O Brave poderá utilizar serviços Web para melhorar a sua experiência de navegação. Poderá optar por desativar estes serviços. <ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Para corrigir erros ortográficos, o Brave envia o texto que introduzir nos campos de texto para a Brave Software.</translation>
 <translation id="8586264863973514035">Para aplicar as alterações, reinicie o Brave.</translation>
 <translation id="7021823858304886493">Permitir o início de sessão no Brave</translation>

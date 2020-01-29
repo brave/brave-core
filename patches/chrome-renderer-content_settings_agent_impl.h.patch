@@ -1,0 +1,12 @@
+diff --git a/chrome/renderer/content_settings_agent_impl.h b/chrome/renderer/content_settings_agent_impl.h
+index cb9d73fded66930c19e1e0a3e881436da6c0e39b..78b83ae4c2ac82f9cc43a6fd9cc8d5345bdb2ec6 100644
+--- a/chrome/renderer/content_settings_agent_impl.h
++++ b/chrome/renderer/content_settings_agent_impl.h
+@@ -117,6 +117,7 @@ class ContentSettingsAgentImpl
+       mojo::Remote<chrome::mojom::ContentSettingsManager>* manager);
+ 
+  private:
++  friend class BraveContentSettingsAgentImpl;
+   FRIEND_TEST_ALL_PREFIXES(ContentSettingsAgentImplTest, WhitelistedSchemes);
+   FRIEND_TEST_ALL_PREFIXES(ContentSettingsAgentImplBrowserTest,
+                            ContentSettingsInterstitialPages);

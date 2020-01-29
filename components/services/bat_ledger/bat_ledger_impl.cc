@@ -13,8 +13,8 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "brave/base/containers/utils.h"
 #include "brave/components/services/bat_ledger/bat_ledger_client_mojo_proxy.h"
-#include "mojo/public/cpp/bindings/map.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -158,7 +158,7 @@ void BatLedgerImpl::OnXHRLoad(uint32_t tab_id, const std::string& url,
     const base::flat_map<std::string, std::string>& parts,
     const std::string& first_party_url, const std::string& referrer,
     ledger::VisitDataPtr visit_data) {
-    ledger_->OnXHRLoad(tab_id, url, mojo::FlatMapToMap(parts),
+    ledger_->OnXHRLoad(tab_id, url, base::FlatMapToMap(parts),
         first_party_url, referrer, std::move(visit_data));
 }
 
@@ -663,7 +663,7 @@ void BatLedgerImpl::SaveMediaInfo(
 
   ledger_->SaveMediaInfo(
       type,
-      mojo::FlatMapToMap(args),
+      base::FlatMapToMap(args),
       std::bind(BatLedgerImpl::OnSaveMediaInfoCallback, holder, _1, _2));
 }
 
@@ -705,7 +705,7 @@ void BatLedgerImpl::GetShareURL(
     const std::string& type,
     const base::flat_map<std::string, std::string>& args,
     GetShareURLCallback callback) {
-  std::move(callback).Run(ledger_->GetShareURL(type, mojo::FlatMapToMap(args)));
+  std::move(callback).Run(ledger_->GetShareURL(type, base::FlatMapToMap(args)));
 }
 
 // static
@@ -852,7 +852,7 @@ void BatLedgerImpl::OnExternalWalletAuthorization(
     ledger::Result result,
     const std::map<std::string, std::string>& args) {
   if (holder->is_valid())
-    std::move(holder->get()).Run(result, mojo::MapToFlatMap(args));
+    std::move(holder->get()).Run(result, base::MapToFlatMap(args));
   delete holder;
 }
 
@@ -865,7 +865,7 @@ void BatLedgerImpl::ExternalWalletAuthorization(
 
   ledger_->ExternalWalletAuthorization(
       wallet_type,
-      mojo::FlatMapToMap(args),
+      base::FlatMapToMap(args),
       std::bind(BatLedgerImpl::OnExternalWalletAuthorization,
                 holder,
                 _1,

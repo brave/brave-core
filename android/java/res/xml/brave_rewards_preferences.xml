@@ -7,13 +7,13 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" >
 
-    <org.chromium.chrome.browser.preferences.ChromeSwitchPreference
+    <org.chromium.chrome.browser.settings.ChromeSwitchPreference
         android:key="ads_switch"
         android:title="@string/show_ads_when_brave_is_not_in_use"
         android:summaryOn="@string/text_on"
         android:summaryOff="@string/text_off" />
 
-    <org.chromium.chrome.browser.preferences.BraveRewardsResetPreference
+    <org.chromium.chrome.browser.settings.BraveRewardsResetPreference
         android:key="reset_rewards"
         android:title="@string/reset_brave_rewards_option"
         android:positiveButtonText="@string/brave_sync_confirm_code_words_text"

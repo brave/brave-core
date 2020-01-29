@@ -1,13 +1,10 @@
 diff --git a/chrome/browser/resources/downloads/manager.html b/chrome/browser/resources/downloads/manager.html
-index 3415eceeeb53203260a6b9c1d20e96f38dd2c55e..f05a3eabcb4e3f3ba88678880de9eb101f505d70 100644
+index 8c5e0d7a682c11c589527ffefdb8c868f3d24c68..f25291992504370135e6e085a9ac353482ab36d0 100644
 --- a/chrome/browser/resources/downloads/manager.html
 +++ b/chrome/browser/resources/downloads/manager.html
-@@ -22,7 +22,7 @@
- 
- <dom-module id="downloads-manager">
-   <template>
--    <style include="cr-page-host-style cr-shared-style cr-hidden-style">
-+    <style include="cr-page-host-style cr-shared-style cr-hidden-style br-shared-style">
-       :host {
-         display: flex;
-         flex: 1 0;
+@@ -1,4 +1,4 @@
+-<style include="cr-page-host-style cr-shared-style cr-hidden-style">
++<style include="cr-page-host-style cr-shared-style cr-hidden-style br-shared-style">
+   :host {
+     display: flex;
+     flex: 1 0;

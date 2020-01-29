@@ -6,7 +6,6 @@
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Logo ng Brave</translation>
 <translation id="7339898014177206373">Bagong window</translation>
-<translation id="5935964611177478118">mag-sign in sa Brave</translation>
 <translation id="5516268345616100622">Task Manager - Brave</translation>
 <translation id="7918740962659365265">Tumulong na gawing mas mahusay ang Brave sa pamamagitan ng pagpapadala ng mga ulat ng pag-crash at <ph name="UMA_LINK"/> sa Brave Software</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
@@ -121,7 +120,6 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="1459786048951724030">Hindi ma-sync ng Brave OS ang iyong data dahil sa isang error sa pagsa-sign in.</translation>
 <translation id="6813094029720377619">Maki-clear mo ang cookies kapag umalis ka sa Brave. Para patuloy na mag-sync, baguhin ang <ph name="COOKIE_SETTINGS_LINK"/> na ito.</translation>
 <translation id="3340978935015468852">mga setting</translation>
-<translation id="380197516434040304">Alisin Sa Brave...</translation>
 <translation id="300669147395456190">Brave Apps</translation>
 <translation id="3421950102518690868">Kinakailangan ng <ph name="DOMAIN"/> na basahin mo at tanggapin ang sumusunod na Mga Tuntunin ng Serbisyo bago gamitin ang device na ito. Hindi pinapalawak, binabago o nililimitahan ng mga tuntuning ito ang Mga Tuntunin ng Brave OS.</translation>
 <translation id="3293668930608086049">Ginagamit ng Brave ang iyong camera at mikropono.</translation>
@@ -182,8 +180,6 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="7798069806040634998">Kailangan ng Brave ang access sa storage upang maka-download ng mga file</translation>
 <translation id="7685904775439037072">Kapag mayroon nang access ang Brave, makakahingi na ang mga website ng access sa iyo.</translation>
 <translation id="1744365871163268756">Mangyaring maghintay habang ini-install ng Brave ang mga pinakabagong update sa system.</translation>
-<translation id="8000338990735917615">Awtomatikong ii-install ang mga bersyon ng Brave sa hinaharap.</translation>
-<translation id="2975476470948647918">Awtomatikong ii-install ang mga bersyon ng Brave sa hinaharap. Kapag nakumpleto ang pag-download na ito, magre-restart ang Brave at makakapagpatuloy ka na.</translation>
 <translation id="7808415789955822133">Mga tuntunin ng Brave OS</translation>
 <translation id="7207456302801184289">Maligayang Pagdating sa Brave</translation>
 <translation id="3507835409099344374">Pumunta sa mga setting ng notification ng Brave</translation>
@@ -215,7 +211,6 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
       mga setting ng Brave browser<ph name="LINK_END"/></translation>
 <translation id="4459296183696059108">Kung hindi lumalabas ang isang setting sa page na ito, tingnan sa iyong <ph name="LINK_BEGIN"/>
       mga setting ng Brave OS<ph name="LINK_END"/></translation>
-<translation id="7977435741986383568">Maaaring gumamit ang Brave ng mga serbisyo sa web upang mapahusay ang iyong karanasan sa pag-browse. Opsyonal mong madi-disable ang mga serbisyong ito. <ph name="BEGIN_LINK"/>Matuto pa<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Para maayos ang mga error sa pagbabaybay, ipinapadala ng Brave sa Brave Software ang text na na-type mo sa mga text field</translation>
 <translation id="8586264863973514035">Para ilapat ang iyong mga pagbabago, muling ilunsad ang Brave</translation>
 <translation id="7021823858304886493">Pagayan ang pag-sign in sa Brave</translation>

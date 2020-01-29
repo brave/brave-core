@@ -15,6 +15,7 @@
 #include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
 #include "content/public/browser/web_contents.h"
+#include "third_party/skia/include/core/SkPathTypes.h"
 #include "ui/gfx/color_utils.h"
 #include "ui/views/background.h"
 
@@ -40,7 +41,7 @@ class BraveAlertIndicator::BraveAlertBackground : public views::Background {
 
     gfx::Point center = host_view_->GetContentsBounds().CenterPoint();
     SkPath path;
-    path.setFillType(SkPath::kEvenOdd_FillType);
+    path.setFillType(SkPathFillType::kEvenOdd);
     path.addCircle(center.x(), center.y(), host_view_->width() / 2);
     cc::PaintFlags flags;
     flags.setAntiAlias(true);
@@ -87,14 +88,10 @@ void BraveAlertIndicator::OnMouseReleased(const ui::MouseEvent& event) {
     return AlertIndicator::OnMouseReleased(event);
 
   auto* tab_strip = static_cast<TabStrip*>(parent_tab_->controller());
-  const int tab_index = tab_strip->GetModelIndexOfTab(parent_tab_);
+  const int tab_index = tab_strip->GetModelIndexOf(parent_tab_);
   auto* tab_strip_model = static_cast<BrowserTabStripController*>(
       tab_strip->controller())->model();
   auto* web_contents = tab_strip_model->GetWebContentsAt(tab_index);
-
-  if (!chrome::CanToggleAudioMute(web_contents))
-    return AlertIndicator::OnMouseReleased(event);
-
   chrome::SetTabAudioMuted(web_contents,
                            !web_contents->IsAudioMuted(),
                            TabMutedReason::CONTEXT_MENU,

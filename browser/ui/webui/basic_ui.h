@@ -15,7 +15,7 @@
 #include "content/public/browser/web_ui_controller.h"
 
 namespace content {
-class RenderViewHost;
+class RenderFrameHost;
 class WebUIDataSource;
 class WebUI;
 }
@@ -45,7 +45,7 @@ class BasicUI : public content::WebUIController {
 
  protected:
   bool IsSafeToSetWebUIProperties() const;
-  content::RenderViewHost* GetRenderViewHost();
+  content::RenderFrameHost* GetRenderFrameHost();
 
  private:
   class BasicUIWebContentsObserver;

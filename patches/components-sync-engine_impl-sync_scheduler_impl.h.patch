@@ -1,8 +1,8 @@
 diff --git a/components/sync/engine_impl/sync_scheduler_impl.h b/components/sync/engine_impl/sync_scheduler_impl.h
-index 5b8e749c5ca4ff2303ddf7e572cd64a7ff53fa62..fa2a9d445c26b0625f4f9b8d07c2f8658b6f8436 100644
+index c0283d1cd1a1b9b815f5164df98426a62a039839..07aba84976c3d7307811814deb1ae18f110cb100 100644
 --- a/components/sync/engine_impl/sync_scheduler_impl.h
 +++ b/components/sync/engine_impl/sync_scheduler_impl.h
-@@ -87,6 +87,7 @@ class SyncSchedulerImpl : public SyncScheduler {
+@@ -88,6 +88,7 @@ class SyncSchedulerImpl : public SyncScheduler {
    // tests.
    void ForceShortNudgeDelayForTest();
  

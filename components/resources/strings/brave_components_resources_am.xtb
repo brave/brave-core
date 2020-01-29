@@ -77,19 +77,11 @@
 <translation id="438216590634144114">ከአድራሻ አሞሌ ላይ በድር ለመፈለግ እንደ ዋና ለመጠቀም የሚፈልጉትን የመፈለጊያ ሞተር ይምረጡ።</translation>
 <translation id="5804484488647369316">ነባሪ የፍለጋ ፍርግም ሙላ</translation>
 <translation id="4428458837269935199">ይበልጥ ግላዊ ለሆነ የፍለጋ ተሞክሮ፣ DuckDuckGo ይሞክሩ።</translation>
-<translation id="513635702954746724">የቀለም ገጽታዎትን ይምረጡ</translation>
-<translation id="6842850080200126305">ከቅንብሮች ፓነል ላይ ነጭ ወይም ጥቁር አማራጭን በመምረጥ የመሳሪያ አሞሌዎን ቀለም ያቀናብሩ፡፡</translation>
-<translation id="5805868144901917207">ገጽታ ይምረጡ</translation>
-<translation id="8131740175452115882">አረጋግጥ</translation>
-<translation id="713206503018076063">የስርዓት ገጽታ (ነባሪ)</translation>
-<translation id="1807246157184219062">ብርሀን</translation>
-<translation id="2414886740292270097">ጨለማ</translation>
 <translation id="3829010735958850433">እንኳን ደህና መጣቹህ የሚለውን ጉብኝት ይዝለሉ</translation>
 <translation id="1201402288615127009">ቀጣይ</translation>
 <translation id="7954950242989581218">ደህንነቱ በተጠበቀና አስተማማኝ በሆነ መንገድ ያስሱ</translation>
 <translation id="2188651882929633653">የ Brave ጋሻ በድረ ገጽ ላይ እርስዎን ለመከታተል የሚሞክሩ አስቸጋሪ ነገሮችን ያግዳል ፤ አብዛኞችን ማስታወቂያዎች ይጨምራል። ድረ ገጹ የማይ ሰራ ከሆነ ለ “down” ጋሻ አዘጋጅ። <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>Brave የተወሰኑ ባህርያትን አጠቃላይ አጠቃቀም ለመገመት ሙሉ በሙሉ ግላዊ የምርት ትንተናን ይጠቀማል።<ph name="END_LINK_P3A">&lt;/a&gt;</ph>  ይህን ለማጥፋት ወደ <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph> መግባት ይችላሉ።</translation>
 <translation id="1919345977826869612">ማስታወቂያዎች</translation>
-<translation id="5698387814910197501">Brave ውስጥ ማስተወቂያ በማየት {{currency}} ያግኙ። ማስተወቂያዎች በፍላጎት ከማሰሻ ባህርይዎ ጋር ተይይዘው ይቀርባሉ፡፡ የግል መረጃ ወይ የማሰስ ታሪክ ማሰሻዎን አይተወውም።</translation>
 <translation id="6112368337882254910">የራስ-አስተዋፅዎ</translation>
 <translation id="3742599705619405136">አሳታሚዎችንና የይዘት ፈጣሪዎችን ለማገዝ አውቶማቲክ መንገድ። ወርሀዊ ክፍያ አዘጋጅተው በተለመደ መልኩ ያስሱ። እርስዎ የሚጎበኟቸው በ Brave የተረጋገጡ ድረ ገጾች በራስ ሰር መንገድ የእርስዎ መዋጮዎች የሚደርሳቸው ሲሆን ይህም በ Brave በሚለካው የእርስዎ ትኩረት መጠን ልክ ነው።</translation>
 <translation id="20281847067919078">ያልተጠናቀቁ ሽልማቶች በግምት</translation>
@@ -97,6 +89,7 @@
 <translation id="319209088187794725">በዚህ ወር የደረሰዎት የማስታወቂያ ማሳወቂያዎች</translation>
 <translation id="4229016885653790965">አዝናለሁ! ማስታወቂያዎች በአካባቢዎ ገና የሉም።</translation>
 <translation id="2539279826042558064">የ Brave ሽልማቶችና ማስታወቂያዎች በዚህ ስዓት በስልክዎ ላይ አይገኙም።</translation>
+<translation id="5421369907811917952">ሌሎች ቅንብሮች</translation>
 <translation id="654711254769318398">የታዩ የማስታወቂያ ገፆች</translation>
 <translation id="2532127066761785857">የሚታየው ከፍተኛው የማስታወቂያ ብዛት</translation>
 <translation id="5171071066587880677">በሰዓት 1 ማስታወቂያ</translation>
@@ -132,7 +125,6 @@
 <translation id="2726674968268546964">ቶክንስ</translation>
 <translation id="7286722244752781970">ከመጎብኘቶ በፊት ዝቅተኛው የገፅ ሰዓት</translation>
 <translation id="4424486208397124985">አንስተኛ የአሳታሚ ጠቃሚነት ጎብኝዎች</translation>
-<translation id="5421369907811917952">ሌሎች ቅንብሮች</translation>
 <translation id="6248554379744796526">በዝርዝሩ ውስጥ ያልተረጋገጡ ድረ ገጾችን አሳይ</translation>
 <translation id="5875669387851353511">ለቪድዮዎች አስተዋጽኦ ይፍቀዱ</translation>
 <translation id="8933202740471878108">1 ጉብኝት</translation>
@@ -162,7 +154,6 @@
 <translation id="7210234701206674260">የብሬቭ ሽልማት ችግር አለው፤ እባክዎ እንደገና ይሞክሩ፡፡</translation>
 <translation id="570208820610947248">ከዋሌትዎ ጋር በተያያዘ የሆነ ችግር እንዳለ ደርሰንበታል፤ ማንኛቸውም ግብይቶች ሊከናወኑ ከመቻላቸው በፊት የመጠባበቂያ ዋሌቶን ወደ ቀድሞ ይዞታው መመለስ ይኖርቦታል፡፡</translation>
 <translation id="7797604753681168055">አሁን እንደገና ያግኙ!</translation>
-<translation id="5549059668721746831">ቀጣይ ወርሃዊ የጉርሻ ቀን</translation>
 <translation id="6231182869178328516">አሁን ጠቃሚ ምክሬን አደረግኩ <ph name="NAME"/> የBraveን ማሰሻ በመጠቀም፤ በ https://brave.com/tips ይመልከቱት።</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">ይቅርታ፣ ጥያቄዎን ለማስኬድ ችግር ነበር እባከዎ እንደገና ይሞክሩ።</translation>
@@ -261,8 +252,6 @@
 <translation id="4114667046481794032">የመዋጮ መጠን</translation>
 <translation id="3520817231440482449">ይህን ገፅ በየወሩ ምክር ይስጡ</translation>
 <translation id="1827184134638345603">ምክር ይላኩ#8230;</translation>
-<translation id="7928243298881209869">የመጀመሪያው ወርሃዊ ጉርሻዎን በሚከተለው ላይ ይላካሉ:</translation>
-<translation id="6045860799501892362">ወርሀዊ ጠቃሚ ምክሮችን ያስቀምጡ</translation>
 <translation id="8003573781961874199">እንደ PDF ያውርዱ</translation>
 <translation id="298067735430872465">እባክዎ ከማስተዋቅያ ያግኙ</translation>
 <translation id="2266556115441975588">ከማስታወቂያ የሚሰጡዎት ሽልማቶች እዚህ ናቸው!</translation>
@@ -291,7 +280,6 @@
 <translation id="9115913704608474258">ህዳር</translation>
 <translation id="7828956995407538686">ጥቅምት</translation>
 <translation id="5502713021410870035">ሰፕተመበር</translation>
-<translation id="5737831580668469027">ወርሃዊ ድጎማዎች!</translation>
 <translation id="606865182719489911">ነፃ የቶክን ብድር ይገኛል፡፡</translation>
 <translation id="2487641031722095938">ዛሬ እድለኛ የሆኑበት ቀን ነው!</translation>
 <translation id="6255773350565723852">የቶክን ግራንትዎ በመንገድ ላይ ነው።</translation>
@@ -318,13 +306,8 @@
 <translation id="4923459931733593730">ክፍያ</translation>
 <translation id="4021593982164260556">ክፍያዎች በየወሩ በ ቀን {{ቀን}}ይካሄዳል፡፡</translation>
 <translation id="6104680658798556671">ክፍያ አልተፈፀመም፡፡</translation>
-<translation id="2834888581291358924">ሒሳቦ አጠቃላይ አውቶ-አስተዋፅኦና ምክሮችን መሸፈን ካልቻለ ለዚህ ግዜ እንዚህ ክፍያዎች ይዘለላሉ፡፡</translation>
 <translation id="3138528956349114724">የተሰጡ ጣቢያዎች አሁን ናቸው</translation>
-<translation id="2337632028350283479">ወርሀዊ ድጎማዎች የሚሰሩት እንደዚህ ነው፡</translation>
-<translation id="6457273203091513039">ወርሃዊ ምክሮች ከራስ-ድጎማ ክፍያዎ አይወጡም፤ እነሱ የተለዩ ናቸው፡፡</translation>
 <translation id="9099396904827413228">እያንዳንዱ ጣቢያ በየወሩ የተወሰነ ቋሚ መጠን ይከፈለዋል፡፡</translation>
-<translation id="5051110132941857169">ወርሃዊ ድጎማዎች በአንድ ጊዜ በየወሩ ይከፈላሉ፤ የራስ-አስተዋፅኦ የሚጠቀሙ ከሆነ፤ ድጎማዎች በወርሃዊ ራስ-መዋጮ ክፍያዎ ላይ በተመሳሳይ ጊዜ ይወጣሉ፡፡</translation>
-<translation id="3374483782662414143">ከጠቃሚ ድጎማዎች ፓናል ውስጥ ወርሃዊ ጠቃሚ ድጎማዎችንን የሚቀበል ማንኛውንም ጣቢያ ማስወገድ ይችላሉ፡፡</translation>
 <translation id="5082474983463379713">እባኮትን ያስታውሱ፡</translation>
 <translation id="1430915738399379752">አትም</translation>
 <translation id="135956957367307069">ጥያቄዎ ገና እየተከወነ ነው፣ እባክዎ ይጠብቁ።</translation>

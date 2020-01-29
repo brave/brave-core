@@ -148,32 +148,35 @@ BraveContentBrowserClient::AllowWebBluetooth(
 
 bool BraveContentBrowserClient::HandleExternalProtocol(
     const GURL& url,
-    content::WebContents::Getter web_contents_getter,
+    content::WebContents::OnceGetter web_contents_getter,
     int child_id,
     content::NavigationUIData* navigation_data,
     bool is_main_frame,
     ui::PageTransition page_transition,
     bool has_user_gesture,
     const base::Optional<url::Origin>& initiating_origin,
-    network::mojom::URLLoaderFactoryPtr* out_factory) {
+    mojo::PendingRemote<network::mojom::URLLoaderFactory>* out_factory) {
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-  if (webtorrent::HandleMagnetProtocol(url, web_contents_getter,
-                                       page_transition, has_user_gesture,
-                                       initiating_origin)) {
+  if (webtorrent::IsMagnetProtocol(url)) {
+    webtorrent::HandleMagnetProtocol(url, std::move(web_contents_getter),
+                                     page_transition, has_user_gesture,
+                                     initiating_origin);
     return true;
   }
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  if (brave_rewards::HandleRewardsProtocol(
-      url, web_contents_getter, page_transition, has_user_gesture)) {
+  if (brave_rewards::IsRewardsProtocol(url)) {
+    brave_rewards::HandleRewardsProtocol(url, std::move(web_contents_getter),
+                                         page_transition, has_user_gesture);
     return true;
   }
 #endif
 
   return ChromeContentBrowserClient::HandleExternalProtocol(
-      url, web_contents_getter, child_id, navigation_data, is_main_frame,
-      page_transition, has_user_gesture, initiating_origin, out_factory);
+      url, std::move(web_contents_getter), child_id, navigation_data,
+      is_main_frame, page_transition, has_user_gesture, initiating_origin,
+      out_factory);
 }
 
 base::Optional<service_manager::Manifest>
@@ -226,10 +229,12 @@ bool BraveContentBrowserClient::WillCreateURLLoaderFactory(
     int render_process_id,
     URLLoaderFactoryType type,
     const url::Origin& request_initiator,
+    base::Optional<int64_t> navigation_id,
     mojo::PendingReceiver<network::mojom::URLLoaderFactory>* factory_receiver,
     mojo::PendingRemote<network::mojom::TrustedURLLoaderHeaderClient>*
         header_client,
-    bool* bypass_redirect_checks) {
+    bool* bypass_redirect_checks,
+    network::mojom::URLLoaderFactoryOverridePtr* factory_override) {
   bool use_proxy = false;
   // TODO(iefremov): Skip proxying for certain requests?
   use_proxy = BraveProxyingURLLoaderFactory::MaybeProxyRequest(
@@ -239,7 +244,8 @@ bool BraveContentBrowserClient::WillCreateURLLoaderFactory(
 
   use_proxy |= ChromeContentBrowserClient::WillCreateURLLoaderFactory(
       browser_context, frame, render_process_id, type, request_initiator,
-      factory_receiver, header_client, bypass_redirect_checks);
+      std::move(navigation_id), factory_receiver, header_client,
+      bypass_redirect_checks, factory_override);
 
   return use_proxy;
 }

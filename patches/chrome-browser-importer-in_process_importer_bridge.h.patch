@@ -1,16 +1,21 @@
 diff --git a/chrome/browser/importer/in_process_importer_bridge.h b/chrome/browser/importer/in_process_importer_bridge.h
-index b77d9ea73508f877c00d5b611b111822eb26c16f..76007e120250dbc9f21a67cb9290a78a749eef2d 100644
+index 59ae2212add6c99401862e4fc72e93d66f6ad3f0..597b8a45bb65aab9beb401343621a189abc228a8 100644
 --- a/chrome/browser/importer/in_process_importer_bridge.h
 +++ b/chrome/browser/importer/in_process_importer_bridge.h
-@@ -60,9 +60,9 @@ class InProcessImporterBridge : public ImporterBridge {
-   // End ImporterBridge implementation.
+@@ -63,14 +63,14 @@ class InProcessImporterBridge : public ImporterBridge {
+   class SearchEnginesParser;
+   friend class SearchEnginesParser;
  
-  private:
 -  ~InProcessImporterBridge() override;
 -
+   // Called by the SearchEnginesParser when all the search engines have been
+   // parsed. The |template_urls| vector is in the same sort order that was
+   // passed to SetFirefoxSearchEnginesXMLData().
+   void WriteSearchEngines(TemplateURL::OwnedTemplateURLVector template_urls);
+ 
    ProfileWriter* const writer_;  // weak
 + protected:
 +  ~InProcessImporterBridge() override;
    const base::WeakPtr<ExternalProcessImporterHost> host_;
+   std::unique_ptr<SearchEnginesParser> search_engines_;
  
-   DISALLOW_COPY_AND_ASSIGN(InProcessImporterBridge);

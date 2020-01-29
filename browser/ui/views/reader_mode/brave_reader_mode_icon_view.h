@@ -13,7 +13,7 @@ class BraveReaderModeIconView : public ReaderModeIconView {
  public:
     using ReaderModeIconView::ReaderModeIconView;
  protected:
-    bool Update() override;
+    void UpdateImpl() override;
 
   DISALLOW_COPY_AND_ASSIGN(BraveReaderModeIconView);
 };

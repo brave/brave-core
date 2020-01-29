@@ -77,19 +77,11 @@
 <translation id="438216590634144114">주소창에서 웹을 검색할 때 기본으로 사용하실 검색 엔진을 골라 주세요.</translation>
 <translation id="5804484488647369316">기본 검색 엔진 설정</translation>
 <translation id="4428458837269935199">보다 비공개적인 검색 경험을 원하시면, DuckDuckGo를 사용해 보세요.</translation>
-<translation id="513635702954746724">색상 테마를 선택하세요</translation>
-<translation id="6842850080200126305">설정 패널에서 '밝게' 또는 '어둡게' 옵션을 선택하여 툴바의 색상을 설정하세요.</translation>
-<translation id="5805868144901917207">테마 선택</translation>
-<translation id="8131740175452115882">확인</translation>
-<translation id="713206503018076063">시스템 테마(기본)</translation>
-<translation id="1807246157184219062">라이트</translation>
-<translation id="2414886740292270097">어두움</translation>
 <translation id="3829010735958850433">시작 안내 건너뛰기</translation>
 <translation id="1201402288615127009">다음</translation>
 <translation id="7954950242989581218">안전하게 검색하세요</translation>
 <translation id="2188651882929633653">Brave Shields는 대부분의 광고를 포함하여, 웹에서 사용자를 추적하려 하는 섬뜩한 것들을 차단합니다. 사이트가 작동하지 않는 경우 Shields를 “다운”으로 설정하세요. Brave는 <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>비밀이 완전히 보장되는 제품 애널리틱스<ph name="END_LINK_P3A">&lt;/a&gt;</ph>를 사용하여 특정 기능의 전체 사용량을 추정합니다. 이 기능은 <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>설정<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>에서 끌 수 있습니다.</translation>
 <translation id="1919345977826869612">광고</translation>
-<translation id="5698387814910197501">브레이브에서 광고를 보고 {{돈}}을 받으세요. 광고는 사용자의 검색 행위에서 추론한 관심사를 바탕으로 제공됩니다. 개인 데이터나 검색 기록은 유출되지 않습니다.</translation>
 <translation id="6112368337882254910">자동 기부</translation>
 <translation id="3742599705619405136">발행자 및 콘텐츠 제작자를 자동으로 후원하는 방법입니다. 월별 지불 금액을 설정하고 평소와 같이 탐색하세요. Brave가 측정하는 귀하의 관심에 기반하여, 방문하시는 Brave 인증 사이트가 자동으로 귀하의 기부금을 받게 됩니다.</translation>
 <translation id="20281847067919078">보류 중인 예상 보상금</translation>
@@ -97,6 +89,7 @@
 <translation id="319209088187794725">이번 달에 받은 광고 알림</translation>
 <translation id="4229016885653790965">죄송합니다! 귀하의 지역에서는 아직 광고가 제공되지 않습니다.</translation>
 <translation id="2539279826042558064">지금 귀하의 장치에서 Brave (브레이브) 리워드 및 광고를 사용할 수 없습니다.</translation>
+<translation id="5421369907811917952">기타 설정</translation>
 <translation id="654711254769318398">조회한 광고 페이지</translation>
 <translation id="2532127066761785857">최대 표시 광고 수</translation>
 <translation id="5171071066587880677">시간당 광고 1개</translation>
@@ -132,7 +125,6 @@
 <translation id="2726674968268546964">토큰</translation>
 <translation id="7286722244752781970">방문을 로그하기 전의 최소 페이지 시간</translation>
 <translation id="4424486208397124985">출판자 접합성을 위한 최소 방문 수</translation>
-<translation id="5421369907811917952">기타 설정</translation>
 <translation id="6248554379744796526">목록에서 비인증 사이트 표시</translation>
 <translation id="5875669387851353511">동영상에 기부 허용</translation>
 <translation id="8933202740471878108">1개의 방문</translation>
@@ -162,7 +154,6 @@
 <translation id="7210234701206674260">브레이브 리워드에 문제가 있습니다. 나중에 다시 시도해 주세요.</translation>
 <translation id="570208820610947248">월렛에 문제가 발생했습니다. 거래를 처리하기 전에 백업 월렛을 복구해야 합니다.</translation>
 <translation id="7797604753681168055">지금 복구!</translation>
-<translation id="5549059668721746831">다음 월간 팁 날짜</translation>
 <translation id="6231182869178328516">Brave 브라우저를 이용해 <ph name="NAME"/>에게 팁으로 주었습니다. https://brave.com/tips에서 확인해 보세요.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">죄송합니다, 귀하의 요청 처리 중에 문제가 발생했습니다, 다시 시도해 주십시오.</translation>
@@ -261,8 +252,6 @@
 <translation id="4114667046481794032">기부 금액</translation>
 <translation id="3520817231440482449">이 사이트에 매월 팁 주기</translation>
 <translation id="1827184134638345603">팁 보내기…</translation>
-<translation id="7928243298881209869">귀하의 첫번째 월갑 팁이 다음 날짜에 송금될 예정입니다:</translation>
-<translation id="6045860799501892362">월간 팁 설정하기</translation>
 <translation id="8003573781961874199">PDF로 다운로드</translation>
 <translation id="298067735430872465">광고 수입</translation>
 <translation id="2266556115441975588">귀하의 광고 보상금이 도착했습니다!</translation>
@@ -291,7 +280,6 @@
 <translation id="9115913704608474258">11월</translation>
 <translation id="7828956995407538686">10월</translation>
 <translation id="5502713021410870035">9월</translation>
-<translation id="5737831580668469027">월간 팁!</translation>
 <translation id="606865182719489911">무료 토큰 지급이 가능합니다.</translation>
 <translation id="2487641031722095938">오늘 운이 좋으시네요!</translation>
 <translation id="6255773350565723852">귀하의 토큰 승인이 진행 중입니다.</translation>
@@ -318,13 +306,8 @@
 <translation id="4923459931733593730">결제</translation>
 <translation id="4021593982164260556">결제는 매달 {{day}}일에 됩니다.</translation>
 <translation id="6104680658798556671">결제가 되지 않았습니다.</translation>
-<translation id="2834888581291358924">잔액이 부족하여 귀하의 자동 후원 금액과 반복 발생하는 팁의 총액을 지불할 수 없는 경우, 이 기간에는 해당 금액의 지불이 건너뛰어 집니다.</translation>
 <translation id="3138528956349114724">현재 고정된 사이트:</translation>
-<translation id="2337632028350283479">다음은 월간 팁의 원리입니다.</translation>
-<translation id="6457273203091513039">월간 팁은 자동 기부 결제와는 별도로 지급됩니다.</translation>
 <translation id="9099396904827413228">매월 각 사이트에 고정 금액이 지급됩니다.</translation>
-<translation id="5051110132941857169">월간 팁은 매월 전액이 한 번에 정산됩니다. 자동 기부를 사용하는 경우 팁은 월간 자동 기부 결제와 함께 지급됩니다.</translation>
-<translation id="3374483782662414143">팁 패널에서 월간 팁을 받는 사이트를 삭제할 수 있습니다.</translation>
 <translation id="5082474983463379713">주의해 주세요:</translation>
 <translation id="1430915738399379752">인쇄</translation>
 <translation id="135956957367307069">귀하의 요청을 아직 처리 중입니다, 기다려주세요:</translation>

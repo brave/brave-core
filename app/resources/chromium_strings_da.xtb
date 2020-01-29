@@ -6,7 +6,6 @@
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Brave-logo</translation>
 <translation id="7339898014177206373">Nyt vindue</translation>
-<translation id="5935964611177478118">log ind på Brave</translation>
 <translation id="5516268345616100622">Jobliste – Brave</translation>
 <translation id="7918740962659365265">Hjælp med at gøre Brave bedre ved at sende fejlrapporter og <ph name="UMA_LINK"/> til Brave Software</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
@@ -119,7 +118,6 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="1459786048951724030">Brave OS kunne ikke synkronisere dine data på grund af en loginfejl.</translation>
 <translation id="6813094029720377619">Du rydder cookies, når du afslutter Brave. Skift <ph name="COOKIE_SETTINGS_LINK"/> for at fortsætte med at synkronisere.</translation>
 <translation id="3340978935015468852">indstillinger</translation>
-<translation id="380197516434040304">Fjern fra Brave...</translation>
 <translation id="300669147395456190">Brave-apps</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> kræver, at du læser og accepterer følgende servicevilkår, inden du bruger denne enhed. Disse vilkår udvider, ændrer eller begrænser på ingen måde vilkårene for Brave OS.</translation>
 <translation id="3293668930608086049">Brave bruger dit kamera og din mikrofon.</translation>
@@ -180,8 +178,6 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="7798069806040634998">Brave skal have lageradgang for at downloade filer</translation>
 <translation id="7685904775439037072">Når Brave har adgang, kan websites bede dig om adgang.</translation>
 <translation id="1744365871163268756">Vent, mens Brave installerer de nyeste systemopdateringer.</translation>
-<translation id="8000338990735917615">Fremtidige versioner af Brave installeres automatisk.</translation>
-<translation id="2975476470948647918">Fremtidige versioner af Brave installeres automatisk. Når denne download er gennemført, genstartes Brave, og så er du godt på vej.</translation>
 <translation id="7808415789955822133">Vilkår for Brave OS</translation>
 <translation id="7207456302801184289">Velkommen til Brave</translation>
 <translation id="3507835409099344374">Gå til indstillinger for Brave-notifikationer</translation>
@@ -213,7 +209,6 @@ Brave kan ikke gendanne dine præferencer.</translation>
       indstillingerne for Brave-browseren<ph name="LINK_END"/></translation>
 <translation id="4459296183696059108">Hvis en indstilling ikke vises på denne side, kan du kigge i <ph name="LINK_BEGIN"/>
       indstillingerne for Brave OS<ph name="LINK_END"/></translation>
-<translation id="7977435741986383568">Brave bruger muligvis webtjenester for at forbedre din browseroplevelse. Du kan vælge at deaktivere disse tjenester. <ph name="BEGIN_LINK"/>Få flere oplysninger<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Brave sender den tekst, du skriver i tekstfelter, til Brave Software for at rette stavefejl</translation>
 <translation id="8586264863973514035">Åbn Brave igen for at anvende ændringerne</translation>
 <translation id="7021823858304886493">Tillad login via Brave</translation>

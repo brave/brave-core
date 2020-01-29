@@ -6,7 +6,6 @@
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Brave லோகோ</translation>
 <translation id="7339898014177206373">புதிய சாளரம்</translation>
-<translation id="5935964611177478118">Brave இல் உள்நுழைக</translation>
 <translation id="5516268345616100622">செயல் நிர்வாகி - Brave</translation>
 <translation id="7918740962659365265">சிதைவு அறிக்கைகளையும் <ph name="UMA_LINK"/> உம் Brave Software க்கு அனுப்புவதன் மூலம் Brave ஐ மேலும் சிறப்பானதாக்க உதவவும்</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
@@ -119,7 +118,6 @@
 <translation id="1459786048951724030">உள்நுழைவதில் ஏற்பட்ட பிழை காரணமாக உங்கள் தரவை Brave OS ஆல் ஒத்திசைக்க முடியவில்லை.</translation>
 <translation id="6813094029720377619">நீங்கள் Braveமை விட்டு வெளியேறும் போது குக்கீகளை அழிக்கும் ஒத்திசைவைத் தொடர இந்த <ph name="COOKIE_SETTINGS_LINK"/> ஐ மாற்றவும்.</translation>
 <translation id="3340978935015468852">அமைப்புகள்</translation>
-<translation id="380197516434040304">Brave இலிருந்து அகற்று...</translation>
 <translation id="300669147395456190">Brave பயன்பாடுகள்</translation>
 <translation id="3421950102518690868">இந்தச் சாதனத்தைப் பயன்படுத்துவதற்கு முன் பின்வரும் சேவை விதிமுறைகளைப் படித்து ஏற்றுக்கொள்வது <ph name="DOMAIN"/> க்கு அவசியமாகும். இந்த விதிமுறைகளானது Brave OS விதிமுறைகளை விரிவாக்கவோ, மாற்றவோ அல்லது கட்டுப்படுத்தவோ செய்யாது.</translation>
 <translation id="3293668930608086049">Brave உங்கள் கேமராவையும் மைக்ரோஃபோனையும் பயன்படுத்துகிறது.</translation>
@@ -180,8 +178,6 @@
 <translation id="7798069806040634998">கோப்புகளைப் பதிவிறக்க, Braveக்குச் சேமிப்பிட அணுகல் தேவை</translation>
 <translation id="7685904775439037072">Braveமுக்கு அணுகல் கிடைத்தவுடன், இணையதளங்கள் உங்களிடம் அணுகலைக் கோர முடியும்.</translation>
 <translation id="1744365871163268756">சமீபத்திய முறைமை புதுப்பிப்புகளை Brave நிறுவும் வரை காத்திருக்கவும்.</translation>
-<translation id="8000338990735917615">இனிவரும் Brave பதிப்புகள் தானாகவே நிறுவப்படும்.</translation>
-<translation id="2975476470948647918">இனிவரும் Brave பதிப்புகள் தானாகவே நிறுவப்படும். இந்தப் பதிவிறக்கம் முடியும்போது, Brave மறுதொடக்கம் செய்யும், பிறகு உங்கள் பணியைத் தொடரலாம்.</translation>
 <translation id="7808415789955822133">Brave OS விதிமுறைகள்</translation>
 <translation id="7207456302801184289">Brave க்கு வரவேற்கிறோம்</translation>
 <translation id="3507835409099344374">Brave அறிவிப்பு அமைப்புகளுக்குச் செல்</translation>
@@ -213,7 +209,6 @@
       Brave உலாவி அமைப்புகளில்<ph name="LINK_END"/> பார்க்கவும்</translation>
 <translation id="4459296183696059108">இந்தப் பக்கத்தில் ஏதேனும் ஓர் அமைப்பு காட்டப்படவில்லை எனில் அதை <ph name="LINK_BEGIN"/>
       Brave OS அமைப்புகளில்<ph name="LINK_END"/> பார்க்கவும்</translation>
-<translation id="7977435741986383568">உங்கள் உலாவல் அனுபவத்தை மேம்படுத்த, Brave ஆனது இணையச் சேவைகளைப் பயன்படுத்தலாம். நீங்கள் விரும்பினால் இந்தச் சேவைகளை முடக்கிக்கொள்ளலாம். <ph name="BEGIN_LINK"/>மேலும் அறிக<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">எழுத்துப் பிழைகளைச் சரிசெய்ய, Brave நீங்கள் உரைப் புலங்களில் உள்ளிடும் உரைகளை Brave Softwareளுக்கு அனுப்பும்</translation>
 <translation id="8586264863973514035">உங்கள் மாற்றங்களைச் செயல்படுத்த, Braveமை மீண்டும் தொடங்கவும்</translation>
 <translation id="7021823858304886493">Brave உள்நுழைவை அனுமதித்தல்</translation>

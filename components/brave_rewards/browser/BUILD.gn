@@ -50,6 +50,7 @@ source_set("browser") {
 
   deps = [
     "//base",
+    "//brave/base",
     "//brave/components/brave_rewards/common",
     "//components/keyed_service/content",
     "//components/keyed_service/core",

@@ -6,7 +6,6 @@
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Logotip Bravea</translation>
 <translation id="7339898014177206373">Novo okno</translation>
-<translation id="5935964611177478118">se prijavite v Brave</translation>
 <translation id="5516268345616100622">Upravitelj opravil – Brave</translation>
 <translation id="7918740962659365265">Pomagajte izboljšati Brave – Googlu pošiljajte poročila o zrušitvah in ta dokument: <ph name="UMA_LINK"/>.</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
@@ -121,7 +120,6 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="1459786048951724030">Brave OS ni mogel sinhronizirati podatkov zaradi napake pri prijavi.</translation>
 <translation id="6813094029720377619">Piškotke izbrišete, ko zaprete Brave. Če želite nadaljevati sinhronizacijo, spremenite to: <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
 <translation id="3340978935015468852">nastavitve</translation>
-<translation id="380197516434040304">Odstranitev iz Bravea ...</translation>
 <translation id="300669147395456190">Aplikacije za Brave</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> zahteva, da preberete in sprejmete pogoje storitve, preden začnete uporabljati napravo. Ti pogoji ne dopolnjujejo, spreminjajo ali omejujejo pogojev za Brave OS.</translation>
 <translation id="3293668930608086049">Brave uporablja vašo kamero in mikrofon.</translation>
@@ -182,8 +180,6 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="7798069806040634998">Brave potrebuje za prenos datotek dostop do shrambe</translation>
 <translation id="7685904775439037072">Ko bo imel Brave dostop, vas bodo spletna mesta lahko pozvala k omogočanju dostopa.</translation>
 <translation id="1744365871163268756">Počakajte, da Brave namesti najnovejše sistemske posodobitve.</translation>
-<translation id="8000338990735917615">Prihodnje različice Bravea bodo nameščene samodejno.</translation>
-<translation id="2975476470948647918">Prihodnje različice Bravea bodo nameščene samodejno. Ko se ta prenos dokonča, se bo Brave znova zagnal in lahko boste nadaljevali z delom.</translation>
 <translation id="7808415789955822133">Pogoji za Brave OS</translation>
 <translation id="7207456302801184289">Pozdravljeni v Braveu</translation>
 <translation id="3507835409099344374">Odprite nastavitve obvestil v Braveu</translation>
@@ -215,8 +211,6 @@ Brave ne more obnoviti vaših nastavitev.</translation>
       nastavitve brskalnika Brave<ph name="LINK_END"/></translation>
 <translation id="4459296183696059108">Če nastavitev ni prikazana na tej strani, preverite <ph name="LINK_BEGIN"/>
       nastavitve operacijskega sistema Brave<ph name="LINK_END"/></translation>
-<translation id="7977435741986383568">Brave lahko za izboljšanje izkušnje pri brskanju uporabi spletne storitve.
-Te storitve lahko po želji onemogočite. <ph name="BEGIN_LINK"/>Več o tem<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Brave zaradi odpravljanja napak pri črkovanju Googlu pošlje besedilo, ki ga vnesete v besedilna polja</translation>
 <translation id="8586264863973514035">Če želite uporabiti spremembe, znova zaženite Brave</translation>
 <translation id="7021823858304886493">Omogočanje prijave v Brave</translation>

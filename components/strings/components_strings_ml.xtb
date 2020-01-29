@@ -5,6 +5,7 @@
 <translation id="6040143037577758943">അവസാനിപ്പിക്കുക</translation>
 <translation id="6643016212128521049">മായ്‌ക്കുക</translation>
 <translation id="8730621377337864115">പൂർത്തിയാക്കി</translation>
+<translation id="6165508094623778733">കൂടുതലറിയുക</translation>
 <translation id="6965382102122355670">ശരി</translation>
 <translation id="7791543448312431591">ചേര്‍ക്കൂ</translation>
 <translation id="1181037720776840403">നീക്കംചെയ്യുക</translation>
@@ -18,6 +19,7 @@
 <translation id="1036348656032585052">ഓഫാക്കുക</translation>
 <translation id="8105368624971345109">ഓഫാക്കുക</translation>
 <translation id="1175364870820465910">&amp;അച്ചടിക്കൂ...</translation>
+<translation id="129553762522093515">സമീപകാലത്ത് അടച്ചവ</translation>
 <translation id="8870413625673593573">സമീപകാലത്ത് അടച്ചവ</translation>
 <translation id="385051799172605136">പിന്നോട്ട്</translation>
 <translation id="7481312909269577407">മുന്നോട്ട്</translation>
@@ -27,18 +29,22 @@
 <translation id="1201402288615127009">അടുത്തത്</translation>
 <translation id="5713644099811900409">Brave Software അക്കൗണ്ട്</translation>
 <translation id="3157931365184549694">പുനഃസ്ഥാപിക്കുക</translation>
+<translation id="5040262127954254034">സ്വകാര്യത</translation>
 <translation id="3061707000357573562">പാച്ച് സേവനം</translation>
 <translation id="1914326953223720820">അൺസിപ്പ് സേവനം</translation>
+<translation id="1623104350909869708">കൂടുതൽ ഡയലോഗുകൾ സൃഷ്‌ടിക്കുന്നതിൽ നിന്നും ഈ പേജിനെ തടയുക</translation>
 <translation id="2677748264148917807">ഉപേക്ഷിക്കുക</translation>
 <translation id="5556459405103347317">വീണ്ടും ലോഡുചെയ്യുക</translation>
 <translation id="2359808026110333948">തുടരുക</translation>
-<translation id="5935964611177478118">Brave-ത്തിലേക്ക് സൈൻ ഇൻ ചെയ്യുക</translation>
 <translation id="4378154925671717803">ഫോൺ</translation>
 <translation id="8131740175452115882">സ്ഥിരീകരിക്കുക</translation>
 <translation id="8968766641738584599">കാർഡ് സംരക്ഷിക്കുക</translation>
+<translation id="860043288473659153">കാർഡിന്റെ ഉടമയുടെ പേര്</translation>
+<translation id="869891660844655955">കാലഹരണപ്പെടല്‍‌ തീയതി</translation>
 <translation id="6518133107902771759">സ്ഥിരീകരിക്കുക</translation>
 <translation id="8987927404178983737">മാസം</translation>
 <translation id="6015796118275082299">വര്‍ഷം</translation>
+<translation id="1581080074034554886">CVC</translation>
 <translation id="9065203028668620118">എഡിറ്റുചെയ്യുക</translation>
 <translation id="5029568752722684782">പകർപ്പ് മായ്‌ക്കുക</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
@@ -68,6 +74,7 @@
 <translation id="4522570452068850558">വിശദാംശങ്ങൾ‌</translation>
 <translation id="3586931643579894722">വിശദാംശങ്ങൾ മറയ്‌ക്കുക‍‌</translation>
 <translation id="614940544461990577">പരീക്ഷിച്ചുനോക്കൂ:</translation>
+<translation id="4943872375798546930">ഫലങ്ങളൊന്നുമില്ല</translation>
 <translation id="8688672835843460752">ലഭ്യമാണ്</translation>
 <translation id="59174027418879706">പ്രാപ്‌തമാക്കി</translation>
 <translation id="4176463684765177261">അപ്രാപ്‌തമാക്കി</translation>
@@ -76,7 +83,10 @@
 <translation id="1838374766361614909">തിരയൽ മായ്ക്കുക</translation>
 <translation id="495170559598752135">പ്രവര്‍ത്തനങ്ങള്‍</translation>
 <translation id="8261506727792406068">ഇല്ലാതാക്കുക</translation>
+<translation id="3207960819495026254">ബുക്ക്‌മാർക്കുചെയ്‌തു</translation>
 <translation id="3303855915957856445">തിരയൽ ഫലങ്ങളൊന്നും കണ്ടെത്തിയില്ല</translation>
+<translation id="1209206284964581585">ഇപ്പോഴത്തേയ്‌ക്ക് മറയ്‌ക്കുക</translation>
+<translation id="1407135791313364759">എല്ലാം തുറക്കുക</translation>
 <translation id="4880827082731008257">തിരയൽ ചരിത്രം</translation>
 <translation id="4756388243121344051">&amp;ചരിത്രം</translation>
 <translation id="1644574205037202324">ചരിത്രം</translation>
@@ -88,10 +98,14 @@
 <translation id="1178581264944972037">അല്പംനിര്‍ത്തൂ</translation>
 <translation id="1232569758102978740">ശീര്‍ഷകമില്ലാത്ത</translation>
 <translation id="7514365320538308">ഡൗൺലോഡ് ചെയ്യുക</translation>
+<translation id="8041089156583427627">ഫീഡ്ബാക്ക് അയയ്ക്കുക</translation>
 <translation id="7552846755917812628">ഇനിപ്പറയുന്ന നുറുങ്ങുകൾ പരീക്ഷിക്കൂ:</translation>
+<translation id="3960299545138990065">Brave റീസ്‌റ്റാർട്ടുചെയ്യുക</translation>
 <translation id="4275830172053184480">നിങ്ങളുടെ ഉപകരണം പുനരാരംഭിക്കുക</translation>
+<translation id="413544239732274901">കൂടുതലറിയുക</translation>
 <translation id="7554791636758816595">പുതിയ ടാബ്</translation>
 <translation id="2079545284768500474">പഴയപടിയാക്കുക</translation>
+<translation id="17513872634828108">ഓപ്പൺ ടാബുകൾ</translation>
 <translation id="981121421437150478">ഓഫ്‌ലൈൻ</translation>
 <translation id="5171045022955879922">തിരയുക അല്ലെങ്കിൽ URL ടൈപ്പുചെയ്യുക</translation>
 <translation id="803771048473350947">ഫയല്‍</translation>
@@ -103,10 +117,10 @@
 <translation id="6831043979455480757">വിവർത്തനം ചെയ്യുക</translation>
 <translation id="2473195200299095979">ഈ പേജ് വിവർത്തനം ചെയ്യുക</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>, ഉത്തരം, <ph name="ANSWER"/></translation>
-<translation id="9008201768610948239">അവഗണിക്കുക</translation>
 <translation id="7714464543167945231">സര്‍‌ട്ടിഫിക്കറ്റ്</translation>
 <translation id="6447842834002726250">കുക്കികള്‍</translation>
 <translation id="1919345977826869612">പരസ്യങ്ങള്‍</translation>
+<translation id="6612358246767739896">പരിരക്ഷിത ഉള്ളടക്കം</translation>
 <translation id="9219103736887031265">ചിത്രങ്ങൾ‌</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">പോപ്-അപ്പുകളും റീഡയറക്‌റ്റുകളും</translation>
@@ -121,6 +135,7 @@
 <translation id="7638605456503525968">സീരിയൽ പോർട്ടുകൾ</translation>
 <translation id="2215727959747642672">ഫയൽ എഡിറ്റ് ചെയ്യൽ</translation>
 <translation id="6545864417968258051">Bluetooth സ്‌കാനിംഗ്</translation>
+<translation id="534295439873310000">NFC ഉപകരണങ്ങൾ</translation>
 <translation id="5039804452771397117">അനുവദിക്കൂ</translation>
 <translation id="7053983685419859001">തടയുക</translation>
 <translation id="57838592816432529">മ്യൂട്ടുചെയ്യുക</translation>
@@ -131,13 +146,17 @@
 <translation id="6979440798594660689">മ്യൂട്ട് ചെയ്യുക (ഡിഫോൾട്ട്)</translation>
 <translation id="8037357227543935929">ചോദിക്കുക (ഡിഫോൾട്ട്)</translation>
 <translation id="8763927697961133303">USB ഉപകരണം</translation>
+<translation id="4165986682804962316">സൈറ്റ് ക്രമീകരണങ്ങൾ</translation>
 <translation id="9011424611726486705">സൈറ്റ് ക്രമീകരണം തുറക്കുക</translation>
 <translation id="5932224571077948991">അനാവശ്യമോ തെറ്റിദ്ധരിപ്പിക്കുന്നതോ ആയ പരസ്യങ്ങള്‍ കാണിക്കുന്ന സൈറ്റ്</translation>
 <translation id="7878562273885520351">നിങ്ങളുടെ പാസ്‍വേഡ് അപഹരിക്കപ്പെട്ടേക്കാം</translation>
 <translation id="1089439967362294234">പാസ്‌വേഡ് മാറ്റുക</translation>
+<translation id="9008201768610948239">അവഗണിക്കുക</translation>
 <translation id="1186201132766001848">പാസ്‌വേഡുകൾ പരിശോധിക്കുക</translation>
 <translation id="5979084224081478209">പാസ്‌വേഡുകൾ പരിശോധിക്കുക</translation>
+<translation id="10614374240317010">ഒരിക്കലും സംരക്ഷിച്ചില്ല</translation>
 <translation id="5869522115854928033">സംരക്ഷിച്ച പാസ്‌വേഡുകള്‍</translation>
+<translation id="230699814587342492">Brave പാസ്‌വേഡുകൾ</translation>
 <translation id="5087580092889165836">കാർഡ് ചേർക്കുക</translation>
 <translation id="2154484045852737596">കാർഡ് എഡിറ്റുചെയ്യുക</translation>
 <translation id="7764225426217299476">വിലാസം ചേർക്കുക</translation>
@@ -182,8 +201,11 @@
 <translation id="1974060860693918893">നൂതനം</translation>
 <translation id="5308380583665731573">കണക്‌റ്റുചെയ്യുക</translation>
 <translation id="2501278716633472235">പിന്നോട്ട് പോകുക</translation>
+<translation id="1736420071277903564">കമ്പ്യൂട്ടർ</translation>
+<translation id="3906954721959377182">ടാബ്‌ലെറ്റ്</translation>
 <translation id="7029809446516969842">പാസ്‌വേഡുകള്‍</translation>
 <translation id="6596325263575161958">എൻക്രിപ്‌ഷൻ ഓപ്‌ഷനുകൾ</translation>
+<translation id="8461694314515752532">നിങ്ങളുടെ സമന്വയ പാസ്‌ഫ്രെയ്‌സ് ഉപയോഗിച്ച്, സമന്വയിപ്പിച്ച ഡാറ്റ എൻക്രി‌പ്‌റ്റ് ചെയ്യുക</translation>
 <translation id="9050666287014529139">പാസ്ഫ്രെയ്സ്</translation>
 <translation id="9095388113577226029">കൂടുതൽ ഭാഷകൾ...</translation>
 <translation id="7600965453749440009"><ph name="LANGUAGE"/> ഒരിക്കലും വിവര്‍‌ത്തനം ചെയ്യരുത്</translation>
@@ -191,6 +213,7 @@
 <translation id="7378627244592794276">വേണ്ട</translation>
 <translation id="9137013805542155359">യഥാര്‍ത്ഥമായത് കാണിക്കുക</translation>
 <translation id="8725066075913043281">വീണ്ടും ശ്രമിക്കുക</translation>
+<translation id="5684874026226664614">ക്ഷമിക്കണം. ഈ പേജ് വിവർത്തനം ചെയ്യാനായില്ല.</translation>
 <translation id="583281660410589416">അറിഞ്ഞുകൂടാത്തത്</translation>
 <translation id="9170848237812810038">‍&amp;പൂര്‍വാവസ്ഥയിലാക്കുക</translation>
 <translation id="2972581237482394796">&amp;വീണ്ടും ചെയ്യുക</translation>

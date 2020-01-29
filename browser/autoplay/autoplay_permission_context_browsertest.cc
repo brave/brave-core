@@ -98,19 +98,19 @@ class AutoplayPermissionContextBrowserTest : public InProcessBrowserTest {
   void AllowAutoplay() {
     content_settings()->SetContentSettingCustomScope(
         top_level_page_pattern_, ContentSettingsPattern::Wildcard(),
-        CONTENT_SETTINGS_TYPE_AUTOPLAY, std::string(), CONTENT_SETTING_ALLOW);
+        ContentSettingsType::AUTOPLAY, std::string(), CONTENT_SETTING_ALLOW);
   }
 
   void AskAutoplay() {
     content_settings()->SetContentSettingCustomScope(
         top_level_page_pattern_, ContentSettingsPattern::Wildcard(),
-        CONTENT_SETTINGS_TYPE_AUTOPLAY, std::string(), CONTENT_SETTING_ASK);
+        ContentSettingsType::AUTOPLAY, std::string(), CONTENT_SETTING_ASK);
   }
 
   void BlockAutoplay() {
     content_settings()->SetContentSettingCustomScope(
         top_level_page_pattern_, ContentSettingsPattern::Wildcard(),
-        CONTENT_SETTINGS_TYPE_AUTOPLAY, std::string(), CONTENT_SETTING_BLOCK);
+        ContentSettingsType::AUTOPLAY, std::string(), CONTENT_SETTING_BLOCK);
   }
 
   content::WebContents* contents() {
@@ -192,7 +192,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, BlockByDefault) {
       PermissionRequestManager::FromWebContents(contents());
 
   NavigateToURLUntilLoadStop(autoplay_method_url());
-  EXPECT_FALSE(manager->IsBubbleVisible());
+  EXPECT_FALSE(manager->IsRequestInProgress());
   EXPECT_TRUE(
       ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
   EXPECT_NE(result, kVideoPlaying);
@@ -200,7 +200,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, BlockByDefault) {
   result.clear();
 
   NavigateToURLUntilLoadStop(autoplay_attr_url());
-  EXPECT_FALSE(manager->IsBubbleVisible());
+  EXPECT_FALSE(manager->IsRequestInProgress());
   EXPECT_TRUE(
       ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
   EXPECT_NE(result, kVideoPlaying);
@@ -209,7 +209,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, BlockByDefault) {
   result.clear();
 
   NavigateToURLUntilLoadStop(autoplay_method_muted_url());
-  EXPECT_FALSE(manager->IsBubbleVisible());
+  EXPECT_FALSE(manager->IsRequestInProgress());
   EXPECT_TRUE(
       ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
   EXPECT_NE(result, kVideoPlaying);
@@ -217,7 +217,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, BlockByDefault) {
   result.clear();
 
   NavigateToURLUntilLoadStop(autoplay_attr_muted_url());
-  EXPECT_FALSE(manager->IsBubbleVisible());
+  EXPECT_FALSE(manager->IsRequestInProgress());
   EXPECT_TRUE(
       ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
   EXPECT_NE(result, kVideoPlaying);
@@ -231,7 +231,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, AskAutoplay) {
       PermissionRequestManager::FromWebContents(contents());
 
   NavigateToURLUntilLoadStop(autoplay_method_url());
-  EXPECT_TRUE(manager->IsBubbleVisible());
+  EXPECT_TRUE(manager->IsRequestInProgress());
   EXPECT_TRUE(
       ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
   EXPECT_NE(result, kVideoPlaying);
@@ -239,7 +239,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, AskAutoplay) {
   result.clear();
 
   NavigateToURLUntilLoadStop(autoplay_attr_url());
-  EXPECT_TRUE(manager->IsBubbleVisible());
+  EXPECT_TRUE(manager->IsRequestInProgress());
   EXPECT_TRUE(
       ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
   EXPECT_NE(result, kVideoPlaying);
@@ -248,7 +248,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, AskAutoplay) {
   result.clear();
 
   NavigateToURLUntilLoadStop(autoplay_method_muted_url());
-  EXPECT_TRUE(manager->IsBubbleVisible());
+  EXPECT_TRUE(manager->IsRequestInProgress());
   EXPECT_TRUE(
       ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
   EXPECT_NE(result, kVideoPlaying);
@@ -256,7 +256,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, AskAutoplay) {
   result.clear();
 
   NavigateToURLUntilLoadStop(autoplay_attr_muted_url());
-  EXPECT_TRUE(manager->IsBubbleVisible());
+  EXPECT_TRUE(manager->IsRequestInProgress());
   EXPECT_TRUE(
       ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
   EXPECT_NE(result, kVideoPlaying);

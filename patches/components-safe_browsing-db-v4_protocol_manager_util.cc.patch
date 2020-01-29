@@ -1,8 +1,8 @@
 diff --git a/components/safe_browsing/db/v4_protocol_manager_util.cc b/components/safe_browsing/db/v4_protocol_manager_util.cc
-index 05b793354899d826ff564e6ad5bff68c915b9e29..bd82531c129898b5484c637853288d5eb0d0ad75 100644
+index 24808e9e2b2398a5187cf7295fd6390d13fca416..4050ddaaa2be4be23f027e4011f9ec25fcee67dd 100644
 --- a/components/safe_browsing/db/v4_protocol_manager_util.cc
 +++ b/components/safe_browsing/db/v4_protocol_manager_util.cc
-@@ -28,7 +28,7 @@ namespace safe_browsing {
+@@ -29,7 +29,7 @@ namespace safe_browsing {
  // Can be overriden by tests.
  const char* g_sbv4_url_prefix_for_testing = nullptr;
  

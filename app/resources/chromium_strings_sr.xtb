@@ -6,7 +6,6 @@
 <translation id="680297041157509674">Brave ОС</translation>
 <translation id="4847979153841887006">Brave логотип</translation>
 <translation id="7339898014177206373">Нови прозор</translation>
-<translation id="5935964611177478118">пријавите се на Brave</translation>
 <translation id="5516268345616100622">Менаџер задатака – Brave</translation>
 <translation id="7918740962659365265">Помозите нам да побољшамо Brave тако што ћете Brave Software-у слати извештаје о отказивању и <ph name="UMA_LINK"/></translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
@@ -121,7 +120,6 @@ Brave не може да врати подешавања.</translation>
 <translation id="1459786048951724030">Brave ОС не може да синхронизује податке због грешке при пријављивању.</translation>
 <translation id="6813094029720377619">Када изађете из Brave-а, колачићи се бришу. Да бисте наставили са синхронизацијом, промените подешавање <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
 <translation id="3340978935015468852">подешавања</translation>
-<translation id="380197516434040304">Уклони из Brave-а...</translation>
 <translation id="300669147395456190">Brave апликације</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> захтева да прочитате и прихватите следеће Услове коришћења услуге пре него што почнете да користите овај уређај. Ови услови не представљају проширење, измену или ограничење Услова за Brave ОС.</translation>
 <translation id="3293668930608086049">Brave користи камеру и микрофон.</translation>
@@ -182,8 +180,6 @@ Brave не може да врати подешавања.</translation>
 <translation id="7798069806040634998">Brave тражи приступ меморијском простору да би преузимао датотеке</translation>
 <translation id="7685904775439037072">Када Brave добије приступ, веб-сајтови ће моћи да затраже приступ.</translation>
 <translation id="1744365871163268756">Сачекајте да Brave инсталира најновија ажурирања система.</translation>
-<translation id="8000338990735917615">Будуће верзије Brave-а ће се инсталирати аутоматски.</translation>
-<translation id="2975476470948647918">Будуће верзије Brave-а ће се инсталирати аутоматски. Када се ово преузимање доврши, Brave ће се рестартовати и бићете спремни.</translation>
 <translation id="7808415789955822133">Brave ОС услови</translation>
 <translation id="7207456302801184289">Добро дошли у Brave</translation>
 <translation id="3507835409099344374">Иди на подешавања обавештења за Brave</translation>
@@ -215,7 +211,6 @@ Brave не може да врати подешавања.</translation>
       подешавањима Brave прегледача<ph name="LINK_END"/></translation>
 <translation id="4459296183696059108">Ако се подешавање не приказује на овој страници, потражите га у <ph name="LINK_BEGIN"/>
       подешавањима Brave ОС-а<ph name="LINK_END"/></translation>
-<translation id="7977435741986383568">Brave може да користи веб-услуге да би побољшао доживљај прегледања. Можете опционално да онемогућите те услуге. <ph name="BEGIN_LINK"/>Сазнајте више<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Да би исправио правописне грешке, Brave шаље Brave Software-овим серверима текст који уносите у поља за текст.</translation>
 <translation id="8586264863973514035">Да бисте применили промене, поново покрените Brave</translation>
 <translation id="7021823858304886493">Дозволи пријављивање у Brave</translation>

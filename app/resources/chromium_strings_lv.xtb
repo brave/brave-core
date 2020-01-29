@@ -9,7 +9,6 @@
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Brave logotips</translation>
 <translation id="7339898014177206373">Jauns logs</translation>
-<translation id="5935964611177478118">pierakstieties pārlūkā Brave</translation>
 <translation id="5516268345616100622">Uzdevumu pārvaldnieks — Brave</translation>
 <translation id="7918740962659365265">Palīdzēt uzlabot Brave, nosūtot Brave Software serveriem avāriju pārskatus un <ph name="UMA_LINK"/></translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> — Brave</translation>
@@ -120,7 +119,6 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="1459786048951724030">Brave OS nevarēja sinhronizēt jūsu datus pierakstīšanās kļūdas dēļ.</translation>
 <translation id="6813094029720377619">Aizverot Brave, tiek notīrīti sīkfaili. Lai turpinātu sinhronizāciju, mainiet šo <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
 <translation id="3340978935015468852">Iestatījumi</translation>
-<translation id="380197516434040304">Noņemšana no pārlūka Brave...</translation>
 <translation id="300669147395456190">Brave lietotnes</translation>
 <translation id="3421950102518690868">Pirms šīs ierīces lietošanas jums ir jāizlasa un jāapstiprina tālāk sniegtie domēna <ph name="DOMAIN"/> pakalpojumu sniegšanas noteikumi. Šie noteikumi nepaplašina, nepārveido vai neierobežo operētājsistēmas Brave OS noteikumus.</translation>
 <translation id="3293668930608086049">Pārlūkā Brave tiek izmantota jūsu kamera un mikrofons.</translation>
@@ -187,8 +185,6 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="7798069806040634998">Pārlūkam Brave ir nepieciešama piekļuve krātuvei, lai varētu lejupielādēt failus.</translation>
 <translation id="7685904775439037072">Tiklīdz pārlūkam Brave tiks sniegta piekļuve, vietnes varēs lūgt jums piekļuvi.</translation>
 <translation id="1744365871163268756">Lūdzu, uzgaidiet, kamēr Brave instalē jaunākos sistēmas atjauninājumus.</translation>
-<translation id="8000338990735917615">Nākamās Brave versijas tiks instalētas automātiski.</translation>
-<translation id="2975476470948647918">Nākamās Brave versijas tiks instalētas automātiski. Kad lejupielāde būs pabeigta, pārlūks Brave tiks restartēts, un pēc tam varēsiet turpināt darbu.</translation>
 <translation id="7808415789955822133">Brave OS noteikumi</translation>
 <translation id="7207456302801184289">Laipni lūdzam pārlūkā Brave!</translation>
 <translation id="3507835409099344374">Pāriet uz Brave paziņojumu iestatījumiem</translation>
@@ -220,7 +216,6 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
       Pārlūkprogrammas Brave iestatījumi<ph name="LINK_END"/>.</translation>
 <translation id="4459296183696059108">Ja šajā lapā iestatījums nav pieejams, skatiet to sadaļā <ph name="LINK_BEGIN"/>
       Brave OS iestatījumi<ph name="LINK_END"/>.</translation>
-<translation id="7977435741986383568">Brave var izmantot tīmekļa pakalpojumus, lai uzlabotu jūsu pārlūkošanas pieredzi. Varat arī atspējot šos pakalpojumus. <ph name="BEGIN_LINK"/>Uzziniet vairāk<ph name="END_LINK"/>.</translation>
 <translation id="2312399718665761438">Lai izlabotu pareizrakstības kļūdas, Brave nosūta teksta laukos ievadīto tekstu Brave Software serveriem.</translation>
 <translation id="8586264863973514035">Lai ieviestu veiktās izmaiņas, atkārtoti palaidiet pārlūku Brave.</translation>
 <translation id="7021823858304886493">Atļaut pierakstīties pārlūkā Brave</translation>

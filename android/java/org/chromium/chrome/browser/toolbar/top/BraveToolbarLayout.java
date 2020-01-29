@@ -38,17 +38,19 @@ import org.chromium.chrome.browser.appmenu.BraveShieldsMenuHandler;
 import org.chromium.chrome.browser.appmenu.BraveShieldsMenuObserver;
 import org.chromium.chrome.browser.dialogs.BraveAdsSignupDialog;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
-import org.chromium.chrome.browser.preferences.AppearancePreferences;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.AppearancePreferences;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.TabModelSelectorTabObserver;
 import org.chromium.chrome.browser.tabmodel.TabSelectionType;
+import org.chromium.chrome.browser.toolbar.ToolbarColors;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
-import org.chromium.chrome.browser.util.ColorUtils;
+import org.chromium.chrome.browser.ui.styles.ChromeColors;
 import org.chromium.chrome.browser.util.MathUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.ui.interpolators.BakedBezierInterpolator;
@@ -162,7 +164,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
                       AppearancePreferences.PREF_HIDE_BRAVE_REWARDS_ICON, false)) {
           if (mRewardsLayout != null && mShieldsLayout != null) {
               if (this instanceof ToolbarTablet) {
-                  mShieldsLayout.setBackgroundColor(ColorUtils.getDefaultThemeColor(getResources(), isIncognito()));
+                  mShieldsLayout.setBackgroundColor(ChromeColors.getDefaultThemeColor(getResources(), isIncognito()));
                   mShieldsLayoutIsColorBackground = true;
               }
               mRewardsLayout.setVisibility(View.VISIBLE);
@@ -232,7 +234,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
                   return;
               }
               mBraveShieldsMenuHandler.show(mBraveShieldsButton, currentTab.getUrl(),
-                  url.getHost(), currentTab.getId(), currentTab.getProfile());
+                  url.getHost(), currentTab.getId(), ((TabImpl)currentTab).getProfile());
           } catch (Exception e) {
               // Do nothing if url is invalid.
               // Just return w/o showing shields popup.
@@ -349,7 +351,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           assert false;
           return false;
       }
-      return BraveShieldsContentSettings.getShields(tab.getProfile(), tab.getUrl(),
+      return BraveShieldsContentSettings.getShields(((TabImpl)tab).getProfile(), tab.getUrl(),
           BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS);
   }
 
@@ -540,11 +542,11 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
   @Override
   public void onThemeColorChanged(int color, boolean shouldAnimate) {
-      final int textBoxColor = ColorUtils.getTextBoxColorForToolbarBackground(
-              getResources(), false, color, isIncognito());
+      final int textBoxColor = ToolbarColors.getTextBoxColorForToolbarBackgroundInNonNativePage(
+              getResources(), color, isIncognito());
       mShieldsLayout.getBackground().setColorFilter(textBoxColor, PorterDuff.Mode.SRC_IN);
       if (mShieldsLayoutIsColorBackground) {
-          mShieldsLayout.setBackgroundColor(ColorUtils.getDefaultThemeColor(getResources(), isIncognito()));
+          mShieldsLayout.setBackgroundColor(ChromeColors.getDefaultThemeColor(getResources(), isIncognito()));
       }
       mRewardsLayout.getBackground().setColorFilter(textBoxColor, PorterDuff.Mode.SRC_IN);
   }

@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <map>
 #include <utility>
 #include <vector>
 
@@ -14,7 +13,6 @@
 #include "bat/ads/category_content.h"
 #include "bat/ads/confirmation_type.h"
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
-#include "mojo/public/cpp/bindings/map.h"
 
 using std::placeholders::_1;
 

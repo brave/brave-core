@@ -11,13 +11,13 @@
         android:key="search_engine_section"
         android:order="0"
         android:title="@string/prefs_section_search_engine"/>
-    <org.chromium.chrome.browser.preferences.ChromeBasePreference
-        android:fragment="org.chromium.chrome.browser.preferences.BraveStandardSearchEnginePreference"
+    <org.chromium.chrome.browser.settings.ChromeBasePreference
+        android:fragment="org.chromium.chrome.browser.settings.BraveStandardSearchEnginePreference"
         android:key="standard_search_engine"
         android:order="1"
         android:title="@string/prefs_standard_search_engine"/>
-    <org.chromium.chrome.browser.preferences.ChromeBasePreference
-        android:fragment="org.chromium.chrome.browser.preferences.BravePrivateSearchEnginePreference"
+    <org.chromium.chrome.browser.settings.ChromeBasePreference
+        android:fragment="org.chromium.chrome.browser.settings.BravePrivateSearchEnginePreference"
         android:key="private_search_engine"
         android:order="2"
         android:title="@string/prefs_private_search_engine"/>
@@ -29,8 +29,8 @@
         android:key="display_section"
         android:order="12"
         android:title="@string/prefs_section_display"/>
-    <org.chromium.chrome.browser.preferences.ChromeBasePreference
-        android:fragment="org.chromium.chrome.browser.preferences.AppearancePreferences"
+    <org.chromium.chrome.browser.settings.ChromeBasePreference
+        android:fragment="org.chromium.chrome.browser.settings.AppearancePreferences"
         android:key="appearance"
         android:order="13"
         android:title="@string/prefs_appearance"/>
@@ -38,23 +38,23 @@
         android:key="controls_section"
         android:order="14"
         android:title="@string/prefs_section_controls"/>
-    <org.chromium.chrome.browser.preferences.ChromeBasePreference
-        android:fragment="org.chromium.chrome.browser.preferences.BackgroundVideoPlaybackPreference"
+    <org.chromium.chrome.browser.settings.ChromeBasePreference
+        android:fragment="org.chromium.chrome.browser.settings.BackgroundVideoPlaybackPreference"
         android:key="background_video_playback"
         android:order="15"
         android:title="@string/prefs_background_video_playback"/>
-    <org.chromium.chrome.browser.preferences.ChromeBasePreference
-        android:fragment="org.chromium.chrome.browser.preferences.ClosingAllTabsClosesBravePreference"
+    <org.chromium.chrome.browser.settings.ChromeBasePreference
+        android:fragment="org.chromium.chrome.browser.settings.ClosingAllTabsClosesBravePreference"
         android:key="closing_all_tabs_closes_brave"
         android:order="16"
         android:title="@string/prefs_closing_all_tabs_closes_brave"/>
-    <org.chromium.chrome.browser.preferences.ChromeBasePreference
-        android:fragment="org.chromium.chrome.browser.preferences.BraveRewardsPreferences"
+    <org.chromium.chrome.browser.settings.ChromeBasePreference
+        android:fragment="org.chromium.chrome.browser.settings.BraveRewardsPreferences"
         android:key="brave_rewards"
         android:order="17"
         android:title="@string/brave_ui_brave_rewards"/>
-    <org.chromium.chrome.browser.preferences.ChromeBasePreference
-        android:fragment="org.chromium.chrome.browser.preferences.BraveSyncScreensPreference"
+    <org.chromium.chrome.browser.settings.ChromeBasePreference
+        android:fragment="org.chromium.chrome.browser.settings.BraveSyncScreensPreference"
         android:key="brave_sync_layout"
         android:order="18"
         android:title="@string/sync_category_title"/>

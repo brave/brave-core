@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.js b/chrome/browser/resources/settings/privacy_page/personalization_options.js
-index 5d066a1dee6901c29e4cdf7dd5adee12a2ec3965..3faa7d0888fecd80c5a459b0852ad8dd8f6af220 100644
+index 29021b8c78cc17cf4a0ed89b9c47e2c07dbbfb74..5847a1544522b64223320ae052c7aac6eb35878e 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.js
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.js
-@@ -58,7 +58,7 @@ Polymer({
-       value: loadTimeData.getBoolean('passwordsLeakDetectionEnabled'),
+@@ -40,7 +40,7 @@ Polymer({
+       },
      },
  
 -    // <if expr="_google_chrome and not chromeos">
@@ -11,7 +11,19 @@ index 5d066a1dee6901c29e4cdf7dd5adee12a2ec3965..3faa7d0888fecd80c5a459b0852ad8dd
      // TODO(dbeam): make a virtual.* pref namespace and set/get this normally
      // (but handled differently in C++).
      /** @private {chrome.settingsPrivate.PrefObject} */
-@@ -80,7 +80,7 @@ Polymer({
+@@ -87,9 +87,11 @@ Polymer({
+     },
+   },
+ 
++  // <if expr="_google_chrome">
+   observers: [
+     'onSafeBrowsingReportingPrefChange_(prefs.safebrowsing.*)',
+   ],
++  // </if>
+ 
+   /**
+    * @return {boolean}
+@@ -103,13 +105,14 @@ Polymer({
    ready: function() {
      this.browserProxy_ = settings.PrivacyPageBrowserProxyImpl.getInstance();
  
@@ -20,12 +32,36 @@ index 5d066a1dee6901c29e4cdf7dd5adee12a2ec3965..3faa7d0888fecd80c5a459b0852ad8dd
      const setMetricsReportingPref = this.setMetricsReportingPref_.bind(this);
      this.addWebUIListener('metrics-reporting-change', setMetricsReportingPref);
      this.browserProxy_.getMetricsReporting().then(setMetricsReportingPref);
-@@ -165,7 +165,7 @@ Polymer({
-     return !this.getPref('safebrowsing.enabled').value;
+     // </if>
+   },
+ 
++  // <if expr="_google_chrome">
+   /**
+    * @return {boolean}
+    * @private
+@@ -143,7 +146,8 @@ Polymer({
+     };
    },
  
 -  // <if expr="_google_chrome and not chromeos">
++  // </if>
 +  // <if expr="_chromium and not chromeos">
    /** @private */
    onMetricsReportingChange_: function() {
      const enabled = this.$.metricsReportingControl.checked;
+@@ -194,6 +198,7 @@ Polymer({
+   },
+   // </if>
+ 
++  // <if expr="_google_chrome">
+   /**
+    * @return {boolean}
+    * @private
+@@ -245,6 +250,7 @@ Polymer({
+     }
+     this.showSignoutDialog_ = false;
+   },
++  // </if>
+ 
+   /**
+    * @param {!Event} e

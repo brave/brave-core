@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java
-index 3e6369a1a9a5f72fc4ef352786aced26c60c0902..f55d8e983f815d8b5e56e007281201df7663e520 100644
+index 4f740aac382b2b2f5013006f0cdf1007b330759b..1d2111d086edfcb0821d7f2d895ce0ba35cf6e85 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java
-@@ -138,4 +138,5 @@ class BottomToolbarCoordinator {
+@@ -164,4 +164,5 @@ class BottomToolbarCoordinator {
          }
          mThemeColorProvider.destroy();
      }

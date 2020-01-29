@@ -9,7 +9,6 @@
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Brave'i logo</translation>
 <translation id="7339898014177206373">Uus aken</translation>
-<translation id="5935964611177478118">logi Brave'i sisse</translation>
 <translation id="5516268345616100622">Tegumihaldur – Brave</translation>
 <translation id="7918740962659365265">Aidake Brave'i täiustada, saates Brave'ile krahhiaruandeid ja lingi <ph name="UMA_LINK"/></translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
@@ -122,7 +121,6 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="1459786048951724030">Brave OS ei saanud sisselogimisvea tõttu teie andmeid sünkroonida.</translation>
 <translation id="6813094029720377619">Bravei sulgemisel kustutatakse küpsisefailid. Sünkroonimise jätkamiseks muutke seda: <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
 <translation id="3340978935015468852">seaded</translation>
-<translation id="380197516434040304">Braveist eemaldamine ...</translation>
 <translation id="300669147395456190">Brave'i rakendused</translation>
 <translation id="3421950102518690868">Domeen <ph name="DOMAIN"/> nõuab, et loete enne selle seadme kasutamist läbi järgmised teenusetingimused ja nõustute nendega. Need tingimused ei laienda, muuda ega piira Brave OS-i tingimusi.</translation>
 <translation id="3293668930608086049">Brave kasutab kaamerat ja mikrofoni.</translation>
@@ -189,8 +187,6 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="7798069806040634998">Brave vajab failide allalaadimiseks juurdepääsu salvestusruumile</translation>
 <translation id="7685904775439037072">Kui annate Braveile juurdepääsu, saavad veebisaidid küsida teilt juurdepääsuluba.</translation>
 <translation id="1744365871163268756">Oodake, kuni Brave installib uusimad süsteemivärskendused.</translation>
-<translation id="8000338990735917615">Bravei tulevased versioonid installitakse automaatselt.</translation>
-<translation id="2975476470948647918">Bravei tulevased versioonid installitakse automaatselt. Kui allalaadimine lõpetatakse, taaskäivitub Brave ja saate alustada.</translation>
 <translation id="7808415789955822133">Brave OS-i tingimused</translation>
 <translation id="7207456302801184289">Tere tulemast Bravei</translation>
 <translation id="3507835409099344374">Ava Bravei märguandeseaded</translation>
@@ -222,7 +218,6 @@ Brave ei saa teie seadeid taastada.</translation>
       Bravei brauseri seadeid<ph name="LINK_END"/></translation>
 <translation id="4459296183696059108">Kui seadet sellel lehel ei kuvata, vaadake oma <ph name="LINK_BEGIN"/>
       Brave OS-i seadeid<ph name="LINK_END"/></translation>
-<translation id="7977435741986383568">Brave võib sirvimiskogemuse parandamiseks kasutada veebiteenuseid. Võite need teenused valikuliselt keelata. <ph name="BEGIN_LINK"/>Lisateave<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Õigekirjavigade parandamiseks saadab Brave teie tekstiväljadel sisestatud teksti Brave Software'ile</translation>
 <translation id="8586264863973514035">Muudatuste rakendamiseks käivitage Brave uuesti</translation>
 <translation id="7021823858304886493">Luba Brave'i sisselogimine</translation>

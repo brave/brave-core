@@ -6,7 +6,6 @@
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Brave embléma</translation>
 <translation id="7339898014177206373">Új ablak</translation>
-<translation id="5935964611177478118">bejelentkezés a Braveba</translation>
 <translation id="5516268345616100622">Feladatkezelő -- Brave</translation>
 <translation id="7918740962659365265">Segítse a Brave fejlesztését azáltal, hogy elküldi a Brave Software-nak a következőket: hibajelentések és <ph name="UMA_LINK"/></translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> -- Brave</translation>
@@ -117,7 +116,6 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="1459786048951724030">A Brave OS egy bejelentkezési hiba miatt nem tudta szinkronizálni az adatokat.</translation>
 <translation id="6813094029720377619">Törli a cookie-kat, amikor bezárja a Braveot. A szinkronizálás folytatásához szükség van a következő módosítására: <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
 <translation id="3340978935015468852">beállítások</translation>
-<translation id="380197516434040304">Eltávolítás a Braveból…</translation>
 <translation id="300669147395456190">Brave-alkalmazások</translation>
 <translation id="3421950102518690868">A(z) <ph name="DOMAIN"/> megköveteli, hogy olvassa, majd fogadja el a következő Általános Szerződési Feltételeket, mielőtt használná ezt az eszközt. Ezek a feltételek nem bővítik, módosítják vagy korlátozzák a Brave OS feltételeit.</translation>
 <translation id="3293668930608086049">A Brave használja a kamerát és a mikrofont.</translation>
@@ -178,8 +176,6 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="7798069806040634998">A Bravenak tárhelyhozzáférésre van szüksége a fájlok letöltéséhez</translation>
 <translation id="7685904775439037072">Miután hozzáférést biztosított a Bravenak, a webhelyek is hozzáférést kérhetnek.</translation>
 <translation id="1744365871163268756">Kérjük, várjon, amíg a Brave telepíti a legutóbbi rendszerfrissítéseket.</translation>
-<translation id="8000338990735917615">A Brave jövőbeli verziói automatikusan települnek.</translation>
-<translation id="2975476470948647918">A Brave jövőbeli verziói automatikusan települnek. A letöltés befejezése után a Brave újraindul, és már rendelkezésre is áll.</translation>
 <translation id="7808415789955822133">Brave OS – Szerződési Feltételek</translation>
 <translation id="7207456302801184289">Üdvözli a Brave!</translation>
 <translation id="3507835409099344374">A Brave értesítési beállításainak megnyitása</translation>
@@ -209,7 +205,6 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="6915252145142862992">Ez a Brave második telepítése, amelyet nem állíthat be az alapértelmezett böngészővé.</translation>
 <translation id="6235873178214143377">Ha valamelyik beállítás nem látható ezen az oldalon, keresse a <ph name="LINK_BEGIN"/>Brave böngésző beállításai<ph name="LINK_END"/> között</translation>
 <translation id="4459296183696059108">Ha valamelyik beállítás nem látható ezen az oldalon, keresse a <ph name="LINK_BEGIN"/>Brave OS beállításai<ph name="LINK_END"/> között</translation>
-<translation id="7977435741986383568">Előfordulhat, hogy a Brave internetes szolgáltatásokat használ böngészési élménye javítására. Lehetősége van az ilyen szolgáltatások letiltására. <ph name="BEGIN_LINK"/>További információ<ph name="END_LINK"/>.</translation>
 <translation id="2312399718665761438">A nyelvtani hibák javítása érdekében a Brave elküldi a szövegmezőkbe gépelt szöveget a Brave Software-nak</translation>
 <translation id="8586264863973514035">A módosítások alkalmazásához indítsa újra a Braveot</translation>
 <translation id="7021823858304886493">Brave-bejelentkezés engedélyezése</translation>

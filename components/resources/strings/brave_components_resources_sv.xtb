@@ -77,19 +77,11 @@
 <translation id="438216590634144114">Välj den sökmotor du vill använda som standard när du söker på nätet från adressfältet.</translation>
 <translation id="5804484488647369316">Ange standardsökmotor</translation>
 <translation id="4428458837269935199">För en mer privat sökupplevelse, prova DuckDuckGo.</translation>
-<translation id="513635702954746724">Välj färgtema</translation>
-<translation id="6842850080200126305">Välj färg för verktygsfältet genom att välja mellan det ljusa eller mörka alternativet i inställningspanelen.</translation>
-<translation id="5805868144901917207">Välj ett tema</translation>
-<translation id="8131740175452115882">Bekräfta</translation>
-<translation id="713206503018076063">Systemtema (förvalt)</translation>
-<translation id="1807246157184219062">Ljus</translation>
-<translation id="2414886740292270097">Mörk</translation>
 <translation id="3829010735958850433">Hoppa över välkomsttur</translation>
 <translation id="1201402288615127009">Nästa</translation>
 <translation id="7954950242989581218">Surfa säkert och tryggt</translation>
-<translation id="2188651882929633653">Brave Shields blockerar de läskiga grejerna som försöker spåra dig på nätet, inklusive största delen av all reklam. Ställ in Shields som "nere" om en webbplats inte verkar fungera. Brave använder <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>helt anonym product analytics<ph name="END_LINK_P3A">&lt;/a&gt;</ph> för att uppskatta den generella användningen av vissa funktioner. Du kan slå av detta i <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
+<translation id="2188651882929633653">Brave Shields blockerar de läskiga grejerna som försöker spåra dig på nätet, inklusive största delen av all reklam. Ställ in Shields som "nere" om en webbplats inte verkar fungera. Brave använder <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>helt privat produktanalys <ph name="END_LINK_P3A">&lt;/a&gt;</ph> för att uppskatta den sammanlagda användningen av vissa funktioner. Du kan stänga av detta i <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Annonser</translation>
-<translation id="5698387814910197501">Tjäna {{currency}} genom att se annonser i Brave. Annonser som visas baseras på dina intressen, taget från ditt surfbeteende. Ingen personlig information eller sökhistorik lämnar någonsin din webbläsare.</translation>
 <translation id="6112368337882254910">Bidra automatiskt</translation>
 <translation id="3742599705619405136">Ett automatiskt sätt att stödja utgivare och contentskapare. Ställ in en månatlig betalning och surfa som vanligt. De Braveverifierade webbplatserna du besöker kommer att ta emot dina bidrag automatiskt, baserat på din uppmärksamhet som den mätts av Brave.</translation>
 <translation id="20281847067919078">Beräknade väntande belöningar</translation>
@@ -97,6 +89,7 @@
 <translation id="319209088187794725">Annonsaviseringar mottagna den här månaden</translation>
 <translation id="4229016885653790965">Beklagar! Annonser kan ännu inte väljas i din region.</translation>
 <translation id="2539279826042558064">Brave belöningar och annonser är inte tillgängliga på din enhet för närvarande.</translation>
+<translation id="5421369907811917952">Andra inställningar</translation>
 <translation id="654711254769318398">Visade annonssidor</translation>
 <translation id="2532127066761785857">Maximalt antal annonser har visats</translation>
 <translation id="5171071066587880677">1 annons per timme</translation>
@@ -132,7 +125,6 @@
 <translation id="2726674968268546964">token</translation>
 <translation id="7286722244752781970">Minimum tid på en sida innan ett besök loggas</translation>
 <translation id="4424486208397124985">Minsta antal besök för relevans för utgivare</translation>
-<translation id="5421369907811917952">Andra inställningar</translation>
 <translation id="6248554379744796526">Visa icke bekräftade webbplatser i listan</translation>
 <translation id="5875669387851353511">Tillåt bidrag till videos</translation>
 <translation id="8933202740471878108">1 besök</translation>
@@ -162,7 +154,7 @@
 <translation id="7210234701206674260">Brave Rewards har problem. Försök igen senare.</translation>
 <translation id="570208820610947248">Vi upptäckte ett fel med din plånbok. Du måste återställa din säkerhetskopia innan transaktioner kan genomföras.</translation>
 <translation id="7797604753681168055">Återställ nu!</translation>
-<translation id="5549059668721746831">Datum för dricks nästa månad</translation>
+<translation id="5549059668721746831">Nästa månatliga bidragsdatum</translation>
 <translation id="6231182869178328516">Jag gav just dricks till <ph name="NAME"/> med Brave Browser. Kolla in den på https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">Det gick inte att behandla din förfrågan. Försök igen.</translation>
@@ -261,8 +253,8 @@
 <translation id="4114667046481794032">Bidragsbelopp</translation>
 <translation id="3520817231440482449">Donera till denna webbplats månadsvis</translation>
 <translation id="1827184134638345603">Skicka en donation…</translation>
-<translation id="7928243298881209869">Du skickar din första månadsdricks den:</translation>
-<translation id="6045860799501892362">Ställ in månatliga donationer</translation>
+<translation id="7928243298881209869">Du skickar ditt första månadsbidrag den:</translation>
+<translation id="6045860799501892362">Ställ in månatliga bidrag</translation>
 <translation id="8003573781961874199">Ladda ned som pdf</translation>
 <translation id="298067735430872465">Förtjänst från annonser</translation>
 <translation id="2266556115441975588">Dina belöningar från annonser har kommit!</translation>
@@ -291,7 +283,7 @@
 <translation id="9115913704608474258">November</translation>
 <translation id="7828956995407538686">Oktober</translation>
 <translation id="5502713021410870035">September</translation>
-<translation id="5737831580668469027">Månatliga donationer!</translation>
+<translation id="5737831580668469027">Månatliga bidrag!</translation>
 <translation id="606865182719489911">En tilldelning av gratis token är tillgänglig.</translation>
 <translation id="2487641031722095938">Det är din lyckodag!</translation>
 <translation id="6255773350565723852">Din tilldelning av token är på väg.</translation>
@@ -318,13 +310,10 @@
 <translation id="4923459931733593730">Betalning</translation>
 <translation id="4021593982164260556">Betalning utförs var {{day}}:e dag varje månad.</translation>
 <translation id="6104680658798556671">Betalning inte gjord</translation>
-<translation id="2834888581291358924">Om ditt saldo inte räcker till för att täcka den sammanlagda summan av automatiska bidrag och återkommande donationer så hoppas dessa betalningar över för perioden.</translation>
+<translation id="2834888581291358924">Om ditt saldo inte räcker till för att täcka den sammanlagda summan av automatiska och månatliga bidrag så hoppas dessa betalningar över för perioden.</translation>
 <translation id="3138528956349114724">Fästa webbplatser är nu</translation>
-<translation id="2337632028350283479">Så här fungerar månatliga donationer:</translation>
-<translation id="6457273203091513039">Månatliga donationer tas inte från din Bidra automatiskt-betalning; de är separata.</translation>
+<translation id="2337632028350283479">Så här fungerar månatliga bidrag:</translation>
 <translation id="9099396904827413228">Varje webbplats betalas en fast summa varje månad.</translation>
-<translation id="5051110132941857169">Månatliga donationer betalas ut samtidigt varje månad. Om du använder Bidra automatiskt så betalas donationerna ut samtidigt som din Bidra automatiskt-betalning.</translation>
-<translation id="3374483782662414143">Du kan redigera vilka webbplatser som får månatliga donationer i donationspanelen.</translation>
 <translation id="5082474983463379713">Vänligen observera:</translation>
 <translation id="1430915738399379752">Skriv ut</translation>
 <translation id="135956957367307069">Förfrågan behandlas. Vänta.</translation>
