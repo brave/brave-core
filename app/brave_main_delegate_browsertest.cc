@@ -44,7 +44,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &autofill::features::kAutofillServerCommunication,
       &features::kAllowPopupsDuringPageUnload,
       &features::kAudioServiceOutOfProcess,
-      &features::kDefaultEnableOopRasterization,
       &features::kNotificationTriggers,
       &features::kSmsReceiver,
       &features::kWebXr,
