@@ -53,6 +53,8 @@ size_t GetIndex(const bookmarks::BookmarkNode* parent,
   DCHECK(!object_id.empty());
   for (size_t i = 0; i < parent->children().size(); ++i) {
     const bookmarks::BookmarkNode* child = parent->children()[i].get();
+    // Same order and same object id (case when child is equal to target node)
+    // will be skipped
     std::string child_order;
     child->GetMetaInfo("order", &child_order);
     if (!child_order.empty() &&
@@ -61,7 +63,7 @@ size_t GetIndex(const bookmarks::BookmarkNode* parent,
     } else if (order == child_order) {
       std::string child_object_id;
       child->GetMetaInfo("object_id", &child_object_id);
-      if (object_id <= child_object_id) {
+      if (object_id < child_object_id) {
         return i;
       }
     }

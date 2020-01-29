@@ -44,7 +44,6 @@ if (enable_brave_sync) {
       "//components/keyed_service/core",
       "//components/pref_registry",
       "//components/prefs",
-      "//components/prefs",
       "//components/signin/public/identity_manager",
       "//components/sync:rest_of_sync",
       "//components/sync/driver:driver",
