@@ -55,29 +55,30 @@ class ClaimRewardsNTPNotificationViewController: TranslucentBottomSheet {
     
     override func viewDidLayoutSubviews() {
         updateMainViewConstraints()
-    }
-    
-    private func updateMainViewConstraints() {
-        guard let mainView = mainView else { return }
-
-        mainView.alignment = isPortraitIphone ? .fill : .center
-
-        mainView.snp.remakeConstraints {
-            $0.top.equalToSuperview().inset(28)
-            $0.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
-
-            if isPortraitIphone {
-                $0.leading.trailing.equalTo(view.safeAreaLayoutGuide).inset(16)
+        
+        view.snp.remakeConstraints {
+            if isPortraitPhone {
+                $0.right.left.equalToSuperview()
             } else {
                 let width = min(view.frame.width, 400)
                 $0.width.equalTo(width)
                 $0.centerX.equalToSuperview()
             }
+            $0.bottom.equalToSuperview()
         }
     }
     
-    private var isPortraitIphone: Bool {
-        traitCollection.userInterfaceIdiom == .phone && UIApplication.shared.statusBarOrientation.isPortrait
+    private func updateMainViewConstraints() {
+        guard let mainView = mainView else { return }
+        
+        mainView.snp.remakeConstraints {
+            $0.edges.equalTo(view.safeAreaLayoutGuide).inset(16)
+        }
+    }
+    
+    private var isPortraitPhone: Bool {
+        traitCollection.userInterfaceIdiom == .phone
+            && UIApplication.shared.statusBarOrientation.isPortrait
     }
     
     private var getMainView: NTPNotificationView? {
