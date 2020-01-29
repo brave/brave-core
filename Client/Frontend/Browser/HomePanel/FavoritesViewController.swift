@@ -323,7 +323,6 @@ class FavoritesViewController: UIViewController, Themeable {
             }
             
             vc = notificationVC
-            Preferences.NewTabPage.atleastOneNTPNotificationWasShowed.value = true
         case .claimRewards:
             if !Preferences.NewTabPage.attemptToShowClaimRewardsNotification.value { return }
             
@@ -340,6 +339,11 @@ class FavoritesViewController: UIViewController, Themeable {
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { [weak self] in
             guard let self = self else { return }
+            
+            if case .brandedImages = type {
+                Preferences.NewTabPage.atleastOneNTPNotificationWasShowed.value = true
+            }
+            
             self.ntpNotificationShowing = true
             self.addChild(viewController)
             self.view.addSubview(viewController.view)
