@@ -270,36 +270,38 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
           </Page.GridItemRewards>
           }
           <Page.Footer>
-            {showBrandedWallpaper && this.state.brandedWallpaper &&
-              this.state.brandedWallpaper.logo &&
-            <Page.GridItemCredits>
-              <BrandedWallpaperLogo
-                menuPosition={'right'}
+            <Page.FooterContent>
+              {showBrandedWallpaper && this.state.brandedWallpaper &&
+                this.state.brandedWallpaper.logo &&
+              <Page.GridItemBrandedLogo>
+                <BrandedWallpaperLogo
+                  menuPosition={'right'}
+                  textDirection={textDirection}
+                  data={this.state.brandedWallpaper.logo}
+                />
+              </Page.GridItemBrandedLogo>
+              }
+              <FooterInfo
                 textDirection={textDirection}
-                data={this.state.brandedWallpaper.logo}
+                onClickOutside={this.closeSettings}
+                backgroundImageInfo={generateRandomBackgroundData}
+                onClickSettings={this.toggleSettings}
+                showSettingsMenu={showSettingsMenu}
+                showPhotoInfo={!showBrandedWallpaper && showBackgroundImage}
+                toggleShowBackgroundImage={this.toggleShowBackgroundImage}
+                toggleShowClock={this.toggleShowClock}
+                toggleShowStats={this.toggleShowStats}
+                toggleShowTopSites={this.toggleShowTopSites}
+                toggleShowRewards={this.toggleShowRewards}
+                toggleBrandedWallpaperOptIn={this.toggleBrandedWallpaperOptIn}
+                showBackgroundImage={showBackgroundImage}
+                showClock={showClock}
+                showStats={showStats}
+                showTopSites={showTopSites}
+                showRewards={showRewards}
+                brandedWallpaperOptIn={this.state.brandedWallpaperOptIn}
               />
-            </Page.GridItemCredits>
-            }
-            <FooterInfo
-              textDirection={textDirection}
-              onClickOutside={this.closeSettings}
-              backgroundImageInfo={generateRandomBackgroundData}
-              onClickSettings={this.toggleSettings}
-              showSettingsMenu={showSettingsMenu}
-              showPhotoInfo={!showBrandedWallpaper && showBackgroundImage}
-              toggleShowBackgroundImage={this.toggleShowBackgroundImage}
-              toggleShowClock={this.toggleShowClock}
-              toggleShowStats={this.toggleShowStats}
-              toggleShowTopSites={this.toggleShowTopSites}
-              toggleShowRewards={this.toggleShowRewards}
-              toggleBrandedWallpaperOptIn={this.toggleBrandedWallpaperOptIn}
-              showBackgroundImage={showBackgroundImage}
-              showClock={showClock}
-              showStats={showStats}
-              showTopSites={showTopSites}
-              showRewards={showRewards}
-              brandedWallpaperOptIn={this.state.brandedWallpaperOptIn}
-            />
+            </Page.FooterContent>
           </Page.Footer>
         </Page.Page>
       </Page.App>

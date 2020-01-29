@@ -353,15 +353,16 @@ class NewTabPage extends React.Component<Props, State> {
           }
             {rewardsContent}
           <Page.Footer>
+            <Page.FooterContent>
             {isShowingBrandedWallpaper && newTabData.brandedWallpaperData &&
              newTabData.brandedWallpaperData.logo &&
-             <Page.GridItemCredits>
+             <Page.GridItemBrandedLogo>
               <BrandedWallpaperLogo
                 menuPosition={'right'}
                 textDirection={newTabData.textDirection}
                 data={newTabData.brandedWallpaperData.logo}
               />
-            </Page.GridItemCredits>}
+            </Page.GridItemBrandedLogo>}
             <FooterInfo
               textDirection={newTabData.textDirection}
               onClickOutside={this.closeSettings}
@@ -383,6 +384,7 @@ class NewTabPage extends React.Component<Props, State> {
               allowBrandedWallpaperUI={newTabData.featureFlagBraveNTPBrandedWallpaper}
               toggleShowRewards={this.toggleShowRewards}
             />
+            </Page.FooterContent>
           </Page.Footer>
         </Page.Page>
       </Page.App>
