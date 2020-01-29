@@ -1213,4 +1213,110 @@ void LedgerClientMojoProxy::UnblindedTokensReady() {
   ledger_client_->UnblindedTokensReady();
 }
 
+// static
+void LedgerClientMojoProxy::OnGetNotCompletedContributions(
+    CallbackHolder<GetIncompleteContributionsCallback>* holder,
+    ledger::ContributionInfoList list) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(std::move(list));
+  }
+  delete holder;
+}
+
+void LedgerClientMojoProxy::GetIncompleteContributions(
+    GetIncompleteContributionsCallback callback) {
+  auto* holder = new CallbackHolder<GetIncompleteContributionsCallback>(
+      AsWeakPtr(),
+      std::move(callback));
+  ledger_client_->GetIncompleteContributions(
+      std::bind(LedgerClientMojoProxy::OnGetNotCompletedContributions,
+                holder,
+                _1));
+}
+
+// static
+void LedgerClientMojoProxy::OnGetContributionInfo(
+    CallbackHolder<GetContributionInfoCallback>* holder,
+    ledger::ContributionInfoPtr info) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(std::move(info));
+  }
+  delete holder;
+}
+
+void LedgerClientMojoProxy::GetContributionInfo(
+    const std::string& contribution_id,
+    GetContributionInfoCallback callback) {
+  auto* holder = new CallbackHolder<GetContributionInfoCallback>(
+      AsWeakPtr(),
+      std::move(callback));
+  ledger_client_->GetContributionInfo(
+      contribution_id,
+      std::bind(LedgerClientMojoProxy::OnGetContributionInfo,
+                holder,
+                _1));
+}
+
+// static
+void LedgerClientMojoProxy::OnUpdateContributionInfoStepAndCount(
+    CallbackHolder<UpdateContributionInfoStepAndCountCallback>* holder,
+    const ledger::Result result) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+  delete holder;
+}
+
+void LedgerClientMojoProxy::UpdateContributionInfoStepAndCount(
+    const std::string& contribution_id,
+    const ledger::ContributionStep step,
+    const int32_t retry_count,
+    UpdateContributionInfoStepAndCountCallback callback) {
+  auto* holder = new CallbackHolder<UpdateContributionInfoStepAndCountCallback>(
+      AsWeakPtr(),
+      std::move(callback));
+  ledger_client_->UpdateContributionInfoStepAndCount(
+      contribution_id,
+      step,
+      retry_count,
+      std::bind(LedgerClientMojoProxy::OnUpdateContributionInfoStepAndCount,
+                holder,
+                _1));
+}
+
+// static
+void LedgerClientMojoProxy::OnUpdateContributionInfoContributedAmount(
+    CallbackHolder<UpdateContributionInfoContributedAmountCallback>* holder,
+    const ledger::Result result) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+  delete holder;
+}
+
+void LedgerClientMojoProxy::UpdateContributionInfoContributedAmount(
+    const std::string& contribution_id,
+    const std::string& publisher_key,
+    UpdateContributionInfoContributedAmountCallback callback) {
+  auto* holder =
+      new CallbackHolder<UpdateContributionInfoContributedAmountCallback>(
+      AsWeakPtr(),
+      std::move(callback));
+  ledger_client_->UpdateContributionInfoContributedAmount(
+      contribution_id,
+      publisher_key,
+      std::bind(
+          LedgerClientMojoProxy::OnUpdateContributionInfoContributedAmount,
+          holder,
+          _1));
+}
+
+void LedgerClientMojoProxy::ReconcileStampReset() {
+  ledger_client_->ReconcileStampReset();
+}
+
 }  // namespace bat_ledger

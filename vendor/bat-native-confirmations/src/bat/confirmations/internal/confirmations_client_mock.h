@@ -375,6 +375,26 @@ class MockConfirmationsClient : public ConfirmationsClient {
   MOCK_METHOD0(GetClientInfo, ledger::ClientInfoPtr());
 
   MOCK_METHOD0(UnblindedTokensReady, void());
+
+  MOCK_METHOD1(GetIncompleteContributions, void(
+      ledger::GetIncompleteContributionsCallback callback));
+
+  MOCK_METHOD2(GetContributionInfo, void(
+      const std::string& contribution_id,
+      ledger::GetContributionInfoCallback callback));
+
+  MOCK_METHOD4(UpdateContributionInfoStepAndCount, void(
+      const std::string& contribution_id,
+      const ledger::ContributionStep step,
+      const int32_t retry_count,
+      ledger::ResultCallback callback));
+
+  MOCK_METHOD3(UpdateContributionInfoContributedAmount, void(
+      const std::string& contribution_id,
+      const std::string& publisher_key,
+      ledger::ResultCallback callback));
+
+  MOCK_METHOD0(ReconcileStampReset, void());
 };
 
 }  // namespace confirmations

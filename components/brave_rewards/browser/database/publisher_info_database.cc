@@ -175,6 +175,53 @@ void PublisherInfoDatabase::GetOneTimeTips(
   contribution_info_->GetOneTimeTips(&GetDB(), list, month, year);
 }
 
+void PublisherInfoDatabase::GetIncompleteContributions(
+    ledger::ContributionInfoList* list) {
+  DCHECK(list);
+  if (!IsInitialized() || !list) {
+    return;
+  }
+
+  contribution_info_->GetNotCompletedRecords(&GetDB(), list);
+}
+
+ledger::ContributionInfoPtr PublisherInfoDatabase::GetContributionInfo(
+    const std::string& contribution_id) {
+  if (!IsInitialized()) {
+    return nullptr;
+  }
+
+  return contribution_info_->GetRecord(&GetDB(), contribution_id);
+}
+
+bool PublisherInfoDatabase::UpdateContributionInfoStepAndCount(
+    const std::string& contribution_id,
+    const ledger::ContributionStep step,
+    const int32_t retry_count) {
+  if (!IsInitialized()) {
+    return false;
+  }
+
+  return contribution_info_->UpdateStepAndCount(
+      &GetDB(),
+      contribution_id,
+      step,
+      retry_count);
+}
+
+bool PublisherInfoDatabase::UpdateContributionInfoContributedAmount(
+    const std::string& contribution_id,
+    const std::string& publisher_key) {
+  if (!IsInitialized()) {
+    return false;
+  }
+
+  return contribution_info_->UpdateContributedAmount(
+      &GetDB(),
+      contribution_id,
+      publisher_key);
+}
+
 /**
  *
  * PUBLISHER INFO

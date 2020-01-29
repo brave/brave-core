@@ -76,6 +76,12 @@ using GetPromotionCallback = std::function<void(PromotionPtr)>;
 using GetAllUnblindedTokensCallback = std::function<void(UnblindedTokenList)>;
 using GetAllPromotionsCallback = std::function<void(PromotionMap)>;
 
+using GetIncompleteContributionsCallback =
+    std::function<void(ContributionInfoList)>;
+
+using GetContributionInfoCallback =
+    std::function<void(ContributionInfoPtr)>;
+
 class LEDGER_EXPORT LedgerClient {
  public:
   virtual ~LedgerClient() = default;
@@ -321,6 +327,26 @@ class LEDGER_EXPORT LedgerClient {
   virtual ledger::ClientInfoPtr GetClientInfo() = 0;
 
   virtual void UnblindedTokensReady() = 0;
+
+  virtual void GetIncompleteContributions(
+      ledger::GetIncompleteContributionsCallback callback) = 0;
+
+  virtual void GetContributionInfo(
+      const std::string& contribution_id,
+      GetContributionInfoCallback callback) = 0;
+
+  virtual void UpdateContributionInfoStepAndCount(
+      const std::string& contribution_id,
+      const ledger::ContributionStep step,
+      const int32_t retry_count,
+      ResultCallback callback) = 0;
+
+  virtual void UpdateContributionInfoContributedAmount(
+      const std::string& contribution_id,
+      const std::string& publisher_key,
+      ResultCallback callback) = 0;
+
+  virtual void ReconcileStampReset() = 0;
 };
 
 }  // namespace ledger

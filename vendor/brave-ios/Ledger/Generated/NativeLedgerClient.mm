@@ -258,3 +258,18 @@ void NativeLedgerClient::GetAllPromotions(ledger::GetAllPromotionsCallback callb
 void NativeLedgerClient::DeleteUnblindedTokensForPromotion(const std::string& promotion_id, ledger::ResultCallback callback) {
   [bridge_ deleteUnblindedTokensForPromotion:promotion_id callback:callback];
 }
+void NativeLedgerClient::GetIncompleteContributions(ledger::GetIncompleteContributionsCallback callback) {
+  [bridge_ getIncompleteContributions:callback];
+}
+void NativeLedgerClient::GetContributionInfo(const std::string& contribution_id, ledger::GetContributionInfoCallback callback) {
+  [bridge_ getContributionInfo:contribution_id callback:callback];
+}
+void NativeLedgerClient::UpdateContributionInfoStepAndCount(const std::string& contribution_id, const ledger::ContributionStep step, const int32_t retry_count, ledger::ResultCallback callback) {
+  [bridge_ updateContributionInfoStepAndCount:contribution_id step:step retry_count:retry_count callback:callback];
+}
+void NativeLedgerClient::UpdateContributionInfoContributedAmount(const std::string& contribution_id, const std::string& publisher_key, ledger::ResultCallback callback) {
+  [bridge_ updateContributionInfoContributedAmount:contribution_id publisher_key:publisher_key callback:callback];
+}
+void NativeLedgerClient::ReconcileStampReset() {
+  [bridge_ reconcileStampReset];
+}

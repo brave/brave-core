@@ -139,6 +139,21 @@ class PublisherInfoDatabase {
   bool DeleteActivityInfo(const std::string& publisher_key,
                           uint64_t reconcile_stamp);
 
+  void GetIncompleteContributions(
+      ledger::ContributionInfoList* list);
+
+  ledger::ContributionInfoPtr GetContributionInfo(
+      const std::string& contribution_id);
+
+  bool UpdateContributionInfoStepAndCount(
+      const std::string& contribution_id,
+      const ledger::ContributionStep step,
+      const int32_t retry_count);
+
+  bool UpdateContributionInfoContributedAmount(
+      const std::string& contribution_id,
+      const std::string& publisher_key);
+
   // Vacuums the database. This will cause sqlite to defragment and collect
   // unused space in the file. It can be VERY SLOW.
   void Vacuum();
