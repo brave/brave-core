@@ -28,7 +28,7 @@ import org.chromium.ui.widget.ChromeImageButton;
 /**
  * The bookmarks button.
  */
-public class BookmarksButton extends ChromeImageButton implements ThemeColorObserver, TintObserver {
+public class BookmarksButton extends ShareButton implements ThemeColorObserver, TintObserver {
     /** A provider that notifies components when the theme color changes.*/
     private ThemeColorProvider mThemeColorProvider;
     private ColorStateList mCurrentTint;
