@@ -114,7 +114,7 @@ scoped_refptr<Extension> ConvertGreaselionRuleToExtensionOnTaskRunner(
   content_script->Set(extensions::manifest_keys::kJs, std::move(js_files));
   // All Greaselion scripts run at document end.
   content_script->SetStringPath(extensions::manifest_keys::kRunAt,
-                                extensions::manifest_values::kRunAtDocumentEnd);
+      extensions::manifest_values::kRunAtDocumentStart);
 
   auto content_scripts = std::make_unique<base::ListValue>();
   content_scripts->Append(std::move(content_script));
