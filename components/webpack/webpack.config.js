@@ -35,9 +35,11 @@ module.exports = (env, argv) => ({
     rules: [
       {
         test: /\.tsx?$/,
-        loader: 'awesome-typescript-loader',
+        loader: 'ts-loader',
+        exclude: /node_modules\/(?!brave-ui)/,
         options: {
-          getCustomTransformers: path.join(__dirname, './webpack-ts-transformers.js')
+          getCustomTransformers: path.join(__dirname, './webpack-ts-transformers.js'),
+          allowTsInNodeModules: true
         }
       },
       {

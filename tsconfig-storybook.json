@@ -2,7 +2,7 @@
   "extends": "./tsconfig",
   "include": [
     "./components/definitions/*",
-    "./components/**/storybook/**"
+    "./components/**/storybook"
   ],
   "exclude": [
 
