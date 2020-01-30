@@ -5,6 +5,7 @@
 import Foundation
 import Shared
 import BraveShared
+import BraveRewards
 
 private let logger = Logger.browserLogger
 
@@ -16,7 +17,14 @@ class NTPDownloader {
     private static let etagFile = "crc.etag"
     private static let metadataFile = "photo.json"
     private static let ntpDownloadsFolder = "NTPDownloads"
-    private static let baseURL = "https://brave-ntp-crx-input-dev.s3-us-west-2.amazonaws.com/"
+    private static let baseURL = { () -> String in
+        switch BraveLedger.environment {
+        case .production: return "https://mobile-data.s3.brave.com/"
+        case .staging, .development: return "https://brave-ntp-crx-input-dev.s3-us-west-2.amazonaws.com/"
+        @unknown default:
+            return "https://mobile-data.s3.brave.com/"
+        }
+    }()
     
     private var timer: Timer?
     private var backgroundObserver: NSObjectProtocol?
@@ -148,13 +156,17 @@ class NTPDownloader {
             self.timer?.invalidate()
             self.timer = nil
             
-            if let nextDate = Preferences.NTP.ntpCheckDate.value {
+            //If the time hasn't passed yet, reschedule the timer with the relative time..
+            if let nextDate = Preferences.NTP.ntpCheckDate.value,
+                Date().timeIntervalSince1970 - nextDate < 0 {
+                
                 let relativeTime = abs(Date().timeIntervalSince1970 - nextDate)
                 self.timer = Timer.scheduledTimer(withTimeInterval: relativeTime, repeats: true) { [weak self] _ in
                     self?.notifyObservers()
                 }
             } else {
-                self.startNTPTimer()
+                //Else the time has already passed so download the new data, reschedule the timers and notify the observers
+                self.notifyObservers()
             }
         }
     }
