@@ -1,10 +1,12 @@
 <link rel="import" href="chrome://resources/html/polymer.html">
 
 <link rel="import" href="chrome://resources/html/i18n_behavior.html">
+<link rel="import" href="chrome://resources/cr_elements/cr_lazy_render/cr_lazy_render.html">
 <link rel="import" href="chrome://resources/cr_elements/md_select_css.html">
 <link rel="import" href="default_brave_shields_browser_proxy.html">
 <link rel="import" href="../settings_shared_css.html">
 <link rel="import" href="../settings_vars_css.html">
+<link rel="import" href="reset_brave_shields_dialog.html">
 
 <dom-module id="settings-default-brave-shields-page">
   <template>
@@ -129,6 +131,15 @@
         </template>
       </select>
     </div>
+    <cr-link-row id="resetShieldsSettings" label="$i18n{resetShieldsSettingsMenuTitle}"
+        on-click="onShowResetShieldsSettingsDialog_"></cr-link-row>
+    <cr-lazy-render id="resetShieldsSettingsDialog">
+      <template>
+        <settings-reset-brave-shields-dialog
+            on-close="onResetShieldsSettingsDialogClose_">
+        </settings-reset-brave-shields-dialog>
+      </template>
+    </cr-lazy-render>
   </template>
   <script src="default_brave_shields_page.js"></script>
 </dom-module>

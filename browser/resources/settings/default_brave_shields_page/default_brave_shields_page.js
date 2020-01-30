@@ -65,6 +65,17 @@ Polymer({
     });
   },
 
+  /** @private */
+  onShowResetShieldsSettingsDialog_: function() {
+    const lazyRender = this.$.resetShieldsSettingsDialog;
+    lazyRender.get().show();
+  },
+
+  /** @private */
+  onResetShieldsSettingsDialogClose_: function() {
+    cr.ui.focusWithoutInk(assert(this.$.resetShieldsSettings));
+  },
+
   /**
    * @param {string} value
    * @param {string} value

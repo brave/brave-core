@@ -17,6 +17,8 @@
       <structure name="IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_BROWSER_PROXY_JS" file="default_brave_shields_page/default_brave_shields_browser_proxy.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_PAGE_JS" file="default_brave_shields_page/default_brave_shields_page.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_PAGE_HTML" file="default_brave_shields_page/default_brave_shields_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <structure name="IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_RESET_BRAVE_SHIELDS_DIALOG_JS" file="default_brave_shields_page/reset_brave_shields_dialog.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_RESET_BRAVE_SHIEDLS_DIALOG_HTML" file="default_brave_shields_page/reset_brave_shields_dialog.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
       <structure name="IDR_SETTINGS_SOCIAL_BLOCKING_BROWSER_PROXY_HTML" file="social_blocking_page/social_blocking_browser_proxy.html" type="chrome_html" />
       <structure name="IDR_SETTINGS_SOCIAL_BLOCKING_BROWSER_PROXY_JS" file="social_blocking_page/social_blocking_browser_proxy.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_SOCIAL_BLOCKING_PAGE_JS" file="social_blocking_page/social_blocking_page.js" type="chrome_html" preprocess="true" />

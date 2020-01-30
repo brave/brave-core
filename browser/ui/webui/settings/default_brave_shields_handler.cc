@@ -10,6 +10,8 @@
 #include "base/bind.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/content_settings/core/browser/brave_host_content_settings_map.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_ui.h"
 
@@ -54,6 +56,11 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
       "setNoScriptControlType",
       base::BindRepeating(&DefaultBraveShieldsHandler::SetNoScriptControlType,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "resetShieldsSettings",
+      base::BindRepeating(
+          &DefaultBraveShieldsHandler::ResetShieldsSettings,
+          base::Unretained(this)));
 }
 
 void DefaultBraveShieldsHandler::GetAdControlType(const base::ListValue* args) {
@@ -154,4 +161,17 @@ void DefaultBraveShieldsHandler::SetNoScriptControlType(
                                         value ? ControlType::BLOCK
                                               : ControlType::ALLOW,
                                         GURL());
+}
+
+void DefaultBraveShieldsHandler::ResetShieldsSettings(
+    const base::ListValue* args) {
+  const base::Value* callback_id;
+  CHECK(args->Get(0, &callback_id));
+
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile_);
+  static_cast<BraveHostContentSettingsMap*>(map)->ClearSettingsForPluginsType(
+      base::Time(), base::Time(), true /* is_shields */);
+
+  AllowJavascript();
+  ResolveJavascriptCallback(*callback_id, base::Value() /* Promise<void> */);
 }

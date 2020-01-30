@@ -174,7 +174,15 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"p3aEnabledDesc",
       IDS_BRAVE_P3A_ENABLE_SETTING_SUBITEM},
     {"remoteDebuggingEnabledTitle",
-      IDS_SETTINGS_REMOTE_DEBUGGING_TITLE}
+      IDS_SETTINGS_REMOTE_DEBUGGING_TITLE},
+    {"resetShieldsSettingsMenuTitle",
+      IDS_SETTINGS_BRAVE_SHIELDS_RESET_SHIELDS_SETTINGS_MENU_TITLE},
+    {"resetBraveShieldsSettingsDialogTitle",
+      IDS_SETTINGS_BRAVE_SHIELDS_RESET_SHIELDS_SETTINGS_DIALOG_TITLE},
+    {"resetBraveShieldsSettingsDialogBody",
+      IDS_SETTINGS_BRAVE_SHIELDS_RESET_SHIELDS_SETTINGS_DIALOG_BODY},
+    {"resetBraveShieldsSEttingsDialogResetButtonText",
+      IDS_SETTINGS_BRAVE_SHIELDS_RESET_SHIELDS_SETTINGS_DIALOG_RESET_BUTTON_TEXT},  // NOLINT
   };
   AddLocalizedStringsBulk(html_source, localized_strings);
   html_source->AddString("webRTCLearnMoreURL",

@@ -41,6 +41,11 @@ cr.define('settings', function() {
      * @param {string} value name.
      */
     setNoScriptControlType(value) {}
+
+    /**
+     * @return {!Promise<>}
+     */
+    performResetShieldsSettings() {}
   }
 
   /**
@@ -85,6 +90,11 @@ cr.define('settings', function() {
     /** @override */
     setNoScriptControlType(value) {
       chrome.send('setNoScriptControlType', [value]);
+    }
+
+    /** @override */
+    performResetShieldsSettings() {
+      return cr.sendWithPromise('resetShieldsSettings');
     }
   }
 
