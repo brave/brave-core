@@ -14,7 +14,8 @@
 
 namespace brave_ads {
 
-const char kDefaultLocale[] = "en-US";
+extern const char kDefaultCountryCode[];
+extern const char kDefaultLocale[];
 
 class LocaleHelper {
  public:
@@ -25,6 +26,8 @@ class LocaleHelper {
 
   // Should return the language based upon the tagging conventions of RFC 4646
   virtual const std::string GetLocale() const;
+
+  static const std::string GetCountryCode(const std::string& locale);
 
  protected:
   LocaleHelper();

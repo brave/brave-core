@@ -5,8 +5,7 @@
 import { Reducer } from 'redux'
 
 // Constants
-import { types } from '../constants/new_tab_types'
-import { Preferences } from '../api/preferences'
+import { types, DismissBrandedWallpaperNotificationPayload } from '../constants/new_tab_types'
 import { Stats } from '../api/stats'
 import { PrivateTabData } from '../api/privateTabData'
 
@@ -16,13 +15,19 @@ import * as gridAPI from '../api/topSites/grid'
 import { InitialData, InitialRewardsData, PreInitialRewardsData } from '../api/initialData'
 import * as bookmarksAPI from '../api/topSites/bookmarks'
 import * as dndAPI from '../api/topSites/dnd'
+import { registerViewCount } from '../api/brandedWallpaper'
+import * as preferencesAPI from '../api/preferences'
 import * as storage from '../storage'
 import { getTotalContributions } from '../rewards-utils'
 
 const initialState = storage.load()
 
-function addToDispatchQueue (fn: Function): void {
-  window.setTimeout(fn, 0)
+let sideEffectState: NewTab.State = initialState
+
+type SideEffectFunction = (currentState: NewTab.State) => void
+
+function performSideEffect (fn: SideEffectFunction): void {
+  window.setTimeout(() => fn(sideEffectState), 0)
 }
 
 export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State | undefined, action: any) => {
@@ -43,8 +48,13 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         ...initialDataPayload.preferences,
         stats: initialDataPayload.stats,
         ...initialDataPayload.privateTabData,
-        topSites: initialDataPayload.topSites
+        topSites: initialDataPayload.topSites,
+        brandedWallpaperData: initialDataPayload.brandedWallpaperData
       }
+      // TODO(petemill): only get backgroundImage if no sponsored background this time.
+      // ...We would also have to set the value at the action
+      // the branded wallpaper is turned off. Since this is a cheap string API
+      // (no image will be downloaded), we can afford to leave this here for now.
       if (initialDataPayload.preferences.showBackgroundImage) {
         state.backgroundImage = backgroundAPI.randomBackgroundImage()
       }
@@ -59,8 +69,15 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       // UI render time.
       // We at least schedule to run after the reducer has finished
       // and the resulting new state is available.
-      addToDispatchQueue(() => {
+      performSideEffect(async function (state) {
         gridAPI.calculateGridSites(state)
+        if (!state.isIncognito) {
+          try {
+            await registerViewCount()
+          } catch (e) {
+            console.error('Error calling registerViewCount', e)
+          }
+        }
       })
       break
     case types.BOOKMARK_ADDED:
@@ -102,7 +119,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       // UI render time.
       // We at least schedule to run after the reducer has finished
       // and the resulting new state is available.
-      addToDispatchQueue(() => {
+      performSideEffect((state) => {
         gridAPI.calculateGridSites(state)
       })
       break
@@ -126,7 +143,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       // UI render time.
       // We at least schedule to run after the reducer has finished
       // and the resulting new state is available.
-      addToDispatchQueue(() => {
+      performSideEffect((state) => {
         gridAPI.calculateGridSites(state)
       })
       break
@@ -148,7 +165,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       // UI render time.
       // We at least schedule to run after the reducer has finished
       // and the resulting new state is available.
-      addToDispatchQueue(() => {
+      performSideEffect((state) => {
         gridAPI.calculateGridSites(state)
       })
       break
@@ -170,7 +187,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       // UI render time.
       // We at least schedule to run after the reducer has finished
       // and the resulting new state is available.
-      addToDispatchQueue(() => {
+      performSideEffect((state) => {
         gridAPI.calculateGridSites(state)
       })
       break
@@ -190,7 +207,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       // UI render time.
       // We at least schedule to run after the reducer has finished
       // and the resulting new state is available.
-      addToDispatchQueue(() => {
+      performSideEffect((state) => {
         gridAPI.calculateGridSites(state)
       })
       break
@@ -234,17 +251,44 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
       break
 
+    case types.NEW_TAB_DISMISS_BRANDED_WALLPAPER_NOTIFICATION:
+      const { isUserAction } = payload as DismissBrandedWallpaperNotificationPayload
+      // Save persisted data.
+      preferencesAPI.saveIsBrandedWallpaperNotificationDismissed(true)
+      // Only change current data if user explicitly took an action (e.g. clicked
+      // on the "Close notification Button" - x).
+      if (isUserAction) {
+        state = {
+          ...state,
+          isBrandedWallpaperNotificationDismissed: true
+        }
+      }
+      break
+
     case types.NEW_TAB_PREFERENCES_UPDATED:
-      const preferences = payload as Preferences
-      const shouldChangeBackgroundImage =
-        !state.showBackgroundImage && preferences.showBackgroundImage
-      state = {
+      const preferences = payload as preferencesAPI.Preferences
+      const newState = {
         ...state,
         ...preferences
       }
-      if (shouldChangeBackgroundImage) {
-        state.backgroundImage = backgroundAPI.randomBackgroundImage()
+      // We don't want to update dismissed status of branded wallpaper notification
+      // since this can happen automatically when the notification is counted as
+      // 'viewed', but we want to keep showing it until the page is navigated away from
+      // or refreshed.
+      newState.isBrandedWallpaperNotificationDismissed = state.isBrandedWallpaperNotificationDismissed
+      // Remove branded wallpaper when opting out or turning wallpapers off
+      const hasTurnedBrandedWallpaperOff = !preferences.brandedWallpaperOptIn && state.brandedWallpaperData
+      const hasTurnedWallpaperOff = !preferences.showBackgroundImage && state.showBackgroundImage
+      if (hasTurnedBrandedWallpaperOff || (state.brandedWallpaperData && hasTurnedWallpaperOff)) {
+        newState.brandedWallpaperData = undefined
       }
+      // Get a new wallpaper image if turning that feature on
+      const shouldChangeBackgroundImage =
+        !state.showBackgroundImage && preferences.showBackgroundImage
+      if (shouldChangeBackgroundImage) {
+        newState.backgroundImage = backgroundAPI.randomBackgroundImage()
+      }
+      state = newState
       break
 
     case types.CREATE_WALLET:
@@ -256,6 +300,9 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
     case types.ON_ENABLED_MAIN:
       state = { ...state }
       state.rewardsState.enabledMain = payload.enabledMain
+      if (payload.enabledAds !== undefined) {
+        state.rewardsState.enabledAds = payload.enabledAds
+      }
       break
 
     case types.ON_WALLET_INITIALIZED: {
@@ -283,17 +330,6 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       break
     }
 
-    case types.ON_REWARDS_SETTING_SAVE:
-      const key = action.payload.key
-      const value = action.payload.value
-
-      if (key) {
-        state = { ...state }
-        state.rewardsState[key] = !!value
-        chrome.braveRewards.saveSetting(key, value)
-      }
-      break
-
     case types.ON_ADS_ENABLED:
       state = { ...state }
       state.rewardsState.enabledAds = payload.enabled
@@ -312,7 +348,6 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
 
     case types.DISMISS_NOTIFICATION:
       state = { ...state }
-
       const dismissedNotifications = state.rewardsState.dismissedNotifications
       dismissedNotifications.push(payload.id)
       state.rewardsState.dismissedNotifications = dismissedNotifications
@@ -438,6 +473,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
     storage.debouncedSave(state)
   }
 
+  sideEffectState = state
   return state
 }
 

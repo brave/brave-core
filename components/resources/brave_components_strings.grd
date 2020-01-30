@@ -138,11 +138,12 @@
       <message name="IDS_BRAVE_NEW_TAB_BOOKMARKS_PAGE_TITLE" desc="Title for bookmarks page">View and Manage Bookmarks</message>
       <message name="IDS_BRAVE_NEW_TAB_HISTORY_PAGE_TITLE" desc="Title for history page">View your browsing history</message>
       <message name="IDS_BRAVE_NEW_TAB_DASHBOARD_SETTINGS_TITLE" desc="Title for dashboard settings">Dashboard Settings</message>
-      <message name="IDS_BRAVE_NEW_TAB_SHOW_BACKGROUND_IMAGE" desc="Text for settings background option">Show background image</message>
+      <message name="IDS_BRAVE_NEW_TAB_SHOW_BACKGROUND_IMAGE" desc="Text for settings background option">Show Background Image</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_BRAVE_STATS" desc="Text for settings show stats option">Show Brave Stats</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_CLOCK" desc="Text for settings show clock option">Show Clock</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_TOP_SITES" desc="Text for settings show top sites option">Show Top Sites</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_REWARDS" desc="Text for settings show rewards option">Show Brave Rewards</message>
+      <message name="IDS_BRAVE_NEW_TAB_BRANDED_WALLPAPER_OPT_IN" desc="Text for setting to opt-in to Branded Wallpapers on New Tab Page">Show Sponsored Images</message>
 
       <!-- WebUI private tab resources -->
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_LEARN_MORE" desc="">Learn more</message>
@@ -640,20 +641,59 @@
       <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_NOTE2" desc="">Brave Software Inc. does not process, store, or access any of the personal information that you provide to Uphold when you establish an account with them.</message>
 
       <!-- Rewards New Tab Widget resources -->
-      <message name="IDS_REWARDS_WIDGET_ABOUT_REWARDS" desc="">about Brave Rewards</message>
-      <message name="IDS_REWARDS_WIDGET_SERVICE_TEXT" desc="">By clicking 'Turn on Rewards', you indicate that you have read and agree to the</message>
+      <message name="IDS_REWARDS_WIDGET_ABOUT_REWARDS" desc=""><ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph> about Brave Rewards</message>
+      <message name="IDS_REWARDS_WIDGET_SERVICE_TEXT"
+        desc="Small-print for enabling Brave Rewards on the New Tab Page"
+      >
+        By turning on Rewards, you agree to the <ph name="LINK_BEGIN">$1</ph>Terms of Service<ph name="LINK_END">$2</ph>.
+      </message>
       <message name="IDS_REWARDS_WIDGET_ESTIMATED_EARNINGS" desc="">Estimated earnings so far this month</message>
+      <message name="IDS_REWARDS_WIDGET_ADS_OPT_IN_DESCRIPTION"
+        desc="Prompt for turning on the Ads feature"
+      >
+        Earn tokens by viewing privacy-respecting ads.
+      </message>
       <message name="IDS_REWARDS_WIDGET_MONTHLY_TIPS" desc="">Tips and contributions this month</message>
       <message name="IDS_REWARDS_WIDGET_CLAIM_MY_REWARDS" desc="">Claim my Rewards</message>
       <message name="IDS_REWARDS_WIDGET_TURNING_ON" desc="">Turning on...</message>
       <message name="IDS_REWARDS_WIDGET_TURN_ON_REWARDS" desc="">Turn on Rewards</message>
       <message name="IDS_REWARDS_WIDGET_REENABLE_TITLE" desc="">Feeling Generous?</message>
+      <message name="IDS_REWARDS_WIDGET_TURN_ON_LEARN_MORE"
+        desc="Button text to learn more about Brave Rewards"
+      >
+        Learn more
+      </message>
       <message name="IDS_REWARDS_WIDGET_ENABLE_TITLE" desc="">Ready to start earning?</message>
+      <message name="IDS_REWARDS_WIDGET_ENABLE_BRANDED_WALLPAPER_TITLE"
+        desc="Title for prompt to enable Brave Rewards when a Branded Wallpaper is currently being displayed"
+      >
+        Get paid to view this sponsored background image.
+      </message>
       <message name="IDS_REWARDS_WIDGET_REENABLE_SUBTITLE" desc="">Try Brave Rewards again and pay it forward as you earn!</message>
-      <message name="IDS_REWARDS_WIDGET_ENABLE_SUBTITLE" desc="">Turn on Brave Rewards and get paid to view privacy respecting ads.</message>
+      <message name="IDS_REWARDS_WIDGET_ENABLE_SUBTITLE" desc="">Turn on Brave Rewards and get paid to view privacy-respecting ads.</message>
+      <message name="IDS_REWARDS_WIDGET_ENABLE_BRANDED_WALLPAPER_SUBTITLE"
+        desc="Description for prompt to enable Brave Rewards when a Branded Wallpaper is currently being displayed"
+      >
+        Turn on <ph name="PRODUCT_NAME">$3<ex>Brave Rewards</ex></ph> to claim your share. You can also choose to <ph name="LINK_BEGIN">$1</ph>hide sponsored images<ph name="LINK_END">$2</ph>.
+      </message>
       <message name="IDS_REWARDS_WIDGET_NOTIFICATION_TITLE" desc="">Way to Go!</message>
       <message name="IDS_REWARDS_WIDGET_NOTIFICATION_TEXT_ADS" desc="">Your rewards from Ads are here</message>
       <message name="IDS_REWARDS_WIDGET_NOTIFICATION_TEXT_UGP" desc="">You have a UGP grant from Brave.</message>
+      <message name="IDS_REWARDS_WIDGET_BRANDED_NOTIFICATION_TITLE"
+        desc="Title for notification that the user is seeing a branded wallpaper and they are getting paid for it"
+      >
+        You’re getting paid to view this background image.
+      </message>
+      <message name="IDS_REWARDS_WIDGET_BRANDED_NOTIFICATION_DESCRIPTION"
+        desc="Description for notification that the user is seeing a branded wallpaper and they are getting paid for it"
+      >
+        <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph> about sponsored images in Brave Rewards.
+      </message>
+      <message name="IDS_REWARDS_WIDGET_BRANDED_NOTIFICATION_HIDE_ACTION"
+        desc="Action for notification that the user is seeing a branded wallpaper and they are getting paid for it"
+      >
+        Hide sponsored images
+      </message>
 
       <!-- WebUI brave sync resources -->
       <!-- WebUI brave sync resources: Shared Content -->

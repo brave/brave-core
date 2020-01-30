@@ -6,10 +6,12 @@ import * as React from 'react'
 import { StyledWidget, StyledWidgetContainer } from './styles'
 import WidgetMenu from './widgetMenu'
 
+type HideWidgetFunction = () => void
+
 export interface WidgetProps {
-  showWidget: boolean
   menuPosition: 'right' | 'left'
-  hideWidget: () => void
+  hideWidget?: HideWidgetFunction
+  preventFocus?: boolean
   textDirection: string
 }
 
@@ -35,25 +37,30 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
     }
 
     render () {
-      const { showWidget, menuPosition, hideWidget, textDirection } = this.props
+      const { menuPosition, hideWidget, textDirection, preventFocus } = this.props
       const { widgetMenuPersist } = this.state
+
       return (
         <StyledWidgetContainer
-          showWidget={showWidget}
           menuPosition={menuPosition}
           textDirection={textDirection}
         >
-          <StyledWidget widgetMenuPersist={widgetMenuPersist}>
-            <WrappedComponent {...this.props as P}/>
+          <StyledWidget
+            widgetMenuPersist={widgetMenuPersist}
+            preventFocus={preventFocus}
+          >
+              <WrappedComponent {...this.props as P}/>
           </StyledWidget>
+          {hideWidget && !preventFocus &&
           <WidgetMenu
             widgetMenuPersist={widgetMenuPersist}
             toggleWidgetHover={this.toggleWidgetHover}
             textDirection={textDirection}
             menuPosition={menuPosition}
-            hideWidget={hideWidget}
+            hideWidget={hideWidget as HideWidgetFunction}
             unpersistWidgetHover={this.unpersistWidgetHover}
           />
+          }
         </StyledWidgetContainer>
       )
     }

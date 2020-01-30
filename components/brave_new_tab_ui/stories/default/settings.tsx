@@ -21,10 +21,12 @@ interface Props {
   toggleShowStats: () => void
   toggleShowTopSites: () => void
   toggleShowRewards: () => void
+  toggleBrandedWallpaperOptIn: () => void
   showBackgroundImage: boolean
   showStats: boolean
   showClock: boolean
   showTopSites: boolean
+  brandedWallpaperOptIn: boolean
   showRewards: boolean
 }
 
@@ -64,11 +66,13 @@ export default class Settings extends React.PureComponent<Props, {}> {
       toggleShowStats,
       toggleShowTopSites,
       toggleShowRewards,
+      toggleBrandedWallpaperOptIn,
       showBackgroundImage,
       showStats,
       showClock,
       showTopSites,
       showRewards,
+      brandedWallpaperOptIn,
       onClick
     } = this.props
     return (
@@ -82,6 +86,15 @@ export default class Settings extends React.PureComponent<Props, {}> {
               <Toggle
                 onChange={toggleShowBackgroundImage}
                 checked={showBackgroundImage}
+                size='small'
+              />
+            </SettingsRow>
+            <SettingsRow isChildSetting={true}>
+              <SettingsText>{getLocale('brandedWallpaperOptIn')}</SettingsText>
+              <Toggle
+                onChange={toggleBrandedWallpaperOptIn}
+                checked={brandedWallpaperOptIn}
+                disabled={!showBackgroundImage}
                 size='small'
               />
             </SettingsRow>
