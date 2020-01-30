@@ -5,6 +5,8 @@
 import UIKit
 import Shared
 
+private let log = Logger.browserLogger
+
 class TrayToBrowserAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         if let bvc = transitionContext.viewController(forKey: .to) as? BrowserViewController,
@@ -26,7 +28,9 @@ private extension TrayToBrowserAnimator {
         let displayedTabs = tabManager.tabsForCurrentMode
         
         guard let selectedTab = bvc.tabManager.selectedTab, let expandFromIndex = displayedTabs.firstIndex(of: selectedTab) else {
-            fatalError("No tab selected for transition.")
+            log.error("No tab selected for transition.")
+            transitionContext.completeTransition(true)
+            return
         }
         bvc.view.frame = transitionContext.finalFrame(for: bvc)
 
@@ -149,7 +153,9 @@ private extension BrowserToTrayAnimator {
         let tabManager = bvc.tabManager
         let displayedTabs = tabManager.tabsForCurrentMode
         guard let selectedTab = bvc.tabManager.selectedTab, let scrollToIndex = displayedTabs.firstIndex(of: selectedTab) else {
-            fatalError("No tab selected for transition.")
+            log.error("No tab selected for transition.")
+            transitionContext.completeTransition(true)
+            return
         }
 
         tabTray.view.frame = transitionContext.finalFrame(for: tabTray)
