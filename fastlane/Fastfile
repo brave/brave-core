@@ -45,7 +45,6 @@ platform :ios do
         "ClientTests/FingerprintProtectionTest/testFingerprintProtection",
         "ClientTests/TabSessionTests",
         "ClientTests/ContentBlockerTests",
-        "ClientTests/ClientTests/testUserAgent",
         "DataTests/DeviceTests",
         "DataTests/DomainTests/testAllShieldsOff"
       ]
