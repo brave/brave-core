@@ -55,22 +55,22 @@ std::string BravePlaylistsSource::GetSource() {
 }
 
 void BravePlaylistsSource::StartDataRequest(
-    const std::string& path,
+    const GURL& url,
     const content::WebContents::Getter& wc_getter,
-    const content::URLDataSource::GotDataCallback& got_data_callback) {
+    content::URLDataSource::GotDataCallback got_data_callback) {
   PlaylistsService* service = PlaylistsServiceFactory::GetForProfile(profile_);
   if (!service) {
-    got_data_callback.Run(nullptr);
+    std::move(got_data_callback).Run(nullptr);
     return;
   }
   PlaylistsController* controller = service->controller();
   if (!controller || !controller->initialized()) {
-    got_data_callback.Run(nullptr);
+    std::move(got_data_callback).Run(nullptr);
     return;
   }
   base::FilePath thumbnail_path;
-  if (!controller->GetThumbnailPath(path, &thumbnail_path)) {
-    got_data_callback.Run(nullptr);
+  if (!controller->GetThumbnailPath(url.path(), &thumbnail_path)) {
+    std::move(got_data_callback).Run(nullptr);
     return;
   }
   base::PostTaskAndReplyWithResult(

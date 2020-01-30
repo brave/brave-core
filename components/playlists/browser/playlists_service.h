@@ -13,6 +13,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observer.h"
+#include "brave/components/playlists/browser/playlists_controller.h"
 #include "brave/components/playlists/browser/playlists_controller_observer.h"
 #include "components/keyed_service/core/keyed_service.h"
 
@@ -27,7 +28,6 @@ class BrowserContext;
 class Profile;
 
 namespace brave_playlists {
-class PlaylistsController;
 
 class PlaylistsService : public KeyedService,
                          public PlaylistsControllerObserver {
