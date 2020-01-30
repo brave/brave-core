@@ -33,6 +33,7 @@ import {
   SetAdvancedViewFirstAccess,
   ShieldsReady
 } from '../types/actions/shieldsPanelActions'
+import { shieldsHasFocus } from '../helpers/shieldsUtils'
 
 interface Props {
   actions: {
@@ -85,6 +86,15 @@ export default class Shields extends React.PureComponent<Props, State> {
 
   componentDidMount () {
     this.props.actions.shieldsReady()
+  }
+
+  componentDidUpdate (prevProps: Props) {
+    // If current window is not focused, close Shields immediately.
+    // See https://github.com/brave/brave-browser/issues/6601.
+    const { url }: Tab = this.props.shieldsPanelTabData
+    if (shieldsHasFocus(url) === false) {
+      window.close()
+    }
   }
 
   render () {
