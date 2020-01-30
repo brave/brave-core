@@ -362,6 +362,7 @@ void BravePrefProvider::OnContentSettingChanged(
 void BravePrefProvider::ClearAllShieldsContentSettings() {
   DCHECK(CalledOnValidThread());
   GetPref(ContentSettingsType::PLUGINS)->ClearAllContentSettingsRules();
+  GetPref(ContentSettingsType::JAVASCRIPT)->ClearAllContentSettingsRules();
   // TODO(simonhong):: Notify changes for all shields resource ids?
 }
 

@@ -58,6 +58,24 @@ void BraveHostContentSettingsMap::ClearSettingsForPluginsType(
       }
     }
   }
+
+  // Clear Javascript settings.
+  if (is_shields) {
+    ContentSettingsForOneType settings;
+    ContentSettingsType content_type = ContentSettingsType::JAVASCRIPT;
+    GetSettingsForOneType(content_type, std::string(), &settings);
+    for (const ContentSettingPatternSource& setting : settings) {
+      base::Time last_modified = provider->GetWebsiteSettingLastModified(
+          setting.primary_pattern, setting.secondary_pattern, content_type,
+          std::string());
+      if (last_modified >= begin_time &&
+          (last_modified < end_time || end_time.is_null())) {
+        provider->SetWebsiteSetting(setting.primary_pattern,
+                                    setting.secondary_pattern, content_type,
+                                    std::string(), nullptr);
+      }
+    }
+  }
 }
 
 content_settings::UserModifiableProvider*
