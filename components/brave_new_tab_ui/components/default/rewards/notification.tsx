@@ -8,7 +8,6 @@ import {
   Title,
   SubTitle,
   CloseIcon,
-  Content,
   NotificationWrapper,
   NotificationButton
 } from './style'
@@ -18,6 +17,7 @@ import { getLocale } from '../../../../common/locale'
 interface NotificationProps {
   promotion: NewTab.Promotion
   onDismissNotification: (id: string) => void
+  order: number
 }
 
 export default class RewardsNotification extends React.PureComponent<NotificationProps, {}> {
@@ -32,13 +32,16 @@ export default class RewardsNotification extends React.PureComponent<Notificatio
   }
 
   render () {
+    const styleVars = { '--notification-counter': this.props.order } as React.CSSProperties
     return (
-      <NotificationWrapper>
+      <NotificationWrapper
+        style={styleVars}
+        isGrant={true}
+      >
         <CloseIcon onClick={this.dismissNotification}>
           <CloseStrokeIcon />
         </CloseIcon>
-        <Content>
-          <Title>
+          <Title isGrant={true}>
             {getLocale('rewardsWidgetNotificationTitle')}
           </Title>
           <SubTitle>
@@ -51,7 +54,6 @@ export default class RewardsNotification extends React.PureComponent<Notificatio
           <NotificationButton onClick={this.onNotificationAction}>
             {getLocale('rewardsWidgetClaimMyRewards')}
           </NotificationButton>
-        </Content>
       </NotificationWrapper>
     )
   }

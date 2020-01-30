@@ -2,7 +2,7 @@
 * License, v. 2.0. If a copy of the MPL was not distributed with this file,
 * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 interface Props {
   textDirection: string
@@ -29,13 +29,20 @@ export const SettingsTitle = styled<{}, 'div'>('div')`
   margin-bottom: 17px;
 `
 
-export const SettingsRow = styled<{}, 'div'>('div')`
+interface SettingsRowProps {
+  isChildSetting?: boolean
+}
+
+export const SettingsRow = styled<SettingsRowProps, 'div'>('div')`
   box-sizing: border-box;
   display: grid;
   grid-template-columns: 1fr 36px;
   margin-top: 10px;
   height: 30px;
   width: 320px;
+  ${p => p.isChildSetting && css`
+    padding-left: 15px;
+  `}
 `
 
 export const SettingsText = styled<{}, 'span'>('span')`
