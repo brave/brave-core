@@ -9,22 +9,16 @@
 #include <utility>
 
 #include "brave/components/services/bat_ads/bat_ads_service_impl.h"
-#include "mojo/public/cpp/bindings/strong_binding.h"
 
 namespace bat_ads {
 
-namespace {
-
-void OnBatAdsServiceRequest(
+void BatAdsApp::BindBatAdsServiceReceiver(
     service_manager::ServiceKeepalive* keepalive,
-    bat_ads::mojom::BatAdsServiceRequest request) {
-
-  mojo::MakeStrongBinding(
+    mojo::PendingReceiver<bat_ads::mojom::BatAdsService> receiver) {
+  receivers_.Add(
       std::make_unique<bat_ads::BatAdsServiceImpl>(keepalive->CreateRef()),
-      std::move(request));
+      std::move(receiver));
 }
-
-}  // namespace
 
 BatAdsApp::BatAdsApp(service_manager::mojom::ServiceRequest request) :
     service_binding_(this, std::move(request)),
@@ -34,15 +28,16 @@ BatAdsApp::BatAdsApp(service_manager::mojom::ServiceRequest request) :
 BatAdsApp::~BatAdsApp() {}
 
 void BatAdsApp::OnStart() {
-  registry_.AddInterface(
-      base::BindRepeating(&OnBatAdsServiceRequest, &service_keepalive_));
+  binders_.Add(base::BindRepeating(&BatAdsApp::BindBatAdsServiceReceiver,
+                                   base::Unretained(this),
+                                   &service_keepalive_));
 }
 
-void BatAdsApp::OnBindInterface(
-    const service_manager::BindSourceInfo& source_info,
+void BatAdsApp::OnConnect(
+    const service_manager::ConnectSourceInfo& source_info,
     const std::string& interface_name,
-    mojo::ScopedMessagePipeHandle interface_pipe) {
-  registry_.BindInterface(interface_name, std::move(interface_pipe));
+    mojo::ScopedMessagePipeHandle receiver_pipe) {
+  binders_.TryBind(interface_name, &receiver_pipe);
 }
 
 }  // namespace bat_ads

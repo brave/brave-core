@@ -10,7 +10,6 @@
 
 #include "bat/ads/ads.h"
 #include "brave/components/services/bat_ads/bat_ads_impl.h"
-#include "mojo/public/cpp/bindings/strong_associated_binding.h"
 
 namespace bat_ads {
 
@@ -22,11 +21,12 @@ BatAdsServiceImpl::BatAdsServiceImpl(
 BatAdsServiceImpl::~BatAdsServiceImpl() {}
 
 void BatAdsServiceImpl::Create(
-    mojom::BatAdsClientAssociatedPtrInfo client_info,
-    mojom::BatAdsAssociatedRequest bat_ads,
+    mojo::PendingAssociatedRemote<mojom::BatAdsClient> client_info,
+    mojo::PendingAssociatedReceiver<mojom::BatAds> bat_ads,
     CreateCallback callback) {
-  mojo::MakeStrongAssociatedBinding(
-      std::make_unique<BatAdsImpl>(std::move(client_info)), std::move(bat_ads));
+
+  receivers_.Add(std::make_unique<BatAdsImpl>(std::move(client_info)),
+                 std::move(bat_ads));
   is_initialized_ = true;
   std::move(callback).Run();
 }

@@ -10,8 +10,8 @@
 #include <string>
 
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
-#include "mojo/public/cpp/bindings/binding_set.h"
-#include "services/service_manager/public/cpp/binder_registry.h"
+#include "mojo/public/cpp/bindings/unique_receiver_set.h"
+#include "services/service_manager/public/cpp/binder_map.h"
 #include "services/service_manager/public/cpp/service.h"
 #include "services/service_manager/public/cpp/service_binding.h"
 #include "services/service_manager/public/cpp/service_keepalive.h"
@@ -26,14 +26,18 @@ class BatAdsApp : public service_manager::Service {
  private:
   // |Service| override:
   void OnStart() override;
-  void OnBindInterface(const service_manager::BindSourceInfo& source_info,
-                       const std::string& interface_name,
-                       mojo::ScopedMessagePipeHandle interface_pipe) override;
+  void OnConnect(const service_manager::ConnectSourceInfo& source_info,
+                 const std::string& interface_name,
+                 mojo::ScopedMessagePipeHandle receiver_pipe) override;
 
   service_manager::ServiceBinding service_binding_;
   service_manager::ServiceKeepalive service_keepalive_;
-  service_manager::BinderRegistry registry_;
-  mojo::BindingSet<mojom::BatAdsService> bindings_;
+  service_manager::BinderMap binders_;
+  mojo::UniqueReceiverSet<mojom::BatAdsService> receivers_;
+
+  void BindBatAdsServiceReceiver(
+      service_manager::ServiceKeepalive* keepalive,
+      mojo::PendingReceiver<mojom::BatAdsService> receiver);
 
   DISALLOW_COPY_AND_ASSIGN(BatAdsApp);
 };

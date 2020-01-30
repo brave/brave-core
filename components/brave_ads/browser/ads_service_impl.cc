@@ -320,7 +320,7 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
     display_service_(NotificationDisplayService::GetForProfile(profile_)),
     rewards_service_(brave_rewards::RewardsServiceFactory::GetForProfile(
         profile_)),
-    bat_ads_client_binding_(new bat_ads::AdsClientMojoBridge(this)) {
+    bat_ads_client_receiver_(new bat_ads::AdsClientMojoBridge(this)) {
   DCHECK(!profile_->IsOffTheRecord());
 
   MigratePrefs();
@@ -562,7 +562,7 @@ void AdsServiceImpl::Shutdown() {
   idle_poll_timer_.Stop();
 
   bat_ads_.reset();
-  bat_ads_client_binding_.Close();
+  bat_ads_client_receiver_.reset();
   bat_ads_service_.reset();
 
   is_initialized_ = false;
@@ -628,7 +628,7 @@ bool AdsServiceImpl::StartService() {
   }
 
   if (!bat_ads_service_.is_bound()) {
-    connection->GetConnector()->BindInterface(
+    connection->GetConnector()->Connect(
         bat_ads::mojom::kServiceName,
         bat_ads_service_.BindNewPipeAndPassReceiver());
 
@@ -717,10 +717,9 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(
 
   BackgroundHelper::GetInstance()->AddObserver(this);
 
-  bat_ads::mojom::BatAdsClientAssociatedPtrInfo client_ptr_info;
-  bat_ads_client_binding_.Bind(mojo::MakeRequest(&client_ptr_info));
-
-  bat_ads_service_->Create(std::move(client_ptr_info), MakeRequest(&bat_ads_),
+  bat_ads_service_->Create(
+      bat_ads_client_receiver_.BindNewEndpointAndPassRemote(),
+      bat_ads_.BindNewEndpointAndPassReceiver(),
       base::BindOnce(&AdsServiceImpl::OnCreate, AsWeakPtr()));
 
   MaybeShowMyFirstAdNotification();

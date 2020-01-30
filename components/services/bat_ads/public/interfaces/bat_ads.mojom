@@ -10,7 +10,8 @@ const string kServiceName = "bat_ads";
 
 // Service which hands out bat ads.
 interface BatAdsService {
-  Create(associated BatAdsClient bat_ads_client, associated BatAds& database) => ();
+  Create(pending_associated_remote<BatAdsClient> bat_ads_client,
+         pending_associated_receiver<BatAds> database) => ();
   SetEnvironment(ads.mojom.Environment environment) => ();
   SetTesting(bool is_testing) => ();
   SetDebug(bool is_debug) => ();

@@ -79,7 +79,7 @@ class LogStreamImpl : public ads::LogStream {
 ///////////////////////////////////////////////////////////////////////////////
 
 BatAdsClientMojoBridge::BatAdsClientMojoBridge(
-    mojom::BatAdsClientAssociatedPtrInfo client_info) {
+    mojo::PendingAssociatedRemote<mojom::BatAdsClient> client_info) {
   bat_ads_client_.Bind(std::move(client_info));
 }
 

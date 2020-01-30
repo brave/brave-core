@@ -29,7 +29,8 @@ class BatAdsImpl :
     public mojom::BatAds,
     public base::SupportsWeakPtr<BatAdsImpl> {
  public:
-  explicit BatAdsImpl(mojom::BatAdsClientAssociatedPtrInfo client_info);
+  explicit BatAdsImpl(
+      mojo::PendingAssociatedRemote<mojom::BatAdsClient> client_info);
   ~BatAdsImpl() override;
 
   // Overridden from mojom::BatAds:
