@@ -12,6 +12,11 @@ const realAds = [
     category: categories.automotive
   },
   {
+    size: [300, 250],
+    path: audiDsky1Url,
+    category: categories.automotive
+  },
+  {
     size: [728, 90],
     path: audiLboard1Url,
     category: categories.automotive
