@@ -857,10 +857,12 @@ void BraveProfileSyncServiceImpl::ProcessOtherBookmarksFolder(
     // resolve-sync-objects but children records will go through. And we don't
     // need to regenerate new object id for it.
 
-    // Handle MOVE, RENAME, REORDER
+    // Handle MOVE, RENAME
+    // REORDER (move under same parent) will be ignored
     // Update will be resolved as Create because [UPDATE, null] => [CREATE]
     auto bookmark = record->GetBookmark();
-    if (bookmark.order != tools::kOtherNodeOrder ||
+    if ((bookmark.order != tools::kOtherNodeOrder &&
+         !bookmark.parentFolderObjectId.empty()) ||
         bookmark.site.title != tools::GetOtherNodeName() ||
         bookmark.site.customTitle != tools::GetOtherNodeName()) {
       // Generate next iteration object id from current object_id which will be
