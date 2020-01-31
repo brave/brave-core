@@ -77,3 +77,14 @@ export const sumAdsAndTrackers = (ads: number, trackers: number) => {
 export const mergeAdsAndTrackersResources = (ads: Array<string>, trackers: Array<string>) => {
   return [ ...ads, ...trackers ]
 }
+
+export const shieldsHasFocus = (url: string) => {
+  const devtoolsURL: string =
+    'chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd'
+  // Consider Shields to be focused if there's real focus
+  // or the focused window is a devtools window.
+  return (
+    document.hasFocus() ||
+    url.startsWith(devtoolsURL)
+  )
+}
