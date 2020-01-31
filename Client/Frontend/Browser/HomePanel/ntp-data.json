@@ -1,5 +1,6 @@
 [
   {
+    "packaged": true,
     "imageUrl": "anders-jilden.jpg",
     "focalPoint": {
       "x": 1200,
@@ -11,6 +12,7 @@
     }
   },
   {
+    "packaged": true,
     "imageUrl": "andreas-gucklhorn.jpg",
     "focalPoint": {
       "x": 1160,
@@ -22,6 +24,7 @@
     }
   },
   {
+    "packaged": true,
     "imageUrl": "andy-mai.jpg",
     "focalPoint": {
       "x": 988,
@@ -33,6 +36,7 @@
     }
   },
   {
+    "packaged": true,
     "imageUrl": "annie-spratt.jpg",
     "focalPoint": {
       "x": 682,
@@ -44,6 +48,7 @@
     }
   },
   {
+    "packaged": true,
     "imageUrl": "anton-repponen.jpg",
     "focalPoint": {
       "x": 2185,
@@ -55,6 +60,7 @@
     }
   },
   {
+    "packaged": true,
     "imageUrl": "ben-karpinski.jpg",
     "focalPoint": {
       "x": 815,
@@ -66,6 +72,7 @@
     }
   },
   {
+    "packaged": true,
     "imageUrl": "dc-cavalleri.jpg",
     "focalPoint": {
       "x": 480,
@@ -77,6 +84,7 @@
     }
   },
   {
+    "packaged": true,
     "imageUrl": "joe-gardner.jpg",
     "focalPoint": {
       "x": 1277,
@@ -88,6 +96,7 @@
     }
   },
   {
+    "packaged": true,
     "imageUrl": "louis-kim.jpg",
     "focalPoint": {
       "x": 300,
@@ -99,6 +108,7 @@
     }
   },
   {
+    "packaged": true,
     "imageUrl": "matt-palmer.jpg",
     "focalPoint": {
       "x": 1205,
@@ -110,6 +120,7 @@
     }
   },
   {
+    "packaged": true,
     "imageUrl": "oliwier gesla.jpg",
     "focalPoint": {
       "x": 780,
@@ -121,6 +132,7 @@
     }
   },
   {
+    "packaged": true,
     "imageUrl": "Svalbard_Jerol_Soibam.jpeg",
     "focalPoint": {
       "x": 1280,
@@ -132,6 +144,7 @@
     }
   },
   {
+    "packaged": true,
     "imageUrl": "will_christiansen_glacier_peak.jpg",
     "focalPoint": {
       "x": 1630,
@@ -143,6 +156,7 @@
     }
   },
   {
+    "packaged": true,
     "imageUrl": "will_christiansen_ice.jpg",
     "focalPoint": {
       "x": 1330,
@@ -154,6 +168,7 @@
     }
   },
   {
+    "packaged": true,
     "imageUrl": "xavier-balderas-cejudo.jpg",
     "focalPoint": {
       "x": 1975,

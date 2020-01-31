@@ -161,7 +161,7 @@ class SettingsViewController: TableViewController {
         
         display.rows.append(Row(text: Strings.newTabPageSettingsTitle,
             selection: { [unowned self] in
-                self.navigationController?.pushViewController(NewTabPageTableViewController(), animated: true)
+                self.navigationController?.pushViewController(NTPTableViewController(), animated: true)
             },
             accessory: .disclosureIndicator,
             cellClass: MultilineValue1Cell.self

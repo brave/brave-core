@@ -10,7 +10,7 @@ import BraveRewards
 private let logger = Logger.browserLogger
 
 protocol NTPDownloaderDelegate: class {
-    func onNTPUpdated(ntpInfo: NewTabPageBackgroundDataSource.Sponsor?)
+    func onNTPUpdated(ntpInfo: NTPBackgroundDataSource.Sponsor?)
 }
 
 class NTPDownloader {
@@ -42,7 +42,7 @@ class NTPDownloader {
         self.removeObservers()
     }
     
-    private func getNTPInfo(_ completion: @escaping (NewTabPageBackgroundDataSource.Sponsor?) -> Void) {
+    private func getNTPInfo(_ completion: @escaping (NTPBackgroundDataSource.Sponsor?) -> Void) {
         //Load from cache because the time since the last fetch hasn't expired yet..
         if let nextDate = Preferences.NTP.ntpCheckDate.value,
             Date().timeIntervalSince1970 - nextDate < 0 {
@@ -171,7 +171,7 @@ class NTPDownloader {
         }
     }
     
-    private func loadNTPInfo() -> NewTabPageBackgroundDataSource.Sponsor? {
+    private func loadNTPInfo() -> NTPBackgroundDataSource.Sponsor? {
         do {
             let metadataFileURL = try self.ntpMetadataFileURL()
             if !FileManager.default.fileExists(atPath: metadataFileURL.path) {
@@ -185,22 +185,21 @@ class NTPDownloader {
             }
             
             let downloadsFolderURL = try self.ntpDownloadsURL()
-            let itemInfo = try JSONDecoder().decode(NewTabPageBackgroundDataSource.Sponsor.self, from: metadata)
+            let itemInfo = try JSONDecoder().decode(NTPBackgroundDataSource.Sponsor.self, from: metadata)
             
-            let logo = NewTabPageBackgroundDataSource.Sponsor.Logo(
+            let logo = NTPBackgroundDataSource.Sponsor.Logo(
                 imageUrl: downloadsFolderURL.appendingPathComponent(itemInfo.logo.imageUrl).path,
                 alt: itemInfo.logo.alt,
                 companyName: itemInfo.logo.companyName,
                 destinationUrl: itemInfo.logo.destinationUrl)
             
             let wallpapers = itemInfo.wallpapers.map {
-                NewTabPageBackgroundDataSource.Background(
+                NTPBackgroundDataSource.Background(
                     imageUrl: downloadsFolderURL.appendingPathComponent($0.imageUrl).path,
-                    focalPoint: $0.focalPoint,
-                    credit: nil)
+                    focalPoint: $0.focalPoint)
             }
             
-            return NewTabPageBackgroundDataSource.Sponsor(wallpapers: wallpapers, logo: logo)
+            return NTPBackgroundDataSource.Sponsor(wallpapers: wallpapers, logo: logo)
         } catch {
             logger.error(error)
         }
@@ -274,7 +273,7 @@ class NTPDownloader {
             }
             
             do {
-                let item = try JSONDecoder().decode(NewTabPageBackgroundDataSource.Sponsor.self, from: data)
+                let item = try JSONDecoder().decode(NTPBackgroundDataSource.Sponsor.self, from: data)
                 self.unpackMetadata(item: item) { url, error in
                     completion(url, cacheInfo, error)
                 }
@@ -342,7 +341,7 @@ class NTPDownloader {
     
     // Unpacks NTPItemInfo by downloading all of its assets to a temporary directory
     // and returning the URL to the directory
-    private func unpackMetadata(item: NewTabPageBackgroundDataSource.Sponsor, _ completion: @escaping (URL?, NTPError?) -> Void) {
+    private func unpackMetadata(item: NTPBackgroundDataSource.Sponsor, _ completion: @escaping (URL?, NTPError?) -> Void) {
         let tempDirectory = FileManager.default.temporaryDirectory
         let directory = tempDirectory.appendingPathComponent(NTPDownloader.ntpDownloadsFolder)
         
