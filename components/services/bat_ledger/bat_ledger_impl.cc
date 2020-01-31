@@ -349,7 +349,7 @@ void BatLedgerImpl::GetAllBalanceReports(
     GetAllBalanceReportsCallback callback) {
   std::map<std::string, ledger::BalanceReportInfoPtr> reports =
     ledger_->GetAllBalanceReports();
-  auto out_reports = mojo::MapToFlatMap(std::move(reports));
+  auto out_reports = base::MapToFlatMap(std::move(reports));
   std::move(callback).Run(std::move(out_reports));
 }
 

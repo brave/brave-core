@@ -12,6 +12,7 @@
 #include "bat/ads/ads_history.h"
 #include "bat/ads/category_content.h"
 #include "bat/ads/confirmation_type.h"
+#include "brave/base/containers/utils.h"
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 
 using std::placeholders::_1;
@@ -167,7 +168,7 @@ void BatAdsImpl::GetAdsHistory(
     result[ads_history.first] = ads_history_json;
   }
 
-  std::move(callback).Run(mojo::MapToFlatMap(result));
+  std::move(callback).Run(base::MapToFlatMap(result));
 }
 
 void BatAdsImpl::ToggleAdThumbUp(
