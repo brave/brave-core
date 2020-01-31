@@ -200,16 +200,16 @@ class SettingsViewController: TableViewController {
     private lazy var otherSettingsSection: Section = {
         // BRAVE TODO: Change it once we finalize our decision how to name the section.(#385)
         var section = Section(header: .title(Strings.otherSettingsSection))
-        #if !NO_REWARDS
-        if let rewards = rewards {
-            section.rows += [
-                Row(text: Strings.braveRewardsTitle, selection: { [unowned self] in
-                    let rewardsVC = BraveRewardsSettingsViewController(rewards)
-                    self.navigationController?.pushViewController(rewardsVC, animated: true)
-                }, accessory: .disclosureIndicator),
-            ]
+        if BraveRewards.isAvailable {
+            if let rewards = rewards {
+                section.rows += [
+                    Row(text: Strings.braveRewardsTitle, selection: { [unowned self] in
+                        let rewardsVC = BraveRewardsSettingsViewController(rewards)
+                        self.navigationController?.pushViewController(rewardsVC, animated: true)
+                        }, accessory: .disclosureIndicator),
+                ]
+            }
         }
-        #endif
         section.rows += [
             Row(text: Strings.sync, selection: { [unowned self] in
                 if Sync.shared.isInSyncGroup {

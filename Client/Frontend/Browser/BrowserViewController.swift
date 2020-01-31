@@ -172,6 +172,12 @@ class BrowserViewController: UIViewController {
             }
         }
         rewards = BraveRewards(configuration: configuration)
+        if !BraveRewards.isAvailable {
+            // Disable rewards services in case previous user already enabled
+            // rewards in previous build
+            rewards.ledger.isEnabled = false
+            rewards.ads.isEnabled = false
+        }
         rewardsObserver = LedgerObserver(ledger: rewards.ledger)
         deviceCheckClient = DeviceCheckClient(environment: configuration.environment)
 
@@ -3477,40 +3483,40 @@ extension BrowserViewController: OnboardingControllerDelegate {
         Preferences.General.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
         Preferences.General.basicOnboardingNextOnboardingPrompt.value = nil
         
-        #if NO_REWARDS
-        switch onboardingController.onboardingType {
-        case .newUser:
-            Preferences.General.basicOnboardingProgress.value = OnboardingProgress.searchEngine.rawValue
-            
-        case .existingUserRewardsOff, .existingUserRewardsOn:
-            break
-            
-        default:
-            break
+        if BraveRewards.isAvailable {
+            switch onboardingController.onboardingType {
+            case .newUser:
+                if BraveAds.isCurrentLocaleSupported() {
+                    Preferences.General.basicOnboardingProgress.value = OnboardingProgress.ads.rawValue
+                } else {
+                    Preferences.General.basicOnboardingProgress.value = OnboardingProgress.rewards.rawValue
+                }
+                
+            case .existingUserRewardsOff:
+                if BraveAds.isCurrentLocaleSupported() {
+                    Preferences.General.basicOnboardingProgress.value = OnboardingProgress.ads.rawValue
+                }
+                
+            case .existingUserRewardsOn:
+                if BraveAds.isCurrentLocaleSupported() {
+                    Preferences.General.basicOnboardingProgress.value = OnboardingProgress.ads.rawValue
+                }
+                
+            default:
+                break
+            }
+        } else {
+            switch onboardingController.onboardingType {
+            case .newUser:
+                Preferences.General.basicOnboardingProgress.value = OnboardingProgress.searchEngine.rawValue
+                
+            case .existingUserRewardsOff, .existingUserRewardsOn:
+                break
+                
+            default:
+                break
+            }
         }
-        #else
-        switch onboardingController.onboardingType {
-        case .newUser:
-            if BraveAds.isCurrentLocaleSupported() {
-                Preferences.General.basicOnboardingProgress.value = OnboardingProgress.ads.rawValue
-            } else {
-                Preferences.General.basicOnboardingProgress.value = OnboardingProgress.rewards.rawValue
-            }
-            
-        case .existingUserRewardsOff:
-            if BraveAds.isCurrentLocaleSupported() {
-                Preferences.General.basicOnboardingProgress.value = OnboardingProgress.ads.rawValue
-            }
-            
-        case .existingUserRewardsOn:
-            if BraveAds.isCurrentLocaleSupported() {
-                Preferences.General.basicOnboardingProgress.value = OnboardingProgress.ads.rawValue
-            }
-            
-        default:
-            break
-        }
-        #endif
         
         // Present private browsing prompt if necessary when onboarding has been completed
         onboardingController.dismiss(animated: true) {
