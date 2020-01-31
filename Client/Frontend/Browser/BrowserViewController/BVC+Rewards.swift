@@ -53,6 +53,10 @@ extension RewardsPanelController: PopoverContentComponent {
 extension BrowserViewController {
     func updateRewardsButtonState() {
         if !isViewLoaded { return }
+        if !BraveRewards.isAvailable {
+            self.topToolbar.locationView.rewardsButton.isHidden = true
+            return
+        }
         let isRewardsEnabled = rewards.ledger.isEnabled
         self.topToolbar.locationView.rewardsButton.isHidden = (!isRewardsEnabled && Preferences.Rewards.hideRewardsIcon.value) || PrivateBrowsingManager.shared.isPrivateBrowsing
         let isVerifiedBadgeVisible = self.publisher?.status == .verified || self.publisher?.status == .connected

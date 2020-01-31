@@ -6,6 +6,8 @@ import Foundation
 import Shared
 import BraveShared
 import Lottie
+import BraveRewardsUI
+import BraveRewards
 
 extension OnboardingShieldsViewController {
     
@@ -18,17 +20,7 @@ extension OnboardingShieldsViewController {
     
     class View: UIView {
         
-        #if NO_REWARDS
-        let continueButton = CommonViews.primaryButton(text: Strings.OBFinishButton).then {
-            $0.accessibilityIdentifier = "OnboardingShieldsViewController.FinishButton"
-            $0.titleLabel?.minimumScaleFactor = 0.75
-        }
-        #else
-        let continueButton = CommonViews.primaryButton(text: Strings.OBContinueButton).then {
-            $0.accessibilityIdentifier = "OnboardingShieldsViewController.ContinueButton"
-            $0.titleLabel?.minimumScaleFactor = 0.75
-        }
-        #endif
+        let continueButton: UIButton
         
         let skipButton = CommonViews.secondaryButton().then {
             $0.accessibilityIdentifier = "OnboardingShieldsViewController.SkipButton"
@@ -81,6 +73,18 @@ extension OnboardingShieldsViewController {
         }
         
         init(theme: Theme) {
+            if BraveRewards.isAvailable {
+                continueButton = CommonViews.primaryButton(text: Strings.OBContinueButton).then {
+                    $0.accessibilityIdentifier = "OnboardingShieldsViewController.ContinueButton"
+                    $0.titleLabel?.minimumScaleFactor = 0.75
+                }
+            } else {
+                continueButton = CommonViews.primaryButton(text: Strings.OBFinishButton).then {
+                    $0.accessibilityIdentifier = "OnboardingShieldsViewController.FinishButton"
+                    $0.titleLabel?.minimumScaleFactor = 0.75
+                }
+            }
+            
             super.init(frame: .zero)
             
             applyTheme(theme)
