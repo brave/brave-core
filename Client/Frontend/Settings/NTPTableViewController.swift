@@ -8,7 +8,7 @@ import BraveShared
 import Shared
 import BraveRewards
 
-class NewTabPageTableViewController: TableViewController {
+class NTPTableViewController: TableViewController {
     let sponsoredRow = Row.boolRow(title: Strings.newTabPageSettingsSponsoredImages, option: Preferences.NewTabPage.backgroundSponsoredImages)
     
     override func viewDidLoad() {
