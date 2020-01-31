@@ -1,0 +1,17 @@
+import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
+
+assert(brave_wallet_enabled)
+
+source_set("brave_wallet") {
+  sources = [
+    "brave_wallet_service_factory.h",
+    "brave_wallet_service_factory.cc",
+    "brave_wallet_utils.cc",
+    "brave_wallet_utils.h",
+  ]
+  deps = [
+    "//components/pref_registry",
+    "//components/prefs",
+    "//extensions/browser",
+  ]
+}

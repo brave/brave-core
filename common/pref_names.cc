@@ -69,7 +69,9 @@ const char kBraveEnabledMediaRouter[] = "brave.enable_media_router";
 const char kBraveWalletAES256GCMSivNonce[] =
     "brave.wallet.aes_256_gcm_siv_nonce";
 const char kBraveWalletEncryptedSeed[] = "brave.wallet.encrypted_seed";
-const char kBraveWalletEnabled[] = "brave.wallet.enabled";
+const char kBraveWalletEnabledDeprecated[] = "brave.wallet.enabled";
+const char kBraveWalletPrefVersion[] = "brave.wallet.pref_version";
+const char kBraveWalletWeb3Provider[] = "brave.wallet.web3_provider";
 const char kAlwaysShowBookmarkBarOnNTP[] =
     "brave.always_show_bookmark_bar_on_ntp";
 const char kRemoteDebuggingEnabled[] = "brave.remote_debugging_enabled";

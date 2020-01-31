@@ -104,8 +104,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
   (*s_brave_whitelist)[kIPFSCompanionEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // Brave Wallet pref
-  (*s_brave_whitelist)[kBraveWalletEnabled] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_whitelist)[kBraveWalletWeb3Provider] =
+      settings_api::PrefType::PREF_TYPE_NUMBER;
   // Media Router Pref
   (*s_brave_whitelist)[kBraveEnabledMediaRouter] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;

@@ -16,6 +16,7 @@ cr.define('settings', function() {
     isTorEnabled() {}
     isTorManaged() {}
     getRestartNeeded() {}
+    getWeb3ProviderList() {}
   }
 
   /**
@@ -49,6 +50,10 @@ cr.define('settings', function() {
     }
     getRestartNeeded() {
       return cr.sendWithPromise('getRestartNeeded');
+    }
+    /** @override */
+    getWeb3ProviderList() {
+      return new Promise(resolve => chrome.braveWallet.getWeb3ProviderList(resolve))
     }
   }
 

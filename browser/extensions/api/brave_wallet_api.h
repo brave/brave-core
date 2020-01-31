@@ -22,17 +22,15 @@ class BraveWalletPromptToEnableWalletFunction :
 
  protected:
   ~BraveWalletPromptToEnableWalletFunction() override {}
-
   ResponseAction Run() override;
 };
 
-class BraveWalletIsEnabledFunction : public ExtensionFunction {
+class BraveWalletShouldCheckForDappsFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveWallet.isEnabled", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveWallet.shouldCheckForDapps", UNKNOWN)
 
  protected:
-  ~BraveWalletIsEnabledFunction() override {}
-
+  ~BraveWalletShouldCheckForDappsFunction() override {}
   ResponseAction Run() override;
 };
 
@@ -42,7 +40,6 @@ class BraveWalletIsInstalledFunction : public ExtensionFunction {
 
  protected:
   ~BraveWalletIsInstalledFunction() override {}
-
   ResponseAction Run() override;
 };
 
@@ -52,7 +49,6 @@ class BraveWalletGetWalletSeedFunction : public ExtensionFunction {
 
  protected:
   ~BraveWalletGetWalletSeedFunction() override {}
-
   ResponseAction Run() override;
 };
 
@@ -62,7 +58,6 @@ class BraveWalletGetProjectIDFunction : public ExtensionFunction {
 
  protected:
   ~BraveWalletGetProjectIDFunction() override {}
-
   ResponseAction Run() override;
 };
 
@@ -72,7 +67,24 @@ class BraveWalletResetWalletFunction : public ExtensionFunction {
 
  protected:
   ~BraveWalletResetWalletFunction() override {}
+  ResponseAction Run() override;
+};
 
+class BraveWalletGetWeb3ProviderFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveWallet.getWeb3Provider", UNKNOWN)
+
+ protected:
+  ~BraveWalletGetWeb3ProviderFunction() override {}
+  ResponseAction Run() override;
+};
+
+class BraveWalletGetWeb3ProviderListFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveWallet.getWeb3ProviderList", UNKNOWN)
+
+ protected:
+  ~BraveWalletGetWeb3ProviderListFunction() override {}
   ResponseAction Run() override;
 };
 

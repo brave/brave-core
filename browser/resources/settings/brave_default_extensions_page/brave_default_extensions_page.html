@@ -11,7 +11,7 @@
 
 <dom-module id="settings-brave-default-extensions-page">
   <template>
-    <style include="settings-shared iron-flex">
+    <style include="settings-shared md-select iron-flex">
       .settings-row:not(:first-child) {
         border-top: var(--cr-separator-line);
       }
@@ -65,13 +65,14 @@
         padding: 14px 38px;
       }
     </style>
-    <settings-toggle-button id="braveWalletEnabled"
-        class="first"
-        pref="{{prefs.brave.wallet.enabled}}"
-        label="Crypto Wallets"
-        sub-label="$i18n{braveWalletEnabledDesc}"
-        on-settings-boolean-control-change="onBraveWalletEnabledChange_">
-    </settings-toggle-button>
+
+    <div class="settings-box first">
+      <div class="start">$i18n{braveWeb3ProviderDesc}</div>
+      <settings-dropdown-menu id="braveWeb3ProvidersType"
+                              pref="{{prefs.brave.wallet.web3_provider}}"
+                              menu-options="[[braveWeb3Providers_]]">
+      </settings-dropdown-menu>
+    </div>
     <settings-toggle-button id="hangoutsEnabled"
         pref="{{prefs.brave.hangouts_enabled}}"
         label="Hangouts"

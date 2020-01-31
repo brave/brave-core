@@ -23,6 +23,7 @@
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/content/browser/webui/brave_shared_resources_data_source.h"
 #include "chrome/browser/browser_process.h"
@@ -47,6 +48,10 @@
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "chrome/browser/extensions/extension_service.h"
 #include "extensions/browser/extension_system.h"
+#endif
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #endif
 
 using content::BrowserThread;
@@ -132,6 +137,9 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   ProfileManager::DoFinalInitForServices(profile, go_off_the_record);
   brave_ads::AdsServiceFactory::GetForProfile(profile);
   brave_rewards::RewardsServiceFactory::GetForProfile(profile);
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  BraveWalletServiceFactory::GetForProfile(profile);
+#endif
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   gcm::BraveGCMChannelStatus::GetForProfile(profile);
 #endif

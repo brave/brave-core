@@ -51,8 +51,7 @@ BraveWalletNavigationThrottle::WillStartRequest() {
     content::BrowserContext* browser_context =
         web_contents->GetBrowserContext();
     Profile* profile = Profile::FromBrowserContext(browser_context);
-    if (!profile->GetPrefs()->GetBoolean(kBraveWalletEnabled) ||
-        brave::IsTorProfile(profile)) {
+    if (brave::IsTorProfile(profile)) {
       return content::NavigationThrottle::BLOCK_REQUEST;
     }
     auto* registry = ExtensionRegistry::Get(browser_context);

@@ -12,6 +12,7 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/component_updater/brave_component_installer.h"
 #include "brave/common/brave_switches.h"
+#include "brave/common/brave_wallet_constants.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_extension/grit/brave_extension.h"
@@ -105,9 +106,14 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  // If brave://wallet has been loaded at least once, then load it again.
+  // If Crypto Wallets has been loaded at least once before, load it
+  // always.
+  // We could only do this when the provider is Crypto Wallets, but
+  // it would cause a bug with loading brave://wallet not loading
+  // if a tab is left open and you restart the browser.  That would
+  // need to be fixed first.
   if (ExtensionPrefs::Get(profile_)->
-      HasPrefForExtension(ethereum_remote_client_extension_id)) {
+          HasPrefForExtension(ethereum_remote_client_extension_id)) {
     AddEthereumRemoteClientExtension();
   }
 #endif
@@ -137,11 +143,9 @@ void BraveComponentLoader::HandleRewardsEnabledStatus() {
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 void BraveComponentLoader::AddEthereumRemoteClientExtension() {
-  if (profile_prefs_->GetBoolean(kBraveWalletEnabled)) {
-    AddExtension(ethereum_remote_client_extension_id,
-        ethereum_remote_client_extension_name,
-        ethereum_remote_client_extension_public_key);
-  }
+  AddExtension(ethereum_remote_client_extension_id,
+      ethereum_remote_client_extension_name,
+      ethereum_remote_client_extension_public_key);
 }
 #endif
 
