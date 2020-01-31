@@ -630,6 +630,10 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 {
   ledger->GetPublisherBanner(std::string(publisherId.UTF8String), ^(ledger::PublisherBannerPtr banner) {
     auto bridgedBanner = banner.get() != nullptr ? [[BATPublisherBanner alloc] initWithPublisherBanner:*banner] : nil;
+    // native libs prefixes the logo and background image with this URL scheme
+    const auto imagePrefix = @"chrome://rewards-image/";
+    bridgedBanner.background = [bridgedBanner.background stringByReplacingOccurrencesOfString:imagePrefix withString:@""];
+    bridgedBanner.logo = [bridgedBanner.logo stringByReplacingOccurrencesOfString:imagePrefix withString:@""];
     completion(bridgedBanner);
   });
 }
