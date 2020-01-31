@@ -318,7 +318,24 @@ const locale: Record<string, string> = {
   whyBraveRewardsDesc2: 'Well, you\'ve come to the right place. Brave welcomes you to the new internet. One where your time is valued, your personal data is kept private, and you actually get paid for your attention.',
   whyHow: 'Why & How',
   yourBalance: 'Your Balance',
-  yourWallet: 'Your wallet'
+  yourWallet: 'Your wallet',
+  // New Tab Page
+  adsTrackersBlocked: 'Ads and Trackers Blocked',
+  httpsUpgraded: 'HTTPS Upgrades',
+  estimatedTimeSaved: 'Estimated Time Saved',
+  minutes: 'minutes',
+  photoBy: 'Photo by',
+  thumbRemoved: 'Top site removed',
+  undoRemoved: 'Undo',
+  close: 'Close',
+  hide: 'Hide',
+  dashboardSettingsTitle: 'Dashboard Settings',
+  showBackgroundImg: 'Show background image',
+  showBraveStats: 'Show Brave Stats',
+  showClock: 'Show Clock',
+  showTopSites: 'Show Top Sites',
+  showRewards: 'Show Rewards',
+  rewardsWidgetEnableBrandedWallpaperTitle: 'Get paid to view this sponsored background image.'
 }
 
 export default locale

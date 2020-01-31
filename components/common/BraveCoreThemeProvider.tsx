@@ -23,11 +23,27 @@ export default class BraveCoreThemeProvider extends React.Component<Props, State
     if (props.initialThemeType) {
       this.state = themeTypeToState(props.initialThemeType)
     }
-    chrome.braveTheme.onBraveThemeTypeChanged.addListener(this.setThemeState)
+    // Ensure we have access to braveTheme before updating.
+    // Otherwise this would break Storybook.
+    if (chrome.braveTheme) {
+      chrome.braveTheme.onBraveThemeTypeChanged.addListener(this.setThemeState)
+    }
   }
 
   setThemeState = (themeType: chrome.braveTheme.ThemeType) => {
     this.setState(themeTypeToState(themeType))
+  }
+
+  componentDidUpdate (prevProps: Props) {
+    // Update theme based on React prop changes.
+    // This only runs on storybook and is needed
+    // since it has no access to chrome.* APIs
+    if (chrome.braveTheme) {
+      return
+    }
+    if (prevProps.initialThemeType !== this.props.initialThemeType) {
+      this.setThemeState(this.props.initialThemeType || 'System')
+    }
   }
 
   render () {
