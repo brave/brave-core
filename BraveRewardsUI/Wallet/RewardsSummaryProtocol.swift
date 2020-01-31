@@ -6,6 +6,11 @@ import Foundation
 import BraveRewards
 import BraveShared
 
+enum RewardsSummaryLink: String {
+  case learnMore = "learn-more"
+  case showPendingContributions = "show-pending-contributions"
+}
+
 /// Shared resources for showing summary of all BAT rewards.
 protocol RewardsSummaryProtocol {
   var state: RewardsState { get }
@@ -98,7 +103,14 @@ extension RewardsSummaryProtocol {
         $0.appearanceTextColor = Colors.grey200
         $0.font = UIFont.systemFont(ofSize: 12.0)
         $0.text = "\(text) \(Strings.disclaimerLearnMore)"
-        $0.setURLInfo([Strings.disclaimerLearnMore: "learn-more"])
+        $0.setURLInfo([Strings.disclaimerLearnMore: RewardsSummaryLink.learnMore.rawValue])
+      })
+      
+      labels.append(LinkLabel().then {
+        $0.appearanceTextColor = Colors.grey200
+        $0.font = UIFont.systemFont(ofSize: 12.0)
+        $0.text = Strings.showAllPendingContributions
+        $0.setURLInfo([Strings.showAllPendingContributions: RewardsSummaryLink.showPendingContributions.rawValue])
       })
     }
     

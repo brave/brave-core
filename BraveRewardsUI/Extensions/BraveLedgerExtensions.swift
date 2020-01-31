@@ -283,3 +283,18 @@ extension PublisherInfo {
     return category
   }
 }
+
+extension RewardsType {
+  var displayString: String {
+    switch self {
+    case .autoContribute:
+      return Strings.settingsAutoContributeTitle
+    case .oneTimeTip:
+      return Strings.settingsTipsTitle
+    case .recurringTip:
+      return Strings.settingsMonthlyTipsTitle
+    @unknown default:
+      return ""
+    }
+  }
+}

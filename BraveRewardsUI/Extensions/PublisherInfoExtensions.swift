@@ -5,10 +5,15 @@
 import Foundation
 import BraveRewards
 
-extension PublisherInfo {
+protocol ProviderDisplayString {
+  var provider: String { get }
   /// A properly capitalized string to use when displaying the provider.
   ///
   /// Example: `youtube` becomes `YouTube`, `github` becomes `GitHub`, etc.
+  var providerDisplayString: String { get }
+}
+
+extension ProviderDisplayString {
   var providerDisplayString: String {
     let providers = [
       "github": "GitHub",
@@ -21,3 +26,6 @@ extension PublisherInfo {
     return providers[provider.lowercased()] ?? provider
   }
 }
+
+extension PublisherInfo: ProviderDisplayString {}
+extension PendingContributionInfo: ProviderDisplayString {}

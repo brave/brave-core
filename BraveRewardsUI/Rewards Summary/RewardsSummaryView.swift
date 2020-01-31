@@ -43,12 +43,12 @@ class RewardsSummaryView: UIView {
             stackView.addArrangedSubview(SeparatorView())
           }
         }
-        if let disclaimerView = disclaimerView {
-          if let finalRow = rows.last {
-            stackView.setCustomSpacing(10.0, after: finalRow)
-          }
-          stackView.addArrangedSubview(disclaimerView)
+      }
+      if let disclaimerView = disclaimerView {
+        if let finalRow = rows.last {
+          stackView.setCustomSpacing(10.0, after: finalRow)
         }
+        stackView.addArrangedSubview(disclaimerView)
       }
     }
   }
