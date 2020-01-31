@@ -250,7 +250,8 @@ class BraveProfileSyncServiceImpl
   void LoadSyncEntityInfo(jslib::SyncRecord* record);
 
   bool IsOtherBookmarksFolder(const jslib::SyncRecord* record) const;
-  void ProcessOtherBookmarksFolder(const jslib::SyncRecord* record);
+  void ProcessOtherBookmarksFolder(const jslib::SyncRecord* record,
+                                   bool* pass_to_syncer);
   void ProcessOtherBookmarksChildren(jslib::SyncRecord* record);
 
   void CreateResolveList(

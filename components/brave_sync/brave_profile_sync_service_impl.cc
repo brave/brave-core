@@ -580,10 +580,14 @@ void BraveProfileSyncServiceImpl::OnResolvedSyncRecords(
   } else if (category_name == kBookmarks) {
     for (auto& record : *records) {
       if (IsOtherBookmarksFolder(record.get())) {
-          ProcessOtherBookmarksFolder(record.get());
-          // We don't process "Other Bookmarks" folder in syncer
-          std::move(record);
-          continue;
+          bool pass_to_syncer = false;
+          ProcessOtherBookmarksFolder(record.get(), &pass_to_syncer);
+          if (!pass_to_syncer) {
+            // We don't process "Other Bookmarks" folder in syncer when
+            // "Other Bookmaks" doesn't need to be remapped.
+            std::move(record);
+            continue;
+          }
       }
       ProcessOtherBookmarksChildren(record.get());
       LoadSyncEntityInfo(record.get());
@@ -594,6 +598,7 @@ void BraveProfileSyncServiceImpl::OnResolvedSyncRecords(
         pending_received_records_ = std::make_unique<RecordsList>();
       pending_received_records_->push_back(std::move(record));
     }
+
     // Send records to syncer
     if (get_record_cb_) {
       backend_task_runner_->PostTask(
@@ -838,11 +843,16 @@ bool BraveProfileSyncServiceImpl::IsOtherBookmarksFolder(
 }
 
 void BraveProfileSyncServiceImpl::ProcessOtherBookmarksFolder(
-    const jslib::SyncRecord* record) {
+    const jslib::SyncRecord* record,
+    bool* pass_to_syncer) {
   std::string other_node_object_id;
     // Save object_id for late joined desktop to catch up with currecnt id
     // iteration
-  if (model_->other_node()->GetMetaInfo("object_id", &other_node_object_id)) {
+  if (!model_->other_node()->GetMetaInfo("object_id", &other_node_object_id) &&
+      record->action == jslib::SyncRecord::Action::A_CREATE) {
+    tools::AsMutable(model_->other_node())->SetMetaInfo("object_id",
+                                                        record->objectId);
+  } else {
     // DELETE won't reach here, because [DELETE, null] => [] in
     // resolve-sync-objects but children records will go through. And we don't
     // need to regenerate new object id for it.
@@ -853,18 +863,30 @@ void BraveProfileSyncServiceImpl::ProcessOtherBookmarksFolder(
     if (bookmark.order != tools::kOtherNodeOrder ||
         bookmark.site.title != tools::GetOtherNodeName() ||
         bookmark.site.customTitle != tools::GetOtherNodeName()) {
-      // This is to compensate mobile couldn't make "Other Bookmarks" a
-      // read-only folder.
-      // Remove remote "Other Bookmarks" folder
-      RecordsListPtr records = std::make_unique<RecordsList>();
-      records->push_back(
-          CreateDeleteBookmarkByObjectId(brave_sync_prefs_.get(),
-                                         record->objectId));
-      brave_sync_client_->SendSyncRecords(jslib_const::SyncRecordType_BOOKMARKS,
-                                          *records);
-      // Remove all local children of other_node
-      while (model_->other_node()->children().size()) {
-        model_->Remove(model_->other_node()->children().front().get());
+      // Generate next iteration object id from current object_id which will be
+      // used to mapped normal folder
+      tools::AsMutable(
+        model_->other_node())
+          ->SetMetaInfo("object_id",
+                        tools::GenerateObjectIdForOtherNode(
+                          other_node_object_id));
+      *pass_to_syncer = true;
+
+      // Add records to move direct children of other_node to this new folder
+      // with existing object id of the old "Other Bookmarks" folder
+      for (size_t i = 0; i < model_->other_node()->children().size(); ++i) {
+        auto sync_record =
+          BookmarkNodeToSyncBookmark(model_->other_node()->children()[i].get());
+        sync_record->mutable_bookmark()->parentFolderObjectId =
+          record->objectId;
+        sync_record->mutable_bookmark()->hideInToolbar = false;
+        sync_record->mutable_bookmark()->order =
+          bookmark.order + "." + std::to_string(i + 1);
+        LoadSyncEntityInfo(sync_record.get());
+
+        if (!pending_received_records_)
+          pending_received_records_ = std::make_unique<RecordsList>();
+        pending_received_records_->push_back(std::move(sync_record));
       }
     }
   }
