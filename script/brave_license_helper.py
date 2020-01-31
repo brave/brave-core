@@ -67,11 +67,6 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
             "URL": "https://github.com/brave-intl/bat-native-bip39wally-core",
             "License": "MIT",
         },
-        os.path.join('brave', 'vendor', 'bloom-filter-cpp'): {
-            "Name": "BloomFilter.cpp",
-            "URL": "https://github.com/brave/bloom-filter-cpp",
-            "License": "MPL-2.0",
-        },
         os.path.join('brave', 'vendor', 'boto'): {
             "Name": "boto",
             "URL": "https://github.com/boto/boto",
