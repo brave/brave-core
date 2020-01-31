@@ -58,6 +58,7 @@ internal extension Strings {
   static let addFundsShowQRCode = NSLocalizedString("BraveRewardsAddFundsShowQRCode", bundle: .rewardsUI, value: "Show QR Code", comment: "")
   static let rewardsOptInPrefix = NSLocalizedString("RewardsOptInPrefix", bundle: .rewardsUI, value: "Get ready to experience the next Internet.", comment: "")
   static let disclaimerLearnMore = NSLocalizedString("BraveRewardsDisclaimerLearnMore", bundle: .rewardsUI, value: "Learn More", comment: "")
+  static let showAllPendingContributions = NSLocalizedString("BraveRewardsShowAllPendingContributions", bundle: .rewardsUI, value: "Show all pending contributions", comment: "")
   static let CLAIM = NSLocalizedString("CLAIM", bundle: .rewardsUI, value: "CLAIM", comment: "")
   static let autoContributeNextDate = NSLocalizedString("BraveRewardsAutoContributeNextDate", bundle: .rewardsUI, value: "Next contribution date", comment: "")
   static let monthlyTippingNextDate = NSLocalizedString("BraveRewardsMonthlyTippingNextDate", bundle: .rewardsUI, value: "Next monthly contribution date", comment: "")
@@ -298,5 +299,12 @@ internal extension Strings {
   static let restoreAllSitesToolbarButtonTitle = NSLocalizedString("ExclusionListRestoreAllButton", bundle: .rewardsUI, value: "Restore All Sites", comment: "The button that restores all excluded publishers while on the Auto-Contribute excluson list")
   static let restore = NSLocalizedString("ExclusionListRestore", bundle: .rewardsUI, value: "Restore", comment: "The swipe-to-delete title when restoring a single item in the Auto-Contribute exclusion list")
   static let emptyExclusionList = NSLocalizedString("EmptyExclusionList", bundle: .rewardsUI, value: "No publishers excluded", comment: "The copy the user sees when they are viewing an empty Auto-Contribute exclusion list.")
+  static let pendingContributionsTitle = NSLocalizedString("PendingContributionsTitle", bundle: .rewardsUI, value: "Pending contributions", comment: "The title of the screen that shows a list of the users pending contributions")
+  static let removeAllSitesToolbarButtonTitle = NSLocalizedString("PendingContributionListRemoveAllButton", bundle: .rewardsUI, value: "Remove All Sites", comment: "The button that removes all pending contributions while on the Pending Contributions list")
+  static let removeSelectedToolbarButtonTitle = NSLocalizedString("PendingContributionListRemoveSelected", bundle: .rewardsUI, value: "Remove Selected", comment: "The button that removes the selected pending contributions while on the Pending Contributions list")
+  static let removePendingContribution = NSLocalizedString("PendingContributionDetailRemove", bundle: .rewardsUI, value: "Remove Pending Contribution", comment: "The button that removes a specific pending contributions while on viewing said contributions details")
+  static let pendingContributionType = NSLocalizedString("PendingContributionDetailType", bundle: .rewardsUI, value: "Type", comment: "")
+  static let pendingContributionAmount = NSLocalizedString("PendingContributionDetailAmount", bundle: .rewardsUI, value: "Amount", comment: "")
+  static let pendingContributionPendingUntil = NSLocalizedString("PendingContributionDetailPendingUntil", bundle: .rewardsUI, value: "Pending Until", comment: "")
 }
 

@@ -272,6 +272,7 @@
 		2744D6CB239EDB1A00A89EBB /* DisconnectedUserWalletButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2744D6CA239EDB1A00A89EBB /* DisconnectedUserWalletButton.swift */; };
 		2744D6CE239EDCBC00A89EBB /* VerifyUserWalletButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2744D6CD239EDCBC00A89EBB /* VerifyUserWalletButton.swift */; };
 		2744D6D0239EF10B00A89EBB /* UserWalletDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2744D6CF239EF10B00A89EBB /* UserWalletDetailsViewController.swift */; };
+		275218FC23E0BB7500E416B4 /* PendingContributionDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 275218FB23E0BB7500E416B4 /* PendingContributionDetailController.swift */; };
 		2755AB7D23107BC600F0721F /* AdsReporting.js in Resources */ = {isa = PBXBuildFile; fileRef = 2755AB7C23107BC600F0721F /* AdsReporting.js */; };
 		2755AB8623107DBD00F0721F /* AdsMediaReporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2755AB8523107DBD00F0721F /* AdsMediaReporting.swift */; };
 		2760D2BF215ACCE20068E131 /* BundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2760D2BE215ACCE20068E131 /* BundleExtensions.swift */; };
@@ -292,6 +293,8 @@
 		279C756B219DDE3B001CD1CB /* FingerprintingProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279C756A219DDE3B001CD1CB /* FingerprintingProtection.swift */; };
 		279C75C821A5B37D001CD1CB /* FingerprintingProtection.js in Resources */ = {isa = PBXBuildFile; fileRef = 279C75C021A5B37D001CD1CB /* FingerprintingProtection.js */; };
 		27A586E1214C0DDD000CAE3C /* PreferencesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A586E0214C0DDD000CAE3C /* PreferencesTest.swift */; };
+		27A9068923D65A10005D7609 /* PendingContributionListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A9068823D65A10005D7609 /* PendingContributionListController.swift */; };
+		27A9068B23D65E0E005D7609 /* PendingContributionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A9068A23D65E0E005D7609 /* PendingContributionCell.swift */; };
 		27AC169323834175004BE19C /* MonthlyAdsGrantReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AC168F23833A16004BE19C /* MonthlyAdsGrantReminder.swift */; };
 		27AC169823834510004BE19C /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27AC169623834510004BE19C /* UserNotifications.framework */; };
 		27B0C7B523D24BAA00B9EA3D /* AutoContributeExclusionListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B0C7B323D24BAA00B9EA3D /* AutoContributeExclusionListController.swift */; };
@@ -1525,6 +1528,7 @@
 		2744D6CA239EDB1A00A89EBB /* DisconnectedUserWalletButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisconnectedUserWalletButton.swift; sourceTree = "<group>"; };
 		2744D6CD239EDCBC00A89EBB /* VerifyUserWalletButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyUserWalletButton.swift; sourceTree = "<group>"; };
 		2744D6CF239EF10B00A89EBB /* UserWalletDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserWalletDetailsViewController.swift; sourceTree = "<group>"; };
+		275218FB23E0BB7500E416B4 /* PendingContributionDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingContributionDetailController.swift; sourceTree = "<group>"; };
 		2755AB7C23107BC600F0721F /* AdsReporting.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = AdsReporting.js; sourceTree = "<group>"; };
 		2755AB8523107DBD00F0721F /* AdsMediaReporting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdsMediaReporting.swift; sourceTree = "<group>"; };
 		2760D2BE215ACCE20068E131 /* BundleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtensions.swift; sourceTree = "<group>"; };
@@ -1545,6 +1549,8 @@
 		279C756A219DDE3B001CD1CB /* FingerprintingProtection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerprintingProtection.swift; sourceTree = "<group>"; };
 		279C75C021A5B37D001CD1CB /* FingerprintingProtection.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = FingerprintingProtection.js; sourceTree = "<group>"; };
 		27A586E0214C0DDD000CAE3C /* PreferencesTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesTest.swift; sourceTree = "<group>"; };
+		27A9068823D65A10005D7609 /* PendingContributionListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingContributionListController.swift; sourceTree = "<group>"; };
+		27A9068A23D65E0E005D7609 /* PendingContributionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingContributionCell.swift; sourceTree = "<group>"; };
 		27AC168F23833A16004BE19C /* MonthlyAdsGrantReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyAdsGrantReminder.swift; sourceTree = "<group>"; };
 		27AC169623834510004BE19C /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		27B0C7B323D24BAA00B9EA3D /* AutoContributeExclusionListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoContributeExclusionListController.swift; sourceTree = "<group>"; };
@@ -2947,6 +2953,7 @@
 				271DEC9C234CC7EF009DAC37 /* Images.xcassets */,
 				271DEC53234CC7EE009DAC37 /* Localized Strings */,
 				271DEC3E234CC7ED009DAC37 /* Publisher */,
+				27A9068623D659FE005D7609 /* Pending Contributions */,
 				271DEC56234CC7EE009DAC37 /* QA Settings */,
 				271DEC71234CC7EE009DAC37 /* Rewards Summary */,
 				271DEC55234CC7EE009DAC37 /* RewardsDataSource.swift */,
@@ -3292,6 +3299,16 @@
 				276E7A3B22F21DBE00939424 /* RewardsReporting.swift */,
 			);
 			path = Rewards;
+			sourceTree = "<group>";
+		};
+		27A9068623D659FE005D7609 /* Pending Contributions */ = {
+			isa = PBXGroup;
+			children = (
+				27A9068823D65A10005D7609 /* PendingContributionListController.swift */,
+				27A9068A23D65E0E005D7609 /* PendingContributionCell.swift */,
+				275218FB23E0BB7500E416B4 /* PendingContributionDetailController.swift */,
+			);
+			path = "Pending Contributions";
 			sourceTree = "<group>";
 		};
 		27AC169223834134004BE19C /* Rewards */ = {
@@ -5739,7 +5756,9 @@
 				271DECD3234CC7EF009DAC37 /* AdContentButton.swift in Sources */,
 				5E77F9A8236B362800E1649C /* DeviceCheck.swift in Sources */,
 				271DED1A234CC7EF009DAC37 /* ActionButton.swift in Sources */,
+				27A9068B23D65E0E005D7609 /* PendingContributionCell.swift in Sources */,
 				27353FF2235F4E7300E42EBB /* WalletDisclaimerView.swift in Sources */,
+				275218FC23E0BB7500E416B4 /* PendingContributionDetailController.swift in Sources */,
 				271DECC5234CC7EF009DAC37 /* PublisherView.swift in Sources */,
 				271DED03234CC7EF009DAC37 /* AutoContributeDetailsViewController.swift in Sources */,
 				271DED16234CC7EF009DAC37 /* BATUSDPairView.swift in Sources */,
@@ -5789,6 +5808,7 @@
 				271DECDB234CC7EF009DAC37 /* TippingOverviewView.swift in Sources */,
 				271DECDC234CC7EF009DAC37 /* TippingSelectionView.swift in Sources */,
 				271DED15234CC7EF009DAC37 /* PublisherIconCircleImageView.swift in Sources */,
+				27A9068923D65A10005D7609 /* PendingContributionListController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
