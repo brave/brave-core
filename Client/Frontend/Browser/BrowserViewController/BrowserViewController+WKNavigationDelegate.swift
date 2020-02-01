@@ -126,12 +126,8 @@ extension BrowserViewController: WKNavigationDelegate {
             return
         }
         
-        if url.isBookmarklet && navigationAction.isAllowed {
+        if url.isBookmarklet {
             decisionHandler(.cancel)
-            
-            if let code = url.bookmarkletCodeComponent {
-                webView.evaluateJavaScript(code)
-            }
             return
         }
 
