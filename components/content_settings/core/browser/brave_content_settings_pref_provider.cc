@@ -192,6 +192,11 @@ std::unique_ptr<RuleIterator> BravePrefProvider::GetRuleIterator(
         cookie_rules_.at(incognito).end());
   }
 
+  // Earyl return. We don't store flash plugin setting in preference.
+  if (content_type == ContentSettingsType::PLUGINS &&
+      resource_identifier == "")
+    return nullptr;
+
   return PrefProvider::GetRuleIterator(content_type,
                                        resource_identifier,
                                        incognito);
@@ -363,7 +368,6 @@ void BravePrefProvider::ClearAllShieldsContentSettings() {
   DCHECK(CalledOnValidThread());
   GetPref(ContentSettingsType::PLUGINS)->ClearAllContentSettingsRules();
   GetPref(ContentSettingsType::JAVASCRIPT)->ClearAllContentSettingsRules();
-  // TODO(simonhong):: Notify changes for all shields resource ids?
 }
 
 }  // namespace content_settings

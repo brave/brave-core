@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.html b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.html
+index d42cf2379e8c6826d75756d1448c254ffe43706f..cd9092fe8e1608ef228a03c424e063e46a619539 100644
+--- a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.html
++++ b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.html
+@@ -227,6 +227,12 @@
+                 sub-label="[[counters_.form_data]]"
+                 disabled="[[clearingInProgress_]]">
+             </settings-checkbox>
++            <settings-checkbox
++                pref="{{prefs.browser.clear_data.shields_settings}}"
++                label="$i18n{clearShieldsSettings}"
++                sub-label="[[counters_.shields_settings]]"
++                disabled="[[clearingInProgress_]]">
++            </settings-checkbox>
+             <settings-checkbox
+                 pref="{{prefs.browser.clear_data.site_settings}}"
+                 label="$i18nPolymer{siteSettings}"

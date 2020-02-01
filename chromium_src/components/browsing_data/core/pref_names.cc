@@ -24,6 +24,10 @@ const char kDeleteHostedAppsDataOnExit[] =
     "browser.clear_data.hosted_apps_data_on_exit";
 const char kDeleteSiteSettingsOnExit[] =
     "browser.clear_data.site_settings_on_exit";
+const char kDeleteShieldsSettingsOnExit[] =
+    "browser.clear_data.shields_settings_on_exit";
+
+const char kDeleteShieldsSettings[] = "browser.clear_data.shields_settings";
 
 void RegisterBrowserUserPrefs(user_prefs::PrefRegistrySyncable* registry) {
   RegisterBrowserUserPrefs_ChromiumImpl(registry);
@@ -36,6 +40,9 @@ void RegisterBrowserUserPrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kDeleteFormDataOnExit, false);
   registry->RegisterBooleanPref(kDeleteHostedAppsDataOnExit, false);
   registry->RegisterBooleanPref(kDeleteSiteSettingsOnExit, false);
+  registry->RegisterBooleanPref(kDeleteShieldsSettingsOnExit, false);
+
+  registry->RegisterBooleanPref(kDeleteShieldsSettings, false);
 }
 
 }  // namespace prefs

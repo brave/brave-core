@@ -6,6 +6,9 @@
 #ifndef BRAVE_COMPONENTS_CONTENT_SETTINGS_CORE_BROWSER_BRAVE_HOST_CONTENT_SETTINGS_MAP_H_
 #define BRAVE_COMPONENTS_CONTENT_SETTINGS_CORE_BROWSER_BRAVE_HOST_CONTENT_SETTINGS_MAP_H_
 
+#include <string>
+
+#include "base/time/time.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 
 class BraveHostContentSettingsMap : public HostContentSettingsMap {
@@ -15,6 +18,11 @@ class BraveHostContentSettingsMap : public HostContentSettingsMap {
   BraveHostContentSettingsMap(const BraveHostContentSettingsMap&) = delete;
   BraveHostContentSettingsMap& operator=(
       const BraveHostContentSettingsMap&) = delete;
+
+  base::Time GetShieldsSettingLastModifiedDate(
+      const ContentSettingsPattern& primary_pattern,
+      const ContentSettingsPattern& secondary_pattern,
+      const std::string& resource_identifier) const;
 
   // Clear shields or flash type content settings with time constraint.
   // If |shields| is true clear shields type. Otherwise, clear flash type.

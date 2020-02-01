@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/webui/settings/settings_clear_browsing_data_handler.cc b/chrome/browser/ui/webui/settings/settings_clear_browsing_data_handler.cc
+index ed1e4d58c0b79a7bf0f21b65ea41f2063ff7e905..ae333e16f90e620e9a51fa9619a5cd74e6970c6c 100644
+--- a/chrome/browser/ui/webui/settings/settings_clear_browsing_data_handler.cc
++++ b/chrome/browser/ui/webui/settings/settings_clear_browsing_data_handler.cc
+@@ -59,6 +59,7 @@ const char* kCounterPrefsAdvanced[] = {
+     browsing_data::prefs::kDeleteHostedAppsData,
+     browsing_data::prefs::kDeletePasswords,
+     browsing_data::prefs::kDeleteSiteSettings,
++    browsing_data::prefs::kDeleteShieldsSettings,
+ };
+ 
+ // Additional counters for the basic tab of CBD.
+@@ -196,6 +197,7 @@ void ClearBrowsingDataHandler::HandleClearBrowsingData(
+         remove_mask |=
+             ChromeBrowsingDataRemoverDelegate::DATA_TYPE_CONTENT_SETTINGS;
+         break;
++      HANDLE_BROWSING_DATA_TYPE_SHIELDS_SETTINGS
+       case BrowsingDataType::HOSTED_APPS_DATA:
+         remove_mask |= site_data_mask;
+         origin_mask |= content::BrowsingDataRemover::ORIGIN_TYPE_PROTECTED_WEB;

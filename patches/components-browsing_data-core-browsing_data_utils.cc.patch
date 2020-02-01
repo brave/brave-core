@@ -1,0 +1,20 @@
+diff --git a/components/browsing_data/core/browsing_data_utils.cc b/components/browsing_data/core/browsing_data_utils.cc
+index df660844a7fe0632a7e3e506573f1237cf684bd6..c9432a242d13f780eed989574636298736937340 100644
+--- a/components/browsing_data/core/browsing_data_utils.cc
++++ b/components/browsing_data/core/browsing_data_utils.cc
+@@ -283,6 +283,7 @@ bool GetDeletionPreferenceFromDataType(
+       case BrowsingDataType::FORM_DATA:
+       case BrowsingDataType::BOOKMARKS:
+       case BrowsingDataType::SITE_SETTINGS:
++      case BrowsingDataType::SHIELDS_SETTINGS:
+       case BrowsingDataType::DOWNLOADS:
+       case BrowsingDataType::HOSTED_APPS_DATA:
+         return false;  // No corresponding preference on basic tab.
+@@ -321,6 +322,7 @@ bool GetDeletionPreferenceFromDataType(
+     case BrowsingDataType::HOSTED_APPS_DATA:
+       *out_pref = prefs::kDeleteHostedAppsData;
+       return true;
++    HANDLE_BROWSING_DATA_TYPE_SHIELDS_SETTINGS
+     case BrowsingDataType::NUM_TYPES:
+       NOTREACHED();  // This is not an actual type.
+       return false;

@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
+index 30426d2f9c760424c372df76fb943cc0b48f3969..4c54efa20ca272617d6168162cec431059937b67 100644
+--- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
++++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
+@@ -79,6 +79,7 @@ class ChromeBrowsingDataRemoverDelegate
+     DATA_TYPE_CONTENT_SETTINGS = DATA_TYPE_EMBEDDER_BEGIN << 9,
+     DATA_TYPE_BOOKMARKS = DATA_TYPE_EMBEDDER_BEGIN << 10,
+     DATA_TYPE_ISOLATED_ORIGINS = DATA_TYPE_EMBEDDER_BEGIN << 11,
++    DATA_TYPE_SHIELDS_SETTINGS = DATA_TYPE_EMBEDDER_BEGIN << 12,
+ 
+     // Group datatypes.
+ 
+@@ -115,6 +116,7 @@ class ChromeBrowsingDataRemoverDelegate
+                      DATA_TYPE_HISTORY |           //
+                      DATA_TYPE_PASSWORDS |         //
+                      DATA_TYPE_CONTENT_SETTINGS |  //
++                     DATA_TYPE_SHIELDS_SETTINGS |  //
+                      DATA_TYPE_BOOKMARKS,
+ 
+     // Includes all available remove options. Meant to be used when the Profile

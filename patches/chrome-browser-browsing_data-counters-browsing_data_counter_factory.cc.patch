@@ -1,0 +1,11 @@
+diff --git a/chrome/browser/browsing_data/counters/browsing_data_counter_factory.cc b/chrome/browser/browsing_data/counters/browsing_data_counter_factory.cc
+index 69fa7f2435f014c540cf4997f7105b65cfbd9617..ab8c363efcd14882f69d851f1f3c3f5167966577 100644
+--- a/chrome/browser/browsing_data/counters/browsing_data_counter_factory.cc
++++ b/chrome/browser/browsing_data/counters/browsing_data_counter_factory.cc
+@@ -126,5 +126,6 @@ BrowsingDataCounterFactory::GetForProfileAndPref(Profile* profile,
+   }
+ #endif
+ 
++  HANDLE_BRAVE_PREFS
+   return nullptr;
+ }

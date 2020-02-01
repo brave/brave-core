@@ -1,0 +1,18 @@
+source_set("browsing_data") {
+  sources = [
+    "brave_clear_browsing_data.cc",
+    "brave_clear_browsing_data.h",
+    "counters/shields_settings_counter.cc",
+    "counters/shields_settings_counter.h",
+  ]
+
+  deps = [
+    "//base",
+    "//chrome/common",
+    "//content/public/browser",
+    "//components/browsing_data/core",
+    "//components/content_settings/core/browser",
+    "//components/content_settings/core/common",
+    "//components/prefs",
+  ]
+}

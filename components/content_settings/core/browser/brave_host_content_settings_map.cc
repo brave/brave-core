@@ -5,11 +5,22 @@
 
 #include "brave/components/content_settings/core/browser/brave_host_content_settings_map.h"
 
+#include <vector>
+
 #include "brave/components/content_settings/core/browser/brave_content_settings_ephemeral_provider.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 
 using content_settings::UserModifiableProvider;
+
+base::Time BraveHostContentSettingsMap::GetShieldsSettingLastModifiedDate(
+    const ContentSettingsPattern& primary_pattern,
+    const ContentSettingsPattern& secondary_pattern,
+    const std::string& resource_identifier) const {
+  return GetPrefProvider()->GetWebsiteSettingLastModified(
+      primary_pattern, secondary_pattern,
+      ContentSettingsType::PLUGINS, resource_identifier);
+}
 
 void BraveHostContentSettingsMap::ClearSettingsForPluginsType(
     bool is_shields) {

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc
-index 873f56bffd068bc0fbcba6db500392e32d736b5b..759cc9885c91630da9fed17d0c443258496aed24 100644
+index 873f56bffd068bc0fbcba6db500392e32d736b5b..cc9ce2a3a5c97478892eae22c6ce3e47bff6bfb2 100644
 --- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc
 +++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.cc
 @@ -705,6 +705,7 @@ void ChromeBrowsingDataRemoverDelegate::RemoveEmbedderData(
@@ -10,3 +10,11 @@ index 873f56bffd068bc0fbcba6db500392e32d736b5b..759cc9885c91630da9fed17d0c443258
        host_content_settings_map_->ClearSettingsForOneTypeWithPredicate(
            info->website_settings_info()->type(), delete_begin_, delete_end_,
            HostContentSettingsMap::PatternSourcePredicate());
+@@ -746,6 +747,7 @@ void ChromeBrowsingDataRemoverDelegate::RemoveEmbedderData(
+ #endif
+   }
+ 
++  HANDLE_DATA_TYPE_SHIELDS_SETTINGS
+   //////////////////////////////////////////////////////////////////////////////
+   // DATA_TYPE_BOOKMARKS
+   if (remove_mask & DATA_TYPE_BOOKMARKS) {

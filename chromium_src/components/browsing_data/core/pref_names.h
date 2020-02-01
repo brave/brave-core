@@ -20,6 +20,9 @@ extern const char kDeletePasswordsOnExit[];
 extern const char kDeleteFormDataOnExit[];
 extern const char kDeleteHostedAppsDataOnExit[];
 extern const char kDeleteSiteSettingsOnExit[];
+extern const char kDeleteShieldsSettingsOnExit[];
+
+extern const char kDeleteShieldsSettings[];
 
 }  // namespace prefs
 
