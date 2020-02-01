@@ -1120,13 +1120,19 @@ class BrowserViewController: UIViewController {
                 return
             }
             
-            if let webView = tab.webView, let code = url.bookmarkletCodeComponent {
-                resetSpoofedUserAgentIfRequired(webView, newURL: url)
-                webView.evaluateJavaScript(code, completionHandler: { _, error in
-                    if let error = error {
-                        log.error(error)
-                    }
-                })
+            //Another Fix for: https://github.com/brave/brave-ios/pull/2296
+            //Disable any sort of privileged execution contexts
+            //IE: The user must explicitly type OR must explicitly tap a bookmark they have saved.
+            //Block all other contexts such as redirects, downloads, embed, linked, etc..
+            if visitType == .typed || visitType == .bookmark {
+                if let webView = tab.webView, let code = url.bookmarkletCodeComponent {
+                    resetSpoofedUserAgentIfRequired(webView, newURL: url)
+                    webView.evaluateJavaScript(code, completionHandler: { _, error in
+                        if let error = error {
+                            log.error(error)
+                        }
+                    })
+                }
             }
         } else {
             topToolbar.currentURL = url
