@@ -84,6 +84,7 @@ export const StyledImageWrapper = styled<Partial<Props>, 'div'>('div')`
 export const StyledImage = styled.img`
   max-width: 100%;
   max-height: 100%;
+  margin: auto;
 `
 
 export const StyledVerified = styled<{}, 'span'>('span')`
