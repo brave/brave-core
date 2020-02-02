@@ -84,10 +84,10 @@
     <message name="IDS_SETTINGS_UPGRADE_SUCCESSFUL_CHANNEL_SWITCH" desc="Status label: Channel was successfully switched on BraveOS/BraveOS">
       Channel changed. Restart your device to apply changes.
     </message>
-    <message name="IDS_SETTINGS_UPGRADE_ROLLBACK_IN_PROGRESS" desc="Status label: Rolling back BraveOS or Brave OS.">
+    <message name="IDS_SETTINGS_UPGRADE_ROLLBACK_IN_PROGRESS" desc="Status label: Rolling back BraveOS or Chrome OS.">
       Your administrator is rolling back this device (<ph name="PROGRESS_PERCENT">$1<ex>90%</ex></ph>)
     </message>
-    <message name="IDS_SETTINGS_UPGRADE_ROLLBACK_SUCCESS" desc="Status label: Successfully rolled back Brave OS. All data on the device will be deleted during the next reboot.">
+    <message name="IDS_SETTINGS_UPGRADE_ROLLBACK_SUCCESS" desc="Status label: Successfully rolled back Chrome OS. All data on the device will be deleted during the next reboot.">
       Your administrator rolled back this device. Please save important files, then restart. All data on the device will be deleted.
     </message>
     <message name="IDS_SETTINGS_UPGRADE_UP_TO_DATE" desc="Status label: Already up to date (BraveOS/BraveOS)">
@@ -102,7 +102,7 @@
       Change channel and Powerwash
     </message>
     <message name="IDS_SETTINGS_ABOUT_PAGE_DELAYED_WARNING_MESSAGE" desc="Message that notifies user that channel change will be applied later.">
-      You are changing to a channel with an older version of <ph name="PRODUCT_NAME">$1<ex>Brave OS</ex></ph>. The channel change will be applied when the channel version matches the version currently installed on your device.
+      You are changing to a channel with an older version of <ph name="PRODUCT_NAME">$1<ex>Chrome OS</ex></ph>. The channel change will be applied when the channel version matches the version currently installed on your device.
     </message>
     <message name="IDS_SETTINGS_ABOUT_PAGE_DELAYED_WARNING_TITLE" desc="Title for the message that the channel change will be applied later.">
       Channel change will be applied later
@@ -114,7 +114,7 @@
       Powerwash required on next reboot
     </message>
     <message name="IDS_SETTINGS_ABOUT_PAGE_UNSTABLE_WARNING_MESSAGE" desc="Warning about switching to developer (unstable) channel.">
-      You are updating to an unstable version of <ph name="PRODUCT_NAME">$1<ex>Brave OS</ex></ph> which contains features that are in progress. Crashes and unexpected bugs will occur. Please proceed with caution.
+      You are updating to an unstable version of <ph name="PRODUCT_NAME">$1<ex>Chrome OS</ex></ph> which contains features that are in progress. Crashes and unexpected bugs will occur. Please proceed with caution.
     </message>
     <message name="IDS_SETTINGS_ABOUT_PAGE_UNSTABLE_WARNING_TITLE" desc="The title of the warning about switching to developer (unstable) channel.">
       Warning: you are switching to developer channel
@@ -147,7 +147,7 @@
       Report an issue
     </message>
   </if>
-    <message name="IDS_SETTINGS_ABOUT_PAGE_RELEASE_NOTES" desc="Warning that internet connection is required to display Brave OS release notes.">
+    <message name="IDS_SETTINGS_ABOUT_PAGE_RELEASE_NOTES" desc="Warning that internet connection is required to display Chrome OS release notes.">
       Internet connection required
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_SHOW_RELEASE_NOTES" desc="Text of the button which shows user the release notes.">
@@ -524,7 +524,7 @@
     <message name="IDS_SETTINGS_TEXT_TO_SPEECH_VOICES" desc="Heading describing a collection of listboxes on the text-to-speech settings page. Each listbox is associated with a language, and contains all possible voices for that language">
       Preferred Voices
     </message>
-    <message name="IDS_SETTINGS_TEXT_TO_SPEECH_NO_VOICES_MESSAGE" desc="Message when no text-to-speech voices are found on the Brave OS device.">
+    <message name="IDS_SETTINGS_TEXT_TO_SPEECH_NO_VOICES_MESSAGE" desc="Message when no text-to-speech voices are found on the Chrome OS device.">
       No voices found
     </message>
     <message name="IDS_SETTINGS_TEXT_TO_SPEECH_MORE_LANGUAGES" desc="Label for a toggle button letting users know they can pick default voices for more languages which are not shown by default">
@@ -1493,13 +1493,13 @@
   <message name="IDS_SETTINGS_PRINTING" desc="Title of the printing page and navigation item to get there.">
     Printing
   </message>
-  <message name="IDS_SETTINGS_PRINTING_CLOUD_PRINT_LEARN_MORE_LABEL" desc="Label for the link that teaches users how to use Brave Cloud Print">
-    Set up or manage printers in Brave Cloud Print.
+  <message name="IDS_SETTINGS_PRINTING_CLOUD_PRINT_LEARN_MORE_LABEL" desc="Label for the link that teaches users how to use Google Cloud Print">
+    Set up or manage printers in Google Cloud Print.
   </message>
   <message name="IDS_SETTINGS_PRINTING_NOTIFICATIONS_LABEL" desc="Label for the checkbox which enabled notifications when new printers are added to the user's network">
     Show notifications when new printers are detected on the network
   </message>
-  <message name="IDS_SETTINGS_PRINTING_MANAGE_CLOUD_PRINT_DEVICES" desc="Text for the button which allows users to manage their Brave Cloud Print devices">
+  <message name="IDS_SETTINGS_PRINTING_MANAGE_CLOUD_PRINT_DEVICES" desc="Text for the button which allows users to manage their Google Cloud Print devices">
     Manage Cloud Print devices
   </message>
   <if expr="chromeos">
@@ -1729,12 +1729,12 @@
 
   </if>
   <if expr="not chromeos">
-    <message name="IDS_SETTINGS_PRINTING_LOCAL_PRINTERS_TITLE" desc="In Printing Settings, the title of local printers setting section on OS other than Brave OS.">
+    <message name="IDS_SETTINGS_PRINTING_LOCAL_PRINTERS_TITLE" desc="In Printing Settings, the title of local printers setting section on OS other than Chrome OS.">
       Printers
     </message>
   </if>
   <message name="IDS_SETTINGS_PRINTING_CLOUD_PRINTERS" desc="In Printing Settings, the title of the google cloud printers setting section.">
-    Brave Cloud Print
+    Google Cloud Print
   </message>
 
   <!-- Downloads Page -->
@@ -1750,8 +1750,8 @@
   <message name="IDS_SETTINGS_PROMPT_FOR_DOWNLOAD" desc="Label for the checkbox which enables a prompt for the user to choose a download location for each download instead of using the default.">
     Ask where to save each file before downloading
   </message>
-  <message name="IDS_SETTINGS_DISCONNECT_GOOGLE_DRIVE" desc="Label for the checkbox which enables disconnecting from Brave Drive account.">
-    Disconnect Brave Drive account
+  <message name="IDS_SETTINGS_DISCONNECT_GOOGLE_DRIVE" desc="Label for the checkbox which enables disconnecting from Google Drive account.">
+    Disconnect Google Drive account
   </message>
   <message name="IDS_SETTINGS_OPEN_FILE_TYPES_AUTOMATICALLY" desc="The information label for the 'Clear auto-opening settings' button">
     Open certain file types automatically after downloading
@@ -2844,7 +2844,7 @@
     <message name="IDS_SETTINGS_LANGUAGES_LANGUAGES_LIST_ORDERING_INSTRUCTIONS" desc="Explanatory message about ordering the list of languages.">
       Add languages or reorder list.
     </message>
-    <!-- The non-Brave OS string is in settings_google_chrome_strings.grdp -->
+    <!-- The non-Chrome OS string is in settings_google_chrome_strings.grdp -->
     <message name="IDS_SETTINGS_LANGUAGES_IS_DISPLAYED_IN_THIS_LANGUAGE" desc="The label for a language that is currently used as the UI display language.">
       System text is shown in this language
     </message>
@@ -3122,7 +3122,7 @@
     Search engine
   </message>
   <if expr="chromeos">
-    <message name="IDS_SETTINGS_SEARCH_AND_ASSISTANT" desc="Name of the settings page which displays search engine and assistant preferences on Brave OS.">
+    <message name="IDS_SETTINGS_SEARCH_AND_ASSISTANT" desc="Name of the settings page which displays search engine and assistant preferences on Chrome OS.">
       Search and Assistant
     </message>
   </if>
@@ -4313,7 +4313,7 @@
     Open Tabs
   </message>
   <message name="IDS_DRIVE_SUGGEST_PREF" desc="The documentation string of the 'Show Drive Results in Omnibox' preference - short description">
-    Brave Drive search suggestions
+    Google Drive search suggestions
   </message>
   <message name="IDS_SETTINGS_USER_EVENTS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables recording user events.">
     Activity and interactions
@@ -4893,10 +4893,10 @@
     <message name="IDS_SETTINGS_STORAGE_TITLE" desc="In Device Settings, the title for storage management.">
       Storage management
     </message>
-    <message name="IDS_SETTINGS_STORAGE_ITEM_IN_USE" desc="In Device Settings &gt; Storage, label for the used storage size of Brave OS internal storage.">
+    <message name="IDS_SETTINGS_STORAGE_ITEM_IN_USE" desc="In Device Settings &gt; Storage, label for the used storage size of Chrome OS internal storage.">
       In use
     </message>
-    <message name="IDS_SETTINGS_STORAGE_ITEM_AVAILABLE" desc="In Device Settings &gt; Storage, label for the available storage size of Brave OS internal storage.">
+    <message name="IDS_SETTINGS_STORAGE_ITEM_AVAILABLE" desc="In Device Settings &gt; Storage, label for the available storage size of Chrome OS internal storage.">
       Available
     </message>
     <message name="IDS_SETTINGS_STORAGE_ITEM_DOWNLOADS" desc="In Device Settings &gt; Storage, label for the size of Downloads directory.">

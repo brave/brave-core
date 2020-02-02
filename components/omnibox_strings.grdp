@@ -81,10 +81,10 @@
   <message name="IDS_OMNIBOX_FILE" desc="Text shown in the omnibox to indicate a user is viewing a file.">
     File
   </message>
-  <message name="IDS_DRIVE_SUGGESTION_DOCUMENT" desc="Brave Docs product name, for use in omnibox Docs result descriptions.">
-    Brave Docs
+  <message name="IDS_DRIVE_SUGGESTION_DOCUMENT" desc="Google Docs product name, for use in omnibox Docs result descriptions.">
+    Google Docs
   </message>
-  <message name="IDS_DRIVE_SUGGESTION_FORM" desc="Brave Docs product name, for use in omnibox Form result descriptions.">
+  <message name="IDS_DRIVE_SUGGESTION_FORM" desc="Google Docs product name, for use in omnibox Form result descriptions.">
     Brave Forms
   </message>
   <message name="IDS_DRIVE_SUGGESTION_SPREADSHEET" desc="Brave Sheets product name, for use in omnibox Sheets result descriptions.">
@@ -93,11 +93,11 @@
     <message name="IDS_DRIVE_SUGGESTION_PRESENTATION" desc="Brave Slides product name, for use in omnibox Slides result descriptions.">
     Brave Slides
   </message>
-  <message name="IDS_DRIVE_SUGGESTION_GENERAL" desc="Brave Drive product name, for use in general omnibox Drive file result descriptions.">
-    Brave Drive
+  <message name="IDS_DRIVE_SUGGESTION_GENERAL" desc="Google Drive product name, for use in general omnibox Drive file result descriptions.">
+    Google Drive
   </message>
-  <message name="IDS_DRIVE_SUGGESTION_DESCRIPTION_TEMPLATE" desc="Product description for Brave Drive omnibox results.">
-    <ph name="RESULT_MODIFIED_DATE">$1<ex>12/31/2018</ex></ph> - <ph name="RESULT_PRODUCT_SOURCE">$2<ex>Brave Docs</ex></ph>
+  <message name="IDS_DRIVE_SUGGESTION_DESCRIPTION_TEMPLATE" desc="Product description for Google Drive omnibox results.">
+    <ph name="RESULT_MODIFIED_DATE">$1<ex>12/31/2018</ex></ph> - <ph name="RESULT_PRODUCT_SOURCE">$2<ex>Google Docs</ex></ph>
   </message>
 
   <!-- Omnibox Pedals -->

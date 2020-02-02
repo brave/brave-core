@@ -63,7 +63,7 @@
         </message>
       </if>
       <if expr="is_macosx or chromeos">
-        <message name="IDS_SAD_TAB_RELOAD_CLOSE_TABS" desc="One of the bullet points displayed on the web page if a reload failed to fix the issue, advising the user to close other Brave tabs or apps running on their computer (Mac, Brave OS).">
+        <message name="IDS_SAD_TAB_RELOAD_CLOSE_TABS" desc="One of the bullet points displayed on the web page if a reload failed to fix the issue, advising the user to close other Brave tabs or apps running on their computer (Mac, Chrome OS).">
           Close other tabs or apps
         </message>
       </if>
