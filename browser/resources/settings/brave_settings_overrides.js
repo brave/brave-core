@@ -395,7 +395,13 @@ BravePatching.RegisterPolymerTemplateModifications({
       if (!version) {
         console.error('[Brave Settings Overrides] Could not find version div')
       }
-      version.innerHTML = '<a id="release-notes" target="_blank" href="https://brave.com/latest/">' + version.innerHTML + '</a>'
+      // Grab the Chromium version number (MAJOR.MINOR.BUILD.PATCH) and take the remaining buildinfo so it can be used in the Brave string.
+      // An example version string is "Version 80.1.6.20 (Developer Build)  (64-bit)" however this code should not throw
+      // if the format changes and instead these sections would be blank.
+      const [fullMatch, chromiumNumber = "", buildInfo = ""] = version.innerHTML.match(/([0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)\s(.*)/) || []
+      const chromiumVersion = `Chromium ${chromiumNumber}`
+      version.innerHTML = `<a id="release-notes" target="_blank" href="https://brave.com/latest/">Brave ${loadTimeData.getString('braveProductVersion')} ${buildInfo}</a>`
+      version.insertAdjacentHTML('afterend', '<div class="secondary">' + chromiumVersion + '</div>')
     }
   },
 })
