@@ -25,6 +25,8 @@ declare namespace NewTab {
     source: string
     author: string
     link: string
+    originalUrl: string
+    license: string
   }
 
   export interface Site {
