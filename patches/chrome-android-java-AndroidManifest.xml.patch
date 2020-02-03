@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 12198ae8ae9b6d3702b6d0265e20a748e5893954..61a1dd2cc9a1f386237cd85295f21ad2c1c56dce 100644
+index 4a4ef4f6a6245b36b39f1f901bf13c6d8a8c42f8..4011af4a1c7232075ec94fe28716cf5e76b0d9d0 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -979,7 +979,7 @@ by a child template that "extends" this file.
@@ -11,7 +11,7 @@ index 12198ae8ae9b6d3702b6d0265e20a748e5893954..61a1dd2cc9a1f386237cd85295f21ad2
              android:exported="false">
              <intent-filter>
                  <action android:name="android.content.SyncAdapter" />
-@@ -1304,6 +1304,7 @@ android:value="true" />
+@@ -1307,6 +1307,7 @@ android:value="true" />
          </activity>
          {% endif %}
  
