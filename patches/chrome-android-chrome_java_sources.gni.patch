@@ -1,8 +1,8 @@
 diff --git a/chrome/android/chrome_java_sources.gni b/chrome/android/chrome_java_sources.gni
-index b6528bfddec01f28fb214d6f0d0e0f10805d991b..5f20b8d1e8b6b9a2a456973b62e128c8b34680a1 100644
+index e34b3f8c7fccc0a5ab7f403ac0477693dca4ed79..b6d5f8614fff320b35a5e75a68cb7fce8eb5daf6 100644
 --- a/chrome/android/chrome_java_sources.gni
 +++ b/chrome/android/chrome_java_sources.gni
-@@ -1896,3 +1896,4 @@ chrome_java_sources = [
+@@ -1897,3 +1897,4 @@ chrome_java_sources = [
    "java/src/org/chromium/chrome/browser/widget/tile/TileView.java",
    "java/src/org/chromium/chrome/browser/widget/tile/TileWithTextView.java",
  ]

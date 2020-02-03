@@ -3263,6 +3263,10 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Tap to collapse
       </message>
 
+      <message name="IDS_ANNOUNCEMENT_NOTIFICATION_CHANNEL_NAME" desc="The channel name for announcement notification, will show on the Android notification setting UI as a channel category.">
+        Announcements
+      </message>
+
       <message name="IDS_TAB_SWITCHER_BUTTON_LABEL" desc="Label for tab switcher button">
         Tabs
       </message>
