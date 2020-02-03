@@ -18,7 +18,7 @@
     Settings
   </message>
 
-  <!-- Subtitles of the Brave OS version of the management page -->
+  <!-- Subtitles of the Chrome OS version of the management page -->
  <if expr="chromeos">
     <message name="IDS_MANAGEMENT_SUBTITLE_MANAGED" desc="Title of chrome://management page, shows when device is managed by unknown organization">
       Your <ph name="DEVICE_NAME">$1<ex>Bravebook</ex></ph> is managed
@@ -54,7 +54,7 @@
     </message>
   </if>
 
-  <!-- Brave OS managed status section -->
+  <!-- Chrome OS managed status section -->
   <if expr="chromeos">
     <message name="IDS_MANAGEMENT_DEVICE_NOT_MANAGED" desc="Message indicating that the device and account are not managed">
       This device and account are not managed by a company or other organization.
