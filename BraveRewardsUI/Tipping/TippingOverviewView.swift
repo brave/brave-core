@@ -15,7 +15,10 @@ class TippingOverviewView: UIView {
     static let bodyColor = Colors.grey200
   }
   
-  let dismissButton = DismissButton()
+  let dismissButton = DismissButton().then {
+    $0.layer.borderWidth = 1.0 / UIScreen.main.scale
+    $0.layer.borderColor = UIColor.black.withAlphaComponent(0.4).cgColor
+  }
   
   let headerView = UIImageView().then {
     $0.backgroundColor = UX.headerBackgroundColor

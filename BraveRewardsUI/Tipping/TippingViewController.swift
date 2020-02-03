@@ -106,7 +106,11 @@ class TippingViewController: UIViewController, UIViewControllerTransitioningDele
       self.tippingView.overviewView.bodyLabel.text = banner.desc.isEmpty ? Strings.tippingOverviewBody : banner.desc
       
       self.downloadImage(url: banner.background, { image in
-        self.tippingView.overviewView.headerView.image = image
+        if image != nil {
+          self.tippingView.overviewView.headerView.image = image
+          self.tippingView.overviewView.watermarkImageView.isHidden = true
+          self.tippingView.overviewView.publisherNameLabel.isHidden = true
+        }
       })
       
       if let dataSource = self.state.dataSource,
