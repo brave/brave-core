@@ -74,7 +74,7 @@ class BraveRewardsSettingsViewController: TableViewController {
                 Section(rows: [
                     Row(text: Strings.openBraveRewardsSettings, selection: { [unowned self] in
                         self.tappedShowRewardsSettings?()
-                    }, cellClass: ButtonCell.self)
+                    }, image: RewardsPanelController.batLogoImage, cellClass: ButtonCell.self)
                 ]),
                 Section(rows: [
                     Row(text: Strings.walletCreationDate, detailText: walletCreatedDate, selection: {
