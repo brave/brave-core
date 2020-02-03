@@ -7,13 +7,13 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" android:orderingFromXml="true">
 
-    <org.chromium.chrome.browser.preferences.ChromeSwitchPreference
+    <org.chromium.chrome.browser.settings.ChromeSwitchPreference
         android:key="use_rewards_staging_server"
         android:title="Use Rewards staging server"
         android:summaryOn="@string/text_on"
         android:summaryOff="@string/text_off" />
 
-    <org.chromium.chrome.browser.preferences.ChromeSwitchPreference
+    <org.chromium.chrome.browser.settings.ChromeSwitchPreference
         android:key="qa_maximize_initial_ads_number"
         android:title="Maximize initial ads number"
         android:summaryOn="@string/text_on"
