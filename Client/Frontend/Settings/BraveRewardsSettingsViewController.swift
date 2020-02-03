@@ -33,6 +33,8 @@ class BraveRewardsSettingsViewController: TableViewController {
     
     let rewards: BraveRewards
     
+    var tappedShowRewardsSettings: (() -> Void)?
+    
     init(_ rewards: BraveRewards) {
         self.rewards = rewards
         super.init(style: .grouped)
@@ -69,6 +71,11 @@ class BraveRewardsSettingsViewController: TableViewController {
             }
             
             dataSource.sections += [
+                Section(rows: [
+                    Row(text: Strings.openBraveRewardsSettings, selection: { [unowned self] in
+                        self.tappedShowRewardsSettings?()
+                    }, cellClass: ButtonCell.self)
+                ]),
                 Section(rows: [
                     Row(text: Strings.walletCreationDate, detailText: walletCreatedDate, selection: {
                         let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)

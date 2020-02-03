@@ -66,7 +66,7 @@ extension BrowserViewController {
         self.topToolbar.locationView.rewardsButton.forceShowBadge = !Preferences.Rewards.panelOpened.value
     }
 
-    func showBraveRewardsPanel() {
+    func showBraveRewardsPanel(initialPage: RewardsPanelController.InitialPage = .default) {
         Preferences.Rewards.panelOpened.value = true
         updateRewardsButtonState()
         
@@ -82,7 +82,8 @@ extension BrowserViewController {
             url: url,
             faviconURL: url,
             delegate: self,
-            dataSource: self
+            dataSource: self,
+            initialPage: initialPage
         )
         
         let popover = PopoverController(contentController: braveRewardsPanel, contentSizeBehavior: .preferredContentSize)

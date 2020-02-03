@@ -42,6 +42,7 @@ protocol SettingsDelegate: class {
     func settingsOpenURLInNewTab(_ url: URL)
     func settingsOpenURLs(_ urls: [URL])
     func settingsDidFinish(_ settingsViewController: SettingsViewController)
+    func settingsOpenRewardsSettings(_ settingsViewController: SettingsViewController)
 }
 
 class SettingsViewController: TableViewController {
@@ -205,6 +206,9 @@ class SettingsViewController: TableViewController {
                 section.rows += [
                     Row(text: Strings.braveRewardsTitle, selection: { [unowned self] in
                         let rewardsVC = BraveRewardsSettingsViewController(rewards)
+                        rewardsVC.tappedShowRewardsSettings = { [unowned self] in
+                            self.settingsDelegate?.settingsOpenRewardsSettings(self)
+                        }
                         self.navigationController?.pushViewController(rewardsVC, animated: true)
                         }, accessory: .disclosureIndicator),
                 ]
