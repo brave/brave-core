@@ -4,11 +4,13 @@
 
 import * as webNavigationTypes from '../../constants/webNavigationTypes'
 import { Actions } from '../../types/actions/index'
+import { isBrowserUrl } from '../../helpers/urlUtils'
 
 export default function dappDetectionReducer (state = {}, action: Actions) {
   switch (action.type) {
     case webNavigationTypes.ON_COMMITTED: {
-      if (chrome.braveWallet && action.isMainFrame) {
+      // Browser built in pages can't have scripts injected into them so ignore them
+      if (chrome.braveWallet && action.isMainFrame && !isBrowserUrl(action.url)) {
         chrome.braveWallet.shouldCheckForDapps((dappDetection) => {
           if (!dappDetection) {
             return

@@ -10,6 +10,14 @@ export const isHttpOrHttps = (url?: string) => {
 }
 
 /**
+ * Returns true for browser built in pages
+ * @param {string} url - The URL to check
+ */
+export const isBrowserUrl = (url: string) => {
+  return /^(brave:|chrome:|about:|devtools:)/.test(url)
+}
+
+/**
  * Get the URL origin via Web API
  * @param {string} url - The URL to get the origin from
  */
