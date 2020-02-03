@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">Preferences...</translation>
 <translation id="5801568494490449797">Preferences</translation>
 <translation id="3677911431265050325">Pieprasīt mobilo vietni</translation>
+<translation id="236470849334943016">31. martā tiks mainīti Brave pakalpojumu sniegšanas noteikumi</translation>
+<translation id="1032605640136438169">Lūdzu, pārskatiet jaunos noteikumus.</translation>
+<translation id="8712637175834984815">Sapratu!</translation>
+<translation id="5007392906805964215">Pārskatīt</translation>
 <translation id="4408599188496843485">P&amp;alīdzība</translation>
 <translation id="8378714024927312812">Pārvalda jūsu organizācija</translation>
 <translation id="7928836894214140642">Pārvalda <ph name="ENROLLMENT_DOMAIN"/></translation>
@@ -2434,7 +2438,6 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="7892963120252479610">Vietne <ph name="ORIGIN"/> varēs atvērt direktorijā <ph name="FOLDERNAME"/> ievietotos failus, kamēr šī cilne ir atvērta.</translation>
 <translation id="7201420661433230412">Skatīt failus</translation>
 <translation id="3015639418649705390">Restartēt tūlīt</translation>
-<translation id="8712637175834984815">Sapratu!</translation>
 <translation id="2783952358106015700">Drošības atslēgas izmantošana ar lietotni <ph name="APP_NAME"/></translation>
 <translation id="2446585455334014596"><ph name="APP_NAME"/> vēlas verificēt jūsu identitāti</translation>
 <translation id="1567750922576943685">Identitātes apstiprināšana palīdz aizsargāt jūsu personas informāciju</translation>

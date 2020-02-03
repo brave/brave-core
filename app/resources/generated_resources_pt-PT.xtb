@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">Preferências...</translation>
 <translation id="5801568494490449797">Preferências</translation>
 <translation id="3677911431265050325">Pedir site para dispositivos móveis</translation>
+<translation id="236470849334943016">Os Termos de Utilização do Brave vão ser alterados a 31 de março</translation>
+<translation id="1032605640136438169">Reveja os novos termos.</translation>
+<translation id="8712637175834984815">Entendido</translation>
+<translation id="5007392906805964215">Rever</translation>
 <translation id="4408599188496843485">A&amp;juda</translation>
 <translation id="8378714024927312812">Gerido pela sua entidade</translation>
 <translation id="7928836894214140642">Gerido por <ph name="ENROLLMENT_DOMAIN"/></translation>
@@ -2435,7 +2439,6 @@ Pretende pará-lo?</translation>
 <translation id="7892963120252479610"><ph name="ORIGIN"/> pode ver ficheiros em <ph name="FOLDERNAME"/> até fechar este separador</translation>
 <translation id="7201420661433230412">Ver ficheiros</translation>
 <translation id="3015639418649705390">Reiniciar agora</translation>
-<translation id="8712637175834984815">Entendido</translation>
 <translation id="2783952358106015700">Utilizar a chave de segurança com a aplicação <ph name="APP_NAME"/></translation>
 <translation id="2446585455334014596">A aplicação <ph name="APP_NAME"/> pretende validar a sua identidade</translation>
 <translation id="1567750922576943685">A validação da sua identidade ajuda a proteger as suas informações pessoais.</translation>

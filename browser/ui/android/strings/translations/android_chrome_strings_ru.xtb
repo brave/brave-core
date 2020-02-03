@@ -904,6 +904,7 @@
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Удалить 1 выбранный объект}one{Удалить # выбранный объект}few{Удалить # выбранных объекта}many{Удалить # выбранных объектов}other{Удалить # выбранного объекта}}</translation>
 <translation id="1283039547216852943">Нажмите, чтобы развернуть</translation>
 <translation id="5962718611393537961">Нажмите, чтобы свернуть</translation>
+<translation id="3123734510202723619">Оповещения</translation>
 <translation id="8076492880354921740">Вкладки</translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{Выбран 1 объект}one{Выбран # объект}few{Выбрано # объекта}many{Выбрано # объектов}other{Выбрано # объекта}}</translation>
 <translation id="6818926723028410516">Выберите объекты</translation>

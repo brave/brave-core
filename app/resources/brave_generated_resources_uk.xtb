@@ -21,6 +21,7 @@
 <translation id="8926389886865778422">Не запитувати знову</translation>
 <translation id="4726634924419692905">Запитувати, коли сайт хоче встановити Widevine на ваш комп'ютер.</translation>
 <translation id="8760415064721320867">Приватне вікно з Tor</translation>
+<translation id="8762452230727230396">Tor приховує вашу IP адресу від сайтів, які ви відвідуєте.</translation>
 <translation id="8053096063396012732">Встановити Widevine</translation>
 <translation id="4840334696217618631">Перезапустіть браузер, щоб увімкнути Widevine</translation>
 <translation id="8410111618231938546">Google Widevineє частиною коду Digital Rights Management (DRM), яким ми у Brave Software не володіємо і не можемо перевіряти. Код Google Widevine завантажується з серверів Google, не з наших серверів. Він завантажується тільки якщо ви увімкнете таку опцію. Ми не заохочуємо використання DRM, але ми поважаємо вибір користувача і беремо до уваги те, що деякі з користувачів Brave захочуть використовувати сервіси, які його вимагають. 
@@ -90,6 +91,8 @@
 <translation id="8502234992433094996">Використовувати Google Services для push-повідомлень</translation>
 <translation id="3888068426966679906">Віддалене налагодження</translation>
 <translation id="6645631466045614531">Отримати доступ до Синхронізації через</translation>
+<translation id="6696935187608454456">Поради</translation>
+<translation id="2775956301559569472">Показати збережену копію запиту на сторінки 404</translation>
 <translation id="1807246157184219062">Світла</translation>
 <translation id="2414886740292270097">Темна</translation>
 <translation id="1360441190790440400">Така ж, як Linux</translation>
@@ -97,7 +100,9 @@
 <translation id="8721331068159819483">Як і в macOS</translation>
 <translation id="6786747875388722282">Розширення</translation>
 <translation id="2896916411183256228">Використовує WebTorrent, щоб показувати торренти безпосередньо у браузері. Підтримує торрент файли та magnet посилання.</translation>
-<translation id="5554028991651120544">Надає гаманець Ethereum та браузер Dapp всередині Brave.</translation>
+<translation id="2356070529366658676">Запитати</translation>
+<translation id="7701040980221191251">Немає</translation>
+<translation id="1085027414516521238">MetaMask</translation>
 <translation id="6554397389149987360">Використовує компоненти Hangouts, щоб увімкнути поширення екрану та інші функції у браузері.</translation>
 <translation id="1765684547504191670">Використовує компонент Media Router для увімкнення Chromecast у браузері.</translation>
 <translation id="9156965752763025780">Ваші зміни почнуть діяти після наступного перезапуску Brave.</translation>
@@ -158,13 +163,17 @@
 <translation id="4394049700291259645">Вимкнути</translation>
 <translation id="6469509880167172749">Автоматично надсилати повністю конфіденційну аналітику продуктів до Brave</translation>
 <translation id="7090566321964540749">Ця анонімна інформація дозволяє Brave лише визначати загальний об'єм користування певними функціями.</translation>
-<translation id="1200956479506699688">Крипто-гаманці тепер доступні в Brave. Ви не можете використовувати MetaMask та Крипто-гаманці одночасно.</translation>
 <translation id="7583735190612229830">Налаштувати Крипто-гаманці для взаємозв'язку з цим додатком та іншими схожими.</translation>
 <translation id="8337117349965899723">Використати Крипто-гаманці</translation>
 <translation id="5756155765711979898">Скористатись MetaMask</translation>
 <translation id="6754134632841262799">НАЛАШТУВАТИ</translation>
+<translation id="4552520379838695057">Вибачте, сторінка відсутня.</translation>
+<translation id="2609895996619941644">Бажаєте перевірити, чи є збережена версія в Архіві?</translation>
+<translation id="8053093028263274061">Вибачте, збереженої версії немає.</translation>
+<translation id="8517321676372639828">Перевірити збережену версію</translation>
 <translation id="191143826155037518">Brave надається вам за умовами <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Публічної Ліцензії Mozilla 2.0 <ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) та включає <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>програмне забезпечення з відкритим кодом <ph name="END_LINK_OSS">&lt;/a&gt;</ph> за умовами багатьох інших ліцензій. 
 Ви можете прочитати <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>інструкції, як завантажити та створити самостійно <ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph>конкретний <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>вихідний код, використаний для створення цієї копії<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
 <translation id="4474155171896946103">Позначити закладками всі вкладки...</translation>
 <translation id="2336228925368920074">Позначити закладками всі вкладки...</translation>
+<translation id="796831669370432378">Щоб додати закладку, натисніть кнопку закладки поруч з адресним рядком</translation>
 </translationbundle>

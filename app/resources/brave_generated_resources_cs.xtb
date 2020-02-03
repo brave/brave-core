@@ -21,6 +21,7 @@
 <translation id="8926389886865778422">Dotaz již nezobrazovat</translation>
 <translation id="4726634924419692905">Zobrazit dotaz, když bude stránka chtít do vašeho počítače nainstalovat doplněk Widevine.</translation>
 <translation id="8760415064721320867">Soukromé okno v prohlížeči Tor</translation>
+<translation id="8762452230727230396">Tor skryje vaši IP adresu před navštívenými weby.</translation>
 <translation id="8053096063396012732">Instalovat Widevine</translation>
 <translation id="4840334696217618631">Restartujte prohlížeč, abyste povolili Widevine</translation>
 <translation id="8410111618231938546">Google Widevine je kód pro správu digitálních práv (DRM), který ve společnosti Brave Software nevlastníme a nemůžeme jej kontrolovat. Kód Google Widevine je nahráván ze serverů Google, ne z našich serverů. Nahraje se pouze po povolení této možnosti. Používání DRM nedoporučujeme, ale respektujeme volbu uživatele a uznáváme, že někteří uživatelé Brave by rádi využívali služby, které DRM vyžadují.
@@ -91,6 +92,8 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="8502234992433094996">Používat služby Google pro zprávy push</translation>
 <translation id="3888068426966679906">Odstranění chyb na dálku</translation>
 <translation id="6645631466045614531">Přístup k synchronizaci skrze</translation>
+<translation id="6696935187608454456">Tipy nápovědy</translation>
+<translation id="2775956301559569472">Zobrazit výzvu Wayback Machine na 404 stránkách</translation>
 <translation id="1807246157184219062">Světlé</translation>
 <translation id="2414886740292270097">Tmavé</translation>
 <translation id="1360441190790440400">Stejné jako u Linuxu</translation>
@@ -98,7 +101,9 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="8721331068159819483">Stejné jako macOS</translation>
 <translation id="6786747875388722282">Rozšíření</translation>
 <translation id="2896916411183256228">Používá WebTorrent k zobrazení torrentů přímo v prohlížeči. Podporuje torrentové soubory a odkazy magnet.</translation>
-<translation id="5554028991651120544">Poskytuje peněženku na Ethereum a prohlížeč Dapp v rámci prohlížeče Brave.</translation>
+<translation id="2356070529366658676">Zeptat se</translation>
+<translation id="7701040980221191251">Žádné</translation>
+<translation id="1085027414516521238">MetaMask</translation>
 <translation id="6554397389149987360">Používá komponentu Hangouts k umožnění sdílení obrazovek a dalších funkcí prohlížeče.</translation>
 <translation id="1765684547504191670">Využívá Media Router komponent umožňující Chromecast v prohlížeči.</translation>
 <translation id="9156965752763025780">Změny se projeví po příštím restartu prohlížeče Brave.</translation>
@@ -159,13 +164,17 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="4394049700291259645">Deaktivovat</translation>
 <translation id="6469509880167172749">Automaticky posílat zcela soukromé produktové analýzy společnosti Brave</translation>
 <translation id="7090566321964540749">Tyto anonymní informace prohlížeči Brave umožní pouze odhadnout celkové využití určitých funkcí.</translation>
-<translation id="1200956479506699688">V Brave jsou nyní k dispozici peněženky Crypto. Nelze současně používat MetaMask a peněženky Crypto.</translation>
 <translation id="7583735190612229830">Pro vzájemné fungování s touto aplikací a dalšími podobnými si Nastavte peněženky Crypto.</translation>
 <translation id="8337117349965899723">Použít peněženky Crypto</translation>
 <translation id="5756155765711979898">Použít MetaMask</translation>
 <translation id="6754134632841262799">NASTAVENÍ</translation>
+<translation id="4552520379838695057">Je nám líto, tato stránka chybí.</translation>
+<translation id="2609895996619941644">Chcete zkontrolovat, zda je na Wayback Machine k dispozici uložená verze?</translation>
+<translation id="8053093028263274061">Litujeme, není k dispozici žádná uložená verze.</translation>
+<translation id="8517321676372639828">Pokusit se najít uloženou verzi</translation>
 <translation id="191143826155037518">Brave máte k dispozici v rámci <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>veřejné licence Mozilla 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) a obsahuje <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>otevřený software<ph name="END_LINK_OSS">&lt;/a&gt;</ph> na základě různých jiných licencí.
         Můžete si sami přečíst <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>pokyny ke způsobu stahování a tvorby<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> specifického <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>zdrojového kódu používaného k vytváření této kopie<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
 <translation id="4474155171896946103">Přidat do záložek všechny karty...</translation>
 <translation id="2336228925368920074">Přidat do záložek všechny karty...</translation>
+<translation id="796831669370432378">Chcete-li přidat záložku, klikněte na tlačítko záložky vedle adresního řádku</translation>
 </translationbundle>

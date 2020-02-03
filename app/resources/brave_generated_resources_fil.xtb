@@ -21,6 +21,7 @@
 <translation id="8926389886865778422">Huwag nang itanong ulit</translation>
 <translation id="4726634924419692905">Magtanong kapag gusto ng isang site na i-install ang Widevine sa iyong computer.</translation>
 <translation id="8760415064721320867">Pribadong Window na may Tor</translation>
+<translation id="8762452230727230396">Itinatago ng tor ang iyong IP address mula sa mga site na binibisita mo.</translation>
 <translation id="8053096063396012732">I-install ang Widevine</translation>
 <translation id="4840334696217618631">I-restart ang browser para i-enable ang Widevine</translation>
 <translation id="8410111618231938546">Ang Google Widevine ay isang bahagi ng code ng Digital Rights Management (DRM) na hindi namin pag-aari sa Brave Software at hindi namin maaaring suriin. Naka-load ang Google Widevine sa mga server ng Google, hindi sa mga server namin. Malo-load lang ito kapag na-enable mo ang opsyong ito. Hindi namin hinihikayat ang paggamit ng DRM, ngunit iginagalang namin ang pasya ng user at kinikilala namin na ang ilang user ng Brave ay gustong gumamit ng mga serbisyong humihingi nito.
@@ -91,6 +92,8 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="8502234992433094996">Gumamit ng Mga Serbisyo ng Google para sa Push Messaging</translation>
 <translation id="3888068426966679906">Malayuang pag-debug</translation>
 <translation id="6645631466045614531">I-access ang Pag-sync sa pamamagitan ng</translation>
+<translation id="6696935187608454456">Mga Tulong na Tip</translation>
+<translation id="2775956301559569472">Ipakita ang prompt ng Wayback Machine sa mga 404 na page</translation>
 <translation id="1807246157184219062">Light</translation>
 <translation id="2414886740292270097">Dark</translation>
 <translation id="1360441190790440400">Pareho sa Linux</translation>
@@ -98,7 +101,9 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="8721331068159819483">Kapareho ng macOS</translation>
 <translation id="6786747875388722282">Mga Extension</translation>
 <translation id="2896916411183256228">Ginagamit ang WebTorrent upang direktang ipakita sa browser ang mga torrent. Sinusuportahan ang mga torrent file at magnet link.</translation>
-<translation id="5554028991651120544">Naglalagay ng Ethereum wallet at Dapp browser sa Brave.</translation>
+<translation id="2356070529366658676">Magtanong</translation>
+<translation id="7701040980221191251">Wala</translation>
+<translation id="1085027414516521238">MetaMask</translation>
 <translation id="6554397389149987360">Ginagamit ang component ng Hangouts upang ma-enable ang pagbabahagi ng screen at iba pang feature sa browser.</translation>
 <translation id="1765684547504191670">Gumagamit ng Media Router na bahagi upang ma-enable ang Chromecast sa browser.</translation>
 <translation id="9156965752763025780">Magkakabisa ang iyong mga pagbabago sa susunod na ilunsad mong muli ang Brave.</translation>
@@ -159,13 +164,17 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="4394049700291259645">Huwag paganahin</translation>
 <translation id="6469509880167172749">Awtomatikong magpadala ng ganap na pribadong analytics ng produkto sa Brave</translation>
 <translation id="7090566321964540749">Pinapayagan lang ng hindi kilalang impormasyon na ito ang Brave na tantyahin ang kabuuang paggamit ng ilang partikular na feature.</translation>
-<translation id="1200956479506699688">Available na ngayon sa Brave ang Crypto Wallets. Hindi mo maaaring gamitin nang sabay ang MetaMask at Crypto Wallets.</translation>
 <translation id="7583735190612229830">I-set up ang Crypto Wallets para makaugnayan ang app na ito at ang iba pang tulad nito.</translation>
 <translation id="8337117349965899723">Gamitin ang Crypto Wallets</translation>
 <translation id="5756155765711979898">Gamitin ang MetaMask</translation>
 <translation id="6754134632841262799">I-SET UP</translation>
+<translation id="4552520379838695057">Pasensya na, nawawala ang page na iyon.</translation>
+<translation id="2609895996619941644">Gusto mo bang tingnan kung may available na naka-save na bersyon sa Wayback Machine?</translation>
+<translation id="8053093028263274061">Pasensya na, walang available na naka-save na bersyon.</translation>
+<translation id="8517321676372639828">Tingnan kung may naka-save na bersyon.</translation>
 <translation id="191143826155037518">Ang Brave ay ginawang available sa iyo sa ilalim ng <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) at may kasama itong <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>open source na software<ph name="END_LINK_OSS">&lt;/a&gt;</ph> sa ilalim ng iba't ibang lisensya.
         Maaari mong basahin ang <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>mga tagubilin sa kung paano i-download at gawin nang mag-isa<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> ang partikular na <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>source code na ginamit para gawin ang kopyang ito<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
 <translation id="4474155171896946103">I-bookmark ang lahat ng tab...</translation>
 <translation id="2336228925368920074">I-bookmark ang Lahat ng Mga Tab...</translation>
+<translation id="796831669370432378">Para magdagdag ng bookmark, i-click ang button ng bookmark sa tabi ng address bar</translation>
 </translationbundle>

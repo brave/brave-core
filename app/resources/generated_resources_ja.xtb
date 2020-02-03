@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">環境設定...</translation>
 <translation id="5801568494490449797">設定</translation>
 <translation id="3677911431265050325">モバイルサイトをリクエスト</translation>
+<translation id="236470849334943016">Brave の利用規約が 3 月 31 日に更新されます。</translation>
+<translation id="1032605640136438169">新しい利用規約をご確認ください</translation>
+<translation id="8712637175834984815">閉じる</translation>
+<translation id="5007392906805964215">内容を確認</translation>
 <translation id="4408599188496843485">ヘルプ(&amp;H)</translation>
 <translation id="8378714024927312812">組織によって管理されています</translation>
 <translation id="7928836894214140642"><ph name="ENROLLMENT_DOMAIN"/> で管理</translation>
@@ -2435,7 +2439,6 @@
 <translation id="7892963120252479610">このタブを開いている間、<ph name="ORIGIN"/> は「<ph name="FOLDERNAME"/>」のファイルを表示できるようになります</translation>
 <translation id="7201420661433230412">ファイルを表示する</translation>
 <translation id="3015639418649705390">今すぐ再起動</translation>
-<translation id="8712637175834984815">閉じる</translation>
 <translation id="2783952358106015700">「<ph name="APP_NAME"/>」でセキュリティ キーを使用</translation>
 <translation id="2446585455334014596"><ph name="APP_NAME"/> が本人確認を求めています</translation>
 <translation id="1567750922576943685">本人確認をすることで個人情報を保護できます</translation>

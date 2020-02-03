@@ -17,15 +17,17 @@
 <translation id="7100907433458266664">день</translation>
 <translation id="4971389353431353387">дни</translation>
 <translation id="8427933533533814946">Фото сделано</translation>
+<translation id="7108338896283013870">Скрыть</translation>
 <translation id="7115515527894388910">Редактировать Параметры</translation>
 <translation id="7606029853066610626">Просмотр и управление закладками</translation>
 <translation id="5550994254534676787">Показать историю просмотров</translation>
 <translation id="1742484101357469636">Настройки панели управления</translation>
-<translation id="8320281346741574991">Показать фоновое изображение</translation>
+<translation id="5783793537552649286">Показать фоновое изображение</translation>
 <translation id="7275773481201277457">Показать статистику Brave</translation>
 <translation id="6836061097810262923">Показывать часы</translation>
 <translation id="8643377320501056697">Показывать лучшие сайты</translation>
 <translation id="3446024864193919737">Показать Вознаграждение Brave</translation>
+<translation id="3870475560794762985">Показать рекламные изображения</translation>
 <translation id="6165508094623778733">Узнать больше</translation>
 <translation id="8730621377337864115">Готово</translation>
 <translation id="6248988683584659830">Искать настройки</translation>
@@ -82,8 +84,11 @@
 <translation id="7954950242989581218">Работайте в интернете в полной безопасности</translation>
 <translation id="2188651882929633653">Brave Shields блокируют все, что пытается отследить вас онлайн, включая большинство рекламных объявлений. Если сайт не работает, то выключите Shields. Brave использует <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>полностью конфиденциальную аналитику<ph name="END_LINK_P3A">&lt;/a&gt;</ph> для оценки общего использования определенных функций. Вы можете выключить ее в <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>настройках<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Реклама</translation>
+<translation id="2364310432103707426">Зарабатывайте {{currency}}, просматривая рекламу Brave. Представленные объявления основаны на ваших интересах, определенных по вашему поведению в сети. Никакие личные данные или история посещений никогда не покидают ваш браузер.</translation>
 <translation id="6112368337882254910">Автоматический Взнос</translation>
 <translation id="3742599705619405136">Автоматический способ поддерживать издателей и создателей контента. Установите ежемесячный платеж и просматривайте сайты как обычно. Верифицированные сайты Brave, которые вы посещаете, получат ваши пожертвования автоматически на основании вашего внимания, которое измеряет Brave.</translation>
+<translation id="8949527283651381130">Разрешить определение рекламной конверсии</translation>
+<translation id="2184191362610545393">Вы анонимно будете сообщать Brave, что в браузере был отклик на рекламу. Эта опция увеличит прибыль.</translation>
 <translation id="20281847067919078">Награда к оплате</translation>
 <translation id="8593551638387217772">Дата следующего платежа</translation>
 <translation id="319209088187794725">Уведомления о рекламе за этот месяц</translation>
@@ -458,20 +463,25 @@
 <translation id="4569155249847375786">Проверен</translation>
 <translation id="8465442795593991224">Uphold может запросить подтверждение вашей личности на основании запрошенных услуг.</translation>
 <translation id="723054503945711909">Brave Software Inc. не обрабатывает, не хранит и не имеет доступа к вашим персональным данным, которые вы предоставляете Uphold при создании учетной записи.</translation>
-<translation id="693248854158660756">О Вознаграждении Brave</translation>
-<translation id="161118570147571596">Нажимая «Включить вознаграждение», вы подтверждаете, что ознакомились и согласны с</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Подробнее<ph name="LINK_END"/> о Brave Rewards</translation>
+<translation id="5826706758731195747">Включая Rewards, вы принимаете <ph name="LINK_BEGIN"/>Условия использования<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Предполагаемый доход за месяц на текущий момент</translation>
+<translation id="6778392839723468409">Получайте токены, просматривая сохраняющую конфиденциальность рекламу.</translation>
 <translation id="5235444069025581717">Чаевые и взносы за этот месяц</translation>
 <translation id="1210965535849006928">Затребовать мое Вознаграждение</translation>
 <translation id="8315514906653279104">Включение...</translation>
 <translation id="7307847920988946894">Включить Вознаграждение</translation>
 <translation id="662631138774963814">Довольны своей щедростью?</translation>
 <translation id="3264975266761862670">Готовы начать зарабатывать?</translation>
+<translation id="8092889639392847252">Получайте оплату за просмотр этого рекламного фонового изображения.</translation>
 <translation id="2542495049135486284">Попробуйте «Вознаграждение Brave» еще раз и платите любимым сайтам вперед, зарабатывая на просмотре рекламы!</translation>
-<translation id="7194640987408033097">Включите «Вознаграждение Brave» и получайте плату за просмотр рекламы в соответствии с вашими интересами.</translation>
+<translation id="53513464591392992">Включите Brave Rewards и получайте оплату за просмотр сохраняющей конфиденциальность рекламы.</translation>
 <translation id="8568666589217601917">Поехали!</translation>
 <translation id="764235488372037377">Ваше вознаграждение за просмотр рекламы</translation>
 <translation id="7091215606170476659">Вы получили бонус UGP от Brave.</translation>
+<translation id="6759185676704303656">Вам платят за просмотр этого фонового изображения.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Подробнее<ph name="LINK_END"/> о рекламных изображениях в Brave Rewards.</translation>
+<translation id="6113004497629356998">Скрыть рекламные изображения</translation>
 <translation id="1181037720776840403">Удалить</translation>
 <translation id="7885157704277298658">Готово!</translation>
 <translation id="5379640681913450928">Количество слов:</translation>

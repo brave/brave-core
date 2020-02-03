@@ -904,6 +904,7 @@ Jos haluat muokata asetusta, <ph name="BEGIN_LINK"/>nollaa synkronointi<ph name=
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Poista 1 valittu kohde}other{Poista # valittua kohdetta}}</translation>
 <translation id="1283039547216852943">Laajenna napauttamalla.</translation>
 <translation id="5962718611393537961">Tiivistä napauttamalla.</translation>
+<translation id="3123734510202723619">Ilmoitukset</translation>
 <translation id="8076492880354921740">Välilehdet</translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 valittu}other{# valittu}}</translation>
 <translation id="6818926723028410516">Valitse kohteet</translation>

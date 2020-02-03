@@ -17,15 +17,17 @@
 <translation id="7100907433458266664">天</translation>
 <translation id="4971389353431353387">天</translation>
 <translation id="8427933533533814946">照片由</translation>
+<translation id="7108338896283013870">隐藏</translation>
 <translation id="7115515527894388910">编辑首选项</translation>
 <translation id="7606029853066610626">查看和管理书签</translation>
 <translation id="5550994254534676787">查看您的浏览历史记录</translation>
 <translation id="1742484101357469636">仪表板设置</translation>
-<translation id="8320281346741574991">显示背景图片</translation>
+<translation id="5783793537552649286">显示背景图片</translation>
 <translation id="7275773481201277457">显示 Brave 统计信息</translation>
 <translation id="6836061097810262923">显示时钟</translation>
 <translation id="8643377320501056697">显示热门网站</translation>
 <translation id="3446024864193919737">显示 Brave 奖励</translation>
+<translation id="3870475560794762985">显示赞助图片</translation>
 <translation id="6165508094623778733">了解更多</translation>
 <translation id="8730621377337864115">已完成</translation>
 <translation id="6248988683584659830">搜索设置</translation>
@@ -82,8 +84,11 @@
 <translation id="7954950242989581218">Browse 安然无恙</translation>
 <translation id="2188651882929633653">Brave Shields 拦截了尝试在 Web 上跟踪您的大部分恶意内容，包括许多广告。如果某个站点无法正常运行，请将 Shields 设置为“关闭”。Brave 使用 <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>completely private product analytics<ph name="END_LINK_P3A">&lt;/a&gt;</ph>; 估算特定功能的整体使用情况。您可在 <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph> 中将其关闭。</translation>
 <translation id="1919345977826869612">广告</translation>
+<translation id="2364310432103707426">通过查看 Brave ads 赚 {{currency}}。展示的广告是根据您的兴趣（根据您的浏览行为）得出的。没有任何个人数据或浏览历史记录会离开您的浏览器。</translation>
 <translation id="6112368337882254910">自动贡献</translation>
 <translation id="3742599705619405136">这是一种自动支持发布者和内容创建者的方式。设置每月付款并正常地进行浏览。您访问的、经 Brave 验证的网站会根据 Brave 测量出的您的关注度自动收到您的捐款。</translation>
+<translation id="8949527283651381130">允许广告转换检测</translation>
+<translation id="2184191362610545393">这将匿名让 Brave 知道有人通过此浏览器对广告做出了响应。启用此功能将增加收入。</translation>
 <translation id="20281847067919078">估计将获得的奖励</translation>
 <translation id="8593551638387217772">下一次支付日期</translation>
 <translation id="319209088187794725">本月收到的广告通知</translation>
@@ -458,20 +463,26 @@
 <translation id="4569155249847375786">已验证</translation>
 <translation id="8465442795593991224">Uphold 可能需要根据请求的服务要求您验证您的身份。</translation>
 <translation id="723054503945711909">在您创建 Uphold 账户时，Brave Software Inc. 不会处理、存储或访问您向其提供的任何个人信息。</translation>
-<translation id="693248854158660756">关于 Brave 奖励</translation>
-<translation id="161118570147571596">点击“开启 Rewards”，即表示您已阅读并同意</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>详细了解<ph name="LINK_END"/> 有关 Brave Rewards 的信息</translation>
+<translation id="5826706758731195747">启用“奖励”即表示您同意<ph name="LINK_BEGIN"/>服务条款<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">本月到目前为止的估计收入</translation>
+<translation id="6778392839723468409">通过查看尊重隐私的广告来赚取令牌。</translation>
 <translation id="5235444069025581717">本月小费和捐款</translation>
 <translation id="1210965535849006928">领取我的奖励</translation>
 <translation id="8315514906653279104">开启...</translation>
 <translation id="7307847920988946894">开启奖励</translation>
 <translation id="662631138774963814">感觉很慷概？</translation>
 <translation id="3264975266761862670">准备开始赚钱了吗？</translation>
+<translation id="8092889639392847252">获得报酬以查看此赞助背景图片。</translation>
 <translation id="2542495049135486284">再次尝试 Brave Rewards，并且一边赚一边支付！</translation>
-<translation id="7194640987408033097">开启 Brave 奖励并获得付款，以观看尊重隐私的广告。</translation>
+<translation id="53513464591392992">启用“Brave Rewards”以通过查看尊重隐私的广告获得报酬。</translation>
+<translation id="8463996294416161140">启用 <ph name="PRODUCT_NAME"/> 领取您的那一份。您也可以选择 <ph name="LINK_BEGIN"/> 隐藏赞助商图像 <ph name="LINK_END"/>。</translation>
 <translation id="8568666589217601917">加油！</translation>
 <translation id="764235488372037377">您从广告中获得的奖励</translation>
 <translation id="7091215606170476659">您获得了 Brave 的 UGP 奖励。</translation>
+<translation id="6759185676704303656">您查看此背景图片将获得报酬。</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>详细了解<ph name="LINK_END"/> 与“Brave Rewards”中的赞助图片有关的信息。</translation>
+<translation id="6113004497629356998">隐藏赞助图片</translation>
 <translation id="1181037720776840403">删除</translation>
 <translation id="7885157704277298658">已复制！</translation>
 <translation id="5379640681913450928">字数：</translation>
@@ -518,7 +529,7 @@
 <translation id="2899261497479389619">在您的目标电脑上，在“设置”菜单中打开Brave同步，然后点击按钮</translation>
 <translation id="4827439149833241990">“我有同步密码”。</translation>
 <translation id="24067401253841795">输入下方显示的同步链代码文字。将该代码用作密码。如果他人获取了该信息，则他们可读取和修改您已同步的数据。</translation>
-<translation id="8914601399214979966">改用我的摄像头</translation>
+<translation id="8914601399214979966">使用我的摄像头</translation>
 <translation id="3034163433136515805">查看二维码</translation>
 <translation id="5093410893656857925">选择设备类型</translation>
 <translation id="7900569862982389597">选择您想同步的目的设备类型。</translation>

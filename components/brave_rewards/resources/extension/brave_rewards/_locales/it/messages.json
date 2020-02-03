@@ -256,7 +256,7 @@
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
-    "message": "Your scheduled monthly payment for Auto-Contribute and monthly contributions could not be completed due to insufficient funds. We’ll try again in 30 days.",
+    "message": "Non è stato possibile completare il tuo pagamento mensile pianificato dei contributi automatici e di quelli mensili a causa di fondi insufficienti. Riproveremo tra 30 giorni. ",
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
@@ -400,7 +400,7 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "Your monthly contributions have been processed!",
+    "message": "I tuoi contributi mensili sono stati elaborati!",
     "description": "Message for monthly contributions processed notification"
   },
   "contributionTips": {

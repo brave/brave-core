@@ -904,6 +904,7 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<p
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Alih keluar 1 item yang dipilih}other{Alih keluar # item yang dipilih}}</translation>
 <translation id="1283039547216852943">Ketik untuk kembangkan</translation>
 <translation id="5962718611393537961">Ketik untuk runtuhkan</translation>
+<translation id="3123734510202723619">Pengumuman</translation>
 <translation id="8076492880354921740">Tab</translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 dipilih}other{# dipilih}}</translation>
 <translation id="6818926723028410516">Pilih item</translation>
