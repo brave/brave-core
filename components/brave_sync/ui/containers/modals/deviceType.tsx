@@ -16,7 +16,7 @@ import {
   DeviceGrid,
   DeviceContainer,
   ModalSubTitle
-} from 'brave-ui/features/sync'
+} from '../../components'
 
 // Modals
 import ViewSyncCode from './viewSyncCode'
@@ -26,7 +26,7 @@ import ScanCode from './scanCode'
 import { getLocale } from '../../../../common/locale'
 
 // Images
-import { SyncDesktopIcon, SyncMobileIcon } from 'brave-ui/features/sync/images'
+import { SyncDesktopIcon, SyncMobileIcon } from '../../components/images'
 
 interface Props {
   syncData: Sync.State

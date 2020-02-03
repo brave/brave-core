@@ -18,9 +18,9 @@ import {
   SyncCard,
   SyncCardContent,
   DisabledContent
-} from 'brave-ui/features/sync'
+} from '../components'
 
-import { SyncStartIcon } from 'brave-ui/features/sync/images'
+import { SyncStartIcon } from '../components/images'
 
 // Modals
 import EnterSyncCodeModal from './modals/enterSyncCode'

@@ -17,7 +17,7 @@ import {
   OneColumnButtonGrid,
   Title,
   SubTitle
-} from 'brave-ui/features/sync'
+} from '../../components'
 
 // Icons
 import { LoaderIcon } from 'brave-ui/components/icons'

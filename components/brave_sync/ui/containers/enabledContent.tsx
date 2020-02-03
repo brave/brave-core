@@ -8,10 +8,6 @@ import * as React from 'react'
 import { Button, AlertBox } from 'brave-ui'
 import { CloseCircleIcon } from 'brave-ui/components/icons'
 import Table, { Cell, Row } from 'brave-ui/components/dataTables/table'
-// TODO(petemill): Do not use a component (Toggle) from another app.
-// Instead copy it local to this app, or create the component in a central location,
-// either in this repo or in brave-ui.
-import { Toggle } from '../../../brave_extension/extension/brave_extension/components/toggle'
 
 // Feature-specific components
 import {
@@ -28,8 +24,9 @@ import {
   TableButtonGrid,
   EnabledContent,
   SyncCardContent,
-  SyncCard
-} from 'brave-ui/features/sync'
+  SyncCard,
+  Toggle
+} from '../components'
 
 // Modals
 import RemoveDeviceModal from './modals/removeDevice'

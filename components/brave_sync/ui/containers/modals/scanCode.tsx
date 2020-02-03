@@ -17,13 +17,13 @@ import {
   ScanGrid,
   ThreeColumnButtonGrid,
   Link
-} from 'brave-ui/features/sync'
+} from '../../components'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 
 // Images
-import { SyncMobilePicture, QRCode } from 'brave-ui/features/sync/images'
+import { SyncMobilePicture, QRCode } from '../../components/images'
 
 interface Props {
   syncData: Sync.State
