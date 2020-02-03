@@ -1152,6 +1152,23 @@ are declared in tools/grit/grit_rule.gni.
           Request mobile site
         </message>
       </if>
+
+      <message name="IDS_TOS_NOTIFICATION_TITLE" desc="The title of the notification that informs the user that a term of service change is coming." formatter_data="android_java">
+        Brave’s Terms of Service are changing March 31
+      </message>
+      <message name="IDS_TOS_NOTIFICATION_BODY_TEXT" desc="The body text of the notification that informs the user that a term of service change is coming." formatter_data="android_java">
+        Please review the new terms
+      </message>
+      <message name="IDS_TOS_NOTIFICATION_ACK_BUTTON_TEXT" desc="The button text on the TOS notification for the user to acknowledge the TOS change." formatter_data="android_java">
+        Got it
+      </message>
+      <message name="IDS_TOS_NOTIFICATION_REVIEW_BUTTON_TEXT" desc="The button text on the TOS notification for the user to review the TOS change." formatter_data="android_java">
+        Review
+      </message>
+      <message name="IDS_TOS_NOTIFICATION_LINK" desc="The URL for the new TOS change link." translateable="false">
+        https://www.google.com/chrome/privacy/eula_text.html
+      </message>
+
       <message name="IDS_HELP_MENU" desc="The text label of the Help sub-menu item in the wrench menu">
         H&amp;elp
       </message>
