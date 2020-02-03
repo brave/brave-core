@@ -47,6 +47,5 @@ components/ntp_sponsored_images @simonhong @petemill
 
 # Licensing of third-party components
 common/licenses/ @fmarier
-components/brave_new_tab_ui/data/backgrounds.ts @fmarier
 components/third_party/ @fmarier
 script/brave_license_helper.py @fmarier
