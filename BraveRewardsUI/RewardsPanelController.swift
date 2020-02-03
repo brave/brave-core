@@ -7,9 +7,14 @@ import BraveRewards
 
 public class RewardsPanelController: PopoverNavigationController {
   
+  public enum InitialPage {
+    case `default`
+    case settings
+  }
+
   public static let batLogoImage = UIImage(frameworkResourceNamed: "bat-small")
   
-  public init(_ rewards: BraveRewards, tabId: UInt64, url: URL, faviconURL: URL?, pageHTML: String? = nil, delegate: RewardsUIDelegate, dataSource: RewardsDataSource) {
+  public init(_ rewards: BraveRewards, tabId: UInt64, url: URL, faviconURL: URL?, pageHTML: String? = nil, delegate: RewardsUIDelegate, dataSource: RewardsDataSource, initialPage: InitialPage = .default) {
     super.init()
     
     let state = RewardsState(ledger: rewards.ledger, ads: rewards.ads, tabId: tabId, url: url, faviconURL: faviconURL, delegate: delegate, dataSource: dataSource)
@@ -17,7 +22,11 @@ public class RewardsPanelController: PopoverNavigationController {
     if !rewards.ledger.isWalletCreated {
       viewControllers = [CreateWalletViewController(state: state)]
     } else {
-      viewControllers = [WalletViewController(state: state)]
+      var vcs: [UIViewController] = [WalletViewController(state: state)]
+      if initialPage == .settings {
+        vcs.append(SettingsViewController(state: state))
+      }
+      viewControllers = vcs
     }
   }
   
