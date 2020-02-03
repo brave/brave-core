@@ -16,7 +16,7 @@ import {
   ThreeColumnButtonGrid,
   Bold,
   Link
-} from 'brave-ui/features/sync'
+} from '../../components'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
