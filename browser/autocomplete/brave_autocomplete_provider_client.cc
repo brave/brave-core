@@ -6,6 +6,7 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/webui_url_constants.h"
+#include "brave/common/url_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/common/webui_url_constants.h"
@@ -17,6 +18,29 @@ BraveAutocompleteProviderClient::BraveAutocompleteProviderClient(
 }
 
 BraveAutocompleteProviderClient::~BraveAutocompleteProviderClient() {
+}
+
+std::vector<base::string16>
+BraveAutocompleteProviderClient::GetBuiltinsToProvideAsUserTypes() {
+  std::vector<base::string16> builtins_to_provide =
+      ChromeAutocompleteProviderClient::GetBuiltinsToProvideAsUserTypes();
+  builtins_to_provide.push_back(
+      base::ASCIIToUTF16(kBraveUIRewardsURL));
+  builtins_to_provide.push_back(
+      base::ASCIIToUTF16(kBraveUITipURL));
+  builtins_to_provide.push_back(
+      base::ASCIIToUTF16(kBraveUIWalletURL));
+
+  for (auto i(builtins_to_provide.begin()); i != builtins_to_provide.end(); ++i) {
+    *i = brave::ReplaceChromeSchemeWithBrave(*i);
+  }
+  return builtins_to_provide;
+}
+
+std::string
+BraveAutocompleteProviderClient::GetEmbedderRepresentationOfAboutScheme()
+    const {
+  return content::kBraveUIScheme;
 }
 
 TemplateURLService* BraveAutocompleteProviderClient::GetTemplateURLService() {
@@ -36,6 +60,9 @@ std::vector<base::string16> BraveAutocompleteProviderClient::GetBuiltinURLs() {
   DCHECK(it != v.end());
   if (it != v.end()) {
     *it = base::ASCIIToUTF16(kBraveUISyncHost);
+  }
+  for (auto i(v.begin()); i != v.end(); ++i) {
+    *i = brave::ReplaceChromeSchemeWithBrave(*i);
   }
   return v;
 }

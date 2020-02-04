@@ -34,6 +34,8 @@ class BraveAutocompleteProviderClient
   TemplateURLService* GetTemplateURLService() override;
   const TemplateURLService* GetTemplateURLService() const override;
   std::vector<base::string16> GetBuiltinURLs() override;
+  std::vector<base::string16> GetBuiltinsToProvideAsUserTypes() override;
+  std::string GetEmbedderRepresentationOfAboutScheme() const override;
 
  private:
   Profile* profile_;
