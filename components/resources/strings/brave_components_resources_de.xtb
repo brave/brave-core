@@ -77,19 +77,11 @@
 <translation id="438216590634144114">Wählen Sie, welche Suchmaschine Sie standardmäßig verwenden wollen, wenn Sie von der Adresszeile aus das Web durchsuchen.</translation>
 <translation id="5804484488647369316">Standard-Suchmaschine festlegen</translation>
 <translation id="4428458837269935199">Probieren Sie für eine vertraulichere Sucherfahrung DuckDuckGo aus.</translation>
-<translation id="513635702954746724">Wählen Sie Ihr Farbschema</translation>
-<translation id="6842850080200126305">Legen Sie die Farbe Ihrer Toolbar fest, indem Sie die Option „Hell“ oder „Dunkel“ aus dem Einstellungspanel auswählen.</translation>
-<translation id="5805868144901917207">Ein Theme auswählen</translation>
-<translation id="8131740175452115882">Bestätigen</translation>
-<translation id="713206503018076063">System-Theme (Standard)</translation>
-<translation id="1807246157184219062">Hell</translation>
-<translation id="2414886740292270097">Dunkel</translation>
 <translation id="3829010735958850433">Die Einführung überspringen</translation>
 <translation id="1201402288615127009">Weiter</translation>
 <translation id="7954950242989581218">Sicheres Surfen</translation>
 <translation id="2188651882929633653">Brave Shields blockiert das gruselige Zeug, das versucht, Sie durch das Internet zu verfolgen, einschließlich der meisten Werbeanzeigen. Stellen Sie Shields auf “down” ein, wenn eine Seite nicht zu funktionieren scheint. Brave verwendet <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>completely private product analytics<ph name="END_LINK_P3A">&lt;/a&gt;</ph>, um die Gesamtnutzung bestimmter Funktionen einzuschätzen. Sie können dies in <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph> ausschalten.</translation>
 <translation id="1919345977826869612">Werbung</translation>
-<translation id="5698387814910197501">Verdienen Sie {{currency}}, indem Sie Werbung auf Brave anschauen. Werbung wird Ihnen auf Grundlage Ihrer Interessen, die sich aus Ihrem Browsing-Verhalten ergeben, vorgeschlagen. Persönliche Daten oder Browserverläufe verlassen niemals Ihren Browser.</translation>
 <translation id="6112368337882254910">Auto-Beitrag</translation>
 <translation id="3742599705619405136">Dies ist eine Möglichkeit, wie Sie Herausgeber und Urheber automatisch unterstützen können. Wählen Sie eine monatlichen Zahlbetrag und surfen Sie normal im Internet. Webseiten mit "Brave"-Zertifikat, die Sie besuchen, erhalten automatisch einen bestimmten Betrag. Dieser ist abhängig von Ihrer Aufmerksamkeit, die Brave misst.</translation>
 <translation id="20281847067919078">Geschätzte ausstehende Vergütungen</translation>
@@ -97,6 +89,7 @@
 <translation id="319209088187794725">In diesem Monat (per Benachrichtigung) erhaltene Anzeigen</translation>
 <translation id="4229016885653790965">Sorry! Werbung ist in Ihrer Region noch nicht verfügbar.</translation>
 <translation id="2539279826042558064">Brave Rewards und Ads stehen auf Ihrem Gerät derzeit nicht zur Verfügung</translation>
+<translation id="5421369907811917952">Weitere Einstellungen</translation>
 <translation id="654711254769318398">Angezeigte Werbeseiten</translation>
 <translation id="2532127066761785857">Maximale Anzahl an Anzeigen</translation>
 <translation id="5171071066587880677">1 Werbeanzeige pro Stunde</translation>
@@ -132,7 +125,6 @@
 <translation id="2726674968268546964">Tokens</translation>
 <translation id="7286722244752781970">Minimale Seitenzeit vor der Anmeldung eines Besuchs</translation>
 <translation id="4424486208397124985">Mindestbesuche für Herausgeberrelevanz</translation>
-<translation id="5421369907811917952">Weitere Einstellungen</translation>
 <translation id="6248554379744796526">Liste noch nicht bestätigter Seiten anzeigen</translation>
 <translation id="5875669387851353511">Beiträge zu Videos zulassen</translation>
 <translation id="8933202740471878108">1 Besuch</translation>
@@ -162,7 +154,6 @@
 <translation id="7210234701206674260">Brave Rewards hat ein Problem. Bitte versuchen Sie es später erneut.</translation>
 <translation id="570208820610947248">Es gibt ein Problem mit Ihre Wallet. Sie müssen sie zunächst wiederherstellen, bevor weitere Transaktionen durchgeführt werden können.</translation>
 <translation id="7797604753681168055">Jetzt wiederherstellen!</translation>
-<translation id="5549059668721746831">Nächstes monatliches Datum für Trinkgeld</translation>
 <translation id="6231182869178328516">Ich habe gerade <ph name="NAME"/> mit dem Brave-Browser ein Trinkgeld gegeben. Sehen Sie es sich unter https://brave.com/tips an.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">Entschuldigung, bei der Bearbeitung Ihrer Anfrage ist ein Problem aufgetreten. Versuchen Sie es bitte erneut.</translation>
@@ -261,8 +252,6 @@
 <translation id="4114667046481794032">Beitragshöhe</translation>
 <translation id="3520817231440482449">Dieser Seite monatlich ein Trinkgeld spendieren</translation>
 <translation id="1827184134638345603">Trinkgeld spendieren …</translation>
-<translation id="7928243298881209869">Das erste monatliche Trinkgeld wird gesendet am:</translation>
-<translation id="6045860799501892362">Monatlich Spenden</translation>
 <translation id="8003573781961874199">Als PDF herunterladen</translation>
 <translation id="298067735430872465">Einnahmen aus Werbung</translation>
 <translation id="2266556115441975588">Ihre Vergütungen aus Werbung sind da!</translation>
@@ -291,7 +280,6 @@
 <translation id="9115913704608474258">November</translation>
 <translation id="7828956995407538686">Oktober</translation>
 <translation id="5502713021410870035">September</translation>
-<translation id="5737831580668469027">Monatliche Trinkgelder!</translation>
 <translation id="606865182719489911">Ein kostenloser Token-Förderbetrag ist verfügbar.</translation>
 <translation id="2487641031722095938">Heute ist Ihr Glückstag!</translation>
 <translation id="6255773350565723852">Ihre Token-Zuwendung ist unterwegs.</translation>
@@ -318,13 +306,8 @@
 <translation id="4923459931733593730">Bezahlung</translation>
 <translation id="4021593982164260556">Bezahlung jeden {{day}}ten Tag im Monat gemacht.</translation>
 <translation id="6104680658798556671">Bezahlung nicht erfolgt.</translation>
-<translation id="2834888581291358924">Wenn Ihr Guthaben nicht ausreicht, um den kombinierten Gesamtbetrag aus automatischen Beiträgen und Ihren wiederkehrenden Trinkgeldern zu decken, werden diese Zahlungen für diesen Zahlungszeitraum übersprungen.</translation>
 <translation id="3138528956349114724">Angeheftete Seiten sind jetzt</translation>
-<translation id="2337632028350283479">So funktionieren monatliche Trinkgelder:</translation>
-<translation id="6457273203091513039">Monatliche Trinkgelder werden nicht von Ihrer Auto-Beitragszahlung gezahlt. Sie sind getrennt.</translation>
 <translation id="9099396904827413228">Jede Seite erhält einen festen monatlichen Betrag.</translation>
-<translation id="5051110132941857169">Monatliche Trinkgelder werden jeden Monat auf einmal ausgezahlt. Wenn Sie die Auto-Beitrags-Funktion nutzen, werden die Trinkgelder zur gleichen Zeit gezahlt wie Ihre monatliche Auto-Beitragszahlung.</translation>
-<translation id="3374483782662414143">Sie können jede Seite im Trinkgeld-Panel entfernen, die monatliche Trinkgelder erhält.</translation>
 <translation id="5082474983463379713">Bitte beachten:</translation>
 <translation id="1430915738399379752">Drucken</translation>
 <translation id="135956957367307069">Ihre Anfrage wird noch immer bearbeitet, haben Sie bitte Geduld.</translation>

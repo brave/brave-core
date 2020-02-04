@@ -182,8 +182,8 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "Ежемесячные чаевые",
-    "description": "Title for monthly tips section in wallet summary"
+    "message": "Ежемесячные пожертвования ",
+    "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
     "message": "Выкл.",
@@ -256,7 +256,7 @@
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
-    "message": "Ваш запланированный ежемесячный платеж (Автоматический Взнос) и ежемесячные чаевые не завершены из-за недостатка средств. Мы попробуем еще раз через 30 дней.",
+    "message": "Запланированные вами ежемесячные взносы не могут быть обработаны из-за недостатка средств. Мы попробуем снова через 30 дней.",
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
@@ -400,12 +400,12 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "Ваши ежемесячные чаевые были обработаны!",
-    "description": "Message for monthly tips processed notification"
+    "message": "Ваши ежемесячные взносы были обработаны!",
+    "description": "Message for monthly contributions processed notification"
   },
   "contributionTips": {
     "message": "Пожертвования и чаевые",
-    "description": "Title for monthly tips processed notification"
+    "description": "Title for monthly contributions processed notification"
   },
   "serviceTextPanelWelcome": {
     "message": "Нажимая 'Участвовать в Rewards', вы подтверждаете, что прочли и согласны с",

@@ -1,0 +1,16 @@
+import("//tools/polymer/polymer.gni")
+
+# Targets for auto-generating and typechecking Polymer 3 JS modules
+
+polymer_modulizer("br_toolbar") {
+  js_file = "br_toolbar.js"
+  html_file = "br_toolbar.html"
+  html_type = "dom-module"
+}
+
+polymer_modulizer("br_toolbar_search_field") {
+  js_file = "br_toolbar_search_field.js"
+  html_file = "br_toolbar_search_field.html"
+  html_type = "dom-module"
+  auto_imports = [ "chrome://resources/cr_elements/cr_search_field/cr_search_field_behavior.html|CrSearchFieldBehavior" ]
+}

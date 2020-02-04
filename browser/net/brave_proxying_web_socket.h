@@ -79,8 +79,6 @@ class BraveProxyingWebSocket : public network::mojom::WebSocketHandshakeClient,
   void OnConnectionEstablished(
       mojo::PendingRemote<network::mojom::WebSocket> websocket,
       mojo::PendingReceiver<network::mojom::WebSocketClient> client_receiver,
-      const std::string& selected_protocol,
-      const std::string& extensions,
       network::mojom::WebSocketHandshakeResponsePtr response,
       mojo::ScopedDataPipeConsumerHandle readable) override;
 
@@ -118,7 +116,7 @@ class BraveProxyingWebSocket : public network::mojom::WebSocketHandshakeClient,
   void OnHeadersReceivedCompleteFromProxy(
       int error_code,
       const base::Optional<std::string>& headers,
-      const GURL& url);
+      const base::Optional<GURL>& url);
 
   void PauseIncomingMethodCallProcessing();
   void ResumeIncomingMethodCallProcessing();

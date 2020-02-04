@@ -15,6 +15,15 @@
      =1 {<ph name="EMAIL">$1<ex>alice@example.com</ex></ph>, +1 more account}
      other {<ph name="EMAIL">$1<ex>alice@example.com</ex></ph>, +<ph name="EXTRA_ACCOUNTS">$2<ex>2</ex></ph> more accounts}}
   </message>
+  <message name="IDS_OS_SETTINGS_SYNC_OS_APPS_CHECKBOX_LABEL" desc="Label for the checkbox which enables syncing of apps from the Google Play Store across devices.">
+    Play Store apps
+  </message>
+  <message name="IDS_OS_SETTINGS_SYNC_PRINTERS_CHECKBOX_LABEL" desc="Label for the checkbox which enables syncing of printers across devices.">
+    Printers
+  </message>
+  <message name="IDS_OS_SETTINGS_SYNC_OS_SETTINGS_CHECKBOX_LABEL" desc="Label for the checkbox which enables syncing of OS settings across devices.">
+    Settings
+  </message>
 
   <!-- Languages and Inputs (OS settings) -->
   <message name="IDS_OS_SETTINGS_LANGUAGES_AND_INPUT_PAGE_TITLE" desc="Name of the OS settings page which displays language method preferences.">

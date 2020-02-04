@@ -24,7 +24,7 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Przeglądasz tę witrynę bez zabezpieczeń prywatności Brave. Czy włączone zabezpieczenia Shields powodują nieprawidłowe działanie tej witryny?",
+    "message": "Przeglądasz tę witrynę bez zabezpieczeń prywatności Brave. Czy włączone tarcze Brave powodują nieprawidłowe działanie tej witryny?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {

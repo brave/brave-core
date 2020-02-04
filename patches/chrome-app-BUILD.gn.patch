@@ -1,8 +1,8 @@
 diff --git a/chrome/app/BUILD.gn b/chrome/app/BUILD.gn
-index 6039c30477ca65a8c5182f32fa32894035b0e549..33b910eaa9cc6315fc6a6d60e43194cde939896d 100644
+index b6739b6344be552d0b4cca287947115b9db822bf..659a63b9aac2a84e5a435bf95c959f001a4ee08f 100644
 --- a/chrome/app/BUILD.gn
 +++ b/chrome/app/BUILD.gn
-@@ -180,6 +180,8 @@ grit("generated_resources") {
+@@ -135,6 +135,8 @@ grit("generated_resources") {
    if (is_android) {
      outputs += android_generated_java_resources
    }
@@ -11,7 +11,7 @@ index 6039c30477ca65a8c5182f32fa32894035b0e549..33b910eaa9cc6315fc6a6d60e43194cd
  }
  
  if (is_android) {
-@@ -257,7 +259,7 @@ grit("google_chrome_strings") {
+@@ -212,7 +214,7 @@ grit("google_chrome_strings") {
  }
  
  grit("chromium_strings") {
@@ -20,11 +20,3 @@ index 6039c30477ca65a8c5182f32fa32894035b0e549..33b910eaa9cc6315fc6a6d60e43194cd
    defines = chrome_grit_defines
    output_dir = "$root_gen_dir/chrome"
    outputs = [
-@@ -341,6 +343,7 @@ static_library("test_support") {
-     "//components/gwp_asan/buildflags",
-     "//components/nacl/common:buildflags",
-     "//components/startup_metric_utils/browser:lib",
-+    "//components/unified_consent",
-     "//content/public/app:both",
-     "//content/public/common",
-     "//content/public/common:service_names",

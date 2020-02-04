@@ -1,11 +1,11 @@
 diff --git a/content/browser/permissions/permission_service_impl.cc b/content/browser/permissions/permission_service_impl.cc
-index c6345e0119f80319683267332f278cbb4a473c77..85088dadc171464ab413df53d5504bec929d5634 100644
+index 3495d3dbb33331691200179b3a67bd80b9e5811e..8b13966c38b66ccc139ff3fbf6f7eee106b36233 100644
 --- a/content/browser/permissions/permission_service_impl.cc
 +++ b/content/browser/permissions/permission_service_impl.cc
-@@ -107,6 +107,9 @@ bool PermissionDescriptorToPermissionType(
-         return true;
-       }
-       break;
+@@ -110,6 +110,9 @@ bool PermissionDescriptorToPermissionType(
+     case PermissionName::NFC:
+       *permission_type = PermissionType::NFC;
+       return true;
 +    case PermissionName::AUTOPLAY:
 +      *permission_type  = PermissionType::AUTOPLAY;
 +      return true;

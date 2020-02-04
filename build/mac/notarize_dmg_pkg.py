@@ -96,11 +96,11 @@ def main():
     args = parse_args()
 
     if args.mac_provisioning_profile and args.development is not True:
-        config = create_config((args.identity, None, args.keychain, args.notary_user,
+        config = create_config((args.identity, None, args.notary_user,
                                args.notary_password, args.notary_asc_provider),
                                args.development, args.mac_provisioning_profile)
     else:
-        config = create_config((args.identity, None, args.keychain, args.notary_user,
+        config = create_config((args.identity, None, args.notary_user,
                                args.notary_password, args.notary_asc_provider),
                                args.development)
     paths = model.Paths(args.pkgdir, args.outdir, None)
@@ -111,8 +111,6 @@ def main():
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Notarize Mac DMG and PKG')
-    parser.add_argument(
-        '--keychain', help='The keychain to load the identity from.')
     parser.add_argument(
         '--identity', required=True, help='The identity to sign with.')
     parser.add_argument(

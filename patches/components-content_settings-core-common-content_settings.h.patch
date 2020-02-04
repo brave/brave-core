@@ -1,13 +1,12 @@
 diff --git a/components/content_settings/core/common/content_settings.h b/components/content_settings/core/common/content_settings.h
-index 824c42112ec33d18796cfe50bbec8cc4b62de660..2a54e9451e2a947a676495e4df3ff6528dbb0094 100644
+index 1203cc6ada248375bce7cb37054bcf0cd9957ea0..406743f971e93c821d4737ec4927b1df12d6a7a2 100644
 --- a/components/content_settings/core/common/content_settings.h
 +++ b/components/content_settings/core/common/content_settings.h
-@@ -76,6 +76,8 @@ struct RendererContentSettingRules {
+@@ -75,6 +75,7 @@ struct RendererContentSettingRules {
    ContentSettingsForOneType client_hints_rules;
    ContentSettingsForOneType popup_redirect_rules;
    ContentSettingsForOneType mixed_content_rules;
-+  ContentSettingsForOneType fingerprinting_rules;
-+  ContentSettingsForOneType brave_shields_rules;
++  BRAVE_CONTENT_SETTINGS_H
  };
  
  namespace content_settings {

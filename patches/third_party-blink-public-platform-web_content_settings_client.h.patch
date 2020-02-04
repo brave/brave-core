@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/public/platform/web_content_settings_client.h b/third_party/blink/public/platform/web_content_settings_client.h
-index 39d76ac9336ae713171291f45960e0bf23bb881b..318b902754d4524c91c94e6c4a90714b450526be 100644
+index 3f98347f168943b98f9397629d9b046e2bd85a4b..4728274690203c8853d9fdd894ec2e7caa4bcc6d 100644
 --- a/third_party/blink/public/platform/web_content_settings_client.h
 +++ b/third_party/blink/public/platform/web_content_settings_client.h
-@@ -60,6 +60,11 @@ class WebContentSettingsClient {
+@@ -62,6 +62,11 @@ class WebContentSettingsClient {
      return enabled_per_settings;
    }
  
@@ -14,3 +14,11 @@ index 39d76ac9336ae713171291f45960e0bf23bb881b..318b902754d4524c91c94e6c4a90714b
    // Retrieves the client hints that should be attached to the request for the
    // given URL.
    virtual void GetAllowedClientHintsFromSource(const blink::WebURL& url,
+@@ -124,6 +129,7 @@ class WebContentSettingsClient {
+   virtual bool ShouldAutoupgradeMixedContent() { return true; }
+ 
+   virtual ~WebContentSettingsClient() = default;
++  BRAVE_WEB_CONTENT_SETTINGS_CLIENT_H
+ };
+ 
+ }  // namespace blink

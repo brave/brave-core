@@ -9,7 +9,6 @@
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Logo di Brave</translation>
 <translation id="7339898014177206373">Nuova finestra</translation>
-<translation id="5935964611177478118">accedi a Brave</translation>
 <translation id="5516268345616100622">Task Manager - Brave</translation>
 <translation id="7918740962659365265">Aiutaci a migliorare Brave inviando a Brave Software rapporti sugli arresti anomali e <ph name="UMA_LINK"/></translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
@@ -122,7 +121,6 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="1459786048951724030">Impossibile sincronizzare i dati in Brave OS a causa di un errore durante l'accesso.</translation>
 <translation id="6813094029720377619">I cookie vengono cancellati alla chiusura di Brave. Per mantenere attiva la sincronizzazione, cambia questa <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
 <translation id="3340978935015468852">impostazioni</translation>
-<translation id="380197516434040304">Rimuovi da Brave...</translation>
 <translation id="300669147395456190">Applicazioni Brave</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> richiede di leggere e accettare i seguenti Termini di servizio prima di utilizzare il dispositivo. Questi termini non ampliano, modificano o limitano i Termini di Brave OS.</translation>
 <translation id="3293668930608086049">Brave sta utilizzando videocamera e microfono.</translation>
@@ -189,8 +187,6 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="7798069806040634998">Brave deve avere accesso allo spazio di archiviazione per poter scaricare file</translation>
 <translation id="7685904775439037072">Dopo che Brave avrà ottenuto l'accesso, i siti web potranno chiederti l'accesso.</translation>
 <translation id="1744365871163268756">Attendi mentre Brave installa gli aggiornamenti di sistema più recenti.</translation>
-<translation id="8000338990735917615">Le versioni future di Brave verranno installate automaticamente.</translation>
-<translation id="2975476470948647918">Le versioni future di Brave verranno installate automaticamente. Al termine del download, Brave si riavvierà e potrai procedere.</translation>
 <translation id="7808415789955822133">Termini di Brave OS</translation>
 <translation id="7207456302801184289">Benvenuto in Brave</translation>
 <translation id="3507835409099344374">Vai alle impostazioni di notifica di Brave</translation>
@@ -220,7 +216,6 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="6915252145142862992">Questa è un'installazione secondaria, di conseguenza Brave non può essere impostato come browser predefinito.</translation>
 <translation id="6235873178214143377">Se un'impostazione non viene mostrata in questa pagina, cercala nelle <ph name="LINK_BEGIN"/>impostazioni del browser Brave<ph name="LINK_END"/>.</translation>
 <translation id="4459296183696059108">Se un'impostazione non viene mostrata in questa pagina, cercala nelle <ph name="LINK_BEGIN"/>impostazioni del sistema operativo Brave<ph name="LINK_END"/>.</translation>
-<translation id="7977435741986383568">Brave potrebbe utilizzare servizi web per migliorare la tua esperienza di navigazione. Se preferisci, puoi disattivare questi servizi. <ph name="BEGIN_LINK"/>Ulteriori informazioni<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Per correggere gli errori ortografici, Brave invia a Brave Software il testo digitato nei campi di testo</translation>
 <translation id="8586264863973514035">Riavvia Brave per applicare le modifiche</translation>
 <translation id="7021823858304886493">Consenti l'accesso a Brave</translation>

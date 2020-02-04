@@ -122,10 +122,10 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
 IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, BubbleTest) {
   auto* permission_request_manager =
       GetPermissionRequestManager();
-  EXPECT_FALSE(permission_request_manager->IsBubbleVisible());
+  EXPECT_FALSE(permission_request_manager->IsRequestInProgress());
   GetBraveDrmTabHelper()->OnWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
-  EXPECT_TRUE(permission_request_manager->IsBubbleVisible());
+  EXPECT_TRUE(permission_request_manager->IsRequestInProgress());
 
   gfx::NativeWindow window =
       permission_request_manager->GetBubbleWindow();

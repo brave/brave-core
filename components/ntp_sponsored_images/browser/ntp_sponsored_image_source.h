@@ -30,12 +30,12 @@ class NTPSponsoredImageSource : public content::URLDataSource {
  private:
   // content::URLDataSource overrides:
   std::string GetSource() override;
-  void StartDataRequest(const std::string& path,
+  void StartDataRequest(const GURL& url,
                         const content::WebContents::Getter& wc_getter,
-                        const GotDataCallback& callback) override;
+                        GotDataCallback callback) override;
   std::string GetMimeType(const std::string& path) override;
 
-  void OnGotImageFile(const GotDataCallback& callback,
+  void OnGotImageFile(GotDataCallback callback,
                       base::Optional<std::string> input);
   bool IsValidPath(const std::string& path) const;
   bool IsLogoPath(const std::string& path) const;

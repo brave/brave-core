@@ -77,19 +77,11 @@
 <translation id="438216590634144114">Pilih enjin carian yang anda ingin gunakan secara lalai ketika mencari web dari bar alamat.</translation>
 <translation id="5804484488647369316">Tetapkan enjin carian lalai</translation>
 <translation id="4428458837269935199">Untuk pengalaman carian yang lebih sulit, cuba DuckDuckGo.</translation>
-<translation id="513635702954746724">Pilih tema warna anda</translation>
-<translation id="6842850080200126305">Tetapkan warna bar alat anda dengan memilih pilihan terang atau gelap dari panel tetapan.</translation>
-<translation id="5805868144901917207">Pilih tema</translation>
-<translation id="8131740175452115882">Sahkan</translation>
-<translation id="713206503018076063">Tema sistem (lalai)</translation>
-<translation id="1807246157184219062">Cahaya</translation>
-<translation id="2414886740292270097">Gelap</translation>
 <translation id="3829010735958850433">Langkau jelajah alu-aluan</translation>
 <translation id="1201402288615127009">Seterusnya</translation>
 <translation id="7954950242989581218">Belayar dengan selamat</translation>
 <translation id="2188651882929633653">Brave Shields menghalang perkara jahat yang cuba menjejak anda di serata web termasuk kebanyakan iklan. Tetapkan Shields kepada “lumpuh” jika tapak kelihatan tidak berfungsi. Brave menggunakan <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>analitik produk persendirian sepenuhnya<ph name="END_LINK_P3A">&lt;/a&gt;</ph> untuk menganggarkan penggunaan sepenuhnya ciri-ciri tertentu. Anda boleh mematikannya di <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Tetapan<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Iklan</translation>
-<translation id="5698387814910197501">Dapatkan {{currency}} dengan melihat iklan di Brave. Iklan yang dipaparkan adalah berdasarkan minat anda, sebagaimana yang disimpulkan dari tingkah laku anda semasa melayari web. Tiada data peribadi atau sejarah pelayaran web akan meninggalkan pelayar web anda.</translation>
 <translation id="6112368337882254910">Auto-Sumbang</translation>
 <translation id="3742599705619405136">Cara automatik untuk menyokong penerbit dan pencipta kandungan. Tetapkan pembayaran bulanan dan layari seperti biasa. Laman web yang Disahkan Brave akan menerima sumbangan anda secara automatik, berdasarkan perhatian anda yang diukur oleh Brave.</translation>
 <translation id="20281847067919078">Anggaran ganjaran menunggu</translation>
@@ -97,6 +89,7 @@
 <translation id="319209088187794725">Pemberitahuan iklan yang diterima bulan ini</translation>
 <translation id="4229016885653790965">Maaf! Iklan belum ada di kawasan anda.</translation>
 <translation id="2539279826042558064">Ganjaran dan Iklan Brave tidak tersedia pada peranti anda pada masa ini.</translation>
+<translation id="5421369907811917952">Tetapan lain</translation>
 <translation id="654711254769318398">Halaman iklan dilihat</translation>
 <translation id="2532127066761785857">Bilangan maksimum iklan dipaparkan</translation>
 <translation id="5171071066587880677">1 iklan setiap jam</translation>
@@ -132,7 +125,6 @@
 <translation id="2726674968268546964">token</translation>
 <translation id="7286722244752781970">Masa halaman minimum sebelum mengelog ke laman</translation>
 <translation id="4424486208397124985">Kunjungan minimum untuk kerelevanan penerbit</translation>
-<translation id="5421369907811917952">Tetapan lain</translation>
 <translation id="6248554379744796526">Tunjukkan laman web yang tidak disahkan dalam senarai</translation>
 <translation id="5875669387851353511">Benarkan sumbangan untuk video</translation>
 <translation id="8933202740471878108">1 visit</translation>
@@ -162,7 +154,6 @@
 <translation id="7210234701206674260">Ganjaran Brave mengalami masalah. Sila cuba sebentar lagi.</translation>
 <translation id="570208820610947248">Kami mengesan bahawa ada sesuatu yang tidak kena dengan dompet anda. Anda mesti mendapatkan semula dompet sandaran anda sebelum sebarang transaksi dapat diproses.</translation>
 <translation id="7797604753681168055">Dapatkan semula sekarang!</translation>
-<translation id="5549059668721746831">Tarikh tip bulanan seterusnya</translation>
 <translation id="6231182869178328516">Saya baru memberikan tip kepada <ph name="NAME"/> menggunakan Pelayar Brave. Cubalah di https://brave.com/tips.</translation>
 <translation id="8404935570206006581">BerikanTipDenganBrave</translation>
 <translation id="2876191400747549936">Maaf ada masalah memproses permintaan anda, sila cuba lagi.</translation>
@@ -261,8 +252,6 @@
 <translation id="4114667046481794032">Jumlah sumbangan</translation>
 <translation id="3520817231440482449">Tip laman ini secara Bulanan</translation>
 <translation id="1827184134638345603">Hantar Tip…</translation>
-<translation id="7928243298881209869">Tip bulanan pertama anda akan dihantar pada:</translation>
-<translation id="6045860799501892362">Tetapkan tip bulanan</translation>
 <translation id="8003573781961874199">Muat turun sebagai PDF</translation>
 <translation id="298067735430872465">Pendapatan daripada Iklan</translation>
 <translation id="2266556115441975588">Ganjaran anda daripada Iklan sudah diterima!</translation>
@@ -291,7 +280,6 @@
 <translation id="9115913704608474258">November</translation>
 <translation id="7828956995407538686">Oktober</translation>
 <translation id="5502713021410870035">September</translation>
-<translation id="5737831580668469027">Tip Bulanan!</translation>
 <translation id="606865182719489911">Pemberian token percuma tersedia.</translation>
 <translation id="2487641031722095938">Ia ialah hari bertuah anda!</translation>
 <translation id="6255773350565723852">Pemberian token anda sedang dilaksanakan.</translation>
@@ -318,13 +306,8 @@
 <translation id="4923459931733593730">Pembayaran</translation>
 <translation id="4021593982164260556">Bayaran dibuat pada setiap hari ke-{{day}} pada setiap bulan.</translation>
 <translation id="6104680658798556671">Pembayaran tidak dibuat.</translation>
-<translation id="2834888581291358924">Apabila baki anda tidak mencukupi untuk meliputi keseluruhan jumlah Auto-Sumbang dan tip berulang anda, pembayaran ini dilangkau untuk tempoh ini.</translation>
 <translation id="3138528956349114724">Tapak dipin kini</translation>
-<translation id="2337632028350283479">Ini cara tip bulanan berfungsi:</translation>
-<translation id="6457273203091513039">Tip bulanan tidak keluar daripada pembayaran Sumbangan Auto anda. Ia berasingan.</translation>
 <translation id="9099396904827413228">Setiap tapak dibayar amaun yang tetap setiap bulan.</translation>
-<translation id="5051110132941857169">Tip bulanan dibayar semua sekali gus, setiap bulan. Sekiranya anda menggunakan Sumbangan Auto, tip keluar pada masa yang sama seperti pembayaran Sumbangan Auto bulanan anda.</translation>
-<translation id="3374483782662414143">Anda boleh mengalih keluar sebarang tapak yang menerima tip bulanan dari dalam panel Tip.</translation>
 <translation id="5082474983463379713">Sila ambil perhatian:</translation>
 <translation id="1430915738399379752">Cetak</translation>
 <translation id="135956957367307069">Permintaan anda masih diproses, sila tunggu.</translation>

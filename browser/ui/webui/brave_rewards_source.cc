@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/webui/brave_rewards_source.h"
 
+#include <utility>
+
 #include "base/memory/ref_counted_memory.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
@@ -15,9 +17,9 @@
 
 namespace {
 
-typedef base::RepeatingCallback<void(BitmapFetcherService::RequestId request_id,
-                                     const GURL& url,
-                                     const SkBitmap& bitmap)>
+typedef base::OnceCallback<void(BitmapFetcherService::RequestId request_id,
+                                const GURL& url,
+                                const SkBitmap& bitmap)>
     RewardsResourceFetcherCallback;
 
 // Calls the specified callback when the requested image is downloaded.  This
@@ -27,19 +29,23 @@ class RewardsResourceFetcherObserver : public BitmapFetcherService::Observer {
  public:
   explicit RewardsResourceFetcherObserver(
       const GURL& url,
-      const RewardsResourceFetcherCallback& rewards_resource_fetcher_callback)
+      RewardsResourceFetcherCallback rewards_resource_fetcher_callback)
       : url_(url),
-        rewards_resource_fetcher_callback_(rewards_resource_fetcher_callback) {}
+        rewards_resource_fetcher_callback_(
+            std::move(rewards_resource_fetcher_callback)) {}
 
   void OnImageChanged(BitmapFetcherService::RequestId request_id,
                       const SkBitmap& image) override {
     DCHECK(!image.empty());
-    rewards_resource_fetcher_callback_.Run(request_id, url_, image);
+    // BitmapFetcherService does not invoke OnImageChanged more than once, in
+    // spite of what the method name suggests.
+    DCHECK(rewards_resource_fetcher_callback_);
+    std::move(rewards_resource_fetcher_callback_).Run(request_id, url_, image);
   }
 
  private:
   GURL url_;
-  const RewardsResourceFetcherCallback rewards_resource_fetcher_callback_;
+  RewardsResourceFetcherCallback rewards_resource_fetcher_callback_;
 
   DISALLOW_COPY_AND_ASSIGN(RewardsResourceFetcherObserver);
 };
@@ -63,12 +69,11 @@ std::string BraveRewardsSource::GetSource() {
 }
 
 void BraveRewardsSource::StartDataRequest(
-    const std::string& path,
+    const GURL& url,
     const content::WebContents::Getter& wc_getter,
-    const content::URLDataSource::GotDataCallback& got_data_callback) {
-  GURL url(path);
+    content::URLDataSource::GotDataCallback got_data_callback) {
   if (!url.is_valid()) {
-    got_data_callback.Run(nullptr);
+    std::move(got_data_callback).Run(nullptr);
     return;
   }
 
@@ -101,14 +106,14 @@ void BraveRewardsSource::StartDataRequest(
           policy_exception_justification:
             "Not implemented."
         })");
-    resource_fetchers_.emplace_back(path);
+    resource_fetchers_.emplace_back(url);
     request_ids_.push_back(image_service->RequestImage(
         url,
         // Image Service takes ownership of the observer.
         new RewardsResourceFetcherObserver(
-            url,
-            base::BindRepeating(&BraveRewardsSource::OnBitmapFetched,
-                                base::Unretained(this), got_data_callback)),
+            url, base::BindOnce(&BraveRewardsSource::OnBitmapFetched,
+                                base::Unretained(this),
+                                std::move(got_data_callback))),
         traffic_annotation));
   }
 }
@@ -138,20 +143,20 @@ bool BraveRewardsSource::ShouldServiceRequest(
 }
 
 void BraveRewardsSource::OnBitmapFetched(
-    const content::URLDataSource::GotDataCallback& got_data_callback,
+    content::URLDataSource::GotDataCallback got_data_callback,
     BitmapFetcherService::RequestId request_id,
     const GURL& url,
     const SkBitmap& bitmap) {
   if (bitmap.isNull()) {
     LOG(ERROR) << "Failed to retrieve Brave Rewards resource, url: " << url;
-    got_data_callback.Run(nullptr);
+    std::move(got_data_callback).Run(nullptr);
     return;
   }
 
-  got_data_callback.Run(BitmapToMemory(&bitmap).get());
+  std::move(got_data_callback).Run(BitmapToMemory(&bitmap).get());
 
   auto it_url =
-      find(resource_fetchers_.begin(), resource_fetchers_.end(), url.spec());
+      find(resource_fetchers_.begin(), resource_fetchers_.end(), url);
   if (it_url != resource_fetchers_.end()) {
     resource_fetchers_.erase(it_url);
   }

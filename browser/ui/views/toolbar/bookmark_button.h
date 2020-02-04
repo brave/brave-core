@@ -9,6 +9,7 @@
 #include "base/scoped_observer.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "ui/base/models/simple_menu_model.h"
+#include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_observer.h"
 
 class BookmarkButton : public ToolbarButton {

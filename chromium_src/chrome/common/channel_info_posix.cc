@@ -18,6 +18,10 @@ std::string GetChannelName() {
   return modifier;
 }
 
+std::string GetChannelSuffixForDataDir() {
+  return std::string();
+}
+
 #if defined(OS_LINUX)
 std::string GetDesktopName(base::Environment* env) {
 #if defined(OFFICIAL_BUILD)

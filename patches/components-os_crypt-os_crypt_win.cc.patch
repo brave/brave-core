@@ -1,20 +1,20 @@
 diff --git a/components/os_crypt/os_crypt_win.cc b/components/os_crypt/os_crypt_win.cc
-index 792233d4405f115f4fc72423dad10c415f4df66b..1fb45bb390dba292b3a075dad620a3b7e73ccd84 100644
+index 67b83393c31c542c7be8943f382408f21f2b1a90..782dccfc49f1902b521230dc26c2f4dfa8c28538 100644
 --- a/components/os_crypt/os_crypt_win.cc
 +++ b/components/os_crypt/os_crypt_win.cc
-@@ -26,6 +26,7 @@ bool OSCrypt::DecryptString16(const std::string& ciphertext,
- 
+@@ -134,6 +134,7 @@ bool OSCrypt::DecryptString16(const std::string& ciphertext,
+ // static
  bool OSCrypt::EncryptString(const std::string& plaintext,
                              std::string* ciphertext) {
 +  if (IsEncryptionDisabled(plaintext, ciphertext)) { return true; }
-   DATA_BLOB input;
-   input.pbData = const_cast<BYTE*>(
-       reinterpret_cast<const BYTE*>(plaintext.data()));
-@@ -49,6 +50,7 @@ bool OSCrypt::EncryptString(const std::string& plaintext,
+   if (g_use_legacy)
+     return EncryptStringWithDPAPI(plaintext, ciphertext);
  
+@@ -160,6 +161,7 @@ bool OSCrypt::EncryptString(const std::string& plaintext,
+ // static
  bool OSCrypt::DecryptString(const std::string& ciphertext,
                              std::string* plaintext) {
 +  if (IsEncryptionDisabled(ciphertext, plaintext)) { return true; }
-   DATA_BLOB input;
-   input.pbData = const_cast<BYTE*>(
-       reinterpret_cast<const BYTE*>(ciphertext.data()));
+   if (!base::StartsWith(ciphertext, kEncryptionVersionPrefix,
+                         base::CompareCase::SENSITIVE))
+     return DecryptStringWithDPAPI(ciphertext, plaintext);

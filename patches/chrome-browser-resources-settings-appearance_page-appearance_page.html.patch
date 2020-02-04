@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/appearance_page/appearance_page.html b/chrome/browser/resources/settings/appearance_page/appearance_page.html
-index 3a619511bedf031b8a600d27a14a8fb9c53d055d..16f0a60679f94cf9dedb2cae8318a52d3ffa0324 100644
+index 61300bbc3fab7bf92aa6eb5c42385d3850728b0e..535bd3c24b28aa53d8c74aefd1305196c1c8fc6a 100644
 --- a/chrome/browser/resources/settings/appearance_page/appearance_page.html
 +++ b/chrome/browser/resources/settings/appearance_page/appearance_page.html
-@@ -22,6 +22,12 @@
+@@ -21,6 +21,12 @@
  <link rel="import" href="../appearance_page/wallpaper_browser_proxy.html">
  </if>
  
@@ -15,7 +15,7 @@ index 3a619511bedf031b8a600d27a14a8fb9c53d055d..16f0a60679f94cf9dedb2cae8318a52d
  <dom-module id="settings-appearance-page">
    <template>
      <style include="settings-shared md-select iron-flex">
-@@ -61,6 +67,9 @@
+@@ -60,6 +66,9 @@
            </template>
          </cr-link-row>
          <div class="hr"></div>
@@ -25,7 +25,7 @@ index 3a619511bedf031b8a600d27a14a8fb9c53d055d..16f0a60679f94cf9dedb2cae8318a52d
  </if>
          <div class="settings-row continuation" id="themeRow"
              hidden="[[!pageVisibility.setTheme]]">
-@@ -134,6 +143,9 @@
+@@ -133,6 +142,9 @@
              </settings-radio-group>
            </div>
          </template>

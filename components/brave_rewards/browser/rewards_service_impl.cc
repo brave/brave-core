@@ -36,6 +36,7 @@
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/mojom_structs.h"
 #include "bat/ledger/transactions_info.h"
+#include "brave/base/containers/utils.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/common/pref_names.h"
@@ -72,7 +73,6 @@
 #include "content/public/browser/url_data_source.h"
 #include "content/public/common/service_manager_connection.h"
 #include "extensions/buildflags/buildflags.h"
-#include "mojo/public/cpp/bindings/map.h"
 #include "net/base/escape.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
@@ -502,9 +502,14 @@ void RewardsServiceImpl::StartLedger() {
     return;
   }
 
+  if (bat_ledger_service_.is_bound()) {
+    bat_ledger_service_.reset();
+  }
+
   connection->GetConnector()->BindInterface(
-      bat_ledger::mojom::kServiceName, &bat_ledger_service_);
-  bat_ledger_service_.set_connection_error_handler(
+      bat_ledger::mojom::kServiceName,
+      bat_ledger_service_.BindNewPipeAndPassReceiver());
+  bat_ledger_service_.set_disconnect_handler(
       base::Bind(&RewardsServiceImpl::ConnectionClosed, AsWeakPtr()));
 
   ledger::Environment environment = ledger::Environment::STAGING;
@@ -791,7 +796,7 @@ void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
 
   bat_ledger_->OnXHRLoad(tab_id.id(),
                          url.spec(),
-                         mojo::MapToFlatMap(parts),
+                         base::MapToFlatMap(parts),
                          first_party_url.spec(),
                          referrer.spec(),
                          std::move(data));
@@ -2400,7 +2405,7 @@ void RewardsServiceImpl::OnPublisherBanner(
   new_banner->background = banner->background;
   new_banner->logo = banner->logo;
   new_banner->amounts = banner->amounts;
-  new_banner->links = mojo::FlatMapToMap(banner->links);
+  new_banner->links = base::FlatMapToMap(banner->links);
   new_banner->provider = banner->provider;
   new_banner->status = static_cast<uint32_t>(banner->status);
 
@@ -2567,7 +2572,7 @@ void RewardsServiceImpl::SaveInlineMediaInfo(
     SaveMediaInfoCallback callback) {
   bat_ledger_->SaveMediaInfo(
       media_type,
-      mojo::MapToFlatMap(args),
+      base::MapToFlatMap(args),
       base::BindOnce(&RewardsServiceImpl::OnMediaInlineInfoSaved,
                     AsWeakPtr(),
                     std::move(callback)));
@@ -3359,7 +3364,7 @@ void RewardsServiceImpl::GetShareURL(
       GetShareURLCallback callback) {
   bat_ledger_->GetShareURL(
       type,
-      mojo::MapToFlatMap(args),
+      base::MapToFlatMap(args),
       base::BindOnce(&RewardsServiceImpl::OnShareURL,
           AsWeakPtr(),
           std::move(callback)));
@@ -3582,8 +3587,8 @@ void RewardsServiceImpl::OnFetchBalance(FetchBalanceCallback callback,
 
   if (balance) {
     new_balance->total = balance->total;
-    new_balance->rates = mojo::FlatMapToMap(balance->rates);
-    new_balance->wallets = mojo::FlatMapToMap(balance->wallets);
+    new_balance->rates = base::FlatMapToMap(balance->rates);
+    new_balance->wallets = base::FlatMapToMap(balance->wallets);
 
     if (balance->total > 0) {
       profile_->GetPrefs()->SetBoolean(prefs::kRewardsUserHasFunded, true);
@@ -3714,7 +3719,7 @@ void RewardsServiceImpl::OnExternalWalletAuthorization(
     ExternalWalletAuthorizationCallback callback,
     const ledger::Result result,
     const base::flat_map<std::string, std::string>& args) {
-  std::move(callback).Run(result, mojo::FlatMapToMap(args));
+  std::move(callback).Run(result, base::FlatMapToMap(args));
 }
 
 void RewardsServiceImpl::ExternalWalletAuthorization(
@@ -3723,7 +3728,7 @@ void RewardsServiceImpl::ExternalWalletAuthorization(
       ExternalWalletAuthorizationCallback callback) {
   bat_ledger_->ExternalWalletAuthorization(
       wallet_type,
-      mojo::MapToFlatMap(args),
+      base::MapToFlatMap(args),
       base::BindOnce(&RewardsServiceImpl::OnExternalWalletAuthorization,
                      AsWeakPtr(),
                      wallet_type,

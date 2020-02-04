@@ -2,11 +2,13 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="zh-CN">
 <translation id="939305735877869636">Brave</translation>
+<translation id="2069994121511856876">Brave 夜间版</translation>
+<translation id="4947625801334180582">Brave 测试版</translation>
+<translation id="2566435362010629810">Brave 开发者版</translation>
 <translation id="6373767849825830651">Brave 是一款可高速运行网页和应用的网络浏览器。它快捷、稳定且易于使用。Brave 内置的防护恶意软件和网上诱骗的功能可让您更安全地浏览网页。</translation>
 <translation id="680297041157509674">Brave 操作系统</translation>
 <translation id="4847979153841887006">Brave 徽标</translation>
 <translation id="7339898014177206373">打开新的窗口</translation>
-<translation id="5935964611177478118">登录 Brave</translation>
 <translation id="5516268345616100622">任务管理器 - Brave</translation>
 <translation id="7918740962659365265">将崩溃报告和<ph name="UMA_LINK"/>发送给Brave Software，帮助我们完善Brave。</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
@@ -119,7 +121,6 @@ Brave 无法恢复您的设置。</translation>
 <translation id="1459786048951724030">登录时出现错误，Brave操作系统无法同步您的数据。</translation>
 <translation id="6813094029720377619">退出 Brave 时会清除 Cookie。要保持同步，请更改此<ph name="COOKIE_SETTINGS_LINK"/>。</translation>
 <translation id="3340978935015468852">设置</translation>
-<translation id="380197516434040304">从Brave中移除…</translation>
 <translation id="300669147395456190">Brave 应用</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> 要求您必须先阅读并接受以下服务条款，才能使用此设备。这些条款不会扩大、修改或限制 Brave 操作系统条款。</translation>
 <translation id="3293668930608086049">Brave 正在使用您的摄像头和麦克风。</translation>
@@ -143,7 +144,13 @@ Brave 无法恢复您的设置。</translation>
 <translation id="2433912322225810055">它还能够控制您启动Brave后或通过多功能框进行搜索时系统显示的页面。</translation>
 <translation id="2871190378186459992">在这里，您可以找到适用于 Brave 的精彩应用、游戏、扩展程序和主题背景。</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
+<translation id="5846303060623790781">Brave 测试版 （mDNS-入站）</translation>
+<translation id="3599046180970731601">Brave 夜间版 （mDNS-入站）</translation>
+<translation id="7881806463410697784">Brave 开发者版 （mDNS-入站）</translation>
 <translation id="1912973375560256099">Brave的入站规则，允许mDNS流量。</translation>
+<translation id="7272074097076644710">Brave 测试版的入站规则，以允许mDNS流量。</translation>
+<translation id="4991512282053949769">Brave 夜间版的入站规则，以允许mDNS流量。</translation>
+<translation id="3856641371299712128">Brave 开发者版的入站规则，以允许mDNS流量。</translation>
 <translation id="8207657266087451193">如果图片缺少有用的说明，则 Brave 会尝试为您提供一条说明。为便于创建说明，系统会将图片发送给 Brave Software。您可以随时在“设置”中关闭此功能。</translation>
 <translation id="5499063270485366718">如果图片缺少有用的说明，则 Brave 会尝试为您提供一条说明。为便于创建说明，系统会将图片发送给 Brave Software。</translation>
 <translation id="215320507915280336">这项服务会使用 Brave Software 搜索所用的拼写检查工具。您在浏览器中输入的文字会被发送给 Brave Software。您随时可在“设置”中更改此行为。</translation>
@@ -180,8 +187,6 @@ Brave 无法恢复您的设置。</translation>
 <translation id="7798069806040634998">Brave 需要获得存储空间使用权限，才能下载文件</translation>
 <translation id="7685904775439037072">一旦 Brave 获得了使用权限，网站便能请求您向其授予使用权限。</translation>
 <translation id="1744365871163268756">Brave正在安装最新的系统更新，请稍候。</translation>
-<translation id="8000338990735917615">Brave 的后续版本将会自动安装。</translation>
-<translation id="2975476470948647918">Brave 的后续版本将会自动安装。下载完毕后，Brave 会重启，然后您就可以开始使用了。</translation>
 <translation id="7808415789955822133">Brave操作系统条款</translation>
 <translation id="7207456302801184289">欢迎使用 Brave</translation>
 <translation id="3507835409099344374">转到 Brave 通知设置部分</translation>
@@ -213,7 +218,6 @@ Brave 无法恢复您的设置。</translation>
       Brave 浏览器设置<ph name="LINK_END"/>中查找</translation>
 <translation id="4459296183696059108">如果此页面中未显示某项设置，请在 <ph name="LINK_BEGIN"/>
       Brave 操作系统设置<ph name="LINK_END"/>中查找</translation>
-<translation id="7977435741986383568">Brave 可能会使用网络服务来改善您的浏览体验。不过，您可以选择停用这些服务。<ph name="BEGIN_LINK"/>了解详情<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">为了修正拼写错误，Brave 会将您在文本字段中输入的文字发送给 Brave Software</translation>
 <translation id="8586264863973514035">要想应用您的更改，请重新启动 Brave</translation>
 <translation id="7021823858304886493">允许登录 Brave</translation>

@@ -1,16 +1,16 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
-index 587e024ad80fc285aa8d2479be436560feccfb47..28cc55a7f484094e638e0925e8436bdbabeadf34 100644
+index 727f95a161e1f1b38c8eba26cf6ecc5f6b30c55b..10bded40fce479fd2bcc59db5905717920a83018 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
 @@ -37,6 +37,7 @@
  #include "base/location.h"
  #include "base/metrics/histogram_macros.h"
  #include "base/numerics/checked_math.h"
-+#include "brave/renderer/brave_content_settings_observer_helper.h"
++#include "brave/renderer/brave_content_settings_agent_impl_helper.h"
  #include "build/build_config.h"
  #include "third_party/blink/public/common/features.h"
  #include "third_party/blink/public/platform/task_type.h"
-@@ -908,6 +909,8 @@ String HTMLCanvasElement::ToDataURLInternal(
+@@ -923,6 +924,8 @@ String HTMLCanvasElement::ToDataURLInternal(
  String HTMLCanvasElement::toDataURL(const String& mime_type,
                                      const ScriptValue& quality_argument,
                                      ExceptionState& exception_state) const {
@@ -19,7 +19,7 @@ index 587e024ad80fc285aa8d2479be436560feccfb47..28cc55a7f484094e638e0925e8436bdb
    if (!OriginClean()) {
      exception_state.ThrowSecurityError("Tainted canvases may not be exported.");
      return String();
-@@ -926,6 +929,8 @@ void HTMLCanvasElement::toBlob(V8BlobCallback* callback,
+@@ -941,6 +944,8 @@ void HTMLCanvasElement::toBlob(V8BlobCallback* callback,
                                 const String& mime_type,
                                 const ScriptValue& quality_argument,
                                 ExceptionState& exception_state) {

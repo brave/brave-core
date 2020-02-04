@@ -34,6 +34,7 @@ import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.favicon.IconType;
 import org.chromium.chrome.browser.favicon.LargeIconBridge;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tabmodel.TabModelImpl;
 import org.chromium.chrome.browser.ui.widget.RoundedIconGenerator;
 import org.chromium.chrome.R;
@@ -74,7 +75,7 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
 
     public BraveRewardsHelper () {
         if (mLargeIconBridge == null) {
-            mLargeIconBridge = new LargeIconBridge(currentActiveTab().getProfile());
+            mLargeIconBridge = new LargeIconBridge(((TabImpl)currentActiveTab()).getProfile());
         }
     }
 

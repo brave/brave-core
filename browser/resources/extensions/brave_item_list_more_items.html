@@ -1,29 +1,16 @@
-<link rel="import" href="chrome://resources/html/polymer.html">
-
-<link rel="import" href="chrome://resources/cr_elements/cr_container_shadow_behavior.html">
-<link rel="import" href="chrome://resources/cr_elements/shared_style_css.html">
-<link rel="import" href="chrome://resources/html/cr.html">
-<link rel="import" href="chrome://resources/html/i18n_behavior.html">
-<link rel="import" href="chrome://resources/polymer/v1_0/iron-a11y-announcer/iron-a11y-announcer.html">
-
-<dom-module id="extensions-brave-item-list-more-items">
-  <template>
-    <style include="cr-shared-style">
-      .more-items-message {
-        color: #6e6e6e;
-        font-size: 123%; /* Should be 16px when 100% is 13px. */
-        font-weight: 500;
-        margin-top: 32px;
-        text-align: center;
-      }
-    </style>
-    <div id="more-items" class="more-items-message"
-         hidden$="[[!shouldShowMoreItemsMessage_(
+<style include="cr-shared-style">
+  .more-items-message {
+    color: #6e6e6e;
+    font-size: 123%; /* Should be 16px when 100% is 13px. */
+    font-weight: 500;
+    margin-top: 32px;
+    text-align: center;
+  }
+</style>
+<div id="more-items" class="more-items-message"
+     hidden$="[[!shouldShowMoreItemsMessage_(
              apps.length, extensions.length)]]">
-      <span>
-        $i18nRaw{noExtensionsOrApps}
-      </span>
-    </div>
-  </template>
-  <script src="brave_item_list_more_items.js"></script>
-</dom-module>
+  <span>
+    $i18nRaw{noExtensionsOrApps}
+  </span>
+</div>

@@ -1,4 +1,6 @@
-source_set("cpp") {
+import("//build/config/jumbo.gni")
+
+jumbo_component("cpp") {
   visibility = [
     "//brave/browser:browser_process",
     "//services/network/public/cpp:cpp",

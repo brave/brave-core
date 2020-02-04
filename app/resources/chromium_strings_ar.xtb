@@ -6,7 +6,6 @@
 <translation id="680297041157509674">‏نظام التشغيل Brave</translation>
 <translation id="4847979153841887006">‏شعار Brave</translation>
 <translation id="7339898014177206373">نافذة جديدة</translation>
-<translation id="5935964611177478118">‏تسجيل الدخول إلى Brave</translation>
 <translation id="5516268345616100622">‏إدارة المهام - Brave</translation>
 <translation id="7918740962659365265">‏يمكنك المساعدة في تحسين Brave عن طريق إرسال تقارير الأعطال و<ph name="UMA_LINK"/> إلى Brave Software</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
@@ -119,7 +118,6 @@
 <translation id="1459786048951724030">‏تعذر على نظام التشغيل Brave مزامنة البيانات نظرًا لحدوث خطأ أثناء تسجيل الدخول.</translation>
 <translation id="6813094029720377619">‏يتم محو ملفات تعريف الارتباط عند الخروج من Brave. لمواصلة عملية المزامنة، يمكنك تغيير هذا <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
 <translation id="3340978935015468852">الإعدادات</translation>
-<translation id="380197516434040304">‏إزالة من Brave</translation>
 <translation id="300669147395456190">‏تطبيقات Brave</translation>
 <translation id="3421950102518690868">‏<ph name="DOMAIN"/> يتطلب قراءة وقبول بنود الخدمة التالية قبل استخدام هذا الجهاز. وهذه البنود لا توسع أو تعدّل أو تقيّد بنود نظام التشغيل Brave.</translation>
 <translation id="3293668930608086049">‏يستخدم Brave الكاميرا والميكروفون.</translation>
@@ -180,8 +178,6 @@
 <translation id="7798069806040634998">‏يحتاج Brave إلى الوصول إلى مساحة التخزين لتنزيل الملفات.</translation>
 <translation id="7685904775439037072">‏بعد حصول Brave على إمكانية الوصول، ستتمكن المواقع الإلكترونية من مطالبتك بإمكانية الوصول.</translation>
 <translation id="1744365871163268756">‏يُرجى الانتظار أثناء تثبيت Brave لآخر تحديثات النظام.</translation>
-<translation id="8000338990735917615">‏سيتم تثبيت الإصدارات المستقبلية من Brave تلقائيًا.</translation>
-<translation id="2975476470948647918">‏سيتم تثبيت الإصدارات المستقبلية من Brave تلقائيًا. عند اكتمال عملية التنزيل هذه، ستتم إعادة تشغيل Brave وسيكون جاهزًا للاستخدام على الفور.</translation>
 <translation id="7808415789955822133">‏بنود نظام تشغيل Brave</translation>
 <translation id="7207456302801184289">‏مرحبًا بك في Brave</translation>
 <translation id="3507835409099344374">‏الانتقال إلى إعدادات الإشعارات في Brave</translation>
@@ -213,7 +209,6 @@
     إعدادات متصفِّح Brave<ph name="LINK_END"/></translation>
 <translation id="4459296183696059108">‏في حال عدم عرض إعداد على هذه الصفحة، انتقل إلى <ph name="LINK_BEGIN"/>
     إعدادات نظام التشغيل Brave<ph name="LINK_END"/></translation>
-<translation id="7977435741986383568">‏قد يستخدم Brave خدمات الويب لتحسين تجربة التصفح. يمكنك إيقاف هذه الخدمات بشكل اختياري. <ph name="BEGIN_LINK"/>مزيد من المعلومات<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">‏لإصلاح الأخطاء الإملائية، يُرسِل Brave ما تكتبه في حقول النص إلى Brave Software</translation>
 <translation id="8586264863973514035">‏لتطبيق التغييرات، يُرجى إعادة تشغيل Brave</translation>
 <translation id="7021823858304886493">‏السماح بتسجيل الدخول إلى Brave</translation>

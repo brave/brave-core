@@ -77,19 +77,11 @@
 <translation id="438216590634144114">בחרו את מנוע החיפוש שבו תרצו להשתמש כברירת מחדל בעת חיפוש באינטרנט מסרגל הכתובות.</translation>
 <translation id="5804484488647369316">הגדר מנוע חיפוש ברירת מחדל</translation>
 <translation id="4428458837269935199">לחוויית חיפוש פרטית יותר, נסו את DuckDuckGo.</translation>
-<translation id="513635702954746724">בחרו את ערכת הצבע שלכם</translation>
-<translation id="6842850080200126305">הגדירו את הצבע של סרגל הכלים שלכם על-ידי בחירה באפשרות בהיר או כהה בפאנל ההגדרות.</translation>
-<translation id="5805868144901917207">בחירת ערכת נושא</translation>
-<translation id="8131740175452115882">אישור</translation>
-<translation id="713206503018076063">ערכת נושא של המערכת (ברירת מחדל)</translation>
-<translation id="1807246157184219062">אור</translation>
-<translation id="2414886740292270097">כהה</translation>
 <translation id="3829010735958850433">לדלג על סיור קבלת הפנים</translation>
 <translation id="1201402288615127009">הבא</translation>
 <translation id="7954950242989581218">גלשו באופן בטוח</translation>
 <translation id="2188651882929633653">Brave Shields חוסם את הדברים המפחידים שמנסים לעקוב אחריכם ברחבי האינטרנט כולל רוב מודעות הפרסומת. העבירו את Shields למצב ”כבוי“ אם נראה שאתר מסוים אינו עובד. Brave משתמש <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>באנליטיקות מוצר פרטיות לחלוטין<ph name="END_LINK_P3A">&lt;/a&gt;</ph> כדי להעריך את השימוש הכולל בתכונות מסוימות. באפשרותכם לכבות זאת דרך <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>ההגדרות<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">פרסומות</translation>
-<translation id="5698387814910197501">אגרו {{currency}} על ידי צפייה בפרסומות ב-Brave. הפרסומות המוצגות לכם מבוססות על תחומי העניין שלכם, כפי שנגזרו מהתנהגות הגלישה שלכם. שום מידע אישי או היסטוריית גלישה לעולם לא יוצאים מהדפדפן.</translation>
 <translation id="6112368337882254910">תרומה אוטומטית</translation>
 <translation id="3742599705619405136">שיטה אוטומטית לתמיכה במו"לים וביוצרי תוכן. הגדר/י תשלום חודשים והמשך/י לגלוש כרגיל. האתרים המאומתים ע"י Brave שביקרת בהם יקבלו את התרומות שלך באופן אוטומטי, על פי מידת העניין שלך שנמדדת על ידי Brave.</translation>
 <translation id="20281847067919078">תגמולים מוערכים שממתינים</translation>
@@ -97,6 +89,7 @@
 <translation id="319209088187794725">התראות פרסומות שהתקבלו החודש</translation>
 <translation id="4229016885653790965">סליחה! פרסומות אינן זמינות עדיין באזור שלך.</translation>
 <translation id="2539279826042558064">Brave Rewards ו-Ads אינם זמינים במכשירך כרגע.</translation>
+<translation id="5421369907811917952">הגדרות אחרות</translation>
 <translation id="654711254769318398">דפי מודעות שנצפו</translation>
 <translation id="2532127066761785857">מספר מרבי של מודעות שהוצגו</translation>
 <translation id="5171071066587880677">מודעה אחת לשעה</translation>
@@ -132,7 +125,6 @@
 <translation id="2726674968268546964">Tokens</translation>
 <translation id="7286722244752781970">זמן מינימלי בדף לפני כניסה שנרשמת כביקור</translation>
 <translation id="4424486208397124985">מספר כניסות מינימלי עבור רלוונטיות של אתר</translation>
-<translation id="5421369907811917952">הגדרות אחרות</translation>
 <translation id="6248554379744796526">הצג ברשימה אתרים לא מאומתים</translation>
 <translation id="5875669387851353511">אפשרו תרומות לסרטונים</translation>
 <translation id="8933202740471878108">ביקור אחד</translation>
@@ -162,7 +154,6 @@
 <translation id="7210234701206674260">Brave Rewards נתקל בבעיה. אנא נסו שוב מאוחר יותר.</translation>
 <translation id="570208820610947248">גילינו שיש בעיה עם הארנק שלך. עליך לשחזר את ארנק  הגיבוי שלך לפני עיבוד עסקה כלשהי.</translation>
 <translation id="7797604753681168055">שחזר כעת!</translation>
-<translation id="5549059668721746831">תאריך הטיפ החודשי הבא</translation>
 <translation id="6231182869178328516">הרגע נתתי טיפ <ph name="NAME"/> באמצעות דפדפן Brave. אפשר לראות את זה ב-https://brave.com/tips.</translation>
 <translation id="8404935570206006581">תנו טיפ עם Brave</translation>
 <translation id="2876191400747549936">אנו מצטערים, הייתה בעיה בעיבוד הבקשה שלך, נא לנסות שוב.</translation>
@@ -264,8 +255,6 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="4114667046481794032">סכום התרומה</translation>
 <translation id="3520817231440482449">טיפ חודשי לאתר זה</translation>
 <translation id="1827184134638345603">שלח טיפ…</translation>
-<translation id="7928243298881209869">הטיפ החודשי הראשון שלך יישלח ב-</translation>
-<translation id="6045860799501892362">הגדר טיפ חודשי</translation>
 <translation id="8003573781961874199">הורידו כקובץ PDF</translation>
 <translation id="298067735430872465">צבירה מפרסומות</translation>
 <translation id="2266556115441975588">התגמולים שלכם מ-Ads הגיעו!</translation>
@@ -294,7 +283,6 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="9115913704608474258">נובמבר</translation>
 <translation id="7828956995407538686">אוקטובר</translation>
 <translation id="5502713021410870035">ספטמבר</translation>
-<translation id="5737831580668469027">טיפים חודשיים</translation>
 <translation id="606865182719489911">יש לכם קופון חינמי.</translation>
 <translation id="2487641031722095938">זהו יום המזל שלך!</translation>
 <translation id="6255773350565723852">מענק האסימון שלכם בדרכו אליכם.</translation>
@@ -321,13 +309,8 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="4923459931733593730">תשלום</translation>
 <translation id="4021593982164260556">התשלום מתבצע ביום ה-{{day}} לכל חודש.</translation>
 <translation id="6104680658798556671">התשלום לא בוצע.</translation>
-<translation id="2834888581291358924">כאשר היתרה שלכם אינה מספיקה לכסות את הסכום הכולל של תרומות אוטומטיות ואת הטיפים הקבועים שלכם, נדלג על תשלומים אלה לתקופה זו.</translation>
 <translation id="3138528956349114724">אתרים מוצמדים נמצאים כעת</translation>
-<translation id="2337632028350283479">כך עובדים הטיפים החודשיים:</translation>
-<translation id="6457273203091513039">טיפים חודשיים אינם יוצאים מתשלום ה-Auto-Contribute שלכם. הם תשלומים נפרדים.</translation>
 <translation id="9099396904827413228">כל אתר מקבל תשלום בסכום קבוע בכל חודש.</translation>
-<translation id="5051110132941857169">תשלום הטיפים מתקבל בבת אחת, בכל חודש. אם אתם משתמשים ב-Auto-Contribute, הטיפים יוצאים במקביל לתשלום ה-Auto-Contribute החודשי שלכם.</translation>
-<translation id="3374483782662414143">באפשרותכם להסיר כל אתר שמקבל טיפים חודשיים מתוך פאנל 'טיפים'.</translation>
 <translation id="5082474983463379713">לתשומת לבכם:</translation>
 <translation id="1430915738399379752">הדפס</translation>
 <translation id="135956957367307069">בקשתך עדיין בטיפול, נא להמתין.</translation>

@@ -1,5 +1,5 @@
 diff --git a/components/sync/engine_impl/sync_manager_impl.cc b/components/sync/engine_impl/sync_manager_impl.cc
-index 5d88716c12198d9085b906962f35906f2662e23e..f4e41cafda0fec19ec61f589e4248b53a1723460 100644
+index 9b153faac8199895d243a0db28fe382dba869f70..215709aab0cadf482f80fa73e8780256eed381dc 100644
 --- a/components/sync/engine_impl/sync_manager_impl.cc
 +++ b/components/sync/engine_impl/sync_manager_impl.cc
 @@ -388,8 +388,9 @@ void SyncManagerImpl::Init(InitArgs* args) {

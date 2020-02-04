@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="fr-CA">
+<translation id="4068928808254189629">Accédez au
+          menu Brave &gt;
+          <ph name="SETTINGS_TITLE"/>
+          &gt;
+          <ph name="ADVANCED_TITLE"/>
+          et décochez « <ph name="NO_PREFETCH_DESCRIPTION"/> ».
+          Si le problème persiste, nous vous conseillons de sélectionner
+          à nouveau cette option pour améliorer les performances.</translation>
+<translation id="2017237562285586622">Autorisez Brave à accéder au réseau dans les paramètres de votre pare-feu
+        ou de votre antivirus.</translation>
+<translation id="7460648687895344848">Brave OS n'a pas pas terminé sa configuration initiale.</translation>
+<translation id="8187289872471304532">Sélectionnez
+          Applications &gt; Préférences Système &gt; Réseau &gt; Avancé... &gt; Proxys et 
+          désélectionnez tous les serveurs mandataires qui ont été sélectionnés.</translation>
+<translation id="8619622797841001082">Accédez au
+          menu Brave &gt;
+          <ph name="SETTINGS_TITLE"/>
+          &gt;
+          <ph name="ADVANCED_TITLE"/>
+          &gt;
+          <ph name="PROXIES_TITLE"/>
+          et assurez-vous que vos paramètres aient comme valeur « sans mandataire » ou « direct ».</translation>
+<translation id="8746410156982274638">Accédez au
+          menu Brave &gt;
+          <ph name="SETTINGS_TITLE"/>
+          &gt;
+          <ph name="ADVANCED_TITLE"/>
+          &gt;
+          <ph name="PROXIES_TITLE"/>
+          &gt;
+          Paramètres réseau
+          et décochez l'option « Utiliser un serveur mandataire pour votre réseau local ».</translation>
+<translation id="9156965752763025780">Vos modifications seront prises en compte au prochain redémarrage de Brave.</translation>
+<translation id="130631256467250065">Vos modifications prendront effet au prochain redémarrage de votre appareil.</translation>
+<translation id="7999989146447764333">Les rapports sur les plantages ne sont pas activés dans Brave.</translation>
+<translation id="7932149101545999102">Brave fonctionne grâce au projet de code source ouvert <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> et à d'autres <ph name="BEGIN_LINK_OSS"/>logiciels libres<ph name="END_LINK_OSS"/>.</translation>
+<translation id="1953231710324290369">Vous consultez une page Brave sécurisée</translation>
+<translation id="2305018990464327944">Brave a vérifié que <ph name="ISSUER"/> a émis le certificat de ce site Web.</translation>
+<translation id="88187049159266777">Brave n'a pas été fermé correctement.</translation>
+</translationbundle>

@@ -20,6 +20,8 @@
 <translation id="3699882589215410581">安裝並執行 Widevine</translation>
 <translation id="8926389886865778422">不再詢問這個問題</translation>
 <translation id="4726634924419692905">當網站要求安裝 Widevine 到您的電腦時先詢問</translation>
+<translation id="8760415064721320867">使用 Tor 的隱私視窗</translation>
+<translation id="8762452230727230396">Tor 會讓您對您造訪的網站隱藏 IP 位置。</translation>
 <translation id="8053096063396012732">安裝 Widevine</translation>
 <translation id="4840334696217618631">重新啟動瀏覽器以啟用 Widevine</translation>
 <translation id="8410111618231938546">Google Widevine 為數位版權管理 (DRM) 碼的一部分，非 Brave Software 所有，且我們無法偵測。Google Widevine 碼是從 Google 伺服器而非我們的伺服器下載。它僅在您同意該選項時裝載。我們不鼓勵使用 DRM，但我們尊重使用者的選擇，並了解部分 Brave 使用者想使用要求安裝 DRM 的服務。
@@ -90,6 +92,8 @@
 <translation id="8502234992433094996">使用 Google 服務來推播訊息</translation>
 <translation id="3888068426966679906">遠端除錯</translation>
 <translation id="6645631466045614531">存取同步透過</translation>
+<translation id="6696935187608454456">協助小費</translation>
+<translation id="2775956301559569472">在 404 頁面上顯示 Wayback Machine 提示</translation>
 <translation id="1807246157184219062">亮</translation>
 <translation id="2414886740292270097">暗</translation>
 <translation id="1360441190790440400">與 Linux 相同</translation>
@@ -163,8 +167,13 @@
 <translation id="8337117349965899723">使用 Crypto Wallets</translation>
 <translation id="5756155765711979898">使用 MetaMask</translation>
 <translation id="6754134632841262799">設定</translation>
+<translation id="4552520379838695057">抱歉，頁面遺失。</translation>
+<translation id="2609895996619941644">您想要檢查 Wayback Machine 上是否有已儲存的版本嗎？</translation>
+<translation id="8053093028263274061">抱歉，無可用的已儲存版本。</translation>
+<translation id="8517321676372639828">檢查已儲存的版本</translation>
 <translation id="191143826155037518">Brave 是以 <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla 公眾授權條款 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) 提供，其包含了其他多種授權條款的 <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>開放原始碼軟體<ph name="END_LINK_OSS">&lt;/a&gt;</ph>。
         您可以閱讀 <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>如何下載並自行建構<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> 特定 <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>原始碼來建立此副本<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph> 的說明。</translation>
 <translation id="4474155171896946103">將所有分頁加入書籤...</translation>
 <translation id="2336228925368920074">將所有分頁加入書籤...</translation>
+<translation id="796831669370432378">要新增書籤，點擊網址列旁的書籤按鈕</translation>
 </translationbundle>

@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -8,6 +9,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 
 using content::WebContents;
 using ImageType = ContentSettingImageModel::ImageType;
@@ -32,5 +34,5 @@ IN_PROC_BROWSER_TEST_F(BraveAutoplayBlockedImageModelTest, CreateBubbleModel) {
             ->content_type(),
             simple_bubble->content_type());
   EXPECT_EQ(ImageType::PLUGINS, model->image_type());
-  EXPECT_EQ(CONTENT_SETTINGS_TYPE_AUTOPLAY, model->content_type());
+  EXPECT_EQ(ContentSettingsType::AUTOPLAY, model->content_type());
 }

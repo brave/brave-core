@@ -77,19 +77,11 @@
 <translation id="438216590634144114">Valige otsingumootor, mida soovite vaikimisi kasutada, kui sisestate otsitava fraasi brauseri aadressiribale.</translation>
 <translation id="5804484488647369316">Määra vaikeotsingumootoriks</translation>
 <translation id="4428458837269935199">Privaatsema otsinguelamuse saamiseks proovige otsingumootorit DuckDuckGo.</translation>
-<translation id="513635702954746724">Valige oma värvilahendus</translation>
-<translation id="6842850080200126305">Määrake oma tööriistariba värv, valides seadete paneelist heleda või tumeda lahenduse.</translation>
-<translation id="5805868144901917207">Vali teema</translation>
-<translation id="8131740175452115882">Kinnita</translation>
-<translation id="713206503018076063">Süsteemi teema (vaikimisi)</translation>
-<translation id="1807246157184219062">Hele</translation>
-<translation id="2414886740292270097">Tume</translation>
 <translation id="3829010735958850433">Jäta tervitustuur vahele</translation>
 <translation id="1201402288615127009">Edasi</translation>
 <translation id="7954950242989581218">Sirvige ohutult</translation>
 <translation id="2188651882929633653">Brave’i kaitse blokeerib kahtlased asjad, mis üritavad teid veebis jälgida sh suurema osa reklaamidest. Määrake kaitse “välja”, kui tundub, et veebisait ei tööta. Brave kasutab <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>täiesti privaatset tooteanalüüsi<ph name="END_LINK_P3A">&lt;/a&gt;</ph>, et prognoosida teatud funktsioonide üldist kasutamist. Saate selle <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>seadetes<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph> välja lülitada.</translation>
 <translation id="1919345977826869612">Reklaamid</translation>
-<translation id="5698387814910197501">Teenige {{currency}}, vaadates Brave'i ilmuvaid reklaame. Reklaamid põhinevad teie eelistustel ja sirvimise ajalool. Teie isikuandmed ega sirvimise ajalugu ei jõua kunagi brauserist väljapoole.</translation>
 <translation id="6112368337882254910">Automaatne panustamine</translation>
 <translation id="3742599705619405136">Automaatne viis toetada väljaandjaid ja sisuloojaid. Määrake igakuine panus ja jätkake oma tavapärast sirvimist. Külastatavad Brave’i kinnitatud veebisaidid saavad teie panused automaatselt ja see põhineb teie aktiivsusel, mida mõõdab Brave.</translation>
 <translation id="20281847067919078">Eeldatavad ootel preemiad</translation>
@@ -97,6 +89,7 @@
 <translation id="319209088187794725">Sellel kuul saadud reklaamteated</translation>
 <translation id="4229016885653790965">Vabandame! Reklaamid ei ole veel teie piirkonnas saadaval.</translation>
 <translation id="2539279826042558064">Brave Rewards ja reklaamid pole teie seadmes praegu saadaval.</translation>
+<translation id="5421369907811917952">Muud seaded</translation>
 <translation id="654711254769318398">Vaadatud reklaamlehed</translation>
 <translation id="2532127066761785857">Suurim näidatavate reklaamide arv</translation>
 <translation id="5171071066587880677">Üks reklaam tunnis</translation>
@@ -132,7 +125,6 @@
 <translation id="2726674968268546964">tokenid</translation>
 <translation id="7286722244752781970">Minimaalne külastusaeg, millest alates külastust logitakse</translation>
 <translation id="4424486208397124985">Minimaalne külastuste arv, millest alates väljaandjat välja tuuakse</translation>
-<translation id="5421369907811917952">Muud seaded</translation>
 <translation id="6248554379744796526">Näidake kinnitamata veebilehti loendis</translation>
 <translation id="5875669387851353511">Luba videote premeerimine</translation>
 <translation id="8933202740471878108">1 külastus</translation>
@@ -162,7 +154,6 @@
 <translation id="7210234701206674260">Brave Rewards ei ole praegu saadaval. Proovige hiljem uuesti.</translation>
 <translation id="570208820610947248">Avastasime vea teie rahakotis. Enne tehingute töötlemist peate taastama oma varundatud rahakoti.</translation>
 <translation id="7797604753681168055">Taasta kohe!</translation>
-<translation id="5549059668721746831">Järgmise igakuise preemia kuupäev</translation>
 <translation id="6231182869178328516">Premeerisin Brave Browseriga just kasutajat <ph name="NAME"/>. Uuri selle kohta lehelt https://brave.com/tips.</translation>
 <translation id="8404935570206006581">Premeeri Brave’iga</translation>
 <translation id="2876191400747549936">Kahjuks ilmnes teie päringu töötlemisel probleem, proovige uuesti.</translation>
@@ -261,8 +252,6 @@
 <translation id="4114667046481794032">Panuse summa</translation>
 <translation id="3520817231440482449">Premeeri seda veebisaiti igakuiselt</translation>
 <translation id="1827184134638345603">Saada preemia…</translation>
-<translation id="7928243298881209869">Sinu esimene igakuuline preemia saadetakse:</translation>
-<translation id="6045860799501892362">Seadista igakuine premeerimine</translation>
 <translation id="8003573781961874199">Laadi alla PDFna</translation>
 <translation id="298067735430872465">Reklaamidest saadud tulu</translation>
 <translation id="2266556115441975588">Teie reklaamide eest saadud preemiad on siin!</translation>
@@ -291,7 +280,6 @@
 <translation id="9115913704608474258">november</translation>
 <translation id="7828956995407538686">oktoober</translation>
 <translation id="5502713021410870035">september</translation>
-<translation id="5737831580668469027">Igakuised preemiad</translation>
 <translation id="606865182719489911">Tasuta tokenivõimalus on saadaval.</translation>
 <translation id="2487641031722095938">Täna on teie õnnepäev!</translation>
 <translation id="6255773350565723852">Sinu tokenitoetus on teel.</translation>
@@ -318,13 +306,8 @@
 <translation id="4923459931733593730">Makse</translation>
 <translation id="4021593982164260556">Makse tehakse igal {{day}}. kuupäeval.</translation>
 <translation id="6104680658798556671">Makset ei ole tehtud.</translation>
-<translation id="2834888581291358924">Kui teie arvel ei ole piisavalt vahendeid, mis kataks nii automaatse panustamise kui ka korduvad preemiad, siis jäetakse need maksed määratud perioodi ajal tegemata.</translation>
 <translation id="3138528956349114724">Märgistatud saidid on praegu</translation>
-<translation id="2337632028350283479">Igakuised preemiad töötavad nii:</translation>
-<translation id="6457273203091513039">Igakuised preemiad ei tule teie automaatse toetuse maksetest, vaid on sellest eraldiseisvad.</translation>
 <translation id="9099396904827413228">Igale saidile makstakse igakuiselt kindel summa.</translation>
-<translation id="5051110132941857169">Igakuised preemiad makstakse igal kuul välja korraga. Kui kasutate automaatset toetust, makstakse preemiad välja automaatse toetuse maksega samal ajal.</translation>
-<translation id="3374483782662414143">Saate eemaldada mis tahes igakuist toetust saava saidi toetuste paneeli alt.</translation>
 <translation id="5082474983463379713">Pane tähele:</translation>
 <translation id="1430915738399379752">Prindi</translation>
 <translation id="135956957367307069">Teie päringut alles töödeldakse, oodake.</translation>

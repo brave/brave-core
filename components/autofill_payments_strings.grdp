@@ -2,17 +2,8 @@
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
 
-  <message name="IDS_AUTOFILL_SIGNIN_PROMO_MESSAGE" desc="Promo message for Sign-in Promo bubble (shown after a local save) to get profiles to sign in.">
-    To use your cards on all devices, sign in and turn on sync.
-  </message>
   <message name="IDS_AUTOFILL_SYNC_PROMO_MESSAGE" desc="Promo message for Sign-in Promo bubble (shown after a local save) to get profiles to sync.">
     To use your cards on all devices, turn on sync.
-  </message>
-  <message name="IDS_AUTOFILL_SIGNIN_PROMO_MESSAGE_DICE_DISABLED" desc="Text of the sign in promo bubble and manage cards footnote.">
-    To use your cards on all your devices, <ph name="SIGN_IN_LINK">$1<ex>sign in</ex></ph>.
-  </message>
-  <message name="IDS_AUTOFILL_SIGNIN_PROMO_LINK_DICE_DISABLED" desc="Text of the link to sign in from the save card sync promo.">
-    sign in to Brave
   </message>
 
   <if expr="not use_titlecase">
@@ -196,58 +187,19 @@
   <message name="IDS_AUTOFILL_SAVE_CARD_UPDATE_EXPIRATION_DATE_TITLE" desc="Title for the dialog requesting the user to fill in the expiration date of the credit card during the save card to google flow.">
     Enter expiration date
   </message>
+  <if expr="is_android or is_ios">
+    <message name="IDS_AUTOFILL_SAVE_CARD_UPDATE_EXPIRATION_DATE_TOOLTIP" desc="The tooltip text for the credit card expiration date textfield. Note that the translation should not have period.">
+      Expiration date
+    </message>
+    <message name="IDS_AUTOFILL_SAVE_CARD_UPDATE_EXPIRATION_DATE_ERROR_TRY_AGAIN" desc="Error message that encourages the user to try to re-enter their credit card expiration date after selecting an invalid expiration date.">
+      Enter an expiration date in the future and try again
+    </message>
+  </if>
   <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION_TOOLTIP" desc="The tooltip hover text that explains why credit card upload to Brave Payments is being offered.">
     Brave is offering to save your cards in your Brave Account because you are signed in. You can change this behavior in settings.
   </message>
   <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION_AND_CARDHOLDER_NAME_TOOLTIP" desc="The tooltip hover text that explains why credit card upload to Brave Account is being offered and where the suggested cardholder name came from.">
     Brave is offering to save your cards in your Brave Account because you are signed in. You can change this behavior in settings. The cardholder name comes from your account.
-  </message>
-
-  <!-- Brave Autofill Upstream Copy Tests -->
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_TITLE_TO_CLOUD_COPY_TEST_STORE_CARD" desc="Title text for the Autofill save card prompt when the card is to be saved by uploading it to Brave Payments. The title is used as one variation of the string experiment. The prompt can be either a bubble or an infobar.">
-    Store card in Brave Account?
-  </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_TITLE_TO_CLOUD_COPY_TEST_STORE_BILLING_DETAILS" desc="Title text for the Autofill save card prompt when the card is to be saved by uploading it to Brave Payments. The title is used as one variation of the string experiment. The prompt can be either a bubble or an infobar.">
-    Store billing details in Brave Account?
-  </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_TITLE_TO_CLOUD_COPY_TEST_ADD_CARD" desc="Title text for the Autofill save card prompt when the card is to be saved by uploading it to Brave Payments. The title is used as one variation of the string experiment. The prompt can be either a bubble or an infobar.">
-    Add card to Brave Account?
-  </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_TITLE_TO_CLOUD_COPY_TEST_CONFIRM_AND_SAVE_CARD" desc="Title text for the Autofill save card prompt when the card is to be saved by uploading it to Brave Payments. The title is used as one variation of the string experiment. The prompt can be either a bubble or an infobar.">
-    Confirm &amp; save card to Brave Account?
-  </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION_COPY_TEST_STORE_WITH_DEVICE" desc="Explanation of the effect of the Autofill save card prompt when the card is to be saved by uploading it to Brave Payments. The explanation is used as one variation of the string experiment.">
-    To pay faster next time, store your card and billing address in your Brave Account and on this device.
-  </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION_COPY_TEST_ADD_CARD_WITH_DEVICE" desc="Explanation of the effect of the Autofill save card prompt when the card is to be saved by uploading it to Brave Payments. The explanation is used as one variation of the string experiment.">
-    To pay faster next time, add your card and billing address to your Brave Account and to this device.
-  </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION_COPY_TEST_CONFIRM_AND_SAVE_CARD_WITH_DEVICE" desc="Explanation of the effect of the Autofill save card prompt when the card is to be saved by uploading it to Brave Payments. The explanation is used as one variation of the string experiment.">
-    To pay faster next time, save your card and billing address to your Brave Account and to this device.
-  </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION_COPY_TEST_STORE" desc="Explanation of the effect of the Autofill save card prompt when the card is to be saved by uploading it to Brave Payments. The explanation is used as one variation of the string experiment. It will be used when local saving of an uploaded card is disabled.">
-    To pay faster next time, store your card and billing address in your Brave Account.
-  </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION_COPY_TEST_ADD_CARD" desc="Explanation of the effect of the Autofill save card prompt when the card is to be saved by uploading it to Brave Payments. The explanation is used as one variation of the string experiment. It will be used when local saving of an uploaded card is disabled.">
-    To pay faster next time, add your card and billing address to your Brave Account.
-  </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION_COPY_TEST_CONFIRM_AND_SAVE_CARD" desc="Explanation of the effect of the Autofill save card prompt when the card is to be saved by uploading it to Brave Payments. The explanation is used as one variation of the string experiment. It will be used when local saving of an uploaded card is disabled.">
-    To pay faster next time, save your card and billing address to your Brave Account.
-  </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_ACCEPT_COPY_TEST_STORE" desc="Text to show for the Autofill save credit card prompt ok button. The label is used as one variation of the Brave Upstream string experiment. The prompt can be either a bubble or an infobar.">
-    Yes, store
-  </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_DECLINE_COPY_TEST_STORE" desc="Text to show for the Autofill save credit card prompt no-thanks button. The label is used as one variation of the Brave Upstream string experiment. The prompt can be either a bubble or an infobar.">
-    Don't store
-  </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_ACCEPT_COPY_TEST_ADD" desc="Text to show for the Autofill save credit card prompt ok button. The label is used as one variation of the Brave Upstream string experiment. The prompt can be either a bubble or an infobar.">
-    Yes, add
-  </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_DECLINE_COPY_TEST_ADD" desc="Text to show for the Autofill save credit card prompt no-thanks button. The label is used as one variation of the Brave Upstream string experiment. The prompt can be either a bubble or an infobar.">
-    No, don't add
-  </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_ACCEPT_COPY_TEST_CONFIRM_AND_SAVE" desc="Text to show for the Autofill save credit card prompt ok button. The label is used as one variation of the Brave Upstream string experiment. The prompt can be either a bubble or an infobar.">
-    Confirm &amp; save
   </message>
 
   <!-- Autofill Local card migration bubble or dialog -->
@@ -462,6 +414,9 @@
       <message name="IDS_AUTOFILL_WEBAUTHN_OPT_IN_DIALOG_TITLE_ERROR" desc="Headline explaining to users there were errors in the attempt to opt in using platform's authenticator.">
         Couldn't use Touch ID
       </message>
+      <message name="IDS_AUTOFILL_WEBAUTHN_OPT_IN_DIALOG_INSTRUCTION" desc="Subheading that appears below the headline explaining to the user that they won't have to enter their card's security code if they decide to use their device's platform authenticator in the future.">
+        Confirm your cards faster by using Touch ID from now on
+      </message>
       <message name="IDS_AUTOFILL_WEBAUTHN_OPT_IN_DIALOG_OK_BUTTON_LABEL" desc="Button that allows the user to use their device's platform authenticator to confirm card use in the future.">
         Use Touch ID
       </message>
@@ -472,6 +427,9 @@
       </message>
       <message name="IDS_AUTOFILL_WEBAUTHN_OPT_IN_DIALOG_TITLE_ERROR" desc="Headline explaining to users there were errors in the attempt to opt in using platform's authenticator.">
         Couldn't use Windows Hello
+      </message>
+      <message name="IDS_AUTOFILL_WEBAUTHN_OPT_IN_DIALOG_INSTRUCTION" desc="Subheading that appears below the headline explaining to the user that they won't have to enter their card's security code if they decide to use their device's platform authenticator in the future.">
+        Confirm your cards faster by using Windows Hello from now on
       </message>
       <message name="IDS_AUTOFILL_WEBAUTHN_OPT_IN_DIALOG_OK_BUTTON_LABEL" desc="Button that allows the user to use their device's platform authenticator to confirm card use in the future.">
         Use Windows Hello
@@ -484,13 +442,13 @@
       <message name="IDS_AUTOFILL_WEBAUTHN_OPT_IN_DIALOG_TITLE_ERROR" desc="Headline explaining to users there were errors in the attempt to opt in using platform's authenticator.">
         Couldn't use WebAuthn
       </message>
+      <message name="IDS_AUTOFILL_WEBAUTHN_OPT_IN_DIALOG_INSTRUCTION" desc="Subheading that appears below the headline explaining to the user that they won't have to enter their card's security code if they decide to use their device's platform authenticator in the future.">
+        Confirm your cards faster by using WebAuthn from now on
+      </message>
       <message name="IDS_AUTOFILL_WEBAUTHN_OPT_IN_DIALOG_OK_BUTTON_LABEL" desc="Button that allows the user to use their device's platform authenticator to confirm card use in the future.">
         Use WebAuthn
       </message>
     </if>
-    <message name="IDS_AUTOFILL_WEBAUTHN_OPT_IN_DIALOG_INSTRUCTION" desc="Subheading that appears below the headline explaining to the user that they won't have to enter their card's security code if they decide to use their device's platform authenticator in the future.">
-      You won't need to enter a card security code from now on
-    </message>
     <message name="IDS_AUTOFILL_WEBAUTHN_OPT_IN_DIALOG_INSTRUCTION_ERROR" desc="Subheading that appears below the headline, acknowledging the current error and encouraging users to retry later.">
       Please try again next time
     </message>
@@ -502,13 +460,13 @@
     </message>
   </if>
 
-
-  <!-- Verify pending dialog (Desktop only) -->
+  <!-- Webauthn verify pending dialog -->
+  <!-- Desktop only -->
   <if expr="not is_ios and not is_android">
-    <message name="IDS_AUTOFILL_VERIFY_PENDING_DIALOG_TITLE" desc="Headline showing the card verification is in progress.">
+    <message name="IDS_AUTOFILL_WEBAUTHN_VERIFY_PENDING_DIALOG_TITLE" desc="Headline of the dialog shown when user has opted in to use platform biometric authenticator and has selected one card to fill the form. This shows the verification of the selected card is in progress.">
         Verifying your identity...
     </message>
-    <message name="IDS_AUTOFILL_VERIFY_PENDING_DIALOG_CANCEL_BUTTON_LABEL" desc="Button that allows the user to cancel the card verification.">
+    <message name="IDS_AUTOFILL_WEBAUTHN_VERIFY_PENDING_DIALOG_CANCEL_BUTTON_LABEL" desc="Label of the cancel button in the dialog shown when user has opted in to use platform biometric authenticator and has selected one card to fill the form. This cancel button allows the user to cancel the entire the verification process.">
         Cancel
     </message>
   </if>

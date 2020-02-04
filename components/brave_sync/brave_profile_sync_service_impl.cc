@@ -56,7 +56,7 @@ namespace {
 
 AccountInfo GetDummyAccountInfo() {
   AccountInfo account_info;
-  account_info.account_id = "dummy_account_id";
+  account_info.account_id = CoreAccountId::FromString("dummy_account_id");
   return account_info;
 }
 
@@ -561,11 +561,10 @@ void BraveProfileSyncServiceImpl::OnResolvedSyncRecords(
     }
     // Send records to syncer
     if (get_record_cb_) {
-      sync_thread_->task_runner()->PostTask(
-          FROM_HERE,
-          base::BindOnce(&DoDispatchGetRecordsCallback,
-                         std::move(get_record_cb_),
-                         std::move(pending_received_records_)));
+      backend_task_runner_->PostTask(
+          FROM_HERE, base::BindOnce(&DoDispatchGetRecordsCallback,
+                                    std::move(get_record_cb_),
+                                    std::move(pending_received_records_)));
     }
     SignalWaitableEvent();
   } else if (category_name == kHistorySites) {

@@ -77,19 +77,11 @@
 <translation id="438216590634144114">Escolha o motor de busca que gostaria de utilizar por defeito ao pesquisar na Web desde a barra de endereços.</translation>
 <translation id="5804484488647369316">Definir motor de busca padrão</translation>
 <translation id="4428458837269935199">Para uma pesquisa mais privada, experimente o DuckDuckGo.</translation>
-<translation id="513635702954746724">Selecione a cor do seu tema</translation>
-<translation id="6842850080200126305">Defina a cor da barra de ferramentas, selecionando a opção de claro ou escuro no painel das definições.</translation>
-<translation id="5805868144901917207">Selecione um tema</translation>
-<translation id="8131740175452115882">Confirmar</translation>
-<translation id="713206503018076063">Tema do sistema (padrão)</translation>
-<translation id="1807246157184219062">Claro</translation>
-<translation id="2414886740292270097">Escuro</translation>
 <translation id="3829010735958850433">Salte a apresentação de boas-vindas</translation>
 <translation id="1201402288615127009">Seguinte</translation>
 <translation id="7954950242989581218">Navegue em segurança</translation>
 <translation id="2188651882929633653">O Brave Shields bloqueia as coisas assustadoras que o tentam rastrear na Web incluindo a maioria dos anúncios. Configure o Shields como “inativo” se um website parecer não estar a funcionar. O Brave usa <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>análises de produtos totalmente confidenciais<ph name="END_LINK_P3A">&lt;/a&gt;</ph> para estimar a utilização geral certas funcionalidades. Pode desativar isto em <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Anúncios</translation>
-<translation id="5698387814910197501">Ganhe {{currency}} por ver anúncios em Brave Os anúncios apresentados são baseados nos seus interesses, inferido dos seus hábitos de navegação. Nenhuma informação pessoal ou histórico de navegação sairá do seu navegador</translation>
 <translation id="6112368337882254910">Contribuição Automática</translation>
 <translation id="3742599705619405136">Uma forma automática de apoiar editores e criadores de conteúdos. Defina um pagamento mensal e navegue normalmente. Os sites "Brave Verified" que visitar irão receber as suas contribuições automaticamente, com base na sua atenção, conforme medido pela Brave.</translation>
 <translation id="20281847067919078">Recompensas pendentes estimadas</translation>
@@ -97,6 +89,7 @@
 <translation id="319209088187794725">Notificações de anúncios recebidos este mês</translation>
 <translation id="4229016885653790965">Desculpe! Ainda não estão disponíveis anúncios na sua região.</translation>
 <translation id="2539279826042558064">De momento, os Anúncios e as Recompensas Brave não estão disponíveis para o seu dispositivo.</translation>
+<translation id="5421369907811917952">Outras configurações</translation>
 <translation id="654711254769318398">Páginas de anúncios visualizadas</translation>
 <translation id="2532127066761785857">Número máximo de anúncios apresentados</translation>
 <translation id="5171071066587880677">1 anúncio por hora</translation>
@@ -132,7 +125,6 @@
 <translation id="2726674968268546964">tokens</translation>
 <translation id="7286722244752781970">Tempo mínimo de página até registar uma visita</translation>
 <translation id="4424486208397124985">Visitas mínimas por relevância do publicador</translation>
-<translation id="5421369907811917952">Outras configurações</translation>
 <translation id="6248554379744796526">Mostrar sites não verificados na lista</translation>
 <translation id="5875669387851353511">Permitir contribuição para vídeos</translation>
 <translation id="8933202740471878108">1 visita</translation>
@@ -162,7 +154,6 @@
 <translation id="7210234701206674260">A Brave Rewards está a ter um problema. Por favor, tente novamente mais tarde.</translation>
 <translation id="570208820610947248">Detetámos que ocorreu um erro com a sua carteira. Tem de recuperar a cópia de segurança da carteira antes de podermos processar quaisquer transações.</translation>
 <translation id="7797604753681168055">Recuperar agora!</translation>
-<translation id="5549059668721746831">Data da próxima doação mensal</translation>
 <translation id="6231182869178328516">Acabei de enviar uma gorjeta a <ph name="NAME"/> utilizando o Navegador Brave. Verifique em https://brave.com/tips.</translation>
 <translation id="8404935570206006581">SugiraComBrave</translation>
 <translation id="2876191400747549936">Lamentamos, ocorreu um problema ao processar o seu pedido. Por favor, tente novamente.</translation>
@@ -261,8 +252,6 @@
 <translation id="4114667046481794032">Valor da  contribuição</translation>
 <translation id="3520817231440482449">Gratifique este site Mensalmente</translation>
 <translation id="1827184134638345603">Envie uma Gratificação</translation>
-<translation id="7928243298881209869">A sua primeira contribuição mensal será enviada a:</translation>
-<translation id="6045860799501892362">Definir gratificação mensal</translation>
 <translation id="8003573781961874199">Descarregue como PDF</translation>
 <translation id="298067735430872465">Ganhos de Anúncios</translation>
 <translation id="2266556115441975588">Eis as suas recompensas decorrentes de Anúncios!</translation>
@@ -291,7 +280,6 @@
 <translation id="9115913704608474258">Novembro</translation>
 <translation id="7828956995407538686">Outubro</translation>
 <translation id="5502713021410870035">Setembro</translation>
-<translation id="5737831580668469027">Recompensas mensais!</translation>
 <translation id="606865182719489911">Está disponível uma doação de token gratuita.</translation>
 <translation id="2487641031722095938">É o seu dia de sorte!</translation>
 <translation id="6255773350565723852">A doação do token está a caminho.</translation>
@@ -318,13 +306,8 @@
 <translation id="4923459931733593730">Pagamento</translation>
 <translation id="4021593982164260556">Pagamento feito todos os dias {{day}}th day em cada mês.</translation>
 <translation id="6104680658798556671">Pagamento não feito</translation>
-<translation id="2834888581291358924">Quando o saldo não é suficiente para cobrir o total combinado de Contribuições-Automáticas e as suas gratificações recorrentes, os pagamentos não serão efetuados nesse período.</translation>
 <translation id="3138528956349114724">Os sites afixados são agora</translation>
-<translation id="2337632028350283479">Eis como funcionam as recompensas mensais:</translation>
-<translation id="6457273203091513039">As recompensas mensais não são efetuadas através do pagamento de contribuição automática, uma vez que são opções distintas.</translation>
 <translation id="9099396904827413228">Cada site irá receber um montante mensal fixo.</translation>
-<translation id="5051110132941857169">As recompensas mensais são pagas todas de uma vez, todos os meses. Se estiver a utilizar a opção de contribuição automática, as recompensas serão pagas ao mesmo tempo que o pagamento mensal da contribuição automática.</translation>
-<translation id="3374483782662414143">Pode remover qualquer site que receba as recompensas mensais a partir do painel Recompensas.</translation>
 <translation id="5082474983463379713">Por favor tenha em atenção:</translation>
 <translation id="1430915738399379752">Imprimir</translation>
 <translation id="135956957367307069">O seu pedido ainda está a ser processado, aguarde.</translation>

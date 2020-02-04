@@ -1,0 +1,12 @@
+diff --git a/components/content_settings/core/common/content_settings.cc b/components/content_settings/core/common/content_settings.cc
+index ae7ff7f5867f385955a414a75366f4b4c6a925f6..73043a2be7a82c3b006e3abd42566fb3bc1370c2 100644
+--- a/components/content_settings/core/common/content_settings.cc
++++ b/components/content_settings/core/common/content_settings.cc
+@@ -161,6 +161,7 @@ bool RendererContentSettingRules::IsRendererContentSetting(
+          content_type == ContentSettingsType::JAVASCRIPT ||
+          content_type == ContentSettingsType::CLIENT_HINTS ||
+          content_type == ContentSettingsType::POPUPS ||
++         BRAVE_IS_RENDERER_CONTENT_SETTING
+          content_type == ContentSettingsType::MIXEDSCRIPT;
+ }
+ 

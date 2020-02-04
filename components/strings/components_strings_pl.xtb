@@ -10,6 +10,7 @@
 <translation id="7791543448312431591">Dodaj</translation>
 <translation id="1181037720776840403">usuń</translation>
 <translation id="5317780077021120954">Zapisz</translation>
+<translation id="3897092660631435901">Menu</translation>
 <translation id="5300589172476337783">Pokaż</translation>
 <translation id="7108338896283013870">Schowaj</translation>
 <translation id="780301667611848630">Nie, dziękuję</translation>
@@ -18,7 +19,9 @@
 <translation id="1008557486741366299">Nie teraz</translation>
 <translation id="1036348656032585052">Wyłącz</translation>
 <translation id="8105368624971345109">Wyłącz</translation>
+<translation id="4989809363548539747">Ta wtyczka nie jest obsługiwana</translation>
 <translation id="1175364870820465910">&amp;Drukuj...</translation>
+<translation id="129553762522093515">Ostatnio zamknięte</translation>
 <translation id="8870413625673593573">Ostatnio zamknięte</translation>
 <translation id="385051799172605136">Wstecz</translation>
 <translation id="7481312909269577407">Dalej</translation>
@@ -31,17 +34,37 @@
 <translation id="5040262127954254034">Prywatność</translation>
 <translation id="3061707000357573562">Zastosowanie poprawki do usługi</translation>
 <translation id="1914326953223720820">Usługa rozpakowywania</translation>
+<translation id="1623104350909869708">Zapobiegaj wyświetlaniu dodatkowych okien dialogowych na tej stronie</translation>
+<translation id="7862185352068345852">Opuścić stronę?</translation>
+<translation id="9171296965991013597">Opuścić aplikację?</translation>
 <translation id="2677748264148917807">Wyjdź</translation>
+<translation id="425582637250725228">Wprowadzone zmiany mogą nie zostać zapisane.</translation>
+<translation id="8079031581361219619">Odświeżyć stronę?</translation>
+<translation id="6852204201400771460">Odświeżyć aplikację?</translation>
 <translation id="5556459405103347317">Odśwież</translation>
 <translation id="2359808026110333948">Kontynuuj</translation>
-<translation id="5935964611177478118">zaloguj się w Brave</translation>
+<translation id="8066955247577885446">Coś poszło nie tak.</translation>
+<translation id="5803412860119678065">Chcesz wpisać dane swojej karty (<ph name="CARD_DETAIL"/>)?</translation>
+<translation id="2463739503403862330">Wpisz</translation>
 <translation id="4378154925671717803">Telefon</translation>
 <translation id="8131740175452115882">Potwierdź</translation>
+<translation id="4901778704868714008">Zapisz...</translation>
+<translation id="2881276955470682203">Zapisać kartę?</translation>
 <translation id="8968766641738584599">Zapisz kartę</translation>
+<translation id="5624611466880082169">Zapisać kartę na koncie Brave?</translation>
+<translation id="5887400589839399685">Karta została zapisana</translation>
+<translation id="4524805452350978254">Zarządzaj kartami</translation>
+<translation id="1638780421120290329">Nie można zapisać karty</translation>
+<translation id="860043288473659153">Imię i nazwisko posiadacza karty</translation>
+<translation id="869891660844655955">Data wygaśnięcia</translation>
+<translation id="1058479211578257048">Zapisywanie kart...</translation>
+<translation id="3366477098757335611">Pokaż karty</translation>
 <translation id="5457113250005438886">Nieprawidlowy</translation>
+<translation id="4582204425268416675">Usuń kartę</translation>
 <translation id="6518133107902771759">Weryfikuj</translation>
 <translation id="8987927404178983737">Miesiąc</translation>
 <translation id="6015796118275082299">Rok</translation>
+<translation id="1581080074034554886">Kod CVC</translation>
 <translation id="9065203028668620118">Edytuj</translation>
 <translation id="5029568752722684782">Usuń kopię</translation>
 <translation id="5152275065296016556">Brave Pay</translation>
@@ -67,13 +90,57 @@
 <translation id="765676359832457558">Ukryj ustawienia zaawansowane</translation>
 <translation id="6989763994942163495">Pokaż ustawienia zaawansowane</translation>
 <translation id="9038649477754266430">Używaj podpowiedzi, by strony ładowały się szybciej</translation>
+<translation id="6451458296329894277">Potwierdź ponowne przesłanie formularza</translation>
 <translation id="4850886885716139402">Widok</translation>
 <translation id="7180611975245234373">Odśwież</translation>
 <translation id="1426410128494586442">Tak</translation>
 <translation id="4250680216510889253">Nie</translation>
 <translation id="4522570452068850558">Szczegóły</translation>
 <translation id="3586931643579894722">Ukryj szczegóły</translation>
+<translation id="3005723025932146533">Pokaż zapisaną kopię</translation>
+<translation id="3287510313208355388">Pobierz, gdy będę online</translation>
+<translation id="1527263332363067270">Czekam na połączenie…</translation>
+<translation id="7440140511386898319">Przeglądaj offline</translation>
+<translation id="4989163558385430922">Pokaż wszystko</translation>
+<translation id="6744009308914054259">Dopóki nie masz połączenia, możesz poczytać artykuły offline z Pobranych plików.</translation>
+<translation id="4646534391647090355">Przejdź tam teraz</translation>
+<translation id="1010200102790553230">Wczytaj stronę później</translation>
+<translation id="230476913390177517">Brave powiadomi Cię, gdy strona będzie gotowa. &lt;a&gt;Anuluj&lt;/a&gt;</translation>
+<translation id="3226128629678568754">Naciśnij przycisk ponownego załadowania, by przesłać dane wymagane do wczytania strony.</translation>
+<translation id="6203231073485539293">Sprawdź połączenie z internetem</translation>
+<translation id="6146055958333702838">Sprawdź wszystkie kable i uruchom ponownie wszelkie używane routery, modemy
+i inne urządzenia sieciowe.</translation>
+<translation id="6321917430147971392">Sprawdź ustawienia DNS</translation>
+<translation id="8289355894181816810">Jeśli nie masz pewności, co to oznacza, skontaktuj się z administratorem sieci.</translation>
+<translation id="6328639280570009161">Wyłącz przewidywanie działań sieciowych</translation>
+<translation id="3630155396527302611">Jeśli ten program jest już na liście programów mogących korzystać z sieci,
+spróbuj go z niej usunąć i dodać ponownie.</translation>
+<translation id="1645368109819982629">Nieobsługiwany protokół</translation>
+<translation id="4075732493274867456">Klient i serwer nie obsługują wspólnej wersji protokołu SSL lub mechanizmu szyfrowania.</translation>
+<translation id="5869405914158311789">Ta witryna jest nieosiągalna</translation>
+<translation id="2292556288342944218">Masz zablokowany dostęp do internetu</translation>
+<translation id="2224337661447660594">Brak internetu</translation>
+<translation id="7716424297397655342">Nie można załadować tej strony z pamięci podręcznej</translation>
+<translation id="4708268264240856090">Połączenie zostało przerwane</translation>
+<translation id="4764776831041365478">Strona internetowa pod adresem <ph name="URL">&lt;strong jscontent="failedUrl"&gt;&lt;/strong&gt;</ph> może być tymczasowo niedostępna lub została na stałe przeniesiona pod nowy adres internetowy.</translation>
+<translation id="8498891568109133222">Serwer <ph name="HOST_NAME"/> potrzebował zbyt wiele czasu na odpowiedź.</translation>
+<translation id="2784949926578158345">Połączenie zostało zresetowane.</translation>
+<translation id="2909946352844186028">Wykryto zmianę sieci.</translation>
+<translation id="7758069387465995638">Połączenie mogło zostać zablokowane przez zaporę sieciową lub program antywirusowy.</translation>
+<translation id="6711464428925977395">Serwer proxy działa nieprawidłowo albo adres jest błędny.</translation>
+<translation id="2705137772291741111">Zapisana w pamięci podręcznej kopia tej strony jest uszkodzona.</translation>
+<translation id="6757797048963528358">Twoje urządzenie przeszło w tryb uśpienia.</translation>
+<translation id="8149426793427495338">Twój komputer przeszedł w tryb uśpienia.</translation>
+<translation id="5510766032865166053">Mógł zostać przeniesiony lub usunięty.</translation>
+<translation id="5617949217645503996">Strona <ph name="HOST_NAME"/> spowodowała zbyt wiele przekierowań.</translation>
+<translation id="139305205187523129">Serwer <ph name="HOST_NAME">&lt;strong jscontent="hostName"&gt;&lt;/strong&gt;</ph> nie wysłał żadnych danych.</translation>
+<translation id="5675650730144413517">Ta strona nie działa</translation>
+<translation id="2166378884831602661">Twoje połączenie z tą stroną nie jest prywatne</translation>
+<translation id="5990559369517809815">Żądania do serwera zostały zablokowane przez rozszerzenie.</translation>
+<translation id="7549584377607005141">Do poprawnego wyświetlenia tej strony internetowej wymagane są dane wpisane przez Ciebie wcześniej. Możesz wysłać je ponownie, ale spowoduje to powtórzenie wszystkich działań wykonanych poprzednio przez stronę.</translation>
 <translation id="614940544461990577">Wypróbuj te rozwiązania:</translation>
+<translation id="4558551763791394412">Spróbuj wyłączyć rozszerzenia.</translation>
+<translation id="4943872375798546930">Brak wyników</translation>
 <translation id="8688672835843460752">Dostępne</translation>
 <translation id="4989542687859782284">Niedostępne</translation>
 <translation id="59174027418879706">Włączone</translation>
@@ -83,23 +150,30 @@
 <translation id="1838374766361614909">Wyczyść wyszukiwanie</translation>
 <translation id="495170559598752135">Czynności</translation>
 <translation id="8261506727792406068">Usuń</translation>
+<translation id="3207960819495026254">Dodano do zakładek</translation>
 <translation id="3303855915957856445">Brak wyników wyszukiwania</translation>
+<translation id="1209206284964581585">Na razie ukryj</translation>
+<translation id="1407135791313364759">Otwórz wszystkie</translation>
 <translation id="4880827082731008257">Przeszukaj historię</translation>
 <translation id="4756388243121344051">&amp;Historia</translation>
 <translation id="1644574205037202324">Historia</translation>
 <translation id="3950820424414687140">Zaloguj się</translation>
 <translation id="8286036467436129157">Zaloguj się</translation>
+<translation id="7526934274050461096">Twoje połączenie z tą witryną nie jest prywatne</translation>
 <translation id="8503813439785031346">Nazwa użytkownika</translation>
 <translation id="6657585470893396449">Hasło</translation>
 <translation id="6790428901817661496">Odtwórz</translation>
 <translation id="1178581264944972037">Wstrzymaj</translation>
 <translation id="1232569758102978740">Bez tytułu</translation>
 <translation id="7514365320538308">Pobierz</translation>
+<translation id="8041089156583427627">Prześlij opinię</translation>
 <translation id="7552846755917812628">Skorzystaj z tych wskazówek:</translation>
+<translation id="3960299545138990065">Uruchom ponownie Brave</translation>
 <translation id="4275830172053184480">Zrestartuj urządzenie</translation>
 <translation id="413544239732274901">Dowiedz się więcej</translation>
 <translation id="7554791636758816595">Nowa karta</translation>
 <translation id="2079545284768500474">Cofnij</translation>
+<translation id="17513872634828108">Otwarte karty</translation>
 <translation id="981121421437150478">Offline</translation>
 <translation id="5171045022955879922">Wyszukaj lub wpisz URL</translation>
 <translation id="803771048473350947">Plik</translation>
@@ -112,12 +186,17 @@
 <translation id="6831043979455480757">Tłumacz</translation>
 <translation id="2473195200299095979">Przetłumacz tę stronę</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>, odpowiedź, <ph name="ANSWER"/></translation>
-<translation id="9008201768610948239">Ignoruj</translation>
+<translation id="3468054117417088249"><ph name="TAB_SWITCH_SUFFIX"/>, obecnie otwarta. Naciśnij klawisz Tab, a potem Enter, by przełączyć się na otwartą kartę</translation>
+<translation id="4950898438188848926">Przycisk przełączania kart. Naciśnij Enter, by przełączyć się na otwartą kartę, <ph name="TAB_SWITCH_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
+<translation id="8211406090763984747">Połączenie jest bezpieczne</translation>
+<translation id="8157295877370077682">Opuścić stronę?</translation>
+<translation id="4750917950439032686">Informacje, które wysyłasz tej witrynie (na przykład hasła lub numery kart kredytowych), pozostają prywatne.</translation>
 <translation id="7714464543167945231">Certyfikat</translation>
-<translation id="4235360514405112390">Ważność</translation>
+<translation id="4235360514405112390">Ważny</translation>
 <translation id="6447842834002726250">Pliki cookie</translation>
+<translation id="5287240709317226393">Pokaż pliki cookie</translation>
 <translation id="1919345977826869612">Reklamy</translation>
-<translation id="410351446219883937">Automatyczne odtwarzanie</translation>
+<translation id="6612358246767739896">Treść chroniona</translation>
 <translation id="9219103736887031265">Grafika</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">Pop-upy i przekierowania</translation>
@@ -132,6 +211,7 @@
 <translation id="7638605456503525968">Porty szeregowe</translation>
 <translation id="2215727959747642672">Edytowanie pliku</translation>
 <translation id="6545864417968258051">Skanowanie Bluetooth</translation>
+<translation id="534295439873310000">Urządzenia z funkcją NFC</translation>
 <translation id="5039804452771397117">Zezwalaj</translation>
 <translation id="7053983685419859001">Zablokuj</translation>
 <translation id="57838592816432529">Wycisz</translation>
@@ -147,9 +227,12 @@
 <translation id="5932224571077948991">Na tej stronie wyświetlają się uciążliwe lub wprowadzające w błąd reklamy</translation>
 <translation id="7878562273885520351">Ktoś mógł poznać Twoje hasło</translation>
 <translation id="1089439967362294234">Zmień hasło</translation>
+<translation id="9008201768610948239">Ignoruj</translation>
 <translation id="1186201132766001848">Sprawdź hasła</translation>
 <translation id="5979084224081478209">Sprawdź hasła</translation>
+<translation id="10614374240317010">Nigdy nie zapisane</translation>
 <translation id="5869522115854928033">Zapisane hasła</translation>
+<translation id="230699814587342492">Hasła w Brave</translation>
 <translation id="5087580092889165836">Dodaj kartę</translation>
 <translation id="2154484045852737596">Edytowanie karty</translation>
 <translation id="4923459931733593730">Płatność</translation>
@@ -161,6 +244,7 @@
 <translation id="1826516787628120939">Sprawdzam</translation>
 <translation id="9154194610265714752">Zaktualizowano</translation>
 <translation id="1743570585616704562">Nie rozpoznano</translation>
+<translation id="9168814207360376865">Zezwalaj stronom na sprawdzanie, czy masz zapisane formy płatności</translation>
 <translation id="2653659639078652383">Wyślij</translation>
 <translation id="5045550434625856497">Nieprawidłowe hasło</translation>
 <translation id="1165039591588034296">Błąd</translation>
@@ -194,15 +278,26 @@
 <translation id="6965978654500191972">Urządzenie</translation>
 <translation id="4728558894243024398">Platforma</translation>
 <translation id="2878424575911748999">A1</translation>
+<translation id="5980920751713728343">Index-3x5</translation>
+<translation id="1374692235857187091">Index-4x6 (pocztówka)</translation>
+<translation id="1086953900555227778">Index-5x8</translation>
 <translation id="2380886658946992094">Informacje prawne</translation>
 <translation id="5939847200023027600">Usługa PDF Compositor</translation>
 <translation id="1588438908519853928">Normalny</translation>
 <translation id="1974060860693918893">Zaawansowane</translation>
 <translation id="5308380583665731573">Połącz</translation>
+<translation id="1413809658975081374">Błąd dotyczący prywatności</translation>
+<translation id="3566021033012934673">Połączenie nie jest prywatne</translation>
+<translation id="2856444702002559011">Osoby atakujące mogą próbować wykraść Twoje informacje ze strony <ph name="BEGIN_BOLD">&lt;strong&gt;</ph><ph name="SITE"/><ph name="END_BOLD">&lt;/strong&gt;</ph> (na przykład hasła, wiadomości lub dane kart kredytowych). <ph name="BEGIN_LEARN_MORE_LINK">&lt;a href="#" id="learn-more-link"&gt;</ph>Więcej informacji<ph name="END_LEARN_MORE_LINK">&lt;/a&gt;</ph></translation>
+<translation id="6264485186158353794">Wróć do bezpieczeństwa</translation>
 <translation id="6251924700383757765">Polityka prywatności</translation>
 <translation id="2501278716633472235">Wróć</translation>
+<translation id="6670613747977017428">Wróć do bezpieczeństwa.</translation>
+<translation id="1736420071277903564">Komputer</translation>
+<translation id="3906954721959377182">Tablet</translation>
 <translation id="7029809446516969842">Hasła</translation>
 <translation id="6596325263575161958">Opcje szyfrowania</translation>
+<translation id="8461694314515752532">Szyfruj synchronizowane dane własnym hasłem synchronizacji</translation>
 <translation id="9050666287014529139">Hasło</translation>
 <translation id="9095388113577226029">Więcej języków…</translation>
 <translation id="7600965453749440009">Nigdy nie tłumacz z języka: <ph name="LANGUAGE"/></translation>
@@ -210,6 +305,7 @@
 <translation id="7378627244592794276">Nie</translation>
 <translation id="9137013805542155359">Pokaż tekst oryginalny</translation>
 <translation id="8725066075913043281">Spróbuj ponownie</translation>
+<translation id="5684874026226664614">Nie można przetłumaczyć tej strony.</translation>
 <translation id="583281660410589416">Nieznane</translation>
 <translation id="9170848237812810038">&amp;Cofnij</translation>
 <translation id="2972581237482394796">&amp;Ponów</translation>

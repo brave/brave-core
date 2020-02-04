@@ -12,7 +12,7 @@ import org.chromium.base.CommandLine;
 import org.chromium.base.Log;
 import org.chromium.chrome.browser.ChromeSwitches;
 import org.chromium.chrome.browser.firstrun.FirstRunStatus;
-import org.chromium.chrome.browser.util.FeatureUtilities;
+import org.chromium.chrome.browser.flags.FeatureUtilities;
 
 /**
  * Base class for ChromeLauncherActivity

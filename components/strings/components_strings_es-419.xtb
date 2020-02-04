@@ -10,6 +10,7 @@
 <translation id="7791543448312431591">Agregar</translation>
 <translation id="1181037720776840403">Quitar</translation>
 <translation id="5317780077021120954">Guardar</translation>
+<translation id="3897092660631435901">Menú</translation>
 <translation id="5300589172476337783">Mostrar</translation>
 <translation id="7108338896283013870">Ocultar</translation>
 <translation id="780301667611848630">No, gracias</translation>
@@ -19,6 +20,7 @@
 <translation id="1036348656032585052">Desactivar</translation>
 <translation id="8105368624971345109">Desactivar</translation>
 <translation id="1175364870820465910">Im&amp;primir...</translation>
+<translation id="129553762522093515">Cerrado recientemente</translation>
 <translation id="8870413625673593573">Cerrado recientemente</translation>
 <translation id="385051799172605136">Atrás</translation>
 <translation id="7481312909269577407">Reenviar</translation>
@@ -28,19 +30,23 @@
 <translation id="1201402288615127009">Siguiente</translation>
 <translation id="5713644099811900409">Cuenta de Brave Software</translation>
 <translation id="3157931365184549694">Restaurar</translation>
+<translation id="5040262127954254034">Privacidad</translation>
 <translation id="3061707000357573562">Aplicar parche al servicio</translation>
 <translation id="1914326953223720820">Servicio de descompresión</translation>
+<translation id="1623104350909869708">Evitar que esta página cree cuadros de diálogo adicionales</translation>
 <translation id="2677748264148917807">Abandonar</translation>
 <translation id="5556459405103347317">Cargar de nuevo</translation>
 <translation id="2359808026110333948">Continuar</translation>
-<translation id="5935964611177478118">acceder a Brave</translation>
 <translation id="4378154925671717803">Teléfono</translation>
 <translation id="8131740175452115882">Confirmar</translation>
 <translation id="8968766641738584599">Guardar la tarjeta</translation>
+<translation id="860043288473659153">Nombre del titular de la tarjeta</translation>
+<translation id="869891660844655955">Fecha de vencimiento</translation>
 <translation id="5457113250005438886">No válido</translation>
 <translation id="6518133107902771759">Verificar</translation>
 <translation id="8987927404178983737">Mes</translation>
 <translation id="6015796118275082299">Año</translation>
+<translation id="1581080074034554886">CVC</translation>
 <translation id="9065203028668620118">Editar</translation>
 <translation id="5029568752722684782">Borrar la copia</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
@@ -70,6 +76,7 @@
 <translation id="4522570452068850558">Detalles</translation>
 <translation id="3586931643579894722">Ocultar detalles</translation>
 <translation id="614940544461990577">Intenta:</translation>
+<translation id="4943872375798546930">Sin resultados</translation>
 <translation id="8688672835843460752">Disponible</translation>
 <translation id="4989542687859782284">No disponible</translation>
 <translation id="59174027418879706">Activado</translation>
@@ -79,7 +86,10 @@
 <translation id="1838374766361614909">Borrar la búsqueda</translation>
 <translation id="495170559598752135">Acciones</translation>
 <translation id="8261506727792406068">Borrar</translation>
+<translation id="3207960819495026254">Agregada a favoritos</translation>
 <translation id="3303855915957856445">No se encontraron resultados en la búsqueda</translation>
+<translation id="1209206284964581585">Ocultar por el momento</translation>
+<translation id="1407135791313364759">Abrir todas</translation>
 <translation id="4880827082731008257">Buscar historial</translation>
 <translation id="4756388243121344051">&amp;Historial</translation>
 <translation id="1644574205037202324">Historial</translation>
@@ -91,11 +101,14 @@
 <translation id="1178581264944972037">Detener</translation>
 <translation id="1232569758102978740">Sin título</translation>
 <translation id="7514365320538308">Descargar</translation>
+<translation id="8041089156583427627">Enviar comentario</translation>
 <translation id="7552846755917812628">Intenta las siguientes sugerencias:</translation>
+<translation id="3960299545138990065">Reinicia Brave.</translation>
 <translation id="4275830172053184480">Reiniciar tu dispositivo</translation>
 <translation id="413544239732274901">Más información</translation>
 <translation id="7554791636758816595">Nueva pestaña</translation>
 <translation id="2079545284768500474">Deshacer</translation>
+<translation id="17513872634828108">Pestañas abiertas</translation>
 <translation id="981121421437150478">Sin conexión</translation>
 <translation id="5171045022955879922">Buscar o escribir URL</translation>
 <translation id="803771048473350947">Archivo</translation>
@@ -108,12 +121,11 @@
 <translation id="6831043979455480757">Traducir</translation>
 <translation id="2473195200299095979">Traducir esta página</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>, respuesta, <ph name="ANSWER"/></translation>
-<translation id="9008201768610948239">Ignorar</translation>
 <translation id="7714464543167945231">Certificado</translation>
 <translation id="4235360514405112390">Válido</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="1919345977826869612">Anuncios</translation>
-<translation id="410351446219883937">Reproducir automáticamente</translation>
+<translation id="6612358246767739896">Contenido protegido</translation>
 <translation id="9219103736887031265">Imágenes</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">Ventanas emergentes y redirec.</translation>
@@ -128,6 +140,7 @@
 <translation id="7638605456503525968">Puertos en serie</translation>
 <translation id="2215727959747642672">Edición de archivo</translation>
 <translation id="6545864417968258051">Búsqueda de dispositivos Bluetooth</translation>
+<translation id="534295439873310000">Dispositivos NFC</translation>
 <translation id="5039804452771397117">Permitir</translation>
 <translation id="7053983685419859001">Bloquear</translation>
 <translation id="57838592816432529">Silenciar</translation>
@@ -138,13 +151,17 @@
 <translation id="6979440798594660689">Silenciar (predeterminado)</translation>
 <translation id="8037357227543935929">Preguntar (predeterminado)</translation>
 <translation id="8763927697961133303">Dispositivo USB</translation>
+<translation id="4165986682804962316">Configuración del sitio</translation>
 <translation id="9011424611726486705">Abrir la configuración del sitio</translation>
 <translation id="5932224571077948991">El sitio muestra anuncios intrusivos o engañosos</translation>
 <translation id="7878562273885520351">Es posible que tu contraseña esté en peligro</translation>
 <translation id="1089439967362294234">Cambiar contraseña</translation>
+<translation id="9008201768610948239">Ignorar</translation>
 <translation id="1186201132766001848">Revisar contraseñas</translation>
 <translation id="5979084224081478209">Revisar contraseñas</translation>
+<translation id="10614374240317010">Nunca guardado</translation>
 <translation id="5869522115854928033">Contraseñas almacenadas</translation>
+<translation id="230699814587342492">Contraseñas de Brave</translation>
 <translation id="5087580092889165836">Agregar tarjeta</translation>
 <translation id="2154484045852737596">Editar tarjeta</translation>
 <translation id="4923459931733593730">Pago</translation>
@@ -193,8 +210,11 @@
 <translation id="1974060860693918893">Avanzada</translation>
 <translation id="5308380583665731573">Conectar</translation>
 <translation id="2501278716633472235">Ir atrás</translation>
+<translation id="1736420071277903564">Computadora</translation>
+<translation id="3906954721959377182">Tablet</translation>
 <translation id="7029809446516969842">Contraseñas</translation>
 <translation id="6596325263575161958">Opciones de encriptación</translation>
+<translation id="8461694314515752532">Encriptar los datos sincronizados con tu propia frase de contraseña de sincronización</translation>
 <translation id="9050666287014529139">Frase de contraseña</translation>
 <translation id="9095388113577226029">Más idiomas…</translation>
 <translation id="7600965453749440009">Nunca traducir <ph name="LANGUAGE"/></translation>
@@ -202,6 +222,7 @@
 <translation id="7378627244592794276">No</translation>
 <translation id="9137013805542155359">Mostrar original</translation>
 <translation id="8725066075913043281">Reintentar</translation>
+<translation id="5684874026226664614">No se puede traducir esta página.</translation>
 <translation id="583281660410589416">Desconocido</translation>
 <translation id="9170848237812810038">&amp;Deshacer</translation>
 <translation id="2972581237482394796">&amp;Rehacer</translation>

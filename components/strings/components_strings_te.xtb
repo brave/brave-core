@@ -5,6 +5,7 @@
 <translation id="6040143037577758943">మూసివేయి</translation>
 <translation id="6643016212128521049">క్లియర్ చేయి</translation>
 <translation id="8730621377337864115">పూర్తయింది</translation>
+<translation id="6165508094623778733">మరింత తెలుసుకోండి</translation>
 <translation id="6965382102122355670">సరే</translation>
 <translation id="7791543448312431591">జోడించు</translation>
 <translation id="1181037720776840403">తీసివేయి</translation>
@@ -18,6 +19,7 @@
 <translation id="1036348656032585052">ఆఫ్ చేయి</translation>
 <translation id="8105368624971345109">ఆఫ్ చేయి</translation>
 <translation id="1175364870820465910">&amp;ముద్రించు...</translation>
+<translation id="129553762522093515">ఇటీవల మూసివెయ్యబడినవి</translation>
 <translation id="8870413625673593573">ఇటీవల మూసివేసినవి</translation>
 <translation id="385051799172605136">వెనుకకు</translation>
 <translation id="7481312909269577407">ఫార్వార్డ్</translation>
@@ -27,18 +29,22 @@
 <translation id="1201402288615127009">తదుపరి</translation>
 <translation id="5713644099811900409">Brave Software ఖాతా</translation>
 <translation id="3157931365184549694">పునరుద్ధరించు</translation>
+<translation id="5040262127954254034">గోప్యత</translation>
 <translation id="3061707000357573562">ప్యాచ్ సేవ</translation>
 <translation id="1914326953223720820">సేవను అన్‌జిప్ చేయండి</translation>
+<translation id="1623104350909869708">ఈ పేజీని అదనపు డైలాగ్‌లు సృష్టించనీయకుండా నిరోధించు</translation>
 <translation id="2677748264148917807">నిష్క్రమించు</translation>
 <translation id="5556459405103347317">రీలోడ్</translation>
 <translation id="2359808026110333948">కొనసాగించు</translation>
-<translation id="5935964611177478118">Braveకి సైన్ ఇన్ చేయండి</translation>
 <translation id="4378154925671717803">ఫోన్</translation>
 <translation id="8131740175452115882">నిర్ధారించు</translation>
 <translation id="8968766641738584599">కార్డ్‌ని సేవ్ చేయండి</translation>
+<translation id="860043288473659153">కార్డుదారుని పేరు</translation>
+<translation id="869891660844655955">గడువు తేదీ</translation>
 <translation id="6518133107902771759">ధృవీకరించు</translation>
 <translation id="8987927404178983737">నెల</translation>
 <translation id="6015796118275082299">సంవత్సరం</translation>
+<translation id="1581080074034554886">CVC</translation>
 <translation id="9065203028668620118">సవరించు</translation>
 <translation id="5029568752722684782">కాపీని తీసివేయి</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
@@ -68,6 +74,7 @@
 <translation id="4522570452068850558">వివరాలు</translation>
 <translation id="3586931643579894722">వివరాలను దాచిపెట్టు</translation>
 <translation id="614940544461990577">ఇలా చేసి ప్రయత్నించండి:</translation>
+<translation id="4943872375798546930">ఫలితాలు ఏవీ లేవు</translation>
 <translation id="8688672835843460752">అందుబాటులో ఉంది</translation>
 <translation id="59174027418879706">ప్రారంభించబడింది</translation>
 <translation id="4176463684765177261">ఆపివేయబడింది</translation>
@@ -76,7 +83,10 @@
 <translation id="1838374766361614909">శోధనను తీసివేయి</translation>
 <translation id="495170559598752135">చర్యలు</translation>
 <translation id="8261506727792406068">తొలగించు</translation>
+<translation id="3207960819495026254">బుక్‌మార్క్ చేయబడింది</translation>
 <translation id="3303855915957856445">శోధన ఫలితాలు ఏవీ కనుగొనబడలేదు</translation>
+<translation id="1209206284964581585">ప్రస్తుతానికి దాచు</translation>
+<translation id="1407135791313364759">అన్నీ తెరువు</translation>
 <translation id="4880827082731008257">శోధన చరిత్ర</translation>
 <translation id="4756388243121344051">&amp;చరిత్ర</translation>
 <translation id="1644574205037202324">చరిత్ర</translation>
@@ -88,10 +98,14 @@
 <translation id="1178581264944972037">పాజ్ చేయి</translation>
 <translation id="1232569758102978740">శీర్షికలేనిది</translation>
 <translation id="7514365320538308">డౌన్‌లోడ్ చేయి</translation>
+<translation id="8041089156583427627">ప్రతిస్పందనను పంపండి</translation>
 <translation id="7552846755917812628">క్రింది చిట్కాలను ప్రయత్నించండి:</translation>
+<translation id="3960299545138990065">Braveను పునఃప్రారంభించండి</translation>
 <translation id="4275830172053184480">మీ పరికరాన్ని పునఃప్రారంభించండి</translation>
+<translation id="413544239732274901">మరింత తెలుసుకోండి</translation>
 <translation id="7554791636758816595">కొత్త ట్యాబ్</translation>
 <translation id="2079545284768500474">చర్య రద్దు</translation>
+<translation id="17513872634828108">తెరిచిన ట్యాబ్‍లు</translation>
 <translation id="981121421437150478">ఆఫ్‌లైన్</translation>
 <translation id="5171045022955879922">URLను వెతకండి లేదా టైప్ చేయండి</translation>
 <translation id="803771048473350947">ఫైల్</translation>
@@ -103,10 +117,10 @@
 <translation id="6831043979455480757">అనువదించు</translation>
 <translation id="2473195200299095979">ఈ పేజీని అనువదించండి</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>, సమాధానం, <ph name="ANSWER"/></translation>
-<translation id="9008201768610948239">విస్మరించు</translation>
 <translation id="7714464543167945231">సర్టిఫికెట్</translation>
 <translation id="6447842834002726250">కుక్కీలు</translation>
 <translation id="1919345977826869612">ప్రకటనలు</translation>
+<translation id="6612358246767739896">రక్షిత కంటెంట్</translation>
 <translation id="9219103736887031265">చిత్రాలు</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">పాప్-అప్‌లు మరియు మళ్లింపులు</translation>
@@ -121,6 +135,7 @@
 <translation id="7638605456503525968">సీరియల్ పోర్ట్‌లు</translation>
 <translation id="2215727959747642672">ఫైల్‌ను సవరించడం</translation>
 <translation id="6545864417968258051">బ్లూటూత్ స్కానింగ్</translation>
+<translation id="534295439873310000">NFC పరికరాలు</translation>
 <translation id="5039804452771397117">అనుమతించు</translation>
 <translation id="7053983685419859001">నిరోధించు</translation>
 <translation id="57838592816432529">మ్యూట్ చేయి</translation>
@@ -131,13 +146,17 @@
 <translation id="6979440798594660689">మ్యూట్ (డిఫాల్ట్)</translation>
 <translation id="8037357227543935929">అడగాలి (డిఫాల్ట్)</translation>
 <translation id="8763927697961133303">USB పరికరం</translation>
+<translation id="4165986682804962316">సైట్ సెట్టింగ్‌లు</translation>
 <translation id="9011424611726486705">సైట్ సెట్టింగ్‌లను తెరవండి</translation>
 <translation id="5932224571077948991">సైట్ అనుచితమైన లేదా తప్పుదారి పట్టించే ప్రకటనలను చూపుతుంది</translation>
 <translation id="7878562273885520351">మీ పాస్‌వర్డ్ ఎవరికైనా తెలిసిపోయి ఉండవచ్చు</translation>
 <translation id="1089439967362294234">పాస్‌వర్డ్‌ని మార్చు</translation>
+<translation id="9008201768610948239">విస్మరించు</translation>
 <translation id="1186201132766001848">పాస్‌వర్డ్‌లను తనిఖీ చేయి</translation>
 <translation id="5979084224081478209">పాస్‌వర్డ్‌లను తనిఖీ చేయి</translation>
+<translation id="10614374240317010">ఎప్పటికి సేవ్ చెయ్యబడవు</translation>
 <translation id="5869522115854928033">సేవ్  చేసిన పాస్‌వర్డ్‌లు</translation>
+<translation id="230699814587342492">Brave పాస్‌వర్డ్‌లు</translation>
 <translation id="5087580092889165836">కార్డ్‌ను జోడించు</translation>
 <translation id="2154484045852737596">కార్డ్‌ను సవరించండి</translation>
 <translation id="7764225426217299476">చిరునామాను జోడించు</translation>
@@ -182,8 +201,11 @@
 <translation id="1974060860693918893">ఆధునిక</translation>
 <translation id="5308380583665731573">కనెక్ట్ చేయండి</translation>
 <translation id="2501278716633472235">వెనుకకు వెళ్ళు</translation>
+<translation id="1736420071277903564">కంప్యూటర్</translation>
+<translation id="3906954721959377182">టాబ్లెట్</translation>
 <translation id="7029809446516969842">పాస్‌వర్డ్‌లు</translation>
 <translation id="6596325263575161958">గుప్తీకరణ ఎంపికలు</translation>
+<translation id="8461694314515752532">మీ స్వంత సమకాలీకరణ రహస్య పదబంధంతో సమకాలీకరించబడిన డేటాని ఎన్‌క్రిప్ట్ చేయండి</translation>
 <translation id="9050666287014529139">పాస్‌ఫ్రేజ్</translation>
 <translation id="9095388113577226029">మరిన్ని భాషలు...</translation>
 <translation id="7600965453749440009"><ph name="LANGUAGE"/>ను ఎప్పటికీ అనువదించవద్దు</translation>
@@ -191,6 +213,7 @@
 <translation id="7378627244592794276">వద్దు</translation>
 <translation id="9137013805542155359">అసలును చూపించు</translation>
 <translation id="8725066075913043281">మళ్లీ ప్రయత్నించు</translation>
+<translation id="5684874026226664614">అయ్యో. ఈ పేజీని అనువదించడం సాధ్యపడలేదు.</translation>
 <translation id="583281660410589416">తెలియదు</translation>
 <translation id="9170848237812810038">&amp;అన్డు</translation>
 <translation id="2972581237482394796">&amp;పునరావృతం</translation>
