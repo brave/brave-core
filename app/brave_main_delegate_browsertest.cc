@@ -46,6 +46,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &features::kAudioServiceOutOfProcess,
       &features::kNotificationTriggers,
       &features::kSmsReceiver,
+      &features::kVideoPlaybackQuality,
       &features::kWebXr,
       &features::kWebXrGamepadModule,
       &features::kLookalikeUrlNavigationSuggestionsUI,
