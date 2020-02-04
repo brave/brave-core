@@ -52,10 +52,6 @@ extension Preferences {
         /// Controls whether or not media auto-plays
         static let mediaAutoPlays = Option<Bool>(key: "general.media-auto-plays", default: false)
         
-        /// Whether or not a user has enabled Night Mode.
-        ///
-        /// Currently unused
-        static let nightMode = Option<Bool>(key: "general.night-mode", default: false)
         /// Whether or not to show the clipboard bar when the user has a URL in their pasteboard on launch
         ///
         /// Currently unused.

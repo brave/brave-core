@@ -916,9 +916,6 @@ extension TabManager: WKNavigationDelegate {
     // Do not excute JS at this point that requires running prior to DOM parsing.
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         guard let tab = self[webView] else { return }
-        let isNightMode = Preferences.General.nightMode.value
-        tab.setNightMode(isNightMode)
-
         let isNoImageMode = Preferences.Shields.blockImages.value
         tab.noImageMode = isNoImageMode
         
