@@ -325,7 +325,9 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
   protected void updateModernLocationBarColor(int color) {
       mShieldsLayout.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
-      mRewardsLayout.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+      if (mRewardsLayout != null) {
+          mRewardsLayout.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+      }
   }
 
   protected int getBoundsAfterAccountingForRightButtons(
@@ -337,9 +339,10 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       }
       ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams)toolbarButtonsContainer.getLayoutParams();
 
+      int rewardsLen = mRewardsLayout == null ? 0 : mRewardsLayout.getWidth();
       return toolbarButtonsContainer.getMeasuredWidth() -
             mShieldsLayout.getWidth() -
-            mRewardsLayout.getWidth() +
+            rewardsLen +
             params.getMarginEnd();
   }
 
@@ -362,6 +365,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           isShieldsOnForTab(tab) ? R.drawable.btn_brave : R.drawable.btn_brave_off);
 
       SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+
+      if (mRewardsLayout == null) return;
       if (isIncognito()) {
           mRewardsLayout.setVisibility(View.GONE);
       } else if (isNativeLibraryReady() &&
@@ -559,7 +564,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   private void updateNotificationBadgeForNewInstall(boolean rewardsEnabled) {
       SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
       boolean shownBefore = sharedPref.getBoolean(BraveRewardsPanelPopup.PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED, false);
-      boolean shouldShow = !shownBefore && !rewardsEnabled;
+      boolean shouldShow =
+              mBraveRewardsNotificationsCount != null && !shownBefore && !rewardsEnabled;
 
       if (!shouldShow) return;
 
@@ -571,10 +577,15 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   public void onThemeColorChanged(int color, boolean shouldAnimate) {
       final int textBoxColor = ToolbarColors.getTextBoxColorForToolbarBackgroundInNonNativePage(
               getResources(), color, isIncognito());
-      mShieldsLayout.getBackground().setColorFilter(textBoxColor, PorterDuff.Mode.SRC_IN);
-      if (mShieldsLayoutIsColorBackground) {
-          mShieldsLayout.setBackgroundColor(ChromeColors.getDefaultThemeColor(getResources(), isIncognito()));
+      if (mShieldsLayout != null) {
+          mShieldsLayout.getBackground().setColorFilter(textBoxColor, PorterDuff.Mode.SRC_IN);
+          if (mShieldsLayoutIsColorBackground) {
+              mShieldsLayout.setBackgroundColor(
+                      ChromeColors.getDefaultThemeColor(getResources(), isIncognito()));
+          }
       }
-      mRewardsLayout.getBackground().setColorFilter(textBoxColor, PorterDuff.Mode.SRC_IN);
+      if (mRewardsLayout != null) {
+          mRewardsLayout.getBackground().setColorFilter(textBoxColor, PorterDuff.Mode.SRC_IN);
+      }
   }
 }
