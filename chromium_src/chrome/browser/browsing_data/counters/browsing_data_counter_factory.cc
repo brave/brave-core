@@ -6,13 +6,14 @@
 #include <memory>
 
 #include "brave/browser/browsing_data/counters/shields_settings_counter.h"
+#include "brave/components/content_settings/core/browser/brave_host_content_settings_map.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
-#include "chrome/browser/profiles/profile.h"
 
 #define HANDLE_BRAVE_PREFS \
   if (pref_name == browsing_data::prefs::kDeleteShieldsSettings) { \
     return std::make_unique<ShieldsSettingsCounter>( \
-        HostContentSettingsMapFactory::GetForProfile(profile)); \
+        static_cast<BraveHostContentSettingsMap*>( \
+            HostContentSettingsMapFactory::GetForProfile(profile))); \
     return nullptr; \
   }
 

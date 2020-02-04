@@ -6,12 +6,12 @@
 #ifndef BRAVE_BROWSER_BROWSING_DATA_COUNTERS_SHIELDS_SETTINGS_COUNTER_H_
 #define BRAVE_BROWSER_BROWSING_DATA_COUNTERS_SHIELDS_SETTINGS_COUNTER_H_
 
+#include "brave/components/content_settings/core/browser/brave_host_content_settings_map.h"
 #include "components/browsing_data/core/counters/browsing_data_counter.h"
-#include "components/content_settings/core/browser/host_content_settings_map.h"
 
 class ShieldsSettingsCounter : public browsing_data::BrowsingDataCounter {
  public:
-  explicit ShieldsSettingsCounter(HostContentSettingsMap* map);
+  explicit ShieldsSettingsCounter(BraveHostContentSettingsMap* map);
   ~ShieldsSettingsCounter() override;
 
   const char* GetPrefName() const override;
@@ -21,7 +21,7 @@ class ShieldsSettingsCounter : public browsing_data::BrowsingDataCounter {
 
   void Count() override;
 
-  scoped_refptr<HostContentSettingsMap> map_;
+  scoped_refptr<BraveHostContentSettingsMap> map_;
 };
 
 #endif  // BRAVE_BROWSER_BROWSING_DATA_COUNTERS_SHIELDS_SETTINGS_COUNTER_H_

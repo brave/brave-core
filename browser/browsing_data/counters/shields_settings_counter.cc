@@ -9,13 +9,11 @@
 #include <string>
 
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
-#include "brave/components/content_settings/core/browser/brave_host_content_settings_map.h"
 #include "components/browsing_data/core/pref_names.h"
 #include "components/content_settings/core/browser/content_settings_registry.h"
-#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 
-ShieldsSettingsCounter::ShieldsSettingsCounter(HostContentSettingsMap* map)
+ShieldsSettingsCounter::ShieldsSettingsCounter(BraveHostContentSettingsMap* map)
     : map_(map) {
   DCHECK(map_);
 }
@@ -48,8 +46,7 @@ void ShieldsSettingsCounter::Count() {
           base::Time last_modified;
           if (content_type == ContentSettingsType::PLUGINS) {
             // Fetching last time for specific resource ids.
-            last_modified = static_cast<BraveHostContentSettingsMap*>(
-                map_.get())->GetShieldsSettingLastModifiedDate(
+            last_modified = map_->GetShieldsSettingLastModifiedDate(
                     content_setting.primary_pattern,
                     content_setting.secondary_pattern,
                     resource_identifier);

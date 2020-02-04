@@ -147,6 +147,8 @@ class BraveClearDataOnExitTest
                             true);
     prefService->SetBoolean(browsing_data::prefs::kDeleteSiteSettingsOnExit,
                             true);
+    prefService->SetBoolean(browsing_data::prefs::kDeleteShieldsSettingsOnExit,
+                            true);
   }
 
   int GetRemoveMaskAll() {
@@ -156,7 +158,8 @@ class BraveClearDataOnExitTest
            ChromeBrowsingDataRemoverDelegate::DATA_TYPE_SITE_DATA |
            ChromeBrowsingDataRemoverDelegate::DATA_TYPE_PASSWORDS |
            ChromeBrowsingDataRemoverDelegate::DATA_TYPE_FORM_DATA |
-           ChromeBrowsingDataRemoverDelegate::DATA_TYPE_CONTENT_SETTINGS;
+           ChromeBrowsingDataRemoverDelegate::DATA_TYPE_CONTENT_SETTINGS |
+           ChromeBrowsingDataRemoverDelegate::DATA_TYPE_SHIELDS_SETTINGS;
   }
 
   int GetOriginMaskAll() {

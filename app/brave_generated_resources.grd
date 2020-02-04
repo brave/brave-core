@@ -333,7 +333,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Clear all site-specific Shields settings
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_RESET_SHIELDS_SETTINGS_DIALOG_TITLE" desc="The title of the shields reset dialog">
-        This will lear all site-specific settings in Shields.
+        This will clear all site-specific settings in Shields.
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_RESET_SHIELDS_SETTINGS_DIALOG_BODY" desc="The body of the shields reset dialog">
         All sites will use your default Shields settings until you make more site-specific changes in the Shields panel.
