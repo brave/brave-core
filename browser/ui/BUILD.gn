@@ -149,8 +149,6 @@ source_set("ui") {
 
   if (is_linux) {
     sources += [
-      "views/brave_browser_main_extra_parts_views_linux.cc",
-      "views/brave_browser_main_extra_parts_views_linux.h",
       "views/brave_views_delegate_linux.cc",
       "views/brave_views_delegate_linux.h",
     ]

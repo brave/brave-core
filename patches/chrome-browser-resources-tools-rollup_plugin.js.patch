@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/resources/tools/rollup_plugin.js b/chrome/browser/resources/tools/rollup_plugin.js
+index e1942718e76890c5051923fc647f488c1801ca95..bbdd1216aeccf37e310d43ea03793267a931cc7a 100644
+--- a/chrome/browser/resources/tools/rollup_plugin.js
++++ b/chrome/browser/resources/tools/rollup_plugin.js
+@@ -71,6 +71,8 @@ export default function plugin(srcPath, genPath, rootPath, host, excludes) {
+         return joinPaths(polymerSrcPath, pathFromPolymer);
+       }
+ 
++      const resolvedByBrave = require(path.join(__dirname, '..', '..', 'brave_rollup_overrides')).braveResolveId({srcPath, genPath, rootPath, host, excludes}, source, origin, relativePath, joinPaths, combinePaths, chromeResourcesUrl, nonGeneratedFiles); if (resolvedByBrave) { return resolvedByBrave; }
++
+       // Get path from ui/webui/resources
+       let pathFromResources = '';
+       if (source.startsWith(chromeResourcesUrl)) {

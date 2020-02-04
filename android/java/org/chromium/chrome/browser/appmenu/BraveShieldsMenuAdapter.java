@@ -42,6 +42,7 @@ import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettin
 //import org.chromium.chrome.browser.MixPanelWorker;
 import org.chromium.ui.base.LocalizationUtils;
 import org.chromium.ui.interpolators.BakedBezierInterpolator;
+import org.chromium.ui.widget.ChromeImageView;
 
 import java.util.List;
 import java.lang.NumberFormatException;
@@ -265,7 +266,7 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
                         number.setTag(R.string.brave_shields_scripts_blocked);
                     }
                 } else if (6 == position) {
-                    convertView = mInflater.inflate(R.layout.brave_shields_menu_item, parent, false);
+//                    convertView = mInflater.inflate(R.layout.brave_shields_menu_item, parent, false);
                     TextView text = (TextView) convertView.findViewById(R.id.brave_shields_text);
                     if (text != null) {
                         text.setText(R.string.brave_shields_fingerprint_methods);
@@ -311,13 +312,13 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
                         text.setText(value);
                     }*/
                 } else {
-                    convertView = mInflater.inflate(R.layout.menu_item, parent, false);
+//                    convertView = mInflater.inflate(R.layout.menu_item, parent, false);
                     holder.text = (TextView) convertView.findViewById(R.id.menu_item_text);
-                    holder.image = (AppMenuItemIcon) convertView.findViewById(R.id.menu_item_icon);
+                    //holder.image = (AppMenuItemIcon) convertView.findViewById(R.id.menu_item_icon);
                     convertView.setTag(holder);
                 }
-                convertView.setTag(R.id.menu_item_enter_anim_id,
-                        buildStandardItemEnterAnimator(convertView, position));
+//                convertView.setTag(R.id.menu_item_enter_anim_id,
+//                        buildStandardItemEnterAnimator(convertView, position));
 
                 mPositionViews.append(position, convertView);
             } else {
@@ -631,7 +632,7 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
         Drawable icon = item.getIcon();
         holder.image.setImageDrawable(icon);
         holder.image.setVisibility(icon == null ? View.GONE : View.VISIBLE);
-        holder.image.setChecked(item.isChecked());
+//        holder.image.setChecked(item.isChecked());
         holder.text.setText(item.getTitle());
         holder.text.setContentDescription(item.getTitleCondensed());
 
@@ -725,7 +726,7 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
 
     static class StandardMenuItemViewHolder {
         public TextView text;
-        public AppMenuItemIcon image;
+        public /*AppMenuItemIcon*/ChromeImageView image;
     }
 
     static class CustomMenuItemViewHolder extends StandardMenuItemViewHolder {

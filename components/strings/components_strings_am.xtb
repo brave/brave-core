@@ -10,6 +10,7 @@
 <translation id="7791543448312431591">አክል</translation>
 <translation id="1181037720776840403">አስወግድ</translation>
 <translation id="5317780077021120954">አስቀምጥ</translation>
+<translation id="3897092660631435901">ምናሌ</translation>
 <translation id="5300589172476337783">አሳይ</translation>
 <translation id="7108338896283013870">ደብቅ</translation>
 <translation id="780301667611848630">አይ፣ አመሰግናለሁ</translation>
@@ -19,6 +20,7 @@
 <translation id="1036348656032585052">አጥፋ</translation>
 <translation id="8105368624971345109">አጥፋ</translation>
 <translation id="1175364870820465910">&amp;አትም…</translation>
+<translation id="129553762522093515">በቅርብ ጊዜ የተዘጉ</translation>
 <translation id="8870413625673593573">በቅርብ ጊዜ የተዘጉ</translation>
 <translation id="385051799172605136">ተመለስ</translation>
 <translation id="7481312909269577407">ወደ ፊት</translation>
@@ -28,19 +30,23 @@
 <translation id="1201402288615127009">ቀጣይ</translation>
 <translation id="5713644099811900409">የBrave Software መለያ</translation>
 <translation id="3157931365184549694">እነበረበት መልስ</translation>
+<translation id="5040262127954254034">ግላዊነት</translation>
 <translation id="3061707000357573562">የመጠገኛ አገልግሎት</translation>
 <translation id="1914326953223720820">አገልግሎትን በትን</translation>
+<translation id="1623104350909869708">ይህ ገጽ ተጨማሪ መገናኛዎችን እንዳይፈጥር አግድ</translation>
 <translation id="2677748264148917807">ለቅቀህ ውጣ</translation>
 <translation id="5556459405103347317">ዳግም ጫን</translation>
 <translation id="2359808026110333948">ቀጥል</translation>
-<translation id="5935964611177478118">ወደ Brave ይግቡ</translation>
 <translation id="4378154925671717803">ስልክ</translation>
 <translation id="8131740175452115882">አረጋግጥ</translation>
 <translation id="8968766641738584599">ካርድ አስቀምጥ</translation>
+<translation id="860043288473659153">የካርድ ያዢ ስም</translation>
+<translation id="869891660844655955">የሚያበቀበት ጊዜ</translation>
 <translation id="5457113250005438886">ልክ ያልሆነ</translation>
 <translation id="6518133107902771759">አረጋግጥ</translation>
 <translation id="8987927404178983737">ወር</translation>
 <translation id="6015796118275082299">ዓመት</translation>
+<translation id="1581080074034554886">CVC</translation>
 <translation id="9065203028668620118">አርትዕ</translation>
 <translation id="5029568752722684782">ቅጂን አጽዳ</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
@@ -70,6 +76,7 @@
 <translation id="4522570452068850558">ዝርዝሮች</translation>
 <translation id="3586931643579894722">ዝርዝር ደብቅ</translation>
 <translation id="614940544461990577">ይሞክሩ፦</translation>
+<translation id="4943872375798546930">ውጤቶች የሉም</translation>
 <translation id="8688672835843460752">ይገኛል</translation>
 <translation id="4989542687859782284">አይገኝም</translation>
 <translation id="59174027418879706">ነቅቷል</translation>
@@ -79,7 +86,10 @@
 <translation id="1838374766361614909">ፍለጋን ያፅዱ</translation>
 <translation id="495170559598752135">እርምጃዎች</translation>
 <translation id="8261506727792406068">ሰርዝ</translation>
+<translation id="3207960819495026254">ዕልባት ተደርጎበታል</translation>
 <translation id="3303855915957856445">ምንም የፍለጋ ውጤቶች አልተገኙም</translation>
+<translation id="1209206284964581585">ለአሁን ደብቅ</translation>
+<translation id="1407135791313364759">ሁሉንም ክፈት</translation>
 <translation id="4880827082731008257">የፍለጋ ታሪክ</translation>
 <translation id="4756388243121344051">&amp;ታሪክ</translation>
 <translation id="1644574205037202324">ታሪክ</translation>
@@ -91,11 +101,14 @@
 <translation id="1178581264944972037">ለአፍታ አቁም</translation>
 <translation id="1232569758102978740">ርዕስ አልባ</translation>
 <translation id="7514365320538308">አውርድ</translation>
+<translation id="8041089156583427627">ግብረ መልስ ላክ</translation>
 <translation id="7552846755917812628">የሚከተሉትን ጠቃሚ ምክሮች ይሞክሩ፦</translation>
+<translation id="3960299545138990065">Braveን ዳግም ያስጀምሩት</translation>
 <translation id="4275830172053184480">መሣሪያዎን ዳግም ያስጀምሩ</translation>
 <translation id="413544239732274901">የበለጠ ይወቁ</translation>
 <translation id="7554791636758816595">አዲስ ትር</translation>
 <translation id="2079545284768500474">ቀልብስ</translation>
+<translation id="17513872634828108">ትሮችን ክፈት</translation>
 <translation id="981121421437150478">ከመስመር ውጪ</translation>
 <translation id="5171045022955879922">ይፈልጉ ወይም ዩአርኤል ይጻፉ</translation>
 <translation id="803771048473350947">ፋይል</translation>
@@ -108,12 +121,11 @@
 <translation id="6831043979455480757">መተርጎም</translation>
 <translation id="2473195200299095979">ይህን ገጽ መተርጎም</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>፣ መልስ፣ <ph name="ANSWER"/></translation>
-<translation id="9008201768610948239">ችላ በል</translation>
 <translation id="7714464543167945231">ሰርቲፊኬት</translation>
 <translation id="4235360514405112390">ልክ የሆነ</translation>
 <translation id="6447842834002726250">ኩኪዎች</translation>
 <translation id="1919345977826869612">ማስታወቂያዎች</translation>
-<translation id="410351446219883937">አውቶፕለይ</translation>
+<translation id="6612358246767739896">ጥበቃ የሚደረግለት ይዘት</translation>
 <translation id="9219103736887031265">ምስሎች</translation>
 <translation id="7521387064766892559">ጃቫስክሪፕት</translation>
 <translation id="4434045419905280838">ብቅ-ባዮች እና አቅጣጫ ማዞሮች</translation>
@@ -128,6 +140,7 @@
 <translation id="7638605456503525968">ተከታታይ ወደቦች</translation>
 <translation id="2215727959747642672">የፋይል አርትዖት አደራረግ</translation>
 <translation id="6545864417968258051">የብሉቱዝ ቅኝት</translation>
+<translation id="534295439873310000">የNFC መሣሪያዎች</translation>
 <translation id="5039804452771397117">ፍቀድ</translation>
 <translation id="7053983685419859001">አግድ</translation>
 <translation id="57838592816432529">ድምጽ ይዝጉ</translation>
@@ -138,13 +151,17 @@
 <translation id="6979440798594660689">ድምጸ-ከል አድርግ (ነባሪ)</translation>
 <translation id="8037357227543935929">ጠይቅ (ነባሪ)</translation>
 <translation id="8763927697961133303">የዩኤስቢ መሣሪያ</translation>
+<translation id="4165986682804962316">የጣቢያ ቅንብሮች</translation>
 <translation id="9011424611726486705">የጣቢያ ቅንብሮችን ክፈት</translation>
 <translation id="5932224571077948991">ጣቢያ ረባሽ ወይም አሳሳች ማስታወቂያዎችን ያሳያል</translation>
 <translation id="7878562273885520351">የእርስዎ ይለፍ ቃል ተሰርቆ ሊሆን ይችላል</translation>
 <translation id="1089439967362294234">የይለፍ ቃል ቀይር</translation>
+<translation id="9008201768610948239">ችላ በል</translation>
 <translation id="1186201132766001848">የይለፍ ቃላትዎን ይፈትሹ</translation>
 <translation id="5979084224081478209">የይለፍ ቃላትዎን ይፈትሹ</translation>
+<translation id="10614374240317010">በጭራሽ አልተቀመጠም</translation>
 <translation id="5869522115854928033">የተቀመጡ የይለፍ ቃሎች</translation>
+<translation id="230699814587342492">የBrave ይለፍ ቃላት</translation>
 <translation id="5087580092889165836">ካርድ አክል</translation>
 <translation id="2154484045852737596">ካርትን ያርትዑ</translation>
 <translation id="4923459931733593730">ክፍያ</translation>
@@ -193,8 +210,11 @@
 <translation id="1974060860693918893">የላቀ</translation>
 <translation id="5308380583665731573">ይገናኙ</translation>
 <translation id="2501278716633472235">ወደ ኋላ ተመለስ</translation>
+<translation id="1736420071277903564">ኮምፒውተር</translation>
+<translation id="3906954721959377182">ጡባዊ</translation>
 <translation id="7029809446516969842">የይለፍ ቃላት</translation>
 <translation id="6596325263575161958">የምስጠራ አማራጮች</translation>
+<translation id="8461694314515752532">የሰመረ ውሂብ በራስዎ የስምረት ይለፍ ሐረግ ያመሣጥሩ</translation>
 <translation id="9050666287014529139">የይለፍ ሐረግ</translation>
 <translation id="9095388113577226029">ተጨማሪ ቋንቋዎች...</translation>
 <translation id="7600965453749440009"><ph name="LANGUAGE"/>ን በጭራሽ አትተርጉም</translation>
@@ -202,6 +222,7 @@
 <translation id="7378627244592794276">አይ</translation>
 <translation id="9137013805542155359">የመጀመሪያውን አሳይ</translation>
 <translation id="8725066075913043281">እንደገና ሞክር</translation>
+<translation id="5684874026226664614">ውይ። ይህ ገጽ ሊተረጎም አይችልም።</translation>
 <translation id="583281660410589416">ያልታወቀ</translation>
 <translation id="9170848237812810038">&amp;ቀልብስ</translation>
 <translation id="2972581237482394796">&amp;ድገም</translation>

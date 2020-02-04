@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/core/svg/svg_text_content_element.cc b/third_party/blink/renderer/core/svg/svg_text_content_element.cc
-index f81f3d4bf3b57f5bf7a8736ce5f1224aaa22b8de..22e34c3036297fb6c7782a8d5cf601f2d75419c9 100644
+index f81f3d4bf3b57f5bf7a8736ce5f1224aaa22b8de..12dfeb57ee92a1eb8fb76a9003c65c6b9b859e80 100644
 --- a/third_party/blink/renderer/core/svg/svg_text_content_element.cc
 +++ b/third_party/blink/renderer/core/svg/svg_text_content_element.cc
 @@ -20,6 +20,7 @@
  
  #include "third_party/blink/renderer/core/svg/svg_text_content_element.h"
  
-+#include "brave/renderer/brave_content_settings_observer_helper.h"
++#include "brave/renderer/brave_content_settings_agent_impl_helper.h"
  #include "third_party/blink/renderer/core/css/css_property_names.h"
  #include "third_party/blink/renderer/core/css_value_keywords.h"
  #include "third_party/blink/renderer/core/editing/frame_selection.h"

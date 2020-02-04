@@ -77,19 +77,11 @@
 <translation id="438216590634144114">اختر محرك البحث الذي ترغب في استخدامه كمحرك افتراضي عند البحث في الويب من شريط العنوان.</translation>
 <translation id="5804484488647369316">تعيين محرك البحث الافتراضي</translation>
 <translation id="4428458837269935199">للحصول على تجربة بحث أكثر خصوصية، جرّب DuckDuckGo.</translation>
-<translation id="513635702954746724">اختيار مظهر اللون</translation>
-<translation id="6842850080200126305">يمكنك ضبط لون شريط الأدوات من خلال اختيار الخيار الفاتح أو الغامق في لوحة الإعدادات.</translation>
-<translation id="5805868144901917207">اختر سمة</translation>
-<translation id="8131740175452115882">التأكيد</translation>
-<translation id="713206503018076063">سمة النظام (الافتراضية)</translation>
-<translation id="1807246157184219062">فاتح</translation>
-<translation id="2414886740292270097">داكن</translation>
 <translation id="3829010735958850433">تخطى جولة الترحيب</translation>
 <translation id="1201402288615127009">التالي</translation>
 <translation id="7954950242989581218">قم بتصفح آمن وسليم</translation>
 <translation id="2188651882929633653">تقوم دروع Brave بحظر العناصر المريبة التي تحاول تتبعك عبر الويب  بما في ذلك معظم الإعلانات. عيّن الدروع إلى "مُعطلة" إذا كان الموقع لا يبدو أنه يعمل. يستخدم Brave  <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>completely private product analytics<ph name="END_LINK_P3A">&lt;/a&gt;</ph> لتقدير الاستخدام الكلي لبعض الميزات. يمكنك إيقاف تشغيل هذا من <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">إعلانات</translation>
-<translation id="5698387814910197501">اكسب {{currency}} عن طريق مشاهدة الإعلانات في Brave. تعتمد الإعلانات المقدمة على اهتماماتك كما يُستنتج من سلوك تصفحك. لا تغادر متصفحك أية بيانات شخصية أو سجلات تصفح أبداً.</translation>
 <translation id="6112368337882254910">مساهمة تلقائية</translation>
 <translation id="3742599705619405136">طريقة تلقائية لدعم الناشرين ومنشئي المحتوى. قم بتعيين دفعة شهرية وتصفح بشكل طبيعي. ستتلقى المواقع المتحقَق منها من Brave التي تزورها مساهماتك تلقائيًا، بناءً على انتباهك كما يتم قياسه بواسطة Brave.</translation>
 <translation id="20281847067919078">تقدير المكافآت المعلقة</translation>
@@ -97,6 +89,7 @@
 <translation id="319209088187794725">إشعارات الإعلانات التي وردت هذا الشهر</translation>
 <translation id="4229016885653790965">عذرًا! لم تتم إتاحة الإعلانات في منطقتك بعد.</translation>
 <translation id="2539279826042558064">مكافآت Brave و Ads غير متوفرة على جهازك في الوقت الحالي.</translation>
+<translation id="5421369907811917952">إعدادات أخرى</translation>
 <translation id="654711254769318398">صفحات الإعلانات التي تمت مشاهدتها</translation>
 <translation id="2532127066761785857">الحد الأقصى لعدد الإعلانات المعروضة</translation>
 <translation id="5171071066587880677">إعلان واحد في الساعة</translation>
@@ -132,7 +125,6 @@
 <translation id="2726674968268546964">الرموز المميزة</translation>
 <translation id="7286722244752781970">الحد الأدنى لوقت الصفحة قبل تسجيل الزيارة</translation>
 <translation id="4424486208397124985">الحد الأدنى من الزيارات من أجل صلة الناشر</translation>
-<translation id="5421369907811917952">إعدادات أخرى</translation>
 <translation id="6248554379744796526">اعرض المواقع التي لم يتم التحقق منها في القائمة</translation>
 <translation id="5875669387851353511">السماح بالمساهمة في مقاطع الفيديو</translation>
 <translation id="8933202740471878108">زِيارَة واحدة</translation>
@@ -162,7 +154,7 @@
 <translation id="7210234701206674260">توجد مشكلة في مكافآت Brave. الرجاء المحاولة مرة أخرى.</translation>
 <translation id="570208820610947248">اكتشفنا وجود خطأ في محفظتك، ولذلك يجب استرداد النسخة الاحتياطية منها قبل معالجة أي معاملات.</translation>
 <translation id="7797604753681168055">الاسترداد الآن</translation>
-<translation id="5549059668721746831">تاريخ الإكرامية الشهرية التالية</translation>
+<translation id="5549059668721746831">تاريخ المساهمة الشهرية التالية</translation>
 <translation id="6231182869178328516">لقد أعطيت إكرامية لـ <ph name="NAME"/> باستخدام متصفح Brave. يمكنك التحقق من ذلك في https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">عذرًا، حدثت مشكلة أثناء معالجة طلبك. يرجى المحاولة مرة أخرى.</translation>
@@ -261,8 +253,8 @@
 <translation id="4114667046481794032">مقدار المساهمة</translation>
 <translation id="3520817231440482449">كافئ هذا الموقع شهريا</translation>
 <translation id="1827184134638345603">أرسل مكافأة؛</translation>
-<translation id="7928243298881209869">سيتم إرسال إكراميتك الشهرية الأولى في:</translation>
-<translation id="6045860799501892362">قم بتعيين مكافأة شهرية</translation>
+<translation id="7928243298881209869">سيتم إرسال مساهمتك الشهرية الأولى في:</translation>
+<translation id="6045860799501892362">تعيين مساهمة شهرية</translation>
 <translation id="8003573781961874199">التنزيل بتنسيق PDF</translation>
 <translation id="298067735430872465">أرباح من الإعلانات</translation>
 <translation id="2266556115441975588">إن مكافآتك من الإعلانات هنا!</translation>
@@ -291,7 +283,7 @@
 <translation id="9115913704608474258">نوفمبر</translation>
 <translation id="7828956995407538686">أكتوبر</translation>
 <translation id="5502713021410870035">سبتمبر</translation>
-<translation id="5737831580668469027">المكافآت الشهرية</translation>
+<translation id="5737831580668469027">المساهمات الشهرية!</translation>
 <translation id="606865182719489911">تتوفر منحة رموز مجانية.</translation>
 <translation id="2487641031722095938">هذا يوم سعدك!</translation>
 <translation id="6255773350565723852">هديتك المالية في طريقها إليك.</translation>
@@ -318,13 +310,10 @@
 <translation id="4923459931733593730">دفعة</translation>
 <translation id="4021593982164260556">يتم عمل الدفع في اليوم {{day}} في كل شهر.</translation>
 <translation id="6104680658798556671">لم يتم الدفع.</translation>
-<translation id="2834888581291358924">عندما لا يكون رصيدك كافيًا لتغطية إجمالي المساهمة التلقائية والمكافآت المتكررة، يتم تخطي هذه الدفعات لهذه الفترة.</translation>
+<translation id="2834888581291358924">عندما لا يكون رصيدك كافيًا لتغطية إجمالي المساهمة التلقائية والمساهمات الشهرية، يتم تخطي هذه الدفعات لهذه الفترة.</translation>
 <translation id="3138528956349114724">المواقع المثبّتة الآن</translation>
-<translation id="2337632028350283479">إليك آلية عمل المكافآت الشهرية:</translation>
-<translation id="6457273203091513039">لا يمكن الحصول على المكافآت الشهرية من خلال دفع "المساهمة التلقائية"، فالأمران مستقلان.</translation>
+<translation id="2337632028350283479">إليك آلية عمل المساهمات الشهرية:</translation>
 <translation id="9099396904827413228">يحصل كل موقع على مبلغ ثابت شهريًا.</translation>
-<translation id="5051110132941857169">يتم دفع جميع المكافآت الشهرية مرة واحدة كل شهر. وإذا كنت تستخدم "المساهمة التلقائية"، فسيتم تقديم المكافآت في آن واحد مع دفعتك الشهرية ضمن "المساهمة التلقائية".</translation>
-<translation id="3374483782662414143">يمكنك إزالة أي موقع يتلقى مكافآت شهرية من داخل لوحة "المكافآت".</translation>
 <translation id="5082474983463379713">يرجى الملاحظة:</translation>
 <translation id="1430915738399379752">طباعة</translation>
 <translation id="135956957367307069">لا يزال طلبك قيد المعالجة. يرجى الانتظار.</translation>

@@ -10,6 +10,7 @@
 <translation id="7791543448312431591">জুড়ুন</translation>
 <translation id="1181037720776840403">সরান</translation>
 <translation id="5317780077021120954">সেভ করুন</translation>
+<translation id="3897092660631435901">মেনু</translation>
 <translation id="5300589172476337783">দেখান</translation>
 <translation id="7108338896283013870">লুকান</translation>
 <translation id="780301667611848630">না থাক</translation>
@@ -19,6 +20,7 @@
 <translation id="1036348656032585052">বন্ধ করুন</translation>
 <translation id="8105368624971345109">বন্ধ করুন</translation>
 <translation id="1175364870820465910">&amp;প্রিন্ট...</translation>
+<translation id="129553762522093515">সম্প্রতি বন্ধ হয়েছে</translation>
 <translation id="8870413625673593573">সম্প্রতি বন্ধ হয়েছে</translation>
 <translation id="385051799172605136">ফিরুন</translation>
 <translation id="7481312909269577407">ফরওয়ার্ড</translation>
@@ -28,19 +30,23 @@
 <translation id="1201402288615127009">পরবর্তী</translation>
 <translation id="5713644099811900409">Brave Software অ্যাকাউন্ট</translation>
 <translation id="3157931365184549694">পুনরুদ্ধার করুন</translation>
+<translation id="5040262127954254034">গোপনীয়তা</translation>
 <translation id="3061707000357573562">প্যাচ পরিষেবা</translation>
 <translation id="1914326953223720820">পরিষেবা আনজিপ করুন</translation>
+<translation id="1623104350909869708">এই পৃষ্ঠাটিকে অতিরিক্ত কথোপকথন তৈরি করা থেকে বাধা দিন</translation>
 <translation id="2677748264148917807">ছেড়ে চলে যান</translation>
 <translation id="5556459405103347317">আবার লোড করুন</translation>
 <translation id="2359808026110333948">এগিয়ে যান</translation>
-<translation id="5935964611177478118">Brave এ প্রবেশ করুন</translation>
 <translation id="4378154925671717803">ফোন</translation>
 <translation id="8131740175452115882">নিশ্চিত হন</translation>
 <translation id="8968766641738584599">কার্ড সেভ করুন</translation>
+<translation id="860043288473659153">কার্ডধারকের নাম</translation>
+<translation id="869891660844655955">মেয়াদকাল সমাপ্তির তারিখ</translation>
 <translation id="5457113250005438886">অবৈধ</translation>
 <translation id="6518133107902771759">যাচাই করুন</translation>
 <translation id="8987927404178983737">মাস</translation>
 <translation id="6015796118275082299">বছর</translation>
+<translation id="1581080074034554886">CVC</translation>
 <translation id="9065203028668620118">সম্পাদনা</translation>
 <translation id="5029568752722684782">প্রতিলিপি সাফ করুন</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
@@ -70,6 +76,7 @@
 <translation id="4522570452068850558">বিশদ বিবরণ</translation>
 <translation id="3586931643579894722">বিশদ বিবরণ লুকান</translation>
 <translation id="614940544461990577">এটি করে দেখুন:</translation>
+<translation id="4943872375798546930">কোন ফলাফল নেই</translation>
 <translation id="8688672835843460752">উপলব্ধ</translation>
 <translation id="4989542687859782284">লভ্য নেই</translation>
 <translation id="59174027418879706">সক্ষম করা হযেছে</translation>
@@ -79,7 +86,10 @@
 <translation id="1838374766361614909">সার্চ সাফ করুন</translation>
 <translation id="495170559598752135">ক্রিয়াসমূহ</translation>
 <translation id="8261506727792406068">মুছুন</translation>
+<translation id="3207960819495026254">বুকমার্ক করা হয়েছে</translation>
 <translation id="3303855915957856445">কোনো সার্চ ফলাফল পাওয়া যায়নি</translation>
+<translation id="1209206284964581585">এখনকার মতো লুকান</translation>
+<translation id="1407135791313364759">সব খুলুন</translation>
 <translation id="4880827082731008257">সার্চের ইতিহাস</translation>
 <translation id="4756388243121344051">&amp;ইতিহাস</translation>
 <translation id="1644574205037202324">ইতিহাস</translation>
@@ -91,11 +101,14 @@
 <translation id="1178581264944972037">বিরতি</translation>
 <translation id="1232569758102978740">শিরোনামহীন</translation>
 <translation id="7514365320538308">ডাউনলোড করুন</translation>
+<translation id="8041089156583427627">প্রতিক্রিয়া পাঠান</translation>
 <translation id="7552846755917812628">নিম্নোল্লিখিত টিপ্স ব্যবহার করে দেখুন:</translation>
+<translation id="3960299545138990065">Brave পুনরায় চালু করুন</translation>
 <translation id="4275830172053184480">আপনার ডিভাইস বন্ধ করে চালু করুন</translation>
 <translation id="413544239732274901">আরও জানুন</translation>
 <translation id="7554791636758816595">নতুন ট্যাব</translation>
 <translation id="2079545284768500474">পূর্বাবস্থায় ফেরান</translation>
+<translation id="17513872634828108">খোলা ট্যাব</translation>
 <translation id="981121421437150478">অফলাইন</translation>
 <translation id="5171045022955879922">খুঁজুন বা URL লিখুন</translation>
 <translation id="803771048473350947">ফাইল</translation>
@@ -108,12 +121,11 @@
 <translation id="6831043979455480757">অনুবাদ</translation>
 <translation id="2473195200299095979">এই পৃষ্ঠাটি অনুবাদ করুন</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>, উত্তর, <ph name="ANSWER"/></translation>
-<translation id="9008201768610948239">উপেক্ষা করুন</translation>
 <translation id="7714464543167945231">সার্টিফিকেট</translation>
 <translation id="4235360514405112390">বৈধ</translation>
 <translation id="6447842834002726250">কুকিজ</translation>
 <translation id="1919345977826869612">বিজ্ঞাপন</translation>
-<translation id="410351446219883937">স্বয়ংক্রিয়ভাবে চালান</translation>
+<translation id="6612358246767739896">সুরক্ষিত কন্টেন্ট</translation>
 <translation id="9219103736887031265">ছবিগুলি</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">পপ-আপ এবং রিডাইরেক্ট</translation>
@@ -128,6 +140,7 @@
 <translation id="7638605456503525968">সিরিয়াল পোর্ট</translation>
 <translation id="2215727959747642672">ফাইল এডিট করা</translation>
 <translation id="6545864417968258051">ব্লুটুথ স্ক্যানিং</translation>
+<translation id="534295439873310000">NFC ডিভাইস</translation>
 <translation id="5039804452771397117">অনুমতি দিন</translation>
 <translation id="7053983685419859001">ব্লক করুন</translation>
 <translation id="57838592816432529">মিউট করুন</translation>
@@ -138,13 +151,17 @@
 <translation id="6979440798594660689">মিউট (ডিফল্ট)</translation>
 <translation id="8037357227543935929">জিজ্ঞাসা করুন (ডিফল্ট)</translation>
 <translation id="8763927697961133303">USB ডিভাইস</translation>
+<translation id="4165986682804962316">সাইটের সেটিংস</translation>
 <translation id="9011424611726486705">সাইট সেটিংস খুলুন</translation>
 <translation id="5932224571077948991">সাইট ব্যাঘাত সৃষ্টিকারী বা বিভ্রান্তিকর বিজ্ঞাপন দেখায়</translation>
 <translation id="7878562273885520351">আপনার পাসওয়ার্ড অন্য কেউ পরিবর্তন করার চেষ্টা করেছে</translation>
 <translation id="1089439967362294234">পাসওয়ার্ড পরিবর্তন করুন</translation>
+<translation id="9008201768610948239">উপেক্ষা করুন</translation>
 <translation id="1186201132766001848">পাসওয়ার্ড চেক করুন</translation>
 <translation id="5979084224081478209">পাসওয়ার্ড চেক করুন</translation>
+<translation id="10614374240317010">কখনও সংরক্ষিত হয়নি</translation>
 <translation id="5869522115854928033">সংরক্ষিত পাসওয়ার্ড</translation>
+<translation id="230699814587342492">Brave পাসওয়ার্ডগুলি</translation>
 <translation id="5087580092889165836">কার্ড জুড়ুন</translation>
 <translation id="2154484045852737596">কার্ড সম্পাদনা করুন</translation>
 <translation id="4923459931733593730">পেমেন্ট</translation>
@@ -193,8 +210,11 @@
 <translation id="1974060860693918893">উন্নত</translation>
 <translation id="5308380583665731573">সংযুক্ত করুন</translation>
 <translation id="2501278716633472235">ফিরে যান</translation>
+<translation id="1736420071277903564">কম্পিউটার</translation>
+<translation id="3906954721959377182">ট্যাবলেট</translation>
 <translation id="7029809446516969842">পাসওয়ার্ড</translation>
 <translation id="6596325263575161958">এনক্রিপশন বিকল্পগুলি</translation>
+<translation id="8461694314515752532">আপনার নিজস্ব সিঙ্ক পাসফ্রেজ দিয়ে সিঙ্ক করা ডেটা এনক্রিপ্ট করুন</translation>
 <translation id="9050666287014529139">পাসফ্রেজ</translation>
 <translation id="9095388113577226029">আরও ভাষা...</translation>
 <translation id="7600965453749440009"><ph name="LANGUAGE"/> কখনও অনুবাদ করবেন না</translation>
@@ -202,6 +222,7 @@
 <translation id="7378627244592794276">না</translation>
 <translation id="9137013805542155359">প্রকৃত রূপ দেখান</translation>
 <translation id="8725066075913043281">আবার করুন</translation>
+<translation id="5684874026226664614">ওহো৷ এই পৃষ্ঠাটির অনুবাদ করা যাবে না৷</translation>
 <translation id="583281660410589416">অজানা</translation>
 <translation id="9170848237812810038">&amp;পূর্বাবস্থায় ফিরুন</translation>
 <translation id="2972581237482394796">&amp;পুনরায় করুন</translation>

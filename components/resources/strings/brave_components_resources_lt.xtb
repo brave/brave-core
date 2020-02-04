@@ -77,19 +77,11 @@
 <translation id="438216590634144114">Pasirink paieškos variklį, kuriuo nori ieškoti iš naršyklės adresu eilutės.</translation>
 <translation id="5804484488647369316">Nustatyti numatytąją paieškos sistemą</translation>
 <translation id="4428458837269935199">Norėdami privatesnės paieškos sistemos, išmėginkite „DuckDuckGo“.</translation>
-<translation id="513635702954746724">Rinktis spalvinę temą</translation>
-<translation id="6842850080200126305">Nustatykite įrankių juostos spalvą pasirinkdami nustatymų skydelyje šviesų arba tamsų variantą.</translation>
-<translation id="5805868144901917207">Pasirinkti temą</translation>
-<translation id="8131740175452115882">Patvirtinti</translation>
-<translation id="713206503018076063">Sistemos tema (numatytoji)</translation>
-<translation id="1807246157184219062">Šviesu</translation>
-<translation id="2414886740292270097">Tamsu</translation>
 <translation id="3829010735958850433">Praleisti pristatymą</translation>
 <translation id="1201402288615127009">Toliau</translation>
 <translation id="7954950242989581218">Naršykite saugiai ir patikimai</translation>
 <translation id="2188651882929633653">„Brave“ skydai užblokuoja pavojingus elementus, bandančius jus sekti žiniatinklyje, įskaitant daugumą skelbimų. Nustatykite skydus „žemyn“, jei panašu, kad svetainė neveikia. „Brave“ naudoja <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>visiškai privačią produktų analizę<ph name="END_LINK_P3A">&lt;/a&gt;</ph> bendram tam tikrų funkcijų naudojimui įvertinti. Galite ją išjungti dalyje <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Nustatymai<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Reklama</translation>
-<translation id="5698387814910197501">Pelnykite {{currency}} už reklamos peržiūrą „Brave“. Pateikiamos reklamos paremtos jūsų interesais ir susijusios su jūsų naršymo elgesiu. Iš jūsų naršyklės neperduodami jokie asmens duomenys ar naršymo istorija.</translation>
 <translation id="6112368337882254910">Automatinis indėlis</translation>
 <translation id="3742599705619405136">Automatinis būdas paremti leidėjus ir turinio kūrėjus. Nustatykite mėnesinį mokėjimą ir naršykite įprastai. Jūsų lankomos „Brave“ patvirtintos svetainės gaus jūsų įmokas automatiškai, atsižvelgdama į jūsų dėmesį, kurį vertina „Brave“.</translation>
 <translation id="20281847067919078">Numatomi laukiantys atlygiai</translation>
@@ -97,6 +89,7 @@
 <translation id="319209088187794725">Šį mėnesį gauti pranešimai apie reklamas</translation>
 <translation id="4229016885653790965">Apgailestaujame, tačiau jūsų regione reklamų kol kas nėra.</translation>
 <translation id="2539279826042558064">„Brave Rewards“ ir reklamos jūsų įrenginyje šiuo metu nepasiekiami.</translation>
+<translation id="5421369907811917952">Kitos nuostatos</translation>
 <translation id="654711254769318398">Peržiūrėti reklamų puslapiai</translation>
 <translation id="2532127066761785857">Didžiausias rodomų reklamų skaičius</translation>
 <translation id="5171071066587880677">1 reklama per valandą</translation>
@@ -132,7 +125,6 @@
 <translation id="2726674968268546964">žetonai</translation>
 <translation id="7286722244752781970">Minimalus puslapyje praleistas laikas prieš užregistruojant apsilankymą</translation>
 <translation id="4424486208397124985">Minimalus apsilankymų skaičius, kad leidėjas būtų pripažintas tinkamu</translation>
-<translation id="5421369907811917952">Kitos nuostatos</translation>
 <translation id="6248554379744796526">Rodyti nepatvirtintas svetaines sąraše</translation>
 <translation id="5875669387851353511">Leisti paramą vaizdo įrašams</translation>
 <translation id="8933202740471878108">1 apsilankymas</translation>
@@ -162,7 +154,6 @@
 <translation id="7210234701206674260">Su „Brave Rewards“ iškilo problema. Bandykite dar kartą vėliau.</translation>
 <translation id="570208820610947248">Nustatėme, kad kažkas yra negerai su jūsų pinigine. Operacijų vykdymas bus įmanomas tik tada, kai atkursite savo piniginės atsarginę kopiją.</translation>
 <translation id="7797604753681168055">Atkurti dabar!</translation>
-<translation id="5549059668721746831">Kita mėnesinių arbatpinigių data</translation>
 <translation id="6231182869178328516">Naudodamasis „Brave“ naršykle ką tik daviau arbatpinigių <ph name="NAME"/>. Daugiau apie tai galite sužinoti adresu https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">Apgailestaujame, apdorojant jūsų užklausą iškilo problema, bandykite dar kartą.</translation>
@@ -261,8 +252,6 @@
 <translation id="4114667046481794032">Indėlio suma</translation>
 <translation id="3520817231440482449">Duoti arbatpinigių šiai svetainei kas mėnesį</translation>
 <translation id="1827184134638345603">Siųsti arbatpinigių…</translation>
-<translation id="7928243298881209869">Pirmųjų mėnesinių arbatpinigių siuntimo data:</translation>
-<translation id="6045860799501892362">Nustatyti mėnesinius arbatpinigius</translation>
 <translation id="8003573781961874199">Atsisiųsti PDF formatu</translation>
 <translation id="298067735430872465">Uždarbis iš reklamos</translation>
 <translation id="2266556115441975588">Savo atlygius už reklamą rasite čia!</translation>
@@ -291,7 +280,6 @@
 <translation id="9115913704608474258">Lapkritis</translation>
 <translation id="7828956995407538686">Spalis</translation>
 <translation id="5502713021410870035">Rugsėjis</translation>
-<translation id="5737831580668469027">Mėnesiniai arbatpinigiai!</translation>
 <translation id="606865182719489911">Galima nemokamų žetonų išmoka.</translation>
 <translation id="2487641031722095938">Šiandien jūsų laiminga diena!</translation>
 <translation id="6255773350565723852">Jūsų žetonų išmoka pakeliui.</translation>
@@ -318,13 +306,8 @@
 <translation id="4923459931733593730">Mokėjimas</translation>
 <translation id="4021593982164260556">Mokėjimas atliekamas kiekvieno mėnesio {{diena}} d.</translation>
 <translation id="6104680658798556671">Mokėjimas neatliktas.</translation>
-<translation id="2834888581291358924">Kai jūsų sąskaitoje esančios sumos nepakanka apmokėti už automatinį indėlį ir pasikartojančius arbatpinigius, šį laikotarpį šie mokėjimai praleidžiami.</translation>
 <translation id="3138528956349114724">Prisegtos svetainės dabar</translation>
-<translation id="2337632028350283479">Mėnesinių arbatpinigių veikimo principas:</translation>
-<translation id="6457273203091513039">Mėnesiniai arbatpinigiai nuskaičiuojami ne iš jūsų automatinio indėlio. Jie yra atskiri.</translation>
 <translation id="9099396904827413228">Kiekvienai svetainei kas mėnesį mokama fiksuota suma.</translation>
-<translation id="5051110132941857169">Mėnesiniai arbatpinigiai kas mėnesį sumokami visi iš karto. Jei naudojate automatinį indėlį, arbatpinigiai nuskaičiuojami tuo pačiu metu, kaip ir automatinio indėlio mokėjimas.</translation>
-<translation id="3374483782662414143">Skydelyje „Arbatpinigiai“ galite pašalinti bet kurią svetainę, gaunančią mėnesinius arbatpinigius.</translation>
 <translation id="5082474983463379713">Pastaba:</translation>
 <translation id="1430915738399379752">Spausdinti</translation>
 <translation id="135956957367307069">Jūsų užklausa vis dar apdorojama, palaukite.</translation>

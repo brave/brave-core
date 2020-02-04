@@ -64,10 +64,15 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
     <output filename="chromium_strings_zh-TW.pak" type="data_package" lang="zh-TW" />
   </outputs>
   <translations>
+    <file path="resources/chromium_strings_af.xtb" lang="af" />
     <file path="resources/chromium_strings_am.xtb" lang="am" />
     <file path="resources/chromium_strings_ar.xtb" lang="ar" />
+    <file path="resources/chromium_strings_as.xtb" lang="as" />
+    <file path="resources/chromium_strings_az.xtb" lang="az" />
+    <file path="resources/chromium_strings_be.xtb" lang="be" />
     <file path="resources/chromium_strings_bg.xtb" lang="bg" />
     <file path="resources/chromium_strings_bn.xtb" lang="bn" />
+    <file path="resources/chromium_strings_bs.xtb" lang="bs" />
     <file path="resources/chromium_strings_ca.xtb" lang="ca" />
     <file path="resources/chromium_strings_cs.xtb" lang="cs" />
     <file path="resources/chromium_strings_da.xtb" lang="da" />
@@ -77,35 +82,53 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
     <file path="resources/chromium_strings_es.xtb" lang="es" />
     <file path="resources/chromium_strings_es-419.xtb" lang="es-419" />
     <file path="resources/chromium_strings_et.xtb" lang="et" />
+    <file path="resources/chromium_strings_eu.xtb" lang="eu" />
     <file path="resources/chromium_strings_fa.xtb" lang="fa" />
     <file path="resources/chromium_strings_fi.xtb" lang="fi" />
     <file path="resources/chromium_strings_fil.xtb" lang="fil" />
     <file path="resources/chromium_strings_fr.xtb" lang="fr" />
+    <file path="resources/chromium_strings_fr-CA.xtb" lang="fr-CA" />
+    <file path="resources/chromium_strings_gl.xtb" lang="gl" />
     <file path="resources/chromium_strings_gu.xtb" lang="gu" />
     <file path="resources/chromium_strings_hi.xtb" lang="hi" />
     <file path="resources/chromium_strings_hr.xtb" lang="hr" />
     <file path="resources/chromium_strings_hu.xtb" lang="hu" />
+    <file path="resources/chromium_strings_hy.xtb" lang="hy" />
     <file path="resources/chromium_strings_id.xtb" lang="id" />
+    <file path="resources/chromium_strings_is.xtb" lang="is" />
     <file path="resources/chromium_strings_it.xtb" lang="it" />
     <!-- The translation console uses 'iw' for Hebrew, but we use 'he'. -->
     <file path="resources/chromium_strings_iw.xtb" lang="he" />
     <file path="resources/chromium_strings_ja.xtb" lang="ja" />
+    <file path="resources/chromium_strings_ka.xtb" lang="ka" />
+    <file path="resources/chromium_strings_kk.xtb" lang="kk" />
+    <file path="resources/chromium_strings_km.xtb" lang="km" />
     <file path="resources/chromium_strings_kn.xtb" lang="kn" />
     <file path="resources/chromium_strings_ko.xtb" lang="ko" />
+    <file path="resources/chromium_strings_ky.xtb" lang="ky" />
+    <file path="resources/chromium_strings_lo.xtb" lang="lo" />
     <file path="resources/chromium_strings_lt.xtb" lang="lt" />
     <file path="resources/chromium_strings_lv.xtb" lang="lv" />
+    <file path="resources/chromium_strings_mk.xtb" lang="mk" />
     <file path="resources/chromium_strings_ml.xtb" lang="ml" />
+    <file path="resources/chromium_strings_mn.xtb" lang="mn" />
     <file path="resources/chromium_strings_mr.xtb" lang="mr" />
     <file path="resources/chromium_strings_ms.xtb" lang="ms" />
+    <file path="resources/chromium_strings_my.xtb" lang="my" />
+    <file path="resources/chromium_strings_ne.xtb" lang="ne" />
     <file path="resources/chromium_strings_nl.xtb" lang="nl" />
     <file path="resources/chromium_strings_no.xtb" lang="no" />
+    <file path="resources/chromium_strings_or.xtb" lang="or" />
+    <file path="resources/chromium_strings_pa.xtb" lang="pa" />
     <file path="resources/chromium_strings_pl.xtb" lang="pl" />
     <file path="resources/chromium_strings_pt-BR.xtb" lang="pt-BR" />
     <file path="resources/chromium_strings_pt-PT.xtb" lang="pt-PT" />
     <file path="resources/chromium_strings_ro.xtb" lang="ro" />
     <file path="resources/chromium_strings_ru.xtb" lang="ru" />
+    <file path="resources/chromium_strings_si.xtb" lang="si" />
     <file path="resources/chromium_strings_sk.xtb" lang="sk" />
     <file path="resources/chromium_strings_sl.xtb" lang="sl" />
+    <file path="resources/chromium_strings_sq.xtb" lang="sq" />
     <file path="resources/chromium_strings_sr.xtb" lang="sr" />
     <file path="resources/chromium_strings_sv.xtb" lang="sv" />
     <file path="resources/chromium_strings_sw.xtb" lang="sw" />
@@ -114,9 +137,13 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
     <file path="resources/chromium_strings_th.xtb" lang="th" />
     <file path="resources/chromium_strings_tr.xtb" lang="tr" />
     <file path="resources/chromium_strings_uk.xtb" lang="uk" />
+    <file path="resources/chromium_strings_ur.xtb" lang="ur" />
+    <file path="resources/chromium_strings_uz.xtb" lang="uz" />
     <file path="resources/chromium_strings_vi.xtb" lang="vi" />
     <file path="resources/chromium_strings_zh-CN.xtb" lang="zh-CN" />
+    <file path="resources/chromium_strings_zh-HK.xtb" lang="zh-HK" />
     <file path="resources/chromium_strings_zh-TW.xtb" lang="zh-TW" />
+    <file path="resources/chromium_strings_zu.xtb" lang="zu" />
   </translations>
   <release seq="1" allow_pseudo="false">
     <messages fallback_to_english="true">
@@ -157,9 +184,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           New window
         </message>
       </if>
-      <message name="IDS_BOOKMARK_SYNC_PROMO_LINK" desc="Text of the link to sign in from the bookmark sync promo.">
-        sign in to Brave
-      </message>
       <message name="IDS_TASK_MANAGER_TITLE" desc="The title of the Task Manager window">
         Task Manager - Brave
       </message>
@@ -452,9 +476,6 @@ Brave is unable to recover your settings.
         <message name="IDS_EXTENSION_INSTALLED_HEADING" desc="Title of the extension-installed bubble. Instructs that the extension was installed.">
           <ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph> has been added to Brave
         </message>
-        <message name="IDS_EXTENSION_INSTALLED_SYNC_PROMO_LINK_NEW" desc="Text of the link to sign in to Brave from the extension installed bubble. This will be converted to a link, with additional text around it.">
-          sign in to Brave
-        </message>
 
         <!-- Extension uninstall prompt -->
         <message name="IDS_EXTENSION_UNINSTALL_PROMPT_REMOVE_DATA_CHECKBOX" desc="Checkbox text to ask the user whether they want to remove associated data at uninstall time. Only used when uninstalling an app associated with a particular website.">
@@ -657,17 +678,10 @@ Brave is unable to recover your settings.
       </message>
 
       <!-- App list -->
-      <if expr="enable_app_list">
-        <if expr="not use_titlecase">
-          <message name="IDS_APP_LIST_EXTENSIONS_UNINSTALL" desc="Title text for the context menu item of a non-platform-app app list item that removes the app.">
-            Remove from Brave...
-          </message>
-        </if>
-        <if expr="use_titlecase">
-          <message name="IDS_APP_LIST_EXTENSIONS_UNINSTALL" desc="In Title Case: Title text for the context menu item of a non-platform-app app list item that removes the app.">
-            Remove From Brave...
-          </message>
-        </if>
+      <if expr="chromeos">
+        <message name="IDS_APP_LIST_EXTENSIONS_UNINSTALL" desc="Title text for the context menu item of a non-platform-app app list item that removes the app.">
+          Remove from Brave...
+        </message>
       </if>
 
       <!-- App shortcuts -->
@@ -963,12 +977,6 @@ Brave is unable to recover your settings.
       <if expr="chromeos">
         <message name="IDS_INSTALLING_UPDATE" desc="Label shown on the updates installation screen during OOBE">
           Please wait while Brave installs the latest system updates.
-        </message>
-        <message name="IDS_CHECKING_FOR_UPDATE_MSG" desc="Brave OS OOBE: message shown during checking for update stage.">
-          Future versions of Brave will install automatically.
-        </message>
-        <message name="IDS_UPDATE_MSG" desc="Brave OS OOBE: message shown during update stage.">
-          Future versions of Brave will install automatically. When this download completes, Brave will restart and you'll be on your way.
         </message>
         <message name="IDS_EULA_SCREEN_ACCESSIBLE_TITLE" desc="Title to be spoken on opening the OOBE EULA screen">
           Brave OS terms

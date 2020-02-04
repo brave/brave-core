@@ -8,6 +8,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/scoped_observer.h"
+#include "ui/native_theme/native_theme.h"
 #include "ui/native_theme/native_theme_observer.h"
 
 class Profile;
@@ -33,7 +34,7 @@ class BraveThemeEventRouter : public ui::NativeThemeObserver {
   ui::NativeTheme* current_native_theme_for_testing_ = nullptr;
   Profile* profile_;
   bool using_dark_;
-  ScopedObserver<ui::NativeTheme, BraveThemeEventRouter> observer_;
+  ScopedObserver<ui::NativeTheme, ui::NativeThemeObserver> observer_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveThemeEventRouter);
 };

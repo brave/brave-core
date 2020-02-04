@@ -1,8 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/download/brave_download_item_model.h"
+
+#include <string>
 
 #include "base/strings/string16.h"
 #include "base/strings/string_util.h"
@@ -24,14 +27,13 @@ BraveDownloadItemModel::~BraveDownloadItemModel() {}
 
 // Adds origin url to the tooltip text and "Not secure", if needed.
 base::string16 BraveDownloadItemModel::GetTooltipText(
-  const gfx::FontList& font_list,
-  int max_width) {
-  base::string16 tooltip =
-      model_.GetTooltipText(font_list, max_width);
-  
+    const gfx::FontList& font_list,
+    int max_width) {
+  base::string16 tooltip = model_.GetTooltipText(font_list, max_width);
+
   bool is_secure;
   base::string16 origin_url = GetOriginURLText(is_secure);
-  
+
   if (!origin_url.empty()) {
     tooltip += base::ASCIIToUTF16("\n");
     base::string16 tooltip_extra;
@@ -39,8 +41,8 @@ base::string16 BraveDownloadItemModel::GetTooltipText(
       tooltip_extra = l10n_util::GetStringUTF16(IDS_NOT_SECURE_VERBOSE_STATE) +
                       base::char16(' ');
     tooltip_extra += origin_url;
-    tooltip += gfx::ElideText(tooltip_extra, font_list, max_width,
-                              gfx::ELIDE_TAIL, gfx::Typesetter::NATIVE);
+    tooltip +=
+        gfx::ElideText(tooltip_extra, font_list, max_width, gfx::ELIDE_TAIL);
   }
 
   return tooltip;
@@ -50,8 +52,9 @@ base::string16 BraveDownloadItemModel::GetTooltipText(
 base::string16 BraveDownloadItemModel::GetOriginURLText(bool& is_secure) {
   is_secure = false;
   const GURL gurl = model_.download()->GetURL();
-  if (gurl.is_empty())
+  if (gurl.is_empty()) {
     return base::string16();
+  }
 
   std::string origin;
   if (gurl.is_valid()) {
@@ -60,11 +63,13 @@ base::string16 BraveDownloadItemModel::GetOriginURLText(bool& is_secure) {
       origin = gurl.spec();
     } else {
       origin = gurl.GetOrigin().spec();
-      if (!gurl.SchemeIsFile())
+      if (!gurl.SchemeIsFile()) {
         base::TrimString(origin, "/", &origin);
+      }
     }
-  } else
+  } else {
     origin = gurl.possibly_invalid_spec();
+  }
 
   return base::UTF8ToUTF16(origin);
 }

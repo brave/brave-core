@@ -6,7 +6,6 @@
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Brave లోగో</translation>
 <translation id="7339898014177206373">కొత్త విండో</translation>
-<translation id="5935964611177478118">Braveకి సైన్ ఇన్ చేయండి</translation>
 <translation id="5516268345616100622">విధి నిర్వాహకుడు - Brave</translation>
 <translation id="7918740962659365265">Brave Softwareకు వినియోగ గణాంకాలు మరియు <ph name="UMA_LINK"/>ను పంపడం ద్వారా Braveను మెరుగుపరచడంలో సహాయపడండి</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
@@ -115,7 +114,6 @@
 <translation id="1459786048951724030">సైన్ ఇన్ చేయడంలో ఎర్రర్ సంభవించినందున Brave OS మీ డేటాను సమకాలీకరించలేకపోయింది.</translation>
 <translation id="6813094029720377619">మీరు Brave నుండి నిష్క్రమించినప్పుడు, కుక్కీలను క్లియర్ చేయండి. సింక్ చేయడం కొనసాగించడానికి, ఈ <ph name="COOKIE_SETTINGS_LINK"/>ను మార్చండి.</translation>
 <translation id="3340978935015468852">సెట్టింగ్‌లు</translation>
-<translation id="380197516434040304">Brave నుండి తీసివేయి...</translation>
 <translation id="300669147395456190">Brave అనువర్తనాలు</translation>
 <translation id="3421950102518690868">మీరు ఈ పరికరాన్ని ఉపయోగించడానికి ముందు సేవా నిబంధనలను చదివి, అంగీకరించాలని <ph name="DOMAIN"/> కోరుతోంది. ఈ నిబంధనలు Brave OS నిబంధనలను విస్తరింపజేయవు, సవరించవు లేదా పరిమితం చేయవు.</translation>
 <translation id="3293668930608086049">Brave మీ కెమెరా మరియు మైక్రోఫోన్‌ని ఉపయోగిస్తోంది.</translation>
@@ -176,8 +174,6 @@
 <translation id="7798069806040634998">ఫైల్‌లను డౌన్‌లోడ్ చేయడానికి Braveకు నిల్వ యాక్సెస్ అవసరం</translation>
 <translation id="7685904775439037072">ఓసారి Braveకి యాక్సెస్ లభించాక, ఆపై వెబ్‌సైట్‌లకు ఏమైనా యాక్సెస్‌ కావాలంటే అవి మిమ్మల్ని అడగవచ్చు.</translation>
 <translation id="1744365871163268756">దయచేసి Brave తాజా సిస్టమ్ నవీకరణలను ఇన్‌స్టాల్ చేస్తున్నప్పుడు వేచి ఉండండి.</translation>
-<translation id="8000338990735917615">Brave యొక్క భవిష్యత్తు వెర్షన్‌లు ఆటోమేటిక్‌గా ఇన్‌స్టాల్ చేయబడతాయి.</translation>
-<translation id="2975476470948647918">Brave యొక్క భవిష్యత్తు వెర్షన్‌లు ఆటోమేటిక్‌గా ఇన్‌స్టాల్ చేయబడతాయి. ఈ డౌన్‌లోడ్ పూర్తయినప్పుడు, Brave పునఃప్రారంభించబడుతుంది, మీరు మీ పనిని కొనసాగించవచ్చు.</translation>
 <translation id="7808415789955822133">Brave OS నిబంధనలు</translation>
 <translation id="7207456302801184289">Braveకు స్వాగతం</translation>
 <translation id="3507835409099344374">Brave నోటిఫికేషన్ సెట్టింగ్‌లకు వెళ్లు</translation>
@@ -209,7 +205,6 @@
     Brave బ్రౌజర్ సెట్టింగ్‌లు<ph name="LINK_END"/>లో చూడండి</translation>
 <translation id="4459296183696059108">ఏదైనా సెట్టింగ్ ఈ పేజీలో కనపడకపోతే, మీ <ph name="LINK_BEGIN"/>
       Brave OS సెట్టింగ్‌లు<ph name="LINK_END"/>లో చూడండి</translation>
-<translation id="7977435741986383568">Brave మీ బ్రౌజింగ్ అనుభవాన్ని మెరుగుపరచడానికి వెబ్ సేవలను ఉపయోగించవచ్చు. మీరు ఈ సేవలను ఐచ్ఛికంగా నిలిపివేయవచ్చు. <ph name="BEGIN_LINK"/>మరింత తెలుసుకోండి<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">అక్షరక్రమ లోపాలను పరిష్కరించడానికి, మీరు వచన ఫీల్డ్‌లలో టైప్ చేసే వచనాన్ని, Brave Brave Softwareకి పంపుతుంది</translation>
 <translation id="8586264863973514035">మీ మార్పులను వర్తింపజేయడానికి, Braveని పునఃప్రారంభించండి</translation>
 <translation id="7021823858304886493">Brave సైన్-ఇన్‌ని అనుమతించండి</translation>

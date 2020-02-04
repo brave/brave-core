@@ -77,26 +77,22 @@
 <translation id="438216590634144114">選擇從網址列搜尋網頁時想使用的預設搜尋引擎。</translation>
 <translation id="5804484488647369316">設定預設搜尋引擎</translation>
 <translation id="4428458837269935199">想要有更私密的搜尋體驗，試試 DuckDuckGo。</translation>
-<translation id="513635702954746724">選擇您的色彩主題</translation>
-<translation id="6842850080200126305">從設定面板選取淺色或深色調，即可設定您的工具列顏色。</translation>
-<translation id="5805868144901917207">選取主題</translation>
-<translation id="8131740175452115882">確認</translation>
-<translation id="713206503018076063">系統主題（預設）</translation>
-<translation id="1807246157184219062">亮</translation>
-<translation id="2414886740292270097">暗</translation>
 <translation id="3829010735958850433">略過迎賓導覽</translation>
 <translation id="1201402288615127009">繼續</translation>
 <translation id="7954950242989581218">安全瀏覽</translation>
 <translation id="2188651882929633653">Brave Shields 會阻擋試圖在整個網路上追蹤您的可怕東西 其中包含大多數的廣告。如果網站看起來沒辦法正常運作時，請將 Shields 設定為「關閉」。Brave 使用 <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>完全私密的產品分析<ph name="END_LINK_P3A">&lt;/a&gt;</ph> 來評估某些功能的整體使用率。您可以在 <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>設定<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph> 中將其關閉。</translation>
 <translation id="1919345977826869612">廣告</translation>
-<translation id="5698387814910197501">透過在 Brave 中觀看廣告來賺取 {{currency}}。所顯示的廣告是您的興趣為基礎，其推測自您的瀏覽行為。您的個人資料或瀏覽歷史記錄從未離開您的瀏覽器。</translation>
+<translation id="2364310432103707426">透過觀看 Brave 廣告來賺取 {{currency}}。所顯示的廣告是您的興趣為基礎，其推測自您的瀏覽行為。您的個人資料或瀏覽歷史記錄從未離開您的瀏覽器。</translation>
 <translation id="6112368337882254910">自動捐獻</translation>
 <translation id="3742599705619405136">一種自動資助發行者和內容創作者的方式。設定每月付款並正常瀏覽。您造訪的 Brave 驗證網站會根據 Brave 測量到您的注意度自動收到您的捐助。</translation>
+<translation id="4982484433851059520">允許轉化追蹤</translation>
+<translation id="5173291160602017299">匿名地讓 Brave 知道您已經對廣告做出反應。停用此選項可能會導致收入減少，因為您可能會收到較少種廣告。</translation>
 <translation id="20281847067919078">預估擱置中的獎勵</translation>
 <translation id="8593551638387217772">下一個支付日期</translation>
 <translation id="319209088187794725">本月收到的廣告通知</translation>
 <translation id="4229016885653790965">抱歉！廣告在您的所在區域不可用。</translation>
 <translation id="2539279826042558064">Brave Rewards 與廣告目前在您的裝置上無法使用。</translation>
+<translation id="5421369907811917952">其它設定</translation>
 <translation id="654711254769318398">檢視過的廣告頁面</translation>
 <translation id="2532127066761785857">廣告顯示數量上限</translation>
 <translation id="5171071066587880677">每小時 1 則廣告</translation>
@@ -132,7 +128,6 @@
 <translation id="2726674968268546964">代幣</translation>
 <translation id="7286722244752781970">紀錄一次造訪前的最少頁面時間</translation>
 <translation id="4424486208397124985">攸關發布者的最低瀏覽數</translation>
-<translation id="5421369907811917952">其它設定</translation>
 <translation id="6248554379744796526">在清單中顯示未經驗證的網站</translation>
 <translation id="5875669387851353511">允許對影片提供捐獻</translation>
 <translation id="8933202740471878108">1 次造訪</translation>
@@ -162,7 +157,7 @@
 <translation id="7210234701206674260">「Brave 報酬」發生問題了。請待會再試一次。</translation>
 <translation id="570208820610947248">我們偵測到您的錢包發生問題。您必須先復原備份錢包，系統才可以處理交易。</translation>
 <translation id="7797604753681168055">立即復原！</translation>
-<translation id="5549059668721746831">下個每月小費日期</translation>
+<translation id="5549059668721746831">下一個每月捐款日期</translation>
 <translation id="6231182869178328516">我剛剛使用 Brave Browser 打賞 <ph name="NAME"/>。到https://brave.com/tips 看看吧。</translation>
 <translation id="8404935570206006581">Brave 小費</translation>
 <translation id="2876191400747549936">抱歉，處理您的請求時遇到問題，請再試一次。</translation>
@@ -261,8 +256,8 @@
 <translation id="4114667046481794032">捐款金額</translation>
 <translation id="3520817231440482449">每月給此網站小費</translation>
 <translation id="1827184134638345603">傳送小費……</translation>
-<translation id="7928243298881209869">您的第一個每月小費將會傳送給：</translation>
-<translation id="6045860799501892362">設定每月小費</translation>
+<translation id="7928243298881209869">您的第一次每月捐款將會在此日期送出：</translation>
+<translation id="6045860799501892362">設定每月捐款</translation>
 <translation id="8003573781961874199">以 PDF 格式下載</translation>
 <translation id="298067735430872465">自廣告而來的收益</translation>
 <translation id="2266556115441975588">您從廣告獲得的獎勵就在這裡！</translation>
@@ -291,7 +286,7 @@
 <translation id="9115913704608474258">十一月</translation>
 <translation id="7828956995407538686">十月</translation>
 <translation id="5502713021410870035">九月</translation>
-<translation id="5737831580668469027">每月給小費！</translation>
+<translation id="5737831580668469027">每月捐款！</translation>
 <translation id="606865182719489911">有一個可用的免費代幣。</translation>
 <translation id="2487641031722095938">您的幸運日！</translation>
 <translation id="6255773350565723852">您的代幣經費已經發放。</translation>
@@ -318,13 +313,13 @@
 <translation id="4923459931733593730">支付</translation>
 <translation id="4021593982164260556">每月第 {{day}} 天支付。</translation>
 <translation id="6104680658798556671">尚未支付。</translation>
-<translation id="2834888581291358924">當您的餘額不足以支應自動捐助及定期小費合計總額，這些支付將會在這個週期被略過。</translation>
+<translation id="2834888581291358924">當您的餘額不夠支付自動捐款與您的每月捐款的總和，則本週期將會跳過這些款項。</translation>
 <translation id="3138528956349114724">已固定的網站現在</translation>
-<translation id="2337632028350283479">每月給小費的運作方式如下：</translation>
-<translation id="6457273203091513039">每月小費並不是由「自動捐獻」費用支付，它們是分開的兩種款項。</translation>
+<translation id="2337632028350283479">這裡是每月捐款的運作方式：</translation>
+<translation id="6457273203091513039">每月捐款與您的自動捐款不同。它們是分開的。</translation>
 <translation id="9099396904827413228">各網站每月會收到一筆固定金額。</translation>
-<translation id="5051110132941857169">您必須每月一次支付全部的每月小費。若您有在使用「自動捐獻」功能，小費會和您的每月「自動捐獻」費用同時扣款。</translation>
-<translation id="3374483782662414143">您可以在「小費」面板內移除任何要給每月小費的網站。</translation>
+<translation id="5051110132941857169">每月捐款會每個月一次付清當次的捐款。如果您使用自動捐款，則小費會與您的每月自動捐款同時出帳。</translation>
+<translation id="3374483782662414143">您可以從「小費」面板中移除任何要收到每月捐款的網站。</translation>
 <translation id="5082474983463379713">請注意：</translation>
 <translation id="1430915738399379752">列印</translation>
 <translation id="135956957367307069">您的請求仍在處理中，請稍候。</translation>
@@ -348,6 +343,7 @@
 <translation id="4699702339303280827">如果瀏覽器或電腦發生狀況，您隨時都可以使用此金鑰來取回錢包。但務必加以保護 — 任何拿到這個金鑰的人都可以竊取您的錢包。最安全的方式可能’就是寫在一張紙上，或任何其它您記錄重要資料的地方。</translation>
 <translation id="7354412786785889047">你可以藉由發送打賞來支持這位推文作者。這是感謝他們提供優質內容的方式。驗證過的作者在每個行事曆月份的第一週收到打賞。</translation>
 <translation id="972846019534552366">您可以在 Brave Rewards 面板中設定每月定期捐款。</translation>
+<translation id="121079855621707240">您可以透過設定每月捐款來支援這些內容創作者。這是感謝他們不斷產出優質內容的一種方式。已驗證的創作者會在每個日曆月裡的第一週獲得報酬。</translation>
 <translation id="3074127054582480056">注意</translation>
 <translation id="5010112177773747965">未經您的同意。</translation>
 <translation id="7147673045905733351">現在，Brave 歡迎您來到全新的網際網路。</translation>

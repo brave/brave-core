@@ -188,7 +188,7 @@
     "description": "Message for the button that confirms the advanced view"
   },
   "learnMore": {
-    "message": "Learn more",
+    "message": "കൂടുതലറിയുക",
     "description": "Message inviting the user to learn more about Shields"
   }
 }

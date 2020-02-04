@@ -10,6 +10,7 @@
 <translation id="7791543448312431591">Dodaj</translation>
 <translation id="1181037720776840403">izbriši</translation>
 <translation id="5317780077021120954">Shrani</translation>
+<translation id="3897092660631435901">Meni</translation>
 <translation id="5300589172476337783">Pokaži</translation>
 <translation id="7108338896283013870">Skrij</translation>
 <translation id="780301667611848630">Ne, hvala</translation>
@@ -19,6 +20,7 @@
 <translation id="1036348656032585052">Izklop</translation>
 <translation id="8105368624971345109">Izklop</translation>
 <translation id="1175364870820465910">&amp;Natisni ...</translation>
+<translation id="129553762522093515">Nedavno zaprto</translation>
 <translation id="8870413625673593573">Nedavno zaprto</translation>
 <translation id="385051799172605136">Nazaj</translation>
 <translation id="7481312909269577407">Naprej</translation>
@@ -28,19 +30,23 @@
 <translation id="1201402288615127009">Naprej</translation>
 <translation id="5713644099811900409">Brave Software Račun</translation>
 <translation id="3157931365184549694">Obnovi</translation>
+<translation id="5040262127954254034">Zasebnost</translation>
 <translation id="3061707000357573562">Storitev za popravke</translation>
 <translation id="1914326953223720820">Storitev razširjanja datotek</translation>
+<translation id="1623104350909869708">Tej strani prepreči, da bi ustvarila dodatna pogovorna okna</translation>
 <translation id="2677748264148917807">Zapusti</translation>
 <translation id="5556459405103347317">Ponovno naloži</translation>
 <translation id="2359808026110333948">Nadaljuj</translation>
-<translation id="5935964611177478118">se prijavite v Brave</translation>
 <translation id="4378154925671717803">Telefon</translation>
 <translation id="8131740175452115882">Potrdi</translation>
 <translation id="8968766641738584599">Shrani kartico</translation>
+<translation id="860043288473659153">Ime imetnika kartice</translation>
+<translation id="869891660844655955">Datum izteka</translation>
 <translation id="5457113250005438886">Neveljaven</translation>
 <translation id="6518133107902771759">Preveri</translation>
 <translation id="8987927404178983737">Mesec</translation>
 <translation id="6015796118275082299">Leto</translation>
+<translation id="1581080074034554886">CVC</translation>
 <translation id="9065203028668620118">Uredi</translation>
 <translation id="5029568752722684782">Počisti kopijo</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
@@ -70,6 +76,7 @@
 <translation id="4522570452068850558">Podrobnosti</translation>
 <translation id="3586931643579894722">Skrij podrobnosti</translation>
 <translation id="614940544461990577">Poskusite:</translation>
+<translation id="4943872375798546930">Ni rezultatov</translation>
 <translation id="8688672835843460752">Na voljo</translation>
 <translation id="4989542687859782284">Ni na voljo</translation>
 <translation id="59174027418879706">Omogočena</translation>
@@ -79,7 +86,10 @@
 <translation id="1838374766361614909">Čiščenje iskanja</translation>
 <translation id="495170559598752135">Dejanja</translation>
 <translation id="8261506727792406068">Izbriši</translation>
+<translation id="3207960819495026254">Dodano med zaznamke</translation>
 <translation id="3303855915957856445">Ni rezultatov iskanja</translation>
+<translation id="1209206284964581585">Zaenkrat skrij</translation>
+<translation id="1407135791313364759">Odpri vse</translation>
 <translation id="4880827082731008257">Zgodovina iskanja</translation>
 <translation id="4756388243121344051">&amp;Zgodovina</translation>
 <translation id="1644574205037202324">Zgodovina</translation>
@@ -91,11 +101,14 @@
 <translation id="1178581264944972037">Prekini</translation>
 <translation id="1232569758102978740">Brez naslova</translation>
 <translation id="7514365320538308">Prenos</translation>
+<translation id="8041089156583427627">Pošlji povratne informacije</translation>
 <translation id="7552846755917812628">Poskusite te nasvete:</translation>
+<translation id="3960299545138990065">Znova zaženite Brave</translation>
 <translation id="4275830172053184480">Znova zaženite napravo.</translation>
 <translation id="413544239732274901">Preberite več</translation>
 <translation id="7554791636758816595">Nov zavihek</translation>
 <translation id="2079545284768500474">Razveljavi</translation>
+<translation id="17513872634828108">Odprti zavihki</translation>
 <translation id="981121421437150478">Brez povezave</translation>
 <translation id="5171045022955879922">Poiščite ali vnesite URL</translation>
 <translation id="803771048473350947">Datoteka</translation>
@@ -108,12 +121,11 @@
 <translation id="6831043979455480757">Prevedi</translation>
 <translation id="2473195200299095979">Prevede to stran</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>, odgovor, <ph name="ANSWER"/></translation>
-<translation id="9008201768610948239">Prezri</translation>
 <translation id="7714464543167945231">Potrdilo</translation>
 <translation id="4235360514405112390">Veljaven</translation>
 <translation id="6447842834002726250">Piškotki</translation>
 <translation id="1919345977826869612">Oglasi</translation>
-<translation id="410351446219883937">Samodejno predvajanje</translation>
+<translation id="6612358246767739896">Zaščitena vsebina</translation>
 <translation id="9219103736887031265">Slike</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">Pojavna okna in preusmeritve</translation>
@@ -128,6 +140,7 @@
 <translation id="7638605456503525968">Serijska vrata</translation>
 <translation id="2215727959747642672">Urejanje datotek</translation>
 <translation id="6545864417968258051">Iskanje naprav Bluetooth</translation>
+<translation id="534295439873310000">Naprave s tehnologijo NFC</translation>
 <translation id="5039804452771397117">Dovoli</translation>
 <translation id="7053983685419859001">Blokiraj</translation>
 <translation id="57838592816432529">Izklopi zvok</translation>
@@ -138,13 +151,17 @@
 <translation id="6979440798594660689">Izklop zvoka (privzeto)</translation>
 <translation id="8037357227543935929">Zahteva (privzeto)</translation>
 <translation id="8763927697961133303">Naprava USB</translation>
+<translation id="4165986682804962316">Nastavitve spletnega mesta</translation>
 <translation id="9011424611726486705">Odpiranje nastavitev spletnega mesta</translation>
 <translation id="5932224571077948991">Spletno mesto prikazuje vsiljive ali zavajajoče oglase</translation>
 <translation id="7878562273885520351">Geslo je morda ogroženo</translation>
 <translation id="1089439967362294234">Spremeni geslo</translation>
+<translation id="9008201768610948239">Prezri</translation>
 <translation id="1186201132766001848">Preveri gesla</translation>
 <translation id="5979084224081478209">Preveri gesla</translation>
+<translation id="10614374240317010">Nikoli shranjeno</translation>
 <translation id="5869522115854928033">Shranjena gesla</translation>
+<translation id="230699814587342492">Gesla za Brave</translation>
 <translation id="5087580092889165836">Dodaj kartico</translation>
 <translation id="2154484045852737596">Urejanje kartice</translation>
 <translation id="4923459931733593730">Plačilo</translation>
@@ -193,8 +210,11 @@
 <translation id="1974060860693918893">Napredno</translation>
 <translation id="5308380583665731573">Poveži</translation>
 <translation id="2501278716633472235">Nazaj</translation>
+<translation id="1736420071277903564">Računalnik</translation>
+<translation id="3906954721959377182">Tablični računalnik</translation>
 <translation id="7029809446516969842">Gesla</translation>
 <translation id="6596325263575161958">Možnosti šifriranja</translation>
+<translation id="8461694314515752532">Šifriranje sinhroniziranih podatkov z vašim geslom za sinhronizacijo</translation>
 <translation id="9050666287014529139">Geslo</translation>
 <translation id="9095388113577226029">Več jezikov …</translation>
 <translation id="7600965453749440009">Nikoli ne prevedi iz jezika: <ph name="LANGUAGE"/></translation>
@@ -202,6 +222,7 @@
 <translation id="7378627244592794276">Ne</translation>
 <translation id="9137013805542155359">Pokaži izvirno besedilo</translation>
 <translation id="8725066075913043281">Poskusi znova</translation>
+<translation id="5684874026226664614">Ojoj, te strani bi bilo mogoče prevesti.</translation>
 <translation id="583281660410589416">Neznano</translation>
 <translation id="9170848237812810038">&amp;Razveljavi</translation>
 <translation id="2972581237482394796">&amp;Uveljavi</translation>

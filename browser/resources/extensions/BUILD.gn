@@ -1,11 +1,19 @@
 import("//chrome/browser/resources/optimize_webui.gni")
 import("//chrome/common/features.gni")
 import("//tools/grit/grit_rule.gni")
+import("//tools/polymer/polymer.gni")
 
 grit("resources") {
   source = "extensions_resources.grd"
 
-  source_is_generated = optimize_webui
+  # The .grd contains references to generated files.
+  source_is_generated = true
+  grit_flags = [
+    "-E",
+    "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
+  ]
+
+  deps = [ ":polymer3_elements" ]
 
   outputs = [
     "grit/brave_extensions_resources.h",
@@ -49,3 +57,14 @@ action("unpak_brave_extensions_resources") {
     rebase_path("$target_gen_dir/${pak_file}", root_build_dir),
   ]
 }
+
+group("polymer3_elements") {
+  deps = [ ":brave_item_list_more_items_module" ]
+}
+
+polymer_modulizer("brave_item_list_more_items") {
+  js_file = "brave_item_list_more_items.js"
+  html_file = "brave_item_list_more_items.html"
+  html_type = "v3-ready"
+}
+

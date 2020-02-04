@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page_browser_proxy.js b/chrome/browser/resources/settings/privacy_page/privacy_page_browser_proxy.js
-index 0cfa4c59e78a7c33a020b4b3d04931fe6a401fb5..2f1c37f6781682cfc255145a7edcfb219693b716 100644
+index d6663e02e31738b2a281729fcb68f94dfe7fdf74..2bde6a9650bd0bd2c2aa8ad7839dcb716afca2e5 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page_browser_proxy.js
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page_browser_proxy.js
-@@ -10,7 +10,7 @@ let MetricsReporting;
+@@ -33,7 +33,7 @@ let MetricsReporting;
  cr.define('settings', function() {
    /** @interface */
    class PrivacyPageBrowserProxy {
@@ -11,7 +11,7 @@ index 0cfa4c59e78a7c33a020b4b3d04931fe6a401fb5..2f1c37f6781682cfc255145a7edcfb21
      /** @return {!Promise<!MetricsReporting>} */
      getMetricsReporting() {}
  
-@@ -33,7 +33,7 @@ cr.define('settings', function() {
+@@ -62,7 +62,7 @@ cr.define('settings', function() {
     * @implements {settings.PrivacyPageBrowserProxy}
     */
    class PrivacyPageBrowserProxyImpl {

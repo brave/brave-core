@@ -182,8 +182,8 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "Ежемесечни дарения",
-    "description": "Title for monthly tips section in wallet summary"
+    "message": "Месечни приноси ",
+    "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
     "message": "Изключено",
@@ -256,7 +256,7 @@
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
-    "message": "Зададеното Ви ежемесечно плащане за автоматично дарение и месечните дарения не могат да бъдат завършени поради недостиг на средства. Ще опитаме отново след 30 дни.",
+    "message": "Your scheduled monthly payment for Auto-Contribute and monthly contributions could not be completed due to insufficient funds. We’ll try again in 30 days.",
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
@@ -400,12 +400,12 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "Вашите месечни бакшиши бяха обработени!",
-    "description": "Message for monthly tips processed notification"
+    "message": "Your monthly contributions have been processed!",
+    "description": "Message for monthly contributions processed notification"
   },
   "contributionTips": {
     "message": "Вноски и бакшиши",
-    "description": "Title for monthly tips processed notification"
+    "description": "Title for monthly contributions processed notification"
   },
   "serviceTextPanelWelcome": {
     "message": "Чрез щракване върху \"Присъединяване към награди\" показвате, че сте прочели и се съгласявате с",

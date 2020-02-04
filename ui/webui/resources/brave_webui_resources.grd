@@ -12,6 +12,9 @@
   <release seq="1">
     <includes>
       <part file="fonts_resources.grdp" />
+      <if expr="not is_android and not is_ios">
+        <part file="br_elements_resources_v3.grdp" />
+      </if>
     </includes>
 
     <structures>

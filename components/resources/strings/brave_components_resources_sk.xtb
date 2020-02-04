@@ -77,19 +77,11 @@
 <translation id="438216590634144114">Ak prehľadávate web z adresného riadku, vyberte vyhľadávací nástroj, ktorý by ste chceli používať predvolene.</translation>
 <translation id="5804484488647369316">Nastaviť predvolený vyhľadávač</translation>
 <translation id="4428458837269935199">Ak chcete mať väčší zážitok z anonymného vyhľadávania, skúste DuckDuckGo.</translation>
-<translation id="513635702954746724">Vyberte si svoj farebný motív</translation>
-<translation id="6842850080200126305">Nastavte farbu panela s nástrojmi výberom svetlej alebo tmavej možnosti z panela nastavení.</translation>
-<translation id="5805868144901917207">Vyberte si motív</translation>
-<translation id="8131740175452115882">Potvrdiť</translation>
-<translation id="713206503018076063">Systémový motív (základné nastavenie)</translation>
-<translation id="1807246157184219062">Svetlý</translation>
-<translation id="2414886740292270097">Tmavý</translation>
 <translation id="3829010735958850433">Preskočiť prehliadku na uvítanie</translation>
 <translation id="1201402288615127009">Ďalej</translation>
 <translation id="7954950242989581218">Surfujte bezpečne a riadne</translation>
 <translation id="2188651882929633653">Bezpečnostný štít Brave Shields blokuje zákerné programy vrátane väčšiny reklám, ktoré sa vás snažia na sieti vystopovať. Ak sa vám zdá, že stránka nefunguje, nastavte štít na dole. Na odhad celkového využívania určitých funkcií využíva Brave <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>výlučne vlastné produktové analýzy<ph name="END_LINK_P3A">&lt;/a&gt;</ph>. Môžete ich vypnúť v <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Nastaveniach<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Reklamy</translation>
-<translation id="5698387814910197501">Získajte {{currency}} za sledovanie reklám v Brave. Tieto reklamy sú založené na Vašich záujmoch, ktoré vyplývajú z vášho surfovania. Vaše osobné údaje a história prehliadania nikdy neopustia váš prehliadač.</translation>
 <translation id="6112368337882254910">Automaticky prispieť</translation>
 <translation id="3742599705619405136">Automatická podpora autorov a tvorcov obsahu. Nastavte mesačné platby a normálne surfujte. Overeným stránkam Brave, ktoré navštívite, bude automaticky odoslaný príspevok. Výšku príspevku vypočíta Brave podľa miery vašej pozornosti venovanej jednotlilvým stránkam.</translation>
 <translation id="20281847067919078">Odhadované čakajúce odmeny</translation>
@@ -97,6 +89,7 @@
 <translation id="319209088187794725">Oznámenia o reklame prijaté tento mesiac</translation>
 <translation id="4229016885653790965">Bohužiaľ! Vo vašej lokalite nie sú reklamy zatiaľ k dispozícii.</translation>
 <translation id="2539279826042558064">V súčasnosti nie sú na vašom zariadení k dispozícii Odmeny Brave and Reklamy.</translation>
+<translation id="5421369907811917952">Ďalšie nastavenia</translation>
 <translation id="654711254769318398">Zobrazené stránky s reklamami</translation>
 <translation id="2532127066761785857">Maximálny počet zobrazených reklám</translation>
 <translation id="5171071066587880677">1 reklama za hodinu</translation>
@@ -132,7 +125,6 @@
 <translation id="2726674968268546964">žetóny</translation>
 <translation id="7286722244752781970">Minimálny čas na stránke k zalogovaniu návštevy</translation>
 <translation id="4424486208397124985">Minimálny počet návštev pre relevanciu vydavateľa</translation>
-<translation id="5421369907811917952">Ďalšie nastavenia</translation>
 <translation id="6248554379744796526">Zobraziť neoverené stránky v zozname</translation>
 <translation id="5875669387851353511">Umožniť príspevok k videám</translation>
 <translation id="8933202740471878108">1 návšteva</translation>
@@ -162,7 +154,6 @@
 <translation id="7210234701206674260">Brave rewards majú nejaký problém. Prosím, skúste to znovu.</translation>
 <translation id="570208820610947248">Zistili sme problém s vašou peňaženkou. Pred spracovaním ľubovoľnej transakcie musíte obnoviť svoju záložnú peňaženku.</translation>
 <translation id="7797604753681168055">Obnoviť teraz!</translation>
-<translation id="5549059668721746831">Dátum nasledujúceho mesačného príspevku</translation>
 <translation id="6231182869178328516">Práve som dal príspevok <ph name="NAME"/> pomocou prehliadača Brave. Skontrolujte to na stránke https://brave.com/tips.</translation>
 <translation id="8404935570206006581">Príspevok s Brave</translation>
 <translation id="2876191400747549936">Je nám ľúto, ale pri spracovaní vašej požiadavky sa vyskytli problémy. Skúste to ešte raz.</translation>
@@ -261,8 +252,6 @@
 <translation id="4114667046481794032">Výška daru</translation>
 <translation id="3520817231440482449">Pošlite príspevok na túto stránku každý mesiac</translation>
 <translation id="1827184134638345603">Poslať príspevok</translation>
-<translation id="7928243298881209869">Váš prvý mesačný príspevok bude odoslaný na:</translation>
-<translation id="6045860799501892362">Nastaviť mesačný príspevok</translation>
 <translation id="8003573781961874199">Stiahnuť ako PDF</translation>
 <translation id="298067735430872465">Zárobky z reklám</translation>
 <translation id="2266556115441975588">Vaše odmeny za sledovanie reklám sú tu!</translation>
@@ -291,7 +280,6 @@
 <translation id="9115913704608474258">November</translation>
 <translation id="7828956995407538686">Október</translation>
 <translation id="5502713021410870035">September</translation>
-<translation id="5737831580668469027">Mesačné príspevky!</translation>
 <translation id="606865182719489911">K dispozícii je bezplatný grant na žetóny.</translation>
 <translation id="2487641031722095938">To je váš šťastný deň!</translation>
 <translation id="6255773350565723852">Váš kupónový grant je na ceste.</translation>
@@ -318,13 +306,8 @@
 <translation id="4923459931733593730">Platba</translation>
 <translation id="4021593982164260556">Platba je realizovaná každý {{day}} deň v mesiaci.</translation>
 <translation id="6104680658798556671">Platba nebola uskutočnená.</translation>
-<translation id="2834888581291358924">Pokiaľ váš zostatok nebude stačiť na pokrytie celkovej sumy automatických a vami zadaných pravidelných príspevkov, platby počas tohto obdobia neprebehnú.</translation>
 <translation id="3138528956349114724">Pripnuté webové stránky</translation>
-<translation id="2337632028350283479">Spôsob fungovania mesačných príspevkov:</translation>
-<translation id="6457273203091513039">Mesačné príspevky nepochádzajú z platby automatického príspevku. Sú samostatné.</translation>
 <translation id="9099396904827413228">Každej stránke sa mesačne platí fixná čiastka.</translation>
-<translation id="5051110132941857169">Mesačné príspevky sa platia naraz každý mesiac. Ak používate automatický príspevok, príspevky odchádzajú v rovnaký čas ako vaša mesačná platba automatického príspevku.</translation>
-<translation id="3374483782662414143">Pomocou panela Príspevky môžete odstrániť ľubovoľnú stránku, ktorá dostáva mesačné príspevky.</translation>
 <translation id="5082474983463379713">Prosím, všimnite si:</translation>
 <translation id="1430915738399379752">Tlačiť</translation>
 <translation id="135956957367307069">Vaša požiadavka sa stále spracováva, čakajte, prosím.</translation>

@@ -1,18 +1,18 @@
 diff --git a/chrome/browser/resources/settings/route.js b/chrome/browser/resources/settings/route.js
-index 091bb933e2e655a30184c35359082cf50c984fb9..b0f7283c8eab2be2f14eee02866b9e7137ef60ff 100644
+index 63409309e9f378f50471be752ed49ef9e11f6bbc..17c53b00fc22d1a2a5c1b5c9d2d792832894c256 100644
 --- a/chrome/browser/resources/settings/route.js
 +++ b/chrome/browser/resources/settings/route.js
-@@ -317,7 +317,9 @@ cr.define('settings', function() {
+@@ -275,7 +275,9 @@ cr.define('settings', function() {
  
-       // TODO(tommycli): Find a way to refactor these repetitive category
-       // routes.
+     // TODO(tommycli): Find a way to refactor these repetitive category
+     // routes.
 +      // <if expr="_google_chrome">
-       r.SITE_SETTINGS_ADS = r.SITE_SETTINGS.createChild('ads');
+     r.SITE_SETTINGS_ADS = r.SITE_SETTINGS.createChild('ads');
 +      // </if>
-       r.SITE_SETTINGS_AUTOMATIC_DOWNLOADS =
-           r.SITE_SETTINGS.createChild('automaticDownloads');
-       r.SITE_SETTINGS_BACKGROUND_SYNC =
-@@ -380,7 +382,9 @@ cr.define('settings', function() {
+     r.SITE_SETTINGS_AUTOMATIC_DOWNLOADS =
+         r.SITE_SETTINGS.createChild('automaticDownloads');
+     r.SITE_SETTINGS_BACKGROUND_SYNC =
+@@ -398,7 +400,9 @@ cr.define('settings', function() {
        }
  
        r.PRINTING = r.ADVANCED.createSection('/printing', 'printing');

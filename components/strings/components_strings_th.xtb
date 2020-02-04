@@ -10,6 +10,7 @@
 <translation id="7791543448312431591">Add</translation>
 <translation id="1181037720776840403">Remove</translation>
 <translation id="5317780077021120954">บันทึก</translation>
+<translation id="3897092660631435901">Menu</translation>
 <translation id="5300589172476337783">แสดง</translation>
 <translation id="7108338896283013870">ซ่อน</translation>
 <translation id="780301667611848630">ไม่ ขอบคุณ</translation>
@@ -19,6 +20,7 @@
 <translation id="1036348656032585052">ปิด</translation>
 <translation id="8105368624971345109">ปิด</translation>
 <translation id="1175364870820465910">&amp;พิมพ์...</translation>
+<translation id="129553762522093515">เพิ่งปิด</translation>
 <translation id="8870413625673593573">เพิ่งปิด</translation>
 <translation id="385051799172605136">กลับ</translation>
 <translation id="7481312909269577407">ส่งต่อ</translation>
@@ -28,19 +30,23 @@
 <translation id="1201402288615127009">ถัดไป</translation>
 <translation id="5713644099811900409">บัญชี Brave Software</translation>
 <translation id="3157931365184549694">Restore</translation>
+<translation id="5040262127954254034">ความเป็นส่วนตัว</translation>
 <translation id="3061707000357573562">แพตช์บริการ</translation>
 <translation id="1914326953223720820">บริการแตกไฟล์</translation>
+<translation id="1623104350909869708">ป้องกันหน้าเว็บนี้จากการสร้างการโต้ตอบเพิ่มเติม</translation>
 <translation id="2677748264148917807">ออก</translation>
 <translation id="5556459405103347317">โหลดใหม่</translation>
 <translation id="2359808026110333948">ทำต่อไป</translation>
-<translation id="5935964611177478118">ลงชื่อเข้าใช้ Brave</translation>
 <translation id="4378154925671717803">โทรศัพท์</translation>
 <translation id="8131740175452115882">ยืนยัน</translation>
 <translation id="8968766641738584599">บันทึกบัตร</translation>
+<translation id="860043288473659153">ชื่อผู้ถือบัตร</translation>
+<translation id="869891660844655955">วันหมดอายุ</translation>
 <translation id="5457113250005438886">ไม่ถูกต้อง</translation>
 <translation id="6518133107902771759">ยืนยัน</translation>
 <translation id="8987927404178983737">เดือน</translation>
 <translation id="6015796118275082299">ปี</translation>
+<translation id="1581080074034554886">CVC</translation>
 <translation id="9065203028668620118">แก้ไข</translation>
 <translation id="5029568752722684782">ล้างสำเนา</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
@@ -70,6 +76,7 @@
 <translation id="4522570452068850558">รายละเอียด</translation>
 <translation id="3586931643579894722">ซ่อนรายละเอียด</translation>
 <translation id="614940544461990577">ลอง:</translation>
+<translation id="4943872375798546930">ไม่มีผลการค้นหา</translation>
 <translation id="8688672835843460752">ว่าง</translation>
 <translation id="4989542687859782284">ใช้งานไม่ได้</translation>
 <translation id="59174027418879706">เปิดใช้งานแล้ว</translation>
@@ -79,7 +86,10 @@
 <translation id="1838374766361614909">ล้างการค้นหา</translation>
 <translation id="495170559598752135">การทำงาน</translation>
 <translation id="8261506727792406068">ลบ</translation>
+<translation id="3207960819495026254">บุ๊กมาร์กแล้ว</translation>
 <translation id="3303855915957856445">ไม่พบผลการค้นหา</translation>
+<translation id="1209206284964581585">ซ่อนไปก่อน</translation>
+<translation id="1407135791313364759">เปิดทั้งหมด</translation>
 <translation id="4880827082731008257">ค้นประวัติการเข้าชม</translation>
 <translation id="4756388243121344051">&amp;ประวัติการเข้าชม</translation>
 <translation id="1644574205037202324">History</translation>
@@ -91,11 +101,14 @@
 <translation id="1178581264944972037">หยุดชั่วคราว</translation>
 <translation id="1232569758102978740">ไม่ระบุชื่อ</translation>
 <translation id="7514365320538308">ดาวน์โหลด</translation>
+<translation id="8041089156583427627">ส่งความคิดเห็น</translation>
 <translation id="7552846755917812628">ลองทำตามเคล็ดลับต่อไปนี้:</translation>
+<translation id="3960299545138990065">รีสตาร์ท Brave</translation>
 <translation id="4275830172053184480">รีสตาร์ทอุปกรณ์ของคุณ</translation>
 <translation id="413544239732274901">เรียนรู้เพิ่มเติม</translation>
 <translation id="7554791636758816595">แท็บใหม่</translation>
 <translation id="2079545284768500474">แก้</translation>
+<translation id="17513872634828108">แท็บที่เปิดอยู่</translation>
 <translation id="981121421437150478">ออฟไลน์</translation>
 <translation id="5171045022955879922">ค้นหาหรือพิมพ์ URL</translation>
 <translation id="803771048473350947">ไฟล์</translation>
@@ -108,12 +121,11 @@
 <translation id="6831043979455480757">แปลภาษา</translation>
 <translation id="2473195200299095979">แปลหน้านี้</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>, คำตอบ, <ph name="ANSWER"/></translation>
-<translation id="9008201768610948239">ไม่สนใจ</translation>
 <translation id="7714464543167945231">ใบรับรอง</translation>
 <translation id="4235360514405112390">ถูกต้อง</translation>
 <translation id="6447842834002726250">คุกกี้</translation>
 <translation id="1919345977826869612">โฆษณา</translation>
-<translation id="410351446219883937">เล่นอัตโนมัติ</translation>
+<translation id="6612358246767739896">เนื้อหาที่ได้รับความคุ้มครอง</translation>
 <translation id="9219103736887031265">ภาพ</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">ป๊อปอัปและการเปลี่ยนเส้นทาง</translation>
@@ -128,6 +140,7 @@
 <translation id="7638605456503525968">พอร์ตอนุกรม</translation>
 <translation id="2215727959747642672">การแก้ไขไฟล์</translation>
 <translation id="6545864417968258051">การสแกนหาบลูทูธ</translation>
+<translation id="534295439873310000">อุปกรณ์ NFC</translation>
 <translation id="5039804452771397117">อนุญาต</translation>
 <translation id="7053983685419859001">บล็อก</translation>
 <translation id="57838592816432529">ปิดเสียง</translation>
@@ -138,13 +151,17 @@
 <translation id="6979440798594660689">ปิดเสียง (ค่าเริ่มต้น)</translation>
 <translation id="8037357227543935929">ขอ (ค่าเริ่มต้น)</translation>
 <translation id="8763927697961133303">อุปกรณ์ USB</translation>
+<translation id="4165986682804962316">การตั้งค่าเว็บไซต์</translation>
 <translation id="9011424611726486705">เปิดการตั้งค่าเว็บไซต์</translation>
 <translation id="5932224571077948991">เว็บไซต์แสดงโฆษณาที่แทรกหรือทำให้เข้าใจผิด</translation>
 <translation id="7878562273885520351">รหัสผ่านของคุณอาจถูกขโมยได้</translation>
 <translation id="1089439967362294234">เปลี่ยนรหัสผ่าน</translation>
+<translation id="9008201768610948239">ไม่สนใจ</translation>
 <translation id="1186201132766001848">ตรวจสอบรหัสผ่าน</translation>
 <translation id="5979084224081478209">ตรวจสอบรหัสผ่าน</translation>
+<translation id="10614374240317010">ไม่เคยบันทึก</translation>
 <translation id="5869522115854928033">รหัสผ่านที่บันทึกไว้</translation>
+<translation id="230699814587342492">รหัสผ่าน Brave</translation>
 <translation id="5087580092889165836">เพิ่มบัตร</translation>
 <translation id="2154484045852737596">แก้ไขบัตร</translation>
 <translation id="4923459931733593730">การชำระเงิน</translation>
@@ -193,8 +210,11 @@
 <translation id="1974060860693918893">Advanced</translation>
 <translation id="5308380583665731573">Connect</translation>
 <translation id="2501278716633472235">ย้อนกลับ</translation>
+<translation id="1736420071277903564">คอมพิวเตอร์</translation>
+<translation id="3906954721959377182">แท็บเล็ต</translation>
 <translation id="7029809446516969842">รหัสผ่าน</translation>
 <translation id="6596325263575161958">ตัวเลือกการเข้ารหัส</translation>
+<translation id="8461694314515752532">เข้ารหัสลับข้อมูลที่ซิงค์ด้วยรหัสผ่านการซิงค์ของคุณเอง</translation>
 <translation id="9050666287014529139">ข้อความรหัสผ่าน</translation>
 <translation id="9095388113577226029">ภาษาเพิ่มเติม...</translation>
 <translation id="7600965453749440009">ไม่ต้องแปลภาษา<ph name="LANGUAGE"/></translation>
@@ -202,6 +222,7 @@
 <translation id="7378627244592794276">ไม่</translation>
 <translation id="9137013805542155359">แสดงหน้าเว็บเดิม</translation>
 <translation id="8725066075913043281">Try again</translation>
+<translation id="5684874026226664614">อ๊ะ หน้านี้ไม่สามารถแปลได้</translation>
 <translation id="583281660410589416">ไม่รู้จัก</translation>
 <translation id="9170848237812810038">เ&amp;ลิกทำ</translation>
 <translation id="2972581237482394796">&amp;ทำซ้ำ</translation>

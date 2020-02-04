@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tab_helpers.cc b/chrome/browser/ui/tab_helpers.cc
-index 12af72905098faf0c10b9deafd41017f874035df..614d803ecf1df897bf07fc203eedcedae52a7e51 100644
+index 0d9d59805199ff315372ebaee0f62f852c0d6e42..d822c123b00593bd577322017d6fb02d26adfe74 100644
 --- a/chrome/browser/ui/tab_helpers.cc
 +++ b/chrome/browser/ui/tab_helpers.cc
 @@ -11,6 +11,7 @@
@@ -10,11 +10,9 @@ index 12af72905098faf0c10b9deafd41017f874035df..614d803ecf1df897bf07fc203eedceda
  #include "build/build_config.h"
  #include "chrome/browser/bookmarks/bookmark_model_factory.h"
  #include "chrome/browser/browser_process.h"
-@@ -199,6 +200,7 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
-       autofill::ChromeAutofillClient::FromWebContents(web_contents),
-       g_browser_process->GetApplicationLocale(),
-       autofill::AutofillManager::ENABLE_AUTOFILL_DOWNLOAD_MANAGER);
+@@ -395,4 +396,5 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
+   //     See https://crbug.com/910288.
+   resource_coordinator::ResourceCoordinatorTabHelper::CreateForWebContents(
+       web_contents);
 +  brave::AttachTabHelpers(web_contents);
-   chrome_browser_net::NetErrorTabHelper::CreateForWebContents(web_contents);
-   ChromePasswordManagerClient::CreateForWebContentsWithAutofillClient(
-       web_contents,
+ }

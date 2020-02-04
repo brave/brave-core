@@ -4,7 +4,7 @@
     "description": "The name of the the extension."
   },
   "shields": {
-    "message": "Shields",
+    "message": "શિલ્ડ્સ",
     "description": "The Shields feature name"
   },
   "up": {
@@ -188,7 +188,7 @@
     "description": "Message for the button that confirms the advanced view"
   },
   "learnMore": {
-    "message": "Learn more",
+    "message": "વધુ જાણો",
     "description": "Message inviting the user to learn more about Shields"
   }
 }

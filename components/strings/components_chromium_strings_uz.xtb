@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="uz">
+<translation id="4068928808254189629">Bu yerga o‘ting
+          Brave menyusi &gt;
+          <ph name="SETTINGS_TITLE"/>
+          &gt;
+          <ph name="ADVANCED_TITLE"/>
+          va "<ph name="NO_PREFETCH_DESCRIPTION"/>"dan tanlanishni olib tashlang.
+          Shunda muammo hal bo‘lmasa, samaradorlikni oshirish uchun
+          yana shu parametrni tanlashni tavsiya qilamiz.</translation>
+<translation id="2017237562285586622">Himoya devori va antivirus dasturlari sozlamalarida Brave tarmoqqa ulanishiga ruxsat bering.</translation>
+<translation id="7460648687895344848">Brave OS boshlang‘ich sozlamalarni yakunlay olmadi.</translation>
+<translation id="8187289872471304532">Bu yerga o‘ting
+          Dasturlar &gt; Tizim sozlamalari &gt; Tarmoq &gt; Qo‘shimcha &gt; Proksi
+          va barcha proksi-serverlardan bayroqchalarni yechib qo‘ying.</translation>
+<translation id="8619622797841001082">Bu yerga o‘ting:
+          Brave menyusi &gt;
+          <ph name="SETTINGS_TITLE"/>
+          &gt;
+          <ph name="ADVANCED_TITLE"/>
+          &gt;
+          <ph name="PROXIES_TITLE"/>
+          va “proksi-serversiz” yoki “to‘g‘ridan-to‘g‘ri” sozlamalaridan biri
+          belgilanganligiga ishonch xosil qiling.</translation>
+<translation id="8746410156982274638">Bu yerga o‘ting:
+          Brave menyusi &gt;
+          <ph name="SETTINGS_TITLE"/>
+          &gt;
+          <ph name="ADVANCED_TITLE"/>
+          &gt;
+          <ph name="PROXIES_TITLE"/>
+          &gt;
+          LAN sozlamalari
+          va "LAN uchun proksi serveri ishlatish" katakchasidan belgini olib tashlang.</translation>
+<translation id="9156965752763025780">O‘zgartirishlar Brave qaytadan ishga tushirilganda kuchga kiradi.</translation>
+<translation id="130631256467250065">O‘zgartirishlar qurimla qaytadan ishga tushirilganda kuchga kiradi.</translation>
+<translation id="7999989146447764333">Brave‘da xatoliklar haqidagi hisobot funksiyasi mavjud emas.</translation>
+<translation id="7932149101545999102">Brave yaratilishida <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> ochiq kodli loyiha va boshqa <ph name="BEGIN_LINK_OSS"/>ochiq kodli dasturiy ta’minotning<ph name="END_LINK_OSS"/> katta o‘rni bor.</translation>
+<translation id="1953231710324290369">Xavfsiz Brave sahifasini ko‘rmoqdasiz.</translation>
+<translation id="2305018990464327944">Brave ushbu veb-sayt haqiqiyligi <ph name="ISSUER"/> tomonidan tasdiqlanganini aniqladi.</translation>
+<translation id="88187049159266777">Brave faoliyati noto‘g‘ri yakunlandi.</translation>
+</translationbundle>

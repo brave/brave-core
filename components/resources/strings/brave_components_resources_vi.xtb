@@ -77,19 +77,11 @@
 <translation id="438216590634144114">Chọn công cụ tìm kiếm bạn muốn sử dụng mặc định khi tìm kiếm trên web từ thanh địa chỉ.</translation>
 <translation id="5804484488647369316">Đặt công cụ tìm kiếm mặc định</translation>
 <translation id="4428458837269935199">Để có trải nghiệm tìm kiếm riêng tư hơn, hãy thử dùng DuckDuckGo.</translation>
-<translation id="513635702954746724">Chọn chủ đề màu của bạn</translation>
-<translation id="6842850080200126305">Đặt màu cho thanh công cụ của bạn bằng cách chọn tùy chọn sáng hoặc tối từ bảng cài đặt.</translation>
-<translation id="5805868144901917207">Chọn chủ đề</translation>
-<translation id="8131740175452115882">Xác nhận</translation>
-<translation id="713206503018076063">Chủ đề hệ thống (mặc định)</translation>
-<translation id="1807246157184219062">Sáng</translation>
-<translation id="2414886740292270097">Tối</translation>
 <translation id="3829010735958850433">Bỏ qua tour chào mừng</translation>
 <translation id="1201402288615127009">Tiếp theo</translation>
 <translation id="7954950242989581218">Duyệt web an toàn</translation>
 <translation id="2188651882929633653">Brave Shields chặn những thứ đáng sợ tìm cách theo dõi bạn trên web bao gồm hầu hết các loại quảng cáo. Hãy tắt Shields nếu một trang web có vẻ không hoạt động. Brave sử dụng <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>dữ liệu phân tích sản phẩm hoàn toàn riêng tư<ph name="END_LINK_P3A">&lt;/a&gt;</ph> để ước tính mức độ sử dụng tổng thể của một số tính năng nhất định. Bạn có thể tắt tính năng này trong phần <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Cài đặt<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Quảng cáo</translation>
-<translation id="5698387814910197501">Kiếm {{currency}} khi xem quảng cáo trên Brave. Quảng cáo trình bày dựa trên sở thích của bạn, theo như suy ra từ hành vi duyệt web của bạn. Không có bất kỳ dữ liệu cá nhân hay lịch sử duyệt nào rời khỏi trình duyệt của bạn.</translation>
 <translation id="6112368337882254910">Tự động Đóng góp</translation>
 <translation id="3742599705619405136">Một cách tự động để hỗ trợ các nhà xuất bản và người sáng tạo nội dung. Đặt chế độ thanh toán hàng tháng và lướt xem bình thường. Các trang web đã được Brave xác thực mà bạn truy cập sẽ tự động nhận được đóng góp của bạn, dựa trên mức độ chú ý của bạn mà Brave đo được.</translation>
 <translation id="20281847067919078">Ước tính phần thưởng chờ xử lý</translation>
@@ -97,6 +89,7 @@
 <translation id="319209088187794725">Thông báo quảng cáo đã nhận được trong tháng này</translation>
 <translation id="4229016885653790965">Rất tiếc! Quảng cáo chưa có sẵn trong khu vực của bạn.</translation>
 <translation id="2539279826042558064">Hiện tại, Brave Rewards và Ads không hoạt động trên thiết bị của bạn.</translation>
+<translation id="5421369907811917952">Cài đặt khác</translation>
 <translation id="654711254769318398">Trang quảng cáo đã xem</translation>
 <translation id="2532127066761785857">Số lượng quảng cáo tối đa được hiển thị</translation>
 <translation id="5171071066587880677">1 quảng cáo mỗi giờ</translation>
@@ -132,7 +125,6 @@
 <translation id="2726674968268546964">mã thông báo</translation>
 <translation id="7286722244752781970">Thời gian xem trang tối thiểu trước khi lưu lại lượt truy cập</translation>
 <translation id="4424486208397124985">Số lượt truy cập tối thiểu đối với nhà xuất bản liên quan</translation>
-<translation id="5421369907811917952">Cài đặt khác</translation>
 <translation id="6248554379744796526">Hiển thị các trang chưa xác thực trong danh sách</translation>
 <translation id="5875669387851353511">Cho phép đóng góp vào vidoe</translation>
 <translation id="8933202740471878108">1 lượt truy cập</translation>
@@ -162,7 +154,6 @@
 <translation id="7210234701206674260">Phần thưởng Brave đang gặp sự cố. Vui lòng thử lại sau.</translation>
 <translation id="570208820610947248">Chúng tôi phát hiện có vấn đề đối với ví tiền của bạn. Bạn phải khôi phục ví sao lưu trước khi có thể xử lý bất kỳ giao dịch nào.</translation>
 <translation id="7797604753681168055">Khôi phục ngay!</translation>
-<translation id="5549059668721746831">Ngày gửi tiền tip hàng tháng tiếp theo</translation>
 <translation id="6231182869178328516">Tôi vừa thưởng <ph name="NAME"/> thông qua Trình duyệt Brave. Xem thêm tại https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">Rất tiếc, đã xảy ra trục trặc khi xử lý yêu cầu của bạn, vui lòng thử lại.</translation>
@@ -261,8 +252,6 @@
 <translation id="4114667046481794032">Khoản tiền đóng góp</translation>
 <translation id="3520817231440482449">Gửi tiền tip cho trang web này Hàng tháng</translation>
 <translation id="1827184134638345603">Gửi tiền boa…</translation>
-<translation id="7928243298881209869">Tiền tip hàng tháng đầu tiên của bạn sẽ được gửi vào:</translation>
-<translation id="6045860799501892362">Thiết lập tiền tip hàng tháng</translation>
 <translation id="8003573781961874199">Tải về dưới dạng PDF</translation>
 <translation id="298067735430872465">Tiền kiếm được từ Quảng cáo</translation>
 <translation id="2266556115441975588">Phần thưởng cho bạn từ Quảng cáo đều có tại đây!</translation>
@@ -291,7 +280,6 @@
 <translation id="9115913704608474258">Tháng 11</translation>
 <translation id="7828956995407538686">Tháng 10</translation>
 <translation id="5502713021410870035">Tháng 9</translation>
-<translation id="5737831580668469027">Tiền boa hàng tháng!</translation>
 <translation id="606865182719489911">Một khoản thưởng token miễn phí đang khả dụng.</translation>
 <translation id="2487641031722095938">Hôm nay là ngày may mắn của bạn!</translation>
 <translation id="6255773350565723852">Khoản thưởng token của bạn đang đến.</translation>
@@ -318,13 +306,8 @@
 <translation id="4923459931733593730">Thanh toán</translation>
 <translation id="4021593982164260556">Thanh toán thực hiện mỗi {{day}}th ngày hàng tháng.</translation>
 <translation id="6104680658798556671">Chưa thực hiện thanh toán.</translation>
-<translation id="2834888581291358924">Khi số dư của bạn không đủ để chi trả tổng số tiền Tự động đóng góp và tiền boa định kỳ của bạn, khoản tiền này sẽ được bỏ qua trong kỳ này.</translation>
 <translation id="3138528956349114724">Các trang được ghim giờ đã</translation>
-<translation id="2337632028350283479">Đây là cách thức hoạt động của tiền boa hàng tháng:</translation>
-<translation id="6457273203091513039">Tiền boa hàng tháng không đến từ khoản thanh toán Tự động đóng góp của bạn. Chúng riêng biệt.</translation>
 <translation id="9099396904827413228">Mỗi trang được trả một số tiền cố định hàng tháng.</translation>
-<translation id="5051110132941857169">Tiền boa hàng tháng được trả đồng thời, mỗi tháng. Nếu bạn đang sử dụng Tự động đóng góp, tiền boa sẽ được trả cùng một lúc với thanh toán Tự động đóng góp hàng tháng của bạn.</translation>
-<translation id="3374483782662414143">Bạn có thể xóa bất cứ trang nhận tiền boa hàng tháng nào từ bên trong bảng Tiền boa.</translation>
 <translation id="5082474983463379713">Xin lưu ý:</translation>
 <translation id="1430915738399379752">In</translation>
 <translation id="135956957367307069">Yêu cầu của bạn đang được xử lý, vui lòng chờ.</translation>

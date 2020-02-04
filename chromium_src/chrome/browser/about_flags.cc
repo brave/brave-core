@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/ntp_sponsored_images/browser/features.h"
+#include "chrome/browser/about_flags.h"
 
 using ntp_sponsored_images::features::kBraveNTPBrandedWallpaper;
 using ntp_sponsored_images::features::kBraveNTPBrandedWallpaperDemo;
@@ -19,15 +20,13 @@ using ntp_sponsored_images::features::kBraveNTPBrandedWallpaperDemo;
      FEATURE_VALUE_TYPE(kBraveNTPBrandedWallpaperDemo)},
 
 #define SetFeatureEntryEnabled SetFeatureEntryEnabled_ChromiumImpl
-#include "../../../../chrome/browser/about_flags.cc"       // NOLINT
-#include "../../../../components/flags_ui/flags_state.cc"  // NOLINT
+#include "../../../../chrome/browser/about_flags.cc"  // NOLINT
 #undef SetFeatureEntryEnabled
 
 #include "base/strings/string_util.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
-#include "components/flags_ui/flags_state.h"
 #include "components/prefs/pref_service.h"
 
 namespace about_flags {

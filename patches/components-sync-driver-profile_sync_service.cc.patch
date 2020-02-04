@@ -1,10 +1,10 @@
 diff --git a/components/sync/driver/profile_sync_service.cc b/components/sync/driver/profile_sync_service.cc
-index 6fde79dea55822db89b717f632fc70b870b496a0..93c5db13325e01db9abff3a924b613968dab297b 100644
+index f3956a3fcd7cbcfe74d81be242b2877075a9b189..685030698b59f621fe3b68a58bd314ae34231a4a 100644
 --- a/components/sync/driver/profile_sync_service.cc
 +++ b/components/sync/driver/profile_sync_service.cc
-@@ -466,6 +466,7 @@ void ProfileSyncService::StartUpSlowEngineComponents() {
-   params.sync_user_agent = MakeUserAgentForSync(channel_);
-   params.http_factory_getter = MakeHttpPostProviderFactoryGetter();
+@@ -508,6 +508,7 @@ void ProfileSyncService::StartUpSlowEngineComponents() {
+       create_http_post_provider_factory_cb_, MakeUserAgentForSync(channel_),
+       url_loader_factory_->Clone(), network_time_update_callback_);
    params.authenticated_account_id = GetAuthenticatedAccountInfo().account_id;
 +  BRAVE_PROFILE_SYNC_SERVICE_START_UP_SLOW_ENGINE_COMPONENTS
    DCHECK(!params.authenticated_account_id.empty() || IsLocalSyncEnabled());

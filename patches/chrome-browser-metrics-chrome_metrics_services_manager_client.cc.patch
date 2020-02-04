@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/metrics/chrome_metrics_services_manager_client.cc b/chrome/browser/metrics/chrome_metrics_services_manager_client.cc
-index c14a0617edde680a9e2c6d9bb8129cab1b826031..7bc8ecedb7eccb6a0634d46d6a88335dac5baa65 100644
+index 93d38754f6dc2fcf99e00f6bc947f4db91c50af3..babb86f791802f0d73efe6dad0dbb6a598af8030 100644
 --- a/chrome/browser/metrics/chrome_metrics_services_manager_client.cc
 +++ b/chrome/browser/metrics/chrome_metrics_services_manager_client.cc
-@@ -145,7 +145,7 @@ class ChromeMetricsServicesManagerClient::ChromeEnabledStateProvider
+@@ -153,7 +153,7 @@ class ChromeMetricsServicesManagerClient::ChromeEnabledStateProvider
    }
  
    bool IsReportingEnabled() const override {

@@ -40,7 +40,7 @@ function getMenuElement (templateContent, href) {
 }
 
 function getSectionElement (templateContent, sectionName) {
-  const sectionEl = templateContent.querySelector(`template[if="[[showPage_(pageVisibility.${sectionName})]]"]`) ||
+  const sectionEl = templateContent.querySelector(`template[if*='pageVisibility.${sectionName}']`) ||
     templateContent.querySelector(`settings-section[section="${sectionName}"]`)
   if (!sectionEl) {
     console.error(`[Brave Settings Overrides] Could not find section '${sectionName}'`)
@@ -179,8 +179,8 @@ BravePatching.RegisterPolymerTemplateModifications({
     a11yEl.remove()
     // Move autofill to advanced
     const autofillEl = getMenuElement(templateContent, '/autofill')
-    const privacyEl = getMenuElement(templateContent, '/privacy')
-    privacyEl.insertAdjacentElement('afterend', autofillEl)
+    const languagesEl = getMenuElement(templateContent, '/languages')
+    languagesEl.insertAdjacentElement('beforebegin', autofillEl)
     // Remove extensions link
     const extensionsLinkEl = templateContent.querySelector('#extensionsLink')
     if (!extensionsLinkEl) {

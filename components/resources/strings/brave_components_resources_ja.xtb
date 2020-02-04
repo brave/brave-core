@@ -77,19 +77,11 @@
 <translation id="438216590634144114">アドレスバーからのウェブ検索で、デフォルトで使用したい検索エンジンを選択してください。</translation>
 <translation id="5804484488647369316">デフォルトの検索エンジンを設定する</translation>
 <translation id="4428458837269935199">よりプライベートに検索を行うには、DuckDuckGoをお試しください。</translation>
-<translation id="513635702954746724">カラーテーマを選択</translation>
-<translation id="6842850080200126305">設定パネルから明暗オプションを選択して、ツールバーの色を設定します。</translation>
-<translation id="5805868144901917207">テーマを選択</translation>
-<translation id="8131740175452115882">確認</translation>
-<translation id="713206503018076063">システムのテーマ（デフォルト）</translation>
-<translation id="1807246157184219062">ライト</translation>
-<translation id="2414886740292270097">ダーク</translation>
 <translation id="3829010735958850433">ウェルカムツアーをスキップする</translation>
 <translation id="1201402288615127009">次へ</translation>
 <translation id="7954950242989581218">安心・安全にブラウズする</translation>
 <translation id="2188651882929633653">Braveシールドは、ウェブのあらゆる場所でユーザーを追跡しようとする不気味なファイルをブロックします。これにはほとんどの広告が含まれます。特定のサイトがうまく動かない時は、シールドを「ダウン」に設定してみてください。Braveは<ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>完全に匿名の製品分析<ph name="END_LINK_P3A">&lt;/a&gt;</ph>を使い、特定の機能が全体でどの程度使われているか予測します。これは<ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>設定<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>でオフにできます。</translation>
 <translation id="1919345977826869612">広告</translation>
-<translation id="5698387814910197501">Braveで広告を視聴して{{currency}}を獲得しましょう。ご自身の閲覧状況から推測される関心に基づいて、広告が表示されます。個人データや閲覧履歴は一切ブラウザの外へ出ることはありません。</translation>
 <translation id="6112368337882254910">自動支援</translation>
 <translation id="3742599705619405136">パブリッシャーとコンテンツ制作者を自動的に支援する方法。月々支払いを設定して通常通りに閲覧してください。あなたが訪問するBrave検証済みサイトは、Braveが測定するあなたのアテンションに基づき、あなたからの寄付を自動で受け取ることになります。</translation>
 <translation id="20281847067919078">保留中の推定報酬額</translation>
@@ -97,6 +89,7 @@
 <translation id="319209088187794725">今月受け取った広告通知</translation>
 <translation id="4229016885653790965">申し訳ありません。広告はお住まいの地域ではまだご利用いただけません。</translation>
 <translation id="2539279826042558064">Braveの報酬と広告は、現時点ではお使いの端末に対応していません。</translation>
+<translation id="5421369907811917952">その他の設定</translation>
 <translation id="654711254769318398">閲覧した広告ページ</translation>
 <translation id="2532127066761785857">表示される広告の最大数</translation>
 <translation id="5171071066587880677">1 時間に 1 件の広告</translation>
@@ -132,7 +125,6 @@
 <translation id="2726674968268546964">ポイント</translation>
 <translation id="7286722244752781970">サイト訪問を記録する最小ページ数</translation>
 <translation id="4424486208397124985">サイト関連性推定に使用する最小サイト訪問数</translation>
-<translation id="5421369907811917952">その他の設定</translation>
 <translation id="6248554379744796526">リスト内に未検証のサイトを表示する</translation>
 <translation id="5875669387851353511">動画への支援を許可する</translation>
 <translation id="8933202740471878108">訪問数1</translation>
@@ -162,7 +154,6 @@
 <translation id="7210234701206674260">Brave Rewardsに問題が発生しました。後でもう一度やり直してください</translation>
 <translation id="570208820610947248">ウォレットの問題が検出されました。取引を処理する前にバックアップウォレットを復元する必要があります。</translation>
 <translation id="7797604753681168055">今すぐ復元してください！</translation>
-<translation id="5549059668721746831">次の毎月のチップ日</translation>
 <translation id="6231182869178328516">Brave Browser を使用してチップを払いました。 <ph name="NAME"/> ここで確認してください。https://brave.com/tips</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">申し訳ありませんがリクエストの処理中に問題が発生しました。もう一度お試しください。</translation>
@@ -261,8 +252,6 @@
 <translation id="4114667046481794032">寄付金額</translation>
 <translation id="3520817231440482449">毎月このサイトへチップを払う</translation>
 <translation id="1827184134638345603">チップを送る…</translation>
-<translation id="7928243298881209869">あなたの最初の毎月のチップは以下に送られます：</translation>
-<translation id="6045860799501892362">毎月のチップを設定</translation>
 <translation id="8003573781961874199">PDFをダウンロード</translation>
 <translation id="298067735430872465">広告閲覧報酬</translation>
 <translation id="2266556115441975588">Adsから得た報酬はこちらです！</translation>
@@ -291,7 +280,6 @@
 <translation id="9115913704608474258">11月</translation>
 <translation id="7828956995407538686">10月</translation>
 <translation id="5502713021410870035">9月</translation>
-<translation id="5737831580668469027">毎月のチップ！</translation>
 <translation id="606865182719489911">無料のポイントを受け取ることが可能です</translation>
 <translation id="2487641031722095938">ラッキーな日です！</translation>
 <translation id="6255773350565723852">あなたの付与ポイントは送金中です。</translation>
@@ -318,13 +306,8 @@
 <translation id="4923459931733593730">支払い</translation>
 <translation id="4021593982164260556">支払いは毎月{{day}}日に行われます。</translation>
 <translation id="6104680658798556671">未払いです。</translation>
-<translation id="2834888581291358924">残高が自動支援と定期支払いチップの合計に満たない場合、支払いはこの期間中スキップされます。</translation>
 <translation id="3138528956349114724">固定されたサイトは現在</translation>
-<translation id="2337632028350283479">毎月定期支払いチップの仕組みは以下の通りです。</translation>
-<translation id="6457273203091513039">毎月定期支払いのチップは自動支援とは別に支払われます。</translation>
 <translation id="9099396904827413228">サイトごとに毎月固定額が支払われます。</translation>
-<translation id="5051110132941857169">毎月のチップは、1 か月ごとにすべて一括で支払われます。自動支援を使っている場合は、毎月の自動支援の支払いと同じタイミングでチップが支払われます。</translation>
-<translation id="3374483782662414143">「チップ」パネル内から毎月のチップを受け取るサイトを削除することができます。</translation>
 <translation id="5082474983463379713">ご注意ください：</translation>
 <translation id="1430915738399379752">印刷</translation>
 <translation id="135956957367307069">リクエストは処理中です。しばらくお待ちください。</translation>

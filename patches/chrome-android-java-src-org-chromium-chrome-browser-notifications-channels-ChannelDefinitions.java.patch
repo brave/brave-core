@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelDefinitions.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelDefinitions.java
-index d5b4877e96934b06e80bd5d120868197c39e5bdf..6615dacd9592f3cf780b5363736220f93651cad8 100644
+index 62d219a61441e8d26ef71f76e2df45f17de4a4e8..98f017a2a82e34794e1fc9fa4e6c569dbe821f62 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelDefinitions.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelDefinitions.java
 @@ -55,6 +55,7 @@ public class ChannelDefinitions {
@@ -9,8 +9,8 @@ index d5b4877e96934b06e80bd5d120868197c39e5bdf..6615dacd9592f3cf780b5363736220f9
 +            BraveChannelDefinitions.ChannelId.BRAVE_ADS,
              ChannelId.SCREEN_CAPTURE, ChannelId.CONTENT_SUGGESTIONS, ChannelId.WEBAPP_ACTIONS,
              ChannelId.SITES, ChannelId.SHARING, ChannelId.UPDATES, ChannelId.COMPLETED_DOWNLOADS,
-             ChannelId.PERMISSION_REQUESTS, ChannelId.PERMISSION_REQUESTS_HIGH})
-@@ -78,6 +79,7 @@ public class ChannelDefinitions {
+             ChannelId.PERMISSION_REQUESTS, ChannelId.PERMISSION_REQUESTS_HIGH,
+@@ -80,6 +81,7 @@ public class ChannelDefinitions {
      }
  
      @StringDef({
@@ -18,7 +18,7 @@ index d5b4877e96934b06e80bd5d120868197c39e5bdf..6615dacd9592f3cf780b5363736220f9
              ChannelGroupId.GENERAL, ChannelGroupId.SITES
      })
      @Retention(RetentionPolicy.SOURCE)
-@@ -108,6 +110,7 @@ public class ChannelDefinitions {
+@@ -110,6 +112,7 @@ public class ChannelDefinitions {
              Map<String, PredefinedChannel> map = new HashMap<>();
              Set<String> startup = new HashSet<>();
  

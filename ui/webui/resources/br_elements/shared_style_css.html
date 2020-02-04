@@ -1,0 +1,36 @@
+<link rel="import" href="chrome://resources/html/polymer.html">
+
+<!-- Some modules declare variables in :host
+      which cannot be overriden by custom-style (e.g. cr-checkbox)
+      For these, we define a style module and use it as an 'include'
+      in containing apps.
+-->
+<dom-module id="br-shared-style">
+  <template>
+    <style>
+
+      :host {
+        --cr-radio-button-checked-color: var(--cr-link-color) !important;
+        --cr-radio-button-checked-ripple-color: rgba(var(--cr-link-color-rgb), .2) !important;
+      }
+
+      :focus {
+        outline-color: var(--flat-focus-shadow-color);
+        outline-width: 3px;
+      }
+
+      cr-checkbox {
+        --cr-checkbox-checked-box-color: var(--cr-link-color) !important;
+        --cr-checkbox-ripple-checked-color: var(--cr-link-color) !important;
+      }
+
+      h1, h2, h3, h4, h5, h6, button {
+        font-family: Poppins;
+      }
+
+      .label:not(.secondary) {
+        font-weight: 500;
+      }
+    </style>
+  </template>
+</dom-module>

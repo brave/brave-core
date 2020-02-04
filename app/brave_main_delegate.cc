@@ -28,7 +28,6 @@
 #include "components/autofill/core/common/autofill_payments_features.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
-#include "components/unified_consent/feature.h"
 #include "components/sync/driver/sync_driver_switches.h"
 #include "content/public/common/content_features.h"
 #include "content/public/common/content_switches.h"
@@ -168,7 +167,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       features::kSmsReceiver.name,
       features::kWebXr.name,
       features::kWebXrGamepadModule.name,
-      unified_consent::kUnifiedConsent.name,
   };
   command_line.AppendFeatures(enabled_features, disabled_features);
 

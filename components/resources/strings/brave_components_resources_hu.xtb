@@ -77,19 +77,11 @@
 <translation id="438216590634144114">Válaszd ki a címsorból végzett webes keresésekhez használandó alapértelmezett keresőmotort.</translation>
 <translation id="5804484488647369316">Állíts be alapértelmezett keresőmotort</translation>
 <translation id="4428458837269935199">Ha még privátabb keresést szeretnél, próbáld ki a DuckDuckGo-t</translation>
-<translation id="513635702954746724">Színséma kiválasztása</translation>
-<translation id="6842850080200126305">A beállítások panelen a világos vagy sötét opció kiválasztásával beállíthatja eszköztárának színét.</translation>
-<translation id="5805868144901917207">Válassz egy témát</translation>
-<translation id="8131740175452115882">Megerősítés</translation>
-<translation id="713206503018076063">Rendszertéma (alapértelmezett)</translation>
-<translation id="1807246157184219062">Világos</translation>
-<translation id="2414886740292270097">Sötét</translation>
 <translation id="3829010735958850433">Üdvözlő bemutató átugrása</translation>
 <translation id="1201402288615127009">Következő</translation>
 <translation id="7954950242989581218">Böngéssz biztonságban</translation>
 <translation id="2188651882929633653">A Brave Shields blokkolja azokat a ronda cuccokat, amelyek követnének a neten ideértve a hirdetések zömét is. Állítsd a Shields-t “lent” állásba, ha úgy tűnik, hogy egy oldal nem működik. A Brave <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>teljes mértékben anonimizált termékanalízis<ph name="END_LINK_P3A">&lt;/a&gt;</ph> használatával becsüli meg az egyes funkciók összesített használatát. Kikapcsolhatod a <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Beállítások<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>; menüben.</translation>
 <translation id="1919345977826869612">Hirdetések</translation>
-<translation id="5698387814910197501">Szerezzen {{currency}} hirdetéseknek a Brave alatti megtekintésével. A bemutatott hirdetések a böngészési viselkedéséből meghatározott érdeklődési körétől függenek. A böngészőt sosem hagyja el semmilyen személyes adat vagy böngészési előzmény.</translation>
 <translation id="6112368337882254910">Automatikus Támogatás</translation>
 <translation id="3742599705619405136">Automatikus módja a kiadók és tartalomkészítők támogatásának. Állítsa be a havi összeget, és böngésszen a megszokott módon. A meglátogatott, Brave által hitelesített webhelyek automatikusan megkapják a hozzájárulást az ön figyelme alapján, amit a Brave mér.</translation>
 <translation id="20281847067919078">Várható függőben lévő jutalmak</translation>
@@ -97,6 +89,7 @@
 <translation id="319209088187794725">Ebben a hónapban kapott reklámértesítések</translation>
 <translation id="4229016885653790965">Sajnáljuk, területén még nem állnak rendelkezésre hirdetések.</translation>
 <translation id="2539279826042558064">Jelenleg nem érhető el a Brave Rewards és Ads készülékéről</translation>
+<translation id="5421369907811917952">Egyéb beállítások</translation>
 <translation id="654711254769318398">Megtekintett hirdetési oldalak</translation>
 <translation id="2532127066761785857">Megjelenített hirdetések maximális száma</translation>
 <translation id="5171071066587880677">Óránként 1 hirdetés</translation>
@@ -132,7 +125,6 @@
 <translation id="2726674968268546964">tokenek</translation>
 <translation id="7286722244752781970">Oldalon eltöltött minimális idő egy látogatás naplózása előtt</translation>
 <translation id="4424486208397124985">Látogatások minimális száma a tartalomszolgáltató relevanciájához</translation>
-<translation id="5421369907811917952">Egyéb beállítások</translation>
 <translation id="6248554379744796526">Nem hitelesített webhelyek megjelenítése a listában</translation>
 <translation id="5875669387851353511">Videókhoz történő hozzájárulás engedélyezése</translation>
 <translation id="8933202740471878108">Egy látogatás</translation>
@@ -162,7 +154,6 @@
 <translation id="7210234701206674260">A Brave Jutalmak problémába ütközött. Próbáld újra később.</translation>
 <translation id="570208820610947248">Úgy tűnik valami baj van pénztárcájával. Mielőtt bármilyen további tranzakciót végrehajtana, szükség van pénztárcája biztonsági mentésének visszaállítására.</translation>
 <translation id="7797604753681168055">Visszaállítás most!</translation>
-<translation id="5549059668721746831">Következő havi borravaló dátuma</translation>
 <translation id="6231182869178328516">Épp most küldtem jattot neki: <ph name="NAME"/> a Brave böngészőt használva. Nézd meg itt: https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">Sajnáljuk, hiba történt kérésed feldolgozása közben. Kérünk, próbáld újra.</translation>
@@ -261,8 +252,6 @@
 <translation id="4114667046481794032">Hozzájárulás összege</translation>
 <translation id="3520817231440482449">Adakozz ennek az oldalnak havonta</translation>
 <translation id="1827184134638345603">Adjon borravalót…</translation>
-<translation id="7928243298881209869">Az első havi borravalója ezen a dátumon lesz elküldve:</translation>
-<translation id="6045860799501892362">Havi borravaló megadása</translation>
 <translation id="8003573781961874199">Letöltés PDF fájlként</translation>
 <translation id="298067735430872465">Jövedelem hirdetésekből</translation>
 <translation id="2266556115441975588">Ads jutalmaid megérkeztek!</translation>
@@ -291,7 +280,6 @@
 <translation id="9115913704608474258">November</translation>
 <translation id="7828956995407538686">Október</translation>
 <translation id="5502713021410870035">Szeptember</translation>
-<translation id="5737831580668469027">Havi hozzájárulások!</translation>
 <translation id="606865182719489911">Ingyenes token grant érhető el.</translation>
 <translation id="2487641031722095938">Szerencséje van!</translation>
 <translation id="6255773350565723852">Zseton adományod úton van.</translation>
@@ -318,13 +306,8 @@
 <translation id="4923459931733593730">Fizetés</translation>
 <translation id="4021593982164260556">A fizetés minden hónap {{day}}. napján történik.</translation>
 <translation id="6104680658798556671">A fizetést nem végezték el.</translation>
-<translation id="2834888581291358924">Ha egyenlege nem fedezi az automatikus hozzájárulás és a rendszeres borravaló összesített összegét, erre az időszakra mellőzzük ezeket a kifizetéseket.</translation>
 <translation id="3138528956349114724">Jelenlegi rögzített oldalak</translation>
-<translation id="2337632028350283479">A havi hozzájárulás működése:</translation>
-<translation id="6457273203091513039">A havi hozzájárulások kifizetése nem az Automatikus hozzájárulásokból történik. Ezek külön állnak.</translation>
 <translation id="9099396904827413228">Minden egyes oldal havi fix összegben részesül.</translation>
-<translation id="5051110132941857169">A havi hozzájárulások kifizetése minden hónapban egyszerre történik. Ha az Automatikus hozzájárulás számlát használja, akkor hozzájárulásainak végrehajtása ugyanazon időpontban történik meg, mint havi Automatikus hozzájárulás kifizetései.</translation>
-<translation id="3374483782662414143">A Hozzájárulás panelen lehetősége van bármely havi hozzájárulásban részesülő oldal eltávolítására.</translation>
 <translation id="5082474983463379713">Vegye figyelembe a következőket:</translation>
 <translation id="1430915738399379752">Nyomtatás</translation>
 <translation id="135956957367307069">Kérésed még feldolgozás alatt áll, kérünk várj.</translation>

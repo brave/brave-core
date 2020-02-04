@@ -2,11 +2,12 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="hr">
 <translation id="939305735877869636">Brave</translation>
+<translation id="2069994121511856876">Noćni Brave</translation>
+<translation id="4947625801334180582">Brave Beta</translation>
 <translation id="6373767849825830651">Brave je web-preglednik koji munjevitom brzinom prikazuje web-stranice i aplikacije. Brz je, stabilan i jednostavan za upotrebu. Pregledavajte web sigurnije jer je zaštita od zlonamjernog softvera i krađe identiteta ugrađena u Brave.</translation>
 <translation id="680297041157509674">OS Brave</translation>
 <translation id="4847979153841887006">Logotip Bravea</translation>
 <translation id="7339898014177206373">Novi prozor</translation>
-<translation id="5935964611177478118">prijavite se na Brave</translation>
 <translation id="5516268345616100622">Upravitelj zadataka – Brave</translation>
 <translation id="7918740962659365265">Pomognite nam poboljšati Brave šaljući izvješća o rušenju programa i <ph name="UMA_LINK"/> Brave Softwareu</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
@@ -119,7 +120,6 @@ Brave ne može oporaviti vaše postavke.</translation>
 <translation id="1459786048951724030">OS Brave nije mogao sinkronizirati vaše podatke zbog pogreške prilikom prijave.</translation>
 <translation id="6813094029720377619">Izbrisat ćete kolačiće prilikom zatvaranja Bravea. Za nastavak sinkronizacije promijenite postavku <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
 <translation id="3340978935015468852">postavke</translation>
-<translation id="380197516434040304">Ukloni iz Bravea...</translation>
 <translation id="300669147395456190">Aplikacije sustava Brave</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> zahtijeva da pročitate i prihvatite sljedeće Uvjete pružanja usluge prije upotrebe ovog uređaja. Ti uvjeti ne predstavljaju proširenje, izmjenu ili ograničenje Uvjeta OS-a Brave.</translation>
 <translation id="3293668930608086049">Brave upotrebljava vašu kameru i mikrofon.</translation>
@@ -180,8 +180,6 @@ Brave ne može oporaviti vaše postavke.</translation>
 <translation id="7798069806040634998">Brave treba pristup pohrani radi preuzimanja datoteka</translation>
 <translation id="7685904775439037072">Kada Brave dobije pristup, web-lokacije će vas moći tražiti pristup.</translation>
 <translation id="1744365871163268756">Pričekajte da Brave instalira najnovija ažuriranja sustava.</translation>
-<translation id="8000338990735917615">Buduće verzije Bravea instalirat će se automatski.</translation>
-<translation id="2975476470948647918">Buduće verzije Bravea instalirat će se automatski. Kada se ovo preuzimanje dovrši, Brave će se ponovo pokrenuti i moći ćete nastaviti.</translation>
 <translation id="7808415789955822133">Uvjeti OS-a Brave</translation>
 <translation id="7207456302801184289">Dobro došli u Brave</translation>
 <translation id="3507835409099344374">Otvori postavke obavijesti za Brave</translation>
@@ -213,7 +211,6 @@ Brave ne može oporaviti vaše postavke.</translation>
       postavke preglednika Brave<ph name="LINK_END"/></translation>
 <translation id="4459296183696059108">Ako se postavka ne prikazuje na ovoj stranici, pogledajte <ph name="LINK_BEGIN"/>
       postavke OS-a Brave<ph name="LINK_END"/></translation>
-<translation id="7977435741986383568">Brave može upotrebljavati web-usluge za poboljšanje vašeg doživljaja pregledavanja. Ako želite, možete onemogućiti te usluge. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Brave Brave Softwareu šalje tekst koji utipkate u tekstualna polja kako bi ispravio pravopisne pogreške</translation>
 <translation id="8586264863973514035">Da bi se vaše promjene primijenile, ponovo pokrenite Brave</translation>
 <translation id="7021823858304886493">Dopusti prijavu u Brave</translation>

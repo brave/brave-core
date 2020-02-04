@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <grit-part>
+  <structure name="IDR_CR_ELEMENTS_SHARED_STYLE_CSS_HTML"
+             file="br_elements/shared_style_css.html"
+             type="chrome_html"
+             compress="gzip" />
   <structure name="IDR_CR_ELEMENTS_SHARED_VARS_CSS_HTML"
              file="br_elements/shared_vars_css.html"
              type="chrome_html"

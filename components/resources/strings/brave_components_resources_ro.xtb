@@ -77,19 +77,11 @@
 <translation id="438216590634144114">Alegeți motorul de căutare pe care doriți să-l utilizați implicit la căutarea pe web din bara de adrese.</translation>
 <translation id="5804484488647369316">Setare motor de căutare implicit</translation>
 <translation id="4428458837269935199">Pentru o experiență de căutare mai privată, încercați DuckDuckGo.</translation>
-<translation id="513635702954746724">Alegeți tema cromatică</translation>
-<translation id="6842850080200126305">Setați culoarea barei de instrumente selectând opțiunea de culori deschise sau închise din panoul de setări.</translation>
-<translation id="5805868144901917207">Selectați o temă</translation>
-<translation id="8131740175452115882">Confirmați</translation>
-<translation id="713206503018076063">Temă sistem (implicită)</translation>
-<translation id="1807246157184219062">Lumină</translation>
-<translation id="2414886740292270097">Negru</translation>
 <translation id="3829010735958850433">Sari peste turul de bun venit</translation>
 <translation id="1201402288615127009">Înainte</translation>
 <translation id="7954950242989581218">Navigați în siguranță</translation>
 <translation id="2188651882929633653">Brave Shields blochează lucrurile ciudate care încearcă să vă păcălească pe internet inclusiv majoritatea reclamelor. Setați Shields ca dezactivat dacă un site pare să nu funcționeze. Brave folosește <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>statistici de produs complet private<ph name="END_LINK_P3A">&lt;/a&gt;</ph> pentru a estima utilizarea totală a anumitor funcții. Puteți dezactiva această opțiune în <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Setări<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Reclame</translation>
-<translation id="5698387814910197501">Câștigați {{currency}} vizualizând reclame pe Brave. Reclamele prezentate sunt în funcție de ceea ce vă interesează, conform comportamentului dumneavoastră de navigare. Niciodată nicio dată personală sau istoric de navigare nu părăsesc browserul.</translation>
 <translation id="6112368337882254910">Contribuție automată</translation>
 <translation id="3742599705619405136">Orice mod automat de a sprijini editorii și creatorii de conținut. Setați o plată lunară și navigați normal. Siteurile verificate de Brave pe care le vizitați vor primi contribuțiile dumneavoastră automat, în funcție de atenția dumneavoastră măsurată de Brave.</translation>
 <translation id="20281847067919078">Recompense în așteptare estimate</translation>
@@ -97,6 +89,7 @@
 <translation id="319209088187794725">Notificări de reclame primite luna aceasta</translation>
 <translation id="4229016885653790965">Ne pare rău! Anunțurile nu sunt încă disponibile în rtegiunea ta.</translation>
 <translation id="2539279826042558064">Recompensele și Reclamele Brave nu sunt disponibile pe dispozitivul dvs. în acest moment.</translation>
+<translation id="5421369907811917952">Alte setări</translation>
 <translation id="654711254769318398">Pagini cu anunțuri vizualizate</translation>
 <translation id="2532127066761785857">Număr maxim de anunțuri afișate</translation>
 <translation id="5171071066587880677">1 anunț pe oră</translation>
@@ -132,7 +125,6 @@
 <translation id="2726674968268546964">token-uri</translation>
 <translation id="7286722244752781970">Timp minim pe pagină înainte de înregistrarea unei vizite</translation>
 <translation id="4424486208397124985">Vizite minime pentru relevanța editorului</translation>
-<translation id="5421369907811917952">Alte setări</translation>
 <translation id="6248554379744796526">Arată siteuri neverificate în listă</translation>
 <translation id="5875669387851353511">Permite contribuția pentru clipuri video</translation>
 <translation id="8933202740471878108">1 vizită</translation>
@@ -162,7 +154,6 @@
 <translation id="7210234701206674260">Brave Rewards are o problemă. Vă rugăm încercați din nou mai târziu.</translation>
 <translation id="570208820610947248">Am detectat că a apărut o eroare cu portofelul dvs. Trebuie să recuperăm copia de rezervă a portofelului dvs. înainte de a putea fi procesate orice tranzacții.</translation>
 <translation id="7797604753681168055">Recuperare acum</translation>
-<translation id="5549059668721746831">Data următoarei plăți lunare</translation>
 <translation id="6231182869178328516">Tocmai am dat un bacșiș lui <ph name="NAME"/> folosind Brave Browser. Vezi despre ce e vorba la https://brave.com/tips.</translation>
 <translation id="8404935570206006581">DațiBacșișCuBrave</translation>
 <translation id="2876191400747549936">Ne pare rău, dar a avut loc o problemă în timpul procesării cererii dvs. Vă rugăm să încercați din nou.</translation>
@@ -261,8 +252,6 @@
 <translation id="4114667046481794032">Suma contribuției</translation>
 <translation id="3520817231440482449">Plată Lunară către acest site</translation>
 <translation id="1827184134638345603">Trimite o Plată…</translation>
-<translation id="7928243298881209869">Prima plată lunară va fi trimisă pe:</translation>
-<translation id="6045860799501892362">Setare plată lunară</translation>
 <translation id="8003573781961874199">Descarcă ca PDF</translation>
 <translation id="298067735430872465">Câștiguri din Reclame</translation>
 <translation id="2266556115441975588">Recompensele dvs. din reclame sunt aici!</translation>
@@ -291,7 +280,6 @@
 <translation id="9115913704608474258">Noiembrie</translation>
 <translation id="7828956995407538686">Octombrie</translation>
 <translation id="5502713021410870035">Septembrie</translation>
-<translation id="5737831580668469027">Plăți lunare</translation>
 <translation id="606865182719489911">Este disponibilă o acordare gratuită de token.</translation>
 <translation id="2487641031722095938">Este ziua dvs. norocoasă!</translation>
 <translation id="6255773350565723852">Grantul token-ului dumneavoastră trebuie să sosească.</translation>
@@ -318,13 +306,8 @@
 <translation id="4923459931733593730">Plată</translation>
 <translation id="4021593982164260556">Plată efectuată în fiecare {{day}} zi din fiecare lună.</translation>
 <translation id="6104680658798556671">Plata nu a fost efectuată.</translation>
-<translation id="2834888581291358924">Când soldul nu este suficient pentru a acoperi totalul combinat de Contribuții Automate și plățile recurente, aceste plăți nu sunt efectuate pentru perioada dată.</translation>
 <translation id="3138528956349114724">Site-urile fixate sunt acum</translation>
-<translation id="2337632028350283479">Iată cum funcționează plățile lunare:</translation>
-<translation id="6457273203091513039">Plățile lunare sunt deduse din plata de Contribuție automată. Acestea sunt separate.</translation>
 <translation id="9099396904827413228">Fiecare site este plătit lunar cu o sumă fixă.</translation>
-<translation id="5051110132941857169">Plățile lunare sunt plătite toate odată, în fiecare lună. Dacă utilizați Contribuția automată, plățile sunt trimise în același timp ca plata dvs. de Contribuție automată.</translation>
-<translation id="3374483782662414143">Puteți să eliminați orice site care primește plăți lunare din interiorul panoului de Plăți.</translation>
 <translation id="5082474983463379713">Vă rugăm rețineți:</translation>
 <translation id="1430915738399379752">Printează</translation>
 <translation id="135956957367307069">Cererea dvs. este încă în curs de procesare. Vă rugăm să așteptați.</translation>

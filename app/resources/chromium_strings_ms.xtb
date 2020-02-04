@@ -6,7 +6,6 @@
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Logo Brave</translation>
 <translation id="7339898014177206373">Tetingkap baharu</translation>
-<translation id="5935964611177478118">log masuk ke Brave</translation>
 <translation id="5516268345616100622">Pengurus Tugas - Brave</translation>
 <translation id="7918740962659365265">Bantu jadikan Brave lebih baik dengan menghantar laporan ranap dan <ph name="UMA_LINK"/> kepada Brave Software.</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
@@ -119,7 +118,6 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="1459786048951724030">OS Brave tidak dapat menyegerakkan data anda disebabkan oleh ralat melog masuk.</translation>
 <translation id="6813094029720377619">Anda mengosongkan kuki apabila anda keluar daripada Brave. Untuk meneruskan penyegerakan, tukar <ph name="COOKIE_SETTINGS_LINK"/> ini.</translation>
 <translation id="3340978935015468852">tetapan</translation>
-<translation id="380197516434040304">Alih Keluar Daripada Brave...</translation>
 <translation id="300669147395456190">Brave Apps</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> menghendaki anda membaca dan menerima Syarat Perkhidmatan berikut sebelum menggunakan peranti ini. Syarat ini tidak meluaskan, mengubah suai atau mengehadkan Syarat OS Brave.</translation>
 <translation id="3293668930608086049">Brave menggunakan kamera dan mikrofon anda.</translation>
@@ -180,8 +178,6 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="7798069806040634998">Brave memerlukan akses storan untuk memuat turun fail</translation>
 <translation id="7685904775439037072">Sebaik sahaja Brave mendapat akses, tapak web akan dapat meminta akses daripada anda.</translation>
 <translation id="1744365871163268756">Sila tunggu sementara Brave memasang kemas kini sistem terkini.</translation>
-<translation id="8000338990735917615">Versi Brave pada masa hadapan akan dipasang secara automatik.</translation>
-<translation id="2975476470948647918">Versi Brave pada masa hadapan akan dipasang secara automatik. Apabila muat turun ini selesai, Brave akan dimulakan semula dan anda sudah boleh menggunakannya.</translation>
 <translation id="7808415789955822133">Syarat Brave OS</translation>
 <translation id="7207456302801184289">Selamat datang ke Brave</translation>
 <translation id="3507835409099344374">Pergi ke tetapan pemberitahuan Brave</translation>
@@ -213,7 +209,6 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
       tetapan penyemak imbas Brave anda<ph name="LINK_END"/></translation>
 <translation id="4459296183696059108">Jika tetapan tidak ditunjukkan pada halaman ini, lihat dalam <ph name="LINK_BEGIN"/>
       tetapan OS Brave anda<ph name="LINK_END"/></translation>
-<translation id="7977435741986383568">Brave boleh menggunakan perkhidmatan web untuk meningkatkan pengalaman penyemakan imbas anda. Anda boleh memilih untuk melumpuhkan perkhidmatan ini. <ph name="BEGIN_LINK"/>Ketahui lebih lanjut<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Untuk membetulkan kesilapan ejaan, Brave menghantar teks yang anda taip dalam medan teks kepada Brave Software</translation>
 <translation id="8586264863973514035">Untuk menggunakan perubahan anda, mulakan semula Brave</translation>
 <translation id="7021823858304886493">Benarkan log masuk Brave</translation>

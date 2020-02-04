@@ -6,7 +6,6 @@
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Brave ലോഗോ</translation>
 <translation id="7339898014177206373">പുതിയ വിന്‍ഡോ</translation>
-<translation id="5935964611177478118">Brave-ത്തിലേക്ക് സൈൻ ഇൻ ചെയ്യുക</translation>
 <translation id="5516268345616100622">ടാസ്‌ക് മാനേജർ - Brave</translation>
 <translation id="7918740962659365265">Brave Software-ലേക്ക് ക്രാഷ് റിപ്പോർട്ടുകളും <ph name="UMA_LINK"/> എന്നതും അയയ്‌ക്കുന്നതിലൂടെ Brave മികച്ചതാക്കാൻ സഹായിക്കുക</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
@@ -121,7 +120,6 @@
 <translation id="1459786048951724030">സൈൻ ഇൻ ചെയ്യുന്നതിലെ പിശക് കാരണം Brave OS-ന് നിങ്ങളുടെ ഡാറ്റ സമന്വയിപ്പിക്കാനായില്ല.</translation>
 <translation id="6813094029720377619">Brave-ത്തിൽ നിന്ന് പുറത്തുകടക്കുമ്പോൾ കുക്കികൾ മായ്‌ക്കുക. സമന്വയിപ്പിക്കുന്നത് തുടരാൻ, <ph name="COOKIE_SETTINGS_LINK"/> ഇത് മാറ്റുക.</translation>
 <translation id="3340978935015468852">ക്രമീകരണങ്ങൾ</translation>
-<translation id="380197516434040304">Brave-ൽ നിന്ന് നീക്കംചെയ്യുക...</translation>
 <translation id="300669147395456190">Brave അപ്ലിക്കേഷനുകൾ</translation>
 <translation id="3421950102518690868">ഈ ഉപകരണം ഉപയോഗിക്കുന്നതിന് മുമ്പ് നിങ്ങൾ ഇനിപ്പറയുന്ന സേവന നിബന്ധനകൾ വായിച്ച് അംഗീകരിക്കണമെന്ന് <ph name="DOMAIN"/> ആവശ്യപ്പെടുന്നു. Brave OS നിബന്ധനകൾ വിപുലീകരിക്കുകയോ പരിഷ്‌കരിക്കുകയോ പരിമിതപ്പെടുത്തുകയോ ചെയ്യരുത്.</translation>
 <translation id="3293668930608086049">Brave നിങ്ങളുടെ ക്യാമറയും മൈക്രോഫോണും ഉപയോഗിക്കുന്നു.</translation>
@@ -182,8 +180,6 @@
 <translation id="7798069806040634998">ഫയലുകൾ ഡൗൺലോഡ് ചെയ്യാൻ Brave-ത്തിന് സ്റ്റോറേജ് ആക്‌സസ് ആവശ്യമാണ്</translation>
 <translation id="7685904775439037072">Brave-ത്തിന് ആക്‌സസ് ലഭിച്ചുകഴിഞ്ഞാൽ, വെബ്‌സൈറ്റുകൾക്ക് നിങ്ങളോട് ആക്‌സസ് ചോദിക്കാനാകും.</translation>
 <translation id="1744365871163268756">Brave ഏറ്റവും പുതിയ സിസ്‌റ്റം അപ്‌ഡേറ്റുകൾ ഇൻസ്റ്റാളുചെയ്യുന്നതുവരെ കാത്തിരിക്കുക.</translation>
-<translation id="8000338990735917615">ഭാവിയിലെ Brave പതിപ്പുകൾ സ്വയമേവ ഇൻസ്‌റ്റാൾ ചെയ്യും.</translation>
-<translation id="2975476470948647918">ഭാവിയിലെ Brave പതിപ്പുകൾ സ്വയമേവ ഇൻസ്‌റ്റാൾ ചെയ്യും. ഈ ഡൗൺലോഡ് പൂർത്തിയാകുമ്പോൾ, Brave പുനരാരംഭിക്കുകയും തുടർന്ന്, നിങ്ങൾക്ക് മുന്നോട്ട് പോവുകയും ചെയ്യാം.</translation>
 <translation id="7808415789955822133">Brave OS നിബന്ധനകൾ</translation>
 <translation id="7207456302801184289">Brave-ത്തിലേക്ക് സ്വാഗതം</translation>
 <translation id="3507835409099344374">Brave അറിയിപ്പ് ക്രമീകരണത്തിലേക്ക് പോവുക</translation>
@@ -215,7 +211,6 @@
     Brave ബ്രൗസർ ക്രമീകരണത്തിൽ<ph name="LINK_END"/> പരിശോധിക്കുക</translation>
 <translation id="4459296183696059108">ഈ പേജിൽ ക്രമീകരണം കാണിക്കുന്നില്ലെങ്കിൽ <ph name="LINK_BEGIN"/>
       Brave OS ക്രമീകരണത്തിൽ<ph name="LINK_END"/> പരിശോധിക്കുക</translation>
-<translation id="7977435741986383568">നിങ്ങളുടെ ബ്രൗസിംഗ് അനുഭവം മെച്ചപ്പെടുത്താൻ Brave വെബ്‌ സേവനങ്ങൾ ഉപയോഗിക്കാനിടയുണ്ട്. വേണമെങ്കിൽ ഈ സേവനങ്ങൾ പ്രവർത്തനരഹിതമാക്കാം. <ph name="BEGIN_LINK"/>കൂടുതലറിയുക<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">അക്ഷരപ്പിശകുകൾ പരിഹരിക്കാൻ, ടെക്‌സ്‌റ്റ് ഫീൽഡുകളിൽ നിങ്ങൾ ടൈപ്പ് ചെയ്യുന്ന ടെക്‌സ്‌റ്റ് Brave, Brave Software-ന് അയയ്ക്കുന്നു</translation>
 <translation id="8586264863973514035">നിങ്ങളുടെ മാറ്റങ്ങൾ ബാധകമാക്കാൻ Brave സമാരംഭിക്കുക</translation>
 <translation id="7021823858304886493">Brave-ലേക്ക് സൈൻ ഇൻ ചെയ്യാൻ അനുവദിക്കുക</translation>

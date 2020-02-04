@@ -12,7 +12,7 @@
     style="@style/BottomToolbarButtonWrapper">
 
     <org.chromium.chrome.browser.toolbar.bottom.BookmarksButton
-        android:id="@+id/share_button"
+        android:id="@+id/bottom_share_button"
         app:tint="@color/standard_mode_tint"
         style="@style/SplitToolbarButton"
         android:layout_gravity="center"

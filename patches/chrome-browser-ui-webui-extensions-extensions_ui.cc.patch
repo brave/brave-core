@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/webui/extensions/extensions_ui.cc b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-index 18b00d539f7c0a629df04f6f670554783313442a..354bedcd261f399402301ee24cd7fc4ea17b1e42 100644
+index 9d525dc5b2995d5dfb3e630cbfcf1d8fcc0745e5..5bde2e55bd398731ebb13411053e33a0fb6218b2 100644
 --- a/chrome/browser/ui/webui/extensions/extensions_ui.cc
 +++ b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-@@ -310,6 +310,8 @@ content::WebUIDataSource* CreateMdExtensionsSource(Profile* profile,
-   source->SetDefaultResource(IDR_EXTENSIONS_EXTENSIONS_HTML);
- #endif
+@@ -309,6 +309,8 @@ content::WebUIDataSource* CreateMdExtensionsSource(Profile* profile,
+                          ::switches::kEnableExtensionActivityLogging));
+   source->AddString(kLoadTimeClassesKey, GetLoadTimeClasses(in_dev_mode));
  
 +  BraveAddExtensionsResources(source);
 +

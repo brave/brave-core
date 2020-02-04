@@ -19,6 +19,7 @@ source_set("tor") {
     "//components/keyed_service/content",
     "//components/keyed_service/core",
     "//content/public/browser",
+    "//mojo/public/cpp/bindings",
   ]
 
   public_deps = [
@@ -41,7 +42,9 @@ source_set("tor") {
       "//brave/components/services/tor/public/interfaces",
       "//content/public/common",
       "//extensions/common:common_constants",
+      "//net",
       "//services/service_manager",
+      "//url",
     ]
   }
 }

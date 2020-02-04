@@ -10,6 +10,7 @@
 <translation id="7791543448312431591">Afegeix</translation>
 <translation id="1181037720776840403">Suprimeix</translation>
 <translation id="5317780077021120954">Desa</translation>
+<translation id="3897092660631435901">Menú</translation>
 <translation id="5300589172476337783">Mostra</translation>
 <translation id="7108338896283013870">Amaga</translation>
 <translation id="780301667611848630">No, gràcies</translation>
@@ -19,6 +20,7 @@
 <translation id="1036348656032585052">Desactiva</translation>
 <translation id="8105368624971345109">Desactiva</translation>
 <translation id="1175364870820465910">&amp;Imprimeix...</translation>
+<translation id="129553762522093515">Tancades recentment</translation>
 <translation id="8870413625673593573">Tancades recentment</translation>
 <translation id="385051799172605136">Enrere</translation>
 <translation id="7481312909269577407">Endavant</translation>
@@ -28,19 +30,23 @@
 <translation id="1201402288615127009">Següent</translation>
 <translation id="5713644099811900409">Compte de Brave Software</translation>
 <translation id="3157931365184549694">Restaura</translation>
+<translation id="5040262127954254034">Privadesa</translation>
 <translation id="3061707000357573562">Servei de pedaç</translation>
 <translation id="1914326953223720820">Descomprimeix el servei</translation>
+<translation id="1623104350909869708">Impedeix que aquesta pàgina creï quadres de diàleg addicionals</translation>
 <translation id="2677748264148917807">Surt</translation>
 <translation id="5556459405103347317">Torna a carregar</translation>
 <translation id="2359808026110333948">Continua</translation>
-<translation id="5935964611177478118">Inicia la sessió a Brave</translation>
 <translation id="4378154925671717803">Telèfon</translation>
 <translation id="8131740175452115882">Confirma</translation>
 <translation id="8968766641738584599">Desa la targeta</translation>
+<translation id="860043288473659153">Nom del titular de la targeta</translation>
+<translation id="869891660844655955">Data de caducitat</translation>
 <translation id="5457113250005438886">No vàlid</translation>
 <translation id="6518133107902771759">Verifica</translation>
 <translation id="8987927404178983737">Mes</translation>
 <translation id="6015796118275082299">Any</translation>
+<translation id="1581080074034554886">CVC</translation>
 <translation id="9065203028668620118">Edita</translation>
 <translation id="5029568752722684782">Esborra la còpia</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
@@ -70,6 +76,7 @@
 <translation id="4522570452068850558">Detalls</translation>
 <translation id="3586931643579894722">Oculta els detalls</translation>
 <translation id="614940544461990577">Prova el següent:</translation>
+<translation id="4943872375798546930">No hi ha cap resultat</translation>
 <translation id="8688672835843460752">Disponible</translation>
 <translation id="4989542687859782284">No disponible</translation>
 <translation id="59174027418879706">Activat</translation>
@@ -79,7 +86,10 @@
 <translation id="1838374766361614909">Esborra la cerca</translation>
 <translation id="495170559598752135">Accions</translation>
 <translation id="8261506727792406068">Suprimeix</translation>
+<translation id="3207960819495026254">S'ha afegit a les adreces d'interès.</translation>
 <translation id="3303855915957856445">No s'ha trobat cap resultat de la cerca</translation>
+<translation id="1209206284964581585">Amaga per ara</translation>
+<translation id="1407135791313364759">Obre-les totes</translation>
 <translation id="4880827082731008257">Cerca a l'historial</translation>
 <translation id="4756388243121344051">&amp;Historial</translation>
 <translation id="1644574205037202324">Historial</translation>
@@ -91,11 +101,14 @@
 <translation id="1178581264944972037">Posa en pausa</translation>
 <translation id="1232569758102978740">Sense títol</translation>
 <translation id="7514365320538308">Baixa</translation>
+<translation id="8041089156583427627">Envia suggeriments</translation>
 <translation id="7552846755917812628">Prova els consells següents:</translation>
+<translation id="3960299545138990065">Reinicia Brave</translation>
 <translation id="4275830172053184480">Reinici del dispositiu</translation>
 <translation id="413544239732274901">Saber més</translation>
 <translation id="7554791636758816595">Pestanya nova</translation>
 <translation id="2079545284768500474">Desfés</translation>
+<translation id="17513872634828108">Pestanyes obertes</translation>
 <translation id="981121421437150478">Sense connexió</translation>
 <translation id="5171045022955879922">Cerqueu o escriviu l'URL</translation>
 <translation id="803771048473350947">Fitxer</translation>
@@ -108,12 +121,11 @@
 <translation id="6831043979455480757">Tradueix</translation>
 <translation id="2473195200299095979">Tradueix aquesta pàgina</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>, resposta, <ph name="ANSWER"/></translation>
-<translation id="9008201768610948239">Ignora</translation>
 <translation id="7714464543167945231">Certificat</translation>
 <translation id="4235360514405112390">Vàlid</translation>
 <translation id="6447842834002726250">Galetes</translation>
 <translation id="1919345977826869612">Anuncis</translation>
-<translation id="410351446219883937">Reproducció automàtica</translation>
+<translation id="6612358246767739896">Contingut protegit</translation>
 <translation id="9219103736887031265">Imatges</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">Finest. emergents i redireccions</translation>
@@ -128,6 +140,7 @@
 <translation id="7638605456503525968">Ports en sèrie</translation>
 <translation id="2215727959747642672">Edició de fitxers</translation>
 <translation id="6545864417968258051">Cerca de dispositius Bluetooth</translation>
+<translation id="534295439873310000">Dispositius amb NFC</translation>
 <translation id="5039804452771397117">Permet</translation>
 <translation id="7053983685419859001">Bloqueja</translation>
 <translation id="57838592816432529">Silencia</translation>
@@ -138,13 +151,17 @@
 <translation id="6979440798594660689">Silencia (opció predeterminada)</translation>
 <translation id="8037357227543935929">Pregunta (opció predeterminada)</translation>
 <translation id="8763927697961133303">Dispositiu USB</translation>
+<translation id="4165986682804962316">Configuració del lloc web</translation>
 <translation id="9011424611726486705">Obre la configuració del lloc web</translation>
 <translation id="5932224571077948991">El lloc web mostra anuncis intrusius o enganyosos</translation>
 <translation id="7878562273885520351">La teva contrasenya pot estar en perill</translation>
 <translation id="1089439967362294234">Canvia la contrasenya</translation>
+<translation id="9008201768610948239">Ignora</translation>
 <translation id="1186201132766001848">Comprova les contrasenyes</translation>
 <translation id="5979084224081478209">Comprova les contrasenyes</translation>
+<translation id="10614374240317010">Contrasenyes que no es desen mai</translation>
 <translation id="5869522115854928033">Contrasenyes desades</translation>
+<translation id="230699814587342492">Contrasenyes de Brave</translation>
 <translation id="5087580092889165836">Afegiu una targeta</translation>
 <translation id="2154484045852737596">Edita la targeta</translation>
 <translation id="4923459931733593730">Pagament</translation>
@@ -193,8 +210,11 @@
 <translation id="1974060860693918893">Configuració avançada</translation>
 <translation id="5308380583665731573">Connecta</translation>
 <translation id="2501278716633472235">Torna</translation>
+<translation id="1736420071277903564">Ordinador</translation>
+<translation id="3906954721959377182">Tauleta</translation>
 <translation id="7029809446516969842">Contrasenyes</translation>
 <translation id="6596325263575161958">Opcions d'encriptació</translation>
+<translation id="8461694314515752532">Encripta les dades sincronitzades amb la teva frase de contrasenya de sincronització</translation>
 <translation id="9050666287014529139">Frase de contrasenya</translation>
 <translation id="9095388113577226029">Més idiomes...</translation>
 <translation id="7600965453749440009">No tradueixis mai de: <ph name="LANGUAGE"/></translation>
@@ -202,6 +222,7 @@
 <translation id="7378627244592794276">No</translation>
 <translation id="9137013805542155359">Mostra l'original</translation>
 <translation id="8725066075913043281">Torna-ho a provar</translation>
+<translation id="5684874026226664614">Aquesta pàgina no s'ha pogut traduir.</translation>
 <translation id="583281660410589416">Desconegut</translation>
 <translation id="9170848237812810038">&amp;Desfés</translation>
 <translation id="2972581237482394796">&amp;Refés</translation>

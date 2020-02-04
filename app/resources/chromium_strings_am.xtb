@@ -9,7 +9,6 @@
 <translation id="680297041157509674">Brave ስርዓተ ክወና</translation>
 <translation id="4847979153841887006">የBrave አርማ</translation>
 <translation id="7339898014177206373">አዲሰ መስኮት</translation>
-<translation id="5935964611177478118">ወደ Brave ይግቡ</translation>
 <translation id="5516268345616100622">ተግባር መሪ - Brave</translation>
 <translation id="7918740962659365265">የብልሽት ሪፖርቶችን እና <ph name="UMA_LINK"/> ወደ Brave Software በመላክ Braveን የተሻለ ለማድረግ እገዛ ያድርጉ</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
@@ -124,7 +123,6 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="1459786048951724030">በመለያ ሲገባ በነበረ ስህተት ምክንያት Brave OS ውሂብዎን ማመሳሰል አልቻለም።</translation>
 <translation id="6813094029720377619">ከ Brave አቋርጠው ሲወጡ ኩኪዎችን ያጸዳሉ። ስምረትን ለመቀጠል፣ ይህን <ph name="COOKIE_SETTINGS_LINK"/> ይለውጡ።</translation>
 <translation id="3340978935015468852">ቅንብሮች</translation>
-<translation id="380197516434040304">ከBrave አስወግድ...</translation>
 <translation id="300669147395456190">Brave መተግበሪያዎች</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> ይህን መሣሪያ ከመጠቀምዎ በፊት የሚከተለውን የአገልግሎት ውል እንዲያነቡት እና እንዲቀበሉት ይፈለጋል። ይህ ውል የBrave ስርዓተ ክወና ውሉን አያስፋፋውም፣ አይቀይረውም ወይም አይገድበውም።</translation>
 <translation id="3293668930608086049">Brave ካሜራዎን እና ማይክሮፎንዎን እየተጠቀመ ነው።</translation>
@@ -191,8 +189,6 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="7798069806040634998">Brave ፋይሎችን ለማውረድ የማከማቻ መዳረሻ ያስፈልገዋል</translation>
 <translation id="7685904775439037072">አንዴ Brave መዳረሻ ከኖረው በኋላ ድር ጣቢያዎች እርስዎን መዳረሻ መጠየቅ ይችላሉ።</translation>
 <translation id="1744365871163268756">Brave የቅርብ ጊዜዎቹ የስርዓቱ ዝማኔዎችን እስኪጭን ድረስ እባክዎ ይጠብቁ።</translation>
-<translation id="8000338990735917615">የወደፊት የBrave ስሪቶች በራስ-ሰር ይጫናሉ።</translation>
-<translation id="2975476470948647918">የወደፊት የBrave ስሪቶች በራስ-ሰር ይጫናሉ። ይህ ውርድ ሲጠናቀቅ Brave ዳግም ይነሳና እርስዎ ይቀጥላሉ።</translation>
 <translation id="7808415789955822133">የBrave OS ውል</translation>
 <translation id="7207456302801184289">ወደ Brave እንኳን በደህና መጡ</translation>
 <translation id="3507835409099344374">ወደ የBrave ማሳወቂያ ቅንብሮች ይሂዱ</translation>
@@ -224,7 +220,6 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
       የ Brave አሳሽ ቅንብሮች<ph name="LINK_END"/> ውስጥ ይመልከቱ</translation>
 <translation id="4459296183696059108">በዚህ ገጽ ላይ አንድ ቅንብር ካልታየ በእርስዎ <ph name="LINK_BEGIN"/>
       የ Brave አሳሽ ቅንብሮች<ph name="LINK_END"/> ውስጥ ይመልከቱ</translation>
-<translation id="7977435741986383568">Brave የአሰሳ ተሞክሮዎን ለማሻሻል የድር አገልግሎቶችን ሊጠቀም ይችላል። እነዚህን አገልግሎቶች በአማራጭነት ሊያሰናክሏቸው ይችላሉ። <ph name="BEGIN_LINK"/>የበለጠ ለመረዳት<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">የሥርዓተ ፊደል አጻጻፍ ስህተቶችን ለማስተካከል፣ Brave እርስዎ በጽሑፍ መስኮች ውስጥ የሚተይቡትን ጽሑፍ ወደ Brave Software ይልካል</translation>
 <translation id="8586264863973514035">የእርስዎን ለውጦች ተፈጻሚ ለማድረግ፣ Braveን ዳግም ያስጀምሩ</translation>
 <translation id="7021823858304886493">የBrave በመለያ መግባትን ይፍቀዱ</translation>

@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/profile_resetter/brandcode_config_fetcher.cc b/chrome/browser/profile_resetter/brandcode_config_fetcher.cc
-index b2127e4d833b07cd667479a7185ed53447bb6c68..9f027b3c8059bb12096963c955912421506c9adb 100644
+index 5a27f64959a3978ef3716353810037b6b6188f1c..72819413b73b21fee845a9b999f770bb02c06628 100644
 --- a/chrome/browser/profile_resetter/brandcode_config_fetcher.cc
 +++ b/chrome/browser/profile_resetter/brandcode_config_fetcher.cc
-@@ -146,6 +146,8 @@ BrandcodeConfigFetcher::BrandcodeConfigFetcher(
+@@ -55,6 +55,8 @@ BrandcodeConfigFetcher::BrandcodeConfigFetcher(
      const GURL& url,
      const std::string& brandcode)
-     : fetch_callback_(callback) {
+     : fetch_callback_(callback), weak_ptr_factory_(this) {
 +  std::move(fetch_callback_).Run(); // tell caller we're done
 +  return; // but don't actually do anything (this feature is disabled in Brave)
    DCHECK(!brandcode.empty());

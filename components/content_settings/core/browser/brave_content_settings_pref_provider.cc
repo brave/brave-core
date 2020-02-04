@@ -108,7 +108,7 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
       WebsiteSettingsRegistry::GetInstance();
   // Makes BravePrefProvder handle plugin type.
   for (const WebsiteSettingsInfo* info : *website_settings) {
-    if (info->type() == CONTENT_SETTINGS_TYPE_PLUGINS) {
+    if (info->type() == ContentSettingsType::PLUGINS) {
       content_settings_prefs_.insert(std::make_pair(
           info->type(),
           std::make_unique<ContentSettingsPref>(
@@ -120,7 +120,7 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
   }
 
   AddObserver(this);
-  OnCookieSettingsChanged(CONTENT_SETTINGS_TYPE_PLUGINS);
+  OnCookieSettingsChanged(ContentSettingsType::PLUGINS);
 }
 
 BravePrefProvider::~BravePrefProvider() {}
@@ -140,14 +140,14 @@ bool BravePrefProvider::SetWebsiteSetting(
   // Flash's setting shouldn't be reached here.
   // Its content type is plugin and id is empty string.
   // One excpetion is default setting. It can be persisted.
-  if (content_type == CONTENT_SETTINGS_TYPE_PLUGINS &&
+  if (content_type == ContentSettingsType::PLUGINS &&
       resource_identifier.empty()) {
     DCHECK(primary_pattern == ContentSettingsPattern::Wildcard() &&
            secondary_pattern == ContentSettingsPattern::Wildcard());
   }
 
   // handle changes to brave cookie settings from chromium cookie settings UI
-  if (content_type == CONTENT_SETTINGS_TYPE_COOKIES) {
+  if (content_type == ContentSettingsType::COOKIES) {
     auto* value = in_value.get();
     auto match = std::find_if(
         brave_cookie_rules_[off_the_record_].begin(),
@@ -171,7 +171,7 @@ bool BravePrefProvider::SetWebsiteSetting(
       // change to type PLUGINS
       return PrefProvider::SetWebsiteSetting(plugin_primary_pattern,
                                              plugin_secondary_pattern,
-                                             CONTENT_SETTINGS_TYPE_PLUGINS,
+                                             ContentSettingsType::PLUGINS,
                                              brave_shields::kCookies,
                                              std::move(in_value));
     }
@@ -186,7 +186,7 @@ std::unique_ptr<RuleIterator> BravePrefProvider::GetRuleIterator(
       ContentSettingsType content_type,
       const ResourceIdentifier& resource_identifier,
       bool incognito) const {
-  if (content_type == CONTENT_SETTINGS_TYPE_COOKIES) {
+  if (content_type == ContentSettingsType::COOKIES) {
     return std::make_unique<BraveShieldsRuleIterator>(
         cookie_rules_.at(incognito).begin(),
         cookie_rules_.at(incognito).end());
@@ -220,7 +220,7 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
 
   // add chromium cookies
   auto chromium_cookies_iterator = PrefProvider::GetRuleIterator(
-      CONTENT_SETTINGS_TYPE_COOKIES,
+      ContentSettingsType::COOKIES,
       "",
       incognito);
   while (chromium_cookies_iterator && chromium_cookies_iterator->HasNext()) {
@@ -229,7 +229,7 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   chromium_cookies_iterator.reset();
 
   auto brave_shields_iterator = PrefProvider::GetRuleIterator(
-      CONTENT_SETTINGS_TYPE_PLUGINS,
+      ContentSettingsType::PLUGINS,
       brave_shields::kBraveShields,
       incognito);
 
@@ -243,7 +243,7 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
 
   // add brave cookies after checking shield status
   auto brave_cookies_iterator = PrefProvider::GetRuleIterator(
-      CONTENT_SETTINGS_TYPE_PLUGINS,
+      ContentSettingsType::PLUGINS,
       brave_shields::kCookies,
       incognito);
 
@@ -313,8 +313,8 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
     }
   }
 
-  // Notify brave cookie changes as CONTENT_SETTINGS_TYPE_COOKIES
-  if (content_type == CONTENT_SETTINGS_TYPE_PLUGINS) {
+  // Notify brave cookie changes as ContentSettingsType::COOKIES
+  if (content_type == ContentSettingsType::PLUGINS) {
     // PostTask here to avoid content settings autolock DCHECK
     base::PostTask(
         FROM_HERE,
@@ -330,14 +330,14 @@ void BravePrefProvider::NotifyChanges(const std::vector<Rule>& rules,
   for (const auto& rule : rules) {
     Notify(rule.primary_pattern,
            rule.secondary_pattern,
-           CONTENT_SETTINGS_TYPE_COOKIES,
+           ContentSettingsType::COOKIES,
            "");
   }
 }
 
 void BravePrefProvider::OnCookiePrefsChanged(
     const std::string& pref) {
-  OnCookieSettingsChanged(CONTENT_SETTINGS_TYPE_PLUGINS);
+  OnCookieSettingsChanged(ContentSettingsType::PLUGINS);
 }
 
 void BravePrefProvider::OnCookieSettingsChanged(
@@ -351,8 +351,8 @@ void BravePrefProvider::OnContentSettingChanged(
     const ContentSettingsPattern& secondary_pattern,
     ContentSettingsType content_type,
     const std::string& resource_identifier) {
-  if (content_type == CONTENT_SETTINGS_TYPE_COOKIES ||
-      (content_type == CONTENT_SETTINGS_TYPE_PLUGINS &&
+  if (content_type == ContentSettingsType::COOKIES ||
+      (content_type == ContentSettingsType::PLUGINS &&
           (resource_identifier == brave_shields::kCookies ||
            resource_identifier == brave_shields::kBraveShields))) {
     OnCookieSettingsChanged(content_type);

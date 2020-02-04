@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/resources/bookmarks/command_manager.js b/chrome/browser/resources/bookmarks/command_manager.js
-index eb2408d17a2627f91f64b3ad3e573e2faabb3ca1..74a5d6cfe7c8227b1d5311c327e94923998a8a48 100644
+index 6539f75e8e07a4fbb568a69f350629678344a597..52c68441325a9988919e42fddffeef9661b2e21b 100644
 --- a/chrome/browser/resources/bookmarks/command_manager.js
 +++ b/chrome/browser/resources/bookmarks/command_manager.js
-@@ -413,7 +413,7 @@ cr.define('bookmarks', function() {
-           chrome.bookmarks.export();
-           break;
-         case Command.HELP_CENTER:
--          window.open('https://support.google.com/chrome/?p=bookmarks');
-+          window.open('https://community.brave.com');
-           break;
-         default:
-           assert(false);
+@@ -447,7 +447,7 @@ export const CommandManager = Polymer({
+         chrome.bookmarks.export();
+         break;
+       case Command.HELP_CENTER:
+-        window.open('https://support.google.com/chrome/?p=bookmarks');
++        window.open('https://community.brave.com');
+         break;
+       default:
+         assert(false);

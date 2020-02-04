@@ -10,6 +10,7 @@
 <translation id="7791543448312431591">הוסף</translation>
 <translation id="1181037720776840403">הסר</translation>
 <translation id="5317780077021120954">שמור</translation>
+<translation id="3897092660631435901">תפריט</translation>
 <translation id="5300589172476337783">הצג</translation>
 <translation id="7108338896283013870">הסתר</translation>
 <translation id="780301667611848630">לא תודה</translation>
@@ -19,6 +20,7 @@
 <translation id="1036348656032585052">כבה</translation>
 <translation id="8105368624971345109">כבה</translation>
 <translation id="1175364870820465910">הדפס...</translation>
+<translation id="129553762522093515">נסגרו לאחרונה</translation>
 <translation id="8870413625673593573">נסגרו לאחרונה</translation>
 <translation id="385051799172605136">חזור</translation>
 <translation id="7481312909269577407">קדימה</translation>
@@ -28,19 +30,23 @@
 <translation id="1201402288615127009">הבא</translation>
 <translation id="5713644099811900409">‏חשבון Brave Software</translation>
 <translation id="3157931365184549694">שחזר</translation>
+<translation id="5040262127954254034">פרטיות</translation>
 <translation id="3061707000357573562">שירות תיקון</translation>
 <translation id="1914326953223720820">שירות לפתיחת קבצים דחוסים</translation>
+<translation id="1623104350909869708">מנע מהדף זה ליצור תיבות דו-שיח נוספות</translation>
 <translation id="2677748264148917807">יציאה</translation>
 <translation id="5556459405103347317">ניסיון טעינה נוסף</translation>
 <translation id="2359808026110333948">המשך</translation>
-<translation id="5935964611177478118">‏היכנס אל Brave</translation>
 <translation id="4378154925671717803">טלפון</translation>
 <translation id="8131740175452115882">אישור</translation>
 <translation id="8968766641738584599">שמירת הכרטיס</translation>
+<translation id="860043288473659153">שם בעל הכרטיס</translation>
+<translation id="869891660844655955">תאריך תפוגה</translation>
 <translation id="5457113250005438886">לא תקף</translation>
 <translation id="6518133107902771759">אימות</translation>
 <translation id="8987927404178983737">חודש</translation>
 <translation id="6015796118275082299">שנה</translation>
+<translation id="1581080074034554886">CVC</translation>
 <translation id="9065203028668620118">ערוך</translation>
 <translation id="5029568752722684782">נקה את העותק</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
@@ -70,6 +76,7 @@
 <translation id="4522570452068850558">פרטים</translation>
 <translation id="3586931643579894722">הסתר פרטים</translation>
 <translation id="614940544461990577">נסה:</translation>
+<translation id="4943872375798546930">אין תוצאות</translation>
 <translation id="8688672835843460752">פנוי</translation>
 <translation id="4989542687859782284">לא זמין</translation>
 <translation id="59174027418879706">מופעל</translation>
@@ -79,7 +86,10 @@
 <translation id="1838374766361614909">נקה חיפוש</translation>
 <translation id="495170559598752135">פעולות</translation>
 <translation id="8261506727792406068">מחיקה</translation>
+<translation id="3207960819495026254">מסומן בסימניה</translation>
 <translation id="3303855915957856445">לא נמצאו תוצאות חיפוש</translation>
+<translation id="1209206284964581585">הסתר בינתיים</translation>
+<translation id="1407135791313364759">פתח הכל</translation>
 <translation id="4880827082731008257">חפש בהיסטוריה</translation>
 <translation id="4756388243121344051">&amp;היסטוריה</translation>
 <translation id="1644574205037202324">היסטוריה</translation>
@@ -91,11 +101,14 @@
 <translation id="1178581264944972037">השהה</translation>
 <translation id="1232569758102978740">ללא שם</translation>
 <translation id="7514365320538308">הורדה</translation>
+<translation id="8041089156583427627">שליחת משוב</translation>
 <translation id="7552846755917812628">אולי הטיפים האלו יעזרו לך:</translation>
+<translation id="3960299545138990065">‏הפעלה מחדש של Brave</translation>
 <translation id="4275830172053184480">הפעלת המכשיר מחדש</translation>
 <translation id="413544239732274901">למדו עוד</translation>
 <translation id="7554791636758816595">כרטיסייה חדשה</translation>
 <translation id="2079545284768500474">בטל</translation>
+<translation id="17513872634828108">כרטיסיות פתוחות</translation>
 <translation id="981121421437150478">לא מקוון</translation>
 <translation id="5171045022955879922">טקסט או כתובת אתר לחיפוש</translation>
 <translation id="803771048473350947">קובץ</translation>
@@ -108,12 +121,11 @@
 <translation id="6831043979455480757">תרגום</translation>
 <translation id="2473195200299095979">תרגם את הדף הזה</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/> , תשובה, <ph name="ANSWER"/></translation>
-<translation id="9008201768610948239">התעלם</translation>
 <translation id="7714464543167945231">אישור</translation>
 <translation id="4235360514405112390">תקף</translation>
 <translation id="6447842834002726250">‏קובצי Cookie</translation>
 <translation id="1919345977826869612">פרסומות</translation>
-<translation id="410351446219883937">הפעלה אוטומטית</translation>
+<translation id="6612358246767739896">תוכן מוגן</translation>
 <translation id="9219103736887031265">תמונות</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">חלונות קופצים והפניות אוטומטיות</translation>
@@ -128,6 +140,7 @@
 <translation id="7638605456503525968">יציאות טוריות</translation>
 <translation id="2215727959747642672">עריכת קובץ</translation>
 <translation id="6545864417968258051">‏סריקת Bluetooth</translation>
+<translation id="534295439873310000">‏מכשירי NFC</translation>
 <translation id="5039804452771397117">אפשר</translation>
 <translation id="7053983685419859001">חסום</translation>
 <translation id="57838592816432529">השתק</translation>
@@ -138,13 +151,17 @@
 <translation id="6979440798594660689">השתקה (ברירת מחדל)</translation>
 <translation id="8037357227543935929">שאל (ברירת מחדל)</translation>
 <translation id="8763927697961133303">‏התקן USB</translation>
+<translation id="4165986682804962316">הגדרות לאתרים</translation>
 <translation id="9011424611726486705">פתיחת הגדרות האתר</translation>
 <translation id="5932224571077948991">באתר מוצגות מודעות מפריעות או מטעות</translation>
 <translation id="7878562273885520351">ייתכן שאבטחת הסיסמה שלך נפגעה</translation>
 <translation id="1089439967362294234">שינוי סיסמה</translation>
+<translation id="9008201768610948239">התעלם</translation>
 <translation id="1186201132766001848">בדיקת הסיסמאות</translation>
 <translation id="5979084224081478209">בדיקת הסיסמאות</translation>
+<translation id="10614374240317010">פריטים שאף פעם לא נשמרו</translation>
 <translation id="5869522115854928033">סיסמאות שמורות</translation>
+<translation id="230699814587342492">‏סיסמאות Brave</translation>
 <translation id="5087580092889165836">הוסף כרטיס</translation>
 <translation id="2154484045852737596">עריכת כרטיס</translation>
 <translation id="4923459931733593730">תשלום</translation>
@@ -193,8 +210,11 @@
 <translation id="1974060860693918893">מתקדם</translation>
 <translation id="5308380583665731573">התחברות</translation>
 <translation id="2501278716633472235">חזרה</translation>
+<translation id="1736420071277903564">מחשב</translation>
+<translation id="3906954721959377182">טאבלט</translation>
 <translation id="7029809446516969842">סיסמאות</translation>
 <translation id="6596325263575161958">אפשרויות הצפנה</translation>
+<translation id="8461694314515752532">הצפנת נתונים מסונכרנים בעזרת ביטוי סיסמה אישי לסנכרון</translation>
 <translation id="9050666287014529139">משפט-סיסמה</translation>
 <translation id="9095388113577226029">שפות נוספות...</translation>
 <translation id="7600965453749440009">אל תתרגם לעולם <ph name="LANGUAGE"/></translation>
@@ -202,6 +222,7 @@
 <translation id="7378627244592794276">לא</translation>
 <translation id="9137013805542155359">הצג מקור</translation>
 <translation id="8725066075913043281">ניסיון חוזר</translation>
+<translation id="5684874026226664614">אופס. לא ניתן היה לתרגם את הדף הזה.</translation>
 <translation id="583281660410589416">לא ידוע</translation>
 <translation id="9170848237812810038">&amp;ביטול</translation>
 <translation id="2972581237482394796">&amp;בצע שנית</translation>

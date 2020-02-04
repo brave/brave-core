@@ -5,7 +5,7 @@
 <translation id="7942180974165298215">Bloqueador de Anuncios Brave</translation>
 <translation id="4615489450165434530">Reportar un Sitio Roto</translation>
 <translation id="6406506848690869874">Brave Sync</translation>
-<translation id="5655621391922317800">Crypto Wallets</translation>
+<translation id="5655621391922317800">Crypto Carteras</translation>
 <translation id="2445484935443597917">Crear un Nuevo Perfil</translation>
 <translation id="2666990579225592931">Abrir Ventana de Invitado</translation>
 <translation id="120759863357279975">La extensión <ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") no está permitida en Brave.</translation>
@@ -20,6 +20,8 @@
 <translation id="3699882589215410581">Instalar y ejecutar Widevine</translation>
 <translation id="8926389886865778422">No preguntar de nuevo</translation>
 <translation id="4726634924419692905">Preguntar cuándo una página quiera instalar Widevine en tu ordenador.</translation>
+<translation id="8760415064721320867">Ventana Privada con Tor</translation>
+<translation id="8762452230727230396">Tor oculta tu dirección IP a los sitios que visitas.</translation>
 <translation id="8053096063396012732">Instalar Widevine</translation>
 <translation id="4840334696217618631">Reinicia el navegador para habilitar Widevine</translation>
 <translation id="8410111618231938546">Google Widevine es una pieza de código de Administración de Derechos Digitales (DRM)  que no es propiedad de Brave Software y por tanto no podemos inspeccionar. El código de Google Widevine se carga desde los servidores de Google, no desde nuestros servidores. Se carga solo cuando habilitas esta opción. Desaconsejamos el uso de DRM, pero respetamos la elección del usuario y entendemos que a algunos usuarios de Brave les gustaría usar algunos servicios que lo requieran.
@@ -40,7 +42,7 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="2814998458708016836">Usar barra de direcciones ancha</translation>
 <translation id="6123134130710658846">Ocultar el botón de Brave Rewards</translation>
 <translation id="7635711399568194460">Oculta el botón de Brave Rewards en la barra de direcciones cuando Brave Rewards está deshabilitado</translation>
-<translation id="1520361618554057102">Mostrar siempre marcadores en la página de la nueva pestaña</translation>
+<translation id="1520361618554057102">Mostrar siempre marcadores en la página Pestaña Nueva</translation>
 <translation id="5802665280774361839">Mostrar autocompletar en la barra de direcciones</translation>
 <translation id="7965178729203412357">Nueva identidad Tor</translation>
 <translation id="8511502469534942133">Nueva Conexión Tor Para Esta Página</translation>
@@ -59,7 +61,7 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="4472575034687746823">Empezar</translation>
 <translation id="3400357268283240774">Opciones adicionales</translation>
 <translation id="6303294677342628402">Escudos</translation>
-<translation id="7133511168130368997">Bloqueo de rastreadores y anuncios que te siguen a través de la web.</translation>
+<translation id="7133511168130368997">Bloquear rastreadores y anuncios que te siguen a través de la web.</translation>
 <translation id="2761825942249694703">Estos son los ajustes por defecto de los Escudos. Se aplican a todos los sitios web a menos que cambies algún parámetro en el panel de Escudos para un sitio en concreto. Cambiarlos no afectará a tus ajustes por sitio actuales.</translation>
 <translation id="8754605759692119662">Esto bloqueará la mayoría de los anuncios en los sitios web, no los anuncios privados de Brave — estos son controlados en</translation>
 <translation id="6388201778088078932">ajustes.</translation>
@@ -97,7 +99,7 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="8721331068159819483">Mismo que en MacOS</translation>
 <translation id="6786747875388722282">Extensiones</translation>
 <translation id="2896916411183256228">Usa WebTorrent para mostrar directamente los torrents en el navegador. Es compatible con archivos torrent y enlaces magnet.</translation>
-<translation id="5554028991651120544">Proporciona un monedero Ethereum y un navegador Dapp dentro de Brave.</translation>
+<translation id="5554028991651120544">Proporciona una cartera Ethereum y un navegador Dapp dentro de Brave.</translation>
 <translation id="6554397389149987360">Usa el componente de Hangouts para habilitar la compartición de la pantalla y otras funciones en el navegador.</translation>
 <translation id="1765684547504191670">Utiliza el componente Enrutador De Contenidos para activar Chromecast en el navegador.</translation>
 <translation id="9156965752763025780">Los cambios se aplicarán la próxima vez que reinicies Brave.</translation>
@@ -158,9 +160,9 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="4394049700291259645">Deshabilitar</translation>
 <translation id="6469509880167172749">Enviar automáticamente los análisis de productos completamente privados a Brave</translation>
 <translation id="7090566321964540749">Esta información anónima solo le permite a Brave estimar el uso general de ciertas funciones.</translation>
-<translation id="1200956479506699688">Crypto Wallets ya está disponible en Brave. No se pueden utilizar MetaMask y Crypto Wallets al mismo tiempo.</translation>
-<translation id="7583735190612229830">Configura Crypto Wallets para que interactuar con esta aplicación y otras similares.</translation>
-<translation id="8337117349965899723">Utiliza Crypto Wallets</translation>
+<translation id="1200956479506699688">Crypto Carteras ya está disponible en Brave. No se pueden utilizar MetaMask y Crypto Carteras al mismo tiempo.</translation>
+<translation id="7583735190612229830">Configura Crypto Carteras para interactuar con esta aplicación y otras similares.</translation>
+<translation id="8337117349965899723">Utiliza Crypto Carteras</translation>
 <translation id="5756155765711979898">Usar MetaMask</translation>
 <translation id="6754134632841262799">CONFIGURACIÓN</translation>
 <translation id="191143826155037518">Brave está disponible para ti bajo la <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) e incluye <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>software de código abierto<ph name="END_LINK_OSS">&lt;/a&gt;</ph> bajo una variedad de otras licencias.

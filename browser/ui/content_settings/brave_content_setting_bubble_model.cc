@@ -21,13 +21,13 @@
 BraveContentSettingPluginBubbleModel::BraveContentSettingPluginBubbleModel(
     Delegate* delegate, content::WebContents* web_contents)
     : ContentSettingSimpleBubbleModel(delegate, web_contents,
-        CONTENT_SETTINGS_TYPE_PLUGINS) {
+        ContentSettingsType::PLUGINS) {
   content_settings::SettingInfo info;
   HostContentSettingsMap* map =
       HostContentSettingsMapFactory::GetForProfile(GetProfile());
   GURL url = web_contents->GetURL();
   std::unique_ptr<base::Value> value =
-      map->GetWebsiteSetting(url, url, CONTENT_SETTINGS_TYPE_PLUGINS,
+      map->GetWebsiteSetting(url, url, ContentSettingsType::PLUGINS,
           std::string(), &info);
 
   set_show_learn_more(true);
@@ -51,7 +51,7 @@ BraveContentSettingPluginBubbleModel::BraveContentSettingPluginBubbleModel(
 
 void BraveContentSettingPluginBubbleModel::OnLearnMoreClicked() {
   if (delegate())
-    delegate()->ShowLearnMorePage(CONTENT_SETTINGS_TYPE_PLUGINS);
+    delegate()->ShowLearnMorePage(ContentSettingsType::PLUGINS);
 }
 
 void BraveContentSettingPluginBubbleModel::OnCustomLinkClicked() {
@@ -69,7 +69,7 @@ void BraveContentSettingPluginBubbleModel::RunPluginsOnPage() {
   map->SetContentSettingDefaultScope(
       web_contents()->GetURL(),
       GURL(),
-      CONTENT_SETTINGS_TYPE_PLUGINS,
+      ContentSettingsType::PLUGINS,
       std::string(),
       CONTENT_SETTING_DETECT_IMPORTANT_CONTENT);
 

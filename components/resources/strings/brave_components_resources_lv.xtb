@@ -77,19 +77,11 @@
 <translation id="438216590634144114">Izvēlieties meklētājprogrammu, kuru vēlaties izmantot pēc noklusējuma, kad veicat meklēšanu tīmeklī, izmantojot adreses joslu.</translation>
 <translation id="5804484488647369316">Iestatīt noklusējuma meklētājprogrammu</translation>
 <translation id="4428458837269935199">Izmantojiet DuckDuckGo, lai meklējumi būtu vēl privātāki.</translation>
-<translation id="513635702954746724">Izvēlieties krāsu dizainu</translation>
-<translation id="6842850080200126305">Iestatiet rīkjoslas krāsu, iestatījumu panelī atlasot gaišo vai tumšo iespēju.</translation>
-<translation id="5805868144901917207">Atlasīt dizainu</translation>
-<translation id="8131740175452115882">Apstiprināt</translation>
-<translation id="713206503018076063">Sistēmas dizains (pēc noklusējuma)</translation>
-<translation id="1807246157184219062">Gaišs</translation>
-<translation id="2414886740292270097">Tumšs</translation>
 <translation id="3829010735958850433">Izlaist iepazīstināšanas tūri</translation>
 <translation id="1201402288615127009">Nākamais</translation>
 <translation id="7954950242989581218">Droša pārlūkošana</translation>
 <translation id="2188651882929633653">Brave Shields bloķē saturu, kas mēģina izsekot jūsu darbībām tīmeklī, tostarp lielāko daļu reklāmu. Iestatiet Shields uz “leju”,  ja kāda vietne nedarbojas. Brave izmanto <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>pilnīgi privātu produktu analīzi<ph name="END_LINK_P3A">&lt;/a&gt;</ph>, lai novērtētu konkrētu funkciju vispārējo lietojumu. Šo opciju varat izslēgt sadaļā <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Iestatījumi<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Reklāmas</translation>
-<translation id="5698387814910197501">Pelniet {{currency}}, aplūkojot reklāmas Brave. Reklāmas tiek rādītas, balstotiets uz Jūsu interesēm, kas iegūtas no Jūsu pārlūkošanas paradumiem. Personas dati vai pārlūkošanas vēsture nekad nepamet Jūsu pārlūku.</translation>
 <translation id="6112368337882254910">Automātiska ziedošana</translation>
 <translation id="3742599705619405136">Automātisks veids izdevēju un satura veidotāju atbalstam. Nosakiet mēneša maksājumu un pārlūkojiet normāli. Brave Verified vietnes, ko apmeklējat, automātiski saņems jūsu ieguldījumu, pateicoties jūsu uzmanībai, ko izmērījis Brave.</translation>
 <translation id="20281847067919078">Aptuvenā gaidāmā peļņa</translation>
@@ -97,6 +89,7 @@
 <translation id="319209088187794725">Šajā mēnesī saņemtie reklāmu paziņojumi</translation>
 <translation id="4229016885653790965">Diemžēl reklāmas vēl nav pieejamas jūsu reģionā.</translation>
 <translation id="2539279826042558064">Jūsu ierīcē pagaidām nav pieejamas Brave balvas un reklāmas.</translation>
+<translation id="5421369907811917952">Citi iestatījumi</translation>
 <translation id="654711254769318398">Skatītās reklāmu lapas</translation>
 <translation id="2532127066761785857">Maksimālais rādīto reklāmu skaits</translation>
 <translation id="5171071066587880677">1 reklāma stundā</translation>
@@ -132,7 +125,6 @@
 <translation id="2726674968268546964">marķieri</translation>
 <translation id="7286722244752781970">Minimālais laiks lapā pirms apmeklējuma reģistrēšanas</translation>
 <translation id="4424486208397124985">Minimālais apmeklējumu skaits publicētāja būtiskumam</translation>
-<translation id="5421369907811917952">Citi iestatījumi</translation>
 <translation id="6248554379744796526">Parādīt nepārbaudītās vietnes sarakstā</translation>
 <translation id="5875669387851353511">Atļauj ziedot videoklipiem</translation>
 <translation id="8933202740471878108">1 apmeklējums</translation>
@@ -162,7 +154,6 @@
 <translation id="7210234701206674260">Brave dāvanās ir radusies kļūda. Lūdzu, mēģiniet vēlreiz vēlāk.</translation>
 <translation id="570208820610947248">Esam konstatējuši, ka jūsu makam ir problēma. Jums ir jāatkopj jūsu maka dublējums, lai varētu apstrādāt turpmākus darījumus.</translation>
 <translation id="7797604753681168055">Atkopt tagad!</translation>
-<translation id="5549059668721746831">Nākamās ikmēneša dzeramnaudas datums</translation>
 <translation id="6231182869178328516">Es tikko pieskāros <ph name="NAME"/>, kurš lieto Brave pārlūkprogrammu. Apskatiet to tīmekļa vietnē: https://brave.com/tips.</translation>
 <translation id="8404935570206006581">Sūtiet dzeramnaudu ar Brave</translation>
 <translation id="2876191400747549936">Atvainojiet, apstrādājot jūsu pieprasījumu, radās kļūda, lūdzu, mēģiniet vēlreiz.</translation>
@@ -261,8 +252,6 @@
 <translation id="4114667046481794032">Ziedojuma apmērs</translation>
 <translation id="3520817231440482449">Dot dzeramnaudu šai vietnei katru mēnesi</translation>
 <translation id="1827184134638345603">Sūtīt dzeramnaudu...</translation>
-<translation id="7928243298881209869">Jūsu pirmā ikmēneša dzeramnauda tiks nosūtīta:</translation>
-<translation id="6045860799501892362">Iestatīt ikmēneša dzeramnaudu</translation>
 <translation id="8003573781961874199">Lejupielādēt kā PDF</translation>
 <translation id="298067735430872465">Peļņa no reklāmām</translation>
 <translation id="2266556115441975588">Ir pieejama jūsu peļņa no reklāmām.</translation>
@@ -291,7 +280,6 @@
 <translation id="9115913704608474258">Novembris</translation>
 <translation id="7828956995407538686">Oktobris</translation>
 <translation id="5502713021410870035">Septembris</translation>
-<translation id="5737831580668469027">Ikmēneša dzeramnaudas!</translation>
 <translation id="606865182719489911">Pieejams bezmaksas marķiera piešķīrums.</translation>
 <translation id="2487641031722095938">Jums šodien veicas!</translation>
 <translation id="6255773350565723852">Drīzumā saņemsiet savu marķiera piešķīrumu.</translation>
@@ -318,13 +306,8 @@
 <translation id="4923459931733593730">Maksājums</translation>
 <translation id="4021593982164260556">Maksājums tiek veikts katrā {{day}}. dienā katru mēnesi.</translation>
 <translation id="6104680658798556671">Maksājums nav veikts.</translation>
-<translation id="2834888581291358924">Ja Jūsu konta bilance ir nepietiekama, lai apmaksātu kopējo automātiskās ziedošanas un periodisko dzeramnaudu summu, šie maksājumi tiks izlaisti šajā laika posmā.</translation>
 <translation id="3138528956349114724">Piespraustās vietnes tagad ir</translation>
-<translation id="2337632028350283479">Ikmēneša dzeramnaudas darbojas, kā norādīts turpmāk.</translation>
-<translation id="6457273203091513039">Ikmēneša dzeramnaudas netiek ņemtas no automātiskās ziedošanas maksājuma. Tās ir atsevišķas.</translation>
 <translation id="9099396904827413228">Katrai vietnei tiek maksāts noteikts apjoms katru mēnesi.</translation>
-<translation id="5051110132941857169">Ikmēneša dzeramnaudas katru mēnesi tiek visas maksātas vienlaikus. Ja izmantojat automātisko ziedošanu, dzeramnaudas tiek izmaksātas tajā pašā laikā, kad ikmēneša automātiskie ziedojumi.</translation>
-<translation id="3374483782662414143">Jūs varat noņemt vietni no ikmēneša dzeramnaudu saņemšanas Dzeramnaudu panelī.</translation>
 <translation id="5082474983463379713">Lūdzu, ņemiet vērā:</translation>
 <translation id="1430915738399379752">Drukāt</translation>
 <translation id="135956957367307069">Jūsu pieprasījums jopoprojām tiek apstrādāts, lūdzu, uzgaidiet.</translation>

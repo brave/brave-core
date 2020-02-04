@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/ui/webui/settings/settings_localized_strings_provider.h"
+#include "chrome/browser/ui/webui/webui_util.h"
 #include "base/stl_util.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 
@@ -28,14 +29,13 @@ void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
 namespace settings {
 
 void BraveAddImportDataStrings(content::WebUIDataSource* html_source) {
-  LocalizedString localized_strings[] = {
+  webui::LocalizedString localized_strings[] = {
       {"importCookies", IDS_SETTINGS_IMPORT_COOKIES_CHECKBOX},
       {"importStats", IDS_SETTINGS_IMPORT_STATS_CHECKBOX},
       {"importLedger", IDS_SETTINGS_IMPORT_LEDGER_CHECKBOX},
       {"importWindows", IDS_SETTINGS_IMPORT_WINDOWS_CHECKBOX},
   };
-  AddLocalizedStringsBulk(html_source, localized_strings,
-                          base::size(localized_strings));
+  AddLocalizedStringsBulk(html_source, localized_strings);
 }
 
 const char kWebRTCLearnMoreURL[] =
@@ -44,7 +44,7 @@ const char kWebRTCLearnMoreURL[] =
 
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
-  LocalizedString localized_strings[] = {
+  webui::LocalizedString localized_strings[] = {
     {"siteSettingsAutoplay",
       IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY},
     {"siteSettingsCategoryAutoplay",
@@ -168,8 +168,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"remoteDebuggingEnabledTitle",
       IDS_SETTINGS_REMOTE_DEBUGGING_TITLE}
   };
-  AddLocalizedStringsBulk(html_source, localized_strings,
-                          base::size(localized_strings));
+  AddLocalizedStringsBulk(html_source, localized_strings);
   html_source->AddString("webRTCLearnMoreURL",
                          base::ASCIIToUTF16(kWebRTCLearnMoreURL));
   html_source->AddString(

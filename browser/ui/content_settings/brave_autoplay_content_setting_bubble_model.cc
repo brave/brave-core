@@ -15,6 +15,7 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "components/url_formatter/elide_url.h"
 #include "content/public/browser/navigation_controller.h"
@@ -31,7 +32,7 @@ BraveAutoplayContentSettingBubbleModel::BraveAutoplayContentSettingBubbleModel(
     WebContents* web_contents)
     : ContentSettingSimpleBubbleModel(delegate,
                                       web_contents,
-                                      CONTENT_SETTINGS_TYPE_AUTOPLAY),
+                                      ContentSettingsType::AUTOPLAY),
       block_setting_(CONTENT_SETTING_BLOCK) {
   SetTitle();
   SetRadioGroup();

@@ -1,33 +1,33 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_menu_view.h b/chrome/browser/ui/views/profiles/profile_menu_view.h
-index 8095e983933697cd540ccbe7cc789a74c3a9f619..b0d295ff31996e2b087efbf3f23bbb72c6be2ac6 100644
+index ba38018fb9f29fb1fd2ce3eb48c300fd61b4b730..153664acc0edf457374f5dfc2fcb19ef08a2c6a6 100644
 --- a/chrome/browser/ui/views/profiles/profile_menu_view.h
 +++ b/chrome/browser/ui/views/profiles/profile_menu_view.h
-@@ -39,6 +39,7 @@ class ProfileMenuView : public ProfileMenuViewBase, public AvatarMenuObserver {
+@@ -40,6 +40,7 @@ class ProfileMenuView : public ProfileMenuViewBase, public AvatarMenuObserver {
    void BuildMenu() override;
  
   private:
 +  BRAVE_PROFILE_MENU_VIEW_H
    friend class ProfileMenuViewExtensionsTest;
  
-   // ProfileMenuViewBase:
-@@ -56,6 +57,7 @@ class ProfileMenuView : public ProfileMenuViewBase, public AvatarMenuObserver {
+   // views::BubbleDialogDelegateView:
+@@ -53,6 +54,7 @@ class ProfileMenuView : public ProfileMenuViewBase, public AvatarMenuObserver {
+   void OnAddressesButtonClicked();
    void OnGuestProfileButtonClicked();
    void OnManageProfilesButtonClicked();
-   void OnLockButtonClicked();
 +  virtual
    void OnExitProfileButtonClicked();
    void OnSyncSettingsButtonClicked();
    void OnSyncErrorButtonClicked(sync_ui_util::AvatarSyncErrorType error);
-@@ -98,6 +100,7 @@ class ProfileMenuView : public ProfileMenuViewBase, public AvatarMenuObserver {
+@@ -101,6 +103,7 @@ class ProfileMenuView : public ProfileMenuViewBase, public AvatarMenuObserver {
    void AddGuestProfileView();
    void AddOptionsView(bool display_lock, AvatarMenu* avatar_menu);
    void AddSupervisedUserDisclaimerView();
 +  virtual
    void AddAutofillHomeView();
- #if defined(GOOGLE_CHROME_BUILD)
    void AddManageGoogleAccountButton();
-@@ -120,6 +123,7 @@ class ProfileMenuView : public ProfileMenuViewBase, public AvatarMenuObserver {
  
+@@ -125,6 +128,7 @@ class ProfileMenuView : public ProfileMenuViewBase, public AvatarMenuObserver {
+   // TODO(crbug.com/1021587): Remove after ProfileMenuRevamp.
    // Adds a view showing the profile associated with |avatar_item| and an error
    // button below, when dice is enabled.
 +  virtual

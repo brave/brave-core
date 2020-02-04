@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/android/chrome_feature_list.cc b/chrome/browser/android/chrome_feature_list.cc
-index e41455bfe3ad7b75ef41403a5bd4c9579c64e3d1..e5558f535eb649a6f0c3cd33d109e68f947a76aa 100644
+index 471d630ab8a2504b78bd7971cef7f0f6f6220932..1ed23e1460d7d7e562b100e8d7d6e747fe4d0231 100644
 --- a/chrome/browser/android/chrome_feature_list.cc
 +++ b/chrome/browser/android/chrome_feature_list.cc
-@@ -230,6 +230,7 @@ const base::Feature* kFeaturesExposedToJava[] = {
+@@ -238,6 +238,7 @@ const base::Feature* kFeaturesExposedToJava[] = {
  };
  
  const base::Feature* FindFeatureExposedToJava(const std::string& feature_name) {
@@ -10,12 +10,3 @@ index e41455bfe3ad7b75ef41403a5bd4c9579c64e3d1..e5558f535eb649a6f0c3cd33d109e68f
    for (size_t i = 0; i < base::size(kFeaturesExposedToJava); ++i) {
      if (kFeaturesExposedToJava[i]->name == feature_name)
        return kFeaturesExposedToJava[i];
-@@ -246,7 +247,7 @@ const base::Feature kAdjustWebApkInstallationSpace = {
-     "AdjustWebApkInstallationSpace", base::FEATURE_DISABLED_BY_DEFAULT};
- 
- const base::Feature kAndroidNightMode{"AndroidNightMode",
--                                      base::FEATURE_DISABLED_BY_DEFAULT};
-+                                      base::FEATURE_ENABLED_BY_DEFAULT};
- 
- const base::Feature kAndroidNightModeCCT{"AndroidNightModeCCT",
-                                          base::FEATURE_ENABLED_BY_DEFAULT};
