@@ -886,6 +886,7 @@ void BraveProfileSyncServiceImpl::ProcessOtherBookmarksFolder(
 
       // Add records to move direct children of other_node to this new folder
       // with existing object id of the old "Other Bookmarks" folder
+      auto records_to_send = std::make_unique<RecordsList>();
       for (size_t i = 0; i < model_->other_node()->children().size(); ++i) {
         auto sync_record =
           BookmarkNodeToSyncBookmark(model_->other_node()->children()[i].get());
@@ -896,10 +897,18 @@ void BraveProfileSyncServiceImpl::ProcessOtherBookmarksFolder(
           bookmark.order + "." + std::to_string(i + 1);
         LoadSyncEntityInfo(sync_record.get());
 
+        auto record_to_send = SyncRecord::Clone(*sync_record);
+
+        // Append chnages to remote records
         if (!pending_received_records_)
           pending_received_records_ = std::make_unique<RecordsList>();
         pending_received_records_->push_back(std::move(sync_record));
+
+        // Send changes to other desktops
+        records_to_send->push_back(std::move(record_to_send));
       }
+      SendSyncRecords(jslib_const::SyncRecordType_BOOKMARKS,
+                      std::move(records_to_send));
     }
   }
 }
