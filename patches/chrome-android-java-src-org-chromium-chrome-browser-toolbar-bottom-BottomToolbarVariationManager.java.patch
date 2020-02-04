@@ -1,0 +1,67 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarVariationManager.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarVariationManager.java
+index 5aca8d3e33981d352282b868dd2ffaaa32a45a74..278dd69cb5a0bcd7deb23e9fef68ff1ddc062b4c 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarVariationManager.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarVariationManager.java
+@@ -41,9 +41,9 @@ public class BottomToolbarVariationManager {
+             return Variations.HOME_SEARCH_TAB_SWITCHER;
+         }
+         sVariation = FeatureUtilities.getBottomToolbarVariation();
+-        if (sVariation.equals(Variations.NONE)) {
++/*        if (sVariation.equals(Variations.NONE)) {
+             return Variations.HOME_SEARCH_TAB_SWITCHER;
+-        }
++        }*/
+         return sVariation;
+     }
+ 
+@@ -52,7 +52,7 @@ public class BottomToolbarVariationManager {
+      *         in the current variation.
+      */
+     public static boolean isShareButtonOnBottom() {
+-        return FeatureUtilities.isBottomToolbarEnabled()
++        return FeatureUtilities.isBottomToolbarEnabled() && !getVariation().equals(Variations.NONE)
+                 && !getVariation().equals(Variations.HOME_SEARCH_TAB_SWITCHER);
+     }
+ 
+@@ -62,7 +62,7 @@ public class BottomToolbarVariationManager {
+      */
+     public static boolean isNewTabButtonOnBottom() {
+         return FeatureUtilities.isBottomToolbarEnabled()
+-                && getVariation().equals(Variations.NEW_TAB_SEARCH_SHARE);
++                && (getVariation().equals(Variations.NEW_TAB_SEARCH_SHARE) || getVariation().equals(Variations.NONE));
+     }
+ 
+     /**
+@@ -72,7 +72,7 @@ public class BottomToolbarVariationManager {
+     public static boolean isMenuButtonOnBottom() {
+         // If we don't have variations that put menu on bottom in the future,
+         // then this method can be removed.
+-        return false;
++        return isBookmarkButtonOnBottom();
+     }
+ 
+     /**
+@@ -84,7 +84,7 @@ public class BottomToolbarVariationManager {
+                        && !FeatureUtilities.isStartSurfaceEnabled())
+                 || ((!FeatureUtilities.isGridTabSwitcherEnabled()
+                             || !IncognitoUtils.isIncognitoModeEnabled())
+-                        && getVariation().equals(Variations.HOME_SEARCH_TAB_SWITCHER));
++                        && getVariation().equals(Variations.HOME_SEARCH_TAB_SWITCHER)) || isBookmarkButtonOnBottom();
+     }
+ 
+     /**
+@@ -102,7 +102,7 @@ public class BottomToolbarVariationManager {
+      */
+     public static boolean isTabSwitcherOnBottom() {
+         return FeatureUtilities.isBottomToolbarEnabled()
+-                && getVariation().equals(Variations.HOME_SEARCH_TAB_SWITCHER);
++                && (getVariation().equals(Variations.HOME_SEARCH_TAB_SWITCHER) || getVariation().equals(Variations.NONE));
+     }
+ 
+     /**
+@@ -116,4 +116,5 @@ public class BottomToolbarVariationManager {
+     public static void setVariation(String variation) {
+         sVariation = variation;
+     }
++    public static boolean isBookmarkButtonOnBottom() {return FeatureUtilities.isBottomToolbarEnabled() && getVariation().equals(Variations.NONE);}
+ }

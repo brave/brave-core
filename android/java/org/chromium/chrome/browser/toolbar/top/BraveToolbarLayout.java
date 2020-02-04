@@ -48,6 +48,7 @@ import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.TabModelSelectorTabObserver;
 import org.chromium.chrome.browser.tabmodel.TabSelectionType;
+import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarVariationManager;
 import org.chromium.chrome.browser.toolbar.HomeButton;
 import org.chromium.chrome.browser.toolbar.ToolbarColors;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
@@ -159,6 +160,12 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       // Initially show shields off image. Shields button state will be updated when tab is
       // shown and loading state is changed.
       updateBraveShieldsButtonState(null);
+      if (this instanceof ToolbarPhone) {
+          if (getMenuButtonWrapper() != null && BottomToolbarVariationManager.isMenuButtonOnBottom()) {
+              getMenuButtonWrapper().setVisibility(View.GONE);
+              disableMenuButton();
+          }
+      }
   }
 
   @Override

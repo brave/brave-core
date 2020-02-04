@@ -91,6 +91,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/sync/BraveSyncServiceObserver.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BookmarksButton.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BraveBottomToolbarCoordinator.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BraveBrowsingModeBottomToolbarCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/BravePackageReplacedBroadcastReceiver.java",
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/BraveUpgradeJobIntentService.java",

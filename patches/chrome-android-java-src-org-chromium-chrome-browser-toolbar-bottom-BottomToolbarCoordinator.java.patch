@@ -1,7 +1,36 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java
-index 4f740aac382b2b2f5013006f0cdf1007b330759b..1d2111d086edfcb0821d7f2d895ce0ba35cf6e85 100644
+index 4f740aac382b2b2f5013006f0cdf1007b330759b..f8f39c3ba0b4a89674a2fc9d7d20b4d53898ed1b 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java
+@@ -28,7 +28,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
+  */
+ class BottomToolbarCoordinator {
+     /** The browsing mode bottom toolbar component */
+-    private final BrowsingModeBottomToolbarCoordinator mBrowsingModeCoordinator;
++    protected final BrowsingModeBottomToolbarCoordinator mBrowsingModeCoordinator;
+ 
+     /** The tab switcher mode bottom toolbar component */
+     private TabSwitcherBottomToolbarCoordinator mTabSwitcherModeCoordinator;
+@@ -40,8 +40,8 @@ class BottomToolbarCoordinator {
+     private final ThemeColorProvider mThemeColorProvider;
+ 
+     /** The overview mode manager. */
+-    private OverviewModeBehavior mOverviewModeBehavior;
+-    private OverviewModeObserver mOverviewModeObserver;
++    protected OverviewModeBehavior mOverviewModeBehavior;
++    protected OverviewModeObserver mOverviewModeObserver;
+ 
+     /** The activity tab provider. */
+     private ActivityTabProvider mTabProvider;
+@@ -62,7 +62,7 @@ class BottomToolbarCoordinator {
+             ThemeColorProvider themeColorProvider) {
+         View root = stub.inflate();
+ 
+-        mBrowsingModeCoordinator = new BrowsingModeBottomToolbarCoordinator(root, tabProvider,
++        mBrowsingModeCoordinator = new BraveBrowsingModeBottomToolbarCoordinator(root, tabProvider,
+                 homeButtonListener, searchAcceleratorListener, shareButtonListenerSupplier,
+                 tabsSwitcherLongClickListner);
+ 
 @@ -164,4 +164,5 @@ class BottomToolbarCoordinator {
          }
          mThemeColorProvider.destroy();

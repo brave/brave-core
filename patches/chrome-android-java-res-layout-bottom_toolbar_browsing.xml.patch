@@ -1,20 +1,50 @@
 diff --git a/chrome/android/java/res/layout/bottom_toolbar_browsing.xml b/chrome/android/java/res/layout/bottom_toolbar_browsing.xml
-index 76d517641db816c12bd35ae6497cd172eea71fd0..e56cffeee66034c659ac7719899f2512a1851c72 100644
+index 76d517641db816c12bd35ae6497cd172eea71fd0..2d13046d3bdac0e21bb9032d9358728b917ec95a 100644
 --- a/chrome/android/java/res/layout/bottom_toolbar_browsing.xml
 +++ b/chrome/android/java/res/layout/bottom_toolbar_browsing.xml
-@@ -62,6 +62,7 @@
-         android:contentDescription="@string/accessibility_toolbar_btn_tabswitcher_toggle_default"
-         app:menuVerticalOverlapAnchor="false" />
+@@ -16,7 +16,7 @@
+     android:paddingStart="@dimen/bottom_toolbar_padding"
+     android:paddingEnd="@dimen/bottom_toolbar_padding" >
  
-+<!--
-     <org.chromium.chrome.browser.toolbar.bottom.ShareButton
-         android:id="@+id/bottom_share_button"
-         android:src="@drawable/ic_share_white_24dp"
-@@ -71,6 +72,7 @@
-         android:contentDescription="@string/share"
+-    <include layout="@layout/toolbar_space" />
++    <!-- <include layout="@layout/toolbar_space" /> -->
+ 
+     <org.chromium.chrome.browser.toolbar.HomeButton
+         android:id="@+id/bottom_home_button"
+@@ -25,7 +25,7 @@
+         android:contentDescription="@string/accessibility_toolbar_btn_home"
+         android:visibility="gone"
          style="@style/SplitToolbarButton" />
- 
-+--> <include layout="@layout/brave_bookmark_toolbar" />
+-
++<!--
+     <org.chromium.chrome.browser.toolbar.bottom.BottomToolbarNewTabButton
+         android:id="@+id/bottom_new_tab_button"
+         android:contentDescription="@string/accessibility_toolbar_btn_new_tab"
+@@ -34,8 +34,9 @@
+         app:srcCompat="@drawable/new_tab_icon"
+         android:visibility="gone"
+         style="@style/SplitToolbarButton" />
+-
++-->
+     <include layout="@layout/toolbar_space" />
++    <include layout="@layout/brave_bookmark_toolbar" />
      <include layout="@layout/toolbar_space" />
  
+     <org.chromium.chrome.browser.toolbar.bottom.SearchAccelerator
+@@ -49,8 +50,9 @@
+         android:paddingBottom="@dimen/search_accelerator_height_padding"
+         android:contentDescription="@string/accessibility_toolbar_btn_search_accelerator"
+         android:src="@drawable/ic_search"/>
++    <include layout="@layout/brave_bottom_new_tab_button" />
+ 
+-    <include layout="@layout/toolbar_space" />
++    <!-- <include layout="@layout/toolbar_space" /> -->
+     <include layout="@layout/toolbar_space" />
+ 
+     <org.chromium.chrome.browser.toolbar.TabSwitcherButtonView
+@@ -73,4 +75,5 @@
+ 
+     <include layout="@layout/toolbar_space" />
+ 
++    <include layout="@layout/bottom_toolbar_menu_button" style="@style/SplitToolbarButton" />
  </org.chromium.chrome.browser.toolbar.bottom.BrowsingModeBottomToolbarLinearLayout>

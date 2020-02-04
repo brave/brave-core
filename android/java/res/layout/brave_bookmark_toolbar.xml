@@ -12,15 +12,10 @@
     style="@style/BottomToolbarButtonWrapper">
 
     <org.chromium.chrome.browser.toolbar.bottom.BookmarksButton
-        android:id="@+id/bottom_share_button"
+        android:id="@+id/bottom_bookmark_button"
         app:tint="@color/standard_mode_tint"
         style="@style/SplitToolbarButton"
         android:layout_gravity="center"
         android:contentDescription="@string/accessibility_toolbar_btn_home"/>
-
-    <TextView
-        android:id="@+id/share_button_label"
-        style="@style/BottomToolbarLabel"
-        android:text="@string/accessibility_menu_bookmark" />
 
 </LinearLayout>
