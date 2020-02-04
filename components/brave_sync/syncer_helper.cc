@@ -89,20 +89,9 @@ void AddBraveMetaInfo(const bookmarks::BookmarkNode* node) {
   tools::AsMutable(node)->SetMetaInfo("object_id", object_id);
 
   std::string parent_object_id;
+  // other_node object id will be empty for the first time, it will be
+  // generated before sending commits
   node->parent()->GetMetaInfo("object_id", &parent_object_id);
-  // Setting object_id for other_node when we are about to send CREATE "Other
-  // Bookmarks" for the first time
-  if (node->parent()->type() == bookmarks::BookmarkNode::OTHER_NODE &&
-      parent_object_id.empty()) {
-    if (!node->parent()->GetMetaInfo("object_id", &parent_object_id)) {
-        // first iteration
-        parent_object_id = tools::GenerateObjectIdForOtherNode(std::string());
-        tools::AsMutable(node->parent())->SetMetaInfo("object_id",
-                                                      parent_object_id);
-    }
-    tools::AsMutable(node->parent())->SetMetaInfo("order",
-                                                  tools::kOtherNodeOrder);
-  }
   tools::AsMutable(node)->SetMetaInfo("parent_object_id", parent_object_id);
 
   std::string sync_timestamp;
