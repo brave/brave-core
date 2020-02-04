@@ -6,6 +6,7 @@ import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
+import("//brave/components/speedreader/buildflags.gni")
 import("//build/config/locales.gni")
 import("//chrome/common/features.gni")
 import("//extensions/buildflags/buildflags.gni")
@@ -147,6 +148,16 @@ template("brave_extra_paks") {
           "//brave/components/brave_rewards/resources/extension:resources",
         ]
       }
+    }
+
+    if (enable_speedreader) {
+      sources += [
+        "$root_gen_dir/brave/components/speedreader/resources/speedreader_resources.pak",
+      ]
+
+      deps += [
+        "//brave/components/speedreader/resources",
+      ]
     }
 
     if (defined(invoker.deps)) {

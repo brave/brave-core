@@ -1,0 +1,207 @@
+html {
+  background-color: #f4f4f4;
+}
+body {
+  font-size:100%; 
+  line-height:1.5;
+  font-family: 'Merriweather', Georgia, 'Times New Roman', Times, serif;
+  background-color: white;
+}
+h1 {
+  font-size: 2.747em;
+}
+h2 {
+  font-size: 0.874em;
+}
+h3 {
+  font-size:1.229em;
+}
+body {
+  max-width:34em;
+  margin:auto;
+  padding:2em 1em;
+  margin-bottom: 5em;
+  margin-top: 2em;
+}
+@media screen and (max-width: 25em) {
+  body { font-size: 90%;}
+}
+
+h1 {
+    font-size: 1.25em;
+}
+
+h2 {
+    font-size: 1.125em;
+}
+
+h3 {
+    font-size: 1.05em;
+}
+
+h4, h5, h6 {
+    font-size: 1em;
+    margin: 1em 0;
+}
+
+figure {
+    margin: 0;
+}
+
+.page.rtl {
+    direction: rtl;
+}
+
+body {
+    text-rendering: optimizeLegibility;
+}
+
+body pre {
+    white-space: pre-wrap;
+}
+
+body * {
+    /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+    max-width: 100%;
+}
+
+body img {
+    /* By default, images are centered on their own line. */
+    margin: 0.5em auto;
+    display: block;
+    height: auto;
+}
+
+body p {
+    /*padding-bottom: 1em;*/
+}
+body > div {
+    margin-block-start: 1em;   
+    margin-block-end: 1em;
+}
+
+body img.reader-image-tiny {
+    display: inline;
+    margin: 0;
+}
+
+body .leading-image, figure, .auxiliary {
+    margin-bottom: .25em;
+}
+
+body .leading-image img {
+    margin: auto;
+    display: block;
+    clear: both;
+}
+
+body .leading-image .credit {
+    margin: 0;
+    text-align: right;
+}
+
+body .leading-image .caption,
+body .leading-image .credit,
+body figcaption,
+body .auxiliary figcaption {
+    font-size: 0.75em;
+    line-height: 1.5em;
+    margin-top: 1em;
+    width: 100%;
+}
+
+body .leading-image .credit + .caption {
+    margin-top: 0.1em;
+}
+
+body .auxiliary {
+    display: block;
+    clear: both;
+    font-size: 0.75em;
+    line-height: 1.4em;
+    text-align: start;
+}
+
+body .auxiliary > * {
+    -webkit-margin-start: 0;
+}
+
+body .auxiliary img, body .auxiliary > *:first-child {
+    margin: 0;
+}
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+body .auxiliary img + * {
+    display: block;
+}
+
+body .auxiliary figcaption {
+    font-size: 100%;
+}
+
+body .auxiliary * {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+body .float.left {
+    float: left;
+    margin-right: 20px;
+}
+
+body .float.right {
+    float: right;
+    margin-left: 20px;
+}
+
+body .clear {
+    clear: both;
+}
+
+body ul.list-style-type-none,
+body ol.list-style-type-none,
+body .list-style-type-none > li {
+    list-style-type: none;
+    -webkit-padding-start: 0;
+}
+
+/* Collapse excess whitespace. */
+.page p > p:empty,
+.page div > p:empty,
+.page p > div:empty,
+.page div > div:empty,
+.page p + br,
+.page p > br:only-child,
+.page div > br:only-child,
+.page img + br
+{
+    display: none;
+}
+
+.title {
+    display: none;
+}
+
+.page:first-of-type .title {
+    display: block;
+}
+
+.page table {
+    font-size: 0.9em;
+    text-align: start;
+    word-wrap: break-word;
+    border-collapse: collapse;
+}
+
+.page table td, .page table th {
+    padding: 0.25em 0.5em;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.page table th {
+    background-color: rgba(0, 0, 0, 0.025);
+}
+
+.page a {
+    text-decoration: none;
+}

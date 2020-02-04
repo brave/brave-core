@@ -1,0 +1,29 @@
+import("//build/buildflag_header.gni")
+import("//brave/components/speedreader/buildflags.gni")
+import("//brave/vendor/speedreader_rust_ffi/config.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "ENABLE_SPEEDREADER=$enable_speedreader",
+  ]
+}
+
+source_set("speedreader") {
+  sources = [
+    "speedreader_loader.cc",
+    "speedreader_loader.h",
+    "speedreader_switches.h",
+    "speedreader_throttle.cc",
+    "speedreader_throttle.h",
+  ]
+
+  deps = [
+    "//brave/components/speedreader:buildflags",
+    "//brave/vendor/speedreader_rust_ffi:speedreadder_ffi",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
+    "//ui/base",  # For ResourceBundle, consider getting rid of this?
+    "//url",
+  ]
+}
