@@ -89,7 +89,6 @@ fileprivate extension Preferences {
         migrate(key: "saveLogins", to: Preferences.General.saveLogins)
         migrate(key: "blockPopups", to: Preferences.General.blockPopups)
         migrate(key: "kPrefKeyTabsBarShowPolicy", to: Preferences.General.tabBarVisibility)
-        migrate(key: "NightModeStatus", to: Preferences.General.nightMode)
         
         // Search
         migrate(key: "search.orderedEngineNames", to: Preferences.Search.orderedEngines)
