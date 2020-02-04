@@ -4,16 +4,19 @@
     "noImplicitAny": true,
     // esnext modules supports import() async webpack modules
     "module": "esnext",
-    // chrome 70 supports 100% es2017/8
-    "target": "es2017",
+    // chrome 80 supports 100% es2019
+    "target": "es2019",
     "allowJs": true,
     // convert jsx to react components
     "jsx": "react",
     "lib": [
       "es6",
       "dom",
+      "DOM.Iterable",
       "es7",
-      "es2017"
+      "es2017",
+      "es2018",
+      "es2019"
     ],
     "moduleResolution": "node",
     "baseUrl": ".",

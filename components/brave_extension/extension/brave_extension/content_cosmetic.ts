@@ -18,6 +18,22 @@ let notYetQueriedIds: string[] = []
 
 let backgroundReady: boolean = false
 
+function isElement (node: Node): boolean {
+  return (node.nodeType === 1)
+}
+
+function asElement (node: Node): Element | null {
+  return isElement(node) ? node as Element : null
+}
+
+function isHTMLElement (node: Node): boolean {
+  return ('innerText' in node)
+}
+
+function asHTMLElement (node: Node): HTMLElement | null {
+  return isHTMLElement(node) ? node as HTMLElement : null
+}
+
 const fetchNewClassIdRules = function () {
   // Only let the backend know that we've found new classes and id attributes
   // if  the back end has told us its ready to go and we have at least one new
@@ -37,12 +53,12 @@ const fetchNewClassIdRules = function () {
   }
 }
 
-const handleMutations = function (mutations: any[]) {
+const handleMutations: MutationCallback = function (mutations: MutationRecord[]) {
   for (const aMutation of mutations) {
-    if (aMutation.type === 'attribute') {
+    if (aMutation.type === 'attributes') {
       // Since we're filtering for attribute modifications, we can be certain
       // that the targets are always HTMLElements, and never TextNode.
-      const changedElm = aMutation.target
+      const changedElm = aMutation.target as Element
       switch (aMutation.attributeName) {
         case 'class':
           for (const aClassName of changedElm.classList.values()) {
@@ -62,13 +78,17 @@ const handleMutations = function (mutations: any[]) {
           break
       }
     } else if (aMutation.addedNodes.length > 0) {
-      for (const element of aMutation.addedNodes) {
+      for (const node of aMutation.addedNodes) {
+        const element = asElement(node)
+        if (!element) {
+          continue
+        }
         const id = element.id
         if (id && !queriedIds.has(id)) {
           notYetQueriedIds.push(id)
           queriedIds.add(id)
         }
-        const classList: any = element.classList
+        const classList = element.classList
         if (classList) {
           for (const className of classList.values()) {
             if (className && !queriedClasses.has(className)) {
@@ -93,7 +113,7 @@ let observerConfig = {
 cosmeticObserver.observe(document.documentElement, observerConfig)
 
 const _parseDomainCache = Object.create(null)
-const getParsedDomain = (aDomain: any) => {
+const getParsedDomain = (aDomain: string) => {
   const cacheResult = _parseDomainCache[aDomain]
   if (cacheResult !== undefined) {
     return cacheResult
@@ -225,11 +245,14 @@ const isSubTreeFirstParty = (elm: Element, possibleQueryResult?: IsFirstPartyQue
     return (queryResult.foundThirdPartyResource === false)
   }
 
-  const foundText = (elm as HTMLElement).innerText
-  return (
-    queryResult.foundThirdPartyResource === false &&
-    foundText.trim().length > 0
-  )
+  if (queryResult.foundThirdPartyResource) {
+    return false
+  }
+  const htmlElement = asHTMLElement(elm)
+  if (!htmlElement || !htmlElement.innerText.trim().length) {
+    return false
+  }
+  return true
 }
 
 const hideSelectors = (selectors: string[]) => {
@@ -243,12 +266,12 @@ const hideSelectors = (selectors: string[]) => {
   })
 }
 
-const alreadyHiddenSelectors = new Set()
+const alreadyHiddenSelectors = new Set<string>()
 const alreadyHiddenThirdPartySubTrees = new WeakSet()
-const allSelectorsSet = new Set()
-const firstRunQueue = new Set()
-const secondRunQueue = new Set()
-const finalRunQueue = new Set()
+const allSelectorsSet = new Set<string>()
+const firstRunQueue = new Set<string>()
+const secondRunQueue = new Set<string>()
+const finalRunQueue = new Set<string>()
 const allQueues = [firstRunQueue, secondRunQueue, finalRunQueue]
 const numQueues = allQueues.length
 const pumpIntervalMs = 50
@@ -273,7 +296,7 @@ const pumpCosmeticFilterQueues = () => {
     const matchingElms = document.querySelectorAll(comboSelector)
     const selectorsToHide = []
 
-    for (const aMatchingElm of Array.from(matchingElms)) {
+    for (const aMatchingElm of matchingElms) {
       if (alreadyHiddenThirdPartySubTrees.has(aMatchingElm)) {
         continue
       }
