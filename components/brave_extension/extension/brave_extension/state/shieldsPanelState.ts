@@ -112,6 +112,12 @@ export const updateResourceBlocked: shieldState.UpdateResourceBlocked = (state, 
   return { ...state, tabs }
 }
 
+export const saveCosmeticFilterRuleExceptions: shieldState.SaveCosmeticFilterRuleExceptions = (state, tabId, exceptions) => {
+  const tabs: shieldState.Tabs = { ...state.tabs }
+  tabs[tabId] = { ...tabs[tabId], ...{ cosmeticFilters: { ...tabs[tabId].cosmeticFilters, ruleExceptions: exceptions } } }
+  return { ...state, tabs }
+}
+
 export const resetBlockingStats: shieldState.ResetBlockingStats = (state, tabId) => {
   const tabs: shieldState.Tabs = { ...state.tabs }
   tabs[tabId] = { ...tabs[tabId], ...{ adsBlocked: 0, trackersBlocked: 0, httpsRedirected: 0, javascriptBlocked: 0, fingerprintingBlocked: 0 } }

@@ -1,0 +1,7 @@
+source_set("common") {
+  sources = [
+    "brave_shield_constants.h",
+    "features.cc",
+    "features.h",
+  ]
+}

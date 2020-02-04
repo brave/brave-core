@@ -38,6 +38,7 @@ describe('Shields API', () => {
           origin: 'https://www.brave.com',
           hostname: 'www.brave.com',
           braveShields: 'block',
+          cosmeticBlocking: true,
           ads: 'block',
           trackers: 'block',
           httpUpgradableResources: 'block',
@@ -94,6 +95,7 @@ describe('Shields API', () => {
     })
     it('resolves and calls requestShieldPanelData', (cb) => {
       const details: ShieldDetails = {
+        cosmeticBlocking: true,
         ads: 'block',
         trackers: 'block',
         httpUpgradableResources: 'block',

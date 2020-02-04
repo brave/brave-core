@@ -16,4 +16,7 @@ const char kBraveNTPBrandedWallpaperDemoDescription[] =
     "Force dummy data for the Branded Wallpaper New Tab Page Experience. "
     "View rate and user opt-in conditionals will still be followed to decide "
     "when to display the Branded Wallpaper.";
+const char kBraveAdblockCosmeticFilteringName[] = "Enable cosmetic filtering";
+const char kBraveAdblockCosmeticFilteringDescription[] =
+    "Enable support for cosmetic filtering";
 }  // namespace flag_descriptions

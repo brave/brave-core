@@ -338,6 +338,7 @@
     "bluebird": "^3.5.1",
     "clipboard-copy": "^2.0.0",
     "jszip": "^3.2.2",
+    "parse-domain": "^2.3.4",
     "prettier-bytes": "^1.0.4",
     "qr-image": "^3.2.0",
     "redux-logger": "^3.0.6",

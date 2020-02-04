@@ -4,10 +4,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/ntp_sponsored_images/browser/features.h"
+#include "brave/components/brave_shields/common/features.h"
 #include "chrome/browser/about_flags.h"
 
 using ntp_sponsored_images::features::kBraveNTPBrandedWallpaper;
 using ntp_sponsored_images::features::kBraveNTPBrandedWallpaperDemo;
+using brave_shields::features::kBraveAdblockCosmeticFiltering;
 
 #define BRAVE_FEATURE_ENTRIES \
     {"brave-ntp-branded-wallpaper",                                        \
@@ -17,7 +19,11 @@ using ntp_sponsored_images::features::kBraveNTPBrandedWallpaperDemo;
     {"brave-ntp-branded-wallpaper-demo",                                   \
      flag_descriptions::kBraveNTPBrandedWallpaperDemoName,                 \
      flag_descriptions::kBraveNTPBrandedWallpaperDemoDescription, kOsAll,  \
-     FEATURE_VALUE_TYPE(kBraveNTPBrandedWallpaperDemo)},
+     FEATURE_VALUE_TYPE(kBraveNTPBrandedWallpaperDemo)},                   \
+    {"brave-adblock-cosmetic-filtering",                                   \
+     flag_descriptions::kBraveAdblockCosmeticFilteringName,                \
+     flag_descriptions::kBraveAdblockCosmeticFilteringDescription, kOsAll, \
+     FEATURE_VALUE_TYPE(kBraveAdblockCosmeticFiltering)},
 
 #define SetFeatureEntryEnabled SetFeatureEntryEnabled_ChromiumImpl
 #include "../../../../chrome/browser/about_flags.cc"  // NOLINT

@@ -20,6 +20,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   switch (action) {
     case 'getTargetSelector': {
       sendResponse(unique(target))
+      break
     }
   }
 })
