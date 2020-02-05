@@ -21,6 +21,7 @@
 <translation id="8926389886865778422">Älä kysy uudestaan</translation>
 <translation id="4726634924419692905">Kysy, jos sivusto tahtoo asentaa Widevinen tietokoneellesi.</translation>
 <translation id="8760415064721320867">Tor-yksityisikkuna</translation>
+<translation id="8762452230727230396">Tor piilottaa IP-osoitteesi vierailemiltasi sivustoilta.</translation>
 <translation id="8053096063396012732">Asenna Widevine</translation>
 <translation id="4840334696217618631">Käynnistä selain uudelleen salliaksesi Widevinen</translation>
 <translation id="8410111618231938546">Google Widevine on osa digitaalisen käyttöoikeuksien hallinnan (DRM) koodia, jota me Brave Softwarella emme omista tai voi tarkkailla. Google Widevine -koodi ladataan Googlen palvelimilta, ei meidän palvelimiltamme. Se ladataan vain, kun sallit tämän vaihtoehdon. Emme suosittele DRM:n käyttöä, mutta kunnioitamme käyttäjiemme valintaa ja tiedostamme, että jotkut Braven käyttäjät saattavat haluta käyttää palveluita, jotka vaativat sitä.
@@ -91,6 +92,8 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="8502234992433094996">Käytä Googlen palveluja push-viestintään</translation>
 <translation id="3888068426966679906">Virheiden etäkorjaus</translation>
 <translation id="6645631466045614531">Avaa synkronointi seuraavaa kautta:</translation>
+<translation id="6696935187608454456">Avustustipit</translation>
+<translation id="2775956301559569472">Näytä Wayback Machine -kehote 404-sivuilla</translation>
 <translation id="1807246157184219062">Kevyt</translation>
 <translation id="2414886740292270097">Pimeä</translation>
 <translation id="1360441190790440400">Sama kuin Linux</translation>
@@ -98,7 +101,9 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="8721331068159819483">Sama kuin macOS</translation>
 <translation id="6786747875388722282">Laajennukset</translation>
 <translation id="2896916411183256228">Käyttää WebTorrentia torrent-tiedostojen näyttämiseen suoraan selaimessa. Tukee torrent-tiedostoja sekä magneettilinkkejä.</translation>
-<translation id="5554028991651120544">Tarjoaa Braveen Ethereum-kukkaron ja Dapp-selaimen.</translation>
+<translation id="2356070529366658676">Kysy</translation>
+<translation id="7701040980221191251">Ei mitään</translation>
+<translation id="1085027414516521238">MetaMask</translation>
 <translation id="6554397389149987360">Käytä Hangouts-komponenttia ruudunjaon sekä muiden ominaisuuksien käytön mahdollistamiseen selaimessa.</translation>
 <translation id="1765684547504191670">Käyttää mediareititin-komponenttia ottamaan Chromecastin käyttöön selaimessa.</translation>
 <translation id="9156965752763025780">Muutokset tulevat voimaan, kun käynnistät Bravein seuraavan kerran.</translation>
@@ -159,13 +164,17 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="4394049700291259645">Poista käytöstä</translation>
 <translation id="6469509880167172749">Lähetä Bravelle automaattisesti täysin yksityisenä pysyvää tuoteanalytiikkaa</translation>
 <translation id="7090566321964540749">Tämä anonyymi tieto sallii Braven arvioida tiettyjen ominaisuuksien kokonaiskäyttöä.</translation>
-<translation id="1200956479506699688">Kryptokukkarot ovat nyt käytettävissä Bravessa. Et voi käyttää MetaMaskia ja kryptokukkaroita samaan aikaan.</translation>
 <translation id="7583735190612229830">Asenna kryptokukkaroita ollaksesi vuorovaikutuksessa tämän sovelluksen ja muiden sen kaltaisten kanssa.</translation>
 <translation id="8337117349965899723">Käytä kryptokukkaroita</translation>
 <translation id="5756155765711979898">Käytä MetaMaskia</translation>
 <translation id="6754134632841262799">ASENNUS</translation>
+<translation id="4552520379838695057">Pahoittelut, mutta kyseinen sivu puuttuu.</translation>
+<translation id="2609895996619941644">Haluatko tarkastaa, onko tallennettu versio saatavilla Wayback Machine -palvelussa?</translation>
+<translation id="8053093028263274061">Pahoittelut, mutta tallennettua versiota ei ole saatavilla.</translation>
+<translation id="8517321676372639828">Tarkista, löytyykö tallennettua versiota</translation>
 <translation id="191143826155037518">Brave on annettu käyttöösi <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0:n<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) nojalla, ja se sisältää <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>avoimen lähdekoodin ohjelmistoja<ph name="END_LINK_OSS">&lt;/a&gt;</ph> useiden muiden lisenssien nojalla.
         Voit lukea <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>ohjeita siitä, miten voit ladata ja koota itsellesi<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> juuri sen <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>lähdekoodin, jota on käytetty tämän kappaleen luomiseen<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
 <translation id="4474155171896946103">Lisää kaikki välilehdet kirjanmerkkeihin...</translation>
 <translation id="2336228925368920074">Lisää kaikki välilehdet kirjanmerkkeihin...</translation>
+<translation id="796831669370432378">Lisää kirjainmerkki napauttamalla kirjainmerkkipainiketta, joka on osoitepalkin vieressä</translation>
 </translationbundle>

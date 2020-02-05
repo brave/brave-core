@@ -902,6 +902,7 @@
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{ရွေးချယ်ထားသည့် အကြောင်းအရာ ၁ ခုကို ဖယ်ရှားရန်}other{ရွေးချယ်ထားသည့် အကြောင်းအရာ # ခုကို ဖယ်ရှားရန်}}</translation>
 <translation id="1283039547216852943">ချဲ့ရန် တို့ပါ</translation>
 <translation id="5962718611393537961">လျှော့ပြရန် တို့ပါ</translation>
+<translation id="3123734510202723619">ကြေညာချက်များ</translation>
 <translation id="8076492880354921740">တဘ်များ</translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{၁ ခု ရွေးချယ်ထားပါသည်}other{# ခု ရွေးချယ်ထားပါသည်}}</translation>
 <translation id="6818926723028410516">စာရင်းမှ ရွေးရန်</translation>

@@ -904,6 +904,7 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Fjern 1 valgt element}other{Fjern # valgte elementer}}</translation>
 <translation id="1283039547216852943">Trykk for å vise</translation>
 <translation id="5962718611393537961">Trykk for å skjule</translation>
+<translation id="3123734510202723619">Kunngjøringer</translation>
 <translation id="8076492880354921740">Faner</translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 er valgt}other{# er valgt}}</translation>
 <translation id="6818926723028410516">Velg elementer</translation>

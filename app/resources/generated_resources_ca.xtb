@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">Preferències...</translation>
 <translation id="5801568494490449797">Preferències</translation>
 <translation id="3677911431265050325">Sol·licita el lloc web per a mòbils</translation>
+<translation id="236470849334943016">Les condicions del servei de Brave canviaran el 31 de març</translation>
+<translation id="1032605640136438169">Revisa les condicions noves</translation>
+<translation id="8712637175834984815">D'acord</translation>
+<translation id="5007392906805964215">Revisa</translation>
 <translation id="4408599188496843485">A&amp;juda</translation>
 <translation id="8378714024927312812">Gestionat per la teva organització</translation>
 <translation id="7928836894214140642">Gestionat per <ph name="ENROLLMENT_DOMAIN"/></translation>
@@ -2433,7 +2437,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="7892963120252479610"><ph name="ORIGIN"/> podrà veure els fitxers que conté la carpeta <ph name="FOLDERNAME"/> mentre no tanquis aquesta pestanya</translation>
 <translation id="7201420661433230412">Visualitza els fitxers</translation>
 <translation id="3015639418649705390">Torna a iniciar ara</translation>
-<translation id="8712637175834984815">D'acord</translation>
 <translation id="2783952358106015700">Utilitza la clau de seguretat amb <ph name="APP_NAME"/></translation>
 <translation id="2446585455334014596"><ph name="APP_NAME"/> vol verificar la teva identitat</translation>
 <translation id="1567750922576943685">Verificar la teva identitat t'ajuda a protegir la informació personal</translation>

@@ -904,6 +904,7 @@
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{إزالة عنصر واحد محدد}zero{إزالة # عنصر محدد}two{إزالة عنصرين (#) محددين}few{إزالة # عناصر محددة}many{إزالة # عنصرًا محددًا}other{إزالة # عنصر محدد}}</translation>
 <translation id="1283039547216852943">النقر للتوسيع</translation>
 <translation id="5962718611393537961">النقر للتصغير</translation>
+<translation id="3123734510202723619">الإعلامات</translation>
 <translation id="8076492880354921740">علامات التبويب</translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{تم تحديد عنصر واحد}zero{تم تحديد # عنصر}two{تم تحديد عنصرين (#)}few{تم تحديد # عناصر}many{تم تحديد # عنصرًا}other{تم تحديد # عنصر}}</translation>
 <translation id="6818926723028410516">اختيار عناصر</translation>

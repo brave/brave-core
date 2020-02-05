@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">偏好設定…</translation>
 <translation id="5801568494490449797">偏好設定</translation>
 <translation id="3677911431265050325">切換至流動網站</translation>
+<translation id="236470849334943016">Brave 的《服務條款》將於 3 月 31 日變更</translation>
+<translation id="1032605640136438169">請閱讀新版條款</translation>
+<translation id="8712637175834984815">我知道了</translation>
+<translation id="5007392906805964215">查看</translation>
 <translation id="4408599188496843485">說明(&amp;E)</translation>
 <translation id="8378714024927312812">由您的機構管理</translation>
 <translation id="7928836894214140642">由 <ph name="ENROLLMENT_DOMAIN"/> 管理</translation>
@@ -2432,7 +2436,6 @@
 <translation id="7892963120252479610"><ph name="ORIGIN"/> 在您關閉此分頁前都能查看「<ph name="FOLDERNAME"/>」中的檔案</translation>
 <translation id="7201420661433230412">查看檔案</translation>
 <translation id="3015639418649705390">立即重新啟動</translation>
-<translation id="8712637175834984815">我知道了</translation>
 <translation id="2783952358106015700">透過 <ph name="APP_NAME"/> 使用安全密鑰</translation>
 <translation id="2446585455334014596"><ph name="APP_NAME"/> 要求驗證您的身分</translation>
 <translation id="1567750922576943685">驗證身分有助保護您的個人資料</translation>

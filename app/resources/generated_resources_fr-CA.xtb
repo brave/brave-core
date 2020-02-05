@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">Préférences...</translation>
 <translation id="5801568494490449797">Préférences</translation>
 <translation id="3677911431265050325">Voir la version pour appareil mobile</translation>
+<translation id="236470849334943016">Les conditions d'utilisation de Brave changeront le 31 mars</translation>
+<translation id="1032605640136438169">Veuillez consulter les nouvelles conditions</translation>
+<translation id="8712637175834984815">OK</translation>
+<translation id="5007392906805964215">Examiner</translation>
 <translation id="4408599188496843485">Aid&amp;e</translation>
 <translation id="8378714024927312812">Géré par votre organisation</translation>
 <translation id="7928836894214140642">Géré par <ph name="ENROLLMENT_DOMAIN"/></translation>
@@ -2435,7 +2439,6 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="7892963120252479610"><ph name="ORIGIN"/> sera en mesure d'afficher les fichiers dans le dossier <ph name="FOLDERNAME"/> jusqu'à ce que vous fermiez cet onglet</translation>
 <translation id="7201420661433230412">Afficher les fichiers</translation>
 <translation id="3015639418649705390">Redémarrer maintenant</translation>
-<translation id="8712637175834984815">OK</translation>
 <translation id="2783952358106015700">Utiliser la clé de sécurité avec <ph name="APP_NAME"/></translation>
 <translation id="2446585455334014596"><ph name="APP_NAME"/> souhaite vérifier votre identité</translation>
 <translation id="1567750922576943685">La vérification de votre identité vous aide à protéger vos renseignements personnels</translation>

@@ -904,6 +904,7 @@ Hvis du vil ændre denne indstilling, skal du <ph name="BEGIN_LINK"/>nulstille s
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Fjern 1 valgt element}one{Fjern # valgt element}other{Fjern # valgte elementer}}</translation>
 <translation id="1283039547216852943">Tryk for at udvide</translation>
 <translation id="5962718611393537961">Tryk for at skjule</translation>
+<translation id="3123734510202723619">Meddelelser</translation>
 <translation id="8076492880354921740">Faner</translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 er valgt}one{# er valgt}other{# er valgt}}</translation>
 <translation id="6818926723028410516">Vælg elementer</translation>

@@ -21,6 +21,7 @@
 <translation id="8926389886865778422">Neklauskite dar kartą</translation>
 <translation id="4726634924419692905">Klausti, kai svetainė nori įdiegti „Widevine“ jūsų kompiuteryje.</translation>
 <translation id="8760415064721320867">Privatusd langas su „Tor“</translation>
+<translation id="8762452230727230396">„Tor“ paslepia jūsų IP adresą nuo svetainių, kuriose lankotės.</translation>
 <translation id="8053096063396012732">Diegti „Widevine“</translation>
 <translation id="4840334696217618631">Paleiskite naršyklę iš naujo, kad „Widevine“ pradėtų veikti</translation>
 <translation id="8410111618231938546">„Google Widevine“ yra skaitmeninio teisių valdymo (DRM) kodo elementas, kuris nepriklauso „Brave Software“ ir todėl negalime jo patikrinti. „Google Widevine“ kodas įkeliamas iš „Google“ serverių, o ne iš mūsų serverių. Jis įkeliamas tik tada, kai aktyvinate šią parinktį. Mes neskatiname naudoti DRM, bet gerbiame naudotojų pasirinkimą ir pripažįstame, kad kai kurie „Brave“ naudotojai nori naudotis paslaugomis, kurioms DRM yra reikalingas.
@@ -91,6 +92,8 @@
 <translation id="8502234992433094996">Naudoti „Google“ paslaugas su „Push“ pranešimais</translation>
 <translation id="3888068426966679906">Nuotolinis derinimas</translation>
 <translation id="6645631466045614531">Eiti į Sync per</translation>
+<translation id="6696935187608454456">Žinyno patarimai</translation>
+<translation id="2775956301559569472">Rodyti „Wayback Machine“ raginimus 404 puslapiuose</translation>
 <translation id="1807246157184219062">Šviesu</translation>
 <translation id="2414886740292270097">Tamsu</translation>
 <translation id="1360441190790440400">Atitinka „Linux“</translation>
@@ -98,7 +101,9 @@
 <translation id="8721331068159819483">Atitinka „MacOS“</translation>
 <translation id="6786747875388722282">Plėtiniai</translation>
 <translation id="2896916411183256228">Naudoja WebTorrent rodyti srautus tiesiogiai naršyklėje. Palaiko srauto failus ir magneto saitus.</translation>
-<translation id="5554028991651120544">Suteikiama „Brave“ įterpta eterio piniginė ir „Dapp“ naršyklė.</translation>
+<translation id="2356070529366658676">Paklausti</translation>
+<translation id="7701040980221191251">Nieko</translation>
+<translation id="1085027414516521238">„MetaMask“</translation>
 <translation id="6554397389149987360">Naudodamas Hangouts komponentą įjunk ekrano bendrinimą ir kitas naršyklės funkcijas.</translation>
 <translation id="1765684547504191670">Naudojamas medijos maršruto parinktuvo komponentas, kad naršyklėje būtų įgalintas „Chromecast“</translation>
 <translation id="9156965752763025780">Pakeitimai įsigalios kitą kartą iš naujo paleidus „Brave“.</translation>
@@ -159,13 +164,17 @@
 <translation id="4394049700291259645">Neleisti</translation>
 <translation id="6469509880167172749">Automatiškai siųskite visiškai privačią produktų analizę „Brave“</translation>
 <translation id="7090566321964540749">Ši anoniminė informacija leidžia „Brave“ įvertinti tik bendrą tam tikrų funkcijų naudojimą.</translation>
-<translation id="1200956479506699688">„Brave“ dabar pasiekiamos kriptovaliutų piniginės. Negalite vienu metu naudoti „MetaMask“ ir kriptovaliutų piniginių.</translation>
 <translation id="7583735190612229830">Nustatykite, kad kriptovaliutų piniginės sąveikautų su šia programa ir kitomis panašiomis programomis.</translation>
 <translation id="8337117349965899723">Naudoti kriptovaliutų pinigines</translation>
 <translation id="5756155765711979898">Naudoti „MetaMask“</translation>
 <translation id="6754134632841262799">SĄRANKA</translation>
+<translation id="4552520379838695057">Deja, šio puslapio nėra.</translation>
+<translation id="2609895996619941644">Gal norite patikrinti, ar per „Wayback Machine“ pasiekiama įrašyta versija?</translation>
+<translation id="8053093028263274061">Deja, nėra įrašytos versijos.</translation>
+<translation id="8517321676372639828">Tikrinti, ar yra įrašyta versija</translation>
 <translation id="191143826155037518">„Brave“ jums pasiekiama pagal <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>„Mozilla“ viešąją licenciją 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) ir apima <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>atvirojo kodo programinę įrangą<ph name="END_LINK_OSS">&lt;/a&gt;</ph> pagal įvairias kitas licencijas.
         Galite perskaityti <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>instrukcijas, kaip atsisiųsti ir sau susikurti<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> specialų <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>šaltinio kodą, naudojamą šiai kopijai sukurti<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
 <translation id="4474155171896946103">Pažymėti visus skirtukus...</translation>
 <translation id="2336228925368920074">Žymėti visus skirtukus...</translation>
+<translation id="796831669370432378">Jei norite pridėti žymę, spustelėkite žymių mygtuką greta adreso juostos</translation>
 </translationbundle>

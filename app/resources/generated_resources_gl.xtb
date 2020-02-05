@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">Preferencias...</translation>
 <translation id="5801568494490449797">Preferencias</translation>
 <translation id="3677911431265050325">Solicitar sitio para móbiles</translation>
+<translation id="236470849334943016">As Condicións de servizo de Brave cambiarán o 31 de marzo</translation>
+<translation id="1032605640136438169">Revísaas</translation>
+<translation id="8712637175834984815">De acordo</translation>
+<translation id="5007392906805964215">Revisar</translation>
 <translation id="4408599188496843485">A&amp;xuda</translation>
 <translation id="8378714024927312812">Xestionado pola túa organización</translation>
 <translation id="7928836894214140642">Xestionado por <ph name="ENROLLMENT_DOMAIN"/></translation>
@@ -2434,7 +2438,6 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="7892963120252479610"><ph name="ORIGIN"/> poderá ver os ficheiros de <ph name="FOLDERNAME"/> ata que peches esta pestana</translation>
 <translation id="7201420661433230412">Ver ficheiros</translation>
 <translation id="3015639418649705390">Reiniciar agora</translation>
-<translation id="8712637175834984815">De acordo</translation>
 <translation id="2783952358106015700">Utiliza a chave de seguranza coa aplicación <ph name="APP_NAME"/></translation>
 <translation id="2446585455334014596"><ph name="APP_NAME"/> quere verificar a túa identidade</translation>
 <translation id="1567750922576943685">Verificar a túa identidade axuda a protexer a túa información persoal</translation>
