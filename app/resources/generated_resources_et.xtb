@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">Eelistused...</translation>
 <translation id="5801568494490449797">Eelistused</translation>
 <translation id="3677911431265050325">Taotle mobiilisaiti</translation>
+<translation id="236470849334943016">Brave'i teenusetingimused muutuvad 31. märtsil</translation>
+<translation id="1032605640136438169">Vaadake uued tingimused üle</translation>
+<translation id="8712637175834984815">Selge</translation>
+<translation id="5007392906805964215">Vaata üle</translation>
 <translation id="4408599188496843485">A&amp;bi</translation>
 <translation id="8378714024927312812">Haldab teie organisatsioon</translation>
 <translation id="7928836894214140642">Haldab <ph name="ENROLLMENT_DOMAIN"/></translation>
@@ -2435,7 +2439,6 @@ kasutades juhtpaneeli funktsiooni <ph name="CONTROL_PANEL_APPLET_NAME"/>.
 <translation id="7892963120252479610"><ph name="ORIGIN"/> saab vaadata kaustas <ph name="FOLDERNAME"/> olevaid faile, kuni vahelehe sulgete</translation>
 <translation id="7201420661433230412">Kuva failid</translation>
 <translation id="3015639418649705390">Taaskäivita kohe</translation>
-<translation id="8712637175834984815">Selge</translation>
 <translation id="2783952358106015700">Turvavõtme kasutamine rakendusega <ph name="APP_NAME"/></translation>
 <translation id="2446585455334014596"><ph name="APP_NAME"/> soovib teie identiteedi kinnitada</translation>
 <translation id="1567750922576943685">Teie identiteedi kinnitamine aitab teie isiklikke andmeid kaitsta</translation>

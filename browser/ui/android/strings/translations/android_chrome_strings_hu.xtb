@@ -904,6 +904,7 @@ A beállítás módosításához <ph name="BEGIN_LINK"/>állítsa vissza a szink
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{1 kijelölt elem eltávolítása}other{# kijelölt elem eltávolítása}}</translation>
 <translation id="1283039547216852943">Koppintson a kibontáshoz</translation>
 <translation id="5962718611393537961">Koppintson az összecsukáshoz</translation>
+<translation id="3123734510202723619">Hirdetmények</translation>
 <translation id="8076492880354921740">Lapok</translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 elem kijelölve}other{# elem kijelölve}}</translation>
 <translation id="6818926723028410516">Válasszon elemeket</translation>

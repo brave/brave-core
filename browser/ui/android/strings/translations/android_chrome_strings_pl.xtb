@@ -904,6 +904,7 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Usuń 1 wybrany element}few{Usuń # wybrane elementy}many{Usuń # wybranych elementów}other{Usuń # wybranego elementu}}</translation>
 <translation id="1283039547216852943">Kliknij, by rozwinąć</translation>
 <translation id="5962718611393537961">Kliknij, by zwinąć</translation>
+<translation id="3123734510202723619">Komunikaty</translation>
 <translation id="8076492880354921740">Karty</translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{Wybrano 1}few{Wybrano #}many{Wybrano #}other{Wybrano #}}</translation>
 <translation id="6818926723028410516">Wybierz elementy</translation>

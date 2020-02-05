@@ -79,6 +79,7 @@
     <file path="strings/brave_components_resources_fi.xtb" lang="fi" />
     <file path="strings/brave_components_resources_fil.xtb" lang="fil" />
     <file path="strings/brave_components_resources_fr.xtb" lang="fr" />
+    <file path="strings/brave_components_resources_fr-CA.xtb" lang="fr-CA" />
     <file path="strings/brave_components_resources_gu.xtb" lang="gu" />
     <file path="strings/brave_components_resources_hi.xtb" lang="hi" />
     <file path="strings/brave_components_resources_hr.xtb" lang="hr" />
@@ -638,7 +639,9 @@
       <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_NOTE2" desc="">Brave Software Inc. does not process, store, or access any of the personal information that you provide to Uphold when you establish an account with them.</message>
 
       <!-- Rewards New Tab Widget resources -->
-      <message name="IDS_REWARDS_WIDGET_ABOUT_REWARDS" desc=""><ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph> about Brave Rewards</message>
+      <message name="IDS_REWARDS_WIDGET_ABOUT_REWARDS" desc="">
+        <ph name="LINK_BEGIN">$1</ph>Learn more<ph name="LINK_END">$2</ph> about Brave Rewards
+      </message>
       <message name="IDS_REWARDS_WIDGET_SERVICE_TEXT"
         desc="Small-print for enabling Brave Rewards on the New Tab Page"
       >

@@ -21,6 +21,7 @@
 <translation id="8926389886865778422">Don't ask again</translation>
 <translation id="4726634924419692905">Ask when a site wants to install Widevine on your computer.</translation>
 <translation id="8760415064721320867">Private Window with Tor</translation>
+<translation id="8762452230727230396">Tor hides your IP address from the sites you visit.</translation>
 <translation id="8053096063396012732">Install Widevine</translation>
 <translation id="4840334696217618631">Restart browser to enable Widevine</translation>
 <translation id="8410111618231938546">Google Widevine is a piece of Digital Rights Management (DRM) code that we at Brave Software do not own and cannot inspect. The Google Widevine code is loaded from Google servers, not from our servers. It is loaded only when you enable this option. We discourage the use of DRM, but we respect user choice and acknowledge that some Brave users would like to use services that require it.
@@ -91,6 +92,8 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="8502234992433094996">Use Google Services for Push Messaging</translation>
 <translation id="3888068426966679906">Remote debugging</translation>
 <translation id="6645631466045614531">Access Sync via</translation>
+<translation id="6696935187608454456">Help Tips</translation>
+<translation id="2775956301559569472">Show Wayback Machine prompt on 404 pages</translation>
 <translation id="1807246157184219062">Light</translation>
 <translation id="2414886740292270097">Dark</translation>
 <translation id="1360441190790440400">Same as Linux</translation>
@@ -98,7 +101,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="8721331068159819483">Same as macOS</translation>
 <translation id="6786747875388722282">Extensions</translation>
 <translation id="2896916411183256228">Uses WebTorrent to display torrents directly in the browser. Supports torrent files and magnet links.</translation>
-<translation id="5554028991651120544">Provides an Ethereum wallet and Dapp browser inside Brave.</translation>
+<translation id="2356070529366658676">Ask</translation>
+<translation id="7701040980221191251">None</translation>
+<translation id="1085027414516521238">MetaMask</translation>
 <translation id="6554397389149987360">Uses Hangouts component to enable screen sharing and other features in the browser.</translation>
 <translation id="1765684547504191670">Uses Media Router component to enable Chromecast in the browser.</translation>
 <translation id="9156965752763025780">Your changes will take effect the next time you relaunch Brave.</translation>
@@ -159,13 +164,17 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="4394049700291259645">Disable</translation>
 <translation id="6469509880167172749">Automatically send completely private product analytics to Brave</translation>
 <translation id="7090566321964540749">This anonymous info only lets Brave estimate the overall usage of certain features.</translation>
-<translation id="1200956479506699688">Crypto Wallets is now available in Brave. You can't use MetaMask and Crypto Wallets at the same time.</translation>
 <translation id="7583735190612229830">Set up Crypto Wallets to interact with this app and others like it.</translation>
 <translation id="8337117349965899723">Use Crypto Wallets</translation>
 <translation id="5756155765711979898">Use MetaMask</translation>
 <translation id="6754134632841262799">SETUP</translation>
+<translation id="4552520379838695057">Sorry, that page is missing.</translation>
+<translation id="2609895996619941644">Do you want to check if a saved version is available on the Wayback Machine?</translation>
+<translation id="8053093028263274061">Sorry, there is no saved version available.</translation>
+<translation id="8517321676372639828">Check for saved version</translation>
 <translation id="191143826155037518">Brave is made available to you under the <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) and includes <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>open source software<ph name="END_LINK_OSS">&lt;/a&gt;</ph> under a variety of other licenses.
         You can read <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>instructions on how to download and build for yourself<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> the specific <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>source code used to create this copy<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
 <translation id="4474155171896946103">Bookmark all tabs...</translation>
 <translation id="2336228925368920074">Bookmark All Tabs...</translation>
+<translation id="796831669370432378">To add a bookmark, click the bookmark button next to the address bar</translation>
 </translationbundle>

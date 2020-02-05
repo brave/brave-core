@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">Tercihler...</translation>
 <translation id="5801568494490449797">Tercihler</translation>
 <translation id="3677911431265050325">Mobil site iste</translation>
+<translation id="236470849334943016">Brave'un Hizmet Şartları 31 Mart'ta değişiyor</translation>
+<translation id="1032605640136438169">Lütfen yeni şartları inceleyin</translation>
+<translation id="8712637175834984815">Anlaşıldı</translation>
+<translation id="5007392906805964215">İncele</translation>
 <translation id="4408599188496843485">Yar&amp;dım</translation>
 <translation id="8378714024927312812">Kuruluşunuz tarafından yönetiliyor</translation>
 <translation id="7928836894214140642"><ph name="ENROLLMENT_DOMAIN"/> tarafından yönetiliyor</translation>
@@ -2436,7 +2440,6 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="7892963120252479610"><ph name="ORIGIN"/> sitesi siz bu sekmeyi kapatana kadar <ph name="FOLDERNAME"/> klasöründeki dosyaları görüntüleyebilecek</translation>
 <translation id="7201420661433230412">Dosyaları görüntüle</translation>
 <translation id="3015639418649705390">Şimdi yeniden başlat</translation>
-<translation id="8712637175834984815">Anlaşıldı</translation>
 <translation id="2783952358106015700">Güvenlik anahtarınızı <ph name="APP_NAME"/> ile kullanın</translation>
 <translation id="2446585455334014596"><ph name="APP_NAME"/> kimliğinizi doğrulamak istiyor</translation>
 <translation id="1567750922576943685">Kimliğinizin doğrulanması kişisel bilgilerinizin korunmasına yardımcı olur</translation>

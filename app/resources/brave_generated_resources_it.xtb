@@ -21,6 +21,7 @@
 <translation id="8926389886865778422">Non visualizzare più questo avviso</translation>
 <translation id="4726634924419692905">Chiedi quando un sito vuole installare Widevine sul tuo computer.</translation>
 <translation id="8760415064721320867">Finestra privata con Tor</translation>
+<translation id="8762452230727230396">Tor nasconde il tuo indirizzo IP ai siti che visiti.</translation>
 <translation id="8053096063396012732">Installa Widevine</translation>
 <translation id="4840334696217618631">Riavvia il browser per abilitare Widevine</translation>
 <translation id="8410111618231938546">Google Widevine è un codice DRM (Digital Rights Management) che noi di Brave Software non possediamo e non possiamo ispezionare. Il codice di Google Widevine è caricato dai server di Google, non dai nostri server. Viene caricato solo quando si attiva questa opzione. Scoraggiamo l'uso del DRM, ma rispettiamo la scelta dell'utente e riconosciamo che alcuni utenti di Brave vorrebbero utilizzare i servizi per cui è obbligatorio.
@@ -91,6 +92,8 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="8502234992433094996">Utilizza i servizi Google per i messaggi push</translation>
 <translation id="3888068426966679906">Debug remoto</translation>
 <translation id="6645631466045614531">Accedi a Sincronizzazione tramite</translation>
+<translation id="6696935187608454456">Mance di aiuto</translation>
+<translation id="2775956301559569472">Mostra il messaggio della Wayback Machine sulle pagine 404</translation>
 <translation id="1807246157184219062">Chiaro</translation>
 <translation id="2414886740292270097">Scuro</translation>
 <translation id="1360441190790440400">Come per Linux</translation>
@@ -98,7 +101,9 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="8721331068159819483">Uguale a macOS</translation>
 <translation id="6786747875388722282">Estensioni</translation>
 <translation id="2896916411183256228">Utilizza WebTorrent per visualizzare i torrent direttamente nel browser. Supporta i file torrent e i magnet link.</translation>
-<translation id="5554028991651120544">Brave offre un portafoglio Ethereum and un browser Dapp integrato.</translation>
+<translation id="2356070529366658676">Chiedi</translation>
+<translation id="7701040980221191251">Nessuno</translation>
+<translation id="1085027414516521238">MetaMask</translation>
 <translation id="6554397389149987360">Utilizza il componente Hangouts per abilitare la condivisione dello schermo e altre funzioni nel browser.</translation>
 <translation id="1765684547504191670">Utilizza il componente Media Router per abilitare Chromecast nel browser.</translation>
 <translation id="9156965752763025780">Le modifiche verranno applicate al prossimo riavvio di Brave.</translation>
@@ -159,13 +164,17 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="4394049700291259645">Disabilita</translation>
 <translation id="6469509880167172749">Invia automaticamente analisi di prodotto completamente private a Brave</translation>
 <translation id="7090566321964540749">Queste informazioni anonime consentono a Brave di stimare solo l'utilizzo complessivo di alcune funzioni.</translation>
-<translation id="1200956479506699688">Adesso i portafogli di criptovaluta sono disponibili su Brave. Non puoi usare MetaMask e i portafogli di criptovaluta in contemporanea.</translation>
 <translation id="7583735190612229830">Configura i portafogli di criptovaluta per interagire con questa app e con altre app simili.</translation>
 <translation id="8337117349965899723">Usa i portafogli di criptovalute</translation>
 <translation id="5756155765711979898">Usa MetaMask</translation>
 <translation id="6754134632841262799">CONFIGURAZIONE</translation>
+<translation id="4552520379838695057">Spiacenti, questa pagina risulta mancante.</translation>
+<translation id="2609895996619941644">Vuoi controllare se è disponibile una versione salvata sulla Wayback Machine?</translation>
+<translation id="8053093028263274061">Spiacenti, non è disponibile alcuna versione salvata.</translation>
+<translation id="8517321676372639828">Controlla la presenza di versioni salvate</translation>
 <translation id="191143826155037518">Brave ti viene fornito con la <ph name="BEGIN_LINK_MPL">&amp;lt;a target="_blank" href="$1"&amp;gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&amp;lt;/a&amp;gt;</ph> (MPL) e include <ph name="BEGIN_LINK_OSS">&amp;lt;a target="_blank" href="$2"&amp;gt;</ph>software open source<ph name="END_LINK_OSS">&amp;lt;/a&amp;gt;</ph> protetto da altre licenze.
         Puoi consultare <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&amp;lt;a target="_blank" href="$3"&amp;gt;</ph>le istruzioni per scaricare e compilare direttamente<ph name="END_LINK_BUILD_INSTRUCTIONS">&amp;lt;/a&amp;gt;</ph><ph name="BEGIN_LINK_SOURCE_CODE">&amp;lt;a target="_blank" href="$4"&amp;gt;</ph>il codice sorgente specifico usato per creare questa copia<ph name="END_LINK_SOURCE_CODE">&amp;lt;/a&amp;gt;</ph></translation>
 <translation id="4474155171896946103">Aggiungi tutte le schede ai Preferiti...</translation>
 <translation id="2336228925368920074">Aggiungi tutte le schede ai Preferiti...</translation>
+<translation id="796831669370432378">Per aggiungere un segnalibro, clicca sul pulsante dei segnalibri accanto alla barra degli indirizzi</translation>
 </translationbundle>

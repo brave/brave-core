@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">Preferences...</translation>
 <translation id="5801568494490449797">Mga Kagustuhan</translation>
 <translation id="3677911431265050325">Hilingin ang pang-mobile na site</translation>
+<translation id="236470849334943016">Magbabago na ang Mga Tuntunin ng Serbisyo ng Brave sa Marso 31</translation>
+<translation id="1032605640136438169">Pakisuri ang mga bagong tuntunin</translation>
+<translation id="8712637175834984815">Nakuha ko</translation>
+<translation id="5007392906805964215">Suriin</translation>
 <translation id="4408599188496843485">T&amp;ulong</translation>
 <translation id="8378714024927312812">Pinapamahalaan ng iyong organisasyon</translation>
 <translation id="7928836894214140642">Pinapamahalaan ng <ph name="ENROLLMENT_DOMAIN"/></translation>
@@ -2435,7 +2439,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="7892963120252479610">Matitingnan ng <ph name="ORIGIN"/> ang mga file sa <ph name="FOLDERNAME"/> hanggang sa isara mo ang tab na ito</translation>
 <translation id="7201420661433230412">Tingnan ang mga file</translation>
 <translation id="3015639418649705390">Ilunsad muli ngayon</translation>
-<translation id="8712637175834984815">Nakuha ko</translation>
 <translation id="2783952358106015700">Gamitin ang iyong security key sa <ph name="APP_NAME"/></translation>
 <translation id="2446585455334014596">Gustong i-verify ng <ph name="APP_NAME"/> ang iyong pagkakakilanlan</translation>
 <translation id="1567750922576943685">Nakakatulong ang pag-verify sa iyong pagkakakilanlang maprotektahan ang personal na impormasyon mo</translation>
