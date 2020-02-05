@@ -12,7 +12,7 @@
         android:fragment="org.chromium.chrome.browser.preferences.developer.TracingPreferences"
         android:key="tracing"
         android:title="Tracing" />
-    <org.chromium.chrome.browser.preferences.TextMessagePreference
+    <org.chromium.chrome.browser.settings.TextMessagePreference
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:enabled="false"
@@ -21,7 +21,7 @@
         app:allowDividerAbove="false"
         app:allowDividerBelow="false" />
     <Preference
-	android:fragment="org.chromium.chrome.browser.preferences.developer.BraveQAPreferences"
+        android:fragment="org.chromium.chrome.browser.settings.developer.BraveQAPreferences"
         android:key="qa_preferences"
         android:title="QA Preferences"/>
 </PreferenceScreen>
