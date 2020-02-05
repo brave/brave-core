@@ -6,6 +6,7 @@
 #include "bat/ads/internal/client_state.h"
 
 #include "bat/ads/ad_history.h"
+#include "bat/ads/purchase_intent_signal_history.h"
 #include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/time.h"
 
@@ -67,6 +68,26 @@ Result ClientState::FromJson(
       }
     }
   }
+
+  if (client.HasMember("purchaseIntentSignalHistory")) {
+    for (const auto& segment_history :
+        client["purchaseIntentSignalHistory"].GetObject()) {
+      std::string segment = segment_history.name.GetString();
+      std::deque<PurchaseIntentSignalHistory> histories;
+      for (const auto& segment_history_item :
+          segment_history.value.GetArray()) {
+        PurchaseIntentSignalHistory history;
+        rapidjson::StringBuffer buffer;
+        rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+        if (segment_history_item.Accept(writer) &&
+            history.FromJson(buffer.GetString()) == SUCCESS) {
+          histories.push_back(history);
+        }
+      }
+      purchase_intent_signal_history.insert({segment, histories});
+    }
+  }
+
 
   if (client.HasMember("adUUID")) {
     ad_uuid = client["adUUID"].GetString();
@@ -228,6 +249,19 @@ void SaveToJson(JsonWriter* writer, const ClientState& state) {
     SaveToJson(writer, ad_shown);
   }
   writer->EndArray();
+
+  writer->String("purchaseIntentSignalHistory");
+  writer->StartObject();
+  for (const auto& segment_history : state.purchase_intent_signal_history) {
+    writer->String(segment_history.first.c_str());
+
+    writer->StartArray();
+    for (const auto& segment_history_item : segment_history.second) {
+      SaveToJson(writer, segment_history_item);
+    }
+    writer->EndArray();
+  }
+  writer->EndObject();
 
   writer->String("adUUID");
   writer->String(state.ad_uuid.c_str());

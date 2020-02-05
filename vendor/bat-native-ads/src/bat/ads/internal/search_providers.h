@@ -32,7 +32,7 @@ const std::vector<SearchProviderInfo> _search_providers = {
   SearchProviderInfo(
       "Fireball",
       "https://fireball.com",
-      "https://fireball.com/?q={searchTerms}",
+      "https://fireball.com/search?q={searchTerms}",
       true),
   SearchProviderInfo(
       "GitHub",
@@ -41,6 +41,8 @@ const std::vector<SearchProviderInfo> _search_providers = {
       false),
   SearchProviderInfo(
       "Google",
+      // TODO(https://github.com/brave/brave-browser/issues/8487): Brave Ads
+      // search providers definition doesn't match all patterns
       "https://google.com",
       "https://www.google.com/search?q={searchTerms}",
       true),
@@ -66,6 +68,8 @@ const std::vector<SearchProviderInfo> _search_providers = {
       false),
   SearchProviderInfo(
       "Yahoo",
+      // TODO(https://github.com/brave/brave-browser/issues/8487): Brave Ads
+      // search providers definition doesn't match all patterns
       "https://search.yahoo.com",
       "https://search.yahoo.com/search?p={searchTerms}&fr=opensearch",
       true),
@@ -76,6 +80,8 @@ const std::vector<SearchProviderInfo> _search_providers = {
       false),
   SearchProviderInfo(
       "StartPage",
+      // TODO(https://github.com/brave/brave-browser/issues/8487): Brave Ads
+      // search providers definition doesn't match all patterns
       "https://startpage.com",
       "https://www.startpage.com/do/dsearch?query={searchTerms}&cat=web&pl=opensearch",  // NOLINT
       true),
@@ -127,6 +133,8 @@ class SearchProviders {
   ~SearchProviders();
 
   static bool IsSearchEngine(
+      const std::string& url);
+  static std::string ExtractSearchQueryKeywords(
       const std::string& url);
 };
 

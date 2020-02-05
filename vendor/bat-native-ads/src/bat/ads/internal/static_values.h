@@ -29,6 +29,8 @@ const int kWinningCategoryCountForServingAds = 3;
 // confirmation types
 const uint64_t kMaximumEntriesInAdsShownHistory = 7 * (20 * 4);
 
+const uint64_t kMaximumEntriesPerSegmentInPurchaseIntentSignalHistory = 100;
+
 const uint64_t kDebugOneHourInSeconds = 25;
 
 const char kEasterEggUrl[] = "https://iab.com";
@@ -49,6 +51,12 @@ const int kExpiredAdConversionFrequency = 5 * base::Time::kSecondsPerMinute;
 const char kDefaultLanguage[] = "en";
 const char kDefaultRegion[] = "US";
 const char kDefaultUserModelLanguage[] = "en";
+
+const uint16_t kPurchaseIntentSignalLevel = 1;
+const uint16_t kPurchaseIntentClassificationThreshold = 10;
+const uint64_t kPurchaseIntentSignalDecayTimeWindow =
+    base::Time::kSecondsPerHour * base::Time::kHoursPerDay * 7;
+const uint16_t kPurchaseIntentMaxSegments = 3;
 
 const int kDoNotDisturbFromHour = 21;  // 9pm
 const int kDoNotDisturbToHour = 6;     // 6am
