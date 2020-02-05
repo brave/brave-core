@@ -1,8 +1,8 @@
 diff --git a/chrome/common/importer/BUILD.gn b/chrome/common/importer/BUILD.gn
-index 9dffb6e3625f4d4b75afc406209636b8f4d25099..8741eb4f41e8e1756ada4b2ceecf03621b698c4d 100644
+index 6be16e699b7e45698cf6fe74334acad901a69aa4..84eb9325c3db6ede78028151481c2031c8f319d4 100644
 --- a/chrome/common/importer/BUILD.gn
 +++ b/chrome/common/importer/BUILD.gn
-@@ -12,6 +12,7 @@ mojom("interfaces") {
+@@ -10,6 +10,7 @@ mojom("interfaces") {
    public_deps = [
      "//components/autofill/core/common/mojom:mojo_types",
      "//mojo/public/mojom/base",

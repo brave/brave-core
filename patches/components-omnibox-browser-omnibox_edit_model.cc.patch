@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/omnibox_edit_model.cc b/components/omnibox/browser/omnibox_edit_model.cc
-index 3cfedd66eff30f1966c10fdb6a8b62961a61a8bb..ba76ebe4d5aa54f65db3b157884e5a4c6d9e7c78 100644
+index 377e6f4dcc4cc68798a98384f29b7b95ba48786a..c75b7d59a9f93000220d8d588b3ae835c3162678 100644
 --- a/components/omnibox/browser/omnibox_edit_model.cc
 +++ b/components/omnibox/browser/omnibox_edit_model.cc
 @@ -384,6 +384,7 @@ void OmniboxEditModel::AdjustTextForCopy(int sel_min,

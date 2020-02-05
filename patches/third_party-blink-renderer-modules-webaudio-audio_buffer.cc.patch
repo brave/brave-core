@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/audio_buffer.cc b/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
-index f173f1bbf32d5ba09d16b5c3f5e7755a2023f240..4008590bba643ff5c03ea3a50c655bfe3b3910b0 100644
+index a35049157303d807bb75de683db0aff4f4a0c18d..894a95b7467dbf16c431a791dc56d3d22c415581 100644
 --- a/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
 +++ b/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
 @@ -191,6 +191,7 @@ AudioBuffer::AudioBuffer(AudioBus* bus)
@@ -35,10 +35,10 @@ index f173f1bbf32d5ba09d16b5c3f5e7755a2023f240..4008590bba643ff5c03ea3a50c655bfe
 +void AudioBuffer::copyFromChannel(ScriptState* script_state,
 +                                  NotShared<DOMFloat32Array> destination,
                                    int32_t channel_number,
-                                   uint32_t buffer_offset,
+                                   size_t buffer_offset,
                                    ExceptionState& exception_state) {
-@@ -256,6 +260,7 @@ void AudioBuffer::copyFromChannel(NotShared<DOMFloat32Array> destination,
-   DCHECK_LE(buffer_offset + count, channel_data->deprecatedLengthAsUnsigned());
+@@ -257,6 +261,7 @@ void AudioBuffer::copyFromChannel(NotShared<DOMFloat32Array> destination,
+   DCHECK_LE(buffer_offset + count, data_length);
  
    memcpy(dst, src + buffer_offset, count * sizeof(*src));
 +  BRAVE_AUDIOBUFFER_COPYFROMCHANNEL

@@ -1,8 +1,8 @@
 diff --git a/net/cookies/canonical_cookie.cc b/net/cookies/canonical_cookie.cc
-index b9743cc9a894cc382f8a1da3d8c9588142b487b7..5a0689cbba31c1f81b9394f125344477cbda43c6 100644
+index f7d20322d8ebc0dd804ea1e1388e625fafccba27..453e781df9d94bc3fac407796f72939301da6efe 100644
 --- a/net/cookies/canonical_cookie.cc
 +++ b/net/cookies/canonical_cookie.cc
-@@ -240,6 +240,7 @@ Time CanonicalCookie::CanonExpiration(const ParsedCookie& pc,
+@@ -248,6 +248,7 @@ Time CanonicalCookie::CanonExpiration(const ParsedCookie& pc,
  
  // static
  std::unique_ptr<CanonicalCookie> CanonicalCookie::Create(
@@ -10,7 +10,7 @@ index b9743cc9a894cc382f8a1da3d8c9588142b487b7..5a0689cbba31c1f81b9394f125344477
      const GURL& url,
      const std::string& cookie_line,
      const base::Time& creation_time,
-@@ -280,8 +281,7 @@ std::unique_ptr<CanonicalCookie> CanonicalCookie::Create(
+@@ -288,8 +289,7 @@ std::unique_ptr<CanonicalCookie> CanonicalCookie::Create(
      cookie_server_time = server_time.value();
  
    DCHECK(!creation_time.is_null());

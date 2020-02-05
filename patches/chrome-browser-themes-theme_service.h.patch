@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/themes/theme_service.h b/chrome/browser/themes/theme_service.h
-index e559e8d17056e4ff1fb5bdb78993775e85fd99f0..82de5cee2f169de7db7791d87a721b5fcf68e074 100644
+index 6d9ac4bff45cbbfd45d2ae7a7e5dcee6cfd95c7b..0b0e25ef254766e0793da5d60b020c37cd5119aa 100644
 --- a/chrome/browser/themes/theme_service.h
 +++ b/chrome/browser/themes/theme_service.h
-@@ -214,6 +214,7 @@ class ThemeService : public content::NotificationObserver,
+@@ -183,6 +183,7 @@ class ThemeService : public content::NotificationObserver,
    // ThemeSource no longer uses the ThemeService when it is not ready.
-   bool ready_;
+   bool ready_ = false;
  
 +  THEMES_THEME_SERVICE_H_
   private:
-   // This class implements ui::ThemeProvider on behalf of ThemeService and keeps
-   // track of the incognito state of the calling code.
+   // This class implements ui::ThemeProvider on behalf of ThemeHelper and
+   // keeps track of the incognito state and CustemThemeSupplier for the calling

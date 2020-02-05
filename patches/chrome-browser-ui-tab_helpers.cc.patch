@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tab_helpers.cc b/chrome/browser/ui/tab_helpers.cc
-index 0d9d59805199ff315372ebaee0f62f852c0d6e42..9119e9d7953ca9f86dbb8a29132a8f49d0529fcc 100644
+index 420dc8b031573d59d40296cf20dae7e47cf5e4de..c9d87d8a149d0b85af16dad204a8107e40dae99a 100644
 --- a/chrome/browser/ui/tab_helpers.cc
 +++ b/chrome/browser/ui/tab_helpers.cc
-@@ -395,4 +395,5 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
+@@ -421,4 +421,5 @@ void TabHelpers::AttachTabHelpers(WebContents* web_contents) {
    //     See https://crbug.com/910288.
    resource_coordinator::ResourceCoordinatorTabHelper::CreateForWebContents(
        web_contents);

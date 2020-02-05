@@ -1,9 +1,9 @@
 diff --git a/extensions/browser/BUILD.gn b/extensions/browser/BUILD.gn
-index 5632f7142b40bb903109dbdf0480683ecb5ffbde..47a74c249781b0597b22f3381db842db067c3685 100644
+index f1f2857db07c4b96d2df1ede94e8d87a0cd422c4..5730daa7e4048e24195d6fb222b5226b998a3dad 100644
 --- a/extensions/browser/BUILD.gn
 +++ b/extensions/browser/BUILD.gn
 @@ -402,6 +402,7 @@ jumbo_source_set("browser_sources") {
-     "//third_party/blink/public/common",
+     "//third_party/blink/public/mojom/frame",
      "//ui/display",
    ]
 +  if (brave_chromium_build) { deps += [ "//brave/extensions/browser"] }

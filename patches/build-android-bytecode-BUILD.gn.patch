@@ -1,5 +1,5 @@
 diff --git a/build/android/bytecode/BUILD.gn b/build/android/bytecode/BUILD.gn
-index 88517537f42e5bcea3aa7763dca9ce95b3e4d552..136410363466f1d717f1faa22bf308180e1f326e 100644
+index 742a46b2ee7a1edb0f3e0be7db25e1486f3dde9a..9a83750ccffc0acc75e6d1d72be98c0b929a71af 100644
 --- a/build/android/bytecode/BUILD.gn
 +++ b/build/android/bytecode/BUILD.gn
 @@ -16,6 +16,7 @@ java_binary("java_bytecode_rewriter") {

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/tools/rollup_plugin.js b/chrome/browser/resources/tools/rollup_plugin.js
-index e1942718e76890c5051923fc647f488c1801ca95..bbdd1216aeccf37e310d43ea03793267a931cc7a 100644
+index f462ab10cb0483f3576dd55c60465d655296f10d..d1936fabc946b0ee47f438535f5e51e8cc4f1c55 100644
 --- a/chrome/browser/resources/tools/rollup_plugin.js
 +++ b/chrome/browser/resources/tools/rollup_plugin.js
 @@ -71,6 +71,8 @@ export default function plugin(srcPath, genPath, rootPath, host, excludes) {

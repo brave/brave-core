@@ -1,17 +1,17 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index be8466ad87791880f1f3c4ea61db11c466eb3356..0bac4ff9d6f7244d388c58ae1b4a47a5c33771bb 100644
+index 73c0640175a256cf35b30760339349a07b5cb567..7fd99daa8dd73f8ddce26e8e413afa7db3180660 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-@@ -172,7 +172,7 @@ import java.util.Locale;
+@@ -169,7 +169,7 @@ import java.util.Locale;
   * This is the main activity for ChromeMobile when not running in document mode.  All the tabs
   * are accessible via a chrome specific tab switching UI.
   */
--public class ChromeTabbedActivity extends ChromeActivity implements ScreenshotMonitorDelegate {
-+public class ChromeTabbedActivity extends BraveActivity implements ScreenshotMonitorDelegate {
-     /**
-      * The results of a system back press action.
-      */
-@@ -1651,7 +1651,7 @@ public class ChromeTabbedActivity extends ChromeActivity implements ScreenshotMo
+-public class ChromeTabbedActivity extends ChromeActivity {
++public class ChromeTabbedActivity extends BraveActivity {
+     private static final String TAG = "ChromeTabbedActivity";
+ 
+     private static final String HELP_URL_PREFIX = "https://support.google.com/chrome/";
+@@ -1612,7 +1612,7 @@ public class ChromeTabbedActivity extends ChromeActivity {
  
      @Override
      public AppMenuPropertiesDelegate createAppMenuPropertiesDelegate() {
@@ -20,9 +20,9 @@ index be8466ad87791880f1f3c4ea61db11c466eb3356..0bac4ff9d6f7244d388c58ae1b4a47a5
                  getMultiWindowModeStateDispatcher(), getTabModelSelector(), getToolbarManager(),
                  getWindow().getDecorView(), this,
                  mOverviewModeController.mOverviewModeBehaviorSupplier,
-@@ -1663,9 +1663,9 @@ public class ChromeTabbedActivity extends ChromeActivity implements ScreenshotMo
-         Supplier<TabDelegateFactory> tabDelegateFactorySupplier = () -> {
-             return new TabbedModeTabDelegateFactory(this);
+@@ -1625,9 +1625,9 @@ public class ChromeTabbedActivity extends ChromeActivity {
+             return new TabbedModeTabDelegateFactory(
+                     this, getAppBrowserControlsVisibilityDelegate(), getShareDelegateSupplier());
          };
 -        return Pair.create(new ChromeTabCreator(this, getWindowAndroid(), getStartupTabPreloader(),
 +        return Pair.create(new org.chromium.chrome.browser.tabmodel.BraveTabCreator(this, getWindowAndroid(), getStartupTabPreloader(),
@@ -32,7 +32,7 @@ index be8466ad87791880f1f3c4ea61db11c466eb3356..0bac4ff9d6f7244d388c58ae1b4a47a5
                          tabDelegateFactorySupplier, true));
      }
  
-@@ -2091,7 +2091,7 @@ public class ChromeTabbedActivity extends ChromeActivity implements ScreenshotMo
+@@ -2012,7 +2012,7 @@ public class ChromeTabbedActivity extends ChromeActivity {
          }
      }
  

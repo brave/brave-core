@@ -1,15 +1,15 @@
 diff --git a/components/os_crypt/os_crypt_mac.mm b/components/os_crypt/os_crypt_mac.mm
-index 1b5d6580f1a4193bcfd6a2c2bf0a12ba2a008823..0ed643b78066a6db42d0d0a57b9d0a645479785e 100644
+index 49c22a9a5000851474421dc5eb9eb37422cda952..469c480164728d0577bc68aa48335b717c30c9e3 100644
 --- a/components/os_crypt/os_crypt_mac.mm
 +++ b/components/os_crypt/os_crypt_mac.mm
-@@ -100,6 +100,10 @@ crypto::SymmetricKey* GetEncryptionKey() {
-     DCHECK(!g_key_creation_util);
-     g_key_creation_util = new os_crypt::EncryptionKeyCreationUtilIOS();
- #endif
+@@ -81,6 +81,10 @@ crypto::SymmetricKey* GetEncryptionKey() {
+     crypto::MockAppleKeychain keychain;
+     password = keychain.GetEncryptionPassword();
+   } else {
 +    base::CommandLine* command_line = base::CommandLine::ForCurrentProcess();
 +    if (!command_line->HasSwitch("import-chrome") &&
 +        command_line->HasSwitch("import-chromium") &&
 +        command_line->HasSwitch("import-brave"))
-     DCHECK(g_key_creation_util);
      AppleKeychain keychain;
-     KeychainPassword encryptor_password(
+     KeychainPassword encryptor_password(keychain);
+     password = encryptor_password.GetPassword();

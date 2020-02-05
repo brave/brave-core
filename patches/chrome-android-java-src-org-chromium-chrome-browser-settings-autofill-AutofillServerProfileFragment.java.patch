@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill/AutofillServerProfileFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill/AutofillServerProfileFragment.java
-index 35d3064b6677cef0ec948e7e4c9e55d53990f0db..7e19c21bad3d436957e0da56d07d5568c12de146 100644
+index c8119f81df2fdaa5d225d68cdf2905b0f2550af6..a88326a7b0f21f9b4e76728e8b22ab8b781a680c 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill/AutofillServerProfileFragment.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill/AutofillServerProfileFragment.java
-@@ -21,7 +21,7 @@ import org.chromium.chrome.browser.settings.SettingsUtils;
+@@ -20,7 +20,7 @@ import org.chromium.chrome.browser.settings.SettingsUtils;
   * Fragment for settings page that allows user to view and edit a single server-provided address.
   */
  public class AutofillServerProfileFragment

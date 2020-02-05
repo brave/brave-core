@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/site_settings_page/site_settings_page.html b/chrome/browser/resources/settings/site_settings_page/site_settings_page.html
-index 38688df76d80161df13fdbc588cd52277c8c2b61..f82cdbcc1b83abf6a39c3eee5beff14c164054e5 100644
+index a225efb9c5ad211d257bd2816e0698510c8deb73..0cbbcb24a1f8f322e53858648ad7b838df811a41 100644
 --- a/chrome/browser/resources/settings/site_settings_page/site_settings_page.html
 +++ b/chrome/browser/resources/settings/site_settings_page/site_settings_page.html
-@@ -88,7 +88,18 @@
+@@ -90,7 +90,18 @@
              '$i18nPolymer{siteSettingsAskBeforeSending}',
              '$i18nPolymer{siteSettingsBlocked}')]]"
          role-description="$i18n{subpageArrowRoleDescription}"></cr-link-row>
@@ -22,7 +22,7 @@ index 38688df76d80161df13fdbc588cd52277c8c2b61..f82cdbcc1b83abf6a39c3eee5beff14c
      <cr-link-row class="hr two-line" data-route="SITE_SETTINGS_JAVASCRIPT"
          id="javascript" label="$i18n{siteSettingsJavascript}"
          on-click="onTapNavigate_" start-icon="settings:code"
-@@ -124,7 +135,7 @@
+@@ -126,7 +137,7 @@
              '$i18nPolymer{siteSettingsAllowed}',
              '$i18nPolymer{siteSettingsBlocked}')]]"
          role-description="$i18n{subpageArrowRoleDescription}"></cr-link-row>
@@ -31,7 +31,7 @@ index 38688df76d80161df13fdbc588cd52277c8c2b61..f82cdbcc1b83abf6a39c3eee5beff14c
      <template is="dom-if" if="[[enableSafeBrowsingSubresourceFilter_]]">
        <cr-link-row class="hr two-line" data-route="SITE_SETTINGS_ADS" id="ads"
            label="$i18n{siteSettingsAds}" on-click="onTapNavigate_"
-@@ -144,7 +155,7 @@
+@@ -146,7 +157,7 @@
              '$i18nPolymer{siteSettingsAllowRecentlyClosedSites}',
              '$i18nPolymer{siteSettingsBackgroundSyncBlocked}')]]"
          role-description="$i18n{subpageArrowRoleDescription}"></cr-link-row>
