@@ -93,8 +93,9 @@ TEST_F(ShieldsSettingsCounterTest, Count) {
   EXPECT_EQ(3, GetResult());
 
   // flash setting is not counted by ShieldsSettingsCounter.
-  map()->SetContentSettingDefaultScope(kAbcURL, GURL(), ContentSettingsType::PLUGINS,
-                                       "", CONTENT_SETTING_ALLOW);
+  map()->SetContentSettingDefaultScope(
+      kAbcURL, GURL(), ContentSettingsType::PLUGINS,
+      "", CONTENT_SETTING_ALLOW);
 
   counter()->Restart();
   EXPECT_EQ(3, GetResult());
