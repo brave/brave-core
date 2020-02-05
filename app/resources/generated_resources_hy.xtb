@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">Preferences...</translation>
 <translation id="5801568494490449797">Նախընտրանքներ</translation>
 <translation id="3677911431265050325">Բջջային տարբերակ</translation>
+<translation id="236470849334943016">Brave-ի օգտագործման պայմանները կթարմացվեն մարտի 31-ին</translation>
+<translation id="1032605640136438169">Ծանոթացեք նոր պայմաններին</translation>
+<translation id="8712637175834984815">Պատրաստ է</translation>
+<translation id="5007392906805964215">Դիտել</translation>
 <translation id="4408599188496843485">Օգ&amp;նություն</translation>
 <translation id="8378714024927312812">Կառավարվում է ձեր կազմակերպության կողմից</translation>
 <translation id="7928836894214140642">Կառավարվում է <ph name="ENROLLMENT_DOMAIN"/> կայքի կողմից</translation>
@@ -2434,7 +2438,6 @@
 <translation id="7892963120252479610">Քանի դեռ այս ներդիրը բացված է, <ph name="ORIGIN"/> կայքը կարող է դիտել <ph name="FOLDERNAME"/> պանակի ֆայլերը։</translation>
 <translation id="7201420661433230412">Դիտել ֆայլերը</translation>
 <translation id="3015639418649705390">Վերագործարկել հիմա</translation>
-<translation id="8712637175834984815">Պատրաստ է</translation>
 <translation id="2783952358106015700">Մուտք «<ph name="APP_NAME"/>» հավելված անվտանգության բանալու օգնությամբ</translation>
 <translation id="2446585455334014596"><ph name="APP_NAME"/> հավելվածն ուզում է հաստատել ձեր ինքնությունը</translation>
 <translation id="1567750922576943685">Ձեր ինքնության հաստատումն օգնում է պաշտպանել ձեր անձնական տվյալները</translation>

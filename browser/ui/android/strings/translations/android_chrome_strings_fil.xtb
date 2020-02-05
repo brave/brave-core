@@ -904,6 +904,7 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph 
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Alisin ang 1 piniling item}one{Alisin ang # piniling item}other{Alisin ang # na piniling item}}</translation>
 <translation id="1283039547216852943">I-tap upang palawakin</translation>
 <translation id="5962718611393537961">I-tap upang i-collapse</translation>
+<translation id="3123734510202723619">Mga Anunsyo</translation>
 <translation id="8076492880354921740">Mga Tab</translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 ang napili}one{# ang napili}other{# ang napili}}</translation>
 <translation id="6818926723028410516">Pumili ng mga item</translation>

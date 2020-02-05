@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">प्राथमिकताएं...</translation>
 <translation id="5801568494490449797">प्राथमिकताएं</translation>
 <translation id="3677911431265050325">मोबाइल साइट के लिए अनुरोध करें</translation>
+<translation id="236470849334943016">Brave की सेवा की शर्तें 31 मार्च से बदलने वाली हैं</translation>
+<translation id="1032605640136438169">कृपया सेवा की नई शर्तों को ध्यान से पढ़ें</translation>
+<translation id="8712637175834984815">समझ लिया</translation>
+<translation id="5007392906805964215">समीक्षा करें</translation>
 <translation id="4408599188496843485">स&amp;हायता</translation>
 <translation id="8378714024927312812">आपके संगठन की ओर से प्रबंधित</translation>
 <translation id="7928836894214140642"><ph name="ENROLLMENT_DOMAIN"/> प्रबंधित करता है</translation>
@@ -2434,7 +2438,6 @@
 <translation id="7892963120252479610">आप जब तक यह टैब बंद नहीं कर देते, <ph name="ORIGIN"/> को फ़ाइलें <ph name="FOLDERNAME"/> में दिखती रहेंगी</translation>
 <translation id="7201420661433230412">फ़ाइलें देखें</translation>
 <translation id="3015639418649705390">अभी फिर से लॉन्च करें</translation>
-<translation id="8712637175834984815">समझ लिया</translation>
 <translation id="2783952358106015700"><ph name="APP_NAME"/> के ज़रिए अपनी 'सुरक्षा चाबी' का इस्तेमाल करें</translation>
 <translation id="2446585455334014596"><ph name="APP_NAME"/> आपकी पहचान की पुष्टि करना चाहता है</translation>
 <translation id="1567750922576943685">अपनी पहचान की पुष्टि करने से आपको अपनी निजी जानकारी सुरक्षित रखने में मदद मिलती है</translation>

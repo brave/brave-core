@@ -21,6 +21,7 @@
 <translation id="8926389886865778422">Többször ne figyelmeztessen</translation>
 <translation id="4726634924419692905">Kérdezzen rá, amikor egy webhely a Widevine-t akarja telepíteni a számítógépére.</translation>
 <translation id="8760415064721320867">Privát Ablak Tor-ral</translation>
+<translation id="8762452230727230396">Ezzel elrejtheti a felkeresett oldalak elől az IP címét.</translation>
 <translation id="8053096063396012732">Widevine telepítése</translation>
 <translation id="4840334696217618631">Widevine engedélyezéséhez indítsa újra a böngészőt</translation>
 <translation id="8410111618231938546">A Google Widevine egy digitális jogkezelő (DRM - Digital Rights Management) kód, amelyet mi a Brave Software vállalatnál nem birtokolunk és nem vizsgálunk meg. A Google Widevine kódot Google szerverektől töltjük be, nem pedig saját szervereinkről. Csak akkor töltődik be, ha engedélyezi ezt az opciót. Javasoljuk a DRM használatát, de tiszteletben tartjuk a felhasználók döntését és elismerjük, hogy néhány Brave felhasználó olyan szolgáltatásokat szeretne használni, amelyekhez ez szükséges.
@@ -91,6 +92,8 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="8502234992433094996">Google Szolgáltatások használata a Push üzenetküldéshez</translation>
 <translation id="3888068426966679906">Távoli hibakeresés</translation>
 <translation id="6645631466045614531">Szinkronizálás elérési útja</translation>
+<translation id="6696935187608454456">Segítség</translation>
+<translation id="2775956301559569472">Wayback Machine megjelenítése 404-es oldalakon</translation>
 <translation id="1807246157184219062">Világos</translation>
 <translation id="2414886740292270097">Sötét</translation>
 <translation id="1360441190790440400">Olyan, mint a Linux</translation>
@@ -98,7 +101,9 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="8721331068159819483">Ugyanaz, mint macOS-en</translation>
 <translation id="6786747875388722282">Kiterjesztések</translation>
 <translation id="2896916411183256228">WebTorrentet használ torrentek megjelenítésére közvetlenül a böngészőben. Támogatja a torrentfájlokat és mágneslinkeket.</translation>
-<translation id="5554028991651120544">Egy Ethereum pénztárcát és Dapp böngészőt nyújt a Brave-ben.</translation>
+<translation id="2356070529366658676">Kérés</translation>
+<translation id="7701040980221191251">Nincs</translation>
+<translation id="1085027414516521238">MetaMask</translation>
 <translation id="6554397389149987360">Hangouts komponenseket használ, hogy lehetővé tegye a képernyőmegosztást és más funkciókat a böngészőben.</translation>
 <translation id="1765684547504191670">Média-útválasztó komponens használatával engedélyezi a Chromecastot a böngészőben.</translation>
 <translation id="9156965752763025780">Módosításai a Brave újraindítása után lépnek érvénybe.</translation>
@@ -159,13 +164,17 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="4394049700291259645">Kikapcsolás</translation>
 <translation id="6469509880167172749">Teljes mértékben anonim termékanalízis automatikus küldése a Brave-hez</translation>
 <translation id="7090566321964540749">Ez az anonimizált adat mindösszesen azt teszi lehetővé, hogy a Brave megbecsülhesse egyes funkciók összesített használatát.</translation>
-<translation id="1200956479506699688">Mostantól használható a Crypto Wallets a Brave-en. A MetaMask és a Crypto Wallets nem használható egyszerre.</translation>
 <translation id="7583735190612229830">Állítsa be, hogy a Crypto Wallets együttműködjön ezzel és más hasonló alkalmazásokkal.</translation>
 <translation id="8337117349965899723">Használja a Crypto Walletset</translation>
 <translation id="5756155765711979898">Használja a MetaMaskot</translation>
 <translation id="6754134632841262799">BEÁLLÍTÁS</translation>
+<translation id="4552520379838695057">Elnézést, ez az oldal hiányzik.</translation>
+<translation id="2609895996619941644">Meg szeretné tekinteni, hogy van-e mentett verziója a Wayback Machine-nek?</translation>
+<translation id="8053093028263274061">Elnézést, de nincs mentett verzió</translation>
+<translation id="8517321676372639828">Mentett verziók ellenőrzése</translation>
 <translation id="191143826155037518">A Brave-et a <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla nyilvános licenc 2.0 értelmében használhatja<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) és tartalmazza a <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>nyílt forráskódú szoftvert<ph name="END_LINK_OSS">&lt;/a&gt;</ph> különböző más licencek alatt.
  Elolvashatja a <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>útmutatót a letöltéshez és a saját építéshez<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> the specific <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>ennek a példánynak a készítéséhez használt forráskód<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
 <translation id="4474155171896946103">Összes lap hozzáadása a könyvjelzőkhöz...</translation>
 <translation id="2336228925368920074">Összes lap hozzáadása a könyvjelzőkhöz...</translation>
+<translation id="796831669370432378">Könyvjelző hozzáadásához kattintson a címsorban szereplő könyvjelző gombra</translation>
 </translationbundle>

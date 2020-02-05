@@ -92,6 +92,8 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="8502234992433094996">Utilizar Servicios de Google para la Mensajería «Push»</translation>
 <translation id="3888068426966679906">Depuración remota</translation>
 <translation id="6645631466045614531">Acceder a la sincronización a través de</translation>
+<translation id="6696935187608454456">Consejos de ayuda</translation>
+<translation id="2775956301559569472">Mostrar el mensaje de Wayback Machine en 404 páginas</translation>
 <translation id="1807246157184219062">Claro</translation>
 <translation id="2414886740292270097">Oscuro</translation>
 <translation id="1360441190790440400">Mismo que en Linux</translation>
@@ -99,7 +101,9 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="8721331068159819483">Mismo que en MacOS</translation>
 <translation id="6786747875388722282">Extensiones</translation>
 <translation id="2896916411183256228">Usa WebTorrent para mostrar directamente los torrents en el navegador. Es compatible con archivos torrent y enlaces magnet.</translation>
-<translation id="5554028991651120544">Proporciona una cartera Ethereum y un navegador Dapp dentro de Brave.</translation>
+<translation id="2356070529366658676">Preguntar</translation>
+<translation id="7701040980221191251">Ninguno</translation>
+<translation id="1085027414516521238">MetaMask</translation>
 <translation id="6554397389149987360">Usa el componente de Hangouts para habilitar la compartición de la pantalla y otras funciones en el navegador.</translation>
 <translation id="1765684547504191670">Utiliza el componente Enrutador De Contenidos para activar Chromecast en el navegador.</translation>
 <translation id="9156965752763025780">Los cambios se aplicarán la próxima vez que reinicies Brave.</translation>
@@ -160,13 +164,17 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="4394049700291259645">Deshabilitar</translation>
 <translation id="6469509880167172749">Enviar automáticamente los análisis de productos completamente privados a Brave</translation>
 <translation id="7090566321964540749">Esta información anónima solo le permite a Brave estimar el uso general de ciertas funciones.</translation>
-<translation id="1200956479506699688">Crypto Carteras ya está disponible en Brave. No se pueden utilizar MetaMask y Crypto Carteras al mismo tiempo.</translation>
 <translation id="7583735190612229830">Configura Crypto Carteras para interactuar con esta aplicación y otras similares.</translation>
 <translation id="8337117349965899723">Utiliza Crypto Carteras</translation>
 <translation id="5756155765711979898">Usar MetaMask</translation>
 <translation id="6754134632841262799">CONFIGURACIÓN</translation>
+<translation id="4552520379838695057">Lo sentimos, esa página ha desaparecido.</translation>
+<translation id="2609895996619941644">¿Quiere comprobar si hay una versión guardada disponible en la Wayback Machine?</translation>
+<translation id="8053093028263274061">Lo sentimos, no hay una versión guardada disponible.</translation>
+<translation id="8517321676372639828">Compruebe si hay una versión guardada</translation>
 <translation id="191143826155037518">Brave está disponible para ti bajo la <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) e incluye <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>software de código abierto<ph name="END_LINK_OSS">&lt;/a&gt;</ph> bajo una variedad de otras licencias.
         Puedes leer las <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>instrucciones sobre como descargar y compilar para ti mismof<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> - <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>source el código fuente específico utilizado para crear esta copia<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
 <translation id="4474155171896946103">Añadir todas las pestañas a marcadores...</translation>
 <translation id="2336228925368920074">Añadir Todas las Pestañas a Marcadores...</translation>
+<translation id="796831669370432378">Para añadir un marcador, haga clic en el botón de marcadores junto a la barra de direcciones</translation>
 </translationbundle>

@@ -904,6 +904,7 @@ Pour modifier ce paramètre, <ph name="BEGIN_LINK"/>réinitialisez la synchronis
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Supprimer 1 élément sélectionné}one{Supprimer # élément sélectionné}other{Supprimer # éléments sélectionnés}}</translation>
 <translation id="1283039547216852943">Appuyer pour développer</translation>
 <translation id="5962718611393537961">Appuyer pour réduire</translation>
+<translation id="3123734510202723619">Annonces</translation>
 <translation id="8076492880354921740">Onglets</translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 élément sélectionné}one{# élément sélectionné}other{# éléments sélectionnés}}</translation>
 <translation id="6818926723028410516">Sélectionner des éléments</translation>

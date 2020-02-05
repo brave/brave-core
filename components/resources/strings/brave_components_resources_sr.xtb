@@ -17,15 +17,17 @@
 <translation id="7100907433458266664">dan</translation>
 <translation id="4971389353431353387">dani</translation>
 <translation id="8427933533533814946">Fotografisao</translation>
+<translation id="7108338896283013870">Сакриј</translation>
 <translation id="7115515527894388910">Izmeni željene postavke</translation>
 <translation id="7606029853066610626">Pogledajte i upravljajte obeleživačima</translation>
 <translation id="5550994254534676787">Pregledajte svoju istoriju pregledanja</translation>
 <translation id="1742484101357469636">Podešavanja kontrolne table</translation>
-<translation id="8320281346741574991">Prikaži pozadinsku sliku</translation>
+<translation id="5783793537552649286">Pokaži pozadinsku sliku</translation>
 <translation id="7275773481201277457">Pokaži Brave statistiku</translation>
 <translation id="6836061097810262923">Prikaži sat</translation>
 <translation id="8643377320501056697">Prikaži najposećenije lokacije</translation>
 <translation id="3446024864193919737">Prikaži Brave nagrade</translation>
+<translation id="3870475560794762985">Pokaži sponzorisane slike</translation>
 <translation id="6165508094623778733">Nauči više</translation>
 <translation id="8730621377337864115">Gotovo</translation>
 <translation id="6248988683584659830">Podešavanja pretrage</translation>
@@ -82,8 +84,11 @@
 <translation id="7954950242989581218">Pretražuj bezbedno</translation>
 <translation id="2188651882929633653">Brave štitovi blokiraju jezive stvari koje pokušavaju da vas prate preko interneta uključujući većinu reklama. Postavite štitove na ugašeno ako izgleda da veb lokacija ne radi. Brave koristi <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>potpuno privatnu analitiku proizvoda<ph name="END_LINK_P3A">&lt;/a&gt;</ph> da bi procenio ukupno korišćenje određenih karakteristika. Ovo možete isključiti u <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Oglasi</translation>
+<translation id="2364310432103707426">Zaradi {{currency}} gledajući Brave oglase. Oglasi koji su pokazani su zasnovani na vašim interesovanjima, kako je zaključeno iz vašeg ponašanja u toku pregledanja interneta. Nijedan privatni podatak ili istorija pregledanja neće napustiti vaš pregledač.</translation>
 <translation id="6112368337882254910">Automatski doprinosi</translation>
 <translation id="3742599705619405136">Automatski način podrške izdavačima i kreatorima sadržaja. Podesite mesečno plaćanje i normalno pregledavajte. Porvrđene lokacije od strane Brave-a koje posetite automatski će primiti vaše doprinose, na osnovu vaše pažnje koju meri Brave.</translation>
+<translation id="8949527283651381130">Omogući detekciju konverzije oglasa</translation>
+<translation id="2184191362610545393">Ovo će anonimno dozvoliti Brave-u da zna da je postojao odgovor na ovu reklamu na ovom pregledaču. Omogućavanje ovoga će povećati zaradu.</translation>
 <translation id="20281847067919078">Procenjene nagrade na čekanju</translation>
 <translation id="8593551638387217772">Sledeći datum za plaćanje</translation>
 <translation id="319209088187794725">Reklamna obaveštenja primljena ovog meseca</translation>
@@ -154,6 +159,7 @@
 <translation id="7210234701206674260">Brave nagrade ima problema. Molimo Vas pokušajte kasnije.</translation>
 <translation id="570208820610947248">Otkrili smo da nešto nije u redu sa vašim novčanikom. Morate osposobiti rezervni novčanik pre obrade bilo kakve transakcije.</translation>
 <translation id="7797604753681168055">Osposobi novčanik odmah!</translation>
+<translation id="5549059668721746831">Sledeći mesečni datum za doprinose</translation>
 <translation id="6231182869178328516">Upravo sam dao napojnicu <ph name="NAME"/> koji koristi pregledač Brave. Pogledajte na https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">Žao nam je što je došlo do problema sa obradom Vašeg zahteva, molimo Vas pokušajte ponovo.</translation>
@@ -252,6 +258,8 @@
 <translation id="4114667046481794032">Iznos za doprinos</translation>
 <translation id="3520817231440482449">Donirajte ovu veb lokaciju mesečno</translation>
 <translation id="1827184134638345603">Pošalji donaciju…</translation>
+<translation id="7928243298881209869">Vaš prvi mesečni doprinos će biti poslat:</translation>
+<translation id="6045860799501892362">Postavi mesečni doprinos</translation>
 <translation id="8003573781961874199">Preuzmite kao PDF</translation>
 <translation id="298067735430872465">Zarade od oglasa</translation>
 <translation id="2266556115441975588">Vaše nagrade od oglasa su ovde!</translation>
@@ -280,6 +288,7 @@
 <translation id="9115913704608474258">Novembar</translation>
 <translation id="7828956995407538686">Oktobar</translation>
 <translation id="5502713021410870035">septembar</translation>
+<translation id="5737831580668469027">Mesečni doprinosi!</translation>
 <translation id="606865182719489911">Besplatan grant žeton je dostupan.</translation>
 <translation id="2487641031722095938">Ovo je vaš srećan dan!</translation>
 <translation id="6255773350565723852">Vaš token odobrenja je na putu.</translation>
@@ -306,8 +315,13 @@
 <translation id="4923459931733593730">Plaćanje</translation>
 <translation id="4021593982164260556">Plaćanja su svakog {{day}}og dana u svakom mesecu.</translation>
 <translation id="6104680658798556671">Uplata nije izvršena</translation>
+<translation id="2834888581291358924">Kada vaš bilans nije dovoljan da pokrije kombinovan celokupan iznos Automatskog doprinosa i vaših mesečnih doprinosa, ove isplate se preskaču za ovaj period.</translation>
 <translation id="3138528956349114724">Sačuvani sajtovi su sada</translation>
+<translation id="2337632028350283479">Evo kako mesečni doprinosi funkcionišu:</translation>
+<translation id="6457273203091513039">Mesečni doprinosi ne dolaze iz vaše Automatski doprinosi uplate. To je odvojeno.</translation>
 <translation id="9099396904827413228">Svakom sajtu se uplaćuje fiksni mesečni iznos.</translation>
+<translation id="5051110132941857169">Mesečni doprinosi se isplaćuju u celosti jednom, svakog meseca. Ako koristite opciju Automatski doprinos, bakšiš odlazi u isto vreme kao i vaša uplata putem Automatskog doprinosa.</translation>
+<translation id="3374483782662414143">Možete ukloniti bilo koju lokaciju koja prima mesečne doprinose, iz vašeg Panela za bakšiš.</translation>
 <translation id="5082474983463379713">Obratite pažnju:</translation>
 <translation id="1430915738399379752">Штампај</translation>
 <translation id="135956957367307069">Vaš zahtev se i dalje obrađuje, molimo Vas pričekajte.</translation>
@@ -331,6 +345,7 @@
 <translation id="4699702339303280827">Uvek možete koristiti ovaj ključ da biste povratili novčanik ako se nešto desi Vašem pregledaču ili računaru. Ali pobrinite se da ga zaštitite — svako ko dobije ovaj ključ može da vam ukrade novčanik. Verovatno je’ najsigurnije da ga zapišete na papiru, ili gde god da čuvate važne informacije.</translation>
 <translation id="7354412786785889047">Slanjem napojnica možete pružiti podršku kreatoru ovog sadržaja. To’ je način da mu se zahvalite što je napravio sjajan sadržaj. Verifikovanim kreatorima se isplaćuju njihove napojnice tokom prve sedmice svakog kalendarskog meseca.</translation>
 <translation id="972846019534552366">U okviru table na Brave nagradama takođe možete podesiti periodični mesečni doprinos.</translation>
+<translation id="121079855621707240">Možete podržati ovog stvaraoca sadržaja tako što ćete podesiti mesečne doprinose. To je način da im se zahvalite što prave sjajan sadržaj na svakodnevnoj bazi. Verifikovani stvaraoci se plaćaju zbog svojih doprinosa tokom prve nedelje svakog kalendarskog meseca.</translation>
 <translation id="3074127054582480056">Pažnja</translation>
 <translation id="5010112177773747965">bez vaše saglasnosti.</translation>
 <translation id="7147673045905733351">Danas, Brave vam želi dobrodošlicu na novi internet.</translation>
@@ -448,20 +463,25 @@
 <translation id="4569155249847375786">Verifikovano</translation>
 <translation id="8465442795593991224">„Uphold” će možda zahtevati da potvrdite svoj identitet na osnovu traženih usluga.</translation>
 <translation id="723054503945711909">„Brave Software Inc.” ne obrađuje, ne čuva, niti pristupa bilo kojim ličnim podacima koje dajete „Uphold-u” pri otvaranju naloga kod njih.</translation>
-<translation id="693248854158660756">o Brave nagradama</translation>
-<translation id="161118570147571596">Klikom na „Uključi nagrade”, ukazujete da ste pročitali i prihvatate</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Saznaj više<ph name="LINK_END"/> o Brave Nagradama</translation>
+<translation id="5826706758731195747">Uključivanjem Nagrada, pristajete na <ph name="LINK_BEGIN"/>Uslove korišćenja<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Procenjena zarada do sada u ovom mesecu</translation>
+<translation id="6778392839723468409">Zaradite tokene gledajući oglase koji poštuju privatnost.</translation>
 <translation id="5235444069025581717">Saveti i doprinosi ovog meseca</translation>
 <translation id="1210965535849006928">Zahtev za mojim nagradama</translation>
 <translation id="8315514906653279104">Uključivanje...</translation>
 <translation id="7307847920988946894">Uključi nagrade</translation>
 <translation id="662631138774963814">Da li se osećate darežljivo?</translation>
 <translation id="3264975266761862670">Jeste li spremni da počnete da zarađujete?</translation>
+<translation id="8092889639392847252">Budite plaćeni da pogledate ovu sponzorisanu pozadinsku sliku.</translation>
 <translation id="2542495049135486284">Isprobajte ponovo Brave nagrade i platite unapred kao što zarađujete!</translation>
-<translation id="7194640987408033097">Uključite Brave nagrade i budite plaćeni za pregleđivanje oglasa koji poštuju privatnost.</translation>
+<translation id="53513464591392992">Uključite Brave Nagrade i budite plaćeni da gledate reklame koje poštuju privatnost.</translation>
 <translation id="8568666589217601917">Svaka čast!</translation>
 <translation id="764235488372037377">Vaše nagrade od oglasa su ovde</translation>
 <translation id="7091215606170476659">Imate UGP dodelu od strane aplikacije Brave.</translation>
+<translation id="6759185676704303656">Plaćeni ste da pogledate ovu pozadinsku sliku.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Saznaj više<ph name="LINK_END"/> o sponzorisanim slikama u Brave Nagradama.</translation>
+<translation id="6113004497629356998">Sakrijte sponzorisane slike</translation>
 <translation id="1181037720776840403">Ukloni</translation>
 <translation id="7885157704277298658">Kopirano!</translation>
 <translation id="5379640681913450928">Broj reči:</translation>

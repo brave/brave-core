@@ -21,6 +21,7 @@
 <translation id="8926389886865778422">Nu mai întreba</translation>
 <translation id="4726634924419692905">Solicită când un site intenționează să instaleze Widevine pe calculator.</translation>
 <translation id="8760415064721320867">Fereastră Privată cu Tor</translation>
+<translation id="8762452230727230396">Tor ascunde adresa dvs. de IP de site-urile pe care le vizitați.</translation>
 <translation id="8053096063396012732">Instalează Widevine</translation>
 <translation id="4840334696217618631">Repornește browserul pentru activarea Widevine</translation>
 <translation id="8410111618231938546">Google Widevine este parte din codul de Administrarea Drepturilor Digitale (ADD) care nu este deținut de Brave și nu-l putem inspecta. Codul Google Widevine este încărcat din serverele Google, nu din serverele noastre. Este încărcat doar când activați această opțiune. Noi descurajăm utilizarea ADD, dar respectăm alegerea utilizatorului și confirmăm că unii utilizatori Brave doresc să utilizeze servicii care necesită acest cod.
@@ -91,6 +92,8 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="8502234992433094996">Folosiți Serviciile Google pentru mesageria push</translation>
 <translation id="3888068426966679906">Depanare de la distanță</translation>
 <translation id="6645631466045614531">Accesare Sincronizare prin</translation>
+<translation id="6696935187608454456">Ponturi de ajutor</translation>
+<translation id="2775956301559569472">Afișează mesajul Wayback Machine pe paginile 404</translation>
 <translation id="1807246157184219062">Lumină</translation>
 <translation id="2414886740292270097">Negru</translation>
 <translation id="1360441190790440400">Aceeași cu Linux</translation>
@@ -98,7 +101,9 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="8721331068159819483">La fel ca macOS</translation>
 <translation id="6786747875388722282">Extensii</translation>
 <translation id="2896916411183256228">Utilizează WebTorrent pentru afișarea torrent-elor direct în browser. Acceptă fișiere torrent și linkuri magnet.</translation>
-<translation id="5554028991651120544">Furnizează un portofel Ethereum și browserul Dapp în interiorul Brave.</translation>
+<translation id="2356070529366658676">Întreabă-mă</translation>
+<translation id="7701040980221191251">Niciuna</translation>
+<translation id="1085027414516521238">MetaMask</translation>
 <translation id="6554397389149987360">Utilizează componenta Hangouts pentru activarea partajării ecranului și alte funcții din browser.</translation>
 <translation id="1765684547504191670">Folosește componenta Media Router pentru a activa Chromecast în browser.</translation>
 <translation id="9156965752763025780">Modificările dvs. vor intra în vigoare următoarea dată când reporniți Brave.</translation>
@@ -159,13 +164,17 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="4394049700291259645">Dezactivează</translation>
 <translation id="6469509880167172749">Trimiteți automat statistici de produs complet private către Brave</translation>
 <translation id="7090566321964540749">Folosind aceste informații anonime, Brave poate numai să estimeze utilizarea totală a anumitor funcții.</translation>
-<translation id="1200956479506699688">Funcția Portofele de criptomonede este disponibilă acum în Brave. Nu puteți folosi MetaMask și Portofele de criptomonede în același timp.</translation>
 <translation id="7583735190612229830">Configurați Portofele de criptomonede să interacționeze cu această aplicație și altele similare.</translation>
 <translation id="8337117349965899723">Folosiți Portofele de criptomonede</translation>
 <translation id="5756155765711979898">Folosiți MetaMask</translation>
 <translation id="6754134632841262799">CONFIGURARE</translation>
+<translation id="4552520379838695057">Ne pare rău, pagina aceea lipsește.</translation>
+<translation id="2609895996619941644">Vreți să verificați dacă este disponibilă o versiune salvată pe Wayback Machine?</translation>
+<translation id="8053093028263274061">Ne pare rău, nu este disponibilă nicio versiune salvată.</translation>
+<translation id="8517321676372639828">Verificați versiunea salvată</translation>
 <translation id="191143826155037518">Brave vă este pus la dispoziție sub <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Licența publică Mozilla 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) și include <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>software cu sursă deschisă<ph name="END_LINK_OSS">&lt;/a&gt;</ph> sub diverse alte licențe.
         Puteți citi <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>instrucțiuni privind modul în care să descărcați și să construiți pentru dvs.<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> exact <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>codul-sursă folosit la crearea acestei copii<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
 <translation id="4474155171896946103">Marchează toate filele...</translation>
 <translation id="2336228925368920074">Marchează toate filele...</translation>
+<translation id="796831669370432378">Pentru a adăuga un marcaj, apăsați butonul de marcare de lângă bara de adrese</translation>
 </translationbundle>

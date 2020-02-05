@@ -21,6 +21,7 @@
 <translation id="8926389886865778422">ไม่ต้องถามอีก</translation>
 <translation id="4726634924419692905">ถามเมื่อเว็บไซต์ต้องการติดตั้ง Widevine บนคอมพิวเตอร์ของคุณ</translation>
 <translation id="8760415064721320867">หน้าต่างส่วนตัว พร้อม Tor</translation>
+<translation id="8762452230727230396">Tor จะซ่อนที่อยู่ IP ของคุณจากเว็บไซต์ที่คุณเยี่ยมชม</translation>
 <translation id="8053096063396012732">ติดตั้ง Widevine</translation>
 <translation id="4840334696217618631">รีสตาร์ทเบราว์เซอร์เพื่อเปิดใช้ Widevine</translation>
 <translation id="8410111618231938546">Google Widevine คือชิ้นส่วนรหัส Digital Rights Management (DRM) ที่พวกเราที่ Brave Software ไม่ได้เป็นเจ้าของและไม่สามารถทำการตรวจได้ รหัส Google Widevine ได้ถูกโหลดจากเซิร์ฟเวอร์ Google ไม่ได้โหลดจากเซิร์ฟเวอร์ของเรา DRM จะถูกโหลดเมื่อคุณเปิดตัวเลือกนี้  เราไม่สนับสนุนการใช้ DRM แต่เราเคารพการตัดสินใจของผู้ใช้และเข้าใจว่าผู้ใช้ Brave บางท่านอาจต้องการใช้บริการที่ต้องการมัน
@@ -91,6 +92,8 @@
 <translation id="8502234992433094996">ใช้ Google Services เพื่อส่งข้อความแจ้ง</translation>
 <translation id="3888068426966679906">การดีบั๊กระยะไกล</translation>
 <translation id="6645631466045614531">เข้าถึงการซิงค์ผ่าน</translation>
+<translation id="6696935187608454456">เคล็ดลับความช่วยเหลือ</translation>
+<translation id="2775956301559569472">แสดงพร้อมท์ Wayback Machine ในหน้า 404</translation>
 <translation id="1807246157184219062">สว่าง</translation>
 <translation id="2414886740292270097">มืด</translation>
 <translation id="1360441190790440400">เหมือน Linux</translation>
@@ -98,7 +101,9 @@
 <translation id="8721331068159819483">เหมือนกับ macOS</translation>
 <translation id="6786747875388722282">ส่วนขยาย</translation>
 <translation id="2896916411183256228">ใช้ WebTorrent สำหรับแสดงทอร์เรนต์ในเบราว์เซอร์โดยตรง รองรับไฟล์ทอร์เรนต์และแม็กเน็ตลิงก์</translation>
-<translation id="5554028991651120544">แจ้งกระเป๋าสตางค์ Ethereum และเบราว์เซอร์ Dapp ภายใน Brave</translation>
+<translation id="2356070529366658676">ถาม</translation>
+<translation id="7701040980221191251">ไม่มี</translation>
+<translation id="1085027414516521238">MetaMask</translation>
 <translation id="6554397389149987360">ใช้ส่วนประกอบ Hangouts เพื่อเปิดใช้งานการแชร์หน้าจอและฟีเจอร์อื่น ๆ ในเบราว์เซอร์</translation>
 <translation id="1765684547504191670">ใช้คอมโพเนนต์ Media Router เพื่อเปิดใช้งาน Chromecast ในเบราว์เซอร์</translation>
 <translation id="9156965752763025780">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิด Brave ขึ้นอีก</translation>
@@ -159,13 +164,17 @@
 <translation id="4394049700291259645">ปิดการใช้งาน</translation>
 <translation id="6469509880167172749">ส่งผลการวิเคราะห์ผลิตภัณฑ์แบบส่วนตัวโดยสมบูรณ์ให้ Brave โดยอัตโนมัติ</translation>
 <translation id="7090566321964540749">ข้อมูลแบบไม่ระบุตัวตนนี้จะช่วยให้ Brave คาดคะเนการใช้งานโดยรวมของฟีเจอร์บางอย่างได้เท่านั้น</translation>
-<translation id="1200956479506699688">กระเป๋าสตางค์ดิจิตอลมีให้บริการใน Brave แล้ว ทั้งนี้ คุณจะใช้ MetaMask และกระเป๋าสตางค์ดิจิตอลพร้อมกันไม่ได้</translation>
 <translation id="7583735190612229830">ตั้งค่ากระเป๋าสตางค์ดิจิตอลเพื่อโต้ตอบกับแอปนี้และแอปอื่นๆ ที่คล้ายกันนี้</translation>
 <translation id="8337117349965899723">ใช้กระเป๋าสตางค์ดิจิตอล</translation>
 <translation id="5756155765711979898">ใช้ MetaMask</translation>
 <translation id="6754134632841262799">ตั้งค่า</translation>
+<translation id="4552520379838695057">ขออภัย หน้านั้นหายไปแล้ว</translation>
+<translation id="2609895996619941644">คุณต้องการตรวจสอบไหมว่ามีเวอร์ชันที่บันทึกไว้ใน Wayback Machine หรือไม่</translation>
+<translation id="8053093028263274061">ขออภัย ไม่มีเวอร์ชันที่บันทึกไว้</translation>
+<translation id="8517321676372639828">ตรวจสอบเวอร์ชันที่บันทึกไว้</translation>
 <translation id="191143826155037518">การให้บริการ Brave อยู่ภายใต้ <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>ใบอนุญาต Mozilla Public License รุ่น 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) และมี <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>ซอฟต์แวร์โอเพ่นซอร์ส<ph name="END_LINK_OSS">&lt;/a&gt;</ph> ซึ่งอยู่ภายใต้ใบอนุญาตอื่นๆ อีกมากมาย
         คุณสามารถอ่าน <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>คำแนะนำวิธีดาวน์โหลดและสร้าง<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> the specific <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>ซอร์ซโค้ดที่ใช้สร้างสำเนานี้<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>ด้วยตัวเองได้</translation>
 <translation id="4474155171896946103">บุ๊กมาร์กแท็บทั้งหมด...</translation>
 <translation id="2336228925368920074">บุ๊กมาร์กแท็บทั้งหมด...</translation>
+<translation id="796831669370432378">หากต้องการเพิ่มบุ๊กมาร์ก ให้คลิกปุ่มบุ๊กมาร์กที่อยู่ถัดจากแถบที่อยู่</translation>
 </translationbundle>

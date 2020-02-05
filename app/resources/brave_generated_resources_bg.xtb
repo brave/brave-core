@@ -21,6 +21,7 @@
 <translation id="8926389886865778422">Без повторно питане</translation>
 <translation id="4726634924419692905">Запитване, когато даден сайт иска да инсталира Widevine на вашия компютър.</translation>
 <translation id="8760415064721320867">Поверителен прозорец с Tor</translation>
+<translation id="8762452230727230396">Tor скрива вашия IP адрес от сайтовете, които посещавате.</translation>
 <translation id="8053096063396012732">Инсталирай Widevine</translation>
 <translation id="4840334696217618631">Рестартирайте браузъра, за да разрешите Widevine</translation>
 <translation id="8410111618231938546">Google Widevine е част от кода за управление на цифровите права (DRM), който ние в Brave Software не притежаваме и не можем да проверим. Кодът на Google Widevine се зарежда от сървърите на Google, а не от нашите сървъри. Той се зарежда само когато активирате тази опция. Ние не подкрепяме употребата на DRM, но уважаваме избора на потребителя и признаваме, че някои потребители на Brave биха искали да използват услуги, които го изискват.
@@ -91,6 +92,8 @@
 <translation id="8502234992433094996">Използвайте Google Services за Push Messaging</translation>
 <translation id="3888068426966679906">Дистанционно отстраняване на грешки</translation>
 <translation id="6645631466045614531">Достъп до синхронизиране чрез</translation>
+<translation id="6696935187608454456">Помощни съвети</translation>
+<translation id="2775956301559569472">Показване на подкана Wayback Machine на страници 404</translation>
 <translation id="1807246157184219062">Светъл</translation>
 <translation id="2414886740292270097">Тъмен</translation>
 <translation id="1360441190790440400">Също като Linux</translation>
@@ -98,7 +101,9 @@
 <translation id="8721331068159819483">Също като macOS</translation>
 <translation id="6786747875388722282">Разширения</translation>
 <translation id="2896916411183256228">Използва WebTorrent за да показва торенти директно в браузъра. Поддържа торент файлове и магнет линкове.</translation>
-<translation id="5554028991651120544">Осигурява Ethereum портфейл и Dapp браузър в Brave.</translation>
+<translation id="2356070529366658676">Попитайте ме</translation>
+<translation id="7701040980221191251">Няма</translation>
+<translation id="1085027414516521238">MetaMask</translation>
 <translation id="6554397389149987360">Използвайте "Hangouts" компоненти, за да разрешите споделяне на екрана и други функции в браузъра.</translation>
 <translation id="1765684547504191670">Използва медия рутер компонент, за да разреши Chromecast в браузъра.</translation>
 <translation id="9156965752763025780">Промените ви ще влязат в сила следващия път, когато стартирате отново Brave.</translation>
@@ -159,13 +164,17 @@
 <translation id="4394049700291259645">Деактивиране</translation>
 <translation id="6469509880167172749">Автоматично изпращайте изцяло поверителни анализи на продукти на Brave</translation>
 <translation id="7090566321964540749">Тази анонимна информация само позволява на Brave да оцени цялостното използване на определени функции.</translation>
-<translation id="1200956479506699688">Крипто портфейлите вече се предлагат в Brave. Не можете едновременно да използвате MetaMask и крипто портфейли.</translation>
 <translation id="7583735190612229830">Настройте Крипто портфейли да взаимодействат с това приложение и други като него.</translation>
 <translation id="8337117349965899723">Използвайте крипто портфейли</translation>
 <translation id="5756155765711979898">Използвайте MetaMask</translation>
 <translation id="6754134632841262799">НАСТРОЙКА</translation>
+<translation id="4552520379838695057">За съжаление тази страница липсва.</translation>
+<translation id="2609895996619941644">Искате ли да проверите дали запазената версия е налична на Wayback Machine?</translation>
+<translation id="8053093028263274061">За съжаление няма налична запазена версия.</translation>
+<translation id="8517321676372639828">Проверете за запазена версия</translation>
 <translation id="191143826155037518">Brave се предоставя на разположение под <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) и включва <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>софтуер с отворен код<ph name="END_LINK_OSS">&lt;/a&gt;</ph> под множество други лицензи.
         Можете да прочетете <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>инструкции как да изтеглите и изградите за себе си<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> конкретния <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>изходен код, използван за създаването на това копие<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
 <translation id="4474155171896946103">Запазване на отметки към всички раздели…</translation>
 <translation id="2336228925368920074">Запазване на отметки към всички раздели...</translation>
+<translation id="796831669370432378">За да добавите отметка, щракнете върху бутона за отметка до адресната лента</translation>
 </translationbundle>

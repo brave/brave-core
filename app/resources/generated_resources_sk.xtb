@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">Predvoľby...</translation>
 <translation id="5801568494490449797">Preferencie</translation>
 <translation id="3677911431265050325">Vyžiadať mobilný web</translation>
+<translation id="236470849334943016">Zmluvné podmienky prehliadača Brave sa 31. marca zmenia</translation>
+<translation id="1032605640136438169">Prečítajte si nové zmluvné podmienky</translation>
+<translation id="8712637175834984815">Dobre</translation>
+<translation id="5007392906805964215">Prezrieť</translation>
 <translation id="4408599188496843485">P&amp;omocník</translation>
 <translation id="8378714024927312812">Spravované vašou organizáciou</translation>
 <translation id="7928836894214140642">Spravuje <ph name="ENROLLMENT_DOMAIN"/></translation>
@@ -2433,7 +2437,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="7892963120252479610">Web <ph name="ORIGIN"/> bude môcť zobrazovať všetky súbory v priečinku <ph name="FOLDERNAME"/>, kým túto kartu nezavriete</translation>
 <translation id="7201420661433230412">Zobraziť súbory</translation>
 <translation id="3015639418649705390">Reštartovať</translation>
-<translation id="8712637175834984815">Dobre</translation>
 <translation id="2783952358106015700">Použitie bezpečnostného kľúča s aplikáciou <ph name="APP_NAME"/></translation>
 <translation id="2446585455334014596"><ph name="APP_NAME"/> chce overiť vašu totožnosť</translation>
 <translation id="1567750922576943685">Overenie totožnosti pomáha chrániť vaše osobné informácie</translation>
