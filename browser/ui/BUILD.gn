@@ -115,6 +115,8 @@ source_set("ui") {
       "views/frame/brave_browser_view.h",
       "views/importer/brave_import_lock_dialog_view.cc",
       "views/importer/brave_import_lock_dialog_view.h",
+      "views/omnibox/brave_omnibox_view_views.cc",
+      "views/omnibox/brave_omnibox_view_views.h",
       "views/reader_mode/brave_reader_mode_icon_view.cc",
       "views/reader_mode/brave_reader_mode_icon_view.h",
       "views/rounded_separator.cc",
@@ -205,6 +207,7 @@ source_set("ui") {
     "//chrome/app/vector_icons:vector_icons",
     "//chrome/common",
     "//components/gcm_driver:gcm_buildflags",
+    "//components/omnibox/browser",
     "//components/prefs",
     "//components/sessions",
     "//content/public/browser",
@@ -213,8 +216,10 @@ source_set("ui") {
     "//skia",
     "//ui/accessibility",
     "//ui/base",
+    "//ui/base/clipboard",
     "//ui/gfx",
     "//ui/resources",
+    "//url",
   ]
 
   # This is no longer compiled into Chromium on Android, but we still
