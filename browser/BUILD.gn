@@ -150,6 +150,7 @@ source_set("browser_process") {
     "//components/gcm_driver:gcm_driver",
     "//components/gcm_driver:gcm_buildflags",
     "//components/password_manager/core/common",
+    "//components/permissions",
     "//components/policy/core/browser",
     "//components/prefs",
     "//components/safe_browsing/common:safe_browsing_prefs",

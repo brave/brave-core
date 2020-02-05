@@ -5,7 +5,7 @@
 
 #include <vector>
 
-#include "chrome/browser/permissions/permission_request.h"
+#include "components/permissions/permission_request.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/views/window/dialog_delegate.h"
 
@@ -49,12 +49,12 @@ void DontAskAgainCheckbox::ButtonPressed(Button* sender,
 }
 
 bool HasWidevinePermissionRequest(
-    const std::vector<PermissionRequest*>& requests) {
+    const std::vector<permissions::PermissionRequest*>& requests) {
   // When widevine permission is requested, |requests| only includes Widevine
   // permission because it is not a candidate for grouping.
   if (requests.size() == 1 &&
       requests[0]->GetPermissionRequestType() ==
-          PermissionRequestType::PERMISSION_WIDEVINE)
+          permissions::PermissionRequestType::PERMISSION_WIDEVINE)
     return true;
 
   return false;
@@ -62,7 +62,7 @@ bool HasWidevinePermissionRequest(
 
 void AddAdditionalWidevineViewControlsIfNeeded(
     views::DialogDelegateView* dialog_delegate,
-    const std::vector<PermissionRequest*>& requests) {
+    const std::vector<permissions::PermissionRequest*>& requests) {
   if (!HasWidevinePermissionRequest(requests))
     return;
 
@@ -84,8 +84,7 @@ void AddAdditionalWidevineViewControlsIfNeeded(
 #else
 void AddAdditionalWidevineViewControlsIfNeeded(
     views::DialogDelegateView* dialog_delegate,
-    const std::vector<PermissionRequest*>& requests) {
-}
+    const std::vector<permissions::PermissionRequest*>& requests) {}
 #endif
 }  // namespace
 

@@ -3,17 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/permissions/permission_util.h"
+#include "components/permissions/permission_util.h"
 
 #define GetPermissionString GetPermissionString_ChromiumImpl
 #define GetRequestType GetRequestType_ChromiumImpl
 #define GetPermissionType GetPermissionType_ChromiumImpl
 #define IsPermission IsPermission_ChromiumImpl
-#include "../../../../../../chrome/browser/permissions/permission_util.cc"
+#include "../../../../../components/permissions/permission_util.cc"
 #undef IsPermission
 #undef GetPermissionType
 #undef GetRequestType
 #undef GetPermissionString
+
+namespace permissions {
 
 std::string PermissionUtil::GetPermissionString(
     ContentSettingsType content_type) {
@@ -43,3 +45,5 @@ bool PermissionUtil::IsPermission(ContentSettingsType type) {
     return true;
   return IsPermission_ChromiumImpl(type);
 }
+
+}  // namespace permissions

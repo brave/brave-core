@@ -26,7 +26,8 @@ WidevinePermissionRequest::WidevinePermissionRequest(
 WidevinePermissionRequest::~WidevinePermissionRequest() {
 }
 
-PermissionRequest::IconId WidevinePermissionRequest::GetIconId() const {
+permissions::PermissionRequest::IconId WidevinePermissionRequest::GetIconId()
+    const {
   return kExtensionIcon;
 }
 
@@ -65,9 +66,9 @@ void WidevinePermissionRequest::RequestFinished() {
   delete this;
 }
 
-PermissionRequestType
+permissions::PermissionRequestType
 WidevinePermissionRequest::GetPermissionRequestType() const {
-  return PermissionRequestType::PERMISSION_WIDEVINE;
+  return permissions::PermissionRequestType::PERMISSION_WIDEVINE;
 }
 
 base::string16 WidevinePermissionRequest::GetExplanatoryMessageText() const {
