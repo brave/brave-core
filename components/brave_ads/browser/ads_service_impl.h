@@ -104,7 +104,7 @@ class AdsServiceImpl : public AdsService,
   void OnTabClosed(
       const SessionID& tab_id) override;
 
-  void GetPublisherAds(
+  bool GetPublisherAds(
       const std::string& url,
       const std::vector<std::string>& sizes,
       OnGetPublisherAdsCallback callback) override;

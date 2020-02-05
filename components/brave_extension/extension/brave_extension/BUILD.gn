@@ -11,7 +11,7 @@ transpile_web_ui("brave_extension") {
     ["content_dapps", rebase_path("content_dapps.ts")],
     ["content_cosmetic", rebase_path("content_cosmetic.ts")],
     ["webstore", rebase_path("webstore.ts")],
-    ["batsense/background", rebase_path("batsense/background.js")],
+    ["batsense/background", rebase_path("batsense/background.ts")],
   ]
 
   # what is the directory / pack name

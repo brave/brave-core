@@ -500,17 +500,18 @@ void AdsServiceImpl::OnTabClosed(
   bat_ads_->OnTabClosed(tab_id.id());
 }
 
-void AdsServiceImpl::GetPublisherAds(
+bool AdsServiceImpl::GetPublisherAds(
     const std::string& url,
     const std::vector<std::string>& sizes,
     OnGetPublisherAdsCallback callback) {
   if (!connected()) {
-    return;
+    return false;
   }
 
   bat_ads_->GetPublisherAds(url, sizes,
       base::BindOnce(&AdsServiceImpl::OnGetPublisherAds, AsWeakPtr(),
           std::move(callback)));
+  return true;
 }
 
 void AdsServiceImpl::GetPublisherAdsToPreFetch(
@@ -1259,13 +1260,13 @@ void AdsServiceImpl::OnGetPublisherAds(
   base::ListValue list;
   for (const auto& entry : ads.entries) {
     base::DictionaryValue dictionary;
-    dictionary.SetKey("creativeInstanceId",
+    dictionary.SetKey("creative_instance_id",
         base::Value(entry.creative_instance_id));
-    dictionary.SetKey("creativeSetId", base::Value(entry.creative_set_id));
+    dictionary.SetKey("creative_set_id", base::Value(entry.creative_set_id));
     dictionary.SetKey("category", base::Value(entry.category));
     dictionary.SetKey("size", base::Value(entry.size));
-    dictionary.SetKey("creativeUrl", base::Value(entry.creative_url));
-    dictionary.SetKey("targetUrl", base::Value(entry.target_url));
+    dictionary.SetKey("creative_url", base::Value(entry.creative_url));
+    dictionary.SetKey("target_url", base::Value(entry.target_url));
 
     list.GetList().emplace_back(std::move(dictionary));
   }

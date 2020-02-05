@@ -146,6 +146,20 @@ declare namespace chrome.braveRewards {
   }
 
   const getAnonWalletStatus: (callback: (result: RewardsExtension.Result) => void) => {}
+
+  type PublisherAd = {
+    creative_instance_id: string,
+    creative_set_id: string,
+    category: string,
+    size: string,
+    creative_url: string,
+    target_url: string
+  }
+  type PublisherAdsCallback = (result: PublisherAd[]) => void
+
+  const getPublisherAds: (url: string, sizes: string[], callback: PublisherAdsCallback) => void
+  const triggerPublisherAdViewed: (publisherAdInfo: PublisherAd) => void
+  const triggerPublisherAdInteracted: (publisherAdInfo: PublisherAd) => void
 }
 
 declare namespace chrome.rewardsNotifications {

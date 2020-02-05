@@ -1,7 +1,7 @@
 import creative1Url from './demo-creatives/creative-1.html'
 
 export default class HTMLDemoAdCatalog {
-  getAd (sizes, isResponsive) {
+  getAd (pageUrl, sizes, isResponsive) {
     // TODO: More creatives
     // TODO: destination Url for each creative
     // TODO: min / max size for each creative

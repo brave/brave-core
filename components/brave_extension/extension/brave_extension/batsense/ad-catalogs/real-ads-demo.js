@@ -24,7 +24,7 @@ const realAds = [
 ]
 
 export default class RealAdDemoCatalog {
-  getAd (sizes, isResponsive) {
+  getAd (pageUrl, sizes, isResponsive) {
     // What fixed numeric sizes does this slot support?
     const sizesTyped = sizes
       .filter(size => Array.isArray(size) && size.length === 2)

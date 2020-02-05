@@ -9,6 +9,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/browser/balance.h"
@@ -440,6 +441,42 @@ class BraveRewardsGetAdsSupportedFunction : public ExtensionFunction {
 
  protected:
   ~BraveRewardsGetAdsSupportedFunction() override;
+
+  ResponseAction Run() override;
+};
+
+class BraveRewardsGetPublisherAdsFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getPublisherAds", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetPublisherAdsFunction() override;
+
+  ResponseAction Run() override;
+
+ private:
+  void OnGetPublisherAds(const std::string& url,
+    const std::vector<std::string>& sizes, const base::ListValue& ads);
+};
+
+class BraveRewardsTriggerPublisherAdViewedFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.triggerPublisherAdViewed", UNKNOWN)
+
+ protected:
+  ~BraveRewardsTriggerPublisherAdViewedFunction() override;
+
+  ResponseAction Run() override;
+};
+
+class BraveRewardsTriggerPublisherAdInteractedFunction
+                                    : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION(
+      "braveRewards.triggerPublisherAdInteracted", UNKNOWN)
+
+ protected:
+  ~BraveRewardsTriggerPublisherAdInteractedFunction() override;
 
   ResponseAction Run() override;
 };

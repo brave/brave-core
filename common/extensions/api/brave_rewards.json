@@ -9,6 +9,33 @@
     "compiler_options": {
       "implemented_in": "brave/browser/extensions/api/brave_rewards_api.h"
     },
+    "types": [
+      {
+        "id": "PublisherAdInfo",
+        "type": "object",
+        "description": "Metadata about a publisher ad",
+        "properties": {
+          "creative_instance_id": {
+            "type": "string"
+          },
+          "creative_set_id": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "size": {
+            "type": "string"
+          },
+          "creative_url": {
+            "type": "string"
+          },
+          "target_url": {
+            "type": "string"
+          }
+        }
+      }
+    ],
     "events": [
       {
         "name": "onWalletInitialized",
@@ -712,6 +739,58 @@
                 "type": "boolean"
               }
             ]
+          }
+        ]
+      },
+      {
+        "name": "getPublisherAds",
+        "type": "function",
+        "description": "Gets any ads targeted to the specific url and sizes",
+        "parameters": [
+          {
+            "name": "url",
+            "type": "string"
+          },
+          {
+            "name": "sizes",
+            "type": "array",
+            "description": "List of sizes specified in [width]x[height] format.",
+            "items": {
+              "type": "string"
+            }
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "ads",
+                "type": "array",
+                "items": {
+                  "$ref": "PublisherAdInfo"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "triggerPublisherAdViewed",
+        "type": "function",
+        "parameters": [
+          {
+            "name": "publisherAdInfo",
+            "$ref": "PublisherAdInfo"
+          }
+        ]
+      },
+      {
+        "name": "triggerPublisherAdInteracted",
+        "type": "function",
+        "parameters": [
+          {
+            "name": "publisherAdInfo",
+            "$ref": "PublisherAdInfo"
           }
         ]
       },

@@ -100,7 +100,7 @@ class AdsService : public KeyedService {
   virtual void OnTabClosed(
       const SessionID& tab_id) = 0;
 
-  virtual void GetPublisherAds(
+  virtual bool GetPublisherAds(
       const std::string& url,
       const std::vector<std::string>& sizes,
       OnGetPublisherAdsCallback callback) = 0;
