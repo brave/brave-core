@@ -21,6 +21,7 @@
 <translation id="8926389886865778422">Jangan tanya lagi</translation>
 <translation id="4726634924419692905">Tanyakan saat suatu situs ingin menginstal Widevine di komputer Anda.</translation>
 <translation id="8760415064721320867">Jendela Pribadi dengan Tor</translation>
+<translation id="8762452230727230396">Tor menyembunyikan alamat IP Anda dari situs yang Anda kunjungi.</translation>
 <translation id="8053096063396012732">Pasang Widevine</translation>
 <translation id="4840334696217618631">Mulai ulang peramban untuk mengaktifkan Widevine</translation>
 <translation id="8410111618231938546">Google Widevine adalah sepotong kode Digital Rights Management (DRM) yang tidak kami miliki dan tidak bisa kami periksa di Brave Software. Kode Google Widevine dimuat dari server Google, bukan dari server kami. Kode ini hanya dimuat jika Anda mengaktifkan pilihan ini. Kami tidak menyarankan penggunaan DRM, tetapi kami menghormati pilihan pengguna dan mengakui bahwa beberapa pengguna Brave ingin menggunakan layanan yang memerlukannya.
@@ -91,6 +92,8 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="8502234992433094996">Gunakan Layanan Google untuk Pesan Sorong</translation>
 <translation id="3888068426966679906">Mendebug Jarak Jauh</translation>
 <translation id="6645631466045614531">Akses Sinkronisasi via</translation>
+<translation id="6696935187608454456">Tips Bantuan</translation>
+<translation id="2775956301559569472">Tampilkan penunjuk Wayback Machine pada halaman 404</translation>
 <translation id="1807246157184219062">Terang</translation>
 <translation id="2414886740292270097">Gelap</translation>
 <translation id="1360441190790440400">Sama seperti Linux</translation>
@@ -98,7 +101,9 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="8721331068159819483">Sama seperti macOS</translation>
 <translation id="6786747875388722282">Ekstensi</translation>
 <translation id="2896916411183256228">Menggunakan WebTorrent untuk menampilkan torrent langsung di peramban. Mendukung file torrent dan tautan magnet.</translation>
-<translation id="5554028991651120544">Menyediakan dompet Ethereum dan peramban Dapp di dalam Brave.</translation>
+<translation id="2356070529366658676">Tanya</translation>
+<translation id="7701040980221191251">Tidak ada</translation>
+<translation id="1085027414516521238">MetaMask</translation>
 <translation id="6554397389149987360">Menggunakan komponen Hangouts untuk mengaktifkan berbagi layar dan fitur lainnya di peramban.</translation>
 <translation id="1765684547504191670">Menggunakan komponen Media Router untuk mengaktifkan Chromecast dalam peramban.</translation>
 <translation id="9156965752763025780">Perubahan Anda akan berlaku saat berikutnya Anda membuka Brave.</translation>
@@ -159,13 +164,17 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="4394049700291259645">Nonaktifkan</translation>
 <translation id="6469509880167172749">Secara otomatis mengirim analisis produk pribadi ke Brave</translation>
 <translation id="7090566321964540749">Info anonim ini hanya memungkinkan Brave memperkirakan penggunaan keseluruhan dari fitur tertentu.</translation>
-<translation id="1200956479506699688">Dompet Kripto sekarang tersedia di Brave. Anda tidak bisa menggunakan MetaMask dan Dompet Kripto secara bersamaan.</translation>
 <translation id="7583735190612229830">Atur agar Dompet Kripto berinteraksi dengan aplikasi ini dan lainnya yang serupa.</translation>
 <translation id="8337117349965899723">Gunakan Dompet Kripto</translation>
 <translation id="5756155765711979898">Gunakan MetaMask</translation>
 <translation id="6754134632841262799">ATUR</translation>
+<translation id="4552520379838695057">Maaf, halaman tersebut tidak ditemukan.</translation>
+<translation id="2609895996619941644">Apakah Anda ingin memeriksa apabila mungkin tersedia versi disimpan di Wayback Machine?</translation>
+<translation id="8053093028263274061">Maaf, tidak tersedia versi yang telah disimpan.</translation>
+<translation id="8517321676372639828">Periksa versi tersimpan</translation>
 <translation id="191143826155037518">Brave disediakan bagi Anda berdasarkan <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Lisensi Umum Mozilla 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) dan menyertakan <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>peranti lunak sumber terbuka<ph name="END_LINK_OSS">&lt;/a&gt;</ph> dengan berbagai lisensi lainnya.
         Anda dapat membaca <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>petunjuk cara mengunduh dan membangun sendiri<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> secara spesisik <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>kode sumber yang digunakan untuk membuat salinan ini<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
 <translation id="4474155171896946103">Bookmark semua tab...</translation>
 <translation id="2336228925368920074">Bookmark Semua Tab...</translation>
+<translation id="796831669370432378">Untuk menambah bookmark, klik tombol bookmark di sebelah bilah alamat</translation>
 </translationbundle>

@@ -101,7 +101,10 @@
 <translation id="8721331068159819483">與 macOS 相同</translation>
 <translation id="6786747875388722282">擴充功能</translation>
 <translation id="2896916411183256228">使用 WebTorrent 直接在瀏覽器顯示種子檔案。支援種子檔案和磁力連結。</translation>
-<translation id="5554028991651120544">在 Brave 內提供以太坊錢包和 Dapp 瀏覽器。</translation>
+<translation id="2356070529366658676">詢問</translation>
+<translation id="7701040980221191251">無</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="3905324891414560921">使用 Dapps 的 Web3 提供者</translation>
 <translation id="6554397389149987360">使用 Hangouts 元件來啟用畫面分享和其它瀏覽器功能。</translation>
 <translation id="1765684547504191670">使用媒體路由器元件以在瀏覽器中啟用 Chromecast。</translation>
 <translation id="9156965752763025780">你的變更將於下次重新啟動 Brave 時生效。</translation>
@@ -162,7 +165,7 @@
 <translation id="4394049700291259645">停用</translation>
 <translation id="6469509880167172749">自動傳送完全私密的產品分析給 Brave</translation>
 <translation id="7090566321964540749">此匿名資訊只會讓 Brave 評估特定功能的整題使用量。</translation>
-<translation id="1200956479506699688">Crypto Wallets 現在已在 Brave 上可用。您無法同時使用 MetaMask 與 Crypto Wallets。</translation>
+<translation id="9111960429693394744">您想要為 Dapps 使用 Brave 的加密錢包或 MetaMask 呢？</translation>
 <translation id="7583735190612229830">設定 Crypto Wallets 以與此應用程式和其他類似的應用程式互動。</translation>
 <translation id="8337117349965899723">使用 Crypto Wallets</translation>
 <translation id="5756155765711979898">使用 MetaMask</translation>

@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">Preferencias...</translation>
 <translation id="5801568494490449797">Preferencias</translation>
 <translation id="3677911431265050325">Solicitar sitio web móvil</translation>
+<translation id="236470849334943016">Los Términos del Servicio de Brave cambiarán el 31 de marzo</translation>
+<translation id="1032605640136438169">Revisa los nuevos términos</translation>
+<translation id="8712637175834984815">Listo</translation>
+<translation id="5007392906805964215">Ver</translation>
 <translation id="4408599188496843485">Ayuda</translation>
 <translation id="8378714024927312812">Gestionado por tu organización</translation>
 <translation id="7928836894214140642">Gestionado por <ph name="ENROLLMENT_DOMAIN"/></translation>
@@ -2439,7 +2443,6 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="7892963120252479610"><ph name="ORIGIN"/> podrá ver los archivos que estén en <ph name="FOLDERNAME"/> hasta que cierres esta pestaña</translation>
 <translation id="7201420661433230412">Ver archivos</translation>
 <translation id="3015639418649705390">Relanzar ahora</translation>
-<translation id="8712637175834984815">Listo</translation>
 <translation id="2783952358106015700">Usar la llave de seguridad con <ph name="APP_NAME"/></translation>
 <translation id="2446585455334014596"><ph name="APP_NAME"/> quiere verificar tu identidad</translation>
 <translation id="1567750922576943685">Verificar tu identidad ayuda a proteger tu información personal</translation>

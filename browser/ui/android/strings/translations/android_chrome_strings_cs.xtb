@@ -904,6 +904,7 @@ Chcete-toto nastavení změnit, <ph name="BEGIN_LINK"/>resetujte synchronizaci<p
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Odstranit jednu vybranou položku}few{Odstranit # vybrané položky}many{Odstranit # vybrané položky}other{Odstranit # vybraných položek}}</translation>
 <translation id="1283039547216852943">Klepnutím rozbalíte</translation>
 <translation id="5962718611393537961">Klepnutím sbalíte</translation>
+<translation id="3123734510202723619">Oznámení</translation>
 <translation id="8076492880354921740">Karty</translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{Vybráno: 1}few{Vybráno: #}many{Vybráno: #}other{Vybráno: #}}</translation>
 <translation id="6818926723028410516">Výběr položek</translation>

@@ -21,6 +21,7 @@
 <translation id="8926389886865778422">Ära enam küsi</translation>
 <translation id="4726634924419692905">Küsi, kui sait soovib Widevine’i arvutisse installida.</translation>
 <translation id="8760415064721320867">Tor'iga privaatne aken</translation>
+<translation id="8762452230727230396">Tor peida IP-aadressi külastatavate lehtede eest.</translation>
 <translation id="8053096063396012732">Installi Widevine</translation>
 <translation id="4840334696217618631">Taaskäivita Widevine lubamiseks brauser</translation>
 <translation id="8410111618231938546">Google Widevine on osa digitaalõiguste haldamise (DRM) süsteemist, mida Brave Software ei oma ega saa kontrollida. Google Widevine laaditakse alla Google'i serveritest, mitte meie omadest. See laaditakse alla ainult siis, kui annate selleks oma loa. Me ei soovita DRMi süsteemi kasutamist, kuid austame oma kasutajate valikut ja mõistame, et mõned Brave'i kasutajad soovivad kasutada teenuseid, kus seda vaja on.
@@ -91,6 +92,8 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="8502234992433094996">Kasuta tõukesõnumite saatmiseks Google’i teenuseid</translation>
 <translation id="3888068426966679906">Kaugsilumine</translation>
 <translation id="6645631466045614531">Ava Sync siit</translation>
+<translation id="6696935187608454456">Abi preemiad</translation>
+<translation id="2775956301559569472">Näita ajamasina viibet 404 veateatega lehtedel</translation>
 <translation id="1807246157184219062">Hele</translation>
 <translation id="2414886740292270097">Tume</translation>
 <translation id="1360441190790440400">Sama mis Linuxil</translation>
@@ -98,7 +101,9 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="8721331068159819483">Sama mis macOSil</translation>
 <translation id="6786747875388722282">Laiendused</translation>
 <translation id="2896916411183256228">Kasutab rakendust WebTorrent torrentite kuvamiseks otse brauseris. Toetab torrent-faile ja magnetlinke.</translation>
-<translation id="5554028991651120544">Pakub Brave'is Ethereumi rahakotti ja Dappi lehitsejat.</translation>
+<translation id="2356070529366658676">Küsi</translation>
+<translation id="7701040980221191251">Mitte ükski</translation>
+<translation id="1085027414516521238">MetaMask</translation>
 <translation id="6554397389149987360">Kasutab Hangouts-komponenti kuva jagamise ja muude funktsioonide aktiveerimiseks brauseris.</translation>
 <translation id="1765684547504191670">Kasutab meedia marsruuteri komponenti, et lubada brauseris Chromecast.</translation>
 <translation id="9156965752763025780">Teie muudatused jõustuvad järgmine kord, kui Bravei taaskäivitate.</translation>
@@ -159,13 +164,17 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="4394049700291259645">Keela</translation>
 <translation id="6469509880167172749">Saada täielikult privaatne tooteanalüüs automaatselt Brave’ile</translation>
 <translation id="7090566321964540749">See anonüümne teave võimaldab Brave’il ainult hinnata teatud funktsioonide üldist kasutamist.</translation>
-<translation id="1200956479506699688">Krüptorahakotid on nüüd Brave’is saadaval. Te ei saa MetaMaski ja krüptorahakotte samal ajal kasutada.</translation>
 <translation id="7583735190612229830">Seadistage krüptorahakotid suhtlema selle rakenduse ja teiste sarnaste rakendustega.</translation>
 <translation id="8337117349965899723">Kasuta krüptorahakotte</translation>
 <translation id="5756155765711979898">Kasuta MetaMaski</translation>
 <translation id="6754134632841262799">SEADISTA</translation>
+<translation id="4552520379838695057">Vabandust, seda lehte pole.</translation>
+<translation id="2609895996619941644">Soovite kontrollida, kas ajamasinas on salvestatud versioon?</translation>
+<translation id="8053093028263274061">Vabandust, ent salvestatud versiooni pole saadaval.</translation>
+<translation id="8517321676372639828">Otsige salvestatud versiooni</translation>
 <translation id="191143826155037518">Brave’i pakutakse teile <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla avaliku litsentsi 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) alusel ja see sisaldab <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>avatud lähtekoodiga tarkvara<ph name="END_LINK_OSS">&lt;/a&gt;</ph> erinevate teiste litsentside alusel.
         Saate lugeda <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>juhiseid selle kohta, kuidas laadida alla ja luua endale<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> spetsiifiline <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>lähtekood, mida kasutati selle koopia loomiseks<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
 <translation id="4474155171896946103">Lisa kõik vahelehed järjehoidjatesse...</translation>
 <translation id="2336228925368920074">Lisa kõik vahelehed järjehoidjatesse...</translation>
+<translation id="796831669370432378">Järjehoidja lisamiseks klõpsake aadressiriba kõrval järjehoidja nuppu.</translation>
 </translationbundle>

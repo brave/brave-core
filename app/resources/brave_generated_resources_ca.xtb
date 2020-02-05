@@ -21,6 +21,7 @@
 <translation id="8926389886865778422">No m'ho tornis a preguntar</translation>
 <translation id="4726634924419692905">Pregunta quan un lloc vulgui instal·lar Widevine al teu ordinador.</translation>
 <translation id="8760415064721320867">Finestra Privada amb Tor</translation>
+<translation id="8762452230727230396">Tor amaga la vostra adreça IP dels llocs que visiteu.</translation>
 <translation id="8053096063396012732">Instal·la Widevine</translation>
 <translation id="4840334696217618631">Reinicia el navegador per activar Widevine</translation>
 <translation id="8410111618231938546">Google Widevine és una part del codi de Gestió de Drets Digitals (DRM) que a Brave Software no tenim i no podem inspeccionar. El codi de Google Widevine es carrega dels servidors de Google, no dels nostres servidors. Es carrega només quan habiliteu aquesta opció. No encoratgem la utilització del DRM, però respectem l'elecció de l'usuari i sabem que a alguns usuaris de Brave els agradaria poder utilitzar els serveis que ho requereixen. 
@@ -92,6 +93,8 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="8502234992433094996">Useu els Serveis de Google per a rebre Notificacions Emergents</translation>
 <translation id="3888068426966679906">Depuració remota</translation>
 <translation id="6645631466045614531">Accedir a la sincronització a través de</translation>
+<translation id="6696935187608454456">Ajuda i Recomanacions</translation>
+<translation id="2775956301559569472">Mostra el missatge de la Wayback Machine a 404 pàgines</translation>
 <translation id="1807246157184219062">Clar</translation>
 <translation id="2414886740292270097">Fosc</translation>
 <translation id="1360441190790440400">Mateix que Linux</translation>
@@ -99,7 +102,9 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="8721331068159819483">Mateix que MacOS</translation>
 <translation id="6786747875388722282">Extensions</translation>
 <translation id="2896916411183256228">Fa servir WebTorrent per mostrar torrents directament al navegador. Accepta arxius de torrent i magnet links.</translation>
-<translation id="5554028991651120544">Aporta un moneder Ethereum i un navegador Dapp dins Brave.</translation>
+<translation id="2356070529366658676">Pregunta-ho</translation>
+<translation id="7701040980221191251">Cap</translation>
+<translation id="1085027414516521238">MetaMask</translation>
 <translation id="6554397389149987360">Fa servir un component de Hangouts per permetre que es comparteixi la pantalla i altres característiques al navegador.</translation>
 <translation id="1765684547504191670">Fa servir el component Media Router per habilitar Chromecast al navegador.</translation>
 <translation id="9156965752763025780">Els canvis s'aplicaran la propera vegada que reinicieu Brave.</translation>
@@ -160,13 +165,17 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="4394049700291259645">Desactiva</translation>
 <translation id="6469509880167172749">Envieu analítiques de productes completament privades a Brave automàticament</translation>
 <translation id="7090566321964540749">Aquesta informació anònima només permet a Brave d'estimar l'ús global de determinades característiques.</translation>
-<translation id="1200956479506699688">Els criptomoneders ja són disponibles a Brave. No pots fer servir MetaMask i criptomoneders al mateix temps.</translation>
 <translation id="7583735190612229830">Estableix criptomoneders per interactuar amb aquesta app i d'altres similars.</translation>
 <translation id="8337117349965899723">Fes servir un criptomoneder</translation>
 <translation id="5756155765711979898">Fes servir MetaMask</translation>
 <translation id="6754134632841262799">CONFIGURACIÓ</translation>
+<translation id="4552520379838695057">Ho sentim, no es pot trobar aquesta pàgina.</translation>
+<translation id="2609895996619941644">Voleu comprocar si hi ha una versió guardadad disponible a la Wayback Machine?</translation>
+<translation id="8053093028263274061">Ho sentim, no hi ha cap versió guardada disponible.</translation>
+<translation id="8517321676372639828">Busca una versió guardada</translation>
 <translation id="191143826155037518">Pots accedir a Brave a través de <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) and includes <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>open source software<ph name="END_LINK_OSS">&lt;/a&gt;</ph> under a variety of other licenses.
         You can read <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>instructions on how to download and build for yourself<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> the specific <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>source code used to create this copy<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
 <translation id="4474155171896946103">Afegeix totes les pestanyes a les adreces d'interès...</translation>
 <translation id="2336228925368920074">Afegeix totes les pestanyes a les adreces d'interès...</translation>
+<translation id="796831669370432378">Per a afegir un marcador, cliqueu el botó del marcador al costat de la barra d'adreces</translation>
 </translationbundle>

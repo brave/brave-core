@@ -904,6 +904,7 @@ Para cambiar esta opción, <ph name="BEGIN_LINK"/>restablece la sincronización<
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Quitar 1 elemento seleccionado}other{Quitar # elementos seleccionados}}</translation>
 <translation id="1283039547216852943">Toca para ampliar</translation>
 <translation id="5962718611393537961">Toca para ocultar</translation>
+<translation id="3123734510202723619">Anuncios</translation>
 <translation id="8076492880354921740">Pestañas</translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 seleccionado}other{# seleccionados}}</translation>
 <translation id="6818926723028410516">Seleccionar elementos</translation>

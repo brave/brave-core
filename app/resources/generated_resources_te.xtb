@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">ప్రాధాన్యతలు...</translation>
 <translation id="5801568494490449797">ప్రాధాన్యతలు</translation>
 <translation id="3677911431265050325">మొబైల్ సైట్‌ను అభ్యర్థించండి</translation>
+<translation id="236470849334943016">Brave యొక్క సేవా నిబంధనలు మార్చి 31న మారుతున్నాయి</translation>
+<translation id="1032605640136438169">దయచేసి కొత్త నిబంధనలను సమీక్షించండి</translation>
+<translation id="8712637175834984815">అర్థమైంది</translation>
+<translation id="5007392906805964215">సమీక్షించు</translation>
 <translation id="4408599188496843485">స&amp;హాయం</translation>
 <translation id="8378714024927312812">మీ సంస్థ ద్వారా నిర్వహించబడుతున్నవి</translation>
 <translation id="7928836894214140642"><ph name="ENROLLMENT_DOMAIN"/> ద్వారా నిర్వహించబడుతోంది</translation>
@@ -2430,7 +2434,6 @@
 <translation id="7892963120252479610">మీరు ఈ ట్యాబ్‌ను మూసేంతవరకు <ph name="ORIGIN"/> ఫైల్‌లను <ph name="FOLDERNAME"/>లో చూడగలదు</translation>
 <translation id="7201420661433230412">ఫైల్‌లను వీక్షించండి</translation>
 <translation id="3015639418649705390">ఇప్పుడే పునఃప్రారంభించు</translation>
-<translation id="8712637175834984815">అర్థమైంది</translation>
 <translation id="2783952358106015700"><ph name="APP_NAME"/>తో మీ భద్రతా కీని ఉపయోగించండి</translation>
 <translation id="2446585455334014596">మీ గుర్తింపుని ధృవీకరించాలని <ph name="APP_NAME"/> కోరుతోంది</translation>
 <translation id="1567750922576943685">మీ గుర్తింపును ధృవీకరించడం ద్వారా మీ వ్యక్తిగత సమాచారాన్ని భద్రంగా కాపాడుకోవచ్చు</translation>

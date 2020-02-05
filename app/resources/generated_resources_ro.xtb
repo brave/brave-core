@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">Preferințe...</translation>
 <translation id="5801568494490449797">Preferințe</translation>
 <translation id="3677911431265050325">Solicită site mobil</translation>
+<translation id="236470849334943016">Termenii și condițiile Brave se modifică la 31 martie</translation>
+<translation id="1032605640136438169">Consultă noile condiții</translation>
+<translation id="8712637175834984815">Am înțeles</translation>
+<translation id="5007392906805964215">Examinează</translation>
 <translation id="4408599188496843485">&amp;Ajutor</translation>
 <translation id="8378714024927312812">Gestionat de organizația ta</translation>
 <translation id="7928836894214140642">Gestionat de <ph name="ENROLLMENT_DOMAIN"/></translation>
@@ -2435,7 +2439,6 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="7892963120252479610"><ph name="ORIGIN"/> va putea vedea fișierele din <ph name="FOLDERNAME"/> până când închizi această filă</translation>
 <translation id="7201420661433230412">Afișați fișierele</translation>
 <translation id="3015639418649705390">Relansează acum</translation>
-<translation id="8712637175834984815">Am înțeles</translation>
 <translation id="2783952358106015700">Folosește cheia de securitate cu <ph name="APP_NAME"/></translation>
 <translation id="2446585455334014596"><ph name="APP_NAME"/> dorește să-ți confirme identitatea</translation>
 <translation id="1567750922576943685">Confirmarea identității te ajută să-ți protejezi informațiile cu caracter personal</translation>

@@ -21,6 +21,7 @@
 <translation id="8926389886865778422">Nisiulizwe tena</translation>
 <translation id="4726634924419692905">Uliza wakati tovuti inataka kusakinisha Widevine kwenye kompyuta yako.</translation>
 <translation id="8760415064721320867">Dirisha Binafsi na Tor</translation>
+<translation id="8762452230727230396">Tor huficha anwani yako ya IP kutoka kwenye tovuti unazotembelea.</translation>
 <translation id="8053096063396012732">Sanidi Widevine</translation>
 <translation id="4840334696217618631">Fungua Upya Kivinjari ili kuwezesha Widevine</translation>
 <translation id="8410111618231938546">Google Widevine ni kipande cha msimbo wa Usimamizi wa Haki za Kidijiti (DRM) ambao sisi hapa Brave Software hatuumiliki na hatuwezi kuukagua. Msimbo wa Google Widevine inapakiwa kutoka katika seva za Google, si kutoka katika seva zetu. Hupakiwa pale tu ambapo unawezesha chaguo hili. Hatupendekezi matumizi ya DRM, lakini tunaheshimu uchaguzi wa mtumiaji na tunakiri kwamba baadhi ya watumiaji wa Brave wangependa kutumia huduma ambazo zinaitaka.
@@ -91,6 +92,8 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="8502234992433094996">Tumia Huduma za Google kwa Ujumbe wa Simu</translation>
 <translation id="3888068426966679906">Utatuaji hitilafu wa mbali</translation>
 <translation id="6645631466045614531">Fikia Oanisha kupitia</translation>
+<translation id="6696935187608454456">Vidokezo vya Usaidizi</translation>
+<translation id="2775956301559569472">Onyesha kidokezo cha Wayback Machine kwenye kurasa 404</translation>
 <translation id="1807246157184219062">Mwanga</translation>
 <translation id="2414886740292270097">Giza</translation>
 <translation id="1360441190790440400">Sawa na Linux</translation>
@@ -98,7 +101,9 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="8721331068159819483">Sawa na MacOS</translation>
 <translation id="6786747875388722282">Viendelezi</translation>
 <translation id="2896916411183256228">Hutumia Torenti ya Tovuti kuonyesha torenti moja kwa moja kwenye kisakuzi. Huwezesha mafaili ya torenti na viungo vya sumaku.</translation>
-<translation id="5554028991651120544">Hutoa pochi ya Ethereum na kivinjari cha Dapp ndani ya Brave.</translation>
+<translation id="2356070529366658676">Uliza</translation>
+<translation id="7701040980221191251">Hamna</translation>
+<translation id="1085027414516521238">MetaMask</translation>
 <translation id="6554397389149987360">Hutumia vipengele vya Hangouts ili kuwezesha kushiriki skrini na vipengele vingine kwenye kisakuzi.</translation>
 <translation id="1765684547504191670">Hutumia kijenzi cha Media Router kuwasha Chromecast katika kivinjari</translation>
 <translation id="9156965752763025780">Mabadiliko yako yataanza kufanya kazi wakati ujao utakapozindua upya Brave.</translation>
@@ -160,13 +165,17 @@ Zawadi za Avatar Paladin</translation>
 <translation id="4394049700291259645">Zima</translation>
 <translation id="6469509880167172749">Tuma kiotomatiki uchanganuzi wa bidhaa wa faragha kabisa kwa Brave</translation>
 <translation id="7090566321964540749">Taarifa hii isiyombainisha mtu huiruhusu Brave kukadiria matumizi ya jumla ya vipengele fulani.</translation>
-<translation id="1200956479506699688">Crypto Wallets sasa inapatikana katika Brave. Huwezi kutumia MetaMask na Crypto Wallets kwa wakati mmoja.</translation>
 <translation id="7583735190612229830">Weka Crypto Wallets ili kutumia programu hii na nyingine kama hiyo.</translation>
 <translation id="8337117349965899723">Tumia Crypto Wallets</translation>
 <translation id="5756155765711979898">Tumia MetaMask</translation>
 <translation id="6754134632841262799">USANIDI</translation>
+<translation id="4552520379838695057">Samahani, ukurasa huo haupo.</translation>
+<translation id="2609895996619941644">Je, unataka kuangalia ikiwa toleo lililohifadhiwa linapatikana kwenye Wayback Machine?</translation>
+<translation id="8053093028263274061">Samahani, hakuna toleo lililohifadhiwa.</translation>
+<translation id="8517321676372639828">Angalia toleo lililohifadhiwa</translation>
 <translation id="191143826155037518">Brave inapatikana kwako chini ya <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Leseni ya Umma ya Mozilla 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) na inajumuisha <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>programu huria<ph name="END_LINK_OSS">&lt;/a&gt;</ph> chini ya leseni nyingine mbalimbali.
         Unaweza kusoma <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>maagizo ya jinsi ya kupakua na kujiundia<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> msimbo  mahususi wa chanzo <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>uliotumiwa kuunda nakala hii<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
 <translation id="4474155171896946103">Alamisha vichupo vyote...</translation>
 <translation id="2336228925368920074">Alamisha Vichupo Vyote...</translation>
+<translation id="796831669370432378">Ili kuongeza alamisho, bofya kitufe cha alamisho karibu na sehemu ya anwani</translation>
 </translationbundle>

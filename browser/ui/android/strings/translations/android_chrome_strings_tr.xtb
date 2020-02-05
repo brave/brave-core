@@ -904,6 +904,7 @@ Bu ayarı değiştirmek için <ph name="BEGIN_LINK"/>senkronizasyonu sıfırlay�
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{1 seçili öğeyi kaldır}other{# seçili öğeyi kaldır}}</translation>
 <translation id="1283039547216852943">Genişletmek için dokunun</translation>
 <translation id="5962718611393537961">Daraltmak için dokunun</translation>
+<translation id="3123734510202723619">Duyurular</translation>
 <translation id="8076492880354921740">Sekmeler</translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 öğe seçildi}other{# öğe seçildi}}</translation>
 <translation id="6818926723028410516">Öğe seçin</translation>

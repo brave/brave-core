@@ -21,6 +21,7 @@
 <translation id="8926389886865778422">दोबारा न पूछें</translation>
 <translation id="4726634924419692905">जब कोई साइट आपके कंप्यूटर पर Widevine स्थापित करना चाहती है तब पूछें</translation>
 <translation id="8760415064721320867">टोर के साथ प्राइवेट विंडो</translation>
+<translation id="8762452230727230396">Tor आपके आईपी एड्रेस को आपके द्वारा देखी जाने वाली साइटों से छुपाता है।</translation>
 <translation id="8053096063396012732">Widevine इनस्टॉल करें</translation>
 <translation id="4840334696217618631">Widevine को सक्रिय करने के लिए ब्राउज़र को पुनः आरम्भ करें</translation>
 <translation id="8410111618231938546">Google Widevine डिजिटल अधिकार प्रबंधन (DRM) कोड का हिस्सा है जिसका हम Brave Software न तो मालिकत्व रखते हैं और न ही जांच कर सकते हैं| Google Widevine के कोड Google के सर्वर से संचालित होते हैं, हमारे सर्वर से नहीं| ये तभी काम करते हैं जब आप इस विकल्प को चुनते हैं| हम DRM के प्रयोग को हतोत्साहित करते हैं, पर हम यूजर के चयन का सम्मान करते हैं और समझते हैं कि  कुछ Brave यूजर्स ऐसी सेवाओं जहाँ इसकी ज़रूरत है का प्रयोग करते हैं| 
@@ -92,6 +93,8 @@
 <translation id="8502234992433094996">पुश मैसेजिंग के लिए Google सेवाओं का उपयोग करें</translation>
 <translation id="3888068426966679906">रिमोट डिबगिंग</translation>
 <translation id="6645631466045614531">के द्वारा सिंक एक्सेस करें</translation>
+<translation id="6696935187608454456">सहायक टिप्स</translation>
+<translation id="2775956301559569472">404 पेजों पर वेबैक मशीन शीघ्र दिखाएं</translation>
 <translation id="1807246157184219062">मन्द</translation>
 <translation id="2414886740292270097">गाढ़ा</translation>
 <translation id="1360441190790440400">Linux के जैसे ही</translation>
@@ -99,7 +102,9 @@
 <translation id="8721331068159819483">MacOS के जैसे ही</translation>
 <translation id="6786747875388722282">एक्सटेंशन</translation>
 <translation id="2896916411183256228">टोरेंट को सीधे अपने ब्राउज़र में देखने के लिए WebTorrent का उपयोग करें। टोरेंट फाइलों और मैग्नेट लिंक के लिए समर्थित।</translation>
-<translation id="5554028991651120544">Brave के अंदर एक इथेरियम वॉलेट और Dapp ब्राउज़र प्राप्त होते हैं।</translation>
+<translation id="2356070529366658676">पूछें</translation>
+<translation id="7701040980221191251">कुछ नहीं</translation>
+<translation id="1085027414516521238">MetaMask</translation>
 <translation id="6554397389149987360">ब्राउज़र में स्क्रीन साझा करने और अन्य सुविधाओं के लिए हैंगऑउट के घटकों का उपयोग करें।</translation>
 <translation id="1765684547504191670">ब्राउज़र में क्रोमकास्ट को सक्रीय करने के लिए मीडिया राउटर घटक का उपयोग करता है।</translation>
 <translation id="9156965752763025780">अगली बार आपके द्वारा क्रोमियम पुन: लॉन्‍च करने पर आपके परिवर्तन प्रभावी होंगे.</translation>
@@ -160,13 +165,17 @@
 <translation id="4394049700291259645">बंद करें</translation>
 <translation id="6469509880167172749">पूरी तरह से निजी प्रोडक्ट एनालिटिक्स को स्वचालित रूप से Brave को भेजें</translation>
 <translation id="7090566321964540749">यह अज्ञात जानकारी केवल Brave को कुछ फ़ीचर्स के समग्र उपयोग का अनुमान लगाने देती है.</translation>
-<translation id="1200956479506699688">अब Brave में क्रिप्टो वॉलेट उपलब्ध हैं। आप एक ही समय में मेटामास्क और क्रिप्टो वॉलेट का उपयोग नहीं कर सकते।</translation>
 <translation id="7583735190612229830">इस ऐप और इसके जैसे अन्य ऐप के साथ जुड़ने के लिए क्रिप्टो वॉलेट सेट करें।</translation>
 <translation id="8337117349965899723">क्रिप्टो वॉलेट का उपयोग करें</translation>
 <translation id="5756155765711979898">मेटामास्क का उपयोग करें</translation>
 <translation id="6754134632841262799">सेटअप</translation>
+<translation id="4552520379838695057">क्षमा करें, वह पेज गायब है।</translation>
+<translation id="2609895996619941644">क्या आप जांचना चाहते हैं कि क्या वेबैक मशीन पर सेव किया गया संस्करण उपलब्ध है?</translation>
+<translation id="8053093028263274061">क्षमा करें, कोई सेव किया गया संस्करण उपलब्ध नहीं है।</translation>
+<translation id="8517321676372639828">सेव किये गए संस्करण के लिए जांच करें</translation>
 <translation id="191143826155037518">Brave आपको  <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) के तहत उपलब्ध कराया जाता है और इसमें कई अन्य लाइसेंसों के तहत ओपन सोर्स सॉफ़्टवेयर <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>open source software<ph name="END_LINK_OSS">&lt;/a&gt;</ph> शामिल होते हैं।
 आप इस प्रतिलिपि<ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph> को बनाने के लिए उपयोग किए गए विशिष्ट <ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>सोर्स कोड को डाउनलोड करने और स्वयं के लिए निर्माण करने के<ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph> निर्देश <ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph>पढ़ सकते हैं।</translation>
 <translation id="4474155171896946103">सभी टैब बुकमार्क करें...</translation>
 <translation id="2336228925368920074">सभी टैब बुकमार्क करें...</translation>
+<translation id="796831669370432378">बुकमार्क जोड़ने के लिए, एड्रेस बार के आगे बुकमार्क बटन पर क्लिक करें</translation>
 </translationbundle>

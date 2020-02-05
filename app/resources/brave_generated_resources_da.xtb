@@ -21,6 +21,7 @@
 <translation id="8926389886865778422">Spørg ikke igen</translation>
 <translation id="4726634924419692905">Spørg når en side vil installere Widevine på din computer.</translation>
 <translation id="8760415064721320867">Privat vindue med Tor</translation>
+<translation id="8762452230727230396">Tor skjuler din IP-adresse fra de sider du besøger.</translation>
 <translation id="8053096063396012732">Installér Widevine</translation>
 <translation id="4840334696217618631">Genstart browser for at slå Widevine til</translation>
 <translation id="8410111618231938546">Google Widevine er en del af Digital Rights Management (DRM)-koden, som vi på Brave Software ikke ejer og ikke kan inspicere. Google Widevine-koden indlæses fra Google-servere, ikke fra vores servere. Den indlæses kun, når du aktiverer denne mulighed. Vi fraråder brugen af DRM, men vi respekterer brugernes valg og anerkender at nogle Brave-brugere ønsker at bruge tjenester der kræver det.
@@ -92,6 +93,8 @@ vindue med Tor</translation>
 <translation id="8502234992433094996">Brug Google-tjenester til Push-beskeder</translation>
 <translation id="3888068426966679906">Fjern-fejlfinding</translation>
 <translation id="6645631466045614531">Få Adgang til Synkronisering via</translation>
+<translation id="6696935187608454456">Hjælpdonationer</translation>
+<translation id="2775956301559569472">Vis Wayback Machine-forespørgsel på 404-sider</translation>
 <translation id="1807246157184219062">Lys</translation>
 <translation id="2414886740292270097">Mørk</translation>
 <translation id="1360441190790440400">Samme som Linux</translation>
@@ -99,7 +102,9 @@ vindue med Tor</translation>
 <translation id="8721331068159819483">Samme som macOS</translation>
 <translation id="6786747875388722282">Internetadresser</translation>
 <translation id="2896916411183256228">Bruger WebTorrent til at vise torrents direkte i browseren. Understøtter torrent-filer og magnetlinks.</translation>
-<translation id="5554028991651120544">Giver en Ethereum tegnebog og Dapp browser i Brave.</translation>
+<translation id="2356070529366658676">Spørg</translation>
+<translation id="7701040980221191251">Ingen</translation>
+<translation id="1085027414516521238">MetaMask\n</translation>
 <translation id="6554397389149987360">Bruger Hangouts-komponent til at aktivere skærmdeling samt andre browserfunktioner.</translation>
 <translation id="1765684547504191670">Bruger Media Router-komponent til at aktivere Chromecast i browseren.</translation>
 <translation id="9156965752763025780">Dine ændringer træder i kraft, næste gang du genstarter Brave.</translation>
@@ -160,13 +165,17 @@ vindue med Tor</translation>
 <translation id="4394049700291259645">Deaktiver</translation>
 <translation id="6469509880167172749">Send automatisk fuldstændig private produktanalyser til Brave</translation>
 <translation id="7090566321964540749">Disse anonyme informationer giver kun Brave tilladelse til at anslå det generelle forbrug af visse funktioner.</translation>
-<translation id="1200956479506699688">Krypto wallets er nu tilgængelige i Brave. Du kan ikke bruge MetaMask og krypto wallets samtidigt.</translation>
 <translation id="7583735190612229830">Sæt dine krypto wallets op til at interagere med denne app og andre som den</translation>
 <translation id="8337117349965899723">Brug Kryptowallet</translation>
 <translation id="5756155765711979898">Brug MetaMask</translation>
 <translation id="6754134632841262799">OPSÆTNING</translation>
+<translation id="4552520379838695057">Beklager, den side mangler.</translation>
+<translation id="2609895996619941644">Ønsker du at tjekke om en gemt version er tilgængelig på Wayback Machine?</translation>
+<translation id="8053093028263274061">Beklager, der er ingen gemt version til rådighed.</translation>
+<translation id="8517321676372639828">Tjek efter gemt version</translation>
 <translation id="191143826155037518">Brave bliver gjort tilgængelig for dig under <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) og inkluderer <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph> open-source software <ph name="END_LINK_OSS">&lt;/a&gt;</ph> under forskellige andre licensaftaler.
 DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>instruktioner om hvordan du downloader og bygger selv<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>den kildekode som bruges til at lave denne kopi<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
 <translation id="4474155171896946103">Tilføj alle faner som bogmærker...</translation>
 <translation id="2336228925368920074">Tilføj alle faner som bogmærker...</translation>
+<translation id="796831669370432378">Klik på bogmærkeknappen for at tilføje et bogmærke ved siden af adresselinjen</translation>
 </translationbundle>

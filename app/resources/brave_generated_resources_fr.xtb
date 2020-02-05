@@ -21,6 +21,7 @@
 <translation id="8926389886865778422">Ne plus afficher ce message</translation>
 <translation id="4726634924419692905">Demandez quand un site veut installer Widevine sur votre ordinateur.</translation>
 <translation id="8760415064721320867">Navigation privée avec Tor</translation>
+<translation id="8762452230727230396">Tor cache votre adresse IP sur les sites que vous visitez.</translation>
 <translation id="8053096063396012732">Installer Widevine</translation>
 <translation id="4840334696217618631">Redémarrez le navigateur pour activer Widevine</translation>
 <translation id="8410111618231938546">Google Widevine fait partie du code de Gestion des droits numériques (GDN) que nous, Brave Software, ne pouvons pas inspecter et dont nous ne sommes pas propriétaires. Le code de Google Widevine est téléchargé à partir des serveurs de Google, et non de nos serveurs. Il n'est téléchargé que lorsque vous activez cette option. Nous n'encourageons pas l'utilisation de GDN, mais respectons le choix de l'utilisateur et reconnaissons que certains utilisateurs de Brave souhaiteraient utiliser des services pour lesquels cela est nécessaire.
@@ -91,6 +92,8 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="8502234992433094996">Utilisez les services Google pour les messages push</translation>
 <translation id="3888068426966679906">Débogage à distance</translation>
 <translation id="6645631466045614531">Accédez à la synchronisation via</translation>
+<translation id="6696935187608454456">Conseils d'utilisation</translation>
+<translation id="2775956301559569472">Afficher l'invite Wayback Machine sur les pages 404</translation>
 <translation id="1807246157184219062">Léger</translation>
 <translation id="2414886740292270097">Sombre</translation>
 <translation id="1360441190790440400">Identique à Linux</translation>
@@ -98,7 +101,9 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="8721331068159819483">Identique à macOS</translation>
 <translation id="6786747875388722282">Extensions</translation>
 <translation id="2896916411183256228">Utilise WebTorrent pour afficher les torrents directement dans le navigateur. Compatible avec les fichiers torrent et les liens magnétiques.</translation>
-<translation id="5554028991651120544">Fournit un portefeuille Ethereum et un navigateur Dapp dans Brave</translation>
+<translation id="2356070529366658676">Demander</translation>
+<translation id="7701040980221191251">Aucun</translation>
+<translation id="1085027414516521238">MetaMask</translation>
 <translation id="6554397389149987360">Utilise le composant Hangouts pour activer le partage d'écran et d'autres fonctionnalités dans le navigateur.</translation>
 <translation id="1765684547504191670">Utilise le routeur média pour activer Chromecast dans le navigateur.</translation>
 <translation id="9156965752763025780">Vos modifications seront prises en compte au prochain redémarrage de Brave.</translation>
@@ -159,13 +164,17 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="4394049700291259645">Désactiver</translation>
 <translation id="6469509880167172749">Envoyez automatiquement des analyses de produits entièrement privées à Brave</translation>
 <translation id="7090566321964540749">Ces informations anonymes permettent seulement à Brave d'estimer l'utilisation globale de certaines fonctionnalités.</translation>
-<translation id="1200956479506699688">Les portefeuilles de crypto-monnaies sont maintenant disponibles chez Brave. Vous ne pouvez pas utiliser MetaMask et les portefeuilles de crypto-monnaies en même temps.</translation>
 <translation id="7583735190612229830">Configurez les portefeuilles de crypto-monnaies pour interagir avec cette application et d'autres applications similaires.</translation>
 <translation id="8337117349965899723">Utiliser des portefeuilles de crypto-monnaies</translation>
 <translation id="5756155765711979898">Utiliser MetaMask</translation>
 <translation id="6754134632841262799">CONFIGURATION</translation>
+<translation id="4552520379838695057">Désolé, cette page est manquante.</translation>
+<translation id="2609895996619941644">Voulez-vous vérifier si une version enregistrée est disponible sur la Wayback Machine ?</translation>
+<translation id="8053093028263274061">Désolé, il n'y a aucune version enregistrée disponible.</translation>
+<translation id="8517321676372639828">Vérifier la version enregistrée</translation>
 <translation id="191143826155037518">Brave est mis à votre disposition sous la <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>licence publique Mozilla 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) et comprend <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>des logiciels libres<ph name="END_LINK_OSS">&lt;/a&gt;</ph> sous une variété d'autres licences.
         Vous pouvez lire <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>des instructions sur la façon de télécharger et de compiler vous-même<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> le code source spécifique <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>utilisé pour créer cette copie<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
 <translation id="4474155171896946103">Ajouter tous les onglets aux favoris...</translation>
 <translation id="2336228925368920074">Ajouter tous les onglets aux favoris...</translation>
+<translation id="796831669370432378">Pour ajouter un signet, cliquez sur le bouton signet à côté de la barre d'adresse</translation>
 </translationbundle>
