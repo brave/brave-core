@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/website/SingleWebsiteSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/website/SingleWebsiteSettings.java
+index 63e57af3ff07e712c82c10d650e50a897eeedd42..7c40ef42d4ed00c0e9b17a4d88a9cbdae6e79e33 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/settings/website/SingleWebsiteSettings.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/website/SingleWebsiteSettings.java
+@@ -46,7 +46,7 @@ import java.util.Set;
+ /**
+  * Shows the permissions and other settings for a particular website.
+  */
+-public class SingleWebsiteSettings extends PreferenceFragmentCompat
++public class SingleWebsiteSettings extends org.chromium.chrome.browser.settings.BravePreferenceFragment
+         implements Preference.OnPreferenceChangeListener, Preference.OnPreferenceClickListener {
+     // SingleWebsiteSettings expects either EXTRA_SITE (a Website) or
+     // EXTRA_SITE_ADDRESS (a WebsiteAddress) to be present (but not both). If
