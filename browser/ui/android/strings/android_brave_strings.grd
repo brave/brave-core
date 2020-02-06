@@ -76,6 +76,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
     <file lang="fi" path="translations/android_brave_strings_fi.xtb" />
     <file lang="fil" path="translations/android_brave_strings_fil.xtb" />
     <file lang="fr" path="translations/android_brave_strings_fr.xtb" />
+    <file lang="fr-CA" path="translations/android_brave_strings_fr-CA.xtb" />
     <file lang="gu" path="translations/android_brave_strings_gu.xtb" />
     <file lang="hi" path="translations/android_brave_strings_hi.xtb" />
     <file lang="hr" path="translations/android_brave_strings_hr.xtb" />
@@ -84,8 +85,8 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
     <file lang="it" path="translations/android_brave_strings_it.xtb" />
     <file lang="iw" path="translations/android_brave_strings_iw.xtb" />
     <file lang="ja" path="translations/android_brave_strings_ja.xtb" />
-    <file lang="ko" path="translations/android_brave_strings_ko.xtb" />
     <file lang="kn" path="translations/android_brave_strings_kn.xtb" />
+    <file lang="ko" path="translations/android_brave_strings_ko.xtb" />
     <file lang="lt" path="translations/android_brave_strings_lt.xtb" />
     <file lang="lv" path="translations/android_brave_strings_lv.xtb" />
     <file lang="ml" path="translations/android_brave_strings_ml.xtb" />

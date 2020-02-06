@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">Προτιμήσεις</translation>
 <translation id="5801568494490449797">Προτιμήσεις</translation>
 <translation id="3677911431265050325">Αίτηση ιστοτόπου για κινητά</translation>
+<translation id="236470849334943016">Οι Όροι Παροχής Υπηρεσιών του Brave αλλάζουν στις 31 Μαρτίου</translation>
+<translation id="1032605640136438169">Ελέγξτε τους νέους όρους.</translation>
+<translation id="8712637175834984815">Κατάλαβα!</translation>
+<translation id="5007392906805964215">Έλεγχος</translation>
 <translation id="4408599188496843485">Β&amp;οήθεια</translation>
 <translation id="8378714024927312812">Διαχειριζόμενο από τον οργανισμό σας</translation>
 <translation id="7928836894214140642">Διαχείριση από <ph name="ENROLLMENT_DOMAIN"/></translation>
@@ -2434,7 +2438,6 @@
 <translation id="7892963120252479610">Ο ιστότοπος <ph name="ORIGIN"/> θα μπορεί να δει τα αρχεία στον φάκελο <ph name="FOLDERNAME"/> μέχρι να κλείσετε αυτήν την καρτέλα</translation>
 <translation id="7201420661433230412">Προβολή αρχείων</translation>
 <translation id="3015639418649705390">Επανεκκίνηση τώρα</translation>
-<translation id="8712637175834984815">Κατάλαβα!</translation>
 <translation id="2783952358106015700">Χρήση του κλειδιού ασφαλείας σας με την εφαρμογή <ph name="APP_NAME"/></translation>
 <translation id="2446585455334014596">Η εφαρμογή <ph name="APP_NAME"/> θέλει να επαληθεύσει την ταυτότητά σας</translation>
 <translation id="1567750922576943685">Η επαλήθευση της ταυτότητάς σας συμβάλλει στην προστασία των προσωπικών στοιχείων σας</translation>

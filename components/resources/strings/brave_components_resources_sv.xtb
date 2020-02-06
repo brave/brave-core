@@ -17,15 +17,17 @@
 <translation id="7100907433458266664">dag</translation>
 <translation id="4971389353431353387">dagar</translation>
 <translation id="8427933533533814946">Foto av</translation>
+<translation id="7108338896283013870">Dölj</translation>
 <translation id="7115515527894388910">Ändra inställningar</translation>
 <translation id="7606029853066610626">Visa och hantera bokmärken</translation>
 <translation id="5550994254534676787">Visa webbhistorik</translation>
 <translation id="1742484101357469636">Inställningar</translation>
-<translation id="8320281346741574991">Visa bakgrundsbild</translation>
+<translation id="5783793537552649286">Visa bakgrundsbild</translation>
 <translation id="7275773481201277457">Visa Brave-statistik</translation>
 <translation id="6836061097810262923">Visa klockan</translation>
 <translation id="8643377320501056697">Visa populäraste webbplatser</translation>
 <translation id="3446024864193919737">Visa Brave Rewards</translation>
+<translation id="3870475560794762985">Visa sponsrade bilder</translation>
 <translation id="6165508094623778733">Läs mer</translation>
 <translation id="8730621377337864115">Klart</translation>
 <translation id="6248988683584659830">Sök i inställningar</translation>
@@ -82,8 +84,11 @@
 <translation id="7954950242989581218">Surfa säkert och tryggt</translation>
 <translation id="2188651882929633653">Brave Shields blockerar de läskiga grejerna som försöker spåra dig på nätet, inklusive största delen av all reklam. Ställ in Shields som "nere" om en webbplats inte verkar fungera. Brave använder <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>helt privat produktanalys <ph name="END_LINK_P3A">&lt;/a&gt;</ph> för att uppskatta den sammanlagda användningen av vissa funktioner. Du kan stänga av detta i <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Annonser</translation>
+<translation id="2364310432103707426">Tjäna {{currency}} genom att se Brave-annonser. Annonser som visas utgår från dina intressen, som kan tydas från ditt sökbeteende. Inga personuppgifter eller någon sökhistorik lämnar någonsin din sökmotor.</translation>
 <translation id="6112368337882254910">Bidra automatiskt</translation>
 <translation id="3742599705619405136">Ett automatiskt sätt att stödja utgivare och contentskapare. Ställ in en månatlig betalning och surfa som vanligt. De Braveverifierade webbplatserna du besöker kommer att ta emot dina bidrag automatiskt, baserat på din uppmärksamhet som den mätts av Brave.</translation>
+<translation id="8949527283651381130">Tillåt upptäckt av annonsomvandling</translation>
+<translation id="2184191362610545393">Detta ger anonym information till Brave att det förekommit respons på en annons på denna sökmotor. Aktivering av detta ökar förtjänsterna.</translation>
 <translation id="20281847067919078">Beräknade väntande belöningar</translation>
 <translation id="8593551638387217772">Nästa betalningsdatum</translation>
 <translation id="319209088187794725">Annonsaviseringar mottagna den här månaden</translation>
@@ -313,7 +318,10 @@
 <translation id="2834888581291358924">Om ditt saldo inte räcker till för att täcka den sammanlagda summan av automatiska och månatliga bidrag så hoppas dessa betalningar över för perioden.</translation>
 <translation id="3138528956349114724">Fästa webbplatser är nu</translation>
 <translation id="2337632028350283479">Så här fungerar månatliga bidrag:</translation>
+<translation id="6457273203091513039">Månatliga bidrag kommer inte från dina Autobidrag. De är separerade.</translation>
 <translation id="9099396904827413228">Varje webbplats betalas en fast summa varje månad.</translation>
+<translation id="5051110132941857169">Månatliga bidrag betalas ut på en gång, varje månad. Om du använder Autobidrag, lämnas tips ut samtidigt som ditt månatliga bidrag.</translation>
+<translation id="3374483782662414143">Du kan ta bort valfri sida som får månatligt bidrag inifrån tipspanelen.</translation>
 <translation id="5082474983463379713">Vänligen observera:</translation>
 <translation id="1430915738399379752">Skriv ut</translation>
 <translation id="135956957367307069">Förfrågan behandlas. Vänta.</translation>
@@ -337,6 +345,7 @@
 <translation id="4699702339303280827">Du kan alltid använda denna nyckel för att få tillbaka din plånbok om något händer din webbläsare eller dator. Se dock till att skydda den #8212; den som kommer åt denna nyckel kan stjäla din plånbok. Det är troligen säkrast att skriva ner den på ett papper eller spara den på ett annat ställe där du förvarar viktig information.</translation>
 <translation id="7354412786785889047">Du kan stödja denna contentskapare genom att skicka dricks. Det är ett sätt att tacka för bra innehåll. Verifierade skapare får sin dricks utbetald under varje kalendermånads första vecka.</translation>
 <translation id="972846019534552366">Du kan också ställa in ett månatligt bidrag i panelen Brave belöningar.</translation>
+<translation id="121079855621707240">Du kan stödja denna innehållsskapare genom att registrera ett månatligt bidrag. Det är ett sätt att tacka dem för att de skapar bra innehåll löpande. Verifierade skapare får betalt för sina bidrag under första veckan varje kalendermånad.</translation>
 <translation id="3074127054582480056">Observation</translation>
 <translation id="5010112177773747965">utan ditt medgivande.</translation>
 <translation id="7147673045905733351">Idag välkomnar Brave dig till ett nytt internet.</translation>
@@ -454,20 +463,25 @@
 <translation id="4569155249847375786">Verifierad</translation>
 <translation id="8465442795593991224">Uphold kan kräva att du verifierar din identitet baserat på begärda tjänster.</translation>
 <translation id="723054503945711909">Brave Software Inc. bearbetar inte, lagrar eller får tillgång till några av de personuppgifter som du tillhandahåller Uphold när du skapar ett konto hos dem.</translation>
-<translation id="693248854158660756">om Brave Rewards</translation>
-<translation id="161118570147571596">Genom att klicka på 'Aktivera Rewards' intygar du att du har läst och godkänt</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Lär dig mer<ph name="LINK_END"/> om Brave Rewards</translation>
+<translation id="5826706758731195747">Genom att sätta på Rewards, godkänner du <ph name="LINK_BEGIN"/>tjänstevillkoren<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Beräknad inkomst hittills denna månad</translation>
+<translation id="6778392839723468409">Tjäna symboler genom att se sekretessrespekterande annonser.</translation>
 <translation id="5235444069025581717">Dricks och bidrag denna månad</translation>
 <translation id="1210965535849006928">Kräv mina belöningar</translation>
 <translation id="8315514906653279104">Aktiverar...</translation>
 <translation id="7307847920988946894">Aktivera Rewards</translation>
 <translation id="662631138774963814">Känner du dig generös?</translation>
 <translation id="3264975266761862670">Redo att börja tjäna?</translation>
+<translation id="8092889639392847252">Få betalt för att se denna sponsrade bakgrundsbild.</translation>
 <translation id="2542495049135486284">Testa Brave Rewards igen och betala vidare allteftersom du tjänar!</translation>
-<translation id="7194640987408033097">Aktivera Brave Rewards och få betalt för att titta på annonser som respekterar din integritet.</translation>
+<translation id="53513464591392992">Sätt på Brave Rewards och få betalt för att se sekretessrespekterande annonser.</translation>
 <translation id="8568666589217601917">Så ska det se ut!</translation>
 <translation id="764235488372037377">Dina belöningar från annonser har kommit</translation>
 <translation id="7091215606170476659">Du har ett UGP-bidrag från Brave.</translation>
+<translation id="6759185676704303656">Du får betalt för att se denna bakgrundsbild.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Lär dig mer<ph name="LINK_END"/> om sponsrade bilder i Brave Rewards.</translation>
+<translation id="6113004497629356998">Dölj sponsrade bilder.</translation>
 <translation id="1181037720776840403">Ta bort</translation>
 <translation id="7885157704277298658">Kopierades!</translation>
 <translation id="5379640681913450928">Ordantal:</translation>

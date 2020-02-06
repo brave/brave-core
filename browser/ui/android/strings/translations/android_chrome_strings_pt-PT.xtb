@@ -904,6 +904,7 @@ Para alterar esta definição, <ph name="BEGIN_LINK"/>reponha a sincronização<
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Remover 1 item selecionado}other{Remover # itens selecionados}}</translation>
 <translation id="1283039547216852943">Toque para expandir</translation>
 <translation id="5962718611393537961">Toque para reduzir</translation>
+<translation id="3123734510202723619">Anúncios</translation>
 <translation id="8076492880354921740">Separadores</translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 selecionado}other{# selecionados}}</translation>
 <translation id="6818926723028410516">Selecionar itens</translation>

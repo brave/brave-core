@@ -17,15 +17,17 @@
 <translation id="7100907433458266664">día</translation>
 <translation id="4971389353431353387">días</translation>
 <translation id="8427933533533814946">Foto por</translation>
+<translation id="7108338896283013870">Ocultar</translation>
 <translation id="7115515527894388910">Editar preferencias</translation>
 <translation id="7606029853066610626">Ver y administrar favoritos</translation>
 <translation id="5550994254534676787">Ver su historial de navegación</translation>
 <translation id="1742484101357469636">Configuración del panel</translation>
-<translation id="8320281346741574991">Mostrar imagen de fondo</translation>
+<translation id="5783793537552649286">Mostrar imagen de fondo</translation>
 <translation id="7275773481201277457">Mostrar estadísticas de Brave</translation>
 <translation id="6836061097810262923">Mostrar reloj</translation>
 <translation id="8643377320501056697">Mostrar sitios populares</translation>
 <translation id="3446024864193919737">Mostrar recompensas de Brave</translation>
+<translation id="3870475560794762985">Mostrar las imágenes patrocinadas</translation>
 <translation id="6165508094623778733">Más información</translation>
 <translation id="8730621377337864115">Listo</translation>
 <translation id="6248988683584659830">Buscar en configuración</translation>
@@ -82,8 +84,11 @@
 <translation id="7954950242989581218">Navega con total tranquilidad</translation>
 <translation id="2188651882929633653">Los escudos de Brave bloquean rastreadores y todo lo que intente seguirte mientras navegas, incluidos casi todos los anuncios. Puedes desactivar los escudos si algún sitio no funciona correctamente. Brave usa <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>análisis del producto totalmente privados<ph name="END_LINK_P3A">&lt;/a&gt;</ph> para calcular el uso general de determinadas funciones. Puedes desactivar esto desde <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Configuración<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Anuncios</translation>
+<translation id="2364310432103707426">Obtén {{currency}} mirando anuncios en Brave. Los anuncios presentados se basan en tus intereses, según lo inferido a partir del comportamiento de tu navegador. Ningún dato personal ni historial de navegación jamás saldrá de tu navegador.</translation>
 <translation id="6112368337882254910">Contribución automática</translation>
 <translation id="3742599705619405136">Una forma automática de apoyar a quienes publican y crean contenido. Configura un pago mensual y navega como siempre. Los sitios verificados de Brave que visitas reciben contribuciones de manera automática en función de tu atención, que mide Brave.</translation>
+<translation id="8949527283651381130">Permitir detección de conversión de anuncios</translation>
+<translation id="2184191362610545393">Esto informará a Brave de manera anónima que hubo una respuesta a un anuncio en este navegador. Si se habilita esto, se incrementarán los ingresos.</translation>
 <translation id="20281847067919078">Recompensas pendientes estimadas</translation>
 <translation id="8593551638387217772">Próxima fecha de pago</translation>
 <translation id="319209088187794725">Notificaciones de anuncios recibidas este mes</translation>
@@ -154,6 +159,7 @@
 <translation id="7210234701206674260">Ha ocurrido un error en Brave Rewards. Vuelve a intentarlo más tarde.</translation>
 <translation id="570208820610947248">Detectamos problemas en su billetera. Debe recuperar la copia de seguridad de su billetera para que se puedan procesar las transacciones.</translation>
 <translation id="7797604753681168055">Recuperar ahora</translation>
+<translation id="5549059668721746831">Próxima fecha de contribución mensual</translation>
 <translation id="6231182869178328516">Recién le di una propina a <ph name="NAME"/> usando el navegador Brave. Aquí hay más información: https://brave.com/tips.</translation>
 <translation id="8404935570206006581">PropinaconBrave</translation>
 <translation id="2876191400747549936">Lo sentimos, pero hubo un problema al procesar tu solicitud. Vuelve a intentarlo.</translation>
@@ -252,6 +258,8 @@
 <translation id="4114667046481794032">Monto de la contribución</translation>
 <translation id="3520817231440482449">Dale propina a este sitio mensualmente</translation>
 <translation id="1827184134638345603">Enviar una propina…</translation>
+<translation id="7928243298881209869">Tu primera contribución mensual se enviará el:</translation>
+<translation id="6045860799501892362">Establecer contribución mensual</translation>
 <translation id="8003573781961874199">Descargar como PDF</translation>
 <translation id="298067735430872465">Ingresos de las publicidades</translation>
 <translation id="2266556115441975588">¡Aquí están tus recompensas por los anuncios!</translation>
@@ -280,6 +288,7 @@
 <translation id="9115913704608474258">Noviembre</translation>
 <translation id="7828956995407538686">Octubre</translation>
 <translation id="5502713021410870035">Septiembre</translation>
+<translation id="5737831580668469027">¡Contribuciones mensuales!</translation>
 <translation id="606865182719489911">Hay una donación de tokens gratis disponible.</translation>
 <translation id="2487641031722095938">¡Es tu día de suerte!</translation>
 <translation id="6255773350565723852">Tu donación de tokens está en camino.</translation>
@@ -306,8 +315,13 @@
 <translation id="4923459931733593730">Pago</translation>
 <translation id="4021593982164260556">Pago hecho el día {{day}} de cada mes.</translation>
 <translation id="6104680658798556671">El pago no se realizó.</translation>
+<translation id="2834888581291358924">Cuando no tienes saldo suficiente para cubrir el total combinado de la contribución automática y tus contribuciones mensuales, estos pagos se omiten para este período.</translation>
 <translation id="3138528956349114724">Los sitios anclados ahora están</translation>
+<translation id="2337632028350283479">Así funcionan las contribuciones mensuales:</translation>
+<translation id="6457273203091513039">Las contribuciones mensuales no salen de tu pago de contribución automática, sino que son aparte.</translation>
 <translation id="9099396904827413228">Cada sitio recibe un pago mensual fijo.</translation>
+<translation id="5051110132941857169">Las contribuciones mensuales se pagan todas juntas una sola vez cada mes. Si usas la contribución automática, las propinas se abonan junto con tu pago mensual de la contribución automática.</translation>
+<translation id="3374483782662414143">Puedes eliminar los sitios que reciban contribuciones mensuales desde el panel de Propinas.</translation>
 <translation id="5082474983463379713">Ten en cuenta:</translation>
 <translation id="1430915738399379752">Imprimir</translation>
 <translation id="135956957367307069">Tu solicitud todavía se está procesando. Aguarda un momento.</translation>
@@ -331,6 +345,7 @@
 <translation id="4699702339303280827">Siempre puedes usar esta clave para recuperar tu billetera si algo le sucede a tu navegador o a tu computadora. Pero asegúrate de protegerla; cualquier persona que sepa esta clave podría robar tu billetera. Probablemente, lo más seguro sea escribirla en un papel o donde guardes información importante.</translation>
 <translation id="7354412786785889047">Puedes colaborar con este creador de contenido enviando una propina. De esa manera, podrás agradecerle por haber creado contenido excelente. Los creadores verificados reciben el pago de sus propinas durante la primera semana de cada mes calendario.</translation>
 <translation id="972846019534552366">También tienes la opción de fijar una contribución mensual periódica en el panel Brave Rewards.</translation>
+<translation id="121079855621707240">Puedes colaborar con este creador de contenido enviando una contribución mensual. De esa manera, podrás agradecerle por haber creado contenido excelente de forma continua. Los creadores verificados reciben el pago de sus contribuciones durante la primera semana de cada mes calendario.</translation>
 <translation id="3074127054582480056">Atención</translation>
 <translation id="5010112177773747965">sin tu consentimiento.</translation>
 <translation id="7147673045905733351">Hoy, Brave le da la bienvenida a una nueva Internet.</translation>
@@ -448,20 +463,25 @@
 <translation id="4569155249847375786">Verificada</translation>
 <translation id="8465442795593991224">Uphold puede solicitarte que verifiques tu identidad según los servicios requeridos.</translation>
 <translation id="723054503945711909">Cuando creas una cuenta con Uphold, Brave Software Inc. no procesa ni almacena la información personal que les proporcionas, así como tampoco accede a esta.</translation>
-<translation id="693248854158660756">acerca de Brave Rewards</translation>
-<translation id="161118570147571596">Al hacer clic en "Activar recompensas", indicas que has leído y aceptado las</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Obtén más información<ph name="LINK_END"/> acerca de Brave Rewards</translation>
+<translation id="5826706758731195747">Al activar Rewards, aceptas las <ph name="LINK_BEGIN"/>Condiciones de servicio<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Ingresos estimados en lo que va de mes</translation>
+<translation id="6778392839723468409">Gana tokens por ver anuncios que respetan la privacidad.</translation>
 <translation id="5235444069025581717">Propinas y contribuciones de este mes</translation>
 <translation id="1210965535849006928">Reclamar mis recompensas</translation>
 <translation id="8315514906653279104">Activando…</translation>
 <translation id="7307847920988946894">Activar Brave Rewards</translation>
 <translation id="662631138774963814">¿Te sientes generoso?</translation>
 <translation id="3264975266761862670">¿Estás listo para comenzar a ganar?</translation>
+<translation id="8092889639392847252">Gana dinero por ver esta imagen imagen de fondo patrocinada.</translation>
 <translation id="2542495049135486284">Vuelve a probar Brave Rewards y paga a medida que ganas.</translation>
-<translation id="7194640987408033097">Activa Brave Rewards y gana dinero por ver anuncios que respetan tu privacidad.</translation>
+<translation id="53513464591392992">Activa Brave Rewards y gana dinero por ver anuncios que respetan tu privacidad.</translation>
 <translation id="8568666589217601917">¡En marcha!</translation>
 <translation id="764235488372037377">Aquí están tus recompensas de Brave Ads</translation>
 <translation id="7091215606170476659">Tienes una donación de UGP de Brave.</translation>
+<translation id="6759185676704303656">Estás ganando dinero por ver esta imagen de fondo.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Obtén más información<ph name="LINK_END"/> acerca de las imágenes patrocinadas en Brave Rewards.</translation>
+<translation id="6113004497629356998">Ocultar las imágenes patrocinadas</translation>
 <translation id="1181037720776840403">Eliminar</translation>
 <translation id="7885157704277298658">Copiado</translation>
 <translation id="5379640681913450928">Recuento de palabras:</translation>

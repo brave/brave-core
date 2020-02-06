@@ -21,6 +21,7 @@
 <translation id="8926389886865778422">Ikke spør igjen</translation>
 <translation id="4726634924419692905">Spør når et nettsted vil installere Widevine på datamaskinen din.</translation>
 <translation id="8760415064721320867">Privat vindu med Tor</translation>
+<translation id="8762452230727230396">Tor skjuler IP-adressen din for nettstedene du besøker.</translation>
 <translation id="8053096063396012732">Installer Widevine</translation>
 <translation id="4840334696217618631">Start nettleseren på nytt for å aktivere Widevine</translation>
 <translation id="8410111618231938546">Google Widevine er en bit Digital Rettighetsstyring (DRM)-kode som vi hos Brave Software ikke eier, og ikke kan inspisere. Google Widevine-koden lastes fra Googles servere, ikke fra våre servere. Den lastes kun når du slår på dette alternativet. Vi fraråder bruk av DRM, men vi respekterer brukerens valg, og anerkjenner at noen Brave-brukere ønsker å bruke tjenester som krever det.
@@ -91,6 +92,8 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="8502234992433094996">Bruk Google-tjenester til push-meldinger</translation>
 <translation id="3888068426966679906">Fjernfeilsøking</translation>
 <translation id="6645631466045614531">Tilgangssynkronisering via</translation>
+<translation id="6696935187608454456">Hjelpetips</translation>
+<translation id="2775956301559569472">Vis Wayback Machine-beskjed på 404-sider</translation>
 <translation id="1807246157184219062">Lyst</translation>
 <translation id="2414886740292270097">Mørkt</translation>
 <translation id="1360441190790440400">Samme som Linux</translation>
@@ -98,7 +101,9 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="8721331068159819483">Samme som macOS</translation>
 <translation id="6786747875388722282">Utvidelser</translation>
 <translation id="2896916411183256228">Bruker WebTorrent til å vise torrents direkte i nettleseren. Støtter torrent-filer og magnetlenker.</translation>
-<translation id="5554028991651120544">Sørger for en Ethereum-lommebok og dApp-nettleser inne i Brave.</translation>
+<translation id="2356070529366658676">Spør</translation>
+<translation id="7701040980221191251">Ingen</translation>
+<translation id="1085027414516521238">MetaMask</translation>
 <translation id="6554397389149987360">Bruk Hangouts-komponenten for å aktivere skjermdeling og andre funksjoner i nettleseren.</translation>
 <translation id="1765684547504191670">Bruker Media Router-komponenten for å aktivere Chromecast i nettleseren.</translation>
 <translation id="9156965752763025780">Endringene dine trer i kraft neste gang du starter Brave.</translation>
@@ -159,13 +164,17 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="4394049700291259645">Slå av</translation>
 <translation id="6469509880167172749">Send helt privat produktdiagnostikk til Brave automatisk</translation>
 <translation id="7090566321964540749">Denne anonyme infoen lar Brave kun beregne den totale bruken av visse funksjoner.</translation>
-<translation id="1200956479506699688">Crypto Wallets er nå tilgjengelig i Brave. Du kan ikke bruke MetaMask og Crypto Wallets samtidig.</translation>
 <translation id="7583735190612229830">Konfigurer Crypto Wallets til å fungere sammen med denne og lignende apper.</translation>
 <translation id="8337117349965899723">Bruk Crypto Wallets</translation>
 <translation id="5756155765711979898">Bruk MetaMask</translation>
 <translation id="6754134632841262799">OPPSETT</translation>
+<translation id="4552520379838695057">Beklager, men den siden mangler.</translation>
+<translation id="2609895996619941644">Vil du se om det finnes en lagret versjon på Wayback Machine?</translation>
+<translation id="8053093028263274061">Beklager, men ingen lagret versjon er tilgjengelig.</translation>
+<translation id="8517321676372639828">Se etter lagret versjon</translation>
 <translation id="191143826155037518">Brave gjøres tilgjengelig for deg under <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) og inneholder <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>programvare med åpen kildekode<ph name="END_LINK_OSS">&lt;/a&gt;</ph> under en rekke andre lisenser.
         Du kan lese <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>hvordan du laster ned <ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> den spesifikke <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>kildekoden som ble brukt til å lage dette eksemplaret<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>, og bygge den selv.</translation>
 <translation id="4474155171896946103">Bokmerk alle fanene</translation>
 <translation id="2336228925368920074">Legg inn bokmerke for alle åpne faner</translation>
+<translation id="796831669370432378">For å legge til bokmerker, klikk på bokmerkeknappen ved siden av adressefeltet.</translation>
 </translationbundle>

@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">Ustawienia...</translation>
 <translation id="5801568494490449797">Preferencje</translation>
 <translation id="3677911431265050325">Otwórz stronę mobilną</translation>
+<translation id="236470849334943016">31 marca zmienią się Warunki korzystania z Brave</translation>
+<translation id="1032605640136438169">Zapoznaj się z ich nową wersją</translation>
+<translation id="8712637175834984815">Rozumiem</translation>
+<translation id="5007392906805964215">Przegląd</translation>
 <translation id="4408599188496843485">Pomo&amp;c</translation>
 <translation id="8378714024927312812">Zarządzane przez Twoją organizację</translation>
 <translation id="7928836894214140642">Zarządzane przez domenę <ph name="ENROLLMENT_DOMAIN"/></translation>
@@ -2435,7 +2439,6 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="7892963120252479610">Strona <ph name="ORIGIN"/> będzie mogła przeglądać pliki w folderze <ph name="FOLDERNAME"/> do chwili zamknięcia tej karty</translation>
 <translation id="7201420661433230412">Wyświetl pliki</translation>
 <translation id="3015639418649705390">Uruchom ponownie teraz</translation>
-<translation id="8712637175834984815">Rozumiem</translation>
 <translation id="2783952358106015700">Użyj klucza bezpieczeństwa w: <ph name="APP_NAME"/></translation>
 <translation id="2446585455334014596"><ph name="APP_NAME"/> chce zweryfikować Twoją tożsamość</translation>
 <translation id="1567750922576943685">Weryfikacja tożsamości pomaga chronić Twoje dane osobowe</translation>

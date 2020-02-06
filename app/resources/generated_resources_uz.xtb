@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">Sozlamalar...</translation>
 <translation id="5801568494490449797">Sozlamalar</translation>
 <translation id="3677911431265050325">Mobil versiya</translation>
+<translation id="236470849334943016">Brave xizmat shartlari 31-mart kuni yangilanadi.</translation>
+<translation id="1032605640136438169">Yangi shartlar bilan tanishib chiqing</translation>
+<translation id="8712637175834984815">Tushunarli</translation>
+<translation id="5007392906805964215">Tekshirish</translation>
 <translation id="4408599188496843485">&amp;Yordam</translation>
 <translation id="8378714024927312812">Tashkilotingiz tomonidan boshqariladi</translation>
 <translation id="7928836894214140642"><ph name="ENROLLMENT_DOMAIN"/> domenida boshqariladi</translation>
@@ -2433,7 +2437,6 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="7892963120252479610">Bu varaq yopilmaguncha <ph name="ORIGIN"/> sayti <ph name="FOLDERNAME"/> jildidagi barcha fayllarni ocha oladi</translation>
 <translation id="7201420661433230412">Fayllarni ochish</translation>
 <translation id="3015639418649705390">Qayta ishga tushirish</translation>
-<translation id="8712637175834984815">Tushunarli</translation>
 <translation id="2783952358106015700"><ph name="APP_NAME"/> hisobiga elektron kalit orqali kiring</translation>
 <translation id="2446585455334014596"><ph name="APP_NAME"/> kimligingizni tekshirmoqchi</translation>
 <translation id="1567750922576943685">Shaxsingiz tasdiqlanishi shaxsiy ma’lumotlaringizni himoyalashda yordam beradi</translation>

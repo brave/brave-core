@@ -904,6 +904,7 @@ Lai mainītu šo iestatījumu, <ph name="BEGIN_LINK"/>atiestatiet sinhronizācij
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Noņemt 1 atlasīto vienumu}zero{Noņemt # atlasītos vienumus}one{Noņemt # atlasīto vienumu}other{Noņemt # atlasītos vienumus}}</translation>
 <translation id="1283039547216852943">Pieskarties, lai izvērstu</translation>
 <translation id="5962718611393537961">Pieskarties, lai sakļautu</translation>
+<translation id="3123734510202723619">Paziņojumi</translation>
 <translation id="8076492880354921740">Cilnes</translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{Atlasīts 1 vienums}zero{Atlasīti # vienumi}one{Atlasīts # vienums}other{Atlasīti # vienumi}}</translation>
 <translation id="6818926723028410516">Vienumu atlase</translation>

@@ -92,6 +92,8 @@
 <translation id="8502234992433094996">Использовать сервисы Google для push-сообщений</translation>
 <translation id="3888068426966679906">Устранить неисправность</translation>
 <translation id="6645631466045614531">Доступ к синхронизации через</translation>
+<translation id="6696935187608454456">Подсказки</translation>
+<translation id="2775956301559569472">Показывать окно Wayback Machine на страницах с ошибкой 404</translation>
 <translation id="1807246157184219062">Светлая</translation>
 <translation id="2414886740292270097">Темная</translation>
 <translation id="1360441190790440400">Как Linux</translation>
@@ -99,7 +101,9 @@
 <translation id="8721331068159819483">Как на macOS</translation>
 <translation id="6786747875388722282">Расширения</translation>
 <translation id="2896916411183256228">WebTorrent позволит отображать информацию о торрентах прямо в браузере. Поддерживаются торрент-файлы и magnet-ссылки.</translation>
-<translation id="5554028991651120544">Обеспечивает кошелек Ethereum и браузер Dapp внутри Brave.</translation>
+<translation id="2356070529366658676">Спрашивать</translation>
+<translation id="7701040980221191251">Нет</translation>
+<translation id="1085027414516521238">MetaMask</translation>
 <translation id="6554397389149987360">С помощью компонента Hangouts можно прямо в браузере демонстрировать свой экран и пользоваться другими возможностями.</translation>
 <translation id="1765684547504191670">Использует компонент Media Router для включения Chromecast в браузере.</translation>
 <translation id="9156965752763025780">Изменения вступят в силу при следующем входе в Brave.</translation>
@@ -160,13 +164,17 @@
 <translation id="4394049700291259645">Отключить</translation>
 <translation id="6469509880167172749">Автоматически отправлять полностью конфиденциальную аналитику в Brave</translation>
 <translation id="7090566321964540749">Эта анонимная информация позволяет Brave оценить, как люди используют определенные функции.</translation>
-<translation id="1200956479506699688">Теперь в Brave доступны Криптовалютные кошельки. Вы можете одновременно использовать Криптовалютные кошельки и  MetaMask.</translation>
 <translation id="7583735190612229830">Настройте Криптовалютные кошельки для взаимодействия с этим и другими похожими приложениями.</translation>
 <translation id="8337117349965899723">Использовать Криптовалютные кошельки</translation>
 <translation id="5756155765711979898">Использовать MetaMask</translation>
 <translation id="6754134632841262799">ЗАГРУЗКА</translation>
+<translation id="4552520379838695057">Извините, этой страницы не существует.</translation>
+<translation id="2609895996619941644">Хотите проверить, доступна ли сохраненная версия на Wayback Machine?</translation>
+<translation id="8053093028263274061">К сожалению, сохраненной версии нет.</translation>
+<translation id="8517321676372639828">Проверить наличие сохраненной версии</translation>
 <translation id="191143826155037518">Brave работает в соответствии с <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>лицензией Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) и включает <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>программное обеспечение с открытым кодом<ph name="END_LINK_OSS">&lt;/a&gt;</ph> под многочисленными лицензиями других компаний.
         Вы можете прочитать <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>инструкции о том, как скачать и написать самому<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> конкретный <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>исходный код, используемый для создания этой копии<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
 <translation id="4474155171896946103">Добавить все вкладки в закладки…</translation>
 <translation id="2336228925368920074">Добавить все вкладки в закладки…</translation>
+<translation id="796831669370432378">Для добавления закладки нажмите кнопку закладки рядом с адресной строкой.</translation>
 </translationbundle>

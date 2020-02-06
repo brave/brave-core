@@ -904,6 +904,7 @@ Per canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Suprimeix 1 element seleccionat}other{Suprimeix # elements seleccionats}}</translation>
 <translation id="1283039547216852943">Toca per desplegar</translation>
 <translation id="5962718611393537961">Toca per replegar</translation>
+<translation id="3123734510202723619">Anuncis</translation>
 <translation id="8076492880354921740">Pestanyes</translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 seleccionat}other{# seleccionats}}</translation>
 <translation id="6818926723028410516">Selecciona elements</translation>
