@@ -72,15 +72,20 @@ void BraveRewardsSource::StartDataRequest(
     const GURL& url,
     const content::WebContents::Getter& wc_getter,
     content::URLDataSource::GotDataCallback got_data_callback) {
-  if (!url.is_valid()) {
+  // URL here comes in the form of
+  // chrome://rewards-image/https://rewards.brave.com/...
+  // We need to take the path and make it into a URL.
+  GURL actual_url(URLDataSource::URLToRequestPath(url));
+  if (!actual_url.is_valid()) {
     std::move(got_data_callback).Run(nullptr);
     return;
   }
 
-  auto it = find(resource_fetchers_.begin(), resource_fetchers_.end(), url);
+  auto it =
+      find(resource_fetchers_.begin(), resource_fetchers_.end(), actual_url);
   if (it != resource_fetchers_.end()) {
     LOG(WARNING) << "Already fetching specified Brave Rewards resource, url: "
-                 << url;
+                 << actual_url;
     return;
   }
 
@@ -106,12 +111,12 @@ void BraveRewardsSource::StartDataRequest(
           policy_exception_justification:
             "Not implemented."
         })");
-    resource_fetchers_.emplace_back(url);
+    resource_fetchers_.emplace_back(actual_url);
     request_ids_.push_back(image_service->RequestImage(
-        url,
+        actual_url,
         // Image Service takes ownership of the observer.
         new RewardsResourceFetcherObserver(
-            url, base::BindOnce(&BraveRewardsSource::OnBitmapFetched,
+            actual_url, base::BindOnce(&BraveRewardsSource::OnBitmapFetched,
                                 base::Unretained(this),
                                 std::move(got_data_callback))),
         traffic_annotation));
