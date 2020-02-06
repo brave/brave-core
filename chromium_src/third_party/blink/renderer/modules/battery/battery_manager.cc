@@ -30,7 +30,7 @@ namespace blink {
   ScriptPromise BatteryManager::StartRequest(ScriptState* script_state) {
     if (!battery_property_) {
       battery_property_ = MakeGarbageCollected<BatteryProperty>(
-        ExecutionContext::From(script_state), this, BatteryProperty::kReady);
+        ExecutionContext::From(script_state));
       battery_property_->Resolve(this);
     }
     return battery_property_->Promise(script_state->World());
