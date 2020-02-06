@@ -75,6 +75,8 @@ source_set("ui") {
       "omnibox/brave_omnibox_client_impl.h",
       "tabs/brave_tab_menu_model.cc",
       "tabs/brave_tab_menu_model.h",
+      "tabs/brave_tab_strip_model.cc",
+      "tabs/brave_tab_strip_model.h",
       "toolbar/brave_app_menu_model.cc",
       "toolbar/brave_app_menu_model.h",
       "webui/brave_new_tab_message_handler.cc",
