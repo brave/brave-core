@@ -230,7 +230,7 @@ source_set("ui") {
       "//brave/components/brave_sync",
       "//brave/components/brave_sync:generated_resources",
       "//brave/components/brave_sync:static_resources",
-      "//brave/components/brave_sync:switches",
+      "//components/sync/driver:driver",
     ]
   }
 
