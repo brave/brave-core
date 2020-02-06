@@ -5,8 +5,7 @@ index 74fd4c627589c7e0860803468499fa729045d255..e1797dae2246c275a4290ad16999cdca
 @@ -545,6 +545,7 @@ class TabStripModel : public TabGroupController {
    // current tree of openers).
    bool ShouldResetOpenerOnActiveTabChange(content::WebContents* contents) const;
- 
+
 +  TAB_STRIP_MODEL_H_
   private:
    FRIEND_TEST_ALL_PREFIXES(TabStripModelTest, GetIndicesClosedByCommand);
- 
