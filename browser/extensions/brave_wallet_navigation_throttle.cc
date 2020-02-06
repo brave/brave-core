@@ -10,6 +10,8 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
+#include "brave/browser/extensions/brave_wallet_util.h"
+#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"
@@ -47,11 +49,13 @@ BraveWalletNavigationThrottle::WillStartRequest() {
   if (url.SchemeIs(content::kChromeUIScheme) &&
       url.host() == ethereum_remote_client_host) {
     // If a user has explicitly disabled the Brave Wallet,
-    // then don't defer and try to install it.
+    // or a project id is not configured, then don't defer
+    // and try to install it.
     content::BrowserContext* browser_context =
         web_contents->GetBrowserContext();
     Profile* profile = Profile::FromBrowserContext(browser_context);
-    if (brave::IsTorProfile(profile)) {
+    bool has_project_id = HasInfuraProjectID();
+    if (brave::IsTorProfile(profile) || !has_project_id) {
       return content::NavigationThrottle::BLOCK_REQUEST;
     }
     auto* registry = ExtensionRegistry::Get(browser_context);

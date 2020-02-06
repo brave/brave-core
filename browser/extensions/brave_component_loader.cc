@@ -20,6 +20,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
+#include "brave/browser/extensions/brave_wallet_util.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/components_ui.h"
@@ -112,7 +113,9 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
   // it would cause a bug with loading brave://wallet not loading
   // if a tab is left open and you restart the browser.  That would
   // need to be fixed first.
-  if (ExtensionPrefs::Get(profile_)->
+  // Does not load if project id is not configured.
+  bool has_project_id = HasInfuraProjectID();
+  if (has_project_id && ExtensionPrefs::Get(profile_)->
           HasPrefForExtension(ethereum_remote_client_extension_id)) {
     AddEthereumRemoteClientExtension();
   }

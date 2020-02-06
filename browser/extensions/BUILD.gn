@@ -55,6 +55,8 @@ source_set("extensions") {
       "api/brave_wallet_api.h",
       "brave_wallet_navigation_throttle.cc",
       "brave_wallet_navigation_throttle.h",
+      "brave_wallet_util.cc",
+      "brave_wallet_util.h"
     ]
     configs += [ ":infura_config" ]
   }
