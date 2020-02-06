@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">Tùy chọn...</translation>
 <translation id="5801568494490449797">Tùy chọn</translation>
 <translation id="3677911431265050325">Yêu cầu trang web dành cho thiết bị di động</translation>
+<translation id="236470849334943016">Điều khoản dịch vụ của Brave sẽ thay đổi từ ngày 31 tháng 3</translation>
+<translation id="1032605640136438169">Vui lòng xem các điều khoản mới này</translation>
+<translation id="8712637175834984815">Bỏ qua</translation>
+<translation id="5007392906805964215">Xem</translation>
 <translation id="4408599188496843485">T&amp;rợ giúp</translation>
 <translation id="8378714024927312812">Do tổ chức của bạn quản lý</translation>
 <translation id="7928836894214140642">Do <ph name="ENROLLMENT_DOMAIN"/> quản lý</translation>
@@ -2435,7 +2439,6 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="7892963120252479610">Chừng nào tab này còn mở thì <ph name="ORIGIN"/> vẫn có thể xem tệp trong <ph name="FOLDERNAME"/></translation>
 <translation id="7201420661433230412">Xem tệp</translation>
 <translation id="3015639418649705390">Chạy lại ngay</translation>
-<translation id="8712637175834984815">Bỏ qua</translation>
 <translation id="2783952358106015700">Sử dụng khóa bảo mật cho <ph name="APP_NAME"/></translation>
 <translation id="2446585455334014596"><ph name="APP_NAME"/> muốn xác minh danh tính của bạn</translation>
 <translation id="1567750922576943685">Việc xác minh thông tin định danh giúp bảo vệ thông tin cá nhân của bạn</translation>

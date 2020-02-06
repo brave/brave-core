@@ -21,6 +21,7 @@
 <translation id="8926389886865778422">عدم السؤال مرة أخرى</translation>
 <translation id="4726634924419692905">اسأل عندما يريد موقع ما تثبيت Widevine على جهاز الكمبيوتر الخاص بك.</translation>
 <translation id="8760415064721320867">نافذة خاصة مع Tor</translation>
+<translation id="8762452230727230396">يقوم متصفح Tor بإخفاء عنوان IP الخاص بك من المواقع التي تزورها.</translation>
 <translation id="8053096063396012732">تثبيت Widevine</translation>
 <translation id="4840334696217618631">أعد تشغيل المتصفح لتمكين Widevine</translation>
 <translation id="8410111618231938546">إن Google Widevine هو جزء من رمز إدارة الحقوق الرقمية (DRM) التي لا نمتلكها ولا يمكننا فحصها في Brave Software. يتم تحميل رمز Google Widevine من خوادم Google، وليس من خوادمنا. يتم تحميله فقط عند تمكين هذا الخيار. نحن لا نشجع استخدام DRM، لكننا نحترم اختيار المستخدم ونقر بأن بعض مستخدمي Brave يرغبون في استخدام الخدمات التي تتطلب ذلك.
@@ -91,6 +92,8 @@
 <translation id="8502234992433094996">استخدم خدمات Google لخدمة المراسلة الفورية</translation>
 <translation id="3888068426966679906">تصحيح الأخطاء عن بُعد</translation>
 <translation id="6645631466045614531">الوصول إلى المزامنة عبر</translation>
+<translation id="6696935187608454456">إرشادات للمساعدة</translation>
+<translation id="2775956301559569472">عرض تنبيه "واي باك مشين" الفوري على صفحات 404</translation>
 <translation id="1807246157184219062">فاتح</translation>
 <translation id="2414886740292270097">داكن</translation>
 <translation id="1360441190790440400">كنظام تشغيل Linux</translation>
@@ -98,7 +101,9 @@
 <translation id="8721331068159819483">تماماً مثل ماك</translation>
 <translation id="6786747875388722282">الإضافات</translation>
 <translation id="2896916411183256228">استخدم WebTorrent لعرض ملفات التورنت مباشرة في المتصفح. تدعم ملفات التورنت والروابط المغناطيسية.</translation>
-<translation id="5554028991651120544">يتيح محفظة Ethereum ومتصفح Dapp في Brave.</translation>
+<translation id="2356070529366658676">طلب</translation>
+<translation id="7701040980221191251">بلا</translation>
+<translation id="1085027414516521238">MetaMask</translation>
 <translation id="6554397389149987360">يستخدم عنصر تطبيق Hangouts لتمكين مشاركة الشاشة وغيرها من الميزات في المتصفح.</translation>
 <translation id="1765684547504191670">يستخدم مكوّن Media Router لتمكين Chromecast في المتصفح.</translation>
 <translation id="9156965752763025780">‏ستسري التغييرات في المرة التالية التي تعيد فيها تشغيل Brave.</translation>
@@ -159,13 +164,17 @@
 <translation id="4394049700291259645">إيقاف</translation>
 <translation id="6469509880167172749">إرسال تحليلات المنتج الخاصة بالكامل تلقائيًا إلى Brave</translation>
 <translation id="7090566321964540749">تتيح هذه المعلومات المُجهلة فقط لمتصفح Brave تقدير الاستخدام الكلي لبعض الميزات.</translation>
-<translation id="1200956479506699688">Crypto Wallets متاحة الآن في Brave. لا يمكنك استخدام MetaMask و Crypto Wallets في نفس الوقت.</translation>
 <translation id="7583735190612229830">قم بإعداد Crypto Wallets للتفاعل مع هذا التطبيق وما يماثله من التطبيقات الأخرى.</translation>
 <translation id="8337117349965899723">استخدام Crypto Wallets</translation>
 <translation id="5756155765711979898">استخدام MetaMask</translation>
 <translation id="6754134632841262799">الإعدادات</translation>
+<translation id="4552520379838695057">عذراً، هذه الصفحة مفقودة.</translation>
+<translation id="2609895996619941644">هل تريد التحقق مما إذا كان هناك إصدار محفوظ متاح على "واي باك مشين"؟</translation>
+<translation id="8053093028263274061">عذراً، لا توجد نسخة محفوظة متاحة.</translation>
+<translation id="8517321676372639828">تحقق من وجود نسخة محفوظة</translation>
 <translation id="191143826155037518">يتم توفير Brave لك بموجب <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>ترخيص Mozilla العام 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) ويشمل <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>برمجيات مفتوحة المصدر<ph name="END_LINK_OSS">&lt;/a&gt;</ph> بموجب مختلف التراخيص الأخرى.
         يمكنك قراءة <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>التعليمات حول كيفية تنزيل وبناء<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph> التعليمات البرمجية الأصلية المحددة المستخدمة لإنشاء هذه النسخة<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph> لنفسك.</translation>
 <translation id="4474155171896946103">وضع إشارات على كل علامات التبويب...</translation>
 <translation id="2336228925368920074">وضع إشارة على جميع علامات التبويب...</translation>
+<translation id="796831669370432378">لإضافة إشارة مرجعية، انقر فوق زر الإشارة المرجعية بجوار شريط العنوان</translation>
 </translationbundle>

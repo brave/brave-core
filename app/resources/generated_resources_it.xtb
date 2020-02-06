@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">Preferenze...</translation>
 <translation id="5801568494490449797">Preferenze</translation>
 <translation id="3677911431265050325">Richiedi sito per dispositivi mobili</translation>
+<translation id="236470849334943016">I Termini di servizio di Brave cambieranno il 31 marzo</translation>
+<translation id="1032605640136438169">Ti invitiamo a leggere i nuovi termini</translation>
+<translation id="8712637175834984815">Fatto</translation>
+<translation id="5007392906805964215">Visualizza</translation>
 <translation id="4408599188496843485">G&amp;uida</translation>
 <translation id="8378714024927312812">Gestito dalla tua organizzazione</translation>
 <translation id="7928836894214140642">Gestito da <ph name="ENROLLMENT_DOMAIN"/></translation>
@@ -2433,7 +2437,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="7892963120252479610"><ph name="ORIGIN"/> potrà vedere i file nella cartella <ph name="FOLDERNAME"/> fino alla chiusura di questa scheda</translation>
 <translation id="7201420661433230412">Visualizza i file</translation>
 <translation id="3015639418649705390">Riavvia ora</translation>
-<translation id="8712637175834984815">Fatto</translation>
 <translation id="2783952358106015700">Utilizza il token di sicurezza con <ph name="APP_NAME"/></translation>
 <translation id="2446585455334014596"><ph name="APP_NAME"/> vuole verificare la tua identità</translation>
 <translation id="1567750922576943685">La verifica della tua identità aiuta a proteggere le tue informazioni personali</translation>

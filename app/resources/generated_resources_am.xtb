@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">ምርጫዎች…</translation>
 <translation id="5801568494490449797">አማራጮች</translation>
 <translation id="3677911431265050325">የሞባይል ጣቢያ ጠይቅ</translation>
+<translation id="236470849334943016">የBrave አገልግሎት ውል ማርች 31 ላይ ይቀየራል</translation>
+<translation id="1032605640136438169">እባክዎ አዲሶቹን ደንቦች ይገምግሙ</translation>
+<translation id="8712637175834984815">ገባኝ</translation>
+<translation id="5007392906805964215">ገምግም</translation>
 <translation id="4408599188496843485">እ&amp;ገዛ</translation>
 <translation id="8378714024927312812">በእርስዎ ድርጅት የሚተዳደር</translation>
 <translation id="7928836894214140642">በ<ph name="ENROLLMENT_DOMAIN"/> የሚቀናበር</translation>
@@ -2436,7 +2440,6 @@ nil</translation>
 <translation id="7892963120252479610">ይህን ትር እስኪዘጉት ድረስ <ph name="ORIGIN"/> በ<ph name="FOLDERNAME"/> ውስጥ ያሉ ፋይሎችን መመልከት ይችላል</translation>
 <translation id="7201420661433230412">ፋይሎችን ይመልከቱ</translation>
 <translation id="3015639418649705390">አሁን ዳግም ያስጀምሩ</translation>
-<translation id="8712637175834984815">ገባኝ</translation>
 <translation id="2783952358106015700">የእርስዎን የደህንነት ቁልፍ በ<ph name="APP_NAME"/> ይጠቀሙ</translation>
 <translation id="2446585455334014596"><ph name="APP_NAME"/> የእርስዎን ማንነት ማረጋገጥ ይፈልጋል</translation>
 <translation id="1567750922576943685">ማንነትዎን ማረጋገጥ የግል መረጃዎ እንዲጠበቅ ያግዛል</translation>

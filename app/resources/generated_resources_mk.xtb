@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">Претпочитани вредности…</translation>
 <translation id="5801568494490449797">Претпочитани вредности</translation>
 <translation id="3677911431265050325">Побарај мобилна верзија на сајтот</translation>
+<translation id="236470849334943016">„Условите на користење“ на Brave се менуваат на 31 март</translation>
+<translation id="1032605640136438169">Прегледајте ги новите услови</translation>
+<translation id="8712637175834984815">Сфатив</translation>
+<translation id="5007392906805964215">Прегледајте</translation>
 <translation id="4408599188496843485">П&amp;омош</translation>
 <translation id="8378714024927312812">Управувано од вашата организација</translation>
 <translation id="7928836894214140642">Управувана од <ph name="ENROLLMENT_DOMAIN"/></translation>
@@ -2434,7 +2438,6 @@
 <translation id="7892963120252479610"><ph name="ORIGIN"/> ќе може да прегледува датотеки во <ph name="FOLDERNAME"/> сѐ додека не ја затворите картичкава</translation>
 <translation id="7201420661433230412">Прикажи ги датотеките</translation>
 <translation id="3015639418649705390">Рестартирај сега</translation>
-<translation id="8712637175834984815">Сфатив</translation>
 <translation id="2783952358106015700">Користете го безбедносниот клуч со <ph name="APP_NAME"/></translation>
 <translation id="2446585455334014596"><ph name="APP_NAME"/> сака да го потврди вашиот идентитет</translation>
 <translation id="1567750922576943685">Потврдувањето на идентитетот помага да се заштитат вашите лични информации</translation>

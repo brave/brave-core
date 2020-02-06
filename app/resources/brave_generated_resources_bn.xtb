@@ -21,6 +21,7 @@
 <translation id="8926389886865778422">আর জিজ্ঞাসা করবেন না</translation>
 <translation id="4726634924419692905">কোনো সাইট আপনার কম্পিউটারে Widevine ইনস্টল করতে চাইলে জিজ্ঞাসা করুন।</translation>
 <translation id="8760415064721320867">Tor এর সাথে ব্যক্তিগত উইন্ডো</translation>
+<translation id="8762452230727230396">Tor আপনার দেখা সাইটগুলি থেকে IP ঠিকানাগুলিকে লুকায়।</translation>
 <translation id="8053096063396012732">Widevine ইনস্টল করুন</translation>
 <translation id="4840334696217618631">Widevine সক্রিয় করতে ব্রাউজার রিস্টার্ট করুন</translation>
 <translation id="8410111618231938546">Google Widevine একটি ডিজিটাল রাইটস ম্যানেজমেন্ট (DRM) কোড যা Brave সফ্টওয়ের মালিকানাধীন নয় এবং আমরা তা পরীক্ষাও করতে পারি না| Google Widevine Google সার্ভার থেকে লোড করা হয়, আমাদের সার্ভার থেকে নয়| এটি শুধু তখনি লোড করা হয় যখন আপনি এই বিকল্পটি সক্ষম করেন| আমরা DRM ব্যবহার করতে বারণ করি, কিন্তু আমরা ব্যবহারকারীদের পছন্দের সম্মান করি এবং স্বীকার করি যে কিছু Brave ব্যবহারকারী কিছু পরিষেবা ব্যবহার করতে চাইবেন যার জন্য এর প্রয়োজন হবে|
@@ -91,6 +92,8 @@
 <translation id="8502234992433094996">পুশ মেসেজিংয়ের জন্য Google পরিষেবাগুলি ব্যবহার করুন</translation>
 <translation id="3888068426966679906">রিমোট ডিবাগিং</translation>
 <translation id="6645631466045614531">এর মাধ্যমে সিঙ্ক অ্যাক্সেস করুন</translation>
+<translation id="6696935187608454456">সহায়তার পরামর্শ</translation>
+<translation id="2775956301559569472">404 পৃষ্ঠায় ওয়েব্যাক মেশিন প্রম্পট দেখান</translation>
 <translation id="1807246157184219062">আলো</translation>
 <translation id="2414886740292270097">অন্ধকার</translation>
 <translation id="1360441190790440400">Linux এর মতো</translation>
@@ -98,7 +101,9 @@
 <translation id="8721331068159819483">macOS এর মত একইরকমের</translation>
 <translation id="6786747875388722282">এক্সটেনশনগুলি</translation>
 <translation id="2896916411183256228">সরাসরি ব্রাউজারে torrents প্রদর্শন করতে WebTorrent ব্যবহার করে। torrent ফাইলগুলি এবং magnet লিঙ্কগুলিকে সমর্থন করে।</translation>
-<translation id="5554028991651120544">Brave এর মধ্যে একটি Ethereum ওয়ালেট এবং Dapp ব্রাউজার প্রদান করে</translation>
+<translation id="2356070529366658676">জিজ্ঞাসা করুন</translation>
+<translation id="7701040980221191251">কিছুই নয়</translation>
+<translation id="1085027414516521238">MetaMask</translation>
 <translation id="6554397389149987360">ব্রাউজারে স্ক্রিন শেয়ারিং এবং অন্যান্য বৈশিষ্ট্য সক্ষম করতে Hangouts উপাদানগুলি ব্যবহার করে।</translation>
 <translation id="1765684547504191670">ব্রাউজারে Chromecast সক্ষম করতে মিডিয়া রাউটার উপাদান ব্যবহার করে।</translation>
 <translation id="9156965752763025780">আপনার পরিবর্তনগুলি পরবর্তী সময় আপনি Brave আবার চালু হলে ফলপ্রদ হবে৷</translation>
@@ -159,13 +164,17 @@
 <translation id="4394049700291259645">অক্ষম</translation>
 <translation id="6469509880167172749">সম্পূর্ণভাবে ব্যক্তিগত পণ্যের বিশ্লেষকগুলি স্বয়ংক্রিয়ভাবে Brave এ পাঠান</translation>
 <translation id="7090566321964540749">এই নামহীন তথ্য Brave কে নির্দিষ্ট কিছু বৈশিষ্ট্যের সামগ্রিক ব্যবহার অনুমান করতে দেয়।</translation>
-<translation id="1200956479506699688">Crypto Wallets এখন Brave তে উপলব্ধ৷ আপনি একই সময়ে MetaMask এবং Crypto Wallets ব্যবহার করতে পারবেন না৷</translation>
 <translation id="7583735190612229830">এই অ্যাপটি এবং এটির মতন অন্যান্য অ্যাপের সাথে ইন্টারঅ্যাক্ট করতে Crypto Wallets সেট আপ করুন৷</translation>
 <translation id="8337117349965899723">Crypto Wallets ব্যবহার করুন</translation>
 <translation id="5756155765711979898">MetaMask ব্যবহার করুন</translation>
 <translation id="6754134632841262799">সেট আপ করুন</translation>
+<translation id="4552520379838695057">দুঃখিত, ঐ পৃষ্ঠাটি পাওয়া যাচ্ছে না।</translation>
+<translation id="2609895996619941644">ওয়েব্যাক মেশিনে একটি সংরক্ষিত সংস্করণ উপলভ্য কিনা তা কি আপনি পরীক্ষা করতে চান?</translation>
+<translation id="8053093028263274061">দুঃখিত, কোনও সংরক্ষিত সংস্করণ উপলভ্য নেই।</translation>
+<translation id="8517321676372639828">সংরক্ষিত সংস্করণের জন্য পরীক্ষা করুন</translation>
 <translation id="191143826155037518">Brave আপনার নিকট উপলভ্য করা হয়েছে <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla পাবলিক লাইসেন্স 2.0 এর অধীনে <ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) এবং এতে অন্তর্ভুক্ত আছে <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>ওপেন সোর্স সফটওয়্যারসমূহ<ph name="END_LINK_OSS">&lt;/a&gt;</ph> অন্য সব বিভিন্ন লাইসেন্সের অধীনে।
 আপনি <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>নিজের জন্য কিভাবে ডাউনলোড ও গঠন করতে হয় সে সংক্রান্ত নির্দেশনাটি পড়তে পারেন<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> সুনির্দিষ্ট <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>সোর্স কোড ব্যবহার করা হয়েছে এই কপিটি তৈরি করতে<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
 <translation id="4474155171896946103">সব কটি ট্যাব বুকমার্ক করুন...</translation>
 <translation id="2336228925368920074">সকল ট্যাব বুকমার্ক করুন...</translation>
+<translation id="796831669370432378">একটি বুকমার্ক যোগ করতে, ঠিকানার বারের ঠিক পরে বুকমার্ক বোতামটি ক্লিক করুন</translation>
 </translationbundle>

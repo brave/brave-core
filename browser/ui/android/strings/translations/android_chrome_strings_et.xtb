@@ -904,6 +904,7 @@ Seade muutmiseks <ph name="BEGIN_LINK"/>lähtestage sünkroonimine<ph name="END_
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Eemalda 1 valitud üksus}other{Eemalda # valitud üksust}}</translation>
 <translation id="1283039547216852943">Laiendamiseks puudutage</translation>
 <translation id="5962718611393537961">Ahendamiseks puudutage</translation>
+<translation id="3123734510202723619">Teadaanded</translation>
 <translation id="8076492880354921740">Vahelehed</translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 on valitud}other{# on valitud}}</translation>
 <translation id="6818926723028410516">Valige üksused</translation>

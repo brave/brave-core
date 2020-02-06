@@ -903,6 +903,7 @@ Bu sozlamani almashtirish uchun <ph name="BEGIN_LINK"/>sinxronizatsiyani tiklang
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Tanlangan 1 ta elementni olib tashlash}other{Tanlangan # ta elementni olib tashlash}}</translation>
 <translation id="1283039547216852943">Bosib yoyish</translation>
 <translation id="5962718611393537961">Bosib yig‘ish</translation>
+<translation id="3123734510202723619">Xabarnomalar</translation>
 <translation id="8076492880354921740">Varaqlar</translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{ 1 ta tanlandi}other{# ta tanlandi}}</translation>
 <translation id="6818926723028410516">Fayllarni tanlang</translation>

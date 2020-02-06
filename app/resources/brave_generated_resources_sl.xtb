@@ -21,6 +21,7 @@
 <translation id="8926389886865778422">Ne sprašuj več</translation>
 <translation id="4726634924419692905">Vprašaj, ko želi spletno mesto namestiti Widevine na vaš računalnik</translation>
 <translation id="8760415064721320867">Zasebno okno v brskalniku Tor</translation>
+<translation id="8762452230727230396">Tor skrije vaš naslov IP na spletnih mestih, ki jih obiščete.</translation>
 <translation id="8053096063396012732">Namesti Widevine</translation>
 <translation id="4840334696217618631">Znova zaženite brskalnik, da omogočite Widevine</translation>
 <translation id="8410111618231938546">Google Widevine je del kode za upravljanje digitalnih pravic (DRM), ki ni v lasti družbe Brave Software in ga ne moremo pregledati. Koda Google Widevine je naložena iz strežnikov Google, ne iz naših strežnikov. Naloži se le, če omogočite to možnost. Uporabo DRM-ja odsvetujemo, a kljub temu spoštujemo izbiro uporabnika in se zavedamo, da nekateri uporabniki Brave želijo uporabljati storitve, za katere je potrebna uporaba DRM-ja.
@@ -91,6 +92,8 @@
 <translation id="8502234992433094996">Za potisno sporočanje uporabljajte Googlove storitve</translation>
 <translation id="3888068426966679906">Oddaljeno odpravljanje napak</translation>
 <translation id="6645631466045614531">Dostop do sinhronizacije prek</translation>
+<translation id="6696935187608454456">Koristni nasveti</translation>
+<translation id="2775956301559569472">Prikaži poziv računalnika Wayback na 404 straneh</translation>
 <translation id="1807246157184219062">Svetlo</translation>
 <translation id="2414886740292270097">Temno</translation>
 <translation id="1360441190790440400">Enako kot Linux</translation>
@@ -98,7 +101,9 @@
 <translation id="8721331068159819483">Enako kot MacOs</translation>
 <translation id="6786747875388722282">Razširitve</translation>
 <translation id="2896916411183256228">Uporablja WebTorrent za prikaz torrentov, neposredno v brskalniku. Podpira datoteke torrent in povezave magnet.</translation>
-<translation id="5554028991651120544">Brave ponuja denarnico Ethereum in brskalnik Dapp</translation>
+<translation id="2356070529366658676">Vprašaj</translation>
+<translation id="7701040980221191251">Brez</translation>
+<translation id="1085027414516521238">MetaMask</translation>
 <translation id="6554397389149987360">Uporabi komponento Hangouts za omogočanje skupne rabe zaslona in drugih funkcij v brskalniku.</translation>
 <translation id="1765684547504191670">Uporablja komponento Media Router, da omogoči Chromecast v brskalniku.</translation>
 <translation id="9156965752763025780">Spremembe bodo začele veljati ob naslednjem zagonu Bravea.</translation>
@@ -159,13 +164,17 @@
 <translation id="4394049700291259645">Onemogoči</translation>
 <translation id="6469509880167172749">Samodejno pošlji popolnoma zasebno analizo izdelkov na Brave</translation>
 <translation id="7090566321964540749">Ta anonimna informacija programski opremi Brave samo omogoča, da oceni splošno uporabo nekaterih funkcij.</translation>
-<translation id="1200956479506699688">V Brave je zdaj na voljo kripto denarnica. Istočasno ne morete uporabljati funkcije MetaMask in kripto denarnice.</translation>
 <translation id="7583735190612229830">Nastavite kripto denarnice za interakcijo s to aplikacijo in drugimi podobnimi.</translation>
 <translation id="8337117349965899723">Uporabi kripto denarnice</translation>
 <translation id="5756155765711979898">Uporabi funkcijo MetaMask</translation>
 <translation id="6754134632841262799">NASTAVITEV</translation>
+<translation id="4552520379838695057">Ta stran manjka.</translation>
+<translation id="2609895996619941644">Želite preveriti, ali je na računalniku Wayback na voljo shranjena različica?</translation>
+<translation id="8053093028263274061">Žal ni na voljo nobene shranjene različice.</translation>
+<translation id="8517321676372639828">Preveri, ali je na voljo shranjena različica</translation>
 <translation id="191143826155037518">Brave vam je na voljo na <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>javna licenca Mozilla 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) in vključuje <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>odprtokodno programsko opremo<ph name="END_LINK_OSS">&lt;/a&gt;</ph> pod različnimi drugimi licencami.
 Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>navodila o tem, kako prenesete in oblikujete<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> specifično <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>izvorno kodo, uporabljeno za ustvarjanje te kopije<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
 <translation id="4474155171896946103">Dodaj vse zavihke med zaznamke ...</translation>
 <translation id="2336228925368920074">Dodaj vse zavihke med zaznamke ...</translation>
+<translation id="796831669370432378">Če želite strani dodati med zaznamke, kliknite gumb za zaznamke v naslovni vrstici</translation>
 </translationbundle>

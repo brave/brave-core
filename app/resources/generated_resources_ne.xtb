@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">प्राथमिकताहरू...</translation>
 <translation id="5801568494490449797">प्राथमिकताहरू</translation>
 <translation id="3677911431265050325">मोबाइल साइट अनुरोध गर्नुहोस्</translation>
+<translation id="236470849334943016">३१ मार्चदेखि Brave को सेवाका सर्तहरू परिवर्तन हुँदै छन्</translation>
+<translation id="1032605640136438169">कृपया नयाँ सर्तहरूको समीक्षा गर्नुहोस्</translation>
+<translation id="8712637175834984815">भयो</translation>
+<translation id="5007392906805964215">समीक्षा गर्नुहोस्</translation>
 <translation id="4408599188496843485">म&amp;द्दत</translation>
 <translation id="8378714024927312812">तपाईंको सङ्गठनले व्यवस्थापन गरेको</translation>
 <translation id="7928836894214140642"><ph name="ENROLLMENT_DOMAIN"/> ले व्यवस्थापन गरेको</translation>
@@ -2427,7 +2431,6 @@
 <translation id="7892963120252479610">तपाईंले यो ट्याब बन्द नगरुन्जेल <ph name="ORIGIN"/> ले <ph name="FOLDERNAME"/> मा फाइलहरू हेर्न सक्ने छ</translation>
 <translation id="7201420661433230412">फाइलहरू हेर्ने</translation>
 <translation id="3015639418649705390">अहिले नै पुनः सुरु गर्नुहोस्</translation>
-<translation id="8712637175834984815">भयो</translation>
 <translation id="2783952358106015700"><ph name="APP_NAME"/> मार्फत आफ्नो सुरक्षा साँचो प्रयोग गर्नुहोस्</translation>
 <translation id="2446585455334014596"><ph name="APP_NAME"/> ले तपाईंको पहिचान पुष्टि गर्न चाहन्छ</translation>
 <translation id="1567750922576943685">तपाईंको पहिचानको पुष्टि गर्नुले तपाईंको व्यक्तिगत जानकारी सुरक्षित राख्न मद्दत गर्छ</translation>

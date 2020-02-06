@@ -256,7 +256,7 @@
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
-    "message": "Your scheduled monthly payment for Auto-Contribute and monthly contributions could not be completed due to insufficient funds. We’ll try again in 30 days.",
+    "message": "ಸ್ವಯಂ ಕೊಡುಗೆಗಾಗಿ ನಿಮ್ಮ ನಿಗದಿತ ಮಾಸಿಕ ಪಾವತಿಯನ್ನು ಮತ್ತು ಮಾಸಿಕ ಕೊಡುಗೆಗಳನ್ನು ಸಾಕಷ್ಟು ಹಣವಿಲ್ಲದ ಕಾರಣದಿಂದಾಗಿ ಪೂರ್ಣಗೊಳಿಸಲಾಗಲಿಲ್ಲ. ನಾವು 30 ದಿನಗಳಲ್ಲಿ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸುತ್ತೇವೆ.",
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
@@ -400,7 +400,7 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "Your monthly contributions have been processed!",
+    "message": "ನಿಮ್ಮ ಮಾಸಿಕ ಕೊಡುಗೆಗಳನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಲಾಗಿದೆ!",
     "description": "Message for monthly contributions processed notification"
   },
   "contributionTips": {

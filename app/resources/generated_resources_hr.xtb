@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">Postavke...</translation>
 <translation id="5801568494490449797">Postavke</translation>
 <translation id="3677911431265050325">Zatraži web-lokaciju za mobilne uređaje</translation>
+<translation id="236470849334943016">Braveovi uvjeti pružanja usluge mijenjaju se 31. ožujka</translation>
+<translation id="1032605640136438169">Pregledajte nove uvjete</translation>
+<translation id="8712637175834984815">Shvaćam</translation>
+<translation id="5007392906805964215">Pregled</translation>
 <translation id="4408599188496843485">P&amp;omoć</translation>
 <translation id="8378714024927312812">Pod upravljanjem vaše organizacije</translation>
 <translation id="7928836894214140642">Upravlja: <ph name="ENROLLMENT_DOMAIN"/></translation>
@@ -2435,7 +2439,6 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="7892963120252479610">Web-lokacija <ph name="ORIGIN"/> moći će vidjeti sve datoteke u mapi <ph name="FOLDERNAME"/> dok ne zatvorite karticu</translation>
 <translation id="7201420661433230412">Pregled datoteka</translation>
 <translation id="3015639418649705390">Ponovo pokreni sada</translation>
-<translation id="8712637175834984815">Shvaćam</translation>
 <translation id="2783952358106015700">Upotreba sigurnosnog ključa s aplikacijom <ph name="APP_NAME"/></translation>
 <translation id="2446585455334014596"><ph name="APP_NAME"/> želi potvrditi vaš identitet</translation>
 <translation id="1567750922576943685">Potvrđivanjem identiteta bolje štitite svoje osobne podatke</translation>

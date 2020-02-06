@@ -17,15 +17,17 @@
 <translation id="7100907433458266664">dzień</translation>
 <translation id="4971389353431353387">dni</translation>
 <translation id="8427933533533814946">Zdjęcie autorstwa</translation>
+<translation id="7108338896283013870">Schowaj</translation>
 <translation id="7115515527894388910">Edytuj ustawienia</translation>
 <translation id="7606029853066610626">Przeglądaj i zarządzaj zakładkami</translation>
 <translation id="5550994254534676787">Wyświetl historię przeglądania</translation>
 <translation id="1742484101357469636">Ustawienia pulpitu</translation>
-<translation id="8320281346741574991">Pokaż zdjęcie w tle</translation>
+<translation id="5783793537552649286">Pokaż obraz w tle</translation>
 <translation id="7275773481201277457">Pokaż statystyki Brave</translation>
 <translation id="6836061097810262923">Pokaż godzinę</translation>
 <translation id="8643377320501056697">Pokaż popularne strony</translation>
 <translation id="3446024864193919737">Pokaż nagrody Brave</translation>
+<translation id="3870475560794762985">Pokaż obrazy sponsorowane</translation>
 <translation id="6165508094623778733">Dowiedz się więcej</translation>
 <translation id="8730621377337864115">Gotowe</translation>
 <translation id="6248988683584659830">Przeszukaj ustawienia</translation>
@@ -82,8 +84,11 @@
 <translation id="7954950242989581218">Przeglądaj bezpiecznie</translation>
 <translation id="2188651882929633653">Brave Shields blokuje wszystkie te internetowe straszydła, które chcą śledzić twoją aktywność w sieci — w tym większość reklam. Ustaw Shields w tryb “wył.”, jeśli dana strona nie działa. Brave wykorzystuje <ph name="BEGIN_LINK_P3A">&amp;lt;a target="_blank" href="$1"&amp;gt;</ph>całkowicie prywatne analizy dotyczące produktu<ph name="END_LINK_P3A">&amp;lt;/a&amp;gt;</ph> w celu oszacowania ogólnego poziomu korzystania z określonych funkcji. Można to wyłączyć w <ph name="BEGIN_LINK_P3A_SETTINGS">&amp;lt;a target="_blank" href="$2"&amp;gt;</ph>ustawieniach<ph name="END_LINK_P3A_SETTINGS">&amp;lt;/a&amp;gt;</ph>.</translation>
 <translation id="1919345977826869612">Reklamy</translation>
+<translation id="2364310432103707426">Zarabiaj {{currency}}, oglądając reklamy Brave. Reklamy te odpowiadają Twoim zainteresowaniom, które określane są na podstawie sposobu przeglądania przez Ciebie stron internetowych. Twoje dane osobowe oraz historia odwiedzin przez cały czas pozostają w Twojej przeglądarce.</translation>
 <translation id="6112368337882254910">Wspieraj automatycznie</translation>
 <translation id="3742599705619405136">Automatyczny sposób wspierania wydawców i twórców treści. Ustaw comiesięczną płatność i przeglądaj normalnie. Zweryfikowane przez Brave witryny, które odwiedzasz, otrzymają Twoje darowizny automatycznie w oparciu o poświęconą uwagę według pomiaru Brave.</translation>
+<translation id="8949527283651381130">Zezwól na rozpoznanie konwersji reklam</translation>
+<translation id="2184191362610545393">Ta funkcja anonimowo poinformuje Brave, że użytkownik tej przeglądarki zareagował na reklamę. Włączenie tej opcji zwiększy Twoje zarobki.</translation>
 <translation id="20281847067919078">Szacowane oczekujące nagrody</translation>
 <translation id="8593551638387217772">Data następnej płatności</translation>
 <translation id="319209088187794725">Powiadomienia o reklamach otrzymane w tym miesiącu</translation>
@@ -310,8 +315,13 @@
 <translation id="4923459931733593730">Płatność</translation>
 <translation id="4021593982164260556">Płatność dokonywana {{day}} dnia każdego miesiąca.</translation>
 <translation id="6104680658798556671">Nie dokonano płatności.</translation>
+<translation id="2834888581291358924">Jeżeli w danym miesiącu saldo Twojego konta nie wystarcza na pokrycie łącznej kwoty automatycznej wpłaty i Twoich comiesięcznych datków, płatności te są pomijane.</translation>
 <translation id="3138528956349114724">Przypięte strony są teraz</translation>
+<translation id="2337632028350283479">Oto jak działają comiesięczne datki:</translation>
+<translation id="6457273203091513039">Comiesięczne datki nie pochodzą z Twojej wpłaty automatycznej i są od niej niezależne.</translation>
 <translation id="9099396904827413228">Każda strona jest opłacana stałą kwotą miesięczną.</translation>
+<translation id="5051110132941857169">Comiesięczne datki wypłacane są co miesiąc, wszystkie naraz. Jeśli korzystasz z opcji automatycznej wpłaty, datki wypłacane są w tym samym terminie co Twoja comiesięczna automatyczna wpłata.</translation>
+<translation id="3374483782662414143">Możesz usunąć dowolną witrynę otrzymującą comiesięczne wpłaty z poziomu panelu Datki.</translation>
 <translation id="5082474983463379713">Uwaga:</translation>
 <translation id="1430915738399379752">Drukuj</translation>
 <translation id="135956957367307069">Twoje żądanie jest nadal przetwarzane, proszę czekać.</translation>
@@ -335,6 +345,7 @@
 <translation id="4699702339303280827">Zawsze możesz skorzystać z tego klucza, aby odzyskać portfel, jeśli coś przytrafi się Twojej przeglądarce lub komputerowi. Pamiętaj, aby ochronić go przed osobami, które mogłyby go użyć, by ukraść Twój portfel. Prawdopodobnie najbezpieczniej będzie zapisać klucz na kartce lub w innymi miejscu, w którym przechowujesz ważne informacje.</translation>
 <translation id="7354412786785889047">Możesz wesprzeć tego twórcę treści, dając napiwek. To forma podziękowania za tworzenie świetnych treści. Napiwek jest wypłacany zweryfikowanym twórcom w pierwszym tygodniu każdego miesiąca kalendarzowego.</translation>
 <translation id="972846019534552366">Możesz również ustawić cykliczne miesięczne wsparcie w ustawieniach nagród Brave.</translation>
+<translation id="121079855621707240">Możesz wesprzeć tego twórcę poprzez ustanowienie comiesięcznego datku. To sposób na podziękowanie mu za regularne tworzenie wspaniałych treści. Zweryfikowani twórcy otrzymują zapłatę za swój wkład w pierwszym tygodniu każdego miesiąca kalendarzowego.</translation>
 <translation id="3074127054582480056">Uwaga</translation>
 <translation id="5010112177773747965">bez Twojej zgody.</translation>
 <translation id="7147673045905733351">Brave wita Cię w nowym Internecie.</translation>
@@ -452,20 +463,25 @@
 <translation id="4569155249847375786">Zweryfikowany</translation>
 <translation id="8465442795593991224">Uphold może wymagać weryfikacji Twojej tożsamości w zależności od żądanych usług.</translation>
 <translation id="723054503945711909">Brave Software Inc. nie przetwarza, nie przechowuje ani nie uzyskuje dostępu do żadnych danych osobowych, które podajesz Uphold, zakładając konto w tym serwisie.</translation>
-<translation id="693248854158660756">o nagrodach Brave</translation>
-<translation id="161118570147571596">Klikając „Włącz nagrody”, zaznaczasz, że przeczytałeś i zgadzasz się na</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Dowiedz się więcej<ph name="LINK_END"/> o programie nagród Brave</translation>
+<translation id="5826706758731195747">Włączając nagrody, akceptujesz <ph name="LINK_BEGIN"/>Warunki korzystania z usługi<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Szacunkowe zarobki do tej pory w tym miesiącu</translation>
+<translation id="6778392839723468409">Zarabiaj tokeny za oglądanie reklam szanujących Twoją prywatność.</translation>
 <translation id="5235444069025581717">Napiwki i wsparcia w tym miesiącu</translation>
 <translation id="1210965535849006928">Odbierz nagrody</translation>
 <translation id="8315514906653279104">Włączanie...</translation>
 <translation id="7307847920988946894">Włącz nagrody</translation>
 <translation id="662631138774963814">Czujesz się hojny?</translation>
 <translation id="3264975266761862670">Gotowy do zarabiania?</translation>
+<translation id="8092889639392847252">Otrzymaj zapłatę za wyświetlenie tego sponsorowanego obrazu w tle.</translation>
 <translation id="2542495049135486284">Wypróbuj ponownie nagrody Brave i wypłacaj je, gdy zarobisz!</translation>
-<translation id="7194640987408033097">Włącz reklamy Brave i zarabiaj, oglądając reklamy szanujące prywatność</translation>
+<translation id="53513464591392992">Włącz nagrody Brave i otrzymuj zapłatę za wyświetlanie reklam szanujących Twoją prywatność.</translation>
 <translation id="8568666589217601917">Tak trzymaj!</translation>
 <translation id="764235488372037377">Twoje nagrody z reklam są tutaj</translation>
 <translation id="7091215606170476659">Możesz odebrać tokeny UGP od Brave</translation>
+<translation id="6759185676704303656">Otrzymujesz wynagrodzenie za wyświetlenie tego obrazu w tle.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Dowiedz się więcej<ph name="LINK_END"/> o sponsorowanych obrazach w nagrodach Brave.</translation>
+<translation id="6113004497629356998">Ukryj obrazy sponsorowane</translation>
 <translation id="1181037720776840403">Usuń</translation>
 <translation id="7885157704277298658">Skopiowano!</translation>
 <translation id="5379640681913450928">Liczba słów:</translation>

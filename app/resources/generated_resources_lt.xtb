@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">Nuostatos...</translation>
 <translation id="5801568494490449797">Nuostatos</translation>
 <translation id="3677911431265050325">Pateikti užklausą dėl svetainės mobiliesiems</translation>
+<translation id="236470849334943016">Kovo 31 dieną bus pakeistos „Brave“ paslaugų teikimo sąlygos</translation>
+<translation id="1032605640136438169">Peržiūrėkite naujas sąlygas</translation>
+<translation id="8712637175834984815">Supratau</translation>
+<translation id="5007392906805964215">Peržiūrėti</translation>
 <translation id="4408599188496843485">P&amp;agalba</translation>
 <translation id="8378714024927312812">Tvarko jūsų organizacija</translation>
 <translation id="7928836894214140642">Tvarko <ph name="ENROLLMENT_DOMAIN"/></translation>
@@ -2436,7 +2440,6 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="7892963120252479610"><ph name="ORIGIN"/> galės peržiūrėti aplanko „<ph name="FOLDERNAME"/>“ failus, kol neuždarysite šio skirtuko</translation>
 <translation id="7201420661433230412">Peržiūrėti failus</translation>
 <translation id="3015639418649705390">Paleisti iš naujo dabar</translation>
-<translation id="8712637175834984815">Supratau</translation>
 <translation id="2783952358106015700">Saugos rakto naudojimas su programa „<ph name="APP_NAME"/>“</translation>
 <translation id="2446585455334014596">„<ph name="APP_NAME"/>“ nori patvirtinti jūsų tapatybę</translation>
 <translation id="1567750922576943685">Jei patvirtinsite savo tapatybę, galėsime efektyviau apsaugoti asmens informaciją</translation>
