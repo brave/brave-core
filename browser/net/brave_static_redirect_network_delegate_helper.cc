@@ -48,6 +48,11 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kCRXDownloadPrefix);
   static URLPattern autofill_pattern(
       URLPattern::SCHEME_HTTPS, kAutofillPrefix);
+  static URLPattern gvt1_pattern(
+      URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, "*://*.gvt1.com/*");
+  static URLPattern googleDl_pattern(
+      URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS,
+      "*://dl.google.com/*");
 
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   static URLPattern translate_pattern(URLPattern::SCHEME_HTTPS,
@@ -117,6 +122,21 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
     *new_url = request_url.ReplaceComponents(replacements);
     return net::OK;
   }
+
+  if (gvt1_pattern.MatchesURL(request_url)) {
+    replacements.SetSchemeStr("https");
+    replacements.SetHostStr(kBraveRedirectorProxy);
+    *new_url = request_url.ReplaceComponents(replacements);
+    return net::OK;
+  }
+
+  if (googleDl_pattern.MatchesURL(request_url)) {
+    replacements.SetSchemeStr("https");
+    replacements.SetHostStr(kBraveRedirectorProxy);
+    *new_url = request_url.ReplaceComponents(replacements);
+    return net::OK;
+  }
+
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
   if (translate_pattern.MatchesURL(request_url)) {
     replacements.SetQueryStr(request_url.query_piece());
