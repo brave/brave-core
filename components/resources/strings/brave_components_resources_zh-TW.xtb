@@ -17,15 +17,17 @@
 <translation id="7100907433458266664">天</translation>
 <translation id="4971389353431353387">天</translation>
 <translation id="8427933533533814946">相片由</translation>
+<translation id="7108338896283013870">隱藏</translation>
 <translation id="7115515527894388910">編輯偏好設定</translation>
 <translation id="7606029853066610626">檢視並管理書籤</translation>
 <translation id="5550994254534676787">檢視您的瀏覽歷史</translation>
 <translation id="1742484101357469636">儀表板設定</translation>
-<translation id="8320281346741574991">顯示背景影像</translation>
+<translation id="5783793537552649286">顯示背景影像</translation>
 <translation id="7275773481201277457">顯示 Brave 統計</translation>
 <translation id="6836061097810262923">顯示時鐘</translation>
 <translation id="8643377320501056697">顯示頂部網站</translation>
 <translation id="3446024864193919737">顯示 Brave Rewards</translation>
+<translation id="3870475560794762985">顯示贊助影像</translation>
 <translation id="6165508094623778733">更多資訊</translation>
 <translation id="8730621377337864115">完成</translation>
 <translation id="6248988683584659830">搜尋設定</translation>
@@ -85,8 +87,8 @@
 <translation id="2364310432103707426">透過觀看 Brave 廣告來賺取 {{currency}}。所顯示的廣告是您的興趣為基礎，其推測自您的瀏覽行為。您的個人資料或瀏覽歷史記錄從未離開您的瀏覽器。</translation>
 <translation id="6112368337882254910">自動捐獻</translation>
 <translation id="3742599705619405136">一種自動資助發行者和內容創作者的方式。設定每月付款並正常瀏覽。您造訪的 Brave 驗證網站會根據 Brave 測量到您的注意度自動收到您的捐助。</translation>
-<translation id="4982484433851059520">允許轉化追蹤</translation>
-<translation id="5173291160602017299">匿名地讓 Brave 知道您已經對廣告做出反應。停用此選項可能會導致收入減少，因為您可能會收到較少種廣告。</translation>
+<translation id="8949527283651381130">允許廣告轉換偵測</translation>
+<translation id="2184191362610545393">這會匿名告訴 Brave 這個瀏覽器上有對廣告的回應。啓用本功能會增加收入。</translation>
 <translation id="20281847067919078">預估擱置中的獎勵</translation>
 <translation id="8593551638387217772">下一個支付日期</translation>
 <translation id="319209088187794725">本月收到的廣告通知</translation>
@@ -461,20 +463,26 @@
 <translation id="4569155249847375786">已驗證</translation>
 <translation id="8465442795593991224">根據服務要求，Uphold 可能需要您驗證身分識別</translation>
 <translation id="723054503945711909">當您建立您的帳號時，Brave 軟體公司不會處理、儲存或存取您提供給 Uphold 的任何個人資料。</translation>
-<translation id="693248854158660756">關於 Brave Rewards</translation>
-<translation id="161118570147571596">透過點擊「開啟 Rewards」，您即暗示您已經閱讀並同意</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>進一步瞭解<ph name="LINK_END"/> Brave Rewards</translation>
+<translation id="5826706758731195747">開啟「獎勵」，即表示您同意<ph name="LINK_BEGIN"/>服務條款<ph name="LINK_END"/>。</translation>
 <translation id="8344084848798035850">本月到目前為止的估計收入</translation>
+<translation id="6778392839723468409">透過檢視尊重隱私的廣告來賺代幣。</translation>
 <translation id="5235444069025581717">本月小費與貢獻</translation>
 <translation id="1210965535849006928">領取我的獎勵</translation>
 <translation id="8315514906653279104">正在開啟……</translation>
 <translation id="7307847920988946894">開啟 Rewards</translation>
 <translation id="662631138774963814">感到慷慨？</translation>
 <translation id="3264975266761862670">準備好開始賺取收益了嗎？</translation>
+<translation id="8092889639392847252">檢視這張贊助背景影像來賺錢。</translation>
 <translation id="2542495049135486284">再次試用 Brave Rewards，並在您賺錢時支付！</translation>
-<translation id="7194640987408033097">開啟 Brave Rewards 並透過觀看尊重隱私的廣告來賺錢。</translation>
+<translation id="53513464591392992">開啟 Brave Rewards，透過檢視尊重隱私的廣告來賺錢。</translation>
+<translation id="8463996294416161140">開啟 <ph name="PRODUCT_NAME"/> 以領取您的獎勵。您也可以選擇 <ph name="LINK_BEGIN"/>隱藏贊助圖片<ph name="LINK_END"/>。</translation>
 <translation id="8568666589217601917">該走了！</translation>
 <translation id="764235488372037377">您從廣告得來的獎勵在此</translation>
 <translation id="7091215606170476659">您有從 Brave 而來的 UGP 經費。</translation>
+<translation id="6759185676704303656">您在透過檢視這張背景影像來賺錢。</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>進一步瞭解<ph name="LINK_END"/> Brave Rewards 的贊助影像。</translation>
+<translation id="6113004497629356998">隱藏贊助影像</translation>
 <translation id="1181037720776840403">移除</translation>
 <translation id="7885157704277298658">已複製！</translation>
 <translation id="5379640681913450928">字數：</translation>

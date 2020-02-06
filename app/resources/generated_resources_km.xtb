@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">ចំណូលចិត្ត......</translation>
 <translation id="5801568494490449797">ចំណូលចិត្ត</translation>
 <translation id="3677911431265050325">ស្នើគេហ​ទំព័រ​សម្រាប់ឧបករណ៍​ចល័ត</translation>
+<translation id="236470849334943016">លក្ខខណ្ឌប្រើប្រាស់របស់​ Brave នឹងផ្លាស់ប្ដូរនៅថ្ងៃទី 31 ខែមីនា</translation>
+<translation id="1032605640136438169">សូម​ពិនិត្យមើល​លក្ខខណ្ឌ​ថ្មី</translation>
+<translation id="8712637175834984815">យល់ហើយ</translation>
+<translation id="5007392906805964215">ពិនិត្យមើល</translation>
 <translation id="4408599188496843485">ជំនួយ</translation>
 <translation id="8378714024927312812">គ្រប់គ្រងដោយ​ស្ថាប័ន​របស់អ្នក</translation>
 <translation id="7928836894214140642">ស្ថិតក្រោម​ការគ្រប់គ្រង​របស់ <ph name="ENROLLMENT_DOMAIN"/></translation>
@@ -2435,7 +2439,6 @@
 <translation id="7892963120252479610"><ph name="ORIGIN"/> នឹងអាចមើល​ឯកសារ​នៅក្នុង <ph name="FOLDERNAME"/> រហូតទាល់តែ​អ្នក​បិទផ្ទាំងនេះ</translation>
 <translation id="7201420661433230412">មើល​ឯកសារ</translation>
 <translation id="3015639418649705390">ចាប់​ផ្តើមឡើងវិញឥឡូវនេះ</translation>
-<translation id="8712637175834984815">យល់ហើយ</translation>
 <translation id="2783952358106015700">ប្រើ​សោសុវត្ថិភាព​របស់អ្នក​ជាមួយ <ph name="APP_NAME"/></translation>
 <translation id="2446585455334014596"><ph name="APP_NAME"/> ចង់​ផ្ទៀងផ្ទាត់​អត្តសញ្ញាណ​របស់អ្នក</translation>
 <translation id="1567750922576943685">ការ​ផ្ទៀងផ្ទាត់​អត្តសញ្ញាណ​របស់អ្នក​ជួយ​ការពារ​ព័ត៌មាន​ផ្ទាល់ខ្លួន​របស់អ្នក</translation>

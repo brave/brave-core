@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">Тусдаа тохиргоо...</translation>
 <translation id="5801568494490449797">Миний сонголт</translation>
 <translation id="3677911431265050325">Мобайл сайтын хүсэлт тавих</translation>
+<translation id="236470849334943016">Brave-н Үйлчилгээний нөхцөлийг гуравдугаар сарын 31-ний өдөр өөрчлөх болно.</translation>
+<translation id="1032605640136438169">Шинэ нөхцөлийг шалгаж үзнэ үү</translation>
+<translation id="8712637175834984815">Ойлголоо</translation>
+<translation id="5007392906805964215">Шалгах</translation>
 <translation id="4408599188496843485">Тусламж</translation>
 <translation id="8378714024927312812">Танай байгууллагаас удирддаг</translation>
 <translation id="7928836894214140642"><ph name="ENROLLMENT_DOMAIN"/>-с удирддаг</translation>
@@ -2426,7 +2430,6 @@
 <translation id="7892963120252479610">Таныг энэ табыг хаах хүртэл <ph name="ORIGIN"/> нь <ph name="FOLDERNAME"/>-н файлыг харах боломжтой байна</translation>
 <translation id="7201420661433230412">Файл харах</translation>
 <translation id="3015639418649705390">Одоо дахин ажиллуулах</translation>
-<translation id="8712637175834984815">Ойлголоо</translation>
 <translation id="2783952358106015700">Аюулгүй байдлын түлхүүрээ <ph name="APP_NAME"/>-д ашиглах</translation>
 <translation id="2446585455334014596"><ph name="APP_NAME"/> таны аюулгүй байдлын түлхүүрийг баталгаажуулах хүсэлтэй байна</translation>
 <translation id="1567750922576943685">Өөрийгөө мөн гэдгийг баталгаажуулах нь хувийн мэдээллээ хамгаалахад тусалдаг</translation>

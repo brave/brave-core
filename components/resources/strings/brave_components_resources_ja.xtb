@@ -17,15 +17,17 @@
 <translation id="7100907433458266664">日</translation>
 <translation id="4971389353431353387">日</translation>
 <translation id="8427933533533814946">撮影者</translation>
+<translation id="7108338896283013870">隠す</translation>
 <translation id="7115515527894388910">設定を変更する</translation>
 <translation id="7606029853066610626">ブックマークの表示と管理</translation>
 <translation id="5550994254534676787">あなたのサイト閲覧履歴を表示する</translation>
 <translation id="1742484101357469636">ダッシュボードの設定</translation>
-<translation id="8320281346741574991">背景画像を表示する</translation>
+<translation id="5783793537552649286">背景画像を表示する</translation>
 <translation id="7275773481201277457">Braveのデータを表示</translation>
 <translation id="6836061097810262923">時計を表示</translation>
 <translation id="8643377320501056697">トップサイトを表示</translation>
 <translation id="3446024864193919737">Brave Rewardsを表示する</translation>
+<translation id="3870475560794762985">スポンサー画像を表示する</translation>
 <translation id="6165508094623778733">詳細情報</translation>
 <translation id="8730621377337864115">完了</translation>
 <translation id="6248988683584659830">検索の設定</translation>
@@ -82,8 +84,11 @@
 <translation id="7954950242989581218">安心・安全にブラウズする</translation>
 <translation id="2188651882929633653">Braveシールドは、ウェブのあらゆる場所でユーザーを追跡しようとする不気味なファイルをブロックします。これにはほとんどの広告が含まれます。特定のサイトがうまく動かない時は、シールドを「ダウン」に設定してみてください。Braveは<ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>完全に匿名の製品分析<ph name="END_LINK_P3A">&lt;/a&gt;</ph>を使い、特定の機能が全体でどの程度使われているか予測します。これは<ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>設定<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>でオフにできます。</translation>
 <translation id="1919345977826869612">広告</translation>
+<translation id="2364310432103707426">Braveの広告を見ることで{{通貨}}を受け取りましょう。表示される広告は、あなたの閲覧行動から推測された、あなたの関心に基づいたものになっています。いかなる個人データや閲覧履歴も、あなたのブラウザから外部に出ていくことはありません。</translation>
 <translation id="6112368337882254910">自動支援</translation>
 <translation id="3742599705619405136">パブリッシャーとコンテンツ制作者を自動的に支援する方法。月々支払いを設定して通常通りに閲覧してください。あなたが訪問するBrave検証済みサイトは、Braveが測定するあなたのアテンションに基づき、あなたからの寄付を自動で受け取ることになります。</translation>
+<translation id="8949527283651381130">広告コンバージョンの検出を可能にする</translation>
+<translation id="2184191362610545393">これは、このブラウザ上の広告に反応があったことをBraveに匿名で知らせます。これを有効にすると、報酬が増えます。</translation>
 <translation id="20281847067919078">保留中の推定報酬額</translation>
 <translation id="8593551638387217772">次回支払日</translation>
 <translation id="319209088187794725">今月受け取った広告通知</translation>
@@ -154,6 +159,7 @@
 <translation id="7210234701206674260">Brave Rewardsに問題が発生しました。後でもう一度やり直してください</translation>
 <translation id="570208820610947248">ウォレットの問題が検出されました。取引を処理する前にバックアップウォレットを復元する必要があります。</translation>
 <translation id="7797604753681168055">今すぐ復元してください！</translation>
+<translation id="5549059668721746831">次の毎月の貢献日</translation>
 <translation id="6231182869178328516">Brave Browser を使用してチップを払いました。 <ph name="NAME"/> ここで確認してください。https://brave.com/tips</translation>
 <translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="2876191400747549936">申し訳ありませんがリクエストの処理中に問題が発生しました。もう一度お試しください。</translation>
@@ -252,6 +258,8 @@
 <translation id="4114667046481794032">寄付金額</translation>
 <translation id="3520817231440482449">毎月このサイトへチップを払う</translation>
 <translation id="1827184134638345603">チップを送る…</translation>
+<translation id="7928243298881209869">あなたの最初の毎月の貢献は以下に送られます：</translation>
+<translation id="6045860799501892362">毎月の貢献を設定する</translation>
 <translation id="8003573781961874199">PDFをダウンロード</translation>
 <translation id="298067735430872465">広告閲覧報酬</translation>
 <translation id="2266556115441975588">Adsから得た報酬はこちらです！</translation>
@@ -280,6 +288,7 @@
 <translation id="9115913704608474258">11月</translation>
 <translation id="7828956995407538686">10月</translation>
 <translation id="5502713021410870035">9月</translation>
+<translation id="5737831580668469027">毎月の貢献！</translation>
 <translation id="606865182719489911">無料のポイントを受け取ることが可能です</translation>
 <translation id="2487641031722095938">ラッキーな日です！</translation>
 <translation id="6255773350565723852">あなたの付与ポイントは送金中です。</translation>
@@ -306,8 +315,13 @@
 <translation id="4923459931733593730">支払い</translation>
 <translation id="4021593982164260556">支払いは毎月{{day}}日に行われます。</translation>
 <translation id="6104680658798556671">未払いです。</translation>
+<translation id="2834888581291358924">自動貢献と毎月の貢献の合計額をカバーするのに十分な残高が残っていない場合、この期間、これらの支払いはスキップされます。</translation>
 <translation id="3138528956349114724">固定されたサイトは現在</translation>
+<translation id="2337632028350283479">毎月の貢献の仕組み：</translation>
+<translation id="6457273203091513039">毎月の貢献は「Auto-Contribute (自動貢献)」支払いから出るものではありません。これらは別々のものです。</translation>
 <translation id="9099396904827413228">サイトごとに毎月固定額が支払われます。</translation>
+<translation id="5051110132941857169">月々の貢献は毎月一度に支払われます。「Auto-Contribute (自動貢献)」を用いている場合、チップはあなたの毎月の自動貢献の支払いと同時に送られます。</translation>
+<translation id="3374483782662414143">チップパネル内から毎月の貢献を受け取るサイトを削除することができます。</translation>
 <translation id="5082474983463379713">ご注意ください：</translation>
 <translation id="1430915738399379752">印刷</translation>
 <translation id="135956957367307069">リクエストは処理中です。しばらくお待ちください。</translation>
@@ -331,6 +345,7 @@
 <translation id="4699702339303280827">あなたのブラウザやコンピューターに問題が発生した場合、いつでもこのキーを使用して、ウォレットを元に戻すことができます。しかし、このキーを持っていれば誰でもあなたのウォレットを手に入れることができるため、しっかりと保管しておいてください。紙に書き写すか、普段大切な情報を保管する場所にしまっておくのが一番安全かもしれません。</translation>
 <translation id="7354412786785889047">素晴らしいコンテンツを作成してくれた感謝を込めて、チップを贈ることでこのサイトを支援できます。認証されたコンテンツクリエイターは、毎月第1週目にチップを受け取ります。</translation>
 <translation id="972846019534552366">また、Braveの報酬パネルから、毎月繰り返す寄付を設定することもできます。</translation>
+<translation id="121079855621707240">毎月の貢献を設定することで、このコンテンツクリエイターをサポートすることができます。素晴らしいコンテンツを作ってくれたことに対して継続的に彼らに感謝を伝える1つの方法です。認証されたクリエイターは、毎月の最初の週に自身の貢献に対する報酬を受け取ります。</translation>
 <translation id="3074127054582480056">アテンション</translation>
 <translation id="5010112177773747965">あなたの同意なく。</translation>
 <translation id="7147673045905733351">今、Braveがあなたを新しいインターネットへ招待します。</translation>
@@ -448,20 +463,25 @@
 <translation id="4569155249847375786">確認済み</translation>
 <translation id="8465442795593991224">Upholdはリクエストされたサービスに基づき、あなたの身元の確認を行う必要性がある場合があります。</translation>
 <translation id="723054503945711909">Brave Software Inc.は、あなたがUpholdのアカウントを開設する際にUpholdに提供する個人情報の処理、保存、アクセスを行いません。</translation>
-<translation id="693248854158660756">Brave Rewardsについて</translation>
-<translation id="161118570147571596">「Brave Rewardsを有効にする」をクリックすると、次をに同意したものと見なされます</translation>
+<translation id="4360054110030715117">Brave Rewardsに関する<ph name="LINK_BEGIN"/>詳細を確認<ph name="LINK_END"/></translation>
+<translation id="5826706758731195747">Rewardsをオンにすることにより、<ph name="LINK_BEGIN"/>サービス規約<ph name="LINK_END"/>に同意したことになります。</translation>
 <translation id="8344084848798035850">今月のこれまでの推定収益</translation>
+<translation id="6778392839723468409">プライバシーを尊重する広告を見て、トークンを獲得しましょう。</translation>
 <translation id="5235444069025581717">今月のチップと支援実績</translation>
 <translation id="1210965535849006928">報酬を受け取る</translation>
 <translation id="8315514906653279104">有効にする</translation>
 <translation id="7307847920988946894">Rewardsを有効にする</translation>
 <translation id="662631138774963814">今気前がいい気分ですか？</translation>
 <translation id="3264975266761862670">報酬を受け取る準備はできましたか？</translation>
+<translation id="8092889639392847252">このスポンサー背景画像を見て、支払いを受けましょう。</translation>
 <translation id="2542495049135486284">もう一度Brave Rewardsを試してみませんか？獲得したポイントで誰かを応援しましょう。</translation>
-<translation id="7194640987408033097">Brave Rewardsをオンにすると、プライバシーを尊重する広告を表示し報酬を受け取ることができます。</translation>
+<translation id="53513464591392992">Brave Rewardsをオンにし、プライバシーを尊重する広告を見て報酬を受け取りましょう。</translation>
 <translation id="8568666589217601917">おめでとうございます！</translation>
 <translation id="764235488372037377">Adsから得た報酬はこちらです！</translation>
 <translation id="7091215606170476659">UGPからポイントが付与されました。</translation>
+<translation id="6759185676704303656">この背景画像を見ると、あなたに報酬が支払われます。</translation>
+<translation id="1749232564087138444">Brave Rewardsのスポンサー画像に関する<ph name="LINK_BEGIN"/>詳細を確認<ph name="LINK_END"/>。</translation>
+<translation id="6113004497629356998">スポンサー画像を非表示にする</translation>
 <translation id="1181037720776840403">削除</translation>
 <translation id="7885157704277298658">コピーしました！</translation>
 <translation id="5379640681913450928">語数:</translation>

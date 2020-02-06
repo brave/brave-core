@@ -904,6 +904,7 @@
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{선택한 1개 항목 삭제}other{선택한 #개 항목 삭제}}</translation>
 <translation id="1283039547216852943">탭하여 펼치기</translation>
 <translation id="5962718611393537961">탭하여 접기</translation>
+<translation id="3123734510202723619">공지사항</translation>
 <translation id="8076492880354921740">탭</translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1개 선택됨}other{#개 선택됨}}</translation>
 <translation id="6818926723028410516">항목 선택</translation>

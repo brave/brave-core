@@ -21,6 +21,7 @@
 <translation id="8926389886865778422">이 메시지 그만 보기</translation>
 <translation id="4726634924419692905">사이트가 언제 컴퓨터에 Widevine을 설치할지 묻습니다.</translation>
 <translation id="8760415064721320867">Tor와 함께하는 비공개 윈도우</translation>
+<translation id="8762452230727230396">Tor는 방문하는 사이트에서 IP 주소를 숨깁니다.</translation>
 <translation id="8053096063396012732">Widevine 설치</translation>
 <translation id="4840334696217618631">Widevine을 활성화라혀면 브라우저를 재시작하세요</translation>
 <translation id="8410111618231938546">Google Widevine는 Brave Software가 소유하거나 관리 할 수 없는 디지털 권한 관리(DRM) 코드입니다. Google Widevine 코드는 우리의 서버가 아닌 Google 서버에서 로드합니다. 이 기능을 활성화 한 경우에만 로드 되며, 우리는 DRM 사용을 권장하지 않지만 사용자의 선택을 존중하며, 일부 Brave 사용자는 이 서비스가 필요함을 인정합니다.
@@ -91,6 +92,8 @@
 <translation id="8502234992433094996">푸시 메시지에 Google 서비스를 사용합니다</translation>
 <translation id="3888068426966679906">원격 디버깅</translation>
 <translation id="6645631466045614531">다음을 통해 동기화 접속</translation>
+<translation id="6696935187608454456">도움말 팁</translation>
+<translation id="2775956301559569472">404 페이지에 Wayback Machine 프롬프트 표시</translation>
 <translation id="1807246157184219062">라이트</translation>
 <translation id="2414886740292270097">어두움</translation>
 <translation id="1360441190790440400">Linux와 동일</translation>
@@ -98,7 +101,9 @@
 <translation id="8721331068159819483">macOS와 동일</translation>
 <translation id="6786747875388722282">익스텐션들</translation>
 <translation id="2896916411183256228">브라우저에 직접 토렌트를 표시하려면 웹 토렌트를 사용하세요. 토렌트 파일들과 마그넷 링크들을 지원하세요.</translation>
-<translation id="5554028991651120544">Brave 안에서 이더리움 월렛과 Dapp 브라우저를 제공합니다.</translation>
+<translation id="2356070529366658676">확인</translation>
+<translation id="7701040980221191251">없음</translation>
+<translation id="1085027414516521238">메타마스크</translation>
 <translation id="6554397389149987360">화면 공유와 다른 기능들을 브라우저에서 사용하시려면 행아웃 요소들을 사용하세요.</translation>
 <translation id="1765684547504191670">브라우저에서 Chromecast를 활성화하기 위해 Media Router 콤포넌트를 사용합니다.</translation>
 <translation id="9156965752763025780">변경사항은 다음에 Brave을 다시 시작할 때 적용됩니다.</translation>
@@ -159,13 +164,17 @@
 <translation id="4394049700291259645">사용 중지</translation>
 <translation id="6469509880167172749">비밀이 완전히 보장되는 제품 애널리틱스를 자동으로 Brave에 전송합니다</translation>
 <translation id="7090566321964540749">이 익명 정보는 Brave가 특정 기능의 전체 사용량을 추정하는 데만 사용됩니다.</translation>
-<translation id="1200956479506699688">Brave (브레이브)에서 지금 크립토 월렛을 이용할 수 있습니다. 메타마스크와 크립토 월렛을 동시에 사용할 수 없습니다.</translation>
 <translation id="7583735190612229830">크립토 월렛을 설정하여 이 앱 및 기타 비슷한 앱과 소통하십시오.</translation>
 <translation id="8337117349965899723">크립토 월렛 사용</translation>
 <translation id="5756155765711979898">메타마스크 사용</translation>
 <translation id="6754134632841262799">설정</translation>
+<translation id="4552520379838695057">죄송합니다. 해당 페이지가 없습니다.</translation>
+<translation id="2609895996619941644">Wayback Machine에서 저장된 버전을 사용할 수 있는지 확인하시겠습니까?</translation>
+<translation id="8053093028263274061">죄송합니다. 저장된 버전이 존재하지 않습니다.</translation>
+<translation id="8517321676372639828">저장된 버전 확인</translation>
 <translation id="191143826155037518">Brave (브레이브)는 <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>모질라 공용 허가서 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL)에 따라 사용자에게 제공되며, 여러 다양한 기타 허가서에 따라 <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>오픈 소스 소프트웨어<ph name="END_LINK_OSS">&lt;/a&gt;</ph>를 포함합니다. 
         귀하는 <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>이 사본을 만드는 데 사용되는 특정 소스 코드<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>를 <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>다운로드하고 구축하는 방법에 대한 지침<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph>을 읽으실 수 있습니다.</translation>
 <translation id="4474155171896946103">모든 탭 북마크...</translation>
 <translation id="2336228925368920074">모든 탭 북마크...</translation>
+<translation id="796831669370432378">북마크를 추가하려면 주소 표시줄 옆에 있는 북마크 버튼을 클릭하세요</translation>
 </translationbundle>

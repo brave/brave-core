@@ -904,6 +904,7 @@ Da biste promijenili tu postavku, <ph name="BEGIN_LINK"/>poništite sinkronizaci
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Uklanjanje 1 odabrane stavke}one{Uklanjanje # odabrane stavke}few{Uklanjanje # odabranih stavki}other{Uklanjanje # odabranih stavki}}</translation>
 <translation id="1283039547216852943">Dodirnite za proširivanje</translation>
 <translation id="5962718611393537961">Dodirnite da biste saželi</translation>
+<translation id="3123734510202723619">Najave</translation>
 <translation id="8076492880354921740">Kartice</translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 odabrana stavka}one{# odabrana stavka}few{# odabrane stavke}other{# odabranih stavki}}</translation>
 <translation id="6818926723028410516">Odaberite stavke</translation>

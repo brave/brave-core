@@ -17,15 +17,17 @@
 <translation id="7100907433458266664">päivä</translation>
 <translation id="4971389353431353387">päivää</translation>
 <translation id="8427933533533814946">Valokuvan ottanut:</translation>
+<translation id="7108338896283013870">Piilota</translation>
 <translation id="7115515527894388910">Muokkaa mieltymyksiä</translation>
 <translation id="7606029853066610626">Näytä ja hallitse kirjanmerkkejä</translation>
 <translation id="5550994254534676787">Näytä selaushistoriasi</translation>
 <translation id="1742484101357469636">Ohjauspaneelin asetukset</translation>
-<translation id="8320281346741574991">Näytä taustakuva</translation>
+<translation id="5783793537552649286">Näytä taustakuva</translation>
 <translation id="7275773481201277457">Näytä Brave-tilastot</translation>
 <translation id="6836061097810262923">Näytä kello</translation>
 <translation id="8643377320501056697">Näytä kärkisivustot</translation>
 <translation id="3446024864193919737">Näytä Brave-palkinnot</translation>
+<translation id="3870475560794762985">Näytä maksetut kuvat</translation>
 <translation id="6165508094623778733">Lisätietoa</translation>
 <translation id="8730621377337864115">Valmis</translation>
 <translation id="6248988683584659830">Hakuasetukset</translation>
@@ -82,8 +84,11 @@
 <translation id="7954950242989581218">Selaa turvallisesti ja huoletta</translation>
 <translation id="2188651882929633653">Brave Shields estää ne epäilyttävät asiat, jotka yrittävät seurata sinua eri puolilla nettiä suurin osa mainoksista mukaan lukien. Mikäli sivusto ei vaikuta toimivan, “laske” Shields sivuun. Brave hyödyntää <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>täysin yksityisenä pysyvää tuoteanalytiikkaa<ph name="END_LINK_P3A">&lt;/a&gt;</ph> arvioidakseen tiettyjen ominaisuuksien kokonaiskäyttöä. Voit kytkeä tämän ominaisuuden pois päältä <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>asetuksissa<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Mainokset</translation>
+<translation id="2364310432103707426">Ansaitse {{currency}} katselemalla Brave-mainoksia. Näytetyt mainokset perustuvat mielenkiinnon kohteisiisi, jotka päätellään selainkäyttäytymisesi perusteella. Mitään henkilötietoja tai selainhistorian tietoja ei koskaan lähetetä selaimestasi eteenpäin.</translation>
 <translation id="6112368337882254910">Osallistu automaattisesti</translation>
 <translation id="3742599705619405136">Automaattinen tapa tukea julkaisijoita ja sisällönluojia. Määrää kuukausittainen maksu ja selaa tavalliseen tapaan. Braven vahvistamat sivut, joilla vierailet, saavat kannatusmaksusi automaattisesti sen mukaan, miten Brave on mitannut sinun osoittavan niille huomiotasi.</translation>
+<translation id="8949527283651381130">Salli mainoksen konversion havaitseminen</translation>
+<translation id="2184191362610545393">Tämä kertoo nimettömästi Brave-palvelulle, että mainokseen on tullut vastaus tällä selaimella. Sen asettaminen päälle kasvattaa ansioita.</translation>
 <translation id="20281847067919078">Arvioidut odottavat palkkiot</translation>
 <translation id="8593551638387217772">Seuraava maksupäivä</translation>
 <translation id="319209088187794725">Tässä kuussa saadut mainosilmoitukset</translation>
@@ -154,6 +159,7 @@
 <translation id="7210234701206674260">Brave Rewards on kohdannut ongelmia. Ole hyvä ja yritä myöhemmin uudelleen.</translation>
 <translation id="570208820610947248">Havaitsimme, että lompakkosi kanssa ilmeni ongelmia. Sinun täytyy palauttaa varalompakkosi ennen kuin liiketapahtumia voidaan käsitellä.</translation>
 <translation id="7797604753681168055">Palauta nyt!</translation>
+<translation id="5549059668721746831">Seuraava tukimaksupäivä</translation>
 <translation id="6231182869178328516">Annoin juuri tipin henkilölle <ph name="NAME"/> Brave-selaimen kautta. Voit tutustua siihen osoitteessa https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TippaaBravella</translation>
 <translation id="2876191400747549936">Ikävä kyllä pyyntösi käsittelyssä oli ongelmia. Ole hyvä ja yritä uudestaan.</translation>
@@ -252,6 +258,8 @@
 <translation id="4114667046481794032">Avustusmäärä</translation>
 <translation id="3520817231440482449">Tippaa tätä sivustoa kuukausittain</translation>
 <translation id="1827184134638345603">Lähetä tippi…</translation>
+<translation id="7928243298881209869">Ensimmäinen kuukausittainen tukimaksusi lähetetään:</translation>
+<translation id="6045860799501892362">Aseta kuukausittainen tukimaksu</translation>
 <translation id="8003573781961874199">Lataa PDF-tiedostona</translation>
 <translation id="298067735430872465">Ansaitset mainoksilla</translation>
 <translation id="2266556115441975588">Mainospalkkiosi ovat saapuneet!</translation>
@@ -280,6 +288,7 @@
 <translation id="9115913704608474258">Marraskuu</translation>
 <translation id="7828956995407538686">Lokakuu</translation>
 <translation id="5502713021410870035">Syyskuu</translation>
+<translation id="5737831580668469027">Kuukausittaiset tukimaksut!</translation>
 <translation id="606865182719489911">Ilmainen lahjoituspoletti on saatavilla</translation>
 <translation id="2487641031722095938">On onnenpäiväsi!</translation>
 <translation id="6255773350565723852">Tunnuslahjoituksesi on matkalla.</translation>
@@ -306,8 +315,13 @@
 <translation id="4923459931733593730">Maksu</translation>
 <translation id="4021593982164260556">Maksu suoritetaan joka kuukauden {{day}}. päivä.</translation>
 <translation id="6104680658798556671">Maksua ei suoritettu.</translation>
+<translation id="2834888581291358924">Kun saldosi ei riitä kattamaan Auto-Contribute-maksujen ja kuukausittaisten tukimaksujen yhteissummaa, maksut jätetään välistä siltä ajanjaksolta.</translation>
 <translation id="3138528956349114724">Kiinnitetyt sivut ovat nyt</translation>
+<translation id="2337632028350283479">Näin kuukausittaiset tukimaksut toimivat:</translation>
+<translation id="6457273203091513039">Kuukausittaisia tukimaksuja ei oteta asettamastasi Auto-Contribute-maksusta. Ne ovat erilliset.</translation>
 <translation id="9099396904827413228">Jokaiselle sivustolle maksetaan kuukausittain kiinteä summa.</translation>
+<translation id="5051110132941857169">Kaikki kuukausittaiset tukimaksut maksetaan kerralla jokaisena kuukautena. Jos käytät Auto-Contribute-toimintoa, tipit maksetaan samaan aikaan kuin kuukausittainen Auto-Contribute-maksusi.</translation>
+<translation id="3374483782662414143">Voit poistaa sivuston, jolle et halua enää maksaa kuukausittaista tukimaksua, Tipit-paneelista (Tips).</translation>
 <translation id="5082474983463379713">Huomaathan:</translation>
 <translation id="1430915738399379752">Tulosta</translation>
 <translation id="135956957367307069">Pyyntöäsi käsitellään yhä. Ole hyvä ja odota.</translation>
@@ -331,6 +345,7 @@
 <translation id="4699702339303280827">Voit aina käyttää tätä avainta lompakkosi palauttamiseen, jos jotain käy selaimellesi tai tietokoneellesi. Muista kuitenkin pitää se turvassa — kuka tahansa avaimen omaava voi nimittäin varastaa lompakkosi. On todennäköisesti turvallisinta kirjoittaa se muistiin paperille tai muulle tärkeälle muistiinpanovälineellesi.</translation>
 <translation id="7354412786785889047">Voit tukea tätä sisällönkehittäjää antamalla tipin. Se on kiitos mainion sisällön tuottamisesta. Vahvistetut kehittäjät saavat maksun tipeistään jokaisen kalenterikuun ensimmäisen viikon aikana.</translation>
 <translation id="972846019534552366">Voit myös asettaa kuukausittain toistuvan avustuksen Brave-palkinnot-ruudusta.</translation>
+<translation id="121079855621707240">Voit tukea sisällön tekijää asettamalla kuukausittaisen tukimaksun. Niin voit kiittää häntä hyvän sisällön jatkuvasta tekemisestä. Varmennetuille tekijöille maksetaan heidän tukimaksunsa kunkin kuukauden ensimmäisen viikon aikana.</translation>
 <translation id="3074127054582480056">Huomio</translation>
 <translation id="5010112177773747965">ilman suostumustasi.</translation>
 <translation id="7147673045905733351">Tänään Brave toivottaa sinut tervetulleeksi uuteen Internetiin.</translation>
@@ -448,20 +463,25 @@
 <translation id="4569155249847375786">Vahvistettu</translation>
 <translation id="8465442795593991224">Ylläpito saattaa vaatia sinua vahvistamaan henkilöllisyytesi pyydetyistä palveluista riippuen.</translation>
 <translation id="723054503945711909">Brave Software Inc. ei käsittele, tallenna tai käytä mitään henkilökohtaisia tietoja, joita luovutit Upholdille luodessasi heidän käyttäjätilinsä.</translation>
-<translation id="693248854158660756">tietoja Brave-palkinnoista</translation>
-<translation id="161118570147571596">Napsauttaessasi kohtaa ”Ota palkinnot käyttöön” ilmoitat samalla lukeneesi ja hyväksyväsi</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Lue lisää<ph name="LINK_END"/> Brave Rewards -palvelusta</translation>
+<translation id="5826706758731195747">Kun asetat Rewards-toiminnon päälle, hyväksyt  <ph name="LINK_BEGIN"/>palveluehdot<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Tämän kuun arvioidut ansiot tähän mennessä</translation>
+<translation id="6778392839723468409">Ansaitse poletteja katselemalla yksityisyyttä arvostavia mainoksia.</translation>
 <translation id="5235444069025581717">Tipit ja avustukset tässä kuussa</translation>
 <translation id="1210965535849006928">Lunasta palkintoni</translation>
 <translation id="8315514906653279104">Otetaan käyttöön...</translation>
 <translation id="7307847920988946894">Ota palkinnot käyttöön</translation>
 <translation id="662631138774963814">Tunnetko olosi anteliaaksi?</translation>
 <translation id="3264975266761862670">Oletko valmis aloittamaan ansaitsemisen?</translation>
+<translation id="8092889639392847252">Ansaitse rahaa tämän maksetun taustakuvan katselulla.</translation>
 <translation id="2542495049135486284">Kokeile Brave-palkintoja uudestaan ja anna hyvän kiertää samalla, kun ansaitset!</translation>
-<translation id="7194640987408033097">Ota Brave-palkinnot käyttöön, niin sinulle maksetaan yksityisyyttä kunnioittavien mainosten katselemisesta.</translation>
+<translation id="53513464591392992">Laita Brave Rewards päälle ja ansaitse rahaa yksityisyyttä arvostavien mainosten katselulla.</translation>
 <translation id="8568666589217601917">Hieno homma!</translation>
 <translation id="764235488372037377">Palkintosi mainoksista ovat täällä</translation>
 <translation id="7091215606170476659">Sinulla on UGP-stipendi Bravelta</translation>
+<translation id="6759185676704303656">Sinulle maksetaan tämän taustakuvan katselusta.</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Lue lisää<ph name="LINK_END"/> maksetuista kuvista Brave Rewards -palvelussa.</translation>
+<translation id="6113004497629356998">Piilota maksetut kuvat</translation>
 <translation id="1181037720776840403">Poista</translation>
 <translation id="7885157704277298658">Kopioitu</translation>
 <translation id="5379640681913450928">Sanamäärä</translation>

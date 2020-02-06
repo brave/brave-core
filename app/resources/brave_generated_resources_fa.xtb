@@ -21,6 +21,7 @@
 <translation id="8926389886865778422">دوباره سؤال نشود</translation>
 <translation id="4726634924419692905">زمانی که یک سایت می‌خواهد Widevine را روی رایانه‌تان نصب کند، سؤال بپرسد.</translation>
 <translation id="8760415064721320867">پنجره خصوصی با Tor</translation>
+<translation id="8762452230727230396">Tor نشانی IP شما را از سایت‌هایی که بازدید می‌کنید، مخفی می‌کند.</translation>
 <translation id="8053096063396012732">نصب Widevine</translation>
 <translation id="4840334696217618631">برای فعال کردن Widevine، مرورگر را دوباره راه‌اندازی کنید</translation>
 <translation id="8410111618231938546">Google Widevine قطعه‌ای از کد «مدیریت حقوق دیجیتال» (DRM) است که ما (Brave Software) مالک آن نیستیم و نمی‌توانیم آن را بازبینی کنیم. کد Google Widevine از سرورهای Google - نه سرورهای ما - بارگیری می‌شود. این کد فقط در صورتی بارگیری می‌شود که این گزینه را فعال کنید. کاربران را به استفاده از DRM تشویق نمی‌کنیم، اما به انتخاب کاربران احترام می‌گذاریم و اذعان داریم بعضی از کاربران Brave تمایل دارند از سرویس‌هایی که به DRM نیاز دارند استفاده کنند.
@@ -91,6 +92,8 @@
 <translation id="8502234992433094996">استفاده از خدمات Google برای پیام‌رسانی فشاری</translation>
 <translation id="3888068426966679906">رفع اشکال از راه دور</translation>
 <translation id="6645631466045614531">دسترسی به همگام‌سازی ازطریق</translation>
+<translation id="6696935187608454456">نکات راهنما</translation>
+<translation id="2775956301559569472">نشان دادن پیام‌واره Wayback Machine در صفحه‌های خطای 404</translation>
 <translation id="1807246157184219062">روشن</translation>
 <translation id="2414886740292270097">تاریک</translation>
 <translation id="1360441190790440400">مشابه Linux</translation>
@@ -98,7 +101,9 @@
 <translation id="8721331068159819483">مشابه macOS</translation>
 <translation id="6786747875388722282">افزونه‌ها</translation>
 <translation id="2896916411183256228">از WebTorrent برای نمایش مستقیم تورنت‌ها در مرورگر استفاده می‌کند. از فایل‌های تورنت و پیوندهای آهنربایی پشتیبانی می‌کند.</translation>
-<translation id="5554028991651120544">کیف پول اتریوم و مرورگر Dapp را در Brave ارائه می‌دهد.</translation>
+<translation id="2356070529366658676">سؤال شود</translation>
+<translation id="7701040980221191251">هیچ کدام</translation>
+<translation id="1085027414516521238">MetaMask</translation>
 <translation id="6554397389149987360">از مؤلفه‌های Hangouts برای فعال کردن اشتراک‌گذاری صفحه و سایر ویژگی‌ها در مرورگر استفاده می‌کند.</translation>
 <translation id="1765684547504191670">از مؤلفه «رهیاب رسانه» برای فعال کردن Chromecast در مرورگر استفاده می‌کند.</translation>
 <translation id="9156965752763025780">‏دفعه بعدی که Brave را مجدداً راه‌اندازی می‌کنید، این تغییرات اعمال می‌شوند.</translation>
@@ -159,13 +164,17 @@
 <translation id="4394049700291259645">غیر فعال کردن</translation>
 <translation id="6469509880167172749">‏ارسال خودکار تجزیه‌وتحلیل کاملاً خصوصی محصول به Brave</translation>
 <translation id="7090566321964540749">این اطلاعات ناشناس فقط به Brave اجازه می‌دهد استفاده کلی از بعضی از قابلیت‌ها را تخمین بزند.</translation>
-<translation id="1200956479506699688">«کیف پول‌های رمزنگاری‌شده» اکنون در Brave موجود است. به‌طور هم‌زمان نمی‌توانید از MetaMask و «کیف پول‌های رمزنگاری‌شده» استفاده کنید.</translation>
 <translation id="7583735190612229830">برای داشتن تعامل با این برنامه و برنامه‌های دیگر مشابه آن، «کیف پول رمزنگاری‌شده» را تنظیم کنید.</translation>
 <translation id="8337117349965899723">استفاده از «کیف پول‌های رمزنگاری‌شده»</translation>
 <translation id="5756155765711979898">استفاده از MetaMask</translation>
 <translation id="6754134632841262799">تنظیم</translation>
+<translation id="4552520379838695057">متأسفیم، آن صفحه یافت نمی‌شود.</translation>
+<translation id="2609895996619941644">می‌خواهید بررسی کنید که آیا نسخه ذخیره‌شده‌ای در Wayback Machine موجود است؟</translation>
+<translation id="8053093028263274061">متأسفیم، نسخه ذخیره‌شده‌ای موجود نیست.</translation>
+<translation id="8517321676372639828">بررسی برای نسخه ذخیره‌شده</translation>
 <translation id="191143826155037518">Brave تحت <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>مجوزهای عمومی Mozilla نسخه 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) در اختیار شما قرار داده می‌شود و شامل <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>نرم‌افزار متن‌باز<ph name="END_LINK_OSS">&lt;/a&gt;</ph> تحت مجموعه دیگری از مجوزها است.
 شما می‌توانید <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>دستورالعمل‌های مربوط به نحوه دانلود و ایجاد<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> کد منبع مشخص <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>استفاده‌شده برای ایجاد این نسخه را مطالعه کنید<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
 <translation id="4474155171896946103">نشانک‌گذاری همه برگه‌ها...</translation>
 <translation id="2336228925368920074">نشانک‌گذاری همه برگه‌ها...</translation>
+<translation id="796831669370432378">برای افزودن نشانک، روی دکمه نشانک در کنار نوار نشانی کلیک کنید</translation>
 </translationbundle>

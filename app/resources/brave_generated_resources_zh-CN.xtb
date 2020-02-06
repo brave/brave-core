@@ -92,6 +92,8 @@
 <translation id="8502234992433094996">为推送消息使用 Google Services</translation>
 <translation id="3888068426966679906">远程调试</translation>
 <translation id="6645631466045614531">通过以下方式访问同步：</translation>
+<translation id="6696935187608454456">帮助提示</translation>
+<translation id="2775956301559569472">显示 404 页上的 Wayback Machine 提示</translation>
 <translation id="1807246157184219062">亮</translation>
 <translation id="2414886740292270097">暗</translation>
 <translation id="1360441190790440400">与 Linux 相同</translation>
@@ -99,7 +101,10 @@
 <translation id="8721331068159819483">与 macOS 相同</translation>
 <translation id="6786747875388722282">扩展程序</translation>
 <translation id="2896916411183256228">使用 WebTorrent 直接在浏览器中显示种子。支持种子文件和磁力链接。</translation>
-<translation id="5554028991651120544">提供以太坊钱包和 Brave 内置的 Dapp 浏览器。</translation>
+<translation id="2356070529366658676">询问</translation>
+<translation id="7701040980221191251">无</translation>
+<translation id="1085027414516521238">MetaMask</translation>
+<translation id="3905324891414560921">使用 Dapps 提供的 Web3 provider</translation>
 <translation id="6554397389149987360">使用环聊组件在浏览器中启用屏幕共享和其他功能。</translation>
 <translation id="1765684547504191670">使用媒体路由器组件在浏览器中启用 Chromecast。</translation>
 <translation id="9156965752763025780">您所做的更改会在下次重新启动 Brave 时生效。</translation>
@@ -160,13 +165,18 @@
 <translation id="4394049700291259645">停用</translation>
 <translation id="6469509880167172749">将完全的隐私产品分析信息自动发送给 Brave Software</translation>
 <translation id="7090566321964540749">该匿名信息仅使 Brave 能够估计某些功能的整体使用情况。</translation>
-<translation id="1200956479506699688">Crypto Wallets 现已在 Brave 上提供。您不能同时使用 MetaMask Wallets 和 Crypto Wallets。</translation>
+<translation id="9111960429693394744">您想为 Dapp 使用 Brave's Crypto 或 MetaMask 吗？</translation>
 <translation id="7583735190612229830">设置 Crypto Wallets 以与此应用程序以及其他类似的应用程序进行交互。</translation>
 <translation id="8337117349965899723">使用 Crypto Wallets</translation>
 <translation id="5756155765711979898">使用 MetaMask</translation>
 <translation id="6754134632841262799">设定</translation>
+<translation id="4552520379838695057">抱歉，该页面缺失。</translation>
+<translation id="2609895996619941644">想要检查 Wayback Machine 上是否有保存的版本？</translation>
+<translation id="8053093028263274061">抱歉，没有可用的已保存版本。</translation>
+<translation id="8517321676372639828">查看保存的版本</translation>
 <translation id="191143826155037518">根据 <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL)，您可以使用 Brave（这里有 <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>根据各种其他许可获得的开源软件）<ph name="END_LINK_OSS">&lt;/a&gt;</ph>。
         您可以自己阅读一下 <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>有关如何自行下载和构建<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph>用来创建此副本的特定 <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>源代码的说明<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>。</translation>
 <translation id="4474155171896946103">为所有标签页添加书签...</translation>
 <translation id="2336228925368920074">为所有标签页添加书签...</translation>
+<translation id="796831669370432378">要添加书签，请点击地址栏旁边的书签按钮</translation>
 </translationbundle>

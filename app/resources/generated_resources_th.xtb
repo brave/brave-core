@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">ค่ากำหนด...</translation>
 <translation id="5801568494490449797">การตั้งค่า</translation>
 <translation id="3677911431265050325">ขอเว็บไซต์ในอุปกรณ์เคลื่อนที่</translation>
+<translation id="236470849334943016">ข้อกำหนดในการให้บริการของ Brave จะมีการเปลี่ยนแปลงในวันที่ 31 มีนาคม</translation>
+<translation id="1032605640136438169">โปรดอ่านข้อกำหนดใหม่</translation>
+<translation id="8712637175834984815">สำเร็จ</translation>
+<translation id="5007392906805964215">ดู</translation>
 <translation id="4408599188496843485">ความ&amp;ช่วยเหลือ</translation>
 <translation id="8378714024927312812">จัดการโดยองค์กร</translation>
 <translation id="7928836894214140642">จัดการโดย <ph name="ENROLLMENT_DOMAIN"/></translation>
@@ -2435,7 +2439,6 @@
 <translation id="7892963120252479610"><ph name="ORIGIN"/> จะดูไฟล์ใน <ph name="FOLDERNAME"/> ได้จนกว่าคุณจะปิดแท็บนี้</translation>
 <translation id="7201420661433230412">ดูไฟล์</translation>
 <translation id="3015639418649705390">เปิดใหม่เลย</translation>
-<translation id="8712637175834984815">สำเร็จ</translation>
 <translation id="2783952358106015700">ใช้คีย์ความปลอดภัยกับ <ph name="APP_NAME"/></translation>
 <translation id="2446585455334014596"><ph name="APP_NAME"/> ต้องการยืนยันตัวตนของคุณ</translation>
 <translation id="1567750922576943685">การยืนยันตัวตนจะช่วยปกป้องข้อมูลส่วนบุคคล</translation>

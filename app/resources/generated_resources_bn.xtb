@@ -223,6 +223,10 @@
 <translation id="7422192691352527311">অভিরুচিসমূহ...</translation>
 <translation id="5801568494490449797">অভিরুচিসমূহ</translation>
 <translation id="3677911431265050325">মোবাইল সাইটের জন্য অনুরোধ করুন</translation>
+<translation id="236470849334943016">৩১ মার্চ থেকে Brave-এর 'পরিষেবার শর্তাবলী'-তে পরিবর্তন করা হবে</translation>
+<translation id="1032605640136438169">নতুন শর্তাবলী ভাল করে পড়ে নিন</translation>
+<translation id="8712637175834984815">বুঝেছি</translation>
+<translation id="5007392906805964215">পর্যালোচনা করুন</translation>
 <translation id="4408599188496843485">স&amp;হায়তা</translation>
 <translation id="8378714024927312812">আপনার প্রতিষ্ঠানের দ্বারা ম্যানেজ করা</translation>
 <translation id="7928836894214140642"><ph name="ENROLLMENT_DOMAIN"/> ম্যানেজ করে</translation>
@@ -2432,7 +2436,6 @@
 <translation id="7892963120252479610">আপনি এই ট্যাব বন্ধ না করা পর্যন্ত <ph name="ORIGIN"/> <ph name="FOLDERNAME"/> ফোল্ডারের ফাইল দেখতে পাবে</translation>
 <translation id="7201420661433230412">ফাইলগুলি দেখুন</translation>
 <translation id="3015639418649705390">এখনই রিলঞ্চ করুন</translation>
-<translation id="8712637175834984815">বুঝেছি</translation>
 <translation id="2783952358106015700"><ph name="APP_NAME"/>-এ আপনার নিরাপত্তা কী ব্যবহার করুন</translation>
 <translation id="2446585455334014596"><ph name="APP_NAME"/> আপনার পরিচয় যাচাই করতে চায়</translation>
 <translation id="1567750922576943685">আপনার পরিচয় যাচাই করলে তা আপনার ব্যক্তিগত তথ্য রক্ষা করতে সহায়তা করে</translation>

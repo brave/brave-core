@@ -21,6 +21,7 @@
 <translation id="8926389886865778422">Više me ne pitaj</translation>
 <translation id="4726634924419692905">Prikazuje se upozorenje kada se mrežnim mjestom želi instalirati aplikacija Widevine na vašem računalu.</translation>
 <translation id="8760415064721320867">Privatni prozor s funkcijom Tor</translation>
+<translation id="8762452230727230396">Tor skriva vašu adresu IP od mrežnih mjesta koje posjećujete.</translation>
 <translation id="8053096063396012732">Instaliraj aplikaciju Widevine</translation>
 <translation id="4840334696217618631">Poništi preglednik za omogućavanje aplikacije Widevine</translation>
 <translation id="8410111618231938546">Widevine tvrtke Google dio je koda za upravljanje digitalnim pravima (DRM) koji tvrtka Brave Software ne posjeduje i ne može pregledati. Kȏd za Googleovo rješenje Widevine učitava se s poslužitelja tvrtke Google, a ne s naših poslužitelja. Učitava se samo kada omogućite tu opciju. Ne preporučujemo uporabu DRM-a, no poštujemo izbor korisnika i prihvaćamo činjenicu da bi neki korisnici preglednika Brave htjeli koristiti usluge koje to zahtijevaju.
@@ -91,6 +92,8 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="8502234992433094996">Upotrijebi Googleove usluge za prosljeđivanje poruka</translation>
 <translation id="3888068426966679906">Udaljeno uklanjanje problema</translation>
 <translation id="6645631466045614531">Pristupiti sinkronizaciji putem</translation>
+<translation id="6696935187608454456">Savjeti za pomoć</translation>
+<translation id="2775956301559569472">Prikaži upit Wayback Machine na stranicama 404</translation>
 <translation id="1807246157184219062">Svjetlo</translation>
 <translation id="2414886740292270097">Tama</translation>
 <translation id="1360441190790440400">Isto kao Linux</translation>
@@ -98,7 +101,9 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="8721331068159819483">Kao na operativnom sustavu macOS</translation>
 <translation id="6786747875388722282">Proširenja</translation>
 <translation id="2896916411183256228">Rabi WebTorrent za prikazivanje torenta izravno u pregledniku. Podržava datoteke i magnetne poveznice za torente.</translation>
-<translation id="5554028991651120544">Pruža se novčanik Ethereum i preglednik Dapp unutar usluge Brave.</translation>
+<translation id="2356070529366658676">Upitaj</translation>
+<translation id="7701040980221191251">Nema</translation>
+<translation id="1085027414516521238">MetaMask</translation>
 <translation id="6554397389149987360">Rabi komponentu Hangouts za omogućavanje dijeljenja zaslona i drugih značajki u pregledniku.</translation>
 <translation id="1765684547504191670">Upotrebljava se komponenta Medijski usmjerivač kako bi se omogućila značajka Chromecast u pregledniku.</translation>
 <translation id="9156965752763025780">Promjene će početi vrijediti sljedeći put kad ponovo pokrenete Brave.</translation>
@@ -159,13 +164,17 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="4394049700291259645">Onemogući</translation>
 <translation id="6469509880167172749">Automatsko šalji u potpunosti privatno analiziranje proizvoda poduzeću Brave</translation>
 <translation id="7090566321964540749">Ovim se anonimnim informacijama omogućava poduzeću Brave procjenjivanje ukupnog korištenja određenim značajkama.</translation>
-<translation id="1200956479506699688">Kriptovalutni su novčanici sada dostupni u pregledniku Brave. Ne možete istovremeno upotrebljavati značajku MetaMask i Kriptovalutne novčanike.</translation>
 <translation id="7583735190612229830">Postavite kriptovalutne novčanike koji ostvaruju interakciju s ovom aplikacijom, a koji se drugima sviđaju.</translation>
 <translation id="8337117349965899723">Upotrijebi kriptovalutne novčanike</translation>
 <translation id="5756155765711979898">Upotrijebi značajku MetaMask</translation>
 <translation id="6754134632841262799">POSTAVLJANJE</translation>
+<translation id="4552520379838695057">Ispričavamo se, ali stranica nedostaje.</translation>
+<translation id="2609895996619941644">Želite li provjeriti je li spremljena inačica dostupna na stavci Wayback Machine?</translation>
+<translation id="8053093028263274061">Ispričavamo se, ali nema dostupne sačuvane inačice.</translation>
+<translation id="8517321676372639828">Provjera spremljene inačice</translation>
 <translation id="191143826155037518">Preglednik vam se Brave pruža pod <ph name="BEGIN_LINK_MPL">&amp;lt;a target="_blank" href="$1"&amp;gt;</ph>inačicom javne licencije 2.0. društva Mozille<ph name="END_LINK_MPL">&amp;lt;/a&amp;gt;</ph> (MPL) i uključuje <ph name="BEGIN_LINK_OSS">&amp;lt;a target="_blank" href="$2"&amp;gt;</ph>softver otvorenog koda<ph name="END_LINK_OSS">&amp;lt;/a&amp;gt;</ph> pod brojnim drugim licencijama.
         Možete pročitati <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&amp;lt;a target="_blank" href="$3"&amp;gt;</ph>upute za preuzimanje i vlastito izgrađivanje<ph name="END_LINK_BUILD_INSTRUCTIONS">&amp;lt;/a&amp;gt;</ph> posebnog <ph name="BEGIN_LINK_SOURCE_CODE">&amp;lt;a target="_blank" href="$4"&amp;gt;</ph>izvornog koda koji se upotrebljava za stvaranje ove kopije<ph name="END_LINK_SOURCE_CODE">&amp;lt;/a&amp;gt;</ph>.</translation>
 <translation id="4474155171896946103">Označi sve kartice...</translation>
 <translation id="2336228925368920074">Označi sve kartice...</translation>
+<translation id="796831669370432378">Za dodavanje knjižne oznake kliknite na gumb za knjižnu oznaku pokraj adresne trake</translation>
 </translationbundle>
