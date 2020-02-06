@@ -91,18 +91,18 @@ source_set("ui") {
       "webui/settings/brave_appearance_handler.h",
       "webui/settings/brave_privacy_handler.cc",
       "webui/settings/brave_privacy_handler.h",
-      "webui/settings/brave_settings_import_data_handler.h",
+      "webui/settings/brave_import_data_handler.h",
       "webui/settings/default_brave_shields_handler.cc",
       "webui/settings/default_brave_shields_handler.h",
     ]
 
     if (is_mac) {
       sources += [
-        "webui/settings/brave_settings_import_data_handler_mac.mm",
+        "webui/settings/brave_import_data_handler_mac.mm",
       ]
     } else {
       sources += [
-        "webui/settings/brave_settings_import_data_handler.cc",
+        "webui/settings/brave_import_data_handler.cc",
       ]
     }
 
