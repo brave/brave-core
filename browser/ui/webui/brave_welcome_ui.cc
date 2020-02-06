@@ -11,6 +11,7 @@
 
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/ui/webui/settings/brave_settings_import_data_handler.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_welcome/resources/grit/brave_welcome_generated_map.h"
@@ -18,7 +19,6 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/browser/ui/webui/settings/search_engines_handler.h"
-#include "chrome/browser/ui/webui/settings/settings_import_data_handler.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
 #include "components/grit/brave_components_resources.h"
@@ -107,7 +107,8 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
     : BasicUI(web_ui, name, kBraveWelcomeGenerated,
         kBraveWelcomeGeneratedSize, IDR_BRAVE_WELCOME_HTML) {
   web_ui->AddMessageHandler(std::make_unique<WelcomeDOMHandler>());
-  web_ui->AddMessageHandler(std::make_unique<settings::ImportDataHandler>());
+  web_ui->AddMessageHandler(
+      std::make_unique<settings::BraveImportDataHandler>());
 
   Profile* profile = Profile::FromWebUI(web_ui);
 
