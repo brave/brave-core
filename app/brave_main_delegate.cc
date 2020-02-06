@@ -29,10 +29,12 @@
 #include "components/feed/feed_feature_list.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
+#include "components/security_state/core/features.h"
 #include "components/sync/driver/sync_driver_switches.h"
 #include "content/public/common/content_features.h"
 #include "content/public/common/content_switches.h"
 #include "services/network/public/cpp/features.h"
+#include "third_party/blink/public/common/features.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/ui_base_features.h"
 
@@ -151,7 +153,13 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 
   // Enabled features.
   const std::unordered_set<const char*> enabled_features = {
+    // Upgrade all mixed content
+      blink::features::kMixedContentAutoupgrade.name,
       password_manager::features::kPasswordImport.name,
+    // Remove URL bar mixed control and allow site specific override instead
+      features::kMixedContentSiteSetting.name,
+    // Warn about Mixed Content optionally blockable content
+      security_state::features::kPassiveMixedContentWarning.name,
     // Enable webui dark theme: @media (prefers-color-scheme: dark) is gated on
     // this feature.
       features::kWebUIDarkMode.name,
