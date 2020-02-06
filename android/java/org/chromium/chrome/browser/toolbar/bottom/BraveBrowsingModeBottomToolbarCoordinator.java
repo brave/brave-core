@@ -21,7 +21,7 @@ import org.chromium.chrome.browser.toolbar.TabCountProvider;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 
 /**
- * Brave's extention to BrowsingModeBottomToolbarCoordinator.
+ * Brave's extension to BrowsingModeBottomToolbarCoordinator.
  */
 public class BraveBrowsingModeBottomToolbarCoordinator
         extends BrowsingModeBottomToolbarCoordinator {
@@ -43,12 +43,10 @@ public class BraveBrowsingModeBottomToolbarCoordinator
         mBraveToolbarRoot = root.findViewById(R.id.bottom_toolbar_browsing);
         mBraveNewTabButton = mBraveToolbarRoot.findViewById(R.id.bottom_new_tab_button);
         mBookmarkButton = mBraveToolbarRoot.findViewById(R.id.bottom_bookmark_button);
-        if (BottomToolbarVariationManager.isBookmarkButtonOnBottom()) {
+        if (BraveBottomToolbarVariationManager.isBraveVariation()) {
             mBookmarkButton.setVisibility(View.VISIBLE);
             getNewTabButtonParent().setVisibility(View.GONE);
-        }
-        if (BottomToolbarVariationManager.isBookmarkButtonOnBottom()) {
-            mBookmarkButton.setVisibility(View.VISIBLE);
+
             mBookmarkButtonListenerSupplierCallback = bookmarkButtonListener -> {
                 mBookmarkButton.setOnClickListener(bookmarkButtonListener);
             };

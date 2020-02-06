@@ -118,7 +118,7 @@ public class BraveBottomToolbarCoordinator
                     if (BottomToolbarVariationManager.isHomeButtonOnBottom()) {
                         browsingModeCoordinator.getHomeButton().setVisibility(View.INVISIBLE);
                     }
-                    if (BottomToolbarVariationManager.isBookmarkButtonOnBottom()) {
+                    if (BraveBottomToolbarVariationManager.isBraveVariation()) {
                         browsingModeCoordinator.getBookmarkButton().setVisibility(View.INVISIBLE);
                     }
                     if (BottomToolbarVariationManager.isTabSwitcherOnBottom()) {
@@ -145,7 +145,7 @@ public class BraveBottomToolbarCoordinator
                         browsingModeCoordinator.getHomeButton().updateButtonEnabledState(
                                 mBraveTabProvider.get());
                     }
-                    if (BottomToolbarVariationManager.isBookmarkButtonOnBottom()) {
+                    if (BraveBottomToolbarVariationManager.isBraveVariation()) {
                         browsingModeCoordinator.getBookmarkButton().setVisibility(View.VISIBLE);
                     }
                     if (BottomToolbarVariationManager.isTabSwitcherOnBottom()) {

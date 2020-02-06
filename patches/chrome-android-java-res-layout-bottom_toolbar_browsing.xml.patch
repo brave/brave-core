@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/res/layout/bottom_toolbar_browsing.xml b/chrome/android/java/res/layout/bottom_toolbar_browsing.xml
-index 76d517641db816c12bd35ae6497cd172eea71fd0..2d13046d3bdac0e21bb9032d9358728b917ec95a 100644
+index 76d517641db816c12bd35ae6497cd172eea71fd0..8c3d3f5e8c1a35343bf30f4b1ff2a1b521e70b06 100644
 --- a/chrome/android/java/res/layout/bottom_toolbar_browsing.xml
 +++ b/chrome/android/java/res/layout/bottom_toolbar_browsing.xml
 @@ -16,7 +16,7 @@
@@ -11,27 +11,26 @@ index 76d517641db816c12bd35ae6497cd172eea71fd0..2d13046d3bdac0e21bb9032d9358728b
  
      <org.chromium.chrome.browser.toolbar.HomeButton
          android:id="@+id/bottom_home_button"
-@@ -25,7 +25,7 @@
-         android:contentDescription="@string/accessibility_toolbar_btn_home"
+@@ -26,6 +26,7 @@
          android:visibility="gone"
          style="@style/SplitToolbarButton" />
--
+ 
 +<!--
      <org.chromium.chrome.browser.toolbar.bottom.BottomToolbarNewTabButton
          android:id="@+id/bottom_new_tab_button"
          android:contentDescription="@string/accessibility_toolbar_btn_new_tab"
-@@ -34,8 +34,9 @@
+@@ -34,8 +35,10 @@
          app:srcCompat="@drawable/new_tab_icon"
          android:visibility="gone"
          style="@style/SplitToolbarButton" />
--
 +-->
+ 
      <include layout="@layout/toolbar_space" />
 +    <include layout="@layout/brave_bookmark_toolbar" />
      <include layout="@layout/toolbar_space" />
  
      <org.chromium.chrome.browser.toolbar.bottom.SearchAccelerator
-@@ -49,8 +50,9 @@
+@@ -49,8 +52,9 @@
          android:paddingBottom="@dimen/search_accelerator_height_padding"
          android:contentDescription="@string/accessibility_toolbar_btn_search_accelerator"
          android:src="@drawable/ic_search"/>
@@ -42,7 +41,7 @@ index 76d517641db816c12bd35ae6497cd172eea71fd0..2d13046d3bdac0e21bb9032d9358728b
      <include layout="@layout/toolbar_space" />
  
      <org.chromium.chrome.browser.toolbar.TabSwitcherButtonView
-@@ -73,4 +75,5 @@
+@@ -73,4 +77,5 @@
  
      <include layout="@layout/toolbar_space" />
  
