@@ -15,13 +15,14 @@ found in the LICENSE file.
   <message name="IDS_XR_CONSENT_DIALOG_DESCRIPTION_DEFAULT" desc="This is the header for a bulleted list of potential concerns that we want to ensure the user is aware of before entering VR. This header and the appended items of the bulleted list make up the body of the user consent dialog displayed before a website may start a VR presentation.">
     While you're in VR, this site may be able to learn about:
   </message>
-  <message name="IDS_XR_CONSENT_DIALOG_DESCRIPTION_PHYSICAL_FEATURES" desc="Item for the bulleted list of potential concerns in the consent dialog indicating that physical features may be exposed. Preceded with a newline and then two spaces to allow for being appended to the bulleted list at runtime.">
-'''
-  - your physical features, such as height
+  <message name="IDS_XR_CONSENT_BULLET" desc="Unicode bullet for list items. Similar to IDS_LIST_BULLET from desktop generated_resources">
+    •  <ph name="LIST_ITEM_TEXT">%s<ex>the layout of your room</ex></ph>
   </message>
-  <message name="IDS_XR_CONSENT_DIALOG_DESCRIPTION_FLOOR_PLAN" desc="Item for the bulleted list of potential concerns in the consent dialog indicating that phyiscal features may be exposed. Preceded with a newline and then two spaces to allow for being appended to the bulleted list at runtime.">
-'''
-  - the layout of your room
+  <message name="IDS_XR_CONSENT_DIALOG_DESCRIPTION_PHYSICAL_FEATURES" desc="Item for the bulleted list of potential concerns in the consent dialog indicating that physical features may be exposed.">
+    your physical features, such as height
+  </message>
+  <message name="IDS_XR_CONSENT_DIALOG_DESCRIPTION_FLOOR_PLAN" desc="Item for the bulleted list of potential concerns in the consent dialog indicating that phyiscal features may be exposed.">
+    the layout of your room
   </message>
   <message name="IDS_XR_CONSENT_DIALOG_BUTTON_ALLOW_AND_ENTER_VR" desc="Text on the button of a user consent dialog which allows a website to start a VR presentation">
     Enter VR

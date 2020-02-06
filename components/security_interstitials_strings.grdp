@@ -65,10 +65,6 @@
     Applications that can cause this error include antivirus, firewall, and web-filtering or proxy software.
   </message>
 
-  <message name="IDS_BLOCKED_INTERCEPTION_HEADING" desc="Large heading of the known interception interstitial.">
-    Your activity on <ph name="HOSTNAME">$1<ex>example.com</ex></ph> is being monitored
-  </message>
-
   <!-- Lookalike URL warning -->
   <message name="IDS_LOOKALIKE_URL_TITLE" desc="Tab title. Context: the requested URL might be trying to trick the user since it looks like a more popular URL. This interstitial points the user to the safe site instead.">
     Safety warning
@@ -464,37 +460,55 @@
     <ph name="LOOKALIKE_DOMAIN">$1<ex>fake-google.com</ex></ph> looks similar to <ph name="SUGGESTED_DOMAIN">$2<ex>google.com</ex></ph>. Attackers sometimes mimic sites by using similar URLs.
   </message>
 
-  <!-- Known interception disclosure WebUI strings -->
-  <!-- Title of the tab -->
-  <message name="IDS_KNOWN_INTERCEPTION_TITLE" desc="Title of network interception disclosure page.">
-    Monitoring Detected
-  </message>
+  <if expr="not is_ios">
+    <!-- Blocked interception interstitial strings -->
+    <message name="IDS_BLOCKED_INTERCEPTION_HEADING" desc="Large heading of the known interception interstitial.">
+      Your activity on <ph name="HOSTNAME">$1<ex>example.com</ex></ph> is being monitored
+    </message>
 
-  <!-- Main message title -->
-  <message name="IDS_KNOWN_INTERCEPTION_HEADER" desc="Title of chrome://connection-monitoring-detected/ page, shows when Brave has detected known network monitoring activity">
-    Your activity on the web is being monitored
-  </message>
+    <!-- Known interception disclosure WebUI strings -->
+    <!-- Title of the tab -->
+    <message name="IDS_KNOWN_INTERCEPTION_TITLE" desc="Title of network interception disclosure page.">
+      Monitoring Detected
+    </message>
 
-  <message name="IDS_KNOWN_INTERCEPTION_BODY1" desc="First body text for the chrome://connection-monitoring-detected/ page">
-    Anything you type, any pages you view, or any other activity on the web is being watched. Content on sites may be changed without your knowledge.
-  </message>
+    <!-- Main message title -->
+    <message name="IDS_KNOWN_INTERCEPTION_HEADER" desc="Title of chrome://connection-monitoring-detected/ page, shows when Brave has detected known network monitoring activity">
+      Your activity on the web is being monitored
+    </message>
 
-  <if expr="_google_chrome">
-    <message name="IDS_KNOWN_INTERCEPTION_BODY2" desc="Second body text for the chrome://connection-monitoring-detected/ page with more details">
-      This problem happens because of a certificate you or someone else installed on your device. The certificate is known to be used to monitor and intercept networks, and is not trusted by Brave. While some legitimate cases for monitoring do exist, like on a school or company network, Brave wants to make sure you're aware it's happening, even if you can't stop it. Monitoring may happen in any browser or application that accesses the web.
+    <message name="IDS_KNOWN_INTERCEPTION_BODY1" desc="First body text for the chrome://connection-monitoring-detected/ page">
+      Anything you type, any pages you view, or any other activity on the web is being watched. Content on sites may be changed without your knowledge.
+    </message>
+
+    <if expr="_google_chrome">
+      <message name="IDS_KNOWN_INTERCEPTION_BODY2" desc="Second body text for the chrome://connection-monitoring-detected/ page with more details">
+        This problem happens because of a certificate you or someone else installed on your device. The certificate is known to be used to monitor and intercept networks, and is not trusted by Brave. While some legitimate cases for monitoring do exist, like on a school or company network, Brave wants to make sure you're aware it's happening, even if you can't stop it. Monitoring may happen in any browser or application that accesses the web.
+      </message>
+    </if>
+    <if expr="not _google_chrome">
+      <message name="IDS_KNOWN_INTERCEPTION_BODY2" desc="Second body text for the chrome://connection-monitoring-detected/ page with more details">
+        This problem happens because of a certificate you or someone else installed on your device. The certificate is known to be used to monitor and intercept networks, and is not trusted by Brave. While some legitimate cases for monitoring do exist, like on a school or company network, Brave wants to make sure you're aware it's happening, even if you can't stop it. Monitoring may happen in any browser or application that accesses the web.
+      </message>
+    </if>
+
+    <!-- Known interception disclosure infobar strings -->
+    <message name="IDS_KNOWN_INTERCEPTION_INFOBAR_HEADING" desc="Text of the heading used to alert the user that Brave has detected that their network connnection is being intercepted.">
+      Your activity on the web is being monitored
+    </message>
+    <message name="IDS_KNOWN_INTERCEPTION_INFOBAR_BUTTON_TEXT" desc="Text of the button to close the disclosure infobar and continue using Brave.">
+      OK
     </message>
   </if>
-  <if expr="not _google_chrome">
-    <message name="IDS_KNOWN_INTERCEPTION_BODY2" desc="Second body text for the chrome://connection-monitoring-detected/ page with more details">
-      This problem happens because of a certificate you or someone else installed on your device. The certificate is known to be used to monitor and intercept networks, and is not trusted by Brave. While some legitimate cases for monitoring do exist, like on a school or company network, Brave wants to make sure you're aware it's happening, even if you can't stop it. Monitoring may happen in any browser or application that accesses the web.
-    </message>
-  </if>
 
-  <!-- Known interception disclosure infobar strings -->
-  <message name="IDS_KNOWN_INTERCEPTION_INFOBAR_HEADING" desc="Text of the heading used to alert the user that Brave has detected that their network connnection is being intercepted.">
-    Your activity on the web is being monitored
+  <!-- Legacy TLS interstitial -->
+  <message name="IDS_LEGACY_TLS_HEADING" desc="Large heading of the legacy TLS interstitial.">
+    Your connection is not fully secure
   </message>
-  <message name="IDS_KNOWN_INTERCEPTION_INFOBAR_BUTTON_TEXT" desc="Text of the button to close the disclosure infobar and continue using Brave.">
-    OK
+  <message name="IDS_LEGACY_TLS_PRIMARY_PARAGRAPH" desc="Main paragraph of the legacy TLS interstitial. A user visits a website that uses an obsolete version of TLS and they are shown this error. Page title and additional description of the error are shown above.">
+    This site uses an outdated security configuration, which may expose your information (for example, passwords, messages, or credit cards) when it is sent to this site.
+  </message>
+  <message name="IDS_LEGACY_TLS_EXPLANATION" desc="Part of an extended description hidden behind an 'Advanced' button on an error page. A user visits a website that uses an obsolete version of TLS and they are shown this error. Page title and additional description of the error are shown above.">
+    The connection used to load this site used TLS 1.0 or TLS 1.1, which are deprecated and will be disabled in the future. Once disabled, users will be prevented from loading this site. The server should enable TLS 1.2 or later.
   </message>
 </grit-part>
