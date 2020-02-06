@@ -7,9 +7,12 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_OMNIBOX_CHROME_OMNIBOX_CLIENT_H_
 
 #include "brave/components/omnibox/browser/brave_omnibox_client.h"
+#include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
 
+#define ChromeAutocompleteSchemeClassifier BraveAutocompleteSchemeClassifier
 #define OmniboxClient BraveOmniboxClient
 #include "../../../../../../chrome/browser/ui/omnibox/chrome_omnibox_client.h"
 #undef OmniboxClient
+#undef ChromeAutocompleteSchemeClassifier
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_OMNIBOX_CHROME_OMNIBOX_CLIENT_H_

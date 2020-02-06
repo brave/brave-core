@@ -1,0 +1,47 @@
+diff --git a/components/url_formatter/url_fixer.cc b/components/url_formatter/url_fixer.cc
+index 502f59805971e76ceda8fffa87f9a166cde3b932..be6dce45247440ab0b89ee818793f58069222d51 100644
+--- a/components/url_formatter/url_fixer.cc
++++ b/components/url_formatter/url_fixer.cc
+@@ -34,6 +34,7 @@ namespace {
+ 
+ // Hardcode these constants to avoid dependences on //chrome and //content.
+ const char kChromeUIScheme[] = "chrome";
++const char kBraveUIScheme[] = "brave";
+ const char kDevToolsScheme[] = "devtools";
+ const char kDevToolsFallbackScheme[] = "chrome-devtools";
+ const char kChromeUIDefaultHost[] = "version";
+@@ -432,6 +433,7 @@ std::string SegmentURLInternal(std::string* text, url::Parsed* parts) {
+                scheme.c_str(),
+                url::Component(0, static_cast<int>(scheme.length()))) ||
+            scheme == url::kAboutScheme || scheme == kChromeUIScheme ||
++           scheme == kBraveUIScheme ||
+            scheme == url::kFileScheme))
+         found_scheme = true;
+       else
+@@ -447,6 +449,7 @@ std::string SegmentURLInternal(std::string* text, url::Parsed* parts) {
+   // Proceed with about, chrome, and devtools schemes,
+   // but not file or nonstandard schemes.
+   if ((scheme != url::kAboutScheme) && (scheme != kChromeUIScheme) &&
++      (scheme != kBraveUIScheme) &&
+       (scheme != kDevToolsScheme) && (scheme != kDevToolsFallbackScheme) &&
+       !url::IsStandard(scheme.c_str(),
+                        url::Component(0, static_cast<int>(scheme.length())))) {
+@@ -573,7 +576,7 @@ GURL FixupURL(const std::string& text, const std::string& desired_tld) {
+ 
+   // Parse and rebuild about: and chrome: URLs.
+   bool chrome_url =
+-      (scheme == url::kAboutScheme) || (scheme == kChromeUIScheme);
++      (scheme == url::kAboutScheme) || (scheme == kChromeUIScheme) || (scheme == kBraveUIScheme);
+ 
+   // Parse and rebuild devtools: and the fallback chrome-devtools: URLs.
+   bool devtools_url =
+@@ -703,6 +706,10 @@ bool IsEquivalentScheme(const std::string& scheme1,
+   return scheme1 == scheme2 ||
+          (scheme1 == url::kAboutScheme && scheme2 == kChromeUIScheme) ||
+          (scheme1 == kChromeUIScheme && scheme2 == url::kAboutScheme) ||
++         (scheme1 == kChromeUIScheme && scheme2 == kBraveUIScheme) ||
++         (scheme1 == kBraveUIScheme && scheme2 == kChromeUIScheme) ||
++         (scheme1 == url::kAboutScheme && scheme2 == kBraveUIScheme) ||
++         (scheme1 == kBraveUIScheme && scheme2 == url::kAboutScheme) ||
+          (scheme1 == kDevToolsScheme && scheme2 == kDevToolsFallbackScheme) ||
+          (scheme1 == kDevToolsFallbackScheme && scheme2 == kDevToolsScheme);
