@@ -16,27 +16,15 @@ class BraveThemeEventRouter;
 
 class BraveThemeService : public ThemeService {
  public:
-  BraveThemeService();
+  BraveThemeService(Profile* profile, const ThemeHelper& theme_helper);
   ~BraveThemeService() override;
 
-  BraveThemeService(const BraveThemeService&) = delete;
-  BraveThemeService& operator=(const BraveThemeService&) = delete;
-
   // ThemeService overrides:
-  void Init(Profile* profile) override;
-
- protected:
-  // ThemeService overrides:
-  SkColor GetDefaultColor(int id, bool incognito) const override;
-  base::Optional<SkColor> GetOmniboxColor(
-      int id,
-      bool incognito,
-      bool* has_custom_color) const override;
+  void Init() override;
 
  private:
   friend class BraveThemeServiceTestWithoutSystemTheme;
-  FRIEND_TEST_ALL_PREFIXES(BraveThemeEventRouterBrowserTest,
-                           ThemeChangeTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveThemeEventRouterBrowserTest, ThemeChangeTest);
   FRIEND_TEST_ALL_PREFIXES(BraveThemeServiceTest, GetBraveThemeListTest);
   FRIEND_TEST_ALL_PREFIXES(BraveThemeServiceTest, SystemThemeChangeTest);
 

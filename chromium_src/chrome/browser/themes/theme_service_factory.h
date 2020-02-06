@@ -1,0 +1,19 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_THEMES_THEME_SERVICE_FACTORY_H_
+#define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_THEMES_THEME_SERVICE_FACTORY_H_
+
+#if !defined(USE_X11)
+#include "brave/browser/themes/brave_theme_service.h"
+#define ThemeService BraveThemeService
+#endif
+
+#include "../../../../../chrome/browser/themes/theme_service_factory.h"
+#if !defined(USE_X11)
+#undef ThemeService
+#endif
+
+#endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_THEMES_THEME_SERVICE_FACTORY_H_

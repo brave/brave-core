@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/themes/theme_service_factory.cc b/chrome/browser/themes/theme_service_factory.cc
+index 5a0d5e736cb9fa72d9d764327aa0d549cfed563b..9f4c147b00156a5e615a813760969d9d8111ea57 100644
+--- a/chrome/browser/themes/theme_service_factory.cc
++++ b/chrome/browser/themes/theme_service_factory.cc
+@@ -34,6 +34,7 @@ const ThemeHelper& GetThemeHelper() {
+ #if defined(OS_WIN)
+   using ThemeHelper = ThemeHelperWin;
+ #endif
++  BRAVE_GETTHEME_HELPER
+ 
+   static base::NoDestructor<std::unique_ptr<ThemeHelper>> theme_helper(
+       std::make_unique<ThemeHelper>());
+@@ -83,7 +84,7 @@ KeyedService* ThemeServiceFactory::BuildServiceInstanceFor(
+ #endif
+ 
+   auto provider = std::make_unique<ThemeService>(static_cast<Profile*>(profile),
+-                                                 GetThemeHelper());
++      BRAVE_THEMESERVICEFACTORY_BUILDSERVICEINSTANCEFOR);
+   provider->Init();
+   return provider.release();
+ }
