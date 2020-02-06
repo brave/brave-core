@@ -76,7 +76,6 @@ public class BraveBrowsingModeBottomToolbarCoordinator
         mMenuButton.setThemeColorProvider(themeColorProvider);
     }
 
-    @Override
     public void updateBookmarkButton(boolean isBookmarked, boolean editingAllowed) {
         if (mBookmarkButton != null) {
             mBookmarkButton.updateBookmarkButton(isBookmarked, editingAllowed);
