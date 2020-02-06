@@ -49,12 +49,7 @@ void NTPSponsoredImageSource::StartDataRequest(
     GotDataCallback callback) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  // GURL::path() returns path with the leading slash, which we don't want.
-  std::string path = url.path();
-  if (!path.empty()) {
-    path.erase(0, 1);
-  }
-
+  const std::string path = URLDataSource::URLToRequestPath(url);
   if (!IsValidPath(path)) {
     scoped_refptr<base::RefCountedMemory> bytes;
     std::move(callback).Run(std::move(bytes));
