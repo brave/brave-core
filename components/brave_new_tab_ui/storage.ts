@@ -1,13 +1,21 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
 // Utils
 import { debounce } from '../common/debounce'
 
-const keyName = 'new-tab-data'
+const keyName = 'new-tab-data-v2'
 
-const defaultState: NewTab.State = {
+export const initialGridSitesState: NewTab.GridSitesState = {
+  gridSites: [],
+  removedSites: [],
+  shouldShowSiteRemovedNotification: false
+}
+
+export const defaultState: NewTab.State = {
+  ...initialGridSitesState,
   initialDataLoaded: false,
   textDirection: window.loadTimeData.getString('textdirection'),
   featureFlagBraveNTPBrandedWallpaper: window.loadTimeData.getBoolean('featureFlagBraveNTPBrandedWallpaper'),
@@ -18,16 +26,11 @@ const defaultState: NewTab.State = {
   showRewards: false,
   brandedWallpaperOptIn: false,
   isBrandedWallpaperNotificationDismissed: true,
-  topSites: [],
-  ignoredTopSites: [],
-  pinnedTopSites: [],
-  gridSites: [],
   showEmptyPage: false,
   isIncognito: chrome.extension.inIncognitoContext,
   useAlternativePrivateSearchEngine: false,
   isTor: false,
   isQwant: false,
-  bookmarks: {},
   stats: {
     adsBlockedStat: 0,
     javascriptBlockedStat: 0,
@@ -65,12 +68,10 @@ const getPersistentData = (state: NewTab.State): NewTab.PersistentState => {
   // Don't save items which we aren't the source
   // of data for.
   const peristantState: NewTab.PersistentState = {
-    topSites: state.topSites,
-    ignoredTopSites: state.ignoredTopSites,
-    pinnedTopSites: state.pinnedTopSites,
+    removedSites: state.removedSites,
+    shouldShowSiteRemovedNotification: state.shouldShowSiteRemovedNotification,
     gridSites: state.gridSites,
     showEmptyPage: state.showEmptyPage,
-    bookmarks: state.bookmarks,
     rewardsState: state.rewardsState,
     currentStackWidget: state.currentStackWidget
   }
@@ -94,10 +95,21 @@ const cleanData = (state: NewTab.State) => {
   return state
 }
 
+const shouldRemoveOutdatedLocalStorage = () => {
+  for (const [key] of Object.entries(localStorage)) {
+    // Do not store outdated information
+    if (key !== keyName) {
+      localStorage.removeItem(key)
+    }
+  }
+}
+
 export const load = (): NewTab.State => {
   const data: string | null = window.localStorage.getItem(keyName)
   let state = defaultState
   let storedState: NewTab.PersistentState
+
+  shouldRemoveOutdatedLocalStorage()
   if (data) {
     try {
       storedState = JSON.parse(data)

@@ -17,7 +17,8 @@ declare namespace NewTab {
     logo: BrandedWallpaperLogo
   }
   export interface ApplicationState {
-    newTabData: State | undefined
+    newTabData: PageState & RewardsState | undefined
+    gridSitesData: GridSitesState | undefined
   }
 
   export interface Image {
@@ -30,16 +31,13 @@ declare namespace NewTab {
   }
 
   export interface Site {
-    index: number
+    id: string
     url: string
     title: string
     favicon: string
     letter: string
-    thumb: string
-    themeColor: string
-    computedThemeColor: string
-    pinned: boolean
-    bookmarked?: Bookmark
+    pinnedIndex: number | undefined
+    bookmarkInfo: chrome.bookmarks.BookmarkTreeNode | undefined
   }
 
   export interface Stats {
@@ -60,16 +58,22 @@ declare namespace NewTab {
 
   export type StackWidget = 'rewards' | 'exchange'
 
-  export interface PersistentState {
-    topSites: Site[]
-    ignoredTopSites: Site[]
-    pinnedTopSites: Site[]
+  export interface GridSitesState {
+    removedSites: Site[]
     gridSites: Site[]
+    shouldShowSiteRemovedNotification: boolean
+  }
+
+  export interface PageState {
     showEmptyPage: boolean
-    bookmarks: Record<string, Bookmark>
+  }
+
+  export interface RewardsState {
     rewardsState: RewardsWidgetState
     currentStackWidget: StackWidget
   }
+
+  export type PersistentState = GridSitesState & PageState & RewardsState
 
   export interface EphemeralState {
     initialDataLoaded: boolean
@@ -81,7 +85,7 @@ declare namespace NewTab {
     isQwant: boolean
     backgroundImage?: Image
     gridLayoutSize?: 'small'
-    showSiteRemovalNotification?: boolean
+    showGridSiteRemovedNotification?: boolean
     showBackgroundImage: boolean
     showStats: boolean
     showClock: boolean
