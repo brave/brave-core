@@ -8,6 +8,8 @@
 namespace confirmations {
 
 NotificationInfo::NotificationInfo() :
+    id(""),
+    parent_id(""),
     creative_set_id(""),
     category(""),
     advertiser(""),
@@ -17,6 +19,8 @@ NotificationInfo::NotificationInfo() :
     type(ConfirmationType::UNKNOWN) {}
 
 NotificationInfo::NotificationInfo(const NotificationInfo& info) :
+    id(info.id),
+    parent_id(info.parent_id),
     creative_set_id(info.creative_set_id),
     category(info.category),
     advertiser(info.advertiser),
