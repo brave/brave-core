@@ -153,7 +153,7 @@ source_set("browser_process") {
     "//components/permissions",
     "//components/policy/core/browser",
     "//components/prefs",
-    "//components/safe_browsing/common:safe_browsing_prefs",
+    "//components/safe_browsing/core/common:safe_browsing_prefs",
     "//components/search_engines",
     "//components/services/patch/content",
     "//components/services/unzip/content",
