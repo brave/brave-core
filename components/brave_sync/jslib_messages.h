@@ -34,6 +34,9 @@ class Site {
   ~Site();
   static std::unique_ptr<Site> Clone(const Site& site);
 
+  // Ignore creationTime
+  bool Matches(const Site& site) const;
+
   std::string TryGetNonEmptyTitle() const;
 
   std::string location;
@@ -61,6 +64,9 @@ class Bookmark {
   Bookmark(const Bookmark& bookmark);
   ~Bookmark();
   static std::unique_ptr<Bookmark> Clone(const Bookmark& bookmark);
+
+  // Ignore fields and metaInfo
+  bool Matches(const Bookmark& bookmark) const;
 
   Site site;
   bool isFolder;
@@ -149,6 +155,9 @@ class SyncRecord {
   const Device& GetDevice() const;
   Bookmark* mutable_bookmark();
 
+  // Ignore syncTimestamp, history, site_setting and device
+  bool Matches(const SyncRecord& record) const;
+
   void SetBookmark(std::unique_ptr<Bookmark> bookmark);
   void SetHistorySite(std::unique_ptr<Site> history_site);
   void SetSiteSetting(std::unique_ptr<SiteSetting> site_setting);
@@ -162,6 +171,8 @@ class SyncRecord {
   std::unique_ptr<SiteSetting> site_setting_;
   std::unique_ptr<Device> device_;
 };
+
+std::ostream& operator<<(std::ostream& out, const Site& site);
 
 }  // namespace jslib
 

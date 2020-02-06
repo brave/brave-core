@@ -829,12 +829,15 @@ void BraveProfileSyncServiceImpl::LoadSyncEntityInfo(
 
 bool BraveProfileSyncServiceImpl::IsOtherBookmarksFolder(
     const jslib::SyncRecord* record) const {
+  auto bookmark = record->GetBookmark();
+  if (!bookmark.isFolder)
+    return false;
+
   std::string other_node_object_id;
   if (model_->other_node()->GetMetaInfo("object_id", &other_node_object_id) &&
       record->objectId == other_node_object_id)
     return true;
 
-  auto bookmark = record->GetBookmark();
   if (bookmark.order == tools::kOtherNodeOrder &&
       bookmark.site.title == tools::GetOtherNodeName() &&
       bookmark.site.customTitle == tools::GetOtherNodeName()) {
@@ -848,14 +851,14 @@ void BraveProfileSyncServiceImpl::ProcessOtherBookmarksFolder(
     const jslib::SyncRecord* record,
     bool* pass_to_syncer) {
   std::string other_node_object_id;
-    // Save object_id for late joined desktop to catch up with currecnt id
+    // Save object_id for late joined desktop to catch up with current id
     // iteration
   if (!model_->other_node()->GetMetaInfo("object_id", &other_node_object_id) &&
       record->action == jslib::SyncRecord::Action::A_CREATE) {
     tools::AsMutable(model_->other_node())->SetMetaInfo("object_id",
                                                         record->objectId);
   } else {
-    // If late joined desktop has bookmarks in other_node before joing sync
+    // If late joined desktop has bookmarks in other_node before joining sync
     // chain
     if (other_node_object_id != record->objectId &&
         other_node_object_id ==
@@ -899,7 +902,7 @@ void BraveProfileSyncServiceImpl::ProcessOtherBookmarksFolder(
 
         auto record_to_send = SyncRecord::Clone(*sync_record);
 
-        // Append chnages to remote records
+        // Append changes to remote records
         if (!pending_received_records_)
           pending_received_records_ = std::make_unique<RecordsList>();
         pending_received_records_->push_back(std::move(sync_record));
