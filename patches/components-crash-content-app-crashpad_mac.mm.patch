@@ -1,13 +1,24 @@
 diff --git a/components/crash/content/app/crashpad_mac.mm b/components/crash/content/app/crashpad_mac.mm
-index c2de9fe867c5e9fc2cf75f12ee136ad529474243..bff59bd4bf740c4be841dcee532654247f2b226c 100644
+index c2de9fe867c5e9fc2cf75f12ee136ad529474243..52a3464d529adfbf5f87e0b39221c0ba91c33a71 100644
 --- a/components/crash/content/app/crashpad_mac.mm
 +++ b/components/crash/content/app/crashpad_mac.mm
-@@ -137,6 +137,8 @@ base::FilePath PlatformCrashpadInitialization(
+@@ -13,6 +13,7 @@
+ #include <vector>
+ 
+ #include "base/files/file_path.h"
++#include "base/environment.h"
+ #include "base/logging.h"
+ #include "base/mac/bundle_locations.h"
+ #include "base/mac/foundation_util.h"
+@@ -137,6 +138,11 @@ base::FilePath PlatformCrashpadInitialization(
        // Only allow the possibility of report upload in official builds. This
        // crash server won't have symbols for any other build types.
        std::string url = "https://clients2.google.com/cr/report";
 +#elif defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD)
-+      std::string url = "https://laptop-updates.brave.com/1/bc-crashes";
++      std::unique_ptr<base::Environment> env(base::Environment::Create());
++      env->GetVar("BRAVE_CRASH_PARSER_URL", &url);
++      if (url.empty())
++        url = "https://laptop-updates.brave.com/1/bc-crashes";
  #else
        std::string url;
  #endif

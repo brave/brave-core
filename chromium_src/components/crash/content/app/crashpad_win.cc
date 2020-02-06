@@ -55,9 +55,16 @@ bool BraveCrashpadClient::StartHandler(
     const std::vector<std::string>& arguments,
     bool restartable,
     bool asynchronous_start) {
+
+  std::string url;
+  std::unique_ptr<base::Environment> env(base::Environment::Create());
+  env->GetVar("BRAVE_CRASH_PARSER_URL", &url);
+  if (url.empty())
+    url = "https://laptop-updates.brave.com/1/bc-crashes";
+
   return crash_reporter::GetCrashpadClient().StartHandler(
       handler, database, metrics_dir,
-      "https://laptop-updates.brave.com/1/bc-crashes", annotations, arguments,
+      url, annotations, arguments,
       restartable, asynchronous_start);
 }
 

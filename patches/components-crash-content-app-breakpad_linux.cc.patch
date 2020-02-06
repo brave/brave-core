@@ -1,13 +1,21 @@
 diff --git a/components/crash/content/app/breakpad_linux.cc b/components/crash/content/app/breakpad_linux.cc
-index 27683246750c4e0eaec83cfe81e170ea326d1814..e7575cd269ca5dc5924bee991b2ce3590ccbdd38 100644
+index 27683246750c4e0eaec83cfe81e170ea326d1814..182c740be31d652c850875014b23b8f7d6a94a0f 100644
 --- a/components/crash/content/app/breakpad_linux.cc
 +++ b/components/crash/content/app/breakpad_linux.cc
-@@ -103,8 +103,12 @@ namespace {
+@@ -28,6 +28,7 @@
+ #include "base/base_switches.h"
+ #include "base/command_line.h"
+ #include "base/debug/dump_without_crashing.h"
++#include "base/environment.h"
+ #include "base/files/file_path.h"
+ #include "base/lazy_instance.h"
+ #include "base/linux_util.h"
+@@ -103,8 +104,12 @@ namespace {
  // while we do have functions to deal with uint64_t's.
  uint64_t g_crash_loop_before_time = 0;
  #else
 +#if defined(BRAVE_CHROMIUM_BUILD)
-+const char kUploadURL[] = "https://laptop-updates.brave.com/1/bc-crashes";
++const char* kUploadURL = "https://laptop-updates.brave.com/1/bc-crashes";
 +#else
  const char kUploadURL[] = "https://clients2.google.com/cr/report";
  #endif
@@ -15,3 +23,18 @@ index 27683246750c4e0eaec83cfe81e170ea326d1814..e7575cd269ca5dc5924bee991b2ce359
  
  bool g_is_crash_reporter_enabled = false;
  uint64_t g_process_start_time = 0;
+@@ -1398,6 +1403,14 @@ void ExecUploadProcessOrTerminate(const BreakpadInfo& info,
+   char* status_fd_path =
+       StringFromPrefixAndUint("/dev/fd/", upload_status_fd, allocator);
+ 
++#if defined(BRAVE_CHROMIUM_BUILD)
++  std::string crash_parser;
++  std::unique_ptr<base::Environment> env(base::Environment::Create());
++  env->GetVar("BRAVE_CRASH_PARSER_URL", &crash_parser);
++  if (!crash_parser.empty())
++    kUploadURL = crash_parser.c_str();
++#endif
++
+   static const char kWgetBinary[] = "/usr/bin/wget";
+   const char* args[] = {
+     kWgetBinary,
