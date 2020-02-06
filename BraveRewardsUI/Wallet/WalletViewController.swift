@@ -655,6 +655,15 @@ extension WalletViewController {
       crypto: Strings.walletBalanceType,
       dollarValue: state.ledger.usdBalanceString
     )
+    #if NO_USER_WALLETS
+    if let publisher = publisher {
+      publisherSummaryView.publisherView.setStatus(
+        publisher.status,
+        externalWalletStatus: .notConnected,
+        hasBraveFunds: false
+      )
+    }
+    #else
     if let publisher = publisher {
       publisherSummaryView.publisherView.setStatus(
         publisher.status,
@@ -679,16 +688,19 @@ extension WalletViewController {
       }
       self.walletView.headerView.addFundsButton.isHidden = wallet.status != .verified
     }
+    #endif
   }
   
   /// Fetch an updated external wallet from ledger if the user isn't in JP
   func updateExternalWallet() {
+    #if !NO_USER_WALLETS
     if Preferences.Rewards.isUsingBAP.value == true { return }
     
     // If we can show Uphold, grab verification status of the wallet
     state.ledger.fetchExternalWallet(forType: .uphold) { _ in
       self.updateWalletHeader()
     }
+    #endif
   }
   
   func setupLedgerObservers() {
