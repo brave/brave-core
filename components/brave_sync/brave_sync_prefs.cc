@@ -255,7 +255,7 @@ void Prefs::AddToRecordsToResend(const std::string& object_id,
 
 void Prefs::RemoveFromRecordsToResend(const std::string& object_id) {
   ListPrefUpdate list_update(pref_service_, kSyncRecordsToResend);
-  base::Erase(list_update->GetList(), base::Value(object_id));
+  list_update->EraseListValue(base::Value(object_id));
   DictionaryPrefUpdate dict_update(pref_service_, kSyncRecordsToResendMeta);
   dict_update->RemoveKey(object_id);
 }
