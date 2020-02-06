@@ -42,11 +42,11 @@ pipeline {
                     if (env.CHANGE_BRANCH) {
                         BRANCH = env.CHANGE_BRANCH
                         TARGET_BRANCH = env.CHANGE_TARGET
-                        def prNumber = readJSON(text: httpRequest(url: GITHUB_API + "/brave-core/pulls?head=brave:" + BRANCH, authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).content)[0].number
-                        def prDetails = readJSON(text: httpRequest(url: GITHUB_API + "/brave-core/pulls/" + prNumber, authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).content)
+                        def prNumber = readJSON(text: httpRequest(customHeaders: [[name: "Authorization", value: "token ${GITHUB_CREDENTIAL_ID}"]], url: GITHUB_API + "/brave-core/pulls?head=brave:" + BRANCH, quiet: !DEBUG).content)[0].number
+                        def prDetails = readJSON(text: httpRequest(customHeaders: [[name: "Authorization", value: "token ${GITHUB_CREDENTIAL_ID}"]], url: GITHUB_API + "/brave-core/pulls/" + prNumber, quiet: !DEBUG).content)
                         SKIP = prDetails.mergeable_state.equals("draft") or prDetails.labels.count { label -> label.name.equalsIgnoreCase("CI/skip") }.equals(1)
                     }
-                    BRANCH_EXISTS_IN_BB = httpRequest(url: GITHUB_API + "/brave-browser/branches/" + BRANCH, validResponseCodes: "100:499", authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).status.equals(200)
+                    BRANCH_EXISTS_IN_BB = httpRequest(customHeaders: [[name: "Authorization", value: "token ${GITHUB_CREDENTIAL_ID}"]], url: GITHUB_API + "/brave-browser/branches/" + BRANCH, validResponseCodes: "100:499", quiet: !DEBUG).status.equals(200)
                 }
             }
         }
@@ -184,7 +184,7 @@ def getBuilds() {
 }
 
 def startBraveBrowserBuild() {
-    def prDetails = readJSON(text: httpRequest(url: GITHUB_API + "/brave-browser/pulls?head=brave:" + BRANCH, authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).content)[0]
+    def prDetails = readJSON(text: httpRequest(customHeaders: [[name: "Authorization", value: "token ${GITHUB_CREDENTIAL_ID}"]], url: GITHUB_API + "/brave-browser/pulls?head=brave:" + BRANCH, quiet: !DEBUG).content)[0]
     def prNumber = prDetails ? prDetails.number : ""
     def refToBuild = prNumber ? "PR-" + prNumber : URLEncoder.encode(BRANCH, "UTF-8")
     params = [
