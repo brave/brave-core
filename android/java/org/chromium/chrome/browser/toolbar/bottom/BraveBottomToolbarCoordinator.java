@@ -83,7 +83,7 @@ public class BraveBottomToolbarCoordinator
         View bottom_toolbar_browsing = root.findViewById(R.id.bottom_toolbar_browsing);
         View bottom_toolbar_buttons = root.findViewById(R.id.bottom_toolbar_buttons);
 
-        mHomeButton = bottom_toolbar_browsing.findViewById(R.id.home_button);
+        mHomeButton = bottom_toolbar_browsing.findViewById(R.id.bottom_home_button);
         if (mHomeButton != null) {
             mHomeButton.setOnLongClickListener(this);
         }
@@ -98,7 +98,7 @@ public class BraveBottomToolbarCoordinator
             mSearchAccelerator.setOnLongClickListener(this);
         }
 
-        mNewTabButton = bottom_toolbar_buttons.findViewById(R.id.new_tab_button);
+        mNewTabButton = bottom_toolbar_buttons.findViewById(R.id.bottom_new_tab_button);
         if (mNewTabButton != null) {
             mNewTabButton.setOnLongClickListener(this);
         }
