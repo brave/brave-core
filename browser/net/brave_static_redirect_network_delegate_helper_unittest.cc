@@ -208,6 +208,36 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifySafeBrowsingURLV5) {
   EXPECT_EQ(rc, net::OK);
 }
 
+TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyGvt1) {
+  const GURL url(
+      "http://redirector.gvt1.com/edgedl/release2/"
+      "NfaZYtcKdtFc0LUvFkcNFA_0.3/AKveSIjhHAm2K09XAMovFEQ");
+  const GURL expected_url(
+      "https://redirector.brave.com/edgedl/release2/"
+      "NfaZYtcKdtFc0LUvFkcNFA_0.3/AKveSIjhHAm2K09XAMovFEQ");
+
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  int rc =
+      OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
+  EXPECT_EQ(request_info->new_url_spec, expected_url);
+  EXPECT_EQ(rc, net::OK);
+}
+
+TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifyGoogleDl) {
+  const GURL url(
+      "http://dl.google.com/release2/"
+      "NfaZYtcKdtFc0LUvFkcNFA_0.3/AKveSIjhHAm2K09XAMovFEQ");
+  const GURL expected_url(
+      "https://redirector.brave.com/release2/"
+      "NfaZYtcKdtFc0LUvFkcNFA_0.3/AKveSIjhHAm2K09XAMovFEQ");
+
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  int rc =
+      OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
+  EXPECT_EQ(request_info->new_url_spec, expected_url);
+  EXPECT_EQ(rc, net::OK);
+}
+
 // TODO(@fmarier): Re-enable download protection once we have
 // truncated the list of metadata that it sends to the server
 // (brave/brave-browser#6267).
