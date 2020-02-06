@@ -18,6 +18,8 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
+using std::placeholders::_4;
+using std::placeholders::_5;
 
 namespace bat_ads {
 
@@ -54,6 +56,22 @@ bool AdsClientMojoBridge::IsEnabled(bool* is_enabled) {
 
 void AdsClientMojoBridge::IsEnabled(IsEnabledCallback callback) {
   std::move(callback).Run(ads_client_->IsEnabled());
+}
+
+bool AdsClientMojoBridge::ShouldShowPublisherAdsOnPariticipatingSites(
+    bool* is_enabled) {
+  if (!is_enabled) {
+    return false;
+  }
+
+  *is_enabled = ads_client_->ShouldShowPublisherAdsOnPariticipatingSites();
+  return true;
+}
+
+void AdsClientMojoBridge::ShouldShowPublisherAdsOnPariticipatingSites(
+    ShouldShowPublisherAdsOnPariticipatingSitesCallback callback) {
+  std::move(callback).Run(
+      ads_client_->ShouldShowPublisherAdsOnPariticipatingSites());
 }
 
 bool AdsClientMojoBridge::ShouldAllowAdConversionTracking(bool* should_allow) {
@@ -321,7 +339,7 @@ void AdsClientMojoBridge::LoadSampleBundle(
 
 void AdsClientMojoBridge::ShowNotification(
     const std::string& notification_info) {
-  auto info = std::make_unique<ads::NotificationInfo>();
+  auto info = std::make_unique<ads::AdNotificationInfo>();
   if (info->FromJson(notification_info) == ads::Result::SUCCESS)
     ads_client_->ShowNotification(std::move(info));
 }
@@ -338,10 +356,24 @@ void AdsClientMojoBridge::SetCatalogIssuers(
   }
 }
 
-void AdsClientMojoBridge::ConfirmAd(const std::string& notification_info) {
-  auto info = std::make_unique<ads::NotificationInfo>();
-  if (info->FromJson(notification_info) == ads::Result::SUCCESS)
-    ads_client_->ConfirmAd(std::move(info));
+void AdsClientMojoBridge::ConfirmAdNotification(
+    const std::string& json) {
+  auto info = std::make_unique<ads::AdNotificationInfo>();
+  if (info->FromJson(json) != ads::Result::SUCCESS) {
+    return;
+  }
+
+  ads_client_->ConfirmAdNotification(std::move(info));
+}
+
+void AdsClientMojoBridge::ConfirmPublisherAd(
+    const std::string& json) {
+  ads::PublisherAdInfo info;
+  if (info.FromJson(json) != ads::Result::SUCCESS) {
+    return;
+  }
+
+  ads_client_->ConfirmPublisherAd(info);
 }
 
 void AdsClientMojoBridge::ConfirmAction(const std::string& uuid,
@@ -379,38 +411,76 @@ void AdsClientMojoBridge::SaveBundleState(const std::string& bundle_state_json,
 }
 
 // static
-void AdsClientMojoBridge::OnGetAds(
-    CallbackHolder<GetAdsCallback>* holder,
-    ads::Result result,
+void AdsClientMojoBridge::OnGetCreativeAdNotifications(
+    CallbackHolder<GetCreativeAdNotificationsCallback>* holder,
+    const ads::Result result,
     const std::vector<std::string>& categories,
-    const std::vector<ads::AdInfo>& ads) {
+    const ads::CreativeAdNotifications& ads) {
   if (holder->is_valid()) {
-    std::vector<std::string> ad_json_list;
+    std::vector<std::string> json;
+
     for (const auto& ad : ads) {
-      ad_json_list.push_back(ad.ToJson());
+      json.push_back(ad.ToJson());
     }
-    std::move(holder->get()).Run(ToMojomResult(result), categories,
-        ad_json_list);
+
+    std::move(holder->get()).Run(ToMojomResult(result), categories, json);
   }
+
   delete holder;
 }
 
-void AdsClientMojoBridge::GetAds(
+void AdsClientMojoBridge::GetCreativeAdNotifications(
     const std::vector<std::string>& categories,
-    GetAdsCallback callback) {
-  // this gets deleted in OnSaveBundleState
-  auto* holder = new CallbackHolder<GetAdsCallback>(
+    GetCreativeAdNotificationsCallback callback) {
+  // this gets deleted in OnGetCreativeAdNotifications
+  auto* holder = new CallbackHolder<GetCreativeAdNotificationsCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ads_client_->GetAds(categories, std::bind(AdsClientMojoBridge::OnGetAds,
-      holder, _1, _2, _3));
+  ads_client_->GetCreativeAdNotifications(categories,
+      std::bind(AdsClientMojoBridge::OnGetCreativeAdNotifications,
+          holder, _1, _2, _3));
+}
+
+void AdsClientMojoBridge::OnGetCreativePublisherAds(
+    CallbackHolder<GetCreativePublisherAdsCallback>* holder,
+    const ads::Result result,
+    const std::string& url,
+    const std::vector<std::string>& categories,
+    const std::vector<std::string>& sizes,
+    const ads::CreativePublisherAds& ads) {
+  if (holder->is_valid()) {
+    std::vector<std::string> json;
+
+    for (const auto& ad : ads) {
+      json.push_back(ad.ToJson());
+    }
+
+    std::move(holder->get()).Run(ToMojomResult(result), url, categories,
+        sizes, json);
+  }
+
+  delete holder;
+}
+
+void AdsClientMojoBridge::GetCreativePublisherAds(
+    const std::string& url,
+    const std::vector<std::string>& categories,
+    const std::vector<std::string>& sizes,
+    GetCreativePublisherAdsCallback callback) {
+  // this gets deleted in OnGetCreativePublisherAds
+  auto* holder = new CallbackHolder<GetCreativePublisherAdsCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ads_client_->GetCreativePublisherAds(url, categories, sizes,
+      std::bind(AdsClientMojoBridge::OnGetCreativePublisherAds,
+          holder, _1, _2, _3, _4, _5));
 }
 
 void AdsClientMojoBridge::OnGetAdConversions(
     CallbackHolder<GetAdConversionsCallback>* holder,
     const ads::Result result,
     const std::string& url,
-    const std::vector<ads::AdConversionTrackingInfo>& ad_conversions) {
+    const ads::AdConversions& ad_conversions) {
   DCHECK(holder);
   if (!holder) {
     return;
@@ -430,7 +500,7 @@ void AdsClientMojoBridge::OnGetAdConversions(
 void AdsClientMojoBridge::GetAdConversions(
     const std::string& url,
     GetAdConversionsCallback callback) {
-  // this gets deleted in OnSaveBundleState
+  // this gets deleted in OnGetAdConversions
   auto* holder = new CallbackHolder<GetAdConversionsCallback>(
       AsWeakPtr(), std::move(callback));
 

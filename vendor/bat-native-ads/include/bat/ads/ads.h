@@ -15,9 +15,9 @@
 #include "bat/ads/ads_client.h"
 #include "bat/ads/category_content.h"
 #include "bat/ads/export.h"
-#include "bat/ads/notification_event_type.h"
-#include "bat/ads/notification_info.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/mojom.h"
+#include "bat/ads/ad_notification_info.h"
+#include "bat/ads/publisher_ads.h"
 #include "bat/ads/ads_history.h"
 
 namespace ads {
@@ -27,6 +27,9 @@ using Environment = mojom::Environment;
 using InitializeCallback = std::function<void(const Result)>;
 using ShutdownCallback = std::function<void(const Result)>;
 using RemoveAllHistoryCallback = std::function<void(const Result)>;
+using GetPublisherAdsCallback = std::function<void(const Result,
+    const std::string&, const std::vector<std::string>&,
+        const ads::PublisherAds&)>;
 
 // |_environment| indicates that URL requests should use production, staging or
 // development servers but can be overridden via command-line arguments
@@ -186,15 +189,20 @@ class ADS_EXPORT Ads {
   // Should be called to get the notification specified by |id|. Returns |true|
   // and a |notification| if the notification exists; otherwise, should return
   // |false|
-  virtual bool GetNotificationForId(
+  virtual bool GetAdNotificationForId(
       const std::string& id,
-      NotificationInfo* notification) = 0;
+      AdNotificationInfo* notification) = 0;
 
   // Should be called when a user implicitly views, clicks or dismisses a
   // notification; or a notification times out
-  virtual void OnNotificationEvent(
+  virtual void OnAdNotificationEvent(
       const std::string& id,
-      const NotificationEventType type) = 0;
+      const AdNotificationEventType event_type) = 0;
+
+  // Should be called when a user implicitly views or clicks a publisher ad
+  virtual void OnPublisherAdEvent(
+      const PublisherAdInfo& info,
+      const PublisherAdEventType event_type) = 0;
 
   // Should be called to remove all cached history. The callback takes one
   // argument — |Result| should be set to |SUCCESS| if successful; otherwise,
@@ -208,6 +216,12 @@ class ADS_EXPORT Ads {
       const AdsHistory::SortType sort_type,
       const uint64_t from_timestamp,
       const uint64_t to_timestamp) = 0;
+
+  // Should be called to get eligible publisher ads
+  virtual void GetPublisherAds(
+      const std::string& url,
+      const std::vector<std::string>& sizes,
+      GetPublisherAdsCallback callback) = 0;
 
   // Should be called to indicate interest in the specified ad. This is a
   // toggle, so calling it again returns the setting to the neutral state

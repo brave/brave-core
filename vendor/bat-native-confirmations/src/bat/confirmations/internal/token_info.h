@@ -16,7 +16,8 @@ namespace confirmations {
 
 struct TokenInfo {
   TokenInfo();
-  TokenInfo(const TokenInfo& info);
+  TokenInfo(
+      const TokenInfo& info);
   ~TokenInfo();
 
   UnblindedToken unblinded_token;

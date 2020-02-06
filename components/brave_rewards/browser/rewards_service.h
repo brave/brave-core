@@ -33,7 +33,7 @@ class Profile;
 
 namespace ads {
 struct IssuersInfo;
-struct NotificationInfo;
+struct AdNotificationInfo;
 }
 
 namespace content {
@@ -221,7 +221,10 @@ class RewardsService : public KeyedService {
   // TODO(Terry Mancey): remove this hack when ads is moved to the same process
   // as ledger
   virtual void SetCatalogIssuers(const std::string& json) = 0;
-  virtual void ConfirmAd(const std::string& json) = 0;
+  virtual void ConfirmAdNotification(
+      const std::string& json) = 0;
+  virtual void ConfirmPublisherAd(
+      const std::string& json) = 0;
   virtual void ConfirmAction(const std::string& uuid,
                              const std::string& creative_set_id,
                              const std::string& type) = 0;

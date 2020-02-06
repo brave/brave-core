@@ -12,7 +12,7 @@
 
 namespace ads {
 
-struct AdInfo;
+struct CreativeAdInfo;
 class FrequencyCapping;
 
 class PerDayFrequencyCap : public ExclusionRule {
@@ -23,7 +23,7 @@ class PerDayFrequencyCap : public ExclusionRule {
   ~PerDayFrequencyCap() override;
 
   bool ShouldExclude(
-      const AdInfo& ad) override;
+      const CreativeAdInfo& ad) override;
 
   const std::string GetLastMessage() const override;
 
@@ -33,7 +33,7 @@ class PerDayFrequencyCap : public ExclusionRule {
   std::string last_message_;
 
   bool DoesAdRespectPerDayCap(
-      const AdInfo& ad) const;
+      const CreativeAdInfo& ad) const;
 };
 
 }  // namespace ads

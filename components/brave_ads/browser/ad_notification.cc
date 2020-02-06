@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/browser/ad_notification.h"
-#include "bat/ads/notification_info.h"
+#include "bat/ads/ad_notification_info.h"
 
 #include "base/strings/utf_string_conversions.h"
 #include "ui/message_center/public/cpp/notification.h"
@@ -21,19 +21,19 @@ const char kNotifierId[] = "service.ads_service";
 
 // static
 std::unique_ptr<message_center::Notification> CreateAdNotification(
-    const ads::NotificationInfo& notification_info) {
+    const ads::AdNotificationInfo& notification_info) {
   message_center::RichNotificationData notification_data;
 
-  base::string16 advertiser;
-  if (base::IsStringUTF8(notification_info.advertiser)) {
-    base::UTF8ToUTF16(notification_info.advertiser.c_str(),
-                      notification_info.advertiser.length(), &advertiser);
+  base::string16 title;
+  if (base::IsStringUTF8(notification_info.title)) {
+    base::UTF8ToUTF16(notification_info.title.c_str(),
+                      notification_info.title.length(), &title);
   }
 
-  base::string16 text;
-  if (base::IsStringUTF8(notification_info.text)) {
-    base::UTF8ToUTF16(notification_info.text.c_str(),
-                      notification_info.text.length(), &text);
+  base::string16 body;
+  if (base::IsStringUTF8(notification_info.body)) {
+    base::UTF8ToUTF16(notification_info.body.c_str(),
+                      notification_info.body.length(), &body);
   }
 
   // hack to prevent origin from showing in the notification
@@ -41,12 +41,12 @@ std::unique_ptr<message_center::Notification> CreateAdNotification(
   notification_data.context_message = base::ASCIIToUTF16(" ");
   auto notification = std::make_unique<message_center::Notification>(
       message_center::NOTIFICATION_TYPE_SIMPLE,
-      notification_info.id,
-      advertiser,
-      text,
+      notification_info.uuid,
+      title,
+      body,
       gfx::Image(),
       base::string16(),
-      GURL(kBraveAdsUrlPrefix + notification_info.id),
+      GURL(kBraveAdsUrlPrefix + notification_info.uuid),
       message_center::NotifierId(message_center::NotifierType::SYSTEM_COMPONENT,
           kNotifierId),
       notification_data,

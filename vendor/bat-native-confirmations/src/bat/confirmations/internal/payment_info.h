@@ -12,13 +12,9 @@
 namespace confirmations {
 
 struct PaymentInfo {
-  PaymentInfo();
-  PaymentInfo(const PaymentInfo& info);
-  ~PaymentInfo();
-
-  double balance;
+  double balance = 0.0;
   std::string month;
-  uint64_t transaction_count;
+  uint64_t transaction_count = 0;
 };
 
 }  // namespace confirmations

@@ -14,7 +14,7 @@
 
 #include "bat/confirmations/confirmations.h"
 #include "bat/confirmations/confirmations_client.h"
-#include "bat/confirmations/notification_info.h"
+#include "bat/confirmations/ad_notification_info.h"
 #include "bat/confirmations/issuers_info.h"
 #include "bat/confirmations/internal/confirmation_info.h"
 #include "bat/confirmations/internal/ads_rewards.h"
@@ -82,7 +82,10 @@ class ConfirmationsImpl : public Confirmations {
   void RefillTokensIfNecessary() const;
 
   // Redeem unblinded tokens
-  void ConfirmAd(std::unique_ptr<NotificationInfo> info) override;
+  void ConfirmAdNotification(
+      std::unique_ptr<AdNotificationInfo> info) override;
+  void ConfirmPublisherAd(
+      const PublisherAdInfo& info) override;
   void ConfirmAction(const std::string& uuid,
                      const std::string& creative_set_id,
                      const ConfirmationType& type) override;

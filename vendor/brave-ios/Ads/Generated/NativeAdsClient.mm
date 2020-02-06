@@ -19,6 +19,10 @@ bool NativeAdsClient::IsEnabled() const {
   return [bridge_ isAdsEnabled];
 }
 
+bool NativeAdsClient::ShouldShowPublisherAdsOnPariticipatingSites() const {
+  return [bridge_ shouldShowPublisherAdsOnParticipatingSites];
+}
+
 bool NativeAdsClient::ShouldAllowAdConversionTracking() const {
   return [bridge_ shouldAllowAdConversionTracking];
 }
@@ -63,7 +67,7 @@ void NativeAdsClient::LoadUserModelForLanguage(const std::string & language, ads
   [bridge_ loadUserModelForLanguage:language callback:callback];
 }
 
-void NativeAdsClient::ShowNotification(std::unique_ptr<ads::NotificationInfo> info) {
+void NativeAdsClient::ShowNotification(std::unique_ptr<ads::AdNotificationInfo> info) {
   [bridge_ showNotification:std::move(info)];
 }
 
@@ -79,8 +83,12 @@ void NativeAdsClient::SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) 
   [bridge_ setCatalogIssuers:std::move(info)];
 }
 
-void NativeAdsClient::ConfirmAd(std::unique_ptr<ads::NotificationInfo> info) {
-  [bridge_ confirmAd:std::move(info)];
+void NativeAdsClient::ConfirmAdNotification(const ads::AdNotificationInfo & info) {
+  [bridge_ confirmAdNotification:info];
+}
+
+void NativeAdsClient::ConfirmPublisherAd(const ads::PublisherAdInfo & info) {
+  [bridge_ confirmPublisherAd:info];
 }
 
 void NativeAdsClient::ConfirmAction(const std::string & uuid, const std::string & creative_set_id, const ads::ConfirmationType & type) {
@@ -123,8 +131,12 @@ void NativeAdsClient::SaveBundleState(std::unique_ptr<ads::BundleState> state, a
   [bridge_ saveBundleState:std::move(state) callback:callback];
 }
 
-void NativeAdsClient::GetAds(const std::vector<std::string> & categories, ads::OnGetAdsCallback callback) {
-  [bridge_ getAds:categories callback:callback];
+void NativeAdsClient::GetCreativeAdNotifications(const std::vector<std::string> & categories, ads::OnGetCreativeAdNotificationsCallback callback) {
+  [bridge_ getCreativeAdNotifications:categories callback:callback];
+}
+
+void NativeAdsClient::GetCreativePublisherAds(const std::string & url, const std::vector<std::string> & categories, const std::vector<std::string> & sizes, ads::OnGetCreativePublisherAdsCallback callback) {
+  [bridge_ getCreativePublisherAds:url categories:categories callback:callback];
 }
 
 void NativeAdsClient::GetAdConversions(const std::string & url, ads::OnGetAdConversionsCallback callback) {

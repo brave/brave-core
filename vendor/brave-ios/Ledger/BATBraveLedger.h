@@ -246,8 +246,11 @@ NS_SWIFT_NAME(BraveLedger)
 
 #pragma mark - Ads & Confirmations
 
-/// Confirm an ad and update confirmations (called from the ads layer)
-- (void)confirmAd:(NSString *)info;
+/// Confirm an ad notification and update confirmations (called from the ads layer)
+- (void)confirmAdNotification:(NSString *)json;
+
+/// Confirm a publisher ad and update confirmations (called from the ads layer)
+- (void)confirmPublisherAd:(NSString *)json;
 
 /// Confirm an action on an ad and update confirmations was sustained (called from ads layer)
 - (void)confirmAction:(NSString *)uuid creativeSetID:(NSString *)creativeSetID type:(NSString *)type;

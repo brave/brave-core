@@ -11,11 +11,7 @@
 namespace ads {
 
 struct BlurInfo {
-  BlurInfo();
-  explicit BlurInfo(const BlurInfo& info);
-  ~BlurInfo();
-
-  int32_t tab_id;
+  int32_t tab_id = -1;
 };
 
 }  // namespace ads

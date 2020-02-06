@@ -9,3 +9,15 @@ enum Environment {
   PRODUCTION = 1,
   DEVELOPMENT = 2
 };
+
+enum AdNotificationEventType {
+  kViewed = 0,
+  kClicked,
+  kDismissed,
+  kTimedOut
+};
+
+enum PublisherAdEventType {
+  kViewed = 0,
+  kClicked
+};

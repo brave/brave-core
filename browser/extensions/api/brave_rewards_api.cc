@@ -608,6 +608,9 @@ ExtensionFunction::ResponseAction BraveRewardsSaveAdsSettingFunction::Run() {
       const auto is_enabled =
           params->value == "true" && ads_service_->IsSupportedLocale();
       ads_service_->SetEnabled(is_enabled);
+    } else if (params->key == "shouldShowPublisherAdsOnParticipatingSites") {
+      ads_service_->SetShowPublisherAdsOnPariticipatingSites(
+          params->value == "true");
     } else if (params->key == "shouldAllowAdConversionTracking") {
       ads_service_->SetAllowAdConversionTracking(params->value == "true");
     }

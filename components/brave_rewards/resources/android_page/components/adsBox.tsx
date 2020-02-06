@@ -31,12 +31,14 @@ class AdsBox extends React.Component<Props, {}> {
 
   onAdsSettingChange = (key: string, value: boolean) => {
     let newValue: any = value
-    const { adsEnabled, shouldAllowAdConversionTracking } = this.props.rewardsData.adsData
+    const { adsEnabled, shouldAllowAdConversionTracking, shouldShowPublisherAdsOnParticipatingSites } = this.props.rewardsData.adsData
 
     if (key === 'adsEnabled') {
       newValue = !adsEnabled
     } else if (key === 'shouldAllowAdConversionTracking') {
       newValue = !shouldAllowAdConversionTracking
+    } else if (key === 'shouldShowPublisherAdsOnParticipatingSites') {
+      newValue = !shouldShowPublisherAdsOnParticipatingSites
     }
 
     this.props.actions.onAdsSettingSave(key, newValue)
@@ -47,7 +49,7 @@ class AdsBox extends React.Component<Props, {}> {
       return null
     }
 
-    const { adsPerHour, shouldAllowAdConversionTracking } = this.props.rewardsData.adsData
+    const { adsPerHour, shouldAllowAdConversionTracking, shouldShowPublisherAdsOnParticipatingSites } = this.props.rewardsData.adsData
 
     return (
       <Grid columns={1} customStyle={{ maxWidth: '270px', margin: '0 auto' }}>
@@ -65,6 +67,18 @@ class AdsBox extends React.Component<Props, {}> {
                 )
               })}
             </Select>
+          </ControlWrapper>
+          <ControlWrapper text={getLocale('adsDeliveryPermissions')}>
+            <Checkbox
+              value={{
+                shouldShowPublisherAdsOnParticipatingSites: shouldShowPublisherAdsOnParticipatingSites
+              }}
+              multiple={true}
+              onChange={this.onAdsSettingChange}
+            >
+              <div data-key='shouldShowPublisherAdsOnParticipatingSites'>{getLocale('adsShowOnParticipatingPublisherSites')}</div>
+            </Checkbox>
+            <div>{getLocale('adsShowOnParticipatingPublisherSitesDescription')}</div>
           </ControlWrapper>
           <ControlWrapper text={getLocale('adsOtherSettings')}>
             <Checkbox

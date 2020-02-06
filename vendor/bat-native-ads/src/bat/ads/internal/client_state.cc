@@ -7,49 +7,16 @@
 
 #include "bat/ads/ad_history.h"
 #include "bat/ads/internal/json_helper.h"
-#include "bat/ads/internal/static_values.h"
 #include "bat/ads/internal/time.h"
 
 #include "base/strings/string_number_conversions.h"
 
 namespace ads {
 
-ClientState::ClientState()
-    : next_check_serve_ad_timestamp_in_seconds(0),
-      available(false),
-      last_search_time(0),
-      last_shop_time(0),
-      last_user_activity(0),
-      last_user_idle_stop_time(0),
-      user_model_language(kDefaultUserModelLanguage),
-      score(0.0),
-      search_activity(false),
-      shop_activity(false) {}
+ClientState::ClientState() = default;
 
-ClientState::ClientState(const ClientState& state)
-    : ad_prefs(state.ad_prefs),
-      ads_shown_history(state.ads_shown_history),
-      ad_uuid(state.ad_uuid),
-      ads_uuid_seen(state.ads_uuid_seen),
-      next_check_serve_ad_timestamp_in_seconds(
-          state.next_check_serve_ad_timestamp_in_seconds),
-      available(state.available),
-      last_search_time(state.last_search_time),
-      last_shop_time(state.last_shop_time),
-      last_user_activity(state.last_user_activity),
-      last_user_idle_stop_time(state.last_user_idle_stop_time),
-      user_model_language(state.user_model_language),
-      user_model_languages(state.user_model_languages),
-      last_page_classification(state.last_page_classification),
-      page_score_history(state.page_score_history),
-      creative_set_history(state.creative_set_history),
-      campaign_history(state.campaign_history),
-      score(state.score),
-      search_activity(state.search_activity),
-      search_url(state.search_url),
-      shop_activity(state.shop_activity),
-      shop_url(state.shop_url),
-      version_code(state.version_code) {}
+ClientState::ClientState(
+    const ClientState& state) = default;
 
 ClientState::~ClientState() = default;
 
@@ -109,6 +76,14 @@ Result ClientState::FromJson(
     for (const auto& ad_uuid_seen : client["adsUUIDSeen"].GetObject()) {
       ads_uuid_seen.insert({ad_uuid_seen.name.GetString(),
           ad_uuid_seen.value.GetInt64()});
+    }
+  }
+
+  if (client.HasMember("publisherAdsUUIDSeen")) {
+    for (const auto& publisher_ad_uuid_seen :
+        client["publisherAdsUUIDSeen"].GetObject()) {
+      publisher_ads_uuid_seen.insert({publisher_ad_uuid_seen.name.GetString(),
+          publisher_ad_uuid_seen.value.GetInt64()});
     }
   }
 
@@ -262,6 +237,14 @@ void SaveToJson(JsonWriter* writer, const ClientState& state) {
   for (const auto& ad_uuid_seen : state.ads_uuid_seen) {
     writer->String(ad_uuid_seen.first.c_str());
     writer->Uint64(ad_uuid_seen.second);
+  }
+  writer->EndObject();
+
+  writer->String("publisherAdsUUIDSeen");
+  writer->StartObject();
+  for (const auto& publisher_ad_uuid_seen : state.publisher_ads_uuid_seen) {
+    writer->String(publisher_ad_uuid_seen.first.c_str());
+    writer->Uint64(publisher_ad_uuid_seen.second);
   }
   writer->EndObject();
 

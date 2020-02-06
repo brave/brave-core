@@ -9,13 +9,10 @@
 
 namespace ads {
 
-SavedAd::SavedAd() :
-    uuid(""),
-    creative_set_id("") {}
+SavedAd::SavedAd() = default;
 
-SavedAd::SavedAd(const SavedAd& ad) :
-    uuid(ad.uuid),
-    creative_set_id(ad.creative_set_id) {}
+SavedAd::SavedAd(
+    const SavedAd& ad) = default;
 
 SavedAd::~SavedAd() = default;
 

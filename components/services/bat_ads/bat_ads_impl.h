@@ -10,8 +10,10 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "bat/ads/ads.h"
+#include "bat/ads/publisher_ads.h"
 
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
@@ -73,12 +75,15 @@ class BatAdsImpl :
   void OnTabClosed(
       const int32_t tab_id) override;
 
-  void GetNotificationForId(
+  void GetAdNotificationForId(
       const std::string& id,
-      GetNotificationForIdCallback callback) override;
-  void OnNotificationEvent(
+      GetAdNotificationForIdCallback callback) override;
+  void OnAdNotificationEvent(
       const std::string& id,
-      const int32_t type) override;
+      const ads::AdNotificationEventType event_type) override;
+  void OnPublisherAdEvent(
+      const std::string& json,
+      const ads::PublisherAdEventType event_type) override;
 
   void RemoveAllHistory(
       RemoveAllHistoryCallback callback) override;
@@ -87,6 +92,11 @@ class BatAdsImpl :
       const uint64_t from_timestamp,
       const uint64_t to_timestamp,
       GetAdsHistoryCallback callback) override;
+
+  void GetPublisherAds(
+      const std::string& url,
+      const std::vector<std::string>& sizes,
+      GetPublisherAdsCallback callback) override;
 
   void ToggleAdThumbUp(
       const std::string& id,
@@ -151,6 +161,13 @@ class BatAdsImpl :
   static void OnRemoveAllHistory(
       CallbackHolder<RemoveAllHistoryCallback>* holder,
       const int32_t result);
+
+  static void OnGetPublisherAds(
+      CallbackHolder<GetPublisherAdsCallback>* holder,
+      const int32_t result,
+      const std::string& url,
+      const std::vector<std::string>& sizes,
+      const ads::PublisherAds& ads);
 
   std::unique_ptr<BatAdsClientMojoBridge> bat_ads_client_mojo_proxy_;
   std::unique_ptr<ads::Ads> ads_;

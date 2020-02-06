@@ -10,7 +10,6 @@
 #include <string>
 
 #include "bat/ads/export.h"
-#include "bat/ads/result.h"
 
 namespace ads {
 

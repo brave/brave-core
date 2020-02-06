@@ -10,19 +10,10 @@
 
 namespace ads {
 
-BundleState::BundleState()
-    : catalog_version(0),
-      catalog_ping(0),
-      catalog_last_updated_timestamp_in_seconds(0) {}
+BundleState::BundleState() = default;
 
-BundleState::BundleState(const BundleState& state)
-    : catalog_id(state.catalog_id),
-      catalog_version(state.catalog_version),
-      catalog_ping(state.catalog_ping),
-      catalog_last_updated_timestamp_in_seconds(
-          state.catalog_last_updated_timestamp_in_seconds),
-      categories(state.categories),
-      ad_conversions(state.ad_conversions) {}
+BundleState::BundleState(
+    const BundleState& state) = default;
 
 BundleState::~BundleState() = default;
 
@@ -48,67 +39,150 @@ Result BundleState::FromJson(
     return result;
   }
 
-  std::map<std::string, std::vector<AdInfo>> new_categories;
+  CreativeAdNotificationCategories new_ad_notification_categories;
 
-  if (bundle.HasMember("categories")) {
-    for (const auto& category : bundle["categories"].GetObject()) {
-      for (const auto& info : category.value.GetArray()) {
-        AdInfo ad_info;
+  if (bundle.HasMember("ad_notification_categories")) {
+    for (const auto& category :
+        bundle["ad_notification_categories"].GetObject()) {
+      for (const auto& creative : category.value.GetArray()) {
+        CreativeAdNotificationInfo info;
 
-        if (info.HasMember("creativeSetId")) {
-          ad_info.creative_set_id = info["creativeSetId"].GetString();
+        if (creative.HasMember("creativeSetId")) {
+          info.creative_set_id = creative["creativeSetId"].GetString();
         }
 
-        if (info.HasMember("campaignId")) {
-          ad_info.campaign_id = info["campaignId"].GetString();
+        if (creative.HasMember("campaignId")) {
+          info.campaign_id = creative["campaignId"].GetString();
         }
 
-        if (info.HasMember("startTimestamp")) {
-          ad_info.start_timestamp = info["startTimestamp"].GetString();
+        if (creative.HasMember("startAtTimestamp")) {
+          info.start_at_timestamp = creative["startAtTimestamp"].GetString();
         }
 
-        if (info.HasMember("endTimestamp")) {
-          ad_info.end_timestamp = info["endTimestamp"].GetString();
+        if (creative.HasMember("endAtTimestamp")) {
+          info.end_at_timestamp = creative["endAtTimestamp"].GetString();
         }
 
-        if (info.HasMember("dailyCap")) {
-          ad_info.daily_cap = info["dailyCap"].GetUint();
+        if (creative.HasMember("dailyCap")) {
+          info.daily_cap = creative["dailyCap"].GetUint();
         }
 
-        if (info.HasMember("perDay")) {
-          ad_info.per_day = info["perDay"].GetUint();
+        if (creative.HasMember("perDay")) {
+          info.per_day = creative["perDay"].GetUint();
         }
 
-        if (info.HasMember("totalMax")) {
-          ad_info.total_max = info["totalMax"].GetUint();
+        if (creative.HasMember("totalMax")) {
+          info.total_max = creative["totalMax"].GetUint();
         }
 
-        std::vector<std::string> regions;
-        if (info.HasMember("regions")) {
-          for (const auto& region : info["regions"].GetArray()) {
-            regions.push_back(region.GetString());
+        if (creative.HasMember("category")) {
+          info.category = creative["category"].GetString();
+        }
+
+        std::vector<std::string> geo_targets;
+        if (creative.HasMember("geoTargets")) {
+          for (const auto& geo_target : creative["geoTargets"].GetArray()) {
+            geo_targets.push_back(geo_target.GetString());
           }
         }
-        ad_info.regions = regions;
+        info.geo_targets = geo_targets;
 
-        ad_info.advertiser = info["advertiser"].GetString();
-        ad_info.notification_text = info["notificationText"].GetString();
-        ad_info.notification_url =
-          helper::Uri::GetUri(info["notificationURL"].GetString());
-        ad_info.uuid = info["uuid"].GetString();
+        info.title = creative["title"].GetString();
+        info.body = creative["body"].GetString();
+        info.target_url = helper::Uri::GetUri(
+             creative["targetUrl"].GetString());
+        info.creative_instance_id = creative["creativeInstanceId"].GetString();
 
-        if (new_categories.find(category.name.GetString()) ==
-            new_categories.end()) {
-          new_categories.insert({category.name.GetString(), {}});
+        if (new_ad_notification_categories.find(category.name.GetString()) ==
+            new_ad_notification_categories.end()) {
+          new_ad_notification_categories.insert(
+              {category.name.GetString(), {}});
         }
-        new_categories.at(category.name.GetString()).push_back(ad_info);
+
+        new_ad_notification_categories.at(
+            category.name.GetString()).push_back(info);
       }
     }
   }
 
-  categories = new_categories;
+  ad_notification_categories = new_ad_notification_categories;
 
-  std::vector<AdConversionTrackingInfo> new_ad_conversions;
+  CreativePublisherAdCategories new_publisher_ad_categories;
+
+  if (bundle.HasMember("publisher_ad_categories")) {
+    for (const auto& category : bundle["publisher_ad_categories"].GetObject()) {
+      for (const auto& creative : category.value.GetArray()) {
+        CreativePublisherAdInfo info;
+
+        if (creative.HasMember("creativeSetId")) {
+          info.creative_set_id = creative["creativeSetId"].GetString();
+        }
+
+        if (creative.HasMember("campaignId")) {
+          info.campaign_id = creative["campaignId"].GetString();
+        }
+
+        if (creative.HasMember("startAtTimestamp")) {
+          info.start_at_timestamp = creative["startAtTimestamp"].GetString();
+        }
+
+        if (creative.HasMember("endAtTimestamp")) {
+          info.end_at_timestamp = creative["endAtTimestamp"].GetString();
+        }
+
+        if (creative.HasMember("dailyCap")) {
+          info.daily_cap = creative["dailyCap"].GetUint();
+        }
+
+        if (creative.HasMember("perDay")) {
+          info.per_day = creative["perDay"].GetUint();
+        }
+
+        if (creative.HasMember("totalMax")) {
+          info.total_max = creative["totalMax"].GetUint();
+        }
+
+        if (creative.HasMember("category")) {
+          info.category = creative["category"].GetString();
+        }
+
+        std::vector<std::string> geo_targets;
+        if (creative.HasMember("geoTargets")) {
+          for (const auto& geo_target : creative["geoTargets"].GetArray()) {
+            geo_targets.push_back(geo_target.GetString());
+          }
+        }
+        info.geo_targets = geo_targets;
+
+        info.size = creative["size"].GetString();
+        info.creative_url = creative["creativeUrl"].GetString();
+        info.target_url = helper::Uri::GetUri(
+            creative["targetUrl"].GetString());
+
+        info.creative_instance_id = creative["creativeInstanceId"].GetString();
+
+        std::vector<std::string> channels;
+        if (creative.HasMember("channels")) {
+          for (const auto& site : creative["channels"].GetArray()) {
+            channels.push_back(site.GetString());
+          }
+        }
+        info.channels = channels;
+
+        if (new_publisher_ad_categories.find(category.name.GetString()) ==
+            new_publisher_ad_categories.end()) {
+          new_publisher_ad_categories.insert({category.name.GetString(), {}});
+        }
+
+        new_publisher_ad_categories.at(
+            category.name.GetString()).push_back(info);
+      }
+    }
+  }
+
+  publisher_ad_categories = new_publisher_ad_categories;
+
+  AdConversions new_ad_conversions;
 
   if (bundle.HasMember("conversions")) {
     for (const auto& info : bundle["conversions"].GetArray()) {
@@ -143,13 +217,15 @@ Result BundleState::FromJson(
   return SUCCESS;
 }
 
-void SaveToJson(JsonWriter* writer, const BundleState& state) {
+void SaveToJson(
+    JsonWriter* writer,
+    const BundleState& state) {
   writer->StartObject();
 
-  writer->String("categories");
+  writer->String("ad_notification_categories");
   writer->StartObject();
 
-  for (const auto& category : state.categories) {
+  for (const auto& category : state.ad_notification_categories) {
     writer->String(category.first.c_str());
     writer->StartArray();
 
@@ -162,11 +238,11 @@ void SaveToJson(JsonWriter* writer, const BundleState& state) {
       writer->String("campaignId");
       writer->String(ad.campaign_id.c_str());
 
-      writer->String("startTimestamp");
-      writer->String(ad.start_timestamp.c_str());
+      writer->String("startAtTimestamp");
+      writer->String(ad.start_at_timestamp.c_str());
 
-      writer->String("endTimestamp");
-      writer->String(ad.end_timestamp.c_str());
+      writer->String("endAtTimestamp");
+      writer->String(ad.end_at_timestamp.c_str());
 
       writer->String("dailyCap");
       writer->Uint(ad.daily_cap);
@@ -177,24 +253,95 @@ void SaveToJson(JsonWriter* writer, const BundleState& state) {
       writer->String("totalMax");
       writer->Uint(ad.total_max);
 
-      writer->String("regions");
+      writer->String("category");
+      writer->String(ad.category.c_str());
+
+      writer->String("geoTargets");
       writer->StartArray();
-      for (const auto& region : ad.regions) {
-        writer->String(region.c_str());
+      for (const auto& geo_target : ad.geo_targets) {
+        writer->String(geo_target.c_str());
       }
       writer->EndArray();
 
-      writer->String("advertiser");
-      writer->String(ad.advertiser.c_str());
+      writer->String("title");
+      writer->String(ad.title.c_str());
 
-      writer->String("notificationText");
-      writer->String(ad.notification_text.c_str());
+      writer->String("body");
+      writer->String(ad.body.c_str());
 
-      writer->String("notificationURL");
-      writer->String(ad.notification_url.c_str());
+      writer->String("targetUrl");
+      writer->String(ad.target_url.c_str());
 
-      writer->String("uuid");
-      writer->String(ad.uuid.c_str());
+      writer->String("creativeInstanceId");
+      writer->String(ad.creative_instance_id.c_str());
+
+      writer->EndObject();
+    }
+
+    writer->EndArray();
+  }
+
+  writer->EndObject();
+
+  writer->String("publisher_ad_categories");
+  writer->StartObject();
+
+  for (const auto& category : state.publisher_ad_categories) {
+    writer->String(category.first.c_str());
+    writer->StartArray();
+
+    for (const auto& ad : category.second) {
+      writer->StartObject();
+
+      writer->String("creativeSetId");
+      writer->String(ad.creative_set_id.c_str());
+
+      writer->String("campaignId");
+      writer->String(ad.campaign_id.c_str());
+
+      writer->String("startAtTimestamp");
+      writer->String(ad.start_at_timestamp.c_str());
+
+      writer->String("endAtTimestamp");
+      writer->String(ad.end_at_timestamp.c_str());
+
+      writer->String("dailyCap");
+      writer->Uint(ad.daily_cap);
+
+      writer->String("perDay");
+      writer->Uint(ad.per_day);
+
+      writer->String("totalMax");
+      writer->Uint(ad.total_max);
+
+      writer->String("category");
+      writer->String(ad.category.c_str());
+
+      writer->String("geoTargets");
+      writer->StartArray();
+      for (const auto& geo_target : ad.geo_targets) {
+        writer->String(geo_target.c_str());
+      }
+      writer->EndArray();
+
+      writer->String("size");
+      writer->String(ad.size.c_str());
+
+      writer->String("creativeUrl");
+      writer->String(ad.creative_url.c_str());
+
+      writer->String("targetUrl");
+      writer->String(ad.target_url.c_str());
+
+      writer->String("creativeInstanceId");
+      writer->String(ad.creative_instance_id.c_str());
+
+      writer->String("channels");
+      writer->StartArray();
+      for (const auto& channel : ad.channels) {
+        writer->String(channel.c_str());
+      }
+      writer->EndArray();
 
       writer->EndObject();
     }
@@ -226,7 +373,6 @@ void SaveToJson(JsonWriter* writer, const BundleState& state) {
   }
 
   writer->EndArray();
-
   writer->EndObject();
 }
 

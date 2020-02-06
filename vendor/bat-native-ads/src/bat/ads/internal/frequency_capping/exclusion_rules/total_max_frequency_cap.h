@@ -12,7 +12,7 @@
 
 namespace ads {
 
-struct AdInfo;
+struct CreativeAdNotificationInfo;
 class FrequencyCapping;
 
 class TotalMaxFrequencyCap : public ExclusionRule {
@@ -23,7 +23,7 @@ class TotalMaxFrequencyCap : public ExclusionRule {
   ~TotalMaxFrequencyCap() override;
 
   bool ShouldExclude(
-      const AdInfo& ad) override;
+      const CreativeAdInfo& ad) override;
 
   const std::string GetLastMessage() const override;
 
@@ -33,7 +33,7 @@ class TotalMaxFrequencyCap : public ExclusionRule {
   std::string last_message_;
 
   bool DoesAdRespectMaximumCap(
-      const AdInfo& ad) const;
+      const CreativeAdInfo& ad) const;
 };
 
 }  // namespace ads

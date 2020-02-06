@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/frequency_capping/frequency_capping.h"
-#include "bat/ads/ad_info.h"
+#include "bat/ads/creative_ad_notification_info.h"
 #include "bat/ads/internal/client.h"
 #include "bat/ads/internal/time.h"
 

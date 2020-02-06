@@ -15,15 +15,10 @@
 
 namespace ads {
 
-AdHistory::AdHistory()
-    : timestamp_in_seconds(0) {}
+AdHistory::AdHistory() = default;
 
 AdHistory::AdHistory(
-    const AdHistory& properties)
-    : timestamp_in_seconds(properties.timestamp_in_seconds),
-      uuid(properties.uuid),
-      ad_content(properties.ad_content),
-      category_content(properties.category_content) {}
+    const AdHistory& properties) = default;
 
 AdHistory::~AdHistory() = default;
 

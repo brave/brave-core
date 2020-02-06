@@ -127,7 +127,8 @@ class MockRewardsService : public RewardsService {
   MOCK_CONST_METHOD1(GetRewardsMainEnabled,
       void(const brave_rewards::GetRewardsMainEnabledCallback&));
   MOCK_METHOD1(SetCatalogIssuers, void(const std::string&));
-  MOCK_METHOD1(ConfirmAd, void(const std::string&));
+  MOCK_METHOD1(ConfirmAdNotification, void(const std::string&));
+  MOCK_METHOD1(ConfirmPublisherAd, void(const std::string&));
   MOCK_METHOD3(ConfirmAction,
                void(const std::string&,
                     const std::string&,

@@ -39,7 +39,7 @@ class Bundle {
   std::unique_ptr<BundleState> GenerateFromCatalog(const Catalog& catalog);
 
   bool DoesOsSupportCreativeSet(
-    const CreativeSetInfo& creative_set);
+    const CatalogCreativeSetInfo& creative_set);
 
   std::string GetClientOS();
 

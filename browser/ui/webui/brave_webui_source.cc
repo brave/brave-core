@@ -257,25 +257,28 @@ void CustomizeWebUIHTMLSource(const std::string &name,
       }
     }, {
       std::string("rewards"), {
-        { "adsAllowConversionTracking",  IDS_BRAVE_REWARDS_LOCAL_ADS_ALLOW_CONVERSION_TRACKING },  // NOLINT
-        { "adsAllowConversionTrackingDescription",  IDS_BRAVE_REWARDS_LOCAL_ADS_ALLOW_CONVERSION_TRACKING_DESCRIPTION },  // NOLINT
-        { "adsCurrentEarnings",  IDS_BRAVE_REWARDS_LOCAL_ADS_CURRENT_EARNINGS },
-        { "adsDesc",  IDS_BRAVE_REWARDS_LOCAL_ADS_DESC },
-        { "adsDisabledTextOne",  IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT_ONE },                // NOLINT
-        { "adsDisabledTextTwo",  IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT_TWO },                // NOLINT
-        { "adsNotificationsReceived",  IDS_BRAVE_REWARDS_LOCAL_ADS_NOTIFICATIONS_RECEIVED },     // NOLINT
-        { "adsNotSupportedRegion", IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED_REGION },           // NOLINT
-        { "adsNotSupportedDevice", IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED_DEVICE },           // NOLINT
-        { "adsPaymentDate",  IDS_BRAVE_REWARDS_LOCAL_ADS_PAYMENT_DATE },
-        { "adsPagesViewed",  IDS_BRAVE_REWARDS_LOCAL_ADS_PAGES_VIEWED },
-        { "adsOtherSettings",  IDS_BRAVE_REWARDS_LOCAL_ADS_OTHER_SETTINGS },
-        { "adsPerHour",  IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR },
-        { "adsPerHour1",  IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_1 },
-        { "adsPerHour2",  IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_2 },
-        { "adsPerHour3",  IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_3 },
-        { "adsPerHour4",  IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_4 },
-        { "adsPerHour5",  IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_5 },
-        { "adsTitle",  IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE },
+        { "adsAllowConversionTracking", IDS_BRAVE_REWARDS_LOCAL_ADS_ALLOW_CONVERSION_TRACKING },                                               // NOLINT
+        { "adsAllowConversionTrackingDescription", IDS_BRAVE_REWARDS_LOCAL_ADS_ALLOW_CONVERSION_TRACKING_DESCRIPTION },                        // NOLINT
+        { "adsDeliveryPermissions", IDS_BRAVE_REWARDS_LOCAL_ADS_DELIVERY_PERMISSIONS },                                                        // NOLINT
+        { "adsShowOnParticipatingPublisherSites", IDS_BRAVE_REWARDS_LOCAL_ADS_SHOW_ON_PARTICIPATING_PUBLISHER_SITES },                         // NOLINT
+        { "adsShowOnParticipatingPublisherSitesDescription", IDS_BRAVE_REWARDS_LOCAL_ADS_SHOW_ON_PARTICIPATING_PUBLISHER_SITES_DESCRIPTION },  // NOLINT
+        { "adsCurrentEarnings", IDS_BRAVE_REWARDS_LOCAL_ADS_CURRENT_EARNINGS },
+        { "adsDesc", IDS_BRAVE_REWARDS_LOCAL_ADS_DESC },
+        { "adsDisabledTextOne", IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT_ONE },                                                               // NOLINT
+        { "adsDisabledTextTwo", IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT_TWO },                                                               // NOLINT
+        { "adsNotificationsReceived", IDS_BRAVE_REWARDS_LOCAL_ADS_NOTIFICATIONS_RECEIVED },                                                    // NOLINT
+        { "adsNotSupportedRegion", IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED_REGION },                                                         // NOLINT
+        { "adsNotSupportedDevice", IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED_DEVICE },                                                         // NOLINT
+        { "adsPaymentDate", IDS_BRAVE_REWARDS_LOCAL_ADS_PAYMENT_DATE },
+        { "adsPagesViewed", IDS_BRAVE_REWARDS_LOCAL_ADS_PAGES_VIEWED },
+        { "adsOtherSettings", IDS_BRAVE_REWARDS_LOCAL_ADS_OTHER_SETTINGS },
+        { "adsPerHour", IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR },
+        { "adsPerHour1", IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_1 },
+        { "adsPerHour2", IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_2 },
+        { "adsPerHour3", IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_3 },
+        { "adsPerHour4", IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_4 },
+        { "adsPerHour5", IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_5 },
+        { "adsTitle", IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE },
 
         { "bat", IDS_BRAVE_UI_BAT_REWARDS_TEXT },
         { "bap", IDS_BRAVE_UI_BAP_REWARDS_TEXT },

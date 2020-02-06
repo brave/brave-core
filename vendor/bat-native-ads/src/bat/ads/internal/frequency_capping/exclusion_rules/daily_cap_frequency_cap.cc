@@ -8,7 +8,7 @@
 #include "bat/ads/internal/time.h"
 #include "bat/ads/internal/client.h"
 
-#include "bat/ads/ad_info.h"
+#include "bat/ads/creative_ad_info.h"
 
 namespace ads {
 
@@ -20,7 +20,7 @@ DailyCapFrequencyCap::DailyCapFrequencyCap(
 DailyCapFrequencyCap::~DailyCapFrequencyCap() = default;
 
 bool DailyCapFrequencyCap::ShouldExclude(
-    const AdInfo& ad) {
+    const CreativeAdInfo& ad) {
   if (!DoesAdRespectDailyCampaignCap(ad)) {
     std::ostringstream string_stream;
     string_stream << "campaignId " << ad.campaign_id <<
@@ -36,7 +36,7 @@ const std::string DailyCapFrequencyCap::GetLastMessage() const {
 }
 
 bool DailyCapFrequencyCap::DoesAdRespectDailyCampaignCap(
-    const AdInfo& ad) const {
+    const CreativeAdInfo& ad) const {
   auto campaign = frequency_capping_->GetCampaignForUuid(ad.campaign_id);
   auto day_window = base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
 

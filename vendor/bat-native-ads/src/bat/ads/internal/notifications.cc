@@ -24,34 +24,38 @@ const char kNotificationsStateName[] = "notifications.json";
 const char kNotificationsListKey[] = "notifications";
 
 const char kNotificationIdKey[] = "id";
+const char kNotificationCreativeInstanceIdKey[] = "uuid";
 const char kNotificationCreativeSetIdKey[] = "creative_set_id";
 const char kNotificationCategoryKey[] = "category";
-const char kNotificationAdvertiserKey[] = "advertiser";
-const char kNotificationTextKey[] = "text";
-const char kNotificationUrlKey[] = "url";
-const char kNotificationUuidKey[] = "uuid";
+const char kNotificationTitleKey[] = "advertiser";
+const char kNotificationBodyKey[] = "text";
+const char kNotificationTargetUrlKey[] = "url";
 
-Notifications::Notifications(AdsImpl* ads, AdsClient* ads_client) :
-    is_initialized_(false),
-    notifications_({}),
-    ads_(ads),
-    ads_client_(ads_client) {
+Notifications::Notifications(
+    AdsImpl* ads,
+    AdsClient* ads_client)
+    : is_initialized_(false),
+      ads_(ads),
+      ads_client_(ads_client) {
   (void)ads_;
 }
 
 Notifications::~Notifications() = default;
 
-void Notifications::Initialize(InitializeCallback callback) {
+void Notifications::Initialize(
+    InitializeCallback callback) {
   callback_ = callback;
 
   LoadState();
 }
 
-bool Notifications::Get(const std::string& id, NotificationInfo* info) const {
+bool Notifications::Get(
+    const std::string& uuid,
+    AdNotificationInfo* info) const {
   DCHECK(is_initialized_);
 
   auto iter = std::find_if(notifications_.begin(), notifications_.end(),
-      [&id](const auto& notification){return notification.id == id;});
+      [&uuid](const auto& notification){return notification.uuid == uuid;});
   if (iter == notifications_.end()) {
     return false;
   }
@@ -61,36 +65,39 @@ bool Notifications::Get(const std::string& id, NotificationInfo* info) const {
   return true;
 }
 
-void Notifications::PushBack(const NotificationInfo& info) {
+void Notifications::PushBack(const AdNotificationInfo& info) {
   DCHECK(is_initialized_);
 
   notifications_.push_back(info);
-  ads_client_->ShowNotification(std::make_unique<NotificationInfo>(info));
+  ads_client_->ShowNotification(std::make_unique<AdNotificationInfo>(info));
 
   SaveState();
 }
 
-void Notifications::PopFront(bool should_dismiss) {
+void Notifications::PopFront(
+    bool should_dismiss) {
   if (!notifications_.empty()) {
     if (should_dismiss) {
-      ads_client_->CloseNotification(notifications_.front().id);
+      ads_client_->CloseNotification(notifications_.front().uuid);
     }
     notifications_.pop_front();
     SaveState();
   }
 }
 
-bool Notifications::Remove(const std::string& id, bool should_dismiss) {
+bool Notifications::Remove(
+    const std::string& uuid,
+    bool should_dismiss) {
   DCHECK(is_initialized_);
 
   auto iter = std::find_if(notifications_.begin(), notifications_.end(),
-      [&id](const auto& notification){return notification.id == id;});
+      [&uuid](const auto& notification){return notification.uuid == uuid;});
   if (iter == notifications_.end()) {
     return false;
   }
 
   if (should_dismiss) {
-    ads_client_->CloseNotification(id);
+    ads_client_->CloseNotification(uuid);
   }
   notifications_.erase(iter);
 
@@ -99,12 +106,13 @@ bool Notifications::Remove(const std::string& id, bool should_dismiss) {
   return true;
 }
 
-void Notifications::RemoveAll(bool should_dismiss) {
+void Notifications::RemoveAll(
+    bool should_dismiss) {
   DCHECK(is_initialized_);
 
   if (should_dismiss) {
     for (const auto& notification : notifications_) {
-      ads_client_->CloseNotification(notification.id);
+      ads_client_->CloseNotification(notification.uuid);
     }
   }
   notifications_.clear();
@@ -112,11 +120,12 @@ void Notifications::RemoveAll(bool should_dismiss) {
   SaveState();
 }
 
-bool Notifications::Exists(const std::string& id) const {
+bool Notifications::Exists(
+    const std::string& uuid) const {
   DCHECK(is_initialized_);
 
   auto iter = std::find_if(notifications_.begin(), notifications_.end(),
-      [&id](const auto& notification){return notification.id == id;});
+      [&uuid](const auto& notification){return notification.uuid == uuid;});
   if (iter == notifications_.end()) {
     return false;
   }
@@ -130,11 +139,11 @@ uint64_t Notifications::Count() const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-std::deque<NotificationInfo> Notifications::GetNotificationsFromList(
+std::deque<AdNotificationInfo> Notifications::GetNotificationsFromList(
     base::ListValue* list) const {
   DCHECK(list);
 
-  std::deque<NotificationInfo> notifications;
+  std::deque<AdNotificationInfo> notifications;
 
   for (auto& item : *list) {
     base::DictionaryValue* dictionary;
@@ -142,7 +151,7 @@ std::deque<NotificationInfo> Notifications::GetNotificationsFromList(
       continue;
     }
 
-    NotificationInfo notification_info;
+    AdNotificationInfo notification_info;
     if (!GetNotificationFromDictionary(dictionary, &notification_info)) {
       continue;
     }
@@ -155,10 +164,10 @@ std::deque<NotificationInfo> Notifications::GetNotificationsFromList(
 
 bool Notifications::GetNotificationFromDictionary(
     base::DictionaryValue* dictionary,
-    NotificationInfo* info) const {
-  NotificationInfo notification_info;
+    AdNotificationInfo* info) const {
+  AdNotificationInfo notification_info;
 
-  if (!GetIdFromDictionary(dictionary, &notification_info.id)) {
+  if (!GetIdFromDictionary(dictionary, &notification_info.uuid)) {
     return false;
   }
 
@@ -171,19 +180,20 @@ bool Notifications::GetNotificationFromDictionary(
     return false;
   }
 
-  if (!GetAdvertiserFromDictionary(dictionary, &notification_info.advertiser)) {
+  if (!GetTitleFromDictionary(dictionary, &notification_info.title)) {
     return false;
   }
 
-  if (!GetTextFromDictionary(dictionary, &notification_info.text)) {
+  if (!GetBodyFromDictionary(dictionary, &notification_info.body)) {
     return false;
   }
 
-  if (!GetUrlFromDictionary(dictionary, &notification_info.url)) {
+  if (!GetTargetUrlFromDictionary(dictionary, &notification_info.target_url)) {
     return false;
   }
 
-  if (!GetUuidFromDictionary(dictionary, &notification_info.uuid)) {
+  if (!GetCreativeInstanceIdFromDictionary(dictionary,
+      &notification_info.creative_instance_id)) {
     return false;
   }
 
@@ -196,6 +206,13 @@ bool Notifications::GetIdFromDictionary(
     base::DictionaryValue* dictionary,
     std::string* value) const {
   return GetStringFromDictionary(kNotificationIdKey, dictionary, value);
+}
+
+bool Notifications::GetCreativeInstanceIdFromDictionary(
+    base::DictionaryValue* dictionary,
+    std::string* value) const {
+  return GetStringFromDictionary(kNotificationCreativeInstanceIdKey,
+      dictionary, value);
 }
 
 bool Notifications::GetCreativeSetIdFromDictionary(
@@ -211,28 +228,22 @@ bool Notifications::GetCategoryFromDictionary(
   return GetStringFromDictionary(kNotificationCategoryKey, dictionary, value);
 }
 
-bool Notifications::GetAdvertiserFromDictionary(
+bool Notifications::GetTitleFromDictionary(
     base::DictionaryValue* dictionary,
     std::string* value) const {
-  return GetStringFromDictionary(kNotificationAdvertiserKey, dictionary, value);
+  return GetStringFromDictionary(kNotificationTitleKey, dictionary, value);
 }
 
-bool Notifications::GetTextFromDictionary(
+bool Notifications::GetBodyFromDictionary(
     base::DictionaryValue* dictionary,
     std::string* value) const {
-  return GetStringFromDictionary(kNotificationTextKey, dictionary, value);
+  return GetStringFromDictionary(kNotificationBodyKey, dictionary, value);
 }
 
-bool Notifications::GetUrlFromDictionary(
+bool Notifications::GetTargetUrlFromDictionary(
     base::DictionaryValue* dictionary,
     std::string* value) const {
-  return GetStringFromDictionary(kNotificationUrlKey, dictionary, value);
-}
-
-bool Notifications::GetUuidFromDictionary(
-    base::DictionaryValue* dictionary,
-    std::string* value) const {
-  return GetStringFromDictionary(kNotificationUuidKey, dictionary, value);
+  return GetStringFromDictionary(kNotificationTargetUrlKey, dictionary, value);
 }
 
 bool Notifications::GetStringFromDictionary(
@@ -365,19 +376,19 @@ base::Value Notifications::GetAsList() {
     base::Value dictionary(base::Value::Type::DICTIONARY);
 
     dictionary.SetKey(kNotificationIdKey,
-        base::Value(notification.id));
+        base::Value(notification.uuid));
+    dictionary.SetKey(kNotificationCreativeInstanceIdKey,
+        base::Value(notification.creative_instance_id));
     dictionary.SetKey(kNotificationCreativeSetIdKey,
         base::Value(notification.creative_set_id));
     dictionary.SetKey(kNotificationCategoryKey,
         base::Value(notification.category));
-    dictionary.SetKey(kNotificationAdvertiserKey,
-        base::Value(notification.advertiser));
-    dictionary.SetKey(kNotificationTextKey,
-        base::Value(notification.text));
-    dictionary.SetKey(kNotificationUrlKey,
-        base::Value(notification.url));
-    dictionary.SetKey(kNotificationUuidKey,
-        base::Value(notification.uuid));
+    dictionary.SetKey(kNotificationTitleKey,
+        base::Value(notification.title));
+    dictionary.SetKey(kNotificationBodyKey,
+        base::Value(notification.body));
+    dictionary.SetKey(kNotificationTargetUrlKey,
+        base::Value(notification.target_url));
 
     list.GetList().push_back(std::move(dictionary));
   }

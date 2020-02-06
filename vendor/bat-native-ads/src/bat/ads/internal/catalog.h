@@ -13,7 +13,7 @@
 
 #include "bat/ads/ads_client.h"
 
-#include "bat/ads/internal/campaign_info.h"
+#include "bat/ads/internal/catalog_campaign_info.h"
 
 namespace ads {
 
@@ -32,7 +32,7 @@ class Catalog {
 
   bool HasChanged(const std::string& current_catalog_id);
 
-  const std::vector<CampaignInfo>& GetCampaigns() const;
+  const std::vector<CatalogCampaignInfo>& GetCampaigns() const;
 
   const IssuersInfo& GetIssuers() const;
 

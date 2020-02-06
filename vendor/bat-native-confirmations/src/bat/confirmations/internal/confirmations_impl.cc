@@ -689,7 +689,7 @@ bool ConfirmationsImpl::GetTransactionHistoryFromDictionary(
       info.confirmation_type = confirmation_type_value->GetString();
     } else {
       // confirmation type missing, fallback to default
-      ConfirmationType type(ConfirmationType::VIEW);
+      ConfirmationType type(ConfirmationType::kViewed);
       info.confirmation_type = std::string(type);
     }
 
@@ -1136,7 +1136,8 @@ void ConfirmationsImpl::AppendTransactionToHistory(
   confirmations_client_->ConfirmationsTransactionHistoryDidChange();
 }
 
-void ConfirmationsImpl::ConfirmAd(std::unique_ptr<NotificationInfo> info) {
+void ConfirmationsImpl::ConfirmAdNotification(
+    std::unique_ptr<AdNotificationInfo> info) {
   DCHECK(state_has_loaded_);
   if (!state_has_loaded_) {
     BLOG(ERROR) << "Unable to confirm ad as Confirmations state is not ready";
@@ -1144,16 +1145,38 @@ void ConfirmationsImpl::ConfirmAd(std::unique_ptr<NotificationInfo> info) {
   }
 
   BLOG(INFO) << "Confirm ad:"
-      << std::endl << "  id: " << info->id
-      << std::endl << "  creative_set_id: " << info->creative_set_id
-      << std::endl << "  advertiser: " << info->advertiser
-      << std::endl << "  category: " << info->category
-      << std::endl << "  text: " << info->text
-      << std::endl << "  url: " << info->url
       << std::endl << "  uuid: " << info->uuid
-      << std::endl << "  type: " << std::string(info->type);
+      << std::endl << "  creativeInstanceId: " << info->creative_instance_id
+      << std::endl << "  creativeSetId: " << info->creative_set_id
+      << std::endl << "  category: " << info->category
+      << std::endl << "  title: " << info->title
+      << std::endl << "  body: " << info->body
+      << std::endl << "  targetUrl: " << info->target_url
+      << std::endl << "  confirmationType: "
+          << std::string(info->confirmation_type);
 
-  redeem_token_->Redeem(info->uuid, info->type);
+  redeem_token_->Redeem(info->creative_instance_id, info->confirmation_type);
+}
+
+void ConfirmationsImpl::ConfirmPublisherAd(
+    const PublisherAdInfo& info) {
+  DCHECK(state_has_loaded_);
+  if (!state_has_loaded_) {
+    BLOG(ERROR) << "Unable to confirm ad as Confirmations state is not ready";
+    return;
+  }
+
+  BLOG(INFO) << "Confirm publisher ad:"
+      << std::endl << "  creativeInstanceId: " << info.creative_instance_id
+      << std::endl << "  creative_set_id: " << info.creative_set_id
+      << std::endl << "  category: " << info.category
+      << std::endl << "  size: " << info.size
+      << std::endl << "  creativeUrl: " << info.creative_url
+      << std::endl << "  targetUrl: " << info.target_url
+      << std::endl << "  confirmationType: "
+          << std::string(info.confirmation_type);
+
+  redeem_token_->Redeem(info.creative_instance_id, info.confirmation_type);
 }
 
 void ConfirmationsImpl::ConfirmAction(

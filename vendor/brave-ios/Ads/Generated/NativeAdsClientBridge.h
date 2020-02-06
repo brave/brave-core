@@ -10,10 +10,12 @@
 @protocol NativeAdsClientBridge
 @required
 
-- (void)confirmAd:(std::unique_ptr<ads::NotificationInfo>)info;
+- (void)confirmAdNotification:(const ads::AdNotificationInfo &)info;
+- (void)confirmPublisherAd:(const ads::PublisherAdInfo &)info;
 - (void)confirmAction:(const std::string &)uuid creativeSetId:(const std::string &)creative_set_id confirmationType:(const ads::ConfirmationType &)type;
 - (void)eventLog:(const std::string &)json;
-- (void)getAds:(const std::vector<std::string> &)categories callback:(ads::OnGetAdsCallback)callback;
+- (void)getCreativeAdNotifications:(const std::vector<std::string> &)categories callback:(ads::OnGetCreativeAdNotificationsCallback)callback;
+- (void)getCreativePublisherAds:(const std::string & url, const std::vector<std::string> &)categories, const std::vector<std::string> &)sizes callback:(ads::OnGetCreativePublisherAdsCallback)callback;
 - (void)getAdConversions:(const std::string &)url callback:(ads::OnGetAdConversionsCallback)callback;
 - (const std::string)getLocale;
 - (uint64_t)getAdsPerDay;
@@ -21,6 +23,7 @@
 - (void)getClientInfo:(ads::ClientInfo *)info;
 - (const std::vector<std::string>)getUserModelLanguages;
 - (bool)isAdsEnabled;
+- (bool)shouldShowPublisherAdsOnParticipatingSites;
 - (bool)shouldAllowAdConversionTracking;
 - (bool)isForeground;
 - (bool)canShowBackgroundNotifications;
@@ -38,7 +41,7 @@
 - (void)setCatalogIssuers:(std::unique_ptr<ads::IssuersInfo>)info;
 - (void)setIdleThreshold:(const int)threshold;
 - (uint32_t)setTimer:(const uint64_t)time_offset;
-- (void)showNotification:(std::unique_ptr<ads::NotificationInfo>)info;
+- (void)showNotification:(std::unique_ptr<ads::AdNotificationInfo>)info;
 - (void)closeNotification:(const std::string&)id;
 - (void)URLRequest:(const std::string &)url headers:(const std::vector<std::string> &)headers content:(const std::string &)content contentType:(const std::string &)content_type method:(const ads::URLRequestMethod)method callback:(ads::URLRequestCallback)callback;
 

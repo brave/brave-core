@@ -11,14 +11,10 @@
 
 namespace ads {
 
-CategoryContent::CategoryContent() :
-    category(""),
-    opt_action(CategoryContent::OPT_ACTION_NONE) {}
+CategoryContent::CategoryContent() = default;
 
 CategoryContent::CategoryContent(
-    const CategoryContent& properties)
-    : category(properties.category),
-      opt_action(properties.opt_action) {}
+    const CategoryContent& properties) = default;
 
 CategoryContent::~CategoryContent() = default;
 

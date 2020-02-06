@@ -293,6 +293,9 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
 namespace {
 
+const char kShouldShowPublisherAdsOnParticipatingSites[] =
+    "shouldShowPublisherAdsOnParticipatingSites";
+
 const char kShouldAllowAdConversionTracking[] =
     "shouldAllowAdConversionTracking";
 
@@ -1092,6 +1095,11 @@ void RewardsDOMHandler::GetAdsData(const base::ListValue *args) {
   auto is_enabled = ads_service_->IsEnabled();
   ads_data.SetBoolean("adsEnabled", is_enabled);
 
+  const auto should_show_publisher_ads =
+      ads_service_->ShouldShowPublisherAdsOnPariticipatingSites();
+  ads_data.SetBoolean(kShouldShowPublisherAdsOnParticipatingSites,
+      should_show_publisher_ads);
+
   const auto should_allow_ad_conversion_tracking =
       ads_service_->ShouldAllowAdConversionTracking();
   ads_data.SetBoolean(kShouldAllowAdConversionTracking,
@@ -1310,6 +1318,8 @@ void RewardsDOMHandler::SaveAdsSetting(const base::ListValue* args) {
     const auto is_enabled =
         value == "true" && ads_service_->IsSupportedLocale();
     ads_service_->SetEnabled(is_enabled);
+  } else if (key == kShouldShowPublisherAdsOnParticipatingSites) {
+    ads_service_->SetShowPublisherAdsOnPariticipatingSites(value == "true");
   } else if (key == kShouldAllowAdConversionTracking) {
     ads_service_->SetAllowAdConversionTracking(value == "true");
   } else if (key == "adsPerHour") {

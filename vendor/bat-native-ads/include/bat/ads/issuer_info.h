@@ -13,10 +13,6 @@
 namespace ads {
 
 struct ADS_EXPORT IssuerInfo {
-  IssuerInfo();
-  IssuerInfo(const IssuerInfo& info);
-  ~IssuerInfo();
-
   std::string name;
   std::string public_key;
 };

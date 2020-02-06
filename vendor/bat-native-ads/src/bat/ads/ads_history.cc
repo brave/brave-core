@@ -12,11 +12,10 @@
 
 namespace ads {
 
-AdsHistory::AdsHistory() :
-    entries() {}
+AdsHistory::AdsHistory() = default;
 
-AdsHistory::AdsHistory(const AdsHistory& history) :
-    entries(history.entries) {}
+AdsHistory::AdsHistory(
+    const AdsHistory& history) = default;
 
 AdsHistory::~AdsHistory() = default;
 

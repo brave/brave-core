@@ -29,6 +29,10 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
       bool* out_is_enabled) override;
   void IsEnabled(
       IsEnabledCallback callback) override;
+  bool ShouldShowPublisherAdsOnPariticipatingSites(
+      bool* out_should_show) override;
+  void ShouldShowPublisherAdsOnPariticipatingSites(
+      ShouldShowPublisherAdsOnPariticipatingSitesCallback callback) override;
   bool ShouldAllowAdConversionTracking(
       bool* should_allow) override;
   void ShouldAllowAdConversionTracking(
@@ -116,8 +120,10 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
       const std::string& id) override;
   void SetCatalogIssuers(
       const std::string& issuers_info) override;
-  void ConfirmAd(
-      const std::string& notification_info) override;
+  void ConfirmAdNotification(
+      const std::string& json) override;
+  void ConfirmPublisherAd(
+      const std::string& json) override;
   void ConfirmAction(
       const std::string& uuid,
       const std::string& creative_set_id,
@@ -125,9 +131,14 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
   void SaveBundleState(
       const std::string& bundle_state,
       SaveBundleStateCallback callback) override;
-  void GetAds(
+  void GetCreativeAdNotifications(
       const std::vector<std::string>& categories,
-      GetAdsCallback callback) override;
+      GetCreativeAdNotificationsCallback callback) override;
+  void GetCreativePublisherAds(
+      const std::string& url,
+      const std::vector<std::string>& categories,
+      const std::vector<std::string>& sizes,
+      GetCreativePublisherAdsCallback callback) override;
   void GetAdConversions(
       const std::string& url,
       GetAdConversionsCallback callback) override;
@@ -174,17 +185,24 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
       const std::string& value);
   static void OnSaveBundleState(
       CallbackHolder<SaveBundleStateCallback>* holder,
-      ads::Result result);
-  static void OnGetAds(
-      CallbackHolder<GetAdsCallback>* holder,
-      ads::Result result,
+      const ads::Result result);
+  static void OnGetCreativeAdNotifications(
+      CallbackHolder<GetCreativeAdNotificationsCallback>* holder,
+      const ads::Result result,
       const std::vector<std::string>& categories,
-      const std::vector<ads::AdInfo>& ad_info);
+      const ads::CreativeAdNotifications& ads);
+  static void OnGetCreativePublisherAds(
+      CallbackHolder<GetCreativePublisherAdsCallback>* holder,
+      const ads::Result result,
+      const std::string& url,
+      const std::vector<std::string>& categories,
+      const std::vector<std::string>& sizes,
+      const ads::CreativePublisherAds& ads);
   static void OnGetAdConversions(
       CallbackHolder<GetAdConversionsCallback>* holder,
       const ads::Result result,
       const std::string& url,
-      const std::vector<ads::AdConversionTrackingInfo>& ad_conversions);
+      const ads::AdConversions& ad_conversions);
 
   ads::AdsClient* ads_client_;
 

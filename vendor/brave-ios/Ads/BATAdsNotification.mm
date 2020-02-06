@@ -3,7 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #import "BATAdsNotification.h"
-#include "bat/ads/notification_info.h"
+#include "bat/ads/ad_notification_info.h"
 #import <map>
 
 @interface BATAdsNotification ()
@@ -19,7 +19,7 @@
 
 @implementation BATAdsNotification
 
-- (instancetype)initWithNotificationInfo:(const ads::NotificationInfo&)info
+- (instancetype)initWithNotificationInfo:(const ads::AdNotificationInfo&)info
 {
   if ((self = [super init])) {
     self.id = [NSString stringWithUTF8String:info.id.c_str()];

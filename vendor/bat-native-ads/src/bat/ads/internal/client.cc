@@ -351,11 +351,12 @@ const std::map<std::string, uint64_t> Client::GetAdsUUIDSeen() {
 }
 
 void Client::ResetAdsUUIDSeen(
-    const std::vector<AdInfo>& ads) {
+    const CreativeAdNotifications& ads) {
   BLOG(INFO) << "Resetting seen ads";
 
   for (const auto& ad : ads) {
-    auto ad_uuid_seen = client_state_->ads_uuid_seen.find(ad.uuid);
+    auto ad_uuid_seen =
+        client_state_->ads_uuid_seen.find(ad.creative_instance_id);
     if (ad_uuid_seen != client_state_->ads_uuid_seen.end()) {
       client_state_->ads_uuid_seen.erase(ad_uuid_seen);
     }
@@ -364,7 +365,35 @@ void Client::ResetAdsUUIDSeen(
   SaveState();
 }
 
-void Client::SetNextCheckServeAdTimestampInSeconds(
+void Client::UpdatePublisherAdsUUIDSeen(
+    const std::string& uuid,
+    const uint64_t value) {
+  client_state_->publisher_ads_uuid_seen.insert({uuid, value});
+
+  SaveState();
+}
+
+const std::map<std::string, uint64_t> Client::GetPublisherAdsUUIDSeen() {
+  return client_state_->publisher_ads_uuid_seen;
+}
+
+void Client::ResetPublisherAdsUUIDSeen(
+    const CreativePublisherAds& ads) {
+  BLOG(INFO) << "Resetting seen publisher ads";
+
+  for (const auto& ad : ads) {
+    auto publisher_ad_uuid_seen =
+        client_state_->publisher_ads_uuid_seen.find(ad.creative_instance_id);
+    if (publisher_ad_uuid_seen !=
+        client_state_->publisher_ads_uuid_seen.end()) {
+      client_state_->publisher_ads_uuid_seen.erase(publisher_ad_uuid_seen);
+    }
+  }
+
+  SaveState();
+}
+
+void Client::SetNextCheckServeAdNotificationTimestampInSeconds(
     const uint64_t timestamp_in_seconds) {
   client_state_->next_check_serve_ad_timestamp_in_seconds
       = timestamp_in_seconds;
@@ -372,7 +401,7 @@ void Client::SetNextCheckServeAdTimestampInSeconds(
   SaveState();
 }
 
-uint64_t Client::GetNextCheckServeAdTimestampInSeconds() {
+uint64_t Client::GetNextCheckServeAdNotificationTimestampInSeconds() {
   return client_state_->next_check_serve_ad_timestamp_in_seconds;
 }
 

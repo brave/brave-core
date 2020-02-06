@@ -12,7 +12,7 @@
 
 namespace ads {
 
-struct AdInfo;
+struct CreativeAdNotificationInfo;
 class AdsClient;
 class FrequencyCapping;
 

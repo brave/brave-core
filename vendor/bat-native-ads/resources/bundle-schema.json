@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "properties": {
-    "categories": {
+    "ad_notification_categories": {
       "type": "object",
       "patternProperties": {
         "^.*$": {
@@ -11,10 +11,10 @@
             "type": "object",
             "additionalProperties": false,
             "required": [
-              "advertiser",
-              "notificationText",
-              "notificationURL",
-              "uuid"
+              "title",
+              "body",
+              "targetUrl",
+              "creativeInstanceId"
             ],
             "properties": {
               "creativeSetId": {
@@ -23,10 +23,10 @@
               "campaignId": {
                 "type": "string"
               },
-              "startTimestamp": {
+              "startAtTimestamp": {
                 "type": "string"
               },
-              "endTimestamp": {
+              "endAtTimestamp": {
                 "type": "string"
               },
               "dailyCap": {
@@ -38,23 +38,95 @@
               "totalMax": {
                 "type": "number"
               },
-              "regions": {
+              "category": {
+                "type": "string"
+              },
+              "geoTargets": {
                 "type": "array",
                 "items": {
                   "type": "string"
                 }
               },
-              "advertiser": {
+              "title": {
                 "type": "string"
               },
-              "notificationText": {
+              "body": {
                 "type": "string"
               },
-              "notificationURL": {
+              "targetUrl": {
                 "type": "string"
               },
-              "uuid": {
+              "creativeInstanceId": {
                 "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "publisher_ad_categories": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "size",
+              "creativeUrl",
+              "targetUrl",
+              "creativeInstanceId"
+            ],
+            "properties": {
+              "creativeSetId": {
+                "type": "string"
+              },
+              "campaignId": {
+                "type": "string"
+              },
+              "startAtTimestamp": {
+                "type": "string"
+              },
+              "endAtTimestamp": {
+                "type": "string"
+              },
+              "dailyCap": {
+                "type": "number"
+              },
+              "perDay": {
+                "type": "number"
+              },
+              "totalMax": {
+                "type": "number"
+              },
+              "category": {
+                "type": "string"
+              },
+              "geoTargets": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "title": {
+                "type": "string"
+              },
+              "body": {
+                "type": "string"
+              },
+              "targetUrl": {
+                "type": "string"
+              },
+              "creativeInstanceId": {
+                "type": "string"
+              },
+              "channels": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
               }
             }
           }
@@ -91,7 +163,9 @@
     }
   },
   "required": [
-    "categories"
+    "ad_notification_categories",
+    "publisher_ad_categories",
+    "conversions"
   ],
   "additionalProperties": false
 }

@@ -11,7 +11,8 @@
 #include <vector>
 #include <memory>
 
-#include "bat/ads/ad_info.h"
+#include "bat/ads/creative_ad_notification_info.h"
+#include "bat/ads/creative_publisher_ad_info.h"
 #include "bat/ads/ad_conversion_tracking_info.h"
 #include "bat/ads/bundle_state.h"
 #include "base/compiler_specific.h"
@@ -28,23 +29,31 @@ namespace brave_ads {
 
 class BundleStateDatabase {
  public:
-  explicit BundleStateDatabase(const base::FilePath& db_path);
+  explicit BundleStateDatabase(
+      const base::FilePath& db_path);
   ~BundleStateDatabase();
 
   // Call before Init() to set the error callback to be used for the
   // underlying database connection.
-  void set_error_callback(const sql::Database::ErrorCallback& error_callback) {
+  void set_error_callback(
+      const sql::Database::ErrorCallback& error_callback) {
     db_.set_error_callback(error_callback);
   }
 
-  bool SaveBundleState(const ads::BundleState& bundle_state);
+  bool SaveBundleState(
+      const ads::BundleState& bundle_state);
 
-  bool GetAdsForCategory(
-      const std::string& category,
-      std::vector<ads::AdInfo>* ads);
+  bool GetCreativeAdNotifications(
+      const std::vector<std::string>& categories,
+      ads::CreativeAdNotifications* ads);
+  bool GetCreativePublisherAds(
+      const std::string& url,
+      const std::vector<std::string>& categories,
+      const std::vector<std::string>& sizes,
+      ads::CreativePublisherAds* ads);
   bool GetAdConversions(
       const std::string& url,
-      std::vector<ads::AdConversionTrackingInfo>* ad_conversions);
+      ads::AdConversions* ad_conversions);
 
   // Returns the current version of the publisher info database
   static int GetCurrentVersion();
@@ -53,7 +62,9 @@ class BundleStateDatabase {
   // unused space in the file. It can be VERY SLOW.
   void Vacuum();
 
-  std::string GetDiagnosticInfo(int extended_error, sql::Statement* statement);
+  std::string GetDiagnosticInfo(
+      int extended_error,
+      sql::Statement* statement);
 
  private:
   bool Init();
@@ -61,25 +72,37 @@ class BundleStateDatabase {
       base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);
 
   bool CreateCategoryTable();
-  bool CreateConversionsTable();
-  bool CreateAdInfoTable();
-  bool CreateAdInfoCategoryTable();
-  bool CreateAdInfoCategoryNameIndex();
-
   bool TruncateCategoryTable();
-  bool TruncateConversionsTable();
-  bool TruncateAdInfoTable();
-  bool TruncateAdInfoCategoryTable();
-
   bool InsertOrUpdateCategory(
       const std::string& category);
+
+  bool CreateCreativeAdNotificationInfoTable();
+  bool TruncateCreativeAdNotificationInfoTable();
+  bool InsertOrUpdateCreativeAdNotificationInfo(
+      const ads::CreativeAdNotificationInfo& info);
+  bool CreateCreativeAdNotificationInfoCategoryTable();
+  bool TruncateCreativeAdNotificationInfoCategoryTable();
+  bool CreateCreativeAdNotificationInfoCategoryNameIndex();
+  bool InsertOrUpdateCreativeAdNotificationInfoCategory(
+      const ads::CreativeAdNotificationInfo& info,
+      const std::string& category);
+
+  bool CreateCreativePublisherAdInfoTable();
+  bool TruncateCreativePublisherAdInfoTable();
+  bool InsertOrUpdateCreativePublisherAdInfo(
+      const ads::CreativePublisherAdInfo& info);
+
+  bool CreateCreativePublisherAdInfoCategoryTable();
+  bool TruncateCreativePublisherAdInfoCategoryTable();
+  bool CreateCreativePublisherAdInfoCategoryNameIndex();
+  bool InsertOrUpdateCreativePublisherAdInfoCategory(
+      const ads::CreativePublisherAdInfo& info,
+      const std::string& category);
+
+  bool CreateAdConversionsTable();
+  bool TruncateAdConversionsTable();
   bool InsertOrUpdateAdConversion(
       const ads::AdConversionTrackingInfo& ad_conversion);
-  bool InsertOrUpdateAdInfo(
-      const ads::AdInfo& info);
-  bool InsertOrUpdateAdInfoCategory(
-      const ads::AdInfo& ad_info,
-      const std::string& category);
 
   sql::Database& GetDB();
   sql::MetaTable& GetMetaTable();
@@ -87,6 +110,8 @@ class BundleStateDatabase {
   bool Migrate();
   bool MigrateV1toV2();
   bool MigrateV2toV3();
+  bool MigrateV3toV4();
+  sql::InitStatus EnsureCurrentVersion();
 
   sql::Database db_;
   sql::MetaTable meta_table_;

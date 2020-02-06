@@ -17,17 +17,17 @@ bool IsConfirmationTypeOfInterest(
   bool is_of_interest = false;
 
   switch (confirmation_type.value()) {
-    case ConfirmationType::Value::CLICK:
-    case ConfirmationType::Value::VIEW:
-    case ConfirmationType::Value::DISMISS: {
+    case ConfirmationType::Value::kClicked:
+    case ConfirmationType::Value::kViewed:
+    case ConfirmationType::Value::kDismissed: {
       is_of_interest = true;
       break;
     }
-    case ConfirmationType::Value::UNKNOWN:
-    case ConfirmationType::Value::LANDED:
-    case ConfirmationType::Value::FLAG:
-    case ConfirmationType::Value::UPVOTE:
-    case ConfirmationType::Value::DOWNVOTE: {
+    case ConfirmationType::Value::kUnknown:
+    case ConfirmationType::Value::kLanded:
+    case ConfirmationType::Value::kFlagged:
+    case ConfirmationType::Value::kUpvoted:
+    case ConfirmationType::Value::kDownvoted: {
       is_of_interest = false;
       break;
     }
@@ -41,11 +41,11 @@ bool DoesConfirmationTypeATrumpB(
   bool does_type_a_trump_type_b = false;
 
   switch (confirmation_type_a.value()) {
-    case ConfirmationType::Value::CLICK: {
+    case ConfirmationType::Value::kClicked: {
       switch (confirmation_type_b.value()) {
-        case ConfirmationType::Value::CLICK:
-        case ConfirmationType::Value::VIEW:
-        case ConfirmationType::Value::DISMISS: {
+        case ConfirmationType::Value::kClicked:
+        case ConfirmationType::Value::kViewed:
+        case ConfirmationType::Value::kDismissed: {
           does_type_a_trump_type_b = true;
           break;
         }
@@ -55,10 +55,10 @@ bool DoesConfirmationTypeATrumpB(
       }
       break;
     }
-    case ConfirmationType::Value::VIEW: {
+    case ConfirmationType::Value::kViewed: {
       switch (confirmation_type_b.value()) {
-        case ConfirmationType::Value::VIEW:
-        case ConfirmationType::Value::DISMISS: {
+        case ConfirmationType::Value::kViewed:
+        case ConfirmationType::Value::kDismissed: {
           does_type_a_trump_type_b = true;
           break;
         }
@@ -68,9 +68,9 @@ bool DoesConfirmationTypeATrumpB(
       }
       break;
     }
-    case ConfirmationType::Value::DISMISS: {
+    case ConfirmationType::Value::kDismissed: {
       switch (confirmation_type_b.value()) {
-        case ConfirmationType::Value::DISMISS: {
+        case ConfirmationType::Value::kDismissed: {
           does_type_a_trump_type_b = true;
           break;
         }

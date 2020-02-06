@@ -11,11 +11,7 @@
 namespace ads {
 
 struct DestroyInfo {
-  DestroyInfo();
-  explicit DestroyInfo(const DestroyInfo& info);
-  ~DestroyInfo();
-
-  int32_t tab_id;
+  int32_t tab_id = -1;
 };
 
 }  // namespace ads

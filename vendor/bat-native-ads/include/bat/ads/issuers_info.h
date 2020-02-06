@@ -17,7 +17,8 @@ namespace ads {
 
 struct ADS_EXPORT IssuersInfo {
   IssuersInfo();
-  IssuersInfo(const IssuersInfo& info);
+  IssuersInfo(
+      const IssuersInfo& info);
   ~IssuersInfo();
 
   const std::string ToJson() const;

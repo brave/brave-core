@@ -11,11 +11,7 @@
 namespace ads {
 
 struct FocusInfo {
-  FocusInfo();
-  explicit FocusInfo(const FocusInfo& info);
-  ~FocusInfo();
-
-  int32_t tab_id;
+  int32_t tab_id = -1;
 };
 
 }  // namespace ads

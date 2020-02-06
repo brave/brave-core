@@ -13,17 +13,10 @@
 
 namespace ads {
 
-AdPreferences::AdPreferences() :
-    filtered_ads({}),
-    filtered_categories({}),
-    saved_ads({}),
-    flagged_ads({}) {}
+AdPreferences::AdPreferences() = default;
 
-AdPreferences::AdPreferences(const AdPreferences& prefs) :
-    filtered_ads(prefs.filtered_ads),
-    filtered_categories(prefs.filtered_categories),
-    saved_ads(prefs.saved_ads),
-    flagged_ads(prefs.flagged_ads) {}
+AdPreferences::AdPreferences(
+    const AdPreferences& prefs) = default;
 
 AdPreferences::~AdPreferences() = default;
 

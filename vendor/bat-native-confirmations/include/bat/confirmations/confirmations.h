@@ -13,7 +13,8 @@
 
 #include "bat/confirmations/confirmations_client.h"
 #include "bat/confirmations/export.h"
-#include "bat/confirmations/notification_info.h"
+#include "bat/confirmations/ad_notification_info.h"
+#include "bat/confirmations/publisher_ad_info.h"
 #include "bat/confirmations/issuers_info.h"
 #include "bat/confirmations/wallet_info.h"
 #include "bat/ledger/ledger.h"
@@ -69,9 +70,14 @@ class CONFIRMATIONS_EXPORT Confirmations {
   virtual void GetTransactionHistory(
       OnGetTransactionHistoryCallback callback) = 0;
 
-  // Should be called to confirm an ad was viewed, clicked, dismissed or landed
-  virtual void ConfirmAd(
-      std::unique_ptr<NotificationInfo> info) = 0;
+  // Should be called to confirm an ad notification was viewed, clicked,
+  // dismissed or landed
+  virtual void ConfirmAdNotification(
+      std::unique_ptr<AdNotificationInfo> info) = 0;
+
+  // Should be called to confirm a publisher ad was viewed, clicked or landed
+  virtual void ConfirmPublisherAd(
+      const PublisherAdInfo& info) = 0;
 
   // Should be called to confirm an action, e.g. when an ad is flagged, upvoted
   // or downvoted

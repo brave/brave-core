@@ -11,7 +11,7 @@
 
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/notification_info.h"
+#include "bat/ads/ad_notification_info.h"
 
 #include "base/values.h"
 
@@ -21,20 +21,31 @@ class AdsImpl;
 
 class Notifications {
  public:
-  Notifications(AdsImpl* ads, AdsClient* ads_client);
+  Notifications(
+      AdsImpl* ads,
+      AdsClient* ads_client);
   ~Notifications();
 
-  void Initialize(InitializeCallback callback);
+  void Initialize(
+      InitializeCallback callback);
 
-  bool Get(const std::string& id, NotificationInfo* info) const;
+  bool Get(
+      const std::string& uuid,
+      AdNotificationInfo* info) const;
 
-  void PushBack(const NotificationInfo& info);
-  void PopFront(bool should_dismiss);
+  void PushBack(
+      const AdNotificationInfo& info);
+  void PopFront(
+      bool should_dismiss);
 
-  bool Remove(const std::string& id, bool should_dismiss);
-  void RemoveAll(bool should_dismiss);
+  bool Remove(
+      const std::string& uuid,
+      bool should_dismiss);
+  void RemoveAll(
+      bool should_dismiss);
 
-  bool Exists(const std::string& id) const;
+  bool Exists(
+      const std::string& uuid) const;
 
   uint64_t Count() const;
 
@@ -43,16 +54,19 @@ class Notifications {
 
   InitializeCallback callback_;
 
-  std::deque<NotificationInfo> notifications_;
+  std::deque<AdNotificationInfo> notifications_;
 
-  std::deque<NotificationInfo> GetNotificationsFromList(
+  std::deque<AdNotificationInfo> GetNotificationsFromList(
       base::ListValue* list) const;
 
   bool GetNotificationFromDictionary(
       base::DictionaryValue* dictionary,
-      NotificationInfo* info) const;
+      AdNotificationInfo* info) const;
 
   bool GetIdFromDictionary(
+      base::DictionaryValue* dictionary,
+      std::string* value) const;
+  bool GetCreativeInstanceIdFromDictionary(
       base::DictionaryValue* dictionary,
       std::string* value) const;
   bool GetCreativeSetIdFromDictionary(
@@ -61,16 +75,13 @@ class Notifications {
   bool GetCategoryFromDictionary(
       base::DictionaryValue* dictionary,
       std::string* value) const;
-  bool GetAdvertiserFromDictionary(
+  bool GetTitleFromDictionary(
       base::DictionaryValue* dictionary,
       std::string* value) const;
-  bool GetTextFromDictionary(
+  bool GetBodyFromDictionary(
       base::DictionaryValue* dictionary,
       std::string* value) const;
-  bool GetUrlFromDictionary(
-      base::DictionaryValue* dictionary,
-      std::string* value) const;
-  bool GetUuidFromDictionary(
+  bool GetTargetUrlFromDictionary(
       base::DictionaryValue* dictionary,
       std::string* value) const;
 
@@ -80,13 +91,18 @@ class Notifications {
     std::string* string) const;
 
   void SaveState();
-  void OnStateSaved(const Result result);
+  void OnStateSaved(
+      const Result result);
 
   void LoadState();
-  void OnStateLoaded(const Result result, const std::string& json);
+  void OnStateLoaded(
+      const Result result,
+      const std::string& json);
 
-  bool FromJson(const std::string& json);
-  bool GetNotificationsFromJson(base::DictionaryValue* dictionary);
+  bool FromJson(
+      const std::string& json);
+  bool GetNotificationsFromJson(
+      base::DictionaryValue* dictionary);
 
   std::string ToJson();
   base::Value GetAsList();

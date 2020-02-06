@@ -9,11 +9,10 @@
 
 namespace ads {
 
-ClientInfo::ClientInfo() :
-    platform(ClientInfoPlatformType::UNKNOWN) {}
+ClientInfo::ClientInfo() = default;
 
-ClientInfo::ClientInfo(const ClientInfo& info) :
-    platform(info.platform) {}
+ClientInfo::ClientInfo(
+    const ClientInfo& info) = default;
 
 ClientInfo::~ClientInfo() = default;
 

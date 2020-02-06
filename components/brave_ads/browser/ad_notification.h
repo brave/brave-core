@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_AD_NOTIFICATION_H_
 
 #include <memory>
-#include <string>
 
 #include "base/compiler_specific.h"
 #include "base/macros.h"
@@ -18,7 +17,7 @@ class Notification;
 }
 
 namespace ads {
-struct NotificationInfo;
+struct AdNotificationInfo;
 }
 
 namespace brave_ads {
@@ -26,7 +25,7 @@ namespace brave_ads {
 const char* const kBraveAdsUrlPrefix ="chrome://brave_ads/?";
 
 std::unique_ptr<message_center::Notification> CreateAdNotification(
-    const ads::NotificationInfo& notification_info);
+    const ads::AdNotificationInfo& notification_info);
 
 }  // namespace brave_ads
 

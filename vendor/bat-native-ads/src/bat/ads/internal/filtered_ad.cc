@@ -9,13 +9,10 @@
 
 namespace ads {
 
-FilteredAd::FilteredAd() :
-    uuid(""),
-    creative_set_id("") {}
+FilteredAd::FilteredAd() = default;
 
-FilteredAd::FilteredAd(const FilteredAd& ad) :
-    uuid(ad.uuid),
-    creative_set_id(ad.creative_set_id) {}
+FilteredAd::FilteredAd(
+    const FilteredAd& ad) = default;
 
 FilteredAd::~FilteredAd() = default;
 

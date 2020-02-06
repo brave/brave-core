@@ -10,13 +10,13 @@
 
 namespace ads {
 
-struct AdInfo;
+struct CreativeAdInfo;
 
 class ExclusionRule {
  public:
   virtual ~ExclusionRule() = default;
   virtual bool ShouldExclude(
-      const AdInfo& ad) = 0;
+      const CreativeAdInfo& ad) = 0;
 
   virtual const std::string GetLastMessage() const = 0;
 };

@@ -16,7 +16,8 @@ namespace confirmations {
 
 struct CONFIRMATIONS_EXPORT IssuersInfo {
   IssuersInfo();
-  IssuersInfo(const IssuersInfo& info);
+  IssuersInfo(
+      const IssuersInfo& info);
   ~IssuersInfo();
 
   std::string public_key;

@@ -51,7 +51,7 @@ uint64_t Catalog::GetPing() const {
   return catalog_state_->ping;
 }
 
-const std::vector<CampaignInfo>& Catalog::GetCampaigns() const {
+const std::vector<CatalogCampaignInfo>& Catalog::GetCampaigns() const {
   return catalog_state_->campaigns;
 }
 

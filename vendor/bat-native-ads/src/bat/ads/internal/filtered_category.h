@@ -14,7 +14,8 @@ namespace ads {
 
 struct FilteredCategory {
   FilteredCategory();
-  explicit FilteredCategory(const FilteredCategory& category);
+  FilteredCategory(
+      const FilteredCategory& category);
   ~FilteredCategory();
 
   const std::string ToJson() const;

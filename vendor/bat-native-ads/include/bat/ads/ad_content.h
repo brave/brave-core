@@ -44,10 +44,10 @@ struct ADS_EXPORT AdContent {
   std::string brand_logo;
   std::string brand_display_url;
   std::string brand_url;
-  LikeAction like_action;
-  ConfirmationType ad_action;
-  bool saved_ad;
-  bool flagged_ad;
+  LikeAction like_action = LIKE_ACTION_NONE;
+  ConfirmationType ad_action = ConfirmationType::kUnknown;
+  bool saved_ad = false;
+  bool flagged_ad = false;
 };
 
 }  // namespace ads

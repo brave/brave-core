@@ -8,7 +8,7 @@
 #include "bat/ads/internal/time.h"
 #include "bat/ads/internal/client.h"
 
-#include "bat/ads/ad_info.h"
+#include "bat/ads/creative_ad_info.h"
 
 namespace ads {
 
@@ -20,7 +20,7 @@ PerDayFrequencyCap::PerDayFrequencyCap(
 PerDayFrequencyCap::~PerDayFrequencyCap() = default;
 
 bool PerDayFrequencyCap::ShouldExclude(
-    const AdInfo& ad) {
+    const CreativeAdInfo& ad) {
   if (!DoesAdRespectPerDayCap(ad)) {
     std::ostringstream string_stream;
     string_stream << "creativeSetId " << ad.creative_set_id <<
@@ -36,7 +36,7 @@ const std::string PerDayFrequencyCap::GetLastMessage() const {
 }
 
 bool PerDayFrequencyCap::DoesAdRespectPerDayCap(
-    const AdInfo& ad) const {
+    const CreativeAdInfo& ad) const {
   auto creative_set = frequency_capping_->GetCreativeSetHistoryForUuid(
       ad.creative_set_id);
   auto day_window = base::Time::kSecondsPerHour * base::Time::kHoursPerDay;

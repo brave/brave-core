@@ -12,9 +12,13 @@
 #include "bat/ads/ads_history.h"
 #include "bat/ads/category_content.h"
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/mojom.h"
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 
 using std::placeholders::_1;
+using std::placeholders::_2;
+using std::placeholders::_3;
+using std::placeholders::_4;
 
 namespace bat_ads {
 
@@ -22,11 +26,6 @@ namespace {
 
 ads::Result ToMojomResult(int32_t result) {
   return (ads::Result)result;
-}
-
-ads::NotificationEventType ToMojomNotificationEventType(
-    const int32_t event_type) {
-  return (ads::NotificationEventType)event_type;
 }
 
 ads::AdContent::LikeAction ToAdsLikeAction(
@@ -130,18 +129,30 @@ void BatAdsImpl::OnTabClosed(
   ads_->OnTabClosed(tab_id);
 }
 
-void BatAdsImpl::GetNotificationForId(
+void BatAdsImpl::GetAdNotificationForId(
     const std::string& id,
-    GetNotificationForIdCallback callback) {
-  ads::NotificationInfo notification;
-  ads_->GetNotificationForId(id, &notification);
+    GetAdNotificationForIdCallback callback) {
+  ads::AdNotificationInfo notification;
+  ads_->GetAdNotificationForId(id, &notification);
   std::move(callback).Run(notification.ToJson());
 }
 
-void BatAdsImpl::OnNotificationEvent(
+void BatAdsImpl::OnAdNotificationEvent(
     const std::string& id,
-    const int32_t type) {
-  ads_->OnNotificationEvent(id, ToMojomNotificationEventType(type));
+    const ads::AdNotificationEventType event_type) {
+  ads_->OnAdNotificationEvent(id, event_type);
+}
+
+void BatAdsImpl::OnPublisherAdEvent(
+    const std::string& json,
+    const ads::PublisherAdEventType event_type) {
+  ads::PublisherAdInfo info;
+  if (info.FromJson(json) != ads::Result::SUCCESS) {
+    NOTREACHED();
+    return;
+  }
+
+  ads_->OnPublisherAdEvent(info, event_type);
 }
 
 void BatAdsImpl::RemoveAllHistory(
@@ -164,6 +175,18 @@ void BatAdsImpl::GetAdsHistory(
               to_timestamp);
 
   std::move(callback).Run(history.ToJson());
+}
+
+void BatAdsImpl::GetPublisherAds(
+    const std::string& url,
+    const std::vector<std::string>& sizes,
+    GetPublisherAdsCallback callback) {
+  auto* holder = new CallbackHolder<GetPublisherAdsCallback>(AsWeakPtr(),
+      std::move(callback));
+
+  auto get_publisher_ads_callback =
+      std::bind(BatAdsImpl::OnGetPublisherAds, holder, _1, _2, _3, _4);
+  ads_->GetPublisherAds(url, sizes, get_publisher_ads_callback);
 }
 
 void BatAdsImpl::ToggleAdThumbUp(
@@ -247,6 +270,19 @@ void BatAdsImpl::OnRemoveAllHistory(
     const int32_t result) {
   if (holder->is_valid()) {
     std::move(holder->get()).Run(ToMojomResult(result));
+  }
+
+  delete holder;
+}
+
+void BatAdsImpl::OnGetPublisherAds(
+    CallbackHolder<GetPublisherAdsCallback>* holder,
+    const int32_t result,
+    const std::string& url,
+    const std::vector<std::string>& sizes,
+    const ads::PublisherAds& ads) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(url, sizes, ads.ToJson());
   }
 
   delete holder;

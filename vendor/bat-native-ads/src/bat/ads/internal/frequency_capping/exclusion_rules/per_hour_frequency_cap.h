@@ -11,7 +11,7 @@
 #include "bat/ads/internal/frequency_capping/exclusion_rule.h"
 
 namespace ads {
-struct AdInfo;
+struct CreativeAdNotificationInfo;
 class FrequencyCapping;
 
 class PerHourFrequencyCap : public ExclusionRule {
@@ -22,7 +22,7 @@ class PerHourFrequencyCap : public ExclusionRule {
   ~PerHourFrequencyCap() override;
 
   bool ShouldExclude(
-    const AdInfo& ad) override;
+    const CreativeAdInfo& ad) override;
 
   const std::string GetLastMessage() const override;
 
@@ -32,7 +32,7 @@ class PerHourFrequencyCap : public ExclusionRule {
   std::string last_message_;
 
   bool DoesAdRespectPerHourCap(
-      const AdInfo& ad) const;
+      const CreativeAdInfo& ad) const;
 };
 }  // namespace ads
 

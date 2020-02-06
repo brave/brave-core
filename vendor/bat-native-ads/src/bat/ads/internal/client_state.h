@@ -16,12 +16,14 @@
 #include "bat/ads/result.h"
 
 #include "bat/ads/internal/ad_preferences.h"
+#include "bat/ads/internal/static_values.h"
 
 namespace ads {
 
 struct ClientState {
   ClientState();
-  explicit ClientState(const ClientState& state);
+  ClientState(
+      const ClientState& state);
   ~ClientState();
 
   const std::string ToJson();
@@ -33,23 +35,24 @@ struct ClientState {
   std::deque<AdHistory> ads_shown_history;
   std::string ad_uuid;
   std::map<std::string, uint64_t> ads_uuid_seen;
-  uint64_t next_check_serve_ad_timestamp_in_seconds;
-  bool available;
-  uint64_t last_search_time;
-  uint64_t last_shop_time;
-  uint64_t last_user_activity;
-  uint64_t last_user_idle_stop_time;
-  std::string user_model_language;
+  std::map<std::string, uint64_t> publisher_ads_uuid_seen;
+  uint64_t next_check_serve_ad_timestamp_in_seconds = 0;
+  bool available = false;
+  uint64_t last_search_time = 0;
+  uint64_t last_shop_time = 0;
+  uint64_t last_user_activity = 0;
+  uint64_t last_user_idle_stop_time = 0;
+  std::string user_model_language = kDefaultUserModelLanguage;
   std::vector<std::string> user_model_languages;
   std::string last_page_classification;
   std::deque<std::vector<double>> page_score_history;
   std::map<std::string, std::deque<uint64_t>> creative_set_history;
   std::map<std::string, std::deque<uint64_t>> ad_conversion_history;
   std::map<std::string, std::deque<uint64_t>> campaign_history;
-  double score;
-  bool search_activity;
+  double score = 0.0;
+  bool search_activity = false;
   std::string search_url;
-  bool shop_activity;
+  bool shop_activity = false;
   std::string shop_url;
   std::string version_code;
 };

@@ -12,16 +12,16 @@ namespace confirmations {
 
 class ConfirmationType {
  public:
-  enum Value : int {
-    UNKNOWN,
-    CLICK,
-    DISMISS,
-    VIEW,
-    LANDED,
-    FLAG,
-    UPVOTE,
-    DOWNVOTE,
-    CONVERSION
+  enum Value {
+    kUnknown,
+    kClicked,
+    kDismissed,
+    kViewed,
+    kLanded,
+    kFlagged,
+    kUpvoted,
+    kDownvoted,
+    kConversion
   };
 
   ConfirmationType() = default;

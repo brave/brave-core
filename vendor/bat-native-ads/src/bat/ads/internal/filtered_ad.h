@@ -14,7 +14,8 @@ namespace ads {
 
 struct FilteredAd {
   FilteredAd();
-  explicit FilteredAd(const FilteredAd& ad);
+  FilteredAd(
+      const FilteredAd& ad);
   ~FilteredAd();
 
   const std::string ToJson() const;

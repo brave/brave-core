@@ -11,12 +11,12 @@ namespace ads {
 
 AdConversionTrackingInfo::AdConversionTrackingInfo() = default;
 
-AdConversionTrackingInfo::~AdConversionTrackingInfo() = default;
-
 AdConversionTrackingInfo::AdConversionTrackingInfo(
     const AdConversionTrackingInfo& info) = default;
 
-std::string AdConversionTrackingInfo::ToJson() const {
+AdConversionTrackingInfo::~AdConversionTrackingInfo() = default;
+
+const std::string AdConversionTrackingInfo::ToJson() const {
   std::string json;
   SaveToJson(*this, &json);
   return json;

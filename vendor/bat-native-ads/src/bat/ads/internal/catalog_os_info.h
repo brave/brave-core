@@ -10,11 +10,7 @@
 
 namespace ads {
 
-struct OsInfo {
-  OsInfo();
-  OsInfo(const OsInfo& info);
-  ~OsInfo();
-
+struct CatalogOsInfo {
   std::string code;
   std::string name;
 };

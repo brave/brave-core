@@ -13,14 +13,15 @@
 
 #include "bat/ads/issuers_info.h"
 
-#include "bat/ads/internal/campaign_info.h"
+#include "bat/ads/internal/catalog_campaign_info.h"
 #include "bat/ads/internal/json_helper.h"
 
 namespace ads {
 
 struct CatalogState {
   CatalogState();
-  explicit CatalogState(const CatalogState& state);
+  CatalogState(
+      const CatalogState& state);
   ~CatalogState();
 
   Result FromJson(
@@ -29,9 +30,9 @@ struct CatalogState {
       std::string* error_description = nullptr);
 
   std::string catalog_id;
-  uint64_t version;
-  uint64_t ping;
-  std::vector<CampaignInfo> campaigns;
+  uint64_t version = 0;
+  uint64_t ping = 0;
+  std::vector<CatalogCampaignInfo> campaigns;
   IssuersInfo issuers;
 };
 

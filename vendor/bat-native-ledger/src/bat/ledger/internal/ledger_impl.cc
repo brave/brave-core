@@ -16,7 +16,8 @@
 #include "base/task/post_task.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "bat/ads/issuers_info.h"
-#include "bat/ads/notification_info.h"
+#include "bat/ads/ad_notification_info.h"
+#include "bat/ads/publisher_ad_info.h"
 #include "bat/confirmations/confirmations.h"
 #include "bat/ledger/internal/media/media.h"
 #include "bat/ledger/internal/publisher/publisher.h"
@@ -1199,63 +1200,134 @@ void LedgerImpl::SetCatalogIssuers(const std::string& info) {
   bat_confirmations_->SetCatalogIssuers(std::move(issuers_info));
 }
 
-void LedgerImpl::ConfirmAd(const std::string& info) {
-  ads::NotificationInfo notification_info_ads;
+void LedgerImpl::ConfirmAdNotification(
+    const std::string& info) {
+  ads::AdNotificationInfo notification_info_ads;
   if (notification_info_ads.FromJson(info) != ads::Result::SUCCESS)
     return;
 
-  auto notification_info = std::make_unique<confirmations::NotificationInfo>();
-  notification_info->id = notification_info_ads.id;
+  auto notification_info =
+      std::make_unique<confirmations::AdNotificationInfo>();
+  notification_info->uuid = notification_info_ads.uuid;
+  notification_info->creative_instance_id =
+      notification_info_ads.creative_instance_id;
   notification_info->creative_set_id = notification_info_ads.creative_set_id;
   notification_info->category = notification_info_ads.category;
-  notification_info->advertiser = notification_info_ads.advertiser;
-  notification_info->text = notification_info_ads.text;
-  notification_info->url = notification_info_ads.url;
-  notification_info->uuid = notification_info_ads.uuid;
+  notification_info->title = notification_info_ads.title;
+  notification_info->body = notification_info_ads.body;
+  notification_info->target_url = notification_info_ads.target_url;
 
-  switch (notification_info_ads.type.value()) {
-    case ads::ConfirmationType::UNKNOWN: {
-      notification_info->type = confirmations::ConfirmationType::UNKNOWN;
+  switch (notification_info_ads.confirmation_type.value()) {
+    case ads::ConfirmationType::kUnknown: {
+      notification_info->confirmation_type =
+          confirmations::ConfirmationType::kUnknown;
       break;
     }
 
-    case ads::ConfirmationType::CLICK: {
-      notification_info->type = confirmations::ConfirmationType::CLICK;
+    case ads::ConfirmationType::kClicked: {
+      notification_info->confirmation_type =
+          confirmations::ConfirmationType::kClicked;
       break;
     }
 
-    case ads::ConfirmationType::DISMISS: {
-      notification_info->type = confirmations::ConfirmationType::DISMISS;
+    case ads::ConfirmationType::kDismissed: {
+      notification_info->confirmation_type =
+          confirmations::ConfirmationType::kDismissed;
       break;
     }
 
-    case ads::ConfirmationType::VIEW: {
-      notification_info->type = confirmations::ConfirmationType::VIEW;
+    case ads::ConfirmationType::kViewed: {
+      notification_info->confirmation_type =
+          confirmations::ConfirmationType::kViewed;
       break;
     }
 
-    case ads::ConfirmationType::LANDED: {
-      notification_info->type = confirmations::ConfirmationType::LANDED;
+    case ads::ConfirmationType::kLanded: {
+      notification_info->confirmation_type =
+          confirmations::ConfirmationType::kLanded;
       break;
     }
 
-    case ads::ConfirmationType::FLAG: {
-      notification_info->type = confirmations::ConfirmationType::FLAG;
+    case ads::ConfirmationType::kFlagged: {
+      notification_info->confirmation_type =
+          confirmations::ConfirmationType::kFlagged;
       break;
     }
 
-    case ads::ConfirmationType::UPVOTE: {
-      notification_info->type = confirmations::ConfirmationType::UPVOTE;
+    case ads::ConfirmationType::kUpvoted: {
+      notification_info->confirmation_type =
+          confirmations::ConfirmationType::kUpvoted;
       break;
     }
 
-    case ads::ConfirmationType::DOWNVOTE: {
-      notification_info->type = confirmations::ConfirmationType::DOWNVOTE;
+    case ads::ConfirmationType::kDownvoted: {
+      notification_info->confirmation_type =
+          confirmations::ConfirmationType::kDownvoted;
       break;
     }
   }
 
-  bat_confirmations_->ConfirmAd(std::move(notification_info));
+  bat_confirmations_->ConfirmAdNotification(std::move(notification_info));
+}
+
+void LedgerImpl::ConfirmPublisherAd(
+    const std::string& json) {
+  ads::PublisherAdInfo publisher_ad_info;
+  if (publisher_ad_info.FromJson(json) != ads::Result::SUCCESS) {
+    return;
+  }
+
+  confirmations::PublisherAdInfo info;
+  info.creative_instance_id = publisher_ad_info.creative_instance_id;
+  info.creative_set_id = publisher_ad_info.creative_set_id;
+  info.category = publisher_ad_info.category;
+  info.size = publisher_ad_info.size;
+  info.creative_url = publisher_ad_info.creative_url;
+  info.target_url = publisher_ad_info.target_url;
+
+  switch (publisher_ad_info.confirmation_type.value()) {
+    case ads::ConfirmationType::kUnknown: {
+      info.confirmation_type = confirmations::ConfirmationType::kUnknown;
+      break;
+    }
+
+    case ads::ConfirmationType::kClicked: {
+      info.confirmation_type = confirmations::ConfirmationType::kClicked;
+      break;
+    }
+
+    case ads::ConfirmationType::kDismissed: {
+      info.confirmation_type = confirmations::ConfirmationType::kDismissed;
+      break;
+    }
+
+    case ads::ConfirmationType::kViewed: {
+      info.confirmation_type = confirmations::ConfirmationType::kViewed;
+      break;
+    }
+
+    case ads::ConfirmationType::kLanded: {
+      info.confirmation_type = confirmations::ConfirmationType::kLanded;
+      break;
+    }
+
+    case ads::ConfirmationType::kFlagged: {
+      info.confirmation_type = confirmations::ConfirmationType::kFlagged;
+      break;
+    }
+
+    case ads::ConfirmationType::kUpvoted: {
+      info.confirmation_type = confirmations::ConfirmationType::kUpvoted;
+      break;
+    }
+
+    case ads::ConfirmationType::kDownvoted: {
+      info.confirmation_type = confirmations::ConfirmationType::kDownvoted;
+      break;
+    }
+  }
+
+  bat_confirmations_->ConfirmPublisherAd(info);
 }
 
 void LedgerImpl::ConfirmAction(

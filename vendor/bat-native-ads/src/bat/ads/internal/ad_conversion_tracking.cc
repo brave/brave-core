@@ -144,7 +144,7 @@ void AdConversionTracking::ProcessQueueItem(
         << " with creative set id " << creative_set_id << " triggered on "
             << Time::FromDoubleT(timestamp_in_seconds);
 
-    ads_->ConfirmAction(uuid, creative_set_id, ConfirmationType::CONVERSION);
+    ads_->ConfirmAction(uuid, creative_set_id, ConfirmationType::kConversion);
   }
 
   Remove(uuid);

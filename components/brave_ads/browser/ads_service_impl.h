@@ -18,10 +18,13 @@
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
+#include "bat/ads/ads.h"
 #include "bat/ads/ads_client.h"
+#include "bat/ads/mojom.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/background_helper.h"
 #include "brave/components/brave_ads/browser/notification_helper.h"
+#include "brave/components/brave_ads/browser/publisher_ads.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "chrome/browser/notifications/notification_handler.h"
@@ -70,6 +73,9 @@ class AdsServiceImpl : public AdsService,
   void SetEnabled(
       const bool is_enabled) override;
 
+  void SetShowPublisherAdsOnPariticipatingSites(
+      const bool should_show) override;
+
   void SetAllowAdConversionTracking(
       const bool should_allow) override;
 
@@ -98,10 +104,19 @@ class AdsServiceImpl : public AdsService,
   void OnTabClosed(
       const SessionID& tab_id) override;
 
+  void OnPublisherAdEvent(
+      const PublisherAdInfo& info,
+      const PublisherAdEventType event_type) override;
+
   void GetAdsHistory(
       const uint64_t from_timestamp,
       const uint64_t to_timestamp,
       OnGetAdsHistoryCallback callback) override;
+
+  void GetPublisherAds(
+      const std::string& url,
+      const std::vector<std::string>& sizes,
+      OnGetPublisherAdsCallback callback) override;
 
   void ToggleAdThumbUp(
       const std::string& id,
@@ -134,6 +149,8 @@ class AdsServiceImpl : public AdsService,
 
   // AdsClient implementation
   bool IsEnabled() const override;
+
+  bool ShouldShowPublisherAdsOnPariticipatingSites() const override;
 
   bool ShouldAllowAdConversionTracking() const override;
 
@@ -218,18 +235,36 @@ class AdsServiceImpl : public AdsService,
       ads::URLRequestCallback callback,
       const std::unique_ptr<std::string> response_body);
 
-  void OnGetAdsForCategories(
-      const ads::OnGetAdsCallback& callback,
+  void OnGetCreativeAdNotifications(
+      const ads::OnGetCreativeAdNotificationsCallback& callback,
       const std::vector<std::string>& categories,
-      const std::vector<ads::AdInfo>& ads);
+      const ads::CreativeAdNotifications& ads);
+
+  void OnGetCreativePublisherAds(
+      const ads::OnGetCreativePublisherAdsCallback& callback,
+      const std::string& url,
+      const std::vector<std::string>& categories,
+      const std::vector<std::string>& sizes,
+      const ads::CreativePublisherAds& ads);
 
   void OnGetAdConversions(
       const ads::OnGetAdConversionsCallback& callback,
       const std::string& url,
-      const std::vector<ads::AdConversionTrackingInfo>& ad_conversions);
+      const ads::AdConversions& ad_conversions);
+
+  void OnTest(
+      const std::string& url,
+      const std::vector<std::string>& sizes,
+      const base::ListValue& ads);
 
   void OnGetAdsHistory(
       OnGetAdsHistoryCallback callback,
+      const std::string& json);
+
+  void OnGetPublisherAds(
+      OnGetPublisherAdsCallback callback,
+      const std::string& url,
+      const std::vector<std::string>& sizes,
       const std::string& json);
 
   void OnRemoveAllHistory(
@@ -377,7 +412,7 @@ class AdsServiceImpl : public AdsService,
       ads::OnLoadCallback callback) const override;
 
   void ShowNotification(
-      std::unique_ptr<ads::NotificationInfo> info) override;
+      std::unique_ptr<ads::AdNotificationInfo> info) override;
   bool ShouldShowNotifications() override;
   void CloseNotification(
       const std::string& id) override;
@@ -385,8 +420,10 @@ class AdsServiceImpl : public AdsService,
   void SetCatalogIssuers(
       std::unique_ptr<ads::IssuersInfo> info) override;
 
-  void ConfirmAd(
-      std::unique_ptr<ads::NotificationInfo> info) override;
+  void ConfirmAdNotification(
+      std::unique_ptr<ads::AdNotificationInfo> info) override;
+  void ConfirmPublisherAd(
+      const ads::PublisherAdInfo& info) override;
   void ConfirmAction(
       const std::string& uuid,
       const std::string& creative_set_id,
@@ -428,9 +465,15 @@ class AdsServiceImpl : public AdsService,
       std::unique_ptr<ads::BundleState> bundle_state,
       ads::OnSaveCallback callback) override;
 
-  void GetAds(
+  void GetCreativeAdNotifications(
       const std::vector<std::string>& categories,
-      ads::OnGetAdsCallback callback) override;
+      ads::OnGetCreativeAdNotificationsCallback callback) override;
+
+  void GetCreativePublisherAds(
+      const std::string& url,
+      const std::vector<std::string>& categories,
+      const std::vector<std::string>& sizes,
+      const ads::OnGetCreativePublisherAdsCallback callback) override;
 
   void GetAdConversions(
       const std::string& url,

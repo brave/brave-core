@@ -9,13 +9,10 @@
 
 namespace ads {
 
-FlaggedAd::FlaggedAd() :
-    uuid(""),
-    creative_set_id("") {}
+FlaggedAd::FlaggedAd() = default;
 
-FlaggedAd::FlaggedAd(const FlaggedAd& ad) :
-    uuid(ad.uuid),
-    creative_set_id(ad.creative_set_id) {}
+FlaggedAd::FlaggedAd(
+    const FlaggedAd& ad) = default;
 
 FlaggedAd::~FlaggedAd() = default;
 

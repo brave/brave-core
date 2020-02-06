@@ -414,7 +414,10 @@ class LedgerImpl : public ledger::Ledger,
       ledger::PublisherInfoList normalized_list);
 
   void SetCatalogIssuers(const std::string& info) override;
-  void ConfirmAd(const std::string& info) override;
+  void ConfirmAdNotification(
+      const std::string& json) override;
+  void ConfirmPublisherAd(
+      const std::string& json) override;
   void ConfirmAction(const std::string& uuid,
                      const std::string& creative_set_id,
                      const std::string& type) override;

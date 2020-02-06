@@ -17,7 +17,7 @@
 #include "bat/ads/internal/client_mock.h"
 #include "bat/ads/internal/ads_client_mock.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/ad_info.h"
+#include "bat/ads/creative_ad_notification_info.h"
 
 // npm run test -- brave_unit_tests --filter=Ads*
 
@@ -81,7 +81,7 @@ class BraveAdsTotalMaxFrequencyCapTest : public ::testing::Test {
   std::unique_ptr<ClientMock> client_mock_;
   std::unique_ptr<FrequencyCapping> frequency_capping_;
   std::unique_ptr<TotalMaxFrequencyCap> exclusion_rule_;
-  AdInfo ad_info_;
+  CreativeAdNotificationInfo ad_info_;
 };
 
 TEST_F(BraveAdsTotalMaxFrequencyCapTest, AdAllowedWithNoAdHistory) {

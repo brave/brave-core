@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_ads/browser/publisher_ads.h"
 #include "base/macros.h"
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -28,6 +29,9 @@ namespace brave_ads {
 
 using OnGetAdsHistoryCallback =
     base::OnceCallback<void(const base::ListValue&)>;
+
+using OnGetPublisherAdsCallback = base::OnceCallback<void(const std::string&,
+    const std::vector<std::string>&, const base::ListValue&)>;
 
 using OnToggleAdThumbUpCallback =
     base::OnceCallback<void(const std::string&, int)>;
@@ -52,6 +56,10 @@ class AdsService : public KeyedService {
   virtual bool IsEnabled() const = 0;
   virtual void SetEnabled(
       const bool is_enabled) = 0;
+
+  virtual bool ShouldShowPublisherAdsOnPariticipatingSites() const = 0;
+  virtual void SetShowPublisherAdsOnPariticipatingSites(
+      const bool should_show) = 0;
 
   virtual bool ShouldAllowAdConversionTracking() const = 0;
   virtual void SetAllowAdConversionTracking(
@@ -83,10 +91,19 @@ class AdsService : public KeyedService {
   virtual void OnTabClosed(
       const SessionID& tab_id) = 0;
 
+  virtual void OnPublisherAdEvent(
+      const PublisherAdInfo& info,
+      const PublisherAdEventType event_type) = 0;
+
   virtual void GetAdsHistory(
       const uint64_t from_timestamp,
       const uint64_t to_timestamp,
       OnGetAdsHistoryCallback callback) = 0;
+
+  virtual void GetPublisherAds(
+      const std::string& url,
+      const std::vector<std::string>& sizes,
+      OnGetPublisherAdsCallback callback) = 0;
 
   virtual void ToggleAdThumbUp(
       const std::string& id,
