@@ -108,7 +108,7 @@ void P3ABandwidthSavingsPermanentState::SaveSavingsDaily() {
     base::DictionaryValue value;
     value.SetKey("day", base::Value(u.day.ToDoubleT()));
     value.SetKey("saving", base::Value(static_cast<double>(u.saving)));
-    list->GetList().push_back(std::move(value));
+    list->Append(std::move(value));
   }
 }
 

@@ -44,7 +44,7 @@ std::string RequestSignedTokensRequest::BuildBody(
   for (const auto& token : tokens) {
     auto token_base64 = token.encode_base64();
     auto token_value = base::Value(token_base64);
-    list.GetList().push_back(std::move(token_value));
+    list.Append(std::move(token_value));
   }
 
   base::Value dictionary(base::Value::Type::DICTIONARY);

@@ -187,7 +187,7 @@ base::Value GetBraveDarkModeTypeList() {
     system_type.SetKey(
         "name",
         base::Value(l10n_util::GetStringUTF16(IDS_BRAVE_THEME_TYPE_SYSTEM)));
-    list.GetList().push_back(std::move(system_type));
+    list.Append(std::move(system_type));
   }
 
   base::Value dark_type(base::Value::Type::DICTIONARY);
@@ -198,7 +198,7 @@ base::Value GetBraveDarkModeTypeList() {
   dark_type.SetKey(
       "name",
       base::Value(l10n_util::GetStringUTF16(IDS_BRAVE_THEME_TYPE_DARK)));
-  list.GetList().push_back(std::move(dark_type));
+  list.Append(std::move(dark_type));
 
   base::Value light_type(base::Value::Type::DICTIONARY);
   light_type.SetKey(
@@ -208,7 +208,7 @@ base::Value GetBraveDarkModeTypeList() {
   light_type.SetKey(
       "name",
       base::Value(l10n_util::GetStringUTF16(IDS_BRAVE_THEME_TYPE_LIGHT)));
-  list.GetList().push_back(std::move(light_type));
+  list.Append(std::move(light_type));
 
   return list;
 }

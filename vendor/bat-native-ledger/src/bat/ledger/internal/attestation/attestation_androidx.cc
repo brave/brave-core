@@ -67,7 +67,7 @@ void AttestationAndroid::Start(
 
   auto payment_id = base::Value(ledger_->GetPaymentId());
   base::Value payment_ids(base::Value::Type::LIST);
-  payment_ids.GetList().push_back(std::move(payment_id));
+  payment_ids.Append(std::move(payment_id));
 
   base::Value body(base::Value::Type::DICTIONARY);
   body.SetKey("paymentIds", std::move(payment_ids));

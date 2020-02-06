@@ -1039,10 +1039,10 @@ void AdsServiceImpl::OnGetAdsHistory(
     dictionary.SetKey("timestampInMilliseconds", base::Value(js_time));
 
     base::ListValue ad_history_list;
-    ad_history_list.GetList().emplace_back(std::move(ad_history_dictionary));
+    ad_history_list.Append(std::move(ad_history_dictionary));
     dictionary.SetPath("adDetailRows", std::move(ad_history_list));
 
-    list.GetList().emplace_back(std::move(dictionary));
+    list.Append(std::move(dictionary));
   }
 
   std::move(callback).Run(list);
