@@ -232,10 +232,13 @@ class AdsImpl : public Ads {
       const std::vector<AdInfo>& ads) const;
   std::vector<AdInfo> GetUnseenAds(
       const std::vector<AdInfo>& ads) const;
+  std::vector<AdInfo> GetAdsForUnseenAdvertisers(
+      const std::vector<AdInfo>& ads) const;
 
   bool IsAdValid(
       const AdInfo& ad_info);
   NotificationInfo last_shown_notification_info_;
+  AdInfo last_shown_ad_info_;
   bool ShowAd(
       const AdInfo& ad_info);
   bool IsAllowedToServeAds();

@@ -66,6 +66,7 @@ Result CatalogState::FromJson(
     campaign_info.start_at = campaign["startAt"].GetString();
     campaign_info.end_at = campaign["endAt"].GetString();
     campaign_info.daily_cap = campaign["dailyCap"].GetUint();
+    campaign_info.advertiser_id = campaign["advertiserId"].GetString();
 
     // Geo targets
     for (const auto& geo_target : campaign["geoTargets"].GetArray()) {

@@ -31,6 +31,7 @@ ClientState::ClientState(const ClientState& state)
       ads_shown_history(state.ads_shown_history),
       ad_uuid(state.ad_uuid),
       ads_uuid_seen(state.ads_uuid_seen),
+      advertisers_uuid_seen(state.advertisers_uuid_seen),
       next_check_serve_ad_timestamp_in_seconds(
           state.next_check_serve_ad_timestamp_in_seconds),
       available(state.available),
@@ -109,6 +110,14 @@ Result ClientState::FromJson(
     for (const auto& ad_uuid_seen : client["adsUUIDSeen"].GetObject()) {
       ads_uuid_seen.insert({ad_uuid_seen.name.GetString(),
           ad_uuid_seen.value.GetInt64()});
+    }
+  }
+
+  if (client.HasMember("advertisersUUIDSeen")) {
+    for (const auto& advertiser_uuid_seen :
+        client["advertisersUUIDSeen"].GetObject()) {
+      advertisers_uuid_seen.insert({advertiser_uuid_seen.name.GetString(),
+          advertiser_uuid_seen.value.GetInt64()});
     }
   }
 
@@ -262,6 +271,14 @@ void SaveToJson(JsonWriter* writer, const ClientState& state) {
   for (const auto& ad_uuid_seen : state.ads_uuid_seen) {
     writer->String(ad_uuid_seen.first.c_str());
     writer->Uint64(ad_uuid_seen.second);
+  }
+  writer->EndObject();
+
+  writer->String("advertisersUUIDSeen");
+  writer->StartObject();
+  for (const auto& advertiser_uuid_seen : state.advertisers_uuid_seen) {
+    writer->String(advertiser_uuid_seen.first.c_str());
+    writer->Uint64(advertiser_uuid_seen.second);
   }
   writer->EndObject();
 

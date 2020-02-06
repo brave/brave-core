@@ -22,8 +22,8 @@ namespace brave_ads {
 
 namespace {
 
-const int kCurrentVersionNumber = 3;
-const int kCompatibleVersionNumber = 3;
+const int kCurrentVersionNumber = 4;
+const int kCompatibleVersionNumber = 4;
 
 }  // namespace
 
@@ -171,6 +171,7 @@ bool BundleStateDatabase::CreateAdInfoTable() {
       "region VARCHAR,"
       "campaign_id LONGVARCHAR,"
       "daily_cap INTEGER DEFAULT 0 NOT NULL,"
+      "advertiser_id LONGVARCHAR,"
       "per_day INTEGER DEFAULT 0 NOT NULL,"
       "total_max INTEGER DEFAULT 0 NOT NULL,"
       "PRIMARY KEY(region, uuid))");
@@ -330,8 +331,9 @@ bool BundleStateDatabase::InsertOrUpdateAdInfo(const ads::AdInfo& info) {
             "INSERT OR REPLACE INTO ad_info "
             "(creative_set_id, advertiser, notification_text, "
             "notification_url, start_timestamp, end_timestamp, uuid, "
-            "campaign_id, daily_cap, per_day, total_max, region) "
-            "VALUES (?, ?, ?, ?, datetime(?), datetime(?), ?, ?, ?, ?, ?, ?)"));
+            "campaign_id, daily_cap, advertiser_id, per_day, total_max, "
+            "region) VALUES (?, ?, ?, ?, datetime(?), datetime(?), ?, ?, ?, "
+            "?, ?, ?, ?)"));
 
     ad_info_statement.BindString(0, info.creative_set_id);
     ad_info_statement.BindString(1, info.advertiser);
@@ -342,9 +344,10 @@ bool BundleStateDatabase::InsertOrUpdateAdInfo(const ads::AdInfo& info) {
     ad_info_statement.BindString(6, info.uuid);
     ad_info_statement.BindString(7, info.campaign_id);
     ad_info_statement.BindInt(8, info.daily_cap);
-    ad_info_statement.BindInt(9, info.per_day);
-    ad_info_statement.BindInt(10, info.total_max);
-    ad_info_statement.BindString(11, *it);
+    ad_info_statement.BindString(9, info.advertiser_id);
+    ad_info_statement.BindInt(10, info.per_day);
+    ad_info_statement.BindInt(11, info.total_max);
+    ad_info_statement.BindString(12, *it);
     if (!ad_info_statement.Run()) {
       return false;
     }
@@ -418,7 +421,7 @@ bool BundleStateDatabase::GetAdsForCategory(
           "ai.notification_text, ai.notification_url, "
           "ai.start_timestamp, ai.end_timestamp, "
           "ai.uuid, ai.region, ai.campaign_id, ai.daily_cap, "
-          "ai.per_day, ai.total_max FROM ad_info AS ai "
+          "ai.advertiser_id, ai.per_day, ai.total_max FROM ad_info AS ai "
           "INNER JOIN ad_info_category AS aic "
           "ON aic.ad_info_uuid = ai.uuid "
           "WHERE aic.category_name = ? and "
@@ -440,8 +443,9 @@ bool BundleStateDatabase::GetAdsForCategory(
     info.uuid = info_sql.ColumnString(6);
     info.campaign_id = info_sql.ColumnString(8);
     info.daily_cap = info_sql.ColumnInt(9);
-    info.per_day = info_sql.ColumnInt(10);
-    info.total_max = info_sql.ColumnInt(11);
+    info.advertiser_id = info_sql.ColumnString(10);
+    info.per_day = info_sql.ColumnInt(11);
+    info.total_max = info_sql.ColumnInt(12);
     ads->emplace_back(info);
   }
 
@@ -558,6 +562,15 @@ bool BundleStateDatabase::Migrate() {
         break;
       }
 
+      case 3: {
+        if (!MigrateV3toV4()) {
+          LOG(ERROR) << "DB: Error migrating database from v3 to v4";
+          return false;
+        }
+
+        break;
+      }
+
       default: {
         NOTREACHED();
         return false;
@@ -618,6 +631,15 @@ bool BundleStateDatabase::MigrateV2toV3() {
       "observation_window INTEGER NOT NULL)");
 
   return GetDB().Execute(sql.c_str());
+}
+
+bool BundleStateDatabase::MigrateV3toV4() {
+  std::string sql = "ALTER TABLE ad_info ADD advertiser_id LONGVARCHAR;";
+  if (!GetDB().Execute(sql.c_str())) {
+    return false;
+  }
+
+  return false;
 }
 
 }  // namespace brave_ads

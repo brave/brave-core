@@ -75,6 +75,10 @@ Result BundleState::FromJson(
           ad_info.daily_cap = info["dailyCap"].GetUint();
         }
 
+        if (info.HasMember("advertiserId")) {
+          ad_info.advertiser_id = info["advertiserId"].GetString();
+        }
+
         if (info.HasMember("perDay")) {
           ad_info.per_day = info["perDay"].GetUint();
         }
@@ -170,6 +174,9 @@ void SaveToJson(JsonWriter* writer, const BundleState& state) {
 
       writer->String("dailyCap");
       writer->Uint(ad.daily_cap);
+
+      writer->String("advertiserId");
+      writer->String(ad.advertiser_id.c_str());
 
       writer->String("perDay");
       writer->Uint(ad.per_day);

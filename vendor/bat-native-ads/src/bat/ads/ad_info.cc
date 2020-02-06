@@ -20,6 +20,7 @@ AdInfo::AdInfo(const AdInfo& info) :
     start_timestamp(info.start_timestamp),
     end_timestamp(info.end_timestamp),
     daily_cap(info.daily_cap),
+    advertiser_id(info.advertiser_id),
     per_day(info.per_day),
     total_max(info.total_max),
     regions(info.regions),
@@ -69,6 +70,10 @@ Result AdInfo::FromJson(
 
   if (document.HasMember("daily_cap")) {
     daily_cap = document["daily_cap"].GetUint();
+  }
+
+  if (document.HasMember("advertiser_id")) {
+    advertiser_id = document["advertiser_id"].GetString();
   }
 
   if (document.HasMember("per_day")) {
@@ -127,6 +132,9 @@ void SaveToJson(JsonWriter* writer, const AdInfo& info) {
 
   writer->String("daily_cap");
   writer->Uint(info.daily_cap);
+
+  writer->String("advertiser_id");
+  writer->String(info.advertiser_id.c_str());
 
   writer->String("per_day");
   writer->Uint(info.per_day);
