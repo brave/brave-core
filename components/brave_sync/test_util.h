@@ -68,13 +68,16 @@ SyncRecordPtr SimpleBookmarkSyncRecord(const int action,
                                        const std::string& title,
                                        const std::string& order,
                                        const std::string& parent_object_id,
-                                       const std::string& device_id = "3");
+                                       const std::string& device_id,
+                                       const bool hide_in_toolbar = true);
 
 SyncRecordPtr SimpleFolderSyncRecord(
     const int action,
+    const std::string& object_id,
     const std::string& title,
     const std::string& order,
     const std::string& parent_object_id,
+    const std::string& device_id,
     const bool hide_in_toolbar,
     const std::string& custom_title);
 
