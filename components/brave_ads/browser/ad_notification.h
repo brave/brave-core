@@ -23,7 +23,8 @@ struct NotificationInfo;
 
 namespace brave_ads {
 
-const char* const kBraveAdsUrlPrefix ="chrome://brave_ads/?";
+// On Android, this URL must represent an HTTP or HTTPS web origin.
+const char* const kBraveAdsUrlPrefix = "https://www.brave.com/ads/?";
 
 std::unique_ptr<message_center::Notification> CreateAdNotification(
     const ads::NotificationInfo& notification_info);
