@@ -1,0 +1,12 @@
+diff --git a/content/public/browser/permission_type.cc b/content/public/browser/permission_type.cc
+index 05632368c83c9a03b4e360f3ab50a85082890c89..322ea955218148f4a8d8a1d6998c22f929136867 100644
+--- a/content/public/browser/permission_type.cc
++++ b/content/public/browser/permission_type.cc
+@@ -99,6 +99,7 @@ base::Optional<PermissionType> PermissionDescriptorToPermissionType(
+       break;
+     case PermissionName::NFC:
+       return PermissionType::NFC;
++    BRAVE_PERMISSIONDESCRIPTORTOPERMISSIONTYPE
+   }
+ 
+   NOTREACHED();
