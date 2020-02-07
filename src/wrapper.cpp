@@ -126,7 +126,7 @@ const std::string Engine::hostnameCosmeticResources(const std::string& hostname)
   char* resources_raw = engine_hostname_cosmetic_resources(raw, hostname.c_str());
   const std::string resources_json = std::string(resources_raw);
 
-  free(resources_raw);
+  c_char_buffer_destroy(resources_raw);
   return resources_json;
 }
 
@@ -157,7 +157,7 @@ const std::string Engine::hiddenClassIdSelectors(const std::vector<std::string>&
   );
   const std::string stylesheet = std::string(stylesheet_raw);
 
-  free(stylesheet_raw);
+  c_char_buffer_destroy(stylesheet_raw);
   return stylesheet;
 }
 
