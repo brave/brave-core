@@ -10,7 +10,14 @@ chrome.braveSync.onGotInitData.addListener(function(seed, device_id, config, dev
 
 chrome.braveSync.onFetchSyncRecords.addListener(function(category_names, start_at, max_records) {
   console.log(`"fetch-sync-records" category_names=${JSON.stringify(category_names)} start_at=${JSON.stringify(start_at)} max_records=${JSON.stringify(max_records)}`);
-  callbackList["fetch-sync-records"](null, category_names, start_at, max_records);
+  try {
+    callbackList["fetch-sync-records"](null, category_names, start_at, max_records);
+  } catch (e) {
+    console.error(e.message)
+    category_names.forEach((category) => {
+      chrome.braveSync.resolvedSyncRecords(category, []);
+    })
+  }
 });
 
 chrome.braveSync.onResolveSyncRecords.addListener(function(category_name, recordsAndExistingObjects) {
@@ -27,7 +34,12 @@ chrome.braveSync.onResolveSyncRecords.addListener(function(category_name, record
     }
   }
   console.log(`"resolve-sync-records" category_name=${JSON.stringify(category_name)} recordsAndExistingObjects=${JSON.stringify(recordsAndExistingObjectsArrArr)}`);
-  callbackList["resolve-sync-records"](null, category_name, recordsAndExistingObjectsArrArr);
+  try {
+    callbackList["resolve-sync-records"](null, category_name, recordsAndExistingObjectsArrArr);
+  } catch (e) {
+    console.error(e.message)
+    chrome.braveSync.resolvedSyncRecords(category_name, []);
+  }
 });
 
 chrome.braveSync.onSendSyncRecords.addListener(function(category_name, records) {
