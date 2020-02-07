@@ -28,9 +28,14 @@ class BraveProfileManager : public ProfileManager {
                         bool success,
                         bool is_new_profile) override;
 
+  void Observe(int type,
+               const content::NotificationSource& source,
+               const content::NotificationDetails& details) override;
+
  protected:
   void DoFinalInitForServices(Profile* profile,
                                bool go_off_the_record) override;
+
  private:
   void MigrateProfileNames();
   DISALLOW_COPY_AND_ASSIGN(BraveProfileManager);
