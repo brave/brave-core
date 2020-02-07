@@ -609,7 +609,7 @@ bool BundleStateDatabase::MigrateV1toV2() {
     return false;
   }
 
-  return false;
+  return true;
 }
 
 bool BundleStateDatabase::MigrateV2toV3() {
@@ -635,11 +635,7 @@ bool BundleStateDatabase::MigrateV2toV3() {
 
 bool BundleStateDatabase::MigrateV3toV4() {
   std::string sql = "ALTER TABLE ad_info ADD advertiser_id LONGVARCHAR;";
-  if (!GetDB().Execute(sql.c_str())) {
-    return false;
-  }
-
-  return false;
+  return GetDB().Execute(sql.c_str());
 }
 
 }  // namespace brave_ads
