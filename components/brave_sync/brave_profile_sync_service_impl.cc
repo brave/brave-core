@@ -13,6 +13,7 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/brave_sync_service_observer.h"
 #include "brave/components/brave_sync/client/brave_sync_client_impl.h"
@@ -28,6 +29,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sync/chrome_sync_client.h"
 #include "components/bookmarks/browser/bookmark_model.h"
+#include "components/prefs/pref_service.h"
 #include "components/signin/public/identity_manager/account_info.h"
 #include "components/sync/engine_impl/syncer.h"
 #include "content/public/browser/browser_thread.h"
@@ -515,7 +517,10 @@ void BraveProfileSyncServiceImpl::OnSyncReadyBookmarksModelLoaded() {
     ProfileSyncService::GetUserSettings()->SetSyncRequested(true);
   }
 
-  BraveMigrateOtherNodeFolder(model_);
+  if (!sync_client_->GetPrefService()->GetBoolean(kOtherBookmarksMigrated)) {
+    BraveMigrateOtherNodeFolder(model_);
+    sync_client_->GetPrefService()->SetBoolean(kOtherBookmarksMigrated, true);
+  }
 }
 
 syncer::ModelTypeSet BraveProfileSyncServiceImpl::GetPreferredDataTypes()
