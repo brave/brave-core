@@ -7,5 +7,5 @@
 # TODO: set to value below after migrating the script to Python 3
 # it now breaks because of urllib2 and SSL/TLS incompatibility when using Fastly
 # RUST_DEPS_PACKAGES_URL = "https://rust-pkg-brave-core.s3.brave.com"
-RUST_DEPS_PACKAGES_URL = "https://s3-us-west-2.amazonaws.com/rust-pkg-brave-core"
+RUST_DEPS_PACKAGES_URL = "https://rust-pkg-brave-core.s3.amazonaws.com/"
 RUST_DEPS_PACKAGE_VERSION = "0.1.2"
