@@ -99,6 +99,10 @@ std::string NTPSponsoredImageSource::GetMimeType(const std::string& path) {
   return "image/jpg";
 }
 
+bool NTPSponsoredImageSource::AllowCaching() {
+  return false;
+}
+
 bool NTPSponsoredImageSource::IsValidPath(const std::string& path) const {
   if (IsLogoPath(path))
     return true;
