@@ -34,6 +34,7 @@ class NTPSponsoredImageSource : public content::URLDataSource {
                         const content::WebContents::Getter& wc_getter,
                         GotDataCallback callback) override;
   std::string GetMimeType(const std::string& path) override;
+  bool AllowCaching() override;
 
   void OnGotImageFile(GotDataCallback callback,
                       base::Optional<std::string> input);
