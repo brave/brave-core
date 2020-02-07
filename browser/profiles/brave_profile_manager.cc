@@ -27,6 +27,7 @@
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/content/browser/webui/brave_shared_resources_data_source.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profiles_state.h"
@@ -40,6 +41,8 @@
 #include "components/signin/public/base/signin_pref_names.h"
 #include "components/translate/core/browser/translate_pref_names.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/notification_service.h"
+#include "content/public/browser/notification_source.h"
 #include "content/public/browser/url_data_source.h"
 #include "extensions/buildflags/buildflags.h"
 #include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
@@ -63,6 +66,9 @@ using content::BrowserThread;
 BraveProfileManager::BraveProfileManager(const base::FilePath& user_data_dir)
     : ProfileManager(user_data_dir) {
   MigrateProfileNames();
+
+  registrar_.Add(this, chrome::NOTIFICATION_PROFILE_CREATED,
+                 content::NotificationService::AllSources());
 }
 
 BraveProfileManager::~BraveProfileManager() {
@@ -143,8 +149,6 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   gcm::BraveGCMChannelStatus::GetForProfile(profile);
 #endif
-  content::URLDataSource::Add(profile,
-      std::make_unique<brave_content::BraveSharedResourcesDataSource>());
 }
 
 void BraveProfileManager::OnProfileCreated(Profile* profile,
@@ -213,4 +217,22 @@ void BraveProfileManager::MigrateProfileNames() {
     }
   }
 #endif
+}
+
+void BraveProfileManager::Observe(int type,
+                                  const content::NotificationSource& source,
+                                  const content::NotificationDetails& details) {
+  switch (type) {
+    case chrome::NOTIFICATION_PROFILE_CREATED: {
+      Profile* profile = content::Source<Profile>(source).ptr();
+      content::URLDataSource::Add(
+          profile,
+          std::make_unique<brave_content::BraveSharedResourcesDataSource>());
+      break;
+    }
+    default: {
+      ProfileManager::Observe(type, source, details);
+      break;
+    }
+  }
 }
