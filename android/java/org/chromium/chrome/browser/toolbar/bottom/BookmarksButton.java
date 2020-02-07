@@ -33,12 +33,6 @@ public class BookmarksButton extends ShareButton implements ThemeColorObserver, 
     private ThemeColorProvider mThemeColorProvider;
     private ColorStateList mCurrentTint;
 
-    /** The bookmark button text label. */
-    private TextView mLabel;
-
-    /** The wrapper View that contains the bookmark button and the label. */
-    private View mWrapper;
-
     public BookmarksButton(Context context, AttributeSet attrs) {
         super(context, attrs);
         setImageDrawable(ContextCompat.getDrawable(context, R.drawable.btn_bookmark));
@@ -49,24 +43,6 @@ public class BookmarksButton extends ShareButton implements ThemeColorObserver, 
             mThemeColorProvider.removeThemeColorObserver(this);
             mThemeColorProvider.removeTintObserver(this);
             mThemeColorProvider = null;
-        }
-    }
-
-    /**
-     * @param wrapper The wrapping View of this button.
-     */
-    public void setWrapperView(ViewGroup wrapper) {
-        mWrapper = wrapper;
-        mLabel = mWrapper.findViewById(R.id.share_button_label);
-        if (FeatureUtilities.isLabeledBottomToolbarEnabled()) mLabel.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void setOnClickListener(OnClickListener listener) {
-        if (mWrapper != null) {
-            mWrapper.setOnClickListener(listener);
-        } else {
-            super.setOnClickListener(listener);
         }
     }
 
@@ -84,7 +60,6 @@ public class BookmarksButton extends ShareButton implements ThemeColorObserver, 
     public void onTintChanged(ColorStateList tint, boolean useLight) {
         mCurrentTint = tint;
         ApiCompatibilityUtils.setImageTintList(this, tint);
-        if (mLabel != null) mLabel.setTextColor(tint);
     }
 
     public void updateBookmarkButton(boolean isBookmarked, boolean editingAllowed) {

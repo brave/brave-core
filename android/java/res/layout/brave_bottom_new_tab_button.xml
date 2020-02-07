@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2020 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/BottomToolbarButtonWrapper" >
+
+    <org.chromium.chrome.browser.toolbar.bottom.BottomToolbarNewTabButton
+        android:id="@+id/bottom_new_tab_button"
+        android:contentDescription="@string/accessibility_toolbar_btn_new_tab"
+        app:tint="@color/standard_mode_tint"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:srcCompat="@drawable/new_tab_icon"
+        android:visibility="gone"
+        style="@style/SplitToolbarButton" />
+
+</LinearLayout>
