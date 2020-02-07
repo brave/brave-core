@@ -1,0 +1,13 @@
+diff --git a/components/sync_bookmarks/synced_bookmark_tracker.cc b/components/sync_bookmarks/synced_bookmark_tracker.cc
+index 5acee2729ad296a9c4a7cbafc2b4bbede0141bc5..324cc5ea8d4470feefa44288d1984dfc9722f1ba 100644
+--- a/components/sync_bookmarks/synced_bookmark_tracker.cc
++++ b/components/sync_bookmarks/synced_bookmark_tracker.cc
+@@ -497,7 +497,7 @@ void SyncedBookmarkTracker::UpdateSyncForLocalCreationIfNeeded(
+   // TODO(crbug.com/516866): The below CHECK is added to debug some crashes.
+   // Should be removed after figuring out the reason for the crash.
+   CHECK_EQ(1U, sync_id_to_entities_map_.count(old_id));
+-  CHECK_EQ(0U, sync_id_to_entities_map_.count(new_id));
++  // CHECK_EQ(0U, sync_id_to_entities_map_.count(new_id));
+ 
+   std::unique_ptr<Entity> entity =
+       std::move(sync_id_to_entities_map_.at(old_id));
