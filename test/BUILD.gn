@@ -185,7 +185,6 @@ test("brave_unit_tests") {
       "//components/gcm_driver/account_tracker_unittest.cc",
       "//components/gcm_driver/gcm_account_mapper_unittest.cc",
       "//components/gcm_driver/gcm_account_tracker_unittest.cc",
-      "//components/gcm_driver/gcm_channel_status_request_unittest.cc",
       "//components/gcm_driver/gcm_client_impl_unittest.cc",
       "//components/gcm_driver/gcm_delayed_task_controller_unittest.cc",
       "//components/gcm_driver/gcm_driver_desktop_unittest.cc",

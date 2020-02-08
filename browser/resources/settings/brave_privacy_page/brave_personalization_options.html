@@ -39,10 +39,10 @@
         on-settings-boolean-control-change="onP3AEnabledChange_">
     </settings-toggle-button>
     <settings-toggle-button id="pushMessagingEnabled"
-        pref="{{prefs.gcm.channel_status}}"
+        pref="{{prefs.brave.gcm.channel_status}}"
         label="$i18n{pushMessagingLabel}">
         <template is="dom-if" if="[[shouldShowRestart_(
-          prefs.gcm.channel_status.value)]]">
+          prefs.brave.gcm.channel_status.value)]]">
         <cr-button on-click="restartBrowser_" slot="more-actions">
           $i18n{restart}
         </cr-button>

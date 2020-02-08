@@ -9,6 +9,7 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/gcm_driver/gcm_buildflags.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -25,8 +26,19 @@
 #include "brave/browser/brave_wallet/brave_wallet_utils.h"
 #endif
 
+#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
+#include "brave/browser/gcm_driver/brave_gcm_utils.h"
+#endif
+
 // This method should be periodically pruned of year+ old migrations.
 void MigrateObsoleteProfilePrefs(Profile* profile) {
+#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
+  // Added 02/2020.
+  // Must be called before ChromiumImpl because it's migrating a Chromium pref
+  // to Brave pref.
+  gcm::MigrateGCMPrefs(profile);
+#endif
+
   MigrateObsoleteProfilePrefs_ChromiumImpl(profile);
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -43,4 +55,6 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
   // Added 1/2020
   brave_wallet::MigrateBraveWalletPrefs(profile);
 #endif
+
+
 }

@@ -34,10 +34,6 @@
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #endif
 
-#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
-#include "components/gcm_driver/gcm_channel_status_syncer.h"
-#endif
-
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/widevine/widevine_utils.h"
 #endif
@@ -53,6 +49,10 @@
 #if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
+#endif
+
+#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
+#include "brave/browser/gcm_driver/brave_gcm_utils.h"
 #endif
 
 using extensions::FeatureSwitch;
@@ -104,8 +104,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   // PushMessaging
-  registry->SetDefaultPrefValue(gcm::prefs::kGCMChannelStatus,
-                                base::Value(false));
+  gcm::RegisterGCMProfilePrefs(registry);
 #endif
 
   registry->RegisterBooleanPref(kShieldsStatsBadgeVisible, true);

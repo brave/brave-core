@@ -7,6 +7,7 @@
 #define BRAVE_COMMON_PREF_NAMES_H_
 
 #include "build/build_config.h"
+#include "components/gcm_driver/gcm_buildflags.h"
 
 extern const char kAdsBlocked[];
 extern const char kTrackersBlocked[];
@@ -68,6 +69,9 @@ extern const char kRemoteDebuggingEnabled[];
 extern const char kAutocompleteEnabled[];
 extern const char kBraveDarkMode[];
 extern const char kOtherBookmarksMigrated[];
+#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
+extern const char kBraveGCMChannelStatus[];
+#endif
 
 #if defined(OS_ANDROID)
 extern const char kDesktopModeEnabled[];

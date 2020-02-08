@@ -57,11 +57,11 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #endif
 
-using content::BrowserThread;
-
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 #include "brave/browser/gcm_driver/brave_gcm_channel_status.h"
 #endif
+
+using content::BrowserThread;
 
 BraveProfileManager::BraveProfileManager(const base::FilePath& user_data_dir)
     : ProfileManager(user_data_dir) {
@@ -147,7 +147,10 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   BraveWalletServiceFactory::GetForProfile(profile);
 #endif
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
-  gcm::BraveGCMChannelStatus::GetForProfile(profile);
+  gcm::BraveGCMChannelStatus* status =
+      gcm::BraveGCMChannelStatus::GetForProfile(profile);
+  DCHECK(status);
+  status->UpdateGCMDriverStatus();
 #endif
 }
 

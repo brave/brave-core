@@ -19,10 +19,6 @@
 #include "components/sync/base/pref_names.h"
 #include "brave/browser/brave_first_run_browsertest.h"
 
-#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
-#include "components/gcm_driver/gcm_channel_status_syncer.h"
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #endif
@@ -71,8 +67,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   EXPECT_FALSE(
-      browser()->profile()->GetPrefs()->GetBoolean(
-          gcm::prefs::kGCMChannelStatus));
+      browser()->profile()->GetPrefs()->GetBoolean(kBraveGCMChannelStatus));
 #endif
 }
 

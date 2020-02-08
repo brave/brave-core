@@ -6,12 +6,9 @@
 #include "brave/test/base/brave_testing_profile.h"
 
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/common/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/prefs/pref_service.h"
-
-#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
-#include "components/gcm_driver/gcm_channel_status_syncer.h"
-#endif
 
 BraveTestingProfile::BraveTestingProfile(const base::FilePath& path,
                                          Delegate* delegate)
@@ -24,6 +21,6 @@ BraveTestingProfile::BraveTestingProfile(const base::FilePath& path,
 BraveTestingProfile::BraveTestingProfile()
     : TestingProfile() {
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
-  GetPrefs()->SetBoolean(gcm::prefs::kGCMChannelStatus, true);
+  GetPrefs()->SetBoolean(kBraveGCMChannelStatus, true);
 #endif
 }
