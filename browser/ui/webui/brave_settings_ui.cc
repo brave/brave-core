@@ -23,7 +23,7 @@
 #include "content/public/browser/web_ui_data_source.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
-#include "brave/components/brave_sync/switches.h"
+#include "components/sync/driver/sync_driver_switches.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPARKLE)
@@ -58,7 +58,7 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
   html_source->AddBoolean("isSyncDisabled",
-                          !brave_sync::switches::IsBraveSyncAllowedByFlag());
+                          !switches::IsSyncAllowedByFlag());
 #else
   html_source->AddBoolean("isSyncDisabled", true);
 #endif
