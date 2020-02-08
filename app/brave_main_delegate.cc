@@ -151,6 +151,9 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 
   command_line.AppendSwitch(switches::kDisableDatabases);
 
+  // Disable sync temporarily
+  command_line.AppendSwitch(switches::kDisableSync);
+
   // Enabled features.
   const std::unordered_set<const char*> enabled_features = {
       password_manager::features::kPasswordImport.name,

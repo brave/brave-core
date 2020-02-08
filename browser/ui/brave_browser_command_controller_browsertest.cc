@@ -19,6 +19,7 @@
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/sync/driver/sync_driver_switches.h"
 #include "content/public/browser/notification_service.h"
 #include "content/public/test/test_utils.h"
 
@@ -53,7 +54,10 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
+  if (switches::IsSyncAllowedByFlag())
+    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
+  else
+    EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
 #else
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
 #endif
@@ -86,7 +90,10 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
+  if (switches::IsSyncAllowedByFlag())
+    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
+  else
+    EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
@@ -171,7 +178,10 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
+  if (switches::IsSyncAllowedByFlag())
+    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
+  else
+    EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
