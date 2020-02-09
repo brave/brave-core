@@ -139,11 +139,11 @@ void BraveProfileWriter::BackupWallet() {
   base::PostTaskAndReplyWithResult(
     task_runner_.get(),
     FROM_HERE,
-    base::Bind(&base::CopyFile,
-      profile_default_directory.AppendASCII("ledger_state"),
-      profile_default_directory.AppendASCII(backup_filename.str())),
-    base::Bind(&BraveProfileWriter::OnWalletBackupComplete,
-      this));
+      base::BindOnce(
+          &base::CopyFile,
+          profile_default_directory.AppendASCII("ledger_state"),
+          profile_default_directory.AppendASCII(backup_filename.str())),
+      base::BindOnce(&BraveProfileWriter::OnWalletBackupComplete, this));
 }
 
 void BraveProfileWriter::OnWalletBackupComplete(bool result) {

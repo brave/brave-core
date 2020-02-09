@@ -669,9 +669,10 @@ void AdsServiceImpl::Stop() {
 }
 
 void AdsServiceImpl::ResetAllState() {
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::Bind(&ResetOnFileTaskRunner, base_path_),
-          base::Bind(&AdsServiceImpl::OnResetAllState, AsWeakPtr()));
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&ResetOnFileTaskRunner, base_path_),
+      base::BindOnce(&AdsServiceImpl::OnResetAllState, AsWeakPtr()));
 }
 
 void AdsServiceImpl::OnResetAllState(
@@ -685,9 +686,11 @@ void AdsServiceImpl::OnResetAllState(
 }
 
 void AdsServiceImpl::EnsureBaseDirectoryExists() {
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::Bind(&EnsureBaseDirectoryExistsOnFileTaskRunner, base_path_),
-      base::Bind(&AdsServiceImpl::OnEnsureBaseDirectoryExists, AsWeakPtr()));
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&EnsureBaseDirectoryExistsOnFileTaskRunner, base_path_),
+      base::BindOnce(&AdsServiceImpl::OnEnsureBaseDirectoryExists,
+                     AsWeakPtr()));
 }
 
 void AdsServiceImpl::OnEnsureBaseDirectoryExists(
