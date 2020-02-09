@@ -74,17 +74,6 @@ source_set("prefs") {
   ]
 }
 
-source_set("switches") {
-  sources = [
-    "switches.cc",
-    "switches.h",
-  ]
-
-  deps = [
-    "//base",
-  ]
-}
-
 source_set("crypto") {
   sources = [
     "crypto/crypto.cc",
@@ -132,7 +121,6 @@ source_set("core") {
     ":crypto",
     ":jslib_messages",
     ":prefs",
-    ":switches",
     "//base",
     "//components/bookmarks/browser",
     "//crypto",
