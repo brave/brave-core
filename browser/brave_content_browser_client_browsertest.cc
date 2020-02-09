@@ -27,6 +27,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
+#include "components/sync/driver/sync_driver_switches.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
@@ -154,10 +155,11 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadCustomBravePages) {
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
         "rewards",
 #endif
-#if BUILDFLAG(ENABLE_BRAVE_SYNC)
-        chrome::kChromeUISyncHost,
-#endif
   };
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
+  if (switches::IsSyncAllowedByFlag())
+    pages.push_back(chrome::kChromeUISyncHost);
+#endif
 
   std::vector<std::string> schemes {
     "brave://",
@@ -221,7 +223,10 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
         browser()->tab_strip_model()->GetActiveWebContents();
     ui_test_utils::NavigateToURL(
         browser(), GURL(scheme + chrome::kChromeUISyncInternalsHost));
-    ASSERT_TRUE(WaitForLoadStop(contents));
+    if (switches::IsSyncAllowedByFlag())
+      ASSERT_TRUE(WaitForLoadStop(contents));
+    else
+      ASSERT_FALSE(WaitForLoadStop(contents));
 
     EXPECT_STREQ(base::UTF16ToUTF8(browser()->location_bar_model()
                     ->GetFormattedFullURL()).c_str(),
