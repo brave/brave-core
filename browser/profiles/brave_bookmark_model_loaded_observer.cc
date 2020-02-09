@@ -29,7 +29,7 @@ void BraveBookmarkModelLoadedObserver::BookmarkModelLoaded(
           ProfileSyncServiceFactory::GetForProfile(profile_));
   // When sync is enabled, we need to send migration records to other devices so
   // it is handled in BraveProfileSyncServiceImpl::OnSyncReady
-  if (!brave_profile_service->IsBraveSyncEnabled())
+  if (brave_profile_service && !brave_profile_service->IsBraveSyncEnabled())
     BraveMigrateOtherNode(model);
 #else
   BraveMigrateOtherNode(model);

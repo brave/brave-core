@@ -24,7 +24,7 @@
 #include "components/prefs/pref_service.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
-#include "brave/components/brave_sync/switches.h"
+#include "components/sync/driver/sync_driver_switches.h"
 #endif
 
 namespace {
@@ -114,7 +114,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
     UpdateCommandForBraveWallet();
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
-    if (brave_sync::switches::IsBraveSyncAllowedByFlag())
+    if (switches::IsSyncAllowedByFlag())
       UpdateCommandForBraveSync();
 #endif
   }
