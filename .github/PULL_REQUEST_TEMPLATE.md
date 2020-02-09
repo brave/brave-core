@@ -1,3 +1,6 @@
+<!-- Add brave-browser issue bellow that this PR will resolve -->
+Resolves 
+
 ## Submitter Checklist:
 
 - [ ] Submitted a [ticket](https://github.com/brave/brave-browser/issues) for my issue if one did not already exist.
