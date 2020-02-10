@@ -8,12 +8,17 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "components/prefs/pref_service.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
+#include "components/sync/driver/sync_driver_switches.h"
+#endif
 
 BraveAppMenuModel::BraveAppMenuModel(
     ui::AcceleratorProvider* provider,
@@ -46,14 +51,18 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
                                IDC_SHOW_BRAVE_WALLET, IDS_SHOW_BRAVE_WALLET);
 #endif
     }
-    InsertItemWithStringIdAt(
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
+    if (switches::IsSyncAllowedByFlag()) {
+      InsertItemWithStringIdAt(
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-        GetIndexOfCommandId(walletEnabled ? IDC_SHOW_BRAVE_WALLET :
-            IDC_SHOW_BRAVE_REWARDS),
+          GetIndexOfCommandId(walletEnabled ? IDC_SHOW_BRAVE_WALLET :
+              IDC_SHOW_BRAVE_REWARDS),
 #else
-        GetIndexOfCommandId(IDC_SHOW_BRAVE_REWARDS),
+          GetIndexOfCommandId(IDC_SHOW_BRAVE_REWARDS),
 #endif
-        IDC_SHOW_BRAVE_SYNC, IDS_SHOW_BRAVE_SYNC);
+          IDC_SHOW_BRAVE_SYNC, IDS_SHOW_BRAVE_SYNC);
+    }
+#endif
   }
 
   // Insert Create New Profile item
