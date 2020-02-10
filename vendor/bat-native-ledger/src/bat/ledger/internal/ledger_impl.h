@@ -106,11 +106,14 @@ class LedgerImpl : public ledger::Ledger,
   void GetPanelPublisherInfo(ledger::ActivityInfoFilterPtr filter,
                              ledger::PublisherInfoCallback callback);
 
-  void GetMediaPublisherInfo(const std::string& media_key,
-                             ledger::PublisherInfoCallback callback);
+  void GetMediaPublisherInfo(
+      const std::string& media_key,
+      ledger::PublisherInfoCallback callback);
 
-  void SetMediaPublisherInfo(const std::string& media_key,
-                             const std::string& publisher_id);
+  void SaveMediaPublisherInfo(
+      const std::string& media_key,
+      const std::string& publisher_key,
+      ledger::ResultCallback callback);
 
   void GetActivityInfoList(uint32_t start,
                            uint32_t limit,

@@ -42,9 +42,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void SavePublisherState(const std::string& publisher_state,
       SavePublisherStateCallback callback) override;
 
-  void LoadMediaPublisherInfo(const std::string& media_key,
-      LoadMediaPublisherInfoCallback callback) override;
-
   void FetchFavIcon(const std::string& url, const std::string& favicon_key,
       FetchFavIconCallback callback) override;
 
@@ -62,9 +59,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void SaveContributionInfo(
       ledger::ContributionInfoPtr info,
       SaveContributionInfoCallback callback) override;
-
-  void SaveMediaPublisherInfo(const std::string& media_key,
-      const std::string& publisher_id) override;
 
   void URIEncode(const std::string& value,
       URIEncodeCallback callback) override;
@@ -280,11 +274,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
     CallbackHolder<LoadLedgerStateCallback>* holder,
     ledger::Result result,
     const std::string& data);
-
-  static void OnLoadMediaPublisherInfo(
-      CallbackHolder<LoadMediaPublisherInfoCallback>* holder,
-      ledger::Result result,
-      ledger::PublisherInfoPtr info);
 
   static void OnFetchFavIcon(
       CallbackHolder<FetchFavIconCallback>* holder,

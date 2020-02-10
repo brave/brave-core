@@ -21,7 +21,6 @@
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/database/database_contribution_info.h"
 #include "brave/components/brave_rewards/browser/database/database_contribution_queue.h"
-#include "brave/components/brave_rewards/browser/database/database_media_publisher_info.h"
 #include "brave/components/brave_rewards/browser/database/database_promotion.h"
 #include "brave/components/brave_rewards/browser/database/database_unblinded_token.h"
 #include "build/build_config.h"
@@ -50,13 +49,6 @@ class PublisherInfoDatabase {
       ledger::PublisherInfoList* list,
       const ledger::ActivityMonth month,
       const int year);
-
-  bool InsertOrUpdateMediaPublisherInfo(
-      const std::string& media_key,
-      const std::string& publisher_key);
-
-  ledger::PublisherInfoPtr GetMediaPublisherInfo(
-      const std::string& media_key);
 
   bool InsertOrUpdateContributionQueue(ledger::ContributionQueuePtr info);
 
@@ -180,7 +172,6 @@ class PublisherInfoDatabase {
   std::unique_ptr<DatabasePromotion> promotion_;
   std::unique_ptr<DatabaseUnblindedToken> unblinded_token_;
   std::unique_ptr<DatabaseContributionInfo> contribution_info_;
-  std::unique_ptr<DatabaseMediaPublisherInfo> media_publisher_info_;
 
   SEQUENCE_CHECKER(sequence_checker_);
   DISALLOW_COPY_AND_ASSIGN(PublisherInfoDatabase);

@@ -8,6 +8,7 @@
 #include "bat/ledger/internal/database/database.h"
 #include "bat/ledger/internal/database/database_activity_info.h"
 #include "bat/ledger/internal/database/database_initialize.h"
+#include "bat/ledger/internal/database/database_media_publisher_info.h"
 #include "bat/ledger/internal/database/database_pending_contribution.h"
 #include "bat/ledger/internal/database/database_publisher_info.h"
 #include "bat/ledger/internal/database/database_recurring_tip.h"
@@ -22,6 +23,8 @@ Database::Database(bat_ledger::LedgerImpl* ledger) :
 
   initialize_ = std::make_unique<DatabaseInitialize>(ledger_);
   activity_info_ = std::make_unique<DatabaseActivityInfo>(ledger_);
+  media_publisher_info_ =
+      std::make_unique<DatabaseMediaPublisherInfo>(ledger_);
   pending_contribution_ =
       std::make_unique<DatabasePendingContribution>(ledger_);
   publisher_info_ = std::make_unique<DatabasePublisherInfo>(ledger_);
@@ -67,6 +70,22 @@ void Database::DeleteActivityInfo(
     const std::string& publisher_key,
     ledger::ResultCallback callback) {
   activity_info_->DeleteRecord(publisher_key, callback);
+}
+
+/**
+ * MEDIA PUBLISHER INFO
+ */
+void Database::SaveMediaPublisherInfo(
+    const std::string& media_key,
+    const std::string& publisher_key,
+    ledger::ResultCallback callback) {
+  media_publisher_info_->InsertOrUpdate(media_key, publisher_key, callback);
+}
+
+void Database::GetMediaPublisherInfo(
+    const std::string& media_key,
+    ledger::PublisherInfoCallback callback) {
+  media_publisher_info_->GetRecord(media_key, callback);
 }
 
 /**

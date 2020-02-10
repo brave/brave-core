@@ -336,7 +336,8 @@ void YouTube::ProcessMedia(const std::map<std::string, std::string>& parts,
   BLOG(ledger_, ledger::LogLevel::LOG_DEBUG) << "Media key: " << media_key;
   BLOG(ledger_, ledger::LogLevel::LOG_DEBUG) << "Media duration: " << duration;
 
-  ledger_->GetMediaPublisherInfo(media_key,
+  ledger_->GetMediaPublisherInfo(
+      media_key,
       std::bind(&YouTube::OnMediaPublisherInfo,
                 this,
                 media_id,
@@ -574,7 +575,10 @@ void YouTube::SavePublisherInfo(const uint64_t duration,
                           window_id,
                           callback);
   if (!media_key.empty()) {
-    ledger_->SetMediaPublisherInfo(media_key, publisher_id);
+    ledger_->SaveMediaPublisherInfo(
+        media_key,
+        publisher_id,
+        [](const ledger::Result _){});
   }
 }
 
@@ -751,14 +755,15 @@ void YouTube::UserPath(uint64_t window_id,
   }
 
   std::string media_key = (std::string)YOUTUBE_MEDIA_TYPE + "_user_" + user;
-  ledger_->GetMediaPublisherInfo(media_key,
-                                 std::bind(&YouTube::OnUserActivity,
-                                           this,
-                                           window_id,
-                                           visit_data,
-                                           media_key,
-                                           _1,
-                                           _2));
+  ledger_->GetMediaPublisherInfo(
+      media_key,
+      std::bind(&YouTube::OnUserActivity,
+          this,
+          window_id,
+          visit_data,
+          media_key,
+          _1,
+          _2));
 }
 
 void YouTube::OnUserActivity(
@@ -805,7 +810,10 @@ void YouTube::OnChannelIdForUser(
     std::string url = GetChannelUrl(channelId);
     std::string publisher_key = GetPublisherKey(channelId);
 
-    ledger_->SetMediaPublisherInfo(media_key, publisher_key);
+    ledger_->SaveMediaPublisherInfo(
+        media_key,
+        publisher_key,
+        [](const ledger::Result _){});
 
     ledger::VisitData new_visit_data;
     new_visit_data.path = path;

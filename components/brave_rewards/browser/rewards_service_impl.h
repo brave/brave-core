@@ -157,11 +157,6 @@ class RewardsServiceImpl : public RewardsService,
       const GetPublisherAllowNonVerifiedCallback& callback) override;
   void GetPublisherAllowVideos(
       const GetPublisherAllowVideosCallback& callback) override;
-  void LoadMediaPublisherInfo(
-      const std::string& media_key,
-      ledger::PublisherInfoCallback callback) override;
-  void SaveMediaPublisherInfo(const std::string& media_key,
-                              const std::string& publisher_id) override;
   void RestorePublishersUI() override;
   void GetBalanceReport(
       const uint32_t month,
@@ -340,9 +335,6 @@ class RewardsServiceImpl : public RewardsService,
       const ledger::Result result,
       ledger::PromotionPtr promotion);
   void TriggerOnRewardsMainEnabled(bool rewards_main_enabled);
-  void OnMediaPublisherInfoSaved(bool success);
-  void OnMediaPublisherInfoLoaded(ledger::PublisherInfoCallback callback,
-                             ledger::PublisherInfoPtr info);
   void OnRestorePublishersUI(const ledger::Result result);
   void OnPublisherInfoListLoaded(uint32_t start,
                                  uint32_t limit,

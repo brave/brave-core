@@ -76,8 +76,10 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD2(GetMediaPublisherInfo,
       void(const std::string&, ledger::PublisherInfoCallback));
 
-  MOCK_METHOD2(SetMediaPublisherInfo,
-      void(const std::string&, const std::string&));
+  MOCK_METHOD3(SaveMediaPublisherInfo,
+      void(const std::string&,
+          const std::string&,
+          ledger::ResultCallback));
 
   MOCK_METHOD4(GetActivityInfoList,
       void(uint32_t,

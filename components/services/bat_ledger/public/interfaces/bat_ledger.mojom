@@ -159,8 +159,6 @@ interface BatLedgerClient {
   OnWalletProperties(ledger.mojom.Result result, ledger.mojom.WalletProperties? properties);
   OnReconcileComplete(ledger.mojom.Result result, string viewing_id,
       double amount, ledger.mojom.RewardsType type);
-  LoadMediaPublisherInfo(string media_key) =>
-      (ledger.mojom.Result result, ledger.mojom.PublisherInfo? publisher_info);
 
   OnPanelPublisherInfo(ledger.mojom.Result result,
                        ledger.mojom.PublisherInfo publisher_info,
@@ -179,7 +177,6 @@ interface BatLedgerClient {
   SetTimer(uint64 time_offset) => (uint32 timer_id);
   KillTimer(uint32 timer_id);
   SaveContributionInfo(ledger.mojom.ContributionInfo info) => (ledger.mojom.Result result);
-  SaveMediaPublisherInfo(string media_key, string publisher_id);
 
   [Sync]
   URIEncode(string value) => (string encoded_value);

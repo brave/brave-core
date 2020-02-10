@@ -64,9 +64,6 @@ PublisherInfoDatabase::PublisherInfoDatabase(
 
   contribution_info_ =
       std::make_unique<DatabaseContributionInfo>(GetCurrentVersion());
-
-  media_publisher_info_ =
-      std::make_unique<DatabaseMediaPublisherInfo>(GetCurrentVersion());
 }
 
 PublisherInfoDatabase::~PublisherInfoDatabase() {
@@ -194,33 +191,6 @@ bool PublisherInfoDatabase::UpdateContributionInfoContributedAmount(
       &GetDB(),
       contribution_id,
       publisher_key);
-}
-
-/**
- *
- * MEDIA PUBLISHER INFO
- *
- */
-bool PublisherInfoDatabase::InsertOrUpdateMediaPublisherInfo(
-    const std::string& media_key,
-    const std::string& publisher_key) {
-  if (!IsInitialized()) {
-    return false;
-  }
-
-  return media_publisher_info_->InsertOrUpdate(
-      &GetDB(),
-      media_key,
-      publisher_key);
-}
-
-ledger::PublisherInfoPtr
-PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
-  if (!IsInitialized()) {
-    return nullptr;
-  }
-
-  return media_publisher_info_->GetRecord(&GetDB(), media_key);
 }
 
 /**
@@ -491,10 +461,6 @@ std::string PublisherInfoDatabase::GetSchema() {
 bool PublisherInfoDatabase::MigrateV0toV1() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  if (!media_publisher_info_->Migrate(&GetDB(), 1)) {
-    return false;
-  }
-
   return true;
 }
 bool PublisherInfoDatabase::MigrateV1toV2() {
@@ -643,10 +609,6 @@ bool PublisherInfoDatabase::MigrateV14toV15() {
   }
 
   if (!contribution_queue_->Migrate(&GetDB(), 15)) {
-    return false;
-  }
-
-  if (!media_publisher_info_->Migrate(&GetDB(), 15)) {
     return false;
   }
 
