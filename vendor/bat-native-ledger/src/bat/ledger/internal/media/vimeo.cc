@@ -714,7 +714,10 @@ void Vimeo::SavePublisherInfo(
                           callback);
 
   if (!media_key.empty()) {
-    ledger_->SetMediaPublisherInfo(media_key, key);
+    ledger_->SaveMediaPublisherInfo(
+        media_key,
+        key,
+        [](const ledger::Result _){});
   }
 }
 

@@ -69,11 +69,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   std::unique_ptr<ledger::LogStream> VerboseLog(const char* file,
                                          int line,
                                          int verbosity_level) const override;
-  void LoadMediaPublisherInfo(
-      const std::string& media_key,
-      ledger::PublisherInfoCallback callback) override;
-  void SaveMediaPublisherInfo(const std::string& media_key,
-                              const std::string& publisher_id) override;
 
   std::string URIEncode(const std::string& value) override;
 

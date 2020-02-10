@@ -127,6 +127,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/database/database_activity_info.h",
     "src/bat/ledger/internal/database/database_initialize.cc",
     "src/bat/ledger/internal/database/database_initialize.h",
+    "src/bat/ledger/internal/database/database_media_publisher_info.cc",
+    "src/bat/ledger/internal/database/database_media_publisher_info.h",
     "src/bat/ledger/internal/database/database_migration.cc",
     "src/bat/ledger/internal/database/database_migration.h",
     "src/bat/ledger/internal/database/database_pending_contribution.cc",

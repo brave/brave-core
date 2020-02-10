@@ -113,12 +113,6 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void LoadNicewareList(ledger::GetNicewareListCallback callback) = 0;
 
-  virtual void LoadMediaPublisherInfo(const std::string& media_key,
-                                PublisherInfoCallback callback) = 0;
-
-  virtual void SaveMediaPublisherInfo(const std::string& media_key,
-                                const std::string& publisher_id) = 0;
-
   virtual void OnPanelPublisherInfo(Result result,
                                    ledger::PublisherInfoPtr publisher_info,
                                    uint64_t windowId) = 0;

@@ -95,14 +95,6 @@ class MockConfirmationsClient : public ConfirmationsClient {
       ledger::ActivityInfoFilterPtr filter,
       ledger::PublisherInfoCallback callback));
 
-  MOCK_METHOD2(LoadMediaPublisherInfo, void(
-      const std::string& media_key,
-      ledger::PublisherInfoCallback callback));
-
-  MOCK_METHOD2(SaveMediaPublisherInfo, void(
-      const std::string& media_key,
-      const std::string& publisher_id));
-
   MOCK_METHOD0(FetchPromotions, void());
 
   MOCK_METHOD1(ClaimPromotion, void(const std::string& promotion_id));

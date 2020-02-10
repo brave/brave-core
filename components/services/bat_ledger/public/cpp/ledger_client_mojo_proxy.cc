@@ -144,28 +144,6 @@ void LedgerClientMojoProxy::OnReconcileComplete(
       type);
 }
 
-// static
-void LedgerClientMojoProxy::OnLoadMediaPublisherInfo(
-    CallbackHolder<LoadMediaPublisherInfoCallback>* holder,
-    ledger::Result result,
-    ledger::PublisherInfoPtr info) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result, std::move(info));
-  delete holder;
-}
-
-void LedgerClientMojoProxy::LoadMediaPublisherInfo(
-    const std::string& media_key,
-    LoadMediaPublisherInfoCallback callback) {
-  // deleted in OnLoadMediaPublisherInfo
-  auto* holder = new CallbackHolder<LoadMediaPublisherInfoCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->LoadMediaPublisherInfo(media_key,
-      std::bind(LedgerClientMojoProxy::OnLoadMediaPublisherInfo,
-                holder, _1, _2));
-}
-
 void LedgerClientMojoProxy::SetTimer(uint64_t time_offset,
     SetTimerCallback callback) {
   uint32_t timer_id;
@@ -246,11 +224,6 @@ void LedgerClientMojoProxy::SaveContributionInfo(
   ledger_client_->SaveContributionInfo(
       std::move(info),
       std::bind(LedgerClientMojoProxy::OnSaveContributionInfo, holder, _1));
-}
-
-void LedgerClientMojoProxy::SaveMediaPublisherInfo(
-    const std::string& media_key, const std::string& publisher_id) {
-  ledger_client_->SaveMediaPublisherInfo(media_key, publisher_id);
 }
 
 void LedgerClientMojoProxy::URIEncode(const std::string& value,

@@ -235,25 +235,6 @@ void BatLedgerClientMojoProxy::SavePublisherState(
         AsWeakPtr(), base::Unretained(handler)));
 }
 
-void OnLoadMediaPublisherInfo(
-    const ledger::PublisherInfoCallback& callback,
-    const ledger::Result result,
-    ledger::PublisherInfoPtr publisher_info) {
-  callback(result, std::move(publisher_info));
-}
-
-void BatLedgerClientMojoProxy::LoadMediaPublisherInfo(
-    const std::string& media_key,
-    ledger::PublisherInfoCallback callback) {
-  if (!Connected()) {
-    callback(ledger::Result::LEDGER_ERROR, nullptr);
-    return;
-  }
-
-  bat_ledger_client_->LoadMediaPublisherInfo(media_key,
-      base::BindOnce(&OnLoadMediaPublisherInfo, std::move(callback)));
-}
-
 void BatLedgerClientMojoProxy::SetTimer(uint64_t time_offset,
     uint32_t* timer_id) {
   if (!Connected()) {
@@ -351,14 +332,6 @@ void BatLedgerClientMojoProxy::SaveContributionInfo(
   bat_ledger_client_->SaveContributionInfo(
       std::move(info),
       base::BindOnce(&OnSaveContributionInfo, std::move(callback)));
-}
-
-void BatLedgerClientMojoProxy::SaveMediaPublisherInfo(
-    const std::string& media_key, const std::string& publisher_id) {
-  if (!Connected())
-    return;
-
-  bat_ledger_client_->SaveMediaPublisherInfo(media_key, publisher_id);
 }
 
 std::string BatLedgerClientMojoProxy::URIEncode(const std::string& value) {

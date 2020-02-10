@@ -233,28 +233,6 @@ std::pair<std::string, base::Value> LoadStateOnFileTaskRunner(
   return result;
 }
 
-bool SaveMediaPublisherInfoOnFileTaskRunner(
-    const std::string& media_key,
-    const std::string& publisher_id,
-    PublisherInfoDatabase* backend) {
-  if (backend && backend->InsertOrUpdateMediaPublisherInfo(media_key,
-        publisher_id))
-    return true;
-
-  return false;
-}
-
-ledger::PublisherInfoPtr
-LoadMediaPublisherInfoOnFileTaskRunner(
-    const std::string& media_key,
-    PublisherInfoDatabase* backend) {
-  ledger::PublisherInfoPtr info;
-  if (!backend)
-    return info;
-
-  return backend->GetMediaPublisherInfo(media_key);
-}
-
 // `callback` has a WeakPtr so this won't crash if the file finishes
 // writing after RewardsServiceImpl has been destroyed
 void PostWriteCallback(
@@ -754,43 +732,6 @@ void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
                          std::move(data));
 }
 
-void RewardsServiceImpl::LoadMediaPublisherInfo(
-    const std::string& media_key,
-    ledger::PublisherInfoCallback callback) {
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::Bind(&LoadMediaPublisherInfoOnFileTaskRunner,
-          media_key, publisher_info_backend_.get()),
-      base::Bind(&RewardsServiceImpl::OnMediaPublisherInfoLoaded,
-                     AsWeakPtr(),
-                     callback));
-}
-
-void RewardsServiceImpl::OnMediaPublisherInfoLoaded(
-    ledger::PublisherInfoCallback callback,
-    ledger::PublisherInfoPtr info) {
-  if (!Connected())
-    return;
-
-  if (!info) {
-    callback(ledger::Result::NOT_FOUND, nullptr);
-    return;
-  }
-
-  callback(ledger::Result::LEDGER_OK, std::move(info));
-}
-
-void RewardsServiceImpl::SaveMediaPublisherInfo(
-    const std::string& media_key,
-    const std::string& publisher_id) {
-base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::Bind(&SaveMediaPublisherInfoOnFileTaskRunner,
-                    media_key,
-                    publisher_id,
-                    publisher_info_backend_.get()),
-      base::Bind(&RewardsServiceImpl::OnMediaPublisherInfoSaved,
-                     AsWeakPtr()));
-}
-
 void RewardsServiceImpl::OnRestorePublishersUI(const ledger::Result result) {
   if (result != ledger::Result::LEDGER_OK) {
     return;
@@ -810,12 +751,6 @@ void RewardsServiceImpl::RestorePublishersUI() {
   bat_ledger_->RestorePublishers(
     base::BindOnce(&RewardsServiceImpl::OnRestorePublishersUI,
                    AsWeakPtr()));
-}
-
-void RewardsServiceImpl::OnMediaPublisherInfoSaved(bool success) {
-  if (!success) {
-    LOG(ERROR) << "Error in OnMediaPublisherInfoSaved";
-  }
 }
 
 std::string RewardsServiceImpl::URIEncode(const std::string& value) {

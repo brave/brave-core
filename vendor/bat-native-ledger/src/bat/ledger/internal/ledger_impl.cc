@@ -482,11 +482,11 @@ void LedgerImpl::SaveActivityInfo(
   bat_database_->SaveActivityInfo(info->Clone(), callback);
 }
 
-void LedgerImpl::SetMediaPublisherInfo(const std::string& media_key,
-                                       const std::string& publisher_id) {
-  if (!media_key.empty() && !publisher_id.empty()) {
-    ledger_client_->SaveMediaPublisherInfo(media_key, publisher_id);
-  }
+void LedgerImpl::SaveMediaPublisherInfo(
+    const std::string& media_key,
+    const std::string& publisher_key,
+    ledger::ResultCallback callback) {
+  bat_database_->SaveMediaPublisherInfo(media_key, publisher_key, callback);
 }
 
 void LedgerImpl::SaveMediaVisit(const std::string& publisher_id,
@@ -579,7 +579,7 @@ void LedgerImpl::GetPanelPublisherInfo(
 void LedgerImpl::GetMediaPublisherInfo(
     const std::string& media_key,
     ledger::PublisherInfoCallback callback) {
-  ledger_client_->LoadMediaPublisherInfo(media_key, callback);
+  bat_database_->GetMediaPublisherInfo(media_key, callback);
 }
 
 void LedgerImpl::GetActivityInfoList(

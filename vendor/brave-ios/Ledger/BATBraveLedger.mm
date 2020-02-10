@@ -1744,31 +1744,11 @@ BATLedgerBridge(BOOL,
   [self handlePublisherListing:publishers start:0 limit:0 callback:callback];
 }
 
-- (void)loadMediaPublisherInfo:(const std::string &)media_key
-                      callback:(ledger::PublisherInfoCallback)callback
-{
-  const auto mediaKey = [NSString stringWithUTF8String:media_key.c_str()];
-  const auto publisher = [BATLedgerDatabase mediaPublisherInfoWithMediaKey:mediaKey];
-  if (publisher) {
-    callback(ledger::Result::LEDGER_OK, publisher.cppObjPtr);
-  } else {
-    callback(ledger::Result::NOT_FOUND, nullptr);
-  }
-}
-
 - (void)saveContributionInfo:(ledger::ContributionInfoPtr)info callback:(ledger::ResultCallback)callback
 {
   BLOG(ledger::LogLevel::LOG_ERROR) << "Cannot save contribution info; Neccessary DB update not available" << std::endl;
   callback(ledger::Result::LEDGER_ERROR);
 }
-
-- (void)saveMediaPublisherInfo:(const std::string &)media_key publisherId:(const std::string &)publisher_id
-{
-  [BATLedgerDatabase insertOrUpdateMediaPublisherInfoWithMediaKey:[NSString stringWithUTF8String:media_key.c_str()]
-                                                      publisherID:[NSString stringWithUTF8String:publisher_id.c_str()]
-                                                       completion:nil];
-}
-
 - (void)publisherListNormalized:(ledger::PublisherInfoList)list
 {
   const auto list_converted = NSArrayFromVector(&list, ^BATPublisherInfo *(const ledger::PublisherInfoPtr& info) {

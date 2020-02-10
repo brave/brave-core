@@ -21,7 +21,6 @@ private:
   void GetOneTimeTips(ledger::PublisherInfoListCallback callback) override;
   void KillTimer(const uint32_t timer_id) override;
   void LoadLedgerState(ledger::OnLoadCallback callback) override;
-  void LoadMediaPublisherInfo(const std::string & media_key, ledger::PublisherInfoCallback callback) override;
   void LoadNicewareList(ledger::GetNicewareListCallback callback) override;
   void LoadPublisherState(ledger::OnLoadCallback callback) override;
   void LoadState(const std::string & name, ledger::OnLoadCallback callback) override;
@@ -33,7 +32,6 @@ private:
   void ResetState(const std::string & name, ledger::OnResetCallback callback) override;
   void SaveContributionInfo(ledger::ContributionInfoPtr info, ledger::ResultCallback callback) override;
   void SaveLedgerState(const std::string & ledger_state, ledger::LedgerCallbackHandler * handler) override;
-  void SaveMediaPublisherInfo(const std::string & media_key, const std::string & publisher_id) override;
   void PublisherListNormalized(ledger::PublisherInfoList list) override;
   void SavePublisherState(const std::string & publisher_state, ledger::LedgerCallbackHandler * handler) override;
   void SaveState(const std::string & name, const std::string & value, ledger::OnSaveCallback callback) override;
