@@ -8,6 +8,8 @@
 
 #include <stdint.h>
 
+#include "base/time/time.h"
+
 namespace brave_base {
 namespace random {
 
@@ -28,15 +30,21 @@ double Uniform_01();
 // Exponential distribution.  Supported on positive real numbers, with
 // probability density function
 //
-//      f(k) = e^{-x/rate} / rate.
+//      f(k) = rate*e^{-rate*x}
 //
-// Return value is in reciprocal units of rate parameter.
+// Return value is in reciprocal units of rate parameter.  (`Rate' is
+// sometimes spelled `lambda'.)
 //
-// Use this to choose a continuous waiting time between events with a
-// prescribed average rate of events per unit of time.  For example,
-// set a timer for Exponential(1.5) minutes if you want there to be an
-// average of 1.5 events per minute.
+// Use this to choose a continuous duration of time between events
+// with a prescribed average frequency.  For example, set a timer for
+// Exponential(1.5) minutes if you want there to be an average of 1.5
+// events per minute.
 double Exponential(double rate);
+
+// Exponential distribution on time deltas.  Supported on positive
+// base::TimeDelta values.  Parametrized by average delay between
+// events, not by average frequency of events.
+base::TimeDelta ExponentialDelay(base::TimeDelta avg_delay);
 
 // Geometric distribution.  Supported on _nonnegative_ integers, with
 // probability mass function
@@ -71,6 +79,8 @@ namespace deterministic {
 double Uniform_01(uint64_t e, uint64_t u);
 double StdExponential(uint64_t s, double p0);
 double Exponential(uint64_t s, double p0, double rate);
+base::TimeDelta ExponentialDelay(uint64_t s, double p0,
+                                 base::TimeDelta avg_delay);
 uint64_t Geometric(uint64_t s, double p0, double period);
 
 }  // namespace deterministic

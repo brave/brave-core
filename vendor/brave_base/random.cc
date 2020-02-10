@@ -71,6 +71,12 @@ double Exponential(double rate) {
   return deterministic::Exponential(s, p0, rate);
 }
 
+base::TimeDelta ExponentialDelay(base::TimeDelta avg_delay) {
+  uint64_t s = Uniform64();
+  double p0 = Uniform_01();
+  return deterministic::ExponentialDelay(s, p0, avg_delay);
+}
+
 uint64_t Geometric(double period) {
   uint64_t s = Uniform64();
   double p0 = Uniform_01();
@@ -89,6 +95,13 @@ double StdExponential(uint64_t s, double p0) {
 
 double Exponential(uint64_t s, double p0, double rate) {
   return StdExponential(s, p0)/rate;
+}
+
+base::TimeDelta ExponentialDelay(uint64_t s, double p0,
+                                 base::TimeDelta avg_delay) {
+  double avg_us = avg_delay.InMicrosecondsF();
+  double us = StdExponential(s, p0) * avg_us;
+  return base::TimeDelta::FromMicrosecondsD(us);
 }
 
 uint64_t Geometric(uint64_t s, double p0, double period) {
