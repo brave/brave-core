@@ -519,7 +519,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnFetchFavIconCompleted(ledger::FetchIconCallback callback,
                           const std::string& favicon_key,
                           const GURL& url,
-                          const BitmapFetcherService::RequestId& request_id,
                           const SkBitmap& image);
   void OnSetOnDemandFaviconComplete(const std::string& favicon_url,
                                     ledger::FetchIconCallback callback,
@@ -703,8 +702,8 @@ class RewardsServiceImpl : public RewardsService,
   base::OneShotEvent ready_;
   base::flat_set<network::SimpleURLLoader*> url_loaders_;
   std::map<uint32_t, std::unique_ptr<base::OneShotTimer>> timers_;
-  std::vector<std::string> current_media_fetchers_;
-  std::vector<BitmapFetcherService::RequestId> request_ids_;
+  std::map<std::string, BitmapFetcherService::RequestId>
+      current_media_fetchers_;
   std::unique_ptr<base::OneShotTimer> notification_startup_timer_;
   std::unique_ptr<base::RepeatingTimer> notification_periodic_timer_;
 

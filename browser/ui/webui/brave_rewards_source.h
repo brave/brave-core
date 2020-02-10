@@ -40,13 +40,11 @@ class BraveRewardsSource : public content::URLDataSource {
  private:
   void OnBitmapFetched(
       content::URLDataSource::GotDataCallback got_data_callback,
-      BitmapFetcherService::RequestId request_id,
       const GURL& url,
       const SkBitmap& bitmap);
 
   Profile* profile_;
   std::vector<GURL> resource_fetchers_;
-  std::vector<BitmapFetcherService::RequestId> request_ids_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveRewardsSource);
 };
