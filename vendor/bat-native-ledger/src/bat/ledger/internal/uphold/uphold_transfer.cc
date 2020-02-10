@@ -35,10 +35,10 @@ void UpholdTransfer::Start(
     return;
   }
 
-  CreateTransaction(transaction, std::move(wallet), callback);
+  CreateTransferTransaction(transaction, std::move(wallet), callback);
 }
 
-void UpholdTransfer::CreateTransaction(
+void UpholdTransfer::CreateTransferTransaction(
     const Transaction& transaction,
     ledger::ExternalWalletPtr wallet,
     TransactionCallback callback) {
@@ -56,6 +56,44 @@ void UpholdTransfer::CreateTransaction(
       "}",
       transaction.amount,
       transaction.address.c_str(),
+      transaction.message.c_str());
+
+  auto create_callback = std::bind(&UpholdTransfer::OnCreateTransaction,
+                            this,
+                            _1,
+                            _2,
+                            _3,
+                            *wallet,
+                            callback);
+  ledger_->LoadURL(
+      GetAPIUrl(path),
+      headers,
+      payload,
+      "application/json",
+      ledger::UrlMethod::POST,
+      create_callback);
+}
+
+void UpholdTransfer::CreateDepositTransaction(
+    const Transaction& transaction,
+    ledger::ExternalWalletPtr wallet,
+    TransactionCallback callback) {
+  auto headers = RequestAuthorization(wallet->token);
+
+  const std::string path = base::StringPrintf(
+      "/v0/me/cards/%s/transactions",
+      wallet->address.c_str());
+
+  const std::string payload = base::StringPrintf(
+      "{ "
+      "  \"denomination\": { \"amount\": %f, \"currency\": \"BAT\" }, "
+      "  \"origin\": \"%s\", "
+      "  \"securityCode\": \"%s\" "
+      "  \"message\": \"%s\" "
+      "}",
+      transaction.amount,
+      transaction.origin.c_str(),
+      transaction.security_code.c_str(),
       transaction.message.c_str());
 
   auto create_callback = std::bind(&UpholdTransfer::OnCreateTransaction,

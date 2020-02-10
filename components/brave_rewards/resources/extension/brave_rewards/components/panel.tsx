@@ -249,27 +249,7 @@ export class Panel extends React.Component<Props, State> {
   }
 
   onAddFunds = (notificationId?: string) => {
-    const { externalWallet } = this.props.rewardsPanelData
-
-    if (notificationId) {
-      this.actions.deleteNotification(notificationId)
-    }
-
-    if (!externalWallet) {
-      return
-    }
-
-    if (externalWallet.addUrl) {
-      chrome.tabs.create({
-        url: externalWallet.addUrl
-      })
-      return
-    }
-
-    if (externalWallet.verifyUrl) {
-      utils.handleUpholdLink(externalWallet.verifyUrl, externalWallet)
-      return
-    }
+    this.onModalBackupOpen();
   }
 
   showTipSiteDetail = (monthly: boolean) => {
@@ -609,6 +589,10 @@ export class Panel extends React.Component<Props, State> {
 
   onDisconnectClick = () => {
     chrome.braveRewards.disconnectWallet('uphold')
+  }
+
+  onModalBackupOpen = () => {
+    this.actions.onModalBackupOpen()
   }
 
   shouldShowConnectedMessage = () => {

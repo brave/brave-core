@@ -24,7 +24,12 @@ namespace braveledger_uphold {
 struct Transaction {
   std::string address;
   double amount;
+  std::string currency;
+  std::string origin;
   std::string message;
+  std::string security_code;
+  Transaction();
+  ~Transaction();
 };
 
 class UpholdTransfer;

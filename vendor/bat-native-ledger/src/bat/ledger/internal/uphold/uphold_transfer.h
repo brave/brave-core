@@ -30,7 +30,12 @@ class UpholdTransfer {
       TransactionCallback callback);
 
  private:
-  void CreateTransaction(
+  void CreateTransferTransaction(
+      const Transaction& transaction,
+      ledger::ExternalWalletPtr wallet,
+      TransactionCallback callback);
+
+  void CreateDepositTransaction(
       const Transaction& transaction,
       ledger::ExternalWalletPtr wallet,
       TransactionCallback callback);

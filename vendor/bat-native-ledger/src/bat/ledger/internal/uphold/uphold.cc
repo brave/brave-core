@@ -32,6 +32,12 @@ namespace {
 
 namespace braveledger_uphold {
 
+inline Transaction::Transaction() {
+}
+
+inline Transaction::~Transaction() {
+}
+
 Uphold::Uphold(bat_ledger::LedgerImpl* ledger) :
     transfer_(std::make_unique<UpholdTransfer>(ledger, this)),
     card_(std::make_unique<UpholdCard>(ledger, this)),
