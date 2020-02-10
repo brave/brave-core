@@ -206,13 +206,13 @@ void Promotion::OnGetAllPromotions(
           this,
           _1,
           braveledger_bind_util::FromPromotionToString(item->Clone()));
-      ledger_->InsertOrUpdatePromotion(item->Clone(), legacy_callback);
+      ledger_->SavePromotion(item->Clone(), legacy_callback);
       continue;
     }
 
     promotions.insert(std::make_pair(item->id, item->Clone()));
 
-    ledger_->InsertOrUpdatePromotion(
+    ledger_->SavePromotion(
         item->Clone(),
         [](const ledger::Result _){});
   }
@@ -306,7 +306,7 @@ void Promotion::OnCompletedAttestation(
       braveledger_bind_util::FromPromotionToString(promotion->Clone()),
       callback);
 
-  ledger_->InsertOrUpdatePromotion(promotion->Clone(), save_callback);
+  ledger_->SavePromotion(promotion->Clone(), save_callback);
 }
 
 void Promotion::AttestedSaved(
@@ -512,7 +512,7 @@ void Promotion::ClaimTokens(
       braveledger_bind_util::FromPromotionToString(promotion->Clone()),
       callback);
 
-  ledger_->InsertOrUpdatePromotion(promotion->Clone(), save_callback);
+  ledger_->SavePromotion(promotion->Clone(), save_callback);
 }
 
 void Promotion::ClaimTokensSaved(
@@ -609,7 +609,7 @@ void Promotion::OnClaimTokens(
       braveledger_bind_util::FromPromotionToString(promotion->Clone()),
       callback);
 
-  ledger_->InsertOrUpdatePromotion(promotion->Clone(), save_callback);
+  ledger_->SavePromotion(promotion->Clone(), save_callback);
 }
 
 void Promotion::ClaimedTokensSaved(
@@ -708,7 +708,7 @@ void Promotion::OnFetchSignedTokens(
             promotion->id,
             callback);
 
-  ledger_->InsertOrUpdatePromotion(
+  ledger_->SavePromotion(
         promotion->Clone(),
         process_callback);
 }
@@ -822,7 +822,7 @@ void Promotion::FinishPromotion(
       static_cast<uint64_t>(base::Time::Now().ToDoubleT());
   promotion->status = ledger::PromotionStatus::FINISHED;
   promotion->claimed_at = current_time;
-  ledger_->InsertOrUpdatePromotion(
+  ledger_->SavePromotion(
         std::move(promotion),
         [](const ledger::Result _){});
   callback(ledger::Result::LEDGER_OK);

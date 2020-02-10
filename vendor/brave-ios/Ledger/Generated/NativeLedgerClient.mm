@@ -170,15 +170,6 @@ void NativeLedgerClient::DeleteContributionQueue(const uint64_t id, ledger::Resu
 void NativeLedgerClient::GetFirstContributionQueue(ledger::GetFirstContributionQueueCallback callback) {
   return [bridge_ getFirstContributionQueue:callback];
 }
-void NativeLedgerClient::InsertOrUpdatePromotion(ledger::PromotionPtr info, ledger::ResultCallback callback) {
-  return [bridge_ insertOrUpdatePromotion:std::move(info) callback:callback];
-}
-void NativeLedgerClient::GetPromotion(const std::string& id, ledger::GetPromotionCallback callback) {
-  return [bridge_ getPromotion:id callback:callback];
-}
-void NativeLedgerClient::DeletePromotionList(const std::vector<std::string>& id_list,  ledger::ResultCallback callback) {
-  return [bridge_ deletePromotionList:id_list callback:callback];
-}
 void NativeLedgerClient::SaveUnblindedTokenList(ledger::UnblindedTokenList list, ledger::ResultCallback callback) {
   return [bridge_ saveUnblindedTokenList:std::move(list) callback:callback];
 }
@@ -193,9 +184,6 @@ ledger::ClientInfoPtr NativeLedgerClient::GetClientInfo() {
 }
 void NativeLedgerClient::UnblindedTokensReady() {
   [bridge_ unblindedTokensReady];
-}
-void NativeLedgerClient::GetAllPromotions(ledger::GetAllPromotionsCallback callback) {
-  [bridge_ getAllPromotions:callback];
 }
 void NativeLedgerClient::DeleteUnblindedTokensForPromotion(const std::string& promotion_id, ledger::ResultCallback callback) {
   [bridge_ deleteUnblindedTokensForPromotion:promotion_id callback:callback];

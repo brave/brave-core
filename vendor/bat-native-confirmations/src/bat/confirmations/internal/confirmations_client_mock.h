@@ -275,21 +275,6 @@ class MockConfirmationsClient : public ConfirmationsClient {
   MOCK_METHOD1(GetFirstContributionQueue, void(
     ledger::GetFirstContributionQueueCallback callback));
 
-  MOCK_METHOD2(InsertOrUpdatePromotion, void(
-    ledger::PromotionPtr info,
-    ledger::ResultCallback callback));
-
-  MOCK_METHOD2(GetPromotion, void(
-    const std::string& id,
-    ledger::GetPromotionCallback callback));
-
-  MOCK_METHOD1(GetAllPromotions, void(
-    ledger::GetAllPromotionsCallback callback));
-
-  MOCK_METHOD2(DeletePromotionList, void(
-      const std::vector<std::string>& id_list,
-      ledger::ResultCallback callback));
-
   MOCK_METHOD2(SaveUnblindedTokenList, void(
     ledger::UnblindedTokenList list,
     ledger::ResultCallback callback));

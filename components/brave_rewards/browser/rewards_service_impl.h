@@ -609,21 +609,6 @@ class RewardsServiceImpl : public RewardsService,
   void GetFirstContributionQueue(
     ledger::GetFirstContributionQueueCallback callback) override;
 
-  void InsertOrUpdatePromotion(
-      ledger::PromotionPtr info,
-      ledger::ResultCallback callback) override;
-
-  void GetPromotion(
-      const std::string& id,
-      ledger::GetPromotionCallback callback) override;
-
-  void GetAllPromotions(
-      ledger::GetAllPromotionsCallback callback) override;
-
-  void DeletePromotionList(
-      const std::vector<std::string>& id_list,
-      ledger::ResultCallback callback) override;
-
   void SaveUnblindedTokenList(
       ledger::UnblindedTokenList list,
       ledger::ResultCallback callback) override;
@@ -720,17 +705,9 @@ class RewardsServiceImpl : public RewardsService,
     ledger::GetFirstContributionQueueCallback callback,
     ledger::ContributionQueuePtr info);
 
-  void OnGetPromotion(
-      ledger::GetPromotionCallback callback,
-      ledger::PromotionPtr info);
-
   void OnGetAllUnblindedTokens(
       ledger::GetAllUnblindedTokensCallback callback,
       ledger::UnblindedTokenList list);
-
-  void OnGetAllPromotions(
-      ledger::GetAllPromotionsCallback callback,
-      ledger::PromotionMap promotions);
 
   void OnGetBalanceReport(
       GetBalanceReportCallback callback,

@@ -93,6 +93,8 @@ bool GetBoolColumn(ledger::DBRecord* record, const int index);
 
 std::string GetStringColumn(ledger::DBRecord* record, const int index);
 
+std::string GenerateStringInCase(const std::vector<std::string>& items);
+
 }  // namespace braveledger_database
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_UTIL_H_

@@ -117,7 +117,7 @@ TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
           callback(std::move(map));
       }));
 
-  EXPECT_CALL(*mock_ledger_impl_, InsertOrUpdatePromotion(_, _)).Times(1);
+  EXPECT_CALL(*mock_ledger_impl_, SavePromotion(_, _)).Times(1);
 
   promotion_->Fetch(fetch_promotion_callback);
   inserted = true;
