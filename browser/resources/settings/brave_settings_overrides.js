@@ -153,12 +153,15 @@ BravePatching.RegisterPolymerTemplateModifications({
     // Move Appearance item
     const appearanceBrowserEl = getMenuElement(templateContent, '/appearance')
     getStartedEl.insertAdjacentElement('afterend', appearanceBrowserEl)
-    // Add Sync item
-    const syncEl = createMenuElement(loadTimeData.getString('braveSync'), '/braveSync', 'brave_settings:sync')
-    appearanceBrowserEl.insertAdjacentElement('afterend', syncEl)
-    // Add Shields item
+    // Add Sync and Shields item
     const shieldsEl = createMenuElement(loadTimeData.getString('braveShieldsTitle'), '/shields',  'brave_settings:shields')
-    syncEl.insertAdjacentElement('afterend', shieldsEl)
+    if (loadTimeData.getBoolean('isSyncDisabled')) {
+      appearanceBrowserEl.insertAdjacentElement('afterend', shieldsEl)
+    } else {
+      const syncEl = createMenuElement(loadTimeData.getString('braveSync'), '/braveSync', 'brave_settings:sync')
+      appearanceBrowserEl.insertAdjacentElement('afterend', syncEl)
+      syncEl.insertAdjacentElement('afterend', shieldsEl)
+    }
     // Add Embed Blocking item
     const embedEl = createMenuElement(loadTimeData.getString('socialBlocking'), '/socialBlocking', 'brave_settings:social-permissions')
     shieldsEl.insertAdjacentElement('afterend', embedEl)
