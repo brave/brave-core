@@ -10,6 +10,7 @@
 #include "bat/ledger/internal/database/database_initialize.h"
 #include "bat/ledger/internal/database/database_media_publisher_info.h"
 #include "bat/ledger/internal/database/database_pending_contribution.h"
+#include "bat/ledger/internal/database/database_promotion.h"
 #include "bat/ledger/internal/database/database_publisher_info.h"
 #include "bat/ledger/internal/database/database_recurring_tip.h"
 #include "bat/ledger/internal/database/database_server_publisher_info.h"
@@ -27,6 +28,7 @@ Database::Database(bat_ledger::LedgerImpl* ledger) :
       std::make_unique<DatabaseMediaPublisherInfo>(ledger_);
   pending_contribution_ =
       std::make_unique<DatabasePendingContribution>(ledger_);
+  promotion_ = std::make_unique<DatabasePromotion>(ledger_);
   publisher_info_ = std::make_unique<DatabasePublisherInfo>(ledger_);
   recurring_tip_ = std::make_unique<DatabaseRecurringTip>(ledger_);
   server_publisher_info_ =
@@ -115,6 +117,31 @@ void Database::RemovePendingContribution(
 
 void Database::RemoveAllPendingContributions(ledger::ResultCallback callback) {
   pending_contribution_->DeleteAllRecords(callback);
+}
+
+/**
+ * PROMOTION
+ */
+void Database::SavePromotion(
+    ledger::PromotionPtr info,
+    ledger::ResultCallback callback) {
+  promotion_->InsertOrUpdate(std::move(info), callback);
+}
+
+void Database::GetPromotion(
+    const std::string& id,
+    ledger::GetPromotionCallback callback) {
+  promotion_->GetRecord(id, callback);
+}
+
+void Database::GetAllPromotions(ledger::GetAllPromotionsCallback callback) {
+  promotion_->GetAllRecords(callback);
+}
+
+void Database::DeletePromotionList(
+    const std::vector<std::string>& ids,
+    ledger::ResultCallback callback) {
+  promotion_->DeleteRecordList(ids, callback);
 }
 
 /**

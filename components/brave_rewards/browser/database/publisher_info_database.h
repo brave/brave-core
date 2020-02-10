@@ -21,7 +21,6 @@
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/database/database_contribution_info.h"
 #include "brave/components/brave_rewards/browser/database/database_contribution_queue.h"
-#include "brave/components/brave_rewards/browser/database/database_promotion.h"
 #include "brave/components/brave_rewards/browser/database/database_unblinded_token.h"
 #include "build/build_config.h"
 #include "sql/database.h"
@@ -55,14 +54,6 @@ class PublisherInfoDatabase {
   ledger::ContributionQueuePtr GetFirstContributionQueue();
 
   bool DeleteContributionQueue(const uint64_t id);
-
-  bool InsertOrUpdatePromotion(ledger::PromotionPtr info);
-
-  ledger::PromotionPtr GetPromotion(const std::string& id);
-
-  ledger::PromotionMap GetAllPromotions();
-
-  bool DeletePromotionList(const std::vector<std::string>& id_list);
 
   bool SaveUnblindedTokenList(ledger::UnblindedTokenList list);
 
@@ -169,7 +160,6 @@ class PublisherInfoDatabase {
 
   std::unique_ptr<base::MemoryPressureListener> memory_pressure_listener_;
   std::unique_ptr<DatabaseContributionQueue> contribution_queue_;
-  std::unique_ptr<DatabasePromotion> promotion_;
   std::unique_ptr<DatabaseUnblindedToken> unblinded_token_;
   std::unique_ptr<DatabaseContributionInfo> contribution_info_;
 

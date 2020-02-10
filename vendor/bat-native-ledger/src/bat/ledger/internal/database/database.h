@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "bat/ledger/ledger.h"
 
@@ -21,6 +22,7 @@ class DatabaseInitialize;
 class DatabaseActivityInfo;
 class DatabaseMediaPublisherInfo;
 class DatabasePendingContribution;
+class DatabasePromotion;
 class DatabasePublisherInfo;
 class DatabaseRecurringTip;
 class DatabaseServerPublisherInfo;
@@ -87,6 +89,23 @@ class Database {
   void RemoveAllPendingContributions(ledger::ResultCallback callback);
 
   /**
+   * PROMOTION
+   */
+  void SavePromotion(
+      ledger::PromotionPtr info,
+      ledger::ResultCallback callback);
+
+  void GetPromotion(
+      const std::string& id,
+      ledger::GetPromotionCallback callback);
+
+  void GetAllPromotions(ledger::GetAllPromotionsCallback callback);
+
+  void DeletePromotionList(
+      const std::vector<std::string>& ids,
+      ledger::ResultCallback callback);
+
+  /**
    * PUBLISHER INFO
    */
   void SavePublisherInfo(
@@ -133,6 +152,7 @@ class Database {
   std::unique_ptr<DatabaseInitialize> initialize_;
   std::unique_ptr<DatabaseActivityInfo> activity_info_;
   std::unique_ptr<DatabasePendingContribution> pending_contribution_;
+  std::unique_ptr<DatabasePromotion> promotion_;
   std::unique_ptr<DatabaseMediaPublisherInfo> media_publisher_info_;
   std::unique_ptr<DatabasePublisherInfo> publisher_info_;
   std::unique_ptr<DatabaseRecurringTip> recurring_tip_;

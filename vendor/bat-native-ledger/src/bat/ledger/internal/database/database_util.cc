@@ -322,4 +322,19 @@ std::string GetStringColumn(ledger::DBRecord* record, const int index) {
   return record->fields.at(index)->get_string_value();
 }
 
+std::string GenerateStringInCase(const std::vector<std::string>& items) {
+  if (items.empty()) {
+    return "";
+  }
+
+  std::string items_join = base::JoinString(items, ", ");
+  base::ReplaceSubstringsAfterOffset(
+      &items_join,
+      0,
+      ", ",
+      "\", \"");
+
+  return base::StringPrintf("\"%s\"", items_join.c_str());
+}
+
 }  // namespace braveledger_database

@@ -593,7 +593,7 @@ class LedgerImpl : public ledger::Ledger,
   void GetFirstContributionQueue(
     ledger::GetFirstContributionQueueCallback callback);
 
-  virtual void InsertOrUpdatePromotion(
+  virtual void SavePromotion(
     ledger::PromotionPtr info,
     ledger::ResultCallback callback);
 

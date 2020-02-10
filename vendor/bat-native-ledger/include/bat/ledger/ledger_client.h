@@ -229,21 +229,6 @@ class LEDGER_EXPORT LedgerClient {
   virtual void GetFirstContributionQueue(
     ledger::GetFirstContributionQueueCallback callback) = 0;
 
-  virtual void InsertOrUpdatePromotion(
-    ledger::PromotionPtr info,
-    ledger::ResultCallback callback) = 0;
-
-  virtual void GetPromotion(
-    const std::string& id,
-    ledger::GetPromotionCallback callback) = 0;
-
-  virtual void GetAllPromotions(
-    ledger::GetAllPromotionsCallback callback) = 0;
-
-  virtual void DeletePromotionList(
-      const std::vector<std::string>& id_list,
-      ledger::ResultCallback callback) = 0;
-
   virtual void SaveUnblindedTokenList(
     ledger::UnblindedTokenList list,
     ledger::ResultCallback callback) = 0;

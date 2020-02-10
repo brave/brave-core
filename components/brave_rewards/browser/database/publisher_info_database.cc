@@ -28,20 +28,20 @@ const int kCurrentVersionNumber = 15;
 const int kCompatibleVersionNumber = 1;
 
 
-ledger::ReportType ConvertPromotionTypeToReportType(const int type) {
-  switch (type) {
-    case 0: {
-      return ledger::ReportType::GRANT_UGP;
-    }
-    case 1: {
-      return ledger::ReportType::GRANT_AD;
-    }
-    default: {
-      NOTREACHED();
-      return ledger::ReportType::GRANT_UGP;
-    }
-  }
-}
+// ledger::ReportType ConvertPromotionTypeToReportType(const int type) {
+//  switch (type) {
+//    case 0: {
+//      return ledger::ReportType::GRANT_UGP;
+//    }
+//    case 1: {
+//      return ledger::ReportType::GRANT_AD;
+//    }
+//    default: {
+//      NOTREACHED();
+//      return ledger::ReportType::GRANT_UGP;
+//    }
+//  }
+// }
 
 }  // namespace
 
@@ -55,9 +55,6 @@ PublisherInfoDatabase::PublisherInfoDatabase(
 
   contribution_queue_ =
       std::make_unique<DatabaseContributionQueue>(GetCurrentVersion());
-
-  promotion_ =
-      std::make_unique<DatabasePromotion>(GetCurrentVersion());
 
   unblinded_token_ =
       std::make_unique<DatabaseUnblindedToken>(GetCurrentVersion());
@@ -226,42 +223,6 @@ bool PublisherInfoDatabase::DeleteContributionQueue(const uint64_t id) {
 
 /**
  *
- * PROMOTION
- *
- */
-bool PublisherInfoDatabase::InsertOrUpdatePromotion(
-    ledger::PromotionPtr info) {
-  if (!IsInitialized()) {
-    return false;
-  }
-
-  return promotion_->InsertOrUpdate(&GetDB(), std::move(info));
-}
-
-ledger::PromotionPtr
-PublisherInfoDatabase::GetPromotion(const std::string& id) {
-  if (!IsInitialized()) {
-    return nullptr;
-  }
-
-  return promotion_->GetRecord(&GetDB(), id);
-}
-
-ledger::PromotionMap PublisherInfoDatabase::GetAllPromotions() {
-  if (!IsInitialized()) {
-    return {};
-  }
-
-  return promotion_->GetAllRecords(&GetDB());
-}
-
-bool PublisherInfoDatabase::DeletePromotionList(
-    const std::vector<std::string>& id_list) {
-  return promotion_->DeleteRecordList(&GetDB(), id_list);
-}
-
-/**
- *
  * UNBLINDED TOKEN
  *
  */
@@ -313,36 +274,37 @@ void PublisherInfoDatabase::GetTransactionReport(
     ledger::TransactionReportInfoList* list,
     const ledger::ActivityMonth month,
     const int year) {
-  DCHECK(list);
-  if (!list || !IsInitialized()) {
-    return;
-  }
-
-  auto promotions = promotion_->GetAllRecords(&GetDB());
-  const auto converted_month = static_cast<int>(month);
-
-  for (const auto& promotion : promotions) {
-    if (!promotion.second ||
-        promotion.second->status != ledger::PromotionStatus::FINISHED ||
-        promotion.second->claimed_at == 0) {
-      continue;
-    }
-
-    base::Time time = base::Time::FromDoubleT(promotion.second->claimed_at);
-    base::Time::Exploded exploded;
-    time.LocalExplode(&exploded);
-    if (exploded.year != year ||
-        exploded.month != converted_month) {
-      continue;
-    }
-
-    auto report = ledger::TransactionReportInfo::New();
-    report->type = ConvertPromotionTypeToReportType(
-        static_cast<int>(promotion.second->type));
-    report->amount = promotion.second->approximate_value;
-    report->created_at = promotion.second->claimed_at;
-    list->push_back(std::move(report));
-  }
+  // TODO(nejczdovc): move to ledger
+//  DCHECK(list);
+//  if (!list || !IsInitialized()) {
+//    return;
+//  }
+//
+//  auto promotions = promotion_->GetAllRecords(&GetDB());
+//  const auto converted_month = static_cast<int>(month);
+//
+//  for (const auto& promotion : promotions) {
+//    if (!promotion.second ||
+//        promotion.second->status != ledger::PromotionStatus::FINISHED ||
+//        promotion.second->claimed_at == 0) {
+//      continue;
+//    }
+//
+//    base::Time time = base::Time::FromDoubleT(promotion.second->claimed_at);
+//    base::Time::Exploded exploded;
+//    time.LocalExplode(&exploded);
+//    if (exploded.year != year ||
+//        exploded.month != converted_month) {
+//      continue;
+//    }
+//
+//    auto report = ledger::TransactionReportInfo::New();
+//    report->type = ConvertPromotionTypeToReportType(
+//        static_cast<int>(promotion.second->type));
+//    report->amount = promotion.second->approximate_value;
+//    report->created_at = promotion.second->claimed_at;
+//    list->push_back(std::move(report));
+//  }
 }
 
 // Other -------------------------------------------------------------------
@@ -535,10 +497,6 @@ bool PublisherInfoDatabase::MigrateV9toV10() {
     return false;
   }
 
-  if (!promotion_->Migrate(&GetDB(), 10)) {
-    return false;
-  }
-
   if (!unblinded_token_->Migrate(&GetDB(), 10)) {
     return false;
   }
@@ -574,20 +532,12 @@ bool PublisherInfoDatabase::MigrateV12toV13() {
     return false;
   }
 
-  if (!promotion_->Migrate(&GetDB(), 13)) {
-    return false;
-  }
-
   return transaction.Commit();
 }
 
 bool PublisherInfoDatabase::MigrateV13toV14() {
   sql::Transaction transaction(&GetDB());
   if (!transaction.Begin()) {
-    return false;
-  }
-
-  if (!promotion_->Migrate(&GetDB(), 14)) {
     return false;
   }
 
@@ -609,10 +559,6 @@ bool PublisherInfoDatabase::MigrateV14toV15() {
   }
 
   if (!contribution_queue_->Migrate(&GetDB(), 15)) {
-    return false;
-  }
-
-  if (!promotion_->Migrate(&GetDB(), 15)) {
     return false;
   }
 

@@ -1594,27 +1594,27 @@ void LedgerImpl::FetchPromotions(
   bat_promotion_->Fetch(callback);
 }
 
-void LedgerImpl::InsertOrUpdatePromotion(
+void LedgerImpl::SavePromotion(
     ledger::PromotionPtr info,
     ledger::ResultCallback callback) {
-  ledger_client_->InsertOrUpdatePromotion(std::move(info), callback);
+  bat_database_->SavePromotion(std::move(info), callback);
 }
 
 void LedgerImpl::GetPromotion(
     const std::string& id,
     ledger::GetPromotionCallback callback) {
-  ledger_client_->GetPromotion(id, callback);
+  bat_database_->GetPromotion(id, callback);
 }
 
 void LedgerImpl::GetAllPromotions(
     ledger::GetAllPromotionsCallback callback) {
-  ledger_client_->GetAllPromotions(callback);
+  bat_database_->GetAllPromotions(callback);
 }
 
 void LedgerImpl::DeletePromotionList(
-    const std::vector<std::string>& id_list,
+    const std::vector<std::string>& ids,
     ledger::ResultCallback callback) {
-  ledger_client_->DeletePromotionList(id_list, callback);
+  bat_database_->DeletePromotionList(ids, callback);
 }
 
 void LedgerImpl::SaveUnblindedTokenList(

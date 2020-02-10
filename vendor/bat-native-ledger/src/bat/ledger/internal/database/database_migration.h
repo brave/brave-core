@@ -19,6 +19,7 @@ namespace braveledger_database {
 class DatabaseActivityInfo;
 class DatabaseMediaPublisherInfo;
 class DatabasePendingContribution;
+class DatabasePromotion;
 class DatabasePublisherInfo;
 class DatabaseRecurringTip;
 class DatabaseServerPublisherInfo;
@@ -38,6 +39,7 @@ class DatabaseMigration {
   std::unique_ptr<DatabaseActivityInfo> activity_info_;
   std::unique_ptr<DatabaseMediaPublisherInfo> media_publisher_info_;
   std::unique_ptr<DatabasePendingContribution> pending_contribution_;
+  std::unique_ptr<DatabasePromotion> promotion_;
   std::unique_ptr<DatabasePublisherInfo> publisher_info_;
   std::unique_ptr<DatabaseRecurringTip> recurring_tip_;
   std::unique_ptr<DatabaseServerPublisherInfo> server_publisher_info_;
