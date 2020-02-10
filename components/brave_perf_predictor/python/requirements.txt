@@ -1,6 +1,6 @@
-numpy
 jupyterlab
 pandas
 sklearn
 matplotlib
 jinja2
+scikit-learn=0.21.3

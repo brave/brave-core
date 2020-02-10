@@ -27,7 +27,7 @@ class NamedThirdPartyRegistry {
   // entities not relevant to the bandwith prediction model (i.e. those not
   // seen in training the model).
   bool LoadMappings(const base::StringPiece entities,
-                    const bool discard_irrelevant);
+                    bool discard_irrelevant);
   base::Optional<std::string> GetThirdParty(
       const base::StringPiece domain) const;
 

@@ -38,7 +38,7 @@ class P3ABandwidthSavingsPermanentState {
   struct DailySaving {
     base::Time day;
     uint64_t saving;
-    // DailySaving(base::Time day, uint64_t saving): day(day), saving(saving) {}
+    DailySaving(base::Time day, uint64_t saving): day(day), saving(saving) {}
   };
   void LoadSavingsDaily();
   void SaveSavingsDaily();

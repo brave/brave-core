@@ -54,7 +54,7 @@ TEST(BraveSavingsPredictorTest, HandlesEmptyFeatureset) {
 TEST(BraveSavingsPredictorTest, HandlesCompleteFeatureset) {
   base::flat_map<std::string, double> features;
   for (unsigned int i = 0; i < feature_count; i++) {
-    features[feature_sequence[i]] = 0;
+    features[feature_sequence->at(i)] = 0;
   }
   const double result = LinregPredictNamed(features);
   const std::array<double, feature_count> array_features{};

@@ -16,17 +16,17 @@ source_set("browser") {
   ]
 
   sources = [
+    "bandwidth_linreg_parameters.h",
+    "bandwidth_linreg.cc",
+    "bandwidth_linreg.h",
     "bandwidth_savings_predictor.cc",
     "bandwidth_savings_predictor.h",
+    "named_third_party_registry.cc",
+    "named_third_party_registry.h",
     "perf_predictor_page_metrics_observer.cc",
     "perf_predictor_page_metrics_observer.h",
     "perf_predictor_tab_helper.cc",
     "perf_predictor_tab_helper.h",
-    "bandwidth_linreg.cc",
-    "bandwidth_linreg.h",
-    "bandwidth_linreg_parameters.h",
-    "named_third_party_registry.cc",
-    "named_third_party_registry.h",
   ]
 
   deps = [
@@ -42,17 +42,16 @@ source_set("browser") {
     "//content/public/common",
     "//net/base/registry_controlled_domains",
     "//services/metrics/public/cpp:metrics_cpp",
-    "//third_party/re2",
     "//ui/base",
-    "//url"
+    "//url",
   ]
 
   if (brave_p3a_enabled) {
     sources += [
-      "p3a_bandwidth_savings_tracker.cc",
-      "p3a_bandwidth_savings_tracker.h",
       "p3a_bandwidth_savings_permanent_state.cc",
       "p3a_bandwidth_savings_permanent_state.h",
+      "p3a_bandwidth_savings_tracker.cc",
+      "p3a_bandwidth_savings_tracker.h",
     ]
   }
 }

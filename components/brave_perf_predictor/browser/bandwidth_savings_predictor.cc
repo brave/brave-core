@@ -15,7 +15,7 @@
 
 namespace brave_perf_predictor {
 
-BandwidthSavingsPredictor::BandwidthSavingsPredictor() {}
+BandwidthSavingsPredictor::BandwidthSavingsPredictor() = default;
 
 BandwidthSavingsPredictor::~BandwidthSavingsPredictor() = default;
 
@@ -148,6 +148,7 @@ double BandwidthSavingsPredictor::PredictSavingsBytes() const {
 
 void BandwidthSavingsPredictor::Reset() {
   feature_map_.clear();
+  main_frame_url_ = {};
 }
 
 }  // namespace brave_perf_predictor

@@ -58,7 +58,8 @@ class BandwidthSavingsPredictor {
  private:
   FRIEND_TEST_ALL_PREFIXES(BandwidthSavingsPredictorTest, FeaturiseBlocked);
   FRIEND_TEST_ALL_PREFIXES(BandwidthSavingsPredictorTest, FeaturiseTiming);
-  FRIEND_TEST_ALL_PREFIXES(BandwidthSavingsPredictorTest, FeaturiseResourceLoading);
+  FRIEND_TEST_ALL_PREFIXES(BandwidthSavingsPredictorTest,
+                           FeaturiseResourceLoading);
 
   GURL main_frame_url_;
   base::flat_map<std::string, double> feature_map_;

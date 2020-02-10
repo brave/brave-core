@@ -53,7 +53,8 @@ void P3ABandwidthSavingsPermanentState::AddSavings(uint64_t delta) {
 base::Optional<uint64_t>
 P3ABandwidthSavingsPermanentState::GetFullPeriodSavingsBytes() {
   if (daily_savings_.size() == kNumOfSavedDailyUptimes) {
-    return static_cast<uint64_t>(GetSavingsTotal() / 1024 / 1024);
+    // divide by 1024*1024 = 2^20 to convert bytes -> MB
+    return GetSavingsTotal() >> 20;
   } else {
     return base::nullopt;
   }
@@ -63,21 +64,21 @@ uint64_t P3ABandwidthSavingsPermanentState::GetSavingsTotal() const {
   // We record only saving for last N days.
   const base::Time n_days_ago =
       base::Time::Now() - base::TimeDelta::FromDays(kNumOfSavedDailyUptimes);
-  return std::accumulate(daily_savings_.begin(), daily_savings_.end(),
-                         DailySaving(),
-                         [n_days_ago](const auto& u1, const auto& u2) {
+  return std::accumulate(daily_savings_.begin(), daily_savings_.end(), 0UL,
+                         [n_days_ago](const uint64_t acc, const auto& u2) {
                            uint64_t add = 0;
                            // Check only last continious days.
                            if (u2.day > n_days_ago) {
                              add = u2.saving;
                            }
-                           return DailySaving{{}, u1.saving + add};
-                         })
-      .saving;
+                           return acc + add;
+                         });
 }
 
 void P3ABandwidthSavingsPermanentState::LoadSavingsDaily() {
   DCHECK(daily_savings_.empty());
+  if (!user_prefs_)
+    return;
   const base::ListValue* list =
       user_prefs_->GetList(prefs::kBandwidthSavedDailyBytes);
   if (!list)
@@ -90,9 +91,8 @@ void P3ABandwidthSavingsPermanentState::LoadSavingsDaily() {
       continue;
     if (daily_savings_.size() == kNumOfSavedDailyUptimes)
       break;
-    daily_savings_.emplace_back(
-        DailySaving{base::Time::FromDoubleT(day->GetDouble()),
-                    (uint64_t)saving->GetDouble()});
+    daily_savings_.emplace_back(base::Time::FromDoubleT(day->GetDouble()),
+                                static_cast<uint64_t>(saving->GetDouble()));
   }
 }
 
@@ -100,6 +100,8 @@ void P3ABandwidthSavingsPermanentState::SaveSavingsDaily() {
   DCHECK(!daily_savings_.empty());
   DCHECK_LE(daily_savings_.size(), kNumOfSavedDailyUptimes);
 
+  if (!user_prefs_)
+    return;
   ListPrefUpdate update(user_prefs_, prefs::kBandwidthSavedDailyBytes);
   base::ListValue* list = update.Get();
   list->Clear();

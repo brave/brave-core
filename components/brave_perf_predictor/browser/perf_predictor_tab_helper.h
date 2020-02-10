@@ -45,23 +45,21 @@ class PerfPredictorTabHelper
  public:
   explicit PerfPredictorTabHelper(content::WebContents*);
   ~PerfPredictorTabHelper() override;
-  // disallow copying
   PerfPredictorTabHelper(const PerfPredictorTabHelper&) = delete;
   PerfPredictorTabHelper& operator=(const PerfPredictorTabHelper&) = delete;
 
-  void OnBlockedSubresource(const std::string& subresource);
   void OnPageLoadTimingUpdated(
       const page_load_metrics::mojom::PageLoadTiming& timing);
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
-  static void DispatchBlockedEvent(
-    const std::string& subresource,
-    int render_process_id,
-    int render_frame_id,
-    int frame_tree_node_id);
+  static void DispatchBlockedEvent(const std::string& subresource,
+                                   int render_process_id,
+                                   int render_frame_id,
+                                   int frame_tree_node_id);
 
  private:
   friend class content::WebContentsUserData<PerfPredictorTabHelper>;
   void RecordSavings();
+  void OnBlockedSubresource(const std::string& subresource);
 
   // content::WebContentsObserver overrides.
   void DidStartNavigation(

@@ -389,8 +389,7 @@ void DispatchBlockedEvent(const GURL& request_url,
 #if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
   brave_perf_predictor::PerfPredictorTabHelper::DispatchBlockedEvent(
       request_url.spec(), render_process_id,
-      render_frame_id, frame_tree_node_id
-  );
+      render_frame_id, frame_tree_node_id);
 #endif
 }
 

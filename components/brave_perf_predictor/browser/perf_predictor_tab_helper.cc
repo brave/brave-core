@@ -18,10 +18,9 @@
 namespace brave_perf_predictor {
 
 namespace {
-content::WebContents* GetWebContents(
-    int render_process_id,
-    int render_frame_id,
-    int frame_tree_node_id) {
+content::WebContents* GetWebContents(int render_process_id,
+                                     int render_frame_id,
+                                     int frame_tree_node_id) {
   content::WebContents* web_contents =
       content::WebContents::FromFrameTreeNodeId(frame_tree_node_id);
   if (!web_contents) {
@@ -30,30 +29,12 @@ content::WebContents* GetWebContents(
     if (!rfh) {
       return nullptr;
     }
-    web_contents =
-        content::WebContents::FromRenderFrameHost(rfh);
+    web_contents = content::WebContents::FromRenderFrameHost(rfh);
   }
   return web_contents;
 }
 
 }  // namespace
-
-// static
-void PerfPredictorTabHelper::DispatchBlockedEvent(const std::string& subresource,
-                                                  int render_process_id,
-                                                  int render_frame_id,
-                                                  int frame_tree_node_id) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-
-  content::WebContents* web_contents = GetWebContents(
-      render_process_id, render_frame_id, frame_tree_node_id);
-  PerfPredictorTabHelper* blocking_observer =
-      brave_perf_predictor::PerfPredictorTabHelper::FromWebContents(
-          web_contents);
-  if (blocking_observer) {
-    blocking_observer->OnBlockedSubresource(subresource);
-  }
-}
 
 PerfPredictorTabHelper::PerfPredictorTabHelper(
     content::WebContents* web_contents)
@@ -69,6 +50,69 @@ PerfPredictorTabHelper::PerfPredictorTabHelper(
 }
 
 PerfPredictorTabHelper::~PerfPredictorTabHelper() = default;
+
+void PerfPredictorTabHelper::OnPageLoadTimingUpdated(
+    const page_load_metrics::mojom::PageLoadTiming& timing) {
+  bandwidth_predictor_->OnPageLoadTimingUpdated(timing);
+}
+
+// static
+void PerfPredictorTabHelper::RegisterProfilePrefs(
+    PrefRegistrySimple* registry) {
+  registry->RegisterUint64Pref(prefs::kBandwidthSavedBytes, 0);
+}
+
+// static
+void PerfPredictorTabHelper::DispatchBlockedEvent(
+    const std::string& subresource,
+    int render_process_id,
+    int render_frame_id,
+    int frame_tree_node_id) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  content::WebContents* web_contents =
+      GetWebContents(render_process_id, render_frame_id, frame_tree_node_id);
+  if (!web_contents)
+    return;
+
+  PerfPredictorTabHelper* blocking_observer =
+      brave_perf_predictor::PerfPredictorTabHelper::FromWebContents(
+          web_contents);
+  if (blocking_observer) {
+    blocking_observer->OnBlockedSubresource(subresource);
+  }
+}
+
+void PerfPredictorTabHelper::RecordSavings() {
+  if (web_contents()) {
+    const uint64_t savings =
+        static_cast<uint64_t>(bandwidth_predictor_->PredictSavingsBytes());
+    bandwidth_predictor_->Reset();
+    VLOG(3) << "Saving computed bw saving = " << savings;
+    if (savings > 0) {
+      // BrowserContenxt can be null in tests
+      auto* browser_context = web_contents()->GetBrowserContext();
+      if (!browser_context)
+        return;
+
+      PrefService* prefs = user_prefs::UserPrefs::Get(browser_context);
+      if (prefs)
+        prefs->SetUint64(
+            prefs::kBandwidthSavedBytes,
+            prefs->GetUint64(prefs::kBandwidthSavedBytes) + savings);
+
+#if BUILDFLAG(BRAVE_P3A_ENABLED)
+      if (bandwidth_tracker_)
+        bandwidth_tracker_->RecordSavings(savings);
+#endif
+    }
+  }
+}
+
+void PerfPredictorTabHelper::OnBlockedSubresource(
+    const std::string& subresource) {
+  bandwidth_predictor_->OnSubresourceBlocked(subresource);
+}
 
 void PerfPredictorTabHelper::DidStartNavigation(
     content::NavigationHandle* handle) {
@@ -90,32 +134,6 @@ void PerfPredictorTabHelper::DidFinishNavigation(
   navigation_id_ = handle->GetNavigationId();
 }
 
-void PerfPredictorTabHelper::RecordSavings() {
-  if (web_contents()) {
-    const uint64_t savings =
-        static_cast<uint64_t>(bandwidth_predictor_->PredictSavingsBytes());
-    bandwidth_predictor_->Reset();
-    VLOG(3) << "Saving computed bw saving = " << savings;
-    if (savings > 0) {
-      // BrowserContenxt can be null in tests
-      auto* browser_context = web_contents()->GetBrowserContext();
-      if (!browser_context)
-        return;
-      PrefService* prefs = user_prefs::UserPrefs::Get(browser_context);
-
-      if (prefs)
-        prefs->SetUint64(
-            prefs::kBandwidthSavedBytes,
-            prefs->GetUint64(prefs::kBandwidthSavedBytes) + savings);
-
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
-      if (bandwidth_tracker_)
-        bandwidth_tracker_->RecordSavings(savings);
-#endif
-    }
-  }
-}
-
 void PerfPredictorTabHelper::ResourceLoadComplete(
     content::RenderFrameHost* render_frame_host,
     const content::GlobalRequestID& request_id,
@@ -123,11 +141,6 @@ void PerfPredictorTabHelper::ResourceLoadComplete(
   if (render_frame_host)
     bandwidth_predictor_->OnResourceLoadComplete(web_contents()->GetURL(),
                                                  resource_load_info);
-}
-
-void PerfPredictorTabHelper::OnBlockedSubresource(
-    const std::string& subresource) {
-  bandwidth_predictor_->OnSubresourceBlocked(subresource);
 }
 
 void PerfPredictorTabHelper::DidAttachInterstitialPage() {
@@ -139,17 +152,7 @@ void PerfPredictorTabHelper::DidAttachInterstitialPage() {
 void PerfPredictorTabHelper::WebContentsDestroyed() {
   // Run a prediction when Web Contents get destroyed (e.g. tab/window closed)
   RecordSavings();
-}
-
-void PerfPredictorTabHelper::OnPageLoadTimingUpdated(
-    const page_load_metrics::mojom::PageLoadTiming& timing) {
-  bandwidth_predictor_->OnPageLoadTimingUpdated(timing);
-}
-
-// static
-void PerfPredictorTabHelper::RegisterProfilePrefs(
-    PrefRegistrySimple* registry) {
-  registry->RegisterUint64Pref(prefs::kBandwidthSavedBytes, 0);
+  VLOG(3) << "Web contents destroyed, savings recorded";
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PerfPredictorTabHelper)

@@ -28,7 +28,7 @@ bool StandardiseFeatsNoOutliers(
   for (unsigned int i = 0; i < standardise_feat_count; i++) {
     if (features->at(i) > outlier_threshold ||
         features->at(i) < -outlier_threshold) {
-      VLOG(2) << "Outlier feature " << feature_sequence.at(i) << " with value "
+      VLOG(2) << "Outlier feature " << feature_sequence->at(i) << " with value "
               << features->at(i);
       return true;
     }
@@ -69,7 +69,7 @@ double LinregPredictVector(const std::array<double, feature_count>& features) {
 double LinregPredictNamed(const base::flat_map<std::string, double>& features) {
   std::array<double, feature_count> feature_vector{};
   for (unsigned int i = 0; i < feature_count; i++) {
-    auto it = features.find(feature_sequence[i]);
+    auto it = features.find(feature_sequence->at(i));
     if (it != features.end())
       feature_vector[i] = it->second;
   }

@@ -39,7 +39,7 @@ P3ABandwidthSavingsTracker::P3ABandwidthSavingsTracker(PrefService* user_prefs)
     : user_prefs_(user_prefs) {}
 
 void P3ABandwidthSavingsTracker::RecordSavings(uint64_t savings) {
-  if (savings > 0) {
+  if (savings > 0 && user_prefs_) {
     // TODO(AndriusA): optimise if needed, loading permanent state on every
     // record could be costly
     auto permanent_state =
@@ -56,16 +56,16 @@ P3ABandwidthSavingsTracker::~P3ABandwidthSavingsTracker() = default;
 
 // static
 void P3ABandwidthSavingsTracker::RegisterPrefs(PrefRegistrySimple* registry) {
-  registry->RegisterListPref(prefs::kBandwidthSavedDailyBytes);
+  if (registry)
+    registry->RegisterListPref(prefs::kBandwidthSavedDailyBytes);
 }
 
 void P3ABandwidthSavingsTracker::StoreSavingsHistogram(uint64_t savings_bytes) {
   int bucket = 0;
   uint64_t total_mb = static_cast<uint64_t>(savings_bytes / 1024 / 1024);
   int counter = 0;
-  for (auto* it = kBandwidthSavingsBuckets.begin();
-       it != kBandwidthSavingsBuckets.end(); ++it, ++counter) {
-    if (total_mb > *it)
+  for (const auto& bucketUpperBound : kBandwidthSavingsBuckets) {
+    if (total_mb > bucketUpperBound)
       bucket = counter + 1;
   }
 
