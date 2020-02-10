@@ -55,7 +55,7 @@ storiesOf('Shields', module)
               adsTrackersBlocked={number('3rd-party trackers blocked', 80) || 0}
               httpsUpgrades={number('Connections upgraded to HTTPS', 0) || 0}
               scriptsBlocked={number('Scripts blocked', 11) || 0}
-              fingerprintingBlocked={number('3rd-party device recognition blocked', 0) || 0}
+              fingerprintingBlocked={number('3rd-party fingerprinting blocked', 0) || 0}
               fakeOnChangeShieldsEnabled={fakeOnChangeShieldsEnabled}
               fakeOnChangeAdvancedView={fakeOnChangeAdvancedView}
               fakeOnChangeReadOnlyView={fakeOnChangeReadOnlyView}
