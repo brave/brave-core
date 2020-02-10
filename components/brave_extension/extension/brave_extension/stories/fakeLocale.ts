@@ -25,11 +25,11 @@ const locale: { [key: string]: string } = {
   thirdPartyCookiesBlocked: '3rd-party cookies blocked',
   allCookiesBlocked: 'Cookies blocked',
   allCookiesAllowed: 'All cookies allowed',
-  thirdPartyFingerprintingBlocked: '3rd-party device recognition blocked',
-  allFingerprintingBlocked: 'Device recognition blocked',
-  allFingerprintingAllowed: 'All device recognition allowed',
+  thirdPartyFingerprintingBlocked: '3rd-party fingerprinting blocked',
+  allFingerprintingBlocked: 'Fingerprinting blocked',
+  allFingerprintingAllowed: 'All fingerprinting allowed',
   // static list
-  deviceRecognitionAttempts: 'Device recognition attempts',
+  deviceRecognitionAttempts: 'Fingerprinting attempts',
   scriptsOnThisSite: 'Scripts on this site',
   // scripts list
   blockedScripts: 'Blocked scripts',
