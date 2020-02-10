@@ -126,16 +126,32 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
   return nullptr;
 }
 
+#if defined(OS_ANDROID)
+bool ShouldBlockRewardsWebUI(
+      content::BrowserContext* browser_context, const GURL& url) {
+  if (url.host_piece() != kRewardsPageHost &&
+      url.host_piece() != kRewardsInternalsHost) {
+    return false;
+  }
+  if (!base::FeatureList::IsEnabled(features::kBraveRewards)) {
+    return true;
+  }
+  Profile* profile = Profile::FromBrowserContext(browser_context);
+  if (profile &&
+      profile->GetPrefs() &&
+      profile->GetPrefs()->GetBoolean(kSafetynetCheckFailed)) {
+    return true;
+  }
+  return false;
+}
+#endif  // defined(OS_ANDROID)
+
 }  // namespace
 
 WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
       content::BrowserContext* browser_context, const GURL& url) {
 #if defined(OS_ANDROID)
-  Profile* profile = Profile::FromBrowserContext(browser_context);
-  if (!base::FeatureList::IsEnabled(features::kBraveRewards) ||
-      (profile &&
-      profile->GetPrefs() &&
-      profile->GetPrefs()->GetBoolean(kSafetynetCheckFailed))) {
+  if (ShouldBlockRewardsWebUI(browser_context, url)) {
     return WebUI::kNoWebUI;
   }
 #endif  // defined(OS_ANDROID)
