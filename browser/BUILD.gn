@@ -157,6 +157,7 @@ source_set("browser_process") {
     "//components/search_engines",
     "//components/services/patch/content",
     "//components/services/unzip/content",
+    "//components/sessions",
     "//components/spellcheck/browser",
     "//components/unified_consent",
     "//components/update_client:patch_impl",
