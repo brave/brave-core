@@ -395,6 +395,28 @@ BravePatching.RegisterPolymerTemplateModifications({
       version.innerHTML = '<a id="release-notes" target="_blank" href="https://brave.com/latest/">' + version.innerHTML + '</a>'
     }
   },
+  'settings-clear-browsing-data-dialog': (templateContent) => {
+    const advancedTab = templateContent.querySelector('#advanced-tab')
+    const shieldsSettingHTML = `
+      <settings-checkbox
+        pref="{{prefs.browser.clear_data.shields_settings}}"
+        label="${I18nBehavior.i18n('clearShieldsSettings')}"
+        sub-label="[[counters_.shields_settings]]"
+        disabled="[[clearingInProgress_]]">
+      </settings-checkbox>
+    `
+
+    let tempParent = document.createElement('div')
+    tempParent.innerHTML = shieldsSettingHTML.trim()
+    // Insert after Cached images and files checkbox. It's fourth child.
+    const targetPrevChildrenIndex = 4
+    if (advancedTab.childElementCount > targetPrevChildrenIndex) {
+      advancedTab.children[targetPrevChildrenIndex].insertAdjacentElement('afterend', tempParent.firstChild)
+    } else {
+      console.error('##### Adjust shields setting position in advanced tab of Clear browsing data dialog #####')
+      advancedTab.appendChild(tempParent.firstChild)
+    }
+  }
 })
 
 // Icons
