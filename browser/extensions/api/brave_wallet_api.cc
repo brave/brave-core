@@ -8,7 +8,6 @@
 #include <memory>
 #include <string>
 
-#include "base/environment.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "brave/browser/infobars/crypto_wallets_infobar_delegate.h"
@@ -29,6 +28,7 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_controller.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/browser/extensions/brave_wallet_util.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
@@ -139,11 +139,7 @@ BraveWalletGetWalletSeedFunction::Run() {
 
 ExtensionFunction::ResponseAction
 BraveWalletGetProjectIDFunction::Run() {
-  std::string project_id(BRAVE_INFURA_PROJECT_ID);
-  std::unique_ptr<base::Environment> env(base::Environment::Create());
-  if (env->HasVar("BRAVE_INFURA_PROJECT_ID")) {
-    env->GetVar("BRAVE_INFURA_PROJECT_ID", &project_id);
-  }
+  std::string project_id = extensions::GetInfuraProjectID();
   return RespondNow(OneArgument(
       std::make_unique<base::Value>(project_id)));
 }
@@ -157,8 +153,6 @@ BraveWalletResetWalletFunction::Run() {
 
 ExtensionFunction::ResponseAction
 BraveWalletGetWeb3ProviderFunction::Run() {
-  std::string project_id(BRAVE_INFURA_PROJECT_ID);
-  std::unique_ptr<base::Environment> env(base::Environment::Create());
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto provider = static_cast<BraveWalletWeb3ProviderTypes>(
       profile->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));

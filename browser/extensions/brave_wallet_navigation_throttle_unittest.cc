@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/environment.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/profiles/tor_unittest_profile_manager.h"
@@ -80,6 +81,12 @@ class BraveWalletNavigationThrottleUnitTest
 #endif
     original_client_ = content::SetBrowserClientForTesting(&client_);
     content::RenderViewHostTestHarness::SetUp();
+
+    // For debug builds, set a fake BRAVE_INFURA_PROJECT_ID env var
+    std::unique_ptr<base::Environment> env(base::Environment::Create());
+    if (!env->HasVar("BRAVE_INFURA_PROJECT_ID")) {
+      env->SetVar("BRAVE_INFURA_PROJECT_ID", "test_project_id");
+    }
   }
 
   std::unique_ptr<content::BrowserContext> CreateBrowserContext() override {
