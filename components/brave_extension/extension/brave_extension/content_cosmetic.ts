@@ -1,3 +1,8 @@
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
+
 // Notify the background script as soon as the content script has loaded.
 // chrome.tabs.insertCSS may sometimes fail to inject CSS in a newly navigated
 // page when using the chrome.webNavigation API.
@@ -10,12 +15,10 @@ chrome.runtime.sendMessage({
 
 const parseDomain = require('parse-domain')
 
-// Don't start looking for things to unblock until at least this long after
-// the backend script is up and connected (eg backgroundReady = true)
-const numMSBeforeStart = 2500
-// Only let the mutation observer run for this long  After this point, the
-// queues are frozen and the mutation observer will stop / disconnect.
-const numMSCheckFor = 15000
+// Start looking for things to unhide before at most this long after
+// the backend script is up and connected (eg backgroundReady = true),
+// or sooner if the thread is idle.
+const maxTimeMSBeforeStart = 2500
 
 const queriedIds = new Set<string>()
 const queriedClasses = new Set<string>()
@@ -24,6 +27,28 @@ const queriedClasses = new Set<string>()
 let notYetQueriedClasses: string[]
 let notYetQueriedIds: string[]
 let cosmeticObserver: MutationObserver | undefined = undefined
+
+const allSelectorsToRules = new Map<string, number>()
+const cosmeticStyleSheet = new CSSStyleSheet()
+
+/**
+ * Provides a new function which can only be scheduled once at a time.
+ *
+ * @param onIdle function to run when the thread is less busy
+ * @param timeout max time to wait. at or after this time the function will be run regardless of thread noise
+ */
+function idleize (onIdle: Function, timeout: number) {
+  let idleId: number | undefined = undefined
+  return function WillRunOnIdle () {
+    if (idleId !== undefined) {
+      return
+    }
+    idleId = window.requestIdleCallback(() => {
+      idleId = undefined
+      onIdle()
+    }, { timeout })
+  }
+}
 
 function isElement (node: Node): boolean {
   return (node.nodeType === 1)
@@ -106,7 +131,6 @@ const handleMutations: MutationCallback = function (mutations: MutationRecord[])
   fetchNewClassIdRules()
 }
 
-
 const _parseDomainCache = Object.create(null)
 const getParsedDomain = (aDomain: string) => {
   const cacheResult = _parseDomainCache[aDomain]
@@ -129,7 +153,7 @@ const isFirstPartyUrl = (url: string): boolean => {
   if (!parsedTargetDomain) {
     // If we cannot determine the party-ness of the resource,
     // consider it first-party.
-    console.debug(`Unable to determine party-ness of "${url}"`)
+    console.debug(`Cosmetic filtering: Unable to determine party-ness of "${url}"`)
     return false
   }
 
@@ -250,29 +274,70 @@ const isSubTreeFirstParty = (elm: Element, possibleQueryResult?: IsFirstPartyQue
   return true
 }
 
-const unhideSelectors = (selectors: string[]) => {
-  if (selectors.length === 0) {
+const unhideSelectors = (selectors: Set<string>) => {
+  if (selectors.size === 0) {
     return
   }
-
-  chrome.runtime.sendMessage({
-    type: 'showFirstPartySelectors',
-    selectors
-  })
+  // Find selectors we have a rule index for
+  const rulesToRemove = Array.from(selectors)
+    .map(selector =>
+      allSelectorsToRules.get(selector)
+    )
+    .filter(i => i !== undefined)
+    .sort()
+    .reverse()
+  // Delete the rules
+  let lastIdx: number = allSelectorsToRules.size - 1
+  for (const ruleIdx of rulesToRemove) {
+    cosmeticStyleSheet.deleteRule(ruleIdx)
+  }
+  // Re-sync the indexes
+  // TODO: Sync is hard, just re-build by iterating through the StyleSheet rules.
+  const ruleLookup = Array.from(allSelectorsToRules.entries())
+  let countAtLastHighest = rulesToRemove.length
+  for (let i = lastIdx; i > 0; i--) {
+    const [selector, oldIdx] = ruleLookup[i]
+    // Is this one we removed?
+    if (rulesToRemove.includes(i)) {
+      allSelectorsToRules.delete(selector)
+      countAtLastHighest--
+      if (countAtLastHighest === 0) {
+        break
+      }
+      continue
+    }
+    if (oldIdx !== i) {
+      // Probably out of sync
+      console.error('Cosmetic Filters: old index did not match lookup index', { selector, oldIdx, i })
+    }
+    allSelectorsToRules.set(selector, oldIdx - countAtLastHighest)
+  }
 }
 
 const alreadyUnhiddenSelectors = new Set<string>()
 const alreadyKnownFirstPartySubtrees = new WeakSet()
-const allSelectorsSet = new Set<string>()
+// All new selectors go in `firstRunQueue`
 const firstRunQueue = new Set<string>()
+// Third party matches go in the second and third queues.
 const secondRunQueue = new Set<string>()
+// Once a selector gets in to this queue, it's only evaluated for 1p content one
+// more time.
 const finalRunQueue = new Set<string>()
 const allQueues = [firstRunQueue, secondRunQueue, finalRunQueue]
 const numQueues = allQueues.length
-const pumpIntervalMs = 50
-const maxWorkSize = 50
+const pumpIntervalMinMs = 40
+const pumpIntervalMaxMs = 1000
+const maxWorkSize = 60
 let queueIsSleeping = false
 
+/**
+ * Go through each of the 3 queues, only take 50 items from each one
+ * 1. Take 50 selects from the first queue with any items
+ * 2. Determine partyness of matched element:
+ *   - If any are 3rd party, keep 'hide' rule and check again later in next queue.
+ *   - If any are 1st party, remove 'hide' rule and never check selector again.
+ * 3. If we're looking at the 3rd queue, don't requeue any selectors.
+ */
 const pumpCosmeticFilterQueues = () => {
   if (queueIsSleeping === true) {
     return
@@ -295,7 +360,7 @@ const pumpCosmeticFilterQueues = () => {
     // Will hold selectors identified by _this_ queue pumping, that were
     // newly identified to be matching 1p content.  Will be sent to
     // the background script to do the un-hiding.
-    const newlyIdentifiedFirstPartySelectors: string[] = []
+    const newlyIdentifiedFirstPartySelectors = new Set<string>()
 
     for (const aMatchingElm of matchingElms) {
       // Don't recheck elements / subtrees we already know are first party.
@@ -308,6 +373,8 @@ const pumpCosmeticFilterQueues = () => {
       const elmSubtreeIsFirstParty = isSubTreeFirstParty(aMatchingElm)
       // If we find that a subtree is third party, then no need to change
       // anything, leave the selector as "hiding" and move on.
+      // This element will likely be checked again on the next 'pump'
+      // as long as another element from the selector does not match 1st party.
       if (elmSubtreeIsFirstParty === false) {
         continue
       }
@@ -326,7 +393,7 @@ const pumpCosmeticFilterQueues = () => {
           continue
         }
 
-        newlyIdentifiedFirstPartySelectors.push(selector)
+        newlyIdentifiedFirstPartySelectors.add(selector)
         alreadyUnhiddenSelectors.add(selector)
       }
       alreadyKnownFirstPartySubtrees.add(aMatchingElm)
@@ -337,24 +404,34 @@ const pumpCosmeticFilterQueues = () => {
     for (const aUsedSelector of currentWorkLoad) {
       currentQueue.delete(aUsedSelector)
       // Don't requeue selectors we know identify first party content.
-      const selectorMatchedFirstParty = newlyIdentifiedFirstPartySelectors.includes(aUsedSelector)
+      const selectorMatchedFirstParty = newlyIdentifiedFirstPartySelectors.has(aUsedSelector)
       if (nextQueue && selectorMatchedFirstParty === false) {
         nextQueue.add(aUsedSelector)
       }
     }
 
     didPumpAnything = true
+    // If we did something,  process the next queue, save it for next time.
     break
   }
 
   if (didPumpAnything) {
     queueIsSleeping = true
-    setTimeout(() => {
+    window.setTimeout(() => {
+      // Set this to false now even though there's a gap in time between now and
+      // idle since all other calls to `pumpCosmeticFilterQueuesOnIdle` that occur during this time
+      // will be ignored (and nothing else should be calling `pumpCosmeticFilterQueues` straight).
       queueIsSleeping = false
-      pumpCosmeticFilterQueues()
-    }, pumpIntervalMs)
+      // tslint:disable-next-line:no-use-before-declare
+      pumpCosmeticFilterQueuesOnIdle()
+    }, pumpIntervalMinMs)
   }
 }
+
+const pumpCosmeticFilterQueuesOnIdle = idleize(
+  pumpCosmeticFilterQueues,
+  pumpIntervalMaxMs
+)
 
 const startObserving = () => {
   // First queue up any classes and ids that exist before the mutation observer
@@ -385,31 +462,59 @@ const startObserving = () => {
   cosmeticObserver.observe(document.documentElement, observerConfig)
 }
 
-const stopObserving = () => {
-  if (cosmeticObserver) {
-    cosmeticObserver.disconnect()
+let _hasDelayOcurred: boolean = false
+let _startCheckingId: number | undefined = undefined
+const scheduleQueuePump = () => {
+  // Three states possible here.  First, the delay has already occurred.  If so,
+  // pass through to pumpCosmeticFilterQueues immediately.
+  if (_hasDelayOcurred === true) {
+    pumpCosmeticFilterQueuesOnIdle()
+    return
   }
+  // Second possibility is that we're already waiting for the delay to pass /
+  // occur.  In this case, do nothing.
+  if (_startCheckingId !== undefined) {
+    return
+  }
+  // Third / final possibility, this is this the first time this has been
+  // called, in which case set up a timmer and quit
+  _startCheckingId = window.requestIdleCallback(function ({ didTimeout }) {
+    _hasDelayOcurred = true
+    startObserving()
+    pumpCosmeticFilterQueuesOnIdle()
+  }, { timeout: maxTimeMSBeforeStart })
 }
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   const action = typeof msg === 'string' ? msg : msg.type
   switch (action) {
     case 'cosmeticFilteringBackgroundReady': {
-      setTimeout(startObserving, numMSBeforeStart)
-      setTimeout(stopObserving, numMSBeforeStart + numMSCheckFor)
+      scheduleQueuePump()
       break
     }
-
-    case 'cosmeticFilterConsiderNewRules': {
-      const { hideRules } = msg
-      for (const aHideRule of hideRules) {
-        if (allSelectorsSet.has(aHideRule)) {
+    case 'cosmeticFilterConsiderNewSelectors': {
+      const { selectors } = msg
+      let nextIndex = cosmeticStyleSheet.rules.length
+      for (const selector of selectors) {
+        if (allSelectorsToRules.has(selector)) {
           continue
         }
-        allSelectorsSet.add(aHideRule)
-        firstRunQueue.add(aHideRule)
+        // insertRule always adds to index 0,
+        // so we always add to end of list manually.
+        cosmeticStyleSheet.insertRule(
+          `${selector}{display:none !important;}`,
+          nextIndex
+        )
+        allSelectorsToRules.set(selector, nextIndex)
+        nextIndex++
+        firstRunQueue.add(selector)
       }
-      pumpCosmeticFilterQueues()
+      // @ts-ignore
+      if (!document.adoptedStyleSheets.includes(cosmeticStyleSheet)) {
+        // @ts-ignore
+        document.adoptedStyleSheets = [cosmeticStyleSheet]
+      }
+      scheduleQueuePump()
       break
     }
   }

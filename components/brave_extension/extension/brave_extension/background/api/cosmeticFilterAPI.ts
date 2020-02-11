@@ -4,11 +4,11 @@
 
 import shieldsPanelActions from '../actions/shieldsPanelActions'
 
-const informTabOfCosmeticRulesToConsider = (tabId: number, hideRules: string[]) => {
-  if (hideRules.length !== 0) {
+const informTabOfCosmeticRulesToConsider = (tabId: number, selectors: string[]) => {
+  if (selectors.length !== 0) {
     const message = {
-      type: 'cosmeticFilterConsiderNewRules',
-      hideRules
+      type: 'cosmeticFilterConsiderNewSelectors',
+      selectors
     }
     const options = {
       frameId: 0
@@ -22,7 +22,6 @@ export const injectClassIdStylesheet = (tabId: number, classes: string[], ids: s
   chrome.braveShields.hiddenClassIdSelectors(classes, ids, exceptions, (jsonSelectors) => {
     const selectors = JSON.parse(jsonSelectors)
     informTabOfCosmeticRulesToConsider(tabId, selectors)
-    hideSelectors(tabId, selectors)
   })
 }
 
@@ -35,8 +34,6 @@ export const applyAdblockCosmeticFilters = (tabId: number, hostname: string) => 
     }
 
     informTabOfCosmeticRulesToConsider(tabId, resources.hide_selectors)
-
-    hideSelectors(tabId, resources.hide_selectors)
     let styledStylesheet = ''
     for (const selector in resources.style_selectors) {
       styledStylesheet += selector + '{' + resources.style_selectors[selector].join(';') + ';}\n'
@@ -55,25 +52,6 @@ export const applyAdblockCosmeticFilters = (tabId: number, hostname: string) => 
     }
 
     shieldsPanelActions.cosmeticFilterRuleExceptions(tabId, resources.exceptions)
-  })
-}
-
-const cssVarNameOverrideDisplay = '--brave-shields-filter-override-display'
-
-function hideSelectors (tabId: number, selectors: string[]) {
-  const code = `${selectors.join(',')}{${cssVarNameOverrideDisplay}: none !important;display:var(${cssVarNameOverrideDisplay}) !important;}`
-  chrome.tabs.insertCSS(tabId, {
-    code: `${selectors.join(',')}{${cssVarNameOverrideDisplay}: none !important;display:var(${cssVarNameOverrideDisplay}) !important;}`,
-    cssOrigin: 'user',
-    runAt: 'document_start'
-  })
-}
-
-export const showFirstPartySelectors = (tabId: number, selectors: string[]) => {
-  chrome.tabs.insertCSS(tabId, {
-    code: `${selectors.join(',')}{${cssVarNameOverrideDisplay}: invalid !important;}`,
-    cssOrigin: 'user',
-    runAt: 'document_start'
   })
 }
 

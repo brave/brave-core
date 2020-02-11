@@ -12,8 +12,24 @@ type loadTimeData = {
   data_: Record<string, string>
 }
 
+type RequestIdleCallbackHandle = any
+type RequestIdleCallbackOptions = {
+  timeout: number
+}
+type RequestIdleCallbackDeadline = {
+  readonly didTimeout: boolean;
+  timeRemaining: (() => number)
+}
+
 declare global {
   interface Window {
+    // Typescript doesn't include requestIdleCallback as it's non-standard.
+    // Since it's supported in Chromium, we can include it here.
+    requestIdleCallback: ((
+      callback: ((deadline: RequestIdleCallbackDeadline) => void),
+      opts?: RequestIdleCallbackOptions
+    ) => RequestIdleCallbackHandle)
+    cancelIdleCallback: ((handle: RequestIdleCallbackHandle) => void)
     loadTimeData: loadTimeData
     cr: {
       define: (name: string, init: () => void) => void
