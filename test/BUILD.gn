@@ -569,6 +569,7 @@ test("brave_browser_tests") {
     "//brave/chromium_src/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view_browsertest.cc",
     "//brave/chromium_src/components/content_settings/core/browser/brave_content_settings_registry_browsertest.cc",
     "//brave/chromium_src/third_party/blink/public/platform/disable_client_hints_browsertest.cc",
+    "//brave/chromium_src/third_party/blink/renderer/core/frame/reporting_observer_browsertest.cc",
     "//brave/chromium_src/third_party/blink/renderer/modules/battery/navigator_batterytest.cc",
     "//brave/chromium_src/third_party/blink/renderer/modules/bluetooth/navigator_bluetoothtest.cc",
     "//brave/common/brave_channel_info_browsertest.cc",
