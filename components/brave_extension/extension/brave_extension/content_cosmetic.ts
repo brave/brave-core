@@ -20,6 +20,12 @@ const parseDomain = require('parse-domain')
 // or sooner if the thread is idle.
 const maxTimeMSBeforeStart = 2500
 
+// The cutoff for text ads.  If something has only text in it, it needs to have
+// this many, or more, characters.  Similarly, require it to have a non-trivial
+// number of words in it, to look like an actual text ad.
+const minAdTextChars = 30
+const minAdTextWords = 5
+
 const queriedIds = new Set<string>()
 const queriedClasses = new Set<string>()
 
@@ -163,6 +169,17 @@ const isFirstPartyUrl = (url: string): boolean => {
   )
 }
 
+const isAdText = (text: string): boolean => {
+  const trimmedText = text.trim()
+  if (trimmedText.length < minAdTextChars) {
+    return false
+  }
+  if (trimmedText.split(' ').length < minAdTextWords) {
+    return false
+  }
+  return true
+}
+
 interface IsFirstPartyQueryResult {
   foundFirstPartyResource: boolean,
   foundThirdPartyResource: boolean,
@@ -268,7 +285,7 @@ const isSubTreeFirstParty = (elm: Element, possibleQueryResult?: IsFirstPartyQue
     return false
   }
   const htmlElement = asHTMLElement(elm)
-  if (!htmlElement || !htmlElement.innerText.trim().length) {
+  if (!htmlElement || isAdText(htmlElement.innerText) === false) {
     return false
   }
   return true
