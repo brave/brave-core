@@ -14,14 +14,8 @@ private struct TabsButtonUX {
 
 class TabsButton: UIButton {
 
-    var textColor = UIColor.Photon.white100 {
-        didSet {
-            updateButtonVisuals()
-        }
-    }
-    
-    // Explicit, should crash if not setup properly
-    var highlightTextColor: UIColor!
+    private var textColor = UIColor.Photon.white100
+    private var highlightTextColor: UIColor?
     
     private var currentCount: Int?
     private var top: Bool
@@ -33,7 +27,8 @@ class TabsButton: UIButton {
     }
     
     private func updateButtonVisuals() {
-        let foregroundColor: UIColor = isHighlighted ? highlightTextColor : textColor
+        let highlightedTextColor = highlightTextColor ?? textColor
+        let foregroundColor = isHighlighted ? highlightedTextColor : textColor
         countLabel.textColor = foregroundColor
         borderView.color = foregroundColor
     }
@@ -118,6 +113,7 @@ extension TabsButton: Themeable {
         
         textColor = top ? theme.colors.tints.header : theme.colors.tints.footer
         highlightTextColor = theme.colors.accent
+        updateButtonVisuals()
     }
 }
 
