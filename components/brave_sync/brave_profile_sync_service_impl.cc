@@ -200,9 +200,17 @@ BraveProfileSyncServiceImpl::BraveProfileSyncServiceImpl(Profile* profile,
                  base::Unretained(this)));
 
   model_ = BookmarkModelFactory::GetForBrowserContext(profile);
+  // model_ can be null in some tests
 
   network_connection_tracker_->AddNetworkConnectionObserver(this);
   RecordSyncStateP3A();
+}
+
+void BraveProfileSyncServiceImpl::BookmarkModelLoaded(BookmarkModel* model,
+                                                      bool ids_reassigned) {
+  VLOG(2) << "[BraveSync] bookmarks model just loaded, "
+          << "resuming pending sync ready callback";
+  OnSyncReadyBookmarksModelLoaded();
 }
 
 void BraveProfileSyncServiceImpl::OnNudgeSyncCycle(RecordsListPtr records) {
@@ -219,6 +227,12 @@ void BraveProfileSyncServiceImpl::OnNudgeSyncCycle(RecordsListPtr records) {
 
 BraveProfileSyncServiceImpl::~BraveProfileSyncServiceImpl() {
   network_connection_tracker_->RemoveNetworkConnectionObserver(this);
+  // Tests which use ProfileSyncService and are not configured to run on UI
+  // thread, fire DCHECK on BookmarkModel::RemoveObserver at a wrong sequence.
+  // Remove observer only if we have set it.
+  if (is_model_loaded_observer_set_) {
+      model_->RemoveObserver(this);
+  }
 }
 
 void BraveProfileSyncServiceImpl::OnSetupSyncHaveCode(
@@ -470,6 +484,18 @@ void BraveProfileSyncServiceImpl::OnSyncReady() {
   DCHECK(false == brave_sync_ready_);
   brave_sync_ready_ = true;
 
+  if (model_->loaded()) {
+    OnSyncReadyBookmarksModelLoaded();
+  } else {
+    // Will call OnSyncReadyBookmarksModelLoaded once model is loaded
+    VLOG(2) << "[BraveSync] bookmarks model is not yet loaded, "
+            << "OnSyncReady will be delayed";
+    model_->AddObserver(this);
+    is_model_loaded_observer_set_ = true;
+  }
+}
+
+void BraveProfileSyncServiceImpl::OnSyncReadyBookmarksModelLoaded() {
   // For launching from legacy sync profile and also brand new profile
   if (brave_sync_prefs_->GetMigratedBookmarksVersion() < 2)
     SetPermanentNodesOrder(brave_sync_prefs_->GetBookmarksBaseOrder());
@@ -525,6 +551,7 @@ void BraveProfileSyncServiceImpl::OnGetExistingObjects(
   // TODO(bridiver) - what do we do with is_truncated ?
   // It appears to be ignored in b-l
   if (category_name == kBookmarks) {
+    DCHECK(model_->loaded());
     if (!IsTimeEmpty(last_record_time_stamp)) {
       brave_sync_prefs_->SetLatestRecordTime(last_record_time_stamp);
     }
@@ -680,6 +707,7 @@ void BraveProfileSyncServiceImpl::ResetSyncInternal() {
 void BraveProfileSyncServiceImpl::SetPermanentNodesOrder(
     const std::string& base_order) {
   DCHECK(model_);
+  DCHECK(model_->loaded());
   DCHECK(!base_order.empty());
   std::string order;
   model_->bookmark_bar_node()->GetMetaInfo("order", &order);
@@ -786,6 +814,8 @@ void BraveProfileSyncServiceImpl::LoadSyncEntityInfo(
 void BraveProfileSyncServiceImpl::CreateResolveList(
     const std::vector<std::unique_ptr<SyncRecord>>& records,
     SyncRecordAndExistingList* records_and_existing_objects) {
+  DCHECK(model_);
+  DCHECK(model_->loaded());
   const auto& this_device_id = brave_sync_prefs_->GetThisDeviceId();
   for (const auto& record : records) {
     // Ignore records from ourselves to avoid mess on merge
@@ -1038,8 +1068,11 @@ BraveSyncService* BraveProfileSyncServiceImpl::GetSyncService() const {
 void BraveProfileSyncServiceImpl::SendSyncRecords(
     const std::string& category_name,
     RecordsListPtr records) {
+  DCHECK(brave_sync_client_);
+  DCHECK(model_->loaded());
   brave_sync_client_->SendSyncRecords(category_name, *records);
   if (category_name == kBookmarks) {
+    DCHECK(model_->loaded());
     for (auto& record : *records) {
       SaveSyncEntityInfo(record.get());
       std::unique_ptr<base::DictionaryValue> meta =
@@ -1060,6 +1093,10 @@ void BraveProfileSyncServiceImpl::ResendSyncRecords(
         brave_sync_prefs_->GetRecordsToResend();
     if (records_to_resend.empty())
       return;
+
+    DCHECK(model_);
+    DCHECK(model_->loaded());
+
     for (auto& object_id : records_to_resend) {
       auto* node = FindByObjectId(model_, object_id);
 
