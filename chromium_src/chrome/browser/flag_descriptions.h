@@ -15,6 +15,8 @@ extern const char kBraveNTPBrandedWallpaperDemoName[];
 extern const char kBraveNTPBrandedWallpaperDemoDescription[];
 extern const char kBraveAdblockCosmeticFilteringName[];
 extern const char kBraveAdblockCosmeticFilteringDescription[];
+extern const char kBraveSyncName[];
+extern const char kBraveSyncDescription[];
 }
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

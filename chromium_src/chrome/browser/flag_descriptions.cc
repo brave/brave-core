@@ -19,4 +19,6 @@ const char kBraveNTPBrandedWallpaperDemoDescription[] =
 const char kBraveAdblockCosmeticFilteringName[] = "Enable cosmetic filtering";
 const char kBraveAdblockCosmeticFilteringDescription[] =
     "Enable support for cosmetic filtering";
+const char kBraveSyncName[] = "Enable Brave Sync";
+const char kBraveSyncDescription[] = "Brave Sync is disabled by default";
 }  // namespace flag_descriptions
