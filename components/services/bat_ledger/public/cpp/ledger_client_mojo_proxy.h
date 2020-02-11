@@ -151,17 +151,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       const std::string& wallet_type,
       const std::string& id) override;
 
-  void InsertOrUpdateContributionQueue(
-    ledger::ContributionQueuePtr info,
-    InsertOrUpdateContributionQueueCallback callback) override;
-
-  void DeleteContributionQueue(
-    const uint64_t id,
-    DeleteContributionQueueCallback callback) override;
-
-  void GetFirstContributionQueue(
-    GetFirstContributionQueueCallback callback) override;
-
   void SaveUnblindedTokenList(
     ledger::UnblindedTokenList list,
     SaveUnblindedTokenListCallback callback) override;
@@ -303,18 +292,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   static void OnShowNotification(
     CallbackHolder<ShowNotificationCallback>* holder,
     const ledger::Result result);
-
-  static void OnInsertOrUpdateContributionQueue(
-    CallbackHolder<InsertOrUpdateContributionQueueCallback>* holder,
-    const ledger::Result result);
-
-  static void OnDeleteContributionQueue(
-    CallbackHolder<DeleteContributionQueueCallback>* holder,
-    const ledger::Result result);
-
-  static void OnGetFirstContributionQueue(
-    CallbackHolder<GetFirstContributionQueueCallback>* holder,
-    ledger::ContributionQueuePtr info);
 
   static void OnSaveUnblindedTokenList(
     CallbackHolder<SaveUnblindedTokenListCallback>* holder,

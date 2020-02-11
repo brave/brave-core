@@ -582,7 +582,7 @@ class LedgerImpl : public ledger::Ledger,
     const std::string& wallet_type,
     const std::string& id);
 
-  void InsertOrUpdateContributionQueue(
+  void SaveContributionQueue(
     ledger::ContributionQueuePtr info,
     ledger::ResultCallback callback);
 

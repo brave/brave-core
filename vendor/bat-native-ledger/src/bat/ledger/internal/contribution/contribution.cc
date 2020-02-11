@@ -242,7 +242,7 @@ void Contribution::PrepareRecurringList(
     queue->partial = false;
     queue->publishers = std::move(queue_list);
 
-    ledger_->InsertOrUpdateContributionQueue(
+    ledger_->SaveContributionQueue(
         std::move(queue),
         [](const ledger::Result _){});
   }
@@ -331,7 +331,7 @@ void Contribution::PrepareACList(ledger::PublisherInfoList list) {
   queue->amount = ledger_->GetContributionAmount();
   queue->partial = true;
   queue->publishers = std::move(queue_list);
-  ledger_->InsertOrUpdateContributionQueue(
+  ledger_->SaveContributionQueue(
       std::move(queue),
       [](const ledger::Result _){});
   CheckContributionQueue();

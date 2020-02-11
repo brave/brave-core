@@ -58,9 +58,6 @@
 - (std::string)getStringOption:(const std::string&)name;
 - (int64_t)getInt64Option:(const std::string&)name;
 - (uint64_t)getUint64Option:(const std::string&)name;
-- (void)insertOrUpdateContributionQueue:(ledger::ContributionQueuePtr)info callback:(ledger::ResultCallback)callback;
-- (void)deleteContributionQueue:(const uint64_t) id callback:(ledger::ResultCallback)callback;
-- (void)getFirstContributionQueue:(ledger::GetFirstContributionQueueCallback)callback;
 - (void)saveUnblindedTokenList:(ledger::UnblindedTokenList)list callback:(ledger::ResultCallback)callback;
 - (void)getAllUnblindedTokens:(ledger::GetAllUnblindedTokensCallback)callback;
 - (void)deleteUnblindedTokens:(const std::vector<std::string>&)list callback:(ledger::ResultCallback)callback;

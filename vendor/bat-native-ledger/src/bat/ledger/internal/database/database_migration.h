@@ -17,6 +17,7 @@ class LedgerImpl;
 namespace braveledger_database {
 
 class DatabaseActivityInfo;
+class DatabaseContributionQueue;
 class DatabaseMediaPublisherInfo;
 class DatabasePendingContribution;
 class DatabasePromotion;
@@ -37,6 +38,7 @@ class DatabaseMigration {
   bool Migrate(ledger::DBTransaction* transaction, const int target);
 
   std::unique_ptr<DatabaseActivityInfo> activity_info_;
+  std::unique_ptr<DatabaseContributionQueue> contribution_queue_;
   std::unique_ptr<DatabaseMediaPublisherInfo> media_publisher_info_;
   std::unique_ptr<DatabasePendingContribution> pending_contribution_;
   std::unique_ptr<DatabasePromotion> promotion_;

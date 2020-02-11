@@ -7,6 +7,7 @@
 
 #include "bat/ledger/internal/database/database.h"
 #include "bat/ledger/internal/database/database_activity_info.h"
+#include "bat/ledger/internal/database/database_contribution_queue.h"
 #include "bat/ledger/internal/database/database_initialize.h"
 #include "bat/ledger/internal/database/database_media_publisher_info.h"
 #include "bat/ledger/internal/database/database_pending_contribution.h"
@@ -24,6 +25,7 @@ Database::Database(bat_ledger::LedgerImpl* ledger) :
 
   initialize_ = std::make_unique<DatabaseInitialize>(ledger_);
   activity_info_ = std::make_unique<DatabaseActivityInfo>(ledger_);
+  contribution_queue_ = std::make_unique<DatabaseContributionQueue>(ledger_);
   media_publisher_info_ =
       std::make_unique<DatabaseMediaPublisherInfo>(ledger_);
   pending_contribution_ =
@@ -72,6 +74,26 @@ void Database::DeleteActivityInfo(
     const std::string& publisher_key,
     ledger::ResultCallback callback) {
   activity_info_->DeleteRecord(publisher_key, callback);
+}
+
+/**
+ * CONTRIBUTION QUEUE
+ */
+void Database::SaveContributionQueue(
+    ledger::ContributionQueuePtr info,
+    ledger::ResultCallback callback) {
+  return contribution_queue_->InsertOrUpdate(std::move(info), callback);
+}
+
+void Database::GetFirstContributionQueue(
+    ledger::GetFirstContributionQueueCallback callback) {
+  return contribution_queue_->GetFirstRecord(callback);
+}
+
+void Database::DeleteContributionQueue(
+    const uint64_t id,
+    ledger::ResultCallback callback) {
+  return contribution_queue_->DeleteRecord(id, callback);
 }
 
 /**

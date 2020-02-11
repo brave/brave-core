@@ -1819,36 +1819,6 @@ BATLedgerBridge(BOOL,
                      onlyOnce:NO];
 }
 
-- (void)insertOrUpdateContributionQueue:(ledger::ContributionQueuePtr)info callback:(ledger::ResultCallback)callback
-{
-  if (info.get() == nullptr) { return; }
-  
-  if (info->id == 0) {
-    NSNumber *nextID = self.prefs[kContributionQueueAutoincrementID] ?: [NSNumber numberWithUnsignedLongLong:1];
-    info->id = [nextID unsignedLongLongValue];
-    self.prefs[kContributionQueueAutoincrementID] = @([nextID unsignedLongLongValue] + 1);
-    [self savePrefs];
-  }
-  
-  const auto queue = [[BATContributionQueue alloc] initWithContributionQueue:*info];
-  [BATLedgerDatabase insertOrUpdateContributionQueue:queue completion:^(BOOL success) {
-    callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
-  }];
-}
-
-- (void)deleteContributionQueue:(const uint64_t) id callback:(ledger::ResultCallback)callback
-{
-  [BATLedgerDatabase deleteQueueWithID:id completion:^(BOOL success) {
-    callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
-  }];
-}
-
-- (void)getFirstContributionQueue:(ledger::GetFirstContributionQueueCallback)callback
-{
-  const auto queue = [BATLedgerDatabase firstQueue];
-  callback(queue != nil ? queue.cppObjPtr : nullptr);
-}
-
 - (void)saveUnblindedTokenList:(ledger::UnblindedTokenList)list callback:(ledger::ResultCallback)callback
 {
   // This can be commented for now as it will be removed as part of database refactor
