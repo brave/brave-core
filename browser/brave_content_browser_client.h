@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/optional.h"
+#include "base/unguessable_token.h"
 #include "chrome/browser/chrome_content_browser_client.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/content_browser_client.h"
@@ -54,6 +55,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       base::StringPiece name) override;
   std::vector<service_manager::Manifest> GetExtraServiceManifests() override;
 
+  void AppendExtraCommandLineSwitches(base::CommandLine* command_line,
+                                      int child_process_id) override;
+
   void AdjustUtilityServiceProcessCommandLine(
       const service_manager::Identity& identity,
       base::CommandLine* command_line) override;
@@ -95,6 +99,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       CreateThrottlesForNavigation(content::NavigationHandle* handle) override;
 
  private:
+  base::UnguessableToken session_token_;
+  base::UnguessableToken incognito_session_token_;
+
   void OnAllowGoogleAuthChanged();
 
   std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
