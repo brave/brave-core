@@ -5,8 +5,10 @@
 
 #include "brave/browser/ui/toolbar/brave_app_menu_model.h"
 
+#include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/sync/driver/sync_driver_switches.h"
 
 BraveAppMenuModel::~BraveAppMenuModel() = default;
 
@@ -74,12 +76,15 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
                              IDS_SHOW_BRAVE_WALLET);
   }
 
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
   // Insert sync menu
-  if (IsCommandIdEnabled(IDC_SHOW_BRAVE_SYNC)) {
+  if (switches::IsSyncAllowedByFlag() &&
+      IsCommandIdEnabled(IDC_SHOW_BRAVE_SYNC)) {
     InsertItemWithStringIdAt(GetIndexOfBraveSyncItem(),
                              IDC_SHOW_BRAVE_SYNC,
                              IDS_SHOW_BRAVE_SYNC);
   }
+#endif
 
   // Insert adblock menu at last. Assumed this is always enabled.
   DCHECK(IsCommandIdEnabled(IDC_SHOW_BRAVE_ADBLOCK));
