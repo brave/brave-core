@@ -33,14 +33,6 @@ protocol URLChangeDelegate {
     func tab(_ tab: Tab, urlDidChangeTo url: URL)
 }
 
-struct TabState {
-    var type: TabType = .regular
-    var desktopSite: Bool = false
-    var url: URL?
-    var title: String?
-    var favicon: Favicon?
-}
-
 class Tab: NSObject {
     var id: String?
     
@@ -55,10 +47,6 @@ class Tab: NSObject {
     }
     
     var contentIsSecure = false
-    
-    var tabState: TabState {
-        return TabState(type: type, desktopSite: desktopSite, url: url, title: displayTitle, favicon: displayFavicon)
-    }
 
     // PageMetadata is derived from the page content itself, and as such lags behind the
     // rest of the tab.
@@ -121,9 +109,14 @@ class Tab: NSObject {
     /// The last title shown by this tab. Used by the tab tray to show titles for zombie tabs.
     var lastTitle: String?
 
-    /// Whether or not the desktop site was requested with the last request, reload or navigation. Note that this property needs to
-    /// be managed by the web view's navigation delegate.
-    var desktopSite: Bool = Preferences.General.alwaysRequestDesktopSite.value
+    var isDesktopSite: Bool {
+        webView?.customUserAgent?.lowercased().contains("mobile") == false
+    }
+    
+    /// In-memory dictionary of websites that were explicitly set to use either desktop or mobile user agent.
+    /// Key is url's base domain, value is desktop mode on or off.
+    /// Each tab has separate list of website overrides.
+    private var userAgentOverrides: [String: Bool] = [:]
     
     var readerModeAvailableOrActive: Bool {
         if let readerMode = self.getContentScript(name: "ReaderMode") as? ReaderMode {
@@ -195,9 +188,6 @@ class Tab: NSObject {
             configuration!.preferences = WKPreferences()
             configuration!.preferences.javaScriptCanOpenWindowsAutomatically = false
             configuration!.allowsInlineMediaPlayback = true
-            if #available(iOS 13.0, *) {
-                configuration!.defaultWebpagePreferences.preferredContentMode = Preferences.General.alwaysRequestDesktopSite.value ? .desktop : .mobile
-            }
             // Enables Zoom in website by ignoring their javascript based viewport Scale limits.
             configuration!.ignoresViewportScaleLimits = true
             let webView = TabWebView(frame: .zero, configuration: configuration!, isPrivate: isPrivate)
@@ -383,21 +373,11 @@ class Tab: NSObject {
     }
 
     func reload() {
-        var mobileUA: String?
-        if #available(iOS 13.0, *) {
-            mobileUA = UserAgent.defaultUserAgent()
-        }
-
-        let userAgent: String? = desktopSite ? UserAgent.desktopUserAgent() : mobileUA
-        
-        if (userAgent ?? "") != webView?.customUserAgent,
-           let currentItem = webView?.backForwardList.currentItem {
-            webView?.customUserAgent = userAgent
-
-            // Reload the initial URL to avoid UA specific redirection
-            loadRequest(PrivilegedRequest(url: currentItem.initialURL, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 60) as URLRequest)
-            return
-        }
+        // Clear the user agent before further navigation.
+        // Proper User Agent setting happens in BVC's WKNavigationDelegate.
+        // This prevents a bug with back-forward list, going back or forward and reloading the tab
+        // loaded wrong user agent.
+        webView?.customUserAgent = nil
         
         // Refreshing error, safe browsing warning pages.
         if let originalUrlFromErrorUrl = webView?.url?.originalURLFromErrorURL {
@@ -414,6 +394,13 @@ class Tab: NSObject {
             log.debug("restoring webView from scratch")
             restore(webView, restorationData: sessionData?.savedTabData)
         }
+    }
+    
+    func updateUserAgent(_ webView: WKWebView, newURL: URL) {
+        guard let baseDomain = newURL.baseDomain else { return }
+        
+        let desktopMode = userAgentOverrides[baseDomain] ?? UserAgent.shouldUseDesktopMode
+        webView.customUserAgent = desktopMode ? UserAgent.desktop : UserAgent.mobile
     }
 
     func addContentScript(_ helper: TabContentScript, name: String) {
@@ -475,8 +462,18 @@ class Tab: NSObject {
         }
     }
 
-    func toggleDesktopSite() {
-        desktopSite = !desktopSite
+    /// Switches user agent Desktop -> Mobile or Mobile -> Desktop.
+    func switchUserAgent() {
+        if let urlString = webView?.url?.baseDomain {
+            // The website was changed once already, need to flip the override.
+            if let siteOverride = userAgentOverrides[urlString] {
+                userAgentOverrides[urlString] = !siteOverride
+            } else {
+                // First time switch, adding the basedomain to dictionary with flipped value.
+                userAgentOverrides[urlString] = !UserAgent.shouldUseDesktopMode
+            }
+        }
+        
         reload()
     }
 
@@ -628,4 +625,3 @@ class TabWebViewMenuHelper: UIView {
         }
     }
 }
-

@@ -409,23 +409,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     }
 
     fileprivate func setUserAgent() {
-        let firefoxUA = UserAgent.defaultUserAgent()
+        let userAgent = UserAgent.userAgentForDesktopMode
 
-        // Set the UA for WKWebView (via defaults), the favicon fetcher, and the image loader.
+        // Set the favicon fetcher, and the image loader.
         // This only needs to be done once per runtime. Note that we use defaults here that are
         // readable from extensions, so they can just use the cached identifier.
-        
-        let defaults = UserDefaults(suiteName: AppInfo.sharedContainerIdentifier)!
-        defaults.register(defaults: ["UserAgent": firefoxUA])
 
-        SDWebImageDownloader.shared().setValue(firefoxUA, forHTTPHeaderField: "User-Agent")
+        SDWebImageDownloader.shared().setValue(userAgent, forHTTPHeaderField: "User-Agent")
 
         // Record the user agent for use by search suggestion clients.
-        SearchViewController.userAgent = firefoxUA
+        SearchViewController.userAgent = userAgent
 
         // Some sites will only serve HTML that points to .ico files.
         // The FaviconFetcher is explicitly for getting high-res icons, so use the desktop user agent.
-        FaviconFetcher.userAgent = UserAgent.desktopUserAgent()
+        FaviconFetcher.userAgent = UserAgent.desktop
     }
 
     fileprivate func presentEmailComposerWithLogs() {

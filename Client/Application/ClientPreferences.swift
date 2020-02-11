@@ -47,7 +47,8 @@ extension Preferences {
         static let themePrivateMode = Option<String>(key: "general.private-mode-theme", default: Theme.DefaultTheme.private.rawValue)
         /// Specifies whether the bookmark button is present on toolbar
         static let showBookmarkToolbarShortcut = Option<Bool>(key: "general.show-bookmark-toolbar-shortcut", default: UIDevice.isIpad)
-        /// Sets Desktop UA for iPad by default (iOS 13+ & iPad only)
+        /// Sets Desktop UA for iPad by default (iOS 13+ & iPad only).
+        /// Do not read it directly, prefer to use `UserAgent.shouldUseDesktopMode` instead.
         static let alwaysRequestDesktopSite = Option<Bool>(key: "general.always-request-desktop-site", default: UIDevice.isIpad)
         /// Controls whether or not media auto-plays
         static let mediaAutoPlays = Option<Bool>(key: "general.media-auto-plays", default: false)

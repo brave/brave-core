@@ -193,10 +193,8 @@ extension BrowserViewController: WKNavigationDelegate {
         // always allow this. Additionally, data URIs are also handled just like normal web pages.
 
         if ["http", "https", "data", "blob", "file"].contains(url.scheme) {
-            if navigationAction.navigationType == .linkActivated {
-                resetSpoofedUserAgentIfRequired(webView, newURL: url)
-            } else if navigationAction.navigationType == .backForward {
-                restoreSpoofedUserAgentIfRequired(webView, newRequest: navigationAction.request)
+            if navigationAction.targetFrame?.isMainFrame == true {
+                tabManager[webView]?.updateUserAgent(webView, newURL: url)
             }
 
             pendingRequests[url.absoluteString] = navigationAction.request
@@ -357,7 +355,6 @@ extension BrowserViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: @escaping (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {
         
         self.webView(webView, decidePolicyFor: navigationAction) {
-            preferences.preferredContentMode = Preferences.General.alwaysRequestDesktopSite.value ? .desktop : .mobile
             decisionHandler($0, preferences)
         }
     }
