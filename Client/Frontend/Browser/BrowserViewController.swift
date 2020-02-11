@@ -1723,8 +1723,7 @@ extension BrowserViewController: TopToolbarDelegate {
             tab.switchUserAgent()
         }))
         
-        let generator = UIImpactFeedbackGenerator(style: .heavy)
-        generator.impactOccurred()
+        UIImpactFeedbackGenerator(style: .heavy).bzzt()
         if UIDevice.current.userInterfaceIdiom == .pad {
             alert.popoverPresentationController?.sourceView = self.view
             alert.popoverPresentationController?.sourceRect = self.view.convert(button.frame, from: button.superview)
@@ -1927,8 +1926,7 @@ extension BrowserViewController: ToolbarDelegate {
     }
 
     func tabToolbarDidLongPressBack(_ tabToolbar: ToolbarProtocol, button: UIButton) {
-        let generator = UIImpactFeedbackGenerator(style: .heavy)
-        generator.impactOccurred()
+        UIImpactFeedbackGenerator(style: .heavy).bzzt()
         showBackForwardList()
     }
     
@@ -2003,14 +2001,12 @@ extension BrowserViewController: ToolbarDelegate {
         addTabAlertActions().forEach(alertController.addAction)
         alertController.popoverPresentationController?.sourceView = sourceView
         alertController.popoverPresentationController?.sourceRect = button.frame
-        let generator = UIImpactFeedbackGenerator(style: .heavy)
-        generator.impactOccurred()
+        UIImpactFeedbackGenerator(style: .heavy).bzzt()
         present(alertController, animated: true)
     }
     
     func tabToolbarDidLongPressForward(_ tabToolbar: ToolbarProtocol, button: UIButton) {
-        let generator = UIImpactFeedbackGenerator(style: .heavy)
-        generator.impactOccurred()
+        UIImpactFeedbackGenerator(style: .heavy).bzzt()
         showBackForwardList()
     }
 
@@ -2042,8 +2038,7 @@ extension BrowserViewController: ToolbarDelegate {
         controller.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil), accessibilityIdentifier: "toolbarTabButtonLongPress.cancel")
         controller.popoverPresentationController?.sourceView = toolbar ?? topToolbar
         controller.popoverPresentationController?.sourceRect = button.frame
-        let generator = UIImpactFeedbackGenerator(style: .heavy)
-        generator.impactOccurred()
+        UIImpactFeedbackGenerator(style: .heavy).bzzt()
         present(controller, animated: true, completion: nil)
     }
 

@@ -227,9 +227,7 @@ public class AdsViewController: UIViewController {
 //      }
 //      adView.openSwipeButton.isHighlighted = tx > actionTriggerThreshold
       if tx < -actionTriggerThreshold && !adView.dislikeSwipeButton.isHighlighted {
-        let impact = UIImpactFeedbackGenerator(style: .medium)
-        impact.prepare()
-        impact.impactOccurred()
+        UIImpactFeedbackGenerator(style: .medium).bzzt()
       }
       adView.dislikeSwipeButton.isHighlighted = tx < -actionTriggerThreshold
       adView.adContentButton.transform.tx = min(0, tx)

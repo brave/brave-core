@@ -240,6 +240,8 @@ class TabManager: NSObject {
         }
 
         assert(tab === selectedTab, "Expected tab is selected")
+        
+        UIImpactFeedbackGenerator(style: .light).bzzt()
         selectedTab?.createWebview()
         selectedTab?.lastExecutedTime = Date.now()
 

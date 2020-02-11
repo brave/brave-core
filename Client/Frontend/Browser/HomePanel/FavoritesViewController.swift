@@ -446,11 +446,13 @@ class FavoritesViewController: UIViewController, Themeable {
         alert.popoverPresentationController?.permittedArrowDirections = [.down, .up]
         alert.addAction(UIAlertAction(title: Strings.close, style: .cancel, handler: nil))
         
+        UIImpactFeedbackGenerator(style: .medium).bzzt()
         present(alert, animated: true, completion: nil)
     }
     
     @objc private func showSponsoredSite() {
         guard let url = background?.sponsor?.logo.destinationUrl else { return }
+        UIImpactFeedbackGenerator(style: .medium).bzzt()
         delegate?.didSelect(input: url)
     }
     

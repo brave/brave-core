@@ -265,9 +265,7 @@ extension TippingViewController.View: UIScrollViewDelegate {
           }, completion: nil)
         })
         
-        let feedback = UIImpactFeedbackGenerator(style: .medium)
-        feedback.prepare()
-        feedback.impactOccurred()
+        UIImpactFeedbackGenerator(style: .medium).bzzt()
       }
     } else {
       if isPassedDismissalThreshold {
