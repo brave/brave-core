@@ -25,6 +25,9 @@ using ServerPublisherLinksCallback =
 using ServerPublisherAmountsCallback =
     std::function<void(const std::vector<double>& amounts)>;
 
+using ContributionQueuePublishersListCallback =
+    std::function<void(ledger::ContributionQueuePublisherList)>;
+
 class DatabaseTable {
  public:
   explicit DatabaseTable(bat_ledger::LedgerImpl* ledger);

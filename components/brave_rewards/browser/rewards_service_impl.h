@@ -598,17 +598,6 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& wallet_type,
       const std::string& id) override;
 
-  void InsertOrUpdateContributionQueue(
-    ledger::ContributionQueuePtr info,
-    ledger::ResultCallback callback) override;
-
-  void DeleteContributionQueue(
-    const uint64_t id,
-    ledger::ResultCallback callback) override;
-
-  void GetFirstContributionQueue(
-    ledger::GetFirstContributionQueueCallback callback) override;
-
   void SaveUnblindedTokenList(
       ledger::UnblindedTokenList list,
       ledger::ResultCallback callback) override;
@@ -700,10 +689,6 @@ class RewardsServiceImpl : public RewardsService,
   void RemovePrivateObserver(RewardsServicePrivateObserver* observer) override;
 
   void RecordBackendP3AStats() const;
-
-  void OnGetFirstContributionQueue(
-    ledger::GetFirstContributionQueueCallback callback,
-    ledger::ContributionQueuePtr info);
 
   void OnGetAllUnblindedTokens(
       ledger::GetAllUnblindedTokensCallback callback,

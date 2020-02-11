@@ -218,17 +218,6 @@ class LEDGER_EXPORT LedgerClient {
     const std::string& wallet_type,
     const std::string& id) = 0;
 
-  virtual void InsertOrUpdateContributionQueue(
-    ledger::ContributionQueuePtr info,
-    ledger::ResultCallback callback) = 0;
-
-  virtual void DeleteContributionQueue(
-    const uint64_t id,
-    ledger::ResultCallback callback) = 0;
-
-  virtual void GetFirstContributionQueue(
-    ledger::GetFirstContributionQueueCallback callback) = 0;
-
   virtual void SaveUnblindedTokenList(
     ledger::UnblindedTokenList list,
     ledger::ResultCallback callback) = 0;

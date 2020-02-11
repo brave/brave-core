@@ -161,15 +161,6 @@ int64_t NativeLedgerClient::GetInt64Option(const std::string& name) const {
 uint64_t NativeLedgerClient::GetUint64Option(const std::string& name) const {
   return [bridge_ getUint64Option:name];
 }
-void NativeLedgerClient::InsertOrUpdateContributionQueue(ledger::ContributionQueuePtr info, ledger::ResultCallback callback) {
-  return [bridge_ insertOrUpdateContributionQueue:std::move(info) callback:callback];
-}
-void NativeLedgerClient::DeleteContributionQueue(const uint64_t id, ledger::ResultCallback callback) {
-  return [bridge_ deleteContributionQueue:id callback:callback];
-}
-void NativeLedgerClient::GetFirstContributionQueue(ledger::GetFirstContributionQueueCallback callback) {
-  return [bridge_ getFirstContributionQueue:callback];
-}
 void NativeLedgerClient::SaveUnblindedTokenList(ledger::UnblindedTokenList list, ledger::ResultCallback callback) {
   return [bridge_ saveUnblindedTokenList:std::move(list) callback:callback];
 }

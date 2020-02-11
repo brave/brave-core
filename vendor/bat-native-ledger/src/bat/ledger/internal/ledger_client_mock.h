@@ -255,17 +255,6 @@ class MockLedgerClient : public LedgerClient {
     const std::string& wallet_type,
     const std::string& id));
 
-  MOCK_METHOD2(InsertOrUpdateContributionQueue, void(
-    ledger::ContributionQueuePtr info,
-    ledger::ResultCallback callback));
-
-  MOCK_METHOD2(DeleteContributionQueue, void(
-    const uint64_t id,
-    ledger::ResultCallback callback));
-
-  MOCK_METHOD1(GetFirstContributionQueue, void(
-    ledger::GetFirstContributionQueueCallback callback));
-
   MOCK_METHOD2(SaveUnblindedTokenList, void(
     ledger::UnblindedTokenList list,
     ledger::ResultCallback callback));

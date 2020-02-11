@@ -20,6 +20,7 @@ namespace braveledger_database {
 
 class DatabaseInitialize;
 class DatabaseActivityInfo;
+class DatabaseContributionQueue;
 class DatabaseMediaPublisherInfo;
 class DatabasePendingContribution;
 class DatabasePromotion;
@@ -55,6 +56,20 @@ class Database {
 
   void DeleteActivityInfo(
       const std::string& publisher_key,
+      ledger::ResultCallback callback);
+
+  /**
+   * CONTRIBUTION QUEUE
+   */
+  void SaveContributionQueue(
+      ledger::ContributionQueuePtr info,
+      ledger::ResultCallback callback);
+
+  void GetFirstContributionQueue(
+      ledger::GetFirstContributionQueueCallback callback);
+
+  void DeleteContributionQueue(
+      const uint64_t id,
       ledger::ResultCallback callback);
 
   /**
@@ -151,6 +166,7 @@ class Database {
  private:
   std::unique_ptr<DatabaseInitialize> initialize_;
   std::unique_ptr<DatabaseActivityInfo> activity_info_;
+  std::unique_ptr<DatabaseContributionQueue> contribution_queue_;
   std::unique_ptr<DatabasePendingContribution> pending_contribution_;
   std::unique_ptr<DatabasePromotion> promotion_;
   std::unique_ptr<DatabaseMediaPublisherInfo> media_publisher_info_;

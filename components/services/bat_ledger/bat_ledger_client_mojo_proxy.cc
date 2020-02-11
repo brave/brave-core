@@ -587,34 +587,6 @@ void BatLedgerClientMojoProxy::RemoveTransferFee(
   bat_ledger_client_->RemoveTransferFee(wallet_type, id);
 }
 
-void BatLedgerClientMojoProxy::InsertOrUpdateContributionQueue(
-    ledger::ContributionQueuePtr info,
-    ledger::ResultCallback callback) {
-  bat_ledger_client_->InsertOrUpdateContributionQueue(
-      std::move(info),
-      base::BindOnce(&OnResultCallback, std::move(callback)));
-}
-
-void BatLedgerClientMojoProxy::DeleteContributionQueue(
-    const uint64_t id,
-    ledger::ResultCallback callback) {
-  bat_ledger_client_->DeleteContributionQueue(
-      id,
-      base::BindOnce(&OnResultCallback, std::move(callback)));
-}
-
-void OnGetFirstContributionQueue(
-    const ledger::GetFirstContributionQueueCallback& callback,
-    ledger::ContributionQueuePtr info) {
-  callback(std::move(info));
-}
-
-void BatLedgerClientMojoProxy::GetFirstContributionQueue(
-    ledger::GetFirstContributionQueueCallback callback) {
-  bat_ledger_client_->GetFirstContributionQueue(
-      base::BindOnce(&OnGetFirstContributionQueue, std::move(callback)));
-}
-
 void BatLedgerClientMojoProxy::SaveUnblindedTokenList(
     ledger::UnblindedTokenList list,
     ledger::ResultCallback callback) {
