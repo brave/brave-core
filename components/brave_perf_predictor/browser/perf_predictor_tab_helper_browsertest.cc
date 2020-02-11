@@ -24,6 +24,15 @@
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 
+namespace {
+
+uint64_t getProfileBandwidthSaved(Browser* browser) {
+  return browser->profile()->GetPrefs()->GetUint64(
+      brave_perf_predictor::prefs::kBandwidthSavedBytes);
+}
+
+}  // namespace
+
 class PerfPredictorTabHelperTest : public InProcessBrowserTest {
  public:
   PerfPredictorTabHelperTest() {}
@@ -68,9 +77,7 @@ class PerfPredictorTabHelperTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, NoBlockNoSavings) {
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(
-                brave_perf_predictor::prefs::kBandwidthSavedBytes),
-            0ULL);
+  EXPECT_EQ(getProfileBandwidthSaved(browser()), 0ULL);
 
   GURL url = embedded_test_server()->GetURL("/blocking.html");
   ui_test_utils::NavigateToURL(browser(), url);
@@ -85,17 +92,13 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, NoBlockNoSavings) {
   EXPECT_TRUE(as_expected);
   // Prediction triggered when web contents are closed
   contents->Close();
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(
-                brave_perf_predictor::prefs::kBandwidthSavedBytes),
-            0ULL);
+  EXPECT_EQ(getProfileBandwidthSaved(browser()), 0ULL);
 }
 
 IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, ScriptBlockHasSavings) {
   ASSERT_TRUE(g_brave_browser_process->ad_block_custom_filters_service()
                   ->UpdateCustomFilters("*analytics.js"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(
-                brave_perf_predictor::prefs::kBandwidthSavedBytes),
-            0ULL);
+  EXPECT_EQ(getProfileBandwidthSaved(browser()), 0ULL);
 
   GURL url = embedded_test_server()->GetURL("/blocking.html");
   ui_test_utils::NavigateToURL(browser(), url);
@@ -111,17 +114,13 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, ScriptBlockHasSavings) {
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
   // Prediction triggered when web contents are closed
   contents->Close();
-  EXPECT_NE(browser()->profile()->GetPrefs()->GetUint64(
-                brave_perf_predictor::prefs::kBandwidthSavedBytes),
-            0ULL);
+  EXPECT_NE(getProfileBandwidthSaved(browser()), 0ULL);
 }
 
 IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, NewNavigationStoresSavings) {
   ASSERT_TRUE(g_brave_browser_process->ad_block_custom_filters_service()
                   ->UpdateCustomFilters("*analytics.js"));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(
-                brave_perf_predictor::prefs::kBandwidthSavedBytes),
-            0ULL);
+  EXPECT_EQ(getProfileBandwidthSaved(browser()), 0ULL);
 
   GURL url = embedded_test_server()->GetURL("/blocking.html");
   ui_test_utils::NavigateToURL(browser(), url);
@@ -150,7 +149,5 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, NewNavigationStoresSavings) {
 
   // closing the new navigation triggers a second computation
   contents->Close();
-  EXPECT_NE(browser()->profile()->GetPrefs()->GetUint64(
-                brave_perf_predictor::prefs::kBandwidthSavedBytes),
-            previous_nav_savings);
+  EXPECT_NE(getProfileBandwidthSaved(browser()), previous_nav_savings);
 }

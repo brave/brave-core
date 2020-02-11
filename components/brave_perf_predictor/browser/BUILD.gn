@@ -1,5 +1,4 @@
 import("//brave/build/config.gni")
-import("//brave/components/p3a/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("buildflags/buildflags.gni")
 
@@ -23,6 +22,10 @@ source_set("browser") {
     "bandwidth_savings_predictor.h",
     "named_third_party_registry.cc",
     "named_third_party_registry.h",
+    "p3a_bandwidth_savings_permanent_state.cc",
+    "p3a_bandwidth_savings_permanent_state.h",
+    "p3a_bandwidth_savings_tracker.cc",
+    "p3a_bandwidth_savings_tracker.h",
     "perf_predictor_page_metrics_observer.cc",
     "perf_predictor_page_metrics_observer.h",
     "perf_predictor_tab_helper.cc",
@@ -45,13 +48,4 @@ source_set("browser") {
     "//ui/base",
     "//url",
   ]
-
-  if (brave_p3a_enabled) {
-    sources += [
-      "p3a_bandwidth_savings_permanent_state.cc",
-      "p3a_bandwidth_savings_permanent_state.h",
-      "p3a_bandwidth_savings_tracker.cc",
-      "p3a_bandwidth_savings_tracker.h",
-    ]
-  }
 }

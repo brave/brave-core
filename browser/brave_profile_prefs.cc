@@ -14,7 +14,6 @@
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
-#include "brave/components/p3a/buildflags.h"
 #include "chrome/browser/net/prediction_options.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/common/pref_names.h"
@@ -55,9 +54,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
-#endif
 #endif
 
 using extensions::FeatureSwitch;
@@ -83,9 +80,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
   brave_perf_predictor::PerfPredictorTabHelper::RegisterProfilePrefs(registry);
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
   brave_perf_predictor::P3ABandwidthSavingsTracker::RegisterPrefs(registry);
-#endif
 #endif
 
   // appearance

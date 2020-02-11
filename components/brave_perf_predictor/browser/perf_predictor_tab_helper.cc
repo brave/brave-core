@@ -43,10 +43,8 @@ PerfPredictorTabHelper::PerfPredictorTabHelper(
   if (web_contents->GetBrowserContext()->IsOffTheRecord())
     return;
 
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
   bandwidth_tracker_ = std::make_unique<P3ABandwidthSavingsTracker>(
       user_prefs::UserPrefs::Get(web_contents->GetBrowserContext()));
-#endif
 }
 
 PerfPredictorTabHelper::~PerfPredictorTabHelper() = default;
@@ -101,10 +99,8 @@ void PerfPredictorTabHelper::RecordSavings() {
             prefs::kBandwidthSavedBytes,
             prefs->GetUint64(prefs::kBandwidthSavedBytes) + savings);
 
-#if BUILDFLAG(BRAVE_P3A_ENABLED)
       if (bandwidth_tracker_)
         bandwidth_tracker_->RecordSavings(savings);
-#endif
     }
   }
 }
@@ -130,7 +126,7 @@ void PerfPredictorTabHelper::DidFinishNavigation(
     return;
   // Reset predictor state when we're committed to this navigation
   bandwidth_predictor_->Reset();
-  // Record current nevigation ID to know if we're in the same navigation later
+  // Record current navigation ID to know if we're in the same navigation later
   navigation_id_ = handle->GetNavigationId();
 }
 
