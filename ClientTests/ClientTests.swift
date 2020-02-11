@@ -12,40 +12,6 @@ import WebKit
 
 class ClientTests: XCTestCase {
 
-    // Simple test to make sure the WKWebView UA matches the expected FxiOS pattern.
-    func testUserAgent() {
-        let compare: (String) -> Bool = { ua in
-            let range = ua.range(of: "^Mozilla/5\\.0 \\(.+\\) AppleWebKit/[0-9\\.]+ \\(KHTML, like Gecko\\) FxiOS/[0-9\\.]+ Mobile/[A-Za-z0-9]+ Safari/[0-9\\.]+$", options: .regularExpression)
-            return range != nil
-        }
-
-        XCTAssertTrue(compare(UserAgent.defaultUserAgent()), "User agent computes correctly.")
-        XCTAssertTrue(compare(UserAgent.cachedUserAgent(checkiOSVersion: true)!), "User agent is cached correctly.")
-
-        let expectation = self.expectation(description: "Found Firefox user agent")
-
-        let webView = WKWebView()
-        webView.evaluateJavaScript("navigator.userAgent") { result, error in
-            let userAgent = result as! String
-            if compare(userAgent) {
-                expectation.fulfill()
-            } else {
-                XCTFail("User agent did not match expected pattern! \(userAgent)")
-            }
-        }
-
-        waitForExpectations(timeout: 10, handler: nil)
-    }
-
-    func testDesktopUserAgent() {
-        let compare: (String) -> Bool = { ua in
-            let range = ua.range(of: "^Mozilla/5\\.0 \\(Macintosh; Intel Mac OS X [0-9_]+\\) AppleWebKit/[0-9\\.]+ \\(KHTML, like Gecko\\) Safari/[0-9\\.]+$", options: .regularExpression)
-            return range != nil
-        }
-
-        XCTAssertTrue(compare(UserAgent.desktopUserAgent()), "Desktop user agent computes correctly.")
-    }
-
     /// Our local server should only accept whitelisted hosts (localhost and 127.0.0.1).
     /// All other localhost equivalents should return 403.
     func testDisallowLocalhostAliases() {

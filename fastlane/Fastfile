@@ -50,6 +50,13 @@ platform :ios do
         "ClientTests/testUserAgent"
       ]
     )
+
+    run_tests(
+      scheme: "Fennec",
+      device: "iPad Pro (9.7-inch)",
+      code_coverage: true,
+      xcargs: "-testPlan Brave_iPad"
+    )
   end
 
   desc "Creates a Brave Beta Release build for TestFlight."

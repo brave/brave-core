@@ -29,6 +29,8 @@ class BraveWebView: WKWebView {
         }
         
         super.init(frame: frame, configuration: configuration)
+        
+        customUserAgent = UserAgent.userAgentForDesktopMode
     }
     
     static func removeNonPersistentStore() {

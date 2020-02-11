@@ -476,7 +476,6 @@ class BrowserViewController: UIViewController {
             
         }
         
-        
         KeyboardHelper.defaultHelper.addDelegate(self)
 
         webViewContainerBackdrop = UIView()
@@ -1126,7 +1125,6 @@ class BrowserViewController: UIViewController {
             //Block all other contexts such as redirects, downloads, embed, linked, etc..
             if visitType == .typed || visitType == .bookmark {
                 if let webView = tab.webView, let code = url.bookmarkletCodeComponent {
-                    resetSpoofedUserAgentIfRequired(webView, newURL: url)
                     webView.evaluateJavaScript(code, completionHandler: { _, error in
                         if let error = error {
                             log.error(error)
@@ -1140,10 +1138,6 @@ class BrowserViewController: UIViewController {
 
             guard let tab = tabManager.selectedTab else {
                 return
-            }
-
-            if let webView = tab.webView {
-                resetSpoofedUserAgentIfRequired(webView, newURL: url)
             }
 
             tab.loadRequest(PrivilegedRequest(url: url) as URLRequest)
@@ -1405,26 +1399,6 @@ class BrowserViewController: UIViewController {
         }
     }
 
-    // MARK: User Agent Spoofing
-
-    func resetSpoofedUserAgentIfRequired(_ webView: WKWebView, newURL: URL) {
-        // Reset the UA when a different domain is being loaded
-        if webView.url?.host != newURL.host {
-            webView.customUserAgent = nil
-        }
-    }
-
-    func restoreSpoofedUserAgentIfRequired(_ webView: WKWebView, newRequest: URLRequest) {
-        // Restore any non-default UA from the request's header
-        let ua = newRequest.value(forHTTPHeaderField: "User-Agent")
-        
-        if #available(iOS 13.0, *) {
-            webView.customUserAgent = Preferences.General.alwaysRequestDesktopSite.value == UserAgent.isDesktopUA(ua) ? nil : ua
-        } else {
-            webView.customUserAgent = ua == UserAgent.defaultUserAgent() ? nil : ua
-        }
-    }
-
     fileprivate func presentActivityViewController(_ url: URL, tab: Tab? = nil, sourceView: UIView?, sourceRect: CGRect, arrowDirection: UIPopoverArrowDirection) {
         let helper = ShareExtensionHelper(url: url, tab: tab)
         
@@ -1433,7 +1407,7 @@ class BrowserViewController: UIViewController {
         }
         
         let requestDesktopSiteActivity = RequestDesktopSiteActivity(tab: tab) { [weak tab] in
-            tab?.toggleDesktopSite()
+            tab?.switchUserAgent()
         }
         
         var activities: [UIActivity] = [findInPageActivity]
@@ -1559,15 +1533,6 @@ class BrowserViewController: UIViewController {
                 if webView.superview == self.view {
                     webView.removeFromSuperview()
                 }
-            }
-        }
-        
-        // Remember whether or not a desktop site was requested
-        tab.desktopSite = UserAgent.isDesktopUA(webView.customUserAgent)
-        
-        if #available(iOS 13.0, *), UIDevice.isIpad {
-            if webView.customUserAgent?.isEmpty == true {
-                tab.desktopSite = Preferences.General.alwaysRequestDesktopSite.value
             }
         }
     }
@@ -1752,9 +1717,10 @@ extension BrowserViewController: TopToolbarDelegate {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
         
-        let toggleActionTitle = tab.desktopSite ? Strings.appMenuViewMobileSiteTitleString : Strings.appMenuViewDesktopSiteTitleString
+        let toggleActionTitle = tab.isDesktopSite == true ?
+            Strings.appMenuViewMobileSiteTitleString : Strings.appMenuViewDesktopSiteTitleString
         alert.addAction(UIAlertAction(title: toggleActionTitle, style: .default, handler: { _ in
-            tab.toggleDesktopSite()
+            tab.switchUserAgent()
         }))
         
         let generator = UIImpactFeedbackGenerator(style: .heavy)

@@ -54,6 +54,9 @@
             reference = "container:Client.xcodeproj/Fennec.xctestplan"
             default = "YES">
          </TestPlanReference>
+         <TestPlanReference
+            reference = "container:Brave_iPad.xctestplan">
+         </TestPlanReference>
       </TestPlans>
       <Testables>
          <TestableReference
