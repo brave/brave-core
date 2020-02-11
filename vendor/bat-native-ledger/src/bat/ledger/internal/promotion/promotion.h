@@ -59,6 +59,10 @@ class Promotion {
       const std::string& response,
       ledger::FetchPromotionCallback callback);
 
+  void LegacyClaimedSaved(
+      const ledger::Result result,
+      const std::string& promotion_string);
+
   void OnAttestPromotion(
       const ledger::Result result,
       const std::string& promotion_id,
@@ -68,9 +72,19 @@ class Promotion {
       ledger::PromotionPtr promotion,
       ledger::AttestPromotionCallback callback);
 
+  void AttestedSaved(
+      const ledger::Result result,
+      const std::string& promotion_string,
+      ledger::AttestPromotionCallback callback);
+
   void Complete(
       const ledger::Result result,
       const std::string& promotion_string,
+      ledger::AttestPromotionCallback callback);
+
+  void OnComplete(
+      ledger::PromotionPtr promotion,
+      const ledger::Result result,
       ledger::AttestPromotionCallback callback);
 
   void ProcessFetchedPromotions(
@@ -87,6 +101,16 @@ class Promotion {
       const std::string promotion_string,
       ledger::ResultCallback callback);
 
+  void ClaimedTokensSaved(
+      const ledger::Result result,
+      const std::string promotion_string,
+      ledger::ResultCallback callback);
+
+  void ClaimTokensSaved(
+      const ledger::Result result,
+      const std::string& promotion_string,
+      ledger::ResultCallback callback);
+
   void FetchSignedTokens(
       ledger::PromotionPtr promotion,
       ledger::ResultCallback callback);
@@ -98,13 +122,27 @@ class Promotion {
       const std::string promotion_string,
       ledger::ResultCallback callback);
 
+  void ProcessSignedCredentials(
+      const ledger::Result result,
+      const std::string& promotion_id,
+      ledger::ResultCallback callback);
+
+  void OnProcessSignedCredentials(
+      ledger::PromotionPtr promotion,
+      ledger::ResultCallback callback);
+
   bool UnBlindTokens(
       ledger::PromotionPtr promotion,
       std::vector<std::string>* unblinded_encoded_tokens);
 
-  void FinishPromotion(
+  void SaveUnblindedTokens(
       ledger::PromotionPtr promotion,
       const std::vector<std::string>& unblinded_encoded_tokens,
+      ledger::ResultCallback callback);
+
+  void FinishPromotion(
+      const ledger::Result result,
+      const std::string promotion_string,
       ledger::ResultCallback callback);
 
   std::unique_ptr<braveledger_attestation::AttestationImpl> attestation_;

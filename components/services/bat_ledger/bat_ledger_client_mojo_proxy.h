@@ -215,8 +215,8 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void GetAllPromotions(
     ledger::GetAllPromotionsCallback callback) override;
 
-  void InsertOrUpdateUnblindedToken(
-      ledger::UnblindedTokenPtr info,
+  void SaveUnblindedTokenList(
+      ledger::UnblindedTokenList list,
       ledger::ResultCallback callback) override;
 
   void GetAllUnblindedTokens(

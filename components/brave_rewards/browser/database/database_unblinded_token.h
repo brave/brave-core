@@ -23,7 +23,7 @@ class DatabaseUnblindedToken: public DatabaseTable {
 
   bool Migrate(sql::Database* db, const int target) override;
 
-  bool InsertOrUpdate(sql::Database* db, ledger::UnblindedTokenPtr info);
+  bool InsertOrUpdateList(sql::Database* db, ledger::UnblindedTokenList list);
 
   ledger::UnblindedTokenList GetAllRecords(sql::Database* db);
 

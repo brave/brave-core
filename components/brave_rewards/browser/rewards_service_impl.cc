@@ -4240,28 +4240,28 @@ void RewardsServiceImpl::OnGetAllPromotions(
   callback(std::move(promotions));
 }
 
-ledger::Result InsertOrUpdateUnblindedTokenFileTaskRunner(
+ledger::Result SaveUnblindedTokenListTokenFileTaskRunner(
     PublisherInfoDatabase* backend,
-    ledger::UnblindedTokenPtr info) {
+    ledger::UnblindedTokenList list) {
   if (!backend) {
     return ledger::Result::LEDGER_ERROR;
   }
 
-  const bool result = backend->InsertOrUpdateUnblindedToken(std::move(info));
+  const bool result =
+      backend->SaveUnblindedTokenList(std::move(list));
 
   return result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR;
 }
 
-void RewardsServiceImpl::InsertOrUpdateUnblindedToken(
-    ledger::UnblindedTokenPtr info,
+void RewardsServiceImpl::SaveUnblindedTokenList(
+    ledger::UnblindedTokenList list,
     ledger::ResultCallback callback) {
-  auto info_clone = info->Clone();
   base::PostTaskAndReplyWithResult(
     file_task_runner_.get(),
     FROM_HERE,
-    base::BindOnce(&InsertOrUpdateUnblindedTokenFileTaskRunner,
+    base::BindOnce(&SaveUnblindedTokenListTokenFileTaskRunner,
         publisher_info_backend_.get(),
-        std::move(info_clone)),
+        std::move(list)),
     base::BindOnce(&RewardsServiceImpl::OnResult,
         AsWeakPtr(),
         callback));

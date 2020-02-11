@@ -120,7 +120,7 @@ class PublisherInfoDatabase {
 
   ledger::PromotionMap GetAllPromotions();
 
-  bool InsertOrUpdateUnblindedToken(ledger::UnblindedTokenPtr info);
+  bool SaveUnblindedTokenList(ledger::UnblindedTokenList list);
 
   ledger::UnblindedTokenList GetAllUnblindedTokens();
 
