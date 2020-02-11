@@ -1,12 +1,12 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelDefinitions.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelDefinitions.java
-index 62d219a61441e8d26ef71f76e2df45f17de4a4e8..98f017a2a82e34794e1fc9fa4e6c569dbe821f62 100644
+index 62d219a61441e8d26ef71f76e2df45f17de4a4e8..d9fe43bf2e621d6338e390679de17a1a9008c2fa 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelDefinitions.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelDefinitions.java
 @@ -55,6 +55,7 @@ public class ChannelDefinitions {
       * more detailed instructions.
       */
      @StringDef({ChannelId.BROWSER, ChannelId.DOWNLOADS, ChannelId.INCOGNITO, ChannelId.MEDIA,
-+            BraveChannelDefinitions.ChannelId.BRAVE_ADS,
++            BraveChannelDefinitions.ChannelId.BRAVE_ADS, BraveChannelDefinitions.ChannelId.BRAVE_ADS_BACKGROUND,
              ChannelId.SCREEN_CAPTURE, ChannelId.CONTENT_SUGGESTIONS, ChannelId.WEBAPP_ACTIONS,
              ChannelId.SITES, ChannelId.SHARING, ChannelId.UPDATES, ChannelId.COMPLETED_DOWNLOADS,
              ChannelId.PERMISSION_REQUESTS, ChannelId.PERMISSION_REQUESTS_HIGH,
