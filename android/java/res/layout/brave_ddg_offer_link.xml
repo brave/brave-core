@@ -18,10 +18,6 @@
       android:text="@string/ddg_offer_link"
       android:textColor="@color/modern_grey_400"
       android:drawableStart="@drawable/duckduckgo"
-      android:drawablePadding="15dp"
-      android:layout_marginTop="15dp"
-      android:textSize="28sp"
-      android:scaleX="0.5"
-      android:scaleY="0.5" />
+      android:drawablePadding="15dp"/>
 
 </LinearLayout>

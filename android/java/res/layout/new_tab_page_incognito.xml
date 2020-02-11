@@ -15,7 +15,6 @@
     android:focusableInTouchMode="true"
     android:contentDescription="@string/brave_new_private_tab">
 
-    <org.chromium.chrome.browser.ntp.BraveDuckDuckGoOfferView android:id="@+id/brave_duck_duck_go_offer_view" android:layout_width="match_parent" android:layout_height="match_parent" > <include layout="@layout/brave_ddg_offer_link" /> </org.chromium.chrome.browser.ntp.BraveDuckDuckGoOfferView>
     <org.chromium.chrome.browser.ntp.NewTabPageScrollView
         android:id="@+id/ntp_scrollview"
         android:background="@color/ntp_bg_incognito"
@@ -81,6 +80,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/learn_more"
                 android:visibility = "gone" />
+
+            <org.chromium.chrome.browser.ntp.BraveDuckDuckGoOfferView 
+                android:id="@+id/brave_duck_duck_go_offer_view" 
+                android:layout_width="wrap_content" 
+                android:layout_height="wrap_content" > 
+                <include layout="@layout/brave_ddg_offer_link" /> 
+            </org.chromium.chrome.browser.ntp.BraveDuckDuckGoOfferView>
+
         </LinearLayout>
 
     </org.chromium.chrome.browser.ntp.NewTabPageScrollView>
