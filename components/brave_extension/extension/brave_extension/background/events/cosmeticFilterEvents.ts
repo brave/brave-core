@@ -3,7 +3,7 @@ import {
   addSiteCosmeticFilter,
   removeSiteFilter,
   removeAllFilters,
-  hideThirdPartySelectors
+  showFirstPartySelectors
 } from '../api/cosmeticFilterAPI'
 import shieldsPanelActions from '../actions/shieldsPanelActions'
 
@@ -63,7 +63,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       shieldsPanelActions.generateClassIdStylesheet(tabId, msg.classes, msg.ids)
       break
     }
-    case 'hideThirdPartySelectors': {
+    case 'showFirstPartySelectors': {
       const tab = sender.tab
       if (tab === undefined) {
         break
@@ -80,7 +80,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       if (selectors === undefined) {
         break
       }
-      hideThirdPartySelectors(tabId, selectors)
+      showFirstPartySelectors(tabId, selectors)
       break
     }
     case 'contentScriptsLoaded': {

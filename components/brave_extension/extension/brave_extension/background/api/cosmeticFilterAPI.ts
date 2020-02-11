@@ -17,22 +17,26 @@ const informTabOfCosmeticRulesToConsider = (tabId: number, hideRules: string[]) 
   }
 }
 
+// Fires when content-script calls hiddenClassIdSelectors
 export const injectClassIdStylesheet = (tabId: number, classes: string[], ids: string[], exceptions: string[]) => {
   chrome.braveShields.hiddenClassIdSelectors(classes, ids, exceptions, (jsonSelectors) => {
-    const hideSelectors = JSON.parse(jsonSelectors)
-    informTabOfCosmeticRulesToConsider(tabId, hideSelectors)
+    const selectors = JSON.parse(jsonSelectors)
+    informTabOfCosmeticRulesToConsider(tabId, selectors)
+    hideSelectors(tabId, selectors)
   })
 }
 
+// Fires on content-script loaded
 export const applyAdblockCosmeticFilters = (tabId: number, hostname: string) => {
   chrome.braveShields.hostnameCosmeticResources(hostname, async (resources) => {
     if (chrome.runtime.lastError) {
-      console.warn('Unable to get cosmetic filter data for the current host')
+      console.warn('Unable to get cosmetic filter data for the current host', chrome.runtime.lastError)
       return
     }
 
     informTabOfCosmeticRulesToConsider(tabId, resources.hide_selectors)
 
+    hideSelectors(tabId, resources.hide_selectors)
     let styledStylesheet = ''
     for (const selector in resources.style_selectors) {
       styledStylesheet += selector + '{' + resources.style_selectors[selector].join(';') + ';}\n'
@@ -54,9 +58,20 @@ export const applyAdblockCosmeticFilters = (tabId: number, hostname: string) => 
   })
 }
 
-export const hideThirdPartySelectors = (tabId: number, selectors: string[]) => {
+const cssVarNameOverrideDisplay = '--brave-shields-filter-override-display'
+
+function hideSelectors (tabId: number, selectors: string[]) {
+  const code = `${selectors.join(',')}{${cssVarNameOverrideDisplay}: none !important;display:var(${cssVarNameOverrideDisplay}) !important;}`
   chrome.tabs.insertCSS(tabId, {
-    code: `${selectors.join(',')}{display:none!important;}`,
+    code: `${selectors.join(',')}{${cssVarNameOverrideDisplay}: none !important;display:var(${cssVarNameOverrideDisplay}) !important;}`,
+    cssOrigin: 'user',
+    runAt: 'document_start'
+  })
+}
+
+export const showFirstPartySelectors = (tabId: number, selectors: string[]) => {
+  chrome.tabs.insertCSS(tabId, {
+    code: `${selectors.join(',')}{${cssVarNameOverrideDisplay}: invalid !important;}`,
     cssOrigin: 'user',
     runAt: 'document_start'
   })

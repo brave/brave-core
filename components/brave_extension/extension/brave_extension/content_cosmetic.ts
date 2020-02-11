@@ -10,13 +10,20 @@ chrome.runtime.sendMessage({
 
 const parseDomain = require('parse-domain')
 
-const queriedIds = new Set()
-const queriedClasses = new Set()
+// Don't start looking for things to unblock until at least this long after
+// the backend script is up and connected (eg backgroundReady = true)
+const numMSBeforeStart = 2500
+// Only let the mutation observer run for this long  After this point, the
+// queues are frozen and the mutation observer will stop / disconnect.
+const numMSCheckFor = 15000
 
-let notYetQueriedClasses: string[] = []
-let notYetQueriedIds: string[] = []
+const queriedIds = new Set<string>()
+const queriedClasses = new Set<string>()
 
-let backgroundReady: boolean = false
+// Each of these get setup once the mutation observer starts running.
+let notYetQueriedClasses: string[]
+let notYetQueriedIds: string[]
+let cosmeticObserver: MutationObserver | undefined = undefined
 
 function isElement (node: Node): boolean {
   return (node.nodeType === 1)
@@ -35,22 +42,17 @@ function asHTMLElement (node: Node): HTMLElement | null {
 }
 
 const fetchNewClassIdRules = function () {
-  // Only let the backend know that we've found new classes and id attributes
-  // if  the back end has told us its ready to go and we have at least one new
-  // class or id to query for.
-  if (backgroundReady) {
-    if (notYetQueriedClasses.length !== 0 || notYetQueriedIds.length !== 0) {
-      chrome.runtime.sendMessage({
-        type: 'hiddenClassIdSelectors',
-        classes: notYetQueriedClasses,
-        ids: notYetQueriedIds
-      })
-      notYetQueriedClasses = []
-      notYetQueriedIds = []
-    }
-  } else {
-    setTimeout(fetchNewClassIdRules, 100)
+  if ((!notYetQueriedClasses || notYetQueriedClasses.length === 0) &&
+      (!notYetQueriedIds || notYetQueriedIds.length === 0)) {
+    return
   }
+  chrome.runtime.sendMessage({
+    type: 'hiddenClassIdSelectors',
+    classes: notYetQueriedClasses || [],
+    ids: notYetQueriedIds || []
+  })
+  notYetQueriedClasses = []
+  notYetQueriedIds = []
 }
 
 const handleMutations: MutationCallback = function (mutations: MutationRecord[]) {
@@ -104,13 +106,6 @@ const handleMutations: MutationCallback = function (mutations: MutationRecord[])
   fetchNewClassIdRules()
 }
 
-const cosmeticObserver = new MutationObserver(handleMutations)
-let observerConfig = {
-  subtree: true,
-  childList: true,
-  attributeFilter: ['id', 'class']
-}
-cosmeticObserver.observe(document.documentElement, observerConfig)
 
 const _parseDomainCache = Object.create(null)
 const getParsedDomain = (aDomain: string) => {
@@ -151,19 +146,19 @@ interface IsFirstPartyQueryResult {
 }
 
 /**
- * Determine whether a given subtree should be considered as "first party" content.
+ * Determine whether a subtree should be considered as "first party" content.
  *
  * Uses the following process in making this determination.
- *   - If the subtree contains any first party resources, the subtree is first party.
+ *   - If the subtree contains any first party resources, the subtree is 1p.
  *   - If the subtree contains no remote resources, the subtree is first party.
  *   - Otherwise, its 3rd party.
  *
- * Note that any instances of "url(" or escape characters in style attributes are
- * automatically treated as third-party URLs.  These patterns and special cases
- * were generated from looking at patterns in ads with resources in the style
- * attribute.
+ * Note that any instances of "url(" or escape characters in style attributes
+ * are automatically treated as third-party URLs.  These patterns and special
+ * cases were generated from looking at patterns in ads with resources in the
+ * style attribute.
  *
- * Similarly, an empty srcdoc attribute is also considered third party, since many
+ * Similarly, an empty srcdoc attribute is also considered 3p, since many
  * third party ads clear this attribute in practice.
  *
  * Finally, special case some ids we know are used only for third party ads.
@@ -255,19 +250,19 @@ const isSubTreeFirstParty = (elm: Element, possibleQueryResult?: IsFirstPartyQue
   return true
 }
 
-const hideSelectors = (selectors: string[]) => {
+const unhideSelectors = (selectors: string[]) => {
   if (selectors.length === 0) {
     return
   }
 
   chrome.runtime.sendMessage({
-    type: 'hideThirdPartySelectors',
+    type: 'showFirstPartySelectors',
     selectors
   })
 }
 
-const alreadyHiddenSelectors = new Set<string>()
-const alreadyHiddenThirdPartySubTrees = new WeakSet()
+const alreadyUnhiddenSelectors = new Set<string>()
+const alreadyKnownFirstPartySubtrees = new WeakSet()
 const allSelectorsSet = new Set<string>()
 const firstRunQueue = new Set<string>()
 const secondRunQueue = new Set<string>()
@@ -279,11 +274,14 @@ const maxWorkSize = 50
 let queueIsSleeping = false
 
 const pumpCosmeticFilterQueues = () => {
-  if (queueIsSleeping) {
+  if (queueIsSleeping === true) {
     return
   }
 
   let didPumpAnything = false
+  // For each "pump", walk through each queue until we find selectors
+  // to evaluate. This means that nothing in queue N+1 will be evaluated
+  // until queue N is completely empty.
   for (let queueIndex = 0; queueIndex < numQueues; queueIndex += 1) {
     const currentQueue = allQueues[queueIndex]
     const nextQueue = allQueues[queueIndex + 1]
@@ -294,29 +292,53 @@ const pumpCosmeticFilterQueues = () => {
     const currentWorkLoad = Array.from(currentQueue.values()).slice(0, maxWorkSize)
     const comboSelector = currentWorkLoad.join(',')
     const matchingElms = document.querySelectorAll(comboSelector)
-    const selectorsToHide = []
+    // Will hold selectors identified by _this_ queue pumping, that were
+    // newly identified to be matching 1p content.  Will be sent to
+    // the background script to do the un-hiding.
+    const newlyIdentifiedFirstPartySelectors: string[] = []
 
     for (const aMatchingElm of matchingElms) {
-      if (alreadyHiddenThirdPartySubTrees.has(aMatchingElm)) {
+      // Don't recheck elements / subtrees we already know are first party.
+      // Once we know something is third party, we never need to evaluate it
+      // again.
+      if (alreadyKnownFirstPartySubtrees.has(aMatchingElm)) {
         continue
       }
+
       const elmSubtreeIsFirstParty = isSubTreeFirstParty(aMatchingElm)
+      // If we find that a subtree is third party, then no need to change
+      // anything, leave the selector as "hiding" and move on.
       if (elmSubtreeIsFirstParty === false) {
-        for (const selector of currentWorkLoad) {
-          if (aMatchingElm.matches(selector) && !alreadyHiddenSelectors.has(selector)) {
-            selectorsToHide.push(selector)
-            alreadyHiddenSelectors.add(selector)
-          }
-        }
-        alreadyHiddenThirdPartySubTrees.add(aMatchingElm)
+        continue
       }
+      // Otherwise, we know that the given subtree was evaluated to be
+      // first party, so we need to figure out which selector from the combo
+      // selector did the matching.
+      for (const selector of currentWorkLoad) {
+        if (aMatchingElm.matches(selector) === false) {
+          continue
+        }
+
+        // Similarly, if we already know a selector matches 1p content,
+        // there is no need to notify the background script again, so
+        // we don't need to consider further.
+        if (alreadyUnhiddenSelectors.has(selector) === true) {
+          continue
+        }
+
+        newlyIdentifiedFirstPartySelectors.push(selector)
+        alreadyUnhiddenSelectors.add(selector)
+      }
+      alreadyKnownFirstPartySubtrees.add(aMatchingElm)
     }
 
-    hideSelectors(selectorsToHide)
+    unhideSelectors(newlyIdentifiedFirstPartySelectors)
 
     for (const aUsedSelector of currentWorkLoad) {
       currentQueue.delete(aUsedSelector)
-      if (nextQueue) {
+      // Don't requeue selectors we know identify first party content.
+      const selectorMatchedFirstParty = newlyIdentifiedFirstPartySelectors.includes(aUsedSelector)
+      if (nextQueue && selectorMatchedFirstParty === false) {
         nextQueue.add(aUsedSelector)
       }
     }
@@ -334,11 +356,47 @@ const pumpCosmeticFilterQueues = () => {
   }
 }
 
+const startObserving = () => {
+  // First queue up any classes and ids that exist before the mutation observer
+  // starts running.
+  const elmWithClassOrId = document.querySelectorAll('[class],[id]')
+  for (const elm of elmWithClassOrId) {
+    for (const aClassName of elm.classList.values()) {
+      queriedClasses.add(aClassName)
+    }
+    const elmId = elm.getAttribute('id')
+    if (elmId) {
+      queriedIds.add(elmId)
+    }
+  }
+
+  notYetQueriedClasses = Array.from(queriedClasses)
+  notYetQueriedIds = Array.from(queriedIds)
+  fetchNewClassIdRules()
+
+  // Second, set up a mutation observer to handle any new ids or classes
+  // that are added to the document.
+  cosmeticObserver = new MutationObserver(handleMutations)
+  let observerConfig = {
+    subtree: true,
+    childList: true,
+    attributeFilter: ['id', 'class']
+  }
+  cosmeticObserver.observe(document.documentElement, observerConfig)
+}
+
+const stopObserving = () => {
+  if (cosmeticObserver) {
+    cosmeticObserver.disconnect()
+  }
+}
+
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   const action = typeof msg === 'string' ? msg : msg.type
   switch (action) {
     case 'cosmeticFilteringBackgroundReady': {
-      backgroundReady = true
+      setTimeout(startObserving, numMSBeforeStart)
+      setTimeout(stopObserving, numMSBeforeStart + numMSCheckFor)
       break
     }
 
