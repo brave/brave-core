@@ -234,9 +234,9 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void GetAllPromotions(
     GetAllPromotionsCallback callback) override;
 
-  void InsertOrUpdateUnblindedToken(
-    ledger::UnblindedTokenPtr info,
-    InsertOrUpdateUnblindedTokenCallback callback) override;
+  void SaveUnblindedTokenList(
+    ledger::UnblindedTokenList list,
+    SaveUnblindedTokenListCallback callback) override;
 
   void GetAllUnblindedTokens(
     GetAllUnblindedTokensCallback callback) override;
@@ -480,8 +480,8 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       CallbackHolder<GetAllPromotionsCallback>* holder,
      ledger::PromotionMap promotions);
 
-  static void OnInsertOrUpdateUnblindedToken(
-    CallbackHolder<InsertOrUpdateUnblindedTokenCallback>* holder,
+  static void OnSaveUnblindedTokenList(
+    CallbackHolder<SaveUnblindedTokenListCallback>* holder,
     const ledger::Result result);
 
   static void OnGetAllUnblindedTokens(

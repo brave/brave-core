@@ -355,8 +355,8 @@ class MockConfirmationsClient : public ConfirmationsClient {
   MOCK_METHOD1(GetAllPromotions, void(
     ledger::GetAllPromotionsCallback callback));
 
-  MOCK_METHOD2(InsertOrUpdateUnblindedToken, void(
-    ledger::UnblindedTokenPtr info,
+  MOCK_METHOD2(SaveUnblindedTokenList, void(
+    ledger::UnblindedTokenList list,
     ledger::ResultCallback callback));
 
   MOCK_METHOD1(GetAllUnblindedTokens, void(

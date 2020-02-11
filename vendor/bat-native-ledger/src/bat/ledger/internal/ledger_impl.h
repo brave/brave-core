@@ -585,8 +585,8 @@ class LedgerImpl : public ledger::Ledger,
   void GetAllPromotions(
     ledger::GetAllPromotionsCallback callback) override;
 
-  void InsertOrUpdateUnblindedToken(
-    ledger::UnblindedTokenPtr info,
+  void SaveUnblindedTokenList(
+    ledger::UnblindedTokenList list,
     ledger::ResultCallback callback);
 
   virtual void GetAllUnblindedTokens(

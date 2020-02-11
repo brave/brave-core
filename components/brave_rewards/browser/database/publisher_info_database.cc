@@ -528,13 +528,13 @@ ledger::PromotionMap PublisherInfoDatabase::GetAllPromotions() {
  * UNBLINDED TOKEN
  *
  */
-bool PublisherInfoDatabase::InsertOrUpdateUnblindedToken(
-    ledger::UnblindedTokenPtr info) {
+bool PublisherInfoDatabase::SaveUnblindedTokenList(
+    ledger::UnblindedTokenList list) {
   if (!IsInitialized()) {
     return false;
   }
 
-  return unblinded_token_->InsertOrUpdate(&GetDB(), std::move(info));
+  return unblinded_token_->InsertOrUpdateList(&GetDB(), std::move(list));
 }
 
 ledger::UnblindedTokenList
