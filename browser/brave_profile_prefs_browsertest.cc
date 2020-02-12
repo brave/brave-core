@@ -11,6 +11,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/embedder_support/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/prefs/pref_service.h"
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
@@ -110,7 +111,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
                        DisableGoogleServicesByDefault) {
   EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
-      prefs::kAlternateErrorPagesEnabled));
+      embedder_support::kAlternateErrorPagesEnabled));
   EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
       spellcheck::prefs::kSpellCheckUseSpellingService));
   EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(

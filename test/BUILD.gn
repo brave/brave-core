@@ -731,6 +731,7 @@ test("brave_browser_tests") {
     "//brave/components/brave_wallet/browser/buildflags:buildflags",
     "//chrome/browser/ui",
     "//chrome/test:test_support_ui",
+    "//components/embedder_support",
     "//components/prefs",
     "//content/test:test_support",
     "//ppapi/buildflags",

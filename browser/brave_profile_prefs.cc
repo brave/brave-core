@@ -19,6 +19,7 @@
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/common/pref_names.h"
 #include "components/content_settings/core/common/pref_names.h"
+#include "components/embedder_support/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/password_manager/core/common/password_manager_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
@@ -154,7 +155,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(prefs::kPromptForDownload, base::Value(true));
 
   // Not using chrome's web service for resolving navigation errors
-  registry->SetDefaultPrefValue(prefs::kAlternateErrorPagesEnabled,
+  registry->SetDefaultPrefValue(embedder_support::kAlternateErrorPagesEnabled,
                                 base::Value(false));
 
   // Disable safebrowsing reporting
