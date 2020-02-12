@@ -31,9 +31,10 @@ static void JNI_BraveShieldsContentSettings_Init(JNIEnv* env,
       new BraveShieldsContentSettings(env, jcaller);
 }
 
-BraveShieldsContentSettings::BraveShieldsContentSettings(JNIEnv* env,
-    const base::android::JavaRef<jobject>& obj):
-    weak_java_native_worker_(env, obj) {
+BraveShieldsContentSettings::BraveShieldsContentSettings(
+    JNIEnv* env,
+    const base::android::JavaRef<jobject>& obj)
+    : jobj_(base::android::ScopedJavaGlobalRef<jobject>(obj)) {
   Java_BraveShieldsContentSettings_setNativePtr(env, obj,
       reinterpret_cast<intptr_t>(this));
 }
@@ -49,8 +50,8 @@ void BraveShieldsContentSettings::Destroy(JNIEnv* env) {
 void BraveShieldsContentSettings::DispatchBlockedEventToJava(int tab_id,
         const std::string& block_type, const std::string& subresource) {
   JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveShieldsContentSettings_blockedEvent(env,
-      weak_java_native_worker_.get(env), tab_id,
+  Java_BraveShieldsContentSettings_blockedEvent(
+      env, jobj_, tab_id,
       base::android::ConvertUTF8ToJavaString(env, block_type),
       base::android::ConvertUTF8ToJavaString(env, subresource));
 }
