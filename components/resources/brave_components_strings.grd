@@ -122,6 +122,7 @@
       <message name="IDS_BRAVE_NEW_TAB_TOTAL_ADS_TRACKERS_BLOCKED" desc="total number of ads and trackers blocked">Ads and Trackers Blocked</message>
       <message name="IDS_BRAVE_NEW_TAB_TOTAL_HTTPS_UPGRADES" desc="total number of HTTPS upgrades">HTTPS Upgrades</message>
       <message name="IDS_BRAVE_NEW_TAB_TOTAL_TIME_SAVED" desc="total time saved from blocking ads and trackers">Estimated Time Saved</message>
+      <message name="IDS_BRAVE_NEW_TAB_ESTIMATED_BANDWIDTH_SAVED" desc="total bandwidth saved from blocking ads and trackers">Estimated Bandwidth Saved</message>
       <message name="IDS_BRAVE_NEW_TAB_THUMB_REMOVED" desc="Shown when a thumbnail is removed from the new tab page">Top site removed.</message>
       <message name="IDS_BRAVE_NEW_TAB_UNDO_REMOVED" desc="Shown when a user wants to undo removing a tile.">Undo</message>
       <message name="IDS_BRAVE_NEW_TAB_CLOSE" desc="Shown when a user wants to close the site removal notification.">Close</message>
@@ -134,6 +135,11 @@
       <message name="IDS_BRAVE_NEW_TAB_HOURS" desc="Displays the number of hours.">hours</message>
       <message name="IDS_BRAVE_NEW_TAB_DAY" desc="Displays the number of days.">day</message>
       <message name="IDS_BRAVE_NEW_TAB_DAYS" desc="Displays the number of days.">days</message>
+      <message name="IDS_BRAVE_NEW_TAB_BYTES" desc="Displays the number of bytes.">B</message>
+      <message name="IDS_BRAVE_NEW_TAB_KILOBYTES" desc="Displays the number of kilobytes.">KB</message>
+      <message name="IDS_BRAVE_NEW_TAB_MEGABYTES" desc="Displays the number of megabytes.">MB</message>
+      <message name="IDS_BRAVE_NEW_TAB_GIGABYTES" desc="Displays the number of gigabytes.">GB</message>
+
       <message name="IDS_BRAVE_NEW_TAB_PHOTO_BY" desc="Prefix for photographer name">Photo by</message>
       <message name="IDS_BRAVE_NEW_TAB_HIDE" desc="Shown as an option for a widget to hide itself">Hide</message>
       <message name="IDS_BRAVE_NEW_TAB_PREFERENCES_PAGE_TITLE" desc="Title for preferences page">Edit Preferences</message>

@@ -10,6 +10,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/shield_exceptions.h"
+#include "brave/components/brave_perf_predictor/browser/buildflags.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/browser/referrer_whitelist_service.h"
@@ -22,6 +23,10 @@
 #include "content/public/common/referrer.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
+#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
+#endif
 
 using content::Referrer;
 
@@ -380,6 +385,12 @@ void DispatchBlockedEvent(const GURL& request_url,
   BraveShieldsWebContentsObserver::DispatchBlockedEvent(
       block_type, request_url.spec(),
       render_process_id, render_frame_id, frame_tree_node_id);
+
+#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
+  brave_perf_predictor::PerfPredictorTabHelper::DispatchBlockedEvent(
+      request_url.spec(), render_process_id,
+      render_frame_id, frame_tree_node_id);
+#endif
 }
 
 bool ShouldSetReferrer(bool allow_referrers,

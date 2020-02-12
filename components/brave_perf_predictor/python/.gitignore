@@ -1,0 +1,8 @@
+.pytest_cache
+__pycache__
+venv
+notebooks/.ipynb_checkpoints
+resources/**
+!resources/**/
+!/resources/**/.gitkeep
+!/resources/**/bandwidth_linreg_parameters.h.tpl

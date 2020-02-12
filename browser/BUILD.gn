@@ -1,6 +1,7 @@
 import("//brave/build/config.gni")
 import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
@@ -290,6 +291,12 @@ source_set("browser_process") {
       "brave_drm_tab_helper.h",
     ]
     deps += [ "//brave/browser/widevine" ]
+  }
+
+  if (enable_brave_perf_predictor) {
+    deps += [
+      "//brave/components/brave_perf_predictor/browser",
+    ]
   }
 
   if (is_win && is_official_build) {

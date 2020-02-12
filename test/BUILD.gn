@@ -4,6 +4,7 @@ import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
@@ -415,6 +416,18 @@ test("brave_unit_tests") {
     }
     deps += [ "//brave/browser/widevine" ]
   }
+
+  if (enable_brave_perf_predictor) {
+    sources += [
+      "//brave/components/brave_perf_predictor/browser/named_third_party_registry_unittest.cc",
+      "//brave/components/brave_perf_predictor/browser/bandwidth_linreg_unittest.cc",
+      "//brave/components/brave_perf_predictor/browser/bandwidth_savings_predictor_unittest.cc",
+    ]
+
+    deps += [
+      "//brave/components/brave_perf_predictor/browser",
+    ]
+  }
 }
 }
 
@@ -586,6 +599,16 @@ test("brave_browser_tests") {
       "//brave/browser/widevine/widevine_prefs_migration_browsertest.cc",
     ]
     deps += [ "//brave/browser/widevine" ]
+  }
+
+  if (enable_brave_perf_predictor) {
+    sources += [
+      "//brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper_browsertest.cc",
+    ]
+
+    deps += [
+      "//brave/components/brave_perf_predictor/browser",
+    ]
   }
 
   if (enable_greaselion) {
