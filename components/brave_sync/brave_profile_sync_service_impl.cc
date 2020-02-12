@@ -738,8 +738,6 @@ BraveProfileSyncServiceImpl::BookmarkNodeToSyncBookmark(
 
   record->action = jslib::SyncRecord::Action::A_UPDATE;
 
-  AddSyncEntityInfo(bookmark.get(), node, "originator_cache_guid");
-  AddSyncEntityInfo(bookmark.get(), node, "originator_client_item_id");
   AddSyncEntityInfo(bookmark.get(), node, "version");
   AddSyncEntityInfo(bookmark.get(), node, "position_in_parent");
 
@@ -775,8 +773,6 @@ void BraveProfileSyncServiceImpl::LoadSyncEntityInfo(
     return;
   auto* node = FindByObjectId(model_, record->objectId);
   if (node) {
-    AddSyncEntityInfo(bookmark, node, "originator_cache_guid");
-    AddSyncEntityInfo(bookmark, node, "originator_client_item_id");
     AddSyncEntityInfo(bookmark, node, "position_in_parent");
     AddSyncEntityInfo(bookmark, node, "version");
   } else {  // Assign base version metainfo for remotely created record
