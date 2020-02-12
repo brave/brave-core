@@ -39,7 +39,8 @@ public class BraveNotificationPlatformBridge extends NotificationPlatformBridge 
             @NotificationType
             int notificationType = intent.getIntExtra(
                     NotificationConstants.EXTRA_NOTIFICATION_TYPE, NotificationType.WEB_PERSISTENT);
-            if (notificationType == NotificationType.BRAVE_ADS) {
+            if (notificationType == NotificationType.BRAVE_ADS
+                    && NotificationConstants.ACTION_CLICK_NOTIFICATION.equals(intent.getAction())) {
                 bringToForeground();
             }
             return true;
