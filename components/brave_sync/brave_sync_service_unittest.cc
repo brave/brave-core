@@ -914,18 +914,19 @@ TEST_F(BraveSyncServiceTest, GetPreferredDataTypes) {
 
 TEST_F(BraveSyncServiceTest, GetDisableReasons) {
   sync_prefs()->SetManagedForTest(true);
-  EXPECT_EQ(sync_service()->GetDisableReasons(),
-            syncer::SyncService::DISABLE_REASON_ENTERPRISE_POLICY |
-                syncer::SyncService::DISABLE_REASON_USER_CHOICE);
+  EXPECT_TRUE(sync_service()->GetDisableReasons().Has(
+                  syncer::SyncService::DISABLE_REASON_ENTERPRISE_POLICY) &&
+              sync_service()->GetDisableReasons().Has(
+                  syncer::SyncService::DISABLE_REASON_USER_CHOICE));
   EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(1);
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnSetSyncEnabled(true);
-  EXPECT_EQ(sync_service()->GetDisableReasons(),
-            syncer::SyncService::DISABLE_REASON_ENTERPRISE_POLICY |
-                syncer::SyncService::DISABLE_REASON_USER_CHOICE);
+  EXPECT_TRUE(sync_service()->GetDisableReasons().Has(
+                  syncer::SyncService::DISABLE_REASON_ENTERPRISE_POLICY) &&
+              sync_service()->GetDisableReasons().Has(
+                  syncer::SyncService::DISABLE_REASON_USER_CHOICE));
   brave_sync_prefs()->SetMigratedBookmarksVersion(2);
-  EXPECT_EQ(sync_service()->GetDisableReasons(),
-            syncer::SyncService::DISABLE_REASON_NONE);
+  EXPECT_TRUE(sync_service()->GetDisableReasons().Empty());
   EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(1);
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnSetSyncEnabled(false);
