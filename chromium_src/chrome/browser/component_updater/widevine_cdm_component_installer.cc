@@ -10,7 +10,7 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/common/extensions/extension_constants.h"
-#include "chrome/browser/ui/webui/components_ui.h"
+#include "chrome/browser/ui/webui/components/components_ui.h"
 #include "components/component_updater/component_updater_service.h"
 
 namespace component_updater {

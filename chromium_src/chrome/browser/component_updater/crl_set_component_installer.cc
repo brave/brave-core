@@ -11,7 +11,7 @@
 
 #if !defined(OS_ANDROID)
 #include "brave/common/extensions/extension_constants.h"
-#include "chrome/browser/ui/webui/components_ui.h"
+#include "chrome/browser/ui/webui/components/components_ui.h"
 #endif
 
 namespace component_updater {
