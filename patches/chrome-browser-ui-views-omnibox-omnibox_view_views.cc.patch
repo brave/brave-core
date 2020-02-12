@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/omnibox/omnibox_view_views.cc b/chrome/browser/ui/views/omnibox/omnibox_view_views.cc
+index c4ddfc6ca822d1eb95ef7411d1c87846f1561be2..8418bc47de957d1bbdc3f9a1ccf7c4fe1e662020 100644
+--- a/chrome/browser/ui/views/omnibox/omnibox_view_views.cc
++++ b/chrome/browser/ui/views/omnibox/omnibox_view_views.cc
+@@ -1762,6 +1762,7 @@ void OmniboxViewViews::OnAfterCutOrCopy(ui::ClipboardBuffer clipboard_buffer) {
+   if (IsSelectAll())
+     UMA_HISTOGRAM_COUNTS_1M(OmniboxEditModel::kCutOrCopyAllTextHistogram, 1);
+ 
++  HANDLE_CHROME_SCHEME_URL
+   ui::ScopedClipboardWriter scoped_clipboard_writer(clipboard_buffer);
+   scoped_clipboard_writer.WriteText(selected_text);
+ 
