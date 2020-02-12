@@ -1,0 +1,12 @@
+diff --git a/content/browser/utility_process_host.cc b/content/browser/utility_process_host.cc
+index 041e32e52a46c5c4b896d8a510de4cf3e8a9198e..44dd73202dbcd00cc29b2a413d1215e31684f6df 100644
+--- a/content/browser/utility_process_host.cc
++++ b/content/browser/utility_process_host.cc
+@@ -444,6 +444,7 @@ bool UtilityProcessHost::StartProcess() {
+           switches::kUtilityCmdPrefix));
+     }
+ 
++    BRAVE_UTILITYPROCESSHOST_STARTPROCESS
+     for (const auto& extra_switch : extra_switches_)
+       cmd_line->AppendSwitch(extra_switch);
+ 

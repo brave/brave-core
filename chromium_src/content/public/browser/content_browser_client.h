@@ -14,7 +14,10 @@
   virtual void MaybeHideReferrer(                               \
       BrowserContext* browser_context, const GURL& request_url, \
       const GURL& document_url, bool is_main_frame,             \
-      blink::mojom::ReferrerPtr* referrer) {}
+      blink::mojom::ReferrerPtr* referrer) {}                   \
+  virtual void AdjustUtilityServiceProcessCommandLine(          \
+      const service_manager::Identity& identity,                \
+      base::CommandLine* command_line) {}
 
 #include "../../../../../content/public/browser/content_browser_client.h"
 
