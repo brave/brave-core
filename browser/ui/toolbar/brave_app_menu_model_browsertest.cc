@@ -29,6 +29,10 @@
 #include "content/public/browser/notification_service.h"
 #include "content/public/test/test_utils.h"
 
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
+#include "components/sync/driver/sync_driver_switches.h"
+#endif
+
 using BraveAppMenuBrowserTest = InProcessBrowserTest;
 
 IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, BasicTest) {
@@ -39,7 +43,14 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, BasicTest) {
   // Check normal window has both menu items.
   // -1 means |model| doesn't have passed command id.
   EXPECT_NE(-1, normal_model.GetIndexOfCommandId(IDC_SHOW_BRAVE_REWARDS));
-  EXPECT_NE(-1, normal_model.GetIndexOfCommandId(IDC_SHOW_BRAVE_SYNC));
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
+  if (switches::IsSyncAllowedByFlag())
+    EXPECT_NE(-1, normal_model.GetIndexOfCommandId(IDC_SHOW_BRAVE_SYNC));
+  else
+    EXPECT_EQ(-1, normal_model.GetIndexOfCommandId(IDC_SHOW_BRAVE_SYNC));
+#else
+  EXPECT_EQ(-1, normal_model.GetIndexOfCommandId(IDC_SHOW_BRAVE_SYNC));
+#endif
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   EXPECT_NE(-1, normal_model.GetIndexOfCommandId(IDC_SHOW_BRAVE_WALLET));
 #else
@@ -64,7 +75,10 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, BasicTest) {
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
+  if (switches::IsSyncAllowedByFlag())
+    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
+  else
+    EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
 #else
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
 #endif
@@ -86,7 +100,14 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, BasicTest) {
   // Check private window has both menu items.
   // -1 means |model| doesn't have passed command id.
   EXPECT_NE(-1, private_model.GetIndexOfCommandId(IDC_SHOW_BRAVE_REWARDS));
-  EXPECT_NE(-1, private_model.GetIndexOfCommandId(IDC_SHOW_BRAVE_SYNC));
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
+  if (switches::IsSyncAllowedByFlag())
+    EXPECT_NE(-1, private_model.GetIndexOfCommandId(IDC_SHOW_BRAVE_SYNC));
+  else
+    EXPECT_EQ(-1, private_model.GetIndexOfCommandId(IDC_SHOW_BRAVE_SYNC));
+#else
+  EXPECT_EQ(-1, private_model.GetIndexOfCommandId(IDC_SHOW_BRAVE_SYNC));
+#endif
 
   command_controller = private_browser->command_controller();
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
@@ -95,7 +116,10 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, BasicTest) {
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
+  if (switches::IsSyncAllowedByFlag())
+    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
+  else
+    EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
 #else
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
 #endif
