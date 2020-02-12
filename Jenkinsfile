@@ -26,27 +26,29 @@ pipeline {
     stages {
         stage("env") {
             steps {
-                script {
-                    BUILD_TYPE = params.BUILD_TYPE
-                    CHANNEL = params.CHANNEL
-                    SLACK_BUILDS_CHANNEL = params.SLACK_BUILDS_CHANNEL
-                    SKIP_SIGNING = params.SKIP_SIGNING
-                    WIPE_WORKSPACE = params.WIPE_WORKSPACE
-                    SKIP_INIT = params.SKIP_INIT
-                    DISABLE_SCCACHE = params.DISABLE_SCCACHE
-                    DCHECK_ALWAYS_ON = params.DCHECK_ALWAYS_ON
-                    DEBUG = params.DEBUG
-                    SKIP = false
-                    BRANCH = env.BRANCH_NAME
-                    TARGET_BRANCH = "master"
-                    if (env.CHANGE_BRANCH) {
-                        BRANCH = env.CHANGE_BRANCH
-                        TARGET_BRANCH = env.CHANGE_TARGET
-                        def prNumber = readJSON(text: httpRequest(customHeaders: [[name: "Authorization", value: "token ${GITHUB_CREDENTIAL_ID}"]], url: GITHUB_API + "/brave-core/pulls?head=brave:" + BRANCH, quiet: !DEBUG).content)[0].number
-                        def prDetails = readJSON(text: httpRequest(customHeaders: [[name: "Authorization", value: "token ${GITHUB_CREDENTIAL_ID}"]], url: GITHUB_API + "/brave-core/pulls/" + prNumber, quiet: !DEBUG).content)
-                        SKIP = prDetails.mergeable_state.equals("draft") or prDetails.labels.count { label -> label.name.equalsIgnoreCase("CI/skip") }.equals(1)
+                withCredentials([usernamePassword(credentialsId: "${GITHUB_CREDENTIAL_ID}", usernameVariable: "PR_BUILDER_USER", passwordVariable: "PR_BUILDER_TOKEN")]) {
+                    script {
+                        BUILD_TYPE = params.BUILD_TYPE
+                        CHANNEL = params.CHANNEL
+                        SLACK_BUILDS_CHANNEL = params.SLACK_BUILDS_CHANNEL
+                        SKIP_SIGNING = params.SKIP_SIGNING
+                        WIPE_WORKSPACE = params.WIPE_WORKSPACE
+                        SKIP_INIT = params.SKIP_INIT
+                        DISABLE_SCCACHE = params.DISABLE_SCCACHE
+                        DCHECK_ALWAYS_ON = params.DCHECK_ALWAYS_ON
+                        DEBUG = params.DEBUG
+                        SKIP = false
+                        BRANCH = env.BRANCH_NAME
+                        TARGET_BRANCH = "master"
+                        if (env.CHANGE_BRANCH) {
+                            BRANCH = env.CHANGE_BRANCH
+                            TARGET_BRANCH = env.CHANGE_TARGET
+                            def prNumber = readJSON(text: httpRequest(customHeaders: [[name: "Authorization", value: "token ${PR_BUILDER_TOKEN}"]], url: GITHUB_API + "/brave-core/pulls?head=brave:" + BRANCH, quiet: !DEBUG).content)[0].number
+                            def prDetails = readJSON(text: httpRequest(customHeaders: [[name: "Authorization", value: "token ${PR_BUILDER_TOKEN}"]], url: GITHUB_API + "/brave-core/pulls/" + prNumber, quiet: !DEBUG).content)
+                            SKIP = prDetails.mergeable_state.equals("draft") or prDetails.labels.count { label -> label.name.equalsIgnoreCase("CI/skip") }.equals(1)
+                        }
+                        BRANCH_EXISTS_IN_BB = httpRequest(customHeaders: [[name: "Authorization", value: "token ${GITHUB_CREDENTIAL_ID}"]], url: GITHUB_API + "/brave-browser/branches/" + BRANCH, validResponseCodes: "100:499", quiet: !DEBUG).status.equals(200)
                     }
-                    BRANCH_EXISTS_IN_BB = httpRequest(customHeaders: [[name: "Authorization", value: "token ${GITHUB_CREDENTIAL_ID}"]], url: GITHUB_API + "/brave-browser/branches/" + BRANCH, validResponseCodes: "100:499", quiet: !DEBUG).status.equals(200)
                 }
             }
         }
@@ -158,14 +160,16 @@ pipeline {
                 expression { !SKIP }
             }
             steps {
-                script {
-                    try {
-                        startBraveBrowserBuild()
-                    }
-                    catch (hudson.AbortException ex) {
-                        echo "Sleeping 6m so new branch is discovered or associated PR created in brave-browser"
-                        sleep(time: 6, unit: "MINUTES")
-                        startBraveBrowserBuild()
+                withCredentials([usernamePassword(credentialsId: "${GITHUB_CREDENTIAL_ID}", usernameVariable: "PR_BUILDER_USER", passwordVariable: "PR_BUILDER_TOKEN")]) {
+                    script {
+                        try {
+                            startBraveBrowserBuild()
+                        }
+                        catch (hudson.AbortException ex) {
+                            echo "Sleeping 6m so new branch is discovered or associated PR created in brave-browser"
+                            sleep(time: 6, unit: "MINUTES")
+                            startBraveBrowserBuild()
+                        }
                     }
                 }
             }
@@ -184,7 +188,7 @@ def getBuilds() {
 }
 
 def startBraveBrowserBuild() {
-    def prDetails = readJSON(text: httpRequest(customHeaders: [[name: "Authorization", value: "token ${GITHUB_CREDENTIAL_ID}"]], url: GITHUB_API + "/brave-browser/pulls?head=brave:" + BRANCH, quiet: !DEBUG).content)[0]
+    def prDetails = readJSON(text: httpRequest(customHeaders: [[name: "Authorization", value: "token ${PR_BUILDER_TOKEN}"]], url: GITHUB_API + "/brave-browser/pulls?head=brave:" + BRANCH, quiet: !DEBUG).content)[0]
     def prNumber = prDetails ? prDetails.number : ""
     def refToBuild = prNumber ? "PR-" + prNumber : URLEncoder.encode(BRANCH, "UTF-8")
     params = [
