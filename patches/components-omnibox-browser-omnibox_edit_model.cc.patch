@@ -1,0 +1,12 @@
+diff --git a/components/omnibox/browser/omnibox_edit_model.cc b/components/omnibox/browser/omnibox_edit_model.cc
+index 3cfedd66eff30f1966c10fdb6a8b62961a61a8bb..ba76ebe4d5aa54f65db3b157884e5a4c6d9e7c78 100644
+--- a/components/omnibox/browser/omnibox_edit_model.cc
++++ b/components/omnibox/browser/omnibox_edit_model.cc
+@@ -384,6 +384,7 @@ void OmniboxEditModel::AdjustTextForCopy(int sel_min,
+       (*text == display_text_ || *text == url_for_editing_)) {
+     *url_from_text = controller()->GetLocationBarModel()->GetURL();
+     *write_url = true;
++    BRAVE_ADJUST_TEXT_FOR_COPY
+ 
+     // If the omnibox is displaying a URL, set the hyperlink text to the URL's
+     // spec. This undoes any URL elisions.
