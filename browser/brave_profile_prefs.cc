@@ -22,7 +22,7 @@
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/password_manager/core/common/password_manager_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
-#include "components/safe_browsing/common/safe_browsing_prefs.h"
+#include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "components/signin/public/base/signin_pref_names.h"
 #include "components/sync/base/pref_names.h"
 #include "extensions/buildflags/buildflags.h"

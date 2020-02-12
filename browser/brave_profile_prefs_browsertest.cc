@@ -13,7 +13,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/prefs/pref_service.h"
-#include "components/safe_browsing/common/safe_browsing_prefs.h"
+#include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "components/spellcheck/browser/pref_names.h"
 #include "components/sync/base/pref_names.h"
 #include "brave/browser/brave_first_run_browsertest.h"

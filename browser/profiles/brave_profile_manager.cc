@@ -37,7 +37,7 @@
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/prefs/pref_service.h"
-#include "components/safe_browsing/common/safe_browsing_prefs.h"
+#include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "components/signin/public/base/signin_pref_names.h"
 #include "components/translate/core/browser/translate_pref_names.h"
 #include "content/public/browser/browser_thread.h"
