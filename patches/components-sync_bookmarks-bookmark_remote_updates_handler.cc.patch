@@ -1,5 +1,5 @@
 diff --git a/components/sync_bookmarks/bookmark_remote_updates_handler.cc b/components/sync_bookmarks/bookmark_remote_updates_handler.cc
-index c31275713056a2a1dd07872bc3569d54a8cfce0e..8128b7ceb92166d149056c15d9a9f7dc23fb5514 100644
+index c31275713056a2a1dd07872bc3569d54a8cfce0e..700877cd135845fe686626e821870ff0bbc3f453 100644
 --- a/components/sync_bookmarks/bookmark_remote_updates_handler.cc
 +++ b/components/sync_bookmarks/bookmark_remote_updates_handler.cc
 @@ -144,6 +144,7 @@ void ApplyRemoteUpdate(
@@ -10,17 +10,6 @@ index c31275713056a2a1dd07872bc3569d54a8cfce0e..8128b7ceb92166d149056c15d9a9f7dc
        ComputeChildNodeIndex(new_parent, update_entity.unique_position, tracker);
    tracker->Update(update_entity.id, update.response_version,
                    update_entity.modification_time,
-@@ -241,8 +242,8 @@ void BookmarkRemoteUpdatesHandler::Process(
-         const bookmarks::BookmarkNode* old_node = old_entity->bookmark_node();
-         const bookmarks::BookmarkNode* new_node =
-             tracked_entity->bookmark_node();
--        CHECK(old_node->type() == bookmarks::BookmarkNode::URL);
--        CHECK(new_node->type() == bookmarks::BookmarkNode::URL);
-+        // CHECK(old_node->type() == bookmarks::BookmarkNode::URL);
-+        // CHECK(new_node->type() == bookmarks::BookmarkNode::URL);
-         CHECK(old_node->url() == new_node->url());
-         bookmark_tracker_->Remove(update_entity.originator_client_item_id);
-         bookmark_model_->Remove(old_node);
 @@ -449,9 +450,11 @@ bool BookmarkRemoteUpdatesHandler::ProcessCreate(
      LogProblematicBookmark(RemoteBookmarkUpdateError::kMissingParentNode);
      return false;
