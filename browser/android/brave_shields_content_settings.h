@@ -8,7 +8,7 @@
 
 #include <jni.h>
 #include <string>
-#include "base/android/jni_weak_ref.h"
+#include "base/android/scoped_java_ref.h"
 
 namespace chrome {
 namespace android {
@@ -27,7 +27,7 @@ class BraveShieldsContentSettings {
         const std::string& block_type, const std::string& subresource);
 
  private:
-    JavaObjectWeakGlobalRef weak_java_native_worker_;
+    base::android::ScopedJavaGlobalRef<jobject> jobj_;
 };
 
 }  // namespace android
