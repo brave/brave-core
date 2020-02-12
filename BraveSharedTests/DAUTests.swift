@@ -254,6 +254,12 @@ class DAUTests: XCTestCase {
         XCTAssertFalse(dau.sendPingToServer())
     }
     
+    func testAPIKeyHeader() throws {
+        let dau = DAU()
+        let headers = try XCTUnwrap(dau.paramsAndPrefsSetup()).headers
+        XCTAssertEqual(headers["x-brave-api-key"], "key")
+    }
+    
     // MARK: Helpers
     
     private func dateFrom(string: String, format: String? = nil) -> Date {

@@ -28,8 +28,12 @@ public class DAU {
         return DAU.calendar.dateComponents([.day, .month, .year, .weekday], from: today)
     }
     
+    private static let apiKeyPlistKey = "API_KEY"
+    private let apiKey: String?
+    
     public init(date: Date = Date()) {
         today = date
+        apiKey = (Bundle.main.infoDictionary?[Self.apiKeyPlistKey] as? String)?.trimmingCharacters(in: .whitespaces)
     }
     
     /// Sends ping to server and returns a boolean whether a timer for the server call was scheduled.
@@ -80,7 +84,12 @@ public class DAU {
         
         log.debug("send ping to server, url: \(pingRequestUrl)")
         
-        let task = URLSession.shared.dataTask(with: pingRequestUrl) { _, _, error in
+        var request = URLRequest(url: pingRequestUrl)
+        for (key, value) in paramsAndPrefs.headers {
+            request.setValue(value, forHTTPHeaderField: key)
+        }
+        
+        let task = URLSession.shared.dataTask(with: request) { _, _, error in
             defer {
                 self.processingPing = false
             }
@@ -104,6 +113,7 @@ public class DAU {
     /// A helper struct that stores all data from params setup.
     struct ParamsAndPrefs {
         let queryParams: [URLQueryItem]
+        let headers: [String: String]
         let lastLaunchInfoPreference: [Optional<Int>]
     }
     
@@ -142,7 +152,13 @@ public class DAU {
         
         let lastPingTimestamp = [Int((today).timeIntervalSince1970)]
         
-        return ParamsAndPrefs(queryParams: params, lastLaunchInfoPreference: lastPingTimestamp)
+        var headers: [String: String] = [:]
+        
+        if let key = self.apiKey, !key.isEmpty {
+            headers["x-brave-api-key"] = key
+        }
+        
+        return ParamsAndPrefs(queryParams: params, headers: headers, lastLaunchInfoPreference: lastPingTimestamp)
     }
     
     func channelParam(for channel: AppBuildChannel = AppConstants.buildChannel) -> URLQueryItem {
