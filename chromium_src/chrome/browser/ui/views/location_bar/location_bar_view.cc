@@ -10,6 +10,6 @@
     trailing_decorations.AddDecoration(0, height(), false, 0, 0, right_most);
 
 #define ChromeOmniboxClient BraveOmniboxClientImpl
-#include "../../../../../../../chrome/browser/ui/views/location_bar/location_bar_view.cc"  // NOLINT
+#include "../../../../../../../chrome/browser/ui/views/location_bar/location_bar_view.cc"
 #undef ChromeOmniboxClient
 #undef BRAVE_LAYOUT_TRAILING_DECORATIONS

@@ -22,5 +22,12 @@ source_set("browser") {
      "//skia",
      "//third_party/icu",
      "//third_party/metrics_proto",
+     "//url",
   ]
+
+if (!is_ios) {
+  deps += [
+   "//content/public/common",
+  ]
+}
 }
