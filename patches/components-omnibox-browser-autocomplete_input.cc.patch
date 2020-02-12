@@ -1,0 +1,31 @@
+diff --git a/components/omnibox/browser/autocomplete_input.cc b/components/omnibox/browser/autocomplete_input.cc
+index fed29aa1d6fc295ab18b67018a2a6816701453c3..b43c784fe3bed15346f4c9d46b01528158fb781c 100644
+--- a/components/omnibox/browser/autocomplete_input.cc
++++ b/components/omnibox/browser/autocomplete_input.cc
+@@ -237,7 +237,7 @@ metrics::OmniboxInputType AutocompleteInput::Parse(
+     // We don't know about this scheme.  It might be that the user typed a
+     // URL of the form "username:password@foo.com".
+     const base::string16 http_scheme_prefix =
+-        base::ASCIIToUTF16(std::string(url::kHttpScheme) +
++        base::ASCIIToUTF16(std::string(url::kHttpsScheme) +
+                            url::kStandardSchemeSeparator);
+     url::Parsed http_parts;
+     base::string16 http_scheme;
+@@ -245,7 +245,7 @@ metrics::OmniboxInputType AutocompleteInput::Parse(
+     metrics::OmniboxInputType http_type =
+         Parse(http_scheme_prefix + text, desired_tld, scheme_classifier,
+               &http_parts, &http_scheme, &http_canonicalized_url);
+-    DCHECK_EQ(std::string(url::kHttpScheme),
++    DCHECK_EQ(std::string(url::kHttpsScheme),
+               base::UTF16ToUTF8(http_scheme));
+ 
+     if ((http_type == metrics::OmniboxInputType::URL) &&
+@@ -572,7 +572,7 @@ bool AutocompleteInput::HasHTTPScheme(const base::string16& input) {
+   if (url::FindAndCompareScheme(utf8_input, kViewSourceScheme, &scheme)) {
+     utf8_input.erase(0, scheme.end() + 1);
+   }
+-  return url::FindAndCompareScheme(utf8_input, url::kHttpScheme, nullptr);
++  return url::FindAndCompareScheme(utf8_input, url::kHttpsScheme, nullptr);
+ }
+ 
+ void AutocompleteInput::UpdateText(const base::string16& text,

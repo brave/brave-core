@@ -1,0 +1,16 @@
+diff --git a/components/url_formatter/url_fixer.cc b/components/url_formatter/url_fixer.cc
+index 502f59805971e76ceda8fffa87f9a166cde3b932..2b6c55b6860e0909f9150230725e1281521501c7 100644
+--- a/components/url_formatter/url_fixer.cc
++++ b/components/url_formatter/url_fixer.cc
+@@ -438,9 +438,9 @@ std::string SegmentURLInternal(std::string* text, url::Parsed* parts) {
+         (*text)[semicolon] = ';';
+     }
+     if (!found_scheme) {
+-      // Couldn't determine the scheme, so just default to http.
++      // Couldn't determine the scheme, so just default to https.
+       parts->scheme.reset();
+-      scheme = url::kHttpScheme;
++      scheme = url::kHttpsScheme;
+     }
+   }
+ 
