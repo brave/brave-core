@@ -76,7 +76,7 @@ void BandwidthSavingsPredictor::OnResourceLoadComplete(
 
   const bool is_third_party =
       !net::registry_controlled_domains::SameDomainOrHost(
-          main_frame_url, resource_load_info.url,
+          main_frame_url, resource_load_info.final_url,
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 
   if (is_third_party) {
