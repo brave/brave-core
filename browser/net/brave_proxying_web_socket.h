@@ -23,9 +23,9 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/network/public/cpp/resource_request.h"
-#include "services/network/public/cpp/resource_response.h"
 #include "services/network/public/mojom/ip_endpoint.mojom.h"
 #include "services/network/public/mojom/network_context.mojom.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
 #include "services/network/public/mojom/websocket.mojom.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -144,7 +144,7 @@ class BraveProxyingWebSocket : public network::mojom::WebSocketHandshakeClient,
       receiver_as_header_client_;
 
   network::ResourceRequest request_;
-  network::ResourceResponseHead response_;
+  network::mojom::URLResponseHead response_;
   scoped_refptr<net::HttpResponseHeaders> override_headers_;
   net::IPEndPoint remote_endpoint_;
 

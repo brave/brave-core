@@ -8,11 +8,11 @@
 
 #include <string>
 #include "base/optional.h"
+#include "services/network/public/mojom/url_response_head.mojom-forward.h"
 
 namespace network {
-struct ResourceResponseHead;
 struct ResourceRequest;
-}
+}  // namespace network
 
 namespace brave_shields {
 
@@ -20,7 +20,7 @@ namespace brave_shields {
 // and not allowing them to hit the network.
 void MakeStubResponse(const base::Optional<std::string>& data_url,
                       const network::ResourceRequest& request,
-                      network::ResourceResponseHead* response,
+                      network::mojom::URLResponseHeadPtr* response,
                       std::string* data);
 
 }  // namespace brave_shields
