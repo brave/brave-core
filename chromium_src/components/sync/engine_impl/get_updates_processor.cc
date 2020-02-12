@@ -86,11 +86,7 @@ void ExtractBookmarkMeta(sync_pb::SyncEntity* entity,
       meta_info->set_key(metaInfo.key);
       meta_info->set_value(metaInfo.value);
     }
-    if (metaInfo.key == "originator_cache_guid") {
-      entity->set_originator_cache_guid(metaInfo.value);
-    } else if (metaInfo.key == "originator_client_item_id") {
-      entity->set_originator_client_item_id(metaInfo.value);
-    } else if (metaInfo.key == "version") {
+    if (metaInfo.key == "version") {
       int64_t version;
       bool result = base::StringToInt64(metaInfo.value, &version);
       DCHECK(result);
