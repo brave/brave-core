@@ -17,6 +17,8 @@ source_set("brave_wayback_machine") {
     "brave_wayback_machine_tab_helper.h",
     "pref_names.cc",
     "pref_names.h",
+    "url_constants.cc",
+    "url_constants.h",
     "wayback_machine_url_fetcher.cc",
     "wayback_machine_url_fetcher.h",
   ]
