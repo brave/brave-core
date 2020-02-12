@@ -3,9 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_sync/features.h"
 #include "brave/components/ntp_sponsored_images/browser/features.h"
 #include "chrome/browser/about_flags.h"
 
+using brave_sync::features::kBraveSync;
 using ntp_sponsored_images::features::kBraveNTPBrandedWallpaper;
 using ntp_sponsored_images::features::kBraveNTPBrandedWallpaperDemo;
 
@@ -17,7 +19,11 @@ using ntp_sponsored_images::features::kBraveNTPBrandedWallpaperDemo;
     {"brave-ntp-branded-wallpaper-demo",                                   \
      flag_descriptions::kBraveNTPBrandedWallpaperDemoName,                 \
      flag_descriptions::kBraveNTPBrandedWallpaperDemoDescription, kOsAll,  \
-     FEATURE_VALUE_TYPE(kBraveNTPBrandedWallpaperDemo)},
+     FEATURE_VALUE_TYPE(kBraveNTPBrandedWallpaperDemo)},                   \
+    {"brave-sync",                                                         \
+     flag_descriptions::kBraveSyncName,                                    \
+     flag_descriptions::kBraveSyncDescription, kOsDesktop,                 \
+     FEATURE_VALUE_TYPE(kBraveSync)},
 
 #define SetFeatureEntryEnabled SetFeatureEntryEnabled_ChromiumImpl
 #include "../../../../chrome/browser/about_flags.cc"  // NOLINT
