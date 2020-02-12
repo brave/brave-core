@@ -1,0 +1,12 @@
+diff --git a/components/flags_ui/resources/flags.html b/components/flags_ui/resources/flags.html
+index 46df47e9f54938051c0404f8ebb5d0ea953706e8..a542a28b3c764a6dc3e373dbd154fae90eaaf980 100644
+--- a/components/flags_ui/resources/flags.html
++++ b/components/flags_ui/resources/flags.html
+@@ -225,6 +225,7 @@
+   </div>
+ </div>
+ <script src="flags.js"></script>
++<script src="brave_flags_overrides.js"></script>
+ <script src="chrome://resources/js/jstemplate_compiled.js"></script>
+ </body>
+ </html>

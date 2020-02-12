@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/webui/flags_ui.cc b/chrome/browser/ui/webui/flags_ui.cc
+index 6bce6f8dd26ba64a131d6efadd30c8964db6d6eb..2f771b0a6a67b679a11ab0e5b50aeb829dd86371 100644
+--- a/chrome/browser/ui/webui/flags_ui.cc
++++ b/chrome/browser/ui/webui/flags_ui.cc
+@@ -78,6 +78,7 @@ content::WebUIDataSource* CreateFlagsUIHTMLSource() {
+   source->AddResourcePath(flags_ui::kFlagsCSS, IDR_FLAGS_UI_FLAGS_CSS);
+   source->SetDefaultResource(IDR_FLAGS_UI_FLAGS_HTML);
+   source->UseStringsJs();
++  ADD_BRAVE_FLAGS_UI_HTML_SOURCE
+   return source;
+ }
+ 
