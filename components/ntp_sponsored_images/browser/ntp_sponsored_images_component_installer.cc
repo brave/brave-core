@@ -12,6 +12,7 @@
 #include "base/base64.h"
 #include "base/bind.h"
 #include "base/callback.h"
+#include "base/strings/stringprintf.h"
 #include "brave/components/brave_ads/browser/locale_helper.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/ntp_sponsored_images/browser/regional_component_data.h"
@@ -53,7 +54,7 @@ class NTPSponsoredImagesComponentInstallerPolicy
   std::vector<std::string> GetMimeTypes() const override;
 
  private:
-  const std::string component_id_;
+  const RegionalComponentData data_;
   OnComponentReadyCallback ready_callback_;
   uint8_t component_hash_[kHashSize];
 
@@ -63,7 +64,7 @@ class NTPSponsoredImagesComponentInstallerPolicy
 NTPSponsoredImagesComponentInstallerPolicy::
 NTPSponsoredImagesComponentInstallerPolicy(
     const RegionalComponentData& data, OnComponentReadyCallback callback)
-    : component_id_(data.component_id),
+    : data_(data),
       ready_callback_(callback) {
   // Generate hash from public key.
   std::string decoded_public_key;
@@ -108,7 +109,7 @@ bool NTPSponsoredImagesComponentInstallerPolicy::VerifyInstallation(
 
 base::FilePath NTPSponsoredImagesComponentInstallerPolicy::
     GetRelativeInstallDir() const {
-  return base::FilePath::FromUTF8Unsafe(component_id_);
+  return base::FilePath::FromUTF8Unsafe(data_.component_id);
 }
 
 void NTPSponsoredImagesComponentInstallerPolicy::GetHash(
@@ -117,7 +118,8 @@ void NTPSponsoredImagesComponentInstallerPolicy::GetHash(
 }
 
 std::string NTPSponsoredImagesComponentInstallerPolicy::GetName() const {
-  return kNTPSponsoredImagesDisplayName;
+  return base::StringPrintf(
+      "%s (%s)", kNTPSponsoredImagesDisplayName, data_.region.c_str());
 }
 
 update_client::InstallerAttributes
