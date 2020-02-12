@@ -23,6 +23,7 @@
 #include "mojo/public/cpp/system/data_pipe_producer.h"
 #include "mojo/public/cpp/system/string_data_source.h"
 #include "net/base/completion_repeating_callback.h"
+#include "net/cookies/site_for_cookies.h"
 #include "net/http/http_util.h"
 #include "services/network/public/cpp/features.h"
 #include "url/origin.h"
@@ -261,7 +262,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
   redirect_info.status_code = kInternalRedirectStatusCode;
   redirect_info.new_method = request_.method;
   redirect_info.new_url = redirect_url_;
-  redirect_info.new_site_for_cookies = redirect_url_;
+  redirect_info.new_site_for_cookies =
+      net::SiteForCookies::FromUrl(redirect_url_);
 
   network::mojom::URLResponseHeadPtr head =
       network::mojom::URLResponseHead::New();
@@ -494,7 +496,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     redirect_info.status_code = override_headers_->response_code();
     redirect_info.new_method = request_.method;
     redirect_info.new_url = new_url;
-    redirect_info.new_site_for_cookies = new_url;
+    redirect_info.new_site_for_cookies = net::SiteForCookies::FromUrl(new_url);
 
     // These will get re-bound if a new request is initiated by
     // |FollowRedirect()|.

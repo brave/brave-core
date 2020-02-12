@@ -47,6 +47,7 @@
 #include "content/public/common/content_switches.h"
 #include "content/public/common/service_names.mojom.h"
 #include "extensions/buildflags/buildflags.h"
+#include "net/cookies/site_for_cookies.h"
 #include "services/service_manager/public/cpp/manifest_builder.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -329,7 +330,7 @@ void BraveContentBrowserClient::CreateWebSocket(
     content::RenderFrameHost* frame,
     content::ContentBrowserClient::WebSocketFactory factory,
     const GURL& url,
-    const GURL& site_for_cookies,
+    const net::SiteForCookies& site_for_cookies,
     const base::Optional<std::string>& user_agent,
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
         handshake_client) {

@@ -62,7 +62,7 @@ class BraveProxyingWebSocket : public network::mojom::WebSocketHandshakeClient,
       content::RenderFrameHost* frame,
       content::ContentBrowserClient::WebSocketFactory factory,
       const GURL& url,
-      const GURL& site_for_cookies,
+      const net::SiteForCookies& site_for_cookies,
       const base::Optional<std::string>& user_agent,
       mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
           handshake_client);
