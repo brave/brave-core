@@ -82,8 +82,6 @@ brave_sync::RecordsListPtr ConvertCommitsToBraveRecords(
       // only mattters for direct children of permanent nodes
       bookmark->hideInToolbar = entity.parent_id_string() != kBookmarkBarTag;
 
-      std::string originator_cache_guid;
-      std::string originator_client_item_id;
       bool skip_record = false;
       for (int i = 0; i < bm_specifics.meta_info_size(); ++i) {
         if (bm_specifics.meta_info(i).key() == "order") {
@@ -95,11 +93,6 @@ brave_sync::RecordsListPtr ConvertCommitsToBraveRecords(
         } else if (bm_specifics.meta_info(i).key() == "sync_timestamp") {
           record->syncTimestamp = base::Time::FromJsTime(
               std::stod(bm_specifics.meta_info(i).value()));
-        } else if (bm_specifics.meta_info(i).key() == "originator_cache_guid") {
-          originator_cache_guid = bm_specifics.meta_info(i).value();
-        } else if (bm_specifics.meta_info(i).key() ==
-                   "originator_client_item_id") {
-          originator_client_item_id = bm_specifics.meta_info(i).value();
         } else if (bm_specifics.meta_info(i).key() == "last_send_time" &&
                    entity.version() == 0) {
           // Upgrade from legacy code, we need to prevent sending duplicate
@@ -123,19 +116,6 @@ brave_sync::RecordsListPtr ConvertCommitsToBraveRecords(
       DCHECK(!record->objectId.empty());
 
       MetaInfo metaInfo;
-      metaInfo.key = "originator_cache_guid";
-      if (originator_cache_guid.empty()) {
-        originator_cache_guid = cache_guid;
-      }
-      metaInfo.value = originator_cache_guid;
-      bookmark->metaInfo.push_back(metaInfo);
-
-      metaInfo.key = "originator_client_item_id";
-      if (originator_client_item_id.empty()) {
-        originator_client_item_id = entity.id_string();
-      }
-      metaInfo.value = originator_client_item_id;
-      bookmark->metaInfo.push_back(metaInfo);
 
       metaInfo.key = "version";
       metaInfo.value = std::to_string(version);
