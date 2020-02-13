@@ -21,9 +21,9 @@
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "brave/browser/extensions/brave_wallet_util.h"
+#include "chrome/browser/component_updater/component_updater_utils.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/webui/components/components_ui.h"
 #include "chrome/common/pref_names.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -53,7 +53,7 @@ BraveComponentLoader::~BraveComponentLoader() {
 
 void BraveComponentLoader::OnComponentRegistered(std::string extension_id) {
   // TODO(bridiver) - I don't think this is correct
-  ComponentsUI::OnDemandUpdate(extension_id);
+  component_updater::BraveOnDemandUpdate(extension_id);
 }
 
 void BraveComponentLoader::OnComponentReady(std::string extension_id,
