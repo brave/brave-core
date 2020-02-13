@@ -279,7 +279,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
   @Override
   public boolean onLongClick(View v) {
-      String description = "";
+      String description = null;
       Context context = getContext();
       Resources resources = context.getResources();
 
