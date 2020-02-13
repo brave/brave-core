@@ -1,6 +1,6 @@
 const glob = require("glob");
 const path = require("path");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+const TerserPlugin = require('terser-webpack-plugin');
 
 const AllFramesAtDocumentStart = glob.sync("./Client/Frontend/UserContent/UserScripts/AllFrames/AtDocumentStart/*.js");
 const AllFramesAtDocumentEnd = glob.sync("./Client/Frontend/UserContent/UserScripts/AllFrames/AtDocumentEnd/*.js");
@@ -53,6 +53,6 @@ module.exports = {
     ]
   },
   plugins: [
-    new UglifyJsPlugin()
+    new TerserPlugin()
   ]
 };
