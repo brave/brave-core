@@ -5,6 +5,10 @@ source_set("browser") {
       "brave_content_settings_ephemeral_provider.h",
       "brave_content_settings_pref_provider.cc",
       "brave_content_settings_pref_provider.h",
+      "brave_content_settings_utils.cc",
+      "brave_content_settings_utils.h",
+      "brave_host_content_settings_map.cc",
+      "brave_host_content_settings_map.h",
     ]
 
     deps = [
