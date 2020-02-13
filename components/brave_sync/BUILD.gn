@@ -103,6 +103,17 @@ source_set("crypto") {
   }
 }
 
+source_set("features") {
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  deps = [
+    "//base",
+  ]
+}
+
 source_set("public") {
   sources = [
     "public/brave_profile_sync_service.h",
@@ -130,6 +141,7 @@ source_set("core") {
 
   deps = [
     ":crypto",
+    ":features",
     ":jslib_messages",
     ":prefs",
     "//base",
