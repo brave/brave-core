@@ -47,7 +47,7 @@ pipeline {
                             def prDetails = readJSON(text: httpRequest(customHeaders: [[name: "Authorization", value: "token ${PR_BUILDER_TOKEN}"]], url: GITHUB_API + "/brave-core/pulls/" + prNumber, quiet: !DEBUG).content)
                             SKIP = prDetails.mergeable_state.equals("draft") or prDetails.labels.count { label -> label.name.equalsIgnoreCase("CI/skip") }.equals(1)
                         }
-                        BRANCH_EXISTS_IN_BB = httpRequest(customHeaders: [[name: "Authorization", value: "token ${GITHUB_CREDENTIAL_ID}"]], url: GITHUB_API + "/brave-browser/branches/" + BRANCH, validResponseCodes: "100:499", quiet: !DEBUG).status.equals(200)
+                        BRANCH_EXISTS_IN_BB = httpRequest(customHeaders: [[name: "Authorization", value: "token ${PR_BUILDER_TOKEN}"]], url: GITHUB_API + "/brave-browser/branches/" + BRANCH, validResponseCodes: "100:499", quiet: !DEBUG).status.equals(200)
                     }
                 }
             }
