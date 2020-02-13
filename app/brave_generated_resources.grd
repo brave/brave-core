@@ -728,6 +728,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_OPEN_PREFS_BUTTON_TEXT" desc="The label for open privacy panel">
         Open System Preferences
       </message>
+      <message name="IDS_SETTINGS_SITE_AND_SHIELDS_SETTINGS" desc="Label for site and shields settings in clear browsing data dialog">
+        Site and Shields Settings
+      </message>
     </messages>
   </release>
 </grit>

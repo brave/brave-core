@@ -174,7 +174,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"p3aEnabledDesc",
       IDS_BRAVE_P3A_ENABLE_SETTING_SUBITEM},
     {"remoteDebuggingEnabledTitle",
-      IDS_SETTINGS_REMOTE_DEBUGGING_TITLE}
+      IDS_SETTINGS_REMOTE_DEBUGGING_TITLE},
+    {"siteSettings",
+      IDS_SETTINGS_SITE_AND_SHIELDS_SETTINGS},
   };
   AddLocalizedStringsBulk(html_source, localized_strings);
   html_source->AddString("webRTCLearnMoreURL",
