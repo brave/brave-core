@@ -8,10 +8,17 @@
 
 #define BRAVE_PROFILE_MENU_VIEW_H    \
   friend class BraveProfileMenuView; \
-  friend class BraveProfileMenuViewTest;
+
+#define OnExitProfileButtonClicked virtual OnExitProfileButtonClicked
+#define BuildAutofillButtons virtual BuildAutofillButtons
+#define BuildIdentity virtual BuildIdentity
+#define GetSyncIcon virtual GetSyncIcon
 
 #include "../../../../../../../chrome/browser/ui/views/profiles/profile_menu_view.h"
-
+#undef GetSyncIcon
+#undef BuildIdentity
+#undef BuildAutofillButtons
+#undef OnExitProfileButtonClicked
 #undef BRAVE_PROFILE_MENU_VIEW_H
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_PROFILES_PROFILE_MENU_VIEW_H_

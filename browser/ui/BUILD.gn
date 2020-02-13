@@ -161,8 +161,6 @@ source_set("ui") {
       "views/profiles/brave_incognito_menu_view.h",
       "views/profiles/brave_profile_menu_view.cc",
       "views/profiles/brave_profile_menu_view.h",
-      "views/profiles/brave_profile_menu_view_helper.cc",
-      "views/profiles/brave_profile_menu_view_helper.h",
       "webui/brave_welcome_ui.cc",
       "webui/brave_welcome_ui.h",
     ]

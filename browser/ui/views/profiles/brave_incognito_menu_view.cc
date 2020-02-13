@@ -8,33 +8,88 @@
 #include <memory>
 #include <utility>
 
+#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/ui/views/profiles/brave_profile_menu_view_helper.h"
+#include "brave/browser/tor/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/grit/generated_resources.h"
-#include "ui/views/controls/button/button.h"
+#include "ui/base/l10n/l10n_util.h"
 
-int BraveIncognitoMenuView::GetProfileMenuTitleId() {
-  return brave::IsTorProfile(browser()->profile())
-             ? IDS_TOR_PROFILE_NAME
-             : IDS_INCOGNITO_PROFILE_MENU_TITLE;
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/extensions/brave_tor_client_updater.h"
+#include "brave/browser/tor/tor_profile_service.h"
+#endif
+
+namespace {
+
+bool ShouldShowTorProfileButton(Profile* profile) {
+  DCHECK(profile);
+#if BUILDFLAG(ENABLE_TOR)
+  return !tor::TorProfileService::IsTorDisabled() &&
+         !brave::IsTorProfile(profile) &&
+         !g_brave_browser_process->tor_client_updater()
+              ->GetExecutablePath()
+              .empty();
+#else
+  return false;
+#endif
 }
 
-int BraveIncognitoMenuView::GetProfileMenuCloseButtonTextId() {
-  return brave::IsTorProfile(browser()->profile())
-             ? IDS_PROFILES_EXIT_TOR
-             : IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON;
+int GetProfileMenuTitleId(Profile* profile) {
+  return brave::IsTorProfile(profile) ? IDS_TOR_PROFILE_NAME
+                                      : IDS_INCOGNITO_PROFILE_MENU_TITLE;
+}
+
+int GetProfileMenuCloseButtonTextId(Profile* profile) {
+  return brave::IsTorProfile(profile) ? IDS_PROFILES_EXIT_TOR
+                                      : IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON;
+}
+
+int GetWindowCount(Profile* profile) {
+  return brave::IsTorProfile(profile)
+             ? 0
+             : BrowserList::GetIncognitoSessionsActiveForProfile(profile);
+}
+
+}  // namespace
+
+void BraveIncognitoMenuView::BuildMenu() {
+  ChromeLayoutProvider* provider = ChromeLayoutProvider::Get();
+  // The icon color is set to match the menu text, which guarantees sufficient
+  // contrast and a consistent visual appearance.
+  const SkColor icon_color = provider->GetTypographyProvider().GetColor(
+      *this, views::style::CONTEXT_LABEL, views::style::STYLE_PRIMARY);
+
+  int window_count = GetWindowCount(browser()->profile());
+  SetIdentityInfo(
+      ColoredImageForMenu(kIncognitoProfileIcon, icon_color),
+      /*badge=*/gfx::ImageSkia(),
+      l10n_util::GetStringUTF16(GetProfileMenuTitleId(browser()->profile())),
+      window_count > 1 ? l10n_util::GetPluralStringFUTF16(
+                             IDS_INCOGNITO_WINDOW_COUNT_MESSAGE, window_count)
+                       : base::string16());
+
+  AddTorButton();
+
+  AddFeatureButton(ImageForMenu(kCloseAllIcon),
+                   l10n_util::GetStringUTF16(
+                       GetProfileMenuCloseButtonTextId(browser()->profile())),
+                   base::BindRepeating(&IncognitoMenuView::OnExitButtonClicked,
+                                       base::Unretained(this)));
 }
 
 void BraveIncognitoMenuView::AddTorButton() {
-  if (brave::ShouldShowTorProfileButton(browser()->profile())) {
-    tor_profile_button_ = CreateAndAddButton(
-        brave::CreateTorProfileButtonIcon(),
-        brave::CreateTorProfileButtonText(),
+  if (ShouldShowTorProfileButton(browser()->profile())) {
+    AddFeatureButton(
+        ImageForMenu(kLaunchIcon),
+        l10n_util::GetStringUTF16(IDS_PROFILES_OPEN_TOR_PROFILE_BUTTON),
         base::BindRepeating(&BraveIncognitoMenuView::OnTorProfileButtonClicked,
                             base::Unretained(this)));
   }
@@ -42,4 +97,19 @@ void BraveIncognitoMenuView::AddTorButton() {
 
 void BraveIncognitoMenuView::OnTorProfileButtonClicked() {
   profiles::SwitchToTorProfile(ProfileManager::CreateCallback());
+}
+
+base::string16 BraveIncognitoMenuView::GetAccessibleWindowTitle() const {
+  return brave::IsTorProfile(browser()->profile())
+             ? l10n_util::GetStringUTF16(IDS_TOR_PROFILE_NAME)
+             : IncognitoMenuView::GetAccessibleWindowTitle();
+}
+
+void BraveIncognitoMenuView::OnExitButtonClicked() {
+  if (brave::IsTorProfile(browser()->profile())) {
+    RecordClick(ActionableItem::kExitProfileButton);
+    profiles::CloseTorProfileWindows();
+  } else {
+    IncognitoMenuView::OnExitButtonClicked();
+  }
 }

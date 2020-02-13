@@ -7,6 +7,7 @@
 
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
@@ -18,21 +19,25 @@
 void BraveAvatarToolbarButton::SetHighlight(
     const base::string16& highlight_text,
     base::Optional<SkColor> highlight_color) {
-  // We only want the icon for Tor profile.
-  AvatarToolbarButton::SetHighlight(brave::IsTorProfile(browser_->profile())
+  // We only want the icon for Tor and Guest profiles.
+  AvatarToolbarButton::SetHighlight((brave::IsTorProfile(browser_->profile()) ||
+                                     browser_->profile()->IsGuestSession())
                                         ? base::string16()
                                         : highlight_text,
-      highlight_color);
+                                    highlight_color);
 }
 
 gfx::ImageSkia BraveAvatarToolbarButton::GetAvatarIcon(
     const gfx::Image& gaia_image) const {
-  if (brave::IsTorProfile(browser_->profile())) {
-    const int icon_size =
-      ui::MaterialDesignController::touch_ui() ? 24 : 20;
-    const SkColor icon_color =
-      GetThemeProvider()->GetColor(ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON);
-    return gfx::CreateVectorIcon(kTorProfileIcon, icon_size, icon_color);
+  if (brave::IsTorProfile(browser_->profile()) ||
+      browser_->profile()->IsGuestSession()) {
+    const int icon_size = ui::MaterialDesignController::touch_ui() ? 24 : 20;
+    const SkColor icon_color = GetThemeProvider()->GetColor(
+        ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON);
+    return gfx::CreateVectorIcon(brave::IsTorProfile(browser_->profile())
+                                     ? kTorProfileIcon
+                                     : kUserMenuGuestIcon,
+                                 icon_size, icon_color);
   }
   return AvatarToolbarButton::GetAvatarIcon(gaia_image);
 }
