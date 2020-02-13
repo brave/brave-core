@@ -10,6 +10,7 @@ chrome.runtime.onMessageExternal.addListener(
       case 'ad-request':
         const { url, sizes, isResponsive } = request
         const ads = await adCatalog.getAd(url, sizes, isResponsive)
+        console.log('got ads for', request, ads)
         sendResponse({
           ads
         })
