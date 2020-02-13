@@ -26,4 +26,24 @@ source_set("speedreader") {
     "//ui/base",  # For ResourceBundle, consider getting rid of this?
     "//url",
   ]
+
+  public_deps = [
+    ":speedreader_libs"
+  ]
+}
+
+if (is_mac) {
+  bundle_data("speedreader_libs") {
+    sources = [
+      speedreader_lib_path,
+    ]
+    outputs = [
+      "{{bundle_contents_dir}}/Libraries/{{source_file_part}}",
+    ]
+    public_deps = [
+      "//brave/vendor/speedreader_rust_ffi:speedreader",
+    ]
+  }
+} else {
+  group("speedreader_libs") {}
 }
