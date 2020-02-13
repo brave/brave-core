@@ -98,12 +98,12 @@ class Promotion {
       const int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
-      const std::string promotion_string,
+      const std::string& promotion_string,
       ledger::ResultCallback callback);
 
   void ClaimedTokensSaved(
       const ledger::Result result,
-      const std::string promotion_string,
+      const std::string& promotion_string,
       ledger::ResultCallback callback);
 
   void ClaimTokensSaved(
@@ -119,7 +119,7 @@ class Promotion {
       const int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
-      const std::string promotion_string,
+      const std::string& promotion_string,
       ledger::ResultCallback callback);
 
   void ProcessSignedCredentials(
@@ -142,8 +142,18 @@ class Promotion {
 
   void FinishPromotion(
       const ledger::Result result,
-      const std::string promotion_string,
+      const std::string& promotion_string,
       ledger::ResultCallback callback);
+
+  void CheckForCorrupted(const ledger::PromotionMap& promotions);
+
+  void OnCheckForCorrupted(
+      const int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers,
+      const std::vector<std::string>& promotion_id_list);
+
+  void PromotionListDeleted(const ledger::Result result);
 
   std::unique_ptr<braveledger_attestation::AttestationImpl> attestation_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED

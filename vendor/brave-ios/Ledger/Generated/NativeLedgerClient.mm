@@ -237,6 +237,9 @@ void NativeLedgerClient::InsertOrUpdatePromotion(ledger::PromotionPtr info, ledg
 void NativeLedgerClient::GetPromotion(const std::string& id, ledger::GetPromotionCallback callback) {
   return [bridge_ getPromotion:id callback:callback];
 }
+void NativeLedgerClient::DeletePromotionList(const std::vector<std::string>& id_list,  ledger::ResultCallback callback) {
+  return [bridge_ deletePromotionList:id_list callback:callback];
+}
 void NativeLedgerClient::SaveUnblindedTokenList(ledger::UnblindedTokenList list, ledger::ResultCallback callback) {
   return [bridge_ saveUnblindedTokenList:std::move(list) callback:callback];
 }

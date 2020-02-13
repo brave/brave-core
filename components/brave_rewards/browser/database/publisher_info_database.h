@@ -120,6 +120,8 @@ class PublisherInfoDatabase {
 
   ledger::PromotionMap GetAllPromotions();
 
+  bool DeletePromotionList(const std::vector<std::string>& id_list);
+
   bool SaveUnblindedTokenList(ledger::UnblindedTokenList list);
 
   ledger::UnblindedTokenList GetAllUnblindedTokens();

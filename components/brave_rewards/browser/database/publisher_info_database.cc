@@ -523,6 +523,11 @@ ledger::PromotionMap PublisherInfoDatabase::GetAllPromotions() {
   return promotion_->GetAllRecords(&GetDB());
 }
 
+bool PublisherInfoDatabase::DeletePromotionList(
+    const std::vector<std::string>& id_list) {
+  return promotion_->DeleteRecordList(&GetDB(), id_list);
+}
+
 /**
  *
  * UNBLINDED TOKEN

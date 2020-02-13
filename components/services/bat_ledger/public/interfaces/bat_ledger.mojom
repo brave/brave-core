@@ -287,6 +287,7 @@ interface BatLedgerClient {
   InsertOrUpdatePromotion(ledger.mojom.Promotion info) => (ledger.mojom.Result result);
   GetPromotion(string id) => (ledger.mojom.Promotion? info);
   GetAllPromotions() => (map<string, ledger.mojom.Promotion> promotions);
+  DeletePromotionList(array<string> id_list) => (ledger.mojom.Result result);
   SaveUnblindedTokenList(array<ledger.mojom.UnblindedToken> list) => (ledger.mojom.Result result);
   GetAllUnblindedTokens() => (array<ledger.mojom.UnblindedToken> info);
   DeleteUnblindedTokens(array<string> id_list) => (ledger.mojom.Result result);
