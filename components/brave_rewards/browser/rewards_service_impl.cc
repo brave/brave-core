@@ -4245,6 +4245,32 @@ void RewardsServiceImpl::OnGetAllPromotions(
   callback(std::move(promotions));
 }
 
+ledger::Result DeletePromotionListFileTaskRunner(
+    PublisherInfoDatabase* backend,
+    const std::vector<std::string>& id_list) {
+  if (!backend) {
+    return ledger::Result::LEDGER_ERROR;
+  }
+
+  const bool result = backend->DeletePromotionList(id_list);
+
+  return result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR;
+}
+
+void RewardsServiceImpl::DeletePromotionList(
+    const std::vector<std::string>& id_list,
+    ledger::ResultCallback callback) {
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::BindOnce(&DeletePromotionListFileTaskRunner,
+        publisher_info_backend_.get(),
+        id_list),
+    base::BindOnce(&RewardsServiceImpl::OnResult,
+        AsWeakPtr(),
+        callback));
+}
+
 ledger::Result SaveUnblindedTokenListTokenFileTaskRunner(
     PublisherInfoDatabase* backend,
     ledger::UnblindedTokenList list) {

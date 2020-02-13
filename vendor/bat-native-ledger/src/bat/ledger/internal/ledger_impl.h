@@ -585,6 +585,10 @@ class LedgerImpl : public ledger::Ledger,
   void GetAllPromotions(
     ledger::GetAllPromotionsCallback callback) override;
 
+  void DeletePromotionList(
+      const std::vector<std::string>& id_list,
+      ledger::ResultCallback callback);
+
   void SaveUnblindedTokenList(
     ledger::UnblindedTokenList list,
     ledger::ResultCallback callback);

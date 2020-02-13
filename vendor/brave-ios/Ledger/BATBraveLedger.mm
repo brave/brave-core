@@ -2066,6 +2066,11 @@ BATLedgerBridge(BOOL,
   callback(promo != nil ? promo.cppObjPtr : nullptr);
 }
 
+- (void)deletePromotionList:(const std::vector<std::string>& )id_list callback:(ledger::ResultCallback)callback
+{
+  // no need to implement as it will be removed as part of db 
+}
+
 - (void)saveUnblindedTokenList:(ledger::UnblindedTokenList)list callback:(ledger::ResultCallback)callback
 {
   // This can be commented for now as it will be removed as part of database refactor
