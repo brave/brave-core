@@ -16,4 +16,6 @@ const char kBraveNTPBrandedWallpaperDemoDescription[] =
     "Force dummy data for the Branded Wallpaper New Tab Page Experience. "
     "View rate and user opt-in conditionals will still be followed to decide "
     "when to display the Branded Wallpaper.";
+const char kBraveSyncName[] = "Enable Brave Sync";
+const char kBraveSyncDescription[] = "Brave Sync is disabled by default";
 }  // namespace flag_descriptions
