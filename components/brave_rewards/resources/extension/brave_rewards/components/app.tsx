@@ -241,7 +241,7 @@ export class RewardsPanel extends React.Component<Props, State> {
 
   openTOS () {
     chrome.tabs.create({
-      url: 'https://brave.com/terms-of-use'
+      url: 'https://basicattentiontoken.org/user-terms-of-service'
     })
   }
 
