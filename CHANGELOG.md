@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.3](https://github.com/brave/brave-ios/releases/tag/v1.14.3)
+ 
+  - Added New Tab Page Sponsored Images. ([#2151](https://github.com/brave/brave-ios/issues/2151))
+  - Disable bookmarklets in URL bar. ([#2297](https://github.com/brave/brave-ios/issues/2297))
+  - Fix ads region support when calendar is set to non-default. ([#2022](https://github.com/brave/brave-ios/issues/2022))
+  - Removed unverified info message for Brave verified publisher. ([#2202](https://github.com/brave/brave-ios/issues/2202))
+
 ## [1.14.2](https://github.com/brave/brave-ios/releases/tag/v1.14.2)
  
   - Added support for NFC authentication. ([#1609](https://github.com/brave/brave-ios/issues/1609))
