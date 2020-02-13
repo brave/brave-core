@@ -10,16 +10,16 @@
 
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
-#include "chrome/browser/dom_distiller/dom_distiller_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/session_tab_helper.h"
 #include "components/dom_distiller/content/browser/distiller_page_web_contents.h"
-#include "components/dom_distiller/core/distiller_page.h"
-#include "components/dom_distiller/core/dom_distiller_service.h"
+#include "components/dom_distiller/content/browser/distiller_javascript_utils.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/resource/resource_bundle.h"
+#include "third_party/re2/src/re2/re2.h"
+#include "base/strings/string_util.h"
 
 #if !defined(OS_ANDROID)
 #include "chrome/browser/ui/browser.h"
@@ -73,57 +73,45 @@ void AdsTabHelper::DidFinishNavigation(
 }
 
 void AdsTabHelper::DocumentOnLoadCompletedInMainFrame() {
-  // don't start distilling is the ad service isn't enabled
-  if (!ads_service_ || !ads_service_->IsEnabled() || !run_distiller_)
+  // Do not start distilling if the ad service isn't enabled
+  if (!ads_service_ || !ads_service_->IsEnabled() || !run_distiller_) {
     return;
-
-  auto* dom_distiller_service =
-      dom_distiller::DomDistillerServiceFactory::GetForBrowserContext(
-          web_contents()->GetBrowserContext());
-
-  if (!dom_distiller_service)
-    return;
+  }
 
   auto source_page_handle =
       std::make_unique<dom_distiller::SourcePageHandleWebContents>(
           web_contents(), false);
 
-  auto distiller_page =
-      dom_distiller_service->CreateDefaultDistillerPageWithHandle(
-          std::move(source_page_handle));
+  content::RenderFrameHost* render_frame_host =
+      source_page_handle->web_contents()->GetMainFrame();
+  DCHECK(render_frame_host);
 
-  auto options = dom_distiller::proto::DomDistillerOptions();
-  // options.set_extract_text_only(true);
-  // options.set_debug_level(1);
-
-  auto* distiller_page_ptr = distiller_page.get();
-
-  distiller_page_ptr->DistillPage(
-      web_contents()->GetLastCommittedURL(),
-      options,
-      base::Bind(&AdsTabHelper::OnWebContentsDistillationDone,
-          weak_factory_.GetWeakPtr(),
-          web_contents()->GetLastCommittedURL(),
-          base::Passed(std::move(distiller_page))));
+  dom_distiller::RunIsolatedJavaScript(render_frame_host,
+      "document.body.innerText",
+          base::BindOnce(&AdsTabHelper::OnWebContentsDistillationDone,
+              weak_factory_.GetWeakPtr(),
+                  source_page_handle->web_contents()->GetLastCommittedURL(),
+                      base::TimeTicks::Now()));
 }
 
 void AdsTabHelper::OnWebContentsDistillationDone(
     const GURL& url,
-    std::unique_ptr<dom_distiller::DistillerPage> distiller_page,
-    std::unique_ptr<dom_distiller::proto::DomDistillerResult> distiller_result,
-    bool distillation_successful) {
-  if (!ads_service_ )
+    const base::TimeTicks& javascript_start,
+    base::Value value) {
+  if (!ads_service_) {
     return;
-
-  if (distillation_successful &&
-      distiller_result->has_distilled_content() &&
-      distiller_result->has_markup_info() &&
-      distiller_result->distilled_content().has_html()) {
-    ads_service_->OnPageLoaded(url.spec(),
-                               distiller_result->distilled_content().html());
-  } else {
-    // TODO(bridiver) - fall back to web_contents()->GenerateMHTML or ignore?
   }
+
+  DCHECK(value.is_string());
+  std::string content;
+  value.GetAsString(&content);
+
+  RE2::GlobalReplace(&content, "[[:cntrl:]]|[[:space:]]|\\\\x[[:xdigit:]]"
+      "[[:xdigit:]]|\\\\(t|n|v|f|r)", " ");
+
+  content = base::CollapseWhitespaceASCII(content, false);
+
+  ads_service_->OnPageLoaded(url.spec(), content);
 }
 
 void AdsTabHelper::DidFinishLoad(

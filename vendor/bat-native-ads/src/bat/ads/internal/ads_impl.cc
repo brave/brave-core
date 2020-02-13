@@ -683,7 +683,7 @@ void AdsImpl::ChangeLocale(
 
 void AdsImpl::OnPageLoaded(
     const std::string& url,
-    const std::string& html) {
+    const std::string& content) {
   DCHECK(!url.empty());
 
   if (!IsInitialized()) {
@@ -731,7 +731,7 @@ void AdsImpl::OnPageLoaded(
 
   TestShoppingData(url);
 
-  MaybeClassifyPage(url, html);
+  MaybeClassifyPage(url, content);
 
   CheckEasterEgg(url);
 
@@ -812,13 +812,13 @@ void AdsImpl::OnGetAdConversions(
 
 void AdsImpl::MaybeClassifyPage(
     const std::string& url,
-    const std::string& html) {
+    const std::string& content) {
   if (!ShouldClassifyPagesIfTargeted()) {
     MaybeGenerateAdReportingLoadEvent(url, kUntargetedPageClassification);
     return;
   }
 
-  auto classification = ClassifyPage(url, html);
+  auto classification = ClassifyPage(url, content);
   MaybeGenerateAdReportingLoadEvent(url, classification);
 }
 
@@ -842,8 +842,8 @@ bool AdsImpl::ShouldClassifyPagesIfTargeted() const {
 
 std::string AdsImpl::ClassifyPage(
     const std::string& url,
-    const std::string& html) {
-  auto page_score = user_model_->ClassifyPage(html);
+    const std::string& content) {
+  auto page_score = user_model_->ClassifyPage(content);
 
   auto winning_category = GetWinningCategory(page_score);
   if (winning_category.empty()) {
