@@ -79,8 +79,8 @@ void BatAdsImpl::ChangeLocale(
 
 void BatAdsImpl::OnPageLoaded(
     const std::string& url,
-    const std::string& html) {
-  ads_->OnPageLoaded(url, html);
+    const std::string& content) {
+  ads_->OnPageLoaded(url, content);
 }
 
 void BatAdsImpl::ServeSampleAd() {
