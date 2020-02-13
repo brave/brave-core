@@ -70,6 +70,7 @@ test("brave_unit_tests") {
   sources = [
     "//brave/browser/brave_content_browser_client_unittest.cc",
     "//brave/browser/brave_resources_util_unittest.cc",
+    "//brave/browser/browsing_data/counters/brave_site_settings_counter_unittest.cc",
     "//brave/browser/download/brave_download_item_model_unittest.cc",
     "//brave/browser/metrics/metrics_reporting_util_unittest_linux.cc",
     "//brave/browser/net/brave_ad_block_tp_network_delegate_helper_unittest.cc",
@@ -105,6 +106,8 @@ test("brave_unit_tests") {
     "//components/bookmarks/browser/bookmark_model_unittest.cc",
     "../../components/domain_reliability/test_util.cc",
     "../../components/domain_reliability/test_util.h",
+    "//chrome/browser/custom_handlers/test_protocol_handler_registry_delegate.cc",
+    "//chrome/browser/custom_handlers/test_protocol_handler_registry_delegate.h",
   ]
 
   deps = [
