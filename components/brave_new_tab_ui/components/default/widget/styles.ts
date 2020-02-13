@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled, { css } from 'styled-components'
+import styled, { css } from 'brave-ui/theme'
 
 interface WidgetPositionProps {
   menuPosition: 'right' | 'left'
@@ -78,7 +78,8 @@ export const StyledWidgetMenu = styled<WidgetMenuProps, 'div'>('div')`
   position absolute;
   width: 166px;
   padding: 8px 0;
-  background: white;
+  background-color: ${p => p.theme.color.contextMenuBackground};
+  color:  ${p => p.theme.color.contextMenuForeground};
   box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.3);
   border-radius: 4px;
   top: 48px;
@@ -107,7 +108,7 @@ interface WidgetButtonProps {
 }
 export const StyledWidgetButton = styled<WidgetButtonProps, 'button'>('button')`
   border-style: none;
-  blackground: white;
+  background: transparent;
   padding: 0;
   display: flex;
   height: 30px;
@@ -118,8 +119,10 @@ export const StyledWidgetButton = styled<WidgetButtonProps, 'button'>('button')`
   outline-color: #FF7654;
   outline-width: 2px;
   outline-offset: -3px;
+
   &:hover {
-    background: rgb(217, 221, 254);
+    background-color: ${p => p.theme.color.contextMenuHoverBackground};
+    color: ${p => p.theme.color.contextMenuHoverForeground};
   }
 `
 
