@@ -72,8 +72,8 @@
 
       <TextView
           android:id="@+id/br_notifications_count"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
+          android:layout_width="14dp"
+          android:layout_height="14dp"
           android:text=""
           android:layout_marginTop="7dp"
           android:layout_marginEnd="6dp"
@@ -82,7 +82,7 @@
           android:visibility="gone"
           android:textColor="#ffffff"
           android:background="@drawable/brave_rewards_circle"
-          android:textSize="12sp" />
+          android:textSize="9sp" />
 
       <org.chromium.chrome.browser.BraveBadge
           android:id="@+id/brave_rewards_badge_small"
