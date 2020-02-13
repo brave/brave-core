@@ -204,6 +204,7 @@ extension NTPBackgroundDataSource: PreferencesObserver {
         if sponsoredPref.key == key {
             if sponsoredPref.value {
                 // Enabled? -> issue download
+                Preferences.NTP.ntpCheckDate.value = nil
                 downloader.delegate = self
 
             } else {
