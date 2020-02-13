@@ -51,6 +51,8 @@ FORWARD_DECLARE_TEST(BraveSyncServiceTest, SetThisDeviceCreatedTime);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, InitialFetchesStartWithZero);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, DeviceIdV2Migration);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, DeviceIdV2MigrationDupDeviceId);
+FORWARD_DECLARE_TEST(BraveSyncServiceTestDelayedLoadModel,
+                     OnSyncReadyModelNotYetLoaded);
 
 class BraveSyncServiceTest;
 
@@ -212,6 +214,8 @@ class BraveProfileSyncServiceImpl
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, DeviceIdV2Migration);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest,
                            DeviceIdV2MigrationDupDeviceId);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTestDelayedLoadModel,
+                           OnSyncReadyModelNotYetLoaded);
 
   friend class ::BraveSyncServiceTest;
 

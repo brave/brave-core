@@ -484,6 +484,7 @@ void BraveProfileSyncServiceImpl::OnSyncReady() {
   DCHECK(false == brave_sync_ready_);
   brave_sync_ready_ = true;
 
+  DCHECK(model_);
   if (model_->loaded()) {
     OnSyncReadyBookmarksModelLoaded();
   } else {
