@@ -149,6 +149,9 @@ const char kLegacySupervisedUserManagementURL[] =
 
 const char kManagedUiLearnMoreUrl[] = "https://support.brave.com/";
 
+const char kMixedContentDownloadBlockingLearnMoreUrl[] =
+    "https://support.brave.com/";
+
 const char kMyActivityUrlInClearBrowsingData[] =
     "https://support.brave.com/";
 
