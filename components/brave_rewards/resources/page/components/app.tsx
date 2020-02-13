@@ -64,7 +64,7 @@ export class App extends React.Component<Props, State> {
   }
 
   openTOS () {
-    window.open('https://brave.com/terms-of-use', '_blank')
+    window.open('https://basicattentiontoken.org/user-terms-of-service', '_blank')
   }
 
   openPrivacyPolicy () {
