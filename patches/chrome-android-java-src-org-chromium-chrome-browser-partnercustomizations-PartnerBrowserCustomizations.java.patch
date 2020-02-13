@@ -1,0 +1,12 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/partnercustomizations/PartnerBrowserCustomizations.java b/chrome/android/java/src/org/chromium/chrome/browser/partnercustomizations/PartnerBrowserCustomizations.java
+index 97fc8c931092fc2c9d532884647a780260ced92d..a7aab4822917c660859a69c3626fad6d83f7001f 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/partnercustomizations/PartnerBrowserCustomizations.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/partnercustomizations/PartnerBrowserCustomizations.java
+@@ -199,6 +199,7 @@ public class PartnerBrowserCustomizations {
+      * @param timeoutMs If initializing takes more than this time, cancels it. The unit is ms.
+      */
+     public static void initializeAsync(final Context context, long timeoutMs) {
++        if (true) return;
+         sIsInitialized = false;
+         Provider provider = AppHooks.get().getCustomizationProvider();
+         // Setup an initializing async task.

@@ -1,0 +1,12 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/partnerbookmarks/PartnerBookmarksShim.java b/chrome/android/java/src/org/chromium/chrome/browser/partnerbookmarks/PartnerBookmarksShim.java
+index f356de4639f54679646b2ffbf8d210441ba3da22..79e0f92c66465c24d8364fef42f1f3b0755b0c0a 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/partnerbookmarks/PartnerBookmarksShim.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/partnerbookmarks/PartnerBookmarksShim.java
+@@ -31,6 +31,7 @@ public class PartnerBookmarksShim {
+         sIsReadingAttempted = true;
+ 
+         PartnerBookmarksReader reader = new PartnerBookmarksReader(context);
++        if (true) {reader.onBookmarksRead(); return;}
+ 
+         boolean systemOrPreStable =
+                 (context.getApplicationInfo().flags & ApplicationInfo.FLAG_SYSTEM) == 1
