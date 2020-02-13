@@ -468,7 +468,7 @@ TEST(MediaYouTubeTest, GetVideoUrl) {
   // null case
   std::string media_id;
   std::string url;
-#if defined(OFFICIAL_BUILD) || defined(NDEBUG)
+#if !DCHECK_IS_ON()
   url = YouTube::GetVideoUrl(media_id);
   EXPECT_EQ(url, media_url);
 #else
@@ -500,7 +500,7 @@ TEST(MediaYouTubeTest, GetChannelUrl) {
   // null case
   std::string channel_id;
   std::string url;
-#if defined(OFFICIAL_BUILD) || defined(NDEBUG)
+#if !DCHECK_IS_ON()
   url = YouTube::GetChannelUrl(channel_id);
   EXPECT_EQ(url, channel_url);
 #else
