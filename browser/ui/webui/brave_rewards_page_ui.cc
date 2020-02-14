@@ -189,6 +189,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void GetMonthlyReport(const base::ListValue* args);
 
   void GetAllMonthlyReportIds(const base::ListValue* args);
+  void GetCountryCode(const base::ListValue* args);
 
   void OnGetMonthlyReport(
       const uint32_t month,
@@ -469,6 +470,9 @@ void RewardsDOMHandler::RegisterMessages() {
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getMonthlyReportIds",
       base::BindRepeating(&RewardsDOMHandler::GetAllMonthlyReportIds,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.getCountryCode",
+      base::BindRepeating(&RewardsDOMHandler::GetCountryCode,
       base::Unretained(this)));
 }
 
@@ -1862,6 +1866,17 @@ void RewardsDOMHandler::GetAllMonthlyReportIds(const base::ListValue* args) {
   rewards_service_->GetAllMonthlyReportIds(
       base::BindOnce(&RewardsDOMHandler::OnGetAllMonthlyReportIds,
           weak_factory_.GetWeakPtr()));
+}
+
+void RewardsDOMHandler::GetCountryCode(const base::ListValue* args) {
+  if (!ads_service_ || !web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  const std::string country_code = ads_service_->GetCountryCode();
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards.countryCode", base::Value(country_code));
 }
 
 

@@ -372,6 +372,35 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
       break
     }
+    case types.DISMISS_PROMO_PROMPT: {
+      const ui = state.ui
+      const promoKey = action.payload.promo
+
+      if (!ui.promosDismissed) {
+        ui.promosDismissed = {}
+      }
+
+      ui.promosDismissed[promoKey] = true
+
+      state = {
+        ...state,
+        ui
+      }
+
+      break
+    }
+    case types.GET_COUNTRY_CODE: {
+      chrome.send('brave_rewards.getCountryCode')
+      break
+    }
+    case types.ON_COUNTRY_CODE: {
+      const { countryCode } = action.payload
+      state = {
+        ...state,
+        currentCountryCode: countryCode
+      }
+      break
+    }
   }
 
   return state
