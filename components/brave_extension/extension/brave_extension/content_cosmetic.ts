@@ -56,6 +56,14 @@ function idleize (onIdle: Function, timeout: number) {
   }
 }
 
+function isRelativeUrl (url: string): boolean {
+  return (
+    !url.startsWith('//') &&
+    !url.startsWith('http://') &&
+    !url.startsWith('https://')
+  )
+}
+
 function isElement (node: Node): boolean {
   return (node.nodeType === 1)
 }
@@ -151,7 +159,7 @@ const getParsedDomain = (aDomain: string) => {
 
 const _parsedCurrentDomain = getParsedDomain(window.location.host)
 const isFirstPartyUrl = (url: string): boolean => {
-  if (url.startsWith('/')) {
+  if (isRelativeUrl(url)) {
     return true
   }
 
