@@ -57,7 +57,7 @@ Rule CloneRule(const Rule& rule, bool reverse_patterns = false) {
 
 class BraveShieldsRuleIterator : public RuleIterator {
  public:
-  BraveShieldsRuleIterator(std::vector<Rule> rules)
+  explicit BraveShieldsRuleIterator(std::vector<Rule> rules)
       : rules_(std::move(rules)) {
     iterator_ = rules_.begin();
   }
