@@ -280,6 +280,7 @@ void AdConversionTracking::OnStateLoaded(
         "values";
 
     queue_.clear();
+    SaveState();
   } else {
     if (!FromJson(json)) {
       BLOG(ERROR) << "Failed to parse ad conversions state: " << json;

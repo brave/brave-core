@@ -302,6 +302,7 @@ void Notifications::OnStateLoaded(
         << "Failed to load notifications state, resetting to default values";
 
     notifications_.clear();
+    SaveState();
   } else {
     if (!FromJson(json)) {
       BLOG(ERROR) << "Failed to parse notifications state: " << json;

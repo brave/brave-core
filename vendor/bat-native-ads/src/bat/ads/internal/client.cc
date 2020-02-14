@@ -637,6 +637,7 @@ void Client::OnStateLoaded(const Result result, const std::string& json) {
     BLOG(ERROR) << "Failed to load client state, resetting to default values";
 
     client_state_.reset(new ClientState());
+    SaveState();
   } else {
     if (!FromJson(json)) {
       BLOG(ERROR) << "Failed to parse client state: " << json;
