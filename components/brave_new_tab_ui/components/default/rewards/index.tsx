@@ -257,7 +257,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
     return (
       <>
         <ServiceText>
-          {beforeTag}<ServiceLink href={'https://brave.com/terms-of-use'}>{duringTag}</ServiceLink>{afterTag}
+          {beforeTag}<ServiceLink href={'https://basicattentiontoken.org/user-terms-of-service'}>{duringTag}</ServiceLink>{afterTag}
         </ServiceText>
       </>
     )
