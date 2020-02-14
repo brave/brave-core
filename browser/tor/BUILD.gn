@@ -39,6 +39,7 @@ source_set("tor") {
     ]
 
     deps += [
+      "//brave/components/brave_referrals/buildflags",
       "//brave/components/services/tor/public/interfaces",
       "//content/public/common",
       "//extensions/common:common_constants",
