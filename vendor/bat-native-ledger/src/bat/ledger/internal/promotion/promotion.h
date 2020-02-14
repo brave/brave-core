@@ -131,10 +131,6 @@ class Promotion {
       ledger::PromotionPtr promotion,
       ledger::ResultCallback callback);
 
-  bool UnBlindTokens(
-      ledger::PromotionPtr promotion,
-      std::vector<std::string>* unblinded_encoded_tokens);
-
   void SaveUnblindedTokens(
       ledger::PromotionPtr promotion,
       const std::vector<std::string>& unblinded_encoded_tokens,
