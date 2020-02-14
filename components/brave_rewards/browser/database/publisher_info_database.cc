@@ -637,7 +637,7 @@ void PublisherInfoDatabase::RecordP3AStats(bool auto_contributions_on) {
         AutoContributionsP3AState::kAutoContributeOn :
         AutoContributionsP3AState::kWalletCreatedAutoContributeOff;
   RecordAutoContributionsState(auto_contributions_state, auto_contributions);
-  RecordTipsState(true, tips, queued_recurring);
+  RecordTipsState(true, true, tips, queued_recurring);
 }
 
 int PublisherInfoDatabase::GetCurrentVersion() {

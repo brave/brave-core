@@ -929,7 +929,7 @@ void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
     StartNotificationTimers(true);
 
     // Record P3A:
-    RecordWalletBalanceP3A(true, 0);
+    RecordWalletBalanceP3A(true, true, 0);
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
     const bool ads_enabled =
         profile_->GetPrefs()->GetBoolean(brave_ads::prefs::kEnabled);
@@ -1729,6 +1729,9 @@ void RewardsServiceImpl::SetRewardsMainEnabled(bool enabled) {
     return;
   }
 
+  if (!enabled) {
+    RecordRewardsDisabledForSomeMetrics();
+  }
   SetRewardsMainEnabledPref(enabled);
   bat_ledger_->SetRewardsMainEnabled(enabled);
   TriggerOnRewardsMainEnabled(enabled);
@@ -3599,7 +3602,8 @@ void RewardsServiceImpl::OnFetchBalance(FetchBalanceCallback callback,
     // Record stats.
     double balance_minus_grant = CalcWalletBalanceForP3A(balance->wallets,
                                                          balance->user_funds);
-    RecordWalletBalanceP3A(true, static_cast<size_t>(balance_minus_grant));
+    RecordWalletBalanceP3A(true, true,
+                           static_cast<size_t>(balance_minus_grant));
     RecordBackendP3AStats();
   }
 
