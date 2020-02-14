@@ -788,19 +788,18 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectRulesAreRespected) {
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
-class CosmeticFilteringEnabledTest : public AdBlockServiceTest {
+class CosmeticFilteringDisabledTest : public AdBlockServiceTest {
  public:
-  CosmeticFilteringEnabledTest() {
-    feature_list_.InitAndEnableFeature(kBraveAdblockCosmeticFiltering);
+  CosmeticFilteringDisabledTest() {
+    feature_list_.InitAndDisableFeature(kBraveAdblockCosmeticFiltering);
   }
 
  private:
   base::test::ScopedFeatureList feature_list_;
 };
 
-// Ensure no cosmetic filtering occurs when the feature flag has not been
-// enabled
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringSimple) {
+// Ensure no cosmetic filtering occurs when the feature flag is disabled
+IN_PROC_BROWSER_TEST_F(CosmeticFilteringDisabledTest, CosmeticFilteringSimple) {
   UpdateAdBlockInstanceWithRules(
       "b.com###ad-banner\n"
       "##.ad");
@@ -837,7 +836,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringSimple) {
 }
 
 // Test simple cosmetic filtering
-IN_PROC_BROWSER_TEST_F(CosmeticFilteringEnabledTest, CosmeticFilteringSimple) {
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringSimple) {
   UpdateAdBlockInstanceWithRules(
       "b.com###ad-banner\n"
       "##.ad");
@@ -874,7 +873,7 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringEnabledTest, CosmeticFilteringSimple) {
 }
 
 // Test cosmetic filtering ignores content determined to be 1st party
-IN_PROC_BROWSER_TEST_F(CosmeticFilteringEnabledTest,
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        CosmeticFilteringProtect1p) {
   UpdateAdBlockInstanceWithRules("b.com##.fpsponsored\n");
 
@@ -896,7 +895,7 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringEnabledTest,
 }
 
 // Test cosmetic filtering on elements added dynamically
-IN_PROC_BROWSER_TEST_F(CosmeticFilteringEnabledTest, CosmeticFilteringDynamic) {
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDynamic) {
   UpdateAdBlockInstanceWithRules("##.blockme");
 
   WaitForBraveExtensionShieldsDataReady();
@@ -925,7 +924,7 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringEnabledTest, CosmeticFilteringDynamic) {
 }
 
 // Test custom style rules
-IN_PROC_BROWSER_TEST_F(CosmeticFilteringEnabledTest,
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        CosmeticFilteringCustomStyle) {
   UpdateAdBlockInstanceWithRules("b.com##.ad:style(padding-bottom: 10px)");
 
@@ -947,7 +946,7 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringEnabledTest,
 }
 
 // Test rules overridden by hostname-specific exception rules
-IN_PROC_BROWSER_TEST_F(CosmeticFilteringEnabledTest, CosmeticFilteringUnhide) {
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringUnhide) {
   UpdateAdBlockInstanceWithRules(
       "##.ad\n"
       "b.com#@#.ad\n"
