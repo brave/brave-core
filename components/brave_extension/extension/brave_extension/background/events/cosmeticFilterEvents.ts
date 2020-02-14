@@ -2,8 +2,7 @@ import { getLocale } from '../api/localeAPI'
 import {
   addSiteCosmeticFilter,
   removeSiteFilter,
-  removeAllFilters,
-  hideThirdPartySelectors
+  removeAllFilters
 } from '../api/cosmeticFilterAPI'
 import shieldsPanelActions from '../actions/shieldsPanelActions'
 
@@ -61,26 +60,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         break
       }
       shieldsPanelActions.generateClassIdStylesheet(tabId, msg.classes, msg.ids)
-      break
-    }
-    case 'hideThirdPartySelectors': {
-      const tab = sender.tab
-      if (tab === undefined) {
-        break
-      }
-      const tabId = tab.id
-      if (tabId === undefined) {
-        break
-      }
-      const url = tab.url
-      if (url === undefined) {
-        break
-      }
-      const selectors = msg.selectors
-      if (selectors === undefined) {
-        break
-      }
-      hideThirdPartySelectors(tabId, selectors)
       break
     }
     case 'contentScriptsLoaded': {
