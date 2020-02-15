@@ -8,6 +8,7 @@
 #include <set>
 #include <string>
 
+#include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "components/browsing_data/core/pref_names.h"
 #include "components/content_settings/core/browser/content_settings_registry.h"
@@ -18,9 +19,8 @@ BraveSiteSettingsCounter::BraveSiteSettingsCounter(
     content::HostZoomMap* zoom_map,
     ProtocolHandlerRegistry* handler_registry,
     PrefService* pref_service)
-    : SiteSettingsCounter(map, zoom_map, handler_registry, pref_service) {
-  map_ = static_cast<BraveHostContentSettingsMap*>(map);
-}
+    : SiteSettingsCounter(map, zoom_map, handler_registry, pref_service),
+      map_(map) {}
 
 BraveSiteSettingsCounter::~BraveSiteSettingsCounter() = default;
 
@@ -43,9 +43,11 @@ int BraveSiteSettingsCounter::CountShieldsSettings() {
           base::Time last_modified;
           DCHECK_EQ(ContentSettingsType::PLUGINS, content_type);
           // Fetching last time for specific resource ids.
-          last_modified = map_->GetShieldsSettingLastModifiedDate(
+          last_modified =
+              map_->GetPrefProvider()->GetWebsiteSettingLastModified(
                   content_setting.primary_pattern,
                   content_setting.secondary_pattern,
+                  ContentSettingsType::PLUGINS,
                   resource_identifier);
           if (last_modified >= period_start && last_modified < period_end) {
             if (content_setting.primary_pattern.GetHost().empty())

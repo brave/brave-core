@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_BROWSING_DATA_COUNTERS_BRAVE_SITE_SETTINGS_COUNTER_H_
 #define BRAVE_BROWSER_BROWSING_DATA_COUNTERS_BRAVE_SITE_SETTINGS_COUNTER_H_
 
-#include "brave/components/content_settings/core/browser/brave_host_content_settings_map.h"
 #include "chrome/browser/browsing_data/counters/site_settings_counter.h"
 
 // This class adds shieldss settings count
@@ -26,7 +25,7 @@ class BraveSiteSettingsCounter : public SiteSettingsCounter {
 
   int CountShieldsSettings();
 
-  scoped_refptr<BraveHostContentSettingsMap> map_;
+  scoped_refptr<HostContentSettingsMap> map_;
 };
 
 #endif  // BRAVE_BROWSER_BROWSING_DATA_COUNTERS_BRAVE_SITE_SETTINGS_COUNTER_H_
