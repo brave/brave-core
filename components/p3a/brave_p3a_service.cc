@@ -43,7 +43,7 @@ constexpr char kLastRotationTimeStampPref[] = "p3a.last_rotation_timestamp";
 
 constexpr char kDefaultUploadServerUrl[] = "https://p3a.brave.com/";
 
-constexpr uint64_t kDefaultUploadIntervalSeconds = 60 * 60;  // 1 hour.
+constexpr uint64_t kDefaultUploadIntervalSeconds = 60;  // 1 minute.
 
 // TODO(iefremov): Provide moar histograms!
 // Whitelist for histograms that we collect. Will be replaced with something
