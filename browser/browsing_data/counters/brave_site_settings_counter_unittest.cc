@@ -13,7 +13,6 @@
 #include "base/test/simple_test_clock.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "brave/components/content_settings/core/browser/brave_host_content_settings_map.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/custom_handlers/protocol_handler_registry.h"
 #include "chrome/browser/custom_handlers/protocol_handler_registry_factory.h"
@@ -21,6 +20,7 @@
 #include "chrome/test/base/testing_profile.h"
 #include "components/browsing_data/core/browsing_data_utils.h"
 #include "components/browsing_data/core/pref_names.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -41,8 +41,7 @@ class BraveSiteSettingsCounterTest : public testing::Test {
  public:
   void SetUp() override {
     profile_ = std::make_unique<TestingProfile>();
-    map_ = static_cast<BraveHostContentSettingsMap*>(
-        HostContentSettingsMapFactory::GetForProfile(profile()));
+    map_ = HostContentSettingsMapFactory::GetForProfile(profile());
 #if !defined(OS_ANDROID)
     auto* zoom_map =
         content::HostZoomMap::GetDefaultForBrowserContext(profile());
@@ -61,7 +60,7 @@ class BraveSiteSettingsCounterTest : public testing::Test {
 
   Profile* profile() { return profile_.get(); }
 
-  BraveHostContentSettingsMap* map() { return map_.get(); }
+  HostContentSettingsMap* map() { return map_.get(); }
 
   BraveSiteSettingsCounter* counter() { return counter_.get(); }
 
@@ -84,7 +83,7 @@ class BraveSiteSettingsCounterTest : public testing::Test {
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<TestingProfile> profile_;
 
-  scoped_refptr<BraveHostContentSettingsMap> map_;
+  scoped_refptr<HostContentSettingsMap> map_;
   std::unique_ptr<ProtocolHandlerRegistry> handler_registry_;
   std::unique_ptr<BraveSiteSettingsCounter> counter_;
   bool finished_;
