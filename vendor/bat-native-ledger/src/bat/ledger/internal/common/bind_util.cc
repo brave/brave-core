@@ -109,10 +109,11 @@ std::string FromPromotionToString(const ledger::PromotionPtr info) {
   promotion.SetStringKey("approximate_value",
       std::to_string(info->approximate_value));
   promotion.SetStringKey("expires_at", std::to_string(info->expires_at));
+  promotion.SetStringKey("claimed_at", std::to_string(info->claimed_at));
   promotion.SetIntKey("version", info->version);
   promotion.SetIntKey("type", static_cast<int>(info->type));
   promotion.SetIntKey("suggestions", info->suggestions);
-  promotion.SetBoolKey("status", static_cast<int>(info->status));
+  promotion.SetIntKey("status", static_cast<int>(info->status));
   promotion.SetKey("credentials", std::move(credentials));
   promotion.SetBoolKey("legacy_claimed", info->legacy_claimed);
 
@@ -153,6 +154,11 @@ ledger::PromotionPtr FromStringToPromotion(const std::string& data) {
   auto* expires_at = dictionary->FindStringKey("expires_at");
   if (expires_at) {
     promotion->expires_at = std::stoull(*expires_at);
+  }
+
+  auto* claimed_at = dictionary->FindStringKey("claimed_at");
+  if (claimed_at) {
+    promotion->claimed_at = std::stoull(*claimed_at);
   }
 
   auto version = dictionary->FindIntKey("version");
