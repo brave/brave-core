@@ -38,6 +38,11 @@ void ParseSignedTokensResponse(
 std::unique_ptr<base::ListValue> ParseStringToBaseList(
     const std::string& string_list);
 
+bool UnBlindTokens(
+    ledger::PromotionPtr promotion,
+    std::vector<std::string>* unblinded_encoded_tokens,
+    std::string* error);
+
 bool UnBlindTokensMock(
     ledger::PromotionPtr promotion,
     std::vector<std::string>* unblinded_encoded_tokens);
