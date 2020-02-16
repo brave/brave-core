@@ -32,5 +32,7 @@ const char kRewardsBadgeText[] = "brave.rewards.badge_text";
 const char kUseRewardsStagingServer[] = "brave.rewards.use_staging_server";
 const char kStatePromotionLastFetchStamp[] =
     "brave.rewards.promotion_last_fetch_stamp";
+const char kStatePromotionCorruptedMigrated[] =
+    "brave.rewards.promotion_corrupted_migrated";
 }  // namespace prefs
 }  // namespace brave_rewards
