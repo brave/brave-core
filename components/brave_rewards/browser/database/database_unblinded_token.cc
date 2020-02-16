@@ -90,10 +90,10 @@ bool DatabaseUnblindedToken::CreateIndex(sql::Database* db) {
   return this->InsertIndex(db, table_name_, "token_id");
 }
 
-bool DatabaseUnblindedToken::InsertOrUpdate(
+bool DatabaseUnblindedToken::InsertOrUpdateList(
     sql::Database* db,
-    ledger::UnblindedTokenPtr info) {
-  if (!info) {
+    ledger::UnblindedTokenList list) {
+  if (list.size() == 0) {
     return false;
   }
 
@@ -102,29 +102,30 @@ bool DatabaseUnblindedToken::InsertOrUpdate(
     return false;
   }
 
-  const std::string query = base::StringPrintf(
+  for (const auto& info : list) {
+    const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
       "(token_id, token_value, public_key, value, promotion_id) "
       "VALUES (?, ?, ?, ?, ?)",
       table_name_);
 
-  sql::Statement statement(
-    db->GetCachedStatement(SQL_FROM_HERE, query.c_str()));
+    sql::Statement statement(
+        db->GetCachedStatement(SQL_FROM_HERE, query.c_str()));
 
+    if (info->id != 0) {
+      statement.BindInt64(0, info->id);
+    } else {
+      statement.BindNull(0);
+    }
 
-  if (info->id != 0) {
-    statement.BindInt64(0, info->id);
-  } else {
-    statement.BindNull(0);
-  }
+    statement.BindString(1, info->token_value);
+    statement.BindString(2, info->public_key);
+    statement.BindDouble(3, info->value);
+    statement.BindString(4, info->promotion_id);
 
-  statement.BindString(1, info->token_value);
-  statement.BindString(2, info->public_key);
-  statement.BindDouble(3, info->value);
-  statement.BindString(4, info->promotion_id);
-
-  if (!statement.Run()) {
-    return false;
+    if (!statement.Run()) {
+      return false;
+    }
   }
 
   return transaction.Commit();

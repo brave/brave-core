@@ -207,7 +207,7 @@ class LedgerImpl : public ledger::Ledger,
       double balance,
       ledger::RecoverWalletCallback callback);
 
-  void LoadURL(
+  virtual void LoadURL(
       const std::string& url,
       const std::vector<std::string>& headers,
       const std::string& content,
@@ -324,7 +324,7 @@ class LedgerImpl : public ledger::Ledger,
       const std::string& viewing_id,
       const ledger::CurrentReconcileProperties& reconcile);
 
-  const std::string& GetPaymentId() const;
+  virtual const std::string& GetPaymentId() const;
 
   const std::string& GetPersonaId() const;
 
@@ -575,7 +575,7 @@ class LedgerImpl : public ledger::Ledger,
   void GetFirstContributionQueue(
     ledger::GetFirstContributionQueueCallback callback);
 
-  void InsertOrUpdatePromotion(
+  virtual void InsertOrUpdatePromotion(
     ledger::PromotionPtr info,
     ledger::ResultCallback callback);
 
@@ -586,8 +586,12 @@ class LedgerImpl : public ledger::Ledger,
   void GetAllPromotions(
     ledger::GetAllPromotionsCallback callback) override;
 
-  void InsertOrUpdateUnblindedToken(
-    ledger::UnblindedTokenPtr info,
+  void DeletePromotionList(
+      const std::vector<std::string>& id_list,
+      ledger::ResultCallback callback);
+
+  void SaveUnblindedTokenList(
+    ledger::UnblindedTokenList list,
     ledger::ResultCallback callback);
 
   virtual void GetAllUnblindedTokens(

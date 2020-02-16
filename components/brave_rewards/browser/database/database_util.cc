@@ -106,4 +106,19 @@ bool RenameDBTable(
   return db->Execute(sql.c_str());
 }
 
+std::string GenerateStringInCase(const std::vector<std::string>& list) {
+  if (list.empty()) {
+    return "";
+  }
+
+  std::string list_join = base::JoinString(list, ", ");
+  base::ReplaceSubstringsAfterOffset(
+      &list_join,
+      0,
+      ", ",
+      "\", \"");
+
+  return base::StringPrintf("\"%s\"", list_join.c_str());
+}
+
 }  // namespace brave_rewards

@@ -1110,8 +1110,8 @@ void LedgerClientMojoProxy::GetAllPromotions(
 }
 
 // static
-void LedgerClientMojoProxy::OnInsertOrUpdateUnblindedToken(
-    CallbackHolder<InsertOrUpdateUnblindedTokenCallback>* holder,
+void LedgerClientMojoProxy::OnDeletePromotionList(
+    CallbackHolder<DeletePromotionListCallback>* holder,
     const ledger::Result result) {
   DCHECK(holder);
   if (holder->is_valid()) {
@@ -1120,15 +1120,39 @@ void LedgerClientMojoProxy::OnInsertOrUpdateUnblindedToken(
   delete holder;
 }
 
-void LedgerClientMojoProxy::InsertOrUpdateUnblindedToken(
-    ledger::UnblindedTokenPtr info,
-    InsertOrUpdateUnblindedTokenCallback callback) {
-  auto* holder = new CallbackHolder<InsertOrUpdateUnblindedTokenCallback>(
+void LedgerClientMojoProxy::DeletePromotionList(
+    const std::vector<std::string>& id_list,
+    DeletePromotionListCallback callback) {
+  auto* holder = new CallbackHolder<DeletePromotionListCallback>(
       AsWeakPtr(),
       std::move(callback));
-  ledger_client_->InsertOrUpdateUnblindedToken(
-      std::move(info),
-      std::bind(LedgerClientMojoProxy::OnInsertOrUpdateUnblindedToken,
+  ledger_client_->DeletePromotionList(
+      id_list,
+      std::bind(LedgerClientMojoProxy::OnDeletePromotionList,
+                holder,
+                _1));
+}
+
+// static
+void LedgerClientMojoProxy::OnSaveUnblindedTokenList(
+    CallbackHolder<SaveUnblindedTokenListCallback>* holder,
+    const ledger::Result result) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+  delete holder;
+}
+
+void LedgerClientMojoProxy::SaveUnblindedTokenList(
+    ledger::UnblindedTokenList list,
+    SaveUnblindedTokenListCallback callback) {
+  auto* holder = new CallbackHolder<SaveUnblindedTokenListCallback>(
+      AsWeakPtr(),
+      std::move(callback));
+  ledger_client_->SaveUnblindedTokenList(
+      std::move(list),
+      std::bind(LedgerClientMojoProxy::OnSaveUnblindedTokenList,
                 holder,
                 _1));
 }

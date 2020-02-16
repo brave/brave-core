@@ -1946,19 +1946,26 @@ BATLedgerBridge(BOOL,
   callback(promo != nil ? promo.cppObjPtr : nullptr);
 }
 
-- (void)insertOrUpdateUnblindedToken:(ledger::UnblindedTokenPtr)info callback:(ledger::ResultCallback)callback
+- (void)deletePromotionList:(const std::vector<std::string>& )id_list callback:(ledger::ResultCallback)callback
 {
-  if (info.get() == nullptr) { return; }
-  if (info->id == 0) {
-    NSNumber *nextID = self.prefs[kUnblindedTokenAutoincrementID] ?: [NSNumber numberWithUnsignedLongLong:1];
-    info->id = [nextID unsignedLongLongValue];
-    self.prefs[kUnblindedTokenAutoincrementID] = @([nextID unsignedLongLongValue] + 1);
-    [self savePrefs];
-  }
-  const auto bridgedToken = [[BATUnblindedToken alloc] initWithUnblindedToken:*info];
-  [BATLedgerDatabase insertOrUpdateUnblindedToken:bridgedToken completion:^(BOOL success) {
-    callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
-  }];
+  // no need to implement as it will be removed as part of db 
+}
+
+- (void)saveUnblindedTokenList:(ledger::UnblindedTokenList)list callback:(ledger::ResultCallback)callback
+{
+  // This can be commented for now as it will be removed as part of database refactor
+//    for (BATPromotion *info in list) {
+//      if (info.id == 0) {
+//        NSNumber *nextID = self.prefs[kUnblindedTokenAutoincrementID] ?: [NSNumber numberWithUnsignedLongLong:1];
+//        info.id = [nextID unsignedLongLongValue];
+//        self.prefs[kUnblindedTokenAutoincrementID] = @([nextID unsignedLongLongValue] + 1);
+//        [self savePrefs];
+//      }
+//      const auto bridgedToken = [[BATUnblindedToken alloc] initWithUnblindedToken:info];
+//      [BATLedgerDatabase insertOrUpdateUnblindedToken:bridgedToken completion:^(BOOL success) {
+//        callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
+//      }];
+//    }
 }
 
 - (void)getAllUnblindedTokens:(ledger::GetAllUnblindedTokensCallback)callback

@@ -1549,10 +1549,16 @@ void LedgerImpl::GetAllPromotions(
   ledger_client_->GetAllPromotions(callback);
 }
 
-void LedgerImpl::InsertOrUpdateUnblindedToken(
-    ledger::UnblindedTokenPtr info,
+void LedgerImpl::DeletePromotionList(
+    const std::vector<std::string>& id_list,
     ledger::ResultCallback callback) {
-  ledger_client_->InsertOrUpdateUnblindedToken(std::move(info), callback);
+  ledger_client_->DeletePromotionList(id_list, callback);
+}
+
+void LedgerImpl::SaveUnblindedTokenList(
+    ledger::UnblindedTokenList list,
+    ledger::ResultCallback callback) {
+  ledger_client_->SaveUnblindedTokenList(std::move(list), callback);
 }
 
 void LedgerImpl::GetAllUnblindedTokens(
