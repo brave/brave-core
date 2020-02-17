@@ -12,6 +12,8 @@ namespace ledger {
   const char kStateServerPublisherListStamp[] = "server_publisher_list_stamp";
   const char kStateUpholdAnonAddress[] = "uphold_anon_address";
   const char kStatePromotionLastFetchStamp[] = "promotion_last_fetch_stamp";
+  const char kStatePromotionCorruptedMigrated[] =
+      "promotion_corrupted_migrated";
 }  // namespace ledger
 
 #endif  // BRAVELEDGER_STATE_KEYS_H_
