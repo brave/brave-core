@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_NOTIFICATION_HANDLER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_NOTIFICATION_HANDLER_H_
 
+#include <queue>
 #include <string>
 #include <utility>
 
@@ -89,4 +90,4 @@ class AdsNotificationHandler : public NotificationHandler {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_IMPL_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_NOTIFICATION_HANDLER_H_

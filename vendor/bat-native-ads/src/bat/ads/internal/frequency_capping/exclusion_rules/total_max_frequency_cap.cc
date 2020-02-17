@@ -8,7 +8,7 @@
 #include "bat/ads/internal/time.h"
 #include "bat/ads/internal/client.h"
 
-#include "bat/ads/ad_info.h"
+#include "bat/ads/creative_ad_info.h"
 
 namespace ads {
 
@@ -20,7 +20,7 @@ TotalMaxFrequencyCap::TotalMaxFrequencyCap(
 TotalMaxFrequencyCap::~TotalMaxFrequencyCap() = default;
 
 bool TotalMaxFrequencyCap::ShouldExclude(
-    const AdInfo& ad) {
+    const CreativeAdInfo& ad) {
   if (!DoesAdRespectMaximumCap(ad)) {
     std::ostringstream string_stream;
     string_stream << "creativeSetId " << ad.creative_set_id <<
@@ -31,14 +31,14 @@ bool TotalMaxFrequencyCap::ShouldExclude(
   return false;
 }
 
-const std::string TotalMaxFrequencyCap::GetLastMessage() const {
-    return last_message_;
+std::string TotalMaxFrequencyCap::GetLastMessage() const {
+  return last_message_;
 }
 
 bool TotalMaxFrequencyCap::DoesAdRespectMaximumCap(
-    const AdInfo& ad) const {
-  auto creative_set = frequency_capping_->GetCreativeSetHistoryForUuid(
-    ad.creative_set_id);
+    const CreativeAdInfo& ad) const {
+  auto creative_set =
+      frequency_capping_->GetCreativeSetHistory(ad.creative_set_id);
 
   if (creative_set.size() >= ad.total_max) {
     return false;

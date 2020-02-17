@@ -286,7 +286,7 @@ void RefillTokens::OnGetSignedTokens(
   }
 
   // Add tokens
-  std::vector<TokenInfo> tokens;
+  TokenList tokens;
   for (const auto& unblinded_token : unblinded_tokens) {
     TokenInfo token_info;
     token_info.unblinded_token = unblinded_token;

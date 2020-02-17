@@ -3,18 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_NOTIFICATION_EVENT_TYPE_H_
-#define BAT_ADS_NOTIFICATION_EVENT_TYPE_H_
+#include "bat/ads/creative_ad_info.h"
 
 namespace ads {
 
-enum class NotificationEventType {
-  VIEWED,
-  CLICKED,
-  DISMISSED,
-  TIMEOUT
-};
+CreativeAdInfo::CreativeAdInfo() = default;
+
+CreativeAdInfo::CreativeAdInfo(
+    const CreativeAdInfo& info) = default;
+
+CreativeAdInfo::~CreativeAdInfo() = default;
 
 }  // namespace ads
-
-#endif  // BAT_ADS_NOTIFICATION_EVENT_TYPE_H_

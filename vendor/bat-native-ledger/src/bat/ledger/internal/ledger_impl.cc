@@ -16,7 +16,7 @@
 #include "base/task/post_task.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "bat/ads/issuers_info.h"
-#include "bat/ads/notification_info.h"
+#include "bat/ads/ad_notification_info.h"
 #include "bat/confirmations/confirmations.h"
 #include "bat/ledger/internal/media/media.h"
 #include "bat/ledger/internal/publisher/publisher.h"
@@ -1199,86 +1199,89 @@ void LedgerImpl::SetCatalogIssuers(const std::string& info) {
   bat_confirmations_->SetCatalogIssuers(std::move(issuers_info));
 }
 
-void LedgerImpl::ConfirmAd(const std::string& info) {
-  ads::NotificationInfo notification_info_ads;
-  if (notification_info_ads.FromJson(info) != ads::Result::SUCCESS)
+void LedgerImpl::ConfirmAdNotification(const std::string& info) {
+  ads::AdNotificationInfo notification_info_ads;
+  if (notification_info_ads.FromJson(info) != ads::Result::SUCCESS) {
     return;
+  }
 
-  auto notification_info = std::make_unique<confirmations::NotificationInfo>();
-  notification_info->id = notification_info_ads.id;
-  notification_info->parent_id = notification_info_ads.parent_id;
+  auto notification_info =
+      std::make_unique<confirmations::AdNotificationInfo>();
+  notification_info->uuid = notification_info_ads.uuid;
+  notification_info->parent_uuid = notification_info_ads.parent_uuid;
+  notification_info->creative_instance_id =
+      notification_info_ads.creative_instance_id;
   notification_info->creative_set_id = notification_info_ads.creative_set_id;
   notification_info->category = notification_info_ads.category;
-  notification_info->advertiser = notification_info_ads.advertiser;
-  notification_info->text = notification_info_ads.text;
-  notification_info->url = notification_info_ads.url;
-  notification_info->uuid = notification_info_ads.uuid;
+  notification_info->title = notification_info_ads.title;
+  notification_info->body = notification_info_ads.body;
+  notification_info->target_url = notification_info_ads.target_url;
 
-  switch (notification_info_ads.type.value()) {
-    case ads::ConfirmationType::UNKNOWN: {
-      notification_info->type = confirmations::ConfirmationType::UNKNOWN;
+  switch (notification_info_ads.confirmation_type.value()) {
+    case ads::ConfirmationType::kUnknown: {
+      notification_info->confirmation_type =
+          confirmations::ConfirmationType::kUnknown;
       break;
     }
 
-    case ads::ConfirmationType::CLICK: {
-      notification_info->type = confirmations::ConfirmationType::CLICK;
+    case ads::ConfirmationType::kClicked: {
+      notification_info->confirmation_type =
+          confirmations::ConfirmationType::kClicked;
       break;
     }
 
-    case ads::ConfirmationType::DISMISS: {
-      notification_info->type = confirmations::ConfirmationType::DISMISS;
+    case ads::ConfirmationType::kDismissed: {
+      notification_info->confirmation_type =
+          confirmations::ConfirmationType::kDismissed;
       break;
     }
 
-    case ads::ConfirmationType::VIEW: {
-      notification_info->type = confirmations::ConfirmationType::VIEW;
+    case ads::ConfirmationType::kViewed: {
+      notification_info->confirmation_type =
+          confirmations::ConfirmationType::kViewed;
       break;
     }
 
-    case ads::ConfirmationType::LANDED: {
-      notification_info->type = confirmations::ConfirmationType::LANDED;
+    case ads::ConfirmationType::kLanded: {
+      notification_info->confirmation_type =
+          confirmations::ConfirmationType::kLanded;
       break;
     }
 
-    case ads::ConfirmationType::FLAG: {
-      // Should never be reached as FLAG is handled by ConfirmAction, refactor
-      // code to abstract different ConfirmationTypes
-      NOTREACHED();
+    case ads::ConfirmationType::kFlagged: {
+      notification_info->confirmation_type =
+          confirmations::ConfirmationType::kFlagged;
       break;
     }
 
-    case ads::ConfirmationType::UPVOTE: {
-      // Should never be reached as UPVOTE is handled by ConfirmAction, refactor
-      // code to abstract different ConfirmationTypes
-      NOTREACHED();
+    case ads::ConfirmationType::kUpvoted: {
+      notification_info->confirmation_type =
+          confirmations::ConfirmationType::kUpvoted;
       break;
     }
 
-    case ads::ConfirmationType::DOWNVOTE: {
-      // Should never be reached as DOWNVOTE is handled by ConfirmAction,
-      // refactor code to abstract different ConfirmationTypes
-      NOTREACHED();
+    case ads::ConfirmationType::kDownvoted: {
+      notification_info->confirmation_type =
+          confirmations::ConfirmationType::kDownvoted;
       break;
     }
 
-    case ads::ConfirmationType::CONVERSION: {
-      // Should never be reached as CONVERSION is handled by ConfirmAction,
-      // refactor code to abstract different ConfirmationTypes
-      NOTREACHED();
+    case ads::ConfirmationType::kConversion: {
+      notification_info->confirmation_type =
+          confirmations::ConfirmationType::kConversion;
       break;
     }
   }
 
-  bat_confirmations_->ConfirmAd(std::move(notification_info));
+  bat_confirmations_->ConfirmAdNotification(std::move(notification_info));
 }
 
 void LedgerImpl::ConfirmAction(
-    const std::string& uuid,
+    const std::string& creative_instance_id,
     const std::string& creative_set_id,
-    const std::string& type) {
-  bat_confirmations_->ConfirmAction(uuid,
-                                    creative_set_id,
-                                    confirmations::ConfirmationType(type));
+    const std::string& confirmation_type) {
+  bat_confirmations_->ConfirmAction(creative_instance_id, creative_set_id,
+      confirmations::ConfirmationType(confirmation_type));
 }
 
 void LedgerImpl::GetTransactionHistory(

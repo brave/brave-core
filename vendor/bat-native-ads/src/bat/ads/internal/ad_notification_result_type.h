@@ -3,18 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/catalog_segment_info.h"
+#ifndef BAT_ADS_AD_NOTIFICATION_RESULT_TYPE_H_
+#define BAT_ADS_AD_NOTIFICATION_RESULT_TYPE_H_
 
 namespace ads {
 
-SegmentInfo::SegmentInfo() :
-    code(""),
-    name("") {}
-
-SegmentInfo::SegmentInfo(const SegmentInfo& info) :
-    code(info.code),
-    name(info.name) {}
-
-SegmentInfo::~SegmentInfo() {}
+enum class AdNotificationResultType {
+  kClicked,
+  kDismissed,
+  kTimedOut
+};
 
 }  // namespace ads
+
+#endif  // BAT_ADS_AD_NOTIFICATION_RESULT_TYPE_H_

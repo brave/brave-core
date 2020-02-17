@@ -18,7 +18,9 @@
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
+#include "bat/ads/ads.h"
 #include "bat/ads/ads_client.h"
+#include "bat/ads/mojom.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/background_helper.h"
 #include "brave/components/brave_ads/browser/notification_helper.h"
@@ -104,12 +106,12 @@ class AdsServiceImpl : public AdsService,
       OnGetAdsHistoryCallback callback) override;
 
   void ToggleAdThumbUp(
-      const std::string& id,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const int action,
       OnToggleAdThumbUpCallback callback) override;
   void ToggleAdThumbDown(
-      const std::string& id,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const int action,
       OnToggleAdThumbDownCallback callback) override;
@@ -122,12 +124,12 @@ class AdsServiceImpl : public AdsService,
       const int action,
       OnToggleAdOptOutActionCallback callback) override;
   void ToggleSaveAd(
-      const std::string& id,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const bool saved,
       OnToggleSaveAdCallback callback) override;
   void ToggleFlagAd(
-      const std::string& id,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const bool flagged,
       OnToggleFlagAdCallback callback) override;
@@ -186,21 +188,21 @@ class AdsServiceImpl : public AdsService,
 
   void OnShow(
       Profile* profile,
-      const std::string& id);
+      const std::string& uuid);
   void OnClose(
       Profile* profile,
       const GURL& origin,
-      const std::string& id,
+      const std::string& uuid,
       const bool by_user,
       base::OnceClosure completed_closure);
 
-  void MaybeViewAd();
-  void ViewAd(
-      const std::string& id);
-  void OnViewAd(
+  void MaybeViewAdNotification();
+  void ViewAdNotification(
+      const std::string& uuid);
+  void OnViewAdNotification(
       const std::string& json);
-  void RetryViewingAdWithId(
-      const std::string& id);
+  void RetryViewingAdNotification(
+      const std::string& uuid);
   void ResetTheWholeState(const base::Callback<void(bool)>& callback) override;
 
   void SetAdsServiceForNotificationHandler();
@@ -211,22 +213,22 @@ class AdsServiceImpl : public AdsService,
 
   void NotificationTimedOut(
       const uint32_t timer_id,
-      const std::string& id);
+      const std::string& uuid);
 
   void OnURLLoaderComplete(
       network::SimpleURLLoader* loader,
       ads::URLRequestCallback callback,
       const std::unique_ptr<std::string> response_body);
 
-  void OnGetAdsForCategories(
-      const ads::OnGetAdsCallback& callback,
+  void OnGetCreativeAdNotifications(
+      const ads::OnGetCreativeAdNotificationsCallback& callback,
       const std::vector<std::string>& categories,
-      const std::vector<ads::AdInfo>& ads);
+      const ads::CreativeAdNotificationList& ads);
 
   void OnGetAdConversions(
       const ads::OnGetAdConversionsCallback& callback,
       const std::string& url,
-      const std::vector<ads::AdConversionTrackingInfo>& ad_conversions);
+      const ads::AdConversionList& ad_conversions);
 
   void OnGetAdsHistory(
       OnGetAdsHistoryCallback callback,
@@ -237,11 +239,11 @@ class AdsServiceImpl : public AdsService,
 
   void OnToggleAdThumbUp(
       OnToggleAdThumbUpCallback callback,
-      const std::string& id,
+      const std::string& creative_instance_id,
       const int action);
   void OnToggleAdThumbDown(
       const OnToggleAdThumbDownCallback callback,
-      const std::string& id,
+      const std::string& creative_instance_id,
       const int action);
   void OnToggleAdOptInAction(
       OnToggleAdOptInActionCallback callback,
@@ -253,11 +255,11 @@ class AdsServiceImpl : public AdsService,
       const int action);
   void OnToggleSaveAd(
       OnToggleSaveAdCallback callback,
-      const std::string& id,
+      const std::string& creative_instance_id,
       const bool saved);
   void OnToggleFlagAd(
       OnToggleSaveAdCallback callback,
-      const std::string& id,
+      const std::string& creative_instance_id,
       const bool flagged);
 
   void OnSaveBundleState(
@@ -362,7 +364,7 @@ class AdsServiceImpl : public AdsService,
   void GetClientInfo(
       ads::ClientInfo* info) const override;
 
-  const std::string GetLocale() const override;
+  std::string GetLocale() const override;
 
   bool IsNetworkConnectionAvailable() const override;
 
@@ -371,26 +373,26 @@ class AdsServiceImpl : public AdsService,
 
   bool IsForeground() const override;
 
-  const std::vector<std::string> GetUserModelLanguages() const override;
+  std::vector<std::string> GetUserModelLanguages() const override;
   void LoadUserModelForLanguage(
       const std::string& language,
       ads::OnLoadCallback callback) const override;
 
   void ShowNotification(
-      std::unique_ptr<ads::NotificationInfo> info) override;
+      std::unique_ptr<ads::AdNotificationInfo> info) override;
   bool ShouldShowNotifications() override;
   void CloseNotification(
-      const std::string& id) override;
+      const std::string& uuid) override;
 
   void SetCatalogIssuers(
       std::unique_ptr<ads::IssuersInfo> info) override;
 
-  void ConfirmAd(
-      std::unique_ptr<ads::NotificationInfo> info) override;
+  void ConfirmAdNotification(
+      std::unique_ptr<ads::AdNotificationInfo> info) override;
   void ConfirmAction(
-      const std::string& uuid,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
-      const ads::ConfirmationType& type) override;
+      const ads::ConfirmationType& confirmation_type) override;
 
   uint32_t SetTimer(
       const uint64_t time_offset) override;
@@ -418,7 +420,7 @@ class AdsServiceImpl : public AdsService,
       const std::string& name,
       ads::OnResetCallback callback) override;
 
-  const std::string LoadJsonSchema(
+  std::string LoadJsonSchema(
       const std::string& name) override;
 
   void LoadSampleBundle(
@@ -428,9 +430,9 @@ class AdsServiceImpl : public AdsService,
       std::unique_ptr<ads::BundleState> bundle_state,
       ads::OnSaveCallback callback) override;
 
-  void GetAds(
+  void GetCreativeAdNotifications(
       const std::vector<std::string>& categories,
-      ads::OnGetAdsCallback callback) override;
+      ads::OnGetCreativeAdNotificationsCallback callback) override;
 
   void GetAdConversions(
       const std::string& url,
@@ -468,7 +470,7 @@ class AdsServiceImpl : public AdsService,
   std::map<uint32_t, std::unique_ptr<base::OneShotTimer>> timers_;
   uint32_t next_timer_id_;
 
-  std::string retry_viewing_ad_with_id_;
+  std::string retry_viewing_ad_notification_with_uuid_;
 
   uint32_t remove_onboarding_timer_id_;
 

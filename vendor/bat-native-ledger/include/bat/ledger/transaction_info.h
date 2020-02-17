@@ -15,13 +15,16 @@ namespace ledger {
 
 LEDGER_EXPORT struct TransactionInfo {
   TransactionInfo();
-  explicit TransactionInfo(const TransactionInfo& info);
+  TransactionInfo(
+        const TransactionInfo& info);
   ~TransactionInfo();
 
-  uint64_t timestamp_in_seconds;
-  double estimated_redemption_value;
+  uint64_t timestamp_in_seconds = 0;
+  double estimated_redemption_value = 0.0;
   std::string confirmation_type;
 };
+
+using TransactionList = std::vector<TransactionInfo>;
 
 }  // namespace ledger
 

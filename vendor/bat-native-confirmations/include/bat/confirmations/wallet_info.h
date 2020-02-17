@@ -14,12 +14,14 @@ namespace confirmations {
 
 struct CONFIRMATIONS_EXPORT WalletInfo {
   WalletInfo();
-  WalletInfo(const WalletInfo& info);
+  WalletInfo(
+      const WalletInfo& info);
   ~WalletInfo();
 
   bool IsValid() const;
 
-  bool operator==(const WalletInfo& info) const;
+  bool operator==(
+      const WalletInfo& info) const;
 
   std::string payment_id;
   std::string private_key;

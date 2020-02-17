@@ -20,19 +20,19 @@ namespace confirmations {
 #define BAT_LEDGER_STAGING_SERVER "https://ledger-staging.mercury.basicattentiontoken.org"  // NOLINT
 #define BAT_LEDGER_DEVELOPMENT_SERVER "https://ledger.rewards.brave.software"  // NOLINT
 
-static const int kNextPaymentDay = 5;
+const int kNextPaymentDay = 5;
 
-static const int kMinimumUnblindedTokens = 20;
-static const int kMaximumUnblindedTokens = 50;
+const int kMinimumUnblindedTokens = 20;
+const int kMaximumUnblindedTokens = 50;
 
-static const uint64_t kRetryGettingRefillSignedTokensAfterSeconds = 15;
+const uint64_t kRetryGettingRefillSignedTokensAfterSeconds = 15;
 
-static const uint64_t kNextTokenRedemptionAfterSeconds =
+const uint64_t kNextTokenRedemptionAfterSeconds =
     24 * base::Time::kSecondsPerHour;
-static const uint64_t kDebugNextTokenRedemptionAfterSeconds =
+const uint64_t kDebugNextTokenRedemptionAfterSeconds =
     25 * base::Time::kSecondsPerMinute;
 
-static const uint64_t kRetryFailedConfirmationsAfterSeconds =
+const uint64_t kRetryFailedConfirmationsAfterSeconds =
     5 * base::Time::kSecondsPerMinute;
 
 }  // namespace confirmations

@@ -3,26 +3,26 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/ad_conversion_tracking_info.h"
+#include "bat/ads/ad_conversion_info.h"
 
 #include "bat/ads/internal/json_helper.h"
 
 namespace ads {
 
-AdConversionTrackingInfo::AdConversionTrackingInfo() = default;
+AdConversionInfo::AdConversionInfo() = default;
 
-AdConversionTrackingInfo::~AdConversionTrackingInfo() = default;
+AdConversionInfo::AdConversionInfo(
+    const AdConversionInfo& info) = default;
 
-AdConversionTrackingInfo::AdConversionTrackingInfo(
-    const AdConversionTrackingInfo& info) = default;
+AdConversionInfo::~AdConversionInfo() = default;
 
-std::string AdConversionTrackingInfo::ToJson() const {
+std::string AdConversionInfo::ToJson() const {
   std::string json;
   SaveToJson(*this, &json);
   return json;
 }
 
-Result AdConversionTrackingInfo::FromJson(
+Result AdConversionInfo::FromJson(
     const std::string& json,
     std::string* error_description) {
   rapidjson::Document document;
@@ -55,7 +55,7 @@ Result AdConversionTrackingInfo::FromJson(
   return SUCCESS;
 }
 
-void SaveToJson(JsonWriter* writer, const AdConversionTrackingInfo& info) {
+void SaveToJson(JsonWriter* writer, const AdConversionInfo& info) {
   writer->StartObject();
 
   writer->String("creative_set_id");

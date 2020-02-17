@@ -7,6 +7,7 @@
 #define BAT_CONFIRMATIONS_INTERNAL_TOKEN_INFO_H_
 
 #include <string>
+#include <vector>
 
 #include "wrapper.hpp"  // NOLINT
 
@@ -16,12 +17,15 @@ namespace confirmations {
 
 struct TokenInfo {
   TokenInfo();
-  TokenInfo(const TokenInfo& info);
+  TokenInfo(
+      const TokenInfo& info);
   ~TokenInfo();
 
   UnblindedToken unblinded_token;
   std::string public_key;
 };
+
+using TokenList = std::vector<TokenInfo>;
 
 }  // namespace confirmations
 

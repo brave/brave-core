@@ -467,14 +467,17 @@ void BatLedgerImpl::SetCatalogIssuers(const std::string& info) {
   ledger_->SetCatalogIssuers(info);
 }
 
-void BatLedgerImpl::ConfirmAd(const std::string& info) {
-  ledger_->ConfirmAd(info);
+void BatLedgerImpl::ConfirmAdNotification(
+    const std::string& json) {
+  ledger_->ConfirmAdNotification(json);
 }
 
-void BatLedgerImpl::ConfirmAction(const std::string& uuid,
+void BatLedgerImpl::ConfirmAction(
+    const std::string& creative_instance_id,
     const std::string& creative_set_id,
-    const std::string& type) {
-  ledger_->ConfirmAction(uuid, creative_set_id, type);
+    const std::string& confirmation_type) {
+  ledger_->ConfirmAction(creative_instance_id, creative_set_id,
+      confirmation_type);
 }
 
 // static

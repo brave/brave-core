@@ -12,18 +12,18 @@ namespace confirmations {
 
 class ConfirmationType {
  public:
-  enum Value : int {
+  enum Value {
     // When adding new confirmation types they must be added with highest
     // priority at the top so that ads history can be filtered
-    UNKNOWN,
-    CLICK,
-    DISMISS,
-    VIEW,
-    LANDED,
-    FLAG,
-    UPVOTE,
-    DOWNVOTE,
-    CONVERSION
+    kUnknown,
+    kClicked,
+    kDismissed,
+    kViewed,
+    kLanded,
+    kFlagged,
+    kUpvoted,
+    kDownvoted,
+    kConversion
   };
 
   ConfirmationType() = default;

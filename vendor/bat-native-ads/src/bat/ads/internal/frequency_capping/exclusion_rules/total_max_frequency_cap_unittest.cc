@@ -17,7 +17,7 @@
 #include "bat/ads/internal/client_mock.h"
 #include "bat/ads/internal/ads_client_mock.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/ad_info.h"
+#include "bat/ads/creative_ad_notification_info.h"
 
 // npm run test -- brave_unit_tests --filter=Ads*
 
@@ -81,16 +81,17 @@ class BraveAdsTotalMaxFrequencyCapTest : public ::testing::Test {
   std::unique_ptr<ClientMock> client_mock_;
   std::unique_ptr<FrequencyCapping> frequency_capping_;
   std::unique_ptr<TotalMaxFrequencyCap> exclusion_rule_;
-  AdInfo ad_info_;
+  CreativeAdNotificationInfo ad_notification_info_;
 };
 
 TEST_F(BraveAdsTotalMaxFrequencyCapTest, AdAllowedWithNoAdHistory) {
   // Arrange
-  ad_info_.creative_set_id = kTestCreativeSetIds.at(0);
-  ad_info_.total_max = 2;
+  ad_notification_info_.creative_set_id = kTestCreativeSetIds.at(0);
+  ad_notification_info_.total_max = 2;
 
   // Act
-  const bool is_ad_excluded = exclusion_rule_->ShouldExclude(ad_info_);
+  const bool is_ad_excluded =
+      exclusion_rule_->ShouldExclude(ad_notification_info_);
 
   // Assert
   EXPECT_FALSE(is_ad_excluded);
@@ -98,14 +99,15 @@ TEST_F(BraveAdsTotalMaxFrequencyCapTest, AdAllowedWithNoAdHistory) {
 
 TEST_F(BraveAdsTotalMaxFrequencyCapTest, AdAllowedWithMatchingAds) {
   // Arrange
-  ad_info_.creative_set_id = kTestCreativeSetIds.at(0);
-  ad_info_.total_max = 2;
+  ad_notification_info_.creative_set_id = kTestCreativeSetIds.at(0);
+  ad_notification_info_.total_max = 2;
 
-  client_mock_->GeneratePastCreativeSetHistoryFromNow(ad_info_.creative_set_id,
-      base::Time::kSecondsPerHour, 1);
+  client_mock_->GeneratePastCreativeSetHistoryFromNow(
+      ad_notification_info_.creative_set_id, base::Time::kSecondsPerHour, 1);
 
   // Act
-  const bool is_ad_excluded = exclusion_rule_->ShouldExclude(ad_info_);
+  const bool is_ad_excluded =
+      exclusion_rule_->ShouldExclude(ad_notification_info_);
 
   // Assert
   EXPECT_FALSE(is_ad_excluded);
@@ -116,11 +118,12 @@ TEST_F(BraveAdsTotalMaxFrequencyCapTest, AdAllowedWithNonMatchingAds) {
   client_mock_->GeneratePastCreativeSetHistoryFromNow(kTestCreativeSetIds.at(0),
       base::Time::kSecondsPerHour, 5);
 
-  ad_info_.creative_set_id = kTestCreativeSetIds.at(1);
-  ad_info_.total_max = 2;
+  ad_notification_info_.creative_set_id = kTestCreativeSetIds.at(1);
+  ad_notification_info_.total_max = 2;
 
   // Act
-  const bool is_ad_excluded = exclusion_rule_->ShouldExclude(ad_info_);
+  const bool is_ad_excluded =
+      exclusion_rule_->ShouldExclude(ad_notification_info_);
 
   // Assert
   EXPECT_FALSE(is_ad_excluded);
@@ -128,14 +131,15 @@ TEST_F(BraveAdsTotalMaxFrequencyCapTest, AdAllowedWithNonMatchingAds) {
 
 TEST_F(BraveAdsTotalMaxFrequencyCapTest, AdExcludedWhenNoneAllowed) {
   // Arrange
-  ad_info_.creative_set_id = kTestCreativeSetIds[0];
-  ad_info_.total_max = 0;
+  ad_notification_info_.creative_set_id = kTestCreativeSetIds[0];
+  ad_notification_info_.total_max = 0;
 
-  client_mock_->GeneratePastCreativeSetHistoryFromNow(ad_info_.creative_set_id,
-      base::Time::kSecondsPerHour, 5);
+  client_mock_->GeneratePastCreativeSetHistoryFromNow(
+      ad_notification_info_.creative_set_id, base::Time::kSecondsPerHour, 5);
 
   // Act
-  const bool is_ad_excluded = exclusion_rule_->ShouldExclude(ad_info_);
+  const bool is_ad_excluded =
+      exclusion_rule_->ShouldExclude(ad_notification_info_);
 
   // Assert
   EXPECT_TRUE(is_ad_excluded);
@@ -144,14 +148,15 @@ TEST_F(BraveAdsTotalMaxFrequencyCapTest, AdExcludedWhenNoneAllowed) {
 
 TEST_F(BraveAdsTotalMaxFrequencyCapTest, AdExcludedWhenMaximumReached) {
   // Arrange
-  ad_info_.creative_set_id = kTestCreativeSetIds.at(0);
-  ad_info_.total_max = 5;
+  ad_notification_info_.creative_set_id = kTestCreativeSetIds.at(0);
+  ad_notification_info_.total_max = 5;
 
-  client_mock_->GeneratePastCreativeSetHistoryFromNow(ad_info_.creative_set_id,
-      base::Time::kSecondsPerHour, 5);
+  client_mock_->GeneratePastCreativeSetHistoryFromNow(
+      ad_notification_info_.creative_set_id, base::Time::kSecondsPerHour, 5);
 
   // Act
-  const bool is_ad_excluded = exclusion_rule_->ShouldExclude(ad_info_);
+  const bool is_ad_excluded =
+      exclusion_rule_->ShouldExclude(ad_notification_info_);
 
   // Assert
   EXPECT_TRUE(is_ad_excluded);

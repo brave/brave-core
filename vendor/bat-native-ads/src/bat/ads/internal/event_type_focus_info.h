@@ -6,16 +6,13 @@
 #ifndef BAT_ADS_INTERNAL_EVENT_TYPE_FOCUS_INFO_H_
 #define BAT_ADS_INTERNAL_EVENT_TYPE_FOCUS_INFO_H_
 
+#include <stdint.h>
 #include <string>
 
 namespace ads {
 
 struct FocusInfo {
-  FocusInfo();
-  explicit FocusInfo(const FocusInfo& info);
-  ~FocusInfo();
-
-  int32_t tab_id;
+  int32_t tab_id = -1;
 };
 
 }  // namespace ads

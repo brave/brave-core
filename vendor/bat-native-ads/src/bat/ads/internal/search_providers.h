@@ -13,7 +13,7 @@
 
 namespace ads {
 
-static const std::vector<SearchProviderInfo> _search_providers = {
+const std::vector<SearchProviderInfo> _search_providers = {
   SearchProviderInfo(
       "Amazon",
       "https://amazon.com",
@@ -126,7 +126,8 @@ class SearchProviders {
   SearchProviders();
   ~SearchProviders();
 
-  static bool IsSearchEngine(const std::string& url);
+  static bool IsSearchEngine(
+      const std::string& url);
 };
 
 }  // namespace ads

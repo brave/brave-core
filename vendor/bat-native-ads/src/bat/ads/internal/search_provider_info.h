@@ -18,13 +18,14 @@ struct SearchProviderInfo {
       const std::string& hostname,
       const std::string& search_template,
       bool is_always_classed_as_a_search);
-  SearchProviderInfo(const SearchProviderInfo& info);
+  SearchProviderInfo(
+      const SearchProviderInfo& info);
   ~SearchProviderInfo();
 
   std::string name;
   std::string hostname;
   std::string search_template;
-  bool is_always_classed_as_a_search;
+  bool is_always_classed_as_a_search = false;
 };
 
 }  // namespace ads

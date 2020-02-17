@@ -7,17 +7,16 @@
 #define BAT_ADS_INTERNAL_CATALOG_OS_INFO_H_
 
 #include <string>
+#include <vector>
 
 namespace ads {
 
-struct OsInfo {
-  OsInfo();
-  OsInfo(const OsInfo& info);
-  ~OsInfo();
-
+struct CatalogOsInfo {
   std::string code;
   std::string name;
 };
+
+using CatalogOsList = std::vector<CatalogOsInfo>;
 
 }  // namespace ads
 

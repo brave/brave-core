@@ -8,12 +8,10 @@
 namespace confirmations {
 
 TokenInfo::TokenInfo() :
-    unblinded_token(nullptr),
-    public_key("") {}
+    unblinded_token(nullptr) {}
 
-TokenInfo::TokenInfo(const TokenInfo& info) :
-    unblinded_token(info.unblinded_token),
-    public_key(info.public_key) {}
+TokenInfo::TokenInfo(
+    const TokenInfo& info) = default;
 
 TokenInfo::~TokenInfo() = default;
 

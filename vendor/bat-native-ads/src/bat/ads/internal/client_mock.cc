@@ -15,14 +15,14 @@
 namespace ads {
 
 void ClientMock::GeneratePastAdHistoryFromNow(
-    const std::string uuid,
+    const std::string& creative_instance_id,
     const int64_t time_offset_per_ad_in_seconds,
     const uint8_t count) {
   auto now_in_seconds = Time::NowInSeconds();
 
   auto ad_history = std::make_unique<AdHistory>();
   ad_history->uuid = base::GenerateGUID();
-  ad_history->ad_content.uuid = uuid;
+  ad_history->ad_content.creative_instance_id = creative_instance_id;
 
   for (uint8_t i = 0; i < count; i++) {
     now_in_seconds -= time_offset_per_ad_in_seconds;
@@ -41,12 +41,12 @@ void ClientMock::GeneratePastCreativeSetHistoryFromNow(
   for (uint8_t i = 0; i < count; i++) {
     now_in_seconds -= time_offset_per_ad_in_seconds;
 
-    AppendTimestampToCreativeSetHistoryForUuid(creative_set_id, now_in_seconds);
+    AppendTimestampToCreativeSetHistory(creative_set_id, now_in_seconds);
   }
 }
 
 void ClientMock::GeneratePastCampaignHistoryFromNow(
-    const std::string campaign_id,
+    const std::string& campaign_id,
     const int64_t time_offset_per_ad_in_seconds,
     const uint8_t count) {
   auto now_in_seconds = Time::NowInSeconds();
@@ -54,7 +54,7 @@ void ClientMock::GeneratePastCampaignHistoryFromNow(
   for (uint8_t i = 0; i < count; i++) {
     now_in_seconds -= time_offset_per_ad_in_seconds;
 
-    AppendTimestampToCampaignHistoryForUuid(campaign_id, now_in_seconds);
+    AppendTimestampToCampaignHistory(campaign_id, now_in_seconds);
   }
 }
 

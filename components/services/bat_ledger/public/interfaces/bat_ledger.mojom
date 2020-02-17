@@ -97,10 +97,10 @@ interface BatLedger {
 
   HasSufficientBalanceToReconcile() => (bool sufficient);
 
-  SetCatalogIssuers(string info);
-  ConfirmAd(string info);
-  ConfirmAction(string uuid, string creative_set_id, string type);
-  GetTransactionHistory() => (string transactions);
+  SetCatalogIssuers(string json);
+  ConfirmAdNotification(string json);
+  ConfirmAction(string creative_instance_id, string creative_set_id, string confirmation_type);
+  GetTransactionHistory() => (string json);
   GetRewardsInternalsInfo() => (ledger.mojom.RewardsInternalsInfo info);
 
   SaveRecurringTip(ledger.mojom.RecurringTip info) => (ledger.mojom.Result result);

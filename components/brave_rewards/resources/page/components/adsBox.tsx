@@ -165,12 +165,12 @@ class AdsBox extends React.Component<Props, State> {
     })
   }
 
-  onThumbUpPress = (uuid: string, creativeSetId: string, action: number) => {
-    this.props.actions.toggleAdThumbUp(uuid, creativeSetId, action)
+  onThumbUpPress = (creativeInstanceId: string, creativeSetId: string, action: number) => {
+    this.props.actions.toggleAdThumbUp(creativeInstanceId, creativeSetId, action)
   }
 
-  onThumbDownPress = (uuid: string, creativeSetId: string, action: number) => {
-    this.props.actions.toggleAdThumbDown(uuid, creativeSetId, action)
+  onThumbDownPress = (creativeInstanceId: string, creativeSetId: string, action: number) => {
+    this.props.actions.toggleAdThumbDown(creativeInstanceId, creativeSetId, action)
   }
 
   onOptInAction = (category: string, action: number) => {
@@ -181,12 +181,12 @@ class AdsBox extends React.Component<Props, State> {
     this.props.actions.toggleAdOptOutAction(category, action)
   }
 
-  onMenuSave = (uuid: string, creativeSetId: string, saved: boolean) => {
-    this.props.actions.toggleSaveAd(uuid, creativeSetId, saved)
+  onMenuSave = (creativeInstanceId: string, creativeSetId: string, saved: boolean) => {
+    this.props.actions.toggleSaveAd(creativeInstanceId, creativeSetId, saved)
   }
 
-  onMenuFlag = (uuid: string, creativeSetId: string, flagged: boolean) => {
-    this.props.actions.toggleFlagAd(uuid, creativeSetId, flagged)
+  onMenuFlag = (creativeInstanceId: string, creativeSetId: string, flagged: boolean) => {
+    this.props.actions.toggleFlagAd(creativeInstanceId, creativeSetId, flagged)
   }
 
   getGroupedAdsHistory = (adsHistory: Rewards.AdsHistory[], savedOnly: boolean) => {
@@ -195,7 +195,7 @@ class AdsBox extends React.Component<Props, State> {
     for (let i = 0; i < adsHistory.length; i++) {
       const adHistory = adsHistory[i]
 
-      const id = adHistory.id
+      const uuid = adHistory.uuid
 
       let flooredDate = new Date(adHistory.timestampInMilliseconds)
       flooredDate.setHours(0, 0, 0, 0)
@@ -207,7 +207,7 @@ class AdsBox extends React.Component<Props, State> {
         const index = groupedAdsHistory.findIndex(item => item.date === flooredDateString)
         if (index === -1) {
           groupedAdsHistory.push({
-            id: id,
+            uuid: uuid,
             date: flooredDateString,
             adDetailRows: [adDetailRow]
           })
@@ -227,7 +227,7 @@ class AdsBox extends React.Component<Props, State> {
     }
 
     const adContent: Rewards.AdContent = {
-      uuid: adHistory.adContent.uuid,
+      creativeInstanceId: adHistory.adContent.creativeInstanceId,
       creativeSetId: adHistory.adContent.creativeSetId,
       brand: adHistory.adContent.brand,
       brandInfo: brandInfo,
@@ -239,19 +239,19 @@ class AdsBox extends React.Component<Props, State> {
       savedAd: adHistory.adContent.savedAd,
       flaggedAd: adHistory.adContent.flaggedAd,
       onThumbUpPress: () =>
-        this.onThumbUpPress(adHistory.adContent.uuid,
+        this.onThumbUpPress(adHistory.adContent.creativeInstanceId,
                             adHistory.adContent.creativeSetId,
                             adHistory.adContent.likeAction),
       onThumbDownPress: () =>
-        this.onThumbDownPress(adHistory.adContent.uuid,
+        this.onThumbDownPress(adHistory.adContent.creativeInstanceId,
                               adHistory.adContent.creativeSetId,
                               adHistory.adContent.likeAction),
       onMenuSave: () =>
-        this.onMenuSave(adHistory.adContent.uuid,
+        this.onMenuSave(adHistory.adContent.creativeInstanceId,
                         adHistory.adContent.creativeSetId,
                         adHistory.adContent.savedAd),
       onMenuFlag: () =>
-        this.onMenuFlag(adHistory.adContent.uuid,
+        this.onMenuFlag(adHistory.adContent.creativeInstanceId,
                         adHistory.adContent.creativeSetId,
                         adHistory.adContent.flaggedAd)
     }
@@ -268,7 +268,7 @@ class AdsBox extends React.Component<Props, State> {
     }
 
     return {
-      id: adHistory.id,
+      uuid: adHistory.uuid,
       adContent: adContent,
       categoryContent: categoryContent
     }

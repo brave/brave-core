@@ -9,17 +9,14 @@
 
 namespace ads {
 
-IssuersInfo::IssuersInfo() :
-    public_key(""),
-    issuers({}) {}
+IssuersInfo::IssuersInfo() = default;
 
-IssuersInfo::IssuersInfo(const IssuersInfo& info) :
-    public_key(info.public_key),
-    issuers(info.issuers) {}
+IssuersInfo::IssuersInfo(
+    const IssuersInfo& info) = default;
 
 IssuersInfo::~IssuersInfo() = default;
 
-const std::string IssuersInfo::ToJson() const {
+std::string IssuersInfo::ToJson() const {
   std::string json;
   SaveToJson(*this, &json);
   return json;

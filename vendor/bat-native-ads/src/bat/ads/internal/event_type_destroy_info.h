@@ -6,16 +6,13 @@
 #ifndef BAT_ADS_INTERNAL_EVENT_TYPE_DESTROY_INFO_H_
 #define BAT_ADS_INTERNAL_EVENT_TYPE_DESTROY_INFO_H_
 
+#include <stdint.h>
 #include <string>
 
 namespace ads {
 
 struct DestroyInfo {
-  DestroyInfo();
-  explicit DestroyInfo(const DestroyInfo& info);
-  ~DestroyInfo();
-
-  int32_t tab_id;
+  int32_t tab_id = -1;
 };
 
 }  // namespace ads

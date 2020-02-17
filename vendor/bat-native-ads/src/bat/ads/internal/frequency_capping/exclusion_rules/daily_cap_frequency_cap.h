@@ -11,7 +11,7 @@
 #include "bat/ads/internal/frequency_capping/exclusion_rule.h"
 
 namespace ads {
-struct AdInfo;
+struct CreativeAdInfo;
 class FrequencyCapping;
 
 class DailyCapFrequencyCap : public ExclusionRule {
@@ -22,9 +22,9 @@ class DailyCapFrequencyCap : public ExclusionRule {
   ~DailyCapFrequencyCap() override;
 
   bool ShouldExclude(
-      const AdInfo& ad) override;
+      const CreativeAdInfo& ad) override;
 
-  const std::string GetLastMessage() const override;
+  std::string GetLastMessage() const override;
 
  private:
   const FrequencyCapping* const frequency_capping_;  // NOT OWNED
@@ -32,7 +32,7 @@ class DailyCapFrequencyCap : public ExclusionRule {
   std::string last_message_;
 
   bool DoesAdRespectDailyCampaignCap(
-      const AdInfo& ad) const;
+      const CreativeAdInfo& ad) const;
 };
 
 }  // namespace ads

@@ -3,18 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/issuer_info.h"
+#include "bat/ads/creative_ad_info.h"
 
 namespace ads {
 
-IssuerInfo::IssuerInfo() :
-    name(""),
-    public_key("") {}
+CreativeAdInfo::CreativeAdInfo() = default;
 
-IssuerInfo::IssuerInfo(const IssuerInfo& info) :
-    name(info.name),
-    public_key(info.public_key) {}
+CreativeAdInfo::CreativeAdInfo(
+    const CreativeAdInfo& info) = default;
 
-IssuerInfo::~IssuerInfo() = default;
+CreativeAdInfo::~CreativeAdInfo() = default;
 
 }  // namespace ads

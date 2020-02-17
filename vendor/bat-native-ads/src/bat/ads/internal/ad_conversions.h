@@ -12,7 +12,7 @@
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/client.h"
-#include "bat/ads/internal/ad_conversion_info.h"
+#include "bat/ads/internal/ad_conversion_queue_item_info.h"
 
 #include "base/values.h"
 
@@ -21,22 +21,22 @@ namespace ads {
 class AdsImpl;
 class Client;
 
-class AdConversionTracking {
+class AdConversions {
  public:
-  AdConversionTracking(
+  AdConversions(
       AdsImpl* ads,
       AdsClient* ads_client,
       Client* client);
-  ~AdConversionTracking();
+  ~AdConversions();
 
   void Initialize(
       InitializeCallback callback);
 
   void ProcessQueue();
 
-  void Add(
-      const std::string& creative_set_id,
-      const std::string& uuid);
+  void AddToQueue(
+      const std::string& creative_instance_id,
+      const std::string& creative_set_id);
 
   bool OnTimer(
       const uint32_t timer_id);
@@ -45,17 +45,19 @@ class AdConversionTracking {
   bool is_initialized_;
   InitializeCallback callback_;
 
-  std::vector<AdConversionInfo> queue_;
+  AdConversionQueueItemList queue_;
+
+  uint32_t timer_id_;
 
   void ProcessQueueItem(
-      const AdConversionInfo& info);
+      const AdConversionQueueItemInfo& info);
 
   void StartTimer(
-      const AdConversionInfo& queue_item);
+      const AdConversionQueueItemInfo& info);
   void StopTimer();
 
   bool Remove(
-      const std::string& uuid);
+      const std::string& creative_instance_id);
 
   void SaveState();
   void OnStateSaved(
@@ -71,13 +73,11 @@ class AdConversionTracking {
 
   bool FromJson(
       const std::string& json);
-  std::vector<AdConversionInfo> GetAdConversionsFromList(
+  AdConversionQueueItemList GetFromList(
       const base::ListValue* list) const;
-  bool GetAdConversionFromDictionary(
+  bool GetFromDictionary(
       const base::DictionaryValue* dictionary,
-      AdConversionInfo* info) const;
-
-  uint32_t timer_id_;
+      AdConversionQueueItemInfo* info) const;
 
   AdsImpl* ads_;  // NOT OWNED
   AdsClient* ads_client_;  // NOT OWNED

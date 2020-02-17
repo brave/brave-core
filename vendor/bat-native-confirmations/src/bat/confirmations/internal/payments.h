@@ -41,8 +41,8 @@ class Payments {
   uint64_t GetTransactionCountForMonth(const base::Time& time) const;
 
  private:
-  std::vector<PaymentInfo> payments_;
-  std::vector<PaymentInfo> GetPaymentsFromList(base::ListValue* list) const;
+  PaymentList payments_;
+  PaymentList GetPaymentsFromList(base::ListValue* list) const;
   bool GetBalanceFromDictionary(
       base::DictionaryValue* dictionary,
       double* balance) const;

@@ -15,9 +15,8 @@
 #include "bat/ads/ads_client.h"
 #include "bat/ads/category_content.h"
 #include "bat/ads/export.h"
-#include "bat/ads/notification_event_type.h"
-#include "bat/ads/notification_info.h"
-#include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/mojom.h"
+#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads_history.h"
 
 namespace ads {
@@ -183,18 +182,18 @@ class ADS_EXPORT Ads {
   virtual void OnTabClosed(
       const int32_t tab_id) = 0;
 
-  // Should be called to get the notification specified by |id|. Returns |true|
-  // and a |notification| if the notification exists; otherwise, should return
+  // Should be called to get the notification specified by |uuid|. Returns
+  // |true| and |info| if the notification exists; otherwise, should return
   // |false|
-  virtual bool GetNotificationForId(
-      const std::string& id,
-      NotificationInfo* notification) = 0;
+  virtual bool GetAdNotification(
+      const std::string& uuid,
+      AdNotificationInfo* info) = 0;
 
   // Should be called when a user implicitly views, clicks or dismisses a
   // notification; or a notification times out
-  virtual void OnNotificationEvent(
-      const std::string& id,
-      const NotificationEventType type) = 0;
+  virtual void OnAdNotificationEvent(
+      const std::string& uuid,
+      const AdNotificationEventType event_type) = 0;
 
   // Should be called to remove all cached history. The callback takes one
   // argument — |Result| should be set to |SUCCESS| if successful; otherwise,
@@ -212,14 +211,14 @@ class ADS_EXPORT Ads {
   // Should be called to indicate interest in the specified ad. This is a
   // toggle, so calling it again returns the setting to the neutral state
   virtual AdContent::LikeAction ToggleAdThumbUp(
-      const std::string& id,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const AdContent::LikeAction& action) = 0;
 
   // Should be called to indicate a lack of interest in the specified ad. This
   // is a toggle, so calling it again returns the setting to the neutral state
   virtual AdContent::LikeAction ToggleAdThumbDown(
-      const std::string& id,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const AdContent::LikeAction& action) = 0;
 
@@ -241,7 +240,7 @@ class ADS_EXPORT Ads {
   // calling it again removes the ad from the saved list. Returns |true| if the
   // ad was saved; otherwise, should return |false|
   virtual bool ToggleSaveAd(
-      const std::string& id,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const bool saved) = 0;
 
@@ -249,7 +248,7 @@ class ADS_EXPORT Ads {
   // calling it again unflags the ad. Returns |true| if the ad was flagged;
   // otherwise returns |false|
   virtual bool ToggleFlagAd(
-      const std::string& id,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const bool flagged) = 0;
 
