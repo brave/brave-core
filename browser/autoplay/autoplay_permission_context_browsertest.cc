@@ -186,7 +186,8 @@ class AutoplayWhitelistServiceTest : public BaseLocalDataFilesBrowserTest {
 };
 
 // Autoplay blocks by default, no bubble is shown
-IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, BlockByDefault) {
+IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest,
+                       DISABLED_BlockByDefault) {
   std::string result;
   PermissionRequestManager* manager =
       PermissionRequestManager::FromWebContents(contents());
@@ -224,7 +225,8 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, BlockByDefault) {
 }
 
 // Switch autoplay to ask
-IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, AskAutoplay) {
+IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest,
+                       DISABLED_AskAutoplay) {
   std::string result;
   AskAutoplay();
   PermissionRequestManager* manager =
@@ -337,7 +339,8 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, ClickAllowMuted) {
 }
 
 // Click block from promt
-IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, ClickBlock) {
+IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest,
+                       DISABLED_ClickBlock) {
   std::string result;
   AskAutoplay();
   PermissionRequestManager* manager =
