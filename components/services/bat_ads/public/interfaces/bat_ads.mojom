@@ -48,10 +48,10 @@ interface BatAdsClient {
   SetIdleThreshold(int32 threshold);
   LoadUserModelForLanguage(string language) => (int32 result, string value);
   ShowNotification(string notification_info);
-  CloseNotification(string id);
+  CloseNotification(string uuid);
   SetCatalogIssuers(string issuers_info);
-  ConfirmAd(string notification_info);
-  ConfirmAction(string uuid, string creative_set_id, string type);
+  ConfirmAdNotification(string json);
+  ConfirmAction(string creative_instance_id, string creative_set_id, string type);
   KillTimer(uint32 timer_id);
   URLRequest(string url, array<string> headers, string content, string content_type, int32 method) => (int32 status_code, string content, map<string, string> headers);
   Save(string name, string value) => (int32 result);
@@ -59,8 +59,8 @@ interface BatAdsClient {
   Load(string name) => (int32 result, string value);
   LoadSampleBundle() => (int32 result, string value);
   Reset(string name) => (int32 result);
-  GetAds(array<string> categories) => (int32 result, array<string> categories, array<string> ad_info);
-  GetAdConversions(string url) => (int32 result, string url, array<string> ad_conversions);
+  GetCreativeAdNotifications(array<string> categories) => (int32 result, array<string> categories, array<string> json_list);
+  GetAdConversions(string url) => (int32 result, string url, array<string> json_list);
   EventLog(string json);
 };
 
@@ -80,14 +80,14 @@ interface BatAds {
   OnMediaStopped(int32 tab_id);
   OnTabUpdated(int32 tab_id, string url, bool is_active, bool is_incognito);
   OnTabClosed(int32 tab_id);
-  GetNotificationForId(string id) => (string notification_info);
-  OnNotificationEvent(string id, int32 type);
+  GetAdNotification(string uuid) => (string json);
+  OnAdNotificationEvent(string uuid, ads.mojom.AdNotificationEventType event_type);
   RemoveAllHistory() => (int32 result);
-  GetAdsHistory(uint64 from_timestamp, uint64 to_timestamp) => (string history);
-  ToggleAdThumbUp(string id, string creative_set_id, int32 action) => (string id, int32 action);
-  ToggleAdThumbDown(string id, string creative_set_id, int32 action) => (string id, int32 action);
-  ToggleAdOptInAction(string category, int32 action) => (string id, int32 action);
-  ToggleAdOptOutAction(string category, int32 action) => (string id, int32 action);
-  ToggleSaveAd(string id, string creative_set_id, bool saved) => (string id, bool saved);
-  ToggleFlagAd(string id, string creative_set_id, bool flagged) => (string id, bool flagged);
+  GetAdsHistory(uint64 from_timestamp, uint64 to_timestamp) => (string json);
+  ToggleAdThumbUp(string creative_instance_id, string creative_set_id, int32 action) => (string creative_instance_id, int32 action);
+  ToggleAdThumbDown(string creative_instance_id, string creative_set_id, int32 action) => (string creative_instance_id, int32 action);
+  ToggleAdOptInAction(string category, int32 action) => (string category, int32 action);
+  ToggleAdOptOutAction(string category, int32 action) => (string category, int32 action);
+  ToggleSaveAd(string creative_instance_id, string creative_set_id, bool saved) => (string creative_instance_id, bool saved);
+  ToggleFlagAd(string creative_instance_id, string creative_set_id, bool flagged) => (string creative_instance_id, bool flagged);
 };

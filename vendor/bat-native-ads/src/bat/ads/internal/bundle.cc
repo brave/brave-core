@@ -24,18 +24,20 @@ using std::placeholders::_1;
 
 namespace ads {
 
-Bundle::Bundle(AdsImpl* ads, AdsClient* ads_client) :
-    catalog_id_(""),
-    catalog_version_(0),
-    catalog_ping_(0),
-    catalog_last_updated_timestamp_in_seconds_(0),
-    ads_(ads),
-    ads_client_(ads_client) {
+Bundle::Bundle(
+    AdsImpl* ads,
+    AdsClient* ads_client)
+    : catalog_version_(0),
+      catalog_ping_(0),
+      catalog_last_updated_timestamp_in_seconds_(0),
+      ads_(ads),
+      ads_client_(ads_client) {
 }
 
 Bundle::~Bundle() = default;
 
-bool Bundle::UpdateFromCatalog(const Catalog& catalog) {
+bool Bundle::UpdateFromCatalog(
+    const Catalog& catalog) {
   // TODO(Terry Mancey): Refactor function to use callbacks
 
   auto bundle_state = GenerateFromCatalog(catalog);
@@ -45,8 +47,8 @@ bool Bundle::UpdateFromCatalog(const Catalog& catalog) {
 
   auto callback = std::bind(&Bundle::OnStateSaved,
       this, bundle_state->catalog_id, bundle_state->catalog_version,
-      bundle_state->catalog_ping,
-      bundle_state->catalog_last_updated_timestamp_in_seconds, _1);
+          bundle_state->catalog_ping,
+              bundle_state->catalog_last_updated_timestamp_in_seconds, _1);
   ads_client_->SaveBundleState(std::move(bundle_state), callback);
 
   // TODO(Terry Mancey): Implement Log (#44)
@@ -62,12 +64,12 @@ void Bundle::Reset() {
 
   auto callback = std::bind(&Bundle::OnStateReset,
       this, bundle_state->catalog_id, bundle_state->catalog_version,
-      bundle_state->catalog_ping,
-      bundle_state->catalog_last_updated_timestamp_in_seconds, _1);
+          bundle_state->catalog_ping,
+              bundle_state->catalog_last_updated_timestamp_in_seconds, _1);
   ads_client_->SaveBundleState(std::move(bundle_state), callback);
 }
 
-const std::string Bundle::GetCatalogId() const {
+std::string Bundle::GetCatalogId() const {
   return catalog_id_;
 }
 
@@ -99,18 +101,17 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
     const Catalog& catalog) {
   // TODO(Terry Mancey): Refactor function to use callbacks
 
-  std::map<std::string, std::vector<AdInfo>> categories;
-  std::vector<AdConversionTrackingInfo> ad_conversions;
+  CreativeAdNotificationMap creative_ad_notifications;
+  AdConversionList ad_conversions;
 
   // Campaigns
   for (const auto& campaign : catalog.GetCampaigns()) {
     // Geo Targets
-    std::vector<std::string> regions = {};
+    std::vector<std::string> regions;
     for (const auto& geo_target : campaign.geo_targets) {
       std::string code = geo_target.code;
 
-      if (std::find(regions.begin(), regions.end(), code)
-          != regions.end()) {
+      if (std::find(regions.begin(), regions.end(), code) != regions.end()) {
         continue;
       }
 
@@ -121,27 +122,26 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
     for (const auto& creative_set : campaign.creative_sets) {
       uint64_t entries = 0;
 
-      // Creatives
-      for (const auto& creative : creative_set.creatives) {
-        AdInfo ad_info;
-        ad_info.creative_set_id = creative_set.creative_set_id;
-        ad_info.campaign_id = campaign.campaign_id;
-        ad_info.start_timestamp = campaign.start_at;
-        ad_info.end_timestamp = campaign.end_at;
-        ad_info.daily_cap = campaign.daily_cap;
-        ad_info.advertiser_id = campaign.advertiser_id;
-        ad_info.per_day = creative_set.per_day;
-        ad_info.total_max = creative_set.total_max;
-        ad_info.regions = regions;
-        ad_info.advertiser = creative.payload.title;
-        ad_info.notification_text = creative.payload.body;
-        ad_info.notification_url = creative.payload.target_url;
-        ad_info.uuid = creative.creative_instance_id;
-
-        // OSes
+      // Ad notification creatives
+      for (const auto& creative : creative_set.creative_ad_notifications) {
         if (!DoesOsSupportCreativeSet(creative_set)) {
           continue;
         }
+
+        CreativeAdNotificationInfo info;
+        info.creative_instance_id = creative.creative_instance_id;
+        info.creative_set_id = creative_set.creative_set_id;
+        info.campaign_id = campaign.campaign_id;
+        info.start_at_timestamp = campaign.start_at;
+        info.end_at_timestamp = campaign.end_at;
+        info.daily_cap = campaign.daily_cap;
+        info.advertiser_id = campaign.advertiser_id;
+        info.per_day = creative_set.per_day;
+        info.total_max = creative_set.total_max;
+        info.geo_targets = regions;
+        info.title = creative.payload.title;
+        info.body = creative.payload.body;
+        info.target_url = creative.payload.target_url;
 
         // Segments
         for (const auto& segment : creative_set.segments) {
@@ -149,7 +149,7 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
 
           std::vector<std::string> segment_name_hierarchy =
               base::SplitString(segment_name, "-", base::KEEP_WHITESPACE,
-              base::SPLIT_WANT_NONEMPTY);
+                  base::SPLIT_WANT_NONEMPTY);
 
           if (segment_name_hierarchy.empty()) {
             BLOG(WARNING) << "creativeSet id " << creative_set.creative_set_id
@@ -158,18 +158,21 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
             continue;
           }
 
-          if (categories.find(segment_name) == categories.end()) {
-            categories.insert({segment_name, {}});
+          if (creative_ad_notifications.find(segment_name) ==
+              creative_ad_notifications.end()) {
+            creative_ad_notifications.insert({segment_name, {}});
           }
-          categories.at(segment_name).push_back(ad_info);
+          creative_ad_notifications.at(segment_name).push_back(info);
           entries++;
 
           auto top_level_segment_name = segment_name_hierarchy.front();
           if (top_level_segment_name != segment_name) {
-            if (categories.find(top_level_segment_name) == categories.end()) {
-              categories.insert({top_level_segment_name, {}});
+            if (creative_ad_notifications.find(top_level_segment_name)
+                == creative_ad_notifications.end()) {
+              creative_ad_notifications.insert({top_level_segment_name, {}});
             }
-            categories.at(top_level_segment_name).push_back(ad_info);
+            creative_ad_notifications.at(top_level_segment_name)
+                .push_back(info);
             entries++;
           }
         }
@@ -194,14 +197,14 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
   state->catalog_version = catalog.GetVersion();
   state->catalog_ping = catalog.GetPing();
   state->catalog_last_updated_timestamp_in_seconds = Time::NowInSeconds();
-  state->categories = categories;
+  state->creative_ad_notifications = creative_ad_notifications;
   state->ad_conversions = ad_conversions;
 
   return state;
 }
 
 bool Bundle::DoesOsSupportCreativeSet(
-    const CreativeSetInfo& creative_set) {
+    const CatalogCreativeSetInfo& creative_set) {
   if (creative_set.oses.empty()) {
     // Creative set supports all OSes
     return true;

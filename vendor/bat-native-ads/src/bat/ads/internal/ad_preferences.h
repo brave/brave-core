@@ -7,31 +7,30 @@
 #define BAT_ADS_INTERNAL_AD_PREFERENCES_H_
 
 #include <string>
-#include <vector>
 
 #include "bat/ads/result.h"
+#include "bat/ads/internal/filtered_ad.h"
+#include "bat/ads/internal/filtered_category.h"
+#include "bat/ads/internal/flagged_ad.h"
+#include "bat/ads/internal/saved_ad.h"
 
 namespace ads {
 
-struct FilteredAd;
-struct FilteredCategory;
-struct FlaggedAd;
-struct SavedAd;
-
 struct AdPreferences {
   AdPreferences();
-  explicit AdPreferences(const AdPreferences& prefs);
+  AdPreferences(
+      const AdPreferences& prefs);
   ~AdPreferences();
 
-  const std::string ToJson() const;
+  std::string ToJson() const;
   Result FromJson(
       const std::string& json,
       std::string* error_description = nullptr);
 
-  std::vector<FilteredAd> filtered_ads;
-  std::vector<FilteredCategory> filtered_categories;
-  std::vector<SavedAd> saved_ads;
-  std::vector<FlaggedAd> flagged_ads;
+  FilteredAdList filtered_ads;
+  FilteredCategoryList filtered_categories;
+  SavedAdList saved_ads;
+  FlaggedAdList flagged_ads;
 };
 
 }  // namespace ads

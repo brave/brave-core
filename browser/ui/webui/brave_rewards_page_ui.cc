@@ -97,17 +97,29 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void GetAdsHistory(const base::ListValue* args);
   void OnGetAdsHistory(const base::ListValue& history);
   void ToggleAdThumbUp(const base::ListValue* args);
-  void OnToggleAdThumbUp(const std::string& id, int action);
+  void OnToggleAdThumbUp(
+      const std::string& creative_instance_id,
+      const int action);
   void ToggleAdThumbDown(const base::ListValue* args);
-  void OnToggleAdThumbDown(const std::string& id, int action);
+  void OnToggleAdThumbDown(
+      const std::string& creative_instance_id,
+      const int action);
   void ToggleAdOptInAction(const base::ListValue* args);
-  void OnToggleAdOptInAction(const std::string& category, int action);
+  void OnToggleAdOptInAction(
+      const std::string& category,
+      const int action);
   void ToggleAdOptOutAction(const base::ListValue* args);
-  void OnToggleAdOptOutAction(const std::string& category, int action);
+  void OnToggleAdOptOutAction(
+      const std::string& category,
+      const int action);
   void ToggleSaveAd(const base::ListValue* args);
-  void OnToggleSaveAd(const std::string& id, bool saved);
+  void OnToggleSaveAd(
+      const std::string& creative_instance_id,
+      const bool saved);
   void ToggleFlagAd(const base::ListValue* args);
-  void OnToggleFlagAd(const std::string& id, bool flagged);
+  void OnToggleFlagAd(
+      const std::string& creative_instance_id,
+      const bool flagged);
   void SaveAdsSetting(const base::ListValue* args);
   void SetBackupCompleted(const base::ListValue* args);
   void OnGetWalletPassphrase(const std::string& pass);
@@ -1158,13 +1170,15 @@ void RewardsDOMHandler::ToggleAdThumbUp(const base::ListValue* args) {
                      weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnToggleAdThumbUp(const std::string& id, int action) {
+void RewardsDOMHandler::OnToggleAdThumbUp(
+    const std::string& creative_instance_id,
+    const int action) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
 
   base::Value result(base::Value::Type::DICTIONARY);
-  result.SetKey("uuid", base::Value(id));
+  result.SetKey("creativeInstanceId", base::Value(creative_instance_id));
   result.SetKey("action", base::Value(action));
   web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.onToggleAdThumbUp",
                                          result);
@@ -1185,13 +1199,15 @@ void RewardsDOMHandler::ToggleAdThumbDown(const base::ListValue* args) {
                      weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnToggleAdThumbDown(const std::string& id, int action) {
+void RewardsDOMHandler::OnToggleAdThumbDown(
+    const std::string& creative_instance_id,
+    const int action) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
 
   base::Value result(base::Value::Type::DICTIONARY);
-  result.SetKey("uuid", base::Value(id));
+  result.SetKey("creativeInstanceId", base::Value(creative_instance_id));
   result.SetKey("action", base::Value(action));
   web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.onToggleAdThumbDown",
                                          result);
@@ -1257,21 +1273,23 @@ void RewardsDOMHandler::ToggleSaveAd(const base::ListValue* args) {
     return;
   }
 
-  const std::string id = args->GetList()[0].GetString();
+  const std::string creative_instance_id = args->GetList()[0].GetString();
   const std::string creative_set_id = args->GetList()[1].GetString();
   const bool saved = args->GetList()[2].GetBool();
-  ads_service_->ToggleSaveAd(id, creative_set_id, saved,
-                             base::BindOnce(&RewardsDOMHandler::OnToggleSaveAd,
-                                            weak_factory_.GetWeakPtr()));
+  ads_service_->ToggleSaveAd(creative_instance_id, creative_set_id, saved,
+      base::BindOnce(&RewardsDOMHandler::OnToggleSaveAd,
+          weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnToggleSaveAd(const std::string& id, bool saved) {
+void RewardsDOMHandler::OnToggleSaveAd(
+    const std::string& creative_instance_id,
+    bool saved) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
 
   base::Value result(base::Value::Type::DICTIONARY);
-  result.SetKey("uuid", base::Value(id));
+  result.SetKey("creativeInstanceId", base::Value(creative_instance_id));
   result.SetKey("saved", base::Value(saved));
   web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.onToggleSaveAd",
                                          result);
@@ -1283,21 +1301,22 @@ void RewardsDOMHandler::ToggleFlagAd(const base::ListValue* args) {
     return;
   }
 
-  const std::string id = args->GetList()[0].GetString();
+  const std::string creative_instance_id = args->GetList()[0].GetString();
   const std::string creative_set_id = args->GetList()[1].GetString();
   const bool flagged = args->GetList()[2].GetBool();
-  ads_service_->ToggleFlagAd(id, creative_set_id, flagged,
-                             base::BindOnce(&RewardsDOMHandler::OnToggleFlagAd,
-                                            weak_factory_.GetWeakPtr()));
+  ads_service_->ToggleFlagAd(creative_instance_id, creative_set_id, flagged,
+      base::BindOnce(&RewardsDOMHandler::OnToggleFlagAd,
+          weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnToggleFlagAd(const std::string& id, bool flagged) {
+void RewardsDOMHandler::OnToggleFlagAd(
+      const std::string& creative_instance_id, bool flagged) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
 
   base::Value result(base::Value::Type::DICTIONARY);
-  result.SetKey("uuid", base::Value(id));
+  result.SetKey("creativeInstanceId", base::Value(creative_instance_id));
   result.SetKey("flagged", base::Value(flagged));
   web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.onToggleFlagAd",
                                          result);

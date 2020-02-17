@@ -53,7 +53,7 @@ bool Payments::SetFromDictionary(base::DictionaryValue* dictionary) {
     return false;
   }
 
-  std::vector<PaymentInfo> payments;
+  PaymentList payments;
 
   base::ListValue list_value(value->GetList());
   for (auto& value : list_value) {
@@ -202,11 +202,11 @@ uint64_t Payments::GetTransactionCountForMonth(const base::Time& time) const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-std::vector<PaymentInfo> Payments::GetPaymentsFromList(
+PaymentList Payments::GetPaymentsFromList(
     base::ListValue* list) const {
   DCHECK(list);
 
-  std::vector<PaymentInfo> payments;
+  PaymentList payments;
 
   for (auto& item : *list) {
     base::DictionaryValue* dictionary;

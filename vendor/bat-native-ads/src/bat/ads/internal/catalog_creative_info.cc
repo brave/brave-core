@@ -7,16 +7,11 @@
 
 namespace ads {
 
-CreativeInfo::CreativeInfo() :
-    creative_instance_id(""),
-    type(TypeInfo()),
-    payload(PayloadInfo()) {}
+CatalogCreativeInfo::CatalogCreativeInfo() = default;
 
-CreativeInfo::CreativeInfo(const CreativeInfo& info) :
-    creative_instance_id(info.creative_instance_id),
-    type(info.type),
-    payload(info.payload) {}
+CatalogCreativeInfo::CatalogCreativeInfo(
+    const CatalogCreativeInfo& info) = default;
 
-CreativeInfo::~CreativeInfo() {}
+CatalogCreativeInfo::~CatalogCreativeInfo() = default;
 
 }  // namespace ads

@@ -11,8 +11,8 @@
 #include <vector>
 #include <memory>
 
-#include "bat/ads/ad_info.h"
-#include "bat/ads/ad_conversion_tracking_info.h"
+#include "bat/ads/creative_ad_notification_info.h"
+#include "bat/ads/ad_conversion_info.h"
 #include "bat/ads/bundle_state.h"
 #include "base/compiler_specific.h"
 #include "base/files/file_path.h"
@@ -39,12 +39,12 @@ class BundleStateDatabase {
 
   bool SaveBundleState(const ads::BundleState& bundle_state);
 
-  bool GetAdsForCategory(
-      const std::string& category,
-      std::vector<ads::AdInfo>* ads);
+  bool GetCreativeAdNotifications(
+      const std::vector<std::string>& categories,
+      ads::CreativeAdNotificationList* ads);
   bool GetAdConversions(
       const std::string& url,
-      std::vector<ads::AdConversionTrackingInfo>* ad_conversions);
+      ads::AdConversionList* ad_conversions);
 
   // Returns the current version of the publisher info database
   static int GetCurrentVersion();
@@ -62,23 +62,23 @@ class BundleStateDatabase {
 
   bool CreateCategoryTable();
   bool CreateConversionsTable();
-  bool CreateAdInfoTable();
-  bool CreateAdInfoCategoryTable();
-  bool CreateAdInfoCategoryNameIndex();
+  bool CreateCreativeAdNotificationInfoTable();
+  bool CreateCreativeAdNotificationInfoCategoryTable();
+  bool CreateCreativeAdNotificationInfoCategoryNameIndex();
 
   bool TruncateCategoryTable();
   bool TruncateConversionsTable();
-  bool TruncateAdInfoTable();
-  bool TruncateAdInfoCategoryTable();
+  bool TruncateCreativeAdNotificationInfoTable();
+  bool TruncateCreativeAdNotificationInfoCategoryTable();
 
   bool InsertOrUpdateCategory(
       const std::string& category);
   bool InsertOrUpdateAdConversion(
-      const ads::AdConversionTrackingInfo& ad_conversion);
-  bool InsertOrUpdateAdInfo(
-      const ads::AdInfo& info);
-  bool InsertOrUpdateAdInfoCategory(
-      const ads::AdInfo& ad_info,
+      const ads::AdConversionInfo& ad_conversion);
+  bool InsertOrUpdateCreativeAdNotificationInfo(
+      const ads::CreativeAdNotificationInfo& info);
+  bool InsertOrUpdateCreativeAdNotificationInfoCategory(
+      const ads::CreativeAdNotificationInfo& ad_info,
       const std::string& category);
 
   sql::Database& GetDB();

@@ -44,7 +44,7 @@ class MockAdsClient : public AdsClient {
 
   MOCK_CONST_METHOD0(ShouldAllowAdConversionTracking, bool());
 
-  MOCK_CONST_METHOD0(GetLocale, const std::string());
+  MOCK_CONST_METHOD0(GetLocale, std::string());
 
   MOCK_CONST_METHOD0(GetAdsPerHour, uint64_t());
 
@@ -58,7 +58,7 @@ class MockAdsClient : public AdsClient {
   MOCK_CONST_METHOD1(GetClientInfo, void(
       ClientInfo* info));
 
-  MOCK_CONST_METHOD0(GetUserModelLanguages, const std::vector<std::string>());
+  MOCK_CONST_METHOD0(GetUserModelLanguages, std::vector<std::string>());
 
   MOCK_CONST_METHOD2(LoadUserModelForLanguage, void(
       const std::string& language,
@@ -69,21 +69,21 @@ class MockAdsClient : public AdsClient {
   MOCK_METHOD0(ShouldShowNotifications, bool());
 
   MOCK_METHOD1(ShowNotification, void(
-      std::unique_ptr<NotificationInfo> info));
+      std::unique_ptr<AdNotificationInfo> info));
 
   MOCK_METHOD1(CloseNotification, void(
-      const std::string& id));
+      const std::string& uuid));
 
   MOCK_METHOD1(SetCatalogIssuers, void(
       std::unique_ptr<IssuersInfo> info));
 
-  MOCK_METHOD1(ConfirmAd, void(
-      std::unique_ptr<NotificationInfo> info));
+  MOCK_METHOD1(ConfirmAdNotification, void(
+      std::unique_ptr<AdNotificationInfo> info));
 
   MOCK_METHOD3(ConfirmAction, void(
-      const std::string& uuid,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
-      const ConfirmationType& type));
+      const ConfirmationType& confirmation_type));
 
   MOCK_METHOD1(SetTimer, uint32_t(
       const uint64_t time_offset));
@@ -112,7 +112,7 @@ class MockAdsClient : public AdsClient {
       const std::string& name,
       OnLoadCallback callback));
 
-  MOCK_METHOD1(LoadJsonSchema, const std::string(
+  MOCK_METHOD1(LoadJsonSchema, std::string(
       const std::string& name));
 
   MOCK_METHOD1(LoadSampleBundle, void(
@@ -122,9 +122,9 @@ class MockAdsClient : public AdsClient {
       const std::string& name,
       OnResetCallback callback));
 
-  MOCK_METHOD2(GetAds, void(
+  MOCK_METHOD2(GetCreativeAdNotifications, void(
       const std::vector<std::string>& categories,
-      OnGetAdsCallback callback));
+      OnGetCreativeAdNotificationsCallback callback));
 
   MOCK_METHOD2(GetAdConversions, void(
       const std::string& url,

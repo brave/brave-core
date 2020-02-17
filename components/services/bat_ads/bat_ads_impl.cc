@@ -12,6 +12,7 @@
 #include "bat/ads/ads_history.h"
 #include "bat/ads/category_content.h"
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/mojom.h"
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 
 using std::placeholders::_1;
@@ -22,11 +23,6 @@ namespace {
 
 ads::Result ToMojomResult(int32_t result) {
   return (ads::Result)result;
-}
-
-ads::NotificationEventType ToMojomNotificationEventType(
-    const int32_t event_type) {
-  return (ads::NotificationEventType)event_type;
 }
 
 ads::AdContent::LikeAction ToAdsLikeAction(
@@ -130,18 +126,18 @@ void BatAdsImpl::OnTabClosed(
   ads_->OnTabClosed(tab_id);
 }
 
-void BatAdsImpl::GetNotificationForId(
-    const std::string& id,
-    GetNotificationForIdCallback callback) {
-  ads::NotificationInfo notification;
-  ads_->GetNotificationForId(id, &notification);
+void BatAdsImpl::GetAdNotification(
+    const std::string& uuid,
+    GetAdNotificationCallback callback) {
+  ads::AdNotificationInfo notification;
+  ads_->GetAdNotification(uuid, &notification);
   std::move(callback).Run(notification.ToJson());
 }
 
-void BatAdsImpl::OnNotificationEvent(
-    const std::string& id,
-    const int32_t type) {
-  ads_->OnNotificationEvent(id, ToMojomNotificationEventType(type));
+void BatAdsImpl::OnAdNotificationEvent(
+    const std::string& uuid,
+    const ads::AdNotificationEventType event_type) {
+  ads_->OnAdNotificationEvent(uuid, event_type);
 }
 
 void BatAdsImpl::RemoveAllHistory(
@@ -167,57 +163,61 @@ void BatAdsImpl::GetAdsHistory(
 }
 
 void BatAdsImpl::ToggleAdThumbUp(
-    const std::string& id,
+    const std::string& creative_instance_id,
     const std::string& creative_set_id,
     const int action,
     ToggleAdThumbUpCallback callback) {
-  int like_action =
-      ads_->ToggleAdThumbUp(id, creative_set_id, ToAdsLikeAction(action));
-  std::move(callback).Run(id, like_action);
+  const ads::AdContent::LikeAction like_action = ads_->ToggleAdThumbUp(
+      creative_instance_id, creative_set_id, ToAdsLikeAction(action));
+  std::move(callback).Run(creative_instance_id, static_cast<int>(like_action));
 }
 
 void BatAdsImpl::ToggleAdThumbDown(
-    const std::string& id,
+    const std::string& creative_instance_id,
     const std::string& creative_set_id,
     const int action,
     ToggleAdThumbDownCallback callback) {
-  int like_action =
-      ads_->ToggleAdThumbDown(id, creative_set_id, ToAdsLikeAction(action));
-  std::move(callback).Run(id, like_action);
+  const ads::AdContent::LikeAction like_action = ads_->ToggleAdThumbDown(
+      creative_instance_id, creative_set_id, ToAdsLikeAction(action));
+  std::move(callback).Run(creative_instance_id, static_cast<int>(like_action));
 }
 
 void BatAdsImpl::ToggleAdOptInAction(
     const std::string& category,
     const int action,
     ToggleAdOptInActionCallback callback) {
-  int opt_action = ads_->ToggleAdOptInAction(category, ToAdsOptAction(action));
-  std::move(callback).Run(category, opt_action);
+  const ads::CategoryContent::OptAction opt_action =
+      ads_->ToggleAdOptInAction(category, ToAdsOptAction(action));
+  std::move(callback).Run(category, static_cast<int>(opt_action));
 }
 
 void BatAdsImpl::ToggleAdOptOutAction(
     const std::string& category,
     const int action,
     ToggleAdOptOutActionCallback callback) {
-  int opt_action = ads_->ToggleAdOptOutAction(category, ToAdsOptAction(action));
-  std::move(callback).Run(category, opt_action);
+  const ads::CategoryContent::OptAction opt_action =
+      ads_->ToggleAdOptOutAction(category, ToAdsOptAction(action));
+  std::move(callback).Run(category, static_cast<int>(opt_action));
 }
 
 void BatAdsImpl::ToggleSaveAd(
-    const std::string& id,
+    const std::string& creative_instance_id,
     const std::string& creative_set_id,
     const bool saved,
     ToggleSaveAdCallback callback) {
-  bool saved_result = ads_->ToggleSaveAd(id, creative_set_id, saved);
-  std::move(callback).Run(id, saved_result);
+  const bool saved_result =
+      ads_->ToggleSaveAd(creative_instance_id, creative_set_id, saved);
+  std::move(callback).Run(creative_instance_id, saved_result);
 }
 
 void BatAdsImpl::ToggleFlagAd(
-    const std::string& id,
+    const std::string& creative_instance_id,
     const std::string& creative_set_id,
     const bool flagged,
     ToggleFlagAdCallback callback) {
-  bool flagged_result = ads_->ToggleFlagAd(id, creative_set_id, flagged);
-  std::move(callback).Run(id, flagged_result);
+  bool flagged_result =
+      ads_->ToggleFlagAd(creative_instance_id, creative_set_id, flagged);
+  std::move(callback).Run(creative_instance_id, flagged_result);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

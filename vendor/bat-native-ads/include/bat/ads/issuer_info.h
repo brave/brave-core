@@ -7,19 +7,18 @@
 #define BAT_ADS_ISSUER_INFO_H_
 
 #include <string>
+#include <vector>
 
 #include "bat/ads/export.h"
 
 namespace ads {
 
 struct ADS_EXPORT IssuerInfo {
-  IssuerInfo();
-  IssuerInfo(const IssuerInfo& info);
-  ~IssuerInfo();
-
   std::string name;
   std::string public_key;
 };
+
+using IssuerList = std::vector<IssuerInfo>;
 
 }  // namespace ads
 

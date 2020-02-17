@@ -8,6 +8,7 @@
 
 #include <stdint.h>
 #include <string>
+#include <vector>
 
 #include "bat/confirmations/confirmation_type.h"
 #include "bat/confirmations/internal/token_info.h"
@@ -35,6 +36,8 @@ struct ConfirmationInfo {
   uint64_t timestamp_in_seconds;
   bool created;
 };
+
+using ConfirmationList = std::vector<ConfirmationInfo>;
 
 }  // namespace confirmations
 

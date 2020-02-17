@@ -13,6 +13,8 @@
 
 #include "base/bind.h"
 #include "base/files/file_util.h"
+#include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
 #include "build/build_config.h"
 #include "sql/meta_table.h"
 #include "sql/statement.h"
@@ -62,9 +64,9 @@ bool BundleStateDatabase::Init() {
   if (!meta_table_.Init(&db_, GetCurrentVersion(), kCompatibleVersionNumber))
     return false;
   if (!CreateCategoryTable() ||
-      !CreateAdInfoTable() ||
-      !CreateAdInfoCategoryTable() ||
-      !CreateAdInfoCategoryNameIndex() ||
+      !CreateCreativeAdNotificationInfoTable() ||
+      !CreateCreativeAdNotificationInfoCategoryTable() ||
+      !CreateCreativeAdNotificationInfoCategoryNameIndex() ||
       !CreateConversionsTable())
     return false;
 
@@ -148,14 +150,14 @@ bool BundleStateDatabase::TruncateConversionsTable() {
   return sql.Run();
 }
 
-bool BundleStateDatabase::CreateAdInfoTable() {
+bool BundleStateDatabase::CreateCreativeAdNotificationInfoTable() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   const char* name = "ad_info";
   if (GetDB().DoesTableExist(name))
     return true;
 
-  // Update InsertOrUpdateAdInfo() if you add anything here
+  // Update InsertOrUpdateCreativeAdNotificationInfo() if you add anything here
   std::string sql;
   sql.append("CREATE TABLE ");
   sql.append(name);
@@ -178,7 +180,7 @@ bool BundleStateDatabase::CreateAdInfoTable() {
   return GetDB().Execute(sql.c_str());
 }
 
-bool BundleStateDatabase::TruncateAdInfoTable() {
+bool BundleStateDatabase::TruncateCreativeAdNotificationInfoTable() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
@@ -192,7 +194,7 @@ bool BundleStateDatabase::TruncateAdInfoTable() {
   return sql.Run();
 }
 
-bool BundleStateDatabase::CreateAdInfoCategoryTable() {
+bool BundleStateDatabase::CreateCreativeAdNotificationInfoCategoryTable() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   const char* name = "ad_info_category";
@@ -218,7 +220,7 @@ bool BundleStateDatabase::CreateAdInfoCategoryTable() {
   return GetDB().Execute(sql.c_str());
 }
 
-bool BundleStateDatabase::TruncateAdInfoCategoryTable() {
+bool BundleStateDatabase::TruncateCreativeAdNotificationInfoCategoryTable() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
@@ -232,7 +234,7 @@ bool BundleStateDatabase::TruncateAdInfoCategoryTable() {
   return sql.Run();
 }
 
-bool BundleStateDatabase::CreateAdInfoCategoryNameIndex() {
+bool BundleStateDatabase::CreateCreativeAdNotificationInfoCategoryNameIndex() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   return GetDB().Execute(
@@ -254,15 +256,15 @@ bool BundleStateDatabase::SaveBundleState(
     return false;
 
   // we are completely replacing here so first truncate all the tables
-  if (!TruncateAdInfoCategoryTable() ||
-      !TruncateAdInfoTable() ||
+  if (!TruncateCreativeAdNotificationInfoCategoryTable() ||
+      !TruncateCreativeAdNotificationInfoTable() ||
       !TruncateCategoryTable() ||
       !TruncateConversionsTable()) {
     GetDB().RollbackTransaction();
     return false;
   }
 
-  auto categories = bundle_state.categories;
+  auto categories = bundle_state.creative_ad_notifications;
   for (auto it = categories.begin(); it != categories.end(); ++it) {
     auto category = it->first;
     if (!InsertOrUpdateCategory(category)) {
@@ -273,8 +275,9 @@ bool BundleStateDatabase::SaveBundleState(
     auto ads = it->second;
     for (auto it = ads.begin(); it != ads.end(); ++it) {
       auto ad_info = *it;
-      if (!InsertOrUpdateAdInfo(ad_info) ||
-          !InsertOrUpdateAdInfoCategory(ad_info, category)) {
+      if (!InsertOrUpdateCreativeAdNotificationInfo(ad_info) ||
+          !InsertOrUpdateCreativeAdNotificationInfoCategory(
+              ad_info, category)) {
         GetDB().RollbackTransaction();
         return false;
       }
@@ -316,7 +319,8 @@ bool BundleStateDatabase::InsertOrUpdateCategory(const std::string& category) {
   return ad_info_statement.Run();
 }
 
-bool BundleStateDatabase::InsertOrUpdateAdInfo(const ads::AdInfo& info) {
+bool BundleStateDatabase::InsertOrUpdateCreativeAdNotificationInfo(
+    const ads::CreativeAdNotificationInfo& info) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
@@ -325,7 +329,7 @@ bool BundleStateDatabase::InsertOrUpdateAdInfo(const ads::AdInfo& info) {
   if (!initialized)
     return false;
 
-  for (auto it = info.regions.begin(); it != info.regions.end(); ++it) {
+  for (auto it = info.geo_targets.begin(); it != info.geo_targets.end(); ++it) {
     sql::Statement ad_info_statement(
         GetDB().GetCachedStatement(SQL_FROM_HERE,
             "INSERT OR REPLACE INTO ad_info "
@@ -336,12 +340,12 @@ bool BundleStateDatabase::InsertOrUpdateAdInfo(const ads::AdInfo& info) {
             "?, ?, ?, ?)"));
 
     ad_info_statement.BindString(0, info.creative_set_id);
-    ad_info_statement.BindString(1, info.advertiser);
-    ad_info_statement.BindString(2, info.notification_text);
-    ad_info_statement.BindString(3, info.notification_url);
-    ad_info_statement.BindString(4, info.start_timestamp);
-    ad_info_statement.BindString(5, info.end_timestamp);
-    ad_info_statement.BindString(6, info.uuid);
+    ad_info_statement.BindString(1, info.title);
+    ad_info_statement.BindString(2, info.body);
+    ad_info_statement.BindString(3, info.target_url);
+    ad_info_statement.BindString(4, info.start_at_timestamp);
+    ad_info_statement.BindString(5, info.end_at_timestamp);
+    ad_info_statement.BindString(6, info.creative_instance_id);
     ad_info_statement.BindString(7, info.campaign_id);
     ad_info_statement.BindInt(8, info.daily_cap);
     ad_info_statement.BindString(9, info.advertiser_id);
@@ -357,7 +361,7 @@ bool BundleStateDatabase::InsertOrUpdateAdInfo(const ads::AdInfo& info) {
 }
 
 bool BundleStateDatabase::InsertOrUpdateAdConversion(
-    const ads::AdConversionTrackingInfo& ad_conversion) {
+    const ads::AdConversionInfo& ad_conversion) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   const bool initialized = Init();
@@ -381,8 +385,8 @@ bool BundleStateDatabase::InsertOrUpdateAdConversion(
   return statement.Run();
 }
 
-bool BundleStateDatabase::InsertOrUpdateAdInfoCategory(
-    const ads::AdInfo& ad_info,
+bool BundleStateDatabase::InsertOrUpdateCreativeAdNotificationInfoCategory(
+    const ads::CreativeAdNotificationInfo& info,
     const std::string& category) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -398,22 +402,27 @@ bool BundleStateDatabase::InsertOrUpdateAdInfoCategory(
           "(ad_info_uuid, category_name) "
           "VALUES (?, ?)"));
 
-  ad_info_statement.BindString(0, ad_info.uuid);
+  ad_info_statement.BindString(0, info.creative_instance_id);
   ad_info_statement.BindString(1, category);
 
   return ad_info_statement.Run();
 }
 
-bool BundleStateDatabase::GetAdsForCategory(
-    const std::string& category,
-    std::vector<ads::AdInfo>* ads) {
+bool BundleStateDatabase::GetCreativeAdNotifications(
+    const std::vector<std::string>& categories,
+    ads::CreativeAdNotificationList* ads) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  DCHECK(ads);
+  if (!ads) {
+    return false;
+  }
 
   bool initialized = Init();
   DCHECK(initialized);
-
-  if (!initialized)
+  if (!initialized) {
     return false;
+  }
 
   sql::Statement info_sql(
       db_.GetUniqueStatement(
@@ -421,31 +430,39 @@ bool BundleStateDatabase::GetAdsForCategory(
           "ai.notification_text, ai.notification_url, "
           "ai.start_timestamp, ai.end_timestamp, "
           "ai.uuid, ai.region, ai.campaign_id, ai.daily_cap, "
-          "ai.advertiser_id, ai.per_day, ai.total_max FROM ad_info AS ai "
+          "ai.advertiser_id, ai.per_day, ai.total_max, aic.category_name "
+          "FROM ad_info AS ai "
           "INNER JOIN ad_info_category AS aic "
           "ON aic.ad_info_uuid = ai.uuid "
-          "WHERE aic.category_name = ? and "
+          "WHERE aic.category_name IN (?) and "
           "ai.start_timestamp <= strftime('%Y-%m-%d %H:%M', "
           "datetime('now','localtime')) and "
           "ai.end_timestamp >= strftime('%Y-%m-%d %H:%M', "
           "datetime('now','localtime'));"));
-  info_sql.BindString(0, category);
+  std::vector<std::string> quoted_categories;
+  for (const auto& category : categories) {
+    const std::string quoted_category = base::StringPrintf("\"%s\"",
+        category.c_str());
+    quoted_categories.push_back(quoted_category);
+  }
+  info_sql.BindString(0, base::JoinString(quoted_categories, ", ").c_str());
 
   while (info_sql.Step()) {
-    ads::AdInfo info;
+    ads::CreativeAdNotificationInfo info;
     info.creative_set_id = info_sql.ColumnString(0);
-    info.advertiser = info_sql.ColumnString(1);
-    info.category = category;
-    info.notification_text = info_sql.ColumnString(2);
-    info.notification_url = info_sql.ColumnString(3);
-    info.start_timestamp = info_sql.ColumnString(4);
-    info.end_timestamp = info_sql.ColumnString(5);
-    info.uuid = info_sql.ColumnString(6);
+    info.title = info_sql.ColumnString(1);
+    info.body = info_sql.ColumnString(2);
+    info.target_url = info_sql.ColumnString(3);
+    info.start_at_timestamp = info_sql.ColumnString(4);
+    info.end_at_timestamp = info_sql.ColumnString(5);
+    info.creative_instance_id = info_sql.ColumnString(6);
+    info.geo_targets.push_back(info_sql.ColumnString(7));
     info.campaign_id = info_sql.ColumnString(8);
     info.daily_cap = info_sql.ColumnInt(9);
     info.advertiser_id = info_sql.ColumnString(10);
     info.per_day = info_sql.ColumnInt(11);
     info.total_max = info_sql.ColumnInt(12);
+    info.category = info_sql.ColumnInt(13);
     ads->emplace_back(info);
   }
 
@@ -454,7 +471,7 @@ bool BundleStateDatabase::GetAdsForCategory(
 
 bool BundleStateDatabase::GetAdConversions(
     const std::string& url,
-    std::vector<ads::AdConversionTrackingInfo>* ad_conversions) {
+    ads::AdConversionList* ad_conversions) {
   DCHECK(ad_conversions);
   if (!ad_conversions) {
     return false;
@@ -476,7 +493,7 @@ bool BundleStateDatabase::GetAdConversions(
           "FROM ad_conversions AS c"));
 
   while (info_sql.Step()) {
-    ads::AdConversionTrackingInfo ad_conversion;
+    ads::AdConversionInfo ad_conversion;
     ad_conversion.creative_set_id = info_sql.ColumnString(0);
     ad_conversion.type = info_sql.ColumnString(1);
     ad_conversion.url_pattern = info_sql.ColumnString(2);

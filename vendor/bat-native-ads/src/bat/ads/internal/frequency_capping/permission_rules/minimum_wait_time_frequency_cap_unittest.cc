@@ -24,7 +24,7 @@ using ::testing::Invoke;
 
 namespace {
 
-const char kTestAdUuid[] = "9aea9a47-c6a0-4718-a0fa-706338bb2156";
+const char kTestAdCreativeInstanceId[] = "9aea9a47-c6a0-4718-a0fa-706338bb2156";
 
 }  // namespace
 
@@ -99,7 +99,8 @@ TEST_F(BraveAdsMinimumWaitTimeFrequencyCapTest,
   ON_CALL(*mock_ads_client_, GetAdsPerHour())
       .WillByDefault(testing::Return(2));
 
-  client_mock_->GeneratePastAdHistoryFromNow(kTestAdUuid, 45 * 60, 1);
+  client_mock_->GeneratePastAdHistoryFromNow(
+      kTestAdCreativeInstanceId, 45 * 60, 1);
 
   // Act
   const bool does_history_respect_minimum_wait_time =
@@ -115,7 +116,8 @@ TEST_F(BraveAdsMinimumWaitTimeFrequencyCapTest,
   ON_CALL(*mock_ads_client_, GetAdsPerHour())
       .WillByDefault(testing::Return(2));
 
-  client_mock_->GeneratePastAdHistoryFromNow(kTestAdUuid, 15 * 60, 1);
+  client_mock_->GeneratePastAdHistoryFromNow(
+      kTestAdCreativeInstanceId, 15 * 60, 1);
 
   // Act
   const bool does_history_respect_minimum_wait_time =

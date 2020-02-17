@@ -9,18 +9,17 @@
 #include <string>
 
 #include "bat/ads/internal/catalog_type_info.h"
-#include "bat/ads/internal/catalog_payload_info.h"
 
 namespace ads {
 
-struct CreativeInfo {
-  CreativeInfo();
-  explicit CreativeInfo(const CreativeInfo& info);
-  ~CreativeInfo();
+struct CatalogCreativeInfo {
+  CatalogCreativeInfo();
+  CatalogCreativeInfo(
+      const CatalogCreativeInfo& info);
+  ~CatalogCreativeInfo();
 
   std::string creative_instance_id;
   TypeInfo type;
-  PayloadInfo payload;
 };
 
 }  // namespace ads

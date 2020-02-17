@@ -16,15 +16,16 @@ namespace ads {
 
 struct ADS_EXPORT ClientInfo {
   ClientInfo();
-  ClientInfo(const ClientInfo& info);
+  ClientInfo(
+      const ClientInfo& info);
   ~ClientInfo();
 
-  const std::string ToJson() const;
+  std::string ToJson() const;
   Result FromJson(
       const std::string& json,
       std::string* error_description = nullptr);
 
-  ClientInfoPlatformType platform;
+  ClientInfoPlatformType platform = ClientInfoPlatformType::UNKNOWN;
 };
 
 }  // namespace ads

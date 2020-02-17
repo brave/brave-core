@@ -1230,14 +1230,14 @@ BATLedgerBridge(BOOL,
 
 #pragma mark - Ads & Confirmations
 
-- (void)confirmAd:(NSString *)info
+- (void)confirmAdNotification:(NSString *)info
 {
-  ledger->ConfirmAd(info.UTF8String);
+  ledger->ConfirmAdNotification(info.UTF8String);
 }
 
-- (void)confirmAction:(NSString *)uuid creativeSetID:(NSString *)creativeSetID type:(NSString *)type
+- (void)confirmAction:(NSString *)creativeInstanceId creativeSetID:(NSString *)creativeSetID type:(NSString *)type
 {
-  ledger->ConfirmAction(uuid.UTF8String, creativeSetID.UTF8String, type.UTF8String);
+  ledger->ConfirmAction(creativeInstanceId.UTF8String, creativeSetID.UTF8String, type.UTF8String);
 }
 
 - (void)setCatalogIssuers:(NSString *)issuers

@@ -10,22 +10,14 @@
 
 namespace ledger {
 
-TransactionsInfo::TransactionsInfo() :
-    estimated_pending_rewards(0.0),
-    next_payment_date_in_seconds(0),
-    ad_notifications_received_this_month(0),
-    transactions({}) {}
+TransactionsInfo::TransactionsInfo() = default;
 
-TransactionsInfo::TransactionsInfo(const TransactionsInfo& info) :
-    estimated_pending_rewards(info.estimated_pending_rewards),
-    next_payment_date_in_seconds(info.next_payment_date_in_seconds),
-    ad_notifications_received_this_month(
-        info.ad_notifications_received_this_month),
-    transactions(info.transactions) {}
+TransactionsInfo::TransactionsInfo(
+    const TransactionsInfo& info) = default;
 
 TransactionsInfo::~TransactionsInfo() = default;
 
-const std::string TransactionsInfo::ToJson() const {
+std::string TransactionsInfo::ToJson() const {
   base::Value dictionary(base::Value::Type::DICTIONARY);
 
   // Estimated pending rewards
@@ -136,11 +128,11 @@ base::Value TransactionsInfo::GetTransactionsAsList() const {
   return list;
 }
 
-std::vector<TransactionInfo> TransactionsInfo::GetTransactionsFromJson(
+TransactionList TransactionsInfo::GetTransactionsFromJson(
     base::DictionaryValue* dictionary) const {
   DCHECK(dictionary);
 
-  std::vector<TransactionInfo> transactions;
+  TransactionList transactions;
 
   auto* transactions_value = dictionary->FindKey("transactions");
   if (!transactions_value) {

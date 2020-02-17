@@ -39,7 +39,7 @@ bool Catalog::FromJson(const std::string& json) {
   return true;
 }
 
-const std::string Catalog::GetId() const {
+std::string Catalog::GetId() const {
   return catalog_state_->catalog_id;
 }
 
@@ -51,11 +51,11 @@ uint64_t Catalog::GetPing() const {
   return catalog_state_->ping;
 }
 
-const std::vector<CampaignInfo>& Catalog::GetCampaigns() const {
+CatalogCampaignList Catalog::GetCampaigns() const {
   return catalog_state_->campaigns;
 }
 
-const IssuersInfo& Catalog::GetIssuers() const {
+IssuersInfo Catalog::GetIssuers() const {
   return catalog_state_->issuers;
 }
 

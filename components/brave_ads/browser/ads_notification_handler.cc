@@ -73,7 +73,7 @@ void AdsNotificationHandler::OnClick(
     return;
   }
 
-  ads_service_->ViewAd(id);
+  ads_service_->ViewAdNotification(id);
 }
 
 void AdsNotificationHandler::DisableNotifications(
@@ -94,7 +94,7 @@ void AdsNotificationHandler::OpenSettings(
     return;
   }
 
-  ads_service_->ViewAd(id);
+  ads_service_->ViewAdNotification(id);
 }
 
 void AdsNotificationHandler::SetAdsService(

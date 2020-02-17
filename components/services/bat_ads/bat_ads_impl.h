@@ -73,12 +73,12 @@ class BatAdsImpl :
   void OnTabClosed(
       const int32_t tab_id) override;
 
-  void GetNotificationForId(
-      const std::string& id,
-      GetNotificationForIdCallback callback) override;
-  void OnNotificationEvent(
-      const std::string& id,
-      const int32_t type) override;
+  void GetAdNotification(
+      const std::string& uuid,
+      GetAdNotificationCallback callback) override;
+  void OnAdNotificationEvent(
+      const std::string& uuid,
+      const ads::AdNotificationEventType event_type) override;
 
   void RemoveAllHistory(
       RemoveAllHistoryCallback callback) override;
@@ -89,12 +89,12 @@ class BatAdsImpl :
       GetAdsHistoryCallback callback) override;
 
   void ToggleAdThumbUp(
-      const std::string& id,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const int action,
       ToggleAdThumbUpCallback callback) override;
   void ToggleAdThumbDown(
-      const std::string& id,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const int action,
       ToggleAdThumbUpCallback callback) override;
@@ -107,12 +107,12 @@ class BatAdsImpl :
       const int action,
       ToggleAdOptOutActionCallback callback) override;
   void ToggleSaveAd(
-      const std::string& id,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const bool saved,
       ToggleSaveAdCallback callback) override;
   void ToggleFlagAd(
-      const std::string& id,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const bool flagged,
       ToggleFlagAdCallback callback) override;

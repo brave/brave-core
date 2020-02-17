@@ -7,6 +7,7 @@
 #define BAT_ADS_INTERNAL_FILTERED_CATEGORY_H_
 
 #include <string>
+#include <vector>
 
 #include "bat/ads/result.h"
 
@@ -14,16 +15,19 @@ namespace ads {
 
 struct FilteredCategory {
   FilteredCategory();
-  explicit FilteredCategory(const FilteredCategory& category);
+  FilteredCategory(
+      const FilteredCategory& category);
   ~FilteredCategory();
 
-  const std::string ToJson() const;
+  std::string ToJson() const;
   Result FromJson(
       const std::string& json,
       std::string* error_description = nullptr);
 
   std::string name;
 };
+
+using FilteredCategoryList = std::vector<FilteredCategory>;
 
 }  // namespace ads
 

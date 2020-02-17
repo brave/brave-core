@@ -10,9 +10,11 @@
 namespace ads {
 
 SearchProviders::SearchProviders() = default;
+
 SearchProviders::~SearchProviders() = default;
 
-bool SearchProviders::IsSearchEngine(const std::string& url) {
+bool SearchProviders::IsSearchEngine(
+    const std::string& url) {
   auto visited_url = GURL(url);
   if (!visited_url.has_host()) {
     return false;

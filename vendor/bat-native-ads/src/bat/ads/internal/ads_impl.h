@@ -15,20 +15,19 @@
 
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_history.h"
-#include "bat/ads/ad_info.h"
-#include "bat/ads/notification_event_type.h"
-#include "bat/ads/notification_info.h"
-
+#include "bat/ads/creative_ad_notification_info.h"
+#include "bat/ads/mojom.h"
+#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/internal/ads_serve.h"
 #include "bat/ads/internal/bundle.h"
 #include "bat/ads/internal/client.h"
-#include "bat/ads/internal/ad_conversion_tracking.h"
+#include "bat/ads/internal/ad_conversions.h"
 #include "bat/ads/internal/event_type_blur_info.h"
 #include "bat/ads/internal/event_type_destroy_info.h"
 #include "bat/ads/internal/event_type_focus_info.h"
 #include "bat/ads/internal/event_type_load_info.h"
-#include "bat/ads/internal/notification_result_type.h"
-#include "bat/ads/internal/notifications.h"
+#include "bat/ads/internal/ad_notification_result_type.h"
+#include "bat/ads/internal/ad_notifications.h"
 
 #include "bat/usermodel/user_model.h"
 
@@ -37,8 +36,8 @@ namespace ads {
 class Client;
 class Bundle;
 class AdsServe;
-class Notifications;
-class AdConversionTracking;
+class AdNotifications;
+class AdConversions;
 class FrequencyCapping;
 class ExclusionRule;
 class PermissionRule;
@@ -92,25 +91,25 @@ class AdsImpl : public Ads {
       const int32_t tab_id) override;
   bool IsMediaPlaying() const;
 
-  bool GetNotificationForId(
-      const std::string& id,
-      ads::NotificationInfo* notification) override;
+  bool GetAdNotification(
+      const std::string& uuid,
+      AdNotificationInfo* info) override;
 
-  void OnNotificationEvent(
-      const std::string& id,
-      const ads::NotificationEventType type) override;
-  void NotificationEventViewed(
-      const std::string& id,
-      const NotificationInfo& notification);
-  void NotificationEventClicked(
-      const std::string& id,
-      const NotificationInfo& notification);
-  void NotificationEventDismissed(
-      const std::string& id,
-      const NotificationInfo& notification);
-  void NotificationEventTimedOut(
-      const std::string& id,
-      const NotificationInfo& notification);
+  void OnAdNotificationEvent(
+      const std::string& uuid,
+      const AdNotificationEventType type) override;
+  void AdNotificationEventViewed(
+      const std::string& uuid,
+      const AdNotificationInfo& info);
+  void AdNotificationEventClicked(
+      const std::string& uuid,
+      const AdNotificationInfo& info);
+  void AdNotificationEventDismissed(
+      const std::string& uuid,
+      const AdNotificationInfo& info);
+  void AdNotificationEventTimedOut(
+      const std::string& uuid,
+      const AdNotificationInfo& info);
 
   bool ShouldNotDisturb() const;
 
@@ -138,11 +137,11 @@ class AdsImpl : public Ads {
       const uint64_t to_timestamp) override;
 
   AdContent::LikeAction ToggleAdThumbUp(
-      const std::string& id,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const AdContent::LikeAction& action) override;
   AdContent::LikeAction ToggleAdThumbDown(
-      const std::string& id,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const AdContent::LikeAction& action) override;
   CategoryContent::OptAction ToggleAdOptInAction(
@@ -152,11 +151,11 @@ class AdsImpl : public Ads {
       const std::string& category,
       const CategoryContent::OptAction& action) override;
   bool ToggleSaveAd(
-      const std::string& id,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const bool saved) override;
   bool ToggleFlagAd(
-      const std::string& id,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const bool flagged) override;
 
@@ -207,40 +206,40 @@ class AdsImpl : public Ads {
   void OnServeAdFromCategories(
       const Result result,
       const std::vector<std::string>& categories,
-      const std::vector<AdInfo>& ads);
+      const CreativeAdNotificationList& ads);
   bool ServeAdFromParentCategories(
       const std::vector<std::string>& categories);
   void ServeUntargetedAd();
   void OnServeUntargetedAd(
       const Result result,
       const std::vector<std::string>& categories,
-      const std::vector<AdInfo>& ads);
+      const CreativeAdNotificationList& ads);
   void OnGetAdConversions(
       const Result result,
       const std::string& url,
-      const std::vector<AdConversionTrackingInfo>& ad_conversions);
+      const AdConversionList& ad_conversions);
   void ServeAd(
-      const std::vector<AdInfo>& ads);
+      const CreativeAdNotificationList& ads);
 
   void SuccessfullyServedAd();
   void FailedToServeAd(
       const std::string& reason);
 
-  std::vector<AdInfo> GetEligibleAds(
-      const std::vector<AdInfo>& ads);
-  std::vector<AdInfo> GetUnseenAdsAndRoundRobinIfNeeded(
-      const std::vector<AdInfo>& ads) const;
-  std::vector<AdInfo> GetUnseenAds(
-      const std::vector<AdInfo>& ads) const;
-  std::vector<AdInfo> GetAdsForUnseenAdvertisers(
-      const std::vector<AdInfo>& ads) const;
+  CreativeAdNotificationList GetEligibleAds(
+      const CreativeAdNotificationList& ads);
+  CreativeAdNotificationList GetUnseenAdsAndRoundRobinIfNeeded(
+      const CreativeAdNotificationList& ads) const;
+  CreativeAdNotificationList GetUnseenAds(
+      const CreativeAdNotificationList& ads) const;
+  CreativeAdNotificationList GetAdsForUnseenAdvertisers(
+      const CreativeAdNotificationList& ads) const;
 
   bool IsAdValid(
-      const AdInfo& ad_info);
-  NotificationInfo last_shown_notification_info_;
-  AdInfo last_shown_ad_info_;
+      const CreativeAdNotificationInfo& info);
+  AdNotificationInfo last_shown_ad_notification_info_;
+  CreativeAdNotificationInfo last_shown_creative_ad_notification_info_;
   bool ShowAd(
-      const AdInfo& ad_info);
+      const CreativeAdNotificationInfo& info);
   bool IsAllowedToServeAds();
 
   uint32_t collect_activity_timer_id_;
@@ -250,20 +249,20 @@ class AdsImpl : public Ads {
   void StopCollectingActivity();
   bool IsCollectingActivity() const;
 
-  uint32_t delivering_notifications_timer_id_;
-  void StartDeliveringNotifications();
-  void StartDeliveringNotificationsAfterSeconds(
+  uint32_t delivering_ad_notifications_timer_id_;
+  void StartDeliveringAdNotifications();
+  void StartDeliveringAdNotificationsAfterSeconds(
       const uint64_t seconds);
-  void DeliverNotification();
-  void StopDeliveringNotifications();
-  bool IsDeliveringNotifications() const;
+  void DeliverAdNotification();
+  void StopDeliveringAdNotifications();
+  bool IsDeliveringAdNotifications() const;
   bool IsCatalogOlderThanOneDay();
-  void NotificationAllowedCheck(
+  void AdNotificationAllowedCheck(
       const bool serve);
 
   #if defined(OS_ANDROID)
-  void RemoveAllNotificationsAfterReboot();
-  void RemoveAllNotificationsAfterUpdate();
+  void RemoveAllAdNotificationsAfterReboot();
+  void RemoveAllAdNotificationsAfterUpdate();
   #endif
 
   void BundleUpdated();
@@ -277,23 +276,23 @@ class AdsImpl : public Ads {
   void StopSustainingAdInteraction();
   bool IsSustainingAdInteraction() const;
   bool IsStillViewingAd() const;
-  void ConfirmAd(
-      const NotificationInfo& info,
-      const ConfirmationType& type);
+  void ConfirmAdNotification(
+      const AdNotificationInfo& info,
+      const ConfirmationType& confirmation_type);
   void ConfirmAction(
-      const std::string& uuid,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
-      const ConfirmationType& type);
+      const ConfirmationType& confirmation_type);
 
   void OnTimer(
       const uint32_t timer_id) override;
 
   uint64_t next_easter_egg_timestamp_in_seconds_;
   void GenerateAdReportingConfirmationEvent(
-      const NotificationInfo& info);
+      const AdNotificationInfo& info);
   void GenerateAdReportingConfirmationEvent(
-      const std::string& uuid,
-      const ConfirmationType& type);
+      const std::string& creative_instance_id,
+      const ConfirmationType& confirmation_type);
   void MaybeGenerateAdReportingLoadEvent(
       const std::string& url,
       const std::string& classification);
@@ -310,17 +309,15 @@ class AdsImpl : public Ads {
   void GenerateAdReportingRestartEvent();
   void GenerateAdReportingSettingsEvent();
   void GenerateAdReportingNotificationShownEvent(
-      const NotificationInfo& info);
+      const AdNotificationInfo& info);
   void GenerateAdReportingNotificationResultEvent(
-      const NotificationInfo& info,
-      const NotificationResultInfoResultType type);
+      const AdNotificationInfo& info,
+      const AdNotificationResultType type);
 
-  void GenerateAdsHistoryEntry(
-      const NotificationInfo& notification_info,
-      const ConfirmationType& type);
+  void AppendAdNotificationToAdsHistory(
+      const AdNotificationInfo& info,
+      const ConfirmationType& confirmation_type);
 
-  bool IsNotificationFromSampleCatalog(
-      const NotificationInfo& info) const;
   bool IsCreativeSetFromSampleCatalog(
       const std::string& creative_set_id) const;
 
@@ -336,8 +333,8 @@ class AdsImpl : public Ads {
   std::unique_ptr<Bundle> bundle_;
   std::unique_ptr<AdsServe> ads_serve_;
   std::unique_ptr<FrequencyCapping> frequency_capping_;
-  std::unique_ptr<Notifications> notifications_;
-  std::unique_ptr<AdConversionTracking> ad_conversions_;
+  std::unique_ptr<AdNotifications> ad_notifications_;
+  std::unique_ptr<AdConversions> ad_conversions_;
   std::unique_ptr<usermodel::UserModel> user_model_;
 
  private:

@@ -22,7 +22,7 @@ class LocaleHelperWin : public LocaleHelper {
   ~LocaleHelperWin() override;
 
   // LocaleHelper impl
-  const std::string GetLocale() const override;
+  std::string GetLocale() const override;
 
   friend struct base::DefaultSingletonTraits<LocaleHelperWin>;
   DISALLOW_COPY_AND_ASSIGN(LocaleHelperWin);

@@ -14,7 +14,7 @@ namespace helper {
 
 class Error {
  public:
-  static const std::string GetDescription(const ads::Result result);
+  static std::string GetDescription(const ads::Result result);
 };
 
 }  // namespace helper
