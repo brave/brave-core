@@ -15,6 +15,7 @@
 #include "bat/ledger/internal/database/database_publisher_info.h"
 #include "bat/ledger/internal/database/database_recurring_tip.h"
 #include "bat/ledger/internal/database/database_server_publisher_info.h"
+#include "bat/ledger/internal/database/database_unblinded_token.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
 namespace braveledger_database {
@@ -35,6 +36,8 @@ Database::Database(bat_ledger::LedgerImpl* ledger) :
   recurring_tip_ = std::make_unique<DatabaseRecurringTip>(ledger_);
   server_publisher_info_ =
       std::make_unique<DatabaseServerPublisherInfo>(ledger_);
+  unblinded_token_ =
+      std::make_unique<DatabaseUnblindedToken>(ledger_);
 }
 
 Database::~Database() = default;
@@ -227,6 +230,32 @@ void Database::GetServerPublisherInfo(
     const std::string& publisher_key,
     ledger::GetServerPublisherInfoCallback callback) {
   server_publisher_info_->GetRecord(publisher_key, callback);
+}
+
+/**
+ * UNBLINDED TOKEN
+ */
+void Database::SaveUnblindedTokenList(
+    ledger::UnblindedTokenList list,
+    ledger::ResultCallback callback) {
+  unblinded_token_->InsertOrUpdateList(std::move(list), callback);
+}
+
+void Database::GetAllUnblindedTokens(
+    ledger::GetAllUnblindedTokensCallback callback) {
+  unblinded_token_->GetAllRecords(callback);
+}
+
+void Database::DeleteUnblindedTokens(
+    const std::vector<std::string>& ids,
+    ledger::ResultCallback callback) {
+  unblinded_token_->DeleteRecordList(ids, callback);
+}
+
+void Database::DeleteUnblindedTokensForPromotion(
+    const std::string& promotion_id,
+    ledger::ResultCallback callback) {
+  unblinded_token_->DeleteRecordsForPromotion(promotion_id, callback);
 }
 
 }  // namespace braveledger_database

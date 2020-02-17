@@ -65,10 +65,6 @@ private:
   std::string GetStringOption(const std::string& name) const override;
   int64_t GetInt64Option(const std::string& name) const override;
   uint64_t GetUint64Option(const std::string& name) const override;
-  void SaveUnblindedTokenList(ledger::UnblindedTokenList list, ledger::ResultCallback callback) override;
-  void GetAllUnblindedTokens(ledger::GetAllUnblindedTokensCallback callback) override;
-  void DeleteUnblindedTokens(const std::vector<std::string>& id_list, ledger::ResultCallback callback) override;
-  void DeleteUnblindedTokensForPromotion(const std::string& promotion_id, ledger::ResultCallback callback) override;
   ledger::ClientInfoPtr GetClientInfo() override;
   void UnblindedTokensReady() override;
   void GetTransactionReport(const ledger::ActivityMonth month, const int year, ledger::GetTransactionReportCallback callback) override;

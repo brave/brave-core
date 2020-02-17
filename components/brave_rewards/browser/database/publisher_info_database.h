@@ -20,7 +20,6 @@
 #include "base/sequence_checker.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/database/database_contribution_info.h"
-#include "brave/components/brave_rewards/browser/database/database_unblinded_token.h"
 #include "build/build_config.h"
 #include "sql/database.h"
 #include "sql/init_status.h"
@@ -47,15 +46,6 @@ class PublisherInfoDatabase {
       ledger::PublisherInfoList* list,
       const ledger::ActivityMonth month,
       const int year);
-
-  bool SaveUnblindedTokenList(ledger::UnblindedTokenList list);
-
-  ledger::UnblindedTokenList GetAllUnblindedTokens();
-
-  bool DeleteUnblindedTokens(const std::vector<std::string>& id_list);
-
-  bool DeleteUnblindedTokensForPromotion(
-      const std::string& promotion_id);
 
   void RecordP3AStats(bool auto_contributions_on);
 
@@ -152,7 +142,6 @@ class PublisherInfoDatabase {
   int testing_current_version_;
 
   std::unique_ptr<base::MemoryPressureListener> memory_pressure_listener_;
-  std::unique_ptr<DatabaseUnblindedToken> unblinded_token_;
   std::unique_ptr<DatabaseContributionInfo> contribution_info_;
 
   SEQUENCE_CHECKER(sequence_checker_);

@@ -264,21 +264,6 @@ class MockConfirmationsClient : public ConfirmationsClient {
     const std::string& wallet_type,
     const std::string& id));
 
-  MOCK_METHOD2(SaveUnblindedTokenList, void(
-    ledger::UnblindedTokenList list,
-    ledger::ResultCallback callback));
-
-  MOCK_METHOD1(GetAllUnblindedTokens, void(
-    ledger::GetAllUnblindedTokensCallback callback));
-
-  MOCK_METHOD2(DeleteUnblindedTokens, void(
-    const std::vector<std::string>& id_list,
-    ledger::ResultCallback callback));
-
-  MOCK_METHOD2(DeleteUnblindedTokensForPromotion, void(
-    const std::string& promotion_id,
-    ledger::ResultCallback callback));
-
   MOCK_METHOD0(GetClientInfo, ledger::ClientInfoPtr());
 
   MOCK_METHOD0(UnblindedTokensReady, void());

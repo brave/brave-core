@@ -53,9 +53,6 @@ PublisherInfoDatabase::PublisherInfoDatabase(
     testing_current_version_(testing_current_version) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 
-  unblinded_token_ =
-      std::make_unique<DatabaseUnblindedToken>(GetCurrentVersion());
-
   contribution_info_ =
       std::make_unique<DatabaseContributionInfo>(GetCurrentVersion());
 }
@@ -185,50 +182,6 @@ bool PublisherInfoDatabase::UpdateContributionInfoContributedAmount(
       &GetDB(),
       contribution_id,
       publisher_key);
-}
-
-/**
- *
- * UNBLINDED TOKEN
- *
- */
-bool PublisherInfoDatabase::SaveUnblindedTokenList(
-    ledger::UnblindedTokenList list) {
-  if (!IsInitialized()) {
-    return false;
-  }
-
-  return unblinded_token_->InsertOrUpdateList(&GetDB(), std::move(list));
-}
-
-ledger::UnblindedTokenList
-PublisherInfoDatabase::GetAllUnblindedTokens()  {
-  if (!IsInitialized()) {
-    ledger::UnblindedTokenList empty_list;
-    return empty_list;
-  }
-
-  return unblinded_token_->GetAllRecords(&GetDB());
-}
-
-bool PublisherInfoDatabase::DeleteUnblindedTokens(
-    const std::vector<std::string>& id_list) {
-  if (!IsInitialized()) {
-    return false;
-  }
-
-  return unblinded_token_->DeleteRecords(&GetDB(), id_list);
-}
-
-bool PublisherInfoDatabase::DeleteUnblindedTokensForPromotion(
-    const std::string& promotion_id) {
-  if (!IsInitialized()) {
-    return false;
-  }
-
-  return DatabaseUnblindedToken::DeleteRecordsForPromotion(
-      &GetDB(),
-      promotion_id);
 }
 
 /**
@@ -459,10 +412,6 @@ bool PublisherInfoDatabase::MigrateV9toV10() {
     return false;
   }
 
-  if (!unblinded_token_->Migrate(&GetDB(), 10)) {
-    return false;
-  }
-
   return transaction.Commit();
 }
 
@@ -503,10 +452,6 @@ bool PublisherInfoDatabase::MigrateV13toV14() {
     return false;
   }
 
-  if (!unblinded_token_->Migrate(&GetDB(), 14)) {
-    return false;
-  }
-
   return transaction.Commit();
 }
 
@@ -517,10 +462,6 @@ bool PublisherInfoDatabase::MigrateV14toV15() {
   }
 
   if (!contribution_info_->Migrate(&GetDB(), 15)) {
-    return false;
-  }
-
-  if (!unblinded_token_->Migrate(&GetDB(), 15)) {
     return false;
   }
 

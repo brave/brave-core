@@ -155,6 +155,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/database/database_server_publisher_links.h",
     "src/bat/ledger/internal/database/database_table.cc",
     "src/bat/ledger/internal/database/database_table.h",
+    "src/bat/ledger/internal/database/database_unblinded_token.cc",
+    "src/bat/ledger/internal/database/database_unblinded_token.h",
     "src/bat/ledger/internal/database/database_util.cc",
     "src/bat/ledger/internal/database/database_util.h",
     "src/bat/ledger/internal/ledger_impl.cc",

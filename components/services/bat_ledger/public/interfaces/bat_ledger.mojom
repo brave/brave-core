@@ -236,10 +236,6 @@ interface BatLedgerClient {
   GetTransferFees(string wallet_type) => (map<string, ledger.mojom.TransferFee> list);
   SetTransferFee(string wallet_type, ledger.mojom.TransferFee transfer_fee);
   RemoveTransferFee(string wallet_type, string id);
-  SaveUnblindedTokenList(array<ledger.mojom.UnblindedToken> list) => (ledger.mojom.Result result);
-  GetAllUnblindedTokens() => (array<ledger.mojom.UnblindedToken> info);
-  DeleteUnblindedTokens(array<string> id_list) => (ledger.mojom.Result result);
-  DeleteUnblindedTokensForPromotion(string promotion_id) => (ledger.mojom.Result result);
   [Sync]
   GetClientInfo() => (ledger.mojom.ClientInfo info);
   UnblindedTokensReady();

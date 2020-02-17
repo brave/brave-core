@@ -87,8 +87,6 @@ source_set("browser") {
       "database/database_contribution_info_publishers.h",
       "database/database_table.cc",
       "database/database_table.h",
-      "database/database_unblinded_token.cc",
-      "database/database_unblinded_token.h",
       "database/database_util.cc",
       "database/database_util.h",
       "database/publisher_info_database.cc",
