@@ -10,8 +10,8 @@
 #include "base/bind.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/task/post_task.h"
-#include "brave/components/speedreader/resources/grit/speedreader_resources.h"
 #include "brave/components/speedreader/speedreader_throttle.h"
+#include "components/grit/brave_components_resources.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -23,7 +23,7 @@ namespace {
 constexpr uint32_t kReadBufferSize = 32768;
 
 std::string GetDistilledPageResources() {
-  return "<style>" +
+  return "<style id=\"brave_speedreader_style\">" +
          ui::ResourceBundle::GetSharedInstance()
              .GetRawDataResource(IDR_SPEEDREADER_STYLE_DESKTOP)
              .as_string() +

@@ -96,7 +96,4 @@
   "<(ROOT_GEN_DIR)/brave/web-ui-webcompat_reporter/webcompat_reporter.grd": {
     "includes": [45000],
   },
-  "brave/components/speedreader/resources/speedreader_static_resources.grd": {
-    "includes": [45500]
-  },
 }

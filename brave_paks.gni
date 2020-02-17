@@ -150,16 +150,6 @@ template("brave_extra_paks") {
       }
     }
 
-    if (enable_speedreader) {
-      sources += [
-        "$root_gen_dir/brave/components/speedreader/resources/speedreader_resources.pak",
-      ]
-
-      deps += [
-        "//brave/components/speedreader/resources",
-      ]
-    }
-
     if (defined(invoker.deps)) {
       deps += invoker.deps
     }
