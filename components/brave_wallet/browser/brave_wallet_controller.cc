@@ -176,10 +176,6 @@ void BraveWalletController::OnCryptoWalletsReset(bool success) {
 }
 
 void BraveWalletController::CloseTabsAndRestart() {
-  // Close current tab
-  auto* current_browser =
-      BrowserList::GetInstance()->GetLastActive();
-  current_browser->tab_strip_model()->CloseSelectedTabs();
   // Close all CW tabs in each browser instance
   for (auto* browser : *BrowserList::GetInstance()) {
     auto* tab_strip = browser->tab_strip_model();
