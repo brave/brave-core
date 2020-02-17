@@ -112,7 +112,7 @@ std::string FromPromotionToString(const ledger::PromotionPtr info) {
   promotion.SetIntKey("version", info->version);
   promotion.SetIntKey("type", static_cast<int>(info->type));
   promotion.SetIntKey("suggestions", info->suggestions);
-  promotion.SetBoolKey("status", static_cast<int>(info->status));
+  promotion.SetIntKey("status", static_cast<int>(info->status));
   promotion.SetKey("credentials", std::move(credentials));
   promotion.SetBoolKey("legacy_claimed", info->legacy_claimed);
 

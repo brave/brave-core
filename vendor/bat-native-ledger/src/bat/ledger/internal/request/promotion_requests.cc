@@ -48,4 +48,11 @@ std::string GetReedemSuggestionsUrl() {
   return BuildUrl("/suggestions", PREFIX_V1, ServerTypes::kPromotion);
 }
 
+std::string ReportClobberedClaimsUrl() {
+  return BuildUrl(
+      "/promotions/reportclobberedclaims",
+      PREFIX_V1,
+      ServerTypes::kPromotion);
+}
+
 }  // namespace braveledger_request_util

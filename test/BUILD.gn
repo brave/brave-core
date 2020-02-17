@@ -314,6 +314,8 @@ test("brave_unit_tests") {
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/state/wallet_state_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/test/niceware_partial_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/promotion/promotion_unittest.cc",
+      "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/promotion/promotion_util_unittest.cc",
+      "//brave/components/brave_rewards/browser/database/database_util_unittest.cc",
       "//brave/components/brave_rewards/browser/database/publisher_info_database_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/ledger_client_mock.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/ledger_client_mock.h",

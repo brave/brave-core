@@ -998,11 +998,19 @@ void BatLedgerClientMojoProxy::GetAllPromotions(
       base::BindOnce(&OnGetAllPromotions, std::move(callback)));
 }
 
-void BatLedgerClientMojoProxy::InsertOrUpdateUnblindedToken(
-    ledger::UnblindedTokenPtr info,
+void BatLedgerClientMojoProxy::DeletePromotionList(
+    const std::vector<std::string>& id_list,
     ledger::ResultCallback callback) {
-  bat_ledger_client_->InsertOrUpdateUnblindedToken(
-      std::move(info),
+  bat_ledger_client_->DeletePromotionList(
+      id_list,
+      base::BindOnce(&OnResultCallback, std::move(callback)));
+}
+
+void BatLedgerClientMojoProxy::SaveUnblindedTokenList(
+    ledger::UnblindedTokenList list,
+    ledger::ResultCallback callback) {
+  bat_ledger_client_->SaveUnblindedTokenList(
+      std::move(list),
       base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 

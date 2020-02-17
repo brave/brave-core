@@ -541,18 +541,23 @@ ledger::PromotionMap PublisherInfoDatabase::GetAllPromotions() {
   return promotion_->GetAllRecords(&GetDB());
 }
 
+bool PublisherInfoDatabase::DeletePromotionList(
+    const std::vector<std::string>& id_list) {
+  return promotion_->DeleteRecordList(&GetDB(), id_list);
+}
+
 /**
  *
  * UNBLINDED TOKEN
  *
  */
-bool PublisherInfoDatabase::InsertOrUpdateUnblindedToken(
-    ledger::UnblindedTokenPtr info) {
+bool PublisherInfoDatabase::SaveUnblindedTokenList(
+    ledger::UnblindedTokenList list) {
   if (!IsInitialized()) {
     return false;
   }
 
-  return unblinded_token_->InsertOrUpdate(&GetDB(), std::move(info));
+  return unblinded_token_->InsertOrUpdateList(&GetDB(), std::move(list));
 }
 
 ledger::UnblindedTokenList

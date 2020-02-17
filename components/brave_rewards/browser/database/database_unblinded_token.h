@@ -27,7 +27,7 @@ class DatabaseUnblindedToken: public DatabaseTable {
 
   bool CreateIndex(sql::Database* db) override;
 
-  bool InsertOrUpdate(sql::Database* db, ledger::UnblindedTokenPtr info);
+  bool InsertOrUpdateList(sql::Database* db, ledger::UnblindedTokenList list);
 
   ledger::UnblindedTokenList GetAllRecords(sql::Database* db);
 

@@ -9,6 +9,8 @@
 
 #include "base/bind.h"
 #include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
+#include "brave/components/brave_rewards/browser/database/database_util.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
 
@@ -188,6 +190,27 @@ ledger::PromotionMap DatabasePromotion::GetAllRecords(sql::Database* db) {
   }
 
   return map;
+}
+
+bool DatabasePromotion::DeleteRecordList(
+      sql::Database* db,
+      const std::vector<std::string>& id_list) {
+  if (id_list.empty()) {
+    return true;
+  }
+
+  const std::string query = base::StringPrintf(
+      "DELETE FROM %s WHERE promotion_id IN (%s)",
+      table_name_,
+      GenerateStringInCase(id_list).c_str());
+
+  sql::Statement statement(db->GetUniqueStatement(query.c_str()));
+
+  if (!statement.Run()) {
+    return false;
+  }
+
+  return creds_->DeleteRecordListByPromotion(db, id_list);
 }
 
 }  // namespace brave_rewards
