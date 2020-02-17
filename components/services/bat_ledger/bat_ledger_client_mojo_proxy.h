@@ -134,21 +134,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       const std::string& wallet_type,
       const std::string& id) override;
 
-  void SaveUnblindedTokenList(
-      ledger::UnblindedTokenList list,
-      ledger::ResultCallback callback) override;
-
-  void GetAllUnblindedTokens(
-      ledger::GetAllUnblindedTokensCallback callback) override;
-
-  void DeleteUnblindedTokens(
-      const std::vector<std::string>& id_list,
-      ledger::ResultCallback callback) override;
-
-  void DeleteUnblindedTokensForPromotion(
-      const std::string& promotion_id,
-      ledger::ResultCallback callback) override;
-
   ledger::ClientInfoPtr GetClientInfo() override;
 
   void UnblindedTokensReady() override;

@@ -27,6 +27,7 @@ class DatabasePromotion;
 class DatabasePublisherInfo;
 class DatabaseRecurringTip;
 class DatabaseServerPublisherInfo;
+class DatabaseUnblindedToken;
 
 class Database {
  public:
@@ -163,6 +164,24 @@ class Database {
       const std::string& publisher_key,
       ledger::GetServerPublisherInfoCallback callback);
 
+  /**
+   * UNBLINDED TOKEN
+   */
+  void SaveUnblindedTokenList(
+      ledger::UnblindedTokenList list,
+      ledger::ResultCallback callback);
+
+  void GetAllUnblindedTokens(
+      ledger::GetAllUnblindedTokensCallback callback);
+
+  void DeleteUnblindedTokens(
+      const std::vector<std::string>& ids,
+      ledger::ResultCallback callback);
+
+  void DeleteUnblindedTokensForPromotion(
+      const std::string& promotion_id,
+      ledger::ResultCallback callback);
+
  private:
   std::unique_ptr<DatabaseInitialize> initialize_;
   std::unique_ptr<DatabaseActivityInfo> activity_info_;
@@ -173,6 +192,7 @@ class Database {
   std::unique_ptr<DatabasePublisherInfo> publisher_info_;
   std::unique_ptr<DatabaseRecurringTip> recurring_tip_;
   std::unique_ptr<DatabaseServerPublisherInfo> server_publisher_info_;
+  std::unique_ptr<DatabaseUnblindedToken> unblinded_token_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 

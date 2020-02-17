@@ -62,20 +62,10 @@ void OnResultCallback(ledger::ResultCallback callback, ledger::Result result) {
   callback(result);
 }
 
-void OnSaveState(const ledger::OnSaveCallback& callback,
-                 const ledger::Result result) {
-  callback(result);
-}
-
 void OnLoadState(const ledger::OnLoadCallback& callback,
                  const ledger::Result result,
                  const std::string& value) {
   callback(result, value);
-}
-
-void OnResetState(const ledger::OnSaveCallback& callback,
-                  const ledger::Result result) {
-  callback(result);
 }
 
 void OnGetExternalWallets(
@@ -363,7 +353,7 @@ void BatLedgerClientMojoProxy::SaveState(
 
   bat_ledger_client_->SaveState(
       name, value,
-      base::BindOnce(&OnSaveState, std::move(callback)));
+      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void BatLedgerClientMojoProxy::LoadState(
@@ -387,7 +377,7 @@ void BatLedgerClientMojoProxy::ResetState(
   }
 
   bat_ledger_client_->ResetState(
-      name, base::BindOnce(&OnResetState, std::move(callback)));
+      name, base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 void BatLedgerClientMojoProxy::SetBooleanState(const std::string& name,
@@ -585,42 +575,6 @@ void BatLedgerClientMojoProxy::RemoveTransferFee(
     const std::string& wallet_type,
     const std::string& id) {
   bat_ledger_client_->RemoveTransferFee(wallet_type, id);
-}
-
-void BatLedgerClientMojoProxy::SaveUnblindedTokenList(
-    ledger::UnblindedTokenList list,
-    ledger::ResultCallback callback) {
-  bat_ledger_client_->SaveUnblindedTokenList(
-      std::move(list),
-      base::BindOnce(&OnResultCallback, std::move(callback)));
-}
-
-void OnGetAllUnblindedTokens(
-    const ledger::GetAllUnblindedTokensCallback& callback,
-    ledger::UnblindedTokenList list) {
-  callback(std::move(list));
-}
-
-void BatLedgerClientMojoProxy::GetAllUnblindedTokens(
-    ledger::GetAllUnblindedTokensCallback callback) {
-  bat_ledger_client_->GetAllUnblindedTokens(
-      base::BindOnce(&OnGetAllUnblindedTokens, std::move(callback)));
-}
-
-void BatLedgerClientMojoProxy::DeleteUnblindedTokens(
-    const std::vector<std::string>& id_list,
-    ledger::ResultCallback callback) {
-  bat_ledger_client_->DeleteUnblindedTokens(
-      id_list,
-      base::BindOnce(&OnResultCallback, std::move(callback)));
-}
-
-void BatLedgerClientMojoProxy::DeleteUnblindedTokensForPromotion(
-    const std::string& promotion_id,
-    ledger::ResultCallback callback) {
-  bat_ledger_client_->DeleteUnblindedTokensForPromotion(
-      promotion_id,
-      base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
 ledger::ClientInfoPtr BatLedgerClientMojoProxy::GetClientInfo() {

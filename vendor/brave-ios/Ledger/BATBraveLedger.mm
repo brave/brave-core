@@ -1818,42 +1818,6 @@ BATLedgerBridge(BOOL,
                notificationID:notificationID
                      onlyOnce:NO];
 }
-
-- (void)saveUnblindedTokenList:(ledger::UnblindedTokenList)list callback:(ledger::ResultCallback)callback
-{
-  // This can be commented for now as it will be removed as part of database refactor
-//    for (BATPromotion *info in list) {
-//      if (info.id == 0) {
-//        NSNumber *nextID = self.prefs[kUnblindedTokenAutoincrementID] ?: [NSNumber numberWithUnsignedLongLong:1];
-//        info.id = [nextID unsignedLongLongValue];
-//        self.prefs[kUnblindedTokenAutoincrementID] = @([nextID unsignedLongLongValue] + 1);
-//        [self savePrefs];
-//      }
-//      const auto bridgedToken = [[BATUnblindedToken alloc] initWithUnblindedToken:info];
-//      [BATLedgerDatabase insertOrUpdateUnblindedToken:bridgedToken completion:^(BOOL success) {
-//        callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
-//      }];
-//    }
-}
-
-- (void)getAllUnblindedTokens:(ledger::GetAllUnblindedTokensCallback)callback
-{
-  const auto tokens = [BATLedgerDatabase allUnblindedTokens];
-  callback(VectorFromNSArray(tokens, ^ledger::UnblindedTokenPtr(BATUnblindedToken *info){
-    return info.cppObjPtr;
-  }));
-}
-
-- (void)deleteUnblindedTokens:(const std::vector<std::string>&)list callback:(ledger::ResultCallback)callback
-{
-  const auto ids = NSArrayFromVector(list, ^NSNumber *(const std::string &str){
-    return @([[NSString stringWithUTF8String:str.c_str()] integerValue]);
-  });
-  [BATLedgerDatabase deleteUnblindedTokens:ids completion:^(BOOL success) {
-    callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
-  }];
-}
-
 - (ledger::ClientInfoPtr)getClientInfo
 {
   auto info = ledger::ClientInfo::New();
@@ -1870,11 +1834,6 @@ BATLedgerBridge(BOOL,
       observer.balanceReportUpdated();
     }
   }
-}
-
-- (void)deleteUnblindedTokensForPromotion:(const std::string&)promotion_id callback:(ledger::ResultCallback)callback
-{
-  // TODO please implement
 }
 
 - (void)getTransactionReport:(const ledger::ActivityMonth)month year:(const uint32_t)year callback:(ledger::GetTransactionReportCallback)callback

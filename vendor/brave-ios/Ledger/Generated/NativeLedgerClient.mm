@@ -161,23 +161,11 @@ int64_t NativeLedgerClient::GetInt64Option(const std::string& name) const {
 uint64_t NativeLedgerClient::GetUint64Option(const std::string& name) const {
   return [bridge_ getUint64Option:name];
 }
-void NativeLedgerClient::SaveUnblindedTokenList(ledger::UnblindedTokenList list, ledger::ResultCallback callback) {
-  return [bridge_ saveUnblindedTokenList:std::move(list) callback:callback];
-}
-void NativeLedgerClient::GetAllUnblindedTokens(ledger::GetAllUnblindedTokensCallback callback) {
-  return [bridge_ getAllUnblindedTokens:callback];
-}
-void NativeLedgerClient::DeleteUnblindedTokens(const std::vector<std::string>& id_list, ledger::ResultCallback callback) {
-  [bridge_ deleteUnblindedTokens:id_list callback:callback];
-}
 ledger::ClientInfoPtr NativeLedgerClient::GetClientInfo() {
   return [bridge_ getClientInfo];
 }
 void NativeLedgerClient::UnblindedTokensReady() {
   [bridge_ unblindedTokensReady];
-}
-void NativeLedgerClient::DeleteUnblindedTokensForPromotion(const std::string& promotion_id, ledger::ResultCallback callback) {
-  [bridge_ deleteUnblindedTokensForPromotion:promotion_id callback:callback];
 }
 void NativeLedgerClient::GetTransactionReport(const ledger::ActivityMonth month, const int year, ledger::GetTransactionReportCallback callback) {
   [bridge_ getTransactionReport:month year:year callback:callback];

@@ -151,21 +151,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       const std::string& wallet_type,
       const std::string& id) override;
 
-  void SaveUnblindedTokenList(
-    ledger::UnblindedTokenList list,
-    SaveUnblindedTokenListCallback callback) override;
-
-  void GetAllUnblindedTokens(
-    GetAllUnblindedTokensCallback callback) override;
-
-  void DeleteUnblindedTokens(
-      const std::vector<std::string>& id_list,
-      DeleteUnblindedTokensCallback callback) override;
-
-  void DeleteUnblindedTokensForPromotion(
-      const std::string& promotion_id,
-      DeleteUnblindedTokensForPromotionCallback callback) override;
-
   void GetClientInfo(
       GetClientInfoCallback callback) override;
 
@@ -292,22 +277,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   static void OnShowNotification(
     CallbackHolder<ShowNotificationCallback>* holder,
     const ledger::Result result);
-
-  static void OnSaveUnblindedTokenList(
-    CallbackHolder<SaveUnblindedTokenListCallback>* holder,
-    const ledger::Result result);
-
-  static void OnGetAllUnblindedTokens(
-    CallbackHolder<GetAllUnblindedTokensCallback>* holder,
-    ledger::UnblindedTokenList list);
-
-  static void OnDeleteUnblindedToken(
-    CallbackHolder<DeleteUnblindedTokensCallback>* holder,
-    const ledger::Result result);
-
-  static void OnDeleteUnblindedTokensForPromotion(
-      CallbackHolder<DeleteUnblindedTokensForPromotionCallback>* holder,
-      const ledger::Result result);
 
   static void OnGetTransactionReport(
       CallbackHolder<GetTransactionReportCallback>* holder,

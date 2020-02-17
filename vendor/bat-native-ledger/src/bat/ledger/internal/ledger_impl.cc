@@ -1620,24 +1620,24 @@ void LedgerImpl::DeletePromotionList(
 void LedgerImpl::SaveUnblindedTokenList(
     ledger::UnblindedTokenList list,
     ledger::ResultCallback callback) {
-  ledger_client_->SaveUnblindedTokenList(std::move(list), callback);
+  bat_database_->SaveUnblindedTokenList(std::move(list), callback);
 }
 
 void LedgerImpl::GetAllUnblindedTokens(
     ledger::GetAllUnblindedTokensCallback callback) {
-  ledger_client_->GetAllUnblindedTokens(callback);
+  bat_database_->GetAllUnblindedTokens(callback);
 }
 
 void LedgerImpl::DeleteUnblindedTokens(
     const std::vector<std::string>& id_list,
     ledger::ResultCallback callback) {
-  ledger_client_->DeleteUnblindedTokens(id_list, callback);
+  bat_database_->DeleteUnblindedTokens(id_list, callback);
 }
 
 void LedgerImpl::DeleteUnblindedTokensForPromotion(
     const std::string& promotion_id,
     ledger::ResultCallback callback) {
-  ledger_client_->DeleteUnblindedTokensForPromotion(promotion_id, callback);
+  bat_database_->DeleteUnblindedTokensForPromotion(promotion_id, callback);
 }
 
 ledger::ClientInfoPtr LedgerImpl::GetClientInfo() {

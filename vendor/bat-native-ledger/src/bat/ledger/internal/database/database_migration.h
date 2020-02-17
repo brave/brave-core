@@ -24,6 +24,7 @@ class DatabasePromotion;
 class DatabasePublisherInfo;
 class DatabaseRecurringTip;
 class DatabaseServerPublisherInfo;
+class DatabaseUnblindedToken;
 
 class DatabaseMigration {
  public:
@@ -45,6 +46,7 @@ class DatabaseMigration {
   std::unique_ptr<DatabasePublisherInfo> publisher_info_;
   std::unique_ptr<DatabaseRecurringTip> recurring_tip_;
   std::unique_ptr<DatabaseServerPublisherInfo> server_publisher_info_;
+  std::unique_ptr<DatabaseUnblindedToken> unblinded_token_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 

@@ -15,6 +15,7 @@
 #include "bat/ledger/internal/database/database_publisher_info.h"
 #include "bat/ledger/internal/database/database_recurring_tip.h"
 #include "bat/ledger/internal/database/database_server_publisher_info.h"
+#include "bat/ledger/internal/database/database_unblinded_token.h"
 #include "bat/ledger/internal/database/database_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
@@ -35,6 +36,8 @@ DatabaseMigration::DatabaseMigration(bat_ledger::LedgerImpl* ledger) :
   recurring_tip_ = std::make_unique<DatabaseRecurringTip>(ledger_);
   server_publisher_info_ =
       std::make_unique<DatabaseServerPublisherInfo>(ledger_);
+  unblinded_token_ =
+      std::make_unique<DatabaseUnblindedToken>(ledger_);
 }
 
 DatabaseMigration::~DatabaseMigration() = default;
@@ -111,6 +114,10 @@ bool DatabaseMigration::Migrate(
   }
 
   if (!server_publisher_info_->Migrate(transaction, target)) {
+    return false;
+  }
+
+  if (!unblinded_token_->Migrate(transaction, target)) {
     return false;
   }
 
