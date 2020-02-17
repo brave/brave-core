@@ -113,7 +113,10 @@ void Uphold::FetchBalance(
     FetchBalanceCallback callback) {
   const auto wallet = GetWallet(std::move(wallets));
 
-  if (!wallet || wallet->token.empty() || wallet->address.empty()) {
+  if (!wallet ||
+      wallet->token.empty() ||
+      wallet->address.empty() ||
+      wallet->status == ledger::WalletStatus::CONNECTED) {
     callback(ledger::Result::LEDGER_OK, 0.0);
     return;
   }
