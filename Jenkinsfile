@@ -43,11 +43,21 @@ pipeline {
                         if (env.CHANGE_BRANCH) {
                             BRANCH = env.CHANGE_BRANCH
                             TARGET_BRANCH = env.CHANGE_TARGET
-                            def prNumber = readJSON(text: httpRequest(customHeaders: [[name: "Authorization", value: "token ${PR_BUILDER_TOKEN}"]], url: GITHUB_API + "/brave-core/pulls?head=brave:" + BRANCH, quiet: !DEBUG).content)[0].number
-                            def prDetails = readJSON(text: httpRequest(customHeaders: [[name: "Authorization", value: "token ${PR_BUILDER_TOKEN}"]], url: GITHUB_API + "/brave-core/pulls/" + prNumber, quiet: !DEBUG).content)
-                            SKIP = prDetails.mergeable_state.equals("draft") or prDetails.labels.count { label -> label.name.equalsIgnoreCase("CI/skip") }.equals(1)
+                            def bcPrDetails = readJSON(text: httpRequest(url: GITHUB_API + "/brave-core/pulls?head=brave:" + BRANCH, customHeaders: [[name: "Authorization", value: "token ${PR_BUILDER_TOKEN}"]], quiet: !DEBUG).content)[0]
+                            if (bcPrDetails) {
+                                bcPrDetails = readJSON(text: httpRequest(url: GITHUB_API + "/brave-core/pulls/" + bcPrDetails.number, customHeaders: [[name: "Authorization", value: "token ${PR_BUILDER_TOKEN}"]], quiet: !DEBUG).content)
+                                SKIP = SKIP || bcPrDetails.mergeable_state.equals("draft") || bcPrDetails.labels.count { label -> label.name.equalsIgnoreCase("CI/skip") }.equals(1)
+                            }
                         }
-                        BRANCH_EXISTS_IN_BB = httpRequest(customHeaders: [[name: "Authorization", value: "token ${PR_BUILDER_TOKEN}"]], url: GITHUB_API + "/brave-browser/branches/" + BRANCH, validResponseCodes: "100:499", quiet: !DEBUG).status.equals(200)
+                        BRANCH_EXISTS_IN_BB = httpRequest(url: GITHUB_API + "/brave-browser/branches/" + BRANCH, validResponseCodes: "100:499", customHeaders: [[name: "Authorization", value: "token ${PR_BUILDER_TOKEN}"]], quiet: !DEBUG).status.equals(200)
+                        if (BRANCH_EXISTS_IN_BB) {
+                            def bbPrDetails = readJSON(text: httpRequest(url: GITHUB_API + "/brave-browser/pulls?head=brave:" + BRANCH, customHeaders: [[name: "Authorization", value: "token ${PR_BUILDER_TOKEN}"]], quiet: !DEBUG).content)[0]
+                            if (bbPrDetails) {
+                                bbPrDetails = readJSON(text: httpRequest(url: GITHUB_API + "/brave-browser/pulls/" + bbPrDetails.number, customHeaders: [[name: "Authorization", value: "token ${PR_BUILDER_TOKEN}"]], quiet: !DEBUG).content)
+                                SKIP = SKIP || bbPrDetails.mergeable_state.equals("draft") || bbPrDetails.labels.count { label -> label.name.equalsIgnoreCase("CI/skip") }.equals(1)
+                            }
+                        }
+                        buildName env.BUILD_NUMBER + "-" + BRANCH + "-" + env.GIT_COMMIT.substring(0, 7)
                     }
                 }
             }
@@ -63,7 +73,6 @@ pipeline {
                         if (build.isBuilding() && build.getNumber() < env.BUILD_NUMBER.toInteger()) {
                             echo "Aborting older running build " + build
                             build.doStop()
-                            // build.finish(hudson.model.Result.ABORTED, new java.io.IOException("Aborting build"))
                         }
                     }
                 }
@@ -90,7 +99,7 @@ pipeline {
                 """
             }
         }
-        stage("branch-create") {
+        stage("branch") {
             when {
                 allOf {
                     expression { !SKIP }
@@ -109,49 +118,6 @@ pipeline {
 
                     echo "Pushing"
                     git push ${BB_REPO}
-                """
-            }
-        }
-        stage("branch-rebase") {
-            when {
-                allOf {
-                    expression { !SKIP }
-                    expression { BRANCH_EXISTS_IN_BB }
-                }
-            }
-            steps {
-                sh """
-                    set -e
-
-                    cd brave-browser
-                    git checkout ${BRANCH}
-
-                    if [ "`jq -r .version package.json`" != "`jq -r .version ../package.json`" ]; then
-                        set +e
-
-                        echo "Version mismatch between brave-browser and brave-core in package.json, attempting rebase on brave-browser"
-
-                        echo "Fetching latest changes and pruning refs"
-                        git fetch --prune
-
-                        echo "Rebasing ${BRANCH} branch on brave-browser against ${TARGET_BRANCH}"
-                        git rebase origin/${TARGET_BRANCH}
-
-                        if [ \$? -ne 0 ]; then
-                            echo "Failed to rebase (conflicts), will need to be manually rebased"
-                            git rebase --abort
-                        else
-                            echo "Rebased, force pushing to brave-browser"
-                            git push --force ${BB_REPO}
-                        fi
-
-                        if [ "`jq -r .version package.json`" != "`jq -r .version ../package.json`" ]; then
-                            echo "Version mismatch between brave-browser and brave-core in package.json, please try rebasing this branch in brave-core as well"
-                            exit 1
-                        fi
-
-                        set -e
-                    fi
                 """
             }
         }
@@ -188,7 +154,7 @@ def getBuilds() {
 }
 
 def startBraveBrowserBuild() {
-    def prDetails = readJSON(text: httpRequest(customHeaders: [[name: "Authorization", value: "token ${PR_BUILDER_TOKEN}"]], url: GITHUB_API + "/brave-browser/pulls?head=brave:" + BRANCH, quiet: !DEBUG).content)[0]
+    def prDetails = readJSON(text: httpRequest(url: GITHUB_API + "/brave-browser/pulls?head=brave:" + BRANCH, customHeaders: [[name: "Authorization", value: "token ${PR_BUILDER_TOKEN}"]], quiet: !DEBUG).content)[0]
     def prNumber = prDetails ? prDetails.number : ""
     def refToBuild = prNumber ? "PR-" + prNumber : URLEncoder.encode(BRANCH, "UTF-8")
     params = [
