@@ -9,6 +9,7 @@
 #include <stdint.h>
 
 #include <string>
+#include <vector>
 
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/database/database_table.h"
@@ -34,6 +35,10 @@ class DatabasePromotionCreds: public DatabaseTable {
   ledger::PromotionCredsPtr GetRecord(
       sql::Database* db,
       const std::string& promotion_id);
+
+  bool DeleteRecordListByPromotion(
+      sql::Database* db,
+      const std::vector<std::string>& id_list);
 
  private:
   const char* table_name_ = "promotion_creds";

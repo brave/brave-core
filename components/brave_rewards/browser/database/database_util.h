@@ -46,6 +46,8 @@ bool DropTable(
     sql::Database* db,
     const std::string& table_name);
 
+std::string GenerateStringInCase(const std::vector<std::string>& list);
+
 }  // namespace brave_rewards
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_DATABASE_DATABASE_UTIL_H_
