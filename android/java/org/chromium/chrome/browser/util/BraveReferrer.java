@@ -48,7 +48,13 @@ public class BraveReferrer implements InstallReferrerStateListener {
         if (!sharedPref.getBoolean(BRAVE_REFERRER_RECEIVED, false) &&
             PackageUtils.isFirstInstall(context)) {
             referrerClient = InstallReferrerClient.newBuilder(context).build();
-            referrerClient.startConnection(this);
+            // This seems to be known issue, for now just wrapping it into try/catch block
+            // https://issuetracker.google.com/issues/72926755
+            try {
+                referrerClient.startConnection(this);
+            } catch (SecurityException e) {
+                Log.e(TAG, "Unable to start connection for referrer client: " + e);
+            }
         }
     }
 
