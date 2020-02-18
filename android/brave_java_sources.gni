@@ -65,6 +65,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/qrreader/CameraSource.java",
   "../../brave/android/java/org/chromium/chrome/browser/qrreader/CameraSourcePreview.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/AppearancePreferences.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/BackgroundImagesPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BackgroundVideoPlaybackPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveHomepagePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveLicensePreferences.java",
