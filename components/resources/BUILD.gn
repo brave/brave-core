@@ -38,15 +38,12 @@ grit("static_resources") {
 
   defines = [
     "enable_brave_perf_predictor=$enable_brave_perf_predictor",
+    "enable_speedreader=$enable_speedreader",
   ]
 
   grit_flags = [
     "-E",
     "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
-  ]
-
-  defines = [
-    "enable_speedreader=$enable_speedreader",
   ]
 
   output_dir = "$root_gen_dir/components"
