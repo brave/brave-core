@@ -182,10 +182,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
                                 base::Value(false));
 
   // Importer: selected data types
-  registry->RegisterBooleanPref(prefs::kImportDialogCookies, true);
-  registry->RegisterBooleanPref(prefs::kImportDialogStats, true);
-  registry->RegisterBooleanPref(prefs::kImportDialogLedger, true);
-  registry->RegisterBooleanPref(prefs::kImportDialogWindows, true);
+  registry->RegisterBooleanPref(kImportDialogCookies, true);
+  registry->RegisterBooleanPref(kImportDialogStats, true);
+  registry->RegisterBooleanPref(kImportDialogLedger, true);
+  registry->RegisterBooleanPref(kImportDialogWindows, true);
+  registry->RegisterBooleanPref(kImportDialogExtensions, true);
   // Importer: ledger (used for Brave Rewards pinned => tips)
   registry->RegisterIntegerPref(kBravePaymentsPinnedItemCount, 0);
 

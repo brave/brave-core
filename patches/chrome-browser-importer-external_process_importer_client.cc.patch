@@ -1,17 +1,12 @@
 diff --git a/chrome/browser/importer/external_process_importer_client.cc b/chrome/browser/importer/external_process_importer_client.cc
-index 262ef2c6489e088465a26f2837a2973050793c3c..bf6b4ab49f29c2d33729537445c34deb6cd1f91e 100644
+index 262ef2c6489e088465a26f2837a2973050793c3c..3d9af922f2d7a3c3b42bec35c9adeacb6f86dc67 100644
 --- a/chrome/browser/importer/external_process_importer_client.cc
 +++ b/chrome/browser/importer/external_process_importer_client.cc
-@@ -68,6 +68,12 @@ void ExternalProcessImporterClient::Start() {
+@@ -68,6 +68,7 @@ void ExternalProcessImporterClient::Start() {
    localized_strings.try_emplace(
        IDS_BOOKMARK_BAR_FOLDER_NAME,
        l10n_util::GetStringUTF8(IDS_BOOKMARK_BAR_FOLDER_NAME));
-+  localized_strings.try_emplace(
-+      IDS_IMPORT_FROM_BRAVE,
-+      l10n_util::GetStringUTF8(IDS_IMPORT_FROM_BRAVE));
-+  localized_strings.try_emplace(
-+      IDS_BOOKMARK_GROUP_FROM_BRAVE,
-+      l10n_util::GetStringUTF8(IDS_BOOKMARK_GROUP_FROM_BRAVE));
++  BRAVE_START
  
    // If the utility process hasn't started yet the message will queue until it
    // does.

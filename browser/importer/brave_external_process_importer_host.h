@@ -1,32 +1,33 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_BROWSER_IMPORTER_BRAVE_EXTERNAL_PROCESS_IMPORTER_HOST_H_
 #define BRAVE_BROWSER_IMPORTER_BRAVE_EXTERNAL_PROCESS_IMPORTER_HOST_H_
 
+#include <memory>
+#include <string>
+
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/importer/browser_profile_lock.h"
+#include "base/optional.h"
+#include "base/values.h"
 #include "chrome/browser/importer/external_process_importer_host.h"
+#include "extensions/buildflags/buildflags.h"
+
+class BrowserProfileLock;
 
 class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
  public:
   BraveExternalProcessImporterHost();
 
-  void StartImportSettings(
-      const importer::SourceProfile& source_profile,
-      Profile* target_profile,
-      uint16_t items,
-      ProfileWriter* writer) override;
-
  private:
+  friend class ExternalProcessImporterHost;
+
   ~BraveExternalProcessImporterHost() override;
 
-  // Launches the utility process that starts the import task, unless bookmark
-  // or template model are not yet loaded. If load is not detected, this method
-  // will be called when the loading observer sees that model loading is
-  // complete.
-  void LaunchImportIfReady() override;
+  // ExternalProcessImporterHost overrides:
+  void NotifyImportEnded() override;
 
   // Make sure that Chrome or Brave isn't running, if import browser is Chrome
   // or Brave. Show to the user a dialog that notifies that is necessary to
@@ -43,6 +44,11 @@ class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
   // the "Skip" or "Continue" buttons. |is_continue| is true when user clicked
   // the "Continue" button.
   void OnImportLockDialogEnd(bool is_continue);
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  void LaunchExtensionsImport();
+  void OnGetChromeExtensionsList(base::Optional<base::Value> extensions_list);
+#endif
 
   // Chrome or Brave profile lock.
   std::unique_ptr<BrowserProfileLock> browser_lock_;

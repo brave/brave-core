@@ -58,6 +58,8 @@ source_set("common") {
     "common_message_generator.h",
     "importer/brave_referral.cc",
     "importer/brave_referral.h",
+    "importer/importer_constants.cc",
+    "importer/importer_constants.h",
     "importer/imported_browser_window.cc",
     "importer/imported_browser_window.h",
     "resource_bundle_helper.cc",
@@ -104,6 +106,7 @@ source_set("common") {
     ":switches",
     "//brave/chromium_src:common",
     "//content/public/common",
+    "//extensions/buildflags",
   ]
 
   if (is_mac) {

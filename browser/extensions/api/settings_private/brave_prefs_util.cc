@@ -8,7 +8,6 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "chrome/browser/extensions/api/settings_private/prefs_util.h"
-#include "chrome/common/pref_names.h"
 #include "chrome/common/extensions/api/settings_private.h"
 #include "components/browsing_data/core/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
@@ -32,13 +31,15 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
   s_brave_whitelist->insert(chromium_prefs.begin(), chromium_prefs.end());
   // Add Brave values to the whitelist
   // import data
-  (*s_brave_whitelist)[::prefs::kImportDialogCookies] =
+  (*s_brave_whitelist)[kImportDialogCookies] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[::prefs::kImportDialogStats] =
+  (*s_brave_whitelist)[kImportDialogStats] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[::prefs::kImportDialogLedger] =
+  (*s_brave_whitelist)[kImportDialogLedger] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[::prefs::kImportDialogWindows] =
+  (*s_brave_whitelist)[kImportDialogWindows] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_whitelist)[kImportDialogExtensions] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // Default Brave shields
   (*s_brave_whitelist)[kShieldsAdvancedViewEnabled] =

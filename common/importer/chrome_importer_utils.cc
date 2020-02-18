@@ -6,12 +6,43 @@
 #include "brave/common/importer/chrome_importer_utils.h"
 
 #include <memory>
-#include <string>
 
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
-#include "base/values.h"
+#include "brave/common/importer/importer_constants.h"
 #include "chrome/common/importer/importer_data_types.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "extensions/common/extension.h"
+#include "extensions/common/manifest.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+using extensions::Extension;
+using extensions::Manifest;
+#endif
+
+namespace {
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+bool HasImportableExtensions(const base::FilePath& secured_preference_path) {
+  if (!base::PathExists(secured_preference_path))
+    return false;
+
+  std::string secured_preference_content;
+  base::ReadFileToString(secured_preference_path, &secured_preference_content);
+  base::Optional<base::Value> secured_preference =
+      base::JSONReader::Read(secured_preference_content);
+  if (auto* extensions = secured_preference->FindPath(
+          kChromeExtensionsListPath)) {
+    auto extensions_list =
+        GetImportableListFromChromeExtensionsList(*extensions);
+    return !extensions_list.empty();
+  }
+  return false;
+}
+#endif
+}  // namespace
 
 base::ListValue* GetChromeSourceProfiles(
   const base::FilePath& user_data_folder) {
@@ -66,13 +97,49 @@ bool ChromeImporterCanImport(const base::FilePath& profile,
     profile.Append(base::FilePath::StringType(FILE_PATH_LITERAL("History")));
   base::FilePath passwords =
     profile.Append(base::FilePath::StringType(FILE_PATH_LITERAL("Login Data")));
-
+  base::FilePath secured_preference =
+      profile.AppendASCII(kChromeExtensionsPreferencesFile);
   if (base::PathExists(bookmarks))
     *services_supported |= importer::FAVORITES;
   if (base::PathExists(history))
     *services_supported |= importer::HISTORY;
   if (base::PathExists(passwords))
     *services_supported |= importer::PASSWORDS;
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  if (HasImportableExtensions(secured_preference))
+    *services_supported |= importer::EXTENSIONS;
+#endif
 
   return *services_supported != importer::NONE;
 }
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+std::vector<std::string> GetImportableListFromChromeExtensionsList(
+    const base::Value& extensions_list) {
+  DCHECK(extensions_list.is_dict());
+
+  std::vector<std::string> extensions;
+  for (const auto& item : extensions_list.DictItems()) {
+    // Only import if type is extension, it's came from webstore and it's not
+    // installed by default.
+    if (item.second.FindBoolKey("was_installed_by_default").value_or(true))
+        continue;
+
+    if (!item.second.FindBoolKey("from_webstore").value_or(false))
+      continue;
+
+    if (auto* manifest_value = item.second.FindDictKey("manifest")) {
+      if (!manifest_value->is_dict())
+        continue;
+
+      const auto& manifest = base::Value::AsDictionaryValue(*manifest_value);
+      if (Manifest::GetTypeFromManifestValue(manifest) ==
+          Manifest::TYPE_EXTENSION) {
+        extensions.push_back(item.first);
+      }
+    }
+  }
+
+  return extensions;
+}
+#endif
