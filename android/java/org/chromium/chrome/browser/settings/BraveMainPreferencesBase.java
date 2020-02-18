@@ -16,6 +16,7 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.util.DisplayMetrics;
 import android.widget.TextView;
+import android.os.Build;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveFeatureList;
@@ -43,6 +44,7 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
     private static final String PREF_CONTENT_SETTINGS = "content_settings";
     private static final String PREF_ABOUT_CHROME = "about_chrome";
     private static final String PREF_WELCOME_TOUR = "welcome_tour";
+    private static final String PREF_BACKGROUND_IMAGES = "backgroud_images";
     private static final String PREF_BRAVE_REWARDS = "brave_rewards";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
@@ -89,6 +91,10 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
         if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) ||
                 BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
             removePreferenceIfPresent(PREF_BRAVE_REWARDS);
+        }
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            removePreferenceIfPresent(PREF_BACKGROUND_IMAGES);
         }
     }
 

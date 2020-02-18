@@ -813,6 +813,15 @@ until they verify, or until 90 days have passed.
       <message name="IDS_NEW_TAB_OTR_TITLE" desc="Message shown when a user opens a private tab explaining private mode">
         Even though sites you visit in private tabs are not saved locally, they do not make you anonymous or invisible to your ISP, your employer, or to the sites you are visiting.
       </message>
+      <message name="IDS_PREFS_NEW_TAB_PAGE" desc="Title of New Tab Page settings.">
+        New Tab Page
+      </message>
+      <message name="IDS_SHOW_BACKGROUND_IMAGES" desc= "Title of show background images option.">
+        Show Background Images
+      </message>
+      <message name="IDS_SHOW_SPONSORED_IMAGES" desc ="Title of show sponsored images option.">
+        Show Sponsored Images
+      </message>
     </messages>
   </release>
 </grit>
