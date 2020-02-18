@@ -816,6 +816,15 @@ until they verify, or until 90 days have passed.
       <message name="IDS_NOTIFICATION_CATEGORY_BRAVE_ADS_BACKGROUND" desc="Label for Brave Ads in background.">
         Brave Ads sent when browser is in the background
       </message>
+      <message name="IDS_PREFS_NEW_TAB_PAGE" desc="Title of New Tab Page settings.">
+        New Tab Page
+      </message>
+      <message name="IDS_SHOW_BACKGROUND_IMAGES" desc= "Title of show background images option.">
+        Show Background Images
+      </message>
+      <message name="IDS_SHOW_SPONSORED_IMAGES" desc ="Title of show sponsored images option.">
+        Show Sponsored Images
+      </message>
     </messages>
   </release>
 </grit>
