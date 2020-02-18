@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "base/path_service.h"
 #include "brave/browser/brave_drm_tab_helper.h"
 #include "brave/browser/widevine/widevine_utils.h"
@@ -16,6 +18,7 @@
 #include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "chrome/test/permissions/permission_request_manager_test_api.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test_utils.h"
@@ -51,8 +54,10 @@ class WidevinePermissionRequestBrowserTest
  public:
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
-
     GetPermissionRequestManager()->AddObserver(&observer);
+    test_api_ =
+        std::make_unique<test::PermissionRequestManagerTestApi>(browser());
+    EXPECT_TRUE(test_api_->manager());
   }
 
   void TearDownOnMainThread() override {
@@ -73,6 +78,7 @@ class WidevinePermissionRequestBrowserTest
   }
 
   TestObserver observer;
+  std::unique_ptr<test::PermissionRequestManagerTestApi> test_api_;
 };
 
 IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
@@ -127,8 +133,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, BubbleTest) {
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(permission_request_manager->IsRequestInProgress());
 
-  gfx::NativeWindow window =
-      permission_request_manager->GetBubbleWindow();
+  gfx::NativeWindow window = test_api_->GetPromptWindow();
   auto* widget = views::Widget::GetWidgetForNativeWindow(window);
   DCHECK(widget);
 
