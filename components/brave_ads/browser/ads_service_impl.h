@@ -484,8 +484,6 @@ class AdsServiceImpl : public AdsService,
 
   std::unique_ptr<BundleStateDatabase> bundle_state_backend_;
 
-  std::deque<std::string> notifications_;
-
   NotificationDisplayService* display_service_;  // NOT OWNED
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
 
