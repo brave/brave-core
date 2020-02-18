@@ -465,7 +465,8 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, AllowAutoplay) {
 }
 
 // Block autoplay
-IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, BlockAutoplay) {
+IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest,
+                       DISABLED_BlockAutoplay) {
   std::string result;
   BlockAutoplay();
   PermissionRequestManager* manager =
