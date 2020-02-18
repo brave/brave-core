@@ -263,6 +263,8 @@ class Tab: NSObject {
     }
     
     func deleteWebView() {
+        contentScriptManager.uninstall(from: self)
+        
         if let webView = webView {
             webView.removeObserver(self, forKeyPath: KVOConstants.URL.rawValue)
             tabDelegate?.tab?(self, willDeleteWebView: webView)
@@ -540,6 +542,14 @@ extension Tab: TabWebViewDelegate {
 
 private class TabContentScriptManager: NSObject, WKScriptMessageHandler {
     fileprivate var helpers = [String: TabContentScript]()
+    
+    func uninstall(from tab: Tab) {
+        helpers.forEach {
+            if let name = $0.value.scriptMessageHandlerName() {
+                tab.webView?.configuration.userContentController.removeScriptMessageHandler(forName: name)
+            }
+        }
+    }
 
     @objc func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         for helper in helpers.values {
