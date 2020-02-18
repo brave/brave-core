@@ -106,7 +106,7 @@ using brave_sync::jslib::SyncRecord;
 using brave_sync::tools::AsMutable;
 using brave_sync::tools::GenerateObjectId;
 using brave_sync::tools::GenerateObjectIdForOtherNode;
-using brave_sync::tools::GetOtherNodeName;
+using brave_sync::tools::kOtherNodeName;
 using brave_sync::tools::kOtherNodeOrder;
 using testing::_;
 using testing::AtLeast;
@@ -1337,25 +1337,25 @@ TEST_F(BraveSyncServiceTest, IsOtherBookmarksFolder) {
 
   auto record_matches_traits = SimpleFolderSyncRecord(
       SyncRecord::Action::A_CREATE, GenerateObjectIdForOtherNode("123"),
-      GetOtherNodeName(), kOtherNodeOrder, "", "", false, GetOtherNodeName());
+      kOtherNodeName, kOtherNodeOrder, "", "", false, kOtherNodeName);
   EXPECT_TRUE(sync_service()
                 ->IsOtherBookmarksFolder(record_matches_traits.get()));
 
   auto record_not_match1 = SimpleFolderSyncRecord(
       SyncRecord::Action::A_CREATE, GenerateObjectIdForOtherNode("123"),
-      GetOtherNodeName(), "", "", "", false, GetOtherNodeName());
+      kOtherNodeName, "", "", "", false, kOtherNodeName);
   EXPECT_FALSE(sync_service()
                 ->IsOtherBookmarksFolder(record_not_match1.get()));
 
   auto record_not_match2 = SimpleFolderSyncRecord(
       SyncRecord::Action::A_CREATE, GenerateObjectIdForOtherNode("123"),
-      "What Bookmarks", kOtherNodeOrder, "", "", false, GetOtherNodeName());
+      "What Bookmarks", kOtherNodeOrder, "", "", false, kOtherNodeName);
   EXPECT_FALSE(sync_service()
                 ->IsOtherBookmarksFolder(record_not_match2.get()));
 
   auto record_not_match3 = SimpleFolderSyncRecord(
       SyncRecord::Action::A_CREATE, GenerateObjectIdForOtherNode("123"),
-      GetOtherNodeName(), kOtherNodeOrder, "", "", false, "No Bookmarks");
+      kOtherNodeName, kOtherNodeOrder, "", "", false, "No Bookmarks");
   EXPECT_FALSE(sync_service()
                 ->IsOtherBookmarksFolder(record_not_match3.get()));
 
@@ -1371,7 +1371,7 @@ TEST_F(BraveSyncServiceTest, ProcessOtherBookmarksFolder) {
     GenerateObjectIdForOtherNode(std::string());
   auto record1 = SimpleFolderSyncRecord(
       SyncRecord::Action::A_CREATE, object_id_iter1,
-      GetOtherNodeName(), kOtherNodeOrder, "", "", false, GetOtherNodeName());
+      kOtherNodeName, kOtherNodeOrder, "", "", false, kOtherNodeName);
   EXPECT_TRUE(sync_service()->IsOtherBookmarksFolder(record1.get()));
 
   bool pass_to_syncer = false;
@@ -1387,7 +1387,7 @@ TEST_F(BraveSyncServiceTest, ProcessOtherBookmarksFolder) {
   // one
   auto record2 = SimpleFolderSyncRecord(
       SyncRecord::Action::A_CREATE, object_id_iter2,
-      GetOtherNodeName(), kOtherNodeOrder, "", "", false, GetOtherNodeName());
+      kOtherNodeName, kOtherNodeOrder, "", "", false, kOtherNodeName);
   EXPECT_TRUE(sync_service()->IsOtherBookmarksFolder(record2.get()));
 
   pass_to_syncer = false;
@@ -1434,8 +1434,8 @@ TEST_F(BraveSyncServiceTest, ProcessOtherBookmarksFolder) {
     GenerateObjectIdForOtherNode(object_id_iter2);
   auto record3 = SimpleFolderSyncRecord(
       SyncRecord::Action::A_CREATE, object_id_iter2,
-      GetOtherNodeName(), "1.0.1.1.1", folder_b_object_id, "",
-      false, GetOtherNodeName());
+      kOtherNodeName, "1.0.1.1.1", folder_b_object_id, "",
+      false, kOtherNodeName);
   EXPECT_TRUE(sync_service()->IsOtherBookmarksFolder(record3.get()));
 
   auto record_a = SimpleFolderSyncRecord(
@@ -1522,8 +1522,8 @@ TEST_F(BraveSyncServiceTest, ProcessOtherBookmarksFolder) {
   sync_service()->pending_received_records_->clear();
   auto record5 = SimpleFolderSyncRecord(
       SyncRecord::Action::A_CREATE, object_id_iter4,
-      GetOtherNodeName(), "1.0.1.2", "", "",
-      false, GetOtherNodeName());
+      kOtherNodeName, "1.0.1.2", "", "",
+      false, kOtherNodeName);
   EXPECT_TRUE(sync_service()->IsOtherBookmarksFolder(record5.get()));
 
   EXPECT_CALL(*sync_client(), SendSyncRecords(kBookmarks, _)).Times(0);
@@ -1566,8 +1566,8 @@ TEST_F(BraveSyncServiceTest, CheckOtherBookmarkRecord) {
   // No object id for other_node yet
   auto record = SimpleFolderSyncRecord(
       SyncRecord::Action::A_CREATE, "",
-      GetOtherNodeName(), kOtherNodeOrder, "", "",
-      false, GetOtherNodeName());
+      kOtherNodeName, kOtherNodeOrder, "", "",
+      false, kOtherNodeName);
   std::string other_node_object_id;
   EXPECT_FALSE(model()->other_node()->GetMetaInfo("object_id",
                                                   &other_node_object_id));
@@ -1580,8 +1580,8 @@ TEST_F(BraveSyncServiceTest, CheckOtherBookmarkRecord) {
   // Obejct id is out-dated
   record = SimpleFolderSyncRecord(
       SyncRecord::Action::A_CREATE, object_id_iter1,
-      GetOtherNodeName(), kOtherNodeOrder, "", "",
-      false, GetOtherNodeName());
+      kOtherNodeName, kOtherNodeOrder, "", "",
+      false, kOtherNodeName);
   AsMutable(model()->other_node())
     ->SetMetaInfo("object_id", object_id_iter2);
   sync_service()->CheckOtherBookmarkRecord(record.get());

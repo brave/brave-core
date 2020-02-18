@@ -24,6 +24,7 @@ source_set("profiles") {
     "//brave/browser/gcm_driver",
     "//brave/browser/tor",
     "//brave/browser/translate/buildflags",
+    "//brave/common:pref_names",
     "//brave/common/tor",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_rewards/browser",

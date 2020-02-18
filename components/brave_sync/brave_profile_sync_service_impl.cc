@@ -844,8 +844,8 @@ bool BraveProfileSyncServiceImpl::IsOtherBookmarksFolder(
     return true;
 
   if (bookmark.order == tools::kOtherNodeOrder &&
-      bookmark.site.title == tools::GetOtherNodeName() &&
-      bookmark.site.customTitle == tools::GetOtherNodeName()) {
+      bookmark.site.title == tools::kOtherNodeName &&
+      bookmark.site.customTitle == tools::kOtherNodeName) {
     return true;
   }
 
@@ -881,8 +881,8 @@ void BraveProfileSyncServiceImpl::ProcessOtherBookmarksFolder(
     auto bookmark = record->GetBookmark();
     if ((bookmark.order != tools::kOtherNodeOrder &&
          !bookmark.parentFolderObjectId.empty()) ||
-        bookmark.site.title != tools::GetOtherNodeName() ||
-        bookmark.site.customTitle != tools::GetOtherNodeName()) {
+        bookmark.site.title != tools::kOtherNodeName ||
+        bookmark.site.customTitle != tools::kOtherNodeName) {
       // Generate next iteration object id from current object_id which will be
       // used to mapped normal folder
       tools::AsMutable(

@@ -72,6 +72,9 @@ void RegisterProfilePrefsForMigration(
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   brave_wallet::RegisterBraveWalletProfilePrefsForMigration(registry);
 #endif
+
+  // Restore "Other Bookmarks" migration
+  registry->RegisterBooleanPref(kOtherBookmarksMigrated, false);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -221,8 +224,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(
       password_manager::prefs::kPasswordLeakDetectionEnabled,
       base::Value(false));
-  // Restore "Other Bookmarks" migration
-  registry->RegisterBooleanPref(kOtherBookmarksMigrated, false);
 
   RegisterProfilePrefsForMigration(registry);
 }

@@ -11,16 +11,15 @@
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
 #include "build/build_config.h"
-#include "components/strings/grit/components_strings.h"
 #include "crypto/random.h"
 #include "crypto/sha2.h"
-#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_sync {
 
 namespace tools {
 
 const char kOtherNodeOrder[] = "255.255.255";
+const char kOtherNodeName[] = "Other Bookmarks";
 const size_t kIdSize = 16;
 const char kOtherBookmarksObjectIdSeed[] = "other_bookmarks_object_id";
 
@@ -76,10 +75,6 @@ bool IsTimeEmpty(const base::Time& time) {
 // Get mutable node to prevent BookmarkMetaInfoChanged from being triggered
 bookmarks::BookmarkNode* AsMutable(const bookmarks::BookmarkNode* node) {
   return const_cast<bookmarks::BookmarkNode*>(node);
-}
-
-std::string GetOtherNodeName() {
-  return l10n_util::GetStringUTF8(IDS_BOOKMARK_BAR_OTHER_FOLDER_NAME);
 }
 
 }  // namespace tools

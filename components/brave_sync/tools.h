@@ -21,6 +21,7 @@ namespace brave_sync {
 namespace tools {
 
 extern const char kOtherNodeOrder[];
+extern const char kOtherNodeName[];
 
 std::string GenerateObjectId();
 
@@ -34,8 +35,6 @@ std::string GetPlatformName();
 bool IsTimeEmpty(const base::Time &time);
 
 bookmarks::BookmarkNode* AsMutable(const bookmarks::BookmarkNode* node);
-
-std::string GetOtherNodeName();
 
 }  // namespace tools
 
