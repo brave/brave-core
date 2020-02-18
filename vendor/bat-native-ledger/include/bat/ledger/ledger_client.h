@@ -74,9 +74,6 @@ using GetTransactionReportCallback =
 using GetContributionReportCallback =
     std::function<void(ledger::ContributionReportInfoList)>;
 
-using GetIncompleteContributionsCallback =
-    std::function<void(ContributionInfoList)>;
-
 using GetContributionInfoCallback =
     std::function<void(ContributionInfoPtr)>;
 
@@ -120,13 +117,6 @@ class LEDGER_EXPORT LedgerClient {
   virtual void FetchFavIcon(const std::string& url,
                             const std::string& favicon_key,
                             FetchIconCallback callback) = 0;
-
-  virtual void SaveContributionInfo(
-      ledger::ContributionInfoPtr info,
-      ledger::ResultCallback callback) = 0;
-
-  virtual void GetOneTimeTips(
-      ledger::PublisherInfoListCallback callback) = 0;
 
   // uint64_t time_offset (input): timer offset in seconds.
   // uint32_t timer_id (output) : 0 in case of failure
@@ -226,29 +216,6 @@ class LEDGER_EXPORT LedgerClient {
       const ledger::ActivityMonth month,
       const int year,
       ledger::GetTransactionReportCallback callback) = 0;
-
-  virtual void GetContributionReport(
-      const ledger::ActivityMonth month,
-      const int year,
-      ledger::GetContributionReportCallback callback) = 0;
-
-  virtual void GetIncompleteContributions(
-      ledger::GetIncompleteContributionsCallback callback) = 0;
-
-  virtual void GetContributionInfo(
-      const std::string& contribution_id,
-      GetContributionInfoCallback callback) = 0;
-
-  virtual void UpdateContributionInfoStepAndCount(
-      const std::string& contribution_id,
-      const ledger::ContributionStep step,
-      const int32_t retry_count,
-      ResultCallback callback) = 0;
-
-  virtual void UpdateContributionInfoContributedAmount(
-      const std::string& contribution_id,
-      const std::string& publisher_key,
-      ResultCallback callback) = 0;
 
   virtual void ReconcileStampReset() = 0;
 

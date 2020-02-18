@@ -20,6 +20,7 @@ namespace braveledger_database {
 
 class DatabaseInitialize;
 class DatabaseActivityInfo;
+class DatabaseContributionInfo;
 class DatabaseContributionQueue;
 class DatabaseMediaPublisherInfo;
 class DatabasePendingContribution;
@@ -58,6 +59,43 @@ class Database {
   void DeleteActivityInfo(
       const std::string& publisher_key,
       ledger::ResultCallback callback);
+
+  /**
+   * CONTRIBUTION INFO
+   */
+  void SaveContributionInfo(
+      ledger::ContributionInfoPtr info,
+      ledger::ResultCallback callback);
+
+  void GetContributionInfo(
+      const std::string& contribution_id,
+      ledger::GetContributionInfoCallback callback);
+
+  void GetOneTimeTips(
+      const ledger::ActivityMonth month,
+      const int year,
+      ledger::PublisherInfoListCallback callback);
+
+  void GetContributionReport(
+      const ledger::ActivityMonth month,
+      const int year,
+      ledger::GetContributionReportCallback callback);
+
+  void GetIncompleteContributions(
+      ledger::ContributionInfoListCallback callback);
+
+  void UpdateContributionInfoStepAndCount(
+      const std::string& contribution_id,
+      const ledger::ContributionStep step,
+      const int32_t retry_count,
+      ledger::ResultCallback callback);
+
+  void UpdateContributionInfoContributedAmount(
+      const std::string& contribution_id,
+      const std::string& publisher_key,
+      ledger::ResultCallback callback);
+
+  void GetAllContributions(ledger::ContributionInfoListCallback callback);
 
   /**
    * CONTRIBUTION QUEUE
@@ -185,6 +223,7 @@ class Database {
  private:
   std::unique_ptr<DatabaseInitialize> initialize_;
   std::unique_ptr<DatabaseActivityInfo> activity_info_;
+  std::unique_ptr<DatabaseContributionInfo> contribution_info_;
   std::unique_ptr<DatabaseContributionQueue> contribution_queue_;
   std::unique_ptr<DatabasePendingContribution> pending_contribution_;
   std::unique_ptr<DatabasePromotion> promotion_;

@@ -19,6 +19,9 @@ class LedgerImpl;
 
 namespace braveledger_database {
 
+using ContributionPublisherInfoMap =
+    std::map<std::string, ledger::PublisherInfoPtr>;
+
 using ServerPublisherLinksCallback =
     std::function<void(const std::map<std::string, std::string>& links)>;
 
@@ -27,6 +30,12 @@ using ServerPublisherAmountsCallback =
 
 using ContributionQueuePublishersListCallback =
     std::function<void(ledger::ContributionQueuePublisherList)>;
+
+using ContributionPublisherListCallback =
+    std::function<void(ledger::ContributionPublisherList)>;
+
+using ContributionPublisherInfoMapCallback =
+    std::function<void(ContributionPublisherInfoMap)>;
 
 class DatabaseTable {
  public:

@@ -150,18 +150,6 @@ class LogStreamImpl : public ledger::LogStream {
 
 namespace {
 
-ledger::ActivityMonth GetPublisherMonth(const base::Time& time) {
-  base::Time::Exploded exploded;
-  time.LocalExplode(&exploded);
-  return (ledger::ActivityMonth)exploded.month;
-}
-
-int GetPublisherYear(const base::Time& time) {
-  base::Time::Exploded exploded;
-  time.LocalExplode(&exploded);
-  return exploded.year;
-}
-
 ContentSite PublisherInfoToContentSite(
     const ledger::PublisherInfo& publisher_info) {
   ContentSite content_site(publisher_info.id);
@@ -2154,33 +2142,6 @@ void RewardsServiceImpl::OnDoTip(
   }
 }
 
-ledger::Result SaveContributionInfoOnFileTaskRunner(
-    ledger::ContributionInfoPtr info,
-    PublisherInfoDatabase* backend) {
-  const bool result =
-      backend && backend->InsertOrUpdateContributionInfo(std::move(info));
-
-  return result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR;
-}
-
-void RewardsServiceImpl::OnContributionInfoSaved(
-    ledger::ResultCallback callback,
-    const ledger::Result result) {
-  callback(result);
-}
-
-void RewardsServiceImpl::SaveContributionInfo(
-    ledger::ContributionInfoPtr info,
-    ledger::ResultCallback callback) {
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&SaveContributionInfoOnFileTaskRunner,
-                    std::move(info),
-                    publisher_info_backend_.get()),
-      base::BindOnce(&RewardsServiceImpl::OnContributionInfoSaved,
-                     AsWeakPtr(),
-                     callback));
-}
-
 void RewardsServiceImpl::OnSaveRecurringTipUI(
     SaveRecurringTipCallback callback,
     const ledger::Result result) {
@@ -2282,39 +2243,6 @@ void RewardsServiceImpl::GetOneTimeTipsUI(GetOneTimeTipsCallback callback) {
       base::BindOnce(&RewardsServiceImpl::OnGetOneTimeTipsUI,
                      AsWeakPtr(),
                      std::move(callback)));
-}
-
-ledger::PublisherInfoList GetOneTimeTipsOnFileTaskRunner(
-    PublisherInfoDatabase* backend) {
-  ledger::PublisherInfoList list;
-  if (!backend) {
-    return list;
-  }
-
-  auto now = base::Time::Now();
-  backend->GetOneTimeTips(&list, GetPublisherMonth(now), GetPublisherYear(now));
-
-  return list;
-}
-
-void RewardsServiceImpl::GetOneTimeTips(
-    ledger::PublisherInfoListCallback callback) {
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::Bind(&GetOneTimeTipsOnFileTaskRunner,
-                 publisher_info_backend_.get()),
-      base::Bind(&RewardsServiceImpl::OnGetOneTimeTips,
-                 AsWeakPtr(),
-                 callback));
-}
-
-void RewardsServiceImpl::OnGetOneTimeTips(
-    ledger::PublisherInfoListCallback callback,
-    ledger::PublisherInfoList list) {
-  if (!Connected()) {
-    return;
-  }
-
-  callback(std::move(list));
 }
 
 void RewardsServiceImpl::OnRecurringTipUI(const ledger::Result result) {
@@ -3300,21 +3228,55 @@ bool RewardsServiceImpl::OnlyAnonWallet() {
   return false;
 }
 
-void RecordBackendP3AStatsOnFileTaskRunner(PublisherInfoDatabase* backend,
-                                           bool auto_contributions_enabled) {
-  if (!backend) {
-    return;
-  }
-  // TODO(nejc): we need to get this from native lib now
-  // backend->RecordP3AStats(auto_contributions_enabled);
+void RewardsServiceImpl::RecordBackendP3AStats() {
+  bat_ledger_->GetRecurringTips(
+      base::BindOnce(&RewardsServiceImpl::OnRecordBackendP3AStatsRecurring,
+          AsWeakPtr()));
 }
 
-void RewardsServiceImpl::RecordBackendP3AStats() const {
-  file_task_runner_->PostTask(
-      FROM_HERE,
-      base::Bind(&RecordBackendP3AStatsOnFileTaskRunner,
-                 base::Unretained(publisher_info_backend_.get()),
-                 auto_contributions_enabled_));
+void RewardsServiceImpl::OnRecordBackendP3AStatsRecurring(
+    ledger::PublisherInfoList list) {
+  bat_ledger_->GetAllContributions(
+      base::BindOnce(&RewardsServiceImpl::OnRecordBackendP3AStatsContributions,
+          AsWeakPtr(),
+          list.size()));
+}
+
+void RewardsServiceImpl::OnRecordBackendP3AStatsContributions(
+    const uint32_t recurring_donation_size,
+    ledger::ContributionInfoList list) {
+  int auto_contributions = 0;
+  int tips = 0;
+  int queued_recurring = 0;
+
+  for (auto& contribution : list) {
+    switch (contribution->type) {
+    case ledger::RewardsType::AUTO_CONTRIBUTE: {
+      auto_contributions += 1;
+      break;
+    }
+    case ledger::RewardsType::ONE_TIME_TIP: {
+      tips += 1;
+      break;
+    }
+    case ledger::RewardsType::RECURRING_TIP: {
+      queued_recurring += 1;
+      break;
+    }
+    default:
+      NOTREACHED();
+    }
+  }
+
+  if (queued_recurring == 0) {
+    queued_recurring = recurring_donation_size;
+  }
+
+  const auto auto_contributions_state = auto_contributions_enabled_ ?
+        AutoContributionsP3AState::kAutoContributeOn :
+        AutoContributionsP3AState::kWalletCreatedAutoContributeOff;
+  RecordAutoContributionsState(auto_contributions_state, auto_contributions);
+  RecordTipsState(true, true, tips, queued_recurring);
 }
 
 #if defined(OS_ANDROID)
@@ -3536,171 +3498,6 @@ void RewardsServiceImpl::OnGetTransactionReport(
     ledger::GetTransactionReportCallback callback,
     ledger::TransactionReportInfoList list) {
   callback(std::move(list));
-}
-
-ledger::ContributionReportInfoList GetContributionReportOnFileTaskRunner(
-    PublisherInfoDatabase* backend,
-    const ledger::ActivityMonth month,
-    const uint32_t year) {
-  DCHECK(backend);
-  if (!backend) {
-    return {};
-  }
-
-  ledger::ContributionReportInfoList list;
-  backend->GetContributionReport(&list, month, year);
-  return list;
-}
-
-void RewardsServiceImpl::GetContributionReport(
-    const ledger::ActivityMonth month,
-    const int year,
-    ledger::GetContributionReportCallback callback) {
-  base::PostTaskAndReplyWithResult(
-    file_task_runner_.get(),
-    FROM_HERE,
-    base::BindOnce(&GetContributionReportOnFileTaskRunner,
-        publisher_info_backend_.get(),
-        month,
-        year),
-    base::BindOnce(&RewardsServiceImpl::OnGetContributionReport,
-        AsWeakPtr(),
-        callback));
-}
-
-void RewardsServiceImpl::OnGetContributionReport(
-    ledger::GetContributionReportCallback callback,
-    ledger::ContributionReportInfoList list) {
-  callback(std::move(list));
-}
-
-
-
-ledger::ContributionInfoList GetNotCompletedContributionsOnFileTaskRunner(
-    PublisherInfoDatabase* backend) {
-  DCHECK(backend);
-  if (!backend) {
-    return {};
-  }
-
-  ledger::ContributionInfoList list;
-  backend->GetIncompleteContributions(&list);
-  return list;
-}
-
-void RewardsServiceImpl::GetIncompleteContributions(
-    ledger::GetIncompleteContributionsCallback callback) {
-  base::PostTaskAndReplyWithResult(
-    file_task_runner_.get(),
-    FROM_HERE,
-    base::BindOnce(&GetNotCompletedContributionsOnFileTaskRunner,
-        publisher_info_backend_.get()),
-    base::BindOnce(&RewardsServiceImpl::OnGetNotCompletedContributions,
-        AsWeakPtr(),
-        callback));
-}
-
-void RewardsServiceImpl::OnGetNotCompletedContributions(
-    ledger::GetIncompleteContributionsCallback callback,
-    ledger::ContributionInfoList list) {
-  callback(std::move(list));
-}
-
-ledger::ContributionInfoPtr GetContributionInfoOnFileTaskRunner(
-    PublisherInfoDatabase* backend,
-    const std::string& contribution_id) {
-  DCHECK(backend);
-  if (!backend) {
-    return {};
-  }
-
-  return backend->GetContributionInfo(contribution_id);
-}
-
-void RewardsServiceImpl::GetContributionInfo(
-    const std::string& contribution_id,
-    ledger::GetContributionInfoCallback callback) {
-  base::PostTaskAndReplyWithResult(
-    file_task_runner_.get(),
-    FROM_HERE,
-    base::BindOnce(&GetContributionInfoOnFileTaskRunner,
-        publisher_info_backend_.get(),
-        contribution_id),
-    base::BindOnce(&RewardsServiceImpl::OnGetContributionInfo,
-        AsWeakPtr(),
-        callback));
-}
-
-void RewardsServiceImpl::OnGetContributionInfo(
-    ledger::GetContributionInfoCallback callback,
-    ledger::ContributionInfoPtr info) {
-  callback(std::move(info));
-}
-
-ledger::Result UpdateContributionInfoStepAndCountOnFileTaskRunner(
-    PublisherInfoDatabase* backend,
-    const std::string& contribution_id,
-    const ledger::ContributionStep step,
-    const int32_t retry_count) {
-  DCHECK(backend);
-  if (!backend) {
-    return {};
-  }
-
-  const bool success = backend->UpdateContributionInfoStepAndCount(
-      contribution_id,
-      step,
-      retry_count);
-  return success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR;
-}
-
-void RewardsServiceImpl::UpdateContributionInfoStepAndCount(
-    const std::string& contribution_id,
-    const ledger::ContributionStep step,
-    const int32_t retry_count,
-    ledger::ResultCallback callback) {
-  base::PostTaskAndReplyWithResult(
-    file_task_runner_.get(),
-    FROM_HERE,
-    base::BindOnce(&UpdateContributionInfoStepAndCountOnFileTaskRunner,
-        publisher_info_backend_.get(),
-        contribution_id,
-        step,
-        retry_count),
-    base::BindOnce(&RewardsServiceImpl::OnResult,
-        AsWeakPtr(),
-        callback));
-}
-
-ledger::Result UpdateContributionInfoContributedAmountOnFileTaskRunner(
-    PublisherInfoDatabase* backend,
-    const std::string& contribution_id,
-    const std::string& publisher_key) {
-  DCHECK(backend);
-  if (!backend) {
-    return {};
-  }
-
-  const bool success = backend->UpdateContributionInfoContributedAmount(
-      contribution_id,
-      publisher_key);
-  return success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR;
-}
-
-void RewardsServiceImpl::UpdateContributionInfoContributedAmount(
-    const std::string& contribution_id,
-    const std::string& publisher_key,
-    ledger::ResultCallback callback) {
-  base::PostTaskAndReplyWithResult(
-    file_task_runner_.get(),
-    FROM_HERE,
-    base::BindOnce(&UpdateContributionInfoContributedAmountOnFileTaskRunner,
-        publisher_info_backend_.get(),
-        contribution_id,
-        publisher_key),
-    base::BindOnce(&RewardsServiceImpl::OnResult,
-        AsWeakPtr(),
-        callback));
 }
 
 void RewardsServiceImpl::ReconcileStampReset() {
