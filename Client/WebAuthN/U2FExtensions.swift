@@ -231,8 +231,8 @@ class U2FExtensions: NSObject {
         
         super.init()
         
-        let handleCancelButton: () -> PopupViewDismissType = {
-            self.sendJSError()
+        let handleCancelButton: () -> PopupViewDismissType = { [weak self] in
+            self?.sendJSError()
             return .flyDown
         }
 
