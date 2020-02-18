@@ -814,13 +814,14 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
     private void ShowNotification(String id, int type, long timestamp,
             String[] args) {
+        if (mBraveRewardsNativeWorker == null){
+            return;
+        }
         currentNotificationId = id;
         LinearLayout hl = (LinearLayout)root.findViewById(R.id.header_layout);
         hl.setBackgroundResource(R.drawable.notification_header);
         GridLayout gl = (GridLayout)root.findViewById(R.id.wallet_info_gridlayout);
         gl.setVisibility(View.GONE);
-        LinearLayout ll = (LinearLayout)root.findViewById(R.id.notification_info_layout);
-        ll.setVisibility(View.VISIBLE);
         TimeZone utc = TimeZone.getTimeZone("UTC");
         Calendar calTime = Calendar.getInstance(utc);
         calTime.setTimeInMillis(timestamp * 1000);
@@ -833,17 +834,16 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         Button btClaimOk = (Button)root.findViewById(R.id.br_claim_button);
         View claim_progress = root.findViewById(R.id.progress_br_claim_button);
 
-        //hide 'Claim' button if Grant claim is in process
+
+        //hide or show 'Claim/OK' button if Grant claim is (not) in process
         mClaimInProcess = mBraveRewardsNativeWorker.IsGrantClaimInProcess();
         if (mClaimInProcess){
-            btClaimOk.setVisibility(View.GONE);
-            claim_progress.setVisibility(View.VISIBLE);
+            BraveRewardsHelper.crossfade(btClaimOk, claim_progress, View.GONE, 1f, BraveRewardsHelper.CROSS_FADE_DURATION);
         }
         else {
-            claim_progress.setVisibility(View.GONE);
-            btClaimOk.setVisibility(View.VISIBLE);
+            btClaimOk.setEnabled(true);
+            BraveRewardsHelper.crossfade(claim_progress, btClaimOk, View.GONE, 1f, BraveRewardsHelper.CROSS_FADE_DURATION);
         }
-
 
         TextView notificationClose = (TextView)root.findViewById(R.id.br_notification_close);
         notificationClose.setVisibility(View.VISIBLE);
@@ -855,6 +855,10 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         nit.setLayoutParams(params);
         TextView tv = (TextView)root.findViewById(R.id.br_notification_description);
         tv.setGravity(Gravity.CENTER);
+
+        LinearLayout ll = (LinearLayout)root.findViewById(R.id.notification_info_layout);
+        ll.setVisibility(View.VISIBLE);
+
         // TODO other types of notifications
         switch (type) {
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_AUTO_CONTRIBUTE:
@@ -1414,5 +1418,9 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             mTip_amount_spinner_auto_select = true; //spinner selection was changed programmatically
             mTip_amount_spinner.setSelection(RequestedPosition);
         }
+    }
+    @Override
+    public void OnGrantFinish(int result){
+        mBraveRewardsNativeWorker.GetAllNotifications();
     }
 }
