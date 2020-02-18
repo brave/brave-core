@@ -273,22 +273,6 @@ void BatLedgerClientMojoProxy::FetchFavIcon(const std::string& url,
       base::BindOnce(&OnFetchFavIcon, std::move(callback)));
 }
 
-void OnGetOneTimeTips(const ledger::PublisherInfoListCallback& callback,
-                      ledger::PublisherInfoList publisher_info_list) {
-  callback(std::move(publisher_info_list));
-}
-
-void BatLedgerClientMojoProxy::GetOneTimeTips(
-    ledger::PublisherInfoListCallback callback) {
-  if (!Connected()) {
-    callback(ledger::PublisherInfoList());
-    return;
-  }
-
-  bat_ledger_client_->GetOneTimeTips(
-      base::BindOnce(&OnGetOneTimeTips, std::move(callback)));
-}
-
 void OnLoadNicewareList(
     const ledger::GetNicewareListCallback& callback,
     const ledger::Result result,
@@ -305,23 +289,6 @@ void BatLedgerClientMojoProxy::LoadNicewareList(
 
   bat_ledger_client_->LoadNicewareList(
       base::BindOnce(&OnLoadNicewareList, std::move(callback)));
-}
-
-void OnSaveContributionInfo(
-    const ledger::ResultCallback& callback,
-    const ledger::Result result) {
-  callback(result);
-}
-
-void BatLedgerClientMojoProxy::SaveContributionInfo(
-    ledger::ContributionInfoPtr info,
-    ledger::ResultCallback callback) {
-  if (!Connected())
-    return;
-
-  bat_ledger_client_->SaveContributionInfo(
-      std::move(info),
-      base::BindOnce(&OnSaveContributionInfo, std::move(callback)));
 }
 
 std::string BatLedgerClientMojoProxy::URIEncode(const std::string& value) {
@@ -601,84 +568,6 @@ void BatLedgerClientMojoProxy::GetTransactionReport(
       month,
       year,
       base::BindOnce(&OnGetTransactionReport, std::move(callback)));
-}
-
-void OnGetContributionReport(
-    ledger::GetContributionReportCallback callback,
-    ledger::ContributionReportInfoList list) {
-  callback(std::move(list));
-}
-
-void BatLedgerClientMojoProxy::GetContributionReport(
-    const ledger::ActivityMonth month,
-    const int year,
-    ledger::GetContributionReportCallback callback) {
-  bat_ledger_client_->GetContributionReport(
-      month,
-      year,
-      base::BindOnce(&OnGetContributionReport, std::move(callback)));
-}
-
-void OnGetNotCompletedContributions(
-    ledger::GetIncompleteContributionsCallback callback,
-    ledger::ContributionInfoList list) {
-  callback(std::move(list));
-}
-
-void BatLedgerClientMojoProxy::GetIncompleteContributions(
-    ledger::GetIncompleteContributionsCallback callback) {
-  bat_ledger_client_->GetIncompleteContributions(
-      base::BindOnce(&OnGetNotCompletedContributions, std::move(callback)));
-}
-
-void OnGetContributionInfo(
-    ledger::GetContributionInfoCallback callback,
-    ledger::ContributionInfoPtr info) {
-  callback(std::move(info));
-}
-
-void BatLedgerClientMojoProxy::GetContributionInfo(
-    const std::string& contribution_id,
-    ledger::GetContributionInfoCallback callback) {
-  bat_ledger_client_->GetContributionInfo(
-      contribution_id,
-      base::BindOnce(&OnGetContributionInfo, std::move(callback)));
-}
-
-void OnUpdateContributionInfoStepAndCount(
-    ledger::ResultCallback callback,
-    const ledger::Result result) {
-  callback(result);
-}
-
-void BatLedgerClientMojoProxy::UpdateContributionInfoStepAndCount(
-    const std::string& contribution_id,
-    const ledger::ContributionStep step,
-    const int32_t retry_count,
-    ledger::ResultCallback callback) {
-  bat_ledger_client_->UpdateContributionInfoStepAndCount(
-      contribution_id,
-      step,
-      retry_count,
-      base::BindOnce(&OnUpdateContributionInfoStepAndCount,
-          std::move(callback)));
-}
-
-void OnUpdateContributionInfoContributedAmount(
-    ledger::ResultCallback callback,
-    const ledger::Result result) {
-  callback(result);
-}
-
-void BatLedgerClientMojoProxy::UpdateContributionInfoContributedAmount(
-    const std::string& contribution_id,
-    const std::string& publisher_key,
-    ledger::ResultCallback callback) {
-  bat_ledger_client_->UpdateContributionInfoContributedAmount(
-      contribution_id,
-      publisher_key,
-      base::BindOnce(&OnUpdateContributionInfoContributedAmount,
-          std::move(callback)));
 }
 
 void BatLedgerClientMojoProxy::ReconcileStampReset() {

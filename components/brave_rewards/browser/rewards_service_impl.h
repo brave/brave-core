@@ -179,8 +179,6 @@ class RewardsServiceImpl : public RewardsService,
       GetRecurringTipsCallback callback,
       ledger::PublisherInfoList list);
   void GetRecurringTipsUI(GetRecurringTipsCallback callback) override;
-  void GetOneTimeTips(
-      ledger::PublisherInfoListCallback callback) override;
   void SetPublisherExclude(
       const std::string& publisher_key,
       bool exclude) override;
@@ -364,12 +362,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnResetTheWholeState(base::Callback<void(bool)> callback,
                                  bool success);
-  void OnContributionInfoSaved(
-      ledger::ResultCallback callback,
-      const ledger::Result result);
-
-  void OnGetOneTimeTips(ledger::PublisherInfoListCallback callback,
-                        ledger::PublisherInfoList list);
   void OnRecurringTipUI(const ledger::Result result);
 
   void TriggerOnGetCurrentBalanceReport(
@@ -535,9 +527,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnSetOnDemandFaviconComplete(const std::string& favicon_url,
                                     ledger::FetchIconCallback callback,
                                     bool success);
-  void SaveContributionInfo(
-      ledger::ContributionInfoPtr info,
-      ledger::ResultCallback callback) override;
 
   std::unique_ptr<ledger::LogStream> Log(
                      const char* file,
@@ -607,29 +596,6 @@ class RewardsServiceImpl : public RewardsService,
       const int year,
       ledger::GetTransactionReportCallback callback) override;
 
-  void GetContributionReport(
-      const ledger::ActivityMonth month,
-      const int year,
-      ledger::GetContributionReportCallback callback) override;
-
-  void GetIncompleteContributions(
-      ledger::GetIncompleteContributionsCallback callback) override;
-
-  void GetContributionInfo(
-      const std::string& contribution_id,
-      ledger::GetContributionInfoCallback callback) override;
-
-  void UpdateContributionInfoStepAndCount(
-      const std::string& contribution_id,
-      const ledger::ContributionStep step,
-      const int32_t retry_count,
-      ledger::ResultCallback callback) override;
-
-  void UpdateContributionInfoContributedAmount(
-      const std::string& contribution_id,
-      const std::string& publisher_key,
-      ledger::ResultCallback callback) override;
-
   void ReconcileStampReset() override;
 
   void RunDBTransaction(
@@ -673,7 +639,13 @@ class RewardsServiceImpl : public RewardsService,
   void AddPrivateObserver(RewardsServicePrivateObserver* observer) override;
   void RemovePrivateObserver(RewardsServicePrivateObserver* observer) override;
 
-  void RecordBackendP3AStats() const;
+  void RecordBackendP3AStats();
+
+  void OnRecordBackendP3AStatsRecurring(ledger::PublisherInfoList list);
+
+  void OnRecordBackendP3AStatsContributions(
+      const uint32_t recurring_donation_size,
+      ledger::ContributionInfoList list);
 
   void OnGetBalanceReport(
       GetBalanceReportCallback callback,
@@ -702,18 +674,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnGetTransactionReport(
       ledger::GetTransactionReportCallback callback,
       ledger::TransactionReportInfoList list);
-
-  void OnGetContributionReport(
-      ledger::GetContributionReportCallback callback,
-      ledger::ContributionReportInfoList list);
-
-  void OnGetNotCompletedContributions(
-      ledger::GetIncompleteContributionsCallback callback,
-      ledger::ContributionInfoList list);
-
-  void OnGetContributionInfo(
-      ledger::GetContributionInfoCallback callback,
-      ledger::ContributionInfoPtr info);
 
   void OnRunDBTransaction(
       ledger::RunDBTransactionCallback callback,

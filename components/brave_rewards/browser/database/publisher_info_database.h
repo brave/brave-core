@@ -19,7 +19,6 @@
 #include "base/memory/memory_pressure_listener.h"
 #include "base/sequence_checker.h"
 #include "bat/ledger/mojom_structs.h"
-#include "brave/components/brave_rewards/browser/database/database_contribution_info.h"
 #include "build/build_config.h"
 #include "sql/database.h"
 #include "sql/init_status.h"
@@ -40,15 +39,6 @@ class PublisherInfoDatabase {
     db_.set_error_callback(error_callback);
   }
 
-  bool InsertOrUpdateContributionInfo(ledger::ContributionInfoPtr info);
-
-  void GetOneTimeTips(
-      ledger::PublisherInfoList* list,
-      const ledger::ActivityMonth month,
-      const int year);
-
-  void RecordP3AStats(bool auto_contributions_on);
-
   // Returns the current version of the publisher info database
   int GetCurrentVersion();
 
@@ -56,26 +46,6 @@ class PublisherInfoDatabase {
       ledger::TransactionReportInfoList* list,
       const ledger::ActivityMonth month,
       const int year);
-
-  void GetContributionReport(
-      ledger::ContributionReportInfoList* list,
-      const ledger::ActivityMonth month,
-      const int year);
-
-  void GetIncompleteContributions(
-      ledger::ContributionInfoList* list);
-
-  ledger::ContributionInfoPtr GetContributionInfo(
-      const std::string& contribution_id);
-
-  bool UpdateContributionInfoStepAndCount(
-      const std::string& contribution_id,
-      const ledger::ContributionStep step,
-      const int32_t retry_count);
-
-  bool UpdateContributionInfoContributedAmount(
-      const std::string& contribution_id,
-      const std::string& publisher_key);
 
   // Vacuums the database. This will cause sqlite to defragment and collect
   // unused space in the file. It can be VERY SLOW.
@@ -142,7 +112,6 @@ class PublisherInfoDatabase {
   int testing_current_version_;
 
   std::unique_ptr<base::MemoryPressureListener> memory_pressure_listener_;
-  std::unique_ptr<DatabaseContributionInfo> contribution_info_;
 
   SEQUENCE_CHECKER(sequence_checker_);
   DISALLOW_COPY_AND_ASSIGN(PublisherInfoDatabase);

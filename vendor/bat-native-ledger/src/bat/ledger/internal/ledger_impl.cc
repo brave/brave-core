@@ -19,6 +19,7 @@
 #include "bat/ads/ad_notification_info.h"
 #include "bat/confirmations/confirmations.h"
 #include "bat/ledger/internal/media/media.h"
+#include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/publisher/publisher.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/bat_state.h"
@@ -837,9 +838,11 @@ void LedgerImpl::GetRecurringTips(ledger::PublisherInfoListCallback callback) {
   bat_database_->GetRecurringTips(callback);
 }
 
-void LedgerImpl::GetOneTimeTips(
-    ledger::PublisherInfoListCallback callback) {
-  ledger_client_->GetOneTimeTips(callback);
+void LedgerImpl::GetOneTimeTips(ledger::PublisherInfoListCallback callback) {
+  bat_database_->GetOneTimeTips(
+      braveledger_time_util::GetCurrentMonth(),
+      braveledger_time_util::GetCurrentYear(),
+      callback);
 }
 
 bool LedgerImpl::IsWalletCreated() const {
@@ -1167,7 +1170,7 @@ bool LedgerImpl::ReconcileExists(const std::string& viewingId) {
 void LedgerImpl::SaveContributionInfo(
     ledger::ContributionInfoPtr info,
     ledger::ResultCallback callback) {
-  ledger_client_->SaveContributionInfo(std::move(info), callback);
+  bat_database_->SaveContributionInfo(std::move(info), callback);
 }
 
 void LedgerImpl::NormalizeContributeWinners(
@@ -1663,18 +1666,18 @@ void LedgerImpl::GetContributionReport(
     const ledger::ActivityMonth month,
     const int year,
     ledger::GetContributionReportCallback callback) {
-  ledger_client_->GetContributionReport(month, year, callback);
+  bat_database_->GetContributionReport(month, year, callback);
 }
 
 void LedgerImpl::GetIncompleteContributions(
-    ledger::GetIncompleteContributionsCallback callback) {
-  ledger_client_->GetIncompleteContributions(callback);
+    ledger::ContributionInfoListCallback callback) {
+  bat_database_->GetIncompleteContributions(callback);
 }
 
 void LedgerImpl::GetContributionInfo(
     const std::string& contribution_id,
     ledger::GetContributionInfoCallback callback) {
-  ledger_client_->GetContributionInfo(contribution_id, callback);
+  bat_database_->GetContributionInfo(contribution_id, callback);
 }
 
 void LedgerImpl::UpdateContributionInfoStepAndCount(
@@ -1682,7 +1685,7 @@ void LedgerImpl::UpdateContributionInfoStepAndCount(
     const ledger::ContributionStep step,
     const int32_t retry_count,
     ledger::ResultCallback callback) {
-  ledger_client_->UpdateContributionInfoStepAndCount(
+  bat_database_->UpdateContributionInfoStepAndCount(
       contribution_id,
       step,
       retry_count,
@@ -1693,7 +1696,7 @@ void LedgerImpl::UpdateContributionInfoContributedAmount(
     const std::string& contribution_id,
     const std::string& publisher_key,
     ledger::ResultCallback callback) {
-  ledger_client_->UpdateContributionInfoContributedAmount(
+  bat_database_->UpdateContributionInfoContributedAmount(
       contribution_id,
       publisher_key,
       callback);
@@ -1708,6 +1711,11 @@ void LedgerImpl::RunDBTransaction(
 void LedgerImpl::GetCreateScript(
     ledger::GetCreateScriptCallback callback) {
   ledger_client_->GetCreateScript(callback);
+}
+
+void LedgerImpl::GetAllContributions(
+      ledger::ContributionInfoListCallback callback) {
+  bat_database_->GetAllContributions(callback);
 }
 
 }  // namespace bat_ledger

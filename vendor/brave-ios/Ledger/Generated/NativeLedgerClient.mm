@@ -20,9 +20,6 @@ void NativeLedgerClient::FetchFavIcon(const std::string & url, const std::string
 std::string NativeLedgerClient::GenerateGUID() const {
   return [bridge_ generateGUID];
 }
-void NativeLedgerClient::GetOneTimeTips(ledger::PublisherInfoListCallback callback) {
-  [bridge_ getOneTimeTips:callback];
-}
 void NativeLedgerClient::KillTimer(const uint32_t timer_id) {
   [bridge_ killTimer:timer_id];
 }
@@ -55,9 +52,6 @@ void NativeLedgerClient::OnWalletProperties(ledger::Result result, ledger::Walle
 }
 void NativeLedgerClient::ResetState(const std::string & name, ledger::OnResetCallback callback) {
   [bridge_ resetState:name callback:callback];
-}
-void NativeLedgerClient::SaveContributionInfo(ledger::ContributionInfoPtr info, ledger::ResultCallback callback) {
-  [bridge_ saveContributionInfo:std::move(info) callback:callback];
 }
 void NativeLedgerClient::SaveLedgerState(const std::string & ledger_state, ledger::LedgerCallbackHandler * handler) {
   [bridge_ saveLedgerState:ledger_state handler:handler];
@@ -169,21 +163,6 @@ void NativeLedgerClient::UnblindedTokensReady() {
 }
 void NativeLedgerClient::GetTransactionReport(const ledger::ActivityMonth month, const int year, ledger::GetTransactionReportCallback callback) {
   [bridge_ getTransactionReport:month year:year callback:callback];
-}
-void NativeLedgerClient::GetContributionReport(const ledger::ActivityMonth month, const int year, ledger::GetContributionReportCallback callback) {
-  [bridge_ getContributionReport:month year:year callback:callback];
-}
-void NativeLedgerClient::GetIncompleteContributions(ledger::GetIncompleteContributionsCallback callback) {
-  [bridge_ getIncompleteContributions:callback];
-}
-void NativeLedgerClient::GetContributionInfo(const std::string& contribution_id, ledger::GetContributionInfoCallback callback) {
-  [bridge_ getContributionInfo:contribution_id callback:callback];
-}
-void NativeLedgerClient::UpdateContributionInfoStepAndCount(const std::string& contribution_id, const ledger::ContributionStep step, const int32_t retry_count, ledger::ResultCallback callback) {
-  [bridge_ updateContributionInfoStepAndCount:contribution_id step:step retry_count:retry_count callback:callback];
-}
-void NativeLedgerClient::UpdateContributionInfoContributedAmount(const std::string& contribution_id, const std::string& publisher_key, ledger::ResultCallback callback) {
-  [bridge_ updateContributionInfoContributedAmount:contribution_id publisher_key:publisher_key callback:callback];
 }
 void NativeLedgerClient::ReconcileStampReset() {
   [bridge_ reconcileStampReset];

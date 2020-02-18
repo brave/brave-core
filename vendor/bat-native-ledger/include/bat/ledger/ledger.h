@@ -60,6 +60,9 @@ using AttestPromotionCallback =
 using GetBalanceReportCallback =
     std::function<void(const ledger::Result, ledger::BalanceReportInfoPtr)>;
 
+using ContributionInfoListCallback =
+    std::function<void(ContributionInfoList)>;
+
 using RecoverWalletCallback = std::function<void(
     const ledger::Result,
     const double balance)>;
@@ -331,6 +334,9 @@ class LEDGER_EXPORT Ledger {
       const ledger::ActivityMonth month,
       const int year,
       ledger::GetContributionReportCallback callback) = 0;
+
+  virtual void GetAllContributions(
+      ledger::ContributionInfoListCallback callback) = 0;
 };
 
 }  // namespace ledger

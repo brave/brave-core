@@ -7,6 +7,7 @@
 
 #include "bat/ledger/internal/database/database.h"
 #include "bat/ledger/internal/database/database_activity_info.h"
+#include "bat/ledger/internal/database/database_contribution_info.h"
 #include "bat/ledger/internal/database/database_contribution_queue.h"
 #include "bat/ledger/internal/database/database_initialize.h"
 #include "bat/ledger/internal/database/database_media_publisher_info.h"
@@ -27,6 +28,7 @@ Database::Database(bat_ledger::LedgerImpl* ledger) :
   initialize_ = std::make_unique<DatabaseInitialize>(ledger_);
   activity_info_ = std::make_unique<DatabaseActivityInfo>(ledger_);
   contribution_queue_ = std::make_unique<DatabaseContributionQueue>(ledger_);
+  contribution_info_ = std::make_unique<DatabaseContributionInfo>(ledger_);
   media_publisher_info_ =
       std::make_unique<DatabaseMediaPublisherInfo>(ledger_);
   pending_contribution_ =
@@ -77,6 +79,68 @@ void Database::DeleteActivityInfo(
     const std::string& publisher_key,
     ledger::ResultCallback callback) {
   activity_info_->DeleteRecord(publisher_key, callback);
+}
+
+
+/**
+ * CONTRIBUTION INFO
+ */
+void Database::SaveContributionInfo(
+    ledger::ContributionInfoPtr info,
+    ledger::ResultCallback callback) {
+  contribution_info_->InsertOrUpdate(std::move(info), callback);
+}
+
+void Database::GetContributionInfo(
+    const std::string& contribution_id,
+    ledger::GetContributionInfoCallback callback) {
+  contribution_info_->GetRecord(contribution_id, callback);
+}
+
+void Database::GetAllContributions(
+    ledger::ContributionInfoListCallback callback) {
+  contribution_info_->GetAllRecords(callback);
+}
+
+void Database::GetOneTimeTips(
+    const ledger::ActivityMonth month,
+    const int year,
+    ledger::PublisherInfoListCallback callback) {
+  contribution_info_->GetOneTimeTips(month, year, callback);
+}
+
+void Database::GetContributionReport(
+    const ledger::ActivityMonth month,
+    const int year,
+    ledger::GetContributionReportCallback callback) {
+  contribution_info_->GetContributionReport(month, year, callback);
+}
+
+void Database::GetIncompleteContributions(
+    ledger::ContributionInfoListCallback callback) {
+  contribution_info_->GetIncompletedRecords(callback);
+}
+
+void Database::UpdateContributionInfoStepAndCount(
+    const std::string& contribution_id,
+    const ledger::ContributionStep step,
+    const int32_t retry_count,
+    ledger::ResultCallback callback) {
+  contribution_info_->UpdateStepAndCount(
+      contribution_id,
+      step,
+      retry_count,
+      callback);
+}
+
+void Database::UpdateContributionInfoContributedAmount(
+    const std::string& contribution_id,
+    const std::string& publisher_key,
+    ledger::ResultCallback callback) {
+  contribution_info_->UpdateContributedAmount(
+      contribution_id,
+      publisher_key,
+      callback);
 }
 
 /**

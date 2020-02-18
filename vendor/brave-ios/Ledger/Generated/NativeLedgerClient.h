@@ -18,7 +18,6 @@ private:
   void ConfirmationsTransactionHistoryDidChange() override;
   void FetchFavIcon(const std::string & url, const std::string & favicon_key, ledger::FetchIconCallback callback) override;
   std::string GenerateGUID() const override;
-  void GetOneTimeTips(ledger::PublisherInfoListCallback callback) override;
   void KillTimer(const uint32_t timer_id) override;
   void LoadLedgerState(ledger::OnLoadCallback callback) override;
   void LoadNicewareList(ledger::GetNicewareListCallback callback) override;
@@ -30,7 +29,6 @@ private:
   void OnReconcileComplete(ledger::Result result, const std::string & viewing_id, const double amount, const ledger::RewardsType type) override;
   void OnWalletProperties(ledger::Result result, ledger::WalletPropertiesPtr arg1) override;
   void ResetState(const std::string & name, ledger::OnResetCallback callback) override;
-  void SaveContributionInfo(ledger::ContributionInfoPtr info, ledger::ResultCallback callback) override;
   void SaveLedgerState(const std::string & ledger_state, ledger::LedgerCallbackHandler * handler) override;
   void PublisherListNormalized(ledger::PublisherInfoList list) override;
   void SavePublisherState(const std::string & publisher_state, ledger::LedgerCallbackHandler * handler) override;
@@ -68,11 +66,6 @@ private:
   ledger::ClientInfoPtr GetClientInfo() override;
   void UnblindedTokensReady() override;
   void GetTransactionReport(const ledger::ActivityMonth month, const int year, ledger::GetTransactionReportCallback callback) override;
-  void GetContributionReport(const ledger::ActivityMonth month, const int year, ledger::GetContributionReportCallback callback) override;
-  void GetIncompleteContributions(ledger::GetIncompleteContributionsCallback callback) override;
-  void GetContributionInfo(const std::string& contribution_id, ledger::GetContributionInfoCallback callback) override;
-  void UpdateContributionInfoStepAndCount(const std::string& contribution_id, const ledger::ContributionStep step, const int32_t retry_count, ledger::ResultCallback callback) override;
-  void UpdateContributionInfoContributedAmount(const std::string& contribution_id, const std::string& publisher_key, ledger::ResultCallback callback) override;
   void ReconcileStampReset() override;
   void RunDBTransaction(ledger::DBTransactionPtr transaction, ledger::RunDBTransactionCallback callback) override;
   void GetCreateScript(ledger::GetCreateScriptCallback callback) override;

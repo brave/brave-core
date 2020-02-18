@@ -76,15 +76,6 @@ const std::map<std::string, uint64_t> kUInt64Options = {
 };
 /// ---
 
-NS_INLINE ledger::ActivityMonth BATGetPublisherMonth(NSDate *date) {
-  const auto month = [[NSCalendar currentCalendar] component:NSCalendarUnitMonth fromDate:date];
-  return (ledger::ActivityMonth)month;
-}
-
-NS_INLINE int BATGetPublisherYear(NSDate *date) {
-  return (int)[[NSCalendar currentCalendar] component:NSCalendarUnitYear fromDate:date];
-}
-
 @interface BATBraveLedger () <NativeLedgerClientBridge> {
   NativeLedgerClient *ledgerClient;
   ledger::Ledger *ledger;
@@ -1734,21 +1725,6 @@ BATLedgerBridge(BOOL,
     return info.cppObjPtr;
   }));
 }
-
-- (void)getOneTimeTips:(ledger::PublisherInfoListCallback)callback
-{
-  const auto now = [NSDate date];
-  const auto publishers = [BATLedgerDatabase oneTimeTipsPublishersForMonth: (BATActivityMonth)BATGetPublisherMonth(now)
-                                                        year:BATGetPublisherYear(now)];
-
-  [self handlePublisherListing:publishers start:0 limit:0 callback:callback];
-}
-
-- (void)saveContributionInfo:(ledger::ContributionInfoPtr)info callback:(ledger::ResultCallback)callback
-{
-  BLOG(ledger::LogLevel::LOG_ERROR) << "Cannot save contribution info; Neccessary DB update not available" << std::endl;
-  callback(ledger::Result::LEDGER_ERROR);
-}
 - (void)publisherListNormalized:(ledger::PublisherInfoList)list
 {
   const auto list_converted = NSArrayFromVector(&list, ^BATPublisherInfo *(const ledger::PublisherInfoPtr& info) {
@@ -1837,31 +1813,6 @@ BATLedgerBridge(BOOL,
 }
 
 - (void)getTransactionReport:(const ledger::ActivityMonth)month year:(const uint32_t)year callback:(ledger::GetTransactionReportCallback)callback
-{
-  // TODO please implement
-}
-
-- (void)getContributionReport:(const ledger::ActivityMonth)month year:(const uint32_t)year callback:(ledger::GetContributionReportCallback)callback
-{
-  // TODO please implement
-}
-
-- (void)getIncompleteContributions:(ledger::GetIncompleteContributionsCallback)callback
-{
-  // TODO please implement
-}
-
-- (void)getContributionInfo:(const std::string&)contribution_id callback:(ledger::GetContributionInfoCallback)callback
-{
-  // TODO please implement
-}
-
-- (void)updateContributionInfoStepAndCount:(const std::string&)contribution_id step:(const ledger::ContributionStep)step retry_count:(const int32_t)retry_count callback:(ledger::ResultCallback)callback
-{
-  // TODO please implement
-}
-
-- (void)updateContributionInfoContributedAmount:(const std::string&)contribution_id publisher_key:(const std::string&)publisher_key callback:(ledger::ResultCallback)callback
 {
   // TODO please implement
 }

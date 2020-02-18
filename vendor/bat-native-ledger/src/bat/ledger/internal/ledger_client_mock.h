@@ -105,13 +105,6 @@ class MockLedgerClient : public LedgerClient {
       const std::string& favicon_key,
       ledger::FetchIconCallback callback));
 
-  MOCK_METHOD2(SaveContributionInfo, void(
-      ledger::ContributionInfoPtr info,
-      ledger::ResultCallback callback));
-
-  MOCK_METHOD1(GetOneTimeTips, void(
-      ledger::PublisherInfoListCallback callback));
-
   MOCK_METHOD2(SetTimer, void(
       uint64_t time_offset,
       uint32_t* timer_id));
@@ -263,29 +256,6 @@ class MockLedgerClient : public LedgerClient {
       const ledger::ActivityMonth month,
       const int year,
       ledger::GetTransactionReportCallback callback));
-
-  MOCK_METHOD3(GetContributionReport, void(
-      const ledger::ActivityMonth month,
-      const int year,
-      ledger::GetContributionReportCallback callback));
-
-  MOCK_METHOD1(GetIncompleteContributions, void(
-      ledger::GetIncompleteContributionsCallback callback));
-
-  MOCK_METHOD2(GetContributionInfo, void(
-      const std::string& contribution_id,
-      GetContributionInfoCallback callback));
-
-  MOCK_METHOD4(UpdateContributionInfoStepAndCount, void(
-      const std::string& contribution_id,
-      const ledger::ContributionStep step,
-      const int32_t retry_count,
-      ResultCallback callback));
-
-  MOCK_METHOD3(UpdateContributionInfoContributedAmount, void(
-      const std::string& contribution_id,
-      const std::string& publisher_key,
-      ResultCallback callback));
 
   MOCK_METHOD0(ReconcileStampReset, void());
 

@@ -961,4 +961,25 @@ void BatLedgerImpl::GetContributionReport(
                 _1));
 }
 
+// static
+void BatLedgerImpl::OnGetAllContributions(
+    CallbackHolder<GetAllContributionsCallback>* holder,
+    ledger::ContributionInfoList list) {
+  DCHECK(holder);
+  if (holder->is_valid())
+    std::move(holder->get()).Run(std::move(list));
+
+  delete holder;
+}
+
+void BatLedgerImpl::GetAllContributions(GetAllContributionsCallback callback) {
+  auto* holder = new CallbackHolder<GetAllContributionsCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->GetAllContributions(std::bind(
+      BatLedgerImpl::OnGetAllContributions,
+      holder,
+      _1));
+}
+
 }  // namespace bat_ledger

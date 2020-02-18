@@ -45,8 +45,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void FetchFavIcon(const std::string& url, const std::string& favicon_key,
       FetchFavIconCallback callback) override;
 
-  void GetOneTimeTips(GetOneTimeTipsCallback callback) override;
-
   void LoadNicewareList(LoadNicewareListCallback callback) override;
 
   void SetTimer(uint64_t time_offset, SetTimerCallback callback) override;
@@ -55,10 +53,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       const ledger::Result result,
       ledger::PublisherInfoPtr info,
       uint64_t window_id) override;
-
-  void SaveContributionInfo(
-      ledger::ContributionInfoPtr info,
-      SaveContributionInfoCallback callback) override;
 
   void URIEncode(const std::string& value,
       URIEncodeCallback callback) override;
@@ -161,29 +155,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       const int year,
       GetTransactionReportCallback callback) override;
 
-  void GetContributionReport(
-      const ledger::ActivityMonth month,
-      const int year,
-      GetContributionReportCallback callback) override;
-
-  void GetIncompleteContributions(
-      GetIncompleteContributionsCallback callback) override;
-
-  void GetContributionInfo(
-      const std::string& contribution_id,
-      GetContributionInfoCallback callback) override;
-
-  void UpdateContributionInfoStepAndCount(
-      const std::string& contribution_id,
-      const ledger::ContributionStep step,
-      const int32_t retry_count,
-      UpdateContributionInfoStepAndCountCallback callback) override;
-
-  void UpdateContributionInfoContributedAmount(
-      const std::string& contribution_id,
-      const std::string& publisher_key,
-      UpdateContributionInfoContributedAmountCallback callback) override;
-
   void ReconcileStampReset() override;
 
   void RunDBTransaction(
@@ -244,10 +215,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       const ledger::Result result,
       const std::string& data);
 
-  static void OnSaveContributionInfo(
-      CallbackHolder<SaveContributionInfoCallback>* holder,
-      const ledger::Result result);
-
   static void OnLoadURL(
       CallbackHolder<LoadURLCallback>* holder,
       int32_t response_code, const std::string& response,
@@ -266,10 +233,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       CallbackHolder<ResetStateCallback>* holder,
       ledger::Result result);
 
-  static void OnGetOneTimeTips(
-      CallbackHolder<GetOneTimeTipsCallback>* holder,
-      ledger::PublisherInfoList publisher_info_list);
-
   static void OnGetExternalWallets(
     CallbackHolder<GetExternalWalletsCallback>* holder,
     std::map<std::string, ledger::ExternalWalletPtr> wallets);
@@ -281,26 +244,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   static void OnGetTransactionReport(
       CallbackHolder<GetTransactionReportCallback>* holder,
       ledger::TransactionReportInfoList list);
-
-  static void OnGetContributionReport(
-      CallbackHolder<GetContributionReportCallback>* holder,
-      ledger::ContributionReportInfoList list);
-
-  static void OnGetNotCompletedContributions(
-      CallbackHolder<GetIncompleteContributionsCallback>* holder,
-      ledger::ContributionInfoList list);
-
-  static void OnGetContributionInfo(
-      CallbackHolder<GetContributionInfoCallback>* holder,
-      ledger::ContributionInfoPtr info);
-
-  static void OnUpdateContributionInfoStepAndCount(
-      CallbackHolder<UpdateContributionInfoStepAndCountCallback>* holder,
-      const ledger::Result result);
-
-  static void OnUpdateContributionInfoContributedAmount(
-      CallbackHolder<UpdateContributionInfoContributedAmountCallback>* holder,
-      const ledger::Result result);
 
   static void OnRunDBTransaction(
       CallbackHolder<RunDBTransactionCallback>* holder,

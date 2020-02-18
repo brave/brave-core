@@ -146,6 +146,8 @@ interface BatLedger {
   GetTransactionReport(ledger.mojom.ActivityMonth month, int32 year) => (array<ledger.mojom.TransactionReportInfo> list);
 
   GetContributionReport(ledger.mojom.ActivityMonth month, int32 year) => (array<ledger.mojom.ContributionReportInfo> list);
+
+  GetAllContributions() => (array<ledger.mojom.ContributionInfo> list);
 };
 
 interface BatLedgerClient {
@@ -165,7 +167,6 @@ interface BatLedgerClient {
                        uint64 window_id);
   FetchFavIcon(string url, string favicon_key) => (bool success,
       string favicon_url);
-  GetOneTimeTips() => (array<ledger.mojom.PublisherInfo> publisher_info_list);
 
   LoadNicewareList() => (ledger.mojom.Result result, string data);
 
@@ -176,8 +177,6 @@ interface BatLedgerClient {
   [Sync]
   SetTimer(uint64 time_offset) => (uint32 timer_id);
   KillTimer(uint32 timer_id);
-  SaveContributionInfo(ledger.mojom.ContributionInfo info) => (ledger.mojom.Result result);
-
   [Sync]
   URIEncode(string value) => (string encoded_value);
 
@@ -241,16 +240,6 @@ interface BatLedgerClient {
   UnblindedTokensReady();
 
   GetTransactionReport(ledger.mojom.ActivityMonth month, int32 year) => (array<ledger.mojom.TransactionReportInfo> list);
-
-  GetContributionReport(ledger.mojom.ActivityMonth month, int32 year) => (array<ledger.mojom.ContributionReportInfo> list);
-
-  GetIncompleteContributions() => (array<ledger.mojom.ContributionInfo> list);
-
-  GetContributionInfo(string contribution_id) => (ledger.mojom.ContributionInfo info);
-
-  UpdateContributionInfoStepAndCount(string contribution_id, ledger.mojom.ContributionStep step, int32 retry_count) => (ledger.mojom.Result result);
-
-  UpdateContributionInfoContributedAmount(string contribution_id, string publisher_key) => (ledger.mojom.Result result);
 
   ReconcileStampReset();
 

@@ -11,7 +11,6 @@
 - (void)confirmationsTransactionHistoryDidChange;
 - (void)fetchFavIcon:(const std::string &)url faviconKey:(const std::string &)favicon_key callback:(ledger::FetchIconCallback)callback;
 - (std::string)generateGUID;
-- (void)getOneTimeTips:(ledger::PublisherInfoListCallback)callback;
 - (void)killTimer:(const uint32_t)timer_id;
 - (void)loadLedgerState:(ledger::OnLoadCallback)callback;
 - (void)loadNicewareList:(ledger::GetNicewareListCallback)callback;
@@ -23,7 +22,6 @@
 - (void)onReconcileComplete:(ledger::Result)result viewingId:(const std::string &)viewing_id type:(const ledger::RewardsType)type amount:(const double)amount;
 - (void)onWalletProperties:(ledger::Result)result arg1:(ledger::WalletPropertiesPtr)arg1;
 - (void)resetState:(const std::string &)name callback:(ledger::OnResetCallback)callback;
-- (void)saveContributionInfo:(ledger::ContributionInfoPtr)info callback:(ledger::ResultCallback)callback;
 - (void)saveLedgerState:(const std::string &)ledger_state handler:(ledger::LedgerCallbackHandler *)handler;
 - (void)publisherListNormalized:(ledger::PublisherInfoList)list;
 - (void)savePublisherState:(const std::string &)publisher_state handler:(ledger::LedgerCallbackHandler *)handler;
@@ -61,11 +59,6 @@
 - (ledger::ClientInfoPtr)getClientInfo;
 - (void)unblindedTokensReady;
 - (void)getTransactionReport:(const ledger::ActivityMonth)month year:(const uint32_t)year callback:(ledger::GetTransactionReportCallback)callback;
-- (void)getContributionReport:(const ledger::ActivityMonth)month year:(const uint32_t)year callback:(ledger::GetContributionReportCallback)callback;
-- (void)getIncompleteContributions:(ledger::GetIncompleteContributionsCallback)callback;
-- (void)getContributionInfo:(const std::string&)contribution_id callback:(ledger::GetContributionInfoCallback)callback;
-- (void)updateContributionInfoStepAndCount:(const std::string&)contribution_id step:(const ledger::ContributionStep)step retry_count:(const int32_t)retry_count callback:(ledger::ResultCallback)callback;
-- (void)updateContributionInfoContributedAmount:(const std::string&)contribution_id publisher_key:(const std::string&)publisher_key callback:(ledger::ResultCallback)callback;
 - (void)reconcileStampReset;
 - (void)runDBTransaction:(ledger::DBTransactionPtr)transaction callback:(ledger::RunDBTransactionCallback)callback;
 - (void)getCreateScript:(ledger::GetCreateScriptCallback)callback;

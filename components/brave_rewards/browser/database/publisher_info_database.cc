@@ -52,9 +52,6 @@ PublisherInfoDatabase::PublisherInfoDatabase(
     initialized_(false),
     testing_current_version_(testing_current_version) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
-
-  contribution_info_ =
-      std::make_unique<DatabaseContributionInfo>(GetCurrentVersion());
 }
 
 PublisherInfoDatabase::~PublisherInfoDatabase() {
@@ -98,90 +95,6 @@ bool PublisherInfoDatabase::Init() {
 
   initialized_ = true;
   return initialized_;
-}
-
-/**
- *
- * CONTRIBUTION INFO
- *
- */
-bool PublisherInfoDatabase::InsertOrUpdateContributionInfo(
-    ledger::ContributionInfoPtr info) {
-  if (!IsInitialized()) {
-    return false;
-  }
-
-  return contribution_info_->InsertOrUpdate(&GetDB(), std::move(info));
-}
-
-void PublisherInfoDatabase::GetOneTimeTips(
-    ledger::PublisherInfoList* list,
-    const ledger::ActivityMonth month,
-    const int year) {
-  if (!IsInitialized()) {
-    return;
-  }
-
-  contribution_info_->GetOneTimeTips(&GetDB(), list, month, year);
-}
-
-void PublisherInfoDatabase::GetContributionReport(
-    ledger::ContributionReportInfoList* list,
-    const ledger::ActivityMonth month,
-    const int year) {
-  DCHECK(list);
-  if (!IsInitialized() || !list) {
-    return;
-  }
-
-  contribution_info_->GetContributionReport(&GetDB(), list, month, year);
-}
-
-void PublisherInfoDatabase::GetIncompleteContributions(
-    ledger::ContributionInfoList* list) {
-  DCHECK(list);
-  if (!IsInitialized() || !list) {
-    return;
-  }
-
-  contribution_info_->GetNotCompletedRecords(&GetDB(), list);
-}
-
-ledger::ContributionInfoPtr PublisherInfoDatabase::GetContributionInfo(
-    const std::string& contribution_id) {
-  if (!IsInitialized()) {
-    return nullptr;
-  }
-
-  return contribution_info_->GetRecord(&GetDB(), contribution_id);
-}
-
-bool PublisherInfoDatabase::UpdateContributionInfoStepAndCount(
-    const std::string& contribution_id,
-    const ledger::ContributionStep step,
-    const int32_t retry_count) {
-  if (!IsInitialized()) {
-    return false;
-  }
-
-  return contribution_info_->UpdateStepAndCount(
-      &GetDB(),
-      contribution_id,
-      step,
-      retry_count);
-}
-
-bool PublisherInfoDatabase::UpdateContributionInfoContributedAmount(
-    const std::string& contribution_id,
-    const std::string& publisher_key) {
-  if (!IsInitialized()) {
-    return false;
-  }
-
-  return contribution_info_->UpdateContributedAmount(
-      &GetDB(),
-      contribution_id,
-      publisher_key);
 }
 
 /**
@@ -233,52 +146,6 @@ bool PublisherInfoDatabase::IsInitialized() {
   bool initialized = Init();
   DCHECK(initialized);
   return initialized;
-}
-
-void PublisherInfoDatabase::RecordP3AStats(bool auto_contributions_on) {
-  if (!initialized_) {
-    return;
-  }
-
-  sql::Statement sql(
-      db_.GetCachedStatement(SQL_FROM_HERE,
-                             "SELECT type, COUNT(*) FROM contribution_info "
-                             "GROUP BY 1"));
-  int auto_contributions = 0;
-  int tips = 0;
-  int queued_recurring = 0;
-
-  while (sql.Step()) {
-    const int count = sql.ColumnInt(1);
-    switch (sql.ColumnInt(0)) {
-    case static_cast<int>(ledger::RewardsType::AUTO_CONTRIBUTE):
-      auto_contributions = count;
-      break;
-    case static_cast<int>(ledger::RewardsType::ONE_TIME_TIP):
-      tips += count;
-      break;
-    case static_cast<int>(ledger::RewardsType::RECURRING_TIP):
-      queued_recurring = count;
-      break;
-    default:
-      NOTREACHED();
-    }
-  }
-
-  if (queued_recurring == 0) {
-    // Check for queued recurring donations.
-    sql::Statement sql(
-        db_.GetUniqueStatement("SELECT COUNT(*) FROM recurring_donation"));
-    if (sql.Step()) {
-      queued_recurring = sql.ColumnInt(0);
-    }
-  }
-
-  const auto auto_contributions_state = auto_contributions_on ?
-        AutoContributionsP3AState::kAutoContributeOn :
-        AutoContributionsP3AState::kWalletCreatedAutoContributeOff;
-  RecordAutoContributionsState(auto_contributions_state, auto_contributions);
-  RecordTipsState(true, true, tips, queued_recurring);
 }
 
 int PublisherInfoDatabase::GetCurrentVersion() {
@@ -347,10 +214,6 @@ bool PublisherInfoDatabase::MigrateV0toV1() {
 bool PublisherInfoDatabase::MigrateV1toV2() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  if (!contribution_info_->Migrate(&GetDB(), 2)) {
-    return false;
-  }
-
   return true;
 }
 
@@ -390,10 +253,6 @@ bool PublisherInfoDatabase::MigrateV7toV8() {
     return false;
   }
 
-  if (!contribution_info_->Migrate(&GetDB(), 8)) {
-    return false;
-  }
-
   return transaction.Commit();
 }
 
@@ -418,10 +277,6 @@ bool PublisherInfoDatabase::MigrateV9toV10() {
 bool PublisherInfoDatabase::MigrateV10toV11() {
   sql::Transaction transaction(&GetDB());
   if (!transaction.Begin()) {
-    return false;
-  }
-
-  if (!contribution_info_->Migrate(&GetDB(), 11)) {
     return false;
   }
 
@@ -458,10 +313,6 @@ bool PublisherInfoDatabase::MigrateV13toV14() {
 bool PublisherInfoDatabase::MigrateV14toV15() {
   sql::Transaction transaction(&GetDB());
   if (!transaction.Begin()) {
-    return false;
-  }
-
-  if (!contribution_info_->Migrate(&GetDB(), 15)) {
     return false;
   }
 

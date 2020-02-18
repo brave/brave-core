@@ -408,6 +408,7 @@ struct TransactionReportInfo {
 };
 
 struct ContributionReportInfo {
+  string contribution_id;
   double amount;
   ReportType type;
   array<PublisherInfo> publishers;
