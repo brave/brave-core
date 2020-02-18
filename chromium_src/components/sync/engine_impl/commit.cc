@@ -60,8 +60,8 @@ std::unique_ptr<SyncRecord> CreateOtherBookmarksRecord(SyncRecord* child) {
   auto record = std::make_unique<SyncRecord>();
   record->objectData = brave_sync::jslib_const::SyncObjectData_BOOKMARK;
   auto bookmark = std::make_unique<brave_sync::jslib::Bookmark>();
-  bookmark->site.title = brave_sync::tools::GetOtherNodeName();
-  bookmark->site.customTitle = brave_sync::tools::GetOtherNodeName();
+  bookmark->site.title = brave_sync::tools::kOtherNodeName;
+  bookmark->site.customTitle = brave_sync::tools::kOtherNodeName;
   // Special order reserved for "Other Bookmarks" folder, it only has effect on
   // mobile. On desktop, it is used to distinguish "Other Bookmarks" from normal
   // same name folder
