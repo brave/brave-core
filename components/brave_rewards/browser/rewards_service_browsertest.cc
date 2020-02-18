@@ -913,7 +913,7 @@ class BraveRewardsBrowserTest
     GURL url = https_server()->GetURL(publisher, "/index.html");
     ui_test_utils::NavigateToURLWithDisposition(
         browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-        ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+        ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
     // The minimum publisher duration when testing is 1 second (and the
     // granularity is seconds), so wait for just over 2 seconds to elapse
@@ -1119,7 +1119,7 @@ class BraveRewardsBrowserTest
     GURL url = https_server()->GetURL(publisher, "/index.html");
     ui_test_utils::NavigateToURLWithDisposition(
         browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-        ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+        ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
     content::WebContents* site_banner_contents = OpenSiteBanner(type);
     ASSERT_TRUE(site_banner_contents);
@@ -1911,7 +1911,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   GURL url = https_server()->GetURL(publisher, "/index.html");
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Open the Rewards popup
   content::WebContents* popup_contents = OpenRewardsPopup();
@@ -2116,7 +2116,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TwitterTipsInjectedOnTwitter) {
   GURL url = https_server()->GetURL("twitter.com", "/twitter");
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media tips injection is active
   EXPECT_TRUE(IsMediaTipsInjected());
@@ -2130,7 +2130,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   GURL url = https_server()->GetURL("twitter.com", "/twitter");
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media tips injection is not active
   EXPECT_FALSE(IsMediaTipsInjected());
@@ -2146,7 +2146,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   GURL url = https_server()->GetURL("twitter.com", "/oldtwitter");
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media tips injection is active
   EXPECT_TRUE(IsMediaTipsInjected());
@@ -2160,7 +2160,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   GURL url = https_server()->GetURL("twitter.com", "/oldtwitter");
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media tips injection is not active
   EXPECT_FALSE(IsMediaTipsInjected());
@@ -2176,7 +2176,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   GURL url = https_server()->GetURL("brave.com", "/twitter");
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media tips injection is not active
   EXPECT_FALSE(IsMediaTipsInjected());
@@ -2191,7 +2191,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RedditTipsInjectedOnReddit) {
   GURL url = https_server()->GetURL("reddit.com", "/reddit");
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media Tips injection is active
   EXPECT_TRUE(IsMediaTipsInjected());
@@ -2204,7 +2204,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   GURL url = https_server()->GetURL("reddit.com", "/reddit");
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media Tips injection is not active
   EXPECT_FALSE(IsMediaTipsInjected());
@@ -2220,7 +2220,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   GURL url = https_server()->GetURL("brave.com", "/reddit");
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media Tips injection is not active
   EXPECT_FALSE(IsMediaTipsInjected());
@@ -2235,7 +2235,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, GitHubTipsInjectedOnGitHub) {
   GURL url = https_server()->GetURL("github.com", "/github");
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media Tips injection is active
   EXPECT_TRUE(IsMediaTipsInjected());
@@ -2249,7 +2249,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   GURL url = https_server()->GetURL("github.com", "/github");
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media Tips injection is not active
   EXPECT_FALSE(IsMediaTipsInjected());
@@ -2265,7 +2265,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   GURL url = https_server()->GetURL("brave.com", "/github");
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media Tips injection is not active
   EXPECT_FALSE(IsMediaTipsInjected());
@@ -2493,7 +2493,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   GURL url = https_server()->GetURL("3zsistemi.si", "/index.html");
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Refresh publisher list
   RefreshPublisherListUsingRewardsPopup();
@@ -2562,7 +2562,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RewardsPanelDefaultTipChoices) {
   GURL url = https_server()->GetURL("3zsistemi.si", "/index.html");
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Add a recurring tip of 10 BAT.
   TipViaCode(
@@ -2584,7 +2584,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, SiteBannerDefaultTipChoices) {
   GURL url = https_server()->GetURL("3zsistemi.si", "/index.html");
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   content::WebContents* site_banner =
       OpenSiteBanner(ContributionType::OneTimeTip);
@@ -2605,7 +2605,7 @@ IN_PROC_BROWSER_TEST_F(
   GURL url = https_server()->GetURL("laurenwags.github.io", "/index.html");
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   content::WebContents* site_banner =
       OpenSiteBanner(ContributionType::OneTimeTip);
@@ -3025,7 +3025,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ShowMonthlyIfACOff) {
   GURL url = https_server()->GetURL("3zsistemi.si", "/");
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Open the Rewards popup
   content::WebContents *popup_contents = OpenRewardsPopup();
