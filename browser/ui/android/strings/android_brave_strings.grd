@@ -876,6 +876,15 @@ until they verify, or until 90 days have passed.
       <message name="IDS_TEN_TIP_OPTION" desc="Text for ten tip option">
         10 <ph name="TIP">%1$s<ex>BAT</ex></ph>
       </message>
+      <message name="IDS_PREFS_NEW_TAB_PAGE" desc="Title of New Tab Page settings.">
+        New Tab Page
+      </message>
+      <message name="IDS_SHOW_BACKGROUND_IMAGES" desc= "Title of show background images option.">
+        Show Background Images
+      </message>
+      <message name="IDS_SHOW_SPONSORED_IMAGES" desc ="Title of show sponsored images option.">
+        Show Sponsored Images
+      </message>
     </messages>
   </release>
 </grit>
