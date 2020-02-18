@@ -224,7 +224,7 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
       self.state.delegate?.loadNewTabWithURL(url)
     }
     
-    walletView.rewardsSummaryView?.disclaimerView?.labels.forEach {
+    rewardsSummaryView.disclaimerView?.labels.forEach {
       $0.onLinkedTapped = { [weak self] link in
         guard let self = self, let disclaimerLink = RewardsSummaryLink(rawValue: link.absoluteString) else { return }
         switch disclaimerLink {
