@@ -822,6 +822,69 @@ until they verify, or until 90 days have passed.
       <message name="IDS_CLEAR_DOWNLOADS_TITLE" desc="Title for Clear download in Clear Browsing Data dialog">
         Download history
       </message>
+      <message name="IDS_BRAVE_UI_CONTRIBUTION_TIPS" desc="Title for monthly tips processed notification">
+        Contributions &amp; Tips
+      </message>
+      <message name="IDS_BRAVE_UI_TIPS_PROCESSED_NOTIFICATION" desc="Message for monthly tips processed notification">
+        Your monthly tips have been processed!
+      </message>
+      <message name="IDS_BRAVE_UI_TURN_ON_ADS" desc="Prompt to turn on Ads via notification">
+        Turn on Ads
+      </message>
+      <message name="IDS_BRAVE_UI_BRAVE_ADS_LAUNCH_TITLE" desc="Message used in notification to let users know Ads is available">
+        Brave Ads has arrived!
+      </message>
+      <message name="IDS_BRAVE_UI_BRAVE_ADS_LAUNCH_MSG" desc="Message for ads launch notification">
+        Now you can earn by viewing ads.
+      </message>
+      <message name="IDS_BRAVE_UI_PENDING_CONTRIBUTION_TITLE" desc="Notification title for pending contribution type">
+        Pending Contribution
+      </message>
+       <message name="IDS_BRAVE_UI_VERIFIED_PUBLISHER_NOTIFICATION" desc="Notification text that tells user which publisher just verified">
+        Creator <ph name="PUBLISHER_NAME">%1$s<ex>brave.com</ex></ph> recently verified
+      </message>
+       <message name="IDS_BRAVE_UI_YOUR_BALANCE" desc="Your balance title">
+        Your balance
+      </message>
+       <message name="IDS_BRAVE_UI_BAP_TEXT" desc="A point name">
+        BAP
+      </message>
+      <message name="IDS_BRAVE_UI_BAT_POINTS_TEXT" desc="A token name for japan">
+        BAT Points
+      </message>
+       <message name="IDS_BRAVE_UI_POINT_GRANT_CLAIMED" desc="A message about points being claimed">
+        Point Grants Claimed
+      </message>
+      <message name="IDS_BRAVE_UI_NEW_POINT_GRANT" desc="A notification about free point grant">
+        Free Point Grant
+      </message>
+      <message name="IDS_BRAVE_UI_DETAILS" desc="Details button text">
+        Details
+      </message>
+      <message name="IDS_TOKEN" desc="Text for token">
+        token
+      </message>
+      <message name="IDS_POINT" desc="Text for point">
+        point
+      </message>
+      <message name="IDS_ONE_TIP_OPTION" desc="Text for one tip option">
+        1 <ph name="TIP">%1$s<ex>BAT</ex></ph>
+      </message>
+      <message name="IDS_FIVE_TIP_OPTION" desc="Text for five tip option">
+        5 <ph name="TIP">%1$s<ex>BAT</ex></ph>
+      </message>
+      <message name="IDS_TEN_TIP_OPTION" desc="Text for ten tip option">
+        10 <ph name="TIP">%1$s<ex>BAT</ex></ph>
+      </message>
+      <message name="IDS_PREFS_NEW_TAB_PAGE" desc="Title of New Tab Page settings.">
+        New Tab Page
+      </message>
+      <message name="IDS_SHOW_BACKGROUND_IMAGES" desc= "Title of show background images option.">
+        Show Background Images
+      </message>
+      <message name="IDS_SHOW_SPONSORED_IMAGES" desc ="Title of show sponsored images option.">
+        Show Sponsored Images
+      </message>
     </messages>
   </release>
 </grit>
