@@ -1,6 +1,7 @@
 .DS_Store
 .tags*
 /.idea/
+/components/brave_new_tab_ui/data/LICENSE
 /components/brave_webtorrent/extension/out/
 /components/brave_rewards/resources/extension/brave_rewards/out/
 /components/brave_sync/extension/brave-sync/
