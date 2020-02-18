@@ -1,0 +1,43 @@
+diff --git a/chrome/browser/renderer_context_menu/render_view_context_menu.cc b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
+index 491e36bcdfbaff0c35c5d6ca6c740df35eb35ad2..746f5402368f07b4d01290d68b9312777de95491 100644
+--- a/chrome/browser/renderer_context_menu/render_view_context_menu.cc
++++ b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
+@@ -226,12 +226,6 @@ using extensions::MenuManager;
+ 
+ namespace {
+ 
+-base::OnceCallback<void(RenderViewContextMenu*)>* GetMenuShownCallback() {
+-  static base::NoDestructor<base::OnceCallback<void(RenderViewContextMenu*)>>
+-      callback;
+-  return callback.get();
+-}
+-
+ // State of the profile that is activated via "Open Link as User".
+ enum UmaEnumOpenLinkAsUser {
+   OPEN_LINK_AS_USER_ACTIVE_PROFILE_ENUM_ID,
+@@ -2475,12 +2469,6 @@ void RenderViewContextMenu::AddAccessibilityLabelsServiceItem(bool is_checked) {
+   }
+ }
+ 
+-// static
+-void RenderViewContextMenu::RegisterMenuShownCallbackForTesting(
+-    base::OnceCallback<void(RenderViewContextMenu*)> cb) {
+-  *GetMenuShownCallback() = std::move(cb);
+-}
+-
+ ProtocolHandlerRegistry::ProtocolHandlerList
+     RenderViewContextMenu::GetHandlersForLinkUrl() {
+   ProtocolHandlerRegistry::ProtocolHandlerList handlers =
+@@ -2490,9 +2478,9 @@ ProtocolHandlerRegistry::ProtocolHandlerList
+ }
+ 
+ void RenderViewContextMenu::NotifyMenuShown() {
+-  auto* cb = GetMenuShownCallback();
+-  if (!cb->is_null())
+-    std::move(*cb).Run(this);
++  // Ensure that if this is called something breaks.
++  // If this method is updated in Chromium, update the BraveRenderViewContextMenu method.
++  DCHECK(false);
+ }
+ 
+ base::string16 RenderViewContextMenu::PrintableSelectionText() {

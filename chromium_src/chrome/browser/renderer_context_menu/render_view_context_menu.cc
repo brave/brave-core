@@ -28,10 +28,22 @@
 // Make it clear which class we mean here.
 #undef RenderViewContextMenu
 
+base::OnceCallback<void(BraveRenderViewContextMenu*)>* GetMenuShownCallback() {
+  static base::NoDestructor<base::OnceCallback<void(BraveRenderViewContextMenu*)>>
+      callback;
+  return callback.get();
+}
+
 BraveRenderViewContextMenu::BraveRenderViewContextMenu(
     content::RenderFrameHost* render_frame_host,
     const content::ContextMenuParams& params)
   : RenderViewContextMenu_Chromium(render_frame_host, params) {
+}
+
+void BraveRenderViewContextMenu::NotifyMenuShown() {
+  auto* cb = GetMenuShownCallback();
+  if (!cb->is_null())
+    std::move(*cb).Run(this);
 }
 
 bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
@@ -64,6 +76,12 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
     default:
       RenderViewContextMenu_Chromium::ExecuteCommand(id, event_flags);
   }
+}
+
+// static
+void BraveRenderViewContextMenu::RegisterMenuShownCallbackForTesting(
+    base::OnceCallback<void(BraveRenderViewContextMenu*)> cb) {
+  *GetMenuShownCallback() = std::move(cb);
 }
 
 void BraveRenderViewContextMenu::AddSpellCheckServiceItem(bool is_checked) {

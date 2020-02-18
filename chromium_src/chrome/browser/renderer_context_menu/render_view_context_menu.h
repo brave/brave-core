@@ -28,6 +28,11 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
   // Hide base class implementation.
   static void AddSpellCheckServiceItem(ui::SimpleMenuModel* menu,
                                        bool is_checked);
+  void NotifyMenuShown() override;
+  // Registers a one-time callback that will be called the next time a context
+  // menu is shown.
+  static void RegisterMenuShownCallbackForTesting(
+      base::OnceCallback<void(BraveRenderViewContextMenu*)> cb);
 
  private:
   // RenderViewContextMenuBase:
