@@ -7,7 +7,6 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
-import { Checkbox, Grid, Column, ControlWrapper } from 'brave-ui/components'
 import {
   DisabledContent,
   Box,
@@ -30,15 +29,13 @@ interface Props extends Rewards.ComponentProps {
 
 interface State {
   modalShowAll: boolean
-  settings: boolean
 }
 
 class TipBox extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      modalShowAll: false,
-      settings: false
+      modalShowAll: false
     }
   }
 
@@ -109,64 +106,6 @@ class TipBox extends React.Component<Props, State> {
     )
   }
 
-  onSettingsToggle = () => {
-    this.setState({ settings: !this.state.settings })
-  }
-
-  onInlineTipSettingChange = (key: string, selected: boolean) => {
-    this.actions.onInlineTipSettingChange(key, selected)
-  }
-
-  donationSettingsChild = () => {
-    const { enabledMain } = this.props.rewardsData
-    if (!enabledMain) {
-      return null
-    }
-
-    let value = this.props.rewardsData.inlineTip
-
-    if (!value) {
-      value = {
-        twitter: true,
-        reddit: true,
-        github: true
-      }
-    }
-
-    return (
-      <>
-        <Grid columns={1}>
-          <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
-            <ControlWrapper text={getLocale('donationAbility')}>
-              <Checkbox
-                value={value}
-                multiple={true}
-                onChange={this.onInlineTipSettingChange}
-              >
-                <div data-key='reddit'>{getLocale('donationAbilityReddit')}</div>
-              </Checkbox>
-              <Checkbox
-                value={value}
-                multiple={true}
-                onChange={this.onInlineTipSettingChange}
-              >
-                <div data-key='twitter'>{getLocale('donationAbilityTwitter')}</div>
-              </Checkbox>
-
-              <Checkbox
-                value={value}
-                multiple={true}
-                onChange={this.onInlineTipSettingChange}
-              >
-                <div data-key='github'>{getLocale('donationAbilityGitHub')}</div>
-              </Checkbox>
-            </ControlWrapper>
-          </Column>
-        </Grid>
-      </>
-    )
-  }
-
   render () {
     const {
       balance,
@@ -191,9 +130,6 @@ class TipBox extends React.Component<Props, State> {
         description={getLocale('donationDesc')}
         disabledContent={showDisabled ? this.disabledContent() : null}
         attachedAlert={this.importAlert(walletImported)}
-        settingsChild={this.donationSettingsChild()}
-        settingsOpened={this.state.settings}
-        onSettingsClick={this.onSettingsToggle}
       >
         {
           this.state.modalShowAll
