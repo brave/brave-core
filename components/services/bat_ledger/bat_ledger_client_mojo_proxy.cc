@@ -554,22 +554,6 @@ void BatLedgerClientMojoProxy::UnblindedTokensReady() {
   bat_ledger_client_->UnblindedTokensReady();
 }
 
-void OnGetTransactionReport(
-    ledger::GetTransactionReportCallback callback,
-    ledger::TransactionReportInfoList list) {
-  callback(std::move(list));
-}
-
-void BatLedgerClientMojoProxy::GetTransactionReport(
-    const ledger::ActivityMonth month,
-    const int year,
-    ledger::GetTransactionReportCallback callback) {
-  bat_ledger_client_->GetTransactionReport(
-      month,
-      year,
-      base::BindOnce(&OnGetTransactionReport, std::move(callback)));
-}
-
 void BatLedgerClientMojoProxy::ReconcileStampReset() {
   bat_ledger_client_->ReconcileStampReset();
 }

@@ -42,11 +42,6 @@ class PublisherInfoDatabase {
   // Returns the current version of the publisher info database
   int GetCurrentVersion();
 
-  void GetTransactionReport(
-      ledger::TransactionReportInfoList* list,
-      const ledger::ActivityMonth month,
-      const int year);
-
   // Vacuums the database. This will cause sqlite to defragment and collect
   // unused space in the file. It can be VERY SLOW.
   void Vacuum();

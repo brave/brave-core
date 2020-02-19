@@ -55,11 +55,6 @@ class MockLedgerClient : public LedgerClient {
 
   MOCK_CONST_METHOD0(GenerateGUID, std::string());
 
-  MOCK_METHOD1(OnWalletInitialized, void(
-      ledger::Result result));
-
-  MOCK_METHOD0(FetchWalletProperties, void());
-
   MOCK_METHOD2(OnWalletProperties, void(
       ledger::Result result,
       ledger::WalletPropertiesPtr));
@@ -86,14 +81,6 @@ class MockLedgerClient : public LedgerClient {
 
   MOCK_METHOD1(LoadNicewareList, void(
       ledger::GetNicewareListCallback callback));
-
-  MOCK_METHOD0(FetchPromotions, void());
-
-  MOCK_METHOD1(ClaimPromotion, void(const std::string& promotion_id));
-
-  MOCK_METHOD2(OnRecoverWallet, void(
-      ledger::Result result,
-      double balance));
 
   MOCK_METHOD3(OnPanelPublisherInfo, void(
       ledger::Result result,
@@ -137,6 +124,8 @@ class MockLedgerClient : public LedgerClient {
       int line,
       int vlog_level) const;
 
+  MOCK_METHOD1(PublisherListNormalized, void(ledger::PublisherInfoList list));
+
   MOCK_METHOD3(SaveState, void(
       const std::string& name,
       const std::string& value,
@@ -149,18 +138,6 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD2(ResetState, void(
       const std::string& name,
       ledger::OnResetCallback callback));
-
-  MOCK_METHOD1(PublisherListNormalized, void(ledger::PublisherInfoList list));
-
-  MOCK_METHOD1(SetConfirmationsIsReady, void(
-      const bool is_ready));
-
-  MOCK_METHOD0(ConfirmationsTransactionHistoryDidChange, void());
-
-  MOCK_METHOD3(OnContributeUnverifiedPublishers, void(
-      ledger::Result result,
-      const std::string& publisher_key,
-      const std::string& publisher_name));
 
   MOCK_METHOD2(SetBooleanState, void(
       const std::string& name,
@@ -225,6 +202,16 @@ class MockLedgerClient : public LedgerClient {
   MOCK_CONST_METHOD1(GetUint64Option, uint64_t(
       const std::string& name));
 
+  MOCK_METHOD1(SetConfirmationsIsReady, void(
+      const bool is_ready));
+
+  MOCK_METHOD0(ConfirmationsTransactionHistoryDidChange, void());
+
+  MOCK_METHOD3(OnContributeUnverifiedPublishers, void(
+      ledger::Result result,
+      const std::string& publisher_key,
+      const std::string& publisher_name));
+
   MOCK_METHOD1(GetExternalWallets, void(
       ledger::GetExternalWalletsCallback callback));
 
@@ -251,11 +238,6 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD0(GetClientInfo, ledger::ClientInfoPtr());
 
   MOCK_METHOD0(UnblindedTokensReady, void());
-
-  MOCK_METHOD3(GetTransactionReport, void(
-      const ledger::ActivityMonth month,
-      const int year,
-      ledger::GetTransactionReportCallback callback));
 
   MOCK_METHOD0(ReconcileStampReset, void());
 

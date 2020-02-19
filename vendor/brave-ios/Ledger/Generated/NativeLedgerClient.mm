@@ -161,9 +161,6 @@ ledger::ClientInfoPtr NativeLedgerClient::GetClientInfo() {
 void NativeLedgerClient::UnblindedTokensReady() {
   [bridge_ unblindedTokensReady];
 }
-void NativeLedgerClient::GetTransactionReport(const ledger::ActivityMonth month, const int year, ledger::GetTransactionReportCallback callback) {
-  [bridge_ getTransactionReport:month year:year callback:callback];
-}
 void NativeLedgerClient::ReconcileStampReset() {
   [bridge_ reconcileStampReset];
 }

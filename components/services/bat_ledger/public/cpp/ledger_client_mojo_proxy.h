@@ -150,11 +150,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   void UnblindedTokensReady() override;
 
-  void GetTransactionReport(
-      const ledger::ActivityMonth month,
-      const int year,
-      GetTransactionReportCallback callback) override;
-
   void ReconcileStampReset() override;
 
   void RunDBTransaction(
@@ -240,10 +235,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   static void OnShowNotification(
     CallbackHolder<ShowNotificationCallback>* holder,
     const ledger::Result result);
-
-  static void OnGetTransactionReport(
-      CallbackHolder<GetTransactionReportCallback>* holder,
-      ledger::TransactionReportInfoList list);
 
   static void OnRunDBTransaction(
       CallbackHolder<RunDBTransactionCallback>* holder,

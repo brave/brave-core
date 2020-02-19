@@ -3465,41 +3465,6 @@ void RewardsServiceImpl::OnGetMonthlyReportContribution(
   std::move(callback).Run(monthly_report);
 }
 
-ledger::TransactionReportInfoList GetTransactionReportOnFileTaskRunner(
-    PublisherInfoDatabase* backend,
-    const ledger::ActivityMonth month,
-    const uint32_t year) {
-  if (!backend) {
-    return {};
-  }
-
-  ledger::TransactionReportInfoList list;
-  backend->GetTransactionReport(&list, month, year);
-  return list;
-}
-
-void RewardsServiceImpl::GetTransactionReport(
-    const ledger::ActivityMonth month,
-    const int year,
-    ledger::GetTransactionReportCallback callback) {
-  base::PostTaskAndReplyWithResult(
-    file_task_runner_.get(),
-    FROM_HERE,
-    base::BindOnce(&GetTransactionReportOnFileTaskRunner,
-        publisher_info_backend_.get(),
-        month,
-        year),
-    base::BindOnce(&RewardsServiceImpl::OnGetTransactionReport,
-        AsWeakPtr(),
-        callback));
-}
-
-void RewardsServiceImpl::OnGetTransactionReport(
-    ledger::GetTransactionReportCallback callback,
-    ledger::TransactionReportInfoList list) {
-  callback(std::move(list));
-}
-
 void RewardsServiceImpl::ReconcileStampReset() {
   for (auto& observer : observers_) {
     observer.ReconcileStampReset();

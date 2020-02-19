@@ -23,6 +23,7 @@ class DatabaseActivityInfo;
 class DatabaseContributionInfo;
 class DatabaseContributionQueue;
 class DatabaseMediaPublisherInfo;
+class DatabaseMultiTables;
 class DatabasePendingContribution;
 class DatabasePromotion;
 class DatabasePublisherInfo;
@@ -122,6 +123,15 @@ class Database {
   void GetMediaPublisherInfo(
       const std::string& media_key,
       ledger::PublisherInfoCallback callback);
+
+  /**
+   * MULTI TABLE
+   * for queries that are not limited to one table
+   */
+  void GetTransactionReport(
+      const ledger::ActivityMonth month,
+      const int year,
+      ledger::GetTransactionReportCallback callback);
 
   /**
    * PENDING CONTRIBUTION
@@ -228,6 +238,7 @@ class Database {
   std::unique_ptr<DatabasePendingContribution> pending_contribution_;
   std::unique_ptr<DatabasePromotion> promotion_;
   std::unique_ptr<DatabaseMediaPublisherInfo> media_publisher_info_;
+  std::unique_ptr<DatabaseMultiTables> multi_tables_;
   std::unique_ptr<DatabasePublisherInfo> publisher_info_;
   std::unique_ptr<DatabaseRecurringTip> recurring_tip_;
   std::unique_ptr<DatabaseServerPublisherInfo> server_publisher_info_;

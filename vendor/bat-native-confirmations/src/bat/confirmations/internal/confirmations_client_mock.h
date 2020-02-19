@@ -261,10 +261,6 @@ class MockConfirmationsClient : public ConfirmationsClient {
 
   MOCK_METHOD0(UnblindedTokensReady, void());
 
-  MOCK_METHOD3(GetTransactionReport, void(
-      const ledger::ActivityMonth month,
-      const int year,
-      ledger::GetTransactionReportCallback callback));
   MOCK_METHOD0(ReconcileStampReset, void());
 
   MOCK_METHOD2(RunDBTransaction, void(
