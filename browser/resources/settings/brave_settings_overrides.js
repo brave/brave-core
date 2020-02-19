@@ -205,7 +205,7 @@ BravePatching.RegisterPolymerTemplateModifications({
   },
   'settings-basic-page': (templateContent) => {
     // Routes
-    const r = settings.router.routes_
+    const r = settings.Router.getInstance().routes_
     if (!r.BASIC) {
       console.error('[Brave Settings Overrides] Routes: could not find BASIC page')
     }
