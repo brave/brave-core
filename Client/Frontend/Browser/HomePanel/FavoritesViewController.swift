@@ -25,6 +25,7 @@ class FavoritesViewController: UIViewController, Themeable {
         static let statsHeight: CGFloat = 110.0
         static let statsBottomMargin: CGFloat = 5
         static let searchEngineCalloutPadding: CGFloat = 120.0
+        static let ddgButtonPadding: CGFloat = 12
     }
     
     weak var delegate: FavoritesDelegate?
@@ -109,7 +110,7 @@ class FavoritesViewController: UIViewController, Themeable {
     private let ddgLabel = UILabel().then {
         $0.numberOfLines = 0
         $0.textColor = BraveUX.greyD
-        $0.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.regular)
+        $0.font = UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.bold)
         $0.text = Strings.DDGPromotion
     }
     
@@ -459,13 +460,14 @@ class FavoritesViewController: UIViewController, Themeable {
     // MARK: - Constraints setup
     fileprivate func makeConstraints() {
         ddgLogo.snp.makeConstraints { make in
-            make.top.left.bottom.equalTo(0)
+            make.top.left.greaterThanOrEqualTo(UI.ddgButtonPadding)
+            make.centerY.equalToSuperview()
             make.size.equalTo(38)
         }
         
         ddgLabel.snp.makeConstraints { make in
-            make.top.bottom.equalTo(0)
-            make.right.equalToSuperview().offset(-5)
+            make.top.bottom.greaterThanOrEqualTo(UI.ddgButtonPadding)
+            make.right.equalToSuperview().offset(-UI.ddgButtonPadding)
             make.left.equalTo(self.ddgLogo.snp.right).offset(5)
             make.width.equalTo(180)
             make.centerY.equalTo(self.ddgLogo)
