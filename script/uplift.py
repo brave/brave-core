@@ -228,15 +228,10 @@ def main():
 
         # set starting point AHEAD of the PR provided
         config.master_pr_number = pr_number
-        if top_level_base == 'master':
-            config.channels_to_process = config.channel_names[1:]
-        else:
-            branch_index = remote_branches.index(top_level_base)
-            config.channels_to_process = config.channel_names[branch_index:]
 
         # if PR was already merged, use the SHA it was PRed against
         if merged_at != 'None' and len(merged_at) > 0:
-            print('pr was already merged at ' + merged_at + '; using "' + top_level_sha +
+            print('PR was already merged at ' + merged_at + '; using "' + top_level_sha +
                   '" instead of "' + top_level_base + '"')
             top_level_base = top_level_sha
         else:
