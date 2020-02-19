@@ -332,10 +332,10 @@ BravePatching.RegisterPolymerTemplateModifications({
         console.error('[Brave Settings Overrides] Could not find advanced toggle text')
       }
       advancedToggleText.innerText = loadTimeData.getString('braveAdditionalSettingsTitle')
-      // Move autofill to after privacy
+      // Move autofill to before languages
       const sectionAutofill = getSectionElement(actualTemplate.content, 'autofill')
-      const sectionPrivacy = getSectionElement(advancedSubSectionsTemplate.content, 'privacy')
-      sectionPrivacy.insertAdjacentElement('afterend', sectionAutofill)
+      const sectionLanguages = getSectionElement(advancedSubSectionsTemplate.content, 'languages')
+      sectionLanguages.insertAdjacentElement('beforebegin', sectionAutofill)
       // Move help tips after printing
       const sectionPrinting = getSectionElement(advancedSubSectionsTemplate.content, 'printing')
       sectionPrinting.insertAdjacentElement('afterend', sectionHelpTips)
