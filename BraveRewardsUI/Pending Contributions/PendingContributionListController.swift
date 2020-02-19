@@ -57,6 +57,11 @@ final class PendingContributionListController: UIViewController {
     
     title = Strings.pendingContributionsTitle.capitalized
     
+    navigationController?.toolbar.do {
+      $0.appearanceBarTintColor = nil
+      $0.appearanceBackgroundColor = nil
+    }
+    
     navigationItem.rightBarButtonItem = editButton
     toolbarItems = [
       .init(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),

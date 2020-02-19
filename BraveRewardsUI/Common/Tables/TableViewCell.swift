@@ -31,14 +31,13 @@ class TableViewCell: UITableViewCell, TableViewReusable {
     }
     
     switch style {
-    case .default:
+    case .default, .subtitle, .value2:
       accessoryLabel = nil
     case .value1:
       accessoryLabel = UILabel().then {
         $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+        $0.appearanceTextColor = Colors.grey100
       }
-    case .subtitle, .value2:
-      fallthrough
     @unknown default:
       fatalError("Currently not supported")
     }

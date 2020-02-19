@@ -85,6 +85,7 @@ extension PendingContributionDetailController: UITableViewDataSource {
       cell.label.font = SettingsUX.bodyFont
       cell.accessoryLabel?.font = SettingsUX.bodyFont
       cell.manualSeparators = []
+      cell.selectionStyle = .none
       switch row {
       case .type:
         cell.label.text = Strings.pendingContributionType
