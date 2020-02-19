@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
+index db1db4f0b941c6cea83f2ca28ddc70b8e7916a90..3383b9bb40cdca6a5265978c739d2497d98abba6 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
+@@ -786,7 +786,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
+         }
+     }
+ 
+-    private static int getMaxTileRows() {
++    public int getMaxTileRows() {
+         return 2;
+     }
+ 
