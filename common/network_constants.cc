@@ -7,7 +7,8 @@
 
 const char kBraveProxyPattern[] = "https://*.brave.com/*";
 const char kBraveUpdatesExtensionsEndpoint[] =
-    "https://go-updater.brave.com/extensions";
+    "https://go-updater-dev.bravesoftware.com/extensions/";
+//  "https://go-updater.brave.com/extensions";
 // For debgugging:
 // const char kBraveUpdatesExtensionsEndpoint[] =
 // "http://localhost:8192/extensions";
