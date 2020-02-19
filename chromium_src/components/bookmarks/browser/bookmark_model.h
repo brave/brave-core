@@ -6,6 +6,12 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_BOOKMARKS_BROWSER_BOOKMARK_MODEL_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_BOOKMARKS_BROWSER_BOOKMARK_MODEL_H_
 
+class BraveSyncServiceTestDelayedLoadModel;
+
+#define BRAVE_BOOKMARK_MODEL_H \
+ private: \
+  friend class ::BraveSyncServiceTestDelayedLoadModel;
+
 #include "../../../../../components/bookmarks/browser/bookmark_model.h"
 
 namespace bookmarks {
