@@ -354,18 +354,13 @@ BravePatching.RegisterPolymerTemplateModifications({
     // (we remove the People section as a separate section).
     const page = templateContent.querySelector('settings-animated-pages[section=people]')
     page.setAttribute('section', 'getStarted')
-    const profileTemplate = templateContent.querySelector('template[is="dom-if"][if="[[diceEnabled_]]"]')
-    // In chromium, the whole 'manage profile' section is only
-    // displayed if dice is enabled.
-    // Instead, always show it, but remove the google account specific entry.
-    profileTemplate.setAttribute('if', 'true')
-    const manageGoogleAccount = profileTemplate.content.querySelector('#manage-google-account')
+    const manageGoogleAccount = templateContent.querySelector('#manage-google-account')
     if (!manageGoogleAccount) {
       console.error('[Brave Settings Overrides] Could not find the google account settings item')
     }
     manageGoogleAccount.remove()
     // Edit profile item needs to know it's the first in the section
-    const firstItem = profileTemplate.content.querySelector('#edit-profile')
+    const firstItem = templateContent.querySelector('#edit-profile')
     if (!firstItem) {
       console.error('[Brave Settings Overrides] Could not find #edit-profile item in people_page')
       return
