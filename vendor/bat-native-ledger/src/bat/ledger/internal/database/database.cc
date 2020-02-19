@@ -11,6 +11,7 @@
 #include "bat/ledger/internal/database/database_contribution_queue.h"
 #include "bat/ledger/internal/database/database_initialize.h"
 #include "bat/ledger/internal/database/database_media_publisher_info.h"
+#include "bat/ledger/internal/database/database_multi_tables.h"
 #include "bat/ledger/internal/database/database_pending_contribution.h"
 #include "bat/ledger/internal/database/database_promotion.h"
 #include "bat/ledger/internal/database/database_publisher_info.h"
@@ -31,6 +32,7 @@ Database::Database(bat_ledger::LedgerImpl* ledger) :
   contribution_info_ = std::make_unique<DatabaseContributionInfo>(ledger_);
   media_publisher_info_ =
       std::make_unique<DatabaseMediaPublisherInfo>(ledger_);
+  multi_tables_ = std::make_unique<DatabaseMultiTables>(ledger_);
   pending_contribution_ =
       std::make_unique<DatabasePendingContribution>(ledger_);
   promotion_ = std::make_unique<DatabasePromotion>(ledger_);
@@ -177,6 +179,17 @@ void Database::GetMediaPublisherInfo(
     const std::string& media_key,
     ledger::PublisherInfoCallback callback) {
   media_publisher_info_->GetRecord(media_key, callback);
+}
+
+/**
+ * MULTI TABLES
+ * for queries that are not limited to one table
+ */
+void Database::GetTransactionReport(
+    const ledger::ActivityMonth month,
+    const int year,
+    ledger::GetTransactionReportCallback callback) {
+  multi_tables_->GetTransactionReport(month, year, callback);
 }
 
 /**

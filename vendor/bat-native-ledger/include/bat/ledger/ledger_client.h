@@ -212,11 +212,6 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void UnblindedTokensReady() = 0;
 
-  virtual void GetTransactionReport(
-      const ledger::ActivityMonth month,
-      const int year,
-      ledger::GetTransactionReportCallback callback) = 0;
-
   virtual void ReconcileStampReset() = 0;
 
   virtual void RunDBTransaction(

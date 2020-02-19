@@ -591,11 +591,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void UnblindedTokensReady() override;
 
-  void GetTransactionReport(
-      const ledger::ActivityMonth month,
-      const int year,
-      ledger::GetTransactionReportCallback callback) override;
-
   void ReconcileStampReset() override;
 
   void RunDBTransaction(
@@ -670,10 +665,6 @@ class RewardsServiceImpl : public RewardsService,
       const MonthlyReport& report,
       GetMonthlyReportCallback callback,
       ledger::ContributionReportInfoList list);
-
-  void OnGetTransactionReport(
-      ledger::GetTransactionReportCallback callback,
-      ledger::TransactionReportInfoList list);
 
   void OnRunDBTransaction(
       ledger::RunDBTransactionCallback callback,

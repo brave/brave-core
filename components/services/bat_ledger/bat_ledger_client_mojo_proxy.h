@@ -133,11 +133,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
 
   void UnblindedTokensReady() override;
 
-  void GetTransactionReport(
-      const ledger::ActivityMonth month,
-      const int year,
-      ledger::GetTransactionReportCallback callback) override;
-
   void ReconcileStampReset() override;
 
   void RunDBTransaction(

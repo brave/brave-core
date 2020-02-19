@@ -139,6 +139,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/database/database_media_publisher_info.h",
     "src/bat/ledger/internal/database/database_migration.cc",
     "src/bat/ledger/internal/database/database_migration.h",
+    "src/bat/ledger/internal/database/database_multi_tables.cc",
+    "src/bat/ledger/internal/database/database_multi_tables.h",
     "src/bat/ledger/internal/database/database_pending_contribution.cc",
     "src/bat/ledger/internal/database/database_pending_contribution.h",
     "src/bat/ledger/internal/database/database_promotion.cc",

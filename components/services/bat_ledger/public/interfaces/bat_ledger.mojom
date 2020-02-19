@@ -239,8 +239,6 @@ interface BatLedgerClient {
   GetClientInfo() => (ledger.mojom.ClientInfo info);
   UnblindedTokensReady();
 
-  GetTransactionReport(ledger.mojom.ActivityMonth month, int32 year) => (array<ledger.mojom.TransactionReportInfo> list);
-
   ReconcileStampReset();
 
   RunDBTransaction(ledger_database.mojom.DBTransaction transaction) => (ledger_database.mojom.DBCommandResponse response);

@@ -65,7 +65,6 @@ private:
   uint64_t GetUint64Option(const std::string& name) const override;
   ledger::ClientInfoPtr GetClientInfo() override;
   void UnblindedTokensReady() override;
-  void GetTransactionReport(const ledger::ActivityMonth month, const int year, ledger::GetTransactionReportCallback callback) override;
   void ReconcileStampReset() override;
   void RunDBTransaction(ledger::DBTransactionPtr transaction, ledger::RunDBTransactionCallback callback) override;
   void GetCreateScript(ledger::GetCreateScriptCallback callback) override;

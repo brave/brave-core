@@ -507,32 +507,6 @@ void LedgerClientMojoProxy::UnblindedTokensReady() {
   ledger_client_->UnblindedTokensReady();
 }
 
-// static
-void LedgerClientMojoProxy::OnGetTransactionReport(
-    CallbackHolder<GetTransactionReportCallback>* holder,
-    ledger::TransactionReportInfoList list) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(std::move(list));
-  }
-  delete holder;
-}
-
-void LedgerClientMojoProxy::GetTransactionReport(
-    const ledger::ActivityMonth month,
-    const int year,
-    GetTransactionReportCallback callback) {
-  auto* holder = new CallbackHolder<GetTransactionReportCallback>(
-      AsWeakPtr(),
-      std::move(callback));
-  ledger_client_->GetTransactionReport(
-      month,
-      year,
-      std::bind(LedgerClientMojoProxy::OnGetTransactionReport,
-                holder,
-                _1));
-}
-
 void LedgerClientMojoProxy::ReconcileStampReset() {
   ledger_client_->ReconcileStampReset();
 }

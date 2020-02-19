@@ -1659,7 +1659,7 @@ void LedgerImpl::GetTransactionReport(
     const ledger::ActivityMonth month,
     const int year,
     ledger::GetTransactionReportCallback callback) {
-  ledger_client_->GetTransactionReport(month, year, callback);
+  bat_database_->GetTransactionReport(month, year, callback);
 }
 
 void LedgerImpl::GetContributionReport(

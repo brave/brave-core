@@ -58,7 +58,6 @@
 - (uint64_t)getUint64Option:(const std::string&)name;
 - (ledger::ClientInfoPtr)getClientInfo;
 - (void)unblindedTokensReady;
-- (void)getTransactionReport:(const ledger::ActivityMonth)month year:(const uint32_t)year callback:(ledger::GetTransactionReportCallback)callback;
 - (void)reconcileStampReset;
 - (void)runDBTransaction:(ledger::DBTransactionPtr)transaction callback:(ledger::RunDBTransactionCallback)callback;
 - (void)getCreateScript:(ledger::GetCreateScriptCallback)callback;
