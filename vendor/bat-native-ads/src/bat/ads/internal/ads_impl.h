@@ -165,15 +165,15 @@ class AdsImpl : public Ads {
 
   void OnPageLoaded(
       const std::string& url,
-      const std::string& html) override;
+      const std::string& content) override;
 
   void MaybeClassifyPage(
       const std::string& url,
-      const std::string& html);
+      const std::string& content);
   bool ShouldClassifyPagesIfTargeted() const;
   std::string ClassifyPage(
       const std::string& url,
-      const std::string& html);
+      const std::string& content);
 
   std::vector<std::string> GetWinningCategories();
   std::string GetWinningCategory(

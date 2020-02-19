@@ -410,12 +410,12 @@ void AdsServiceImpl::ChangeLocale(
 
 void AdsServiceImpl::OnPageLoaded(
     const std::string& url,
-    const std::string& html) {
+    const std::string& content) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_->OnPageLoaded(url, html);
+  bat_ads_->OnPageLoaded(url, content);
 }
 
 void AdsServiceImpl::OnMediaStart(
