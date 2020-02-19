@@ -16,10 +16,14 @@ source_set("speedreader") {
     "speedreader_switches.h",
     "speedreader_throttle.cc",
     "speedreader_throttle.h",
+    "speedreader_whitelist.cc",
+    "speedreader_whitelist.h",
   ]
 
   deps = [
+    "//brave/components/brave_component_updater/browser",
     "//brave/components/speedreader:buildflags",
+    "//brave/vendor/adblock_rust_ffi:adblock_ffi",
     "//brave/vendor/speedreader_rust_ffi:speedreadder_ffi",
     "//services/network/public/cpp",
     "//services/network/public/mojom",

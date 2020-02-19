@@ -97,6 +97,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/speedreader_switches.h"
 #include "brave/components/speedreader/speedreader_throttle.h"
+#include "brave/components/speedreader/speedreader_whitelist.h"
 #include "content/public/common/resource_type.h"
 #endif
 
@@ -280,7 +281,9 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
         static_cast<int>(content::ResourceType::kMainFrame)) {
       // Note that we check the whitelist before any redirects, while distilling
       // will be performed on a final document (the last in the redirect chain).
-      if (speedreader::IsWhitelisted(request.url)) {
+      auto* whitelist = g_brave_browser_process->speedreader_whitelist();
+      if (speedreader::IsWhitelisted(request.url) ||
+          whitelist->IsWhitelisted(request.url)) {
         result.push_back(std::make_unique<speedreader::SpeedReaderThrottle>(
                          base::ThreadTaskRunnerHandle::Get()));
       }

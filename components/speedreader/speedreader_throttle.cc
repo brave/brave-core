@@ -15,6 +15,7 @@
 #include "base/strings/string_split.h"
 #include "brave/components/speedreader/speedreader_loader.h"
 #include "brave/components/speedreader/speedreader_switches.h"
+#include "brave/components/speedreader/speedreader_whitelist.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/network/public/cpp/resource_response.h"
