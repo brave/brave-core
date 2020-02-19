@@ -162,6 +162,10 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   std::unique_ptr<speedreader::SpeedreaderWhitelist> speedreader_whitelist_;
 #endif
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  std::unique_ptr<speedreader::SpeedreaderWhitelist> speedreader_whitelist_;
+#endif
+
   SEQUENCE_CHECKER(sequence_checker_);
 
   DISALLOW_COPY_AND_ASSIGN(BraveBrowserProcessImpl);
