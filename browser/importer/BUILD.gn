@@ -32,6 +32,9 @@ source_set("importer") {
     # into importer target's deps.
     "//chrome/common:buildflags",
     "//chrome/common/importer",
+    # For profile_import.mojom.h from external_process_importer_client.h.
+    # brave_external_process_importer_client.cc refers it indirectly.
+    "//chrome/common/importer:interfaces",
     "//components/prefs",
     "//components/search_engines",
     "//content/public/browser",
