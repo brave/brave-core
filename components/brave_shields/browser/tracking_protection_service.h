@@ -105,7 +105,6 @@ class TrackingProtectionService : public LocalDataFilesObserver {
   std::vector<std::string> third_party_base_hosts_;
   std::map<std::string, std::vector<std::string>> third_party_hosts_cache_;
   base::Lock third_party_hosts_lock_;
-  brave_component_updater::DATFileDataBuffer buffer_;
 
   base::WeakPtrFactory<TrackingProtectionService> weak_factory_;
   base::WeakPtrFactory<TrackingProtectionService> weak_factory_io_thread_;

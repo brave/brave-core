@@ -231,16 +231,14 @@ void AdBlockBaseService::OnGetDATFileData(GetDATFileDataResult result) {
   }
   GetTaskRunner()->PostTask(
       FROM_HERE, base::BindOnce(&AdBlockBaseService::UpdateAdBlockClient,
-                                base::Unretained(this), std::move(result.first),
-                                std::move(result.second)));
+                                base::Unretained(this),
+                                std::move(result.first)));
 }
 
 void AdBlockBaseService::UpdateAdBlockClient(
-    std::unique_ptr<adblock::Engine> ad_block_client,
-    brave_component_updater::DATFileDataBuffer buffer) {
+    std::unique_ptr<adblock::Engine> ad_block_client) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
   ad_block_client_ = std::move(ad_block_client);
-  buffer_ = std::move(buffer);
   AddKnownTagsToAdBlockInstance();
   AddKnownResourcesToAdBlockInstance();
 }
