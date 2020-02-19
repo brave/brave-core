@@ -49,7 +49,6 @@
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
-#include "brave/components/brave_rewards/browser/database/publisher_info_database.h"
 #include "brave/components/brave_rewards/browser/rewards_database.h"
 #include "brave/components/brave_rewards/browser/rewards_fetcher_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
@@ -335,16 +334,12 @@ bool IsMediaLink(const GURL& url,
 const base::FilePath::StringType kLedger_state(L"ledger_state");
 const base::FilePath::StringType kPublisher_state(L"publisher_state");
 const base::FilePath::StringType kPublisher_info_db(L"publisher_info_db");
-// TODO(nejc) remove publisher_info_db2
-const base::FilePath::StringType kPublisher_info_db2(L"publisher_info_db2");
 const base::FilePath::StringType kPublishers_list(L"publishers_list");
 const base::FilePath::StringType kRewardsStatePath(L"rewards_service");
 #else
 const base::FilePath::StringType kLedger_state("ledger_state");
 const base::FilePath::StringType kPublisher_state("publisher_state");
 const base::FilePath::StringType kPublisher_info_db("publisher_info_db");
-// TODO(nejc) remove publisher_info_db2
-const base::FilePath::StringType kPublisher_info_db2("publisher_info_db2");
 const base::FilePath::StringType kPublishers_list("publishers_list");
 const base::FilePath::StringType kRewardsStatePath("rewards_service");
 #endif
@@ -363,13 +358,9 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
       ledger_state_path_(profile_->GetPath().Append(kLedger_state)),
       publisher_state_path_(profile_->GetPath().Append(kPublisher_state)),
       publisher_info_db_path_(profile->GetPath().Append(kPublisher_info_db)),
-      publisher_info_db_path2_(profile->GetPath().Append(kPublisher_info_db2)),
       publisher_list_path_(profile->GetPath().Append(kPublishers_list)),
       rewards_base_path_(profile_->GetPath().Append(kRewardsStatePath)),
-      publisher_info_backend_(
-          new PublisherInfoDatabase(publisher_info_db_path_)),
-      rewards_database_(
-          new RewardsDatabase(publisher_info_db_path2_)),
+      rewards_database_(new RewardsDatabase(publisher_info_db_path_)),
       notification_service_(new RewardsNotificationServiceImpl(profile)),
 #if BUILDFLAG(ENABLE_EXTENSIONS)
       private_observer_(
@@ -386,7 +377,7 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
 }
 
 RewardsServiceImpl::~RewardsServiceImpl() {
-  file_task_runner_->DeleteSoon(FROM_HERE, publisher_info_backend_.release());
+  file_task_runner_->DeleteSoon(FROM_HERE, rewards_database_.release());
   StopNotificationTimers();
 }
 

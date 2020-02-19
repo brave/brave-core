@@ -68,7 +68,6 @@ source_set("browser") {
     "//content/public/browser",
     "//content/public/common",
     "//services/network/public/mojom",
-    "//third_party/leveldatabase",
   ]
 
   if (!is_android) {
@@ -81,12 +80,6 @@ source_set("browser") {
 
   if (brave_rewards_enabled) {
     sources += [
-      "database/database_table.cc",
-      "database/database_table.h",
-      "database/database_util.cc",
-      "database/database_util.h",
-      "database/publisher_info_database.cc",
-      "database/publisher_info_database.h",
       "net/network_delegate_helper.cc",
       "net/network_delegate_helper.h",
       "rewards_service_impl.cc",
