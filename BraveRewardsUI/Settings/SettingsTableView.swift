@@ -16,6 +16,7 @@ class SettingsTableView: UIView {
     }
     tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNormalMagnitude))
     tableView.separatorInset = .zero
+    tableView.appearanceSeparatorColor = nil
     
     addSubview(tableView)
     tableView.snp.makeConstraints {

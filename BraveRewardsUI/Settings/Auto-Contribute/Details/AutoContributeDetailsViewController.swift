@@ -268,7 +268,6 @@ extension AutoContributeDetailViewController: UITableViewDataSource, UITableView
       cell.label.font = SettingsUX.bodyFont
       cell.label.appearanceTextColor = .black
       cell.label.numberOfLines = 0
-      cell.accessoryLabel?.appearanceTextColor = Colors.grey100
       cell.accessoryLabel?.font = SettingsUX.bodyFont
       cell.accessoryType = .none
       cell.selectionStyle = .none
@@ -293,7 +292,6 @@ extension AutoContributeDetailViewController: UITableViewDataSource, UITableView
       cell.label.font = SettingsUX.bodyFont
       cell.label.appearanceTextColor = .black
       cell.label.numberOfLines = 0
-      cell.accessoryLabel?.appearanceTextColor = Colors.grey100
       cell.accessoryLabel?.font = UIFont.monospacedDigitSystemFont(ofSize: 14.0, weight: .semibold)
       cell.accessoryType = .disclosureIndicator
       cell.selectionStyle = .default
@@ -313,7 +311,6 @@ extension AutoContributeDetailViewController: UITableViewDataSource, UITableView
       cell.label.font = SettingsUX.bodyFont
       cell.label.numberOfLines = 0
       cell.label.lineBreakMode = .byWordWrapping
-      cell.accessoryLabel?.appearanceTextColor = Colors.grey100
       cell.accessoryLabel?.font = SettingsUX.bodyFont
       cell.accessoryType = row.accessoryType
       switch row {

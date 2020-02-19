@@ -126,7 +126,6 @@ extension AdsDetailsViewController: UITableViewDelegate, UITableViewDataSource {
     cell.label.font = SettingsUX.bodyFont
     cell.label.numberOfLines = 0
     cell.label.lineBreakMode = .byWordWrapping
-    cell.accessoryLabel?.appearanceTextColor = Colors.grey100
     cell.accessoryLabel?.font = SettingsUX.bodyFont
     cell.accessoryType = .none
     switch row {
