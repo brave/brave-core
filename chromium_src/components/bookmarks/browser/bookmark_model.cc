@@ -10,7 +10,9 @@ namespace bookmarks {
 // Move bookmarks under "Other Bookmarks" permanent node to a same name folder
 // at the end of "Bookmark Bar" permanent node
 void BraveMigrateOtherNode(BookmarkModel* model) {
-  DCHECK(model);
+  CHECK(model);
+  CHECK(model->loaded());
+  // Model must be loaded at this point
   if (!model->other_node()->children().empty()) {
     const bookmarks::BookmarkNode* new_other_node =
         model->AddFolder(model->bookmark_bar_node(),

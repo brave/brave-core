@@ -185,12 +185,7 @@ class BraveSyncServiceTest : public testing::Test {
 
     sync_prefs_ = std::make_unique<syncer::SyncPrefs>(profile_->GetPrefs());
 
-    // TODO(bridiver) - this is temporary until some changes are made to
-    // to bookmark_change_processor to allow `set_for_testing` like
-    // BraveSyncClient
-    BookmarkModelFactory::GetInstance()->SetTestingFactory(
-        profile(),
-        base::BindRepeating(&brave_sync::BuildFakeBookmarkModelForTests));
+    SetBookmarkModelFactory();
 
     model_ = BookmarkModelFactory::GetForBrowserContext(
         Profile::FromBrowserContext(profile_.get()));
@@ -216,6 +211,15 @@ class BraveSyncServiceTest : public testing::Test {
     sync_service_->Shutdown();
     sync_prefs_.reset();
     profile_.reset();
+  }
+
+  virtual void SetBookmarkModelFactory() {
+    // TODO(bridiver) - this is temporary until some changes are made to
+    // to bookmark_change_processor to allow `set_for_testing` like
+    // BraveSyncClient
+    BookmarkModelFactory::GetInstance()->SetTestingFactory(
+        profile(),
+        base::BindRepeating(&brave_sync::BuildFakeBookmarkModelForTests));
   }
 
   Profile* profile() { return profile_.get(); }
@@ -244,6 +248,37 @@ class BraveSyncServiceTest : public testing::Test {
   std::unique_ptr<MockBraveSyncServiceObserver> observer_;
 
   base::ScopedTempDir temp_dir_;
+};
+
+class BraveSyncServiceTestDelayedLoadModel : public BraveSyncServiceTest {
+ public:
+  void SetBookmarkModelFactory() override {
+    BookmarkModelFactory::GetInstance()->SetTestingFactory(
+        profile(),
+        base::BindRepeating(&BraveSyncServiceTestDelayedLoadModel::BuildModel,
+                            base::Unretained(this)));
+  }
+  void ModelDoneLoading() {
+    model()->DoneLoading(std::move(bookmark_load_details_));
+  }
+
+ private:
+  std::unique_ptr<KeyedService> BuildModel(content::BrowserContext* context) {
+    using bookmarks::BookmarkClient;
+    using bookmarks::BookmarkLoadDetails;
+    using bookmarks::BookmarkModel;
+    using bookmarks::TestBookmarkClient;
+    std::unique_ptr<TestBookmarkClient> client(new TestBookmarkClient());
+    BookmarkClient* client_ptr = client.get();
+    std::unique_ptr<BookmarkModel> bookmark_model(
+        new BookmarkModel(std::move(client)));
+    bookmark_load_details_ = std::make_unique<BookmarkLoadDetails>(client_ptr);
+    bookmark_load_details_->LoadManagedNode();
+    bookmark_load_details_->CreateUrlIndex();
+    // By intent don't call BookmarkModel::DoneLoading
+    return bookmark_model;
+  }
+  std::unique_ptr<bookmarks::BookmarkLoadDetails> bookmark_load_details_;
 };
 
 TEST_F(BraveSyncServiceTest, SetSyncEnabled) {
@@ -823,6 +858,22 @@ TEST_F(BraveSyncServiceTest, OnSyncReadyNewToSync) {
 
   // We want to have Chromium syncer bookmarks be enabled from begin to avoid
   // reaching BookmarkModelAssociator::AssociateModels
+  EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(syncer::prefs::kSyncBookmarks));
+}
+
+TEST_F(BraveSyncServiceTestDelayedLoadModel, OnSyncReadyModelNotYetLoaded) {
+  EXPECT_NE(sync_service()->model_, nullptr);
+  EXPECT_FALSE(model()->loaded());
+  profile()->GetPrefs()->SetString(brave_sync::prefs::kSyncBookmarksBaseOrder,
+                                   "1.1.");
+
+  EXPECT_FALSE(sync_service()->is_model_loaded_observer_set_);
+  sync_service()->OnSyncReady();
+  EXPECT_TRUE(sync_service()->is_model_loaded_observer_set_);
+  EXPECT_CALL(*observer(), OnSyncStateChanged);
+  ModelDoneLoading();
+
+  // This pref is enabled in observer, check wether the observer job done
   EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(syncer::prefs::kSyncBookmarks));
 }
 
