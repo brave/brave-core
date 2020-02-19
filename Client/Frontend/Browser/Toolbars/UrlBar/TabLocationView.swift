@@ -163,6 +163,7 @@ class TabLocationView: UIView {
     
     lazy var reloadButton = ToolbarButton(top: true).then {
         $0.accessibilityIdentifier = "TabToolbar.stopReloadButton"
+        $0.isAccessibilityElement = true
         $0.accessibilityLabel = Strings.tabToolbarReloadButtonAccessibilityLabel
         $0.setImage(#imageLiteral(resourceName: "nav-refresh").template, for: .normal)
         $0.tintColor = UIColor.Photon.grey30
@@ -256,7 +257,7 @@ class TabLocationView: UIView {
 
     override var accessibilityElements: [Any]? {
         get {
-            return [lockImageView, urlTextField, readerModeButton].filter { !$0.isHidden }
+            return [lockImageView, urlTextField, readerModeButton, reloadButton].filter { !$0.isHidden }
         }
         set {
             super.accessibilityElements = newValue
