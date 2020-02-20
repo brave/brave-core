@@ -28,16 +28,19 @@ namespace brave_ads {
 
 class BundleStateDatabase {
  public:
-  explicit BundleStateDatabase(const base::FilePath& db_path);
+  explicit BundleStateDatabase(
+      const base::FilePath& db_path);
   ~BundleStateDatabase();
 
   // Call before Init() to set the error callback to be used for the
-  // underlying database connection.
-  void set_error_callback(const sql::Database::ErrorCallback& error_callback) {
+  // underlying database connection
+  void set_error_callback(
+      const sql::Database::ErrorCallback& error_callback) {
     db_.set_error_callback(error_callback);
   }
 
-  bool SaveBundleState(const ads::BundleState& bundle_state);
+  bool SaveBundleState(
+      const ads::BundleState& bundle_state);
 
   bool GetCreativeAdNotifications(
       const std::vector<std::string>& categories,
@@ -46,14 +49,16 @@ class BundleStateDatabase {
       const std::string& url,
       ads::AdConversionList* ad_conversions);
 
-  // Returns the current version of the publisher info database
+  // Returns the current version of the bundle state database
   static int GetCurrentVersion();
 
   // Vacuums the database. This will cause sqlite to defragment and collect
-  // unused space in the file. It can be VERY SLOW.
+  // unused space in the file. It can be VERY SLOW
   void Vacuum();
 
-  std::string GetDiagnosticInfo(int extended_error, sql::Statement* statement);
+  std::string GetDiagnosticInfo(
+      const int extended_error,
+      sql::Statement* statement);
 
  private:
   bool Init();
@@ -61,25 +66,25 @@ class BundleStateDatabase {
       base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);
 
   bool CreateCategoryTable();
-  bool CreateConversionsTable();
   bool CreateCreativeAdNotificationInfoTable();
   bool CreateCreativeAdNotificationInfoCategoryTable();
   bool CreateCreativeAdNotificationInfoCategoryNameIndex();
+  bool CreateAdConversionsTable();
 
   bool TruncateCategoryTable();
-  bool TruncateConversionsTable();
   bool TruncateCreativeAdNotificationInfoTable();
   bool TruncateCreativeAdNotificationInfoCategoryTable();
+  bool TruncateAdConversionsTable();
 
   bool InsertOrUpdateCategory(
       const std::string& category);
-  bool InsertOrUpdateAdConversion(
-      const ads::AdConversionInfo& ad_conversion);
   bool InsertOrUpdateCreativeAdNotificationInfo(
       const ads::CreativeAdNotificationInfo& info);
   bool InsertOrUpdateCreativeAdNotificationInfoCategory(
-      const ads::CreativeAdNotificationInfo& ad_info,
+      const ads::CreativeAdNotificationInfo& info,
       const std::string& category);
+  bool InsertOrUpdateAdConversion(
+      const ads::AdConversionInfo& info);
 
   sql::Database& GetDB();
   sql::MetaTable& GetMetaTable();
@@ -92,7 +97,7 @@ class BundleStateDatabase {
   sql::Database db_;
   sql::MetaTable meta_table_;
   const base::FilePath db_path_;
-  bool initialized_;
+  bool is_initialized_;
 
   std::unique_ptr<base::MemoryPressureListener> memory_pressure_listener_;
 
