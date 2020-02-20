@@ -202,13 +202,14 @@ base::Optional<base::Value> AdBlockBaseService::HostnameCosmeticResources(
           this->ad_block_client_->hostnameCosmeticResources(hostname));
 }
 
-std::string AdBlockBaseService::HiddenClassIdSelectors(
+base::Optional<base::Value> AdBlockBaseService::HiddenClassIdSelectors(
         const std::vector<std::string>& classes,
         const std::vector<std::string>& ids,
         const std::vector<std::string>& exceptions) {
-  return this->ad_block_client_->hiddenClassIdSelectors(classes,
-                                                        ids,
-                                                        exceptions);
+  return base::JSONReader::Read(
+          this->ad_block_client_->hiddenClassIdSelectors(classes,
+                                                         ids,
+                                                         exceptions));
 }
 
 void AdBlockBaseService::GetDATFileData(const base::FilePath& dat_file_path) {

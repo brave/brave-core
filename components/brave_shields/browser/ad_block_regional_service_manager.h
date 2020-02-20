@@ -9,6 +9,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/macros.h"
 #include "base/memory/scoped_refptr.h"
@@ -56,6 +57,10 @@ class AdBlockRegionalServiceManager {
 
   base::Optional<base::Value> HostnameCosmeticResources(
           const std::string& hostname);
+  base::Optional<base::Value> HiddenClassIdSelectors(
+          const std::vector<std::string>& classes,
+          const std::vector<std::string>& ids,
+          const std::vector<std::string>& exceptions);
 
  private:
   friend class ::AdBlockServiceTest;

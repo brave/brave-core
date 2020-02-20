@@ -19,8 +19,7 @@ const informTabOfCosmeticRulesToConsider = (tabId: number, selectors: string[]) 
 
 // Fires when content-script calls hiddenClassIdSelectors
 export const injectClassIdStylesheet = (tabId: number, classes: string[], ids: string[], exceptions: string[]) => {
-  chrome.braveShields.hiddenClassIdSelectors(classes, ids, exceptions, (jsonSelectors) => {
-    const selectors = JSON.parse(jsonSelectors)
+  chrome.braveShields.hiddenClassIdSelectors(classes, ids, exceptions, (selectors) => {
     informTabOfCosmeticRulesToConsider(tabId, selectors)
   })
 }
