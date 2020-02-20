@@ -37,6 +37,7 @@ if (enable_brave_sync) {
       ":public",
       ":static_resources",
       "//base",
+      "//brave/common:common",
       "//chrome/common",
       "//components/bookmarks/browser",
       "//components/bookmarks/common",

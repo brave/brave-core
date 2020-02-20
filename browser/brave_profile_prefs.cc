@@ -72,6 +72,9 @@ void RegisterProfilePrefsForMigration(
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   brave_wallet::RegisterBraveWalletProfilePrefsForMigration(registry);
 #endif
+
+  // Restore "Other Bookmarks" migration
+  registry->RegisterBooleanPref(kOtherBookmarksMigrated, false);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {

@@ -5,8 +5,10 @@
 
 #include "brave/components/brave_sync/jslib_messages.h"
 
+#include <iostream>
 #include <utility>
 
+#include "brave/components/brave_sync/jslib_const.h"
 #include "brave/components/brave_sync/values_conv.h"
 #include "base/logging.h"
 #include "base/values.h"
@@ -29,6 +31,15 @@ Site::~Site() = default;
 
 std::unique_ptr<Site> Site::Clone(const Site& site) {
   return std::make_unique<Site>(site);
+}
+
+bool Site::Matches(const Site& site) const {
+  if (location == site.location &&
+      title == site.title &&
+      customTitle == site.customTitle &&
+      favicon == site.favicon)
+    return true;
+  return false;
 }
 
 std::string Site::TryGetNonEmptyTitle() const {
@@ -64,6 +75,16 @@ Bookmark::~Bookmark() = default;
 
 std::unique_ptr<Bookmark> Bookmark::Clone(const Bookmark& bookmark) {
   return std::make_unique<Bookmark>(bookmark);
+}
+
+bool Bookmark::Matches(const Bookmark& bookmark) const {
+  if (site.Matches(bookmark.site) &&
+      isFolder == bookmark.isFolder &&
+      parentFolderObjectId == bookmark.parentFolderObjectId &&
+      hideInToolbar == bookmark.hideInToolbar &&
+      order == bookmark.order)
+    return true;
+  return false;
 }
 
 SiteSetting::SiteSetting() : zoomLevel(1.0f), shieldsUp(true),
@@ -171,6 +192,20 @@ Bookmark* SyncRecord::mutable_bookmark() {
   return bookmark_.get();
 }
 
+bool SyncRecord::Matches(const SyncRecord& record) const {
+  if (action == record.action && deviceId == record.deviceId &&
+      objectId == record.objectId && objectData == record.objectData &&
+      has_bookmark() == record.has_bookmark() &&
+      has_historysite() == record.has_historysite() &&
+      has_sitesetting() == record.has_sitesetting() &&
+      has_device() == record.has_device()) {
+    if (objectData == jslib_const::SyncObjectData_BOOKMARK)
+      return GetBookmark().Matches(record.GetBookmark());
+    return true;
+  }
+  return false;
+}
+
 void SyncRecord::SetBookmark(std::unique_ptr<Bookmark> bookmark) {
   DCHECK(!has_bookmark() && !has_historysite() && !has_sitesetting() &&
          !has_device());
@@ -193,6 +228,15 @@ void SyncRecord::SetDevice(std::unique_ptr<Device> device) {
   DCHECK(!has_bookmark() && !has_historysite() && !has_sitesetting() &&
          !has_device());
   device_ = std::move(device);
+}
+
+std::ostream& operator<<(std::ostream& out, const Site& site) {
+  out << "location=" << site.location << ", ";
+  out << "title=" << site.title << ", ";
+  out << "customTitle=" << site.customTitle << ", ";
+  out << "creationTime=" << site.creationTime << ", ";
+  out << "favicon=" << site.favicon;
+  return out;
 }
 
 }  // namespace jslib
