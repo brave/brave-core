@@ -226,7 +226,7 @@ class FavoritesViewController: UIViewController, Themeable {
         collection.dataSource = dataSource
         dataSource.collectionView = collection
         
-        dataSource.favoriteDeletedHandler = { [weak self] in
+        dataSource.favoriteUpdatedHandler = { [weak self] in
             self?.favoritesOverflowButton.isHidden = self?.dataSource.hasOverflow == false
         }
         
