@@ -643,6 +643,7 @@ test("brave_browser_tests") {
       "//brave/components/brave_rewards/browser/rewards_notification_service_browsertest.cc",
       "//brave/components/brave_rewards/browser/rewards_database_browsertest.cc",
       "//brave/components/brave_rewards/browser/rewards_service_browsertest.cc",
+      "//brave/components/brave_ads/browser/ads_service_browsertest.cc",
       "//brave/components/brave_ads/browser/locale_helper_mock.cc",
       "//brave/components/brave_ads/browser/locale_helper_mock.h",
       "//brave/components/brave_ads/browser/notification_helper_mock.cc",
