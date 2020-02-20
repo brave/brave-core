@@ -126,7 +126,8 @@
             "parameters": [
               {
                 "name": "selectorsJson",
-                "type": "string"
+                "type": "array",
+                "items": {"type": "string"}
               }
             ]
           }

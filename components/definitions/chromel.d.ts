@@ -220,7 +220,7 @@ declare namespace chrome.braveShields {
     injected_script: string
   }
   const hostnameCosmeticResources: (hostname: string, callback: (resources: HostnameSpecificResources) => void) => void
-  const hiddenClassIdSelectors: (classes: string[], ids: string[], exceptions: string[], callback: (selectorsJson: string) => void) => void
+  const hiddenClassIdSelectors: (classes: string[], ids: string[], exceptions: string[], callback: (selectors: string[]) => void) => void
 
   type BraveShieldsViewPreferences = {
     showAdvancedView: boolean

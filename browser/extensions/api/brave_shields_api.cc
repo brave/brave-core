@@ -93,11 +93,49 @@ BraveShieldsHiddenClassIdSelectorsFunction::Run() {
       brave_shields::HiddenClassIdSelectors::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  std::string stylesheet = g_brave_browser_process->
+  base::Optional<base::Value> selectors = g_brave_browser_process->
       ad_block_service()->HiddenClassIdSelectors(params->classes,
                                                  params->ids,
                                                  params->exceptions);
-  return RespondNow(OneArgument(std::make_unique<base::Value>(stylesheet)));
+
+  base::Optional<base::Value> regional_selectors = g_brave_browser_process->
+      ad_block_regional_service_manager()->
+        HiddenClassIdSelectors(params->classes,
+                               params->ids,
+                               params->exceptions);
+
+  if (selectors && selectors->is_list()) {
+    if (regional_selectors && regional_selectors->is_list()) {
+      for (auto i = regional_selectors->GetList().begin();
+              i < regional_selectors->GetList().end();
+              i++) {
+        selectors->Append(std::move(*i));
+      }
+    }
+  } else {
+    selectors = std::move(regional_selectors);
+  }
+
+  base::Optional<base::Value> custom_selectors = g_brave_browser_process->
+      ad_block_custom_filters_service()->
+          HiddenClassIdSelectors(params->classes,
+                                 params->ids,
+                                 params->exceptions);
+
+  if (selectors && custom_selectors->is_list()) {
+    if (custom_selectors && custom_selectors->is_list()) {
+      for (auto i = custom_selectors->GetList().begin();
+              i < custom_selectors->GetList().end();
+              i++) {
+        selectors->Append(std::move(*i));
+      }
+    }
+  } else {
+    selectors = std::move(custom_selectors);
+  }
+
+  return RespondNow(OneArgument(std::make_unique<base::Value>(
+                  std::move(*selectors))));
 }
 
 
