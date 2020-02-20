@@ -635,13 +635,16 @@
 "ntp.turnOnBraveRewards" = "Slå på belønninger";
 
 /* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turnin Rewards, you agree to the Terms of Service'. */
-"ntp.turnRewardsTos" = "Ved å slå på belønninger samtykker du i %@.";
+"ntp.turnRewardsTos" = "Ved å slå på Rewards, godtar du %@.";
 
 /* No comment provided by engineer. */
 "ntp.youArePaidToSeeThisImage" = "Du får betalt for å se dette bakgrunnsbildet.";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Åpne alle (%i)";
+
+/* Button title for opening the Brave Rewards panel to settings */
+"OpenBraveRewardsSettings" = "Åpne Brave Rewards-innstillinger";
 
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "Åpne bilde i ny fane";

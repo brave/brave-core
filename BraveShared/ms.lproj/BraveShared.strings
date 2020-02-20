@@ -643,6 +643,9 @@
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Buka Semua (%i)";
 
+/* Button title for opening the Brave Rewards panel to settings */
+"OpenBraveRewardsSettings" = "Buka Tetapan Brave Rewards";
+
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "Buka Imej Dalam Tab Baru";
 

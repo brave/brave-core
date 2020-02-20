@@ -245,6 +245,12 @@
 "BraveRewardsMinimumVisitsChoices2" = "訪問数: 10";
 
 /* No comment provided by engineer. */
+"BraveRewardsMonthlyContributionsTotalThisMonth" = "今月の支援総額";
+
+/* No comment provided by engineer. */
+"BraveRewardsMonthlyTippingNextDate" = "次の毎月定期支援支払日";
+
+/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "月々のチップ";
 
 /* No comment provided by engineer. */
@@ -353,6 +359,15 @@
 "BraveRewardsSettingsGrantTextJapan" = "無料のポイントを受け取ることが可能です。";
 
 /* No comment provided by engineer. */
+"BraveRewardsSettingsMonthlyTipsBody" = "継続的にサイトを支援するために毎月定額支払い設定をする";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsMonthlyTipsTitle" = "毎月定期支援";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTipsBody" = "ブラウジング中にBrave Rewardsパネルから直接クリエイターにチップを送る";
+
+/* No comment provided by engineer. */
 "BraveRewardsSettingsTipsTitle" = "チップ";
 
 /* No comment provided by engineer. */
@@ -360,6 +375,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsViewDetails" = "詳細を表示";
+
+/* No comment provided by engineer. */
+"BraveRewardsShowAllPendingContributions" = "全ての保留中の支援を確認する";
 
 /* No comment provided by engineer. */
 "BraveRewardsSite" = "サイト";
@@ -561,6 +579,27 @@
 
 /* This is a suffix statement. example: SomeChannel on Twitter */
 "OnProviderText" = "on %@";
+
+/* No comment provided by engineer. */
+"PendingContributionDetailAmount" = "総額";
+
+/* No comment provided by engineer. */
+"PendingContributionDetailPendingUntil" = "保留期限";
+
+/* The button that removes a specific pending contributions while on viewing said contributions details */
+"PendingContributionDetailRemove" = "保留中の支援を中止する";
+
+/* No comment provided by engineer. */
+"PendingContributionDetailType" = "タイプ";
+
+/* The button that removes all pending contributions while on the Pending Contributions list */
+"PendingContributionListRemoveAllButton" = "全ての支援を中止する";
+
+/* The button that removes the selected pending contributions while on the Pending Contributions list */
+"PendingContributionListRemoveSelected" = "選択された支援を中止する";
+
+/* The title of the screen that shows a list of the users pending contributions */
+"PendingContributionsTitle" = "保留中の支援";
 
 /* No comment provided by engineer. */
 "PrivacyPolicyURL" = "プライバシーポリシー";

@@ -245,6 +245,12 @@
 "BraveRewardsMinimumVisitsChoices2" = "10 посещений";
 
 /* No comment provided by engineer. */
+"BraveRewardsMonthlyContributionsTotalThisMonth" = "Всего взносов за месяц";
+
+/* No comment provided by engineer. */
+"BraveRewardsMonthlyTippingNextDate" = "Дата следующего взноса";
+
+/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "Ежемесячные платежи";
 
 /* No comment provided by engineer. */
@@ -353,6 +359,15 @@
 "BraveRewardsSettingsGrantTextJapan" = "Доступен бесплатный балл.";
 
 /* No comment provided by engineer. */
+"BraveRewardsSettingsMonthlyTipsBody" = "Настройте ежемесячные платежи, чтобы постоянно поддерживать сайты.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsMonthlyTipsTitle" = "Ежемесячные взносы";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTipsBody" = "Отправляйте платежи создателям контента через панель Rewards при просмотре сайтов.";
+
+/* No comment provided by engineer. */
 "BraveRewardsSettingsTipsTitle" = "Платежи";
 
 /* No comment provided by engineer. */
@@ -360,6 +375,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsViewDetails" = "Подробности";
+
+/* No comment provided by engineer. */
+"BraveRewardsShowAllPendingContributions" = "Показать незавершенные взносы";
 
 /* No comment provided by engineer. */
 "BraveRewardsSite" = "Сайт";
@@ -561,6 +579,27 @@
 
 /* This is a suffix statement. example: SomeChannel on Twitter */
 "OnProviderText" = "в %@";
+
+/* No comment provided by engineer. */
+"PendingContributionDetailAmount" = "Сумма";
+
+/* No comment provided by engineer. */
+"PendingContributionDetailPendingUntil" = "Дата завершения";
+
+/* The button that removes a specific pending contributions while on viewing said contributions details */
+"PendingContributionDetailRemove" = "Отменить незавершенный взнос";
+
+/* No comment provided by engineer. */
+"PendingContributionDetailType" = "Тип";
+
+/* The button that removes all pending contributions while on the Pending Contributions list */
+"PendingContributionListRemoveAllButton" = "Удалить все сайты";
+
+/* The button that removes the selected pending contributions while on the Pending Contributions list */
+"PendingContributionListRemoveSelected" = "Удалить выбранные";
+
+/* The title of the screen that shows a list of the users pending contributions */
+"PendingContributionsTitle" = "Незавершенные взносы";
 
 /* No comment provided by engineer. */
 "PrivacyPolicyURL" = "Политика конфиденциальности";
