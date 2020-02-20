@@ -863,11 +863,11 @@ void BraveProfileSyncServiceImpl::ProcessOtherBookmarksFolder(
     tools::AsMutable(model_->other_node())->SetMetaInfo("object_id",
                                                         record->objectId);
   } else {
-    // If late joined desktop has bookmarks in other_node before joining sync
-    // chain
-    if (other_node_object_id != record->objectId &&
-        other_node_object_id ==
-          tools::GenerateObjectIdForOtherNode(std::string())) {
+    // Out-of-date desktop will poll remote records before commiting local
+    // changes so we won't get old iteration id. That is why we always take
+    // remote id when it is different than what we have to catch up with current
+    // iteration
+    if (other_node_object_id != record->objectId) {
       tools::AsMutable(model_->other_node())->SetMetaInfo("object_id",
                                                           record->objectId);
     }
