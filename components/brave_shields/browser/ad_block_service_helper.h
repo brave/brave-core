@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/values.h"
 #include "brave/vendor/adblock_rust_ffi/src/wrapper.hpp"
 
 namespace brave_shields {
@@ -19,6 +20,8 @@ std::vector<adblock::FilterList>::const_iterator FindAdBlockFilterListByUUID(
 std::vector<adblock::FilterList>::const_iterator FindAdBlockFilterListByLocale(
     const std::vector<adblock::FilterList>& region_lists,
     const std::string& locale);
+
+void MergeResourcesInto(base::Value* into, base::Value* from);
 
 }  // namespace brave_shields
 

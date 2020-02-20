@@ -15,7 +15,11 @@
 #include "brave/browser/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "brave/common/extensions/api/brave_shields.h"
 #include "brave/common/extensions/extension_constants.h"
+#include "brave/components/brave_shields/browser/ad_block_base_service.h"
+#include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
+#include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
@@ -59,6 +63,23 @@ BraveShieldsHostnameCosmeticResourcesFunction::Run() {
     return RespondNow(Error(
         "Hostname-specific cosmetic resources could not be returned"));
   }
+
+  base::Optional<base::Value> regional_resources = g_brave_browser_process->
+      ad_block_regional_service_manager()->
+          HostnameCosmeticResources(params->hostname);
+
+  if (regional_resources && regional_resources->is_dict()) {
+    ::brave_shields::MergeResourcesInto(&*resources, &*regional_resources);
+  }
+
+  base::Optional<base::Value> custom_resources = g_brave_browser_process->
+      ad_block_custom_filters_service()->
+          HostnameCosmeticResources(params->hostname);
+
+  if (custom_resources && custom_resources->is_dict()) {
+    ::brave_shields::MergeResourcesInto(&*resources, &*custom_resources);
+  }
+
   auto result_list = std::make_unique<base::ListValue>();
 
   result_list->GetList().push_back(std::move(*resources));

@@ -12,7 +12,9 @@
 
 #include "base/macros.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/optional.h"
 #include "base/synchronization/lock.h"
+#include "base/values.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "content/public/common/resource_type.h"
 #include "url/gurl.h"
@@ -51,6 +53,9 @@ class AdBlockRegionalServiceManager {
   void EnableTag(const std::string& tag, bool enabled);
   void AddResources(const std::string& resources);
   void EnableFilterList(const std::string& uuid, bool enabled);
+
+  base::Optional<base::Value> HostnameCosmeticResources(
+          const std::string& hostname);
 
  private:
   friend class ::AdBlockServiceTest;
