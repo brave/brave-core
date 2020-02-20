@@ -10,14 +10,12 @@
 #undef CreateAndSwitchToNewProfile
 
 #include "base/bind.h"
-#include "base/task/post_task.h"
+#include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_metrics.h"
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/browser_thread.h"
 
 namespace profiles {
 
@@ -66,8 +64,9 @@ void OnTorRegularProfileCreated(ProfileManager::CreateCallback callback,
   // hosts in time before the off-the-record Tor profile is destroyed and hit
   // DCHECK in ProfileDestroyer because a render process host wasn't destroyed
   // before the off-the-record profile is destroyed.
-  base::PostTask(FROM_HERE, {content::BrowserThread::UI},
-                 base::BindOnce(&profiles::OpenBrowserWindowForTorProfile,
+  DCHECK(base::SequencedTaskRunnerHandle::IsSet());
+  base::SequencedTaskRunnerHandle::Get()->PostTask(
+      FROM_HERE, base::BindOnce(&profiles::OpenBrowserWindowForTorProfile,
                                 callback, always_create, is_new_profile,
                                 unblock_extensions, profile, status));
 }
