@@ -4,3 +4,4 @@
 import("//brave/brave_repack_locales.gni")
 import("//brave/build/features.gni")
 import("//brave/net/sources.gni")
+import("//brave/third_party/blink/renderer/includes.gni")
