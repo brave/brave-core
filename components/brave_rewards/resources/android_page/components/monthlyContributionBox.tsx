@@ -7,20 +7,23 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 import {
-  DisabledContent,
-  Box,
   TableDonation,
   List,
   Tokens,
   ModalDonation,
   NextContribution
 } from '../../ui/components'
+import { BoxMobile } from '../../ui/components/mobile'
 import { Provider } from '../../ui/components/profile'
 
 import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
 import { DetailRow } from '../../ui/components/tableDonation'
+import {
+  StyledListContent,
+  StyledTotalContent
+} from './style'
 
 interface Props extends Rewards.ComponentProps {
 }
@@ -39,16 +42,6 @@ class MonthlyContributionBox extends React.Component<Props, State> {
 
   get actions () {
     return this.props.actions
-  }
-
-  disabledContent = () => {
-    return (
-      <DisabledContent
-        type={'monthly'}
-      >
-        {getLocale('monthlyContributionDisabledText')}
-      </DisabledContent>
-    )
   }
 
   getRows = () => {
@@ -94,12 +87,9 @@ class MonthlyContributionBox extends React.Component<Props, State> {
   render () {
     const {
       balance,
-      firstLoad,
-      enabledMain,
       recurringList,
       reconcileStamp
     } = this.props.rewardsData
-    const showDisabled = firstLoad !== false || !enabledMain
     const tipRows = this.getRows()
     const topRows = tipRows.slice(0, 5)
     const numRows = tipRows && tipRows.length
@@ -108,11 +98,11 @@ class MonthlyContributionBox extends React.Component<Props, State> {
     const converted = utils.convertBalance(total, balance.rates)
 
     return (
-      <Box
+      <BoxMobile
+        checked={true}
         type={'donation'}
         title={getLocale('monthlyContributionTitle')}
         description={getLocale('monthlyContributionDesc')}
-        disabledContent={showDisabled ? this.disabledContent() : null}
       >
         {
           this.state.modalShowAll
@@ -123,25 +113,30 @@ class MonthlyContributionBox extends React.Component<Props, State> {
           />
           : null
         }
-        <List title={getLocale('donationTotalMonthlyContribution')}>
-          <Tokens value={total.toFixed(1)} converted={converted} />
+        <List title={<StyledListContent>{getLocale('donationTotalMonthlyContribution')}</StyledListContent>}>
+          <StyledTotalContent>
+            <Tokens value={total.toFixed(1)} converted={converted} />
+          </StyledTotalContent>
         </List>
-        <List title={getLocale('donationNextDate')}>
-          <NextContribution>
-            {new Intl.DateTimeFormat('default', { month: 'short', day: 'numeric' }).format(reconcileStamp * 1000)}
-          </NextContribution>
+        <List title={<StyledListContent>{getLocale('donationNextDate')}</StyledListContent>}>
+          <StyledListContent>
+            <NextContribution>
+              {new Intl.DateTimeFormat('default', { month: 'short', day: 'numeric' }).format(reconcileStamp * 1000)}
+            </NextContribution>
+          </StyledListContent>
         </List>
-
-        <TableDonation
-          rows={topRows}
-          allItems={allSites}
-          numItems={numRows}
-          headerColor={true}
-          onShowAll={this.onModalToggle}
-        >
-          {getLocale('monthlyContributionEmpty')}
-        </TableDonation>
-      </Box>
+        <StyledListContent>
+          <TableDonation
+            rows={topRows}
+            allItems={allSites}
+            numItems={numRows}
+            headerColor={true}
+            onShowAll={this.onModalToggle}
+          >
+            {getLocale('monthlyContributionEmpty')}
+          </TableDonation>
+        </StyledListContent>
+      </BoxMobile>
     )
   }
 }

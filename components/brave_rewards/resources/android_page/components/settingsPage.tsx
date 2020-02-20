@@ -12,6 +12,7 @@ import AdsBox from './adsBox'
 import ContributeBox from './contributeBox'
 import TipBox from './tipsBox'
 import PageWallet from './pageWallet'
+import MonthlyContributionBox from './monthlyContributionBox'
 import {
   MainToggleMobile,
   SettingsPageMobile,
@@ -217,6 +218,7 @@ class SettingsPage extends React.Component<Props, State> {
         />
         <AdsBox />
         <ContributeBox />
+        <MonthlyContributionBox />
         <TipBox />
         <PageWallet
           toggleAction={this.onToggleWallet}
