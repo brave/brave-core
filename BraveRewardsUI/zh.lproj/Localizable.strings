@@ -245,6 +245,12 @@
 "BraveRewardsMinimumVisitsChoices2" = "访问 10 次";
 
 /* No comment provided by engineer. */
+"BraveRewardsMonthlyContributionsTotalThisMonth" = "本月捐款总额";
+
+/* No comment provided by engineer. */
+"BraveRewardsMonthlyTippingNextDate" = "下月捐款日期";
+
+/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "每月酬谢费";
 
 /* No comment provided by engineer. */
@@ -353,6 +359,15 @@
 "BraveRewardsSettingsGrantTextJapan" = "免费赠予的积分现已可用。";
 
 /* No comment provided by engineer. */
+"BraveRewardsSettingsMonthlyTipsBody" = "设置每月定期捐款，以便可以持续支持网站。";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsMonthlyTipsTitle" = "每月捐款";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTipsBody" = "使用“奖励面板”浏览时直接对内容创作者打赏。";
+
+/* No comment provided by engineer. */
 "BraveRewardsSettingsTipsTitle" = "酬谢费";
 
 /* No comment provided by engineer. */
@@ -360,6 +375,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsViewDetails" = "查看详情";
+
+/* No comment provided by engineer. */
+"BraveRewardsShowAllPendingContributions" = "显示所有待处理捐款";
 
 /* No comment provided by engineer. */
 "BraveRewardsSite" = "站点";
@@ -561,6 +579,27 @@
 
 /* This is a suffix statement. example: SomeChannel on Twitter */
 "OnProviderText" = "日期：%@";
+
+/* No comment provided by engineer. */
+"PendingContributionDetailAmount" = "金额";
+
+/* No comment provided by engineer. */
+"PendingContributionDetailPendingUntil" = "处理期限";
+
+/* The button that removes a specific pending contributions while on viewing said contributions details */
+"PendingContributionDetailRemove" = "移除待处理捐款";
+
+/* No comment provided by engineer. */
+"PendingContributionDetailType" = "类型";
+
+/* The button that removes all pending contributions while on the Pending Contributions list */
+"PendingContributionListRemoveAllButton" = "移除所有站点";
+
+/* The button that removes the selected pending contributions while on the Pending Contributions list */
+"PendingContributionListRemoveSelected" = "移除所选";
+
+/* The title of the screen that shows a list of the users pending contributions */
+"PendingContributionsTitle" = "待处理捐款";
 
 /* No comment provided by engineer. */
 "PrivacyPolicyURL" = "隐私政策";

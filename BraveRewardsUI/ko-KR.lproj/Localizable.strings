@@ -245,6 +245,12 @@
 "BraveRewardsMinimumVisitsChoices2" = "10회 방문";
 
 /* No comment provided by engineer. */
+"BraveRewardsMonthlyContributionsTotalThisMonth" = "이번 달 후원 총액";
+
+/* No comment provided by engineer. */
+"BraveRewardsMonthlyTippingNextDate" = "다음 월간 후원 날짜";
+
+/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "월정기 팁";
 
 /* No comment provided by engineer. */
@@ -353,6 +359,15 @@
 "BraveRewardsSettingsGrantTextJapan" = "무료 포인트를 받을 수 있습니다.";
 
 /* No comment provided by engineer. */
+"BraveRewardsSettingsMonthlyTipsBody" = "월정기 팁을 설정하면 사이트를 지속적으로 후원할 수 있습니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsMonthlyTipsTitle" = "월간 후원";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTipsBody" = "브라우징하면서 Rewards 패널을 사용하여 콘텐츠 제작자에게 직접 팁을 건넬 수 있습니다.";
+
+/* No comment provided by engineer. */
 "BraveRewardsSettingsTipsTitle" = "팁";
 
 /* No comment provided by engineer. */
@@ -360,6 +375,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsViewDetails" = "세부정보 보기";
+
+/* No comment provided by engineer. */
+"BraveRewardsShowAllPendingContributions" = "보류 중인 후원 모두 표시";
 
 /* No comment provided by engineer. */
 "BraveRewardsSite" = "사이트";
@@ -561,6 +579,27 @@
 
 /* This is a suffix statement. example: SomeChannel on Twitter */
 "OnProviderText" = "- %@";
+
+/* No comment provided by engineer. */
+"PendingContributionDetailAmount" = "금액";
+
+/* No comment provided by engineer. */
+"PendingContributionDetailPendingUntil" = "보류 해제 날짜";
+
+/* The button that removes a specific pending contributions while on viewing said contributions details */
+"PendingContributionDetailRemove" = "보류 중인 후원 제거";
+
+/* No comment provided by engineer. */
+"PendingContributionDetailType" = "유형";
+
+/* The button that removes all pending contributions while on the Pending Contributions list */
+"PendingContributionListRemoveAllButton" = "모든 사이트 제거";
+
+/* The button that removes the selected pending contributions while on the Pending Contributions list */
+"PendingContributionListRemoveSelected" = "선택 항목 제거";
+
+/* The title of the screen that shows a list of the users pending contributions */
+"PendingContributionsTitle" = "보류 중인 후원";
 
 /* No comment provided by engineer. */
 "PrivacyPolicyURL" = "개인정보 취급방침";

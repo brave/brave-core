@@ -245,6 +245,12 @@
 "BraveRewardsMinimumVisitsChoices2" = "10 besök";
 
 /* No comment provided by engineer. */
+"BraveRewardsMonthlyContributionsTotalThisMonth" = "Totala donationer den här månaden";
+
+/* No comment provided by engineer. */
+"BraveRewardsMonthlyTippingNextDate" = "Nästa månatliga donationsdatum";
+
+/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "Månatlig dricks";
 
 /* No comment provided by engineer. */
@@ -353,6 +359,15 @@
 "BraveRewardsSettingsGrantTextJapan" = "Ett gratis poängbidrag är tillgängligt.";
 
 /* No comment provided by engineer. */
+"BraveRewardsSettingsMonthlyTipsBody" = "Ställ in donationer som betalas automatiskt månatligen för att ge ditt ständiga stöd till sajter.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsMonthlyTipsTitle" = "Månatliga donationer";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTipsBody" = "Dricksa innehållsskapare direkt när du surfar med hjälp av belöningspanelen.";
+
+/* No comment provided by engineer. */
 "BraveRewardsSettingsTipsTitle" = "Dricks";
 
 /* No comment provided by engineer. */
@@ -360,6 +375,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsViewDetails" = "Visa detaljer";
+
+/* No comment provided by engineer. */
+"BraveRewardsShowAllPendingContributions" = "Visa alla väntande donationer";
 
 /* No comment provided by engineer. */
 "BraveRewardsSite" = "Webbplats";
@@ -561,6 +579,27 @@
 
 /* This is a suffix statement. example: SomeChannel on Twitter */
 "OnProviderText" = "på %@";
+
+/* No comment provided by engineer. */
+"PendingContributionDetailAmount" = "Belopp";
+
+/* No comment provided by engineer. */
+"PendingContributionDetailPendingUntil" = "Väntande fram till ";
+
+/* The button that removes a specific pending contributions while on viewing said contributions details */
+"PendingContributionDetailRemove" = "Raderade väntande donation";
+
+/* No comment provided by engineer. */
+"PendingContributionDetailType" = "Typ";
+
+/* The button that removes all pending contributions while on the Pending Contributions list */
+"PendingContributionListRemoveAllButton" = "Ta bort alla webbplatser";
+
+/* The button that removes the selected pending contributions while on the Pending Contributions list */
+"PendingContributionListRemoveSelected" = "Ta bort markerade";
+
+/* The title of the screen that shows a list of the users pending contributions */
+"PendingContributionsTitle" = "Väntande donationer";
 
 /* No comment provided by engineer. */
 "PrivacyPolicyURL" = "Integritetspolicy";

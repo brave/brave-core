@@ -245,6 +245,12 @@
 "BraveRewardsMinimumVisitsChoices2" = "10 lawatan";
 
 /* No comment provided by engineer. */
+"BraveRewardsMonthlyContributionsTotalThisMonth" = "Jumlah sumbangan bulan ini";
+
+/* No comment provided by engineer. */
+"BraveRewardsMonthlyTippingNextDate" = "Tarikh sumbangan bulanan seterusnya";
+
+/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "Tip Bulanan";
 
 /* No comment provided by engineer. */
@@ -353,6 +359,15 @@
 "BraveRewardsSettingsGrantTextJapan" = "Pemberian poin percuma tersedia.";
 
 /* No comment provided by engineer. */
+"BraveRewardsSettingsMonthlyTipsBody" = "Tetapkan sumbangan bulanan berulang supaya anda boleh menyokong tapak secara berterusan.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsMonthlyTipsTitle" = "Sumbangan Bulanan";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTipsBody" = "Berikan tip kepada pencipta kandungan secara langsung semasa anda melayar dengan menggunakan Panel Ganjaran.";
+
+/* No comment provided by engineer. */
 "BraveRewardsSettingsTipsTitle" = "Tip";
 
 /* No comment provided by engineer. */
@@ -360,6 +375,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsViewDetails" = "Lihat Butiran";
+
+/* No comment provided by engineer. */
+"BraveRewardsShowAllPendingContributions" = "Tunjukkan semua sumbangan yang belum selesai";
 
 /* No comment provided by engineer. */
 "BraveRewardsSite" = "Tapak";
@@ -561,6 +579,27 @@
 
 /* This is a suffix statement. example: SomeChannel on Twitter */
 "OnProviderText" = "pada %@";
+
+/* No comment provided by engineer. */
+"PendingContributionDetailAmount" = "Jumlah";
+
+/* No comment provided by engineer. */
+"PendingContributionDetailPendingUntil" = "Belum Selesai Sehingga";
+
+/* The button that removes a specific pending contributions while on viewing said contributions details */
+"PendingContributionDetailRemove" = "Alih Keluar Sumbangan Yang Belum Selesai";
+
+/* No comment provided by engineer. */
+"PendingContributionDetailType" = "Jenis";
+
+/* The button that removes all pending contributions while on the Pending Contributions list */
+"PendingContributionListRemoveAllButton" = "Alih Keluar Semua Tapak";
+
+/* The button that removes the selected pending contributions while on the Pending Contributions list */
+"PendingContributionListRemoveSelected" = "Alih Keluar Terpilih";
+
+/* The title of the screen that shows a list of the users pending contributions */
+"PendingContributionsTitle" = "Sumbangan yang belum selesai";
 
 /* No comment provided by engineer. */
 "PrivacyPolicyURL" = "Dasar Privasi";

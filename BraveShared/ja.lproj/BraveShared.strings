@@ -62,19 +62,19 @@
 "AuthenticationImmediately" = "直ちに";
 
 /* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app with attempts remaining */
-"AuthenticationIncorrectAttemptsRemaining" = "パスコードが正しくありません。やり直してください (残り試行回数: %d)。";
+"AuthenticationIncorrectAttemptsRemaining" = "パスコードが正しくありません。\nやり直してください (残り試行回数: %d)。";
 
 /* Touch ID prompt subtitle when accessing logins */
 "AuthenticationLoginsTouchReason" = "ログイン情報にアクセスするには指紋認証が必要です。";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "規程回数以上の試行が失敗しました。%d分後に再試行してください。";
+"AuthenticationMaximumAttemptsReached" = "規程回数以上の試行が失敗しました。\n%d分後に再試行してください。";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedNoTime" = "試行回数が上限に達しました。しばらくしてからやり直してください。";
+"AuthenticationMaximumAttemptsReachedNoTime" = "試行回数が上限に達しました。\nしばらくしてからやり直してください。";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedOneMinute" = "規程回数以上の試行が失敗しました。1分後にもう一度お試しください。";
+"AuthenticationMaximumAttemptsReachedOneMinute" = "規程回数以上の試行が失敗しました。\n1分後にもう一度お試しください。";
 
 /* Label for the Passcode item in Settings */
 "AuthenticationPasscode" = "ログイン情報のパスコード";
@@ -642,6 +642,9 @@
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "すべて開く (%i)";
+
+/* Button title for opening the Brave Rewards panel to settings */
+"OpenBraveRewardsSettings" = "Brave Rewardsの設定を開く";
 
 /* Context menu for opening image in new tab */
 "OpenImageInNewTab" = "画像を新しいタブで開く";

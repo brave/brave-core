@@ -245,6 +245,12 @@
 "BraveRewardsMinimumVisitsChoices2" = "10 visitas";
 
 /* No comment provided by engineer. */
+"BraveRewardsMonthlyContributionsTotalThisMonth" = "Total de contribuições deste mês";
+
+/* No comment provided by engineer. */
+"BraveRewardsMonthlyTippingNextDate" = "Data da próxima contribuição mensal";
+
+/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "Contribuições mensais";
 
 /* No comment provided by engineer. */
@@ -353,6 +359,15 @@
 "BraveRewardsSettingsGrantTextJapan" = "Uma doação de pontos grátis está disponível.";
 
 /* No comment provided by engineer. */
+"BraveRewardsSettingsMonthlyTipsBody" = "Configure contribuições mensais recorrentes para apoiar sites continuamente.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsMonthlyTipsTitle" = "Contribuições mensais";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTipsBody" = "Usando o Painel do Rewards, contribua diretamente para criadores de conteúdo enquanto navega.";
+
+/* No comment provided by engineer. */
 "BraveRewardsSettingsTipsTitle" = "Contribuições";
 
 /* No comment provided by engineer. */
@@ -360,6 +375,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsViewDetails" = "Ver detalhes";
+
+/* No comment provided by engineer. */
+"BraveRewardsShowAllPendingContributions" = "Mostrar todas as contribuições pendentes";
 
 /* No comment provided by engineer. */
 "BraveRewardsSite" = "Site";
@@ -561,6 +579,27 @@
 
 /* This is a suffix statement. example: SomeChannel on Twitter */
 "OnProviderText" = "no %@";
+
+/* No comment provided by engineer. */
+"PendingContributionDetailAmount" = "Valor";
+
+/* No comment provided by engineer. */
+"PendingContributionDetailPendingUntil" = "Pendente até";
+
+/* The button that removes a specific pending contributions while on viewing said contributions details */
+"PendingContributionDetailRemove" = "Remover contribuição pendente";
+
+/* No comment provided by engineer. */
+"PendingContributionDetailType" = "Tipo";
+
+/* The button that removes all pending contributions while on the Pending Contributions list */
+"PendingContributionListRemoveAllButton" = "Remover todos os sites";
+
+/* The button that removes the selected pending contributions while on the Pending Contributions list */
+"PendingContributionListRemoveSelected" = "Remover contribuições selecionadas";
+
+/* The title of the screen that shows a list of the users pending contributions */
+"PendingContributionsTitle" = "Contribuições pendentes";
 
 /* No comment provided by engineer. */
 "PrivacyPolicyURL" = "Política de Privacidade";
