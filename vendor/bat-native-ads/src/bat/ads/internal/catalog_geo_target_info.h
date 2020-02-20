@@ -7,17 +7,16 @@
 #define BAT_ADS_INTERNAL_CATALOG_GEO_TARGET_INFO_H_
 
 #include <string>
+#include <vector>
 
 namespace ads {
 
-struct GeoTargetInfo {
-  GeoTargetInfo();
-  explicit GeoTargetInfo(const GeoTargetInfo& info);
-  ~GeoTargetInfo();
-
+struct CatalogGeoTargetInfo {
   std::string code;
   std::string name;
 };
+
+using CatalogGeoTargetList = std::vector<CatalogGeoTargetInfo>;
 
 }  // namespace ads
 

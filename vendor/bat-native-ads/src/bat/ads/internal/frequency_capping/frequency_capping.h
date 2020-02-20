@@ -26,16 +26,16 @@ class FrequencyCapping {
       const uint64_t time_constraint_in_seconds,
       const uint64_t cap) const;
 
-  std::deque<uint64_t> GetCreativeSetHistoryForUuid(
-      const std::string& uuid) const;
+  std::deque<uint64_t> GetCreativeSetHistory(
+      const std::string& creative_set_id) const;
 
   std::deque<uint64_t> GetAdsShownHistory() const;
 
-  std::deque<uint64_t> GetAdsHistoryForUuid(
-      const std::string& uuid) const;
+  std::deque<uint64_t> GetAdsHistory(
+      const std::string& creative_instance_id) const;
 
-  std::deque<uint64_t> GetCampaignForUuid(
-      const std::string& uuid) const;
+  std::deque<uint64_t> GetCampaign(
+      const std::string& campaign_id) const;
 
  private:
   const Client* const client_;  // NOT OWNED

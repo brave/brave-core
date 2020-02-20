@@ -7,7 +7,7 @@
 #include <memory>
 #include <utility>
 
-#include "bat/ads/internal/ad_conversion_tracking.h"
+#include "bat/ads/internal/ad_conversions.h"
 #include "bat/ads/internal/static_values.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/time.h"
@@ -26,9 +26,9 @@ const char kAdConversionsListKey[] = "ad_conversions";
 
 const char kAdConversionTimestampKey[] = "timestamp_in_seconds";
 const char kAdConversionCreativeSetIdKey[] = "creative_set_id";
-const char kAdConversionUuidKey[] = "uuid";
+const char kAdConversionCreativeInstanceeIdKey[] = "uuid";
 
-AdConversionTracking::AdConversionTracking(
+AdConversions::AdConversions(
     AdsImpl* ads,
     AdsClient* ads_client,
     Client* client)
@@ -42,18 +42,18 @@ AdConversionTracking::AdConversionTracking(
   DCHECK(client_);
 }
 
-AdConversionTracking::~AdConversionTracking() {
+AdConversions::~AdConversions() {
   StopTimer();
 }
 
-void AdConversionTracking::Initialize(
+void AdConversions::Initialize(
     InitializeCallback callback) {
   callback_ = callback;
 
   LoadState();
 }
 
-void AdConversionTracking::ProcessQueue() {
+void AdConversions::ProcessQueue() {
   DCHECK(is_initialized_);
 
   if (timer_id_ != 0) {
@@ -65,38 +65,38 @@ void AdConversionTracking::ProcessQueue() {
     return;
   }
 
-  AdConversionInfo queue_item = queue_.front();
-  StartTimer(queue_item);
+  AdConversionQueueItemInfo ad_conversion = queue_.front();
+  StartTimer(ad_conversion);
 }
 
-void AdConversionTracking::Add(
-    const std::string& creative_set_id,
-    const std::string& uuid) {
+void AdConversions::AddToQueue(
+    const std::string& creative_instance_id,
+    const std::string& creative_set_id) {
   DCHECK(is_initialized_);
+  DCHECK(!creative_instance_id.empty());
   DCHECK(!creative_set_id.empty());
-  DCHECK(!uuid.empty());
 
-  if (creative_set_id.empty() || uuid.empty()) {
+  if (creative_instance_id.empty() || creative_set_id.empty()) {
     return;
   }
 
   const uint64_t now = Time::NowInSeconds();
-  client_->AppendTimestampToAdConversionHistoryForUuid(creative_set_id, now);
+  client_->AppendTimestampToAdConversionHistory(creative_set_id, now);
 
-  AdConversionInfo queue_item;
+  AdConversionQueueItemInfo ad_conversion;
 
   const uint64_t rand_delay = brave_base::random::Geometric(
       _is_debug ? kDebugAdConversionFrequency : kAdConversionFrequency);
 
-  queue_item.timestamp_in_seconds = Time::NowInSeconds() + rand_delay;
-  queue_item.creative_set_id = creative_set_id;
-  queue_item.uuid = uuid;
+  ad_conversion.timestamp_in_seconds = now + rand_delay;
+  ad_conversion.creative_instance_id = creative_instance_id;
+  ad_conversion.creative_set_id = creative_set_id;
 
-  queue_.push_back(queue_item);
+  queue_.push_back(ad_conversion);
 
-  std::sort(queue_.begin(), queue_.end(), [] (
-      const AdConversionInfo& a,
-      const AdConversionInfo& b) {
+  std::sort(queue_.begin(), queue_.end(), [](
+      const AdConversionQueueItemInfo& a,
+      const AdConversionQueueItemInfo& b) {
     return a.timestamp_in_seconds < b.timestamp_in_seconds;
   });
 
@@ -105,7 +105,7 @@ void AdConversionTracking::Add(
   ProcessQueue();
 }
 
-bool AdConversionTracking::OnTimer(
+bool AdConversions::OnTimer(
     const uint32_t timer_id) {
   if (timer_id != timer_id_) {
     return false;
@@ -118,42 +118,43 @@ bool AdConversionTracking::OnTimer(
     return true;
   }
 
-  AdConversionInfo queue_item = queue_.front();
-  ProcessQueueItem(queue_item);
+  AdConversionQueueItemInfo ad_conversion = queue_.front();
+  ProcessQueueItem(ad_conversion);
 
   return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void AdConversionTracking::ProcessQueueItem(
-    const AdConversionInfo& queue_item) {
-  const uint64_t timestamp_in_seconds = queue_item.timestamp_in_seconds;
-  const std::string creative_set_id = queue_item.creative_set_id;
-  const std::string uuid = queue_item.uuid;
+void AdConversions::ProcessQueueItem(
+    const AdConversionQueueItemInfo& info) {
+  const uint64_t timestamp_in_seconds = info.timestamp_in_seconds;
+  const std::string creative_set_id = info.creative_set_id;
+  const std::string creative_instance_id = info.creative_instance_id;
 
   DCHECK(!creative_set_id.empty());
-  DCHECK(!uuid.empty());
+  DCHECK(!creative_instance_id.empty());
 
-  if (creative_set_id.empty() || uuid.empty()) {
-    BLOG(WARNING) << "Ad conversion for uuid " << uuid
-        << " with creative set id " << creative_set_id << " failed on "
-            << Time::FromDoubleT(timestamp_in_seconds);
+  if (creative_set_id.empty() || creative_instance_id.empty()) {
+    BLOG(WARNING) << "Ad conversion for creative instance id "
+        << creative_instance_id << " with creative set id " << creative_set_id
+            << " failed on " << Time::FromDoubleT(timestamp_in_seconds);
   } else {
-    BLOG(INFO) << "Ad conversion for uuid " << uuid
-        << " with creative set id " << creative_set_id << " triggered on "
-            << Time::FromDoubleT(timestamp_in_seconds);
+    BLOG(INFO) << "Ad conversion for creative instance id "
+        << creative_instance_id << " with creative set id " << creative_set_id
+            << " triggered on " << Time::FromDoubleT(timestamp_in_seconds);
 
-    ads_->ConfirmAction(uuid, creative_set_id, ConfirmationType::CONVERSION);
+    ads_->ConfirmAction(creative_instance_id, creative_set_id,
+        ConfirmationType::kConversion);
   }
 
-  Remove(uuid);
+  Remove(creative_instance_id);
 
   ProcessQueue();
 }
 
-void AdConversionTracking::StartTimer(
-    const AdConversionInfo& queue_item) {
+void AdConversions::StartTimer(
+    const AdConversionQueueItemInfo& info) {
   DCHECK(is_initialized_);
   DCHECK_EQ(0UL, timer_id_);
 
@@ -162,8 +163,8 @@ void AdConversionTracking::StartTimer(
   const uint64_t now = Time::NowInSeconds();
 
   uint64_t start_timer_in;
-  if (queue_item.timestamp_in_seconds < now) {
-    start_timer_in = now - queue_item.timestamp_in_seconds;
+  if (info.timestamp_in_seconds < now) {
+    start_timer_in = now - info.timestamp_in_seconds;
   } else {
     start_timer_in = brave_base::random::Geometric(
         kExpiredAdConversionFrequency);
@@ -175,12 +176,13 @@ void AdConversionTracking::StartTimer(
     return;
   }
 
-  BLOG(INFO) << "Started ad conversion timer for uuid " << queue_item.uuid
-      << " and creative set id " << queue_item.creative_set_id << " which will"
-          " trigger on " << Time::FromDoubleT(now + start_timer_in);
+  BLOG(INFO) << "Started ad conversion timer for creative_instance_id "
+      << info.creative_instance_id << " with creative set id "
+          << info.creative_set_id << " which will trigger on "
+              << Time::FromDoubleT(now + start_timer_in);
 }
 
-void AdConversionTracking::StopTimer() {
+void AdConversions::StopTimer() {
   if (timer_id_ == 0) {
     return;
   }
@@ -191,13 +193,13 @@ void AdConversionTracking::StopTimer() {
   timer_id_ = 0;
 }
 
-bool AdConversionTracking::Remove(
-    const std::string& uuid) {
+bool AdConversions::Remove(
+    const std::string& creative_instance_id) {
   DCHECK(is_initialized_);
 
-  auto iter = std::find_if(queue_.begin(), queue_.end(), [&uuid] (
-      const auto& ad_conversion) {
-    return ad_conversion.uuid == uuid;
+  auto iter = std::find_if(queue_.begin(), queue_.end(),
+      [&creative_instance_id] (const auto& ad_conversion) {
+    return ad_conversion.creative_instance_id == creative_instance_id;
   });
 
   if (iter == queue_.end()) {
@@ -211,7 +213,7 @@ bool AdConversionTracking::Remove(
   return true;
 }
 
-void AdConversionTracking::SaveState() {
+void AdConversions::SaveState() {
   if (!is_initialized_) {
     return;
   }
@@ -219,11 +221,11 @@ void AdConversionTracking::SaveState() {
   BLOG(INFO) << "Saving ad conversions state";
 
   std::string json = ToJson();
-  auto callback = std::bind(&AdConversionTracking::OnStateSaved, this, _1);
+  auto callback = std::bind(&AdConversions::OnStateSaved, this, _1);
   ads_client_->Save(kAdConversionsStateName, json, callback);
 }
 
-void AdConversionTracking::OnStateSaved(const Result result) {
+void AdConversions::OnStateSaved(const Result result) {
   if (result != SUCCESS) {
     BLOG(ERROR) << "Failed to save ad conversions state";
     return;
@@ -232,7 +234,7 @@ void AdConversionTracking::OnStateSaved(const Result result) {
   BLOG(INFO) << "Successfully saved ad conversions state";
 }
 
-std::string AdConversionTracking::ToJson() {
+std::string AdConversions::ToJson() {
   base::Value dictionary(base::Value::Type::DICTIONARY);
 
   auto ad_conversions = GetAsList();
@@ -246,18 +248,18 @@ std::string AdConversionTracking::ToJson() {
   return json;
 }
 
-base::Value AdConversionTracking::GetAsList() {
+base::Value AdConversions::GetAsList() {
   base::Value list(base::Value::Type::LIST);
 
-  for (const auto& queue_item : queue_) {
+  for (const auto& ad_conversion : queue_) {
     base::Value dictionary(base::Value::Type::DICTIONARY);
 
     dictionary.SetKey(kAdConversionTimestampKey,
-        base::Value(std::to_string(queue_item.timestamp_in_seconds)));
+        base::Value(std::to_string(ad_conversion.timestamp_in_seconds)));
+    dictionary.SetKey(kAdConversionCreativeInstanceeIdKey,
+        base::Value(ad_conversion.creative_instance_id));
     dictionary.SetKey(kAdConversionCreativeSetIdKey,
-        base::Value(queue_item.creative_set_id));
-    dictionary.SetKey(kAdConversionUuidKey,
-        base::Value(queue_item.uuid));
+        base::Value(ad_conversion.creative_set_id));
 
     list.GetList().push_back(std::move(dictionary));
   }
@@ -265,12 +267,12 @@ base::Value AdConversionTracking::GetAsList() {
   return list;
 }
 
-void AdConversionTracking::LoadState() {
-  auto callback = std::bind(&AdConversionTracking::OnStateLoaded, this, _1, _2);
+void AdConversions::LoadState() {
+  auto callback = std::bind(&AdConversions::OnStateLoaded, this, _1, _2);
   ads_client_->Load(kAdConversionsStateName, callback);
 }
 
-void AdConversionTracking::OnStateLoaded(
+void AdConversions::OnStateLoaded(
     const Result result,
     const std::string& json) {
   is_initialized_ = true;
@@ -295,7 +297,7 @@ void AdConversionTracking::OnStateLoaded(
   callback_(SUCCESS);
 }
 
-bool AdConversionTracking::FromJson(
+bool AdConversions::FromJson(
     const std::string& json) {
   base::Optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_dict()) {
@@ -317,16 +319,16 @@ bool AdConversionTracking::FromJson(
     return false;
   }
 
-  queue_ = GetAdConversionsFromList(list);
+  queue_ = GetFromList(list);
 
   SaveState();
 
   return true;
 }
 
-std::vector<AdConversionInfo> AdConversionTracking::GetAdConversionsFromList(
+AdConversionQueueItemList AdConversions::GetFromList(
     const base::ListValue* list) const {
-  std::vector<AdConversionInfo> ad_conversions;
+  AdConversionQueueItemList ad_conversions;
 
   DCHECK(list);
   if (!list) {
@@ -346,8 +348,8 @@ std::vector<AdConversionInfo> AdConversionTracking::GetAdConversionsFromList(
       continue;
     }
 
-    AdConversionInfo ad_conversion;
-    if (!GetAdConversionFromDictionary(dictionary, &ad_conversion)) {
+    AdConversionQueueItemInfo ad_conversion;
+    if (!GetFromDictionary(dictionary, &ad_conversion)) {
       NOTREACHED();
       continue;
     }
@@ -358,9 +360,9 @@ std::vector<AdConversionInfo> AdConversionTracking::GetAdConversionsFromList(
   return ad_conversions;
 }
 
-bool AdConversionTracking::GetAdConversionFromDictionary(
+bool AdConversions::GetFromDictionary(
     const base::DictionaryValue* dictionary,
-    AdConversionInfo* info) const {
+    AdConversionQueueItemInfo* info) const {
   DCHECK(dictionary);
   if (!dictionary) {
     return false;
@@ -371,13 +373,13 @@ bool AdConversionTracking::GetAdConversionFromDictionary(
     return false;
   }
 
-  AdConversionInfo ad_conversion_info;
+  AdConversionQueueItemInfo ad_conversion;
 
   const auto* timestamp = dictionary->FindStringKey(kAdConversionTimestampKey);
   if (!timestamp) {
     return false;
   }
-  ad_conversion_info.timestamp_in_seconds = std::stoull(*timestamp);
+  ad_conversion.timestamp_in_seconds = std::stoull(*timestamp);
 
   // Creative Set Id
   const auto* creative_set_id =
@@ -385,16 +387,17 @@ bool AdConversionTracking::GetAdConversionFromDictionary(
   if (!creative_set_id) {
     return false;
   }
-  ad_conversion_info.creative_set_id = *creative_set_id;
+  ad_conversion.creative_set_id = *creative_set_id;
 
   // UUID
-  const auto* uuid = dictionary->FindStringKey(kAdConversionUuidKey);
-  if (!uuid) {
+  const auto* creative_instance_id =
+      dictionary->FindStringKey(kAdConversionCreativeInstanceeIdKey);
+  if (!creative_instance_id) {
     return false;
   }
-  ad_conversion_info.uuid = *uuid;
+  ad_conversion.creative_instance_id = *creative_instance_id;
 
-  *info = ad_conversion_info;
+  *info = ad_conversion;
 
   return true;
 }

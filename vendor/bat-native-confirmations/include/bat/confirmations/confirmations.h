@@ -13,7 +13,7 @@
 
 #include "bat/confirmations/confirmations_client.h"
 #include "bat/confirmations/export.h"
-#include "bat/confirmations/notification_info.h"
+#include "bat/confirmations/ad_notification_info.h"
 #include "bat/confirmations/issuers_info.h"
 #include "bat/confirmations/wallet_info.h"
 #include "bat/ledger/ledger.h"
@@ -21,11 +21,13 @@
 
 namespace confirmations {
 
-using TransactionInfo = ::ledger::TransactionInfo;
-using TransactionsInfo = ::ledger::TransactionsInfo;
+using TransactionInfo = ledger::TransactionInfo;
+using TransactionList = std::vector<TransactionInfo>;
+using TransactionsInfo = ledger::TransactionsInfo;
 
-using OnGetTransactionHistoryCallback = ::ledger::GetTransactionHistoryCallback;
 using OnInitializeCallback = std::function<void(bool)>;
+
+using OnGetTransactionHistoryCallback = ledger::GetTransactionHistoryCallback;
 
 // |_environment| indicates that URL requests should use production, staging or
 // development servers but can be overridden via command-line arguments
@@ -69,16 +71,17 @@ class CONFIRMATIONS_EXPORT Confirmations {
   virtual void GetTransactionHistory(
       OnGetTransactionHistoryCallback callback) = 0;
 
-  // Should be called to confirm an ad was viewed, clicked, dismissed or landed
-  virtual void ConfirmAd(
-      std::unique_ptr<NotificationInfo> info) = 0;
+  // Should be called to confirm an ad notification was viewed, clicked,
+  // dismissed or landed
+  virtual void ConfirmAdNotification(
+      std::unique_ptr<AdNotificationInfo> info) = 0;
 
   // Should be called to confirm an action, e.g. when an ad is flagged, upvoted
   // or downvoted
   virtual void ConfirmAction(
-      const std::string& uuid,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
-      const ConfirmationType& type) = 0;
+      const ConfirmationType& confirmation_type) = 0;
 
   // Should be called to refresh the ads rewards UI. |should_refresh| should be
   // set to |true| to fetch the latest payment balances from the server, e.g.

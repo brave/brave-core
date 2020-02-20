@@ -36,7 +36,7 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
   void GetClientInfo(
       ads::ClientInfo* info) const override;
 
-  const std::string GetLocale() const override;
+  std::string GetLocale() const override;
 
   bool IsNetworkConnectionAvailable() const override;
 
@@ -45,26 +45,26 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
 
   bool IsForeground() const override;
 
-  const std::vector<std::string> GetUserModelLanguages() const override;
+  std::vector<std::string> GetUserModelLanguages() const override;
   void LoadUserModelForLanguage(
       const std::string& language,
       ads::OnLoadCallback callback) const override;
 
   void ShowNotification(
-      std::unique_ptr<ads::NotificationInfo> info) override;
+      std::unique_ptr<ads::AdNotificationInfo> info) override;
   bool ShouldShowNotifications() override;
   void CloseNotification(
-      const std::string& id) override;
+      const std::string& uuid) override;
 
   void SetCatalogIssuers(
       std::unique_ptr<ads::IssuersInfo> info) override;
 
-  void ConfirmAd(
-      std::unique_ptr<ads::NotificationInfo> info) override;
+  void ConfirmAdNotification(
+      std::unique_ptr<ads::AdNotificationInfo> info) override;
   void ConfirmAction(
-      const std::string& uuid,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
-      const ads::ConfirmationType& type) override;
+      const ads::ConfirmationType& confirmation_type) override;
 
   uint32_t SetTimer(
       const uint64_t time_offset) override;
@@ -90,7 +90,7 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
       const std::string& name,
       ads::OnResetCallback callback) override;
 
-  const std::string LoadJsonSchema(
+  std::string LoadJsonSchema(
       const std::string& name) override;
 
   void LoadSampleBundle(
@@ -100,9 +100,9 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
       std::unique_ptr<ads::BundleState> bundle_state,
       ads::OnSaveCallback callback) override;
 
-  void GetAds(
+  void GetCreativeAdNotifications(
       const std::vector<std::string>& categories,
-      ads::OnGetAdsCallback callback) override;
+      ads::OnGetCreativeAdNotificationsCallback callback) override;
 
   void GetAdConversions(
       const std::string& url,

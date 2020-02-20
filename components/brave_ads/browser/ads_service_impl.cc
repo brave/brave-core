@@ -22,8 +22,7 @@
 #include "bat/ads/ad_history.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_history.h"
-#include "bat/ads/notification_info.h"
-#include "bat/ads/notification_event_type.h"
+#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/resources/grit/bat_ads_resources.h"
 #include "brave/components/brave_ads/browser/ad_notification.h"
 #include "brave/components/brave_ads/browser/ads_notification_handler.h"
@@ -130,11 +129,6 @@ class LogStreamImpl : public ads::LogStream {
 
 namespace {
 
-int32_t ToMojomNotificationEventType(
-    const ads::NotificationEventType type) {
-  return (int32_t)type;
-}
-
 static std::map<std::string, int> g_schema_resource_ids = {
   {ads::_catalog_schema_resource_name, IDR_ADS_CATALOG_SCHEMA},
   {ads::_bundle_schema_resource_name, IDR_ADS_BUNDLE_SCHEMA},
@@ -224,28 +218,22 @@ bool EnsureBaseDirectoryExistsOnFileTaskRunner(
   return base::CreateDirectory(path);
 }
 
-std::vector<ads::AdInfo> GetAdsForCategoriesOnFileTaskRunner(
+ads::CreativeAdNotificationList GetCreativeAdNotificationsOnFileTaskRunner(
     const std::vector<std::string>& categories,
     BundleStateDatabase* backend) {
-  std::vector<ads::AdInfo> ads;
-
   if (!backend) {
-    return ads;
+    return {};
   }
 
-  for (const auto& category : categories) {
-    std::vector<ads::AdInfo> category_ads;
-    backend->GetAdsForCategory(category, &category_ads);
-    ads.insert(ads.end(), category_ads.begin(), category_ads.end());
-  }
-
+  ads::CreativeAdNotificationList ads;
+  backend->GetCreativeAdNotifications(categories, &ads);
   return ads;
 }
 
-std::vector<ads::AdConversionTrackingInfo> GetAdConversionsOnFileTaskRunner(
+ads::AdConversionList GetAdConversionsOnFileTaskRunner(
     const std::string& url,
     BundleStateDatabase* backend) {
-  std::vector<ads::AdConversionTrackingInfo> ad_conversions;
+  ads::AdConversionList ad_conversions;
 
   if (!backend) {
     return ad_conversions;
@@ -312,7 +300,6 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
             base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
     base_path_(profile_->GetPath().AppendASCII("ads_service")),
     next_timer_id_(0),
-    retry_viewing_ad_with_id_(""),
     remove_onboarding_timer_id_(0),
     last_idle_state_(ui::IdleState::IDLE_STATE_ACTIVE),
     bundle_state_backend_(new BundleStateDatabase(
@@ -471,21 +458,21 @@ void AdsServiceImpl::GetAdsHistory(
 }
 
 void AdsServiceImpl::ToggleAdThumbUp(
-    const std::string& id,
+    const std::string& creative_instance_id,
     const std::string& creative_set_id,
     const int action,
     OnToggleAdThumbUpCallback callback) {
-  bat_ads_->ToggleAdThumbUp(id, creative_set_id, action,
+  bat_ads_->ToggleAdThumbUp(creative_instance_id, creative_set_id, action,
       base::BindOnce(&AdsServiceImpl::OnToggleAdThumbUp, AsWeakPtr(),
           std::move(callback)));
 }
 
 void AdsServiceImpl::ToggleAdThumbDown(
-    const std::string& id,
+    const std::string& creative_instance_id,
     const std::string& creative_set_id,
     const int action,
     OnToggleAdThumbDownCallback callback) {
-  bat_ads_->ToggleAdThumbDown(id, creative_set_id, action,
+  bat_ads_->ToggleAdThumbDown(creative_instance_id, creative_set_id, action,
       base::BindOnce(&AdsServiceImpl::OnToggleAdThumbDown, AsWeakPtr(),
           std::move(callback)));
 }
@@ -509,21 +496,21 @@ void AdsServiceImpl::ToggleAdOptOutAction(
 }
 
 void AdsServiceImpl::ToggleSaveAd(
-    const std::string& id,
+    const std::string& creative_instance_id,
     const std::string& creative_set_id,
     const bool saved,
     OnToggleSaveAdCallback callback) {
-  bat_ads_->ToggleSaveAd(id, creative_set_id, saved,
+  bat_ads_->ToggleSaveAd(creative_instance_id, creative_set_id, saved,
       base::BindOnce(&AdsServiceImpl::OnToggleSaveAd, AsWeakPtr(),
           std::move(callback)));
 }
 
 void AdsServiceImpl::ToggleFlagAd(
-    const std::string& id,
+    const std::string& creative_instance_id,
     const std::string& creative_set_id,
     const bool flagged,
     OnToggleFlagAdCallback callback) {
-  bat_ads_->ToggleFlagAd(id, creative_set_id, flagged,
+  bat_ads_->ToggleFlagAd(creative_instance_id, creative_set_id, flagged,
       base::BindOnce(&AdsServiceImpl::OnToggleFlagAd, AsWeakPtr(),
           std::move(callback)));
 }
@@ -589,7 +576,7 @@ void AdsServiceImpl::OnInitialize(
 
     SetAdsServiceForNotificationHandler();
 
-    MaybeViewAd();
+    MaybeViewAdNotification();
 
     StartCheckIdleStateTimer();
   }
@@ -812,18 +799,16 @@ int AdsServiceImpl::GetIdleThreshold() {
 
 void AdsServiceImpl::OnShow(
     Profile* profile,
-    const std::string& id) {
+    const std::string& uuid) {
   if (!connected()) {
     return;
   }
 
-  auto type = ToMojomNotificationEventType(ads::NotificationEventType::VIEWED);
-
-  bat_ads_->OnNotificationEvent(id, type);
+  bat_ads_->OnAdNotificationEvent(uuid, ads::AdNotificationEventType::kViewed);
 
   // If we've surpassed the maximum number of visible notifications,
   // then close the oldest one
-  notifications_.push_back(id);
+  notifications_.push_back(uuid);
   if (kMaximumAdNotifications > 0 &&
       notifications_.size() > kMaximumAdNotifications) {
     CloseNotification(notifications_.front());
@@ -833,64 +818,65 @@ void AdsServiceImpl::OnShow(
 void AdsServiceImpl::OnClose(
     Profile* profile,
     const GURL& origin,
-    const std::string& id,
+    const std::string& uuid,
     const bool by_user,
     base::OnceClosure completed_closure) {
   if (connected()) {
-    auto type = by_user ? ads::NotificationEventType::DISMISSED
-        : ads::NotificationEventType::TIMEOUT;
+    const ads::AdNotificationEventType event_type =
+        by_user ? ads::AdNotificationEventType::kDismissed :
+            ads::AdNotificationEventType::kTimedOut;
 
-    bat_ads_->OnNotificationEvent(id, ToMojomNotificationEventType(type));
+    bat_ads_->OnAdNotificationEvent(uuid, event_type);
   }
 
   if (completed_closure) {
     std::move(completed_closure).Run();
   }
 
-  const auto it = std::find(notifications_.begin(), notifications_.end(), id);
+  const auto it = std::find(notifications_.begin(), notifications_.end(), uuid);
   if (it != notifications_.end()) {
     notifications_.erase(it);
   }
 }
 
-void AdsServiceImpl::MaybeViewAd() {
-  if (retry_viewing_ad_with_id_.empty()) {
+void AdsServiceImpl::MaybeViewAdNotification() {
+  if (retry_viewing_ad_notification_with_uuid_.empty()) {
     return;
   }
 
-  ViewAd(retry_viewing_ad_with_id_);
+  ViewAdNotification(retry_viewing_ad_notification_with_uuid_);
 
-  retry_viewing_ad_with_id_ = "";
+  retry_viewing_ad_notification_with_uuid_ = "";
 }
 
-void AdsServiceImpl::ViewAd(
-    const std::string& id) {
+void AdsServiceImpl::ViewAdNotification(
+    const std::string& uuid) {
   if (!connected() || !is_initialized_) {
-    RetryViewingAdWithId(id);
+    RetryViewingAdNotification(uuid);
     return;
   }
 
-  LOG(INFO) << "View ad with id " << id;
+  LOG(INFO) << "View ad notification with uuid " << uuid;
 
-  bat_ads_->GetNotificationForId(
-      id, base::BindOnce(&AdsServiceImpl::OnViewAd, AsWeakPtr()));
+  bat_ads_->GetAdNotification(
+      uuid, base::BindOnce(&AdsServiceImpl::OnViewAdNotification, AsWeakPtr()));
 }
 
-void AdsServiceImpl::OnViewAd(
+void AdsServiceImpl::OnViewAdNotification(
     const std::string& json) {
-  ads::NotificationInfo notification;
+  ads::AdNotificationInfo notification;
   notification.FromJson(json);
 
-  bat_ads_->OnNotificationEvent(notification.id,
-      ToMojomNotificationEventType(ads::NotificationEventType::CLICKED));
+  bat_ads_->OnAdNotificationEvent(notification.uuid,
+      ads::AdNotificationEventType::kClicked);
 
-  OpenNewTabWithUrl(notification.url);
+  OpenNewTabWithUrl(notification.target_url);
 }
 
-void AdsServiceImpl::RetryViewingAdWithId(
-    const std::string& id) {
-  LOG(WARNING) << "Retry viewing ad with notification id " << id;
-  retry_viewing_ad_with_id_ = id;
+void AdsServiceImpl::RetryViewingAdNotification(
+    const std::string& uuid) {
+  LOG(WARNING) << "Retry viewing ad notification with uuid " << uuid;
+  retry_viewing_ad_notification_with_uuid_ = uuid;
 }
 
 void AdsServiceImpl::SetAdsServiceForNotificationHandler() {
@@ -940,16 +926,16 @@ void AdsServiceImpl::OpenNewTabWithUrl(
 
 void AdsServiceImpl::NotificationTimedOut(
     const uint32_t timer_id,
-    const std::string& id) {
+    const std::string& uuid) {
   timers_.erase(timer_id);
 
   if (!connected()) {
     return;
   }
 
-  CloseNotification(id);
+  CloseNotification(uuid);
 
-  OnClose(profile_, GURL(), id, false, base::OnceClosure());
+  OnClose(profile_, GURL(), uuid, false, base::OnceClosure());
 }
 
 void AdsServiceImpl::OnURLLoaderComplete(
@@ -990,10 +976,10 @@ bool AdsServiceImpl::CanShowBackgroundNotifications() const {
   return NotificationHelper::GetInstance()->CanShowBackgroundNotifications();
 }
 
-void AdsServiceImpl::OnGetAdsForCategories(
-    const ads::OnGetAdsCallback& callback,
+void AdsServiceImpl::OnGetCreativeAdNotifications(
+    const ads::OnGetCreativeAdNotificationsCallback& callback,
     const std::vector<std::string>& categories,
-    const std::vector<ads::AdInfo>& ads) {
+    const ads::CreativeAdNotificationList& ads) {
   if (!connected()) {
     return;
   }
@@ -1006,7 +992,7 @@ void AdsServiceImpl::OnGetAdsForCategories(
 void AdsServiceImpl::OnGetAdConversions(
     const ads::OnGetAdConversionsCallback& callback,
     const std::string& url,
-    const std::vector<ads::AdConversionTrackingInfo>& ad_conversions) {
+    const ads::AdConversionList& ad_conversions) {
   if (!connected()) {
     return;
   }
@@ -1024,11 +1010,12 @@ void AdsServiceImpl::OnGetAdsHistory(
   ads_history.FromJson(json);
 
   // Build the list structure required by the webUI
-  int id = 0;
+  int uuid = 0;
   base::ListValue list;
   for (const auto& entry : ads_history.entries) {
     base::DictionaryValue ad_content_dictionary;
-    ad_content_dictionary.SetKey("uuid", base::Value(entry.ad_content.uuid));
+    ad_content_dictionary.SetKey("creativeInstanceId",
+        base::Value(entry.ad_content.creative_instance_id));
     ad_content_dictionary.SetKey("creativeSetId",
         base::Value(entry.ad_content.creative_set_id));
     ad_content_dictionary.SetKey("brand", base::Value(entry.ad_content.brand));
@@ -1041,9 +1028,9 @@ void AdsServiceImpl::OnGetAdsHistory(
     ad_content_dictionary.SetKey("brandUrl",
         base::Value(entry.ad_content.brand_url));
     ad_content_dictionary.SetKey("likeAction",
-        base::Value(entry.ad_content.like_action));
-    ad_content_dictionary.SetKey(
-        "adAction", base::Value(std::string(entry.ad_content.ad_action)));
+        base::Value(static_cast<int>(entry.ad_content.like_action)));
+    ad_content_dictionary.SetKey("adAction",
+        base::Value(std::string(entry.ad_content.ad_action)));
     ad_content_dictionary.SetKey("savedAd",
         base::Value(entry.ad_content.saved_ad));
     ad_content_dictionary.SetKey("flaggedAd",
@@ -1053,11 +1040,11 @@ void AdsServiceImpl::OnGetAdsHistory(
     category_content_dictionary.SetKey("category",
         base::Value(entry.category_content.category));
     category_content_dictionary.SetKey("optAction",
-        base::Value(entry.category_content.opt_action));
+        base::Value(static_cast<int>(entry.category_content.opt_action)));
 
     base::DictionaryValue ad_history_dictionary;
-    ad_history_dictionary.SetKey("id", base::Value(entry.uuid));
-    ad_history_dictionary.SetKey("parent_uuid", base::Value(entry.parent_uuid));
+    ad_history_dictionary.SetKey("uuid", base::Value(entry.uuid));
+    ad_history_dictionary.SetKey("parentUuid", base::Value(entry.parent_uuid));
     ad_history_dictionary.SetPath("adContent",
         std::move(ad_content_dictionary));
     ad_history_dictionary.SetPath("categoryContent",
@@ -1065,7 +1052,7 @@ void AdsServiceImpl::OnGetAdsHistory(
 
     base::DictionaryValue dictionary;
 
-    dictionary.SetKey("id", base::Value(std::to_string(id++)));
+    dictionary.SetKey("uuid", base::Value(std::to_string(uuid++)));
     auto time = base::Time::FromDoubleT(entry.timestamp_in_seconds);
     auto js_time = time.ToJsTime();
     dictionary.SetKey("timestampInMilliseconds", base::Value(js_time));
@@ -1092,16 +1079,16 @@ void AdsServiceImpl::OnRemoveAllHistory(
 
 void AdsServiceImpl::OnToggleAdThumbUp(
     OnToggleAdThumbUpCallback callback,
-    const std::string& id,
+    const std::string& creative_instance_id,
     const int action) {
-  std::move(callback).Run(id, action);
+  std::move(callback).Run(creative_instance_id, action);
 }
 
 void AdsServiceImpl::OnToggleAdThumbDown(
     OnToggleAdThumbDownCallback callback,
-    const std::string& id,
+    const std::string& creative_instance_id,
     const int action) {
-  std::move(callback).Run(id, action);
+  std::move(callback).Run(creative_instance_id, action);
 }
 
 void AdsServiceImpl::OnToggleAdOptInAction(
@@ -1120,16 +1107,16 @@ void AdsServiceImpl::OnToggleAdOptOutAction(
 
 void AdsServiceImpl::OnToggleSaveAd(
     OnToggleSaveAdCallback callback,
-    const std::string& id,
+    const std::string& creative_instance_id,
     const bool saved) {
-  std::move(callback).Run(id, saved);
+  std::move(callback).Run(creative_instance_id, saved);
 }
 
 void AdsServiceImpl::OnToggleFlagAd(
     OnToggleSaveAdCallback callback,
-    const std::string& id,
+    const std::string& creative_instance_id,
     const bool flagged) {
-  std::move(callback).Run(id, flagged);
+  std::move(callback).Run(creative_instance_id, flagged);
 }
 
 void AdsServiceImpl::OnSaveBundleState(
@@ -1910,7 +1897,7 @@ void AdsServiceImpl::GetClientInfo(ads::ClientInfo* client_info) const {
 #endif
 }
 
-const std::string AdsServiceImpl::GetLocale() const {
+std::string AdsServiceImpl::GetLocale() const {
   return LocaleHelper::GetInstance()->GetLocale();
 }
 
@@ -1926,7 +1913,7 @@ bool AdsServiceImpl::IsForeground() const {
   return BackgroundHelper::GetInstance()->IsForeground();
 }
 
-const std::vector<std::string> AdsServiceImpl::GetUserModelLanguages() const {
+std::vector<std::string> AdsServiceImpl::GetUserModelLanguages() const {
   std::vector<std::string> languages;
 
   for (const auto& user_model_resource_id : g_user_model_resource_ids) {
@@ -1959,7 +1946,7 @@ void AdsServiceImpl::LoadUserModelForLanguage(
 }
 
 void AdsServiceImpl::ShowNotification(
-    const std::unique_ptr<ads::NotificationInfo> info) {
+    const std::unique_ptr<ads::AdNotificationInfo> info) {
   auto notification = CreateAdNotification(*info);
 
   display_service_->Display(NotificationHandler::Type::BRAVE_ADS,
@@ -1972,7 +1959,7 @@ void AdsServiceImpl::ShowNotification(
   timers_[timer_id]->Start(FROM_HERE,
       base::TimeDelta::FromSeconds(120),
       base::BindOnce(&AdsServiceImpl::NotificationTimedOut, AsWeakPtr(),
-          timer_id, info->id));
+          timer_id, info->uuid));
 #endif
 }
 
@@ -1981,8 +1968,8 @@ bool AdsServiceImpl::ShouldShowNotifications() {
 }
 
 void AdsServiceImpl::CloseNotification(
-    const std::string& id) {
-  display_service_->Close(NotificationHandler::Type::BRAVE_ADS, id);
+    const std::string& uuid) {
+  display_service_->Close(NotificationHandler::Type::BRAVE_ADS, uuid);
 }
 
 void AdsServiceImpl::SetCatalogIssuers(
@@ -1990,16 +1977,17 @@ void AdsServiceImpl::SetCatalogIssuers(
   rewards_service_->SetCatalogIssuers(info->ToJson());
 }
 
-void AdsServiceImpl::ConfirmAd(
-    const std::unique_ptr<ads::NotificationInfo> info) {
-  rewards_service_->ConfirmAd(info->ToJson());
+void AdsServiceImpl::ConfirmAdNotification(
+    const std::unique_ptr<ads::AdNotificationInfo> info) {
+  rewards_service_->ConfirmAdNotification(info->ToJson());
 }
 
 void AdsServiceImpl::ConfirmAction(
-    const std::string& uuid,
+    const std::string& creative_instance_id,
     const std::string& creative_set_id,
-    const ads::ConfirmationType& type) {
-  rewards_service_->ConfirmAction(uuid, creative_set_id, type);
+    const ads::ConfirmationType& confirmation_type) {
+  rewards_service_->ConfirmAction(creative_instance_id, creative_set_id,
+      confirmation_type);
 }
 
 uint32_t AdsServiceImpl::SetTimer(
@@ -2099,7 +2087,7 @@ void AdsServiceImpl::Reset(
           AsWeakPtr(), std::move(callback)));
 }
 
-const std::string AdsServiceImpl::LoadJsonSchema(
+std::string AdsServiceImpl::LoadJsonSchema(
     const std::string& name) {
   const auto resource_id = GetSchemaResourceId(name);
   return LoadDataResourceAndDecompressIfNeeded(resource_id);
@@ -2128,14 +2116,14 @@ void AdsServiceImpl::SaveBundleState(
                      callback));
 }
 
-void AdsServiceImpl::GetAds(
+void AdsServiceImpl::GetCreativeAdNotifications(
     const std::vector<std::string>& categories,
-    ads::OnGetAdsCallback callback) {
+    ads::OnGetCreativeAdNotificationsCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&GetAdsForCategoriesOnFileTaskRunner, categories,
-          bundle_state_backend_.get()),
-      base::BindOnce(&AdsServiceImpl::OnGetAdsForCategories, AsWeakPtr(),
-          std::move(callback), categories));
+      base::BindOnce(&GetCreativeAdNotificationsOnFileTaskRunner,
+          categories, bundle_state_backend_.get()),
+      base::BindOnce(&AdsServiceImpl::OnGetCreativeAdNotifications,
+          AsWeakPtr(), std::move(callback), categories));
 }
 
 void AdsServiceImpl::GetAdConversions(

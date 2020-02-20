@@ -23,25 +23,25 @@ class UnblindedTokens {
   ~UnblindedTokens();
 
   TokenInfo GetToken() const;
-  std::vector<TokenInfo> GetAllTokens() const;
+  TokenList GetAllTokens() const;
   base::Value GetTokensAsList();
 
-  void SetTokens(const std::vector<TokenInfo>& tokens);
+  void SetTokens(const TokenList& tokens);
   void SetTokensFromList(const base::Value& list);
 
-  void AddTokens(const std::vector<TokenInfo>& tokens);
+  void AddTokens(const TokenList& tokens);
 
-  bool RemoveToken(const TokenInfo& unblinded_token);
+  bool RemoveToken(const TokenInfo& token);
   void RemoveAllTokens();
 
-  bool TokenExists(const TokenInfo& unblinded_token);
+  bool TokenExists(const TokenInfo& token);
 
   int Count() const;
 
   bool IsEmpty() const;
 
  private:
-  std::vector<TokenInfo> tokens_;
+  TokenList tokens_;
 
   ConfirmationsImpl* confirmations_;  // NOT OWNED
 };

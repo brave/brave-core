@@ -25,19 +25,19 @@ struct ADS_EXPORT CategoryContent {
   bool operator!=(
       const CategoryContent& rhs) const;
 
-  const std::string ToJson() const;
+  std::string ToJson() const;
   Result FromJson(
       const std::string& json,
       std::string* error_description = nullptr);
 
-  enum OptAction {
-    OPT_ACTION_NONE = 0,
-    OPT_ACTION_OPT_IN,
-    OPT_ACTION_OPT_OUT
+  enum class OptAction {
+    kNone = 0,
+    kOptIn,
+    kOptOut
   };
 
   std::string category;
-  OptAction opt_action;
+  OptAction opt_action = OptAction::kNone;
 };
 
 }  // namespace ads

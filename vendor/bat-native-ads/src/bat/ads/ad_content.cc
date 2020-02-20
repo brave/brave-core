@@ -12,31 +12,16 @@
 
 namespace ads {
 
-AdContent::AdContent() :
-    like_action(AdContent::LIKE_ACTION_NONE),
-    ad_action(ConfirmationType::UNKNOWN),
-    saved_ad(false),
-    flagged_ad(false) {}
+AdContent::AdContent() = default;
 
 AdContent::AdContent(
-    const AdContent& properties)
-    : uuid(properties.uuid),
-      creative_set_id(properties.creative_set_id),
-      brand(properties.brand),
-      brand_info(properties.brand_info),
-      brand_logo(properties.brand_logo),
-      brand_display_url(properties.brand_display_url),
-      brand_url(properties.brand_url),
-      like_action(properties.like_action),
-      ad_action(properties.ad_action),
-      saved_ad(properties.saved_ad),
-      flagged_ad(properties.flagged_ad) {}
+    const AdContent& properties) = default;
 
 AdContent::~AdContent() = default;
 
 bool AdContent::operator==(
     const AdContent& rhs) const {
-  return uuid == rhs.uuid &&
+  return creative_instance_id == rhs.creative_instance_id &&
       creative_set_id == rhs.creative_set_id &&
       brand == rhs.brand &&
       brand_info == rhs.brand_info &&
@@ -54,7 +39,7 @@ bool AdContent::operator!=(
   return !(*this == rhs);
 }
 
-const std::string AdContent::ToJson() const {
+std::string AdContent::ToJson() const {
   std::string json;
   SaveToJson(*this, &json);
   return json;
@@ -75,7 +60,7 @@ Result AdContent::FromJson(
   }
 
   if (document.HasMember("uuid")) {
-    uuid = document["uuid"].GetString();
+    creative_instance_id = document["uuid"].GetString();
   }
 
   if (document.HasMember("creative_set_id")) {
@@ -126,7 +111,7 @@ void SaveToJson(JsonWriter* writer, const AdContent& content) {
   writer->StartObject();
 
   writer->String("uuid");
-  writer->String(content.uuid.c_str());
+  writer->String(content.creative_instance_id.c_str());
 
   writer->String("creative_set_id");
   writer->String(content.creative_set_id.c_str());
@@ -147,7 +132,7 @@ void SaveToJson(JsonWriter* writer, const AdContent& content) {
   writer->String(content.brand_url.c_str());
 
   writer->String("like_action");
-  writer->Int(content.like_action);
+  writer->Int(static_cast<int>(content.like_action));
 
   writer->String("ad_action");
   auto ad_action = std::string(content.ad_action);

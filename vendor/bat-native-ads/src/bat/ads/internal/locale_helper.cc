@@ -14,7 +14,8 @@
 
 namespace helper {
 
-const std::string Locale::GetLanguageCode(const std::string& locale) {
+std::string Locale::GetLanguageCode(
+    const std::string& locale) {
   std::vector<std::string> locale_components = base::SplitString(locale, ".",
       base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
@@ -36,7 +37,8 @@ const std::string Locale::GetLanguageCode(const std::string& locale) {
   return language_code;
 }
 
-const std::string Locale::GetRegionCode(const std::string& locale) {
+std::string Locale::GetRegionCode(
+    const std::string& locale) {
   std::vector<std::string> locale_components = base::SplitString(locale, ".",
       base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 

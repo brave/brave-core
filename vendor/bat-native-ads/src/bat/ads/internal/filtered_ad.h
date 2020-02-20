@@ -7,6 +7,7 @@
 #define BAT_ADS_INTERNAL_FILTERED_AD_H_
 
 #include <string>
+#include <vector>
 
 #include "bat/ads/result.h"
 
@@ -14,17 +15,20 @@ namespace ads {
 
 struct FilteredAd {
   FilteredAd();
-  explicit FilteredAd(const FilteredAd& ad);
+  FilteredAd(
+      const FilteredAd& ad);
   ~FilteredAd();
 
-  const std::string ToJson() const;
+  std::string ToJson() const;
   Result FromJson(
       const std::string& json,
       std::string* error_description = nullptr);
 
-  std::string uuid;
+  std::string creative_instance_id;
   std::string creative_set_id;
 };
+
+using FilteredAdList = std::vector<FilteredAd>;
 
 }  // namespace ads
 

@@ -414,10 +414,11 @@ class LedgerImpl : public ledger::Ledger,
       ledger::PublisherInfoList normalized_list);
 
   void SetCatalogIssuers(const std::string& info) override;
-  void ConfirmAd(const std::string& info) override;
-  void ConfirmAction(const std::string& uuid,
-                     const std::string& creative_set_id,
-                     const std::string& type) override;
+  void ConfirmAdNotification(const std::string& info) override;
+  void ConfirmAction(
+      const std::string& creative_instance_id,
+      const std::string& creative_set_id,
+      const std::string& confirmation_type) override;
   void GetTransactionHistory(
       ledger::GetTransactionHistoryCallback callback) override;
 

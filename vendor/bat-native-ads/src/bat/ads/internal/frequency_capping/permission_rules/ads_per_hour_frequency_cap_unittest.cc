@@ -24,7 +24,7 @@ using ::testing::Invoke;
 
 namespace {
 
-const char kTestAdUuid[] = "9aea9a47-c6a0-4718-a0fa-706338bb2156";
+const char kTestAdCreativeInstanceId[] = "9aea9a47-c6a0-4718-a0fa-706338bb2156";
 
 }  // namespace
 
@@ -98,7 +98,7 @@ TEST_F(BraveAdsAdsPerHourFrequencyCapTest,
   ON_CALL(*mock_ads_client_, GetAdsPerHour())
       .WillByDefault(testing::Return(2));
 
-  client_mock_->GeneratePastAdHistoryFromNow(kTestAdUuid,
+  client_mock_->GeneratePastAdHistoryFromNow(kTestAdCreativeInstanceId,
     base::Time::kSecondsPerHour - 1, 1);
 
   // Act
@@ -115,7 +115,7 @@ TEST_F(BraveAdsAdsPerHourFrequencyCapTest,
   ON_CALL(*mock_ads_client_, GetAdsPerHour())
       .WillByDefault(testing::Return(2));
 
-  client_mock_->GeneratePastAdHistoryFromNow(kTestAdUuid,
+  client_mock_->GeneratePastAdHistoryFromNow(kTestAdCreativeInstanceId,
       base::Time::kSecondsPerHour, 2);
 
   // Act
@@ -132,7 +132,8 @@ TEST_F(BraveAdsAdsPerHourFrequencyCapTest,
   ON_CALL(*mock_ads_client_, GetAdsPerHour())
       .WillByDefault(testing::Return(2));
 
-  client_mock_->GeneratePastAdHistoryFromNow(kTestAdUuid, 10 * 60, 2);
+  client_mock_->GeneratePastAdHistoryFromNow(
+      kTestAdCreativeInstanceId, 10 * 60, 2);
 
   // Act
   const bool does_history_respect_per_hour_limit =

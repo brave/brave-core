@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_CAMPAIGN_INFO_H_
-#define BAT_ADS_INTERNAL_CAMPAIGN_INFO_H_
+#ifndef BAT_ADS_INTERNAL_CATALOG_CAMPAIGN_INFO_H_
+#define BAT_ADS_INTERNAL_CATALOG_CAMPAIGN_INFO_H_
 
 #include <string>
 #include <vector>
@@ -15,24 +15,26 @@
 
 namespace ads {
 
-struct CampaignInfo {
-  CampaignInfo();
-  explicit CampaignInfo(const std::string& campaign_id);
-  explicit CampaignInfo(const CampaignInfo& info);
-  ~CampaignInfo();
+struct CatalogCampaignInfo {
+  CatalogCampaignInfo();
+  CatalogCampaignInfo(
+      const CatalogCampaignInfo& info);
+  ~CatalogCampaignInfo();
 
   std::string campaign_id;
-  unsigned int priority;
+  unsigned int priority = 0;
   std::string name;
   std::string start_at;
   std::string end_at;
-  unsigned int daily_cap;
+  unsigned int daily_cap = 0;
   std::string advertiser_id;
-  std::vector<GeoTargetInfo> geo_targets;
-  std::vector<DayPartInfo> day_parts;
-  std::vector<CreativeSetInfo> creative_sets;
+  CatalogGeoTargetList geo_targets;
+  CatalogDayPartList day_parts;
+  CatalogCreativeSetList creative_sets;
 };
+
+using CatalogCampaignList = std::vector<CatalogCampaignInfo>;
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_CAMPAIGN_INFO_H_
+#endif  // BAT_ADS_INTERNAL_CATALOG_CAMPAIGN_INFO_H_

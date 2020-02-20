@@ -50,8 +50,8 @@ const char kDefaultLanguage[] = "en";
 const char kDefaultRegion[] = "US";
 const char kDefaultUserModelLanguage[] = "en";
 
-static const int kDoNotDisturbFromHour = 21;  // 9pm
-static const int kDoNotDisturbToHour = 6;     // 6am
+const int kDoNotDisturbFromHour = 21;  // 9pm
+const int kDoNotDisturbToHour = 6;     // 6am
 
 const std::map<int, std::map<std::string, bool>> kSupportedRegionsSchemas = {
   // Append newly supported regions with a new schema version and update

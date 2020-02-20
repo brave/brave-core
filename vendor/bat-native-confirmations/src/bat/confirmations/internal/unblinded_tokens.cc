@@ -24,7 +24,7 @@ TokenInfo UnblindedTokens::GetToken() const {
   return tokens_.front();
 }
 
-std::vector<TokenInfo> UnblindedTokens::GetAllTokens() const {
+TokenList UnblindedTokens::GetAllTokens() const {
   return tokens_;
 }
 
@@ -43,7 +43,7 @@ base::Value UnblindedTokens::GetTokensAsList() {
 }
 
 void UnblindedTokens::SetTokens(
-    const std::vector<TokenInfo>& tokens) {
+    const TokenList& tokens) {
   tokens_ = tokens;
 
   confirmations_->SaveState();
@@ -52,7 +52,7 @@ void UnblindedTokens::SetTokens(
 void UnblindedTokens::SetTokensFromList(const base::Value& list) {
   base::ListValue list_values(list.GetList());
 
-  std::vector<TokenInfo> tokens;
+  TokenList tokens;
   for (auto& value : list_values) {
     std::string unblinded_token;
     std::string public_key;
@@ -96,7 +96,7 @@ void UnblindedTokens::SetTokensFromList(const base::Value& list) {
 }
 
 void UnblindedTokens::AddTokens(
-    const std::vector<TokenInfo>& tokens) {
+    const TokenList& tokens) {
   for (const auto& token_info : tokens) {
     if (TokenExists(token_info)) {
       continue;

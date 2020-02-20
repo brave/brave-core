@@ -166,7 +166,7 @@ base::Value ConfirmationsImpl::GetCatalogIssuersAsDictionary(
 }
 
 base::Value ConfirmationsImpl::GetConfirmationsAsDictionary(
-    const std::vector<ConfirmationInfo>& confirmations) const {
+    const ConfirmationList& confirmations) const {
   base::Value dictionary(base::Value::Type::DICTIONARY);
 
   base::Value list(base::Value::Type::LIST);
@@ -218,7 +218,7 @@ base::Value ConfirmationsImpl::GetConfirmationsAsDictionary(
 }
 
 base::Value ConfirmationsImpl::GetTransactionHistoryAsDictionary(
-    const std::vector<TransactionInfo>& transaction_history) const {
+    const TransactionList& transaction_history) const {
   base::Value dictionary(base::Value::Type::DICTIONARY);
 
   base::Value list(base::Value::Type::LIST);
@@ -421,7 +421,7 @@ bool ConfirmationsImpl::ParseConfirmationsFromJSON(
     return false;
   }
 
-  std::vector<ConfirmationInfo> confirmations;
+  ConfirmationList confirmations;
   if (!GetConfirmationsFromDictionary(confirmations_dictionary,
       &confirmations)) {
     return false;
@@ -434,7 +434,7 @@ bool ConfirmationsImpl::ParseConfirmationsFromJSON(
 
 bool ConfirmationsImpl::GetConfirmationsFromDictionary(
     base::DictionaryValue* dictionary,
-    std::vector<ConfirmationInfo>* confirmations) {
+    ConfirmationList* confirmations) {
   DCHECK(dictionary);
   if (!dictionary) {
     return false;
@@ -615,7 +615,7 @@ bool ConfirmationsImpl::ParseTransactionHistoryFromJSON(
     return false;
   }
 
-  std::vector<TransactionInfo> transaction_history;
+  TransactionList transaction_history;
   if (!GetTransactionHistoryFromDictionary(transaction_history_dictionary,
       &transaction_history)) {
     return false;
@@ -628,7 +628,7 @@ bool ConfirmationsImpl::ParseTransactionHistoryFromJSON(
 
 bool ConfirmationsImpl::GetTransactionHistoryFromDictionary(
     base::DictionaryValue* dictionary,
-    std::vector<TransactionInfo>* transaction_history) {
+    TransactionList* transaction_history) {
   DCHECK(dictionary);
   if (!dictionary) {
     return false;
@@ -689,7 +689,7 @@ bool ConfirmationsImpl::GetTransactionHistoryFromDictionary(
       info.confirmation_type = confirmation_type_value->GetString();
     } else {
       // confirmation type missing, fallback to default
-      ConfirmationType type(ConfirmationType::VIEW);
+      ConfirmationType type(ConfirmationType::kViewed);
       info.confirmation_type = std::string(type);
     }
 
@@ -1012,7 +1012,7 @@ void ConfirmationsImpl::AddUnredeemedTransactionsToPendingRewards() {
 }
 
 void ConfirmationsImpl::AddTransactionsToPendingRewards(
-    const std::vector<TransactionInfo>& transactions) {
+    const TransactionList& transactions) {
   estimated_pending_rewards_ +=
       GetEstimatedPendingRewardsForTransactions(transactions);
 
@@ -1020,7 +1020,7 @@ void ConfirmationsImpl::AddTransactionsToPendingRewards(
 }
 
 double ConfirmationsImpl::GetEstimatedPendingRewardsForTransactions(
-    const std::vector<TransactionInfo>& transactions) const {
+    const TransactionList& transactions) const {
   double estimated_pending_rewards = 0.0;
 
   for (const auto& transaction : transactions) {
@@ -1034,7 +1034,7 @@ double ConfirmationsImpl::GetEstimatedPendingRewardsForTransactions(
 }
 
 uint64_t ConfirmationsImpl::GetAdNotificationsReceivedThisMonthForTransactions(
-    const std::vector<TransactionInfo>& transactions) const {
+    const TransactionList& transactions) const {
   uint64_t ad_notifications_received_this_month = 0;
 
   auto now = base::Time::Now();
@@ -1058,12 +1058,12 @@ uint64_t ConfirmationsImpl::GetAdNotificationsReceivedThisMonthForTransactions(
   return ad_notifications_received_this_month;
 }
 
-std::vector<TransactionInfo> ConfirmationsImpl::GetTransactionHistory(
+TransactionList ConfirmationsImpl::GetTransactionHistory(
     const uint64_t from_timestamp_in_seconds,
     const uint64_t to_timestamp_in_seconds) {
   DCHECK(state_has_loaded_);
 
-  std::vector<TransactionInfo> transactions(transaction_history_.size());
+  TransactionList transactions(transaction_history_.size());
 
   auto it = std::copy_if(transaction_history_.begin(),
       transaction_history_.end(), transactions.begin(),
@@ -1077,13 +1077,13 @@ std::vector<TransactionInfo> ConfirmationsImpl::GetTransactionHistory(
   return transactions;
 }
 
-std::vector<TransactionInfo> ConfirmationsImpl::GetTransactions() const {
+TransactionList ConfirmationsImpl::GetTransactions() const {
   DCHECK(state_has_loaded_);
 
   return transaction_history_;
 }
 
-std::vector<TransactionInfo> ConfirmationsImpl::GetUnredeemedTransactions() {
+TransactionList ConfirmationsImpl::GetUnredeemedTransactions() {
   DCHECK(state_has_loaded_);
 
   auto count = unblinded_payment_tokens_->Count();
@@ -1093,7 +1093,7 @@ std::vector<TransactionInfo> ConfirmationsImpl::GetUnredeemedTransactions() {
   }
 
   // Unredeemed transactions are always at the end of the transaction history
-  std::vector<TransactionInfo> transactions(transaction_history_.end() - count,
+  TransactionList transactions(transaction_history_.end() - count,
       transaction_history_.end());
 
   return transactions;
@@ -1136,7 +1136,8 @@ void ConfirmationsImpl::AppendTransactionToHistory(
   confirmations_client_->ConfirmationsTransactionHistoryDidChange();
 }
 
-void ConfirmationsImpl::ConfirmAd(std::unique_ptr<NotificationInfo> info) {
+void ConfirmationsImpl::ConfirmAdNotification(
+    std::unique_ptr<AdNotificationInfo> info) {
   DCHECK(state_has_loaded_);
   if (!state_has_loaded_) {
     BLOG(ERROR) << "Unable to confirm ad as Confirmations state is not ready";
@@ -1144,22 +1145,23 @@ void ConfirmationsImpl::ConfirmAd(std::unique_ptr<NotificationInfo> info) {
   }
 
   BLOG(INFO) << "Confirm ad:"
-      << std::endl << "  id: " << info->id
-      << std::endl << "  creative_set_id: " << info->creative_set_id
-      << std::endl << "  advertiser: " << info->advertiser
-      << std::endl << "  category: " << info->category
-      << std::endl << "  text: " << info->text
-      << std::endl << "  url: " << info->url
       << std::endl << "  uuid: " << info->uuid
-      << std::endl << "  type: " << std::string(info->type);
+      << std::endl << "  creativeInstanceId: " << info->creative_instance_id
+      << std::endl << "  creativeSetId: " << info->creative_set_id
+      << std::endl << "  category: " << info->category
+      << std::endl << "  title: " << info->title
+      << std::endl << "  body: " << info->body
+      << std::endl << "  targetUrl: " << info->target_url
+      << std::endl << "  confirmationType: "
+          << std::string(info->confirmation_type);
 
-  redeem_token_->Redeem(info->uuid, info->type);
+  redeem_token_->Redeem(info->creative_instance_id, info->confirmation_type);
 }
 
 void ConfirmationsImpl::ConfirmAction(
-    const std::string& uuid,
+    const std::string& creative_instance_id,
     const std::string& creative_set_id,
-    const ConfirmationType& type) {
+    const ConfirmationType& confirmation_type) {
   DCHECK(state_has_loaded_);
   if (!state_has_loaded_) {
     BLOG(ERROR) <<
@@ -1168,11 +1170,11 @@ void ConfirmationsImpl::ConfirmAction(
   }
 
   BLOG(INFO) << "Confirm action:"
-      << std::endl << "  creative_set_id: " << creative_set_id
-      << std::endl << "  uuid: " << uuid
-      << std::endl << "  type: " << std::string(type);
+      << std::endl << "  creativeInstanceId: " << creative_instance_id
+      << std::endl << "  creativeSetId: " << creative_set_id
+      << std::endl << "  confirmationType: " << std::string(confirmation_type);
 
-  redeem_token_->Redeem(uuid, type);
+  redeem_token_->Redeem(creative_instance_id, confirmation_type);
 }
 
 bool ConfirmationsImpl::OnTimer(const uint32_t timer_id) {

@@ -14,7 +14,7 @@
 #include "bat/ads/internal/client_mock.h"
 #include "bat/ads/internal/ads_client_mock.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/ad_info.h"
+#include "bat/ads/creative_ad_notification_info.h"
 #include "bat/ads/internal/time.h"
 
 // npm run test -- brave_unit_tests --filter=Ads*
@@ -79,16 +79,17 @@ class BraveAdsPerDayFrequencyCapTest : public ::testing::Test {
   std::unique_ptr<ClientMock> client_mock_;
   std::unique_ptr<FrequencyCapping> frequency_capping_;
   std::unique_ptr<PerDayFrequencyCap> exclusion_rule_;
-  AdInfo ad_info_;
+  CreativeAdNotificationInfo ad_notification_info_;
 };
 
 TEST_F(BraveAdsPerDayFrequencyCapTest, AdAllowedWhenNoAds) {
   // Arrange
-  ad_info_.creative_set_id = kTestCreativeSetId;
-  ad_info_.per_day = 2;
+  ad_notification_info_.creative_set_id = kTestCreativeSetId;
+  ad_notification_info_.per_day = 2;
 
   // Act
-  const bool is_ad_excluded = exclusion_rule_->ShouldExclude(ad_info_);
+  const bool is_ad_excluded =
+      exclusion_rule_->ShouldExclude(ad_notification_info_);
 
   // Assert
   EXPECT_FALSE(is_ad_excluded);
@@ -96,13 +97,14 @@ TEST_F(BraveAdsPerDayFrequencyCapTest, AdAllowedWhenNoAds) {
 
 TEST_F(BraveAdsPerDayFrequencyCapTest, AdAllowedBelowDailyCap) {
   // Arrange
-  ad_info_.creative_set_id = kTestCreativeSetId;
-  ad_info_.per_day = 2;
+  ad_notification_info_.creative_set_id = kTestCreativeSetId;
+  ad_notification_info_.per_day = 2;
   client_mock_->GeneratePastCreativeSetHistoryFromNow(
       kTestCreativeSetId, 0, 1);
 
   // Act
-  const bool is_ad_excluded = exclusion_rule_->ShouldExclude(ad_info_);
+  const bool is_ad_excluded =
+      exclusion_rule_->ShouldExclude(ad_notification_info_);
 
   // Assert
   EXPECT_FALSE(is_ad_excluded);
@@ -110,8 +112,8 @@ TEST_F(BraveAdsPerDayFrequencyCapTest, AdAllowedBelowDailyCap) {
 
 TEST_F(BraveAdsPerDayFrequencyCapTest, AdAllowedWithAdOutsideDayWindow) {
   // Arrange
-  ad_info_.creative_set_id = kTestCreativeSetId;
-  ad_info_.per_day = 2;
+  ad_notification_info_.creative_set_id = kTestCreativeSetId;
+  ad_notification_info_.per_day = 2;
 
   client_mock_->GeneratePastCreativeSetHistoryFromNow(
       kTestCreativeSetId, 0, 1);
@@ -119,7 +121,8 @@ TEST_F(BraveAdsPerDayFrequencyCapTest, AdAllowedWithAdOutsideDayWindow) {
       kTestCreativeSetId, kSecondsPerDay, 1);
 
   // Act
-  const bool is_ad_excluded = exclusion_rule_->ShouldExclude(ad_info_);
+  const bool is_ad_excluded =
+      exclusion_rule_->ShouldExclude(ad_notification_info_);
 
   // Assert
   EXPECT_FALSE(is_ad_excluded);
@@ -127,14 +130,15 @@ TEST_F(BraveAdsPerDayFrequencyCapTest, AdAllowedWithAdOutsideDayWindow) {
 
 TEST_F(BraveAdsPerDayFrequencyCapTest, AdExcludedAboveDailyCapWithRecentAds) {
   // Arrange
-  ad_info_.creative_set_id = kTestCreativeSetId;
-  ad_info_.per_day = 2;
+  ad_notification_info_.creative_set_id = kTestCreativeSetId;
+  ad_notification_info_.per_day = 2;
 
   client_mock_->GeneratePastCreativeSetHistoryFromNow(
       kTestCreativeSetId, 0, 2);
 
   // Act
-  const bool is_ad_excluded = exclusion_rule_->ShouldExclude(ad_info_);
+  const bool is_ad_excluded =
+      exclusion_rule_->ShouldExclude(ad_notification_info_);
 
   // Assert
   EXPECT_TRUE(is_ad_excluded);
@@ -144,16 +148,16 @@ TEST_F(BraveAdsPerDayFrequencyCapTest, AdExcludedAboveDailyCapWithRecentAds) {
 TEST_F(BraveAdsPerDayFrequencyCapTest,
     AdExcludedAboveDailyCapWithAdsJustWithinDay) {
   // Arrange
-  ad_info_.creative_set_id = kTestCreativeSetId;
-  ad_info_.per_day = 2;
+  ad_notification_info_.creative_set_id = kTestCreativeSetId;
+  ad_notification_info_.per_day = 2;
 
-  client_mock_->GeneratePastCreativeSetHistoryFromNow(kTestCreativeSetId, 0,
-    1);
+  client_mock_->GeneratePastCreativeSetHistoryFromNow(kTestCreativeSetId, 0, 1);
   client_mock_->GeneratePastCreativeSetHistoryFromNow(kTestCreativeSetId,
     kSecondsPerDay - 1, 1);
 
   // Act
-  const bool is_ad_excluded = exclusion_rule_->ShouldExclude(ad_info_);
+  const bool is_ad_excluded =
+      exclusion_rule_->ShouldExclude(ad_notification_info_);
 
   // Assert
   EXPECT_TRUE(is_ad_excluded);
@@ -164,8 +168,8 @@ TEST_F(BraveAdsPerDayFrequencyCapTest, AdExcludedForIssue4207) {
   // Arrange
   uint64_t ads_per_day = 20;
 
-  ad_info_.creative_set_id = kTestCreativeSetId;
-  ad_info_.per_day = ads_per_day;
+  ad_notification_info_.creative_set_id = kTestCreativeSetId;
+  ad_notification_info_.per_day = ads_per_day;
 
   uint64_t ads_per_hour = 5;
   uint64_t ad_interval = base::Time::kSecondsPerHour / ads_per_hour;
@@ -174,7 +178,8 @@ TEST_F(BraveAdsPerDayFrequencyCapTest, AdExcludedForIssue4207) {
       ad_interval, ads_per_day);
 
   // Act
-  const bool is_ad_excluded = exclusion_rule_->ShouldExclude(ad_info_);
+  const bool is_ad_excluded =
+      exclusion_rule_->ShouldExclude(ad_notification_info_);
 
   // Assert
   EXPECT_TRUE(is_ad_excluded);

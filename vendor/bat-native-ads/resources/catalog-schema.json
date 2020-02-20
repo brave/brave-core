@@ -1,273 +1,293 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "object",
-  "additionalProperties": false,
-  "required": [
-    "version",
-    "ping",
-    "campaigns",
-    "issuers",
-    "catalogId"
-  ],
-  "properties": {
-    "version": {
-      "type": "number"
-    },
-    "ping": {
-      "type": "number"
-    },
-    "catalogId": {
-      "type": "string"
-    },
-    "issuers": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "name",
-          "publicKey"
-        ],
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "publicKey": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "campaigns": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "required": [
-          "priority",
-          "campaignId",
-          "advertiserId",
-          "startAt",
-          "endAt",
-          "dailyCap",
-          "geoTargets",
-          "dayParts",
-          "creativeSets"
-        ],
-        "properties": {
-          "campaignId": {
-            "type": "string"
-          },
-          "priority": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "version",
+        "ping",
+        "campaigns",
+        "issuers",
+        "catalogId"
+    ],
+    "properties": {
+        "version": {
             "type": "number"
-          },
-          "advertiserId": {
-            "type": "string"
-          },
-          "startAt": {
-            "type": "string"
-          },
-          "endAt": {
-            "type": "string"
-          },
-          "dailyCap": {
+        },
+        "ping": {
             "type": "number"
-          },
-          "dayParts": {
+        },
+        "catalogId": {
+            "type": "string"
+        },
+        "issuers": {
             "type": "array",
             "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": [
-                "dow",
-                "startMinute",
-                "endMinute"
-              ],
-              "properties": {
-                "dow": {
-                  "type": "string"
-                },
-                "startMinute": {
-                  "type": "number"
-                },
-                "endMinute": {
-                  "type": "number"
-                }
-              }
-            }
-          },
-          "geoTargets": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": [
-                "code",
-                "name"
-              ],
-              "properties": {
-                "code": {
-                  "type": "string"
-                },
-                "name": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "creativeSets": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "required": [
-                "creativeSetId",
-                "perDay",
-                "totalMax",
-                "segments",
-                "creatives",
-                "oses"
-              ],
-              "properties": {
-                "creativeSetId": {
-                  "type": "string"
-                },
-                "perDay": {
-                  "type": "number"
-                },
-                "totalMax": {
-                  "type": "number"
-                },
-                "conversions": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "required": [
-                      "urlPattern",
-                      "type",
-                      "observationWindow"
-                    ],
-                    "properties": {
-                      "urlPattern": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "name",
+                    "publicKey"
+                ],
+                "properties": {
+                    "name": {
                         "type": "string"
-                      },
-                      "type": {
+                    },
+                    "publicKey": {
                         "type": "string"
-                      },
-                      "observationWindow": {
+                    }
+                }
+            }
+        },
+        "campaigns": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "priority",
+                    "campaignId",
+                    "advertiserId",
+                    "startAt",
+                    "endAt",
+                    "dailyCap",
+                    "geoTargets",
+                    "dayParts",
+                    "creativeSets"
+                ],
+                "properties": {
+                    "campaignId": {
+                        "type": "string"
+                    },
+                    "priority": {
                         "type": "number"
-                      }
-                    }
-                  }
-                },
-                "segments": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "required": [
-                      "code",
-                      "name"
-                    ],
-                    "properties": {
-                      "code": {
+                    },
+                    "advertiserId": {
                         "type": "string"
-                      },
-                      "name": {
+                    },
+                    "startAt": {
                         "type": "string"
-                      },
-                      "parentCode": {
+                    },
+                    "endAt": {
                         "type": "string"
-                      }
-                    }
-                  }
-                },
-                "oses": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "required": [
-                      "code",
-                      "name"
-                    ],
-                    "properties": {
-                      "code": {
-                        "type": "string"
-                      },
-                      "name": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                },
-                "creatives": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "additionalProperties": false,
-                    "required": [
-                      "creativeInstanceId",
-                      "type",
-                      "payload"
-                    ],
-                    "properties": {
-                      "creativeInstanceId": {
-                        "type": "string"
-                      },
-                      "type": {
-                        "type": "object",
-                        "additionalProperties": false,
-                        "required": [
-                          "code",
-                          "name",
-                          "platform",
-                          "version"
-                        ],
-                        "properties": {
-                          "code": {
-                            "type": "string"
-                          },
-                          "name": {
-                            "type": "string"
-                          },
-                          "platform": {
-                            "type": "string"
-                          },
-                          "version": {
-                            "type": "number"
-                          }
+                    },
+                    "dailyCap": {
+                        "type": "number"
+                    },
+                    "dayParts": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": [
+                                "dow",
+                                "startMinute",
+                                "endMinute"
+                            ],
+                            "properties": {
+                                "dow": {
+                                    "type": "string"
+                                },
+                                "startMinute": {
+                                    "type": "number"
+                                },
+                                "endMinute": {
+                                    "type": "number"
+                                }
+                            }
                         }
-                      },
-                      "payload": {
-                        "type": "object",
-                        "additionalProperties": false,
-                        "required": [
-                          "targetUrl",
-                          "body",
-                          "title"
-                        ],
-                        "properties": {
-                          "targetUrl": {
-                            "type": "string"
-                          },
-                          "body": {
-                            "type": "string"
-                          },
-                          "title": {
-                            "type": "string"
-                          }
+                    },
+                    "geoTargets": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": [
+                                "code",
+                                "name"
+                            ],
+                            "properties": {
+                                "code": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                }
+                            }
                         }
-                      }
+                    },
+                    "creativeSets": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "required": [
+                                "creativeSetId",
+                                "perDay",
+                                "totalMax",
+                                "segments",
+                                "creatives",
+                                "oses",
+                                "channels"
+                            ],
+                            "properties": {
+                                "creativeSetId": {
+                                    "type": "string"
+                                },
+                                "perDay": {
+                                    "type": "number"
+                                },
+                                "totalMax": {
+                                    "type": "number"
+                                },
+                                "conversions": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "additionalProperties": false,
+                                        "required": [
+                                            "urlPattern",
+                                            "type",
+                                            "observationWindow"
+                                        ],
+                                        "properties": {
+                                            "urlPattern": {
+                                                "type": "string"
+                                            },
+                                            "type": {
+                                                "type": "string"
+                                            },
+                                            "observationWindow": {
+                                                "type": "number"
+                                            }
+                                        }
+                                    }
+                                },
+                                "segments": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "additionalProperties": false,
+                                        "required": [
+                                            "code",
+                                            "name"
+                                        ],
+                                        "properties": {
+                                            "code": {
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "parentCode": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "oses": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "additionalProperties": false,
+                                        "required": [
+                                            "code",
+                                            "name"
+                                        ],
+                                        "properties": {
+                                            "code": {
+                                                "type": "string"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "channels": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "creatives": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "additionalProperties": false,
+                                        "required": [
+                                            "creativeInstanceId",
+                                            "type",
+                                            "payload"
+                                        ],
+                                        "properties": {
+                                            "creativeInstanceId": {
+                                                "type": "string"
+                                            },
+                                            "type": {
+                                                "type": "object",
+                                                "additionalProperties": false,
+                                                "required": [
+                                                    "code",
+                                                    "name",
+                                                    "platform",
+                                                    "version"
+                                                ],
+                                                "properties": {
+                                                    "code": {
+                                                        "type": "string"
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    },
+                                                    "platform": {
+                                                        "type": "string"
+                                                    },
+                                                    "version": {
+                                                        "type": "number"
+                                                    }
+                                                }
+                                            },
+                                            "payload": {
+                                                "type": "object",
+                                                "oneOf": [
+                                                    {
+                                                        "properties": {
+                                                            "targetUrl": {
+                                                                "type": "string"
+                                                            },
+                                                            "body": {
+                                                                "type": "string"
+                                                            },
+                                                            "title": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "additionalProperties": false
+                                                    },
+                                                    {
+                                                        "properties": {
+                                                            "creativeUrl": {
+                                                                "type": "string"
+                                                            },
+                                                            "size": {
+                                                                "type": "string"
+                                                            },
+                                                            "targetUrl": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "additionalProperties": false
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
-                  }
                 }
-              }
             }
-          }
         }
-      }
     }
-  }
 }

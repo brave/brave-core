@@ -25,9 +25,10 @@ class LocaleHelper {
       LocaleHelper* locale_helper);
 
   // Should return the language based upon the tagging conventions of RFC 4646
-  virtual const std::string GetLocale() const;
+  virtual std::string GetLocale() const;
 
-  static const std::string GetCountryCode(const std::string& locale);
+  static std::string GetCountryCode(
+      const std::string& locale);
 
  protected:
   LocaleHelper();

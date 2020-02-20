@@ -131,15 +131,15 @@ NS_SWIFT_NAME(BraveAds)
 - (void)reportTabClosedWithTabId:(NSInteger)tabId NS_SWIFT_NAME(reportTabClosed(tabId:));
 
 /// Report that a notification event type was triggered for a given id
-- (void)reportNotificationEvent:(NSString *)notificationId
-                      eventType:(BATAdsNotificationEventType)eventType;
+- (void)reportAdNotificationEvent:(NSString *)notificationUuid
+                        eventType:(BATAdsNotificationEventType)eventType;
 
 /// Toggle that the user liked the given ad and more like it should be shown
-- (void)toggleThumbsUpForAd:(NSString *)identifier
+- (void)toggleThumbsUpForAd:(NSString *)creativeInstanceId
               creativeSetID:(NSString *)creativeSetID;
 
 /// Toggle that the user disliked the given ad and it shouldn't be shown again
-- (void)toggleThumbsDownForAd:(NSString *)identifier
+- (void)toggleThumbsDownForAd:(NSString *)creativeInstanceId
                 creativeSetID:(NSString *)creativeSetID;
 
 #pragma mark -

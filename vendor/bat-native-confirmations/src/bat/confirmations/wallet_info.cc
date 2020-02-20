@@ -7,13 +7,10 @@
 
 namespace confirmations {
 
-WalletInfo::WalletInfo() :
-    payment_id(""),
-    private_key("") {}
+WalletInfo::WalletInfo() = default;
 
-WalletInfo::WalletInfo(const WalletInfo& info) :
-    payment_id(info.payment_id),
-    private_key(info.private_key) {}
+WalletInfo::WalletInfo(
+    const WalletInfo& info) = default;
 
 WalletInfo::~WalletInfo() = default;
 
@@ -21,7 +18,8 @@ bool WalletInfo::IsValid() const {
   return !payment_id.empty() && !private_key.empty();
 }
 
-bool WalletInfo::operator==(const WalletInfo& info) const {
+bool WalletInfo::operator==(
+    const WalletInfo& info) const {
   return (payment_id == info.payment_id && private_key == info.private_key);
 }
 

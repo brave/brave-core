@@ -13,21 +13,14 @@
 
 namespace ads {
 
-AdPreferences::AdPreferences() :
-    filtered_ads({}),
-    filtered_categories({}),
-    saved_ads({}),
-    flagged_ads({}) {}
+AdPreferences::AdPreferences() = default;
 
-AdPreferences::AdPreferences(const AdPreferences& prefs) :
-    filtered_ads(prefs.filtered_ads),
-    filtered_categories(prefs.filtered_categories),
-    saved_ads(prefs.saved_ads),
-    flagged_ads(prefs.flagged_ads) {}
+AdPreferences::AdPreferences(
+    const AdPreferences& prefs) = default;
 
 AdPreferences::~AdPreferences() = default;
 
-const std::string AdPreferences::ToJson() const {
+std::string AdPreferences::ToJson() const {
   std::string json;
   SaveToJson(*this, &json);
   return json;
@@ -53,7 +46,7 @@ Result AdPreferences::FromJson(
     }
 
     FilteredAd filtered_ad;
-    filtered_ad.uuid = ad["uuid"].GetString();
+    filtered_ad.creative_instance_id = ad["uuid"].GetString();
     filtered_ad.creative_set_id = ad["creative_set_id"].GetString();
     filtered_ads.push_back(filtered_ad);
   }
@@ -74,7 +67,7 @@ Result AdPreferences::FromJson(
     }
 
     SavedAd saved_ad;
-    saved_ad.uuid = ad["uuid"].GetString();
+    saved_ad.creative_instance_id = ad["uuid"].GetString();
     saved_ad.creative_set_id = ad["creative_set_id"].GetString();
     saved_ads.push_back(saved_ad);
   }
@@ -85,7 +78,7 @@ Result AdPreferences::FromJson(
     }
 
     FlaggedAd flagged_ad;
-    flagged_ad.uuid = ad["uuid"].GetString();
+    flagged_ad.creative_instance_id = ad["uuid"].GetString();
     flagged_ad.creative_set_id = ad["creative_set_id"].GetString();
     flagged_ads.push_back(flagged_ad);
   }
@@ -102,7 +95,7 @@ void SaveToJson(JsonWriter* writer, const AdPreferences& prefs) {
     writer->StartObject();
 
     writer->String("uuid");
-    writer->String(ad.uuid.c_str());
+    writer->String(ad.creative_instance_id.c_str());
 
     writer->String("creative_set_id");
     writer->String(ad.creative_set_id.c_str());
@@ -129,7 +122,7 @@ void SaveToJson(JsonWriter* writer, const AdPreferences& prefs) {
     writer->StartObject();
 
     writer->String("uuid");
-    writer->String(ad.uuid.c_str());
+    writer->String(ad.creative_instance_id.c_str());
 
     writer->String("creative_set_id");
     writer->String(ad.creative_set_id.c_str());
@@ -144,7 +137,7 @@ void SaveToJson(JsonWriter* writer, const AdPreferences& prefs) {
     writer->StartObject();
 
     writer->String("uuid");
-    writer->String(ad.uuid.c_str());
+    writer->String(ad.creative_instance_id.c_str());
 
     writer->String("creative_set_id");
     writer->String(ad.creative_set_id.c_str());

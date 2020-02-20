@@ -15,13 +15,13 @@
 #include <memory>
 #include <functional>
 
-#include "bat/ads/ad_info.h"
-#include "bat/ads/ad_conversion_tracking_info.h"
+#include "bat/ads/creative_ad_notification_info.h"
+#include "bat/ads/ad_conversion_info.h"
 #include "bat/ads/issuers_info.h"
 #include "bat/ads/bundle_state.h"
 #include "bat/ads/client_info.h"
 #include "bat/ads/export.h"
-#include "bat/ads/notification_info.h"
+#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/result.h"
 
 namespace ads {
@@ -49,11 +49,11 @@ using OnLoadCallback = std::function<void(const Result, const std::string&)>;
 
 using OnResetCallback = std::function<void(const Result)>;
 
-using OnGetAdsCallback = std::function<void(const Result,
-    const std::vector<std::string>&, const std::vector<AdInfo>&)>;
+using OnGetCreativeAdNotificationsCallback = std::function<void(const Result,
+    const std::vector<std::string>&, const CreativeAdNotificationList&)>;
 
 using OnGetAdConversionsCallback = std::function<void(const Result,
-    const std::string&, const std::vector<AdConversionTrackingInfo>&)>;
+    const std::string&, const AdConversionList&)>;
 
 using OnLoadSampleBundleCallback = std::function<void(const Result,
     const std::string&)>;
@@ -79,7 +79,7 @@ class ADS_EXPORT AdsClient {
   //     <language>-<REGION>.<ENCODING> i.e. en-US.UTF-8
   //     <language>_<REGION> i.e. en_US
   //     <language>-<REGION>.<ENCODING> i.e. en_US.UTF-8
-  virtual const std::string GetLocale() const = 0;
+  virtual std::string GetLocale() const = 0;
 
   // Should return the maximum number of ads that can be shown per hour
   virtual uint64_t GetAdsPerHour() const = 0;
@@ -101,8 +101,7 @@ class ADS_EXPORT AdsClient {
       ClientInfo* info) const = 0;
 
   // Should return an array of supported User Model languages
-  virtual const std::vector<std::string>
-      GetUserModelLanguages() const = 0;
+  virtual std::vector<std::string> GetUserModelLanguages() const = 0;
 
   // Should load the User Model for the specified language, user models are a
   // dependency of the application and should be bundled accordingly, the
@@ -132,7 +131,7 @@ class ADS_EXPORT AdsClient {
 
   // Should show a notification
   virtual void ShowNotification(
-      const std::unique_ptr<NotificationInfo> info) = 0;
+      const std::unique_ptr<AdNotificationInfo> info) = 0;
 
   // Should return |true| if notifications can be displayed; otherwise should
   // return |false|
@@ -140,23 +139,23 @@ class ADS_EXPORT AdsClient {
 
   // Should close a notification
   virtual void CloseNotification(
-      const std::string& id) = 0;
+      const std::string& uuid) = 0;
 
   // Should pass-through to Confirmations that the catalog issuers have changed
   virtual void SetCatalogIssuers(
       const std::unique_ptr<IssuersInfo> info) = 0;
 
-  // Should pass-through to Confirmations that an ad was viewed, clicked,
-  // dismissed or landed
-  virtual void ConfirmAd(
-      const std::unique_ptr<NotificationInfo> info) = 0;
+  // Should pass-through to Confirmations that an ad notification was viewed,
+  // clicked, dismissed or landed
+  virtual void ConfirmAdNotification(
+      const std::unique_ptr<AdNotificationInfo> info) = 0;
 
   // Should pass-through to Confirmations that an ad was flagged, upvoted or
   // downvoted
   virtual void ConfirmAction(
-      const std::string& uuid,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
-      const ConfirmationType& type) = 0;
+      const ConfirmationType& confirmation_type) = 0;
 
   // Should create a timer to trigger after the time offset specified in
   // seconds. If the timer was created successfully a unique identifier should
@@ -215,7 +214,7 @@ class ADS_EXPORT AdsClient {
   // specify the JSON-based format to define the structure of the JSON data for
   // validation, documentation, and interaction control. It provides the
   // contract for the JSON data and how that data can be modified
-  virtual const std::string LoadJsonSchema(
+  virtual std::string LoadJsonSchema(
       const std::string& name) = 0;
 
   // Should load the sample bundle from persistent storage. The callback takes 2
@@ -230,21 +229,21 @@ class ADS_EXPORT AdsClient {
   virtual void Reset(
       const std::string& name, OnResetCallback callback) = 0;
 
-  // Should fetch all ads for the specified |category| where the current time is
-  // between the ad |start_timestamp| and |end_timestamp| from the previously
-  // persisted bundle state. The callback takes 3 arguments — |Result| should be
-  // set to |SUCCESS| if successful; otherwise, should be set to |FAILED|.
-  // |category| should contain the category. |ads| should contain an array of
-  // ads
-  virtual void GetAds(
+  // Should fetch all creative ad notifications for the specified |category|
+  // where the current time is between the ad |start_timestamp| and
+  // |end_timestamp| from the previously persisted bundle state. The callback
+  // takes 3 arguments — |Result| should be set to |SUCCESS| if successful;
+  // otherwise, should be set to |FAILED|. |category| should contain the
+  // category. |ads| should contain an array of ads
+  virtual void GetCreativeAdNotifications(
       const std::vector<std::string>& categories,
-      OnGetAdsCallback callback) = 0;
+      OnGetCreativeAdNotificationsCallback callback) = 0;
 
-  // Should fetch all ad conversions for the specified |url| from the previously
-  // persisted bundle state. The callback takes 3 arguments — |Result| should be
-  // set to |SUCCESS| if successful; otherwise, should be set to |FAILED|. |url|
-  // should contain the url. |ad_conversions| should contain an array of ad
-  // conversions
+  // Should fetch all ad conversions for the specified |url| from the
+  // previously persisted bundle state. The callback takes 3 arguments —
+  // |Result| should be set to |SUCCESS| if successful; otherwise, should be set
+  // to |FAILED|. |url| should contain the url. |ad_conversions| should
+  // contain an array of ad conversions
   virtual void GetAdConversions(
       const std::string& url,
       OnGetAdConversionsCallback callback) = 0;

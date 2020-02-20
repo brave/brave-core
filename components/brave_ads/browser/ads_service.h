@@ -89,12 +89,12 @@ class AdsService : public KeyedService {
       OnGetAdsHistoryCallback callback) = 0;
 
   virtual void ToggleAdThumbUp(
-      const std::string& id,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const int action,
       OnToggleAdThumbUpCallback callback) = 0;
   virtual void ToggleAdThumbDown(
-      const std::string& id,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const int action,
       OnToggleAdThumbDownCallback callback) = 0;
@@ -107,12 +107,12 @@ class AdsService : public KeyedService {
       const int action,
       OnToggleAdOptOutActionCallback callback) = 0;
   virtual void ToggleSaveAd(
-      const std::string& id,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const bool saved,
       OnToggleSaveAdCallback callback) = 0;
   virtual void ToggleFlagAd(
-      const std::string& id,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const bool flagged,
       OnToggleFlagAdCallback callback) = 0;

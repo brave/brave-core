@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/frequency_capping/frequency_capping.h"
-#include "bat/ads/ad_info.h"
+#include "bat/ads/creative_ad_notification_info.h"
 #include "bat/ads/internal/client.h"
 #include "bat/ads/internal/time.h"
 
@@ -38,13 +38,14 @@ bool FrequencyCapping::DoesHistoryRespectCapForRollingTimeConstraint(
   return false;
 }
 
-std::deque<uint64_t> FrequencyCapping::GetCreativeSetHistoryForUuid(
-    const std::string& uuid) const {
+std::deque<uint64_t> FrequencyCapping::GetCreativeSetHistory(
+    const std::string& creative_set_id) const {
   std::deque<uint64_t> history;
 
   auto creative_set_history = client_->GetCreativeSetHistory();
-  if (creative_set_history.find(uuid) != creative_set_history.end()) {
-     history = creative_set_history.at(uuid);
+  if (creative_set_history.find(creative_set_id)
+      != creative_set_history.end()) {
+    history = creative_set_history.at(creative_set_id);
   }
 
   return history;
@@ -61,13 +62,13 @@ std::deque<uint64_t> FrequencyCapping::GetAdsShownHistory() const {
   return history;
 }
 
-std::deque<uint64_t> FrequencyCapping::GetAdsHistoryForUuid(
-    const std::string& uuid) const {
+std::deque<uint64_t> FrequencyCapping::GetAdsHistory(
+    const std::string& creative_instance_id) const {
   std::deque<uint64_t> history;
   auto ads_history = client_->GetAdsShownHistory();
 
   for (const auto& ad : ads_history) {
-    if (ad.ad_content.uuid != uuid) {
+    if (ad.ad_content.creative_instance_id != creative_instance_id) {
       continue;
     }
 
@@ -77,13 +78,13 @@ std::deque<uint64_t> FrequencyCapping::GetAdsHistoryForUuid(
   return history;
 }
 
-std::deque<uint64_t> FrequencyCapping::GetCampaignForUuid(
-    const std::string& uuid) const {
+std::deque<uint64_t> FrequencyCapping::GetCampaign(
+    const std::string& campaign_id) const {
   std::deque<uint64_t> history;
 
   auto campaign_history = client_->GetCampaignHistory();
-  if (campaign_history.find(uuid) != campaign_history.end()) {
-    history = campaign_history.at(uuid);
+  if (campaign_history.find(campaign_id) != campaign_history.end()) {
+    history = campaign_history.at(campaign_id);
   }
 
   return history;

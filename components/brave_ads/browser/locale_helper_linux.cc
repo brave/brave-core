@@ -13,7 +13,7 @@ LocaleHelperLinux::LocaleHelperLinux() = default;
 
 LocaleHelperLinux::~LocaleHelperLinux() = default;
 
-const std::string LocaleHelperLinux::GetLocale() const {
+std::string LocaleHelperLinux::GetLocale() const {
   char const *language = nullptr;
 
   if (!language || !*language) {

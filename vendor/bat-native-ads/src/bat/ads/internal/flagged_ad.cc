@@ -9,17 +9,14 @@
 
 namespace ads {
 
-FlaggedAd::FlaggedAd() :
-    uuid(""),
-    creative_set_id("") {}
+FlaggedAd::FlaggedAd() = default;
 
-FlaggedAd::FlaggedAd(const FlaggedAd& ad) :
-    uuid(ad.uuid),
-    creative_set_id(ad.creative_set_id) {}
+FlaggedAd::FlaggedAd(
+    const FlaggedAd& ad) = default;
 
 FlaggedAd::~FlaggedAd() = default;
 
-const std::string FlaggedAd::ToJson() const {
+std::string FlaggedAd::ToJson() const {
   std::string json;
   SaveToJson(*this, &json);
   return json;
@@ -40,7 +37,7 @@ Result FlaggedAd::FromJson(
   }
 
   if (document.HasMember("uuid")) {
-    uuid = document["uuid"].GetString();
+    creative_instance_id = document["uuid"].GetString();
   }
 
   if (document.HasMember("creative_set_id")) {
@@ -54,7 +51,7 @@ void SaveToJson(JsonWriter* writer, const FlaggedAd& ad) {
   writer->StartObject();
 
   writer->String("uuid");
-  writer->String(ad.uuid.c_str());
+  writer->String(ad.creative_instance_id.c_str());
 
   writer->String("creative_set_id");
   writer->String(ad.creative_set_id.c_str());

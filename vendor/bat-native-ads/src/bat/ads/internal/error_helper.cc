@@ -7,7 +7,7 @@
 
 namespace helper {
 
-const std::string GetDescription(const ads::Result result) {
+std::string GetDescription(const ads::Result result) {
   std::string description = "";
 
   switch (result) {

@@ -9,7 +9,7 @@
 #include "bat/ads/internal/time.h"
 #include "bat/ads/internal/client.h"
 
-#include "bat/ads/ad_info.h"
+#include "bat/ads/creative_ad_notification_info.h"
 
 namespace ads {
 
@@ -32,8 +32,8 @@ bool AdsPerDayFrequencyCap::IsAllowed() {
   return respects_day_limit;
 }
 
-const std::string AdsPerDayFrequencyCap::GetLastMessage() const {
-    return last_message_;
+std::string AdsPerDayFrequencyCap::GetLastMessage() const {
+  return last_message_;
 }
 
 bool AdsPerDayFrequencyCap::AreAdsPerDayBelowAllowedThreshold() const {

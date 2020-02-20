@@ -3,20 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/confirmations/internal/payment_info.h"
+#include "bat/confirmations/ad_notification_info.h"
 
 namespace confirmations {
 
-PaymentInfo::PaymentInfo() :
-    balance(0.0),
-    month(""),
-    transaction_count(0) {}
+AdNotificationInfo::AdNotificationInfo() = default;
 
-PaymentInfo::PaymentInfo(const PaymentInfo& info) :
-    balance(info.balance),
-    month(info.month),
-    transaction_count(info.transaction_count) {}
+AdNotificationInfo::AdNotificationInfo(
+    const AdNotificationInfo& info) = default;
 
-PaymentInfo::~PaymentInfo() {}
+AdNotificationInfo::~AdNotificationInfo() = default;
 
 }  // namespace confirmations

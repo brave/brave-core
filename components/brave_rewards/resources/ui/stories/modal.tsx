@@ -508,15 +508,15 @@ storiesOf('Rewards/Modal', module)
   })
   .add('Show Ads History',() => {
     const adsPerHour = 2
-    const adId: number = 0
+    const adUuid: number = 0
     const rowId: number = 0
     const rows: AdsHistoryRow[] = [
       {
-        id: rowId.toString(),
+        uuid: rowId.toString(),
         date: '1/30',
         adDetailRows: [
           {
-            id: adId.toString(),
+            uuid: adUuid.toString(),
             adContent: {
               brand: 'Pepsi',
               brandLogo: '',
@@ -540,7 +540,7 @@ storiesOf('Rewards/Modal', module)
             }
           },
           {
-            id: (adId + 1).toString(),
+            uuid: (adUuid + 1).toString(),
             adContent: {
               brand: 'TESLA',
               brandLogo: '',
@@ -565,7 +565,7 @@ storiesOf('Rewards/Modal', module)
             }
           },
           {
-            id: (adId + 2).toString(),
+            uuid: (adUuid + 2).toString(),
             adContent: {
               brand: 'Disney',
               brandLogo: '',
@@ -591,11 +591,11 @@ storiesOf('Rewards/Modal', module)
         ]
       },
       {
-        id: (rowId + 1).toString(),
+        uuid: (rowId + 1).toString(),
         date: '1/29',
         adDetailRows: [
           {
-            id: (adId + 3).toString(),
+            uuid: (adUuid + 3).toString(),
             adContent: {
               brand: 'Puma',
               brandLogo: '',
@@ -619,7 +619,7 @@ storiesOf('Rewards/Modal', module)
             }
           },
           {
-            id: (adId + 4).toString(),
+            uuid: (adUuid + 4).toString(),
             adContent: {
               brand: 'Expedia.com',
               brandLogo: '',
@@ -643,7 +643,7 @@ storiesOf('Rewards/Modal', module)
             }
           },
           {
-            id: (adId + 5).toString(),
+            uuid: (adUuid + 5).toString(),
             adContent: {
               brand: 'H&M',
               brandLogo: '',

@@ -106,28 +106,28 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
       const std::vector<std::string>& headers,
       const std::string& content,
       const std::string& content_type,
-      int32_t method,
+      const int32_t method,
       URLRequestCallback callback) override;
   void LoadSampleBundle(
       LoadSampleBundleCallback callback) override;
   void ShowNotification(
       const std::string& notification_info) override;
   void CloseNotification(
-      const std::string& id) override;
+      const std::string& uuid) override;
   void SetCatalogIssuers(
       const std::string& issuers_info) override;
-  void ConfirmAd(
-      const std::string& notification_info) override;
+  void ConfirmAdNotification(
+      const std::string& json) override;
   void ConfirmAction(
-      const std::string& uuid,
+      const std::string& creative_instance_id,
       const std::string& creative_set_id,
-      const std::string& type) override;
+      const std::string& confirmation_type) override;
   void SaveBundleState(
       const std::string& bundle_state,
       SaveBundleStateCallback callback) override;
-  void GetAds(
+  void GetCreativeAdNotifications(
       const std::vector<std::string>& categories,
-      GetAdsCallback callback) override;
+      GetCreativeAdNotificationsCallback callback) override;
   void GetAdConversions(
       const std::string& url,
       GetAdConversionsCallback callback) override;
@@ -174,17 +174,17 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
       const std::string& value);
   static void OnSaveBundleState(
       CallbackHolder<SaveBundleStateCallback>* holder,
-      ads::Result result);
-  static void OnGetAds(
-      CallbackHolder<GetAdsCallback>* holder,
-      ads::Result result,
+      const ads::Result result);
+  static void OnGetCreativeAdNotifications(
+      CallbackHolder<GetCreativeAdNotificationsCallback>* holder,
+      const ads::Result result,
       const std::vector<std::string>& categories,
-      const std::vector<ads::AdInfo>& ad_info);
+      const ads::CreativeAdNotificationList& ads);
   static void OnGetAdConversions(
       CallbackHolder<GetAdConversionsCallback>* holder,
       const ads::Result result,
       const std::string& url,
-      const std::vector<ads::AdConversionTrackingInfo>& ad_conversions);
+      const ads::AdConversionList& ad_conversions);
 
   ads::AdsClient* ads_client_;
 

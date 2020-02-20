@@ -13,7 +13,7 @@
 
 #include "bat/ads/ads_client.h"
 
-#include "bat/ads/internal/campaign_info.h"
+#include "bat/ads/internal/catalog_campaign_info.h"
 
 namespace ads {
 
@@ -26,15 +26,15 @@ class Catalog {
 
   bool FromJson(const std::string& json);  // Deserialize
 
-  const std::string GetId() const;
+  std::string GetId() const;
   uint64_t GetVersion() const;
   uint64_t GetPing() const;
 
   bool HasChanged(const std::string& current_catalog_id);
 
-  const std::vector<CampaignInfo>& GetCampaigns() const;
+  CatalogCampaignList GetCampaigns() const;
 
-  const IssuersInfo& GetIssuers() const;
+  IssuersInfo GetIssuers() const;
 
   void Save(const std::string& json, OnSaveCallback callback);
   void Reset(OnSaveCallback callback);

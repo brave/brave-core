@@ -22,15 +22,17 @@ class RedeemPaymentTokensRequest {
   RedeemPaymentTokensRequest();
   ~RedeemPaymentTokensRequest();
 
-  std::string BuildUrl(const WalletInfo& wallet_info) const;
+  std::string BuildUrl(
+      const WalletInfo& wallet_info) const;
 
   URLRequestMethod GetMethod() const;
 
   std::string BuildBody(
-    const std::vector<TokenInfo>& tokens,
-    const std::string& payload) const;
+      const TokenList& tokens,
+      const std::string& payload) const;
 
-  std::string CreatePayload(const WalletInfo& wallet_info) const;
+  std::string CreatePayload(
+      const WalletInfo& wallet_info) const;
 
   std::vector<std::string> BuildHeaders() const;
   std::string GetAcceptHeaderValue() const;
@@ -39,7 +41,7 @@ class RedeemPaymentTokensRequest {
 
  private:
   base::Value CreatePaymentRequestDTO(
-      const std::vector<TokenInfo>& tokens,
+      const TokenList& tokens,
       const std::string& payload) const;
 
   base::Value CreateCredential(

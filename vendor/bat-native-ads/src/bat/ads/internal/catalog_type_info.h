@@ -13,13 +13,14 @@ namespace ads {
 
 struct TypeInfo {
   TypeInfo();
-  explicit TypeInfo(const TypeInfo& info);
+  TypeInfo(
+      const TypeInfo& info);
   ~TypeInfo();
 
   std::string code;
   std::string name;
   std::string platform;
-  uint64_t version;
+  uint64_t version = 0;
 };
 
 }  // namespace ads

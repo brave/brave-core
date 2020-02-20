@@ -12,15 +12,14 @@
 
 namespace ads {
 
-AdsHistory::AdsHistory() :
-    entries() {}
+AdsHistory::AdsHistory() = default;
 
-AdsHistory::AdsHistory(const AdsHistory& history) :
-    entries(history.entries) {}
+AdsHistory::AdsHistory(
+    const AdsHistory& history) = default;
 
 AdsHistory::~AdsHistory() = default;
 
-const std::string AdsHistory::ToJson() const {
+std::string AdsHistory::ToJson() const {
   std::string json;
   SaveToJson(*this, &json);
   return json;

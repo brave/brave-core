@@ -28,12 +28,12 @@ struct ADS_EXPORT AdHistory {
   bool operator!=(
       const AdHistory& rhs) const;
 
-  const std::string ToJson() const;
+  std::string ToJson() const;
   Result FromJson(
       const std::string& json,
       std::string* error_description = nullptr);
 
-  uint64_t timestamp_in_seconds;
+  uint64_t timestamp_in_seconds = 0;
   std::string uuid;
   std::string parent_uuid;
   AdContent ad_content;
