@@ -6,8 +6,10 @@
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 
 #include <algorithm>
+#include <utility>
 
 #include "base/strings/string_util.h"
+#include "base/values.h"
 
 using adblock::FilterList;
 
@@ -42,6 +44,60 @@ std::vector<FilterList>::const_iterator FindAdBlockFilterListByLocale(
                               return lang == adjusted_locale;
                             }) != filter_list.langs.end();
       });
+}
+
+// Merges the contents of the second HostnameCosmeticResources Value into the
+// first one provided.
+void MergeResourcesInto(base::Value* into, base::Value* from) {
+  base::Value* resources_hide_selectors = into->FindKey("hide_selectors");
+  base::Value* from_resources_hide_selectors =
+      from->FindKey("hide_selectors");
+  if (resources_hide_selectors && from_resources_hide_selectors) {
+    for (auto i = from_resources_hide_selectors->GetList().begin();
+            i < from_resources_hide_selectors->GetList().end();
+            i++) {
+      resources_hide_selectors->Append(std::move(*i));
+    }
+  }
+
+  base::Value* resources_style_selectors = into->FindKey("style_selectors");
+  base::Value* from_resources_style_selectors =
+      from->FindKey("style_selectors");
+  if (resources_style_selectors && from_resources_style_selectors) {
+    for (auto i : from_resources_style_selectors->DictItems()) {
+      base::Value* resources_entry =
+          resources_style_selectors->FindKey(i.first);
+      if (resources_entry) {
+        for (auto j = i.second.GetList().begin();
+                j < i.second.GetList().end();
+                j++) {
+          resources_entry->Append(std::move(*j));
+        }
+      } else {
+        resources_style_selectors->SetPath(i.first, std::move(i.second));
+      }
+    }
+  }
+
+  base::Value* resources_exceptions = into->FindKey("exceptions");
+  base::Value* from_resources_exceptions = from->FindKey("exceptions");
+  if (resources_exceptions && from_resources_exceptions) {
+    for (auto i = from_resources_exceptions->GetList().begin();
+            i < from_resources_exceptions->GetList().end();
+            i++) {
+      resources_exceptions->Append(std::move(*i));
+    }
+  }
+
+  base::Value* resources_injected_script = into->FindKey("injected_script");
+  base::Value* from_resources_injected_script =
+      from->FindKey("injected_script");
+  if (resources_injected_script && from_resources_injected_script) {
+    *resources_injected_script = base::Value(
+            resources_injected_script->GetString()
+            + '\n'
+            + from_resources_injected_script->GetString());
+  }
 }
 
 }  // namespace brave_shields
