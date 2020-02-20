@@ -230,7 +230,7 @@ def main():
         config.master_pr_number = pr_number
         if top_level_base == 'master':
             config.channels_to_process = config.channel_names[1:]
-        else:
+        elif len(config.channels_to_process) == 0:
             branch_index = remote_branches.index(top_level_base)
             config.channels_to_process = config.channel_names[branch_index:]
 
