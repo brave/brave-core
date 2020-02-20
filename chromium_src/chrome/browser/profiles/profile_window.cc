@@ -10,6 +10,7 @@
 #undef CreateAndSwitchToNewProfile
 
 #include "base/bind.h"
+#include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
@@ -43,6 +44,33 @@ void OpenBrowserWindowForTorProfile(ProfileManager::CreateCallback callback,
       profile->GetOffTheRecordProfile(), status);
 }
 
+void OnTorRegularProfileCreated(ProfileManager::CreateCallback callback,
+                                bool always_create,
+                                bool is_new_profile,
+                                bool unblock_extensions,
+                                Profile* profile,
+                                Profile::CreateStatus status) {
+  // We need to postpone the timing of creating the off-the-record Tor profile
+  // and let the regular Tor profile finish ProfileManager::DoFinalInit first.
+  // So we pass the regular Tor profile here and access the off-the-record Tor
+  // profile later when this task is executed.
+  //
+  // It is because an existing ProfileObserver might only start to observe
+  // this regular profile in OnProfileAdded which is happened in DoFinalInit.
+  // For example, ChromeProcessManagerDelegate has this behavior and we will
+  // miss the OnOffTheRecordProfileCreated event if we create the
+  // off-the-record Tor profile before OnProfileAdded of the regular Tor
+  // profile is called. This would lead us to not destroying the background
+  // hosts in time before the off-the-record Tor profile is destroyed and hit
+  // DCHECK in ProfileDestroyer because a render process host wasn't destroyed
+  // before the off-the-record profile is destroyed.
+  DCHECK(base::SequencedTaskRunnerHandle::IsSet());
+  base::SequencedTaskRunnerHandle::Get()->PostTask(
+      FROM_HERE, base::BindOnce(&profiles::OpenBrowserWindowForTorProfile,
+                                callback, always_create, is_new_profile,
+                                unblock_extensions, profile, status));
+}
+
 #if !defined(OS_ANDROID)
 void SwitchToTorProfile(ProfileManager::CreateCallback callback) {
   const base::FilePath& path = BraveProfileManager::GetTorProfilePath();
@@ -52,8 +80,8 @@ void SwitchToTorProfile(ProfileManager::CreateCallback callback) {
   //                                  path);
   g_browser_process->profile_manager()->CreateProfileAsync(
       path,
-      base::Bind(&profiles::OpenBrowserWindowForTorProfile, callback, false,
-                 false, false),
+      base::Bind(&profiles::OnTorRegularProfileCreated, callback, false, false,
+                 false),
       base::string16(), std::string());
 }
 #endif
