@@ -118,6 +118,13 @@ class FavoritesDataSource: NSObject, UICollectionViewDataSource {
 }
 
 extension FavoritesDataSource: NSFetchedResultsControllerDelegate {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        // Workaround for http://www.openradar.me/15262692
+        // At the same time when preloaded favorites are created we show the onboarding screen to users.
+        // This can cause the app to crash.
+        collectionView?.numberOfItems(inSection: 0)
+    }
+    
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
 
         switch type {
