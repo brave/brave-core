@@ -1577,7 +1577,7 @@ TEST_F(BraveSyncServiceTest, CheckOtherBookmarkRecord) {
   EXPECT_EQ(other_node_object_id, object_id_iter1);
   EXPECT_EQ(record->objectId, other_node_object_id);
 
-  // Obejct id is out-dated
+  // Object id is out-dated
   record = SimpleFolderSyncRecord(
       SyncRecord::Action::A_CREATE, object_id_iter1,
       kOtherNodeName, kOtherNodeOrder, "", "",
