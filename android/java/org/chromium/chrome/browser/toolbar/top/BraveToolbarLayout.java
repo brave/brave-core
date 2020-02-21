@@ -173,7 +173,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       if (this instanceof ToolbarPhone) {
           if (getMenuButtonWrapper() != null && BottomToolbarVariationManager.isMenuButtonOnBottom()) {
               getMenuButtonWrapper().setVisibility(View.GONE);
-              disableMenuButton();
           }
       }
   }
