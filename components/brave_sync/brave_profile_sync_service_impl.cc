@@ -523,6 +523,17 @@ void BraveProfileSyncServiceImpl::OnSyncReadyBookmarksModelLoaded() {
   }
 }
 
+// static
+void BraveProfileSyncServiceImpl::AddNonClonedBookmarkKeys(
+    BookmarkModel* model) {
+  DCHECK(model);
+  DCHECK(model->loaded());
+  model->AddNonClonedKey("object_id");
+  model->AddNonClonedKey("order");
+  model->AddNonClonedKey("sync_timestamp");
+  model->AddNonClonedKey("version");
+}
+
 syncer::ModelTypeSet BraveProfileSyncServiceImpl::GetPreferredDataTypes()
     const {
   // Force DEVICE_INFO type to have nudge cycle each time to fetch
