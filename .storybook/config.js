@@ -35,7 +35,13 @@ function loadStories() {
   window.loadTimeData = {
     getString (key) {
       return locale[key] || key
+    },
+    getBoolean (key) {
+      return false
     }
+  }
+  chrome.extension = {
+    inIncognitoContext: false
   }
   const req = require.context('../components/', true, /\/stories\/.*\.tsx$/)
   req.keys().forEach(filename => req(filename))
