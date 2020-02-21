@@ -96,6 +96,16 @@ source_set("ui") {
       "webui/settings/default_brave_shields_handler.h",
     ]
 
+    if (is_mac) {
+      sources += [
+        "webui/settings/brave_settings_import_data_handler_mac.mm",
+      ]
+    } else {
+      sources += [
+        "webui/settings/brave_settings_import_data_handler.cc",
+      ]
+    }
+
     if (enable_sparkle) {
       sources += [
         "webui/settings/brave_relaunch_handler_mac.h",
@@ -169,16 +179,6 @@ source_set("ui") {
     sources += [
       "views/brave_views_delegate_linux.cc",
       "views/brave_views_delegate_linux.h",
-    ]
-  }
-
-  if (is_mac) {
-    sources += [
-      "webui/settings/brave_settings_import_data_handler_mac.mm",
-    ]
-  } else {
-    sources += [
-      "webui/settings/brave_settings_import_data_handler.cc",
     ]
   }
 
