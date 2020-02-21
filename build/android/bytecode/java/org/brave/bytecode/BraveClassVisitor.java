@@ -8,7 +8,6 @@ package org.brave.bytecode;
 import static org.objectweb.asm.Opcodes.ACC_PRIVATE;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.ASM5;
-import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 
 import java.util.HashMap;
 import java.util.Map;
