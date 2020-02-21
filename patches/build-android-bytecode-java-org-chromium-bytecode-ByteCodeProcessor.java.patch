@@ -1,18 +1,8 @@
 diff --git a/build/android/bytecode/java/org/chromium/bytecode/ByteCodeProcessor.java b/build/android/bytecode/java/org/chromium/bytecode/ByteCodeProcessor.java
-index 4a56332c061a775dae854a1d2946c855c2f4f66c..d036a1ea3b4f680932db276e2ec248462c76f0ea 100644
+index 4a56332c061a775dae854a1d2946c855c2f4f66c..694a5fb9d72cad2a67df0b6084e9ca8c231faf48 100644
 --- a/build/android/bytecode/java/org/chromium/bytecode/ByteCodeProcessor.java
 +++ b/build/android/bytecode/java/org/chromium/bytecode/ByteCodeProcessor.java
-@@ -9,6 +9,9 @@ import static org.objectweb.asm.ClassWriter.COMPUTE_FRAMES;
- import org.objectweb.asm.ClassReader;
- import org.objectweb.asm.ClassVisitor;
- import org.objectweb.asm.ClassWriter;
-+import org.objectweb.asm.Opcodes;
-+import org.objectweb.asm.tree.ClassNode;
-+import org.objectweb.asm.tree.MethodNode;
- 
- import java.io.BufferedInputStream;
- import java.io.BufferedOutputStream;
-@@ -126,6 +129,7 @@ class ByteCodeProcessor {
+@@ -126,6 +126,7 @@ class ByteCodeProcessor {
            chain = new TraceClassVisitor(chain, new PrintWriter(System.out));
          }
          */
@@ -20,19 +10,11 @@ index 4a56332c061a775dae854a1d2946c855c2f4f66c..d036a1ea3b4f680932db276e2ec24846
          if (sShouldUseThreadAnnotations) {
              chain = new ThreadAssertionClassAdapter(chain);
          }
-@@ -136,8 +140,10 @@ class ByteCodeProcessor {
+@@ -136,6 +137,7 @@ class ByteCodeProcessor {
              chain = new CustomResourcesClassAdapter(
                      chain, reader.getClassName(), reader.getSuperName(), sFullClassPathClassLoader);
          }
 +        chain = org.brave.bytecode.BraveClassAdapter.createAdapter(chain);
          reader.accept(chain, 0);
          byte[] patchedByteCode = writer.toByteArray();
-+
          return EntryDataPair.create(entry.getName(), patchedByteCode);
-     }
- 
-@@ -285,3 +291,4 @@ class ByteCodeProcessor {
-         process(inputJarPath, outputJarPath);
-     }
- }
-+
