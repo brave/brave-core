@@ -1215,7 +1215,6 @@ void BraveProfileSyncServiceImpl::SendSyncRecords(
     const std::string& category_name,
     RecordsListPtr records) {
   DCHECK(brave_sync_client_);
-  DCHECK(model_->loaded());
   brave_sync_client_->SendSyncRecords(category_name, *records);
   if (category_name == kBookmarks) {
     DCHECK(model_->loaded());
