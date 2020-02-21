@@ -19,8 +19,18 @@ const informTabOfCosmeticRulesToConsider = (tabId: number, selectors: string[]) 
 
 // Fires when content-script calls hiddenClassIdSelectors
 export const injectClassIdStylesheet = (tabId: number, classes: string[], ids: string[], exceptions: string[]) => {
-  chrome.braveShields.hiddenClassIdSelectors(classes, ids, exceptions, (selectors) => {
+  chrome.braveShields.hiddenClassIdSelectors(classes, ids, exceptions, (selectors, forceHideSelectors) => {
     informTabOfCosmeticRulesToConsider(tabId, selectors)
+
+    if (forceHideSelectors.length > 0) {
+      const forceHideStylesheet = forceHideSelectors.join(',') + '{display:none!important;}\n'
+
+      chrome.tabs.insertCSS(tabId, {
+        code: forceHideStylesheet,
+        cssOrigin: 'user',
+        runAt: 'document_start'
+      })
+    }
   })
 }
 
@@ -33,7 +43,11 @@ export const applyAdblockCosmeticFilters = (tabId: number, hostname: string) => 
     }
 
     informTabOfCosmeticRulesToConsider(tabId, resources.hide_selectors)
+
     let styledStylesheet = ''
+    if (resources.force_hide_selectors.length > 0) {
+      styledStylesheet += resources.force_hide_selectors.join(',') + '{display:none!important;}\n'
+    }
     for (const selector in resources.style_selectors) {
       styledStylesheet += selector + '{' + resources.style_selectors[selector].join(';') + ';}\n'
     }
