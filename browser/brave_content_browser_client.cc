@@ -12,6 +12,7 @@
 #include "base/bind.h"
 #include "base/json/json_reader.h"
 #include "base/task/post_task.h"
+#include "base/unguessable_token.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/brave_tor_client_updater.h"
@@ -42,6 +43,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/browser_url_handler.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/common/content_switches.h"
 #include "content/public/common/service_names.mojom.h"
 #include "extensions/buildflags/buildflags.h"
 #include "services/service_manager/public/cpp/manifest_builder.h"
@@ -111,7 +113,10 @@ bool HandleURLRewrite(GURL* url, content::BrowserContext* browser_context) {
 }  // namespace
 
 BraveContentBrowserClient::BraveContentBrowserClient(StartupData* startup_data)
-    : ChromeContentBrowserClient(startup_data) {}
+    : ChromeContentBrowserClient(startup_data) {
+  session_token_ = base::UnguessableToken::Create();
+  incognito_session_token_ = base::UnguessableToken::Create();
+}
 
 BraveContentBrowserClient::~BraveContentBrowserClient() {}
 
@@ -203,6 +208,32 @@ BraveContentBrowserClient::GetExtraServiceManifests() {
 #endif
 
   return manifests;
+}
+
+void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
+    base::CommandLine* command_line,
+    int child_process_id) {
+  ChromeContentBrowserClient::AppendExtraCommandLineSwitches(command_line,
+                                                             child_process_id);
+  std::string process_type =
+      command_line->GetSwitchValueASCII(switches::kProcessType);
+  if (process_type == switches::kRendererProcess) {
+    content::RenderProcessHost* process =
+        content::RenderProcessHost::FromID(child_process_id);
+    Profile* profile =
+        process ? Profile::FromBrowserContext(process->GetBrowserContext())
+                : nullptr;
+    if (profile && !profile->IsOffTheRecord()) {
+      command_line->AppendSwitchASCII(
+          "brave_session_token",
+          base::NumberToString(session_token_.GetHighForSerialization()));
+    } else {
+      command_line->AppendSwitchASCII(
+          "brave_session_token",
+          base::NumberToString(
+              incognito_session_token_.GetHighForSerialization()));
+    }
+  }
 }
 
 void BraveContentBrowserClient::AdjustUtilityServiceProcessCommandLine(
