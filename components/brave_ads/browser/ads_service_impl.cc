@@ -221,11 +221,12 @@ bool EnsureBaseDirectoryExistsOnFileTaskRunner(
 ads::CreativeAdNotificationList GetCreativeAdNotificationsOnFileTaskRunner(
     const std::vector<std::string>& categories,
     BundleStateDatabase* backend) {
+  ads::CreativeAdNotificationList ads;
+
   if (!backend) {
-    return {};
+    return ads;
   }
 
-  ads::CreativeAdNotificationList ads;
   backend->GetCreativeAdNotifications(categories, &ads);
   return ads;
 }

@@ -9,10 +9,12 @@
 #include "url/url_constants.h"
 #include "url/gurl.h"
 #include "third_party/re2/src/re2/re2.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
 namespace helper {
 
-std::string Uri::GetUri(const std::string& url) {
+std::string Uri::GetUri(
+    const std::string& url) {
   auto http_scheme = std::string(url::kHttpScheme) +
       std::string(url::kStandardSchemeSeparator);
 
@@ -27,7 +29,7 @@ std::string Uri::GetUri(const std::string& url) {
   return url;
 }
 
-bool Uri::MatchWildcard(
+bool Uri::MatchesWildcard(
     const std::string& url,
     const std::string& pattern) {
   DCHECK(!url.empty());
@@ -49,6 +51,13 @@ bool Uri::MatchWildcard(
   RE2::GlobalReplace(&quoted_lowercase_pattern, "\\\\\\*", ".*");
 
   return RE2::FullMatch(lowercase_url, quoted_lowercase_pattern);
+}
+
+bool Uri::MatchesDomainOrHost(
+      const std::string& url1,
+      const std::string& url2) {
+  return SameDomainOrHost(GURL(url1), GURL(url2),
+      net::registry_controlled_domains::EXCLUDE_PRIVATE_REGISTRIES);
 }
 
 }  // namespace helper

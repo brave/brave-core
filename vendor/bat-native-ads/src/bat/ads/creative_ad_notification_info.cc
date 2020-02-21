@@ -35,6 +35,10 @@ Result CreativeAdNotificationInfo::FromJson(
     return FAILED;
   }
 
+  if (document.HasMember("creative_instance_id")) {
+    creative_instance_id = document["creative_instance_id"].GetString();
+  }
+
   if (document.HasMember("creative_set_id")) {
     creative_set_id = document["creative_set_id"].GetString();
   }
@@ -53,6 +57,10 @@ Result CreativeAdNotificationInfo::FromJson(
 
   if (document.HasMember("daily_cap")) {
     daily_cap = document["daily_cap"].GetUint();
+  }
+
+  if (document.HasMember("advertiser_id")) {
+    advertiser_id = document["advertiser_id"].GetString();
   }
 
   if (document.HasMember("per_day")) {
@@ -87,10 +95,6 @@ Result CreativeAdNotificationInfo::FromJson(
     target_url = document["target_url"].GetString();
   }
 
-  if (document.HasMember("creative_instance_id")) {
-    creative_instance_id = document["creative_instance_id"].GetString();
-  }
-
   return SUCCESS;
 }
 
@@ -98,6 +102,9 @@ void SaveToJson(
     JsonWriter* writer,
     const CreativeAdNotificationInfo& info) {
   writer->StartObject();
+
+  writer->String("creative_instance_id");
+  writer->String(info.creative_instance_id.c_str());
 
   writer->String("creative_set_id");
   writer->String(info.creative_set_id.c_str());
@@ -113,6 +120,9 @@ void SaveToJson(
 
   writer->String("daily_cap");
   writer->Uint(info.daily_cap);
+
+  writer->String("advertiser_id");
+  writer->String(info.advertiser_id.c_str());
 
   writer->String("per_day");
   writer->Uint(info.per_day);
@@ -138,9 +148,6 @@ void SaveToJson(
 
   writer->String("target_url");
   writer->String(info.target_url.c_str());
-
-  writer->String("creative_instance_id");
-  writer->String(info.creative_instance_id.c_str());
 
   writer->EndObject();
 }

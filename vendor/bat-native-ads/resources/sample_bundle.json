@@ -1,5 +1,5 @@
 {
-   "ad_notification_categories": {
+   "creative_ad_notifications": {
       "fashion": [
          {
             "title": "FramedArt.com",
@@ -1553,5 +1553,5 @@
          }
       ]
    },
-   "conversions": []
+   "ad_conversions": []
 }
