@@ -9,6 +9,7 @@
 #include <map>
 #include <string>
 
+#include "base/values.h"
 #include "bat/ledger/mojom_structs.h"
 #include "bat/ledger/internal/properties/reconcile_direction_properties.h"
 
@@ -19,6 +20,18 @@ FromContributionQueuePublishersToReconcileDirections(
     ledger::ContributionQueuePublisherList list);
 
 ledger::ReportType GetReportTypeFromRewardsType(const ledger::RewardsType type);
+
+bool GenerateSuggestion(
+    const std::string& token_value,
+    const std::string& public_key,
+    const std::string& suggestion_encoded,
+    base::Value* result);
+
+bool GenerateSuggestionMock(
+    const std::string& token_value,
+    const std::string& public_key,
+    const std::string& suggestion_encoded,
+    base::Value* result);
 
 }  // namespace braveledger_contribution
 

@@ -102,13 +102,7 @@ void UpholdWallet::OnGenerate(
     wallet_ptr->status = ledger::WalletStatus::PENDING;
   }
 
-  const auto current_status = wallet_ptr->status;
   wallet_ptr = SetStatus(user, std::move(wallet_ptr));
-
-  if (current_status == ledger::WalletStatus::CONNECTED &&
-      wallet_ptr->status == ledger::WalletStatus::VERIFIED) {
-    allow_zero_balance = true;
-  }
 
   // if we don't have anon address we need to force claim so that server
   // can save it
@@ -132,6 +126,7 @@ void UpholdWallet::OnGenerate(
   }
 
   if (user.verified) {
+    ledger_->TransferTokens(wallet_ptr->Clone(), [](const ledger::Result){});
     uphold_->TransferAnonToExternalWallet(
         std::move(wallet_ptr),
         allow_zero_balance,
@@ -159,6 +154,7 @@ void UpholdWallet::OnCreateCard(
   wallet_ptr = GenerateLinks(std::move(wallet_ptr));
 
   if (wallet_ptr->status == ledger::WalletStatus::VERIFIED) {
+    ledger_->TransferTokens(wallet_ptr->Clone(), [](const ledger::Result){});
     uphold_->TransferAnonToExternalWallet(
         std::move(wallet_ptr),
         allow_zero_balance,

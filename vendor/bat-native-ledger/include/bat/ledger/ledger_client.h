@@ -65,7 +65,7 @@ using ResultCallback = std::function<void(const Result)>;
 using GetFirstContributionQueueCallback =
     std::function<void(ContributionQueuePtr)>;
 using GetPromotionCallback = std::function<void(PromotionPtr)>;
-using GetAllUnblindedTokensCallback = std::function<void(UnblindedTokenList)>;
+using GetUnblindedTokenListCallback = std::function<void(UnblindedTokenList)>;
 using GetAllPromotionsCallback = std::function<void(PromotionMap)>;
 
 using GetTransactionReportCallback =

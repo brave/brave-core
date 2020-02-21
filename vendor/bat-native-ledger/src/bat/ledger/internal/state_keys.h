@@ -14,6 +14,7 @@ namespace ledger {
   const char kStatePromotionLastFetchStamp[] = "promotion_last_fetch_stamp";
   const char kStatePromotionCorruptedMigrated[] =
       "promotion_corrupted_migrated";
+  const char kStateAnonTransferChecked[] = "anon_transfer_checked";
 }  // namespace ledger
 
 #endif  // BRAVELEDGER_STATE_KEYS_H_

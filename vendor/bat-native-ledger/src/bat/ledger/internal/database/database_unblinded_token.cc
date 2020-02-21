@@ -245,7 +245,7 @@ void DatabaseUnblindedToken::InsertOrUpdateList(
 }
 
 void DatabaseUnblindedToken::GetAllRecords(
-    ledger::GetAllUnblindedTokensCallback callback) {
+    ledger::GetUnblindedTokenListCallback callback) {
   auto transaction = ledger::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
@@ -281,7 +281,7 @@ void DatabaseUnblindedToken::GetAllRecords(
 
 void DatabaseUnblindedToken::OnGetAllRecords(
     ledger::DBCommandResponsePtr response,
-    ledger::GetAllUnblindedTokensCallback callback) {
+    ledger::GetUnblindedTokenListCallback callback) {
   if (!response
       || response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     callback({});
@@ -363,6 +363,71 @@ void DatabaseUnblindedToken::DeleteRecordsForPromotion(
       callback);
 
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+}
+
+void DatabaseUnblindedToken::GetRecordsByPromotionType(
+    const std::vector<ledger::PromotionType>& promotion_types,
+    ledger::GetUnblindedTokenListCallback callback) {
+  DCHECK(!promotion_types.empty());
+  auto transaction = ledger::DBTransaction::New();
+  std::vector<std::string> in_case;
+
+  for (const auto& type : promotion_types) {
+    in_case.push_back(std::to_string(static_cast<int>(type)));
+  }
+
+  const std::string query = base::StringPrintf(
+      "SELECT u.token_id, u.token_value, u.public_key, u.value FROM %s as u "
+      "INNER JOIN promotion as p ON p.promotion_id = u.promotion_id "
+      "WHERE p.type IN (%s)",
+      table_name_,
+      base::JoinString(in_case, ",").c_str());
+
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::READ;
+  command->command = query;
+
+  command->record_bindings = {
+      ledger::DBCommand::RecordBindingType::INT64_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE
+  };
+
+  transaction->commands.push_back(std::move(command));
+
+  auto transaction_callback =
+      std::bind(&DatabaseUnblindedToken::OnGetRecordsByPromotionType,
+          this,
+          _1,
+          callback);
+
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+}
+
+void DatabaseUnblindedToken::OnGetRecordsByPromotionType(
+    ledger::DBCommandResponsePtr response,
+    ledger::GetUnblindedTokenListCallback callback) {
+  if (!response
+      || response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    callback({});
+    return;
+  }
+
+  ledger::UnblindedTokenList list;
+  for (auto const& record : response->result->get_records()) {
+    auto info = ledger::UnblindedToken::New();
+    auto* record_pointer = record.get();
+
+    info->id = GetInt64Column(record_pointer, 0);
+    info->token_value = GetStringColumn(record_pointer, 1);
+    info->public_key = GetStringColumn(record_pointer, 2);
+    info->value = GetDoubleColumn(record_pointer, 3);
+
+    list.push_back(std::move(info));
+  }
+
+  callback(std::move(list));
 }
 
 }  // namespace braveledger_database

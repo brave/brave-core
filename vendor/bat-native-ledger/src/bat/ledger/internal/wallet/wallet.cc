@@ -268,9 +268,12 @@ void Wallet::OnTransferAnonToExternalWallet(
     ledger::TransferAnonToExternalWalletCallback callback) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
-  if (response_status_code == net::HTTP_OK ||
-      response_status_code == net::HTTP_CONFLICT) {
+  if (response_status_code == net::HTTP_OK) {
     callback(ledger::Result::LEDGER_OK);
+    return;
+  }
+  if (response_status_code == net::HTTP_CONFLICT) {
+    callback(ledger::Result::ALREADY_EXISTS);
     return;
   }
 
@@ -281,7 +284,6 @@ void Wallet::TransferAnonToExternalWallet(
     ledger::ExternalWalletPtr wallet,
     const bool allow_zero_balance,
     ledger::TransferAnonToExternalWalletCallback callback) {
-
   FetchBalance(std::bind(&Wallet::OnTransferAnonToExternalWalletBalance,
                this,
                _1,

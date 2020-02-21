@@ -236,7 +236,8 @@ void Uphold::OnTransferAnonToExternalWalletCallback(
     const ledger::ExternalWallet& wallet,
     ledger::Result result) {
   auto wallet_ptr = ledger::ExternalWallet::New(wallet);
-  if (result == ledger::Result::LEDGER_OK) {
+  if (result == ledger::Result::LEDGER_OK ||
+      result == ledger::Result::ALREADY_EXISTS) {
     wallet_ptr->transferred = true;
   }
 

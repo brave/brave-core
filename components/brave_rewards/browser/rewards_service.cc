@@ -66,6 +66,7 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
 #endif
   registry->RegisterUint64Pref(prefs::kStatePromotionLastFetchStamp, 0ull);
   registry->RegisterBooleanPref(prefs::kStatePromotionCorruptedMigrated, false);
+  registry->RegisterBooleanPref(prefs::kStateAnonTransferChecked, false);
 }
 
 }  // namespace brave_rewards
