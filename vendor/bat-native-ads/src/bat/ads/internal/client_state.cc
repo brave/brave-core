@@ -80,10 +80,10 @@ Result ClientState::FromJson(
   }
 
   if (client.HasMember("advertisersUUIDSeen")) {
-    for (const auto& advertiser_uuid_seen :
+    for (const auto& seen_advertiser :
         client["advertisersUUIDSeen"].GetObject()) {
-      seen_advertisers.insert({advertiser_uuid_seen.name.GetString(),
-          advertiser_uuid_seen.value.GetInt64()});
+      seen_advertisers.insert({seen_advertiser.name.GetString(),
+          seen_advertiser.value.GetInt64()});
     }
   }
 
@@ -234,7 +234,7 @@ void SaveToJson(JsonWriter* writer, const ClientState& state) {
 
   writer->String("adsUUIDSeen");
   writer->StartObject();
-  for (const auto& seen_ad_notification : state.seen_advertisers) {
+  for (const auto& seen_ad_notification : state.seen_ad_notifications) {
     writer->String(seen_ad_notification.first.c_str());
     writer->Uint64(seen_ad_notification.second);
   }
