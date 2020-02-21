@@ -72,6 +72,21 @@ IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
+    BraveWalletAPIBitGoKnownValuesTest) {
+  GetPrefs()->SetString(kBraveWalletAES256GCMSivNonce, "yJngKDr5nCGYz7EM");
+  GetPrefs()->SetString(kBraveWalletEncryptedSeed,
+      "IQu5fUMbXG6E7v8ITwcIKL3TI3rst0LU1US7ZxCKpgAGgLNAN6DbCN7nMF2Eg7Kx");
+  ResultCatcher catcher;
+  const Extension* extension =
+    LoadExtension(extension_dir_.AppendASCII("braveWallet"));
+  ASSERT_TRUE(extension);
+  ASSERT_TRUE(browsertest_util::ExecuteScriptInBackgroundPageNoWait(
+      browser()->profile(), ethereum_remote_client_extension_id,
+      "testKnownBitGoSeedValuesEndToEnd()"));
+  ASSERT_TRUE(catcher.GetNextResult()) << message_;
+}
+
+IN_PROC_BROWSER_TEST_F(BraveWalletExtensionApiTest,
     BraveWalletWeb3ProviderCryptoWallets) {
   GetPrefs()->SetInteger(kBraveWalletWeb3Provider,
       static_cast<int>(BraveWalletWeb3ProviderTypes::CRYPTO_WALLETS));

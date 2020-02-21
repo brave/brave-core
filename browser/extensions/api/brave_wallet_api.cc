@@ -124,8 +124,31 @@ BraveWalletGetWalletSeedFunction::Run() {
   auto* controller = GetBraveWalletController(browser_context());
 
   base::Value::BlobStorage blob;
-  std::string derived = controller->GetWalletSeed(
-      params->key);
+  std::string derived = controller->GetWalletSeed(params->key);
+
+  if (derived.empty()) {
+    return RespondNow(Error("Error getting wallet seed"));
+  }
+
+  blob.assign(derived.begin(), derived.end());
+
+  return RespondNow(OneArgument(
+    std::make_unique<base::Value>(blob)));
+}
+
+ExtensionFunction::ResponseAction
+BraveWalletGetBitGoSeedFunction::Run() {
+  // make sure the passed in enryption key is 32 bytes.
+  std::unique_ptr<brave_wallet::GetBitGoSeed::Params> params(
+    brave_wallet::GetBitGoSeed::Params::Create(*args_));
+  if (params->key.size() != 32) {
+    return RespondNow(Error("Invalid input key size"));
+  }
+
+  auto* controller = GetBraveWalletController(browser_context());
+
+  base::Value::BlobStorage blob;
+  std::string derived = controller->GetBitGoSeed(params->key);
 
   if (derived.empty()) {
     return RespondNow(Error("Error getting wallet seed"));

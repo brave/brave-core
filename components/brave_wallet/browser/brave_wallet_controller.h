@@ -43,10 +43,14 @@ class BraveWalletController : extensions::ExtensionRegistryObserver {
 
   void ResetCryptoWallets();
   void CloseTabsAndRestart();
-  std::string GetWalletSeed(
-      std::vector<uint8_t> key);
+  bool LoadRootSeedInfo(std::vector<uint8_t> key, std::string* seed);
+
+  std::string GetWalletSeed(std::vector<uint8_t> key);
+  std::string GetBitGoSeed(std::vector<uint8_t> key);
 
   static std::string GetEthereumRemoteClientSeedFromRootSeed(
+      const std::string& seed);
+  static std::string GetBitGoSeedFromRootSeed(
       const std::string& seed);
   static bool SealSeed(const std::string& seed, const std::string& key,
       const std::string& nonce, std::string* cipher_seed);

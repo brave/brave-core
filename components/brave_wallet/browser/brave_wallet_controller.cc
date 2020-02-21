@@ -64,6 +64,21 @@ const size_t BraveWalletController::kNonceByteLength = 12;
 const size_t BraveWalletController::kSeedByteLength = 32;
 
 // Returns 32 bytes of output from HKDF-SHA256.
+// This is done so that BitGo never actually directly has
+// access to the master seed, but it does have a deterministic seed.
+// The salt value is the same intentionally on all clients.
+// See https://github.com/brave/brave-browser/wiki/Brave-Ethereum-Remote-Client-Wallet-Seed-Information#note-on-salts
+// static
+std::string
+BraveWalletController::GetBitGoSeedFromRootSeed(
+    const std::string& seed) {
+  base::StringPiece salt("brave-bitgo-salt");
+  base::StringPiece info("bitgo");
+  return crypto::HkdfSha256(base::StringPiece(seed.begin(), seed.end()),
+      salt, info, kSeedByteLength);
+}
+
+// Returns 32 bytes of output from HKDF-SHA256.
 // This is done so that ethereum-remote-client never actually directly has
 // access to the master seed, but it does have a deterministic seed.
 // The salt value is the same intentionally on all clients.
@@ -196,6 +211,44 @@ void BraveWalletController::CloseTabsAndRestart() {
 // from AES 256 GCM SIV.
 // If this function is called multiple times, the previous value
 // from prefs will be re-used.
+// The return value will be true if successful
+// https://github.com/brave/brave-browser/wiki/Brave-Ethereum-Remote-Client-Wallet-Seed-Information
+bool BraveWalletController::LoadRootSeedInfo(std::vector<uint8_t> key,
+    std::string* seed) {
+  std::string nonce;
+  std::string cipher_seed;
+  if (!seed) {
+    return false;
+  }
+  Profile* profile = Profile::FromBrowserContext(context_);
+  // Check if we already have a nonce and seed stored in prefs.
+  std::string aes_256_gcm_siv_key(key.begin(), key.end());
+  if (BraveWalletController::LoadFromPrefs(
+          profile, &cipher_seed, &nonce)) {
+    // Decrypt the existing seed.
+    if (!BraveWalletController::OpenSeed(
+            cipher_seed, aes_256_gcm_siv_key, nonce, seed)) {
+      return false;
+    }
+  } else {
+    // No valid previous value was stored, so generate new random values.
+    nonce = BraveWalletController::GetRandomNonce();
+    *seed = BraveWalletController::GetRandomSeed();
+    // Encrypt that seed.
+    if (!BraveWalletController::SealSeed(
+            *seed, aes_256_gcm_siv_key, nonce, &cipher_seed)) {
+      return false;
+    }
+    // Save it to prefs.
+    BraveWalletController::SaveToPrefs(profile, cipher_seed, nonce);
+  }
+  // We should have the correct nonce size and seed size at this point
+  // regardless of if it was newly genearted or retrieved from prefs.
+  DCHECK_EQ(nonce.size(), BraveWalletController::kNonceByteLength);
+  DCHECK_EQ(seed->size(), BraveWalletController::kSeedByteLength);
+  return true;
+}
+
 // The return value is passed to chrome.braveWallet.getWalletSeed
 // via the second paramter callback function.
 // The return value will not be the root seed, but instead a
@@ -205,41 +258,28 @@ void BraveWalletController::CloseTabsAndRestart() {
 // https://github.com/brave/brave-browser/wiki/Brave-Ethereum-Remote-Client-Wallet-Seed-Information
 std::string BraveWalletController::GetWalletSeed(
     std::vector<uint8_t> key) {
-  std::string nonce;
-  std::string cipher_seed;
   std::string seed;
-  std::string derived;
-
-  Profile* profile = Profile::FromBrowserContext(context_);
-  // Check if we already have a nonce and seed stored in prefs.
-  std::string aes_256_gcm_siv_key(key.begin(), key.end());
-  if (BraveWalletController::LoadFromPrefs(
-          profile, &cipher_seed, &nonce)) {
-    // Decrypt the existing seed.
-    if (!BraveWalletController::OpenSeed(
-            cipher_seed, aes_256_gcm_siv_key, nonce, &seed)) {
-      return derived;
-    }
-  } else {
-    // No valid previous value was stored, so generate new random values.
-    nonce = BraveWalletController::GetRandomNonce();
-    seed = BraveWalletController::GetRandomSeed();
-    // Encrypt that seed.
-    if (!BraveWalletController::SealSeed(
-            seed, aes_256_gcm_siv_key, nonce, &cipher_seed)) {
-      return derived;
-    }
-    // Save it to prefs.
-    BraveWalletController::SaveToPrefs(profile, cipher_seed, nonce);
+  if (!LoadRootSeedInfo(key, &seed)) {
+    return "";
   }
-  // We should have the correct nonce size and seed size at this point
-  // regardless of if it was newly genearted or retrieved from prefs.
-  DCHECK_EQ(nonce.size(), BraveWalletController::kNonceByteLength);
-  DCHECK_EQ(seed.size(), BraveWalletController::kSeedByteLength);
-
-  derived = BraveWalletController::GetEthereumRemoteClientSeedFromRootSeed(
+  return BraveWalletController::GetEthereumRemoteClientSeedFromRootSeed(
       seed);
-  return derived;
+}
+
+// The return value is passed to chrome.braveWallet.getBitGoSeed
+// via the second paramter callback function.
+// The return value will not be the root seed, but instead a
+// deterministic hash of that seed with HKDF, so that we can use
+// other HKDF hashes with different info parameters for different purposes.
+// For more information, see:
+// https://github.com/brave/brave-browser/wiki/Brave-Ethereum-Remote-Client-Wallet-Seed-Information
+std::string BraveWalletController::GetBitGoSeed(
+    std::vector<uint8_t> key) {
+  std::string seed;
+  if (!LoadRootSeedInfo(key, &seed)) {
+    return "";
+  }
+  return BraveWalletController::GetBitGoSeedFromRootSeed(seed);
 }
 
 void BraveWalletController::RemoveUnusedWeb3ProviderContentScripts() {
