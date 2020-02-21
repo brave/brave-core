@@ -206,7 +206,7 @@ AdBlockRegionalServiceManager::HostnameCosmeticResources(
         it->second->HostnameCosmeticResources(hostname);
     if (first_value) {
       if (next_value) {
-        MergeResourcesInto(&*first_value, &*next_value);
+        MergeResourcesInto(&*first_value, &*next_value, false);
       }
     } else {
       first_value = std::move(next_value);

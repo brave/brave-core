@@ -69,7 +69,10 @@ BraveShieldsHostnameCosmeticResourcesFunction::Run() {
           HostnameCosmeticResources(params->hostname);
 
   if (regional_resources && regional_resources->is_dict()) {
-    ::brave_shields::MergeResourcesInto(&*resources, &*regional_resources);
+    ::brave_shields::MergeResourcesInto(
+            &*resources,
+            &*regional_resources,
+            false);
   }
 
   base::Optional<base::Value> custom_resources = g_brave_browser_process->
@@ -77,7 +80,10 @@ BraveShieldsHostnameCosmeticResourcesFunction::Run() {
           HostnameCosmeticResources(params->hostname);
 
   if (custom_resources && custom_resources->is_dict()) {
-    ::brave_shields::MergeResourcesInto(&*resources, &*custom_resources);
+    ::brave_shields::MergeResourcesInto(
+            &*resources,
+            &*custom_resources,
+            true);
   }
 
   auto result_list = std::make_unique<base::ListValue>();
@@ -93,7 +99,7 @@ BraveShieldsHiddenClassIdSelectorsFunction::Run() {
       brave_shields::HiddenClassIdSelectors::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  base::Optional<base::Value> selectors = g_brave_browser_process->
+  base::Optional<base::Value> hide_selectors = g_brave_browser_process->
       ad_block_service()->HiddenClassIdSelectors(params->classes,
                                                  params->ids,
                                                  params->exceptions);
@@ -104,16 +110,16 @@ BraveShieldsHiddenClassIdSelectorsFunction::Run() {
                                params->ids,
                                params->exceptions);
 
-  if (selectors && selectors->is_list()) {
+  if (hide_selectors && hide_selectors->is_list()) {
     if (regional_selectors && regional_selectors->is_list()) {
       for (auto i = regional_selectors->GetList().begin();
               i < regional_selectors->GetList().end();
               i++) {
-        selectors->Append(std::move(*i));
+        hide_selectors->Append(std::move(*i));
       }
     }
   } else {
-    selectors = std::move(regional_selectors);
+    hide_selectors = std::move(regional_selectors);
   }
 
   base::Optional<base::Value> custom_selectors = g_brave_browser_process->
@@ -122,20 +128,12 @@ BraveShieldsHiddenClassIdSelectorsFunction::Run() {
                                  params->ids,
                                  params->exceptions);
 
-  if (selectors && custom_selectors->is_list()) {
-    if (custom_selectors && custom_selectors->is_list()) {
-      for (auto i = custom_selectors->GetList().begin();
-              i < custom_selectors->GetList().end();
-              i++) {
-        selectors->Append(std::move(*i));
-      }
-    }
-  } else {
-    selectors = std::move(custom_selectors);
-  }
+  auto result_list = std::make_unique<base::ListValue>();
 
-  return RespondNow(OneArgument(std::make_unique<base::Value>(
-                  std::move(*selectors))));
+  result_list->GetList().push_back(std::move(*hide_selectors));
+  result_list->GetList().push_back(std::move(*custom_selectors));
+
+  return RespondNow(ArgumentList(std::move(result_list)));
 }
 
 

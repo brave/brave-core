@@ -20,6 +20,7 @@ class CosmeticResourceMergeTest : public testing::Test {
   void CompareMergeFromStrings(
           const std::string& a,
           const std::string& b,
+          bool force_hide,
           const std::string& expected) {
     base::Optional<base::Value> a_val = base::JSONReader::Read(a);
     ASSERT_TRUE(a_val);
@@ -31,7 +32,7 @@ class CosmeticResourceMergeTest : public testing::Test {
         base::JSONReader::Read(expected);
     ASSERT_TRUE(expected_val);
 
-    MergeResourcesInto(&*a_val, &*b_val);
+    MergeResourcesInto(&*a_val, &*b_val, force_hide);
 
     ASSERT_EQ(*a_val, *expected_val);
   }
@@ -69,7 +70,7 @@ TEST_F(CosmeticResourceMergeTest, MergeTwoEmptyResources) {
       "\"injected_script\": \"\n\""
   "}";
 
-  CompareMergeFromStrings(a, b, expected);
+  CompareMergeFromStrings(a, b, false, expected);
 }
 
 TEST_F(CosmeticResourceMergeTest, MergeEmptyIntoNonEmpty) {
@@ -85,7 +86,7 @@ TEST_F(CosmeticResourceMergeTest, MergeEmptyIntoNonEmpty) {
       "\"injected_script\": \"console.log('g')\n\""
   "}";
 
-  CompareMergeFromStrings(a, b, expected);
+  CompareMergeFromStrings(a, b, false, expected);
 }
 
 TEST_F(CosmeticResourceMergeTest, MergeNonEmptyIntoEmpty) {
@@ -101,7 +102,7 @@ TEST_F(CosmeticResourceMergeTest, MergeNonEmptyIntoEmpty) {
       "\"injected_script\": \"\nconsole.log('g')\""
   "}";
 
-  CompareMergeFromStrings(a, b, expected);
+  CompareMergeFromStrings(a, b, false, expected);
 }
 
 TEST_F(CosmeticResourceMergeTest, MergeNonEmptyIntoNonEmpty) {
@@ -125,7 +126,49 @@ TEST_F(CosmeticResourceMergeTest, MergeNonEmptyIntoNonEmpty) {
       "\"injected_script\": \"console.log('g')\nconsole.log('n')\""
   "}";
 
-  CompareMergeFromStrings(a, b, expected);
+  CompareMergeFromStrings(a, b, false, expected);
+}
+
+TEST_F(CosmeticResourceMergeTest, MergeEmptyForceHide) {
+  const std::string a = EMPTY_RESOURCES;
+  const std::string b = EMPTY_RESOURCES;
+
+  // Same as EMPTY_RESOURCES, but with an additional newline in the
+  // injected_script and a new empty `force_hide_selectors` array
+  const std::string expected = "{"
+      "\"hide_selectors\": [], "
+      "\"style_selectors\": {}, "
+      "\"exceptions\": [], "
+      "\"injected_script\": \"\n\","
+      "\"force_hide_selectors\": []"
+  "}";
+
+  CompareMergeFromStrings(a, b, true, expected);
+}
+
+TEST_F(CosmeticResourceMergeTest, MergeNonEmptyForceHide) {
+  const std::string a = NONEMPTY_RESOURCES;
+  const std::string b = "{"
+      "\"hide_selectors\": [\"h\", \"i\"], "
+      "\"style_selectors\": {\"j\": \"color: #eee\", \"k\": \"color: #111\"}, "
+      "\"exceptions\": [\"l\", \"m\"], "
+      "\"injected_script\": \"console.log('n')\""
+  "}";
+
+  const std::string expected = "{"
+      "\"hide_selectors\": [\"a\", \"b\"], "
+      "\"style_selectors\": {"
+          "\"c\": \"color: #fff\", "
+          "\"d\": \"color: #000\", "
+          "\"j\": \"color: #eee\", "
+          "\"k\": \"color: #111\""
+      "}, "
+      "\"exceptions\": [\"e\", \"f\", \"l\", \"m\"], "
+      "\"injected_script\": \"console.log('g')\nconsole.log('n')\","
+      "\"force_hide_selectors\": [\"h\", \"i\"]"
+  "}";
+
+  CompareMergeFromStrings(a, b, true, expected);
 }
 
 

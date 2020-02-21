@@ -48,8 +48,24 @@ std::vector<FilterList>::const_iterator FindAdBlockFilterListByLocale(
 
 // Merges the contents of the second HostnameCosmeticResources Value into the
 // first one provided.
-void MergeResourcesInto(base::Value* into, base::Value* from) {
-  base::Value* resources_hide_selectors = into->FindKey("hide_selectors");
+//
+// If `force_hide` is true, the contents of `from`'s `hide_selectors` field
+// will be moved into a possibly new field of `into` called
+// `force_hide_selectors`.
+void MergeResourcesInto(
+        base::Value* into,
+        base::Value* from,
+        bool force_hide) {
+  base::Value* resources_hide_selectors = nullptr;
+  if (force_hide) {
+    resources_hide_selectors = into->FindKey("force_hide_selectors");
+    if (!resources_hide_selectors || !resources_hide_selectors->is_list()) {
+        into->SetPath("force_hide_selectors", base::ListValue());
+        resources_hide_selectors = into->FindKey("force_hide_selectors");
+    }
+  } else {
+    resources_hide_selectors = into->FindKey("hide_selectors");
+  }
   base::Value* from_resources_hide_selectors =
       from->FindKey("hide_selectors");
   if (resources_hide_selectors && from_resources_hide_selectors) {
