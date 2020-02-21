@@ -15,9 +15,13 @@ class Uri {
   static std::string GetUri(
       const std::string& url);
 
-  static bool MatchWildcard(
+  static bool MatchesWildcard(
       const std::string& url,
       const std::string& pattern);
+
+  static bool MatchesDomainOrHost(
+      const std::string& url1,
+      const std::string& url2);
 };
 
 }  // namespace helper
