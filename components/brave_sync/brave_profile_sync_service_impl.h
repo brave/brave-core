@@ -175,6 +175,8 @@ class BraveProfileSyncServiceImpl
   BraveSyncClient* GetBraveSyncClient() override;
 #endif
 
+  static void AddNonClonedBookmarkKeys(BookmarkModel* model);
+
   bool IsBraveSyncEnabled() const override;
 
   syncer::ModelTypeSet GetPreferredDataTypes() const override;
