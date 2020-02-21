@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_PROFILE_SYNC_SERVICE_IMPL_H_
 
 #include <memory>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -15,6 +16,7 @@
 #include "brave/components/brave_sync/jslib_messages_fwd.h"
 #include "brave/components/brave_sync/public/brave_profile_sync_service.h"
 #include "components/bookmarks/browser/bookmark_model.h"
+#include "components/bookmarks/browser/bookmark_model_observer.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/sync/driver/profile_sync_service.h"
 #include "services/network/public/cpp/network_connection_tracker.h"
@@ -49,19 +51,30 @@ FORWARD_DECLARE_TEST(BraveSyncServiceTest, SetThisDeviceCreatedTime);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, InitialFetchesStartWithZero);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, DeviceIdV2Migration);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, DeviceIdV2MigrationDupDeviceId);
+FORWARD_DECLARE_TEST(BraveSyncServiceTestDelayedLoadModel,
+                     OnSyncReadyModelNotYetLoaded);
 
 class BraveSyncServiceTest;
+
+namespace bookmarks {
+class BookmarkModel;
+class BookmarkNode;
+}  // namespace bookmarks
 
 namespace brave_sync {
 namespace prefs {
 class Prefs;
 }  // namespace prefs
 
+using bookmarks::BookmarkModel;
+using bookmarks::BookmarkNode;
+
 class BraveProfileSyncServiceImpl
     : public BraveProfileSyncService,
       public BraveSyncService,
       public network::NetworkConnectionTracker::NetworkConnectionObserver,
-      public SyncMessageHandler {
+      public SyncMessageHandler,
+      public bookmarks::BookmarkModelObserver {
  public:
   explicit BraveProfileSyncServiceImpl(Profile* profile,
                                        InitParams init_params);
@@ -116,9 +129,42 @@ class BraveProfileSyncServiceImpl
   // NetworkConnectionTracker::NetworkConnectionObserver implementation.
   void OnConnectionChanged(network::mojom::ConnectionType type) override;
 
-  // KeyedService implementation.  This must be called exactly
+  // KeyedService implementation. This must be called exactly
   // once (before this object is destroyed).
   void Shutdown() override;
+
+  // bookmarks::BookmarkModelObserver implementation
+  void BookmarkModelLoaded(BookmarkModel* model, bool ids_reassigned) override;
+
+  void BookmarkNodeMoved(BookmarkModel* model,
+                         const BookmarkNode* old_parent,
+                         size_t old_index,
+                         const BookmarkNode* new_parent,
+                         size_t new_index) override {}
+
+  void BookmarkNodeAdded(BookmarkModel* model,
+                         const BookmarkNode* parent,
+                         size_t index) override {}
+
+  void BookmarkNodeRemoved(
+      BookmarkModel* model,
+      const BookmarkNode* parent,
+      size_t old_index,
+      const BookmarkNode* node,
+      const std::set<GURL>& no_longer_bookmarked) override {}
+
+  void BookmarkNodeChanged(BookmarkModel* model,
+                           const BookmarkNode* node) override {}
+
+  void BookmarkNodeFaviconChanged(BookmarkModel* model,
+                                  const BookmarkNode* node) override {}
+
+  void BookmarkNodeChildrenReordered(BookmarkModel* model,
+                                     const BookmarkNode* node) override {}
+
+  void BookmarkAllUserNodesRemoved(
+      BookmarkModel* model,
+      const std::set<GURL>& removed_urls) override {}
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   BraveSyncClient* GetBraveSyncClient() override;
@@ -168,6 +214,8 @@ class BraveProfileSyncServiceImpl
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, DeviceIdV2Migration);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest,
                            DeviceIdV2MigrationDupDeviceId);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTestDelayedLoadModel,
+                           OnSyncReadyModelNotYetLoaded);
 
   friend class ::BraveSyncServiceTest;
 
@@ -215,6 +263,9 @@ class BraveProfileSyncServiceImpl
 
   bool IsSQSReady() const;
 
+  // Method to be run right after bookmark model will be loaded
+  void OnSyncReadyBookmarksModelLoaded();
+
   static base::TimeDelta GetRetryExponentialWaitAmount(int retry_number);
   static std::vector<unsigned> GetExponentialWaitsForTests();
   static const std::vector<unsigned> kExponentialWaits;
@@ -254,6 +305,8 @@ class BraveProfileSyncServiceImpl
   base::Time this_device_created_time_;
 
   bool pending_self_reset_ = false;
+
+  bool is_model_loaded_observer_set_ = false;
 
   // Used to ensure that certain operations are performed on the sequence that
   // this object was created on.
