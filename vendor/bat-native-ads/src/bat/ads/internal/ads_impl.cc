@@ -694,6 +694,8 @@ void AdsImpl::OnPageLoaded(
     return;
   }
 
+  CheckAdConversion(url);
+
   if (DomainsMatch(url, last_shown_ad_notification_info_.target_url)) {
     BLOG(INFO) << "Site visited " << url
         << ", domain matches the last shown ad notification for "
@@ -732,8 +734,6 @@ void AdsImpl::OnPageLoaded(
   MaybeClassifyPage(url, content);
 
   CheckEasterEgg(url);
-
-  CheckAdConversion(url);
 
   BLOG(INFO) << "Site visited " << url << ", previous tab url was "
       << previous_tab_url_;
