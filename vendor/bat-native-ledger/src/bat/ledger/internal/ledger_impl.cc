@@ -1206,6 +1206,7 @@ void LedgerImpl::ConfirmAd(const std::string& info) {
 
   auto notification_info = std::make_unique<confirmations::NotificationInfo>();
   notification_info->id = notification_info_ads.id;
+  notification_info->parent_id = notification_info_ads.parent_id;
   notification_info->creative_set_id = notification_info_ads.creative_set_id;
   notification_info->category = notification_info_ads.category;
   notification_info->advertiser = notification_info_ads.advertiser;
@@ -1240,17 +1241,30 @@ void LedgerImpl::ConfirmAd(const std::string& info) {
     }
 
     case ads::ConfirmationType::FLAG: {
-      notification_info->type = confirmations::ConfirmationType::FLAG;
+      // Should never be reached as FLAG is handled by ConfirmAction, refactor
+      // code to abstract different ConfirmationTypes
+      NOTREACHED();
       break;
     }
 
     case ads::ConfirmationType::UPVOTE: {
-      notification_info->type = confirmations::ConfirmationType::UPVOTE;
+      // Should never be reached as UPVOTE is handled by ConfirmAction, refactor
+      // code to abstract different ConfirmationTypes
+      NOTREACHED();
       break;
     }
 
     case ads::ConfirmationType::DOWNVOTE: {
-      notification_info->type = confirmations::ConfirmationType::DOWNVOTE;
+      // Should never be reached as DOWNVOTE is handled by ConfirmAction,
+      // refactor code to abstract different ConfirmationTypes
+      NOTREACHED();
+      break;
+    }
+
+    case ads::ConfirmationType::CONVERSION: {
+      // Should never be reached as CONVERSION is handled by ConfirmAction,
+      // refactor code to abstract different ConfirmationTypes
+      NOTREACHED();
       break;
     }
   }

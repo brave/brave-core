@@ -44,7 +44,7 @@ bool ConfirmationType::IsSupported() const {
   return value_ != UNKNOWN;
 }
 
-int ConfirmationType::value() const {
+ConfirmationType::Value ConfirmationType::value() const {
   return value_;
 }
 

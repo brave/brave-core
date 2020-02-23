@@ -13,6 +13,8 @@ namespace ads {
 class ConfirmationType {
  public:
   enum Value : int {
+    // When adding new confirmation types they must be added with highest
+    // priority at the top so that ads history can be filtered
     UNKNOWN,
     CLICK,
     DISMISS,
@@ -36,7 +38,7 @@ class ConfirmationType {
 
   bool IsSupported() const;
 
-  int value() const;
+  Value value() const;
   operator std::string() const;
 
   bool operator==(
