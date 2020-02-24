@@ -709,7 +709,7 @@ extension Strings {
             NSLocalizedString("ntp.learnMoreAboutBrandedImages",
                 tableName: "BraveShared",
                 bundle: .braveShared,
-                value: "%@ about sponsored images in Brave Rewards",
+                value: "%@ about sponsored images in Brave Rewards.",
                 comment: "The placeholder says 'Learn more'. So full sentence goes like: 'Learn more about sponsored images in Brave Rewards.'")
         public static let goodJob =
             NSLocalizedString("ntp.goodJob",
