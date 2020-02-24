@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2016 The Chromium Authors. All rights reserved.
+     Use of this source code is governed by a BSD-style license that can be
+     found in the LICENSE file. -->
+<org.chromium.chrome.browser.ntp.BraveNewTabPageLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ntp_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:paddingTop="@dimen/toolbar_height_no_shadow"
+    android:visibility="gone" >
+
+    <LinearLayout
+        android:id="@+id/parent_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ntp_main_layout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <!-- Brave stats -->
+            <include layout="@layout/brave_stats_layout"/>
+
+            <!-- Explore offline card -->
+            <ViewStub
+                android:id="@+id/explore_offline_card_stub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout="@layout/new_tab_page_offline_card"
+                android:inflatedId="@+id/explore_offline_card" />
+
+            <!-- Search provider logo -->
+            <org.chromium.chrome.browser.ntp.LogoView
+                android:id="@+id/search_provider_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/ntp_logo_height"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="@dimen/ntp_logo_margin_top"
+                android:layout_marginBottom="23dp" />
+
+            <!-- Search box -->
+            <include layout="@layout/fake_search_box_layout"/>
+
+            <!-- Middle spacer -->
+            <View
+                android:id="@+id/ntp_middle_spacer"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="0"
+                android:visibility="invisible" />
+
+            <!-- Insertion point of the SiteSectionView, see NewTabPageLayout#insertSiteSection() -->
+
+            <ViewStub
+                android:id="@+id/explore_sites_stub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inflatedId="@+id/explore_sites"
+                android:layout_marginBottom="16dp"
+                android:layout="@layout/explore_sites_section" />
+
+            <!-- Site suggestion tile grid placeholder -->
+            <ViewStub
+                android:id="@+id/tile_grid_placeholder_stub"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inflatedId="@+id/tile_grid_placeholder"
+                android:layout="@layout/new_tab_page_tile_grid_placeholder" />
+
+            <!-- Spacer for when there is no search provider logo. -->
+            <View
+                android:id="@+id/no_search_logo_spacer"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+         <FrameLayout
+            android:id="@+id/image_credit_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/credit_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|bottom"
+                android:background="@drawable/image_credit_rounded_shape"
+                android:padding="5dp"
+                android:layout_margin="10dp"
+                android:textSize="12sp"
+                android:visibility="gone"
+                android:textColor = "@android:color/white"/>
+
+            <ImageView
+                android:id="@+id/sponsored_logo"
+                android:layout_width="170dp"
+                android:layout_height="170dp"
+                android:contentDescription="@null"
+                android:visibility="gone"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <include layout="@layout/ntp_non_distruptive_banner"/>
+
+</org.chromium.chrome.browser.ntp.BraveNewTabPageLayout>

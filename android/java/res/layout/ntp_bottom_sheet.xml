@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ntp_content"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:maxWidth="400dp"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/ntp_bottom_sheet_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:drawableStart="@drawable/btn_bat"
+            android:drawablePadding="8dp"
+            android:textSize="20sp"
+            android:layout_marginBottom="16dp"
+            android:textColor="@android:color/black"
+            android:text="@string/brave_ui_brave_rewards"/>
+
+        <TextView
+            android:id="@+id/ntp_bottom_sheet_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:id="@+id/ntp_bottom_sheet_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/btn_turn_on_ads"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/blue_rounded_button"
+            android:layout_marginBottom="8dp"
+            android:text="@string/turn_on_brave_ads"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:drawableStart="@drawable/coins"
+            android:drawablePadding="8dp"
+            android:textColor="@android:color/white"
+            android:visibility="gone"
+            style="?android:attr/borderlessButtonStyle"/>
+
+        <Button
+            android:id="@+id/btn_turn_on_rewards"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/blue_rounded_button"
+            android:layout_marginBottom="4dp"
+            android:text="@string/turn_on_rewards"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textColor="@android:color/white"
+            android:visibility="gone"
+            style="?android:attr/borderlessButtonStyle"/>
+
+        <Button
+            android:id="@+id/btn_learn_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/transparent"
+            android:text="@string/learn_more"
+            android:textAllCaps="false"
+            android:visibility="gone"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ntp_bottom_sheet_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@null"
+        android:layout_gravity="end|top"
+        android:src="@drawable/btn_close"/>
+
+</FrameLayout>

@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index be8466ad87791880f1f3c4ea61db11c466eb3356..b0c143310192acdbf23ca719e857efdac517f25e 100644
+index be8466ad87791880f1f3c4ea61db11c466eb3356..f06085055c0c1f1df7e3ff15580b21055c08f15f 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 @@ -172,7 +172,7 @@ import java.util.Locale;
@@ -20,3 +20,12 @@ index be8466ad87791880f1f3c4ea61db11c466eb3356..b0c143310192acdbf23ca719e857efda
                  getMultiWindowModeStateDispatcher(), getTabModelSelector(), getToolbarManager(),
                  getWindow().getDecorView(), this,
                  mOverviewModeController.mOverviewModeBehaviorSupplier,
+@@ -2091,7 +2091,7 @@ public class ChromeTabbedActivity extends ChromeActivity implements ScreenshotMo
+         }
+     }
+ 
+-    private void hideOverview() {
++    public void hideOverview() {
+         assert (mOverviewModeController.overviewVisible());
+         Layout activeLayout = mLayoutManager.getActiveLayout();
+         if (activeLayout instanceof StackLayout) {

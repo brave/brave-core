@@ -1,0 +1,42 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/tab/TabImpl.java b/chrome/android/java/src/org/chromium/chrome/browser/tab/TabImpl.java
+index 5a3b49ec9effaec8a4ad6d99f48d98d3c5028e52..8049a4ceec7920c8e6d3e3f4a09e173953f3cc53 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/tab/TabImpl.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/tab/TabImpl.java
+@@ -61,6 +61,7 @@ import org.chromium.content_public.browser.WebContentsAccessibility;
+ import org.chromium.content_public.common.ResourceRequestBody;
+ import org.chromium.ui.base.PageTransition;
+ import org.chromium.ui.base.WindowAndroid;
++import org.chromium.chrome.browser.ntp.sponsored.SponsoredTab;
+ 
+ /**
+  * Implementation of the interface {@link Tab}. Contains and manages a {@link ContentView}.
+@@ -224,6 +225,8 @@ public class TabImpl implements Tab {
+ 
+     private final UserDataHost mUserDataHost = new UserDataHost();
+ 
++    private SponsoredTab sponsoredTab;
++
+     /**
+      * Creates an instance of a {@link TabImpl}.
+      *
+@@ -275,6 +278,9 @@ public class TabImpl implements Tab {
+                 updateInteractableState();
+             }
+         };
++
++        if(sponsoredTab == null)
++            sponsoredTab = new SponsoredTab();
+     }
+ 
+     @Override
+@@ -1564,6 +1570,10 @@ public class TabImpl implements Tab {
+         }
+     }
+ 
++    public SponsoredTab getSponsoredTab() {
++        return sponsoredTab;
++    }
++
+     @NativeMethods
+     interface Natives {
+         void init(TabImpl caller);
