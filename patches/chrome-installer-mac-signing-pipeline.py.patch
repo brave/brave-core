@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/mac/signing/pipeline.py b/chrome/installer/mac/signing/pipeline.py
-index 48e6eb85fc25e8de7c8fa2f6cc0e00d0428dcad2..7524313d08c50eaafe660e7ed8dfa13c1b5161cf 100644
+index be7ff657a7ed8371a2706736b20d95044456b335..6106c292c1854c4e961ec848daf34e293ca0ac47 100644
 --- a/chrome/installer/mac/signing/pipeline.py
 +++ b/chrome/installer/mac/signing/pipeline.py
-@@ -350,12 +350,6 @@ def _package_dmg(paths, dist, config):
+@@ -351,12 +351,6 @@ def _package_dmg(paths, dist, config):
          '--volname', config.app_product,
          '--icon', os.path.join(packaging_dir, icon_file),
          '--copy', '{}:/'.format(app_path),
@@ -15,7 +15,7 @@ index 48e6eb85fc25e8de7c8fa2f6cc0e00d0428dcad2..7524313d08c50eaafe660e7ed8dfa13c
          '--copy', '{}/{}:/.DS_Store'.format(packaging_dir, dsstore_file),
          '--symlink', '/Applications:/ ',
      ])
-@@ -379,7 +373,6 @@ def _package_installer_tools(paths, config):
+@@ -380,7 +374,6 @@ def _package_installer_tools(paths, config):
          'dirdiffer.sh',
          'dirpatcher.sh',
          'dmgdiffer.sh',
@@ -23,7 +23,7 @@ index 48e6eb85fc25e8de7c8fa2f6cc0e00d0428dcad2..7524313d08c50eaafe660e7ed8dfa13c
          'pkg-dmg',
      )
  
-@@ -526,5 +519,8 @@ def sign_all(orig_paths,
+@@ -527,5 +520,8 @@ def sign_all(orig_paths,
                          uuids_to_package_path.keys(), config):
                      package_path = uuids_to_package_path[result]
                      notarize.staple(package_path)
