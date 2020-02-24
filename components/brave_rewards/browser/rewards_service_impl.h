@@ -303,6 +303,7 @@ class RewardsServiceImpl : public RewardsService,
   void CheckInsufficientFundsForTesting();
   ledger::TransferFeeList GetTransferFeesForTesting(
       const std::string& wallet_type);
+  bool IsWalletInitialized();
 
  private:
   friend class ::BraveRewardsBrowserTest;
@@ -713,6 +714,7 @@ class RewardsServiceImpl : public RewardsService,
 
   uint32_t next_timer_id_;
   bool reset_states_;
+  bool is_wallet_initialized_ = false;
 
   GetTestResponseCallback test_response_callback_;
 
