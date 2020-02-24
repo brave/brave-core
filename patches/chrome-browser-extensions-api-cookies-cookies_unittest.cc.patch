@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/extensions/api/cookies/cookies_unittest.cc b/chrome/browser/extensions/api/cookies/cookies_unittest.cc
+index 56e587afe3836e261350bd999c11e9372f9d36c9..c6dd98dabbb3b7773b326651795fb092bb112959 100644
+--- a/chrome/browser/extensions/api/cookies/cookies_unittest.cc
++++ b/chrome/browser/extensions/api/cookies/cookies_unittest.cc
+@@ -188,6 +188,7 @@ TEST_F(ExtensionCookiesTest, DomainMatching) {
+ TEST_F(ExtensionCookiesTest, DecodeUTF8WithErrorHandling) {
+   std::unique_ptr<net::CanonicalCookie> canonical_cookie(
+       net::CanonicalCookie::Create(
++          BRAVE_SETCOOKIE
+           GURL("http://test.com"), "=011Q255bNX_1!yd\203e+;path=/path\203",
+           base::Time::Now(), base::nullopt /* server_time */));
+   ASSERT_NE(nullptr, canonical_cookie.get());

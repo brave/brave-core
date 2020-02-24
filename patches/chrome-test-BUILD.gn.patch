@@ -1,5 +1,5 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index 4af881eba8a764c5faf007527f03c6e90af4bec0..148234dc86c84583640278b704bb79d436008859 100644
+index 4af881eba8a764c5faf007527f03c6e90af4bec0..03c2321529a6f477a8d63278b76b62df819981cb 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
 @@ -761,6 +761,7 @@ if (!is_android) {
@@ -10,3 +10,11 @@ index 4af881eba8a764c5faf007527f03c6e90af4bec0..148234dc86c84583640278b704bb79d4
      # Runtime dependencies
      data_deps = [
        "//chrome/browser/resources/media/mei_preload:component",
+@@ -3541,6 +3542,7 @@ test("unit_tests") {
+   deps = [
+     ":test_support",
+     ":test_support_unit",
++    "//brave/test:brave_test_support_unit",
+     "//base:base_stack_sampling_profiler_test_util",
+     "//base/test:test_support",
+     "//base/util/memory_pressure:test_support",

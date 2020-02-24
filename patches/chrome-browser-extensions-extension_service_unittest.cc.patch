@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/extensions/extension_service_unittest.cc b/chrome/browser/extensions/extension_service_unittest.cc
+index 0b8da26ab0c49de5b91fd18dd0095d859056198d..9c6951ea25f993b545a44f89a15cdf551305226a 100644
+--- a/chrome/browser/extensions/extension_service_unittest.cc
++++ b/chrome/browser/extensions/extension_service_unittest.cc
+@@ -4878,7 +4878,7 @@ TEST_F(ExtensionServiceTest, ClearExtensionData) {
+           ->GetCookieStoreForTesting();
+   ASSERT_TRUE(cookie_store);
+   auto cookie =
+-      net::CanonicalCookie::Create(ext_url, "dummy=value", base::Time::Now(),
++      net::CanonicalCookie::Create(BRAVE_SETCOOKIE ext_url, "dummy=value", base::Time::Now(),
+                                    base::nullopt /* server_time */);
+   cookie_store->SetCanonicalCookieAsync(
+       std::move(cookie), ext_url.scheme(),
+@@ -5017,7 +5017,7 @@ TEST_F(ExtensionServiceTest, ClearAppData) {
+       cookie_manager_remote.BindNewPipeAndPassReceiver());
+ 
+   std::unique_ptr<net::CanonicalCookie> cc(
+-      net::CanonicalCookie::Create(origin1, "dummy=value", base::Time::Now(),
++      net::CanonicalCookie::Create(BRAVE_SETCOOKIE origin1, "dummy=value", base::Time::Now(),
+                                    base::nullopt /* server_time */));
+   ASSERT_TRUE(cc.get());
+ 

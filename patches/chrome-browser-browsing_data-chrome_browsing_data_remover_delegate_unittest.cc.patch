@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_unittest.cc b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_unittest.cc
+index 19caebdc16c5941f65b9fa3ad28c7445d20af822..4e330f3feda33ad93f4972f04ae0b1f9da704b57 100644
+--- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_unittest.cc
++++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_unittest.cc
+@@ -295,6 +295,7 @@ class RemoveCookieTester {
+   void AddCookie() {
+     base::RunLoop run_loop;
+     auto cookie = net::CanonicalCookie::Create(
++        BRAVE_SETCOOKIE
+         kOrigin1, "A=1", base::Time::Now(), base::nullopt /* server_time */);
+     cookie_manager_->SetCanonicalCookie(
+         *cookie, "http", net::CookieOptions(),

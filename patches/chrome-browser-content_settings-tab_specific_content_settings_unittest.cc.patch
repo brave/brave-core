@@ -1,0 +1,90 @@
+diff --git a/chrome/browser/content_settings/tab_specific_content_settings_unittest.cc b/chrome/browser/content_settings/tab_specific_content_settings_unittest.cc
+index 2773f4c732f481e2f8f0b69e72451a68da382356..cd051c21cd2e485bfedeeaf858683db12d5ae0af 100644
+--- a/chrome/browser/content_settings/tab_specific_content_settings_unittest.cc
++++ b/chrome/browser/content_settings/tab_specific_content_settings_unittest.cc
+@@ -72,6 +72,7 @@ TEST_F(TabSpecificContentSettingsTest, BlockedContent) {
+   // popup.
+   GURL origin("http://google.com");
+   std::unique_ptr<net::CanonicalCookie> cookie1(net::CanonicalCookie::Create(
++      BRAVE_SETCOOKIE
+       origin, "A=B", base::Time::Now(), base::nullopt /* server_time */));
+   ASSERT_TRUE(cookie1);
+   web_contents()->OnCookieChange(origin, origin, *cookie1, false);
+@@ -112,6 +113,7 @@ TEST_F(TabSpecificContentSettingsTest, BlockedContent) {
+ 
+   // Block a cookie.
+   std::unique_ptr<net::CanonicalCookie> cookie2(net::CanonicalCookie::Create(
++      BRAVE_SETCOOKIE
+       origin, "C=D", base::Time::Now(), base::nullopt /* server_time */));
+   ASSERT_TRUE(cookie2);
+   web_contents()->OnCookieChange(origin, origin, *cookie2, true);
+@@ -189,6 +191,7 @@ TEST_F(TabSpecificContentSettingsTest, AllowedContent) {
+   // Record a cookie.
+   GURL origin("http://google.com");
+   std::unique_ptr<net::CanonicalCookie> cookie1(net::CanonicalCookie::Create(
++      BRAVE_SETCOOKIE
+       origin, "A=B", base::Time::Now(), base::nullopt /* server_time */));
+   ASSERT_TRUE(cookie1);
+   web_contents()->OnCookieChange(origin, origin, *cookie1, false);
+@@ -198,6 +201,7 @@ TEST_F(TabSpecificContentSettingsTest, AllowedContent) {
+ 
+   // Record a blocked cookie.
+   std::unique_ptr<net::CanonicalCookie> cookie2(net::CanonicalCookie::Create(
++      BRAVE_SETCOOKIE
+       origin, "C=D", base::Time::Now(), base::nullopt /* server_time */));
+   ASSERT_TRUE(cookie2);
+   web_contents()->OnCookieChange(origin, origin, *cookie2, true);
+@@ -231,13 +235,14 @@ TEST_F(TabSpecificContentSettingsTest, SiteDataObserver) {
+   bool blocked_by_policy = false;
+   GURL origin("http://google.com");
+   std::unique_ptr<net::CanonicalCookie> cookie(net::CanonicalCookie::Create(
++      BRAVE_SETCOOKIE
+       origin, "A=B", base::Time::Now(), base::nullopt /* server_time */));
+   ASSERT_TRUE(cookie);
+   web_contents()->OnCookieChange(origin, origin, *cookie, blocked_by_policy);
+ 
+   net::CookieList cookie_list;
+   std::unique_ptr<net::CanonicalCookie> other_cookie(
+-      net::CanonicalCookie::Create(GURL("http://google.com"),
++      net::CanonicalCookie::Create(BRAVE_SETCOOKIE GURL("http://google.com"),
+                                    "CookieName=CookieValue", base::Time::Now(),
+                                    base::nullopt /* server_time */));
+   ASSERT_TRUE(other_cookie);
+@@ -260,7 +265,7 @@ TEST_F(TabSpecificContentSettingsTest, LocalSharedObjectsContainer) {
+   TabSpecificContentSettings* content_settings =
+       TabSpecificContentSettings::FromWebContents(web_contents());
+   bool blocked_by_policy = false;
+-  auto cookie = net::CanonicalCookie::Create(GURL("http://google.com"), "k=v",
++  auto cookie = net::CanonicalCookie::Create(BRAVE_SETCOOKIE GURL("http://google.com"), "k=v",
+                                              base::Time::Now(),
+                                              base::nullopt /* server_time */);
+   web_contents()->OnCookiesRead(GURL("http://google.com"),
+@@ -293,23 +298,26 @@ TEST_F(TabSpecificContentSettingsTest, LocalSharedObjectsContainerCookie) {
+   TabSpecificContentSettings* content_settings =
+       TabSpecificContentSettings::FromWebContents(web_contents());
+   bool blocked_by_policy = false;
+-  auto cookie1 = net::CanonicalCookie::Create(GURL("http://google.com"), "k1=v",
++  auto cookie1 = net::CanonicalCookie::Create(BRAVE_SETCOOKIE GURL("http://google.com"), "k1=v",
+                                               base::Time::Now(),
+                                               base::nullopt /* server_time */);
+   auto cookie2 = net::CanonicalCookie::Create(
++      BRAVE_SETCOOKIE
+       GURL("http://www.google.com"), "k2=v; Domain=google.com",
+       base::Time::Now(), base::nullopt /* server_time */);
+   auto cookie3 = net::CanonicalCookie::Create(
++      BRAVE_SETCOOKIE
+       GURL("http://www.google.com"), "k3=v; Domain=.google.com",
+       base::Time::Now(), base::nullopt /* server_time */);
+   auto cookie4 = net::CanonicalCookie::Create(
++      BRAVE_SETCOOKIE
+       GURL("http://www.google.com"), "k4=v; Domain=.www.google.com",
+       base::Time::Now(), base::nullopt /* server_time */);
+   web_contents()->OnCookiesRead(
+       GURL("http://www.google.com"), GURL("http://www.google.com"),
+       {*cookie1, *cookie2, *cookie3, *cookie4}, blocked_by_policy);
+ 
+-  auto cookie5 = net::CanonicalCookie::Create(GURL("https://www.google.com"),
++  auto cookie5 = net::CanonicalCookie::Create(BRAVE_SETCOOKIE GURL("https://www.google.com"),
+                                               "k5=v", base::Time::Now(),
+                                               base::nullopt /* server_time */);
+   web_contents()->OnCookiesRead(GURL("https://www.google.com"),

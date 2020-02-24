@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/content_settings/content_setting_image_model_unittest.cc b/chrome/browser/ui/content_settings/content_setting_image_model_unittest.cc
+index e4f486842eabe247e165e51cc550e2288770fdc2..c52855debd48f97d71610d60e4ba6546ed6d7a24 100644
+--- a/chrome/browser/ui/content_settings/content_setting_image_model_unittest.cc
++++ b/chrome/browser/ui/content_settings/content_setting_image_model_unittest.cc
+@@ -131,6 +131,7 @@ TEST_F(ContentSettingImageModelTest, CookieAccessed) {
+ 
+   GURL origin("http://google.com");
+   std::unique_ptr<net::CanonicalCookie> cookie(net::CanonicalCookie::Create(
++      BRAVE_SETCOOKIE
+       origin, "A=B", base::Time::Now(), base::nullopt /* server_time */));
+   ASSERT_TRUE(cookie);
+   web_contents()->OnCookieChange(origin, origin, *cookie, false);
