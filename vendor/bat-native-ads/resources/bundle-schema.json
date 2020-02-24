@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "properties": {
-    "ad_notification_categories": {
+    "creative_ad_notifications": {
       "type": "object",
       "patternProperties": {
         "^.*$": {
@@ -68,7 +68,7 @@
       },
       "additionalProperties": false
     },
-    "conversions": {
+    "ad_conversions": {
       "type": "array",
       "items": {
         "type": "object",
@@ -97,8 +97,8 @@
     }
   },
   "required": [
-    "ad_notification_categories",
-    "conversions"
+    "creative_ad_notifications",
+    "ad_conversions"
   ],
   "additionalProperties": false
 }

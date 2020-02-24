@@ -66,23 +66,25 @@ class BundleStateDatabase {
       base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);
 
   bool CreateCategoryTable();
-  bool CreateCreativeAdNotificationInfoTable();
-  bool CreateCreativeAdNotificationInfoCategoryTable();
-  bool CreateCreativeAdNotificationInfoCategoryNameIndex();
-  bool CreateAdConversionsTable();
-
   bool TruncateCategoryTable();
-  bool TruncateCreativeAdNotificationInfoTable();
-  bool TruncateCreativeAdNotificationInfoCategoryTable();
-  bool TruncateAdConversionsTable();
-
   bool InsertOrUpdateCategory(
       const std::string& category);
+
+  bool CreateCreativeAdNotificationInfoTable();
+  bool TruncateCreativeAdNotificationInfoTable();
   bool InsertOrUpdateCreativeAdNotificationInfo(
       const ads::CreativeAdNotificationInfo& info);
+
+  bool CreateCreativeAdNotificationInfoCategoryTable();
+  bool TruncateCreativeAdNotificationInfoCategoryTable();
   bool InsertOrUpdateCreativeAdNotificationInfoCategory(
       const ads::CreativeAdNotificationInfo& info,
       const std::string& category);
+
+  bool CreateCreativeAdNotificationInfoCategoryNameIndex();
+
+  bool CreateAdConversionsTable();
+  bool TruncateAdConversionsTable();
   bool InsertOrUpdateAdConversion(
       const ads::AdConversionInfo& info);
 

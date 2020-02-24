@@ -124,40 +124,20 @@ bool BundleStateDatabase::TruncateCategoryTable() {
   return statement.Run();
 }
 
-bool BundleStateDatabase::CreateAdConversionsTable() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  const char name[] = "ad_conversions";
-  if (GetDB().DoesTableExist(name)) {
-    return true;
-  }
-
-  std::string sql;
-  sql.append("CREATE TABLE ");
-  sql.append(name);
-  sql.append(
-      "("
-      "id INTEGER PRIMARY KEY,"
-      "creative_set_id LONGVARCHAR NOT NULL,"
-      "type LONGVARCHAR NOT NULL,"
-      "url_pattern LONGVARCHAR NOT NULL,"
-      "observation_window INTEGER NOT NULL)");
-
-  return GetDB().Execute(sql.c_str());
-}
-
-bool BundleStateDatabase::TruncateAdConversionsTable() {
+bool BundleStateDatabase::InsertOrUpdateCategory(
+    const std::string& category) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   const bool is_initialized = Init();
   DCHECK(is_initialized);
-
   if (!is_initialized) {
     return false;
   }
 
   sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
-      "DELETE FROM ad_conversions"));
+      "INSERT OR REPLACE INTO category (name) VALUES (?)"));
+
+  statement.BindString(0, category);
 
   return statement.Run();
 }
@@ -209,6 +189,47 @@ bool BundleStateDatabase::TruncateCreativeAdNotificationInfoTable() {
   return statement.Run();
 }
 
+bool BundleStateDatabase::InsertOrUpdateCreativeAdNotificationInfo(
+    const ads::CreativeAdNotificationInfo& info) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool is_initialized = Init();
+  DCHECK(is_initialized);
+  if (!is_initialized) {
+    return false;
+  }
+
+  for (const auto& geo_target : info.geo_targets) {
+    sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
+        "INSERT OR REPLACE INTO ad_info "
+        "(creative_set_id, advertiser, notification_text, "
+        "notification_url, start_timestamp, end_timestamp, uuid, "
+        "campaign_id, daily_cap, advertiser_id, per_day, total_max, "
+        "region) VALUES (?, ?, ?, ?, datetime(?), datetime(?), ?, ?, ?, "
+        "?, ?, ?, ?)"));
+
+    statement.BindString(0, info.creative_set_id);
+    statement.BindString(1, info.title);
+    statement.BindString(2, info.body);
+    statement.BindString(3, info.target_url);
+    statement.BindString(4, info.start_at_timestamp);
+    statement.BindString(5, info.end_at_timestamp);
+    statement.BindString(6, info.creative_instance_id);
+    statement.BindString(7, info.campaign_id);
+    statement.BindInt(8, info.daily_cap);
+    statement.BindString(9, info.advertiser_id);
+    statement.BindInt(10, info.per_day);
+    statement.BindInt(11, info.total_max);
+    statement.BindString(12, geo_target);
+
+    if (!statement.Run()) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 bool BundleStateDatabase::CreateCreativeAdNotificationInfoCategoryTable() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -251,12 +272,96 @@ bool BundleStateDatabase::TruncateCreativeAdNotificationInfoCategoryTable() {
   return statement.Run();
 }
 
+bool BundleStateDatabase::InsertOrUpdateCreativeAdNotificationInfoCategory(
+    const ads::CreativeAdNotificationInfo& info,
+    const std::string& category) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  const bool is_initialized = Init();
+  DCHECK(is_initialized);
+  if (!is_initialized) {
+    return false;
+  }
+
+  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
+      "INSERT OR REPLACE INTO ad_info_category "
+      "(ad_info_uuid, category_name) "
+      "VALUES (?, ?)"));
+
+  statement.BindString(0, info.creative_instance_id);
+  statement.BindString(1, category);
+
+  return statement.Run();
+}
+
 bool BundleStateDatabase::CreateCreativeAdNotificationInfoCategoryNameIndex() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   return GetDB().Execute(
       "CREATE INDEX IF NOT EXISTS ad_info_category_category_name_index "
       "ON ad_info_category (category_name)");
+}
+
+bool BundleStateDatabase::CreateAdConversionsTable() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  const char name[] = "ad_conversions";
+  if (GetDB().DoesTableExist(name)) {
+    return true;
+  }
+
+  // Update InsertOrUpdateAdConversion() if you add anything here
+  std::string sql;
+  sql.append("CREATE TABLE ");
+  sql.append(name);
+  sql.append(
+      "("
+      "id INTEGER PRIMARY KEY,"
+      "creative_set_id LONGVARCHAR NOT NULL,"
+      "type LONGVARCHAR NOT NULL,"
+      "url_pattern LONGVARCHAR NOT NULL,"
+      "observation_window INTEGER NOT NULL)");
+
+  return GetDB().Execute(sql.c_str());
+}
+
+bool BundleStateDatabase::TruncateAdConversionsTable() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  const bool is_initialized = Init();
+  DCHECK(is_initialized);
+
+  if (!is_initialized) {
+    return false;
+  }
+
+  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
+      "DELETE FROM ad_conversions"));
+
+  return statement.Run();
+}
+
+bool BundleStateDatabase::InsertOrUpdateAdConversion(
+    const ads::AdConversionInfo& info) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  const bool is_initialized = Init();
+  DCHECK(is_initialized);
+  if (!is_initialized) {
+    return false;
+  }
+
+  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
+      "INSERT OR REPLACE INTO ad_conversions "
+      "(creative_set_id, type, url_pattern, observation_window) "
+      "VALUES (?, ?, ?, ?)"));
+
+  statement.BindString(0, info.creative_set_id);
+  statement.BindString(1, info.type);
+  statement.BindString(2, info.url_pattern);
+  statement.BindInt(3, info.observation_window);
+
+  return statement.Run();
 }
 
 bool BundleStateDatabase::SaveBundleState(
@@ -314,110 +419,6 @@ bool BundleStateDatabase::SaveBundleState(
 
   Vacuum();
   return true;
-}
-
-bool BundleStateDatabase::InsertOrUpdateCategory(
-    const std::string& category) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  const bool is_initialized = Init();
-  DCHECK(is_initialized);
-  if (!is_initialized) {
-    return false;
-  }
-
-  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
-      "INSERT OR REPLACE INTO category (name) VALUES (?)"));
-
-  statement.BindString(0, category);
-
-  return statement.Run();
-}
-
-bool BundleStateDatabase::InsertOrUpdateCreativeAdNotificationInfo(
-    const ads::CreativeAdNotificationInfo& info) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool is_initialized = Init();
-  DCHECK(is_initialized);
-  if (!is_initialized) {
-    return false;
-  }
-
-  for (const auto& geo_target : info.geo_targets) {
-    sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
-        "INSERT OR REPLACE INTO ad_info "
-        "(creative_set_id, advertiser, notification_text, "
-        "notification_url, start_timestamp, end_timestamp, uuid, "
-        "campaign_id, daily_cap, advertiser_id, per_day, total_max, "
-        "region) VALUES (?, ?, ?, ?, datetime(?), datetime(?), ?, ?, ?, "
-        "?, ?, ?, ?)"));
-
-    statement.BindString(0, info.creative_set_id);
-    statement.BindString(1, info.title);
-    statement.BindString(2, info.body);
-    statement.BindString(3, info.target_url);
-    statement.BindString(4, info.start_at_timestamp);
-    statement.BindString(5, info.end_at_timestamp);
-    statement.BindString(6, info.creative_instance_id);
-    statement.BindString(7, info.campaign_id);
-    statement.BindInt(8, info.daily_cap);
-    statement.BindString(9, info.advertiser_id);
-    statement.BindInt(10, info.per_day);
-    statement.BindInt(11, info.total_max);
-    statement.BindString(12, geo_target);
-
-    if (!statement.Run()) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-bool BundleStateDatabase::InsertOrUpdateAdConversion(
-    const ads::AdConversionInfo& info) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  const bool is_initialized = Init();
-  DCHECK(is_initialized);
-  if (!is_initialized) {
-    return false;
-  }
-
-  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
-      "INSERT OR REPLACE INTO ad_conversions "
-      "(creative_set_id, type, url_pattern, observation_window) "
-      "VALUES (?, ?, ?, ?)"));
-
-  statement.BindString(0, info.creative_set_id);
-  statement.BindString(1, info.type);
-  statement.BindString(2, info.url_pattern);
-  statement.BindInt(3, info.observation_window);
-
-  return statement.Run();
-}
-
-bool BundleStateDatabase::InsertOrUpdateCreativeAdNotificationInfoCategory(
-    const ads::CreativeAdNotificationInfo& info,
-    const std::string& category) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  const bool is_initialized = Init();
-  DCHECK(is_initialized);
-  if (!is_initialized) {
-    return false;
-  }
-
-  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
-      "INSERT OR REPLACE INTO ad_info_category "
-      "(ad_info_uuid, category_name) "
-      "VALUES (?, ?)"));
-
-  statement.BindString(0, info.creative_instance_id);
-  statement.BindString(1, category);
-
-  return statement.Run();
 }
 
 bool BundleStateDatabase::GetCreativeAdNotifications(

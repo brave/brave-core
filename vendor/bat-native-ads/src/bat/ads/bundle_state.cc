@@ -41,10 +41,10 @@ Result BundleState::FromJson(
 
   CreativeAdNotificationMap new_creative_ad_notifications;
 
-  if (bundle.HasMember("ad_notification_categories")) {
-    for (const auto& category :
-        bundle["ad_notification_categories"].GetObject()) {
-      for (const auto& creative : category.value.GetArray()) {
+  if (bundle.HasMember("creative_ad_notifications")) {
+    for (const auto& creative_ad_notification :
+        bundle["creative_ad_notifications"].GetObject()) {
+      for (const auto& creative : creative_ad_notification.value.GetArray()) {
         CreativeAdNotificationInfo info;
 
         if (creative.HasMember("creativeSetId")) {
@@ -97,13 +97,13 @@ Result BundleState::FromJson(
              creative["targetUrl"].GetString());
         info.creative_instance_id = creative["creativeInstanceId"].GetString();
 
-        if (new_creative_ad_notifications.find(category.name.GetString()) ==
-                new_creative_ad_notifications.end()) {
-          new_creative_ad_notifications.insert({category.name.GetString(), {}});
+        const std::string category = creative_ad_notification.name.GetString();
+        if (new_creative_ad_notifications.find(category) ==
+            new_creative_ad_notifications.end()) {
+          new_creative_ad_notifications.insert({category, {}});
         }
 
-        new_creative_ad_notifications.at(
-            category.name.GetString()).push_back(info);
+        new_creative_ad_notifications.at(category).push_back(info);
       }
     }
   }
@@ -112,31 +112,31 @@ Result BundleState::FromJson(
 
   AdConversionList new_ad_conversions;
 
-  if (bundle.HasMember("conversions")) {
-    for (const auto& info : bundle["conversions"].GetArray()) {
-      AdConversionInfo ad_conversion;
+  if (bundle.HasMember("ad_conversions")) {
+    for (const auto& ad_conversion : bundle["ad_conversions"].GetArray()) {
+      AdConversionInfo info;
 
-      if (info.HasMember("creativeSetId")) {
-        ad_conversion.creative_set_id =
-            info["creativeSetId"].GetString();
+      if (ad_conversion.HasMember("creativeSetId")) {
+        info.creative_set_id =
+            ad_conversion["creativeSetId"].GetString();
       }
 
-      if (info.HasMember("type")) {
-        ad_conversion.type =
-            info["type"].GetString();
+      if (ad_conversion.HasMember("type")) {
+        info.type =
+            ad_conversion["type"].GetString();
       }
 
-      if (info.HasMember("urlPattern")) {
-        ad_conversion.url_pattern =
-            info["urlPattern"].GetString();
+      if (ad_conversion.HasMember("urlPattern")) {
+        info.url_pattern =
+            ad_conversion["urlPattern"].GetString();
       }
 
-      if (info.HasMember("observationWindow")) {
-        ad_conversion.observation_window =
-            info["observationWindow"].GetUint();
+      if (ad_conversion.HasMember("observationWindow")) {
+        info.observation_window =
+            ad_conversion["observationWindow"].GetUint();
       }
 
-      new_ad_conversions.push_back(ad_conversion);
+      new_ad_conversions.push_back(info);
     }
   }
 
@@ -150,14 +150,15 @@ void SaveToJson(
     const BundleState& state) {
   writer->StartObject();
 
-  writer->String("ad_notification_categories");
+  writer->String("creative_ad_notifications");
   writer->StartObject();
 
-  for (const auto& category : state.creative_ad_notifications) {
-    writer->String(category.first.c_str());
+  for (const auto& creative_ad_notification : state.creative_ad_notifications) {
+    const std::string category = creative_ad_notification.first.c_str();
+    writer->String(category.c_str());
     writer->StartArray();
 
-    for (const auto& ad : category.second) {
+    for (const auto& ad : creative_ad_notification.second) {
       writer->StartObject();
 
       writer->String("creativeSetId");
@@ -214,7 +215,7 @@ void SaveToJson(
 
   writer->EndObject();
 
-  writer->String("conversions");
+  writer->String("ad_conversions");
   writer->StartArray();
 
   for (const auto& ad_conversion : state.ad_conversions) {

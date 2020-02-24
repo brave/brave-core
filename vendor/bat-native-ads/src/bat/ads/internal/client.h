@@ -75,11 +75,12 @@ class Client {
   void ResetSeenAdvertisers(
       const CreativeAdNotificationList& ads);
 
-  void SetNextCheckServeAdTimestampInSeconds(
+  void SetNextCheckServeAdNotificationTimestampInSeconds(
       const uint64_t timestamp_in_seconds);
-  uint64_t GetNextCheckServeAdTimestampInSeconds();
+  uint64_t GetNextCheckServeAdNotificationTimestampInSeconds();
   void SetAvailable(
       const bool available);
+
   bool GetAvailable() const;
   void FlagShoppingState(
       const std::string& url,

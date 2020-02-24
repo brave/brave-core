@@ -178,10 +178,6 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
         }
       }
 
-      // Conversions
-      ad_conversions.insert(ad_conversions.end(),
-          creative_set.ad_conversions.begin(),
-              creative_set.ad_conversions.end());
 
       if (entries == 0) {
         BLOG(WARNING) << "creativeSet id " << creative_set.creative_set_id
@@ -189,6 +185,11 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
 
         continue;
       }
+
+      // Ad conversions
+      ad_conversions.insert(ad_conversions.end(),
+          creative_set.ad_conversions.begin(),
+              creative_set.ad_conversions.end());
     }
   }
 
