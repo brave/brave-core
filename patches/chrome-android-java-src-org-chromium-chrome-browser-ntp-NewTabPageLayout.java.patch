@@ -1,8 +1,49 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
-index db1db4f0b941c6cea83f2ca28ddc70b8e7916a90..3383b9bb40cdca6a5265978c739d2497d98abba6 100644
+index db1db4f0b941c6cea83f2ca28ddc70b8e7916a90..01939137e47c16389c1ffedbc626c75868d7bec7 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
-@@ -786,7 +786,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
+@@ -20,6 +20,7 @@ import android.view.ViewGroup;
+ import android.view.ViewStub;
+ import android.widget.ImageView;
+ import android.widget.LinearLayout;
++import android.widget.FrameLayout;
+ import android.widget.TextView;
+ 
+ import androidx.annotation.Nullable;
+@@ -62,7 +63,7 @@ import org.chromium.ui.base.DeviceFormFactor;
+  * Layout for the new tab page. This positions the page elements in the correct vertical positions.
+  * There are no separate phone and tablet UIs; this layout adapts based on the available space.
+  */
+-public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer, VrModeObserver {
++public class NewTabPageLayout extends FrameLayout implements TileGroup.Observer, VrModeObserver {
+     private static final String TAG = "NewTabPageLayout";
+     // Used to signify the cached resource value is unset.
+     private static final int UNSET_RESOURCE_FLAG = -1;
+@@ -415,8 +416,9 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
+                 1f);
+     }
+ 
+-    private void insertSiteSectionView() {
+-        mSiteSectionView = SiteSection.inflateSiteSection(this);
++    public void insertSiteSectionView() {
++        ViewGroup mainLayout = findViewById(R.id.ntp_main_layout);
++        mSiteSectionView = SiteSection.inflateSiteSection(mainLayout);
+         ViewGroup.LayoutParams layoutParams = mSiteSectionView.getLayoutParams();
+         layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+         // If the explore sites section exists as its own section, then space it more closely.
+@@ -429,8 +431,9 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
+         }
+         mSiteSectionView.setLayoutParams(layoutParams);
+ 
+-        int insertionPoint = indexOfChild(mMiddleSpacer) + 1;
+-        addView(mSiteSectionView, insertionPoint);
++        ViewGroup mBraveStatsView = (ViewGroup) findViewById(R.id.brave_stats_layout);
++        int insertionPoint = mainLayout.indexOfChild(mBraveStatsView) + 1;
++        mainLayout.addView(mSiteSectionView, insertionPoint);
+     }
+ 
+     /**
+@@ -786,7 +789,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
          }
      }
  
