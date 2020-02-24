@@ -764,6 +764,12 @@ void RewardsServiceImpl::Shutdown() {
 }
 
 void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
+  if (result == ledger::Result::WALLET_CREATED ||
+      result == ledger::Result::NO_LEDGER_STATE ||
+      result == ledger::Result::LEDGER_OK) {
+    is_wallet_initialized_ = true;
+  }
+
   if (!ready_.is_signaled())
     ready_.Signal();
 
@@ -3504,6 +3510,10 @@ void RewardsServiceImpl::PendingContributionSaved(const ledger::Result result) {
   for (auto& observer : observers_) {
     observer.OnPendingContributionSaved(this, static_cast<int>(result));
   }
+}
+
+bool RewardsServiceImpl::IsWalletInitialized() {
+  return is_wallet_initialized_;
 }
 
 }  // namespace brave_rewards

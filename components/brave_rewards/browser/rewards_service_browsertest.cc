@@ -197,11 +197,16 @@ class BraveRewardsBrowserTest
     rewards_service_->test_response_callback_ =
         base::BindRepeating(&BraveRewardsBrowserTest::GetTestResponse,
                             base::Unretained(this));
-    rewards_service_->SetLedgerEnvForTesting();
 
     ads_service_ = static_cast<brave_ads::AdsServiceImpl*>(
         brave_ads::AdsServiceFactory::GetForProfile(browser_profile));
     ASSERT_NE(nullptr, ads_service_);
+
+    rewards_service_->AddObserver(this);
+    if (!rewards_service_->IsWalletInitialized()) {
+      WaitForWalletInitialization();
+    }
+    rewards_service_->SetLedgerEnvForTesting();
   }
 
   void TearDown() override {
@@ -1505,7 +1510,8 @@ class BraveRewardsBrowserTest
                            int32_t result) {
     const auto converted_result = static_cast<ledger::Result>(result);
     ASSERT_TRUE(converted_result == ledger::Result::WALLET_CREATED ||
-                converted_result == ledger::Result::NO_LEDGER_STATE);
+                converted_result == ledger::Result::NO_LEDGER_STATE ||
+                converted_result == ledger::Result::LEDGER_OK);
     wallet_initialized_ = true;
     if (wait_for_wallet_initialization_loop_)
       wait_for_wallet_initialization_loop_->Quit();
@@ -2110,42 +2116,27 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsWrongInput) {
 
 // #1 - Claim promotion via settings page
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ClaimPromotionViaSettingsPage) {
-  // Observe the Rewards service
-  rewards_service_->AddObserver(this);
-
   // Enable Rewards
   EnableRewards();
 
   // Claim and verify promotion using settings page
   const bool use_panel = false;
   ClaimPromotion(use_panel);
-
-  // Stop observing the Rewards service
-  rewards_service_->RemoveObserver(this);
 }
 
 // #2 - Claim promotion via panel
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ClaimPromotionViaPanel) {
-  // Observe the Rewards service
-  rewards_service_->AddObserver(this);
-
   // Enable Rewards
   EnableRewards();
 
   // Claim and verify promotion using panel
   const bool use_panel = true;
   ClaimPromotion(use_panel);
-
-  // Stop observing the Rewards service
-  rewards_service_->RemoveObserver(this);
 }
 
 // #3 - Panel shows correct publisher data
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
                        PanelShowsCorrectPublisherData) {
-  // Observe the Rewards service
-  rewards_service_->AddObserver(this);
-
   // Enable Rewards
   EnableRewardsViaCode();
 
@@ -2201,48 +2192,30 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
         "chrome://favicon/size/48@2x/https://" + publisher;
     EXPECT_NE(js_result.ExtractString().find(favicon), std::string::npos);
   }
-
-  // Stop observing the Rewards service
-  rewards_service_->RemoveObserver(this);
 }
 
 // #4a - Visit verified publisher
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, VisitVerifiedPublisher) {
-  // Observe the Rewards service
-  rewards_service_->AddObserver(this);
-
   // Enable Rewards
   EnableRewards();
 
   // Visit verified publisher
   const bool verified = true;
   VisitPublisher("duckduckgo.com", verified);
-
-  // Stop observing the Rewards service
-  rewards_service_->RemoveObserver(this);
 }
 
 // #4b - Visit unverified publisher
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, VisitUnverifiedPublisher) {
-  // Observe the Rewards service
-  rewards_service_->AddObserver(this);
-
   // Enable Rewards
   EnableRewards();
 
   // Visit unverified publisher
   const bool verified = false;
   VisitPublisher("brave.com", verified);
-
-  // Stop observing the Rewards service
-  rewards_service_->RemoveObserver(this);
 }
 
 // #5 - Auto contribution
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContribution) {
-  // Observe the Rewards service
-  rewards_service_->AddObserver(this);
-
   // Enable Rewards
   EnableRewards();
 
@@ -2267,15 +2240,9 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContribution) {
   // Check that summary table shows the appropriate contribution
   ASSERT_NE(ElementInnerText("[color=contribute]").find("-20.0BAT"),
       std::string::npos);
-
-  // Stop observing the Rewards service
-  rewards_service_->RemoveObserver(this);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContributeWhenACOff) {
-    // Observe the Rewards service
-  rewards_service_->AddObserver(this);
-
   EnableRewards();
 
   // Claim promotion using panel
@@ -2318,16 +2285,10 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContributeWhenACOff) {
   // Trigger contribution process
   rewards_service()->StartMonthlyContributionForTest();
   ASSERT_FALSE(first_url_ac_called_);
-
-  // Stop observing the Rewards service
-  rewards_service_->RemoveObserver(this);
 }
 
 // #6 - Tip verified publisher
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipVerifiedPublisher) {
-  // Observe the Rewards service
-  rewards_service_->AddObserver(this);
-
   // Enable Rewards
   EnableRewards();
 
@@ -2337,16 +2298,10 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipVerifiedPublisher) {
 
   // Tip verified publisher
   TipPublisher("duckduckgo.com", ContributionType::OneTimeTip, true);
-
-  // Stop observing the Rewards service
-  rewards_service_->RemoveObserver(this);
 }
 
 // #7 - Tip unverified publisher
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipUnverifiedPublisher) {
-  // Observe the Rewards service
-  rewards_service_->AddObserver(this);
-
   // Enable Rewards
   EnableRewards();
 
@@ -2356,17 +2311,11 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipUnverifiedPublisher) {
 
   // Tip unverified publisher
   TipPublisher("brave.com", ContributionType::OneTimeTip);
-
-  // Stop observing the Rewards service
-  rewards_service_->RemoveObserver(this);
 }
 
 // #8 - Recurring tip for verified publisher
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
                        RecurringTipForVerifiedPublisher) {
-  // Observe the Rewards service
-  rewards_service_->AddObserver(this);
-
   // Enable Rewards
   EnableRewards();
 
@@ -2376,17 +2325,11 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
   // Tip verified publisher
   TipPublisher("duckduckgo.com", ContributionType::MonthlyTip, true);
-
-  // Stop observing the Rewards service
-  rewards_service_->RemoveObserver(this);
 }
 
 // #9 - Recurring tip for unverified publisher
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
                        RecurringTipForUnverifiedPublisher) {
-  // Observe the Rewards service
-  rewards_service_->AddObserver(this);
-
   // Enable Rewards
   EnableRewards();
 
@@ -2396,9 +2339,6 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
   // Tip verified publisher
   TipPublisher("brave.com", ContributionType::MonthlyTip, false);
-
-  // Stop observing the Rewards service
-  rewards_service_->RemoveObserver(this);
 }
 
 // Brave tip icon is injected when visiting Twitter
@@ -2570,9 +2510,6 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
                        PendingContributionTip) {
   const std::string publisher = "example.com";
 
-  // Observe the Rewards service
-  rewards_service_->AddObserver(this);
-
   // Enable Rewards
   EnableRewards();
 
@@ -2623,14 +2560,11 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
         js_result.ExtractString().find(publisher),
         std::string::npos);
   }
-
-  // Stop observing the Rewards service
-  rewards_service_->RemoveObserver(this);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
     InsufficientNotificationForZeroAmountZeroPublishers) {
-  rewards_service_->GetNotificationService()->AddObserver(this);
+  AddNotificationServiceObserver();
   EnableRewardsViaCode();
   CheckInsufficientFundsForTesting();
   WaitForInsufficientFundsNotification();
@@ -2646,15 +2580,11 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       RewardsNotificationType::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS);
 
   EXPECT_FALSE(is_showing_notification);
-
-  // Stop observing the Rewards service
-  rewards_service_->RemoveObserver(this);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
                        InsufficientNotificationForACNotEnoughFunds) {
-  rewards_service_->AddObserver(this);
-  rewards_service_->GetNotificationService()->AddObserver(this);
+  AddNotificationServiceObserver();
   EnableRewards();
 
   // Visit publishers
@@ -2679,15 +2609,11 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       RewardsNotificationType::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS);
 
   EXPECT_FALSE(is_showing_notification);
-
-  // Stop observing the Rewards service
-  rewards_service_->RemoveObserver(this);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
                        InsufficientNotificationForInsufficientAmount) {
-  rewards_service_->AddObserver(this);
-  rewards_service_->GetNotificationService()->AddObserver(this);
+  AddNotificationServiceObserver();
   EnableRewards();
   // Claim promotion using panel
   const bool use_panel = true;
@@ -2721,15 +2647,11 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       RewardsNotificationType::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS);
 
   EXPECT_FALSE(is_showing_notification);
-
-  // Stop observing the Rewards service
-  rewards_service_->RemoveObserver(this);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
                        InsufficientNotificationForVerifiedInsufficientAmount) {
-  rewards_service_->AddObserver(this);
-  rewards_service_->GetNotificationService()->AddObserver(this);
+  AddNotificationServiceObserver();
   EnableRewards();
   // Claim promotion using panel
   const bool use_panel = true;
@@ -2763,9 +2685,6 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       RewardsNotificationType::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS);
 
   EXPECT_TRUE(is_showing_notification);
-
-  // Stop observing the Rewards service
-  rewards_service_->RemoveObserver(this);
 }
 
 // Test whether rewards is diabled in private profile.
@@ -2782,9 +2701,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, PrefsTestInPrivateWindow) {
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
                        ProcessPendingContributions) {
-  rewards_service_->AddObserver(this);
-  rewards_service_->GetNotificationService()->AddObserver(this);
-
+  AddNotificationServiceObserver();
   alter_publisher_list_ = true;
 
   EnableRewards();
@@ -2867,14 +2784,10 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
     EXPECT_NE(js_result2.ExtractString().find("Insufficient Funds"),
           std::string::npos);
   }
-
-  // Stop observing the Rewards service
-  rewards_service_->RemoveObserver(this);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RewardsPanelDefaultTipChoices) {
   show_defaults_in_properties_ = true;
-  rewards_service_->AddObserver(this);
   EnableRewards();
 
   bool use_panel = true;
@@ -2896,13 +2809,10 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RewardsPanelDefaultTipChoices) {
   content::WebContents* popup = OpenRewardsPopup();
   const auto tip_options = GetRewardsPopupTipOptions(popup);
   ASSERT_EQ(tip_options, std::vector<double>({ 0, 10, 20, 50 }));
-
-  rewards_service_->RemoveObserver(this);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, SiteBannerDefaultTipChoices) {
   show_defaults_in_properties_ = true;
-  rewards_service_->AddObserver(this);
   EnableRewards();
 
   GURL url = https_server()->GetURL("3zsistemi.si", "/index.html");
@@ -2918,15 +2828,12 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, SiteBannerDefaultTipChoices) {
   site_banner = OpenSiteBanner(ContributionType::MonthlyTip);
   tip_options = GetSiteBannerTipOptions(site_banner);
   ASSERT_EQ(tip_options, std::vector<double>({ 10, 20, 50 }));
-
-  rewards_service_->RemoveObserver(this);
 }
 
 IN_PROC_BROWSER_TEST_F(
     BraveRewardsBrowserTest,
     SiteBannerDefaultPublisherAmounts) {
   show_defaults_in_properties_ = true;
-  rewards_service_->AddObserver(this);
   EnableRewards();
 
   GURL url = https_server()->GetURL("laurenwags.github.io", "/index.html");
@@ -2938,8 +2845,6 @@ IN_PROC_BROWSER_TEST_F(
       OpenSiteBanner(ContributionType::OneTimeTip);
   const auto tip_options = GetSiteBannerTipOptions(site_banner);
   ASSERT_EQ(tip_options, std::vector<double>({ 5, 10, 20 }));
-
-  rewards_service_->RemoveObserver(this);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
@@ -2988,7 +2893,6 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
                        TipWithVerifiedWallet) {
-  rewards_service()->AddObserver(this);
   verified_wallet_ = true;
   external_balance_ = 50.0;
 
@@ -3019,7 +2923,6 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
                        MultipleTipsProduceMultipleFeesWithVerifiedWallet) {
-  rewards_service()->AddObserver(this);
   verified_wallet_ = true;
   external_balance_ = 50.0;
 
@@ -3070,9 +2973,6 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipConnectedPublisherAnon) {
-  // Observe the Rewards service
-  rewards_service_->AddObserver(this);
-
   // Enable Rewards
   EnableRewards();
 
@@ -3089,16 +2989,11 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipConnectedPublisherAnon) {
       ledger::PublisherStatus::CONNECTED,
       should_contribute);
   VerifyTip(amount, should_contribute, false, true);
-
-  // Stop observing the Rewards service
-  rewards_service_->RemoveObserver(this);
 }
 
 IN_PROC_BROWSER_TEST_F(
     BraveRewardsBrowserTest,
     TipConnectedPublisherAnonAndConnected) {
-  // Observe the Rewards service
-  rewards_service()->AddObserver(this);
   verified_wallet_ = true;
   external_balance_ = 50.0;
 
@@ -3127,16 +3022,11 @@ IN_PROC_BROWSER_TEST_F(
       ledger::PublisherStatus::CONNECTED,
       should_contribute);
   VerifyTip(amount, should_contribute, false, true);
-
-  // Stop observing the Rewards service
-  rewards_service_->RemoveObserver(this);
 }
 
 IN_PROC_BROWSER_TEST_F(
     BraveRewardsBrowserTest,
     TipConnectedPublisherConnected) {
-  // Observe the Rewards service
-  rewards_service()->AddObserver(this);
   verified_wallet_ = true;
   external_balance_ = 50.0;
 
@@ -3163,16 +3053,11 @@ IN_PROC_BROWSER_TEST_F(
       ledger::PublisherStatus::CONNECTED,
       should_contribute);
   VerifyTip(amount, should_contribute, false, true);
-
-  // Stop observing the Rewards service
-  rewards_service_->RemoveObserver(this);
 }
 
 IN_PROC_BROWSER_TEST_F(
     BraveRewardsBrowserTest,
     TipConnectedPublisherVerified) {
-  // Observe the Rewards service
-  rewards_service()->AddObserver(this);
   verified_wallet_ = true;
   external_balance_ = 50.0;
 
@@ -3199,15 +3084,10 @@ IN_PROC_BROWSER_TEST_F(
       ledger::PublisherStatus::CONNECTED,
       should_contribute);
   VerifyTip(amount, should_contribute, false, true);
-
-  // Stop observing the Rewards service
-  rewards_service_->RemoveObserver(this);
 }
 
 // Ensure that we can make a one-time tip of a non-integral amount.
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipNonIntegralAmount) {
-  rewards_service()->AddObserver(this);
-
   EnableRewards();
 
   const bool use_panel = true;
@@ -3219,14 +3099,10 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipNonIntegralAmount) {
   ASSERT_EQ(tip_reconcile_status_, ledger::Result::LEDGER_OK);
 
   ASSERT_EQ(reconciled_tip_total_, 2.5);
-
-  rewards_service_->RemoveObserver(this);
 }
 
 // Ensure that we can make a recurring tip of a non-integral amount.
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RecurringTipNonIntegralAmount) {
-  rewards_service()->AddObserver(this);
-
   EnableRewards();
 
   const bool use_panel = true;
@@ -3241,15 +3117,10 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RecurringTipNonIntegralAmount) {
   ASSERT_EQ(tip_reconcile_status_, ledger::Result::LEDGER_OK);
 
   ASSERT_EQ(reconciled_tip_total_, 2.5);
-
-  rewards_service_->RemoveObserver(this);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
     RecurringAndPartialAutoContribution) {
-  // Observe the Rewards service
-  rewards_service_->AddObserver(this);
-
   // Enable Rewards
   EnableRewards();
 
@@ -3293,16 +3164,10 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
     const std::string result = ElementInnerText("[color='contribute']");
     EXPECT_NE(result.find("-5.0BAT"), std::string::npos);
   }
-
-  // Stop observing the Rewards service
-  rewards_service_->RemoveObserver(this);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
     MultipleRecurringOverBudgetAndPartialAutoContribution) {
-  // Observe the Rewards service
-  rewards_service_->AddObserver(this);
-
   // Enable Rewards
   EnableRewards();
 
@@ -3364,9 +3229,6 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
     const std::string result = ElementInnerText("[color='contribute']");
     EXPECT_NE(result.find("-5.0BAT"), std::string::npos);
   }
-
-  // Stop observing the Rewards service
-  rewards_service_->RemoveObserver(this);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
@@ -3478,18 +3340,12 @@ IN_PROC_BROWSER_TEST_F(
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, PanelDontDoRequests) {
-  // Observe the Rewards service
-  rewards_service_->AddObserver(this);
-
   // Open the Rewards popup
   content::WebContents *popup_contents = OpenRewardsPopup();
   ASSERT_TRUE(popup_contents);
 
   // Make sure that no request was made
   ASSERT_FALSE(request_made_);
-
-  // Stop observing the Rewards service
-  rewards_service_->RemoveObserver(this);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ShowMonthlyIfACOff) {
