@@ -233,12 +233,6 @@ export default class SiteBanner extends React.PureComponent<Props, {}> {
     }
   }
 
-  onKeyUp = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key.toLowerCase() === 'escape' && this.props.onClose) {
-      this.props.onClose()
-    }
-  }
-
   renderConfirmation = () => {
     const { type, onTweet, onlyAnonWallet, monthlyDate, amount } = this.props
 
@@ -286,11 +280,7 @@ export default class SiteBanner extends React.PureComponent<Props, {}> {
     const batFormatString = onlyAnonWallet ? 'bap' : 'bat'
 
     return (
-      <StyledWrapper
-        id={id}
-        onKeyUp={this.onKeyUp}
-        tabIndex={0}
-      >
+      <StyledWrapper id={id} tabIndex={0}>
         <StyledBanner>
           <StyledClose onClick={onClose}>
             <CloseCircleOIcon />
