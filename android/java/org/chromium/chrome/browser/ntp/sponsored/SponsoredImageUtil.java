@@ -15,6 +15,7 @@ public class SponsoredImageUtil {
 
     public static final String NTP_TYPE = "ntp_type";
 
+    public static final int BR_INVALID_OPTION = -1;
     public static final int BR_OFF = 1;
     public static final int BR_ON_ADS_OFF = 2;
     public static final int BR_ON_ADS_OFF_BG_IMAGE = 3;

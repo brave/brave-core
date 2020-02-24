@@ -19,5 +19,12 @@
         android:summaryOn="@string/text_on"
         android:summaryOff="@string/text_off"
         android:defaultValue="true" />
+
+    <org.chromium.chrome.browser.settings.ChromeSwitchPreference
+        android:key="qa_debug_ntp"
+        android:title="Enable debugging NTP"
+        android:summaryOn="@string/text_on"
+        android:summaryOff="@string/text_off"
+        android:defaultValue="false" />
     
 </PreferenceScreen>

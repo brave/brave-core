@@ -6,6 +6,10 @@
 -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <color name="black_alpha_30">#4D000000</color>
+    <color name="black_alpha_50">#80000000</color>
+
     <!-- Onborading colors -->
     <color name="onboarding_orange">#fb542b</color>
     <color name="onboarding_gray">#84889c</color>
@@ -55,4 +59,6 @@
     <color name="incognito_emphasis">@android:color/white</color>
 
     <color name="find_in_page_query_incognito_hint_color">@color/white_alpha_70</color>
+
+    <color name="ntp_non_disruptive_banner_bg_color">#E6343a40</color>
 </resources>
