@@ -5,17 +5,97 @@
 
 package org.chromium.chrome.browser.ntp;
 
+import android.os.Bundle;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.content.SharedPreferences;
+import android.graphics.Canvas;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.view.View;
+import android.view.Gravity;
+import android.widget.LinearLayout;
+import android.widget.FrameLayout;
+import android.widget.Button;
+import android.view.ViewTreeObserver;
+import java.util.Calendar;
+import android.widget.Toast;
+import android.content.res.Configuration;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.Color;
+import android.app.Activity;
+import android.os.Build;
+import android.graphics.LinearGradient;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Shader;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.TextPaint;
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import java.io.File;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import android.net.Uri;
+import android.os.Handler;
 
 import org.chromium.base.TraceEvent;
 import org.chromium.chrome.R;
+import org.chromium.base.Log;
+import org.chromium.base.PathUtils;
+import org.chromium.base.ContextUtils;
+import org.chromium.base.ApplicationStatus;
 import org.chromium.chrome.browser.ntp.NewTabPageView;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.suggestions.tile.TileGroup;
+import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabImpl;
+import org.chromium.chrome.browser.tabmodel.TabLaunchType;
+import org.chromium.chrome.browser.ui.widget.displaystyle.UiConfig;
+import org.chromium.chrome.browser.ui.widget.displaystyle.ViewResizer;
+import org.chromium.chrome.browser.util.ViewUtils;
+import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
+import org.chromium.chrome.browser.ntp.sponsored.NTPImage;
+import org.chromium.chrome.browser.ntp.sponsored.BackgroundImage;
+import org.chromium.chrome.browser.ntp.sponsored.SponsoredImage;
+import org.chromium.chrome.browser.ntp.sponsored.NewTabListener;
+import org.chromium.chrome.browser.ntp.sponsored.SponsoredImageUtil;
+import org.chromium.content_public.browser.LoadUrlParams;
+import org.chromium.chrome.browser.ntp.sponsored.RewardsBottomSheetDialogFragment;
+import org.chromium.chrome.browser.BraveAdsNativeHelper;
+import org.chromium.chrome.browser.BraveRewardsPanelPopup;
+import org.chromium.chrome.browser.BraveRewardsObserver;
+import org.chromium.chrome.browser.BraveRewardsNativeWorker;
+import org.chromium.chrome.browser.tab.EmptyTabObserver;
+import org.chromium.chrome.browser.tab.TabObserver;
+import org.chromium.chrome.browser.tabmodel.TabSelectionType;
+import org.chromium.chrome.browser.download.DownloadUtils;
+import org.chromium.ui.base.DeviceFormFactor;
+import org.chromium.chrome.browser.tabmodel.TabModel;
+import org.chromium.chrome.browser.util.LocaleUtils;
+import org.chromium.chrome.browser.util.ConfigurationUtils;
+import org.chromium.chrome.browser.util.ImageUtils;
+import org.chromium.chrome.browser.ntp.sponsored.NTPUtil;
+import org.chromium.chrome.browser.ntp.sponsored.SponsoredTab;
+
+import static org.chromium.chrome.browser.util.ViewUtils.dpToPx;
 
 public class BraveNewTabPageView extends NewTabPageView {
     private static final String TAG = "BraveNewTabPageView";
@@ -24,15 +104,73 @@ public class BraveNewTabPageView extends NewTabPageView {
     private static final String PREF_ADS_BLOCKED_COUNT = "ads_blocked_count";
     private static final String PREF_HTTPS_UPGRADES_COUNT = "https_upgrades_count";
     private static final short MILLISECONDS_PER_ITEM = 50;
+    private static final int BOTTOM_TOOLBAR_HEIGHT = 56;
 
     private TextView mAdsBlockedCountTextView;
     private TextView mHttpsUpgradesCountTextView;
+    private TextView mEstTimeSavedCountTextView;
+    private TextView mAdsBlockedTextView;
+    private TextView mHttpsUpgradesTextView;
     private TextView mEstTimeSavedTextView;
     private Profile mProfile;
+
+    private TabImpl mTab;
+    private SponsoredTab sponsoredTab;
+
+    private NewTabPageLayout mNewTabPageLayout;
+    private SharedPreferences mSharedPreferences;
+    private BitmapDrawable imageDrawable;
+
+    private boolean isFromBottomSheet;
 
     public BraveNewTabPageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mProfile = Profile.getLastUsedProfile();
+        mNewTabPageLayout = getNewTabPageLayout();
+        mSharedPreferences = ContextUtils.getAppSharedPreferences();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M || (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !sponsoredTab.isMoreTabs())) {
+            NTPImage ntpImage = sponsoredTab.getTabNTPImage();
+            if(ntpImage == null) {
+                sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
+            } else if (ntpImage instanceof SponsoredImage) {
+                String countryCode = LocaleUtils.getCountryCode();
+                SponsoredImage sponsoredImage = (SponsoredImage) ntpImage;
+                File imageFile = new File(PathUtils.getDataDirectory(), countryCode + "_" + sponsoredImage.getImageUrl());
+                if(!imageFile.exists()) {
+                    sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
+                }
+            }
+            checkForNonDistruptiveBanner(ntpImage);
+            super.onConfigurationChanged(newConfig);
+            showNTPImage(ntpImage);
+        } else {
+            super.onConfigurationChanged(newConfig);
+        }
+    }
+
+    @Override
+    public void initialize(NewTabPageManager manager, Tab tab, TileGroup.Delegate tileGroupDelegate,
+            boolean searchProviderHasLogo, boolean searchProviderIsGoogle, int scrollPosition,
+            long constructedTimeNs) {
+        super.initialize(manager, tab, tileGroupDelegate,
+            searchProviderHasLogo, searchProviderIsGoogle, scrollPosition,
+            constructedTimeNs);
+
+        mTab = (TabImpl) tab;
+        sponsoredTab = mTab.getSponsoredTab();
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            NTPImage ntpImage = sponsoredTab.getTabNTPImage();
+            checkForNonDistruptiveBanner(ntpImage);
+            showNTPImage(ntpImage);
+        } else if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.M && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !sponsoredTab.isMoreTabs()) {
+            mTab.addObserver(mTabObserver);
+        }
+
     }
 
     @Override
@@ -42,7 +180,11 @@ public class BraveNewTabPageView extends NewTabPageView {
         ViewGroup braveStatsView = (ViewGroup) getNewTabPageLayout().findViewById(R.id.brave_stats);
         mAdsBlockedCountTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_ads_count);
         mHttpsUpgradesCountTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_https_count);
-        mEstTimeSavedTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_time_count);
+        mEstTimeSavedCountTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_time_count);
+
+        mAdsBlockedTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_ads);
+        mHttpsUpgradesTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_https);
+        mEstTimeSavedTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_time);
     }
 
     @Override
@@ -65,7 +207,16 @@ public class BraveNewTabPageView extends NewTabPageView {
 
         mAdsBlockedCountTextView.setText(getBraveStatsStringFormNumber(adsBlockedCount));
         mHttpsUpgradesCountTextView.setText(getBraveStatsStringFormNumber(httpsUpgradesCount));
-        mEstTimeSavedTextView.setText(getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000));
+        mEstTimeSavedCountTextView.setText(getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000));
+
+        if(mSharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES, true) 
+            && (Build.VERSION.SDK_INT > Build.VERSION_CODES.M || (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !sponsoredTab.isMoreTabs()))) {
+            mAdsBlockedTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));
+            mHttpsUpgradesTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));
+            mEstTimeSavedTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));            
+            mEstTimeSavedCountTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));            
+        }
+
         TraceEvent.end(TAG + ".updateBraveStats()");
     }
 
@@ -127,4 +278,220 @@ public class BraveNewTabPageView extends NewTabPageView {
         }
         return result;
     }
+
+    private void showNTPImage(NTPImage ntpImage) {
+        NTPUtil.updateOrientedUI(mTab.getActivity(), mNewTabPageLayout);
+
+        if(mSharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES, true)
+            && (Build.VERSION.SDK_INT > Build.VERSION_CODES.M || (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !sponsoredTab.isMoreTabs()))) {
+            ViewTreeObserver observer = mNewTabPageLayout.getViewTreeObserver();
+            observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    String countryCode = LocaleUtils.getCountryCode();
+
+                    int layoutWidth = mNewTabPageLayout.getMeasuredWidth();
+                    int layoutHeight = mNewTabPageLayout.getMeasuredHeight();
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inScaled = false;
+                    options.inJustDecodeBounds = false;
+
+                    Bitmap imageBitmap = null;
+                    float imageWidth;
+                    float imageHeight;
+                    float centerPointX;
+                    float centerPointY;
+
+                    if (ntpImage instanceof SponsoredImage) {
+                        SponsoredImage sponsoredImage = (SponsoredImage) ntpImage;
+                        File imageFile = new File(PathUtils.getDataDirectory(), countryCode + "_" + sponsoredImage.getImageUrl());
+                        try {
+                            Uri imageFileUri = Uri.parse("file://"+imageFile.getAbsolutePath());
+                            InputStream inputStream = mTab.getActivity().getContentResolver().openInputStream(imageFileUri);
+                            imageBitmap = BitmapFactory.decodeStream(inputStream);
+                            imageWidth = imageBitmap.getWidth();
+                            imageHeight = imageBitmap.getHeight();
+                            centerPointX = sponsoredImage.getFocalPointX() == 0 ? (imageWidth/2) : sponsoredImage.getFocalPointX();
+                            centerPointY = sponsoredImage.getFocalPointY() == 0 ? (imageHeight/2) : sponsoredImage.getFocalPointY();
+
+                            if (SponsoredImageUtil.getSponsoredLogo() != null ) {
+                                ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
+                                sponsoredLogo.setVisibility(View.VISIBLE);
+                                File logoFile = new File(PathUtils.getDataDirectory(),countryCode + "_" + SponsoredImageUtil.getSponsoredLogo().getImageUrl());
+                                Bitmap logoBitmap = BitmapFactory.decodeFile(logoFile.getPath());
+                                sponsoredLogo.setImageBitmap(logoBitmap);
+                                sponsoredLogo.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        if (SponsoredImageUtil.getSponsoredLogo().getDestinationUrl() != null) {
+                                            NTPUtil.openImageCredit(SponsoredImageUtil.getSponsoredLogo().getDestinationUrl());
+                                        }
+                                    }
+                                });
+                            }
+                        } catch (Exception exc) {
+                            Log.e("NTP", exc.getMessage());
+                            return;
+                        }
+                    } else {
+                        BackgroundImage backgroundImage = (BackgroundImage) ntpImage;
+
+                        ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
+                        sponsoredLogo.setVisibility(View.GONE);
+
+                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
+                            Bitmap imageBitmapRes = BitmapFactory.decodeResource(mNewTabPageLayout.getResources(), backgroundImage.getImageDrawable(), options);
+                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                            imageBitmapRes.compress(Bitmap.CompressFormat.JPEG,50,stream);
+                            byte[] byteArray = stream.toByteArray();
+                            imageBitmap = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
+                            imageBitmapRes.recycle();
+                        } else {
+                            imageBitmap = BitmapFactory.decodeResource(mNewTabPageLayout.getResources(), backgroundImage.getImageDrawable(), options);
+                        }
+                        imageWidth = imageBitmap.getWidth();
+                        imageHeight = imageBitmap.getHeight();
+                        centerPointX = backgroundImage.getCenterPoint();
+                        centerPointY = 0;
+
+                        if (backgroundImage.getImageCredit() != null) {
+
+                            String imageCreditStr = String.format(mNewTabPageLayout.getResources().getString(R.string.photo_by, backgroundImage.getImageCredit().getName()));
+
+                            SpannableStringBuilder spannableString = new SpannableStringBuilder(imageCreditStr);
+                            spannableString.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), ((imageCreditStr.length()-1) - (backgroundImage.getImageCredit().getName().length()-1)), imageCreditStr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                            TextView creditText = (TextView)mNewTabPageLayout.findViewById(R.id.credit_text);
+                            creditText.setText(spannableString);
+                            creditText.setVisibility(View.VISIBLE);
+                            creditText.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if (backgroundImage.getImageCredit() != null) {
+                                        NTPUtil.openImageCredit(backgroundImage.getImageCredit().getUrl());
+                                    }
+                                }
+                            });
+                        }
+                    }
+
+                    float centerRatioX = centerPointX / imageWidth;
+
+                    float imageWHRatio = imageWidth / imageHeight;
+                    float imageHWRatio = imageHeight / imageWidth;
+
+                    int newImageWidth = (int) (layoutHeight * imageWHRatio);
+                    int newImageHeight = layoutHeight;
+
+                    if (newImageWidth < layoutWidth) {
+                        // Image is now too small so we need to adjust width and height based on
+                        // This covers landscape and strange tablet sizes.
+                        newImageWidth = layoutWidth;
+                        newImageHeight = (int) (newImageWidth * imageHWRatio);
+                    }
+
+                    int newCenterX = (int) (newImageWidth * centerRatioX);
+                    int startX = (int) (newCenterX - (layoutWidth / 2));
+                    if (newCenterX < layoutWidth / 2) {
+                        // Need to crop starting at 0 to newImageWidth - left aligned image
+                        startX = 0;
+                    } else if (newImageWidth - newCenterX < layoutWidth / 2) {
+                        // Need to crop right side of image - right aligned
+                        startX = newImageWidth - layoutWidth;
+                    }
+
+                    int startY = (newImageHeight - layoutHeight)/2;
+                    if (centerPointY > 0) {
+                        float centerRatioY = centerPointY / imageHeight;
+                        newImageWidth = layoutWidth;
+                        newImageHeight = (int) (layoutWidth * imageHWRatio);
+
+                        if (newImageHeight < layoutHeight) {
+                            newImageHeight = layoutHeight;
+                            newImageWidth = (int) (newImageHeight * imageWHRatio);
+                        }
+
+                        int newCenterY = (int) (newImageHeight * centerRatioY);
+                        startY = (int) (newCenterY - (layoutHeight / 2));
+                        if (newCenterY < layoutHeight / 2) {
+                            // Need to crop starting at 0 to newImageWidth - left aligned image
+                            startY = 0;
+                        } else if (newImageHeight - newCenterY < layoutHeight / 2) {
+                            // Need to crop right side of image - right aligned
+                            startY = newImageHeight - layoutHeight;
+                        }
+                    }
+
+                    imageBitmap = Bitmap.createScaledBitmap(imageBitmap, newImageWidth, newImageHeight, true);
+
+                    Bitmap newBitmap = Bitmap.createBitmap(imageBitmap, startX, startY, layoutWidth, (int) layoutHeight);
+                    Bitmap bitmapWithGradient = ImageUtils.addGradient(mTab.getActivity(), newBitmap, dpToPx(mTab.getActivity(),BOTTOM_TOOLBAR_HEIGHT));
+                    Bitmap offsetBitmap = ImageUtils.topOffset(bitmapWithGradient, dpToPx(mTab.getActivity(),BOTTOM_TOOLBAR_HEIGHT));
+
+                    imageBitmap.recycle();
+                    newBitmap.recycle();
+                    bitmapWithGradient.recycle();
+
+                    // Center vertically, and crop to new center
+                    imageDrawable = new BitmapDrawable(mNewTabPageLayout.getResources(), offsetBitmap);
+                    mNewTabPageLayout.setBackground(imageDrawable);
+
+                    mNewTabPageLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            });
+        }
+    }
+
+    private void checkForNonDistruptiveBanner(NTPImage ntpImage) {
+        int brOption = NTPUtil.checkForNonDistruptiveBanner(ntpImage, sponsoredTab);
+        if (SponsoredImageUtil.BR_INVALID_OPTION != brOption) {
+            NTPUtil.showNonDistruptiveBanner(mTab.getActivity(), mNewTabPageLayout, brOption, sponsoredTab, newTabListener);
+        }
+    }
+
+    private void checkAndShowNTPImage() {
+        NTPImage ntpImage = sponsoredTab.getTabNTPImage();
+        if(ntpImage == null) {
+            sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
+        } else if (ntpImage instanceof SponsoredImage) {
+            String countryCode = LocaleUtils.getCountryCode();
+            SponsoredImage sponsoredImage = (SponsoredImage) ntpImage;
+            File imageFile = new File(PathUtils.getDataDirectory(), countryCode + "_" + sponsoredImage.getImageUrl());
+            if(!imageFile.exists()) {
+                sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
+                ntpImage = sponsoredTab.getTabNTPImage();
+            }
+        }
+        checkForNonDistruptiveBanner(ntpImage);
+        showNTPImage(ntpImage);
+    }
+
+    private TabObserver mTabObserver = new EmptyTabObserver() {
+        @Override
+        public void onInteractabilityChanged(boolean interactable) {
+            // Force a layout update if the tab is now in the foreground.
+            if (interactable) {
+                checkAndShowNTPImage();
+            } else {
+                if(!isFromBottomSheet){
+                    mNewTabPageLayout.setBackgroundResource(0);
+                    if (imageDrawable != null && imageDrawable.getBitmap() != null && !imageDrawable.getBitmap().isRecycled()) {
+                        imageDrawable.getBitmap().recycle();
+                    }
+                }
+            }
+        }
+    };
+
+    private NewTabListener newTabListener = new NewTabListener() {
+        @Override
+        public void updateInteractableFlag(boolean isBottomSheet) {
+            isFromBottomSheet = isBottomSheet;
+        }
+
+        @Override
+        public void updateNTPImage() {
+            checkAndShowNTPImage();
+        }
+    };
 }

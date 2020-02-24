@@ -6,6 +6,10 @@
 -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+    <color name="black_alpha_30">#4D000000</color>
+    <color name="black_alpha_50">#80000000</color>
+
     <!-- Onborading colors -->
     <color name="onboarding_orange">#fb542b</color>
     <color name="onboarding_gray">#84889c</color>
@@ -58,4 +62,5 @@
 
     <color name="new_tab_menu_text_dark_color">@android:color/white</color>
     <color name="new_tab_menu_bg_dark_color">@color/modern_grey_800</color>
+    <color name="ntp_non_disruptive_banner_bg_color">#E6343a40</color>
 </resources>
