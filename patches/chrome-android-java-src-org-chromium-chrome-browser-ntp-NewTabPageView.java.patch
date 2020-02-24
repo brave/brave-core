@@ -1,7 +1,16 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageView.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageView.java
-index d1ca3eb54eaa4988d2d347804152eae9d2381e00..ec729182152b6a74c067772c02fedc2865c95c2e 100644
+index d1ca3eb54eaa4988d2d347804152eae9d2381e00..c015ff58dd15669b3e6f26f8c95e57d5997dc3f8 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageView.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageView.java
+@@ -99,7 +99,7 @@ public class NewTabPageView extends HistoryNavigationLayout {
+ 
+         // Don't attach now, the recyclerView itself will determine when to do it.
+         mNewTabPageLayout = (NewTabPageLayout) LayoutInflater.from(getContext())
+-                                    .inflate(R.layout.new_tab_page_layout, mRecyclerView, false);
++                                    .inflate(R.layout.brave_new_tab_page_layout, mRecyclerView, false);
+     }
+ 
+     /**
 @@ -199,11 +199,12 @@ public class NewTabPageView extends HistoryNavigationLayout {
          mRecyclerView.setAdapter(newTabPageAdapter);
          mRecyclerView.getLinearLayoutManager().scrollToPosition(scrollPosition);
