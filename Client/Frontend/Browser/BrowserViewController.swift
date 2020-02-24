@@ -1550,32 +1550,6 @@ class BrowserViewController: UIViewController {
     
     private var browserLockPopup: AlertPopupView?
     
-    func presentBrowserLockCallout() {
-        if isBrowserLockEnabled || Preferences.Popups.browserLock.value || browserLockPopup != nil { return }
-        
-        topToolbar.leaveOverlayMode()
-        
-        let popup = AlertPopupView(imageView: UIImageView(image: #imageLiteral(resourceName: "browser_lock_popup")), title: Strings.browserLockCalloutTitle, message: Strings.browserLockCalloutMessage)
-        popup.addButton(title: Strings.browserLockCalloutNotNow) { () -> PopupViewDismissType in
-            Preferences.Popups.browserLock.value = true
-            self.browserLockPopup = nil
-            return .flyDown
-        }
-        
-        popup.addButton(title: Strings.browserLockCalloutEnable, type: .primary) { [weak self] () -> PopupViewDismissType in
-            Preferences.Popups.browserLock.value = true
-            self?.browserLockPopup = nil
-            
-            let setupPasscodeController = SetupPasscodeViewController()
-            let container = UINavigationController(rootViewController: setupPasscodeController)
-            self?.present(container, animated: true)
-            
-            return .flyUp
-        }
-        browserLockPopup = popup
-        popup.showWithType(showType: .flyUp)
-    }
-    
     // MARK: - DuckDuckGo Callout
     
     private var duckDuckGoPopup: AlertPopupView?
@@ -1588,24 +1562,10 @@ class BrowserViewController: UIViewController {
         // Don't show duplicate popups
         if duckDuckGoPopup != nil { return }
         
-        // Check to see if its been presented already
-        if !SearchEngines.shouldShowDuckDuckGoPromo || (Preferences.Popups.duckDuckGoPrivateSearch.value && !force) {
-            presentBrowserLockCallout()
-            return
-        }
-        
-        // Do not show ddg popup if user already chose it for private browsing.
-        if profile.searchEngines.defaultEngine(forType: .privateMode).shortName == OpenSearchEngine.EngineNames.duckDuckGo {
-            presentBrowserLockCallout()
-            return
-        }
-        
         topToolbar.leaveOverlayMode()
         
         let popup = AlertPopupView(imageView: UIImageView(image: #imageLiteral(resourceName: "duckduckgo")), title: Strings.DDGCalloutTitle, message: Strings.DDGCalloutMessage)
-        popup.dismissHandler = { [weak self] in
-            self?.presentBrowserLockCallout()
-        }
+        
         popup.addButton(title: Strings.DDGCalloutNo) {
             Preferences.Popups.duckDuckGoPrivateSearch.value = true
             self.duckDuckGoPopup = nil
