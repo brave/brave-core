@@ -12,6 +12,8 @@
     <color name="modern_blue_300">#FF7654</color>
     <color name="modern_blue_600">#EA3A0D</color>
     <color name="modern_blue_700">#C22700</color>
+    <color name="black_alpha_30">#4D000000</color>
+    <color name="black_alpha_50">#80000000</color>
 
     <!-- Onborading colors -->
     <color name="onboarding_orange">#fb542b</color>
@@ -65,4 +67,5 @@
 
     <color name="new_tab_menu_text_dark_color">@android:color/white</color>
     <color name="new_tab_menu_bg_dark_color">@color/modern_grey_800</color>
+    <color name="ntp_non_disruptive_banner_bg_color">#E6343a40</color>
 </resources>

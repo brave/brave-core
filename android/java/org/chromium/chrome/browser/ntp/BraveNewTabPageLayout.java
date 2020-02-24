@@ -5,9 +5,9 @@
 
 package org.chromium.chrome.browser.ntp;
 
+import android.os.Build;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.content.SharedPreferences;
@@ -19,7 +19,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 
 public class BraveNewTabPageLayout extends NewTabPageLayout {
-    private ViewGroup mBraveStatsLayout;
+    private ViewGroup mBraveStatsView;
 
     public BraveNewTabPageLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -31,27 +31,20 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         // Make brave stats visibile always on NTP.
         // NewTabPageLayout::setSearchProviderInfo() makes it invisible.
         // So, explicitly set it as visible.
-        mBraveStatsLayout.setVisibility(View.VISIBLE);
+        mBraveStatsView.setVisibility(View.VISIBLE);
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        insertBraveStatsLayout();
-    }
-
-    private void insertBraveStatsLayout() {
-        mBraveStatsLayout = (ViewGroup) LayoutInflater.from(getContext())
-                .inflate(R.layout.brave_stats_layout, this, false);
-        ViewGroup logo = (ViewGroup) findViewById(R.id.search_provider_logo);
-        int insertionPoint = indexOfChild(logo) + 1;
-        addView(mBraveStatsLayout, insertionPoint);
+        mBraveStatsView = (ViewGroup) findViewById(R.id.brave_stats);
     }
 
     @Override
     public int getMaxTileRows() {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-        if(sharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES, true)) {
+        if(sharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES, true) 
+            && (Build.VERSION.SDK_INT > Build.VERSION_CODES.M || (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP))) {
             return 1;
         } else {
             return 2;
