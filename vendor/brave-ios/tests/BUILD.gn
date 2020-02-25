@@ -20,7 +20,6 @@ ios_xctest_test("brave_rewards_ios_tests") {
 
   sources = [
     "main.mm",
-    "ledger_database_test.mm",
     "dictionary_transform_test.mm",
     "vector_transform_test.mm",
     "test_foo.mm",
