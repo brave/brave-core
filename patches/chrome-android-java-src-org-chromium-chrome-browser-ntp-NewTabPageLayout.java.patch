@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
-index db1db4f0b941c6cea83f2ca28ddc70b8e7916a90..01939137e47c16389c1ffedbc626c75868d7bec7 100644
+index db1db4f0b941c6cea83f2ca28ddc70b8e7916a90..29b95ee943646c9556533850585b904300ad918d 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
 @@ -20,6 +20,7 @@ import android.view.ViewGroup;
@@ -19,31 +19,25 @@ index db1db4f0b941c6cea83f2ca28ddc70b8e7916a90..01939137e47c16389c1ffedbc626c758
      private static final String TAG = "NewTabPageLayout";
      // Used to signify the cached resource value is unset.
      private static final int UNSET_RESOURCE_FLAG = -1;
-@@ -415,8 +416,9 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
+@@ -74,7 +75,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
+ 
+     private LogoView mSearchProviderLogoView;
+     private View mSearchBoxView;
+-    private ViewGroup mSiteSectionView;
++    protected ViewGroup mSiteSectionView;
+     private SiteSectionViewHolder mSiteSectionViewHolder;
+     private ImageView mVoiceSearchButton;
+     private View mTileGridPlaceholder;
+@@ -415,7 +416,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
                  1f);
      }
  
 -    private void insertSiteSectionView() {
--        mSiteSectionView = SiteSection.inflateSiteSection(this);
 +    public void insertSiteSectionView() {
-+        ViewGroup mainLayout = findViewById(R.id.ntp_main_layout);
-+        mSiteSectionView = SiteSection.inflateSiteSection(mainLayout);
+         mSiteSectionView = SiteSection.inflateSiteSection(this);
          ViewGroup.LayoutParams layoutParams = mSiteSectionView.getLayoutParams();
          layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-         // If the explore sites section exists as its own section, then space it more closely.
-@@ -429,8 +431,9 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
-         }
-         mSiteSectionView.setLayoutParams(layoutParams);
- 
--        int insertionPoint = indexOfChild(mMiddleSpacer) + 1;
--        addView(mSiteSectionView, insertionPoint);
-+        ViewGroup mBraveStatsView = (ViewGroup) findViewById(R.id.brave_stats_layout);
-+        int insertionPoint = mainLayout.indexOfChild(mBraveStatsView) + 1;
-+        mainLayout.addView(mSiteSectionView, insertionPoint);
-     }
- 
-     /**
-@@ -786,7 +789,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
+@@ -786,7 +787,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
          }
      }
  
