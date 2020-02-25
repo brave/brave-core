@@ -6,6 +6,8 @@
 #ifndef BRAVELEDGER_DATABASE_DATABASE_H_
 #define BRAVELEDGER_DATABASE_DATABASE_H_
 
+#include <memory>
+
 #include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
@@ -14,20 +16,21 @@ class LedgerImpl;
 
 namespace braveledger_database {
 
+class DatabaseInitialize;
+
 class Database {
  public:
   explicit Database(bat_ledger::LedgerImpl* ledger);
   ~Database();
 
-  void Initialize(ledger::ResultCallback callback);
-
- private:
-  void OnInitialize(
-      ledger::DBCommandResponsePtr response,
+  void Initialize(
+      const bool execute_create_script,
       ledger::ResultCallback callback);
 
-  void InitializeTables(ledger::DBTransaction* transaction);
+ private:
+  int GetCurrentVersion();
 
+  std::unique_ptr<DatabaseInitialize> initialize_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 

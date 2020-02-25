@@ -184,16 +184,34 @@ ledger::DBCommandResponse::Status RewardsDatabase::Initialize(
     return ledger::DBCommandResponse::Status::RESPONSE_ERROR;
   }
 
+  int table_version = 0;
   if (!initialized_) {
+    bool table_exists = false;
+    if (meta_table_.DoesTableExist(&db_)) {
+      table_exists = true;
+    }
+
     if (!meta_table_.Init(&db_, version, compatible_version)) {
       return ledger::DBCommandResponse::Status::INITIALIZATION_ERROR;
+    }
+
+    if (table_exists) {
+      table_version = meta_table_.GetVersionNumber();
     }
 
     initialized_ = true;
     memory_pressure_listener_.reset(new base::MemoryPressureListener(
         base::Bind(&RewardsDatabase::OnMemoryPressure,
         base::Unretained(this))));
+  } else {
+    table_version = meta_table_.GetVersionNumber();
   }
+
+  auto value = ledger::DBValue::New();
+  value->set_int_value(table_version);
+  auto result = ledger::DBCommandResult::New();
+  result->set_value(std::move(value));
+  response->result = std::move(result);
 
   return ledger::DBCommandResponse::Status::RESPONSE_OK;
 }

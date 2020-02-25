@@ -49,7 +49,9 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_CONST_METHOD0(GenerateGUID, std::string());
 
-  MOCK_METHOD1(Initialize, void(ledger::InitializeCallback));
+  MOCK_METHOD2(Initialize, void(
+      const bool,
+      ledger::InitializeCallback));
 
   MOCK_METHOD2(CreateWallet,
       void(const std::string&, ledger::CreateWalletCallback));

@@ -272,6 +272,9 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       ledger::DBTransactionPtr transaction,
       ledger::RunDBTransactionCallback callback) override;
 
+  void GetCreateScript(
+      ledger::GetCreateScriptCallback callback) override;
+
  private:
   bool Connected() const;
 

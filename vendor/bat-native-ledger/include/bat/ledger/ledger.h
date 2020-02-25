@@ -80,7 +80,9 @@ class LEDGER_EXPORT Ledger {
 
   static Ledger* CreateInstance(LedgerClient* client);
 
-  virtual void Initialize(InitializeCallback) = 0;
+  virtual void Initialize(
+      const bool execute_create_script,
+      InitializeCallback) = 0;
 
   // returns false if wallet initialization is already in progress
   virtual void CreateWallet(const std::string& safetynet_token,

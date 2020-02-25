@@ -1415,4 +1415,28 @@ void LedgerClientMojoProxy::RunDBTransaction(
                 _1));
 }
 
+// static
+void LedgerClientMojoProxy::OnGetCreateScript(
+    CallbackHolder<GetCreateScriptCallback>* holder,
+    const std::string& script,
+    const int table_version) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(script, table_version);
+  }
+  delete holder;
+}
+
+void LedgerClientMojoProxy::GetCreateScript(
+    GetCreateScriptCallback callback) {
+  auto* holder = new CallbackHolder<GetCreateScriptCallback>(
+      AsWeakPtr(),
+      std::move(callback));
+  ledger_client_->GetCreateScript(
+      std::bind(LedgerClientMojoProxy::OnGetCreateScript,
+                holder,
+                _1,
+                _2));
+}
+
 }  // namespace bat_ledger
