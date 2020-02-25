@@ -33,19 +33,20 @@ struct DBCommand {
   enum Type {
     INITIALIZE,
     READ,
-    WRITE,
+    RUN,
+    EXECUTE,
     MIGRATE
   };
 
   Type type;
-  string command; // Move to DBTransaction
-  int32 compatible_version; // Move to DBTransaction
-  int32 version;
+  string command;
   array<DBCommandBinding> bindings;
   array<DBRecordBinding> record_bindings;
 };
 
 struct DBTransaction {
+  int32 version;
+  int32 compatible_version;
   array<DBCommand> commands;
 };
 
@@ -67,6 +68,6 @@ struct DBCommandResponse {
     RESPONSE_ERROR
   };
 
-  DBCommandResult result;
+  DBCommandResult? result;
   Status status;
 };

@@ -31,16 +31,21 @@ class RewardsDatabase {
 
  private:
   ledger::DBCommandResponse::Status Initialize(
-      ledger::DBCommand* command,
+      const int32_t version,
+      const int32_t compatible_version,
       ledger::DBCommandResponse* response);
 
   ledger::DBCommandResponse::Status Execute(ledger::DBCommand* command);
+
+  ledger::DBCommandResponse::Status Run(ledger::DBCommand* command);
 
   ledger::DBCommandResponse::Status Query(
       ledger::DBCommand* command,
       ledger::DBCommandResponse* response);
 
-  ledger::DBCommandResponse::Status Migrate(ledger::DBCommand* command);
+  ledger::DBCommandResponse::Status Migrate(
+      const int32_t version,
+      const int32_t compatible_version);
 
   void OnMemoryPressure(
       base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);

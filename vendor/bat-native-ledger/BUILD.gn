@@ -121,6 +121,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/contribution/phase_two.h",
     "src/bat/ledger/internal/contribution/unverified.cc",
     "src/bat/ledger/internal/contribution/unverified.h",
+    "src/bat/ledger/internal/database/database.cc",
+    "src/bat/ledger/internal/database/database.h",
     "src/bat/ledger/internal/ledger_impl.cc",
     "src/bat/ledger/internal/ledger_impl.h",
     "src/bat/ledger/internal/media/helper.h",
