@@ -49,3 +49,7 @@ components/ntp_sponsored_images @simonhong @petemill
 common/licenses/ @fmarier
 components/third_party/ @fmarier
 script/brave_license_helper.py @fmarier
+
+# Crypto Wallets
+browser/brave_wallet/ @bbondy @ryanml
+components/brave_wallet/ @bbondy @ryanml
