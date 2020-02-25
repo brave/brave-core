@@ -40,19 +40,33 @@ public class TabUtils {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
-                if (chromeActivity != null)
-                    if (id == R.id.new_tab_menu_id) {
-                        openNewTab(chromeActivity, false);
-                    } else if (id == R.id.new_incognito_tab_menu_id) {
-                        openNewTab(chromeActivity, true);
-                    }
+                if (id == R.id.new_tab_menu_id) {
+                    openNewTab(chromeActivity, false);
+                } else if (id == R.id.new_incognito_tab_menu_id) {
+                    openNewTab(chromeActivity, true);
+                }
                 return true;
             }
         });
         popup.show(); // showing popup menu
     }
 
+    public static void openHomepage() {
+        ChromeActivity chromeActivity = getChromeActivity();
+        if (chromeActivity != null && chromeActivity.getToolbarManager() != null) {
+            chromeActivity.getToolbarManager().openHomepage();
+        }
+    }
+
+    public static void openNewTab() {
+        ChromeActivity chromeActivity = getChromeActivity();
+        boolean isIncognito =
+                chromeActivity != null ? chromeActivity.getCurrentTabModel().isIncognito() : false;
+        openNewTab(chromeActivity, isIncognito);
+    }
+
     private static void openNewTab(ChromeActivity chromeActivity, boolean isIncognito) {
+        if (chromeActivity == null) return;
         chromeActivity.getTabModelSelector().getModel(isIncognito).commitAllTabClosures();
         chromeActivity.getTabCreator(isIncognito).launchNTP();
     }
