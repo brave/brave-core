@@ -81,8 +81,6 @@ source_set("browser") {
 
   if (brave_rewards_enabled) {
     sources += [
-      "database/database_activity_info.cc",
-      "database/database_activity_info.h",
       "database/database_contribution_info.cc",
       "database/database_contribution_info.h",
       "database/database_contribution_info_publishers.cc",

@@ -202,14 +202,12 @@ class Contribution {
   ledger::PublisherInfoList GetVerifiedListRecurring(
       const ledger::PublisherInfoList& all);
 
-  void PrepareACList(ledger::PublisherInfoList list,
-                     uint32_t next_record);
+  void PrepareACList(ledger::PublisherInfoList list);
 
   void StartRecurringTips(ledger::ResultCallback callback);
 
   void PrepareRecurringList(
       ledger::PublisherInfoList list,
-      uint32_t next_record,
       ledger::ResultCallback callback);
 
   void OnStartRecurringTips(const ledger::Result result);
@@ -234,7 +232,6 @@ class Contribution {
 
   void OnHasSufficientBalance(
       const ledger::PublisherInfoList& publisher_list,
-      const uint32_t record,
       const double balance,
       ledger::HasSufficientBalanceToReconcileCallback callback);
 

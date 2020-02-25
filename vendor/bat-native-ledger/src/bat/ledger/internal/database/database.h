@@ -7,6 +7,7 @@
 #define BRAVELEDGER_DATABASE_DATABASE_H_
 
 #include <memory>
+#include <string>
 
 #include "bat/ledger/ledger.h"
 
@@ -17,6 +18,7 @@ class LedgerImpl;
 namespace braveledger_database {
 
 class DatabaseInitialize;
+class DatabaseActivityInfo;
 
 class Database {
  public:
@@ -27,10 +29,30 @@ class Database {
       const bool execute_create_script,
       ledger::ResultCallback callback);
 
- private:
-  int GetCurrentVersion();
+  /**
+   * ACTIVITY INFO
+   */
+  void SaveActivityInfo(
+      ledger::PublisherInfoPtr info,
+      ledger::ResultCallback callback);
 
+  void SaveActivityInfoList(
+      ledger::PublisherInfoList list,
+      ledger::ResultCallback callback);
+
+  void GetActivityInfoList(
+      uint32_t start,
+      uint32_t limit,
+      ledger::ActivityInfoFilterPtr filter,
+      ledger::PublisherInfoListCallback callback);
+
+  void DeleteActivityInfo(
+      const std::string& publisher_key,
+      ledger::ResultCallback callback);
+
+ private:
   std::unique_ptr<DatabaseInitialize> initialize_;
+  std::unique_ptr<DatabaseActivityInfo> activity_info_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 

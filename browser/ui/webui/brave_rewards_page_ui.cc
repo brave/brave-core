@@ -78,11 +78,9 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void SaveSetting(const base::ListValue* args);
   void UpdateAdsRewards(const base::ListValue* args);
   void OnContentSiteList(
-      std::unique_ptr<brave_rewards::ContentSiteList>,
-      uint32_t record);
+      std::unique_ptr<brave_rewards::ContentSiteList>);
   void OnExcludedSiteList(
-      std::unique_ptr<brave_rewards::ContentSiteList>,
-      uint32_t record);
+      std::unique_ptr<brave_rewards::ContentSiteList>);
   void ExcludePublisher(const base::ListValue* args);
   void RestorePublishers(const base::ListValue* args);
   void RestorePublisher(const base::ListValue* args);
@@ -917,8 +915,7 @@ void RewardsDOMHandler::RestorePublisher(const base::ListValue *args) {
 }
 
 void RewardsDOMHandler::OnContentSiteList(
-    std::unique_ptr<brave_rewards::ContentSiteList> list,
-    uint32_t record) {
+    std::unique_ptr<brave_rewards::ContentSiteList> list) {
   if (web_ui()->CanCallJavascript()) {
     auto publishers = std::make_unique<base::ListValue>();
     for (auto const& item : *list) {
@@ -941,8 +938,7 @@ void RewardsDOMHandler::OnContentSiteList(
 }
 
 void RewardsDOMHandler::OnExcludedSiteList(
-    std::unique_ptr<brave_rewards::ContentSiteList> list,
-    uint32_t record) {
+    std::unique_ptr<brave_rewards::ContentSiteList> list) {
   if (web_ui()->CanCallJavascript()) {
     auto publishers = std::make_unique<base::ListValue>();
     for (auto const& item : *list) {
@@ -1389,7 +1385,7 @@ void RewardsDOMHandler::OnRewardsMainEnabled(
 void RewardsDOMHandler::OnPublisherListNormalized(
     brave_rewards::RewardsService* rewards_service,
     const brave_rewards::ContentSiteList& list) {
-  OnContentSiteList(std::make_unique<brave_rewards::ContentSiteList>(list), 0);
+  OnContentSiteList(std::make_unique<brave_rewards::ContentSiteList>(list));
 }
 
 void RewardsDOMHandler::GetTransactionHistory(

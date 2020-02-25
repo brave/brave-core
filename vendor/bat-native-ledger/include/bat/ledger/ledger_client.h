@@ -43,7 +43,7 @@ using PublisherInfoCallback =
     std::function<void(const Result, PublisherInfoPtr)>;
 // TODO(nejczdovc) we should be providing result back as well
 using PublisherInfoListCallback =
-    std::function<void(PublisherInfoList, uint32_t /* next_record */)>;
+    std::function<void(PublisherInfoList)>;
 using GetNicewareListCallback =
     std::function<void(const Result, const std::string&)>;
 using RemoveRecurringTipCallback = std::function<void(const Result)>;
@@ -63,7 +63,6 @@ using GetExternalWalletsCallback =
     std::function<void(std::map<std::string, ledger::ExternalWalletPtr>)>;
 using ShowNotificationCallback = std::function<void(const Result)>;
 using SavePendingContributionCallback = std::function<void(const Result)>;
-using DeleteActivityInfoCallback = std::function<void(const ledger::Result)>;
 using SaveRecurringTipCallback = std::function<void(const Result)>;
 using ClearAndInsertServerPublisherListCallback =
     std::function<void(const Result)>;
@@ -124,14 +123,8 @@ class LEDGER_EXPORT LedgerClient {
   virtual void SavePublisherInfo(PublisherInfoPtr publisher_info,
                                  PublisherInfoCallback callback) = 0;
 
-  virtual void SaveActivityInfo(PublisherInfoPtr publisher_info,
-                                PublisherInfoCallback callback) = 0;
-
   virtual void LoadPublisherInfo(const std::string& publisher_key,
                                  PublisherInfoCallback callback) = 0;
-
-  virtual void LoadActivityInfo(ActivityInfoFilterPtr filter,
-                                PublisherInfoCallback callback) = 0;
 
   virtual void LoadPanelPublisherInfo(ActivityInfoFilterPtr filter,
                                       PublisherInfoCallback callback) = 0;
@@ -141,10 +134,6 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void SaveMediaPublisherInfo(const std::string& media_key,
                                 const std::string& publisher_id) = 0;
-
-  virtual void GetActivityInfoList(uint32_t start, uint32_t limit,
-                                   ActivityInfoFilterPtr filter,
-                                   PublisherInfoListCallback callback) = 0;
 
   virtual void OnPanelPublisherInfo(Result result,
                                    ledger::PublisherInfoPtr publisher_info,
@@ -205,8 +194,7 @@ class LEDGER_EXPORT LedgerClient {
   virtual void RestorePublishers(
     ledger::RestorePublishersCallback callback) = 0;
 
-  virtual void SaveNormalizedPublisherList(
-      ledger::PublisherInfoList normalized_list) = 0;
+  virtual void PublisherListNormalized(ledger::PublisherInfoList list) = 0;
 
   virtual void SaveState(const std::string& name,
                          const std::string& value,
@@ -271,10 +259,6 @@ class LEDGER_EXPORT LedgerClient {
       const std::string& type,
       const std::vector<std::string>& args,
       ledger::ShowNotificationCallback callback) = 0;
-
-  virtual void DeleteActivityInfo(
-      const std::string& publisher_key,
-      ledger::DeleteActivityInfoCallback callback) = 0;
 
   virtual void ClearAndInsertServerPublisherList(
       ledger::ServerPublisherInfoList list,

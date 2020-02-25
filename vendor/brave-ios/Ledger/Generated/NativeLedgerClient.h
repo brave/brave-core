@@ -18,14 +18,12 @@ private:
   void ConfirmationsTransactionHistoryDidChange() override;
   void FetchFavIcon(const std::string & url, const std::string & favicon_key, ledger::FetchIconCallback callback) override;
   std::string GenerateGUID() const override;
-  void GetActivityInfoList(uint32_t start, uint32_t limit, ledger::ActivityInfoFilterPtr filter, ledger::PublisherInfoListCallback callback) override;
   void GetOneTimeTips(ledger::PublisherInfoListCallback callback) override;
   void GetPendingContributions(ledger::PendingContributionInfoListCallback callback) override;
   void GetPendingContributionsTotal(ledger::PendingContributionsTotalCallback callback) override;
   void SaveRecurringTip(ledger::RecurringTipPtr info, ledger::SaveRecurringTipCallback callback) override;
   void GetRecurringTips(ledger::PublisherInfoListCallback callback) override;
   void KillTimer(const uint32_t timer_id) override;
-  void LoadActivityInfo(ledger::ActivityInfoFilterPtr filter, ledger::PublisherInfoCallback callback) override;
   void LoadLedgerState(ledger::OnLoadCallback callback) override;
   void LoadMediaPublisherInfo(const std::string & media_key, ledger::PublisherInfoCallback callback) override;
   void LoadNicewareList(ledger::GetNicewareListCallback callback) override;
@@ -43,11 +41,10 @@ private:
   void RemoveAllPendingContributions(ledger::RemovePendingContributionCallback callback) override;
   void RemovePendingContribution(const uint64_t id, ledger::RemovePendingContributionCallback callback) override;
   void ResetState(const std::string & name, ledger::OnResetCallback callback) override;
-  void SaveActivityInfo(ledger::PublisherInfoPtr publisher_info, ledger::PublisherInfoCallback callback) override;
   void SaveContributionInfo(ledger::ContributionInfoPtr info, ledger::ResultCallback callback) override;
   void SaveLedgerState(const std::string & ledger_state, ledger::LedgerCallbackHandler * handler) override;
   void SaveMediaPublisherInfo(const std::string & media_key, const std::string & publisher_id) override;
-  void SaveNormalizedPublisherList(ledger::PublisherInfoList normalized_list) override;
+  void PublisherListNormalized(ledger::PublisherInfoList list) override;
   void SavePendingContribution(ledger::PendingContributionList list, ledger::SavePendingContributionCallback callback) override;
   void SavePublisherInfo(ledger::PublisherInfoPtr publisher_info, ledger::PublisherInfoCallback callback) override;
   void SavePublisherState(const std::string & publisher_state, ledger::LedgerCallbackHandler * handler) override;
@@ -73,7 +70,6 @@ private:
   void GetExternalWallets(ledger::GetExternalWalletsCallback callback) override;
   void SaveExternalWallet(const std::string& wallet_type, ledger::ExternalWalletPtr wallet) override;
   void ShowNotification(const std::string& type, const std::vector<std::string>& args,  ledger::ShowNotificationCallback callback) override;
-  void DeleteActivityInfo(const std::string& publisher_key, ledger::DeleteActivityInfoCallback callback) override;
   void ClearAndInsertServerPublisherList(ledger::ServerPublisherInfoList list, ledger::ClearAndInsertServerPublisherListCallback callback) override;
   void GetServerPublisherInfo(const std::string& publisher_key, ledger::GetServerPublisherInfoCallback callback) override;
   void SetTransferFee(const std::string& wallet_type, ledger::TransferFeePtr transfer_fee) override;

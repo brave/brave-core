@@ -79,9 +79,6 @@ PublisherInfoDatabase::PublisherInfoDatabase(
 
   publisher_info_ =
       std::make_unique<DatabasePublisherInfo>(GetCurrentVersion());
-
-  activity_info_ =
-      std::make_unique<DatabaseActivityInfo>(GetCurrentVersion());
 }
 
 PublisherInfoDatabase::~PublisherInfoDatabase() {
@@ -260,76 +257,6 @@ bool PublisherInfoDatabase::GetExcludedList(
   }
 
   return publisher_info_->GetExcludedList(&GetDB(), list);
-}
-
-/**
- *
- * ACTIVITY INFO
- *
- */
-bool PublisherInfoDatabase::InsertOrUpdateActivityInfo(
-    ledger::PublisherInfoPtr info) {
-  if (!IsInitialized()) {
-    return false;
-  }
-
-  if (!InsertOrUpdatePublisherInfo(info->Clone())) {
-    return false;
-  }
-
-  return activity_info_->InsertOrUpdate(&GetDB(), info->Clone());
-}
-
-bool PublisherInfoDatabase::InsertOrUpdateActivityInfos(
-    ledger::PublisherInfoList list) {
-  if (!IsInitialized()) {
-    return false;
-  }
-
-  if (list.size() == 0) {
-    return true;
-  }
-
-  sql::Transaction transaction(&GetDB());
-  if (!transaction.Begin()) {
-    return false;
-  }
-
-  for (auto& info : list) {
-    if (!InsertOrUpdateActivityInfo(std::move(info))) {
-      transaction.Rollback();
-      return false;
-    }
-  }
-
-  return transaction.Commit();
-}
-
-bool PublisherInfoDatabase::GetActivityList(
-    int start,
-    int limit,
-    ledger::ActivityInfoFilterPtr filter,
-    ledger::PublisherInfoList* list) {
-  if (!IsInitialized()) {
-    return false;
-  }
-
-  return activity_info_->GetRecordsList(
-      &GetDB(),
-      start,
-      limit,
-      std::move(filter),
-      list);
-}
-
-bool PublisherInfoDatabase::DeleteActivityInfo(
-    const std::string& publisher_key,
-    uint64_t reconcile_stamp) {
-  if (!IsInitialized()) {
-    return false;
-  }
-
-  return activity_info_->DeleteRecord(&GetDB(), publisher_key, reconcile_stamp);
 }
 
 /**
@@ -729,10 +656,6 @@ std::string PublisherInfoDatabase::GetSchema() {
 bool PublisherInfoDatabase::MigrateV0toV1() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  if (!activity_info_->Migrate(&GetDB(), 1)) {
-    return false;
-  }
-
   if (!media_publisher_info_->Migrate(&GetDB(), 1)) {
     return false;
   }
@@ -745,10 +668,6 @@ bool PublisherInfoDatabase::MigrateV0toV1() {
 }
 bool PublisherInfoDatabase::MigrateV1toV2() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  if (!activity_info_->Migrate(&GetDB(), 2)) {
-    return false;
-  }
 
   if (!contribution_info_->Migrate(&GetDB(), 2)) {
     return false;
@@ -774,27 +693,17 @@ bool PublisherInfoDatabase::MigrateV2toV3() {
 bool PublisherInfoDatabase::MigrateV3toV4() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  if (!activity_info_->Migrate(&GetDB(), 4)) {
-    return false;
-  }
-
   return true;
 }
 
 bool PublisherInfoDatabase::MigrateV4toV5() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!activity_info_->Migrate(&GetDB(), 5)) {
-    return false;
-  }
 
   return true;
 }
 
 bool PublisherInfoDatabase::MigrateV5toV6() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (!activity_info_->Migrate(&GetDB(), 6)) {
-    return false;
-  }
 
   return true;
 }
@@ -922,10 +831,6 @@ bool PublisherInfoDatabase::MigrateV13toV14() {
 bool PublisherInfoDatabase::MigrateV14toV15() {
   sql::Transaction transaction(&GetDB());
   if (!transaction.Begin()) {
-    return false;
-  }
-
-  if (!activity_info_->Migrate(&GetDB(), 15)) {
     return false;
   }
 

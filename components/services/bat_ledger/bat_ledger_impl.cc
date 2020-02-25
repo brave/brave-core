@@ -546,8 +546,7 @@ void BatLedgerImpl::SaveRecurringTip(
 // static
 void BatLedgerImpl::OnGetRecurringTips(
     CallbackHolder<GetRecurringTipsCallback>* holder,
-    ledger::PublisherInfoList list,
-    uint32_t num) {
+    ledger::PublisherInfoList list) {
   DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(std::move(list));
@@ -560,14 +559,13 @@ void BatLedgerImpl::GetRecurringTips(GetRecurringTipsCallback callback) {
       AsWeakPtr(), std::move(callback));
 
   ledger_->GetRecurringTips(std::bind(
-      BatLedgerImpl::OnGetRecurringTips, holder, _1, _2));
+      BatLedgerImpl::OnGetRecurringTips, holder, _1));
 }
 
 // static
 void BatLedgerImpl::OnGetOneTimeTips(
     CallbackHolder<GetRecurringTipsCallback>* holder,
-    ledger::PublisherInfoList list,
-    uint32_t num) {
+    ledger::PublisherInfoList list) {
   DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(std::move(list));
@@ -580,17 +578,16 @@ void BatLedgerImpl::GetOneTimeTips(GetOneTimeTipsCallback callback) {
       AsWeakPtr(), std::move(callback));
 
   ledger_->GetOneTimeTips(std::bind(
-      BatLedgerImpl::OnGetOneTimeTips, holder, _1, _2));
+      BatLedgerImpl::OnGetOneTimeTips, holder, _1));
 }
 
 // static
 void BatLedgerImpl::OnGetActivityInfoList(
     CallbackHolder<GetActivityInfoListCallback>* holder,
-    ledger::PublisherInfoList list,
-    uint32_t num) {
+    ledger::PublisherInfoList list) {
   DCHECK(holder);
   if (holder->is_valid())
-    std::move(holder->get()).Run(std::move(list), num);
+    std::move(holder->get()).Run(std::move(list));
 
   delete holder;
 }
@@ -607,7 +604,7 @@ void BatLedgerImpl::GetActivityInfoList(
       start,
       limit,
       std::move(filter),
-      std::bind(BatLedgerImpl::OnGetActivityInfoList, holder, _1, _2));
+      std::bind(BatLedgerImpl::OnGetActivityInfoList, holder, _1));
 }
 
 // static

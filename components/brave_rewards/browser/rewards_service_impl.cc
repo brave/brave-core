@@ -275,35 +275,6 @@ bool SavePublisherInfoOnFileTaskRunner(
   return false;
 }
 
-bool SaveActivityInfoOnFileTaskRunner(
-    ledger::PublisherInfoPtr publisher_info,
-    PublisherInfoDatabase* backend) {
-  if (backend &&
-      backend->InsertOrUpdateActivityInfo(std::move(publisher_info)))
-    return true;
-
-  return false;
-}
-
-ledger::PublisherInfoList GetActivityListOnFileTaskRunner(
-    uint32_t start,
-    uint32_t limit,
-    ledger::ActivityInfoFilterPtr filter,
-    PublisherInfoDatabase* backend) {
-  ledger::PublisherInfoList list;
-  if (!backend || filter.is_null())
-    return list;
-
-  if (filter->excluded ==
-    ledger::ExcludeFilter::FILTER_EXCLUDED) {
-    ignore_result(backend->GetExcludedList(&list));
-  } else {
-    ignore_result(backend->GetActivityList(start, limit,
-        std::move(filter), &list));
-  }
-  return list;
-}
-
 ledger::PublisherInfoPtr GetPanelPublisherInfoOnFileTaskRunner(
     ledger::ActivityInfoFilterPtr filter,
     PublisherInfoDatabase* backend) {
@@ -686,15 +657,14 @@ void RewardsServiceImpl::GetContentSiteList(
 
 void RewardsServiceImpl::OnGetContentSiteList(
     const GetContentSiteListCallback& callback,
-    ledger::PublisherInfoList list,
-    uint32_t next_record) {
+    ledger::PublisherInfoList list) {
   std::unique_ptr<ContentSiteList> site_list(new ContentSiteList);
 
   for (auto &publisher : list) {
     site_list->push_back(PublisherInfoToContentSite(*publisher));
   }
 
-  callback.Run(std::move(site_list), next_record);
+  callback.Run(std::move(site_list));
 }
 
 void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
@@ -1227,85 +1197,6 @@ void RewardsServiceImpl::OnPublisherInfoSaved(
   }
 }
 
-void RewardsServiceImpl::SaveActivityInfo(
-    ledger::PublisherInfoPtr publisher_info,
-    ledger::PublisherInfoCallback callback) {
-  DCHECK(publisher_info);
-  if (!publisher_info) {
-    callback(ledger::Result::LEDGER_ERROR, std::move(publisher_info));
-    return;
-  }
-
-  ledger::PublisherInfoPtr copy = publisher_info->Clone();
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&SaveActivityInfoOnFileTaskRunner,
-                    std::move(copy),
-                    publisher_info_backend_.get()),
-      base::BindOnce(&RewardsServiceImpl::OnActivityInfoSaved,
-                     AsWeakPtr(),
-                     callback,
-                     std::move(publisher_info)));
-}
-
-void RewardsServiceImpl::OnActivityInfoSaved(
-    ledger::PublisherInfoCallback callback,
-    ledger::PublisherInfoPtr info,
-    bool success) {
-  if (Connected()) {
-    callback(success ? ledger::Result::LEDGER_OK
-                     : ledger::Result::LEDGER_ERROR, std::move(info));
-  }
-}
-
-void RewardsServiceImpl::LoadActivityInfo(
-    ledger::ActivityInfoFilterPtr filter,
-    ledger::PublisherInfoCallback callback) {
-  auto id = filter->id;
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&GetActivityListOnFileTaskRunner,
-          // set limit to 2 to make sure there is
-          // only 1 valid result for the filter
-          0, 2, std::move(filter), publisher_info_backend_.get()),
-      base::BindOnce(&RewardsServiceImpl::OnActivityInfoLoaded,
-                     AsWeakPtr(),
-                     callback,
-                     id));
-}
-
-void RewardsServiceImpl::OnPublisherActivityInfoLoaded(
-    ledger::PublisherInfoCallback callback,
-    const ledger::Result result,
-    ledger::PublisherInfoPtr publisher) {
-  callback(result, std::move(publisher));
-}
-
-void RewardsServiceImpl::OnActivityInfoLoaded(
-    ledger::PublisherInfoCallback callback,
-    const std::string& publisher_key,
-    ledger::PublisherInfoList list) {
-  if (!Connected()) {
-    return;
-  }
-
-  // activity info not found
-  if (list.size() == 0) {
-    // we need to try to get at least publisher info in this case
-    // this way we preserve publisher info
-    bat_ledger_->LoadPublisherInfo(
-        publisher_key,
-        base::BindOnce(&RewardsServiceImpl::OnPublisherActivityInfoLoaded,
-                       AsWeakPtr(),
-                       callback));
-    return;
-  } else if (list.size() > 1) {
-    callback(ledger::Result::TOO_MANY_RESULTS, nullptr);
-    return;
-  }
-
-  callback(ledger::Result::LEDGER_OK,
-      std::move(list[0]));
-}
-
 void RewardsServiceImpl::LoadPanelPublisherInfo(
     ledger::ActivityInfoFilterPtr filter,
     ledger::PublisherInfoCallback callback) {
@@ -1327,38 +1218,6 @@ void RewardsServiceImpl::OnPanelPublisherInfoLoaded(
   }
 
   callback(ledger::Result::LEDGER_OK, std::move(publisher_info));
-}
-
-void RewardsServiceImpl::GetActivityInfoList(
-    uint32_t start,
-    uint32_t limit,
-    ledger::ActivityInfoFilterPtr filter,
-    ledger::PublisherInfoListCallback callback) {
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&GetActivityListOnFileTaskRunner,
-                    start, limit, std::move(filter),
-                    publisher_info_backend_.get()),
-      base::BindOnce(&RewardsServiceImpl::OnPublisherInfoListLoaded,
-                    AsWeakPtr(),
-                    start,
-                    limit,
-                    callback));
-}
-
-void RewardsServiceImpl::OnPublisherInfoListLoaded(
-    uint32_t start,
-    uint32_t limit,
-    ledger::PublisherInfoListCallback callback,
-    ledger::PublisherInfoList list) {
-  if (!Connected()) {
-    return;
-  }
-
-  uint32_t next_record = 0;
-  if (list.size() == limit)
-    next_record = start + limit + 1;
-
-  callback(std::move(list), next_record);
 }
 
 void RewardsServiceImpl::LoadURL(
@@ -2638,7 +2497,7 @@ void RewardsServiceImpl::OnGetRecurringTips(
     return;
   }
 
-  callback(std::move(list), 0);
+  callback(std::move(list));
 }
 
 void RewardsServiceImpl::GetRecurringTips(
@@ -2703,7 +2562,7 @@ void RewardsServiceImpl::OnGetOneTimeTips(
     return;
   }
 
-  callback(std::move(list), 0);
+  callback(std::move(list));
 }
 
 void RewardsServiceImpl::OnRecurringTipUI(const ledger::Result result) {
@@ -3235,17 +3094,7 @@ void RewardsServiceImpl::OnRestorePublishers(
   callback(result);
 }
 
-bool SaveNormalizedPublisherListOnFileTaskRunner(
-    PublisherInfoDatabase* backend,
-    ledger::PublisherInfoList list) {
-  if (!backend) {
-    return false;
-  }
-
-  return backend->InsertOrUpdateActivityInfos(std::move(list));
-}
-
-void RewardsServiceImpl::SaveNormalizedPublisherList(
+void RewardsServiceImpl::PublisherListNormalized(
     ledger::PublisherInfoList list) {
   ContentSiteList site_list;
   for (const auto& publisher : list) {
@@ -3253,82 +3102,10 @@ void RewardsServiceImpl::SaveNormalizedPublisherList(
       site_list.push_back(PublisherInfoToContentSite(*publisher));
     }
   }
-  // TODO(bridiver) - this doesn't belong here
-  std::sort(site_list.begin(), site_list.end());
-
-  base::PostTaskAndReplyWithResult(
-      file_task_runner_.get(),
-      FROM_HERE,
-      base::BindOnce(&SaveNormalizedPublisherListOnFileTaskRunner,
-                     publisher_info_backend_.get(),
-                     std::move(list)),
-      base::BindOnce(&RewardsServiceImpl::OnPublisherListNormalizedSaved,
-                     AsWeakPtr(),
-                     std::move(site_list)));
-}
-
-void RewardsServiceImpl::OnPublisherListNormalizedSaved(
-    ContentSiteList site_list,
-    bool success) {
-  if (!success) {
-    LOG(ERROR) << "Problem saving normalized publishers "
-                  "in SaveNormalizedPublisherList";
-    return;
-  }
 
   for (auto& observer : observers_) {
     observer.OnPublisherListNormalized(this, site_list);
   }
-}
-
-bool DeleteActivityInfoOnFileTaskRunner(PublisherInfoDatabase* backend,
-                                        const std::string& publisher_key,
-                                        uint64_t reconcile_stamp) {
-  if (backend &&
-      backend->DeleteActivityInfo(publisher_key, reconcile_stamp)) {
-    return true;
-  }
-
-  return false;
-}
-
-void RewardsServiceImpl::DeleteActivityInfo(
-  const std::string& publisher_key,
-  ledger::DeleteActivityInfoCallback callback) {
-  GetReconcileStamp(
-      base::Bind(&RewardsServiceImpl::OnDeleteActivityInfoStamp,
-                 AsWeakPtr(),
-                 publisher_key,
-                 callback));
-}
-
-void RewardsServiceImpl::OnDeleteActivityInfoStamp(
-    const std::string& publisher_key,
-    const ledger::DeleteActivityInfoCallback& callback,
-    uint64_t reconcile_stamp) {
-  base::PostTaskAndReplyWithResult(
-      file_task_runner_.get(),
-      FROM_HERE,
-      base::Bind(&DeleteActivityInfoOnFileTaskRunner,
-                 publisher_info_backend_.get(),
-                 publisher_key,
-                 reconcile_stamp),
-      base::Bind(&RewardsServiceImpl::OnDeleteActivityInfo,
-                 AsWeakPtr(),
-                 publisher_key,
-                 callback));
-}
-
-void RewardsServiceImpl::OnDeleteActivityInfo(
-    const std::string& publisher_key,
-    const ledger::DeleteActivityInfoCallback& callback,
-    bool result) {
-  if (!result) {
-    LOG(ERROR) << "Problem deleting activity info for "
-               << publisher_key;
-  }
-
-  callback(result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
 }
 
 void RewardsServiceImpl::RefreshPublisher(

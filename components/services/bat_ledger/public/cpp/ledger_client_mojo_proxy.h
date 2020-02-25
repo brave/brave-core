@@ -93,21 +93,10 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       ledger::PendingContributionList list,
       SavePendingContributionCallback callback) override;
 
-  void LoadActivityInfo(ledger::ActivityInfoFilterPtr filter,
-      LoadActivityInfoCallback callback) override;
-
-  void SaveActivityInfo(ledger::PublisherInfoPtr publisher_info,
-      SaveActivityInfoCallback callback) override;
-
   void RestorePublishers(RestorePublishersCallback callback) override;
 
-  void GetActivityInfoList(uint32_t start,
-                           uint32_t limit,
-                           ledger::ActivityInfoFilterPtr filter,
-                           GetActivityInfoListCallback callback) override;
+  void PublisherListNormalized(ledger::PublisherInfoList list) override;
 
-  void SaveNormalizedPublisherList(
-      ledger::PublisherInfoList normalized_list) override;
   void SaveState(const std::string& name,
                               const std::string& value,
                               SaveStateCallback callback) override;
@@ -187,10 +176,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       const std::string& type,
       const std::vector<std::string>& args,
       ShowNotificationCallback callback) override;
-
-  void DeleteActivityInfo(
-    const std::string& publisher_key,
-    DeleteActivityInfoCallback callback) override;
 
   void ClearAndInsertServerPublisherList(
     ledger::ServerPublisherInfoList list,
@@ -365,8 +350,7 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   static void OnGetRecurringTips(
       CallbackHolder<GetRecurringTipsCallback>* holder,
-      ledger::PublisherInfoList publisher_info_list,
-      uint32_t next_record);
+      ledger::PublisherInfoList publisher_info_list);
 
   static void OnLoadNicewareList(
       CallbackHolder<LoadNicewareListCallback>* holder,
@@ -390,16 +374,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       CallbackHolder<SavePendingContributionCallback>* holder,
       ledger::Result result);
 
-  static void OnLoadActivityInfo(
-      CallbackHolder<LoadActivityInfoCallback>* holder,
-      ledger::Result result,
-      ledger::PublisherInfoPtr info);
-
-  static void OnSaveActivityInfo(
-      CallbackHolder<SaveActivityInfoCallback>* holder,
-      ledger::Result result,
-      ledger::PublisherInfoPtr info);
-
   static void RestorePublishers(
     CallbackHolder<RestorePublishersCallback>* holder,
     bool result);
@@ -407,11 +381,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   static void OnRestorePublishers(
       CallbackHolder<RestorePublishersCallback>* holder,
       ledger::Result result);
-
-  static void OnGetActivityInfoList(
-      CallbackHolder<GetActivityInfoListCallback>* holder,
-      ledger::PublisherInfoList publisher_info_list,
-      uint32_t next_record);
 
   static void OnSaveState(
       CallbackHolder<SaveStateCallback>* holder,
@@ -428,8 +397,7 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   static void OnGetOneTimeTips(
       CallbackHolder<GetOneTimeTipsCallback>* holder,
-      ledger::PublisherInfoList publisher_info_list,
-      uint32_t next_record);
+      ledger::PublisherInfoList publisher_info_list);
 
   static void OnGetPendingContributions(
       CallbackHolder<GetPendingContributionsCallback>* holder,
@@ -454,10 +422,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   static void OnShowNotification(
     CallbackHolder<ShowNotificationCallback>* holder,
     const ledger::Result result);
-
-  static void OnDeleteActivityInfo(
-      CallbackHolder<DeleteActivityInfoCallback>* holder,
-      const ledger::Result result);
 
   static void OnClearAndInsertServerPublisherList(
       CallbackHolder<ClearAndInsertServerPublisherListCallback>* holder,

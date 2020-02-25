@@ -109,7 +109,7 @@ interface BatLedger {
   GetOneTimeTips() => (array<ledger.mojom.PublisherInfo> list);
 
   GetActivityInfoList(uint32 start, uint32 limit, ledger.mojom.ActivityInfoFilter? filter) =>
-      (array<ledger.mojom.PublisherInfo> list, uint32 number);
+      (array<ledger.mojom.PublisherInfo> list);
 
   LoadPublisherInfo(string publisher_key) =>
       (ledger.mojom.Result result, ledger.mojom.PublisherInfo? info);
@@ -177,12 +177,8 @@ interface BatLedgerClient {
   FetchFavIcon(string url, string favicon_key) => (bool success,
       string favicon_url);
   SaveRecurringTip(ledger.mojom.RecurringTip info) => (ledger.mojom.Result result);
-  GetRecurringTips() => (
-      array<ledger.mojom.PublisherInfo> publisher_info_list,
-      uint32 next_record);
-  GetOneTimeTips() => (
-      array<ledger.mojom.PublisherInfo> publisher_info_list,
-      uint32 next_record);
+  GetRecurringTips() => (array<ledger.mojom.PublisherInfo> publisher_info_list);
+  GetOneTimeTips() => (array<ledger.mojom.PublisherInfo> publisher_info_list);
 
   LoadNicewareList() => (ledger.mojom.Result result, string data);
   RemoveRecurringTip(string publisher_key) => (ledger.mojom.Result result);
@@ -202,18 +198,9 @@ interface BatLedgerClient {
 
   SavePendingContribution(array<ledger.mojom.PendingContribution> list) => (ledger.mojom.Result result);
 
-  LoadActivityInfo(ledger.mojom.ActivityInfoFilter? filter) =>
-      (ledger.mojom.Result result, ledger.mojom.PublisherInfo? publisher_info);
-
-  SaveActivityInfo(ledger.mojom.PublisherInfo publisher_info) =>
-      (ledger.mojom.Result result, ledger.mojom.PublisherInfo? publisher_info);
-
   RestorePublishers() => (ledger.mojom.Result result);
 
-  GetActivityInfoList(uint32 start, uint32 limit, ledger.mojom.ActivityInfoFilter? filter) =>
-      (array<ledger.mojom.PublisherInfo> publisher_info_list, uint32 next_record);
-
-  SaveNormalizedPublisherList(array<ledger.mojom.PublisherInfo> list);
+  PublisherListNormalized(array<ledger.mojom.PublisherInfo> list);
 
   SaveState(string name, string value) => (ledger.mojom.Result result);
   LoadState(string name) => (ledger.mojom.Result result, string value);
@@ -271,8 +258,6 @@ interface BatLedgerClient {
   SaveExternalWallet(string wallet_type, ledger.mojom.ExternalWallet wallet);
 
   ShowNotification(string type, array<string> args) => (ledger.mojom.Result result);
-
-  DeleteActivityInfo(string publisher_key) => (ledger.mojom.Result result);
 
   ClearAndInsertServerPublisherList(array<ledger.mojom.ServerPublisherInfo> list) => (ledger.mojom.Result result);
 

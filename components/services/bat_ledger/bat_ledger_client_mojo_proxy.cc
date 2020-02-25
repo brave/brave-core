@@ -378,15 +378,14 @@ void BatLedgerClientMojoProxy::SaveRecurringTip(
 }
 
 void OnGetRecurringTips(const ledger::PublisherInfoListCallback& callback,
-                        ledger::PublisherInfoList publisher_info_list,
-                        uint32_t next_record) {
-  callback(std::move(publisher_info_list), next_record);
+                        ledger::PublisherInfoList publisher_info_list) {
+  callback(std::move(publisher_info_list));
 }
 
 void BatLedgerClientMojoProxy::GetRecurringTips(
     ledger::PublisherInfoListCallback callback) {
   if (!Connected()) {
-    callback(ledger::PublisherInfoList(), 0);
+    callback(ledger::PublisherInfoList());
     return;
   }
 
@@ -395,15 +394,14 @@ void BatLedgerClientMojoProxy::GetRecurringTips(
 }
 
 void OnGetOneTimeTips(const ledger::PublisherInfoListCallback& callback,
-                      ledger::PublisherInfoList publisher_info_list,
-                      uint32_t next_record) {
-  callback(std::move(publisher_info_list), next_record);
+                      ledger::PublisherInfoList publisher_info_list) {
+  callback(std::move(publisher_info_list));
 }
 
 void BatLedgerClientMojoProxy::GetOneTimeTips(
     ledger::PublisherInfoListCallback callback) {
   if (!Connected()) {
-    callback(ledger::PublisherInfoList(), 0);
+    callback(ledger::PublisherInfoList());
     return;
   }
 
@@ -498,45 +496,6 @@ void BatLedgerClientMojoProxy::SavePendingContribution(
       base::BindOnce(&OnSavePendingContribution, std::move(callback)));
 }
 
-void OnLoadActivityInfo(
-    const ledger::PublisherInfoCallback& callback,
-    const ledger::Result result,
-    ledger::PublisherInfoPtr publisher_info) {
-  callback(result, std::move(publisher_info));
-}
-
-void BatLedgerClientMojoProxy::LoadActivityInfo(
-    ledger::ActivityInfoFilterPtr filter,
-    ledger::PublisherInfoCallback callback) {
-  if (!Connected()) {
-    callback(ledger::Result::LEDGER_ERROR, nullptr);
-    return;
-  }
-
-  bat_ledger_client_->LoadActivityInfo(std::move(filter),
-      base::BindOnce(&OnLoadActivityInfo, std::move(callback)));
-}
-
-void OnSaveActivityInfo(
-    const ledger::PublisherInfoCallback& callback,
-    const ledger::Result result,
-    ledger::PublisherInfoPtr publisher_info) {
-  callback(result, std::move(publisher_info));
-}
-
-void BatLedgerClientMojoProxy::SaveActivityInfo(
-    ledger::PublisherInfoPtr publisher_info,
-    ledger::PublisherInfoCallback callback) {
-  if (!Connected()) {
-    callback(ledger::Result::LEDGER_ERROR, nullptr);
-    return;
-  }
-
-  bat_ledger_client_->SaveActivityInfo(
-      std::move(publisher_info),
-      base::BindOnce(&OnSaveActivityInfo, std::move(callback)));
-}
-
 void OnRestorePublishers(
     const ledger::RestorePublishersCallback& callback,
     const ledger::Result result) {
@@ -554,35 +513,13 @@ void BatLedgerClientMojoProxy::RestorePublishers(
       base::BindOnce(&OnRestorePublishers, std::move(callback)));
 }
 
-void OnGetActivityInfoList(const ledger::PublisherInfoListCallback& callback,
-    ledger::PublisherInfoList publisher_info_list,
-    uint32_t next_record) {
-  callback(std::move(publisher_info_list), next_record);
-}
-
-void BatLedgerClientMojoProxy::GetActivityInfoList(uint32_t start,
-    uint32_t limit,
-    ledger::ActivityInfoFilterPtr filter,
-    ledger::PublisherInfoListCallback callback) {
-  if (!Connected()) {
-    callback(ledger::PublisherInfoList(), 0);
-    return;
-  }
-
-  bat_ledger_client_->GetActivityInfoList(start,
-      limit,
-      std::move(filter),
-      base::BindOnce(&OnGetActivityInfoList, std::move(callback)));
-}
-
-
-void BatLedgerClientMojoProxy::SaveNormalizedPublisherList(
-    ledger::PublisherInfoList normalized_list) {
+void BatLedgerClientMojoProxy::PublisherListNormalized(
+    ledger::PublisherInfoList list) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_client_->SaveNormalizedPublisherList(std::move(normalized_list));
+  bat_ledger_client_->PublisherListNormalized(std::move(list));
 }
 
 void BatLedgerClientMojoProxy::SaveState(
@@ -869,20 +806,6 @@ void BatLedgerClientMojoProxy::ShowNotification(
       type,
       args,
       base::BindOnce(&OnShowNotification, std::move(callback)));
-}
-
-void OnDeleteActivityInfo(
-  const ledger::DeleteActivityInfoCallback& callback,
-  const ledger::Result result) {
-  callback(result);
-}
-
-void BatLedgerClientMojoProxy::DeleteActivityInfo(
-    const std::string& publisher_key,
-    ledger::DeleteActivityInfoCallback callback) {
-  bat_ledger_client_->DeleteActivityInfo(
-      publisher_key,
-      base::BindOnce(&OnDeleteActivityInfo, std::move(callback)));
 }
 
 void OnClearAndInsertServerPublisherList(

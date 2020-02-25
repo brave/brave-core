@@ -599,27 +599,6 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   ledger->GetPublisherActivityFromUrl(tabId, std::move(visitData), blob);
 }
 
-- (void)deleteActivityInfo:(const std::string &)publisher_key callback:(ledger::DeleteActivityInfoCallback )callback
-{
-  if (publisher_key.size() == 0) {
-    // Nothing to delete?
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-  const auto __block bridgedKey = [NSString stringWithUTF8String:publisher_key.c_str()];
-  const auto stamp = ledger->GetReconcileStamp();
-  [BATLedgerDatabase deleteActivityInfoWithPublisherID:bridgedKey reconcileStamp:stamp completion:^(BOOL success) {
-    if (success) {
-      for (BATBraveLedgerObserver *observer in [self.observers copy]) {
-        if (observer.activityRemoved) {
-          observer.activityRemoved(bridgedKey);
-        }
-      }
-    }
-    callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
-  }];
-}
-
 - (void)updatePublisherExclusionState:(NSString *)publisherId state:(BATPublisherExclude)state
 {
   ledger->SetPublisherExclude(std::string(publisherId.UTF8String), (ledger::PublisherExclude)state, ^(const ledger::Result result) {
@@ -1764,14 +1743,6 @@ BATLedgerBridge(BOOL,
   }), next_record);
 }
 
-- (void)getActivityInfoList:(uint32_t)start limit:(uint32_t)limit filter:(ledger::ActivityInfoFilterPtr)filter callback:(ledger::PublisherInfoListCallback)callback
-{
-  const auto filter_ = [[BATActivityInfoFilter alloc] initWithActivityInfoFilter:*filter];
-  const auto publishers = [BATLedgerDatabase publishersWithActivityFromOffset:start limit:limit filter:filter_];
-
-  [self handlePublisherListing:publishers start:start limit:limit callback:callback];
-}
-
 - (void)getOneTimeTips:(ledger::PublisherInfoListCallback)callback
 {
   const auto now = [NSDate date];
@@ -1800,36 +1771,6 @@ BATLedgerBridge(BOOL,
   const auto publishers = [BATLedgerDatabase recurringTips];
 
   [self handlePublisherListing:publishers start:0 limit:0 callback:callback];
-}
-
-- (void)loadActivityInfo:(ledger::ActivityInfoFilterPtr)filter
-                callback:(ledger::PublisherInfoCallback)callback
-{
-  const auto filter_ = [[BATActivityInfoFilter alloc] initWithActivityInfoFilter:*filter];
-  // set limit to 2 to make sure there is only 1 valid result for the filter
-  const auto publishers = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:2 filter:filter_];
-
-  [self handlePublisherListing:publishers start:0 limit:2 callback:^(const ledger::PublisherInfoList& list, uint32_t) {
-    // activity info not found
-    if (list.size() == 0) {
-      // we need to try to get at least publisher info in this case
-      // this way we preserve publisher info
-      const auto publisherID = filter_.id;
-      const auto info = [BATLedgerDatabase publisherInfoWithPublisherID:publisherID];
-      if (info) {
-        callback(ledger::Result::LEDGER_OK, info.cppObjPtr);
-      } else {
-        // This part diverges from brave-core. brave-core actually goes into an infinite loop here?
-        // Hope im missing something on their side where they don't even call this method unless
-        // there's a publisher with that ID in the ActivityInfo and PublisherInfo table...
-        callback(ledger::Result::NOT_FOUND, nullptr);
-      }
-    } else if (list.size() > 1) {
-      callback(ledger::Result::TOO_MANY_RESULTS, ledger::PublisherInfoPtr());
-    } else {
-      callback(ledger::Result::LEDGER_OK, list[0].Clone());
-    }
-  }];
 }
 
 - (void)loadMediaPublisherInfo:(const std::string &)media_key
@@ -1882,23 +1823,6 @@ BATLedgerBridge(BOOL,
   }];
 }
 
-- (void)saveActivityInfo:(ledger::PublisherInfoPtr)publisher_info callback:(ledger::PublisherInfoCallback)callback
-{
-  const auto* info = publisher_info.get();
-  if (info != nullptr) {
-    const auto publisher = [[BATPublisherInfo alloc] initWithPublisherInfo:*info];
-    [BATLedgerDatabase insertOrUpdateActivityInfoFromPublisher:publisher completion:^(BOOL success) {
-      if (success) {
-        callback(ledger::Result::LEDGER_OK, publisher.cppObjPtr);
-      } else {
-        callback(ledger::Result::LEDGER_ERROR, nullptr);
-      }
-    }];
-  } else {
-    callback(ledger::Result::LEDGER_ERROR, nullptr);
-  }
-}
-
 - (void)saveContributionInfo:(ledger::ContributionInfoPtr)info callback:(ledger::ResultCallback)callback
 {
   BLOG(ledger::LogLevel::LOG_ERROR) << "Cannot save contribution info; Neccessary DB update not available" << std::endl;
@@ -1912,21 +1836,17 @@ BATLedgerBridge(BOOL,
                                                        completion:nil];
 }
 
-- (void)saveNormalizedPublisherList:(ledger::PublisherInfoList)normalized_list
+- (void)publisherListNormalized:(ledger::PublisherInfoList)list
 {
-  const auto list = NSArrayFromVector(&normalized_list, ^BATPublisherInfo *(const ledger::PublisherInfoPtr& info) {
+  const auto list_converted = NSArrayFromVector(&normalized_list, ^BATPublisherInfo *(const ledger::PublisherInfoPtr& info) {
     return [[BATPublisherInfo alloc] initWithPublisherInfo:*info];
   });
-  [BATLedgerDatabase insertOrUpdateActivitiesInfoFromPublishers:list completion:^(BOOL success) {
-    if (!success) {
-      return;
+
+  for (BATBraveLedgerObserver *observer in [self.observers copy]) {
+    if (observer.publisherListNormalized) {
+      observer.publisherListNormalized(list_converted);
     }
-    for (BATBraveLedgerObserver *observer in [self.observers copy]) {
-      if (observer.publisherListNormalized) {
-        observer.publisherListNormalized(list);
-      }
-    }
-  }];
+  }
 }
 
 - (void)savePendingContribution:(ledger::PendingContributionList)list callback:(ledger::SavePendingContributionCallback)callback

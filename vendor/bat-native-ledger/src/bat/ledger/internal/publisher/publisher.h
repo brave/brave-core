@@ -207,8 +207,7 @@ class Publisher : public ledger::LedgerCallbackHandler {
 
   void SynopsisNormalizer();
 
-  void SynopsisNormalizerCallback(ledger::PublisherInfoList list,
-                                  uint32_t /* next_record */);
+  void SynopsisNormalizerCallback(ledger::PublisherInfoList list);
 
   void synopsisNormalizerInternal(ledger::PublisherInfoList* newList,
                                   const ledger::PublisherInfoList* list,

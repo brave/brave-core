@@ -58,7 +58,7 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD1(SetPublisherInfo, void(ledger::PublisherInfoPtr));
 
-  MOCK_METHOD1(SetActivityInfo, void(ledger::PublisherInfoPtr));
+  MOCK_METHOD1(SaveActivityInfo, void(ledger::PublisherInfoPtr));
 
   MOCK_METHOD2(GetPublisherInfo,
       void(const std::string&, ledger::PublisherInfoCallback));
@@ -482,7 +482,7 @@ class MockLedgerImpl : public LedgerImpl {
           const std::vector<std::string>&));
 
   MOCK_METHOD2(DeleteActivityInfo,
-      void(const std::string&, ledger::DeleteActivityInfoCallback));
+      void(const std::string&, ledger::ResultCallback));
 
   MOCK_METHOD2(ClearAndInsertServerPublisherList,
       void(ledger::ServerPublisherInfoList,
@@ -582,6 +582,12 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD2(GetContributionInfo, void(
       const std::string& contribution_id,
       ledger::GetContributionInfoCallback callback));
+
+  MOCK_METHOD2(RunDBTransaction, void(
+      ledger::DBTransactionPtr,
+      ledger::RunDBTransactionCallback));
+
+  MOCK_METHOD1(GetCreateScript, void(ledger::GetCreateScriptCallback callback));
 };
 
 }  // namespace bat_ledger

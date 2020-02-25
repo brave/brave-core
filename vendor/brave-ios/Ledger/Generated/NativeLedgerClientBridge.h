@@ -11,14 +11,12 @@
 - (void)confirmationsTransactionHistoryDidChange;
 - (void)fetchFavIcon:(const std::string &)url faviconKey:(const std::string &)favicon_key callback:(ledger::FetchIconCallback)callback;
 - (std::string)generateGUID;
-- (void)getActivityInfoList:(uint32_t)start limit:(uint32_t)limit filter:(ledger::ActivityInfoFilterPtr)filter callback:(ledger::PublisherInfoListCallback)callback;
 - (void)getOneTimeTips:(ledger::PublisherInfoListCallback)callback;
 - (void)getPendingContributions:(ledger::PendingContributionInfoListCallback)callback;
 - (void)getPendingContributionsTotal:(ledger::PendingContributionsTotalCallback)callback;
 - (void)saveRecurringTip:(ledger::RecurringTipPtr)info callback:(ledger::SaveRecurringTipCallback)callback;
 - (void)getRecurringTips:(ledger::PublisherInfoListCallback)callback;
 - (void)killTimer:(const uint32_t)timer_id;
-- (void)loadActivityInfo:(ledger::ActivityInfoFilterPtr)filter callback:(ledger::PublisherInfoCallback)callback;
 - (void)loadLedgerState:(ledger::OnLoadCallback)callback;
 - (void)loadMediaPublisherInfo:(const std::string &)media_key callback:(ledger::PublisherInfoCallback)callback;
 - (void)loadNicewareList:(ledger::GetNicewareListCallback)callback;
@@ -36,11 +34,10 @@
 - (void)removeAllPendingContributions:(ledger::RemovePendingContributionCallback)callback;
 - (void)removePendingContribution:(const uint64_t)id callback:(ledger::RemovePendingContributionCallback )callback;
 - (void)resetState:(const std::string &)name callback:(ledger::OnResetCallback)callback;
-- (void)saveActivityInfo:(ledger::PublisherInfoPtr)publisher_info callback:(ledger::PublisherInfoCallback)callback;
 - (void)saveContributionInfo:(ledger::ContributionInfoPtr)info callback:(ledger::ResultCallback)callback;
 - (void)saveLedgerState:(const std::string &)ledger_state handler:(ledger::LedgerCallbackHandler *)handler;
 - (void)saveMediaPublisherInfo:(const std::string &)media_key publisherId:(const std::string &)publisher_id;
-- (void)saveNormalizedPublisherList:(ledger::PublisherInfoList)normalized_list;
+- (void)publisherListNormalized:(ledger::PublisherInfoList)list;
 - (void)savePendingContribution:(ledger::PendingContributionList)list callback:(ledger::SavePendingContributionCallback)callback;
 - (void)savePublisherInfo:(ledger::PublisherInfoPtr)publisher_info callback:(ledger::PublisherInfoCallback)callback;
 - (void)savePublisherState:(const std::string &)publisher_state handler:(ledger::LedgerCallbackHandler *)handler;
@@ -66,7 +63,6 @@
 - (void)getExternalWallets:(ledger::GetExternalWalletsCallback)callback;
 - (void)saveExternalWallet:(const std::string &)wallet_type wallet:(ledger::ExternalWalletPtr)wallet;
 - (void)showNotification:(const std::string &)type args:(const std::vector<std::string>&)args callback:(ledger::ShowNotificationCallback)callback;
-- (void)deleteActivityInfo:(const std::string&)publisher_key callback:(ledger::DeleteActivityInfoCallback)callback;
 - (void)clearAndInsertServerPublisherList:(ledger::ServerPublisherInfoList)list callback:(ledger::ClearAndInsertServerPublisherListCallback)callback;
 - (void)getServerPublisherInfo:(const std::string&)publisher_key callback:(ledger::GetServerPublisherInfoCallback) callback;
 - (void)setTransferFee:(const std::string&)wallet_type transfer_fee:(ledger::TransferFeePtr)transfer_fee;

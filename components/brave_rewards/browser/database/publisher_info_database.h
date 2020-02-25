@@ -19,7 +19,6 @@
 #include "base/memory/memory_pressure_listener.h"
 #include "base/sequence_checker.h"
 #include "bat/ledger/mojom_structs.h"
-#include "brave/components/brave_rewards/browser/database/database_activity_info.h"
 #include "brave/components/brave_rewards/browser/database/database_contribution_info.h"
 #include "brave/components/brave_rewards/browser/database/database_contribution_queue.h"
 #include "brave/components/brave_rewards/browser/database/database_media_publisher_info.h"
@@ -66,15 +65,6 @@ class PublisherInfoDatabase {
      const ledger::ActivityInfoFilterPtr filter);
 
   bool RestorePublishers();
-
-  bool InsertOrUpdateActivityInfo(ledger::PublisherInfoPtr info);
-
-  bool InsertOrUpdateActivityInfos(ledger::PublisherInfoList list);
-
-  bool GetActivityList(int start,
-                       int limit,
-                       ledger::ActivityInfoFilterPtr filter,
-                       ledger::PublisherInfoList* list);
 
   bool GetExcludedList(ledger::PublisherInfoList* list);
 
@@ -135,9 +125,6 @@ class PublisherInfoDatabase {
 
   // Returns the current version of the publisher info database
   int GetCurrentVersion();
-
-  bool DeleteActivityInfo(const std::string& publisher_key,
-                          uint64_t reconcile_stamp);
 
   void GetTransactionReport(
       ledger::TransactionReportInfoList* list,
@@ -238,7 +225,6 @@ class PublisherInfoDatabase {
   std::unique_ptr<DatabaseMediaPublisherInfo> media_publisher_info_;
   std::unique_ptr<DatabaseRecurringTip> recurring_tip_;
   std::unique_ptr<DatabasePublisherInfo> publisher_info_;
-  std::unique_ptr<DatabaseActivityInfo> activity_info_;
 
   SEQUENCE_CHECKER(sequence_checker_);
   DISALLOW_COPY_AND_ASSIGN(PublisherInfoDatabase);
