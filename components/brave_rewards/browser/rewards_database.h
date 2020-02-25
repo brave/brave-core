@@ -39,7 +39,7 @@ class RewardsDatabase {
 
   ledger::DBCommandResponse::Status Run(ledger::DBCommand* command);
 
-  ledger::DBCommandResponse::Status Query(
+  ledger::DBCommandResponse::Status Read(
       ledger::DBCommand* command,
       ledger::DBCommandResponse* response);
 

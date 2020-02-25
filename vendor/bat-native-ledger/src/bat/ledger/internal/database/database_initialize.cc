@@ -6,22 +6,18 @@
 #include <utility>
 
 #include "bat/ledger/internal/database/database_initialize.h"
+#include "bat/ledger/internal/database/database_migration.h"
+#include "bat/ledger/internal/database/database_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace {
-
-const int kCurrentVersionNumber = 15;
-const int kCompatibleVersionNumber = 1;
-
-}  // namespace
-
 namespace braveledger_database {
 
 DatabaseInitialize::DatabaseInitialize(bat_ledger::LedgerImpl* ledger) :
     ledger_(ledger) {
+  migration_ = std::make_unique<DatabaseMigration>(ledger_);
 }
 
 DatabaseInitialize::~DatabaseInitialize() = default;
@@ -30,9 +26,8 @@ void DatabaseInitialize::Start(
     const bool execute_create_script,
     ledger::ResultCallback callback) {
   auto transaction = ledger::DBTransaction::New();
-  transaction->version = kCurrentVersionNumber;
-  transaction->compatible_version = kCompatibleVersionNumber;
-
+  transaction->version = GetCurrentVersion();
+  transaction->compatible_version = GetCompatibleVersion();
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::INITIALIZE;
   transaction->commands.push_back(std::move(command));
@@ -70,13 +65,7 @@ void DatabaseInitialize::OnInitialize(
 
   const auto current_table_version =
       response->result->get_value()->get_int_value();
-  EnsureCurrentVersion(current_table_version, callback);
-}
-
-void DatabaseInitialize::EnsureCurrentVersion(
-    const int table_version,
-    ledger::ResultCallback callback) {
-  callback(ledger::Result::LEDGER_OK);
+  migration_->Start(current_table_version, callback);
 }
 
 void DatabaseInitialize::GetCreateScript(ledger::ResultCallback callback) {
@@ -122,7 +111,7 @@ void DatabaseInitialize::OnExecuteCreateScript(
     return;
   }
 
-  EnsureCurrentVersion(table_version, callback);
+  migration_->Start(table_version, callback);
 }
 
 }  // namespace braveledger_database

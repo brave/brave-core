@@ -51,8 +51,7 @@ class RewardsServiceObserver;
 class RewardsServicePrivateObserver;
 
 using GetContentSiteListCallback =
-    base::Callback<void(std::unique_ptr<ContentSiteList>,
-        uint32_t /* next_record */)>;
+    base::Callback<void(std::unique_ptr<ContentSiteList>)>;
 using GetWalletPassphraseCallback = base::Callback<void(const std::string&)>;
 using GetContributionAmountCallback = base::Callback<void(double)>;
 using GetAutoContributePropsCallback = base::Callback<void(

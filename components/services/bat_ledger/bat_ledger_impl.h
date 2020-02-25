@@ -298,21 +298,18 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   static void OnGetRecurringTips(
       CallbackHolder<GetRecurringTipsCallback>* holder,
-      ledger::PublisherInfoList list,
-      uint32_t num);
+      ledger::PublisherInfoList list);
 
   static void OnGetOneTimeTips(
       CallbackHolder<GetRecurringTipsCallback>* holder,
-      ledger::PublisherInfoList list,
-      uint32_t num);
+      ledger::PublisherInfoList list);
   static void OnRefreshPublisher(
       CallbackHolder<RefreshPublisherCallback>* holder,
       ledger::PublisherStatus status);
 
   static void OnGetActivityInfoList(
     CallbackHolder<GetActivityInfoListCallback>* holder,
-    ledger::PublisherInfoList list,
-    uint32_t num);
+    ledger::PublisherInfoList list);
 
   static void OnLoadPublisherInfo(
     CallbackHolder<LoadPublisherInfoCallback>* holder,

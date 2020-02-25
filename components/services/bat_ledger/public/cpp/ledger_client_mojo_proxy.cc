@@ -296,11 +296,10 @@ void LedgerClientMojoProxy::SaveRecurringTip(
 // static
 void LedgerClientMojoProxy::OnGetRecurringTips(
     CallbackHolder<GetRecurringTipsCallback>* holder,
-    ledger::PublisherInfoList publisher_info_list,
-    uint32_t next_record) {
+    ledger::PublisherInfoList publisher_info_list) {
   DCHECK(holder);
   if (holder->is_valid())
-    std::move(holder->get()).Run(std::move(publisher_info_list), next_record);
+    std::move(holder->get()).Run(std::move(publisher_info_list));
   delete holder;
 }
 
@@ -312,8 +311,7 @@ void LedgerClientMojoProxy::GetRecurringTips(
   ledger_client_->GetRecurringTips(
       std::bind(LedgerClientMojoProxy::OnGetRecurringTips,
                 holder,
-                _1,
-                _2));
+                _1));
 }
 
 // static
@@ -434,49 +432,6 @@ void LedgerClientMojoProxy::SavePendingContribution(
 }
 
 // static
-void LedgerClientMojoProxy::OnLoadActivityInfo(
-    CallbackHolder<LoadActivityInfoCallback>* holder,
-    ledger::Result result,
-    ledger::PublisherInfoPtr info) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result, std::move(info));
-  delete holder;
-}
-
-void LedgerClientMojoProxy::LoadActivityInfo(
-    ledger::ActivityInfoFilterPtr filter,
-    LoadActivityInfoCallback callback) {
-  // deleted in OnLoadActivityInfo
-  auto* holder = new CallbackHolder<LoadActivityInfoCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->LoadActivityInfo(std::move(filter),
-      std::bind(LedgerClientMojoProxy::OnLoadActivityInfo, holder, _1, _2));
-}
-
-// static
-void LedgerClientMojoProxy::OnSaveActivityInfo(
-    CallbackHolder<SaveActivityInfoCallback>* holder,
-    ledger::Result result,
-    ledger::PublisherInfoPtr info) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result, std::move(info));
-  delete holder;
-}
-
-void LedgerClientMojoProxy::SaveActivityInfo(
-    ledger::PublisherInfoPtr publisher_info,
-    SaveActivityInfoCallback callback) {
-  // deleted in OnSaveActivityInfo
-  auto* holder = new CallbackHolder<SaveActivityInfoCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  ledger_client_->SaveActivityInfo(std::move(publisher_info),
-      std::bind(LedgerClientMojoProxy::OnSaveActivityInfo, holder, _1, _2));
-}
-
-// static
 void LedgerClientMojoProxy::OnRestorePublishers(
     CallbackHolder<RestorePublishersCallback>* holder,
     ledger::Result result) {
@@ -496,37 +451,9 @@ void LedgerClientMojoProxy::RestorePublishers(
       std::bind(LedgerClientMojoProxy::OnRestorePublishers, holder, _1));
 }
 
-// static
-void LedgerClientMojoProxy::OnGetActivityInfoList(
-    CallbackHolder<GetActivityInfoListCallback>* holder,
-    ledger::PublisherInfoList publisher_info_list,
-    uint32_t next_record) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(std::move(publisher_info_list), next_record);
-  delete holder;
-}
-
-void LedgerClientMojoProxy::GetActivityInfoList(uint32_t start,
-    uint32_t limit,
-    ledger::ActivityInfoFilterPtr filter,
-    GetActivityInfoListCallback callback) {
-  // deleted in OnGetActivityInfoList
-  auto* holder = new CallbackHolder<GetActivityInfoListCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  ledger_client_->GetActivityInfoList(start,
-      limit,
-      std::move(filter),
-      std::bind(LedgerClientMojoProxy::OnGetActivityInfoList,
-                holder,
-                _1,
-                _2));
-}
-
-void LedgerClientMojoProxy::SaveNormalizedPublisherList(
+void LedgerClientMojoProxy::PublisherListNormalized(
     ledger::PublisherInfoList list) {
-  ledger_client_->SaveNormalizedPublisherList(std::move(list));
+  ledger_client_->PublisherListNormalized(std::move(list));
 }
 
 // static
@@ -708,11 +635,10 @@ void LedgerClientMojoProxy::ConfirmationsTransactionHistoryDidChange() {
 // static
 void LedgerClientMojoProxy::OnGetOneTimeTips(
     CallbackHolder<GetOneTimeTipsCallback>* holder,
-    ledger::PublisherInfoList publisher_info_list,
-    uint32_t next_record) {
+    ledger::PublisherInfoList publisher_info_list) {
   DCHECK(holder);
   if (holder->is_valid())
-    std::move(holder->get()).Run(std::move(publisher_info_list), next_record);
+    std::move(holder->get()).Run(std::move(publisher_info_list));
   delete holder;
 }
 
@@ -724,8 +650,7 @@ void LedgerClientMojoProxy::GetOneTimeTips(
   ledger_client_->GetOneTimeTips(
       std::bind(LedgerClientMojoProxy::OnGetOneTimeTips,
                 holder,
-                _1,
-                _2));
+                _1));
 }
 
 // static
@@ -871,29 +796,6 @@ void LedgerClientMojoProxy::ShowNotification(
       type,
       args,
       std::bind(LedgerClientMojoProxy::OnShowNotification,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnDeleteActivityInfo(
-    CallbackHolder<DeleteActivityInfoCallback>* holder,
-    const ledger::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(result);
-  }
-  delete holder;
-}
-
-void LedgerClientMojoProxy::DeleteActivityInfo(
-      const std::string& publisher_key,
-      DeleteActivityInfoCallback callback) {
-  auto* holder = new CallbackHolder<DeleteActivityInfoCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->DeleteActivityInfo(
-      publisher_key,
-      std::bind(LedgerClientMojoProxy::OnDeleteActivityInfo,
                 holder,
                 _1));
 }

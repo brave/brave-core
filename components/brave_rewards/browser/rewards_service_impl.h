@@ -127,8 +127,7 @@ class RewardsServiceImpl : public RewardsService,
       const GetContentSiteListCallback& callback) override;
   void OnGetContentSiteList(
       const GetContentSiteListCallback& callback,
-      ledger::PublisherInfoList list,
-      uint32_t next_record);
+      ledger::PublisherInfoList list);
   void OnLoad(SessionID tab_id, const GURL& url) override;
   void OnUnload(SessionID tab_id) override;
   void OnShow(SessionID tab_id) override;
@@ -344,12 +343,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnPublisherInfoSaved(ledger::PublisherInfoCallback callback,
                             ledger::PublisherInfoPtr info,
                             bool success);
-  void OnActivityInfoSaved(ledger::PublisherInfoCallback callback,
-                            ledger::PublisherInfoPtr info,
-                            bool success);
-  void OnActivityInfoLoaded(ledger::PublisherInfoCallback callback,
-                            const std::string& publisher_key,
-                            ledger::PublisherInfoList list);
   void OnMediaPublisherInfoSaved(bool success);
   void OnPublisherInfoLoaded(ledger::PublisherInfoCallback callback,
                              ledger::PublisherInfoPtr info);
@@ -398,32 +391,12 @@ class RewardsServiceImpl : public RewardsService,
       ledger::BalanceReportInfoPtr report);
   void MaybeShowBackupNotification(uint64_t boot_stamp);
   void MaybeShowAddFundsNotification(uint64_t reconcile_stamp);
-  void OnPublisherListNormalizedSaved(ContentSiteList site_list,
-                                      bool success);
   void OnWalletProperties(
       const ledger::Result result,
       ledger::WalletPropertiesPtr properties) override;
 
-  void DeleteActivityInfo(
-    const std::string& publisher_key,
-    ledger::DeleteActivityInfoCallback callback) override;
-
-  void OnDeleteActivityInfoStamp(
-      const std::string& publisher_key,
-      const ledger::DeleteActivityInfoCallback& callback,
-      uint64_t reconcile_stamp);
-
-  void OnDeleteActivityInfo(
-    const std::string& publisher_key,
-    const ledger::DeleteActivityInfoCallback& callback,
-    bool result);
-
   void OnGetOneTimeTipsUI(GetRecurringTipsCallback callback,
                           ledger::PublisherInfoList list);
-
-  void OnPublisherActivityInfoLoaded(ledger::PublisherInfoCallback callback,
-                                     const ledger::Result result,
-                                     ledger::PublisherInfoPtr info);
 
   void OnInlineTipSetting(GetInlineTipSettingCallback callback, bool enabled);
 
@@ -549,17 +522,8 @@ class RewardsServiceImpl : public RewardsService,
                           ledger::LedgerCallbackHandler* handler) override;
   void SavePublisherInfo(ledger::PublisherInfoPtr publisher_info,
                          ledger::PublisherInfoCallback callback) override;
-  void SaveActivityInfo(ledger::PublisherInfoPtr publisher_info,
-                        ledger::PublisherInfoCallback callback) override;
-  void LoadActivityInfo(ledger::ActivityInfoFilterPtr filter,
-                         ledger::PublisherInfoCallback callback) override;
   void LoadPanelPublisherInfo(ledger::ActivityInfoFilterPtr filter,
                               ledger::PublisherInfoCallback callback) override;
-  void GetActivityInfoList(
-      uint32_t start,
-      uint32_t limit,
-      ledger::ActivityInfoFilterPtr filter,
-      ledger::PublisherInfoListCallback callback) override;
   void SetTimer(uint64_t time_offset, uint32_t* timer_id) override;
   void LoadURL(const std::string& url,
       const std::vector<std::string>& headers,
@@ -666,8 +630,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnRestorePublishers(ledger::RestorePublishersCallback callback,
                            const bool success);
 
-  void SaveNormalizedPublisherList(
-      ledger::PublisherInfoList list) override;
+  void PublisherListNormalized(ledger::PublisherInfoList list) override;
 
   void GetPendingContributions(
     ledger::PendingContributionInfoListCallback callback) override;

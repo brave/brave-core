@@ -92,21 +92,9 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       ledger::PendingContributionList list,
       ledger::SavePendingContributionCallback callback) override;
 
-  void LoadActivityInfo(ledger::ActivityInfoFilterPtr filter,
-                        ledger::PublisherInfoCallback callback) override;
-
-  void SaveActivityInfo(ledger::PublisherInfoPtr publisher_info,
-                        ledger::PublisherInfoCallback callback) override;
-
   void RestorePublishers(ledger::RestorePublishersCallback callback) override;
 
-  void GetActivityInfoList(uint32_t start,
-                           uint32_t limit,
-                           ledger::ActivityInfoFilterPtr filter,
-                           ledger::PublisherInfoListCallback callback) override;
-
-  void SaveNormalizedPublisherList(
-      ledger::PublisherInfoList normalized_list) override;
+  void PublisherListNormalized(ledger::PublisherInfoList list) override;
 
   void SaveState(const std::string& name,
                  const std::string& value,
@@ -168,10 +156,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       const std::string& type,
       const std::vector<std::string>& args,
       ledger::ShowNotificationCallback callback) override;
-
-  void DeleteActivityInfo(
-      const std::string& publisher_key,
-      ledger::DeleteActivityInfoCallback callback) override;
 
   void ClearAndInsertServerPublisherList(
     ledger::ServerPublisherInfoList list,

@@ -91,16 +91,8 @@ class MockLedgerClient : public LedgerClient {
       ledger::PublisherInfoPtr publisher_info,
       ledger::PublisherInfoCallback callback));
 
-  MOCK_METHOD2(SaveActivityInfo, void(
-      ledger::PublisherInfoPtr publisher_info,
-      ledger::PublisherInfoCallback callback));
-
   MOCK_METHOD2(LoadPublisherInfo, void(
       const std::string& publisher_key,
-      ledger::PublisherInfoCallback callback));
-
-  MOCK_METHOD2(LoadActivityInfo, void(
-      ledger::ActivityInfoFilterPtr filter,
       ledger::PublisherInfoCallback callback));
 
   MOCK_METHOD2(LoadPanelPublisherInfo, void(
@@ -114,12 +106,6 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD2(SaveMediaPublisherInfo, void(
       const std::string& media_key,
       const std::string& publisher_id));
-
-  MOCK_METHOD4(GetActivityInfoList, void(
-      uint32_t start,
-      uint32_t limit,
-      ledger::ActivityInfoFilterPtr filter,
-      ledger::PublisherInfoListCallback callback));
 
   MOCK_METHOD0(FetchPromotions, void());
 
@@ -209,8 +195,7 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD1(RestorePublishers, void(
       ledger::RestorePublishersCallback callback));
 
-  MOCK_METHOD1(SaveNormalizedPublisherList, void(
-      ledger::PublisherInfoList normalized_list));
+  MOCK_METHOD1(PublisherListNormalized, void(ledger::PublisherInfoList list));
 
   MOCK_METHOD1(SetConfirmationsIsReady, void(
       const bool is_ready));
@@ -309,10 +294,6 @@ class MockLedgerClient : public LedgerClient {
       const std::string& type,
       const std::vector<std::string>& args,
       ledger::ShowNotificationCallback callback));
-
-  MOCK_METHOD2(DeleteActivityInfo, void(
-      const std::string& publisher_key,
-      ledger::DeleteActivityInfoCallback callback));
 
   MOCK_METHOD2(ClearAndInsertServerPublisherList, void(
       ledger::ServerPublisherInfoList list,

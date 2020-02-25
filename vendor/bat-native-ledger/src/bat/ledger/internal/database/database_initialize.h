@@ -6,6 +6,7 @@
 #ifndef BRAVELEDGER_DATABASE_DATABASE_INITIALIZE_H_
 #define BRAVELEDGER_DATABASE_DATABASE_INITIALIZE_H_
 
+#include <memory>
 #include <string>
 
 #include "bat/ledger/ledger.h"
@@ -15,6 +16,8 @@ class LedgerImpl;
 }
 
 namespace braveledger_database {
+
+class DatabaseMigration;
 
 class DatabaseInitialize {
  public:
@@ -47,6 +50,7 @@ class DatabaseInitialize {
       const int table_version,
       ledger::ResultCallback callback);
 
+  std::unique_ptr<DatabaseMigration> migration_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 

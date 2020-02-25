@@ -144,7 +144,6 @@ void Contribution::OnSufficientBalanceWallet(
       std::bind(&Contribution::OnHasSufficientBalance,
           this,
           _1,
-          _2,
           properties->total,
           callback);
 
@@ -153,7 +152,6 @@ void Contribution::OnSufficientBalanceWallet(
 
 void Contribution::OnHasSufficientBalance(
     const ledger::PublisherInfoList& publisher_list,
-    const uint32_t record,
     const double balance,
     ledger::HasSufficientBalanceToReconcileCallback callback) {
   if (publisher_list.empty()) {
@@ -218,13 +216,11 @@ void Contribution::StartRecurringTips(ledger::ResultCallback callback) {
       std::bind(&Contribution::PrepareRecurringList,
                 this,
                 _1,
-                _2,
                 callback));
 }
 
 void Contribution::PrepareRecurringList(
     ledger::PublisherInfoList list,
-    uint32_t next_record,
     ledger::ResultCallback callback) {
   auto verified_list = GetVerifiedListRecurring(list);
 
@@ -301,13 +297,10 @@ void Contribution::StartAutoContribute(uint64_t reconcile_stamp) {
       std::move(filter),
       std::bind(&Contribution::PrepareACList,
                 this,
-                _1,
-                _2));
+                _1));
 }
 
-void Contribution::PrepareACList(
-    ledger::PublisherInfoList list,
-    uint32_t next_record) {
+void Contribution::PrepareACList(ledger::PublisherInfoList list) {
   ledger::PublisherInfoList normalized_list;
 
   ledger_->NormalizeContributeWinners(&normalized_list, &list, 0);

@@ -312,7 +312,7 @@ void Publisher::SaveVisitInternal(
 
     panel_info = publisher_info->Clone();
 
-    ledger_->SetActivityInfo(std::move(publisher_info));
+    ledger_->SaveActivityInfo(std::move(publisher_info));
   }
 
   if (panel_info) {
@@ -422,7 +422,7 @@ void Publisher::OnSetPublisherExclude(
   if (exclude == ledger::PublisherExclude::EXCLUDED) {
     ledger_->DeleteActivityInfo(
       publisher_info->id,
-      [](ledger::Result _){});
+      [](const ledger::Result _){});
   }
   callback(ledger::Result::LEDGER_OK);
 }
@@ -586,19 +586,15 @@ void Publisher::SynopsisNormalizer() {
       ledger_->GetReconcileStamp(),
       ledger_->GetPublisherAllowNonVerified(),
       ledger_->GetPublisherMinVisits());
-  // TODO(SZ): We pull the whole list currently,
-  // I don't think it consumes lots of RAM, but could.
-  // We need to limit it and iterate.
   ledger_->GetActivityInfoList(
       0,
       0,
       std::move(filter),
-      std::bind(&Publisher::SynopsisNormalizerCallback, this, _1, _2));
+      std::bind(&Publisher::SynopsisNormalizerCallback, this, _1));
 }
 
 void Publisher::SynopsisNormalizerCallback(
-    ledger::PublisherInfoList list,
-    uint32_t record) {
+    ledger::PublisherInfoList list) {
   ledger::PublisherInfoList normalized_list;
   synopsisNormalizerInternal(&normalized_list, &list, 0);
   ledger_->SaveNormalizedPublisherList(std::move(normalized_list));
