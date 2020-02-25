@@ -270,8 +270,8 @@ public class NTPUtil {
     private static boolean shouldShowSponsoredImage() {
     	SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
     	if(mSharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_SPONSORED_IMAGES, true)
-            && SponsoredImageUtil.getSponsoredImages().size() > 0
-            && shouldShowImageForRewards()) {
+    		&& SponsoredImageUtil.getSponsoredImages().size() > 0
+    		&& shouldShowImageForRewards()) {
     		return true;
     	}
     	return false;
@@ -279,8 +279,8 @@ public class NTPUtil {
 
     private static boolean shouldShowImageForRewards() {
     	if(BraveAdsNativeHelper.nativeIsLocaleValid(Profile.getLastUsedProfile())
-            && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
-            && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
+    		&& !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
+    		&& ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
     		return true;
     	}
     	return false;
