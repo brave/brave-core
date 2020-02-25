@@ -349,16 +349,10 @@ bool AdsImpl::IsForeground() const {
 }
 
 void AdsImpl::OnIdle() {
-  // TODO(Terry Mancey): Implement Log (#44)
-  // 'Idle state changed', { idleState: action.get('idleState') }
-
   BLOG(INFO) << "Browser state changed to idle";
 }
 
 void AdsImpl::OnUnIdle() {
-  // TODO(Terry Mancey): Implement Log (#44)
-  // 'Idle state changed', { idleState: action.get('idleState') }
-
   if (!IsInitialized()) {
     BLOG(WARNING) << "OnUnIdle failed as not initialized";
     return;
@@ -1020,9 +1014,6 @@ void AdsImpl::OnLoadSampleBundle(
   auto categories = state.creative_ad_notifications.begin();
   auto categories_count = state.creative_ad_notifications.size();
   if (categories_count == 0) {
-    // TODO(Terry Mancey): Implement Log (#44)
-    // 'Notification not made', { reason: 'no categories' }
-
     BLOG(INFO) << "Notification not made: No sample bundle ad notification "
         "categories";
 
@@ -1037,9 +1028,6 @@ void AdsImpl::OnLoadSampleBundle(
 
   auto ads_count = ads.size();
   if (ads_count == 0) {
-    // TODO(Terry Mancey): Implement Log (#44)
-    // 'Notification not made', { reason: 'no ads for category', category }
-
     BLOG(INFO) << "Notification not made: No sample bundle ads found for \""
         << category << "\" sample category";
 
@@ -1102,10 +1090,6 @@ void AdsImpl::ServeAdNotificationIfReady(
     }
 
     if (ShouldNotDisturb()) {
-      // TODO(Terry Mancey): Implement Log (#44)
-      // 'Notification not made', { reason: 'do not disturb while not in
-      // foreground' }
-
       FailedToServeAdNotification("Should not disturb");
       return;
     }
@@ -1410,11 +1394,6 @@ bool AdsImpl::IsAdNotificationValid(
   if (info.title.empty() ||
       info.body.empty() ||
       info.target_url.empty()) {
-    // TODO(Terry Mancey): Implement Log (#44)
-    // 'Notification not made', { reason: 'incomplete ad information',
-    // category, winnerOverTime, arbitraryKey, notificationUrl,
-    // notificationText, advertiser
-
     BLOG(INFO) << "Ad notification not made: Incomplete ad information"
         << std::endl << "  creativeInstanceId: " << info.creative_instance_id
         << std::endl << "  creativeSetId: " << info.creative_set_id
@@ -1456,10 +1435,6 @@ bool AdsImpl::ShowAdNotification(
   ad_notification->title = info.title;
   ad_notification->body = info.body;
   ad_notification->target_url = helper::Uri::GetUri(info.target_url);
-
-  // TODO(Terry Mancey): Implement Log (#44)
-  // 'Notification shown', {category, winnerOverTime, arbitraryKey,
-  // notificationUrl, notificationText, advertiser, uuid, hierarchy}
 
   BLOG(INFO) << "Ad notification shown:"
       << std::endl << "  uuid: " << ad_notification->uuid
@@ -1648,9 +1623,6 @@ void AdsImpl::MaybeServeAdNotification(
     const bool should_serve) {
   auto ok = ads_client_->ShouldShowNotifications();
 
-  // TODO(Terry Mancey): Implement Log (#44)
-  // appConstants.APP_ON_NATIVE_NOTIFICATION_AVAILABLE_CHECK, {err, result}
-
   auto previous = client_->GetAvailable();
 
   if (ok != previous) {
@@ -1668,26 +1640,16 @@ void AdsImpl::MaybeServeAdNotification(
   }
 
   if (!ok) {
-    // TODO(Terry Mancey): Implement Log (#44)
-    // 'Notification not made', { reason: 'notifications not presently allowed'
-    // }
-
     FailedToServeAdNotification("Notifications not allowed");
     return;
   }
 
   if (!ads_client_->IsNetworkConnectionAvailable()) {
-    // TODO(Terry Mancey): Implement Log (#44)
-    // 'Notification not made', { reason: 'network connection not available' }
-
     FailedToServeAdNotification("Network connection not available");
     return;
   }
 
   if (IsCatalogOlderThanOneDay()) {
-    // TODO(Terry Mancey): Implement Log (#44)
-    // 'Notification not made', { reason: 'catalog older than one day' }
-
     FailedToServeAdNotification("Catalog older than one day");
     return;
   }
