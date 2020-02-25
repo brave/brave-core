@@ -92,6 +92,10 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     cross_site_url_ = embedded_test_server()->GetURL("b.com", "/simple.html");
     cross_site_image_url_ =
         embedded_test_server()->GetURL("b.com", "/logo.png");
+    same_site_url_ =
+        embedded_test_server()->GetURL("sub.a.com", "/simple.html");
+    same_site_image_url_ =
+        embedded_test_server()->GetURL("sub.a.com", "/logo.png");
     top_level_page_url_ = embedded_test_server()->GetURL("a.com", "/");
     top_level_page_pattern_ =
         ContentSettingsPattern::FromString("http://a.com/*");
@@ -139,6 +143,8 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   const GURL& url() { return url_; }
   const GURL& cross_site_url() { return cross_site_url_; }
   const GURL& cross_site_image_url() { return cross_site_image_url_; }
+  const GURL& same_site_url() { return same_site_url_; }
+  const GURL& same_site_image_url() { return same_site_image_url_; }
 
   std::string create_image_script(const GURL& url) {
     std::string s;
@@ -291,6 +297,8 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   GURL url_;
   GURL cross_site_url_;
   GURL cross_site_image_url_;
+  GURL same_site_url_;
+  GURL same_site_image_url_;
   GURL top_level_page_url_;
   ContentSettingsPattern top_level_page_pattern_;
   ContentSettingsPattern first_party_pattern_;
@@ -429,12 +437,23 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), "");
   EXPECT_TRUE(GetLastReferrer(url()).empty());
 
+  // Same-site sub-resources within the page get the page URL as referrer.
+  EXPECT_EQ(
+      ExecScriptGetStr(create_image_script(same_site_image_url()), contents()),
+      same_site_image_url().spec());
+  EXPECT_EQ(GetLastReferrer(same_site_image_url()), url().spec());
+
   // Cross-site sub-resources within the page get their referrer spoofed.
   EXPECT_EQ(
       ExecScriptGetStr(create_image_script(cross_site_image_url()), contents()),
       cross_site_image_url().spec());
   EXPECT_EQ(GetLastReferrer(cross_site_image_url()),
             cross_site_url().GetOrigin().spec());
+
+  // Same-site iframe navigations get the page get the page URL as referrer.
+  NavigateIframe(same_site_url());
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, child_frame()), url().spec());
+  EXPECT_EQ(GetLastReferrer(same_site_url()), url().spec());
 
   // Cross-site iframe navigations get their referrer spoofed.
   NavigateIframe(cross_site_url());
@@ -453,12 +472,23 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), "");
   EXPECT_TRUE(GetLastReferrer(url()).empty());
 
+  // Same-site sub-resources within the page get the page URL as referrer.
+  EXPECT_EQ(
+      ExecScriptGetStr(create_image_script(same_site_image_url()), contents()),
+      same_site_image_url().spec());
+  EXPECT_EQ(GetLastReferrer(same_site_image_url()), url().spec());
+
   // Cross-site sub-resources within the page get their referrer spoofed.
   EXPECT_EQ(
       ExecScriptGetStr(create_image_script(cross_site_image_url()), contents()),
       cross_site_image_url().spec());
   EXPECT_EQ(GetLastReferrer(cross_site_image_url()),
             cross_site_image_url().GetOrigin().spec());
+
+  // Same-site iframe navigations get the page get the page URL as referrer.
+  NavigateIframe(same_site_url());
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, child_frame()), url().spec());
+  EXPECT_EQ(GetLastReferrer(same_site_url()), url().spec());
 
   // Cross-site iframe navigations get their referrer spoofed.
   NavigateIframe(cross_site_url());
