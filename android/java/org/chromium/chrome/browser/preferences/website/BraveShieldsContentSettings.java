@@ -29,6 +29,7 @@ public class BraveShieldsContentSettings {
     static public final String RESOURCE_IDENTIFIER_JAVASCRIPTS = "javascript";
 
     static private final String blockResource = "block";
+    static private final String blockThirdPartyResource = "block_third_party";
     static private final String allowResource = "allow";
 
     private long mNativeBraveShieldsContentSettings;
@@ -65,6 +66,11 @@ public class BraveShieldsContentSettings {
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
             BraveShieldsContentSettingsJni.get().setCookieControlType(setting_string, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FINGERPRINTING)) {
+            if (setting_string.equals(blockResource)) {
+                // On Android we temporary control 3rd party fingerprint resources only,
+                // until UI design for new shields menu is implemented
+                setting_string = blockThirdPartyResource;
+            }
             BraveShieldsContentSettingsJni.get().setFingerprintingControlType(setting_string, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_JAVASCRIPTS)) {
             BraveShieldsContentSettingsJni.get().setNoScriptControlType(setting_string, host, profile);
