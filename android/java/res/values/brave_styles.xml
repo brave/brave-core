@@ -63,4 +63,14 @@
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">14sp</item>
     </style>
+
+    <style name="NewTabPopupMenuLight" parent="Widget.AppCompat.PopupMenu">
+      <item name="android:textColor">@android:color/black</item>
+      <item name="android:itemBackground">@android:color/white</item>
+    </style>
+
+    <style name="NewTabPopupMenuDark" parent="Widget.AppCompat.PopupMenu">
+      <item name="android:textColor">@color/new_tab_menu_text_dark_color</item>
+      <item name="android:itemBackground">@color/new_tab_menu_bg_dark_color</item>
+    </style>
 </resources>
