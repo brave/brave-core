@@ -93,6 +93,10 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     cross_site_image_url_ =
         embedded_test_server()->GetURL("b.com", "/logo.png");
     link_url_ = embedded_test_server()->GetURL("a.com", "/simple_link.html");
+    redirect_to_cross_site_url_ = embedded_test_server()->GetURL(
+        "a.com", "/cross-site/b.com/simple.html");
+    redirect_to_cross_site_image_url_ =
+        embedded_test_server()->GetURL("a.com", "/cross-site/b.com/logo.png");
     same_site_url_ =
         embedded_test_server()->GetURL("sub.a.com", "/simple.html");
     same_site_image_url_ =
@@ -145,6 +149,12 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   const GURL& cross_site_url() { return cross_site_url_; }
   const GURL& cross_site_image_url() { return cross_site_image_url_; }
   const GURL& link_url() { return link_url_; }
+  const GURL& redirect_to_cross_site_url() {
+    return redirect_to_cross_site_url_;
+  }
+  const GURL& redirect_to_cross_site_image_url() {
+    return redirect_to_cross_site_image_url_;
+  }
   const GURL& same_site_url() { return same_site_url_; }
   const GURL& same_site_image_url() { return same_site_image_url_; }
 
@@ -271,20 +281,16 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     return value;
   }
 
-  void NavigateToPageWithLink(const GURL& url) {
-    ui_test_utils::NavigateToURL(browser(), link_url());
+  void NavigateDirectlyToPageWithLink(const GURL& url) {
+    NavigateToPageWithLink(url);
     content::RenderFrameHost* main_frame = contents()->GetMainFrame();
-    EXPECT_EQ(main_frame->GetLastCommittedURL(), link_url());
-
-    std::string clickLink =
-        "domAutomationController.send(clickLink('" + url.spec() + "'));";
-    bool success = false;
-    EXPECT_TRUE(
-        ExecuteScriptAndExtractBool(contents(), clickLink.c_str(), &success));
-    EXPECT_TRUE(success);
-    EXPECT_TRUE(WaitForLoadStop(contents()));
-    main_frame = contents()->GetMainFrame();
     EXPECT_EQ(main_frame->GetLastCommittedURL(), url);
+  }
+
+  void RedirectToPageWithLink(const GURL& url, const GURL& final_url) {
+    NavigateToPageWithLink(url);
+    content::RenderFrameHost* main_frame = contents()->GetMainFrame();
+    EXPECT_EQ(main_frame->GetLastCommittedURL(), final_url);
   }
 
   void NavigateToPageWithIframe() {
@@ -306,6 +312,12 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     ASSERT_EQ(child_frame()->GetLastCommittedURL(), url);
   }
 
+  void NavigateCrossSiteRedirectIframe() {
+    ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID,
+                                    redirect_to_cross_site_url()));
+    ASSERT_EQ(child_frame()->GetLastCommittedURL(), cross_site_url());
+  }
+
   template <typename T>
   void CheckCookie(T* frame, base::StringPiece cookie) {
     EXPECT_EQ(ExecScriptGetStr(kCookieScript, frame), cookie);
@@ -316,6 +328,8 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   GURL cross_site_url_;
   GURL cross_site_image_url_;
   GURL link_url_;
+  GURL redirect_to_cross_site_url_;
+  GURL redirect_to_cross_site_image_url_;
   GURL same_site_url_;
   GURL same_site_image_url_;
   GURL top_level_page_url_;
@@ -328,6 +342,20 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   std::map<GURL, std::string> last_referrers_;
 
   base::ScopedTempDir temp_user_data_dir_;
+
+  void NavigateToPageWithLink(const GURL& url) {
+    ui_test_utils::NavigateToURL(browser(), link_url());
+    content::RenderFrameHost* main_frame = contents()->GetMainFrame();
+    EXPECT_EQ(main_frame->GetLastCommittedURL(), link_url());
+
+    std::string clickLink =
+        "domAutomationController.send(clickLink('" + url.spec() + "'));";
+    bool success = false;
+    EXPECT_TRUE(
+        ExecuteScriptAndExtractBool(contents(), clickLink.c_str(), &success));
+    EXPECT_TRUE(success);
+    EXPECT_TRUE(WaitForLoadStop(contents()));
+  }
 };
 
 // See https://github.com/brave/brave-browser/issues/8937
@@ -482,14 +510,48 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
             cross_site_url().GetOrigin().spec());
 
   // Same-site navigations get the original page URL as the referrer.
-  NavigateToPageWithLink(same_site_url());
+  NavigateDirectlyToPageWithLink(same_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), link_url().spec());
   EXPECT_EQ(GetLastReferrer(same_site_url()), link_url().spec());
 
   // Cross-site navigations get no referrer.
-  NavigateToPageWithLink(cross_site_url());
+  NavigateDirectlyToPageWithLink(cross_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), "");
   EXPECT_EQ(GetLastReferrer(cross_site_url()), "");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
+                       DISABLED_BlockReferrerByDefaultRedirects) {
+  ContentSettingsForOneType settings;
+  content_settings()->GetSettingsForOneType(
+      ContentSettingsType::PLUGINS, brave_shields::kReferrers, &settings);
+  EXPECT_EQ(settings.size(), 0u)
+      << "There should not be any visible referrer rules.";
+
+  // The initial navigation doesn't have a referrer.
+  NavigateToPageWithIframe();
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), "");
+  EXPECT_TRUE(GetLastReferrer(url()).empty());
+
+  // Cross-site sub-resources within the page get their referrer spoofed.
+  EXPECT_EQ(
+      ExecScriptGetStr(create_image_script(redirect_to_cross_site_image_url()),
+                       contents()),
+      redirect_to_cross_site_image_url().spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_image_url()),
+            cross_site_url().GetOrigin().spec());
+
+  // Cross-site iframe navigations get their referrer spoofed.
+  NavigateCrossSiteRedirectIframe();
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, child_frame()),
+            cross_site_url().GetOrigin().spec());
+  EXPECT_EQ(GetLastReferrer(redirect_to_cross_site_url()),
+            cross_site_url().GetOrigin().spec());
+
+  // Cross-site navigations get no referrer.
+  RedirectToPageWithLink(redirect_to_cross_site_url(), cross_site_url());
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), "");
+  EXPECT_EQ(GetLastReferrer(redirect_to_cross_site_url()), "");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -527,14 +589,51 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
             cross_site_url().GetOrigin().spec());
 
   // Same-site navigations get the original page URL as the referrer.
-  NavigateToPageWithLink(same_site_url());
+  NavigateDirectlyToPageWithLink(same_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), link_url().spec());
   EXPECT_EQ(GetLastReferrer(same_site_url()), link_url().spec());
 
   // Cross-site navigations get no referrer.
-  NavigateToPageWithLink(cross_site_url());
+  NavigateDirectlyToPageWithLink(cross_site_url());
   EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), "");
   EXPECT_EQ(GetLastReferrer(cross_site_url()), "");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
+                       DISABLED_BlockReferrerRedirects) {
+  BlockReferrers();
+
+  // The initial navigation doesn't have a referrer.
+  NavigateToPageWithIframe();
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), "");
+  EXPECT_TRUE(GetLastReferrer(url()).empty());
+
+  // Cross-site sub-resources within the page get their referrer spoofed.
+  EXPECT_EQ(
+      ExecScriptGetStr(create_image_script(redirect_to_cross_site_image_url()),
+                       contents()),
+      redirect_to_cross_site_image_url().spec());
+  EXPECT_EQ(GetLastReferrer(cross_site_image_url()),
+            cross_site_url().GetOrigin().spec());
+
+  // Cross-site iframe navigations get their referrer spoofed.
+  NavigateCrossSiteRedirectIframe();
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, child_frame()),
+            cross_site_url().GetOrigin().spec());
+  EXPECT_EQ(GetLastReferrer(redirect_to_cross_site_url()),
+            cross_site_url().GetOrigin().spec());
+
+  // Cross-site iframe navigations get their referrer spoofed.
+  NavigateCrossSiteRedirectIframe();
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, child_frame()),
+            cross_site_url().GetOrigin().spec());
+  EXPECT_EQ(GetLastReferrer(redirect_to_cross_site_url()),
+            cross_site_url().GetOrigin().spec());
+
+  // Cross-site navigations get no referrer.
+  RedirectToPageWithLink(redirect_to_cross_site_url(), cross_site_url());
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), "");
+  EXPECT_EQ(GetLastReferrer(redirect_to_cross_site_url()), "");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
