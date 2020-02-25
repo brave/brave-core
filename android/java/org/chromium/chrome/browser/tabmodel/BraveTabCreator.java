@@ -26,16 +26,16 @@ import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 public class BraveTabCreator extends ChromeTabCreator {
 
 	public BraveTabCreator(ChromeActivity activity, WindowAndroid nativeWindow,
-            StartupTabPreloader startupTabPreloader,
-            Supplier<TabDelegateFactory> tabDelegateFactory, boolean incognito) {
-			super(activity, nativeWindow, startupTabPreloader, tabDelegateFactory, incognito);
+		StartupTabPreloader startupTabPreloader,
+		Supplier<TabDelegateFactory> tabDelegateFactory, boolean incognito) {
+		super(activity, nativeWindow, startupTabPreloader, tabDelegateFactory, incognito);
 	}
 
 	@Override
     public Tab launchUrl(String url, @TabLaunchType int type) {
     	SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
 
-        ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
+    	ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
         if(chromeTabbedActivity != null && Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
             TabModel tabModel = chromeTabbedActivity.getCurrentTabModel();
             if (tabModel.getCount() >= SponsoredImageUtil.MAX_TABS && mSharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES, true)) {
@@ -51,7 +51,6 @@ public class BraveTabCreator extends ChromeTabCreator {
         } else {
             return launchUrl(url, type, null, 0);
         }
-
         return null;
     }
 }
