@@ -76,9 +76,6 @@ PublisherInfoDatabase::PublisherInfoDatabase(
 
   recurring_tip_ =
       std::make_unique<DatabaseRecurringTip>(GetCurrentVersion());
-
-  publisher_info_ =
-      std::make_unique<DatabasePublisherInfo>(GetCurrentVersion());
 }
 
 PublisherInfoDatabase::~PublisherInfoDatabase() {
@@ -206,57 +203,6 @@ bool PublisherInfoDatabase::UpdateContributionInfoContributedAmount(
       &GetDB(),
       contribution_id,
       publisher_key);
-}
-
-/**
- *
- * PUBLISHER INFO
- *
- */
-
-bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
-    ledger::PublisherInfoPtr info) {
-  if (!IsInitialized()) {
-    return false;
-  }
-
-  return publisher_info_->InsertOrUpdate(&GetDB(), std::move(info));
-}
-
-ledger::PublisherInfoPtr
-PublisherInfoDatabase::GetPublisherInfo(const std::string& publisher_key) {
-  if (!IsInitialized()) {
-    return nullptr;
-  }
-
-  return publisher_info_->GetRecord(&GetDB(), publisher_key);
-}
-
-ledger::PublisherInfoPtr
-PublisherInfoDatabase::GetPanelPublisher(
-    ledger::ActivityInfoFilterPtr filter) {
-  if (!IsInitialized()) {
-    return nullptr;
-  }
-
-  return publisher_info_->GetPanelRecord(&GetDB(), std::move(filter));
-}
-
-bool PublisherInfoDatabase::RestorePublishers() {
-  if (!IsInitialized()) {
-    return false;
-  }
-
-  return publisher_info_->RestorePublishers(&GetDB());
-}
-
-bool PublisherInfoDatabase::GetExcludedList(
-    ledger::PublisherInfoList* list) {
-  if (!IsInitialized()) {
-    return false;
-  }
-
-  return publisher_info_->GetExcludedList(&GetDB(), list);
 }
 
 /**
@@ -660,10 +606,6 @@ bool PublisherInfoDatabase::MigrateV0toV1() {
     return false;
   }
 
-  if (!publisher_info_->Migrate(&GetDB(), 1)) {
-    return false;
-  }
-
   return true;
 }
 bool PublisherInfoDatabase::MigrateV1toV2() {
@@ -711,10 +653,6 @@ bool PublisherInfoDatabase::MigrateV5toV6() {
 bool PublisherInfoDatabase::MigrateV6toV7() {
   sql::Transaction transaction(&GetDB());
   if (!transaction.Begin()) {
-    return false;
-  }
-
-  if (!publisher_info_->Migrate(&GetDB(), 7)) {
     return false;
   }
 

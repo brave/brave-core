@@ -56,7 +56,7 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD2(CreateWallet,
       void(const std::string&, ledger::CreateWalletCallback));
 
-  MOCK_METHOD1(SetPublisherInfo, void(ledger::PublisherInfoPtr));
+  MOCK_METHOD1(SavePublisherInfo, void(ledger::PublisherInfoPtr));
 
   MOCK_METHOD1(SaveActivityInfo, void(ledger::PublisherInfoPtr));
 
@@ -216,10 +216,10 @@ class MockLedgerImpl : public LedgerImpl {
           const ledger::PublisherExclude&,
           ledger::SetPublisherExcludeCallback));
 
-  MOCK_METHOD1(RestorePublishers, void(ledger::RestorePublishersCallback));
+  MOCK_METHOD1(RestorePublishers, void(ledger::ResultCallback));
 
   MOCK_METHOD2(OnRestorePublishers,
-      void(const ledger::Result, ledger::RestorePublishersCallback));
+      void(const ledger::Result, ledger::ResultCallback));
 
   MOCK_CONST_METHOD0(IsWalletCreated, bool());
 

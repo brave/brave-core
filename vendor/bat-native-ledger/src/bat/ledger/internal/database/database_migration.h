@@ -17,6 +17,7 @@ class LedgerImpl;
 namespace braveledger_database {
 
 class DatabaseActivityInfo;
+class DatabasePublisherInfo;
 
 class DatabaseMigration {
  public:
@@ -31,6 +32,7 @@ class DatabaseMigration {
   bool Migrate(ledger::DBTransaction* transaction, const int target);
 
   std::unique_ptr<DatabaseActivityInfo> activity_info_;
+  std::unique_ptr<DatabasePublisherInfo> publisher_info_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 

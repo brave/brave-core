@@ -146,9 +146,7 @@ class BatLedgerImpl : public mojom::BatLedger,
     ledger::ActivityInfoFilterPtr filter,
     GetActivityInfoListCallback callback) override;
 
-  void LoadPublisherInfo(
-    const std::string& publisher_key,
-    LoadPublisherInfoCallback callback) override;
+  void GetExcludedList(GetExcludedListCallback callback) override;
 
   void SaveMediaInfo(
       const std::string& type,
@@ -311,10 +309,9 @@ class BatLedgerImpl : public mojom::BatLedger,
     CallbackHolder<GetActivityInfoListCallback>* holder,
     ledger::PublisherInfoList list);
 
-  static void OnLoadPublisherInfo(
-    CallbackHolder<LoadPublisherInfoCallback>* holder,
-    ledger::Result result,
-    ledger::PublisherInfoPtr info);
+  static void OnGetExcludedList(
+      CallbackHolder<GetExcludedListCallback>* holder,
+      ledger::PublisherInfoList list);
 
   static void OnSaveMediaInfoCallback(
     CallbackHolder<SaveMediaInfoCallback>* holder,

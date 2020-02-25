@@ -245,16 +245,6 @@ bool SaveMediaPublisherInfoOnFileTaskRunner(
 }
 
 ledger::PublisherInfoPtr
-LoadPublisherInfoOnFileTaskRunner(
-    const std::string& publisher_key,
-    PublisherInfoDatabase* backend) {
-  if (!backend)
-    return nullptr;
-
-  return backend->GetPublisherInfo(publisher_key);
-}
-
-ledger::PublisherInfoPtr
 LoadMediaPublisherInfoOnFileTaskRunner(
     const std::string& media_key,
     PublisherInfoDatabase* backend) {
@@ -263,27 +253,6 @@ LoadMediaPublisherInfoOnFileTaskRunner(
     return info;
 
   return backend->GetMediaPublisherInfo(media_key);
-}
-
-bool SavePublisherInfoOnFileTaskRunner(
-    ledger::PublisherInfoPtr publisher_info,
-    PublisherInfoDatabase* backend) {
-  if (backend &&
-      backend->InsertOrUpdatePublisherInfo(std::move(publisher_info)))
-    return true;
-
-  return false;
-}
-
-ledger::PublisherInfoPtr GetPanelPublisherInfoOnFileTaskRunner(
-    ledger::ActivityInfoFilterPtr filter,
-    PublisherInfoDatabase* backend) {
-  ledger::PublisherInfoList list;
-  if (!backend) {
-    return nullptr;
-  }
-
-  return backend->GetPanelPublisher(std::move(filter));
 }
 
 // `callback` has a WeakPtr so this won't crash if the file finishes
@@ -632,16 +601,13 @@ void RewardsServiceImpl::GetContentSiteList(
     uint64_t reconcile_stamp,
     bool allow_non_verified,
     uint32_t min_visits,
-    bool fetch_excluded,
     const GetContentSiteListCallback& callback) {
   auto filter = ledger::ActivityInfoFilter::New();
   filter->min_duration = min_visit_time;
   auto pair = ledger::ActivityInfoFilterOrderPair::New("ai.percent", false);
   filter->order_by.push_back(std::move(pair));
   filter->reconcile_stamp = reconcile_stamp;
-  filter->excluded = fetch_excluded
-    ? ledger::ExcludeFilter::FILTER_EXCLUDED
-    : ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED;
+  filter->excluded = ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED;
   filter->percent = 1;
   filter->non_verified = allow_non_verified;
   filter->min_visits = min_visits;
@@ -653,6 +619,14 @@ void RewardsServiceImpl::GetContentSiteList(
       base::BindOnce(&RewardsServiceImpl::OnGetContentSiteList,
                      AsWeakPtr(),
                      callback));
+}
+
+void RewardsServiceImpl::GetExcludedList(
+    const GetContentSiteListCallback& callback) {
+  bat_ledger_->GetExcludedList(base::BindOnce(
+      &RewardsServiceImpl::OnGetContentSiteList,
+      AsWeakPtr(),
+      callback));
 }
 
 void RewardsServiceImpl::OnGetContentSiteList(
@@ -778,28 +752,6 @@ void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
                          first_party_url.spec(),
                          referrer.spec(),
                          std::move(data));
-}
-
-void RewardsServiceImpl::LoadPublisherInfo(
-    const std::string& publisher_key,
-    ledger::PublisherInfoCallback callback) {
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::Bind(&LoadPublisherInfoOnFileTaskRunner,
-          publisher_key, publisher_info_backend_.get()),
-      base::Bind(&RewardsServiceImpl::OnPublisherInfoLoaded,
-                     AsWeakPtr(),
-                     callback));
-}
-
-void RewardsServiceImpl::OnPublisherInfoLoaded(
-    ledger::PublisherInfoCallback callback,
-    ledger::PublisherInfoPtr info) {
-  if (!info) {
-    callback(ledger::Result::NOT_FOUND, nullptr);
-    return;
-  }
-
-  callback(ledger::Result::LEDGER_OK, std::move(info));
 }
 
 void RewardsServiceImpl::LoadMediaPublisherInfo(
@@ -1165,59 +1117,6 @@ void RewardsServiceImpl::LoadNicewareList(
   }
   callback(data.empty() ? ledger::Result::LEDGER_ERROR
                         : ledger::Result::LEDGER_OK, data);
-}
-
-void RewardsServiceImpl::SavePublisherInfo(
-    ledger::PublisherInfoPtr publisher_info,
-    ledger::PublisherInfoCallback callback) {
-  DCHECK(publisher_info);
-  if (!publisher_info) {
-    callback(ledger::Result::LEDGER_ERROR, std::move(publisher_info));
-    return;
-  }
-
-  auto copy = publisher_info->Clone();
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&SavePublisherInfoOnFileTaskRunner,
-                    std::move(copy),
-                    publisher_info_backend_.get()),
-      base::BindOnce(&RewardsServiceImpl::OnPublisherInfoSaved,
-                     AsWeakPtr(),
-                     callback,
-                     std::move(publisher_info)));
-}
-
-void RewardsServiceImpl::OnPublisherInfoSaved(
-    ledger::PublisherInfoCallback callback,
-    ledger::PublisherInfoPtr info,
-    bool success) {
-  if (Connected()) {
-    callback(success ? ledger::Result::LEDGER_OK
-                     : ledger::Result::LEDGER_ERROR, std::move(info));
-  }
-}
-
-void RewardsServiceImpl::LoadPanelPublisherInfo(
-    ledger::ActivityInfoFilterPtr filter,
-    ledger::PublisherInfoCallback callback) {
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&GetPanelPublisherInfoOnFileTaskRunner,
-                 std::move(filter),
-                 publisher_info_backend_.get()),
-      base::BindOnce(&RewardsServiceImpl::OnPanelPublisherInfoLoaded,
-                     AsWeakPtr(),
-                     callback));
-}
-
-void RewardsServiceImpl::OnPanelPublisherInfoLoaded(
-    ledger::PublisherInfoCallback callback,
-    ledger::PublisherInfoPtr publisher_info) {
-  if (!publisher_info) {
-    callback(ledger::Result::NOT_FOUND, nullptr);
-    return;
-  }
-
-  callback(ledger::Result::LEDGER_OK, std::move(publisher_info));
 }
 
 void RewardsServiceImpl::LoadURL(
@@ -2313,13 +2212,14 @@ void RewardsServiceImpl::OnTip(const std::string& publisher_key,
   // TODO(https://github.com/brave/brave-browser/issues/7217):
   //  this needs to be wired through ledger code
   if (publisher_info) {
-    SavePublisherInfo(std::move(publisher_info),
-        std::bind(&RewardsServiceImpl::OnTipPublisherInfoSaved,
-            this,
-            _1,
-            _2,
-            recurring,
-            amount));
+    // TODO
+//    SavePublisherInfo(std::move(publisher_info),
+//        std::bind(&RewardsServiceImpl::OnTipPublisherInfoSaved,
+//            this,
+//            _1,
+//            _2,
+//            recurring,
+//            amount));
     return;
   } else if (recurring) {
     SaveRecurringTipUI(publisher_key, amount, base::DoNothing());
@@ -3064,34 +2964,6 @@ void RewardsServiceImpl::GetPendingContributionsTotal(
       base::Bind(&RewardsServiceImpl::OnGetPendingContributionsTotal,
                  AsWeakPtr(),
                  callback));
-}
-
-bool RestorePublisherOnFileTaskRunner(PublisherInfoDatabase* backend) {
-  if (!backend) {
-    return false;
-  }
-
-  return backend->RestorePublishers();
-}
-
-void RewardsServiceImpl::RestorePublishers(
-  ledger::RestorePublishersCallback callback) {
-  base::PostTaskAndReplyWithResult(
-      file_task_runner_.get(),
-      FROM_HERE,
-      base::Bind(&RestorePublisherOnFileTaskRunner,
-                 publisher_info_backend_.get()),
-      base::Bind(&RewardsServiceImpl::OnRestorePublishers,
-                 AsWeakPtr(),
-                 callback));
-}
-
-void RewardsServiceImpl::OnRestorePublishers(
-    ledger::RestorePublishersCallback callback,
-    const bool success) {
-  auto result =
-    success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR;
-  callback(result);
 }
 
 void RewardsServiceImpl::PublisherListNormalized(

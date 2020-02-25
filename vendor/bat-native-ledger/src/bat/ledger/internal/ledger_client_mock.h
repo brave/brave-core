@@ -87,18 +87,6 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD1(LoadNicewareList, void(
       ledger::GetNicewareListCallback callback));
 
-  MOCK_METHOD2(SavePublisherInfo, void(
-      ledger::PublisherInfoPtr publisher_info,
-      ledger::PublisherInfoCallback callback));
-
-  MOCK_METHOD2(LoadPublisherInfo, void(
-      const std::string& publisher_key,
-      ledger::PublisherInfoCallback callback));
-
-  MOCK_METHOD2(LoadPanelPublisherInfo, void(
-      ledger::ActivityInfoFilterPtr filter,
-      ledger::PublisherInfoCallback callback));
-
   MOCK_METHOD2(LoadMediaPublisherInfo, void(
       const std::string& media_key,
       ledger::PublisherInfoCallback callback));
@@ -191,9 +179,6 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD2(ResetState, void(
       const std::string& name,
       ledger::OnResetCallback callback));
-
-  MOCK_METHOD1(RestorePublishers, void(
-      ledger::RestorePublishersCallback callback));
 
   MOCK_METHOD1(PublisherListNormalized, void(ledger::PublisherInfoList list));
 

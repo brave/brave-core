@@ -128,8 +128,8 @@ class RewardsService : public KeyedService {
       uint64_t reconcile_stamp,
       bool allow_non_verified,
       uint32_t min_visits,
-      bool fetch_excluded,
       const GetContentSiteListCallback& callback) = 0;
+  virtual void GetExcludedList(const GetContentSiteListCallback& callback) = 0;
   virtual void FetchPromotions() = 0;
   // Used by desktop
   virtual void ClaimPromotion(ClaimPromotionCallback callback) = 0;

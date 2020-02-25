@@ -47,12 +47,6 @@ void NativeLedgerClient::LoadMediaPublisherInfo(const std::string & media_key, l
 void NativeLedgerClient::LoadNicewareList(ledger::GetNicewareListCallback callback) {
   [bridge_ loadNicewareList:callback];
 }
-void NativeLedgerClient::LoadPanelPublisherInfo(ledger::ActivityInfoFilterPtr filter, ledger::PublisherInfoCallback callback) {
-  [bridge_ loadPanelPublisherInfo:std::move(filter) callback:callback];
-}
-void NativeLedgerClient::LoadPublisherInfo(const std::string & publisher_key, ledger::PublisherInfoCallback callback) {
-  [bridge_ loadPublisherInfo:publisher_key callback:callback];
-}
 void NativeLedgerClient::LoadPublisherState(ledger::OnLoadCallback callback) {
   [bridge_ loadPublisherState:callback];
 }
@@ -73,10 +67,6 @@ void NativeLedgerClient::OnReconcileComplete(ledger::Result result, const std::s
 }
 void NativeLedgerClient::RemoveRecurringTip(const std::string & publisher_key, ledger::RemoveRecurringTipCallback callback) {
   [bridge_ removeRecurringTip:publisher_key callback:callback];
-}
-
-void NativeLedgerClient::RestorePublishers(ledger::RestorePublishersCallback callback) {
-  [bridge_ restorePublishers:callback];
 }
 void NativeLedgerClient::OnWalletProperties(ledger::Result result, ledger::WalletPropertiesPtr arg1) {
   [bridge_ onWalletProperties:result arg1:std::move(arg1)];
@@ -104,9 +94,6 @@ void NativeLedgerClient::PublisherListNormalized(ledger::PublisherInfoList list)
 }
 void NativeLedgerClient::SavePendingContribution(ledger::PendingContributionList list, ledger::SavePendingContributionCallback callback) {
   [bridge_ savePendingContribution:std::move(list) callback:callback];
-}
-void NativeLedgerClient::SavePublisherInfo(ledger::PublisherInfoPtr publisher_info, ledger::PublisherInfoCallback callback) {
-  [bridge_ savePublisherInfo:std::move(publisher_info) callback:callback];
 }
 void NativeLedgerClient::SavePublisherState(const std::string & publisher_state, ledger::LedgerCallbackHandler * handler) {
   [bridge_ savePublisherState:publisher_state handler:handler];

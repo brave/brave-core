@@ -50,7 +50,6 @@ using RemoveRecurringTipCallback = std::function<void(const Result)>;
 using FetchIconCallback = std::function<void(bool, const std::string&)>;
 using LoadURLCallback = std::function<void(const int, const std::string&,
     const std::map<std::string, std::string>& headers)>;
-using RestorePublishersCallback = std::function<void(const Result)>;
 using OnSaveCallback = std::function<void(const Result)>;
 using OnLoadCallback = std::function<void(const Result,
                                           const std::string&)>;
@@ -120,15 +119,6 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void LoadNicewareList(ledger::GetNicewareListCallback callback) = 0;
 
-  virtual void SavePublisherInfo(PublisherInfoPtr publisher_info,
-                                 PublisherInfoCallback callback) = 0;
-
-  virtual void LoadPublisherInfo(const std::string& publisher_key,
-                                 PublisherInfoCallback callback) = 0;
-
-  virtual void LoadPanelPublisherInfo(ActivityInfoFilterPtr filter,
-                                      PublisherInfoCallback callback) = 0;
-
   virtual void LoadMediaPublisherInfo(const std::string& media_key,
                                 PublisherInfoCallback callback) = 0;
 
@@ -190,9 +180,6 @@ class LEDGER_EXPORT LedgerClient {
       const char* file,
       int line,
       int vlog_level) const = 0;
-
-  virtual void RestorePublishers(
-    ledger::RestorePublishersCallback callback) = 0;
 
   virtual void PublisherListNormalized(ledger::PublisherInfoList list) = 0;
 

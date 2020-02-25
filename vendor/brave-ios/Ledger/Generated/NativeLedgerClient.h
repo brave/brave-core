@@ -27,8 +27,6 @@ private:
   void LoadLedgerState(ledger::OnLoadCallback callback) override;
   void LoadMediaPublisherInfo(const std::string & media_key, ledger::PublisherInfoCallback callback) override;
   void LoadNicewareList(ledger::GetNicewareListCallback callback) override;
-  void LoadPanelPublisherInfo(ledger::ActivityInfoFilterPtr filter, ledger::PublisherInfoCallback callback) override;
-  void LoadPublisherInfo(const std::string & publisher_key, ledger::PublisherInfoCallback callback) override;
   void LoadPublisherState(ledger::OnLoadCallback callback) override;
   void LoadState(const std::string & name, ledger::OnLoadCallback callback) override;
   void LoadURL(const std::string & url, const std::vector<std::string> & headers, const std::string & content, const std::string & contentType, const ledger::UrlMethod method, ledger::LoadURLCallback callback) override;
@@ -36,7 +34,6 @@ private:
   void OnPanelPublisherInfo(ledger::Result result, ledger::PublisherInfoPtr publisher_info, uint64_t windowId) override;
   void OnReconcileComplete(ledger::Result result, const std::string & viewing_id, const double amount, const ledger::RewardsType type) override;
   void RemoveRecurringTip(const std::string & publisher_key, ledger::RemoveRecurringTipCallback callback) override;
-  void RestorePublishers(ledger::RestorePublishersCallback callback) override;
   void OnWalletProperties(ledger::Result result, ledger::WalletPropertiesPtr arg1) override;
   void RemoveAllPendingContributions(ledger::RemovePendingContributionCallback callback) override;
   void RemovePendingContribution(const uint64_t id, ledger::RemovePendingContributionCallback callback) override;
@@ -46,7 +43,6 @@ private:
   void SaveMediaPublisherInfo(const std::string & media_key, const std::string & publisher_id) override;
   void PublisherListNormalized(ledger::PublisherInfoList list) override;
   void SavePendingContribution(ledger::PendingContributionList list, ledger::SavePendingContributionCallback callback) override;
-  void SavePublisherInfo(ledger::PublisherInfoPtr publisher_info, ledger::PublisherInfoCallback callback) override;
   void SavePublisherState(const std::string & publisher_state, ledger::LedgerCallbackHandler * handler) override;
   void SaveState(const std::string & name, const std::string & value, ledger::OnSaveCallback callback) override;
   void SetConfirmationsIsReady(const bool is_ready) override;

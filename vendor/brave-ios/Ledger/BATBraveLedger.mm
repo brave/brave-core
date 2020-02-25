@@ -1785,41 +1785,11 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)loadPanelPublisherInfo:(ledger::ActivityInfoFilterPtr)filter callback:(ledger::PublisherInfoCallback)callback
-{
-  const auto filter_ = [[BATActivityInfoFilter alloc] initWithActivityInfoFilter:*filter];
-  const auto publisher = [BATLedgerDatabase panelPublisherWithFilter:filter_];
-  if (publisher) {
-    callback(ledger::Result::LEDGER_OK, publisher.cppObjPtr);
-  } else {
-    callback(ledger::Result::NOT_FOUND, nullptr);
-  }
-}
-
-- (void)loadPublisherInfo:(const std::string &)publisher_key callback:(ledger::PublisherInfoCallback)callback
-{
-  const auto publisherID = [NSString stringWithUTF8String:publisher_key.c_str()];
-  const auto publisher = [BATLedgerDatabase publisherInfoWithPublisherID:publisherID];
-  if (publisher) {
-    callback(ledger::Result::LEDGER_OK, publisher.cppObjPtr);
-  } else {
-    callback(ledger::Result::NOT_FOUND, nullptr);
-  }
-}
-
 - (void)removeRecurringTip:(const std::string &)publisher_key callback:(ledger::RemoveRecurringTipCallback)callback
 {
   const auto publisherID = [NSString stringWithUTF8String:publisher_key.c_str()];
   [BATLedgerDatabase removeRecurringTipWithPublisherID:publisherID completion:^(BOOL success) {
     callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
-  }];
-}
-
-- (void)restorePublishers:(ledger::RestorePublishersCallback)callback
-{
-  [BATLedgerDatabase restoreExcludedPublishers:^(BOOL success) {
-    const auto result = success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR;
-    callback(result);
   }];
 }
 
@@ -1868,18 +1838,6 @@ BATLedgerBridge(BOOL,
     }
     callback(ledger::Result::LEDGER_OK);
   }];
-}
-
-- (void)savePublisherInfo:(ledger::PublisherInfoPtr)publisher_info callback:(ledger::PublisherInfoCallback)callback
-{
-  if (publisher_info.get() != nullptr) {
-    const auto publisher = [[BATPublisherInfo alloc] initWithPublisherInfo:*publisher_info];
-    [BATLedgerDatabase insertOrUpdatePublisherInfo:publisher completion:^(BOOL success) {
-      callback(ledger::Result::LEDGER_OK, publisher.cppObjPtr);
-    }];
-  } else {
-    callback(ledger::Result::LEDGER_ERROR, nullptr);
-  }
 }
 
 - (void)getPendingContributions:(ledger::PendingContributionInfoListCallback)callback

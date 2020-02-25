@@ -36,15 +36,16 @@ class MockRewardsService : public RewardsService {
 
   MOCK_METHOD1(CreateWallet, void(brave_rewards::CreateWalletCallback));
   MOCK_METHOD0(FetchWalletProperties, void());
-  MOCK_METHOD8(GetContentSiteList,
+  MOCK_METHOD7(GetContentSiteList,
       void(uint32_t,
            uint32_t,
            uint64_t,
            uint64_t,
            bool,
            uint32_t,
-           bool,
            const brave_rewards::GetContentSiteListCallback&));
+  MOCK_METHOD1(GetExcludedList,
+      void(const brave_rewards::GetContentSiteListCallback&));
   MOCK_METHOD0(FetchPromotions, void());
   MOCK_METHOD1(ClaimPromotion, void(brave_rewards::ClaimPromotionCallback));
   MOCK_METHOD2(ClaimPromotion, void(const std::string&,

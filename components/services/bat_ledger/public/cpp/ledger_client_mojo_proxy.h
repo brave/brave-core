@@ -42,12 +42,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void SavePublisherState(const std::string& publisher_state,
       SavePublisherStateCallback callback) override;
 
-  void SavePublisherInfo(ledger::PublisherInfoPtr publisher_info,
-      SavePublisherInfoCallback callback) override;
-  void LoadPublisherInfo(const std::string& publisher_key,
-      LoadPublisherInfoCallback callback) override;
-  void LoadPanelPublisherInfo(ledger::ActivityInfoFilterPtr filter,
-      LoadPanelPublisherInfoCallback callback) override;
   void LoadMediaPublisherInfo(const std::string& media_key,
       LoadMediaPublisherInfoCallback callback) override;
 
@@ -92,8 +86,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void SavePendingContribution(
       ledger::PendingContributionList list,
       SavePendingContributionCallback callback) override;
-
-  void RestorePublishers(RestorePublishersCallback callback) override;
 
   void PublisherListNormalized(ledger::PublisherInfoList list) override;
 
@@ -309,11 +301,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
     Callback callback_;
   };
 
-  static void OnSavePublisherInfo(
-      CallbackHolder<SavePublisherInfoCallback>* holder,
-      ledger::Result result,
-      ledger::PublisherInfoPtr info);
-
   static void OnLoadLedgerState(
     CallbackHolder<LoadLedgerStateCallback>* holder,
     ledger::Result result,
@@ -323,16 +310,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
     CallbackHolder<LoadLedgerStateCallback>* holder,
     ledger::Result result,
     const std::string& data);
-
-  static void OnLoadPublisherInfo(
-      CallbackHolder<LoadPublisherInfoCallback>* holder,
-      ledger::Result result,
-      ledger::PublisherInfoPtr info);
-
-  static void OnLoadPanelPublisherInfo(
-      CallbackHolder<LoadPanelPublisherInfoCallback>* holder,
-      ledger::Result result,
-      ledger::PublisherInfoPtr info);
 
   static void OnLoadMediaPublisherInfo(
       CallbackHolder<LoadMediaPublisherInfoCallback>* holder,
@@ -372,14 +349,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   static void OnSavePendingContribution(
       CallbackHolder<SavePendingContributionCallback>* holder,
-      ledger::Result result);
-
-  static void RestorePublishers(
-    CallbackHolder<RestorePublishersCallback>* holder,
-    bool result);
-
-  static void OnRestorePublishers(
-      CallbackHolder<RestorePublishersCallback>* holder,
       ledger::Result result);
 
   static void OnSaveState(

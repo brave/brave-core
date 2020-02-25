@@ -132,7 +132,7 @@ class Publisher : public ledger::LedgerCallbackHandler {
 
   void OnRestorePublishers(
       const ledger::Result result,
-      ledger::RestorePublishersCallback callback);
+      ledger::ResultCallback callback);
 
   bool IsConnectedOrVerified(const ledger::PublisherStatus status);
 
