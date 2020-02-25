@@ -77,10 +77,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
 
   std::string URIEncode(const std::string& value) override;
 
-  void SavePendingContribution(
-      ledger::PendingContributionList list,
-      ledger::SavePendingContributionCallback callback) override;
-
   void PublisherListNormalized(ledger::PublisherInfoList list) override;
 
   void SaveState(const std::string& name,
@@ -115,19 +111,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void SetConfirmationsIsReady(const bool is_ready) override;
 
   void ConfirmationsTransactionHistoryDidChange() override;
-
-  void GetPendingContributions(
-      ledger::PendingContributionInfoListCallback callback) override;
-
-  void RemovePendingContribution(
-      const uint64_t id,
-      ledger::RemovePendingContributionCallback callback) override;
-
-  void RemoveAllPendingContributions(
-      ledger::RemovePendingContributionCallback callback) override;
-
-  void GetPendingContributionsTotal(
-      ledger::PendingContributionsTotalCallback callback) override;
 
   void OnContributeUnverifiedPublishers(
       ledger::Result result,
@@ -237,6 +220,8 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
 
   void GetCreateScript(
       ledger::GetCreateScriptCallback callback) override;
+
+  void PendingContributionSaved(const ledger::Result result) override;
 
  private:
   bool Connected() const;

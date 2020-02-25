@@ -46,6 +46,10 @@ bool RenameDBTable(
     const std::string& from,
     const std::string& to);
 
+void BindNull(
+    ledger::DBCommand* command,
+    const int index);
+
 void BindInt(
     ledger::DBCommand* command,
     const int index,

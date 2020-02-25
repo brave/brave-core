@@ -284,26 +284,6 @@ void LedgerClientMojoProxy::LoadURL(const std::string& url,
       std::bind(LedgerClientMojoProxy::OnLoadURL, holder, _1, _2, _3));
 }
 
-// static
-void LedgerClientMojoProxy::OnSavePendingContribution(
-    CallbackHolder<SavePendingContributionCallback>* holder,
-    const ledger::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result);
-  delete holder;
-}
-
-void LedgerClientMojoProxy::SavePendingContribution(
-    ledger::PendingContributionList list,
-    SavePendingContributionCallback callback) {
-  // deleted in OnSavePendingContribution
-  auto* holder = new CallbackHolder<SavePendingContributionCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->SavePendingContribution(std::move(list),
-      std::bind(LedgerClientMojoProxy::OnSavePendingContribution, holder, _1));
-}
-
 void LedgerClientMojoProxy::PublisherListNormalized(
     ledger::PublisherInfoList list) {
   ledger_client_->PublisherListNormalized(std::move(list));
@@ -502,92 +482,6 @@ void LedgerClientMojoProxy::GetOneTimeTips(
       AsWeakPtr(), std::move(callback));
   ledger_client_->GetOneTimeTips(
       std::bind(LedgerClientMojoProxy::OnGetOneTimeTips,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnGetPendingContributions(
-    CallbackHolder<GetPendingContributionsCallback>* holder,
-    ledger::PendingContributionInfoList list) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(std::move(list));
-  delete holder;
-}
-
-void LedgerClientMojoProxy::GetPendingContributions(
-    GetPendingContributionsCallback callback) {
-  // deleted in OnGetPendingContributions
-  auto* holder = new CallbackHolder<GetPendingContributionsCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->GetPendingContributions(
-      std::bind(LedgerClientMojoProxy::OnGetPendingContributions,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnRemovePendingContribution(
-    CallbackHolder<RemovePendingContributionCallback>* holder,
-    ledger::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result);
-  delete holder;
-}
-
-void LedgerClientMojoProxy::RemovePendingContribution(
-    const uint64_t id,
-    RemovePendingContributionCallback callback) {
-  // deleted in OnRemovePendingContribution
-  auto* holder = new CallbackHolder<RemovePendingContributionCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->RemovePendingContribution(
-      id,
-      std::bind(LedgerClientMojoProxy::OnRemovePendingContribution,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnRemoveAllPendingContributions(
-    CallbackHolder<RemovePendingContributionCallback>* holder,
-    ledger::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result);
-  delete holder;
-}
-
-void LedgerClientMojoProxy::RemoveAllPendingContributions(
-    RemovePendingContributionCallback callback) {
-  // deleted in OnRemoveAllPendingContributions
-  auto* holder = new CallbackHolder<RemovePendingContributionCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->RemoveAllPendingContributions(
-      std::bind(LedgerClientMojoProxy::OnRemoveAllPendingContributions,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnGetPendingContributionsTotal(
-    CallbackHolder<GetPendingContributionsTotalCallback>* holder,
-    double amount) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(amount);
-  delete holder;
-}
-
-void LedgerClientMojoProxy::GetPendingContributionsTotal(
-    GetPendingContributionsTotalCallback callback) {
-  // deleted in OnGetPendingContributionsTotal
-  auto* holder = new CallbackHolder<GetPendingContributionsTotalCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->GetPendingContributionsTotal(
-      std::bind(LedgerClientMojoProxy::OnGetPendingContributionsTotal,
                 holder,
                 _1));
 }
@@ -1144,6 +1038,11 @@ void LedgerClientMojoProxy::GetCreateScript(
                 holder,
                 _1,
                 _2));
+}
+
+void LedgerClientMojoProxy::PendingContributionSaved(
+    const ledger::Result result) {
+  ledger_client_->PendingContributionSaved(result);
 }
 
 }  // namespace bat_ledger

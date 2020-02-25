@@ -203,6 +203,8 @@ class Contribution {
   ledger::PublisherInfoList GetVerifiedListRecurring(
       const ledger::PublisherInfoList& all);
 
+  void OnSavePendingContribution(const ledger::Result result);
+
   void PrepareACList(ledger::PublisherInfoList list);
 
   void StartRecurringTips(ledger::ResultCallback callback);
@@ -255,12 +257,16 @@ class Contribution {
       const std::string& publisher_key,
       double amount,
       const ledger::RewardsType type,
-      ledger::SavePendingContributionCallback callback);
+      ledger::ResultCallback callback);
 
-  void OnDoDirectTipServerPublisher(
+  void OneTimeTipServerPublisher(
       ledger::ServerPublisherInfoPtr server_info,
       const std::string& publisher_key,
       double amount,
+      ledger::ResultCallback callback);
+
+  void OnSavePendingOneTimeTip(
+      const ledger::Result result,
       ledger::ResultCallback callback);
 
   bool HaveReconcileEnoughFunds(

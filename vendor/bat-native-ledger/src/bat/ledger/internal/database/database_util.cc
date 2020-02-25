@@ -148,6 +148,20 @@ bool RenameDBTable(
   return true;
 }
 
+void BindNull(
+    ledger::DBCommand* command,
+    const int index) {
+  if (!command) {
+    return;
+  }
+
+  auto binding = ledger::DBCommandBinding::New();
+  binding->index = index;
+  binding->value = ledger::DBValue::New();
+  binding->value->set_null_value(0);
+  command->bindings.push_back(std::move(binding));
+}
+
 void BindInt(
     ledger::DBCommand* command,
     const int index,

@@ -46,6 +46,10 @@ void HandleBinding(
       statement->BindBool(binding.index, binding.value->get_bool_value());
       return;
     }
+    case ledger::DBValue::Tag::NULL_VALUE: {
+      statement->BindNull(binding.index);
+      return;
+    }
     default: {
       NOTREACHED();
     }

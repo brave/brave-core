@@ -22,10 +22,8 @@
 #include "brave/components/brave_rewards/browser/database/database_contribution_info.h"
 #include "brave/components/brave_rewards/browser/database/database_contribution_queue.h"
 #include "brave/components/brave_rewards/browser/database/database_media_publisher_info.h"
-#include "brave/components/brave_rewards/browser/database/database_pending_contribution.h"
 #include "brave/components/brave_rewards/browser/database/database_promotion.h"
 #include "brave/components/brave_rewards/browser/database/database_unblinded_token.h"
-#include "brave/components/brave_rewards/browser/pending_contribution.h"
 #include "build/build_config.h"
 #include "sql/database.h"
 #include "sql/init_status.h"
@@ -59,17 +57,6 @@ class PublisherInfoDatabase {
 
   ledger::PublisherInfoPtr GetMediaPublisherInfo(
       const std::string& media_key);
-
-  bool InsertPendingContribution(ledger::PendingContributionList list);
-
-  double GetReservedAmount();
-
-  void GetPendingContributions(
-      ledger::PendingContributionInfoList* list);
-
-  bool RemovePendingContributions(const uint64_t id);
-
-  bool RemoveAllPendingContributions();
 
   bool InsertOrUpdateContributionQueue(ledger::ContributionQueuePtr info);
 
@@ -193,7 +180,6 @@ class PublisherInfoDatabase {
   std::unique_ptr<DatabasePromotion> promotion_;
   std::unique_ptr<DatabaseUnblindedToken> unblinded_token_;
   std::unique_ptr<DatabaseContributionInfo> contribution_info_;
-  std::unique_ptr<DatabasePendingContribution> pending_contribution_;
   std::unique_ptr<DatabaseMediaPublisherInfo> media_publisher_info_;
 
   SEQUENCE_CHECKER(sequence_checker_);

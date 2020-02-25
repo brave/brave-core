@@ -396,11 +396,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnShareURL(GetShareURLCallback callback, const std::string& url);
 
   void OnPendingContributionRemoved(
-    ledger::RemovePendingContributionCallback callback,
-    bool result);
-
-  void OnRemoveAllPendingContribution(
-    ledger::RemovePendingContributionCallback callback,
+    ledger::ResultCallback callback,
     bool result);
 
   void OnGetPendingContributionsUI(
@@ -433,10 +429,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnPendingContributionRemovedUI(const ledger::Result result);
 
   void OnRemoveAllPendingContributionsUI(const ledger::Result result);
-
-  void OnGetPendingContributionsTotal(
-    ledger::PendingContributionsTotalCallback callback,
-    double amount);
 
   void OnFetchBalance(FetchBalanceCallback callback,
                       const ledger::Result result,
@@ -596,28 +588,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void KillTimer(uint32_t timer_id) override;
 
-  void SavePendingContribution(
-      ledger::PendingContributionList list,
-      ledger::SavePendingContributionCallback callback) override;
-
-  void OnSavePendingContribution(
-      ledger::SavePendingContributionCallback callback,
-      ledger::Result result);
-
   void PublisherListNormalized(ledger::PublisherInfoList list) override;
-
-  void GetPendingContributions(
-    ledger::PendingContributionInfoListCallback callback) override;
-
-  void RemovePendingContribution(
-    const uint64_t id,
-    ledger::RemovePendingContributionCallback callback) override;
-
-  void RemoveAllPendingContributions(
-      ledger::RemovePendingContributionCallback callback) override;
-
-  void GetPendingContributionsTotal(
-      ledger::PendingContributionsTotalCallback callback) override;
 
   void ShowNotification(
       const std::string& type,
@@ -716,6 +687,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetCreateScript(
       ledger::GetCreateScriptCallback callback) override;
+
+  void PendingContributionSaved(const ledger::Result result) override;
 
   // end ledger::LedgerClient
 

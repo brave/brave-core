@@ -19,6 +19,7 @@ namespace braveledger_database {
 
 class DatabaseInitialize;
 class DatabaseActivityInfo;
+class DatabasePendingContribution;
 class DatabasePublisherInfo;
 class DatabaseRecurringTip;
 class DatabaseServerPublisherInfo;
@@ -52,6 +53,25 @@ class Database {
   void DeleteActivityInfo(
       const std::string& publisher_key,
       ledger::ResultCallback callback);
+
+  /**
+   * PENDING CONTRIBUTION
+   */
+  void SavePendingContribution(
+      ledger::PendingContributionList list,
+      ledger::ResultCallback callback);
+
+  void GetPendingContributionsTotal(
+      ledger::PendingContributionsTotalCallback callback);
+
+  void GetPendingContributions(
+      ledger::PendingContributionInfoListCallback callback);
+
+  void RemovePendingContribution(
+      const uint64_t id,
+      ledger::ResultCallback callback);
+
+  void RemoveAllPendingContributions(ledger::ResultCallback callback);
 
   /**
    * PUBLISHER INFO
@@ -99,6 +119,7 @@ class Database {
  private:
   std::unique_ptr<DatabaseInitialize> initialize_;
   std::unique_ptr<DatabaseActivityInfo> activity_info_;
+  std::unique_ptr<DatabasePendingContribution> pending_contribution_;
   std::unique_ptr<DatabasePublisherInfo> publisher_info_;
   std::unique_ptr<DatabaseRecurringTip> recurring_tip_;
   std::unique_ptr<DatabaseServerPublisherInfo> server_publisher_info_;

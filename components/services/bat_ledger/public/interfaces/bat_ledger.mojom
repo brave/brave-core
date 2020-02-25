@@ -184,8 +184,6 @@ interface BatLedgerClient {
   [Sync]
   URIEncode(string value) => (string encoded_value);
 
-  SavePendingContribution(array<ledger.mojom.PendingContribution> list) => (ledger.mojom.Result result);
-
   PublisherListNormalized(array<ledger.mojom.PublisherInfo> list);
 
   SaveState(string name, string value) => (ledger.mojom.Result result);
@@ -227,14 +225,6 @@ interface BatLedgerClient {
 
   SetConfirmationsIsReady(bool is_ready);
   ConfirmationsTransactionHistoryDidChange();
-
-  GetPendingContributions() => (array<ledger.mojom.PendingContributionInfo> list);
-
-  RemovePendingContribution(uint64 id) => (ledger.mojom.Result result);
-
-  RemoveAllPendingContributions() => (ledger.mojom.Result result);
-
-  GetPendingContributionsTotal() => (double amount);
 
   OnContributeUnverifiedPublishers(ledger.mojom.Result result, string publisher_key,
       string publisher_name);
@@ -281,4 +271,6 @@ interface BatLedgerClient {
   RunDBTransaction(ledger_database.mojom.DBTransaction transaction) => (ledger_database.mojom.DBCommandResponse response);
 
   GetCreateScript() => (string script, int32 table_version);
+
+  PendingContributionSaved(ledger.mojom.Result result);
 };

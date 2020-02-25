@@ -65,9 +65,6 @@ PublisherInfoDatabase::PublisherInfoDatabase(
   contribution_info_ =
       std::make_unique<DatabaseContributionInfo>(GetCurrentVersion());
 
-  pending_contribution_ =
-      std::make_unique<DatabasePendingContribution>(GetCurrentVersion());
-
   media_publisher_info_ =
       std::make_unique<DatabaseMediaPublisherInfo>(GetCurrentVersion());
 }
@@ -224,53 +221,6 @@ PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
   }
 
   return media_publisher_info_->GetRecord(&GetDB(), media_key);
-}
-
-/**
- *
- * PENDING CONTRIBUTION
- *
- */
-bool PublisherInfoDatabase::InsertPendingContribution(
-    ledger::PendingContributionList list) {
-  if (!IsInitialized()) {
-    return false;
-  }
-
-  return pending_contribution_->InsertOrUpdate(&GetDB(), std::move(list));
-}
-
-double PublisherInfoDatabase::GetReservedAmount() {
-  if (!IsInitialized()) {
-    return 0.0;
-  }
-
-  return pending_contribution_->GetReservedAmount(&GetDB());
-}
-
-void PublisherInfoDatabase::GetPendingContributions(
-    ledger::PendingContributionInfoList* list) {
-  if (!IsInitialized()) {
-    return;
-  }
-
-  return pending_contribution_->GetAllRecords(&GetDB(), list);
-}
-
-bool PublisherInfoDatabase::RemovePendingContributions(const uint64_t id) {
-  if (!IsInitialized()) {
-    return false;
-  }
-
-  return pending_contribution_->DeleteRecord(&GetDB(), id);
-}
-
-bool PublisherInfoDatabase::RemoveAllPendingContributions() {
-  if (!IsInitialized()) {
-    return false;
-  }
-
-  return pending_contribution_->DeleteAllRecords(&GetDB());
 }
 
 /**
@@ -560,10 +510,6 @@ bool PublisherInfoDatabase::MigrateV1toV2() {
 bool PublisherInfoDatabase::MigrateV2toV3() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  if (!pending_contribution_->Migrate(&GetDB(), 3)) {
-    return false;
-  }
-
   return true;
 }
 
@@ -598,10 +544,6 @@ bool PublisherInfoDatabase::MigrateV7toV8() {
   }
 
   if (!contribution_info_->Migrate(&GetDB(), 8)) {
-    return false;
-  }
-
-  if (!pending_contribution_->Migrate(&GetDB(), 8)) {
     return false;
   }
 
@@ -657,10 +599,6 @@ bool PublisherInfoDatabase::MigrateV11toV12() {
     return false;
   }
 
-  if (!pending_contribution_->Migrate(&GetDB(), 12)) {
-    return false;
-  }
-
   return transaction.Commit();
 }
 
@@ -709,10 +647,6 @@ bool PublisherInfoDatabase::MigrateV14toV15() {
   }
 
   if (!media_publisher_info_->Migrate(&GetDB(), 15)) {
-    return false;
-  }
-
-  if (!pending_contribution_->Migrate(&GetDB(), 15)) {
     return false;
   }
 

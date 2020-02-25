@@ -2782,76 +2782,9 @@ void RewardsServiceImpl::SetShortRetries(bool short_retries) {
   bat_ledger_service_->SetShortRetries(short_retries);
 }
 
-ledger::Result SavePendingContributionOnFileTaskRunner(
-    PublisherInfoDatabase* backend,
-    ledger::PendingContributionList list) {
-  if (!backend) {
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  bool result = backend->InsertPendingContribution(std::move(list));
-
-  return result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR;
-}
-
-void RewardsServiceImpl::OnSavePendingContribution(
-    ledger::SavePendingContributionCallback callback,
-    const ledger::Result result) {
-  for (auto& observer : observers_) {
-    observer.OnPendingContributionSaved(this, static_cast<int>(result));
-  }
-  callback(result);
-}
-
-void RewardsServiceImpl::SavePendingContribution(
-      ledger::PendingContributionList list,
-      ledger::SavePendingContributionCallback callback) {
-  base::PostTaskAndReplyWithResult(
-      file_task_runner_.get(),
-      FROM_HERE,
-      base::BindOnce(&SavePendingContributionOnFileTaskRunner,
-                 publisher_info_backend_.get(),
-                 std::move(list)),
-      base::BindOnce(&RewardsServiceImpl::OnSavePendingContribution,
-                 AsWeakPtr(),
-                 std::move(callback)));
-}
-
 void RewardsServiceImpl::GetPendingContributionsTotalUI(
     const GetPendingContributionsTotalCallback& callback) {
   bat_ledger_->GetPendingContributionsTotal(std::move(callback));
-}
-
-double PendingContributionsTotalOnFileTaskRunner(
-    PublisherInfoDatabase* backend) {
-  if (!backend) {
-    return 0.0;
-  }
-
-  return backend->GetReservedAmount();
-}
-
-void RewardsServiceImpl::OnGetPendingContributionsTotal(
-    ledger::PendingContributionsTotalCallback callback,
-    double amount) {
-  if (!Connected()) {
-    callback(0.0);
-    return;
-  }
-
-  callback(amount);
-}
-
-void RewardsServiceImpl::GetPendingContributionsTotal(
-    ledger::PendingContributionsTotalCallback callback) {
-  base::PostTaskAndReplyWithResult(
-      file_task_runner_.get(),
-      FROM_HERE,
-      base::Bind(&PendingContributionsTotalOnFileTaskRunner,
-                 publisher_info_backend_.get()),
-      base::Bind(&RewardsServiceImpl::OnGetPendingContributionsTotal,
-                 AsWeakPtr(),
-                 callback));
 }
 
 void RewardsServiceImpl::PublisherListNormalized(
@@ -2936,18 +2869,6 @@ void RewardsServiceImpl::OnShareURL(
   std::move(callback).Run(url);
 }
 
-ledger::PendingContributionInfoList PendingContributionsOnFileTaskRunner(
-    PublisherInfoDatabase* backend) {
-  ledger::PendingContributionInfoList list;
-  if (!backend) {
-    return list;
-  }
-
-  backend->GetPendingContributions(&list);
-
-  return list;
-}
-
 PendingContributionInfo PendingContributionLedgerToRewards(
     const ledger::PendingContributionInfoPtr contribution) {
   PendingContributionInfo info;
@@ -2988,28 +2909,6 @@ void RewardsServiceImpl::GetPendingContributionsUI(
                      std::move(callback)));
 }
 
-void RewardsServiceImpl::OnGetPendingContributions(
-    ledger::PendingContributionInfoListCallback callback,
-    ledger::PendingContributionInfoList list) {
-  if (!Connected()) {
-    return;
-  }
-
-  callback(std::move(list));
-}
-
-void RewardsServiceImpl::GetPendingContributions(
-    ledger::PendingContributionInfoListCallback callback) {
-  base::PostTaskAndReplyWithResult(
-      file_task_runner_.get(),
-      FROM_HERE,
-      base::Bind(&PendingContributionsOnFileTaskRunner,
-                 publisher_info_backend_.get()),
-      base::Bind(&RewardsServiceImpl::OnGetPendingContributions,
-                 AsWeakPtr(),
-                 callback));
-}
-
 void RewardsServiceImpl::OnPendingContributionRemovedUI(
   const ledger::Result result) {
   for (auto& observer : observers_) {
@@ -3022,49 +2921,6 @@ void RewardsServiceImpl::RemovePendingContributionUI(const uint64_t id) {
       id,
       base::BindOnce(&RewardsServiceImpl::OnPendingContributionRemovedUI,
                      AsWeakPtr()));
-}
-
-bool RemovePendingContributionOnFileTaskRunner(
-    PublisherInfoDatabase* backend,
-    const uint64_t id) {
-  if (!backend) {
-    return false;
-  }
-
-  return backend->RemovePendingContributions(id);
-}
-
-void RewardsServiceImpl::RemovePendingContribution(
-    const uint64_t id,
-    ledger::RemovePendingContributionCallback callback) {
-  base::PostTaskAndReplyWithResult(
-      file_task_runner_.get(),
-      FROM_HERE,
-      base::Bind(&RemovePendingContributionOnFileTaskRunner,
-                 publisher_info_backend_.get(),
-                 id),
-      base::Bind(&RewardsServiceImpl::OnPendingContributionRemoved,
-                 AsWeakPtr(),
-                 callback));
-}
-
-void RewardsServiceImpl::OnPendingContributionRemoved(
-    ledger::RemovePendingContributionCallback callback,
-    bool result) {
-  ledger::Result result_new = result
-      ? ledger::Result::LEDGER_OK
-      : ledger::Result::LEDGER_ERROR;
-
-  callback(result_new);
-}
-
-bool RemoveAllPendingContributionOnFileTaskRunner(
-    PublisherInfoDatabase* backend) {
-  if (!backend) {
-    return false;
-  }
-
-  return backend->RemoveAllPendingContributions();
 }
 
 void RewardsServiceImpl::OnRemoveAllPendingContributionsUI(
@@ -3080,27 +2936,6 @@ void RewardsServiceImpl::RemoveAllPendingContributionsUI() {
                      AsWeakPtr()));
 }
 
-void RewardsServiceImpl::OnRemoveAllPendingContribution(
-    ledger::RemovePendingContributionCallback callback,
-    bool result) {
-  ledger::Result result_new = result
-      ? ledger::Result::LEDGER_OK
-      : ledger::Result::LEDGER_ERROR;
-
-  callback(result_new);
-}
-
-void RewardsServiceImpl::RemoveAllPendingContributions(
-    ledger::RemovePendingContributionCallback callback) {
-  base::PostTaskAndReplyWithResult(
-      file_task_runner_.get(),
-      FROM_HERE,
-      base::Bind(&RemoveAllPendingContributionOnFileTaskRunner,
-                 publisher_info_backend_.get()),
-      base::Bind(&RewardsServiceImpl::OnRemoveAllPendingContribution,
-                 AsWeakPtr(),
-                 callback));
-}
 
 void RewardsServiceImpl::OnContributeUnverifiedPublishers(
       ledger::Result result,
@@ -4274,6 +4109,12 @@ void RewardsServiceImpl::OnRunDBTransaction(
 void RewardsServiceImpl::GetCreateScript(
     ledger::GetCreateScriptCallback callback) {
   callback("", 0);
+}
+
+void RewardsServiceImpl::PendingContributionSaved(const ledger::Result result) {
+  for (auto& observer : observers_) {
+    observer.OnPendingContributionSaved(this, static_cast<int>(result));
+  }
 }
 
 }  // namespace brave_rewards
