@@ -13,7 +13,7 @@
 #endif
 #define ReaderModeIconView BraveReaderModeIconView
 #define StarView BraveStarView
-#include "../../../../../../../chrome/browser/ui/views/page_action/page_action_icon_container_view.cc"
+#include "../../../../../../../chrome/browser/ui/views/page_action/page_action_icon_controller.cc"
 #undef StarView
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_EXTENSION)
 #undef TranslateIconView
