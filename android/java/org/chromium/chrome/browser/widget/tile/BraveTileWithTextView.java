@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.widget.tile;
 
-import android.os.Build;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.TextView;
@@ -14,6 +13,7 @@ import android.content.SharedPreferences;
 import org.chromium.chrome.R;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.ntp.sponsored.SponsoredImageUtil;
+import org.chromium.chrome.browser.ntp.sponsored.NTPUtil;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.tabmodel.TabModel;
@@ -40,7 +40,7 @@ public class BraveTileWithTextView extends TileWithTextView {
         }
 
         if(mSharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES, true)
-            && (Build.VERSION.SDK_INT > Build.VERSION_CODES.M || (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !isMoreTabs))) {
+            && NTPUtil.shouldEnableNTPFeature(isMoreTabs)) {
             mTitleView.setTextColor(getResources().getColor(android.R.color.white));
         }
     }
