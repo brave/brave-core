@@ -17,7 +17,8 @@
 
 namespace bat_ads {
 
-class BatAdsClientMojoBridge : public ads::AdsClient {
+class BatAdsClientMojoBridge
+    : public ads::AdsClient {
  public:
   explicit BatAdsClientMojoBridge(
       mojo::PendingAssociatedRemote<mojom::BatAdsClient> client_info);
