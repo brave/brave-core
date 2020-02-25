@@ -1,0 +1,31 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/customtabs/content/CustomTabActivityTabFactory.java b/chrome/android/java/src/org/chromium/chrome/browser/customtabs/content/CustomTabActivityTabFactory.java
+index 157946aad58b6efcba212da92effb3dc9e7b30d2..db7638335f72755418c6437894742836b73ca219 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/customtabs/content/CustomTabActivityTabFactory.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/customtabs/content/CustomTabActivityTabFactory.java
+@@ -32,7 +32,7 @@ import javax.inject.Inject;
+ import dagger.Lazy;
+ 
+ /**
+- * Creates {@link Tab}, {@link TabModelSelector}, and {@link ChromeTabCreator}s in the context of a
++ * Creates {@link Tab}, {@link TabModelSelector}, and {@link org.chromium.chrome.browser.tabmodel.BraveTabCreator}s in the context of a
+  * Custom Tab activity.
+  */
+ @ActivityScope
+@@ -78,13 +78,13 @@ public class CustomTabActivityTabFactory {
+         return mTabModelSelector;
+     }
+ 
+-    /** Creates a {@link ChromeTabCreator}s for the custom tab. */
+-    public Pair<ChromeTabCreator, ChromeTabCreator> createTabCreators() {
++    /** Creates a {@link org.chromium.chrome.browser.tabmodel.BraveTabCreator}s for the custom tab. */
++    public Pair<org.chromium.chrome.browser.tabmodel.BraveTabCreator, org.chromium.chrome.browser.tabmodel.BraveTabCreator> createTabCreators() {
+         return Pair.create(createTabCreator(false), createTabCreator(true));
+     }
+ 
+-    private ChromeTabCreator createTabCreator(boolean incognito) {
+-        return new ChromeTabCreator(mActivity, mActivityWindowAndroid.get(), mStartupTabPreloader,
++    private org.chromium.chrome.browser.tabmodel.BraveTabCreator createTabCreator(boolean incognito) {
++        return new org.chromium.chrome.browser.tabmodel.BraveTabCreator(mActivity, mActivityWindowAndroid.get(), mStartupTabPreloader,
+                 mCustomTabDelegateFactory::get, incognito) {
+             @Override
+             public TabDelegateFactory createDefaultTabDelegateFactory() {

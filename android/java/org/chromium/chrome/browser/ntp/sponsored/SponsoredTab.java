@@ -5,12 +5,10 @@
 
 package org.chromium.chrome.browser.ntp.sponsored;
 
-import android.os.Build;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.ntp.sponsored.NTPImage;
 import org.chromium.chrome.browser.ntp.sponsored.NTPUtil;
-import org.chromium.chrome.browser.ntp.sponsored.NewTabListener;
 import org.chromium.chrome.browser.ntp.sponsored.SponsoredImageUtil;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
@@ -21,7 +19,6 @@ public class SponsoredTab{
     private int tabIndex;
     private boolean mShouldShowBanner;
     private boolean isMoreTabs;
-    private NewTabListener newTabListener;
 
     public SponsoredTab() {
         ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
@@ -30,7 +27,7 @@ public class SponsoredTab{
             isMoreTabs = tabModel.getCount() > SponsoredImageUtil.MAX_TABS ? true : false;
         }
 
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M || (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !isMoreTabs)){
+        if (NTPUtil.shouldEnableNTPFeature(isMoreTabs)){
             ntpImage = NTPUtil.getNTPImage();
             tabIndex = SponsoredImageUtil.getTabIndex();
             updateBannerPref();
@@ -47,10 +44,6 @@ public class SponsoredTab{
 
     public void setNTPImage(NTPImage ntpImage) {
         this.ntpImage = ntpImage;
-    }
-
-    public void setNewTabListener(NewTabListener newTabListener) {
-        this.newTabListener = newTabListener;
     }
 
     public int getTabIndex() {
@@ -71,9 +64,5 @@ public class SponsoredTab{
 
     public boolean isMoreTabs() {
         return isMoreTabs;
-    }
-
-    public void setMoreTabs(boolean isMoreTabs) {
-        this.isMoreTabs = isMoreTabs;
     }
 }
