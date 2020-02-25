@@ -15,3 +15,5 @@ const char kWidevineTOS[] = "https://policies.google.com/terms";
 const char kRewardsUpholdSupport[] = "https://uphold.com/en/brave/support";
 const char kP3ALearnMoreURL[] = "https://brave.com/P3A";
 const char kP3ASettingsLink[] = "chrome://settings/privacy";
+const char kImportDataHelpURL[] =
+    "https://support.brave.com/hc/en-us/articles/360019782291#safari";

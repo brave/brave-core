@@ -93,6 +93,7 @@ source_set("ui") {
       "webui/settings/brave_appearance_handler.h",
       "webui/settings/brave_privacy_handler.cc",
       "webui/settings/brave_privacy_handler.h",
+      "webui/settings/brave_settings_import_data_handler.h",
       "webui/settings/default_brave_shields_handler.cc",
       "webui/settings/default_brave_shields_handler.h",
     ]
@@ -173,6 +174,16 @@ source_set("ui") {
     ]
   }
 
+  if (is_mac) {
+    sources += [
+      "webui/settings/brave_settings_import_data_handler_mac.mm",
+    ]
+  } else {
+    sources += [
+      "webui/settings/brave_settings_import_data_handler.cc",
+    ]
+  }
+
   deps = [
     "//base",
     "//brave/app:command_ids",
@@ -215,6 +226,7 @@ source_set("ui") {
     "//ui/base",
     "//ui/gfx",
     "//ui/resources",
+    "//url",
   ]
 
   # This is no longer compiled into Chromium on Android, but we still
