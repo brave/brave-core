@@ -5,38 +5,19 @@
 
 package org.chromium.chrome.browser.ntp;
 
-import android.os.Bundle;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.content.SharedPreferences;
-import android.graphics.Canvas;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.util.AttributeSet;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
 import android.view.View;
-import android.view.Gravity;
-import android.widget.LinearLayout;
-import android.widget.FrameLayout;
-import android.widget.Button;
 import android.view.ViewTreeObserver;
-import java.util.Calendar;
-import android.widget.Toast;
 import android.content.res.Configuration;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.Color;
-import android.app.Activity;
 import android.os.Build;
-import android.graphics.LinearGradient;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Shader;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ClickableSpan;
@@ -44,56 +25,35 @@ import android.text.style.ForegroundColorSpan;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
-import android.text.TextPaint;
-import android.content.Intent;
-import android.support.annotation.NonNull;
 import java.io.File;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import android.net.Uri;
-import android.os.Handler;
 
 import org.chromium.base.TraceEvent;
 import org.chromium.chrome.R;
 import org.chromium.base.Log;
 import org.chromium.base.PathUtils;
 import org.chromium.base.ContextUtils;
-import org.chromium.base.ApplicationStatus;
 import org.chromium.chrome.browser.ntp.NewTabPageView;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.suggestions.tile.TileGroup;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabImpl;
-import org.chromium.chrome.browser.tabmodel.TabLaunchType;
-import org.chromium.chrome.browser.ui.widget.displaystyle.UiConfig;
-import org.chromium.chrome.browser.ui.widget.displaystyle.ViewResizer;
-import org.chromium.chrome.browser.util.ViewUtils;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.ntp.sponsored.NTPImage;
 import org.chromium.chrome.browser.ntp.sponsored.BackgroundImage;
 import org.chromium.chrome.browser.ntp.sponsored.SponsoredImage;
-import org.chromium.chrome.browser.ntp.sponsored.NewTabListener;
+import org.chromium.chrome.browser.ntp.sponsored.NewTabPageListener;
 import org.chromium.chrome.browser.ntp.sponsored.SponsoredImageUtil;
-import org.chromium.content_public.browser.LoadUrlParams;
-import org.chromium.chrome.browser.ntp.sponsored.RewardsBottomSheetDialogFragment;
-import org.chromium.chrome.browser.BraveAdsNativeHelper;
-import org.chromium.chrome.browser.BraveRewardsPanelPopup;
-import org.chromium.chrome.browser.BraveRewardsObserver;
-import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.tab.EmptyTabObserver;
 import org.chromium.chrome.browser.tab.TabObserver;
-import org.chromium.chrome.browser.tabmodel.TabSelectionType;
-import org.chromium.chrome.browser.download.DownloadUtils;
-import org.chromium.ui.base.DeviceFormFactor;
-import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.util.LocaleUtils;
-import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.util.ImageUtils;
 import org.chromium.chrome.browser.ntp.sponsored.NTPUtil;
 import org.chromium.chrome.browser.ntp.sponsored.SponsoredTab;
+import org.chromium.chrome.browser.tab.TabAttributes;
 
 import static org.chromium.chrome.browser.util.ViewUtils.dpToPx;
 
@@ -132,7 +92,7 @@ public class BraveNewTabPageView extends NewTabPageView {
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M || (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !sponsoredTab.isMoreTabs())) {
+        if (NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
             NTPImage ntpImage = sponsoredTab.getTabNTPImage();
             if(ntpImage == null) {
                 sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
@@ -161,7 +121,11 @@ public class BraveNewTabPageView extends NewTabPageView {
             constructedTimeNs);
 
         mTab = (TabImpl) tab;
-        sponsoredTab = mTab.getSponsoredTab();
+        if (TabAttributes.from(tab).get(String.valueOf(((org.chromium.chrome.browser.tab.TabImpl)tab).getId())) == null) {
+            SponsoredTab mSponsoredTab = new SponsoredTab();
+            TabAttributes.from(tab).set(String.valueOf(((org.chromium.chrome.browser.tab.TabImpl)tab).getId()), mSponsoredTab);
+        }
+        sponsoredTab = TabAttributes.from(tab).get(String.valueOf(((org.chromium.chrome.browser.tab.TabImpl)tab).getId()));
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
             NTPImage ntpImage = sponsoredTab.getTabNTPImage();
@@ -210,7 +174,7 @@ public class BraveNewTabPageView extends NewTabPageView {
         mEstTimeSavedCountTextView.setText(getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000));
 
         if(mSharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES, true) 
-            && (Build.VERSION.SDK_INT > Build.VERSION_CODES.M || (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !sponsoredTab.isMoreTabs()))) {
+            && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
             mAdsBlockedTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));
             mHttpsUpgradesTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));
             mEstTimeSavedTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));            
@@ -283,7 +247,7 @@ public class BraveNewTabPageView extends NewTabPageView {
         NTPUtil.updateOrientedUI(mTab.getActivity(), mNewTabPageLayout);
 
         if(mSharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES, true)
-            && (Build.VERSION.SDK_INT > Build.VERSION_CODES.M || (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !sponsoredTab.isMoreTabs()))) {
+            && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
             ViewTreeObserver observer = mNewTabPageLayout.getViewTreeObserver();
             observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
@@ -445,7 +409,7 @@ public class BraveNewTabPageView extends NewTabPageView {
     private void checkForNonDistruptiveBanner(NTPImage ntpImage) {
         int brOption = NTPUtil.checkForNonDistruptiveBanner(ntpImage, sponsoredTab);
         if (SponsoredImageUtil.BR_INVALID_OPTION != brOption) {
-            NTPUtil.showNonDistruptiveBanner(mTab.getActivity(), mNewTabPageLayout, brOption, sponsoredTab, newTabListener);
+            NTPUtil.showNonDistruptiveBanner(mTab.getActivity(), mNewTabPageLayout, brOption, sponsoredTab, newTabPageListener);
         }
     }
 
@@ -483,7 +447,7 @@ public class BraveNewTabPageView extends NewTabPageView {
         }
     };
 
-    private NewTabListener newTabListener = new NewTabListener() {
+    private NewTabPageListener newTabPageListener = new NewTabPageListener() {
         @Override
         public void updateInteractableFlag(boolean isBottomSheet) {
             isFromBottomSheet = isBottomSheet;

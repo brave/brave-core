@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.ntp.sponsored;
 
 import android.os.Bundle;
+import android.os.Build;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.ViewGroup;
@@ -153,7 +154,7 @@ public class NTPUtil {
         return SponsoredImageUtil.BR_INVALID_OPTION;
     }
 
-    public static void showNonDistruptiveBanner(ChromeActivity chromeActivity, View view, int ntpType, SponsoredTab sponsoredTab, NewTabListener newTabListener) {
+    public static void showNonDistruptiveBanner(ChromeActivity chromeActivity, View view, int ntpType, SponsoredTab sponsoredTab, NewTabPageListener newTabPageListener) {
         ViewGroup nonDistruptiveBannerLayout = (ViewGroup) view.findViewById(R.id.non_distruptive_banner);
         nonDistruptiveBannerLayout.setVisibility(View.GONE);
 
@@ -197,7 +198,7 @@ public class NTPUtil {
                         Bundle bundle = new Bundle();
                         bundle.putInt(SponsoredImageUtil.NTP_TYPE, ntpType);
                         rewardsBottomSheetDialogFragment.setArguments(bundle);
-                        rewardsBottomSheetDialogFragment.setNewTabListener(newTabListener);
+                        rewardsBottomSheetDialogFragment.setNewTabPageListener(newTabPageListener);
                         rewardsBottomSheetDialogFragment.show(chromeActivity.getSupportFragmentManager(), "rewards_bottom_sheet_dialog_fragment");
                         rewardsBottomSheetDialogFragment.setCancelable(false);
 
@@ -237,33 +238,51 @@ public class NTPUtil {
         }, 1500);
     }
 
-    public static NTPImage getNTPImage() {
-        SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
+    public static boolean shouldEnableNTPFeature(boolean isMoreTabs) {
+    	if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M 
+    		|| (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !isMoreTabs)) {
+    		return true;
+    	}
+    	return false;
+    }
 
-        if (mSharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_SPONSORED_IMAGES, true)
-            && SponsoredImageUtil.getSponsoredImages().size() > 0
+    public static NTPImage getNTPImage() {
+    	SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
+        if (shouldShowSponsoredImage()
             && mSharedPreferences.getInt(BackgroundImagesPreferences.PREF_APP_OPEN_COUNT, 0) == 1
-            && SponsoredImageUtil.getTabIndex() == 2
-            && BraveAdsNativeHelper.nativeIsLocaleValid(Profile.getLastUsedProfile())
-            && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
-            && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
+            && SponsoredImageUtil.getTabIndex() == 2) {
             SponsoredImage sponsoredImage = SponsoredImageUtil.getSponsoredImage();
             SponsoredImageUtil.incrementTabIndex(3);
             return sponsoredImage;
         }
 
-        if (mSharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_SPONSORED_IMAGES, true)
-            && SponsoredImageUtil.getSponsoredImages().size() > 0
+        if (shouldShowSponsoredImage()
             && SponsoredImageUtil.getTabIndex() != 1
-            && SponsoredImageUtil.getTabIndex() % 4 == 0
-            && BraveAdsNativeHelper.nativeIsLocaleValid(Profile.getLastUsedProfile())
-            && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
-            && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
+            && SponsoredImageUtil.getTabIndex() % 4 == 0) {
             SponsoredImageUtil.incrementTabIndex(1);
             return SponsoredImageUtil.getSponsoredImage();
         } else {
             SponsoredImageUtil.incrementTabIndex(1);
             return SponsoredImageUtil.getBackgroundImage();
         }
+    }
+
+    private static boolean shouldShowSponsoredImage() {
+    	SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
+    	if(mSharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_SPONSORED_IMAGES, true)
+            && SponsoredImageUtil.getSponsoredImages().size() > 0
+            && shouldShowImageForRewards()) {
+    		return true;
+    	}
+    	return false;
+    }
+
+    private static boolean shouldShowImageForRewards() {
+    	if(BraveAdsNativeHelper.nativeIsLocaleValid(Profile.getLastUsedProfile())
+            && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
+            && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
+    		return true;
+    	}
+    	return false;
     }
 }

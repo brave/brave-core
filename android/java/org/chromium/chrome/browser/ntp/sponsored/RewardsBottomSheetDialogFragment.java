@@ -46,6 +46,7 @@ import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.tabmodel.TabModel;
+import org.chromium.chrome.browser.tab.TabAttributes;
 import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.chrome.R;
 
@@ -56,7 +57,7 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment{
     private static final String BRAVE_REWARDS_LEARN_MORE = "https://brave.com/faq-rewards";
 
     private int ntpType;
-    private NewTabListener newTabListener;
+    private NewTabPageListener newTabPageListener;
 
     public static RewardsBottomSheetDialogFragment newInstance() {
         return new RewardsBottomSheetDialogFragment();
@@ -75,7 +76,7 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment{
 
     @Override
     public void onPause() {
-        newTabListener.updateInteractableFlag(true);
+        newTabPageListener.updateInteractableFlag(true);
         super.onPause();
     }
 
@@ -95,7 +96,7 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment{
     public void onResume() {
         super.onResume();
 
-        newTabListener.updateInteractableFlag(false);
+        newTabPageListener.updateInteractableFlag(false);
 
         boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
         if(isTablet || (!isTablet && ConfigurationUtils.isLandscape(getActivity()))) {
@@ -105,8 +106,8 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment{
         }
     }
 
-    public void setNewTabListener(NewTabListener newTabListener) {
-        this.newTabListener = newTabListener;
+    public void setNewTabPageListener(NewTabPageListener newTabPageListener) {
+        this.newTabPageListener = newTabPageListener;
     }
 
     @Override
@@ -304,9 +305,11 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment{
     private void reloadTab() { 
         ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
         if(chromeTabbedActivity != null) {
-            TabImpl currentTab = (TabImpl) chromeTabbedActivity.getActivityTab(); 
-            currentTab.getSponsoredTab().setNTPImage(SponsoredImageUtil.getBackgroundImage());
-            newTabListener.updateNTPImage();
+            Tab currentTab = chromeTabbedActivity.getActivityTab(); 
+            SponsoredTab sponsoredTab = TabAttributes.from(currentTab).get(String.valueOf(((TabImpl)currentTab).getId()));
+            sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
+            TabAttributes.from(currentTab).set(String.valueOf(((TabImpl)currentTab).getId()), sponsoredTab);
+            newTabPageListener.updateNTPImage();
         }
     }
 
