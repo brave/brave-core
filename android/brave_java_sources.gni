@@ -100,6 +100,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/BraveUpgradeJobIntentService.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/BraveReferrer.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/PackageUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/util/TabUtils.java",
 ]
 
 if (brave_rewards_enabled) {
