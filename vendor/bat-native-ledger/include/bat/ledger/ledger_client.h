@@ -55,12 +55,10 @@ using OnLoadCallback = std::function<void(const Result,
 using OnResetCallback = std::function<void(const Result)>;
 using PendingContributionInfoListCallback =
     std::function<void(PendingContributionInfoList)>;
-using RemovePendingContributionCallback = std::function<void(const Result)>;
 using PendingContributionsTotalCallback = std::function<void(double)>;
 using GetExternalWalletsCallback =
     std::function<void(std::map<std::string, ledger::ExternalWalletPtr>)>;
 using ShowNotificationCallback = std::function<void(const Result)>;
-using SavePendingContributionCallback = std::function<void(const Result)>;
 using GetServerPublisherInfoCallback =
     std::function<void(ledger::ServerPublisherInfoPtr)>;
 using ResultCallback = std::function<void(const Result)>;
@@ -151,10 +149,6 @@ class LEDGER_EXPORT LedgerClient {
       const ledger::UrlMethod method,
       ledger::LoadURLCallback callback) = 0;
 
-  virtual void SavePendingContribution(
-      ledger::PendingContributionList list,
-      ledger::SavePendingContributionCallback callback) = 0;
-
   // Logs debug information
   virtual std::unique_ptr<LogStream> Log(
       const char* file,
@@ -202,19 +196,6 @@ class LEDGER_EXPORT LedgerClient {
   virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
 
   virtual void ConfirmationsTransactionHistoryDidChange() = 0;
-
-  virtual void GetPendingContributions(
-      ledger::PendingContributionInfoListCallback callback) = 0;
-
-  virtual void RemovePendingContribution(
-      const uint64_t id,
-      ledger::RemovePendingContributionCallback callback) = 0;
-
-  virtual void RemoveAllPendingContributions(
-      ledger::RemovePendingContributionCallback callback) = 0;
-
-  virtual void GetPendingContributionsTotal(
-      ledger::PendingContributionsTotalCallback callback) = 0;
 
   virtual void OnContributeUnverifiedPublishers(
       Result result,
@@ -323,6 +304,8 @@ class LEDGER_EXPORT LedgerClient {
       ledger::RunDBTransactionCallback callback) = 0;
 
   virtual void GetCreateScript(ledger::GetCreateScriptCallback callback) = 0;
+
+  virtual void PendingContributionSaved(const ledger::Result result) = 0;
 };
 
 }  // namespace ledger

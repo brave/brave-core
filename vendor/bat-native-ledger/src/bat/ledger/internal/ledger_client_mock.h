@@ -142,10 +142,6 @@ class MockLedgerClient : public LedgerClient {
       const std::string& publisher_key,
       bool exclude));
 
-  MOCK_METHOD2(SavePendingContribution, void(
-      ledger::PendingContributionList list,
-      ledger::SavePendingContributionCallback callback));
-
   std::unique_ptr<ledger::LogStream> Log(
       const char* file,
       const int line,
@@ -175,19 +171,6 @@ class MockLedgerClient : public LedgerClient {
       const bool is_ready));
 
   MOCK_METHOD0(ConfirmationsTransactionHistoryDidChange, void());
-
-  MOCK_METHOD1(GetPendingContributions, void(
-      ledger::PendingContributionInfoListCallback callback));
-
-  MOCK_METHOD2(RemovePendingContribution, void(
-      const uint64_t id,
-      ledger::RemovePendingContributionCallback callback));
-
-  MOCK_METHOD1(RemoveAllPendingContributions, void(
-    ledger::RemovePendingContributionCallback callback));
-
-  MOCK_METHOD1(GetPendingContributionsTotal, void(
-    ledger::PendingContributionsTotalCallback callback));
 
   MOCK_METHOD3(OnContributeUnverifiedPublishers, void(
       ledger::Result result,
@@ -359,6 +342,8 @@ class MockLedgerClient : public LedgerClient {
       ledger::RunDBTransactionCallback));
 
   MOCK_METHOD1(GetCreateScript, void(ledger::GetCreateScriptCallback));
+
+  MOCK_METHOD1(PendingContributionSaved, void(const ledger::Result result));
 };
 
 }  // namespace ledger

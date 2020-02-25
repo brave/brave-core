@@ -296,10 +296,10 @@ class LEDGER_EXPORT Ledger {
 
   virtual void RemovePendingContribution(
       const uint64_t id,
-      ledger::RemovePendingContributionCallback callback) = 0;
+      ledger::ResultCallback callback) = 0;
 
   virtual void RemoveAllPendingContributions(
-      ledger::RemovePendingContributionCallback callback) = 0;
+      ledger::ResultCallback callback) = 0;
 
   virtual void GetPendingContributionsTotal(
       ledger::PendingContributionsTotalCallback callback) = 0;

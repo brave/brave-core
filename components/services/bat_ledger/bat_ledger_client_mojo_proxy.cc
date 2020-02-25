@@ -370,23 +370,6 @@ std::string BatLedgerClientMojoProxy::URIEncode(const std::string& value) {
   return encoded_value;
 }
 
-void OnSavePendingContribution(
-    const ledger::SavePendingContributionCallback& callback,
-    const ledger::Result result) {
-  callback(result);
-}
-
-void BatLedgerClientMojoProxy::SavePendingContribution(
-    ledger::PendingContributionList list,
-    ledger::SavePendingContributionCallback callback) {
-  if (!Connected())
-    return;
-
-  bat_ledger_client_->SavePendingContribution(
-      std::move(list),
-      base::BindOnce(&OnSavePendingContribution, std::move(callback)));
-}
-
 void BatLedgerClientMojoProxy::PublisherListNormalized(
     ledger::PublisherInfoList list) {
   if (!Connected()) {
@@ -562,76 +545,6 @@ void BatLedgerClientMojoProxy::ConfirmationsTransactionHistoryDidChange() {
 
 bool BatLedgerClientMojoProxy::Connected() const {
   return bat_ledger_client_.is_bound();
-}
-
-void OnGetPendingContributions(
-    const ledger::PendingContributionInfoListCallback& callback,
-    ledger::PendingContributionInfoList list) {
-  callback(std::move(list));
-}
-
-void BatLedgerClientMojoProxy::GetPendingContributions(
-    ledger::PendingContributionInfoListCallback callback) {
-  if (!Connected()) {
-    callback(ledger::PendingContributionInfoList());
-    return;
-  }
-
-  bat_ledger_client_->GetPendingContributions(
-      base::BindOnce(&OnGetPendingContributions, std::move(callback)));
-}
-
-void OnRemovePendingContribution(
-    const ledger::RemovePendingContributionCallback& callback,
-    const ledger::Result result) {
-  callback(result);
-}
-
-void BatLedgerClientMojoProxy::RemovePendingContribution(
-    const uint64_t id,
-    ledger::RemovePendingContributionCallback callback) {
-  if (!Connected()) {
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  bat_ledger_client_->RemovePendingContribution(
-      id,
-      base::BindOnce(&OnRemovePendingContribution, std::move(callback)));
-}
-
-void OnRemoveAllPendingContributions(
-    const ledger::RemovePendingContributionCallback& callback,
-    const ledger::Result result) {
-  callback(result);
-}
-
-void BatLedgerClientMojoProxy::RemoveAllPendingContributions(
-    ledger::RemovePendingContributionCallback callback) {
-  if (!Connected()) {
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  bat_ledger_client_->RemoveAllPendingContributions(
-      base::BindOnce(&OnRemoveAllPendingContributions, std::move(callback)));
-}
-
-void OnGetPendingContributionsTotal(
-    const ledger::PendingContributionsTotalCallback& callback,
-    double amount) {
-  callback(amount);
-}
-
-void BatLedgerClientMojoProxy::GetPendingContributionsTotal(
-    ledger::PendingContributionsTotalCallback callback) {
-  if (!Connected()) {
-    callback(0.0);
-    return;
-  }
-
-  bat_ledger_client_->GetPendingContributionsTotal(
-      base::BindOnce(&OnGetPendingContributionsTotal, std::move(callback)));
 }
 
 void BatLedgerClientMojoProxy::OnContributeUnverifiedPublishers(
@@ -939,6 +852,11 @@ void BatLedgerClientMojoProxy::GetCreateScript(
     ledger::GetCreateScriptCallback callback) {
   bat_ledger_client_->GetCreateScript(
       base::BindOnce(&OnGetCreateScript, std::move(callback)));
+}
+
+void BatLedgerClientMojoProxy::PendingContributionSaved(
+    const ledger::Result result) {
+  bat_ledger_client_->PendingContributionSaved(result);
 }
 
 }  // namespace bat_ledger

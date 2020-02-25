@@ -19,8 +19,6 @@ private:
   void FetchFavIcon(const std::string & url, const std::string & favicon_key, ledger::FetchIconCallback callback) override;
   std::string GenerateGUID() const override;
   void GetOneTimeTips(ledger::PublisherInfoListCallback callback) override;
-  void GetPendingContributions(ledger::PendingContributionInfoListCallback callback) override;
-  void GetPendingContributionsTotal(ledger::PendingContributionsTotalCallback callback) override;
   void KillTimer(const uint32_t timer_id) override;
   void LoadLedgerState(ledger::OnLoadCallback callback) override;
   void LoadMediaPublisherInfo(const std::string & media_key, ledger::PublisherInfoCallback callback) override;
@@ -32,14 +30,11 @@ private:
   void OnPanelPublisherInfo(ledger::Result result, ledger::PublisherInfoPtr publisher_info, uint64_t windowId) override;
   void OnReconcileComplete(ledger::Result result, const std::string & viewing_id, const double amount, const ledger::RewardsType type) override;
   void OnWalletProperties(ledger::Result result, ledger::WalletPropertiesPtr arg1) override;
-  void RemoveAllPendingContributions(ledger::RemovePendingContributionCallback callback) override;
-  void RemovePendingContribution(const uint64_t id, ledger::RemovePendingContributionCallback callback) override;
   void ResetState(const std::string & name, ledger::OnResetCallback callback) override;
   void SaveContributionInfo(ledger::ContributionInfoPtr info, ledger::ResultCallback callback) override;
   void SaveLedgerState(const std::string & ledger_state, ledger::LedgerCallbackHandler * handler) override;
   void SaveMediaPublisherInfo(const std::string & media_key, const std::string & publisher_id) override;
   void PublisherListNormalized(ledger::PublisherInfoList list) override;
-  void SavePendingContribution(ledger::PendingContributionList list, ledger::SavePendingContributionCallback callback) override;
   void SavePublisherState(const std::string & publisher_state, ledger::LedgerCallbackHandler * handler) override;
   void SaveState(const std::string & name, const std::string & value, ledger::OnSaveCallback callback) override;
   void SetConfirmationsIsReady(const bool is_ready) override;
@@ -94,4 +89,5 @@ private:
   void ReconcileStampReset() override;
   void RunDBTransaction(ledger::DBTransactionPtr transaction, ledger::RunDBTransactionCallback callback) override;
   void GetCreateScript(ledger::GetCreateScriptCallback callback) override;
+  void PendingContributionSaved(const ledger::Result result) override;
 };

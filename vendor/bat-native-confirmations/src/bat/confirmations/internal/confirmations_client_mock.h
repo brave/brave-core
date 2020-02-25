@@ -150,10 +150,6 @@ class MockConfirmationsClient : public ConfirmationsClient {
       const std::string& publisher_key,
       bool exclude));
 
-  MOCK_METHOD2(SavePendingContribution, void(
-      ledger::PendingContributionList list,
-      ledger::SavePendingContributionCallback callback));
-
   std::unique_ptr<ledger::LogStream> Log(
       const char* file,
       const int line,
@@ -184,19 +180,6 @@ class MockConfirmationsClient : public ConfirmationsClient {
       const bool is_ready));
 
   MOCK_METHOD0(ConfirmationsTransactionHistoryDidChange, void());
-
-  MOCK_METHOD1(GetPendingContributions, void(
-      ledger::PendingContributionInfoListCallback callback));
-
-  MOCK_METHOD2(RemovePendingContribution, void(
-      const uint64_t id,
-      ledger::RemovePendingContributionCallback callback));
-
-  MOCK_METHOD1(RemoveAllPendingContributions, void(
-    ledger::RemovePendingContributionCallback callback));
-
-  MOCK_METHOD1(GetPendingContributionsTotal, void(
-    ledger::PendingContributionsTotalCallback callback));
 
   MOCK_METHOD3(OnContributeUnverifiedPublishers, void(
       ledger::Result result,
@@ -369,6 +352,8 @@ class MockConfirmationsClient : public ConfirmationsClient {
       ledger::RunDBTransactionCallback callback));
 
   MOCK_METHOD1(GetCreateScript, void(ledger::GetCreateScriptCallback callback));
+
+  MOCK_METHOD1(PendingContributionSaved, void(const ledger::Result result));
 };
 
 }  // namespace confirmations

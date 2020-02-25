@@ -146,9 +146,11 @@ class LedgerImpl : public ledger::Ledger,
 
   void UpdateAdsRewards() override;
 
-  void SaveUnverifiedContribution(
+  void SavePendingContribution(
       ledger::PendingContributionList list,
-      ledger::SavePendingContributionCallback callback);
+      ledger::ResultCallback callback);
+
+  void PendingContributionSaved(const ledger::Result result);
 
   uint64_t GetReconcileStamp() const override;
 
@@ -466,10 +468,10 @@ class LedgerImpl : public ledger::Ledger,
 
   void RemovePendingContribution(
       const uint64_t id,
-      ledger::RemovePendingContributionCallback callback) override;
+      ledger::ResultCallback callback) override;
 
   void RemoveAllPendingContributions(
-      ledger::RemovePendingContributionCallback callback) override;
+      ledger::ResultCallback callback) override;
 
   void GetPendingContributionsTotal(
       ledger::PendingContributionsTotalCallback callback) override;

@@ -112,9 +112,9 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD0(UpdateAdsRewards, void());
 
-  MOCK_METHOD2(SaveUnverifiedContribution,
+  MOCK_METHOD2(SavePendingContribution,
       void(ledger::PendingContributionList,
-          ledger::SavePendingContributionCallback));
+          ledger::ResultCallback));
 
   MOCK_CONST_METHOD0(GetReconcileStamp, uint64_t());
 
@@ -439,10 +439,10 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD2(RemovePendingContribution,
       void(const uint64_t id,
-          ledger::RemovePendingContributionCallback));
+          ledger::ResultCallback));
 
   MOCK_METHOD1(RemoveAllPendingContributions,
-      void(ledger::RemovePendingContributionCallback));
+      void(ledger::ResultCallback));
 
   MOCK_METHOD1(GetPendingContributionsTotal,
       void(ledger::PendingContributionsTotalCallback));

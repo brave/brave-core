@@ -791,10 +791,14 @@ LedgerImpl::GetAllBalanceReports() const {
   return bat_publisher_->GetAllBalanceReports();
 }
 
-void LedgerImpl::SaveUnverifiedContribution(
+void LedgerImpl::SavePendingContribution(
     ledger::PendingContributionList list,
-    ledger::SavePendingContributionCallback callback) {
-  ledger_client_->SavePendingContribution(std::move(list), callback);
+    ledger::ResultCallback callback) {
+  bat_database_->SavePendingContribution(std::move(list), callback);
+}
+
+void LedgerImpl::PendingContributionSaved(const ledger::Result result) {
+  ledger_client_->PendingContributionSaved(result);
 }
 
 void LedgerImpl::DoTip(
@@ -1351,45 +1355,25 @@ std::string LedgerImpl::GetShareURL(
   return bat_media_->GetShareURL(type, args);
 }
 
-void LedgerImpl::OnGetPendingContributions(
-    const ledger::PendingContributionInfoList& list,
-    ledger::PendingContributionInfoListCallback callback) {
-  ledger::PendingContributionInfoList new_list;
-  for (const auto& item : list) {
-    auto new_item = item->Clone();
-    new_item->expiration_date =
-        new_item->added_date +
-        braveledger_ledger::_pending_contribution_expiration;
-
-    new_list.push_back(std::move(new_item));
-  }
-
-  callback(std::move(new_list));
-}
-
 void LedgerImpl::GetPendingContributions(
     ledger::PendingContributionInfoListCallback callback) {
-  ledger_client_->GetPendingContributions(
-      std::bind(&LedgerImpl::OnGetPendingContributions,
-                this,
-                _1,
-                callback));
+  bat_database_->GetPendingContributions(callback);
 }
 
 void LedgerImpl::RemovePendingContribution(
     const uint64_t id,
-    ledger::RemovePendingContributionCallback callback) {
-  ledger_client_->RemovePendingContribution(id, callback);
+    ledger::ResultCallback callback) {
+  bat_database_->RemovePendingContribution(id, callback);
 }
 
 void LedgerImpl::RemoveAllPendingContributions(
-    ledger::RemovePendingContributionCallback callback) {
-  ledger_client_->RemoveAllPendingContributions(callback);
+    ledger::ResultCallback callback) {
+  bat_database_->RemoveAllPendingContributions(callback);
 }
 
 void LedgerImpl::GetPendingContributionsTotal(
     ledger::PendingContributionsTotalCallback callback) {
-  ledger_client_->GetPendingContributionsTotal(callback);
+  bat_database_->GetPendingContributionsTotal(callback);
 }
 
 void LedgerImpl::ContributeUnverifiedPublishers() {

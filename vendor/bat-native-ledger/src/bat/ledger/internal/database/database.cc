@@ -8,6 +8,7 @@
 #include "bat/ledger/internal/database/database.h"
 #include "bat/ledger/internal/database/database_activity_info.h"
 #include "bat/ledger/internal/database/database_initialize.h"
+#include "bat/ledger/internal/database/database_pending_contribution.h"
 #include "bat/ledger/internal/database/database_publisher_info.h"
 #include "bat/ledger/internal/database/database_recurring_tip.h"
 #include "bat/ledger/internal/database/database_server_publisher_info.h"
@@ -21,6 +22,8 @@ Database::Database(bat_ledger::LedgerImpl* ledger) :
 
   initialize_ = std::make_unique<DatabaseInitialize>(ledger_);
   activity_info_ = std::make_unique<DatabaseActivityInfo>(ledger_);
+  pending_contribution_ =
+      std::make_unique<DatabasePendingContribution>(ledger_);
   publisher_info_ = std::make_unique<DatabasePublisherInfo>(ledger_);
   recurring_tip_ = std::make_unique<DatabaseRecurringTip>(ledger_);
   server_publisher_info_ =
@@ -64,6 +67,35 @@ void Database::DeleteActivityInfo(
     const std::string& publisher_key,
     ledger::ResultCallback callback) {
   activity_info_->DeleteRecord(publisher_key, callback);
+}
+
+/**
+ * PENDING CONTRIBUTION
+ */
+void Database::SavePendingContribution(
+    ledger::PendingContributionList list,
+    ledger::ResultCallback callback) {
+  pending_contribution_->InsertOrUpdateList(std::move(list), callback);
+}
+
+void Database::GetPendingContributionsTotal(
+    ledger::PendingContributionsTotalCallback callback) {
+  pending_contribution_->GetReservedAmount(callback);
+}
+
+void Database::GetPendingContributions(
+    ledger::PendingContributionInfoListCallback callback) {
+  pending_contribution_->GetAllRecords(callback);
+}
+
+void Database::RemovePendingContribution(
+    const uint64_t id,
+    ledger::ResultCallback callback) {
+  pending_contribution_->DeleteRecord(id, callback);
+}
+
+void Database::RemoveAllPendingContributions(ledger::ResultCallback callback) {
+  pending_contribution_->DeleteAllRecords(callback);
 }
 
 /**

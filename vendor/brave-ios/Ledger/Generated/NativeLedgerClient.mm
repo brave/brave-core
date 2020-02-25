@@ -23,12 +23,6 @@ std::string NativeLedgerClient::GenerateGUID() const {
 void NativeLedgerClient::GetOneTimeTips(ledger::PublisherInfoListCallback callback) {
   [bridge_ getOneTimeTips:callback];
 }
-void NativeLedgerClient::GetPendingContributions(ledger::PendingContributionInfoListCallback callback) {
-  [bridge_ getPendingContributions:callback];
-}
-void NativeLedgerClient::GetPendingContributionsTotal(ledger::PendingContributionsTotalCallback callback) {
-  [bridge_ getPendingContributionsTotal:callback];
-}
 void NativeLedgerClient::KillTimer(const uint32_t timer_id) {
   [bridge_ killTimer:timer_id];
 }
@@ -62,12 +56,6 @@ void NativeLedgerClient::OnReconcileComplete(ledger::Result result, const std::s
 void NativeLedgerClient::OnWalletProperties(ledger::Result result, ledger::WalletPropertiesPtr arg1) {
   [bridge_ onWalletProperties:result arg1:std::move(arg1)];
 }
-void NativeLedgerClient::RemoveAllPendingContributions(ledger::RemovePendingContributionCallback callback) {
-  [bridge_ removeAllPendingContributions:callback];
-}
-void NativeLedgerClient::RemovePendingContribution(const uint64_t id, ledger::RemovePendingContributionCallback callback) {
-  [bridge_ removePendingContribution:id callback:callback];
-}
 void NativeLedgerClient::ResetState(const std::string & name, ledger::OnResetCallback callback) {
   [bridge_ resetState:name callback:callback];
 }
@@ -82,9 +70,6 @@ void NativeLedgerClient::SaveMediaPublisherInfo(const std::string & media_key, c
 }
 void NativeLedgerClient::PublisherListNormalized(ledger::PublisherInfoList list) {
   [bridge_ publisherListNormalized:std::move(list)];
-}
-void NativeLedgerClient::SavePendingContribution(ledger::PendingContributionList list, ledger::SavePendingContributionCallback callback) {
-  [bridge_ savePendingContribution:std::move(list) callback:callback];
 }
 void NativeLedgerClient::SavePublisherState(const std::string & publisher_state, ledger::LedgerCallbackHandler * handler) {
   [bridge_ savePublisherState:publisher_state handler:handler];
@@ -247,4 +232,7 @@ void NativeLedgerClient::RunDBTransaction(ledger::DBTransactionPtr transaction, 
 }
 void NativeLedgerClient::GetCreateScript(ledger::GetCreateScriptCallback callback) {
   [bridge_ getCreateScript:callback];
+}
+void NativeLedgerClient::PendingContributionSaved(const ledger::Result result) {
+  [bridge_ pendingContributionSaved:result];
 }

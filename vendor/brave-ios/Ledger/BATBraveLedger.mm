@@ -1782,40 +1782,6 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)savePendingContribution:(ledger::PendingContributionList)list callback:(ledger::SavePendingContributionCallback)callback
-{
-  const auto list_ = NSArrayFromVector(&list, ^BATPendingContribution *(const ledger::PendingContributionPtr& info) {
-    return [[BATPendingContribution alloc] initWithPendingContribution:*info];
-  });
-  [BATLedgerDatabase insertPendingContributions:list_ completion:^(BOOL success) {
-    if (!success) {
-      callback(ledger::Result::LEDGER_ERROR);
-      return;
-    }
-    for (BATBraveLedgerObserver *observer in [self.observers copy]) {
-      if (observer.pendingContributionAdded) {
-        for (BATPendingContribution *pc in list_) {
-          observer.pendingContributionAdded(pc.publisherKey);
-        }
-      }
-    }
-    callback(ledger::Result::LEDGER_OK);
-  }];
-}
-
-- (void)getPendingContributions:(ledger::PendingContributionInfoListCallback)callback
-{
-  const auto pendingContributions = [BATLedgerDatabase pendingContributions];
-  callback(VectorFromNSArray(pendingContributions, ^ledger::PendingContributionInfoPtr(BATPendingContributionInfo *info){
-    return info.cppObjPtr;
-  }));
-}
-
-- (void)getPendingContributionsTotal:(ledger::PendingContributionsTotalCallback)callback
-{
-  callback([BATLedgerDatabase reservedAmountForPendingContributions]);
-}
-
 - (void)onPanelPublisherInfo:(ledger::Result)result publisherInfo:(ledger::PublisherInfoPtr)publisher_info windowId:(uint64_t)windowId
 {
   if (publisher_info.get() == nullptr || result != ledger::Result::LEDGER_OK) {
@@ -1827,43 +1793,6 @@ BATLedgerBridge(BOOL,
       observer.fetchedPanelPublisher(info, windowId);
     }
   }
-}
-
-- (void)removeAllPendingContributions:(ledger::RemovePendingContributionCallback)callback
-{
-  const auto pendingContributions = [BATLedgerDatabase pendingContributions];
-  const auto keys = [[NSMutableArray alloc] init];
-  for (BATPendingContributionInfo *info in pendingContributions) {
-    [keys addObject:info.publisherKey];
-  }
-
-  [BATLedgerDatabase removeAllPendingContributions:^(BOOL success) {
-    callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
-    if (success) {
-      for (BATBraveLedgerObserver *observer in [self.observers copy]) {
-        if (observer.pendingContributionsRemoved) {
-          observer.pendingContributionsRemoved(keys);
-        }
-      }
-    }
-  }];
-}
-
-- (void)removePendingContribution:(const uint64_t)id callback:(ledger::RemovePendingContributionCallback)callback
-{
-  // TODO we need to use id when removing a record
-//  [BATLedgerDatabase removePendingContributionForPublisherID:publisherID
-//                                                   viewingID:viewingID
-//                                                   addedDate:added_date
-//                                                  completion:^(BOOL success) {
-//                                                    callback(success ? ledger::Result::LEDGER_OK :
-//                                                             ledger::Result::LEDGER_ERROR);
-//                                                    for (BATBraveLedgerObserver *observer in [self.observers copy]) {
-//                                                      if (observer.pendingContributionsRemoved) {
-//                                                        observer.pendingContributionsRemoved(@[publisherID]);
-//                                                      }
-//                                                    }
-//                                                  }];
 }
 
 - (void)onContributeUnverifiedPublishers:(ledger::Result)result publisherKey:(const std::string &)publisher_key publisherName:(const std::string &)publisher_name
@@ -2081,6 +2010,11 @@ BATLedgerBridge(BOOL,
       });
     });
   }
+}
+
+- (void)pendingContributionSaved:(const ledger::Result)result
+{
+  // TODO please implement
 }
 
 @end

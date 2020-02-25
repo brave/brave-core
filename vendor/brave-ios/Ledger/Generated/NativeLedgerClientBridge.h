@@ -12,8 +12,6 @@
 - (void)fetchFavIcon:(const std::string &)url faviconKey:(const std::string &)favicon_key callback:(ledger::FetchIconCallback)callback;
 - (std::string)generateGUID;
 - (void)getOneTimeTips:(ledger::PublisherInfoListCallback)callback;
-- (void)getPendingContributions:(ledger::PendingContributionInfoListCallback)callback;
-- (void)getPendingContributionsTotal:(ledger::PendingContributionsTotalCallback)callback;
 - (void)killTimer:(const uint32_t)timer_id;
 - (void)loadLedgerState:(ledger::OnLoadCallback)callback;
 - (void)loadMediaPublisherInfo:(const std::string &)media_key callback:(ledger::PublisherInfoCallback)callback;
@@ -25,14 +23,11 @@
 - (void)onPanelPublisherInfo:(ledger::Result)result publisherInfo:(ledger::PublisherInfoPtr)publisher_info windowId:(uint64_t)windowId;
 - (void)onReconcileComplete:(ledger::Result)result viewingId:(const std::string &)viewing_id type:(const ledger::RewardsType)type amount:(const double)amount;
 - (void)onWalletProperties:(ledger::Result)result arg1:(ledger::WalletPropertiesPtr)arg1;
-- (void)removeAllPendingContributions:(ledger::RemovePendingContributionCallback)callback;
-- (void)removePendingContribution:(const uint64_t)id callback:(ledger::RemovePendingContributionCallback )callback;
 - (void)resetState:(const std::string &)name callback:(ledger::OnResetCallback)callback;
 - (void)saveContributionInfo:(ledger::ContributionInfoPtr)info callback:(ledger::ResultCallback)callback;
 - (void)saveLedgerState:(const std::string &)ledger_state handler:(ledger::LedgerCallbackHandler *)handler;
 - (void)saveMediaPublisherInfo:(const std::string &)media_key publisherId:(const std::string &)publisher_id;
 - (void)publisherListNormalized:(ledger::PublisherInfoList)list;
-- (void)savePendingContribution:(ledger::PendingContributionList)list callback:(ledger::SavePendingContributionCallback)callback;
 - (void)savePublisherState:(const std::string &)publisher_state handler:(ledger::LedgerCallbackHandler *)handler;
 - (void)saveState:(const std::string &)name value:(const std::string &)value callback:(ledger::OnSaveCallback)callback;
 - (void)setConfirmationsIsReady:(const bool)is_ready;
@@ -87,5 +82,6 @@
 - (void)reconcileStampReset;
 - (void)runDBTransaction:(ledger::DBTransactionPtr)transaction callback:(ledger::RunDBTransactionCallback)callback;
 - (void)getCreateScript:(ledger::GetCreateScriptCallback)callback;
+- (void)pendingContributionSaved:(const ledger::Result)result;
 
 @end
