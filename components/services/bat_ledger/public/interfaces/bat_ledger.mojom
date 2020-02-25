@@ -24,7 +24,7 @@ interface BatLedgerService {
 };
 
 interface BatLedger {
-  Initialize() => (ledger.mojom.Result result);
+  Initialize(bool execute_create_script) => (ledger.mojom.Result result);
   CreateWallet(string safetynet_token) => (ledger.mojom.Result result);
   FetchWalletProperties() =>
       (ledger.mojom.Result result, ledger.mojom.WalletProperties properties);
@@ -312,4 +312,6 @@ interface BatLedgerClient {
   ReconcileStampReset();
 
   RunDBTransaction(ledger_database.mojom.DBTransaction transaction) => (ledger_database.mojom.DBCommandResponse response);
+
+  GetCreateScript() => (string script, int32 table_version);
 };

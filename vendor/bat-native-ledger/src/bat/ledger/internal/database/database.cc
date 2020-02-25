@@ -7,93 +7,25 @@
 #include <utility>
 
 #include "bat/ledger/internal/database/database.h"
+#include "bat/ledger/internal/database/database_initialize.h"
 #include "bat/ledger/internal/ledger_impl.h"
-
-using std::placeholders::_1;
-
-namespace {
-
-const int kCurrentVersionNumber = 12;
-const int kCompatibleVersionNumber = 1;
-
-
-ledger::DBTransactionPtr CreateTransaction() {
-  auto transaction = ledger::DBTransaction::New();
-  transaction->version = kCurrentVersionNumber;
-  transaction->compatible_version = kCompatibleVersionNumber;
-
-  return transaction;
-}
-
-}  // namespace
 
 namespace braveledger_database {
 
 Database::Database(bat_ledger::LedgerImpl* ledger) :
     ledger_(ledger) {
+  initialize_ = std::make_unique<DatabaseInitialize>(ledger_);
 }
 
 Database::~Database() = default;
 
-void Database::Initialize(ledger::ResultCallback callback) {
-  auto transaction = CreateTransaction();
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::INITIALIZE;
-  transaction->commands.push_back(std::move(command));
-
-  InitializeTables(transaction.get());
-
-  ledger_->RunDBTransaction(
-      std::move(transaction),
-      std::bind(&Database::OnInitialize,
-                this,
-                _1,
-                callback));
-}
-
-void Database::OnInitialize(
-    ledger::DBCommandResponsePtr response,
+void Database::Initialize(
+    const bool execute_create_script,
     ledger::ResultCallback callback) {
-  auto result = ledger::Result::LEDGER_OK;
-  if (response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
-    result = ledger::Result::DATABASE_INIT_FAILED;
-  }
-
-  callback(result);
+  initialize_->Start(
+      execute_create_script,
+      callback);
 }
 
-void Database::InitializeTables(ledger::DBTransaction* transaction) {
-  const std::string create =
-      "CREATE TABLE IF NOT EXISTS test_db ("
-        "field_1 INTEGER DEFAULT 0 NOT NULL,"
-        "field_2 INTEGER DEFAULT 0 NOT NULL"
-      ")";
-
-  auto create_command = ledger::DBCommand::New();
-  create_command->type = ledger::DBCommand::Type::EXECUTE;
-  create_command->command = create;
-  transaction->commands.push_back(std::move(create_command));
-
-  const std::string insert =
-    "INSERT INTO test_db (field_1, field_2) VALUES (?, ?)";
-
-  auto insert_command = ledger::DBCommand::New();
-  insert_command->type = ledger::DBCommand::Type::RUN;
-  insert_command->command = insert;
-
-  auto binding = ledger::DBCommandBinding::New();
-  binding->index = 0;
-  binding->value = ledger::DBValue::New();
-  binding->value->set_int_value(5);
-  insert_command->bindings.push_back(std::move(binding));
-
-  binding = ledger::DBCommandBinding::New();
-  binding->index = 1;
-  binding->value = ledger::DBValue::New();
-  binding->value->set_int_value(7);
-  insert_command->bindings.push_back(std::move(binding));
-
-  transaction->commands.push_back(std::move(insert_command));
-}
 
 }  // namespace braveledger_database

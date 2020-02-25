@@ -1160,4 +1160,17 @@ void BatLedgerClientMojoProxy::RunDBTransaction(
       base::BindOnce(&OnRunDBTransaction, std::move(callback)));
 }
 
+void OnGetCreateScript(
+    const ledger::GetCreateScriptCallback& callback,
+    const std::string& script,
+    const int table_version) {
+  callback(script, table_version);
+}
+
+void BatLedgerClientMojoProxy::GetCreateScript(
+    ledger::GetCreateScriptCallback callback) {
+  bat_ledger_client_->GetCreateScript(
+      base::BindOnce(&OnGetCreateScript, std::move(callback)));
+}
+
 }  // namespace bat_ledger
