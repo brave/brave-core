@@ -42,8 +42,6 @@ Result CatalogState::FromJson(
 
   new_version = catalog["version"].GetUint64();
   if (new_version != 1) {
-    // TODO(Terry Mancey): Implement Log (#44)
-    // 'patch invalid', { reason: 'unsupported version', version: version }
     return SUCCESS;
   }
 

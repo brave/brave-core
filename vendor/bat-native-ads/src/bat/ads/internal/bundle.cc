@@ -51,9 +51,6 @@ bool Bundle::UpdateFromCatalog(
               bundle_state->catalog_last_updated_timestamp_in_seconds, _1);
   ads_client_->SaveBundleState(std::move(bundle_state), callback);
 
-  // TODO(Terry Mancey): Implement Log (#44)
-  // 'Generated bundle'
-
   BLOG(INFO) << "Generated bundle";
 
   return true;
