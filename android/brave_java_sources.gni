@@ -49,7 +49,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/ntp/sponsored/NTPUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/sponsored/SponsoredLogo.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/sponsored/SponsoredTab.java",
-  "../../brave/android/java/org/chromium/chrome/browser/ntp/sponsored/NewTabListener.java",
+  "../../brave/android/java/org/chromium/chrome/browser/ntp/sponsored/NewTabPageListener.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/sponsored/RewardsBottomSheetDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/BraveRewardsOnboardingFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/BraveRewardsService.java",
@@ -118,7 +118,8 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/util/ConfigurationUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/LocaleUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/ImageUtils.java",
-  "../../brave/android/java/org/chromium/chrome/browser/widget/tile/BraveTileWithTextView.java"
+  "../../brave/android/java/org/chromium/chrome/browser/widget/tile/BraveTileWithTextView.java",
+  "../../brave/android/java/org/chromium/chrome/browser/tabmodel/BraveTabCreator.java"
 ]
 
 if (brave_rewards_enabled) {

@@ -5,7 +5,7 @@
 
 package org.chromium.chrome.browser.ntp.sponsored;
 
-public interface NewTabListener {
+public interface NewTabPageListener {
 	void updateInteractableFlag(boolean isFromBottomSheet);
 	void updateNTPImage();
 }
