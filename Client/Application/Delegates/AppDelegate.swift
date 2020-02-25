@@ -57,7 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         self.application = application
         self.launchOptions = launchOptions
         self.window = UIWindow(frame: UIScreen.main.bounds)
-        self.window!.backgroundColor = UIColor.Photon.white100
+        self.window!.backgroundColor = .black
         
         SceneObserver.setupApplication(window: self.window!)
 
