@@ -166,6 +166,11 @@ void BraveReferralsService::Stop() {
 }
 
 // static
+bool BraveReferralsService::IsDefaultReferralCode(const std::string& code) {
+  return code == kDefaultPromoCode;
+}
+
+// static
 bool BraveReferralsService::GetMatchingReferralHeaders(
     const base::ListValue& referral_headers_list,
     const base::DictionaryValue** request_headers_dict,

@@ -14,6 +14,7 @@ namespace ntp_sponsored_images {
 namespace features {
 extern const base::Feature kBraveNTPBrandedWallpaper;
 extern const base::Feature kBraveNTPBrandedWallpaperDemo;
+extern const base::Feature kBraveCustomHomepage;
 }  // namespace features
 }  // namespace ntp_sponsored_images
 

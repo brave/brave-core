@@ -39,7 +39,7 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler {
   void HandleGetBrandedWallpaperData(const base::ListValue* args);
 
   void OnStatsChanged();
-  void OnPreferencesChanged();
+  void OnPreferencesChanged(const std::string& pref_name);
   void OnPrivatePropertiesChanged();
 
   PrefChangeRegistrar pref_change_registrar_;

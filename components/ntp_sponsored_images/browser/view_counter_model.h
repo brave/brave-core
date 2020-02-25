@@ -11,25 +11,23 @@ namespace ntp_sponsored_images {
 class ViewCounterModel {
  public:
   ViewCounterModel();
-  ~ViewCounterModel();
+  virtual ~ViewCounterModel();
 
   ViewCounterModel(const ViewCounterModel&) = delete;
   ViewCounterModel& operator=(const ViewCounterModel&) = delete;
 
+  void set_total_image_count(int count) { total_image_count_ = count; }
+  void ResetCurrentWallpaperImageIndex() { current_wallpaper_image_index_ = 0; }
   int current_wallpaper_image_index() const {
     return current_wallpaper_image_index_;
   }
 
-  void set_total_image_count(int count) { total_image_count_ = count; }
+  virtual bool ShouldShowWallpaper() const = 0;
+  virtual void RegisterPageView() = 0;
 
-  bool ShouldShowBrandedWallpaper() const;
-  void RegisterPageView();
-  void ResetCurrentWallpaperImageIndex();
-
- private:
-  int current_wallpaper_image_index_ = 0;
-  int count_to_branded_wallpaper_;
+ protected:
   int total_image_count_ = -1;
+  int current_wallpaper_image_index_ = 0;
 };
 
 }  // namespace ntp_sponsored_images

@@ -6,39 +6,25 @@
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_service.h"
 
 #include <algorithm>
-#include <string>
 
 #include "base/bind.h"
 #include "base/command_line.h"
 #include "base/files/file_util.h"
-#include "base/json/json_reader.h"
-#include "base/optional.h"
 #include "base/task/post_task.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/browser/locale_helper.h"
+#include "brave/components/ntp_sponsored_images/browser/features.h"
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_component_installer.h"
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_image_source.h"
 #include "brave/components/ntp_sponsored_images/browser/regional_component_data.h"
 #include "brave/components/ntp_sponsored_images/browser/switches.h"
-#include "content/public/browser/browser_context.h"
-#include "content/public/browser/url_data_source.h"
 
 namespace ntp_sponsored_images {
 
 namespace {
 
 constexpr char kPhotoJsonFilename[] = "photo.json";
-
-constexpr char kLogoImageURLPath[] = "logo.imageUrl";
-constexpr char kLogoAltPath[] = "logo.alt";
-constexpr char kLogoCompanyNamePath[] = "logo.companyName";
-constexpr char kLogoDestinationURLPath[] = "logo.destinationUrl";
-constexpr char kWallpapersPath[] = "wallpapers";
-constexpr char kWallpaperImageURLPath[] = "imageUrl";
-constexpr char kSchemaVersionPath[] = "schemaVersion";
-
-constexpr int kExpectedSchemaVersion = 1;
 
 std::string ReadPhotosManifest(const base::FilePath& photos_manifest_path) {
   std::string contents;
@@ -48,6 +34,20 @@ std::string ReadPhotosManifest(const base::FilePath& photos_manifest_path) {
              << "read photo.json file " << photos_manifest_path;
   }
   return contents;
+}
+
+NTPSponsoredImagesData* GetDemoWallpaper() {
+  static auto demo = std::make_unique<NTPSponsoredImagesData>();
+  demo->url_prefix = "chrome://newtab/ntp-dummy-brandedwallpaper/";
+  demo->wallpaper_image_files = {
+      base::FilePath(FILE_PATH_LITERAL("wallpaper1.jpg")),
+      base::FilePath(FILE_PATH_LITERAL("wallpaper2.jpg")),
+      base::FilePath(FILE_PATH_LITERAL("wallpaper3.jpg")),
+  };
+  demo->logo_alt_text = "Technikke: For music lovers.";
+  demo->logo_company_name = "Technikke";
+  demo->logo_destination_url = "https://brave.com";
+  return demo.get();
 }
 
 }  // namespace
@@ -95,96 +95,39 @@ bool NTPSponsoredImagesService::HasObserver(Observer* observer) {
   return observer_list_.HasObserver(observer);
 }
 
-void NTPSponsoredImagesService::AddDataSource(
-    content::BrowserContext* browser_context) {
-  content::URLDataSource::Add(browser_context,
-                              std::make_unique<NTPSponsoredImageSource>(this));
-}
-
 NTPSponsoredImagesData*
 NTPSponsoredImagesService::GetSponsoredImagesData() const {
-  return images_data_.get();
+  if (base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo))
+    return GetDemoWallpaper();
+
+  if (images_data_ && images_data_->IsValid())
+    return images_data_.get();
+
+  return nullptr;
 }
 
 void NTPSponsoredImagesService::OnComponentReady(
     const base::FilePath& installed_dir) {
   // image list is no longer valid after the component has been updated
   images_data_.reset();
-  NotifyObservers();
-
-  photos_manifest_path_ = installed_dir.AppendASCII(kPhotoJsonFilename);
+  installed_dir_ = installed_dir;
   base::PostTaskAndReplyWithResult(
       FROM_HERE, {base::ThreadPool(), base::MayBlock()},
-      base::BindOnce(&ReadPhotosManifest, photos_manifest_path_),
+      base::BindOnce(&ReadPhotosManifest,
+                     installed_dir.AppendASCII(kPhotoJsonFilename)),
       base::BindOnce(&NTPSponsoredImagesService::OnGetPhotoJsonData,
                      weak_factory_.GetWeakPtr()));
 }
 
 void NTPSponsoredImagesService::OnGetPhotoJsonData(
     const std::string& photo_json) {
-  base::Optional<base::Value> photo_value = base::JSONReader::Read(photo_json);
-  if (photo_value) {
-    // Resources are stored with json file in the same directory.
-    base::FilePath base_dir = photos_manifest_path_.DirName();
-
-    base::Optional<int> incomingSchemaVersion =
-        photo_value->FindIntPath(kSchemaVersionPath);
-    const bool schemaVersionIsValid = incomingSchemaVersion &&
-        *incomingSchemaVersion == kExpectedSchemaVersion;
-    if (!schemaVersionIsValid) {
-      LOG(ERROR) <<
-      "Incoming NTP Sponsored images component data was not valid."
-      "Schema version was " <<
-      (incomingSchemaVersion
-          ? std::to_string(*incomingSchemaVersion)
-          : "missing") <<
-      ", but we expected " << kExpectedSchemaVersion;
-      images_data_.reset(nullptr);
-      NotifyObservers();
-      return;
-    }
-
-    images_data_.reset(new NTPSponsoredImagesData);
-
-    if (auto* logo_image_url = photo_value->FindStringPath(kLogoImageURLPath)) {
-      images_data_->logo_image_file =
-          base_dir.AppendASCII(*logo_image_url);
-    }
-
-    if (auto* logo_alt_text = photo_value->FindStringPath(kLogoAltPath)) {
-      images_data_->logo_alt_text = *logo_alt_text;
-    }
-
-    if (auto* logo_company_name =
-            photo_value->FindStringPath(kLogoCompanyNamePath)) {
-      images_data_->logo_company_name = *logo_company_name;
-    }
-
-    if (auto* logo_destination_url =
-            photo_value->FindStringPath(kLogoDestinationURLPath)) {
-      images_data_->logo_destination_url = *logo_destination_url;
-    }
-
-    if (auto* wallpaper_image_urls =
-            photo_value->FindListPath(kWallpapersPath)) {
-      for (const auto& value : wallpaper_image_urls->GetList()) {
-        images_data_->wallpaper_image_files.push_back(
-            base_dir.AppendASCII(
-                *value.FindStringPath(kWallpaperImageURLPath)));
-      }
-    }
-    NotifyObservers();
-  }
+  images_data_.reset(new NTPSponsoredImagesData(photo_json, installed_dir_));
+  NotifyObservers();
 }
 
 void NTPSponsoredImagesService::NotifyObservers() {
-  for (auto& observer : observer_list_) {
-    observer.OnUpdated(images_data_.get());
-  }
-}
-
-void NTPSponsoredImagesService::ResetImagesDataForTest() {
-  images_data_.reset();
+  for (auto& observer : observer_list_)
+    observer.OnSponsoredImagesUpdated(images_data_.get());
 }
 
 }  // namespace ntp_sponsored_images

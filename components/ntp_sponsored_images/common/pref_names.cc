@@ -12,6 +12,10 @@ const char kBrandedWallpaperNotificationDismissed[] =
     "brave.branded_wallpaper_notification_dismissed";
 const char kNewTabPageShowBrandedBackgroundImage[] =
     "brave.new_tab_page.show_branded_background_image";
+const char kNewTabPageShowReferralBackgroundImage[] =
+    "brave.new_tab_page.show_referral_background_image";
+const char kReferralImagesServiceComponent[] =
+    "brave.referral_images_service_component";
 
 }  // namespace prefs
 }  // namespace ntp_sponsored_images

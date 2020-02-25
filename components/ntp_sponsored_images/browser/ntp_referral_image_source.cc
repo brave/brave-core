@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_image_source.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_referral_image_source.h"
 
 #include <utility>
 
@@ -13,10 +13,11 @@
 #include "base/memory/ref_counted_memory.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
-#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_service.h"
-#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_referral_images_service.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_referral_images_data.h"
 #include "brave/components/ntp_sponsored_images/browser/url_constants.h"
 #include "content/public/browser/browser_thread.h"
+#include "url/gurl.h"
 
 namespace ntp_sponsored_images {
 
@@ -31,19 +32,19 @@ base::Optional<std::string> ReadFileToString(const base::FilePath& path) {
 
 }  // namespace
 
-NTPSponsoredImageSource::NTPSponsoredImageSource(
-    NTPSponsoredImagesService* service)
+NTPReferralImageSource::NTPReferralImageSource(
+    NTPReferralImagesService* service)
     : service_(service),
       weak_factory_(this) {
 }
 
-NTPSponsoredImageSource::~NTPSponsoredImageSource() = default;
+NTPReferralImageSource::~NTPReferralImageSource() = default;
 
-std::string NTPSponsoredImageSource::GetSource() {
-  return kSponsoredWallpaperHost;
+std::string NTPReferralImageSource::GetSource() {
+  return kReferralWallpaperHost;
 }
 
-void NTPSponsoredImageSource::StartDataRequest(
+void NTPReferralImageSource::StartDataRequest(
     const GURL& url,
     const content::WebContents::Getter& wc_getter,
     GotDataCallback callback) {
@@ -56,7 +57,7 @@ void NTPSponsoredImageSource::StartDataRequest(
     return;
   }
 
-  auto* images_data = service_->GetSponsoredImagesData();
+  auto* images_data = service_->GetReferralImagesData();
   if (!images_data) {
     base::PostTask(FROM_HERE,
         base::BindOnce(std::move(callback),
@@ -67,6 +68,9 @@ void NTPSponsoredImageSource::StartDataRequest(
   base::FilePath image_file_path;
   if (IsLogoPath(path)) {
     image_file_path = images_data->logo_image_file;
+  } else if (IsIconPath(path)) {
+    image_file_path =
+        images_data->top_sites[GetIconFileIndexFromPath(path)].icon_image_file;
   } else {
     DCHECK(IsWallpaperPath(path));
     image_file_path =
@@ -76,12 +80,12 @@ void NTPSponsoredImageSource::StartDataRequest(
   base::PostTaskAndReplyWithResult(
       FROM_HERE, {base::ThreadPool(), base::MayBlock()},
       base::BindOnce(&ReadFileToString, image_file_path),
-      base::BindOnce(&NTPSponsoredImageSource::OnGotImageFile,
+      base::BindOnce(&NTPReferralImageSource::OnGotImageFile,
                      weak_factory_.GetWeakPtr(),
                      std::move(callback)));
 }
 
-void NTPSponsoredImageSource::OnGotImageFile(
+void NTPReferralImageSource::OnGotImageFile(
     GotDataCallback callback,
     base::Optional<std::string> input) {
   if (!input)
@@ -93,37 +97,60 @@ void NTPSponsoredImageSource::OnGotImageFile(
   std::move(callback).Run(std::move(bytes));
 }
 
-std::string NTPSponsoredImageSource::GetMimeType(const std::string& path) {
+std::string NTPReferralImageSource::GetMimeType(const std::string& path) {
   if (IsLogoPath(path))
     return "image/png";
   return "image/jpg";
 }
 
-bool NTPSponsoredImageSource::AllowCaching() {
+bool NTPReferralImageSource::AllowCaching() {
   return false;
 }
 
-bool NTPSponsoredImageSource::IsValidPath(const std::string& path) const {
+bool NTPReferralImageSource::IsValidPath(const std::string& path) const {
   if (IsLogoPath(path))
     return true;
 
   if (IsWallpaperPath(path))
     return true;
 
+  if (IsIconPath(path))
+    return true;
+
   return false;
 }
 
-bool NTPSponsoredImageSource::IsWallpaperPath(const std::string& path) const {
+int NTPReferralImageSource::GetIconFileIndexFromPath(
+    const std::string& path) const {
+  auto* images_data = service_->GetReferralImagesData();
+  if (!images_data)
+    return -1;
+
+  const int icon_count = images_data->top_sites.size();
+  for (int i = 0; i < icon_count; ++i) {
+    GURL url(images_data->top_sites[i].icon_image_url());
+    if (path.compare(URLDataSource::URLToRequestPath(url)) == 0)
+      return i;
+  }
+
+  return -1;
+}
+
+bool NTPReferralImageSource::IsIconPath(const std::string& path) const {
+  return GetIconFileIndexFromPath(path) != -1;
+}
+
+bool NTPReferralImageSource::IsWallpaperPath(const std::string& path) const {
   return GetWallpaperIndexFromPath(path) != -1;
 }
 
-bool NTPSponsoredImageSource::IsLogoPath(const std::string& path) const {
+bool NTPReferralImageSource::IsLogoPath(const std::string& path) const {
   return path.compare(kLogoPath) == 0;
 }
 
-int NTPSponsoredImageSource::GetWallpaperIndexFromPath(
+int NTPReferralImageSource::GetWallpaperIndexFromPath(
     const std::string& path) const {
-  auto* images_data = service_->GetSponsoredImagesData();
+  auto* images_data = service_->GetReferralImagesData();
   if (!images_data)
     return -1;
 

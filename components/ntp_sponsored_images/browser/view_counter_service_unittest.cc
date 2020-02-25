@@ -20,6 +20,7 @@ using ntp_sponsored_images::ViewCounterService;
 using ntp_sponsored_images::NTPSponsoredImagesData;
 using ntp_sponsored_images::NTPSponsoredImagesService;
 
+namespace ntp_sponsored_images {
 
 class NTPSponsoredImagesViewCounterTest : public testing::Test {
  public:
@@ -35,7 +36,7 @@ class NTPSponsoredImagesViewCounterTest : public testing::Test {
 
     service_ = std::make_unique<NTPSponsoredImagesService>(nullptr);
     view_counter_ = std::make_unique<ViewCounterService>(
-        service_.get(), prefs(), true);
+        nullptr, service_.get(), prefs(), true);
   }
 
   void OptOut() {
@@ -73,27 +74,27 @@ class NTPSponsoredImagesViewCounterTest : public testing::Test {
 
 TEST_F(NTPSponsoredImagesViewCounterTest, NotActiveInitially) {
   // By default, data is bad and wallpaper is not active.
-  EXPECT_FALSE(view_counter_->IsBrandedWallpaperActive());
+  EXPECT_FALSE(view_counter_->IsSponsoredWallpaperActive());
 }
 
 TEST_F(NTPSponsoredImagesViewCounterTest, NotActiveWithBadData) {
   // Set some bad data explicitly.
   NTPSponsoredImagesData* badData = new NTPSponsoredImagesData;
   service_->images_data_.reset(badData);
-  EXPECT_FALSE(view_counter_->IsBrandedWallpaperActive());
+  EXPECT_FALSE(view_counter_->IsSponsoredWallpaperActive());
 }
 
 TEST_F(NTPSponsoredImagesViewCounterTest, NotActiveOptedOut) {
   // Even with good data, wallpaper should not be active if user pref is off.
   service_->images_data_ = CreateGoodData();
   OptOut();
-  EXPECT_FALSE(view_counter_->IsBrandedWallpaperActive());
+  EXPECT_FALSE(view_counter_->IsSponsoredWallpaperActive());
 }
 
 TEST_F(NTPSponsoredImagesViewCounterTest, IsActiveOptedIn) {
   service_->images_data_ = CreateGoodData();
   OptIn();
-  EXPECT_TRUE(view_counter_->IsBrandedWallpaperActive());
+  EXPECT_TRUE(view_counter_->IsSponsoredWallpaperActive());
 }
 
 TEST_F(NTPSponsoredImagesViewCounterTest, ActiveInitiallyOptedIn) {
@@ -101,6 +102,7 @@ TEST_F(NTPSponsoredImagesViewCounterTest, ActiveInitiallyOptedIn) {
   // If this gets manually changed, then this test should be manually changed
   // too.
   service_->images_data_ = CreateGoodData();
-  EXPECT_TRUE(view_counter_->IsBrandedWallpaperActive());
+  EXPECT_TRUE(view_counter_->IsSponsoredWallpaperActive());
 }
 
+}  // namespace ntp_sponsored_images

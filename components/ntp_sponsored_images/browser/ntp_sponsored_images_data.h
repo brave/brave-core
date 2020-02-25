@@ -10,17 +10,23 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/values.h"
 
 namespace ntp_sponsored_images {
 
 struct NTPSponsoredImagesData {
   NTPSponsoredImagesData();
+  NTPSponsoredImagesData(const std::string& photo_json,
+                         const base::FilePath& base_dir);
   NTPSponsoredImagesData(const NTPSponsoredImagesData& data);
   NTPSponsoredImagesData& operator=(const NTPSponsoredImagesData& data);
   NTPSponsoredImagesData(NTPSponsoredImagesData&& data);
   ~NTPSponsoredImagesData();
 
   bool IsValid() const;
+  // Generate Value with background image at |index|.
+  base::Value GetValueAt(size_t index);
+
   std::string logo_image_url() const;
   std::vector<std::string> wallpaper_image_urls() const;
 

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_component_installer.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_referral_component_installer.h"
 
 #include <memory>
 #include <string>
@@ -13,9 +13,7 @@
 #include "base/bind.h"
 #include "base/callback.h"
 #include "base/strings/stringprintf.h"
-#include "brave/components/brave_ads/browser/locale_helper.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
-#include "brave/components/ntp_sponsored_images/browser/regional_component_data.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
 #include "crypto/sha2.h"
@@ -24,16 +22,19 @@ using brave_component_updater::BraveOnDemandUpdater;
 
 namespace {
 
-constexpr char kNTPSponsoredImagesDisplayName[] = "NTP sponsored images";
+constexpr char kNTPReferralComponentName[] = "NTP Referral component";
+
 constexpr size_t kHashSize = 32;
 
-class NTPSponsoredImagesComponentInstallerPolicy
+class NTPReferralComponentInstallerPolicy
     : public component_updater::ComponentInstallerPolicy {
  public:
-  explicit NTPSponsoredImagesComponentInstallerPolicy(
-      const RegionalComponentData& regional_component_data,
-      OnComponentReadyCallback callback);
-  ~NTPSponsoredImagesComponentInstallerPolicy() override;
+  NTPReferralComponentInstallerPolicy(
+      const std::string& component_public_key,
+      const std::string& component_id,
+      const std::string& company_name,
+      OnReferralComponentReadyCallback callback);
+  ~NTPReferralComponentInstallerPolicy() override;
 
   // component_updater::ComponentInstallerPolicy
   bool SupportsGroupPolicyEnabledComponentUpdates() const override;
@@ -54,81 +55,88 @@ class NTPSponsoredImagesComponentInstallerPolicy
   std::vector<std::string> GetMimeTypes() const override;
 
  private:
-  const RegionalComponentData data_;
-  OnComponentReadyCallback ready_callback_;
+  const std::string component_public_key_;
+  const std::string component_id_;
+  const std::string company_name_;
+  OnReferralComponentReadyCallback ready_callback_;
   uint8_t component_hash_[kHashSize];
 
-  DISALLOW_COPY_AND_ASSIGN(NTPSponsoredImagesComponentInstallerPolicy);
+  DISALLOW_COPY_AND_ASSIGN(NTPReferralComponentInstallerPolicy);
 };
 
-NTPSponsoredImagesComponentInstallerPolicy::
-NTPSponsoredImagesComponentInstallerPolicy(
-    const RegionalComponentData& data, OnComponentReadyCallback callback)
-    : data_(data),
+NTPReferralComponentInstallerPolicy::
+NTPReferralComponentInstallerPolicy(
+    const std::string& component_public_key,
+    const std::string& component_id,
+    const std::string& company_name,
+    OnReferralComponentReadyCallback callback)
+    : component_public_key_(component_public_key),
+      component_id_(component_id),
+      company_name_(company_name),
       ready_callback_(callback) {
   // Generate hash from public key.
   std::string decoded_public_key;
-  base::Base64Decode(data.component_base64_public_key, &decoded_public_key);
+  base::Base64Decode(component_public_key_, &decoded_public_key);
   crypto::SHA256HashString(decoded_public_key, component_hash_, kHashSize);
 }
 
-NTPSponsoredImagesComponentInstallerPolicy::
-~NTPSponsoredImagesComponentInstallerPolicy() {}
+NTPReferralComponentInstallerPolicy::
+~NTPReferralComponentInstallerPolicy() = default;
 
-bool NTPSponsoredImagesComponentInstallerPolicy::
+bool NTPReferralComponentInstallerPolicy::
     SupportsGroupPolicyEnabledComponentUpdates() const {
   return true;
 }
 
-bool NTPSponsoredImagesComponentInstallerPolicy::
+bool NTPReferralComponentInstallerPolicy::
     RequiresNetworkEncryption() const {
   return false;
 }
 
 update_client::CrxInstaller::Result
-NTPSponsoredImagesComponentInstallerPolicy::OnCustomInstall(
+NTPReferralComponentInstallerPolicy::OnCustomInstall(
     const base::DictionaryValue& manifest,
     const base::FilePath& install_dir) {
   return update_client::CrxInstaller::Result(0);
 }
 
-void NTPSponsoredImagesComponentInstallerPolicy::OnCustomUninstall() {}
+void NTPReferralComponentInstallerPolicy::OnCustomUninstall() {}
 
-void NTPSponsoredImagesComponentInstallerPolicy::ComponentReady(
+void NTPReferralComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& path,
     std::unique_ptr<base::DictionaryValue> manifest) {
   ready_callback_.Run(path);
 }
 
-bool NTPSponsoredImagesComponentInstallerPolicy::VerifyInstallation(
+bool NTPReferralComponentInstallerPolicy::VerifyInstallation(
     const base::DictionaryValue& manifest,
     const base::FilePath& install_dir) const {
   return true;
 }
 
-base::FilePath NTPSponsoredImagesComponentInstallerPolicy::
+base::FilePath NTPReferralComponentInstallerPolicy::
     GetRelativeInstallDir() const {
-  return base::FilePath::FromUTF8Unsafe(data_.component_id);
+  return base::FilePath::FromUTF8Unsafe(component_id_);
 }
 
-void NTPSponsoredImagesComponentInstallerPolicy::GetHash(
+void NTPReferralComponentInstallerPolicy::GetHash(
     std::vector<uint8_t>* hash) const {
   hash->assign(component_hash_, component_hash_ + kHashSize);
 }
 
-std::string NTPSponsoredImagesComponentInstallerPolicy::GetName() const {
+std::string NTPReferralComponentInstallerPolicy::GetName() const {
   return base::StringPrintf(
-      "%s (%s)", kNTPSponsoredImagesDisplayName, data_.region.c_str());
+      "%s (%s)", kNTPReferralComponentName, company_name_.c_str());
 }
 
 update_client::InstallerAttributes
-NTPSponsoredImagesComponentInstallerPolicy::GetInstallerAttributes() const {
+NTPReferralComponentInstallerPolicy::GetInstallerAttributes() const {
   return update_client::InstallerAttributes();
 }
 
 std::vector<std::string>
-    NTPSponsoredImagesComponentInstallerPolicy::GetMimeTypes() const {
+    NTPReferralComponentInstallerPolicy::GetMimeTypes() const {
   return std::vector<std::string>();
 }
 
@@ -138,13 +146,17 @@ void OnRegistered(const std::string& component_id) {
 
 }  // namespace
 
-void RegisterNTPSponsoredImagesComponent(
+void RegisterNTPReferralComponent(
     component_updater::ComponentUpdateService* cus,
-    const RegionalComponentData& data,
-    OnComponentReadyCallback callback) {
+    const std::string& component_public_key,
+    const std::string& component_id,
+    const std::string& company_name,
+    OnReferralComponentReadyCallback callback) {
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
-      std::make_unique<NTPSponsoredImagesComponentInstallerPolicy>(
-          data, callback));
-  installer->Register(cus,
-                      base::BindOnce(&OnRegistered, data.component_id));
+      std::make_unique<NTPReferralComponentInstallerPolicy>(
+          component_public_key,
+          component_id,
+          company_name,
+          callback));
+  installer->Register(cus, base::BindOnce(&OnRegistered, component_id));
 }

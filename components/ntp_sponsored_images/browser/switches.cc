@@ -14,6 +14,7 @@ namespace switches {
 // Allows forcing sponsored images to use a local directory to find
 // the photo json rule file and associated images.
 const char kNTPBrandedDataPathForTesting[] = "ntp-branded-data-path";
+const char kNTPReferralDataPathForTesting[] = "ntp-referral-data-path";
 
 }  // namespace switches
 

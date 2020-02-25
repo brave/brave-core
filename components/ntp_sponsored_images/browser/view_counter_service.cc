@@ -15,31 +15,15 @@
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/ntp_sponsored_images/browser/features.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_referral_images_data.h"
+#include "brave/components/ntp_sponsored_images/browser/ntp_referral_images_service.h"
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_sponsored_images/browser/sponsored_view_counter_model.h"
 #include "brave/components/ntp_sponsored_images/common/pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
-#include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 
 namespace ntp_sponsored_images {
-
-namespace {
-
-NTPSponsoredImagesData* GetDemoWallpaper() {
-  static auto demo = std::make_unique<NTPSponsoredImagesData>();
-  demo->url_prefix = "chrome://newtab/ntp-dummy-brandedwallpaper/";
-  demo->wallpaper_image_files = {
-      base::FilePath(FILE_PATH_LITERAL("wallpaper1.jpg")),
-      base::FilePath(FILE_PATH_LITERAL("wallpaper2.jpg")),
-      base::FilePath(FILE_PATH_LITERAL("wallpaper3.jpg")),
-  };
-  demo->logo_alt_text = "Technikke: For music lovers.";
-  demo->logo_company_name = "Technikke";
-  demo->logo_destination_url = "https://brave.com";
-  return demo.get();
-}
-
-}  // namespace
 
 // static
 void ViewCounterService::RegisterProfilePrefs(
@@ -48,26 +32,32 @@ void ViewCounterService::RegisterProfilePrefs(
       prefs::kBrandedWallpaperNotificationDismissed, false);
   registry->RegisterBooleanPref(
       prefs::kNewTabPageShowBrandedBackgroundImage, true);
+  registry->RegisterBooleanPref(
+      prefs::kNewTabPageShowReferralBackgroundImage, true);
 }
 
 ViewCounterService::ViewCounterService(
-    NTPSponsoredImagesService* service,
+    NTPReferralImagesService* referral_service,
+    NTPSponsoredImagesService* sponsored_service,
     PrefService* prefs,
     bool is_supported_locale)
-    : service_(service),
+    : referral_service_(referral_service),
+      sponsored_service_(sponsored_service),
       prefs_(prefs),
       is_supported_locale_(is_supported_locale) {
   // If we have a wallpaper, store it as private var.
   // Set demo wallpaper if a flag is set.
-  if (!base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo)) {
-    DCHECK(service_);
-    service_->AddObserver(this);
+  if (sponsored_service_ &&
+      !base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo)) {
+    sponsored_service_->AddObserver(this);
   }
 
-  if (current_wallpaper()) {
-    model_.set_total_image_count(
-        current_wallpaper()->wallpaper_image_files.size());
-  }
+  if (referral_service_)
+    referral_service_->AddObserver(this);
+
+  model_.reset(new SponsoredViewCounterModel);
+  if (auto* data = GetCurrentSponsoredWallpaperData())
+    model_->set_total_image_count(data->wallpaper_image_files.size());
 
   pref_change_registrar_.Init(prefs_);
   pref_change_registrar_.Add(brave_rewards::prefs::kBraveRewardsEnabled,
@@ -80,33 +70,57 @@ ViewCounterService::ViewCounterService(
 
 ViewCounterService::~ViewCounterService() = default;
 
-NTPSponsoredImagesData* ViewCounterService::current_wallpaper() {
-  if (base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo)) {
-    return GetDemoWallpaper();
+NTPSponsoredImagesData*
+ViewCounterService::GetCurrentSponsoredWallpaperData() const {
+  if (!sponsored_service_)
+    return nullptr;
+
+  return sponsored_service_->GetSponsoredImagesData();
+}
+
+base::Value ViewCounterService::GetCurrentWallpaper() const {
+  if (ShouldShowReferralWallpaper()) {
+    return GetCurrentReferralWallpaperData()->GetValueAt(
+        model_->current_wallpaper_image_index());
   }
-  return service_->GetSponsoredImagesData();
+
+  if (ShouldShowSponsoredWallpaper()) {
+    return GetCurrentSponsoredWallpaperData()->GetValueAt(
+        model_->current_wallpaper_image_index());
+  }
+
+  return base::Value();
 }
 
 void ViewCounterService::Shutdown() {
-  if (service_ && service_->HasObserver(this))
-    service_->RemoveObserver(this);
+  if (sponsored_service_ && sponsored_service_->HasObserver(this))
+    sponsored_service_->RemoveObserver(this);
 }
 
-void ViewCounterService::OnUpdated(
+void ViewCounterService::OnReferralImagesUpdated(NTPReferralImagesData* data) {
+  DCHECK(referral_service_);
+
+  if (data && IsReferralWallpaperActive())
+    ResetViewCounterModelByDataUpdated(data->wallpaper_image_files.size());
+}
+
+void ViewCounterService::OnSponsoredImagesUpdated(
     NTPSponsoredImagesData* data) {
   DCHECK(
       !base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo));
-  DCHECK(service_);
+  DCHECK(sponsored_service_);
 
-  // Data is updated, so change our stored data and reset any indexes.
-  // But keep view counter until branded content is seen.
-  model_.ResetCurrentWallpaperImageIndex();
-  model_.set_total_image_count(data ? data->wallpaper_image_files.size() : 0);
+  if (data && IsSponsoredWallpaperActive())
+    ResetViewCounterModelByDataUpdated(data->wallpaper_image_files.size());
 }
 
+void ViewCounterService::ResetViewCounterModelByDataUpdated(
+    int background_images_count) {
+  model_->ResetCurrentWallpaperImageIndex();
+  model_->set_total_image_count(background_images_count);
+}
 
-void ViewCounterService::OnPreferenceChanged(
-    const std::string& pref_name) {
+void ViewCounterService::OnPreferenceChanged() {
   ResetNotificationState();
 }
 
@@ -118,27 +132,41 @@ void ViewCounterService::RegisterPageView() {
   // Don't do any counting if we will never be showing the data
   // since we want the count to start at the point of data being available
   // or the user opt-in status changing.
-  if (IsBrandedWallpaperActive()) {
-    model_.RegisterPageView();
-  }
+  if (IsReferralWallpaperActive() || IsSponsoredWallpaperActive())
+    model_->RegisterPageView();
 }
 
-bool ViewCounterService::IsBrandedWallpaperActive() {
-  return (is_supported_locale_ && IsOptedIn() && current_wallpaper() &&
-      current_wallpaper()->IsValid());
+bool ViewCounterService::ShouldShowSponsoredWallpaper() const {
+  return IsSponsoredWallpaperActive() && model_->ShouldShowWallpaper();
 }
 
-bool ViewCounterService::ShouldShowBrandedWallpaper() {
-  return IsBrandedWallpaperActive() && model_.ShouldShowBrandedWallpaper();
+bool ViewCounterService::IsSponsoredWallpaperActive() const {
+  return is_supported_locale_ && show_background_image_enabled_ &&
+         IsSponsoredWallpaperOptedIn() && GetCurrentSponsoredWallpaperData();
 }
 
-size_t ViewCounterService::GetWallpaperImageIndexToDisplay() {
-  return model_.current_wallpaper_image_index();
+bool ViewCounterService::IsSponsoredWallpaperOptedIn() const {
+  return prefs_->GetBoolean(prefs::kNewTabPageShowBrandedBackgroundImage);
 }
 
-bool ViewCounterService::IsOptedIn() {
-  return prefs_->GetBoolean(prefs::kNewTabPageShowBrandedBackgroundImage) &&
-         prefs_->GetBoolean(kNewTabPageShowBackgroundImage);
+bool ViewCounterService::ShouldShowReferralWallpaper() const {
+  return IsReferralWallpaperActive() && model_->ShouldShowWallpaper();
+}
+
+bool ViewCounterService::IsReferralWallpaperActive() const {
+  return show_background_image_enabled_ &&
+      IsReferralWallpaperOptedIn() && GetCurrentReferralWallpaperData();
+}
+
+bool ViewCounterService::IsReferralWallpaperOptedIn() const {
+  return prefs_->GetBoolean(prefs::kNewTabPageShowReferralBackgroundImage);
+}
+
+NTPReferralImagesData*
+ViewCounterService::GetCurrentReferralWallpaperData() const {
+  if (!referral_service_)
+    return nullptr;
+  return referral_service_->GetReferralImagesData();
 }
 
 }  // namespace ntp_sponsored_images

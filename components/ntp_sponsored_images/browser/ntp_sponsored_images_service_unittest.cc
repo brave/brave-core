@@ -9,15 +9,14 @@
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using ntp_sponsored_images::NTPSponsoredImagesService;
-using ntp_sponsored_images::NTPSponsoredImagesData;
+namespace ntp_sponsored_images {
 
 class TestObserver : public NTPSponsoredImagesService::Observer {
  public:
   TestObserver() = default;
   ~TestObserver() override = default;
 
-  void OnUpdated(NTPSponsoredImagesData* data) override {
+  void OnSponsoredImagesUpdated(NTPSponsoredImagesData* data) override {
     called_ = true;
     data_ = data;
   }
@@ -39,25 +38,25 @@ TEST(NTPSponsoredImagesServiceTest, InternalDataTest) {
   service.AddObserver(&observer);
 
   // Check with json file w/o schema version with empty object.
-  service.ResetImagesDataForTest();
+  service.images_data_.reset();
   service.OnGetPhotoJsonData("{}");
   EXPECT_EQ(nullptr, service.GetSponsoredImagesData());
 
   // Check with json file with empty object.
-  const std::string  test_empty_json_string = R"(
+  const std::string test_empty_json_string = R"(
       {
           "schemaVersion": 1
       })";
-  service.ResetImagesDataForTest();
+  service.images_data_.reset();
+  observer.called_ = false;
+  observer.data_ = nullptr;
   service.OnGetPhotoJsonData(test_empty_json_string);
   auto* data = service.GetSponsoredImagesData();
-  EXPECT_NE(data, nullptr);
-  EXPECT_FALSE(data->IsValid());
-  service.NotifyObservers();
+  EXPECT_EQ(data, nullptr);
   EXPECT_TRUE(observer.called_);
   EXPECT_TRUE(observer.data_->logo_alt_text.empty());
 
-  const std::string  test_json_string = R"(
+  const std::string test_json_string = R"(
       {
           "schemaVersion": 1,
           "logo": {
@@ -81,7 +80,9 @@ TEST(NTPSponsoredImagesServiceTest, InternalDataTest) {
               }
           ]
       })";
-  service.ResetImagesDataForTest();
+  service.images_data_.reset();
+  observer.called_ = false;
+  observer.data_ = nullptr;
   service.OnGetPhotoJsonData(test_json_string);
   data = service.GetSponsoredImagesData();
   EXPECT_TRUE(data);
@@ -89,13 +90,11 @@ TEST(NTPSponsoredImagesServiceTest, InternalDataTest) {
   // Above json data has 3 wallpapers.
   const size_t image_count = 3;
   EXPECT_EQ(image_count, data->wallpaper_image_urls().size());
-  observer.called_ = false;
-  service.NotifyObservers();
   EXPECT_TRUE(observer.called_);
   EXPECT_FALSE(observer.data_->logo_alt_text.empty());
 
   // Invalid schema version
-  const std::string  test_json_string_higher_schema = R"(
+  const std::string test_json_string_higher_schema = R"(
     {
         "schemaVersion": 2,
         "logo": {
@@ -119,10 +118,14 @@ TEST(NTPSponsoredImagesServiceTest, InternalDataTest) {
             }
         ]
     })";
-  service.ResetImagesDataForTest();
+  service.images_data_.reset();
+  observer.called_ = false;
+  observer.data_ = nullptr;
   service.OnGetPhotoJsonData(test_json_string_higher_schema);
   data = service.GetSponsoredImagesData();
   EXPECT_FALSE(data);
 
   service.RemoveObserver(&observer);
 }
+
+}  // namespace ntp_sponsored_imaages

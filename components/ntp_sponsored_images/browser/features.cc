@@ -18,6 +18,13 @@ const base::Feature kBraveNTPBrandedWallpaper{
 const base::Feature kBraveNTPBrandedWallpaperDemo{
     "BraveNTPBrandedWallpaperDemoName",
     base::FEATURE_DISABLED_BY_DEFAULT};
-
+const base::Feature kBraveCustomHomepage{
+    "BraveCutomHomepageName",
+#if defined(OS_LINUX)
+    base::FEATURE_DISABLED_BY_DEFAULT};
+#else
+    // TODO(simonhong): Change disabled by default before uploading PR.
+    base::FEATURE_ENABLED_BY_DEFAULT};
+#endif
 }  // namespace features
 }  // namespace ntp_sponsored_images

@@ -8,7 +8,8 @@
 
 namespace ntp_sponsored_images {
 
-extern const char kBrandedWallpaperHost[];
+extern const char kSponsoredWallpaperHost[];
+extern const char kReferralWallpaperHost[];
 extern const char kLogoPath[];
 extern const char kWallpaperPathPrefix[];
 

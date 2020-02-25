@@ -7,7 +7,15 @@
 
 namespace ntp_sponsored_images {
 
-const char kBrandedWallpaperHost[] = "branded-wallpaper";
+// For sponsored wallpaper,
+//   * chrome://branded-wallpaper/wallpaper-N.jpg
+//   * chrome://branded-wallpaper/logo.png
+// For referral wallpaper,
+//   * chrome://referral-wallpaper/wallpaper-N.jpg
+//   * chrome://referral-wallpaper/logo.png
+//   * chrome://referral-wallpaper/icon-file-name.png
+const char kSponsoredWallpaperHost[] = "branded-wallpaper";
+const char kReferralWallpaperHost[] = "referral-wallpaper";
 const char kLogoPath[] = "logo.png";
 const char kWallpaperPathPrefix[] = "wallpaper-";
 
