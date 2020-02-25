@@ -87,15 +87,11 @@ class MockConfirmationsClient : public ConfirmationsClient {
   MOCK_METHOD1(LoadNicewareList, void(
       ledger::GetNicewareListCallback callback));
 
-  MOCK_METHOD2(SavePublisherInfo, void(
+  MOCK_METHOD2(SaveActivityInfo, void(
       ledger::PublisherInfoPtr publisher_info,
       ledger::PublisherInfoCallback callback));
 
-  MOCK_METHOD2(LoadPublisherInfo, void(
-      const std::string& publisher_key,
-      ledger::PublisherInfoCallback callback));
-
-  MOCK_METHOD2(LoadPanelPublisherInfo, void(
+  MOCK_METHOD2(LoadActivityInfo, void(
       ledger::ActivityInfoFilterPtr filter,
       ledger::PublisherInfoCallback callback));
 
@@ -191,9 +187,6 @@ class MockConfirmationsClient : public ConfirmationsClient {
   MOCK_METHOD2(ResetState, void(
       const std::string& name,
       ledger::OnResetCallback callback));
-
-  MOCK_METHOD1(RestorePublishers, void(
-      ledger::RestorePublishersCallback callback));
 
   MOCK_METHOD1(PublisherListNormalized, void(
       ledger::PublisherInfoList list));

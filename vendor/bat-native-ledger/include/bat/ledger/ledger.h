@@ -126,12 +126,11 @@ class LEDGER_EXPORT Ledger {
 
   virtual std::string URIEncode(const std::string& value) = 0;
 
-  virtual void GetPublisherInfo(const std::string& publisher_key,
-                                PublisherInfoCallback callback) = 0;
-
   virtual void GetActivityInfoList(uint32_t start, uint32_t limit,
                                     ledger::ActivityInfoFilterPtr filter,
                                     PublisherInfoListCallback callback) = 0;
+
+  virtual void GetExcludedList(PublisherInfoListCallback callback) = 0;
 
   virtual void SetRewardsMainEnabled(bool enabled) = 0;
 
@@ -228,8 +227,7 @@ class LEDGER_EXPORT Ledger {
       const ledger::PublisherExclude& exclude,
       SetPublisherExcludeCallback callback) = 0;
 
-  virtual void RestorePublishers(
-    ledger::RestorePublishersCallback callback) = 0;
+  virtual void RestorePublishers(ledger::ResultCallback callback) = 0;
 
   virtual bool IsWalletCreated() const = 0;
 

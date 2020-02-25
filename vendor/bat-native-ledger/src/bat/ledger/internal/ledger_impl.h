@@ -88,14 +88,14 @@ class LedgerImpl : public ledger::Ledger,
   void CreateWallet(const std::string& safetynet_token,
                     ledger::CreateWalletCallback callback) override;
 
-  void SetPublisherInfo(
-      ledger::PublisherInfoPtr publisher_info);
+  void SavePublisherInfo(ledger::PublisherInfoPtr publisher_info);
 
   void SaveActivityInfo(
       ledger::PublisherInfoPtr publisher_info);
 
-  void GetPublisherInfo(const std::string& publisher_key,
-                        ledger::PublisherInfoCallback callback) override;
+  void GetPublisherInfo(
+      const std::string& publisher_key,
+      ledger::PublisherInfoCallback callback);
 
   void GetActivityInfo(ledger::ActivityInfoFilterPtr filter,
                        ledger::PublisherInfoCallback callback);
@@ -113,6 +113,8 @@ class LedgerImpl : public ledger::Ledger,
                            uint32_t limit,
                            ledger::ActivityInfoFilterPtr filter,
                            ledger::PublisherInfoListCallback callback) override;
+
+  void GetExcludedList(ledger::PublisherInfoListCallback callback) override;
 
   void DoDirectTip(const std::string& publisher_key,
                    double amount,
@@ -249,7 +251,7 @@ class LedgerImpl : public ledger::Ledger,
       const ledger::PublisherExclude& exclude,
       ledger::SetPublisherExcludeCallback callback) override;
 
-  void RestorePublishers(ledger::RestorePublishersCallback callback) override;
+  void RestorePublishers(ledger::ResultCallback callback) override;
 
   void LogRequest(
       const std::string& url,
@@ -260,7 +262,7 @@ class LedgerImpl : public ledger::Ledger,
 
   void OnRestorePublishers(
     const ledger::Result result,
-    ledger::RestorePublishersCallback callback);
+    ledger::ResultCallback callback);
 
   bool IsWalletCreated() const override;
 
@@ -667,9 +669,6 @@ class LedgerImpl : public ledger::Ledger,
   void OnUnload(uint32_t tab_id, const uint64_t& current_time) override;
 
   void OnShow(uint32_t tab_id, const uint64_t& current_time) override;
-
-  void OnSaveVisit(ledger::Result result,
-                   ledger::PublisherInfoPtr info);
 
   void OnHide(uint32_t tab_id, const uint64_t& current_time) override;
 

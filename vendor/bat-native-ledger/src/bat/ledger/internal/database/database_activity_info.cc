@@ -630,7 +630,7 @@ void DatabaseActivityInfo::GetRecordsList(
   query += GenerateActivityFilterQuery(start, limit, filter->Clone());
 
   auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  command->type = ledger::DBCommand::Type::READ;
   command->command = query;
 
   GenerateActivityFilterBind(command.get(), filter->Clone());

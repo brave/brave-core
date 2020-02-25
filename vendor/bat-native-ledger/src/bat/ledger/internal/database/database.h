@@ -19,6 +19,7 @@ namespace braveledger_database {
 
 class DatabaseInitialize;
 class DatabaseActivityInfo;
+class DatabasePublisherInfo;
 
 class Database {
  public:
@@ -50,9 +51,29 @@ class Database {
       const std::string& publisher_key,
       ledger::ResultCallback callback);
 
+  /**
+   * PUBLISHER INFO
+   */
+  void SavePublisherInfo(
+      ledger::PublisherInfoPtr publisher_info,
+      ledger::ResultCallback callback);
+
+  void GetPublisherInfo(
+      const std::string& publisher_key,
+      ledger::PublisherInfoCallback callback);
+
+  void GetPanelPublisherInfo(
+      ledger::ActivityInfoFilterPtr filter,
+      ledger::PublisherInfoCallback callback);
+
+  void RestorePublishers(ledger::ResultCallback callback);
+
+  void GetExcludedList(ledger::PublisherInfoListCallback callback);
+
  private:
   std::unique_ptr<DatabaseInitialize> initialize_;
   std::unique_ptr<DatabaseActivityInfo> activity_info_;
+  std::unique_ptr<DatabasePublisherInfo> publisher_info_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 

@@ -97,8 +97,6 @@ source_set("browser") {
       "database/database_promotion.h",
       "database/database_promotion_creds.cc",
       "database/database_promotion_creds.h",
-      "database/database_publisher_info.cc",
-      "database/database_publisher_info.h",
       "database/database_recurring_tip.cc",
       "database/database_recurring_tip.h",
       "database/database_server_publisher_amounts.cc",

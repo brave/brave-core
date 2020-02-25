@@ -41,13 +41,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
                        ledger::LedgerCallbackHandler* handler) override;
   void SavePublisherState(const std::string& publisher_state,
                           ledger::LedgerCallbackHandler* handler) override;
-
-  void SavePublisherInfo(ledger::PublisherInfoPtr publisher_info,
-                         ledger::PublisherInfoCallback callback) override;
-  void LoadPublisherInfo(const std::string& publisher_key,
-                         ledger::PublisherInfoCallback callback) override;
-  void LoadPanelPublisherInfo(ledger::ActivityInfoFilterPtr filter,
-                              ledger::PublisherInfoCallback callback) override;
   void SetTimer(uint64_t time_offset, uint32_t* timer_id) override;
   void KillTimer(const uint32_t timer_id) override;
 
@@ -91,8 +84,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void SavePendingContribution(
       ledger::PendingContributionList list,
       ledger::SavePendingContributionCallback callback) override;
-
-  void RestorePublishers(ledger::RestorePublishersCallback callback) override;
 
   void PublisherListNormalized(ledger::PublisherInfoList list) override;
 

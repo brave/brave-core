@@ -608,26 +608,23 @@ void BatLedgerImpl::GetActivityInfoList(
 }
 
 // static
-void BatLedgerImpl::OnLoadPublisherInfo(
-    CallbackHolder<LoadPublisherInfoCallback>* holder,
-    ledger::Result result,
-    ledger::PublisherInfoPtr publisher_info) {
+void BatLedgerImpl::OnGetExcludedList(
+    CallbackHolder<GetExcludedListCallback>* holder,
+    ledger::PublisherInfoList list) {
   DCHECK(holder);
   if (holder->is_valid())
-    std::move(holder->get()).Run(result, std::move(publisher_info));
+    std::move(holder->get()).Run(std::move(list));
 
   delete holder;
 }
 
-void BatLedgerImpl::LoadPublisherInfo(
-    const std::string& publisher_key,
-    LoadPublisherInfoCallback callback) {
-  auto* holder = new CallbackHolder<LoadPublisherInfoCallback>(
+void BatLedgerImpl::GetExcludedList(
+    GetExcludedListCallback callback) {
+  auto* holder = new CallbackHolder<GetExcludedListCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ledger_->GetPublisherInfo(
-      publisher_key,
-      std::bind(BatLedgerImpl::OnLoadPublisherInfo, holder, _1, _2));
+  ledger_->GetExcludedList(
+      std::bind(BatLedgerImpl::OnGetExcludedList, holder, _1));
 }
 
 // static

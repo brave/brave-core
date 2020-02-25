@@ -300,7 +300,7 @@ void Publisher::SaveVisitInternal(
        verified_new)) {
     panel_info = publisher_info->Clone();
 
-    ledger_->SetPublisherInfo(std::move(publisher_info));
+    ledger_->SavePublisherInfo(std::move(publisher_info));
   } else if (!excluded &&
              ledger_->GetAutoContribute() &&
              min_duration_ok &&
@@ -361,7 +361,7 @@ void Publisher::onFetchFavIconDBResponse(
 
     ledger::PublisherInfoPtr panel_info = info->Clone();
 
-    ledger_->SetPublisherInfo(std::move(info));
+    ledger_->SavePublisherInfo(std::move(info));
 
     if (window_id > 0) {
       ledger::VisitData visit_data;
@@ -418,7 +418,7 @@ void Publisher::OnSetPublisherExclude(
   }
 
   publisher_info->excluded = exclude;
-  ledger_->SetPublisherInfo(publisher_info->Clone());
+  ledger_->SavePublisherInfo(publisher_info->Clone());
   if (exclude == ledger::PublisherExclude::EXCLUDED) {
     ledger_->DeleteActivityInfo(
       publisher_info->id,
@@ -429,7 +429,7 @@ void Publisher::OnSetPublisherExclude(
 
 void Publisher::OnRestorePublishers(
     const ledger::Result result,
-    ledger::RestorePublishersCallback callback) {
+    ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
     << "Could not restore publishers.";
@@ -814,6 +814,7 @@ void Publisher::OnPanelPublisherInfo(
     const ledger::VisitData& visit_data) {
   if (result == ledger::Result::LEDGER_OK) {
     ledger_->OnPanelPublisherInfo(result, std::move(info), windowId);
+    return;
   }
 
   if (result == ledger::Result::NOT_FOUND && !visit_data.domain.empty()) {

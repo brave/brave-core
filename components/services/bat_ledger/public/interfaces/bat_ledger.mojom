@@ -111,8 +111,8 @@ interface BatLedger {
   GetActivityInfoList(uint32 start, uint32 limit, ledger.mojom.ActivityInfoFilter? filter) =>
       (array<ledger.mojom.PublisherInfo> list);
 
-  LoadPublisherInfo(string publisher_key) =>
-      (ledger.mojom.Result result, ledger.mojom.PublisherInfo? info);
+  GetExcludedList() => (array<ledger.mojom.PublisherInfo> list);
+
   RefreshPublisher(string publisher_key) => (ledger.mojom.PublisherStatus status);
 
   StartMonthlyContribution();
@@ -161,13 +161,6 @@ interface BatLedgerClient {
   OnWalletProperties(ledger.mojom.Result result, ledger.mojom.WalletProperties? properties);
   OnReconcileComplete(ledger.mojom.Result result, string viewing_id,
       double amount, ledger.mojom.RewardsType type);
-
-  SavePublisherInfo(ledger.mojom.PublisherInfo publisher_info) =>
-      (ledger.mojom.Result result, ledger.mojom.PublisherInfo? publisher_info);
-  LoadPublisherInfo(string publisher_key) =>
-      (ledger.mojom.Result result, ledger.mojom.PublisherInfo? publisher_info);
-  LoadPanelPublisherInfo(ledger.mojom.ActivityInfoFilter? filter) =>
-      (ledger.mojom.Result result, ledger.mojom.PublisherInfo? publisher_info);
   LoadMediaPublisherInfo(string media_key) =>
       (ledger.mojom.Result result, ledger.mojom.PublisherInfo? publisher_info);
 
@@ -197,8 +190,6 @@ interface BatLedgerClient {
   URIEncode(string value) => (string encoded_value);
 
   SavePendingContribution(array<ledger.mojom.PendingContribution> list) => (ledger.mojom.Result result);
-
-  RestorePublishers() => (ledger.mojom.Result result);
 
   PublisherListNormalized(array<ledger.mojom.PublisherInfo> list);
 

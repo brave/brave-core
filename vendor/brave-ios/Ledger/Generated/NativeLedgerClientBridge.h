@@ -20,8 +20,6 @@
 - (void)loadLedgerState:(ledger::OnLoadCallback)callback;
 - (void)loadMediaPublisherInfo:(const std::string &)media_key callback:(ledger::PublisherInfoCallback)callback;
 - (void)loadNicewareList:(ledger::GetNicewareListCallback)callback;
-- (void)loadPanelPublisherInfo:(ledger::ActivityInfoFilterPtr)filter callback:(ledger::PublisherInfoCallback)callback;
-- (void)loadPublisherInfo:(const std::string &)publisher_key callback:(ledger::PublisherInfoCallback)callback;
 - (void)loadPublisherState:(ledger::OnLoadCallback)callback;
 - (void)loadState:(const std::string &)name callback:(ledger::OnLoadCallback)callback;
 - (void)loadURL:(const std::string &)url headers:(const std::vector<std::string> &)headers content:(const std::string &)content contentType:(const std::string &)contentType method:(const ledger::UrlMethod)method callback:(ledger::LoadURLCallback)callback;
@@ -29,7 +27,6 @@
 - (void)onPanelPublisherInfo:(ledger::Result)result publisherInfo:(ledger::PublisherInfoPtr)publisher_info windowId:(uint64_t)windowId;
 - (void)onReconcileComplete:(ledger::Result)result viewingId:(const std::string &)viewing_id type:(const ledger::RewardsType)type amount:(const double)amount;
 - (void)removeRecurringTip:(const std::string &)publisher_key callback:(ledger::RemoveRecurringTipCallback)callback;
-- (void)restorePublishers:(ledger::RestorePublishersCallback)callback;
 - (void)onWalletProperties:(ledger::Result)result arg1:(ledger::WalletPropertiesPtr)arg1;
 - (void)removeAllPendingContributions:(ledger::RemovePendingContributionCallback)callback;
 - (void)removePendingContribution:(const uint64_t)id callback:(ledger::RemovePendingContributionCallback )callback;
@@ -39,7 +36,6 @@
 - (void)saveMediaPublisherInfo:(const std::string &)media_key publisherId:(const std::string &)publisher_id;
 - (void)publisherListNormalized:(ledger::PublisherInfoList)list;
 - (void)savePendingContribution:(ledger::PendingContributionList)list callback:(ledger::SavePendingContributionCallback)callback;
-- (void)savePublisherInfo:(ledger::PublisherInfoPtr)publisher_info callback:(ledger::PublisherInfoCallback)callback;
 - (void)savePublisherState:(const std::string &)publisher_state handler:(ledger::LedgerCallbackHandler *)handler;
 - (void)saveState:(const std::string &)name value:(const std::string &)value callback:(ledger::OnSaveCallback)callback;
 - (void)setConfirmationsIsReady:(const bool)is_ready;
