@@ -96,7 +96,5 @@ extension Theme {
         
         // This solves bunch of small theming problems like disclosure indicators color, cell highlight color..
         UIView.appearance(whenContainedInInstancesOf: [RewardsPanelController.self]).appearanceOverrideUserInterfaceStyle = .light
-        
-        (UIApplication.shared.delegate as? AppDelegate)?.window?.backgroundColor = colors.home
     }
 }
