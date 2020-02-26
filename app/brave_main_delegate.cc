@@ -12,7 +12,6 @@
 #include "base/lazy_instance.h"
 #include "base/path_service.h"
 #include "base/time/time.h"
-#include "build/build_config.h"
 #include "brave/app/brave_command_line_helper.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/common/brave_switches.h"
@@ -20,6 +19,7 @@
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/renderer/brave_content_renderer_client.h"
 #include "brave/utility/brave_content_utility_client.h"
+#include "build/build_config.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/chrome_paths_internal.h"
@@ -31,6 +31,7 @@
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/security_state/core/features.h"
 #include "components/sync/driver/sync_driver_switches.h"
+#include "components/translate/core/browser/translate_prefs.h"
 #include "content/public/common/content_features.h"
 #include "content/public/common/content_switches.h"
 #include "services/network/public/cpp/features.h"
@@ -182,6 +183,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       features::kWebXrGamepadModule.name,
 #if defined(OS_ANDROID)
       feed::kInterestFeedContentSuggestions.name,
+      translate::kTranslateUI.name,
 #endif
   };
   command_line.AppendFeatures(enabled_features, disabled_features);
