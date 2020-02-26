@@ -14,6 +14,7 @@
 #include "base/base64.h"
 #include "base/bind.h"
 #include "base/bind_helpers.h"
+#include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
@@ -25,6 +26,7 @@
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
 #include "base/values.h"
+#include "brave/common/brave_switches.h"
 #include "brave/common/network_constants.h"
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -81,8 +83,17 @@ scoped_refptr<Extension> ConvertGreaselionRuleToExtensionOnTaskRunner(
   char raw[crypto::kSHA256Length] = {0};
   std::string key;
   std::string script_name = rule->name();
-  crypto::SHA256HashString(kBraveUpdatesExtensionsEndpoint + script_name, raw,
-                           crypto::kSHA256Length);
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+  if (!command_line.HasSwitch(switches::kUseGoUpdateDev)) {
+    crypto::SHA256HashString(kBraveUpdatesExtensionsDevEndpoint + script_name,
+                             raw,
+                             crypto::kSHA256Length);
+  } else {
+    crypto::SHA256HashString(kBraveUpdatesExtensionsProdEndpoint + script_name,
+                             raw,
+                             crypto::kSHA256Length);
+  }
   base::Base64Encode(base::StringPiece(raw, crypto::kSHA256Length), &key);
 
   root->SetStringPath(extensions::manifest_keys::kName, script_name);
