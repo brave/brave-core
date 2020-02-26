@@ -267,4 +267,4 @@ NS_INLINE std::map<std::string, std::string> MapFromNSDictionary(NSDictionary<NS
     map.insert(std::make_pair(key.UTF8String, d[key].UTF8String));
   }
   return map;
-};
+}

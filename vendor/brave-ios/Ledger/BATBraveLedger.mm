@@ -884,9 +884,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)removePendingContribution:(BATPendingContributionInfo *)info completion:(void (^)(BATResult result))completion
 {
-  ledger->RemovePendingContribution(info.publisherKey.UTF8String,
-                                    info.viewingId.UTF8String,
-                                    info.addedDate,
+  ledger->RemovePendingContribution(info.id,
                                     ^(const ledger::Result result){
     completion(static_cast<BATResult>(result));
   });
