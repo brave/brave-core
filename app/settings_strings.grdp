@@ -2996,7 +2996,7 @@
     Uses cookies to remember your preferences, even if you don’t visit those pages
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_ENABLEPROTECTION" desc="The section title of 'Protects you and your device from dangerous sites'">
-    Safe Browsing (protects you and your device from dangerous sites)
+    Google Safe Browsing (protects you and your device from dangerous sites)
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_ENABLEPROTECTION_DESC" desc="Checkbox label: should Brave protect user and user's device from dangerous sites">
     Sends URLs of some pages you visit to Brave, when your security is at risk
