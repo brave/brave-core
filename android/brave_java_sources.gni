@@ -66,6 +66,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/qrreader/CameraSourcePreview.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/AppearancePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BackgroundVideoPlaybackPreference.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveHomepagePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveLicensePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveMainPreferencesBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BravePreferenceFragment.java",
@@ -91,6 +92,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/signin/BraveSigninManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/sync/BraveSyncService.java",
   "../../brave/android/java/org/chromium/chrome/browser/sync/BraveSyncServiceObserver.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/BraveHomeButton.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BookmarksButton.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BraveBottomToolbarCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BraveBottomToolbarVariationManager.java",
@@ -100,6 +102,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/BraveUpgradeJobIntentService.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/BraveReferrer.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/PackageUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/util/TabUtils.java",
 ]
 
 if (brave_rewards_enabled) {
