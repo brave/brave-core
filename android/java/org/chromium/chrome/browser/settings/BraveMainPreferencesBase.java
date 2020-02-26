@@ -23,6 +23,7 @@ import org.chromium.chrome.browser.ChromeFeatureList;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
+import org.chromium.chrome.browser.settings.download.BraveDownloadPreferences;
 import org.chromium.chrome.browser.settings.privacy.BravePrivacyPreferences;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
@@ -44,6 +45,7 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
     private static final String PREF_ABOUT_CHROME = "about_chrome";
     private static final String PREF_WELCOME_TOUR = "welcome_tour";
     private static final String PREF_BRAVE_REWARDS = "brave_rewards";
+    private static final String PREF_DOWNLOADS = "downloads";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
 
@@ -164,6 +166,7 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
     private void overrideChromiumPreferences() {
         // Replace fragment.
         findPreference(PREF_PRIVACY).setFragment(BravePrivacyPreferences.class.getName());
+        findPreference(PREF_DOWNLOADS).setFragment(BraveDownloadPreferences.class.getName());
     }
 
     private void initWelcomeTourPreference() {
