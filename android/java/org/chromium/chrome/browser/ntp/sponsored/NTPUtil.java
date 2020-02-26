@@ -44,7 +44,7 @@ import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import static org.chromium.chrome.browser.util.ViewUtils.dpToPx;
 
 public class NTPUtil {
-	public static void openImageCredit(String url) {
+    public static void openImageCredit(String url) {
         ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
         if(chromeTabbedActivity != null) {
             LoadUrlParams loadUrlParams = new LoadUrlParams(url);
@@ -57,7 +57,7 @@ public class NTPUtil {
     }
 
     public static void updateOrientedUI(Context context, ViewGroup view) {
-		SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
+    	SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
 
         LinearLayout parentLayout= (LinearLayout)view.findViewById(R.id.parent_layout);
         ViewGroup mainLayout = view.findViewById(R.id.ntp_main_layout);
