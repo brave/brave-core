@@ -16,12 +16,13 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/infobars/infobar_service.h"
-#include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/chrome_typography.h"
 #include "components/grit/components_scaled_resources.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -55,8 +56,9 @@ BraveWaybackMachineInfoBarContentsView::BraveWaybackMachineInfoBarContentsView(
       contents_(contents),
       wayback_machine_url_fetcher_(
           this,
-          SystemNetworkContextManager::GetInstance()->
-              GetSharedURLLoaderFactory()) {
+          content::BrowserContext::GetDefaultStoragePartition(
+              contents->GetBrowserContext())->
+                  GetURLLoaderFactoryForBrowserProcess()) {
   SetLayoutManager(std::make_unique<views::FlexLayout>());
   InitializeChildren();
 }
