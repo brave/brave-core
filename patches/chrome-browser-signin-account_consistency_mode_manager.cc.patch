@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/signin/account_consistency_mode_manager.cc b/chrome/browser/signin/account_consistency_mode_manager.cc
-index 75bd8332ec588ccd048c9394e310323c051c75ed..46b5251c95555803dac72eead10e258e0b3d3468 100644
+index e1e53d483a34658df926be3f11d6dcb30a0d2bbb..b865d1075af36e7f4ec7ba8a3b38ef22e80b825d 100644
 --- a/chrome/browser/signin/account_consistency_mode_manager.cc
 +++ b/chrome/browser/signin/account_consistency_mode_manager.cc
-@@ -174,7 +174,9 @@ bool AccountConsistencyModeManager::ShouldBuildServiceForProfile(
+@@ -188,7 +188,9 @@ bool AccountConsistencyModeManager::ShouldBuildServiceForProfile(
  
  AccountConsistencyMethod
  AccountConsistencyModeManager::GetAccountConsistencyMethod() {
