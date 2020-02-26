@@ -186,9 +186,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       prefs::kNetworkPredictionOptions,
       base::Value(chrome_browser_net::NETWORK_PREDICTION_NEVER));
 
-  // Make sync managed to dsiable some UI after password saving.
-  registry->SetDefaultPrefValue(syncer::prefs::kSyncManaged, base::Value(true));
-
   // Disable cloud print
   // Cloud Print: Don't allow this browser to act as Cloud Print server
   registry->SetDefaultPrefValue(prefs::kCloudPrintProxyEnabled,
