@@ -159,6 +159,8 @@ const char kUntargetedPageClassification[] = "untargeted";
 
 #if defined(OS_ANDROID)
 const int kMaximumAdNotifications = 3;
+#else
+const int kMaximumAdNotifications = 0;  // No limit
 #endif
 
 }  // namespace ads
