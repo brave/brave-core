@@ -20,6 +20,10 @@ extern NSString * const BATBraveLedgerErrorDomain NS_SWIFT_NAME(BraveLedgerError
 
 extern NSNotificationName const BATBraveLedgerNotificationAdded NS_SWIFT_NAME(BraveLedger.NotificationAdded);
 
+typedef NSString *BATBraveGeneralLedgerNotificationID NS_SWIFT_NAME(GeneralLedgerNotificationID) NS_STRING_ENUM;
+extern BATBraveGeneralLedgerNotificationID const BATBraveGeneralLedgerNotificationIDWalletNowVerified;
+extern BATBraveGeneralLedgerNotificationID const BATBraveGeneralLedgerNotificationIDWalletDisconnected;
+
 NS_SWIFT_NAME(BraveLedger)
 @interface BATBraveLedger : NSObject
 
@@ -93,6 +97,21 @@ NS_SWIFT_NAME(BraveLedger)
 
 /// Returns reserved amount of pending contributions to publishers.
 @property (nonatomic, readonly) double reservedAmount;
+
+#pragma mark - User Wallets
+
+/// The last updated external wallet if a user has hooked one up
+@property (nonatomic, readonly) NSDictionary<BATWalletType, BATExternalWallet *> *externalWallets;
+
+- (void)fetchExternalWalletForType:(BATWalletType)walletType
+                        completion:(nullable void (^)(BATExternalWallet * _Nullable wallet))completion;
+
+- (void)disconnectWalletOfType:(BATWalletType)walletType
+                    completion:(nullable void (^)(BATResult result))completion;
+
+- (void)authorizeExternalWalletOfType:(BATWalletType)walletType
+                           queryItems:(NSDictionary<NSString *, NSString *> *)queryItems
+                           completion:(void (^)(BATResult result, NSURL * _Nullable redirectURL))completion;
 
 #pragma mark - Publishers
 
@@ -184,6 +203,15 @@ NS_SWIFT_NAME(BraveLedger)
 - (void)attestPromotion:(NSString *)promotionId
                solution:(BATPromotionSolution *)solution
              completion:(nullable void (^)(BATResult result, BATPromotion * _Nullable promotion))completion;
+
+#pragma mark - Pending Contributions
+
+- (void)pendingContributions:(void (^)(NSArray<BATPendingContributionInfo *> *publishers))completion;
+
+- (void)removePendingContribution:(BATPendingContributionInfo *)info
+                       completion:(void (^)(BATResult result))completion;
+
+- (void)deleteAllPendingContributions:(void (^)(BATResult result))completion;
 
 #pragma mark - History
 

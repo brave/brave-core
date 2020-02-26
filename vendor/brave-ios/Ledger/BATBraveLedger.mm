@@ -13,6 +13,7 @@
 #import "BATBraveAds.h"
 #import "BATCommonOperations.h"
 #import "NSURL+Extensions.h"
+#import "BATExternalWallet+DictionaryValue.h"
 
 #import "NativeLedgerClient.h"
 #import "NativeLedgerClientBridge.h"
@@ -44,6 +45,9 @@
 NSString * const BATBraveLedgerErrorDomain = @"BATBraveLedgerErrorDomain";
 NSNotificationName const BATBraveLedgerNotificationAdded = @"BATBraveLedgerNotificationAdded";
 
+BATBraveGeneralLedgerNotificationID const BATBraveGeneralLedgerNotificationIDWalletNowVerified = @"wallet_new_verified";
+BATBraveGeneralLedgerNotificationID const BATBraveGeneralLedgerNotificationIDWalletDisconnected = @"wallet_disconnected";
+
 static NSString * const kNextAddFundsDateNotificationKey = @"BATNextAddFundsDateNotification";
 static NSString * const kBackupNotificationIntervalKey = @"BATBackupNotificationInterval";
 static NSString * const kBackupNotificationFrequencyKey = @"BATBackupNotificationFrequency";
@@ -52,6 +56,9 @@ static NSString * const kBackupSucceededKey = @"BATRewardsBackupSucceeded";
 
 static NSString * const kContributionQueueAutoincrementID = @"BATContributionQueueAutoincrementID";
 static NSString * const kUnblindedTokenAutoincrementID = @"BATUnblindedTokenAutoincrementID";
+
+static NSString * const kExternalWalletsPrefKey = @"external_wallets";
+static NSString * const kTransferFeesPrefKey = @"transfer_fees";
 
 static const auto kOneDay = base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
 
@@ -83,6 +90,7 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
 @property (nonatomic, copy) NSString *storagePath;
 @property (nonatomic) BATWalletProperties *walletInfo;
 @property (nonatomic) BATBalance *balance;
+@property (nonatomic) NSMutableDictionary<BATWalletType, BATExternalWallet *> *mExternalWallets;
 @property (nonatomic) dispatch_queue_t fileWriteThread;
 @property (nonatomic) NSMutableDictionary<NSString *, NSString *> *state;
 @property (nonatomic) BATCommonOperations *commonOps;
@@ -117,6 +125,7 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
     self.fileWriteThread = dispatch_queue_create("com.rewards.file-write", DISPATCH_QUEUE_SERIAL);
     self.mPendingPromotions = [[NSMutableArray alloc] init];
     self.mFinishedPromotions = [[NSMutableArray alloc] init];
+    self.mExternalWallets = [[NSMutableDictionary alloc] init];
     self.observers = [NSHashTable weakObjectsHashTable];
 
     self.prefs = [[NSMutableDictionary alloc] initWithContentsOfFile:[self prefsPath]];
@@ -148,6 +157,7 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
     if (self.walletCreated) {
       [self fetchWalletDetails:nil];
       [self fetchBalance:nil];
+      [self fetchExternalWalletForType:BATWalletTypeUphold completion:nil];
     }
 
     [self readNotificationsFromDisk];
@@ -356,6 +366,149 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   ledger->HasSufficientBalanceToReconcile(completion);
 }
 
+#pragma mark - User Wallets
+
+- (NSDictionary<BATWalletType, BATExternalWallet *> *)externalWallets
+{
+  return [self.mExternalWallets copy];
+}
+
+- (void)fetchExternalWalletForType:(BATWalletType)walletType
+                        completion:(nullable void (^)(BATExternalWallet * _Nullable wallet))completion
+{
+  ledger->GetExternalWallet(walletType.UTF8String, ^(ledger::Result result, ledger::ExternalWalletPtr walletPtr) {
+    if (result == ledger::Result::LEDGER_OK && walletPtr.get() != nullptr) {
+      const auto bridgedWallet = [[BATExternalWallet alloc] initWithExternalWallet:*walletPtr];
+      self.mExternalWallets[walletType] = bridgedWallet;
+      if (completion) {
+        completion(bridgedWallet);
+      }
+    } else {
+      if (completion) {
+        completion(nil);
+      }
+    }
+  });
+}
+
+- (void)disconnectWalletOfType:(BATWalletType)walletType
+                    completion:(nullable void (^)(BATResult result))completion
+{
+  ledger->DisconnectWallet(walletType.UTF8String, ^(ledger::Result result){
+    if (completion) {
+      completion(static_cast<BATResult>(result));
+    }
+    
+    for (BATBraveLedgerObserver *observer in self.observers) {
+      if (observer.externalWalletDisconnected) {
+        observer.externalWalletDisconnected(walletType);
+      }
+    }
+  });
+}
+
+- (void)authorizeExternalWalletOfType:(BATWalletType)walletType
+                           queryItems:(NSDictionary<NSString *, NSString *> *)queryItems
+                           completion:(void (^)(BATResult result, NSURL * _Nullable redirectURL))completion
+{
+  ledger->ExternalWalletAuthorization(walletType.UTF8String,
+                                      MapFromNSDictionary(queryItems),
+                                      ^(ledger::Result result, std::map<std::string, std::string> args) {
+    const auto it = args.find("redirect_url");
+    std::string redirect;
+    if (it != args.end()) {
+      redirect = it->second;
+    }
+    NSURL *url = redirect.empty() ? nil : [NSURL URLWithString:[NSString stringWithUTF8String:redirect.c_str()]];
+    completion(static_cast<BATResult>(result), url);
+    
+    if (result == ledger::Result::LEDGER_OK) {
+      for (BATBraveLedgerObserver *observer in self.observers) {
+        if (observer.externalWalletAuthorized) {
+          observer.externalWalletAuthorized(walletType);
+        }
+      }
+    }
+  });
+}
+
+- (void)getExternalWallets:(ledger::GetExternalWalletsCallback)callback
+{
+  std::map<std::string, ledger::ExternalWalletPtr> wallets;
+  NSDictionary *externalWallets = self.prefs[kExternalWalletsPrefKey] ?: [[NSDictionary alloc] init];
+  for (NSString *walletTypeKey in externalWallets) {
+    const auto wallet = [[BATExternalWallet alloc] initWithDictionaryValue:externalWallets[walletTypeKey]];
+    wallets.insert(std::make_pair(walletTypeKey.UTF8String, wallet.cppObjPtr));
+  }
+  callback(std::move(wallets));
+}
+
+- (void)saveExternalWallet:(const std::string &)wallet_type wallet:(ledger::ExternalWalletPtr)wallet
+{
+  if (wallet.get() == nullptr) { return; }
+  const auto bridgedWallet = [[BATExternalWallet alloc] initWithExternalWallet:*wallet];
+  const auto bridgedType = [NSString stringWithUTF8String:wallet_type.c_str()];
+  NSMutableDictionary *externalWallets = [self.prefs[kExternalWalletsPrefKey] mutableCopy] ?: [[NSMutableDictionary alloc] init];
+  externalWallets[bridgedType] = [bridgedWallet dictionaryValue];
+  self.prefs[kExternalWalletsPrefKey] = externalWallets;
+  [self savePrefs];
+}
+
+- (void)setTransferFee:(const std::string &)wallet_type transfer_fee:(ledger::TransferFeePtr)transfer_fee
+{
+  if (transfer_fee.get() == nullptr) {
+    return;
+  }
+  const auto bridgedType = [NSString stringWithUTF8String:wallet_type.c_str()];
+  const auto feeID = [NSString stringWithUTF8String:transfer_fee->id.c_str()];
+  const auto feeDict = @{
+    @"id": feeID,
+    @"amount": @(transfer_fee->amount),
+    @"execution_timestamp": @(transfer_fee->execution_timestamp),
+    @"execution_id": @(transfer_fee->execution_id)
+  };
+
+  NSMutableDictionary *transferFees = [self.prefs[kTransferFeesPrefKey] mutableCopy] ?: [[NSMutableDictionary alloc] init];
+  NSMutableDictionary *feesForWalletType = [transferFees[bridgedType] mutableCopy] ?: [[NSMutableDictionary alloc] init];
+  feesForWalletType[feeID] = feeDict;
+  transferFees[bridgedType] = feesForWalletType;
+  self.prefs[kTransferFeesPrefKey] = transferFees;
+  [self savePrefs];
+}
+
+- (ledger::TransferFeeList)getTransferFees:(const std::string &)wallet_type
+{
+  const auto bridgedType = [NSString stringWithUTF8String:wallet_type.c_str()];
+  ledger::TransferFeeList list;
+  NSDictionary *transferFees = self.prefs[kTransferFeesPrefKey] ?: [[NSDictionary alloc] init];
+  NSDictionary *walletFees = transferFees[bridgedType];
+  if (!walletFees || walletFees.count == 0) {
+    return list;
+  }
+  for (NSString *feeID in walletFees) {
+    NSDictionary* feeDict = walletFees[feeID];
+    auto fee = ledger::TransferFee::New();
+    fee->id = feeID.UTF8String;
+    fee->amount = [feeDict[@"amount"] doubleValue];
+    fee->execution_id = [feeDict[@"execution_id"] longValue];
+    fee->execution_timestamp = [feeDict[@"execution_timestamp"] longLongValue];
+    list.insert(std::make_pair(feeID.UTF8String, std::move(fee)));
+  }
+  return list;
+}
+
+- (void)removeTransferFee:(const std::string &)wallet_type id:(const std::string &)id
+{
+  const auto bridgedType = [NSString stringWithUTF8String:wallet_type.c_str()];
+  const auto bridgedID = [NSString stringWithUTF8String:id.c_str()];
+  NSMutableDictionary *transferFees = [self.prefs[kTransferFeesPrefKey] mutableCopy] ?: [[NSMutableDictionary alloc] init];
+  NSMutableDictionary *feesForWalletType = [transferFees[bridgedType] mutableCopy] ?: [[NSMutableDictionary alloc] init];
+  [feesForWalletType removeObjectForKey:bridgedID];
+  transferFees[bridgedType] = feesForWalletType;
+  self.prefs[kTransferFeesPrefKey] = transferFees;
+  [self savePrefs];
+}
+
 #pragma mark - Publishers
 
 - (void)listActivityInfoFromStart:(unsigned int)start
@@ -477,6 +630,10 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 {
   ledger->GetPublisherBanner(std::string(publisherId.UTF8String), ^(ledger::PublisherBannerPtr banner) {
     auto bridgedBanner = banner.get() != nullptr ? [[BATPublisherBanner alloc] initWithPublisherBanner:*banner] : nil;
+    // native libs prefixes the logo and background image with this URL scheme
+    const auto imagePrefix = @"chrome://rewards-image/";
+    bridgedBanner.background = [bridgedBanner.background stringByReplacingOccurrencesOfString:imagePrefix withString:@""];
+    bridgedBanner.logo = [bridgedBanner.logo stringByReplacingOccurrencesOfString:imagePrefix withString:@""];
     completion(bridgedBanner);
   });
 }
@@ -711,6 +868,36 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 {
   ledger::AutoContributePropsPtr props = ledger->GetAutoContributeProps();
   return [[BATAutoContributeProps alloc] initWithAutoContributePropsPtr:std::move(props)];
+}
+
+#pragma mark - Pending Contributions
+
+- (void)pendingContributions:(void (^)(NSArray<BATPendingContributionInfo *> *publishers))completion
+{
+  ledger->GetPendingContributions(^(ledger::PendingContributionInfoList list){
+    const auto convetedList = NSArrayFromVector(&list, ^BATPendingContributionInfo *(const ledger::PendingContributionInfoPtr& info){
+      return [[BATPendingContributionInfo alloc] initWithPendingContributionInfo:*info];
+    });
+    completion(convetedList);
+  });
+}
+
+- (void)removePendingContribution:(BATPendingContributionInfo *)info completion:(void (^)(BATResult result))completion
+{
+  ledger->RemovePendingContribution(info.id,
+                                    ^(const ledger::Result result){
+    completion(static_cast<BATResult>(result));
+  });
+}
+
+// TODO: After DB migration, rename to `removeAll` instead of `deleteAll`
+// Reason being that right now ledger client already has a method called
+// `removeAllPendingContributions`
+- (void)deleteAllPendingContributions:(void (^)(BATResult result))completion
+{
+  ledger->RemoveAllPendingContributions(^(const ledger::Result result){
+    completion(static_cast<BATResult>(result));
+  });
 }
 
 #pragma mark - Reconcile
@@ -990,7 +1177,9 @@ BATLedgerBridge(BOOL,
 - (std::string)getStringState:(const std::string&)name
 {
   const auto key = [NSString stringWithUTF8String:name.c_str()];
-  return ((NSString *)self.prefs[key]).UTF8String;
+  const auto value = (NSString *)self.prefs[key];
+  if (!value) { return ""; }
+  return value.UTF8String;
 }
 
 - (void)setInt64State:(const std::string&)name value:(int64_t)value
@@ -1823,21 +2012,17 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)getExternalWallets:(ledger::GetExternalWalletsCallback)callback
-{
-  // For uphold wallets (not implemented)
-  std::map<std::string, ledger::ExternalWalletPtr> wallets;
-  callback(std::move(wallets));
-}
-
-- (void)saveExternalWallet:(const std::string &)wallet_type wallet:(ledger::ExternalWalletPtr)wallet
-{
-  // For uphold wallets (not implemented)
-}
-
 - (void)showNotification:(const std::string &)type args:(const std::vector<std::string>&)args callback:(ledger::ShowNotificationCallback)callback
 {
-  // TODO: Add notifications
+  const auto notificationID = [NSString stringWithUTF8String:type.c_str()];
+  const auto info = [[NSMutableDictionary<NSNumber *, NSString *> alloc] init];
+  for (NSInteger i = 0; i < args.size(); i++) {
+    info[@(i)] = [NSString stringWithUTF8String:args[i].c_str()];
+  }
+  [self addNotificationOfKind:BATRewardsNotificationKindGeneralLedger
+                     userInfo:info
+               notificationID:notificationID
+                     onlyOnce:NO];
 }
 
 - (void)getServerPublisherInfo:(const std::string &)publisher_key callback:(ledger::GetServerPublisherInfoCallback)callback
@@ -1870,23 +2055,6 @@ BATLedgerBridge(BOOL,
       }
     }
   }];
-}
-
-- (void)setTransferFee:(const std::string &)wallet_type transfer_fee:(ledger::TransferFeePtr)transfer_fee
-{
-  // FIXME: Add implementation
-}
-
-- (ledger::TransferFeeList)getTransferFees:(const std::string &)wallet_type
-{
-  // FIXME: Add implementation
-  ledger::TransferFeeList list;
-  return list;
-}
-
-- (void)removeTransferFee:(const std::string &)wallet_type id:(const std::string &)id
-{
-  // FIXME: Add implementation
 }
 
 - (void)insertOrUpdateContributionQueue:(ledger::ContributionQueuePtr)info callback:(ledger::ResultCallback)callback
