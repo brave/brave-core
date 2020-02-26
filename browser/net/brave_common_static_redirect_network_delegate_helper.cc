@@ -9,6 +9,8 @@
 #include <string>
 #include <vector>
 
+#include "base/command_line.h"
+#include "brave/common/brave_switches.h"
 #include "brave/common/network_constants.h"
 #include "components/component_updater/component_updater_url_constants.h"
 #include "extensions/buildflags/buildflags.h"
@@ -66,8 +68,15 @@ int OnBeforeURLRequest_CommonStaticRedirectWorkForGURL(
 
   if (IsUpdaterURL(request_url)) {
     replacements.SetQueryStr(request_url.query_piece());
-    *new_url = GURL(kBraveUpdatesExtensionsEndpoint)
+    const base::CommandLine& command_line =
+        *base::CommandLine::ForCurrentProcess();
+    if (!command_line.HasSwitch(switches::kUseGoUpdateDev)) {
+      *new_url = GURL(kBraveUpdatesExtensionsProdEndpoint)
                             .ReplaceComponents(replacements);
+    } else {
+      *new_url = GURL(kBraveUpdatesExtensionsDevEndpoint)
+                            .ReplaceComponents(replacements);
+    }
     return net::OK;
   }
 

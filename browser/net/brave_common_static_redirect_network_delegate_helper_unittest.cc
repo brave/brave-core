@@ -8,7 +8,9 @@
 #include <memory>
 #include <string>
 
+#include "base/command_line.h"
 #include "brave/browser/net/url_context.h"
+#include "brave/common/brave_switches.h"
 #include "brave/common/network_constants.h"
 #include "components/component_updater/component_updater_url_constants.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -27,7 +29,23 @@ TEST(BraveCommonStaticRedirectNetworkDelegateHelperTest,
   const GURL url(component_updater::kUpdaterJSONDefaultUrl + query_string);
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
   const GURL expected_url(
-      std::string(kBraveUpdatesExtensionsEndpoint + query_string));
+      std::string(kBraveUpdatesExtensionsProdEndpoint + query_string));
+
+  int rc = OnBeforeURLRequest_CommonStaticRedirectWork(ResponseCallback(),
+                                                       request_info);
+  EXPECT_EQ(GURL(request_info->new_url_spec), expected_url);
+  EXPECT_EQ(rc, net::OK);
+}
+
+TEST(BraveCommonStaticRedirectNetworkDelegateHelperTest,
+     ModifyComponentUpdaterURLDev) {
+  base::CommandLine::ForCurrentProcess()->AppendSwitch(
+      switches::kUseGoUpdateDev);
+  const std::string query_string("?foo=bar");
+  const GURL url(component_updater::kUpdaterJSONDefaultUrl + query_string);
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  const GURL expected_url(
+      std::string(kBraveUpdatesExtensionsDevEndpoint + query_string));
 
   int rc = OnBeforeURLRequest_CommonStaticRedirectWork(ResponseCallback(),
                                                        request_info);

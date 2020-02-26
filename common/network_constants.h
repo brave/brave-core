@@ -7,7 +7,8 @@
 #define BRAVE_COMMON_NETWORK_CONSTANTS_H_
 
 extern const char kBraveProxyPattern[];
-extern const char kBraveUpdatesExtensionsEndpoint[];
+extern const char kBraveUpdatesExtensionsProdEndpoint[];
+extern const char kBraveUpdatesExtensionsDevEndpoint[];
 
 extern const char kBraveReferralsServer[];
 extern const char kBraveReferralsHeadersPath[];
