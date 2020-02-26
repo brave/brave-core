@@ -29,6 +29,7 @@ import android.widget.RemoteViews;
 import androidx.annotation.VisibleForTesting;
 
 import org.chromium.base.ApiCompatibilityUtils;
+import org.chromium.base.ApplicationStatus;
 import org.chromium.base.Log;
 import org.chromium.base.metrics.RecordHistogram;
 import org.chromium.chrome.R;
@@ -143,13 +144,19 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
         // Note: under the hood this is not a NotificationCompat builder so be mindful of the
         // API level of methods you call on the builder.
         // TODO(crbug.com/697104) We should probably use a Compat builder.
+        String channelId =  (ApplicationStatus.hasVisibleActivities()) ?
+                BraveChannelDefinitions.ChannelId.BRAVE_ADS :
+                BraveChannelDefinitions.ChannelId.BRAVE_ADS_BACKGROUND;
         ChromeNotificationBuilder builder =
                 NotificationBuilderFactory.createChromeNotificationBuilder(false /* preferCompat */,
-                        mChannelId, mRemotePackageForBuilderContext, metadata);
+                        channelId, mRemotePackageForBuilderContext, metadata);
         builder.setTicker(mTickerText);
         builder.setContentIntent(mContentIntent);
         builder.setDeleteIntent(mDeleteIntent);
-        builder.setPriorityBeforeO(Notification.PRIORITY_HIGH);
+
+        int priority = (ApplicationStatus.hasVisibleActivities()) ? Notification.PRIORITY_HIGH :
+                Notification.PRIORITY_LOW;
+        builder.setPriorityBeforeO(priority);
         builder.setDefaults(mDefaults);
         if (mVibratePattern != null) builder.setVibrate(mVibratePattern);
         builder.setWhen(mTimestamp);
