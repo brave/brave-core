@@ -412,14 +412,6 @@ GURL BraveContentBrowserClient::GetEffectiveURL(
 // [static]
 bool BraveContentBrowserClient::HandleURLOverrideRewrite(GURL* url,
     content::BrowserContext* browser_context) {
-  // redirect sync-internals
-  if (url->host() == chrome::kChromeUISyncInternalsHost ||
-      url->host() == chrome::kChromeUISyncHost) {
-    GURL::Replacements replacements;
-    replacements.SetHostStr(chrome::kChromeUISyncHost);
-    *url = url->ReplaceComponents(replacements);
-    return true;
-  }
 
   // no special win10 welcome page
   if (url->host() == chrome::kChromeUIWelcomeHost) {
