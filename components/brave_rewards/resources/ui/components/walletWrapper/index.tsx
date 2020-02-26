@@ -569,6 +569,33 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       if (grant.amount) {
         grantAmount = grant.amount.toFixed(1)
       }
+
+      if (grant.captchaImage && grant.captchaStatus !== 'finished') {
+        let rendered = this.grantCaptcha()
+        if (rendered) {
+          return rendered
+        }
+      }
+
+      if (grant.captchaStatus === 'finished') {
+        return (
+          <GrantWrapper
+            isPanel={true}
+            onClose={this.onFinish.bind(this, grant.promotionId)}
+            title={grant.finishTitle || ''}
+            text={grant.finishText}
+          >
+            <GrantComplete
+              isMobile={true}
+              onClose={this.onFinish.bind(this, grant.promotionId)}
+              amount={grantAmount}
+              date={date}
+              tokenTitle={grant.finishTokenTitle}
+              onlyAnonWallet={onlyAnonWallet}
+            />
+          </GrantWrapper>
+        )
+      }
     }
 
     const walletVerified = walletState === 'verified' || walletState === 'disconnected_verified'
@@ -583,23 +610,6 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
           isMobile={isMobile}
           notification={notification}
         >
-          {
-            grant && grant.captchaImage && grant.captchaStatus !== 'finished'
-              ? this.grantCaptcha()
-              : null
-          }
-          {
-            grant && grant.captchaStatus === 'finished'
-              ? <GrantWrapper
-                isPanel={true}
-                onClose={this.onFinish.bind(this, grant.promotionId)}
-                title={grant.finishTitle || ''}
-                text={grant.finishText}
-              >
-                <GrantComplete isMobile={true} onClose={this.onFinish.bind(this, grant.promotionId)} amount={grantAmount} date={date} tokenTitle={grant.finishTokenTitle} onlyAnonWallet={onlyAnonWallet} />
-              </GrantWrapper>
-              : null
-          }
           <StyledHeader>
             {
               !notification

@@ -17,6 +17,7 @@ export interface Props {
   onClose: () => void
   title: string
   fullScreen?: boolean
+  overlay?: boolean
   hint?: string
   text: React.ReactNode
   children: React.ReactNode
@@ -24,7 +25,18 @@ export interface Props {
 
 export default class GrantWrapper extends React.PureComponent<Props, {}> {
   render () {
-    const { id, testId, isPanel, fullScreen, hint, onClose, title, text, children } = this.props
+    const {
+      id,
+      testId,
+      isPanel,
+      fullScreen,
+      overlay,
+      hint,
+      onClose,
+      title,
+      text,
+      children
+    } = this.props
 
     return (
       <StyledWrapper
@@ -32,6 +44,7 @@ export default class GrantWrapper extends React.PureComponent<Props, {}> {
         data-test-id={testId}
         isPanel={isPanel}
         fullScreen={fullScreen}
+        overlay={overlay}
       >
         <StyledClose onClick={onClose}>
           <CloseCircleOIcon />

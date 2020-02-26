@@ -6,7 +6,7 @@ import styled from 'styled-components'
 
 export const StyledWrapper = styled<{}, 'div'>('div')`
   text-align: center;
-  margin: 10px 0 0 -32px;
+  margin: 10px -32px 0;
   width: 333px;
 `
 

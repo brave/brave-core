@@ -73,6 +73,7 @@ class Promotion extends React.Component<Props, State> {
           onClose={this.onHide}
           title={getLocale('grantGeneralErrorTitle')}
           text={''}
+          overlay={true}
         >
           <GrantError
             buttonText={getLocale('grantGeneralErrorButton')}
@@ -92,6 +93,7 @@ class Promotion extends React.Component<Props, State> {
         onClose={this.onHide}
         title={promotion.captchaStatus === 'wrongPosition' ? getLocale('notQuite') : getLocale('almostThere')}
         text={getLocale('proveHuman')}
+        overlay={true}
       >
         <GrantCaptcha
           onSolution={this.onSolution}
@@ -125,6 +127,7 @@ class Promotion extends React.Component<Props, State> {
         onClose={this.onFinish}
         title={title}
         text={text}
+        overlay={true}
       >
         <GrantComplete
           onClose={this.onFinish}
