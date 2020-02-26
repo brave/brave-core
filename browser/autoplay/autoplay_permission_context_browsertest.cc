@@ -149,8 +149,15 @@ class AutoplayWhitelistServiceTest : public BaseLocalDataFilesBrowserTest {
 
   void SetUpOnMainThread() override {
     BaseLocalDataFilesBrowserTest::SetUpOnMainThread();
-    whitelist_autoplay_url_ =
-        embedded_test_server()->GetURL("example.com", "/autoplay_by_attr.html");
+    // exact host match
+    whitelist_autoplay_urls_.push_back(embedded_test_server()->GetURL(
+        "example.com", "/autoplay_by_attr.html"));
+    // eTLD+1 match
+    whitelist_autoplay_urls_.push_back(embedded_test_server()->GetURL(
+        "sub.example.com", "/autoplay_by_attr.html"));
+    // exact host match with subdomain
+    whitelist_autoplay_urls_.push_back(embedded_test_server()->GetURL(
+        "sandbox.uphold.com", "/autoplay_by_attr.html"));
   }
 
   // BaseLocalDataFilesBrowserTest overrides
@@ -179,10 +186,12 @@ class AutoplayWhitelistServiceTest : public BaseLocalDataFilesBrowserTest {
     ASSERT_EQ("PLAYING", msg_from_renderer);
   }
 
-  const GURL& whitelist_autoplay_url() { return whitelist_autoplay_url_; }
+  const GURL& whitelist_autoplay_url(int index) {
+    return whitelist_autoplay_urls_[index];
+  }
 
  private:
-  GURL whitelist_autoplay_url_;
+  std::vector<GURL> whitelist_autoplay_urls_;
 };
 
 // Autoplay blocks by default, no bubble is shown
@@ -553,8 +562,8 @@ IN_PROC_BROWSER_TEST_F(AutoplayPermissionContextBrowserTest, FileAutoplay) {
   EXPECT_EQ(result, kVideoPlaying);
 }
 
-// Default allow autoplay on URLs in whitelist
-IN_PROC_BROWSER_TEST_F(AutoplayWhitelistServiceTest, Allow) {
+// Default allow autoplay on URLs in whitelist if host matches exactly
+IN_PROC_BROWSER_TEST_F(AutoplayWhitelistServiceTest, AllowIfExactHostMatch) {
   ASSERT_TRUE(InstallMockExtension());
   std::string result;
   PermissionRequestManager* manager =
@@ -562,7 +571,49 @@ IN_PROC_BROWSER_TEST_F(AutoplayWhitelistServiceTest, Allow) {
   auto popup_prompt_factory =
       std::make_unique<MockPermissionPromptFactory>(manager);
 
-  NavigateToURLUntilLoadStop(whitelist_autoplay_url());
+  NavigateToURLUntilLoadStop(whitelist_autoplay_url(0));
+  EXPECT_FALSE(popup_prompt_factory->is_visible());
+  EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
+      PermissionRequestType::PERMISSION_AUTOPLAY));
+  EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
+  WaitForPlaying();
+  EXPECT_TRUE(
+      ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
+  EXPECT_EQ(result, kVideoPlaying);
+}
+
+// Default allow autoplay on URLs in whitelist if eTLD+1 matches
+IN_PROC_BROWSER_TEST_F(AutoplayWhitelistServiceTest, AllowIfETLDPlusOneMatch) {
+  ASSERT_TRUE(InstallMockExtension());
+  std::string result;
+  PermissionRequestManager* manager =
+      PermissionRequestManager::FromWebContents(contents());
+  auto popup_prompt_factory =
+      std::make_unique<MockPermissionPromptFactory>(manager);
+
+  NavigateToURLUntilLoadStop(whitelist_autoplay_url(1));
+  EXPECT_FALSE(popup_prompt_factory->is_visible());
+  EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
+      PermissionRequestType::PERMISSION_AUTOPLAY));
+  EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
+  WaitForPlaying();
+  EXPECT_TRUE(
+      ExecuteScriptAndExtractString(contents(), kVideoPlayingDetect, &result));
+  EXPECT_EQ(result, kVideoPlaying);
+}
+
+// Default allow autoplay on URLs in whitelist if multi-domain host matches
+// exactly
+IN_PROC_BROWSER_TEST_F(AutoplayWhitelistServiceTest,
+                       AllowIfExactSubdomainAndHostMatch) {
+  ASSERT_TRUE(InstallMockExtension());
+  std::string result;
+  PermissionRequestManager* manager =
+      PermissionRequestManager::FromWebContents(contents());
+  auto popup_prompt_factory =
+      std::make_unique<MockPermissionPromptFactory>(manager);
+
+  NavigateToURLUntilLoadStop(whitelist_autoplay_url(2));
   EXPECT_FALSE(popup_prompt_factory->is_visible());
   EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
       PermissionRequestType::PERMISSION_AUTOPLAY));
