@@ -12,12 +12,6 @@
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/prefs/pref_service.h"
 
-#include "brave/components/brave_sync/buildflags/buildflags.h"
-#if BUILDFLAG(ENABLE_BRAVE_SYNC)
-#include "brave/components/brave_sync/brave_profile_sync_service_impl.h"
-using brave_sync::BraveProfileSyncServiceImpl;
-#endif
-
 using bookmarks::BookmarkModel;
 
 BraveBookmarkModelLoadedObserver::BraveBookmarkModelLoadedObserver(
@@ -28,28 +22,9 @@ void BraveBookmarkModelLoadedObserver::BookmarkModelLoaded(
     BookmarkModel* model,
     bool ids_reassigned) {
   if (!profile_->GetPrefs()->GetBoolean(kOtherBookmarksMigrated)) {
-#if BUILDFLAG(ENABLE_BRAVE_SYNC)
-    BraveProfileSyncServiceImpl* brave_profile_service =
-      static_cast<BraveProfileSyncServiceImpl*>(
-          ProfileSyncServiceFactory::GetForProfile(profile_));
-    // When sync is enabled, we need to send migration records to other devices
-    // so it is handled in BraveProfileSyncServiceImpl::OnSyncReady
-    if (!brave_profile_service ||
-        (brave_profile_service && !brave_profile_service->IsBraveSyncEnabled()))
-      BraveMigrateOtherNodeFolder(model);
-#else
     BraveMigrateOtherNodeFolder(model);
-#endif
     profile_->GetPrefs()->SetBoolean(kOtherBookmarksMigrated, true);
   }
-
-#if BUILDFLAG(ENABLE_BRAVE_SYNC)
-  BraveProfileSyncServiceImpl::AddNonClonedBookmarkKeys(model);
-  BraveProfileSyncServiceImpl::MigrateDuplicatedBookmarksObjectIds(
-      base::FeatureList::IsEnabled(brave_sync::features::kBraveSync),
-      profile_,
-      model);
-#endif
 
   BookmarkModelLoadedObserver::BookmarkModelLoaded(model, ids_reassigned);
 }
