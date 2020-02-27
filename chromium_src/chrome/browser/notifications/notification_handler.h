@@ -7,7 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_NOTIFICATIONS_NOTIFICATION_HANDLER_H_
 
 #define NotificationHandler NotificationHandler_ChromiumImpl
-#include "../../../../../../chrome/browser/notifications/notification_handler.h"
+#include "../../../../../chrome/browser/notifications/notification_handler.h"
 #undef NotificationHandler
 
 class NotificationHandler : public NotificationHandler_ChromiumImpl {

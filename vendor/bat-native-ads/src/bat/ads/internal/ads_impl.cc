@@ -1461,11 +1461,10 @@ bool AdsImpl::ShowAd(
 
   notifications_->PushBack(*notification_info);
 
-#if defined(OS_ANDROID)
-  if (notifications_->Count() > kMaximumAdNotifications) {
+  if (kMaximumAdNotifications > 0 &&
+      notifications_->Count() > kMaximumAdNotifications) {
     notifications_->PopFront(true);
   }
-#endif
 
   return true;
 }
