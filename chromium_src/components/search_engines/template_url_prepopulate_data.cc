@@ -13,6 +13,7 @@
 #include "../../../components/search_engines/brave_prepopulated_engines.h"
 
 #define GetDataVersion GetDataVersion_ChromiumImpl
+#define GetEngineType GetEngineType_ChromiumImpl
 #if defined(OS_ANDROID)
 #define GetLocalPrepopulatedEngines GetLocalPrepopulatedEngines_Unused
 #endif
@@ -21,6 +22,7 @@
 #define GetPrepopulatedEngines GetPrepopulatedEngines_Unused
 #include "../../../../components/search_engines/template_url_prepopulate_data.cc"  // NOLINT
 #undef GetDataVersion
+#undef GetEngineType
 #if defined(OS_ANDROID)
 #undef GetLocalPrepopulatedEngines
 #endif
@@ -233,6 +235,24 @@ std::vector<std::unique_ptr<TemplateURLData>> GetLocalPrepopulatedEngines(
 }
 
 #endif
+
+SearchEngineType GetEngineType(const GURL& url) {
+  SearchEngineType type = GetEngineType_ChromiumImpl(url);
+  if (type == SEARCH_ENGINE_OTHER) {
+    for (const auto& entry : brave_engines_map) {
+      const auto* engine = entry.second;
+      if (SameDomain(url, GURL(engine->search_url))) {
+        return engine->type;
+      }
+      for (size_t j = 0; j < engine->alternate_urls_size; ++j) {
+        if (SameDomain(url, GURL(engine->alternate_urls[j]))) {
+          return engine->type;
+        }
+      }
+    }
+  }
+  return type;
+}
 
 // Functions below are copied verbatim from
 // components\search_engines\template_url_prepopulate_data.cc because they

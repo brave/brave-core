@@ -63,6 +63,7 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.Core.BookmarksCountOnProfileLoad",
     "Brave.Core.TabCount",
     "Brave.Core.WindowCount",
+    "Brave.Search.DefaultEngine",
     "Brave.Rewards.WalletBalance.2",
     "Brave.Rewards.AutoContributionsState.2",
     "Brave.Rewards.TipsState.2",
