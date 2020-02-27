@@ -813,6 +813,9 @@ until they verify, or until 90 days have passed.
       <message name="IDS_NEW_TAB_OTR_TITLE" desc="Message shown when a user opens a private tab explaining private mode">
         Even though sites you visit in private tabs are not saved locally, they do not make you anonymous or invisible to your ISP, your employer, or to the sites you are visiting.
       </message>
+      <message name="IDS_NOTIFICATION_CATEGORY_BRAVE_ADS_BACKGROUND" desc="Label for Brave Ads in background.">
+        Brave Ads sent when browser is in the background
+      </message>
     </messages>
   </release>
 </grit>
