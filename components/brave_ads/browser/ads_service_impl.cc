@@ -66,9 +66,10 @@
 #include "ui/message_center/public/cpp/notification.h"
 
 #if defined(OS_ANDROID)
-#include "chrome/browser/ui/android/tab_model/tab_model_list.h"
-#include "chrome/browser/android/tab_android.h"
+#include "brave/browser/notifications/brave_notification_platform_bridge_helper_android.h"
 #include "chrome/browser/android/service_tab_launcher.h"
+#include "chrome/browser/android/tab_android.h"
+#include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #include "content/public/browser/page_navigator.h"
 #endif
 
@@ -82,12 +83,6 @@ const char kRewardsNotificationAdsOnboarding[] =
     "rewards_notification_ads_onboarding";
 
 const unsigned int kRetriesCountOnNetworkChange = 1;
-
-#if defined(OS_ANDROID)
-const int kMaximumAdNotifications = 3;
-#else
-const int kMaximumAdNotifications = 0;  // No limit
-#endif
 
 }  // namespace
 
@@ -820,14 +815,6 @@ void AdsServiceImpl::OnShow(
   auto type = ToMojomNotificationEventType(ads::NotificationEventType::VIEWED);
 
   bat_ads_->OnNotificationEvent(id, type);
-
-  // If we've surpassed the maximum number of visible notifications,
-  // then close the oldest one
-  notifications_.push_back(id);
-  if (kMaximumAdNotifications > 0 &&
-      notifications_.size() > kMaximumAdNotifications) {
-    CloseNotification(notifications_.front());
-  }
 }
 
 void AdsServiceImpl::OnClose(
@@ -845,11 +832,6 @@ void AdsServiceImpl::OnClose(
 
   if (completed_closure) {
     std::move(completed_closure).Run();
-  }
-
-  const auto it = std::find(notifications_.begin(), notifications_.end(), id);
-  if (it != notifications_.end()) {
-    notifications_.erase(it);
   }
 }
 
@@ -1982,6 +1964,13 @@ bool AdsServiceImpl::ShouldShowNotifications() {
 
 void AdsServiceImpl::CloseNotification(
     const std::string& id) {
+#if defined(OS_ANDROID)
+  const std::string brave_ads_url_prefix = kBraveAdsUrlPrefix;
+  const GURL service_worker_scope =
+      GURL(brave_ads_url_prefix.substr(0, brave_ads_url_prefix.size() - 1));
+  BraveNotificationPlatformBridgeHelperAndroid::MaybeRegenerateNotification(
+      id, service_worker_scope);
+#endif
   display_service_->Close(NotificationHandler::Type::BRAVE_ADS, id);
 }
 
