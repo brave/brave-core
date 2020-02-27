@@ -21,13 +21,15 @@ import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.ThemeColorProvider;
 import org.chromium.chrome.browser.compositor.layouts.EmptyOverviewModeObserver;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
-import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarNewTabButton;
-import org.chromium.chrome.browser.toolbar.bottom.SearchAccelerator;
-import org.chromium.chrome.browser.toolbar.bottom.ShareButton;
+import org.chromium.chrome.browser.partnercustomizations.HomepageManager;
 import org.chromium.chrome.browser.toolbar.HomeButton;
 import org.chromium.chrome.browser.toolbar.IncognitoStateProvider;
 import org.chromium.chrome.browser.toolbar.TabCountProvider;
+import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarNewTabButton;
+import org.chromium.chrome.browser.toolbar.bottom.SearchAccelerator;
+import org.chromium.chrome.browser.toolbar.bottom.ShareButton;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
+import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.widget.Toast;
 
 public class BraveBottomToolbarCoordinator
@@ -56,6 +58,12 @@ public class BraveBottomToolbarCoordinator
         Resources resources = mContext.getResources();
 
         if (v == mHomeButton) {
+            // It is currently a new tab button when homepage is disabled.
+            if (!HomepageManager.isHomepageEnabled()) {
+                TabUtils.showTabPopupMenu(mContext, v);
+                return true;
+            }
+
             description = resources.getString(R.string.accessibility_toolbar_btn_home);
         } else if (v == mBookmarksButton) {
             description = resources.getString(R.string.accessibility_toolbar_btn_bookmark);
@@ -63,7 +71,8 @@ public class BraveBottomToolbarCoordinator
             description =
                     resources.getString(R.string.accessibility_toolbar_btn_search_accelerator);
         } else if (v == mNewTabButton) {
-            description = resources.getString(R.string.accessibility_new_tab_page);
+            TabUtils.showTabPopupMenu(mContext, v);
+            return true;
         }
 
         return Toast.showAnchoredToast(mContext, v, description);
@@ -86,6 +95,17 @@ public class BraveBottomToolbarCoordinator
         mHomeButton = bottom_toolbar_browsing.findViewById(R.id.bottom_home_button);
         if (mHomeButton != null) {
             mHomeButton.setOnLongClickListener(this);
+
+            final OnClickListener homeButtonListener = v -> {
+                final boolean isHomepageEnabled = HomepageManager.isHomepageEnabled();
+                if (isHomepageEnabled) {
+                    TabUtils.openHomepage();
+                } else {
+                    TabUtils.openNewTab();
+                }
+            };
+
+            mHomeButton.setOnClickListener(homeButtonListener);
         }
 
         mBookmarksButton = bottom_toolbar_browsing.findViewById(R.id.bottom_bookmark_button);
