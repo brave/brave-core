@@ -1,23 +1,12 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_model.h b/chrome/browser/ui/tabs/tab_strip_model.h
-index f7282146e44d05a4f923adeed59089423bc6be62..1a92bed95ca16c45a982238c7cf5e78648125d40 100644
+index f7282146e44d05a4f923adeed59089423bc6be62..ddc57f1da1224cbf4b395e79ccfab561cad1f08b 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model.h
 +++ b/chrome/browser/ui/tabs/tab_strip_model.h
-@@ -384,8 +384,10 @@ class TabStripModel : public TabGroupController {
-   void CloseSelectedTabs();
- 
-   // Select adjacent tabs
-+  virtual
-   void SelectNextTab(
-       UserGestureDetails detail = UserGestureDetails(GestureType::kOther));
-+  virtual
-   void SelectPreviousTab(
-       UserGestureDetails detail = UserGestureDetails(GestureType::kOther));
- 
-@@ -512,6 +514,7 @@ class TabStripModel : public TabGroupController {
+@@ -511,6 +511,7 @@ class TabStripModel : public TabGroupController {
+   // current tree of openers).
    bool ShouldResetOpenerOnActiveTabChange(content::WebContents* contents) const;
  
++  TAB_STRIP_MODEL_H_
   private:
-+ friend class BraveTabStripModel;
    FRIEND_TEST_ALL_PREFIXES(TabStripModelTest, GetIndicesClosedByCommand);
  
-   class WebContentsData;

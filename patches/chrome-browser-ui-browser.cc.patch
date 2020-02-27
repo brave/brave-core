@@ -1,16 +1,8 @@
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index d262a424f49b2299a3367a265299a4c74328e4d6..fc3cfc594e157e1baeefe995a616a7ab198b5bde 100644
+index d262a424f49b2299a3367a265299a4c74328e4d6..018fd2d38862dfea1cda2e32cbbfd4414e51e82c 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
-@@ -31,6 +31,7 @@
- #include "base/threading/thread_task_runner_handle.h"
- #include "base/time/time.h"
- #include "build/build_config.h"
-+#include "brave/browser/ui/tabs/brave_tab_strip_model.h"
- #include "chrome/app/chrome_command_ids.h"
- #include "chrome/browser/app_mode/app_mode_utils.h"
- #include "chrome/browser/autofill/personal_data_manager_factory.h"
-@@ -412,7 +413,7 @@ Browser::Browser(const CreateParams& params)
+@@ -412,7 +412,7 @@ Browser::Browser(const CreateParams& params)
        tab_strip_model_delegate_(
            std::make_unique<chrome::BrowserTabStripModelDelegate>(this)),
        tab_strip_model_(
