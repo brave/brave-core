@@ -1,0 +1,12 @@
+diff --git a/components/sync/engine_impl/loopback_server/loopback_server.cc b/components/sync/engine_impl/loopback_server/loopback_server.cc
+index ff1a357065c4d056c70285740d942e02c4235f34..c3e53d919236df21e052991d838f6ce19f1921ae 100644
+--- a/components/sync/engine_impl/loopback_server/loopback_server.cc
++++ b/components/sync/engine_impl/loopback_server/loopback_server.cc
+@@ -385,6 +385,7 @@ bool LoopbackServer::HandleGetUpdatesRequest(
+     const std::string& invalidator_client_id,
+     sync_pb::GetUpdatesResponse* response,
+     std::vector<ModelType>* datatypes_to_migrate) {
++  LoadStateFromFile(persistent_file_);
+   response->set_changes_remaining(0);
+ 
+   bool is_initial_bookmark_sync = false;
