@@ -466,7 +466,6 @@ class FavoritesViewController: UIViewController, Themeable {
         }
         
         ddgLabel.snp.makeConstraints { make in
-            make.top.bottom.greaterThanOrEqualTo(UI.ddgButtonPadding)
             make.right.equalToSuperview().offset(-UI.ddgButtonPadding)
             make.left.equalTo(self.ddgLogo.snp.right).offset(5)
             make.width.equalTo(180)
