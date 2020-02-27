@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -18,10 +18,13 @@
 
 namespace bat_ads {
 
-class AdsClientMojoBridge : public mojom::BatAdsClient,
-                         public base::SupportsWeakPtr<AdsClientMojoBridge> {
+class AdsClientMojoBridge
+    : public mojom::BatAdsClient,
+      public base::SupportsWeakPtr<AdsClientMojoBridge> {
  public:
-  explicit AdsClientMojoBridge(ads::AdsClient* ads_client);
+  explicit AdsClientMojoBridge(
+      ads::AdsClient* ads_client);
+
   ~AdsClientMojoBridge() override;
 
   // Overridden from BatAdsClient:
@@ -30,7 +33,7 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
   void IsEnabled(
       IsEnabledCallback callback) override;
   bool ShouldAllowAdConversionTracking(
-      bool* should_allow) override;
+      bool* out_should_allow) override;
   void ShouldAllowAdConversionTracking(
       ShouldAllowAdConversionTrackingCallback callback) override;
   bool IsForeground(
@@ -55,7 +58,8 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
       GetAdsPerDayCallback callback) override;
   bool IsNetworkConnectionAvailable(
       bool* out_available) override;
-  bool CanShowBackgroundNotifications(bool* out_can_show) override;
+  bool CanShowBackgroundNotifications(
+      bool* out_can_show) override;
   void CanShowBackgroundNotifications(
       CanShowBackgroundNotificationsCallback callback) override;
   void IsNetworkConnectionAvailable(
@@ -65,7 +69,7 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
   void ShouldShowNotifications(
       ShouldShowNotificationsCallback callback) override;
   bool SetTimer(
-      uint64_t time_offset,
+      const uint64_t time_offset,
       uint32_t* out_timer_id) override;
   void SetTimer(
       uint64_t time_offset,
@@ -85,9 +89,9 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
   void EventLog(
       const std::string& json) override;
   void SetIdleThreshold(
-      int32_t threshold) override;
+      const int32_t threshold) override;
   void KillTimer(
-      uint32_t timer_id) override;
+      const uint32_t timer_id) override;
   void Load(
       const std::string& name,
       LoadCallback callback) override;
@@ -137,12 +141,21 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
   template <typename Callback>
   class CallbackHolder {
    public:
-    CallbackHolder(base::WeakPtr<AdsClientMojoBridge> client, Callback callback)
+    CallbackHolder(
+        base::WeakPtr<AdsClientMojoBridge> client,
+        Callback callback)
         : client_(client),
           callback_(std::move(callback)) {}
+
     ~CallbackHolder() = default;
-    bool is_valid() { return !!client_.get(); }
-    Callback& get() { return callback_; }
+
+    bool is_valid() {
+      return !!client_.get();
+    }
+
+    Callback& get() {
+      return callback_;
+    }
 
    private:
     base::WeakPtr<AdsClientMojoBridge> client_;
@@ -151,26 +164,26 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
 
   static void OnLoad(
       CallbackHolder<LoadCallback>* holder,
-      ads::Result result,
+      const ads::Result result,
       const std::string& value);
   static void OnSave(
       CallbackHolder<SaveCallback>* holder,
-      ads::Result result);
+      const ads::Result result);
   static void OnReset(
       CallbackHolder<ResetCallback>* holder,
-      ads::Result result);
+      const ads::Result result);
   static void OnLoadUserModelForLanguage(
       CallbackHolder<LoadUserModelForLanguageCallback>* holder,
-      ads::Result result,
+      const ads::Result result,
       const std::string& value);
   static void OnURLRequest(
       CallbackHolder<URLRequestCallback>* holder,
-      const int status_code,
+      const int response_status_code,
       const std::string& content,
       const std::map<std::string, std::string>& headers);
   static void OnLoadSampleBundle(
       CallbackHolder<LoadSampleBundleCallback>* holder,
-      ads::Result result,
+      const ads::Result result,
       const std::string& value);
   static void OnSaveBundleState(
       CallbackHolder<SaveBundleStateCallback>* holder,
@@ -186,7 +199,7 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
       const std::string& url,
       const ads::AdConversionList& ad_conversions);
 
-  ads::AdsClient* ads_client_;
+  ads::AdsClient* ads_client_;  // NOT OWNED
 
   DISALLOW_COPY_AND_ASSIGN(AdsClientMojoBridge);
 };

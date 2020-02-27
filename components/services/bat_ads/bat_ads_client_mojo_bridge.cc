@@ -9,10 +9,10 @@
 #include <memory>
 #include <utility>
 
-#include "base/containers/flat_map.h"
-#include "base/logging.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
 #include "mojo/public/cpp/bindings/sync_call_restrictions.h"
+#include "base/containers/flat_map.h"
+#include "base/logging.h"
 
 namespace bat_ads {
 
@@ -26,9 +26,11 @@ int32_t ToMojomURLRequestMethod(
 std::map<std::string, std::string> ToStdMap(
     const base::flat_map<std::string, std::string>& map) {
   std::map<std::string, std::string> std_map;
+
   for (const auto& it : map) {
     std_map[it.first] = it.second;
   }
+
   return std_map;
 }
 
@@ -37,7 +39,8 @@ ads::Result ToAdsResult(
   return (ads::Result)result;
 }
 
-class LogStreamImpl : public ads::LogStream {
+class LogStreamImpl
+    : public ads::LogStream {
  public:
   LogStreamImpl(
       const char* file,
@@ -83,8 +86,7 @@ BatAdsClientMojoBridge::BatAdsClientMojoBridge(
   bat_ads_client_.Bind(std::move(client_info));
 }
 
-BatAdsClientMojoBridge::~BatAdsClientMojoBridge() {
-}
+BatAdsClientMojoBridge::~BatAdsClientMojoBridge() = default;
 
 bool BatAdsClientMojoBridge::IsEnabled() const {
   if (!connected()) {
@@ -116,11 +118,12 @@ bool BatAdsClientMojoBridge::CanShowBackgroundNotifications() const {
 }
 
 std::string BatAdsClientMojoBridge::GetLocale() const {
+  std::string locale = "en-US";
+
   if (!connected()) {
-    return "en-US";
+    return locale;
   }
 
-  std::string locale;
   bat_ads_client_->GetLocale(&locale);
   return locale;
 }
@@ -159,9 +162,9 @@ bool BatAdsClientMojoBridge::IsNetworkConnectionAvailable() const {
     return false;
   }
 
-  bool available;
-  bat_ads_client_->IsNetworkConnectionAvailable(&available);
-  return available;
+  bool is_available;
+  bat_ads_client_->IsNetworkConnectionAvailable(&is_available);
+  return is_available;
 }
 
 void BatAdsClientMojoBridge::GetClientInfo(
@@ -170,17 +173,18 @@ void BatAdsClientMojoBridge::GetClientInfo(
     return;
   }
 
-  std::string out_info;
-  bat_ads_client_->GetClientInfo(info->ToJson(), &out_info);
-  info->FromJson(out_info);
+  std::string client_info;
+  bat_ads_client_->GetClientInfo(info->ToJson(), &client_info);
+  info->FromJson(client_info);
 }
 
 std::vector<std::string> BatAdsClientMojoBridge::GetUserModelLanguages() const {
+  std::vector<std::string> languages;
+
   if (!connected()) {
-    return {};
+    return languages;
   }
 
-  std::vector<std::string> languages;
   bat_ads_client_->GetUserModelLanguages(&languages);
   return languages;
 }
@@ -294,10 +298,10 @@ void BatAdsClientMojoBridge::KillTimer(
 
 void OnURLRequest(
     const ads::URLRequestCallback& callback,
-    const int32_t status_code,
+    const int32_t response_status_code,
     const std::string& content,
     const base::flat_map<std::string, std::string>& headers) {
-  callback(status_code, content, ToStdMap(headers));
+  callback(response_status_code, content, ToStdMap(headers));
 }
 
 void BatAdsClientMojoBridge::URLRequest(
@@ -308,7 +312,7 @@ void BatAdsClientMojoBridge::URLRequest(
     const ads::URLRequestMethod method,
     ads::URLRequestCallback callback) {
   if (!connected()) {
-    callback(418, "", std::map<std::string, std::string>());
+    callback(418, "", {});
     return;
   }
 
@@ -373,11 +377,12 @@ void BatAdsClientMojoBridge::Reset(
 
 std::string BatAdsClientMojoBridge::LoadJsonSchema(
     const std::string& name) {
+  std::string json;
+
   if (!connected()) {
-    return "";
+    return json;
   }
 
-  std::string json;
   bat_ads_client_->LoadJsonSchema(name, &json);
   return json;
 }
