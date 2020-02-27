@@ -8,6 +8,9 @@
 #import "DataController.h"
 #import "BATLedgerDatabase.h"
 #import "RewardsLogger.h"
+#import "CoreDataModels.h"
+#import "BATBraveLedger.h"
+#import "brave/components/brave_rewards/browser/rewards_database.h"
 
 @interface TempTestDataController : DataController
 @property (nonatomic, nullable) NSUUID *folderPrefix;
@@ -29,8 +32,10 @@
 
 @end
 
-@interface LedgerDatabaseTest : XCTestCase
-@property (nonatomic, copy, nullable) void (^contextSaveCompletion)();
+@interface LedgerDatabaseTest : XCTestCase  {
+  brave_rewards::RewardsDatabase *rewardsDatabase;
+}
+@property (nonatomic, copy) NSString *dbPath;
 @end
 
 @implementation LedgerDatabaseTest
@@ -38,1422 +43,843 @@
 - (void)setUp
 {
   [super setUp];
-  [NSNotificationCenter.defaultCenter addObserver:self
-                                         selector:@selector(contextSaved)
-                                             name:NSManagedObjectContextDidSaveNotification
-                                           object:nil];
 
   DataController.shared = [[TempTestDataController alloc] init];
   
   [BATBraveRewardsLogger configureWithLogCallback:^(BATLogLevel logLevel, int line, NSString * _Nonnull file, NSString * _Nonnull data) {
     NSLog(@"%@", data);
   } withFlush:^{ }];
+  
+  const auto name = [NSString stringWithFormat:@"%@.sqlite", NSUUID.UUID.UUIDString];
+  self.dbPath = [NSTemporaryDirectory() stringByAppendingPathComponent:name];
+  rewardsDatabase = new brave_rewards::RewardsDatabase(base::FilePath(self.dbPath.UTF8String));
+  
+  [self initializeSQLiteDatabase];
 }
 
 - (void)tearDown
 {
   [super tearDown];
+  delete rewardsDatabase;
   [DataController.viewContext reset];
   [[NSFileManager defaultManager] removeItemAtURL:DataController.shared.storeDirectoryURL error:nil];
-  self.contextSaveCompletion = nil;
-  [NSNotificationCenter.defaultCenter removeObserver:self];
+  [[NSFileManager defaultManager] removeItemAtPath:self.dbPath error:nil];
+  [[NSFileManager defaultManager] removeItemAtPath:[self.dbPath stringByAppendingString:@"-journal"] error:nil];
 }
 
-#pragma mark - Publisher Info
-
-- (void)testNonExistentPublisher
+// Test that migration script creates required tables
+- (void)testCreatesTables
 {
-  const auto publisher = [BATLedgerDatabase publisherInfoWithPublisherID:@"duckduckgo.com"];
-  XCTAssertNil(publisher);
-}
-
-- (void)testPublisherAddAndQuery
-{
-  const auto publisherID = @"brave.com";
-  auto info = [[BATPublisherInfo alloc] init];
-  info.id = publisherID;
-
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdatePublisherInfo:info completion:nil];
-  }];
-
-  const auto queriedInfo = [BATLedgerDatabase publisherInfoWithPublisherID:publisherID];
-  XCTAssertNotNil(queriedInfo);
-  XCTAssertTrue([queriedInfo.id isEqualToString:publisherID]);
-}
-
-- (void)testPublisherUpdate
-{
-  const auto publisherID = @"brave.com";
-  auto info = [[BATPublisherInfo alloc] init];
-  info.id = publisherID;
-  info.duration = 5;
-
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdatePublisherInfo:info completion:nil];
-  }];
-
-  auto queriedInfo = [BATLedgerDatabase publisherInfoWithPublisherID:publisherID];
-  XCTAssertNotNil(queriedInfo);
-  XCTAssertTrue([queriedInfo.id isEqualToString:publisherID]);
-  XCTAssertEqual(info.duration, 5);
-
-  info.duration = 10;
-
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdatePublisherInfo:info completion:nil];
-  }];
-
-  // Make sure second call to `insertOrUpdatePublisherInfo` did not add another record;
-  XCTAssert([self countMustBeEqualTo:1 forEntityName:@"PublisherInfo"]);
-
-  queriedInfo = [BATLedgerDatabase publisherInfoWithPublisherID:publisherID];
-  XCTAssertNotNil(queriedInfo);
-  XCTAssertTrue([queriedInfo.id isEqualToString:publisherID]);
-  XCTAssertEqual(info.duration, 10);
-}
-
-- (void)testRestoringExcludedPublishers
-{
-  for (NSUInteger i = 0; i < 3; i++) {
-    const auto info = [[BATPublisherInfo alloc] init];
-    info.id = [NSUUID.UUID UUIDString];
-    info.excluded = BATPublisherExcludeExcluded;
-    [self backgroundSaveAndWaitForExpectation:^{
-      [BATLedgerDatabase insertOrUpdatePublisherInfo:info completion:nil];
-    }];
-  }
-
-  const auto defaultPublisher = [[BATPublisherInfo alloc] init];
-  defaultPublisher.id = [NSUUID.UUID UUIDString];
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdatePublisherInfo:defaultPublisher completion:nil];
-  }];
-
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase restoreExcludedPublishers:nil];
-  }];
-
-  XCTAssertEqual([BATLedgerDatabase excludedPublishersCount], 0);
-}
-
-- (void)testNonZeroExcludedCount
-{
-  const auto excludedPublishersCount = 3;
-  for (NSUInteger i = 0; i < excludedPublishersCount; i++) {
-    const auto info = [[BATPublisherInfo alloc] init];
-    info.id = [NSUUID.UUID UUIDString];
-    info.excluded = BATPublisherExcludeExcluded;
-    [self backgroundSaveAndWaitForExpectation:^{
-      [BATLedgerDatabase insertOrUpdatePublisherInfo:info completion:nil];
-    }];
-  }
-
-  const auto defaultPublisher = [[BATPublisherInfo alloc] init];
-  defaultPublisher.id = [NSUUID.UUID UUIDString];
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdatePublisherInfo:defaultPublisher completion:nil];
-  }];
-
-  XCTAssertEqual([BATLedgerDatabase excludedPublishersCount], excludedPublishersCount);
-}
-
-- (void)testPanelPublisherWithFilter
-{
-  const auto reconcileStamp = 123123;
-  const auto percent = 10;
-
-  const auto info = [self createBATPublisherInfo:[NSUUID.UUID UUIDString]
-                                  reconcileStamp:reconcileStamp percent:percent createActivityInfo:YES];
-
-  const auto filter = [[BATActivityInfoFilter alloc] init];
-  filter.id = info.id;
-  filter.reconcileStamp = reconcileStamp;
-  filter.percent = 20;
-  const auto resultInfo = [BATLedgerDatabase panelPublisherWithFilter:filter];
-
-  XCTAssertNotNil(resultInfo);
-  XCTAssertEqual(resultInfo.percent, percent);
-}
-
-- (void)testPanelPublisherWithFilterWrongPublisherId
-{
-  const auto filterWrongId = [[BATActivityInfoFilter alloc] init];
-  filterWrongId.id = @"333";
-  filterWrongId.reconcileStamp = 123;
-  const auto resultInfo2 = [BATLedgerDatabase panelPublisherWithFilter:filterWrongId];
-
-  XCTAssertNil(resultInfo2);
-}
-
-- (void)testPanelPublisherWithFilterByReconcileStamp
-{
-  const auto percent = 10;
-  const auto updatedPercent = 20;
-  const auto reconcileStamp = 1000;
-  const auto newReconcileStamp = 2000;
-
-  const auto info = [self createBATPublisherInfo:[NSUUID.UUID UUIDString]
-                                  reconcileStamp:reconcileStamp percent:percent createActivityInfo:YES];
-
-  // Add second activity info with another timestamp to check whether reconcileStamp query works.
-  info.reconcileStamp = newReconcileStamp;
-  info.percent = updatedPercent;
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdateActivityInfoFromPublisher:info completion:nil];
-  }];
-
-  const auto filter = [[BATActivityInfoFilter alloc] init];
-  filter.id = info.id;
-  filter.reconcileStamp = newReconcileStamp;
-  const auto resultInfo = [BATLedgerDatabase panelPublisherWithFilter:filter];
-
-  XCTAssertEqual(resultInfo.percent, updatedPercent);
-}
-
-- (BATPublisherInfo *)createBATPublisherInfo:(NSString *)publisherId
-                              reconcileStamp:(unsigned long long)stamp
-                                     percent:(unsigned int)percent
-                          createActivityInfo:(BOOL)createActivityInfo
-{
-
-  const auto info = [[BATPublisherInfo alloc] init];
-  info.id = publisherId;
-  info.reconcileStamp = stamp;
-  info.percent = percent;
-
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdatePublisherInfo:info completion:nil];
-  }];
-
-  if (createActivityInfo) {
-    [self backgroundSaveAndWaitForExpectation:^{
-      [BATLedgerDatabase insertOrUpdateActivityInfoFromPublisher:info completion:nil];
-    }];
-  }
-
-  return info;
-}
-
-- (BATPublisherInfo *)createBATPublisherInfo:(NSString *)publisherId
-                              reconcileStamp:(unsigned long long)stamp
-                                     percent:(unsigned int)percent
-                          createActivityInfo:(BOOL)createActivityInfo
-                                    duration:(unsigned long long)duration
-                                      visits:(unsigned int)visits
-                                    excluded:(BATPublisherExclude)excluded
-{
-
-  const auto info = [[BATPublisherInfo alloc] init];
-  info.id = publisherId;
-  info.reconcileStamp = stamp;
-  info.percent = percent;
-  info.duration = duration;
-  info.visits = visits;
-  info.excluded = excluded;
-
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdatePublisherInfo:info completion:nil];
-  }];
-
-  if (createActivityInfo) {
-    [self backgroundSaveAndWaitForExpectation:^{
-      [BATLedgerDatabase insertOrUpdateActivityInfoFromPublisher:info completion:nil];
-    }];
-  }
-
-  return info;
-}
-
-- (void)testInsertOrUpdatePublisherInfoEmptyId
-{
-  const auto info = [[BATPublisherInfo alloc] init];
-  info.id = @"";
-
-  [self waitForFailedSaveAttempt:^{
-    [BATLedgerDatabase insertOrUpdatePublisherInfo:info completion:nil];
-  }];
-
-  XCTAssert([self countMustBeEqualTo:0 forEntityName:@"PublisherInfo"]);
-}
-
-- (BOOL)countMustBeEqualTo:(int)count forEntityName:(NSString *)name
-{
-  const auto fetchRequest = [[NSFetchRequest alloc] initWithEntityName:name];
-  NSError *error;
-  const auto recordsCount = [[DataController viewContext] countForFetchRequest:fetchRequest error:&error];
-
-  return count == recordsCount;
-}
-
-#pragma mark - Contribution Info
-
-- (void)testInsertContributionInfo
-{
-  const auto pubId = @"333";
-
-  XCTAssert([self countMustBeEqualTo:0 forEntityName:@"ContributionInfo"]);
-
-  [self makeOneTimeTip:pubId month:BATActivityMonthOctober year:2020];
-
-  const auto filter = [[BATActivityInfoFilter alloc] init];
-  filter.id = pubId;
-
-  const auto tips = [BATLedgerDatabase oneTimeTipsPublishersForMonth:BATActivityMonthOctober year:2020];
-
-  NSMutableArray<BATPublisherInfo *> *publisherTips = [[NSMutableArray alloc] init];
-  for (BATPublisherInfo *tipInfo in tips) {
-    if ([tipInfo.id isEqualToString:pubId]) {
-      [publisherTips addObject:tipInfo];
+  const auto migration = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
+  
+  auto migrationResponse = [self executeSQLCommand:migration];
+  XCTAssertEqual(migrationResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  
+  const auto response = [self readSQL:@"SELECT name FROM sqlite_master WHERE type='table' ORDER BY name"
+        columnTypes:{ ledger::DBCommand::RecordBindingType::STRING_TYPE }];
+  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK, @"Failed to grab table names");
+  
+  XCTAssert(response->result->is_records());
+  const auto tableNames = [[NSMutableArray alloc] init];
+  for (const auto& record : response->result->get_records()) {
+    for (const auto& field : record->fields) {
+      XCTAssert(field->is_string_value());
+      const auto stringValue = field->get_string_value();
+      [tableNames addObject:[NSString stringWithUTF8String:stringValue.c_str()]];
     }
   }
-
-  XCTAssertEqual(publisherTips.count, 1);
-  // FIXME: Converting between double and probi can change soon. for now we convert it here in the test only.
-  XCTAssertEqual(publisherTips.firstObject.weight / pow(10, 18), 1.5);
-}
-
-- (void)testOneTimeTipsPublishersForMonth
-{
-  BATActivityMonth month = BATActivityMonthJanuary;
-  const auto year = 2019;
-  const auto publisherId = @"333";
-
-  [self makeOneTimeTip:publisherId month:month year:year];
-
-  // Tip with different month
-  [self makeOneTimeTip:publisherId month:BATActivityMonthFebruary year:year];
-
-  // Tip with different year
-  [self makeOneTimeTip:publisherId month:month year:2020];
-
-  // Tip with different type
-  [self makeOneTimeTip:publisherId month:month year:year
-                 probi:@"20000000000000000" type:BATRewardsTypeAutoContribute];
-
-  const auto tips = [BATLedgerDatabase oneTimeTipsPublishersForMonth:month year:year];
-  XCTAssert([self countMustBeEqualTo:4 forEntityName:@"ContributionInfo"]);
-  XCTAssertEqual(tips.count, 1);
-
-  // Add two more valid tips
-
-  // Same publisher
-  [self makeOneTimeTip:publisherId month:BATActivityMonthJanuary year:year];
-
-  // Different publisher
-  [self makeOneTimeTip:@"444" month:BATActivityMonthJanuary year:year];
-
-  const auto newerTips = [BATLedgerDatabase oneTimeTipsPublishersForMonth:month year:year];
-  XCTAssert([self countMustBeEqualTo:6 forEntityName:@"ContributionInfo"]);
-  XCTAssertEqual(newerTips.count, 3);
-}
-
-- (void)makeOneTimeTip:(NSString *)publisherId month:(const BATActivityMonth)month year:(const int)year
-{
-  const auto probi = @"1500000000000000000";
-  const BATRewardsType type = BATRewardsTypeOneTimeTip;
-
-  [self makeOneTimeTip:publisherId month:month year:year probi:probi type:type];
-}
-
-- (void)makeOneTimeTip:(NSString *)publisherId month:(const BATActivityMonth)month year:(const int)year
-                 probi:(NSString *)probi type:(BATRewardsType)type
-{
-  const auto now = [[NSDate date] timeIntervalSince1970];
-
-  [self createBATPublisherInfo:publisherId reconcileStamp:100 percent:30 createActivityInfo:YES];
-
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertContributionInfo:probi month:month year:year date:now
-                                 publisherKey:publisherId type:type completion:nil];
-  }];
-}
-
-#pragma mark - Activity Info
-
-- (void)testInsertOrUpdateActivityInfoFromPublisherEmptyId
-{
-  const auto info = [self createBATPublisherInfo:@"111" reconcileStamp:111 percent:11 createActivityInfo:NO];
-  XCTAssert([self countMustBeEqualTo:0 forEntityName:@"ActivityInfo"]);
-
-  info.id = @"";
-  [self waitForFailedSaveAttempt:^{
-    [BATLedgerDatabase insertOrUpdateActivityInfoFromPublisher:info completion:nil];
-  }];
-  XCTAssert([self countMustBeEqualTo:0 forEntityName:@"ActivityInfo"]);
-}
-
-- (void)testInsertOrUpdateActivityInfoFromPublisherTwoActivites
-{
-  const auto stamp = 200;
-  const auto info = [self createBATPublisherInfo:@"111" reconcileStamp:stamp percent:11 createActivityInfo:NO];
-
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdateActivityInfoFromPublisher:info completion:nil];
-  }];
-
-  const auto filter = [[BATActivityInfoFilter alloc] init];
-  filter.id = @"111";
-  const auto sort = [[BATActivityInfoFilterOrderPair alloc] init];
-  sort.propertyName = @"reconcileStamp";
-  sort.ascending = NO;
-  filter.orderBy = @[ sort ];
-
-  auto result = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:0 filter:filter];
-  XCTAssertEqual(result.count, 1);
-
-  // Try to add new activity but with the same reconcile stamp.
-  info.reconcileStamp = stamp;
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdateActivityInfoFromPublisher:info completion:nil];
-  }];
-
-  result = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:0 filter:filter];
-  XCTAssertEqual(result.count, 1);
-
-  // New activity, new reconcile stamp.
-  info.reconcileStamp = 300;
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdateActivityInfoFromPublisher:info completion:nil];
-  }];
-
-  result = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:0 filter:filter];
-  XCTAssertEqual(result.count, 2);
-  XCTAssertEqual(result.firstObject.reconcileStamp, 300);
-  XCTAssertEqual(result.lastObject.reconcileStamp, 200);
-}
-
-- (void)testInsertOrUpdateActivitiesInfoFromPublishers
-{
-  const auto p1 = [self createBATPublisherInfo:@"111" reconcileStamp:111 percent:11 createActivityInfo:NO];
-  const auto p2 = [self createBATPublisherInfo:@"222" reconcileStamp:222 percent:22 createActivityInfo:NO];
-  const auto p3 = [self createBATPublisherInfo:@"333" reconcileStamp:333 percent:33 createActivityInfo:NO];
-
-  const auto publishers = @[p1, p2, p3];
-
-  XCTAssert([self countMustBeEqualTo:0 forEntityName:@"ActivityInfo"]);
-
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdateActivitiesInfoFromPublishers:publishers completion:nil];
-  }];
-
-  XCTAssert([self countMustBeEqualTo:3 forEntityName:@"ActivityInfo"]);
-}
-
-- (void)testDeleteActivityInfoWithPublisherID
-{
-  const auto pubId = @"1";
-
-  [self createBATPublisherInfo:pubId reconcileStamp:10 percent:11 createActivityInfo:YES];
-  [self createBATPublisherInfo:@"2" reconcileStamp:10 percent:22 createActivityInfo:YES];
-
-  XCTAssert([self countMustBeEqualTo:2 forEntityName:@"ActivityInfo"]);
-
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase deleteActivityInfoWithPublisherID:pubId reconcileStamp:10 completion:nil];
-  }];
-  XCTAssert([self countMustBeEqualTo:1 forEntityName:@"ActivityInfo"]);
-
-  // Make sure correct activity got deleted and remaning one still exists.
-  const auto filter = [[BATActivityInfoFilter alloc] init];
-  filter.id = pubId;
-
-  auto result = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:0 filter:filter];
-  XCTAssertEqual(result.count, 0);
-
-  filter.id = @"2";
-  result = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:0 filter:filter];
-  XCTAssertEqual(result.firstObject.reconcileStamp, 10);
-  XCTAssertEqual(result.firstObject.percent, 22);
-  XCTAssert([result.firstObject.id isEqualToString:@"2"]);
-}
-
-#pragma mark - publishersWithActivityFromOffset
-
-- (void)testPublishersWithFiltersEmptyFilter
-{
-  const auto offset = 0;
-  const auto limit = 0;
-  const auto filter = [[BATActivityInfoFilter alloc] init];
-
-  [self createBATPublisherInfo:@"1" reconcileStamp:10 percent:10 createActivityInfo:YES];
-  [self createBATPublisherInfo:@"2" reconcileStamp:10 percent:10 createActivityInfo:YES];
-
-  const auto result = [BATLedgerDatabase publishersWithActivityFromOffset:offset limit:limit filter:filter];
-
-  XCTAssertEqual(result.count, 2);
-}
-
-- (void)testPublishersWithFiltersLimitOffset
-{
-  const auto filter = [[BATActivityInfoFilter alloc] init];
-  const auto sort = [[BATActivityInfoFilterOrderPair alloc] init];
-  sort.propertyName = @"publisherID";
-  sort.ascending = YES;
-  filter.orderBy = @[ sort ];
-
-  [self createBATPublisherInfo:@"1" reconcileStamp:10 percent:10 createActivityInfo:YES];
-  [self createBATPublisherInfo:@"2" reconcileStamp:10 percent:10 createActivityInfo:YES];
-  [self createBATPublisherInfo:@"3" reconcileStamp:10 percent:10 createActivityInfo:YES];
-
-  const auto limit = 1;
-  const auto resultWithLimit = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:limit filter:filter];
-
-  XCTAssertEqual(resultWithLimit.count, 1);
-  XCTAssert([resultWithLimit.firstObject.id isEqualToString:@"1"]);
-
-  const auto offset = 2;
-  const auto resultWithOffset = [BATLedgerDatabase publishersWithActivityFromOffset:offset limit:30 filter:filter];
-
-  XCTAssertEqual(resultWithOffset.count, 1);
-  XCTAssert([resultWithOffset.firstObject.id isEqualToString:@"3"]);
-}
-
-- (void)testPublishersWithFiltersSorting
-{
-  const auto filter = [[BATActivityInfoFilter alloc] init];
-
-  [self createBATPublisherInfo:@"1" reconcileStamp:30 percent:30 createActivityInfo:YES];
-  [self createBATPublisherInfo:@"2" reconcileStamp:40 percent:40 createActivityInfo:YES];
-  [self createBATPublisherInfo:@"3" reconcileStamp:10 percent:10 createActivityInfo:YES];
-
-  // Ascending order
-  const auto percentAscending = [[BATActivityInfoFilterOrderPair alloc] init];
-  percentAscending.propertyName = @"percent";
-  percentAscending.ascending = YES;
-  filter.orderBy = @[percentAscending];
-
-  const auto ascendingResult = [BATLedgerDatabase publishersWithActivityFromOffset:0
-                                                                             limit:0
-                                                                            filter:filter];
-
-  XCTAssert([ascendingResult[0].id isEqualToString:@"3"]);
-  XCTAssert([ascendingResult[1].id isEqualToString:@"1"]);
-  XCTAssert([ascendingResult[2].id isEqualToString:@"2"]);
-
-  // Descending order
-  const auto percentDescending = [[BATActivityInfoFilterOrderPair alloc] init];
-  percentDescending.propertyName = @"percent";
-  percentDescending.ascending = NO;
-
-  filter.orderBy = @[percentDescending];
-
-  const auto descendingResult = [BATLedgerDatabase publishersWithActivityFromOffset:0
-                                                                              limit:0
-                                                                             filter:filter];
-
-  XCTAssert([descendingResult[0].id isEqualToString:@"2"]);
-  XCTAssert([descendingResult[1].id isEqualToString:@"1"]);
-  XCTAssert([descendingResult[2].id isEqualToString:@"3"]);
-
-  // Two sort descriptors
-
-  // Add two more publishers with same `percent` but different `reconcileStamp`
-  [self createBATPublisherInfo:@"4" reconcileStamp:40 percent:10 createActivityInfo:YES];
-  [self createBATPublisherInfo:@"5" reconcileStamp:30 percent:10 createActivityInfo:YES];
-
-  filter.orderBy = @[percentAscending];
-  const auto oneSortResult = [BATLedgerDatabase publishersWithActivityFromOffset:0
-                                                                           limit:0
-                                                                          filter:filter];
-
-  const auto oneSortResultIds = @[oneSortResult[0].id, oneSortResult[1].id, oneSortResult[2].id];
-  const auto expectedIds = @[@"3", @"5", @"4"];
-
-  // Make sure records by `reconcileStamp` are in wrong order when using one order pair
-  XCTAssertFalse([oneSortResultIds isEqualToArray:expectedIds]);
-
-  const auto stampAscending = [[BATActivityInfoFilterOrderPair alloc] init];
-  stampAscending.propertyName = @"reconcileStamp";
-  stampAscending.ascending = YES;
-
-  filter.orderBy = @[percentAscending, stampAscending];
-
-  const auto doubleSortResult = [BATLedgerDatabase publishersWithActivityFromOffset:0
-                                                                              limit:0
-                                                                             filter:filter];
-
-  const auto doubleSortResultIds = @[doubleSortResult[0].id, doubleSortResult[1].id, doubleSortResult[2].id];
-
-  XCTAssert([doubleSortResultIds isEqualToArray:expectedIds]);
-}
-
-- (void)testPublishersWithFiltersPublisherId
-{
-  const auto idForFilter = @"brave";
-
-  [self createBATPublisherInfo:idForFilter reconcileStamp:30 percent:30 createActivityInfo:YES];
-  [self createBATPublisherInfo:@"2" reconcileStamp:30 percent:30 createActivityInfo:YES];
-  [self createBATPublisherInfo:@"3" reconcileStamp:40 percent:40 createActivityInfo:YES];
-
-  const auto filter = [[BATActivityInfoFilter alloc] init];
-  filter.id = idForFilter;
-
-  const auto result = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:0 filter:filter];
-  XCTAssert([result.firstObject.id isEqualToString:idForFilter]);
-
-  const auto idDoesNotExist = @"not_exists";
-  filter.id = idDoesNotExist;
-
-  const auto emptyResult = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:0 filter:filter];
-
-  XCTAssertEqual(emptyResult.count, 0);
-}
-
-- (void)testPublishersWithFiltersReconcileStamp
-{
-  const auto stamp = 30;
-
-  [self createBATPublisherInfo:@"1" reconcileStamp:stamp percent:30 createActivityInfo:YES];
-  [self createBATPublisherInfo:@"2" reconcileStamp:stamp percent:30 createActivityInfo:YES];
-  [self createBATPublisherInfo:@"3" reconcileStamp:40 percent:40 createActivityInfo:YES];
-
-  const auto filter = [[BATActivityInfoFilter alloc] init];
-  filter.reconcileStamp = stamp;
-
-  const auto result = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:0 filter:filter];
-  XCTAssertEqual(result.count, 2);
-  XCTAssertFalse([result.firstObject.id isEqualToString:@"3"]);
-
-  // non existent stamp
-  filter.reconcileStamp = 333;
-
-  const auto emptyResult = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:0 filter:filter];
-  XCTAssertEqual(emptyResult.count, 0);
-}
-
-- (void)testPublishersWithFiltersDuration
-{
-  const auto stamp = 30;
-
-  [self createBATPublisherInfo:@"1" reconcileStamp:stamp percent:1 createActivityInfo:YES duration:stamp
-                        visits:1 excluded:BATPublisherExcludeDefault];
-
-  [self createBATPublisherInfo:@"2" reconcileStamp:30 percent:1 createActivityInfo:YES duration:350
-                        visits:1 excluded:BATPublisherExcludeDefault];
-
-  [self createBATPublisherInfo:@"3" reconcileStamp:30 percent:1 createActivityInfo:YES duration:29
-                        visits:1 excluded:BATPublisherExcludeDefault];
-
-  [self createBATPublisherInfo:@"4" reconcileStamp:30 percent:1 createActivityInfo:YES duration:10
-                        visits:1 excluded:BATPublisherExcludeDefault];
-
-
-  const auto filter = [[BATActivityInfoFilter alloc] init];
-  filter.minDuration = stamp;
-
-  const auto result = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:0 filter:filter];
-  XCTAssertEqual(result.count, 2);
-
-  filter.minDuration = 50000000;
-
-  const auto emptyResult = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:0 filter:filter];
-  XCTAssertEqual(emptyResult.count, 0);
-}
-
-- (void)testPublishersWithFiltersExcluded
-{
-
-  // Watch out, BATPublisherInfo and BATActivityInfoFilter both have `exclude` enums
-  // but they are not the same.
-  [self createBATPublisherInfo:@"1" reconcileStamp:12 percent:1 createActivityInfo:YES duration:15
-                        visits:1 excluded:BATPublisherExcludeAll];
-
-  [self createBATPublisherInfo:@"2" reconcileStamp:30 percent:1 createActivityInfo:YES duration:350
-                        visits:1 excluded:BATPublisherExcludeDefault];
-
-  [self createBATPublisherInfo:@"3" reconcileStamp:30 percent:1 createActivityInfo:YES duration:29
-                        visits:1 excluded:BATPublisherExcludeDefault];
-
-  [self createBATPublisherInfo:@"4" reconcileStamp:30 percent:1 createActivityInfo:YES duration:10
-                        visits:1 excluded:BATPublisherExcludeIncluded];
-
-  [self createBATPublisherInfo:@"5" reconcileStamp:30 percent:1 createActivityInfo:YES duration:10
-                        visits:1 excluded:BATPublisherExcludeExcluded];
-
-  const auto filter = [[BATActivityInfoFilter alloc] init];
-
-  // Filter all - skip exclude filtering
-  filter.excluded = BATExcludeFilterFilterAll;
-
-  auto result = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:0 filter:filter];
-  XCTAssertEqual(result.count, 5);
-
-  // All except excluded
-  filter.excluded = BATExcludeFilterFilterAllExceptExcluded;
-
-  result = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:0 filter:filter];
-  XCTAssertEqual(result.count, 4);
-
-  // Other excludes
-  filter.excluded = BATExcludeFilterFilterDefault;
-
-  result = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:0 filter:filter];
-  XCTAssertEqual(result.count, 2);
-
-  filter.excluded = BATExcludeFilterFilterIncluded;
-
-  result = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:0 filter:filter];
-  XCTAssertEqual(result.count, 1);
-}
-
-- (void)testListingAllExcludedPublishers
-{
-  [self createBATPublisherInfo:@"2" reconcileStamp:30 percent:1 createActivityInfo:YES duration:350
-                        visits:1 excluded:BATPublisherExcludeDefault];
-
-  [self createBATPublisherInfo:@"3" reconcileStamp:30 percent:1 createActivityInfo:YES duration:29
-                        visits:1 excluded:BATPublisherExcludeDefault];
-
-  [self createBATPublisherInfo:@"4" reconcileStamp:30 percent:1 createActivityInfo:YES duration:10
-                        visits:1 excluded:BATPublisherExcludeIncluded];
-
-  [self createBATPublisherInfo:@"5" reconcileStamp:30 percent:1 createActivityInfo:YES duration:10
-                        visits:1 excluded:BATPublisherExcludeExcluded];
-
-  const auto excludedPublishers = [BATLedgerDatabase excludedPublishers];
-  XCTAssertTrue([excludedPublishers.firstObject.id isEqualToString:@"5"]);
-  XCTAssertEqual(excludedPublishers.count, 1);
-}
-
-- (void)testPublishersWithFiltersPercent
-{
-  const auto percent = 30;
-
-  [self createBATPublisherInfo:@"1" reconcileStamp:20 percent:percent createActivityInfo:YES];
-  [self createBATPublisherInfo:@"2" reconcileStamp:30 percent:80 createActivityInfo:YES];
-  [self createBATPublisherInfo:@"3" reconcileStamp:40 percent:0 createActivityInfo:YES];
-  [self createBATPublisherInfo:@"4" reconcileStamp:40 percent:5 createActivityInfo:YES];
-
-  const auto filter = [[BATActivityInfoFilter alloc] init];
-  filter.percent = percent;
-
-  const auto result = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:0 filter:filter];
-  XCTAssertEqual(result.count, 2);
-
-  filter.percent = 90;
-
-  const auto emptyResult = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:0 filter:filter];
-  XCTAssertEqual(emptyResult.count, 0);
-}
-
-- (void)testPublishersWithFiltersVisits
-{
-  const auto visits = 10;
-
-  // Same `duration` as reconcile stamp
-  [self createBATPublisherInfo:@"1" reconcileStamp:10 percent:1 createActivityInfo:YES duration:100
-                        visits:visits excluded:BATPublisherExcludeDefault];
-
-  // `duration` higher than reconcile stamp
-  [self createBATPublisherInfo:@"2" reconcileStamp:30 percent:1 createActivityInfo:YES duration:350
-                        visits:19 excluded:BATPublisherExcludeDefault];
-
-  [self createBATPublisherInfo:@"3" reconcileStamp:30 percent:1 createActivityInfo:YES duration:29
-                        visits:5 excluded:BATPublisherExcludeDefault];
-
-  const auto filter = [[BATActivityInfoFilter alloc] init];
-  filter.minVisits = visits;
-
-  const auto result = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:0 filter:filter];
-  XCTAssertEqual(result.count, 2);
-
-  filter.minVisits = 100;
-
-  const auto emptyResult = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:0 filter:filter];
-  XCTAssertEqual(emptyResult.count, 0);
-}
-
-#pragma mark - Media Publisher Info
-
-- (void)testInsertOrUpdateMediaPublisherInfoWithMediaKey
-{
-  [self createBATPublisherInfo:@"1" reconcileStamp:40 percent:0 createActivityInfo:YES];
-
-  XCTAssert([self countMustBeEqualTo:0 forEntityName:@"MediaPublisherInfo"]);
-
-  [self waitForFailedSaveAttempt:^{
-    [BATLedgerDatabase insertOrUpdateMediaPublisherInfoWithMediaKey:@"" publisherID:@"1" completion:nil];
-  }];
-  XCTAssert([self countMustBeEqualTo:0 forEntityName:@"MediaPublisherInfo"]);
-
-  // Empty publishser
-  [self waitForFailedSaveAttempt:^{
-      [BATLedgerDatabase insertOrUpdateMediaPublisherInfoWithMediaKey:@"key" publisherID:@"" completion:nil];
-  }];
-  XCTAssert([self countMustBeEqualTo:0 forEntityName:@"MediaPublisherInfo"]);
-
-  [self backgroundSaveAndWaitForExpectation:^{
-      [BATLedgerDatabase insertOrUpdateMediaPublisherInfoWithMediaKey:@"key" publisherID:@"1" completion:nil];
-  }];
-
-  XCTAssert([self countMustBeEqualTo:1 forEntityName:@"MediaPublisherInfo"]);
-  const auto newPub = [BATLedgerDatabase mediaPublisherInfoWithMediaKey:@"key"];
-  XCTAssert([newPub.id isEqualToString:@"1"]);
-}
-
-- (void)testMediaPublisherInfoWithMediaKey
-{
-  const auto publisherId = @"1";
-  const auto key = @"key";
-
-  [self createBATPublisherInfo:@"1" reconcileStamp:40 percent:0 createActivityInfo:YES];
-
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdateMediaPublisherInfoWithMediaKey:key publisherID:publisherId completion:nil];
-  }];
-
-  const auto result = [BATLedgerDatabase mediaPublisherInfoWithMediaKey:key];
-  XCTAssert([result.id isEqualToString:publisherId]);
-
-  const auto emptyResult = [BATLedgerDatabase mediaPublisherInfoWithMediaKey:@"empty"];
-  XCTAssertNil(emptyResult);
-}
-
-#pragma mark - Recurring Tips
-
-- (void)testInsertOrUpdateRecurringTipWithPublisherID
-{
-  const auto publisherId = @"1";
-  const auto amount = 20.0;
-  const auto now = [[NSDate date] timeIntervalSince1970];
-
-  [self createBATPublisherInfo:publisherId reconcileStamp:40 percent:0 createActivityInfo:YES];
-
-  XCTAssert([self countMustBeEqualTo:0 forEntityName:@"RecurringDonation"]);
-
-  // Empty publisher id
-  [self waitForFailedSaveAttempt:^{
-    [BATLedgerDatabase insertOrUpdateRecurringTipWithPublisherID:@"" amount:amount dateAdded:now completion:nil];
-  }];
-
-  [self createRecurringTip:publisherId amount:amount date:now];
-
-  const auto tips = BATLedgerDatabase.recurringTips;
-  XCTAssertEqual(tips.count, 1);
-  XCTAssert([tips.firstObject.id isEqualToString:publisherId]);
-  XCTAssertEqual(tips.firstObject.weight, amount);
-}
-
-- (void)testRecurringTipsForMonth
-{
-  const auto publisherId = @"1";
-
-  const auto dateFormatter = [[NSDateFormatter alloc] init];
-  dateFormatter.dateFormat = @"yyyy-MM-dd";
-
-  const auto date = [[dateFormatter dateFromString:@"2019-10-07"] timeIntervalSince1970];
-  const auto date2 = [[dateFormatter dateFromString:@"2020-11-17"] timeIntervalSince1970];
-
-  [self createBATPublisherInfo:@"1" reconcileStamp:40 percent:0 createActivityInfo:YES];
-  [self createBATPublisherInfo:@"2" reconcileStamp:40 percent:0 createActivityInfo:YES];
-
-  [self createRecurringTip:publisherId amount:15.0 date:date];
-  [self createRecurringTip:@"2" amount:100.0 date:date2];
-
-  auto result = [BATLedgerDatabase recurringTips];
-  XCTAssertEqual(result.count, 2);
-}
-
-- (void)testRemoveRecurringTipWithPublisherID
-{
-  const auto now = [[[NSDate alloc] init] timeIntervalSince1970];
-
-  [self createBATPublisherInfo:@"1" reconcileStamp:40 percent:0 createActivityInfo:YES];
-  [self createBATPublisherInfo:@"2" reconcileStamp:40 percent:0 createActivityInfo:YES];
-
-  [self createRecurringTip:@"1" amount:15.0 date:now];
-  [self createRecurringTip:@"2" amount:100.0 date:now];
-
-  XCTAssert([self countMustBeEqualTo:2 forEntityName:@"RecurringDonation"]);
-
-  // Non existing donation
-  [self createBATPublisherInfo:@"3" reconcileStamp:10 percent:10 createActivityInfo:YES];
-  [self waitForFailedSaveAttempt:^{
-    [BATLedgerDatabase removeRecurringTipWithPublisherID:@"3" completion:nil];
-  }];
-  XCTAssert([self countMustBeEqualTo:2 forEntityName:@"RecurringDonation"]);
-
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase removeRecurringTipWithPublisherID:@"1" completion:nil];
-  }];
-
-  XCTAssert([self countMustBeEqualTo:1 forEntityName:@"RecurringDonation"]);
-  const auto tipsLeft = BATLedgerDatabase.recurringTips;
-  XCTAssertEqual(tipsLeft.count, 1);
-  XCTAssertFalse([tipsLeft.firstObject.id isEqualToString:@"1"]);
-}
-
-- (void)createRecurringTip:(NSString *)publisherId amount:(double)amount date:(uint32_t)date
-{
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdateRecurringTipWithPublisherID:publisherId
-                                                          amount:amount
-                                                       dateAdded:date
-                                                      completion:nil];
-  }];
-}
-
-#pragma mark - Pending Contributions
-
-- (void)testPendingContributions
-{
-  [self createBATPublisherInfo:@"brave.com" reconcileStamp:40 percent:0 createActivityInfo:YES];
-  [self createBATPublisherInfo:@"duckduckgo.com" reconcileStamp:40 percent:0 createActivityInfo:YES];
-
-  const auto now = [[NSDate date] timeIntervalSince1970];
-  const auto one = [[BATPendingContribution alloc] init];
-  one.publisherKey = @"brave.com";
-  one.amount = 20.0;
-  one.type = BATRewardsTypeAutoContribute;
-  one.addedDate = now;
-  one.viewingId = @"";
-
-  const auto two = [[BATPendingContribution alloc] init];
-  two.publisherKey = @"duckduckgo.com";
-  two.amount = 10.0;
-  two.type = BATRewardsTypeAutoContribute;
-  two.addedDate = now;
-  two.viewingId = @"";
-
-  const auto list = @[one, two];
-
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertPendingContributions:list completion:nil];
-  }];
-
-  const auto contributions = [BATLedgerDatabase pendingContributions];
-  XCTAssertEqual(contributions.count, 2);
-}
-
-- (void)testRemovePendingContribution
-{
-  const auto removedPublisherKey = @"brave.com";
-  const auto removedViewingId = @"viewing-id";
-  const auto keptPublisherKey = @"duckduckgo.com";
-
-  [self createBATPublisherInfo:removedPublisherKey reconcileStamp:40 percent:0 createActivityInfo:YES];
-  [self createBATPublisherInfo:keptPublisherKey reconcileStamp:40 percent:0 createActivityInfo:YES];
-
-  const auto now = [[NSDate date] timeIntervalSince1970];
-  const auto one = [[BATPendingContribution alloc] init];
-  one.publisherKey = removedPublisherKey;
-  one.amount = 20.0;
-  one.type = BATRewardsTypeAutoContribute;
-  one.addedDate = now;
-  one.viewingId = removedViewingId;
-
-  const auto two = [[BATPendingContribution alloc] init];
-  two.publisherKey = keptPublisherKey;
-  two.amount = 10.0;
-  two.type = BATRewardsTypeAutoContribute;
-  two.addedDate = now;
-  two.viewingId = @"";
-
-  const auto list = @[one, two];
-
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertPendingContributions:list completion:nil];
-  }];
-
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase removePendingContributionForPublisherID:removedPublisherKey
-                                                     viewingID:removedViewingId
-                                                     addedDate:now
-                                                    completion:^(BOOL success) {
-                                                      XCTAssertTrue(success);
-                                                    }];
-  }];
-
-  const auto contributions = [BATLedgerDatabase pendingContributions];
-
-  XCTAssertEqual(contributions.count, 1);
-  XCTAssertTrue([contributions[0].publisherKey isEqualToString:keptPublisherKey]);
-}
-
-- (void)testRemoveAllPendingContributions
-{
-  [self createBATPublisherInfo:@"brave.com" reconcileStamp:40 percent:0 createActivityInfo:YES];
-  [self createBATPublisherInfo:@"duckduckgo.com" reconcileStamp:40 percent:0 createActivityInfo:YES];
-
-  const auto now = [[NSDate date] timeIntervalSince1970];
-  const auto one = [[BATPendingContribution alloc] init];
-  one.publisherKey = @"brave.com";
-  one.amount = 20.0;
-  one.type = BATRewardsTypeAutoContribute;
-  one.addedDate = now;
-  one.viewingId = @"";
-
-  const auto two = [[BATPendingContribution alloc] init];
-  two.publisherKey = @"duckduckgo.com";
-  two.amount = 10.0;
-  two.type = BATRewardsTypeAutoContribute;
-  two.addedDate = now;
-  two.viewingId = @"";
-
-  const auto list = @[one, two];
-
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertPendingContributions:list completion:nil];
-  }];
-
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase removeAllPendingContributions:nil];
-  }];
-
-  const auto contributions = [BATLedgerDatabase pendingContributions];
-  XCTAssertEqual(contributions.count, 0);
-}
-
-- (void)testReservedAmount
-{
-  [self createBATPublisherInfo:@"brave.com" reconcileStamp:40 percent:0 createActivityInfo:YES];
-  [self createBATPublisherInfo:@"duckduckgo.com" reconcileStamp:40 percent:0 createActivityInfo:YES];
-
-  const auto now = [[NSDate date] timeIntervalSince1970];
-  const auto one = [[BATPendingContribution alloc] init];
-  one.publisherKey = @"brave.com";
-  one.amount = 20.0;
-  one.type = BATRewardsTypeAutoContribute;
-  one.addedDate = now;
-  one.viewingId = @"";
-
-  const auto two = [[BATPendingContribution alloc] init];
-  two.publisherKey = @"duckduckgo.com";
-  two.amount = 10.0;
-  two.type = BATRewardsTypeAutoContribute;
-  two.addedDate = now;
-  two.viewingId = @"";
-
-  const auto list = @[one, two];
-
-  [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertPendingContributions:list completion:nil];
-  }];
-
-  const auto amount = [BATLedgerDatabase reservedAmountForPendingContributions];
-  XCTAssertEqual(amount, 30.0);
-}
-
-#pragma mark - Publisher List / Info
-
-- (BATServerPublisherInfo *)serverPublisherInfo:(NSString *)publisherID
-{
-  return [self serverPublisherInfo:publisherID amounts:nil links:nil];
-}
-
-- (BATServerPublisherInfo *)serverPublisherInfo:(NSString *)publisherID
-                                        amounts:(nullable NSArray<NSNumber *> *)amounts
-                                          links:(nullable NSDictionary<NSString *, NSString *> *)links
-{
-  auto info = [[BATServerPublisherInfo alloc] init];
-  info.publisherKey = publisherID;
-  info.address = publisherID;
-  
-  const auto banner = [[BATPublisherBanner alloc] init];
-  banner.publisherKey = publisherID;
-  banner.desc = @"brave";
-  banner.amounts = amounts ?: @[ @1.0, @5.0, @10.0 ];
-  banner.links = links ?: @{ @"twitter": @"twitter.com", @"youtube": @"youtube.com" };
-  info.banner = banner;
-  
-  return info;
-}
-
-- (void)testServerPublisherInfoNotFound
-{
-  const auto publisher = [BATLedgerDatabase serverPublisherInfoWithPublisherID:@"duckduckgo.com"];
-  XCTAssertNil(publisher);
-}
-
-- (void)testInsertServerPublisherListAndQuery
-{
-  const auto list = @[
-    [self serverPublisherInfo:@"brave.com"],
-    [self serverPublisherInfo:@"duckduckgo.com"]
+  XCTAssertNotEqual(tableNames.count, 0);
+  const auto expectedTables = @[
+    @"activity_info",
+    @"contribution_info",
+    @"contribution_queue",
+    @"contribution_queue_publishers",
+    @"media_publisher_info",
+    @"meta",
+    @"pending_contribution",
+    @"promotion",
+    @"promotion_creds",
+    @"publisher_info",
+    @"recurring_donation",
+    @"server_publisher_amounts",
+    @"server_publisher_banner",
+    @"server_publisher_info",
+    @"server_publisher_links",
+    @"sqlite_sequence",
+    @"unblinded_tokens"
   ];
-  [self waitForCompletion:^(XCTestExpectation *expectation) {
-    [BATLedgerDatabase clearAndInsertList:list completion:^(BOOL success) {
-      XCTAssertTrue(success);
-      [expectation fulfill];
-    }];
-  }];
-  for (BATServerPublisherInfo *info in list) {
-    XCTAssertNotNil([BATLedgerDatabase serverPublisherInfoWithPublisherID:info.publisherKey]);
-  }
+  XCTAssertTrue([tableNames isEqualToArray:expectedTables]);
 }
 
-- (void)testClearAndInsertServerPublisherList
+// Test that migration script creates required indexes
+- (void)testCreatesIndexes
 {
-  const auto firstList = @[
-    [self serverPublisherInfo:@"brave.com"],
-    [self serverPublisherInfo:@"duckduckgo.com"]
+  const auto migration = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
+  
+  auto migrationResponse = [self executeSQLCommand:migration];
+  XCTAssertEqual(migrationResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  
+  const auto response = [self readSQL:@"SELECT name FROM sqlite_master WHERE (type='index' AND name NOT LIKE 'sqlite%') ORDER BY name;"
+                          columnTypes:{ ledger::DBCommand::RecordBindingType::STRING_TYPE }];
+  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK, @"Failed to grab table names");
+  
+  XCTAssert(response->result->is_records());
+  const auto indexNames = [[NSMutableArray alloc] init];
+  for (const auto& record : response->result->get_records()) {
+    for (const auto& field : record->fields) {
+      XCTAssert(field->is_string_value());
+      const auto stringValue = field->get_string_value();
+      [indexNames addObject:[NSString stringWithUTF8String:stringValue.c_str()]];
+    }
+  }
+  XCTAssertNotEqual(indexNames.count, 0);
+  const auto expectedIndexes = @[
+    @"activity_info_publisher_id_index",
+    @"contribution_info_publisher_id_index",
+    @"pending_contribution_publisher_id_index",
+    @"promotion_creds_promotion_id_index",
+    @"promotion_promotion_id_index",
+    @"recurring_donation_publisher_id_index",
+    @"server_publisher_amounts_publisher_key_index",
+    @"server_publisher_banner_publisher_key_index",
+    @"server_publisher_info_publisher_key_index",
+    @"server_publisher_links_publisher_key_index",
+    @"unblinded_tokens_token_id_index"
   ];
-  
-  [self waitForCompletion:^(XCTestExpectation *expectation) {
-    [BATLedgerDatabase clearAndInsertList:firstList completion:^(BOOL success) {
-      XCTAssertTrue(success);
-      [expectation fulfill];
-    }];
-  }];
-  
-  const auto secondList = @[
-    [self serverPublisherInfo:@"github.com"],
-    [self serverPublisherInfo:@"twitter.com"]
-  ];
-  
-  [self waitForCompletion:^(XCTestExpectation *expectation) {
-    [BATLedgerDatabase clearAndInsertList:secondList completion:^(BOOL success) {
-      XCTAssertTrue(success);
-      [expectation fulfill];
-    }];
-  }];
-  
-  for (BATServerPublisherInfo *info in firstList) {
-    // Ensure all originals were destroyed
-    XCTAssertNil([BATLedgerDatabase serverPublisherInfoWithPublisherID:info.publisherKey]);
-    XCTAssertNil([BATLedgerDatabase bannerForPublisherID:info.publisherKey]);
-    XCTAssertNil([BATLedgerDatabase bannerAmountsForPublisherWithPublisherID:info.publisherKey]);
-    XCTAssertNil([BATLedgerDatabase publisherLinksWithPublisherID:info.publisherKey]);
-  }
-  for (BATServerPublisherInfo *info in secondList) {
-    const auto queriedInfo = [BATLedgerDatabase serverPublisherInfoWithPublisherID:info.publisherKey];
-    XCTAssertNotNil(queriedInfo);
-    XCTAssertNotNil(queriedInfo.banner);
-    XCTAssert(queriedInfo.banner.amounts.count > 0);
-    XCTAssert(queriedInfo.banner.links.count > 0);
-  }
+  XCTAssertTrue([indexNames isEqualToArray:expectedIndexes]);
 }
 
-#pragma mark - Publisher List / Banner
-
-- (void)testInsertPublisherListBannerForPublisherInfo
+// Tests when we insert an incomplete publisher info (which would end up with empty strings)
+- (void)testMigratePublisherInfo
 {
-  const auto publisherID = @"brave.com";
-  const auto info = [self serverPublisherInfo:publisherID];
+  PublisherInfo *publisher = [self coreDataModelOfClass:PublisherInfo.self];
+  publisher.publisherID = @"brave.com";
+  publisher.url = @"https://brave.com";
+  publisher.faviconURL = @"";
+  publisher.name = @"";
+  publisher.provider = @"";
 
-  [self waitForCompletion:^(XCTestExpectation *expectation) {
-    [BATLedgerDatabase clearAndInsertList:@[info] completion:^(BOOL success) {
-      XCTAssertTrue(success);
-      [expectation fulfill];
-    }];
+  const auto migration = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
+  const auto insertLine = [BATLedgerDatabase publisherInfoInsertFor:publisher];
+  XCTAssert([migration containsString:insertLine]);
+  
+  const auto migrateResponse = [self executeSQLCommand:migration];
+  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  
+  const auto response = [self readSQL:@"SELECT publisher_id, excluded, name, favIcon, url, provider FROM publisher_info;" columnTypes:{
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE
   }];
-  const auto queriedInfo = [BATLedgerDatabase serverPublisherInfoWithPublisherID:publisherID];
-  XCTAssertNotNil(queriedInfo.banner);
-  const auto amounts = queriedInfo.banner.amounts;
-  const auto links =  queriedInfo.banner.links;
-  XCTAssertEqual(amounts.count, info.banner.amounts.count);
-  XCTAssert([[NSSet setWithArray:amounts] isEqualToSet:[NSSet setWithArray:info.banner.amounts]]);
-  XCTAssertEqual(links.count, info.banner.links.count);
-  for (NSString *key in links) {
-    XCTAssert([info.banner.links[key] isEqualToString:links[key]]);
-  }
+  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->result->get_records().size(), 1);
+  
+  const auto record = std::move(response->result->get_records()[0]);
+  XCTAssertEqual(record->fields[0]->get_string_value(), publisher.publisherID.UTF8String);
+  XCTAssertEqual(record->fields[1]->get_int_value(), publisher.excluded);
+  XCTAssertEqual(record->fields[2]->get_string_value(), publisher.name.UTF8String);
+  XCTAssertEqual(record->fields[3]->get_string_value(), publisher.faviconURL.UTF8String);
+  XCTAssertEqual(record->fields[4]->get_string_value(), publisher.url.UTF8String);
+  XCTAssertEqual(record->fields[5]->get_string_value(), publisher.provider.UTF8String);
 }
 
-#pragma mark - Contribution Queue
-
-- (void)testInsertContributionQueue
+- (void)testMigratePublisherInfoChannel
 {
-  const auto queue = [[BATContributionQueue alloc] init];
+  PublisherInfo *publisher = [self coreDataModelOfClass:PublisherInfo.self];
+  publisher.publisherID = @"github#channel:12301619";
+  publisher.url = @"https://github.com/brave";
+  publisher.faviconURL = @"";
+  publisher.name = @"Brave Software";
+  publisher.provider = @"github";
+  
+  const auto migration = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
+  const auto insertLine = [BATLedgerDatabase publisherInfoInsertFor:publisher];
+  XCTAssert([migration containsString:insertLine]);
+  
+  const auto migrateResponse = [self executeSQLCommand:migration];
+  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  
+  const auto response = [self readSQL:@"SELECT publisher_id, excluded, name, favIcon, url, provider FROM publisher_info;" columnTypes:{
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE
+  }];
+  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->result->get_records().size(), 1);
+  
+  const auto record = std::move(response->result->get_records()[0]);
+  XCTAssertEqual(record->fields[0]->get_string_value(), publisher.publisherID.UTF8String);
+  XCTAssertEqual(record->fields[1]->get_int_value(), publisher.excluded);
+  XCTAssertEqual(record->fields[2]->get_string_value(), publisher.name.UTF8String);
+  XCTAssertEqual(record->fields[3]->get_string_value(), publisher.faviconURL.UTF8String);
+  XCTAssertEqual(record->fields[4]->get_string_value(), publisher.url.UTF8String);
+  XCTAssertEqual(record->fields[5]->get_string_value(), publisher.provider.UTF8String);
+}
+
+- (void)testMigrateMediaPublisherInfo
+{
+  MediaPublisherInfo *media = [self coreDataModelOfClass:MediaPublisherInfo.self];
+  media.mediaKey = @"github_brave";
+  media.publisherID = @"github#channel:12301619";
+  
+  const auto migration = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
+  const auto insertLine = [BATLedgerDatabase mediaPublisherInfoInsertFor:media];
+  XCTAssert([migration containsString:insertLine]);
+  
+  const auto migrateResponse = [self executeSQLCommand:migration];
+  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  
+  const auto response = [self readSQL:@"SELECT media_key, publisher_id FROM media_publisher_info;" columnTypes:{
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE
+  }];
+  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->result->get_records().size(), 1);
+  
+  const auto record = std::move(response->result->get_records()[0]);
+  XCTAssertEqual(record->fields[0]->get_string_value(), media.mediaKey.UTF8String);
+  XCTAssertEqual(record->fields[1]->get_string_value(), media.publisherID.UTF8String);
+}
+
+- (void)testMigrateActivityInfo
+{
+  ActivityInfo *activity = [self coreDataModelOfClass:ActivityInfo.self];
+  activity.publisherID = @"brave.com";
+  activity.duration = 74270;
+  activity.percent = 54;
+  activity.visits = 16;
+  activity.reconcileStamp = 1583427109;
+  activity.score = 50.914412;
+  activity.weight = 53.976898;
+  
+  const auto migration = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
+  const auto insertLine = [BATLedgerDatabase activityInfoInsertFor:activity];
+  XCTAssert([migration containsString:insertLine]);
+  
+  const auto migrateResponse = [self executeSQLCommand:migration];
+  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  
+  const auto response = [self readSQL:@"SELECT publisher_id, duration, visits, score, percent, weight, reconcile_stamp FROM activity_info;" columnTypes:{
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::INT64_TYPE,
+    ledger::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
+    ledger::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
+    ledger::DBCommand::RecordBindingType::INT64_TYPE
+  }];
+  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->result->get_records().size(), 1);
+  
+  const auto record = std::move(response->result->get_records()[0]);
+  XCTAssertEqual(record->fields[0]->get_string_value(), activity.publisherID.UTF8String);
+  XCTAssertEqual(record->fields[1]->get_int64_value(), activity.duration);
+  XCTAssertEqual(record->fields[2]->get_int_value(), activity.visits);
+  XCTAssertEqual(record->fields[3]->get_double_value(), activity.score);
+  XCTAssertEqual(record->fields[4]->get_int_value(), activity.percent);
+  XCTAssertEqual(record->fields[5]->get_double_value(), activity.weight);
+  XCTAssertEqual(record->fields[6]->get_int64_value(), activity.reconcileStamp);
+}
+
+- (void)testMigrateContributionInfo
+{
+  ContributionInfo *contribution = [self coreDataModelOfClass:ContributionInfo.self];
+  contribution.publisherID = @"brave.com";
+  contribution.probi = @"1000000000000000000";
+  contribution.date = [[NSDate date] timeIntervalSince1970];
+  contribution.type = static_cast<int32_t>(ledger::RewardsType::ONE_TIME_TIP);
+  contribution.month = 2;
+  contribution.year = 2020;
+  
+  const auto migration = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
+  const auto insertLine = [BATLedgerDatabase contributionInfoInsertFor:contribution];
+  XCTAssert([migration containsString:insertLine]);
+  
+  const auto migrateResponse = [self executeSQLCommand:migration];
+  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  
+  const auto response = [self readSQL:@"SELECT publisher_id, probi, date, type, month, year FROM contribution_info;" columnTypes:{
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::INT64_TYPE,
+    ledger::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::DBCommand::RecordBindingType::INT_TYPE
+  }];
+  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->result->get_records().size(), 1);
+  
+  const auto record = std::move(response->result->get_records()[0]);
+  XCTAssertEqual(record->fields[0]->get_string_value(), contribution.publisherID.UTF8String);
+  XCTAssertEqual(record->fields[1]->get_string_value(), contribution.probi.UTF8String);
+  XCTAssertEqual(record->fields[2]->get_int64_value(), contribution.date);
+  XCTAssertEqual(record->fields[3]->get_int_value(), contribution.type);
+  XCTAssertEqual(record->fields[4]->get_int_value(), contribution.month);
+  XCTAssertEqual(record->fields[5]->get_int_value(), contribution.year);
+}
+
+- (void)testMigrateContributionQueue
+{
+  ContributionQueue *queue = [self coreDataModelOfClass:ContributionQueue.self];
+  queue.id = 10;
+  queue.type = static_cast<int32_t>(ledger::RewardsType::ONE_TIME_TIP);
+  queue.partial = false;
+  queue.amount = 1000.0;
+  
+  const auto migration = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
+  const auto insertLine = [BATLedgerDatabase contributionQueueInsertFor:queue];
+  XCTAssert([migration containsString:insertLine]);
+  
+  const auto migrateResponse = [self executeSQLCommand:migration];
+  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  
+  const auto response = [self readSQL:@"SELECT contribution_queue_id, type, amount, partial, created_at FROM contribution_queue;" columnTypes:{
+    ledger::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
+    ledger::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::DBCommand::RecordBindingType::INT64_TYPE
+  }];
+  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->result->get_records().size(), 1);
+  
+  const auto record = std::move(response->result->get_records()[0]);
+  XCTAssertEqual(record->fields[0]->get_int_value(), queue.id);
+  XCTAssertEqual(record->fields[1]->get_int_value(), queue.type);
+  XCTAssertEqual(record->fields[2]->get_double_value(), queue.amount);
+  XCTAssertEqual(record->fields[3]->get_int_value(), queue.partial);
+  XCTAssertNotEqual(record->fields[4]->get_int64_value(), 0);
+  
+  // Check that the autoincrementing sequence is set correctly
+  const auto sequenceResponse = [self readSQL:@"SELECT seq FROM sqlite_sequence WHERE name = 'contribution_queue';" columnTypes:{
+    ledger::DBCommand::RecordBindingType::INT64_TYPE
+  }];
+  const auto sequenceRecord = std::move(sequenceResponse->result->get_records()[0]);
+  XCTAssertEqual(sequenceRecord->fields[0]->get_int64_value(), queue.id);
+}
+
+- (void)testMigrateContributionQueuePublishers
+{
+  ContributionQueue *queue = [self coreDataModelOfClass:ContributionQueue.self];
   queue.id = 1;
-  queue.amount = 10;
-  [self waitForCompletion:^(XCTestExpectation *expectation) {
-    [BATLedgerDatabase insertOrUpdateContributionQueue:queue completion:^(BOOL success) {
-      XCTAssert(success);
-      [expectation fulfill];
-    }];
-  }];
+  queue.type = static_cast<int32_t>(ledger::RewardsType::ONE_TIME_TIP);
+  queue.partial = false;
+  queue.amount = 1000.0;
   
-  const auto queried = [BATLedgerDatabase firstQueue];
-  XCTAssertEqual(queried.id, queue.id);
-  XCTAssertEqual(queried.amount, queue.amount);
+  ContributionPublisher *queuePublisher = [self coreDataModelOfClass:ContributionPublisher.self];
+  queuePublisher.queue = queue;
+  queuePublisher.publisherKey = @"brave.com";
+  queuePublisher.amountPercent = 40;
+  
+  const auto migration = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
+  const auto insertLine = [BATLedgerDatabase contributionQueuePublisherInsertFor:queuePublisher];
+  XCTAssert([migration containsString:insertLine]);
+  
+  const auto migrateResponse = [self executeSQLCommand:migration];
+  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  
+  const auto response = [self readSQL:@"SELECT contribution_queue_id, publisher_key, amount_percent FROM contribution_queue_publishers;" columnTypes:{
+    ledger::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::DOUBLE_TYPE
+  }];
+  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->result->get_records().size(), 1);
+  
+  const auto record = std::move(response->result->get_records()[0]);
+  XCTAssertEqual(record->fields[0]->get_int_value(), queuePublisher.queue.id);
+  XCTAssertEqual(record->fields[1]->get_string_value(), queuePublisher.publisherKey.UTF8String);
+  XCTAssertEqual(record->fields[2]->get_double_value(), queuePublisher.amountPercent);
 }
 
-- (void)testFirstContributionQueueSorting
+- (void)testMetaTable
 {
-  const auto queue = [[BATContributionQueue alloc] init];
-  queue.id = 1;
-  queue.amount = 10;
-  [self waitForCompletion:^(XCTestExpectation *expectation) {
-    [BATLedgerDatabase insertOrUpdateContributionQueue:queue completion:^(BOOL success) {
-      XCTAssert(success);
-      [expectation fulfill];
-    }];
+  const auto migration = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
+  const auto migrateResponse = [self executeSQLCommand:migration];
+  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  
+  const auto response = [self readSQL:@"SELECT key, value FROM meta;" columnTypes:{
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE
   }];
+  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssert(response->result->get_records().size() > 0);
   
-  const auto queue2 = [[BATContributionQueue alloc] init];
-  queue2.id = 2;
-  queue2.amount = 10;
-  [self waitForCompletion:^(XCTestExpectation *expectation) {
-    [BATLedgerDatabase insertOrUpdateContributionQueue:queue2 completion:^(BOOL success) {
-      XCTAssert(success);
-      [expectation fulfill];
-    }];
-  }];
-  
-  const auto queried = [BATLedgerDatabase firstQueue];
-  XCTAssertEqual(queried.id, queue.id);
-  XCTAssertEqual(queried.amount, queue.amount);
-}
-
-- (void)testEmptyContributionQueue
-{
-  const auto queried = [BATLedgerDatabase firstQueue];
-  XCTAssertNil(queried);
-}
-
-- (void)testDeleteContributionQueue
-{
-  const auto queue = [[BATContributionQueue alloc] init];
-  queue.id = 1;
-  queue.amount = 10;
-  [self waitForCompletion:^(XCTestExpectation *expectation) {
-    [BATLedgerDatabase insertOrUpdateContributionQueue:queue completion:^(BOOL success) {
-      XCTAssert(success);
-      [expectation fulfill];
-    }];
-  }];
-  
-  const auto queue2 = [[BATContributionQueue alloc] init];
-  queue2.id = 2;
-  queue2.amount = 10;
-  [self waitForCompletion:^(XCTestExpectation *expectation) {
-    [BATLedgerDatabase insertOrUpdateContributionQueue:queue2 completion:^(BOOL success) {
-      XCTAssert(success);
-      [expectation fulfill];
-    }];
-  }];
-  
-  // Delete the first queue, therefore firstQueue should return the second one
-  [self waitForCompletion:^(XCTestExpectation *expectation) {
-    [BATLedgerDatabase deleteQueueWithID:queue.id completion:^(BOOL success) {
-      XCTAssert(success);
-      [expectation fulfill];
-    }];
-  }];
-  
-  const auto queried = [BATLedgerDatabase firstQueue];
-  XCTAssertEqual(queried.id, queue2.id);
-  XCTAssertEqual(queried.amount, queue2.amount);
-}
-
-- (void)testContributionQueueWithPublishers
-{
-  const auto queue = [[BATContributionQueue alloc] init];
-  queue.id = 1;
-  queue.amount = 10;
-  
-  const auto pub1 = [[BATContributionQueuePublisher alloc] init];
-  pub1.publisherKey = @"brave.com";
-  pub1.amountPercent = 0.6;
-  
-  const auto pub2 = [[BATContributionQueuePublisher alloc] init];
-  pub2.publisherKey = @"duckduckgo.com";
-  pub2.amountPercent = 0.4;
-  
-  queue.publishers = @[ pub1, pub2 ];
-  
-  [self waitForCompletion:^(XCTestExpectation *expectation) {
-    [BATLedgerDatabase insertOrUpdateContributionQueue:queue completion:^(BOOL success) {
-      XCTAssert(success);
-      [expectation fulfill];
-    }];
-  }];
-  
-  const auto queried = [BATLedgerDatabase firstQueue];
-  XCTAssertEqual(queried.publishers.count, queue.publishers.count);
-  const auto pub1Index = [queried.publishers indexOfObjectPassingTest:^BOOL(BATContributionQueuePublisher * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-    return [obj.publisherKey isEqualToString:pub1.publisherKey];
-  }];
-  XCTAssertNotEqual(pub1Index, NSNotFound);
-  const auto pub2Index = (pub1Index == 0 ? 1 : 0);
-  
-  XCTAssertEqual(queried.publishers[pub1Index].amountPercent, pub1.amountPercent);
-  XCTAssert([queried.publishers[pub2Index].publisherKey isEqualToString:pub2.publisherKey]);
-  XCTAssertEqual(queried.publishers[pub2Index].amountPercent, pub2.amountPercent);
-}
-
-#pragma mark - Promotions
-
-- (void)testQueryAllPromotions
-{
-  const auto numberOfPromos = 3;
-  for (NSUInteger i = 0; i < numberOfPromos; i++) {
-    const auto promo = [[BATPromotion alloc] init];
-    promo.status = BATPromotionStatusFinished;
-    promo.credentials = [[BATPromotionCreds alloc] init];
-    promo.credentials.tokens = @"Test";
-    promo.credentials.claimId = [NSString stringWithFormat:@"%ld", i];
-    promo.id = [NSString stringWithFormat:@"%ld", i];
-    
-    [self waitForCompletion:^(XCTestExpectation *expectation) {
-      [BATLedgerDatabase insertOrUpdatePromotion:promo completion:^(BOOL success) {
-        XCTAssert(success);
-        [expectation fulfill];
-      }];
-    }];
+  const auto metaTable = [[NSMutableDictionary alloc] init];
+  for (const auto& record : response->result->get_records()) {
+    const auto key = [NSString stringWithUTF8String:record->fields[0]->get_string_value().c_str()];
+    const auto value = [NSString stringWithUTF8String:record->fields[1]->get_string_value().c_str()];
+    metaTable[key] = value;
   }
   
-  const auto queried = [BATLedgerDatabase allPromotions];
-  XCTAssertEqual(queried.count, numberOfPromos);
-  XCTAssertEqual(queried[0].status, BATPromotionStatusFinished);
+  XCTAssert([metaTable[@"version"] isEqualToString:@"10"]);
+  XCTAssert([metaTable[@"last_compatible_version"] isEqualToString:@"1"]);
 }
 
-- (void)testInsertPromotion
+- (void)testMigratePendingContributions
 {
-  const auto promo = [[BATPromotion alloc] init];
-  promo.credentials = [[BATPromotionCreds alloc] init];
-  promo.credentials.tokens = @"Test";
-  promo.credentials.claimId = @"1";
-  promo.id = @"1";
+  PendingContribution *contribution = [self coreDataModelOfClass:PendingContribution.self];
+  contribution.publisherID = @"github.com";
+  contribution.amount = 10;
+  contribution.addedDate = [[NSDate date] timeIntervalSince1970];
+  contribution.viewingID = [NSUUID UUID].UUIDString;
+  contribution.type = static_cast<int32_t>(ledger::RewardsType::ONE_TIME_TIP);
   
-  [self waitForCompletion:^(XCTestExpectation *expectation) {
-    [BATLedgerDatabase insertOrUpdatePromotion:promo completion:^(BOOL success) {
-      XCTAssert(success);
-      [expectation fulfill];
-    }];
+  const auto migration = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
+  const auto insertLine = [BATLedgerDatabase pendingContributionInsertFor:contribution];
+  XCTAssert([migration containsString:insertLine]);
+  
+  const auto migrateResponse = [self executeSQLCommand:migration];
+  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  
+  const auto response = [self readSQL:@"SELECT publisher_id, amount, added_date, viewing_id, type FROM pending_contribution;" columnTypes:{
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
+    ledger::DBCommand::RecordBindingType::INT64_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::INT_TYPE
   }];
+  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->result->get_records().size(), 1);
   
-  const auto queried = [BATLedgerDatabase promotionWithID:promo.id];
-  XCTAssertNotNil(queried);
-  XCTAssertNotNil(queried.credentials);
-  XCTAssert([queried.credentials.claimId isEqualToString:promo.credentials.claimId]);
-  XCTAssert([promo.id isEqualToString:queried.id]);
+  const auto record = std::move(response->result->get_records()[0]);
+  XCTAssertEqual(record->fields[0]->get_string_value(), contribution.publisherID.UTF8String);
+  XCTAssertEqual(record->fields[1]->get_double_value(), contribution.amount);
+  XCTAssertEqual(record->fields[2]->get_int64_value(), contribution.addedDate);
+  XCTAssertEqual(record->fields[3]->get_string_value(), contribution.viewingID.UTF8String);
+  XCTAssertEqual(record->fields[4]->get_int_value(), contribution.type);
 }
 
-- (void)testInsertPromotionCredentials
+- (void)testMigratePromotions
 {
-  const auto creds = [[BATPromotionCreds alloc] init];
-  creds.batchProof = @"1234";
-  creds.publicKey = @"2341";
-  creds.signedCreds = @"3412";
-  creds.blindedCreds = @"4123";
-  creds.claimId = @"1";
+  Promotion *promotion = [self coreDataModelOfClass:Promotion.self];
+  promotion.promotionID = NSUUID.UUID.UUIDString;
+  promotion.version = 1;
+  promotion.type = BATPromotionTypeAds;
+  promotion.publicKeys = NSUUID.UUID.UUIDString;
+  promotion.suggestions = 0;
+  promotion.approximateValue = 20;
+  promotion.status = BATPromotionStatusActive;
+  promotion.expiryDate = [[NSDate date] dateByAddingTimeInterval:60];
   
-  const auto promo = [[BATPromotion alloc] init];
-  promo.id = @"1";
-  promo.credentials = creds;
+  const auto migration = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
+  const auto insertLine = [BATLedgerDatabase promotionInsertFor:promotion];
+  XCTAssert([migration containsString:insertLine]);
   
-  [self waitForCompletion:^(XCTestExpectation *expectation) {
-    [BATLedgerDatabase insertOrUpdatePromotion:promo completion:^(BOOL success) {
-      XCTAssert(success);
-      [expectation fulfill];
-    }];
+  const auto migrateResponse = [self executeSQLCommand:migration];
+  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  
+  const auto response = [self readSQL:@"SELECT promotion_id, version, type, public_keys, suggestions, approximate_value, status, expires_at, created_at FROM promotion;" columnTypes:{
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
+    ledger::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::DBCommand::RecordBindingType::INT64_TYPE,
+    ledger::DBCommand::RecordBindingType::INT64_TYPE
   }];
+  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->result->get_records().size(), 1);
   
-  const auto queried = [BATLedgerDatabase promotionWithID:promo.id];
-  XCTAssertNotNil(queried);
-  XCTAssertNotNil(queried.credentials);
-  XCTAssert([queried.credentials.claimId isEqualToString:creds.claimId]);
-  XCTAssert([queried.credentials.batchProof isEqualToString:creds.batchProof]);
-  XCTAssert([queried.credentials.publicKey isEqualToString:creds.publicKey]);
-  XCTAssert([queried.credentials.signedCreds isEqualToString:creds.signedCreds]);
-  XCTAssert([queried.credentials.blindedCreds isEqualToString:creds.blindedCreds]);
+  const auto record = std::move(response->result->get_records()[0]);
+  XCTAssertEqual(record->fields[0]->get_string_value(), promotion.promotionID.UTF8String);
+  XCTAssertEqual(record->fields[1]->get_int_value(), promotion.version);
+  XCTAssertEqual(record->fields[2]->get_int_value(), promotion.type);
+  XCTAssertEqual(record->fields[3]->get_string_value(), promotion.publicKeys.UTF8String);
+  XCTAssertEqual(record->fields[4]->get_int_value(), promotion.suggestions);
+  XCTAssertEqual(record->fields[5]->get_double_value(), promotion.approximateValue);
+  XCTAssertEqual(record->fields[6]->get_int_value(), promotion.status);
+  XCTAssertEqual(record->fields[7]->get_int64_value(), static_cast<int64_t>(promotion.expiryDate.timeIntervalSince1970));
+  XCTAssertNotEqual(record->fields[8]->get_int64_value(), 0);
 }
 
-- (void)testInsertUnblindedToken
+- (void)testMigratePromotionCreds
 {
-  const auto token = [[BATUnblindedToken alloc] init];
-  token.id = 1;
+  PromotionCredentials *creds = [self coreDataModelOfClass:PromotionCredentials.self];
+  creds.promotionID = NSUUID.UUID.UUIDString;
+  creds.batchProof = NSUUID.UUID.UUIDString;
+  creds.blindedCredentials = NSUUID.UUID.UUIDString;
+  creds.claimID = @"1";
+  creds.publicKey = NSUUID.UUID.UUIDString;
+  creds.signedCredentials = NSUUID.UUID.UUIDString;
+  creds.tokens = NSUUID.UUID.UUIDString;
+  
+  const auto migration = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
+  const auto insertLine = [BATLedgerDatabase promotionCredsInsertFor:creds];
+  XCTAssert([migration containsString:insertLine]);
+  
+  const auto migrateResponse = [self executeSQLCommand:migration];
+  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  
+  const auto response = [self readSQL:@"SELECT promotion_id, tokens, blinded_creds, signed_creds, public_key, batch_proof, claim_id FROM promotion_creds;" columnTypes:{
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE
+  }];
+  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->result->get_records().size(), 1);
+  
+  const auto record = std::move(response->result->get_records()[0]);
+  XCTAssertEqual(record->fields[0]->get_string_value(), creds.promotionID.UTF8String);
+  XCTAssertEqual(record->fields[1]->get_string_value(), creds.tokens.UTF8String);
+  XCTAssertEqual(record->fields[2]->get_string_value(), creds.blindedCredentials.UTF8String);
+  XCTAssertEqual(record->fields[3]->get_string_value(), creds.signedCredentials.UTF8String);
+  XCTAssertEqual(record->fields[4]->get_string_value(), creds.publicKey.UTF8String);
+  XCTAssertEqual(record->fields[5]->get_string_value(), creds.batchProof.UTF8String);
+  XCTAssertEqual(record->fields[6]->get_string_value(), creds.claimID.UTF8String);
+}
+
+- (void)testMigrateIncompletePromotionCreds
+{
+  PromotionCredentials *creds = [self coreDataModelOfClass:PromotionCredentials.self];
+  creds.promotionID = NSUUID.UUID.UUIDString;
+  creds.blindedCredentials = NSUUID.UUID.UUIDString;
+  creds.claimID = @"1";
+  creds.tokens = NSUUID.UUID.UUIDString;
+  
+  const auto migration = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
+  const auto insertLine = [BATLedgerDatabase promotionCredsInsertFor:creds];
+  XCTAssert([migration containsString:insertLine]);
+  
+  const auto migrateResponse = [self executeSQLCommand:migration];
+  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  
+  const auto response = [self readSQL:@"SELECT promotion_id, tokens, blinded_creds, signed_creds, public_key, batch_proof, claim_id FROM promotion_creds;" columnTypes:{
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE
+  }];
+  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->result->get_records().size(), 1);
+  
+  const auto record = std::move(response->result->get_records()[0]);
+  XCTAssertEqual(record->fields[0]->get_string_value(), creds.promotionID.UTF8String);
+  XCTAssertEqual(record->fields[1]->get_string_value(), creds.tokens.UTF8String);
+  XCTAssertEqual(record->fields[2]->get_string_value(), creds.blindedCredentials.UTF8String);
+  XCTAssertEqual(record->fields[3]->get_string_value(), "");
+  XCTAssertEqual(record->fields[4]->get_string_value(), "");
+  XCTAssertEqual(record->fields[5]->get_string_value(), "");
+  XCTAssertEqual(record->fields[6]->get_string_value(), creds.claimID.UTF8String);
+}
+
+- (void)testMigrateRecurringTips
+{
+  RecurringDonation *tip = [self coreDataModelOfClass:RecurringDonation.self];
+  tip.publisherID = @"brave.com";
+  tip.amount = 20;
+  tip.addedDate = [[NSDate date] timeIntervalSince1970];
+  
+  const auto migration = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
+  const auto insertLine = [BATLedgerDatabase recurringDonationInsertFor:tip];
+  XCTAssert([migration containsString:insertLine]);
+  
+  const auto migrateResponse = [self executeSQLCommand:migration];
+  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  
+  const auto response = [self readSQL:@"SELECT publisher_id, amount, added_date FROM recurring_donation;" columnTypes:{
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
+    ledger::DBCommand::RecordBindingType::INT64_TYPE
+  }];
+  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->result->get_records().size(), 1);
+  
+  const auto record = std::move(response->result->get_records()[0]);
+  XCTAssertEqual(record->fields[0]->get_string_value(), tip.publisherID.UTF8String);
+  XCTAssertEqual(record->fields[1]->get_double_value(), tip.amount);
+  XCTAssertEqual(record->fields[2]->get_int64_value(), tip.addedDate);
+}
+
+- (void)testMigrateUnblindedTokens
+{
+  UnblindedToken *token = [self coreDataModelOfClass:UnblindedToken.self];
+  token.tokenID = 10;
+  token.tokenValue = @"1000000000";
+  token.publicKey = NSUUID.UUID.UUIDString;
   token.value = 10;
-  token.publicKey = @"1234";
+  token.promotionID = NSUUID.UUID.UUIDString;
   
-  [self waitForCompletion:^(XCTestExpectation *expectation) {
-    [BATLedgerDatabase insertOrUpdateUnblindedToken:token completion:^(BOOL success) {
-      XCTAssert(success);
-      [expectation fulfill];
-    }];
+  const auto migration = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
+  const auto insertLine = [BATLedgerDatabase unblindedTokenInsertFor:token];
+  XCTAssert([migration containsString:insertLine]);
+  
+  const auto migrateResponse = [self executeSQLCommand:migration];
+  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  
+  const auto response = [self readSQL:@"SELECT token_id, token_value, public_key, value, promotion_id, created_at FROM unblinded_tokens;" columnTypes:{
+    ledger::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
+    ledger::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::DBCommand::RecordBindingType::INT64_TYPE
   }];
+  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->result->get_records().size(), 1);
   
-  const auto queried = [[BATLedgerDatabase allUnblindedTokens] firstObject];
-  XCTAssertNotNil(queried);
-  XCTAssertEqual(token.id, queried.id);
-  XCTAssertEqual(token.value, queried.value);
-  XCTAssert([token.publicKey isEqualToString:queried.publicKey]);
+  const auto record = std::move(response->result->get_records()[0]);
+  XCTAssertEqual(record->fields[0]->get_int_value(), token.tokenID);
+  XCTAssertEqual(record->fields[1]->get_string_value(), token.tokenValue.UTF8String);
+  XCTAssertEqual(record->fields[2]->get_string_value(), token.publicKey.UTF8String);
+  XCTAssertEqual(record->fields[3]->get_double_value(), token.value);
+  XCTAssertEqual(record->fields[4]->get_string_value(), token.promotionID.UTF8String);
+  XCTAssertNotEqual(record->fields[5]->get_int64_value(), 0);
+  
+  // Check that the autoincrementing sequence is set correctly
+  const auto sequenceResponse = [self readSQL:@"SELECT seq FROM sqlite_sequence WHERE name = 'unblinded_tokens';" columnTypes:{
+    ledger::DBCommand::RecordBindingType::INT64_TYPE
+  }];
+  const auto sequenceRecord = std::move(sequenceResponse->result->get_records()[0]);
+  XCTAssertEqual(sequenceRecord->fields[0]->get_int64_value(), token.tokenID);
 }
 
-- (void)testQueryAllUnblindedTokens
+- (void)testBATOnlyTransfer
 {
-  const auto token = [[BATUnblindedToken alloc] init];
-  token.id = 1;
+  Promotion *promotion = [self coreDataModelOfClass:Promotion.self];
+  promotion.promotionID = NSUUID.UUID.UUIDString;
+  promotion.version = 1;
+  promotion.type = BATPromotionTypeAds;
+  promotion.publicKeys = NSUUID.UUID.UUIDString;
+  promotion.suggestions = 0;
+  promotion.approximateValue = 20;
+  promotion.status = BATPromotionStatusActive;
+  promotion.expiryDate = [[NSDate date] dateByAddingTimeInterval:60];
   
-  [self waitForCompletion:^(XCTestExpectation *expectation) {
-    [BATLedgerDatabase insertOrUpdateUnblindedToken:token completion:^(BOOL success) {
-      XCTAssert(success);
-      [expectation fulfill];
-    }];
-  }];
+  UnblindedToken *token = [self coreDataModelOfClass:UnblindedToken.self];
+  token.tokenID = 10;
+  token.tokenValue = @"1000000000";
+  token.publicKey = NSUUID.UUID.UUIDString;
+  token.value = 10;
+  token.promotionID = promotion.promotionID;
   
-  const auto token2 = [[BATUnblindedToken alloc] init];
-  token2.id = 2;
+  PublisherInfo *publisher = [self coreDataModelOfClass:PublisherInfo.self];
+  publisher.publisherID = @"github#channel:12301619";
+  publisher.url = @"https://github.com/brave";
+  publisher.faviconURL = @"";
+  publisher.name = @"Brave Software";
+  publisher.provider = @"github";
   
-  [self waitForCompletion:^(XCTestExpectation *expectation) {
-    [BATLedgerDatabase insertOrUpdateUnblindedToken:token2 completion:^(BOOL success) {
-      XCTAssert(success);
-      [expectation fulfill];
-    }];
-  }];
+  const auto migration = [BATLedgerDatabase migrateCoreDataBATOnlyToSQLTransaction];
+  const auto tokenString = [BATLedgerDatabase unblindedTokenInsertFor:token];
+  const auto promoString = [BATLedgerDatabase promotionInsertFor:promotion];
+  XCTAssert([migration containsString:tokenString]);
+  XCTAssert([migration containsString:promoString]);
+  const auto pubInfoString = [BATLedgerDatabase publisherInfoInsertFor:publisher];
+  XCTAssert(![migration containsString:pubInfoString]);
   
-  const auto queried = [BATLedgerDatabase allUnblindedTokens];
-  XCTAssertEqual(queried.count, 2);
+  const auto migrateResponse = [self executeSQLCommand:migration];
+  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
 }
 
-- (void)testDeletingUnblindedTokens
+#pragma mark -
+
+- (void)testInsertedQuotes
 {
-  const auto token = [[BATUnblindedToken alloc] init];
-  token.id = 1;
+  PublisherInfo *publisher = [self coreDataModelOfClass:PublisherInfo.self];
+  publisher.publisherID = @"github#channel:12301619";
+  publisher.url = @"https://github.com/brave";
+  publisher.faviconURL = @"";
+  publisher.name = @"'Brave Software'";
+  publisher.provider = @"github";
   
-  [self waitForCompletion:^(XCTestExpectation *expectation) {
-    [BATLedgerDatabase insertOrUpdateUnblindedToken:token completion:^(BOOL success) {
-      XCTAssert(success);
-      [expectation fulfill];
+  const auto migration = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
+  const auto insert = [BATLedgerDatabase publisherInfoInsertFor:publisher];
+  XCTAssert([insert containsString:@"'''Brave Software'''"]);
+  
+  const auto migrateResponse = [self executeSQLCommand:migration];
+  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  
+  const auto response = [self readSQL:@"SELECT name FROM publisher_info;" columnTypes:{
+    ledger::DBCommand::RecordBindingType::STRING_TYPE
+  }];
+  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->result->get_records().size(), 1);
+  
+  const auto record = std::move(response->result->get_records()[0]);
+  XCTAssertEqual(record->fields[0]->get_string_value(), publisher.name.UTF8String);
+}
+
+- (void)testInsertedJSON
+{
+  NSDictionary *someJSON = @{
+    @"key": @"value",
+    @"intKey": @(1),
+    @"boolKey": @YES,
+    @"arrayKey": @[ @"one", @"two", @"three" ],
+    @"dictKey": @{ @"one": @"two", @"three": @(4) }
+  };
+  NSError *error = nil;
+  NSData *jsonData = [NSJSONSerialization dataWithJSONObject:someJSON options:0 error:&error];
+  XCTAssertNil(error);
+  NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+  
+  PromotionCredentials *creds = [self coreDataModelOfClass:PromotionCredentials.self];
+  creds.promotionID = NSUUID.UUID.UUIDString;
+  creds.blindedCredentials = NSUUID.UUID.UUIDString;
+  creds.claimID = @"1";
+  creds.tokens = jsonString;
+  
+  const auto migration = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
+  const auto migrateResponse = [self executeSQLCommand:migration];
+  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  
+  const auto response = [self readSQL:@"SELECT tokens FROM promotion_creds;" columnTypes:{
+    ledger::DBCommand::RecordBindingType::STRING_TYPE
+  }];
+  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->result->get_records().size(), 1);
+  
+  const auto record = std::move(response->result->get_records()[0]);
+  const auto dbJSONString = [NSString stringWithUTF8String:record->fields[0]->get_string_value().c_str()];
+  XCTAssert([dbJSONString isEqualToString:creds.tokens]);
+
+  NSError *readError = nil;
+  NSDictionary *decodedJSON = [NSJSONSerialization JSONObjectWithData:[dbJSONString dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&readError];
+  XCTAssertNil(readError);
+  XCTAssert([someJSON isEqualToDictionary:decodedJSON]);
+}
+
+- (void)testUnicodeInsert
+{
+  PublisherInfo *publisher = [self coreDataModelOfClass:PublisherInfo.self];
+  publisher.publisherID = @"github#channel:12301619";
+  publisher.url = @"https://github.com/brave";
+  publisher.faviconURL = @"";
+  publisher.name = @"😲👻  ｂŕᵃ𝕧𝐄 ⓢⓞℱţ𝐖α𝓻έ  ♣✌";
+  publisher.provider = @"github";
+  
+  const auto migration = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
+  
+  const auto migrateResponse = [self executeSQLCommand:migration];
+  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  
+  const auto response = [self readSQL:@"SELECT name FROM publisher_info;" columnTypes:{
+    ledger::DBCommand::RecordBindingType::STRING_TYPE
+  }];
+  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->result->get_records().size(), 1);
+  
+  const auto record = std::move(response->result->get_records()[0]);
+  XCTAssertEqual(record->fields[0]->get_string_value(), publisher.name.UTF8String);
+}
+
+#pragma mark -
+
+- (void)testClearServerPubList
+{
+  ServerPublisherInfo *info = [self coreDataModelOfClass:ServerPublisherInfo.self];
+  info.publisherID = @"brave.com";
+  info.address = NSUUID.UUID.UUIDString;
+  info.banner = [self coreDataModelOfClass:ServerPublisherBanner.self];
+  info.banner.publisherID = @"brave.com";
+  ServerPublisherAmount *amount = [self coreDataModelOfClass:ServerPublisherAmount.self];
+  amount.publisherID = @"brave.com";
+  amount.serverPublisherInfo = info;
+  ServerPublisherLink *link = [self coreDataModelOfClass:ServerPublisherLink.self];
+  link.publisherID = @"brave.com";
+  link.serverPublisherInfo = info;
+  
+  // Save it to disk so the batch delete works
+  NSError *saveError = nil;
+  [DataController.viewContext save:&saveError];
+  XCTAssertNil(saveError);
+  
+  {
+    const auto context = DataController.viewContext;
+    const auto fetchRequest = PublisherInfo.fetchRequest;
+    fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(ServerPublisherInfo.class)
+                                      inManagedObjectContext:context];
+    
+    NSError *error;
+    const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    XCTAssertNil(error);
+    XCTAssertEqual(fetchedObjects.count, 1);
+  }
+  
+  [self waitForCompletion:^(XCTestExpectation *e) {
+    [BATLedgerDatabase deleteCoreDataServerPublisherList:^(NSError *error){
+      XCTAssertNil(error);
+      [e fulfill];
     }];
   }];
   
-  const auto token2 = [[BATUnblindedToken alloc] init];
-  token2.id = 2;
+  const auto context = DataController.viewContext;
+  const auto fetchRequest = PublisherInfo.fetchRequest;
+  fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(ServerPublisherInfo.class)
+                                    inManagedObjectContext:context];
   
-  [self waitForCompletion:^(XCTestExpectation *expectation) {
-    [BATLedgerDatabase insertOrUpdateUnblindedToken:token2 completion:^(BOOL success) {
-      XCTAssert(success);
-      [expectation fulfill];
-    }];
-  }];
+  NSError *error;
+  const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+  XCTAssertNil(error);
+  XCTAssertEqual(fetchedObjects.count, 0);
+}
+
+#pragma mark - SQL Helpers
+
+- (__kindof NSManagedObject *)coreDataModelOfClass:(Class)clazz
+{
+  const auto entity = [NSEntityDescription entityForName:NSStringFromClass(clazz) inManagedObjectContext:DataController.viewContext];
+  return [[clazz alloc] initWithEntity:entity insertIntoManagedObjectContext:DataController.viewContext];
+}
+
+- (void)initializeSQLiteDatabase
+{
+  auto transaction = ledger::DBTransaction::New();
+  transaction->version = 10;
+  transaction->compatible_version = 1;
   
-  const auto token3 = [[BATUnblindedToken alloc] init];
-  token3.id = 3;
+  const auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::INITIALIZE;
+  transaction->commands.push_back(command->Clone());
   
-  [self waitForCompletion:^(XCTestExpectation *expectation) {
-    [BATLedgerDatabase insertOrUpdateUnblindedToken:token3 completion:^(BOOL success) {
-      XCTAssert(success);
-      [expectation fulfill];
-    }];
-  }];
+  auto response = ledger::DBCommandResponse::New();
+  rewardsDatabase->RunTransaction(std::move(transaction), response.get());
+  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK, @"Failed to initialize SQLite database");
+}
+
+- (ledger::DBCommandResponsePtr)executeSQLCommand:(NSString *)sqlCommand
+{
+  auto transaction = ledger::DBTransaction::New();
   
-  const auto firstQuery = [BATLedgerDatabase allUnblindedTokens];
-  XCTAssertEqual(firstQuery.count, 3);
+  const auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = sqlCommand.UTF8String;
+  transaction->commands.push_back(command->Clone());
   
-  [self waitForCompletion:^(XCTestExpectation *expectation) {
-    [BATLedgerDatabase deleteUnblindedTokens:@[@1, @3] completion:^(BOOL success) {
-      XCTAssert(success);
-      [expectation fulfill];
-    }];
-  }];
+  auto response = ledger::DBCommandResponse::New();
+  rewardsDatabase->RunTransaction(std::move(transaction), response.get());
+  return response->Clone();
+}
+
+- (ledger::DBCommandResponsePtr)readSQL:(NSString *)sqlCommand columnTypes:(std::vector<ledger::DBCommand::RecordBindingType>)bindings
+{
+  auto transaction = ledger::DBTransaction::New();
   
-  const auto queried = [BATLedgerDatabase allUnblindedTokens];
-  XCTAssertEqual(queried.count, 1);
-  XCTAssertEqual(queried.firstObject.id, 2);
+  const auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::READ;
+  command->command = sqlCommand.UTF8String;
+  command->record_bindings = bindings;
+  transaction->commands.push_back(command->Clone());
   
-  [self waitForCompletion:^(XCTestExpectation *expectation) {
-    [BATLedgerDatabase deleteUnblindedTokens:@[@2] completion:^(BOOL success) {
-      XCTAssert(success);
-      [expectation fulfill];
-    }];
-  }];
-  
-  
-  const auto lastQuery = [BATLedgerDatabase allUnblindedTokens];
-  XCTAssertEqual(lastQuery.count, 0);
+  auto response = ledger::DBCommandResponse::New();
+  rewardsDatabase->RunTransaction(std::move(transaction), response.get());
+  return response->Clone();
 }
 
 #pragma mark -
@@ -1463,41 +889,6 @@
   auto __block expectation = [self expectationWithDescription:NSUUID.UUID.UUIDString];
   task(expectation);
   [self waitForExpectations:@[expectation] timeout:5];
-}
-
-#pragma mark - Handling background context reads/writes
-
-- (void)contextSaved
-{
-  if (self.contextSaveCompletion) {
-    self.contextSaveCompletion();
-  }
-}
-
-/// Waits for core data context save notification. Use this for single background context saves if you want to wait
-/// for view context to update itself. Unfortunately there is no notification after changes are merged into context.
-- (void)backgroundSaveAndWaitForExpectation:(void (^)())task
-{
-  auto __block saveExpectation = [self expectationWithDescription:NSUUID.UUID.UUIDString];
-  self.contextSaveCompletion = ^{
-    [saveExpectation fulfill];
-  };
-  task();
-  [self waitForExpectations:@[saveExpectation] timeout:5];
-}
-
-/// Waits a second to verify that no save happened.
-/// Useful when you want to test saves with wrong values, early returns etc.
-- (void)waitForFailedSaveAttempt:(void (^)())task
-{
-  auto __block saveExpectation = [self expectationWithDescription:NSUUID.UUID.UUIDString];
-  saveExpectation.inverted = YES;
-
-  self.contextSaveCompletion = ^{
-    [saveExpectation fulfill];
-  };
-  task();
-  [self waitForExpectations:@[saveExpectation] timeout:1];
 }
 
 @end

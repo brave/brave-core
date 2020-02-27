@@ -5,6 +5,8 @@ ios_xctest_test("brave_rewards_ios_tests") {
 
   deps = [
     "//brave/vendor/brave-ios:brave_rewards_ios_framework+link",
+    "//brave/vendor/brave-ios:rewards_db",
+    "//brave/vendor/bat-native-ledger"
   ]
 
   bundle_deps = [
@@ -20,6 +22,7 @@ ios_xctest_test("brave_rewards_ios_tests") {
 
   sources = [
     "main.mm",
+    "ledger_database_test.mm",
     "dictionary_transform_test.mm",
     "vector_transform_test.mm",
     "test_foo.mm",

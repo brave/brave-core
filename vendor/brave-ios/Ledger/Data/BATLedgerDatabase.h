@@ -5,6 +5,7 @@
 #import <Foundation/Foundation.h>
 #import "Records.h"
 #import "ledger.mojom.objc.h"
+#import "CoreDataModels.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -23,110 +24,27 @@ typedef void (^BATLedgerDatabaseWriteCompletion)(BOOL success);
 /// Return's nil if the migration template cannot be found
 + (nullable NSString *)migrateCoreDataToSQLTransaction;
 
-// TO BE REMOVED:
+/// Generates a SQL migration transaction that will move token related tables
+/// only (promos, promo creds, unblinded tokens) to version 10 of brave-core's
+/// database schema.
+///
+/// Return's nil if the migration template cannot be found
++ (nullable NSString *)migrateCoreDataBATOnlyToSQLTransaction;
 
-#pragma mark - Contribution Info
+/// Deletes the server publisher list from the CoreData DB
++ (void)deleteCoreDataServerPublisherList:(nullable void (^)(NSError * _Nullable error))completion;
 
-/// Insert or update contribution info into the database given all the information for a contribution
-+ (void)insertContributionInfo:(NSString *)probi
-                         month:(const BATActivityMonth)month
-                          year:(const int)year
-                          date:(const uint32_t)date
-                  publisherKey:(NSString *)publisherKey
-                          type:(BATRewardsType)type
-                    completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
-
-/// Get a list of publishers you have supported with one time tips given some month and year
-+ (NSArray<BATPublisherInfo *> *)oneTimeTipsPublishersForMonth:(BATActivityMonth)month
-                                                          year:(int)year;
-
-#pragma mark - Contribution Queue
-
-+ (void)insertOrUpdateContributionQueue:(BATContributionQueue *)queue
-                             completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
-
-+ (nullable BATContributionQueue *)firstQueue;
-
-+ (void)deleteQueueWithID:(int64_t)queueID
-               completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
-
-#pragma mark - Media Publisher Info
-
-/// Get a publisher linked with some media key
-+ (nullable BATPublisherInfo *)mediaPublisherInfoWithMediaKey:(NSString *)mediaKey;
-
-/// Insert or update some media info given some media key and publisher ID that it is linked to
-+ (void)insertOrUpdateMediaPublisherInfoWithMediaKey:(NSString *)mediaKey
-                                         publisherID:(NSString *)publisherID
-                                          completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
-
-#pragma mark - Recurring Tips
-
-/// Get a list of publishers you have supported with recurring tips
-+ (NSArray<BATPublisherInfo *> *)recurringTips;
-
-/// Insert a recurring tip linked to a given publisher ID for some amount
-+ (void)insertOrUpdateRecurringTipWithPublisherID:(NSString *)publisherID
-                                           amount:(double)amount
-                                        dateAdded:(uint32_t)dateAdded
-                                       completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
-
-/// Remove a recurring tip linked to a given publisher ID
-+ (void)removeRecurringTipWithPublisherID:(NSString *)publisherID
-                               completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
-
-#pragma mark - Pending Contributions
-
-/// Get a list of pending contributions
-+ (NSArray<BATPendingContributionInfo *> *)pendingContributions;
-
-/// Inserts a set of pending contributions from a contribution list
-+ (void)insertPendingContributions:(NSArray<BATPendingContribution *> *)contributions
-                        completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
-
-/// Remove a pending contribution for a given publisher, viewing ID and added date
-+ (void)removePendingContributionForPublisherID:(NSString *)publisherID
-                                      viewingID:(NSString *)viewingID
-                                      addedDate:(UInt64)addedDate
-                                     completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
-
-/// Removes all the users pending contributions
-+ (void)removeAllPendingContributions:(nullable BATLedgerDatabaseWriteCompletion)completion;
-
-/// Get the amount of BAT allocated for pending contributions
-+ (double)reservedAmountForPendingContributions;
-
-#pragma mark - Publisher List
-
-+ (nullable BATServerPublisherInfo *)serverPublisherInfoWithPublisherID:(NSString *)publisherID;
-
-+ (void)clearAndInsertList:(NSArray<BATServerPublisherInfo *> *)list
-                completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
-
-#pragma mark - Publisher List / Test Helpers
-
-+ (nullable BATPublisherBanner *)bannerForPublisherID:(NSString *)publisherID;
-+ (nullable NSArray<NSNumber *> *)bannerAmountsForPublisherWithPublisherID:(NSString *)publisherID;
-+ (nullable NSDictionary<NSString *, NSString *> *)publisherLinksWithPublisherID:(NSString *)publisherID;
-
-#pragma mark - Promotions
-
-+ (NSArray<BATPromotion *> *)allPromotions;
-
-+ (void)insertOrUpdatePromotion:(BATPromotion *)promotion
-                     completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
-
-+ (nullable BATPromotion *)promotionWithID:(NSString *)promoID;
-
-+ (void)insertOrUpdateUnblindedToken:(BATUnblindedToken *)unblindedToken
-                          completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
-
-+ (NSArray<BATUnblindedToken *> *)allUnblindedTokens;
-
-+ (void)deleteUnblindedTokens:(NSArray<NSNumber *> *)idList
-                   completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
-
-#pragma mark -
++ (NSString *)activityInfoInsertFor:(ActivityInfo *)info;
++ (NSString *)contributionInfoInsertFor:(ContributionInfo *)info;
++ (NSString *)contributionQueueInsertFor:(ContributionQueue *)obj;
++ (NSString *)contributionQueuePublisherInsertFor:(ContributionPublisher *)obj;
++ (NSString *)mediaPublisherInfoInsertFor:(MediaPublisherInfo *)obj;
++ (NSString *)pendingContributionInsertFor:(PendingContribution *)obj;
++ (NSString *)promotionInsertFor:(Promotion *)obj;
++ (NSString *)promotionCredsInsertFor:(PromotionCredentials *)obj;
++ (NSString *)publisherInfoInsertFor:(PublisherInfo *)obj;
++ (NSString *)recurringDonationInsertFor:(RecurringDonation *)obj;
++ (NSString *)unblindedTokenInsertFor:(UnblindedToken *)obj;
 
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
