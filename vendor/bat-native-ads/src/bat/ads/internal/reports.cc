@@ -19,6 +19,7 @@ Reports::Reports(
     AdsImpl* ads)
     : is_first_run_(true),
       ads_(ads) {
+  DCHECK(ads_);
 }
 
 Reports::~Reports() = default;
@@ -29,10 +30,12 @@ std::string Reports::GenerateAdNotificationEventReport(
   rapidjson::StringBuffer buffer;
   rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
 
+  const std::string timestamp = Time::Timestamp();
+
+  writer.StartObject();
+
   if (is_first_run_) {
     is_first_run_ = false;
-
-    writer.StartObject();
 
     writer.String("data");
     writer.StartObject();
@@ -41,15 +44,10 @@ std::string Reports::GenerateAdNotificationEventReport(
     writer.String("restart");
 
     writer.String("timestamp");
-    auto time_stamp = Time::Timestamp();
-    writer.String(time_stamp.c_str());
-
-    writer.EndObject();
+    writer.String(timestamp.c_str());
 
     writer.EndObject();
   }
-
-  writer.StartObject();
 
   writer.String("data");
   writer.StartObject();
@@ -58,8 +56,7 @@ std::string Reports::GenerateAdNotificationEventReport(
   writer.String("notify");
 
   writer.String("timestamp");
-  auto time_stamp = Time::Timestamp();
-  writer.String(time_stamp.c_str());
+  writer.String(timestamp.c_str());
 
   writer.String("eventType");
   switch (event_type) {
@@ -125,8 +122,8 @@ std::string Reports::GenerateConfirmationEventReport(
   writer.String("confirmation");
 
   writer.String("timestamp");
-  auto time_stamp = Time::Timestamp();
-  writer.String(time_stamp.c_str());
+  const std::string timestamp = Time::Timestamp();
+  writer.String(timestamp.c_str());
 
   writer.String("creativeInstanceId");
   writer.String(creative_instance_id.c_str());
@@ -155,8 +152,8 @@ std::string Reports::GenerateLoadEventReport(
   writer.String("load");
 
   writer.String("timestamp");
-  auto time_stamp = Time::Timestamp();
-  writer.String(time_stamp.c_str());
+  const std::string timestamp = Time::Timestamp();
+  writer.String(timestamp.c_str());
 
   writer.String("tabId");
   writer.Int(info.tab_id);
@@ -211,8 +208,8 @@ std::string Reports::GenerateBackgroundEventReport() const {
   writer.String("background");
 
   writer.String("timestamp");
-  auto time_stamp = Time::Timestamp();
-  writer.String(time_stamp.c_str());
+  const std::string timestamp = Time::Timestamp();
+  writer.String(timestamp.c_str());
 
   writer.EndObject();
 
@@ -234,8 +231,8 @@ std::string Reports::GenerateForegroundEventReport() const {
   writer.String("foreground");
 
   writer.String("timestamp");
-  auto time_stamp = Time::Timestamp();
-  writer.String(time_stamp.c_str());
+  const std::string timestamp = Time::Timestamp();
+  writer.String(timestamp.c_str());
 
   writer.EndObject();
 
@@ -258,8 +255,8 @@ std::string Reports::GenerateBlurEventReport(
   writer.String("blur");
 
   writer.String("timestamp");
-  auto time_stamp = Time::Timestamp();
-  writer.String(time_stamp.c_str());
+  const std::string timestamp = Time::Timestamp();
+  writer.String(timestamp.c_str());
 
   writer.String("tabId");
   writer.Int(info.tab_id);
@@ -285,8 +282,8 @@ std::string Reports::GenerateDestroyEventReport(
   writer.String("destroy");
 
   writer.String("timestamp");
-  auto time_stamp = Time::Timestamp();
-  writer.String(time_stamp.c_str());
+  const std::string timestamp = Time::Timestamp();
+  writer.String(timestamp.c_str());
 
   writer.String("tabId");
   writer.Int(info.tab_id);
@@ -312,8 +309,8 @@ std::string Reports::GenerateFocusEventReport(
   writer.String("focus");
 
   writer.String("timestamp");
-  auto time_stamp = Time::Timestamp();
-  writer.String(time_stamp.c_str());
+  const std::string timestamp = Time::Timestamp();
+  writer.String(timestamp.c_str());
 
   writer.String("tabId");
   writer.Int(info.tab_id);
@@ -326,11 +323,6 @@ std::string Reports::GenerateFocusEventReport(
 }
 
 std::string Reports::GenerateSettingsEventReport() const {
-  DCHECK(ads_);
-  if (!ads_) {
-    return "Failed to generate settings event report";
-  }
-
   rapidjson::StringBuffer buffer;
   rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
 
@@ -343,8 +335,8 @@ std::string Reports::GenerateSettingsEventReport() const {
   writer.String("settings");
 
   writer.String("timestamp");
-  auto time_stamp = Time::Timestamp();
-  writer.String(time_stamp.c_str());
+  const std::string timestamp = Time::Timestamp();
+  writer.String(timestamp.c_str());
 
   writer.String("settings");
   writer.StartObject();
