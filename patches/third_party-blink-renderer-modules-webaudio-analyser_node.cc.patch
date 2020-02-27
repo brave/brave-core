@@ -1,41 +1,12 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/analyser_node.cc b/third_party/blink/renderer/modules/webaudio/analyser_node.cc
-index 4df218da56b5f4db4bf40d5ca19c1ab24d9e50fd..ddd9cadb6a50dbc24ae52bb59e4b80c4a3661d05 100644
+index 4df218da56b5f4db4bf40d5ca19c1ab24d9e50fd..6047f6868f65bb2efb3c79ed1fabbce1753ccb9b 100644
 --- a/third_party/blink/renderer/modules/webaudio/analyser_node.cc
 +++ b/third_party/blink/renderer/modules/webaudio/analyser_node.cc
-@@ -25,6 +25,7 @@
+@@ -35,6 +35,7 @@ namespace blink {
  
- #include "third_party/blink/renderer/modules/webaudio/analyser_node.h"
- 
-+#include "brave/renderer/brave_content_settings_agent_impl_helper.h"
- #include "third_party/blink/renderer/modules/webaudio/analyser_options.h"
- #include "third_party/blink/renderer/modules/webaudio/audio_node_input.h"
- #include "third_party/blink/renderer/modules/webaudio/audio_node_output.h"
-@@ -274,20 +275,28 @@ double AnalyserNode::smoothingTimeConstant() const {
- }
- 
- void AnalyserNode::getFloatFrequencyData(NotShared<DOMFloat32Array> array) {
-+  if (!AllowFingerprinting(To<Document>(GetExecutionContext())->GetFrame()))
-+    return;
-   GetAnalyserHandler().GetFloatFrequencyData(array.View(),
-                                              context()->currentTime());
- }
- 
- void AnalyserNode::getByteFrequencyData(NotShared<DOMUint8Array> array) {
-+  if (!AllowFingerprinting(To<Document>(GetExecutionContext())->GetFrame()))
-+    return;
-   GetAnalyserHandler().GetByteFrequencyData(array.View(),
-                                             context()->currentTime());
- }
- 
- void AnalyserNode::getFloatTimeDomainData(NotShared<DOMFloat32Array> array) {
-+  if (!AllowFingerprinting(To<Document>(GetExecutionContext())->GetFrame()))
-+    return;
-   GetAnalyserHandler().GetFloatTimeDomainData(array.View());
- }
- 
- void AnalyserNode::getByteTimeDomainData(NotShared<DOMUint8Array> array) {
-+  if (!AllowFingerprinting(To<Document>(GetExecutionContext())->GetFrame()))
-+    return;
-   GetAnalyserHandler().GetByteTimeDomainData(array.View());
- }
+ AnalyserHandler::AnalyserHandler(AudioNode& node, float sample_rate)
+     : AudioBasicInspectorHandler(kNodeTypeAnalyser, node, sample_rate) {
++  BRAVE_ANALYSERHANDLER_CONSTRUCTOR
+   channel_count_ = 2;
+   AddOutput(1);
  

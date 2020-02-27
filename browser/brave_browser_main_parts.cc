@@ -99,7 +99,8 @@ void BraveBrowserMainParts::PreProfileInit() {
   auto* command_line = base::CommandLine::ForCurrentProcess();
   if (!base::FeatureList::IsEnabled(brave_sync::features::kBraveSync)) {
     // Disable sync temporarily
-    command_line->AppendSwitch(switches::kDisableSync);
+    if (!command_line->HasSwitch(switches::kDisableSync))
+        command_line->AppendSwitch(switches::kDisableSync);
   } else {
     // Relaunch after flag changes will still have the switch
     // when switching from disabled to enabled

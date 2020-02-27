@@ -5,7 +5,7 @@ declare_args() {
 }
 
 source_set("browser") {
-  deps = [
+  public_deps = [
     "//brave/components/brave_referrals/buildflags",
   ]
 
@@ -17,7 +17,7 @@ source_set("browser") {
 
     defines = [ "BRAVE_REFERRALS_API_KEY=\"$brave_referrals_api_key\"" ]
 
-    deps += [
+    deps = [
       "//base",
       "//brave/common",
       "//brave/vendor/brave_base",

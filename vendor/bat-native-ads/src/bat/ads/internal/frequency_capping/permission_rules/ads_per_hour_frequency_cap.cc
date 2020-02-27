@@ -10,7 +10,7 @@
 #include "bat/ads/internal/client.h"
 #include "bat/ads/internal/ads_impl.h"
 
-#include "bat/ads/ad_info.h"
+#include "bat/ads/creative_ad_notification_info.h"
 
 namespace ads {
 
@@ -40,8 +40,8 @@ bool AdsPerHourFrequencyCap::IsAllowed() {
   return true;
 }
 
-const std::string AdsPerHourFrequencyCap::GetLastMessage() const {
-    return last_message_;
+std::string AdsPerHourFrequencyCap::GetLastMessage() const {
+  return last_message_;
 }
 
 bool AdsPerHourFrequencyCap::AreAdsPerHourBelowAllowedThreshold(

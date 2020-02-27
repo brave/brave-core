@@ -49,7 +49,7 @@ class AdBlockBaseService : public BaseBraveShieldsService {
 
   base::Optional<base::Value> HostnameCosmeticResources(
           const std::string& hostname);
-  std::string HiddenClassIdSelectors(
+  base::Optional<base::Value> HiddenClassIdSelectors(
           const std::vector<std::string>& classes,
           const std::vector<std::string>& ids,
           const std::vector<std::string>& exceptions);
@@ -68,12 +68,10 @@ class AdBlockBaseService : public BaseBraveShieldsService {
 
  private:
   void UpdateAdBlockClient(
-      std::unique_ptr<adblock::Engine> ad_block_client,
-      brave_component_updater::DATFileDataBuffer buffer);
+      std::unique_ptr<adblock::Engine> ad_block_client);
   void OnGetDATFileData(GetDATFileDataResult result);
   void OnPreferenceChanges(const std::string& pref_name);
 
-  brave_component_updater::DATFileDataBuffer buffer_;
   std::vector<std::string> tags_;
   std::string resources_;
   base::WeakPtrFactory<AdBlockBaseService> weak_factory_;

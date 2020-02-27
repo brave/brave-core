@@ -121,7 +121,7 @@ class ConfirmationsRedeemPaymentTokensRequestTest : public ::testing::Test {
     return true;
   }
 
-  std::vector<TokenInfo> GetUnblindedTokens(const int count) {
+  TokenList GetUnblindedTokens(const int count) {
     std::vector<std::string> tokens_base64 = {
       "PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY",  // NOLINT
       "hfrMEltWLuzbKQ02Qixh5C/DWiJbdOoaGaidKZ7Mv+cRq5fyxJqemE/MPlARPhl6NgXPHUeyaxzd6/Lk6YHlfXbBA023DYvGMHoKm15NP/nWnZ1V3iLkgOOHZuk80Z4K",  // NOLINT
@@ -137,7 +137,7 @@ class ConfirmationsRedeemPaymentTokensRequestTest : public ::testing::Test {
 
     int modulo = tokens_base64.size();
 
-    std::vector<TokenInfo> tokens;
+    TokenList tokens;
     for (int i = 0; i < count; i++) {
       TokenInfo token_info;
       auto token_base64 = tokens_base64.at(i % modulo);

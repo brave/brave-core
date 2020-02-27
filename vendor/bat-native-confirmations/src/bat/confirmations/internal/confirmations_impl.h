@@ -14,7 +14,7 @@
 
 #include "bat/confirmations/confirmations.h"
 #include "bat/confirmations/confirmations_client.h"
-#include "bat/confirmations/notification_info.h"
+#include "bat/confirmations/ad_notification_info.h"
 #include "bat/confirmations/issuers_info.h"
 #include "bat/confirmations/internal/confirmation_info.h"
 #include "bat/confirmations/internal/ads_rewards.h"
@@ -60,16 +60,16 @@ class ConfirmationsImpl : public Confirmations {
       OnGetTransactionHistoryCallback callback) override;
   void AddUnredeemedTransactionsToPendingRewards();
   void AddTransactionsToPendingRewards(
-      const std::vector<TransactionInfo>& transactions);
+      const TransactionList& transactions);
   double GetEstimatedPendingRewardsForTransactions(
-      const std::vector<TransactionInfo>& transactions) const;
+      const TransactionList& transactions) const;
   uint64_t GetAdNotificationsReceivedThisMonthForTransactions(
-      const std::vector<TransactionInfo>& transactions) const;
-  std::vector<TransactionInfo> GetTransactionHistory(
+      const TransactionList& transactions) const;
+  TransactionList GetTransactionHistory(
       const uint64_t from_timestamp_in_seconds,
       const uint64_t to_timestamp_in_seconds);
-  std::vector<TransactionInfo> GetTransactions() const;
-  std::vector<TransactionInfo> GetUnredeemedTransactions();
+  TransactionList GetTransactions() const;
+  TransactionList GetUnredeemedTransactions();
   void AppendTransactionToHistory(
       const double estimated_redemption_value,
       const ConfirmationType confirmation_type);
@@ -82,10 +82,12 @@ class ConfirmationsImpl : public Confirmations {
   void RefillTokensIfNecessary() const;
 
   // Redeem unblinded tokens
-  void ConfirmAd(std::unique_ptr<NotificationInfo> info) override;
-  void ConfirmAction(const std::string& uuid,
-                     const std::string& creative_set_id,
-                     const ConfirmationType& type) override;
+  void ConfirmAdNotification(
+      std::unique_ptr<AdNotificationInfo> info) override;
+  void ConfirmAction(
+      const std::string& creative_instance_id,
+      const std::string& creative_set_id,
+      const ConfirmationType& confirmation_type) override;
 
   // Payout redeemed tokens
   void UpdateNextTokenRedemptionDate();
@@ -116,10 +118,10 @@ class ConfirmationsImpl : public Confirmations {
   bool IsRetryingFailedConfirmations() const;
   void RetryFailedConfirmations();
   void StopRetryingFailedConfirmations();
-  std::vector<ConfirmationInfo> confirmations_;
+  ConfirmationList confirmations_;
 
   // Transaction history
-  std::vector<TransactionInfo> transaction_history_;
+  TransactionList transaction_history_;
 
   // Unblinded tokens
   std::unique_ptr<UnblindedTokens> unblinded_tokens_;
@@ -167,10 +169,10 @@ class ConfirmationsImpl : public Confirmations {
       const std::map<std::string, std::string>& issuers) const;
 
   base::Value GetConfirmationsAsDictionary(
-      const std::vector<ConfirmationInfo>& confirmations) const;
+      const ConfirmationList& confirmations) const;
 
   base::Value GetTransactionHistoryAsDictionary(
-      const std::vector<TransactionInfo>& transaction_history) const;
+      const TransactionList& transaction_history) const;
 
   bool FromJSON(const std::string& json);
 
@@ -188,13 +190,13 @@ class ConfirmationsImpl : public Confirmations {
       base::DictionaryValue* dictionary);
   bool GetConfirmationsFromDictionary(
       base::DictionaryValue* dictionary,
-      std::vector<ConfirmationInfo>* confirmations);
+      ConfirmationList* confirmations);
 
   bool ParseTransactionHistoryFromJSON(
       base::DictionaryValue* dictionary);
   bool GetTransactionHistoryFromDictionary(
       base::DictionaryValue* dictionary,
-      std::vector<TransactionInfo>* transaction_history);
+      TransactionList* transaction_history);
 
   bool ParseUnblindedTokensFromJSON(
       base::DictionaryValue* dictionary);

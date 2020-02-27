@@ -192,6 +192,11 @@ std::unique_ptr<RuleIterator> BravePrefProvider::GetRuleIterator(
         cookie_rules_.at(incognito).end());
   }
 
+  // Early return. We don't store flash plugin setting in preference.
+  if (content_type == ContentSettingsType::PLUGINS &&
+      resource_identifier == "")
+    return nullptr;
+
   return PrefProvider::GetRuleIterator(content_type,
                                        resource_identifier,
                                        incognito);

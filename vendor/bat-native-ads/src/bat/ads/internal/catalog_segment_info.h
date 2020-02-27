@@ -7,17 +7,16 @@
 #define BAT_ADS_INTERNAL_CATALOG_SEGMENT_INFO_H_
 
 #include <string>
+#include <vector>
 
 namespace ads {
 
-struct SegmentInfo {
-  SegmentInfo();
-  explicit SegmentInfo(const SegmentInfo& info);
-  ~SegmentInfo();
-
+struct CatalogSegmentInfo {
   std::string code;
   std::string name;
 };
+
+using CatalogSegmentList = std::vector<CatalogSegmentInfo>;
 
 }  // namespace ads
 

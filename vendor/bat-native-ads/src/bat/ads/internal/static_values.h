@@ -36,7 +36,7 @@ const uint64_t kNextEasterEggStartsInSeconds = 30;
 
 const char kShoppingStateUrl[] = "https://amazon.com";
 
-const uint64_t kSustainAdInteractionAfterSeconds = 10;
+const uint64_t kSustainAdNotificationInteractionAfterSeconds = 10;
 
 const uint64_t kDefaultCatalogPing = 2 * base::Time::kSecondsPerHour;
 const uint64_t kDebugCatalogPing = 15 * base::Time::kSecondsPerMinute;
@@ -50,8 +50,8 @@ const char kDefaultLanguage[] = "en";
 const char kDefaultRegion[] = "US";
 const char kDefaultUserModelLanguage[] = "en";
 
-static const int kDoNotDisturbFromHour = 21;  // 9pm
-static const int kDoNotDisturbToHour = 6;     // 6am
+const int kDoNotDisturbFromHour = 21;  // 9pm
+const int kDoNotDisturbToHour = 6;     // 6am
 
 const std::map<int, std::map<std::string, bool>> kSupportedRegionsSchemas = {
   // Append newly supported regions with a new schema version and update
@@ -159,6 +159,8 @@ const char kUntargetedPageClassification[] = "untargeted";
 
 #if defined(OS_ANDROID)
 const int kMaximumAdNotifications = 3;
+#else
+const int kMaximumAdNotifications = 0;  // No limit
 #endif
 
 }  // namespace ads

@@ -173,7 +173,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       if (this instanceof ToolbarPhone) {
           if (getMenuButtonWrapper() != null && BottomToolbarVariationManager.isMenuButtonOnBottom()) {
               getMenuButtonWrapper().setVisibility(View.GONE);
-              disableMenuButton();
           }
       }
   }
@@ -662,6 +661,10 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     }
 
     private void updateVerifiedPublisherMark() {
+        if (mBraveRewardsNotificationsCount == null) {
+            // Most likely we are on a custom page
+            return;
+        }
         if (mIsInitialNotificationPosted) {
             return;
         } else if (!mIsRewardsEnabled) {

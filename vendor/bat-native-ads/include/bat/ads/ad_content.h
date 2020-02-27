@@ -26,28 +26,28 @@ struct ADS_EXPORT AdContent {
   bool operator!=(
       const AdContent& rhs) const;
 
-  const std::string ToJson() const;
+  std::string ToJson() const;
   Result FromJson(
       const std::string& json,
       std::string* error_description = nullptr);
 
-  enum LikeAction {
-    LIKE_ACTION_NONE = 0,
-    LIKE_ACTION_THUMBS_UP,
-    LIKE_ACTION_THUMBS_DOWN
+  enum class LikeAction {
+    kNone = 0,
+    kThumbsUp,
+    kThumbsDown
   };
 
-  std::string uuid;
+  std::string creative_instance_id;
   std::string creative_set_id;
   std::string brand;
   std::string brand_info;
   std::string brand_logo;
   std::string brand_display_url;
   std::string brand_url;
-  LikeAction like_action;
-  ConfirmationType ad_action;
-  bool saved_ad;
-  bool flagged_ad;
+  LikeAction like_action = LikeAction::kNone;
+  ConfirmationType ad_action = ConfirmationType::kUnknown;
+  bool saved_ad = false;
+  bool flagged_ad = false;
 };
 
 }  // namespace ads

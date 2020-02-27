@@ -26,11 +26,11 @@ void LocaleHelper::set_for_testing(
   g_locale_helper_for_testing = locale_helper;
 }
 
-const std::string LocaleHelper::GetLocale() const {
+std::string LocaleHelper::GetLocale() const {
   return kDefaultLocale;
 }
 
-const std::string LocaleHelper::GetCountryCode(
+std::string LocaleHelper::GetCountryCode(
     const std::string& locale) {
   std::vector<std::string> locale_components = base::SplitString(locale, ".",
       base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);

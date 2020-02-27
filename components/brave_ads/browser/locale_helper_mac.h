@@ -21,7 +21,7 @@ class LocaleHelperMac : public LocaleHelper {
   ~LocaleHelperMac() override;
 
   // LocaleHelper impl
-  const std::string GetLocale() const override;
+  std::string GetLocale() const override;
 
   friend struct base::DefaultSingletonTraits<LocaleHelperMac>;
   DISALLOW_COPY_AND_ASSIGN(LocaleHelperMac);

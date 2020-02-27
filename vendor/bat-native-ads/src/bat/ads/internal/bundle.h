@@ -28,7 +28,7 @@ class Bundle {
   bool UpdateFromCatalog(const Catalog& catalog);
   void Reset();
 
-  const std::string GetCatalogId() const;
+  std::string GetCatalogId() const;
   uint64_t GetCatalogVersion() const;
   uint64_t GetCatalogPing() const;
   uint64_t GetCatalogLastUpdatedTimestampInSeconds() const;
@@ -39,7 +39,7 @@ class Bundle {
   std::unique_ptr<BundleState> GenerateFromCatalog(const Catalog& catalog);
 
   bool DoesOsSupportCreativeSet(
-    const CreativeSetInfo& creative_set);
+    const CatalogCreativeSetInfo& creative_set);
 
   std::string GetClientOS();
 

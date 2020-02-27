@@ -6,16 +6,13 @@
 #ifndef BAT_ADS_INTERNAL_EVENT_TYPE_LOAD_INFO_H_
 #define BAT_ADS_INTERNAL_EVENT_TYPE_LOAD_INFO_H_
 
+#include <stdint.h>
 #include <string>
 
 namespace ads {
 
 struct LoadInfo {
-  LoadInfo();
-  explicit LoadInfo(const LoadInfo& info);
-  ~LoadInfo();
-
-  int32_t tab_id;
+  int32_t tab_id = -1;
   std::string tab_url;
   std::string tab_classification;
 };

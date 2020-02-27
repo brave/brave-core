@@ -24,4 +24,5 @@ public interface BraveRewardsObserver {
   public void OnResetTheWholeState(boolean success);
   public void OnRewardsMainEnabled(boolean enabled);
   public void OnFetchPromotions();
+  default public void OnGrantFinish(int result) {};
 }

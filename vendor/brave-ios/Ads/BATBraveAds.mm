@@ -35,7 +35,7 @@ static NSString * const kNumberOfAdsPerDayKey = @"BATNumberOfAdsPerDay";
 static NSString * const kNumberOfAdsPerHourKey = @"BATNumberOfAdsPerHour";
 
 @interface BATAdsNotification ()
-- (instancetype)initWithNotificationInfo:(const ads::NotificationInfo&)info;
+- (instancetype)initWithNotificationInfo:(const ads::AdNotificationInfo&)info;
 @end
 
 @interface BATBraveAds () <NativeAdsClientBridge> {
@@ -343,50 +343,49 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
   ads->OnTabClosed((int32_t)tabId);
 }
 
-- (void)reportNotificationEvent:(NSString *)notificationId eventType:(BATAdsNotificationEventType)eventType
+- (void)reportAdNotificationEvent:(NSString *)notificationUuid eventType:(BATAdNotificationEventType)eventType
 {
   if (![self isAdsServiceRunning]) { return; }
-  ads->OnNotificationEvent(notificationId.UTF8String,
-                           static_cast<ads::NotificationEventType>(eventType));
+  ads->OnAdNotificationEvent(notificationUuid.UTF8String,
+                             static_cast<ads::AdNotificationEventType>(eventType));
 }
 
-- (void)toggleThumbsUpForAd:(NSString *)identifier creativeSetID:(NSString *)creativeSetID
+- (void)toggleThumbsUpForAd:(NSString *)creativeInstanceId creativeSetID:(NSString *)creativeSetID
 {
   if (![self isAdsServiceRunning]) { return; }
-  ads->ToggleAdThumbUp(identifier.UTF8String,
+  ads->ToggleAdThumbUp(creativeInstanceId.UTF8String,
                        creativeSetID.UTF8String,
-                       ads::AdContent::LikeAction::LIKE_ACTION_THUMBS_UP);
+                       ads::AdContent::LikeAction::kThumbsUp);
 }
 
-
-- (void)toggleThumbsDownForAd:(NSString *)identifier creativeSetID:(NSString *)creativeSetID
+- (void)toggleThumbsDownForAd:(NSString *)creativeInstanceId creativeSetID:(NSString *)creativeSetID
 {
   if (![self isAdsServiceRunning]) { return; }
-  ads->ToggleAdThumbDown(identifier.UTF8String,
+  ads->ToggleAdThumbDown(creativeInstanceId.UTF8String,
                          creativeSetID.UTF8String,
-                         ads::AdContent::LikeAction::LIKE_ACTION_THUMBS_DOWN);
+                         ads::AdContent::LikeAction::kThumbsDown);
 }
 
-- (void)confirmAd:(std::unique_ptr<ads::NotificationInfo>)info
+- (void)confirmAdNotification:(std::unique_ptr<ads::AdNotificationInfo>)info
 {
-  [self.ledger confirmAd:[NSString stringWithUTF8String:info->ToJson().c_str()]];
+  [self.ledger confirmAdNotification:[NSString stringWithUTF8String:info->ToJson().c_str()]];
 }
 
-- (void)confirmAction:(const std::string &)uuid creativeSetId:(const std::string &)creative_set_id confirmationType:(const ads::ConfirmationType &)type
+- (void)confirmAction:(const std::string &)creative_instance_id creativeSetId:(const std::string &)creative_set_id confirmationType:(const ads::ConfirmationType &)type
 {
-  [self.ledger confirmAction:[NSString stringWithUTF8String:uuid.c_str()]
+  [self.ledger confirmAction:[NSString stringWithUTF8String:creative_instance_id.c_str()]
                creativeSetID:[NSString stringWithUTF8String:creative_set_id.c_str()]
                         type:[NSString stringWithUTF8String:std::string(type).c_str()]];
 }
 
-- (void)getAds:(const std::vector<std::string> &)categories callback:(ads::OnGetAdsCallback)callback
+- (void)getCreativeAdNotifications:(const std::vector<std::string> &)categories callback:(ads::OnGetCreativeAdNotificationsCallback)callback
 {
   if (![self isAdsServiceRunning]) { return; }
 
-  std::vector<ads::AdInfo> found_ads;
+  ads::CreativeAdNotificationList found_ads;
   for (const auto & category : categories) {
-    auto it = bundleState->categories.find(category);
-    if (it == bundleState->categories.end()) {
+    auto it = bundleState->creative_ad_notifications.find(category);
+    if (it == bundleState->creative_ad_notifications.end()) {
       continue;
     }
 
@@ -611,8 +610,8 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
 - (nullable BATAdsNotification *)adsNotificationForIdentifier:(NSString *)identifier
 {
   if (![self isAdsServiceRunning]) { return nil; }
-  ads::NotificationInfo info;
-  if (ads->GetNotificationForId(identifier.UTF8String, &info)) {
+  ads::AdNotificationInfo info;
+  if (ads->GetAdNotification(identifier.UTF8String, &info)) {
     return [[BATAdsNotification alloc] initWithNotificationInfo:info];
   }
   return nil;
@@ -623,7 +622,7 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
   return [self.notificationsHandler shouldShowNotifications];
 }
 
-- (void)showNotification:(std::unique_ptr<ads::NotificationInfo>)info
+- (void)showNotification:(std::unique_ptr<ads::AdNotificationInfo>)info
 {
   if (info.get() == nullptr) {
     return;

@@ -202,13 +202,14 @@ base::Optional<base::Value> AdBlockBaseService::HostnameCosmeticResources(
           this->ad_block_client_->hostnameCosmeticResources(hostname));
 }
 
-std::string AdBlockBaseService::HiddenClassIdSelectors(
+base::Optional<base::Value> AdBlockBaseService::HiddenClassIdSelectors(
         const std::vector<std::string>& classes,
         const std::vector<std::string>& ids,
         const std::vector<std::string>& exceptions) {
-  return this->ad_block_client_->hiddenClassIdSelectors(classes,
-                                                        ids,
-                                                        exceptions);
+  return base::JSONReader::Read(
+          this->ad_block_client_->hiddenClassIdSelectors(classes,
+                                                         ids,
+                                                         exceptions));
 }
 
 void AdBlockBaseService::GetDATFileData(const base::FilePath& dat_file_path) {
@@ -231,16 +232,14 @@ void AdBlockBaseService::OnGetDATFileData(GetDATFileDataResult result) {
   }
   GetTaskRunner()->PostTask(
       FROM_HERE, base::BindOnce(&AdBlockBaseService::UpdateAdBlockClient,
-                                base::Unretained(this), std::move(result.first),
-                                std::move(result.second)));
+                                base::Unretained(this),
+                                std::move(result.first)));
 }
 
 void AdBlockBaseService::UpdateAdBlockClient(
-    std::unique_ptr<adblock::Engine> ad_block_client,
-    brave_component_updater::DATFileDataBuffer buffer) {
+    std::unique_ptr<adblock::Engine> ad_block_client) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
   ad_block_client_ = std::move(ad_block_client);
-  buffer_ = std::move(buffer);
   AddKnownTagsToAdBlockInstance();
   AddKnownResourcesToAdBlockInstance();
 }

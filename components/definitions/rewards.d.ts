@@ -284,19 +284,19 @@ declare namespace Rewards {
 
   export interface AdsHistory {
     [key: string]: any
-    id: string
+    uuid: string
     date: string
     adDetailRows: AdHistory[]
   }
 
   export interface AdHistory {
-    id: string
+    uuid: string
     adContent: AdContent
     categoryContent: CategoryContent
   }
 
   export interface AdContent {
-    uuid: string
+    creativeInstanceId: string
     creativeSetId: string
     brand: string
     brandInfo: string

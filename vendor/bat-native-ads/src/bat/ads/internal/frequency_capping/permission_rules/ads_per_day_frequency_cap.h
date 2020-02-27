@@ -12,7 +12,7 @@
 
 namespace ads {
 
-struct AdInfo;
+struct CreativeAdNotificationInfo;
 class AdsClient;
 class FrequencyCapping;
 
@@ -26,7 +26,7 @@ class AdsPerDayFrequencyCap : public PermissionRule  {
 
   bool IsAllowed() override;
 
-  const std::string GetLastMessage() const override;
+  std::string GetLastMessage() const override;
 
  private:
   const AdsClient* const ads_client_;  // NOT OWNED

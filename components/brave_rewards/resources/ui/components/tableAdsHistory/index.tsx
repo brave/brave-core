@@ -33,7 +33,7 @@ import AdRowsDetails from '../adRowsDetails'
 import { getLocale } from 'brave-ui/helpers'
 
 export interface DetailRow {
-  id: string
+  uuid: string
   date: string
   adDetailRows: AdDetailRow[]
 }
@@ -65,7 +65,7 @@ interface CategoryContent {
 }
 
 export interface AdDetailRow {
-  id: string
+  uuid: string
   adContent: AdContent
   categoryContent: CategoryContent
 }

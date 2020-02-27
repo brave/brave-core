@@ -1393,6 +1393,11 @@ void RewardsServiceImpl::LoadURL(
   // Loading Twitter requires credentials
   if (request->url.DomainIs("twitter.com")) {
     request->credentials_mode = network::mojom::CredentialsMode::kInclude;
+
+#if defined(OS_ANDROID)
+    request->headers.SetHeader(net::HttpRequestHeaders::kUserAgent, "DESKTOP");
+#endif
+
   } else {
     request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   }
@@ -1776,22 +1781,25 @@ void RewardsServiceImpl::SetCatalogIssuers(const std::string& json) {
   bat_ledger_->SetCatalogIssuers(json);
 }
 
-void RewardsServiceImpl::ConfirmAd(const std::string& json) {
+void RewardsServiceImpl::ConfirmAdNotification(
+    const std::string& json) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->ConfirmAd(json);
+  bat_ledger_->ConfirmAdNotification(json);
 }
 
-void RewardsServiceImpl::ConfirmAction(const std::string& uuid,
+void RewardsServiceImpl::ConfirmAction(
+    const std::string& creative_instance_id,
     const std::string& creative_set_id,
-    const std::string& type) {
+    const std::string& confirmation_type) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->ConfirmAction(uuid, creative_set_id, type);
+  bat_ledger_->ConfirmAction(creative_instance_id, creative_set_id,
+      confirmation_type);
 }
 
 void RewardsServiceImpl::SetConfirmationsIsReady(const bool is_ready) {
@@ -1810,7 +1818,6 @@ void RewardsServiceImpl::GetTransactionHistory(
   if (!Connected()) {
     return;
   }
-
   bat_ledger_->GetTransactionHistory(
       base::BindOnce(&RewardsServiceImpl::OnGetTransactionHistory,
           AsWeakPtr(), std::move(callback)));
@@ -1818,9 +1825,9 @@ void RewardsServiceImpl::GetTransactionHistory(
 
 void RewardsServiceImpl::OnGetTransactionHistory(
     GetTransactionHistoryCallback callback,
-    const std::string& transactions) {
+    const std::string& json) {
   ledger::TransactionsInfo info;
-  info.FromJson(transactions);
+  info.FromJson(json);
 
   std::move(callback).Run(info.estimated_pending_rewards,
       info.next_payment_date_in_seconds,

@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
   "properties": {
-    "categories": {
+    "creative_ad_notifications": {
       "type": "object",
       "patternProperties": {
         "^.*$": {
@@ -11,10 +11,10 @@
             "type": "object",
             "additionalProperties": false,
             "required": [
-              "advertiser",
-              "notificationText",
-              "notificationURL",
-              "uuid"
+              "title",
+              "body",
+              "targetUrl",
+              "creativeInstanceId"
             ],
             "properties": {
               "creativeSetId": {
@@ -23,10 +23,10 @@
               "campaignId": {
                 "type": "string"
               },
-              "startTimestamp": {
+              "startAtTimestamp": {
                 "type": "string"
               },
-              "endTimestamp": {
+              "endAtTimestamp": {
                 "type": "string"
               },
               "dailyCap": {
@@ -41,22 +41,25 @@
               "totalMax": {
                 "type": "number"
               },
-              "regions": {
+              "category": {
+                "type": "string"
+              },
+              "geoTargets": {
                 "type": "array",
                 "items": {
                   "type": "string"
                 }
               },
-              "advertiser": {
+              "title": {
                 "type": "string"
               },
-              "notificationText": {
+              "body": {
                 "type": "string"
               },
-              "notificationURL": {
+              "targetUrl": {
                 "type": "string"
               },
-              "uuid": {
+              "creativeInstanceId": {
                 "type": "string"
               }
             }
@@ -65,7 +68,7 @@
       },
       "additionalProperties": false
     },
-    "conversions": {
+    "ad_conversions": {
       "type": "array",
       "items": {
         "type": "object",
@@ -94,7 +97,8 @@
     }
   },
   "required": [
-    "categories"
+    "creative_ad_notifications",
+    "ad_conversions"
   ],
   "additionalProperties": false
 }

@@ -26,7 +26,7 @@ std::deque<AdHistory> AdsHistoryConfirmationFilter::Apply(
       continue;
     }
 
-    const std::string uuid = ad.parent_uuid;
+    std::string uuid = ad.parent_uuid;
 
     const auto it = filtered_ads_history_map.find(uuid);
     if (it == filtered_ads_history_map.end()) {
@@ -53,18 +53,18 @@ bool AdsHistoryConfirmationFilter::ShouldFilterAction(
   bool should_filter;
 
   switch (confirmation_type.value()) {
-    case ConfirmationType::CLICK:
-    case ConfirmationType::VIEW:
-    case ConfirmationType::DISMISS: {
+    case ConfirmationType::kClicked:
+    case ConfirmationType::kViewed:
+    case ConfirmationType::kDismissed: {
       should_filter = false;
       break;
     }
-    case ConfirmationType::UNKNOWN:
-    case ConfirmationType::LANDED:
-    case ConfirmationType::FLAG:
-    case ConfirmationType::UPVOTE:
-    case ConfirmationType::DOWNVOTE:
-    case ConfirmationType::CONVERSION: {
+    case ConfirmationType::kUnknown:
+    case ConfirmationType::kLanded:
+    case ConfirmationType::kFlagged:
+    case ConfirmationType::kUpvoted:
+    case ConfirmationType::kDownvoted:
+    case ConfirmationType::kConversion: {
       should_filter = true;
       break;
     }

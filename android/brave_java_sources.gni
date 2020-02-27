@@ -63,6 +63,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/SearchEngineEnum.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/SearchEngineOnboardingFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/TroubleshootingOnboardingFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/partnercustomizations/BravePartnerBrowserCustomizations.java",
   "../../brave/android/java/org/chromium/chrome/browser/partnercustomizations/CloseBraveManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/BravePreferenceKeys.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java",
@@ -76,6 +77,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/settings/AppearancePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BackgroundImagesPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BackgroundVideoPlaybackPreference.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveHomepagePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveLicensePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveMainPreferencesBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BravePreferenceFragment.java",
@@ -90,8 +92,9 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSyncScreensPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/ClosingAllTabsClosesBravePreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/developer/BraveQAPreferences.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/download/BraveDownloadPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/privacy/BravePrivacyPreferences.java",
-  "../../brave/android/java/org/chromium/chrome/browser/settings/SearchEngineTabModelSelectorObserver.java",  
+  "../../brave/android/java/org/chromium/chrome/browser/settings/SearchEngineTabModelSelectorObserver.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/themes/BraveRadioButtonGroupThemePreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/themes/BraveThemePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/website/BraveSiteSettingsPreferencesBase.java",
@@ -100,10 +103,12 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/signin/BraveSigninManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/sync/BraveSyncService.java",
   "../../brave/android/java/org/chromium/chrome/browser/sync/BraveSyncServiceObserver.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/BraveHomeButton.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BookmarksButton.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BraveBottomToolbarCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BraveBottomToolbarVariationManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BraveBrowsingModeBottomToolbarCoordinator.java",
+  "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BraveSearchAccelerator.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/BravePackageReplacedBroadcastReceiver.java",
   "../../brave/android/java/org/chromium/chrome/browser/upgrade/BraveUpgradeJobIntentService.java",
@@ -113,7 +118,8 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/util/LocaleUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/ImageUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/tile/BraveTileWithTextView.java",
-  "../../brave/android/java/org/chromium/chrome/browser/tabmodel/BraveTabCreator.java"
+  "../../brave/android/java/org/chromium/chrome/browser/tabmodel/BraveTabCreator.java",
+  "../../brave/android/java/org/chromium/chrome/browser/util/TabUtils.java"
 ]
 
 if (brave_rewards_enabled) {

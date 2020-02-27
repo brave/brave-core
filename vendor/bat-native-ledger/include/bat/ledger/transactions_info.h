@@ -22,16 +22,17 @@ namespace ledger {
 
 LEDGER_EXPORT struct TransactionsInfo {
   TransactionsInfo();
-  explicit TransactionsInfo(const TransactionsInfo& info);
+  TransactionsInfo(
+      const TransactionsInfo& info);
   ~TransactionsInfo();
 
-  const std::string ToJson() const;
+  std::string ToJson() const;
   bool FromJson(const std::string& json);
 
-  double estimated_pending_rewards;
-  uint64_t next_payment_date_in_seconds;
-  uint64_t ad_notifications_received_this_month;
-  std::vector<TransactionInfo> transactions;
+  double estimated_pending_rewards = 0.0;
+  uint64_t next_payment_date_in_seconds = 0;
+  uint64_t ad_notifications_received_this_month = 0;
+  TransactionList transactions;
 
  private:
   double GetEstimatedPendingRewardsFromJson(
@@ -44,7 +45,7 @@ LEDGER_EXPORT struct TransactionsInfo {
     base::DictionaryValue* dictionary) const;
 
   base::Value GetTransactionsAsList() const;
-  std::vector<TransactionInfo> GetTransactionsFromJson(
+  TransactionList GetTransactionsFromJson(
     base::DictionaryValue* dictionary) const;
 };
 

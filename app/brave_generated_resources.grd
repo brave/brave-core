@@ -344,8 +344,8 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_COOKIE_CONTROL_LABEL" desc="Default Brave cookies control setting label">
         Cookies
       </message>
-      <message name="IDS_SETTINGS_BRAVE_SHIELDS_FINGERPRINTING_CONTROL_LABEL" desc="Default Brave device recognition control setting label">
-        Device recognition
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_FINGERPRINTING_CONTROL_LABEL" desc="Default Brave fingerprinting control setting label">
+        Fingerprinting
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_CONTROL_LABEL" desc="Default Brave upgrade connections to HTTPS control setting label">
         Upgrade connections to HTTPS
@@ -375,13 +375,13 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Block all cookies
       </message>
       <message name="IDS_SETTINGS_BLOCK_3RD_PARTY_FINGERPRINTING" desc="Select value">
-        Only block cross-site device recognition attempts
+        Only block cross-site fingerprinting attempts
       </message>
       <message name="IDS_SETTINGS_ALLOW_FINGERPRINTING" desc="Select value">
-        Allow all device recognition attempts
+        Allow all fingerprinting attempts
       </message>
       <message name="IDS_SETTINGS_BLOCK_FINGERPRINTING" desc="Select value">
-        Block all device recognition attempts
+        Block all fingerprinting attempts
       </message>
       <!-- WebRTC Policy Setting -->
       <message name="IDS_SETTINGS_WEBRTC_POLICY_LABEL" desc="WebRTC policy setting label">
@@ -715,6 +715,21 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </if>
       <message name="IDS_BRAVE_BOOKMARK_MANAGER_EMPTY_LIST" desc="">
         To add a bookmark, click the bookmark button next to the address bar
+      </message>
+      <message name="IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_TITLE" desc="The label for full disk access dialog title">
+        Full Disk Access required
+      </message>
+      <message name="IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_MESSAGE" desc="The label for full disk access dialog message">
+        Brave needs Full Disk Access to import your Bookmarks and History from Safari.
+      </message>
+      <message name="IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_LINK_TEXT" desc="The label for full disk access dialog link text">
+        Learn to how to grant Full Disk Access from your System Preferences.
+      </message>
+      <message name="IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_OPEN_PREFS_BUTTON_TEXT" desc="The label for open privacy panel">
+        Open System Preferences
+      </message>
+      <message name="IDS_SETTINGS_SITE_AND_SHIELDS_SETTINGS" desc="Label for site and shields settings in clear browsing data dialog">
+        Site and Shields Settings
       </message>
     </messages>
   </release>

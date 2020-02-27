@@ -11,14 +11,10 @@
 
 namespace ads {
 
-CategoryContent::CategoryContent() :
-    category(""),
-    opt_action(CategoryContent::OPT_ACTION_NONE) {}
+CategoryContent::CategoryContent() = default;
 
 CategoryContent::CategoryContent(
-    const CategoryContent& properties)
-    : category(properties.category),
-      opt_action(properties.opt_action) {}
+    const CategoryContent& properties) = default;
 
 CategoryContent::~CategoryContent() = default;
 
@@ -33,7 +29,7 @@ bool CategoryContent::operator!=(
   return !(*this == rhs);
 }
 
-const std::string CategoryContent::ToJson() const {
+std::string CategoryContent::ToJson() const {
   std::string json;
   SaveToJson(*this, &json);
   return json;
@@ -71,7 +67,7 @@ void SaveToJson(JsonWriter* writer, const CategoryContent& content) {
   writer->String(content.category.c_str());
 
   writer->String("opt_action");
-  writer->Int(content.opt_action);
+  writer->Int(static_cast<int>(content.opt_action));
 
   writer->EndObject();
 }

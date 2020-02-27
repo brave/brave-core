@@ -7,22 +7,27 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSInteger, BATAdsConfirmationType) {
-  BATAdsConfirmationTypeUnknown,  // = ads::ConfirmationType::UNKNOWN
-  BATAdsConfirmationTypeClick,    // = ads::ConfirmationType::CLICK
-  BATAdsConfirmationTypeDismiss,  // = ads::ConfirmationType::DISMISS
-  BATAdsConfirmationTypeView,     // = ads::ConfirmationType::VIEW
-  BATAdsConfirmationTypeLanded    // = ads::ConfirmationType::LANDED
+  BATAdsConfirmationTypeUnknown,    // = ads::ConfirmationType::kUnknown
+  BATAdsConfirmationTypeClick,      // = ads::ConfirmationType::kClicked
+  BATAdsConfirmationTypeDismiss,    // = ads::ConfirmationType::kDismissed
+  BATAdsConfirmationTypeView,       // = ads::ConfirmationType::kViewed
+  BATAdsConfirmationTypeLanded,     // = ads::ConfirmationType::kLanded
+  BATAdsConfirmationTypeFlagged,    // = ads::ConfirmationType::kFlagged
+  BATAdsConfirmationTypeUpvoted,    // = ads::ConfirmationType::kUpvoted
+  BATAdsConfirmationTypeDownvoted,  // = ads::ConfirmationType::kDownvoted
+  BATAdsConfirmationTypeConversion  // = ads::ConfirmationType::kConversion
 } NS_SWIFT_NAME(ConfirmationType);
 
 NS_SWIFT_NAME(AdsNotification)
 @interface BATAdsNotification : NSObject
-@property (nonatomic, readonly, copy) NSString *id;
+@property (nonatomic, readonly, copy) NSString *uuid;
+@property (nonatomic, readonly, copy) NSString *parentUuid;
+@property (nonatomic, readonly, copy) NSString *creativeInstanceID;
 @property (nonatomic, readonly, copy) NSString *creativeSetID;
 @property (nonatomic, readonly, copy) NSString *category;
-@property (nonatomic, readonly, copy) NSString *advertiser;
-@property (nonatomic, readonly, copy) NSString *text;
-@property (nonatomic, readonly, copy) NSURL *url;
-@property (nonatomic, readonly, copy) NSString *uuid;
+@property (nonatomic, readonly, copy) NSString *title;
+@property (nonatomic, readonly, copy) NSString *body;
+@property (nonatomic, readonly, copy) NSURL *targetURL;
 @property (nonatomic, readonly) BATAdsConfirmationType confirmationType;
 @end
 

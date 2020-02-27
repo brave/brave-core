@@ -7,15 +7,10 @@
 
 namespace ledger {
 
-TransactionInfo::TransactionInfo() :
-    timestamp_in_seconds(0),
-    estimated_redemption_value(0),
-    confirmation_type("") {}
+TransactionInfo::TransactionInfo() = default;
 
-TransactionInfo::TransactionInfo(const TransactionInfo& info) :
-    timestamp_in_seconds(info.timestamp_in_seconds),
-    estimated_redemption_value(info.estimated_redemption_value),
-    confirmation_type(info.confirmation_type) {}
+TransactionInfo::TransactionInfo(
+    const TransactionInfo& info) = default;
 
 TransactionInfo::~TransactionInfo() = default;
 

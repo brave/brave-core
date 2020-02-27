@@ -68,9 +68,6 @@ void AdsServe::OnCatalogDownloaded(
   auto should_retry = false;
 
   if (response_status_code / 100 == 2) {
-    // TODO(Terry Mancey): Implement Log (#44)
-    // 'Catalog downloaded', [ 'version', 'catalog', 'status' ]
-
     if (!response.empty()) {
       BLOG(INFO) << "Successfully downloaded catalog";
     }
@@ -79,16 +76,10 @@ void AdsServe::OnCatalogDownloaded(
       should_retry = true;
     }
   } else if (response_status_code == 304) {
-    // TODO(Terry Mancey): Implement Log (#44)
-    // 'Catalog current', { method, server, path }
-
     BLOG(INFO) << "Catalog is already up to dates";
 
     UpdateNextCatalogCheck();
   } else {
-    // TODO(Terry Mancey): Implement Log (#44)
-    // 'Catalog download failed', { error, method, server, path }
-
     std::string formatted_headers = "";
     for (auto header = headers.begin(); header != headers.end(); ++header) {
       formatted_headers += header->first + ": " + header->second;
@@ -161,11 +152,6 @@ bool AdsServe::ProcessCatalog(const std::string& json) {
   }
 
   BLOG(INFO) << "Catalog parsed";
-
-  // TODO(Terry Mancey): Implement Log (#44)
-  // 'Catalog parsed', underscore.extend(underscore.clone(header),
-  // { status: 'processed', campaigns: underscore.keys(campaigns).length,
-  // creativeSets: underscore.keys(creativeSets).length
 
   if (!catalog.HasChanged(bundle_->GetCatalogId())) {
     BLOG(WARNING) << "Catalog id " << catalog.GetId() <<

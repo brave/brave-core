@@ -9,15 +9,14 @@
 
 namespace ads {
 
-FilteredCategory::FilteredCategory() :
-    name("") {}
+FilteredCategory::FilteredCategory() = default;
 
-FilteredCategory::FilteredCategory(const FilteredCategory& category) :
-    name(category.name) {}
+FilteredCategory::FilteredCategory(
+    const FilteredCategory& category) = default;
 
 FilteredCategory::~FilteredCategory() = default;
 
-const std::string FilteredCategory::ToJson() const {
+std::string FilteredCategory::ToJson() const {
   std::string json;
   SaveToJson(*this, &json);
   return json;

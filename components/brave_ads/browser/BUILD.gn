@@ -104,6 +104,7 @@ source_set("browser") {
       "//components/history/core/common",
       "//components/wifi",
       "//net",
+      "//third_party/re2",
       "//services/network/public/cpp",
       "//sql",
       "//ui/base",

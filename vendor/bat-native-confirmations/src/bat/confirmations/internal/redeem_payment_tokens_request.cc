@@ -35,7 +35,7 @@ URLRequestMethod RedeemPaymentTokensRequest::GetMethod() const {
 }
 
 std::string RedeemPaymentTokensRequest::BuildBody(
-    const std::vector<TokenInfo>& tokens,
+    const TokenList& tokens,
     const std::string& payload) const {
   DCHECK(!payload.empty());
 
@@ -86,7 +86,7 @@ std::string RedeemPaymentTokensRequest::GetContentType() const {
 ///////////////////////////////////////////////////////////////////////////////
 
 base::Value RedeemPaymentTokensRequest::CreatePaymentRequestDTO(
-    const std::vector<TokenInfo>& tokens,
+    const TokenList& tokens,
     const std::string& payload) const {
   DCHECK_NE(tokens.size(), 0UL);
 

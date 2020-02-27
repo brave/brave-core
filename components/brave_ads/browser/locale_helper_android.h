@@ -21,7 +21,7 @@ class LocaleHelperAndroid : public LocaleHelper {
   ~LocaleHelperAndroid() override = default;
 
   // LocaleHelper impl
-  const std::string GetLocale() const override;
+  std::string GetLocale() const override;
 
   friend struct base::DefaultSingletonTraits<LocaleHelperAndroid>;
   DISALLOW_COPY_AND_ASSIGN(LocaleHelperAndroid);

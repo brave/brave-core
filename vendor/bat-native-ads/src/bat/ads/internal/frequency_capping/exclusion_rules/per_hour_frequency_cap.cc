@@ -8,7 +8,7 @@
 #include "bat/ads/internal/time.h"
 #include "bat/ads/internal/client.h"
 
-#include "bat/ads/ad_info.h"
+#include "bat/ads/creative_ad_info.h"
 
 namespace ads {
 
@@ -20,10 +20,10 @@ PerHourFrequencyCap::PerHourFrequencyCap(
 PerHourFrequencyCap::~PerHourFrequencyCap() = default;
 
 bool PerHourFrequencyCap::ShouldExclude(
-  const AdInfo& ad) {
+    const CreativeAdInfo& ad) {
   if (!DoesAdRespectPerHourCap(ad)) {
     std::ostringstream string_stream;
-    string_stream << "adUUID " << ad.uuid <<
+    string_stream << "adUUID " << ad.creative_instance_id <<
         " has exceeded the frequency capping for perHour";
     last_message_ = string_stream.str();
     return true;
@@ -31,13 +31,13 @@ bool PerHourFrequencyCap::ShouldExclude(
   return false;
 }
 
-const std::string PerHourFrequencyCap::GetLastMessage() const {
-    return last_message_;
+std::string PerHourFrequencyCap::GetLastMessage() const {
+  return last_message_;
 }
 
 bool PerHourFrequencyCap::DoesAdRespectPerHourCap(
-    const AdInfo& ad) const {
-  auto ads_shown = frequency_capping_->GetAdsHistoryForUuid(ad.uuid);
+    const CreativeAdInfo& ad) const {
+  auto ads_shown = frequency_capping_->GetAdsHistory(ad.creative_instance_id);
   auto hour_window = base::Time::kSecondsPerHour;
 
   return frequency_capping_->DoesHistoryRespectCapForRollingTimeConstraint(

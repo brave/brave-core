@@ -396,7 +396,7 @@ void RedeemToken::OnFetchPaymentToken(
     return;
   }
 
-  std::vector<TokenInfo> tokens = {unblinded_payment_token_info};
+  TokenList tokens = {unblinded_payment_token_info};
   unblinded_payment_tokens_->AddTokens(tokens);
 
   // Add transaction to history

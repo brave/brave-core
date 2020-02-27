@@ -21,7 +21,7 @@ class LocaleHelperLinux : public LocaleHelper {
   ~LocaleHelperLinux() override;
 
   // LocaleHelper impl
-  const std::string GetLocale() const override;
+  std::string GetLocale() const override;
 
   friend struct base::DefaultSingletonTraits<LocaleHelperLinux>;
   DISALLOW_COPY_AND_ASSIGN(LocaleHelperLinux);

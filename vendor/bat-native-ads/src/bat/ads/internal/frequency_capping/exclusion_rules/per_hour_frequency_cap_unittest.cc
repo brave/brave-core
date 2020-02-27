@@ -16,7 +16,7 @@
 #include "bat/ads/internal/client_mock.h"
 #include "bat/ads/internal/ads_client_mock.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/ad_info.h"
+#include "bat/ads/creative_ad_notification_info.h"
 
 // npm run test -- brave_unit_tests --filter=Ads*
 
@@ -26,7 +26,7 @@ using ::testing::Invoke;
 
 namespace {
 
-const char kTestAdUuid[] = "9aea9a47-c6a0-4718-a0fa-706338bb2156";
+const char kTestAdCreativeInstanceId[] = "9aea9a47-c6a0-4718-a0fa-706338bb2156";
 
 }  // namespace
 
@@ -77,15 +77,16 @@ class BraveAdsPerHourFrequencyCapTest : public ::testing::Test {
   std::unique_ptr<ClientMock> client_mock_;
   std::unique_ptr<FrequencyCapping> frequency_capping_;
   std::unique_ptr<PerHourFrequencyCap> exclusion_rule_;
-  AdInfo ad_info_;
+  CreativeAdNotificationInfo ad_notification_info_;
 };
 
 TEST_F(BraveAdsPerHourFrequencyCapTest, AdAllowedWhenNoAds) {
   // Arrange
-  ad_info_.uuid = kTestAdUuid;
+  ad_notification_info_.creative_instance_id = kTestAdCreativeInstanceId;
 
   // Act
-  const bool is_ad_excluded = exclusion_rule_->ShouldExclude(ad_info_);
+  const bool is_ad_excluded =
+      exclusion_rule_->ShouldExclude(ad_notification_info_);
 
   // Assert
   EXPECT_FALSE(is_ad_excluded);
@@ -93,13 +94,14 @@ TEST_F(BraveAdsPerHourFrequencyCapTest, AdAllowedWhenNoAds) {
 
 TEST_F(BraveAdsPerHourFrequencyCapTest, AdAllowedOverTheHour) {
   // Arrange
-  ad_info_.uuid = kTestAdUuid;
+  ad_notification_info_.creative_instance_id = kTestAdCreativeInstanceId;
   // 1hr 1s in the past
-  client_mock_->GeneratePastAdHistoryFromNow(kTestAdUuid,
+  client_mock_->GeneratePastAdHistoryFromNow(kTestAdCreativeInstanceId,
       base::Time::kSecondsPerHour, 1);
 
   // Act
-  const bool is_ad_excluded = exclusion_rule_->ShouldExclude(ad_info_);
+  const bool is_ad_excluded =
+      exclusion_rule_->ShouldExclude(ad_notification_info_);
 
   // Assert
   EXPECT_FALSE(is_ad_excluded);
@@ -108,13 +110,14 @@ TEST_F(BraveAdsPerHourFrequencyCapTest, AdAllowedOverTheHour) {
 TEST_F(BraveAdsPerHourFrequencyCapTest,
     AdExcludedWithPastAdsJustWithinTheHour) {
   // Arrange
-  ad_info_.uuid = kTestAdUuid;
+  ad_notification_info_.creative_instance_id = kTestAdCreativeInstanceId;
   // 59m 59s
-  client_mock_->GeneratePastAdHistoryFromNow(kTestAdUuid,
+  client_mock_->GeneratePastAdHistoryFromNow(kTestAdCreativeInstanceId,
       base::Time::kSecondsPerHour - 1, 1);
 
   // Act
-  const bool is_ad_excluded = exclusion_rule_->ShouldExclude(ad_info_);
+  const bool is_ad_excluded =
+      exclusion_rule_->ShouldExclude(ad_notification_info_);
 
   // Assert
   EXPECT_TRUE(is_ad_excluded);
@@ -123,11 +126,12 @@ TEST_F(BraveAdsPerHourFrequencyCapTest,
 
 TEST_F(BraveAdsPerHourFrequencyCapTest, AdExcludedWithPastAdWithinTheHour) {
   // Arrange
-  ad_info_.uuid = kTestAdUuid;
-  client_mock_->GeneratePastAdHistoryFromNow(kTestAdUuid, 0, 1);
+  ad_notification_info_.creative_instance_id = kTestAdCreativeInstanceId;
+  client_mock_->GeneratePastAdHistoryFromNow(kTestAdCreativeInstanceId, 0, 1);
 
   // Act
-  const bool is_ad_excluded = exclusion_rule_->ShouldExclude(ad_info_);
+  const bool is_ad_excluded =
+      exclusion_rule_->ShouldExclude(ad_notification_info_);
 
   // Assert
   EXPECT_TRUE(is_ad_excluded);

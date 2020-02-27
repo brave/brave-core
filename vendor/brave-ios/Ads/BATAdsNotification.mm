@@ -3,34 +3,36 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #import "BATAdsNotification.h"
-#include "bat/ads/notification_info.h"
+#include "bat/ads/ad_notification_info.h"
 #import <map>
 
 @interface BATAdsNotification ()
-@property (nonatomic, copy) NSString *id;
+@property (nonatomic, copy) NSString *uuid;
+@property (nonatomic, copy) NSString *parentUuid;
+@property (nonatomic, copy) NSString *creativeInstanceID;
 @property (nonatomic, copy) NSString *creativeSetID;
 @property (nonatomic, copy) NSString *category;
-@property (nonatomic, copy) NSString *advertiser;
-@property (nonatomic, copy) NSString *text;
-@property (nonatomic, copy) NSURL *url;
-@property (nonatomic, copy) NSString *uuid;
+@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *body;
+@property (nonatomic, copy) NSURL *targetURL;
 @property (nonatomic) BATAdsConfirmationType confirmationType;
 @end
 
 @implementation BATAdsNotification
 
-- (instancetype)initWithNotificationInfo:(const ads::NotificationInfo&)info
+- (instancetype)initWithNotificationInfo:(const ads::AdNotificationInfo&)info
 {
   if ((self = [super init])) {
-    self.id = [NSString stringWithUTF8String:info.id.c_str()];
+    self.uuid = [NSString stringWithUTF8String:info.uuid.c_str()];
+    self.parentUuid = [NSString stringWithUTF8String:info.parent_uuid.c_str()];
+    self.creativeInstanceID = [NSString stringWithUTF8String:info.creative_instance_id.c_str()];
     self.creativeSetID = [NSString stringWithUTF8String:info.creative_set_id.c_str()];
     self.category = [NSString stringWithUTF8String:info.category.c_str()];
-    self.advertiser = [NSString stringWithUTF8String:info.advertiser.c_str()];
-    self.text = [NSString stringWithUTF8String:info.text.c_str()];
-    self.url = [NSURL URLWithString:[NSString stringWithUTF8String:info.url.c_str()]];
-    self.uuid = [NSString stringWithUTF8String:info.uuid.c_str()];
+    self.title = [NSString stringWithUTF8String:info.title.c_str()];
+    self.body = [NSString stringWithUTF8String:info.body.c_str()];
+    self.targetURL = [NSURL URLWithString:[NSString stringWithUTF8String:info.target_url.c_str()]];
     // FIXME: Move to ConfirmationsType class here, instead of just casting its enum value
-    self.confirmationType = (BATAdsConfirmationType)info.type.value();
+    self.confirmationType = (BATAdsConfirmationType)info.confirmation_type.value();
   }
   return self;
 }
@@ -41,9 +43,9 @@
 + (instancetype)customAdWithTitle:(NSString *)title body:(NSString *)body url:(NSURL *)url
 {
   BATAdsNotification *notification = [[BATAdsNotification alloc] init];
-  notification.advertiser = title;
-  notification.text = body;
-  notification.url = url;
+  notification.title = title;
+  notification.body = body;
+  notification.targetURL = url;
   return notification;
 }
 @end

@@ -573,10 +573,11 @@ class RewardsServiceImpl : public RewardsService,
   void SetUserChangedContribution() const override;
   void UpdateAdsRewards() const override;
   void SetCatalogIssuers(const std::string& json) override;
-  void ConfirmAd(const std::string& json) override;
-  void ConfirmAction(const std::string& uuid,
+  void ConfirmAdNotification(
+      const std::string& json) override;
+  void ConfirmAction(const std::string& creative_instance_id,
                      const std::string& creative_set_id,
-                     const std::string& type) override;
+                     const std::string& confirmation_type) override;
   void SetConfirmationsIsReady(const bool is_ready) override;
   void GetTransactionHistory(
       GetTransactionHistoryCallback callback) override;
@@ -784,7 +785,7 @@ class RewardsServiceImpl : public RewardsService,
   // Mojo Proxy methods
   void OnGetTransactionHistory(
       GetTransactionHistoryCallback callback,
-      const std::string& transactions);
+      const std::string& json);
   void OnGetAutoContributeProps(
       const GetAutoContributePropsCallback& callback,
       ledger::AutoContributePropsPtr props);
