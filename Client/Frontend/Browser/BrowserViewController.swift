@@ -695,7 +695,7 @@ class BrowserViewController: UIViewController {
 
     fileprivate func showRestoreTabsAlert() {
         guard canRestoreTabs() else {
-            self.tabManager.addTabAndSelect()
+            self.tabManager.addTabAndSelect(isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
             return
         }
         let alert = UIAlertController.restoreTabsAlert(
@@ -704,7 +704,7 @@ class BrowserViewController: UIViewController {
             },
             noCallback: { _ in
                 TabMO.deleteAll()
-                self.tabManager.addTabAndSelect()
+                self.tabManager.addTabAndSelect(isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
             }
         )
         self.present(alert, animated: true, completion: nil)
