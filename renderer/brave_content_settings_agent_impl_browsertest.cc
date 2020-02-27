@@ -92,6 +92,7 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     cross_site_url_ = embedded_test_server()->GetURL("b.com", "/simple.html");
     cross_site_image_url_ =
         embedded_test_server()->GetURL("b.com", "/logo.png");
+    link_url_ = embedded_test_server()->GetURL("a.com", "/simple_link.html");
     same_site_url_ =
         embedded_test_server()->GetURL("sub.a.com", "/simple.html");
     same_site_image_url_ =
@@ -143,6 +144,7 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   const GURL& url() { return url_; }
   const GURL& cross_site_url() { return cross_site_url_; }
   const GURL& cross_site_image_url() { return cross_site_image_url_; }
+  const GURL& link_url() { return link_url_; }
   const GURL& same_site_url() { return same_site_url_; }
   const GURL& same_site_image_url() { return same_site_image_url_; }
 
@@ -269,6 +271,22 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     return value;
   }
 
+  void NavigateToPageWithLink(const GURL& url) {
+    ui_test_utils::NavigateToURL(browser(), link_url());
+    content::RenderFrameHost* main_frame = contents()->GetMainFrame();
+    EXPECT_EQ(main_frame->GetLastCommittedURL(), link_url());
+
+    std::string clickLink =
+        "domAutomationController.send(clickLink('" + url.spec() + "'));";
+    bool success = false;
+    EXPECT_TRUE(
+        ExecuteScriptAndExtractBool(contents(), clickLink.c_str(), &success));
+    EXPECT_TRUE(success);
+    EXPECT_TRUE(WaitForLoadStop(contents()));
+    main_frame = contents()->GetMainFrame();
+    EXPECT_EQ(main_frame->GetLastCommittedURL(), url);
+  }
+
   void NavigateToPageWithIframe() {
     ui_test_utils::NavigateToURL(browser(), url());
     ASSERT_EQ(contents()->GetAllFrames().size(), 2u)
@@ -297,6 +315,7 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   GURL url_;
   GURL cross_site_url_;
   GURL cross_site_image_url_;
+  GURL link_url_;
   GURL same_site_url_;
   GURL same_site_image_url_;
   GURL top_level_page_url_;
@@ -461,6 +480,16 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
             cross_site_url().GetOrigin().spec());
   EXPECT_EQ(GetLastReferrer(cross_site_url()),
             cross_site_url().GetOrigin().spec());
+
+  // Same-site navigations get the original page URL as the referrer.
+  NavigateToPageWithLink(same_site_url());
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), link_url().spec());
+  EXPECT_EQ(GetLastReferrer(same_site_url()), link_url().spec());
+
+  // Cross-site navigations get no referrer.
+  NavigateToPageWithLink(cross_site_url());
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), "");
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), "");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -496,6 +525,16 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
             cross_site_url().GetOrigin().spec());
   EXPECT_EQ(GetLastReferrer(cross_site_url()),
             cross_site_url().GetOrigin().spec());
+
+  // Same-site navigations get the original page URL as the referrer.
+  NavigateToPageWithLink(same_site_url());
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), link_url().spec());
+  EXPECT_EQ(GetLastReferrer(same_site_url()), link_url().spec());
+
+  // Cross-site navigations get no referrer.
+  NavigateToPageWithLink(cross_site_url());
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), "");
+  EXPECT_EQ(GetLastReferrer(cross_site_url()), "");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
