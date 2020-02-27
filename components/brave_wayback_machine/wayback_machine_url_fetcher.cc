@@ -11,6 +11,7 @@
 #include "base/json/json_reader.h"
 #include "brave/components/brave_wayback_machine/url_constants.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
+#include "net/base/load_flags.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -58,6 +59,8 @@ void WaybackMachineURLFetcher::Fetch(const GURL& url) {
   std::string wayback_fetch_url =
       std::string(kWaybackQueryURL) + url.spec();
   request->url = GURL(wayback_fetch_url);
+  request->load_flags =
+      net::LOAD_DO_NOT_SEND_COOKIES | net::LOAD_DO_NOT_SAVE_COOKIES;
   wayback_url_loader_ = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());
   wayback_url_loader_->DownloadToString(
