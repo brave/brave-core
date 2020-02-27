@@ -99,6 +99,7 @@ using brave_sync::RecordsList;
 using brave_sync::SimpleBookmarkSyncRecord;
 using brave_sync::SimpleDeviceRecord;
 using brave_sync::jslib::SyncRecord;
+using brave_sync::tools::AsMutable;
 using testing::_;
 using testing::AtLeast;
 
@@ -1309,4 +1310,35 @@ TEST_F(BraveSyncServiceTest, DeviceIdV2MigrationDupDeviceId) {
   brave_sync::GetRecordsCallback on_get_records =
       base::BindOnce(&OnGetRecordsStub);
   sync_service()->OnPollSyncCycle(std::move(on_get_records), &we);
+}
+
+TEST_F(BraveSyncServiceTest, AddNonClonedBookmarkKeys) {
+  sync_service()->AddNonClonedBookmarkKeys(model());
+  const bookmarks::BookmarkNode* bookmark_a1 =
+      model()->AddURL(model()->other_node(), 0, base::ASCIIToUTF16("A1"),
+                      GURL("https://a1.com"));
+
+  AsMutable(bookmark_a1)->SetMetaInfo("object_id", "object_id_value");
+  AsMutable(bookmark_a1)->SetMetaInfo("order", "order_value");
+  AsMutable(bookmark_a1)->SetMetaInfo("sync_timestamp", "sync_timestamp_value");
+  AsMutable(bookmark_a1)->SetMetaInfo("version", "version_value");
+
+  model()->Copy(bookmark_a1, model()->other_node(), 1);
+
+  const bookmarks::BookmarkNode* bookmark_copy =
+      model()->other_node()->children().at(1).get();
+
+  std::string meta_object_id;
+  EXPECT_FALSE(bookmark_copy->GetMetaInfo("object_id", &meta_object_id));
+  EXPECT_TRUE(meta_object_id.empty());
+  std::string meta_order;
+  EXPECT_FALSE(bookmark_copy->GetMetaInfo("order", &meta_order));
+  EXPECT_TRUE(meta_order.empty());
+  std::string meta_sync_timestamp;
+  EXPECT_FALSE(
+      bookmark_copy->GetMetaInfo("sync_timestamp", &meta_sync_timestamp));
+  EXPECT_TRUE(meta_sync_timestamp.empty());
+  std::string meta_version;
+  EXPECT_FALSE(bookmark_copy->GetMetaInfo("version", &meta_version));
+  EXPECT_TRUE(meta_version.empty());
 }

@@ -1,6 +1,8 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include "brave/components/brave_sync/tools.h"
 
 #include <string>
@@ -15,20 +17,27 @@ namespace brave_sync {
 
 namespace tools {
 
-std::string GenerateObjectId() {
-  //16 random 8-bit unsigned numbers
-  const size_t length = 16;
-  uint8_t bytes[length];
-  crypto::RandBytes(bytes, sizeof(bytes));
+const size_t kIdSize = 16;
+
+namespace {
+std::string PrintObjectId(uint8_t* bytes) {
   std::stringstream ss;
-  for (size_t i = 0; i < length; ++i) {
-    const uint8_t &byte = bytes[i];
-    ss << std::dec << (int)byte;
-    if (i != length - 1) {
+  for (size_t i = 0; i < kIdSize; ++i) {
+    const uint8_t& byte = bytes[i];
+    ss << std::dec << static_cast<int>(byte);
+    if (i != kIdSize - 1) {
       ss << ", ";
     }
   }
   return ss.str();
+}
+}  // namespace
+
+std::string GenerateObjectId() {
+  // 16 random 8-bit unsigned numbers
+  uint8_t bytes[kIdSize];
+  crypto::RandBytes(bytes, sizeof(bytes));
+  return PrintObjectId(bytes);
 }
 
 std::string GetPlatformName() {
@@ -50,6 +59,11 @@ bool IsTimeEmpty(const base::Time &time) {
   return time.is_null() || base::checked_cast<int64_t>(time.ToJsTime()) == 0;
 }
 
-} // namespace tools
+// Get mutable node to prevent BookmarkMetaInfoChanged from being triggered
+bookmarks::BookmarkNode* AsMutable(const bookmarks::BookmarkNode* node) {
+  return const_cast<bookmarks::BookmarkNode*>(node);
+}
 
-} // namespace brave_sync
+}  // namespace tools
+
+}  // namespace brave_sync

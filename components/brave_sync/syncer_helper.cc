@@ -13,11 +13,6 @@
 namespace brave_sync {
 namespace {
 
-// Get mutable node to prevent BookmarkMetaInfoChanged from being triggered
-bookmarks::BookmarkNode* AsMutable(const bookmarks::BookmarkNode* node) {
-  return const_cast<bookmarks::BookmarkNode*>(node);
-}
-
 void SetOrder(const bookmarks::BookmarkNode* node,
               const std::string& parent_order) {
   DCHECK(!parent_order.empty());
@@ -41,7 +36,7 @@ void SetOrder(const bookmarks::BookmarkNode* node,
 
   std::string order =
       brave_sync::GetOrder(prev_order, next_order, parent_order);
-  AsMutable(node)->SetMetaInfo("order", order);
+  tools::AsMutable(node)->SetMetaInfo("order", order);
 }
 
 }  // namespace
@@ -92,17 +87,17 @@ void AddBraveMetaInfo(const bookmarks::BookmarkNode* node) {
   if (object_id.empty()) {
     object_id = tools::GenerateObjectId();
   }
-  AsMutable(node)->SetMetaInfo("object_id", object_id);
+  tools::AsMutable(node)->SetMetaInfo("object_id", object_id);
 
   std::string parent_object_id;
   node->parent()->GetMetaInfo("object_id", &parent_object_id);
-  AsMutable(node)->SetMetaInfo("parent_object_id", parent_object_id);
+  tools::AsMutable(node)->SetMetaInfo("parent_object_id", parent_object_id);
 
   std::string sync_timestamp;
   node->GetMetaInfo("sync_timestamp", &sync_timestamp);
   if (sync_timestamp.empty()) {
     sync_timestamp = std::to_string(base::Time::Now().ToJsTime());
-    AsMutable(node)->SetMetaInfo("sync_timestamp", sync_timestamp);
+    tools::AsMutable(node)->SetMetaInfo("sync_timestamp", sync_timestamp);
   }
   DCHECK(!sync_timestamp.empty());
 }
