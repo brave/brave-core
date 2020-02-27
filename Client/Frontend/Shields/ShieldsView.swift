@@ -314,3 +314,10 @@ extension ShieldsViewController {
         }
     }
 }
+
+extension ShieldsViewController {
+
+    var closeActionAccessibilityLabel: String {
+        return Strings.Popover.closeShieldsMenu
+    }
+}

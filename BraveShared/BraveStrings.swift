@@ -733,3 +733,10 @@ extension Strings {
     
 }
 
+// MARK: - Popover Views
+extension Strings {
+    public struct Popover {
+        public static let closeContextMenu = NSLocalizedString("PopoverDefaultClose", bundle: Bundle.braveShared, value: "Close Context Menu", comment: "Description for closing a popover menu that is displayed.")
+        public static let closeShieldsMenu = NSLocalizedString("PopoverShieldsMenuClose", bundle: Bundle.braveShared, value: "Close Shields Menu", comment: "Description for closing the `Brave Shields` popover menu that is displayed.")
+    }
+}
