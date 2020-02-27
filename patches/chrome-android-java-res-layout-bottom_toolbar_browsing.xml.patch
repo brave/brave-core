@@ -1,16 +1,19 @@
 diff --git a/chrome/android/java/res/layout/bottom_toolbar_browsing.xml b/chrome/android/java/res/layout/bottom_toolbar_browsing.xml
-index 76d517641db816c12bd35ae6497cd172eea71fd0..8c3d3f5e8c1a35343bf30f4b1ff2a1b521e70b06 100644
+index 76d517641db816c12bd35ae6497cd172eea71fd0..34653dbf1849b43ada4dd34651ba9b3c6eab5596 100644
 --- a/chrome/android/java/res/layout/bottom_toolbar_browsing.xml
 +++ b/chrome/android/java/res/layout/bottom_toolbar_browsing.xml
-@@ -16,7 +16,7 @@
+@@ -16,9 +16,9 @@
      android:paddingStart="@dimen/bottom_toolbar_padding"
      android:paddingEnd="@dimen/bottom_toolbar_padding" >
  
 -    <include layout="@layout/toolbar_space" />
 +    <!-- <include layout="@layout/toolbar_space" /> -->
  
-     <org.chromium.chrome.browser.toolbar.HomeButton
+-    <org.chromium.chrome.browser.toolbar.HomeButton
++    <org.chromium.chrome.browser.toolbar.BraveHomeButton
          android:id="@+id/bottom_home_button"
+         app:tint="@color/standard_mode_tint"
+         android:background="?attr/selectableItemBackgroundBorderless"
 @@ -26,6 +26,7 @@
          android:visibility="gone"
          style="@style/SplitToolbarButton" />
