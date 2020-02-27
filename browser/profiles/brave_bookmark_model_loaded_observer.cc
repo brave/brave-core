@@ -41,5 +41,10 @@ void BraveBookmarkModelLoadedObserver::BookmarkModelLoaded(
 #endif
     profile_->GetPrefs()->SetBoolean(kOtherBookmarksMigrated, true);
   }
+
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
+  BraveProfileSyncServiceImpl::AddNonClonedBookmarkKeys(model);
+#endif
+
   BookmarkModelLoadedObserver::BookmarkModelLoaded(model, ids_reassigned);
 }
