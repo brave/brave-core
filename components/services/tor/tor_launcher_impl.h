@@ -30,7 +30,7 @@ class TorLauncherImpl : public tor::mojom::TorLauncher {
   void SetCrashHandler(SetCrashHandlerCallback callback) override;
   void ReLaunch(const TorConfig& config,
               ReLaunchCallback callback) override;
-
+  void SetDisconnected();
  private:
   void MonitorChild();
 
@@ -38,6 +38,7 @@ class TorLauncherImpl : public tor::mojom::TorLauncher {
   std::unique_ptr<base::Thread> child_monitor_thread_;
   base::Process tor_process_;
   const std::unique_ptr<service_manager::ServiceContextRef> service_ref_;
+  bool connected_ = true;
 
   DISALLOW_COPY_AND_ASSIGN(TorLauncherImpl);
 };
