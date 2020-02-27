@@ -16,7 +16,10 @@ import java.util.Map;
 import java.util.Set;
 
 public class BraveChannelDefinitions {
-    public class ChannelId { public static final String BRAVE_ADS = "com.brave.browser.ads"; }
+    public class ChannelId {
+        public static final String BRAVE_ADS = "com.brave.browser.ads";
+        public static final String BRAVE_ADS_BACKGROUND = "com.brave.browser.ads.background";
+	}
 
     public class ChannelGroupId { public static final String BRAVE_ADS = "com.brave.browser.ads"; }
 
@@ -27,6 +30,12 @@ public class BraveChannelDefinitions {
                         R.string.notification_category_brave_ads,
                         NotificationManager.IMPORTANCE_HIGH, ChannelGroupId.BRAVE_ADS));
         startup.add(ChannelId.BRAVE_ADS);
+
+        map.put(ChannelId.BRAVE_ADS_BACKGROUND,
+                new ChannelDefinitions.PredefinedChannel(ChannelId.BRAVE_ADS_BACKGROUND,
+                       R.string.notification_category_brave_ads_background,
+                       NotificationManager.IMPORTANCE_LOW, ChannelGroupId.BRAVE_ADS));
+        startup.add(ChannelId.BRAVE_ADS_BACKGROUND);
     }
 
     static protected void addBraveChannelGroups(
