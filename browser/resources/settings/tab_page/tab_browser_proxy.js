@@ -4,19 +4,14 @@
 
 cr.define('settings', function() {
   /** @interface */
-  class TabBrowserProxy {
-  }
+  class TabBrowserProxy {}
 
   /**
    * @implements {settings.TabBrowserProxy}
    */
-  class TabBrowserProxyImpl {
-  }
+  class TabBrowserProxyImpl {}
 
   cr.addSingletonGetter(TabBrowserProxyImpl);
 
-  return {
-    TabBrowserProxy,
-    TabBrowserProxyImpl
-  };
+  return {TabBrowserProxy, TabBrowserProxyImpl};
 });

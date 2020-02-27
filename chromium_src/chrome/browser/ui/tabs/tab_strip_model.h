@@ -8,10 +8,9 @@
 
 #define SelectNextTab virtual SelectNextTab
 #define SelectPreviousTab virtual SelectPreviousTab
-#define TAB_STRIP_MODEL_H_ \
-  friend class BraveTabStripModel;
-  
-#include "../../../../../../chrome/browser/ui/tabs/tab_strip_model.h" // NOLINT
+#define TAB_STRIP_MODEL_H_ friend class BraveTabStripModel;
+
+#include "../../../../../../chrome/browser/ui/tabs/tab_strip_model.h"  // NOLINT
 #undef SelectNextTab
 #undef SelectPreviousTab
 

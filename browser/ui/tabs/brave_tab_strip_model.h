@@ -11,26 +11,25 @@
 
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 
-
 #include "ui/events/event_handler.h"
-
 
 class BraveTabStripModel : public TabStripModel {
  public:
   explicit BraveTabStripModel(TabStripModelDelegate* delegate,
-                               Profile* profile);
+                              Profile* profile);
 
   ~BraveTabStripModel() override;
 
   void SelectNextTab(UserGestureDetails detail =
-    UserGestureDetails(GestureType::kOther)) override;
+                         UserGestureDetails(GestureType::kOther)) override;
 
   void SelectPreviousTab(UserGestureDetails detail =
-    UserGestureDetails(GestureType::kOther)) override;
+                             UserGestureDetails(GestureType::kOther)) override;
 
   // Set the next tab when doing a MRU cycling with Ctrl-tab
-  void SelectTabMRU(bool backward,
-  UserGestureDetails detail = UserGestureDetails(GestureType::kOther));
+  void SelectTabMRU(
+      bool backward,
+      UserGestureDetails detail = UserGestureDetails(GestureType::kOther));
 
   // Stop MRU cycling, called when releasing the Ctrl key
   void StopMRUCycling();
