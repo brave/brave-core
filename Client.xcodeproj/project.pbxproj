@@ -67,6 +67,7 @@
 		0A62A355238C6F3E008902E3 /* Bookmark+Restoration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A62A354238C6F3E008902E3 /* Bookmark+Restoration.swift */; };
 		0A66550A23E9D9750047EF2A /* UserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A66550923E9D9750047EF2A /* UserAgent.swift */; };
 		0A66550C23E9E04F0047EF2A /* UserAgentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A66550B23E9E04F0047EF2A /* UserAgentTests.swift */; };
+		0A6F957624044F070098217F /* NTPLearnMoreContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6F957524044F070098217F /* NTPLearnMoreContentView.swift */; };
 		0A764F31230EE5CA003A1D9B /* OnboardingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A764F30230EE5CA003A1D9B /* OnboardingState.swift */; };
 		0A771D35218C8FDC00336E0D /* Bookmark+Sync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A771D34218C8FDC00336E0D /* Bookmark+Sync.swift */; };
 		0A7B5D6722689C5D00AADF22 /* AddEditHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7B5D6622689C5D00AADF22 /* AddEditHeaderView.swift */; };
@@ -1323,6 +1324,7 @@
 		0A66550D23E9EA540047EF2A /* Brave_iPad.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Brave_iPad.xctestplan; sourceTree = "<group>"; };
 		0A67500A23571F21006A6D00 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Storage.strings; sourceTree = "<group>"; };
 		0A6E095E230E05BC00AB3F19 /* onboarding-shields.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "onboarding-shields.json"; sourceTree = "<group>"; };
+		0A6F957524044F070098217F /* NTPLearnMoreContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NTPLearnMoreContentView.swift; sourceTree = "<group>"; };
 		0A75A3BD23571F2B00013540 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Storage.strings"; sourceTree = "<group>"; };
 		0A764F30230EE5CA003A1D9B /* OnboardingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingState.swift; sourceTree = "<group>"; };
 		0A771D34218C8FDC00336E0D /* Bookmark+Sync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bookmark+Sync.swift"; sourceTree = "<group>"; };
@@ -2809,6 +2811,7 @@
 			children = (
 				0AFC8F9D23D3762A00941895 /* NTPNotificationViewController.swift */,
 				0A5CBD3323D4677100362CC8 /* NTPLearnMoreViewController.swift */,
+				0A6F957524044F070098217F /* NTPLearnMoreContentView.swift */,
 				0A16E2D623D4E1FB00B0BF94 /* ClaimRewardsNTPNotificationViewController.swift */,
 				0A27ABA023D1B9C400194921 /* BrandedImageCalloutState.swift */,
 				0A5CBD3723D4905D00362CC8 /* NTPNotificationView.swift */,
@@ -6133,6 +6136,7 @@
 				4422D4AF21BFFB7600BF1855 /* status.cc in Sources */,
 				4422D4EA21BFFB7600BF1855 /* db_impl.cc in Sources */,
 				0AAAAC972249174A009A8763 /* SyncAlerts.swift in Sources */,
+				0A6F957624044F070098217F /* NTPLearnMoreContentView.swift in Sources */,
 				4422D4F221BFFB7600BF1855 /* builder.cc in Sources */,
 				0A1E84432190A57F0042F782 /* SyncWelcomeViewController.swift in Sources */,
 				D308E4E41A5306F500842685 /* SearchEngines.swift in Sources */,
