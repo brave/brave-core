@@ -40,6 +40,12 @@ window.cr.define('brave_rewards_tip', function () {
       console.error('Error parsing incoming dialog args', dialogArgsRaw, e)
     }
 
+    document.body.addEventListener('keyup', (evt) => {
+      if (evt.key.toLowerCase() === 'escape') {
+        getActions().onCloseDialog()
+      }
+    })
+
     render(
       <Provider store={store}>
         <ThemeProvider theme={Theme}>
