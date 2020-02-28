@@ -22,7 +22,7 @@ index 76d517641db816c12bd35ae6497cd172eea71fd0..34653dbf1849b43ada4dd34651ba9b3c
      <org.chromium.chrome.browser.toolbar.bottom.BottomToolbarNewTabButton
          android:id="@+id/bottom_new_tab_button"
          android:contentDescription="@string/accessibility_toolbar_btn_new_tab"
-@@ -34,8 +35,10 @@
+@@ -34,11 +35,13 @@
          app:srcCompat="@drawable/new_tab_icon"
          android:visibility="gone"
          style="@style/SplitToolbarButton" />
@@ -32,7 +32,11 @@ index 76d517641db816c12bd35ae6497cd172eea71fd0..34653dbf1849b43ada4dd34651ba9b3c
 +    <include layout="@layout/brave_bookmark_toolbar" />
      <include layout="@layout/toolbar_space" />
  
-     <org.chromium.chrome.browser.toolbar.bottom.SearchAccelerator
+-    <org.chromium.chrome.browser.toolbar.bottom.SearchAccelerator
++    <org.chromium.chrome.browser.toolbar.bottom.BraveSearchAccelerator
+         android:id="@+id/search_accelerator"
+         android:layout_width="@dimen/search_accelerator_width"
+         android:layout_height="@dimen/search_accelerator_height"
 @@ -49,8 +52,9 @@
          android:paddingBottom="@dimen/search_accelerator_height_padding"
          android:contentDescription="@string/accessibility_toolbar_btn_search_accelerator"
