@@ -303,7 +303,7 @@ class FavoritesViewController: UIViewController, Themeable {
                       adsAvailableInRegion: adsAvailableInRegion,
                       isSponsoredImage: isSponsoredImage)
         
-        return .brandedImages(state: state)
+        return .brandedImages(state: .getPaidTurnRewardsOn)
     }
     
     private func showNTPNotification(for type: NTPNotificationType) {

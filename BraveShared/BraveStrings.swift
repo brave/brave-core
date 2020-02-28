@@ -643,7 +643,7 @@ extension Strings {
             NSLocalizedString("ntp.getPaidToSeeThisImage",
                 tableName: "BraveShared",
                 bundle: .braveShared,
-                value: "Get paid to see this background image.",
+                value: "Earn tokens for viewing this image.",
                 comment: "")
         public static let supportWebCreatorsWithTokens =
             NSLocalizedString("ntp.supportWebCreatorsWithTokens",
@@ -661,7 +661,7 @@ extension Strings {
             NSLocalizedString("ntp.youArePaidToSeeThisImage",
                 tableName: "BraveShared",
                 bundle: .braveShared,
-                value: "You're getting paid to see this background image.",
+                value: "You're earning tokens for viewing this image.",
                 comment: "")
         public static let turnOnBraveAds =
             NSLocalizedString("ntp.turnOnBraveAds",
@@ -673,44 +673,38 @@ extension Strings {
             NSLocalizedString("ntp.turnOnBraveRewards",
                 tableName: "BraveShared",
                 bundle: .braveShared,
-                value: "Turn on Rewards",
+                value: "Turn on Brave Rewards",
                 comment: "")
         public static let getPaidForThisImageTurnRewards =
             NSLocalizedString("ntp.getPaidForThisImageTurnRewards",
                 tableName: "BraveShared",
                 bundle: .braveShared,
-                value: "Get paid to see this background image. Turn on Brave Rewards to claim your share.",
+                value: "Earn tokens for viewing this image. Turn on Brave Rewards to claim your share.",
                 comment: "")
         public static let getPaidForThisImageTurnAds =
             NSLocalizedString("ntp.getPaidForThisImageTurnAds",
                 tableName: "BraveShared",
                 bundle: .braveShared,
-                value: "Get paid to see this background image. Turn on Brave Ads to claim your share.",
+                value: "Earn tokens for viewing this image. Turn on Brave Ads to claim your share.",
                 comment: "")
         public static let turnRewardsTos =
             NSLocalizedString("ntp.turnRewardsTos",
                 tableName: "BraveShared",
                 bundle: .braveShared,
                 value: "By turning on Rewards, you agree to the %@.",
-                comment: "The placeholder says 'Terms of Service'. So full sentence goes like: 'By turnin Rewards, you agree to the Terms of Service'.")
-        public static let chooseToHideSponsoredImages =
-            NSLocalizedString("ntp.chooseToHideSponsoredImages",
-                tableName: "BraveShared",
-                bundle: .braveShared,
-                value: "You can also choose to %@.",
-                comment: "The placeholder says 'hide sponsored images'. So full sentence goes like: 'You can also choose to hide sponsored images.'")
+                comment: "The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'.")
         public static let hideSponsoredImages =
             NSLocalizedString("ntp.hideSponsoredImages",
                 tableName: "BraveShared",
                 bundle: .braveShared,
-                value: "hide sponsored images",
-                comment: "This sentence is not capitalized on purpose, it is a part of a bigger sentence which goes like this: 'You can also choose to hide sponsored images.'")
+                value: "Hide sponsored images",
+                comment: "")
         public static let learnMoreAboutBrandedImages =
             NSLocalizedString("ntp.learnMoreAboutBrandedImages",
                 tableName: "BraveShared",
                 bundle: .braveShared,
-                value: "%@ about sponsored images in Brave Rewards.",
-                comment: "The placeholder says 'Learn more'. So full sentence goes like: 'Learn more about sponsored images in Brave Rewards.'")
+                value: "For every sponsored image you view, you receive 70% of the revenue in tokens. With Brave Ads, you're always in control of the ads you see.",
+                comment: "")
         public static let goodJob =
             NSLocalizedString("ntp.goodJob",
                 tableName: "BraveShared",
@@ -729,6 +723,20 @@ extension Strings {
                 bundle: .braveShared,
                 value: "Claim my rewards",
                 comment: "")
+
+        public static let learnMoreAboutRewards =
+            NSLocalizedString("ntp.learnMoreAboutRewards",
+                    tableName: "BraveShared",
+                    bundle: .braveShared,
+                    value: "Learn more about Brave Rewards",
+                    comment: "")
+
+        public static let learnMoreAboutSI =
+            NSLocalizedString("ntp.learnMoreAboutSI",
+                    tableName: "BraveShared",
+                    bundle: .braveShared,
+                    value: "Learn more about sponsored images",
+                    comment: "")
     }
     
 }
