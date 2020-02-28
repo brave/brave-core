@@ -297,10 +297,20 @@ void Database::RemoveRecurringTip(
 /**
  * SERVER PUBLISHER INFO
  */
-void Database::ClearAndInsertServerPublisherList(
-    const ledger::ServerPublisherInfoList& list,
+void Database::ClearServerPublisherList(ledger::ResultCallback callback) {
+  server_publisher_info_->DeleteAll(callback);
+}
+
+void Database::InsertServerPublisherList(
+    const std::vector<ledger::ServerPublisherPartial>& list,
     ledger::ResultCallback callback) {
-  server_publisher_info_->ClearAndInsertList(list, callback);
+  server_publisher_info_->InsertOrUpdatePartialList(list, callback);
+}
+
+void Database::InsertPublisherBannerList(
+    const std::vector<ledger::PublisherBanner>& list,
+    ledger::ResultCallback callback) {
+  server_publisher_info_->InsertOrUpdateBannerList(list, callback);
 }
 
 void Database::GetServerPublisherInfo(

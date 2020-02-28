@@ -37,27 +37,44 @@ class PublisherServerList {
 
  private:
   void OnDownload(
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
-    DownloadServerPublisherListCallback callback);
+      int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers,
+      DownloadServerPublisherListCallback callback);
 
   void OnParsePublisherList(
-    const ledger::Result result,
-    DownloadServerPublisherListCallback callback);
+      const ledger::Result result,
+      DownloadServerPublisherListCallback callback);
 
   uint64_t GetTimerTime(
-    bool retry_after_error,
-    const uint64_t last_download);
+      bool retry_after_error,
+      const uint64_t last_download);
 
   ledger::PublisherStatus ParsePublisherStatus(const std::string& status);
 
   void ParsePublisherList(
-    const std::string& data,
-    ParsePublisherListCallback callback);
+      const std::string& data,
+      ParsePublisherListCallback callback);
 
-  ledger::PublisherBannerPtr ParsePublisherBanner(
+  ledger::PublisherBanner ParsePublisherBanner(
+      const std::string& publisher_key,
       base::DictionaryValue* dictionary);
+
+  void SaveParsedData(
+      const ledger::Result result,
+      const std::vector<ledger::ServerPublisherPartial>& list_publisher,
+      const std::vector<ledger::PublisherBanner>& list_banner,
+      ParsePublisherListCallback callback);
+
+  void SavePublishers(
+      const std::vector<ledger::ServerPublisherPartial>& list_publisher,
+      const std::vector<ledger::PublisherBanner>& list_banner,
+      ParsePublisherListCallback callback);
+
+  void SaveBanners(
+      const std::vector<ledger::ServerPublisherPartial>& list_publisher,
+      const std::vector<ledger::PublisherBanner>& list_banner,
+      ParsePublisherListCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   uint32_t server_list_timer_id_;

@@ -105,12 +105,27 @@ bool DatabaseServerPublisherInfo::MigrateToV15(
   return banner_->Migrate(transaction, 15);
 }
 
-void DatabaseServerPublisherInfo::InsertOrUpdate(
-    ledger::DBTransaction* transaction,
-    ledger::ServerPublisherInfoPtr info) {
-  DCHECK(transaction);
+void DatabaseServerPublisherInfo::DeleteAll(ledger::ResultCallback callback) {
+  auto transaction = ledger::DBTransaction::New();
+  const std::string query = base::StringPrintf("DELETE FROM %s", table_name_);
 
-  if (!info) {
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = query;
+  transaction->commands.push_back(std::move(command));
+
+  auto transaction_callback = std::bind(&OnResultCallback,
+      _1,
+      callback);
+
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+}
+
+void DatabaseServerPublisherInfo::InsertOrUpdatePartialList(
+    const std::vector<ledger::ServerPublisherPartial>& list,
+    ledger::ResultCallback callback) {
+  if (list.empty()) {
+    callback(ledger::Result::LEDGER_OK);
     return;
   }
 
@@ -120,52 +135,31 @@ void DatabaseServerPublisherInfo::InsertOrUpdate(
       "VALUES (?, ?, ?, ?)",
       table_name_);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
-  command->command = query;
+  auto transaction = ledger::DBTransaction::New();
+  for (const auto& info : list) {
+    auto command = ledger::DBCommand::New();
+    command->type = ledger::DBCommand::Type::RUN;
+    command->command = query;
 
-  BindString(command.get(), 0, info->publisher_key);
-  BindInt(command.get(), 1, static_cast<int>(info->status));
-  BindBool(command.get(), 2, info->excluded);
-  BindString(command.get(), 3, info->address);
+    BindString(command.get(), 0, info.publisher_key);
+    BindInt(command.get(), 1, static_cast<int>(info.status));
+    BindBool(command.get(), 2, info.excluded);
+    BindString(command.get(), 3, info.address);
 
-  transaction->commands.push_back(std::move(command));
-}
+    transaction->commands.push_back(std::move(command));
+  }
 
-void DatabaseServerPublisherInfo::ClearAndInsertList(
-    const ledger::ServerPublisherInfoList& list,
-    ledger::ResultCallback callback) {
   auto transaction_callback = std::bind(&OnResultCallback,
       _1,
       callback);
-  auto transaction = ledger::DBTransaction::New();
-  const std::string query = base::StringPrintf(
-      "DELETE FROM %s",
-      table_name_);
-
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::EXECUTE;
-  command->command = query;
-  transaction->commands.push_back(std::move(command));
-
-  if (list.empty()) {
-    ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
-    return;
-  }
-
-  for (const auto& info : list) {
-    if (!info) {
-      continue;
-    }
-
-    InsertOrUpdate(transaction.get(), info->Clone());
-
-    if (info->banner) {
-      banner_->InsertOrUpdate(transaction.get(), info->Clone());
-    }
-  }
 
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+}
+
+void DatabaseServerPublisherInfo::InsertOrUpdateBannerList(
+    const std::vector<ledger::PublisherBanner>& list,
+    ledger::ResultCallback callback) {
+  banner_->InsertOrUpdateList(list, callback);
 }
 
 void DatabaseServerPublisherInfo::GetRecord(
