@@ -320,15 +320,18 @@ class NTPDownloader {
             guard let self = self else { return }
             
             if let error = error {
-                return completion(nil, nil, error)
+                completion(nil, nil, error)
+                return
             }
             
             guard let response = response as? HTTPURLResponse else {
-                return completion(nil, nil, "Response is not an HTTP Response")
+                completion(nil, nil, "Response is not an HTTP Response")
+                return
             }
             
             if response.statusCode != 304 && (response.statusCode < 200 || response.statusCode > 299) {
                 completion(nil, nil, "Invalid Response Status Code: \(response.statusCode)")
+                return
             }
             
             completion(data, self.parseETagResponseInfo(response), nil)
@@ -356,12 +359,14 @@ class NTPDownloader {
                 self.download(path: itemURL, etag: nil) { data, _, err in
                     if let err = err {
                         error = err
-                        return group.leave()
+                        group.leave()
+                        return
                     }
                     
                     guard let data = data else {
                         error = "No Data Available for NTP-Download: \(itemURL)"
-                        return group.leave()
+                        group.leave()
+                        return
                     }
                     
                     do {
