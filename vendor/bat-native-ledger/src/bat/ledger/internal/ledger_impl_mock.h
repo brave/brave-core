@@ -491,9 +491,15 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD2(DeleteActivityInfo,
       void(const std::string&, ledger::ResultCallback));
 
-  MOCK_METHOD2(ClearAndInsertServerPublisherList,
-      void(ledger::ServerPublisherInfoList,
-          ledger::ResultCallback));
+  MOCK_METHOD1(ClearServerPublisherList, void(ledger::ResultCallback));
+
+  MOCK_METHOD2(InsertServerPublisherList, void(
+      const std::vector<ledger::ServerPublisherPartial>&,
+      ledger::ResultCallback));
+
+  MOCK_METHOD2(InsertPublisherBannerList, void(
+      const std::vector<ledger::PublisherBanner>&,
+      ledger::ResultCallback));
 
   MOCK_METHOD2(GetServerPublisherInfo, void(
       const std::string&,

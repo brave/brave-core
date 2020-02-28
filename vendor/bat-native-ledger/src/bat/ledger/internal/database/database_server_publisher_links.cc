@@ -175,21 +175,17 @@ bool DatabaseServerPublisherLinks::MigrateToV15(
   return true;
 }
 
-bool DatabaseServerPublisherLinks::InsertOrUpdate(
+void DatabaseServerPublisherLinks::InsertOrUpdate(
     ledger::DBTransaction* transaction,
-    ledger::ServerPublisherInfoPtr info) {
+    const ledger::PublisherBanner& info) {
   DCHECK(transaction);
 
-  if (!info || !info->banner) {
-    return false;
-  }
-
   // It's ok if links are empty
-  if (info->banner->links.empty()) {
-    return true;
+  if (info.links.empty()) {
+    return;
   }
 
-  for (const auto& link : info->banner->links) {
+  for (const auto& link : info.links) {
     if (link.second.empty()) {
       continue;
     }
@@ -204,13 +200,11 @@ bool DatabaseServerPublisherLinks::InsertOrUpdate(
     command->type = ledger::DBCommand::Type::RUN;
     command->command = query;
 
-    BindString(command.get(), 0, info->publisher_key);
+    BindString(command.get(), 0, info.publisher_key);
     BindString(command.get(), 1, link.first);
     BindString(command.get(), 2, link.second);
     transaction->commands.push_back(std::move(command));
   }
-
-  return true;
 }
 
 void DatabaseServerPublisherLinks::GetRecord(

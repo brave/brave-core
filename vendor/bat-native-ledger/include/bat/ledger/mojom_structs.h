@@ -125,7 +125,9 @@ using RewardsType = mojom::RewardsType;
 
 using ServerPublisherInfo = mojom::ServerPublisherInfo;
 using ServerPublisherInfoPtr = mojom::ServerPublisherInfoPtr;
-using ServerPublisherInfoList = std::vector<ServerPublisherInfoPtr>;
+
+using ServerPublisherPartial = mojom::ServerPublisherPartial;
+using ServerPublisherPartialPtr = mojom::ServerPublisherPartialPtr;
 
 using TransferFee = mojom::TransferFee;
 using TransferFeePtr = mojom::TransferFeePtr;

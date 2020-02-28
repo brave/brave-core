@@ -173,21 +173,17 @@ bool DatabaseServerPublisherAmounts::MigrateToV15(
   return true;
 }
 
-bool DatabaseServerPublisherAmounts::InsertOrUpdate(
+void DatabaseServerPublisherAmounts::InsertOrUpdate(
     ledger::DBTransaction* transaction,
-    ledger::ServerPublisherInfoPtr info) {
+    const ledger::PublisherBanner& info) {
   DCHECK(transaction);
 
-  if (!info || !info->banner) {
-    return false;
-  }
-
   // It's ok if social links are empty
-  if (info->banner->amounts.empty()) {
-    return true;
+  if (info.amounts.empty()) {
+    return;
   }
 
-  for (const auto& amount : info->banner->amounts) {
+  for (const auto& amount : info.amounts) {
     const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
       "(publisher_key, amount) VALUES (?, ?)",
@@ -197,12 +193,10 @@ bool DatabaseServerPublisherAmounts::InsertOrUpdate(
     command->type = ledger::DBCommand::Type::RUN;
     command->command = query;
 
-    BindString(command.get(), 0, info->publisher_key);
+    BindString(command.get(), 0, info.publisher_key);
     BindDouble(command.get(), 1, amount);
     transaction->commands.push_back(std::move(command));
   }
-
-  return true;
 }
 
 void DatabaseServerPublisherAmounts::GetRecord(

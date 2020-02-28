@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "bat/ledger/internal/database/database_server_publisher_banner.h"
 #include "bat/ledger/internal/database/database_table.h"
@@ -21,12 +22,14 @@ class DatabaseServerPublisherInfo: public DatabaseTable {
 
   bool Migrate(ledger::DBTransaction* transaction, const int target) override;
 
-  void InsertOrUpdate(
-      ledger::DBTransaction* transaction,
-      ledger::ServerPublisherInfoPtr info);
+  void DeleteAll(ledger::ResultCallback callback);
 
-  void ClearAndInsertList(
-      const ledger::ServerPublisherInfoList& list,
+  void InsertOrUpdatePartialList(
+      const std::vector<ledger::ServerPublisherPartial>& list,
+      ledger::ResultCallback callback);
+
+  void InsertOrUpdateBannerList(
+      const std::vector<ledger::PublisherBanner>& list,
       ledger::ResultCallback callback);
 
   void GetRecord(
@@ -34,6 +37,10 @@ class DatabaseServerPublisherInfo: public DatabaseTable {
       ledger::GetServerPublisherInfoCallback callback);
 
  private:
+  void InsertOrUpdate(
+      ledger::DBTransaction* transaction,
+      ledger::ServerPublisherInfoPtr info);
+
   bool CreateTableV7(ledger::DBTransaction* transaction);
 
   bool CreateIndexV7(ledger::DBTransaction* transaction);

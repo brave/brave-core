@@ -1463,10 +1463,20 @@ void LedgerImpl::DeleteActivityInfo(
   bat_database_->DeleteActivityInfo(publisher_key, callback);
 }
 
-void LedgerImpl::ClearAndInsertServerPublisherList(
-    ledger::ServerPublisherInfoList list,
+void LedgerImpl::ClearServerPublisherList(ledger::ResultCallback callback) {
+  bat_database_->ClearServerPublisherList(callback);
+}
+
+void LedgerImpl::InsertServerPublisherList(
+    const std::vector<ledger::ServerPublisherPartial>& list,
     ledger::ResultCallback callback) {
-  bat_database_->ClearAndInsertServerPublisherList(std::move(list), callback);
+  bat_database_->InsertServerPublisherList(list, callback);
+}
+
+void LedgerImpl::InsertPublisherBannerList(
+    const std::vector<ledger::PublisherBanner>& list,
+    ledger::ResultCallback callback) {
+  bat_database_->InsertPublisherBannerList(list, callback);
 }
 
 void LedgerImpl::GetServerPublisherInfo(

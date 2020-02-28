@@ -193,37 +193,43 @@ bool DatabaseServerPublisherBanner::MigrateToV15(
   return true;
 }
 
-bool DatabaseServerPublisherBanner::InsertOrUpdate(
-    ledger::DBTransaction* transaction,
-    ledger::ServerPublisherInfoPtr info) {
-  DCHECK(transaction);
-
-  if (!info || !info->banner) {
-    return false;
+void DatabaseServerPublisherBanner::InsertOrUpdateList(
+    const std::vector<ledger::PublisherBanner>& list,
+    ledger::ResultCallback callback) {
+  if (list.empty()) {
+    callback(ledger::Result::LEDGER_OK);
+    return;
   }
 
+  auto transaction = ledger::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
       "(publisher_key, title, description, background, logo) "
       "VALUES (?, ?, ?, ?, ?)",
       table_name_);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
-  command->command = query;
+  for (const auto& info : list) {
+    auto command = ledger::DBCommand::New();
+    command->type = ledger::DBCommand::Type::RUN;
+    command->command = query;
 
-  BindString(command.get(), 0, info->publisher_key);
-  BindString(command.get(), 1, info->banner->title);
-  BindString(command.get(), 2, info->banner->description);
-  BindString(command.get(), 3, info->banner->background);
-  BindString(command.get(), 4, info->banner->logo);
+    BindString(command.get(), 0, info.publisher_key);
+    BindString(command.get(), 1, info.title);
+    BindString(command.get(), 2, info.description);
+    BindString(command.get(), 3, info.background);
+    BindString(command.get(), 4, info.logo);
 
-  transaction->commands.push_back(std::move(command));
+    transaction->commands.push_back(std::move(command));
 
-  links_->InsertOrUpdate(transaction, info->Clone());
-  amounts_->InsertOrUpdate(transaction, info->Clone());
+    links_->InsertOrUpdate(transaction.get(), info);
+    amounts_->InsertOrUpdate(transaction.get(), info);
+  }
 
-  return true;
+  auto transaction_callback = std::bind(&OnResultCallback,
+      _1,
+      callback);
+
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseServerPublisherBanner::GetRecord(

@@ -524,8 +524,14 @@ class LedgerImpl : public ledger::Ledger,
       const std::string& publisher_key,
       ledger::ResultCallback callback);
 
-  void ClearAndInsertServerPublisherList(
-      ledger::ServerPublisherInfoList list,
+  void ClearServerPublisherList(ledger::ResultCallback callback);
+
+  void InsertServerPublisherList(
+      const std::vector<ledger::ServerPublisherPartial>& list,
+      ledger::ResultCallback callback);
+
+  void InsertPublisherBannerList(
+      const std::vector<ledger::PublisherBanner>& list,
       ledger::ResultCallback callback);
 
   void GetServerPublisherInfo(
