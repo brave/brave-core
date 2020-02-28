@@ -227,10 +227,10 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
         state.currentNotification = current
       }
 
+      setBadgeText(state)
+
       if (state.currentNotification === undefined) {
         updateBadgeTextAllWindows(payload.windows, state)
-      } else {
-        setBadgeText(state)
       }
 
       state = {
