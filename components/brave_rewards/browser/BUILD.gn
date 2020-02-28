@@ -52,6 +52,8 @@ source_set("browser") {
     "transaction_report_info.h",
     "contribution_report_info.cc",
     "contribution_report_info.h",
+    "rewards_database.h",
+    "rewards_database.cc",
   ]
 
   deps = [
@@ -66,7 +68,6 @@ source_set("browser") {
     "//content/public/browser",
     "//content/public/common",
     "//services/network/public/mojom",
-    "//third_party/leveldatabase",
   ]
 
   if (!is_android) {
@@ -79,44 +80,6 @@ source_set("browser") {
 
   if (brave_rewards_enabled) {
     sources += [
-      "database/database_activity_info.cc",
-      "database/database_activity_info.h",
-      "database/database_contribution_info.cc",
-      "database/database_contribution_info.h",
-      "database/database_contribution_info_publishers.cc",
-      "database/database_contribution_info_publishers.h",
-      "database/database_contribution_queue.cc",
-      "database/database_contribution_queue.h",
-      "database/database_contribution_queue_publishers.cc",
-      "database/database_contribution_queue_publishers.h",
-      "database/database_media_publisher_info.cc",
-      "database/database_media_publisher_info.h",
-      "database/database_pending_contribution.cc",
-      "database/database_pending_contribution.h",
-      "database/database_promotion.cc",
-      "database/database_promotion.h",
-      "database/database_promotion_creds.cc",
-      "database/database_promotion_creds.h",
-      "database/database_publisher_info.cc",
-      "database/database_publisher_info.h",
-      "database/database_recurring_tip.cc",
-      "database/database_recurring_tip.h",
-      "database/database_server_publisher_amounts.cc",
-      "database/database_server_publisher_amounts.h",
-      "database/database_server_publisher_banner.cc",
-      "database/database_server_publisher_banner.h",
-      "database/database_server_publisher_info.cc",
-      "database/database_server_publisher_info.h",
-      "database/database_server_publisher_links.cc",
-      "database/database_server_publisher_links.h",
-      "database/database_table.cc",
-      "database/database_table.h",
-      "database/database_unblinded_token.cc",
-      "database/database_unblinded_token.h",
-      "database/database_util.cc",
-      "database/database_util.h",
-      "database/publisher_info_database.cc",
-      "database/publisher_info_database.h",
       "net/network_delegate_helper.cc",
       "net/network_delegate_helper.h",
       "rewards_service_impl.cc",

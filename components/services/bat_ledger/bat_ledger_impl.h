@@ -29,7 +29,9 @@ class BatLedgerImpl : public mojom::BatLedger,
   ~BatLedgerImpl() override;
 
   // bat_ledger::mojom::BatLedger
-  void Initialize(InitializeCallback callback) override;
+  void Initialize(
+    const bool execute_create_script,
+    InitializeCallback callback) override;
   void CreateWallet(const std::string& safetynet_token,
       CreateWalletCallback callback) override;
   void FetchWalletProperties(FetchWalletPropertiesCallback callback) override;
@@ -108,10 +110,12 @@ class BatLedgerImpl : public mojom::BatLedger,
   void GetPublisherBanner(const std::string& publisher_id,
       GetPublisherBannerCallback callback) override;
 
-  void DoDirectTip(const std::string& publisher_id,
-                   double amount,
-                   const std::string& currency,
-                   DoDirectTipCallback callback) override;
+  void DoTip(
+      const std::string& publisher_key,
+      const double amount,
+      ledger::PublisherInfoPtr info,
+      const bool recurring,
+      DoTipCallback callback) override;
 
   void RemoveRecurringTip(
       const std::string& publisher_key,
@@ -134,6 +138,7 @@ class BatLedgerImpl : public mojom::BatLedger,
   void SaveRecurringTip(
       ledger::RecurringTipPtr info,
       SaveRecurringTipCallback callback) override;
+
   void GetRecurringTips(GetRecurringTipsCallback callback) override;
 
   void GetOneTimeTips(GetOneTimeTipsCallback callback) override;
@@ -144,9 +149,7 @@ class BatLedgerImpl : public mojom::BatLedger,
     ledger::ActivityInfoFilterPtr filter,
     GetActivityInfoListCallback callback) override;
 
-  void LoadPublisherInfo(
-    const std::string& publisher_key,
-    LoadPublisherInfoCallback callback) override;
+  void GetExcludedList(GetExcludedListCallback callback) override;
 
   void SaveMediaInfo(
       const std::string& type,
@@ -202,6 +205,8 @@ class BatLedgerImpl : public mojom::BatLedger,
       const ledger::ActivityMonth month,
       const int year,
       GetContributionReportCallback callback) override;
+
+  void GetAllContributions(GetAllContributionsCallback callback) override;
 
  private:
   void SetCatalogIssuers(const std::string& info) override;
@@ -278,8 +283,8 @@ class BatLedgerImpl : public mojom::BatLedger,
       CallbackHolder<RemoveRecurringTipCallback>* holder,
       const ledger::Result result);
 
-  static void OnDoDirectTip(
-      CallbackHolder<DoDirectTipCallback>* holder,
+  static void OnDoTip(
+      CallbackHolder<DoTipCallback>* holder,
       const ledger::Result result);
 
   static void OnGetTransactionHistory(
@@ -296,26 +301,22 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   static void OnGetRecurringTips(
       CallbackHolder<GetRecurringTipsCallback>* holder,
-      ledger::PublisherInfoList list,
-      uint32_t num);
+      ledger::PublisherInfoList list);
 
   static void OnGetOneTimeTips(
       CallbackHolder<GetRecurringTipsCallback>* holder,
-      ledger::PublisherInfoList list,
-      uint32_t num);
+      ledger::PublisherInfoList list);
   static void OnRefreshPublisher(
       CallbackHolder<RefreshPublisherCallback>* holder,
       ledger::PublisherStatus status);
 
   static void OnGetActivityInfoList(
     CallbackHolder<GetActivityInfoListCallback>* holder,
-    ledger::PublisherInfoList list,
-    uint32_t num);
+    ledger::PublisherInfoList list);
 
-  static void OnLoadPublisherInfo(
-    CallbackHolder<LoadPublisherInfoCallback>* holder,
-    ledger::Result result,
-    ledger::PublisherInfoPtr info);
+  static void OnGetExcludedList(
+      CallbackHolder<GetExcludedListCallback>* holder,
+      ledger::PublisherInfoList list);
 
   static void OnSaveMediaInfoCallback(
     CallbackHolder<SaveMediaInfoCallback>* holder,
@@ -377,6 +378,10 @@ class BatLedgerImpl : public mojom::BatLedger,
   static void OnGetContributionReport(
       CallbackHolder<GetContributionReportCallback>* holder,
       ledger::ContributionReportInfoList list);
+
+  static void OnGetAllContributions(
+      CallbackHolder<GetAllContributionsCallback>* holder,
+      ledger::ContributionInfoList list);
 
   std::unique_ptr<BatLedgerClientMojoProxy> bat_ledger_client_mojo_proxy_;
   std::unique_ptr<ledger::Ledger> ledger_;

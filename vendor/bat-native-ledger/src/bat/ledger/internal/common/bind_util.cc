@@ -226,4 +226,156 @@ ledger::PromotionPtr FromStringToPromotion(const std::string& data) {
   return promotion;
 }
 
+std::string FromContributionToString(const ledger::ContributionInfoPtr info) {
+  if (!info) {
+    return "{}";
+  }
+
+  base::Value publishers(base::Value::Type::LIST);
+  for (auto& item : info->publishers) {
+    base::Value publisher(base::Value::Type::DICTIONARY);
+    publisher.SetStringKey("contribution_id", item->contribution_id);
+    publisher.SetStringKey("publisher_key", item->publisher_key);
+    publisher.SetDoubleKey("total_amount", item->total_amount);
+    publisher.SetDoubleKey("contributed_amount", item->contributed_amount);
+    publishers.GetList().push_back(std::move(publisher));
+  }
+
+  base::Value queue(base::Value::Type::DICTIONARY);
+
+  queue.SetStringKey("contribution_id", info->contribution_id);
+  queue.SetDoubleKey("amount", info->amount);
+  queue.SetIntKey("type", static_cast<int>(info->type));
+  queue.SetIntKey("step", static_cast<int>(info->step));
+  queue.SetIntKey("retry_count", info->retry_count);
+  queue.SetStringKey("created_at", std::to_string(info->created_at));
+  queue.SetKey("publishers", std::move(publishers));
+
+  std::string json;
+  base::JSONWriter::Write(queue, &json);
+
+  return json;
+}
+
+ledger::ContributionInfoPtr FromStringToContribution(const std::string& data) {
+  base::Optional<base::Value> value = base::JSONReader::Read(data);
+
+  if (!value || !value->is_dict()) {
+    return nullptr;
+  }
+
+  base::DictionaryValue* dictionary = nullptr;
+  if (!value->GetAsDictionary(&dictionary)) {
+    return nullptr;
+  }
+
+  auto contribution = ledger::ContributionInfo::New();
+
+  std::string id;
+  const auto* contribution_id = dictionary->FindStringKey("contribution_id");
+  if (contribution_id) {
+    contribution->contribution_id = *contribution_id;
+    id = contribution->contribution_id;
+  }
+
+  if (id.empty()) {
+    return nullptr;
+  }
+
+  const auto amount = dictionary->FindDoubleKey("amount");
+  if (amount) {
+    contribution->amount = *amount;
+  }
+
+  const auto type = dictionary->FindIntKey("type");
+  if (type) {
+    contribution->type = static_cast<ledger::RewardsType>(*type);
+  }
+
+  const auto step = dictionary->FindIntKey("step");
+  if (step) {
+    contribution->step = static_cast<ledger::ContributionStep>(*step);
+  }
+
+  const auto retry_count = dictionary->FindIntKey("retry_count");
+  if (retry_count) {
+    contribution->retry_count = *retry_count;
+  }
+
+  const auto* created_at = dictionary->FindStringKey("created_at");
+  if (created_at) {
+    contribution->created_at = std::stoull(*created_at);
+  }
+
+  auto* publishers = dictionary->FindListKey("publishers");
+  if (publishers) {
+    for (auto& item : publishers->GetList()) {
+      auto publisher = ledger::ContributionPublisher::New();
+      publisher->contribution_id = id;
+
+      const auto* publisher_key = item.FindStringKey("publisher_key");
+      if (publisher_key) {
+        publisher->publisher_key = *publisher_key;
+      }
+
+      const auto total_amount = item.FindDoubleKey("total_amount");
+      if (total_amount) {
+        publisher->total_amount = *total_amount;
+      }
+
+      const auto contributed_amount = item.FindDoubleKey("contributed_amount");
+      if (contributed_amount) {
+        publisher->contributed_amount = *contributed_amount;
+      }
+
+      contribution->publishers.push_back(std::move(publisher));
+    }
+  }
+
+  return contribution;
+}
+
+std::string FromContributionListToString(ledger::ContributionInfoList list) {
+  base::Value items(base::Value::Type::LIST);
+
+  for (auto& contribution : list) {
+    items.GetList().push_back(
+        base::Value(FromContributionToString(std::move(contribution))));
+  }
+
+  std::string json;
+  base::JSONWriter::Write(items, &json);
+
+  return json;
+}
+
+void FromStringToContributionList(
+    const std::string& data,
+    ledger::ContributionInfoList* contribution_list) {
+  DCHECK(contribution_list);
+
+  base::Optional<base::Value> list = base::JSONReader::Read(data);
+  if (!list || !list->is_list()) {
+    return;
+  }
+
+  base::ListValue* list_value = nullptr;
+  if (!list->GetAsList(&list_value)) {
+    return;
+  }
+
+  for (auto& item : list_value->GetList()) {
+    if (!item.is_string()) {
+      continue;
+    }
+
+    auto info = FromStringToContribution(item.GetString());
+    if (!info) {
+      continue;
+    }
+
+    contribution_list->push_back(std::move(info));
+  }
+}
+
 }  // namespace braveledger_bind_util

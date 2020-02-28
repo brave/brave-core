@@ -300,7 +300,11 @@ void Publisher::SaveVisitInternal(
        verified_new)) {
     panel_info = publisher_info->Clone();
 
-    ledger_->SetPublisherInfo(std::move(publisher_info));
+    auto callback = std::bind(&Publisher::OnPublisherInfoSaved,
+        this,
+        _1);
+
+    ledger_->SavePublisherInfo(std::move(publisher_info), callback);
   } else if (!excluded &&
              ledger_->GetAutoContribute() &&
              min_duration_ok &&
@@ -312,7 +316,11 @@ void Publisher::SaveVisitInternal(
 
     panel_info = publisher_info->Clone();
 
-    ledger_->SetActivityInfo(std::move(publisher_info));
+    auto callback = std::bind(&Publisher::OnPublisherInfoSaved,
+        this,
+        _1);
+
+    ledger_->SaveActivityInfo(std::move(publisher_info), callback);
   }
 
   if (panel_info) {
@@ -359,14 +367,16 @@ void Publisher::onFetchFavIconDBResponse(
   if (result == ledger::Result::LEDGER_OK && !favicon_url.empty()) {
     info->favicon_url = favicon_url;
 
-    ledger::PublisherInfoPtr panel_info = info->Clone();
+    auto callback = std::bind(&Publisher::OnPublisherInfoSaved,
+        this,
+        _1);
 
-    ledger_->SetPublisherInfo(std::move(info));
+    ledger_->SavePublisherInfo(info->Clone(), callback);
 
     if (window_id > 0) {
       ledger::VisitData visit_data;
       OnPanelPublisherInfo(ledger::Result::LEDGER_OK,
-                          std::move(panel_info),
+                          std::move(info),
                           window_id,
                           visit_data);
     }
@@ -376,10 +386,8 @@ void Publisher::onFetchFavIconDBResponse(
   }
 }
 
-void Publisher::OnPublisherInfoSaved(
-    ledger::Result result,
-    ledger::PublisherInfoPtr info) {
-  if (result != ledger::Result::LEDGER_OK || !info) {
+void Publisher::OnPublisherInfoSaved(const ledger::Result result) {
+  if (result != ledger::Result::LEDGER_OK) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
       "Publisher info was not saved!";
   }
@@ -418,18 +426,22 @@ void Publisher::OnSetPublisherExclude(
   }
 
   publisher_info->excluded = exclude;
-  ledger_->SetPublisherInfo(publisher_info->Clone());
+
+  auto save_callback = std::bind(&Publisher::OnPublisherInfoSaved,
+      this,
+      _1);
+  ledger_->SavePublisherInfo(publisher_info->Clone(), save_callback);
   if (exclude == ledger::PublisherExclude::EXCLUDED) {
     ledger_->DeleteActivityInfo(
       publisher_info->id,
-      [](ledger::Result _){});
+      [](const ledger::Result _){});
   }
   callback(ledger::Result::LEDGER_OK);
 }
 
 void Publisher::OnRestorePublishers(
     const ledger::Result result,
-    ledger::RestorePublishersCallback callback) {
+    ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
     << "Could not restore publishers.";
@@ -586,19 +598,15 @@ void Publisher::SynopsisNormalizer() {
       ledger_->GetReconcileStamp(),
       ledger_->GetPublisherAllowNonVerified(),
       ledger_->GetPublisherMinVisits());
-  // TODO(SZ): We pull the whole list currently,
-  // I don't think it consumes lots of RAM, but could.
-  // We need to limit it and iterate.
   ledger_->GetActivityInfoList(
       0,
       0,
       std::move(filter),
-      std::bind(&Publisher::SynopsisNormalizerCallback, this, _1, _2));
+      std::bind(&Publisher::SynopsisNormalizerCallback, this, _1));
 }
 
 void Publisher::SynopsisNormalizerCallback(
-    ledger::PublisherInfoList list,
-    uint32_t record) {
+    ledger::PublisherInfoList list) {
   ledger::PublisherInfoList normalized_list;
   synopsisNormalizerInternal(&normalized_list, &list, 0);
   ledger_->SaveNormalizedPublisherList(std::move(normalized_list));
@@ -818,6 +826,7 @@ void Publisher::OnPanelPublisherInfo(
     const ledger::VisitData& visit_data) {
   if (result == ledger::Result::LEDGER_OK) {
     ledger_->OnPanelPublisherInfo(result, std::move(info), windowId);
+    return;
   }
 
   if (result == ledger::Result::NOT_FOUND && !visit_data.domain.empty()) {

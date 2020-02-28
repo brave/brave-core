@@ -29,6 +29,16 @@ std::string FromPromotionToString(const ledger::PromotionPtr info);
 
 ledger::PromotionPtr FromStringToPromotion(const std::string& data);
 
+std::string FromContributionToString(const ledger::ContributionInfoPtr info);
+
+ledger::ContributionInfoPtr FromStringToContribution(const std::string& data);
+
+std::string FromContributionListToString(ledger::ContributionInfoList list);
+
+void FromStringToContributionList(
+    const std::string& data,
+    ledger::ContributionInfoList* contribution_list);
+
 }  // namespace braveledger_bind_util
 
 #endif  // BRAVELEDGER_COMMON_BIND_UTIL_H_

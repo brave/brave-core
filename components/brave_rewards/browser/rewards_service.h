@@ -51,8 +51,7 @@ class RewardsServiceObserver;
 class RewardsServicePrivateObserver;
 
 using GetContentSiteListCallback =
-    base::Callback<void(std::unique_ptr<ContentSiteList>,
-        uint32_t /* next_record */)>;
+    base::Callback<void(std::unique_ptr<ContentSiteList>)>;
 using GetWalletPassphraseCallback = base::Callback<void(const std::string&)>;
 using GetContributionAmountCallback = base::Callback<void(double)>;
 using GetAutoContributePropsCallback = base::Callback<void(
@@ -129,8 +128,8 @@ class RewardsService : public KeyedService {
       uint64_t reconcile_stamp,
       bool allow_non_verified,
       uint32_t min_visits,
-      bool fetch_excluded,
       const GetContentSiteListCallback& callback) = 0;
+  virtual void GetExcludedList(const GetContentSiteListCallback& callback) = 0;
   virtual void FetchPromotions() = 0;
   // Used by desktop
   virtual void ClaimPromotion(ClaimPromotionCallback callback) = 0;
@@ -198,11 +197,17 @@ class RewardsService : public KeyedService {
       const GetContributionAmountCallback& callback) = 0;
   virtual void GetPublisherBanner(const std::string& publisher_id,
                                   GetPublisherBannerCallback callback) = 0;
-  virtual void OnTip(const std::string& publisher_key,
-                     double amount,
-                     bool recurring) = 0;
-  virtual void OnTip(const std::string& publisher_key, double amount,
-      bool recurring, std::unique_ptr<brave_rewards::ContentSite> site) = 0;
+  virtual void OnTip(
+      const std::string& publisher_key,
+      const double amount,
+      const bool recurring) = 0;
+
+  virtual void OnTip(
+      const std::string& publisher_key,
+      double amount,
+      const bool recurring,
+      std::unique_ptr<brave_rewards::ContentSite> site) = 0;
+
   virtual void RemoveRecurringTipUI(const std::string& publisher_key) = 0;
   virtual void GetRecurringTipsUI(GetRecurringTipsCallback callback) = 0;
   virtual void GetOneTimeTipsUI(GetOneTimeTipsCallback callback) = 0;

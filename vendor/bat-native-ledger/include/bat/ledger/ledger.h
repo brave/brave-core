@@ -45,7 +45,6 @@ using ExternalWalletAuthorizationCallback =
 using DisconnectWalletCallback = std::function<void(ledger::Result)>;
 using TransferAnonToExternalWalletCallback =
     std::function<void(ledger::Result)>;
-using DoDirectTipCallback = std::function<void(ledger::Result)>;
 using FetchPromotionCallback =
     std::function<void(ledger::Result, ledger::PromotionList)>;
 using SetPublisherExcludeCallback = std::function<void(ledger::Result)>;
@@ -60,6 +59,9 @@ using AttestPromotionCallback =
 
 using GetBalanceReportCallback =
     std::function<void(const ledger::Result, ledger::BalanceReportInfoPtr)>;
+
+using ContributionInfoListCallback =
+    std::function<void(ContributionInfoList)>;
 
 using RecoverWalletCallback = std::function<void(
     const ledger::Result,
@@ -80,16 +82,20 @@ class LEDGER_EXPORT Ledger {
 
   static Ledger* CreateInstance(LedgerClient* client);
 
-  virtual void Initialize(InitializeCallback) = 0;
+  virtual void Initialize(
+      const bool execute_create_script,
+      InitializeCallback) = 0;
 
   // returns false if wallet initialization is already in progress
   virtual void CreateWallet(const std::string& safetynet_token,
                             CreateWalletCallback callback) = 0;
 
-  virtual void DoDirectTip(const std::string& publisher_key,
-                           double amount,
-                           const std::string& currency,
-                           ledger::DoDirectTipCallback callback) = 0;
+  virtual void DoTip(
+      const std::string& publisher_key,
+      const double amount,
+      ledger::PublisherInfoPtr info,
+      const bool recurring,
+      ledger::ResultCallback callback) = 0;
 
   virtual void OnLoad(VisitDataPtr visit_data,
                       const uint64_t& current_time) = 0;
@@ -124,12 +130,11 @@ class LEDGER_EXPORT Ledger {
 
   virtual std::string URIEncode(const std::string& value) = 0;
 
-  virtual void GetPublisherInfo(const std::string& publisher_key,
-                                PublisherInfoCallback callback) = 0;
-
   virtual void GetActivityInfoList(uint32_t start, uint32_t limit,
                                     ledger::ActivityInfoFilterPtr filter,
                                     PublisherInfoListCallback callback) = 0;
+
+  virtual void GetExcludedList(PublisherInfoListCallback callback) = 0;
 
   virtual void SetRewardsMainEnabled(bool enabled) = 0;
 
@@ -226,8 +231,7 @@ class LEDGER_EXPORT Ledger {
       const ledger::PublisherExclude& exclude,
       SetPublisherExcludeCallback callback) = 0;
 
-  virtual void RestorePublishers(
-    ledger::RestorePublishersCallback callback) = 0;
+  virtual void RestorePublishers(ledger::ResultCallback callback) = 0;
 
   virtual bool IsWalletCreated() const = 0;
 
@@ -242,7 +246,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void RemoveRecurringTip(
     const std::string& publisher_key,
-    RemoveRecurringTipCallback callback) = 0;
+    ResultCallback callback) = 0;
 
   virtual double GetDefaultContributionAmount() = 0;
 
@@ -267,7 +271,8 @@ class LEDGER_EXPORT Ledger {
 
   virtual void SaveRecurringTip(
       ledger::RecurringTipPtr info,
-      ledger::SaveRecurringTipCallback callback) = 0;
+      ledger::ResultCallback callback) = 0;
+
   virtual void GetRecurringTips(ledger::PublisherInfoListCallback callback) = 0;
 
   virtual void GetOneTimeTips(ledger::PublisherInfoListCallback callback) = 0;
@@ -294,10 +299,10 @@ class LEDGER_EXPORT Ledger {
 
   virtual void RemovePendingContribution(
       const uint64_t id,
-      ledger::RemovePendingContributionCallback callback) = 0;
+      ledger::ResultCallback callback) = 0;
 
   virtual void RemoveAllPendingContributions(
-      ledger::RemovePendingContributionCallback callback) = 0;
+      ledger::ResultCallback callback) = 0;
 
   virtual void GetPendingContributionsTotal(
       ledger::PendingContributionsTotalCallback callback) = 0;
@@ -329,6 +334,9 @@ class LEDGER_EXPORT Ledger {
       const ledger::ActivityMonth month,
       const int year,
       ledger::GetContributionReportCallback callback) = 0;
+
+  virtual void GetAllContributions(
+      ledger::ContributionInfoListCallback callback) = 0;
 };
 
 }  // namespace ledger

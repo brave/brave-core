@@ -27,6 +27,8 @@ extern BATBraveGeneralLedgerNotificationID const BATBraveGeneralLedgerNotificati
 NS_SWIFT_NAME(BraveLedger)
 @interface BATBraveLedger : NSObject
 
++ (NSString *)migrateString;
+
 @property (nonatomic, weak) BATBraveAds *ads;
 
 @property (nonatomic, copy, nullable) BATFaviconFetcher faviconFetcher;
@@ -35,6 +37,8 @@ NS_SWIFT_NAME(BraveLedger)
 - (instancetype)initWithStateStoragePath:(NSString *)path;
 
 - (instancetype)init NS_UNAVAILABLE;
+
+@property (nonatomic, readonly, getter=isInitialized) BOOL initialized;
 
 #pragma mark - Observers
 
@@ -126,7 +130,7 @@ NS_SWIFT_NAME(BraveLedger)
 - (void)listActivityInfoFromStart:(unsigned int)start
                             limit:(unsigned int)limit
                            filter:(BATActivityInfoFilter *)filter
-                       completion:(void (NS_NOESCAPE ^)(NSArray<BATPublisherInfo *> *))completion;
+                       completion:(void (^)(NSArray<BATPublisherInfo *> *))completion;
 
 /// Start a fetch to get a publishers activity information given a URL
 ///
@@ -136,9 +140,6 @@ NS_SWIFT_NAME(BraveLedger)
                         publisherBlob:(nullable NSString *)publisherBlob
                                 tabId:(uint64_t)tabId;
 
-/// Returns activity info for current reconcile stamp.
-- (nullable BATPublisherInfo *)currentActivityInfoWithPublisherId:(NSString *)publisherId;
-
 /// Update a publishers exclusion state
 - (void)updatePublisherExclusionState:(NSString *)publisherId
                                 state:(BATPublisherExclude)state
@@ -147,7 +148,7 @@ NS_SWIFT_NAME(BraveLedger)
 /// Restore all sites which had been previously excluded
 - (void)restoreAllExcludedPublishers;
 
-@property (nonatomic, readonly) NSUInteger numberOfExcludedPublishers;
+- (void)numberOfExcludedPublishers:(void (^)(NSUInteger count))completion;
 
 /// Get the publisher banner given some publisher key
 ///
@@ -156,7 +157,7 @@ NS_SWIFT_NAME(BraveLedger)
 ///
 /// @note `completion` callback is called synchronously
 - (void)publisherBannerForId:(NSString *)publisherId
-                  completion:(void (NS_NOESCAPE ^)(BATPublisherBanner * _Nullable banner))completion;
+                  completion:(void (^)(BATPublisherBanner * _Nullable banner))completion;
 
 /// Refresh a publishers verification status
 - (void)refreshPublisherWithId:(NSString *)publisherId
@@ -167,7 +168,7 @@ NS_SWIFT_NAME(BraveLedger)
 /// Get a list of publishers who the user has recurring tips on
 ///
 /// @note `completion` callback is called synchronously
-- (void)listRecurringTips:(void (NS_NOESCAPE ^)(NSArray<BATPublisherInfo *> *))completion;
+- (void)listRecurringTips:(void (^)(NSArray<BATPublisherInfo *> *))completion;
 
 - (void)addRecurringTipToPublisherWithId:(NSString *)publisherId
                                   amount:(double)amount
@@ -178,7 +179,7 @@ NS_SWIFT_NAME(BraveLedger)
 /// Get a list of publishers who the user has made direct tips too
 ///
 /// @note `completion` callback is called synchronously
-- (void)listOneTimeTips:(void (NS_NOESCAPE ^)(NSArray<BATPublisherInfo *> *))completion;
+- (void)listOneTimeTips:(void (^)(NSArray<BATPublisherInfo *> *))completion;
 
 - (void)tipPublisherDirectly:(BATPublisherInfo *)publisher
                       amount:(double)amount

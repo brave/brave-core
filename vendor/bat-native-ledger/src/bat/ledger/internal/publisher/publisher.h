@@ -88,9 +88,7 @@ class Publisher : public ledger::LedgerCallbackHandler {
 
   bool getPublisherAllowVideos() const;
 
-  void OnPublisherInfoSaved(
-      ledger::Result result,
-      ledger::PublisherInfoPtr);
+  void OnPublisherInfoSaved(const ledger::Result result);
 
   std::string GetBalanceReportName(ledger::ActivityMonth month, int year);
 
@@ -132,7 +130,7 @@ class Publisher : public ledger::LedgerCallbackHandler {
 
   void OnRestorePublishers(
       const ledger::Result result,
-      ledger::RestorePublishersCallback callback);
+      ledger::ResultCallback callback);
 
   bool IsConnectedOrVerified(const ledger::PublisherStatus status);
 
@@ -207,8 +205,7 @@ class Publisher : public ledger::LedgerCallbackHandler {
 
   void SynopsisNormalizer();
 
-  void SynopsisNormalizerCallback(ledger::PublisherInfoList list,
-                                  uint32_t /* next_record */);
+  void SynopsisNormalizerCallback(ledger::PublisherInfoList list);
 
   void synopsisNormalizerInternal(ledger::PublisherInfoList* newList,
                                   const ledger::PublisherInfoList* list,

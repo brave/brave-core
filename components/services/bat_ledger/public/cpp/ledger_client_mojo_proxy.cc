@@ -144,93 +144,6 @@ void LedgerClientMojoProxy::OnReconcileComplete(
       type);
 }
 
-// static
-void LedgerClientMojoProxy::OnSavePublisherInfo(
-    CallbackHolder<SavePublisherInfoCallback>* holder,
-    const ledger::Result result,
-    ledger::PublisherInfoPtr info) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result, std::move(info));
-  delete holder;
-}
-
-void LedgerClientMojoProxy::SavePublisherInfo(
-    ledger::PublisherInfoPtr publisher_info,
-    SavePublisherInfoCallback callback) {
-  // deleted in OnSavePublisherInfo
-  auto* holder = new CallbackHolder<SavePublisherInfoCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->SavePublisherInfo(std::move(publisher_info),
-      std::bind(LedgerClientMojoProxy::OnSavePublisherInfo, holder, _1, _2));
-}
-
-// static
-void LedgerClientMojoProxy::OnLoadPublisherInfo(
-    CallbackHolder<LoadPublisherInfoCallback>* holder,
-    const ledger::Result result,
-    ledger::PublisherInfoPtr info) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result, std::move(info));
-  delete holder;
-}
-
-void LedgerClientMojoProxy::LoadPublisherInfo(
-    const std::string& publisher_key,
-    LoadPublisherInfoCallback callback) {
-  // deleted in OnLoadPublisherInfo
-  auto* holder = new CallbackHolder<LoadPublisherInfoCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->LoadPublisherInfo(publisher_key,
-      std::bind(LedgerClientMojoProxy::OnLoadPublisherInfo, holder, _1, _2));
-}
-
-// static
-void LedgerClientMojoProxy::OnLoadPanelPublisherInfo(
-    CallbackHolder<LoadPanelPublisherInfoCallback>* holder,
-    const ledger::Result result,
-    ledger::PublisherInfoPtr info) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result, std::move(info));
-  delete holder;
-}
-
-void LedgerClientMojoProxy::LoadPanelPublisherInfo(
-    ledger::ActivityInfoFilterPtr filter,
-    LoadPanelPublisherInfoCallback callback) {
-  // deleted in OnLoadPanelPublisherInfo
-  auto* holder = new CallbackHolder<LoadPanelPublisherInfoCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger::ActivityInfoFilter publisher_info_filter;
-  ledger_client_->LoadPanelPublisherInfo(std::move(filter),
-      std::bind(LedgerClientMojoProxy::OnLoadPanelPublisherInfo,
-        holder, _1, _2));
-}
-
-// static
-void LedgerClientMojoProxy::OnLoadMediaPublisherInfo(
-    CallbackHolder<LoadMediaPublisherInfoCallback>* holder,
-    ledger::Result result,
-    ledger::PublisherInfoPtr info) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result, std::move(info));
-  delete holder;
-}
-
-void LedgerClientMojoProxy::LoadMediaPublisherInfo(
-    const std::string& media_key,
-    LoadMediaPublisherInfoCallback callback) {
-  // deleted in OnLoadMediaPublisherInfo
-  auto* holder = new CallbackHolder<LoadMediaPublisherInfoCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->LoadMediaPublisherInfo(media_key,
-      std::bind(LedgerClientMojoProxy::OnLoadMediaPublisherInfo,
-                holder, _1, _2));
-}
-
 void LedgerClientMojoProxy::SetTimer(uint64_t time_offset,
     SetTimerCallback callback) {
   uint32_t timer_id;
@@ -272,51 +185,6 @@ void LedgerClientMojoProxy::FetchFavIcon(const std::string& url,
 }
 
 // static
-void LedgerClientMojoProxy::OnSaveRecurringTip(
-    CallbackHolder<SaveRecurringTipCallback>* holder,
-    const ledger::Result result) {
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result);
-  delete holder;
-}
-
-void LedgerClientMojoProxy::SaveRecurringTip(
-    ledger::RecurringTipPtr info,
-    SaveRecurringTipCallback callback) {
-  // deleted in OnSaveRecurringTip
-  auto* holder = new CallbackHolder<SaveRecurringTipCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->SaveRecurringTip(
-      std::move(info),
-      std::bind(LedgerClientMojoProxy::OnSaveRecurringTip,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnGetRecurringTips(
-    CallbackHolder<GetRecurringTipsCallback>* holder,
-    ledger::PublisherInfoList publisher_info_list,
-    uint32_t next_record) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(std::move(publisher_info_list), next_record);
-  delete holder;
-}
-
-void LedgerClientMojoProxy::GetRecurringTips(
-    GetRecurringTipsCallback callback) {
-  // deleted in OnGetRecurringTips
-  auto* holder = new CallbackHolder<GetRecurringTipsCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->GetRecurringTips(
-      std::bind(LedgerClientMojoProxy::OnGetRecurringTips,
-                holder,
-                _1,
-                _2));
-}
-
-// static
 void LedgerClientMojoProxy::OnLoadNicewareList(
     CallbackHolder<LoadNicewareListCallback>* holder,
     const ledger::Result result,
@@ -335,51 +203,6 @@ void LedgerClientMojoProxy::LoadNicewareList(
   ledger_client_->LoadNicewareList(
       std::bind(LedgerClientMojoProxy::OnLoadNicewareList,
         holder, _1, _2));
-}
-
-// static
-void LedgerClientMojoProxy::OnRemoveRecurringTip(
-    CallbackHolder<RemoveRecurringTipCallback>* holder,
-    const ledger::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result);
-  delete holder;
-}
-
-void LedgerClientMojoProxy::RemoveRecurringTip(const std::string& publisher_key,
-    RemoveRecurringTipCallback callback) {
-  // deleted in OnRemoveRecurringTip
-  auto* holder = new CallbackHolder<RemoveRecurringTipCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->RemoveRecurringTip(publisher_key,
-      std::bind(LedgerClientMojoProxy::OnRemoveRecurringTip, holder, _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnSaveContributionInfo(
-    CallbackHolder<SaveContributionInfoCallback>* holder,
-    const ledger::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result);
-  delete holder;
-}
-
-void LedgerClientMojoProxy::SaveContributionInfo(
-    ledger::ContributionInfoPtr info,
-    SaveContributionInfoCallback callback) {
-    // deleted in OnSaveContributionInfo
-  auto* holder = new CallbackHolder<RemoveRecurringTipCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->SaveContributionInfo(
-      std::move(info),
-      std::bind(LedgerClientMojoProxy::OnSaveContributionInfo, holder, _1));
-}
-
-void LedgerClientMojoProxy::SaveMediaPublisherInfo(
-    const std::string& media_key, const std::string& publisher_id) {
-  ledger_client_->SaveMediaPublisherInfo(media_key, publisher_id);
 }
 
 void LedgerClientMojoProxy::URIEncode(const std::string& value,
@@ -413,120 +236,9 @@ void LedgerClientMojoProxy::LoadURL(const std::string& url,
       std::bind(LedgerClientMojoProxy::OnLoadURL, holder, _1, _2, _3));
 }
 
-// static
-void LedgerClientMojoProxy::OnSavePendingContribution(
-    CallbackHolder<SavePendingContributionCallback>* holder,
-    const ledger::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result);
-  delete holder;
-}
-
-void LedgerClientMojoProxy::SavePendingContribution(
-    ledger::PendingContributionList list,
-    SavePendingContributionCallback callback) {
-  // deleted in OnSavePendingContribution
-  auto* holder = new CallbackHolder<SavePendingContributionCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->SavePendingContribution(std::move(list),
-      std::bind(LedgerClientMojoProxy::OnSavePendingContribution, holder, _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnLoadActivityInfo(
-    CallbackHolder<LoadActivityInfoCallback>* holder,
-    ledger::Result result,
-    ledger::PublisherInfoPtr info) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result, std::move(info));
-  delete holder;
-}
-
-void LedgerClientMojoProxy::LoadActivityInfo(
-    ledger::ActivityInfoFilterPtr filter,
-    LoadActivityInfoCallback callback) {
-  // deleted in OnLoadActivityInfo
-  auto* holder = new CallbackHolder<LoadActivityInfoCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->LoadActivityInfo(std::move(filter),
-      std::bind(LedgerClientMojoProxy::OnLoadActivityInfo, holder, _1, _2));
-}
-
-// static
-void LedgerClientMojoProxy::OnSaveActivityInfo(
-    CallbackHolder<SaveActivityInfoCallback>* holder,
-    ledger::Result result,
-    ledger::PublisherInfoPtr info) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result, std::move(info));
-  delete holder;
-}
-
-void LedgerClientMojoProxy::SaveActivityInfo(
-    ledger::PublisherInfoPtr publisher_info,
-    SaveActivityInfoCallback callback) {
-  // deleted in OnSaveActivityInfo
-  auto* holder = new CallbackHolder<SaveActivityInfoCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  ledger_client_->SaveActivityInfo(std::move(publisher_info),
-      std::bind(LedgerClientMojoProxy::OnSaveActivityInfo, holder, _1, _2));
-}
-
-// static
-void LedgerClientMojoProxy::OnRestorePublishers(
-    CallbackHolder<RestorePublishersCallback>* holder,
-    ledger::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result);
-  delete holder;
-}
-
-void LedgerClientMojoProxy::RestorePublishers(
-    RestorePublishersCallback callback) {
-  // deleted in OnRestorePublishers
-  auto* holder = new CallbackHolder<RestorePublishersCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  ledger_client_->RestorePublishers(
-      std::bind(LedgerClientMojoProxy::OnRestorePublishers, holder, _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnGetActivityInfoList(
-    CallbackHolder<GetActivityInfoListCallback>* holder,
-    ledger::PublisherInfoList publisher_info_list,
-    uint32_t next_record) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(std::move(publisher_info_list), next_record);
-  delete holder;
-}
-
-void LedgerClientMojoProxy::GetActivityInfoList(uint32_t start,
-    uint32_t limit,
-    ledger::ActivityInfoFilterPtr filter,
-    GetActivityInfoListCallback callback) {
-  // deleted in OnGetActivityInfoList
-  auto* holder = new CallbackHolder<GetActivityInfoListCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  ledger_client_->GetActivityInfoList(start,
-      limit,
-      std::move(filter),
-      std::bind(LedgerClientMojoProxy::OnGetActivityInfoList,
-                holder,
-                _1,
-                _2));
-}
-
-void LedgerClientMojoProxy::SaveNormalizedPublisherList(
+void LedgerClientMojoProxy::PublisherListNormalized(
     ledger::PublisherInfoList list) {
-  ledger_client_->SaveNormalizedPublisherList(std::move(list));
+  ledger_client_->PublisherListNormalized(std::move(list));
 }
 
 // static
@@ -705,115 +417,6 @@ void LedgerClientMojoProxy::ConfirmationsTransactionHistoryDidChange() {
   ledger_client_->ConfirmationsTransactionHistoryDidChange();
 }
 
-// static
-void LedgerClientMojoProxy::OnGetOneTimeTips(
-    CallbackHolder<GetOneTimeTipsCallback>* holder,
-    ledger::PublisherInfoList publisher_info_list,
-    uint32_t next_record) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(std::move(publisher_info_list), next_record);
-  delete holder;
-}
-
-void LedgerClientMojoProxy::GetOneTimeTips(
-    GetOneTimeTipsCallback callback) {
-  // deleted in OnGetOneTimeTips
-  auto* holder = new CallbackHolder<GetOneTimeTipsCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->GetOneTimeTips(
-      std::bind(LedgerClientMojoProxy::OnGetOneTimeTips,
-                holder,
-                _1,
-                _2));
-}
-
-// static
-void LedgerClientMojoProxy::OnGetPendingContributions(
-    CallbackHolder<GetPendingContributionsCallback>* holder,
-    ledger::PendingContributionInfoList list) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(std::move(list));
-  delete holder;
-}
-
-void LedgerClientMojoProxy::GetPendingContributions(
-    GetPendingContributionsCallback callback) {
-  // deleted in OnGetPendingContributions
-  auto* holder = new CallbackHolder<GetPendingContributionsCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->GetPendingContributions(
-      std::bind(LedgerClientMojoProxy::OnGetPendingContributions,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnRemovePendingContribution(
-    CallbackHolder<RemovePendingContributionCallback>* holder,
-    ledger::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result);
-  delete holder;
-}
-
-void LedgerClientMojoProxy::RemovePendingContribution(
-    const uint64_t id,
-    RemovePendingContributionCallback callback) {
-  // deleted in OnRemovePendingContribution
-  auto* holder = new CallbackHolder<RemovePendingContributionCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->RemovePendingContribution(
-      id,
-      std::bind(LedgerClientMojoProxy::OnRemovePendingContribution,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnRemoveAllPendingContributions(
-    CallbackHolder<RemovePendingContributionCallback>* holder,
-    ledger::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result);
-  delete holder;
-}
-
-void LedgerClientMojoProxy::RemoveAllPendingContributions(
-    RemovePendingContributionCallback callback) {
-  // deleted in OnRemoveAllPendingContributions
-  auto* holder = new CallbackHolder<RemovePendingContributionCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->RemoveAllPendingContributions(
-      std::bind(LedgerClientMojoProxy::OnRemoveAllPendingContributions,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnGetPendingContributionsTotal(
-    CallbackHolder<GetPendingContributionsTotalCallback>* holder,
-    double amount) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(amount);
-  delete holder;
-}
-
-void LedgerClientMojoProxy::GetPendingContributionsTotal(
-    GetPendingContributionsTotalCallback callback) {
-  // deleted in OnGetPendingContributionsTotal
-  auto* holder = new CallbackHolder<GetPendingContributionsTotalCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->GetPendingContributionsTotal(
-      std::bind(LedgerClientMojoProxy::OnGetPendingContributionsTotal,
-                holder,
-                _1));
-}
-
 void LedgerClientMojoProxy::OnContributeUnverifiedPublishers(
       const ledger::Result result,
       const std::string& publisher_key,
@@ -875,77 +478,6 @@ void LedgerClientMojoProxy::ShowNotification(
                 _1));
 }
 
-// static
-void LedgerClientMojoProxy::OnDeleteActivityInfo(
-    CallbackHolder<DeleteActivityInfoCallback>* holder,
-    const ledger::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(result);
-  }
-  delete holder;
-}
-
-void LedgerClientMojoProxy::DeleteActivityInfo(
-      const std::string& publisher_key,
-      DeleteActivityInfoCallback callback) {
-  auto* holder = new CallbackHolder<DeleteActivityInfoCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->DeleteActivityInfo(
-      publisher_key,
-      std::bind(LedgerClientMojoProxy::OnDeleteActivityInfo,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnClearAndInsertServerPublisherList(
-    CallbackHolder<ClearAndInsertServerPublisherListCallback>* holder,
-    const ledger::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(result);
-  }
-  delete holder;
-}
-
-void LedgerClientMojoProxy::ClearAndInsertServerPublisherList(
-      ledger::ServerPublisherInfoList list,
-      ClearAndInsertServerPublisherListCallback callback) {
-  auto* holder = new CallbackHolder<ClearAndInsertServerPublisherListCallback>(
-      AsWeakPtr(),
-      std::move(callback));
-  ledger_client_->ClearAndInsertServerPublisherList(
-      std::move(list),
-      std::bind(LedgerClientMojoProxy::OnClearAndInsertServerPublisherList,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnGetServerPublisherInfo(
-    CallbackHolder<GetServerPublisherInfoCallback>* holder,
-    ledger::ServerPublisherInfoPtr info) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(std::move(info));
-  }
-  delete holder;
-}
-
-void LedgerClientMojoProxy::GetServerPublisherInfo(
-    const std::string& publisher_key,
-    GetServerPublisherInfoCallback callback) {
-  auto* holder = new CallbackHolder<GetServerPublisherInfoCallback>(
-      AsWeakPtr(),
-      std::move(callback));
-  ledger_client_->GetServerPublisherInfo(
-      publisher_key,
-      std::bind(LedgerClientMojoProxy::OnGetServerPublisherInfo,
-                holder,
-                _1));
-}
-
 void LedgerClientMojoProxy::GetTransferFees(
     const std::string& wallet_type,
     GetTransferFeesCallback callback) {
@@ -965,264 +497,6 @@ void LedgerClientMojoProxy::RemoveTransferFee(
   ledger_client_->RemoveTransferFee(wallet_type, id);
 }
 
-// static
-void LedgerClientMojoProxy::OnInsertOrUpdateContributionQueue(
-    CallbackHolder<InsertOrUpdateContributionQueueCallback>* holder,
-    const ledger::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(result);
-  }
-  delete holder;
-}
-
-void LedgerClientMojoProxy::InsertOrUpdateContributionQueue(
-    ledger::ContributionQueuePtr info,
-    InsertOrUpdateContributionQueueCallback callback) {
-  auto* holder = new CallbackHolder<InsertOrUpdateContributionQueueCallback>(
-      AsWeakPtr(),
-      std::move(callback));
-  ledger_client_->InsertOrUpdateContributionQueue(
-      std::move(info),
-      std::bind(LedgerClientMojoProxy::OnInsertOrUpdateContributionQueue,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnDeleteContributionQueue(
-    CallbackHolder<DeleteContributionQueueCallback>* holder,
-    const ledger::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(result);
-  }
-  delete holder;
-}
-
-void LedgerClientMojoProxy::DeleteContributionQueue(
-    const uint64_t id,
-    DeleteContributionQueueCallback callback) {
-  auto* holder = new CallbackHolder<DeleteContributionQueueCallback>(
-      AsWeakPtr(),
-      std::move(callback));
-  ledger_client_->DeleteContributionQueue(
-      id,
-      std::bind(LedgerClientMojoProxy::OnDeleteContributionQueue,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnGetFirstContributionQueue(
-    CallbackHolder<GetFirstContributionQueueCallback>* holder,
-    ledger::ContributionQueuePtr info) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(std::move(info));
-  }
-  delete holder;
-}
-
-void LedgerClientMojoProxy::GetFirstContributionQueue(
-    GetFirstContributionQueueCallback callback) {
-  auto* holder = new CallbackHolder<GetFirstContributionQueueCallback>(
-      AsWeakPtr(),
-      std::move(callback));
-  ledger_client_->GetFirstContributionQueue(
-      std::bind(LedgerClientMojoProxy::OnGetFirstContributionQueue,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnInsertOrUpdatePromotion(
-    CallbackHolder<InsertOrUpdatePromotionCallback>* holder,
-    const ledger::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(result);
-  }
-  delete holder;
-}
-
-void LedgerClientMojoProxy::InsertOrUpdatePromotion(
-    ledger::PromotionPtr info,
-    InsertOrUpdatePromotionCallback callback) {
-  auto* holder = new CallbackHolder<InsertOrUpdatePromotionCallback>(
-      AsWeakPtr(),
-      std::move(callback));
-  ledger_client_->InsertOrUpdatePromotion(
-      std::move(info),
-      std::bind(LedgerClientMojoProxy::OnInsertOrUpdatePromotion,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnGetPromotion(
-    CallbackHolder<GetPromotionCallback>* holder,
-    ledger::PromotionPtr info) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(std::move(info));
-  }
-  delete holder;
-}
-
-void LedgerClientMojoProxy::GetPromotion(
-    const std::string& id,
-    GetPromotionCallback callback) {
-  auto* holder = new CallbackHolder<GetPromotionCallback>(
-      AsWeakPtr(),
-      std::move(callback));
-  ledger_client_->GetPromotion(
-      id,
-      std::bind(LedgerClientMojoProxy::OnGetPromotion,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnGetAllPromotions(
-    CallbackHolder<GetAllPromotionsCallback>* holder,
-    ledger::PromotionMap promotions) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(base::MapToFlatMap(std::move(promotions)));
-  }
-  delete holder;
-}
-
-void LedgerClientMojoProxy::GetAllPromotions(
-    GetAllPromotionsCallback callback) {
-  auto* holder = new CallbackHolder<GetAllPromotionsCallback>(
-      AsWeakPtr(),
-      std::move(callback));
-  ledger_client_->GetAllPromotions(
-      std::bind(LedgerClientMojoProxy::OnGetAllPromotions,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnDeletePromotionList(
-    CallbackHolder<DeletePromotionListCallback>* holder,
-    const ledger::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(result);
-  }
-  delete holder;
-}
-
-void LedgerClientMojoProxy::DeletePromotionList(
-    const std::vector<std::string>& id_list,
-    DeletePromotionListCallback callback) {
-  auto* holder = new CallbackHolder<DeletePromotionListCallback>(
-      AsWeakPtr(),
-      std::move(callback));
-  ledger_client_->DeletePromotionList(
-      id_list,
-      std::bind(LedgerClientMojoProxy::OnDeletePromotionList,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnSaveUnblindedTokenList(
-    CallbackHolder<SaveUnblindedTokenListCallback>* holder,
-    const ledger::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(result);
-  }
-  delete holder;
-}
-
-void LedgerClientMojoProxy::SaveUnblindedTokenList(
-    ledger::UnblindedTokenList list,
-    SaveUnblindedTokenListCallback callback) {
-  auto* holder = new CallbackHolder<SaveUnblindedTokenListCallback>(
-      AsWeakPtr(),
-      std::move(callback));
-  ledger_client_->SaveUnblindedTokenList(
-      std::move(list),
-      std::bind(LedgerClientMojoProxy::OnSaveUnblindedTokenList,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnGetAllUnblindedTokens(
-    CallbackHolder<GetAllUnblindedTokensCallback>* holder,
-    ledger::UnblindedTokenList list) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(std::move(list));
-  }
-  delete holder;
-}
-
-void LedgerClientMojoProxy::GetAllUnblindedTokens(
-    GetAllUnblindedTokensCallback callback) {
-  auto* holder = new CallbackHolder<GetAllUnblindedTokensCallback>(
-      AsWeakPtr(),
-      std::move(callback));
-  ledger_client_->GetAllUnblindedTokens(
-      std::bind(LedgerClientMojoProxy::OnGetAllUnblindedTokens,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnDeleteUnblindedToken(
-    CallbackHolder<DeleteUnblindedTokensCallback>* holder,
-    const ledger::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(result);
-  }
-  delete holder;
-}
-
-void LedgerClientMojoProxy::DeleteUnblindedTokens(
-    const std::vector<std::string>& id_list,
-    DeleteUnblindedTokensCallback callback) {
-  auto* holder = new CallbackHolder<DeleteUnblindedTokensCallback>(
-      AsWeakPtr(),
-      std::move(callback));
-  ledger_client_->DeleteUnblindedTokens(
-      id_list,
-      std::bind(LedgerClientMojoProxy::OnDeleteUnblindedToken,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnDeleteUnblindedTokensForPromotion(
-    CallbackHolder<DeleteUnblindedTokensForPromotionCallback>* holder,
-    const ledger::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(result);
-  }
-  delete holder;
-}
-
-void LedgerClientMojoProxy::DeleteUnblindedTokensForPromotion(
-    const std::string& promotion_id,
-    DeleteUnblindedTokensForPromotionCallback callback) {
-  auto* holder = new CallbackHolder<DeleteUnblindedTokensForPromotionCallback>(
-      AsWeakPtr(),
-      std::move(callback));
-  ledger_client_->DeleteUnblindedTokensForPromotion(
-      promotion_id,
-      std::bind(LedgerClientMojoProxy::OnDeleteUnblindedTokensForPromotion,
-                holder,
-                _1));
-}
-
 void LedgerClientMojoProxy::GetClientInfo(
     GetClientInfoCallback callback) {
   auto info = ledger_client_->GetClientInfo();
@@ -1233,162 +507,61 @@ void LedgerClientMojoProxy::UnblindedTokensReady() {
   ledger_client_->UnblindedTokensReady();
 }
 
-// static
-void LedgerClientMojoProxy::OnGetTransactionReport(
-    CallbackHolder<GetTransactionReportCallback>* holder,
-    ledger::TransactionReportInfoList list) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(std::move(list));
-  }
-  delete holder;
-}
-
-void LedgerClientMojoProxy::GetTransactionReport(
-    const ledger::ActivityMonth month,
-    const int year,
-    GetTransactionReportCallback callback) {
-  auto* holder = new CallbackHolder<GetTransactionReportCallback>(
-      AsWeakPtr(),
-      std::move(callback));
-  ledger_client_->GetTransactionReport(
-      month,
-      year,
-      std::bind(LedgerClientMojoProxy::OnGetTransactionReport,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnGetContributionReport(
-    CallbackHolder<GetContributionReportCallback>* holder,
-    ledger::ContributionReportInfoList list) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(std::move(list));
-  }
-  delete holder;
-}
-
-void LedgerClientMojoProxy::GetContributionReport(
-    const ledger::ActivityMonth month,
-    const int year,
-    GetContributionReportCallback callback) {
-  auto* holder = new CallbackHolder<GetContributionReportCallback>(
-      AsWeakPtr(),
-      std::move(callback));
-  ledger_client_->GetContributionReport(
-      month,
-      year,
-      std::bind(LedgerClientMojoProxy::OnGetContributionReport,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnGetNotCompletedContributions(
-    CallbackHolder<GetIncompleteContributionsCallback>* holder,
-    ledger::ContributionInfoList list) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(std::move(list));
-  }
-  delete holder;
-}
-
-void LedgerClientMojoProxy::GetIncompleteContributions(
-    GetIncompleteContributionsCallback callback) {
-  auto* holder = new CallbackHolder<GetIncompleteContributionsCallback>(
-      AsWeakPtr(),
-      std::move(callback));
-  ledger_client_->GetIncompleteContributions(
-      std::bind(LedgerClientMojoProxy::OnGetNotCompletedContributions,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnGetContributionInfo(
-    CallbackHolder<GetContributionInfoCallback>* holder,
-    ledger::ContributionInfoPtr info) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(std::move(info));
-  }
-  delete holder;
-}
-
-void LedgerClientMojoProxy::GetContributionInfo(
-    const std::string& contribution_id,
-    GetContributionInfoCallback callback) {
-  auto* holder = new CallbackHolder<GetContributionInfoCallback>(
-      AsWeakPtr(),
-      std::move(callback));
-  ledger_client_->GetContributionInfo(
-      contribution_id,
-      std::bind(LedgerClientMojoProxy::OnGetContributionInfo,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnUpdateContributionInfoStepAndCount(
-    CallbackHolder<UpdateContributionInfoStepAndCountCallback>* holder,
-    const ledger::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(result);
-  }
-  delete holder;
-}
-
-void LedgerClientMojoProxy::UpdateContributionInfoStepAndCount(
-    const std::string& contribution_id,
-    const ledger::ContributionStep step,
-    const int32_t retry_count,
-    UpdateContributionInfoStepAndCountCallback callback) {
-  auto* holder = new CallbackHolder<UpdateContributionInfoStepAndCountCallback>(
-      AsWeakPtr(),
-      std::move(callback));
-  ledger_client_->UpdateContributionInfoStepAndCount(
-      contribution_id,
-      step,
-      retry_count,
-      std::bind(LedgerClientMojoProxy::OnUpdateContributionInfoStepAndCount,
-                holder,
-                _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnUpdateContributionInfoContributedAmount(
-    CallbackHolder<UpdateContributionInfoContributedAmountCallback>* holder,
-    const ledger::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(result);
-  }
-  delete holder;
-}
-
-void LedgerClientMojoProxy::UpdateContributionInfoContributedAmount(
-    const std::string& contribution_id,
-    const std::string& publisher_key,
-    UpdateContributionInfoContributedAmountCallback callback) {
-  auto* holder =
-      new CallbackHolder<UpdateContributionInfoContributedAmountCallback>(
-      AsWeakPtr(),
-      std::move(callback));
-  ledger_client_->UpdateContributionInfoContributedAmount(
-      contribution_id,
-      publisher_key,
-      std::bind(
-          LedgerClientMojoProxy::OnUpdateContributionInfoContributedAmount,
-          holder,
-          _1));
-}
-
 void LedgerClientMojoProxy::ReconcileStampReset() {
   ledger_client_->ReconcileStampReset();
+}
+
+// static
+void LedgerClientMojoProxy::OnRunDBTransaction(
+    CallbackHolder<RunDBTransactionCallback>* holder,
+    ledger::DBCommandResponsePtr response) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(std::move(response));
+  }
+  delete holder;
+}
+
+void LedgerClientMojoProxy::RunDBTransaction(
+    ledger::DBTransactionPtr transaction,
+    RunDBTransactionCallback callback) {
+  auto* holder = new CallbackHolder<RunDBTransactionCallback>(
+      AsWeakPtr(),
+      std::move(callback));
+  ledger_client_->RunDBTransaction(
+      std::move(transaction),
+      std::bind(LedgerClientMojoProxy::OnRunDBTransaction,
+                holder,
+                _1));
+}
+
+// static
+void LedgerClientMojoProxy::OnGetCreateScript(
+    CallbackHolder<GetCreateScriptCallback>* holder,
+    const std::string& script,
+    const int table_version) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(script, table_version);
+  }
+  delete holder;
+}
+
+void LedgerClientMojoProxy::GetCreateScript(
+    GetCreateScriptCallback callback) {
+  auto* holder = new CallbackHolder<GetCreateScriptCallback>(
+      AsWeakPtr(),
+      std::move(callback));
+  ledger_client_->GetCreateScript(
+      std::bind(LedgerClientMojoProxy::OnGetCreateScript,
+                holder,
+                _1,
+                _2));
+}
+
+void LedgerClientMojoProxy::PendingContributionSaved(
+    const ledger::Result result) {
+  ledger_client_->PendingContributionSaved(result);
 }
 
 }  // namespace bat_ledger

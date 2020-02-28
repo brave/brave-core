@@ -184,11 +184,12 @@ class Contribution {
 
   void StartPhaseTwo(const std::string& viewing_id);
 
-  void DoDirectTip(
+  void DoTip(
       const std::string& publisher_key,
-      double amount,
-      const std::string& currency,
-      ledger::DoDirectTipCallback callback);
+      const double amount,
+      ledger::PublisherInfoPtr info,
+      const bool recurring,
+      ledger::ResultCallback callback);
 
  private:
   void CheckContributionQueue();
@@ -202,14 +203,14 @@ class Contribution {
   ledger::PublisherInfoList GetVerifiedListRecurring(
       const ledger::PublisherInfoList& all);
 
-  void PrepareACList(ledger::PublisherInfoList list,
-                     uint32_t next_record);
+  void OnSavePendingContribution(const ledger::Result result);
+
+  void PrepareACList(ledger::PublisherInfoList list);
 
   void StartRecurringTips(ledger::ResultCallback callback);
 
   void PrepareRecurringList(
       ledger::PublisherInfoList list,
-      uint32_t next_record,
       ledger::ResultCallback callback);
 
   void OnStartRecurringTips(const ledger::Result result);
@@ -234,7 +235,6 @@ class Contribution {
 
   void OnHasSufficientBalance(
       const ledger::PublisherInfoList& publisher_list,
-      const uint32_t record,
       const double balance,
       ledger::HasSufficientBalanceToReconcileCallback callback);
 
@@ -246,18 +246,28 @@ class Contribution {
       ledger::BalancePtr properties,
       ledger::HasSufficientBalanceToReconcileCallback callback);
 
+  void ProcessTip(
+      const ledger::Result result,
+      const std::string& publisher_key,
+      const double amount,
+      const bool recurring,
+      ledger::ResultCallback callback);
+
   void SavePendingContribution(
       const std::string& publisher_key,
       double amount,
       const ledger::RewardsType type,
-      ledger::SavePendingContributionCallback callback);
+      ledger::ResultCallback callback);
 
-  void OnDoDirectTipServerPublisher(
-    ledger::ServerPublisherInfoPtr server_info,
-    const std::string& publisher_key,
-    double amount,
-    const std::string& currency,
-    ledger::DoDirectTipCallback callback);
+  void OneTimeTipServerPublisher(
+      ledger::ServerPublisherInfoPtr server_info,
+      const std::string& publisher_key,
+      double amount,
+      ledger::ResultCallback callback);
+
+  void OnSavePendingOneTimeTip(
+      const ledger::Result result,
+      ledger::ResultCallback callback);
 
   bool HaveReconcileEnoughFunds(
       ledger::ContributionQueuePtr contribution,

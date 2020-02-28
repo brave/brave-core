@@ -49,14 +49,20 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_CONST_METHOD0(GenerateGUID, std::string());
 
-  MOCK_METHOD1(Initialize, void(ledger::InitializeCallback));
+  MOCK_METHOD2(Initialize, void(
+      const bool,
+      ledger::InitializeCallback));
 
   MOCK_METHOD2(CreateWallet,
       void(const std::string&, ledger::CreateWalletCallback));
 
-  MOCK_METHOD1(SetPublisherInfo, void(ledger::PublisherInfoPtr));
+  MOCK_METHOD2(SavePublisherInfo, void(
+      ledger::PublisherInfoPtr,
+      ledger::ResultCallback));
 
-  MOCK_METHOD1(SetActivityInfo, void(ledger::PublisherInfoPtr));
+  MOCK_METHOD2(SaveActivityInfo, void(
+      ledger::PublisherInfoPtr,
+      ledger::ResultCallback));
 
   MOCK_METHOD2(GetPublisherInfo,
       void(const std::string&, ledger::PublisherInfoCallback));
@@ -70,8 +76,10 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD2(GetMediaPublisherInfo,
       void(const std::string&, ledger::PublisherInfoCallback));
 
-  MOCK_METHOD2(SetMediaPublisherInfo,
-      void(const std::string&, const std::string&));
+  MOCK_METHOD3(SaveMediaPublisherInfo,
+      void(const std::string&,
+          const std::string&,
+          ledger::ResultCallback));
 
   MOCK_METHOD4(GetActivityInfoList,
       void(uint32_t,
@@ -79,11 +87,12 @@ class MockLedgerImpl : public LedgerImpl {
           ledger::ActivityInfoFilterPtr,
           ledger::PublisherInfoListCallback));
 
-  MOCK_METHOD4(DoDirectTip,
-      void(const std::string&,
-          double,
-          const std::string&,
-          ledger::DoDirectTipCallback));
+  MOCK_METHOD5(DoTip, void(
+      const std::string&,
+      const double,
+      ledger::PublisherInfoPtr,
+      const bool,
+      ledger::ResultCallback));
 
   MOCK_METHOD1(SetRewardsMainEnabled, void(bool));
 
@@ -105,9 +114,9 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD0(UpdateAdsRewards, void());
 
-  MOCK_METHOD2(SaveUnverifiedContribution,
+  MOCK_METHOD2(SavePendingContribution,
       void(ledger::PendingContributionList,
-          ledger::SavePendingContributionCallback));
+          ledger::ResultCallback));
 
   MOCK_CONST_METHOD0(GetReconcileStamp, uint64_t());
 
@@ -214,10 +223,10 @@ class MockLedgerImpl : public LedgerImpl {
           const ledger::PublisherExclude&,
           ledger::SetPublisherExcludeCallback));
 
-  MOCK_METHOD1(RestorePublishers, void(ledger::RestorePublishersCallback));
+  MOCK_METHOD1(RestorePublishers, void(ledger::ResultCallback));
 
   MOCK_METHOD2(OnRestorePublishers,
-      void(const ledger::Result, ledger::RestorePublishersCallback));
+      void(const ledger::Result, ledger::ResultCallback));
 
   MOCK_CONST_METHOD0(IsWalletCreated, bool());
 
@@ -264,14 +273,14 @@ class MockLedgerImpl : public LedgerImpl {
           const uint32_t));
 
   MOCK_METHOD2(SaveRecurringTip,
-      void(ledger::RecurringTipPtr, ledger::SaveRecurringTipCallback));
+      void(ledger::RecurringTipPtr, ledger::ResultCallback));
 
   MOCK_METHOD1(GetRecurringTips, void(ledger::PublisherInfoListCallback));
 
   MOCK_METHOD1(GetOneTimeTips, void(ledger::PublisherInfoListCallback));
 
   MOCK_METHOD2(RemoveRecurringTip,
-      void(const std::string&, ledger::RemoveRecurringTipCallback));
+      void(const std::string&, ledger::ResultCallback));
 
   MOCK_METHOD6(CreateActivityFilter,
       ledger::ActivityInfoFilterPtr(const std::string&,
@@ -432,10 +441,10 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD2(RemovePendingContribution,
       void(const uint64_t id,
-          ledger::RemovePendingContributionCallback));
+          ledger::ResultCallback));
 
   MOCK_METHOD1(RemoveAllPendingContributions,
-      void(ledger::RemovePendingContributionCallback));
+      void(ledger::ResultCallback));
 
   MOCK_METHOD1(GetPendingContributionsTotal,
       void(ledger::PendingContributionsTotalCallback));
@@ -480,14 +489,21 @@ class MockLedgerImpl : public LedgerImpl {
           const std::vector<std::string>&));
 
   MOCK_METHOD2(DeleteActivityInfo,
-      void(const std::string&, ledger::DeleteActivityInfoCallback));
+      void(const std::string&, ledger::ResultCallback));
 
-  MOCK_METHOD2(ClearAndInsertServerPublisherList,
-      void(ledger::ServerPublisherInfoList,
-          ledger::ClearAndInsertServerPublisherListCallback));
+  MOCK_METHOD1(ClearServerPublisherList, void(ledger::ResultCallback));
 
-  MOCK_METHOD2(GetServerPublisherInfo,
-      void(const std::string&, ledger::GetServerPublisherInfoCallback));
+  MOCK_METHOD2(InsertServerPublisherList, void(
+      const std::vector<ledger::ServerPublisherPartial>&,
+      ledger::ResultCallback));
+
+  MOCK_METHOD2(InsertPublisherBannerList, void(
+      const std::vector<ledger::PublisherBanner>&,
+      ledger::ResultCallback));
+
+  MOCK_METHOD2(GetServerPublisherInfo, void(
+      const std::string&,
+      ledger::GetServerPublisherInfoCallback));
 
   MOCK_METHOD1(IsPublisherConnectedOrVerified,
       bool(const ledger::PublisherStatus));
@@ -538,7 +554,7 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD2(RemoveTransferFee, void(const std::string&, const std::string&));
 
-  MOCK_METHOD2(InsertOrUpdateContributionQueue,
+  MOCK_METHOD2(SaveContributionQueue,
       void(ledger::ContributionQueuePtr, ledger::ResultCallback));
 
   MOCK_METHOD2(DeleteContributionQueue,
@@ -547,7 +563,7 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD1(GetFirstContributionQueue,
       void(ledger::GetFirstContributionQueueCallback));
 
-  MOCK_METHOD2(InsertOrUpdatePromotion,
+  MOCK_METHOD2(SavePromotion,
       void(ledger::PromotionPtr, ledger::ResultCallback));
 
   MOCK_METHOD2(GetPromotion,
@@ -556,8 +572,8 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD1(GetAllPromotions, void(ledger::GetAllPromotionsCallback));
 
   MOCK_METHOD2(DeletePromotionList, void(
-      const std::vector<std::string>& id_list,
-      ledger::ResultCallback callback));
+      const std::vector<std::string>&,
+      ledger::ResultCallback));
 
   MOCK_METHOD2(SaveUnblindedTokenList, void(
     ledger::UnblindedTokenList, ledger::ResultCallback));
@@ -580,6 +596,12 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD2(GetContributionInfo, void(
       const std::string& contribution_id,
       ledger::GetContributionInfoCallback callback));
+
+  MOCK_METHOD2(RunDBTransaction, void(
+      ledger::DBTransactionPtr,
+      ledger::RunDBTransactionCallback));
+
+  MOCK_METHOD1(GetCreateScript, void(ledger::GetCreateScriptCallback callback));
 };
 
 }  // namespace bat_ledger

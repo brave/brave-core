@@ -422,7 +422,10 @@ void GitHub::SavePublisherInfo(
                           callback);
 
   if (!media_key.empty()) {
-    ledger_->SetMediaPublisherInfo(media_key, publisher_key);
+    ledger_->SaveMediaPublisherInfo(
+        media_key,
+        publisher_key,
+        [](const ledger::Result _){});
   }
 }
 

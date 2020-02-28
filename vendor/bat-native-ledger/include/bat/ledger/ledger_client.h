@@ -43,30 +43,22 @@ using PublisherInfoCallback =
     std::function<void(const Result, PublisherInfoPtr)>;
 // TODO(nejczdovc) we should be providing result back as well
 using PublisherInfoListCallback =
-    std::function<void(PublisherInfoList, uint32_t /* next_record */)>;
+    std::function<void(PublisherInfoList)>;
 using GetNicewareListCallback =
     std::function<void(const Result, const std::string&)>;
-using RemoveRecurringTipCallback = std::function<void(const Result)>;
 using FetchIconCallback = std::function<void(bool, const std::string&)>;
 using LoadURLCallback = std::function<void(const int, const std::string&,
     const std::map<std::string, std::string>& headers)>;
-using RestorePublishersCallback = std::function<void(const Result)>;
 using OnSaveCallback = std::function<void(const Result)>;
 using OnLoadCallback = std::function<void(const Result,
                                           const std::string&)>;
 using OnResetCallback = std::function<void(const Result)>;
 using PendingContributionInfoListCallback =
     std::function<void(PendingContributionInfoList)>;
-using RemovePendingContributionCallback = std::function<void(const Result)>;
 using PendingContributionsTotalCallback = std::function<void(double)>;
 using GetExternalWalletsCallback =
     std::function<void(std::map<std::string, ledger::ExternalWalletPtr>)>;
 using ShowNotificationCallback = std::function<void(const Result)>;
-using SavePendingContributionCallback = std::function<void(const Result)>;
-using DeleteActivityInfoCallback = std::function<void(const ledger::Result)>;
-using SaveRecurringTipCallback = std::function<void(const Result)>;
-using ClearAndInsertServerPublisherListCallback =
-    std::function<void(const Result)>;
 using GetServerPublisherInfoCallback =
     std::function<void(ledger::ServerPublisherInfoPtr)>;
 using ResultCallback = std::function<void(const Result)>;
@@ -82,11 +74,12 @@ using GetTransactionReportCallback =
 using GetContributionReportCallback =
     std::function<void(ledger::ContributionReportInfoList)>;
 
-using GetIncompleteContributionsCallback =
-    std::function<void(ContributionInfoList)>;
-
 using GetContributionInfoCallback =
     std::function<void(ContributionInfoPtr)>;
+
+using RunDBTransactionCallback = std::function<void(DBCommandResponsePtr)>;
+using GetCreateScriptCallback =
+    std::function<void(const std::string&, const int)>;
 
 class LEDGER_EXPORT LedgerClient {
  public:
@@ -117,31 +110,6 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void LoadNicewareList(ledger::GetNicewareListCallback callback) = 0;
 
-  virtual void SavePublisherInfo(PublisherInfoPtr publisher_info,
-                                 PublisherInfoCallback callback) = 0;
-
-  virtual void SaveActivityInfo(PublisherInfoPtr publisher_info,
-                                PublisherInfoCallback callback) = 0;
-
-  virtual void LoadPublisherInfo(const std::string& publisher_key,
-                                 PublisherInfoCallback callback) = 0;
-
-  virtual void LoadActivityInfo(ActivityInfoFilterPtr filter,
-                                PublisherInfoCallback callback) = 0;
-
-  virtual void LoadPanelPublisherInfo(ActivityInfoFilterPtr filter,
-                                      PublisherInfoCallback callback) = 0;
-
-  virtual void LoadMediaPublisherInfo(const std::string& media_key,
-                                PublisherInfoCallback callback) = 0;
-
-  virtual void SaveMediaPublisherInfo(const std::string& media_key,
-                                const std::string& publisher_id) = 0;
-
-  virtual void GetActivityInfoList(uint32_t start, uint32_t limit,
-                                   ActivityInfoFilterPtr filter,
-                                   PublisherInfoListCallback callback) = 0;
-
   virtual void OnPanelPublisherInfo(Result result,
                                    ledger::PublisherInfoPtr publisher_info,
                                    uint64_t windowId) = 0;
@@ -149,24 +117,6 @@ class LEDGER_EXPORT LedgerClient {
   virtual void FetchFavIcon(const std::string& url,
                             const std::string& favicon_key,
                             FetchIconCallback callback) = 0;
-
-  virtual void SaveContributionInfo(
-      ledger::ContributionInfoPtr info,
-      ledger::ResultCallback callback) = 0;
-
-  virtual void SaveRecurringTip(
-      ledger::RecurringTipPtr info,
-      ledger::SaveRecurringTipCallback callback) = 0;
-
-  virtual void GetRecurringTips(
-      ledger::PublisherInfoListCallback callback) = 0;
-
-  virtual void GetOneTimeTips(
-      ledger::PublisherInfoListCallback callback) = 0;
-
-  virtual void RemoveRecurringTip(
-      const std::string& publisher_key,
-      ledger::RemoveRecurringTipCallback callback) = 0;
 
   // uint64_t time_offset (input): timer offset in seconds.
   // uint32_t timer_id (output) : 0 in case of failure
@@ -183,10 +133,6 @@ class LEDGER_EXPORT LedgerClient {
       const ledger::UrlMethod method,
       ledger::LoadURLCallback callback) = 0;
 
-  virtual void SavePendingContribution(
-      ledger::PendingContributionList list,
-      ledger::SavePendingContributionCallback callback) = 0;
-
   // Logs debug information
   virtual std::unique_ptr<LogStream> Log(
       const char* file,
@@ -198,11 +144,7 @@ class LEDGER_EXPORT LedgerClient {
       int line,
       int vlog_level) const = 0;
 
-  virtual void RestorePublishers(
-    ledger::RestorePublishersCallback callback) = 0;
-
-  virtual void SaveNormalizedPublisherList(
-      ledger::PublisherInfoList normalized_list) = 0;
+  virtual void PublisherListNormalized(ledger::PublisherInfoList list) = 0;
 
   virtual void SaveState(const std::string& name,
                          const std::string& value,
@@ -239,19 +181,6 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void ConfirmationsTransactionHistoryDidChange() = 0;
 
-  virtual void GetPendingContributions(
-      ledger::PendingContributionInfoListCallback callback) = 0;
-
-  virtual void RemovePendingContribution(
-      const uint64_t id,
-      ledger::RemovePendingContributionCallback callback) = 0;
-
-  virtual void RemoveAllPendingContributions(
-      ledger::RemovePendingContributionCallback callback) = 0;
-
-  virtual void GetPendingContributionsTotal(
-      ledger::PendingContributionsTotalCallback callback) = 0;
-
   virtual void OnContributeUnverifiedPublishers(
       Result result,
       const std::string& publisher_key,
@@ -268,18 +197,6 @@ class LEDGER_EXPORT LedgerClient {
       const std::vector<std::string>& args,
       ledger::ShowNotificationCallback callback) = 0;
 
-  virtual void DeleteActivityInfo(
-      const std::string& publisher_key,
-      ledger::DeleteActivityInfoCallback callback) = 0;
-
-  virtual void ClearAndInsertServerPublisherList(
-      ledger::ServerPublisherInfoList list,
-      ledger::ClearAndInsertServerPublisherListCallback callback) = 0;
-
-  virtual void GetServerPublisherInfo(
-    const std::string& publisher_key,
-    ledger::GetServerPublisherInfoCallback callback) = 0;
-
   virtual void SetTransferFee(
       const std::string& wallet_type,
       ledger::TransferFeePtr transfer_fee) = 0;
@@ -291,80 +208,19 @@ class LEDGER_EXPORT LedgerClient {
     const std::string& wallet_type,
     const std::string& id) = 0;
 
-  virtual void InsertOrUpdateContributionQueue(
-    ledger::ContributionQueuePtr info,
-    ledger::ResultCallback callback) = 0;
-
-  virtual void DeleteContributionQueue(
-    const uint64_t id,
-    ledger::ResultCallback callback) = 0;
-
-  virtual void GetFirstContributionQueue(
-    ledger::GetFirstContributionQueueCallback callback) = 0;
-
-  virtual void InsertOrUpdatePromotion(
-    ledger::PromotionPtr info,
-    ledger::ResultCallback callback) = 0;
-
-  virtual void GetPromotion(
-    const std::string& id,
-    ledger::GetPromotionCallback callback) = 0;
-
-  virtual void GetAllPromotions(
-    ledger::GetAllPromotionsCallback callback) = 0;
-
-  virtual void DeletePromotionList(
-      const std::vector<std::string>& id_list,
-      ledger::ResultCallback callback) = 0;
-
-  virtual void SaveUnblindedTokenList(
-    ledger::UnblindedTokenList list,
-    ledger::ResultCallback callback) = 0;
-
-  virtual void GetAllUnblindedTokens(
-    ledger::GetAllUnblindedTokensCallback callback) = 0;
-
-  virtual void DeleteUnblindedTokens(
-      const std::vector<std::string>& id_list,
-      ledger::ResultCallback callback) = 0;
-
-  virtual void DeleteUnblindedTokensForPromotion(
-      const std::string& promotion_id,
-      ledger::ResultCallback callback) = 0;
-
   virtual ledger::ClientInfoPtr GetClientInfo() = 0;
 
   virtual void UnblindedTokensReady() = 0;
 
-  virtual void GetTransactionReport(
-      const ledger::ActivityMonth month,
-      const int year,
-      ledger::GetTransactionReportCallback callback) = 0;
-
-  virtual void GetContributionReport(
-      const ledger::ActivityMonth month,
-      const int year,
-      ledger::GetContributionReportCallback callback) = 0;
-
-  virtual void GetIncompleteContributions(
-      ledger::GetIncompleteContributionsCallback callback) = 0;
-
-  virtual void GetContributionInfo(
-      const std::string& contribution_id,
-      GetContributionInfoCallback callback) = 0;
-
-  virtual void UpdateContributionInfoStepAndCount(
-      const std::string& contribution_id,
-      const ledger::ContributionStep step,
-      const int32_t retry_count,
-      ResultCallback callback) = 0;
-
-  virtual void UpdateContributionInfoContributedAmount(
-      const std::string& contribution_id,
-      const std::string& publisher_key,
-      ResultCallback callback) = 0;
-
   virtual void ReconcileStampReset() = 0;
+
+  virtual void RunDBTransaction(
+      ledger::DBTransactionPtr transaction,
+      ledger::RunDBTransactionCallback callback) = 0;
+
+  virtual void GetCreateScript(ledger::GetCreateScriptCallback callback) = 0;
+
+  virtual void PendingContributionSaved(const ledger::Result result) = 0;
 };
 
 }  // namespace ledger

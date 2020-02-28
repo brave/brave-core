@@ -144,7 +144,6 @@ void Contribution::OnSufficientBalanceWallet(
       std::bind(&Contribution::OnHasSufficientBalance,
           this,
           _1,
-          _2,
           properties->total,
           callback);
 
@@ -153,7 +152,6 @@ void Contribution::OnSufficientBalanceWallet(
 
 void Contribution::OnHasSufficientBalance(
     const ledger::PublisherInfoList& publisher_list,
-    const uint32_t record,
     const double balance,
     ledger::HasSufficientBalanceToReconcileCallback callback) {
   if (publisher_list.empty()) {
@@ -205,12 +203,17 @@ ledger::PublisherInfoList Contribution::GetVerifiedListRecurring(
   }
 
   if (non_verified.size() > 0) {
-    ledger_->SaveUnverifiedContribution(
-      std::move(non_verified),
-      [](const ledger::Result _){});
+    auto save_callback = std::bind(&Contribution::OnSavePendingContribution,
+        this,
+        _1);
+    ledger_->SavePendingContribution(std::move(non_verified), save_callback);
   }
 
   return verified;
+}
+
+void Contribution::OnSavePendingContribution(const ledger::Result result) {
+  ledger_->PendingContributionSaved(result);
 }
 
 void Contribution::StartRecurringTips(ledger::ResultCallback callback) {
@@ -218,13 +221,11 @@ void Contribution::StartRecurringTips(ledger::ResultCallback callback) {
       std::bind(&Contribution::PrepareRecurringList,
                 this,
                 _1,
-                _2,
                 callback));
 }
 
 void Contribution::PrepareRecurringList(
     ledger::PublisherInfoList list,
-    uint32_t next_record,
     ledger::ResultCallback callback) {
   auto verified_list = GetVerifiedListRecurring(list);
 
@@ -241,7 +242,7 @@ void Contribution::PrepareRecurringList(
     queue->partial = false;
     queue->publishers = std::move(queue_list);
 
-    ledger_->InsertOrUpdateContributionQueue(
+    ledger_->SaveContributionQueue(
         std::move(queue),
         [](const ledger::Result _){});
   }
@@ -301,13 +302,10 @@ void Contribution::StartAutoContribute(uint64_t reconcile_stamp) {
       std::move(filter),
       std::bind(&Contribution::PrepareACList,
                 this,
-                _1,
-                _2));
+                _1));
 }
 
-void Contribution::PrepareACList(
-    ledger::PublisherInfoList list,
-    uint32_t next_record) {
+void Contribution::PrepareACList(ledger::PublisherInfoList list) {
   ledger::PublisherInfoList normalized_list;
 
   ledger_->NormalizeContributeWinners(&normalized_list, &list, 0);
@@ -333,7 +331,7 @@ void Contribution::PrepareACList(
   queue->amount = ledger_->GetContributionAmount();
   queue->partial = true;
   queue->publishers = std::move(queue_list);
-  ledger_->InsertOrUpdateContributionQueue(
+  ledger_->SaveContributionQueue(
       std::move(queue),
       [](const ledger::Result _){});
   CheckContributionQueue();
@@ -654,26 +652,61 @@ void Contribution::StartPhaseTwo(const std::string& viewing_id) {
   phase_two_->Start(viewing_id);
 }
 
-void Contribution::DoDirectTip(
+void Contribution::DoTip(
     const std::string& publisher_key,
-    double amount,
-    const std::string& currency,
-    ledger::DoDirectTipCallback callback) {
+    const double amount,
+    ledger::PublisherInfoPtr info,
+    const bool recurring,
+    ledger::ResultCallback callback) {
   if (publisher_key.empty()) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-      "Failed direct donation due to missing publisher id";
+      "Failed to do tip due to missing publisher key";
     callback(ledger::Result::NOT_FOUND);
     return;
   }
 
+  if (info) {
+    auto save_callback = std::bind(&Contribution::ProcessTip,
+        this,
+        _1,
+        publisher_key,
+        amount,
+        recurring,
+        callback);
+    ledger_->SavePublisherInfo(std::move(info), save_callback);
+    return;
+  }
+
+  ProcessTip(
+      ledger::Result::LEDGER_OK,
+      publisher_key,
+      amount,
+      recurring,
+      callback);
+}
+
+void Contribution::ProcessTip(
+    const ledger::Result result,
+    const std::string& publisher_key,
+    const double amount,
+    const bool recurring,
+    ledger::ResultCallback callback) {
+  if (recurring) {
+    auto info = ledger::RecurringTip::New();
+    info->publisher_key = publisher_key;
+    info->amount = amount;
+    info->created_at = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+    ledger_->SaveRecurringTip(std::move(info), callback);
+    return;
+  }
+
   const auto server_callback =
-    std::bind(&Contribution::OnDoDirectTipServerPublisher,
-              this,
-              _1,
-              publisher_key,
-              amount,
-              currency,
-              callback);
+    std::bind(&Contribution::OneTimeTipServerPublisher,
+        this,
+        _1,
+        publisher_key,
+        amount,
+        callback);
 
   ledger_->GetServerPublisherInfo(publisher_key, server_callback);
 }
@@ -682,7 +715,7 @@ void Contribution::SavePendingContribution(
     const std::string& publisher_key,
     double amount,
     const ledger::RewardsType type,
-    ledger::SavePendingContributionCallback callback) {
+    ledger::ResultCallback callback) {
   auto contribution = ledger::PendingContribution::New();
   contribution->publisher_key = publisher_key;
   contribution->amount = amount;
@@ -691,17 +724,14 @@ void Contribution::SavePendingContribution(
   ledger::PendingContributionList list;
   list.push_back(std::move(contribution));
 
-  ledger_->SaveUnverifiedContribution(
-      std::move(list),
-      callback);
+  ledger_->SavePendingContribution(std::move(list), callback);
 }
 
-void Contribution::OnDoDirectTipServerPublisher(
+void Contribution::OneTimeTipServerPublisher(
     ledger::ServerPublisherInfoPtr server_info,
     const std::string& publisher_key,
     double amount,
-    const std::string& currency,
-    ledger::DoDirectTipCallback callback) {
+    ledger::ResultCallback callback) {
   auto status = ledger::PublisherStatus::NOT_VERIFIED;
   if (server_info) {
     status =  server_info->status;
@@ -709,11 +739,15 @@ void Contribution::OnDoDirectTipServerPublisher(
 
   // Save to the pending list if not verified
   if (status == ledger::PublisherStatus::NOT_VERIFIED) {
+    auto save_callback = std::bind(&Contribution::OnSavePendingOneTimeTip,
+        this,
+        _1,
+        callback);
     SavePendingContribution(
         publisher_key,
         amount,
         ledger::RewardsType::ONE_TIME_TIP,
-        callback);
+        save_callback);
     return;
   }
 
@@ -731,6 +765,13 @@ void Contribution::OnDoDirectTipServerPublisher(
 
   InitReconcile(std::move(queue));
   callback(ledger::Result::LEDGER_OK);
+}
+
+void Contribution::OnSavePendingOneTimeTip(
+    const ledger::Result result,
+    ledger::ResultCallback callback) {
+  ledger_->PendingContributionSaved(result);
+  callback(result);
 }
 
 bool Contribution::HaveReconcileEnoughFunds(
@@ -1083,11 +1124,14 @@ void Contribution::OnExternalWalletServerPublisherInfo(
   }
 
   if (info->status != ledger::PublisherStatus::VERIFIED) {
+    auto save_callback = std::bind(&Contribution::OnSavePendingContribution,
+        this,
+        _1);
     SavePendingContribution(
         info->publisher_key,
         amount,
         static_cast<ledger::RewardsType>(reconcile.type),
-        [](const ledger::Result _){});
+        save_callback);
     return;
   }
 

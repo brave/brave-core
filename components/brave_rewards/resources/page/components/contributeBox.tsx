@@ -50,25 +50,27 @@ class ContributeBox extends React.Component<Props, State> {
   }
 
   getContributeRows = (list: Rewards.Publisher[]) => {
-    return list.map((item: Rewards.Publisher) => {
-      const verified = utils.isPublisherConnectedOrVerified(item.status)
-      let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
-      if (item.favIcon && verified) {
-        faviconUrl = `chrome://favicon/size/48@1x/${item.favIcon}`
-      }
+    return list
+      .sort((a, b) => b.percentage - a.percentage)
+      .map((item: Rewards.Publisher) => {
+        const verified = utils.isPublisherConnectedOrVerified(item.status)
+        let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
+        if (item.favIcon && verified) {
+          faviconUrl = `chrome://favicon/size/48@1x/${item.favIcon}`
+        }
 
-      return {
-        profile: {
-          name: item.name,
-          verified,
-          provider: (item.provider ? item.provider : undefined) as Provider,
-          src: faviconUrl
-        },
-        url: item.url,
-        attention: item.percentage,
-        onRemove: () => { this.actions.excludePublisher(item.id) }
-      }
-    })
+        return {
+          profile: {
+            name: item.name,
+            verified,
+            provider: (item.provider ? item.provider : undefined) as Provider,
+            src: faviconUrl
+          },
+          url: item.url,
+          attention: item.percentage,
+          onRemove: () => { this.actions.excludePublisher(item.id) }
+        }
+      })
   }
 
   getExcludedRows = (list?: Rewards.ExcludedPublisher[]) => {

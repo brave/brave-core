@@ -20,44 +20,14 @@ void NativeLedgerClient::FetchFavIcon(const std::string & url, const std::string
 std::string NativeLedgerClient::GenerateGUID() const {
   return [bridge_ generateGUID];
 }
-void NativeLedgerClient::GetActivityInfoList(uint32_t start, uint32_t limit, ledger::ActivityInfoFilterPtr filter, ledger::PublisherInfoListCallback callback) {
-  [bridge_ getActivityInfoList:start limit:limit filter:std::move(filter) callback:callback];
-}
-void NativeLedgerClient::GetOneTimeTips(ledger::PublisherInfoListCallback callback) {
-  [bridge_ getOneTimeTips:callback];
-}
-void NativeLedgerClient::GetPendingContributions(ledger::PendingContributionInfoListCallback callback) {
-  [bridge_ getPendingContributions:callback];
-}
-void NativeLedgerClient::GetPendingContributionsTotal(ledger::PendingContributionsTotalCallback callback) {
-  [bridge_ getPendingContributionsTotal:callback];
-}
-void NativeLedgerClient::SaveRecurringTip(ledger::RecurringTipPtr info, ledger::SaveRecurringTipCallback callback) {
-  [bridge_ saveRecurringTip:std::move(info) callback:callback];
-}
-void NativeLedgerClient::GetRecurringTips(ledger::PublisherInfoListCallback callback) {
-  [bridge_ getRecurringTips:callback];
-}
 void NativeLedgerClient::KillTimer(const uint32_t timer_id) {
   [bridge_ killTimer:timer_id];
-}
-void NativeLedgerClient::LoadActivityInfo(ledger::ActivityInfoFilterPtr filter, ledger::PublisherInfoCallback callback) {
-  [bridge_ loadActivityInfo:std::move(filter) callback:callback];
 }
 void NativeLedgerClient::LoadLedgerState(ledger::OnLoadCallback callback) {
   [bridge_ loadLedgerState:callback];
 }
-void NativeLedgerClient::LoadMediaPublisherInfo(const std::string & media_key, ledger::PublisherInfoCallback callback) {
-  [bridge_ loadMediaPublisherInfo:media_key callback:callback];
-}
 void NativeLedgerClient::LoadNicewareList(ledger::GetNicewareListCallback callback) {
   [bridge_ loadNicewareList:callback];
-}
-void NativeLedgerClient::LoadPanelPublisherInfo(ledger::ActivityInfoFilterPtr filter, ledger::PublisherInfoCallback callback) {
-  [bridge_ loadPanelPublisherInfo:std::move(filter) callback:callback];
-}
-void NativeLedgerClient::LoadPublisherInfo(const std::string & publisher_key, ledger::PublisherInfoCallback callback) {
-  [bridge_ loadPublisherInfo:publisher_key callback:callback];
 }
 void NativeLedgerClient::LoadPublisherState(ledger::OnLoadCallback callback) {
   [bridge_ loadPublisherState:callback];
@@ -77,45 +47,17 @@ void NativeLedgerClient::OnPanelPublisherInfo(ledger::Result result, ledger::Pub
 void NativeLedgerClient::OnReconcileComplete(ledger::Result result, const std::string & viewing_id, const double amount, const ledger::RewardsType type) {
   [bridge_ onReconcileComplete:result viewingId:viewing_id type:type amount:amount];
 }
-void NativeLedgerClient::RemoveRecurringTip(const std::string & publisher_key, ledger::RemoveRecurringTipCallback callback) {
-  [bridge_ removeRecurringTip:publisher_key callback:callback];
-}
-
-void NativeLedgerClient::RestorePublishers(ledger::RestorePublishersCallback callback) {
-  [bridge_ restorePublishers:callback];
-}
 void NativeLedgerClient::OnWalletProperties(ledger::Result result, ledger::WalletPropertiesPtr arg1) {
   [bridge_ onWalletProperties:result arg1:std::move(arg1)];
-}
-void NativeLedgerClient::RemoveAllPendingContributions(ledger::RemovePendingContributionCallback callback) {
-  [bridge_ removeAllPendingContributions:callback];
-}
-void NativeLedgerClient::RemovePendingContribution(const uint64_t id, ledger::RemovePendingContributionCallback callback) {
-  [bridge_ removePendingContribution:id callback:callback];
 }
 void NativeLedgerClient::ResetState(const std::string & name, ledger::OnResetCallback callback) {
   [bridge_ resetState:name callback:callback];
 }
-void NativeLedgerClient::SaveActivityInfo(ledger::PublisherInfoPtr publisher_info, ledger::PublisherInfoCallback callback) {
-  [bridge_ saveActivityInfo:std::move(publisher_info) callback:callback];
-}
-void NativeLedgerClient::SaveContributionInfo(ledger::ContributionInfoPtr info, ledger::ResultCallback callback) {
-  [bridge_ saveContributionInfo:std::move(info) callback:callback];
-}
 void NativeLedgerClient::SaveLedgerState(const std::string & ledger_state, ledger::LedgerCallbackHandler * handler) {
   [bridge_ saveLedgerState:ledger_state handler:handler];
 }
-void NativeLedgerClient::SaveMediaPublisherInfo(const std::string & media_key, const std::string & publisher_id) {
-  [bridge_ saveMediaPublisherInfo:media_key publisherId:publisher_id];
-}
-void NativeLedgerClient::SaveNormalizedPublisherList(ledger::PublisherInfoList normalized_list) {
-  [bridge_ saveNormalizedPublisherList:std::move(normalized_list)];
-}
-void NativeLedgerClient::SavePendingContribution(ledger::PendingContributionList list, ledger::SavePendingContributionCallback callback) {
-  [bridge_ savePendingContribution:std::move(list) callback:callback];
-}
-void NativeLedgerClient::SavePublisherInfo(ledger::PublisherInfoPtr publisher_info, ledger::PublisherInfoCallback callback) {
-  [bridge_ savePublisherInfo:std::move(publisher_info) callback:callback];
+void NativeLedgerClient::PublisherListNormalized(ledger::PublisherInfoList list) {
+  [bridge_ publisherListNormalized:std::move(list)];
 }
 void NativeLedgerClient::SavePublisherState(const std::string & publisher_state, ledger::LedgerCallbackHandler * handler) {
   [bridge_ savePublisherState:publisher_state handler:handler];
@@ -186,15 +128,6 @@ void NativeLedgerClient::SaveExternalWallet(const std::string& wallet_type, ledg
 void NativeLedgerClient::ShowNotification(const std::string& type, const std::vector<std::string>& args, ledger::ShowNotificationCallback callback) {
   [bridge_ showNotification:type args:args callback:callback];
 }
-void NativeLedgerClient::DeleteActivityInfo(const std::string& publisher_key, ledger::DeleteActivityInfoCallback callback) {
-  [bridge_ deleteActivityInfo:publisher_key callback:callback];
-}
-void NativeLedgerClient::ClearAndInsertServerPublisherList(ledger::ServerPublisherInfoList list, ledger::ClearAndInsertServerPublisherListCallback callback) {
-  [bridge_ clearAndInsertServerPublisherList:std::move(list) callback:callback];
-}
-void NativeLedgerClient::GetServerPublisherInfo(const std::string& publisher_key, ledger::GetServerPublisherInfoCallback callback) {
-  [bridge_ getServerPublisherInfo:publisher_key callback:callback];
-}
 void NativeLedgerClient::SetTransferFee(const std::string& wallet_type, ledger::TransferFeePtr transfer_fee) {
   [bridge_ setTransferFee:wallet_type transfer_fee:std::move(transfer_fee)];
 }
@@ -222,63 +155,21 @@ int64_t NativeLedgerClient::GetInt64Option(const std::string& name) const {
 uint64_t NativeLedgerClient::GetUint64Option(const std::string& name) const {
   return [bridge_ getUint64Option:name];
 }
-void NativeLedgerClient::InsertOrUpdateContributionQueue(ledger::ContributionQueuePtr info, ledger::ResultCallback callback) {
-  return [bridge_ insertOrUpdateContributionQueue:std::move(info) callback:callback];
-}
-void NativeLedgerClient::DeleteContributionQueue(const uint64_t id, ledger::ResultCallback callback) {
-  return [bridge_ deleteContributionQueue:id callback:callback];
-}
-void NativeLedgerClient::GetFirstContributionQueue(ledger::GetFirstContributionQueueCallback callback) {
-  return [bridge_ getFirstContributionQueue:callback];
-}
-void NativeLedgerClient::InsertOrUpdatePromotion(ledger::PromotionPtr info, ledger::ResultCallback callback) {
-  return [bridge_ insertOrUpdatePromotion:std::move(info) callback:callback];
-}
-void NativeLedgerClient::GetPromotion(const std::string& id, ledger::GetPromotionCallback callback) {
-  return [bridge_ getPromotion:id callback:callback];
-}
-void NativeLedgerClient::DeletePromotionList(const std::vector<std::string>& id_list,  ledger::ResultCallback callback) {
-  return [bridge_ deletePromotionList:id_list callback:callback];
-}
-void NativeLedgerClient::SaveUnblindedTokenList(ledger::UnblindedTokenList list, ledger::ResultCallback callback) {
-  return [bridge_ saveUnblindedTokenList:std::move(list) callback:callback];
-}
-void NativeLedgerClient::GetAllUnblindedTokens(ledger::GetAllUnblindedTokensCallback callback) {
-  return [bridge_ getAllUnblindedTokens:callback];
-}
-void NativeLedgerClient::DeleteUnblindedTokens(const std::vector<std::string>& id_list, ledger::ResultCallback callback) {
-  [bridge_ deleteUnblindedTokens:id_list callback:callback];
-}
 ledger::ClientInfoPtr NativeLedgerClient::GetClientInfo() {
   return [bridge_ getClientInfo];
 }
 void NativeLedgerClient::UnblindedTokensReady() {
   [bridge_ unblindedTokensReady];
 }
-void NativeLedgerClient::GetAllPromotions(ledger::GetAllPromotionsCallback callback) {
-  [bridge_ getAllPromotions:callback];
-}
-void NativeLedgerClient::DeleteUnblindedTokensForPromotion(const std::string& promotion_id, ledger::ResultCallback callback) {
-  [bridge_ deleteUnblindedTokensForPromotion:promotion_id callback:callback];
-}
-void NativeLedgerClient::GetTransactionReport(const ledger::ActivityMonth month, const int year, ledger::GetTransactionReportCallback callback) {
-  [bridge_ getTransactionReport:month year:year callback:callback];
-}
-void NativeLedgerClient::GetContributionReport(const ledger::ActivityMonth month, const int year, ledger::GetContributionReportCallback callback) {
-  [bridge_ getContributionReport:month year:year callback:callback];
-}
-void NativeLedgerClient::GetIncompleteContributions(ledger::GetIncompleteContributionsCallback callback) {
-  [bridge_ getIncompleteContributions:callback];
-}
-void NativeLedgerClient::GetContributionInfo(const std::string& contribution_id, ledger::GetContributionInfoCallback callback) {
-  [bridge_ getContributionInfo:contribution_id callback:callback];
-}
-void NativeLedgerClient::UpdateContributionInfoStepAndCount(const std::string& contribution_id, const ledger::ContributionStep step, const int32_t retry_count, ledger::ResultCallback callback) {
-  [bridge_ updateContributionInfoStepAndCount:contribution_id step:step retry_count:retry_count callback:callback];
-}
-void NativeLedgerClient::UpdateContributionInfoContributedAmount(const std::string& contribution_id, const std::string& publisher_key, ledger::ResultCallback callback) {
-  [bridge_ updateContributionInfoContributedAmount:contribution_id publisher_key:publisher_key callback:callback];
-}
 void NativeLedgerClient::ReconcileStampReset() {
   [bridge_ reconcileStampReset];
+}
+void NativeLedgerClient::RunDBTransaction(ledger::DBTransactionPtr transaction, ledger::RunDBTransactionCallback callback) {
+  [bridge_ runDBTransaction:std::move(transaction) callback:callback];
+}
+void NativeLedgerClient::GetCreateScript(ledger::GetCreateScriptCallback callback) {
+  [bridge_ getCreateScript:callback];
+}
+void NativeLedgerClient::PendingContributionSaved(const ledger::Result result) {
+  [bridge_ pendingContributionSaved:result];
 }

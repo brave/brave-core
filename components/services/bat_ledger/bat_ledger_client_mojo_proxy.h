@@ -41,13 +41,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
                        ledger::LedgerCallbackHandler* handler) override;
   void SavePublisherState(const std::string& publisher_state,
                           ledger::LedgerCallbackHandler* handler) override;
-
-  void SavePublisherInfo(ledger::PublisherInfoPtr publisher_info,
-                         ledger::PublisherInfoCallback callback) override;
-  void LoadPublisherInfo(const std::string& publisher_key,
-                         ledger::PublisherInfoCallback callback) override;
-  void LoadPanelPublisherInfo(ledger::ActivityInfoFilterPtr filter,
-                              ledger::PublisherInfoCallback callback) override;
   void SetTimer(uint64_t time_offset, uint32_t* timer_id) override;
   void KillTimer(const uint32_t timer_id) override;
 
@@ -65,48 +58,16 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
                     const std::string& favicon_key,
                     ledger::FetchIconCallback callback) override;
 
-  void SaveContributionInfo(
-      ledger::ContributionInfoPtr info,
-      ledger::ResultCallback callback) override;
-
-  void SaveRecurringTip(
-      ledger::RecurringTipPtr info,
-      ledger::SaveRecurringTipCallback callback) override;
-  void GetRecurringTips(ledger::PublisherInfoListCallback callback) override;
-  void GetOneTimeTips(ledger::PublisherInfoListCallback callback) override;
   std::unique_ptr<ledger::LogStream> Log(const char* file,
                                          int line,
                                          ledger::LogLevel level) const override;
   std::unique_ptr<ledger::LogStream> VerboseLog(const char* file,
                                          int line,
                                          int verbosity_level) const override;
-  void LoadMediaPublisherInfo(
-      const std::string& media_key,
-      ledger::PublisherInfoCallback callback) override;
-  void SaveMediaPublisherInfo(const std::string& media_key,
-                              const std::string& publisher_id) override;
 
   std::string URIEncode(const std::string& value) override;
 
-  void SavePendingContribution(
-      ledger::PendingContributionList list,
-      ledger::SavePendingContributionCallback callback) override;
-
-  void LoadActivityInfo(ledger::ActivityInfoFilterPtr filter,
-                        ledger::PublisherInfoCallback callback) override;
-
-  void SaveActivityInfo(ledger::PublisherInfoPtr publisher_info,
-                        ledger::PublisherInfoCallback callback) override;
-
-  void RestorePublishers(ledger::RestorePublishersCallback callback) override;
-
-  void GetActivityInfoList(uint32_t start,
-                           uint32_t limit,
-                           ledger::ActivityInfoFilterPtr filter,
-                           ledger::PublisherInfoListCallback callback) override;
-
-  void SaveNormalizedPublisherList(
-      ledger::PublisherInfoList normalized_list) override;
+  void PublisherListNormalized(ledger::PublisherInfoList list) override;
 
   void SaveState(const std::string& name,
                  const std::string& value,
@@ -141,19 +102,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
 
   void ConfirmationsTransactionHistoryDidChange() override;
 
-  void GetPendingContributions(
-      ledger::PendingContributionInfoListCallback callback) override;
-
-  void RemovePendingContribution(
-      const uint64_t id,
-      ledger::RemovePendingContributionCallback callback) override;
-
-  void RemoveAllPendingContributions(
-      ledger::RemovePendingContributionCallback callback) override;
-
-  void GetPendingContributionsTotal(
-      ledger::PendingContributionsTotalCallback callback) override;
-
   void OnContributeUnverifiedPublishers(
       ledger::Result result,
       const std::string& publisher_key,
@@ -169,18 +117,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       const std::vector<std::string>& args,
       ledger::ShowNotificationCallback callback) override;
 
-  void DeleteActivityInfo(
-      const std::string& publisher_key,
-      ledger::DeleteActivityInfoCallback callback) override;
-
-  void ClearAndInsertServerPublisherList(
-    ledger::ServerPublisherInfoList list,
-    ledger::ClearAndInsertServerPublisherListCallback callback) override;
-
-  void GetServerPublisherInfo(
-    const std::string& publisher_key,
-    ledger::GetServerPublisherInfoCallback callback) override;
-
 
   ledger::TransferFeeList GetTransferFees(
       const std::string& wallet_type) override;
@@ -193,88 +129,25 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       const std::string& wallet_type,
       const std::string& id) override;
 
-  void InsertOrUpdateContributionQueue(
-      ledger::ContributionQueuePtr info,
-      ledger::ResultCallback callback) override;
-
-  void DeleteContributionQueue(
-      const uint64_t id,
-      ledger::ResultCallback callback) override;
-
-  void GetFirstContributionQueue(
-      ledger::GetFirstContributionQueueCallback callback) override;
-
-  void InsertOrUpdatePromotion(
-      ledger::PromotionPtr info,
-      ledger::ResultCallback callback) override;
-
-  void GetPromotion(
-      const std::string& id,
-      ledger::GetPromotionCallback callback) override;
-
-  void GetAllPromotions(
-    ledger::GetAllPromotionsCallback callback) override;
-
-  void DeletePromotionList(
-      const std::vector<std::string>& id_list,
-      ledger::ResultCallback callback) override;
-
-  void SaveUnblindedTokenList(
-      ledger::UnblindedTokenList list,
-      ledger::ResultCallback callback) override;
-
-  void GetAllUnblindedTokens(
-      ledger::GetAllUnblindedTokensCallback callback) override;
-
-  void DeleteUnblindedTokens(
-      const std::vector<std::string>& id_list,
-      ledger::ResultCallback callback) override;
-
-  void DeleteUnblindedTokensForPromotion(
-      const std::string& promotion_id,
-      ledger::ResultCallback callback) override;
-
   ledger::ClientInfoPtr GetClientInfo() override;
 
   void UnblindedTokensReady() override;
 
-  void GetTransactionReport(
-      const ledger::ActivityMonth month,
-      const int year,
-      ledger::GetTransactionReportCallback callback) override;
-
-  void GetContributionReport(
-      const ledger::ActivityMonth month,
-      const int year,
-      ledger::GetContributionReportCallback callback) override;
-
-  void GetIncompleteContributions(
-      ledger::GetIncompleteContributionsCallback callback) override;
-
-  void GetContributionInfo(
-      const std::string& contribution_id,
-      ledger::GetContributionInfoCallback callback) override;
-
-  void UpdateContributionInfoStepAndCount(
-      const std::string& contribution_id,
-      const ledger::ContributionStep step,
-      const int32_t retry_count,
-      ledger::ResultCallback callback) override;
-
-  void UpdateContributionInfoContributedAmount(
-      const std::string& contribution_id,
-      const std::string& publisher_key,
-      ledger::ResultCallback callback) override;
-
   void ReconcileStampReset() override;
+
+  void RunDBTransaction(
+      ledger::DBTransactionPtr transaction,
+      ledger::RunDBTransactionCallback callback) override;
+
+  void GetCreateScript(
+      ledger::GetCreateScriptCallback callback) override;
+
+  void PendingContributionSaved(const ledger::Result result) override;
 
  private:
   bool Connected() const;
 
   void LoadNicewareList(ledger::GetNicewareListCallback callback) override;
-  void RemoveRecurringTip(
-    const std::string& publisher_key,
-    ledger::RemoveRecurringTipCallback callback) override;
 
   mojom::BatLedgerClientAssociatedPtr bat_ledger_client_;
 

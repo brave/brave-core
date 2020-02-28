@@ -64,7 +64,8 @@ void Reddit::UserPath(
   }
 
   const std::string media_key = (std::string)REDDIT_MEDIA_TYPE + "_" + user;
-  ledger_->GetMediaPublisherInfo(media_key,
+  ledger_->GetMediaPublisherInfo(
+      media_key,
       std::bind(&Reddit::OnUserActivity,
           this,
           window_id,
@@ -347,7 +348,10 @@ if (publisher_key.empty()) {
                           callback);
 
   if (!media_key.empty()) {
-    ledger_->SetMediaPublisherInfo(media_key, publisher_key);
+    ledger_->SaveMediaPublisherInfo(
+        media_key,
+        publisher_key,
+        [](const ledger::Result _){});
   }
 }
 

@@ -78,11 +78,9 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void SaveSetting(const base::ListValue* args);
   void UpdateAdsRewards(const base::ListValue* args);
   void OnContentSiteList(
-      std::unique_ptr<brave_rewards::ContentSiteList>,
-      uint32_t record);
+      std::unique_ptr<brave_rewards::ContentSiteList>);
   void OnExcludedSiteList(
-      std::unique_ptr<brave_rewards::ContentSiteList>,
-      uint32_t record);
+      std::unique_ptr<brave_rewards::ContentSiteList>);
   void ExcludePublisher(const base::ListValue* args);
   void RestorePublishers(const base::ListValue* args);
   void RestorePublisher(const base::ListValue* args);
@@ -140,8 +138,6 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void GetRewardsMainEnabled(const base::ListValue* args);
   void OnGetRewardsMainEnabled(bool enabled);
   void GetExcludedSites(const base::ListValue* args);
-  void OnAutoContributePropsReadyExcluded(
-      std::unique_ptr<brave_rewards::AutoContributeProps> auto_contri_props);
 
   void OnTransactionHistory(
       double estimated_pending_rewards,
@@ -764,22 +760,7 @@ void RewardsDOMHandler::OnAutoContributePropsReady(
       props->reconcile_stamp,
       props->contribution_non_verified,
       props->contribution_min_visits,
-      false,
       base::Bind(&RewardsDOMHandler::OnContentSiteList,
-                 weak_factory_.GetWeakPtr()));
-}
-
-void RewardsDOMHandler::OnAutoContributePropsReadyExcluded(
-    std::unique_ptr<brave_rewards::AutoContributeProps> props) {
-  rewards_service_->GetContentSiteList(
-      0,
-      0,
-      props->contribution_min_time,
-      props->reconcile_stamp,
-      props->contribution_non_verified,
-      props->contribution_min_visits,
-      true,
-      base::Bind(&RewardsDOMHandler::OnExcludedSiteList,
                  weak_factory_.GetWeakPtr()));
 }
 
@@ -791,9 +772,9 @@ void RewardsDOMHandler::OnContentSiteUpdated(
 }
 
 void RewardsDOMHandler::GetExcludedSites(const base::ListValue* args) {
-  rewards_service_->GetAutoContributeProps(
-      base::Bind(&RewardsDOMHandler::OnAutoContributePropsReadyExcluded,
-        weak_factory_.GetWeakPtr()));
+  rewards_service_->GetExcludedList(
+      base::Bind(&RewardsDOMHandler::OnExcludedSiteList,
+          weak_factory_.GetWeakPtr()));
 }
 
 void RewardsDOMHandler::OnExcludedSitesChanged(
@@ -917,8 +898,7 @@ void RewardsDOMHandler::RestorePublisher(const base::ListValue *args) {
 }
 
 void RewardsDOMHandler::OnContentSiteList(
-    std::unique_ptr<brave_rewards::ContentSiteList> list,
-    uint32_t record) {
+    std::unique_ptr<brave_rewards::ContentSiteList> list) {
   if (web_ui()->CanCallJavascript()) {
     auto publishers = std::make_unique<base::ListValue>();
     for (auto const& item : *list) {
@@ -941,8 +921,7 @@ void RewardsDOMHandler::OnContentSiteList(
 }
 
 void RewardsDOMHandler::OnExcludedSiteList(
-    std::unique_ptr<brave_rewards::ContentSiteList> list,
-    uint32_t record) {
+    std::unique_ptr<brave_rewards::ContentSiteList> list) {
   if (web_ui()->CanCallJavascript()) {
     auto publishers = std::make_unique<base::ListValue>();
     for (auto const& item : *list) {
@@ -1389,7 +1368,7 @@ void RewardsDOMHandler::OnRewardsMainEnabled(
 void RewardsDOMHandler::OnPublisherListNormalized(
     brave_rewards::RewardsService* rewards_service,
     const brave_rewards::ContentSiteList& list) {
-  OnContentSiteList(std::make_unique<brave_rewards::ContentSiteList>(list), 0);
+  OnContentSiteList(std::make_unique<brave_rewards::ContentSiteList>(list));
 }
 
 void RewardsDOMHandler::GetTransactionHistory(
