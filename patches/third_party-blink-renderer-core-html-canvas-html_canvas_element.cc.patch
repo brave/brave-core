@@ -1,30 +1,20 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
-index 727f95a161e1f1b38c8eba26cf6ecc5f6b30c55b..10bded40fce479fd2bcc59db5905717920a83018 100644
+index 727f95a161e1f1b38c8eba26cf6ecc5f6b30c55b..45f4ea7f453f18c74d90db222f852c3b31928fef 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
-@@ -37,6 +37,7 @@
- #include "base/location.h"
- #include "base/metrics/histogram_macros.h"
- #include "base/numerics/checked_math.h"
-+#include "brave/renderer/brave_content_settings_agent_impl_helper.h"
- #include "build/build_config.h"
- #include "third_party/blink/public/common/features.h"
- #include "third_party/blink/public/platform/task_type.h"
-@@ -923,6 +924,8 @@ String HTMLCanvasElement::ToDataURLInternal(
- String HTMLCanvasElement::toDataURL(const String& mime_type,
-                                     const ScriptValue& quality_argument,
-                                     ExceptionState& exception_state) const {
-+  if (!AllowFingerprinting(GetDocument().GetFrame()))
-+    return String();
-   if (!OriginClean()) {
-     exception_state.ThrowSecurityError("Tainted canvases may not be exported.");
-     return String();
-@@ -941,6 +944,8 @@ void HTMLCanvasElement::toBlob(V8BlobCallback* callback,
-                                const String& mime_type,
-                                const ScriptValue& quality_argument,
-                                ExceptionState& exception_state) {
-+  if (!AllowFingerprinting(GetDocument().GetFrame()))
-+    return;
-   if (!OriginClean()) {
-     exception_state.ThrowSecurityError("Tainted canvases may not be exported.");
-     return;
+@@ -883,6 +883,7 @@ String HTMLCanvasElement::ToDataURLInternal(
+   scoped_refptr<StaticBitmapImage> image_bitmap =
+       Snapshot(source_buffer, kPreferNoAcceleration);
+   if (image_bitmap) {
++    BRAVE_TO_DATA_URL_INTERNAL
+     std::unique_ptr<ImageDataBuffer> data_buffer =
+         ImageDataBuffer::Create(image_bitmap);
+     if (!data_buffer)
+@@ -972,6 +973,7 @@ void HTMLCanvasElement::toBlob(V8BlobCallback* callback,
+   scoped_refptr<StaticBitmapImage> image_bitmap =
+       Snapshot(kBackBuffer, kPreferNoAcceleration);
+   if (image_bitmap) {
++    BRAVE_TO_BLOB
+     auto* options = ImageEncodeOptions::Create();
+     options->setType(ImageEncodingMimeTypeName(encoding_mime_type));
+     async_creator = MakeGarbageCollected<CanvasAsyncBlobCreator>(
