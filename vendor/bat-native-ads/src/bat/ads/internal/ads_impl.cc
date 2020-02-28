@@ -410,7 +410,6 @@ void AdsImpl::OnAdNotificationEvent(
     const AdNotificationEventType event_type) {
   AdNotificationInfo info;
   if (!ad_notifications_->Get(uuid, &info)) {
-    NOTREACHED();
     return;
   }
 
