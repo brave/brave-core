@@ -13,9 +13,10 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.settings.ChromeSwitchPreference;
+import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 
 public class BackgroundVideoPlaybackPreference
-        extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
+        extends BravePreferenceFragment implements Preference.OnPreferenceChangeListener {
     private static final String BACKGROUND_VIDEO_PLAYBACK_KEY = "background_video_playback";
 
     @Override
