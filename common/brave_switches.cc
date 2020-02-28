@@ -53,4 +53,6 @@ const char kEnableSmartTrackingProtection[] =
 
 const char kFastWidevineBundleUpdate[] = "fast-widevine-bundle-update";
 
+const char kUseGoUpdateDev[] = "use-dev-goupdater-url";
+
 }  // namespace switches
