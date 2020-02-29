@@ -387,12 +387,14 @@ class AdsServiceImpl : public AdsService,
   void SetCatalogIssuers(
       std::unique_ptr<ads::IssuersInfo> info) override;
 
-  void ConfirmAdNotification(
-      std::unique_ptr<ads::AdNotificationInfo> info) override;
+  void ConfirmAd(
+      const ads::AdInfo& info,
+      const ads::ConfirmationType confirmation_type) override;
+
   void ConfirmAction(
       const std::string& creative_instance_id,
       const std::string& creative_set_id,
-      const ads::ConfirmationType& confirmation_type) override;
+      const ads::ConfirmationType confirmation_type) override;
 
   uint32_t SetTimer(
       const uint64_t time_offset) override;

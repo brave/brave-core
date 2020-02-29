@@ -29,7 +29,6 @@ struct ADS_EXPORT CreativeAdNotificationInfo : CreativeAdInfo {
 
   std::string title;
   std::string body;
-  std::string target_url;
 };
 
 using CreativeAdNotificationList = std::vector<CreativeAdNotificationInfo>;

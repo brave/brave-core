@@ -67,10 +67,10 @@ bool BundleStateDatabase::Init() {
     return false;
   }
 
-  if (!CreateCategoryTable() ||
-      !CreateCreativeAdNotificationInfoTable() ||
-      !CreateCreativeAdNotificationInfoCategoryTable() ||
-      !CreateCreativeAdNotificationInfoCategoryNameIndex() ||
+  if (!CreateCategoriesTable() ||
+      !CreateCreativeAdNotificationsTable() ||
+      !CreateCreativeAdNotificationCategoriesTable() ||
+      !CreateCreativeAdNotificationCategoriesCategoryIndex() ||
       !CreateAdConversionsTable()) {
     return false;
   }
@@ -91,35 +91,34 @@ bool BundleStateDatabase::Init() {
   return is_initialized_;
 }
 
-bool BundleStateDatabase::CreateCategoryTable() {
+bool BundleStateDatabase::CreateCategoriesTable() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  const char name[] = "category";
-  if (GetDB().DoesTableExist(name)) {
+  const char table_name[] = "category";
+  if (GetDB().DoesTableExist(table_name)) {
     return true;
   }
 
-  // Note: revise implementation for InsertOrUpdateCategory() if you add
-  // any new constraints to the schema.
-  std::string sql;
-  sql.append("CREATE TABLE ");
-  sql.append(name);
-  sql.append("(name LONGVARCHAR PRIMARY KEY)");
+  // Note: revise implementation for |InsertOrUpdateCategory| if you add any new
+  // constraints to the schema
+  const std::string sql = base::StringPrintf(
+      "CREATE TABLE %s "
+          "(name LONGVARCHAR PRIMARY KEY)",
+      table_name);
 
   return GetDB().Execute(sql.c_str());
 }
 
-bool BundleStateDatabase::TruncateCategoryTable() {
+bool BundleStateDatabase::TruncateCategoriesTable() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   const bool is_initialized = Init();
   DCHECK(is_initialized);
-  if (!is_initialized) {
-    return false;
-  }
 
-  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
-      "DELETE FROM category"));
+  const std::string sql =
+      "DELETE FROM category";
+
+  sql::Statement statement(GetDB().GetUniqueStatement(sql.c_str()));
 
   return statement.Run();
 }
@@ -130,83 +129,90 @@ bool BundleStateDatabase::InsertOrUpdateCategory(
 
   const bool is_initialized = Init();
   DCHECK(is_initialized);
-  if (!is_initialized) {
-    return false;
-  }
 
-  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
-      "INSERT OR REPLACE INTO category (name) VALUES (?)"));
+  const std::string sql = base::StringPrintf(
+      "INSERT OR REPLACE INTO category "
+          "(name) VALUES (%s)",
+      CreateBindingParameterPlaceholders(1).c_str());
+
+  sql::Statement statement(GetDB().GetUniqueStatement(sql.c_str()));
 
   statement.BindString(0, category);
 
   return statement.Run();
 }
 
-bool BundleStateDatabase::CreateCreativeAdNotificationInfoTable() {
+bool BundleStateDatabase::CreateCreativeAdNotificationsTable() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  const char name[] = "ad_info";
-  if (GetDB().DoesTableExist(name)) {
+  const char table_name[] = "ad_info";
+  if (GetDB().DoesTableExist(table_name)) {
     return true;
   }
 
-  // Update InsertOrUpdateCreativeAdNotificationInfo() if you add anything here
-  std::string sql;
-  sql.append("CREATE TABLE ");
-  sql.append(name);
-  sql.append(
-      "("
-      "creative_set_id LONGVARCHAR,"
-      "advertiser LONGVARCHAR,"
-      "notification_text TEXT,"
-      "notification_url LONGVARCHAR,"
-      "start_timestamp DATETIME,"
-      "end_timestamp DATETIME,"
-      "uuid LONGVARCHAR,"
-      "region VARCHAR,"
-      "campaign_id LONGVARCHAR,"
-      "daily_cap INTEGER DEFAULT 0 NOT NULL,"
-      "advertiser_id LONGVARCHAR,"
-      "per_day INTEGER DEFAULT 0 NOT NULL,"
-      "total_max INTEGER DEFAULT 0 NOT NULL,"
-      "PRIMARY KEY(region, uuid))");
+  // Note: revise implementation for |InsertOrUpdateCreativeAdNotification| if
+  // you add any new constraints to the schema
+  const std::string sql = base::StringPrintf(
+      "CREATE TABLE %s "
+          "(creative_set_id LONGVARCHAR, "
+          "advertiser LONGVARCHAR, "
+          "notification_text TEXT, "
+          "notification_url LONGVARCHAR, "
+          "start_timestamp DATETIME, "
+          "end_timestamp DATETIME, "
+          "uuid LONGVARCHAR, "
+          "region VARCHAR, "
+          "campaign_id LONGVARCHAR, "
+          "daily_cap INTEGER DEFAULT 0 NOT NULL, "
+          "advertiser_id LONGVARCHAR, "
+          "per_day INTEGER DEFAULT 0 NOT NULL, "
+          "total_max INTEGER DEFAULT 0 NOT NULL, "
+          "PRIMARY KEY(region, uuid))",
+      table_name);
 
   return GetDB().Execute(sql.c_str());
 }
 
-bool BundleStateDatabase::TruncateCreativeAdNotificationInfoTable() {
+bool BundleStateDatabase::TruncateCreativeAdNotificationsTable() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   const bool is_initialized = Init();
   DCHECK(is_initialized);
-  if (!is_initialized) {
-    return false;
-  }
 
-  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
-      "DELETE FROM ad_info"));
+  const std::string sql =
+      "DELETE FROM ad_info";
+
+  sql::Statement statement(GetDB().GetUniqueStatement(sql.c_str()));
 
   return statement.Run();
 }
 
-bool BundleStateDatabase::InsertOrUpdateCreativeAdNotificationInfo(
+bool BundleStateDatabase::InsertOrUpdateCreativeAdNotification(
     const ads::CreativeAdNotificationInfo& info) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  bool is_initialized = Init();
+  const bool is_initialized = Init();
   DCHECK(is_initialized);
-  if (!is_initialized) {
-    return false;
-  }
 
   for (const auto& geo_target : info.geo_targets) {
-    sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
+    const std::string sql = base::StringPrintf(
         "INSERT OR REPLACE INTO ad_info "
-        "(creative_set_id, advertiser, notification_text, "
-        "notification_url, start_timestamp, end_timestamp, uuid, "
-        "campaign_id, daily_cap, advertiser_id, per_day, total_max, "
-        "region) VALUES (?, ?, ?, ?, datetime(?), datetime(?), ?, ?, ?, "
-        "?, ?, ?, ?)"));
+            "(creative_set_id, "
+            "advertiser, "
+            "notification_text, "
+            "notification_url, "
+            "start_timestamp, "
+            "end_timestamp, "
+            "uuid, "
+            "campaign_id, "
+            "daily_cap, "
+            "advertiser_id, "
+            "per_day, "
+            "total_max, "
+            "region) VALUES (%s)",
+      CreateBindingParameterPlaceholders(13).c_str());
+
+    sql::Statement statement(GetDB().GetUniqueStatement(sql.c_str()));
 
     statement.BindString(0, info.creative_set_id);
     statement.BindString(1, info.title);
@@ -230,63 +236,61 @@ bool BundleStateDatabase::InsertOrUpdateCreativeAdNotificationInfo(
   return true;
 }
 
-bool BundleStateDatabase::CreateCreativeAdNotificationInfoCategoryTable() {
+bool BundleStateDatabase::CreateCreativeAdNotificationCategoriesTable() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  const char* name = "ad_info_category";
-  if (GetDB().DoesTableExist(name)) {
+  const char table_name[] = "ad_info_category";
+  if (GetDB().DoesTableExist(table_name)) {
     return true;
   }
 
-  std::string sql;
-  sql.append("CREATE TABLE ");
-  sql.append(name);
-  sql.append(
-      "("
-      "ad_info_uuid LONGVARCHAR NOT NULL,"
-      "category_name LONGVARCHAR NOT NULL,"
-      "UNIQUE(ad_info_uuid, category_name) ON CONFLICT REPLACE,"
-      "CONSTRAINT fk_ad_info_uuid"
-      "    FOREIGN KEY (ad_info_uuid)"
-      "    REFERENCES ad_info (uuid)"
-      "    ON DELETE CASCADE,"
-      "CONSTRAINT fk_category_name"
-      "    FOREIGN KEY (category_name)"
-      "    REFERENCES category (name)"
-      "    ON DELETE CASCADE)");
+  const std::string sql = base::StringPrintf(
+      "CREATE TABLE %s "
+          "(ad_info_uuid LONGVARCHAR NOT NULL, "
+          "category_name LONGVARCHAR NOT NULL, "
+          "UNIQUE(ad_info_uuid, category_name) ON CONFLICT REPLACE, "
+          "CONSTRAINT fk_ad_info_uuid "
+              "FOREIGN KEY (ad_info_uuid) "
+              "REFERENCES ad_info (uuid) "
+              "ON DELETE CASCADE, "
+          "CONSTRAINT fk_category_name "
+              "FOREIGN KEY (category_name) "
+              "REFERENCES category (name) "
+              "ON DELETE CASCADE)",
+      table_name);
 
   return GetDB().Execute(sql.c_str());
 }
 
-bool BundleStateDatabase::TruncateCreativeAdNotificationInfoCategoryTable() {
+bool BundleStateDatabase::TruncateCreativeAdNotificationCategoriesTable() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   const bool is_initialized = Init();
   DCHECK(is_initialized);
-  if (!is_initialized) {
-    return false;
-  }
 
-  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
-      "DELETE FROM ad_info_category"));
+  const std::string sql =
+      "DELETE FROM ad_info_category";
+
+  sql::Statement statement(GetDB().GetUniqueStatement(sql.c_str()));
+
   return statement.Run();
 }
 
-bool BundleStateDatabase::InsertOrUpdateCreativeAdNotificationInfoCategory(
+bool BundleStateDatabase::InsertOrUpdateCreativeAdNotificationCategory(
     const ads::CreativeAdNotificationInfo& info,
     const std::string& category) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   const bool is_initialized = Init();
   DCHECK(is_initialized);
-  if (!is_initialized) {
-    return false;
-  }
 
-  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
+  const std::string sql = base::StringPrintf(
       "INSERT OR REPLACE INTO ad_info_category "
-      "(ad_info_uuid, category_name) "
-      "VALUES (?, ?)"));
+          "(ad_info_uuid, "
+          "category_name) VALUES (%s)",
+      CreateBindingParameterPlaceholders(2).c_str());
+
+  sql::Statement statement(GetDB().GetUniqueStatement(sql.c_str()));
 
   statement.BindString(0, info.creative_instance_id);
   statement.BindString(1, category);
@@ -294,33 +298,35 @@ bool BundleStateDatabase::InsertOrUpdateCreativeAdNotificationInfoCategory(
   return statement.Run();
 }
 
-bool BundleStateDatabase::CreateCreativeAdNotificationInfoCategoryNameIndex() {
+bool
+BundleStateDatabase::CreateCreativeAdNotificationCategoriesCategoryIndex() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  return GetDB().Execute(
+  const std::string sql =
       "CREATE INDEX IF NOT EXISTS ad_info_category_category_name_index "
-      "ON ad_info_category (category_name)");
+          "ON ad_info_category (category_name)";
+
+  return GetDB().Execute(sql.c_str());
 }
 
 bool BundleStateDatabase::CreateAdConversionsTable() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  const char name[] = "ad_conversions";
-  if (GetDB().DoesTableExist(name)) {
+  const char table_name[] = "ad_conversions";
+  if (GetDB().DoesTableExist(table_name)) {
     return true;
   }
 
-  // Update InsertOrUpdateAdConversion() if you add anything here
-  std::string sql;
-  sql.append("CREATE TABLE ");
-  sql.append(name);
-  sql.append(
-      "("
-      "id INTEGER PRIMARY KEY,"
-      "creative_set_id LONGVARCHAR NOT NULL,"
-      "type LONGVARCHAR NOT NULL,"
-      "url_pattern LONGVARCHAR NOT NULL,"
-      "observation_window INTEGER NOT NULL)");
+  // Note: revise implementation for |InsertOrUpdateAdConversion| if you add any
+  // new constraints to the schema
+  const std::string sql = base::StringPrintf(
+      "CREATE TABLE %s "
+          "(id INTEGER PRIMARY KEY, "
+          "creative_set_id LONGVARCHAR NOT NULL, "
+          "type LONGVARCHAR NOT NULL, "
+          "url_pattern LONGVARCHAR NOT NULL, "
+          "observation_window INTEGER NOT NULL)",
+      table_name);
 
   return GetDB().Execute(sql.c_str());
 }
@@ -331,12 +337,10 @@ bool BundleStateDatabase::TruncateAdConversionsTable() {
   const bool is_initialized = Init();
   DCHECK(is_initialized);
 
-  if (!is_initialized) {
-    return false;
-  }
+  const std::string sql =
+      "DELETE FROM ad_conversions";
 
-  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
-      "DELETE FROM ad_conversions"));
+  sql::Statement statement(GetDB().GetUniqueStatement(sql.c_str()));
 
   return statement.Run();
 }
@@ -347,14 +351,16 @@ bool BundleStateDatabase::InsertOrUpdateAdConversion(
 
   const bool is_initialized = Init();
   DCHECK(is_initialized);
-  if (!is_initialized) {
-    return false;
-  }
 
-  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
+  const std::string sql = base::StringPrintf(
       "INSERT OR REPLACE INTO ad_conversions "
-      "(creative_set_id, type, url_pattern, observation_window) "
-      "VALUES (?, ?, ?, ?)"));
+          "(creative_set_id, "
+          "type, "
+          "url_pattern, "
+          "observation_window) VALUES (%s)",
+      CreateBindingParameterPlaceholders(4).c_str());
+
+  sql::Statement statement(GetDB().GetUniqueStatement(sql.c_str()));
 
   statement.BindString(0, info.creative_set_id);
   statement.BindString(1, info.type);
@@ -370,18 +376,15 @@ bool BundleStateDatabase::SaveBundleState(
 
   const bool is_initialized = Init();
   DCHECK(is_initialized);
-  if (!is_initialized) {
-    return false;
-  }
 
   if (!GetDB().BeginTransaction()) {
     return false;
   }
 
-  // We are completely replacing here so first truncate all the tables
-  if (!TruncateCategoryTable() ||
-      !TruncateCreativeAdNotificationInfoCategoryTable() ||
-      !TruncateCreativeAdNotificationInfoTable() ||
+  // We are completely replacing the database here so truncate all the tables
+  if (!TruncateCategoriesTable() ||
+      !TruncateCreativeAdNotificationCategoriesTable() ||
+      !TruncateCreativeAdNotificationsTable() ||
       !TruncateAdConversionsTable()) {
     GetDB().RollbackTransaction();
     return false;
@@ -389,17 +392,16 @@ bool BundleStateDatabase::SaveBundleState(
 
   for (const auto& creative_ad_notification :
       bundle_state.creative_ad_notifications) {
-    const std::string category_name = creative_ad_notification.first;
-    if (!InsertOrUpdateCategory(category_name)) {
+    const std::string category = creative_ad_notification.first;
+    if (!InsertOrUpdateCategory(category)) {
       GetDB().RollbackTransaction();
       return false;
     }
 
     const ads::CreativeAdNotificationList ads = creative_ad_notification.second;
     for (const auto& ad : ads) {
-      if (!InsertOrUpdateCreativeAdNotificationInfo(ad) ||
-          !InsertOrUpdateCreativeAdNotificationInfoCategory(ad,
-              category_name)) {
+      if (!InsertOrUpdateCreativeAdNotification(ad) ||
+          !InsertOrUpdateCreativeAdNotificationCategory(ad, category)) {
         GetDB().RollbackTransaction();
         return false;
       }
@@ -427,51 +429,35 @@ bool BundleStateDatabase::GetCreativeAdNotifications(
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   DCHECK(ads);
-  if (!ads) {
-    return false;
-  }
 
   const bool is_initialized = Init();
   DCHECK(is_initialized);
-  if (!is_initialized) {
-    return false;
-  }
 
-  std::string sql =
-      "SELECT ai.creative_set_id, "
-      "ai.advertiser, "
-      "ai.notification_text, "
-      "ai.notification_url, "
-      "ai.start_timestamp, "
-      "ai.end_timestamp, "
-      "ai.uuid, "
-      "ai.region, "
-      "ai.campaign_id, "
-      "ai.daily_cap, "
-      "ai.advertiser_id, "
-      "ai.per_day, "
-      "ai.total_max, "
-      "aic.category_name "
+  const std::string sql = base::StringPrintf(
+      "SELECT "
+          "ai.creative_set_id, "
+          "ai.advertiser, "
+          "ai.notification_text, "
+          "ai.notification_url, "
+          "ai.start_timestamp, "
+          "ai.end_timestamp, "
+          "ai.uuid, "
+          "ai.region, "
+          "ai.campaign_id, "
+          "ai.daily_cap, "
+          "ai.advertiser_id, "
+          "ai.per_day, "
+          "ai.total_max, "
+          "aic.category_name "
       "FROM ad_info AS ai "
-      "INNER JOIN ad_info_category AS aic "
-      "ON aic.ad_info_uuid = ai.uuid "
-      "WHERE ";
-
-  sql += "aic.category_name IN (";
-  for (size_t i = 0; i < categories.size(); i++) {
-    if (i != 0) {
-      sql += ", ";
-    }
-
-    sql += "?";
-  }
-  sql += ") and ";
-
-  sql +=
-      "ai.start_timestamp <= strftime('%Y-%m-%d %H:%M', "
-      "datetime('now','localtime')) and "
-      "ai.end_timestamp >= strftime('%Y-%m-%d %H:%M', "
-      "datetime('now','localtime'));";
+          "INNER JOIN ad_info_category AS aic "
+              "ON aic.ad_info_uuid = ai.uuid "
+      "WHERE aic.category_name IN (%s) "
+          "AND ai.start_timestamp <= strftime('%%Y-%%m-%%d %%H:%%M', "
+               "datetime('now','localtime')) "
+          "AND ai.end_timestamp >= strftime('%%Y-%%m-%%d %%H:%%M', "
+              "datetime('now','localtime'))",
+      CreateBindingParameterPlaceholders(categories.size()).c_str());
 
   sql::Statement statement(db_.GetUniqueStatement(sql.c_str()));
 
@@ -506,23 +492,21 @@ bool BundleStateDatabase::GetCreativeAdNotifications(
 bool BundleStateDatabase::GetAdConversions(
     const std::string& url,
     ads::AdConversionList* ad_conversions) {
-  DCHECK(ad_conversions);
-  if (!ad_conversions) {
-    return false;
-  }
-
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  DCHECK(ad_conversions);
 
   const bool is_initialized = Init();
   DCHECK(is_initialized);
-  if (!is_initialized) {
-    return false;
-  }
 
-  sql::Statement statement(db_.GetUniqueStatement(
-      "SELECT c.creative_set_id, c.type, c.url_pattern, "
-      "c.observation_window "
-      "FROM ad_conversions AS c"));
+  const std::string sql =
+      "SELECT "
+          "ac.creative_set_id, "
+          "ac.type, ac.url_pattern, "
+          "ac.observation_window "
+      "FROM ad_conversions AS ac";
+
+  sql::Statement statement(db_.GetUniqueStatement(sql.c_str()));
 
   while (statement.Step()) {
     ads::AdConversionInfo info;
@@ -534,6 +518,21 @@ bool BundleStateDatabase::GetAdConversions(
   }
 
   return true;
+}
+
+std::string BundleStateDatabase::CreateBindingParameterPlaceholders(
+    const size_t count) {
+  std::string placeholders;
+
+  for (size_t i = 0; i < count; i++) {
+    if (i != 0) {
+      placeholders += ", ";
+    }
+
+    placeholders += "?";
+  }
+
+  return placeholders;
 }
 
 // static
@@ -549,7 +548,7 @@ void BundleStateDatabase::Vacuum() {
   }
 
   DCHECK_EQ(0, db_.transaction_nesting()) <<
-      "Can not have a transaction when vacuuming.";
+      "Can not have a transaction when vacuuming";
   ignore_result(db_.Execute("VACUUM"));
 }
 
@@ -563,6 +562,8 @@ std::string BundleStateDatabase::GetDiagnosticInfo(
     const int extended_error,
     sql::Statement* statement) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  DCHECK(statement);
 
   DCHECK(is_initialized_);
   return db_.GetDiagnosticInfo(extended_error, statement);
@@ -583,49 +584,43 @@ bool BundleStateDatabase::Migrate() {
     return false;
   }
 
-  // We can't read databases newer than we were designed for.
   if (meta_table_.GetCompatibleVersionNumber() > GetCurrentVersion()) {
-    LOG(WARNING) << "Bundle state database is too new";
+    LOG(WARNING) << "Bundle state database cannot be downgraded";
     return false;
   }
 
   const int source_version = meta_table_.GetVersionNumber();
   const int dest_version = GetCurrentVersion();
 
-  // Migrate database
+  bool success = false;
   for (int i = source_version; i < dest_version; i++) {
     switch (i) {
       case 1: {
-        if (!MigrateV1toV2()) {
-          LOG(ERROR) << "DB: Error migrating database from v1 to v2";
-          return false;
-        }
-
+        success = MigrateV1toV2();
         break;
       }
 
       case 2: {
-        if (!MigrateV2toV3()) {
-          LOG(ERROR) << "DB: Error migrating database from v2 to v3";
-          return false;
-        }
-
+        success = MigrateV2toV3();
         break;
       }
 
       case 3: {
-        if (!MigrateV3toV4()) {
-          LOG(ERROR) << "DB: Error migrating database from v3 to v4";
-          return false;
-        }
-
+        success = MigrateV3toV4();
         break;
       }
 
       default: {
         NOTREACHED();
-        return false;
+        break;
       }
+    }
+
+    if (!success) {
+      LOG(ERROR) << "Cannot migrate database from v" << source_version << " to "
+          "v" << dest_version;
+
+      return false;
     }
   }
 
@@ -640,23 +635,31 @@ bool BundleStateDatabase::Migrate() {
 }
 
 bool BundleStateDatabase::MigrateV1toV2() {
-  std::string sql = "ALTER TABLE ad_info ADD campaign_id LONGVARCHAR;";
-  if (!GetDB().Execute(sql.c_str())) {
+  const std::string campaign_id_sql =
+      "ALTER TABLE ad_info "
+          "ADD campaign_id LONGVARCHAR";
+  if (!GetDB().Execute(campaign_id_sql.c_str())) {
     return false;
   }
 
-  sql = "ALTER TABLE ad_info ADD daily_cap INTEGER DEFAULT 0 NOT NULL;";
-  if (!GetDB().Execute(sql.c_str())) {
+  const std::string daily_cap_sql =
+      "ALTER TABLE ad_info "
+          "ADD daily_cap INTEGER DEFAULT 0 NOT NULL";
+  if (!GetDB().Execute(daily_cap_sql.c_str())) {
     return false;
   }
 
-  sql = "ALTER TABLE ad_info ADD per_day INTEGER DEFAULT 0 NOT NULL;";
-  if (!GetDB().Execute(sql.c_str())) {
+  const std::string per_day_sql =
+      "ALTER TABLE ad_info "
+          "ADD per_day INTEGER DEFAULT 0 NOT NULL";
+  if (!GetDB().Execute(per_day_sql.c_str())) {
     return false;
   }
 
-  sql = "ALTER TABLE ad_info ADD total_max INTEGER DEFAULT 0 NOT NULL;";
-  if (!GetDB().Execute(sql.c_str())) {
+  const std::string total_max_sql =
+      "ALTER TABLE ad_info "
+          "ADD total_max INTEGER DEFAULT 0 NOT NULL";
+  if (!GetDB().Execute(total_max_sql.c_str())) {
     return false;
   }
 
@@ -666,27 +669,27 @@ bool BundleStateDatabase::MigrateV1toV2() {
 bool BundleStateDatabase::MigrateV2toV3() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  const char* name = "ad_conversions";
-  if (GetDB().DoesTableExist(name)) {
+  const char table_name[] = "ad_conversions";
+  if (GetDB().DoesTableExist(table_name)) {
     return true;
   }
 
-  std::string sql;
-  sql.append("CREATE TABLE ");
-  sql.append(name);
-  sql.append(
-      "("
-      "id INTEGER PRIMARY KEY,"
-      "creative_set_id LONGVARCHAR NOT NULL,"
-      "type LONGVARCHAR NOT NULL,"
-      "url_pattern LONGVARCHAR NOT NULL,"
-      "observation_window INTEGER NOT NULL)");
+  const std::string sql = base::StringPrintf(
+      "CREATE TABLE %s "
+          "(id INTEGER PRIMARY KEY, "
+          "creative_set_id LONGVARCHAR NOT NULL, "
+          "type LONGVARCHAR NOT NULL, "
+          "url_pattern LONGVARCHAR NOT NULL, "
+          "observation_window INTEGER NOT NULL)",
+      table_name);
 
   return GetDB().Execute(sql.c_str());
 }
 
 bool BundleStateDatabase::MigrateV3toV4() {
-  std::string sql = "ALTER TABLE ad_info ADD advertiser_id LONGVARCHAR;";
+  const std::string sql =
+      "ALTER TABLE ad_info "
+      "ADD advertiser_id LONGVARCHAR";
 
   return GetDB().Execute(sql.c_str());
 }

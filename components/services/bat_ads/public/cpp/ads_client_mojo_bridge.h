@@ -120,8 +120,9 @@ class AdsClientMojoBridge
       const std::string& uuid) override;
   void SetCatalogIssuers(
       const std::string& issuers_info) override;
-  void ConfirmAdNotification(
-      const std::string& json) override;
+  void ConfirmAd(
+      const std::string& json,
+      const std::string& confirmation_type) override;
   void ConfirmAction(
       const std::string& creative_instance_id,
       const std::string& creative_set_id,

@@ -175,7 +175,6 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
         }
       }
 
-
       if (entries == 0) {
         BLOG(WARNING) << "creativeSet id " << creative_set.creative_set_id
             << " has an invalid creative";

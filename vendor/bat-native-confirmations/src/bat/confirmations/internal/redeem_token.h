@@ -11,8 +11,6 @@
 #include <map>
 
 #include "bat/confirmations/confirmations_client.h"
-#include "bat/confirmations/internal/token_info.h"
-#include "bat/confirmations/internal/confirmation_info.h"
 #include "bat/confirmations/confirmation_type.h"
 
 #include "wrapper.hpp"  // NOLINT
@@ -24,6 +22,9 @@ namespace confirmations {
 
 class ConfirmationsImpl;
 class UnblindedTokens;
+struct AdInfo;
+struct ConfirmationInfo;
+struct TokenInfo;
 
 class RedeemToken {
  public:
@@ -36,18 +37,22 @@ class RedeemToken {
   ~RedeemToken();
 
   void Redeem(
-      const std::string& creative_instance_id,
+      const AdInfo& info,
       const ConfirmationType confirmation_type);
   void Redeem(
-    const ConfirmationInfo& confirmation);
+      const std::string& creative_instance_id,
+      const std::string& creative_set_id,
+      const ConfirmationType confirmation_type);
+  void Redeem(
+      const ConfirmationInfo& confirmation);
 
  private:
   void CreateConfirmation(
       const ConfirmationInfo& confirmation);
   void CreateConfirmation(
-      const std::string& creative_instance_id,
-      const TokenInfo& token_info,
-      const ConfirmationType confirmation_type);
+      const AdInfo& ad_info,
+      const ConfirmationType confirmation_type,
+      const TokenInfo& token_info);
   void OnCreateConfirmation(
       const std::string& url,
       const int response_status_code,
@@ -70,7 +75,7 @@ class RedeemToken {
       const bool should_retry = true);
 
   bool Verify(
-    const ConfirmationInfo& confirmation) const;
+     const ConfirmationInfo& confirmation) const;
 
   ConfirmationsImpl* confirmations_;  // NOT OWNED
   ConfirmationsClient* confirmations_client_;  // NOT OWNED

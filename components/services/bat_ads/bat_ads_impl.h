@@ -12,7 +12,6 @@
 #include <utility>
 
 #include "bat/ads/ads.h"
-
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
 #include "base/memory/weak_ptr.h"

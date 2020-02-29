@@ -1,29 +1,27 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/ad_notification_info.h"
-#include "bat/ads/confirmation_type.h"
+#include "bat/ads/ad_info.h"
 #include "bat/ads/internal/json_helper.h"
-#include "base/logging.h"
 
 namespace ads {
 
-AdNotificationInfo::AdNotificationInfo() = default;
+AdInfo::AdInfo() = default;
 
-AdNotificationInfo::AdNotificationInfo(
-    const AdNotificationInfo& info) = default;
+AdInfo::AdInfo(
+    const AdInfo& info) = default;
 
-AdNotificationInfo::~AdNotificationInfo() = default;
+AdInfo::~AdInfo() = default;
 
-std::string AdNotificationInfo::ToJson() const {
+std::string AdInfo::ToJson() const {
   std::string json;
   SaveToJson(*this, &json);
   return json;
 }
 
-Result AdNotificationInfo::FromJson(
+Result AdInfo::FromJson(
     const std::string& json,
     std::string* error_description) {
   rapidjson::Document document;
@@ -35,14 +33,6 @@ Result AdNotificationInfo::FromJson(
     }
 
     return FAILED;
-  }
-
-  if (document.HasMember("id")) {
-    uuid = document["id"].GetString();
-  }
-
-  if (document.HasMember("parent_id")) {
-    parent_uuid = document["parent_id"].GetString();
   }
 
   if (document.HasMember("uuid")) {
@@ -57,14 +47,6 @@ Result AdNotificationInfo::FromJson(
     category = document["category"].GetString();
   }
 
-  if (document.HasMember("advertiser")) {
-    title = document["advertiser"].GetString();
-  }
-
-  if (document.HasMember("text")) {
-    body = document["text"].GetString();
-  }
-
   if (document.HasMember("url")) {
     target_url = document["url"].GetString();
   }
@@ -74,14 +56,8 @@ Result AdNotificationInfo::FromJson(
 
 void SaveToJson(
     JsonWriter* writer,
-    const AdNotificationInfo& info) {
+    const AdInfo& info) {
   writer->StartObject();
-
-  writer->String("id");
-  writer->String(info.uuid.c_str());
-
-  writer->String("parent_uuid");
-  writer->String(info.parent_uuid.c_str());
 
   writer->String("uuid");
   writer->String(info.creative_instance_id.c_str());
@@ -91,12 +67,6 @@ void SaveToJson(
 
   writer->String("category");
   writer->String(info.category.c_str());
-
-  writer->String("advertiser");
-  writer->String(info.title.c_str());
-
-  writer->String("text");
-  writer->String(info.body.c_str());
 
   writer->String("url");
   writer->String(info.target_url.c_str());

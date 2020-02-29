@@ -5,7 +5,7 @@
 #include <limits>
 
 #import "BATBraveAds.h"
-#import "BATAdsNotification.h"
+#import "BATAdNotification.h"
 #import "BATBraveLedger.h"
 
 #import "bat/ads/ads.h"
@@ -34,7 +34,7 @@ static NSString * const kShouldAllowAdConversionTrackingPrefKey = @"BATShouldAll
 static NSString * const kNumberOfAdsPerDayKey = @"BATNumberOfAdsPerDay";
 static NSString * const kNumberOfAdsPerHourKey = @"BATNumberOfAdsPerHour";
 
-@interface BATAdsNotification ()
+@interface BATAdNotification ()
 - (instancetype)initWithNotificationInfo:(const ads::AdNotificationInfo&)info;
 @end
 
@@ -366,16 +366,17 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
                          ads::AdContent::LikeAction::kThumbsDown);
 }
 
-- (void)confirmAdNotification:(std::unique_ptr<ads::AdNotificationInfo>)info
+- (void)confirmAd:(const ads::AdInfo &)info confirmationType:(const ads::ConfirmationType)confirmationType
 {
-  [self.ledger confirmAdNotification:[NSString stringWithUTF8String:info->ToJson().c_str()]];
+  [self.ledger confirmAd:[NSString stringWithUTF8String:info.ToJson().c_str()]
+        confirmationType:[NSString stringWithUTF8String:std::string(confirmationType).c_str()]];
 }
 
-- (void)confirmAction:(const std::string &)creative_instance_id creativeSetId:(const std::string &)creative_set_id confirmationType:(const ads::ConfirmationType &)type
+- (void)confirmAction:(const std::string &)creative_instance_id creativeSetId:(const std::string &)creative_set_id confirmationType:(const ads::ConfirmationType &)confirmationType
 {
   [self.ledger confirmAction:[NSString stringWithUTF8String:creative_instance_id.c_str()]
                creativeSetID:[NSString stringWithUTF8String:creative_set_id.c_str()]
-                        type:[NSString stringWithUTF8String:std::string(type).c_str()]];
+            confirmationType:[NSString stringWithUTF8String:std::string(confirmationType).c_str()]];
 }
 
 - (void)getCreativeAdNotifications:(const std::vector<std::string> &)categories callback:(ads::OnGetCreativeAdNotificationsCallback)callback
@@ -607,12 +608,12 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
 
 #pragma mark - Notifications
 
-- (nullable BATAdsNotification *)adsNotificationForIdentifier:(NSString *)identifier
+- (nullable BATAdNotification *)adsNotificationForIdentifier:(NSString *)identifier
 {
   if (![self isAdsServiceRunning]) { return nil; }
   ads::AdNotificationInfo info;
   if (ads->GetAdNotification(identifier.UTF8String, &info)) {
-    return [[BATAdsNotification alloc] initWithNotificationInfo:info];
+    return [[BATAdNotification alloc] initWithNotificationInfo:info];
   }
   return nil;
 }
@@ -627,7 +628,7 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
   if (info.get() == nullptr) {
     return;
   }
-  const auto notification = [[BATAdsNotification alloc] initWithNotificationInfo:*info];
+  const auto notification = [[BATAdNotification alloc] initWithNotificationInfo:*info];
   [self.notificationsHandler showNotification:notification];
 }
 

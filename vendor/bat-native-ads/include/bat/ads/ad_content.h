@@ -45,7 +45,7 @@ struct ADS_EXPORT AdContent {
   std::string brand_display_url;
   std::string brand_url;
   LikeAction like_action = LikeAction::kNone;
-  ConfirmationType ad_action = ConfirmationType::kUnknown;
+  ConfirmationType ad_action;
   bool saved_ad = false;
   bool flagged_ad = false;
 };

@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "bat/confirmations/confirmations_client.h"
-#include "bat/confirmations/internal/token_info.h"
 #include "bat/confirmations/confirmation_type.h"
 
 #include "wrapper.hpp"  // NOLINT
@@ -18,6 +17,9 @@
 using challenge_bypass_ristretto::BlindedToken;
 
 namespace confirmations {
+
+struct ConfirmationInfo;
+struct TokenInfo;
 
 class CreateConfirmationRequest {
  public:
@@ -39,9 +41,7 @@ class CreateConfirmationRequest {
   std::string GetContentType() const;
 
   std::string CreateConfirmationRequestDTO(
-      const std::string& creative_instance_id,
-      const BlindedToken& token,
-      const ConfirmationType confirmation_type) const;
+      const ConfirmationInfo& info) const;
 
   std::string CreateCredential(
       const TokenInfo& token_info,

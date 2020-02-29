@@ -411,14 +411,15 @@ void AdsClientMojoBridge::SetCatalogIssuers(
   ads_client_->SetCatalogIssuers(std::move(info));
 }
 
-void AdsClientMojoBridge::ConfirmAdNotification(
-    const std::string& json) {
-  auto info = std::make_unique<ads::AdNotificationInfo>();
-  if (info->FromJson(json) != ads::Result::SUCCESS) {
+void AdsClientMojoBridge::ConfirmAd(
+    const std::string& json,
+    const std::string& confirmation_type) {
+  ads::AdInfo info;
+  if (info.FromJson(json) != ads::Result::SUCCESS) {
     return;
   }
 
-  ads_client_->ConfirmAdNotification(std::move(info));
+  ads_client_->ConfirmAd(info, ads::ConfirmationType(confirmation_type));
 }
 
 void AdsClientMojoBridge::ConfirmAction(

@@ -7,7 +7,6 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef NS_ENUM(NSInteger, BATAdsConfirmationType) {
-  BATAdsConfirmationTypeUnknown,    // = ads::ConfirmationType::kUnknown
   BATAdsConfirmationTypeClick,      // = ads::ConfirmationType::kClicked
   BATAdsConfirmationTypeDismiss,    // = ads::ConfirmationType::kDismissed
   BATAdsConfirmationTypeView,       // = ads::ConfirmationType::kViewed
@@ -19,7 +18,7 @@ typedef NS_ENUM(NSInteger, BATAdsConfirmationType) {
 } NS_SWIFT_NAME(ConfirmationType);
 
 NS_SWIFT_NAME(AdsNotification)
-@interface BATAdsNotification : NSObject
+@interface BATAdNotification : NSObject
 @property (nonatomic, readonly, copy) NSString *uuid;
 @property (nonatomic, readonly, copy) NSString *parentUuid;
 @property (nonatomic, readonly, copy) NSString *creativeInstanceID;
@@ -28,10 +27,9 @@ NS_SWIFT_NAME(AdsNotification)
 @property (nonatomic, readonly, copy) NSString *title;
 @property (nonatomic, readonly, copy) NSString *body;
 @property (nonatomic, readonly, copy) NSURL *targetURL;
-@property (nonatomic, readonly) BATAdsConfirmationType confirmationType;
 @end
 
-@interface BATAdsNotification (MyFirstAd)
+@interface BATAdNotification (MyFirstAd)
 + (instancetype)customAdWithTitle:(NSString *)title
                              body:(NSString *)body
                               url:(NSURL *)url NS_SWIFT_NAME(customAd(title:body:url:));

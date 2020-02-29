@@ -5,9 +5,11 @@
 
 #include <string>
 
-#include "bat/ads/internal/ad_events/ad_notification_event_dismissed.h"
-#include "bat/ads/internal/reports.h"
+#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/confirmation_type.h"
+#include "bat/ads/internal/ad_events/ad_notification_event_dismissed.h"
+#include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/reports.h"
 #include "base/logging.h"
 
 namespace ads {
@@ -15,25 +17,23 @@ namespace ads {
 AdNotificationEventDismissed::AdNotificationEventDismissed(
     AdsImpl* ads)
     : ads_(ads) {
+  DCHECK(ads_);
 }
 
 AdNotificationEventDismissed::~AdNotificationEventDismissed() = default;
 
 void AdNotificationEventDismissed::Trigger(
     const AdNotificationInfo& info) {
-  DCHECK(ads_);
-  if (!ads_) {
-    return;
-  }
+  ads_->get_ad_notifications()->Remove(info.uuid, false);
 
   Reports reports(ads_);
   const std::string report = reports.GenerateAdNotificationEventReport(info,
       AdNotificationEventType::kDismissed);
   ads_->get_ads_client()->EventLog(report);
 
-  ads_->ConfirmAdNotification(info, ConfirmationType::kDismissed);
+  ads_->ConfirmAd(info, ConfirmationType::kDismissed);
 
-  ads_->AppendAdNotificationToAdsHistory(info, ConfirmationType::kDismissed);
+  ads_->AppendAdNotificationToHistory(info, ConfirmationType::kDismissed);
 }
 
 }  // namespace ads

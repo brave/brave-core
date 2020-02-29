@@ -255,19 +255,20 @@ void BatAdsClientMojoBridge::SetCatalogIssuers(
   bat_ads_client_->SetCatalogIssuers(info->ToJson());
 }
 
-void BatAdsClientMojoBridge::ConfirmAdNotification(
-    std::unique_ptr<ads::AdNotificationInfo> info) {
+void BatAdsClientMojoBridge::ConfirmAd(
+    const ads::AdInfo& info,
+    const ads::ConfirmationType confirmation_type) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_client_->ConfirmAdNotification(info->ToJson());
+  bat_ads_client_->ConfirmAd(info.ToJson(), confirmation_type);
 }
 
 void BatAdsClientMojoBridge::ConfirmAction(
     const std::string& creative_instance_id,
     const std::string& creative_set_id,
-    const ads::ConfirmationType& confirmation_type) {
+    const ads::ConfirmationType confirmation_type) {
   if (!connected()) {
     return;
   }

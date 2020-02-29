@@ -71,17 +71,17 @@ class CONFIRMATIONS_EXPORT Confirmations {
   virtual void GetTransactionHistory(
       OnGetTransactionHistoryCallback callback) = 0;
 
-  // Should be called to confirm an ad notification was viewed, clicked,
-  // dismissed or landed
-  virtual void ConfirmAdNotification(
-      std::unique_ptr<AdNotificationInfo> info) = 0;
+  // Should be called to confirm an ad was viewed, clicked or landed
+  virtual void ConfirmAd(
+      const AdInfo& info,
+      const ConfirmationType confirmation_type) = 0;
 
-  // Should be called to confirm an action, e.g. when an ad is flagged, upvoted
-  // or downvoted
+  // Should be called to confirm an action, e.g. when an ad is flagged, upvoted,
+  // downvoted or converted
   virtual void ConfirmAction(
       const std::string& creative_instance_id,
       const std::string& creative_set_id,
-      const ConfirmationType& confirmation_type) = 0;
+      const ConfirmationType confirmation_type) = 0;
 
   // Should be called to refresh the ads rewards UI. |should_refresh| should be
   // set to |true| to fetch the latest payment balances from the server, e.g.

@@ -502,12 +502,15 @@ class RewardsServiceImpl : public RewardsService,
   void SetPublisherAllowVideos(bool allow) const override;
   void SetUserChangedContribution() const override;
   void UpdateAdsRewards() const override;
-  void SetCatalogIssuers(const std::string& json) override;
-  void ConfirmAdNotification(
+  void SetCatalogIssuers(
       const std::string& json) override;
-  void ConfirmAction(const std::string& creative_instance_id,
-                     const std::string& creative_set_id,
-                     const std::string& confirmation_type) override;
+  void ConfirmAd(
+      const std::string& json,
+      const std::string& confirmation_type) override;
+  void ConfirmAction(
+      const std::string& creative_instance_id,
+      const std::string& creative_set_id,
+      const std::string& confirmation_type) override;
   void SetConfirmationsIsReady(const bool is_ready) override;
   void GetTransactionHistory(
       GetTransactionHistoryCallback callback) override;

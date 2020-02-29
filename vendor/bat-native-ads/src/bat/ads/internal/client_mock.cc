@@ -20,15 +20,15 @@ void ClientMock::GeneratePastAdHistoryFromNow(
     const uint8_t count) {
   auto now_in_seconds = Time::NowInSeconds();
 
-  auto ad_history = std::make_unique<AdHistory>();
-  ad_history->uuid = base::GenerateGUID();
-  ad_history->ad_content.creative_instance_id = creative_instance_id;
+  AdHistory ad_history;
+  ad_history.uuid = base::GenerateGUID();
+  ad_history.ad_content.creative_instance_id = creative_instance_id;
 
   for (uint8_t i = 0; i < count; i++) {
     now_in_seconds -= time_offset_per_ad_in_seconds;
 
-    ad_history->timestamp_in_seconds = now_in_seconds;
-    AppendAdHistoryToAdsShownHistory(*ad_history);
+    ad_history.timestamp_in_seconds = now_in_seconds;
+    AppendAdHistoryToAdsShownHistory(ad_history);
   }
 }
 

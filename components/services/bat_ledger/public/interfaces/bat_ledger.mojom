@@ -97,7 +97,7 @@ interface BatLedger {
   HasSufficientBalanceToReconcile() => (bool sufficient);
 
   SetCatalogIssuers(string json);
-  ConfirmAdNotification(string json);
+  ConfirmAd(string json, string confirmation_type);
   ConfirmAction(string creative_instance_id, string creative_set_id, string confirmation_type);
   GetTransactionHistory() => (string json);
   GetRewardsInternalsInfo() => (ledger.mojom.RewardsInternalsInfo info);

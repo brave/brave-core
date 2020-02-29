@@ -14,7 +14,7 @@ typedef NS_ENUM(NSInteger, BATAdNotificationEventType) {
 
 NS_ASSUME_NONNULL_BEGIN
 
-@class BATAdsNotification, BATBraveAds, BATBraveLedger;
+@class BATAdNotification, BATBraveAds, BATBraveLedger;
 
 NS_SWIFT_NAME(BraveAdsNotificationHandler)
 @protocol BATBraveAdsNotificationHandler
@@ -23,7 +23,7 @@ NS_SWIFT_NAME(BraveAdsNotificationHandler)
 /// to the user.
 - (BOOL)shouldShowNotifications;
 /// Show the given notification to the user (or add it to the queue)
-- (void)showNotification:(BATAdsNotification *)notification;
+- (void)showNotification:(BATAdNotification *)notification;
 /// Remove a pending notification from the queue or remove an already shown
 /// notification from view
 - (void)clearNotificationWithIdentifier:(NSString *)identifier;
@@ -102,7 +102,7 @@ NS_SWIFT_NAME(BraveAds)
 
 #pragma mark - Notificiations
 
-- (nullable BATAdsNotification *)adsNotificationForIdentifier:(NSString *)identifier;
+- (nullable BATAdNotification *)adsNotificationForIdentifier:(NSString *)identifier;
 
 #pragma mark - History
 

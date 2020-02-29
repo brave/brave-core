@@ -15,7 +15,6 @@ class ConfirmationType {
   enum Value {
     // When adding new confirmation types they must be added with highest
     // priority at the top so that ads history can be filtered
-    kUnknown,
     kClicked,
     kDismissed,
     kViewed,
