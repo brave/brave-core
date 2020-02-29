@@ -367,6 +367,7 @@ test("brave_unit_tests") {
       # TODO(darkdh): move these out and use buildflag guard once it contains non tor specifics
       "//brave/browser/profiles/brave_profile_manager_unittest.cc",
       "//brave/browser/tor/tor_navigation_throttle_unittest.cc",
+      "//brave/common/tor/tor_control_unittest.cc",
       "//brave/common/tor/tor_test_constants.cc",
       "//brave/common/tor/tor_test_constants.h",
       "//brave/net/proxy_resolution/proxy_config_service_tor_unittest.cc",

@@ -5,9 +5,11 @@
 
 #include "brave/browser/tor/tor_launcher_factory.h"
 
+#include "base/task/post_task.h"
 #include "brave/browser/tor/tor_profile_service_impl.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/service_sandbox_type.h"
+#include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/service_process_host.h"
 
@@ -24,7 +26,8 @@ TorLauncherFactory* TorLauncherFactory::GetInstance() {
 
 TorLauncherFactory::TorLauncherFactory()
     : is_starting_(false),
-      tor_pid_(-1) {
+      tor_pid_(-1),
+      control_(tor::TorControl::Create()) {
   if (g_prevent_tor_launch_for_tests) {
     tor_pid_ = 1234;
     VLOG(1) << "Skipping the tor process launch in tests.";
@@ -47,6 +50,7 @@ void TorLauncherFactory::Init() {
   tor_launcher_->SetCrashHandler(base::Bind(
                         &TorLauncherFactory::OnTorCrashed,
                         base::Unretained(this)));
+  control_->AddObserver(this);
 }
 
 TorLauncherFactory::~TorLauncherFactory() {}
@@ -90,6 +94,7 @@ void TorLauncherFactory::LaunchTorProcess(const tor::TorConfig& config) {
   tor_launcher_->Launch(config_,
                         base::Bind(&TorLauncherFactory::OnTorLaunched,
                                    base::Unretained(this)));
+  control_->Start(config_.tor_watch_path());
 }
 
 void TorLauncherFactory::ReLaunchTorProcess(const tor::TorConfig& config) {
@@ -120,7 +125,7 @@ void TorLauncherFactory::ReLaunchTorProcess(const tor::TorConfig& config) {
 void TorLauncherFactory::KillTorProcess() {
   if (tor_launcher_.is_bound())
     tor_launcher_->Shutdown();
-
+  control_->Stop();
   tor_launcher_.reset();
   tor_pid_ = -1;
 }
@@ -156,6 +161,59 @@ void TorLauncherFactory::OnTorLaunched(bool result, int64_t pid) {
   }
   for (auto& observer : observers_)
     observer.NotifyTorLaunched(result, pid);
+}
+
+void TorLauncherFactory::OnTorControlReady() {
+  LOG(ERROR) << "TOR CONTROL: Ready!";
+  control_->GetVersion(
+      base::BindOnce(&TorLauncherFactory::GotVersion, base::Unretained(this)));
+  control_->Subscribe(tor::TorControlEvent::NETWORK_LIVENESS,
+                      base::DoNothing::Once<bool>());
+  control_->Subscribe(tor::TorControlEvent::STATUS_CLIENT,
+                      base::DoNothing::Once<bool>());
+  control_->Subscribe(tor::TorControlEvent::STATUS_GENERAL,
+                      base::DoNothing::Once<bool>());
+  control_->Subscribe(tor::TorControlEvent::STREAM,
+                      base::DoNothing::Once<bool>());
+}
+
+void TorLauncherFactory::GotVersion(bool error, const std::string& version) {
+  if (error) {
+    LOG(ERROR) << "Failed to get version!";
+    return;
+  }
+  LOG(ERROR) << "Tor version: " << version;
+}
+
+void TorLauncherFactory::OnTorClosed() {
+  LOG(ERROR) << "TOR CONTROL: Closed!";
+}
+
+void TorLauncherFactory::OnTorEvent(
+    tor::TorControlEvent event, const std::string& initial,
+    const std::map<std::string, std::string>& extra) {
+  LOG(ERROR) << "TOR CONTROL: event "
+             << (*tor::kTorControlEventByEnum.find(event)).second
+             << ": " << initial;
+}
+
+void TorLauncherFactory::OnTorRawCmd(const std::string& cmd) {
+  LOG(ERROR) << "TOR CONTROL: command: " << cmd;
+}
+
+void TorLauncherFactory::OnTorRawAsync(
+    const std::string& status, const std::string& line) {
+  LOG(ERROR) << "TOR CONTROL: async " << status << " " << line;
+}
+
+void TorLauncherFactory::OnTorRawMid(
+    const std::string& status, const std::string& line) {
+  LOG(ERROR) << "TOR CONTROL: mid " << status << "-" << line;
+}
+
+void TorLauncherFactory::OnTorRawEnd(
+    const std::string& status, const std::string& line) {
+  LOG(ERROR) << "TOR CONTROL: end " << status << " " << line;
 }
 
 ScopedTorLaunchPreventerForTest::ScopedTorLaunchPreventerForTest() {

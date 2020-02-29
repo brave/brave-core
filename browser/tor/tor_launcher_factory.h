@@ -11,6 +11,8 @@
 #include "base/memory/singleton.h"
 #include "base/observer_list.h"
 #include "brave/common/tor/tor_common.h"
+#include "brave/common/tor/tor_control.h"
+#include "brave/common/tor/tor_control_observer.h"
 #include "brave/components/services/tor/public/interfaces/tor.mojom.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
@@ -18,7 +20,7 @@ namespace tor {
 class TorProfileServiceImpl;
 }
 
-class TorLauncherFactory {
+class TorLauncherFactory : public tor::TorControlObserver {
  public:
   static TorLauncherFactory* GetInstance();
 
@@ -32,17 +34,40 @@ class TorLauncherFactory {
   void AddObserver(tor::TorProfileServiceImpl* serice);
   void RemoveObserver(tor::TorProfileServiceImpl* service);
 
+  // tor::TorControlObserver
+  void OnTorControlReady() override;
+  void OnTorClosed() override;
+  void OnTorEvent(
+      tor::TorControlEvent event,
+      const std::string& initial,
+      const std::map<std::string, std::string>& extra)
+    override;
+  void OnTorRawCmd(const std::string& cmd) override;
+  void OnTorRawAsync(const std::string& status,
+                     const std::string& line)
+    override;
+  void OnTorRawMid(const std::string& status,
+                   const std::string& line)
+    override;
+  void OnTorRawEnd(const std::string& status,
+                   const std::string& line)
+    override;
+
  private:
   friend struct base::DefaultSingletonTraits<TorLauncherFactory>;
 
   TorLauncherFactory();
-  ~TorLauncherFactory();
+  ~TorLauncherFactory() final;
 
   bool SetConfig(const tor::TorConfig& config);
 
   void OnTorLauncherCrashed();
   void OnTorCrashed(int64_t pid);
   void OnTorLaunched(bool result, int64_t pid);
+
+  void GotVersion(bool error, const std::string& version);
+  void Loggerific(
+      bool error, const std::string& status, const std::string& reply);
 
   bool is_starting_;
 
@@ -53,6 +78,8 @@ class TorLauncherFactory {
   tor::TorConfig config_;
 
   base::ObserverList<tor::TorProfileServiceImpl> observers_;
+
+  scoped_refptr<tor::TorControl> control_;
 
   DISALLOW_COPY_AND_ASSIGN(TorLauncherFactory);
 };
