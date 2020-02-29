@@ -99,7 +99,6 @@ class BottomSheetViewController: UIViewController {
         traitCollection.userInterfaceIdiom == .phone && UIApplication.shared.statusBarOrientation.isLandscape
     }
     
-    
     // MARK: - Lifecycle
 
     init() {
@@ -160,6 +159,13 @@ class BottomSheetViewController: UIViewController {
             if showAsPopup || isLandscapePhone {
                 $0.bottom.centerX.equalToSuperview()
                 $0.width.equalTo(maxHorizontalWidth)
+                
+                // If contents can't fit the screen height, we have to add top constraint
+                // in order to squeeze views in the `contentView`.
+                // At the moment it only happens on iPhone 5S in landscape mode.
+                //
+                // Otherwise no top constraint is set, it will take as much space as needed.
+                $0.top.greaterThanOrEqualToSuperview()
             } else {
                 $0.leading.trailing.bottom.equalToSuperview()
             }

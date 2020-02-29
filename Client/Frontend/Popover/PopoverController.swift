@@ -117,7 +117,11 @@ class PopoverController: UIViewController {
         super.viewDidLoad()
         
         backgroundOverlayView.backgroundColor = UIColor(white: 0.0, alpha: 0.2)
-        backgroundOverlayView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedBackgroundOverlay(_:))))
+        let backgroundTap = UITapGestureRecognizer(target: self, action: #selector(tappedBackgroundOverlay(_:)))
+        backgroundOverlayView.isAccessibilityElement = true
+        backgroundOverlayView.accessibilityLabel = contentController.closeActionAccessibilityLabel
+        backgroundOverlayView.accessibilityElements = [backgroundTap]
+        backgroundOverlayView.addGestureRecognizer(backgroundTap)
         
         let pan = UIPanGestureRecognizer(target: self, action: #selector(pannedPopover(_:)))
         pan.delegate = self

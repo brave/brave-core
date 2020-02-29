@@ -40,7 +40,7 @@ case $i in
     shift
     ;;
     --debug)
-    release_flag=""
+    release_flag="Debug"
     sim_dir="out/ios_Debug"
     device_dir="out/ios_Debug_arm64"
     shift

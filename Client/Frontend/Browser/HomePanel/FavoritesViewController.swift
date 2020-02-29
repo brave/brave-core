@@ -303,7 +303,7 @@ class FavoritesViewController: UIViewController, Themeable {
                       adsAvailableInRegion: adsAvailableInRegion,
                       isSponsoredImage: isSponsoredImage)
         
-        return .brandedImages(state: state)
+        return .brandedImages(state: .getPaidTurnRewardsOn)
     }
     
     private func showNTPNotification(for type: NTPNotificationType) {
@@ -466,7 +466,6 @@ class FavoritesViewController: UIViewController, Themeable {
         }
         
         ddgLabel.snp.makeConstraints { make in
-            make.top.bottom.greaterThanOrEqualTo(UI.ddgButtonPadding)
             make.right.equalToSuperview().offset(-UI.ddgButtonPadding)
             make.left.equalTo(self.ddgLogo.snp.right).offset(5)
             make.width.equalTo(180)

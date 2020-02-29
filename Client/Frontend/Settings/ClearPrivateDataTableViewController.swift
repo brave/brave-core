@@ -190,7 +190,7 @@ class ClearPrivateDataTableViewController: UITableViewController {
                         (.webSiteData, true)
                         ])
                 }
-                self.tabManager.removeTab(self.tabManager.addTab())
+                self.tabManager.removeTab(self.tabManager.addTab(isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing))
             }
         })
     }

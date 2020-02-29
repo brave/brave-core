@@ -17,11 +17,11 @@ You can now setup an Xcode workspace to make working on iOS code much easier.
 Run one of the following command while at the root folder of brave-browser:
 ```shell
 # Creates a debug target
-npm run build -- --target_os=ios --xcode_gen=ios
+npm run build -- Debug --target_os=ios --xcode_gen=ios
 # Creates a release target
 npm run build -- Release --target_os=ios --xcode_gen=ios
 # Creates a device build target
-npm run build -- --target_os=ios --target_arch=arm64 --xcode_gen=ios
+npm run build -- Release --target_os=ios --target_arch=arm64 --xcode_gen=ios
 ```
 
 Assuming you ran the first command, this will create a folder at `src/out/ios_Debug_Xcode` which will contain `Workspace.xcworkspace` with two projects:
@@ -66,11 +66,11 @@ When you have changes that need to be fixed in the BraveRewards.framework (such 
     # This has to be run at brave-browser root dir
     cd ../..
     # Creates debug build
-    npm run build -- target_os=ios
+    npm run build -- Debug --target_os=ios
     # Creates release build
-    npm run build -- Release target_os=ios
+    npm run build -- Release --target_os=ios
     # Creates arm64 build
-    npm run build -- target_os=ios target_arch=arm64
+    npm run build -- Release --target_os=ios --target_arch=arm64
     ```
 1. Run the tests:
     ```shell
