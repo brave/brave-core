@@ -295,7 +295,7 @@ class TabManager: NSObject {
             tab.expireSnackbars()
         }
     }
-
+    
     func addPopupForParentTab(_ parentTab: Tab, configuration: WKWebViewConfiguration) -> Tab {
         let popup = Tab(configuration: configuration, type: parentTab.type)
         configureTab(popup, request: nil, afterTab: parentTab, flushToDisk: true, zombie: false, isPopup: true)
@@ -310,25 +310,11 @@ class TabManager: NSObject {
         return popup
     }
     
-    @discardableResult func addTab(_ request: URLRequest! = nil, configuration: WKWebViewConfiguration! = nil, afterTab: Tab? = nil, isPrivate: Bool) -> Tab {
-        return self.addTab(request, configuration: configuration, afterTab: afterTab, flushToDisk: true, zombie: false, isPrivate: isPrivate)
-    }
-
-    @discardableResult func addTabAndSelect(_ request: URLRequest! = nil, configuration: WKWebViewConfiguration! = nil, afterTab: Tab? = nil, isPrivate: Bool) -> Tab {
+    @discardableResult
+    func addTabAndSelect(_ request: URLRequest! = nil, configuration: WKWebViewConfiguration! = nil, afterTab: Tab? = nil, isPrivate: Bool) -> Tab {
         let tab = addTab(request, configuration: configuration, afterTab: afterTab, isPrivate: isPrivate)
         selectTab(tab)
         return tab
-    }
-
-    @discardableResult func addTabAndSelect(_ request: URLRequest! = nil, configuration: WKWebViewConfiguration! = nil, afterTab: Tab? = nil) -> Tab {
-        let tab = addTab(request, configuration: configuration, afterTab: afterTab)
-        selectTab(tab)
-        return tab
-    }
-
-    // This method is duplicated to hide the flushToDisk option from consumers.
-    @discardableResult func addTab(_ request: URLRequest! = nil, configuration: WKWebViewConfiguration! = nil, afterTab: Tab? = nil) -> Tab {
-        return self.addTab(request, configuration: configuration, afterTab: afterTab, flushToDisk: true, zombie: false)
     }
 
     func addTabsForURLs(_ urls: [URL], zombie: Bool, isPrivate: Bool = false) {
@@ -349,8 +335,9 @@ class TabManager: NSObject {
         // Okay now notify that we bulk-loaded so we can adjust counts and animate changes.
         delegates.forEach { $0.get()?.tabManagerDidAddTabs(self) }
     }
-
-    fileprivate func addTab(_ request: URLRequest? = nil, configuration: WKWebViewConfiguration? = nil, afterTab: Tab? = nil, flushToDisk: Bool, zombie: Bool, id: String? = nil, isPrivate: Bool) -> Tab {
+    
+    @discardableResult
+    func addTab(_ request: URLRequest? = nil, configuration: WKWebViewConfiguration? = nil, afterTab: Tab? = nil, flushToDisk: Bool = true, zombie: Bool = false, id: String? = nil, isPrivate: Bool) -> Tab {
         assert(Thread.isMainThread)
 
         // Take the given configuration. Or if it was nil, take our default configuration for the current browsing mode.
@@ -359,27 +346,10 @@ class TabManager: NSObject {
         let type: TabType = isPrivate ? .private : .regular
         let tab = Tab(configuration: configuration, type: type)
         
-        if isPrivate {
-            // Creating random tab id for private mode, as we don't want to save to database.
-            tab.id = UUID().uuidString
-        } else {
-            tab.id = id ?? TabMO.create()
-        }
-        
-        configureTab(tab, request: request, afterTab: afterTab, flushToDisk: flushToDisk, zombie: zombie, isPrivate: isPrivate)
+        configureTab(tab, request: request, afterTab: afterTab, flushToDisk: flushToDisk, zombie: zombie, id: id)
         return tab
     }
 
-    fileprivate func addTab(_ request: URLRequest? = nil, configuration: WKWebViewConfiguration? = nil, afterTab: Tab? = nil, flushToDisk: Bool, zombie: Bool) -> Tab {
-        assert(Thread.isMainThread)
-
-        let tab = Tab(configuration: configuration ?? self.configuration)
-        tab.id = TabMO.create()
-        
-        configureTab(tab, request: request, afterTab: afterTab, flushToDisk: flushToDisk, zombie: zombie)
-        return tab
-    }
-    
     func moveTab(_ tab: Tab, toIndex visibleToIndex: Int) {
         assert(Thread.isMainThread)
         
@@ -410,9 +380,17 @@ class TabManager: NSObject {
         TabMO.saveTabOrder(tabIds: allTabIds)
     }
 
-    func configureTab(_ tab: Tab, request: URLRequest?, afterTab parent: Tab? = nil, flushToDisk: Bool, zombie: Bool, isPopup: Bool = false, isPrivate: Bool = false) {
+    func configureTab(_ tab: Tab, request: URLRequest?, afterTab parent: Tab? = nil, flushToDisk: Bool, zombie: Bool, id: String? = nil, isPopup: Bool = false) {
         assert(Thread.isMainThread)
-
+        
+        let isPrivate = tab.type == .private
+        if isPrivate {
+            // Creating random tab id for private mode, as we don't want to save to database.
+            tab.id = UUID().uuidString
+        } else {
+            tab.id = id ?? TabMO.create()
+        }
+        
         delegates.forEach { $0.get()?.tabManager(self, willAddTab: tab) }
 
         if parent == nil || parent?.type != tab.type {

@@ -4,6 +4,7 @@
 
 import Foundation
 import UIKit
+import Shared
 
 /// Defines behavior of a component which will be used with a `PopoverController`
 protocol PopoverContentComponent {
@@ -16,6 +17,9 @@ protocol PopoverContentComponent {
     /// Allows the component to decide whether or not the popover should dismiss based on some gestural action (tapping
     /// the background around the popover or dismissing via pan). Optional, true by defualt
     func popoverShouldDismiss(_ popoverController: PopoverController) -> Bool
+
+    /// Description for closing the popover view for accessibility users
+    var closeActionAccessibilityLabel: String { get }
 }
 
 extension PopoverContentComponent {
@@ -32,6 +36,10 @@ extension PopoverContentComponent {
     }
     
     func popoverDidDismiss(_ popoverController: PopoverController) {
+    }
+
+    var closeActionAccessibilityLabel: String {
+        return Strings.Popover.closeContextMenu
     }
 }
 

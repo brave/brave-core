@@ -166,7 +166,7 @@ class TabManagerTests: XCTestCase {
         manager.addDelegate(delegate)
         
         delegate.expect([willAdd, didAdd])
-        manager.addTab()
+        manager.addTab(isPrivate: false)
         delegate.verify("Not all delegate methods were called")
     }
     
@@ -174,7 +174,7 @@ class TabManagerTests: XCTestCase {
         let delegate = MockTabManagerDelegate()
         
         //create the tab before adding the mock delegate. So we don't have to check delegate calls we dont care about
-        let tab = manager.addTab()
+        let tab = manager.addTab(isPrivate: false)
         manager.selectTab(tab)
         manager.addDelegate(delegate)
         
@@ -212,7 +212,7 @@ class TabManagerTests: XCTestCase {
     
     func testDeletePrivateTabsOnExit() {
         // create one private and one normal tab
-        let tab = manager.addTab()
+        let tab = manager.addTab(isPrivate: false)
         manager.selectTab(tab)
         manager.selectTab(manager.addTab(isPrivate: true))
         
@@ -231,15 +231,15 @@ class TabManagerTests: XCTestCase {
         manager.selectTab(manager.addTab(isPrivate: true))
         manager.selectTab(manager.addTab(isPrivate: true))
         XCTAssertEqual(manager.tabs(withType: .private).count, 2, "Private tabs should not be deleted when another one is added")
-        manager.selectTab(manager.addTab())
+        manager.selectTab(manager.addTab(isPrivate: false))
         XCTAssertEqual(manager.tabs(withType: .private).count, 0, "But once we add a normal tab we've switched out of private mode. Private tabs should be deleted")
         XCTAssertEqual(manager.tabs(withType: .regular).count, 2, "The original normal tab and the new one should both still exist")
     }
     
     func testTogglePBMDelete() {
-        let tab = manager.addTab()
+        let tab = manager.addTab(isPrivate: false)
         manager.selectTab(tab)
-        manager.selectTab(manager.addTab())
+        manager.selectTab(manager.addTab(isPrivate: false))
         manager.selectTab(manager.addTab(isPrivate: true))
         
         manager.willSwitchTabMode(leavingPBM: false)
@@ -254,10 +254,10 @@ class TabManagerTests: XCTestCase {
         let delegate = MockTabManagerDelegate()
         
         //create the tab before adding the mock delegate. So we don't have to check delegate calls we dont care about
-        let tab = manager.addTab()
+        let tab = manager.addTab(isPrivate: false)
         manager.selectTab(tab)
-        manager.addTab()
-        let deleteTab = manager.addTab()
+        manager.addTab(isPrivate: false)
+        let deleteTab = manager.addTab(isPrivate: false)
         manager.addDelegate(delegate)
         
         delegate.expect([willRemove, didRemove])
@@ -270,7 +270,7 @@ class TabManagerTests: XCTestCase {
         let delegate = MockTabManagerDelegate()
         
         func addTab(_ visit: Bool) -> Tab {
-            let tab = manager.addTab()
+            let tab = manager.addTab(isPrivate: false)
             if visit {
                 tab.lastExecutedTime = Date.now()
             }
@@ -309,7 +309,7 @@ class TabManagerTests: XCTestCase {
         let delegate = MockTabManagerDelegate()
         
         //create the tab before adding the mock delegate. So we don't have to check delegate calls we dont care about
-        (0..<10).forEach {_ in manager.addTab() }
+        (0..<10).forEach {_ in manager.addTab(isPrivate: false) }
         manager.selectTab(manager.allTabs.last)
         let deleteTab = manager.allTabs.last
         let newSelectedTab = manager.allTabs[8]
@@ -332,8 +332,8 @@ class TabManagerTests: XCTestCase {
         let delegate = MockTabManagerDelegate()
         
         // create one private and one normal tab
-        let tab = manager.addTab()
-        let newTab = manager.addTab()
+        let tab = manager.addTab(isPrivate: false)
+        let newTab = manager.addTab(isPrivate: false)
         manager.selectTab(tab)
         manager.selectTab(manager.addTab(isPrivate: true))
         manager.addDelegate(delegate)
@@ -370,7 +370,7 @@ class TabManagerTests: XCTestCase {
         let delegate = MockTabManagerDelegate()
         
         //create the tab before adding the mock delegate. So we don't have to check delegate calls we dont care about
-        (0..<10).forEach {_ in manager.addTab() }
+        (0..<10).forEach {_ in manager.addTab(isPrivate: false) }
         manager.selectTab(manager.allTabs.first)
         let deleteTab = manager.allTabs.first
         let newSelectedTab = manager.allTabs[1]
@@ -394,10 +394,10 @@ class TabManagerTests: XCTestCase {
         
         // We add 2 tabs. Then a private one before adding another normal tab and selecting it.
         // Make sure that when the last one is deleted we dont switch to the private tab
-        manager.addTab()
-        let newSelected = manager.addTab()
+        manager.addTab(isPrivate: false)
+        let newSelected = manager.addTab(isPrivate: false)
         manager.addTab(isPrivate: true)
-        let deleted = manager.addTab()
+        let deleted = manager.addTab(isPrivate: false)
         manager.selectTab(manager.allTabs.last)
         manager.addDelegate(delegate)
         
@@ -418,10 +418,10 @@ class TabManagerTests: XCTestCase {
         
         // We add 2 tabs. Then a private one before adding another normal tab and selecting the first.
         // Make sure that when the last one is deleted we dont switch to the private tab
-        let deleted = manager.addTab()
-        let newSelected = manager.addTab()
+        let deleted = manager.addTab(isPrivate: false)
+        let newSelected = manager.addTab(isPrivate: false)
         manager.addTab(isPrivate: true)
-        manager.addTab()
+        manager.addTab(isPrivate: false)
         manager.selectTab(manager.allTabs.first)
         manager.addDelegate(delegate)
         
@@ -439,7 +439,7 @@ class TabManagerTests: XCTestCase {
     func testRemoveOnlyTab() {
         let delegate = MockTabManagerDelegate()
         
-        let tab = manager.addTab()
+        let tab = manager.addTab(isPrivate: false)
         
         manager.addDelegate(delegate)
         delegate.expect([willRemove, didRemove, willAdd, didAdd, MethodSpy(functionName: "tabManager(_:didSelectedTabChange:previous:)")])
@@ -452,7 +452,7 @@ class TabManagerTests: XCTestCase {
     }
     
     func testRemoveAllTabs() {
-        (0..<10).forEach { _ in manager.addTab() }
+        (0..<10).forEach { _ in manager.addTab(isPrivate: false) }
         manager.removeAll()
         
         XCTAssertFalse(manager.allTabs.isEmpty, "Should create a new tab when all others are removed")
@@ -460,10 +460,10 @@ class TabManagerTests: XCTestCase {
     }
     
     func testMoveTabToEnd() {
-        let firstTab = manager.addTabAndSelect()
-        let secondTab = manager.addTab()
+        let firstTab = manager.addTabAndSelect(isPrivate: false)
+        let secondTab = manager.addTab(isPrivate: false)
         manager.addTab(isPrivate: true)
-        let thirdTab = manager.addTab()
+        let thirdTab = manager.addTab(isPrivate: false)
         
         manager.moveTab(firstTab, toIndex: manager.tabs(withType: .regular).count - 1)
         
@@ -474,10 +474,10 @@ class TabManagerTests: XCTestCase {
     }
     
     func testMoveTabToStart() {
-        let firstTab = manager.addTabAndSelect()
-        let secondTab = manager.addTab()
+        let firstTab = manager.addTabAndSelect(isPrivate: false)
+        let secondTab = manager.addTab(isPrivate: false)
         manager.addTab(isPrivate: true)
-        let thirdTab = manager.addTab()
+        let thirdTab = manager.addTab(isPrivate: false)
         
         manager.moveTab(thirdTab, toIndex: 0)
         
@@ -488,11 +488,11 @@ class TabManagerTests: XCTestCase {
     }
     
     func testMoveTabToMiddle() {
-        let firstTab = manager.addTab()
-        let secondTab = manager.addTab()
+        let firstTab = manager.addTab(isPrivate: false)
+        let secondTab = manager.addTab(isPrivate: false)
         manager.addTab(isPrivate: true)
-        let thirdTab = manager.addTabAndSelect()
-        let forthTab = manager.addTab()
+        let thirdTab = manager.addTabAndSelect(isPrivate: false)
+        let forthTab = manager.addTab(isPrivate: false)
         
         manager.moveTab(forthTab, toIndex: 1)
         
@@ -508,7 +508,7 @@ class TabManagerTests: XCTestCase {
         DataController.shared = InMemoryDataController()
         
         delegate.expect([willAdd, didAdd])
-        let tab = manager.addTab()
+        let tab = manager.addTab(isPrivate: false)
         wait(1)
         delegate.verify("Not all delegate methods were called")
         
@@ -540,7 +540,7 @@ class TabManagerTests: XCTestCase {
         delegate.expect([willAdd, didAdd, willAdd, didAdd])
         manager.addTab(isPrivate: true)
 
-        let tab = manager.addTab()
+        let tab = manager.addTab(isPrivate: false)
         wait(1)
         delegate.verify("Not all delegate methods were called")
         

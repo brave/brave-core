@@ -257,7 +257,7 @@ class TabLocationView: UIView {
 
     override var accessibilityElements: [Any]? {
         get {
-            return [lockImageView, urlTextField, readerModeButton, reloadButton].filter { !$0.isHidden }
+            return [lockImageView, urlTextField, readerModeButton, reloadButton, shieldsButton].filter { !$0.isHidden }
         }
         set {
             super.accessibilityElements = newValue
