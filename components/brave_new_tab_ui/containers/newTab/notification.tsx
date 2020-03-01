@@ -38,10 +38,10 @@ export default class Notification extends React.Component<Props, {}> {
     return (
        <SiteRemovalNotification>
          <SiteRemovalText>{getLocale('thumbRemoved')}</SiteRemovalText>
-         <SiteRemovalAction onClick={this.onUndoIgnoredTopSite}>{getLocale('undoRemoved')}</SiteRemovalAction>
-         <SiteRemovalAction onClick={this.onUndoAllSiteIgnored}>{getLocale('restoreAll')}</SiteRemovalAction>
-         <SiteRemovalAction onClick={this.onHideSiteRemovalNotification} iconOnly={true} title={getLocale('close')}>
-          <CloseStrokeIcon />
+         &nbps;<SiteRemovalAction onClick={this.onUndoIgnoredTopSite}>{getLocale('undoRemoved')}</SiteRemovalAction>
+         &nbps;<SiteRemovalAction onClick={this.onUndoAllSiteIgnored}>{getLocale('restoreAll')}</SiteRemovalAction>
+         &nbps;<SiteRemovalAction onClick={this.onHideSiteRemovalNotification} iconOnly={true} title={getLocale('close')}>
+         &nbps;<CloseStrokeIcon />
         </SiteRemovalAction>
        </SiteRemovalNotification>
     )
