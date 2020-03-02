@@ -13,7 +13,8 @@ export const SiteRemovalNotification = styled<{}, 'header'>('header')`
   align-items: center;
   padding: 30px 60px;
   display: grid;
-  grid-template-columns: auto auto auto auto;
+ grid-auto-flow: column;
+ grid-auto-columns: auto;
   grid-gap: 15px;
 `
 
