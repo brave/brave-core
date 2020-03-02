@@ -750,6 +750,7 @@ bool AdsImpl::ShouldClassifyPagesIfTargeted() const {
 std::string AdsImpl::ClassifyPage(
     const std::string& url,
     const std::string& html) {
+  DCHECK(user_model_);
   auto page_score = user_model_->ClassifyPage(html);
 
   auto winning_category = GetWinningCategory(page_score);
@@ -775,9 +776,15 @@ std::string AdsImpl::ClassifyPage(
 }
 
 std::vector<std::string> AdsImpl::GetWinningCategories() {
+  std::vector<std::string> winning_categories;
+
+  if (!ShouldClassifyPagesIfTargeted()) {
+    return winning_categories;
+  }
+
   auto page_score_history = client_->GetPageScoreHistory();
-  if (page_score_history.size() == 0) {
-    return {};
+  if (page_score_history.empty()) {
+    return winning_categories;
   }
 
   uint64_t count = page_score_history.front().size();
@@ -788,6 +795,7 @@ std::vector<std::string> AdsImpl::GetWinningCategories() {
 
   for (const auto& page_score : page_score_history) {
     DCHECK(page_score.size() == count);
+    DCHECK(user_model_);
 
     for (size_t i = 0; i < page_score.size(); i++) {
       auto taxonomy = user_model_->GetTaxonomyAtIndex(i);
@@ -806,7 +814,6 @@ std::vector<std::string> AdsImpl::GetWinningCategories() {
   std::sort(sorted_winning_category_page_scores.begin(),
       sorted_winning_category_page_scores.end(), std::greater<double>());
 
-  std::vector<std::string> winning_categories;
   for (const auto& page_score : sorted_winning_category_page_scores) {
     if (page_score == 0.0) {
       continue;
@@ -815,6 +822,7 @@ std::vector<std::string> AdsImpl::GetWinningCategories() {
     auto it = std::find(winning_category_page_scores.begin(),
         winning_category_page_scores.end(), page_score);
     const int index = std::distance(winning_category_page_scores.begin(), it);
+    DCHECK(user_model_);
     const std::string category = user_model_->GetTaxonomyAtIndex(index);
     if (category.empty()) {
       continue;
@@ -837,6 +845,7 @@ std::vector<std::string> AdsImpl::GetWinningCategories() {
 
 std::string AdsImpl::GetWinningCategory(
     const std::vector<double>& page_score) {
+  DCHECK(user_model_);
   return user_model_->GetWinningCategory(page_score);
 }
 
