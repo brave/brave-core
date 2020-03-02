@@ -178,6 +178,9 @@ BravePatching.RegisterPolymerTemplateModifications({
     const autofillEl = getMenuElement(templateContent, '/autofill')
     const languagesEl = getMenuElement(templateContent, '/languages')
     languagesEl.insertAdjacentElement('beforebegin', autofillEl)
+    // Move privacy to advanced
+    const privacyEl = getMenuElement(templateContent, '/privacy')
+    autofillEl.insertAdjacentElement('beforebegin', privacyEl)
     // Move helptips to advanced
     const printingEl = getMenuElement(templateContent, '/printing')
     printingEl.insertAdjacentElement('afterend', helpTipsEl)
@@ -227,6 +230,12 @@ BravePatching.RegisterPolymerTemplateModifications({
       console.error('[Brave Settings Overrides] Could not move autofill route to advanced route', r)
     } else {
       r.AUTOFILL.parent = r.ADVANCED
+    }
+    // Privacy route is moved to advanced.
+    if (!r.PRIVACY || !r.ADVANCED) {
+      console.error('[Brave Settings Overrides] Could not move privacy route to advanced route', r)
+    } else {
+      r.PRIVACY.parent = r.ADVANCED
     }
     // Add 'Getting Started' section
     // Entire content is wrapped in another conditional template
@@ -336,6 +345,9 @@ BravePatching.RegisterPolymerTemplateModifications({
       const sectionAutofill = getSectionElement(actualTemplate.content, 'autofill')
       const sectionLanguages = getSectionElement(advancedSubSectionsTemplate.content, 'languages')
       sectionLanguages.insertAdjacentElement('beforebegin', sectionAutofill)
+      // Move privacy to before autofill
+      const sectionPrivacy = getSectionElement(actualTemplate.content, 'privacy')
+      sectionAutofill.insertAdjacentElement('beforebegin', sectionPrivacy)
       // Move help tips after printing
       const sectionPrinting = getSectionElement(advancedSubSectionsTemplate.content, 'printing')
       sectionPrinting.insertAdjacentElement('afterend', sectionHelpTips)
