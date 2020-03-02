@@ -51,8 +51,8 @@ void PromotionTransfer::Start(
 
   ledger_->TransferAnonToExternalWallet(
       std::move(wallet),
-      true,
-      transfer_callback);
+      transfer_callback,
+      true);
 }
 
 void PromotionTransfer::OnAnonExternalWallet(

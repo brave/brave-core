@@ -96,27 +96,16 @@ void UpholdWallet::OnGenerate(
 
   wallet_ptr->user_name = user.name;
 
-  bool allow_zero_balance = false;
-
   if (user.status != UserStatus::OK) {
     wallet_ptr->status = ledger::WalletStatus::PENDING;
   }
 
   wallet_ptr = SetStatus(user, std::move(wallet_ptr));
 
-  // if we don't have anon address we need to force claim so that server
-  // can save it
-  const std::string anon_address =
-      ledger_->GetStringState(ledger::kStateUpholdAnonAddress);
-  if (anon_address.empty()) {
-    allow_zero_balance = true;
-  }
-
   if (wallet_ptr->address.empty()) {
     auto card_callback = std::bind(
       &UpholdWallet::OnCreateCard,
       this,
-      allow_zero_balance,
       *wallet_ptr,
       callback,
       _1,
@@ -127,10 +116,7 @@ void UpholdWallet::OnGenerate(
 
   if (user.verified) {
     ledger_->TransferTokens(wallet_ptr->Clone(), [](const ledger::Result){});
-    uphold_->TransferAnonToExternalWallet(
-        std::move(wallet_ptr),
-        allow_zero_balance,
-        callback);
+    uphold_->TransferAnonToExternalWallet(std::move(wallet_ptr), callback);
     return;
   }
 
@@ -139,7 +125,6 @@ void UpholdWallet::OnGenerate(
 }
 
 void UpholdWallet::OnCreateCard(
-    const bool allow_zero_balance,
     const ledger::ExternalWallet& wallet,
     ledger::ExternalWalletCallback callback,
     const ledger::Result result,
@@ -155,10 +140,7 @@ void UpholdWallet::OnCreateCard(
 
   if (wallet_ptr->status == ledger::WalletStatus::VERIFIED) {
     ledger_->TransferTokens(wallet_ptr->Clone(), [](const ledger::Result){});
-    uphold_->TransferAnonToExternalWallet(
-        std::move(wallet_ptr),
-        allow_zero_balance,
-        callback);
+    uphold_->TransferAnonToExternalWallet(std::move(wallet_ptr), callback);
     return;
   }
 

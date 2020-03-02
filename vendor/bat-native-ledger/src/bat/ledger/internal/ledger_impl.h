@@ -519,8 +519,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void TransferAnonToExternalWallet(
       ledger::ExternalWalletPtr wallet,
-      const bool allow_zero_balance,
-      ledger::TransferAnonToExternalWalletCallback callback);
+      ledger::TransferAnonToExternalWalletCallback callback,
+      const bool allow_zero_balance = false);
 
   void ShowNotification(
       const std::string& type,

@@ -481,8 +481,8 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD3(TransferAnonToExternalWallet,
       void(ledger::ExternalWalletPtr,
-          const bool,
-          ledger::TransferAnonToExternalWalletCallback));
+          ledger::TransferAnonToExternalWalletCallback,
+          const bool));
 
   MOCK_METHOD3(ShowNotification,
       void(const std::string&,

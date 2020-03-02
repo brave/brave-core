@@ -1379,8 +1379,8 @@ void LedgerImpl::DisconnectWallet(
 
 void LedgerImpl::TransferAnonToExternalWallet(
     ledger::ExternalWalletPtr wallet,
-    const bool allow_zero_balance,
-    ledger::TransferAnonToExternalWalletCallback callback) {
+    ledger::TransferAnonToExternalWalletCallback callback,
+    const bool allow_zero_balance) {
   bat_wallet_->TransferAnonToExternalWallet(
     std::move(wallet),
     allow_zero_balance,

@@ -203,7 +203,6 @@ void Uphold::WalletAuthorization(
 
 void Uphold::TransferAnonToExternalWallet(
     ledger::ExternalWalletPtr wallet,
-    const bool allow_zero_balance,
     ledger::ExternalWalletCallback callback) {
   auto transfer_callback = std::bind(
     &Uphold::OnTransferAnonToExternalWalletCallback,
@@ -213,10 +212,7 @@ void Uphold::TransferAnonToExternalWallet(
     _1);
 
   // transfer funds from anon wallet to uphold
-  ledger_->TransferAnonToExternalWallet(
-    std::move(wallet),
-    allow_zero_balance,
-    transfer_callback);
+  ledger_->TransferAnonToExternalWallet(std::move(wallet), transfer_callback);
 }
 
 void Uphold::GenerateExternalWallet(
