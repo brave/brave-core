@@ -816,6 +816,9 @@ until they verify, or until 90 days have passed.
       <message name="IDS_NOTIFICATION_CATEGORY_BRAVE_ADS_BACKGROUND" desc="Label for Brave Ads in background.">
         Brave Ads sent when browser is in the background
       </message>
+      <message name="IDS_CLEAR_DOWNLOADS_TITLE" desc="Title for Clear download in Clear Browsing Data dialog">
+        Download history
+      </message>
     </messages>
   </release>
 </grit>

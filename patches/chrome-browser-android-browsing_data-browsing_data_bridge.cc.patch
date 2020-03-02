@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/android/browsing_data/browsing_data_bridge.cc b/chrome/browser/android/browsing_data/browsing_data_bridge.cc
+index cd5bfb077e93e2e9904ebf4287860c966776b869..afdaa25123934b7bbad3131c9efe5eb887884bd4 100644
+--- a/chrome/browser/android/browsing_data/browsing_data_bridge.cc
++++ b/chrome/browser/android/browsing_data/browsing_data_bridge.cc
+@@ -123,6 +123,7 @@ static void JNI_BrowsingDataBridge_ClearBrowsingData(
+             ChromeBrowsingDataRemoverDelegate::DATA_TYPE_CONTENT_SETTINGS;
+         break;
+       case browsing_data::BrowsingDataType::DOWNLOADS:
++        BRAVE_HANDLE_DATA_TYPE_DOWNLOADS
+       case browsing_data::BrowsingDataType::HOSTED_APPS_DATA:
+         // Only implemented on Desktop.
+         NOTREACHED();
