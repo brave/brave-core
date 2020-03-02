@@ -96,25 +96,58 @@ jboolean JNI_BravePrefServiceBridge_GetDesktopModeEnabled(
   return GetOriginalProfile()->GetPrefs()->GetBoolean(kDesktopModeEnabled);
 }
 
-int JNI_BravePrefServiceBridge_GetTrackersBlockedCount(
+jlong JNI_BravePrefServiceBridge_GetTrackersBlockedCount(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile) {
   Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
   return profile->GetPrefs()->GetUint64(kTrackersBlocked);
 }
 
-int JNI_BravePrefServiceBridge_GetAdsBlockedCount(
+jlong JNI_BravePrefServiceBridge_GetAdsBlockedCount(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile) {
   Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
   return profile->GetPrefs()->GetUint64(kAdsBlocked);
 }
 
-int JNI_BravePrefServiceBridge_GetHttpsUpgradesCount(
+jlong JNI_BravePrefServiceBridge_GetHttpsUpgradesCount(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile) {
   Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
   return profile->GetPrefs()->GetUint64(kHttpsUpgrades);
+}
+
+void JNI_BravePrefServiceBridge_SetOldTrackersBlockedCount(JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& j_profile,
+    jlong count) {
+  if (count <= 0) {
+    return;
+  }
+  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
+  profile->GetPrefs()->SetUint64(kTrackersBlocked,
+    count + profile->GetPrefs()->GetUint64(kTrackersBlocked));
+}
+
+void JNI_BravePrefServiceBridge_SetOldAdsBlockedCount(JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& j_profile,
+    jlong count) {
+  if (count <= 0) {
+    return;
+  }
+  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
+  profile->GetPrefs()->SetUint64(kAdsBlocked,
+    count + profile->GetPrefs()->GetUint64(kAdsBlocked));
+}
+
+void JNI_BravePrefServiceBridge_SetOldHttpsUpgradesCount(JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& j_profile,
+    jlong count) {
+  if (count <= 0) {
+    return;
+  }
+  Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
+  profile->GetPrefs()->SetUint64(kHttpsUpgrades,
+    count + profile->GetPrefs()->GetUint64(kHttpsUpgrades));
 }
 
 ScopedJavaLocalRef<jstring> JNI_BravePrefServiceBridge_GetSyncDeviceId(

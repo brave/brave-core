@@ -70,15 +70,15 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getBackgroundVideoPlaybackEnabled();
     }
 
-    public int getTrackersBlockedCount(Profile profile) {
+    public long getTrackersBlockedCount(Profile profile) {
         return BravePrefServiceBridgeJni.get().getTrackersBlockedCount(profile);
     }
 
-    public int getAdsBlockedCount(Profile profile) {
+    public long getAdsBlockedCount(Profile profile) {
         return BravePrefServiceBridgeJni.get().getAdsBlockedCount(profile);
     }
 
-    public int getHttpsUpgradesCount(Profile profile) {
+    public long getHttpsUpgradesCount(Profile profile) {
         return BravePrefServiceBridgeJni.get().getHttpsUpgradesCount(profile);
     }
 
@@ -121,6 +121,18 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getUseRewardsStagingServer();
     }
 
+    public void setOldTrackersBlockedCount(Profile profile, long count) {
+        BravePrefServiceBridgeJni.get().setOldTrackersBlockedCount(profile, count);
+    }
+
+    public void setOldAdsBlockedCount(Profile profile, long count) {
+        BravePrefServiceBridgeJni.get().setOldAdsBlockedCount(profile, count);
+    }
+
+    public void setOldHttpsUpgradesCount(Profile profile, long count) {
+        BravePrefServiceBridgeJni.get().setOldHttpsUpgradesCount(profile, count);
+    }
+
     @NativeMethods
     interface Natives {
         void setHTTPSEEnabled(boolean enabled);
@@ -136,9 +148,15 @@ public class BravePrefServiceBridge {
         void setBackgroundVideoPlaybackEnabled(boolean enabled);
         boolean getBackgroundVideoPlaybackEnabled();
 
-        int getTrackersBlockedCount(Profile profile);
-        int getAdsBlockedCount(Profile profile);
-        int getHttpsUpgradesCount(Profile profile);
+        long getTrackersBlockedCount(Profile profile);
+        long getAdsBlockedCount(Profile profile);
+        long getHttpsUpgradesCount(Profile profile);
+
+        // Used to pass total stat from upgrading old tabs based browser
+        // to a new core based
+        void setOldTrackersBlockedCount(Profile profile, long count);
+        void setOldAdsBlockedCount(Profile profile, long count);
+        void setOldHttpsUpgradesCount(Profile profile, long count);
 
         String getSyncDeviceId();
 

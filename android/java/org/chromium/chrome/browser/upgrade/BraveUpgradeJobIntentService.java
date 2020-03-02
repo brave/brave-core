@@ -7,12 +7,14 @@ package org.chromium.chrome.browser.upgrade;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.JobIntentService;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.library_loader.LibraryProcessType;
 import org.chromium.base.task.PostTask;
+import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.content_public.browser.BrowserStartupController;
@@ -28,13 +30,15 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
     private static final String SHIELDS_CONFIG_FILENAME = "shields_config.dat";
     private static final String SHIELDS_CONFIG_MIGRATED_FILENAME = "shields_config_migrated.dat";
     private static final int JOB_ID = 1;
+    // For old Brave stats
+    private static final String PREF_TRACKERS_BLOCKED_COUNT = "trackers_blocked_count";
+    private static final String PREF_ADS_BLOCKED_COUNT = "ads_blocked_count";
+    private static final String PREF_HTTPS_UPGRADES_COUNT = "https_upgrades_count";
 
     public static void startMigrationIfNecessary(Context context) {
-        // If the Brave shields config file exists, migrate it
-        File path = new File(context.getApplicationInfo().dataDir, SHIELDS_CONFIG_FILENAME);
-        if (path.exists()) {
-            BraveUpgradeJobIntentService.enqueueWork(context, new Intent());
-        }
+        // Start migration in any case as we can have only partial data
+        // to migrate available
+        BraveUpgradeJobIntentService.enqueueWork(context, new Intent());
     }
 
     private static void enqueueWork(Context context, Intent work) {
@@ -161,6 +165,28 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
         return true;
     }
 
+    private void migrateTotalStats() {
+        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+        long trackersBlockedCount = sharedPreferences.getLong(PREF_TRACKERS_BLOCKED_COUNT, 0);
+        long adsBlockedCount = sharedPreferences.getLong(PREF_ADS_BLOCKED_COUNT, 0);
+        long httpsUpgradesCount = sharedPreferences.getLong(PREF_HTTPS_UPGRADES_COUNT, 0);
+        Profile profile = Profile.getLastUsedProfile();
+        if (trackersBlockedCount > 0) {
+            BravePrefServiceBridge.getInstance().setOldTrackersBlockedCount(profile, trackersBlockedCount);
+        }
+        if (adsBlockedCount > 0) {
+            BravePrefServiceBridge.getInstance().setOldAdsBlockedCount(profile, adsBlockedCount);
+        }
+        if (httpsUpgradesCount > 0) {
+            BravePrefServiceBridge.getInstance().setOldHttpsUpgradesCount(profile, httpsUpgradesCount);
+        }
+        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+        sharedPreferencesEditor.putLong(PREF_TRACKERS_BLOCKED_COUNT, 0);
+        sharedPreferencesEditor.putLong(PREF_ADS_BLOCKED_COUNT, 0);
+        sharedPreferencesEditor.putLong(PREF_HTTPS_UPGRADES_COUNT, 0);
+        sharedPreferencesEditor.apply();
+    }
+
     @Override
     protected void onHandleWork(Intent intent) {
         // Kick off the migration task only after the browser has
@@ -170,6 +196,7 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
                     .addStartupCompletedObserver(new BrowserStartupController.StartupCallback() {
                         @Override
                         public void onSuccess() {
+                            migrateTotalStats();
                             if (!migrateShieldsConfig()) {
                                 Log.e(TAG, "Failed to migrate Brave shields config settings");
                                 return;
