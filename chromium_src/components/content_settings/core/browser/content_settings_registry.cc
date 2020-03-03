@@ -64,6 +64,38 @@
       ContentSettingsInfo::INHERIT_IN_INCOGNITO, \
       ContentSettingsInfo::PERSISTENT, \
       ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS); \
+  /* We need 62, 63, 64 for ContentSettingsTypes for Android tabs migration*/ \
+  Register( \
+      static_cast<ContentSettingsType>(62), "desktop-view", \
+      CONTENT_SETTING_BLOCK,  \
+      WebsiteSettingsInfo::UNSYNCABLE, \
+      WhitelistedSchemes(), \
+      ValidSettings(CONTENT_SETTING_BLOCK, CONTENT_SETTING_ALLOW), \
+      WebsiteSettingsInfo::REQUESTING_ORIGIN_AND_TOP_LEVEL_ORIGIN_SCOPE, \
+      WebsiteSettingsRegistry::PLATFORM_ANDROID, \
+      ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE, \
+      ContentSettingsInfo::PERSISTENT, \
+      ContentSettingsInfo::EXCEPTIONS_ON_SECURE_ORIGINS_ONLY); \
+  Register( \
+      static_cast<ContentSettingsType>(63), "play-video-in-background", \
+      CONTENT_SETTING_BLOCK, \
+      WebsiteSettingsInfo::UNSYNCABLE, WhitelistedSchemes(), \
+      ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK), \
+      WebsiteSettingsInfo::SINGLE_ORIGIN_ONLY_SCOPE, \
+      WebsiteSettingsRegistry::PLATFORM_ANDROID, \
+      ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE, \
+      ContentSettingsInfo::PERSISTENT, \
+      ContentSettingsInfo::EXCEPTIONS_ON_SECURE_ORIGINS_ONLY); \
+  Register( \
+      static_cast<ContentSettingsType>(64), "play-yt-video-in-browser", \
+      CONTENT_SETTING_ALLOW, \
+      WebsiteSettingsInfo::UNSYNCABLE, WhitelistedSchemes(), \
+      ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK), \
+      WebsiteSettingsInfo::SINGLE_ORIGIN_ONLY_SCOPE, \
+      WebsiteSettingsRegistry::PLATFORM_ANDROID, \
+      ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE, \
+      ContentSettingsInfo::PERSISTENT, \
+      ContentSettingsInfo::EXCEPTIONS_ON_SECURE_ORIGINS_ONLY); \
 }
 
 #include "../../../../../../components/content_settings/core/browser/content_settings_registry.cc"

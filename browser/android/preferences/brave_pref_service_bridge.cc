@@ -10,9 +10,11 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_android.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
 
 using base::android::ConvertUTF8ToJavaString;
@@ -206,6 +208,20 @@ void JNI_BravePrefServiceBridge_SetUseRewardsStagingServer(
 jboolean JNI_BravePrefServiceBridge_GetUseRewardsStagingServer(JNIEnv* env) {
   return GetOriginalProfile()->GetPrefs()->GetBoolean(
       brave_rewards::prefs::kUseRewardsStagingServer);
+}
+
+jboolean JNI_BravePrefServiceBridge_GetBooleanForContentSetting(JNIEnv* env, jint type) {
+  HostContentSettingsMap* content_settings =
+      HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile());
+  switch (content_settings->GetDefaultContentSetting((ContentSettingsType)type, nullptr)) {
+    case CONTENT_SETTING_ALLOW:
+      return true;
+    case CONTENT_SETTING_BLOCK:
+    default:
+      return false;
+  }
+
+  return false;
 }
 
 }  // namespace android

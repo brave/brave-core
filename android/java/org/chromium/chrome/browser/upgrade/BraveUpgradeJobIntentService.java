@@ -17,6 +17,7 @@ import org.chromium.base.task.PostTask;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.website.WebsitePreferenceBridge;
 import org.chromium.content_public.browser.BrowserStartupController;
 import org.chromium.content_public.browser.UiThreadTaskTraits;
 
@@ -30,10 +31,21 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
     private static final String SHIELDS_CONFIG_FILENAME = "shields_config.dat";
     private static final String SHIELDS_CONFIG_MIGRATED_FILENAME = "shields_config_migrated.dat";
     private static final int JOB_ID = 1;
+
+    // Used to indicate were the settings migrated to the new brave-core based version
+    private static final String PREF_TABS_SETTINGS_MIGRATED = "android_tabs_settings_to_core_migrated";
+
     // For old Brave stats
     private static final String PREF_TRACKERS_BLOCKED_COUNT = "trackers_blocked_count";
     private static final String PREF_ADS_BLOCKED_COUNT = "ads_blocked_count";
     private static final String PREF_HTTPS_UPGRADES_COUNT = "https_upgrades_count";
+
+    // For Desktop always mode
+    private static final int CONTENT_SETTINGS_TYPE_DESKTOP_VIEW = 62;
+    // For play video in background option
+    private static final int CONTENT_SETTINGS_TYPE_PLAY_VIDEO_IN_BACKGROUND = 63;
+    // For YT links play video in Brave
+    private static final int CONTENT_SETTINGS_TYPE_PLAY_YT_VIDEO_IN_BROWSER = 64;
 
     public static void startMigrationIfNecessary(Context context) {
         // Start migration in any case as we can have only partial data
@@ -165,8 +177,14 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
         return true;
     }
 
-    private void migrateTotalStats() {
+    private void migrateTotalStatsAndPreferences() {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+        boolean migrated = sharedPreferences.getBoolean(PREF_TABS_SETTINGS_MIGRATED, false);
+        if (migrated) {
+            // Everything was already migrated
+            return;
+        }
+        // Total stats migration
         long trackersBlockedCount = sharedPreferences.getLong(PREF_TRACKERS_BLOCKED_COUNT, 0);
         long adsBlockedCount = sharedPreferences.getLong(PREF_ADS_BLOCKED_COUNT, 0);
         long httpsUpgradesCount = sharedPreferences.getLong(PREF_HTTPS_UPGRADES_COUNT, 0);
@@ -185,6 +203,19 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
         sharedPreferencesEditor.putLong(PREF_ADS_BLOCKED_COUNT, 0);
         sharedPreferencesEditor.putLong(PREF_HTTPS_UPGRADES_COUNT, 0);
         sharedPreferencesEditor.apply();
+
+        // Background video playback migration
+        BravePrefServiceBridge.getInstance().setBackgroundVideoPlaybackEnabled(
+            BravePrefServiceBridge.getInstance().GetBooleanForContentSetting(CONTENT_SETTINGS_TYPE_PLAY_VIDEO_IN_BACKGROUND));
+        // Play YT links in Brave option
+        BravePrefServiceBridge.getInstance().setPlayYTVideoInBrowserEnabled(
+            BravePrefServiceBridge.getInstance().GetBooleanForContentSetting(CONTENT_SETTINGS_TYPE_PLAY_YT_VIDEO_IN_BROWSER));
+        // View pages in Desktop mode option
+        BravePrefServiceBridge.getInstance().setDesktopModeEnabled(
+            BravePrefServiceBridge.getInstance().GetBooleanForContentSetting(CONTENT_SETTINGS_TYPE_DESKTOP_VIEW));
+
+        sharedPreferencesEditor.putBoolean(PREF_TABS_SETTINGS_MIGRATED, true);
+        sharedPreferencesEditor.apply();
     }
 
     @Override
@@ -196,7 +227,7 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
                     .addStartupCompletedObserver(new BrowserStartupController.StartupCallback() {
                         @Override
                         public void onSuccess() {
-                            migrateTotalStats();
+                            migrateTotalStatsAndPreferences();
                             if (!migrateShieldsConfig()) {
                                 Log.e(TAG, "Failed to migrate Brave shields config settings");
                                 return;

@@ -70,6 +70,8 @@ public abstract class BraveActivity extends ChromeActivity {
     public static final String ANDROID_SETUPWIZARD_PACKAGE_NAME = "com.google.android.setupwizard";
     public static final String ANDROID_PACKAGE_NAME = "android";
     public static final String BRAVE_BLOG_URL = "http://www.brave.com/blog";
+    // Used to indicate were the settings migrated to the new brave-core based version
+    private static final String PREF_TABS_SETTINGS_MIGRATED = "android_tabs_settings_to_core_migrated";
 
     // Sync worker
     public BraveSyncWorker mBraveSyncWorker;
@@ -90,6 +92,12 @@ public abstract class BraveActivity extends ChromeActivity {
 
         // Disable page prefetching
         PrefetchConfiguration.setPrefetchingEnabledInSettings(false);
+
+        // Set a flag in preferences that tabs pref migration is done
+        SharedPreferences.Editor sharedPreferencesEditor =
+            ContextUtils.getAppSharedPreferences().edit();
+        sharedPreferencesEditor.putBoolean(PREF_TABS_SETTINGS_MIGRATED, true);
+        sharedPreferencesEditor.apply();
     }
 
     @Override

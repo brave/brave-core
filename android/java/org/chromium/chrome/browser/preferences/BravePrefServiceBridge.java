@@ -133,6 +133,10 @@ public class BravePrefServiceBridge {
         BravePrefServiceBridgeJni.get().setOldHttpsUpgradesCount(profile, count);
     }
 
+    public boolean GetBooleanForContentSetting(int content_type) {
+        return BravePrefServiceBridgeJni.get().getBooleanForContentSetting(content_type);
+    }
+
     @NativeMethods
     interface Natives {
         void setHTTPSEEnabled(boolean enabled);
@@ -171,5 +175,6 @@ public class BravePrefServiceBridge {
 
         void setUseRewardsStagingServer(boolean enabled);
         boolean getUseRewardsStagingServer();
+        boolean getBooleanForContentSetting(int content_type);
     }
 }
