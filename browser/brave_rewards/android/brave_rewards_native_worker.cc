@@ -196,8 +196,10 @@ bool BraveRewardsNativeWorker::GetPublisherVerified(JNIEnv* env,
 
   PublishersInfoMap::const_iterator iter(map_publishers_info_.find(tabId));
   if (iter != map_publishers_info_.end()) {
-    res = ((uint32_t)iter->second->status ==
-      (uint32_t)ledger::WalletStatus::VERIFIED);
+    res = (uint32_t)iter->second->status ==
+              (uint32_t)ledger::WalletStatus::VERIFIED ||
+          (uint32_t)iter->second->status ==
+              (uint32_t)ledger::WalletStatus::CONNECTED;
   }
 
   return res;
