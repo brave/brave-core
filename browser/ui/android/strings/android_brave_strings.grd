@@ -913,6 +913,9 @@ until they verify, or until 90 days have passed.
       <message name="IDS_TURN_ON_BRAVE_ADS_TO_CLAIM" desc="Text description for NTP banner.">
           Get paid to see this background image. Turn on Brave Ads to claim your share.
       </message>
+      <message name="IDS_CLEAR_DOWNLOADS_TITLE" desc="Title for Clear download in Clear Browsing Data dialog">
+        Download history
+      </message>
     </messages>
   </release>
 </grit>
