@@ -1,0 +1,16 @@
+[package]
+name = "readability"
+version = "0.1.4"
+authors = ["Hiroki Kumamoto <kumabook@live.jp>"]
+license = "MIT"
+homepage = "https://github.com/kumabook/readability"
+repository = "https://github.com/kumabook/readability.git"
+description = "Port of arc90's readability project to rust"
+keywords = ["readability"]
+categories = []
+
+[dependencies]
+regex            = "1"
+url              = "1.7"
+html5ever        = "0.23"
+lazy_static      = "1.3"

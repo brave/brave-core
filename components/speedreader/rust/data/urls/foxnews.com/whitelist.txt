@@ -1,0 +1,28 @@
+! foxnews.com
+! Explicitly list all categories for lack of better identifying features
+! format tends to be www.foxnews.com/CATEGORY/name
+@@||video.foxnews.com
+||foxbusiness.com/business-leaders/*
+||foxbusiness.com/lifestyle/*
+||foxbusiness.com/markets/*
+||foxbusiness.com/money/*
+||foxbusiness.com/politics/*
+||foxbusiness.com/sports/*
+||foxbusiness.com/technology/*
+||foxnews.com/auto/*
+||foxnews.com/entertainment/*
+||foxnews.com/faith-values/*
+||foxnews.com/food-drink/*
+||foxnews.com/great-outdoors/*
+||foxnews.com/health/*
+||foxnews.com/lifestyle/*
+||foxnews.com/media/*
+||foxnews.com/opinion/*
+||foxnews.com/politics/*
+||foxnews.com/real-estate/*
+||foxnews.com/science/*
+||foxnews.com/sports/*
+||foxnews.com/tech/*
+||foxnews.com/travel/*
+||foxnews.com/us/*
+||foxnews.com/world/*

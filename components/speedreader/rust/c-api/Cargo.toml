@@ -1,0 +1,20 @@
+[package]
+name = "speedreader-ffi"
+version = "0.1.0"
+authors = ["Andrius Aucinas <aaucinas@brave.com>"]
+edition = "2018"
+
+[dependencies]
+speedreader = { path = "../" }
+libc = "0"
+
+[build-dependencies]
+cbindgen = "0.13.1"
+cc = "1.0.46"
+
+[profile.release]
+panic = "abort"
+lto = true
+
+[lib]
+crate-type = ["staticlib", "cdylib"]

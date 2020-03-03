@@ -1,0 +1,61 @@
+[package]
+name = "speedreader"
+version = "0.1.0"
+authors = [
+    "gpestana <gpestana@brave.com>",
+    "Andrius Aucinas <aaucinas@brave.com>"
+]
+edition = "2018"
+
+include = [
+    "/Cargo.toml",
+    "/build.rs",
+    "/LICENSE",
+    "/README.md",
+    "/src",
+    "/tests",
+    "/examples",
+    "/benches"
+]
+
+[workspace]
+members = [
+    "src/readability",
+    "c-api",
+    "c-api/test",
+]
+
+[dependencies]
+html5ever = "0.23.0"
+regex = "1"
+lol_html = { path = "../lol-html", version = "0.1.0" }
+thiserror = "1.0.2"
+adblock = "0.1.38"
+serde =  { version = "1.0.104", features = ["derive"] }
+rmp-serde = "0.14.3"
+
+# Pin versions compatible with rustc 1.35.0
+url = "=1.7.2"
+unicode-normalization = "=0.1.8"
+smallvec = "=0.6.13"
+
+readability = { path = "src/readability" }
+lazy_static = "1.3"
+markup5ever = "0.8"
+
+[build-dependencies]
+regex = "1"
+
+[dev-dependencies]
+matches = "0.1"
+distance = "0.4.0"
+termion = "1.5"
+reqwest = { version = "0.10.2", features = ["blocking", "stream"] }
+serde_json = "1.0.48"
+criterion = "0.3"
+futures = "0.3"
+tokio = { version = "0.2", features = ["full"] }
+
+[[bench]]
+name = "lolhtml"
+harness = false

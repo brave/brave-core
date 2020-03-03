@@ -1,0 +1,4 @@
+! wsj.com
+||www.barrons.com/articles/
+||www.wsj.com/articles/
+||marketwatch.com/story/*

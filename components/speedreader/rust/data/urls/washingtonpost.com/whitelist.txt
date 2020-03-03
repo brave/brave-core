@@ -1,0 +1,7 @@
+! washingtonpost.com
+! images handled poorly
+/washingtonpost.com\/.*\/(\d){4}\/(\d){2}\/(\d){2}\/\w+/
+||washingtonpost.com*_story.html
+! travel pages currently handled poorly
+@@||washingtonpost.com/travel
+||thelily.com/*/

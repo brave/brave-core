@@ -1,0 +1,35 @@
+# The language to output bindings in
+language = "C++"
+
+# Options for Wrapping the Contents of the Header
+include_guard = "SPEEDREADER_FFI_H"
+namespace = "speedreader"
+
+no_includes = true
+
+# Code Stylr Options
+braces = "SameLine"
+line_length = 80
+tab_width = 2
+documentation_style = "auto"
+
+[parse]
+# Whether to parse dependent crates and include their types in the generated
+# bindings
+parse_deps = true
+# A black list of crate names that are not allowed to be parsed
+include = ["speedreader"]
+
+[parse.expand]
+# A list of crate names that should be run through `cargo expand` before
+# parsing to expand any macros
+crates = []
+all_features = false
+default_features = false
+features = ["cbindgen"]
+
+[export]
+# A prefix to add before the name of every item
+prefix = "C_"
+
+[defines]

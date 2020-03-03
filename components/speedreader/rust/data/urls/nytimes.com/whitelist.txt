@@ -1,0 +1,2 @@
+! nytimes.com format www.nytimes.com/YYYY/mm/dd/CATEGORY(/SUBCATEGORY)?/name.html
+/www.nytimes.com\/\d{4}\/\d{2}\/\d{2}\/([^\/]+(\/)?){2,3}\.html/
