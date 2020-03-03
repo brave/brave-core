@@ -31,11 +31,11 @@ public class BraveTabCreator extends ChromeTabCreator {
 		super(activity, nativeWindow, startupTabPreloader, tabDelegateFactory, incognito);
 	}
 
-	@Override
-    public Tab launchUrl(String url, @TabLaunchType int type) {
-    	SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
+    @Override
+    public void launchNTP() {
+        SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
 
-    	ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
+        ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
         if(chromeTabbedActivity != null && Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
             TabModel tabModel = chromeTabbedActivity.getCurrentTabModel();
             if (tabModel.getCount() >= SponsoredImageUtil.MAX_TABS && mSharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES, true)) {
@@ -46,11 +46,10 @@ public class BraveTabCreator extends ChromeTabCreator {
                     chromeTabbedActivity.hideOverview();
                 }
             } else {
-                return launchUrl(url, type, null, 0);
+                launchUrl(UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
             }
         } else {
-            return launchUrl(url, type, null, 0);
+            launchUrl(UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
         }
-        return null;
     }
 }
