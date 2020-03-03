@@ -8,7 +8,8 @@
 namespace confirmations {
 
 ConfirmationInfo::ConfirmationInfo()
-    : payment_token(nullptr),
+    : type(ConfirmationType::kNone),
+      payment_token(nullptr),
       blinded_payment_token(nullptr),
       timestamp_in_seconds(0),
       created(false) {}
