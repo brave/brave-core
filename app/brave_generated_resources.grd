@@ -720,7 +720,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Full Disk Access required
       </message>
       <message name="IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_MESSAGE" desc="The label for full disk access dialog message">
-        Brave needs Full Disk Access to import your Bookmarks and History from Safari.
+        Brave needs Full Disk Access to import your Bookmarks from Safari.
       </message>
       <message name="IDS_FULL_DISK_ACCESS_CONFIRM_DIALOG_LINK_TEXT" desc="The label for full disk access dialog link text">
         Learn how to grant Full Disk Access from your System Preferences.
