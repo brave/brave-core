@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/frame/reporting_observer.idl b/third_party/blink/renderer/core/frame/reporting_observer.idl
+index a248a08fcd1e3566c838f26393fd64c877bab11b..a1ae499dab51d79756e339cfd2ac508675f97b90 100644
+--- a/third_party/blink/renderer/core/frame/reporting_observer.idl
++++ b/third_party/blink/renderer/core/frame/reporting_observer.idl
+@@ -7,6 +7,7 @@
+ callback ReportingObserverCallback = void (sequence<Report> reports, ReportingObserver observer);
+ 
+ [
++    ContextEnabled=ReportingObservers,
+     Constructor(ReportingObserverCallback callback, optional ReportingObserverOptions options),
+     ConstructorCallWith=ExecutionContext,
+     ActiveScriptWrappable
