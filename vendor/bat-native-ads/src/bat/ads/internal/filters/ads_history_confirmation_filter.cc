@@ -59,6 +59,7 @@ bool AdsHistoryConfirmationFilter::ShouldFilterAction(
       should_filter = false;
       break;
     }
+    case ConfirmationType::kNone:
     case ConfirmationType::kLanded:
     case ConfirmationType::kFlagged:
     case ConfirmationType::kUpvoted:

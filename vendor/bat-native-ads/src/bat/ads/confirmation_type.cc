@@ -10,6 +10,7 @@ namespace ads {
 
 // Do not change the following string values as they are used for persisting and
 // restoring state
+const char kConfirmationTypeNone[] = "";
 const char kConfirmationTypeClicked[] = "click";
 const char kConfirmationTypeDismissed[] = "dismiss";
 const char kConfirmationTypeViewed[] = "view";
@@ -21,7 +22,9 @@ const char kConfirmationTypeConversion[] = "conversion";
 
 ConfirmationType::ConfirmationType(
     const std::string& value) {
-  if (value == kConfirmationTypeClicked) {
+  if (value == kConfirmationTypeNone) {
+    value_ = kNone;
+  } else if (value == kConfirmationTypeClicked) {
     value_ = kClicked;
   } else if (value == kConfirmationTypeDismissed) {
     value_ = kDismissed;
@@ -48,6 +51,11 @@ ConfirmationType::Value ConfirmationType::value() const {
 
 ConfirmationType::operator std::string() const {
   switch (value_) {
+    case kNone: {
+      NOTREACHED();
+      return kConfirmationTypeNone;
+    }
+
     case kClicked: {
       return kConfirmationTypeClicked;
     }
