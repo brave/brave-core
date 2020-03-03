@@ -31,8 +31,11 @@ void BraveBookmarkModelLoadedObserver::BookmarkModelLoaded(
   // it is handled in BraveProfileSyncServiceImpl::OnSyncReady
   if (brave_profile_service && !brave_profile_service->IsBraveSyncEnabled())
     BraveMigrateOtherNode(model);
+
+  BraveProfileSyncServiceImpl::AddNonClonedBookmarkKeys(model);
 #else
   BraveMigrateOtherNode(model);
 #endif
+
   BookmarkModelLoadedObserver::BookmarkModelLoaded(model, ids_reassigned);
 }
