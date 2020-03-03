@@ -60,6 +60,7 @@
 
     <color name="find_in_page_query_incognito_hint_color">@color/white_alpha_70</color>
 
+    <color name="ntp_non_disruptive_banner_bg_color">#E6343a40</color>
     <color name="new_tab_menu_text_dark_color">@android:color/white</color>
     <color name="new_tab_menu_bg_dark_color">@color/modern_grey_800</color>
     <color name="ntp_non_disruptive_banner_bg_color">#E6343a40</color>

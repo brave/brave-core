@@ -813,6 +813,55 @@ until they verify, or until 90 days have passed.
       <message name="IDS_NEW_TAB_OTR_TITLE" desc="Message shown when a user opens a private tab explaining private mode">
         Even though sites you visit in private tabs are not saved locally, they do not make you anonymous or invisible to your ISP, your employer, or to the sites you are visiting.
       </message>
+
+      <message name="IDS_PREFS_NEW_TAB_PAGE" desc="Title of New Tab Page settings.">
+        New Tab Page
+      </message>
+      <message name="IDS_SHOW_BACKGROUND_IMAGES" desc= "Title of show background images option.">
+        Show Background Images
+      </message>
+      <message name="IDS_SHOW_SPONSORED_IMAGES" desc ="Title of show sponsored images option.">
+        Show Sponsored Images
+      </message>
+      <message name="IDS_PHOTO_BY" desc="Text for image credit for background images on NTP">
+        Photo by <ph name="PHOTO_BY">%1$s</ph>
+      </message>
+      <message name="IDS_GET_PAID_TO_SEE_ADS">
+        Get paid to see this background image.
+      </message>
+      <message name="IDS_NTP_BRAVE_REWARDS_OFF_TEXT" desc="Text on NTP banner when brave rewrads is off ">
+        You&apos;ll receive 70% of the ad revenue for this private sponsorship which can be used to support web content creators. Turn on Brave Rewards to claim your share.
+      </message>
+      <message name="IDS_TURN_ON_REWARDS" desc="Text for turn on rewards button">
+        Turn on Rewards
+      </message>
+      <message name="IDS_TURN_ON_BRAVE_ADS" desc="Text for turn on brave ads button">
+        Turn on Brave Ads
+      </message>
+      <message name="IDS_NTP_TOS_TEXT" desc="Text for term of service on NTP">
+        By turning on Rewards, you agree to the <ph name="TERMS_OF_SERVICE">%1$s</ph>. You can also choose to <ph name="HIDE_SPONSORED_IMAGES">%2$s</ph>.
+      </message>
+      <message name="IDS_GET_PAID_TO_SEE_IMAGE" desc="Text description for NTP banner.">
+        Get paid to see this background image.
+      </message>
+      <message name="IDS_HIDE_SPONSORED_IMAGES" desc="Text for hide sponsored images button">
+        Hide Sponsored Images
+      </message>
+      <message name="IDS_YOU_CAN_SUPPORT_CREATORS" desc="Text description for banner on NTP.">
+        You can support web creators with tokens.\nEarn tokens by viewing privacy-respecting ads.
+      </message>
+      <message name="IDS_YOU_ARE_GETTING_PAID" desc="Text title for NTP banner.">
+          You’re getting paid to see this background image.
+      </message>
+      <message name="IDS_BR_ON_ADS_ON_TEXT" desc="Text description for NTP banner.">
+          <ph name="LEARN_MORE">%1$s</ph> about sponsored images in Brave Rewards. You can also choose to <ph name="HIDE_SPONSORED_IMAGES">%2$s</ph>.
+      </message>
+      <message name="IDS_BR_ON_ADS_ON_TEXT2" desc="Text description for NTP banner.">
+          You can also choose to <ph name="HIDE_SPONSORED_IMAGES">%1$s</ph>.
+      </message>
+      <message name="IDS_TURN_ON_BRAVE_ADS_TO_CLAIM" desc="Text description for NTP banner.">
+          Get paid to see this background image. Turn on Brave Ads to claim your share.
+      </message>
       <message name="IDS_NOTIFICATION_CATEGORY_BRAVE_ADS_BACKGROUND" desc="Label for Brave Ads in background.">
         Brave Ads sent when browser is in the background
       </message>
