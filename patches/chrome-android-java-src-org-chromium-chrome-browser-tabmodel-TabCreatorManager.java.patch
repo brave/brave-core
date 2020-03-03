@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/tabmodel/TabCreatorManager.java b/chrome/android/java/src/org/chromium/chrome/browser/tabmodel/TabCreatorManager.java
+index de7adb86f85b72ad82b8d994c59d164394cbdfdb..c8f26dd54052d28257d9ddbb670264d0c6b54dcb 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/tabmodel/TabCreatorManager.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/tabmodel/TabCreatorManager.java
+@@ -87,7 +87,7 @@ public interface TabCreatorManager {
+         /**
+          * Creates a new tab and loads the NTP.
+          */
+-        public final void launchNTP() {
++        public void launchNTP() {
+             try {
+                 TraceEvent.begin("TabCreator.launchNTP");
+                 launchUrl(UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
