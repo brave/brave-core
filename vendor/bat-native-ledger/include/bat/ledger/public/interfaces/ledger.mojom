@@ -423,3 +423,9 @@ struct ContributionReportInfo {
   array<PublisherInfo> publishers;
   uint64 created_at;
 };
+
+struct MonthlyReportInfo {
+  BalanceReportInfo balance;
+  array<TransactionReportInfo> transactions;
+  array<ContributionReportInfo> contributions;
+};

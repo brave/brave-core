@@ -648,24 +648,10 @@ class RewardsServiceImpl : public RewardsService,
       const ledger::Result result,
       ledger::BalanceReportInfoPtr report);
 
-  void OnGetMonthlyReportBalance(
-      const uint32_t month,
-      const uint32_t year,
+  void OnGetMonthlyReport(
       GetMonthlyReportCallback callback,
       const ledger::Result result,
-      ledger::BalanceReportInfoPtr report);
-
-  void OnGetMonthlyReportTransaction(
-      const uint32_t month,
-      const uint32_t year,
-      const MonthlyReport& report,
-      GetMonthlyReportCallback callback,
-      ledger::TransactionReportInfoList list);
-
-  void OnGetMonthlyReportContribution(
-      const MonthlyReport& report,
-      GetMonthlyReportCallback callback,
-      ledger::ContributionReportInfoList list);
+      ledger::MonthlyReportInfoPtr report);
 
   void OnRunDBTransaction(
       ledger::RunDBTransactionCallback callback,

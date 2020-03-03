@@ -74,6 +74,9 @@ using ExternalWalletPtr = mojom::ExternalWalletPtr;
 using MediaEventInfo = mojom::MediaEventInfo;
 using MediaEventInfoPtr = mojom::MediaEventInfoPtr;
 
+using MonthlyReportInfo = mojom::MonthlyReportInfo;
+using MonthlyReportInfoPtr = mojom::MonthlyReportInfoPtr;
+
 using OperatingSystem = mojom::OperatingSystem;
 
 using Platform = mojom::Platform;

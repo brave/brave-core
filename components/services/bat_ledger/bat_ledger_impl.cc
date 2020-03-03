@@ -1005,4 +1005,32 @@ void BatLedgerImpl::SavePublisherInfo(
           _1));
 }
 
+// static
+void BatLedgerImpl::OnGetMonthlyReport(
+    CallbackHolder<GetMonthlyReportCallback>* holder,
+    const ledger::Result result,
+    ledger::MonthlyReportInfoPtr info) {
+  DCHECK(holder);
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result, std::move(info));
+
+  delete holder;
+}
+
+void BatLedgerImpl::GetMonthlyReport(
+    const ledger::ActivityMonth month,
+    const int year,
+    GetMonthlyReportCallback callback) {
+  auto* holder = new CallbackHolder<GetMonthlyReportCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->GetMonthlyReport(
+      month,
+      year,
+      std::bind(BatLedgerImpl::OnGetMonthlyReport,
+          holder,
+          _1,
+          _2));
+}
+
 }  // namespace bat_ledger

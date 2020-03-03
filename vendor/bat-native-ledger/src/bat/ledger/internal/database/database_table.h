@@ -8,6 +8,7 @@
 
 #include <map>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "bat/ledger/ledger.h"
@@ -19,8 +20,8 @@ class LedgerImpl;
 
 namespace braveledger_database {
 
-using ContributionPublisherInfoMap =
-    std::map<std::string, ledger::PublisherInfoPtr>;
+using ContributionPublisherInfoPair =
+    std::pair<std::string, ledger::PublisherInfoPtr>;
 
 using ServerPublisherLinksCallback =
     std::function<void(const std::map<std::string, std::string>& links)>;
@@ -34,8 +35,8 @@ using ContributionQueuePublishersListCallback =
 using ContributionPublisherListCallback =
     std::function<void(ledger::ContributionPublisherList)>;
 
-using ContributionPublisherInfoMapCallback =
-    std::function<void(ContributionPublisherInfoMap)>;
+using ContributionPublisherPairListCallback =
+    std::function<void(std::vector<ContributionPublisherInfoPair>)>;
 
 class DatabaseTable {
  public:
