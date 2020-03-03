@@ -6,7 +6,7 @@
 import newTabReducer from '../../../brave_new_tab_ui/reducers/new_tab_reducer'
 
 // API
-import * as storage from '../../../brave_new_tab_ui/storage'
+import * as storage from '../../../brave_new_tab_ui/storage/new_tab_storage'
 
 describe('newTabReducer', () => {
 

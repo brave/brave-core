@@ -11,12 +11,12 @@ import { types } from '../constants/grid_sites_types'
 
 // API
 import * as gridSitesState from '../state/gridSitesState'
-import * as storage from '../storage'
+import * as storage from '../storage/grid_sites_storage'
 
 const initialState = storage.load()
 
-export const gridSitesReducer: Reducer<NewTab.State | undefined> = (
-  state: NewTab.State | undefined,
+export const gridSitesReducer: Reducer<NewTab.GridSitesState | undefined> = (
+  state: NewTab.GridSitesState | undefined,
   action
 ) => {
   if (state === undefined) {

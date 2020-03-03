@@ -8,7 +8,7 @@ import * as gridSitesState from '../../../brave_new_tab_ui/state/gridSitesState'
 
 // Helpers
 import { generateGridSiteProperties } from '../../../brave_new_tab_ui/helpers/newTabUtils'
-import { defaultState } from '../../../brave_new_tab_ui/storage'
+import * as storage from '../../../brave_new_tab_ui/storage/grid_sites_storage'
 
 const newTopSite1: chrome.topSites.MostVisitedURL = {
   url: 'https://brave.com',
@@ -32,7 +32,7 @@ describe('gridSitesState', () => {
   describe('gridSitesReducerSetFirstRenderData', () => {
     it('does not populate state.gridSites list if url already exist within the list', () => {
       const newState: NewTab.State = {
-        ...defaultState,
+        ...storage.initialGridSitesState,
         gridSites: [generateGridSiteProperties(0, newTopSite1)]
       }
       const assertion = gridSitesState
@@ -47,7 +47,7 @@ describe('gridSitesState', () => {
     })
     it('populate state.gridSites list if urls are different', () => {
       const assertion = gridSitesState
-        .gridSitesReducerSetFirstRenderData(defaultState, [
+        .gridSitesReducerSetFirstRenderData(storage.initialGridSitesState, [
           newTopSite1,
           newTopSite2
         ])
@@ -58,7 +58,7 @@ describe('gridSitesState', () => {
   describe('gridSitesReducerDataUpdated', () => {
     it('update state.gridSites list', () => {
       const assertion = gridSitesState
-        .gridSitesReducerDataUpdated(defaultState, gridSites)
+        .gridSitesReducerDataUpdated(storage.initialGridSitesState, gridSites)
 
       expect(assertion.gridSites).toHaveLength(2)
     })
@@ -85,7 +85,7 @@ describe('gridSitesState', () => {
       ]
 
       const newState: NewTab.State = {
-        ...defaultState,
+        ...storage.initialGridSitesState,
         gridSites: newGridSites
       }
       // add a new site on top of gridSites after a tile
@@ -138,7 +138,7 @@ describe('gridSitesState', () => {
       ]
 
       const newState: NewTab.State = {
-        ...defaultState,
+        ...storage.initialGridSitesState,
         gridSites: newGridSites
       }
 
@@ -152,7 +152,7 @@ describe('gridSitesState', () => {
   describe('gridSitesReducerToggleSitePinned', () => {
     it('set own pinnedIndex value if property is undefined', () => {
       const expectedIndex: number = 1
-      const newState: NewTab.State = { ...defaultState, gridSites }
+      const newState: NewTab.State = { ...storage.initialGridSitesState, gridSites }
 
       const assertion = gridSitesState
         .gridSitesReducerToggleSitePinned(newState, gridSites[expectedIndex])
@@ -162,7 +162,7 @@ describe('gridSitesState', () => {
     })
     it('set own pinnedIndex value to undefined if property is defined', () => {
       const pinnedSite: NewTab.Site = { ...gridSites[1], pinnedIndex: 1337 }
-      const newState: NewTab.State = { ...defaultState, gridSites: [pinnedSite] }
+      const newState: NewTab.State = { ...storage.initialGridSitesState, gridSites: [pinnedSite] }
 
       const assertion = gridSitesState
         .gridSitesReducerToggleSitePinned(newState, pinnedSite)
@@ -177,7 +177,7 @@ describe('gridSitesState', () => {
         url: 'fake.com',
         pinnedIndex: undefined
       }
-      const newState: NewTab.State = { ...defaultState, gridSites: [ ...gridSites, pinnedSite ] }
+      const newState: NewTab.State = { ...storage.initialGridSitesState, gridSites: [ ...gridSites, pinnedSite ] }
 
       expect(newState.gridSites).toHaveLength(3)
 
@@ -190,7 +190,7 @@ describe('gridSitesState', () => {
   describe('gridSitesReducerRemoveSite', () => {
     it('remove a site from state.gridSites list', () => {
       const removedSite: NewTab.Site = gridSites[1]
-      const newState: NewTab.State = { ...defaultState, gridSites }
+      const newState: NewTab.State = { ...storage.initialGridSitesState, gridSites }
 
       const assertion = gridSitesState
         .gridSitesReducerRemoveSite(newState, removedSite)
@@ -202,7 +202,7 @@ describe('gridSitesState', () => {
     it('push an item from the state.removedSites list back to state.gridSites list', () => {
       const removedSite: NewTab.Site = { ...gridSites[1], url: 'https://example.com' }
       const newState: NewTab.State = {
-        ...defaultState,
+        ...storage.initialGridSitesState,
         gridSites,
         removedSites: [removedSite]
       }
@@ -215,7 +215,7 @@ describe('gridSitesState', () => {
     it('do not push an item from state.gridSites if url exists inside the list', () => {
       const removedSite: NewTab.Site = { ...gridSites[1] }
       const newState: NewTab.State = {
-        ...defaultState,
+        ...storage.initialGridSitesState,
         gridSites,
         removedSites: [removedSite]
       }
@@ -237,7 +237,7 @@ describe('gridSitesState', () => {
       }]
 
       const newState: NewTab.State = {
-        ...defaultState,
+        ...storage.initialGridSitesState,
         gridSites,
         removedSites: removedSites
       }
@@ -250,7 +250,7 @@ describe('gridSitesState', () => {
     it('do not push any item to state.gridSites if url exists inside the list', () => {
       const sites: NewTab.Sites[] = gridSites
       const newState: NewTab.State = {
-        ...defaultState,
+        ...storage.initialGridSitesState,
         gridSites: sites,
         removedSites: sites
       }
@@ -265,7 +265,7 @@ describe('gridSitesState', () => {
     it('update own bookmarkInfo with the specified value', () => {
       const topSiteUrl: NewTab.Site = gridSites[0].url
       const sites: NewTab.Sites[] = [{ ...gridSites[0], bookmarkInfo: 'NEW_INFO' }]
-      const newState: NewTab.State = { ...defaultState, gridSites: sites }
+      const newState: NewTab.State = { ...storage.initialGridSitesState, gridSites: sites }
 
       const assertion = gridSitesState
         .gridSitesReducerUpdateSiteBookmarkInfo(newState, topSiteUrl)
@@ -277,7 +277,7 @@ describe('gridSitesState', () => {
   describe('gridSitesReducerToggleTopSiteBookmarked', () => {
     it('add own add bookmarkInfo if url has no data', () => {
       const siteUrl: string = gridSites[0].url
-      const newState: NewTab.State = { ...defaultState, gridSites }
+      const newState: NewTab.State = { ...storage.initialGridSitesState, gridSites }
 
       const assertion = gridSitesState
         .gridSitesReducerToggleSiteBookmarkInfo(newState, siteUrl, undefined)
@@ -290,7 +290,7 @@ describe('gridSitesState', () => {
         title: 'cool bookmark',
         id: ''
       }
-      const newState: NewTab.State = { ...defaultState, gridSites }
+      const newState: NewTab.State = { ...storage.initialGridSitesState, gridSites }
 
       const assertion = gridSitesState
         .gridSitesReducerToggleSiteBookmarkInfo(newState, siteUrl, topSiteBookmarkInfo)
@@ -301,7 +301,7 @@ describe('gridSitesState', () => {
   describe('gridSitesReducerAddSiteOrSites', () => {
     it('add sites to state.gridSites list', () => {
       const newSite: NewTab.Site = { ...gridSites[0], url: 'https://example.com' }
-      const newState: NewTab.State = { ...defaultState, gridSites }
+      const newState: NewTab.State = { ...storage.initialGridSitesState, gridSites }
 
       const assertion = gridSitesState
         .gridSitesReducerAddSiteOrSites(newState, newSite)
@@ -314,7 +314,7 @@ describe('gridSitesState', () => {
       const shouldShow: boolean = true
 
       const assertion = gridSitesState
-        .gridSitesReducerShowSiteRemovedNotification(defaultState, shouldShow)
+        .gridSitesReducerShowSiteRemovedNotification(storage.initialGridSitesState, shouldShow)
 
       expect(assertion.shouldShowSiteRemovedNotification).toBe(true)
     })

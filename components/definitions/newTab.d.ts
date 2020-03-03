@@ -17,7 +17,7 @@ declare namespace NewTab {
     logo: BrandedWallpaperLogo
   }
   export interface ApplicationState {
-    newTabData: PageState & RewardsState | undefined
+    newTabData: State | undefined
     gridSitesData: GridSitesState | undefined
   }
 
@@ -73,7 +73,10 @@ declare namespace NewTab {
     currentStackWidget: StackWidget
   }
 
-  export type PersistentState = GridSitesState & PageState & RewardsState
+  export interface PersistentState {
+    showEmptyPage: boolean
+    rewardsState: RewardsWidgetState
+  }
 
   export interface EphemeralState {
     initialDataLoaded: boolean

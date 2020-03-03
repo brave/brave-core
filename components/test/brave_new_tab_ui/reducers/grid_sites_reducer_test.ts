@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import gridSitesReducer from '../../../brave_new_tab_ui/reducers/grid_sites_reducer'
-import * as storage from '../../../brave_new_tab_ui/storage'
+import * as storage from '../../../brave_new_tab_ui/storage/grid_sites_storage'
 import { types } from '../../../brave_new_tab_ui/constants/grid_sites_types'
 import * as gridSitesState from '../../../brave_new_tab_ui/state/gridSitesState'
 
@@ -47,7 +47,7 @@ describe('gridSitesReducer', () => {
         { type: undefined, payload: undefined }
       )
 
-      expect(assertion).toEqual(storage.defaultState)
+      expect(assertion).toEqual(storage.initialGridSitesState)
     })
   })
 
@@ -70,10 +70,10 @@ describe('gridSitesReducer', () => {
 
       expect(gridSitesReducerSetFirstRenderDataStub).toBeCalledTimes(1)
       expect(gridSitesReducerSetFirstRenderDataStub)
-        .toBeCalledWith(storage.defaultState, [])
+        .toBeCalledWith(storage.initialGridSitesState, [])
     })
     it('populate state.gridSites list with Chromium topSites data', () => {
-      const assertion = gridSitesReducer(storage.defaultState, {
+      const assertion = gridSitesReducer(storage.initialGridSitesState, {
         type: types.GRID_SITES_SET_FIRST_RENDER_DATA,
         payload: { topSites }
       })
@@ -100,10 +100,10 @@ describe('gridSitesReducer', () => {
 
       expect(gridSitesReducerDataUpdatedStub).toBeCalledTimes(1)
       expect(gridSitesReducerDataUpdatedStub)
-        .toBeCalledWith(storage.defaultState, gridSites)
+        .toBeCalledWith(storage.initialGridSitesState, gridSites)
     })
     it('update state.gridSites list', () => {
-      const assertion = gridSitesReducer(storage.defaultState, {
+      const assertion = gridSitesReducer(storage.initialGridSitesState, {
         type: types.GRID_SITES_DATA_UPDATED,
         payload: { gridSites }
       })
@@ -131,12 +131,12 @@ describe('gridSitesReducer', () => {
 
       expect(gridSitesReducerToggleSitePinnedStub).toBeCalledTimes(1)
       expect(gridSitesReducerToggleSitePinnedStub)
-        .toBeCalledWith(storage.defaultState, site)
+        .toBeCalledWith(storage.initialGridSitesState, site)
     })
     it('set own pinnedIndex value if property is undefined', () => {
       const pinnedSite: NewTab.Site = { ...gridSites[1], pinnedIndex: 1337 }
       const newStateWithGridSites: NewTab.State = {
-        ...storage.defaultState,
+        ...storage.initialGridSitesState,
         gridSites: [pinnedSite]
       }
 
@@ -150,7 +150,7 @@ describe('gridSitesReducer', () => {
     })
     it('set own pinnedIndex value to undefined if property is defined', () => {
       const newStateWithGridSites: NewTab.State = {
-        ...storage.defaultState,
+        ...storage.initialGridSitesState,
         gridSites
       }
 
@@ -183,12 +183,12 @@ describe('gridSitesReducer', () => {
 
       expect(gridSitesReducerRemoveSiteStub).toBeCalledTimes(1)
       expect(gridSitesReducerRemoveSiteStub)
-        .toBeCalledWith(storage.defaultState, site)
+        .toBeCalledWith(storage.initialGridSitesState, site)
     })
     it('remove a site from state.gridSites list', () => {
       const removedSite: NewTab.Site = gridSites[1]
       const newStateWithGridSites: NewTab.State = {
-        ...storage.defaultState,
+        ...storage.initialGridSitesState,
         gridSites
       }
 
@@ -219,7 +219,7 @@ describe('gridSitesReducer', () => {
 
       expect(gridSitesReducerUndoRemoveSiteStub).toBeCalledTimes(1)
       expect(gridSitesReducerUndoRemoveSiteStub)
-        .toBeCalledWith(storage.defaultState)
+        .toBeCalledWith(storage.initialGridSitesState)
     })
     it('push an item from state.removedSites list back to state.gridSites list', () => {
       const removedSite: NewTab.Site = {
@@ -227,7 +227,7 @@ describe('gridSitesReducer', () => {
         url: 'https://example.com'
       }
       const newStateWithGridSites: NewTab.State = {
-        ...storage.defaultState,
+        ...storage.initialGridSitesState,
         gridSites,
         removedSites: [removedSite]
       }
@@ -241,7 +241,7 @@ describe('gridSitesReducer', () => {
     it('do not push an item from state.gridSites if url exists inside the list', () => {
       const removedSite: NewTab.Site = { ...gridSites[1] }
       const newStateWithGridSites: NewTab.State = {
-        ...storage.defaultState,
+        ...storage.initialGridSitesState,
         gridSites,
         removedSites: [removedSite]
       }
@@ -272,7 +272,7 @@ describe('gridSitesReducer', () => {
 
       expect(gridSitesReducerUndoRemoveAllSitesStub).toBeCalledTimes(1)
       expect(gridSitesReducerUndoRemoveAllSitesStub)
-        .toBeCalledWith(storage.defaultState)
+        .toBeCalledWith(storage.initialGridSitesState)
     })
     it('push all items from state.removedSites list back to state.gridSites list', () => {
       const removedSites: NewTab.Site[] = [{
@@ -283,7 +283,7 @@ describe('gridSitesReducer', () => {
         url: 'https://another-example.com'
       }]
       const newStateWithGridSites: NewTab.State = {
-        ...storage.defaultState,
+        ...storage.initialGridSitesState,
         gridSites,
         removedSites: removedSites
       }
@@ -298,7 +298,7 @@ describe('gridSitesReducer', () => {
     it('do not push any item to state.gridSites if url exists inside the list', () => {
       const sites: NewTab.Sites[] = gridSites
       const newStateWithGridSites: NewTab.State = {
-        ...storage.defaultState,
+        ...storage.initialGridSitesState,
         gridSites: sites,
         removedSites: sites
       }
@@ -331,7 +331,7 @@ describe('gridSitesReducer', () => {
 
       expect(gridSitesReducerUpdateSiteBookmarkInfoStub).toBeCalledTimes(1)
       expect(gridSitesReducerUpdateSiteBookmarkInfoStub)
-        .toBeCalledWith(storage.defaultState, topSiteBookmarkInfo)
+        .toBeCalledWith(storage.initialGridSitesState, topSiteBookmarkInfo)
     })
     it('update own bookmarkInfo with the specified value', () => {
       const topSiteBookmarkInfo: NewTab.Site = gridSites[0].bookmarkInfo
@@ -339,7 +339,7 @@ describe('gridSitesReducer', () => {
         ...gridSites[0], bookmarkInfo: 'NEW_INFO'
       }]
       const newStateWithGridSites: NewTab.State = {
-        ...storage.defaultState,
+        ...storage.initialGridSitesState,
         gridSites: sites
       }
 
@@ -377,12 +377,12 @@ describe('gridSitesReducer', () => {
 
       expect(gridSitesReducerToggleSiteBookmarkInfoStub).toBeCalledTimes(1)
       expect(gridSitesReducerToggleSiteBookmarkInfoStub)
-        .toBeCalledWith(storage.defaultState, siteUrl, topSiteBookmarkInfo)
+        .toBeCalledWith(storage.initialGridSitesState, siteUrl, topSiteBookmarkInfo)
     })
     it('add own add bookmarkInfo if url has no data', () => {
       const siteUrl: string = gridSites[0].url
       const newStateWithGridSites: NewTab.State = {
-        ...storage.defaultState,
+        ...storage.initialGridSitesState,
         gridSites
       }
 
@@ -400,7 +400,7 @@ describe('gridSitesReducer', () => {
       const siteUrl: string = gridSites[0].url
       const topSiteBookmarkInfo: NewTab.Site = gridSites[0].bookmarkInfo
       const newStateWithGridSites: NewTab.State = {
-        ...storage.defaultState,
+        ...storage.initialGridSitesState,
         gridSites
       }
 
@@ -435,7 +435,7 @@ describe('gridSitesReducer', () => {
 
       expect(gridSitesReducerAddSiteOrSitesStub).toBeCalledTimes(1)
       expect(gridSitesReducerAddSiteOrSitesStub)
-        .toBeCalledWith(storage.defaultState, site)
+        .toBeCalledWith(storage.initialGridSitesState, site)
     })
     it('add sites to state.gridSites list', () => {
       const newSite: NewTab.Site = {
@@ -443,7 +443,7 @@ describe('gridSitesReducer', () => {
         url: 'https://example.com'
       }
       const newStateWithGridSites: NewTab.State = {
-        ...storage.defaultState,
+        ...storage.initialGridSitesState,
         gridSites
       }
 
@@ -475,10 +475,10 @@ describe('gridSitesReducer', () => {
 
       expect(gridSitesReducerShowSiteRemovedNotificationStub).toBeCalledTimes(1)
       expect(gridSitesReducerShowSiteRemovedNotificationStub)
-        .toBeCalledWith(storage.defaultState, shouldShow)
+        .toBeCalledWith(storage.initialGridSitesState, shouldShow)
     })
     it('update state with the specified payload value', () => {
-      const assertion = gridSitesReducer(storage.defaultState, {
+      const assertion = gridSitesReducer(storage.initialGridSitesState, {
         type: types.GRID_SITES_SHOW_SITE_REMOVED_NOTIFICATION,
         payload: {
           shouldShow: true

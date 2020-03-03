@@ -12,9 +12,9 @@ import {
 } from '../helpers/newTabUtils'
 
 export function gridSitesReducerSetFirstRenderData (
-  state: NewTab.State,
+  state: NewTab.GridSitesState,
   topSites: chrome.topSites.MostVisitedURL[]
-): NewTab.State {
+): NewTab.GridSitesState {
   const gridSitesWhitelist = getGridSitesWhitelist(topSites)
   const newGridSites: NewTab.Site[] = []
   for (const [index, topSite] of gridSitesWhitelist.entries()) {
@@ -30,9 +30,9 @@ export function gridSitesReducerSetFirstRenderData (
 }
 
 export function gridSitesReducerDataUpdated (
-  state: NewTab.State,
+  state: NewTab.GridSitesState,
   sitesData: NewTab.Site[]
-): NewTab.State {
+): NewTab.GridSitesState {
   let updatedGridSites: NewTab.Site[] = []
   let isolatedPinnedSites: NewTab.Site[] = []
 
@@ -60,9 +60,9 @@ export function gridSitesReducerDataUpdated (
 }
 
 export function gridSitesReducerToggleSitePinned (
-  state: NewTab.State,
+  state: NewTab.GridSitesState,
   pinnedSite: NewTab.Site
-): NewTab.State {
+): NewTab.GridSitesState {
   const updatedGridSites: NewTab.Site[] = []
   for (const [index, gridSite] of state.gridSites.entries()) {
     if (gridSite.url === pinnedSite.url) {
@@ -79,9 +79,9 @@ export function gridSitesReducerToggleSitePinned (
 }
 
 export function gridSitesReducerRemoveSite (
-  state: NewTab.State,
+  state: NewTab.GridSitesState,
   removedSite: NewTab.Site
-): NewTab.State {
+): NewTab.GridSitesState {
   state = {
     ...state,
     removedSites: [ ...state.removedSites, removedSite ]
@@ -98,8 +98,8 @@ export function gridSitesReducerRemoveSite (
 }
 
 export function gridSitesReducerUndoRemoveSite (
-  state: NewTab.State
-): NewTab.State {
+  state: NewTab.GridSitesState
+): NewTab.GridSitesState {
   if (state.removedSites.length < 0) {
     return state
   }
@@ -120,8 +120,8 @@ export function gridSitesReducerUndoRemoveSite (
 }
 
 export function gridSitesReducerUndoRemoveAllSites (
-  state: NewTab.State
-): NewTab.State {
+  state: NewTab.GridSitesState
+): NewTab.GridSitesState {
   // Get all removed sites, assuming the are unique to gridSites
   const allRemovedSites: NewTab.Site[] = state.removedSites
     .filter((site: NewTab.Site) => !isExistingGridSite(state.gridSites, site))
@@ -135,9 +135,9 @@ export function gridSitesReducerUndoRemoveAllSites (
 }
 
 export const gridSitesReducerUpdateSiteBookmarkInfo = (
-  state: NewTab.State,
+  state: NewTab.GridSitesState,
   bookmarkInfo: chrome.bookmarks.BookmarkTreeNode
-): NewTab.State => {
+): NewTab.GridSitesState => {
   const updatedGridSites: NewTab.Site[] = []
   for (const [index, gridSite] of state.gridSites.entries()) {
     const updatedBookmarkTreeNode = bookmarkInfo[index]
@@ -158,10 +158,10 @@ export const gridSitesReducerUpdateSiteBookmarkInfo = (
 }
 
 export const gridSitesReducerToggleSiteBookmarkInfo = (
-  state: NewTab.State,
+  state: NewTab.GridSitesState,
   url: string,
   bookmarkInfo: chrome.bookmarks.BookmarkTreeNode
-): NewTab.State => {
+): NewTab.GridSitesState => {
   const updatedGridSites: NewTab.Site[] = []
   for (const gridSite of state.gridSites) {
     if (url === gridSite.url) {
@@ -183,9 +183,9 @@ export const gridSitesReducerToggleSiteBookmarkInfo = (
 }
 
 export function gridSitesReducerAddSiteOrSites (
-  state: NewTab.State,
+  state: NewTab.GridSitesState,
   addedSites: NewTab.Site[] | NewTab.Site
-): NewTab.State {
+): NewTab.GridSitesState {
   const sitesToAdd: NewTab.Site[] = Array.isArray(addedSites)
     ? addedSites
     : [addedSites]
@@ -206,9 +206,9 @@ export function gridSitesReducerAddSiteOrSites (
 }
 
 export function gridSitesReducerShowSiteRemovedNotification (
-  state: NewTab.State,
+  state: NewTab.GridSitesState,
   shouldShow: boolean
-): NewTab.State {
+): NewTab.GridSitesState {
   state = { ...state, shouldShowSiteRemovedNotification: shouldShow }
   return state
 }

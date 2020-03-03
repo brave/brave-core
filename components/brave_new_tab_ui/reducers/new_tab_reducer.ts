@@ -15,7 +15,7 @@ import * as backgroundAPI from '../api/background'
 import { InitialData, InitialRewardsData, PreInitialRewardsData } from '../api/initialData'
 import { registerViewCount } from '../api/brandedWallpaper'
 import * as preferencesAPI from '../api/preferences'
-import * as storage from '../storage'
+import * as storage from '../storage/new_tab_storage'
 import { getTotalContributions } from '../rewards-utils'
 
 const initialState = storage.load()
