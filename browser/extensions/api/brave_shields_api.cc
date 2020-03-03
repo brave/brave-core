@@ -15,7 +15,11 @@
 #include "brave/browser/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "brave/common/extensions/api/brave_shields.h"
 #include "brave/common/extensions/extension_constants.h"
+#include "brave/components/brave_shields/browser/ad_block_base_service.h"
+#include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
+#include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
+#include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
@@ -59,6 +63,29 @@ BraveShieldsHostnameCosmeticResourcesFunction::Run() {
     return RespondNow(Error(
         "Hostname-specific cosmetic resources could not be returned"));
   }
+
+  base::Optional<base::Value> regional_resources = g_brave_browser_process->
+      ad_block_regional_service_manager()->
+          HostnameCosmeticResources(params->hostname);
+
+  if (regional_resources && regional_resources->is_dict()) {
+    ::brave_shields::MergeResourcesInto(
+            &*resources,
+            &*regional_resources,
+            false);
+  }
+
+  base::Optional<base::Value> custom_resources = g_brave_browser_process->
+      ad_block_custom_filters_service()->
+          HostnameCosmeticResources(params->hostname);
+
+  if (custom_resources && custom_resources->is_dict()) {
+    ::brave_shields::MergeResourcesInto(
+            &*resources,
+            &*custom_resources,
+            true);
+  }
+
   auto result_list = std::make_unique<base::ListValue>();
 
   result_list->GetList().push_back(std::move(*resources));
@@ -72,11 +99,41 @@ BraveShieldsHiddenClassIdSelectorsFunction::Run() {
       brave_shields::HiddenClassIdSelectors::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  std::string stylesheet = g_brave_browser_process->
+  base::Optional<base::Value> hide_selectors = g_brave_browser_process->
       ad_block_service()->HiddenClassIdSelectors(params->classes,
                                                  params->ids,
                                                  params->exceptions);
-  return RespondNow(OneArgument(std::make_unique<base::Value>(stylesheet)));
+
+  base::Optional<base::Value> regional_selectors = g_brave_browser_process->
+      ad_block_regional_service_manager()->
+        HiddenClassIdSelectors(params->classes,
+                               params->ids,
+                               params->exceptions);
+
+  if (hide_selectors && hide_selectors->is_list()) {
+    if (regional_selectors && regional_selectors->is_list()) {
+      for (auto i = regional_selectors->GetList().begin();
+              i < regional_selectors->GetList().end();
+              i++) {
+        hide_selectors->Append(std::move(*i));
+      }
+    }
+  } else {
+    hide_selectors = std::move(regional_selectors);
+  }
+
+  base::Optional<base::Value> custom_selectors = g_brave_browser_process->
+      ad_block_custom_filters_service()->
+          HiddenClassIdSelectors(params->classes,
+                                 params->ids,
+                                 params->exceptions);
+
+  auto result_list = std::make_unique<base::ListValue>();
+
+  result_list->GetList().push_back(std::move(*hide_selectors));
+  result_list->GetList().push_back(std::move(*custom_selectors));
+
+  return RespondNow(ArgumentList(std::move(result_list)));
 }
 
 
