@@ -96,6 +96,8 @@ class SettingsPage extends React.Component<Props, State> {
 
     this.isWalletUrl()
 
+    this.actions.fetchPromotions()
+
     window.addEventListener('popstate', (e) => {
       this.isWalletUrl()
     })
@@ -140,27 +142,31 @@ class SettingsPage extends React.Component<Props, State> {
     })
   }
 
-  getPromotionsClaim = () => {
+  getPromotionsClaims = () => {
     const { promotions, ui } = this.props.rewardsData
 
     if (!promotions) {
       return null
     }
 
+    let remainingPromotions = promotions.filter((promotion: Rewards.Promotion) => {
+      return promotion.status !== 4 // PromotionStatus::FINISHED
+    })
+
     return (
-      <>
-        {promotions.map((promotion?: Rewards.Promotion, index?: number) => {
+      <div style={{ width: '100%' }}>
+        {remainingPromotions.map((promotion?: Rewards.Promotion, index?: number) => {
           if (!promotion || !promotion.promotionId) {
             return null
           }
 
           return (
-            <div key={`grant-${index}`}>
+            <div key={`promotion-${index}`}>
               <Promotion promotion={promotion} onlyAnonWallet={ui.onlyAnonWallet} />
             </div>
           )
         })}
-      </>
+      </div>
     )
   }
 
@@ -197,7 +203,7 @@ class SettingsPage extends React.Component<Props, State> {
         }
         {
           enabledMain
-          ? this.getPromotionsClaim()
+          ? this.getPromotionsClaims()
           : null
         }
         <WalletInfoHeader
