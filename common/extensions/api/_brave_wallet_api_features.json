@@ -33,6 +33,15 @@
       "21070F3D60711361C1210B870439BE49B5D995F4"
     ]
   },
+  "braveWallet.getBitGoSeed": {
+    "channel": "stable",
+    "dependencies": [],
+    "contexts": ["blessed_extension"],
+    "component_extensions_auto_granted": false,
+    "whitelist": [
+      "21070F3D60711361C1210B870439BE49B5D995F4"
+    ]
+  },
   "braveWallet.getProjectID": {
     "channel": "stable",
     "dependencies": [],

@@ -21,7 +21,7 @@ function arrayBufsMatch(ab1, ab2) {
 
 function testKnownSeedValuesEndToEnd() {
   chrome.test.runTests([
-    function braveWalletExtensionHasAccess() {
+    function testKnownSeedValues() {
       const buf = new Uint8Array([
         196, 34, 104, 152, 91, 63, 78, 171,
         234, 163, 25, 221, 80, 73, 158, 89,
@@ -38,6 +38,35 @@ function testKnownSeedValuesEndToEnd() {
           expectedResult.buffer.slice(expectedResult.byteOffset,
             expectedResult.byteLength + expectedResult.byteOffset)
       chrome.braveWallet.getWalletSeed(buf, (resultArrayBuf) => {
+        if (arrayBufsMatch(resultArrayBuf, expectedResultArrayBuf)) {
+          chrome.test.succeed();
+        } else {
+          chrome.test.fail();
+        }
+      })
+    }
+  ])
+}
+
+function testKnownBitGoSeedValuesEndToEnd() {
+  chrome.test.runTests([
+    function testKnownBitGoSeedValues() {
+      const buf = new Uint8Array([
+        196, 34, 104, 152, 91, 63, 78, 171,
+        234, 163, 25, 221, 80, 73, 158, 89,
+        52, 53, 227, 231, 152, 214, 61, 210,
+        33, 54, 68, 171, 140, 239, 3, 158])
+      const expectedResult = new Uint8Array([
+        101, 6, 89, 61, 129, 81, 104, 13,
+        48, 59, 117, 46, 73, 177, 168, 248,
+        91, 84, 145, 54, 61, 157, 27, 254,
+        45, 203, 71, 123, 188, 29, 224, 203])
+      const arraybuf = buf.buffer.slice(buf.byteOffset,
+          buf.byteLength + buf.byteOffset)
+      const expectedResultArrayBuf =
+          expectedResult.buffer.slice(expectedResult.byteOffset,
+            expectedResult.byteLength + expectedResult.byteOffset)
+      chrome.braveWallet.getBitGoSeed(buf, (resultArrayBuf) => {
         if (arrayBufsMatch(resultArrayBuf, expectedResultArrayBuf)) {
           chrome.test.succeed();
         } else {
@@ -116,6 +145,7 @@ function testBasics() {
     },
     function braveWalletExtensionSeedFunctionHasAccess() {
       if (chrome.braveWallet && chrome.braveWallet.getWalletSeed &&
+          chrome.braveWallet.getBitGoSeed &&
           chrome.braveWallet.getProjectID &&
           chrome.braveWallet.getWeb3Provider) {
         chrome.test.succeed();
@@ -128,6 +158,18 @@ function testBasics() {
       const arraybuf = buf.buffer.slice(buf.byteOffset,
           buf.byteLength + buf.byteOffset)
       chrome.braveWallet.getWalletSeed(arraybuf, (seed) => {
+        if (!seed) {
+          chrome.test.succeed();
+          return
+        }
+        chrome.test.fail();
+      })
+    },
+    function braveBitGoWrongInputKeySizeFails() {
+      const buf = new Uint8Array([...Array(3).keys()])
+      const arraybuf = buf.buffer.slice(buf.byteOffset,
+          buf.byteLength + buf.byteOffset)
+      chrome.braveWallet.getBitGoSeed(arraybuf, (seed) => {
         if (!seed) {
           chrome.test.succeed();
           return
@@ -150,6 +192,36 @@ function testBasics() {
         })
       })
     },
+    function braveWalletExtensionGetBitGoSeedSameSeedOnMultipleRequests() {
+      const buf = new Uint8Array([...Array(32).keys()])
+      const arraybuf = buf.buffer.slice(buf.byteOffset,
+          buf.byteLength + buf.byteOffset)
+      chrome.braveWallet.getBitGoSeed(arraybuf, (firstSeed) => {
+        chrome.braveWallet.getBitGoSeed(arraybuf, (secondSeed) => {
+          if (arrayBufsMatch(firstSeed, secondSeed)) {
+            chrome.test.succeed();
+            return
+          }
+          console.error('Seeds differ across calls!')
+          chrome.test.fail();
+        })
+      })
+    },
+    function braveWalletExtensionSeedsDiffValues() {
+      const buf = new Uint8Array([...Array(32).keys()])
+      const arraybuf = buf.buffer.slice(buf.byteOffset,
+          buf.byteLength + buf.byteOffset)
+      chrome.braveWallet.getWalletSeed(arraybuf, (firstSeed) => {
+        chrome.braveWallet.getBitGoSeed(arraybuf, (secondSeed) => {
+          if (!arrayBufsMatch(firstSeed, secondSeed)) {
+            chrome.test.succeed();
+            return
+          }
+          console.error('Seeds are the same but should not be!')
+          chrome.test.fail();
+        })
+      })
+    },
     function braveWalletExtensionGetWalletSeedDifferentKeysDoesNotWork() {
       const buf = new Uint8Array([...Array(32).keys()])
       const arraybuf = buf.buffer.slice(buf.byteOffset,
@@ -158,6 +230,22 @@ function testBasics() {
       const arraybuf2 = buf2.buffer.slice(buf2.byteOffset, buf2.byteLength + buf2.byteOffset)
       chrome.braveWallet.getWalletSeed(arraybuf, (firstSeed) => {
         chrome.braveWallet.getWalletSeed(arraybuf2, (secondSeed) => {
+          if (firstSeed && !secondSeed) {
+            chrome.test.succeed();
+            return
+          }
+          chrome.test.fail();
+        })
+      })
+    },
+    function braveWalletExtensionGetBitGoSeedDifferentKeysDoesNotWork() {
+      const buf = new Uint8Array([...Array(32).keys()])
+      const arraybuf = buf.buffer.slice(buf.byteOffset,
+          buf.byteLength + buf.byteOffset)
+      const buf2 = new Uint8Array([11, ...Array(31).keys()])
+      const arraybuf2 = buf2.buffer.slice(buf2.byteOffset, buf2.byteLength + buf2.byteOffset)
+      chrome.braveWallet.getBitGoSeed(arraybuf, (firstSeed) => {
+        chrome.braveWallet.getBitGoSeed(arraybuf2, (secondSeed) => {
           if (firstSeed && !secondSeed) {
             chrome.test.succeed();
             return

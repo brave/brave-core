@@ -75,6 +75,26 @@
           }
         ]
       }, {
+        "name": "getBitGoSeed",
+        "type": "function",
+        "description": "Called when setting up BitGo",
+        "parameters": [
+          {
+            "name": "key",
+            "type": "binary"
+          }, {
+            "name": "seedCallback",
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "seed",
+                "type": "binary"
+              }
+            ]
+          }
+        ]
+      }, {
         "name": "getProjectID",
         "type": "function",
         "description": "Called to get the configured infura project ID",
