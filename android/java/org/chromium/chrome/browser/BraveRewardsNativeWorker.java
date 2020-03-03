@@ -36,6 +36,9 @@ public class BraveRewardsNativeWorker {
     public static final int REWARDS_NOTIFICATION_IMPENDING_CONTRIBUTION = 5;
     public static final int REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS = 6;
     public static final int REWARDS_NOTIFICATION_BACKUP_WALLET = 7;
+    public static final int REWARDS_NOTIFICATION_TIPS_PROCESSED = 8;
+    public static final int REWARDS_NOTIFICATION_ADS_ONBOARDING = 9;
+    public static final int REWARDS_NOTIFICATION_VERIFIED_PUBLISHER = 10;
 
     public static final int LEDGER_OK = 0;
     public static final int LEDGER_ERROR = 1;
