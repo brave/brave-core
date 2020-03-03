@@ -7,13 +7,13 @@
 <android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto" >
 
-    <org.chromium.chrome.browser.preferences.ChromeSwitchPreference
+    <org.chromium.chrome.browser.settings.ChromeSwitchPreference
         android:key="show_background_images"
         android:title="@string/show_background_images"
         android:summaryOn="@string/text_on"
         android:summaryOff="@string/text_off" />
 
-    <org.chromium.chrome.browser.preferences.ChromeSwitchPreference
+    <org.chromium.chrome.browser.settings.ChromeSwitchPreference
         android:key="show_sponsored_images"
         android:title="@string/show_sponsored_images"
         android:summaryOn="@string/text_on"
