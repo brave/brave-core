@@ -20,11 +20,6 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.text.style.ClickableSpan;
-import android.text.style.ForegroundColorSpan;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.method.LinkMovementMethod;
 import java.io.File;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -74,7 +69,8 @@ public class BraveNewTabPageView extends NewTabPageView {
     private TextView mEstTimeSavedTextView;
     private Profile mProfile;
 
-    private TabImpl mTab;
+    private TabImpl mTabImpl;
+    private Tab mTab;
     private SponsoredTab sponsoredTab;
 
     private NewTabPageLayout mNewTabPageLayout;
@@ -92,7 +88,7 @@ public class BraveNewTabPageView extends NewTabPageView {
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
-        if (NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
+        if (sponsoredTab != null && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
             NTPImage ntpImage = sponsoredTab.getTabNTPImage();
             if(ntpImage == null) {
                 sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
@@ -120,21 +116,18 @@ public class BraveNewTabPageView extends NewTabPageView {
             searchProviderHasLogo, searchProviderIsGoogle, scrollPosition,
             constructedTimeNs);
 
-        mTab = (TabImpl) tab;
-        if (TabAttributes.from(tab).get(String.valueOf(((org.chromium.chrome.browser.tab.TabImpl)tab).getId())) == null) {
-            SponsoredTab mSponsoredTab = new SponsoredTab();
-            TabAttributes.from(tab).set(String.valueOf(((org.chromium.chrome.browser.tab.TabImpl)tab).getId()), mSponsoredTab);
-        }
-        sponsoredTab = TabAttributes.from(tab).get(String.valueOf(((org.chromium.chrome.browser.tab.TabImpl)tab).getId()));
+        mTabImpl = (TabImpl) tab;
+        mTab = tab;
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            if (sponsoredTab == null)
+                initilizeSponsoredTab();
             NTPImage ntpImage = sponsoredTab.getTabNTPImage();
             checkForNonDistruptiveBanner(ntpImage);
             showNTPImage(ntpImage);
-        } else if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.M && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !sponsoredTab.isMoreTabs()) {
-            mTab.addObserver(mTabObserver);
+        } else if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.M && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mTabImpl.addObserver(mTabObserver);
         }
-
     }
 
     @Override
@@ -174,7 +167,7 @@ public class BraveNewTabPageView extends NewTabPageView {
         mEstTimeSavedCountTextView.setText(getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000));
 
         if(mSharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES, true) 
-            && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
+            && sponsoredTab != null && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
             mAdsBlockedTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));
             mHttpsUpgradesTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));
             mEstTimeSavedTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));            
@@ -244,10 +237,10 @@ public class BraveNewTabPageView extends NewTabPageView {
     }
 
     private void showNTPImage(NTPImage ntpImage) {
-        NTPUtil.updateOrientedUI(mTab.getActivity(), mNewTabPageLayout);
+        NTPUtil.updateOrientedUI(mTabImpl.getActivity(), mNewTabPageLayout);
 
         if(mSharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES, true)
-            && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
+            && sponsoredTab != null && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
             ViewTreeObserver observer = mNewTabPageLayout.getViewTreeObserver();
             observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
@@ -271,7 +264,7 @@ public class BraveNewTabPageView extends NewTabPageView {
                         File imageFile = new File(PathUtils.getDataDirectory(), countryCode + "_" + sponsoredImage.getImageUrl());
                         try {
                             Uri imageFileUri = Uri.parse("file://"+imageFile.getAbsolutePath());
-                            InputStream inputStream = mTab.getActivity().getContentResolver().openInputStream(imageFileUri);
+                            InputStream inputStream = mTabImpl.getActivity().getContentResolver().openInputStream(imageFileUri);
                             imageBitmap = BitmapFactory.decodeStream(inputStream);
                             imageWidth = imageBitmap.getWidth();
                             imageHeight = imageBitmap.getHeight();
@@ -389,8 +382,8 @@ public class BraveNewTabPageView extends NewTabPageView {
                     imageBitmap = Bitmap.createScaledBitmap(imageBitmap, newImageWidth, newImageHeight, true);
 
                     Bitmap newBitmap = Bitmap.createBitmap(imageBitmap, startX, startY, layoutWidth, (int) layoutHeight);
-                    Bitmap bitmapWithGradient = ImageUtils.addGradient(mTab.getActivity(), newBitmap, dpToPx(mTab.getActivity(),BOTTOM_TOOLBAR_HEIGHT));
-                    Bitmap offsetBitmap = ImageUtils.topOffset(bitmapWithGradient, dpToPx(mTab.getActivity(),BOTTOM_TOOLBAR_HEIGHT));
+                    Bitmap bitmapWithGradient = ImageUtils.addGradient(mTabImpl.getActivity(), newBitmap, dpToPx(mTabImpl.getActivity(),BOTTOM_TOOLBAR_HEIGHT));
+                    Bitmap offsetBitmap = ImageUtils.topOffset(bitmapWithGradient, dpToPx(mTabImpl.getActivity(),BOTTOM_TOOLBAR_HEIGHT));
 
                     imageBitmap.recycle();
                     newBitmap.recycle();
@@ -409,7 +402,7 @@ public class BraveNewTabPageView extends NewTabPageView {
     private void checkForNonDistruptiveBanner(NTPImage ntpImage) {
         int brOption = NTPUtil.checkForNonDistruptiveBanner(ntpImage, sponsoredTab);
         if (SponsoredImageUtil.BR_INVALID_OPTION != brOption) {
-            NTPUtil.showNonDistruptiveBanner(mTab.getActivity(), mNewTabPageLayout, brOption, sponsoredTab, newTabPageListener);
+            NTPUtil.showNonDistruptiveBanner(mTabImpl.getActivity(), mNewTabPageLayout, brOption, sponsoredTab, newTabPageListener);
         }
     }
 
@@ -430,12 +423,24 @@ public class BraveNewTabPageView extends NewTabPageView {
         showNTPImage(ntpImage);
     }
 
+    private void initilizeSponsoredTab() {
+        if (TabAttributes.from(mTab).get(String.valueOf((mTabImpl).getId())) == null) {
+            SponsoredTab mSponsoredTab = new SponsoredTab();
+            TabAttributes.from(mTab).set(String.valueOf((mTabImpl).getId()), mSponsoredTab);
+        }
+        sponsoredTab = TabAttributes.from(mTab).get(String.valueOf((mTabImpl).getId()));
+    }
+
     private TabObserver mTabObserver = new EmptyTabObserver() {
         @Override
         public void onInteractabilityChanged(boolean interactable) {
             // Force a layout update if the tab is now in the foreground.
             if (interactable) {
-                checkAndShowNTPImage();
+                if (sponsoredTab == null)
+                    initilizeSponsoredTab();
+                if(!sponsoredTab.isMoreTabs()) {
+                    checkAndShowNTPImage();
+                }
             } else {
                 if(!isFromBottomSheet){
                     mNewTabPageLayout.setBackgroundResource(0);
@@ -455,6 +460,8 @@ public class BraveNewTabPageView extends NewTabPageView {
 
         @Override
         public void updateNTPImage() {
+            if (sponsoredTab == null)
+                initilizeSponsoredTab();
             checkAndShowNTPImage();
         }
     };
