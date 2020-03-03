@@ -31,6 +31,7 @@ class SafetyNetCheck {
     void clientAttestationResult(JNIEnv* env,
       const base::android::JavaRef<jobject>& jobj, jboolean result,
       const base::android::JavaParamRef<jstring>& jresult_string);
+    friend class SafetyNetCheckRunner;
  private:
     base::android::ScopedJavaGlobalRef<jobject> java_obj_;
     ClientAttestationCallback attest_callback_;
