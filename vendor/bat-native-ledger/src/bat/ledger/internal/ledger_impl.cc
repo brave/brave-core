@@ -1238,81 +1238,22 @@ void LedgerImpl::SetCatalogIssuers(const std::string& info) {
   bat_confirmations_->SetCatalogIssuers(std::move(issuers_info));
 }
 
-void LedgerImpl::ConfirmAdNotification(const std::string& info) {
-  ads::AdNotificationInfo notification_info_ads;
-  if (notification_info_ads.FromJson(info) != ads::Result::SUCCESS) {
+void LedgerImpl::ConfirmAd(
+    const std::string& json,
+    const std::string& confirmation_type) {
+  ads::AdInfo ad_info;
+  if (ad_info.FromJson(json) != ads::Result::SUCCESS) {
     return;
   }
 
-  auto notification_info =
-      std::make_unique<confirmations::AdNotificationInfo>();
-  notification_info->uuid = notification_info_ads.uuid;
-  notification_info->parent_uuid = notification_info_ads.parent_uuid;
-  notification_info->creative_instance_id =
-      notification_info_ads.creative_instance_id;
-  notification_info->creative_set_id = notification_info_ads.creative_set_id;
-  notification_info->category = notification_info_ads.category;
-  notification_info->title = notification_info_ads.title;
-  notification_info->body = notification_info_ads.body;
-  notification_info->target_url = notification_info_ads.target_url;
+  confirmations::AdInfo confirmations_ad_info;
+  confirmations_ad_info.creative_instance_id = ad_info.creative_instance_id;
+  confirmations_ad_info.creative_set_id = ad_info.creative_set_id;
+  confirmations_ad_info.category = ad_info.category;
+  confirmations_ad_info.target_url = ad_info.target_url;
 
-  switch (notification_info_ads.confirmation_type.value()) {
-    case ads::ConfirmationType::kUnknown: {
-      notification_info->confirmation_type =
-          confirmations::ConfirmationType::kUnknown;
-      break;
-    }
-
-    case ads::ConfirmationType::kClicked: {
-      notification_info->confirmation_type =
-          confirmations::ConfirmationType::kClicked;
-      break;
-    }
-
-    case ads::ConfirmationType::kDismissed: {
-      notification_info->confirmation_type =
-          confirmations::ConfirmationType::kDismissed;
-      break;
-    }
-
-    case ads::ConfirmationType::kViewed: {
-      notification_info->confirmation_type =
-          confirmations::ConfirmationType::kViewed;
-      break;
-    }
-
-    case ads::ConfirmationType::kLanded: {
-      notification_info->confirmation_type =
-          confirmations::ConfirmationType::kLanded;
-      break;
-    }
-
-    case ads::ConfirmationType::kFlagged: {
-      notification_info->confirmation_type =
-          confirmations::ConfirmationType::kFlagged;
-      break;
-    }
-
-    case ads::ConfirmationType::kUpvoted: {
-      notification_info->confirmation_type =
-          confirmations::ConfirmationType::kUpvoted;
-      break;
-    }
-
-    case ads::ConfirmationType::kDownvoted: {
-      notification_info->confirmation_type =
-          confirmations::ConfirmationType::kDownvoted;
-      break;
-    }
-
-    case ads::ConfirmationType::kConversion: {
-      notification_info->confirmation_type =
-          confirmations::ConfirmationType::kConversion;
-      break;
-    }
-  }
-
-  bat_confirmations_->ConfirmAdNotification(std::move(notification_info));
+  bat_confirmations_->ConfirmAd(confirmations_ad_info,
+      confirmations::ConfirmationType(confirmation_type));
 }
 
 void LedgerImpl::ConfirmAction(

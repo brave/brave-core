@@ -489,12 +489,6 @@ bool ConfirmationsImpl::GetConfirmationsFromDictionary(
     auto* type_value = confirmation_dictionary->FindKey("type");
     if (type_value) {
       ConfirmationType type(type_value->GetString());
-      if (!type.IsSupported()) {
-        // Unsupported type, skip confirmation
-        DCHECK(false) << "Unsupported confirmation type: " << std::string(type);
-        continue;
-      }
-
       confirmation_info.type = type;
     } else {
       // Type missing, skip confirmation
@@ -1136,32 +1130,28 @@ void ConfirmationsImpl::AppendTransactionToHistory(
   confirmations_client_->ConfirmationsTransactionHistoryDidChange();
 }
 
-void ConfirmationsImpl::ConfirmAdNotification(
-    std::unique_ptr<AdNotificationInfo> info) {
-  DCHECK(state_has_loaded_);
+void ConfirmationsImpl::ConfirmAd(
+    const AdInfo& info,
+    const ConfirmationType confirmation_type) {
   if (!state_has_loaded_) {
     BLOG(ERROR) << "Unable to confirm ad as Confirmations state is not ready";
     return;
   }
 
   BLOG(INFO) << "Confirm ad:"
-      << std::endl << "  uuid: " << info->uuid
-      << std::endl << "  creativeInstanceId: " << info->creative_instance_id
-      << std::endl << "  creativeSetId: " << info->creative_set_id
-      << std::endl << "  category: " << info->category
-      << std::endl << "  title: " << info->title
-      << std::endl << "  body: " << info->body
-      << std::endl << "  targetUrl: " << info->target_url
-      << std::endl << "  confirmationType: "
-          << std::string(info->confirmation_type);
+      << std::endl << "  creativeInstanceId: " << info.creative_instance_id
+      << std::endl << "  creativeSetId: " << info.creative_set_id
+      << std::endl << "  category: " << info.category
+      << std::endl << "  targetUrl: " << info.target_url
+      << std::endl << "  confirmationType: " << std::string(confirmation_type);
 
-  redeem_token_->Redeem(info->creative_instance_id, info->confirmation_type);
+  redeem_token_->Redeem(info, confirmation_type);
 }
 
 void ConfirmationsImpl::ConfirmAction(
     const std::string& creative_instance_id,
     const std::string& creative_set_id,
-    const ConfirmationType& confirmation_type) {
+    const ConfirmationType confirmation_type) {
   DCHECK(state_has_loaded_);
   if (!state_has_loaded_) {
     BLOG(ERROR) <<
@@ -1174,7 +1164,8 @@ void ConfirmationsImpl::ConfirmAction(
       << std::endl << "  creativeSetId: " << creative_set_id
       << std::endl << "  confirmationType: " << std::string(confirmation_type);
 
-  redeem_token_->Redeem(creative_instance_id, confirmation_type);
+  redeem_token_->Redeem(creative_instance_id, creative_set_id,
+      confirmation_type);
 }
 
 bool ConfirmationsImpl::OnTimer(const uint32_t timer_id) {

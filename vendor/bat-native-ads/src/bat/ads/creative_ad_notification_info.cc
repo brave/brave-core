@@ -78,7 +78,7 @@ Result CreativeAdNotificationInfo::FromJson(
   std::vector<std::string> new_geo_targets;
   if (document.HasMember("geo_targets")) {
     for (const auto& geo_target : document["geo_targets"].GetArray()) {
-      geo_targets.push_back(geo_target.GetString());
+      new_geo_targets.push_back(geo_target.GetString());
     }
   }
   geo_targets = new_geo_targets;

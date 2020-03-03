@@ -45,6 +45,7 @@ class BundleStateDatabase {
   bool GetCreativeAdNotifications(
       const std::vector<std::string>& categories,
       ads::CreativeAdNotificationList* ads);
+
   bool GetAdConversions(
       const std::string& url,
       ads::AdConversionList* ad_conversions);
@@ -65,28 +66,31 @@ class BundleStateDatabase {
   void OnMemoryPressure(
       base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);
 
-  bool CreateCategoryTable();
-  bool TruncateCategoryTable();
+  bool CreateCategoriesTable();
+  bool TruncateCategoriesTable();
   bool InsertOrUpdateCategory(
       const std::string& category);
 
-  bool CreateCreativeAdNotificationInfoTable();
-  bool TruncateCreativeAdNotificationInfoTable();
-  bool InsertOrUpdateCreativeAdNotificationInfo(
+  bool CreateCreativeAdNotificationsTable();
+  bool TruncateCreativeAdNotificationsTable();
+  bool InsertOrUpdateCreativeAdNotification(
       const ads::CreativeAdNotificationInfo& info);
 
-  bool CreateCreativeAdNotificationInfoCategoryTable();
-  bool TruncateCreativeAdNotificationInfoCategoryTable();
-  bool InsertOrUpdateCreativeAdNotificationInfoCategory(
+  bool CreateCreativeAdNotificationCategoriesTable();
+  bool TruncateCreativeAdNotificationCategoriesTable();
+  bool InsertOrUpdateCreativeAdNotificationCategory(
       const ads::CreativeAdNotificationInfo& info,
       const std::string& category);
 
-  bool CreateCreativeAdNotificationInfoCategoryNameIndex();
+  bool CreateCreativeAdNotificationCategoriesCategoryIndex();
 
   bool CreateAdConversionsTable();
   bool TruncateAdConversionsTable();
   bool InsertOrUpdateAdConversion(
       const ads::AdConversionInfo& info);
+
+  std::string CreateBindingParameterPlaceholders(
+      const size_t count);
 
   sql::Database& GetDB();
   sql::MetaTable& GetMetaTable();

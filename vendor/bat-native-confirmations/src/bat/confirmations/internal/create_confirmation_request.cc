@@ -4,11 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/confirmations/confirmation_type.h"
-
+#include "bat/confirmations/internal/confirmation_info.h"
+#include "bat/confirmations/internal/token_info.h"
 #include "bat/confirmations/internal/create_confirmation_request.h"
 #include "bat/confirmations/internal/ads_serve_helper.h"
 #include "bat/confirmations/internal/security_helper.h"
-
 #include "base/logging.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
@@ -64,22 +64,24 @@ std::string CreateConfirmationRequest::GetContentType() const {
 }
 
 std::string CreateConfirmationRequest::CreateConfirmationRequestDTO(
-    const std::string& creative_instance_id,
-    const BlindedToken& token,
-    const ConfirmationType confirmation_type) const {
-  DCHECK(!creative_instance_id.empty());
+    const ConfirmationInfo& info) const {
+  DCHECK(!info.creative_instance_id.empty());
 
   base::Value payload(base::Value::Type::DICTIONARY);
 
-  payload.SetKey("creativeInstanceId", base::Value(creative_instance_id));
+  payload.SetKey("creativeInstanceId", base::Value(info.creative_instance_id));
 
   payload.SetKey("payload", base::Value(base::Value::Type::DICTIONARY));
 
-  auto token_base64 = token.encode_base64();
+  auto token_base64 = info.blinded_payment_token.encode_base64();
   payload.SetKey("blindedPaymentToken", base::Value(token_base64));
 
-  auto type = std::string(confirmation_type);
+  auto type = std::string(info.type);
   payload.SetKey("type", base::Value(type));
+
+  if (!info.channel_id.empty()) {
+    payload.SetKey("channelId", base::Value(info.channel_id));
+  }
 
   std::string json;
   base::JSONWriter::Write(payload, &json);

@@ -32,7 +32,7 @@ Result CatalogState::FromJson(
     return result;
   }
 
-  std::string new_catalog_id = "";
+  std::string new_catalog_id;
   uint64_t new_version = 0;
   uint64_t new_ping = kDefaultCatalogPing * base::Time::kMillisecondsPerSecond;
   CatalogCampaignList new_campaigns;
@@ -52,7 +52,6 @@ Result CatalogState::FromJson(
     CatalogCampaignInfo campaign_info;
 
     campaign_info.campaign_id = campaign["campaignId"].GetString();
-    campaign_info.advertiser_id = campaign["advertiserId"].GetString();
     campaign_info.priority = campaign["priority"].GetUint();
     campaign_info.start_at = campaign["startAt"].GetString();
     campaign_info.end_at = campaign["endAt"].GetString();

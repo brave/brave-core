@@ -4,9 +4,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/confirmations/confirmation_type.h"
+#include "base/logging.h"
 
 namespace confirmations {
 
+// Do not change the following string values as they are used for persisting and
+// restoring state
 const char kConfirmationTypeClicked[] = "click";
 const char kConfirmationTypeDismissed[] = "dismiss";
 const char kConfirmationTypeViewed[] = "view";
@@ -15,7 +18,6 @@ const char kConfirmationTypeFlagged[] = "flag";
 const char kConfirmationTypeUpvoted[] = "upvote";
 const char kConfirmationTypeDownvoted[] = "downvote";
 const char kConfirmationTypeConversion[] = "conversion";
-const char kConfirmationTypeUnknown[] = "";
 
 ConfirmationType::ConfirmationType(
     const std::string& value) {
@@ -36,12 +38,8 @@ ConfirmationType::ConfirmationType(
   } else if (value == kConfirmationTypeConversion) {
     value_ = kConversion;
   } else {
-    value_ = kUnknown;
+    NOTREACHED();
   }
-}
-
-bool ConfirmationType::IsSupported() const {
-  return value_ != kUnknown;
 }
 
 ConfirmationType::Value ConfirmationType::value() const {
@@ -80,10 +78,6 @@ ConfirmationType::operator std::string() const {
 
     case kConversion: {
       return kConfirmationTypeConversion;
-    }
-
-    case kUnknown: {
-      return kConfirmationTypeUnknown;
     }
   }
 }

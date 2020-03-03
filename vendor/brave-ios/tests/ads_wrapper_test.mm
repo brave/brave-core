@@ -9,7 +9,7 @@
 #import "BATBraveRewards.h"
 
 @interface _MockNotificationHandler : NSObject <BATBraveAdsNotificationHandler>
-@property (nonatomic, copy, nullable) void (^showNotification)(BATAdsNotification *);
+@property (nonatomic, copy, nullable) void (^showNotification)(BATAdNotification *);
 @property (nonatomic, copy, nullable) void (^clearNotification)(NSString *);
 @end
 
@@ -18,7 +18,7 @@
 {
   return YES;
 }
-- (void)showNotification:(BATAdsNotification *)notification
+- (void)showNotification:(BATAdNotification *)notification
 {
   if (self.showNotification) {
     self.showNotification(notification);
@@ -84,7 +84,7 @@
   
   const auto expect = [self expectationWithDescription:@"Serving Sample Ad"];
   const auto mockHandler = [[_MockNotificationHandler alloc] init];
-  mockHandler.showNotification = ^(BATAdsNotification *) {
+  mockHandler.showNotification = ^(BATAdNotification *) {
     [expect fulfill];
   };
   self.ads.notificationsHandler = mockHandler;

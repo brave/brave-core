@@ -225,12 +225,15 @@ class RewardsService : public KeyedService {
     const GetRewardsMainEnabledCallback& callback) const = 0;
   // TODO(Terry Mancey): remove this hack when ads is moved to the same process
   // as ledger
-  virtual void SetCatalogIssuers(const std::string& json) = 0;
-  virtual void ConfirmAdNotification(
+  virtual void SetCatalogIssuers(
       const std::string& json) = 0;
-  virtual void ConfirmAction(const std::string& creative_instance_id,
-                             const std::string& creative_set_id,
-                             const std::string& confirmation_type) = 0;
+  virtual void ConfirmAd(
+      const std::string& json,
+      const std::string& confirmation_type) = 0;
+  virtual void ConfirmAction(
+      const std::string& creative_instance_id,
+      const std::string& creative_set_id,
+      const std::string& confirmation_type) = 0;
   virtual void GetRewardsInternalsInfo(
       GetRewardsInternalsInfoCallback callback) = 0;
   virtual void AddPrivateObserver(

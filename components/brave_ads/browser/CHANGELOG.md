@@ -35,4 +35,6 @@ ConfirmAd to ConfirmAdNotification
 NotificationInfo to AdNotificationInfo
 OnNotificationEvent to OnAdNotificationEvent
 NotificationEventType to AdNotificationEventType
+BatAdsNotificationEventType to BatAdNotificationEventType
+BatAdsNotification to BatAdNotification
 ---

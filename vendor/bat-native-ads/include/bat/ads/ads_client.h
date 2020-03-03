@@ -145,17 +145,18 @@ class ADS_EXPORT AdsClient {
   virtual void SetCatalogIssuers(
       const std::unique_ptr<IssuersInfo> info) = 0;
 
-  // Should pass-through to Confirmations that an ad notification was viewed,
-  // clicked, dismissed or landed
-  virtual void ConfirmAdNotification(
-      const std::unique_ptr<AdNotificationInfo> info) = 0;
+  // Should pass-through to Confirmations that an ad was viewed, clicked or
+  // landed
+  virtual void ConfirmAd(
+      const AdInfo& info,
+      const ConfirmationType confirmation_type) = 0;
 
-  // Should pass-through to Confirmations that an ad was flagged, upvoted or
-  // downvoted
+  // Should pass-through to Confirmations that an ad was flagged, upvoted,
+  // downvoted or converted
   virtual void ConfirmAction(
       const std::string& creative_instance_id,
       const std::string& creative_set_id,
-      const ConfirmationType& confirmation_type) = 0;
+      const ConfirmationType confirmation_type) = 0;
 
   // Should create a timer to trigger after the time offset specified in
   // seconds. If the timer was created successfully a unique identifier should

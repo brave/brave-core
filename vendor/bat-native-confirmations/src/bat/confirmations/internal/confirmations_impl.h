@@ -82,12 +82,13 @@ class ConfirmationsImpl : public Confirmations {
   void RefillTokensIfNecessary() const;
 
   // Redeem unblinded tokens
-  void ConfirmAdNotification(
-      std::unique_ptr<AdNotificationInfo> info) override;
+  void ConfirmAd(
+      const AdInfo& info,
+      const ConfirmationType confirmation_type) override;
   void ConfirmAction(
       const std::string& creative_instance_id,
       const std::string& creative_set_id,
-      const ConfirmationType& confirmation_type) override;
+      const ConfirmationType confirmation_type) override;
 
   // Payout redeemed tokens
   void UpdateNextTokenRedemptionDate();

@@ -50,8 +50,8 @@ interface BatAdsClient {
   ShowNotification(string notification_info);
   CloseNotification(string uuid);
   SetCatalogIssuers(string issuers_info);
-  ConfirmAdNotification(string json);
-  ConfirmAction(string creative_instance_id, string creative_set_id, string type);
+  ConfirmAd(string json, string confirmation_type);
+  ConfirmAction(string creative_instance_id, string creative_set_id, string confirmation_type);
   KillTimer(uint32 timer_id);
   URLRequest(string url, array<string> headers, string content, string content_type, int32 method) => (int32 status_code, string content, map<string, string> headers);
   Save(string name, string value) => (int32 result);

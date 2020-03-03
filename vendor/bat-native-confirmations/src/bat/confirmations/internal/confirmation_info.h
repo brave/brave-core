@@ -28,6 +28,7 @@ struct ConfirmationInfo {
 
   std::string id;
   std::string creative_instance_id;
+  std::string channel_id;
   ConfirmationType type;
   TokenInfo token_info;
   Token payment_token;

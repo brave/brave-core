@@ -209,13 +209,16 @@ class BatLedgerImpl : public mojom::BatLedger,
   void GetAllContributions(GetAllContributionsCallback callback) override;
 
  private:
-  void SetCatalogIssuers(const std::string& info) override;
+  void SetCatalogIssuers(
+      const std::string& info) override;
 
-  void ConfirmAdNotification(
-      const std::string& json) override;
-  void ConfirmAction(const std::string& creative_instance_id,
-                     const std::string& creative_set_id,
-                     const std::string& confirmation_type) override;
+  void ConfirmAd(
+      const std::string& json,
+      const std::string& confirmation_type) override;
+  void ConfirmAction(
+      const std::string& creative_instance_id,
+      const std::string& creative_set_id,
+      const std::string& confirmation_type) override;
 
   // workaround to pass base::OnceCallback into std::bind
   template <typename Callback>

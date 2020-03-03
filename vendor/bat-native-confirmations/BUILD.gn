@@ -37,6 +37,7 @@ source_set("bat-native-confirmations") {
   ]
 
   sources = [
+    "include/bat/confirmations/ad_info.h",
     "include/bat/confirmations/ad_notification_info.h",
     "include/bat/confirmations/confirmation_type.h",
     "include/bat/confirmations/confirmations_client.h",
@@ -45,6 +46,7 @@ source_set("bat-native-confirmations") {
     "include/bat/confirmations/issuer_info.h",
     "include/bat/confirmations/issuers_info.h",
     "include/bat/confirmations/wallet_info.h",
+    "src/bat/confirmations/ad_info.cc",
     "src/bat/confirmations/ad_notification_info.cc",
     "src/bat/confirmations/confirmation_type.cc",
     "src/bat/confirmations/confirmations.cc",

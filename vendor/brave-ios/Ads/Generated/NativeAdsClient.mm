@@ -79,12 +79,12 @@ void NativeAdsClient::SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) 
   [bridge_ setCatalogIssuers:std::move(info)];
 }
 
-void NativeAdsClient::ConfirmAdNotification(std::unique_ptr<ads::AdNotificationInfo> info) {
-  [bridge_ confirmAdNotification:std::move(info)];
+void NativeAdsClient::ConfirmAd(const ads::AdInfo & info, const ads::ConfirmationType confirmation_type) {
+  [bridge_ confirmAd:info confirmationType:confirmation_type];
 }
 
-void NativeAdsClient::ConfirmAction(const std::string & uuid, const std::string & creative_set_id, const ads::ConfirmationType & type) {
-  [bridge_ confirmAction:uuid creativeSetId:creative_set_id confirmationType:type];
+void NativeAdsClient::ConfirmAction(const std::string & uuid, const std::string & creative_set_id, const ads::ConfirmationType confirmation_type) {
+  [bridge_ confirmAction:uuid creativeSetId:creative_set_id confirmationType:confirmation_type];
 }
 
 uint32_t NativeAdsClient::SetTimer(const uint64_t time_offset) {

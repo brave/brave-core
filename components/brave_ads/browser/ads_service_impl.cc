@@ -1967,15 +1967,16 @@ void AdsServiceImpl::SetCatalogIssuers(
   rewards_service_->SetCatalogIssuers(info->ToJson());
 }
 
-void AdsServiceImpl::ConfirmAdNotification(
-    const std::unique_ptr<ads::AdNotificationInfo> info) {
-  rewards_service_->ConfirmAdNotification(info->ToJson());
+void AdsServiceImpl::ConfirmAd(
+    const ads::AdInfo& info,
+    const ads::ConfirmationType confirmation_type) {
+  rewards_service_->ConfirmAd(info.ToJson(), confirmation_type);
 }
 
 void AdsServiceImpl::ConfirmAction(
     const std::string& creative_instance_id,
     const std::string& creative_set_id,
-    const ads::ConfirmationType& confirmation_type) {
+    const ads::ConfirmationType confirmation_type) {
   rewards_service_->ConfirmAction(creative_instance_id, creative_set_id,
       confirmation_type);
 }

@@ -15,6 +15,10 @@
 #include "bat/confirmations/internal/create_confirmation_request.h"
 #include "bat/confirmations/internal/fetch_payment_token_request.h"
 #include "bat/confirmations/internal/time.h"
+#include "bat/confirmations/internal/token_info.h"
+#include "bat/confirmations/internal/confirmation_info.h"
+#include "url/gurl.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
 #include "base/logging.h"
 #include "base/guid.h"
@@ -40,20 +44,18 @@ RedeemToken::RedeemToken(
     ConfirmationsImpl* confirmations,
     ConfirmationsClient* confirmations_client,
     UnblindedTokens* unblinded_tokens,
-    UnblindedTokens* unblinded_payment_tokens) :
-    confirmations_(confirmations),
-    confirmations_client_(confirmations_client),
-    unblinded_tokens_(unblinded_tokens),
-    unblinded_payment_tokens_(unblinded_payment_tokens) {
+    UnblindedTokens* unblinded_payment_tokens)
+    : confirmations_(confirmations),
+      confirmations_client_(confirmations_client),
+      unblinded_tokens_(unblinded_tokens),
+      unblinded_payment_tokens_(unblinded_payment_tokens) {
 }
 
 RedeemToken::~RedeemToken() = default;
 
 void RedeemToken::Redeem(
-    const std::string& creative_instance_id,
+    const AdInfo& info,
     const ConfirmationType confirmation_type) {
-  DCHECK(!creative_instance_id.empty());
-
   BLOG(INFO) << "Redeem";
 
   if (unblinded_tokens_->IsEmpty()) {
@@ -64,9 +66,25 @@ void RedeemToken::Redeem(
   auto token_info = unblinded_tokens_->GetToken();
   unblinded_tokens_->RemoveToken(token_info);
 
-  CreateConfirmation(creative_instance_id, token_info, confirmation_type);
+  CreateConfirmation(info, confirmation_type, token_info);
 
   confirmations_->RefillTokensIfNecessary();
+}
+
+void RedeemToken::Redeem(
+    const std::string& creative_instance_id,
+    const std::string& creative_set_id,
+    const ConfirmationType confirmation_type) {
+  // TODO(https://github.com/brave/brave-browser/issues/8479): Deprecate this
+  // function which is used by |ConfirmAction| and replace code with |ConfirmAd|
+
+  DCHECK(!creative_instance_id.empty());
+  DCHECK(!creative_set_id.empty());
+
+  AdInfo info;
+  info.creative_instance_id = creative_instance_id;
+  info.creative_set_id = creative_set_id;
+  Redeem(info, confirmation_type);
 }
 
 void RedeemToken::Redeem(
@@ -100,9 +118,8 @@ void RedeemToken::CreateConfirmation(
 
   auto method = request.GetMethod();
 
-  auto confirmation_request_dto = request.CreateConfirmationRequestDTO(
-      confirmation.creative_instance_id, confirmation.blinded_payment_token,
-          confirmation.type);
+  auto confirmation_request_dto =
+      request.CreateConfirmationRequestDTO(confirmation);
 
   auto body = request.BuildBody(confirmation_request_dto);
   BLOG(INFO) << "  Body: " << body;
@@ -124,38 +141,34 @@ void RedeemToken::CreateConfirmation(
 }
 
 void RedeemToken::CreateConfirmation(
-    const std::string& creative_instance_id,
-    const TokenInfo& token_info,
-    const ConfirmationType confirmation_type) {
-  DCHECK(!creative_instance_id.empty());
+    const AdInfo& ad_info,
+    const ConfirmationType confirmation_type,
+    const TokenInfo& token_info) {
+  DCHECK(!ad_info.creative_instance_id.empty());
 
-  ConfirmationInfo confirmation;
+  ConfirmationInfo confirmation_info;
 
-  confirmation.id = base::GenerateGUID();
-
-  confirmation.creative_instance_id = creative_instance_id;
-
-  confirmation.type = confirmation_type;
-
-  confirmation.token_info = token_info;
+  confirmation_info.id = base::GenerateGUID();
+  confirmation_info.creative_instance_id = ad_info.creative_instance_id;
+  const std::string tld_plus_1 = GetDomainAndRegistry(GURL(ad_info.target_url),
+      net::registry_controlled_domains::EXCLUDE_PRIVATE_REGISTRIES);
+  confirmation_info.channel_id = tld_plus_1;
+  confirmation_info.type = confirmation_type;
+  confirmation_info.token_info = token_info;
 
   auto payment_tokens = helper::Security::GenerateTokens(1);
-  confirmation.payment_token = payment_tokens.front();
+  confirmation_info.payment_token = payment_tokens.front();
 
   auto blinded_payment_tokens = helper::Security::BlindTokens(payment_tokens);
   auto blinded_payment_token = blinded_payment_tokens.front();
-  confirmation.blinded_payment_token = blinded_payment_token;
+  confirmation_info.blinded_payment_token = blinded_payment_token;
 
   CreateConfirmationRequest request;
+  auto payload = request.CreateConfirmationRequestDTO(confirmation_info);
+  confirmation_info.credential = request.CreateCredential(token_info, payload);
+  confirmation_info.timestamp_in_seconds = Time::NowInSeconds();
 
-  auto payload = request.CreateConfirmationRequestDTO(creative_instance_id,
-      blinded_payment_token, confirmation_type);
-
-  confirmation.credential = request.CreateCredential(token_info, payload);
-
-  confirmation.timestamp_in_seconds = Time::NowInSeconds();
-
-  CreateConfirmation(confirmation);
+  CreateConfirmation(confirmation_info);
 }
 
 void RedeemToken::OnCreateConfirmation(
@@ -184,7 +197,7 @@ void RedeemToken::OnCreateConfirmation(
     OnRedeem(FAILED, confirmation, false);
 
     // Duplicate confirmation so redeem a new token
-    Redeem(confirmation.creative_instance_id, confirmation.type);
+    Redeem(confirmation);
     return;
   }
 
@@ -194,7 +207,8 @@ void RedeemToken::OnCreateConfirmation(
   FetchPaymentToken(new_confirmation);
 }
 
-void RedeemToken::FetchPaymentToken(const ConfirmationInfo& confirmation) {
+void RedeemToken::FetchPaymentToken(
+    const ConfirmationInfo& confirmation) {
   DCHECK(!confirmation.id.empty());
 
   BLOG(INFO) << "FetchPaymentToken";
@@ -295,7 +309,7 @@ void RedeemToken::OnFetchPaymentToken(
     OnRedeem(FAILED, confirmation, false);
 
     // Token is in a bad state so redeem a new token
-    Redeem(confirmation.creative_instance_id, confirmation.type);
+    Redeem(confirmation);
     return;
   }
 
@@ -435,9 +449,9 @@ void RedeemToken::OnRedeem(
 }
 
 bool RedeemToken::Verify(
-    const ConfirmationInfo& confirmation) const {
+    const ConfirmationInfo& info) const {
   std::string credential;
-  base::Base64Decode(confirmation.credential, &credential);
+  base::Base64Decode(info.credential, &credential);
 
   base::Optional<base::Value> value = base::JSONReader::Read(credential);
   if (!value || !value->is_dict()) {
@@ -458,11 +472,9 @@ bool RedeemToken::Verify(
   auto verification_signature = VerificationSignature::decode_base64(signature);
 
   CreateConfirmationRequest request;
-  auto payload = request.CreateConfirmationRequestDTO(
-      confirmation.creative_instance_id, confirmation.blinded_payment_token,
-          confirmation.type);
+  auto payload = request.CreateConfirmationRequestDTO(info);
 
-  auto unblinded_token = confirmation.token_info.unblinded_token;
+  auto unblinded_token = info.token_info.unblinded_token;
   auto verification_key = unblinded_token.derive_verification_key();
 
   return verification_key.verify(verification_signature, payload);

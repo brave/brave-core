@@ -7,10 +7,11 @@
 #define BAT_ADS_INTERNAL_AD_EVENTS_AD_EVENT_VIEWED_H_
 
 #include "bat/ads/internal/ad_events/ad_event.h"
-#include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/ad_notification_info.h"
 
 namespace ads {
+
+class AdsImpl;
+struct AdNotificationInfo;
 
 class AdNotificationEventViewed : public AdEvent<AdNotificationInfo> {
  public:

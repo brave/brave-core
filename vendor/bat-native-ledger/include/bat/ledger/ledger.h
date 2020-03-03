@@ -255,12 +255,18 @@ class LEDGER_EXPORT Ledger {
   virtual void HasSufficientBalanceToReconcile(
       HasSufficientBalanceToReconcileCallback callback) = 0;
 
-  virtual void SetCatalogIssuers(const std::string& info) = 0;
+  virtual void SetCatalogIssuers(
+      const std::string& info) = 0;
 
-  virtual void ConfirmAdNotification(const std::string& info) = 0;
-  virtual void ConfirmAction(const std::string& creative_instance_id,
-                             const std::string& creative_set_id,
-                             const std::string& confirmation_type) = 0;
+  virtual void ConfirmAd(
+      const std::string& json,
+      const std::string& confirmation_type) = 0;
+
+  virtual void ConfirmAction(
+      const std::string& creative_instance_id,
+      const std::string& creative_set_id,
+      const std::string& confirmation_type) = 0;
+
   virtual void GetTransactionHistory(
       GetTransactionHistoryCallback callback) = 0;
 
