@@ -160,7 +160,7 @@ class RewardsDatabaseBrowserTest
     ASSERT_TRUE(base::CreateDirectory(user_data_path));
     const std::string& db_file_name = "publisher_info_db";
 
-    user_data_path = user_data_path.Append(db_file_name);
+    user_data_path = user_data_path.AppendASCII(db_file_name);
     *path = user_data_path;
   }
 
