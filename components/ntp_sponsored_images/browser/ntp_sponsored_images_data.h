@@ -10,17 +10,29 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/values.h"
+#include "ui/gfx/geometry/point.h"
 
 namespace ntp_sponsored_images {
 
+struct Background {
+  base::FilePath image_file;
+  gfx::Point focal_point;
+};
+
 struct NTPSponsoredImagesData {
   NTPSponsoredImagesData();
+  NTPSponsoredImagesData(const std::string& photo_json,
+                         const base::FilePath& base_dir);
   NTPSponsoredImagesData(const NTPSponsoredImagesData& data);
   NTPSponsoredImagesData& operator=(const NTPSponsoredImagesData& data);
   NTPSponsoredImagesData(NTPSponsoredImagesData&& data);
   ~NTPSponsoredImagesData();
 
   bool IsValid() const;
+  // Generate Value with background image at |index|.
+  base::Value GetValueAt(size_t index);
+
   std::string logo_image_url() const;
   std::vector<std::string> wallpaper_image_urls() const;
 
@@ -28,7 +40,7 @@ struct NTPSponsoredImagesData {
   std::string logo_alt_text;
   std::string logo_destination_url;
   std::string logo_company_name;
-  std::vector<base::FilePath> wallpaper_image_files;
+  std::vector<Background> backgrounds;
   std::string url_prefix;
 };
 

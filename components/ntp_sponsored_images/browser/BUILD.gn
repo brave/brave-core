@@ -35,5 +35,6 @@ static_library("browser") {
     "//content/public/browser",
     "//content/public/common",
     "//crypto",
+    "//ui/gfx/geometry",
   ]
 }

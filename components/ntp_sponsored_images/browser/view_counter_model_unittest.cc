@@ -8,7 +8,7 @@
 
 using ntp_sponsored_images::ViewCounterModel;
 
-TEST(ViewCounterTest, BasicTest) {
+TEST(ViewCounterModelTest, BasicTest) {
   ViewCounterModel model;
   model.set_total_image_count(3);
 

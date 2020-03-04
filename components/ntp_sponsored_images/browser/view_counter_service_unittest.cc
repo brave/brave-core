@@ -20,6 +20,7 @@ using ntp_sponsored_images::ViewCounterService;
 using ntp_sponsored_images::NTPSponsoredImagesData;
 using ntp_sponsored_images::NTPSponsoredImagesService;
 
+namespace ntp_sponsored_images {
 
 class NTPSponsoredImagesViewCounterTest : public testing::Test {
  public:
@@ -53,9 +54,9 @@ class NTPSponsoredImagesViewCounterTest : public testing::Test {
   std::unique_ptr<NTPSponsoredImagesData> CreateGoodData() {
     auto data = std::make_unique<NTPSponsoredImagesData>();
     data->url_prefix = "not://real/data/";
-    data->wallpaper_image_files = {
-        base::FilePath(FILE_PATH_LITERAL("fake1.jpg")),
-        base::FilePath(FILE_PATH_LITERAL("fake2.jpg")),
+    data->backgrounds = {
+        { base::FilePath(FILE_PATH_LITERAL("fake1.jpg")), {} },
+        { base::FilePath(FILE_PATH_LITERAL("fake2.jpg")), {} },
     };
     data->logo_alt_text = "Test alt text.";
     data->logo_company_name = "Test";
@@ -104,3 +105,4 @@ TEST_F(NTPSponsoredImagesViewCounterTest, ActiveInitiallyOptedIn) {
   EXPECT_TRUE(view_counter_->IsBrandedWallpaperActive());
 }
 
+}  // namespace ntp_sponsored_images
