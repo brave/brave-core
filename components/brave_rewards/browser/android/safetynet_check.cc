@@ -59,6 +59,7 @@ void SafetyNetCheckRunner::performSafetynetCheck(const std::string& nonce,
     ClientAttestationCallback attest_callback) {
   jobs_.push_back(std::make_unique<SafetyNetCheck>(this));
   if (!jobs_.back()->clientAttestation(nonce, std::move(attest_callback))) {
+    std::move(jobs_.back()->attest_callback_).Run(false, "");
     jobFinished(jobs_.back().get());
   }
 }
