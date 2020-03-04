@@ -32,6 +32,12 @@ AutoplayWhitelistService::~AutoplayWhitelistService() {
 
 bool AutoplayWhitelistService::ShouldAllowAutoplay(const GURL& url) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  // look for exact host match (this is the only way that subdomains
+  // listed in the autoplay whitelist will match)
+  if (url.has_host() &&
+      autoplay_whitelist_client_->matchesHost(url.host().c_str()))
+    return true;
+  // look for match of eTLD+1
   std::string etld_plus_one =
       net::registry_controlled_domains::GetDomainAndRegistry(
           url, net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
