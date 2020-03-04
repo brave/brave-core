@@ -7,8 +7,7 @@ import styled from 'styled-components'
 export const StyledWrapper = styled<{}, 'div'>('div')`
   text-align: center;
   width: 100%;
-  padding: 20px 10px;
-  min-height: 350px;
+  padding: 20px 10px 0;
 `
 
 export const StyledText = styled<{}, 'div'>('div')`

@@ -7,6 +7,7 @@ import styled from 'styled-components'
 interface StyleProps {
   isPanel?: boolean
   fullScreen?: boolean
+  overlay?: boolean
 }
 
 const getBackground = (props: StyleProps) => {
@@ -22,7 +23,9 @@ const getBackground = (props: StyleProps) => {
 }
 
 export const StyledWrapper = styled<StyleProps, 'div'>('div')`
-  position: ${p => p.fullScreen ? 'fixed' : 'absolute'};
+  position: ${p => p.fullScreen
+    ? 'fixed'
+    : p.overlay ? 'absolute' : 'relative'};
   top: 0;
   left: 0;
   z-index: 6;
@@ -32,9 +35,12 @@ export const StyledWrapper = styled<StyleProps, 'div'>('div')`
   flex-wrap: wrap;
   overflow: hidden;
   width: 100%;
-  padding: 0 52px 20px;
+  padding: 0 52px 36px;
   border-radius: 6px;
-  height: ${p => (p.fullScreen || p.isPanel) ? '100%' : 'auto'};
+  min-height: ${p => (p.fullScreen || p.isPanel)
+    ? '100%'
+    : p.overlay ? '710px' : 'auto'};
+  min-width: 373px;
   overflow-y: ${p => p.fullScreen ? 'scroll' : 'hidden'};
   background: ${p => getBackground(p)};
 `
