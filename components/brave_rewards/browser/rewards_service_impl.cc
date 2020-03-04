@@ -3517,4 +3517,9 @@ bool RewardsServiceImpl::IsWalletInitialized() {
   return is_wallet_initialized_;
 }
 
+void RewardsServiceImpl::ForTestingSetTestResponseCallback(
+    GetTestResponseCallback callback) {
+  test_response_callback_ = callback;
+}
+
 }  // namespace brave_rewards
