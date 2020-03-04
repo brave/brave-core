@@ -88,6 +88,12 @@
 /* Skip button to skip onboarding and start using the app. */
 "OnboardingSkipButton" = "スキップ";
 
+/* Description for closing a popover menu that is displayed. */
+"PopoverDefaultClose" = "コンテキストメニューを閉じる";
+
+/* Description for closing the `Brave Shields` popover menu that is displayed. */
+"PopoverShieldsMenuClose" = "Shieldメニューを閉じる";
+
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "復元されたブックマーク";
 

@@ -88,6 +88,12 @@
 /* Skip button to skip onboarding and start using the app. */
 "OnboardingSkipButton" = "跳過";
 
+/* Description for closing a popover menu that is displayed. */
+"PopoverDefaultClose" = "關閉內容選單";
+
+/* Description for closing the `Brave Shields` popover menu that is displayed. */
+"PopoverShieldsMenuClose" = "關閉 Shields 選單";
+
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "恢復的書籤";
 

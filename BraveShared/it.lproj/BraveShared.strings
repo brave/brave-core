@@ -595,9 +595,6 @@
 /* Sync Alert */
 "NotEnoughWordsTitle" = "Parole non sufficienti";
 
-/* The placeholder says 'hide sponsored images'. So full sentence goes like: 'You can also choose to hide sponsored images.' */
-"ntp.chooseToHideSponsoredImages" = "Puoi anche scegliere di %@.";
-
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "Riscatta i miei premi";
 
@@ -608,22 +605,28 @@
 "ntp.earnTokensByViewingAds" = "Guadagna dei token visualizzando annunci che rispettano la privacy.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "Fatti ricompensare per la visualizzazione di questa immagine di sfondo. Attiva Brave Ads per ricevere la parte che ti spetta.";
+"ntp.getPaidForThisImageTurnAds" = "Ottieni dei token per la visualizzazione di questa immagine. Attiva Brave Ads per ricevere la parte che ti spetta.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "Fatti ricompensare per la visualizzazione di questa immagine di sfondo. Attiva Brave Rewards per ricevere la parte che ti spetta.";
+"ntp.getPaidForThisImageTurnRewards" = "Ottieni dei token per la visualizzazione di questa immagine. Attiva Brave Ads per ricevere la parte che ti spetta.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidToSeeThisImage" = "Fatti ricompensare per la visualizzazione di questa immagine di sfondo.";
+"ntp.getPaidToSeeThisImage" = "Ottieni dei token per la visualizzazione di questa immagine.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Continua così!";
 
-/* This sentence is not capitalized on purpose, it is a part of a bigger sentence which goes like this: 'You can also choose to hide sponsored images.' */
-"ntp.hideSponsoredImages" = "nascondere le immagini sponsorizzate";
+/* No comment provided by engineer. */
+"ntp.hideSponsoredImages" = "Nascondi le immagini sponsorizzate";
 
-/* The placeholder says 'Learn more'. So full sentence goes like: 'Learn more about sponsored images in Brave Rewards.' */
-"ntp.learnMoreAboutBrandedImages" = "%@ sulle immagini sponsorizzate in Brave Rewards";
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutBrandedImages" = "Per ogni immagini sponsorizzata che visualizzi, ottieni il 70% dei ricavi in token. Con Brave Ads sai sempre quali annunci vedi.";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutRewards" = "Scopri di più su Brave Rewards";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutSI" = "Scopri di più sulle immagini sponsorizzate";
 
 /* No comment provided by engineer. */
 "ntp.supportWebCreatorsWithTokens" = "Puoi sostenere con dei token i creatori di contenuti web.";
@@ -632,13 +635,13 @@
 "ntp.turnOnBraveAds" = "Attiva Brave Ads";
 
 /* No comment provided by engineer. */
-"ntp.turnOnBraveRewards" = "Attiva Rewards";
+"ntp.turnOnBraveRewards" = "Attiva Brave Rewards";
 
-/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turnin Rewards, you agree to the Terms of Service'. */
+/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Attivando Rewards, accetti %@.";
 
 /* No comment provided by engineer. */
-"ntp.youArePaidToSeeThisImage" = "Riceverai del denaro per la visualizzazione di questa immagine di sfondo.";
+"ntp.youArePaidToSeeThisImage" = "Con la visualizzazione di questa immagine stai guadagnando dei token.";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Apri tutti (%i)";

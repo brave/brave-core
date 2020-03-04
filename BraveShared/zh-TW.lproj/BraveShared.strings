@@ -595,9 +595,6 @@
 /* Sync Alert */
 "NotEnoughWordsTitle" = "沒有足够詞語";
 
-/* The placeholder says 'hide sponsored images'. So full sentence goes like: 'You can also choose to hide sponsored images.' */
-"ntp.chooseToHideSponsoredImages" = "您也可選擇 %@。";
-
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "領取我的獎勵";
 
@@ -608,22 +605,28 @@
 "ntp.earnTokensByViewingAds" = "觀看尊重隱私的廣告以賺取代幣。";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "查看此背景圖片並獲得報酬。 啟用 Brave Ads 以領取您的部份。";
+"ntp.getPaidForThisImageTurnAds" = "查看此圖片即可賺取代幣。快啟用 Brave Ads 領取您的報酬。";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "查看此背景圖片並獲得報酬。 啟用 Brave Rewards 以領取您的部份。";
+"ntp.getPaidForThisImageTurnRewards" = "查看此圖片即可賺取代幣。快啟用 Brave Rewards 領取您的報酬。";
 
 /* No comment provided by engineer. */
-"ntp.getPaidToSeeThisImage" = "查看此背景圖片並獲得報酬。";
+"ntp.getPaidToSeeThisImage" = "查看此圖片即可賺取代幣。";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "做得很好！";
 
-/* This sentence is not capitalized on purpose, it is a part of a bigger sentence which goes like this: 'You can also choose to hide sponsored images.' */
+/* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "隱藏贊助圖片";
 
-/* The placeholder says 'Learn more'. So full sentence goes like: 'Learn more about sponsored images in Brave Rewards.' */
-"ntp.learnMoreAboutBrandedImages" = "%@ 關於 Brave Rewards 中的贊助圖片";
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutBrandedImages" = "每查看一張贊助圖片，就能獲得相當於營收 70% 的代幣。使用 Brave Ads，畫面所顯示的廣告全由您掌控。";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutRewards" = "深入了解 Brave Rewards";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutSI" = "深入了解贊助圖片";
 
 /* No comment provided by engineer. */
 "ntp.supportWebCreatorsWithTokens" = "您可以用代幣來贊助網路創作者。";
@@ -632,13 +635,13 @@
 "ntp.turnOnBraveAds" = "啟用 Brave Ads";
 
 /* No comment provided by engineer. */
-"ntp.turnOnBraveRewards" = "啟用 Rewards";
+"ntp.turnOnBraveRewards" = "啟用 Brave Rewards";
 
-/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turnin Rewards, you agree to the Terms of Service'. */
+/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "開啟「獎勵」即表示您同意%@。";
 
 /* No comment provided by engineer. */
-"ntp.youArePaidToSeeThisImage" = "您查看此背景圖片時將獲得報酬。";
+"ntp.youArePaidToSeeThisImage" = "查看此圖片立即賺取代幣。";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "開啟全部 (%i)";
@@ -977,13 +980,13 @@
 "SyncAddDeviceScan" = "Sync Chain 二維碼";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "在第二部行動裝置上導向至設定面板中的同步並點選「掃描同步代碼」按鈕。使用相機掃描下方的 QR 碼。\n\n將此代碼視為密碼。如某人取得此密碼，將可讀取並修改您同步的資料。";
+"SyncAddDeviceScanDescription" = "在第二部行動裝置上，瀏覽到「設定」面板中的「同步」，並點選「掃描同步代碼」按鈕。使用相機掃描下方的 QR 碼。\n\n不妨將此代碼視為密碼。要是他人取得此代碼，將能讀取及修改您同步的資料。";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "輸入同步代碼";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "在裝置上導向至設定面板中的同步並點選「%@」按鈕。輸入下方顯示的同步鏈代碼字組。\n\n將此代碼視為密碼。如某人取得此密碼，將可讀取並修改您同步的資料。";
+"SyncAddDeviceWordsDescription" = "在裝置上，瀏覽到「設定」面板中的「同步」，並點選「%@」按鈕。輸入下方顯示的同步鏈代碼字組。\n\n不妨將此代碼視為密碼。要是他人取得此代碼，將能讀取及修改您同步的資料。";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "輸入代碼字組";

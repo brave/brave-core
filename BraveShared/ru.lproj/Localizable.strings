@@ -88,6 +88,12 @@
 /* Skip button to skip onboarding and start using the app. */
 "OnboardingSkipButton" = "Пропустить";
 
+/* Description for closing a popover menu that is displayed. */
+"PopoverDefaultClose" = "Закрыть контекстное меню";
+
+/* Description for closing the `Brave Shields` popover menu that is displayed. */
+"PopoverShieldsMenuClose" = "Закрыть меню «Щиты»";
+
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "Восстановленные закладки";
 
