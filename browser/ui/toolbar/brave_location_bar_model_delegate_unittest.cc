@@ -23,6 +23,20 @@ TEST_F(BraveLocationBarModelDelegateTest, ResolvesEthereumRemoteClient) {
   BraveLocationBarModelDelegate::FormattedStringFromURL(url, &formatted_url);
   ASSERT_STREQ(base::UTF16ToASCII(formatted_url).c_str(), "brave://wallet");
 }
+TEST_F(BraveLocationBarModelDelegateTest,
+    ResolvesEthereumRemoteClientPhishingRoute) {
+  GURL url(ethereum_remote_client_phishing_url);
+  base::string16 formatted_url = base::UTF8ToUTF16(url.spec());
+  BraveLocationBarModelDelegate::FormattedStringFromURL(url, &formatted_url);
+  ASSERT_STREQ(base::UTF16ToASCII(formatted_url).c_str(), "brave://wallet");
+}
+TEST_F(BraveLocationBarModelDelegateTest,
+    ResolvesEthereumRemoteClientENSRoute) {
+  GURL url(ethereum_remote_client_ens_redirect_url);
+  base::string16 formatted_url = base::UTF8ToUTF16(url.spec());
+  BraveLocationBarModelDelegate::FormattedStringFromURL(url, &formatted_url);
+  ASSERT_STREQ(base::UTF16ToASCII(formatted_url).c_str(), "brave://wallet");
+}
 #endif
 
 TEST_F(BraveLocationBarModelDelegateTest, ResolvesChromeSchemeToBrave) {

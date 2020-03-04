@@ -38,6 +38,16 @@ void BraveLocationBarModelDelegate::FormattedStringFromURL(const GURL& url,
         0,
         base::UTF8ToUTF16(ethereum_remote_client_base_url),
         base::UTF8ToUTF16("brave://wallet"));
+    base::ReplaceFirstSubstringAfterOffset(
+        new_formatted_url,
+        0,
+        base::UTF8ToUTF16(ethereum_remote_client_phishing_url),
+        base::UTF8ToUTF16("brave://wallet"));
+    base::ReplaceFirstSubstringAfterOffset(
+        new_formatted_url,
+        0,
+        base::UTF8ToUTF16(ethereum_remote_client_ens_redirect_url),
+        base::UTF8ToUTF16("brave://wallet"));
   }
 #endif
 }
