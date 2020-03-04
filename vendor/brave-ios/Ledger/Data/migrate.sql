@@ -5,7 +5,6 @@ CREATE TABLE contribution_info(publisher_id LONGVARCHAR,probi TEXT "0"  NOT NULL
 CREATE TABLE contribution_queue (contribution_queue_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,type INTEGER NOT NULL,amount DOUBLE NOT NULL,partial INTEGER NOT NULL DEFAULT 0,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL);
 CREATE TABLE contribution_queue_publishers (contribution_queue_id INTEGER NOT NULL,publisher_key TEXT NOT NULL,amount_percent DOUBLE NOT NULL,CONSTRAINT fk_contribution_queue_publishers_publisher_key     FOREIGN KEY (publisher_key)     REFERENCES publisher_info (publisher_id),CONSTRAINT fk_contribution_queue_publishers_id     FOREIGN KEY (contribution_queue_id)     REFERENCES contribution_queue (contribution_queue_id)     ON DELETE CASCADE);
 CREATE TABLE media_publisher_info(media_key TEXT NOT NULL PRIMARY KEY UNIQUE,publisher_id LONGVARCHAR NOT NULL,CONSTRAINT fk_media_publisher_info_publisher_id    FOREIGN KEY (publisher_id)    REFERENCES publisher_info (publisher_id)    ON DELETE CASCADE);
-CREATE TABLE meta(key LONGVARCHAR NOT NULL UNIQUE PRIMARY KEY, value LONGVARCHAR);
 CREATE TABLE pending_contribution(publisher_id LONGVARCHAR NOT NULL,amount DOUBLE DEFAULT 0 NOT NULL,added_date INTEGER DEFAULT 0 NOT NULL,viewing_id LONGVARCHAR NOT NULL,type INTEGER NOT NULL,CONSTRAINT fk_pending_contribution_publisher_id    FOREIGN KEY (publisher_id)    REFERENCES publisher_info (publisher_id)    ON DELETE CASCADE);
 CREATE TABLE promotion (promotion_id TEXT NOT NULL,version INTEGER NOT NULL,type INTEGER NOT NULL,public_keys TEXT NOT NULL,suggestions INTEGER NOT NULL DEFAULT 0,approximate_value DOUBLE NOT NULL DEFAULT 0,status INTEGER NOT NULL DEFAULT 0,expires_at TIMESTAMP NOT NULL,created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,PRIMARY KEY (promotion_id));
 CREATE TABLE promotion_creds (promotion_id TEXT UNIQUE NOT NULL,tokens TEXT NOT NULL,blinded_creds TEXT NOT NULL,signed_creds TEXT,public_key TEXT,batch_proof TEXT,claim_id TEXT,CONSTRAINT fk_promotion_creds_promotion_id FOREIGN KEY (promotion_id) REFERENCES promotion (promotion_id) ON DELETE CASCADE);
@@ -30,10 +29,6 @@ CREATE INDEX server_publisher_banner_publisher_key_index ON server_publisher_ban
 CREATE INDEX server_publisher_info_publisher_key_index ON server_publisher_info (publisher_key);
 CREATE INDEX server_publisher_links_publisher_key_index ON server_publisher_links (publisher_key);
 CREATE INDEX unblinded_tokens_token_id_index ON unblinded_tokens (token_id);
-
-INSERT INTO "meta" VALUES ('mmap_status', '-1');
-INSERT INTO "meta" VALUES ('last_compatible_version', '1');
-INSERT INTO "meta" VALUES ('version', '10');
 
 -- Migrate data into tables
 

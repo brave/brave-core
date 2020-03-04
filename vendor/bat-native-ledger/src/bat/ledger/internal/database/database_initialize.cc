@@ -9,6 +9,7 @@
 #include "bat/ledger/internal/database/database_migration.h"
 #include "bat/ledger/internal/database/database_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/state_keys.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -85,6 +86,8 @@ void DatabaseInitialize::ExecuteCreateScript(
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
+
+  ledger_->ClearState(ledger::kStateServerPublisherListStamp);
 
   auto script_callback = std::bind(&DatabaseInitialize::OnExecuteCreateScript,
       this,

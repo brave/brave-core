@@ -27,8 +27,6 @@ extern BATBraveGeneralLedgerNotificationID const BATBraveGeneralLedgerNotificati
 NS_SWIFT_NAME(BraveLedger)
 @interface BATBraveLedger : NSObject
 
-+ (NSString *)migrateString;
-
 @property (nonatomic, weak) BATBraveAds *ads;
 
 @property (nonatomic, copy, nullable) BATFaviconFetcher faviconFetcher;
@@ -38,7 +36,23 @@ NS_SWIFT_NAME(BraveLedger)
 
 - (instancetype)init NS_UNAVAILABLE;
 
+#pragma mark - Initialization
+
+/// Whether or not the ledger service has been initialized already
 @property (nonatomic, readonly, getter=isInitialized) BOOL initialized;
+
+/// Whether or not the ledger service is currently initializing
+@property (nonatomic, readonly, getter=isInitializing) BOOL initializing;
+
+/// The result when initializing the ledger service. Should be
+/// `BATResultLedgerOk` if `initialized` is `true`
+///
+/// If this is not `BATResultLedgerOk`, rewards is not usable for the user
+@property (nonatomic, readonly) BATResult initializationResult;
+
+/// Whether or not data migration failed when initializing and the user should
+/// be notified.
+@property (nonatomic, readonly) BOOL dataMigrationFailed;
 
 #pragma mark - Observers
 
@@ -100,7 +114,7 @@ NS_SWIFT_NAME(BraveLedger)
 - (void)hasSufficientBalanceToReconcile:(void (^)(BOOL sufficient))completion;
 
 /// Returns reserved amount of pending contributions to publishers.
-@property (nonatomic, readonly) double reservedAmount;
+- (void)pendingContributionsTotal:(void (^)(double amount))completion NS_SWIFT_NAME(pendingContributionsTotal(completion:));
 
 #pragma mark - User Wallets
 
@@ -147,8 +161,6 @@ NS_SWIFT_NAME(BraveLedger)
 
 /// Restore all sites which had been previously excluded
 - (void)restoreAllExcludedPublishers;
-
-- (void)numberOfExcludedPublishers:(void (^)(NSUInteger count))completion;
 
 /// Get the publisher banner given some publisher key
 ///
@@ -212,7 +224,7 @@ NS_SWIFT_NAME(BraveLedger)
 - (void)removePendingContribution:(BATPendingContributionInfo *)info
                        completion:(void (^)(BATResult result))completion;
 
-- (void)deleteAllPendingContributions:(void (^)(BATResult result))completion;
+- (void)removeAllPendingContributions:(void (^)(BATResult result))completion;
 
 #pragma mark - History
 

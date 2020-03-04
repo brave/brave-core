@@ -23,6 +23,7 @@
 #import <objc/runtime.h>
 
 #import "BATLedgerDatabase.h"
+#import "DataController.h"
 
 #import "base/time/time.h"
 #import "url/gurl.h"
@@ -76,6 +77,16 @@ const std::map<std::string, uint64_t> kUInt64Options = {
 };
 /// ---
 
+/// When initializing the ledger, what should we do when migrating
+typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
+  /// Attempt to migrate all rewards data if needed
+  BATLedgerDatabaseMigrationTypeDefault = 0,
+  /// Only migrate unblinded tokens if needed
+  BATLedgerDatabaseMigrationTypeTokensOnly,
+  /// Do not migrate any data (essentially resetting rewards activity & balance)
+  BATLedgerDatabaseMigrationTypeNone
+};
+
 @interface BATBraveLedger () <NativeLedgerClientBridge> {
   NativeLedgerClient *ledgerClient;
   ledger::Ledger *ledger;
@@ -96,8 +107,12 @@ const std::map<std::string, uint64_t> kUInt64Options = {
 @property (nonatomic) NSHashTable<BATBraveLedgerObserver *> *observers;
 
 @property (nonatomic, getter=isInitialized) BOOL initialized;
+@property (nonatomic) BOOL initializing;
+@property (nonatomic) BOOL dataMigrationFailed;
+@property (nonatomic) BATResult initializationResult;
 @property (nonatomic, getter=isLoadingPublisherList) BOOL loadingPublisherList;
 @property (nonatomic, getter=isInitializingWallet) BOOL initializingWallet;
+@property (nonatomic) BATLedgerDatabaseMigrationType migrationType;
 
 @property (nonatomic) dispatch_queue_t databaseQueue;
 
@@ -113,11 +128,6 @@ const std::map<std::string, uint64_t> kUInt64Options = {
 
 @implementation BATBraveLedger
 
-+ (NSString *)migrateString
-{
-  return [BATLedgerDatabase migrateCoreDataToSQLTransaction];
-}
-
 - (instancetype)initWithStateStoragePath:(NSString *)path
 {
   if ((self = [super init])) {
@@ -129,7 +139,8 @@ const std::map<std::string, uint64_t> kUInt64Options = {
     self.mFinishedPromotions = [[NSMutableArray alloc] init];
     self.mExternalWallets = [[NSMutableDictionary alloc] init];
     self.observers = [NSHashTable weakObjectsHashTable];
-
+    rewardsDatabase = nullptr;
+    
     self.prefs = [[NSMutableDictionary alloc] initWithContentsOfFile:[self prefsPath]];
     if (!self.prefs) {
       self.prefs = [[NSMutableDictionary alloc] init];
@@ -145,25 +156,18 @@ const std::map<std::string, uint64_t> kUInt64Options = {
     
     self.databaseQueue = dispatch_queue_create("com.rewards.db-transactions", DISPATCH_QUEUE_SERIAL);
     
-    const auto* dbPath = [self.storagePath stringByAppendingPathComponent:@"Rewards.db"].UTF8String;
+    const auto* dbPath = [self rewardsDatabasePath].UTF8String;
     rewardsDatabase = new brave_rewards::RewardsDatabase(base::FilePath(dbPath));
 
     ledgerClient = new NativeLedgerClient(self);
     ledger = ledger::Ledger::CreateInstance(ledgerClient);
 
-    BOOL needsMigration = ![self.prefs[kMigrationSucceeded] boolValue];
-    ledger->Initialize(needsMigration, ^(ledger::Result result){
-      self.initialized = result == ledger::Result::LEDGER_OK;
-      if (self.initialized && needsMigration) {
-        self.prefs[kMigrationSucceeded] = @(YES);
-        [self savePrefs];
-      }
-      for (BATBraveLedgerObserver *observer in [self.observers copy]) {
-        if (observer.walletInitalized) {
-          observer.walletInitalized(static_cast<BATResult>(result));
-        }
-      }
-    });
+    self.migrationType = BATLedgerDatabaseMigrationTypeDefault;
+    BOOL needsMigration = [self databaseNeedsMigration];
+    if (needsMigration) {
+      [BATLedgerDatabase deleteCoreDataServerPublisherList:nil];
+    }
+    [self initializeLedgerService:needsMigration];
     
     // Add notifications for standard app foreground/background
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -190,9 +194,135 @@ const std::map<std::string, uint64_t> kUInt64Options = {
   delete rewardsDatabase;
 }
 
+- (void)initializeLedgerService:(BOOL)executeMigrateScript
+{
+  if (self.initialized || self.initializing) {
+    return;
+  }
+  self.initializing = YES;
+  
+  BLOG(ledger::LogLevel::LOG_DEBUG) << "DB: Migrate from CoreData? " << (executeMigrateScript ? "YES" : "NO") << std::endl;
+  ledger->Initialize(executeMigrateScript, ^(ledger::Result result){
+    self.initialized = result == ledger::Result::LEDGER_OK;
+    self.initializing = NO;
+    if (self.initialized) {
+      self.prefs[kMigrationSucceeded] = @(YES);
+      [self savePrefs];
+    } else {
+      BLOG(ledger::LogLevel::LOG_ERROR) << "Ledger Initialization Failed with error: " << std::to_string(static_cast<int>(result)) << std::endl;
+      if (result == ledger::Result::DATABASE_INIT_FAILED) {
+        // Failed to migrate data...
+        switch (self.migrationType) {
+          case BATLedgerDatabaseMigrationTypeDefault:
+            BLOG(ledger::LogLevel::LOG_ERROR) << "DB: Full migration failed, attempting BAT only migration." << std::endl;
+            self.dataMigrationFailed = YES;
+            self.migrationType = BATLedgerDatabaseMigrationTypeTokensOnly;
+            [self resetRewardsDatabase];
+            // attempt re-initialize without other data
+            [self initializeLedgerService:YES];
+            return;
+          case BATLedgerDatabaseMigrationTypeTokensOnly:
+            BLOG(ledger::LogLevel::LOG_ERROR) << "DB: BAT only migration failed. Initializing without migration." << std::endl;
+            self.dataMigrationFailed = YES;
+            self.migrationType = BATLedgerDatabaseMigrationTypeNone;
+            [self resetRewardsDatabase];
+            // attempt initialize without migrating at all
+            [self initializeLedgerService:NO];
+            return;
+          default:
+            break;
+        }
+      }
+    }
+    self.initializationResult = static_cast<BATResult>(result);
+    for (BATBraveLedgerObserver *observer in [self.observers copy]) {
+      if (observer.walletInitalized) {
+        observer.walletInitalized(self.initializationResult);
+      }
+    }
+  });
+}
+
+- (BOOL)databaseNeedsMigration
+{
+  // Check if we even have a DB to migrate
+  if (!DataController.defaultStoreExists) {
+    return NO;
+  }
+  // Have we set the pref saying ledger has alaready initialized successfully?
+  if ([self.prefs[kMigrationSucceeded] boolValue]) {
+    return NO;
+  }
+  // Can we even check the DB
+  if (!rewardsDatabase) {
+    return YES;
+  }
+  // Check integrity of the new DB. Safe to assume if `publisher_info` table
+  // exists, then all the others do as well.
+  auto transaction = ledger::DBTransaction::New();
+  const auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::READ;
+  command->command = "SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'publisher_info';";
+  command->record_bindings = { ledger::DBCommand::RecordBindingType::STRING_TYPE };
+  transaction->commands.push_back(command->Clone());
+  
+  auto response = ledger::DBCommandResponse::New();
+  rewardsDatabase->RunTransaction(std::move(transaction), response.get());
+  
+  // Failed to even run the check, tables probably don't exist,
+  // restart from scratch
+  if (response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    [self resetRewardsDatabase];
+    return YES;
+  }
+  
+  const auto record = std::move(response->result->get_records());
+  // sqlite_master table exists, but the publisher_info table doesn't exist?
+  // Restart from scratch
+  if (record.empty() || record.front()->fields.empty()) {
+    [self resetRewardsDatabase];
+    return YES;
+  }
+  
+  // Tables exist so migration has happened already, but somehow the flag wasn't
+  // saved.
+  self.prefs[kMigrationSucceeded] = @(YES);
+  [self savePrefs];
+  
+  return NO;
+}
+
+- (NSString *)rewardsDatabasePath
+{
+  return [self.storagePath stringByAppendingPathComponent:@"Rewards.db"];
+}
+
+- (void)resetRewardsDatabase
+{
+  delete rewardsDatabase;
+  const auto dbPath = [self rewardsDatabasePath];
+  [NSFileManager.defaultManager removeItemAtPath:dbPath error:nil];
+  [NSFileManager.defaultManager removeItemAtPath:[dbPath stringByAppendingString:@"-journal"] error:nil];
+  rewardsDatabase = new brave_rewards::RewardsDatabase(base::FilePath(dbPath.UTF8String));
+}
+
 - (void)getCreateScript:(ledger::GetCreateScriptCallback)callback
 {
-  callback([BATLedgerDatabase migrateCoreDataToSQLTransaction].UTF8String, 10);
+  NSString *migrationScript = @"";
+  switch (self.migrationType) {
+    case BATLedgerDatabaseMigrationTypeNone:
+      // We shouldn't be migrating, therefore doesn't make sense that
+      // `getCreateScript` was called
+      BLOG(ledger::LogLevel::LOG_ERROR) << "DB: Attempted CoreData migration with an empty migration script" << std::endl;
+      break;
+    case BATLedgerDatabaseMigrationTypeTokensOnly:
+      migrationScript = [BATLedgerDatabase migrateCoreDataBATOnlyToSQLTransaction];
+      break;
+    case BATLedgerDatabaseMigrationTypeDefault:
+    default:
+      migrationScript = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
+  }
+  callback(migrationScript.UTF8String, 10);
 }
 
 - (NSString *)randomStatePath
@@ -376,15 +506,18 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   );
 }
 
-- (double)reservedAmount {
-  return [BATLedgerDatabase reservedAmountForPendingContributions];
-}
-
 BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributionAmount)
 
 - (void)hasSufficientBalanceToReconcile:(void (^)(BOOL))completion
 {
   ledger->HasSufficientBalanceToReconcile(completion);
+}
+
+- (void)pendingContributionsTotal:(void (^)(double amount))completion
+{
+  ledger->GetPendingContributionsTotal(^(double total){
+    completion(total);
+  });
 }
 
 #pragma mark - User Wallets
@@ -623,13 +756,6 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
                                       static_cast<BATPublisherExclude>(ledger::PublisherExclude::ALL));
       }
     }
-  });
-}
-
-- (void)numberOfExcludedPublishers:(void (^)(NSUInteger count))completion
-{
-  ledger->GetExcludedList(^(ledger::PublisherInfoList list) {
-    completion(static_cast<NSUInteger>(list.size()));
   });
 }
 
@@ -887,10 +1013,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   });
 }
 
-// TODO: After DB migration, rename to `removeAll` instead of `deleteAll`
-// Reason being that right now ledger client already has a method called
-// `removeAllPendingContributions`
-- (void)deleteAllPendingContributions:(void (^)(BATResult result))completion
+- (void)removeAllPendingContributions:(void (^)(BATResult result))completion
 {
   ledger->RemoveAllPendingContributions(^(const ledger::Result result){
     completion(static_cast<BATResult>(result));
@@ -1814,7 +1937,11 @@ BATLedgerBridge(BOOL,
 
 - (void)reconcileStampReset
 {
-  // TODO please implement
+  for (BATBraveLedgerObserver *observer in [self.observers copy]) {
+    if (observer.reconcileStampReset) {
+      observer.reconcileStampReset();
+    }
+  }
 }
 
 - (void)runDBTransaction:(ledger::DBTransactionPtr)transaction
@@ -1838,7 +1965,11 @@ BATLedgerBridge(BOOL,
 
 - (void)pendingContributionSaved:(const ledger::Result)result
 {
-  // TODO please implement
+  for (BATBraveLedgerObserver *observer in [self.observers copy]) {
+    if (observer.pendingContributionAdded) {
+      observer.pendingContributionAdded();
+    }
+  }
 }
 
 @end

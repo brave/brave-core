@@ -26,7 +26,7 @@ config("internal_config") {
     "Ledger",
     "Ledger/Generated",
     "Ledger/Data",
-    "Ledger/Data/CoreDataGenerated/Model",
+    "Ledger/Data/Model",
     "Ledger/Models",
     "Shared",
     "objc-gen",

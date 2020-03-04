@@ -5,11 +5,11 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-typedef void (^DataControllerCompletion)(NSError * _Nullable error);
-
 NS_ASSUME_NONNULL_BEGIN
 
 @interface DataController : NSObject
+
++ (BOOL)defaultStoreExists;
 
 @property (nonatomic, class) DataController *shared;
 
@@ -20,20 +20,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)addPersistentStoreForContainer:(NSPersistentContainer *)container;
 
-@property (nonatomic, readonly) BOOL storeExists;
-
 @property (nonatomic, readonly) NSPersistentContainer *container;
 
 /// Context object also allows us access to all persistent container data if needed.
 + (NSManagedObjectContext *)viewContext;
 
 + (NSManagedObjectContext *)newBackgroundContext;
-
-+ (void)save:(NSManagedObjectContext *)context;
-
-- (void)performOnContext:(nullable NSManagedObjectContext *)context task:(void (^)(NSManagedObjectContext *))task;
-- (void)performOnContext:(nullable NSManagedObjectContext *)context task:(void (^)(NSManagedObjectContext *))task completion:(nullable DataControllerCompletion)completion;
-- (void)performOnContext:(nullable NSManagedObjectContext *)context save:(BOOL)save task:(void (^)(NSManagedObjectContext *))task completion:(nullable DataControllerCompletion)completion;
 
 @end
 
