@@ -227,7 +227,6 @@ class AdsServiceImpl : public AdsService,
 
   void OnGetAdConversions(
       const ads::OnGetAdConversionsCallback& callback,
-      const std::string& url,
       const ads::AdConversionList& ad_conversions);
 
   void OnGetAdsHistory(
@@ -437,7 +436,6 @@ class AdsServiceImpl : public AdsService,
       ads::OnGetCreativeAdNotificationsCallback callback) override;
 
   void GetAdConversions(
-      const std::string& url,
       ads::OnGetAdConversionsCallback callback) override;
 
   void EventLog(

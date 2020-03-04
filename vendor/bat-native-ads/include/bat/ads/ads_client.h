@@ -53,7 +53,7 @@ using OnGetCreativeAdNotificationsCallback = std::function<void(const Result,
     const std::vector<std::string>&, const CreativeAdNotificationList&)>;
 
 using OnGetAdConversionsCallback = std::function<void(const Result,
-    const std::string&, const AdConversionList&)>;
+    const AdConversionList&)>;
 
 using OnLoadSampleBundleCallback = std::function<void(const Result,
     const std::string&)>;
@@ -240,13 +240,11 @@ class ADS_EXPORT AdsClient {
       const std::vector<std::string>& categories,
       OnGetCreativeAdNotificationsCallback callback) = 0;
 
-  // Should fetch all ad conversions for the specified |url| from the
-  // previously persisted bundle state. The callback takes 3 arguments —
-  // |Result| should be set to |SUCCESS| if successful; otherwise, should be set
-  // to |FAILED|. |url| should contain the url. |ad_conversions| should
+  // Should fetch all ad conversions from the previously persisted bundle state.
+  // The callback takes 2 arguments — |Result| should be set to |SUCCESS| if
+  // successful; otherwise, should be set to |FAILED|. |ad_conversions| should
   // contain an array of ad conversions
   virtual void GetAdConversions(
-      const std::string& url,
       OnGetAdConversionsCallback callback) = 0;
 
   // Should log an event

@@ -490,7 +490,6 @@ bool BundleStateDatabase::GetCreativeAdNotifications(
 }
 
 bool BundleStateDatabase::GetAdConversions(
-    const std::string& url,
     ads::AdConversionList* ad_conversions) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -502,7 +501,8 @@ bool BundleStateDatabase::GetAdConversions(
   const std::string sql =
       "SELECT "
           "ac.creative_set_id, "
-          "ac.type, ac.url_pattern, "
+          "ac.type, "
+          "ac.url_pattern, "
           "ac.observation_window "
       "FROM ad_conversions AS ac";
 

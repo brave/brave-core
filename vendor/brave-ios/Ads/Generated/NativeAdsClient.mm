@@ -127,8 +127,8 @@ void NativeAdsClient::GetCreativeAdNotifications(const std::vector<std::string> 
   [bridge_ getCreativeAdNotifications:categories callback:callback];
 }
 
-void NativeAdsClient::GetAdConversions(const std::string & url, ads::OnGetAdConversionsCallback callback) {
-  [bridge_ getAdConversions:url callback:callback];
+void NativeAdsClient::GetAdConversions(ads::OnGetAdConversionsCallback callback) {
+  [bridge_ getAdConversions:callback];
 }
 
 void NativeAdsClient::EventLog(const std::string & json) const {

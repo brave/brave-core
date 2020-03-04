@@ -501,7 +501,6 @@ void AdsClientMojoBridge::GetCreativeAdNotifications(
 void AdsClientMojoBridge::OnGetAdConversions(
     CallbackHolder<GetAdConversionsCallback>* holder,
     const ads::Result result,
-    const std::string& url,
     const ads::AdConversionList& ad_conversions) {
   DCHECK(holder);
 
@@ -512,21 +511,20 @@ void AdsClientMojoBridge::OnGetAdConversions(
       json_list.push_back(ad_conversion.ToJson());
     }
 
-    std::move(holder->get()).Run(ToMojomResult(result), url, json_list);
+    std::move(holder->get()).Run(ToMojomResult(result), json_list);
   }
 
   delete holder;
 }
 
 void AdsClientMojoBridge::GetAdConversions(
-    const std::string& url,
     GetAdConversionsCallback callback) {
   // this gets deleted in OnGetAdConversions
   auto* holder = new CallbackHolder<GetAdConversionsCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ads_client_->GetAdConversions(url,
-      std::bind(AdsClientMojoBridge::OnGetAdConversions, holder, _1, _2, _3));
+  ads_client_->GetAdConversions(
+      std::bind(AdsClientMojoBridge::OnGetAdConversions, holder, _1, _2));
 }
 
 }  // namespace bat_ads
