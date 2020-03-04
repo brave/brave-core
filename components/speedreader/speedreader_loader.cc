@@ -255,8 +255,7 @@ void SpeedReaderURLLoader::MaybeLaunchSpeedreader() {
               if (!speedreader.ReadableURL(url.spec())) {
                 return std::string();
               }
-              auto rewriter = speedreader.RewriterNew(url.spec(),
-                speedreader::RewriterType::RewriterHeuristics);
+              auto rewriter = speedreader.RewriterNew(url.spec());
               int written = rewriter->Write(data.c_str(), data.length());
               // Error occurred
               if (written != 0) {

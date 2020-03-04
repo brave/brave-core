@@ -1,5 +1,6 @@
 use super::*;
 use libc::c_void;
+use std::panic::{self, AssertUnwindSafe};
 
 // NOTE: we use `ExternOutputSink` proxy type, for extern handler function
 struct ExternOutputSink {
@@ -162,7 +163,20 @@ pub extern "C" fn speedreader_rewriter_write(
     let chunk = to_bytes!(chunk, chunk_len);
     let rewriter: &mut Box<dyn SpeedReaderProcessor> = leak_void_to_box!(rewriter);
 
-    unwrap_or_ret_err_code! { rewriter.write(chunk) };
+    let mut rewriter = AssertUnwindSafe(rewriter);
+
+    let res = panic::catch_unwind(move || {
+      rewriter.write(chunk)
+    });
+
+    let res = match res {
+      Ok(v) => v,
+      Err(err) => {
+          // crate::errors::LAST_ERROR.with(|cell| *cell.borrow_mut() = Some(err.into()));
+          return -1;
+      }
+    };
+    unwrap_or_ret_err_code! { res };
     0
 }
 

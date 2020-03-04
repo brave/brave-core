@@ -488,6 +488,12 @@ test("brave_unit_tests") {
       "//brave/components/brave_perf_predictor/browser",
     ]
   }
+
+  if (enable_speedreader) {
+    sources += [
+      "//brave/components/speedreader/rust/ffi/src/speedreader_unittest.cc",
+    ]
+  }
 }
 }
 

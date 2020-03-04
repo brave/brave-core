@@ -6,7 +6,7 @@ edition = "2018"
 build = "build.rs"
 
 [dependencies]
-speedreader = { path = "../../" }
+speedreader = { path = "../../src" }
 speedreader-ffi = { path = "../" }
 libc = "0"
 

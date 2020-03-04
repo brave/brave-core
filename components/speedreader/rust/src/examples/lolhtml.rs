@@ -41,7 +41,7 @@ async fn stream_content(article_url: &str) -> Result<(), Box<dyn Error>> {
 
     let mut mapped_file = fs::File::create(format!("{}/mapped.html", &dir))?;
     let mut mapped_test_file =
-        fs::File::create(format!("{}/mapped.html", "data/lolhtml/dump/test"))?;
+        fs::File::create(format!("{}/mapped.html", "data/lolhtml/test"))?;
 
     let sr = SpeedReader::default();
     let config = sr.get_rewriter_type(article_url);
@@ -57,7 +57,7 @@ async fn stream_content(article_url: &str) -> Result<(), Box<dyn Error>> {
     )?;
 
     let mut init_file = fs::File::create(format!("{}/init.html", &dir))?;
-    let mut init_test_file = fs::File::create(format!("{}/init.html", "data/lolhtml/dump/test"))?;
+    let mut init_test_file = fs::File::create(format!("{}/init.html", "data/lolhtml/test"))?;
     while let Some(chunk) = data.chunk().await? {
         rewriter.write(chunk.as_ref()).ok();
         init_file.write_all(chunk.as_ref()).ok();
