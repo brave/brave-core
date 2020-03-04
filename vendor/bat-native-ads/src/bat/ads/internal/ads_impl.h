@@ -216,18 +216,24 @@ class AdsImpl : public Ads {
       const std::vector<std::string>& categories,
       const std::vector<AdInfo>& ads);
   void OnGetAdConversions(
-      const Result result,
       const std::string& url,
+      const Result result,
       const std::vector<AdConversionTrackingInfo>& ad_conversions);
   void ServeAd(
       const std::vector<AdInfo>& ads);
-
+  void OnServeAd(
+      const Result result,
+      const std::vector<AdConversionTrackingInfo>& ad_conversions,
+      const std::vector<AdInfo>& ads);
   void SuccessfullyServedAd();
   void FailedToServeAd(
       const std::string& reason);
 
   std::vector<AdInfo> GetEligibleAds(
       const std::vector<AdInfo>& ads);
+  std::vector<AdInfo> GetEligibleAdsForConversions(
+      const std::vector<AdInfo>& ads,
+      const std::vector<AdConversionTrackingInfo>& ad_conversions);
   std::vector<AdInfo> GetUnseenAdsAndRoundRobinIfNeeded(
       const std::vector<AdInfo>& ads) const;
   std::vector<AdInfo> GetUnseenAds(

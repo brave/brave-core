@@ -453,7 +453,6 @@ bool BundleStateDatabase::GetAdsForCategory(
 }
 
 bool BundleStateDatabase::GetAdConversions(
-    const std::string& url,
     std::vector<ads::AdConversionTrackingInfo>* ad_conversions) {
   DCHECK(ad_conversions);
   if (!ad_conversions) {

@@ -409,7 +409,6 @@ void AdsClientMojoBridge::GetAds(
 void AdsClientMojoBridge::OnGetAdConversions(
     CallbackHolder<GetAdConversionsCallback>* holder,
     const ads::Result result,
-    const std::string& url,
     const std::vector<ads::AdConversionTrackingInfo>& ad_conversions) {
   DCHECK(holder);
   if (!holder) {
@@ -421,21 +420,20 @@ void AdsClientMojoBridge::OnGetAdConversions(
     for (const auto& ad_conversion : ad_conversions) {
       ad_conversions_json_list.push_back(ad_conversion.ToJson());
     }
-    std::move(holder->get()).Run(ToMojomResult(result), url,
+    std::move(holder->get()).Run(ToMojomResult(result),
         ad_conversions_json_list);
   }
   delete holder;
 }
 
 void AdsClientMojoBridge::GetAdConversions(
-    const std::string& url,
     GetAdConversionsCallback callback) {
   // this gets deleted in OnSaveBundleState
   auto* holder = new CallbackHolder<GetAdConversionsCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ads_client_->GetAdConversions(url, std::bind(
-      AdsClientMojoBridge::OnGetAdConversions, holder, _1, _2, _3));
+  ads_client_->GetAdConversions(
+      std::bind(AdsClientMojoBridge::OnGetAdConversions, holder, _1, _2));
 }
 
 }  // namespace bat_ads
