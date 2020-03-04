@@ -218,9 +218,17 @@ class Banner extends React.Component<Props, State> {
       return false
     }
 
-    const hasAnonBalance = wallets['anonymous'] && wallets['anonymous'] > 0
+    let nonUserFunds = 0
 
-    return connected && !hasAnonBalance
+    if (wallets['anonymous']) {
+      nonUserFunds += wallets['anonymous']
+    }
+
+    if (wallets['blinded']) {
+      nonUserFunds += wallets['blinded']
+    }
+
+    return connected && nonUserFunds === 0
   }
 
   render () {
