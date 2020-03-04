@@ -413,6 +413,12 @@ test("brave_unit_tests") {
     ]
   }
 
+  if (enable_brave_wayback_machine) {
+    sources += [
+      "//brave/components/brave_wayback_machine/brave_wayback_machine_utils_unittest.cc",
+    ]
+  }
+
   if (enable_widevine) {
     if (is_win || is_mac) {
       sources += [ "//brave/chromium_src/chrome/browser/component_updater/widevine_cdm_component_installer_unittest.cc" ]

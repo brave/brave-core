@@ -13,6 +13,7 @@
 #include "base/task/post_task.h"
 #include "base/task/task_traits.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_delegate.h"
+#include "brave/components/brave_wayback_machine/brave_wayback_machine_utils.h"
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -41,6 +42,9 @@ void BraveWaybackMachineTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   DCHECK(delegate_);
   if (!IsWaybackMachineEnabled())
+    return;
+
+  if (IsWaybackMachineDisabledFor(navigation_handle->GetURL()))
     return;
 
   if (!navigation_handle->IsInMainFrame() ||
