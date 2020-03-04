@@ -25,6 +25,10 @@ const char ethereum_remote_client_extension_public_key[] =
     "EGySVmv6czOI5eJYezWXwIDAQAB";
 const char ethereum_remote_client_base_url[] =
     "chrome-extension://odbfpeeihdkbihmopkbjmoonfanlbfcl/home.html";
+const char ethereum_remote_client_phishing_url[] =
+    "chrome-extension://odbfpeeihdkbihmopkbjmoonfanlbfcl/phishing.html";
+const char ethereum_remote_client_ens_redirect_url[] =
+    "chrome-extension://odbfpeeihdkbihmopkbjmoonfanlbfcl/loading.html";
 const char ethereum_remote_client_host[] = "wallet";
 const char metamask_extension_id[] = "nkbihfbeogaeaoehlefnkodbefgpgknn";
 
