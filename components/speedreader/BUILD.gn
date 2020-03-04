@@ -1,6 +1,6 @@
 import("//build/buildflag_header.gni")
 import("//brave/components/speedreader/buildflags.gni")
-import("//brave/vendor/speedreader_rust_ffi/config.gni")
+import("//brave/components/speedreader/rust/ffi/config.gni")
 
 buildflag_header("buildflags") {
   header = "buildflags.h"
@@ -30,7 +30,7 @@ source_set("speedreader") {
     "//brave/components/resources",
     "//brave/components/speedreader:buildflags",
     "//brave/vendor/adblock_rust_ffi:adblock_ffi",
-    "//brave/vendor/speedreader_rust_ffi:speedreadder_ffi",
+    "//brave/components/speedreader/rust/ffi:speedreader_ffi",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
     "//ui/base",  # For ResourceBundle, consider getting rid of this?
@@ -51,7 +51,7 @@ if (is_mac) {
       "{{bundle_contents_dir}}/Libraries/{{source_file_part}}",
     ]
     public_deps = [
-      "//brave/vendor/speedreader_rust_ffi:speedreader",
+      "//brave/components/speedreader/rust/ffi:speedreader",
     ]
   }
 } else {

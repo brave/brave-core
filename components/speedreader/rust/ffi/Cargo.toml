@@ -5,7 +5,7 @@ authors = ["Andrius Aucinas <aaucinas@brave.com>"]
 edition = "2018"
 
 [dependencies]
-speedreader = { path = "../" }
+speedreader = { path = "../src/" }
 libc = "0"
 
 [build-dependencies]

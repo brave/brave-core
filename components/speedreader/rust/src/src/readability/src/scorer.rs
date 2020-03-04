@@ -103,7 +103,7 @@ pub fn is_candidate(handle: &Handle) -> bool {
             "p" => true,
             "div" | "article" | "center" | "section" => !dom::has_nodes(
                 &handle,
-                &BLOCK_CHILD_TAGS.iter().copied().collect::<Vec<_>>(),
+                &BLOCK_CHILD_TAGS.iter().cloned().collect::<Vec<_>>(),
             ),
             _ => false,
         }

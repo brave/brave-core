@@ -1,0 +1,68 @@
+# Copyright 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+import("config.gni")
+import("//brave/build/cargo.gni")
+import("//brave/test/testing.gni")
+
+config("external_config") {
+  include_dirs = [ "include" ]
+  defines = [
+    "NO_CXXEXCEPTIONS=1"
+  ]
+}
+
+source_set("speedreader_ffi") {
+  public_configs = [ ":external_config" ]
+
+  sources = [
+    "src/speedreader.cpp",
+    "include/speedreader.hpp"
+  ]
+
+  deps = [
+    "//base",
+    ":speedreader"
+  ]
+
+  libs = [ speedreader_lib_path ]
+
+  if (is_mac || is_ios ) {
+    libs += [
+      "Security.framework"
+    ]
+  }
+}
+
+if (speedreader_shared_lib_install_name != "") {
+  fix_testing_install_name("test_speedreader_install_name") {
+    current_path = speedreader_shared_lib_install_name
+    new_path = "@executable_path/" + rebase_path(speedreader_lib_path, root_build_dir)
+  }
+} else {
+    group("test_speedreader_install_name") {}
+}
+
+cargo_build("speedreader") {
+  inputs = [
+    "Cargo.toml",
+    "build.rs",
+    "cbindgen.toml",
+    "include/speedreader_ffi.hpp",
+    "src/lib.rs",
+    "src/charbuf.rs",
+    "src/errors.rs",
+    "src/speedreader.rs",
+  ]
+
+  rust_flags = speedreader_flags
+  output = speedreader_lib_path
+
+  manifest_path = "Cargo.toml"
+
+  build_path = speedreader_build_path
+
+  target = speedreader_target
+}
