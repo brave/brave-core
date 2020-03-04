@@ -752,13 +752,13 @@ void AdsImpl::CheckAdConversion(
     return;
   }
 
-  auto callback = std::bind(&AdsImpl::OnGetAdConversions, this, _1, _2, _3);
-  ads_client_->GetAdConversions(url, callback);
+  auto callback = std::bind(&AdsImpl::OnGetAdConversions, this, url, _1, _2);
+  ads_client_->GetAdConversions(callback);
 }
 
 void AdsImpl::OnGetAdConversions(
-    const Result result,
     const std::string& url,
+    const Result result,
     const std::vector<AdConversionTrackingInfo>& ad_conversions) {
   for (const auto& ad_conversion : ad_conversions) {
     if (!helper::Uri::MatchWildcard(url, ad_conversion.url_pattern)) {
@@ -1156,7 +1156,6 @@ void AdsImpl::OnServeAdFromCategories(
     const std::vector<AdInfo>& ads) {
   auto eligible_ads = GetEligibleAds(ads);
   if (!eligible_ads.empty()) {
-    BLOG(INFO) << "Found " << eligible_ads.size() << " eligible ads";
     ServeAd(eligible_ads);
     return;
   }
@@ -1225,14 +1224,30 @@ void AdsImpl::OnServeUntargetedAd(
     return;
   }
 
-  BLOG(INFO) << "Found " << eligible_ads.size() << " eligible ads";
   ServeAd(eligible_ads);
 }
 
 void AdsImpl::ServeAd(
     const std::vector<AdInfo>& ads) {
-  auto rand = base::RandInt(0, ads.size() - 1);
-  auto ad = ads.at(rand);
+  auto callback =
+      std::bind(&AdsImpl::OnServeAd, this, _1, _2, ads);
+  ads_client_->GetAdConversions(callback);
+}
+
+void AdsImpl::OnServeAd(
+    const Result result,
+    const std::vector<AdConversionTrackingInfo>& ad_conversions,
+    const std::vector<AdInfo>& ads) {
+  auto eligible_ads = GetEligibleAdsForConversions(ads, ad_conversions);
+  if (eligible_ads.empty()) {
+    FailedToServeAd("No eligible ads found");
+    return;
+  }
+
+  BLOG(INFO) << "Found " << eligible_ads.size() << " eligible ads";
+
+  auto rand = base::RandInt(0, eligible_ads.size() - 1);
+  auto ad = eligible_ads.at(rand);
   ShowAd(ad);
 
   SuccessfullyServedAd();
@@ -1315,6 +1330,27 @@ std::vector<AdInfo> AdsImpl::GetEligibleAds(
     }
 
     eligible_ads.push_back(ad);
+  }
+
+  return eligible_ads;
+}
+
+std::vector<AdInfo> AdsImpl::GetEligibleAdsForConversions(
+    const std::vector<AdInfo>& ads,
+    const std::vector<AdConversionTrackingInfo>& ad_conversions) {
+  std::vector<AdInfo> eligible_ads = ads;
+
+  if (ads_client_->ShouldAllowAdConversionTracking()) {
+    return eligible_ads;
+  }
+
+  for (const auto& ad_conversion : ad_conversions) {
+    const auto iter = std::remove_if(eligible_ads.begin(), eligible_ads.end(),
+        [&ad_conversion](AdInfo& ad_notification) {
+      return ad_notification.creative_set_id == ad_conversion.creative_set_id;
+    });
+
+    eligible_ads.erase(iter, eligible_ads.end());
   }
 
   return eligible_ads;

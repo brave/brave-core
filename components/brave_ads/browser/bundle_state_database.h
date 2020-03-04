@@ -43,7 +43,6 @@ class BundleStateDatabase {
       const std::string& category,
       std::vector<ads::AdInfo>* ads);
   bool GetAdConversions(
-      const std::string& url,
       std::vector<ads::AdConversionTrackingInfo>* ad_conversions);
 
   // Returns the current version of the publisher info database

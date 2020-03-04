@@ -396,12 +396,12 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
   callback(ads::Result::SUCCESS, categories, found_ads);
 }
 
-- (void)getAdConversions:(const std::string &)url callback:(ads::OnGetAdConversionsCallback)callback
+- (void)getAdConversions:(ads::OnGetAdConversionsCallback)callback
 {
   // TODO(khickinson): To be implemented
   if (![self isAdsServiceRunning]) { return; }
 
-  callback(ads::Result::SUCCESS, url, {});
+  callback(ads::Result::SUCCESS, {});
 }
 
 - (void)setCatalogIssuers:(std::unique_ptr<ads::IssuersInfo>)info

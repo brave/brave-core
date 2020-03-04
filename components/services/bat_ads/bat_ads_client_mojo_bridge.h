@@ -105,7 +105,6 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
       ads::OnGetAdsCallback callback) override;
 
   void GetAdConversions(
-      const std::string& url,
       ads::OnGetAdConversionsCallback callback) override;
 
   void EventLog(
