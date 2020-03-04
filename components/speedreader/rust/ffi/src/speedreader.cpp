@@ -13,6 +13,17 @@ SpeedReader::SpeedReader(const char* whitelist_serialized,
                          size_t whitelist_size)
     : raw(speedreader_with_whitelist(whitelist_serialized, whitelist_size)) {}
 
+bool SpeedReader::deserialize(const char* data, size_t data_size) {
+  auto* new_raw = speedreader_with_whitelist(data, data_size);
+  if (new_raw != nullptr) {
+    speedreader_free(raw);
+    raw = new_raw;
+    return true;
+  } else {
+    return false;
+  }
+}
+
 SpeedReader::~SpeedReader() {
   speedreader_free(raw);
 }

@@ -30,6 +30,9 @@ class Rewriter {
            void* output_sink_user_data);
   ~Rewriter();
 
+  Rewriter(const Rewriter&) = delete;
+  void operator=(const Rewriter&) = delete;
+
   /// Write a new chunk of data (byte array) to the rewriter instance. Does
   /// _not_ need to be a full document and can be called many times with ever
   /// new chunk of data available.
@@ -44,9 +47,6 @@ class Rewriter {
   const std::string* GetOutput();
 
  private:
-  Rewriter(const Rewriter&) = delete;
-  void operator=(const Rewriter&) = delete;
-
   std::string output_;
   bool ended_;
   bool poisoned_;
@@ -59,6 +59,10 @@ class SpeedReader {
   /// New instance of SpeedReader using serialized whitelist
   SpeedReader(const char* whitelist_serialized, size_t whitelist_size);
   ~SpeedReader();
+  SpeedReader(const SpeedReader&) = delete;
+  void operator=(const SpeedReader&) = delete;
+
+  bool deserialize(const char* data, size_t data_size);
 
   /// Checks if the provided URL matches whitelisted readable URLs.
   bool ReadableURL(const std::string& url);
@@ -85,13 +89,10 @@ class SpeedReader {
                                                             size_t,
                                                             void*),
                                         void* output_sink_user_data);
-  
+
   static std::string TakeLastError();
 
  private:
-  SpeedReader(const SpeedReader&) = delete;
-  void operator=(const SpeedReader&) = delete;
-
   C_SpeedReader* raw;
 };
 

@@ -29,7 +29,6 @@ source_set("speedreader") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/resources",
     "//brave/components/speedreader:buildflags",
-    "//brave/vendor/adblock_rust_ffi:adblock_ffi",
     "//brave/components/speedreader/rust/ffi:speedreader_ffi",
     "//services/network/public/cpp",
     "//services/network/public/mojom",

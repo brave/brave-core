@@ -5,6 +5,7 @@
 
 #include "brave/components/speedreader/speedreader_loader.h"
 
+#include <string>
 #include <utility>
 
 #include "base/bind.h"
@@ -15,6 +16,7 @@
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "ui/base/resource/resource_bundle.h"
+#include "brave/components/speedreader/rust/ffi/include/speedreader.hpp"
 
 namespace speedreader {
 
@@ -250,25 +252,21 @@ void SpeedReaderURLLoader::MaybeLaunchSpeedreader() {
             [](GURL url, std::string data) -> auto {
               SCOPED_UMA_HISTOGRAM_TIMER("Brave.Speedreader.Distill");
               SpeedReader speedreader;
-              speedreader.reset(url.spec().c_str());
-              // TODO(iefremov): Change speedreader API to accept the data size?
-              data.push_back('\0');
-              speedreader.pumpContent(data.data());
-
-              std::string transformed;
-              const bool readable = speedreader.finalize(&transformed);
-              VLOG(2) << __func__ << " readable = " << readable;
-              if (!readable) {
-                // Return the initial data.
-                DCHECK_EQ('\0', data.back());
-                data.pop_back();
-                return data;
+              if (!speedreader.ReadableURL(url.spec())) {
+                return std::string();
               }
-              const std::string distilled =
-                  GetDistilledPageResources() + transformed;
-              VLOG(2) << "Distilled size = " << distilled.size();
+              auto rewriter = speedreader.RewriterNew(url.spec(),
+                speedreader::RewriterType::RewriterHeuristics);
+              int written = rewriter->Write(data.c_str(), data.length());
+              // Error occurred
+              if (written != 0) {
+                return std::string();
+              }
 
-              return distilled;
+              rewriter->End();
+              std::string transformed = *rewriter->GetOutput();
+
+              return GetDistilledPageResources() + transformed;
             },
             response_url_, std::move(buffered_body_)),
         base::BindOnce(&SpeedReaderURLLoader::CompleteLoading,

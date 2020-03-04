@@ -13,8 +13,8 @@
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 
-namespace adblock {
-class Engine;
+namespace speedreader {
+class SpeedReader;
 }
 
 class GURL;
@@ -38,11 +38,11 @@ class SpeedreaderWhitelist : public brave_component_updater::BraveComponent {
                         const std::string& manifest) override;
 
   using GetDATFileDataResult =
-      brave_component_updater::LoadDATFileDataResult<adblock::Engine>;
+      brave_component_updater::LoadDATFileDataResult<speedreader::SpeedReader>;
 
   void OnGetDATFileData(GetDATFileDataResult result);
 
-  std::unique_ptr<adblock::Engine> engine_;
+  std::unique_ptr<speedreader::SpeedReader> speedreader_;
   base::WeakPtrFactory<SpeedreaderWhitelist> weak_factory_{this};
 };
 
