@@ -75,6 +75,8 @@ class DatabaseContributionInfo: public DatabaseTable {
 
   bool MigrateToV15(ledger::DBTransaction* transaction);
 
+  bool MigrateToV16(ledger::DBTransaction* transaction);
+
   void OnGetRecord(
       ledger::DBCommandResponsePtr response,
       ledger::GetContributionInfoCallback callback);
