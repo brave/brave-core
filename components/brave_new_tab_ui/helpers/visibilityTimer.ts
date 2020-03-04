@@ -50,7 +50,7 @@ export default class VisibilityTimer {
     if (this.timerId) {
       return
     }
-    this.timerId = setTimeout(() => {
+    this.timerId = window.setTimeout(() => {
       // If we made it here, then we have received enough uninterupted time
       // and we can call the provided function.
       this.stopTracking()

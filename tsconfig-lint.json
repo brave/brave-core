@@ -1,9 +1,0 @@
-{
-  "extends": "./tsconfig",
-  "include": [
-    "./components/**/*"
-  ],
-  "exclude": [
-    "./components/brave_sync/extension"
-  ]
-}

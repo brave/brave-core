@@ -1,42 +1,15 @@
 {
-  "compilerOptions": {
-    "sourceMap": true,
-    "noImplicitAny": true,
-    // esnext modules supports import() async webpack modules
-    "module": "esnext",
-    // chrome 80 supports 100% es2019
-    "target": "es2019",
-    "allowJs": true,
-    // convert jsx to react components
-    "jsx": "react",
-    "lib": [
-      "es6",
-      "dom",
-      "DOM.Iterable",
-      "es7",
-      "es2017",
-      "es2018",
-      "es2019"
-    ],
-    "moduleResolution": "node",
-    "baseUrl": ".",
-    "paths": {
-      "brave-ui": ["node_modules/brave-ui/src"],
-      "brave-ui/*": ["node_modules/brave-ui/src/*"]
-    },
-    "typeRoots": [
-      "./node_modules/@types",
-      "./components/definitions"
-    ],
-    // optional
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": true,
-    "strictNullChecks": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true
-  },
+  "extends": "./tsconfig-webpack",
   "include": [
-    "./components/definitions/*",
-    "./components/brave_extension/extension/brave_extension/types/**/*"
+    // explicitly include ts/tsx so JS files can be avoided
+    // since they are auto-required via allowJS: true
+    // see https://www.typescriptlang.org/docs/handbook/tsconfig-json.html#details
+    "components/**/*.ts",
+    "components/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules",
+    "components/test/**/*",
+    "components/**/spec.tsx"
   ]
 }
