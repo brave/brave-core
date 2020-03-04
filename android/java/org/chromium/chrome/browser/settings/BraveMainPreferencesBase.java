@@ -25,7 +25,7 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.BraveHomepagePreferences;
-import org.chromium.chrome.browser.settings.privacy.BravePrivacyPreferences;
+import org.chromium.chrome.browser.settings.privacy.BravePrivacySettings;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
@@ -173,7 +173,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
 
     private void overrideChromiumPreferences() {
         // Replace fragment.
-        findPreference(PREF_PRIVACY).setFragment(BravePrivacyPreferences.class.getName());
+        findPreference(PREF_PRIVACY).setFragment(BravePrivacySettings.class.getName());
         findPreference(PREF_HOMEPAGE).setFragment(BraveHomepagePreferences.class.getName());
     }
 

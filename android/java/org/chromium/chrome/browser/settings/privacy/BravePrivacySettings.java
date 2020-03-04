@@ -18,10 +18,10 @@ import org.chromium.chrome.browser.preferences.PrefServiceBridge;
 import org.chromium.chrome.browser.settings.ChromeBaseCheckBoxPreference;
 import org.chromium.chrome.browser.settings.ChromeSwitchPreference;
 import org.chromium.chrome.browser.settings.ManagedPreferenceDelegate;
-import org.chromium.chrome.browser.settings.privacy.PrivacyPreferences;
+import org.chromium.chrome.browser.settings.privacy.PrivacySettings;
 import org.chromium.chrome.browser.settings.SettingsUtils;
 
-public class BravePrivacyPreferences extends PrivacyPreferences {
+public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_HTTPSE = "httpse";
     private static final String PREF_AD_BLOCK = "ad_block";
     private static final String PREF_FINGERPRINTING_PROTECTION = "fingerprinting_protection";
