@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/webui/settings/people_handler.h b/chrome/browser/ui/webui/settings/people_handler.h
+index 1573a3ce552a1e5abc4982d33aa1fad69e8faede..9d44c6440b9293a69dc8de648b4d8e007e4bc985 100644
+--- a/chrome/browser/ui/webui/settings/people_handler.h
++++ b/chrome/browser/ui/webui/settings/people_handler.h
+@@ -167,6 +167,7 @@ class PeopleHandler : public SettingsPageUIHandler,
+ #endif
+   void HandleStartKeyRetrieval(const base::ListValue* args);
+   void HandleGetSyncStatus(const base::ListValue* args);
++  BRAVE_PEOPLE_HANDLER_H_
+ 
+ #if !defined(OS_CHROMEOS)
+   // Displays the GAIA login form.

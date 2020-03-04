@@ -1,10 +1,19 @@
 <link rel="import" href="chrome://resources/html/polymer.html">
 
 <link rel="import" href="chrome://resources/html/i18n_behavior.html">
+<link rel="import" href="chrome://resources/html/util.html">
+<link rel="import" href="chrome://resources/html/web_ui_listener_behavior.html">
 <link rel="import" href="chrome://resources/cr_elements/md_select_css.html">
-<link rel="import" href="brave_sync_browser_proxy.html">
+<link rel="import" href="chrome://resources/cr_elements/cr_toggle/cr_toggle.html">
+<link rel="import" href="chrome://resources/cr_elements/shared_vars_css.html">
+<link rel="import" href="chrome://resources/cr_elements/icons.html">
+<link rel="import" href="../settings_page/settings_animated_pages.html">
+<link rel="import" href="../settings_page/settings_subpage.html">
 <link rel="import" href="../settings_shared_css.html">
 <link rel="import" href="../settings_vars_css.html">
+<link rel="import" href="brave_sync_subpage.html">
+
+<link rel="import" href="chrome://resources/cr_elements/cr_dialog/cr_dialog.html">
 
 <dom-module id="settings-brave-sync-page">
   <template>
@@ -15,6 +24,26 @@
         $i18n{braveSyncLabel} <a href="chrome://sync" target="_blank">brave://sync</a>
       </div>
     </div>
+
+    <settings-animated-pages id="pages" section="braveSync">
+    <div route-path="default">
+      <cr-link-row id="brave-sync-setup"
+        label="Sync Setup"
+        on-click="onSyncTap_"
+        role-description="$i18n{subpageArrowRoleDescription}">
+      </cr-link-row>
+    </div>
+     <template is="dom-if" route-path="/braveSync/setup">
+       <settings-subpage
+         associated-control="[[$$('#brave-sync-setup')]]"
+         page-title="Sync Settings">
+         <settings-brave-sync-subpage
+              sync-status="[[syncStatus]]" prefs="{{prefs}}"
+              page-visibility="[[pageVisibility.privacy]]">
+         </settings-brave-sync-subpage>
+       </settings-subpage>
+     </template>
+    </settings-animated-pages>
   </template>
   <script src="brave_sync_page.js"></script>
 </dom-module>
