@@ -107,10 +107,10 @@ impl Whitelist {
             delazify: true,
             fix_embeds: true,
             content_script: Some(r#"<script>
-            document.querySelector(".FeaturedMedia figure img").src = 
+            document.querySelector(".FeaturedMedia figure img").src =
                 JSON.parse(document.querySelector('script[type="application/ld+json"]').innerText).image.url;
             [...document.querySelectorAll(".InlineImage .Image__Wrapper img")]
-                .map((e, i) => e.src = 
+                .map((e, i) => e.src =
                     __abcnews__.page.content.story.everscroll[0].inlines.filter(d => d.type === "image").map(i => i.imageSrc)[i])
             </script>"#.to_owned()),
             preprocess: vec![],
@@ -179,7 +179,7 @@ impl Whitelist {
         [...document.querySelectorAll("figure[itemid]")].forEach(fig => {
             let lazy = fig.querySelector("[data-testid=\"lazyimage-container\"]");
             if (lazy) { lazy.innerHTML = "<img src='" + fig.getAttribute("itemid") + "'>" }
-        })});
+        });
         </script>
         "#
                     .to_owned(),

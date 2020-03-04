@@ -1,6 +1,7 @@
 use super::*;
 use libc::c_void;
 use std::panic::{self, AssertUnwindSafe};
+use std::any::Any;
 
 // NOTE: we use `ExternOutputSink` proxy type, for extern handler function
 struct ExternOutputSink {
@@ -68,6 +69,13 @@ pub struct CSpeedReaderRewriter {
     _private: [u8; 0],
 }
 
+/// Opaque structure to have the minimum amount of type safety across the FFI.
+/// Only replaces c_void
+#[repr(C)]
+pub struct CRewriterOpaqueConfig {
+    _private: [u8; 0],
+}
+
 /// New instance of SpeedReader. Loads the default configuration and rewriting
 /// whitelists. Must be freed by calling `speedreader_free`.
 #[no_mangle]
@@ -119,6 +127,19 @@ pub extern "C" fn speedreader_free(speedreader: *mut SpeedReader) {
     drop(to_box!(speedreader));
 }
 
+#[no_mangle]
+pub extern "C" fn speedreader_get_rewriter_opaque_config(
+    speedreader: *const SpeedReader,
+    url: *const c_char,
+    url_len: size_t
+) -> *mut CRewriterOpaqueConfig {
+    let url = unwrap_or_ret_null! { to_str!(url, url_len) };
+    let speedreader = to_ref!(speedreader);
+
+    let opaque_config = speedreader.get_opaque_config(url);
+    box_to_opaque!(opaque_config, CRewriterOpaqueConfig)
+}
+
 /// Returns SpeedReader rewriter instance for the given URL. If provided
 /// `rewriter_type` is `RewriterUnknown`, will look it up in the whitelist
 /// and default to heuristics-based rewriter if none found in the whitelist.
@@ -133,19 +154,20 @@ pub extern "C" fn speedreader_rewriter_new(
     url_len: size_t,
     output_sink: unsafe extern "C" fn(*const c_char, size_t, *mut c_void),
     output_sink_user_data: *mut c_void,
+    rewriter_opaque_config: *mut CRewriterOpaqueConfig,
     rewriter_type: CRewriterType,
 ) -> *mut CSpeedReaderRewriter {
     let url = unwrap_or_ret_null! { to_str!(url, url_len) };
     let speedreader = to_ref!(speedreader);
 
-    let opaque_config = speedreader.get_opaque_config(url);
+    let opaque_config: &Box<dyn Any> = leak_void_to_box!(rewriter_opaque_config);
 
     let output_sink = ExternOutputSink::new(output_sink, output_sink_user_data);
 
     let rewriter = unwrap_or_ret_null! { speedreader
         .get_rewriter(
             url,
-            &opaque_config,
+            opaque_config,
             output_sink,
             rewriter_type.to_rewriter_type(),
         )
@@ -197,4 +219,11 @@ pub extern "C" fn speedreader_rewriter_free(rewriter: *mut CSpeedReaderRewriter)
     // Clean up the memory by converting the pointer back
     // into a Box and letting the Box be dropped.
     void_to_box!(rewriter);
+}
+
+#[no_mangle]
+pub extern "C" fn speedreader_free_rewriter_opaque_config(config: *mut CRewriterOpaqueConfig) {
+    // Clean up the memory by converting the pointer back
+    // into a Box and letting the Box be dropped.
+    void_to_box!(config);
 }

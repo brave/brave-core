@@ -6,6 +6,7 @@ include_guard = "SPEEDREADER_FFI_H"
 namespace = "speedreader"
 
 no_includes = true
+sys_includes = ["cstddef", "cstdint"]
 
 # Code Stylr Options
 braces = "SameLine"

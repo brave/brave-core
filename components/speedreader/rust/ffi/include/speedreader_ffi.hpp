@@ -1,6 +1,9 @@
 #ifndef SPEEDREADER_FFI_H
 #define SPEEDREADER_FFI_H
 
+#include <cstddef>
+#include <cstdint>
+
 namespace speedreader {
 
 /// Indicate type of rewriter that would be used based on existing
@@ -16,6 +19,12 @@ enum class C_CRewriterType {
 };
 
 struct C_SpeedReader;
+
+/// Opaque structure to have the minimum amount of type safety across the FFI.
+/// Only replaces c_void
+struct C_CRewriterOpaqueConfig {
+  uint8_t _private[0];
+};
 
 /// Opaque structure to have the minimum amount of type safety across the FFI.
 /// Only replaces c_void
@@ -37,6 +46,12 @@ C_CRewriterType speedreader_find_type(const C_SpeedReader *speedreader,
                                       size_t url_len);
 
 void speedreader_free(C_SpeedReader *speedreader);
+
+void speedreader_free_rewriter_opaque_config(C_CRewriterOpaqueConfig *config);
+
+C_CRewriterOpaqueConfig *speedreader_get_rewriter_opaque_config(const C_SpeedReader *speedreader,
+                                                                const char *url,
+                                                                size_t url_len);
 
 /// New instance of SpeedReader. Loads the default configuration and rewriting
 /// whitelists. Must be freed by calling `speedreader_free`.
@@ -61,6 +76,7 @@ C_CSpeedReaderRewriter *speedreader_rewriter_new(const C_SpeedReader *speedreade
                                                  size_t url_len,
                                                  void (*output_sink)(const char*, size_t, void*),
                                                  void *output_sink_user_data,
+                                                 C_CRewriterOpaqueConfig *rewriter_opaque_config,
                                                  C_CRewriterType rewriter_type);
 
 /// Write a new chunk of data (byte array) to the rewriter instance.

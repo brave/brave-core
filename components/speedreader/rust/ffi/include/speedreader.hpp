@@ -50,6 +50,7 @@ class Rewriter {
   std::string output_;
   bool ended_;
   bool poisoned_;
+  C_CRewriterOpaqueConfig* config_raw;
   C_CSpeedReaderRewriter* raw;
 };
 

@@ -128,21 +128,18 @@ TEST(SpeedreaderFFITest, RewriterDoubleEnd) {
   ASSERT_NE(rewriter->End(), 0);
 }
 
-void test_cpp_rewriter_parsing_ambiguity() {
+TEST(SpeedreaderFFITest, RewriterParsingAmbiguity) {
   const char* ambiguity = "<select><div><style><div></div></style></div></select>";
-
-  std::unique_ptr<SpeedReader> sr = std::make_unique<SpeedReader>();
+  SpeedReader sr;
   std::string url_str = "https://cnn.com/news/article/topic/index.html";
-  auto rewriter = sr->RewriterNew(url_str, RewriterType::RewriterUnknown);
+  auto rewriter = sr.RewriterNew(url_str, RewriterType::RewriterUnknown);
   int write_ret = rewriter->Write(ambiguity, strlen(ambiguity));
-  int end_ret = 0;
-  if (write_ret != 0) {
-    end_ret = rewriter->End();
-    ok(end_ret != 0);
-    std::cout << "Error: " << SpeedReader::TakeLastError() << std::endl;
+  if (write_ret == 0) {
+    int end_ret = rewriter->End();
+    EXPECT_NE(end_ret, 0);
+    EXPECT_NE(SpeedReader::TakeLastError(), "");
   } else {
-    ok(write_ret != 0);
-    std::cout << "Error: " << SpeedReader::TakeLastError() << std::endl;
+    EXPECT_NE(SpeedReader::TakeLastError(), "");
   }
 }
 
