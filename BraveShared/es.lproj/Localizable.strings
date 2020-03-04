@@ -88,6 +88,12 @@
 /* Skip button to skip onboarding and start using the app. */
 "OnboardingSkipButton" = "Omitir";
 
+/* Description for closing a popover menu that is displayed. */
+"PopoverDefaultClose" = "Cerrar el menú de contexto";
+
+/* Description for closing the `Brave Shields` popover menu that is displayed. */
+"PopoverShieldsMenuClose" = "Cerrar el menú de escudos";
+
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "Marcadores restaurados";
 

@@ -595,9 +595,6 @@
 /* Sync Alert */
 "NotEnoughWordsTitle" = "Ikke nok ord";
 
-/* The placeholder says 'hide sponsored images'. So full sentence goes like: 'You can also choose to hide sponsored images.' */
-"ntp.chooseToHideSponsoredImages" = "Du kan også velge å %@.";
-
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "Gjør krav på mine belønninger";
 
@@ -608,22 +605,28 @@
 "ntp.earnTokensByViewingAds" = "Tjene tokens for å se på annonser som respekterer personvernet.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "Få betalt for å se dette bakgrunnsbildet. Slå på Brave-annonser for å kreve andelen din.";
+"ntp.getPaidForThisImageTurnAds" = "Tjen opp tokens for å se dette bildet. Slå på Brave-annonser for å få din andel.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "Få betalt for å se dette bakgrunnsbildet. Slå på Brave-annonser for å kreve andelen din.";
+"ntp.getPaidForThisImageTurnRewards" = "Tjen opp tokens for å se dette bildet. Slå på Brave Rewards for å få din andel.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidToSeeThisImage" = "Få betalt for å se dette bakgrunnsbildet.";
+"ntp.getPaidToSeeThisImage" = "Tjen opp tokens for å se dette bildet.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Bra jobba!";
 
-/* This sentence is not capitalized on purpose, it is a part of a bigger sentence which goes like this: 'You can also choose to hide sponsored images.' */
-"ntp.hideSponsoredImages" = "skjul sponsede bilder";
+/* No comment provided by engineer. */
+"ntp.hideSponsoredImages" = "Skjul sponsede bilder";
 
-/* The placeholder says 'Learn more'. So full sentence goes like: 'Learn more about sponsored images in Brave Rewards.' */
-"ntp.learnMoreAboutBrandedImages" = "%@ om sponsede bilder i Brave Rewards";
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutBrandedImages" = "For hvert sponsede bilde du ser, får du 70 % av inntjeningen i tokens. Med Brave-annonser har du alltid kontroll over annonsene du ser.";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutRewards" = "Få mer informasjon om Brave Rewards";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutSI" = "Få mer informasjon om sponsede bilder";
 
 /* No comment provided by engineer. */
 "ntp.supportWebCreatorsWithTokens" = "Du kan skape nettskapere med tokens.";
@@ -632,13 +635,13 @@
 "ntp.turnOnBraveAds" = "Slå på Brave-annonser";
 
 /* No comment provided by engineer. */
-"ntp.turnOnBraveRewards" = "Slå på belønninger";
+"ntp.turnOnBraveRewards" = "Slå på Brave Rewards";
 
-/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turnin Rewards, you agree to the Terms of Service'. */
+/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Ved å slå på Rewards, godtar du %@.";
 
 /* No comment provided by engineer. */
-"ntp.youArePaidToSeeThisImage" = "Du får betalt for å se dette bakgrunnsbildet.";
+"ntp.youArePaidToSeeThisImage" = "Du tjener tokens for å se dette bildet.";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Åpne alle (%i)";
@@ -977,13 +980,13 @@
 "SyncAddDeviceScan" = "QR-kode for synkkjede";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "På den andre mobilenheten går du til Sync på panelet Innstillinger på enheten og trykker på knappen «Skann synkkode». Bruk kameraet til å skanne QR-koden som er vist nedenfor.\n\nDu må behandle koden som et passord. Hvis noen får tak i den, kan de lese og endre de synkroniserte dataene.";
+"SyncAddDeviceScanDescription" = "Gå til Sync i innstillingene på den andre mobilenheten din, og trykk på knappen for «Skann synkkode». Bruk kameraet ditt til å skanne QR-koden nedenfor.\nBehandle denne koden som et passord. Hvis noen får tak i det, kan de lese og endre de synkroniserte dataene dine.";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Angi synkkoden";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Naviger til Sync på panelet Innstillinger på enheten, og trykk på knappen «%@». Skriv inn ordene for synkroniseringskoden som er vist nedenfor. \n\nDu må behandle koden som et passord. Hvis noen får tak i den, kan de lese og endre de synkroniserte dataene.";
+"SyncAddDeviceWordsDescription" = "Gå til Sync i innstillingene på mobilenheten din, og trykk på knappen for «%@». Legg inn synklenke-kodeordene som vises nedenfor\nBehandle denne koden som et passord. Hvis noen får tak i det, kan de lese og endre de synkroniserte dataene dine.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Skriv inn kodeord";

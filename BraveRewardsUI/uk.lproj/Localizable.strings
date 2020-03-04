@@ -584,7 +584,7 @@
 "PendingContributionDetailAmount" = "Сума";
 
 /* No comment provided by engineer. */
-"PendingContributionDetailPendingUntil" = "Незавершено доки";
+"PendingContributionDetailPendingUntil" = "Незавершено, доки";
 
 /* The button that removes a specific pending contributions while on viewing said contributions details */
 "PendingContributionDetailRemove" = "Видалити незавершений внесок";

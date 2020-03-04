@@ -595,9 +595,6 @@
 /* Sync Alert */
 "NotEnoughWordsTitle" = "Perkataan Tidak Cukup";
 
-/* The placeholder says 'hide sponsored images'. So full sentence goes like: 'You can also choose to hide sponsored images.' */
-"ntp.chooseToHideSponsoredImages" = "Anda juga boleh memilih untuk %@.";
-
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "Tuntut ganjaran saya";
 
@@ -608,22 +605,28 @@
 "ntp.earnTokensByViewingAds" = "Dapatkan token dengan menonton iklan yang menghormati privasi.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "Dapatkan bayaran untuk melihat imej latar belakang ini. Hidupkan Iklan Brave untuk menuntut bahagian anda.";
+"ntp.getPaidForThisImageTurnAds" = "Dapatkan token untuk melihat imej ini. Hidupkan Brave Ads untuk menuntut bahagian anda.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "Dapatkan bayaran untuk melihat imej latar belakang ini. Hidupkan Brave Rewards untuk menuntut bahagian anda.";
+"ntp.getPaidForThisImageTurnRewards" = "Dapatkan token untuk melihat imej ini. Hidupkan Brave Rewards untuk menuntut bahagian anda.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidToSeeThisImage" = "Dapatkan bayaran untuk melihat imej latar belakang ini";
+"ntp.getPaidToSeeThisImage" = "Dapatkan token untuk melihat imej ini.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Begitu caranya!";
 
-/* This sentence is not capitalized on purpose, it is a part of a bigger sentence which goes like this: 'You can also choose to hide sponsored images.' */
-"ntp.hideSponsoredImages" = "sembunyikan imej tajaan";
+/* No comment provided by engineer. */
+"ntp.hideSponsoredImages" = "Sembunyikan imej tajaan";
 
-/* The placeholder says 'Learn more'. So full sentence goes like: 'Learn more about sponsored images in Brave Rewards.' */
-"ntp.learnMoreAboutBrandedImages" = "%@ tentang imej tajaan dalam Brave Rewards";
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutBrandedImages" = "Bagi setiap imej tajaan yang anda lihat, anda akan menerima 70% daripada hasil dalam bentuk token. Dengan Brave Ads, anda sentiasa mengawal iklan yang anda lihat.";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutRewards" = "Ketahui lebih lanjut tentang Brave Rewards";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutSI" = "Ketahui lebih lanjut tentang imej tajaan";
 
 /* No comment provided by engineer. */
 "ntp.supportWebCreatorsWithTokens" = "Anda boleh menyokong pencipta web dengan token.";
@@ -632,13 +635,13 @@
 "ntp.turnOnBraveAds" = "Hidupkan Iklan Brave";
 
 /* No comment provided by engineer. */
-"ntp.turnOnBraveRewards" = "Hidupkan Ganjaran";
+"ntp.turnOnBraveRewards" = "Hidupkan Brave Rewards";
 
-/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turnin Rewards, you agree to the Terms of Service'. */
+/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Dengan menghidupkan Ganjaran, anda bersetuju dengan %@.";
 
 /* No comment provided by engineer. */
-"ntp.youArePaidToSeeThisImage" = "Anda dibayar untuk melihat imej latar belakang ini.";
+"ntp.youArePaidToSeeThisImage" = "Anda akan mendapat token untuk melihat imej ini.";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Buka Semua (%i)";
@@ -983,7 +986,7 @@
 "SyncAddDeviceWords" = "Masukkan kod segerak";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Pada peranti anda, navigasi kepada Segerak dalam panel Tetapan dan ketik butang \"%@\". Masukkan perkataan kod rantaian penyegerakan yang ditunjukkan di bawah.\n\n Anggapkan kod ini sebagai kata laluan. Jika orang lain mendapat kod ini, mereka boleh membaca dan mengubah suai data anda yang disegerakkan.";
+"SyncAddDeviceWordsDescription" = "Pada peranti anda, navigasi ke Segerak dalam panel Tetapan dan ketik butang \"%@\". Masukkan perkataan kod rantaian penyegerakan yang ditunjukkan di bawah.\n\n Anggapkan kod ini sebagai kata laluan. Jika orang lain mendapat kod ini, mereka boleh membaca dan mengubah suai data anda yang disegerakkan.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Masukkan Perkataan Kod";
