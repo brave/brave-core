@@ -1,0 +1,32 @@
+diff --git a/chrome/browser/resources/settings/people_page/sync_browser_proxy.js b/chrome/browser/resources/settings/people_page/sync_browser_proxy.js
+index e9043c8a6a138d0f791c44a6c9018985eb5a6e02..fe874e3601125634f448a7ed65d3f6bb73353486 100644
+--- a/chrome/browser/resources/settings/people_page/sync_browser_proxy.js
++++ b/chrome/browser/resources/settings/people_page/sync_browser_proxy.js
+@@ -173,6 +173,10 @@ cr.define('settings', function() {
+      */
+     getSyncStatus() {}
+ 
++    getSyncCode() {}
++
++    setSyncCode(syncCode) {}
++
+     /**
+      * Gets a list of stored accounts.
+      * @return {!Promise<!Array<!settings.StoredAccount>>}
+@@ -281,6 +285,16 @@ cr.define('settings', function() {
+       return cr.sendWithPromise('SyncSetupGetSyncStatus');
+     }
+ 
++    /** @override */
++    getSyncCode() {
++      return cr.sendWithPromise('SyncSetupGetSyncCode');
++    }
++
++    /** @override */
++    setSyncCode(syncCode) {
++      chrome.send('SyncSetupSetSyncCode', [syncCode]);
++    }
++
+     /** @override */
+     getStoredAccounts() {
+       return cr.sendWithPromise('SyncSetupGetStoredAccounts');

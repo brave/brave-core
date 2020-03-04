@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/resources/settings/people_page/sync_controls.js b/chrome/browser/resources/settings/people_page/sync_controls.js
+index acccef1b831a6ae58b610c772366a1f531c2b23a..e6752f18b265646cb76b3f35ae0b483aee03d0f1 100644
+--- a/chrome/browser/resources/settings/people_page/sync_controls.js
++++ b/chrome/browser/resources/settings/people_page/sync_controls.js
+@@ -76,7 +76,7 @@ Polymer({
+     this.addWebUIListener(
+         'sync-prefs-changed', this.handleSyncPrefsChanged_.bind(this));
+ 
+-    if (settings.getCurrentRoute() == settings.routes.SYNC_ADVANCED) {
++    if (settings.getCurrentRoute() == settings.routes.BRAVE_SYNC_SETUP) {
+       this.browserProxy_.didNavigateToSyncPage();
+     }
+   },
+@@ -181,6 +181,7 @@ Polymer({
+    * @private
+    */
+   syncControlsHidden_: function() {
++    return false;
+     if (!this.syncStatus) {
+       // Show sync controls by default.
+       return false;

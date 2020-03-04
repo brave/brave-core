@@ -1,0 +1,84 @@
+<link rel="import" href="chrome://resources/html/polymer.html">
+
+<link rel="import" href="chrome://resources/html/i18n_behavior.html">
+<link rel="import" href="chrome://resources/html/util.html">
+<link rel="import" href="chrome://resources/html/web_ui_listener_behavior.html">
+<link rel="import" href="chrome://resources/cr_elements/cr_dialog/cr_dialog.html">
+<link rel="import" href="chrome://resources/cr_elements/cr_button/cr_button.html">
+<link rel="import" href="chrome://resources/cr_elements/cr_icon_button/cr_icon_button.html">
+<link rel="import" href="chrome://resources/cr_elements/cr_input/cr_input.html">
+<link rel="import" href="chrome://resources/cr_elements/cr_radio_button/cr_radio_button.html">
+<link rel="import" href="chrome://resources/cr_elements/cr_radio_group/cr_radio_group.html">
+<link rel="import" href="chrome://resources/cr_elements/icons.html">
+<link rel="import" href="chrome://resources/cr_elements/shared_style_css.html">
+<link rel="import" href="chrome://resources/cr_elements/shared_vars_css.html">
+<link rel="import" href="chrome://resources/polymer/v1_0/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../people_page/sync_browser_proxy.html">
+<link rel="import" href="../people_page/sync_controls.html">
+<link rel="import" href="../privacy_page/personalization_options.html">
+<link rel="import" href="../route.html">
+<link rel="import" href="../settings_shared_css.html">
+<link rel="import" href="../settings_vars_css.html">
+<link rel="import" href="brave_sync_control.html">
+
+<dom-module id="settings-brave-sync-subpage">
+  <template>
+    <style include="cr-shared-style settings-shared iron-flex">
+      #sync-separator {
+        border-bottom: var(--cr-separator-line);
+      }
+
+    </style>
+    <template is="dom-if" if="[[shouldShowSyncAccountControl_(
+        syncStatus.syncSystemEnabled, syncStatus.signinAllowed)]]">
+      <settings-brave-sync-control embedded-in-subpage
+          sync-status="[[syncStatus]]" prefs="{{prefs}}"
+          passphrase ="{{passphrase_}}"
+          on-sync-setup-done="onSyncSetupDone_">
+      </settings-brave-sync-control>
+    </template>
+
+    <div id="sync-separator" hidden="[[!syncSectionDisabled_]]"></div>
+
+    <div id="sync-section" hidden="[[syncSectionDisabled_]]">
+      <div class="settings-box first">
+        <h2 class="cr-title-text start">$i18n{sync}</h2>
+      </div>
+
+      <div id="[[pages_.SPINNER]]" class="settings-box first settings-box-text"
+          hidden$="[[!isStatus_(pages_.SPINNER, pageStatus_)]]">
+        $i18n{syncLoading}
+      </div>
+      <div id="[[pages_.TIMEOUT]]" class="settings-box first settings-box-text"
+          hidden$="[[!isStatus_(pages_.TIMEOUT, pageStatus_)]]">
+        $i18n{syncTimeout}
+      </div>
+      <div id="[[pages_.CONFIGURE]]"
+           hidden$="[[!isStatus_(pages_.CONFIGURE, pageStatus_)]]">
+         <settings-sync-controls sync-status="[[syncStatus]]">
+         </settings-sync-controls>
+      </div>
+    </div>
+
+<if expr="not chromeos">
+    <template is="dom-if" if="[[showSetupCancelDialog_]]" restamp>
+      <cr-dialog id="setupCancelDialog" on-close="onSetupCancelDialogClose_"
+          ignore-popstate>
+        <div slot="title">$i18n{syncSetupCancelDialogTitle}</div>
+        <div slot="body">$i18n{syncSetupCancelDialogBody}</div>
+        <div slot="button-container">
+          <cr-button class="cancel-button"
+              on-click="onSetupCancelDialogBack_">
+            $i18n{back}
+          </cr-button>
+          <cr-button class="action-button"
+              on-click="onSetupCancelDialogConfirm_">
+            $i18n{cancelSync}
+          </cr-button>
+        </div>
+      </cr-dialog>
+    </template>
+</if>
+  </template>
+  <script src="brave_sync_subpage.js"></script>
+</dom-module>
