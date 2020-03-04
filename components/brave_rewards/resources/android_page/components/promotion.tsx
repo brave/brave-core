@@ -91,6 +91,7 @@ class Promotion extends React.Component<Props, State> {
   onSuccess = (promotionId: string) => {
     this.setState({
       promotionShow: false,
+      promotionStep: '',
       loading: false
     })
     this.actions.deletePromotion(promotionId)
