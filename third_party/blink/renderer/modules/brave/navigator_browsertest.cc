@@ -4,10 +4,8 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "base/path_service.h"
-#include "brave/browser/brave_content_browser_client.h"
 #include "brave/common/brave_paths.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/common/chrome_content_client.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test_utils.h"
@@ -15,6 +13,8 @@
 namespace {
 
 const char kDetectBraveTest[] = "/detect_brave.html";
+
+}  // namespace
 
 class NavigatorGetBraveDetectedTest : public InProcessBrowserTest {
  public:
@@ -37,8 +37,5 @@ IN_PROC_BROWSER_TEST_F(NavigatorGetBraveDetectedTest, IsDetected) {
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  EXPECT_EQ(true, EvalJs(
-      contents, "getBraveDetected()"));
+  EXPECT_EQ(true, EvalJs(contents, "getBraveDetected()"));
 }
-
-}  // namespace
