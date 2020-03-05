@@ -1,0 +1,11 @@
+<script>
+  var brave_detected = false;
+  navigator.brave.isBrave().then((response) => {
+    if (response === true) {
+      brave_detected = true;
+    }
+  });
+  function getBraveDetected() {
+    return brave_detected;
+  }
+</script>
