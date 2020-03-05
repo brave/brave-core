@@ -11,6 +11,7 @@
 #include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "content/public/browser/notification_source.h"
+#include "brave/common/pref_names.h"
 
 BraveProfileImpl::BraveProfileImpl(
     const base::FilePath& path,
@@ -20,6 +21,18 @@ BraveProfileImpl::BraveProfileImpl(
     scoped_refptr<base::SequencedTaskRunner> io_task_runner)
     : ProfileImpl(path, delegate, create_mode, creation_time, io_task_runner),
       weak_ptr_factory_(this) {
+#if !defined(OS_ANDROID)
+  const PrefService::Preference* pref =
+      GetPrefs()->FindPreference(kShieldsAdvancedViewEnabled);
+  if (!pref->HasUserSetting()) {
+    bool default_value = GetPrefs()->GetBoolean(kShieldsAdvancedViewEnabled);
+    // advanced view is defaulted to true for EXISTING users; false for new.
+    // preference needs to be explicitly set to hold its value
+    // see brave_profile_prefs.cc for where this default is determined
+    GetPrefs()->SetBoolean(kShieldsAdvancedViewEnabled, default_value);
+  }
+#endif
+
   // In sessions profiles, prefs are created from the original profile like how
   // incognito profile works. By the time chromium start to observe prefs
   // initialization in ProfileImpl constructor for the async creation case,
