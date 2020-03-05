@@ -64,22 +64,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "6c337c63662ee0ba4e57f6f8156d69ce.svg", IDR_BRAVE_NEW_TAB_IMG2 },
         // New tab Backgrounds
 #if !defined(OS_ANDROID)
-        { "ntp-1.webp", IDR_BRAVE_NEW_TAB_BACKGROUND1 },
-        { "ntp-2.webp", IDR_BRAVE_NEW_TAB_BACKGROUND2 },
-        { "ntp-3.webp", IDR_BRAVE_NEW_TAB_BACKGROUND3 },
-        { "ntp-4.webp", IDR_BRAVE_NEW_TAB_BACKGROUND4 },
-        { "ntp-5.webp", IDR_BRAVE_NEW_TAB_BACKGROUND5 },
-        { "ntp-6.webp", IDR_BRAVE_NEW_TAB_BACKGROUND6 },
-        { "ntp-7.webp", IDR_BRAVE_NEW_TAB_BACKGROUND7 },
-        { "ntp-8.webp", IDR_BRAVE_NEW_TAB_BACKGROUND8 },
-        { "ntp-9.webp", IDR_BRAVE_NEW_TAB_BACKGROUND9 },
-        { "ntp-10.webp", IDR_BRAVE_NEW_TAB_BACKGROUND10 },
-        { "ntp-11.webp", IDR_BRAVE_NEW_TAB_BACKGROUND11 },
-        { "ntp-12.webp", IDR_BRAVE_NEW_TAB_BACKGROUND12 },
-        { "ntp-13.webp", IDR_BRAVE_NEW_TAB_BACKGROUND13 },
-        { "ntp-14.webp", IDR_BRAVE_NEW_TAB_BACKGROUND14 },
-        { "ntp-15.webp", IDR_BRAVE_NEW_TAB_BACKGROUND15 },
-        { "ntp-16.webp", IDR_BRAVE_NEW_TAB_BACKGROUND16 },
         { "ntp-dummy-brandedwallpaper/wallpaper-0.jpg",
             IDR_BRAVE_NEW_TAB_DUMMY_BRANDED_WALLPAPER_BG_1 },
         { "ntp-dummy-brandedwallpaper/wallpaper-1.jpg",
@@ -88,11 +72,21 @@ void CustomizeWebUIHTMLSource(const std::string &name,
             IDR_BRAVE_NEW_TAB_DUMMY_BRANDED_WALLPAPER_BG_3 },
         { "ntp-dummy-brandedwallpaper/logo.png",
             IDR_BRAVE_NEW_TAB_DUMMY_BRANDED_WALLPAPER_LOGO },
+        { "anders-jilden.webp", IDR_BRAVE_NEW_TAB_BACKGROUND1 },
+        { "andreas-gucklhorn.webp", IDR_BRAVE_NEW_TAB_BACKGROUND2 },
+        { "andy-mai.webp", IDR_BRAVE_NEW_TAB_BACKGROUND3 },
+        { "anton-repponen.webp", IDR_BRAVE_NEW_TAB_BACKGROUND5 },
+        { "ben-karpinski.webp", IDR_BRAVE_NEW_TAB_BACKGROUND6 },
+        { "joe-gardner.webp", IDR_BRAVE_NEW_TAB_BACKGROUND8 },
+        { "matt-palmer.webp", IDR_BRAVE_NEW_TAB_BACKGROUND10 },
+        { "svalbard-jerol-soibam.webp", IDR_BRAVE_NEW_TAB_BACKGROUND12 },
+        { "will-christiansen-glacier-peak.webp", IDR_BRAVE_NEW_TAB_BACKGROUND13 },
+        { "will-christiansen-ice.webp", IDR_BRAVE_NEW_TAB_BACKGROUND14 },
 #endif
         // private tab
         { "c168145d6bf1abf2c0322636366f7dbe.svg", IDR_BRAVE_PRIVATE_TAB_TOR_IMG },               // NOLINT
         { "dbdc336ccc651b8a7c925b3482d6e65a.svg", IDR_BRAVE_PRIVATE_TAB_IMG }
-      }
+    }
 #if !defined(OS_ANDROID)
     }, {
       std::string("rewards"), {
