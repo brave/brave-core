@@ -584,3 +584,27 @@ IN_PROC_BROWSER_TEST_F(
     EXPECT_EQ(promotion_sql.ColumnDouble(0), 1.25);
   }
 }
+
+IN_PROC_BROWSER_TEST_F(
+    RewardsDatabaseBrowserTest,
+    Migration_16_ContributionInfo) {
+  {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    InitDB();
+
+    EXPECT_EQ(CountTableRows("contribution_info"), 5);
+
+    std::vector<int> list;
+    std::string query = "SELECT created_at FROM contribution_info";
+    sql::Statement sql(db_.GetUniqueStatement(query.c_str()));
+    while (sql.Step()) {
+      list.push_back(sql.ColumnInt64(0));
+    }
+
+    EXPECT_EQ(list.at(0), 1570614352);
+    EXPECT_EQ(list.at(1), 1574671265);
+    EXPECT_EQ(list.at(2), 1574671276);
+    EXPECT_EQ(list.at(3), 1574671293);
+    EXPECT_EQ(list.at(4), 1583310925);
+  }
+}

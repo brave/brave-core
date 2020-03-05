@@ -7,6 +7,7 @@
 #include <utility>
 
 #include "base/strings/stringprintf.h"
+#include "base/time/time.h"
 #include "bat/ledger/internal/common/bind_util.h"
 #include "bat/ledger/internal/database/database_contribution_info.h"
 #include "bat/ledger/internal/database/database_util.h"
@@ -159,6 +160,9 @@ bool DatabaseContributionInfo::Migrate(
     }
     case 15: {
       return MigrateToV15(transaction);
+    }
+    case 16: {
+      return MigrateToV16(transaction);
     }
     default: {
       return true;
@@ -336,12 +340,35 @@ bool DatabaseContributionInfo::MigrateToV15(
   return publishers_->Migrate(transaction, 15);
 }
 
+bool DatabaseContributionInfo::MigrateToV16(
+    ledger::DBTransaction* transaction) {
+  DCHECK(transaction);
+
+  const std::string query = base::StringPrintf(
+      "UPDATE %s SET created_at = "
+      "(CASE WHEN datetime(created_at, 'unixepoch') IS NULL "
+      " THEN strftime('%%s', datetime(created_at)) "
+      " ELSE created_at END)",
+      table_name_);
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = query;
+  transaction->commands.push_back(std::move(command));
+
+  return true;
+}
+
 void DatabaseContributionInfo::InsertOrUpdate(
     ledger::ContributionInfoPtr info,
     ledger::ResultCallback callback) {
   if (!info) {
     callback(ledger::Result::LEDGER_ERROR);
     return;
+  }
+
+  auto created_at = info->created_at;
+  if (info->created_at == 0) {
+    created_at = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
   }
 
   auto transaction = ledger::DBTransaction::New();
@@ -361,12 +388,7 @@ void DatabaseContributionInfo::InsertOrUpdate(
   BindInt(command.get(), 2, static_cast<int>(info->type));
   BindInt(command.get(), 3, static_cast<int>(info->step));
   BindInt(command.get(), 4, info->retry_count);
-
-  if (info->created_at == 0) {
-    BindNull(command.get(), 5);
-  } else {
-    BindInt64(command.get(), 5, info->created_at);
-  }
+  BindInt64(command.get(), 5, created_at);
 
   transaction->commands.push_back(std::move(command));
 
