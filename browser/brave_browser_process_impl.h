@@ -58,9 +58,6 @@ namespace extensions {
 class BraveTorClientUpdater;
 }
 
-using brave_component_updater::BraveComponent;
-using ntp_sponsored_images::NTPSponsoredImagesService;
-
 class BraveBrowserProcessImpl : public BrowserProcessImpl {
  public:
   explicit BraveBrowserProcessImpl(StartupData* startup_data);
@@ -96,7 +93,8 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   BraveWidevineBundleManager* brave_widevine_bundle_manager();
 #endif
   brave::BraveStatsUpdater* brave_stats_updater();
-  NTPSponsoredImagesService* ntp_sponsored_images_service();
+  ntp_sponsored_images::NTPSponsoredImagesService*
+      ntp_sponsored_images_service();
 
  private:
   // BrowserProcessImpl overrides:
@@ -112,13 +110,15 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   void UpdateBraveDarkMode();
   void OnBraveDarkModeChanged();
 
-  BraveComponent::Delegate* brave_component_updater_delegate();
+  brave_component_updater::BraveComponent::Delegate*
+      brave_component_updater_delegate();
 
   // local_data_files_service_ should always be first because it needs
   // to be destroyed last
   std::unique_ptr<brave_component_updater::LocalDataFilesService>
       local_data_files_service_;
-  std::unique_ptr<BraveComponent::Delegate> brave_component_updater_delegate_;
+  std::unique_ptr<brave_component_updater::BraveComponent::Delegate>
+      brave_component_updater_delegate_;
   std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
   std::unique_ptr<brave_shields::AdBlockCustomFiltersService>
       ad_block_custom_filters_service_;
@@ -151,7 +151,8 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   std::unique_ptr<BraveWidevineBundleManager> brave_widevine_bundle_manager_;
 #endif
   scoped_refptr<brave::BraveP3AService> brave_p3a_service_;
-  std::unique_ptr<NTPSponsoredImagesService> ntp_sponsored_images_service_;
+  std::unique_ptr<ntp_sponsored_images::NTPSponsoredImagesService>
+      ntp_sponsored_images_service_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 

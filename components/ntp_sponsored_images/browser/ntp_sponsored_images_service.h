@@ -14,27 +14,9 @@
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 
-FORWARD_DECLARE_TEST(NTPSponsoredImagesServiceTest, InternalDataTest);
-FORWARD_DECLARE_TEST(NTPSponsoredImagesViewCounterTest,
-    NotActiveInitially);
-FORWARD_DECLARE_TEST(NTPSponsoredImagesViewCounterTest,
-    NotActiveWithBadData);
-FORWARD_DECLARE_TEST(NTPSponsoredImagesViewCounterTest,
-    NotActiveOptedOut);
-FORWARD_DECLARE_TEST(NTPSponsoredImagesViewCounterTest,
-    IsActiveOptedIn);
-FORWARD_DECLARE_TEST(NTPSponsoredImagesViewCounterTest,
-    ActiveInitiallyOptedIn);
-
 namespace component_updater {
 class ComponentUpdateService;
-}
-
-namespace content {
-class BrowserContext;
-}  // namespace content
-
-class NTPSponsoredImagesServiceTest;
+}  // namespace component_updater
 
 namespace ntp_sponsored_images {
 
@@ -62,36 +44,31 @@ class NTPSponsoredImagesService {
   void RemoveObserver(Observer* observer);
   bool HasObserver(Observer* observer);
 
-  // This should be called by client because this service is context neutral.
-  void AddDataSource(content::BrowserContext* browser_context);
-
   NTPSponsoredImagesData* GetSponsoredImagesData() const;
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(::NTPSponsoredImagesServiceTest, InternalDataTest);
-  FRIEND_TEST_ALL_PREFIXES(::NTPSponsoredImagesViewCounterTest,
-      NotActiveInitially);
-  FRIEND_TEST_ALL_PREFIXES(::NTPSponsoredImagesViewCounterTest,
-      NotActiveWithBadData);
-  FRIEND_TEST_ALL_PREFIXES(::NTPSponsoredImagesViewCounterTest,
-      NotActiveOptedOut);
-  FRIEND_TEST_ALL_PREFIXES(::NTPSponsoredImagesViewCounterTest,
-      IsActiveOptedIn);
-  FRIEND_TEST_ALL_PREFIXES(::NTPSponsoredImagesViewCounterTest,
-      ActiveInitiallyOptedIn);
-
+  FRIEND_TEST_ALL_PREFIXES(NTPSponsoredImagesServiceTest, InternalDataTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPSponsoredImagesViewCounterTest,
+                           NotActiveInitially);
+  FRIEND_TEST_ALL_PREFIXES(NTPSponsoredImagesViewCounterTest,
+                           NotActiveWithBadData);
+  FRIEND_TEST_ALL_PREFIXES(NTPSponsoredImagesViewCounterTest,
+                           NotActiveOptedOut);
+  FRIEND_TEST_ALL_PREFIXES(NTPSponsoredImagesViewCounterTest,
+                           IsActiveOptedIn);
+  FRIEND_TEST_ALL_PREFIXES(NTPSponsoredImagesViewCounterTest,
+                           ActiveInitiallyOptedIn);
 
   void OnComponentReady(const base::FilePath& installed_dir);
   void OnGetPhotoJsonData(const std::string& photo_json);
   void NotifyObservers();
 
-  void ResetImagesDataForTest();
-
-  base::FilePath photos_manifest_path_;
+  base::FilePath installed_dir_;
   base::ObserverList<Observer>::Unchecked observer_list_;
   std::unique_ptr<NTPSponsoredImagesData> images_data_;
   base::WeakPtrFactory<NTPSponsoredImagesService> weak_factory_;
 };
 
 }  // namespace ntp_sponsored_images
+
 #endif  // BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_BROWSER_NTP_SPONSORED_IMAGES_SERVICE_H_

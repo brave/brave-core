@@ -11,6 +11,7 @@ namespace prefs {
 
 extern const char kNewTabPageShowBrandedBackgroundImage[];
 extern const char kBrandedWallpaperNotificationDismissed[];
+extern const char kNewTabPageShowBackgroundImage[];
 
 }  // namespace prefs
 }  // namespace ntp_sponsored_images
