@@ -38,6 +38,7 @@ import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tabmodel.TabModelImpl;
 import org.chromium.chrome.browser.ui.widget.RoundedIconGenerator;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveAdsNativeHelper;
 
 
 import java.io.IOException;
@@ -393,5 +394,9 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
         } else {
             return Html.fromHtml(string);
         }
+    }
+
+    public static boolean isAnonWallet() {
+      return BraveRewardsNativeWorker.getInstance().IsAnonWallet();
     }
 }
