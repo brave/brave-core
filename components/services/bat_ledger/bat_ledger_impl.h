@@ -215,6 +215,9 @@ class BatLedgerImpl : public mojom::BatLedger,
       const int year,
       GetMonthlyReportCallback callback) override;
 
+  void GetAllMonthlyReportIds(
+      GetAllMonthlyReportIdsCallback callback) override;
+
  private:
   void SetCatalogIssuers(
       const std::string& info) override;
@@ -401,6 +404,10 @@ class BatLedgerImpl : public mojom::BatLedger,
       CallbackHolder<GetMonthlyReportCallback>* holder,
       const ledger::Result result,
       ledger::MonthlyReportInfoPtr info);
+
+  static void OnGetAllMonthlyReportIds(
+      CallbackHolder<GetAllMonthlyReportIdsCallback>* holder,
+      const std::vector<std::string>& ids);
 
   std::unique_ptr<BatLedgerClientMojoProxy> bat_ledger_client_mojo_proxy_;
   std::unique_ptr<ledger::Ledger> ledger_;

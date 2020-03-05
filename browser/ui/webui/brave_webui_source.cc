@@ -80,7 +80,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "joe-gardner.webp", IDR_BRAVE_NEW_TAB_BACKGROUND8 },
         { "matt-palmer.webp", IDR_BRAVE_NEW_TAB_BACKGROUND10 },
         { "svalbard-jerol-soibam.webp", IDR_BRAVE_NEW_TAB_BACKGROUND12 },
-        { "will-christiansen-glacier-peak.webp", IDR_BRAVE_NEW_TAB_BACKGROUND13 },
+        { "will-christiansen-glacier-peak.webp", IDR_BRAVE_NEW_TAB_BACKGROUND13 },            // NOLINT
         { "will-christiansen-ice.webp", IDR_BRAVE_NEW_TAB_BACKGROUND14 },
 #endif
         // private tab

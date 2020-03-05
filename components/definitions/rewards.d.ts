@@ -51,6 +51,7 @@ declare namespace Rewards {
     excludedList: ExcludedPublisher[]
     firstLoad: boolean | null
     monthlyReport: MonthlyReport
+    monthlyReportIds: string[]
     promotions?: Promotion[]
     pendingContributions: PendingContribution[]
     pendingContributionTotal: number

@@ -1672,4 +1672,9 @@ void LedgerImpl::GetMonthlyReport(
   bat_report_->GetMonthly(month, year, callback);
 }
 
+void LedgerImpl::GetAllMonthlyReportIds(
+    ledger::GetAllMonthlyReportIdsCallback callback) {
+  bat_report_->GetAllMonthlyIds(callback);
+}
+
 }  // namespace bat_ledger

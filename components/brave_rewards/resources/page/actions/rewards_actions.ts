@@ -310,7 +310,7 @@ export const onOnlyAnonWallet = (only: boolean) => action(types.ON_ONLY_ANON_WAL
   only
 })
 
-export const getMonthlyStatement = (month: number, year: number) => action(types.GET_MONTHLY_REPORT, {
+export const getMonthlyReport = (month?: number, year?: number) => action(types.GET_MONTHLY_REPORT, {
   month,
   year
 })
@@ -323,3 +323,7 @@ export const onMonthlyReport = (properties: { result: number, month: number, yea
 })
 
 export const onReconcileStampReset = () => action(types.ON_RECONCILE_STAMP_RESET)
+
+export const getMonthlyReportIds = () => action(types.GET_MONTHLY_REPORT_IDS)
+
+export const onMonthlyReportIds = (ids: string[]) => action(types.ON_MONTHLY_REPORT_IDS, ids)

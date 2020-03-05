@@ -3462,4 +3462,18 @@ void RewardsServiceImpl::ForTestingSetTestResponseCallback(
   test_response_callback_ = callback;
 }
 
+void RewardsServiceImpl::GetAllMonthlyReportIds(
+      GetAllMonthlyReportIdsCallback callback) {
+  bat_ledger_->GetAllMonthlyReportIds(
+      base::BindOnce(&RewardsServiceImpl::OnGetAllMonthlyReportIds,
+                     AsWeakPtr(),
+                     std::move(callback)));
+}
+
+void RewardsServiceImpl::OnGetAllMonthlyReportIds(
+    GetAllMonthlyReportIdsCallback callback,
+    const std::vector<std::string>& ids) {
+  std::move(callback).Run(ids);
+}
+
 }  // namespace brave_rewards

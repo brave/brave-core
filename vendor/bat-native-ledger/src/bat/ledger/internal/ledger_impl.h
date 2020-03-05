@@ -684,6 +684,9 @@ class LedgerImpl : public ledger::Ledger,
       const int year,
       ledger::GetMonthlyReportCallback callback) override;
 
+  void GetAllMonthlyReportIds(
+      ledger::GetAllMonthlyReportIdsCallback callback) override;
+
  private:
   void InitializeConfirmations(
       const bool execute_create_script,

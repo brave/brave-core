@@ -24,7 +24,7 @@ import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
 import WalletOff from '../../ui/components/walletOff'
-import {ExtendedActivityRow, SummaryItem, SummaryType} from '../../ui/components/modalActivity'
+import { ExtendedActivityRow, SummaryItem, SummaryType } from '../../ui/components/modalActivity'
 import { DetailRow as TransactionRow } from '../../ui/components/tableTransactions'
 
 const clipboardCopy = require('clipboard-copy')
@@ -59,6 +59,7 @@ class PageWallet extends React.Component<Props, State> {
   componentDidMount () {
     this.isBackupUrl()
     this.isVerifyUrl()
+    this.actions.getMonthlyReportIds()
   }
 
   onModalBackupClose = () => {
@@ -176,7 +177,7 @@ class PageWallet extends React.Component<Props, State> {
 
   onModalActivityToggle = () => {
     if (!this.state.modalActivity) {
-      this.actions.getMonthlyStatement(new Date().getMonth() + 1, new Date().getFullYear())
+      this.actions.getMonthlyReport()
     }
 
     this.setState({
@@ -220,9 +221,15 @@ class PageWallet extends React.Component<Props, State> {
     })
   }
 
-  onModalActivityAction (action: string) {
-    // TODO NZ implement
-    console.log(action)
+  onModalActivityAction = (action: string, value: string, node: any) => {
+    if (action === 'onMonthChange') {
+      const items = value.split('_')
+      if (items.length !== 2) {
+        return
+      }
+      this.actions.getMonthlyReport(parseInt(items[1], 10), parseInt(items[0], 10))
+      return
+    }
   }
 
   walletAlerts = (): AlertWallet | null => {
@@ -508,7 +515,7 @@ class PageWallet extends React.Component<Props, State> {
       },
       {
         type: 'monthly',
-        token: this.getBalanceToken('donation')
+        token: this.getBalanceToken('monthly')
       },
       {
         type: 'tip',
@@ -652,6 +659,29 @@ class PageWallet extends React.Component<Props, State> {
     return transactions
   }
 
+  getMonthlyReportDropDown = (): Record<string, string> => {
+    const { monthlyReportIds } = this.props.rewardsData
+
+    let ids = monthlyReportIds
+    if (!monthlyReportIds) {
+      ids = []
+      ids.push(`${new Date().getFullYear()}_${new Date().getMonth() + 1}`)
+    }
+
+    let result: Record<string, string> = {}
+    ids.forEach((id: string) => {
+      const items = id.split('_')
+      if (items.length !== 2) {
+        return
+      }
+
+      const date = new Date(Date.UTC(parseInt(items[0], 10), parseInt(items[1], 10) - 1, 1))
+      result[id] = new Intl.DateTimeFormat('default', { month: 'long', year: 'numeric' }).format(date)
+    })
+
+    return result
+  }
+
   generateMonthlyReport = () => {
     const {
       monthlyReport,
@@ -665,22 +695,15 @@ class PageWallet extends React.Component<Props, State> {
 
     const paymentDay = new Intl.DateTimeFormat('default', { day: 'numeric' }).format(reconcileStamp * 1000)
 
-    const months = {
-      '12-2019': 'December 2019',
-      '11-2019': 'November 2019',
-      '10-2019': 'October 2019',
-      '9-2019': 'September 2019'
-    } // TODO
-
     return (
       <ModalActivity
         onlyAnonWallet={ui.onlyAnonWallet}
         summary={this.generateSummaryRows()}
         activityRows={this.generateActivityRows()}
         transactionRows={this.generateTransactionRows()}
-        months={months}
+        months={this.getMonthlyReportDropDown()}
         onClose={this.onModalActivityToggle}
-        onMonthChange={this.onModalActivityAction.bind('onMonthChange')}
+        onMonthChange={this.onModalActivityAction.bind(this,'onMonthChange')}
         paymentDay={parseInt(paymentDay, 10)}
       />
     )

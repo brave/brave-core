@@ -458,6 +458,11 @@ ledger::MonthlyReportInfoPtr FromStringToMonthlyReport(
       balance_report->earning_from_ads = *earning_from_ads;
     }
 
+    const auto auto_contribute = balance->FindDoubleKey("auto_contribute");
+    if (auto_contribute) {
+      balance_report->auto_contribute = *auto_contribute;
+    }
+
     const auto recurring_donation =
         balance->FindDoubleKey("recurring_donation");
     if (recurring_donation) {

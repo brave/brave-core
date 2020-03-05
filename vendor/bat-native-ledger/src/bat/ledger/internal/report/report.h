@@ -26,6 +26,8 @@ class Report {
       const int year,
       ledger::GetMonthlyReportCallback callback);
 
+  void GetAllMonthlyIds(ledger::GetAllMonthlyReportIdsCallback callback);
+
  private:
   void OnBalance(
       const ledger::Result result,

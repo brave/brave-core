@@ -148,10 +148,17 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
     return items
   }
 
+  onMonthChange = (value: string, child: React.ReactNode) => {
+    if (value === this.state.currentMonth) {
+      return
+    }
+
+    this.props.onMonthChange(value, child)
+  }
+
   getMonthlyDropDown = () => {
     const {
       id,
-      onMonthChange,
       months
     } = this.props
 
@@ -159,7 +166,7 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
       <ControlWrapper text={this.modalTitle}>
         <Select
           value={this.state.currentMonth}
-          onChange={onMonthChange}
+          onChange={this.onMonthChange}
         >
           {
             Object.keys(months).map((item: string) => {

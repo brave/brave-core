@@ -209,6 +209,9 @@ class MockRewardsService : public RewardsService {
       const uint32_t month,
       const uint32_t year,
       brave_rewards::GetMonthlyReportCallback callback));
+
+  MOCK_METHOD1(GetAllMonthlyReportIds, void(
+      brave_rewards::GetAllMonthlyReportIdsCallback callback));
 };
 
 class AdsServiceTest : public testing::Test {

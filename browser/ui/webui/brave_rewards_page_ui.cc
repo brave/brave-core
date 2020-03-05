@@ -188,10 +188,14 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
   void GetMonthlyReport(const base::ListValue* args);
 
+  void GetAllMonthlyReportIds(const base::ListValue* args);
+
   void OnGetMonthlyReport(
       const uint32_t month,
       const uint32_t year,
       const brave_rewards::MonthlyReport& report);
+
+  void OnGetAllMonthlyReportIds(const std::vector<std::string>& ids);
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
@@ -462,6 +466,9 @@ void RewardsDOMHandler::RegisterMessages() {
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getMonthlyReport",
       base::BindRepeating(&RewardsDOMHandler::GetMonthlyReport,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.getMonthlyReportIds",
+      base::BindRepeating(&RewardsDOMHandler::GetAllMonthlyReportIds,
       base::Unretained(this)));
 }
 
@@ -1721,7 +1728,7 @@ void RewardsDOMHandler::OnGetBalanceReport(
   report_base.SetDoubleKey("grant", report.grants);
   report_base.SetDoubleKey("ads", report.earning_from_ads);
   report_base.SetDoubleKey("contribute", report.auto_contribute);
-  report_base.SetDoubleKey("donation", report.recurring_donation);
+  report_base.SetDoubleKey("monthly", report.recurring_donation);
   report_base.SetDoubleKey("tips", report.one_time_donation);
 
   base::Value data(base::Value::Type::DICTIONARY);
@@ -1767,7 +1774,7 @@ void RewardsDOMHandler::OnGetMonthlyReport(
   balance_report.SetDoubleKey("grant", report.balance.grants);
   balance_report.SetDoubleKey("ads", report.balance.earning_from_ads);
   balance_report.SetDoubleKey("contribute", report.balance.auto_contribute);
-  balance_report.SetDoubleKey("donation", report.balance.recurring_donation);
+  balance_report.SetDoubleKey("monthly", report.balance.recurring_donation);
   balance_report.SetDoubleKey("tips", report.balance.one_time_donation);
 
   base::Value transactions(base::Value::Type::LIST);
@@ -1833,6 +1840,28 @@ void RewardsDOMHandler::GetMonthlyReport(const base::ListValue* args) {
           weak_factory_.GetWeakPtr(),
           month,
           year));
+}
+
+void RewardsDOMHandler::OnGetAllMonthlyReportIds(
+    const std::vector<std::string>& ids) {
+  base::Value list(base::Value::Type::LIST);
+  for (const auto& item : ids) {
+    list.Append(base::Value(item));
+  }
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards.monthlyReportIds",
+      list);
+}
+
+void RewardsDOMHandler::GetAllMonthlyReportIds(const base::ListValue* args) {
+  if (!rewards_service_) {
+    return;
+  }
+
+  rewards_service_->GetAllMonthlyReportIds(
+      base::BindOnce(&RewardsDOMHandler::OnGetAllMonthlyReportIds,
+          weak_factory_.GetWeakPtr()));
 }
 
 

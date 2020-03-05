@@ -3,9 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
 #include <utility>
 #include <vector>
+#include <iostream>
 
+#include "base/strings/string_split.h"
 #include "bat/ledger/internal/common/bind_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/report/report.h"
@@ -23,9 +26,9 @@ Report::Report(bat_ledger::LedgerImpl* ledger):
 Report::~Report() = default;
 
 void Report::GetMonthly(
-      const ledger::ActivityMonth month,
-      const int year,
-      ledger::GetMonthlyReportCallback callback) {
+    const ledger::ActivityMonth month,
+    const int year,
+    ledger::GetMonthlyReportCallback callback) {
   auto balance_callback = std::bind(&Report::OnBalance,
       this,
       _1,
@@ -74,7 +77,6 @@ void Report::OnTransactions(
     const uint32_t year,
     const std::string& monthly_report_string,
     ledger::GetMonthlyReportCallback callback) {
-
   auto monthly_report = braveledger_bind_util::FromStringToMonthlyReport(
       monthly_report_string);
 
@@ -104,7 +106,6 @@ void Report::OnContributions(
     ledger::ContributionReportInfoList contribution_report,
     const std::string& monthly_report_string,
     ledger::GetMonthlyReportCallback callback) {
-
   auto monthly_report = braveledger_bind_util::FromStringToMonthlyReport(
       monthly_report_string);
 
@@ -118,6 +119,48 @@ void Report::OnContributions(
   monthly_report->contributions = std::move(contribution_report);
 
   callback(ledger::Result::LEDGER_OK, std::move(monthly_report));
+}
+
+// This will be removed when we move reports in database and just order in db
+bool CompareReportIds(const std::string& id_1, const std::string& id_2) {
+  auto id_1_parts = base::SplitString(
+      id_1,
+      "_",
+      base::TRIM_WHITESPACE,
+      base::SPLIT_WANT_NONEMPTY);
+
+  auto id_2_parts = base::SplitString(
+      id_2,
+      "_",
+      base::TRIM_WHITESPACE,
+      base::SPLIT_WANT_NONEMPTY);
+
+  DCHECK(id_1_parts.size() == 2 && id_2_parts.size() == 2);
+
+  const int id_1_year = std::stoi(id_1_parts[0]);
+  const int id_2_year = std::stoi(id_2_parts[0]);
+  const int id_1_month = std::stoi(id_1_parts[1]);
+  const int id_2_month = std::stoi(id_2_parts[1]);
+
+  if (id_1_year == id_2_year) {
+    return id_1_month > id_2_month;
+  }
+
+  return id_1_year > id_2_year;
+}
+
+void Report::GetAllMonthlyIds(ledger::GetAllMonthlyReportIdsCallback callback) {
+  auto reports = ledger_->GetAllBalanceReports();
+
+  std::vector<std::string> ids;
+
+  for (auto const& report : reports) {
+    ids.push_back(report.first);
+  }
+
+  std::sort(ids.begin(), ids.end(), CompareReportIds);
+
+  callback(ids);
 }
 
 }  // namespace braveledger_report

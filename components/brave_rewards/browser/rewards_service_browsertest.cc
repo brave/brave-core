@@ -996,7 +996,7 @@ class BraveRewardsBrowserTest
 
   std::string RewardsPageTipSummaryAmount() const {
     std::string amount = ElementInnerText(
-        "[data-test-id=summary-tips] [color=donation] span span");
+        "[data-test-id=summary-tips] [color=contribute] span span");
     return amount + " BAT";
   }
 
@@ -1225,7 +1225,7 @@ class BraveRewardsBrowserTest
 
       // Check that tip table shows the appropriate tip amount
       const std::string selector = monthly
-          ? "[data-test-id='summary-donation']"
+          ? "[data-test-id='summary-monthly']"
           : "[data-test-id='summary-tips']";
 
       std::string page_amount = ElementInnerText(selector);
@@ -1446,6 +1446,8 @@ class BraveRewardsBrowserTest
       const ledger::PublisherStatus status,
       const bool should_contribute = false,
       const bool recurring = false) {
+    tip_reconcile_completed_ = false;
+    pending_tip_saved_ = false;
     auto site = std::make_unique<brave_rewards::ContentSite>();
     site->id = publisher_key;
     site->name = publisher_key;

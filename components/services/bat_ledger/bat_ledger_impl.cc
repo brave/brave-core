@@ -1033,4 +1033,27 @@ void BatLedgerImpl::GetMonthlyReport(
           _2));
 }
 
+// static
+void BatLedgerImpl::OnGetAllMonthlyReportIds(
+    CallbackHolder<GetAllMonthlyReportIdsCallback>* holder,
+    const std::vector<std::string>& ids) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(ids);
+  }
+
+  delete holder;
+}
+
+void BatLedgerImpl:: GetAllMonthlyReportIds(
+    GetAllMonthlyReportIdsCallback callback) {
+  auto* holder = new CallbackHolder<GetAllMonthlyReportIdsCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->GetAllMonthlyReportIds(
+      std::bind(BatLedgerImpl::OnGetAllMonthlyReportIds,
+          holder,
+          _1));
+}
+
 }  // namespace bat_ledger

@@ -295,6 +295,8 @@ class RewardsServiceImpl : public RewardsService,
       const uint32_t year,
       GetMonthlyReportCallback callback) override;
 
+  void GetAllMonthlyReportIds(GetAllMonthlyReportIdsCallback callback) override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
   void StartMonthlyContributionForTest();
@@ -656,6 +658,10 @@ class RewardsServiceImpl : public RewardsService,
   void OnRunDBTransaction(
       ledger::RunDBTransactionCallback callback,
       ledger::DBCommandResponsePtr response);
+
+  void OnGetAllMonthlyReportIds(
+      GetAllMonthlyReportIdsCallback callback,
+      const std::vector<std::string>& ids);
 
 #if defined(OS_ANDROID)
   ledger::Environment GetServerEnvironmentForAndroid();
