@@ -1,0 +1,29 @@
+# common includes which can help minimize patches for
+# src/third_party/blink/renderer/core/BUILD.gn
+brave_blink_renderer_core_visibility = [
+  "//brave/third_party/blink/renderer/*"
+]
+
+brave_blink_renderer_core_public_deps = [
+  "//brave/third_party/blink/renderer"
+]
+
+# common includes which can help minimize patches for
+# src/third_party/blink/renderer/modules/BUILD.gn
+brave_blink_renderer_modules_visibility = [
+  "//brave/third_party/blink/renderer/*"
+]
+
+brave_blink_sub_modules = [
+  "//brave/third_party/blink/renderer/modules/brave"
+]
+
+# common includes which can help minimize patches for
+# src/third_party/blink/renderer/modules/modules_idl_files.gni
+brave_modules_idl_files = get_path_info([
+  "//brave/third_party/blink/renderer/modules/brave/brave.idl",
+], "abspath")
+
+brave_modules_dependency_idl_files = get_path_info([
+  "//brave/third_party/blink/renderer/modules/brave/navigator_brave.idl",
+], "abspath")
