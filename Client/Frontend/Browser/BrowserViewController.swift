@@ -561,6 +561,8 @@ class BrowserViewController: UIViewController {
         setupConstraints()
         
         updateRewardsButtonState()
+        
+        applyTheme(Theme.of(tabManager.selectedTab))
 
         // Setup UIDropInteraction to handle dragging and dropping
         // links into the view from other apps.
@@ -3205,6 +3207,7 @@ extension BrowserViewController: Themeable {
         
         theme.applyAppearanceProperties()
 
+        view.backgroundColor = theme.colors.home
         statusBarOverlay.backgroundColor = topToolbar.backgroundColor
         setNeedsStatusBarAppearanceUpdate()
     }
