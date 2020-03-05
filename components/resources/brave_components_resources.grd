@@ -47,18 +47,13 @@
         <include name="IDR_BRAVE_NEW_TAB_BACKGROUND1" file="../img/newtab/backgrounds/anders-jilden.webp" type="BINDATA" />
         <include name="IDR_BRAVE_NEW_TAB_BACKGROUND2" file="../img/newtab/backgrounds/andreas-gucklhorn.webp" type="BINDATA" />
         <include name="IDR_BRAVE_NEW_TAB_BACKGROUND3" file="../img/newtab/backgrounds/andy-mai.webp" type="BINDATA" />
-        <include name="IDR_BRAVE_NEW_TAB_BACKGROUND4" file="../img/newtab/backgrounds/annie-spratt.webp" type="BINDATA" />
         <include name="IDR_BRAVE_NEW_TAB_BACKGROUND5" file="../img/newtab/backgrounds/anton-repponen.webp" type="BINDATA" />
         <include name="IDR_BRAVE_NEW_TAB_BACKGROUND6" file="../img/newtab/backgrounds/ben-karpinski.webp" type="BINDATA" />
-        <include name="IDR_BRAVE_NEW_TAB_BACKGROUND7" file="../img/newtab/backgrounds/dc-cavalleri.webp" type="BINDATA" />
         <include name="IDR_BRAVE_NEW_TAB_BACKGROUND8" file="../img/newtab/backgrounds/joe-gardner.webp" type="BINDATA" />
-        <include name="IDR_BRAVE_NEW_TAB_BACKGROUND9" file="../img/newtab/backgrounds/louis-kim.webp" type="BINDATA" />
         <include name="IDR_BRAVE_NEW_TAB_BACKGROUND10" file="../img/newtab/backgrounds/matt-palmer.webp" type="BINDATA" />
-        <include name="IDR_BRAVE_NEW_TAB_BACKGROUND11" file="../img/newtab/backgrounds/oliwier-gesla.webp" type="BINDATA" />
         <include name="IDR_BRAVE_NEW_TAB_BACKGROUND12" file="../img/newtab/backgrounds/svalbard-jerol-soibam.webp" type="BINDATA" />
         <include name="IDR_BRAVE_NEW_TAB_BACKGROUND13" file="../img/newtab/backgrounds/will-christiansen-glacier-peak.webp" type="BINDATA" />
         <include name="IDR_BRAVE_NEW_TAB_BACKGROUND14" file="../img/newtab/backgrounds/will-christiansen-ice.webp" type="BINDATA" />
-        <include name="IDR_BRAVE_NEW_TAB_BACKGROUND15" file="../img/newtab/backgrounds/xavier-balderas-cejudo.webp" type="BINDATA" />
       </if>
 
       <!-- WebUI private new tab resources -->

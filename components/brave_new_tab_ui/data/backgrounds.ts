@@ -2,13 +2,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-//  'name': '1',
-//  'source': 'ntp-1.webp',
-//  'author': 'Pok Rie',
-//  'link': 'https://www.pexels.com/@pok-rie-33563',
-//  'originalUrl': 'https://www.pexels.com/photo/red-white-and-blue-abstract-painting-1045850/',
-//  'license': 'https://www.pexels.com/photo-license/'
-
 export const images: NewTab.Image[] = [
   {
     'name': 'ntp-fall-2019-1',
@@ -35,14 +28,6 @@ export const images: NewTab.Image[] = [
     'license': 'https://unsplash.com/license'
   },
   {
-    'name': 'ntp-fall-2019-4',
-    'source': 'annie-spratt.webp',
-    'author': 'Annie Spratt',
-    'link': 'https://unsplash.com/@anniespratt?utm_source=unsplash&utm_medium=referral&utm_content=credit',
-    'originalUrl': 'https://unsplash.com/photos/C9jP5AlgcuQ',
-    'license': 'https://unsplash.com/license'
-  },
-  {
     'name': 'ntp-fall-2019-5',
     'source': 'anton-repponen.webp',
     'author': 'Anton Repponen',
@@ -59,14 +44,6 @@ export const images: NewTab.Image[] = [
     'license': 'Used with permission'
   },
   {
-    'name': 'ntp-fall-2019-7',
-    'source': 'dc-cavalleri.webp',
-    'author': 'D.C. Cavalleri',
-    'link': 'https://gradivis.com',
-    'originalUrl': 'Contributor sent the hi-res version through email',
-    'license': 'Used with permission'
-  },
-  {
     'name': 'ntp-fall-2019-8',
     'source': 'joe-gardner.webp',
     'author': 'Joe Gardner',
@@ -75,27 +52,11 @@ export const images: NewTab.Image[] = [
     'license': 'Used with permission'
   },
   {
-    'name': 'ntp-fall-2019-9',
-    'source': 'louis-kim.webp',
-    'author': 'Louis Kim',
-    'link': 'http://louiskimphotography.com',
-    'originalUrl': 'Contributor sent the hi-res version through email',
-    'license': 'Used with permission'
-  },
-  {
     'name': 'ntp-fall-2019-10',
     'source': 'matt-palmer.webp',
     'author': 'Matt Palmer',
     'link': 'https://unsplash.com/@mattpalmer?utm_source=unsplash&utm_medium=referral&utm_content=credit',
     'originalUrl': 'https://unsplash.com/photos/veMnvjmfoxw',
-    'license': 'Used with permission'
-  },
-  {
-    'name': 'ntp-fall-2019-11',
-    'source': 'oliwier-gesla.webp',
-    'author': 'Oliwier Gesla',
-    'link': 'https://www.instagram.com/oliwiergesla/',
-    'originalUrl': 'Contributor sent the hi-res version through email',
     'license': 'Used with permission'
   },
   {
@@ -121,13 +82,5 @@ export const images: NewTab.Image[] = [
     'link': 'www.theskyfolk.com',
     'originalUrl': 'Contributor sent the hi-res version through email',
     'license': 'Used with permission'
-  },
-  {
-    'name': 'ntp-fall-2019-15',
-    'source': 'xavier-balderas-cejudo.webp',
-    'author': 'Xavier Balderas Cejudo',
-    'link': 'https://unsplash.com/@xavibalderas?utm_source=unsplash&utm_medium=referral&utm_content=credit',
-    'originalUrl': 'https://unsplash.com/photos/kxIE049IZ1g',
-    'license': 'https://unsplash.com/license'
   }
 ]
