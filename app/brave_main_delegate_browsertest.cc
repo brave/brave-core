@@ -15,7 +15,6 @@
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/common/content_features.h"
-#include "content/public/common/content_switches.h"
 #include "content/public/common/web_preferences.h"
 #include "gpu/config/gpu_finch_features.h"
 #include "services/network/public/cpp/features.h"
@@ -38,11 +37,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisableHyperlinkAuditing) {
   const content::WebPreferences prefs =
       contents->GetRenderViewHost()->GetWebkitPreferences();
   EXPECT_FALSE(prefs.hyperlink_auditing_enabled);
-}
-
-IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisableWebSQL) {
-  EXPECT_TRUE(base::CommandLine::ForCurrentProcess()->HasSwitch(
-      switches::kDisableDatabases));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
