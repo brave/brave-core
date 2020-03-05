@@ -459,32 +459,30 @@ void BatAdsClientMojoBridge::GetCreativeAdNotifications(
 void OnGetAdConversions(
     const ads::OnGetAdConversionsCallback& callback,
     const int32_t result,
-    const std::string& url,
     const std::vector<std::string>& json_list) {
   ads::AdConversionList ad_conversions;
 
   for (const auto& json : json_list) {
     ads::AdConversionInfo ad_conversion;
     if (ad_conversion.FromJson(json) != ads::Result::SUCCESS) {
-      callback(ads::Result::FAILED, url, {});
+      callback(ads::Result::FAILED, {});
       return;
     }
 
     ad_conversions.push_back(ad_conversion);
   }
 
-  callback(ToAdsResult(result), url, ad_conversions);
+  callback(ToAdsResult(result), ad_conversions);
 }
 
 void BatAdsClientMojoBridge::GetAdConversions(
-    const std::string& url,
     ads::OnGetAdConversionsCallback callback) {
   if (!connected()) {
-    callback(ads::Result::FAILED, url, {});
+    callback(ads::Result::FAILED, {});
     return;
   }
 
-  bat_ads_client_->GetAdConversions(url,
+  bat_ads_client_->GetAdConversions(
       base::BindOnce(&OnGetAdConversions, std::move(callback)));
 }
 

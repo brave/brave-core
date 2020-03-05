@@ -715,13 +715,13 @@ void AdsImpl::CheckAdConversion(
     return;
   }
 
-  auto callback = std::bind(&AdsImpl::OnGetAdConversions, this, _1, _2, _3);
-  ads_client_->GetAdConversions(url, callback);
+  auto callback = std::bind(&AdsImpl::OnGetAdConversions, this, url, _1, _2);
+  ads_client_->GetAdConversions(callback);
 }
 
 void AdsImpl::OnGetAdConversions(
-    const Result result,
     const std::string& url,
+    const Result result,
     const AdConversionList& ad_conversions) {
   for (const auto& ad_conversion : ad_conversions) {
     if (!helper::Uri::MatchesWildcard(url, ad_conversion.url_pattern)) {
@@ -1198,8 +1198,24 @@ void AdsImpl::OnServeUntargetedAdNotification(
 
 void AdsImpl::ServeAdNotification(
     const CreativeAdNotificationList& ads) {
-  auto rand = base::RandInt(0, ads.size() - 1);
-  auto ad = ads.at(rand);
+  auto callback =
+      std::bind(&AdsImpl::OnServeAdNotification, this, _1, _2, ads);
+  ads_client_->GetAdConversions(callback);
+}
+
+void AdsImpl::OnServeAdNotification(
+    const Result result,
+    const AdConversionList& ad_conversions,
+    const CreativeAdNotificationList& ads) {
+  CreativeAdNotificationList eligible_ads =
+      GetEligibleAdsForConversions(ads, ad_conversions);
+  if (eligible_ads.empty()) {
+    FailedToServeAdNotification("No eligible ads found");
+    return;
+  }
+
+  const int rand = base::RandInt(0, eligible_ads.size() - 1);
+  const CreativeAdNotificationInfo ad = eligible_ads.at(rand);
   ShowAdNotification(ad);
 
   SuccessfullyServedAd();
@@ -1283,6 +1299,27 @@ CreativeAdNotificationList AdsImpl::GetEligibleAds(
     }
 
     eligible_ads.push_back(ad);
+  }
+
+  return eligible_ads;
+}
+
+CreativeAdNotificationList AdsImpl::GetEligibleAdsForConversions(
+    const CreativeAdNotificationList& ads,
+    const AdConversionList& ad_conversions) {
+  CreativeAdNotificationList eligible_ads = ads;
+
+  if (ads_client_->ShouldAllowAdConversionTracking()) {
+    return eligible_ads;
+  }
+
+  for (const auto& ad_conversion : ad_conversions) {
+    const auto iter = std::remove_if(eligible_ads.begin(), eligible_ads.end(),
+        [&ad_conversion](CreativeAdNotificationInfo& ad_notification) {
+      return ad_notification.creative_set_id == ad_conversion.creative_set_id;
+    });
+
+    eligible_ads.erase(iter, eligible_ads.end());
   }
 
   return eligible_ads;

@@ -227,7 +227,6 @@ ads::CreativeAdNotificationList GetCreativeAdNotificationsOnFileTaskRunner(
 }
 
 ads::AdConversionList GetAdConversionsOnFileTaskRunner(
-    const std::string& url,
     BundleStateDatabase* backend) {
   ads::AdConversionList ad_conversions;
 
@@ -235,7 +234,7 @@ ads::AdConversionList GetAdConversionsOnFileTaskRunner(
     return ad_conversions;
   }
 
-  backend->GetAdConversions(url, &ad_conversions);
+  backend->GetAdConversions(&ad_conversions);
 
   return ad_conversions;
 }
@@ -974,7 +973,6 @@ void AdsServiceImpl::OnGetCreativeAdNotifications(
 
 void AdsServiceImpl::OnGetAdConversions(
     const ads::OnGetAdConversionsCallback& callback,
-    const std::string& url,
     const ads::AdConversionList& ad_conversions) {
   if (!connected()) {
     return;
@@ -983,7 +981,7 @@ void AdsServiceImpl::OnGetAdConversions(
   const auto result = ad_conversions.empty() ?
       ads::Result::FAILED : ads::Result::SUCCESS;
 
-  callback(result, url, ad_conversions);
+  callback(result, ad_conversions);
 }
 
 void AdsServiceImpl::OnGetAdsHistory(
@@ -2118,13 +2116,12 @@ void AdsServiceImpl::GetCreativeAdNotifications(
 }
 
 void AdsServiceImpl::GetAdConversions(
-    const std::string& url,
     ads::OnGetAdConversionsCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&GetAdConversionsOnFileTaskRunner, url,
+      base::BindOnce(&GetAdConversionsOnFileTaskRunner,
           bundle_state_backend_.get()),
       base::BindOnce(&AdsServiceImpl::OnGetAdConversions, AsWeakPtr(),
-          std::move(callback), url));
+          std::move(callback)));
 }
 
 void AdsServiceImpl::EventLog(

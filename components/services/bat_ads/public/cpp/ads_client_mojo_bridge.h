@@ -134,7 +134,6 @@ class AdsClientMojoBridge
       const std::vector<std::string>& categories,
       GetCreativeAdNotificationsCallback callback) override;
   void GetAdConversions(
-      const std::string& url,
       GetAdConversionsCallback callback) override;
 
  private:
@@ -197,7 +196,6 @@ class AdsClientMojoBridge
   static void OnGetAdConversions(
       CallbackHolder<GetAdConversionsCallback>* holder,
       const ads::Result result,
-      const std::string& url,
       const ads::AdConversionList& ad_conversions);
 
   ads::AdsClient* ads_client_;  // NOT OWNED

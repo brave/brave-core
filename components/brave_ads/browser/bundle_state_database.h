@@ -47,7 +47,6 @@ class BundleStateDatabase {
       ads::CreativeAdNotificationList* ads);
 
   bool GetAdConversions(
-      const std::string& url,
       ads::AdConversionList* ad_conversions);
 
   // Returns the current version of the bundle state database

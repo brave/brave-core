@@ -187,8 +187,8 @@ class AdsImpl : public Ads {
   void CheckAdConversion(
       const std::string& url);
   void OnGetAdConversions(
-      const Result result,
       const std::string& url,
+      const Result result,
       const AdConversionList& ad_conversions);
 
   void MaybeServeAdNotification(
@@ -210,12 +210,19 @@ class AdsImpl : public Ads {
       const CreativeAdNotificationList& ads);
   void ServeAdNotification(
       const CreativeAdNotificationList& ads);
+  void OnServeAdNotification(
+      const Result result,
+      const AdConversionList& ad_conversions,
+      const CreativeAdNotificationList& ads);
   void SuccessfullyServedAd();
   void FailedToServeAdNotification(
       const std::string& reason);
 
   CreativeAdNotificationList GetEligibleAds(
       const CreativeAdNotificationList& ads);
+  CreativeAdNotificationList GetEligibleAdsForConversions(
+      const CreativeAdNotificationList& ads,
+      const AdConversionList& ad_conversions);
   CreativeAdNotificationList GetUnseenAdsAndRoundRobinIfNeeded(
       const CreativeAdNotificationList& ads) const;
   CreativeAdNotificationList GetUnseenAds(
