@@ -57,7 +57,7 @@ bool Uri::MatchesDomainOrHost(
       const std::string& url1,
       const std::string& url2) {
   return SameDomainOrHost(GURL(url1), GURL(url2),
-      net::registry_controlled_domains::EXCLUDE_PRIVATE_REGISTRIES);
+      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 }
 
 }  // namespace helper
