@@ -32,7 +32,7 @@ class NTPSponsoredImagesViewCounterTest : public testing::Test {
     auto* registry = prefs()->registry();
     ViewCounterService::RegisterProfilePrefs(registry);
     // Need general prefs for "ShowBackgroundImage"
-    registry->RegisterBooleanPref(kNewTabPageShowBackgroundImage, true);
+    registry->RegisterBooleanPref(prefs::kNewTabPageShowBackgroundImage, true);
 
     service_ = std::make_unique<NTPSponsoredImagesService>(nullptr);
     view_counter_ = std::make_unique<ViewCounterService>(
@@ -40,15 +40,11 @@ class NTPSponsoredImagesViewCounterTest : public testing::Test {
   }
 
   void OptOut() {
-    prefs()->SetBoolean(
-        ntp_sponsored_images::prefs::kNewTabPageShowBrandedBackgroundImage,
-        false);
+    prefs()->SetBoolean(prefs::kNewTabPageShowBrandedBackgroundImage, false);
   }
 
   void OptIn() {
-    prefs()->SetBoolean(
-        ntp_sponsored_images::prefs::kNewTabPageShowBrandedBackgroundImage,
-        true);
+    prefs()->SetBoolean(prefs::kNewTabPageShowBrandedBackgroundImage, true);
   }
 
   std::unique_ptr<NTPSponsoredImagesData> CreateGoodData() {

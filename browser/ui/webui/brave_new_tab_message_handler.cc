@@ -28,6 +28,7 @@
 #include "components/prefs/pref_service.h"
 
 using ntp_sponsored_images::features::kBraveNTPBrandedWallpaper;
+using ntp_sponsored_images::prefs::kNewTabPageShowBackgroundImage;
 using ntp_sponsored_images::ViewCounterServiceFactory;
 
 #if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)

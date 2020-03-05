@@ -11,7 +11,6 @@
 #include "base/bind.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
-#include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/ntp_sponsored_images/browser/features.h"
@@ -114,7 +113,7 @@ bool ViewCounterService::IsBrandedWallpaperActive() const {
 
 bool ViewCounterService::IsBrandedWallpaperOptedIn() const {
   return prefs_->GetBoolean(prefs::kNewTabPageShowBrandedBackgroundImage) &&
-         prefs_->GetBoolean(kNewTabPageShowBackgroundImage);
+         prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage);
 }
 
 }  // namespace ntp_sponsored_images
