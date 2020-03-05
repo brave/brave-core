@@ -52,10 +52,14 @@ std::deque<uint64_t> FrequencyCapping::GetCreativeSetHistoryForUuid(
 
 std::deque<uint64_t> FrequencyCapping::GetAdsShownHistory() const {
   std::deque<uint64_t> history;
-  auto ads_history = client_->GetAdsShownHistory();
 
-  for (const auto& detail : ads_history) {
-    history.push_back(detail.timestamp_in_seconds);
+  const std::deque<AdHistory> ads_history = client_->GetAdsShownHistory();
+  for (const auto& ad : ads_history) {
+    if (ad.ad_content.ad_action != ConfirmationType::VIEW) {
+      continue;
+    }
+
+    history.push_back(ad.timestamp_in_seconds);
   }
 
   return history;
@@ -64,10 +68,11 @@ std::deque<uint64_t> FrequencyCapping::GetAdsShownHistory() const {
 std::deque<uint64_t> FrequencyCapping::GetAdsHistoryForUuid(
     const std::string& uuid) const {
   std::deque<uint64_t> history;
-  auto ads_history = client_->GetAdsShownHistory();
 
+  const std::deque<AdHistory> ads_history = client_->GetAdsShownHistory();
   for (const auto& ad : ads_history) {
-    if (ad.ad_content.uuid != uuid) {
+    if (ad.ad_content.ad_action != ConfirmationType::VIEW ||
+        ad.ad_content.uuid != uuid) {
       continue;
     }
 
