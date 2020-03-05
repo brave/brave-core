@@ -3,7 +3,6 @@
 * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import createWidget from '../widget/index'
 import { convertBalance } from '../../../../brave_rewards/resources/page/utils'
 import { getLocale, splitStringForTag } from '../../../../common/locale'
 
@@ -33,6 +32,7 @@ import {
   TurnOnAdsButton,
   UnsupportedMessage
 } from './style'
+import { StyledTitleTab } from '../exchange/style'
 import Notification from './notification'
 import BrandedWallpaperNotification from './brandedWallpaperNotification'
 import { BatColorIcon, CloseStrokeIcon } from 'brave-ui/components/icons'
@@ -54,6 +54,8 @@ export interface RewardsProps {
   isNotification?: boolean
   showBrandedWallpaperNotification: boolean
   brandedWallpaperData?: NewTab.BrandedWallpaper
+  showContent: boolean
+  onShowContent: () => void
   onCreateWallet: () => void
   onEnableAds: () => void
   onEnableRewards: () => void
@@ -67,7 +69,7 @@ const enum AmountItemType {
   TIPS = 1
 }
 
-class Rewards extends React.PureComponent<RewardsProps, {}> {
+export default class Rewards extends React.PureComponent<RewardsProps, {}> {
 
   getButtonText = (isAds: boolean = false) => {
     if (isAds) {
@@ -312,6 +314,27 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
     )
   }
 
+  renderTitle = () => {
+    return (
+      <RewardsTitle>
+        <BatIcon>
+          <BatColorIcon />
+        </BatIcon>
+        {getLocale('rewardsWidgetBraveRewards')}
+      </RewardsTitle>
+    )
+  }
+
+  renderTitleTab = () => {
+    const { onShowContent } = this.props
+
+    return (
+      <StyledTitleTab onClick={onShowContent}>
+        {this.renderTitle()}
+      </StyledTitleTab>
+    )
+  }
+
   dismissNotification (notificationType: string) {
     this.props.onDismissNotification(notificationType)
   }
@@ -328,8 +351,13 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
     const {
       enabledMain,
       walletCreated,
-      isNotification
+      isNotification,
+      showContent
     } = this.props
+
+    if (!showContent) {
+      return this.renderTitleTab()
+    }
 
     // Handle isNotification:
     //   - if rewards isn't on, we ourselves are a notification
@@ -349,12 +377,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
             <CloseStrokeIcon />
           </CloseIcon>
           }
-          <RewardsTitle>
-            <BatIcon>
-              <BatColorIcon />
-            </BatIcon>
-            {getLocale('rewardsWidgetBraveRewards')}
-          </RewardsTitle>
+          {this.renderTitle()}
           {this.renderPreOptIn()}
           {this.renderRewardsInfo()}
           <Footer>
@@ -374,5 +397,3 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
     )
   }
 }
-
-export const RewardsWidget = createWidget(Rewards)

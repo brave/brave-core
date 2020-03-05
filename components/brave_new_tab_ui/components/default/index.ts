@@ -8,7 +8,9 @@ import { SettingsMenu, SettingsRow, SettingsText, SettingsTitle, SettingsWrapper
 import { ListWidget, Tile, TileActionsContainer, TileAction, TileFavicon } from './topSites'
 import { SiteRemovalNotification, SiteRemovalText, SiteRemovalAction } from './notification'
 import { ClockWidget } from './clock'
-import { RewardsWidget } from './rewards'
+import RewardsWidget from './rewards'
+import ExchangeWidget from './exchange'
+import { WidgetStack } from './widgetStack'
 import createWidget from './widget'
 
 export * from './page'
@@ -31,5 +33,7 @@ export {
   SettingsTitle,
   SettingsWrapper,
   RewardsWidget,
+  ExchangeWidget,
+  WidgetStack,
   createWidget
 }
