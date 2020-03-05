@@ -2,6 +2,8 @@ static_library("browser") {
   sources = [
     "features.cc",
     "features.h",
+    "ntp_background_images_utils.cc",
+    "ntp_background_images_utils.h",
     "ntp_sponsored_image_source.cc",
     "ntp_sponsored_image_source.h",
     "ntp_sponsored_images_component_installer.cc",
@@ -35,5 +37,6 @@ static_library("browser") {
     "//content/public/browser",
     "//content/public/common",
     "//crypto",
+    "//ui/gfx/geometry",
   ]
 }

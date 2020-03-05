@@ -130,11 +130,11 @@ std::vector<std::string>
   return std::vector<std::string>();
 }
 
-}  // namespace
-
 void OnRegistered(const std::string& component_id) {
   BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(component_id);
 }
+
+}  // namespace
 
 void RegisterNTPSponsoredImagesComponent(
     component_updater::ComponentUpdateService* cus,

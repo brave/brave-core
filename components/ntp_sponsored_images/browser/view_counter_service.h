@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/values.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_service.h"
@@ -24,19 +25,16 @@ namespace ntp_sponsored_images {
 
 struct NTPSponsoredImagesData;
 
-class ViewCounterService
-    : public KeyedService,
-      public NTPSponsoredImagesService::Observer {
+class ViewCounterService : public KeyedService,
+                           public NTPSponsoredImagesService::Observer {
  public:
-  explicit ViewCounterService(
-      NTPSponsoredImagesService* service,
-      PrefService* prefs,
-      bool is_supported_locale);
+  ViewCounterService(NTPSponsoredImagesService* service,
+                     PrefService* prefs,
+                     bool is_supported_locale);
   ~ViewCounterService() override;
 
   ViewCounterService(const ViewCounterService&) = delete;
-  ViewCounterService& operator=(
-      const ViewCounterService&) = delete;
+  ViewCounterService& operator=(const ViewCounterService&) = delete;
 
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
@@ -44,19 +42,21 @@ class ViewCounterService
   // This should always be called as it will evaluate whether the user has
   // opted-in or data is available.
   void RegisterPageView();
-  // Do we have a branded wallpaper to show and has the user
-  // opted-in to showing it at some time.
-  bool IsBrandedWallpaperActive();
-  // Should we show the branded wallpaper right now, in addition
-  // to the result from `IsBrandedWallpaperActive()`.
-  bool ShouldShowBrandedWallpaper();
-  // Gets the current data for branded wallpaper, if there
-  // is a wallpaper active. Does not consider user opt-in
-  // status, or consider whether the wallpaper should be shown.
-  NTPSponsoredImagesData* current_wallpaper();
-  size_t GetWallpaperImageIndexToDisplay();
+
+  base::Value GetCurrentWallpaper() const;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(NTPSponsoredImagesViewCounterTest,
+                           NotActiveInitially);
+  FRIEND_TEST_ALL_PREFIXES(NTPSponsoredImagesViewCounterTest,
+                           NotActiveWithBadData);
+  FRIEND_TEST_ALL_PREFIXES(NTPSponsoredImagesViewCounterTest,
+                           NotActiveOptedOut);
+  FRIEND_TEST_ALL_PREFIXES(NTPSponsoredImagesViewCounterTest,
+                           IsActiveOptedIn);
+  FRIEND_TEST_ALL_PREFIXES(NTPSponsoredImagesViewCounterTest,
+                           ActiveInitiallyOptedIn);
+
   void OnPreferenceChanged(const std::string& pref_name);
 
   // KeyedService
@@ -65,9 +65,18 @@ class ViewCounterService
   // NTPSponsoredImagesService::Observer
   void OnUpdated(NTPSponsoredImagesData* data) override;
 
-  bool GetBrandedWallpaperFromDataSource();
-  bool IsOptedIn();
   void ResetNotificationState();
+  bool IsBrandedWallpaperOptedIn() const;
+  // Do we have a sponsored wallpaper to show and has the user
+  // opted-in to showing it at some time.
+  bool IsBrandedWallpaperActive() const;
+  // Should we show the sponsored wallpaper right now, in addition
+  // to the result from `IsSponsoredWallpaperActive()`.
+  bool ShouldShowBrandedWallpaper() const;
+  // Gets the current data for branded wallpaper, if there
+  // is a wallpaper active. Does not consider user opt-in
+  // status, or consider whether the wallpaper should be shown.
+  NTPSponsoredImagesData* GetCurrentBrandedWallpaperData() const;
 
   NTPSponsoredImagesService* service_ = nullptr;  // not owned
   PrefService* prefs_ = nullptr;  // not owned
