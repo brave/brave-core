@@ -23,6 +23,7 @@ void ClientMock::GeneratePastAdHistoryFromNow(
   AdHistory ad_history;
   ad_history.uuid = base::GenerateGUID();
   ad_history.ad_content.creative_instance_id = creative_instance_id;
+  ad_history.ad_content.ad_action = ConfirmationType::kViewed;
 
   for (uint8_t i = 0; i < count; i++) {
     now_in_seconds -= time_offset_per_ad_in_seconds;
