@@ -123,6 +123,11 @@ let mockSettings: MockSettingsStore = {
     key: 'brave.shields.advanced_view_enabled',
     type: 'BOOLEAN',
     value: false
+  },
+  ['brave.shields.stats_badge_visible']: {
+    key: 'brave.shields.stats_badge_visible',
+    type: 'BOOLEAN',
+    value: true
   }
 }
 
@@ -342,7 +347,8 @@ export const initialState = deepFreeze({
     currentWindowId: -1,
     tabs: {},
     windows: {},
-    persistentData: { isFirstAccess: true }
+    persistentData: { isFirstAccess: true },
+    settingsData: { showAdvancedView: false, statsBadgeVisible: true }
   }
 })
 

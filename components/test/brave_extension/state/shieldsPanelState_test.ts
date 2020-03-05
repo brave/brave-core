@@ -13,6 +13,10 @@ const state: State = deepFreeze({
   persistentData: {
     isFirstAccess: true
   },
+  settingsData: {
+    showAdvancedView: false,
+    statsBadgeVisible: true
+  },
   tabs: {
     2: {
       id: 2,

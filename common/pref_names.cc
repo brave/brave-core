@@ -47,6 +47,8 @@ const char kHTTPSEVerywhereControlType[] = "brave.https_everywhere_default";
 const char kNoScriptControlType[] = "brave.no_script_default";
 const char kShieldsAdvancedViewEnabled[] =
     "brave.shields.advanced_view_enabled";
+const char kShieldsStatsBadgeVisible[] =
+    "brave.shields.stats_badge_visible";
 const char kAdControlType[] = "brave.ad_default";
 const char kGoogleLoginControlType[] = "brave.google_login_default";
 const char kFBEmbedControlType[] = "brave.fb_embed_default";

@@ -45,7 +45,7 @@ Promise.all([
     mountNode
   )
 })
-.catch((e) => {
+.catch((error: any) => {
   console.error('Problem mounting brave shields')
-  console.error(e)
+  console.error(error)
 })

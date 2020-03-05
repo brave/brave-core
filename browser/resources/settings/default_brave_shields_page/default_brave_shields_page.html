@@ -129,6 +129,13 @@
         </template>
       </select>
     </div>
+    <div class="settings-box">
+      <div class="label shields-primary-title">$i18n{shieldsLookFeelTitle}</div>
+    </div>
+    <settings-toggle-button
+        class="continuation"
+        pref="{{prefs.brave.shields.stats_badge_visible}}"
+        label="$i18n{showStatsBlockedBadgeLabel}">
   </template>
   <script src="default_brave_shields_page.js"></script>
 </dom-module>

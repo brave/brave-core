@@ -47,6 +47,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
   // Default Brave shields
   (*s_brave_whitelist)[kShieldsAdvancedViewEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_whitelist)[kShieldsStatsBadgeVisible] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kAdControlType] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kHTTPSEVerywhereControlType] =

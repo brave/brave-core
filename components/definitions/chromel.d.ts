@@ -56,6 +56,10 @@ declare namespace chrome.settingsPrivate {
 
   type SetDefaultZoomCallback = (success: boolean) => void
   function setDefaultZoom (zoom: number, callback?: SetDefaultZoomCallback): void
+
+  const onPrefsChanged: {
+    addListener: (callback: (prefs: PrefObject[]) => void) => void
+  }
 }
 
 declare namespace chrome.braveRewards {
@@ -225,9 +229,7 @@ declare namespace chrome.braveShields {
 
   type BraveShieldsViewPreferences = {
     showAdvancedView: boolean
-  }
-  type BraveShieldsSetViewPreferencesData = {
-    showAdvancedView?: boolean
+    statsBadgeVisible: boolean
   }
 }
 

@@ -5,6 +5,7 @@
 import { BlockOptions, BlockTypes, BlockFPOptions, BlockCookiesOptions } from '../other/blockTypes'
 import { CosmeticFilteringState } from '../adblock/adblockTypes'
 import { NoScriptInfo } from '../other/noScriptInfo'
+import { SettingsData } from '../other/settingsTypes'
 
 export interface Tab {
   cosmeticBlocking: boolean
@@ -47,6 +48,7 @@ export interface PersistentData {
 
 export interface State {
   persistentData: PersistentData
+  settingsData: SettingsData
   currentWindowId: number
   tabs: Tabs
   windows: Windows
@@ -66,6 +68,10 @@ export interface GetPersistentData {
 
 export interface UpdatePersistentData {
   (state: State, persistentData: Partial<PersistentData>): State
+}
+
+export interface MergeSettingsData {
+  (state: State, settingsData: SettingsData): SettingsData
 }
 
 export interface UpdateActiveTab {
