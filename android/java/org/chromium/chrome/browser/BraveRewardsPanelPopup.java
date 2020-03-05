@@ -130,6 +130,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     private Button btRewardsSettings;
     private Switch btAutoContribute;
     private TextView tvLearnMore;
+    private TextView tvYourWalletTitle;
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
     private Timer balanceUpdater;
     private Timer mPublisherFetcher;
@@ -162,6 +163,10 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
     private boolean mAutoContributeEnabled;
     private boolean mPubInReccuredDonation;
+
+    private String batText;
+    private String batPointsText;
+    private boolean isAnonWallet;
 
     public static boolean isBraveRewardsEnabled() {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
@@ -255,7 +260,16 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 (LayoutInflater) this.anchor.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.brave_rewards_panel, null);
+
+        isAnonWallet = BraveRewardsHelper.isAnonWallet();
+
+        batText = isAnonWallet ? root.getResources().getString(R.string.brave_ui_bap_text) : root.getResources().getString(R.string.brave_ui_bat_text);
+        batPointsText = isAnonWallet ? root.getResources().getString(R.string.brave_ui_bat_points_text) : root.getResources().getString(R.string.brave_ui_bat_text);
+
         setContentView(root);
+
+        ((TextView)root.findViewById(R.id.get_paid_id)).setText(String.format(root.getResources().getString(R.string.brave_ui_welcome_desc_two), isAnonWallet ? root.getResources().getString(R.string.point) : root.getResources().getString(R.string.token)));
+
         tvPublisherNotVerifiedSummary = (TextView)root.findViewById(R.id.publisher_not_verified_summary);
         tvPublisherNotVerifiedSummary.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -315,8 +329,15 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
           }));
         }
 
+        tvYourWalletTitle = (TextView)root.findViewById(R.id.your_wallet_title);
+        tvYourWalletTitle.setText(isAnonWallet ? root.getResources().getString(R.string.brave_ui_your_balance) : root.getResources().getString(R.string.brave_ui_your_wallet));
+
+        ((TextView)root.findViewById(R.id.br_bat)).setText(batPointsText);
+
         btAddFunds = (Button)root.findViewById(R.id.br_add_funds);
         if (btAddFunds != null) {
+          if(btAddFunds.getVisibility() == View.VISIBLE)
+            btAddFunds.setVisibility(isAnonWallet ? View.GONE : View.VISIBLE);
           btAddFunds.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -395,6 +416,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
         Button btGrants = (Button)this.root.findViewById(R.id.grants_dropdown);
         if (btGrants != null) {
+            btGrants.setText(isAnonWallet ? context.getResources().getString(R.string.brave_ui_details) : context.getResources().getString(R.string.brave_ui_grants));
             btGrants.setOnClickListener((new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -739,7 +761,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 tv = (TextView)view;
             }
 
-            String strValue = String.format(Locale.getDefault(), "%d.0 BAT", bat_donations[position]);
+            String strValue = String.format("%d.0 "+ batPointsText, bat_donations[position]);
             tv.setText(strValue);
             return tv;
         }
@@ -757,7 +779,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 tv = (TextView)convertView;
             }
 
-            String strValue = String.format(Locale.getDefault(), "%d.0 BAT (%.2f USD)", bat_donations[position], bat_donations[position] * usdrate);
+            String strValue = String.format("%d.0 "+ batPointsText +" (%.2f USD)", bat_donations[position], bat_donations[position] * usdrate);
             tv.setText(strValue);
             int selected = mTip_amount_spinner.getSelectedItemPosition();
             if (selected == position){
@@ -864,11 +886,22 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                         notification_icon.setImageResource(R.drawable.contribute_icon);
                         hl.setBackgroundResource(R.drawable.notification_header_normal);
 
-                            double  probiDouble = BraveRewardsHelper.probiToDouble(args[3]);
-                            String probiString = Double.isNaN(probiDouble) ? ERROR_CONVERT_PROBI : String.format(Locale.getDefault(), "%.2f", probiDouble);
+                            double value = 0;
+                            String valueString = "";
+                            String[] splittedValue = args[3].split("\\.", 0);
+                            // 18 digits is a probi min digits count
+                            if (splittedValue.length != 0 && splittedValue[0].length() >= 18) {
+                                value = BraveRewardsHelper.probiToDouble(args[3]);
+                                valueString = Double.isNaN(value) ?
+                                    ERROR_CONVERT_PROBI : String.format("%.1f", value);
+                            } else {
+                                value = Double.parseDouble(args[3]);
+                                valueString = String.format("%.1f", value);
+                            }
+
                             description = String.format(
                                 root.getResources().getString(R.string.brave_ui_rewards_contribute_description),
-                                    probiString);
+                                    valueString, batPointsText);
                             break;
                         case AUTO_CONTRIBUTE_NOT_ENOUGH_FUNDS:
                             title = "";
@@ -908,11 +941,11 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 notification_icon.setImageResource(grant_icon_id);
 
                 title = (BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT == type ) ?
-                        root.getResources().getString(R.string.brave_ui_new_token_grant):
+                        (isAnonWallet ? root.getResources().getString(R.string.brave_ui_new_point_grant) : root.getResources().getString(R.string.brave_ui_new_token_grant)):
                         root.getResources().getString(R.string.notification_category_group_brave_ads);
 
                 description = (BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT == type ) ?
-                        root.getResources().getString(R.string.brave_ui_new_grant) :
+                        String.format(root.getResources().getString(R.string.brave_ui_new_grant), isAnonWallet ? root.getResources().getString(R.string.point) : root.getResources().getString(R.string.token)) :
                         root.getResources().getString(R.string.brave_ads_you_earned);
                 break;
             case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS:
@@ -1086,6 +1119,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
           df.setRoundingMode(RoundingMode.FLOOR);
           df.setMinimumFractionDigits(1);
           ((TextView)this.root.findViewById(R.id.br_bat_wallet)).setText(df.format(balance));
+          ((TextView)this.root.findViewById(R.id.br_bat)).setText(batPointsText);
           double usdValue = balance * mBraveRewardsNativeWorker.GetWalletRate("USD");
           String usdText = String.format(this.root.getResources().getString(R.string.brave_ui_usd),
             String.format(Locale.getDefault(), "%.2f", usdValue));
@@ -1281,37 +1315,38 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
           switch (i) {
             case BALANCE_REPORT_GRANTS:
               tvTitle = (TextView)root.findViewById(R.id.br_grants_claimed_title);
+              tvTitle.setText(isAnonWallet ? BraveRewardsPanelPopup.this.root.getResources().getString(R.string.brave_ui_point_grant_claimed) : BraveRewardsPanelPopup.this.root.getResources().getString(R.string.brave_ui_token_grant_claimed));
               tv = (TextView)root.findViewById(R.id.br_grants_claimed_bat);
               tvUSD = (TextView)root.findViewById(R.id.br_grants_claimed_usd);
-              text = "<font color=#8E2995>" + value + "</font><font color=#000000> BAT</font>";
+              text = "<font color=#8E2995>" + value + "</font><font color=#000000> "+batText+"</font>";
               textUSD = usdValue;
               break;
             case BALANCE_REPORT_EARNING_FROM_ADS:
               tvTitle = (TextView)root.findViewById(R.id.br_earnings_ads_title);
               tv = (TextView)root.findViewById(R.id.br_earnings_ads_bat);
               tvUSD = (TextView)root.findViewById(R.id.br_earnings_ads_usd);
-              text = "<font color=#8E2995>" + value + "</font><font color=#000000> BAT</font>";
+              text = "<font color=#8E2995>" + value + "</font><font color=#000000> "+batText+"</font>";
               textUSD = usdValue;
               break;
             case BALANCE_REPORT_AUTO_CONTRIBUTE:
               tvTitle = (TextView)root.findViewById(R.id.br_auto_contribute_title);
               tv = (TextView)root.findViewById(R.id.br_auto_contribute_bat);
               tvUSD = (TextView)root.findViewById(R.id.br_auto_contribute_usd);
-              text = "<font color=#6537AD>" + value + "</font><font color=#000000> BAT</font>";
+              text = "<font color=#6537AD>" + value + "</font><font color=#000000> "+batText+"</font>";
               textUSD = usdValue;
               break;
             case BALANCE_REPORT_RECURRING_DONATION:
               tvTitle = (TextView)root.findViewById(R.id.br_recurring_donation_title);
               tv = (TextView)root.findViewById(R.id.br_recurring_donation_bat);
               tvUSD = (TextView)root.findViewById(R.id.br_recurring_donation_usd);
-              text = "<font color=#392DD1>" + value + "</font><font color=#000000> BAT</font>";
+              text = "<font color=#392DD1>" + value + "</font><font color=#000000> "+batText+"</font>";
               textUSD = usdValue;
               break;
             case BALANCE_REPORT_ONE_TIME_DONATION:
               tvTitle = (TextView)root.findViewById(R.id.br_one_time_donation_title);
               tv = (TextView)root.findViewById(R.id.br_one_time_donation_bat);
               tvUSD = (TextView)root.findViewById(R.id.br_one_time_donation_usd);
-              text = "<font color=#392DD1>" + value + "</font><font color=#000000> BAT</font>";
+              text = "<font color=#392DD1>" + value + "</font><font color=#000000> "+batText+"</font>";
               textUSD = usdValue;
               break;
           }
@@ -1396,7 +1431,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         if (amount > 0.0) {
             String non_verified_summary =
               String.format(root.getResources().getString(
-                R.string.brave_ui_reserved_amount_text), String.format(Locale.getDefault(), "%.2f", amount)) +
+                R.string.brave_ui_reserved_amount_text), String.format("%.1f", amount), batPointsText) +
               " <font color=#73CBFF>" + root.getResources().getString(R.string.learn_more) +
               ".</font>";
             Spanned toInsert = BraveRewardsHelper.spannedFromHtmlString(non_verified_summary);

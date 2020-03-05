@@ -72,7 +72,6 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:layout_margin="15dp"
-                    android:text="@string/brave_ui_welcome_desc_two"
                     android:gravity="center_horizontal"
                     android:layout_gravity="center"
                     android:fontFamily="sans-serif"
@@ -174,6 +173,7 @@
                         android:columnCount="2">
 
                         <TextView
+                            android:id="@+id/your_wallet_title"
                             android:layout_height="wrap_content"
                             android:layout_width="wrap_content"
                             android:layout_gravity="start|top"
@@ -230,11 +230,11 @@
                                     android:id="@+id/br_bat"
                                     android:layout_height="wrap_content"
                                     android:layout_width="fill_parent"
-                                    android:text="@string/brave_ui_bat_text"
                                     android:layout_gravity="start"
                                     android:textSize="18sp"
                                     android:layout_marginStart="5dp"
                                     android:textColor="#FFFFFF"
+                                    android:textAllCaps="true"
                                     android:alpha=".5"
                                     android:layout_row="0"
                                     android:layout_column="1"/>
@@ -631,7 +631,6 @@
                             android:layout_width="wrap_content"
                             android:layout_gravity="start|center"
                             android:layout_marginStart="10dp"
-                            android:text="@string/brave_ui_token_grant_claimed"
                             android:textColor="@color/modern_grey_700"
                             android:fontFamily="sans-serif"
                             android:gravity="start"
