@@ -1156,7 +1156,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         View fadeout  = enable ? root.findViewById(R.id.progress_wallet_update) : root.findViewById(R.id.br_bat_wallet);
         BraveRewardsHelper.crossfade(fadeout, fadein, View.GONE, 1f, BraveRewardsHelper.CROSS_FADE_DURATION);
 
-        View usd = root.findViewById(R.id.br_usd_wallet);
+        View usd = root.findViewById(R.id.br_usd_wallet_layout);
         if (enable) {
             BraveRewardsHelper.crossfade(null, usd, 0,1f, BraveRewardsHelper.CROSS_FADE_DURATION );
         }
