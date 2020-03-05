@@ -1562,6 +1562,16 @@ class BrowserViewController: UIViewController {
         // Don't show duplicate popups
         if duckDuckGoPopup != nil { return }
         
+        // Check to see if its been presented already
+        if !SearchEngines.shouldShowDuckDuckGoPromo || (Preferences.Popups.duckDuckGoPrivateSearch.value && !force) {
+            return
+        }
+
+        // Do not show ddg popup if user already chose it for private browsing.
+        if profile.searchEngines.defaultEngine(forType: .privateMode).shortName == OpenSearchEngine.EngineNames.duckDuckGo {
+            return
+        }
+        
         topToolbar.leaveOverlayMode()
         
         let popup = AlertPopupView(imageView: UIImageView(image: #imageLiteral(resourceName: "duckduckgo")), title: Strings.DDGCalloutTitle, message: Strings.DDGCalloutMessage)
