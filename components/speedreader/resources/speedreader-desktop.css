@@ -1,207 +1,411 @@
-html {
-  background-color: #f4f4f4;
-}
-body {
-  font-size:100%; 
-  line-height:1.5;
-  font-family: 'Merriweather', Georgia, 'Times New Roman', Times, serif;
-  background-color: white;
-}
-h1 {
-  font-size: 2.747em;
-}
-h2 {
-  font-size: 0.874em;
-}
-h3 {
-  font-size:1.229em;
-}
-body {
-  max-width:34em;
-  margin:auto;
-  padding:2em 1em;
-  margin-bottom: 5em;
-  margin-top: 2em;
-}
-@media screen and (max-width: 25em) {
-  body { font-size: 90%;}
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
 }
 
 h1 {
-    font-size: 1.25em;
+  font-size: 1.95552em;
+  line-height: 1.2141em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
 }
 
 h2 {
-    font-size: 1.125em;
+  font-size: 1.5em;
+  line-height: 1em;
 }
 
 h3 {
-    font-size: 1.05em;
+  font-size: 1.25em;
+  line-height: 1em;
 }
 
 h4, h5, h6 {
-    font-size: 1em;
-    margin: 1em 0;
+  font-size: 1em;
+  margin: 1em 0;
+}
+
+p {
+  font-size: 1em;
+  line-height: 1.5em;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: rgba(27, 27, 27, 0.65);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: none;
+}
+
+a[href] {
+  color: rgb(65, 110, 210);
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 100%;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin: 0.5em auto;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.75em;
+  line-height: 1.5em;
+}
+
+body.watch #article .leading-image, body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+  width: 100%;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article .list-style-type-none.code-block code {
+  white-space: pre-wrap;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: -apple-system-font;
+}
+
+#article .leading-image, #article figure, #article .auxiliary, #article .pullquote {
+  color: rgba(0, 0, 0, 0.65);
 }
 
 figure {
-    margin: 0;
+  margin: 0;
 }
 
-.page.rtl {
-    direction: rtl;
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
 }
 
-body {
-    text-rendering: optimizeLegibility;
+hr {
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
 }
 
-body pre {
-    white-space: pre-wrap;
+pre {
+  font-family: -apple-system-ui-monospaced, Menlo;
+  font-size: 0.87em;
+  line-height: 1.45em;
 }
 
-body * {
-    /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
-    max-width: 100%;
+blockquote, q {
+  color: rgba(0, 0, 0, 0.65);
 }
 
-body img {
-    /* By default, images are centered on their own line. */
-    margin: 0.5em auto;
-    display: block;
-    height: auto;
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
 }
 
-body p {
-    /*padding-bottom: 1em;*/
-}
-body > div {
-    margin-block-start: 1em;   
-    margin-block-end: 1em;
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
 }
 
-body img.reader-image-tiny {
-    display: inline;
-    margin: 0;
+q.pullquote {
+  display: block;
 }
 
-body .leading-image, figure, .auxiliary {
-    margin-bottom: .25em;
-}
-
-body .leading-image img {
-    margin: auto;
-    display: block;
-    clear: both;
-}
-
-body .leading-image .credit {
-    margin: 0;
-    text-align: right;
-}
-
-body .leading-image .caption,
-body .leading-image .credit,
-body figcaption,
-body .auxiliary figcaption {
-    font-size: 0.75em;
-    line-height: 1.5em;
-    margin-top: 1em;
-    width: 100%;
-}
-
-body .leading-image .credit + .caption {
-    margin-top: 0.1em;
-}
-
-body .auxiliary {
-    display: block;
-    clear: both;
-    font-size: 0.75em;
-    line-height: 1.4em;
-    text-align: start;
-}
-
-body .auxiliary > * {
-    -webkit-margin-start: 0;
-}
-
-body .auxiliary img, body .auxiliary > *:first-child {
-    margin: 0;
-}
-
-/* If the element immediately after an image is inline, it might bump up against the image. */
-body .auxiliary img + * {
-    display: block;
-}
-
-body .auxiliary figcaption {
-    font-size: 100%;
-}
-
-body .auxiliary * {
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-}
-
-body .float.left {
-    float: left;
-    margin-right: 20px;
-}
-
-body .float.right {
-    float: right;
-    margin-left: 20px;
-}
-
-body .clear {
-    clear: both;
-}
-
-body ul.list-style-type-none,
-body ol.list-style-type-none,
-body .list-style-type-none > li {
-    list-style-type: none;
-    -webkit-padding-start: 0;
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
 }
 
 /* Collapse excess whitespace. */
-.page p > p:empty,
-.page div > p:empty,
-.page p > div:empty,
-.page div > div:empty,
-.page p + br,
-.page p > br:only-child,
-.page div > br:only-child,
-.page img + br
-{
-    display: none;
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
 }
 
-.title {
-    display: none;
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
 }
 
-.page:first-of-type .title {
-    display: block;
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
 }
 
-.page table {
-    font-size: 0.9em;
-    text-align: start;
-    word-wrap: break-word;
-    border-collapse: collapse;
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
 }
 
-.page table td, .page table th {
-    padding: 0.25em 0.5em;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+.metadata.singleline .delimiter::after {
+  content: "•";
 }
 
-.page table th {
-    background-color: rgba(0, 0, 0, 0.025);
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
 }
 
-.page a {
-    text-decoration: none;
+article table th {
+  background-color: rgba(0, 0, 0, 0.025);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    -webkit-user-select: none;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+  body.mac {
+    background-color: transparent;
+  }
+  #article {
+    pointer-events: auto;
+    -webkit-user-select: auto;
+    overflow: visible;
+  }
+  #article:focus {
+    outline: none;
+  }
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 35px;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+  body article {
+    padding: 0 4px;
+  }
+  #article {
+    margin-top: 0;
+    border-top: none;
+    padding-top: 32px;
+  }
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+  article video {
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  /* Readable margins. */
+  body #article {
+    max-width: 83.2ex;
+  }
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
 }

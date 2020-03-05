@@ -59,7 +59,13 @@ impl Whitelist {
     pub fn load_predefined(&mut self) {
         self.add_configuration(SpeedReaderConfig {
             domain: "cnet.com".to_owned(),
-            url_rules: vec![],
+            url_rules: vec![
+              "||cnet.com/features/*".to_owned(),
+              "||cnet.com/roadshow/reviews/*".to_owned(),
+              "||cnet.com/roadshow/news/*".to_owned(),
+              "||cnet.com/news/*".to_owned(),
+              "||cnet.com/reviews/*".to_owned(),
+            ],
             declarative_rewrite: Some(RewriteRules {
                 main_content: vec![".article-main-body".to_owned(), ".hero-content".to_owned()],
                 main_content_cleanup: vec![
@@ -82,7 +88,9 @@ impl Whitelist {
 
         self.add_configuration(SpeedReaderConfig {
             domain: "247sports.com".to_owned(),
-            url_rules: vec![],
+            url_rules: vec![
+              "||247sports.com/Article/".to_owned(),
+            ],
             declarative_rewrite: Some(RewriteRules {
                 main_content: vec!["section .article-cnt".to_owned()],
                 main_content_cleanup: vec![".article-cnt__header > .container".to_owned()],
@@ -95,7 +103,10 @@ impl Whitelist {
 
         self.add_configuration(SpeedReaderConfig {
             domain: "abcnews.go.com".to_owned(),
-            url_rules: vec![],
+            url_rules: vec![
+              "||abcnews.go.com/*/story".to_owned(),
+              "||abcnews.go.com/*/wireStory".to_owned(),
+            ],
             declarative_rewrite: Some(RewriteRules {
             main_content: vec![".Article__Wrapper".to_owned(), "body > script:not([src])".to_owned()],
             main_content_cleanup: vec![
@@ -443,7 +454,9 @@ impl Whitelist {
 
         self.add_configuration(SpeedReaderConfig {
             domain: "nypost.com".to_owned(),
-            url_rules: vec![],
+            url_rules: vec![
+              r#"/nypost.com\/(\d){4}\/(\d){2}\/(\d){2}\/.*/"#.to_owned(),
+            ],
             declarative_rewrite: Some(RewriteRules {
                 main_content: vec![".article-header".to_owned(), ".slide".to_owned()],
                 main_content_cleanup: vec![
@@ -461,7 +474,9 @@ impl Whitelist {
 
         self.add_configuration(SpeedReaderConfig {
             domain: "chron.com".to_owned(),
-            url_rules: vec![],
+            url_rules: vec![
+              "||chron.com/*/article/".to_owned(),
+            ],
             declarative_rewrite: Some(RewriteRules {
                 main_content: vec![".article-title".to_owned(), ".article-body".to_owned()],
                 main_content_cleanup: vec![
@@ -484,7 +499,10 @@ impl Whitelist {
 
         self.add_configuration(SpeedReaderConfig {
             domain: "nbcnews.com".to_owned(),
-            url_rules: vec![],
+            url_rules: vec![
+              "||nbcnews.com/*-n*".to_owned(),
+              "@@||nbcnews.com/video".to_owned(),
+            ],
             declarative_rewrite: Some(RewriteRules {
                 main_content: vec![
                     ".article header".to_owned(),
@@ -506,7 +524,9 @@ impl Whitelist {
 
         self.add_configuration(SpeedReaderConfig {
             domain: "dw.com".to_owned(),
-            url_rules: vec![],
+            url_rules: vec![
+              "||dw.com/*/a-*".to_owned(),
+            ],
             declarative_rewrite: Some(RewriteRules {
                 main_content: vec!["#bodyContent".to_owned()],
                 main_content_cleanup: vec![
@@ -525,7 +545,9 @@ impl Whitelist {
 
         self.add_configuration(SpeedReaderConfig {
             domain: "time.com".to_owned(),
-            url_rules: vec![],
+            url_rules: vec![
+              r#"/time.com\/(\d){6,}\/.*/"#.to_owned(),
+            ],
             declarative_rewrite: Some(RewriteRules {
                 main_content: vec!["main.article".to_owned()],
                 main_content_cleanup: vec![
@@ -552,7 +574,11 @@ impl Whitelist {
 
         self.add_configuration(SpeedReaderConfig {
             domain: "cbsnews.com".to_owned(),
-            url_rules: vec![],
+            url_rules: vec![
+              "||cbsnews.com/news/*".to_owned(),
+              "@@||cbsnews.com/live".to_owned(),
+              "@@||cbsnews.com/video".to_owned(),
+            ],
             declarative_rewrite: Some(RewriteRules {
                 main_content: vec!["article.content".to_owned(), "article.article".to_owned()],
                 main_content_cleanup: vec![
@@ -578,7 +604,10 @@ impl Whitelist {
 
         self.add_configuration(SpeedReaderConfig {
             domain: "thedailybeast.com".to_owned(),
-            url_rules: vec![],
+            url_rules: vec![
+              "@@||thedailybeast.com/category/".to_owned(),
+              r#"/thedailybeast\.com\/(\w+-)+/"#.to_owned(),
+            ],
             declarative_rewrite: Some(RewriteRules {
             main_content: vec!["article.Story".to_owned(), "body > div > script:not([src]):not([type])".to_owned()],
             main_content_cleanup: vec![
@@ -617,7 +646,9 @@ impl Whitelist {
 
         self.add_configuration(SpeedReaderConfig {
             domain: "businessinsider.com".to_owned(),
-            url_rules: vec![],
+            url_rules: vec![
+              r#"/businessinsider\.com\/(\w+-)+(\d){4}-(\d)/"#.to_owned(),
+            ],
             declarative_rewrite: Some(RewriteRules {
                 main_content: vec![
                     ".post-headline:nth".to_owned(),

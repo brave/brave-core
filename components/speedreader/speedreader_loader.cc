@@ -253,6 +253,7 @@ void SpeedReaderURLLoader::MaybeLaunchSpeedreader() {
               SCOPED_UMA_HISTOGRAM_TIMER("Brave.Speedreader.Distill");
               SpeedReader speedreader;
               if (!speedreader.ReadableURL(url.spec())) {
+                VLOG(2) << __func__ << " URL not readable " << url.spec();
                 return std::string();
               }
               auto rewriter = speedreader.RewriterNew(url.spec());

@@ -47,13 +47,13 @@ if (speedreader_shared_lib_install_name != "") {
 
 cargo_build("speedreader") {
   inputs = [
-    "Cargo.toml",
     "build.rs",
+    "Cargo.toml",
     "cbindgen.toml",
     "include/speedreader_ffi.hpp",
-    "src/lib.rs",
     "src/charbuf.rs",
     "src/errors.rs",
+    "src/lib.rs",
     "src/speedreader.rs",
   ]
 

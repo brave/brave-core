@@ -78,17 +78,20 @@ pub fn rewrite_rules_to_content_handlers(
     );
 
     let maybe_script = conf.content_script.clone();
-    if let Some(script) = maybe_script {
-        add_element_function(
-            &mut element_content_handlers,
-            &mut errors,
-            "body",
-            Box::new(move |el| {
-                el.append(&script, ContentType::Html);
-                Ok(())
-            }),
-        );
-    };
+
+    add_element_function(
+        &mut element_content_handlers,
+        &mut errors,
+        "body",
+        Box::new(move |el| {
+            el.before("<article id=\"article\">", ContentType::Html);
+            el.after("</article>", ContentType::Html);
+            if let Some(script) = &maybe_script {
+              el.append(&script, ContentType::Html);
+            }
+            Ok(())
+        }),
+    );
 
     if !errors.is_empty() {
         eprintln!(
@@ -226,7 +229,8 @@ fn correct_relative_links(
         Box::new(move |el| {
             let src = el.get_attribute("src").expect("src was required");
 
-            if !src.starts_with("http") {
+            if !src.starts_with("http://") && !src.starts_with("https://")
+                && !src.starts_with("//") {
                 el.set_attribute("src", &format!("{}{}", origin, src))?;
             }
 
