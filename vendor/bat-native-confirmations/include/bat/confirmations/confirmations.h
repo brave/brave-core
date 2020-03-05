@@ -14,6 +14,7 @@
 #include "bat/confirmations/confirmations_client.h"
 #include "bat/confirmations/export.h"
 #include "bat/confirmations/ad_notification_info.h"
+#include "bat/confirmations/publisher_ad_info.h"
 #include "bat/confirmations/issuers_info.h"
 #include "bat/confirmations/wallet_info.h"
 #include "bat/ledger/ledger.h"

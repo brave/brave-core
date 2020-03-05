@@ -18,7 +18,7 @@ typedef NS_ENUM(NSInteger, BATAdsConfirmationType) {
   BATAdsConfirmationTypeConversion  // = ads::ConfirmationType::kConversion
 } NS_SWIFT_NAME(ConfirmationType);
 
-NS_SWIFT_NAME(AdsNotification)
+NS_SWIFT_NAME(AdNotification)
 @interface BATAdNotification : NSObject
 @property (nonatomic, readonly, copy) NSString *uuid;
 @property (nonatomic, readonly, copy) NSString *parentUuid;

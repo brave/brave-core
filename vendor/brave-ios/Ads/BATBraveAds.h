@@ -12,6 +12,13 @@ typedef NS_ENUM(NSInteger, BATAdNotificationEventType) {
   BATAdNotificationEventTypeTimedOut      // = ads::AdNotificationEventType::kTimedOut
 } NS_SWIFT_NAME(AdNotificationEventType);
 
+typedef NS_ENUM(NSInteger, BATPublisherAdEventType) {
+  BATPublisherAdEventTypeViewed,        // = ads::PublisherAdEventType::kViewed
+  BATPublisherAdEventTypeClicked,       // = ads::PublisherAdEventType::kClicked
+  BATPublisherAdEventTypeDismissed,     // = ads::PublisherAdEventType::kDismissed
+  BATPublisherAdEventTypeTimedOut       // = ads::PublisherAdEventType::kTimedOut
+} NS_SWIFT_NAME(PublisherAdEventType);
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class BATAdNotification, BATBraveAds, BATBraveLedger;
@@ -76,6 +83,9 @@ NS_SWIFT_NAME(BraveAds)
 /// Whether or not Brave Ads is enabled
 @property (nonatomic, assign, getter=isEnabled) BOOL enabled;
 
+/// Whether or not Brave publisher ads should be shown for pariticipating sites
+@property (nonatomic, assign, getter=shouldShowPublisherAdsOnParticipatingSites) BOOL showPublisherAdsOnParticipatingSites;
+
 /// Whether or not the user has opted out of conversion tracking
 @property (nonatomic, assign, getter=shouldAllowAdConversionTracking) BOOL allowAdConversionTracking;
 
@@ -133,6 +143,10 @@ NS_SWIFT_NAME(BraveAds)
 /// Report that a notification event type was triggered for a given id
 - (void)reportAdNotificationEvent:(NSString *)notificationUuid
                         eventType:(BATAdNotificationEventType)eventType;
+
+/// Report that an publisher ad event type was triggered
+- (void)reportPublisherAdEvent:(NSString *)json
+                     eventType:(BATPublisherAdEventType)eventType;
 
 /// Toggle that the user liked the given ad and more like it should be shown
 - (void)toggleThumbsUpForAd:(NSString *)creativeInstanceId

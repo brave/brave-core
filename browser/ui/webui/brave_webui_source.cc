@@ -284,6 +284,9 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "adsPerHour4",  IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_4 },
         { "adsPerHour5",  IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_5 },
         { "adsTitle",  IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE },
+        { "adsDeliveryPermissions", IDS_BRAVE_REWARDS_LOCAL_ADS_DELIVERY_PERMISSIONS },                                                        // NOLINT
+        { "adsShowOnParticipatingPublisherSites", IDS_BRAVE_REWARDS_LOCAL_ADS_SHOW_ON_PARTICIPATING_PUBLISHER_SITES },                         // NOLINT
+        { "adsShowOnParticipatingPublisherSitesDescription", IDS_BRAVE_REWARDS_LOCAL_ADS_SHOW_ON_PARTICIPATING_PUBLISHER_SITES_DESCRIPTION },  // NOLINT
 
         { "bat", IDS_BRAVE_UI_BAT_REWARDS_TEXT },
         { "bap", IDS_BRAVE_UI_BAP_REWARDS_TEXT },

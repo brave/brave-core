@@ -378,6 +378,34 @@ void Client::ResetSeenAdNotifications(
   SaveState();
 }
 
+void Client::UpdateSeenPublisherAd(
+    const std::string& creative_instance_id,
+    const uint64_t value) {
+  client_state_->seen_publisher_ads.insert({creative_instance_id, value});
+
+  SaveState();
+}
+
+const std::map<std::string, uint64_t> Client::GetSeenPublisherAds() {
+  return client_state_->seen_publisher_ads;
+}
+
+void Client::ResetSeenPublisherAds(
+    const CreativePublisherAdList& ads) {
+  BLOG(INFO) << "Resetting seen publisher ads";
+
+  for (const auto& ad : ads) {
+    auto publisher_ad_uuid_seen =
+        client_state_->seen_publisher_ads.find(ad.creative_instance_id);
+    if (publisher_ad_uuid_seen !=
+        client_state_->seen_publisher_ads.end()) {
+      client_state_->seen_publisher_ads.erase(publisher_ad_uuid_seen);
+    }
+  }
+
+  SaveState();
+}
+
 void Client::UpdateSeenAdvertiser(
     const std::string& advertiser_id,
     const uint64_t value) {

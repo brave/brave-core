@@ -32,6 +32,10 @@ class AdsClientMojoBridge
       bool* out_is_enabled) override;
   void IsEnabled(
       IsEnabledCallback callback) override;
+  bool ShouldShowPublisherAdsOnParticipatingSites(
+      bool* out_should_show) override;
+  void ShouldShowPublisherAdsOnParticipatingSites(
+      ShouldShowPublisherAdsOnParticipatingSitesCallback callback) override;
   bool ShouldAllowAdConversionTracking(
       bool* out_should_allow) override;
   void ShouldAllowAdConversionTracking(
@@ -133,6 +137,20 @@ class AdsClientMojoBridge
   void GetCreativeAdNotifications(
       const std::vector<std::string>& categories,
       GetCreativeAdNotificationsCallback callback) override;
+  void GetCreativePublisherAds(
+      const std::string& url,
+      const std::vector<std::string>& categories,
+      const std::vector<std::string>& sizes,
+      GetCreativePublisherAdsCallback callback) override;
+  void GetCreativePublisherAdsToPreFetch(
+      const std::vector<std::string>& creative_instance_ids,
+      GetCreativePublisherAdsToPreFetchCallback callback) override;
+  void GetExpiredCreativePublisherAds(
+      const std::vector<std::string>& creative_instance_ids,
+      GetExpiredCreativePublisherAdsCallback callback) override;
+  void SiteSupportsPublisherAds(
+      const std::string& url,
+      SiteSupportsPublisherAdsCallback callback) override;
   void GetAdConversions(
       const std::string& url,
       GetAdConversionsCallback callback) override;
@@ -194,6 +212,27 @@ class AdsClientMojoBridge
       const ads::Result result,
       const std::vector<std::string>& categories,
       const ads::CreativeAdNotificationList& ads);
+  static void OnGetCreativePublisherAds(
+      CallbackHolder<GetCreativePublisherAdsCallback>* holder,
+      const ads::Result result,
+      const std::string& url,
+      const std::vector<std::string>& categories,
+      const std::vector<std::string>& sizes,
+      const ads::CreativePublisherAdList& ads);
+  static void OnGetCreativePublisherAdsToPreFetch(
+      CallbackHolder<GetCreativePublisherAdsToPreFetchCallback>* holder,
+      const ads::Result result,
+      const std::vector<std::string>& creative_instance_ids,
+      const ads::CreativePublisherAdList& ads);
+  static void OnGetExpiredCreativePublisherAds(
+      CallbackHolder<GetExpiredCreativePublisherAdsCallback>* holder,
+      const ads::Result result,
+      const std::vector<std::string>& creative_instance_ids,
+      const ads::CreativePublisherAdList& ads);
+  static void OnSiteSupportsPublisherAds(
+      CallbackHolder<SiteSupportsPublisherAdsCallback>* holder,
+      const std::string& url,
+      const bool is_supported);
   static void OnGetAdConversions(
       CallbackHolder<GetAdConversionsCallback>* holder,
       const ads::Result result,

@@ -41,8 +41,12 @@ Result CatalogState::FromJson(
   new_catalog_id = catalog["catalogId"].GetString();
 
   new_version = catalog["version"].GetUint64();
-  if (new_version != 1) {
-    return SUCCESS;
+  if (new_version != kCatalogVersion) {
+    if (error_description != nullptr) {
+      *error_description = "Unsupported catalog version";
+    }
+
+    return FAILED;
   }
 
   new_ping = catalog["ping"].GetUint64();
@@ -98,7 +102,7 @@ Result CatalogState::FromJson(
               "with creativeSetId: " + creative_set_info.creative_set_id;
         }
 
-        return FAILED;
+        continue;
       }
 
       for (const auto& segment : segments) {
@@ -164,13 +168,39 @@ Result CatalogState::FromJson(
           creative_info.payload.target_url = payload["targetUrl"].GetString();
 
           creative_set_info.creative_ad_notifications.push_back(creative_info);
+        } else if (code == "in_page_all_v1") {
+          CatalogCreativePublisherAdInfo creative_info;
+
+          creative_info.creative_instance_id = creative_instance_id;
+
+          // Type
+          creative_info.type.code = code;
+          creative_info.type.name = type["name"].GetString();
+          creative_info.type.platform = type["platform"].GetString();
+          creative_info.type.version = type["version"].GetUint64();
+
+          // Payload
+          auto payload = creative["payload"].GetObject();
+          creative_info.payload.size = payload["size"].GetString();
+          creative_info.payload.creative_url =
+              payload["creativeUrl"].GetString();
+          creative_info.payload.target_url = payload["targetUrl"].GetString();
+
+          // Channels
+          for (const auto& channel : creative_set["channels"].GetArray()) {
+            CatalogPublisherAdChannelInfo channel_info;
+            channel_info.name = channel.GetString();
+            creative_info.channels.push_back(channel_info);
+          }
+
+          creative_set_info.creative_publisher_ads.push_back(creative_info);
         } else {
           if (error_description != nullptr) {
             *error_description = "Catalog invalid: Invalid " + code
                 +" creative for creativeInstanceId: " + creative_instance_id;
           }
 
-          return FAILED;
+          continue;
         }
       }
 

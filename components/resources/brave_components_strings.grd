@@ -226,6 +226,9 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DESC" desc="">An automatic way to support publishers and content creators. Set a monthly payment and browse normally. The Brave Verified sites you visit will receive your contributions automatically, based on your attention as measured by Brave.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_ALLOW_CONVERSION_TRACKING" desc="">Allow ad conversion detection</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_ALLOW_CONVERSION_TRACKING_DESCRIPTION" desc="">This will anonymously let Brave know that there was a response to an ad on this browser. Enabling this will increase earnings.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DELIVERY_PERMISSIONS" desc="">Ad delivery permissions</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SHOW_ON_PARTICIPATING_PUBLISHER_SITES" desc="">In-page ads on participating publisher websites</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_SHOW_ON_PARTICIPATING_PUBLISHER_SITES_DESCRIPTION" desc="">Earn by viewing privacy-respecting ads on participating publisher sites.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CURRENT_EARNINGS" desc="">Estimated pending rewards</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PAYMENT_DATE" desc="">Next payment date</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_NOTIFICATIONS_RECEIVED" desc="">Ad notifications received this month</message>

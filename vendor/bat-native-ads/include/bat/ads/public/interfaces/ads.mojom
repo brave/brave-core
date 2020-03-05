@@ -16,3 +16,8 @@ enum AdNotificationEventType {
   kDismissed,
   kTimedOut
 };
+
+enum PublisherAdEventType {
+  kViewed = 0,
+  kClicked
+};

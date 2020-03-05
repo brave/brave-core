@@ -17,14 +17,25 @@
 #include "bat/ads/export.h"
 #include "bat/ads/mojom.h"
 #include "bat/ads/ad_notification_info.h"
+#include "bat/ads/publisher_ads.h"
 #include "bat/ads/ads_history.h"
 
 namespace ads {
 
 using Environment = mojom::Environment;
-
 using InitializeCallback = std::function<void(const Result)>;
 using ShutdownCallback = std::function<void(const Result)>;
+using GetPublisherAdsCallback =
+    std::function<void(const Result, const std::string&,
+        const std::vector<std::string>&, const ads::PublisherAds&)>;
+using GetPublisherAdsToPreFetchCallback =
+    std::function<void(const Result, const std::vector<std::string>&,
+        const ads::PublisherAds&)>;
+using GetExpiredPublisherAdsCallback =
+    std::function<void(const Result, const std::vector<std::string>&,
+        const ads::PublisherAds&)>;
+using CanShowPublisherAdsCallback =
+    std::function<void(const std::string&, const bool)>;
 using RemoveAllHistoryCallback = std::function<void(const Result)>;
 
 // |_environment| indicates that URL requests should use production, staging or
@@ -194,6 +205,32 @@ class ADS_EXPORT Ads {
   virtual void OnAdNotificationEvent(
       const std::string& uuid,
       const AdNotificationEventType event_type) = 0;
+
+  // Should be called to get a list of eligible publisher ads
+  virtual void GetPublisherAds(
+      const std::string& url,
+      const std::vector<std::string>& sizes,
+      GetPublisherAdsCallback callback) = 0;
+
+  // Should be called to get a list of publisher ads to pre cache
+  virtual void GetPublisherAdsToPreFetch(
+      const std::vector<std::string>& creative_instance_ids,
+      GetPublisherAdsToPreFetchCallback callback) = 0;
+
+  // Should be called to get a list of expired publisher ads from the cache
+  virtual void GetExpiredPublisherAds(
+      const std::vector<std::string>& creative_instance_ids,
+      GetExpiredPublisherAdsCallback callback) = 0;
+
+  // Should be called to check if the site supports publisher ads
+  virtual void CanShowPublisherAds(
+      const std::string& url,
+      CanShowPublisherAdsCallback callback) = 0;
+
+  // Should be called when a user implicitly views or clicks a publisher ad
+  virtual void OnPublisherAdEvent(
+      const PublisherAdInfo& info,
+      const PublisherAdEventType event_type) = 0;
 
   // Should be called to remove all cached history. The callback takes one
   // argument — |Result| should be set to |SUCCESS| if successful; otherwise,

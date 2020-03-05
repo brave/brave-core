@@ -50,6 +50,8 @@ source_set("browser") {
       "bundle_state_database.h",
       "notification_helper.cc",
       "notification_helper.h",
+      "publisher_ads.cc",
+      "publisher_ads.h",
     ]
 
     if (is_android) {

@@ -10,8 +10,11 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "bat/ads/ads.h"
+#include "bat/ads/publisher_ads.h"
+
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
 #include "base/memory/weak_ptr.h"
@@ -78,6 +81,23 @@ class BatAdsImpl :
   void OnAdNotificationEvent(
       const std::string& uuid,
       const ads::AdNotificationEventType event_type) override;
+
+  void GetPublisherAds(
+      const std::string& url,
+      const std::vector<std::string>& sizes,
+      GetPublisherAdsCallback callback) override;
+  void GetPublisherAdsToPreFetch(
+      const std::vector<std::string>& creative_instance_ids,
+      GetPublisherAdsToPreFetchCallback callback) override;
+  void GetExpiredPublisherAds(
+      const std::vector<std::string>& creative_instance_ids,
+      GetExpiredPublisherAdsCallback callback) override;
+  void CanShowPublisherAds(
+      const std::string& url,
+      CanShowPublisherAdsCallback callback) override;
+  void OnPublisherAdEvent(
+      const std::string& json,
+      const ads::PublisherAdEventType event_type) override;
 
   void RemoveAllHistory(
       RemoveAllHistoryCallback callback) override;
@@ -146,6 +166,30 @@ class BatAdsImpl :
   static void OnShutdown(
       CallbackHolder<ShutdownCallback>* holder,
       const int32_t result);
+
+  static void OnGetPublisherAds(
+      CallbackHolder<GetPublisherAdsCallback>* holder,
+      const int32_t result,
+      const std::string& url,
+      const std::vector<std::string>& sizes,
+      const ads::PublisherAds& ads);
+
+  static void OnGetPublisherAdsToPreFetch(
+      CallbackHolder<GetPublisherAdsToPreFetchCallback>* holder,
+      const int32_t result,
+      const std::vector<std::string>& creative_instance_ids,
+      const ads::PublisherAds& ads);
+
+  static void OnGetExpiredPublisherAds(
+      CallbackHolder<GetExpiredPublisherAdsCallback>* holder,
+      const int32_t result,
+      const std::vector<std::string>& creative_instance_ids,
+      const ads::PublisherAds& ads);
+
+  static void OnCanShowPublisherAds(
+      CallbackHolder<CanShowPublisherAdsCallback>* holder,
+      const std::string& url,
+      const bool can_show);
 
   static void OnRemoveAllHistory(
       CallbackHolder<RemoveAllHistoryCallback>* holder,

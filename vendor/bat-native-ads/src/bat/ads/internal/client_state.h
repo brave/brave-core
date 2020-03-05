@@ -35,6 +35,7 @@ struct ClientState {
   std::deque<AdHistory> ads_shown_history;
   std::string ad_uuid;
   std::map<std::string, uint64_t> seen_ad_notifications;
+  std::map<std::string, uint64_t> seen_publisher_ads;
   std::map<std::string, uint64_t> seen_advertisers;
   uint64_t next_check_serve_ad_timestamp_in_seconds = 0;
   bool available = false;

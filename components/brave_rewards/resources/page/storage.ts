@@ -48,6 +48,7 @@ export const defaultState: Rewards.State = {
   adsData: {
     adsEnabled: false,
     shouldAllowAdConversionTracking: false,
+    shouldShowPublisherAdsOnParticipatingSites: false,
     adsPerHour: 0,
     adsUIEnabled: false,
     adsIsSupported: false,

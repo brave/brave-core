@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "bat/ads/creative_ad_notification_info.h"
+#include "bat/ads/creative_publisher_ad_info.h"
 #include "bat/ads/ad_conversion_info.h"
 
 namespace ads {
@@ -32,6 +33,7 @@ struct BundleState {
   uint64_t catalog_ping = 0;
   uint64_t catalog_last_updated_timestamp_in_seconds = 0;
   CreativeAdNotificationMap creative_ad_notifications;
+  CreativePublisherAdMap creative_publisher_ads;
   AdConversionList ad_conversions;
 };
 

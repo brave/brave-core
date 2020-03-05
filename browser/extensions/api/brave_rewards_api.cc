@@ -34,6 +34,15 @@ using brave_rewards::RewardsServiceFactory;
 namespace extensions {
 namespace api {
 
+namespace {
+
+const char kShouldShowPublisherAdsOnParticipatingSites[] =
+    "shouldShowPublisherAdsOnParticipatingSites";
+
+const char kTrue[] = "true";
+
+}  // namespace
+
 BraveRewardsCreateWalletFunction::BraveRewardsCreateWalletFunction()
     : weak_factory_(this) {
 }
@@ -608,6 +617,9 @@ ExtensionFunction::ResponseAction BraveRewardsSaveAdsSettingFunction::Run() {
       const auto is_enabled =
           params->value == "true" && ads_service_->IsSupportedLocale();
       ads_service_->SetEnabled(is_enabled);
+    } else if (params->key == kShouldShowPublisherAdsOnParticipatingSites) {
+      ads_service_->SetShowPublisherAdsOnParticipatingSites(
+          params->value == kTrue);
     } else if (params->key == "shouldAllowAdConversionTracking") {
       ads_service_->SetAllowAdConversionTracking(params->value == "true");
     }

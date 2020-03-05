@@ -21,6 +21,8 @@ interface BatAdsClient {
   [Sync]
   IsEnabled() => (bool is_enabled);
   [Sync]
+  ShouldShowPublisherAdsOnParticipatingSites() => (bool should_show);
+  [Sync]
   ShouldAllowAdConversionTracking() => (bool should_allow);
   [Sync]
   GetLocale() => (string locale);
@@ -60,6 +62,10 @@ interface BatAdsClient {
   LoadSampleBundle() => (int32 result, string value);
   Reset(string name) => (int32 result);
   GetCreativeAdNotifications(array<string> categories) => (int32 result, array<string> categories, array<string> json_list);
+  GetCreativePublisherAds(string url, array<string> categories, array<string> sizes) => (int32 result, string url, array<string> categories, array<string> sizes, array<string> json_list);
+  GetCreativePublisherAdsToPreFetch(array<string> creative_instance_ids) => (int32 result, array<string> creative_instance_ids, array<string> json_list);
+  GetExpiredCreativePublisherAds(array<string> creative_instance_ids) => (int32 result, array<string> creative_instance_ids, array<string> json_list);
+  SiteSupportsPublisherAds(string url) => (string url, bool is_supported);
   GetAdConversions(string url) => (int32 result, string url, array<string> json_list);
   EventLog(string json);
 };
@@ -82,8 +88,13 @@ interface BatAds {
   OnTabClosed(int32 tab_id);
   GetAdNotification(string uuid) => (string json);
   OnAdNotificationEvent(string uuid, ads.mojom.AdNotificationEventType event_type);
+  OnPublisherAdEvent(string json, ads.mojom.PublisherAdEventType event_type);
   RemoveAllHistory() => (int32 result);
   GetAdsHistory(uint64 from_timestamp, uint64 to_timestamp) => (string json);
+  GetPublisherAds(string url, array<string> sizes) => (string url, array<string> sizes, string ads);
+  GetPublisherAdsToPreFetch(array<string> creative_instance_ids) => (array<string> creative_instance_ids, string ads);
+  GetExpiredPublisherAds(array<string> creative_instance_ids) => (array<string> creative_instance_ids, string ads);
+  CanShowPublisherAds(string url) => (string url, bool can_show);
   ToggleAdThumbUp(string creative_instance_id, string creative_set_id, int32 action) => (string creative_instance_id, int32 action);
   ToggleAdThumbDown(string creative_instance_id, string creative_set_id, int32 action) => (string creative_instance_id, int32 action);
   ToggleAdOptInAction(string category, int32 action) => (string category, int32 action);

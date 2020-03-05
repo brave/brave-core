@@ -96,6 +96,7 @@ describe('rewards reducer', () => {
         initState.adsData = {
           adsEnabled: false,
           shouldAllowAdConversionTracking: true,
+          shouldShowPublisherAdsOnParticipatingSites: true,
           adsPerHour: 2,
           adsUIEnabled: false,
           adsIsSupported: false,
@@ -108,6 +109,7 @@ describe('rewards reducer', () => {
         expectedState.adsData = {
           adsEnabled: true,
           shouldAllowAdConversionTracking: true,
+          shouldShowPublisherAdsOnParticipatingSites: true,
           adsPerHour: 5,
           adsUIEnabled: true,
           adsIsSupported: true,
@@ -124,6 +126,7 @@ describe('rewards reducer', () => {
             adsData: {
               adsEnabled: true,
               shouldAllowAdConversionTracking: true,
+              shouldShowPublisherAdsOnParticipatingSites: true,
               adsPerHour: 5,
               adsUIEnabled: true,
               adsIsSupported: true
@@ -143,6 +146,7 @@ describe('rewards reducer', () => {
         expectedState.adsData = {
           adsEnabled: false,
           shouldAllowAdConversionTracking: true,
+          shouldShowPublisherAdsOnParticipatingSites: true,
           adsPerHour: 2,
           adsUIEnabled: true,
           adsIsSupported: true,
@@ -159,6 +163,7 @@ describe('rewards reducer', () => {
             adsData: {
               adsEnabled: false,
               shouldAllowAdConversionTracking: true,
+              shouldShowPublisherAdsOnParticipatingSites: true,
               adsPerHour: 2,
               adsUIEnabled: true,
               adsIsSupported: true

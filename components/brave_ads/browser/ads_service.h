@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_ads/browser/publisher_ads.h"
 #include "base/macros.h"
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -25,6 +26,18 @@ class ListValue;
 }
 
 namespace brave_ads {
+
+using OnGetPublisherAdsCallback = base::OnceCallback<void(const std::string&,
+    const std::vector<std::string>&, const base::ListValue&)>;
+
+using OnGetPublisherAdsToPreFetchCallback = base::OnceCallback<void(
+    const std::vector<std::string>&, const base::ListValue&)>;
+
+using OnGetExpiredPublisherAdsCallback = base::OnceCallback<void(
+    const std::vector<std::string>&, const base::ListValue&)>;
+
+using OnCanShowPublisherAdsCallback = base::OnceCallback<void(
+    const std::string&, const bool)>;
 
 using OnGetAdsHistoryCallback =
     base::OnceCallback<void(const base::ListValue&)>;
@@ -52,6 +65,10 @@ class AdsService : public KeyedService {
   virtual bool IsEnabled() const = 0;
   virtual void SetEnabled(
       const bool is_enabled) = 0;
+
+  virtual bool ShouldShowPublisherAdsOnParticipatingSites() const = 0;
+  virtual void SetShowPublisherAdsOnParticipatingSites(
+      const bool should_show) = 0;
 
   virtual bool ShouldAllowAdConversionTracking() const = 0;
   virtual void SetAllowAdConversionTracking(
@@ -82,6 +99,27 @@ class AdsService : public KeyedService {
       const bool is_active) = 0;
   virtual void OnTabClosed(
       const SessionID& tab_id) = 0;
+
+  virtual void GetPublisherAds(
+      const std::string& url,
+      const std::vector<std::string>& sizes,
+      OnGetPublisherAdsCallback callback) = 0;
+
+  virtual void GetPublisherAdsToPreFetch(
+      const std::vector<std::string>& creative_instance_ids,
+      OnGetPublisherAdsToPreFetchCallback callback) = 0;
+
+  virtual void GetExpiredPublisherAds(
+      const std::vector<std::string>& creative_instance_ids,
+      OnGetExpiredPublisherAdsCallback callback) = 0;
+
+  virtual void CanShowPublisherAds(
+      const std::string& url,
+      OnCanShowPublisherAdsCallback callback) = 0;
+
+  virtual void OnPublisherAdEvent(
+      const PublisherAdInfo& info,
+      const PublisherAdEventType event_type) = 0;
 
   virtual void GetAdsHistory(
       const uint64_t from_timestamp,

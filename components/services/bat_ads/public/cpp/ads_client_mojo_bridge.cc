@@ -19,6 +19,8 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
+using std::placeholders::_4;
+using std::placeholders::_5;
 
 namespace bat_ads {
 
@@ -64,6 +66,19 @@ bool AdsClientMojoBridge::IsEnabled(
 void AdsClientMojoBridge::IsEnabled(
     IsEnabledCallback callback) {
   std::move(callback).Run(ads_client_->IsEnabled());
+}
+
+bool AdsClientMojoBridge::ShouldShowPublisherAdsOnParticipatingSites(
+    bool* out_should_show) {
+  DCHECK(out_should_show);
+  *out_should_show = ads_client_->ShouldShowPublisherAdsOnParticipatingSites();
+  return true;
+}
+
+void AdsClientMojoBridge::ShouldShowPublisherAdsOnParticipatingSites(
+    ShouldShowPublisherAdsOnParticipatingSitesCallback callback) {
+  std::move(callback).Run(
+      ads_client_->ShouldShowPublisherAdsOnParticipatingSites());
 }
 
 bool AdsClientMojoBridge::ShouldAllowAdConversionTracking(
@@ -495,6 +510,130 @@ void AdsClientMojoBridge::GetCreativeAdNotifications(
   ads_client_->GetCreativeAdNotifications(categories,
       std::bind(AdsClientMojoBridge::OnGetCreativeAdNotifications,
           holder, _1, _2, _3));
+}
+
+// static
+void AdsClientMojoBridge::OnGetCreativePublisherAds(
+    CallbackHolder<GetCreativePublisherAdsCallback>* holder,
+    const ads::Result result,
+    const std::string& url,
+    const std::vector<std::string>& categories,
+    const std::vector<std::string>& sizes,
+    const ads::CreativePublisherAdList& ads) {
+  if (holder->is_valid()) {
+    std::vector<std::string> json_list;
+
+    for (const auto& ad : ads) {
+      json_list.push_back(ad.ToJson());
+    }
+
+    std::move(holder->get()).Run(ToMojomResult(result), url, categories,
+        sizes, json_list);
+  }
+
+  delete holder;
+}
+
+void AdsClientMojoBridge::GetCreativePublisherAds(
+    const std::string& url,
+    const std::vector<std::string>& categories,
+    const std::vector<std::string>& sizes,
+    GetCreativePublisherAdsCallback callback) {
+  // this gets deleted in OnGetCreativePublisherAds
+  auto* holder = new CallbackHolder<GetCreativePublisherAdsCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ads_client_->GetCreativePublisherAds(url, categories, sizes,
+      std::bind(AdsClientMojoBridge::OnGetCreativePublisherAds,
+          holder, _1, _2, _3, _4, _5));
+}
+
+// static
+void AdsClientMojoBridge::OnGetCreativePublisherAdsToPreFetch(
+    CallbackHolder<GetCreativePublisherAdsToPreFetchCallback>* holder,
+    const ads::Result result,
+    const std::vector<std::string>& creative_instance_ids,
+    const ads::CreativePublisherAdList& ads) {
+  if (holder->is_valid()) {
+    std::vector<std::string> json_list;
+
+    for (const auto& ad : ads) {
+      json_list.push_back(ad.ToJson());
+    }
+
+    std::move(holder->get()).Run(ToMojomResult(result),
+        creative_instance_ids, json_list);
+  }
+
+  delete holder;
+}
+
+void AdsClientMojoBridge::GetCreativePublisherAdsToPreFetch(
+    const std::vector<std::string>& creative_instance_ids,
+    GetCreativePublisherAdsToPreFetchCallback callback) {
+  // this gets deleted in OnGetCreativePublisherAdsToPreFetch
+  auto* holder = new CallbackHolder<GetCreativePublisherAdsToPreFetchCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ads_client_->GetCreativePublisherAdsToPreFetch(creative_instance_ids,
+      std::bind(AdsClientMojoBridge::OnGetCreativePublisherAdsToPreFetch,
+          holder, _1, _2, _3));
+}
+
+// static
+void AdsClientMojoBridge::OnGetExpiredCreativePublisherAds(
+    CallbackHolder<GetExpiredCreativePublisherAdsCallback>* holder,
+    const ads::Result result,
+    const std::vector<std::string>& creative_instance_ids,
+    const ads::CreativePublisherAdList& ads) {
+  if (holder->is_valid()) {
+    std::vector<std::string> json_list;
+
+    for (const auto& ad : ads) {
+      json_list.push_back(ad.ToJson());
+    }
+
+    std::move(holder->get()).Run(ToMojomResult(result),
+        creative_instance_ids, json_list);
+  }
+
+  delete holder;
+}
+
+void AdsClientMojoBridge::GetExpiredCreativePublisherAds(
+    const std::vector<std::string>& creative_instance_ids,
+    GetExpiredCreativePublisherAdsCallback callback) {
+  // this gets deleted in OnGetExpiredCreativePublisherAds
+  auto* holder = new CallbackHolder<GetExpiredCreativePublisherAdsCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ads_client_->GetExpiredCreativePublisherAds(creative_instance_ids,
+      std::bind(AdsClientMojoBridge::OnGetExpiredCreativePublisherAds, holder,
+          _1, _2, _3));
+}
+
+// static
+void AdsClientMojoBridge::OnSiteSupportsPublisherAds(
+    CallbackHolder<SiteSupportsPublisherAdsCallback>* holder,
+    const std::string& url,
+    const bool is_supported) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(url, is_supported);
+  }
+
+  delete holder;
+}
+
+void AdsClientMojoBridge::SiteSupportsPublisherAds(
+    const std::string& url,
+    SiteSupportsPublisherAdsCallback callback) {
+  // this gets deleted in OnSiteSupportsPublisherAds
+  auto* holder = new CallbackHolder<SiteSupportsPublisherAdsCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ads_client_->SiteSupportsPublisherAds(url,
+      std::bind(AdsClientMojoBridge::OnSiteSupportsPublisherAds,
+          holder, _1, _2));
 }
 
 // static
