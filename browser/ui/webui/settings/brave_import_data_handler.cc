@@ -7,7 +7,7 @@
 
 namespace settings {
 
-BraveImportDataHandler::BraveImportDataHandler() {}
+BraveImportDataHandler::BraveImportDataHandler() = default;
 BraveImportDataHandler::~BraveImportDataHandler() = default;
 
 }  // namespace settings

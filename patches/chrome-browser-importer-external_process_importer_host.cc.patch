@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/importer/external_process_importer_host.cc b/chrome/browser/importer/external_process_importer_host.cc
-index 9087093838f249ca73cc9fc82d54d5b44e9bb5f2..22e47149317aa6f7a48661d58156f176a2be33e8 100644
+index 9087093838f249ca73cc9fc82d54d5b44e9bb5f2..d8eb7cbb25bf4ef9f931830b1ebdd71453f86b95 100644
 --- a/chrome/browser/importer/external_process_importer_host.cc
 +++ b/chrome/browser/importer/external_process_importer_host.cc
 @@ -60,6 +60,7 @@ void ExternalProcessImporterHost::StartImportSettings(
@@ -10,11 +10,3 @@ index 9087093838f249ca73cc9fc82d54d5b44e9bb5f2..22e47149317aa6f7a48661d58156f176
    CheckForLoadedModels(items);
  
    LaunchImportIfReady();
-@@ -113,6 +114,7 @@ void ExternalProcessImporterHost::LaunchImportIfReady() {
-   client_ = new ExternalProcessImporterClient(
-       weak_ptr_factory_.GetWeakPtr(), source_profile_, items_, bridge);
-   client_->Start();
-+  BRAVE_LAUNCH_IMPORT_IF_READY
- }
- 
- void ExternalProcessImporterHost::BookmarkModelLoaded(BookmarkModel* model,
