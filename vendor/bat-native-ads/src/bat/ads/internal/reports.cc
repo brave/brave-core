@@ -7,6 +7,7 @@
 #include "bat/ads/internal/time.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/ad_notification_info.h"
+#include "bat/ads/publisher_ad_info.h"
 
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
@@ -77,6 +78,79 @@ std::string Reports::GenerateAdNotificationEventReport(
 
     case AdNotificationEventType::kTimedOut: {
       writer.String("timed out");
+      break;
+    }
+  }
+
+  writer.String("classifications");
+  writer.StartArray();
+  auto classifications =
+      helper::Classification::GetClassifications(info.category);
+  for (const auto& classification : classifications) {
+    writer.String(classification.c_str());
+  }
+  writer.EndArray();
+
+  writer.String("adCatalog");
+  if (ads_->IsCreativeSetFromSampleCatalog(info.creative_set_id)) {
+    writer.String("sample-catalog");
+  } else {
+    writer.String(info.creative_set_id.c_str());
+  }
+
+  writer.String("targetUrl");
+  writer.String(info.target_url.c_str());
+
+  writer.EndObject();
+
+  writer.EndObject();
+
+  return buffer.GetString();
+}
+
+std::string Reports::GeneratePublisherAdEventReport(
+    const PublisherAdInfo& info,
+    const PublisherAdEventType event_type) {
+  rapidjson::StringBuffer buffer;
+  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+
+  const std::string timestamp = Time::Timestamp();
+
+  writer.StartObject();
+
+  if (is_first_run_) {
+    is_first_run_ = false;
+
+    writer.String("data");
+    writer.StartObject();
+
+    writer.String("type");
+    writer.String("restart");
+
+    writer.String("timestamp");
+    writer.String(timestamp.c_str());
+
+    writer.EndObject();
+  }
+
+  writer.String("data");
+  writer.StartObject();
+
+  writer.String("type");
+  writer.String("notify");
+
+  writer.String("timestamp");
+  writer.String(timestamp.c_str());
+
+  writer.String("eventType");
+  switch (event_type) {
+    case PublisherAdEventType::kViewed: {
+      writer.String("generated");
+      break;
+    }
+
+    case PublisherAdEventType::kClicked: {
+      writer.String("clicked");
       break;
     }
   }

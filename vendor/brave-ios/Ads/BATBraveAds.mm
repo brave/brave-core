@@ -29,6 +29,7 @@ static const NSInteger kDefaultNumberOfAdsPerDay = 20;
 static const NSInteger kDefaultNumberOfAdsPerHour = 2;
 
 static NSString * const kAdsEnabledPrefKey = @"BATAdsEnabled";
+static NSString * const kShouldShowPublisherAdsOnParticipatingSitesPrefKey = @"BATkShouldShowPublisherAdsOnParticipatingSites";
 static NSString * const kNumberOfAdsPerDayKey = @"BATNumberOfAdsPerDay";
 static NSString * const kNumberOfAdsPerHourKey = @"BATNumberOfAdsPerHour";
 
@@ -169,6 +170,17 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
   } else {
     [self shutdown];
   }
+}
+
+- (BOOL)shouldShowPublisherAdsOnParticipatingSites
+{
+  return [(NSNumber *)self.prefs[kShouldShowPublisherAdsOnParticipatingSitesPrefKey] boolValue];
+}
+
+- (void)setShowPublisherAdsOnParticipatingSites:(BOOL)shouldShowPublisherAdsOnParticipatingSites
+{
+  self.prefs[kShouldShowPublisherAdsOnParticipatingSitesPrefKey] = @(shouldShowPublisherAdsOnParticipatingSites);
+  [self savePrefs];
 }
 
 - (BOOL)shouldAllowAdConversionTracking
@@ -341,6 +353,17 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
                              static_cast<ads::AdNotificationEventType>(eventType));
 }
 
+- (void)reportPublisherAdEvent:(NSString *)json eventType:(BATPublisherAdEventType)eventType
+{
+  if (![self isAdsServiceRunning]) { return; }
+
+  ads::PublisherAdInfo info;
+  if (!info.FromJson([json UTF8String])) { return; }
+
+  ads->OnPublisherAdEvent(info,
+                          static_cast<ads::PublisherAdEventType>(eventType));
+}
+
 - (void)toggleThumbsUpForAd:(NSString *)creativeInstanceId creativeSetID:(NSString *)creativeSetID
 {
   if (![self isAdsServiceRunning]) { return; }
@@ -385,6 +408,38 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
   }
 
   callback(ads::Result::SUCCESS, categories, found_ads);
+}
+
+- (void)getCreativePublisherAds:(const std::string &)url categories:(const std::vector<std::string> &)categories sizes:(const std::vector<std::string> &)sizes callback:(ads::GetCreativePublisherAdsCallback)callback
+{
+  // TODO(brave): Get a list of publisher ads for the specified categories and sizes. See |bool BundleStateDatabase::GetCreativePublisherAds|
+  if (![self isAdsServiceRunning]) { return; }
+
+  callback(ads::Result::SUCCESS, url, categories, sizes, {});
+}
+
+- (void)getCreativePublisherAdsToPreCache:(ads::GetCreativePublisherAdsToPreCacheCallback)callback
+{
+  // TODO(brave): Get a list of publisher ads to pre-cache. See |bool BundleStateDatabase::GetCreativePublisherAdsToPreCache|
+  if (![self isAdsServiceRunning]) { return; }
+
+  callback(ads::Result::SUCCESS, {});
+}
+
+- (void)flagPublisherAdWasPreCached:(const std::string &)creativeInstanceId callback:(ads::FlagPublisherAdWasPreCachedCallback)callback
+{
+  // TODO(brave): Flag an ad has been pre-cached. See |bool BundleStateDatabase::InsertOrUpdateCreativePublisherAdPreCacheCreativeInstanceId|
+  if (![self isAdsServiceRunning]) { return; }
+
+  callback(creativeInstanceId, false);
+}
+
+- (void)siteSupportsPublisherAds:(const std::string &)url callback:(ads::SiteSupportsPublisherAdsCallback)callback
+{
+  // TODO(brave): Determine from the bundle if a URL is a participating site for publisher ads. See |bool BundleStateDatabase::SiteSupportsPublisherAds|
+  if (![self isAdsServiceRunning]) { return; }
+
+  callback(url, false);
 }
 
 - (void)getAdConversions:(ads::GetAdConversionsCallback)callback

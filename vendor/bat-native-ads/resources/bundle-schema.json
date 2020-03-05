@@ -68,6 +68,78 @@
       },
       "additionalProperties": false
     },
+    "creative_publisher_ads": {
+      "type": "object",
+      "patternProperties": {
+        "^.*$": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "size",
+              "creativeUrl",
+              "targetUrl",
+              "creativeInstanceId"
+            ],
+            "properties": {
+              "creativeSetId": {
+                "type": "string"
+              },
+              "campaignId": {
+                "type": "string"
+              },
+              "startAtTimestamp": {
+                "type": "string"
+              },
+              "endAtTimestamp": {
+                "type": "string"
+              },
+              "dailyCap": {
+                "type": "number"
+              },
+              "advertiserId": {
+                "type": "string"
+              },
+              "perDay": {
+                "type": "number"
+              },
+              "totalMax": {
+                "type": "number"
+              },
+              "category": {
+                "type": "string"
+              },
+              "geoTargets": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "title": {
+                "type": "string"
+              },
+              "body": {
+                "type": "string"
+              },
+              "targetUrl": {
+                "type": "string"
+              },
+              "creativeInstanceId": {
+                "type": "string"
+              },
+              "channels": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
     "ad_conversions": {
       "type": "array",
       "items": {
@@ -98,6 +170,7 @@
   },
   "required": [
     "creative_ad_notifications",
+    "creative_publisher_ads",
     "ad_conversions"
   ],
   "additionalProperties": false

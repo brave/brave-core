@@ -24,6 +24,7 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/background_helper.h"
 #include "brave/components/brave_ads/browser/notification_helper.h"
+#include "brave/components/brave_ads/browser/publisher_ads.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "chrome/browser/notifications/notification_handler.h"
@@ -72,6 +73,9 @@ class AdsServiceImpl : public AdsService,
   void SetEnabled(
       const bool is_enabled) override;
 
+  void SetShowPublisherAdsOnParticipatingSites(
+      const bool should_show) override;
+
   void SetAllowAdConversionTracking(
       const bool should_allow) override;
 
@@ -99,6 +103,22 @@ class AdsServiceImpl : public AdsService,
       const bool is_active) override;
   void OnTabClosed(
       const SessionID& tab_id) override;
+
+  void GetPublisherAds(
+      const std::string& url,
+      const std::vector<std::string>& sizes,
+      OnGetPublisherAdsCallback callback) override;
+
+  void GetPublisherAdsToPreCache(
+      OnGetPublisherAdsToPreCacheCallback callback) override;
+
+  void CanShowPublisherAds(
+      const std::string& url,
+      OnCanShowPublisherAdsCallback callback) override;
+
+  void OnPublisherAdEvent(
+      const PublisherAdInfo& info,
+      const PublisherAdEventType event_type) override;
 
   void GetAdsHistory(
       const uint64_t from_timestamp,
@@ -138,6 +158,8 @@ class AdsServiceImpl : public AdsService,
   bool IsEnabled() const override;
 
   const std::string GetCountryCode() const override;
+
+  bool ShouldShowPublisherAdsOnParticipatingSites() const override;
 
   bool ShouldAllowAdConversionTracking() const override;
 
@@ -227,6 +249,27 @@ class AdsServiceImpl : public AdsService,
       const std::vector<std::string>& categories,
       const ads::CreativeAdNotificationList& ads);
 
+  void OnGetCreativePublisherAds(
+      const ads::GetCreativePublisherAdsCallback& callback,
+      const std::string& url,
+      const std::vector<std::string>& categories,
+      const std::vector<std::string>& sizes,
+      const ads::CreativePublisherAdList& ads);
+
+  void OnGetCreativePublisherAdsToPreCache(
+      const ads::GetCreativePublisherAdsToPreCacheCallback& callback,
+      const ads::CreativePublisherAdList& ads);
+
+  void OnFlagPublisherAdWasPreCached(
+      const ads::FlagPublisherAdWasPreCachedCallback& callback,
+      const std::string& creative_instance_id,
+      const bool was_flagged);
+
+  void OnSiteSupportsPublisherAds(
+      const ads::SiteSupportsPublisherAdsCallback& callback,
+      const std::string& url,
+      const bool is_supported);
+
   void OnGetAdConversions(
       const ads::GetAdConversionsCallback& callback,
       const ads::AdConversionList& ad_conversions);
@@ -234,6 +277,21 @@ class AdsServiceImpl : public AdsService,
   void OnGetAdsHistory(
       OnGetAdsHistoryCallback callback,
       const std::string& json);
+
+  void OnGetPublisherAds(
+      OnGetPublisherAdsCallback callback,
+      const std::string& url,
+      const std::vector<std::string>& sizes,
+      const std::string& json);
+
+  void OnGetPublisherAdsToPreCache(
+      OnGetPublisherAdsToPreCacheCallback callback,
+      const std::string& json);
+
+  void OnCanShowPublisherAds(
+      OnCanShowPublisherAdsCallback callback,
+      const std::string& url,
+      const bool can_show);
 
   void OnRemoveAllHistory(
       const int32_t result);
@@ -436,6 +494,23 @@ class AdsServiceImpl : public AdsService,
   void GetCreativeAdNotifications(
       const std::vector<std::string>& categories,
       ads::GetCreativeAdNotificationsCallback callback) override;
+
+  void GetCreativePublisherAds(
+      const std::string& url,
+      const std::vector<std::string>& categories,
+      const std::vector<std::string>& sizes,
+      ads::GetCreativePublisherAdsCallback callback) override;
+
+  void GetCreativePublisherAdsToPreCache(
+      ads::GetCreativePublisherAdsToPreCacheCallback callback) override;
+
+  void FlagPublisherAdWasPreCached(
+      const std::string& creative_instance_id,
+      ads::FlagPublisherAdWasPreCachedCallback callback) override;
+
+  void SiteSupportsPublisherAds(
+      const std::string& url,
+      ads::SiteSupportsPublisherAdsCallback callback) override;
 
   void GetAdConversions(
       ads::GetAdConversionsCallback callback) override;

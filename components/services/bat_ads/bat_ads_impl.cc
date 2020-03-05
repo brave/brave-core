@@ -16,6 +16,9 @@
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 
 using std::placeholders::_1;
+using std::placeholders::_2;
+using std::placeholders::_3;
+using std::placeholders::_4;
 
 namespace bat_ads {
 
@@ -140,6 +143,18 @@ void BatAdsImpl::OnAdNotificationEvent(
   ads_->OnAdNotificationEvent(uuid, event_type);
 }
 
+void BatAdsImpl::OnPublisherAdEvent(
+    const std::string& json,
+    const ads::PublisherAdEventType event_type) {
+  ads::PublisherAdInfo info;
+  if (info.FromJson(json) != ads::Result::SUCCESS) {
+    NOTREACHED();
+    return;
+  }
+
+  ads_->OnPublisherAdEvent(info, event_type);
+}
+
 void BatAdsImpl::RemoveAllHistory(
     RemoveAllHistoryCallback callback) {
   auto* holder = new CallbackHolder<RemoveAllHistoryCallback>(AsWeakPtr(),
@@ -160,6 +175,39 @@ void BatAdsImpl::GetAdsHistory(
               to_timestamp);
 
   std::move(callback).Run(history.ToJson());
+}
+
+void BatAdsImpl::GetPublisherAds(
+    const std::string& url,
+    const std::vector<std::string>& sizes,
+    GetPublisherAdsCallback callback) {
+  auto* holder = new CallbackHolder<GetPublisherAdsCallback>(AsWeakPtr(),
+      std::move(callback));
+
+  auto get_publisher_ads_callback =
+      std::bind(BatAdsImpl::OnGetPublisherAds, holder, _1, _2, _3, _4);
+  ads_->GetPublisherAds(url, sizes, get_publisher_ads_callback);
+}
+
+void BatAdsImpl::GetPublisherAdsToPreCache(
+    GetPublisherAdsToPreCacheCallback callback) {
+  auto* holder = new CallbackHolder<GetPublisherAdsToPreCacheCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  auto get_publisher_ads_to_pre_fetch_callback =
+      std::bind(BatAdsImpl::OnGetPublisherAdsToPreCache, holder, _1, _2);
+  ads_->GetPublisherAdsToPreCache(get_publisher_ads_to_pre_fetch_callback);
+}
+
+void BatAdsImpl::CanShowPublisherAds(
+    const std::string& url,
+    CanShowPublisherAdsCallback callback) {
+  auto* holder = new CallbackHolder<CanShowPublisherAdsCallback>(AsWeakPtr(),
+      std::move(callback));
+
+  auto can_show_publisher_ads_callback =
+      std::bind(BatAdsImpl::OnCanShowPublisherAds, holder, _1, _2);
+  ads_->CanShowPublisherAds(url, can_show_publisher_ads_callback);
 }
 
 void BatAdsImpl::ToggleAdThumbUp(
@@ -247,6 +295,41 @@ void BatAdsImpl::OnRemoveAllHistory(
     const int32_t result) {
   if (holder->is_valid()) {
     std::move(holder->get()).Run(ToMojomResult(result));
+  }
+
+  delete holder;
+}
+
+void BatAdsImpl::OnGetPublisherAds(
+    CallbackHolder<GetPublisherAdsCallback>* holder,
+    const int32_t result,
+    const std::string& url,
+    const std::vector<std::string>& sizes,
+    const ads::PublisherAds& ads) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(url, sizes, ads.ToJson());
+  }
+
+  delete holder;
+}
+
+void BatAdsImpl::OnGetPublisherAdsToPreCache(
+    CallbackHolder<GetPublisherAdsToPreCacheCallback>* holder,
+    const int32_t result,
+    const ads::PublisherAds& ads) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(ads.ToJson());
+  }
+
+  delete holder;
+}
+
+void BatAdsImpl::OnCanShowPublisherAds(
+    CallbackHolder<CanShowPublisherAdsCallback>* holder,
+    const std::string& url,
+    const bool can_show) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(url, can_show);
   }
 
   delete holder;

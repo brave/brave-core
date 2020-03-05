@@ -42,6 +42,8 @@ class MockAdsClient : public AdsClient {
 
   MOCK_CONST_METHOD0(IsEnabled, bool());
 
+  MOCK_CONST_METHOD0(ShouldShowPublisherAdsOnParticipatingSites, bool());
+
   MOCK_CONST_METHOD0(ShouldAllowAdConversionTracking, bool());
 
   MOCK_CONST_METHOD0(GetLocale, std::string());
@@ -126,6 +128,23 @@ class MockAdsClient : public AdsClient {
   MOCK_METHOD2(GetCreativeAdNotifications, void(
       const std::vector<std::string>& categories,
       GetCreativeAdNotificationsCallback callback));
+
+  MOCK_METHOD4(GetCreativePublisherAds, void(
+      const std::string& url,
+      const std::vector<std::string>& categories,
+      const std::vector<std::string>& sizes,
+      const GetCreativePublisherAdsCallback callback));
+
+  MOCK_METHOD2(GetCreativePublisherAdsToPreCache, void(
+      const GetCreativePublisherAdsToPreCacheCallback callback));
+
+  MOCK_METHOD2(FlagPublisherAdWasPreCached, void(
+      const std::string& creative_instance_id,
+      const FlagPublisherAdWasPreCachedCallback callback));
+
+  MOCK_METHOD2(SiteSupportsPublisherAds, void(
+      const std::string& url,
+      const SiteSupportsPublisherAdsCallback callback));
 
   MOCK_METHOD1(GetAdConversions, void(
       GetAdConversionsCallback callback));

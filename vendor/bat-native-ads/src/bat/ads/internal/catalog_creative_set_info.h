@@ -12,6 +12,7 @@
 #include "bat/ads/internal/catalog_segment_info.h"
 #include "bat/ads/internal/catalog_os_info.h"
 #include "bat/ads/internal/catalog_creative_ad_notification_info.h"
+#include "bat/ads/internal/catalog_creative_publisher_ad_info.h"
 #include "bat/ads/ad_conversion_info.h"
 
 namespace ads {
@@ -28,6 +29,7 @@ struct CatalogCreativeSetInfo {
   CatalogSegmentList segments;
   CatalogOsList oses;
   CatalogCreativeAdNotificationList creative_ad_notifications;
+  CatalogCreativePublisherAdList creative_publisher_ads;
   AdConversionList ad_conversions;
 };
 

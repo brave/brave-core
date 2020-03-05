@@ -20,6 +20,7 @@ namespace ads {
 
 class AdsImpl;
 struct AdNotificationInfo;
+struct PublisherAdInfo;
 
 class Reports {
  public:
@@ -30,6 +31,10 @@ class Reports {
   std::string GenerateAdNotificationEventReport(
       const AdNotificationInfo& info,
       const AdNotificationEventType event_type);
+
+  std::string GeneratePublisherAdEventReport(
+      const PublisherAdInfo& info,
+      const PublisherAdEventType event_type);
 
   std::string GenerateConfirmationEventReport(
       const std::string& creative_instance_id,

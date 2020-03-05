@@ -12,6 +12,7 @@
 #include <memory>
 
 #include "bat/ads/creative_ad_notification_info.h"
+#include "bat/ads/creative_publisher_ad_info.h"
 #include "bat/ads/ad_conversion_info.h"
 #include "bat/ads/bundle_state.h"
 #include "base/compiler_specific.h"
@@ -45,6 +46,22 @@ class BundleStateDatabase {
   bool GetCreativeAdNotifications(
       const std::vector<std::string>& categories,
       ads::CreativeAdNotificationList* ads);
+
+  bool GetCreativePublisherAds(
+      const std::string& url,
+      const std::vector<std::string>& categories,
+      const std::vector<std::string>& sizes,
+      ads::CreativePublisherAdList* ads);
+
+  bool InsertOrUpdateCreativePublisherAdPreCacheCreativeInstanceId(
+      const std::string& creative_instance_id);
+
+  bool GetCreativePublisherAdsToPreCache(
+      ads::CreativePublisherAdList* ads);
+
+  bool SiteSupportsPublisherAds(
+      const std::string& url,
+      bool* is_supported);
 
   bool GetAdConversions(
       ads::AdConversionList* ad_conversions);
@@ -80,13 +97,42 @@ class BundleStateDatabase {
   bool InsertOrUpdateCreativeAdNotificationCategory(
       const ads::CreativeAdNotificationInfo& info,
       const std::string& category);
-
   bool CreateCreativeAdNotificationCategoriesCategoryIndex();
+
+  bool CreateCreativePublisherAdsTable();
+  bool TruncateCreativePublisherAdsTable();
+  bool InsertOrUpdateCreativePublisherAd(
+      const ads::CreativePublisherAdInfo& info);
+
+  bool CreateCreativePublisherAdsCategoriesTable();
+  bool TruncateCreativePublisherAdsCategoriesTable();
+  bool InsertOrUpdateCreativePublisherAdCategory(
+      const ads::CreativePublisherAdInfo& info,
+      const std::string& category);
+  bool CreateCreativePublisherAdsCategoriesCategoryIndex();
+
+  bool CreateCreativePublisherAdsChannelsTable();
+  bool TruncateCreativePublisherAdsChannelsTable();
+  bool InsertOrUpdateCreativePublisherAdChannel(
+      const ads::CreativePublisherAdInfo& info);
+  bool CreateCreativePublisherAdsChannelsChannelIndex();
+
+  bool CreateCreativePublisherAdsPreCacheTable();
+  bool CreateCreativePublisherAdsPreCacheCreativeInstanceIdIndex();
 
   bool CreateAdConversionsTable();
   bool TruncateAdConversionsTable();
   bool InsertOrUpdateAdConversion(
       const ads::AdConversionInfo& info);
+
+  bool GetCreativePublisherAdsNotInPreCache(
+      const std::string& url,
+      const std::vector<std::string>& categories,
+      const std::vector<std::string>& sizes,
+      ads::CreativePublisherAdList* ads);
+
+  std::string GetPublisherAdsChannel(
+      const std::string& url);
 
   std::string CreateBindingParameterPlaceholders(
       const size_t count);
@@ -98,6 +144,7 @@ class BundleStateDatabase {
   bool MigrateV1toV2();
   bool MigrateV2toV3();
   bool MigrateV3toV4();
+  bool MigrateV4toV5();
 
   sql::Database db_;
   sql::MetaTable meta_table_;

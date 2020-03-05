@@ -19,6 +19,10 @@ bool NativeAdsClient::IsEnabled() const {
   return [bridge_ isAdsEnabled];
 }
 
+bool NativeAdsClient::ShouldShowPublisherAdsOnParticipatingSites() const {
+  return [bridge_ shouldShowPublisherAdsOnParticipatingSites];
+}
+
 bool NativeAdsClient::ShouldAllowAdConversionTracking() const {
   return [bridge_ shouldAllowAdConversionTracking];
 }
@@ -125,6 +129,22 @@ void NativeAdsClient::SaveBundleState(std::unique_ptr<ads::BundleState> state, a
 
 void NativeAdsClient::GetCreativeAdNotifications(const std::vector<std::string> & categories, ads::GetCreativeAdNotificationsCallback callback) {
   [bridge_ getCreativeAdNotifications:categories callback:callback];
+}
+
+void NativeAdsClient::GetCreativePublisherAds(const std::string & url, const std::vector<std::string> & categories, const std::vector<std::string> & sizes, ads::GetCreativePublisherAdsCallback callback) {
+  [bridge_ getCreativePublisherAds:url categories:categories sizes:sizes callback:callback];
+}
+
+void NativeAdsClient::GetCreativePublisherAdsToPreCache(ads::GetCreativePublisherAdsToPreCacheCallback callback) {
+  [bridge_ getCreativePublisherAdsToPreCache:callback];
+}
+
+void NativeAdsClient::FlagPublisherAdWasPreCached(const std::string & creativeInstanceId, ads::FlagPublisherAdWasPreCachedCallback callback) {
+  [bridge_ flagPublisherAdWasPreCached:creativeInstanceId callback:callback];
+}
+
+void NativeAdsClient::SiteSupportsPublisherAds(const std::string & url, ads::SiteSupportsPublisherAdsCallback callback) {
+  [bridge_ siteSupportsPublisherAds:url callback:callback];
 }
 
 void NativeAdsClient::GetAdConversions(ads::GetAdConversionsCallback callback) {

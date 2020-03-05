@@ -18,6 +18,7 @@ class NativeAdsClient : public ads::AdsClient {
   __unsafe_unretained id<NativeAdsClientBridge> bridge_;
 
   bool IsEnabled() const override;
+  bool ShouldShowPublisherAdsOnParticipatingSites() const override;
   bool ShouldAllowAdConversionTracking() const override;
   uint64_t GetAdsPerDay() const override;
   uint64_t GetAdsPerHour() const override;
@@ -45,6 +46,10 @@ class NativeAdsClient : public ads::AdsClient {
   void LoadSampleBundle(ads::LoadSampleBundleCallback callback) override;
   void SaveBundleState(std::unique_ptr<ads::BundleState> state, ads::ResultCallback callback) override;
   void GetCreativeAdNotifications(const std::vector<std::string> & categories, ads::GetCreativeAdNotificationsCallback callback) override;
+  void GetCreativePublisherAds(const std::string & url, const std::vector<std::string> & categories, const std::vector<std::string> & sizes, ads::GetCreativePublisherAdsCallback callback) override;
+  void GetCreativePublisherAdsToPreCache(ads::GetCreativePublisherAdsToPreCacheCallback callback) override;
+  void FlagPublisherAdWasPreCached(const std::string & creative_instance_id, ads::FlagPublisherAdWasPreCachedCallback callback) override;
+  void SiteSupportsPublisherAds(const std::string & url, ads::SiteSupportsPublisherAdsCallback callback) override;
   void GetAdConversions(ads::GetAdConversionsCallback callback) override;
   void EventLog(const std::string & json) const override;
   std::unique_ptr<ads::LogStream> Log(const char * file, const int line, const ads::LogLevel log_level) const override;

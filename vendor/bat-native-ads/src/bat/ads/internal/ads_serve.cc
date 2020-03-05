@@ -50,7 +50,7 @@ void AdsServe::BuildUrl() {
     }
   }
 
-  url_ += CATALOG_PATH;
+  url_ += "/v" + std::to_string(kCatalogVersion) + "/catalog";
 }
 
 void AdsServe::DownloadCatalog() {

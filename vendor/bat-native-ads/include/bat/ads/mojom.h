@@ -11,6 +11,7 @@
 namespace ads {
 
 using AdNotificationEventType = mojom::AdNotificationEventType;
+using PublisherAdEventType = mojom::PublisherAdEventType;
 
 }  // namespace ads
 

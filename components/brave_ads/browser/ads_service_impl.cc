@@ -226,6 +226,58 @@ ads::CreativeAdNotificationList GetCreativeAdNotificationsOnFileTaskRunner(
   return ads;
 }
 
+ads::CreativePublisherAdList GetCreativePublisherAdsOnFileTaskRunner(
+    const std::string& url,
+    const std::vector<std::string>& categories,
+    const std::vector<std::string>& sizes,
+    BundleStateDatabase* backend) {
+  ads::CreativePublisherAdList ads;
+
+  if (!backend) {
+    return ads;
+  }
+
+  backend->GetCreativePublisherAds(url, categories, sizes, &ads);
+  return ads;
+}
+
+ads::CreativePublisherAdList GetCreativePublisherAdsToPreCacheOnFileTaskRunner(
+    BundleStateDatabase* backend) {
+  ads::CreativePublisherAdList ads;
+
+  if (!backend) {
+    return ads;
+  }
+
+  backend->GetCreativePublisherAdsToPreCache(&ads);
+  return ads;
+}
+
+bool FlagPublisherAdWasPreCachedOnFileTaskRunner(
+    const std::string& creative_instance_id,
+    BundleStateDatabase* backend) {
+  if (!backend) {
+    return false;
+  }
+
+  backend->InsertOrUpdateCreativePublisherAdPreCacheCreativeInstanceId(
+      creative_instance_id);
+
+  return true;
+}
+
+bool SiteSupportsPublisherAdsOnFileTaskRunner(
+    const std::string& url,
+    BundleStateDatabase* backend) {
+  if (!backend) {
+    return false;
+  }
+
+  bool is_supported;
+  backend->SiteSupportsPublisherAds(url, &is_supported);
+  return is_supported;
+}
+
 ads::AdConversionList GetAdConversionsOnFileTaskRunner(
     BundleStateDatabase* backend) {
   ads::AdConversionList ad_conversions;
@@ -362,6 +414,12 @@ void AdsServiceImpl::SetEnabled(
   rewards_service_->OnAdsEnabled(is_enabled);
 }
 
+void AdsServiceImpl::SetShowPublisherAdsOnParticipatingSites(
+    const bool should_show) {
+  SetBooleanPref(prefs::kShouldShowPublisherAdsOnParticipatingSites,
+      should_show);
+}
+
 void AdsServiceImpl::SetAllowAdConversionTracking(
     const bool should_allow) {
   SetBooleanPref(prefs::kShouldAllowAdConversionTracking, should_allow);
@@ -437,6 +495,73 @@ void AdsServiceImpl::OnTabClosed(
   }
 
   bat_ads_->OnTabClosed(tab_id.id());
+}
+
+void AdsServiceImpl::GetPublisherAds(
+    const std::string& url,
+    const std::vector<std::string>& sizes,
+    OnGetPublisherAdsCallback callback) {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_->GetPublisherAds(url, sizes,
+      base::BindOnce(&AdsServiceImpl::OnGetPublisherAds, AsWeakPtr(),
+          std::move(callback)));
+}
+
+void AdsServiceImpl::GetPublisherAdsToPreCache(
+    OnGetPublisherAdsToPreCacheCallback callback) {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_->GetPublisherAdsToPreCache(
+      base::BindOnce(&AdsServiceImpl::OnGetPublisherAdsToPreCache, AsWeakPtr(),
+          std::move(callback)));
+}
+
+void AdsServiceImpl::CanShowPublisherAds(
+    const std::string& url,
+    OnCanShowPublisherAdsCallback callback) {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_->CanShowPublisherAds(url,
+      base::BindOnce(&AdsServiceImpl::OnCanShowPublisherAds,
+          AsWeakPtr(), std::move(callback)));
+}
+
+void AdsServiceImpl::OnPublisherAdEvent(
+    const PublisherAdInfo& info,
+    const PublisherAdEventType event_type) {
+  if (!connected()) {
+    return;
+  }
+
+  ads::PublisherAdInfo ad;
+  ad.creative_instance_id = info.creative_instance_id;
+  ad.creative_set_id = info.creative_set_id;
+  ad.category = info.category;
+  ad.size = info.size;
+  ad.creative_url = info.creative_url;
+  ad.target_url = info.target_url;
+
+  const std::string json = ad.ToJson();
+
+  switch (event_type) {
+    case PublisherAdEventType::kViewed: {
+      bat_ads_->OnPublisherAdEvent(json, ads::PublisherAdEventType::kViewed);
+      break;
+    }
+
+    case PublisherAdEventType::kClicked: {
+      bat_ads_->OnPublisherAdEvent(json, ads::PublisherAdEventType::kClicked);
+      OpenNewTabWithUrl(ad.target_url);
+      break;
+    }
+  }
 }
 
 void AdsServiceImpl::GetAdsHistory(
@@ -517,6 +642,11 @@ bool AdsServiceImpl::IsEnabled() const {
       GetBooleanPref(brave_rewards::prefs::kBraveRewardsEnabled);
 
   return is_enabled && is_rewards_enabled;
+}
+
+bool AdsServiceImpl::ShouldShowPublisherAdsOnParticipatingSites() const {
+  return IsEnabled() && GetBooleanPref(
+      prefs::kShouldShowPublisherAdsOnParticipatingSites);
 }
 
 bool AdsServiceImpl::ShouldAllowAdConversionTracking() const {
@@ -974,6 +1104,55 @@ void AdsServiceImpl::OnGetCreativeAdNotifications(
   callback(result, categories, ads);
 }
 
+void AdsServiceImpl::OnGetCreativePublisherAds(
+    const ads::GetCreativePublisherAdsCallback& callback,
+    const std::string& url,
+    const std::vector<std::string>& categories,
+    const std::vector<std::string>& sizes,
+    const ads::CreativePublisherAdList& ads) {
+  if (!connected()) {
+    return;
+  }
+
+  auto result = ads.empty() ? ads::Result::FAILED : ads::Result::SUCCESS;
+
+  callback(result, url, categories, sizes, ads);
+}
+
+void AdsServiceImpl::OnGetCreativePublisherAdsToPreCache(
+    const ads::GetCreativePublisherAdsToPreCacheCallback& callback,
+    const ads::CreativePublisherAdList& ads) {
+  if (!connected()) {
+    return;
+  }
+
+  auto result = ads.empty() ? ads::Result::FAILED : ads::Result::SUCCESS;
+
+  callback(result, ads);
+}
+
+void AdsServiceImpl::OnFlagPublisherAdWasPreCached(
+    const ads::FlagPublisherAdWasPreCachedCallback& callback,
+    const std::string& creative_instance_id,
+    const bool was_flagged) {
+  if (!connected()) {
+    return;
+  }
+
+  callback(creative_instance_id, was_flagged);
+}
+
+void AdsServiceImpl::OnSiteSupportsPublisherAds(
+    const ads::SiteSupportsPublisherAdsCallback& callback,
+    const std::string& url,
+    const bool is_supported) {
+  if (!connected()) {
+    return;
+  }
+
+  callback(url, is_supported);
+}
+
 void AdsServiceImpl::OnGetAdConversions(
     const ads::GetAdConversionsCallback& callback,
     const ads::AdConversionList& ad_conversions) {
@@ -1049,6 +1228,61 @@ void AdsServiceImpl::OnGetAdsHistory(
   }
 
   std::move(callback).Run(list);
+}
+
+void AdsServiceImpl::OnGetPublisherAds(
+    OnGetPublisherAdsCallback callback,
+    const std::string& url,
+    const std::vector<std::string>& sizes,
+    const std::string& json) {
+  ads::PublisherAds ads;
+  ads.FromJson(json);
+
+  base::ListValue list;
+  for (const auto& entry : ads.entries) {
+    base::DictionaryValue dictionary;
+    dictionary.SetKey("creativeInstanceId",
+        base::Value(entry.creative_instance_id));
+    dictionary.SetKey("creativeSetId", base::Value(entry.creative_set_id));
+    dictionary.SetKey("category", base::Value(entry.category));
+    dictionary.SetKey("size", base::Value(entry.size));
+    dictionary.SetKey("creativeUrl", base::Value(entry.creative_url));
+    dictionary.SetKey("targetUrl", base::Value(entry.target_url));
+
+    list.Append(std::move(dictionary));
+  }
+
+  std::move(callback).Run(url, sizes, list);
+}
+
+void AdsServiceImpl::OnGetPublisherAdsToPreCache(
+    OnGetPublisherAdsToPreCacheCallback callback,
+    const std::string& json) {
+  ads::PublisherAds ads;
+  ads.FromJson(json);
+
+  base::ListValue list;
+  for (const auto& entry : ads.entries) {
+    base::DictionaryValue dictionary;
+    dictionary.SetKey("creativeInstanceId",
+        base::Value(entry.creative_instance_id));
+    dictionary.SetKey("creativeSetId", base::Value(entry.creative_set_id));
+    dictionary.SetKey("category", base::Value(entry.category));
+    dictionary.SetKey("size", base::Value(entry.size));
+    dictionary.SetKey("creativeUrl", base::Value(entry.creative_url));
+    dictionary.SetKey("targetUrl", base::Value(entry.target_url));
+
+    list.Append(std::move(dictionary));
+  }
+
+  std::move(callback).Run(list);
+}
+
+void AdsServiceImpl::OnCanShowPublisherAds(
+    OnCanShowPublisherAdsCallback callback,
+    const std::string& url,
+    const bool can_show) {
+  std::move(callback).Run(url, can_show);
 }
 
 void AdsServiceImpl::OnRemoveAllHistory(
@@ -2123,6 +2357,47 @@ void AdsServiceImpl::GetCreativeAdNotifications(
           categories, bundle_state_backend_.get()),
       base::BindOnce(&AdsServiceImpl::OnGetCreativeAdNotifications,
           AsWeakPtr(), std::move(callback), categories));
+}
+
+void AdsServiceImpl::GetCreativePublisherAds(
+    const std::string& url,
+    const std::vector<std::string>& categories,
+    const std::vector<std::string>& sizes,
+    ads::GetCreativePublisherAdsCallback callback) {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&GetCreativePublisherAdsOnFileTaskRunner,
+          url, categories, sizes, bundle_state_backend_.get()),
+      base::BindOnce(&AdsServiceImpl::OnGetCreativePublisherAds,
+          AsWeakPtr(), std::move(callback), url, categories, sizes));
+}
+
+void AdsServiceImpl::GetCreativePublisherAdsToPreCache(
+    ads::GetCreativePublisherAdsToPreCacheCallback callback) {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&GetCreativePublisherAdsToPreCacheOnFileTaskRunner,
+          bundle_state_backend_.get()),
+      base::BindOnce(&AdsServiceImpl::OnGetCreativePublisherAdsToPreCache,
+          AsWeakPtr(), std::move(callback)));
+}
+
+void AdsServiceImpl::FlagPublisherAdWasPreCached(
+    const std::string& creative_instance_id,
+    ads::FlagPublisherAdWasPreCachedCallback callback) {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&FlagPublisherAdWasPreCachedOnFileTaskRunner,
+          creative_instance_id, bundle_state_backend_.get()),
+      base::BindOnce(&AdsServiceImpl::OnFlagPublisherAdWasPreCached,
+          AsWeakPtr(), std::move(callback), creative_instance_id));
+}
+
+void AdsServiceImpl::SiteSupportsPublisherAds(
+    const std::string& url,
+    ads::SiteSupportsPublisherAdsCallback callback) {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&SiteSupportsPublisherAdsOnFileTaskRunner, url,
+          bundle_state_backend_.get()),
+      base::BindOnce(&AdsServiceImpl::OnSiteSupportsPublisherAds,
+          AsWeakPtr(), std::move(callback), url));
 }
 
 void AdsServiceImpl::GetAdConversions(
