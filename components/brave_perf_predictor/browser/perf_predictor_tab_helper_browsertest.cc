@@ -105,6 +105,7 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, ScriptBlockHasSavings) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
+  ASSERT_TRUE(ExecuteScript(contents, "addImage('logo.png')"));
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
                                           "setExpectations(0, 0, 0, 0, 1, 0);"
@@ -127,6 +128,7 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, NewNavigationStoresSavings) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
+  ASSERT_TRUE(ExecuteScript(contents, "addImage('logo.png')"));
   bool as_expected = false;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
                                           "setExpectations(0, 0, 0, 0, 1, 0);"
@@ -138,6 +140,7 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, NewNavigationStoresSavings) {
   GURL second_url =
       embedded_test_server()->GetURL("example.com", "/blocking.html");
   ui_test_utils::NavigateToURL(browser(), second_url);
+  ASSERT_TRUE(ExecuteScript(contents, "addImage('logo.png')"));
   ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
                                           "setExpectations(0, 0, 0, 0, 1, 0);"
                                           "xhr('analytics.js')",

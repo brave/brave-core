@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_perf_predictor/browser/bandwidth_savings_predictor.h"
+
 #include <iostream>
 
 #include "base/logging.h"
@@ -147,7 +148,8 @@ double BandwidthSavingsPredictor::PredictSavingsBytes() const {
   double prediction = ::brave_perf_predictor::LinregPredictNamed(feature_map_);
   VLOG(2) << main_frame_url_ << " estimated saving " << prediction << " bytes";
   // Sanity check for predicted saving
-  if ((prediction / kOutlierThreshold) > total_size->second) {
+  if (prediction > kSavingsAbsoluteOutlier &&
+      (prediction / kOutlierThreshold) > total_size->second) {
     return 0;
   }
   return prediction;
