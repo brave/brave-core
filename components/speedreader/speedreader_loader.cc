@@ -234,13 +234,13 @@ void SpeedReaderURLLoader::OnBodyWritable(MojoResult r) {
 
 void SpeedReaderURLLoader::MaybeLaunchSpeedreader() {
   DCHECK_EQ(State::kLoading, state_);
-  VLOG(2) << __func__ << " buffered body size = " << buffered_body_.size();
-
-  bytes_remaining_in_buffer_ = buffered_body_.size();
   if (!throttle_) {
     Abort();
     return;
   }
+
+  VLOG(2) << __func__ << " buffered body size = " << buffered_body_.size();
+  bytes_remaining_in_buffer_ = buffered_body_.size();
 
   if (bytes_remaining_in_buffer_ > 0) {
     // Offload heavy distilling to another thread.
@@ -257,21 +257,28 @@ void SpeedReaderURLLoader::MaybeLaunchSpeedreader() {
 
               std::string transformed;
               const bool readable = speedreader.finalize(&transformed);
-              if (!readable)
-                return std::string();
-              return GetDistilledPageResources() + transformed;
+              VLOG(2) << __func__ << " readable = " << readable;
+              if (!readable) {
+                // Return the initial data.
+                DCHECK_EQ('\0', data.back());
+                data.pop_back();
+                return data;
+              }
+              const std::string distilled =
+                  GetDistilledPageResources() + transformed;
+              VLOG(2) << "Distilled size = " << distilled.size();
+
+              return distilled;
             },
-            // TODO(iefremov): We actually can avoid extra copying of
-            // |buffered_body_|, but for the code is just more readable as is.
-            response_url_, buffered_body_),
+            response_url_, std::move(buffered_body_)),
         base::BindOnce(&SpeedReaderURLLoader::CompleteLoading,
                        weak_factory_.GetWeakPtr()));
     return;
   }
-  CompleteLoading({});
+  CompleteLoading(std::move(buffered_body_));
 }
 
-void SpeedReaderURLLoader::CompleteLoading(const std::string& distilled) {
+void SpeedReaderURLLoader::CompleteLoading(std::string body) {
   DCHECK_EQ(State::kLoading, state_);
   state_ = State::kSending;
 
@@ -280,13 +287,8 @@ void SpeedReaderURLLoader::CompleteLoading(const std::string& distilled) {
     return;
   }
 
-  const bool readable = !distilled.empty();
-  VLOG(2) << __func__ << " readable = " << readable;
-  if (readable) {
-    buffered_body_ = std::move(distilled);
-    bytes_remaining_in_buffer_ = buffered_body_.size();
-    VLOG(2) << "Distilled size = " << bytes_remaining_in_buffer_;
-  }
+  buffered_body_ = std::move(body);
+  bytes_remaining_in_buffer_ = buffered_body_.size();
 
   throttle_->Resume();
   mojo::ScopedDataPipeConsumerHandle body_to_send;

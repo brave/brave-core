@@ -112,7 +112,9 @@ class SpeedReaderURLLoader
   void OnBodyReadable(MojoResult);
   void OnBodyWritable(MojoResult);
   void MaybeLaunchSpeedreader();
-  void CompleteLoading(const std::string& distilled);
+
+  // Gets either distilled or untouched body.
+  void CompleteLoading(std::string body);
   void CompleteSending();
   void SendReceivedBodyToClient();
 
@@ -135,6 +137,7 @@ class SpeedReaderURLLoader
   // Set if OnComplete() is called during distilling.
   base::Optional<network::URLLoaderCompletionStatus> complete_status_;
 
+  // Note that this could be replaced by a distilled version.
   std::string buffered_body_;
   size_t bytes_remaining_in_buffer_;
 
