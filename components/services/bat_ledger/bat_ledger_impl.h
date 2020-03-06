@@ -110,12 +110,10 @@ class BatLedgerImpl : public mojom::BatLedger,
   void GetPublisherBanner(const std::string& publisher_id,
       GetPublisherBannerCallback callback) override;
 
-  void DoTip(
+  void OneTimeTip(
       const std::string& publisher_key,
       const double amount,
-      ledger::PublisherInfoPtr info,
-      const bool recurring,
-      DoTipCallback callback) override;
+      OneTimeTipCallback callback) override;
 
   void RemoveRecurringTip(
       const std::string& publisher_key,
@@ -208,6 +206,10 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   void GetAllContributions(GetAllContributionsCallback callback) override;
 
+  void SavePublisherInfo(
+      ledger::PublisherInfoPtr info,
+      SavePublisherInfoCallback callback) override;
+
  private:
   void SetCatalogIssuers(
       const std::string& info) override;
@@ -286,8 +288,8 @@ class BatLedgerImpl : public mojom::BatLedger,
       CallbackHolder<RemoveRecurringTipCallback>* holder,
       const ledger::Result result);
 
-  static void OnDoTip(
-      CallbackHolder<DoTipCallback>* holder,
+  static void OnOneTimeTip(
+      CallbackHolder<OneTimeTipCallback>* holder,
       const ledger::Result result);
 
   static void OnGetTransactionHistory(
@@ -385,6 +387,10 @@ class BatLedgerImpl : public mojom::BatLedger,
   static void OnGetAllContributions(
       CallbackHolder<GetAllContributionsCallback>* holder,
       ledger::ContributionInfoList list);
+
+  static void OnSavePublisherInfo(
+      CallbackHolder<SavePublisherInfoCallback>* holder,
+      const ledger::Result result);
 
   std::unique_ptr<BatLedgerClientMojoProxy> bat_ledger_client_mojo_proxy_;
   std::unique_ptr<ledger::Ledger> ledger_;

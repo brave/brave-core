@@ -398,8 +398,8 @@ void BatLedgerImpl::GetContributionAmount(
   std::move(callback).Run(ledger_->GetContributionAmount());
 }
 
-void BatLedgerImpl::OnDoTip(
-    CallbackHolder<DoTipCallback>* holder,
+void BatLedgerImpl::OnOneTimeTip(
+    CallbackHolder<OneTimeTipCallback>* holder,
     const ledger::Result result) {
   DCHECK(holder);
   if (holder->is_valid())
@@ -407,21 +407,17 @@ void BatLedgerImpl::OnDoTip(
   delete holder;
 }
 
-void BatLedgerImpl::DoTip(
+void BatLedgerImpl::OneTimeTip(
     const std::string& publisher_key,
     const double amount,
-    ledger::PublisherInfoPtr info,
-    const bool recurring,
-    DoTipCallback callback) {
-  // deleted in OnDoTip
-  auto* holder = new CallbackHolder<DoTipCallback>(
+    OneTimeTipCallback callback) {
+  // deleted in OnOneTimeTip
+  auto* holder = new CallbackHolder<OneTimeTipCallback>(
     AsWeakPtr(), std::move(callback));
-  ledger_->DoTip(
+  ledger_->OneTimeTip(
       publisher_key,
       amount,
-      std::move(info),
-      recurring,
-      std::bind(BatLedgerImpl::OnDoTip, holder, _1));
+      std::bind(BatLedgerImpl::OnOneTimeTip, holder, _1));
 }
 
 // static
@@ -982,6 +978,31 @@ void BatLedgerImpl::GetAllContributions(GetAllContributionsCallback callback) {
       BatLedgerImpl::OnGetAllContributions,
       holder,
       _1));
+}
+
+// static
+void BatLedgerImpl::OnSavePublisherInfo(
+    CallbackHolder<SavePublisherInfoCallback>* holder,
+    const ledger::Result result) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+
+  delete holder;
+}
+
+void BatLedgerImpl::SavePublisherInfo(
+    ledger::PublisherInfoPtr info,
+    SavePublisherInfoCallback callback) {
+  auto* holder = new CallbackHolder<SavePublisherInfoCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->SavePublisherInfo(
+      std::move(info),
+      std::bind(BatLedgerImpl::OnSavePublisherInfo,
+          holder,
+          _1));
 }
 
 }  // namespace bat_ledger

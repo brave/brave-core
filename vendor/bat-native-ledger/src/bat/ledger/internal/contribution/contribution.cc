@@ -652,51 +652,14 @@ void Contribution::StartPhaseTwo(const std::string& viewing_id) {
   phase_two_->Start(viewing_id);
 }
 
-void Contribution::DoTip(
+void Contribution::OneTimeTip(
     const std::string& publisher_key,
     const double amount,
-    ledger::PublisherInfoPtr info,
-    const bool recurring,
     ledger::ResultCallback callback) {
   if (publisher_key.empty()) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
       "Failed to do tip due to missing publisher key";
     callback(ledger::Result::NOT_FOUND);
-    return;
-  }
-
-  if (info) {
-    auto save_callback = std::bind(&Contribution::ProcessTip,
-        this,
-        _1,
-        publisher_key,
-        amount,
-        recurring,
-        callback);
-    ledger_->SavePublisherInfo(std::move(info), save_callback);
-    return;
-  }
-
-  ProcessTip(
-      ledger::Result::LEDGER_OK,
-      publisher_key,
-      amount,
-      recurring,
-      callback);
-}
-
-void Contribution::ProcessTip(
-    const ledger::Result result,
-    const std::string& publisher_key,
-    const double amount,
-    const bool recurring,
-    ledger::ResultCallback callback) {
-  if (recurring) {
-    auto info = ledger::RecurringTip::New();
-    info->publisher_key = publisher_key;
-    info->amount = amount;
-    info->created_at = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
-    ledger_->SaveRecurringTip(std::move(info), callback);
     return;
   }
 

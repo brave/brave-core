@@ -202,6 +202,7 @@ class RewardsService : public KeyedService {
       const double amount,
       const bool recurring) = 0;
 
+  // Used in importer from muon days
   virtual void OnTip(
       const std::string& publisher_key,
       double amount,

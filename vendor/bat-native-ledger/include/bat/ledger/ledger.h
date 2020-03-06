@@ -90,11 +90,9 @@ class LEDGER_EXPORT Ledger {
   virtual void CreateWallet(const std::string& safetynet_token,
                             CreateWalletCallback callback) = 0;
 
-  virtual void DoTip(
+  virtual void OneTimeTip(
       const std::string& publisher_key,
       const double amount,
-      ledger::PublisherInfoPtr info,
-      const bool recurring,
       ledger::ResultCallback callback) = 0;
 
   virtual void OnLoad(VisitDataPtr visit_data,
@@ -343,6 +341,10 @@ class LEDGER_EXPORT Ledger {
 
   virtual void GetAllContributions(
       ledger::ContributionInfoListCallback callback) = 0;
+
+  virtual void SavePublisherInfo(
+      ledger::PublisherInfoPtr info,
+      ledger::ResultCallback callback) = 0;
 };
 
 }  // namespace ledger

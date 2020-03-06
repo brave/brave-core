@@ -87,11 +87,9 @@ class MockLedgerImpl : public LedgerImpl {
           ledger::ActivityInfoFilterPtr,
           ledger::PublisherInfoListCallback));
 
-  MOCK_METHOD5(DoTip, void(
+  MOCK_METHOD3(OneTimeTip, void(
       const std::string&,
       const double,
-      ledger::PublisherInfoPtr,
-      const bool,
       ledger::ResultCallback));
 
   MOCK_METHOD1(SetRewardsMainEnabled, void(bool));

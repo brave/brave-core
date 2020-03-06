@@ -250,13 +250,13 @@ class RewardsServiceImpl : public RewardsService,
   void OnTip(
       const std::string& publisher_key,
       const double amount,
-      const bool recurring) override;
+      const bool recurring,
+      std::unique_ptr<brave_rewards::ContentSite> site) override;
 
   void OnTip(
       const std::string& publisher_key,
       const double amount,
-      const bool recurring,
-      std::unique_ptr<brave_rewards::ContentSite> site) override;
+      const bool recurring) override;
 
   void SetPublisherMinVisitTime(uint64_t duration_in_seconds) const override;
 
@@ -350,16 +350,6 @@ class RewardsServiceImpl : public RewardsService,
       ledger::PublisherInfoPtr info,
       const bool recurring,
       const double amount);
-
-  void OnTip(
-      const std::string& publisher_key,
-      double amount,
-      bool recurring,
-      ledger::PublisherInfoPtr publisher_info);
-
-  void OnDoTip(
-      const bool recurring,
-      const ledger::Result result);
 
   void OnResetTheWholeState(base::Callback<void(bool)> callback,
                                  bool success);
@@ -606,6 +596,12 @@ class RewardsServiceImpl : public RewardsService,
 
   void PendingContributionSaved(const ledger::Result result) override;
 
+  void OnTipPublisherSaved(
+      const std::string& publisher_key,
+      const double amount,
+      const bool recurring,
+      const ledger::Result result);
+
   // end ledger::LedgerClient
 
   // Mojo Proxy methods
@@ -619,6 +615,7 @@ class RewardsServiceImpl : public RewardsService,
                                  ledger::RewardsInternalsInfoPtr info);
   void SetRewardsMainEnabledPref(bool enabled);
   void SetRewardsMainEnabledMigratedPref(bool enabled);
+
   void OnRefreshPublisher(
       RefreshPublisherCallback callback,
       const std::string& publisher_key,
