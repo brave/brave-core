@@ -60,7 +60,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
       base::Value(GetDefaultPrefValueForMetricsReporting()));
 
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
-  brave::BraveP3AService::RegisterPrefs(registry);
+  brave::BraveP3AService::RegisterPrefs(registry,
+                                        first_run::IsChromeFirstRun());
 #endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
 
   brave_shields::RegisterShieldsP3APrefs(registry);
