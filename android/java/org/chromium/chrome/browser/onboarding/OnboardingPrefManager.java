@@ -54,12 +54,6 @@ public class OnboardingPrefManager {
 
     public static boolean isNotification;
 
-    private static final List<String> adsAvailableRegions =
-            Arrays.asList("US", "CA", "NZ", "IE", "AU", "CA", "FR", "GB", "DE");
-
-    private static final List<String> newAdsAvailableRegions =
-            Arrays.asList(); // Add country code for new ad regions in the list
-
     private static final String GOOGLE = "Google";
     private static final String DUCKDUCKGO = "DuckDuckGo";
     private static final String DUCKDUCKGOLITE = "DuckDuckGo Lite";
@@ -162,15 +156,11 @@ public class OnboardingPrefManager {
     }
 
     public boolean isAdsAvailable() {
-        String locale = BraveAdsNativeHelper.nativeGetLocale();
-        String countryCode = BraveAdsNativeHelper.nativeGetCountryCode(locale);
-        return adsAvailableRegions.contains(countryCode);
+        return BraveAdsNativeHelper.nativeIsSupportedLocale(Profile.getLastUsedProfile());
     }
 
     public boolean isAdsAvailableNewLocale() {
-        String locale = BraveAdsNativeHelper.nativeGetLocale();
-        String countryCode = BraveAdsNativeHelper.nativeGetCountryCode(locale);
-        return newAdsAvailableRegions.contains(countryCode);
+        return BraveAdsNativeHelper.nativeIsNewlySupportedLocale(Profile.getLastUsedProfile());
     }
 
     public void showOnboarding(Context context, boolean fromSettings) {
