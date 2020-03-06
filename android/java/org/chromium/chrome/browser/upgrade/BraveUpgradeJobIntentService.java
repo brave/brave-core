@@ -7,14 +7,18 @@ package org.chromium.chrome.browser.upgrade;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.JobIntentService;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.library_loader.LibraryProcessType;
 import org.chromium.base.task.PostTask;
+import org.chromium.chrome.browser.BraveHelper;
+import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.website.WebsitePreferenceBridge;
 import org.chromium.content_public.browser.BrowserStartupController;
 import org.chromium.content_public.browser.UiThreadTaskTraits;
 
@@ -29,12 +33,30 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
     private static final String SHIELDS_CONFIG_MIGRATED_FILENAME = "shields_config_migrated.dat";
     private static final int JOB_ID = 1;
 
+    // For old Brave stats
+    private static final String PREF_TRACKERS_BLOCKED_COUNT = "trackers_blocked_count";
+    private static final String PREF_ADS_BLOCKED_COUNT = "ads_blocked_count";
+    private static final String PREF_HTTPS_UPGRADES_COUNT = "https_upgrades_count";
+
+    // For Desktop always mode
+    private static final int CONTENT_SETTINGS_TYPE_DESKTOP_VIEW = 62;
+    // For play video in background option
+    private static final int CONTENT_SETTINGS_TYPE_PLAY_VIDEO_IN_BACKGROUND = 63;
+    // For YT links play video in Brave
+    private static final int CONTENT_SETTINGS_TYPE_PLAY_YT_VIDEO_IN_BROWSER = 64;
+
+    // Old search engines settings
+    private static final String PREF_STANDARD_SEARCH_ENGINE = "brave_standard_search_engine";
+    private static final String PREF_STANDARD_SEARCH_ENGINE_KEYWORD = "brave_standard_search_engine_keyword";
+    private static final String PREF_PRIVATE_SEARCH_ENGINE = "brave_private_search_engine";
+    private static final String PREF_PRIVATE_SEARCH_ENGINE_KEYWORD = "brave_private_search_engine_keyword";
+    private static final String DSE_NAME = "Google";
+    private static final String DSE_KEYWORD = "google.com";
+
     public static void startMigrationIfNecessary(Context context) {
-        // If the Brave shields config file exists, migrate it
-        File path = new File(context.getApplicationInfo().dataDir, SHIELDS_CONFIG_FILENAME);
-        if (path.exists()) {
-            BraveUpgradeJobIntentService.enqueueWork(context, new Intent());
-        }
+        // Start migration in any case as we can have only partial data
+        // to migrate available
+        BraveUpgradeJobIntentService.enqueueWork(context, new Intent());
     }
 
     private static void enqueueWork(Context context, Intent work) {
@@ -161,6 +183,56 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
         return true;
     }
 
+    private void migrateTotalStatsAndPreferences() {
+        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+        boolean migrated = sharedPreferences.getBoolean(BraveHelper.PREF_TABS_SETTINGS_MIGRATED, false);
+        if (migrated) {
+            // Everything was already migrated
+            return;
+        }
+        // Total stats migration
+        long trackersBlockedCount = sharedPreferences.getLong(PREF_TRACKERS_BLOCKED_COUNT, 0);
+        long adsBlockedCount = sharedPreferences.getLong(PREF_ADS_BLOCKED_COUNT, 0);
+        long httpsUpgradesCount = sharedPreferences.getLong(PREF_HTTPS_UPGRADES_COUNT, 0);
+        Profile profile = Profile.getLastUsedProfile();
+        if (trackersBlockedCount > 0) {
+            BravePrefServiceBridge.getInstance().setOldTrackersBlockedCount(profile, trackersBlockedCount);
+        }
+        if (adsBlockedCount > 0) {
+            BravePrefServiceBridge.getInstance().setOldAdsBlockedCount(profile, adsBlockedCount);
+        }
+        if (httpsUpgradesCount > 0) {
+            BravePrefServiceBridge.getInstance().setOldHttpsUpgradesCount(profile, httpsUpgradesCount);
+        }
+        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+        sharedPreferencesEditor.putLong(PREF_TRACKERS_BLOCKED_COUNT, 0);
+        sharedPreferencesEditor.putLong(PREF_ADS_BLOCKED_COUNT, 0);
+        sharedPreferencesEditor.putLong(PREF_HTTPS_UPGRADES_COUNT, 0);
+
+        // Background video playback migration
+        BravePrefServiceBridge.getInstance().setBackgroundVideoPlaybackEnabled(
+            BravePrefServiceBridge.getInstance().GetBooleanForContentSetting(CONTENT_SETTINGS_TYPE_PLAY_VIDEO_IN_BACKGROUND));
+        // Play YT links in Brave option
+        BravePrefServiceBridge.getInstance().setPlayYTVideoInBrowserEnabled(
+            BravePrefServiceBridge.getInstance().GetBooleanForContentSetting(CONTENT_SETTINGS_TYPE_PLAY_YT_VIDEO_IN_BROWSER));
+        // View pages in Desktop mode option
+        BravePrefServiceBridge.getInstance().setDesktopModeEnabled(
+            BravePrefServiceBridge.getInstance().GetBooleanForContentSetting(CONTENT_SETTINGS_TYPE_DESKTOP_VIEW));
+
+        // Migrate search engines settings
+        sharedPreferencesEditor.putString(BraveHelper.PRIVATE_DSE_KEYWORD,
+            sharedPreferences.getString(PREF_PRIVATE_SEARCH_ENGINE_KEYWORD, DSE_KEYWORD));
+        sharedPreferencesEditor.putString(BraveHelper.PRIVATE_DSE_SHORTNAME,
+            sharedPreferences.getString(PREF_PRIVATE_SEARCH_ENGINE, DSE_NAME));
+        sharedPreferencesEditor.putString(BraveHelper.STANDARD_DSE_KEYWORD,
+            sharedPreferences.getString(PREF_STANDARD_SEARCH_ENGINE_KEYWORD, DSE_KEYWORD));
+        sharedPreferencesEditor.putString(BraveHelper.STANDARD_DSE_SHORTNAME,
+            sharedPreferences.getString(PREF_STANDARD_SEARCH_ENGINE, DSE_NAME));
+
+        sharedPreferencesEditor.putBoolean(BraveHelper.PREF_TABS_SETTINGS_MIGRATED, true);
+        sharedPreferencesEditor.apply();
+    }
+
     @Override
     protected void onHandleWork(Intent intent) {
         // Kick off the migration task only after the browser has
@@ -170,6 +242,7 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
                     .addStartupCompletedObserver(new BrowserStartupController.StartupCallback() {
                         @Override
                         public void onSuccess() {
+                            migrateTotalStatsAndPreferences();
                             if (!migrateShieldsConfig()) {
                                 Log.e(TAG, "Failed to migrate Brave shields config settings");
                                 return;
