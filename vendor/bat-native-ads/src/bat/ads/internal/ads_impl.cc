@@ -1122,7 +1122,6 @@ void AdsImpl::OnServeAdNotificationFromCategories(
     const CreativeAdNotificationList& ads) {
   auto eligible_ads = GetEligibleAds(ads);
   if (!eligible_ads.empty()) {
-    BLOG(INFO) << "Found " << eligible_ads.size() << " eligible ads";
     ServeAdNotification(eligible_ads);
     return;
   }
@@ -1192,7 +1191,6 @@ void AdsImpl::OnServeUntargetedAdNotification(
     return;
   }
 
-  BLOG(INFO) << "Found " << eligible_ads.size() << " eligible ads";
   ServeAdNotification(eligible_ads);
 }
 
@@ -1213,6 +1211,8 @@ void AdsImpl::OnServeAdNotification(
     FailedToServeAdNotification("No eligible ads found");
     return;
   }
+
+  BLOG(INFO) << "Found " << eligible_ads.size() << " eligible ads";
 
   const int rand = base::RandInt(0, eligible_ads.size() - 1);
   const CreativeAdNotificationInfo ad = eligible_ads.at(rand);
