@@ -1617,8 +1617,9 @@ void LedgerImpl::GetContributionReport(
 }
 
 void LedgerImpl::GetIncompleteContributions(
+    const ledger::ContributionProcessor processor,
     ledger::ContributionInfoListCallback callback) {
-  bat_database_->GetIncompleteContributions(callback);
+  bat_database_->GetIncompleteContributions(processor, callback);
 }
 
 void LedgerImpl::GetContributionInfo(

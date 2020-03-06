@@ -191,7 +191,9 @@ void Unblinded::Initialize() {
   auto callback = std::bind(&Unblinded::OnGetNotCompletedContributions,
       this,
       _1);
-  ledger_->GetIncompleteContributions(callback);
+  ledger_->GetIncompleteContributions(
+      ledger::ContributionProcessor::BRAVE_TOKENS,
+      callback);
 }
 
 void Unblinded::OnGetNotCompletedContributions(

@@ -653,6 +653,7 @@ class LedgerImpl : public ledger::Ledger,
       ledger::GetContributionReportCallback callback) override;
 
   void GetIncompleteContributions(
+      const ledger::ContributionProcessor processor,
       ledger::ContributionInfoListCallback callback);
 
   virtual void GetContributionInfo(

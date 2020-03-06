@@ -83,6 +83,7 @@ class Database {
       ledger::GetContributionReportCallback callback);
 
   void GetIncompleteContributions(
+      const ledger::ContributionProcessor processor,
       ledger::ContributionInfoListCallback callback);
 
   void UpdateContributionInfoStepAndCount(

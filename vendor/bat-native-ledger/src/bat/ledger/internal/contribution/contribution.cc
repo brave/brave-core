@@ -820,6 +820,7 @@ bool Contribution::ProcessReconcileUnblindedTokens(
   contribution->step = ledger::ContributionStep::STEP_START;
   contribution->retry_count = -1;
   contribution->created_at = now;
+  contribution->processor = ledger::ContributionProcessor::BRAVE_TOKENS;
 
   ledger::ReconcileDirections new_directions;
   bool full_amount = true;
