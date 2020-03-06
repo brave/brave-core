@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
+import org.chromium.base.library_loader.LibraryLoader;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
@@ -44,6 +45,9 @@ public class BraveRewardsService extends Service implements BraveRewardsObserver
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if (!LibraryLoader.getInstance().isInitialized()) {
+            return START_STICKY;
+        }
         try {
             mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
             if (mBraveRewardsNativeWorker != null) {
