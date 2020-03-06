@@ -2109,37 +2109,6 @@ void RewardsServiceImpl::OnPublisherBanner(
   std::move(callback).Run(std::move(new_banner));
 }
 
-void RewardsServiceImpl::OnTip(
-    const std::string& publisher_key,
-    const double amount,
-    const bool recurring,
-    ledger::PublisherInfoPtr publisher_info) {
-  if (!Connected()) {
-    return;
-  }
-
-  bat_ledger_->DoTip(
-      publisher_key,
-      amount,
-      std::move(publisher_info),
-      recurring,
-      base::BindOnce(&RewardsServiceImpl::OnDoTip, AsWeakPtr(), recurring));
-}
-
-void RewardsServiceImpl::OnDoTip(
-    const bool recurring,
-    const ledger::Result result) {
-  if (!recurring) {
-    return;
-  }
-
-  bool success = result == ledger::Result::LEDGER_OK;
-
-  for (auto& observer : observers_) {
-    observer.OnRecurringTipSaved(this, success);
-  }
-}
-
 void RewardsServiceImpl::OnSaveRecurringTipUI(
     SaveRecurringTipCallback callback,
     const ledger::Result result) {
@@ -2547,34 +2516,50 @@ void RewardsServiceImpl::GetRewardsInternalsInfo(
 void RewardsServiceImpl::OnTip(
     const std::string& publisher_key,
     const double amount,
-    const bool recurring) {
-  OnTip(
-      publisher_key,
-      amount,
-      recurring,
-      static_cast<ledger::PublisherInfoPtr>(nullptr));
-}
-
-void RewardsServiceImpl::OnTip(
-    const std::string& publisher_key,
-    const double amount,
     const bool recurring,
     std::unique_ptr<brave_rewards::ContentSite> site) {
-
   if (!site) {
     return;
   }
 
   auto info = ledger::PublisherInfo::New();
   info->id = publisher_key;
-  info->status = static_cast<ledger::PublisherStatus>(site->status);
-  info->excluded = ledger::PublisherExclude::DEFAULT;
   info->name = site->name;
   info->url = site->url;
   info->provider = site->provider;
   info->favicon_url = site->favicon_url;
 
-  OnTip(publisher_key, amount, recurring, std::move(info));
+  bat_ledger_->SavePublisherInfo(
+      std::move(info),
+      base::BindOnce(&RewardsServiceImpl::OnTipPublisherSaved,
+          AsWeakPtr(),
+          publisher_key,
+          amount,
+          recurring));
+}
+
+void RewardsServiceImpl::OnTipPublisherSaved(
+    const std::string& publisher_key,
+    const double amount,
+    const bool recurring,
+    const ledger::Result result) {
+  if (result != ledger::Result::LEDGER_OK) {
+    return;
+  }
+
+  OnTip(publisher_key, amount, recurring);
+}
+
+void RewardsServiceImpl::OnTip(
+    const std::string& publisher_key,
+    const double amount,
+    const bool recurring) {
+  if (recurring) {
+    SaveRecurringTipUI(publisher_key, amount, base::DoNothing());
+    return;
+  }
+
+  bat_ledger_->OneTimeTip(publisher_key, amount, base::DoNothing());
 }
 
 bool RewardsServiceImpl::Connected() const {

@@ -184,11 +184,9 @@ class Contribution {
 
   void StartPhaseTwo(const std::string& viewing_id);
 
-  void DoTip(
+  void OneTimeTip(
       const std::string& publisher_key,
       const double amount,
-      ledger::PublisherInfoPtr info,
-      const bool recurring,
       ledger::ResultCallback callback);
 
  private:
@@ -245,13 +243,6 @@ class Contribution {
       ledger::Result result,
       ledger::BalancePtr properties,
       ledger::HasSufficientBalanceToReconcileCallback callback);
-
-  void ProcessTip(
-      const ledger::Result result,
-      const std::string& publisher_key,
-      const double amount,
-      const bool recurring,
-      ledger::ResultCallback callback);
 
   void SavePendingContribution(
       const std::string& publisher_key,

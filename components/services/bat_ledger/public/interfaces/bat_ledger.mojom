@@ -88,7 +88,7 @@ interface BatLedger {
   GetPublisherBanner(string publisher_id) =>
       (ledger.mojom.PublisherBanner? banner);
 
-  DoTip(string publisher_id, double amount, ledger.mojom.PublisherInfo? info, bool recurring) => (ledger.mojom.Result result);
+  OneTimeTip(string publisher_id, double amount) => (ledger.mojom.Result result);
 
   RemoveRecurringTip(string publisher_key) => (ledger.mojom.Result result);
   GetBootStamp() => (uint64 boot_stamp);
@@ -148,6 +148,8 @@ interface BatLedger {
   GetContributionReport(ledger.mojom.ActivityMonth month, int32 year) => (array<ledger.mojom.ContributionReportInfo> list);
 
   GetAllContributions() => (array<ledger.mojom.ContributionInfo> list);
+
+  SavePublisherInfo(ledger.mojom.PublisherInfo info) => (ledger.mojom.Result result);
 };
 
 interface BatLedgerClient {

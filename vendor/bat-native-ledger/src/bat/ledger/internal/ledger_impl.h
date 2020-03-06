@@ -90,7 +90,7 @@ class LedgerImpl : public ledger::Ledger,
 
   void SavePublisherInfo(
       ledger::PublisherInfoPtr publisher_info,
-      ledger::ResultCallback callback);
+      ledger::ResultCallback callback) override;
 
   void SaveActivityInfo(
       ledger::PublisherInfoPtr publisher_info,
@@ -122,11 +122,9 @@ class LedgerImpl : public ledger::Ledger,
 
   void GetExcludedList(ledger::PublisherInfoListCallback callback) override;
 
-  void DoTip(
+  void OneTimeTip(
       const std::string& publisher_key,
       const double amount,
-      ledger::PublisherInfoPtr info,
-      const bool recurring,
       ledger::ResultCallback callback) override;
 
   void SetRewardsMainEnabled(bool enabled) override;

@@ -474,13 +474,13 @@ std::string LedgerImpl::URIEncode(const std::string& value) {
 void LedgerImpl::SavePublisherInfo(
     ledger::PublisherInfoPtr info,
     ledger::ResultCallback callback) {
-  bat_database_->SavePublisherInfo(info->Clone(), callback);
+  bat_database_->SavePublisherInfo(std::move(info), callback);
 }
 
 void LedgerImpl::SaveActivityInfo(
     ledger::PublisherInfoPtr info,
     ledger::ResultCallback callback) {
-  bat_database_->SaveActivityInfo(info->Clone(), callback);
+  bat_database_->SaveActivityInfo(std::move(info), callback);
 }
 
 void LedgerImpl::SaveMediaPublisherInfo(
@@ -802,18 +802,11 @@ void LedgerImpl::PendingContributionSaved(const ledger::Result result) {
   ledger_client_->PendingContributionSaved(result);
 }
 
-void LedgerImpl::DoTip(
+void LedgerImpl::OneTimeTip(
     const std::string& publisher_key,
     const double amount,
-    ledger::PublisherInfoPtr info,
-    const bool recurring,
     ledger::ResultCallback callback) {
-  bat_contribution_->DoTip(
-      publisher_key,
-      amount,
-      std::move(info),
-      recurring,
-      callback);
+  bat_contribution_->OneTimeTip(publisher_key, amount, callback);
 }
 
 void LedgerImpl::OnTimer(uint32_t timer_id) {
