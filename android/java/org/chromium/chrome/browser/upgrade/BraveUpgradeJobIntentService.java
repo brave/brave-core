@@ -14,6 +14,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.library_loader.LibraryProcessType;
 import org.chromium.base.task.PostTask;
+import org.chromium.chrome.browser.BraveHelper;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -32,9 +33,6 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
     private static final String SHIELDS_CONFIG_MIGRATED_FILENAME = "shields_config_migrated.dat";
     private static final int JOB_ID = 1;
 
-    // Used to indicate were the settings migrated to the new brave-core based version
-    private static final String PREF_TABS_SETTINGS_MIGRATED = "android_tabs_settings_to_core_migrated";
-
     // For old Brave stats
     private static final String PREF_TRACKERS_BLOCKED_COUNT = "trackers_blocked_count";
     private static final String PREF_ADS_BLOCKED_COUNT = "ads_blocked_count";
@@ -46,6 +44,14 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
     private static final int CONTENT_SETTINGS_TYPE_PLAY_VIDEO_IN_BACKGROUND = 63;
     // For YT links play video in Brave
     private static final int CONTENT_SETTINGS_TYPE_PLAY_YT_VIDEO_IN_BROWSER = 64;
+
+    // Old search engines settings
+    private static final String PREF_STANDARD_SEARCH_ENGINE = "brave_standard_search_engine";
+    private static final String PREF_STANDARD_SEARCH_ENGINE_KEYWORD = "brave_standard_search_engine_keyword";
+    private static final String PREF_PRIVATE_SEARCH_ENGINE = "brave_private_search_engine";
+    private static final String PREF_PRIVATE_SEARCH_ENGINE_KEYWORD = "brave_private_search_engine_keyword";
+    private static final String DSE_NAME = "Google";
+    private static final String DSE_KEYWORD = "google.com";
 
     public static void startMigrationIfNecessary(Context context) {
         // Start migration in any case as we can have only partial data
@@ -179,7 +185,7 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
 
     private void migrateTotalStatsAndPreferences() {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-        boolean migrated = sharedPreferences.getBoolean(PREF_TABS_SETTINGS_MIGRATED, false);
+        boolean migrated = sharedPreferences.getBoolean(BraveHelper.PREF_TABS_SETTINGS_MIGRATED, false);
         if (migrated) {
             // Everything was already migrated
             return;
@@ -202,7 +208,6 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
         sharedPreferencesEditor.putLong(PREF_TRACKERS_BLOCKED_COUNT, 0);
         sharedPreferencesEditor.putLong(PREF_ADS_BLOCKED_COUNT, 0);
         sharedPreferencesEditor.putLong(PREF_HTTPS_UPGRADES_COUNT, 0);
-        sharedPreferencesEditor.apply();
 
         // Background video playback migration
         BravePrefServiceBridge.getInstance().setBackgroundVideoPlaybackEnabled(
@@ -214,7 +219,17 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
         BravePrefServiceBridge.getInstance().setDesktopModeEnabled(
             BravePrefServiceBridge.getInstance().GetBooleanForContentSetting(CONTENT_SETTINGS_TYPE_DESKTOP_VIEW));
 
-        sharedPreferencesEditor.putBoolean(PREF_TABS_SETTINGS_MIGRATED, true);
+        // Migrate search engines settings
+        sharedPreferencesEditor.putString(BraveHelper.PRIVATE_DSE_KEYWORD,
+            sharedPreferences.getString(PREF_PRIVATE_SEARCH_ENGINE_KEYWORD, DSE_KEYWORD));
+        sharedPreferencesEditor.putString(BraveHelper.PRIVATE_DSE_SHORTNAME,
+            sharedPreferences.getString(PREF_PRIVATE_SEARCH_ENGINE, DSE_NAME));
+        sharedPreferencesEditor.putString(BraveHelper.STANDARD_DSE_KEYWORD,
+            sharedPreferences.getString(PREF_STANDARD_SEARCH_ENGINE_KEYWORD, DSE_KEYWORD));
+        sharedPreferencesEditor.putString(BraveHelper.STANDARD_DSE_SHORTNAME,
+            sharedPreferences.getString(PREF_STANDARD_SEARCH_ENGINE, DSE_NAME));
+
+        sharedPreferencesEditor.putBoolean(BraveHelper.PREF_TABS_SETTINGS_MIGRATED, true);
         sharedPreferencesEditor.apply();
     }
 

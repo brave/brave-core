@@ -210,10 +210,12 @@ jboolean JNI_BravePrefServiceBridge_GetUseRewardsStagingServer(JNIEnv* env) {
       brave_rewards::prefs::kUseRewardsStagingServer);
 }
 
-jboolean JNI_BravePrefServiceBridge_GetBooleanForContentSetting(JNIEnv* env, jint type) {
+jboolean JNI_BravePrefServiceBridge_GetBooleanForContentSetting(JNIEnv* env,
+    jint type) {
   HostContentSettingsMap* content_settings =
       HostContentSettingsMapFactory::GetForProfile(GetOriginalProfile());
-  switch (content_settings->GetDefaultContentSetting((ContentSettingsType)type, nullptr)) {
+  switch (content_settings->GetDefaultContentSetting((ContentSettingsType)type,
+      nullptr)) {
     case CONTENT_SETTING_ALLOW:
       return true;
     case CONTENT_SETTING_BLOCK:

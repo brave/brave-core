@@ -28,6 +28,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveHelper;
 import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
@@ -70,8 +71,6 @@ public abstract class BraveActivity extends ChromeActivity {
     public static final String ANDROID_SETUPWIZARD_PACKAGE_NAME = "com.google.android.setupwizard";
     public static final String ANDROID_PACKAGE_NAME = "android";
     public static final String BRAVE_BLOG_URL = "http://www.brave.com/blog";
-    // Used to indicate were the settings migrated to the new brave-core based version
-    private static final String PREF_TABS_SETTINGS_MIGRATED = "android_tabs_settings_to_core_migrated";
 
     // Sync worker
     public BraveSyncWorker mBraveSyncWorker;
@@ -96,7 +95,7 @@ public abstract class BraveActivity extends ChromeActivity {
         // Set a flag in preferences that tabs pref migration is done
         SharedPreferences.Editor sharedPreferencesEditor =
             ContextUtils.getAppSharedPreferences().edit();
-        sharedPreferencesEditor.putBoolean(PREF_TABS_SETTINGS_MIGRATED, true);
+        sharedPreferencesEditor.putBoolean(BraveHelper.PREF_TABS_SETTINGS_MIGRATED, true);
         sharedPreferencesEditor.apply();
     }
 
