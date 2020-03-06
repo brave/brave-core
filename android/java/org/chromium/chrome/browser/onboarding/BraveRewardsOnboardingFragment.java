@@ -38,10 +38,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.chromium.chrome.R;
+import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
-import org.chromium.chrome.browser.onboarding.BraveRewardsServiceReceiver;
 import org.chromium.chrome.browser.onboarding.OnViewPagerAction;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -179,10 +179,8 @@ public class BraveRewardsOnboardingFragment extends Fragment {
                     assert onViewPagerAction != null;
                     if (onViewPagerAction != null) onViewPagerAction.onNext();
                 } else {
-                    AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-                    Intent broadcast_intent = new Intent(getActivity(), BraveRewardsServiceReceiver.class);
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0,  broadcast_intent, 0);
-                    alarmManager.set(AlarmManager.RTC_WAKEUP, 0, pendingIntent);
+                    Intent mBraveRewardsServiceIntent = new Intent(ContextUtils.getApplicationContext(), BraveRewardsService.class);
+                    ContextUtils.getApplicationContext().startService(mBraveRewardsServiceIntent);
 
                     if (PackageUtils.isFirstInstall(getActivity()) && !isAdsAvailable) {
                         OnboardingPrefManager.getInstance().setPrefOnboardingEnabled(false);
