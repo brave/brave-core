@@ -143,14 +143,6 @@ namespace brave_test_resp {
   std::string uphold_auth_resp_;
   std::string uphold_transactions_resp_;
   std::string uphold_commit_resp_;
-
-  std::string contribution_;
-  std::string reconcile_;
-  std::string current_reconcile_;
-  std::string register_;
-  std::string register_credential_;
-  std::string surveyor_voting_;
-  std::string surveyor_voting_credential_;
 }  // namespace brave_test_resp
 
 class BraveRewardsBrowserTest
@@ -409,30 +401,6 @@ class BraveRewardsBrowserTest
         braveledger_uphold::GetAPIUrl("/v0/me"),
         base::CompareCase::INSENSITIVE_ASCII)) {
       *response = GetUpholdUser();
-    } else if (URLMatches(url, WALLET_PROPERTIES, PREFIX_V2,
-                          ServerTypes::LEDGER)) {
-      GURL gurl(url);
-      if (gurl.has_query()) {
-        *response = brave_test_resp::reconcile_;
-      } else {
-        *response = brave_test_resp::current_reconcile_;
-      }
-
-    } else if (URLMatches(url, RECONCILE_CONTRIBUTION, PREFIX_V2,
-                          ServerTypes::LEDGER)) {
-      *response = brave_test_resp::contribution_;
-    } else if (URLMatches(url, REGISTER_VIEWING, PREFIX_V2,
-                          ServerTypes::LEDGER)) {
-      if (url.find(REGISTER_VIEWING "/") != std::string::npos)
-        *response = brave_test_resp::register_credential_;
-      else
-        *response = brave_test_resp::register_;
-    } else if (URLMatches(url, SURVEYOR_BATCH_VOTING, PREFIX_V2,
-                          ServerTypes::LEDGER)) {
-      if (url.find(SURVEYOR_BATCH_VOTING "/") != std::string::npos)
-        *response = brave_test_resp::surveyor_voting_credential_;
-      else
-        *response = brave_test_resp::surveyor_voting_;
     }
   }
 
@@ -667,26 +635,6 @@ class BraveRewardsBrowserTest
     ASSERT_TRUE(base::ReadFileToString(
         path.AppendASCII("uphold_commit_resp.json"),
         &brave_test_resp::uphold_commit_resp_));
-
-    ASSERT_TRUE(
-        base::ReadFileToString(path.AppendASCII("contribution_resp.json"),
-                               &brave_test_resp::contribution_));
-    ASSERT_TRUE(base::ReadFileToString(path.AppendASCII("reconcile_resp.json"),
-                                       &brave_test_resp::reconcile_));
-    ASSERT_TRUE(
-        base::ReadFileToString(path.AppendASCII("current_reconcile_resp.json"),
-                               &brave_test_resp::current_reconcile_));
-    ASSERT_TRUE(base::ReadFileToString(path.AppendASCII("register_resp.json"),
-                                       &brave_test_resp::register_));
-    ASSERT_TRUE(base::ReadFileToString(
-        path.AppendASCII("register_credential_resp.json"),
-        &brave_test_resp::register_credential_));
-    ASSERT_TRUE(
-        base::ReadFileToString(path.AppendASCII("surveyor_voting_resp.json"),
-                               &brave_test_resp::surveyor_voting_));
-    ASSERT_TRUE(base::ReadFileToString(
-        path.AppendASCII("surveyor_voting_credential_resp.json"),
-        &brave_test_resp::surveyor_voting_credential_));
   }
 
   void UpdateContributionBalance(double amount, bool verified = false) {

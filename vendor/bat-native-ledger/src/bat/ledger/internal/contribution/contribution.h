@@ -16,68 +16,6 @@
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/properties/current_reconcile_properties.h"
 
-// Contribution has two big phases. PHASE 1 is starting the contribution,
-// getting surveyors and transferring BAT from the wallet.
-// PHASE 2 uses surveyors from the phase 1 and client generates votes/ballots
-// and send them to the server so that server knows to
-// which publisher sends the money.
-
-// For every phase we are doing retries, so that we try our best to process
-// contribution successfully. In Phase 1 we notify users about the failure after
-// we do the whole interval of retries. In Phase 2 we have shorter interval
-// but we will try indefinitely, because we just need to send data to the server
-// and we don't need anything from the server.
-
-// Re-try interval for Phase 1:
-// 1 hour
-// 6 hours
-// 12 hours
-// 24 hours
-// 48 hours
-// stop contribution and report error to the user
-
-// Re-try interval for Phase 2:
-// 1 hour
-// 6 hours
-// 24 hours
-// repeat 24 hours interval
-
-
-// Contribution process
-
-// PHASE 0
-// 1. InitReconcile
-// 2. ProcessReconcile
-
-// PHASE 1 (reconcile)
-// 1. Start (Reconcile)
-// 3. ReconcileCallback
-// 4. CurrentReconcile
-// 5. CurrentReconcileCallback
-// 6. ReconcilePayload
-// 7. ReconcilePayloadCallback
-// 8. RegisterViewing
-// 9. RegisterViewingCallback
-// 10. ViewingCredentials
-// 11. ViewingCredentialsCallback
-// 12. Complete
-
-// PHASE 2 (voting)
-// 1. Start (GetReconcileWinners)
-// 2. VotePublishers
-// 3. VotePublisher
-// 4. PrepareBallots
-// 5. PrepareBatch
-// 6. PrepareBatchCallback
-// 7. ProofBatch
-// 8. ProofBatchCallback
-// 9. SetTimer
-// 10. PrepareVoteBatch
-// 12. SetTimer
-// 12. VoteBatch
-// 13. VoteBatchCallback
-// 14. SetTimer - we set timer until the whole batch is processed
-
 namespace bat_ledger {
 class LedgerImpl;
 }
@@ -88,34 +26,8 @@ class Uphold;
 
 namespace braveledger_contribution {
 
-class PhaseOne;
-class PhaseTwo;
 class Unverified;
 class Unblinded;
-
-static const uint64_t phase_one_timers[] = {
-    1 * 60 * 60,  // 1h
-    2 * 60 * 60,  // 2h
-    12 * 60 * 60,  // 12h
-    24 * 60 * 60,  // 24h
-    48 * 60 * 60};  // 48h
-
-static const uint64_t phase_two_timers[] = {
-    1 * 60 * 60,  // 1h
-    6 * 60 * 60,  // 6h
-    24 * 60 * 60};  // 24h
-
-static const uint64_t phase_one_debug_timers[] = {
-    0.5 * 60,  // 30sec
-    1 * 60,  //  1min
-    2 * 60,  //  2min
-    3 * 60,  // 3min
-    4 * 60};  // 4min
-
-static const uint64_t phase_two_debug_timers[] = {
-    1 * 60,  // 1min
-    2 * 60,  //  2min
-    3 * 60};  // 3min
 
 class Contribution {
  public:
@@ -182,8 +94,6 @@ class Contribution {
 
   void ContributeUnverifiedPublishers();
 
-  void StartPhaseTwo(const std::string& viewing_id);
-
   void OneTimeTip(
       const std::string& publisher_key,
       const double amount,
@@ -236,9 +146,6 @@ class Contribution {
       const double balance,
       ledger::HasSufficientBalanceToReconcileCallback callback);
 
-  static double GetTotalFromRecurringVerified(
-      const ledger::PublisherInfoList& publisher_list);
-
   void OnSufficientBalanceWallet(
       ledger::Result result,
       ledger::BalancePtr properties,
@@ -260,19 +167,7 @@ class Contribution {
       const ledger::Result result,
       ledger::ResultCallback callback);
 
-  bool HaveReconcileEnoughFunds(
-      ledger::ContributionQueuePtr contribution,
-      double* fee,
-      const double balance);
-
   bool ProcessReconcileUnblindedTokens(
-      ledger::BalancePtr info,
-      ledger::RewardsType type,
-      double* fee,
-      ledger::ReconcileDirections directions,
-      ledger::ReconcileDirections* leftovers);
-
-  bool ProcessReconcileAnonize(
       ledger::BalancePtr info,
       ledger::RewardsType type,
       double* fee,
@@ -332,8 +227,6 @@ class Contribution {
       const ledger::RewardsType type);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  std::unique_ptr<PhaseOne> phase_one_;
-  std::unique_ptr<PhaseTwo> phase_two_;
   std::unique_ptr<Unverified> unverified_;
   std::unique_ptr<Unblinded> unblinded_;
   std::unique_ptr<braveledger_uphold::Uphold> uphold_;
@@ -345,7 +238,6 @@ class Contribution {
   // For testing purposes
   friend class ContributionTest;
   FRIEND_TEST_ALL_PREFIXES(ContributionTest, GetAmountFromVerifiedAuto);
-  FRIEND_TEST_ALL_PREFIXES(ContributionTest, GetTotalFromRecurringVerified);
 };
 
 }  // namespace braveledger_contribution

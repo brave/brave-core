@@ -20,8 +20,6 @@
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/contribution/contribution_unblinded.h"
 #include "bat/ledger/internal/contribution/contribution_util.h"
-#include "bat/ledger/internal/contribution/phase_one.h"
-#include "bat/ledger/internal/contribution/phase_two.h"
 #include "bat/ledger/internal/contribution/unverified.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
@@ -34,31 +32,71 @@ using std::placeholders::_2;
 using std::placeholders::_3;
 
 namespace {
-  ledger::ContributionStep ConvertResultIntoContributionStep(
-      const ledger::Result result) {
-    switch (result) {
-      case ledger::Result::LEDGER_OK: {
-        return ledger::ContributionStep::STEP_COMPLETED;
-      }
-      case ledger::Result::AC_TABLE_EMPTY: {
-        return ledger::ContributionStep::STEP_AC_TABLE_EMPTY;
-      }
-      case ledger::Result::NOT_ENOUGH_FUNDS: {
-        return ledger::ContributionStep::STEP_NOT_ENOUGH_FUNDS;
-      }
-      default: {
-        return ledger::ContributionStep::STEP_FAILED;
-      }
+ledger::ContributionStep ConvertResultIntoContributionStep(
+    const ledger::Result result) {
+  switch (result) {
+    case ledger::Result::LEDGER_OK: {
+      return ledger::ContributionStep::STEP_COMPLETED;
+    }
+    case ledger::Result::AC_TABLE_EMPTY: {
+      return ledger::ContributionStep::STEP_AC_TABLE_EMPTY;
+    }
+    case ledger::Result::NOT_ENOUGH_FUNDS: {
+      return ledger::ContributionStep::STEP_NOT_ENOUGH_FUNDS;
+    }
+    default: {
+      return ledger::ContributionStep::STEP_FAILED;
     }
   }
+}
+
+double GetTotalFromRecurringVerified(
+    const ledger::PublisherInfoList& publisher_list) {
+  double total_recurring_amount = 0.0;
+  for (const auto& publisher : publisher_list) {
+    if (publisher->id.empty()) {
+      continue;
+    }
+
+    if (publisher->status == ledger::PublisherStatus::VERIFIED) {
+      total_recurring_amount += publisher->weight;
+    }
+  }
+
+  return total_recurring_amount;
+}
+
+bool HaveReconcileEnoughFunds(
+    ledger::ContributionQueuePtr contribution,
+    double* fee,
+    const double balance) {
+  if (contribution->type == ledger::RewardsType::AUTO_CONTRIBUTE) {
+    if (balance == 0) {
+      return false;
+    }
+
+    if (contribution->amount > balance) {
+      contribution->amount = balance;
+    }
+
+    *fee = contribution->amount;
+    return true;
+  }
+
+  if (contribution->amount > balance) {
+    return false;
+  }
+
+  *fee = contribution->amount;
+  return true;
+}
+
 }  // namespace
 
 namespace braveledger_contribution {
 
 Contribution::Contribution(bat_ledger::LedgerImpl* ledger) :
     ledger_(ledger),
-    phase_one_(std::make_unique<PhaseOne>(ledger, this)),
-    phase_two_(std::make_unique<PhaseTwo>(ledger, this)),
     unverified_(std::make_unique<Unverified>(ledger, this)),
     unblinded_(std::make_unique<Unblinded>(ledger)),
     uphold_(std::make_unique<braveledger_uphold::Uphold>(ledger)),
@@ -66,11 +104,9 @@ Contribution::Contribution(bat_ledger::LedgerImpl* ledger) :
     queue_timer_id_(0u) {
 }
 
-Contribution::~Contribution() {
-}
+Contribution::~Contribution() = default;
 
 void Contribution::Initialize() {
-  phase_two_->Initialize();
   uphold_->Initialize();
   unblinded_->Initialize();
 
@@ -119,10 +155,11 @@ void Contribution::OnProcessContributionQueue(
   }
 
   queue_in_progress_ = true;
-
   InitReconcile(std::move(info));
 }
 
+// TODO rename to something that tells you that you are checking
+//  monthly recurring sufficient balance
 void Contribution::HasSufficientBalance(
     ledger::HasSufficientBalanceToReconcileCallback callback) {
   ledger_->FetchBalance(
@@ -162,22 +199,6 @@ void Contribution::OnHasSufficientBalance(
 
   const auto total = GetTotalFromRecurringVerified(publisher_list);
   callback(balance >= total);
-}
-
-// static
-double Contribution::GetTotalFromRecurringVerified(
-    const ledger::PublisherInfoList& publisher_list) {
-  double total_recurring_amount = 0.0;
-  for (const auto& publisher : publisher_list) {
-    if (publisher->id.empty()) {
-      continue;
-    }
-
-    if (publisher->status == ledger::PublisherStatus::VERIFIED) {
-      total_recurring_amount += publisher->weight;
-    }
-  }
-  return total_recurring_amount;
 }
 
 ledger::PublisherInfoList Contribution::GetVerifiedListRecurring(
@@ -243,10 +264,13 @@ void Contribution::PrepareRecurringList(
     queue->partial = false;
     queue->publishers = std::move(queue_list);
 
+    // TODO this should be batch insert and
+    // callback should then do what is left after this point
     ledger_->SaveContributionQueue(
         std::move(queue),
         [](const ledger::Result _){});
   }
+
   CheckContributionQueue();
   callback(ledger::Result::LEDGER_OK);
 }
@@ -332,6 +356,7 @@ void Contribution::PrepareACList(ledger::PublisherInfoList list) {
   queue->amount = ledger_->GetContributionAmount();
   queue->partial = true;
   queue->publishers = std::move(queue_list);
+  // TODO add real callback
   ledger_->SaveContributionQueue(
       std::move(queue),
       [](const ledger::Result _){});
@@ -384,15 +409,6 @@ void Contribution::OnTimer(uint32_t timer_id) {
   if (timer_id == queue_timer_id_) {
     ProcessContributionQueue();
   }
-
-  // DEPRECATED
-  for (std::pair<std::string, uint32_t> const& value : retry_timers_) {
-    if (value.second == timer_id) {
-      std::string viewing_id = value.first;
-      DoRetry(viewing_id);
-      retry_timers_[viewing_id] = 0u;
-    }
-  }
 }
 
 void Contribution::SetReconcileTimer() {
@@ -422,46 +438,6 @@ void Contribution::SetTimer(uint32_t* timer_id, uint64_t start_timer_in) {
   ledger_->SetTimer(start_timer_in, timer_id);
 }
 
-// DEPRECATED
-void Contribution::ReconcileSuccess(
-    const std::string& viewing_id,
-    const double amount,
-    const bool delete_reconcile) {
-  const auto reconcile = ledger_->GetReconcileById(viewing_id);
-
-  ledger_->SetBalanceReportItem(
-        braveledger_time_util::GetCurrentMonth(),
-        braveledger_time_util::GetCurrentYear(),
-        GetReportTypeFromRewardsType(reconcile.type),
-        amount);
-
-  ledger::ContributionPublisherList publisher_list;
-  for (auto& item : reconcile.directions) {
-    auto publisher = ledger::ContributionPublisher::New();
-    publisher->contribution_id = viewing_id;
-    publisher->publisher_key = item.publisher_key;
-    publisher->total_amount = (item.amount_percent * amount) / 100;
-    publisher->contributed_amount = publisher->total_amount;
-    publisher_list.push_back(std::move(publisher));
-  }
-
-  const uint64_t now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
-  auto info = ledger::ContributionInfo::New();
-  info->contribution_id = viewing_id;
-  info->amount = amount;
-  info->type = reconcile.type;
-  info->step = ledger::ContributionStep::STEP_COMPLETED;
-  info->retry_count = -1;
-  info->created_at = now;
-  info->publishers = std::move(publisher_list);
-
-  ledger_->SaveContributionInfo(std::move(info), [](ledger::Result _){});
-
-  if (!viewing_id.empty() && delete_reconcile) {
-      ledger_->RemoveReconcileById(viewing_id);
-  }
-}
-
 void Contribution::ContributionCompleted(
     const std::string& contribution_id,
     const ledger::RewardsType type,
@@ -482,175 +458,8 @@ void Contribution::ContributionCompleted(
       [](const ledger::Result _){});
 }
 
-// DEPRECATED
-void Contribution::AddRetry(
-    ledger::ContributionRetry step,
-    const std::string& viewing_id,
-    ledger::CurrentReconcileProperties reconcile) {
-  BLOG(ledger_, ledger::LogLevel::LOG_WARNING)
-      << "Re-trying contribution for step "
-      << std::to_string(static_cast<int32_t>(step))
-      << " for " << viewing_id;
-
-  if (reconcile.viewing_id.empty()) {
-    reconcile = ledger_->GetReconcileById(viewing_id);
-  }
-
-  // Don't retry one-time tip if in phase 1
-  if (GetRetryPhase(step) == 1 &&
-      reconcile.type == ledger::RewardsType::ONE_TIME_TIP) {
-    phase_one_->Complete(ledger::Result::TIP_ERROR,
-                         viewing_id,
-                         reconcile.type);
-    return;
-  }
-
-  uint64_t start_timer_in = GetRetryTimer(step, viewing_id, &reconcile);
-  bool success = ledger_->AddReconcileStep(viewing_id,
-                                           reconcile.retry_step,
-                                           reconcile.retry_level);
-  if (!success || start_timer_in == 0) {
-    phase_one_->Complete(ledger::Result::LEDGER_ERROR,
-                         viewing_id,
-                         reconcile.type);
-    return;
-  }
-
-  retry_timers_[viewing_id] = 0u;
-  SetTimer(&retry_timers_[viewing_id], start_timer_in);
-}
-
-// DEPRECATED
-uint64_t Contribution::GetRetryTimer(
-    ledger::ContributionRetry step,
-    const std::string& viewing_id,
-    ledger::CurrentReconcileProperties* reconcile) {
-  ledger::ContributionRetry old_step = reconcile->retry_step;
-
-  int phase = GetRetryPhase(step);
-  if (phase > GetRetryPhase(old_step)) {
-    reconcile->retry_level = 0;
-  } else {
-    reconcile->retry_level++;
-  }
-
-  reconcile->retry_step = step;
-
-  if (phase == 1) {
-    // TODO(nejczdovc) get size from the list
-    if (reconcile->retry_level < 5) {
-      if (ledger::short_retries) {
-        return phase_one_debug_timers[reconcile->retry_level];
-      } else {
-        return phase_one_timers[reconcile->retry_level];
-      }
-
-    } else {
-      return 0;
-    }
-  }
-
-  if (phase == 2) {
-    // TODO(nejczdovc) get size from the list
-    if (reconcile->retry_level > 2) {
-      if (ledger::short_retries) {
-        return phase_two_debug_timers[2];
-      } else {
-        return phase_two_timers[2];
-      }
-    } else {
-      if (ledger::short_retries) {
-        return phase_two_debug_timers[reconcile->retry_level];
-      } else {
-        return phase_two_timers[reconcile->retry_level];
-      }
-    }
-  }
-
-  return 0;
-}
-
-// DEPRECATED
-int Contribution::GetRetryPhase(ledger::ContributionRetry step) {
-  int phase = 0;
-
-  switch (step) {
-    case ledger::ContributionRetry::STEP_RECONCILE:
-    case ledger::ContributionRetry::STEP_CURRENT:
-    case ledger::ContributionRetry::STEP_PAYLOAD:
-    case ledger::ContributionRetry::STEP_REGISTER:
-    case ledger::ContributionRetry::STEP_VIEWING: {
-      phase = 1;
-      break;
-    }
-    case ledger::ContributionRetry::STEP_PREPARE:
-    case ledger::ContributionRetry::STEP_VOTE:
-    case ledger::ContributionRetry::STEP_PROOF:
-    case ledger::ContributionRetry::STEP_WINNERS:
-    case ledger::ContributionRetry::STEP_FINAL: {
-      phase = 2;
-      break;
-    }
-    case ledger::ContributionRetry::STEP_NO:
-      break;
-  }
-
-  return phase;
-}
-
-// DEPRECATED
-void Contribution::DoRetry(const std::string& viewing_id) {
-  auto reconcile = ledger_->GetReconcileById(viewing_id);
-
-  switch (reconcile.retry_step) {
-    case ledger::ContributionRetry::STEP_RECONCILE: {
-      phase_one_->Start(viewing_id);
-      break;
-    }
-    case ledger::ContributionRetry::STEP_CURRENT: {
-      phase_one_->CurrentReconcile(viewing_id);
-      break;
-    }
-    case ledger::ContributionRetry::STEP_PAYLOAD: {
-      phase_one_->ReconcilePayload(viewing_id);
-      break;
-    }
-    case ledger::ContributionRetry::STEP_REGISTER: {
-      phase_one_->RegisterViewing(viewing_id);
-      break;
-    }
-    case ledger::ContributionRetry::STEP_VIEWING: {
-      phase_one_->ViewingCredentials(viewing_id);
-      break;
-    }
-    case ledger::ContributionRetry::STEP_PREPARE: {
-      phase_two_->PrepareBallots();
-      break;
-    }
-    case ledger::ContributionRetry::STEP_PROOF: {
-      phase_two_->Proof();
-      break;
-    }
-    case ledger::ContributionRetry::STEP_VOTE: {
-      phase_two_->VoteBatch();
-      break;
-    }
-    case ledger::ContributionRetry::STEP_WINNERS: {
-      phase_two_->Start(viewing_id);
-      break;
-    }
-    case ledger::ContributionRetry::STEP_FINAL:
-    case ledger::ContributionRetry::STEP_NO:
-      break;
-  }
-}
-
 void Contribution::ContributeUnverifiedPublishers() {
   unverified_->Contribute();
-}
-
-void Contribution::StartPhaseTwo(const std::string& viewing_id) {
-  phase_two_->Start(viewing_id);
 }
 
 void Contribution::OneTimeTip(
@@ -736,41 +545,6 @@ void Contribution::OnSavePendingOneTimeTip(
     ledger::ResultCallback callback) {
   ledger_->PendingContributionSaved(result);
   callback(result);
-}
-
-bool Contribution::HaveReconcileEnoughFunds(
-    ledger::ContributionQueuePtr contribution,
-    double* fee,
-    const double balance) {
-  if (contribution->type == ledger::RewardsType::AUTO_CONTRIBUTE) {
-    if (balance == 0) {
-      BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
-          "You do not have enough funds for auto contribution";
-       phase_one_->Complete(ledger::Result::NOT_ENOUGH_FUNDS,
-                            "",
-                            contribution->type);
-      return false;
-    }
-
-    if (contribution->amount > balance) {
-      contribution->amount = balance;
-    }
-
-    *fee = contribution->amount;
-    return true;
-  }
-
-  if (contribution->amount > balance) {
-    BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
-      "You do not have enough funds to do a contribution";
-      phase_one_->Complete(ledger::Result::NOT_ENOUGH_FUNDS,
-                           "",
-                           contribution->type);
-    return false;
-  }
-
-  *fee = contribution->amount;
-  return true;
 }
 
 void Contribution::OnDeleteContributionQueue(const ledger::Result result) {
@@ -991,6 +765,15 @@ void Contribution::OnProcessExternalWalletSaved(
 void Contribution::ProcessReconcile(
     ledger::ContributionQueuePtr contribution,
     ledger::BalancePtr info) {
+  if (!contribution) {
+    return;
+  }
+
+  if (contribution->amount == 0 || contribution->publishers.empty()) {
+    DeleteContributionQueue(contribution->Clone());
+    return;
+  }
+
   double fee = .0;
   const auto have_enough_balance = HaveReconcileEnoughFunds(
       contribution->Clone(),
@@ -1010,6 +793,7 @@ void Contribution::ProcessReconcile(
   const auto directions = FromContributionQueuePublishersToReconcileDirections(
       std::move(contribution->publishers));
 
+  // UNBLINDED TOKENS
   ledger::ReconcileDirections anon_directions = directions;
   bool result = ProcessReconcileUnblindedTokens(
       info->Clone(),
@@ -1023,6 +807,7 @@ void Contribution::ProcessReconcile(
     return;
   }
 
+  // USER FUNDS in ANON WALLET
   ledger::ReconcileDirections wallet_directions = anon_directions;
   result = ProcessReconcileAnonize(
       info->Clone(),
@@ -1036,6 +821,7 @@ void Contribution::ProcessReconcile(
     return;
   }
 
+  // EXTERNAL WALLET
   result = ProcessExternalWallet(
       info->Clone(),
       contribution->type,
