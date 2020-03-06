@@ -14,7 +14,7 @@
 
 #if !defined(OS_ANDROID)
 #include "brave/browser/importer/brave_importer_p3a.h"
-#include "brave/components/p3a/p3a_core_metrics.h"
+#include "brave/browser/p3a/p3a_core_metrics.h"
 #include "chrome/browser/first_run/first_run.h"
 #endif  // !defined(OS_ANDROID)
 

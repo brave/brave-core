@@ -31,7 +31,7 @@
 #endif
 
 #if !defined(OS_ANDROID)
-#include "brave/components/p3a/p3a_core_metrics.h"
+#include "brave/browser/p3a/p3a_core_metrics.h"
 #endif  // !defined(OS_ANDROID)
 
 #if BUILDFLAG(ENABLE_WIDEVINE)

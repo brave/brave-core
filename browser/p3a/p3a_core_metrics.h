@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_P3A_P3A_CORE_METRICS_H_
-#define BRAVE_COMPONENTS_P3A_P3A_CORE_METRICS_H_
+#ifndef BRAVE_BROWSER_P3A_P3A_CORE_METRICS_H_
+#define BRAVE_BROWSER_P3A_P3A_CORE_METRICS_H_
 
 #include <list>
 
@@ -84,4 +84,4 @@ class BraveWindowTracker : public BrowserListObserver {
 
 }  // namespace brave
 
-#endif  // BRAVE_COMPONENTS_P3A_P3A_CORE_METRICS_H_
+#endif  // BRAVE_BROWSER_P3A_P3A_CORE_METRICS_H_

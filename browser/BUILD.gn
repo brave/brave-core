@@ -196,6 +196,8 @@ source_set("browser_process") {
     sources += [
       "brave_rewards/tip_dialog.cc",
       "brave_rewards/tip_dialog.h",
+      "p3a/p3a_core_metrics.cc",
+      "p3a/p3a_core_metrics.h",
     ]
 
     deps += [
