@@ -6,9 +6,10 @@
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
 
 #include <memory>
+#include <utility>
 
-#include "base/time/default_clock.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/time/default_clock.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_permanent_state.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -37,7 +38,8 @@ constexpr char kSavingsDailyUMAHistogramName[] =
 }  // namespace
 
 P3ABandwidthSavingsTracker::P3ABandwidthSavingsTracker(PrefService* user_prefs)
-    : P3ABandwidthSavingsTracker(user_prefs, std::make_unique<base::DefaultClock>()) {}
+    : P3ABandwidthSavingsTracker(user_prefs,
+                                 std::make_unique<base::DefaultClock>()) {}
 
 P3ABandwidthSavingsTracker::P3ABandwidthSavingsTracker(
     PrefService* user_prefs,

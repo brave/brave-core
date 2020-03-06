@@ -48,7 +48,7 @@ TEST_F(P3ABandwidthSavingsPermanentStateTest, AddsSavings) {
   // Accumulate
   state_->AddSavings(saving);
   state_->AddSavings(saving);
-  EXPECT_EQ(state_->GetFullPeriodSavingsBytes().value(), saving*3);
+  EXPECT_EQ(state_->GetFullPeriodSavingsBytes().value(), saving * 3);
 }
 
 TEST_F(P3ABandwidthSavingsPermanentStateTest, ForgetsOldSavings) {
@@ -73,7 +73,7 @@ TEST_F(P3ABandwidthSavingsPermanentStateTest, RetrievesDailySavings) {
     state_->AddSavings(saving);
   }
   ASSERT_TRUE(state_->GetFullPeriodSavingsBytes().has_value());
-  EXPECT_EQ(state_->GetFullPeriodSavingsBytes().value(), 7*saving);
+  EXPECT_EQ(state_->GetFullPeriodSavingsBytes().value(), 7 * saving);
 }
 
 TEST_F(P3ABandwidthSavingsPermanentStateTest, HandlesSkippedDay) {
@@ -85,7 +85,7 @@ TEST_F(P3ABandwidthSavingsPermanentStateTest, HandlesSkippedDay) {
     state_->AddSavings(saving);
   }
   ASSERT_TRUE(state_->GetFullPeriodSavingsBytes().has_value());
-  EXPECT_EQ(state_->GetFullPeriodSavingsBytes().value(), 6*saving);
+  EXPECT_EQ(state_->GetFullPeriodSavingsBytes().value(), 6 * saving);
 }
 
 TEST_F(P3ABandwidthSavingsPermanentStateTest, IntermittentUsage) {
@@ -95,7 +95,7 @@ TEST_F(P3ABandwidthSavingsPermanentStateTest, IntermittentUsage) {
     state_->AddSavings(saving);
   }
   ASSERT_TRUE(state_->GetFullPeriodSavingsBytes().has_value());
-  EXPECT_EQ(state_->GetFullPeriodSavingsBytes().value(), 4*saving);
+  EXPECT_EQ(state_->GetFullPeriodSavingsBytes().value(), 4 * saving);
 }
 
 TEST_F(P3ABandwidthSavingsPermanentStateTest, InfrequentUsage) {
@@ -104,7 +104,7 @@ TEST_F(P3ABandwidthSavingsPermanentStateTest, InfrequentUsage) {
   clock_->Advance(base::TimeDelta::FromDays(6));
   state_->AddSavings(saving);
   ASSERT_TRUE(state_->GetFullPeriodSavingsBytes().has_value());
-  EXPECT_EQ(state_->GetFullPeriodSavingsBytes().value(), 2*saving);
+  EXPECT_EQ(state_->GetFullPeriodSavingsBytes().value(), 2 * saving);
 }
 
 }  // namespace brave_perf_predictor
