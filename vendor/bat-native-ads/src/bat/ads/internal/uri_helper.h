@@ -19,6 +19,10 @@ class Uri {
       const std::string& url,
       const std::string& pattern);
 
+  static std::string GetValueForKeyInQuery(
+      const std::string& url,
+      const std::string& key);
+
   static bool MatchesDomainOrHost(
       const std::string& url1,
       const std::string& url2);

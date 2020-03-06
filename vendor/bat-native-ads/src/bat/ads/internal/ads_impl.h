@@ -24,10 +24,13 @@
 #include "bat/ads/internal/ad_conversions.h"
 #include "bat/ads/internal/ad_notification_result_type.h"
 #include "bat/ads/internal/ad_notifications.h"
-
 #include "bat/usermodel/user_model.h"
+#include "bat/ads/internal/purchase_intent/purchase_intent_classifier.h"
 
 namespace ads {
+
+using WinningCategoryList = std::vector<std::string>;
+using CategoryList = std::vector<std::string>;
 
 class Client;
 class Bundle;
@@ -37,6 +40,8 @@ class AdConversions;
 class FrequencyCapping;
 class ExclusionRule;
 class PermissionRule;
+class PurchaseIntentClassifier;
+struct PurchaseIntentSignalInfo;
 
 class AdsImpl : public Ads {
  public:
@@ -153,6 +158,11 @@ class AdsImpl : public Ads {
       const std::string& url,
       const std::string& content) override;
 
+  void ExtractPurchaseIntentSignal(
+      const std::string& url);
+  void GeneratePurchaseIntentSignalHistoryEntry(
+      const PurchaseIntentSignalInfo& purchase_intent_signal);
+
   void MaybeClassifyPage(
       const std::string& url,
       const std::string& content);
@@ -161,7 +171,8 @@ class AdsImpl : public Ads {
       const std::string& url,
       const std::string& content);
 
-  std::vector<std::string> GetWinningCategories();
+  WinningCategoryList GetWinningCategories();
+  PurchaseIntentWinningCategoryList GetWinningPurchaseIntentCategories();
   std::string GetWinningCategory(
       const std::vector<double>& page_score);
 
@@ -208,6 +219,7 @@ class AdsImpl : public Ads {
       const Result result,
       const std::vector<std::string>& categories,
       const CreativeAdNotificationList& ads);
+  CategoryList GetCategoriesToServeAd();
   void ServeAdNotification(
       const CreativeAdNotificationList& ads);
   void OnServeAdNotification(
@@ -293,6 +305,7 @@ class AdsImpl : public Ads {
   std::unique_ptr<FrequencyCapping> frequency_capping_;
   std::unique_ptr<AdConversions> ad_conversions_;
   std::unique_ptr<usermodel::UserModel> user_model_;
+  std::unique_ptr<PurchaseIntentClassifier> purchase_intent_classifier_;
 
  private:
   bool is_initialized_;

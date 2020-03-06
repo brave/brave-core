@@ -6,6 +6,7 @@
 #include "bat/ads/internal/client.h"
 
 #include "bat/ads/ad_history.h"
+#include "bat/ads/purchase_intent_signal_history.h"
 #include "bat/ads/internal/classification_helper.h"
 #include "bat/ads/internal/filtered_ad.h"
 #include "bat/ads/internal/filtered_category.h"
@@ -78,6 +79,30 @@ void Client::AppendAdHistoryToAdsShownHistory(
 
 std::deque<AdHistory> Client::GetAdsShownHistory() const {
   return client_state_->ads_shown_history;
+}
+
+void Client::AppendToPurchaseIntentSignalHistoryForSegment(
+    const std::string& segment,
+    const PurchaseIntentSignalHistory& history) {
+  if (client_state_->purchase_intent_signal_history.find(segment) ==
+      client_state_->purchase_intent_signal_history.end()) {
+    client_state_->purchase_intent_signal_history.insert({segment, {}});
+  }
+
+  client_state_->purchase_intent_signal_history.at(
+      segment).push_back(history);
+
+  if (client_state_->purchase_intent_signal_history.at(segment).size() >
+      kMaximumEntriesPerSegmentInPurchaseIntentSignalHistory) {
+    client_state_->purchase_intent_signal_history.at(segment).pop_back();
+  }
+
+  SaveState();
+}
+
+const PurchaseIntentSignalSegmentHistoryMap&
+    Client::GetPurchaseIntentSignalHistory() const {
+  return client_state_->purchase_intent_signal_history;
 }
 
 AdContent::LikeAction Client::ToggleAdThumbUp(
