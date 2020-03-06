@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_NOTIFICATION_HANDLER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_NOTIFICATION_HANDLER_H_
 
+#include <map>
 #include <queue>
 #include <string>
 #include <utility>
@@ -16,6 +17,10 @@
 #include "base/supports_user_data.h"
 #include "chrome/browser/notifications/notification_handler.h"
 #include "url/gurl.h"
+
+#if defined(OS_ANDROID)
+#include "base/timer/timer.h"
+#endif
 
 namespace content {
 class BrowserContext;
@@ -80,7 +85,23 @@ class AdsNotificationHandler : public NotificationHandler {
 
  private:
   void SendPendingNotifications();
+  void CloseOperationCompleted(const std::string& notification_id);
 
+#if defined(OS_ANDROID)
+  static bool IsHeadless();
+  void StartShutDownTimerIfNecessary(
+      const std::string & last_processed_notification_id);
+  void ShutdownTimerCallback();
+
+  std::string last_dismissed_notification_id_;
+  // timer to wait before shutdwon when running UI-less
+  base::OneShotTimer headless_shutdown_timer_;
+
+  // wait before shutdown if running headless
+  const int64_t kWaitBeforeShutdownWhenRunHeadless = 30;  // sec
+#endif
+
+  std::map<std::string, base::OnceClosure> pending_close_callbacks_;
   content::BrowserContext* browser_context_;
   brave_ads::AdsServiceImpl* ads_service_;
   base::queue<base::OnceClosure> pending_notifications_;
