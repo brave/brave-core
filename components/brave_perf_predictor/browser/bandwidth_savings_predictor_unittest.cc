@@ -138,7 +138,8 @@ TEST(BandwidthSavingsPredictorTest, PredictNonZero) {
   const GURL main_frame("https://brave.com");
   auto res = predictors::CreateResourceLoadInfo(
       "https://brave.com/style.css", content::ResourceType::kStylesheet);
-  res->raw_body_bytes = 1000;
+  res->raw_body_bytes = 200000;
+  res->total_received_bytes = 200000;
   predictor.OnResourceLoadComplete(main_frame, *res);
 
   predictor.OnSubresourceBlocked("https://google-analytics.com/ga.js");
