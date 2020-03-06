@@ -16,9 +16,6 @@
 <receiver android:name="org.chromium.chrome.browser.notifications.BraveOnboardingNotification"
     android:exported="false">
 </receiver>
-<receiver android:name="org.chromium.chrome.browser.onboarding.BraveRewardsServiceReceiver"
-    android:exported="false">
-</receiver>
 <activity
     android:name="org.chromium.chrome.browser.onboarding.OnboardingActivity"
     android:theme="@style/Theme.Chromium.Activity.Fullscreen"

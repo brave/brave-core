@@ -43,7 +43,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/ntp/IncognitoNewTabPageView.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/BraveRewardsOnboardingFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/BraveRewardsService.java",
-  "../../brave/android/java/org/chromium/chrome/browser/onboarding/BraveRewardsServiceReceiver.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/BraveShieldsOnboardingFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/NonSwipeableViewPager.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/OnboardingActivity.java",
