@@ -5,15 +5,16 @@
 
 package org.chromium.chrome.browser.preferences.website;
 
+import org.chromium.base.Log;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
-import org.chromium.base.Log;
 import org.chromium.chrome.browser.ContentSettingsType;
-import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.website.WebsitePreferenceBridge;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @JNINamespace("chrome::android")
@@ -33,12 +34,27 @@ public class BraveShieldsContentSettings {
     static private final String allowResource = "allow";
 
     private long mNativeBraveShieldsContentSettings;
-    private BraveShieldsContentSettingsObserver mBraveShieldsContentSettingsObserver;
+    private List<BraveShieldsContentSettingsObserver> mBraveShieldsContentSettingsObservers;
+    private static BraveShieldsContentSettings sInstance;
 
-    public BraveShieldsContentSettings(BraveShieldsContentSettingsObserver braveShieldsContentSettingsObserver) {
-        mBraveShieldsContentSettingsObserver = braveShieldsContentSettingsObserver;
+    public static BraveShieldsContentSettings getInstance() {
+        if (sInstance == null) sInstance = new BraveShieldsContentSettings();
+        return sInstance;
+    }
+
+    private BraveShieldsContentSettings() {
         mNativeBraveShieldsContentSettings = 0;
+        mBraveShieldsContentSettingsObservers =
+                new ArrayList<BraveShieldsContentSettingsObserver>();
         init();
+    }
+
+    public void addObserver(BraveShieldsContentSettingsObserver observer) {
+        mBraveShieldsContentSettingsObservers.add(observer);
+    }
+
+    public void removeObserver(BraveShieldsContentSettingsObserver observer) {
+        mBraveShieldsContentSettingsObservers.remove(observer);
     }
 
     private void init() {
@@ -47,7 +63,12 @@ public class BraveShieldsContentSettings {
         }
     }
 
-    public void destroy() {
+    @Override
+    protected void finalize() {
+        destroy();
+    }
+
+    private void destroy() {
         if (mNativeBraveShieldsContentSettings == 0) {
             return;
         }
@@ -104,11 +125,9 @@ public class BraveShieldsContentSettings {
 
     @CalledByNative
     private void blockedEvent(int tabId, String block_type, String subresource) {
-        assert mBraveShieldsContentSettingsObserver != null;
-        if (mBraveShieldsContentSettingsObserver == null) {
-            return;
+        for (BraveShieldsContentSettingsObserver observer : mBraveShieldsContentSettingsObservers) {
+            observer.blockEvent(tabId, block_type, subresource);
         }
-        mBraveShieldsContentSettingsObserver.blockEvent(tabId, block_type, subresource);
     }
 
     @NativeMethods

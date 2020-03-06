@@ -97,7 +97,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   @Override
   void destroy() {
       if (mBraveShieldsContentSettings != null) {
-          mBraveShieldsContentSettings.destroy();
+          mBraveShieldsContentSettings.removeObserver(mBraveShieldsContentSettingsObserver);
       }
       super.destroy();
 
@@ -126,15 +126,14 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           mBraveShieldsButton.setOnClickListener(this);
           mBraveShieldsButton.setOnLongClickListener(this);
       }
+
       if (mBraveRewardsButton != null) {
           mBraveRewardsButton.setClickable(true);
           mBraveRewardsButton.setOnClickListener(this);
           mBraveRewardsButton.setOnLongClickListener(this);
       }
-      for (Activity ref : ApplicationStatus.getRunningActivities()) {
-          if (!(ref instanceof ChromeActivity)) continue;
-          mMainActivity = (ChromeActivity)ref;
-      }
+
+      mMainActivity = (ChromeActivity) getContext();
       mBraveShieldsMenuHandler = new BraveShieldsMenuHandler(mMainActivity, R.menu.brave_shields_menu);
       mBraveShieldsMenuHandler.addObserver(new BraveShieldsMenuObserver() {
           @Override
@@ -180,21 +179,22 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   @Override
   void onNativeLibraryReady() {
       super.onNativeLibraryReady();
-      mBraveShieldsContentSettings = new BraveShieldsContentSettings(mBraveShieldsContentSettingsObserver);
+      mBraveShieldsContentSettings = BraveShieldsContentSettings.getInstance();
+      mBraveShieldsContentSettings.addObserver(mBraveShieldsContentSettingsObserver);
 
       SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
       if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
               && !sharedPreferences.getBoolean(
-                      AppearancePreferences.PREF_HIDE_BRAVE_REWARDS_ICON, false)) {
-          if (mRewardsLayout != null && mShieldsLayout != null) {
-              if (this instanceof ToolbarTablet) {
-                  mShieldsLayout.setBackgroundColor(ChromeColors.getDefaultThemeColor(getResources(), isIncognito()));
-                  mShieldsLayoutIsColorBackground = true;
-              }
-              mRewardsLayout.setVisibility(View.VISIBLE);
-          }
+                      AppearancePreferences.PREF_HIDE_BRAVE_REWARDS_ICON, false)
+              && mRewardsLayout != null) {
+          mRewardsLayout.setVisibility(View.VISIBLE);
       }
       if (mShieldsLayout != null) {
+          if (this instanceof ToolbarTablet) {
+              mShieldsLayout.setBackgroundColor(
+                      ChromeColors.getDefaultThemeColor(getResources(), isIncognito()));
+              mShieldsLayoutIsColorBackground = true;
+          }
           mShieldsLayout.setVisibility(View.VISIBLE);
       }
       mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
@@ -207,6 +207,10 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
   @Override
   public void setTabModelSelector(TabModelSelector selector) {
+      // We might miss events before calling setTabModelSelector, so we need
+      // to proactively update the shields button state here, otherwise shields
+      // might sometimes show as disabled while it is actually enabled.
+      updateBraveShieldsButtonState(mMainActivity.getActivityTab());
       mTabModelSelectorTabObserver = new TabModelSelectorTabObserver(selector) {
             @Override
             public void onShown(Tab tab, @TabSelectionType int type) {
