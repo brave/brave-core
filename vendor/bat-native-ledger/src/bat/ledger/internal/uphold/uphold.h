@@ -48,10 +48,11 @@ class Uphold {
   void Initialize();
 
   void StartContribution(
-      const std::string& viewing_id,
-      const std::string& address,
+      const std::string& contribution_id,
+      ledger::ServerPublisherInfoPtr info,
       double amount,
-      ledger::ExternalWalletPtr wallet);
+      ledger::ExternalWalletPtr wallet,
+      ledger::ResultCallback callback);
 
   void FetchBalance(std::map<std::string, ledger::ExternalWalletPtr> wallets,
                     FetchBalanceCallback callback);
@@ -95,9 +96,10 @@ class Uphold {
   void ContributionCompleted(
       const ledger::Result result,
       const bool created,
-      const std::string& viewing_id,
-      const double fee = 0,
-      const ledger::ExternalWallet& wallet = {});
+      const std::string& contribution_id,
+      const double fee,
+      const std::string& publisher_key,
+      ledger::ResultCallback callback);
 
   void OnFeeCompleted(ledger::Result result,
                     bool created,
