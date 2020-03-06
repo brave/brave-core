@@ -283,7 +283,7 @@ class Contribution {
       ledger::ContributionQueuePtr contribution,
       ledger::BalancePtr info);
 
-  void DeleteContributionQueue(ledger::ContributionQueuePtr contribution);
+  void DeleteContributionQueue(const uint64_t id);
 
   void AdjustTipsAmounts(
     ledger::ReconcileDirections original_directions,

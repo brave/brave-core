@@ -777,9 +777,8 @@ void Contribution::OnDeleteContributionQueue(const ledger::Result result) {
   CheckContributionQueue();
 }
 
-void Contribution::DeleteContributionQueue(
-    ledger::ContributionQueuePtr contribution) {
-  if (!contribution || contribution->id == 0) {
+void Contribution::DeleteContributionQueue(const uint64_t id) {
+  if (id == 0) {
     return;
   }
 
@@ -787,9 +786,7 @@ void Contribution::DeleteContributionQueue(
       this,
       _1);
 
-  ledger_->DeleteContributionQueue(
-      contribution->id,
-      callback);
+  ledger_->DeleteContributionQueue(id, callback);
 }
 
 bool Contribution::ProcessReconcileUnblindedTokens(
@@ -924,12 +921,12 @@ void Contribution::ProcessReconcile(
       info->total);
 
   if (!have_enough_balance) {
-    DeleteContributionQueue(contribution->Clone());
+    DeleteContributionQueue(contribution->id);
     return;
   }
 
   if (contribution->amount == 0 || contribution->publishers.empty()) {
-    DeleteContributionQueue(contribution->Clone());
+    DeleteContributionQueue(contribution->id);
     return;
   }
 
@@ -945,7 +942,7 @@ void Contribution::ProcessReconcile(
       &anon_directions);
   if (result) {
     // contribution was processed in full
-    DeleteContributionQueue(contribution->Clone());
+    DeleteContributionQueue(contribution->id);
     return;
   }
 
@@ -958,7 +955,7 @@ void Contribution::ProcessReconcile(
       &wallet_directions);
   if (result) {
     // contribution was processed in full
-    DeleteContributionQueue(contribution->Clone());
+    DeleteContributionQueue(contribution->id);
     return;
   }
 
@@ -977,7 +974,7 @@ void Contribution::ProcessReconcile(
 
   // Check if we have token
   ledger_->GetExternalWallets(wallets_callback);
-  DeleteContributionQueue(contribution->Clone());
+  DeleteContributionQueue(contribution->id);
 }
 
 void Contribution::AdjustTipsAmounts(
