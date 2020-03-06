@@ -28,6 +28,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveHelper;
 import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
@@ -90,6 +91,12 @@ public abstract class BraveActivity extends ChromeActivity {
 
         // Disable page prefetching
         PrefetchConfiguration.setPrefetchingEnabledInSettings(false);
+
+        // Set a flag in preferences that tabs pref migration is done
+        SharedPreferences.Editor sharedPreferencesEditor =
+            ContextUtils.getAppSharedPreferences().edit();
+        sharedPreferencesEditor.putBoolean(BraveHelper.PREF_TABS_SETTINGS_MIGRATED, true);
+        sharedPreferencesEditor.apply();
     }
 
     @Override
