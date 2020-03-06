@@ -49,15 +49,52 @@ pub fn rewrite_rules_to_content_handlers(
             &mut errors,
             &attr_rewrite.selector,
             Box::new(move |el| {
-                if let Some(attr_value) = el.get_attribute(&rewrite.attribute) {
-                    el.set_attribute(&rewrite.to_attribute, &attr_value)
-                        .unwrap_or(());
+                if let Some((attribute_from, attribute_to)) = rewrite.attribute.as_ref() {
+                    if let Some(attr_value) = el.get_attribute(attribute_from) {
+                        el.set_attribute(&attribute_to, &attr_value).unwrap_or(());
+                    }
                 }
                 el.set_tag_name(&rewrite.element_name)?;
                 Ok(())
             }),
         );
     }
+
+    // Keep the basic HTML structure
+    add_element_function(
+        &mut element_content_handlers,
+        &mut errors,
+        "html, html > head, html > body",
+        Box::new(mark_retained_element),
+    );
+
+    add_element_function(
+        &mut element_content_handlers,
+        &mut errors,
+        "head",
+        Box::new(|el: &mut Element| {
+            el.prepend(
+                r#"<link rel="stylesheet" href="/readermode.css" type="text/css">"#,
+                ContentType::Html,
+            );
+            Ok(())
+        }),
+    );
+
+    let maybe_script = conf.content_script.clone();
+    add_element_function(
+        &mut element_content_handlers,
+        &mut errors,
+        "body",
+        Box::new(move |el| {
+            el.before("<article id=\"article\">", ContentType::Html);
+            el.after("</article>", ContentType::Html);
+            if let Some(script) = &maybe_script {
+                el.append(&script, ContentType::Html);
+            }
+            Ok(())
+        }),
+    );
 
     collect_main_content(
         &mut element_content_handlers,
@@ -75,22 +112,6 @@ pub fn rewrite_rules_to_content_handlers(
         &mut element_content_handlers,
         &mut errors,
         origin.to_owned(),
-    );
-
-    let maybe_script = conf.content_script.clone();
-
-    add_element_function(
-        &mut element_content_handlers,
-        &mut errors,
-        "body",
-        Box::new(move |el| {
-            el.before("<article id=\"article\">", ContentType::Html);
-            el.after("</article>", ContentType::Html);
-            if let Some(script) = &maybe_script {
-              el.append(&script, ContentType::Html);
-            }
-            Ok(())
-        }),
     );
 
     if !errors.is_empty() {
@@ -215,7 +236,10 @@ fn correct_relative_links(
         Box::new(move |el| {
             let href = el.get_attribute("href").expect("href was required");
 
-            if !href.starts_with("http") {
+            if !href.starts_with("http://")
+                && !href.starts_with("https://")
+                && !href.starts_with("//")
+            {
                 el.set_attribute("href", &format!("{}{}", href_origin, href))?;
             }
 
@@ -229,8 +253,8 @@ fn correct_relative_links(
         Box::new(move |el| {
             let src = el.get_attribute("src").expect("src was required");
 
-            if !src.starts_with("http://") && !src.starts_with("https://")
-                && !src.starts_with("//") {
+            if !src.starts_with("http://") && !src.starts_with("https://") && !src.starts_with("//")
+            {
                 el.set_attribute("src", &format!("{}{}", origin, src))?;
             }
 
@@ -239,74 +263,31 @@ fn correct_relative_links(
     );
 }
 
+const LAZY_MAPPINGS: [(&str, &str, &str); 6] = [
+    ("[data-src]", "data-src", "src"),
+    ("[data-srcset]", "data-srcset", "srcset"),
+    ("[data-original]", "data-original", "src"),
+    ("img[data-src-medium]", "data-src-medium", "src"),
+    ("img[data-raw-src]", "data-raw-src", "src"),
+    ("img[data-gl-src]", "data-gl-src", "src"),
+];
+
 #[inline]
 fn delazify(handlers: &mut Vec<(Selector, ContentFunction)>, errors: &mut Vec<SpeedReaderError>) {
-    add_element_function(
-        handlers,
-        errors,
-        "[data-src]",
-        Box::new(|el| {
-            if let Some(src) = el.get_attribute("data-src") {
-                el.set_attribute("src", &src).ok();
-            }
-            Ok(())
-        }),
-    );
-    add_element_function(
-        handlers,
-        errors,
-        "[data-srcset]",
-        Box::new(|el| {
-            if let Some(srcset) = el.get_attribute("data-srcset") {
-                el.set_attribute("srcset", &srcset).ok();
-            }
-            Ok(())
-        }),
-    );
-    add_element_function(
-        handlers,
-        errors,
-        "[data-original]",
-        Box::new(|el| {
-            if let Some(original) = el.get_attribute("data-original") {
-                el.set_attribute("src", &original).ok();
-            }
-            Ok(())
-        }),
-    );
-    add_element_function(
-        handlers,
-        errors,
-        "img[data-src-medium]",
-        Box::new(|el| {
-            if let Some(original) = el.get_attribute("data-src-medium") {
-                el.set_attribute("src", &original).ok();
-            }
-            Ok(())
-        }),
-    );
-    add_element_function(
-        handlers,
-        errors,
-        "img[data-raw-src]",
-        Box::new(|el| {
-            if let Some(original) = el.get_attribute("data-raw-src") {
-                el.set_attribute("src", &original).ok();
-            }
-            Ok(())
-        }),
-    );
-    add_element_function(
-        handlers,
-        errors,
-        "img[data-gl-src]",
-        Box::new(|el| {
-            if let Some(original) = el.get_attribute("data-gl-src") {
-                el.set_attribute("src", &original).ok();
-            }
-            Ok(())
-        }),
-    );
+    for (selector, attribute, target) in LAZY_MAPPINGS.iter() {
+        add_element_function(
+            handlers,
+            errors,
+            selector,
+            Box::new(move |el| {
+                if let Some(src) = el.get_attribute(attribute) {
+                    el.set_attribute(target, &src).ok();
+                }
+                Ok(())
+            }),
+        )
+    }
+
     add_element_function(
         handlers,
         errors,

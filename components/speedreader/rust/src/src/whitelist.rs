@@ -3,6 +3,8 @@ use std::collections::HashMap;
 
 use crate::speedreader::{AttributeRewrite, RewriteRules, SpeedReaderConfig, SpeedReaderError};
 
+const IMAGE_TARGET_WIDTH: u32 = 600;
+
 #[derive(Serialize, Deserialize)]
 pub struct Whitelist {
     map: HashMap<String, SpeedReaderConfig>,
@@ -60,11 +62,11 @@ impl Whitelist {
         self.add_configuration(SpeedReaderConfig {
             domain: "cnet.com".to_owned(),
             url_rules: vec![
-              "||cnet.com/features/*".to_owned(),
-              "||cnet.com/roadshow/reviews/*".to_owned(),
-              "||cnet.com/roadshow/news/*".to_owned(),
-              "||cnet.com/news/*".to_owned(),
-              "||cnet.com/reviews/*".to_owned(),
+                "||cnet.com/features/*".to_owned(),
+                "||cnet.com/roadshow/reviews/*".to_owned(),
+                "||cnet.com/roadshow/news/*".to_owned(),
+                "||cnet.com/news/*".to_owned(),
+                "||cnet.com/reviews/*".to_owned(),
             ],
             declarative_rewrite: Some(RewriteRules {
                 main_content: vec![".article-main-body".to_owned(), ".hero-content".to_owned()],
@@ -79,25 +81,20 @@ impl Whitelist {
                     ".video".to_owned(),
                     ".svg-symbol".to_owned(),
                 ],
-                delazify: false,
+                delazify: true,
                 fix_embeds: true,
-                content_script: None,
-                preprocess: vec![],
+                ..RewriteRules::default()
             }),
         });
 
         self.add_configuration(SpeedReaderConfig {
             domain: "247sports.com".to_owned(),
-            url_rules: vec![
-              "||247sports.com/Article/".to_owned(),
-            ],
+            url_rules: vec!["||247sports.com/Article/".to_owned()],
             declarative_rewrite: Some(RewriteRules {
                 main_content: vec!["section .article-cnt".to_owned()],
                 main_content_cleanup: vec![".article-cnt__header > .container".to_owned()],
-                delazify: true,
                 fix_embeds: true,
-                content_script: None,
-                preprocess: vec![],
+                ..RewriteRules::default()
             }),
         });
 
@@ -115,7 +112,6 @@ impl Whitelist {
                 ".inlineElement > iframe".to_owned(),
                 ".Screen__Reader__Text".to_owned(), ".taboola".to_owned(),
             ],
-            delazify: true,
             fix_embeds: true,
             content_script: Some(r#"<script>
             document.querySelector(".FeaturedMedia figure img").src =
@@ -124,7 +120,7 @@ impl Whitelist {
                 .map((e, i) => e.src =
                     __abcnews__.page.content.story.everscroll[0].inlines.filter(d => d.type === "image").map(i => i.imageSrc)[i])
             </script>"#.to_owned()),
-            preprocess: vec![],
+            ..RewriteRules::default()
         })});
 
         self.add_configuration(SpeedReaderConfig {
@@ -147,10 +143,8 @@ impl Whitelist {
                     ".zn-story-bottom".to_owned(),
                     ".zn-body__read-more".to_owned(),
                 ],
-                delazify: true,
                 fix_embeds: true,
-                content_script: None,
-                preprocess: vec![],
+                ..RewriteRules::default()
             }),
         });
 
@@ -182,7 +176,6 @@ impl Whitelist {
                     "[role=\"toolbar\"]".to_owned(),
                     "header > section".to_owned(),
                 ],
-                delazify: true,
                 fix_embeds: true,
                 content_script: Some(
                     r#"
@@ -195,7 +188,7 @@ impl Whitelist {
         "#
                     .to_owned(),
                 ),
-                preprocess: vec![],
+                ..RewriteRules::default()
             }),
         });
 
@@ -220,13 +213,12 @@ impl Whitelist {
             fix_embeds: true,
             content_script: Some(r#"<script>
             [...document.querySelectorAll("[data-src-background]")]
-                .map(d => d.src = d.dataset["srcBackground"].replace("background-image: url", "").replace(/[\(\)]/g, ""))
+                .map(d => d.src = d.dataset["src-background"].replace("background-image: url", "").replace(/[\(\)]/g, ""))
             </script>"#.to_owned()),
             preprocess: vec![
                 AttributeRewrite {
                     selector: ".vjs-big-play-button[style]".to_owned(),
-                    attribute: "style".to_owned(),
-                    to_attribute: "data-src-background".to_owned(),
+                    attribute: Some(("style".to_owned(), "data-src-background".to_owned())),
                     element_name: "img".to_owned()
                 }
             ],
@@ -256,15 +248,12 @@ impl Whitelist {
                     ".tooltip".to_owned(),
                     "[data-qa=\"article-body-ad\"]".to_owned(),
                 ],
-                delazify: true,
-                fix_embeds: false,
-                content_script: None,
                 preprocess: vec![AttributeRewrite {
                     selector: "[data-fallback-image-url]".to_owned(),
-                    attribute: "data-fallback-image-url".to_owned(),
-                    to_attribute: "src".to_owned(),
+                    attribute: Some(("data-fallback-image-url".to_owned(), "src".to_owned())),
                     element_name: "img".to_owned(),
                 }],
+                ..RewriteRules::default()
             }),
         });
 
@@ -304,10 +293,7 @@ impl Whitelist {
                     ".article-social".to_owned(),
                     ".author-headshot".to_owned(),
                 ],
-                delazify: true,
-                fix_embeds: false,
-                content_script: None,
-                preprocess: vec![],
+                ..RewriteRules::default()
             }),
         });
 
@@ -330,10 +316,7 @@ impl Whitelist {
                     "fbs-ad".to_owned(),
                     "#speechkit-io-iframe".to_owned(),
                 ],
-                delazify: true,
-                fix_embeds: false,
-                content_script: None,
-                preprocess: vec![],
+                ..RewriteRules::default()
             }),
         });
 
@@ -356,26 +339,23 @@ impl Whitelist {
             content_script: Some(r#"<script>
               [...document.querySelectorAll("figure")].map(f => {
                 let imgid = f.id.replace("ArticleBody-InlineImage-", "");
-                f.querySelector("img").src = "https://image.cnbcfm.com/api/v1/image/"+imgid+"-.jpeg?w=678&h=381";
+                f.querySelector("img").src = "https://image.cnbcfm.com/api/v1/image/"+imgid+"-.jpeg?w=678";
               })
             </script>"#.to_owned()),
             preprocess: vec![
                 AttributeRewrite {
                     selector: "[id^=\"ArticleBody-InlineImage\"]".to_owned(),
-                    attribute: "id".to_owned(),
-                    to_attribute: "id".to_owned(),
+                    attribute: None,
                     element_name: "figure".to_owned()
                 },
                 AttributeRewrite {
                     selector: "[id^=\"ArticleBody-InlineImage\"] .lazyload-placeholder".to_owned(),
-                    attribute: "class".to_owned(),
-                    to_attribute: "class".to_owned(),
+                    attribute: None,
                     element_name: "img".to_owned()
                 },
                 AttributeRewrite {
                     selector: "[id^=\"ArticleBody-InlineImage\"] > div > div:not([class*=\"imagePlaceholder\"])".to_owned(),
-                    attribute: "id".to_owned(),
-                    to_attribute: "id".to_owned(),
+                    attribute: None,
                     element_name: "figcaption".to_owned()
                 }
             ],
@@ -391,23 +371,19 @@ impl Whitelist {
                     "svg".to_owned(),
                     "custom-style".to_owned(),
                 ],
-                delazify: true,
-                fix_embeds: false,
-                content_script: None,
                 preprocess: vec![
                     AttributeRewrite {
                         selector: "button[data-c-vpattrs]".to_owned(),
-                        attribute: "id".to_owned(),
-                        to_attribute: "id".to_owned(),
+                        attribute: Some(("id".to_owned(), "id".to_owned())),
                         element_name: "div".to_owned(),
                     },
                     AttributeRewrite {
                         selector: "slide".to_owned(),
-                        attribute: "original".to_owned(),
-                        to_attribute: "src".to_owned(),
+                        attribute: Some(("original".to_owned(), "src".to_owned())),
                         element_name: "img".to_owned(),
                     },
                 ],
+                ..RewriteRules::default()
             }),
         });
 
@@ -424,39 +400,38 @@ impl Whitelist {
                     "#saving-united-coupon-list".to_owned(),
                     ".author-info".to_owned(),
                 ],
-                delazify: true,
-                fix_embeds: false,
-                content_script: None,
-                preprocess: vec![],
+                ..RewriteRules::default()
             }),
         });
 
         self.add_configuration(SpeedReaderConfig {
             domain: "reuters.com".to_owned(),
-            url_rules: vec![
-                r#"||reuters.com/article/*"#.to_owned()
-            ],
+            url_rules: vec![r#"||reuters.com/article/*"#.to_owned()],
             declarative_rewrite: Some(RewriteRules {
-            main_content: vec![
-                ".ArticleHeader_container".to_owned(), ".StandardArticleBody_body".to_owned(),
-            ],
-            main_content_cleanup: vec![
-                ".SmallImage_small-image".to_owned(), "[class$=expand-button]".to_owned(),
-                ".Slideshow_caption".to_owned(), "[role=button]".to_owned(),
-            ],
-            delazify: true,
-            fix_embeds: false,
-            content_script: Some(r#"<script>
-                [...document.querySelectorAll(".LazyImage_container img")].map(i => i.src = i.src.replace(/\&w=\d+/, "&w=600"));
-            </script>"#.to_owned()),
-            preprocess: vec![],
-        })});
+                main_content: vec![
+                    ".ArticleHeader_container".to_owned(),
+                    ".StandardArticleBody_body".to_owned(),
+                ],
+                main_content_cleanup: vec![
+                    ".SmallImage_small-image".to_owned(),
+                    "[class$=expand-button]".to_owned(),
+                    ".Slideshow_caption".to_owned(),
+                    "[role=button]".to_owned(),
+                ],
+                content_script: Some(
+                    r#"<script>
+                [...document.querySelectorAll(".LazyImage_container img")]
+                    .map(i => i.src = i.src.replace(/\&w=\d+/, "&w=600"));
+            </script>"#
+                        .to_owned(),
+                ),
+                ..RewriteRules::default()
+            }),
+        });
 
         self.add_configuration(SpeedReaderConfig {
             domain: "nypost.com".to_owned(),
-            url_rules: vec![
-              r#"/nypost.com\/(\d){4}\/(\d){2}\/(\d){2}\/.*/"#.to_owned(),
-            ],
+            url_rules: vec![r#"/nypost.com\/(\d){4}\/(\d){2}\/(\d){2}\/.*/"#.to_owned()],
             declarative_rewrite: Some(RewriteRules {
                 main_content: vec![".article-header".to_owned(), ".slide".to_owned()],
                 main_content_cleanup: vec![
@@ -465,18 +440,13 @@ impl Whitelist {
                     ".sharedaddy".to_owned(),
                     ".author-flyout".to_owned(),
                 ],
-                delazify: true,
-                fix_embeds: false,
-                content_script: None,
-                preprocess: vec![],
+                ..RewriteRules::default()
             }),
         });
 
         self.add_configuration(SpeedReaderConfig {
             domain: "chron.com".to_owned(),
-            url_rules: vec![
-              "||chron.com/*/article/".to_owned(),
-            ],
+            url_rules: vec!["||chron.com/*/article/".to_owned()],
             declarative_rewrite: Some(RewriteRules {
                 main_content: vec![".article-title".to_owned(), ".article-body".to_owned()],
                 main_content_cleanup: vec![
@@ -485,23 +455,20 @@ impl Whitelist {
                     ".article-body > script".to_owned(),
                     ".caption-truncated".to_owned(),
                 ],
-                delazify: true,
-                fix_embeds: false,
-                content_script: None,
                 preprocess: vec![AttributeRewrite {
                     selector: "li.hst-resgalleryitem".to_owned(),
-                    attribute: "id".to_owned(),
-                    to_attribute: "id".to_owned(),
+                    attribute: None,
                     element_name: "div".to_owned(),
                 }],
+                ..RewriteRules::default()
             }),
         });
 
         self.add_configuration(SpeedReaderConfig {
             domain: "nbcnews.com".to_owned(),
             url_rules: vec![
-              "||nbcnews.com/*-n*".to_owned(),
-              "@@||nbcnews.com/video".to_owned(),
+                "||nbcnews.com/*-n*".to_owned(),
+                "@@||nbcnews.com/video".to_owned(),
             ],
             declarative_rewrite: Some(RewriteRules {
                 main_content: vec![
@@ -515,18 +482,13 @@ impl Whitelist {
                     "#emailSignup".to_owned(),
                     ".ad-container".to_owned(),
                 ],
-                delazify: true,
-                fix_embeds: false,
-                content_script: None,
-                preprocess: vec![],
+                ..RewriteRules::default()
             }),
         });
 
         self.add_configuration(SpeedReaderConfig {
             domain: "dw.com".to_owned(),
-            url_rules: vec![
-              "||dw.com/*/a-*".to_owned(),
-            ],
+            url_rules: vec!["||dw.com/*/a-*".to_owned()],
             declarative_rewrite: Some(RewriteRules {
                 main_content: vec!["#bodyContent".to_owned()],
                 main_content_cleanup: vec![
@@ -536,18 +498,13 @@ impl Whitelist {
                     ".smallList".to_owned(),
                     "#sharing-bar".to_owned(),
                 ],
-                delazify: true,
-                fix_embeds: false,
-                content_script: None,
-                preprocess: vec![],
+                ..RewriteRules::default()
             }),
         });
 
         self.add_configuration(SpeedReaderConfig {
             domain: "time.com".to_owned(),
-            url_rules: vec![
-              r#"/time.com\/(\d){6,}\/.*/"#.to_owned(),
-            ],
+            url_rules: vec![r#"/time.com\/(\d){6,}\/.*/"#.to_owned()],
             declarative_rewrite: Some(RewriteRules {
                 main_content: vec!["main.article".to_owned()],
                 main_content_cleanup: vec![
@@ -560,24 +517,21 @@ impl Whitelist {
                     ".ad".to_owned(),
                     ".component.video video:not([poster])".to_owned(),
                 ],
-                delazify: true,
-                fix_embeds: false,
-                content_script: None,
                 preprocess: vec![AttributeRewrite {
                     selector: "noscript".to_owned(),
-                    attribute: "id".to_owned(),
-                    to_attribute: "id".to_owned(),
+                    attribute: None,
                     element_name: "div".to_owned(),
                 }],
+                ..RewriteRules::default()
             }),
         });
 
         self.add_configuration(SpeedReaderConfig {
             domain: "cbsnews.com".to_owned(),
             url_rules: vec![
-              "||cbsnews.com/news/*".to_owned(),
-              "@@||cbsnews.com/live".to_owned(),
-              "@@||cbsnews.com/video".to_owned(),
+                "||cbsnews.com/news/*".to_owned(),
+                "@@||cbsnews.com/live".to_owned(),
+                "@@||cbsnews.com/video".to_owned(),
             ],
             declarative_rewrite: Some(RewriteRules {
                 main_content: vec!["article.content".to_owned(), "article.article".to_owned()],
@@ -590,15 +544,12 @@ impl Whitelist {
                     "[data-component=socialLinks]".to_owned(),
                     "[data-component=sharebar]".to_owned(),
                 ],
-                delazify: true,
-                fix_embeds: false,
-                content_script: None,
                 preprocess: vec![AttributeRewrite {
                     selector: "link[as=\"image\"]".to_owned(),
-                    attribute: "href".to_owned(),
-                    to_attribute: "src".to_owned(),
+                    attribute: Some(("href".to_owned(), "src".to_owned())),
                     element_name: "img".to_owned(),
                 }],
+                ..RewriteRules::default()
             }),
         });
 
@@ -623,22 +574,21 @@ impl Whitelist {
             delazify: true,
             fix_embeds: false,
             content_script: Some(r#"<script>
-            [...document.querySelectorAll(".Body .LazyLoad")]
-            .map((div, i) => {
-                let lazyLoad = window.__INITIAL_STATE__.body.cards
-                    .filter(c => c[0] === "pt-image" || c[0] === "pt-video-card")[i];
+            [...document.querySelectorAll(".Body .LazyLoad")].map((div, i) => {
+                let lazyLoad = window.__INITIAL_STATE__.body.cards.filter(c => c[0] === "pt-image" || c[0] === "pt-video-card")[i];
                 if (!lazyLoad || lazyLoad[0] !== "pt-image") return;
                 let figure = document.createElement("figure");
-                figure.innerHTML = '<img src="https://img.thedailybeast.com/image/upload/c_crop/dpr_1.5/c_limit,w_800/fl_lossy,q_auto/'+lazyLoad[1].public_id+'"><figcaption>'+lazyLoad[1].title+' Credit: '+lazyLoad[1].credit+'</figcaption>';
+                figure.innerHTML = '<img src="https://img.thedailybeast.com/image/upload/c_crop/dpr_1.0/c_limit,w_600/fl_lossy,q_auto/' 
+                    + lazyLoad[1].public_id + '"><figcaption>' 
+                    + lazyLoad[1].title + ' Credit: ' 
+                    + lazyLoad[1].credit + '</figcaption>';
                 div.appendChild(figure);
-                console.log(div, lazyLoad);
             })
             </script>"#.to_owned()),
             preprocess: vec![
                 AttributeRewrite {
                     selector: ".PullQuote".to_owned(),
-                    attribute: "id".to_owned(),
-                    to_attribute: "id".to_owned(),
+                    attribute: None,
                     element_name: "blockquote".to_owned()
                 }
             ],
@@ -646,9 +596,7 @@ impl Whitelist {
 
         self.add_configuration(SpeedReaderConfig {
             domain: "businessinsider.com".to_owned(),
-            url_rules: vec![
-              r#"/businessinsider\.com\/(\w+-)+(\d){4}-(\d)/"#.to_owned(),
-            ],
+            url_rules: vec![r#"/businessinsider\.com\/(\w+-)+(\d){4}-(\d)/"#.to_owned()],
             declarative_rewrite: Some(RewriteRules {
                 main_content: vec![
                     ".post-headline:nth".to_owned(),
@@ -664,15 +612,12 @@ impl Whitelist {
                     "figure .lazy-image".to_owned(),
                     "figure .lazy-blur".to_owned(),
                 ],
-                delazify: true,
-                fix_embeds: false,
-                content_script: None,
                 preprocess: vec![AttributeRewrite {
                     selector: "figure noscript".to_owned(),
-                    attribute: "id".to_owned(),
-                    to_attribute: "id".to_owned(),
+                    attribute: None,
                     element_name: "div".to_owned(),
                 }],
+                ..RewriteRules::default()
             }),
         });
     }

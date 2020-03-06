@@ -102,9 +102,21 @@ pub struct SpeedReaderConfig {
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct AttributeRewrite {
     pub selector: String,
-    pub attribute: String,
-    pub to_attribute: String,
+    pub attribute: Option<(String, String)>,
     pub element_name: String,
+}
+
+impl Default for RewriteRules {
+    fn default() -> Self {
+        RewriteRules {
+            main_content: vec![],
+            main_content_cleanup: vec![],
+            delazify: true,
+            fix_embeds: false,
+            content_script: None,
+            preprocess: vec![]
+        }
+    }
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
