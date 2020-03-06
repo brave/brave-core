@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/time/default_clock.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_permanent_state.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
@@ -36,7 +37,12 @@ constexpr char kSavingsDailyUMAHistogramName[] =
 }  // namespace
 
 P3ABandwidthSavingsTracker::P3ABandwidthSavingsTracker(PrefService* user_prefs)
-    : user_prefs_(user_prefs) {}
+    : P3ABandwidthSavingsTracker(user_prefs, std::make_unique<base::DefaultClock>()) {}
+
+P3ABandwidthSavingsTracker::P3ABandwidthSavingsTracker(
+    PrefService* user_prefs,
+    std::unique_ptr<base::Clock> clock)
+    : user_prefs_(user_prefs), clock_(std::move(clock)) {}
 
 void P3ABandwidthSavingsTracker::RecordSavings(uint64_t savings) {
   if (savings > 0 && user_prefs_) {
@@ -62,11 +68,11 @@ void P3ABandwidthSavingsTracker::RegisterPrefs(PrefRegistrySimple* registry) {
 
 void P3ABandwidthSavingsTracker::StoreSavingsHistogram(uint64_t savings_bytes) {
   int bucket = 0;
-  uint64_t total_mb = static_cast<uint64_t>(savings_bytes / 1024 / 1024);
-  int counter = 0;
+  // divide by 1024*1024 = 2^20 to convert bytes -> MB
+  uint64_t total_mb = savings_bytes >> 20;
   for (const auto& bucketUpperBound : kBandwidthSavingsBuckets) {
     if (total_mb > bucketUpperBound)
-      bucket = counter + 1;
+      bucket = bucket + 1;
   }
 
   UMA_HISTOGRAM_EXACT_LINEAR(kSavingsDailyUMAHistogramName, bucket, 7);
