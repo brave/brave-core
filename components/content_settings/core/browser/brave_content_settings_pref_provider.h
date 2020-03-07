@@ -33,6 +33,8 @@ class BravePrefProvider : public PrefProvider,
                     bool store_last_modified);
   ~BravePrefProvider() override;
 
+  static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
+
   // content_settings::PrefProvider overrides:
   void ShutdownOnUIThread() override;
   bool SetWebsiteSetting(
@@ -47,6 +49,13 @@ class BravePrefProvider : public PrefProvider,
       bool incognito) const override;
 
  private:
+  friend class BravePrefProviderTest;
+  FRIEND_TEST(BravePrefProviderTest, TestShieldsSettingsMigration);
+  FRIEND_TEST(BravePrefProviderTest, TestShieldsSettingsMigrationVersion);
+  void MigrateShieldsSettings(bool incognito);
+  void MigrateShieldsSettingsV1ToV2();
+  void MigrateShieldsSettingsV1ToV2ForOneType(ContentSettingsType content_type,
+                                              const std::string& resource_id);
   void UpdateCookieRules(ContentSettingsType content_type, bool incognito);
   void OnCookieSettingsChanged(ContentSettingsType content_type);
   void NotifyChanges(const std::vector<Rule>& rules, bool incognito);

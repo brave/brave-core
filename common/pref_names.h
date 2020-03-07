@@ -69,6 +69,7 @@ extern const char kRemoteDebuggingEnabled[];
 extern const char kAutocompleteEnabled[];
 extern const char kBraveDarkMode[];
 extern const char kOtherBookmarksMigrated[];
+extern const char kBraveShieldsSettingsVersion[];
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 extern const char kBraveGCMChannelStatus[];
 #endif
