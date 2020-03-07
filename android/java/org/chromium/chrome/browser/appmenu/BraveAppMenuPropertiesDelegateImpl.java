@@ -56,6 +56,9 @@ public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegat
         // Brave donesn't show help menu item in app menu.
         menu.findItem(R.id.help_id).setVisible(false).setEnabled(false);
 
+        // Always hide share row menu item in app menu if it's not on tablet.
+        if (!mIsTablet) menu.findItem(R.id.share_row_menu_id).setVisible(false);
+
         menu.add(Menu.NONE, R.id.set_default_browser, 0, R.string.menu_set_default_browser);
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) &&
                 !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
