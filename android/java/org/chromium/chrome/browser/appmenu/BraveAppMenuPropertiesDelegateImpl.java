@@ -21,6 +21,7 @@ import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.ChromeFeatureList;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
+import org.chromium.chrome.browser.flags.FeatureUtilities;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
@@ -89,6 +90,12 @@ public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegat
 
     @Override
     public void onFooterViewInflated(AppMenuHandler appMenuHandler, View view) {
+        // Hide bookmark button if bottom toolbar is enabled
+        ImageButton bookmarkButton = view.findViewById(R.id.bookmark_this_page_id);
+        if (bookmarkButton != null && FeatureUtilities.isBottomToolbarEnabled()) {
+            bookmarkButton.setVisibility(View.GONE);
+        }
+
         // Replace info button with share
         ImageButton shareButton = view.findViewById(R.id.info_menu_id);
         if (shareButton != null) {
