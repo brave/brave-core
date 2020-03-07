@@ -28,12 +28,14 @@ class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
 
   // ExternalProcessImporterHost overrides:
   void NotifyImportEnded() override;
-
+  bool CheckForFirefoxLock(
+      const importer::SourceProfile& source_profile) override;
   // Make sure that Chrome or Brave isn't running, if import browser is Chrome
   // or Brave. Show to the user a dialog that notifies that is necessary to
   // close Chrome or Brave prior to continuing the import. Returns false iff
   // import should be aborted.
-  bool CheckForChromeOrBraveLock();
+  bool CheckForChromeOrBraveLock(
+      const importer::SourceProfile& source_profile);
 
   // ShowWarningDialog() asks user to close the application that is owning the
   // lock. They can retry or skip the importing process.

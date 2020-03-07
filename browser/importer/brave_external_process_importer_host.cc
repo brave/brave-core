@@ -89,22 +89,30 @@ void BraveExternalProcessImporterHost::OnImportLockDialogEnd(bool is_continue) {
     NotifyImportEnded();
   }
 }
+bool BraveExternalProcessImporterHost::CheckForFirefoxLock(
+    const importer::SourceProfile& source_profile) {
+  if (!ExternalProcessImporterHost::CheckForFirefoxLock(source_profile))
+    return false;
 
-bool BraveExternalProcessImporterHost::CheckForChromeOrBraveLock() {
-  if (!(source_profile_.importer_type == importer::TYPE_CHROME ||
-        source_profile_.importer_type == importer::TYPE_BRAVE))
+  return CheckForChromeOrBraveLock(source_profile);
+}
+
+bool BraveExternalProcessImporterHost::CheckForChromeOrBraveLock(
+    const importer::SourceProfile& source_profile) {
+  if (!(source_profile.importer_type == importer::TYPE_CHROME ||
+        source_profile.importer_type == importer::TYPE_BRAVE))
     return true;
 
   DCHECK(!browser_lock_.get());
 
-  if (source_profile_.importer_type == importer::TYPE_CHROME) {
+  if (source_profile.importer_type == importer::TYPE_CHROME) {
     // Extract the user data directory from the path of the profile to be
     // imported, because we can only lock/unlock the entire user directory with
     // ProcessSingleton.
-    base::FilePath user_data_dir = source_profile_.source_path.DirName();
+    base::FilePath user_data_dir = source_profile.source_path.DirName();
     browser_lock_.reset(new ChromeProfileLock(user_data_dir));
-  } else {  // source_profile_.importer_type == importer::TYPE_BRAVE
-    browser_lock_.reset(new BraveProfileLock(source_profile_.source_path));
+  } else {  // source_profile.importer_type == importer::TYPE_BRAVE
+    browser_lock_.reset(new BraveProfileLock(source_profile.source_path));
   }
 
   browser_lock_->Lock();

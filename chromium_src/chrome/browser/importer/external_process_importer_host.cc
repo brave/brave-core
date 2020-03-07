@@ -9,14 +9,6 @@
 
 #define InProcessImporterBridge BraveInProcessImporterBridge
 #define ExternalProcessImporterClient BraveExternalProcessImporterClient
-#define BRAVE_START_IMPORT_SETTINGS \
-  if (!static_cast<BraveExternalProcessImporterHost*>(this)-> \
-          CheckForChromeOrBraveLock()) { \
-    Cancel(); \
-    return; \
-  }
-
 #include "../../../../../chrome/browser/importer/external_process_importer_host.cc"
-#undef BRAVE_START_IMPORT_SETTINGS
 #undef InProcessImporterBridge
 #undef ExternalProcessImporterClient
