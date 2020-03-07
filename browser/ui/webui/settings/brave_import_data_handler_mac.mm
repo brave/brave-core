@@ -152,7 +152,7 @@ void BraveImportDataHandler::StartImport(
     return;
   }
 
-  BraveImportDataHandlerBase::StartImport(source_profile, imported_items);
+  ImportDataHandler::StartImport(source_profile, imported_items);
 }
 
 void BraveImportDataHandler::OnGetDiskAccessPermission(
@@ -173,8 +173,7 @@ void BraveImportDataHandler::OnGetDiskAccessPermission(
     return;
   }
 
-  return BraveImportDataHandlerBase::StartImport(source_profile,
-                                                 imported_items);
+  return ImportDataHandler::StartImport(source_profile, imported_items);
 }
 
 void BraveImportDataHandler::DidStopLoading() {

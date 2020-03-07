@@ -8,7 +8,6 @@
 
 #define BRAVE_IMPORT_DATA_HANDLER_H \
  private: \
-  friend class BraveImportDataHandlerBase; \
   friend class BraveImportDataHandler;
 
 #define StartImport virtual StartImport
