@@ -4,27 +4,27 @@
     "description": "The name of the the extension."
   },
   "shields": {
-    "message": "Shields",
+    "message": "Suojaus",
     "description": "The Shields feature name"
   },
   "up": {
-    "message": "ylös",
+    "message": "päällä",
     "description": "Message for when shields is enabled"
   },
   "down": {
-    "message": "alas",
+    "message": "pois",
     "description": "Message for when shields is disabled"
   },
   "forThisSite": {
-    "message": "tälle sivustolle",
+    "message": "tällä sivustolla",
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "Jos sivusto ei näytä toimivan oikein, kokeile ottaa suojat pois käytöstä",
+    "message": "Jos sivusto ei näytä toimivan oikein, kokeile ottaa suojaus pois käytöstä",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Selaat tätä sivustoa ilman Braven yksityisyys- ja tietoturvasuojia. Eikö se toimi oikein kilpien ollessa käytössä?",
+    "message": "Selaat tätä sivustoa ilman Braven yksityisyys- ja tietoturvasuojia. Eikö se toimi oikein suojien ollessa käytössä?",
     "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
   },
   "reportBrokenSite": {
@@ -32,7 +32,7 @@
     "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
-    "message": "Kohteet estetty",
+    "message": "Kohdetta estetty",
     "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
   "itemBlocked": {
@@ -44,7 +44,7 @@
     "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
   "connectionsUpgraded": {
-    "message": "yhteyksiä päivitetty",
+    "message": "yhteyttä päivitetty",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
   "connectionUpgraded": {
@@ -56,7 +56,7 @@
     "description": "Message for the scripts blocked row label"
   },
   "connectionsUpgradedHTTPS": {
-    "message": "Yhteys päivitetty HTTPS:ään",
+    "message": "Yhteydet päivitetty HTTPS:ään",
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
   "connectionUpgradedHTTPS": {
@@ -64,7 +64,7 @@
     "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
   "scriptsBlocked": {
-    "message": "Skriptit estetty.",
+    "message": "Skriptit estetty",
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
@@ -92,7 +92,7 @@
     "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Laitteen tunnistuksen yrityksiä",
+    "message": "Laitteen tunnistuksen yritystä",
     "description": "Message for the device recognition attempts blocked panel"
   },
   "scriptsOnThisSite": {
@@ -152,15 +152,15 @@
     "description": "Message for the button action linking to the settings page"
   },
   "addBlockElement": {
-    "message": "Estä elementti valitsimen kautta",
+    "message": "Estä elementti valitsimella",
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
   "resetSiteFilterSettings": {
-    "message": "Tyhjennä tämän sivun CSS-säännöt",
+    "message": "Tyhjennä tämän sivuston CSS-säännöt",
     "description": "Message for context menu that resets the site filters for cosmetic filtering"
   },
   "resetAllFilterSettings": {
-    "message": "Selkeät CSS-säännöt kaikille sivustoille",
+    "message": "Tyhjennä kaikkien sivustojen CSS-säännöt",
     "description": "Message for context menu that resets all cosmetic filters"
   },
   "advancedView": {
@@ -176,7 +176,7 @@
     "description": "Message in read-only view explaining what Brave Shields do"
   },
   "blockedResoucesExplanation": {
-    "message": "Sivustot ylittävät seurantasovellukset (cross-site trackers) ja muita ikäviä juttuja estetty",
+    "message": "Sivustojen välistä seurantasovellusta (cross-site trackers) ja muuta ikävää juttua estetty",
     "description": "Message for the main trackers count in Shields simple view"
   },
   "webCompatWarning": {
@@ -188,7 +188,7 @@
     "description": "Message for the button that confirms the advanced view"
   },
   "learnMore": {
-    "message": "Lisätietoa",
+    "message": "Lisätietoja",
     "description": "Message inviting the user to learn more about Shields"
   }
 }
