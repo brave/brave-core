@@ -7,17 +7,19 @@ package org.chromium.chrome.browser.appmenu;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v7.content.res.AppCompatResources;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 
 import org.chromium.base.Log;
 import org.chromium.base.ObservableSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.BraveFeatureList;
-import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.ChromeFeatureList;
+import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
@@ -64,6 +66,13 @@ public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegat
         if (BraveSetDefaultBrowserNotificationService.isBraveSetAsDefaultBrowser(mContext)) {
             menu.findItem(R.id.set_default_browser).setVisible(false);
         }
+
+        // Replace info item with share
+        MenuItem shareItem = menu.findItem(R.id.info_menu_id);
+        if (shareItem != null) {
+            shareItem.setTitle(mContext.getString(R.string.share));
+            shareItem.setIcon(AppCompatResources.getDrawable(mContext, R.drawable.share_icon));
+        }
     }
 
     @Override
@@ -73,5 +82,16 @@ public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegat
         mMenu.removeItem(R.id.set_default_browser);
         mMenu.removeItem(R.id.brave_rewards_id);
         mMenu.removeItem(R.id.exit_id);
+    }
+
+    @Override
+    public void onFooterViewInflated(AppMenuHandler appMenuHandler, View view) {
+        // Replace info button with share
+        ImageButton shareButton = view.findViewById(R.id.info_menu_id);
+        if (shareButton != null) {
+            shareButton.setImageDrawable(
+                    AppCompatResources.getDrawable(mContext, R.drawable.share_icon));
+            shareButton.setContentDescription(mContext.getString(R.string.share));
+        }
     }
 }

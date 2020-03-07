@@ -39,6 +39,7 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.PrefServiceBridge;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
+import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tabmodel.TabLaunchType;
@@ -101,11 +102,20 @@ public abstract class BraveActivity extends ChromeActivity {
 
     @Override
     public boolean onMenuOrKeyboardAction(int id, boolean fromMenu) {
+        final TabImpl currentTab = (TabImpl) getActivityTab();
+        // Handle items replaced by Brave.
+        if (id == R.id.info_menu_id && currentTab != null) {
+            ShareDelegate shareDelegate = (ShareDelegate) getShareDelegateSupplier().get();
+            shareDelegate.share(currentTab, false);
+            return true;
+        }
+
         if (super.onMenuOrKeyboardAction(id, fromMenu)) {
             return true;
         }
 
-        if (getActivityTab() == null) {
+        // Handle items added by Brave.
+        if (currentTab == null) {
             return false;
         } else if (id == R.id.exit_id) {
             ApplicationLifetime.terminate(false);
