@@ -1,7 +1,5 @@
 use html5ever::driver::{ParseOpts, Parser};
-use html5ever::rcdom::Handle;
-use html5ever::rcdom::NodeData;
-use html5ever::rcdom::RcDom;
+use markup5ever_rcdom::{Handle, NodeData, RcDom};
 use html5ever::tendril::*;
 use html5ever::tree_builder::{AppendText, ElementFlags, NodeOrText, QuirksMode, TreeSink};
 use html5ever::{Attribute, ExpandedName, QualName};

@@ -1,9 +1,6 @@
 use dom;
-use html5ever::rcdom::Handle;
-use html5ever::rcdom::Node;
-use html5ever::rcdom::NodeData::{Comment, Doctype, Document, ProcessingInstruction};
-use html5ever::rcdom::NodeData::{Element, Text};
-use html5ever::rcdom::RcDom;
+use markup5ever_rcdom::{Handle, Node, RcDom};
+use markup5ever_rcdom::NodeData::{Comment, Doctype, Document, ProcessingInstruction, Element, Text};
 use html5ever::tree_builder::TreeSink;
 use html5ever::tree_builder::{ElementFlags, NodeOrText};
 use html5ever::{LocalName, QualName};

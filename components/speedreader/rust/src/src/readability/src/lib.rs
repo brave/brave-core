@@ -1,5 +1,6 @@
 #[macro_use]
 extern crate html5ever;
+extern crate markup5ever_rcdom;
 extern crate regex;
 extern crate url;
 #[macro_use]

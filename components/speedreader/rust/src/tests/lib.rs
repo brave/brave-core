@@ -12,8 +12,8 @@ use std::io::Read;
 use url::Url;
 
 use distance::damerau_levenshtein;
-use html5ever::rcdom::NodeData::{Element, Text};
-use html5ever::rcdom::{Handle, Node};
+use markup5ever_rcdom::NodeData::{Element, Text};
+use markup5ever_rcdom::{Handle, Node};
 use std::rc::Rc;
 use std::vec::Vec;
 

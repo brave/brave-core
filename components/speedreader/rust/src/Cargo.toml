@@ -18,7 +18,8 @@ include = [
 ]
 
 [dependencies]
-html5ever = "0.24.1"
+html5ever = "0.25.1"
+markup5ever_rcdom = "0.1.0"
 regex = "1"
 lol_html = { version = "0.1.0" }
 thiserror = "1.0.2"
@@ -33,7 +34,7 @@ smallvec = "=0.6.13"
 
 readability = { path = "src/readability" }
 lazy_static = "1.3"
-markup5ever = "0.9"
+markup5ever = "0.10"
 
 [build-dependencies]
 regex = "1"

@@ -1,4 +1,5 @@
-use html5ever::rcdom::RcDom;
+use markup5ever_rcdom::RcDom;
+use markup5ever_rcdom::SerializableHandle;
 use html5ever::tendril::TendrilSink;
 use html5ever::{parse_document, serialize};
 use scorer;
@@ -85,7 +86,8 @@ pub fn extract_dom<S: ::std::hash::BuildHasher>(
         &candidates,
     );
 
-    serialize(&mut bytes, &top_candidate.node, Default::default())?;
+    let document: SerializableHandle = top_candidate.node.clone().into();
+    serialize(&mut bytes, &document, Default::default())?;
     let content = String::from_utf8(bytes).unwrap_or_default();
 
     Ok(Product { title, content })

@@ -1,5 +1,5 @@
-use html5ever::rcdom::NodeData::{Element, Text};
-use html5ever::rcdom::{Handle, Node};
+use markup5ever_rcdom::NodeData::{Element, Text};
+use markup5ever_rcdom::{Handle, Node};
 use html5ever::tendril::StrTendril;
 use html5ever::Attribute;
 use html5ever::LocalName;
@@ -78,19 +78,19 @@ pub fn is_empty(handle: &Handle) -> bool {
         }
     }
     match get_tag_name(&handle) {
-        Some(local_name!("li"))
-        | Some(local_name!("dt"))
-        | Some(local_name!("dd"))
-        | Some(local_name!("p"))
-        | Some(local_name!("div"))
-        | Some(local_name!("canvas")) => true,
+        Some(&local_name!("li"))
+        | Some(&local_name!("dt"))
+        | Some(&local_name!("dd"))
+        | Some(&local_name!("p"))
+        | Some(&local_name!("div"))
+        | Some(&local_name!("canvas")) => true,
         _ => false,
     }
 }
 
 pub fn has_link(handle: &Handle) -> bool {
     match get_tag_name(&handle) {
-        Some(local_name!("a")) => return true,
+        Some(&local_name!("a")) => return true,
         _ => (),
     }
     for child in handle.children.borrow().iter() {
