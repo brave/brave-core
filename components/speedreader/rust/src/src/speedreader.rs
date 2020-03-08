@@ -1,6 +1,6 @@
 use lol_html::Selector;
 use serde::{Deserialize, Serialize};
-use std::any::Any;
+use core::any::Any;
 use thiserror::Error;
 use url::Url;
 

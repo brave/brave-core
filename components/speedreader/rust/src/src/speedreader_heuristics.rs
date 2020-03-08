@@ -1,7 +1,7 @@
 use lol_html::OutputSink;
 
-use std::borrow::Borrow;
-use std::cell::RefCell;
+use core::borrow::Borrow;
+use core::cell::RefCell;
 use url::Url;
 
 use super::classifier::feature_extractor::{FeatureExtractorStreamer, FeaturisingTreeSink};

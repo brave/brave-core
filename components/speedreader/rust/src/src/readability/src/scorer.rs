@@ -30,16 +30,16 @@ pub static NEGATIVE_CANDIDATES: &str = "hidden|^hid$|hid$|hid|^hid\
         |legends|menu|related|remark|replies|rss|shoutbox|sidebar|skyscraper\
         |social|sponsor|supplemental|ad-break|agegate|pagination|pager|popup\
         yom-remote";
-static BLOCK_CHILD_TAGS: [&str; 9] = [
-    "a",
-    "blockquote",
-    "dl",
-    "ol",
-    "p",
-    "pre",
-    "table",
-    "ul",
-    "select",
+static BLOCK_CHILD_TAGS: [&LocalName; 9] = [
+    &local_name!("a"),
+    &local_name!("blockquote"),
+    &local_name!("dl"),
+    &local_name!("ol"),
+    &local_name!("p"),
+    &local_name!("pre"),
+    &local_name!("table"),
+    &local_name!("ul"),
+    &local_name!("select"),
 ];
 
 static DECAY_FACTOR: f32 = 3.0;
@@ -98,38 +98,42 @@ pub fn is_candidate(handle: &Handle) -> bool {
     if text_len < 20 {
         return false;
     }
-    if let Some(tag_name) = dom::get_tag_name(handle) {
-        match tag_name.as_str() {
-            "p" => true,
-            "div" | "article" | "center" | "section" => !dom::has_nodes(
+    match handle.data {
+        Element { ref name, .. } => match name.local {
+            local_name!("p") => true,
+            local_name!("div")
+            | local_name!("article")
+            | local_name!("center")
+            | local_name!("section") => !dom::has_nodes(
                 &handle,
                 &BLOCK_CHILD_TAGS.iter().cloned().collect::<Vec<_>>(),
             ),
             _ => false,
-        }
-    } else {
-        false
+        },
+        _ => false,
     }
 }
 
 pub fn init_content_score(handle: &Handle) -> f32 {
-    let tag_name = dom::get_tag_name(&handle).unwrap_or_default();
-    let score = match tag_name.as_ref() {
-        "article" => 10.0,
-        "div" => 5.0,
-        "h1" | "h2" | "h3" | "h4" => 5.0,
-        "blockquote" => 3.0,
-        "pre" => 3.0,
-        "td" => 3.0,
-        "th" => 5.0,
-        "address" => -3.0,
-        "ol" => -3.0,
-        "ul" => -3.0,
-        "dl" => -3.0,
-        "dd" => -3.0,
-        "dt" => -3.0,
-        "li" => -3.0,
-        "form" => -3.0,
+    let score = match handle.data {
+        Element { ref name, .. } => match name.local {
+            local_name!("article") => 10.0,
+            local_name!("div") => 5.0,
+            local_name!("h1") | local_name!("h2") | local_name!("h3") | local_name!("h4") => 5.0,
+            local_name!("blockquote") => 3.0,
+            local_name!("pre") => 3.0,
+            local_name!("td") => 3.0,
+            local_name!("th") => 5.0,
+            local_name!("address") => -3.0,
+            local_name!("ol") => -3.0,
+            local_name!("ul") => -3.0,
+            local_name!("dl") => -3.0,
+            local_name!("dd") => -3.0,
+            local_name!("dt") => -3.0,
+            local_name!("li") => -3.0,
+            local_name!("form") => -3.0,
+            _ => 0.0,
+        },
         _ => 0.0,
     };
     score + get_class_weight(handle)
@@ -172,15 +176,17 @@ pub fn preprocess(mut dom: &mut RcDom, handle: Handle, mut title: &mut String) -
         ..
     } = handle.data
     {
-        let tag_name = name.local.as_ref();
-        match tag_name.to_lowercase().as_ref() {
-            "script" | "link" | "style" => return true,
-            "title" => dom::extract_text(&handle, &mut title, true),
+        match name.local {
+            local_name!("script") | local_name!("link") | local_name!("style") => return true,
+            local_name!("title") => dom::extract_text(&handle, &mut title, true),
             _ => (),
         }
-        for name in ["id", "class", "itemProp"].iter() {
-            if let Some(val) = dom::attr(name, &attrs.borrow()) {
-                if tag_name != "body" && UNLIKELY.is_match(&val) && !LIKELY.is_match(&val) {
+        for attr_name in ["id", "class", "itemProp"].iter() {
+            if let Some(val) = dom::attr(attr_name, &attrs.borrow()) {
+                if name.local != local_name!("body")
+                    && UNLIKELY.is_match(&val)
+                    && !LIKELY.is_match(&val)
+                {
                     return true;
                 }
             }
@@ -194,14 +200,10 @@ pub fn preprocess(mut dom: &mut RcDom, handle: Handle, mut title: &mut String) -
             useless_nodes.push(child.clone());
         }
         match child.data {
-            Element { ref name, .. } => {
-                let tag_name = name.local.as_ref();
-                if "br" == tag_name.to_lowercase() {
-                    br_count += 1
-                } else {
-                    br_count = 0
-                }
-            }
+            Element { ref name, .. } => match name.local {
+                local_name!("br") => br_count += 1,
+                _ => br_count = 0,
+            },
             Text { ref contents } => {
                 let s = contents.borrow();
                 if br_count >= 2 && !s.trim().is_empty() {
@@ -343,40 +345,50 @@ pub fn clean<S: ::std::hash::BuildHasher>(
     features: &HashMap<String, u32, S>,
     candidates: &BTreeMap<String, Candidate>,
 ) -> bool {
-    let mut useless = false;
-    match handle.data {
-        Document => (),
-        Doctype { .. } => (),
+    let useless = match handle.data {
+        Document => false,
+        Doctype { .. } => false,
         Text { ref contents } => {
             let s = contents.borrow();
             if s.trim().is_empty() {
-                useless = true
+                true
+            } else {
+                false
             }
         }
-        Comment { .. } => useless = true,
+        Comment { .. } => true,
         Element {
             ref name,
             ref attrs,
             ..
         } => {
-            let tag_name = name.local.as_ref();
-            match tag_name.to_lowercase().as_ref() {
-                "script" | "link" | "style" | "noscript" | "meta" | "iframe" | "object"
-                | "header" | "footer" | "aside" => useless = true,
-                "form" | "table" | "ul" | "div" => useless = is_useless(id, &handle, candidates),
-                "img" => {
-                    useless = !fix_img_path(handle.clone(), url);
-                }
-                _ => (),
+            match name.local {
+                local_name!("script")
+                | local_name!("link")
+                | local_name!("style")
+                | local_name!("noscript")
+                | local_name!("meta")
+                | local_name!("iframe")
+                | local_name!("object")
+                | local_name!("header")
+                | local_name!("footer")
+                | local_name!("aside") => true,
+                local_name!("form")
+                | local_name!("table")
+                | local_name!("ul")
+                | local_name!("div") => is_useless(id, &handle, candidates),
+                local_name!("img") => !fix_img_path(handle.clone(), url),
+                _ => false,
             }
 
-            // cleans all ids, classes and styles in node
-            dom::clean_attr("id", &mut *attrs.borrow_mut());
-            dom::clean_attr("class", &mut *attrs.borrow_mut());
-            dom::clean_attr("style", &mut *attrs.borrow_mut());
+            // // cleans all ids, classes and styles in node
+            // dom::clean_attr("id", &mut *attrs.borrow_mut());
+            // dom::clean_attr("class", &mut *attrs.borrow_mut());
+            // dom::clean_attr("style", &mut *attrs.borrow_mut());
         }
         ProcessingInstruction { .. } => unreachable!(),
-    }
+    };
+
     let mut useless_nodes = vec![];
     for (i, child) in handle.children.borrow().iter().enumerate() {
         let pid = id.join(i.to_string());
@@ -396,13 +408,13 @@ pub fn clean<S: ::std::hash::BuildHasher>(
         dom.remove_from_parent(node);
     }
     if dom::is_empty(&handle) {
-        useless = true
+        return true;
     }
     useless
 }
 
 pub fn is_useless(id: &Path, handle: &Handle, candidates: &BTreeMap<String, Candidate>) -> bool {
-    let tag_name = &dom::get_tag_name(&handle).unwrap_or_default();
+    let tag_name = dom::get_tag_name(&handle);
     let weight = get_class_weight(&handle);
     let score = id
         .to_str()
@@ -412,42 +424,37 @@ pub fn is_useless(id: &Path, handle: &Handle, candidates: &BTreeMap<String, Cand
     if weight + score < 0.0 {
         return true;
     }
-    let text_nodes_len = dom::text_children_count(&handle);
-    let mut p_nodes: Vec<Rc<Node>> = vec![];
-    let mut img_nodes: Vec<Rc<Node>> = vec![];
-    let mut li_nodes: Vec<Rc<Node>> = vec![];
-    let mut input_nodes: Vec<Rc<Node>> = vec![];
-    let mut embed_nodes: Vec<Rc<Node>> = vec![];
-    dom::find_node(&handle, "p", &mut p_nodes);
-    dom::find_node(&handle, "img", &mut img_nodes);
-    dom::find_node(&handle, "li", &mut li_nodes);
-    dom::find_node(&handle, "input", &mut input_nodes);
-    dom::find_node(&handle, "embed", &mut embed_nodes);
-    let p_count = p_nodes.len();
-    let img_count = img_nodes.len();
-    let li_count = li_nodes.len() as i32 - 100;
-    let input_count = input_nodes.len();
-    let embed_count = embed_nodes.len();
-    let link_density = get_link_density(handle);
-    let content_length = dom::text_len(&handle);
-    let para_count = text_nodes_len + p_count;
 
-    //if img_count > para_count + text_nodes_len {
-    //    return true
-    //}
-    if li_count > para_count as i32 && tag_name != "ul" && tag_name != "ol" {
+    let para_count =
+        dom::count_nodes(&handle, &local_name!("p")) + dom::text_children_count(&handle) as u32;
+    let li_count = dom::count_nodes(&handle, &local_name!("li")) as i32 - 100;
+
+    if tag_name != Some(&local_name!("ul"))
+        && tag_name != Some(&local_name!("ol"))
+        && li_count > para_count as i32
+    {
         return true;
     }
+
+    let input_count = dom::count_nodes(&handle, &local_name!("input"));
     if input_count as f32 > f32::floor(para_count as f32 / 3.0) {
         return true;
     }
+
+    let img_count = dom::count_nodes(&handle, &local_name!("img"));
+    let content_length = dom::text_len(&handle);
+
     if content_length < 10 && (img_count == 0 || img_count > 2) {
         return true;
     }
-    if weight < 10.0 && link_density > 0.1 {
+
+    let embed_count = dom::count_nodes(&handle, &local_name!("embed"));
+    if (embed_count == 1 && content_length < 35) || embed_count > 1 {
         return true;
     }
-    if (embed_count == 1 && content_length < 35) || embed_count > 1 {
+
+    let link_density = get_link_density(handle);
+    if weight < 10.0 && link_density > 0.1 {
         return true;
     }
     false

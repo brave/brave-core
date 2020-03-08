@@ -262,10 +262,14 @@ mod test {
 
 // passing
 
-test!(ars_1);
-test!(cnet);
-test!(folha);
-test!(liberation_1);
+#[cfg(test)]
+mod fulltest {
+    use super::*;
+    test!(ars_1);
+    test!(cnet);
+    test!(folha);
+    test!(liberation_1);
+}
 // test!(metadata_content_missing);
 // test!(msn);
 // test!(rtl_1);

@@ -2,12 +2,13 @@ use html5ever::rcdom::NodeData::{Element, Text};
 use html5ever::rcdom::{Handle, Node};
 use html5ever::tendril::StrTendril;
 use html5ever::Attribute;
+use html5ever::LocalName;
 use std::rc::Rc;
 use std::str::FromStr;
 
-pub fn get_tag_name(handle: &Handle) -> Option<String> {
+pub fn get_tag_name<'a>(handle: &'a Handle) -> Option<&'a LocalName> {
     match handle.data {
-        Element { ref name, .. } => Some(name.local.as_ref().to_lowercase()),
+        Element { ref name, .. } => Some(&name.local),
         _ => None,
     }
 }
@@ -76,15 +77,21 @@ pub fn is_empty(handle: &Handle) -> bool {
             _ => (),
         }
     }
-    match get_tag_name(&handle).unwrap_or_default().as_ref() {
-        "li" | "dt" | "dd" | "p" | "div" | "canvas" => true,
+    match get_tag_name(&handle) {
+        Some(local_name!("li"))
+        | Some(local_name!("dt"))
+        | Some(local_name!("dd"))
+        | Some(local_name!("p"))
+        | Some(local_name!("div"))
+        | Some(local_name!("canvas")) => true,
         _ => false,
     }
 }
 
 pub fn has_link(handle: &Handle) -> bool {
-    if "a" == &get_tag_name(handle).unwrap_or_default() {
-        return true;
+    match get_tag_name(&handle) {
+        Some(local_name!("a")) => return true,
+        _ => (),
     }
     for child in handle.children.borrow().iter() {
         if has_link(child) {
@@ -138,12 +145,26 @@ pub fn find_node(handle: &Handle, tag_name: &str, nodes: &mut Vec<Rc<Node>>) {
     }
 }
 
-pub fn has_nodes(handle: &Handle, tag_names: &[&'static str]) -> bool {
+pub fn count_nodes(handle: &Handle, tag_name: &LocalName) -> u32 {
+    let mut count = match handle.data {
+        Element { ref name, .. } if &name.local == tag_name => 1,
+        _ => 0,
+    };
+
     for child in handle.children.borrow().iter() {
-        let tag_name: &str = &get_tag_name(child).unwrap_or_default();
-        if tag_names.iter().any(|&n| n == tag_name) {
-            return true;
+        count += count_nodes(child, tag_name);
+    }
+    count
+}
+
+pub fn has_nodes(handle: &Handle, tag_names: &[&'static LocalName]) -> bool {
+    for child in handle.children.borrow().iter() {
+        if let Some(tag_name) = get_tag_name(child) {
+            if tag_names.iter().any(|n| n == &tag_name) {
+                return true;
+            }
         }
+        
         if match child.data {
             Element { .. } => has_nodes(child, tag_names),
             _ => false,
@@ -159,8 +180,7 @@ pub fn text_children_count(handle: &Handle) -> usize {
     for child in handle.children.borrow().iter() {
         match child.data {
             Text { ref contents } => {
-                let s = contents.borrow();
-                if s.trim().len() >= 20 {
+                if contents.borrow().trim().len() >= 20 {
                     count += 1
                 }
             }
