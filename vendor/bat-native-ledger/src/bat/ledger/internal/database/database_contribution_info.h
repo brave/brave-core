@@ -95,7 +95,7 @@ class DatabaseContributionInfo: public DatabaseTable {
       ledger::GetContributionReportCallback callback);
 
   void OnGetContributionReportPublishers(
-      ContributionPublisherInfoMap publisher_map,
+      std::vector<ContributionPublisherInfoPair> publisher_pair_list,
       const std::string& contribution_list_string,
       ledger::GetContributionReportCallback callback);
 

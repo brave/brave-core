@@ -60,6 +60,10 @@ namespace braveledger_database {
 class Database;
 }
 
+namespace braveledger_report {
+class Report;
+}
+
 namespace confirmations {
 class Confirmations;
 }
@@ -675,6 +679,14 @@ class LedgerImpl : public ledger::Ledger,
   void GetAllContributions(
       ledger::ContributionInfoListCallback callback) override;
 
+  void GetMonthlyReport(
+      const ledger::ActivityMonth month,
+      const int year,
+      ledger::GetMonthlyReportCallback callback) override;
+
+  void GetAllMonthlyReportIds(
+      ledger::GetAllMonthlyReportIdsCallback callback) override;
+
  private:
   void InitializeConfirmations(
       const bool execute_create_script,
@@ -761,6 +773,7 @@ class LedgerImpl : public ledger::Ledger,
   std::unique_ptr<braveledger_wallet::Wallet> bat_wallet_;
   std::unique_ptr<braveledger_database::Database> bat_database_;
   std::unique_ptr<confirmations::Confirmations> bat_confirmations_;
+  std::unique_ptr<braveledger_report::Report> bat_report_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   bool initialized_task_scheduler_;
 

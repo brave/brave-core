@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TableDonation tests basic tests matches the snapshot 1`] = `
+<div
+  id="table"
+>
+  <div>
+    <table
+      className="sc-ifAKCX kBPdCV"
+    >
+      <thead>
+        <tr>
+          <th
+            className="sc-EHOje eGUeYL"
+          >
+            MISSING: site
+          </th>
+          <th
+            className="sc-EHOje eGUeYL"
+          >
+            MISSING: type
+          </th>
+          <th
+            className="sc-EHOje eGUeYL"
+          >
+            MISSING: pendingUntil
+          </th>
+          <th
+            className="sc-EHOje ldWhay"
+          >
+            MISSING: amount
+          </th>
+          <th
+            className="sc-EHOje jUXHhx"
+          >
+            MISSING: remove
+          </th>
+        </tr>
+      </thead>
+    </table>
+    <div
+      className="sc-bxivhb iqKUsl"
+    />
+  </div>
+</div>
+`;

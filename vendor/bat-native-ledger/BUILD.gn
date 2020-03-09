@@ -223,6 +223,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/publisher/publisher.h",
     "src/bat/ledger/internal/publisher/publisher_server_list.cc",
     "src/bat/ledger/internal/publisher/publisher_server_list.h",
+    "src/bat/ledger/internal/report/report.cc",
+    "src/bat/ledger/internal/report/report.h",
     "src/bat/ledger/internal/request/attestation_requests.cc",
     "src/bat/ledger/internal/request/attestation_requests.h",
     "src/bat/ledger/internal/request/promotion_requests.cc",

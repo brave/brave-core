@@ -677,6 +677,7 @@ void DatabaseContributionInfo::OnGetContributionReport(
     info->created_at = GetInt64Column(record_pointer, 3);
 
     contribution_ids.push_back(info->contribution_id);
+    list.push_back(std::move(info));
   }
 
   auto publisher_callback =
@@ -686,13 +687,13 @@ void DatabaseContributionInfo::OnGetContributionReport(
           braveledger_bind_util::FromContributionListToString(std::move(list)),
           callback);
 
-  publishers_->GetContributionPublisherInfoMap(
+  publishers_->GetContributionPublisherPairList(
       contribution_ids,
       publisher_callback);
 }
 
 void DatabaseContributionInfo::OnGetContributionReportPublishers(
-    ContributionPublisherInfoMap publisher_map,
+    std::vector<ContributionPublisherInfoPair> publisher_pair_list,
     const std::string& contribution_list_string,
     ledger::GetContributionReportCallback callback) {
   ledger::ContributionInfoList contribution_list;
@@ -712,7 +713,7 @@ void DatabaseContributionInfo::OnGetContributionReportPublishers(
   }
 
   for (auto& report : report_list) {
-    for (auto& item : publisher_map) {
+    for (auto& item : publisher_pair_list) {
       if (item.first != report->contribution_id) {
         continue;
       }

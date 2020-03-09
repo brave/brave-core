@@ -54,17 +54,17 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
       {
         key: 'grant',
         translation: onlyAnonWallet ? 'pointGrantClaimed' : 'tokenGrantClaimed',
-        color: 'earnings'
+        color: 'earning'
       },
       {
         key: 'ads',
         translation: 'earningsAds',
-        color: 'earnings'
+        color: 'earning'
       },
       {
         key: 'deposit',
         translation: 'deposits',
-        color: 'earnings'
+        color: 'earning'
       },
       {
         key: 'contribute',
@@ -73,15 +73,15 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
         negative: true
       },
       {
-        key: 'donation',
+        key: 'monthly',
         translation: 'recurringDonations',
-        color: 'donation',
+        color: 'contribute',
         negative: true
       },
       {
         key: 'tips',
         translation: 'oneTimeDonation',
-        color: 'donation',
+        color: 'contribute',
         negative: true
       }
     ]

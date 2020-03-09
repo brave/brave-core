@@ -9,6 +9,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/macros.h"
 #include "base/observer_list.h"
@@ -113,6 +114,9 @@ using GetBalanceReportCallback = base::OnceCallback<void(
 
 using GetMonthlyReportCallback = base::OnceCallback<void(
     const MonthlyReport&)>;
+
+using GetAllMonthlyReportIdsCallback =
+    base::OnceCallback<void(const std::vector<std::string>&)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -305,6 +309,9 @@ class RewardsService : public KeyedService {
       const uint32_t month,
       const uint32_t year,
       GetMonthlyReportCallback callback) = 0;
+
+  virtual void GetAllMonthlyReportIds(
+      GetAllMonthlyReportIdsCallback callback) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

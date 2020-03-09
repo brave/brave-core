@@ -51,6 +51,7 @@ declare namespace Rewards {
     excludedList: ExcludedPublisher[]
     firstLoad: boolean | null
     monthlyReport: MonthlyReport
+    monthlyReportIds: string[]
     promotions?: Promotion[]
     pendingContributions: PendingContribution[]
     pendingContributionTotal: number
@@ -88,7 +89,7 @@ declare namespace Rewards {
     year: number
     balance?: BalanceReport
     transactions?: TransactionReport[]
-    contribution?: ContributionReport[]
+    contributions?: ContributionReport[]
   }
 
   export enum ReportType {
@@ -183,6 +184,7 @@ declare namespace Rewards {
     favIcon: string
     id: string
     tipDate?: number
+    weight: number
   }
 
   export interface ExcludedPublisher {

@@ -24,6 +24,7 @@
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/bat_state.h"
 #include "bat/ledger/internal/promotion/promotion.h"
+#include "bat/ledger/internal/report/report.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/media/helper.h"
 #include "bat/ledger/internal/static_values.h"
@@ -36,6 +37,7 @@ using namespace braveledger_bat_state; //  NOLINT
 using namespace braveledger_contribution; //  NOLINT
 using namespace braveledger_wallet; //  NOLINT
 using namespace braveledger_database; //  NOLINT
+using namespace braveledger_report; //  NOLINT
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
@@ -61,6 +63,7 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     bat_contribution_(new Contribution(this)),
     bat_wallet_(new Wallet(this)),
     bat_database_(new Database(this)),
+    bat_report_(new Report(this)),
     initialized_task_scheduler_(false),
     initialized_(false),
     initializing_(false),
@@ -1658,8 +1661,20 @@ void LedgerImpl::GetCreateScript(
 }
 
 void LedgerImpl::GetAllContributions(
-      ledger::ContributionInfoListCallback callback) {
+    ledger::ContributionInfoListCallback callback) {
   bat_database_->GetAllContributions(callback);
+}
+
+void LedgerImpl::GetMonthlyReport(
+    const ledger::ActivityMonth month,
+    const int year,
+    ledger::GetMonthlyReportCallback callback) {
+  bat_report_->GetMonthly(month, year, callback);
+}
+
+void LedgerImpl::GetAllMonthlyReportIds(
+    ledger::GetAllMonthlyReportIdsCallback callback) {
+  bat_report_->GetAllMonthlyIds(callback);
 }
 
 }  // namespace bat_ledger

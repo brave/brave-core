@@ -1005,4 +1005,55 @@ void BatLedgerImpl::SavePublisherInfo(
           _1));
 }
 
+// static
+void BatLedgerImpl::OnGetMonthlyReport(
+    CallbackHolder<GetMonthlyReportCallback>* holder,
+    const ledger::Result result,
+    ledger::MonthlyReportInfoPtr info) {
+  DCHECK(holder);
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result, std::move(info));
+
+  delete holder;
+}
+
+void BatLedgerImpl::GetMonthlyReport(
+    const ledger::ActivityMonth month,
+    const int year,
+    GetMonthlyReportCallback callback) {
+  auto* holder = new CallbackHolder<GetMonthlyReportCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->GetMonthlyReport(
+      month,
+      year,
+      std::bind(BatLedgerImpl::OnGetMonthlyReport,
+          holder,
+          _1,
+          _2));
+}
+
+// static
+void BatLedgerImpl::OnGetAllMonthlyReportIds(
+    CallbackHolder<GetAllMonthlyReportIdsCallback>* holder,
+    const std::vector<std::string>& ids) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(ids);
+  }
+
+  delete holder;
+}
+
+void BatLedgerImpl:: GetAllMonthlyReportIds(
+    GetAllMonthlyReportIdsCallback callback) {
+  auto* holder = new CallbackHolder<GetAllMonthlyReportIdsCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->GetAllMonthlyReportIds(
+      std::bind(BatLedgerImpl::OnGetAllMonthlyReportIds,
+          holder,
+          _1));
+}
+
 }  // namespace bat_ledger

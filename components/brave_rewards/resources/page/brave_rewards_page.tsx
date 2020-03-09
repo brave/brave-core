@@ -246,6 +246,10 @@ window.cr.define('brave_rewards', function () {
     getActions().onReconcileStampReset()
   }
 
+  function monthlyReportIds (ids: string[]) {
+    getActions().onMonthlyReportIds(ids)
+  }
+
   return {
     initialize,
     walletCreated,
@@ -291,7 +295,8 @@ window.cr.define('brave_rewards', function () {
     onlyAnonWallet,
     unblindedTokensReady,
     monthlyReport,
-    reconcileStampReset
+    reconcileStampReset,
+    monthlyReportIds
   }
 })
 
