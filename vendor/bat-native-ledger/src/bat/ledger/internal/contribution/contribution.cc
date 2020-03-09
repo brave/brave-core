@@ -530,9 +530,11 @@ bool Contribution::ProcessUnblindedTokens(
     ledger::BalancePtr info,
     ledger::RewardsType type,
     double* fee,
-    ledger::ReconcileDirections directions,
-    ledger::ReconcileDirections* leftovers) {
+    ledger::ContributionQueuePublisherList publishers,
+    ledger::ContributionQueuePublisherList* publishers_left) {
+  DCHECK(publishers_left);
   if (!fee) {
+    *publishers_left = std::move(publishers);
     return false;
   }
 
@@ -541,6 +543,7 @@ bool Contribution::ProcessUnblindedTokens(
           ledger::kWalletUnBlinded,
           info->wallets);
   if (balance == 0) {
+    *publishers_left = std::move(publishers);
     return false;
   }
 
@@ -556,7 +559,7 @@ bool Contribution::ProcessUnblindedTokens(
   contribution->created_at = now;
   contribution->processor = ledger::ContributionProcessor::BRAVE_TOKENS;
 
-  ledger::ReconcileDirections new_directions;
+  ledger::ContributionQueuePublisherList publishers_new;
   bool full_amount = true;
   if (balance < *fee) {
     *fee = *fee - balance;
@@ -566,24 +569,24 @@ bool Contribution::ProcessUnblindedTokens(
     if (type == ledger::RewardsType::RECURRING_TIP ||
         type == ledger::RewardsType::ONE_TIME_TIP) {
       AdjustTipsAmounts(
-          directions,
-          &new_directions,
-          leftovers,
+          std::move(publishers),
+          &publishers_new,
+          publishers_left,
           balance);
     } else {
       new_directions = directions;
     }
   } else {
-    new_directions = directions;
+    publishers_new = std::move(publishers);
   }
 
   ledger::ContributionPublisherList publisher_list;
-  for (auto& item : new_directions) {
+  for (auto& item : publishers_new) {
     auto publisher = ledger::ContributionPublisher::New();
     publisher->contribution_id = contribution_id;
-    publisher->publisher_key = item.publisher_key;
+    publisher->publisher_key = item->publisher_key;
     publisher->total_amount =
-        (item.amount_percent * contribution->amount) / 100;
+        (item->amount_percent * contribution->amount) / 100;
     publisher->contributed_amount = 0;
     publisher_list.push_back(std::move(publisher));
   }
@@ -601,9 +604,10 @@ bool Contribution::ProcessAnonUserFunds(
     ledger::BalancePtr info,
     ledger::RewardsType type,
     double* fee,
-    ledger::ReconcileDirections directions,
-    ledger::ReconcileDirections* leftovers) {
-  // TODO implement
+    ledger::ContributionQueuePublisherList publishers,
+    ledger::ContributionQueuePublisherList* publishers_left) {
+  DCHECK(publishers_left);
+  *publishers_left = std::move(publishers);
   return false;
 }
 
@@ -611,7 +615,7 @@ bool Contribution::ProcessExternalWallet(
     ledger::BalancePtr info,
     ledger::RewardsType type,
     const double fee,
-    const ledger::ReconcileDirections& directions) {
+    ledger::ContributionQueuePublisherList publishers) {
   const double balance =
       braveledger_wallet::Balance::GetPerWalletBalance(
           ledger::kWalletUphold,
@@ -634,18 +638,18 @@ bool Contribution::ProcessExternalWallet(
   // when we add more external processors
   contribution->processor = ledger::ContributionProcessor::UPHOLD;
 
-  ledger::ContributionPublisherList publisher_list;
-  for (auto& item : directions) {
+  ledger::ContributionPublisherList publishers_converted;
+  for (auto& item : publishers) {
     auto publisher = ledger::ContributionPublisher::New();
     publisher->contribution_id = contribution_id;
-    publisher->publisher_key = item.publisher_key;
+    publisher->publisher_key = item->publisher_key;
     publisher->total_amount =
-        (item.amount_percent * contribution->amount) / 100;
+        (item->amount_percent * contribution->amount) / 100;
     publisher->contributed_amount = 0;
-    publisher_list.push_back(std::move(publisher));
+    publishers_converted.push_back(std::move(publisher));
   }
 
-  contribution->publishers = std::move(publisher_list);
+  contribution->publishers = std::move(publishers_converted);
 
   if (type == ledger::RewardsType::AUTO_CONTRIBUTE) {
     auto reconcile = ledger::CurrentReconcileProperties();
@@ -708,17 +712,14 @@ void Contribution::Process(
     return;
   }
 
-  const auto directions = FromContributionQueuePublishersToReconcileDirections(
-      std::move(contribution->publishers));
-
   // UNBLINDED TOKENS
-  ledger::ReconcileDirections anon_directions = directions;
+  ledger::ContributionQueuePublisherList publishers_anon;
   bool result = ProcessUnblindedTokens(
       info->Clone(),
       contribution->type,
       &fee,
-      directions,
-      &anon_directions);
+      std::move(contribution->publishers),
+      &publishers_anon);
 
   if (result) {
     // contribution was processed in full
@@ -727,13 +728,13 @@ void Contribution::Process(
   }
 
   // USER FUNDS in ANON WALLET
-  ledger::ReconcileDirections wallet_directions = anon_directions;
+  ledger::ContributionQueuePublisherList publishers_external;
   result = ProcessAnonUserFunds(
       info->Clone(),
       contribution->type,
       &fee,
-      anon_directions,
-      &wallet_directions);
+      std::move(publishers_anon),
+      &publishers_external);
   if (result) {
     // contribution was processed in full
     DeleteContributionQueue(contribution->id);
@@ -745,7 +746,7 @@ void Contribution::Process(
       info->Clone(),
       contribution->type,
       fee,
-      wallet_directions);
+      std::move(publishers_external));
 
   if (result) {
     // contribution was processed in full
@@ -754,35 +755,33 @@ void Contribution::Process(
 }
 
 void Contribution::AdjustTipsAmounts(
-    ledger::ReconcileDirections original_directions,
-    ledger::ReconcileDirections* primary_directions,
-    ledger::ReconcileDirections* rest_directions,
+    ledger::ContributionQueuePublisherList publishers,
+    ledger::ContributionQueuePublisherList* publishers_new,
+    ledger::ContributionQueuePublisherList* publishers_left,
     double reduce_fee_for) {
-  if (!primary_directions || !rest_directions) {
-    return;
-  }
+  DCHECK(publishers_new && publishers_left);
 
-  for (auto item : original_directions) {
+  for (auto& item : publishers) {
     if (reduce_fee_for == 0) {
-      rest_directions->push_back(item);
+      publishers_left->push_back(std::move(item));
       continue;
     }
 
-    if (item.amount_percent <= reduce_fee_for) {
-      primary_directions->push_back(item);
-      reduce_fee_for -= item.amount_percent;
+    if (item->amount_percent <= reduce_fee_for) {
+      publishers_new->push_back(item->Clone());
+      reduce_fee_for -= item->amount_percent;
       continue;
     }
 
-    if (item.amount_percent > reduce_fee_for) {
+    if (item->amount_percent > reduce_fee_for) {
       // primary wallet
-      const auto original_weight = item.amount_percent;
-      item.amount_percent = reduce_fee_for;
-      primary_directions->push_back(item);
+      const auto original_weight = item->amount_percent;
+      item->amount_percent = reduce_fee_for;
+      publishers_new->push_back(item->Clone());
 
       // second wallet
-      item.amount_percent = original_weight - reduce_fee_for;
-      rest_directions->push_back(item);
+      item->amount_percent = original_weight - reduce_fee_for;
+      publishers_left->push_back(item->Clone());
 
       reduce_fee_for = 0;
     }

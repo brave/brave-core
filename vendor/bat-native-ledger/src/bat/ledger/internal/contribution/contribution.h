@@ -14,7 +14,6 @@
 
 #include "base/gtest_prod_util.h"
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/internal/properties/reconcile_direction_properties.h"
 
 namespace bat_ledger {
 class LedgerImpl;
@@ -137,21 +136,21 @@ class Contribution {
       ledger::BalancePtr info,
       ledger::RewardsType type,
       double* fee,
-      ledger::ReconcileDirections directions,
-      ledger::ReconcileDirections* leftovers);
+      ledger::ContributionQueuePublisherList publishers,
+      ledger::ContributionQueuePublisherList* publishers_left);
 
   bool ProcessAnonUserFunds(
       ledger::BalancePtr info,
       ledger::RewardsType type,
       double* fee,
-      ledger::ReconcileDirections directions,
-      ledger::ReconcileDirections* leftovers);
+      ledger::ContributionQueuePublisherList publishers,
+      ledger::ContributionQueuePublisherList* publishers_left);
 
   bool ProcessExternalWallet(
       ledger::BalancePtr info,
       ledger::RewardsType type,
       const double fee,
-      const ledger::ReconcileDirections& directions);
+      ledger::ContributionQueuePublisherList publishers);
 
   void OnProcessExternalWalletSaved(
       const ledger::Result result,
@@ -165,10 +164,10 @@ class Contribution {
   void DeleteContributionQueue(const uint64_t id);
 
   void AdjustTipsAmounts(
-    ledger::ReconcileDirections original_directions,
-    ledger::ReconcileDirections* primary_directions,
-    ledger::ReconcileDirections* rest_directions,
-    double reduce_fee_for);
+      ledger::ContributionQueuePublisherList publishers,
+      ledger::ContributionQueuePublisherList* publishers_new,
+      ledger::ContributionQueuePublisherList* publishers_left,
+      double reduce_fee_for);
 
   void OnExternalWallets(
       const std::string& contribution_id,

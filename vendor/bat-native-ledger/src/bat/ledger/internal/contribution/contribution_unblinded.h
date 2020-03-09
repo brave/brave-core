@@ -13,7 +13,6 @@
 #include <vector>
 
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/internal/properties/reconcile_direction_properties.h"
 
 namespace bat_ledger {
 class LedgerImpl;

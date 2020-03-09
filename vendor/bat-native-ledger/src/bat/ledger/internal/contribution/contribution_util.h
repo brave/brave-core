@@ -11,13 +11,8 @@
 
 #include "base/values.h"
 #include "bat/ledger/mojom_structs.h"
-#include "bat/ledger/internal/properties/reconcile_direction_properties.h"
 
 namespace braveledger_contribution {
-
-ledger::ReconcileDirections
-FromContributionQueuePublishersToReconcileDirections(
-    ledger::ContributionQueuePublisherList list);
 
 ledger::ReportType GetReportTypeFromRewardsType(const ledger::RewardsType type);
 

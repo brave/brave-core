@@ -15,26 +15,6 @@ using challenge_bypass_ristretto::VerificationSignature;
 
 namespace braveledger_contribution {
 
-ledger::ReconcileDirections
-FromContributionQueuePublishersToReconcileDirections(
-    ledger::ContributionQueuePublisherList list) {
-  ledger::ReconcileDirections directions;
-
-  for (auto& item : list) {
-    if (!item || item->publisher_key.empty()) {
-      continue;
-    }
-
-    ledger::ReconcileDirectionProperties direction;
-    direction.publisher_key = item->publisher_key,
-    direction.amount_percent = item->amount_percent;
-
-    directions.push_back(direction);
-  }
-
-  return directions;
-}
-
 ledger::ReportType GetReportTypeFromRewardsType(
     const ledger::RewardsType type) {
   switch (static_cast<int>(type)) {
