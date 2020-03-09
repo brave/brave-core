@@ -6,11 +6,8 @@
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
 
 #include <memory>
-#include <string>
 #include <utility>
 
-#include "base/compiler_specific.h"
-#include "base/test/bind_test_util.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/simple_test_clock.h"
 #include "base/time/time.h"

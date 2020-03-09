@@ -8,6 +8,7 @@
 #include <numeric>
 #include <utility>
 
+#include "base/time/clock.h"
 #include "base/time/default_clock.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -58,12 +59,7 @@ void P3ABandwidthSavingsPermanentState::AddSavings(uint64_t delta) {
   SaveSavingsDaily();
 }
 
-base::Optional<uint64_t>
-P3ABandwidthSavingsPermanentState::GetFullPeriodSavingsBytes() {
-  return GetSavingsTotal();
-}
-
-uint64_t P3ABandwidthSavingsPermanentState::GetSavingsTotal() const {
+uint64_t P3ABandwidthSavingsPermanentState::GetFullPeriodSavingsBytes() const {
   // We record only saving for last N days.
   const base::Time n_days_ago =
       clock_->Now() - base::TimeDelta::FromDays(kNumOfSavedDailyUptimes);

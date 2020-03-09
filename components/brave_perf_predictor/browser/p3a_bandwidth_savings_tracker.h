@@ -9,16 +9,19 @@
 #include <cstdint>
 #include <memory>
 
-#include "base/time/clock.h"
-
 class PrefRegistrySimple;
 class PrefService;
+
+namespace base {
+class Clock;
+}  // namespace base
 
 namespace brave_perf_predictor {
 
 class P3ABandwidthSavingsTracker {
  public:
   explicit P3ABandwidthSavingsTracker(PrefService* user_prefs);
+  // Constructor with injected clock for testing
   P3ABandwidthSavingsTracker(PrefService* user_prefs,
                              std::unique_ptr<base::Clock> clock);
   ~P3ABandwidthSavingsTracker();

@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/metrics/histogram_macros.h"
+#include "base/time/clock.h"
 #include "base/time/default_clock.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_permanent_state.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
@@ -54,9 +55,7 @@ void P3ABandwidthSavingsTracker::RecordSavings(uint64_t savings) {
         std::make_unique<P3ABandwidthSavingsPermanentState>(user_prefs_);
     permanent_state->AddSavings(savings);
     const auto total = permanent_state->GetFullPeriodSavingsBytes();
-    if (total.has_value()) {
-      StoreSavingsHistogram(total.value());
-    }
+    StoreSavingsHistogram(total);
   }
 }
 

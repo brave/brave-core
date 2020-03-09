@@ -9,11 +9,14 @@
 #include <list>
 #include <memory>
 
-#include "base/time/clock.h"
 #include "base/time/time.h"
 #include "base/values.h"
 
 class PrefService;
+
+namespace base {
+class Clock;
+}  // namespace base
 
 namespace brave_perf_predictor {
 
@@ -27,6 +30,7 @@ namespace brave_perf_predictor {
 class P3ABandwidthSavingsPermanentState {
  public:
   explicit P3ABandwidthSavingsPermanentState(PrefService* user_prefs);
+  // Constructor with injected clock for testing
   P3ABandwidthSavingsPermanentState(PrefService* user_prefs,
                                     std::unique_ptr<base::Clock> clock);
   ~P3ABandwidthSavingsPermanentState();
@@ -36,7 +40,7 @@ class P3ABandwidthSavingsPermanentState {
       const P3ABandwidthSavingsPermanentState&) = delete;
 
   void AddSavings(uint64_t delta);
-  base::Optional<uint64_t> GetFullPeriodSavingsBytes();
+  uint64_t GetFullPeriodSavingsBytes() const;
 
  private:
   struct DailySaving {
@@ -47,7 +51,6 @@ class P3ABandwidthSavingsPermanentState {
   void LoadSavingsDaily();
   void SaveSavingsDaily();
   void RecordSavingsTotal();
-  uint64_t GetSavingsTotal() const;
 
   std::unique_ptr<base::Clock> clock_;
   std::list<DailySaving> daily_savings_;
