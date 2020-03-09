@@ -16,4 +16,15 @@ source_set("ntp_sponsored_images") {
     "//components/prefs",
     "//components/pref_registry",
   ]
+
+  if (is_android) {
+    sources += [
+      "android/ntp_sponsored_images_bridge.cc",
+      "android/ntp_sponsored_images_bridge.h",
+    ]
+
+    deps += [
+      "//brave/build/android:jni_headers",
+    ]
+  }
 }
