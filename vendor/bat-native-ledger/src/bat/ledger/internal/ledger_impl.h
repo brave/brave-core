@@ -493,8 +493,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void TransferAnonToExternalWallet(
       ledger::ExternalWalletPtr wallet,
-      const bool allow_zero_balance,
-      ledger::TransferAnonToExternalWalletCallback callback);
+      ledger::TransferAnonToExternalWalletCallback callback,
+      const bool allow_zero_balance = false);
 
   void ShowNotification(
       const std::string& type,
@@ -594,7 +594,7 @@ class LedgerImpl : public ledger::Ledger,
     ledger::ResultCallback callback);
 
   virtual void GetAllUnblindedTokens(
-      ledger::GetAllUnblindedTokensCallback callback);
+      ledger::GetUnblindedTokenListCallback callback);
 
   virtual void DeleteUnblindedTokens(
       const std::vector<std::string>& id_list,
@@ -637,6 +637,14 @@ class LedgerImpl : public ledger::Ledger,
       const std::string& contribution_id,
       const std::string& publisher_key,
       ledger::ResultCallback callback);
+
+  void TransferTokens(
+      ledger::ExternalWalletPtr wallet,
+      ledger::ResultCallback callback);
+
+  void GetUnblindedTokensByPromotionType(
+      const std::vector<ledger::PromotionType>& promotion_types,
+      ledger::GetUnblindedTokenListCallback callback);
 
  private:
   void InitializeConfirmations(
