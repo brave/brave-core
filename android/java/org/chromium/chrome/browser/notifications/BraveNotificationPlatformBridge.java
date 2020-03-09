@@ -17,6 +17,8 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.annotations.CalledByNative;
 
 public class BraveNotificationPlatformBridge extends NotificationPlatformBridge {
+    private static final int[] EMPTY_VIBRATION_PATTERN = new int[0];
+
     private @NotificationType int mNotificationType;
 
     @CalledByNative
@@ -70,6 +72,10 @@ public class BraveNotificationPlatformBridge extends NotificationPlatformBridge 
             Bitmap icon, Bitmap badge, int[] vibrationPattern, long timestamp, boolean renotify,
             boolean silent, ActionInfo[] actions, String webApkPackage) {
         mNotificationType = notificationType;
+
+        if (notificationType == NotificationType.BRAVE_ADS) {
+            vibrationPattern = EMPTY_VIBRATION_PATTERN;
+        }
 
         return super.prepareNotificationBuilder(notificationId, notificationType, origin, scopeUrl,
                 profileId, incognito, title, body, image, icon, badge, vibrationPattern, timestamp,
