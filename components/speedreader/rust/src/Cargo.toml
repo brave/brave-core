@@ -21,7 +21,7 @@ include = [
 html5ever = "0.25.1"
 markup5ever_rcdom = "0.1.0"
 regex = "1"
-lol_html = { version = "0.1.0" }
+lol_html = { version = "0.2.0" }
 thiserror = "1.0.2"
 adblock = "0.1.38"
 serde =  { version = "1.0.104", features = ["derive"] }

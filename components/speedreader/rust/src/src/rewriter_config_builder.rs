@@ -92,6 +92,7 @@ pub fn rewrite_rules_to_content_handlers(
             if let Some(script) = &maybe_script {
                 el.append(&script, ContentType::Html);
             }
+            el.set_attribute("dir", "auto")?;
             Ok(())
         }),
     );

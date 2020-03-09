@@ -620,6 +620,141 @@ impl Whitelist {
                 ..RewriteRules::default()
             }),
         });
+
+        self.add_configuration(SpeedReaderConfig {
+            domain: "thehill.com".to_owned(),
+            url_rules: vec![r#"/thehill\.com\/[\w-]+\/[\w-]+\/(\d){3}-.*/"#.to_owned()],
+            declarative_rewrite: Some(RewriteRules {
+                main_content: vec![
+                    ".content-wrapper.title".to_owned(),
+                    ".title-wrapper .title".to_owned(),
+                    "article".to_owned(),
+                ],
+                main_content_cleanup: vec![
+                    ".dfp-tag-wrapper".to_owned(),
+                    ".rollover-block".to_owned(),
+                    "#jwplayer-unmute-button".to_owned(),
+                ],
+                ..RewriteRules::default()
+            }),
+        });
+
+        self.add_configuration(SpeedReaderConfig {
+            domain: "theatlantic.com".to_owned(),
+            url_rules: vec![r#"/theatlantic.com\/.*\/(\d){4}\/(\d){2}\/.*\/\d{4,}/"#.to_owned()],
+            declarative_rewrite: Some(RewriteRules {
+                main_content: vec!["article".to_owned()],
+                main_content_cleanup: vec![
+                    ".c-share-social".to_owned(),
+                    "header .c-article-author__image".to_owned(),
+                    ".c-article-writer__social-link-icon".to_owned(),
+                    ".ad-boxinjector-wrapper".to_owned(),
+                    ".ad".to_owned(),
+                ],
+                ..RewriteRules::default()
+            }),
+        });
+
+        self.add_configuration(SpeedReaderConfig {
+            domain: "livemint.com".to_owned(),
+            url_rules: vec![r#"/livemint.com\/.*-\d{4,}\.html/"#.to_owned()],
+            declarative_rewrite: Some(RewriteRules {
+                main_content: vec!["article".to_owned(), ".contentSec".to_owned()],
+                main_content_cleanup: vec![
+                    ".socialHolder".to_owned(),
+                    ".adHolderStory".to_owned(),
+                    "a.btnClose".to_owned(),
+                ],
+                ..RewriteRules::default()
+            }),
+        });
+
+        self.add_configuration(SpeedReaderConfig {
+            domain: "sfgate.com".to_owned(),
+            url_rules: vec!["||sfgate.com/*/article/*".to_owned()],
+            declarative_rewrite: Some(RewriteRules {
+                main_content: vec![
+                    ".article-content .article-title".to_owned(),
+                    ".article-content .article-body".to_owned(),
+                ],
+                main_content_cleanup: vec![
+                    ".asset_gallery .control-panel".to_owned(),
+                    ".asset_media".to_owned(),
+                    ".caption-truncated".to_owned(),
+                ],
+                preprocess: vec![
+                    AttributeRewrite {
+                        selector: ".hst-resgalleryitem".to_owned(),
+                        attribute: None,
+                        element_name: "figure".to_owned(),
+                    },
+                    AttributeRewrite {
+                        selector: ".caption".to_owned(),
+                        attribute: None,
+                        element_name: "figcaption".to_owned(),
+                    },
+                ],
+                ..RewriteRules::default()
+            }),
+        });
+
+        self.add_configuration(SpeedReaderConfig {
+            domain: "alarabiya.net".to_owned(),
+            url_rules: vec![r#"/alarabiya\.net\/(\d){4}\/(\d){2}\/(\d){2}\/.*/"#.to_owned()],
+            declarative_rewrite: Some(RewriteRules {
+                main_content: vec!["article".to_owned()],
+                main_content_cleanup: vec!["article > img".to_owned(), ".teaser-tools".to_owned()],
+                ..RewriteRules::default()
+            }),
+        });
+
+        self.add_configuration(SpeedReaderConfig {
+            domain: "euronews.com".to_owned(),
+            url_rules: vec![r#"/euronews\.com\/(\d){4}\/(\d){2}\/(\d){2}\/.*/"#.to_owned()],
+            declarative_rewrite: Some(RewriteRules {
+                main_content: vec!["article".to_owned()],
+                main_content_cleanup: vec![
+                    "[class$=spotim]".to_owned(),
+                    "article [class^=js-]".to_owned(),
+                    ".teaser-tools".to_owned(),
+                    "[class*=social]".to_owned(),
+                    ".media__body__cartouche__mask".to_owned(),
+                    ".c-font-size-switcher".to_owned(),
+                    "footer".to_owned(),
+                    ".c-article-meta__content-img".to_owned(),
+                    ".ads".to_owned(),
+                ],
+                ..RewriteRules::default()
+            }),
+        });
+
+        self.add_configuration(SpeedReaderConfig {
+            domain: "nationalgeographic.com".to_owned(),
+            url_rules: vec![r#"/nationalgeographic\.com\/.*\/(\d){4}\/(\d){2}\/.*/"#.to_owned()],
+            declarative_rewrite: Some(RewriteRules {
+                main_content: vec!["article".to_owned()],
+                main_content_cleanup: vec![
+                    "#smart-body__read-more".to_owned(),
+                    ".lead-container__social-wrap".to_owned(),
+                    ".media__caption--mobile-expanded".to_owned(),
+                    ".UniversalVideo".to_owned(),
+                    ".enlarge-button".to_owned(),
+                ],
+                preprocess: vec![AttributeRewrite {
+                    selector: ".placeholder-image-wrap .picturefill".to_owned(),
+                    attribute: None,
+                    element_name: "img".to_owned(),
+                }],
+                content_script: Some(r#"<script>
+                [...document.querySelectorAll(".picturefill")]
+                .map((e, i) => {
+                e.src = JSON.parse(e.parentElement.querySelector("script").innerHTML).src;
+                })
+                </script>"#.to_owned(),
+                ),
+                ..RewriteRules::default()
+            }),
+        });
     }
 }
 
