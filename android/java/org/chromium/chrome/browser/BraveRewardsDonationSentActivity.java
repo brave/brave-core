@@ -29,7 +29,7 @@ import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsSiteBannerActivity;
 
 import static java.util.Locale.getDefault;
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 
 public class BraveRewardsDonationSentActivity extends Activity implements BraveRewardsHelper.LargeIconReadyCallback, BraveRewardsObserver  {
 
@@ -236,7 +236,7 @@ public class BraveRewardsDonationSentActivity extends Activity implements BraveR
             TextView send_date = (TextView) findViewById(R.id.txt_send_date);
             send_date.setVisibility(View.VISIBLE);
             mReconcileStamp_ = new java.util.Date(timestamp * 1000); //ms
-            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", getDefault());
+            DateFormat formatter = DateFormat.getDateInstance(DateFormat.SHORT, getDefault());
             send_date.setText(formatter.format (mReconcileStamp_));
         }
     }
