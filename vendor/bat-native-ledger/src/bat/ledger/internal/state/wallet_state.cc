@@ -12,7 +12,6 @@ namespace ledger {
 namespace {
 
 // Do not change these values as they are required to transition legacy state
-const char kFeeAmountKey[] = "fee_amount";
 const char kParametersKey[] = "parameters";
 const char kAdFreeKey[] = "adFree";
 const char kFeeKey[] = "fee";
@@ -124,9 +123,6 @@ bool WalletState::ToJson(
   }
 
   writer->StartObject();
-
-  writer->String(kFeeAmountKey);
-  writer->Double(properties.fee_amount);
 
   writer->String(kParametersKey);
   writer->StartObject();

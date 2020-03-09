@@ -235,7 +235,6 @@ void Create::RegisterPersonaCallback(
       ledger_->GetRegistrarVK().c_str());
 
   if (masterUserToken != nullptr) {
-    ledger_->SetMasterUserToken(masterUserToken);
     // should fix in
     // https://github.com/brave-intl/bat-native-anonize/issues/11
     free((void*)masterUserToken); // NOLINT
@@ -246,22 +245,16 @@ void Create::RegisterPersonaCallback(
   }
 
   ledger::WalletInfoProperties wallet_info = ledger_->GetWalletInfo();
-  unsigned int days;
   double fee_amount = .0;
-  std::string currency;
   if (!braveledger_bat_helper::getJSONWalletInfo(response,
                                                  &wallet_info,
-                                                 &currency,
-                                                 &fee_amount,
-                                                 &days)) {
+                                                 &fee_amount)) {
     callback(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }
 
   ledger_->SetWalletInfo(wallet_info);
-  ledger_->SetCurrency(currency);
   ledger_->SetContributionAmount(fee_amount);
-  ledger_->SetDays(days);
   ledger_->SetBootStamp(braveledger_time_util::GetCurrentTimeStamp());
   ledger_->ResetReconcileStamp();
   callback(ledger::Result::WALLET_CREATED);

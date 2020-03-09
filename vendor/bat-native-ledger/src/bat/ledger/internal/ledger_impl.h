@@ -19,9 +19,6 @@
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/database/database.h"
 #include "bat/ledger/internal/logging.h"
-#include "bat/ledger/internal/properties/ballot_properties.h"
-#include "bat/ledger/internal/properties/publisher_votes_properties.h"
-#include "bat/ledger/internal/properties/transaction_properties.h"
 #include "bat/ledger/internal/properties/wallet_info_properties.h"
 #include "bat/ledger/internal/wallet/wallet.h"
 #include "bat/ledger/ledger_client.h"
@@ -234,14 +231,6 @@ class LedgerImpl : public ledger::Ledger {
       const ledger::UrlMethod method,
       ledger::LoadURLCallback callback);
 
-  // DEPRECATED
-  void ReconcileComplete(
-      const ledger::Result result,
-      const double amount,
-      const std::string& viewing_id,
-      const ledger::RewardsType type,
-      const bool delete_reconcile = true);
-
   virtual void ContributionCompleted(
       const ledger::Result result,
       const double amount,
@@ -297,11 +286,6 @@ class LedgerImpl : public ledger::Ledger {
       const ledger::ReportType type,
       const double amount);
 
-  ledger::CurrentReconcileProperties GetReconcileById(
-      const std::string& viewingId);
-
-  void RemoveReconcileById(const std::string& viewingId);
-
   void FetchFavIcon(const std::string& url,
                     const std::string& favicon_key,
                     ledger::FetchIconCallback callback);
@@ -337,13 +321,6 @@ class LedgerImpl : public ledger::Ledger {
 
   void ResetReconcileStamp();
 
-  bool UpdateReconcile(
-      const ledger::CurrentReconcileProperties& reconcile);
-
-  void AddReconcile(
-      const std::string& viewing_id,
-      const ledger::CurrentReconcileProperties& reconcile);
-
   virtual const std::string& GetPaymentId() const;
 
   const std::string& GetPersonaId() const;
@@ -371,38 +348,9 @@ class LedgerImpl : public ledger::Ledger {
   void SetWalletProperties(
       ledger::WalletProperties* properties);
 
-  unsigned int GetDays() const;
-
-  void SetDays(unsigned int days);
-
-  const ledger::Transactions& GetTransactions() const;
-
-  void SetTransactions(
-      const ledger::Transactions& transactions);
-
-  const ledger::Ballots& GetBallots() const;
-
-  void SetBallots(
-      const ledger::Ballots& ballots);
-
-  const ledger::PublisherVotes& GetPublisherVotes() const;
-
-  void SetPublisherVotes(
-      const ledger::PublisherVotes& publisher_votes);
-
-  const std::string& GetCurrency() const;
-
-  void SetCurrency(const std::string& currency);
-
   uint64_t GetBootStamp() const override;
 
   void SetBootStamp(uint64_t stamp);
-
-  const std::string& GetMasterUserToken() const;
-
-  void SetMasterUserToken(const std::string& token);
-
-  bool ReconcileExists(const std::string& viewingId);
 
   void SaveContributionInfo(
       ledger::ContributionInfoPtr info,
@@ -414,12 +362,6 @@ class LedgerImpl : public ledger::Ledger {
       uint32_t /* next_record */);
 
   void SetTimer(uint64_t time_offset, uint32_t* timer_id) const;
-
-  bool AddReconcileStep(const std::string& viewing_id,
-                        ledger::ContributionRetry step,
-                        int level = -1);
-
-  const ledger::CurrentReconciles& GetCurrentReconciles() const;
 
   double GetDefaultContributionAmount() override;
 

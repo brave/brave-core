@@ -33,6 +33,9 @@ bool GenerateSuggestionMock(
     const std::string& suggestion_encoded,
     base::Value* result);
 
+double GetTotalFromRecurringVerified(
+    const ledger::PublisherInfoList& publisher_list);
+
 }  // namespace braveledger_contribution
 
 #endif  // BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_UTIL_H_

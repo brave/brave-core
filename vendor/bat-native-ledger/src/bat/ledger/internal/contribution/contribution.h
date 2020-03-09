@@ -14,7 +14,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/internal/properties/current_reconcile_properties.h"
+#include "bat/ledger/internal/properties/reconcile_direction_properties.h"
 
 namespace bat_ledger {
 class LedgerImpl;
@@ -37,23 +37,15 @@ class Contribution {
 
   void Initialize();
 
-  // Initial point for contribution
+  // Start point for contribution
   // In this step we get balance from the server
-  void InitReconcile(ledger::ContributionQueuePtr info);
+  void Start(ledger::ContributionQueuePtr info);
 
   // Called when timer is triggered
   void OnTimer(uint32_t timer_id);
 
   // Sets new reconcile timer for monthly contribution in 30 days
   void SetReconcileTimer();
-
-  // Does final stage in contribution
-  // Sets reports and contribution info
-  // DEPRECATED
-  void ReconcileSuccess(
-      const std::string& viewing_id,
-      const double amount,
-      const bool delete_reconcile);
 
   // Does final stage in contribution
   // Sets reports and contribution info
@@ -71,20 +63,7 @@ class Contribution {
   // Can be also called manually
   void StartMonthlyContribution();
 
-  bool ShouldStartAutoContribute();
-
   void SetTimer(uint32_t* timer_id, uint64_t start_timer_in = 0);
-
-  // DEPRECATED
-  void AddRetry(
-    ledger::ContributionRetry step,
-    const std::string& viewing_id,
-    ledger::CurrentReconcileProperties reconcile = {});
-
-  void UpdateContributionStepAndCount(
-      const std::string& contribution_id,
-      const ledger::ContributionStep step,
-      const int32_t retry_count);
 
   // Resets reconcile stamps
   void ResetReconcileStamp();
@@ -123,23 +102,10 @@ class Contribution {
 
   void OnStartRecurringTips(const ledger::Result result);
 
-  void OnBalanceForReconcile(
+  void OnBalance(
       const std::string& contribution_queue,
       const ledger::Result result,
       ledger::BalancePtr info);
-
-  // DEPRECATED
-  uint64_t GetRetryTimer(ledger::ContributionRetry step,
-                         const std::string& viewing_id,
-                         ledger::CurrentReconcileProperties* reconcile);
-
-  // DEPRECATED
-  int GetRetryPhase(ledger::ContributionRetry step);
-
-  // DEPRECATED
-  void DoRetry(const std::string& viewing_id);
-
-  void CheckStep(const std::string& contribution_id);
 
   void OnHasSufficientBalance(
       const ledger::PublisherInfoList& publisher_list,
@@ -167,7 +133,14 @@ class Contribution {
       const ledger::Result result,
       ledger::ResultCallback callback);
 
-  bool ProcessReconcileUnblindedTokens(
+  bool ProcessUnblindedTokens(
+      ledger::BalancePtr info,
+      ledger::RewardsType type,
+      double* fee,
+      ledger::ReconcileDirections directions,
+      ledger::ReconcileDirections* leftovers);
+
+  bool ProcessAnonUserFunds(
       ledger::BalancePtr info,
       ledger::RewardsType type,
       double* fee,
@@ -185,7 +158,7 @@ class Contribution {
       const std::string& contribution_id,
       base::flat_map<std::string, double> wallet_balances);
 
-  void ProcessReconcile(
+  void Process(
       ledger::ContributionQueuePtr contribution,
       ledger::BalancePtr info);
 
@@ -216,7 +189,7 @@ class Contribution {
 
   void OnUpholdAC(ledger::Result result,
                   bool created,
-                  const std::string& viewing_id);
+                  const std::string& contribution_id);
 
   void OnDeleteContributionQueue(const ledger::Result result);
 

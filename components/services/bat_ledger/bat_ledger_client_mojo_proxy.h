@@ -31,7 +31,7 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       ledger::Result result,
       ledger::WalletPropertiesPtr properties) override;
   void OnReconcileComplete(ledger::Result result,
-                           const std::string& viewing_id,
+                           const std::string& contribution_id,
                            const double amount,
                            const ledger::RewardsType type) override;
   void LoadLedgerState(ledger::OnLoadCallback callback) override;

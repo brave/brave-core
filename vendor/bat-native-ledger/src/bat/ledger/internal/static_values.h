@@ -51,16 +51,8 @@
 #define PREFIX_V4                       "/v4"
 #define PREFIX_V5                       "/v5"
 #define REGISTER_PERSONA                "/registrar/persona"
-#define REGISTER_VIEWING                "/registrar/viewing"
 #define WALLET_PROPERTIES               "/wallet/"
 #define WALLET_PROPERTIES_END           "/balance"
-#define RECONCILE_CONTRIBUTION          "/surveyor/contribution/current/"
-#define SURVEYOR_VOTING                 "/surveyor/voting/"
-#define SURVEYOR_BATCH_VOTING           "/batch/surveyor/voting"
-#define UPDATE_RULES_V1                 \
-"/v1/publisher/ruleset?consequential=true"
-#define UPDATE_RULES_V2                 \
-"/v2/publisher/ruleset?limit=512&excludedOnly=false"
 #define RECOVER_WALLET_PUBLIC_KEY       "/wallet?publicKey="
 #define GET_PROMOTION_CAPTCHA           "/captchas/"
 #define GET_PUBLISHERS_LIST             "/api/v3/public/channels"
@@ -74,8 +66,6 @@
 #define LEDGER_CURRENCY                 "BAT"
 
 #define SIGNATURE_ALGORITHM             "ed25519"
-
-#define AD_FREE_SETTINGS                "adFree"
 
 #define LEDGER_STATE_FILENAME           "6e16793f-52e1-41fb-b6a2-24b99b47e8f8"
 #define LEDGER_PUBLISHER_STATE_FILENAME "ee1e6705-bc4f-4aba-b03c-57cc8cb2ae4d"

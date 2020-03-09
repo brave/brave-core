@@ -1,61 +1,67 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/values.h"
+#include <memory>
+#include <utility>
+#include <vector>
+
 #include "bat/ledger/internal/contribution/contribution_util.h"
+#include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/ledger.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=ContributionUtilTest.*
 
 namespace braveledger_contribution {
 
-class ContributionUtilTest : public testing::Test {};
+class ContributionUtilTest : public testing::Test {
+ protected:
+  void GetPublishersForRecurring(
+      ledger::PublisherInfoList* publisher_info_list,
+      uint32_t iterations,
+      std::vector<uint32_t> amounts,
+      uint32_t variation) {
+    for (uint32_t ix = 0; ix < iterations; ix++) {
+      const auto status =
+          ix < variation
+          ? ledger::PublisherStatus::VERIFIED
+          : ledger::PublisherStatus::NOT_VERIFIED;
+      ledger::PublisherInfoPtr publisher_info = ledger::PublisherInfo::New();
+      publisher_info->id = "recurringexample" + std::to_string(ix) + ".com";
+      publisher_info->weight = amounts[ix % amounts.size()];
+      publisher_info->status = status;
+      publisher_info_list->push_back(std::move(publisher_info));
+    }
+  }
+};
 
-TEST_F(ContributionUtilTest, GenerateSuggestionEmptyToken) {
-  base::Value token(base::Value::Type::DICTIONARY);
-  bool success = GenerateSuggestion(
-      "",
-      "rqQ1Tz26C4mv33ld7xpcLhuX1sWaD+s7VMnuX6cokT4=",
-      "some id",
-      &token);
-  ASSERT_FALSE(success);
-}
+TEST_F(ContributionUtilTest, GetTotalFromRecurringVerified) {
+  ledger::PublisherInfoList publisher_info_list;
+  GetPublishersForRecurring(&publisher_info_list, 5, {1, 5, 10}, 2);
+  double amount = GetTotalFromRecurringVerified(publisher_info_list);
+  EXPECT_EQ(amount, 6);
 
-TEST_F(ContributionUtilTest, GenerateSuggestionEmptyPublicKey) {
-  base::Value token(base::Value::Type::DICTIONARY);
-  bool success = GenerateSuggestion(
-      "Twsi4QeUNcOOW/IFnYcGLHgLsfVco0oPZ+cl3YeZMQgb4NB8E29Ts+2/pQA54VksqGpg/DtmPRBV4FlQ1VXbKmiwO9BI7jDXSN33CCb+rSBe1PCG1LtigUOfzaIVF3c5",  // NOLINT
-      "",
-      "some id",
-      &token);
-  ASSERT_FALSE(success);
-}
+  publisher_info_list.clear();
+  GetPublishersForRecurring(&publisher_info_list, 7, {1, 5, 10}, 5);
+  amount = GetTotalFromRecurringVerified(publisher_info_list);
+  EXPECT_EQ(amount, 22);
 
-TEST_F(ContributionUtilTest, GenerateSuggestionEmptyPayload) {
-  base::Value token(base::Value::Type::DICTIONARY);
-  bool success = GenerateSuggestion(
-      "Twsi4QeUNcOOW/IFnYcGLHgLsfVco0oPZ+cl3YeZMQgb4NB8E29Ts+2/pQA54VksqGpg/DtmPRBV4FlQ1VXbKmiwO9BI7jDXSN33CCb+rSBe1PCG1LtigUOfzaIVF3c5",  // NOLINT
-      "rqQ1Tz26C4mv33ld7xpcLhuX1sWaD+s7VMnuX6cokT4=",
-      "",
-      &token);
-  ASSERT_FALSE(success);
-}
+  publisher_info_list.clear();
+  GetPublishersForRecurring(&publisher_info_list, 10, {5, 10, 20}, 7);
+  amount = GetTotalFromRecurringVerified(publisher_info_list);
+  EXPECT_EQ(amount, 75);
 
-TEST_F(ContributionUtilTest, GenerateSuggestionGenerated) {
-  const std::string public_key =
-      "rqQ1Tz26C4mv33ld7xpcLhuX1sWaD+s7VMnuX6cokT4=";
-  base::Value token(base::Value::Type::DICTIONARY);
-  bool success = GenerateSuggestion(
-      "Twsi4QeUNcOOW/IFnYcGLHgLsfVco0oPZ+cl3YeZMQgb4NB8E29Ts+2/pQA54VksqGpg/DtmPRBV4FlQ1VXbKmiwO9BI7jDXSN33CCb+rSBe1PCG1LtigUOfzaIVF3c5",  // NOLINT
-      public_key,
-      "some id",
-      &token);
-  ASSERT_TRUE(success);
-  ASSERT_EQ(*token.FindStringKey("t"), "Twsi4QeUNcOOW/IFnYcGLHgLsfVco0oPZ+cl3YeZMQgb4NB8E29Ts+2/pQA54VksqGpg/DtmPRBV4FlQ1VXbKg==");  // NOLINT
-  ASSERT_EQ(*token.FindStringKey("publicKey"), public_key);
-  ASSERT_EQ(*token.FindStringKey("signature"), "qnQvRh1dWoc/YKAGVYgP4PljOoK10T8ryMqLGY6RFc3Gig8mZCzmuGH5IQtVtCZ0x42/pOFKfX3rUpzIL4wPUw==");  // NOLINT
+  publisher_info_list.clear();
+  GetPublishersForRecurring(&publisher_info_list, 10, {10, 20, 50}, 9);
+  amount = GetTotalFromRecurringVerified(publisher_info_list);
+  EXPECT_EQ(amount, 240);
+
+  publisher_info_list.clear();
+  GetPublishersForRecurring(&publisher_info_list, 5, {1, 5, 10, 20, 50}, 5);
+  amount = GetTotalFromRecurringVerified(publisher_info_list);
+  EXPECT_EQ(amount, 86);
 }
 
 }  // namespace braveledger_contribution

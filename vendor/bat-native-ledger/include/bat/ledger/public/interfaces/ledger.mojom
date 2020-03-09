@@ -17,7 +17,8 @@ enum ContributionStep {
 enum ContributionProcessor {
   NONE = 0,
   BRAVE_TOKENS = 1,
-  UPHOLD = 2
+  UPHOLD = 2,
+  BRAVE_USER_FUNDS = 3
 };
 
 struct ContributionInfo {

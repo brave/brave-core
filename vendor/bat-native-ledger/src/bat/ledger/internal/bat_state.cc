@@ -75,47 +75,6 @@ void BatState::OnSaveState(const ledger::Result result) {
   }
 }
 
-void BatState::AddReconcile(const std::string& viewing_id,
-      const ledger::CurrentReconcileProperties& reconcile) {
-  state_->current_reconciles.insert(std::make_pair(viewing_id, reconcile));
-  SaveState();
-}
-
-bool BatState::UpdateReconcile(
-    const ledger::CurrentReconcileProperties& reconcile) {
-  if (state_->current_reconciles.count(reconcile.viewing_id) == 0) {
-    return false;
-  }
-
-  state_->current_reconciles[reconcile.viewing_id] = reconcile;
-  SaveState();
-  return true;
-}
-
-ledger::CurrentReconcileProperties BatState::GetReconcileById(
-    const std::string& viewingId) const {
-  if (state_->current_reconciles.count(viewingId) == 0) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-      "Could not find any reconcile tasks with the id " << viewingId;
-    return ledger::CurrentReconcileProperties();
-  }
-
-  return state_->current_reconciles[viewingId];
-}
-
-bool BatState::ReconcileExists(const std::string& viewingId) const {
-  return state_->current_reconciles.count(viewingId) > 0;
-}
-
-void BatState::RemoveReconcileById(const std::string& viewingId) {
-  ledger::CurrentReconciles::iterator it =
-      state_->current_reconciles.find(viewingId);
-  if (it != state_->current_reconciles.end()) {
-    state_->current_reconciles.erase(it);
-    SaveState();
-  }
-}
-
 void BatState::SetRewardsMainEnabled(bool enabled) {
   state_->rewards_enabled = enabled;
   SaveState();
@@ -271,53 +230,6 @@ void BatState::SetWalletProperties(
   SaveState();
 }
 
-unsigned int BatState::GetDays() const {
-  return state_->days;
-}
-
-void BatState::SetDays(unsigned int days) {
-  state_->days = days;
-  SaveState();
-}
-
-const ledger::Transactions& BatState::GetTransactions() const {
-  return state_->transactions;
-}
-
-void BatState::SetTransactions(
-    const ledger::Transactions& transactions) {
-  state_->transactions = transactions;
-  SaveState();
-}
-
-const ledger::Ballots& BatState::GetBallots() const {
-  return state_->ballots;
-}
-
-void BatState::SetBallots(const ledger::Ballots& ballots) {
-  state_->ballots = ballots;
-  SaveState();
-}
-
-const ledger::PublisherVotes& BatState::GetPublisherVotes() const {
-  return state_->publisher_votes;
-}
-
-void BatState::SetPublisherVotes(
-    const ledger::PublisherVotes& publisher_votes) {
-  state_->publisher_votes = publisher_votes;
-  SaveState();
-}
-
-const std::string& BatState::GetCurrency() const {
-  return state_->fee_currency;
-}
-
-void BatState::SetCurrency(const std::string &currency) {
-  state_->fee_currency = currency;
-  SaveState();
-}
-
 uint64_t BatState::GetBootStamp() const {
   return state_->boot_timestamp;
 }
@@ -325,39 +237,6 @@ uint64_t BatState::GetBootStamp() const {
 void BatState::SetBootStamp(uint64_t stamp) {
   state_->boot_timestamp = stamp;
   SaveState();
-}
-
-const std::string& BatState::GetMasterUserToken() const {
-  return state_->master_user_token;
-}
-
-void BatState::SetMasterUserToken(const std::string &token) {
-  state_->master_user_token = token;
-  SaveState();
-}
-
-bool BatState::AddReconcileStep(const std::string& viewing_id,
-                                ledger::ContributionRetry step,
-                                int level) {
-  ledger::CurrentReconcileProperties reconcile = GetReconcileById(viewing_id);
-
-  if (reconcile.viewing_id.empty()) {
-    return false;
-  }
-
-  // don't save step when you are already in the same step
-  if (reconcile.retry_step == step && level == -1) {
-    return true;
-  }
-
-  reconcile.retry_step = step;
-  reconcile.retry_level = level;
-
-  return UpdateReconcile(reconcile);
-}
-
-const ledger::CurrentReconciles& BatState::GetCurrentReconciles() const {
-  return state_->current_reconciles;
 }
 
 double BatState::GetDefaultContributionAmount() {

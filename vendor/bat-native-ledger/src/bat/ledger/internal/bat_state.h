@@ -11,11 +11,7 @@
 #include <string>
 
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/internal/properties/ballot_properties.h"
-#include "bat/ledger/internal/properties/publisher_votes_properties.h"
 #include "bat/ledger/internal/properties/client_properties.h"
-#include "bat/ledger/internal/properties/current_reconcile_properties.h"
-#include "bat/ledger/internal/properties/transaction_properties.h"
 #include "bat/ledger/internal/properties/wallet_info_properties.h"
 
 namespace bat_ledger {
@@ -30,20 +26,6 @@ class BatState {
   ~BatState();
 
   bool LoadState(const std::string& data);
-
-  void AddReconcile(
-      const std::string& viewing_id,
-      const ledger::CurrentReconcileProperties& reconcile);
-
-  bool UpdateReconcile(
-      const ledger::CurrentReconcileProperties& reconcile);
-
-  ledger::CurrentReconcileProperties GetReconcileById(
-      const std::string& viewingId) const;
-
-  void RemoveReconcileById(const std::string& viewingId);
-
-  bool ReconcileExists(const std::string& viewingId) const;
 
   void SetRewardsMainEnabled(bool enabled);
 
@@ -96,41 +78,9 @@ class BatState {
   void SetWalletProperties(
       ledger::WalletProperties* properties);
 
-  unsigned int GetDays() const;
-
-  void SetDays(unsigned int days);
-
-  const ledger::Transactions& GetTransactions() const;
-
-  void SetTransactions(
-      const ledger::Transactions& transactions);
-
-  const ledger::Ballots& GetBallots() const;
-
-  void SetBallots(const ledger::Ballots& ballots);
-
-  const ledger::PublisherVotes& GetPublisherVotes() const;
-
-  void SetPublisherVotes(
-      const ledger::PublisherVotes& publisher_votes);
-
-  const std::string& GetCurrency() const;
-
-  void SetCurrency(const std::string& currency);
-
   uint64_t GetBootStamp() const;
 
   void SetBootStamp(uint64_t stamp);
-
-  const std::string& GetMasterUserToken() const;
-
-  void SetMasterUserToken(const std::string& token);
-
-  bool AddReconcileStep(const std::string& viewing_id,
-                        ledger::ContributionRetry step,
-                        int level);
-
-  const ledger::CurrentReconciles& GetCurrentReconciles() const;
 
   double GetDefaultContributionAmount();
 

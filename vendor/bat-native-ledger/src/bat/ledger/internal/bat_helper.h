@@ -31,9 +31,7 @@ bool getJSONList(const std::string& fieldName,
 
 bool getJSONWalletInfo(const std::string& json,
                        ledger::WalletInfoProperties* walletInfo,
-                       std::string* fee_currency,
-                       double* fee_amount,
-                       unsigned int* days);
+                       double* fee_amount);
 
 bool getJSONRates(const std::string& json,
                   std::map<std::string, double>* rates);

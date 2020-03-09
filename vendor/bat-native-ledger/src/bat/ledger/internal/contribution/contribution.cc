@@ -50,22 +50,6 @@ ledger::ContributionStep ConvertResultIntoContributionStep(
   }
 }
 
-double GetTotalFromRecurringVerified(
-    const ledger::PublisherInfoList& publisher_list) {
-  double total_recurring_amount = 0.0;
-  for (const auto& publisher : publisher_list) {
-    if (publisher->id.empty()) {
-      continue;
-    }
-
-    if (publisher->status == ledger::PublisherStatus::VERIFIED) {
-      total_recurring_amount += publisher->weight;
-    }
-  }
-
-  return total_recurring_amount;
-}
-
 bool HaveReconcileEnoughFunds(
     ledger::ContributionQueuePtr contribution,
     double* fee,
@@ -110,20 +94,6 @@ void Contribution::Initialize() {
   uphold_->Initialize();
   unblinded_->Initialize();
 
-  // Resume in progress contributions
-  ledger::CurrentReconciles currentReconciles = ledger_->GetCurrentReconciles();
-
-  for (const auto& value : currentReconciles) {
-    ledger::CurrentReconcileProperties reconcile = value.second;
-
-    if (reconcile.retry_step == ledger::ContributionRetry::STEP_FINAL ||
-        reconcile.retry_step == ledger::ContributionRetry::STEP_NO) {
-      ledger_->RemoveReconcileById(reconcile.viewing_id);
-    } else {
-      DoRetry(reconcile.viewing_id);
-    }
-  }
-
   // Process contribution queue
   CheckContributionQueue();
 }
@@ -155,7 +125,7 @@ void Contribution::OnProcessContributionQueue(
   }
 
   queue_in_progress_ = true;
-  InitReconcile(std::move(info));
+  Start(std::move(info));
 }
 
 // TODO rename to something that tells you that you are checking
@@ -299,16 +269,8 @@ void Contribution::OnStartRecurringTips(const ledger::Result result) {
   ResetReconcileStamp();
 }
 
-bool Contribution::ShouldStartAutoContribute() {
-  if (!ledger_->GetRewardsMainEnabled()) {
-    return false;
-  }
-
-  return ledger_->GetAutoContribute();
-}
-
 void Contribution::StartAutoContribute(uint64_t reconcile_stamp) {
-  if (!ShouldStartAutoContribute()) {
+  if (!ledger_->GetRewardsMainEnabled() || !ledger_->GetAutoContribute()) {
     return;
   }
 
@@ -363,7 +325,7 @@ void Contribution::PrepareACList(ledger::PublisherInfoList list) {
   CheckContributionQueue();
 }
 
-void Contribution::OnBalanceForReconcile(
+void Contribution::OnBalance(
     const std::string& contribution_queue,
     const ledger::Result result,
     ledger::BalancePtr info) {
@@ -373,21 +335,18 @@ void Contribution::OnBalanceForReconcile(
     queue_in_progress_ = false;
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
          "We couldn't get balance from the server.";
-    phase_one_->Complete(ledger::Result::LEDGER_ERROR,
-                         "",
-                         contribution->type);
     return;
   }
 
-  ProcessReconcile(contribution->Clone(), std::move(info));
+  Process(contribution->Clone(), std::move(info));
 }
 
 
-void Contribution::InitReconcile(ledger::ContributionQueuePtr info) {
+void Contribution::Start(ledger::ContributionQueuePtr info) {
   const auto info_converted =
       braveledger_bind_util::FromContributionQueueToString(std::move(info));
   ledger_->FetchBalance(
-      std::bind(&Contribution::OnBalanceForReconcile,
+      std::bind(&Contribution::OnBalance,
                 this,
                 info_converted,
                 _1,
@@ -395,7 +354,6 @@ void Contribution::InitReconcile(ledger::ContributionQueuePtr info) {
 }
 
 void Contribution::OnTimer(uint32_t timer_id) {
-  phase_two_->OnTimer(timer_id);
   unverified_->OnTimer(timer_id);
   uphold_->OnTimer(timer_id);
   unblinded_->OnTimer(timer_id);
@@ -449,6 +407,10 @@ void Contribution::ContributionCompleted(
         braveledger_time_util::GetCurrentYear(),
         GetReportTypeFromRewardsType(type),
         amount);
+  }
+
+  if (contribution_id.empty()) {
+    return;
   }
 
   ledger_->UpdateContributionInfoStepAndCount(
@@ -536,7 +498,7 @@ void Contribution::OneTimeTipServerPublisher(
   queue->partial = false;
   queue->publishers = std::move(queue_list);
 
-  InitReconcile(std::move(queue));
+  Start(std::move(queue));
   callback(ledger::Result::LEDGER_OK);
 }
 
@@ -564,7 +526,7 @@ void Contribution::DeleteContributionQueue(const uint64_t id) {
   ledger_->DeleteContributionQueue(id, callback);
 }
 
-bool Contribution::ProcessReconcileUnblindedTokens(
+bool Contribution::ProcessUnblindedTokens(
     ledger::BalancePtr info,
     ledger::RewardsType type,
     double* fee,
@@ -635,57 +597,13 @@ bool Contribution::ProcessReconcileUnblindedTokens(
   return full_amount;
 }
 
-bool Contribution::ProcessReconcileAnonize(
+bool Contribution::ProcessAnonUserFunds(
     ledger::BalancePtr info,
     ledger::RewardsType type,
     double* fee,
     ledger::ReconcileDirections directions,
     ledger::ReconcileDirections* leftovers) {
-  if (!fee) {
-    return false;
-  }
-
-  auto reconcile = ledger::CurrentReconcileProperties();
-  reconcile.viewing_id = base::GenerateGUID();
-  reconcile.fee = *fee;
-  reconcile.directions = directions;
-  reconcile.type = type;
-
-  if (ledger_->ReconcileExists(reconcile.viewing_id)) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-      << "Unable to reconcile with the same viewing id: "
-      << reconcile.viewing_id;
-    return false;
-  }
-
-  const double balance = braveledger_wallet::Balance::GetPerWalletBalance(
-      ledger::kWalletAnonymous,
-      info->wallets);
-  if (balance == 0) {
-    return false;
-  }
-
-  if (balance >= *fee) {
-    ledger_->AddReconcile(reconcile.viewing_id, reconcile);
-    phase_one_->Start(reconcile.viewing_id);
-    return true;
-  }
-
-  *fee = *fee - balance;
-  reconcile.fee = balance;
-
-  if (type == ledger::RewardsType::RECURRING_TIP ||
-      type == ledger::RewardsType::ONE_TIME_TIP) {
-    ledger::ReconcileDirections new_direction;
-    AdjustTipsAmounts(directions,
-                      &new_direction,
-                      leftovers,
-                      balance);
-    reconcile.directions = new_direction;
-  }
-
-  ledger_->AddReconcile(reconcile.viewing_id, reconcile);
-  phase_one_->Start(reconcile.viewing_id);
+  // TODO implement
   return false;
 }
 
@@ -762,7 +680,7 @@ void Contribution::OnProcessExternalWalletSaved(
   ledger_->GetExternalWallets(wallets_callback);
 }
 
-void Contribution::ProcessReconcile(
+void Contribution::Process(
     ledger::ContributionQueuePtr contribution,
     ledger::BalancePtr info) {
   if (!contribution) {
@@ -770,7 +688,7 @@ void Contribution::ProcessReconcile(
   }
 
   if (contribution->amount == 0 || contribution->publishers.empty()) {
-    DeleteContributionQueue(contribution->Clone());
+    DeleteContributionQueue(contribution->id);
     return;
   }
 
@@ -795,12 +713,13 @@ void Contribution::ProcessReconcile(
 
   // UNBLINDED TOKENS
   ledger::ReconcileDirections anon_directions = directions;
-  bool result = ProcessReconcileUnblindedTokens(
+  bool result = ProcessUnblindedTokens(
       info->Clone(),
       contribution->type,
       &fee,
       directions,
       &anon_directions);
+
   if (result) {
     // contribution was processed in full
     DeleteContributionQueue(contribution->id);
@@ -809,7 +728,7 @@ void Contribution::ProcessReconcile(
 
   // USER FUNDS in ANON WALLET
   ledger::ReconcileDirections wallet_directions = anon_directions;
-  result = ProcessReconcileAnonize(
+  result = ProcessAnonUserFunds(
       info->Clone(),
       contribution->type,
       &fee,
@@ -1017,13 +936,13 @@ void Contribution::ExternalWalletCompleted(
 
 void Contribution::OnUpholdAC(ledger::Result result,
                               bool created,
-                              const std::string& viewing_id) {
+                              const std::string& contribution_id) {
   if (result != ledger::Result::LEDGER_OK) {
     // TODO(nejczdovc): add retries
     return;
   }
 
-  phase_one_->Start(viewing_id);
+  // TODO implement
 }
 
 }  // namespace braveledger_contribution

@@ -91,7 +91,7 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void OnReconcileComplete(
       const Result result,
-      const std::string& viewing_id,
+      const std::string& contribution_id,
       const double amount,
       const ledger::RewardsType type) = 0;
 

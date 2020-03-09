@@ -181,15 +181,6 @@ void LedgerImpl::CreateWallet(ledger::ResultCallback callback) {
   bat_wallet_->CreateWalletIfNecessary(std::move(on_wallet));
 }
 
-ledger::CurrentReconcileProperties LedgerImpl::GetReconcileById(
-    const std::string& viewingId) {
-  return bat_state_->GetReconcileById(viewingId);
-}
-
-void LedgerImpl::RemoveReconcileById(const std::string& viewingId) {
-  bat_state_->RemoveReconcileById(viewingId);
-}
-
 void LedgerImpl::OnLoad(ledger::VisitDataPtr visit_data,
                         const uint64_t& current_time) {
   if (visit_data.get()) {
@@ -705,28 +696,6 @@ uint64_t LedgerImpl::GetReconcileStamp() const {
   return bat_state_->GetReconcileStamp();
 }
 
-void LedgerImpl::ReconcileComplete(
-    const ledger::Result result,
-    const double amount,
-    const std::string& viewing_id,
-    const ledger::RewardsType type,
-    const bool delete_reconcile) {
-  const auto reconcile = GetReconcileById(viewing_id);
-
-  if (result == ledger::Result::LEDGER_OK) {
-    bat_contribution_->ReconcileSuccess(
-      viewing_id,
-      amount,
-      delete_reconcile);
-  }
-
-  ledger_client_->OnReconcileComplete(
-      result,
-      viewing_id,
-      amount,
-      type);
-}
-
 void LedgerImpl::ContributionCompleted(
     const ledger::Result result,
     const double amount,
@@ -981,17 +950,6 @@ void LedgerImpl::ResetReconcileStamp() {
   ledger_client_->ReconcileStampReset();
 }
 
-bool LedgerImpl::UpdateReconcile(
-    const ledger::CurrentReconcileProperties& reconcile) {
-  return bat_state_->UpdateReconcile(reconcile);
-}
-
-void LedgerImpl::AddReconcile(
-      const std::string& viewing_id,
-      const ledger::CurrentReconcileProperties& reconcile) {
-  bat_state_->AddReconcile(viewing_id, reconcile);
-}
-
 const std::string& LedgerImpl::GetPaymentId() const {
   return bat_state_->GetPaymentId();
 }
@@ -1074,18 +1032,6 @@ void LedgerImpl::GetRewardsInternalsInfo(
         secret_key, &public_key, &new_secret_key);
   }
 
-  // Retrieve the current reconciles.
-  const ledger::CurrentReconciles current_reconciles = GetCurrentReconciles();
-  for (const auto& reconcile : current_reconciles) {
-    ledger::ReconcileInfoPtr reconcile_info = ledger::ReconcileInfo::New();
-    reconcile_info->viewing_id = reconcile.second.viewing_id;
-    reconcile_info->amount = reconcile.second.amount;
-    reconcile_info->retry_step = reconcile.second.retry_step;
-    reconcile_info->retry_level = reconcile.second.retry_level;
-    info->current_reconciles.insert(
-        std::make_pair(reconcile.second.viewing_id, std::move(reconcile_info)));
-  }
-
   callback(std::move(info));
 }
 
@@ -1102,48 +1048,6 @@ void LedgerImpl::SetWalletProperties(
   bat_state_->SetWalletProperties(properties);
 }
 
-unsigned int LedgerImpl::GetDays() const {
-  return bat_state_->GetDays();
-}
-
-void LedgerImpl::SetDays(unsigned int days) {
-  bat_state_->SetDays(days);
-}
-
-const ledger::Transactions& LedgerImpl::GetTransactions() const {
-  return bat_state_->GetTransactions();
-}
-
-void LedgerImpl::SetTransactions(
-    const ledger::Transactions& transactions) {
-  bat_state_->SetTransactions(transactions);
-}
-
-const ledger::Ballots& LedgerImpl::GetBallots() const {
-  return bat_state_->GetBallots();
-}
-
-void LedgerImpl::SetBallots(const ledger::Ballots& ballots) {
-  bat_state_->SetBallots(ballots);
-}
-
-const ledger::PublisherVotes& LedgerImpl::GetPublisherVotes() const {
-  return bat_state_->GetPublisherVotes();
-}
-
-void LedgerImpl::SetPublisherVotes(
-    const ledger::PublisherVotes& publisher_votes) {
-  bat_state_->SetPublisherVotes(publisher_votes);
-}
-
-const std::string& LedgerImpl::GetCurrency() const {
-  return bat_state_->GetCurrency();
-}
-
-void LedgerImpl::SetCurrency(const std::string& currency) {
-  bat_state_->SetCurrency(currency);
-}
-
 uint64_t LedgerImpl::GetBootStamp() const {
   return bat_state_->GetBootStamp();
 }
@@ -1151,19 +1055,6 @@ uint64_t LedgerImpl::GetBootStamp() const {
 void LedgerImpl::SetBootStamp(uint64_t stamp) {
   bat_state_->SetBootStamp(stamp);
 }
-
-const std::string& LedgerImpl::GetMasterUserToken() const {
-  return bat_state_->GetMasterUserToken();
-}
-
-void LedgerImpl::SetMasterUserToken(const std::string& token) {
-  bat_state_->SetMasterUserToken(token);
-}
-
-bool LedgerImpl::ReconcileExists(const std::string& viewingId) {
-  return bat_state_->ReconcileExists(viewingId);
-}
-
 void LedgerImpl::SaveContributionInfo(
     ledger::ContributionInfoPtr info,
     ledger::ResultCallback callback) {
@@ -1179,22 +1070,6 @@ void LedgerImpl::NormalizeContributeWinners(
 
 void LedgerImpl::SetTimer(uint64_t time_offset, uint32_t* timer_id) const {
   ledger_client_->SetTimer(time_offset, timer_id);
-}
-
-bool LedgerImpl::AddReconcileStep(
-    const std::string& viewing_id,
-    ledger::ContributionRetry step,
-    int level) {
-  BLOG(this, ledger::LogLevel::LOG_DEBUG)
-    << "Contribution step "
-    << std::to_string(static_cast<int32_t>(step))
-    << " for "
-    << viewing_id;
-  return bat_state_->AddReconcileStep(viewing_id, step, level);
-}
-
-const ledger::CurrentReconciles& LedgerImpl::GetCurrentReconciles() const {
-  return bat_state_->GetCurrentReconciles();
 }
 
 double LedgerImpl::GetDefaultContributionAmount() {

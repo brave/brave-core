@@ -183,24 +183,18 @@ void Recover::RecoverWalletCallback(
 
   ledger::WalletInfoProperties wallet_info = ledger_->GetWalletInfo();
   ledger::WalletProperties properties = ledger_->GetWalletProperties();
-  unsigned int days;
   double fee_amount = .0;
   double balance = .0;
-  std::string currency;
   braveledger_bat_helper::getJSONWalletInfo(
       response,
       &wallet_info,
-      &currency,
-      &fee_amount,
-      &days);
+      &fee_amount);
   braveledger_bat_helper::getJSONRecoverWallet(
       response,
       &balance);
-  ledger_->SetCurrency(currency);
   if (!ledger_->GetUserChangedContribution()) {
     ledger_->SetContributionAmount(fee_amount);
   }
-  ledger_->SetDays(days);
   ledger_->SetWalletProperties(&properties);
 
   wallet_info.payment_id = recoveryId;

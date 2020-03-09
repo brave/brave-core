@@ -191,13 +191,6 @@ class MockLedgerImpl : public LedgerImpl {
           const ledger::UrlMethod,
           ledger::LoadURLCallback));
 
-  MOCK_METHOD5(ReconcileComplete,
-      void(ledger::Result,
-          const double,
-          const std::string&,
-          const ledger::RewardsType,
-          const bool));
-
   MOCK_METHOD4(ContributionCompleted, void(
       const ledger::Result,
       const double,
@@ -245,12 +238,6 @@ class MockLedgerImpl : public LedgerImpl {
       const ledger::ReportType,
       const double));
 
-
-  MOCK_METHOD1(GetReconcileById,
-      ledger::CurrentReconcileProperties(const std::string&));
-
-  MOCK_METHOD1(RemoveReconcileById, void(const std::string&));
-
   MOCK_METHOD3(FetchFavIcon,
       void(const std::string&,
           const std::string&,
@@ -258,14 +245,6 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD2(GetPublisherBanner,
       void(const std::string&, ledger::PublisherBannerCallback));
-
-  MOCK_METHOD6(OnReconcileCompleteSuccess,
-      void(const std::string&,
-          const ledger::RewardsType,
-          const std::string&,
-          const ledger::ActivityMonth,
-          const int,
-          const uint32_t));
 
   MOCK_METHOD2(SaveRecurringTip,
       void(ledger::RecurringTipPtr, ledger::ResultCallback));
@@ -292,13 +271,6 @@ class MockLedgerImpl : public LedgerImpl {
           const std::map<std::string, std::string>&));
 
   MOCK_METHOD0(ResetReconcileStamp, void());
-
-  MOCK_METHOD1(UpdateReconcile,
-      bool(const ledger::CurrentReconcileProperties&));
-
-  MOCK_METHOD2(AddReconcile,
-      void(const std::string&,
-          const ledger::CurrentReconcileProperties&));
 
   MOCK_CONST_METHOD0(GetPaymentId, const std::string&());
 
@@ -334,37 +306,9 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD1(SetWalletProperties,
       void(ledger::WalletProperties*));
 
-  MOCK_CONST_METHOD0(GetDays, unsigned int());
-
-  MOCK_METHOD1(SetDays, void(unsigned int));
-
-  MOCK_CONST_METHOD0(GetTransactions,
-      const ledger::Transactions&());
-
-  MOCK_METHOD1(SetTransactions,
-      void(const ledger::Transactions&));
-
-  MOCK_CONST_METHOD0(GetBallots, const ledger::Ballots&());
-
-  MOCK_METHOD1(SetBallots, void(const ledger::Ballots&));
-
-  MOCK_CONST_METHOD0(GetBatch, const ledger::BatchVotes&());
-
-  MOCK_METHOD1(SetBatch, void(const ledger::BatchVotes&));
-
-  MOCK_CONST_METHOD0(GetCurrency, const std::string&());
-
-  MOCK_METHOD1(SetCurrency, void(const std::string&));
-
   MOCK_CONST_METHOD0(GetBootStamp, uint64_t());
 
   MOCK_METHOD1(SetBootStamp, void(uint64_t));
-
-  MOCK_CONST_METHOD0(GetMasterUserToken, const std::string&());
-
-  MOCK_METHOD1(SetMasterUserToken, void(const std::string&));
-
-  MOCK_METHOD1(ReconcileExists, bool(const std::string&));
 
   MOCK_METHOD6(SaveContributionInfo,
       void(const std::string&,
@@ -380,14 +324,6 @@ class MockLedgerImpl : public LedgerImpl {
           uint32_t));
 
   MOCK_CONST_METHOD2(SetTimer, void(uint64_t, uint32_t*));
-
-  MOCK_METHOD3(AddReconcileStep,
-      bool(const std::string&,
-          ledger::ContributionRetry,
-          int));
-
-  MOCK_CONST_METHOD0(GetCurrentReconciles,
-      const ledger::CurrentReconciles&());
 
   MOCK_METHOD0(GetDefaultContributionAmount, double());
 

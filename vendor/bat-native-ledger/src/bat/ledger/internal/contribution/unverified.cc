@@ -110,7 +110,7 @@ void Unverified::OnContributeUnverifiedPublishers(
     queue->partial = false;
     queue->publishers = std::move(queue_list);
 
-    contribution_->InitReconcile(std::move(queue));
+    contribution_->Start(std::move(queue));
 
     ledger_->RemovePendingContribution(
         current->id,

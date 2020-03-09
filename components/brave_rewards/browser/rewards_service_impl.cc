@@ -851,15 +851,8 @@ void RewardsServiceImpl::OnGetRewardsInternalsInfo(
   rewards_internals_info->user_id = info->user_id;
   rewards_internals_info->boot_stamp = info->boot_stamp;
 
-  for (const auto& item : info->current_reconciles) {
-    ReconcileInfo reconcile_info;
-    reconcile_info.viewing_id_ = item.second->viewing_id;
-    reconcile_info.amount_ = item.second->amount;
-    reconcile_info.retry_step_ =
-        static_cast<ContributionRetry>(item.second->retry_step);
-    reconcile_info.retry_level_ = item.second->retry_level;
-    rewards_internals_info->current_reconciles[item.first] = reconcile_info;
-  }
+  // TODO(https://github.com/brave/brave-browser/issues/8633)
+  // add active contributions
 
   std::move(callback).Run(std::move(rewards_internals_info));
 }
@@ -886,7 +879,7 @@ void RewardsServiceImpl::OnRecoverWallet(
 
 void RewardsServiceImpl::OnReconcileComplete(
     const ledger::Result result,
-    const std::string& viewing_id,
+    const std::string& contribution_id,
     const double amount,
     const ledger::RewardsType type) {
   if (result == ledger::Result::LEDGER_OK &&
@@ -897,7 +890,7 @@ void RewardsServiceImpl::OnReconcileComplete(
   for (auto& observer : observers_)
     observer.OnReconcileComplete(this,
                                  static_cast<int>(result),
-                                 viewing_id,
+                                 contribution_id,
                                  amount,
                                  static_cast<int>(type));
 }
