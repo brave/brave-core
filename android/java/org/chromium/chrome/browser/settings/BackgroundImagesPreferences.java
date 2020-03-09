@@ -16,6 +16,8 @@ import org.chromium.chrome.browser.ChromeFeatureList;
 import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
+import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.preferences.PrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 
@@ -40,7 +42,7 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
         super.onCreate(savedInstanceState);
         getActivity().setTitle(R.string.prefs_new_tab_page);
         SettingsUtils.addPreferencesFromResource(this, R.xml.background_images_preferences);
-        if (!BraveAdsNativeHelper.nativeIsLocaleValid(Profile.getLastUsedProfile()) 
+        if (!BraveAdsNativeHelper.nativeIsLocaleValid(Profile.getLastUsedProfile())
             || BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
             || !ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
             removePreferenceIfPresent(PREF_SHOW_SPONSORED_IMAGES);
@@ -68,7 +70,8 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
             } else {
                 showSponsoredImagesPref.setEnabled(false);
             }
-            showSponsoredImagesPref.setChecked(sharedPreferences.getBoolean(PREF_SHOW_SPONSORED_IMAGES, true));
+
+            showSponsoredImagesPref.setChecked(PrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BRANDED_BACKGROUND_IMAGE));
             showSponsoredImagesPref.setOnPreferenceChangeListener(this);
         }
     }
@@ -84,7 +87,10 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
             }
         }
 
-        setOnPreferenceValue(preference.getKey(), (boolean)newValue);
+        if (PREF_SHOW_SPONSORED_IMAGES.equals(preference.getKey())) {
+            PrefServiceBridge.getInstance().setBoolean(BravePref.NTP_SHOW_BRANDED_BACKGROUND_IMAGE, (boolean)newValue);
+        }
+        // setOnPreferenceValue(preference.getKey(), (boolean)newValue);
         BraveRelaunchUtils.askForRelaunch(getActivity());
         return true;
     }
