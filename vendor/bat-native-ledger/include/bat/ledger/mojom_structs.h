@@ -41,6 +41,8 @@ using ContributionInfo = mojom::ContributionInfo;
 using ContributionInfoPtr = mojom::ContributionInfoPtr;
 using ContributionInfoList = std::vector<ContributionInfoPtr>;
 
+using ContributionProcessor = mojom::ContributionProcessor;
+
 using ContributionPublisher = mojom::ContributionPublisher;
 using ContributionPublisherPtr = mojom::ContributionPublisherPtr;
 using ContributionPublisherList =

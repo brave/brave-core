@@ -279,11 +279,22 @@ class Contribution {
       ledger::ReconcileDirections directions,
       ledger::ReconcileDirections* leftovers);
 
+  bool ProcessExternalWallet(
+      ledger::BalancePtr info,
+      ledger::RewardsType type,
+      const double fee,
+      const ledger::ReconcileDirections& directions);
+
+  void OnProcessExternalWalletSaved(
+      const ledger::Result result,
+      const std::string& contribution_id,
+      base::flat_map<std::string, double> wallet_balances);
+
   void ProcessReconcile(
       ledger::ContributionQueuePtr contribution,
       ledger::BalancePtr info);
 
-  void DeleteContributionQueue(ledger::ContributionQueuePtr contribution);
+  void DeleteContributionQueue(const uint64_t id);
 
   void AdjustTipsAmounts(
     ledger::ReconcileDirections original_directions,
@@ -292,21 +303,33 @@ class Contribution {
     double reduce_fee_for);
 
   void OnExternalWallets(
-      const std::string& viewing_id,
+      const std::string& contribution_id,
       base::flat_map<std::string, double> wallet_balances,
       std::map<std::string, ledger::ExternalWalletPtr> wallets);
 
+  void ExternalWalletContributionInfo(
+      ledger::ContributionInfoPtr contribution,
+      base::flat_map<std::string, double> wallet_balances,
+      const ledger::ExternalWallet& wallet);
+
   void OnExternalWalletServerPublisherInfo(
       ledger::ServerPublisherInfoPtr info,
-      const std::string& viewing_id,
+      const std::string& contribution_id,
       double amount,
-      const ledger::ExternalWallet& wallet);
+      const ledger::ExternalWallet& wallet,
+      const ledger::RewardsType type);
 
   void OnUpholdAC(ledger::Result result,
                   bool created,
                   const std::string& viewing_id);
 
   void OnDeleteContributionQueue(const ledger::Result result);
+
+  void ExternalWalletCompleted(
+      const ledger::Result result,
+      const double amount,
+      const std::string& contribution_id,
+      const ledger::RewardsType type);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<PhaseOne> phase_one_;

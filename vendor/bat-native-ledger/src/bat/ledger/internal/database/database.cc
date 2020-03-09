@@ -119,8 +119,9 @@ void Database::GetContributionReport(
 }
 
 void Database::GetIncompleteContributions(
+    const ledger::ContributionProcessor processor,
     ledger::ContributionInfoListCallback callback) {
-  contribution_info_->GetIncompletedRecords(callback);
+  contribution_info_->GetIncompletedRecords(processor, callback);
 }
 
 void Database::UpdateContributionInfoStepAndCount(

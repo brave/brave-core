@@ -43,6 +43,7 @@ class DatabaseContributionInfo: public DatabaseTable {
       ledger::GetContributionReportCallback callback);
 
   void GetIncompletedRecords(
+      const ledger::ContributionProcessor processor,
       ledger::ContributionInfoListCallback callback);
 
   void UpdateStepAndCount(
@@ -76,6 +77,8 @@ class DatabaseContributionInfo: public DatabaseTable {
   bool MigrateToV15(ledger::DBTransaction* transaction);
 
   bool MigrateToV16(ledger::DBTransaction* transaction);
+
+  bool MigrateToV17(ledger::DBTransaction* transaction);
 
   void OnGetRecord(
       ledger::DBCommandResponsePtr response,

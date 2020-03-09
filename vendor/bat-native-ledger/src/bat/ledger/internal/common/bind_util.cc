@@ -249,6 +249,7 @@ std::string FromContributionToString(const ledger::ContributionInfoPtr info) {
   queue.SetIntKey("step", static_cast<int>(info->step));
   queue.SetIntKey("retry_count", info->retry_count);
   queue.SetStringKey("created_at", std::to_string(info->created_at));
+  queue.SetIntKey("processor", static_cast<int>(info->processor));
   queue.SetKey("publishers", std::move(publishers));
 
   std::string json;
@@ -305,6 +306,12 @@ ledger::ContributionInfoPtr FromStringToContribution(const std::string& data) {
   const auto* created_at = dictionary->FindStringKey("created_at");
   if (created_at) {
     contribution->created_at = std::stoull(*created_at);
+  }
+
+  const auto processor = dictionary->FindIntKey("processor");
+  if (processor) {
+    contribution->processor =
+        static_cast<ledger::ContributionProcessor>(*processor);
   }
 
   auto* publishers = dictionary->FindListKey("publishers");
