@@ -36,7 +36,6 @@ class UpholdWallet {
     ledger::ExternalWalletCallback callback);
 
   void OnCreateCard(
-    const bool allow_zero_balance,
     const ledger::ExternalWallet& wallet,
     ledger::ExternalWalletCallback callback,
     const ledger::Result result,

@@ -1379,8 +1379,8 @@ void LedgerImpl::DisconnectWallet(
 
 void LedgerImpl::TransferAnonToExternalWallet(
     ledger::ExternalWalletPtr wallet,
-    const bool allow_zero_balance,
-    ledger::TransferAnonToExternalWalletCallback callback) {
+    ledger::TransferAnonToExternalWalletCallback callback,
+    const bool allow_zero_balance) {
   bat_wallet_->TransferAnonToExternalWallet(
     std::move(wallet),
     allow_zero_balance,
@@ -1574,7 +1574,7 @@ void LedgerImpl::SaveUnblindedTokenList(
 }
 
 void LedgerImpl::GetAllUnblindedTokens(
-    ledger::GetAllUnblindedTokensCallback callback) {
+    ledger::GetUnblindedTokenListCallback callback) {
   bat_database_->GetAllUnblindedTokens(callback);
 }
 
@@ -1675,6 +1675,18 @@ void LedgerImpl::GetMonthlyReport(
 void LedgerImpl::GetAllMonthlyReportIds(
     ledger::GetAllMonthlyReportIdsCallback callback) {
   bat_report_->GetAllMonthlyIds(callback);
+}
+
+void LedgerImpl::TransferTokens(
+    ledger::ExternalWalletPtr wallet,
+    ledger::ResultCallback callback) {
+  bat_promotion_->TransferTokens(std::move(wallet), callback);
+}
+
+void LedgerImpl::GetUnblindedTokensByPromotionType(
+    const std::vector<ledger::PromotionType>& promotion_types,
+    ledger::GetUnblindedTokenListCallback callback) {
+  bat_database_->GetUnblindedTokensByPromotionType(promotion_types, callback);
 }
 
 }  // namespace bat_ledger

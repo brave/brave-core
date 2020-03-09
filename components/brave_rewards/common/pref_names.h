@@ -27,6 +27,7 @@ extern const char kStateServerPublisherListStamp[];
 extern const char kStateUpholdAnonAddress[];
 extern const char kStatePromotionLastFetchStamp[];
 extern const char kStatePromotionCorruptedMigrated[];
+extern const char kStateAnonTransferChecked[];
 
 extern const char kUseRewardsStagingServer[];
 }  // namespace prefs

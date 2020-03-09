@@ -24,6 +24,8 @@ std::string GetReedemSuggestionsUrl();
 
 std::string ReportClobberedClaimsUrl();
 
+std::string GetTransferTokens();
+
 }  // namespace braveledger_request_util
 
 #endif  // BRAVELEDGER_COMMON_PROMOTION_REQUESTS_H_

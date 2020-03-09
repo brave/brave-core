@@ -24,7 +24,7 @@ class DatabaseUnblindedToken: public DatabaseTable {
       ledger::UnblindedTokenList list,
       ledger::ResultCallback callback);
 
-  void GetAllRecords(ledger::GetAllUnblindedTokensCallback callback);
+  void GetAllRecords(ledger::GetUnblindedTokenListCallback callback);
 
   void DeleteRecordList(
       const std::vector<std::string>& ids,
@@ -33,6 +33,10 @@ class DatabaseUnblindedToken: public DatabaseTable {
   void DeleteRecordsForPromotion(
       const std::string& promotion_id,
       ledger::ResultCallback callback);
+
+  void GetRecordsByPromotionType(
+      const std::vector<ledger::PromotionType>& promotion_types,
+      ledger::GetUnblindedTokenListCallback callback);
 
  private:
   bool CreateTableV10(ledger::DBTransaction* transaction);
@@ -51,7 +55,11 @@ class DatabaseUnblindedToken: public DatabaseTable {
 
   void OnGetAllRecords(
       ledger::DBCommandResponsePtr response,
-      ledger::GetAllUnblindedTokensCallback callback);
+      ledger::GetUnblindedTokenListCallback callback);
+
+  void OnGetRecordsByPromotionType(
+      ledger::DBCommandResponsePtr response,
+      ledger::GetUnblindedTokenListCallback callback);
 };
 
 }  // namespace braveledger_database
