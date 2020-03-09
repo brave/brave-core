@@ -79,6 +79,9 @@ public class BraveNewTabPageView extends NewTabPageView {
 
     private boolean isFromBottomSheet;
 
+    // TODO - call NTPSponsoredImagesBridge.getCurrentWallpaper
+    // if null then display regular background image
+    // on every NTP load call NTPSponsoredImagesBridge.registerPageView()
     public BraveNewTabPageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mProfile = Profile.getLastUsedProfile();
@@ -166,12 +169,12 @@ public class BraveNewTabPageView extends NewTabPageView {
         mHttpsUpgradesCountTextView.setText(getBraveStatsStringFormNumber(httpsUpgradesCount));
         mEstTimeSavedCountTextView.setText(getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000));
 
-        if(mSharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES, true) 
+        if(mSharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES, true)
             && sponsoredTab != null && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
             mAdsBlockedTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));
             mHttpsUpgradesTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));
-            mEstTimeSavedTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));            
-            mEstTimeSavedCountTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));            
+            mEstTimeSavedTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));
+            mEstTimeSavedCountTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));
         }
 
         TraceEvent.end(TAG + ".updateBraveStats()");
