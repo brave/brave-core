@@ -42,8 +42,8 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
     host_resolver()->AddRule("*", "127.0.0.1");
   }
 
-  protected:
-   net::EmbeddedTestServer https_server_;
+ protected:
+  net::EmbeddedTestServer https_server_;
 };
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {

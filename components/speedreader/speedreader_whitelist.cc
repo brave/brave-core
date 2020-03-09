@@ -5,6 +5,8 @@
 
 #include "brave/components/speedreader/speedreader_whitelist.h"
 
+#include <utility>
+
 #include "base/bind.h"
 #include "base/files/file_path.h"
 #include "base/task/post_task.h"

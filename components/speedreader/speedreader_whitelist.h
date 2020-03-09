@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_WHITELIST_H_
 
 #include <memory>
+#include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
