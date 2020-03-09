@@ -60,10 +60,6 @@ export default class Settings extends React.PureComponent<Props, {}> {
 
   toggleShowBackgroundImage = () => {
     this.props.toggleShowBackgroundImage()
-    // Re opt-in to branded wallpaper if re-enabling background image
-    if (!this.props.showBackgroundImage && !this.props.brandedWallpaperOptIn) {
-      this.props.toggleBrandedWallpaperOptIn()
-    }
   }
 
   render () {
