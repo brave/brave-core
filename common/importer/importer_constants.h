@@ -6,8 +6,15 @@
 #ifndef BRAVE_COMMON_IMPORTER_IMPORTER_CONSTANTS_H_
 #define BRAVE_COMMON_IMPORTER_IMPORTER_CONSTANTS_H_
 
+#include "build/build_config.h"
+
 // Pref file that holds installed extension list.
-extern const char kChromeExtensionsPreferencesFile[];
-extern const char kChromeExtensionsListPath[];
+constexpr char kChromeExtensionsPreferencesFile[] =
+#if defined(OS_LINUX)
+    "Preferences";
+#else
+    "Secure Preferences";
+#endif
+constexpr char kChromeExtensionsListPath[] = "extensions.settings";
 
 #endif  // BRAVE_COMMON_IMPORTER_IMPORTER_CONSTANTS_H_

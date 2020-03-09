@@ -9,9 +9,13 @@
 #include <string>
 #include <vector>
 
-#include "base/values.h"
-#include "base/files/file_path.h"
 #include "extensions/buildflags/buildflags.h"
+
+namespace base {
+class FilePath;
+class ListValue;
+class Value;
+}  // namespace base
 
 base::FilePath GetChromeUserDataFolder();
 #if !defined(OS_LINUX)

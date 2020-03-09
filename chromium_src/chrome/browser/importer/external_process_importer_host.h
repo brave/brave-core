@@ -7,7 +7,6 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_IMPORTER_EXTERNAL_PROCESS_IMPORTER_HOST_H_
 
 #define BRAVE_EXTERNAL_PROCESS_IMPORTER_HOST_H \
- private: \
   friend class BraveExternalProcessImporterHost;
 
 #define NotifyImportEnded virtual NotifyImportEnded

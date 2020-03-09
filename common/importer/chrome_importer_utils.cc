@@ -7,6 +7,8 @@
 
 #include <memory>
 
+#include "base/values.h"
+#include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "brave/common/importer/importer_constants.h"
