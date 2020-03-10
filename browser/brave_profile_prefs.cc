@@ -33,10 +33,6 @@
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #endif
 
-#if !defined(OS_ANDROID)
-#include "chrome/browser/first_run/first_run.h"
-#endif
-
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 #include "components/gcm_driver/gcm_channel_status_syncer.h"
 #endif
@@ -103,15 +99,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kHTTPSEVerywhereControlType, true);
   registry->RegisterBooleanPref(kNoScriptControlType, false);
   registry->RegisterBooleanPref(kAdControlType, true);
-
-  // advanced view is defaulted to true for EXISTING users; false for new.
-  // also see brave_profile_impl.cc for where default is locked in.
-  bool is_new_user = false;
-#if !defined(OS_ANDROID)
-  is_new_user = first_run::IsChromeFirstRun();
-#endif
-  registry->RegisterBooleanPref(kShieldsAdvancedViewEnabled,
-                                is_new_user == false);
+  registry->RegisterBooleanPref(kShieldsAdvancedViewEnabled, false);
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   // PushMessaging

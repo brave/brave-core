@@ -7,11 +7,15 @@
 
 #include "base/task/post_task.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "content/public/browser/notification_source.h"
-#include "brave/common/pref_names.h"
+
+#if !defined(OS_ANDROID)
+#include "chrome/browser/first_run/first_run.h"
+#endif
 
 BraveProfileImpl::BraveProfileImpl(
     const base::FilePath& path,
@@ -25,10 +29,9 @@ BraveProfileImpl::BraveProfileImpl(
   const PrefService::Preference* pref =
       GetPrefs()->FindPreference(kShieldsAdvancedViewEnabled);
   if (!pref->HasUserSetting()) {
-    bool default_value = GetPrefs()->GetBoolean(kShieldsAdvancedViewEnabled);
     // advanced view is defaulted to true for EXISTING users; false for new.
     // preference needs to be explicitly set to hold its value
-    // see brave_profile_prefs.cc for where this default is determined
+    const bool default_value = !first_run::IsChromeFirstRun();
     GetPrefs()->SetBoolean(kShieldsAdvancedViewEnabled, default_value);
   }
 #endif
