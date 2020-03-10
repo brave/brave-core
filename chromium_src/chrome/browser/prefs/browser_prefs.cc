@@ -55,6 +55,4 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
   // Added 1/2020
   brave_wallet::MigrateBraveWalletPrefs(profile);
 #endif
-
-
 }

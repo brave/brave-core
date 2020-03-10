@@ -11,7 +11,6 @@
   friend class BraveThemeHelper; \
                                  \
  public:
-
 #define GetOmniboxColor virtual GetOmniboxColor
 #include "../../../../../chrome/browser/themes/theme_helper.h"
 #undef GetOmniboxColor

@@ -11,7 +11,6 @@
   friend class BraveProfileMenuViewTest; \
                                          \
  public:
-
 #include "../../../../../../../chrome/browser/ui/views/profiles/profile_menu_view_base.h"
 #undef BRAVE_PROFILE_MENU_VIEW_BASE_H_
 

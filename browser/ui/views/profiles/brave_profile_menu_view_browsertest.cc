@@ -45,7 +45,7 @@ class BraveProfileMenuViewTest : public InProcessBrowserTest {
     return bubble;
   }
 
-  void CheckIdentityHasNoText() { 
+  void CheckIdentityHasNoText() {
     ProfileMenuViewBase* menu = profile_menu();
     // Only the profile image.
     EXPECT_EQ(1u, menu->identity_info_container_->children().size());

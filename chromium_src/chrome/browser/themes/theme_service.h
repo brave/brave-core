@@ -35,7 +35,6 @@
   friend class BraveThemeService; \
                                   \
  public:
-
 #define Init virtual Init
 #include "../../../../../chrome/browser/themes/theme_service.h"
 #undef Init

@@ -11,7 +11,6 @@
   friend class BraveIncognitoMenuView; \
                                        \
  public:
-
 #define OnExitButtonClicked virtual OnExitButtonClicked
 #include "../../../../../../../chrome/browser/ui/views/profiles/incognito_menu_view.h"
 #undef OnExitButtonClicked
