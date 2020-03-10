@@ -98,15 +98,11 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   BraveWidevineBundleManager* brave_widevine_bundle_manager();
 #endif
   brave::BraveStatsUpdater* brave_stats_updater();
-<<<<<<< HEAD
   ntp_sponsored_images::NTPSponsoredImagesService*
       ntp_sponsored_images_service();
-=======
-  NTPSponsoredImagesService* ntp_sponsored_images_service();
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderWhitelist* speedreader_whitelist();
 #endif
->>>>>>> Issue 7968: Wire up the easylist-based whitelist.
 
  private:
   // BrowserProcessImpl overrides:
