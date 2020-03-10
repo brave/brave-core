@@ -1,0 +1,6 @@
+brave_java_bytecode_files = [
+  "../../../brave/build/android/bytecode/java/org/brave/bytecode/BraveClassAdapter.java",
+  "../../../brave/build/android/bytecode/java/org/brave/bytecode/BraveClassVisitor.java",
+  "../../../brave/build/android/bytecode/java/org/brave/bytecode/BraveBookmarkModelClassAdapter.java",
+  "../../../brave/build/android/bytecode/java/org/brave/bytecode/BraveMainPreferenceBaseClassAdapter.java",
+]

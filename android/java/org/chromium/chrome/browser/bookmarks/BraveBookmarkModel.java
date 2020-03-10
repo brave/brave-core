@@ -5,14 +5,31 @@
 
 package org.chromium.chrome.browser.bookmarks;
 
+import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
+import org.chromium.chrome.browser.bookmarks.BookmarkBridge.BookmarkItem;
 import org.chromium.components.bookmarks.BookmarkId;
 
-
+// see org.brave.bytecode.BraveBookmarkModelClassAdapter
 public class BraveBookmarkModel extends BookmarkModel {
 
   public void deleteBookmarkSilently(BookmarkId bookmark) {
       assert null != bookmark;
       deleteBookmark(bookmark);
+  }
+
+  public void extensiveBookmarkChangesBeginning() {
+    assert false;
+  }
+
+  public void extensiveBookmarkChangesEnded() {
+    assert false;
+  }
+
+  public static BookmarkItem createBookmarkItem(long id, int type, String title, String url,
+         boolean isFolder, long parentId, int parentIdType, boolean isEditable,
+         boolean isManaged) {
+    assert false;
+    return null;
   }
 
   /**
