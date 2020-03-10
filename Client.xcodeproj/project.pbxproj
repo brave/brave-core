@@ -273,6 +273,7 @@
 		271DED2C234CC7EF009DAC37 /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECC1234CC7EF009DAC37 /* DateExtensions.swift */; };
 		27253973236CE6B100D06EF1 /* GrantClaimedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC81234CC7EF009DAC37 /* GrantClaimedViewController.swift */; };
 		272FCAA0225CF8F00091E645 /* OnePasswordExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272FCA98225CF8F00091E645 /* OnePasswordExtension.framework */; };
+		27325A5724097DB900790DC6 /* LedgerInitializationFailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27325A5624097DB900790DC6 /* LedgerInitializationFailedView.swift */; };
 		27353FF2235F4E7300E42EBB /* WalletDisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27353FF1235F4E7300E42EBB /* WalletDisclaimerView.swift */; };
 		2744D6CB239EDB1A00A89EBB /* DisconnectedUserWalletButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2744D6CA239EDB1A00A89EBB /* DisconnectedUserWalletButton.swift */; };
 		2744D6CE239EDCBC00A89EBB /* VerifyUserWalletButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2744D6CD239EDCBC00A89EBB /* VerifyUserWalletButton.swift */; };
@@ -1535,6 +1536,7 @@
 		271DECC0234CC7EF009DAC37 /* BundleExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BundleExtensions.swift; sourceTree = "<group>"; };
 		271DECC1234CC7EF009DAC37 /* DateExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
 		272FCA98225CF8F00091E645 /* OnePasswordExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OnePasswordExtension.framework; path = Carthage/Build/iOS/OnePasswordExtension.framework; sourceTree = "<group>"; };
+		27325A5624097DB900790DC6 /* LedgerInitializationFailedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerInitializationFailedView.swift; sourceTree = "<group>"; };
 		27353FF1235F4E7300E42EBB /* WalletDisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletDisclaimerView.swift; sourceTree = "<group>"; };
 		2744D6CA239EDB1A00A89EBB /* DisconnectedUserWalletButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisconnectedUserWalletButton.swift; sourceTree = "<group>"; };
 		2744D6CD239EDCBC00A89EBB /* VerifyUserWalletButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyUserWalletButton.swift; sourceTree = "<group>"; };
@@ -2953,6 +2955,7 @@
 		271DEC1A234CC75F009DAC37 /* BraveRewardsUI */ = {
 			isa = PBXGroup;
 			children = (
+				27325A5424097D9E00790DC6 /* Errors */,
 				2713AF022396EA6000E3ACAA /* User Wallet */,
 				271DEC4D234CC7EE009DAC37 /* Ads */,
 				271DEC6D234CC7EE009DAC37 /* BATValue.swift */,
@@ -3291,6 +3294,14 @@
 				27B1E26C235E58190062E86F /* LocaleExtensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		27325A5424097D9E00790DC6 /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				27325A5624097DB900790DC6 /* LedgerInitializationFailedView.swift */,
+			);
+			path = Errors;
 			sourceTree = "<group>";
 		};
 		2765826D217130B700754B2F /* Certificates */ = {
@@ -5740,6 +5751,7 @@
 				271DED0D234CC7EF009DAC37 /* LabelAccessoryView.swift in Sources */,
 				271DED2B234CC7EF009DAC37 /* BundleExtensions.swift in Sources */,
 				271DED08234CC7EF009DAC37 /* SettingsViewController.swift in Sources */,
+				27325A5724097DB900790DC6 /* LedgerInitializationFailedView.swift in Sources */,
 				271DECC4234CC7EF009DAC37 /* PublisherAttentionView.swift in Sources */,
 				27253973236CE6B100D06EF1 /* GrantClaimedViewController.swift in Sources */,
 				271DED23234CC7EF009DAC37 /* UITableViewExtensions.swift in Sources */,
