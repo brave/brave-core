@@ -105,7 +105,12 @@ def get_previous_version_branch(version):
     if version[0] == 'v':
         version = version[1:]
     parts = version.split('.', 3)
-    parts[1] = str(int(parts[1]) - 1)
+    # TODO(bsclifton): hack used when deprecating dev channel
+    # remove me when 1.7 hits release channel
+    if int(parts[1]) == 7:
+        parts[1] = "5"
+    else:
+        parts[1] = str(int(parts[1]) - 1)
     parts[2] = 'x'
     return '.'.join(parts)
 
