@@ -146,7 +146,7 @@ const std::map<int, std::map<std::string, bool>> kSupportedRegionsSchemas = {
       { "PT", false },  // Portugal
       { "RO", false },  // Romania
       { "RS", false },  // Serbia
-      { "RU", false },  // Russian Federation
+      { "RU", false },  // Russia
       { "SA", false },  // Saudi Arabia
       { "SI", false },  // Slovenia
       { "SK", false },  // Slovakia
@@ -155,6 +155,183 @@ const std::map<int, std::map<std::string, bool>> kSupportedRegionsSchemas = {
       { "TW", false },  // Taiwan
       { "UA", false },  // Ukraine
       { "VN", false }   // Vietnam
+    }
+  },
+  {
+    6, {
+      { "AF", false },  // Afghanistan
+      { "AS", false },  // American Samoa
+      { "AD", false },  // Andorra
+      { "AO", false },  // Angola
+      { "AI", false },  // Anguilla
+      { "AQ", false },  // Antarctica
+      { "AG", false },  // Antigua and Barbuda
+      { "AM", false },  // Armenia
+      { "AW", false },  // Aruba
+      { "BS", false },  // Bahamas
+      { "BH", false },  // Bahrain
+      { "BB", false },  // Barbados
+      { "BY", false },  // Belarus
+      { "BZ", false },  // Belize
+      { "BJ", false },  // Benin
+      { "BM", false },  // Bermuda
+      { "BT", false },  // Bhutan
+      { "BO", false },  // Bolivia
+      { "BQ", false },  // Bonaire
+      { "BA", false },  // Bosnia and Herzegovina
+      { "BW", false },  // Botswana
+      { "BV", false },  // Bouvet Island
+      { "IO", false },  // British Indian Ocean Territory
+      { "BN", false },  // Brunei Darussalam
+      { "BF", false },  // Burkina Faso
+      { "BI", false },  // Burundi
+      { "CM", false },  // Cameroon
+      { "CV", false },  // Cape Verde
+      { "TD", false },  // Chad
+      { "CX", false },  // Christmas Island
+      { "CC", false },  // Cocos (Keeling) Islands
+      { "KM", false },  // Comoros
+      { "CG", false },  // Republic of the Congo
+      { "CD", false },  // Democratic Republic of the Congo
+      { "CK", false },  // Cook Islands
+      { "CR", false },  // Costa Rica
+      { "CW", false },  // Curacao
+      { "CY", false },  // Cyprus
+      { "CI", false },  // Cote d'Ivoire
+      { "DJ", false },  // Djibouti
+      { "DM", false },  // Dominica
+      { "DO", false },  // Dominican Republic
+      { "SV", false },  // El Salvador
+      { "GQ", false },  // Equatorial Guinea
+      { "ER", false },  // Eritrea
+      { "EE", false },  // Estonia
+      { "ET", false },  // Ethiopia
+      { "FK", false },  // Falkland Islands
+      { "FO", false },  // Faroe Islands
+      { "FJ", false },  // Fiji
+      { "GF", false },  // French Guiana
+      { "PF", false },  // French Polynesia
+      { "TF", false },  // French and Antarctic Lands
+      { "GA", false },  // Gabon
+      { "GM", false },  // Gambia
+      { "GE", false },  // Georgia
+      { "GH", false },  // Ghana
+      { "GI", false },  // Gibraltar
+      { "GL", false },  // Greenland
+      { "GD", false },  // Grenada
+      { "GP", false },  // Guadeloupe
+      { "GU", false },  // Guam
+      { "GT", false },  // Guatemala
+      { "GG", false },  // Guernsey
+      { "GN", false },  // Guinea
+      { "GW", false },  // Guinea-Bissau
+      { "GY", false },  // Guyana
+      { "HT", false },  // Haiti
+      { "HM", false },  // Heard Island and McDonald Islands
+      { "VA", false },  // Vatican City
+      { "HN", false },  // Honduras
+      { "IS", false },  // Iceland
+      { "IM", false },  // Isle of Man
+      { "JM", false },  // Jamaica
+      { "JE", false },  // Jersey
+      { "JO", false },  // Jordan
+      { "KZ", false },  // Kazakhstan
+      { "KE", false },  // Kenya
+      { "KI", false },  // Kiribati
+      { "KW", false },  // Kuwait
+      { "KG", false },  // Kyrgyzstan
+      { "LA", false },  // Lao People's Democratic Republic
+      { "LV", false },  // Latvia
+      { "LB", false },  // Lebanon
+      { "LS", false },  // Lesotho
+      { "LR", false },  // Liberia
+      { "LI", false },  // Liechtenstein
+      { "LU", false },  // Luxembourg
+      { "MO", false },  // Macao
+      { "MK", false },  // Macedonia
+      { "MG", false },  // Madagascar
+      { "MW", false },  // Malawi
+      { "MV", false },  // Maldives
+      { "ML", false },  // Mali
+      { "MT", false },  // Malta
+      { "MH", false },  // Marshall Islands
+      { "MQ", false },  // Martinique
+      { "MR", false },  // Mauritania
+      { "MU", false },  // Mauritius
+      { "YT", false },  // Mayotte
+      { "FM", false },  // Micronesia, Federated States of
+      { "MD", false },  // Moldova
+      { "MC", false },  // Monaco
+      { "MN", false },  // Mongolia
+      { "ME", false },  // Montenegro
+      { "MS", false },  // Montserrat
+      { "MZ", false },  // Mozambique
+      { "MM", false },  // Myanmar
+      { "NA", false },  // Namibia
+      { "NR", false },  // Nauru
+      { "NP", false },  // Nepal
+      { "NC", false },  // New Caledonia
+      { "NI", false },  // Nicaragua
+      { "NE", false },  // Niger
+      { "NU", false },  // Niue
+      { "NF", false },  // Norfolk Island
+      { "MP", false },  // Northern Mariana Islands
+      { "NO", false },  // Norway
+      { "OM", false },  // Oman
+      { "PW", false },  // Palau
+      { "PS", false },  // Palestine
+      { "PA", false },  // Panama
+      { "PG", false },  // Papua New Guinea
+      { "PY", false },  // Paraguay
+      { "PN", false },  // Pitcairn
+      { "PR", false },  // Puerto Rico
+      { "QA", false },  // Qatar
+      { "RW", false },  // Rwanda
+      { "RE", false },  // Reunion
+      { "BL", false },  // Saint Barthelemy
+      { "SH", false },  // Saint Helena
+      { "KN", false },  // Saint Kitts and Nevis
+      { "LC", false },  // Saint Lucia
+      { "MF", false },  // Saint Martin
+      { "PM", false },  // Saint Pierre and Miquelon
+      { "VC", false },  // Saint Vincent and the Grenadines
+      { "WS", false },  // Samoa
+      { "SM", false },  // San Marino
+      { "ST", false },  // São Tomé and Príncipe
+      { "SN", false },  // Senegal
+      { "SC", false },  // Seychelles
+      { "SL", false },  // Sierra Leone
+      { "SX", false },  // Sint Maarten
+      { "SB", false },  // Solomon Islands
+      { "GS", false },  // South Georgia and the South Sandwich Islands
+      { "SS", false },  // South Sudan
+      { "LK", false },  // Sri Lanka
+      { "SR", false },  // Suriname
+      { "SJ", false },  // Svalbard and Jan Mayen
+      { "SZ", false },  // Swaziland
+      { "TJ", false },  // Tajikistan
+      { "TZ", false },  // United Republic of Tanzania
+      { "TL", false },  // Timor-Leste
+      { "TG", false },  // Togo
+      { "TK", false },  // Tokelau
+      { "TO", false },  // Tonga
+      { "TT", false },  // Trinidad and Tobago
+      { "TN", false },  // Tunisia
+      { "TM", false },  // Turkmenistan
+      { "TC", false },  // Turks and Caicos Islands
+      { "TV", false },  // Tuvalu
+      { "UG", false },  // Uganda
+      { "UM", false },  // United States Minor Outlying Islands
+      { "UY", false },  // Uruguay
+      { "UZ", false },  // Uzbekistan
+      { "VU", false },  // Vanuatu
+      { "VG", false },  // British Virgin Islands
+      { "VI", false },  // US Virgin Islands
+      { "WF", false },  // Wallis and Futuna
+      { "EH", false },  // Western Sahara
+      { "YE", false },  // Yemen
+      { "ZM", false },  // Zambia
+      { "ZW", false }   // Zimbabwe
     }
   }
 
