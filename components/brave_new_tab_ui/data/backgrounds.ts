@@ -41,7 +41,7 @@ export const images: NewTab.Image[] = [
     'author': 'Ben Karpinski',
     'link': 'https://www.benkarpinski.com/landscapes',
     'originalUrl': 'Contributor sent the hi-res version through email',
-    'license': 'used with permission'
+    'license': 'Used with permission'
   },
   {
     'name': 'ntp-fall-2019-8',
@@ -49,7 +49,7 @@ export const images: NewTab.Image[] = [
     'author': 'Joe Gardner',
     'link': 'https://unsplash.com/@josephgardnerphotography?utm_source=unsplash&utm_medium=referral&utm_content=credit',
     'originalUrl': 'https://unsplash.com/photos/4xv3lqnanYc',
-    'license': 'used with permission'
+    'license': 'Used with permission'
   },
   {
     'name': 'ntp-fall-2019-10',
@@ -57,7 +57,7 @@ export const images: NewTab.Image[] = [
     'author': 'Matt Palmer',
     'link': 'https://unsplash.com/@mattpalmer?utm_source=unsplash&utm_medium=referral&utm_content=credit',
     'originalUrl': 'https://unsplash.com/photos/veMnvjmfoxw',
-    'license': 'used with permission'
+    'license': 'Used with permission'
   },
   {
     'name': 'ntp-fall-2019-12',
@@ -65,7 +65,7 @@ export const images: NewTab.Image[] = [
     'author': 'Jerol Soibam',
     'link': 'https://www.instagram.com/jerol_soibam',
     'originalUrl': 'Contributor sent the hi-res version through email',
-    'license': 'used with permission'
+    'license': 'Used with permission'
   },
   {
     'name': 'ntp-fall-2019-13',
@@ -73,7 +73,7 @@ export const images: NewTab.Image[] = [
     'author': 'Will Christiansen',
     'link': 'www.theskyfolk.com',
     'originalUrl': 'Contributor sent the hi-res version through email',
-    'license': 'used with permission'
+    'license': 'Used with permission'
   },
   {
     'name': 'ntp-fall-2019-14',
@@ -81,6 +81,6 @@ export const images: NewTab.Image[] = [
     'author': 'Will Christiansen',
     'link': 'www.theskyfolk.com',
     'originalUrl': 'Contributor sent the hi-res version through email',
-    'license': 'used with permission'
+    'license': 'Used with permission'
   }
 ]
