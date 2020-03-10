@@ -105,12 +105,11 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, ScriptBlockHasSavings) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  bool as_expected = false;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
-                                          "setExpectations(0, 0, 0, 0, 1, 0);"
-                                          "xhr('analytics.js')",
-                                          &as_expected));
-  EXPECT_TRUE(as_expected);
+  ASSERT_TRUE(ExecJs(contents, "addImage('logo.png')"));
+  ASSERT_TRUE(EvalJsWithManualReply(contents,
+                                    "setExpectations(0, 0, 0, 0, 1, 0);"
+                                    "xhr('analytics.js')")
+                  .ExtractBool());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
   // Prediction triggered when web contents are closed
   contents->Close();
@@ -127,21 +126,21 @@ IN_PROC_BROWSER_TEST_F(PerfPredictorTabHelperTest, NewNavigationStoresSavings) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
 
-  bool as_expected = false;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
-                                          "setExpectations(0, 0, 0, 0, 1, 0);"
-                                          "xhr('analytics.js')",
-                                          &as_expected));
-  EXPECT_TRUE(as_expected);
+  ASSERT_TRUE(ExecJs(contents, "addImage('logo.png')"));
+  ASSERT_TRUE(EvalJsWithManualReply(contents,
+                                    "setExpectations(0, 0, 0, 0, 1, 0);"
+                                    "xhr('analytics.js')")
+                  .ExtractBool());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
   // Prediction triggered when web contents are closed
   GURL second_url =
       embedded_test_server()->GetURL("example.com", "/blocking.html");
   ui_test_utils::NavigateToURL(browser(), second_url);
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
-                                          "setExpectations(0, 0, 0, 0, 1, 0);"
-                                          "xhr('analytics.js')",
-                                          &as_expected));
+  ASSERT_TRUE(ExecJs(contents, "addImage('logo.png')"));
+  ASSERT_TRUE(EvalJsWithManualReply(contents,
+                                    "setExpectations(0, 0, 0, 0, 1, 0);"
+                                    "xhr('analytics.js')")
+                  .ExtractBool());
 
   auto previous_nav_savings = browser()->profile()->GetPrefs()->GetUint64(
       brave_perf_predictor::prefs::kBandwidthSavedBytes);

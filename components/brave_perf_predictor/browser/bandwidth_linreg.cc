@@ -24,10 +24,9 @@ bool StandardiseFeatsNoOutliers(
   for (unsigned int i = 0; i < standardise_feat_count; i++) {
     features->at(i) = (features->at(i) - means[i]) / scale[i];
   }
-  double outlier_threshold = 6;
   for (unsigned int i = 0; i < standardise_feat_count; i++) {
-    if (features->at(i) > outlier_threshold ||
-        features->at(i) < -outlier_threshold) {
+    if (features->at(i) > kOutlierThreshold ||
+        features->at(i) < -kOutlierThreshold) {
       VLOG(2) << "Outlier feature " << feature_sequence.at(i) << " with value "
               << features->at(i);
       return true;

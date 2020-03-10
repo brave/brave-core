@@ -14,6 +14,10 @@
 
 namespace brave_perf_predictor {
 
+constexpr double kOutlierThreshold = 6;
+// if above 20MB _and_ more than 6x of the transfer size, probably an outlier
+constexpr double kSavingsAbsoluteOutlier = 20 << 20;
+
 // Computes prediction based on the provided feature vector.
 // It is the client's responsibility to provide features in
 // the exact order expected by the predictor.

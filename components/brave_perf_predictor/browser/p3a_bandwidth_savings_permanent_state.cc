@@ -8,6 +8,8 @@
 #include <numeric>
 #include <utility>
 
+#include "base/time/clock.h"
+#include "base/time/default_clock.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -23,7 +25,14 @@ constexpr size_t kNumOfSavedDailyUptimes = 7;
 
 P3ABandwidthSavingsPermanentState::P3ABandwidthSavingsPermanentState(
     PrefService* user_prefs)
-    : user_prefs_(user_prefs) {
+    : P3ABandwidthSavingsPermanentState(
+          user_prefs,
+          std::make_unique<base::DefaultClock>()) {}
+
+P3ABandwidthSavingsPermanentState::P3ABandwidthSavingsPermanentState(
+    PrefService* user_prefs,
+    std::unique_ptr<base::Clock> clock)
+    : clock_(std::move(clock)), user_prefs_(user_prefs) {
   if (user_prefs)
     LoadSavingsDaily();
 }
@@ -32,7 +41,7 @@ P3ABandwidthSavingsPermanentState::~P3ABandwidthSavingsPermanentState() =
     default;
 
 void P3ABandwidthSavingsPermanentState::AddSavings(uint64_t delta) {
-  base::Time now_midnight = base::Time::Now().LocalMidnight();
+  base::Time now_midnight = clock_->Now().LocalMidnight();
   base::Time last_saved_midnight;
 
   if (!daily_savings_.empty())
@@ -50,20 +59,10 @@ void P3ABandwidthSavingsPermanentState::AddSavings(uint64_t delta) {
   SaveSavingsDaily();
 }
 
-base::Optional<uint64_t>
-P3ABandwidthSavingsPermanentState::GetFullPeriodSavingsBytes() {
-  if (daily_savings_.size() == kNumOfSavedDailyUptimes) {
-    // divide by 1024*1024 = 2^20 to convert bytes -> MB
-    return GetSavingsTotal() >> 20;
-  } else {
-    return base::nullopt;
-  }
-}
-
-uint64_t P3ABandwidthSavingsPermanentState::GetSavingsTotal() const {
+uint64_t P3ABandwidthSavingsPermanentState::GetFullPeriodSavingsBytes() const {
   // We record only saving for last N days.
   const base::Time n_days_ago =
-      base::Time::Now() - base::TimeDelta::FromDays(kNumOfSavedDailyUptimes);
+      clock_->Now() - base::TimeDelta::FromDays(kNumOfSavedDailyUptimes);
   return std::accumulate(daily_savings_.begin(), daily_savings_.end(), 0UL,
                          [n_days_ago](const uint64_t acc, const auto& u2) {
                            uint64_t add = 0;
