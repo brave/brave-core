@@ -42,7 +42,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             @Nullable ObservableSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
             ObservableSupplier<BookmarkBridge> bookmarkBridgeSupplier) {
         super(context, activityTabProvider, multiWindowModeStateDispatcher, tabModelSelector,
-                toolbarManager, decorView, appMenuDelegate, overviewModeBehaviorSupplier, bookmarkBridgeSupplier);
+                toolbarManager, decorView, appMenuDelegate, overviewModeBehaviorSupplier,
+                bookmarkBridgeSupplier);
     }
 
     @Override
@@ -54,8 +55,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         // Brave's items are only visible for page menu.
         // To make logic simple, below three items are added whenever menu gets visible
         // and removed when menu is dismissed.
-        if (!shouldShowPageMenu())
-            return;
+        if (!shouldShowPageMenu()) return;
 
         // Brave donesn't show help menu item in app menu.
         menu.findItem(R.id.help_id).setVisible(false).setEnabled(false);
@@ -64,8 +64,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         if (!mIsTablet) menu.findItem(R.id.share_row_menu_id).setVisible(false);
 
         menu.add(Menu.NONE, R.id.set_default_browser, 0, R.string.menu_set_default_browser);
-        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) &&
-                !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
+                && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
             menu.add(Menu.NONE, R.id.brave_rewards_id, 0, R.string.menu_brave_rewards);
         }
         menu.add(Menu.NONE, R.id.exit_id, 0, R.string.menu_exit);

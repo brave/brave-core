@@ -8,7 +8,6 @@ package org.brave.bytecode;
 import org.objectweb.asm.ClassVisitor;
 
 public class BraveMainPreferenceBaseClassAdapter extends BraveClassVisitor {
-
     static String sMainPreferencesClassName =
             "org/chromium/chrome/browser/settings/MainPreferences";
 
