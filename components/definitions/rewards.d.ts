@@ -36,6 +36,7 @@ declare namespace Rewards {
     contributionNonVerified: boolean
     contributionVideos: boolean
     createdTimestamp: number | null
+    currentCountryCode: string
     donationAbilityTwitter: boolean
     donationAbilityYT: boolean
     enabledAds: boolean
@@ -67,6 +68,9 @@ declare namespace Rewards {
       modalBackup: boolean
       modalRedirect: 'show' | 'hide' | 'error' | 'notAllowed'
       paymentIdCheck: boolean
+      promosDismissed?: {
+        [key: string]: boolean
+      }
       walletRecoverySuccess: boolean | null
       walletServerProblem: boolean
       walletCorrupted: boolean

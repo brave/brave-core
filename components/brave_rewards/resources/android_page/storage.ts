@@ -75,7 +75,8 @@ export const defaultState: Rewards.State = {
     month: -1,
     year: -1
   },
-  monthlyReportIds: []
+  monthlyReportIds: [],
+  currentCountryCode: ''
 }
 
 const cleanData = (state: Rewards.State) => {

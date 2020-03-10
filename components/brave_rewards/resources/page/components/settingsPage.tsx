@@ -8,7 +8,13 @@ import { connect } from 'react-redux'
 
 // Components
 import { Column, Grid } from 'brave-ui/components'
-import { DisabledBox, MainToggle, SettingsPage as Page, ModalRedirect } from '../../ui/components'
+import {
+  DisabledBox,
+  MainToggle,
+  SettingsPage as Page,
+  ModalRedirect,
+  SidebarPromo
+} from '../../ui/components'
 import PageWallet from './pageWallet'
 import AdsBox from './adsBox'
 import ContributeBox from './contributeBox'
@@ -19,6 +25,7 @@ import MonthlyContributionBox from './monthlyContributionBox'
 import * as rewardsActions from '../actions/rewards_actions'
 import Promotion from './promotion'
 import { getLocale } from '../../../../common/locale'
+import { activePromos, getPromo, PromoType, Promo } from '../promos'
 
 interface Props extends Rewards.ComponentProps {
 }
@@ -54,6 +61,7 @@ class SettingsPage extends React.Component<Props, State> {
     this.actions.getTransactionHistory()
     this.actions.getAdsData()
     this.actions.getExcludedSites()
+    this.actions.getCountryCode()
   }
 
   componentDidMount () {
@@ -141,6 +149,10 @@ class SettingsPage extends React.Component<Props, State> {
     window.open('https://brave.com/privacy#rewards', '_blank')
   }
 
+  onDismissPromo = (promo: PromoType) => {
+    this.actions.dismissPromoPrompt(promo)
+  }
+
   getPromotionsClaims = () => {
     const { promotions, ui } = this.props.rewardsData
 
@@ -223,6 +235,36 @@ class SettingsPage extends React.Component<Props, State> {
     return null
   }
 
+  renderPromos = () => {
+    const { currentCountryCode, ui } = this.props.rewardsData
+    const { promosDismissed } = ui
+
+    return (
+      <>
+        {activePromos.map((key: PromoType) => {
+          if (promosDismissed && promosDismissed[key]) {
+            return null
+          }
+
+          const promo = getPromo(key, getLocale) as Promo
+          const { supportedLocales } = promo
+
+          if (supportedLocales.length && !supportedLocales.includes(currentCountryCode)) {
+            return null
+          }
+
+          return (
+            <SidebarPromo
+              {...promo}
+              key={`${key}-promo`}
+              onDismissPromo={this.onDismissPromo.bind(this, key)}
+            />
+          )
+        })}
+      </>
+    )
+  }
+
   render () {
     const { enabledMain } = this.props.rewardsData
 
@@ -259,6 +301,7 @@ class SettingsPage extends React.Component<Props, State> {
               : null
             }
             <PageWallet />
+            {this.renderPromos()}
           </Column>
         </Grid>
       </Page>

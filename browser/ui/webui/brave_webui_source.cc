@@ -624,7 +624,12 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "serviceTextReady", IDS_BRAVE_UI_SERVICE_TEXT_READY },
         { "showAll", IDS_BRAVE_UI_SHOW_ALL },
         { "viewedSites", IDS_BRAVE_UI_VIEWED_SITES },
-        { "termsOfService", IDS_BRAVE_UI_TERMS_OF_SERVICE }
+        { "termsOfService", IDS_BRAVE_UI_TERMS_OF_SERVICE },
+
+        { "tapNetworkTitle", IDS_BRAVE_UI_TAP_NETWORK_TITLE },
+        { "tapNetworkInfo", IDS_BRAVE_UI_TAP_NETWORK_INFO },
+        { "tapNetworkLink", IDS_BRAVE_UI_TAP_NETWORK_LINK },
+        { "tapNetworkDisclaimer", IDS_BRAVE_UI_TAP_NETWORK_DISCLAIMER }
       }
     }, {
       std::string("sync"), {
