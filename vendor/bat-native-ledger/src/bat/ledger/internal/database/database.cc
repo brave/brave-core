@@ -18,6 +18,8 @@
 #include "bat/ledger/internal/database/database_publisher_info.h"
 #include "bat/ledger/internal/database/database_recurring_tip.h"
 #include "bat/ledger/internal/database/database_server_publisher_info.h"
+#include "bat/ledger/internal/database/database_sku_order.h"
+#include "bat/ledger/internal/database/database_sku_transaction.h"
 #include "bat/ledger/internal/database/database_unblinded_token.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
@@ -42,6 +44,8 @@ Database::Database(bat_ledger::LedgerImpl* ledger) :
   recurring_tip_ = std::make_unique<DatabaseRecurringTip>(ledger_);
   server_publisher_info_ =
       std::make_unique<DatabaseServerPublisherInfo>(ledger_);
+  sku_transaction_ = std::make_unique<DatabaseSKUTransaction>(ledger_);
+  sku_order_ = std::make_unique<DatabaseSKUOrder>(ledger_);
   unblinded_token_ =
       std::make_unique<DatabaseUnblindedToken>(ledger_);
 }
@@ -385,6 +389,24 @@ void Database::GetServerPublisherInfo(
     const std::string& publisher_key,
     ledger::GetServerPublisherInfoCallback callback) {
   server_publisher_info_->GetRecord(publisher_key, callback);
+}
+
+/**
+ * SKU ORDER
+ */
+void Database::SaveSKUOrder(
+    ledger::SKUOrderPtr order,
+    ledger::ResultCallback callback) {
+  sku_order_->InsertOrUpdate(std::move(order), callback);
+}
+
+/**
+ * SKU TRANSACTION
+ */
+void Database::SaveSKUTransaction(
+    ledger::SKUTransactionPtr transaction,
+    ledger::ResultCallback callback) {
+  sku_transaction_->InsertOrUpdate(std::move(transaction), callback);
 }
 
 /**

@@ -674,6 +674,12 @@ class LedgerImpl : public ledger::Ledger {
       const ledger::CredsBatchStatus status,
       ledger::ResultCallback callback);
 
+  void SaveSKUOrder(ledger::SKUOrderPtr order, ledger::ResultCallback callback);
+
+  void SaveSKUTransaction(
+      ledger::SKUTransactionPtr transaction,
+      ledger::ResultCallback callback);
+
  private:
   void InitializeConfirmations(
       const bool execute_create_script,

@@ -1633,4 +1633,17 @@ void LedgerImpl::UpdateCredsBatchStatus(
       callback);
 }
 
+void LedgerImpl::SaveSKUOrder(
+    ledger::SKUOrderPtr order,
+    ledger::ResultCallback callback) {
+  bat_database_->SaveSKUOrder(std::move(order), callback);
+}
+
+void LedgerImpl::SaveSKUTransaction(
+      ledger::SKUTransactionPtr transaction,
+      ledger::ResultCallback callback) {
+  bat_database_->SaveSKUTransaction(std::move(transaction), callback);
+
+}
+
 }  // namespace bat_ledger

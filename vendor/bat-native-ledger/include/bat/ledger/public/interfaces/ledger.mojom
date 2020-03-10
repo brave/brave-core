@@ -457,3 +457,63 @@ struct CredsBatch {
   CredsBatchStatus status;
 };
 
+enum SKUOrderStatus {
+  NONE = 0,
+  CREATED = 1,
+  SENT = 2,
+  PAID = 3,
+  FULFILLED = 4,
+  CANCELED = 5
+};
+
+struct SKUOrder {
+  string order_id;
+  double total_amount;
+  string merchant_id;
+  string location;
+  SKUOrderStatus status;
+  string contribution_id;
+  uint64 created_at;
+  array<SKUOrderItem> items;
+};
+
+enum SKUOrderItemType {
+  NONE = 0,
+  SINGLE_USE = 1
+};
+
+struct SKUOrderItem {
+  string order_item_id;
+  string order_id;
+  string sku;
+  int32 quantity;
+  double price;
+  string name;
+  string description;
+  SKUOrderItemType type;
+  uint64 expires_at;
+  uint64 created_at;
+};
+
+enum SKUTransactionType {
+  NONE = 0,
+  UPHOLD = 1,
+  ANONYMOUS_CARD = 2
+};
+
+enum SKUTransactionStatus {
+  NONE = 0,
+  CREATED = 1,
+  COMPLETED = 2
+};
+
+struct SKUTransaction {
+  string transaction_id;
+  string order_id;
+  string external_transaction_id;
+  SKUTransactionType type;
+  double amount;
+  SKUTransactionStatus status;
+  uint64 created_at;
+};
+

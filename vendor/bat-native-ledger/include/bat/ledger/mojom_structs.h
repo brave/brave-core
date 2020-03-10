@@ -139,6 +139,22 @@ using ServerPublisherInfoPtr = mojom::ServerPublisherInfoPtr;
 using ServerPublisherPartial = mojom::ServerPublisherPartial;
 using ServerPublisherPartialPtr = mojom::ServerPublisherPartialPtr;
 
+using SKUOrder = mojom::SKUOrder;
+using SKUOrderPtr = mojom::SKUOrderPtr;
+
+using SKUOrderItem = mojom::SKUOrderItem;
+using SKUOrderItemPtr = mojom::SKUOrderItemPtr;
+using SKUOrderItemList = std::vector<SKUOrderItemPtr>;
+
+using SKUOrderStatus = mojom::SKUOrderStatus;
+
+using SKUTransaction = mojom::SKUTransaction;
+using SKUTransactionPtr = mojom::SKUTransactionPtr;
+
+using SKUTransactionStatus = mojom::SKUTransactionStatus;
+
+using SKUTransactionType = mojom::SKUTransactionType;
+
 using TransferFee = mojom::TransferFee;
 using TransferFeePtr = mojom::TransferFeePtr;
 using TransferFeeList = std::map<std::string, TransferFeePtr>;
