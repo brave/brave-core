@@ -25,21 +25,24 @@ import org.chromium.chrome.browser.flags.FeatureUtilities;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.tabbed_mode.TabbedAppMenuPropertiesDelegate;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
+import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler;
 
-public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegateImpl {
+public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertiesDelegate {
     private Menu mMenu;
 
-    public BraveAppMenuPropertiesDelegateImpl(Context context,
+    public BraveTabbedAppMenuPropertiesDelegate(Context context,
             ActivityTabProvider activityTabProvider,
             MultiWindowModeStateDispatcher multiWindowModeStateDispatcher,
             TabModelSelector tabModelSelector, ToolbarManager toolbarManager, View decorView,
+            AppMenuDelegate appMenuDelegate,
             @Nullable ObservableSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
             ObservableSupplier<BookmarkBridge> bookmarkBridgeSupplier) {
         super(context, activityTabProvider, multiWindowModeStateDispatcher, tabModelSelector,
-                toolbarManager, decorView, overviewModeBehaviorSupplier, bookmarkBridgeSupplier);
+                toolbarManager, decorView, appMenuDelegate, overviewModeBehaviorSupplier, bookmarkBridgeSupplier);
     }
 
     @Override
@@ -90,6 +93,8 @@ public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegat
 
     @Override
     public void onFooterViewInflated(AppMenuHandler appMenuHandler, View view) {
+        super.onFooterViewInflated(appMenuHandler, view);
+
         // Hide bookmark button if bottom toolbar is enabled
         ImageButton bookmarkButton = view.findViewById(R.id.bookmark_this_page_id);
         if (bookmarkButton != null && FeatureUtilities.isBottomToolbarEnabled()) {
