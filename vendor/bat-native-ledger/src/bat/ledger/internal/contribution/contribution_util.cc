@@ -5,6 +5,7 @@
 
 #include <utility>
 
+#include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/contribution/contribution_util.h"
 
 #include "wrapper.hpp"  // NOLINT
@@ -86,6 +87,62 @@ double GetTotalFromRecurringVerified(
   }
 
   return total_recurring_amount;
+}
+
+ledger::ContributionProcessor GetProcessor(const std::string& wallet_type) {
+  if (wallet_type == ledger::kWalletUnBlinded) {
+    return ledger::ContributionProcessor::BRAVE_TOKENS;
+  }
+
+  if (wallet_type == ledger::kWalletAnonymous) {
+    return ledger::ContributionProcessor::BRAVE_USER_FUNDS;
+  }
+
+  if (wallet_type == ledger::kWalletUphold) {
+    return ledger::ContributionProcessor::UPHOLD;
+  }
+
+  return ledger::ContributionProcessor::NONE;
+}
+
+std::string GetNextProcessor(const std::string& current_processor) {
+  if (current_processor == ledger::kWalletUnBlinded) {
+    return ledger::kWalletAnonymous;
+  }
+
+  if (current_processor == ledger::kWalletAnonymous) {
+    return ledger::kWalletUphold;
+  }
+
+  if (current_processor == ledger::kWalletUphold) {
+    return "";
+  }
+
+  return ledger::kWalletUnBlinded;
+}
+
+bool HaveEnoughFundsToContribute(
+    double* amount,
+    const bool partial,
+    const double balance) {
+  DCHECK(amount);
+  if (partial) {
+    if (balance == 0) {
+      return false;
+    }
+
+    if (*amount > balance) {
+      *amount = balance;
+    }
+
+    return true;
+  }
+
+  if (*amount > balance) {
+    return false;
+  }
+
+  return true;
 }
 
 }  // namespace braveledger_contribution

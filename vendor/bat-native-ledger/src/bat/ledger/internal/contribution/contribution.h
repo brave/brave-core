@@ -132,25 +132,17 @@ class Contribution {
       const ledger::Result result,
       ledger::ResultCallback callback);
 
-  bool ProcessUnblindedTokens(
-      ledger::BalancePtr info,
-      ledger::RewardsType type,
-      double* fee,
-      ledger::ContributionQueuePublisherList publishers,
-      ledger::ContributionQueuePublisherList* publishers_left);
+  void CreateNewEntry(
+      const std::string& wallet_type,
+      ledger::BalancePtr balance,
+      ledger::ContributionQueuePtr queue);
 
-  bool ProcessAnonUserFunds(
-      ledger::BalancePtr info,
-      ledger::RewardsType type,
-      double* fee,
-      ledger::ContributionQueuePublisherList publishers,
-      ledger::ContributionQueuePublisherList* publishers_left);
-
-  bool ProcessExternalWallet(
-      ledger::BalancePtr info,
-      ledger::RewardsType type,
-      const double fee,
-      ledger::ContributionQueuePublisherList publishers);
+  void OnEntrySaved(
+      const ledger::Result result,
+      const std::string& contribution_id,
+      const std::string& current_wallet_type,
+      const ledger::Balance& balance,
+      const std::string& queue_string);
 
   void OnProcessExternalWalletSaved(
       const ledger::Result result,
@@ -158,8 +150,8 @@ class Contribution {
       base::flat_map<std::string, double> wallet_balances);
 
   void Process(
-      ledger::ContributionQueuePtr contribution,
-      ledger::BalancePtr info);
+      ledger::ContributionQueuePtr queue,
+      ledger::BalancePtr balance);
 
   void DeleteContributionQueue(const uint64_t id);
 
@@ -171,12 +163,10 @@ class Contribution {
 
   void OnExternalWallets(
       const std::string& contribution_id,
-      base::flat_map<std::string, double> wallet_balances,
       std::map<std::string, ledger::ExternalWalletPtr> wallets);
 
   void ExternalWalletContributionInfo(
       ledger::ContributionInfoPtr contribution,
-      base::flat_map<std::string, double> wallet_balances,
       const ledger::ExternalWallet& wallet);
 
   void OnExternalWalletServerPublisherInfo(

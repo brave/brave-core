@@ -31,6 +31,15 @@ bool GenerateSuggestionMock(
 double GetTotalFromRecurringVerified(
     const ledger::PublisherInfoList& publisher_list);
 
+ledger::ContributionProcessor GetProcessor(const std::string& wallet_type);
+
+std::string GetNextProcessor(const std::string& current_processor);
+
+bool HaveEnoughFundsToContribute(
+    double* amount,
+    const bool partial,
+    const double balance);
+
 }  // namespace braveledger_contribution
 
 #endif  // BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_UTIL_H_

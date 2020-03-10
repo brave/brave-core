@@ -50,31 +50,6 @@ ledger::ContributionStep ConvertResultIntoContributionStep(
   }
 }
 
-bool HaveReconcileEnoughFunds(
-    ledger::ContributionQueuePtr contribution,
-    double* fee,
-    const double balance) {
-  if (contribution->type == ledger::RewardsType::AUTO_CONTRIBUTE) {
-    if (balance == 0) {
-      return false;
-    }
-
-    if (contribution->amount > balance) {
-      contribution->amount = balance;
-    }
-
-    *fee = contribution->amount;
-    return true;
-  }
-
-  if (contribution->amount > balance) {
-    return false;
-  }
-
-  *fee = contribution->amount;
-  return true;
-}
-
 }  // namespace
 
 namespace braveledger_contribution {
@@ -329,7 +304,7 @@ void Contribution::OnBalance(
     const std::string& contribution_queue,
     const ledger::Result result,
     ledger::BalancePtr info) {
-  auto const contribution =
+  auto const queue =
       braveledger_bind_util::FromStringToContributionQueue(contribution_queue);
   if (result != ledger::Result::LEDGER_OK || !info) {
     queue_in_progress_ = false;
@@ -338,7 +313,7 @@ void Contribution::OnBalance(
     return;
   }
 
-  Process(contribution->Clone(), std::move(info));
+  Process(queue->Clone(), std::move(info));
 }
 
 
@@ -526,58 +501,58 @@ void Contribution::DeleteContributionQueue(const uint64_t id) {
   ledger_->DeleteContributionQueue(id, callback);
 }
 
-bool Contribution::ProcessUnblindedTokens(
-    ledger::BalancePtr info,
-    ledger::RewardsType type,
-    double* fee,
-    ledger::ContributionQueuePublisherList publishers,
-    ledger::ContributionQueuePublisherList* publishers_left) {
-  DCHECK(publishers_left);
-  if (!fee) {
-    *publishers_left = std::move(publishers);
-    return false;
+void Contribution::CreateNewEntry(
+    const std::string& wallet_type,
+    ledger::BalancePtr balance,
+    ledger::ContributionQueuePtr queue) {
+  if (!queue || !balance || wallet_type.empty()) {
+    DeleteContributionQueue(queue->id);
+    return;
   }
 
-  const double balance =
+  const double wallet_balance =
       braveledger_wallet::Balance::GetPerWalletBalance(
-          ledger::kWalletUnBlinded,
-          info->wallets);
-  if (balance == 0) {
-    *publishers_left = std::move(publishers);
-    return false;
+          wallet_type,
+          balance->wallets);
+  if (wallet_balance == 0) {
+    CreateNewEntry(
+        GetNextProcessor(wallet_type),
+        std::move(balance),
+        std::move(queue));
+    return;
   }
 
   const std::string contribution_id = base::GenerateGUID();
 
-  const uint64_t now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
   auto contribution = ledger::ContributionInfo::New();
+  const uint64_t now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
   contribution->contribution_id = contribution_id;
-  contribution->amount = *fee;
-  contribution->type = type;
+  contribution->amount = queue->amount;
+  contribution->type = queue->type;
   contribution->step = ledger::ContributionStep::STEP_START;
   contribution->retry_count = -1;
   contribution->created_at = now;
-  contribution->processor = ledger::ContributionProcessor::BRAVE_TOKENS;
+  contribution->processor = GetProcessor(wallet_type);
 
   ledger::ContributionQueuePublisherList publishers_new;
-  bool full_amount = true;
-  if (balance < *fee) {
-    *fee = *fee - balance;
-    contribution->amount = balance;
-    full_amount = false;
+  ledger::ContributionQueuePublisherList publishers_left;
+  if (wallet_balance < queue->amount) {
+    contribution->amount = wallet_balance;
+    queue->amount = queue->amount - wallet_balance;
 
-    if (type == ledger::RewardsType::RECURRING_TIP ||
-        type == ledger::RewardsType::ONE_TIME_TIP) {
+    if (queue->type == ledger::RewardsType::RECURRING_TIP ||
+        queue->type == ledger::RewardsType::ONE_TIME_TIP) {
       AdjustTipsAmounts(
-          std::move(publishers),
+          std::move(queue->publishers),
           &publishers_new,
-          publishers_left,
-          balance);
+          &publishers_left,
+          wallet_balance);
+      queue->publishers = std::move(publishers_left);
     } else {
-      new_directions = directions;
+      publishers_new = std::move(queue->publishers);
     }
   } else {
-    publishers_new = std::move(publishers);
+    publishers_new = std::move(queue->publishers);
   }
 
   ledger::ContributionPublisherList publisher_list;
@@ -592,166 +567,91 @@ bool Contribution::ProcessUnblindedTokens(
   }
 
   contribution->publishers = std::move(publisher_list);
-  ledger_->SaveContributionInfo(
-      std::move(contribution),
-      [](const ledger::Result){});
-  unblinded_->Start(contribution_id);
 
-  return full_amount;
-}
-
-bool Contribution::ProcessAnonUserFunds(
-    ledger::BalancePtr info,
-    ledger::RewardsType type,
-    double* fee,
-    ledger::ContributionQueuePublisherList publishers,
-    ledger::ContributionQueuePublisherList* publishers_left) {
-  DCHECK(publishers_left);
-  *publishers_left = std::move(publishers);
-  return false;
-}
-
-bool Contribution::ProcessExternalWallet(
-    ledger::BalancePtr info,
-    ledger::RewardsType type,
-    const double fee,
-    ledger::ContributionQueuePublisherList publishers) {
-  const double balance =
-      braveledger_wallet::Balance::GetPerWalletBalance(
-          ledger::kWalletUphold,
-          info->wallets);
-  if (balance == 0) {
-    return false;
-  }
-
-  const std::string contribution_id = base::GenerateGUID();
-
-  const uint64_t now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
-  auto contribution = ledger::ContributionInfo::New();
-  contribution->contribution_id = contribution_id;
-  contribution->amount = fee;
-  contribution->type = type;
-  contribution->step = ledger::ContributionStep::STEP_START;
-  contribution->retry_count = -1;
-  contribution->created_at = now;
-  // We should change this to NONE and update it in next phase
-  // when we add more external processors
-  contribution->processor = ledger::ContributionProcessor::UPHOLD;
-
-  ledger::ContributionPublisherList publishers_converted;
-  for (auto& item : publishers) {
-    auto publisher = ledger::ContributionPublisher::New();
-    publisher->contribution_id = contribution_id;
-    publisher->publisher_key = item->publisher_key;
-    publisher->total_amount =
-        (item->amount_percent * contribution->amount) / 100;
-    publisher->contributed_amount = 0;
-    publishers_converted.push_back(std::move(publisher));
-  }
-
-  contribution->publishers = std::move(publishers_converted);
-
-  if (type == ledger::RewardsType::AUTO_CONTRIBUTE) {
-    auto reconcile = ledger::CurrentReconcileProperties();
-    reconcile.viewing_id = contribution_id;
-    reconcile.fee = fee;
-    reconcile.directions = directions;
-    reconcile.type = contribution->type;
-    ledger_->AddReconcile(reconcile.viewing_id, reconcile);
-  }
-
-  auto save_callback = std::bind(&Contribution::OnProcessExternalWalletSaved,
+  auto save_callback = std::bind(&Contribution::OnEntrySaved,
       this,
       _1,
-      contribution_id,
-      info->wallets);
+      contribution->contribution_id,
+      wallet_type,
+      *balance,
+      braveledger_bind_util::FromContributionQueueToString(std::move(queue)));
 
-  ledger_->SaveContributionInfo(std::move(contribution), save_callback);
-  return true;
+  ledger_->SaveContributionInfo(
+      std::move(contribution),
+      save_callback);
 }
 
-void Contribution::OnProcessExternalWalletSaved(
+void Contribution::OnEntrySaved(
     const ledger::Result result,
     const std::string& contribution_id,
-    base::flat_map<std::string, double> wallet_balances) {
-  auto wallets_callback = std::bind(&Contribution::OnExternalWallets,
-      this,
-      contribution_id,
-      wallet_balances,
-      _1);
+    const std::string& current_wallet_type,
+    const ledger::Balance& balance,
+    const std::string& queue_string) {
+  auto queue = braveledger_bind_util::FromStringToContributionQueue(
+      queue_string);
 
-  // Check if we have token
-  ledger_->GetExternalWallets(wallets_callback);
+  if (!queue) {
+    DeleteContributionQueue(queue->id);
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+        << "Queue was not converted successfully";
+    return;
+  }
+
+  if (current_wallet_type == ledger::kWalletUnBlinded) {
+    unblinded_->Start(contribution_id);
+  } else if (current_wallet_type == ledger::kWalletAnonymous) {
+    // TODO implement
+  } else if (current_wallet_type == ledger::kWalletUphold) {
+    auto wallets_callback = std::bind(&Contribution::OnExternalWallets,
+        this,
+        contribution_id,
+        _1);
+
+    // Check if we have token
+    ledger_->GetExternalWallets(wallets_callback);
+  }
+
+  if (queue->amount > 0) {
+    CreateNewEntry(
+        GetNextProcessor(current_wallet_type),
+        ledger::Balance::New(balance),
+        std::move(queue));
+  } else {
+    DeleteContributionQueue(queue->id);
+  }
 }
 
 void Contribution::Process(
-    ledger::ContributionQueuePtr contribution,
-    ledger::BalancePtr info) {
-  if (!contribution) {
+    ledger::ContributionQueuePtr queue,
+    ledger::BalancePtr balance) {
+  if (!queue) {
     return;
   }
 
-  if (contribution->amount == 0 || contribution->publishers.empty()) {
-    DeleteContributionQueue(contribution->id);
+  if (queue->amount == 0 || queue->publishers.empty()) {
+    DeleteContributionQueue(queue->id);
     return;
   }
 
-  double fee = .0;
-  const auto have_enough_balance = HaveReconcileEnoughFunds(
-      contribution->Clone(),
-      &fee,
-      info->total);
+  const auto have_enough_balance = HaveEnoughFundsToContribute(
+      &queue->amount,
+      queue->partial,
+      balance->total);
 
   if (!have_enough_balance) {
-    DeleteContributionQueue(contribution->id);
+    DeleteContributionQueue(queue->id);
     return;
   }
 
-  if (contribution->amount == 0 || contribution->publishers.empty()) {
-    DeleteContributionQueue(contribution->id);
+  if (queue->amount == 0 || queue->publishers.empty()) {
+    DeleteContributionQueue(queue->id);
     return;
   }
 
-  // UNBLINDED TOKENS
-  ledger::ContributionQueuePublisherList publishers_anon;
-  bool result = ProcessUnblindedTokens(
-      info->Clone(),
-      contribution->type,
-      &fee,
-      std::move(contribution->publishers),
-      &publishers_anon);
-
-  if (result) {
-    // contribution was processed in full
-    DeleteContributionQueue(contribution->id);
-    return;
-  }
-
-  // USER FUNDS in ANON WALLET
-  ledger::ContributionQueuePublisherList publishers_external;
-  result = ProcessAnonUserFunds(
-      info->Clone(),
-      contribution->type,
-      &fee,
-      std::move(publishers_anon),
-      &publishers_external);
-  if (result) {
-    // contribution was processed in full
-    DeleteContributionQueue(contribution->id);
-    return;
-  }
-
-  // EXTERNAL WALLET
-  result = ProcessExternalWallet(
-      info->Clone(),
-      contribution->type,
-      fee,
-      std::move(publishers_external));
-
-  if (result) {
-    // contribution was processed in full
-    DeleteContributionQueue(contribution->id);
-  }
+  CreateNewEntry(
+      GetNextProcessor(""),
+      balance->Clone(),
+      queue->Clone());
 }
 
 void Contribution::AdjustTipsAmounts(
@@ -790,7 +690,6 @@ void Contribution::AdjustTipsAmounts(
 
 void Contribution::OnExternalWallets(
     const std::string& contribution_id,
-    base::flat_map<std::string, double> wallet_balances,
     std::map<std::string, ledger::ExternalWalletPtr> wallets) {
   if (wallets.size() == 0) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "No external wallets";
@@ -809,44 +708,25 @@ void Contribution::OnExternalWallets(
       std::bind(&Contribution::ExternalWalletContributionInfo,
                 this,
                 _1,
-                wallet_balances,
                 *wallet));
 }
 
 void Contribution::ExternalWalletContributionInfo(
     ledger::ContributionInfoPtr contribution,
-    base::flat_map<std::string, double> wallet_balances,
     const ledger::ExternalWallet& wallet) {
   // In this phase we only support one wallet
   // so we will just always pick uphold.
   // In the future we will allow user to pick which wallet to use via UI
   // and then we will extend this function
-  const double uphold_balance =
-      braveledger_wallet::Balance::GetPerWalletBalance(
-          ledger::kWalletUphold,
-          wallet_balances);
-
-  auto result = ledger::Result::LEDGER_OK;
-  if (uphold_balance < contribution->amount) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-    << "Not enough funds in uphold wallet";
-    result = ledger::Result::NOT_ENOUGH_FUNDS;
-  }
-
   if (wallet.token.empty() ||
       wallet.status != ledger::WalletStatus::VERIFIED) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
     << "Wallet token is empty/wallet is not verified " << wallet.status;
-    result = ledger::Result::LEDGER_ERROR;
-  }
-
-  if (result != ledger::Result::LEDGER_OK) {
     ledger_->ContributionCompleted(
-        result,
+        ledger::Result::LEDGER_ERROR,
         contribution->amount,
         contribution->contribution_id,
         contribution->type);
-    return;
   }
 
   if (contribution->type == ledger::RewardsType::AUTO_CONTRIBUTE) {
