@@ -39,7 +39,7 @@ export const StyledBackground = styled<StyleProps, 'div'>('div')`
 
 export const StyledContent = styled<{}, 'div'>('div')`
   float: right;
-  max-width: 190px;
+  max-width: 205px;
   margin-top: 25px;
   text-align: left;
 `
