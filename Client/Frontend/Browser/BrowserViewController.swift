@@ -258,7 +258,7 @@ class BrowserViewController: UIViewController {
         notificationsHandler?.actionOccured = { [weak self] notification, action in
             guard let self = self else { return }
             if action == .opened {
-                let request = URLRequest(url: notification.url)
+                let request = URLRequest(url: notification.targetURL)
                 self.tabManager.addTabAndSelect(request, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
             }
         }

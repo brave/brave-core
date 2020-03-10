@@ -14,7 +14,7 @@ FOUNDATION_EXPORT const unsigned char BraveRewardsVersionString[];
 #import <BraveRewards/RewardsLogger.h>
 
 // Ads
-#import <BraveRewards/BATAdsNotification.h>
+#import <BraveRewards/BATAdNotification.h>
 
 // Ledger
 #import <BraveRewards/Enums.h>

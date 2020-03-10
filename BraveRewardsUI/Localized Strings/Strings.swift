@@ -306,5 +306,7 @@ internal extension Strings {
   static let pendingContributionType = NSLocalizedString("PendingContributionDetailType", bundle: .rewardsUI, value: "Type", comment: "")
   static let pendingContributionAmount = NSLocalizedString("PendingContributionDetailAmount", bundle: .rewardsUI, value: "Amount", comment: "")
   static let pendingContributionPendingUntil = NSLocalizedString("PendingContributionDetailPendingUntil", bundle: .rewardsUI, value: "Pending Until", comment: "")
+  static let ledgerInitializationFailedTitle = NSLocalizedString("LedgerInitializationFailedTitle", bundle: .rewardsUI, value: "Sorry, something went wrong…", comment: "")
+  static let ledgerDatabaseMigrationFailedBody = NSLocalizedString("LedgerDatabaseMigrationFailedBody", bundle: .rewardsUI, value: "There was a problem loading your Rewards information. Your rewards activity details will be restarted.\n\nPlease contact support@brave.com for any issues or concerns", comment: "")
 }
 

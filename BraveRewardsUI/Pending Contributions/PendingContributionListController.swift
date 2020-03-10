@@ -132,7 +132,7 @@ final class PendingContributionListController: UIViewController {
       self.contentView.tableView.deleteSections(IndexSet(0..<contributionSections.count), with: .automatic)
       self.contributionSections.removeAll()
     }, completion: { _ in
-      self.state.ledger.deleteAllPendingContributions { [weak self] _ in
+      self.state.ledger.removeAllPendingContributions { [weak self] _ in
         self?.reloadData()
       }
     })

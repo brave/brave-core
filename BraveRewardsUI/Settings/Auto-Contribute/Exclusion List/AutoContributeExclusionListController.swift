@@ -78,7 +78,7 @@ final class AutoContributeExclusionListController: UIViewController {
   }
   
   @objc private func tappedRestoreAll(_ sender: UIBarButtonItem) {
-    let numberOfExcludedSites = state.ledger.numberOfExcludedPublishers
+    let numberOfExcludedSites = publishers.count
     let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
     if let presenter = alert.popoverPresentationController {
       presenter.barButtonItem = sender

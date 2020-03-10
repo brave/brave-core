@@ -59,21 +59,21 @@ public class AdsNotificationHandler: BraveAdsNotificationHandler {
       }
     }
     
-    self.ads.reportNotificationEvent(notification.id, eventType: .viewed)
+    self.ads.reportAdNotificationEvent(notification.uuid, eventType: .viewed)
     MonthlyAdsGrantReminder.schedule()
     
     adsViewController.display(ad: notification, handler: { [weak self] (notification, action) in
       guard let self = self else { return }
       switch action {
       case .opened:
-        self.ads.reportNotificationEvent(notification.id, eventType: .clicked)
+        self.ads.reportAdNotificationEvent(notification.uuid, eventType: .clicked)
       case .dismissed:
-        self.ads.reportNotificationEvent(notification.id, eventType: .dismissed)
+        self.ads.reportAdNotificationEvent(notification.uuid, eventType: .dismissed)
       case .timedOut:
-        self.ads.reportNotificationEvent(notification.id, eventType: .timedOut)
+        self.ads.reportAdNotificationEvent(notification.uuid, eventType: .timedOut)
       case .disliked:
-        self.ads.reportNotificationEvent(notification.id, eventType: .dismissed)
-        self.ads.toggleThumbsDown(forAd: notification.id, creativeSetID: notification.creativeSetID)
+        self.ads.reportAdNotificationEvent(notification.uuid, eventType: .dismissed)
+        self.ads.toggleThumbsDown(forAd: notification.uuid, creativeSetID: notification.creativeSetID)
       }
       self.actionOccured?(notification, action)
       
@@ -99,7 +99,7 @@ public class AdsNotificationHandler: BraveAdsNotificationHandler {
   }
   
   public func clearNotification(withIdentifier identifier: String) {
-    adsQueue.removeAll(where: { $0.id == identifier })
+    adsQueue.removeAll(where: { $0.uuid == identifier })
   }
   
   public func shouldShowNotifications() -> Bool {

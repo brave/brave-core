@@ -64,7 +64,7 @@ NS_SWIFT_NAME(LedgerObserver)
 /// The publisher list was normalized and saved
 @property (nonatomic, copy, nullable) void (^publisherListNormalized)(NSArray<BATPublisherInfo *> *normalizedList);
 
-@property (nonatomic, copy, nullable) void (^pendingContributionAdded)(NSString *publisherKey);
+@property (nonatomic, copy, nullable) void (^pendingContributionAdded)();
 
 @property (nonatomic, copy, nullable) void (^pendingContributionsRemoved)(NSArray<NSString *> *publisherKeys);
 
@@ -87,6 +87,9 @@ NS_SWIFT_NAME(LedgerObserver)
 @property (nonatomic, copy, nullable) void (^externalWalletAuthorized)(BATWalletType type);
 
 @property (nonatomic, copy, nullable) void (^externalWalletDisconnected)(BATWalletType type);
+
+/// The reconcile stamp reset
+@property (nonatomic, copy, nullable) void (^reconcileStampReset)();
 
 @end
 
