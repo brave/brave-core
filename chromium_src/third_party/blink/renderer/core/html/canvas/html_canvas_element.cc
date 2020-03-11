@@ -7,9 +7,6 @@
   image_bitmap = brave::BraveSessionCache::From(GetDocument()) \
                      .PerturbPixels(image_bitmap);
 
-#define BRAVE_TO_BLOB BRAVE_TO_DATA_URL_INTERNAL
-
 #include "../../../../../../../third_party/blink/renderer/core/html/canvas/html_canvas_element.cc"
 
 #undef BRAVE_TO_DATA_URL_INTERNAL
-#undef BRAVE_TO_BLOB

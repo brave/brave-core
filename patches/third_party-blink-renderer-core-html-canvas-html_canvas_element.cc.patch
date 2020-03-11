@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
-index 727f95a161e1f1b38c8eba26cf6ecc5f6b30c55b..45f4ea7f453f18c74d90db222f852c3b31928fef 100644
+index 727f95a161e1f1b38c8eba26cf6ecc5f6b30c55b..e2f9957473e439a34a0579677596840ad6ff4219 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
 @@ -883,6 +883,7 @@ String HTMLCanvasElement::ToDataURLInternal(
@@ -10,11 +10,3 @@ index 727f95a161e1f1b38c8eba26cf6ecc5f6b30c55b..45f4ea7f453f18c74d90db222f852c3b
      std::unique_ptr<ImageDataBuffer> data_buffer =
          ImageDataBuffer::Create(image_bitmap);
      if (!data_buffer)
-@@ -972,6 +973,7 @@ void HTMLCanvasElement::toBlob(V8BlobCallback* callback,
-   scoped_refptr<StaticBitmapImage> image_bitmap =
-       Snapshot(kBackBuffer, kPreferNoAcceleration);
-   if (image_bitmap) {
-+    BRAVE_TO_BLOB
-     auto* options = ImageEncodeOptions::Create();
-     options->setType(ImageEncodingMimeTypeName(encoding_mime_type));
-     async_creator = MakeGarbageCollected<CanvasAsyncBlobCreator>(
