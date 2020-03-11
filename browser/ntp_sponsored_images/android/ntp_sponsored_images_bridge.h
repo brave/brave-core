@@ -11,6 +11,9 @@
 #include "base/compiler_specific.h"
 #include "base/macros.h"
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_service.h"
+#include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
+#include "third_party/skia/include/core/SkBitmap.h"
+#include "url/gurl.h"
 
 class Profile;
 
@@ -40,13 +43,20 @@ class NTPSponsoredImagesBridge : public NTPSponsoredImagesService::Observer {
   // jboolean ShouldShowBrandedWallpaper(JNIEnv* env);
 
  private:
-  base::android::ScopedJavaLocalRef<jobject> CreateWallpaper();
   void OnUpdated(NTPSponsoredImagesData* data) override;
+  base::android::ScopedJavaLocalRef<jobject> CreateWallpaper();
+  void PreloadImageIfNeeded();
+  void OnBitmapFetched(const BitmapFetcherService::RequestId request_id,
+                       const SkBitmap& bitmap);
 
   Profile* profile_;
   JavaObjectWeakGlobalRef weak_java_ref_;
   ViewCounterService* view_counter_service_;
   NTPSponsoredImagesService* sponsored_images_service_;
+
+  GURL image_url_;
+  SkBitmap bitmap_;
+  BitmapFetcherService::RequestId request_id_;
 
   DISALLOW_COPY_AND_ASSIGN(NTPSponsoredImagesBridge);
 };

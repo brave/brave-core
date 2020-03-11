@@ -25,6 +25,12 @@ source_set("ntp_sponsored_images") {
 
     deps += [
       "//brave/build/android:jni_headers",
+      "//ui/gfx",
+      "//url",
+    ]
+
+    public_deps = [
+      "//skia",
     ]
   }
 }
