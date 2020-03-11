@@ -121,9 +121,15 @@ void NTPSponsoredImagesBridge::OnBitmapFetched(
 void NTPSponsoredImagesBridge::PreloadImageIfNeeded() {
   auto data = view_counter_service_->GetCurrentWallpaper();
   if (data.is_none())
+    LOG(ERROR)
+        << "NTP"
+        << "PreloadImageIfNeeded : data empty";
     return;
 
   auto* image_url = data.FindStringPath("wallpaperImageUrl");
+  LOG(ERROR)
+        << "NTP"
+        << image_url;
   if (!image_url)
     return;
 
