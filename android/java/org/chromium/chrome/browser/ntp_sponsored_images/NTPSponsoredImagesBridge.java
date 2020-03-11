@@ -29,18 +29,18 @@ public class NTPSponsoredImagesBridge {
             new ObserverList<NTPSponsoredImageServiceObserver>();
 
     public static class Wallpaper extends NTPImage {
-        private String mImageUrl;
+        private Bitmap mBitmap;
         private int mFocalPointX;
         private int mFocalPointY;
 
-        private Wallpaper(String imageUrl, int focalPointX, int focalPointY) {
-            mImageUrl = imageUrl;
+        private Wallpaper(Bitmap bitmap, int focalPointX, int focalPointY) {
+            mBitmap = bitmap;
             mFocalPointX = focalPointX;
             mFocalPointY = focalPointY;
         }
 
-        public String getImageURL() {
-            return mImageUrl;
+        public Bitmap getBitmap() {
+            return mBitmap;
         }
 
         public int getFocalPointX() {
@@ -53,7 +53,7 @@ public class NTPSponsoredImagesBridge {
     }
 
     public abstract static class NTPSponsoredImageServiceObserver {
-        public abstract void onUpdated(Wallpaper wallaper);
+        public abstract void onUpdated();
     }
 
     public NTPSponsoredImagesBridge(Profile profile) {
@@ -78,7 +78,6 @@ public class NTPSponsoredImagesBridge {
     }
 
     /**
-     * Add an observer to bookmark model changes.
      * @param observer The observer to be added.
      */
     public void addObserver(NTPSponsoredImageServiceObserver observer) {
@@ -86,7 +85,6 @@ public class NTPSponsoredImagesBridge {
     }
 
     /**
-     * Remove an observer of bookmark model changes.
      * @param observer The observer to be removed.
      */
     public void removeObserver(NTPSponsoredImageServiceObserver observer) {
@@ -116,14 +114,14 @@ public class NTPSponsoredImagesBridge {
     }
 
     @CalledByNative
-    public static Wallpaper createWallpaper(String url, int focalPointX, int focalPointY) {
-        return new Wallpaper(url, focalPointX, focalPointY);
+    public static Wallpaper createWallpaper(Bitmap bitmap, int focalPointX, int focalPointY) {
+        return new Wallpaper(bitmap, focalPointX, focalPointY);
     }
 
     @CalledByNative
-    public void onUpdated(Wallpaper wallpaper) {
+    public void onUpdated() {
         for (NTPSponsoredImageServiceObserver observer : mObservers) {
-            observer.onUpdated(wallpaper);
+            observer.onUpdated();
         }
     }
 
