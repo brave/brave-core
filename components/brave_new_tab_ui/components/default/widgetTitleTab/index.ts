@@ -13,7 +13,7 @@ export const StyledTitleTab = styled<StyleProps, 'div'>('div')`
   cursor: pointer;
   padding: 10px ${p => p.isInTab ? 13 : 25}px;
   margin-bottom: -3px;
-  border-radius: 6px 6px 0 0;
-  backdrop-filter: blur(75px);
+  background-image: linear-gradient(270deg, rgba(33,37,41,0.16) 0%, #212529 100%);
+  border-radius: 8px 8px 0 0;
   box-shadow: rgba(0, 0, 0, 0.2) 1px 1px 20px 2px;
 `

@@ -57,6 +57,7 @@ extern const char kNewTabPageShowClock[];
 extern const char kNewTabPageShowTopSites[];
 extern const char kNewTabPageShowStats[];
 extern const char kNewTabPageShowRewards[];
+extern const char kNewTabPageShowBinance[];
 extern const char kBraveEnabledMediaRouter[];
 extern const char kBraveWalletAES256GCMSivNonce[];
 extern const char kBraveWalletEncryptedSeed[];

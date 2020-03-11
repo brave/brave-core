@@ -58,7 +58,7 @@ declare namespace NewTab {
     url: string
   }
 
-  export type StackWidget = 'rewards' | 'exchange'
+  export type StackWidget = 'rewards' | 'binance'
 
   export interface PersistentState {
     topSites: Site[]
@@ -69,6 +69,7 @@ declare namespace NewTab {
     bookmarks: Record<string, Bookmark>
     rewardsState: RewardsWidgetState
     currentStackWidget: StackWidget
+    binanceState: BinanceWidgetState
   }
 
   export interface EphemeralState {
@@ -87,6 +88,7 @@ declare namespace NewTab {
     showClock: boolean
     showTopSites: boolean
     showRewards: boolean
+    showBinance: boolean
     brandedWallpaperOptIn: boolean
     isBrandedWallpaperNotificationDismissed: boolean
     stats: Stats,
@@ -108,6 +110,16 @@ declare namespace NewTab {
     walletCreateFailed: boolean
     walletCorrupted: boolean
   }
+
+  export interface BinanceWidgetState {
+    userTLD: BinanceTLD
+    initialFiat: string
+    initialAmount: string
+    initialAsset: string
+    userTLDAutoSet: boolean
+  }
+
+  export type BinanceTLD = 'us' | 'com'
 
   export const enum RewardsResult {
     LEDGER_OK = 0,

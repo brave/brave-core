@@ -134,3 +134,21 @@ export const onPromotionFinish = (result: NewTab.RewardsResult, promotion: NewTa
 export const setCurrentStackWidget = (widgetId: NewTab.StackWidget) => action(types.SET_CURRENT_STACK_WIDGET, {
   widgetId
 })
+
+export const onBinanceUserTLD = (userTLD: NewTab.BinanceTLD) => action(types.ON_BINANCE_USER_TLD, {
+  userTLD
+})
+
+export const setInitialFiat = (initialFiat: string) => action(types.SET_INITIAL_FIAT, {
+  initialFiat
+})
+
+export const setInitialAmount = (initialAmount: string) => action(types.SET_INITIAL_AMOUNT, {
+  initialAmount
+})
+
+export const setInitialAsset = (initialAsset: string) => action(types.SET_INITIAL_ASSET, {
+  initialAsset
+})
+
+export const setUserTLDAutoSet = () => action(types.SET_USER_TLD_AUTO_SET)

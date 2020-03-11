@@ -1,0 +1,38 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+[
+  {
+    "namespace": "binance",
+    "description": "Use the <code>chrome.binance</code> API to receive notifications about Dapp detection.",
+    "compiler_options": {
+      "implemented_in": "brave/browser/extensions/api/binance_api.h"
+    },
+    "events": [
+    ],
+    "functions": [
+      {
+        "name": "getUserTLD",
+        "type": "function",
+        "description": "Gets the appropriate Binance TLD per a user's region",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "userTLD",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "types": [
+    ],
+    "properties": {
+    }
+  }
+]

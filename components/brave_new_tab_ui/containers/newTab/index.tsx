@@ -15,6 +15,7 @@ import {
   ClockWidget as Clock,
   ListWidget as List,
   RewardsWidget as Rewards,
+  BinanceWidget as Binance,
   WidgetStack
 } from '../../components/default'
 import * as Page from '../../components/default/page'
@@ -29,6 +30,7 @@ interface Props {
   saveShowTopSites: (value: boolean) => void
   saveShowStats: (value: boolean) => void
   saveShowRewards: (value: boolean) => void
+  saveShowBinance: (value: boolean) => void
   saveBrandedWallpaperOptIn: (value: boolean) => void
 }
 
@@ -84,6 +86,13 @@ class NewTabPage extends React.Component<Props, State> {
     this.trackCachedImage()
     if (GetShouldShowBrandedWallpaperNotification(this.props)) {
       this.trackBrandedWallpaperNotificationAutoDismiss()
+    }
+
+    // Migratory check in the event that rewards is off
+    // when receiving the upgrade with the Binance widget.
+    const { showRewards } = this.props.newTabData
+    if (!showRewards) {
+      this.props.actions.setCurrentStackWidget('binance')
     }
   }
 
@@ -187,10 +196,61 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
+  toggleShowCrypto = () => {
+    const { currentStackWidget } = this.props.newTabData
+
+    if (currentStackWidget === 'rewards') {
+      this.toggleShowRewards()
+    } else {
+      this.toggleShowBinance()
+    }
+  }
+
   toggleShowRewards = () => {
-    this.props.saveShowRewards(
-      !this.props.newTabData.showRewards
-    )
+    const {
+      currentStackWidget,
+      showBinance,
+      showRewards
+    } = this.props.newTabData
+
+    if (currentStackWidget === 'rewards') {
+      this.props.actions.setCurrentStackWidget('binance')
+    } else if (!showBinance) {
+      this.props.actions.setCurrentStackWidget('rewards')
+    }
+
+    this.props.saveShowRewards(!showRewards)
+  }
+
+  toggleShowBinance = () => {
+    const {
+      currentStackWidget,
+      showBinance,
+      showRewards
+    } = this.props.newTabData
+
+    if (currentStackWidget === 'binance') {
+      this.props.actions.setCurrentStackWidget('rewards')
+    } else if (!showRewards) {
+      this.props.actions.setCurrentStackWidget('binance')
+    }
+
+    this.props.saveShowBinance(!showBinance)
+  }
+
+  buyCrypto = (coin: string, amount: string, fiat: string) => {
+    const { userTLD } = this.props.newTabData.binanceState
+    const refParams = 'ref=39346846&utm_source=brave'
+
+    if (userTLD === 'us') {
+      window.open(`https://www.binance.${userTLD}/en/buy-sell-crypto?coin=${coin}&amount=${amount}&${refParams}`, '_blank')
+    } else {
+      window.open(`https://www.binance.com/en/buy-sell-crypto?fiat=${fiat}&crypto=${coin}&amount=${amount}&${refParams}`, '_blank')
+    }
+  }
+
+  onBinanceUserTLD = (userTLD: NewTab.BinanceTLD) => {
+    this.props.actions.onBinanceUserTLD(userTLD)
   }
 
   disableBrandedWallpaper = () => {
@@ -235,27 +295,57 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.setCurrentStackWidget(widgetId)
   }
 
+  setInitialAmount = (amount: string) => {
+    this.props.actions.setInitialAmount(amount)
+  }
+
+  setInitialFiat = (fiat: string) => {
+    this.props.actions.setInitialFiat(fiat)
+  }
+
+  setInitialAsset = (asset: string) => {
+    this.props.actions.setInitialAsset(asset)
+  }
+
+  setUserTLDAutoSet = () => {
+    this.props.actions.setUserTLDAutoSet()
+  }
+
   getCryptoContent () {
+    const { currentStackWidget } = this.props.newTabData
+
     return (
       <>
-        {this.renderRewardsWidget(true)}
+        {
+          currentStackWidget === 'rewards'
+          ? <>
+              {this.renderBinanceWidget(false)}
+              {this.renderRewardsWidget(true)}
+            </>
+          : <>
+              {this.renderRewardsWidget(false)}
+              {this.renderBinanceWidget(true)}
+            </>
+        }
       </>
     )
   }
 
-  // Widget toggling/preventFocus tied to rewards for now
-  // This will be updated when we integrate another widget
   renderCryptoContent () {
     const { newTabData } = this.props
-    const { textDirection, showRewards } = newTabData
+    const { textDirection, showRewards, showBinance } = newTabData
+
+    if (!showRewards && !showBinance) {
+      return null
+    }
 
     return (
       <Page.GridItemWidgetStack>
         <WidgetStack
           menuPosition={'left'}
           textDirection={textDirection}
-          preventFocus={!showRewards}
-          hideWidget={this.toggleShowRewards}
+          preventFocus={false}
+          hideWidget={this.toggleShowCrypto}
         >
           {this.getCryptoContent()}
         </WidgetStack>
@@ -296,6 +386,29 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
+  renderBinanceWidget (showContent: boolean) {
+    const { newTabData } = this.props
+    const { binanceState, showBinance } = newTabData
+
+    if (!showBinance) {
+      return null
+    }
+
+    return (
+      <Binance
+        {...binanceState}
+        showContent={showContent}
+        onBuyCrypto={this.buyCrypto}
+        onBinanceUserTLD={this.onBinanceUserTLD}
+        onShowContent={this.toggleStackWidget.bind(this, 'binance')}
+        onSetInitialAmount={this.setInitialAmount}
+        onSetInitialAsset={this.setInitialAsset}
+        onSetInitialFiat={this.setInitialFiat}
+        onSetUserTLDAutoSet={this.setUserTLDAutoSet}
+      />
+    )
+  }
+
   render () {
     const { newTabData, actions } = this.props
     const { showSettingsMenu } = this.state
@@ -328,6 +441,7 @@ class NewTabPage extends React.Component<Props, State> {
             showClock={newTabData.showClock}
             showStats={newTabData.showStats}
             showRewards={!!cryptoContent}
+            showBinance={newTabData.showBinance}
             showTopSites={showTopSites}
             showBrandedWallpaper={isShowingBrandedWallpaper}
         >
@@ -389,8 +503,8 @@ class NewTabPage extends React.Component<Props, State> {
           <Page.Footer>
             <Page.FooterContent>
             {isShowingBrandedWallpaper && newTabData.brandedWallpaperData &&
-             newTabData.brandedWallpaperData.logo &&
-             <Page.GridItemBrandedLogo>
+            newTabData.brandedWallpaperData.logo &&
+            <Page.GridItemBrandedLogo>
               <BrandedWallpaperLogo
                 menuPosition={'right'}
                 textDirection={newTabData.textDirection}
@@ -414,9 +528,11 @@ class NewTabPage extends React.Component<Props, State> {
               showStats={newTabData.showStats}
               showTopSites={newTabData.showTopSites}
               showRewards={newTabData.showRewards}
+              showBinance={newTabData.showBinance}
               brandedWallpaperOptIn={newTabData.brandedWallpaperOptIn}
               allowBrandedWallpaperUI={newTabData.featureFlagBraveNTPBrandedWallpaper}
               toggleShowRewards={this.toggleShowRewards}
+              toggleShowBinance={this.toggleShowBinance}
             />
             </Page.FooterContent>
           </Page.Footer>

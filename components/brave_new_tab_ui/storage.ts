@@ -16,6 +16,7 @@ const defaultState: NewTab.State = {
   showClock: false,
   showTopSites: false,
   showRewards: false,
+  showBinance: false,
   brandedWallpaperOptIn: false,
   isBrandedWallpaperNotificationDismissed: true,
   topSites: [],
@@ -53,7 +54,14 @@ const defaultState: NewTab.State = {
     walletCreateFailed: false,
     walletCorrupted: false
   },
-  currentStackWidget: 'rewards'
+  currentStackWidget: 'rewards',
+  binanceState: {
+    userTLD: 'com',
+    initialFiat: 'USD',
+    initialAmount: '',
+    initialAsset: 'BTC',
+    userTLDAutoSet: false
+  }
 }
 
 if (chrome.extension.inIncognitoContext) {
@@ -72,7 +80,8 @@ const getPersistentData = (state: NewTab.State): NewTab.PersistentState => {
     showEmptyPage: state.showEmptyPage,
     bookmarks: state.bookmarks,
     rewardsState: state.rewardsState,
-    currentStackWidget: state.currentStackWidget
+    currentStackWidget: state.currentStackWidget,
+    binanceState: state.binanceState
   }
 
   return peristantState
