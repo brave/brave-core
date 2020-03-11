@@ -400,6 +400,19 @@ void Database::SaveSKUOrder(
   sku_order_->InsertOrUpdate(std::move(order), callback);
 }
 
+void Database::UpdateSKUOrderStatus(
+    const std::string& order_id,
+    const ledger::SKUOrderStatus status,
+    ledger::ResultCallback callback) {
+  sku_order_->UpdateStatus(order_id, status, callback);
+}
+
+void Database::GetSKUOrder(
+    const std::string& order_id,
+    ledger::GetSKUOrderCallback callback) {
+  sku_order_->GetRecord(order_id, callback);
+}
+
 /**
  * SKU TRANSACTION
  */
@@ -407,6 +420,16 @@ void Database::SaveSKUTransaction(
     ledger::SKUTransactionPtr transaction,
     ledger::ResultCallback callback) {
   sku_transaction_->InsertOrUpdate(std::move(transaction), callback);
+}
+
+void Database::SaveSKUExternalTransaction(
+    const std::string& transaction_id,
+    const std::string& external_transaction_id,
+    ledger::ResultCallback callback) {
+  sku_transaction_->SaveExternalTransaction(
+      transaction_id,
+      external_transaction_id,
+      callback);
 }
 
 /**

@@ -2864,6 +2864,8 @@ void RewardsServiceImpl::GetExternalWallets(
   for (const auto& it : dict->DictItems()) {
     ledger::ExternalWalletPtr wallet = ledger::ExternalWallet::New();
 
+    wallet->type = it.first;
+
     auto* token = it.second.FindKey("token");
     if (token && token->is_string()) {
       wallet->token = token->GetString();

@@ -150,10 +150,11 @@ std::string DigestValue(const std::string& body) {
 }
 
 std::string SignatureHeaderValue(
-    const std::string& url,
+    const std::string& data,
     const std::string& body,
-    const std::string payment_id,
-    const std::vector<uint8_t>& private_key) {
+    const std::string key_id,
+    const std::vector<uint8_t>& private_key,
+    const bool idempotency_key) {
   DCHECK(!body.empty());
   DCHECK(!private_key.empty());
 
@@ -161,25 +162,52 @@ std::string SignatureHeaderValue(
 
   std::vector<std::map<std::string, std::string>> headers;
   headers.push_back({{"digest", digest_header_value}});
-  headers.push_back({{"(request-target)", url}});
+  if (idempotency_key) {
+    headers.push_back({{"idempotency-key", data}});
+  } else {
+    headers.push_back({{"(request-target)", data}});
+  }
 
   return braveledger_helper::Security::Sign(
       headers,
-      payment_id,
+      key_id,
       private_key);
+}
+
+std::vector<std::string> GetSignHeaders(
+    const std::string& data,
+    const std::string& body,
+    const std::string& key_id,
+    const std::vector<uint8_t>& private_key,
+    const bool idempotency_key) {
+  const std::string digest_header = DigestValue(body).c_str();
+  const std::string signature_header = SignatureHeaderValue(
+      data,
+      body,
+      key_id,
+      private_key,
+      idempotency_key).c_str();
+
+  return {
+    digest_header,
+    signature_header
+  };
 }
 
 std::vector<std::string> BuildSignHeaders(
     const std::string& url,
     const std::string& body,
-    const std::string& payment_id,
+    const std::string& key_id,
     const std::vector<uint8_t>& private_key) {
+  auto headers = GetSignHeaders(url, body, key_id, private_key);
+  DCHECK_EQ(headers.size(), 2ul);
+
   const std::string digest_header = base::StringPrintf(
       "digest: %s",
-      DigestValue(body).c_str());
+      headers[0].c_str());
   const std::string signature_header = base::StringPrintf(
       "signature: %s",
-      SignatureHeaderValue(url, body, payment_id, private_key).c_str());
+      headers[1].c_str());
 
   const std::string accept_header = "accept: application/json";
 

@@ -19,9 +19,11 @@
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/contribution/contribution_ac.h"
+#include "bat/ledger/internal/contribution/contribution_anon_card.h"
 #include "bat/ledger/internal/contribution/contribution_external_wallet.h"
 #include "bat/ledger/internal/contribution/contribution_monthly.h"
 #include "bat/ledger/internal/contribution/contribution_tip.h"
+#include "bat/ledger/internal/contribution/contribution_sku.h"
 #include "bat/ledger/internal/contribution/contribution_unblinded.h"
 #include "bat/ledger/internal/contribution/contribution_util.h"
 #include "bat/ledger/internal/contribution/unverified.h"
@@ -61,13 +63,15 @@ Contribution::Contribution(bat_ledger::LedgerImpl* ledger) :
     ledger_(ledger),
     unverified_(std::make_unique<Unverified>(ledger, this)),
     unblinded_(std::make_unique<Unblinded>(ledger)),
+    sku_(std::make_unique<ContributionSKU>(ledger, this)),
     uphold_(std::make_unique<braveledger_uphold::Uphold>(ledger)),
     monthly_(std::make_unique<ContributionMonthly>(ledger, this)),
     ac_(std::make_unique<ContributionAC>(ledger, this)),
     tip_(std::make_unique<ContributionTip>(ledger, this)),
+    anon_card_(std::make_unique<ContributionAnonCard>(ledger, this)),
     last_reconcile_timer_id_(0u),
     queue_timer_id_(0u) {
-  DCHECK(ledger_);
+  DCHECK(ledger_ && uphold_);
   external_wallet_ = std::make_unique<ContributionExternalWallet>(
       ledger,
       this,
@@ -284,7 +288,7 @@ void Contribution::CreateNewEntry(
     const std::string& wallet_type,
     ledger::BalancePtr balance,
     ledger::ContributionQueuePtr queue) {
-  if (!queue || !balance || wallet_type.empty()) {
+  if (!queue || queue->publishers.empty() || !balance || wallet_type.empty()) {
     DeleteContributionQueue(queue->id);
     return;
   }
@@ -313,6 +317,11 @@ void Contribution::CreateNewEntry(
   contribution->created_at = now;
   contribution->processor = GetProcessor(wallet_type);
 
+  ledger::ContributionQueuePublisherList queue_publishers;
+  for (auto& item : queue->publishers) {
+    queue_publishers.push_back(item->Clone());
+  }
+
   ledger::ContributionQueuePublisherList publishers_new;
   ledger::ContributionQueuePublisherList publishers_left;
   if (wallet_balance < queue->amount) {
@@ -322,16 +331,17 @@ void Contribution::CreateNewEntry(
     if (queue->type == ledger::RewardsType::RECURRING_TIP ||
         queue->type == ledger::RewardsType::ONE_TIME_TIP) {
       AdjustPublisherListAmounts(
-          std::move(queue->publishers),
+          std::move(queue_publishers),
           &publishers_new,
           &publishers_left,
           wallet_balance);
       queue->publishers = std::move(publishers_left);
     } else {
-      publishers_new = std::move(queue->publishers);
+      publishers_new = std::move(queue_publishers);
     }
   } else {
-    publishers_new = std::move(queue->publishers);
+    publishers_new = std::move(queue_publishers);
+    queue->amount = 0;
   }
 
   ledger::ContributionPublisherList publisher_list;
@@ -353,45 +363,85 @@ void Contribution::CreateNewEntry(
       contribution->contribution_id,
       wallet_type,
       *balance,
-      braveledger_bind_util::FromContributionQueueToString(std::move(queue)));
+      braveledger_bind_util::FromContributionQueueToString(queue->Clone()));
 
   ledger_->SaveContributionInfo(
-      std::move(contribution),
+      contribution->Clone(),
       save_callback);
 }
 
 void Contribution::OnEntrySaved(
     const ledger::Result result,
     const std::string& contribution_id,
-    const std::string& current_wallet_type,
+    const std::string& wallet_type,
     const ledger::Balance& balance,
     const std::string& queue_string) {
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+        << "Contribution was not saved correctly";
+    return;
+  }
+
   auto queue = braveledger_bind_util::FromStringToContributionQueue(
       queue_string);
 
   if (!queue) {
-    DeleteContributionQueue(queue->id);
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
         << "Queue was not converted successfully";
     return;
   }
 
-  if (current_wallet_type == ledger::kWalletUnBlinded) {
+  if (wallet_type == ledger::kWalletUnBlinded) {
     unblinded_->Start(contribution_id);
-  } else if (current_wallet_type == ledger::kWalletAnonymous) {
-    // TODO implement
-  } else if (current_wallet_type == ledger::kWalletUphold) {
+  } else if (wallet_type == ledger::kWalletAnonymous) {
+    auto wallet = ledger::ExternalWallet::New();
+    wallet->type = wallet_type;
+
+    sku_->AnonUserFunds(
+        contribution_id,
+        std::move(wallet));
+  } else if (wallet_type == ledger::kWalletUphold) {
     external_wallet_->Process(contribution_id);
   }
 
   if (queue->amount > 0) {
-    CreateNewEntry(
-        GetNextProcessor(current_wallet_type),
-        ledger::Balance::New(balance),
-        std::move(queue));
+    auto save_callback = std::bind(&Contribution::OnQueueSaved,
+      this,
+      _1,
+      wallet_type,
+      balance,
+      braveledger_bind_util::FromContributionQueueToString(queue->Clone()));
+
+    ledger_->SaveContributionQueue(queue->Clone(), save_callback);
   } else {
     DeleteContributionQueue(queue->id);
   }
+}
+
+void Contribution::OnQueueSaved(
+    const ledger::Result result,
+    const std::string& wallet_type,
+    const ledger::Balance& balance,
+    const std::string& queue_string) {
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+        << "Queue was not saved successfully";
+    return;
+  }
+
+  auto queue = braveledger_bind_util::FromStringToContributionQueue(
+      queue_string);
+
+  if (!queue) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+        << "Queue was not converted successfully";
+    return;
+  }
+
+  CreateNewEntry(
+      GetNextProcessor(wallet_type),
+      ledger::Balance::New(balance),
+      std::move(queue));
 }
 
 void Contribution::Process(
@@ -425,6 +475,51 @@ void Contribution::Process(
       GetNextProcessor(""),
       balance->Clone(),
       queue->Clone());
+}
+
+void Contribution::TransferFunds(
+    const ledger::SKUTransaction& transaction,
+    const std::string& destination,
+    ledger::ExternalWalletPtr wallet,
+    ledger::TransactionCallback callback) {
+  if (!wallet) {
+     BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+        << "Wallet is null";
+    callback(ledger::Result::LEDGER_ERROR, "");
+    return;
+  }
+
+  if (wallet->type == ledger::kWalletUphold) {
+    uphold_->TransferFunds(
+        transaction.amount,
+        destination,
+        std::move(wallet),
+        callback);
+    return;
+  }
+
+  if (wallet->type == ledger::kWalletAnonymous) {
+    anon_card_->SendTransaction(
+        transaction.amount,
+        transaction.order_id,
+        destination,
+        callback);
+    return;
+  }
+
+  NOTREACHED();
+  BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+      << "Wallet type not supported: " << wallet->type;
+}
+
+void Contribution::SKUAutoContribution(
+    const std::string& contribution_id,
+    ledger::ExternalWalletPtr wallet) {
+  sku_->AutoContribution(contribution_id, std::move(wallet));
+}
+
+void Contribution::StartUnblinded(const std::string& contribution_id) {
+  unblinded_->Start(contribution_id);
 }
 
 }  // namespace braveledger_contribution

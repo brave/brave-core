@@ -27,6 +27,7 @@
 #include "bat/ledger/internal/report/report.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/media/helper.h"
+#include "bat/ledger/internal/sku/sku.h"
 #include "bat/ledger/internal/static_values.h"
 #include "net/http/http_status_code.h"
 
@@ -38,6 +39,7 @@ using namespace braveledger_contribution; //  NOLINT
 using namespace braveledger_wallet; //  NOLINT
 using namespace braveledger_database; //  NOLINT
 using namespace braveledger_report; //  NOLINT
+using namespace braveledger_sku; //  NOLINT
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
@@ -64,6 +66,7 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     bat_wallet_(new Wallet(this)),
     bat_database_(new Database(this)),
     bat_report_(new Report(this)),
+    bat_sku_(new SKU(this)),
     initialized_task_scheduler_(false),
     initialized_(false),
     initializing_(false),
@@ -1643,7 +1646,58 @@ void LedgerImpl::SaveSKUTransaction(
       ledger::SKUTransactionPtr transaction,
       ledger::ResultCallback callback) {
   bat_database_->SaveSKUTransaction(std::move(transaction), callback);
+}
 
+void LedgerImpl::SaveSKUExternalTransaction(
+    const std::string& transaction_id,
+    const std::string& external_transaction_id,
+    ledger::ResultCallback callback) {
+  bat_database_->SaveSKUExternalTransaction(
+      transaction_id,
+      external_transaction_id,
+      callback);
+}
+
+void LedgerImpl::UpdateSKUOrderStatus(
+    const std::string& order_id,
+    const ledger::SKUOrderStatus status,
+    ledger::ResultCallback callback) {
+  bat_database_->UpdateSKUOrderStatus(
+      order_id,
+      status,
+      callback);
+}
+
+void LedgerImpl::TransferFunds(
+      const ledger::SKUTransaction& transaction,
+      const std::string& destination,
+      ledger::ExternalWalletPtr wallet,
+      ledger::TransactionCallback callback) {
+  bat_contribution_->TransferFunds(
+      transaction,
+      destination,
+      std::move(wallet),
+      callback);
+}
+
+void LedgerImpl::GetSKUOrder(
+    const std::string& order_id,
+    ledger::GetSKUOrderCallback callback) {
+  bat_database_->GetSKUOrder(order_id, callback);
+}
+
+void LedgerImpl::BraveSKU(
+    const std::string& destination,
+    const std::vector<ledger::SKUOrderItem>& items,
+    const std::string& contribution_id,
+    ledger::ExternalWalletPtr wallet,
+    ledger::SKUOrderCallback callback) {
+  bat_sku_->Brave(
+      destination,
+      items,
+      contribution_id,
+      std::move(wallet),
+      callback);
 }
 
 }  // namespace bat_ledger

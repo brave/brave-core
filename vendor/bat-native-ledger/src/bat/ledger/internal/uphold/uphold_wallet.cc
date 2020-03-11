@@ -43,6 +43,8 @@ void UpholdWallet::Generate(
     }
   }
 
+  wallet->type = ledger::kWalletUphold;
+
   if (wallet->one_time_string.empty()) {
     wallet->one_time_string = GenerateRandomString(ledger::is_testing);
   }

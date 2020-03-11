@@ -32,7 +32,6 @@ class UpholdCard;
 class UpholdAuthorization;
 class UpholdWallet;
 
-using TransactionCallback = std::function<void(ledger::Result, bool created)>;
 using FetchBalanceCallback = std::function<void(ledger::Result, double)>;
 using CreateCardCallback =
     std::function<void(ledger::Result, const std::string&)>;
@@ -57,10 +56,11 @@ class Uphold {
   void FetchBalance(std::map<std::string, ledger::ExternalWalletPtr> wallets,
                     FetchBalanceCallback callback);
 
-  void TransferFunds(double amount,
-                     const std::string& address,
-                     ledger::ExternalWalletPtr wallet,
-                     TransactionCallback callback);
+  void TransferFunds(
+      const double amount,
+      const std::string& address,
+      ledger::ExternalWalletPtr wallet,
+      ledger::TransactionCallback callback);
 
   void WalletAuthorization(
     const std::map<std::string, std::string>& args,
@@ -94,15 +94,11 @@ class Uphold {
  private:
   void ContributionCompleted(
       const ledger::Result result,
-      const bool created,
+      const std::string& transaction_id,
       const std::string& contribution_id,
       const double fee,
       const std::string& publisher_key,
       ledger::ResultCallback callback);
-
-  void OnFeeCompleted(ledger::Result result,
-                    bool created,
-                    const std::string &viewing_id);
 
   void OnFetchBalance(
     FetchBalanceCallback callback,
@@ -123,7 +119,7 @@ class Uphold {
 
   void OnTransferFeeCompleted(
     const ledger::Result result,
-    const bool created,
+    const std::string& transaction_id,
     const ledger::TransferFee& transfer_fee);
 
   void TransferFee(

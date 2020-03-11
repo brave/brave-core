@@ -10,14 +10,9 @@
 #include <string>
 
 #include "bat/ledger/ledger.h"
+#include "bat/ledger/internal/credentials/credentials_trigger.h"
 
 namespace braveledger_credentials {
-
-struct CredentialsTrigger {
-  std::string id;
-  ledger::CredsBatchType type;
-  int size;
-};
 
 class Credentials {
  public:

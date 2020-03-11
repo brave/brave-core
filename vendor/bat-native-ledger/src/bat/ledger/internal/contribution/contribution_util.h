@@ -43,6 +43,8 @@ void AdjustPublisherListAmounts(
     ledger::ContributionQueuePublisherList* publishers_left,
     double reduce_fee_for);
 
+int32_t GetVotesFromAmount(const double amount);
+
 }  // namespace braveledger_contribution
 
 #endif  // BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_UTIL_H_

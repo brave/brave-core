@@ -7,6 +7,7 @@
 #define BRAVELEDGER_COMMON_PROMOTION_REQUESTS_H_
 
 #include <string>
+#include "bat/ledger/mojom_structs.h"
 
 namespace braveledger_request_util {
 
@@ -20,7 +21,9 @@ std::string FetchSignedCredsUrl(
     const std::string& promotion_id,
     const std::string& claim_id);
 
-std::string GetReedemSuggestionsUrl();
+std::string GetReedemTokensUrl(
+    const ledger::RewardsType type,
+    const ledger::ContributionProcessor processor);
 
 std::string ReportClobberedClaimsUrl();
 

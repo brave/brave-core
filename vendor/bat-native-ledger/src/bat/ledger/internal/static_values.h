@@ -144,6 +144,8 @@ static const std::vector<std::string> _add_funds_limited_countries = {
   "JP"
 };
 
+static const double _vote_price = 0.25;
+
 }  // namespace braveledger_ledger
 
 #endif  // BRAVELEDGER_STATIC_VALUES_H_

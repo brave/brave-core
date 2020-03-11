@@ -532,6 +532,12 @@ class MockLedgerImpl : public LedgerImpl {
       const std::string& contribution_id,
       ledger::GetContributionInfoCallback callback));
 
+  MOCK_METHOD4(UpdateContributionInfoStepAndCount, void(
+      const std::string& contribution_id,
+      const ledger::ContributionStep step,
+      const int32_t retry_count,
+      ledger::ResultCallback callback));
+
   MOCK_METHOD2(RunDBTransaction, void(
       ledger::DBTransactionPtr,
       ledger::RunDBTransactionCallback));

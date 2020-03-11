@@ -26,8 +26,10 @@ class Uphold;
 namespace braveledger_contribution {
 
 class ContributionAC;
+class ContributionAnonCard;
 class ContributionExternalWallet;
 class ContributionMonthly;
+class ContributionSKU;
 class ContributionTip;
 class Unverified;
 class Unblinded;
@@ -80,6 +82,18 @@ class Contribution {
 
   void CheckContributionQueue();
 
+  void TransferFunds(
+      const ledger::SKUTransaction& transaction,
+      const std::string& destination,
+      ledger::ExternalWalletPtr wallet,
+      ledger::TransactionCallback callback);
+
+  void SKUAutoContribution(
+      const std::string& contribution_id,
+      ledger::ExternalWalletPtr wallet);
+
+  void StartUnblinded(const std::string& contribution_id);
+
  private:
   void StartAutoContribute(const ledger::Result result);
 
@@ -102,14 +116,15 @@ class Contribution {
   void OnEntrySaved(
       const ledger::Result result,
       const std::string& contribution_id,
-      const std::string& current_wallet_type,
+      const std::string& wallet_type,
       const ledger::Balance& balance,
       const std::string& queue_string);
 
-  void OnProcessExternalWalletSaved(
-      const ledger::Result result,
-      const std::string& contribution_id,
-      base::flat_map<std::string, double> wallet_balances);
+  void OnQueueSaved(
+    const ledger::Result result,
+    const std::string& wallet_type,
+    const ledger::Balance& balance,
+    const std::string& queue_string);
 
   void Process(
       ledger::ContributionQueuePtr queue,
@@ -122,11 +137,13 @@ class Contribution {
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<Unverified> unverified_;
   std::unique_ptr<Unblinded> unblinded_;
+  std::unique_ptr<ContributionSKU> sku_;
   std::unique_ptr<braveledger_uphold::Uphold> uphold_;
   std::unique_ptr<ContributionMonthly> monthly_;
   std::unique_ptr<ContributionAC> ac_;
   std::unique_ptr<ContributionTip> tip_;
   std::unique_ptr<ContributionExternalWallet> external_wallet_;
+  std::unique_ptr<ContributionAnonCard> anon_card_;
   uint32_t last_reconcile_timer_id_;
   std::map<std::string, uint32_t> retry_timers_;
   uint32_t queue_timer_id_;

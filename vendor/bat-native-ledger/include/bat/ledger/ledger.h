@@ -67,6 +67,8 @@ using RecoverWalletCallback = std::function<void(
     const ledger::Result,
     const double balance)>;
 
+
+
 class LEDGER_EXPORT Ledger {
  public:
   static bool IsMediaLink(const std::string& url,

@@ -25,6 +25,10 @@ const char kClientSecretProduction[] =
     "de1aa4196c8d4aa50c6bc1371734e3f57f781f72";
 const char kFeeAddressStaging[] = "1b2b466f-5c15-49bf-995e-c91777d3da93";
 const char kFeeAddressProduction[] = "b01e8c55-5004-4761-9e4b-01ec13e25c92";
+// TODO(nejczdovc) change with real ones
+const char kACAddressStaging[] = "1b2b466f-5c15-49bf-995e-c91777d3da93";
+// TODO(nejczdovc) change with real ones
+const char kACAddressProduction[] = "b01e8c55-5004-4761-9e4b-01ec13e25c92";
 
 std::string GetClientId();
 
@@ -35,6 +39,8 @@ std::string GetUrl();
 std::string GetAPIUrl(const std::string& path);
 
 std::string GetFeeAddress();
+
+std::string GetACAddress();
 
 std::string GetVerifyUrl(const std::string& state);
 

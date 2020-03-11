@@ -13,6 +13,8 @@
 
 namespace braveledger_database {
 
+using GetSKUOrderItemsCallback = std::function<void(ledger::SKUOrderItemList)>;
+
 class DatabaseSKUOrderItems: public DatabaseTable {
  public:
   explicit DatabaseSKUOrderItems(bat_ledger::LedgerImpl* ledger);
@@ -24,12 +26,20 @@ class DatabaseSKUOrderItems: public DatabaseTable {
       ledger::DBTransaction* transaction,
       ledger::SKUOrderItemList list);
 
+  void GetRecordsByOrderId(
+      const std::string& order_id,
+      GetSKUOrderItemsCallback callback);
+
  private:
   bool CreateTableV19(ledger::DBTransaction* transaction);
 
   bool CreateIndexV19(ledger::DBTransaction* transaction);
 
   bool MigrateToV19(ledger::DBTransaction* transaction);
+
+  void OnGetRecordsByOrderId(
+      ledger::DBCommandResponsePtr response,
+      GetSKUOrderItemsCallback callback);
 };
 
 }  // namespace braveledger_database

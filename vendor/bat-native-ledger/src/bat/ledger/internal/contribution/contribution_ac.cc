@@ -51,6 +51,7 @@ void ContributionAC::PreparePublisherList(ledger::PublisherInfoList list) {
   ledger_->NormalizeContributeWinners(&normalized_list, &list, 0);
 
   if (normalized_list.empty()) {
+    BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "AC list is empty";
     return;
   }
 
@@ -65,6 +66,11 @@ void ContributionAC::PreparePublisherList(ledger::PublisherInfoList list) {
     publisher->publisher_key = item->id;
     publisher->amount_percent =  item->weight;
     queue_list.push_back(std::move(publisher));
+  }
+
+  if (queue_list.empty()) {
+    BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "AC queue list is empty";
+    return;
   }
 
   auto queue = ledger::ContributionQueue::New();

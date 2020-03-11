@@ -60,6 +60,10 @@ namespace braveledger_report {
 class Report;
 }
 
+namespace braveledger_sku {
+class SKU;
+}
+
 namespace confirmations {
 class Confirmations;
 }
@@ -597,7 +601,7 @@ class LedgerImpl : public ledger::Ledger {
       const std::string& contribution_id,
       ledger::GetContributionInfoCallback callback);
 
-  void UpdateContributionInfoStepAndCount(
+  virtual void UpdateContributionInfoStepAndCount(
       const std::string& contribution_id,
       const ledger::ContributionStep step,
       const int32_t retry_count,
@@ -679,6 +683,33 @@ class LedgerImpl : public ledger::Ledger {
   void SaveSKUTransaction(
       ledger::SKUTransactionPtr transaction,
       ledger::ResultCallback callback);
+
+  void SaveSKUExternalTransaction(
+      const std::string& transaction_id,
+      const std::string& external_transaction_id,
+      ledger::ResultCallback callback);
+
+  void UpdateSKUOrderStatus(
+      const std::string& order_id,
+      const ledger::SKUOrderStatus status,
+      ledger::ResultCallback callback);
+
+  void TransferFunds(
+      const ledger::SKUTransaction& transaction,
+      const std::string& destination,
+      ledger::ExternalWalletPtr wallet,
+      ledger::TransactionCallback callback);
+
+  void GetSKUOrder(
+      const std::string& order_id,
+      ledger::GetSKUOrderCallback callback);
+
+  void BraveSKU(
+      const std::string& destination,
+      const std::vector<ledger::SKUOrderItem>& items,
+      const std::string& contribution_id,
+      ledger::ExternalWalletPtr wallet,
+      ledger::SKUOrderCallback callback);
 
  private:
   void InitializeConfirmations(
@@ -768,6 +799,7 @@ class LedgerImpl : public ledger::Ledger {
   std::unique_ptr<braveledger_database::Database> bat_database_;
   std::unique_ptr<confirmations::Confirmations> bat_confirmations_;
   std::unique_ptr<braveledger_report::Report> bat_report_;
+  std::unique_ptr<braveledger_sku::SKU> bat_sku_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   bool initialized_task_scheduler_;
 

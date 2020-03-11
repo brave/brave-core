@@ -25,10 +25,28 @@ class DatabaseSKUOrder: public DatabaseTable {
       ledger::SKUOrderPtr info,
       ledger::ResultCallback callback);
 
+  void UpdateStatus(
+      const std::string& order_id,
+      const ledger::SKUOrderStatus status,
+      ledger::ResultCallback callback);
+
+  void GetRecord(
+      const std::string& order_id,
+      ledger::GetSKUOrderCallback callback);
+
  private:
   bool CreateTableV19(ledger::DBTransaction* transaction);
 
   bool MigrateToV19(ledger::DBTransaction* transaction);
+
+  void OnGetRecord(
+      ledger::DBCommandResponsePtr response,
+      ledger::GetSKUOrderCallback callback);
+
+  void OnGetRecordItems(
+      ledger::SKUOrderItemList list,
+      const std::string& order_string,
+      ledger::GetSKUOrderCallback callback);
 
   std::unique_ptr<DatabaseSKUOrderItems> items_;
 };

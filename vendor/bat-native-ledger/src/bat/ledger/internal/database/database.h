@@ -275,11 +275,25 @@ class Database {
    */
   void SaveSKUOrder(ledger::SKUOrderPtr order, ledger::ResultCallback callback);
 
+  void UpdateSKUOrderStatus(
+      const std::string& order_id,
+      const ledger::SKUOrderStatus status,
+      ledger::ResultCallback callback);
+
+  void GetSKUOrder(
+      const std::string& order_id,
+      ledger::GetSKUOrderCallback callback);
+
   /**
    * SKU TRANSACTION
    */
   void SaveSKUTransaction(
       ledger::SKUTransactionPtr transaction,
+      ledger::ResultCallback callback);
+
+  void SaveSKUExternalTransaction(
+      const std::string& transaction_id,
+      const std::string& external_transaction_id,
       ledger::ResultCallback callback);
 
   /**

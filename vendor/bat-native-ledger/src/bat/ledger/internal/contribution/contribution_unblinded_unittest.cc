@@ -83,8 +83,16 @@ TEST_F(UnblindedTest, NotEnoughFunds) {
 }
 
 TEST_F(UnblindedTest, PromotionExpiredDeleteToken) {
-  EXPECT_CALL(*mock_ledger_impl_,
-      ContributionCompleted(ledger::Result::LEDGER_OK, _, _, _));
+  EXPECT_CALL(*mock_ledger_impl_, UpdateContributionInfoStepAndCount(
+      _,
+      ledger::ContributionStep::STEP_START,
+      _,
+      _));
+  EXPECT_CALL(*mock_ledger_impl_, UpdateContributionInfoStepAndCount(
+      _,
+      ledger::ContributionStep::STEP_SUGGESTIONS,
+      _,
+      _));
 
   std::vector<std::string> delete_list;
   delete_list.push_back("1");

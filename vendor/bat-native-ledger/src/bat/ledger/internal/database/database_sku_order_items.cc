@@ -135,4 +135,75 @@ void DatabaseSKUOrderItems::InsertOrUpdateList(
   }
 }
 
+void DatabaseSKUOrderItems::GetRecordsByOrderId(
+    const std::string& order_id,
+    GetSKUOrderItemsCallback callback) {
+  auto transaction = ledger::DBTransaction::New();
+
+  const std::string query = base::StringPrintf(
+      "SELECT order_item_id, order_id, sku, quantity, price, name, "
+      "description, type, expires_at FROM %s WHERE order_id = ?",
+      kTableName);
+
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::READ;
+  command->command = query;
+
+  BindString(command.get(), 0, order_id);
+
+  command->record_bindings = {
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::INT_TYPE,
+      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::INT_TYPE,
+      ledger::DBCommand::RecordBindingType::INT64_TYPE
+  };
+
+  transaction->commands.push_back(std::move(command));
+
+  auto transaction_callback =
+      std::bind(&DatabaseSKUOrderItems::OnGetRecordsByOrderId,
+          this,
+          _1,
+          callback);
+
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+}
+
+void DatabaseSKUOrderItems::OnGetRecordsByOrderId(
+    ledger::DBCommandResponsePtr response,
+    GetSKUOrderItemsCallback callback) {
+  if (!response ||
+      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    callback({});
+    return;
+  }
+
+  ledger::SKUOrderItemList list;
+  ledger::SKUOrderItemPtr info = nullptr;
+  for (auto const& record : response->result->get_records()) {
+    auto* record_pointer = record.get();
+    info = ledger::SKUOrderItem::New();
+
+    info->order_item_id = GetStringColumn(record_pointer, 0);
+    info->order_id = GetStringColumn(record_pointer, 1);
+    info->sku = GetStringColumn(record_pointer, 2);
+    info->quantity = GetIntColumn(record_pointer, 3);
+    info->price = GetDoubleColumn(record_pointer, 4);
+    info->name = GetStringColumn(record_pointer, 5);
+    info->description = GetStringColumn(record_pointer, 6);
+    info->type =
+        static_cast<ledger::SKUOrderItemType>(GetIntColumn(record_pointer, 7));
+    info->expires_at = GetInt64Column(record_pointer, 8);
+
+    list.push_back(std::move(info));
+  }
+
+  callback(std::move(list));
+}
+
 }  // namespace braveledger_database

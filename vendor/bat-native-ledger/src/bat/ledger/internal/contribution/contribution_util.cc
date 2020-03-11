@@ -7,6 +7,7 @@
 
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/contribution/contribution_util.h"
+#include "bat/ledger/internal/static_values.h"
 
 #include "wrapper.hpp"  // NOLINT
 
@@ -161,6 +162,10 @@ void AdjustPublisherListAmounts(
       reduce_fee_for = 0;
     }
   }
+}
+
+int32_t GetVotesFromAmount(const double amount) {
+  return std::floor(amount / braveledger_ledger::_vote_price);
 }
 
 }  // namespace braveledger_contribution

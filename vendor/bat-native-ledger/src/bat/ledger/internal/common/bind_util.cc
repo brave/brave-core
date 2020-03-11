@@ -543,4 +543,144 @@ ledger::MonthlyReportInfoPtr FromStringToMonthlyReport(
   return info;
 }
 
+std::string FromSKUOrderToString(ledger::SKUOrderPtr info) {
+  if (!info) {
+    return "{}";
+  }
+
+  base::Value items(base::Value::Type::LIST);
+  for (auto& item : info->items) {
+    base::Value order_item(base::Value::Type::DICTIONARY);
+    order_item.SetStringKey("order_item_id", item->order_item_id);
+    order_item.SetStringKey("order_id", item->order_id);
+    order_item.SetStringKey("sku", item->sku);
+    order_item.SetIntKey("quantity", item->quantity);
+    order_item.SetDoubleKey("price", item->price);
+    order_item.SetStringKey("name", item->name);
+    order_item.SetStringKey("description", item->description);
+    order_item.SetIntKey("type", static_cast<int>(item->type));
+    order_item.SetStringKey("expires_at", std::to_string(item->expires_at));
+    items.Append(std::move(order_item));
+  }
+
+  base::Value order(base::Value::Type::DICTIONARY);
+  order.SetStringKey("order_id", info->order_id);
+  order.SetDoubleKey("total_amount", info->total_amount);
+  order.SetStringKey("merchant_id", info->merchant_id);
+  order.SetStringKey("location", info->location);
+  order.SetIntKey("status", static_cast<int>(info->status));
+  order.SetStringKey("contribution_id", info->contribution_id);
+  order.SetKey("items", std::move(items));
+
+  std::string json;
+  base::JSONWriter::Write(order, &json);
+
+  return json;
+}
+
+ledger::SKUOrderPtr FromStringToSKUOrder(const std::string& data) {
+  base::Optional<base::Value> value = base::JSONReader::Read(data);
+
+  if (!value || !value->is_dict()) {
+    return nullptr;
+  }
+
+  base::DictionaryValue* dictionary = nullptr;
+  if (!value->GetAsDictionary(&dictionary)) {
+    return nullptr;
+  }
+
+  auto order = ledger::SKUOrder::New();
+
+  std::string id;
+  const auto* order_id = dictionary->FindStringKey("order_id");
+  if (order_id) {
+    order->order_id = *order_id;
+    id = order->order_id;
+  }
+
+  if (id.empty()) {
+    return nullptr;
+  }
+
+  const auto total_amount = dictionary->FindDoubleKey("total_amount");
+  if (total_amount) {
+    order->total_amount = *total_amount;
+  }
+
+  const auto* merchant_id = dictionary->FindStringKey("merchant_id");
+  if (merchant_id) {
+    order->merchant_id = *merchant_id;
+  }
+
+  const auto* location = dictionary->FindStringKey("location");
+  if (location) {
+    order->location = *location;
+  }
+
+  const auto status = dictionary->FindIntKey("status");
+  if (status) {
+    order->status = static_cast<ledger::SKUOrderStatus>(*status);
+  }
+
+  const auto* contribution_id = dictionary->FindStringKey("contribution_id");
+  if (contribution_id) {
+    order->contribution_id = *contribution_id;
+  }
+
+  auto* items = dictionary->FindListKey("items");
+  if (items) {
+    ledger::SKUOrderItemPtr order_item = nullptr;
+    for (auto& item : items->GetList()) {
+      order_item = ledger::SKUOrderItem::New();
+
+      const auto* order_item_id = item.FindStringKey("order_item_id");
+      if (order_item_id) {
+        order_item->order_item_id = *order_item_id;
+      }
+
+      order_item->order_id = id;
+
+      const auto* sku = item.FindStringKey("sku");
+      if (sku) {
+        order_item->sku = *sku;
+      }
+
+      const auto quantity = item.FindIntKey("quantity");
+      if (quantity) {
+        order_item->quantity = *quantity;
+      }
+
+      const auto price = item.FindDoubleKey("price");
+      if (price) {
+        order_item->price = *price;
+      }
+
+      const auto* name = item.FindStringKey("name");
+      if (name) {
+        order_item->name = *name;
+      }
+
+      const auto* description = item.FindStringKey("description");
+      if (description) {
+        order_item->description = *description;
+      }
+
+      const auto type = item.FindDoubleKey("type");
+      if (type) {
+        order_item->type = static_cast<ledger::SKUOrderItemType>(*type);
+      }
+
+      const auto* expires_at = item.FindStringKey("expires_at");
+      if (expires_at) {
+        order_item->expires_at = std::stoull(*expires_at);
+      }
+
+      order->items.push_back(std::move(order_item));
+    }
+  }
+
+  return order;
+}
+
 }  // namespace braveledger_bind_util

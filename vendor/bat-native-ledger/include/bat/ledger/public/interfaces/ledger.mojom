@@ -134,6 +134,7 @@ struct MediaEventInfo {
 };
 
 struct ExternalWallet {
+  string type;
   string token;
   string address;
   WalletStatus status;
@@ -433,7 +434,8 @@ struct MonthlyReportInfo {
 
 enum CredsBatchType {
   NONE = 0,
-  PROMOTION = 1
+  PROMOTION = 1,
+  SKU = 2
 };
 
 enum CredsBatchStatus {
@@ -460,7 +462,7 @@ struct CredsBatch {
 enum SKUOrderStatus {
   NONE = 0,
   CREATED = 1,
-  SENT = 2,
+  PENDING = 2,
   PAID = 3,
   FULFILLED = 4,
   CANCELED = 5

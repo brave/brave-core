@@ -90,7 +90,7 @@ class Unblinded {
 
   void SendTokens(
       const std::string& publisher_key,
-      const ledger::RewardsType type,
+      ledger::ContributionInfoPtr contribution,
       const std::vector<ledger::UnblindedToken>& list,
       ledger::ResultCallback callback);
 

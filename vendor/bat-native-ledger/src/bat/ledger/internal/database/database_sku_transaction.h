@@ -23,6 +23,11 @@ class DatabaseSKUTransaction: public DatabaseTable {
       ledger::SKUTransactionPtr info,
       ledger::ResultCallback callback);
 
+  void SaveExternalTransaction(
+      const std::string& transaction_id,
+      const std::string& external_transaction_id,
+      ledger::ResultCallback callback);
+
  private:
   bool CreateTableV19(ledger::DBTransaction* transaction);
 

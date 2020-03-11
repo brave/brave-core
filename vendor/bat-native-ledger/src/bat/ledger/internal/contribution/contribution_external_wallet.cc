@@ -85,17 +85,9 @@ void ContributionExternalWallet::ContributionInfo(
   }
 
   if (contribution->type == ledger::RewardsType::AUTO_CONTRIBUTE) {
-    auto callback = std::bind(&ContributionExternalWallet::OnAC,
-        this,
-        _1,
-        _2,
-        contribution->contribution_id);
-
-    uphold_->TransferFunds(
-        contribution->amount,
-        ledger_->GetCardIdAddress(),
-        ledger::ExternalWallet::New(wallet),
-        callback);
+    contribution_->SKUAutoContribution(
+        contribution->contribution_id,
+        ledger::ExternalWallet::New(wallet));
     return;
   }
 
@@ -111,18 +103,6 @@ void ContributionExternalWallet::ContributionInfo(
 
     ledger_->GetServerPublisherInfo(publisher->publisher_key, callback);
   }
-}
-
-void ContributionExternalWallet::OnAC(
-    const ledger::Result result,
-    const bool created,
-    const std::string& contribution_id) {
-  if (result != ledger::Result::LEDGER_OK) {
-    // TODO(nejczdovc): add retries
-    return;
-  }
-
-  // TODO implement
 }
 
 void ContributionExternalWallet::OnSavePendingContribution(

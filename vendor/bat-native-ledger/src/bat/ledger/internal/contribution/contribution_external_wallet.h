@@ -41,7 +41,6 @@ class ContributionExternalWallet {
 
   void OnAC(
       const ledger::Result result,
-      const bool created,
       const std::string& contribution_id);
 
   void OnSavePendingContribution(

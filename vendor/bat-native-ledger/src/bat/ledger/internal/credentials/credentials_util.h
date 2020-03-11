@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_CREDENTIALS_CREDENTIALS_HELPER_H_
-#define BRAVELEDGER_CREDENTIALS_CREDENTIALS_HELPER_H_
+#ifndef BRAVELEDGER_CREDENTIALS_CREDENTIALS_UTIL_H_
+#define BRAVELEDGER_CREDENTIALS_CREDENTIALS_UTIL_H_
 
 #include <memory>
 #include <string>
@@ -42,4 +42,4 @@ namespace braveledger_credentials {
 
 }  // namespace braveledger_credentials
 
-#endif  // BRAVELEDGER_CREDENTIALS_CREDENTIALS_HELPER_H_
+#endif  // BRAVELEDGER_CREDENTIALS_CREDENTIALS_UTIL_H_

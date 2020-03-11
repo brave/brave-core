@@ -142,11 +142,13 @@ using ServerPublisherPartialPtr = mojom::ServerPublisherPartialPtr;
 using SKUOrder = mojom::SKUOrder;
 using SKUOrderPtr = mojom::SKUOrderPtr;
 
+using SKUOrderStatus = mojom::SKUOrderStatus;
+
 using SKUOrderItem = mojom::SKUOrderItem;
 using SKUOrderItemPtr = mojom::SKUOrderItemPtr;
 using SKUOrderItemList = std::vector<SKUOrderItemPtr>;
 
-using SKUOrderStatus = mojom::SKUOrderStatus;
+using SKUOrderItemType = mojom::SKUOrderItemType;
 
 using SKUTransaction = mojom::SKUTransaction;
 using SKUTransactionPtr = mojom::SKUTransactionPtr;

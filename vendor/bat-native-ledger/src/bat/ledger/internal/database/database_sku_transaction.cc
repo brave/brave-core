@@ -131,4 +131,37 @@ void DatabaseSKUTransaction::InsertOrUpdate(
   ledger_->RunDBTransaction(std::move(db_transaction), transaction_callback);
 }
 
+void DatabaseSKUTransaction::SaveExternalTransaction(
+    const std::string& transaction_id,
+    const std::string& external_transaction_id,
+    ledger::ResultCallback callback) {
+  if (transaction_id.empty() || external_transaction_id.empty()) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  const std::string query = base::StringPrintf(
+      "UPDATE %s SET "
+      "external_transaction_id = ?, status = ? WHERE transaction_id = ?",
+      kTableName);
+
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::RUN;
+  command->command = query;
+
+  BindString(command.get(), 0, external_transaction_id);
+  BindInt(command.get(), 1, static_cast<int>(
+      ledger::SKUTransactionStatus::COMPLETED));
+  BindString(command.get(), 2, transaction_id);
+
+  auto transaction = ledger::DBTransaction::New();
+  transaction->commands.push_back(std::move(command));
+
+  auto transaction_callback = std::bind(&OnResultCallback,
+      _1,
+      callback);
+
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+}
+
 }  // namespace braveledger_database
