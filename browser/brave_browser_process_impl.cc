@@ -25,7 +25,6 @@
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/components/brave_shields/browser/autoplay_whitelist_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_shields/browser/referrer_whitelist_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
@@ -182,7 +181,6 @@ void BraveBrowserProcessImpl::StartBraveServices() {
   ad_block_regional_service_manager()->Start();
   https_everywhere_service()->Start();
 
-  autoplay_whitelist_service();
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   extension_whitelist_service();
 #endif
@@ -236,16 +234,6 @@ BraveBrowserProcessImpl::ntp_sponsored_images_service() {
   }
 
   return ntp_sponsored_images_service_.get();
-}
-
-brave_shields::AutoplayWhitelistService*
-BraveBrowserProcessImpl::autoplay_whitelist_service() {
-  if (!autoplay_whitelist_service_) {
-    autoplay_whitelist_service_ =
-        brave_shields::AutoplayWhitelistServiceFactory(
-            local_data_files_service());
-  }
-  return autoplay_whitelist_service_.get();
 }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)

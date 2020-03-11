@@ -6,9 +6,7 @@
 #include "base/path_service.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/brave_content_browser_client.h"
-#include "brave/components/brave_shields/browser/autoplay_whitelist_service.h"
 #include "brave/common/brave_paths.h"
-#include "brave/vendor/autoplay-whitelist/autoplay_whitelist_parser.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/permission_bubble/mock_permission_prompt_factory.h"
@@ -47,8 +45,6 @@ class BraveContentSettingsAgentImplAutoplayTest : public InProcessBrowserTest {
 
       ASSERT_TRUE(embedded_test_server()->Start());
 
-      g_brave_browser_process->autoplay_whitelist_service()->
-        autoplay_whitelist_client_->addHost("example.com");
       whitelisted_url_ = embedded_test_server()->GetURL(
         "example.com", "/autoplay/autoplay_by_attr.html");
 
