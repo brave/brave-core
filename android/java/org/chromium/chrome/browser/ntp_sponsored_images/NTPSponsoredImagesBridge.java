@@ -92,9 +92,10 @@ public class NTPSponsoredImagesBridge {
     }
 
     static public boolean enableSponsoredImages(Profile profile) {
-        return BraveAdsNativeHelper.nativeIsLocaleValid(profile)
-               && BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
-               && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
+        // return BraveAdsNativeHelper.nativeIsLocaleValid(profile)
+        //        && BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
+        //        && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
+        return true;
     }
 
     @Nullable

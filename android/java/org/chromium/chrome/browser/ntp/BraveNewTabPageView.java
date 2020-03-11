@@ -39,7 +39,6 @@ import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.ntp.sponsored.NTPImage;
 import org.chromium.chrome.browser.ntp.sponsored.BackgroundImage;
-import org.chromium.chrome.browser.ntp.sponsored.SponsoredImage;
 import org.chromium.chrome.browser.ntp.sponsored.NewTabPageListener;
 import org.chromium.chrome.browser.ntp.sponsored.SponsoredImageUtil;
 import org.chromium.chrome.browser.tab.EmptyTabObserver;
@@ -49,6 +48,8 @@ import org.chromium.chrome.browser.util.ImageUtils;
 import org.chromium.chrome.browser.ntp.sponsored.NTPUtil;
 import org.chromium.chrome.browser.ntp.sponsored.SponsoredTab;
 import org.chromium.chrome.browser.tab.TabAttributes;
+
+import org.chromium.chrome.browser.ntp_sponsored_images.NTPSponsoredImagesBridge;
 
 import static org.chromium.chrome.browser.util.ViewUtils.dpToPx;
 
@@ -79,6 +80,8 @@ public class BraveNewTabPageView extends NewTabPageView {
 
     private boolean isFromBottomSheet;
 
+    private NTPSponsoredImagesBridge mNTPSponsoredImagesBridge;
+
     // TODO - call NTPSponsoredImagesBridge.getCurrentWallpaper
     // if null then display regular background image
     // on every NTP load call NTPSponsoredImagesBridge.registerPageView()
@@ -95,13 +98,13 @@ public class BraveNewTabPageView extends NewTabPageView {
             NTPImage ntpImage = sponsoredTab.getTabNTPImage();
             if(ntpImage == null) {
                 sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
-            } else if (ntpImage instanceof SponsoredImage) {
+            } else if (ntpImage instanceof NTPSponsoredImagesBridge.Wallpaper) {
                 String countryCode = LocaleUtils.getCountryCode();
-                SponsoredImage sponsoredImage = (SponsoredImage) ntpImage;
-                File imageFile = new File(PathUtils.getDataDirectory(), countryCode + "_" + sponsoredImage.getImageUrl());
-                if(!imageFile.exists()) {
-                    sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
-                }
+                NTPSponsoredImagesBridge.Wallpaper sponsoredImage = (NTPSponsoredImagesBridge.Wallpaper) ntpImage;
+                // File imageFile = new File(PathUtils.getDataDirectory(), countryCode + "_" + sponsoredImage.getImageURL());
+                // if(!imageFile.exists()) {
+                //     sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
+                // }
             }
             checkForNonDistruptiveBanner(ntpImage);
             super.onConfigurationChanged(newConfig);
@@ -121,6 +124,15 @@ public class BraveNewTabPageView extends NewTabPageView {
 
         mTabImpl = (TabImpl) tab;
         mTab = tab;
+
+        mNTPSponsoredImagesBridge = new NTPSponsoredImagesBridge(mProfile);
+        mNTPSponsoredImagesBridge.registerPageView();
+
+        if (mNTPSponsoredImagesBridge.getCurrentWallpaper() != null) {
+            Log.i("NTP", "Wallpaper is not null");
+        } else {
+            Log.i("NTP", "Wallpaper is null");
+        }
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
             if (sponsoredTab == null)
@@ -262,33 +274,34 @@ public class BraveNewTabPageView extends NewTabPageView {
                     float centerPointX;
                     float centerPointY;
 
-                    if (ntpImage instanceof SponsoredImage) {
-                        SponsoredImage sponsoredImage = (SponsoredImage) ntpImage;
-                        File imageFile = new File(PathUtils.getDataDirectory(), countryCode + "_" + sponsoredImage.getImageUrl());
+                    if (ntpImage instanceof NTPSponsoredImagesBridge.Wallpaper) {
+                        NTPSponsoredImagesBridge.Wallpaper sponsoredImage = (NTPSponsoredImagesBridge.Wallpaper) ntpImage;
+                        // File imageFile = new File(sponsoredImage.getImageURL());
                         try {
-                            Uri imageFileUri = Uri.parse("file://"+imageFile.getAbsolutePath());
-                            InputStream inputStream = mTabImpl.getActivity().getContentResolver().openInputStream(imageFileUri);
-                            imageBitmap = BitmapFactory.decodeStream(inputStream);
+                            // Uri imageFileUri = Uri.parse(sponsoredImage.getImageURL());
+                            // InputStream inputStream = ContextUtils.getApplicationContext().getContentResolver().openInputStream(imageFileUri);
+                            // imageBitmap = BitmapFactory.decodeStream(inputStream);
+                            imageBitmap = sponsoredImage.getBitmap();
                             imageWidth = imageBitmap.getWidth();
                             imageHeight = imageBitmap.getHeight();
                             centerPointX = sponsoredImage.getFocalPointX() == 0 ? (imageWidth/2) : sponsoredImage.getFocalPointX();
                             centerPointY = sponsoredImage.getFocalPointY() == 0 ? (imageHeight/2) : sponsoredImage.getFocalPointY();
 
-                            if (SponsoredImageUtil.getSponsoredLogo() != null ) {
-                                ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
-                                sponsoredLogo.setVisibility(View.VISIBLE);
-                                File logoFile = new File(PathUtils.getDataDirectory(),countryCode + "_" + SponsoredImageUtil.getSponsoredLogo().getImageUrl());
-                                Bitmap logoBitmap = BitmapFactory.decodeFile(logoFile.getPath());
-                                sponsoredLogo.setImageBitmap(logoBitmap);
-                                sponsoredLogo.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        if (SponsoredImageUtil.getSponsoredLogo().getDestinationUrl() != null) {
-                                            NTPUtil.openImageCredit(SponsoredImageUtil.getSponsoredLogo().getDestinationUrl());
-                                        }
-                                    }
-                                });
-                            }
+                            // if (SponsoredImageUtil.getSponsoredLogo() != null ) {
+                            //     ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
+                            //     sponsoredLogo.setVisibility(View.VISIBLE);
+                            //     File logoFile = new File(PathUtils.getDataDirectory(),countryCode + "_" + SponsoredImageUtil.getSponsoredLogo().getImageURL());
+                            //     Bitmap logoBitmap = BitmapFactory.decodeFile(logoFile.getPath());
+                            //     sponsoredLogo.setImageBitmap(logoBitmap);
+                            //     sponsoredLogo.setOnClickListener(new View.OnClickListener() {
+                            //         @Override
+                            //         public void onClick(View view) {
+                            //             if (SponsoredImageUtil.getSponsoredLogo().getDestinationUrl() != null) {
+                            //                 NTPUtil.openImageCredit(SponsoredImageUtil.getSponsoredLogo().getDestinationUrl());
+                            //             }
+                            //         }
+                            //     });
+                            // }
                         } catch (Exception exc) {
                             Log.e("NTP", exc.getMessage());
                             return;
@@ -413,14 +426,14 @@ public class BraveNewTabPageView extends NewTabPageView {
         NTPImage ntpImage = sponsoredTab.getTabNTPImage();
         if(ntpImage == null) {
             sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
-        } else if (ntpImage instanceof SponsoredImage) {
+        } else if (ntpImage instanceof NTPSponsoredImagesBridge.Wallpaper) {
             String countryCode = LocaleUtils.getCountryCode();
-            SponsoredImage sponsoredImage = (SponsoredImage) ntpImage;
-            File imageFile = new File(PathUtils.getDataDirectory(), countryCode + "_" + sponsoredImage.getImageUrl());
-            if(!imageFile.exists()) {
-                sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
-                ntpImage = sponsoredTab.getTabNTPImage();
-            }
+            NTPSponsoredImagesBridge.Wallpaper sponsoredImage = (NTPSponsoredImagesBridge.Wallpaper) ntpImage;
+            // File imageFile = new File(PathUtils.getDataDirectory(), countryCode + "_" + sponsoredImage.getImageURL());
+            // if(!imageFile.exists()) {
+            //     sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
+            //     ntpImage = sponsoredTab.getTabNTPImage();
+            // }
         }
         checkForNonDistruptiveBanner(ntpImage);
         showNTPImage(ntpImage);
@@ -428,7 +441,7 @@ public class BraveNewTabPageView extends NewTabPageView {
 
     private void initilizeSponsoredTab() {
         if (TabAttributes.from(mTab).get(String.valueOf((mTabImpl).getId())) == null) {
-            SponsoredTab mSponsoredTab = new SponsoredTab();
+            SponsoredTab mSponsoredTab = new SponsoredTab(mNTPSponsoredImagesBridge);
             TabAttributes.from(mTab).set(String.valueOf((mTabImpl).getId()), mSponsoredTab);
         }
         sponsoredTab = TabAttributes.from(mTab).get(String.valueOf((mTabImpl).getId()));

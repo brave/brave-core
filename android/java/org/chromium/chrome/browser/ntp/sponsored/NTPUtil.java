@@ -41,6 +41,7 @@ import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.ntp_sponsored_images.NTPSponsoredImagesBridge;
 
 import static org.chromium.chrome.browser.util.ViewUtils.dpToPx;
 
@@ -246,25 +247,31 @@ public class NTPUtil {
     	return false;
     }
 
-    public static NTPImage getNTPImage() {
-    	SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
-        if (shouldShowSponsoredImage()
-            && mSharedPreferences.getInt(BackgroundImagesPreferences.PREF_APP_OPEN_COUNT, 0) == 1
-            && SponsoredImageUtil.getTabIndex() == 2) {
-            SponsoredImage sponsoredImage = SponsoredImageUtil.getSponsoredImage();
-            SponsoredImageUtil.incrementTabIndex(3);
-            return sponsoredImage;
-        }
+    public static NTPImage getNTPImage(NTPSponsoredImagesBridge mNTPSponsoredImagesBridge) {
+    	NTPSponsoredImagesBridge.Wallpaper mWallpaper = mNTPSponsoredImagesBridge.getCurrentWallpaper();
+    	if (mWallpaper != null) {
+    		return mWallpaper;
+    	} else {
+    		return SponsoredImageUtil.getBackgroundImage();
+    	}
+    	// SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
+     //    if (shouldShowSponsoredImage()
+     //        && mSharedPreferences.getInt(BackgroundImagesPreferences.PREF_APP_OPEN_COUNT, 0) == 1
+     //        && SponsoredImageUtil.getTabIndex() == 2) {
+     //        SponsoredImage sponsoredImage = SponsoredImageUtil.getSponsoredImage();
+     //        SponsoredImageUtil.incrementTabIndex(3);
+     //        return sponsoredImage;
+     //    }
 
-        if (shouldShowSponsoredImage()
-            && SponsoredImageUtil.getTabIndex() != 1
-            && SponsoredImageUtil.getTabIndex() % 4 == 0) {
-            SponsoredImageUtil.incrementTabIndex(1);
-            return SponsoredImageUtil.getSponsoredImage();
-        } else {
-            SponsoredImageUtil.incrementTabIndex(1);
-            return SponsoredImageUtil.getBackgroundImage();
-        }
+     //    if (shouldShowSponsoredImage()
+     //        && SponsoredImageUtil.getTabIndex() != 1
+     //        && SponsoredImageUtil.getTabIndex() % 4 == 0) {
+     //        SponsoredImageUtil.incrementTabIndex(1);
+     //        return SponsoredImageUtil.getSponsoredImage();
+     //    } else {
+     //        SponsoredImageUtil.incrementTabIndex(1);
+     //        return SponsoredImageUtil.getBackgroundImage();
+     //    }
     }
 
     private static boolean shouldShowSponsoredImage() {
