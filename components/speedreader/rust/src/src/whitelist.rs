@@ -755,6 +755,207 @@ impl Whitelist {
                 ..RewriteRules::default()
             }),
         });
+
+        self.add_configuration(SpeedReaderConfig {
+            domain: "latimes.com".to_owned(),
+            url_rules: vec![r#"||latimes.com/*/story/*"#.to_owned()],
+            declarative_rewrite: Some(RewriteRules {
+                main_content: vec![
+                    ".ArticlePage-content".to_owned(),
+                    ".LongFormPage-content".to_owned(),
+                ],
+                main_content_cleanup: vec![
+                    ".NewsletterModule".to_owned(),
+                    "[class*=Page-actions]".to_owned(),
+                    "[class*=Page-contentFooter]".to_owned(),
+                    "[class*=Page-aside]".to_owned(),
+                    "[class*=Page-comments]".to_owned(),
+                    ".RevContent".to_owned(),
+                    ".SocialBar".to_owned(),
+                    ".Enhancement > .Infobox".to_owned(),
+                ],
+                ..RewriteRules::default()
+            }),
+        });
+
+        self.add_configuration(SpeedReaderConfig {
+            domain: "newsweek.com".to_owned(),
+            url_rules: vec![r#"/newsweek\.com\/.*(\d){6,}/"#.to_owned()],
+            declarative_rewrite: Some(RewriteRules {
+                main_content: vec![
+                    "article".to_owned(),
+                    ".article-header".to_owned(),
+                    "figure".to_owned(),
+                ],
+                main_content_cleanup: vec![
+                    ".social-share".to_owned(),
+                    "article .block-nw-magazine".to_owned(),
+                    ".hidden-print".to_owned(),
+                ],
+                ..RewriteRules::default()
+            }),
+        });
+
+        self.add_configuration(SpeedReaderConfig {
+            domain: "variety.com".to_owned(),
+            url_rules: vec![r#"/variety\.com\/.*-(\d){6,}/"#.to_owned()],
+            declarative_rewrite: Some(RewriteRules {
+                main_content: vec![
+                    ".post".to_owned(),
+                ],
+                main_content_cleanup: vec![
+                    ".c-author__extra".to_owned(),
+                    "[data-trigger=share-links-manager]".to_owned(),
+                    ".pmc-contextual-player".to_owned(),
+                    "footer".to_owned(),
+                    ".c-ad, .admz".to_owned(),
+                    "[id^=comments]".to_owned(),
+                ],
+                ..RewriteRules::default()
+            }),
+        });
+
+        self.add_configuration(SpeedReaderConfig {
+            domain: "hollywoodreporter.com".to_owned(),
+            url_rules: vec![r#"/variety\.com\/.*-(\d){6,}/"#.to_owned()],
+            declarative_rewrite: Some(RewriteRules {
+                main_content: vec![
+                    "article".to_owned(),
+                    ".blog-post".to_owned(),
+                ],
+                main_content_cleanup: vec![
+                    ".social-share".to_owned(),
+                    ".dfp-ad".to_owned(),
+                    ".blog-post aside".to_owned(),
+                    ".blog-post-sections".to_owned(),
+                ],
+                ..RewriteRules::default()
+            }),
+        });
+
+        self.add_configuration(SpeedReaderConfig {
+            domain: "bbc.com".to_owned(),
+            url_rules: vec![
+                r#"/bbc\.com\/.*-(\d){6,}/"#.to_owned(),
+                r#"/bbc\.com\/.*\/.*\/(\d){6,}/"#.to_owned(),
+                "||bbc.com/*/articles/*".to_owned(),
+            ],
+            declarative_rewrite: Some(RewriteRules {
+                main_content: vec![
+                    ".story-headline, .story-info, .story-body".to_owned(),
+                    "#story-page".to_owned(),   // different format
+                    "section.article".to_owned(), //another different format
+                    ".programmes-page.article--individual".to_owned(), // and another one
+                    "article.blocks-article".to_owned(),
+                ],
+                main_content_cleanup: vec![
+                    "[class*=share-tools]".to_owned(),
+                    ".idt2".to_owned(),
+                    ".off-screen".to_owned(),
+                    "#share-tools-top".to_owned(),
+                    ".story-share".to_owned(),
+                    ".article__footer".to_owned(),
+                    "article header img".to_owned(),
+                    ".drop-capped".to_owned(),
+                ],
+                preprocess: vec![
+                    AttributeRewrite {
+                        selector: ".js-delayed-image-load".to_owned(),
+                        attribute: None,
+                        element_name: "img".to_owned(),
+                    },
+                    AttributeRewrite {
+                        selector: "a.replace-image".to_owned(),
+                        attribute: Some(("href".to_owned(), "src".to_owned())),
+                        element_name: "img".to_owned(),
+                    },
+                    AttributeRewrite {
+                        selector: ".blocks-image".to_owned(),
+                        // attribute: Some(("src".to_owned(), "src".to_owned())),
+                        attribute: None,
+                        element_name: "img".to_owned(),
+                    },
+                    
+                ],
+                fix_embeds: true,
+                content_script: Some(r#"<script>
+                [...document.querySelectorAll("img[data-src].blocks-image")].map((e, i) => {
+                    if (e.dataset["src"]) {
+                        e.src = e.dataset["src"].replace("{width}", "800xn");
+                    }
+                });
+                [...document.querySelectorAll("img[data-src].sp-lazyload")].map((e, i) => {
+                    if (e.dataset["src"]) {
+                        e.src = e.dataset["src"].replace("{width}", "800").replace("{hidpi}","");
+                    }
+                })
+                </script>"#.to_owned(),
+                ),
+                ..RewriteRules::default()
+            }),
+        });
+
+        self.add_configuration(SpeedReaderConfig {
+            domain: "bbc.co.uk".to_owned(),
+            url_rules: vec![
+                r#"/bbc\.co.uk\/.*-(\d){6,}/"#.to_owned(),
+                r#"/bbc\.co.uk\/.*\/.*\/(\d){6,}/"#.to_owned(),
+                "||bbc.co.uk/*/articles/*".to_owned(),
+            ],
+            declarative_rewrite: Some(RewriteRules {
+                main_content: vec![
+                    ".story-headline, .story-info, .story-body".to_owned(),
+                    "#story-page".to_owned(),   // different format
+                    "section.article".to_owned(), //another different format
+                    ".programmes-page.article--individual".to_owned(), // and another one
+                    "article.blocks-article".to_owned(),
+                ],
+                main_content_cleanup: vec![
+                    "[class*=share-tools]".to_owned(),
+                    ".idt2".to_owned(),
+                    ".off-screen".to_owned(),
+                    "#share-tools-top".to_owned(),
+                    ".story-share".to_owned(),
+                    ".article__footer".to_owned(),
+                    "article header img".to_owned(),
+                    ".drop-capped".to_owned(),
+                ],
+                preprocess: vec![
+                    AttributeRewrite {
+                        selector: ".js-delayed-image-load".to_owned(),
+                        attribute: None,
+                        element_name: "img".to_owned(),
+                    },
+                    AttributeRewrite {
+                        selector: "a.replace-image".to_owned(),
+                        attribute: Some(("href".to_owned(), "src".to_owned())),
+                        element_name: "img".to_owned(),
+                    },
+                    AttributeRewrite {
+                        selector: ".blocks-image".to_owned(),
+                        // attribute: Some(("src".to_owned(), "src".to_owned())),
+                        attribute: None,
+                        element_name: "img".to_owned(),
+                    },
+                    
+                ],
+                fix_embeds: true,
+                content_script: Some(r#"<script>
+                [...document.querySelectorAll("img[data-src].blocks-image")].map((e, i) => {
+                    if (e.dataset["src"]) {
+                        e.src = e.dataset["src"].replace("{width}", "800xn");
+                    }
+                });
+                [...document.querySelectorAll("img[data-src].sp-lazyload")].map((e, i) => {
+                    if (e.dataset["src"]) {
+                        e.src = e.dataset["src"].replace("{width}", "800").replace("{hidpi}","");
+                    }
+                })
+                </script>"#.to_owned(),
+                ),
+                ..RewriteRules::default()
+            }),
+        });
     }
 }
 
