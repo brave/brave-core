@@ -388,6 +388,14 @@ class AdsServiceImpl : public AdsService,
   void MaybeShowMyFirstAdNotification();
   bool ShouldShowMyFirstAdNotification() const;
 
+  void OnCreativeCacheInterval();
+  void OnCreativeCacheGotPublisherAds(
+    const std::vector<std::string>& creative_instance_ids,
+    const base::ListValue& creative_data);
+  void OnCreativeCacheGotResource(
+    network::SimpleURLLoader* loader,
+    std::unique_ptr<std::string> response_body);
+
   bool GetBooleanPref(
       const std::string& path) const;
   void SetBooleanPref(
@@ -581,6 +589,8 @@ class AdsServiceImpl : public AdsService,
       bat_ads_client_receiver_;
   mojo::AssociatedRemote<bat_ads::mojom::BatAds> bat_ads_;
   mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_;
+
+  std::unique_ptr<base::RepeatingTimer> ad_creative_cache_timer_;
 
   DISALLOW_COPY_AND_ASSIGN(AdsServiceImpl);
 };

@@ -339,6 +339,29 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
+net::NetworkTrafficAnnotationTag GetCacheNetworkTrafficAnnotationTag() {
+  return net::DefineNetworkTrafficAnnotation("ads_service_impl", R"(
+      semantics {
+        sender: "Brave Ads Service"
+        description:
+          "This request is used to pre fetch advertisement creative "
+          "which will be displayed to the user at some future time."
+        trigger:
+          "Triggered by a regular interval timer."
+        data:
+          "Creative for an advertisement."
+        destination: WEBSITE
+      }
+      policy {
+        cookies_allowed: NO
+        setting:
+          "You can enable or disable this feature by visiting brave://rewards."
+        policy_exception_justification:
+          "Not implemented."
+      }
+    )");
+}
+
 }  // namespace
 
 AdsServiceImpl::AdsServiceImpl(Profile* profile) :
@@ -357,7 +380,8 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
     display_service_(NotificationDisplayService::GetForProfile(profile_)),
     rewards_service_(brave_rewards::RewardsServiceFactory::GetForProfile(
         profile_)),
-    bat_ads_client_receiver_(new bat_ads::AdsClientMojoBridge(this)) {
+    bat_ads_client_receiver_(new bat_ads::AdsClientMojoBridge(this)),
+    ad_creative_cache_timer_(std::make_unique<base::RepeatingTimer>()) {
   DCHECK(!profile_->IsOffTheRecord());
 
   MigratePrefs();
@@ -806,9 +830,65 @@ void AdsServiceImpl::MaybeStart(
 
 void AdsServiceImpl::Start() {
   EnsureBaseDirectoryExists();
+  // Start caching publisher Ads creatives that the user may be shown
+  OnCreativeCacheInterval();
+  // TODO: fetch the net set of creatives to cache when the current cache is
+  // running low, e.g. when we get
+  ad_creative_cache_timer_->Start(FROM_HERE, base::TimeDelta::FromHours(5),
+      base::BindRepeating(&AdsServiceImpl::OnCreativeCacheInterval,
+      base::Unretained(this)));
+}
+
+void AdsServiceImpl::OnCreativeCacheInterval() {
+  const std::vector<std::string> already_cached_creative_ids;
+  GetPublisherAdsToPreFetch(already_cached_creative_ids,
+    base::BindOnce(&AdsServiceImpl::OnCreativeCacheGotPublisherAds,
+        base::Unretained(this)));
+}
+
+void AdsServiceImpl::OnCreativeCacheGotPublisherAds(
+    const std::vector<std::string>& creative_instance_ids,
+    const base::ListValue& creative_data) {
+  for (auto i = creative_data.GetList().begin();
+                i < creative_data.GetList().end();
+                i++) {
+    base::DictionaryValue creative_entry;
+    // TODO: change to "creative_url" key when fixed
+    const std::string* creative_url = i->FindStringKey("size");
+    if (creative_url) {
+      LOG(INFO) << "Caching ad creative at " << *creative_url;
+      // Make a request so that it gets put in the cache
+      auto request = std::make_unique<network::ResourceRequest>();
+      request->url = GURL(*creative_url);
+      request->method = "GET";
+
+      auto* url_loader = network::SimpleURLLoader::Create(std::move(request),
+      GetCacheNetworkTrafficAnnotationTag()).release();
+
+      url_loader->SetRetryOptions(kRetriesCountOnNetworkChange,
+          network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
+
+      url_loaders_.insert(url_loader);
+
+      url_loader->DownloadToString(
+          content::BrowserContext::GetDefaultStoragePartition(profile_)
+              ->GetURLLoaderFactoryForBrowserProcess().get(),
+          base::BindOnce(&AdsServiceImpl::OnCreativeCacheGotResource,
+              base::Unretained(this), url_loader),
+          1024 * 1024);
+    }
+  }
+}
+
+void AdsServiceImpl::OnCreativeCacheGotResource(
+    network::SimpleURLLoader* loader,
+    std::unique_ptr<std::string> response_body) {
+  DCHECK(url_loaders_.find(loader) != url_loaders_.end());
+  url_loaders_.erase(loader);
 }
 
 void AdsServiceImpl::Stop() {
+  ad_creative_cache_timer_->Stop();
   if (!connected()) {
     return;
   }
@@ -1290,6 +1370,7 @@ void AdsServiceImpl::OnGetPublisherAdsToPreFetch(
     dictionary.SetKey("category", base::Value(entry.category));
     dictionary.SetKey("size", base::Value(entry.size));
     dictionary.SetKey("creativeUrl", base::Value(entry.creative_url));
+    LOG(ERROR) << "creative url from get" << entry.creative_url;
     dictionary.SetKey("targetUrl", base::Value(entry.target_url));
 
     list.GetList().emplace_back(std::move(dictionary));
