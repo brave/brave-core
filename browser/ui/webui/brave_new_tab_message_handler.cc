@@ -240,6 +240,9 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   pref_change_registrar_.Add(kNewTabPageShowBinance,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
+  pref_change_registrar_.Add(kNewTabPageShowBinance,
+    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
+    base::Unretained(this)));
 }
 
 void BraveNewTabMessageHandler::OnJavascriptDisallowed() {
@@ -306,7 +309,12 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
   } else if (settingsKeyInput == "showRewards") {
     settingsKey = kNewTabPageShowRewards;
   } else if (settingsKeyInput == "isBrandedWallpaperNotificationDismissed") {
+<<<<<<< HEAD
     settingsKey = kBrandedWallpaperNotificationDismissed;
+=======
+    settingsKey =
+        ntp_sponsored_images::prefs::kBrandedWallpaperNotificationDismissed;
+>>>>>>> Initial NTP widget with buy support
   } else if (settingsKeyInput == "showBinance") {
     settingsKey = kNewTabPageShowBinance;
   } else {

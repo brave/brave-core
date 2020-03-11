@@ -147,6 +147,14 @@ export default class Settings extends React.PureComponent<Props, {}> {
               : null
             }
             <SettingsRow>
+              <SettingsText>{getLocale('showBinance')}</SettingsText>
+              <Toggle
+                onChange={toggleShowBinance}
+                checked={showBinance}
+                size='small'
+              />
+            </SettingsRow>
+            <SettingsRow>
               <SettingsText>{getLocale('showBraveStats')}</SettingsText>
               <Toggle
                 onChange={toggleShowStats}
