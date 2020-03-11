@@ -93,16 +93,20 @@ public class NTPSponsoredImagesBridge {
         mObservers.removeObserver(observer);
     }
 
+    static public boolean enableSponsoredImages(Profile profile) {
+        return BraveAdsNativeHelper.nativeIsLocaleValid(profile)
+               && BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
+               && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
+    }
+
     @Nullable
     public Wallpaper getCurrentWallpaper() {
         ThreadUtils.assertOnUiThread();
-        if (!BraveAdsNativeHelper.nativeIsLocaleValid(mProfile)
-            || BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
-            || !ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
-            return null;
-        } else {
+        if (enableSponsoredImages(mProfile)) {
             return NTPSponsoredImagesBridgeJni.get().getCurrentWallpaper(
                 mNativeNTPSponsoredImagesBridge, NTPSponsoredImagesBridge.this);
+        } else {
+            return null;
         }
     }
 

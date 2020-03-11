@@ -52,6 +52,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/ntp/sponsored/SponsoredTab.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/sponsored/NewTabPageListener.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/sponsored/RewardsBottomSheetDialogFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/ntp_sponsored_images/NTPSponsoredImagesBridge.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/BraveRewardsOnboardingFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/BraveRewardsService.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/BraveShieldsOnboardingFragment.java",

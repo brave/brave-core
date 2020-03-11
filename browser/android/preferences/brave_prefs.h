@@ -7,14 +7,14 @@
 
 #include <cstddef>
 
+#include "brave/components/ntp_sponsored_images/common/pref_names.h"
 #include "build/build_config.h"
-#include "components/ntp_sponsored_images/common/pref_names.h"
 
 // A preference exposed to Java.
 // A Java counterpart will be generated for this enum.
 // GENERATED_JAVA_ENUM_PACKAGE: org.chromium.chrome.browser.preferences
 enum BravePref {
-  NTP_SHOW_BRANDED_BACKGROUND_IMAGE,
+  NTP_SHOW_BRANDED_BACKGROUND_IMAGE = 10000,
   NTP_SHOW_BACKGROUND_IMAGE,
   // BRAVE_PREF_NUM_PREFS must be the last entry.
   BRAVE_PREF_NUM_PREFS
@@ -22,8 +22,10 @@ enum BravePref {
 
 // The indices must match value of Pref.
 const char* const kBravePrefsExposedToJava[] = {
-    ntp_sponsored_images::prefs::kNewTabPageShowBrandedBackgroundImage[],
-    ntp_sponsored_images::prefs::kNewTabPageShowBackgroundImage[],
+    ntp_sponsored_images::prefs::kNewTabPageShowBrandedBackgroundImage,
+    ntp_sponsored_images::prefs::kNewTabPageShowBackgroundImage,
 };
+
+static const int kBravePrefOffset = 10000;
 
 #endif  // BRAVE_BROWSER_ANDROID_PREFERENCES_BRAVE_PREFS_H_
