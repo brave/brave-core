@@ -57,6 +57,8 @@ class BraveReferralsService {
   void CheckForReferralFinalization();
   std::string FormatExtraHeaders(const base::Value* referral_headers,
                                  const GURL& url);
+  void DoInitialization(bool has_promo_code_file);
+  void ResetPrefs();
 
   // Invoked from RepeatingTimer when finalization checks timer
   // fires.

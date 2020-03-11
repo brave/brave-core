@@ -89,6 +89,10 @@ std::string BuildReferralEndpoint(const std::string& path) {
                             path.c_str());
 }
 
+bool HasPromoCodeFile(const base::FilePath& promo_code_file) {
+  return base::PathExists(promo_code_file);
+}
+
 }  // namespace
 
 namespace brave {
@@ -116,6 +120,36 @@ BraveReferralsService::~BraveReferralsService() {
 void BraveReferralsService::Start() {
   if (initialized_)
     return;
+
+  base::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::ThreadPool(), base::MayBlock()},
+      base::BindOnce(&HasPromoCodeFile, GetPromoCodeFileName()),
+      base::BindOnce(&BraveReferralsService::DoInitialization,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void BraveReferralsService::ResetPrefs() {
+  pref_service_->ClearPref(kReferralCheckedForPromoCodeFile);
+  pref_service_->ClearPref(kReferralPromoCode);
+  pref_service_->ClearPref(kReferralDownloadID);
+  pref_service_->ClearPref(kReferralTimestamp);
+  pref_service_->ClearPref(kReferralAttemptTimestamp);
+  pref_service_->ClearPref(kReferralAttemptCount);
+  pref_service_->ClearPref(kReferralHeaders);
+#if defined(OS_ANDROID)
+  pref_service_->ClearPref(kReferralAndroidFirstRunTimestamp);
+#endif
+}
+
+void BraveReferralsService::DoInitialization(bool has_promo_code_file) {
+  DCHECK(!initialized_);
+
+  if (has_promo_code_file) {
+    // For first run, this is no-op.
+    // If it's not a first run, this means user installs another referrals.
+    // Let's start new referrals after clearing existing prefs.
+    ResetPrefs();
+  }
 
   // Retrieve first run time.
   GetFirstRunTime();
