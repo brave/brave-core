@@ -1,0 +1,12 @@
+diff --git a/build/android/bytecode/BUILD.gn b/build/android/bytecode/BUILD.gn
+index 88517537f42e5bcea3aa7763dca9ce95b3e4d552..136410363466f1d717f1faa22bf308180e1f326e 100644
+--- a/build/android/bytecode/BUILD.gn
++++ b/build/android/bytecode/BUILD.gn
+@@ -16,6 +16,7 @@ java_binary("java_bytecode_rewriter") {
+     "java/org/chromium/bytecode/ThreadAssertionClassAdapter.java",
+     "java/org/chromium/bytecode/TypeUtils.java",
+   ]
++  java_files += brave_java_bytecode_files
+   main_class = "org.chromium.bytecode.ByteCodeProcessor"
+   deps = [
+     "//third_party/ow2_asm:asm_java",

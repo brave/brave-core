@@ -1,0 +1,12 @@
+diff --git a/build/android/bytecode/java/org/chromium/bytecode/ByteCodeProcessor.java b/build/android/bytecode/java/org/chromium/bytecode/ByteCodeProcessor.java
+index 4a56332c061a775dae854a1d2946c855c2f4f66c..682225913081bafd1f393ed8327240012304dfc6 100644
+--- a/build/android/bytecode/java/org/chromium/bytecode/ByteCodeProcessor.java
++++ b/build/android/bytecode/java/org/chromium/bytecode/ByteCodeProcessor.java
+@@ -136,6 +136,7 @@ class ByteCodeProcessor {
+             chain = new CustomResourcesClassAdapter(
+                     chain, reader.getClassName(), reader.getSuperName(), sFullClassPathClassLoader);
+         }
++        chain = org.brave.bytecode.BraveClassAdapter.createAdapter(chain);
+         reader.accept(chain, 0);
+         byte[] patchedByteCode = writer.toByteArray();
+         return EntryDataPair.create(entry.getName(), patchedByteCode);
