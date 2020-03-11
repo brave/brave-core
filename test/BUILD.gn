@@ -24,6 +24,11 @@ group("fix_brave_test_install_name") {
   deps = [
     "//brave/vendor/challenge_bypass_ristretto_ffi:test_install_name",
   ]
+  if (enable_speedreader) {
+    deps += [
+      "//brave/vendor/speedreader_rust_ffi:test_speedreader_install_name",
+    ]
+  }
 }
 
 group("fix_brave_test_install_name_adblock") {
