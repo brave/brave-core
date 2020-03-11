@@ -113,7 +113,37 @@ BravePatching.RegisterPolymerComponentBehaviors({
   ],
   'settings-ui': [
     BraveClearSettingsMenuHighlightBehavior
-  ]
+  ],
+  'settings-import-data-dialog': [{
+    registered: function () {
+      const oldPrefsChanged = this.prefsChanged_
+      if (!oldPrefsChanged) {
+        console.error('[Brave Settings Overrides] cannot find prefsChanged_ on ImportDataDialog')
+        return
+      }
+      this.prefsChanged_ = function () {
+        if (typeof this.noImportDataTypeSelected_ !== 'boolean') {
+          console.error('[Brave Settings Overrides] cannot find noImportDataTypeSelected_ on ImportDataDialog')
+          return
+        }
+        oldPrefsChanged.apply(this)
+        if (this.selected_ == undefined || this.prefs == undefined) {
+          return;
+        }
+        this.noImportDataTypeSelected_ = this.noImportDataTypeSelected_ &&
+          !(this.getPref('import_dialog_cookies').value &&
+          this.selected_.cookies) &&
+          !(this.getPref('import_dialog_stats').value &&
+            this.selected_.stats) &&
+          !(this.getPref('import_dialog_ledger').value &&
+            this.selected_.ledger) &&
+          !(this.getPref('import_dialog_windows').value &&
+            this.selected_.windows) &&
+          !(this.getPref('import_dialog_extensions').value &&
+            this.selected_.extensions)
+      }
+    }
+  }]
 })
 
 // Templates
