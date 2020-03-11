@@ -13,14 +13,17 @@ import org.chromium.chrome.browser.ntp.sponsored.SponsoredImageUtil;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.BraveRewardsHelper;
+import org.chromium.chrome.browser.ntp_sponsored_images.NTPSponsoredImagesBridge;
 
 public class SponsoredTab{
+    private NTPSponsoredImagesBridge mNTPSponsoredImagesBridge;
     private NTPImage ntpImage;
     private int tabIndex;
     private boolean mShouldShowBanner;
     private boolean isMoreTabs;
 
-    public SponsoredTab() {
+    public SponsoredTab(NTPSponsoredImagesBridge mNTPSponsoredImagesBridge) {
+        this.mNTPSponsoredImagesBridge = mNTPSponsoredImagesBridge;
         ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
         if(chromeTabbedActivity != null) {
             TabModel tabModel = chromeTabbedActivity.getCurrentTabModel();
@@ -28,7 +31,7 @@ public class SponsoredTab{
         }
 
         if (NTPUtil.shouldEnableNTPFeature(isMoreTabs)){
-            ntpImage = NTPUtil.getNTPImage();
+            ntpImage = NTPUtil.getNTPImage(mNTPSponsoredImagesBridge);
             tabIndex = SponsoredImageUtil.getTabIndex();
             updateBannerPref();
         }
@@ -38,7 +41,7 @@ public class SponsoredTab{
         if (ntpImage != null) {
             return ntpImage;
         } else {
-            return NTPUtil.getNTPImage();
+            return NTPUtil.getNTPImage(mNTPSponsoredImagesBridge);
         }
     }
 
