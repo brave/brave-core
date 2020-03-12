@@ -349,7 +349,7 @@ bool ResetOnFileTaskRunner(const base::FilePath& path) {
 bool ResetOnFilesTaskRunner(const std::vector<base::FilePath>& paths) {
   bool res = true;
   for (size_t i = 0; i < paths.size(); i++) {
-    if (!base::DeleteFile(paths[i], false)) {
+    if (!base::DeleteFileRecursively(paths[i])) {
       res = false;
     }
   }
