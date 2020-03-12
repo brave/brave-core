@@ -15,9 +15,6 @@ import org.chromium.base.ObserverList;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.NativeMethods;
-import org.chromium.chrome.browser.BraveAdsNativeHelper;
-import org.chromium.chrome.browser.BraveFeatureList;
-import org.chromium.chrome.browser.ChromeFeatureList;
 import org.chromium.chrome.browser.ntp.sponsored.NTPImage;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -33,11 +30,16 @@ public class NTPSponsoredImagesBridge {
         private Bitmap mBitmap;
         private int mFocalPointX;
         private int mFocalPointY;
+        private Bitmap mLogoBitmap;
+        private String mLogoDestinationUrl;
 
-        private Wallpaper(Bitmap bitmap, int focalPointX, int focalPointY) {
+        private Wallpaper(Bitmap bitmap, int focalPointX, int focalPointY,
+                          Bitmap logoBitmap, String logoDestinationUrl) {
             mBitmap = bitmap;
             mFocalPointX = focalPointX;
             mFocalPointY = focalPointY;
+            mLogoBitmap = logoBitmap;
+            mLogoDestinationUrl = logoDestinationUrl;
         }
 
         public Bitmap getBitmap() {
@@ -50,6 +52,14 @@ public class NTPSponsoredImagesBridge {
 
         public int getFocalPointY() {
             return mFocalPointY;
+        }
+
+        public Bitmap getLogoBitmap() {
+            return mLogoBitmap;
+        }
+
+        public String getLogoDestinationUrl() {
+            return mLogoDestinationUrl;
         }
     }
 
@@ -100,9 +110,7 @@ public class NTPSponsoredImagesBridge {
     }
 
     static public boolean enableSponsoredImages(Profile profile) {
-        // return BraveAdsNativeHelper.nativeIsLocaleValid(profile)
-        //        && BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
-        //        && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
+        // return BravePrefServiceBridge.getInstance().getSafetynetCheckFailed();
         return true;
     }
 
@@ -123,8 +131,11 @@ public class NTPSponsoredImagesBridge {
     }
 
     @CalledByNative
-    public static Wallpaper createWallpaper(Bitmap bitmap, int focalPointX, int focalPointY) {
-        return new Wallpaper(bitmap, focalPointX, focalPointY);
+    public static Wallpaper createWallpaper(
+            Bitmap bitmap, int focalPointX, int focalPointY,
+            Bitmap logoBitmap, String logoDestinationUrl) {
+        return new Wallpaper(bitmap, focalPointX, focalPointY,
+                             logoBitmap, logoDestinationUrl);
     }
 
     @CalledByNative
