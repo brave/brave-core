@@ -55,33 +55,6 @@
     }, {
       "run_at": "document_start",
       "all_frames": true,
-      "matches": [
-        "https://www.washingtonpost.com/*",
-        "https://www.youtube.com/*",
-        "https://www.yahoo.com/*"
-      ],
-      "css": [
-        "assets/removeEmptyElements.css"
-      ]
-    }, {
-      "run_at": "document_start",
-      "all_frames": true,
-      "matches": [
-        "https://coinmarketcap.com/*"
-      ],
-      "css": [
-        "assets/siteHack-coinmarketcap.com.css"
-      ]
-    }, {
-      "run_at": "document_start",
-      "all_frames": true,
-      "matches": ["https://www.marketwatch.com/*"],
-      "css": [
-        "assets/siteHack-marketwatch.com.css"
-      ]
-    }, {
-      "run_at": "document_start",
-      "all_frames": true,
       "matches": ["https://www.glennbeck.com/*"],
       "js": [
         "assets/siteHack-glennbeck.com.js"
