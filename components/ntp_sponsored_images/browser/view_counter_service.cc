@@ -64,10 +64,10 @@ ViewCounterService::GetCurrentBrandedWallpaperData() const {
 
 base::Value ViewCounterService::GetCurrentWallpaper() const {
 
-  LOG(ERROR)
-        << "NTP"
-        << "ShouldShowBrandedWallpaper"
-        << ShouldShowBrandedWallpaper();
+  // LOG(ERROR)
+  //       << "NTP"
+  //       << "ShouldShowBrandedWallpaper"
+  //       << ShouldShowBrandedWallpaper();
 
   if (ShouldShowBrandedWallpaper()) {
     return GetCurrentBrandedWallpaperData()->GetValueAt(
@@ -104,10 +104,10 @@ void ViewCounterService::RegisterPageView() {
   // since we want the count to start at the point of data being available
   // or the user opt-in status changing.
 
-  LOG(ERROR)
-        << "NTP"
-        << "IsBrandedWallpaperActive"
-        << IsBrandedWallpaperActive();
+  // LOG(ERROR)
+  //       << "NTP"
+  //       << "IsBrandedWallpaperActive"
+  //       << IsBrandedWallpaperActive();
 
   if (IsBrandedWallpaperActive()) {
     model_.RegisterPageView();
@@ -119,15 +119,15 @@ bool ViewCounterService::ShouldShowBrandedWallpaper() const {
 }
 
 bool ViewCounterService::IsBrandedWallpaperActive() const {
-  LOG(ERROR)
-        << "NTP"
-        << "is_supported_locale_"
-        << is_supported_locale_;
+  // LOG(ERROR)
+  //       << "NTP"
+  //       << "is_supported_locale_"
+  //       << is_supported_locale_;
 
-  LOG(ERROR)
-        << "NTP"
-        << "IsBrandedWallpaperOptedIn"
-        << IsBrandedWallpaperOptedIn();
+  // LOG(ERROR)
+  //       << "NTP"
+  //       << "IsBrandedWallpaperOptedIn"
+  //       << IsBrandedWallpaperOptedIn();
 
   return is_supported_locale_ && IsBrandedWallpaperOptedIn() &&
          GetCurrentBrandedWallpaperData();
