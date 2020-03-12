@@ -62,14 +62,16 @@ ViewCounterService::GetCurrentBrandedWallpaperData() const {
   return service_->GetSponsoredImagesData();
 }
 
-base::Value ViewCounterService::GetCurrentWallpaper() const {
-
-  // LOG(ERROR)
-  //       << "NTP"
-  //       << "ShouldShowBrandedWallpaper"
-  //       << ShouldShowBrandedWallpaper();
-
+base::Value ViewCounterService::GetCurrentWallpaperForDisplay() const {
   if (ShouldShowBrandedWallpaper()) {
+    return GetCurrentWallpaper();
+  }
+
+  return base::Value();
+}
+
+base::Value ViewCounterService::GetCurrentWallpaper() const {
+  if (GetCurrentBrandedWallpaperData()) {
     return GetCurrentBrandedWallpaperData()->GetValueAt(
         model_.current_wallpaper_image_index());
   }
@@ -103,12 +105,6 @@ void ViewCounterService::RegisterPageView() {
   // Don't do any counting if we will never be showing the data
   // since we want the count to start at the point of data being available
   // or the user opt-in status changing.
-
-  // LOG(ERROR)
-  //       << "NTP"
-  //       << "IsBrandedWallpaperActive"
-  //       << IsBrandedWallpaperActive();
-
   if (IsBrandedWallpaperActive()) {
     model_.RegisterPageView();
   }
@@ -119,16 +115,6 @@ bool ViewCounterService::ShouldShowBrandedWallpaper() const {
 }
 
 bool ViewCounterService::IsBrandedWallpaperActive() const {
-  // LOG(ERROR)
-  //       << "NTP"
-  //       << "is_supported_locale_"
-  //       << is_supported_locale_;
-
-  // LOG(ERROR)
-  //       << "NTP"
-  //       << "IsBrandedWallpaperOptedIn"
-  //       << IsBrandedWallpaperOptedIn();
-
   return is_supported_locale_ && IsBrandedWallpaperOptedIn() &&
          GetCurrentBrandedWallpaperData();
 }
