@@ -106,19 +106,14 @@ void NTPSponsoredImagesBridge::RegisterPageView(
 
 void NTPSponsoredImagesBridge::PreloadImageIfNeeded() {
   auto data = view_counter_service_->GetCurrentWallpaper();
-  if (data.is_none()) {
+  if (data.is_none())
     return;
-  }
 
   // TODO(bridiver) - need to either expose these constants or change this
   // to a struct instead of base::Value
   std::string* image_path = data.FindStringPath("wallpaperImagePath");
-  if (!image_path)
+  if (!image_path || *image_path == image_path_)
     return;
-
-  if (*image_path == image_path_)
-    return;
-
   image_path_ = *image_path;
 
   ImageDecoder::Cancel(image_request_.get());
@@ -132,10 +127,7 @@ void NTPSponsoredImagesBridge::PreloadImageIfNeeded() {
                      base::Unretained(image_request_.get())));
 
   auto* logo_image_path = data.FindStringPath("logo.imagePath");
-  if (!logo_image_path)
-    return;
-
-  if (*logo_image_path != logo_image_path_)
+  if (!logo_image_path || *logo_image_path == logo_image_path_)
     return;
 
   logo_image_path_ = *logo_image_path;
@@ -165,7 +157,7 @@ NTPSponsoredImagesBridge::CreateWallpaper() {
   JNIEnv* env = AttachCurrentThread();
 
   auto data = view_counter_service_->GetCurrentWallpaperForDisplay();
-  if (data.is_none() || bitmap_.isNull()) {
+  if (data.is_none() || bitmap_.isNull() || logo_bitmap_.isNull()) {
     return base::android::ScopedJavaLocalRef<jobject>();
   }
 
