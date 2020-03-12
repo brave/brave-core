@@ -173,12 +173,16 @@ NTPSponsoredImagesBridge::CreateWallpaper() {
   // to a struct instead of base::Value
   auto focal_point_x = data.FindIntPath("focalPoint.x");
   auto focal_point_y = data.FindIntPath("focalPoint.y");
+  auto* logo_destination_url = data.FindStringPath("logo.destinationUrl");
 
   return Java_NTPSponsoredImagesBridge_createWallpaper(
       env,
       gfx::ConvertToJavaBitmap(&bitmap_),
       focal_point_x ? *focal_point_x : 0,
-      focal_point_y ? *focal_point_y : 0);
+      focal_point_y ? *focal_point_y : 0,
+      gfx::ConvertToJavaBitmap(&logo_bitmap_),
+      ConvertUTF8ToJavaString(env, logo_destination_url ? *logo_destination_url
+                                                        : ""));
 }
 
 base::android::ScopedJavaLocalRef<jobject>
