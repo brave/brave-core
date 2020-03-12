@@ -518,7 +518,7 @@ void RewardsServiceImpl::CreateWallet(CreateWalletCallback callback) {
           AsWeakPtr(),
           std::move(callback));
 #if !defined(OS_ANDROID)
-      bat_ledger_->CreateWallet("", std::move(on_create));
+      bat_ledger_->CreateWallet(std::move(on_create));
 #else
       safetynet_check::ClientAttestationCallback attest_callback =
           base::BindOnce(&RewardsServiceImpl::CreateWalletAttestationResult,
