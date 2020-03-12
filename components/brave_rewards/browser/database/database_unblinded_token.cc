@@ -273,4 +273,36 @@ bool DatabaseUnblindedToken::DeleteRecordsForPromotion(
   return statement.Run();
 }
 
+ledger::UnblindedTokenList DatabaseUnblindedToken::GetRecordsByPromotionType(
+    sql::Database* db,
+    const std::vector<ledger::PromotionType>& promotion_types) {
+  std::vector<std::string> in_case;
+
+  for (const auto& type : promotion_types) {
+    in_case.push_back(std::to_string(static_cast<int>(type)));
+  }
+
+  const std::string query = base::StringPrintf(
+      "SELECT u.token_id, u.token_value, u.public_key, u.value FROM %s as u "
+      "INNER JOIN promotion as p ON p.promotion_id = u.promotion_id "
+      "WHERE p.type IN (%s)",
+      table_name_,
+      base::JoinString(in_case, ",").c_str());
+
+  sql::Statement statement(db->GetUniqueStatement(query.c_str()));
+
+  ledger::UnblindedTokenList list;
+  while (statement.Step()) {
+    auto info = ledger::UnblindedToken::New();
+    info->id = statement.ColumnInt64(0);
+    info->token_value = statement.ColumnString(1);
+    info->public_key = statement.ColumnString(2);
+    info->value = statement.ColumnDouble(3);
+
+    list.push_back(std::move(info));
+  }
+
+  return list;
+}
+
 }  // namespace brave_rewards

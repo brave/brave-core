@@ -309,4 +309,6 @@ interface BatLedgerClient {
   UpdateContributionInfoContributedAmount(string contribution_id, string publisher_key) => (ledger.mojom.Result result);
 
   ReconcileStampReset();
+
+  GetUnblindedTokensByPromotionType(array<ledger.mojom.PromotionType> types) => (array<ledger.mojom.UnblindedToken> list);
 };

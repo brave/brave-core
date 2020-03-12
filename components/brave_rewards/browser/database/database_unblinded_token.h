@@ -35,6 +35,10 @@ class DatabaseUnblindedToken: public DatabaseTable {
       sql::Database* db,
       const std::string& promotion_id);
 
+  ledger::UnblindedTokenList GetRecordsByPromotionType(
+      sql::Database* db,
+      const std::vector<ledger::PromotionType>& promotion_types);
+
  private:
   bool CreateTableV10(sql::Database* db);
 

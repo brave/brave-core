@@ -243,7 +243,7 @@ void NativeLedgerClient::DeletePromotionList(const std::vector<std::string>& id_
 void NativeLedgerClient::SaveUnblindedTokenList(ledger::UnblindedTokenList list, ledger::ResultCallback callback) {
   return [bridge_ saveUnblindedTokenList:std::move(list) callback:callback];
 }
-void NativeLedgerClient::GetAllUnblindedTokens(ledger::GetAllUnblindedTokensCallback callback) {
+void NativeLedgerClient::GetAllUnblindedTokens(ledger::GetUnblindedTokenListCallback callback) {
   return [bridge_ getAllUnblindedTokens:callback];
 }
 void NativeLedgerClient::DeleteUnblindedTokens(const std::vector<std::string>& id_list, ledger::ResultCallback callback) {
@@ -281,4 +281,7 @@ void NativeLedgerClient::UpdateContributionInfoContributedAmount(const std::stri
 }
 void NativeLedgerClient::ReconcileStampReset() {
   [bridge_ reconcileStampReset];
+}
+void NativeLedgerClient::GetUnblindedTokensByPromotionType(const std::vector<ledger::PromotionType>& promotion_types, ledger::GetUnblindedTokenListCallback callback) {
+  // no need to be implemented as just need it for 1.5
 }

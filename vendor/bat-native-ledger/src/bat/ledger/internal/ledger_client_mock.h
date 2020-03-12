@@ -364,7 +364,7 @@ class MockLedgerClient : public LedgerClient {
     ledger::ResultCallback callback));
 
   MOCK_METHOD1(GetAllUnblindedTokens, void(
-    ledger::GetAllUnblindedTokensCallback callback));
+    ledger::GetUnblindedTokenListCallback callback));
 
   MOCK_METHOD2(DeleteUnblindedTokens, void(
     const std::vector<std::string>& id_list,
@@ -406,6 +406,10 @@ class MockLedgerClient : public LedgerClient {
       ResultCallback callback));
 
   MOCK_METHOD0(ReconcileStampReset, void());
+
+  MOCK_METHOD2(GetUnblindedTokensByPromotionType, void(
+      const std::vector<ledger::PromotionType>& promotion_types,
+      ledger::GetUnblindedTokenListCallback callback));
 };
 
 }  // namespace ledger

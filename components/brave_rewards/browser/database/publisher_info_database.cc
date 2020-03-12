@@ -572,6 +572,12 @@ bool PublisherInfoDatabase::DeleteUnblindedTokensForPromotion(
       promotion_id);
 }
 
+ledger::UnblindedTokenList
+PublisherInfoDatabase::GetUnblindedTokensByPromotionType(
+    const std::vector<ledger::PromotionType>& promotion_types) {
+  return unblinded_token_->GetRecordsByPromotionType(&GetDB(), promotion_types);
+}
+
 /**
  *
  * GENERAL

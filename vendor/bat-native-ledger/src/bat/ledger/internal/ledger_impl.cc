@@ -1683,7 +1683,7 @@ void LedgerImpl::UpdateContributionInfoContributedAmount(
 void LedgerImpl::TransferTokens(
     ledger::ExternalWalletPtr wallet,
     ledger::ResultCallback callback) {
-  ledger_client_->TransferTokens(std::move(wallet), callback);
+  bat_promotion_->TransferTokens(std::move(wallet), callback);
 }
 
 void LedgerImpl::GetUnblindedTokensByPromotionType(

@@ -322,7 +322,7 @@ class LEDGER_EXPORT LedgerClient {
     ledger::ResultCallback callback) = 0;
 
   virtual void GetAllUnblindedTokens(
-    ledger::GetAllUnblindedTokensCallback callback) = 0;
+    ledger::GetUnblindedTokenListCallback callback) = 0;
 
   virtual void DeleteUnblindedTokens(
       const std::vector<std::string>& id_list,
@@ -365,6 +365,10 @@ class LEDGER_EXPORT LedgerClient {
       ResultCallback callback) = 0;
 
   virtual void ReconcileStampReset() = 0;
+
+  virtual void GetUnblindedTokensByPromotionType(
+      const std::vector<ledger::PromotionType>& promotion_types,
+      ledger::GetUnblindedTokenListCallback callback) = 0;
 };
 
 }  // namespace ledger

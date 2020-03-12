@@ -288,6 +288,10 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   void ReconcileStampReset() override;
 
+  void GetUnblindedTokensByPromotionType(
+      const std::vector<ledger::PromotionType>& promotion_types,
+      GetUnblindedTokensByPromotionTypeCallback callback) override;
+
  private:
   // workaround to pass base::OnceCallback into std::bind
   // also serves as a wrapper for passing ledger::LedgerCallbackHandler*
@@ -527,6 +531,10 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   static void OnUpdateContributionInfoContributedAmount(
       CallbackHolder<UpdateContributionInfoContributedAmountCallback>* holder,
       const ledger::Result result);
+
+  static void OnGetUnblindedTokensByPromotionType(
+      CallbackHolder<GetUnblindedTokensByPromotionTypeCallback>* holder,
+      ledger::UnblindedTokenList list);
 
   ledger::LedgerClient* ledger_client_;
 

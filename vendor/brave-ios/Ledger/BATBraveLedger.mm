@@ -1967,7 +1967,7 @@ BATLedgerBridge(BOOL,
 //    }
 }
 
-- (void)getAllUnblindedTokens:(ledger::GetAllUnblindedTokensCallback)callback
+- (void)getAllUnblindedTokens:(ledger::GetUnblindedTokenListCallback)callback
 {
   const auto tokens = [BATLedgerDatabase allUnblindedTokens];
   callback(VectorFromNSArray(tokens, ^ledger::UnblindedTokenPtr(BATUnblindedToken *info){
