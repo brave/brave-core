@@ -519,8 +519,9 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& promotion_id,
       AttestPromotionCallback callback,
       const std::string& nonce,
-      bool result,
-      const std::string& token);
+      const bool token_received,
+      const std::string& token,
+      const bool attestation_passed);
 
   void OnGetAnonWalletStatus(
       GetAnonWalletStatusCallback callback,
@@ -889,7 +890,9 @@ class RewardsServiceImpl : public RewardsService,
   ledger::Environment GetServerEnvironmentForAndroid();
   void CreateWalletAttestationResult(
       bat_ledger::mojom::BatLedger::CreateWalletCallback callback,
-      bool result, const std::string& result_string);
+      const bool token_received,
+      const std::string& result_string,
+      const bool attestation_passed);
   void GrantAttestationResult(
       const std::string& promotion_id, bool result,
       const std::string& result_string);

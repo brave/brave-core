@@ -156,8 +156,7 @@ void LedgerImpl::OnConfirmationsInitialized(
   LoadLedgerState(std::move(on_load));
 }
 
-void LedgerImpl::CreateWallet(const std::string& safetynet_token,
-    ledger::CreateWalletCallback callback) {
+void LedgerImpl::CreateWallet(ledger::CreateWalletCallback callback) {
   if (initializing_) {
     return;
   }
@@ -167,7 +166,7 @@ void LedgerImpl::CreateWallet(const std::string& safetynet_token,
       this,
       _1,
       std::move(callback));
-  bat_wallet_->CreateWalletIfNecessary(safetynet_token, std::move(on_wallet));
+  bat_wallet_->CreateWalletIfNecessary(std::move(on_wallet));
 }
 
 ledger::CurrentReconcileProperties LedgerImpl::GetReconcileById(

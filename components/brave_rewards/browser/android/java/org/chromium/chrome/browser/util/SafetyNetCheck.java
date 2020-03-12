@@ -5,7 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
-
+import android.util.Base64;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.ConnectionResult;
@@ -20,17 +20,20 @@ import com.google.android.gms.tasks.Task;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 import org.chromium.base.ApplicationStatus;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Utility class for providing additional safety checks.
@@ -65,7 +68,8 @@ public class SafetyNetCheck {
     * Performs client attestation
     */
     @CalledByNative
-    public boolean clientAttestation(String nonceData, String apiKey) {
+    public boolean clientAttestation(String nonceData, String apiKey,
+            boolean performAttestationOnClient) {
         boolean res = false;
         try {
             Activity activity = ApplicationStatus.getLastTrackedFocusedActivity();
@@ -77,7 +81,7 @@ public class SafetyNetCheck {
                 Calendar currentTime = Calendar.getInstance();
                 long milliSeconds = currentTime.getTimeInMillis();
                 if (nonceData.isEmpty() && !safetyNetResult.isEmpty() && (milliSeconds - lastTimeCheck < TEN_DAYS)) {
-                    clientAttestationResult(true, safetyNetResult);
+                    clientAttestationResult(true, safetyNetResult, performAttestationOnClient);
                     return true;
                 }
                 byte[] nonce = nonceData.isEmpty() ? getRequestNonce() : nonceData.getBytes();
@@ -91,18 +95,18 @@ public class SafetyNetCheck {
                             sharedPreferencesEditor.putString(PREF_SAFETYNET_RESULT, response.getJwsResult());
                             sharedPreferencesEditor.putLong(PREF_SAFETYNET_LAST_TIME_CHECK, milliSeconds);
                             sharedPreferencesEditor.apply();
-                            clientAttestationResult(true, response.getJwsResult());
+                            clientAttestationResult(true, response.getJwsResult(), performAttestationOnClient);
                         }
                     }).addOnFailureListener(activity, new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Log.e(TAG, "Failed to perform SafetyNetCheck: " + e);
-                            clientAttestationResult(false, e.toString());
+                            clientAttestationResult(false, e.toString(), performAttestationOnClient);
                         }
                     });
                 res = true;
             } else {
-                clientAttestationResult(false, "Google Play Services are not available");
+                clientAttestationResult(false, "Google Play Services are not available", performAttestationOnClient);
                 // This result just indicates that callback with the actual result was called
                 res = true;
             }
@@ -126,10 +130,33 @@ public class SafetyNetCheck {
     /**
     * Returns client attestation final result
     */
-    private void clientAttestationResult(boolean result, String resultString) {
+    private void clientAttestationResult(boolean tokenReceived, String resultString,
+            boolean performAttestationOnClient) {
         if (mNativeSafetyNetCheck == 0) return;
-        nativeclientAttestationResult(mNativeSafetyNetCheck, result, resultString);
+        boolean attestationPassed = false;
+        if (tokenReceived && performAttestationOnClient) {
+            String[] tokenParts = resultString.split(Pattern.quote("."));
+            if (tokenParts.length >= 2) {
+                String tokenPart2 = new String(Base64.decode(tokenParts[1], Base64.DEFAULT));
+                boolean ctsProfileMatch = false;
+                boolean basicIntegrity = false;
+                try {
+                    JSONObject json = new JSONObject(tokenPart2);
+                    if (json.has("ctsProfileMatch")) {
+                        ctsProfileMatch = json.getBoolean("ctsProfileMatch");
+                    }
+                    if (json.has("basicIntegrity")) {
+                        basicIntegrity = json.getBoolean("basicIntegrity");
+                    }
+                } catch (JSONException e) {
+                    Log.e(TAG, "Unable to perform SafetyNet attestation: " + e);
+                }
+                attestationPassed = ctsProfileMatch && basicIntegrity;
+            }
+        }
+        nativeclientAttestationResult(mNativeSafetyNetCheck, tokenReceived, resultString, attestationPassed);
     }
 
-    private native void nativeclientAttestationResult(long nativeSafetyNetCheck, boolean result, String resultString);
+    private native void nativeclientAttestationResult(long nativeSafetyNetCheck, boolean tokenReceived,
+            String resultString, boolean attestationPassed);
 }

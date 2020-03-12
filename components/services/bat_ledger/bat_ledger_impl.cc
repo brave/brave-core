@@ -58,13 +58,11 @@ void BatLedgerImpl::OnCreateWallet(
   delete holder;
 }
 
-void BatLedgerImpl::CreateWallet(const std::string& safetynet_token,
-    CreateWalletCallback callback) {
+void BatLedgerImpl::CreateWallet(CreateWalletCallback callback) {
   // deleted in OnCreateWallet
   auto* holder = new CallbackHolder<CreateWalletCallback>(
       AsWeakPtr(), std::move(callback));
-  ledger_->CreateWallet(safetynet_token,
-      std::bind(BatLedgerImpl::OnCreateWallet, holder, _1));
+  ledger_->CreateWallet(std::bind(BatLedgerImpl::OnCreateWallet, holder, _1));
 }
 
 // static

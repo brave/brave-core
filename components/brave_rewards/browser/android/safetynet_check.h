@@ -18,7 +18,7 @@ namespace safetynet_check {
 
 class SafetyNetCheckRunner;
 using ClientAttestationCallback =
-  base::OnceCallback<void(bool, const std::string&)>;
+  base::OnceCallback<void(const bool, const std::string&, const bool)>;
 
 class SafetyNetCheck {
  public:
@@ -26,11 +26,16 @@ class SafetyNetCheck {
     ~SafetyNetCheck();
     // Performs client attestation, called from C++
     bool clientAttestation(const std::string& nonce,
-      ClientAttestationCallback attest_callback);
+      ClientAttestationCallback attest_callback,
+      const bool perform_attestation_on_client);
     // Callback returns client attestation final result, called from Java
-    void clientAttestationResult(JNIEnv* env,
-      const base::android::JavaRef<jobject>& jobj, jboolean result,
-      const base::android::JavaParamRef<jstring>& jresult_string);
+    void clientAttestationResult(
+        JNIEnv* env,
+        const base::android::JavaRef<jobject>& jobj,
+        jboolean token_received,
+        const base::android::JavaParamRef<jstring>& jresult_string,
+        jboolean attestation_passed);
+    friend class SafetyNetCheckRunner;
  private:
     base::android::ScopedJavaGlobalRef<jobject> java_obj_;
     ClientAttestationCallback attest_callback_;
@@ -44,7 +49,8 @@ class SafetyNetCheckRunner {
     SafetyNetCheckRunner();
     ~SafetyNetCheckRunner();
     void performSafetynetCheck(const std::string& nonce,
-      ClientAttestationCallback attest_callback_);
+      ClientAttestationCallback attest_callback,
+      const bool perform_attestation_on_client = false);
     void jobFinished(SafetyNetCheck* finished_job);
  private:
     std::vector<std::unique_ptr<SafetyNetCheck>> jobs_;
