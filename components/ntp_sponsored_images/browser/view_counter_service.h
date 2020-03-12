@@ -43,6 +43,7 @@ class ViewCounterService : public KeyedService,
   // opted-in or data is available.
   void RegisterPageView();
 
+  base::Value GetCurrentWallpaperForDisplay() const;
   base::Value GetCurrentWallpaper() const;
 
  private:
