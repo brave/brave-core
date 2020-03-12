@@ -22,6 +22,7 @@ source_set("speedreader") {
 
   deps = [
     "//brave/components/brave_component_updater/browser",
+    "//brave/components/resources",
     "//brave/components/speedreader:buildflags",
     "//brave/vendor/adblock_rust_ffi:adblock_ffi",
     "//brave/vendor/speedreader_rust_ffi:speedreadder_ffi",
