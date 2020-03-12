@@ -1,0 +1,32 @@
+import("//tools/grit/grit_rule.gni")
+import("//tools/grit/repack.gni")
+
+grit("static_resources") {
+  source = "speedreader_static_resources.grd"
+
+  outputs = [
+    "grit/speedreader_resources.h",
+    "speedreader_static.pak",
+  ]
+
+  grit_flags = [
+    "-E",
+    "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
+  ]
+
+  resource_ids = "//brave/browser/resources/resource_ids"
+
+  output_dir = "$root_gen_dir/brave/components/speedreader/resources"
+}
+
+repack("resources") {
+  public_deps = [
+    ":static_resources",
+  ]
+
+  sources = [
+    "$root_gen_dir/brave/components/speedreader/resources/speedreader_static.pak",
+  ]
+
+  output = "$root_gen_dir/brave/components/speedreader/resources/speedreader_resources.pak"
+}

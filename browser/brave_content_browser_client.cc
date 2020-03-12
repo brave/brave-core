@@ -30,6 +30,7 @@
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/services/brave_content_browser_overlay_manifest.h"
+#include "brave/components/speedreader/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"
 #include "chrome/browser/profiles/profile.h"
@@ -91,6 +92,13 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/browser/extensions/brave_wallet_navigation_throttle.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/speedreader_switches.h"
+#include "brave/components/speedreader/speedreader_throttle.h"
+#include "brave/components/speedreader/speedreader_whitelist.h"
+#include "content/public/common/resource_type.h"
 #endif
 
 namespace {
@@ -252,6 +260,37 @@ void BraveContentBrowserClient::AdjustUtilityServiceProcessCommandLine(
     }
   }
 #endif
+}
+
+std::vector<std::unique_ptr<blink::URLLoaderThrottle>>
+BraveContentBrowserClient::CreateURLLoaderThrottles(
+    const network::ResourceRequest& request,
+    content::BrowserContext* browser_context,
+    const base::RepeatingCallback<content::WebContents*()>& wc_getter,
+    content::NavigationUIData* navigation_ui_data,
+    int frame_tree_node_id) {
+  auto result = ChromeContentBrowserClient::CreateURLLoaderThrottles(
+        request, browser_context, wc_getter, navigation_ui_data,
+        frame_tree_node_id);
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  const auto* cmd_line = base::CommandLine::ForCurrentProcess();
+  if (cmd_line->HasSwitch(speedreader::kEnableSpeedreader)) {
+    // Work only with casual main frame navigations.
+    if (request.url.SchemeIsHTTPOrHTTPS() &&
+        request.resource_type ==
+        static_cast<int>(content::ResourceType::kMainFrame)) {
+      // Note that we check the whitelist before any redirects, while distilling
+      // will be performed on a final document (the last in the redirect chain).
+      auto* whitelist = g_brave_browser_process->speedreader_whitelist();
+      if (speedreader::IsWhitelisted(request.url) ||
+          whitelist->IsWhitelisted(request.url)) {
+        result.push_back(std::make_unique<speedreader::SpeedReaderThrottle>(
+                         base::ThreadTaskRunnerHandle::Get()));
+      }
+    }
+  }
+#endif  // ENABLE_SPEEDREADER
+  return result;
 }
 
 bool BraveContentBrowserClient::WillCreateURLLoaderFactory(
