@@ -75,6 +75,10 @@ NTPSponsoredImagesBridge::NTPSponsoredImagesBridge(JNIEnv* env,
 
   sponsored_images_service_->AddObserver(this);
   // preload the first image if available
+  LOG(ERROR)
+        << "NTP"
+        << "PreloadImageIfNeeded in : "
+        << "Creating object";
   PreloadImageIfNeeded();
 }
 
@@ -101,13 +105,22 @@ void NTPSponsoredImagesBridge::RegisterPageView(
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   view_counter_service_->RegisterPageView();
   // preload the next image
+  LOG(ERROR)
+        << "NTP"
+        << "PreloadImageIfNeeded in : "
+        << "RegisterPageView";
   PreloadImageIfNeeded();
 }
 
 void NTPSponsoredImagesBridge::PreloadImageIfNeeded() {
   auto data = view_counter_service_->GetCurrentWallpaper();
-  if (data.is_none())
+  if (data.is_none()) {
+    LOG(ERROR)
+        << "NTP"
+        << "in PreloadImageIfNeeded : "
+        << "data empty";
     return;
+  }
 
   // TODO(bridiver) - need to either expose these constants or change this
   // to a struct instead of base::Value
@@ -119,6 +132,11 @@ void NTPSponsoredImagesBridge::PreloadImageIfNeeded() {
     return;
 
   image_path_ = *image_path;
+
+  LOG(ERROR)
+        << "NTP"
+        << "in PreloadImageIfNeeded image path : "
+        << image_path_;
 
   ImageDecoder::Cancel(image_request_.get());
   bitmap_.reset();
@@ -165,6 +183,10 @@ NTPSponsoredImagesBridge::CreateWallpaper() {
 
   auto data = view_counter_service_->GetCurrentWallpaper();
   if (data.is_none() || bitmap_.isNull()) {
+    LOG(ERROR)
+        << "NTP"
+        << "in CreateWallpaper : "
+        << "data empty";
     return base::android::ScopedJavaLocalRef<jobject>();
   }
 

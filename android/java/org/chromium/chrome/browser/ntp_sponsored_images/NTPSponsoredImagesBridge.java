@@ -27,6 +27,7 @@ public class NTPSponsoredImagesBridge {
     private long mNativeNTPSponsoredImagesBridge;
     private final ObserverList<NTPSponsoredImageServiceObserver> mObservers =
             new ObserverList<NTPSponsoredImageServiceObserver>();
+    private static NTPSponsoredImagesBridge sInstance;
 
     public static class Wallpaper extends NTPImage {
         private Bitmap mBitmap;
@@ -62,6 +63,13 @@ public class NTPSponsoredImagesBridge {
         mNativeNTPSponsoredImagesBridge =
             NTPSponsoredImagesBridgeJni.get().init(
                     NTPSponsoredImagesBridge.this, profile);
+    }
+
+    public static NTPSponsoredImagesBridge getInstance(Profile profile) {
+        if (sInstance == null) {
+            sInstance = new NTPSponsoredImagesBridge(profile);
+        }
+        return sInstance;
     }
 
     /**

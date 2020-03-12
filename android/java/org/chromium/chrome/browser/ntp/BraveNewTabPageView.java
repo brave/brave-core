@@ -90,6 +90,7 @@ public class BraveNewTabPageView extends NewTabPageView {
         mProfile = Profile.getLastUsedProfile();
         mNewTabPageLayout = getNewTabPageLayout();
         mSharedPreferences = ContextUtils.getAppSharedPreferences();
+        mNTPSponsoredImagesBridge = NTPSponsoredImagesBridge.getInstance(mProfile);
     }
 
     @Override
@@ -125,7 +126,6 @@ public class BraveNewTabPageView extends NewTabPageView {
         mTabImpl = (TabImpl) tab;
         mTab = tab;
 
-        mNTPSponsoredImagesBridge = new NTPSponsoredImagesBridge(mProfile);
         mNTPSponsoredImagesBridge.registerPageView();
 
         if (mNTPSponsoredImagesBridge.getCurrentWallpaper() != null) {
