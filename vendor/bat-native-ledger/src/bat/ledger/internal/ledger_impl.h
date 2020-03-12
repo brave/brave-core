@@ -89,8 +89,7 @@ class LedgerImpl : public ledger::Ledger,
       const bool execute_create_script,
       ledger::InitializeCallback callback) override;
 
-  void CreateWallet(const std::string& safetynet_token,
-                    ledger::CreateWalletCallback callback) override;
+  void CreateWallet(ledger::CreateWalletCallback callback) override;
 
   void SavePublisherInfo(
       ledger::PublisherInfoPtr publisher_info,
