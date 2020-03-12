@@ -356,7 +356,7 @@ pub fn clean<S: ::std::hash::BuildHasher>(
         Comment { .. } => true,
         Element {
             ref name,
-            ref attrs,
+            // ref attrs,
             ..
         } => {
             match name.local {

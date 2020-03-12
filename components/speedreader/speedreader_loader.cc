@@ -254,13 +254,13 @@ void SpeedReaderURLLoader::MaybeLaunchSpeedreader() {
               SpeedReader speedreader;
               if (!speedreader.ReadableURL(url.spec())) {
                 VLOG(2) << __func__ << " URL not readable " << url.spec();
-                return std::string();
+                return data;
               }
               auto rewriter = speedreader.RewriterNew(url.spec());
               int written = rewriter->Write(data.c_str(), data.length());
               // Error occurred
               if (written != 0) {
-                return std::string();
+                return data;
               }
 
               rewriter->End();
@@ -307,7 +307,7 @@ void SpeedReaderURLLoader::CompleteLoading(std::string body) {
   destination_url_loader_client_->OnStartLoadingResponseBody(
       std::move(body_to_send));
 
-  DCHECK(bytes_remaining_in_buffer_);
+  // DCHECK(bytes_remaining_in_buffer_);
   if (bytes_remaining_in_buffer_) {
     SendReceivedBodyToClient();
     return;

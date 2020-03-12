@@ -1,0 +1,1778 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" prefix="og: https://ogp.me/ns#">
+  <head>
+    <!-- Google Tag Manager -->
+      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push(
+
+      {'gtm.start': new Date().getTime(),event:'gtm.js'}
+      );var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-N8MP7P');</script>
+    <!-- End Google Tag Manager -->
+    <meta charset="utf-8" /><script type="text/javascript">(window.NREUM||(NREUM={})).loader_config={licenseKey:"9dbf7bf394",applicationID:"184097864"};window.NREUM||(NREUM={}),__nr_require=function(e,n,t){function r(t){if(!n[t]){var i=n[t]={exports:{}};e[t][0].call(i.exports,function(n){var i=e[t][1][n];return r(i||n)},i,i.exports)}return n[t].exports}if("function"==typeof __nr_require)return __nr_require;for(var i=0;i<t.length;i++)r(t[i]);return r}({1:[function(e,n,t){function r(){}function i(e,n,t){return function(){return o(e,[u.now()].concat(f(arguments)),n?null:this,t),n?void 0:this}}var o=e("handle"),a=e(4),f=e(5),c=e("ee").get("tracer"),u=e("loader"),s=NREUM;"undefined"==typeof window.newrelic&&(newrelic=s);var p=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],l="api-",d=l+"ixn-";a(p,function(e,n){s[n]=i(l+n,!0,"api")}),s.addPageAction=i(l+"addPageAction",!0),s.setCurrentRouteName=i(l+"routeName",!0),n.exports=newrelic,s.interaction=function(){return(new r).get()};var m=r.prototype={createTracer:function(e,n){var t={},r=this,i="function"==typeof n;return o(d+"tracer",[u.now(),e,t],r),function(){if(c.emit((i?"":"no-")+"fn-start",[u.now(),r,i],t),i)try{return n.apply(this,arguments)}catch(e){throw c.emit("fn-err",[arguments,this,e],t),e}finally{c.emit("fn-end",[u.now()],t)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(e,n){m[n]=i(d+n)}),newrelic.noticeError=function(e,n){"string"==typeof e&&(e=new Error(e)),o("err",[e,u.now(),!1,n])}},{}],2:[function(e,n,t){function r(e,n){var t=e.getEntries();t.forEach(function(e){"first-paint"===e.name?c("timing",["fp",Math.floor(e.startTime)]):"first-contentful-paint"===e.name&&c("timing",["fcp",Math.floor(e.startTime)])})}function i(e,n){var t=e.getEntries();t.length>0&&c("lcp",[t[t.length-1]])}function o(e){if(e instanceof s&&!l){var n,t=Math.round(e.timeStamp);n=t>1e12?Date.now()-t:u.now()-t,l=!0,c("timing",["fi",t,{type:e.type,fid:n}])}}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var a,f,c=e("handle"),u=e("loader"),s=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){a=new PerformanceObserver(r),f=new PerformanceObserver(i);try{a.observe({entryTypes:["paint"]}),f.observe({entryTypes:["largest-contentful-paint"]})}catch(p){}}if("addEventListener"in document){var l=!1,d=["click","keydown","mousedown","pointerdown","touchstart"];d.forEach(function(e){document.addEventListener(e,o,!1)})}}},{}],3:[function(e,n,t){function r(e,n){if(!i)return!1;if(e!==i)return!1;if(!n)return!0;if(!o)return!1;for(var t=o.split("."),r=n.split("."),a=0;a<r.length;a++)if(r[a]!==t[a])return!1;return!0}var i=null,o=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var f=navigator.userAgent,c=f.match(a);c&&f.indexOf("Chrome")===-1&&f.indexOf("Chromium")===-1&&(i="Safari",o=c[1])}n.exports={agent:i,version:o,match:r}},{}],4:[function(e,n,t){function r(e,n){var t=[],r="",o=0;for(r in e)i.call(e,r)&&(t[o]=n(r,e[r]),o+=1);return t}var i=Object.prototype.hasOwnProperty;n.exports=r},{}],5:[function(e,n,t){function r(e,n,t){n||(n=0),"undefined"==typeof t&&(t=e?e.length:0);for(var r=-1,i=t-n||0,o=Array(i<0?0:i);++r<i;)o[r]=e[n+r];return o}n.exports=r},{}],6:[function(e,n,t){n.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(e,n,t){function r(){}function i(e){function n(e){return e&&e instanceof r?e:e?c(e,f,o):o()}function t(t,r,i,o){if(!l.aborted||o){e&&e(t,r,i);for(var a=n(i),f=v(t),c=f.length,u=0;u<c;u++)f[u].apply(a,r);var p=s[y[t]];return p&&p.push([b,t,r,a]),a}}function d(e,n){h[e]=v(e).concat(n)}function m(e,n){var t=h[e];if(t)for(var r=0;r<t.length;r++)t[r]===n&&t.splice(r,1)}function v(e){return h[e]||[]}function g(e){return p[e]=p[e]||i(t)}function w(e,n){u(e,function(e,t){n=n||"feature",y[t]=n,n in s||(s[n]=[])})}var h={},y={},b={on:d,addEventListener:d,removeEventListener:m,emit:t,get:g,listeners:v,context:n,buffer:w,abort:a,aborted:!1};return b}function o(){return new r}function a(){(s.api||s.feature)&&(l.aborted=!0,s=l.backlog={})}var f="nr@context",c=e("gos"),u=e(4),s={},p={},l=n.exports=i();l.backlog=s},{}],gos:[function(e,n,t){function r(e,n,t){if(i.call(e,n))return e[n];var r=t();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(e,n,{value:r,writable:!0,enumerable:!1}),r}catch(o){}return e[n]=r,r}var i=Object.prototype.hasOwnProperty;n.exports=r},{}],handle:[function(e,n,t){function r(e,n,t,r){i.buffer([e],r),i.emit(e,n,t)}var i=e("ee").get("handle");n.exports=r,r.ee=i},{}],id:[function(e,n,t){function r(e){var n=typeof e;return!e||"object"!==n&&"function"!==n?-1:e===window?0:a(e,o,function(){return i++})}var i=1,o="nr@id",a=e("gos");n.exports=r},{}],loader:[function(e,n,t){function r(){if(!x++){var e=E.info=NREUM.info,n=d.getElementsByTagName("script")[0];if(setTimeout(s.abort,3e4),!(e&&e.licenseKey&&e.applicationID&&n))return s.abort();u(y,function(n,t){e[n]||(e[n]=t)}),c("mark",["onload",a()+E.offset],null,"api");var t=d.createElement("script");t.src="https://"+e.agent,n.parentNode.insertBefore(t,n)}}function i(){"complete"===d.readyState&&o()}function o(){c("mark",["domContent",a()+E.offset],null,"api")}function a(){return O.exists&&performance.now?Math.round(performance.now()):(f=Math.max((new Date).getTime(),f))-E.offset}var f=(new Date).getTime(),c=e("handle"),u=e(4),s=e("ee"),p=e(3),l=window,d=l.document,m="addEventListener",v="attachEvent",g=l.XMLHttpRequest,w=g&&g.prototype;NREUM.o={ST:setTimeout,SI:l.setImmediate,CT:clearTimeout,XHR:g,REQ:l.Request,EV:l.Event,PR:l.Promise,MO:l.MutationObserver};var h=""+location,y={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1167.min.js"},b=g&&w&&w[m]&&!/CriOS/.test(navigator.userAgent),E=n.exports={offset:f,now:a,origin:h,features:{},xhrWrappable:b,userAgent:p};e(1),e(2),d[m]?(d[m]("DOMContentLoaded",o,!1),l[m]("load",r,!1)):(d[v]("onreadystatechange",i),l[v]("onload",r)),c("mark",["firstbyte",f],null,"api");var x=0,O=e(6)},{}],"wrap-function":[function(e,n,t){function r(e){return!(e&&e instanceof Function&&e.apply&&!e[a])}var i=e("ee"),o=e(5),a="nr@original",f=Object.prototype.hasOwnProperty,c=!1;n.exports=function(e,n){function t(e,n,t,i){function nrWrapper(){var r,a,f,c;try{a=this,r=o(arguments),f="function"==typeof t?t(r,a):t||{}}catch(u){l([u,"",[r,a,i],f])}s(n+"start",[r,a,i],f);try{return c=e.apply(a,r)}catch(p){throw s(n+"err",[r,a,p],f),p}finally{s(n+"end",[r,a,c],f)}}return r(e)?e:(n||(n=""),nrWrapper[a]=e,p(e,nrWrapper),nrWrapper)}function u(e,n,i,o){i||(i="");var a,f,c,u="-"===i.charAt(0);for(c=0;c<n.length;c++)f=n[c],a=e[f],r(a)||(e[f]=t(a,u?f+i:i,o,f))}function s(t,r,i){if(!c||n){var o=c;c=!0;try{e.emit(t,r,i,n)}catch(a){l([a,t,r,i])}c=o}}function p(e,n){if(Object.defineProperty&&Object.keys)try{var t=Object.keys(e);return t.forEach(function(t){Object.defineProperty(n,t,{get:function(){return e[t]},set:function(n){return e[t]=n,n}})}),n}catch(r){l([r])}for(var i in e)f.call(e,i)&&(n[i]=e[i]);return n}function l(n){try{e.emit("internal-error",n)}catch(t){}}return e||(e=i),t.inPlace=u,t.flag=a,t}},{}]},{},["loader"]);</script>
+<meta http-equiv="content-language" content="en" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="og:site_name" content="Voice of America" />
+<meta property="fb:pages" content="36235438073" />
+<link rel="canonical" href="https://www.voanews.com/usa/us-politics/sanders-staying-democratic-presidential-race-despite-biden-leading" />
+<meta name="twitter:title" content="Sanders Staying in Democratic Presidential Race Despite Biden Leading" />
+<meta property="og:type" content="Article" />
+<meta name="twitter:site" content="@VOANews" />
+<meta name="news_keywords" content="Sanders, Biden, 2020 campaign" />
+<meta name="description" content="Vermont Sen. Bernie Sanders said Wednesday he&#039;s staying in the race for the U.S. Democratic presidential nomination, even as he acknowledged he&#039;s losing voters to former vice president Joe Biden on the question of which one of them has the better chance to defeat Republican President Donald Trump in November&#039;s national election.
+
+&quot;It was obviously not a good night for my campaign...,&quot; Sanders said of Tuesday&#039;s six state primary elections, four of which Biden won, including the day&#039;s biggest prize, Michigan, the country&#039;s auto manufacturing hub in the U.S. heartland." />
+<meta property="fb:app_id" content="394734098058258" />
+<meta name="twitter:description" content="Vermont Sen. Bernie Sanders said Wednesday he&#039;s staying in the race for the U.S. Democratic presidential nomination, even as he acknowledged he&#039;s losing voters to former vice president Joe Biden on the question of which one of them has the better chance to defeat Republican President Donald Trump in November&#039;s national election.
+
+&quot;It was obviously not a good night for my campaign...,&quot; Sanders said of Tuesday&#039;s six state primary elections, four of which Biden won, including the day&#039;s biggest prize, Michigan, the country&#039;s auto manufacturing hub in the U.S. heartland." />
+<meta name="msvalidate.01" content="3286EE554B6F672A6F2E608C02343C0E" />
+<meta property="og:url" content="https://www.voanews.com/usa/us-politics/sanders-staying-democratic-presidential-race-despite-biden-leading" />
+<meta property="og:title" content="Sanders Staying in Democratic Presidential Race Despite Biden Leading" />
+<meta name="keywords" content="Sanders, Biden, 2020 campaign" />
+<meta property="og:description" content="Vermont Sen. Bernie Sanders said Wednesday he&#039;s staying in the race for the U.S. Democratic presidential nomination, even as he acknowledged he&#039;s losing voters to former vice president Joe Biden on the question of which one of them has the better chance to defeat Republican President Donald Trump in November&#039;s national election.
+
+&quot;It was obviously not a good night for my campaign...,&quot; Sanders said of Tuesday&#039;s six state primary elections, four of which Biden won, including the day&#039;s biggest prize, Michigan, the country&#039;s auto manufacturing hub in the U.S. heartland." />
+<meta name="twitter:url" content="https://www.voanews.com/usa/us-politics/sanders-staying-democratic-presidential-race-despite-biden-leading" />
+<meta name="twitter:image" content="https://media.voltron.voanews.com/Drupal/01live-166/styles/710x340/s3/2020-03/ap_bernie7.jpg?itok=e-uCTsUn" />
+<meta property="og:image" content="https://media.voltron.voanews.com/Drupal/01live-166/2020-03/ap_bernie7.jpg" />
+<meta property="article:section" content="US Politics, USA" />
+<meta property="article:tag" content="Sanders" />
+<meta property="article:tag" content="Biden" />
+<meta property="article:tag" content="2020 campaign" />
+<meta name="apple-itunes-app" content="app-id=1414561730, app-argument=//4948560.ltr" />
+<meta property="og:image:width" content="2905" />
+<meta property="og:image:height" content="1937" />
+<meta name="Generator" content="Drupal 8 (https://www.drupal.org)" />
+<meta name="MobileOptimized" content="width" />
+<meta name="HandheldFriendly" content="true" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script src="//tags.tiqcdn.com/utag/bbg/voa-pangea/prod/utag.sync.js"></script>
+<link rel="sitemap" type="application/rss+xml" href="/sitemap.xml" />
+<link rel="manifest" href="/modules/custom/voa_pwa/js/manifest.json?voltron=universalDefender" />
+<meta name="theme-color" content="#3a79b7" />
+<link rel="shortcut icon" href="/favicon.ico" type="image/vnd.microsoft.icon" />
+<link rel="revision" href="https://www.voanews.com/usa/us-politics/sanders-staying-democratic-presidential-race-despite-biden-leading" />
+<link rel="amphtml" href="https://www.voanews.com/usa/us-politics/sanders-staying-democratic-presidential-race-despite-biden-leading?amp" />
+
+    <title>Sanders Staying in Democratic Presidential Race Despite Biden Leading | Voice of America - English</title>
+    <link rel="stylesheet" media="all" href="/sites/g/files/cauiqe166/files/css/css_mE2t7fauFf3N0LMRK6Xlc07MisnZRutCETQIShaKbP8.css" />
+<link rel="stylesheet" media="all" href="/modules/custom/voa_breaking_news/css/voa-breaking-news.theme.css?q72xw4" />
+<link rel="stylesheet" media="all" href="/sites/g/files/cauiqe166/files/css/css_brtELhLjrGuxeYH7xiDoXcpuEL1WdiaRr1M9OKIWxMI.css" />
+
+    
+<!--[if lte IE 8]>
+<script src="/sites/g/files/cauiqe166/files/js/js_VtafjXmRvoUgAzqzYTA3Wrjkx9wcWhjP0G4ZnnqRamA.js"></script>
+<![endif]-->
+<script src="/sites/g/files/cauiqe166/files/js/js_QHqjxhGPGgZFwOfW92tmrVpssmC1sbO0zDG4TgLmaEI.js"></script>
+
+  </head>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+      <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N8MP7P"
+      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+        <a href="#main-content" class="visually-hidden focusable">
+      Skip to main content
+    </a>
+    <script type="text/javascript">var utag_data = {"slug":"sanders-staying-democratic-presidential-race-despite-biden-leading","page_type":"article","content_type":"article","article_uid":"4219496","video_event":[],"pub_day":"11","pub_hour":"13","pub_minute":"28","pub_min":"28","pub_month":"03","pub_weekday":"Wed","pub_year":"2020","pub_date":"Wednesday, March 11, 2020 - 13:28","dateline":" WASHINGTON ","short_headline":null,"byline":"Ken Bredemeier, Chris Hannas","categories":"US Politics, USA","subcontent_type":"Article","section":"US Politics, USA","tags":"US Politics, USA","english_section":"US Politics, USA","page_name":"Sanders Staying in Democratic Presidential Race Despite Biden Leading","page_title":"Sanders Staying in Democratic Presidential Race Despite Biden Leading","long_headline":"Sanders Staying in Democratic Presidential Race Despite Biden Leading","headline":"Sanders Staying in Democratic Presidential Race Despite Biden Leading","runs_js":"yes","language":"English","language_service":"voa english","entity":"voa","platform":"Responsive","short_language_service":"en","platform_short":"r","property_id":"461","enviro_type":"prod","domain":"www.voanews.com","url":"www.voanews.com\/usa\/us-politics\/sanders-staying-democratic-presidential-race-despite-biden-leading"}</script>
+<script type="text/javascript">
+  (function(a,b,c,d){
+  a='//tags.tiqcdn.com/utag/bbg/voa-pangea/prod/utag.js';
+  b=document;c='script';d=b.createElement(c);d.src=a;d.type='text/java'+c;d.async=true;
+  a=b.getElementsByTagName(c)[0];a.parentNode.insertBefore(d,a);
+  })();
+</script>
+
+      <div class="dialog-off-canvas-main-canvas" data-off-canvas-main-canvas>
+    <div class="l-page">
+  <div id="breaking-news-ajax"></div>
+
+      <div class="site-header">
+
+  <div class="site-header__bar">
+
+    <div class="site-header__primary">
+
+      <div class="site-header__menu">
+        <button class="button site-header__menu-item" aria-label="Open main navigation"><span class="hidden">Open main navigation</span></button>
+        <nav class="site-header__mega-menu site-header__subnav">
+          <div class="site-header__mega-menu--inner">
+            <!-- This is hidden by default -->
+            <div class="grid">
+              <div class="col-1 col--hidden-large">
+                                <div>
+  
+    
+      <div class="schedule-menu voa-media-schedule-menu-block">
+      <div class="channel-schedule-wrapper" id="channel-296-wrapper-mobile" data-menu-block-channel="296" >
+              <div class="channel-schedule__section-title">
+          <span class="channel-schedule__icon fa fa-play"></span>
+                      Live TV                  </div>
+      
+      <div class="channel-playing">
+        <img src="/core/themes/stable/images/core/throbber-active.gif"
+             alt="Please wait, loading..."/>
+      </div>
+    </div>
+
+          <div class="channel-schedule-wrapper" id="channel-266-wrapper-mobile" data-menu-block-channel="266" >
+      
+      <div class="channel-playing">
+        <img src="/core/themes/stable/images/core/throbber-active.gif"
+             alt="Please wait, loading..."/>
+      </div>
+    </div>
+
+          <div class="schedule-menu__links">
+        <div class="schedule-menu__link"><a
+            href="/watch/schedule">Full Schedule</a>
+        </div>
+        <div class="schedule-menu__link"><a
+            href="/watch/programs">All Programs</a>
+        </div>
+      </div>
+      </div>
+
+  </div>
+
+                                                <div>
+  
+    
+      <div class="schedule-menu voa-media-schedule-menu-block">
+      <div class="channel-schedule-wrapper" id="channel-246-wrapper-mobile" data-menu-block-channel="246" >
+              <div class="channel-schedule__section-title">
+          <span class="channel-schedule__icon fa fa-volume-up"></span>
+                      Live Radio                  </div>
+      
+      <div class="channel-playing">
+        <img src="/core/themes/stable/images/core/throbber-active.gif"
+             alt="Please wait, loading..."/>
+      </div>
+    </div>
+
+          <div class="channel-schedule-wrapper" id="channel-251-wrapper-mobile" data-menu-block-channel="251" >
+      
+      <div class="channel-playing">
+        <img src="/core/themes/stable/images/core/throbber-active.gif"
+             alt="Please wait, loading..."/>
+      </div>
+    </div>
+
+          <div class="channel-schedule-wrapper" id="channel-256-wrapper-mobile" data-menu-block-channel="256" >
+      
+      <div class="channel-playing">
+        <img src="/core/themes/stable/images/core/throbber-active.gif"
+             alt="Please wait, loading..."/>
+      </div>
+    </div>
+
+          <div class="schedule-menu__links">
+        <div class="schedule-menu__link"><a
+            href="/listen/schedule">Full Schedule</a>
+        </div>
+        <div class="schedule-menu__link"><a
+            href="/listen/programs">All Programs</a>
+        </div>
+      </div>
+      </div>
+
+  </div>
+
+                              </div>
+            </div>
+
+            
+    
+    
+      
+              <ul class="grid site-header__mega-menu-list">
+                              <li class="site-header__mega-menu-item col-2 col-2--full-mobile site-header__mega-menu-item--header">
+          <a href="/usa" class="site-header__mega-menu-item-link site-header__mega-menu-item-link--header" data-drupal-link-system-path="taxonomy/term/32681">United States</a>
+                                    <ul class="site-header__mega-menu-sub-list">
+                                      <div class="grid">
+        <div class="col-2 site-header__mega-menu-sub-column">
+                      <li class="site-header__mega-menu-item">
+              <a href="/usa/us-politics" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/32936">US Politics</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/usa/immigration" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/33021">Immigration</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/usa/all-about-america" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/562771">All About America</a>
+                          </li>
+                  </div>
+        <div class="col-2 site-header__mega-menu-sub-column">
+                      <li class="site-header__mega-menu-item">
+              <a href="/science-health" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/562831">Science &amp; Health</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/silicon-valley-technology" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/61">Silicon Valley &amp; Technology</a>
+                          </li>
+                  </div>
+      </div>
+        </ul>
+  
+                  </li>
+                      <li class="site-header__mega-menu-item col-2 col-2--full-mobile site-header__mega-menu-item--header">
+          <span class="site-header__mega-menu-item-link site-header__mega-menu-item-link--header">World</span>
+                                    <ul class="site-header__mega-menu-sub-list">
+                                      <div class="grid">
+        <div class="col-2 site-header__mega-menu-sub-column">
+                      <li class="site-header__mega-menu-item">
+              <a href="/africa" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/562841">Africa</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/americas" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/562846">The Americas</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/east-asia-pacific" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/562821">East Asia Pacific</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/europe" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/32686">Europe</a>
+                          </li>
+                  </div>
+        <div class="col-2 site-header__mega-menu-sub-column">
+                      <li class="site-header__mega-menu-item">
+              <a href="/extremism-watch" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/51">Extremism Watch</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/middle-east" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/562811">Middle East</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/south-central-asia" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/562866">South &amp; Central Asia</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/middle-east/voa-news-iran" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/33026">VOA News on Iran</a>
+                          </li>
+                  </div>
+      </div>
+        </ul>
+  
+                  </li>
+                      <li class="site-header__mega-menu-item col-2 col-2--full-mobile site-header__mega-menu-item--header">
+          <span class="site-header__mega-menu-item-link site-header__mega-menu-item-link--header">Sections</span>
+                                    <ul class="site-header__mega-menu-sub-list">
+                                      <div class="grid">
+        <div class="col-2 site-header__mega-menu-sub-column">
+                      <li class="site-header__mega-menu-item">
+              <a href="/arts-culture" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/562826">Arts &amp; Culture</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/day-photos" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/32661">Day in Photos</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/economy-business" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/66">Economy &amp; Business</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/press-freedom" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/562871">Press Freedom</a>
+                          </li>
+                  </div>
+        <div class="col-2 site-header__mega-menu-sub-column">
+                      <li class="site-header__mega-menu-item">
+              <a href="/plugged-greta-van-susteren" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/156">Plugged in with Greta Van Susteren</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/student-union" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/32976">VOA StudentU</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/voa-connect" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/191">VOA Connect</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/refugees" class="site-header__mega-menu-item-link" data-drupal-link-system-path="node/4078021">Refugees</a>
+                          </li>
+                  </div>
+      </div>
+        </ul>
+  
+                  </li>
+              </ul>
+  
+
+
+  
+
+          </div>
+        </nav>
+      </div>
+
+        <div>
+    
+<div id="block-featuredmenu">
+  
+  
+              <ul class="site-header__featured-menu">
+              <li><a class="site-header__featured-menu-item" href="/usa">US News</a></li>
+              <li><a class="site-header__featured-menu-item" href="/press-freedom">Press Freedom</a></li>
+              <li><a class="site-header__featured-menu-item" href="/student-union">VOA StudentU</a></li>
+              <li><a class="site-header__featured-menu-item" href="/middle-east/voa-news-iran">VOA News on Iran</a></li>
+          </ul>
+  
+  </div>
+
+  </div>
+
+    </div>
+
+    <a href="/" class="site-header__branding"><img alt="Voice of America Logo" src="/themes/custom/voa/logo.svg"/></a>
+
+    <div class="site-header__secondary">
+      <button id="js-search-drop" class="button site-header__item">
+        <span class="site-header__icon fa fa-search"></span><span
+          class="site-header__icon-text site-header__icon-text--medium-only">Search</span>
+      </button>
+      <div class="site-header__search-drop site-header__subnav">
+        <div class="grid">
+          <div class="col-1">
+            <form class="site-header__search-form" action="/search" method="GET">
+              <label class="site-header__search-label" for="header-search">Search VOA News</label>
+              <input placeholder="Search VOA News" class="site-header__search" id="header-search" type="text"
+                     name="search_api_fulltext">
+              <input type="hidden" name="type" value="1">
+              <input type="hidden" name="sort_by" value="publication_time">
+              <button class="button site-header__search-button fa fa-search" type="submit"><span
+                  class="site-header__search-label">Search</span></button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="site-header__dropdown">
+        <button id="js-language-drop" class="button site-header__item">
+          <span class="site-header__icon fa fa-globe"></span>
+            <span class="site-header__icon-text site-header__icon-text">Lang</span>
+        </button>
+      </div>
+            <a href="/watch" id="js-watch-drop" data-target=".site-header__watch-drop" class="site-header__item site-header__item--secondary site-header__item--wide-only">
+        <span class="site-header__icon fa fa-play"></span><span class="site-header__icon-text">Live TV</span>
+      </a>
+      <div class="site-header__watch-drop site-header__subnav">
+        <div class="grid">
+          <div class="col-1">
+            <div id="watch-drop-menu">
+              <div>
+  
+    
+      <div class="schedule-menu voa-media-schedule-menu-block">
+      <div class="channel-schedule-wrapper" id="channel-296-wrapper-desktop" data-menu-block-channel="296" >
+              <div class="channel-schedule__section-title">
+          <span class="channel-schedule__icon fa fa-play"></span>
+                      Live TV                  </div>
+      
+      <div class="channel-playing">
+        <img src="/core/themes/stable/images/core/throbber-active.gif"
+             alt="Please wait, loading..."/>
+      </div>
+    </div>
+
+          <div class="channel-schedule-wrapper" id="channel-266-wrapper-desktop" data-menu-block-channel="266" >
+      
+      <div class="channel-playing">
+        <img src="/core/themes/stable/images/core/throbber-active.gif"
+             alt="Please wait, loading..."/>
+      </div>
+    </div>
+
+          <div class="schedule-menu__links">
+        <div class="schedule-menu__link"><a
+            href="/watch/schedule">Full Schedule</a>
+        </div>
+        <div class="schedule-menu__link"><a
+            href="/watch/programs">All Programs</a>
+        </div>
+      </div>
+      </div>
+
+  </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+                  <a href="/listen" id="js-listen-drop" data-target=".site-header__listen-drop" class="site-header__item site-header__item--secondary site-header__item--wide-only site-header__subnav"><span
+          class="site-header__icon fa fa-volume-up"></span><span class="site-header__icon-text">Live Radio</span></a>
+      <div class="site-header__listen-drop site-header__subnav">
+        <div class="grid">
+          <div class="col-1">
+            <div id="listen-drop-menu">
+              <div>
+  
+    
+      <div class="schedule-menu voa-media-schedule-menu-block">
+      <div class="channel-schedule-wrapper" id="channel-246-wrapper-desktop" data-menu-block-channel="246" >
+              <div class="channel-schedule__section-title">
+          <span class="channel-schedule__icon fa fa-volume-up"></span>
+                      Live Radio                  </div>
+      
+      <div class="channel-playing">
+        <img src="/core/themes/stable/images/core/throbber-active.gif"
+             alt="Please wait, loading..."/>
+      </div>
+    </div>
+
+          <div class="channel-schedule-wrapper" id="channel-251-wrapper-desktop" data-menu-block-channel="251" >
+      
+      <div class="channel-playing">
+        <img src="/core/themes/stable/images/core/throbber-active.gif"
+             alt="Please wait, loading..."/>
+      </div>
+    </div>
+
+          <div class="channel-schedule-wrapper" id="channel-256-wrapper-desktop" data-menu-block-channel="256" >
+      
+      <div class="channel-playing">
+        <img src="/core/themes/stable/images/core/throbber-active.gif"
+             alt="Please wait, loading..."/>
+      </div>
+    </div>
+
+          <div class="schedule-menu__links">
+        <div class="schedule-menu__link"><a
+            href="/listen/schedule">Full Schedule</a>
+        </div>
+        <div class="schedule-menu__link"><a
+            href="/listen/programs">All Programs</a>
+        </div>
+      </div>
+      </div>
+
+  </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+          </div>
+
+  </div>
+
+  <div class="site-header__language-drop site-header__subnav">
+    <div class="site-header__language-wrap">
+              <div class="site-header__language-region">
+          <div class="section-title site-header__language-region-title">English</div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voanews-com" href="https://voanews.com">English</a>
+              <a class="site-header__language-url" href="https://voanews.com">voanews.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title learningenglish-voanews-com" href="https://learningenglish.voanews.com">Learning English</a>
+              <a class="site-header__language-url" href="https://learningenglish.voanews.com">learningenglish.voanews.com</a>
+            </div>
+                  </div>
+              <div class="site-header__language-region">
+          <div class="section-title site-header__language-region-title">Eastern &amp; Central Europe</div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title zeriamerikes-com" href="https://zeriamerikes.com">Shqip</a>
+              <a class="site-header__language-url" href="https://zeriamerikes.com">zeriamerikes.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title ba-voanews-com" href="https://ba.voanews.com">Bosanski</a>
+              <a class="site-header__language-url" href="https://ba.voanews.com">ba.voanews.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title gr-voanews-com" href="https://gr.voanews.com">Ελληνικά</a>
+              <a class="site-header__language-url" href="https://gr.voanews.com">gr.voanews.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title mk-voanews-com" href="https://mk.voanews.com">Македонски</a>
+              <a class="site-header__language-url" href="https://mk.voanews.com">mk.voanews.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title glasamerike-net" href="https://glasamerike.net">Srpski</a>
+              <a class="site-header__language-url" href="https://glasamerike.net">glasamerike.net</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title ukrainian-voanews-com" href="https://ukrainian.voanews.com">Українська</a>
+              <a class="site-header__language-url" href="https://ukrainian.voanews.com">ukrainian.voanews.com</a>
+            </div>
+                  </div>
+              <div class="site-header__language-region">
+          <div class="section-title site-header__language-region-title">Eurasia</div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title amerikayidzayn-com" href="https://amerikayidzayn.com">Հայերեն</a>
+              <a class="site-header__language-url" href="https://amerikayidzayn.com">amerikayidzayn.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title amerikaninsesi-org" href="https://amerikaninsesi.org">Azerbaijani</a>
+              <a class="site-header__language-url" href="https://amerikaninsesi.org">amerikaninsesi.org</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title amerikiskhma-com" href="https://amerikiskhma.com">ქართული</a>
+              <a class="site-header__language-url" href="https://amerikiskhma.com">amerikiskhma.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title golos-ameriki-ru" href="https://golos-ameriki.ru">Русский</a>
+              <a class="site-header__language-url" href="https://golos-ameriki.ru">golos-ameriki.ru</a>
+            </div>
+                  </div>
+              <div class="site-header__language-region">
+          <div class="section-title site-header__language-region-title">Central Asia</div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title amerikaovozi-com" href="https://amerikaovozi.com">O‘zbek‎</a>
+              <a class="site-header__language-url" href="https://amerikaovozi.com">amerikaovozi.com</a>
+            </div>
+                  </div>
+              <div class="site-header__language-region">
+          <div class="section-title site-header__language-region-title">South Asia</div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voabangla-com" href="https://voabangla.com">বাংলা</a>
+              <a class="site-header__language-url" href="https://voabangla.com">voabangla.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title darivoa-com" href="https://darivoa.com">دری</a>
+              <a class="site-header__language-url" href="https://darivoa.com">darivoa.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title pashtovoa-com" href="https://pashtovoa.com">پښتو</a>
+              <a class="site-header__language-url" href="https://pashtovoa.com">pashtovoa.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voadeewanews-com" href="https://voadeewanews.com">وی او اې ډيوه ريډیو</a>
+              <a class="site-header__language-url" href="https://voadeewanews.com">voadeewanews.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title urduvoa-com" href="https://urduvoa.com">ارد</a>
+              <a class="site-header__language-url" href="https://urduvoa.com">urduvoa.com</a>
+            </div>
+                  </div>
+              <div class="site-header__language-region">
+          <div class="section-title site-header__language-region-title">East &amp; Southeast Asia</div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title burmese-voanews-com" href="https://burmese.voanews.com">ျမန္မာ</a>
+              <a class="site-header__language-url" href="https://burmese.voanews.com">burmese.voanews.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voacantonese-com" href="https://voacantonese.com">粤语</a>
+              <a class="site-header__language-url" href="https://voacantonese.com">voacantonese.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voachinese-com" href="https://voachinese.com">中文</a>
+              <a class="site-header__language-url" href="https://voachinese.com">voachinese.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voaindonesia-com" href="https://voaindonesia.com">Bahasa Indonesia</a>
+              <a class="site-header__language-url" href="https://voaindonesia.com">voaindonesia.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title khmer-voanews-com" href="https://khmer.voanews.com">ខ្មែរ</a>
+              <a class="site-header__language-url" href="https://khmer.voanews.com">khmer.voanews.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voacambodia-com" href="https://voacambodia.com">Khmer</a>
+              <a class="site-header__language-url" href="https://voacambodia.com">voacambodia.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voakorea-com" href="https://voakorea.com">한국어</a>
+              <a class="site-header__language-url" href="https://voakorea.com">voakorea.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title lao-voanews-com" href="https://lao.voanews.com">ລາວ</a>
+              <a class="site-header__language-url" href="https://lao.voanews.com">lao.voanews.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voathai-com" href="https://voathai.com">ไทย</a>
+              <a class="site-header__language-url" href="https://voathai.com">voathai.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voatibetan-com" href="https://voatibetan.com">བོད་ཡིག</a>
+              <a class="site-header__language-url" href="https://voatibetan.com">voatibetan.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voatiengviet-com" href="https://voatiengviet.com">Tiếng Việt</a>
+              <a class="site-header__language-url" href="https://voatiengviet.com">voatiengviet.com</a>
+            </div>
+                  </div>
+              <div class="site-header__language-region">
+          <div class="section-title site-header__language-region-title">Africa</div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voaafaanoromoo-com" href="https://voaafaanoromoo.com">Afaan Oromoo</a>
+              <a class="site-header__language-url" href="https://voaafaanoromoo.com">voaafaanoromoo.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title amharic-voanews-com" href="https://amharic.voanews.com">አማርኛ</a>
+              <a class="site-header__language-url" href="https://amharic.voanews.com">amharic.voanews.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voabambara-com" href="https://voabambara.com">Bambara</a>
+              <a class="site-header__language-url" href="https://voabambara.com">voabambara.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voaafrique-com" href="https://voaafrique.com">Français</a>
+              <a class="site-header__language-url" href="https://voaafrique.com">voaafrique.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voahausa-com" href="https://voahausa.com">Hausa</a>
+              <a class="site-header__language-url" href="https://voahausa.com">voahausa.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title radiyoyacuvoa-com" href="https://radiyoyacuvoa.com">Kinyarwanda / Kirundi</a>
+              <a class="site-header__language-url" href="https://radiyoyacuvoa.com">radiyoyacuvoa.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voandebele-com" href="https://voandebele.com">Ndebele</a>
+              <a class="site-header__language-url" href="https://voandebele.com">voandebele.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voaportugues-com" href="https://voaportugues.com">Português</a>
+              <a class="site-header__language-url" href="https://voaportugues.com">voaportugues.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voashona-com" href="https://voashona.com">Shona</a>
+              <a class="site-header__language-url" href="https://voashona.com">voashona.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voasomali-com" href="https://voasomali.com">Soomaaliga</a>
+              <a class="site-header__language-url" href="https://voasomali.com">voasomali.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voaswahili-com" href="https://voaswahili.com">Kiswahili</a>
+              <a class="site-header__language-url" href="https://voaswahili.com">voaswahili.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title tigrigna-voanews-com" href="https://tigrigna.voanews.com">ትግርኛ</a>
+              <a class="site-header__language-url" href="https://tigrigna.voanews.com">tigrigna.voanews.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voazimbabwe-com" href="https://voazimbabwe.com">Zimbabwe</a>
+              <a class="site-header__language-url" href="https://voazimbabwe.com">voazimbabwe.com</a>
+            </div>
+                  </div>
+              <div class="site-header__language-region">
+          <div class="section-title site-header__language-region-title">Middle East/North Africa</div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title ir-voanews-com" href="https://ir.voanews.com">فارسی</a>
+              <a class="site-header__language-url" href="https://ir.voanews.com">ir.voanews.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title dengiamerika-com" href="https://dengiamerika.com">كوردی</a>
+              <a class="site-header__language-url" href="https://dengiamerika.com">dengiamerika.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title dengeamerika-com" href="https://dengeamerika.com">Kurdi</a>
+              <a class="site-header__language-url" href="https://dengeamerika.com">dengeamerika.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title amerikaninsesi-com" href="https://amerikaninsesi.com">Türkçe</a>
+              <a class="site-header__language-url" href="https://amerikaninsesi.com">amerikaninsesi.com</a>
+            </div>
+                  </div>
+              <div class="site-header__language-region">
+          <div class="section-title site-header__language-region-title">Latin America</div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voanouvel-com" href="https://voanouvel.com">Creole</a>
+              <a class="site-header__language-url" href="https://voanouvel.com">voanouvel.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voanoticias-com" href="https://voanoticias.com">Español</a>
+              <a class="site-header__language-url" href="https://voanoticias.com">voanoticias.com</a>
+            </div>
+                  </div>
+          </div>
+  </div>
+</div>
+  
+  <main role="main" id="main-content" tabindex="-1">
+        <div>
+    <div data-drupal-messages-fallback class="hidden"></div>
+<div id="block-voa-content">
+  
+    
+      
+
+    
+  
+
+  
+  
+              
+    
+                      
+
+
+  <div class="l-content-container"><div class="article">
+  <div class="article__social">
+    <div class="article__social-container">
+      
+
+<div class="social-widget">
+      <div tabindex="0" id="share-facebook" class="fab social-widget__icon social-widget__icon--facebook" data-url="https%3A%2F%2Fwww.voanews.com%2Fusa%2Fus-politics%2Fsanders-staying-democratic-presidential-race-despite-biden-leading">
+      <span class="fa-facebook-f"><span class="sr-only">Share on Facebook</span></span>
+    </div>
+        <div tabindex="0" id="share-twitter" class="fab social-widget__icon social-widget__icon--twitter" data-url="https%3A%2F%2Fwww.voanews.com%2Fusa%2Fus-politics%2Fsanders-staying-democratic-presidential-race-despite-biden-leading" data-title="Sanders%20Staying%20in%20Democratic%20Presidential%20Race%20Despite%20Biden%20Leading" >
+      <span class="fa-twitter"><span class="sr-only">Share on Twitter</span></span>
+    </div>
+                <div tabindex="0" id="share-email" class="fa social-widget__icon social-widget__icon--mail" data-url="https%3A%2F%2Fwww.voanews.com%2Fusa%2Fus-politics%2Fsanders-staying-democratic-presidential-race-despite-biden-leading" data-title="Sanders%20Staying%20in%20Democratic%20Presidential%20Race%20Despite%20Biden%20Leading">
+      <span class="fa-envelope"><span class="sr-only">Share via Email</span></span>
+    </div>
+        <div tabindex="0" id="share-print" class="fa social-widget__icon social-widget__icon--print">
+      <span class="fa-print"><span class="sr-only">Print this page</span></span>
+    </div>
+      </div>
+    </div>
+  </div>
+  <div class="article__main"><div class="page-header">
+  <span class="page-header__eyebrow eyebrow"><a href="/usa/us-politics" hreflang="en">US Politics</a></span>
+  <h1 class="page-header__title"><span>Sanders Staying in Democratic Presidential Race Despite Biden Leading</span>
+</h1>
+
+  
+  <div class="caption page-header__meta ">
+          <div class="page-header__meta-item">
+        <span>By</span>
+                  <span>Ken Bredemeier</span>,                  <span>Chris Hannas</span>              </div>
+    
+    <div class="page-header__meta-item">
+              Updated March 11, 2020 06:22 PM
+          </div>
+          <div class="page-header__meta-item">
+        
+      </div>
+      </div>
+</div>
+<div class="article__social article__social--mobile-only">
+      
+
+<div class="social-widget">
+      <div tabindex="0" id="share-facebook-mobile" class="fab social-widget__icon social-widget__icon--facebook" data-url="https%3A%2F%2Fwww.voanews.com%2Fusa%2Fus-politics%2Fsanders-staying-democratic-presidential-race-despite-biden-leading">
+      <span class="fa-facebook-f"><span class="sr-only">Share on Facebook</span></span>
+    </div>
+        <div tabindex="0" id="share-twitter-mobile" class="fab social-widget__icon social-widget__icon--twitter" data-url="https%3A%2F%2Fwww.voanews.com%2Fusa%2Fus-politics%2Fsanders-staying-democratic-presidential-race-despite-biden-leading" data-title="Sanders%20Staying%20in%20Democratic%20Presidential%20Race%20Despite%20Biden%20Leading" >
+      <span class="fa-twitter"><span class="sr-only">Share on Twitter</span></span>
+    </div>
+                <div tabindex="0" id="share-email-mobile" class="fa social-widget__icon social-widget__icon--mail" data-url="https%3A%2F%2Fwww.voanews.com%2Fusa%2Fus-politics%2Fsanders-staying-democratic-presidential-race-despite-biden-leading" data-title="Sanders%20Staying%20in%20Democratic%20Presidential%20Race%20Despite%20Biden%20Leading">
+      <span class="fa-envelope"><span class="sr-only">Share via Email</span></span>
+    </div>
+        <div tabindex="0" id="share-print-mobile" class="fa social-widget__icon social-widget__icon--print">
+      <span class="fa-print"><span class="sr-only">Print this page</span></span>
+    </div>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="col-2of3">
+        <div class="article__lightbox-available">
+                      <div class="article__featured-media"><figure class="media media--type-image media--view-mode-" itemscope="itemscope" itemtype="http://schema.org/ImageObject">
+      <a href="https://media.voltron.voanews.com/Drupal/01live-166/styles/sourced/s3/2020-03/ap_bernie7.jpg?itok=8hK9M9a-" data-size="2905x1937">
+      
+            <div>    <picture>
+                <!--[if IE 9]><video style="display: none;"><![endif]-->
+              <source srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/817x459/s3/2020-03/ap_bernie7.jpg?itok=IGpQct9- 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/817x459_retina/s3/2020-03/ap_bernie7.jpg?itok=ybu8gzn8 2x" media="(min-width: 2000px)" type="image/jpeg"/>
+              <source srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/817x459/s3/2020-03/ap_bernie7.jpg?itok=IGpQct9- 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/817x459_retina/s3/2020-03/ap_bernie7.jpg?itok=ybu8gzn8 2x" media="(min-width: 1280px)" type="image/jpeg"/>
+              <source srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/710x340/s3/2020-03/ap_bernie7.jpg?itok=e-uCTsUn 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/710x340_retina/s3/2020-03/ap_bernie7.jpg?itok=6n2AZjY8 2x" media="(min-width: 1024px)" type="image/jpeg"/>
+              <source srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/545x307/s3/2020-03/ap_bernie7.jpg?itok=WTVYxLup 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/576x564_retina/s3/2020-03/ap_bernie7.jpg?itok=gTjNV4A5 2x" media="(min-width: 992px)" type="image/jpeg"/>
+              <source srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/892x501/s3/2020-03/ap_bernie7.jpg?itok=jPEJ-FdT 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/892x501_retina/s3/2020-03/ap_bernie7.jpg?itok=fKRpchSi 2x" media="(min-width: 769px)" type="image/jpeg"/>
+              <source srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/671x377/s3/2020-03/ap_bernie7.jpg?itok=udr1rWqc 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/671x377_retina/s3/2020-03/ap_bernie7.jpg?itok=w6DVLylT 2x" media="(min-width: 580px)" type="image/jpeg"/>
+              <source srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/516x290/s3/2020-03/ap_bernie7.jpg?itok=GvrTrb2P 1x" type="image/jpeg"/>
+            <!--[if IE 9]></video><![endif]-->
+            <img src="https://media.voltron.voanews.com/Drupal/01live-166/styles/892x501/s3/2020-03/ap_bernie7.jpg?itok=jPEJ-FdT" alt="Democratic presidential candidate Bernie Sanders walks away from the podium after speaking to reporters in Burlington, Vermont, March 11, 2020." />
+
+  </picture>
+
+</div>
+      
+      <figcaption>
+                          
+  <div>
+          <figcaption>Democratic presidential candidate Bernie Sanders walks away from the podium after speaking to reporters in Burlington, Vermont, March 11, 2020.</figcaption>
+      </div>
+
+              </figcaption>
+    </a>
+  </figure>
+</div>
+          
+          <div class="article__content">
+            <div class="article__body">
+              
+            <div><p> WASHINGTON  - Vermont Sen. Bernie Sanders said Wednesday he's staying in the race for the U.S. Democratic presidential nomination, even as he acknowledged he's losing voters to former vice president Joe Biden on the question of which one of them has the better chance to defeat Republican President Donald Trump in November's national election.</p>
+
+<p>"It was obviously not a good night for my campaign...," Sanders said of Tuesday's six state primary elections, four of which Biden won, including the day's biggest prize, Michigan, the country's auto manufacturing hub in the U.S. heartland. Sanders captured only the small upper Midwest state of North Dakota, while leading in the western state of Washington, with the votes still being counted.</p>
+
+<p>Sanders, a self-declared democratic socialist, said he looks forward to debating Biden, now in his third run for the presidency over three decades, one-on-one on Sunday night. Sanders laid out a string of questions he plans to ask Biden about income inequality among Americans, climate change, free college tuition and why he opposes Sanders's plan for a government-controlled health care system in the U.S., among other issues.</p>
+
+    <article data-embed-button="wysiwyg_video" data-entity-embed-display="view_mode:media.embedded" data-entity-type="media" data-entity-uuid="2330fb52-c8e2-4dbd-a9b9-ac6a563c87dc" data-langcode="en" class="embedded-entity"><div>
+  
+    <div class="sr-only"></div>
+  <!-- Kaltura v7 Player Code For Dynamic Embed-->
+<div id="kvideo_1_scwos4mp">
+  <div id="_3634011-1-scwos4mp-wrapper" class="kaltura-video-player" data-embed-id="2572396">
+    <div id="hvideo_1_scwos4mp">
+      <div class="psiphon-player">
+        <video playsinline="playsinline" controls="controls" preload="auto" width="100%" poster="https://media.voltron.voanews.com/Drupal/01live-166/kaltura-video-thumbs/1_o/1_o68ie268.jpg" id="hvideo_1_scwos4mp_player"><source src="https://voamedia.voanews.com/p/2446332/sp/244633200/download/entry_id/1_scwos4mp/flavor/1_kuseeduy" type="video/mp4"></source><p>Sorry, but your browser cannot support embedded video of this type, you can
+            <a href="https://voamedia.voanews.com/p/2446332/sp/244633200/download/entry_id/1_scwos4mp/flavor/1_kuseeduy" target="_blank">download this video</a> to view it offline.</p>
+        </video></div>
+    </div>
+  </div>
+
+    <script type="text/javascript" src="https://cdnapisec.kaltura.com/p/2446332/embedPlaykitJs/uiconf_id/43634011"></script></div>
+
+
+
+  <div id="_3634011-1-scwos4mp-embed-code-wrapper" class="embed-code-wrapper">
+    <a class="button embed-code-popup-link" href="#"><span class="fa fa-code"></span> Embed</a>
+    <div class="hidden">
+      <div id="-embed-code-dialog" class="embed-code-dialog">
+        <input name="embed-code" value="&lt;iframe src=&quot;https://www.voanews.com/media/2572396/embed&quot; frameborder=&quot;0&quot; scrolling=&quot;no&quot; allowfullscreen width=&quot;876&quot; height=&quot;493&quot;&gt;&lt;/iframe&gt;" /><button class="embed-code-copy">Copy</button>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+</div>
+</article><p>He said a vast number of voters across the country have told him they favor his positions over Biden's more moderate political views. "There is strong majority support for our progressive agenda," Sanders contended.</p>
+
+<p>But Sanders said at the same time many of these voters have also told him they are casting ballots for Biden because they think he, and not Sanders, has a better chance of defeating Trump to keep him from winning a second four-year term.</p>
+
+<p>"We are losing the debate over electability," Sanders conceded. "Needless to say, I disagree with that assertion."</p>
+
+<p>Sanders acknowledged that he is losing older voters to Biden, while defeating him among voters in their 20s, 30s and 40s.</p>
+
+<p>After the Tuesday voting, the second straight week in which Biden has scored major wins over Sanders in the state-by-state Democratic contests, Biden increased his lead in pledged delegates to the party's national nominating convention in July to at least an 843-681 edge over Sanders. A total of 1,991 is needed to win the nomination, but Sanders will have to start winning the state nominating contests decisively in order to catch up.</p>
+
+    <article data-embed-button="node" data-entity-embed-display="view_mode:node.backgrounder" data-entity-type="node" data-entity-uuid="abeb6c3c-daaf-42bc-a57a-ed21a5a7c65a" data-langcode="en" class="embedded-entity"><a href="/usa/us-politics/biden-sweeps-tuesday-primaries-increasing-lead-over-democratic-rival-sanders" target="_blank" class="backgrounder">
+  <div class="backgrounder__media">
+          
+            <div><div>
+  
+  
+            <div data-blazy="" class="blazy blazy--field blazy--field-media-image">
+
+
+
+                    <div class="media media--bundle--image media--blazy media--loading media--responsive media--image">
+      
+      
+        <picture><!--[if IE 9]><video style="display: none;"><![endif]--><source media="(min-width: 769px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/221x146/s3/2020-03/AP_20071103280556.jpg?itok=Z4qKhAkU 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/221x146retina/s3/2020-03/AP_20071103280556.jpg?itok=PaMbkare 2x"></source><source media="(min-width: 580px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/608x401/s3/2020-03/AP_20071103280556.jpg?itok=UT5NDGNj 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/608x401_retina/s3/2020-03/AP_20071103280556.jpg?itok=CAE23bJ_ 2x"></source><source type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/221x146/s3/2020-03/AP_20071103280556.jpg?itok=Z4qKhAkU 1x"></source><!--[if IE 9]></video><![endif]--><img class="media__image media__element b-lazy b-responsive" loading="lazy" data-src="https://media.voltron.voanews.com/Drupal/01live-166/2020-03/AP_20071103280556.jpg" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg' viewBox%3D'0 0 5447 3631'%2F%3E" alt="Democratic presidential candidate former Vice President Joe Biden, accompanied by his wife Jill, speaks to members of the press." /></picture></div>
+        
+  
+  
+
+
+</div>
+      
+</div>
+</div>
+      
+      </div>
+  <div class="backgrounder__content">
+    <div class="backgrounder__title"><span>Biden Sweeps Tuesday Primaries, Increasing Lead Over Democratic Rival Sanders </span>
+</div>
+    
+            <div>Former vice president won in US auto manufacturing hub of Michigan, along with Missouri in the Midwest, Mississippi in the South and Idaho in the West</div>
+      
+  </div>
+</a>
+</article><p>Four more states vote next Tuesday -- Ohio, Florida, Illinois and Arizona -- all with sizable delegations to the party's national convention.</p>
+
+<p>State delegates, however, are awarded proportionally based on the vote count, rather than winner take all, which typically has left both of the candidates with a share of each state's delegates.</p>
+
+<p>Besides Michigan, Biden won contests Tuesday in Missouri in the Midwest, Mississippi in the South and Idaho in the West.</p>
+
+<p>After a slow start in last month's voting, Biden told reporters in Philadelphia late Tuesday that he believes his campaign is "taking off," and he said Democrats will come together to retake the White House and unite the nation.</p>
+
+<p>"I want to thank Bernie Sanders and his supporters for their tireless energy and their compassion. We share a common goal, and together we'll defeat Donald Trump," Biden said.</p>
+
+<p>He and Sanders were both scheduled to hold Tuesday night rallies in Cleveland, Ohio, but canceled the events due to the coronavirus outbreak. Those cancellations may presage a dramatic change in campaigning practices, with both the Democratic candidates and Trump under pressure to limit the use of mass rallies to excite and motivate their supporters.</p>
+
+<p>The Democratic National Committee announced there will be no live audience for the debate.</p>
+
+<p>Based on pre-election polls, the results in Michigan, Missouri and Mississippi had been expected, especially in Mississippi with its significant African-American population, a bloc of voters who have favored Biden in other states. In Missouri, voter exit polls showed that Biden also won the African American vote, as well as those who called themselves political moderates or conservatives.</p>
+
+<p>Other exit polls showed Biden capturing the votes of blue collar workers, an important subset of the American electorate that Trump collected a sizable portion of in winning the 2016 election.</p>
+
+<p>Michigan was the key prize among six states that voted Tuesday, with Biden winning a majority of the 125 delegates at stake to the Democrats' national presidential nominating convention in July.</p>
+
+<p>The state could also prove pivotal in the presidential election since it was one of a handful of Midwest "rust belt" states Trump unexpectedly won four years ago on his path to a four-year term in the White House.<br />
+Exit polls of voters Tuesday conducted by the U.S. cable news network CNN indicated about half of Democratic voters in Michigan and Washington said they would trust Biden more than Sanders to handle a major crisis as president. In Missouri, the spread was wider, with about 60% saying they trusted Biden more in such a situation.</p>
+
+<p>The exit polls in Michigan and Washington also indicated Democratic voters considered themselves angry at the Trump administration.</p>
+
+<p>The formerly long list of Democratic presidential candidates thinned markedly in the last 10 days, with challengers to Biden and Sanders dropping out of the contest just ahead of Super Tuesday voting a week ago or just after failing to win any states.</p>
+
+<p>Gone from the race are former South Bend, Indiana, Mayor Pete Buttigieg, Minnesota Sen. Amy Klobuchar, former New York Mayor Michael Bloomberg and Massachusetts Sen. Elizabeth Warren. Another former candidate, entrepreneur Andrew Yang, endorsed Biden Tuesday night on CNN shortly after Biden sewed up his victory in Michigan.</p>
+
+<p>"The math says Joe is our prohibitive nominee," Yang said. "We've got to start pulling the party together."<br />
+ </p>
+</div>
+      
+            </div>
+          </div>
+        </div>
+
+                  <div class="article__footer">
+                          <h2 class="section-title">Related Stories</h2>
+
+              
+<div class="grid vertical-list vertical-list--list">
+      <div class="col-1 vertical-list__item vertical-list__item--list">
+      
+
+  
+
+  
+
+
+
+<div class="teaser">
+      <div class="teaser__img">
+      <div class="teaser__img-wrap">
+                  
+            <div><div>
+  
+  
+            <div data-blazy="" class="blazy blazy--field blazy--field-media-image">
+
+
+
+                    <div class="media media--bundle--image media--blazy media--loading media--responsive media--image">
+      
+      
+        <img class="media__image media__element b-lazy b-responsive" loading="lazy" data-src="https://media.voltron.voanews.com/Drupal/01live-166/2020-03/AP_20071103280556.jpg" srcset="" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/269x177/s3/2020-03/AP_20071103280556.jpg?itok=57-M7R5C 1x" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039; viewBox%3D&#039;0 0 5447 3631&#039;%2F%3E" alt="Democratic presidential candidate former Vice President Joe Biden, accompanied by his wife Jill, speaks to members of the press." />
+
+
+        
+      
+    </div>
+        
+  
+  
+
+
+</div>
+      
+</div>
+</div>
+      
+                      </div>
+    </div>
+    <div class="teaser__content">
+          <div class="eyebrow">
+        <a href="/usa/us-politics" hreflang="en">US Politics</a>
+      </div>
+        <div class="teaser__title">
+      <a class="teaser__title-link" href="/usa/us-politics/biden-sweeps-tuesday-primaries-increasing-lead-over-democratic-rival-sanders" title="Biden Sweeps Tuesday Primaries, Increasing Lead Over Democratic Rival Sanders"><span>Biden Sweeps Tuesday Primaries, Increasing Lead Over Democratic Rival Sanders </span>
+</a>
+    </div>
+    <div class="teaser__text">
+      Former vice president won in US auto manufacturing hub of Michigan, along with Missouri in the Midwest, Mississippi in the South and Idaho in the West
+    </div>
+          <div class="teaser__author">
+        <div class="teaser__author-image">
+          <div>
+  
+  
+            <div>  <img src="https://media.voltron.voanews.com/Drupal/01live-166/styles/medium/s3/2019-12/ken_bredemeier1_cropped.jpg?h=3b968dc9&amp;itok=vtVlHaVg" width="220" height="220" alt="Ken Bredemeier" />
+
+
+</div>
+      
+</div>
+
+        </div>
+        <div class="teaser__author-content">
+          <div class="teaser__author-name">
+            By <a class="teaser__author-link" href="/author/ken-bredemeier" title="Ken Bredemeier">Ken Bredemeier</a>          </div>
+          <div class="teaser__publish-date">
+            Tue, 03/10/2020 - 23:58
+          </div>
+        </div>
+      </div>
+      </div>
+</div>
+
+    </div>
+      <div class="col-1 vertical-list__item vertical-list__item--list">
+      
+
+  
+
+  
+
+
+
+<div class="teaser">
+      <div class="teaser__img">
+      <div class="teaser__img-wrap">
+                  
+            <div><div>
+  
+  
+            <div data-blazy="" class="blazy blazy--field blazy--field-media-image">
+
+
+
+                    <div class="media media--bundle--image media--blazy media--loading media--responsive media--image">
+      
+      
+        <img class="media__image media__element b-lazy b-responsive" loading="lazy" data-src="https://media.voltron.voanews.com/Drupal/01live-166/ap-images/2020/03/da66bdeca76b2ce249bd6729c480ff28.jpg" srcset="" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/269x177/s3/ap-images/2020/03/da66bdeca76b2ce249bd6729c480ff28.jpg?itok=SQY-rESu 1x" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039; viewBox%3D&#039;0 0 4950 3300&#039;%2F%3E" alt="A supporter of Democratic presidential candidate Sen. Bernie Sanders, I-Vt., holds a sign outside the Huntington Convention…" />
+
+
+        
+      
+    </div>
+        
+  
+  
+
+
+</div>
+      
+</div>
+</div>
+      
+                      </div>
+    </div>
+    <div class="teaser__content">
+          <div class="eyebrow">
+        <a href="/usa/us-politics" hreflang="en">US Politics</a>
+      </div>
+        <div class="teaser__title">
+      <a class="teaser__title-link" href="/usa/us-politics/biden-sanders-cancel-rally-amid-coronavirus-scare" title="Biden, Sanders Cancel Rally Amid Coronavirus Scare"><span>Biden, Sanders Cancel Rally Amid Coronavirus Scare</span>
+</a>
+    </div>
+    <div class="teaser__text">
+      The campaigns say cancellation was made to heed warnings from state and public health officials
+    </div>
+          <div class="teaser__author">
+        <div class="teaser__author-image">
+          <div>
+  
+  
+            <div>  <img src="https://media.voltron.voanews.com/Drupal/01live-166/styles/medium/s3/2019-04/716B06D3-98F6-4A8E-AED9-1D7F051EDF94.jpg?itok=nNd2DPnL" width="220" height="220" alt="Patsy Widakuswara, Senior White House Correspondent" />
+
+
+</div>
+      
+</div>
+
+        </div>
+        <div class="teaser__author-content">
+          <div class="teaser__author-name">
+            By <a class="teaser__author-link" href="/author/patsy-widakuswara" title="Patsy Widakuswara">Patsy Widakuswara</a>          </div>
+          <div class="teaser__publish-date">
+            Tue, 03/10/2020 - 18:03
+          </div>
+        </div>
+      </div>
+      </div>
+</div>
+
+    </div>
+  </div>
+            
+                          
+
+
+<div class="author-card">
+  <div class="author-card__photo">
+    <div>
+  
+  
+            <div>  <img src="https://media.voltron.voanews.com/Drupal/01live-166/styles/medium/s3/2019-12/ken_bredemeier1_cropped.jpg?h=3b968dc9&amp;itok=vtVlHaVg" width="220" height="220" alt="Ken Bredemeier" />
+
+
+</div>
+      
+</div>
+
+  </div>
+  <div class="author-card__content">
+    <span class="author-card__eyebrow eyebrow">Written By</span>
+    <div class="author-card__name">
+      <a href="/author/ken-bredemeier" hreflang="en">Ken Bredemeier</a>
+    </div>
+    
+      </div>
+</div>
+
+
+
+<div class="author-card">
+  <div class="author-card__photo">
+    <img src="/themes/custom/voa/images/Author__Placeholder.png" alt="Default Author Profile" />
+  </div>
+  <div class="author-card__content">
+    <span class="author-card__eyebrow eyebrow">Written By</span>
+    <div class="author-card__name">
+      <a href="/author/chris-hannas" hreflang="en">Chris Hannas</a>
+    </div>
+    
+      </div>
+</div>
+
+                      </div>
+        
+              </div>
+
+      <div class="col-3">
+                  
+<div class="section-content">
+      <h2 class="section-title">
+            <div>2020 Campaign</div>
+      </h2>
+  
+  
+            <div>
+  
+    
+    
+<div class="teaser">
+      <div class="teaser__img">
+      <div class="teaser__img-wrap">
+                  <div>
+  
+  
+            <div data-blazy="" class="blazy blazy--field blazy--field-media-image">
+
+
+
+                    <div class="media media--bundle--image media--blazy media--loading media--responsive media--image">
+      
+      
+        <img class="media__image media__element b-lazy b-responsive" loading="lazy" data-src="https://media.voltron.voanews.com/Drupal/01live-166/2019-12/poster__historical__02__w1280.jpg" srcset="" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/718x474/s3/2019-12/poster__historical__02__w1280.jpg?itok=a-ZpNj6n 1x" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039; viewBox%3D&#039;0 0 1280 720&#039;%2F%3E" alt="How (Historically) Presidential Are the Democratic Candidates?" />
+
+
+        
+      
+    </div>
+        
+  
+  
+
+
+</div>
+      
+</div>
+
+                      </div>
+    </div>
+    <div class="teaser__content">
+        <div class="teaser__title">
+      <a class="teaser__title-link" href="https://projects.voanews.com/election-2020/english/candidates/background.html" title="How Presidential Are the Democratic Candidates?">How Presidential Are the Democratic Candidates?</a>
+    </div>
+    <div class="teaser__text">
+      
+    </div>
+      </div>
+</div>
+
+</div>
+      
+</div>
+
+
+
+
+
+  <div class="section-title__container section-title__container--centered">
+    <h2 class="section-title--callout">
+              More stories
+          </h2>
+  </div>
+
+
+
+
+
+
+    
+    
+    
+                                                                                  
+
+        
+  
+  <div class="section-content-widgets">
+    
+<div class="content-list">
+      
+<div class="grid vertical-list vertical-list--list">
+      <div class="col-1 vertical-list__item vertical-list__item--list">
+      
+  
+
+
+<div class="teaser teaser--small">
+  <div class="teaser__content teaser__content--small">
+          <div class="eyebrow">
+        <a href="/science-health/coronavirus-outbreak" hreflang="en">Coronavirus Outbreak</a>
+      </div>
+        <a href="/science-health/coronavirus-outbreak/covid-national-emergency-explainer" title="COVID National Emergency Explainer">
+      <h2 class="teaser__title teaser__title--small"><span>COVID National Emergency Explainer</span>
+</h2>
+    </a>
+  </div>
+  <div class="teaser__img teaser__img--small">
+    <a href="/science-health/coronavirus-outbreak/covid-national-emergency-explainer" title="COVID National Emergency Explainer">
+              
+            <div><div>
+  
+  
+            <div data-blazy="" class="blazy blazy--field blazy--field-media-image">
+
+
+
+                    <div class="media media--bundle--image media--blazy media--loading media--responsive media--image">
+      
+      
+        <picture>
+                <!--[if IE 9]><video style="display: none;"><![endif]-->
+              <source media="(min-width: 2000px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/ap-images/2020/03/dd540b7b525151cd5d3fd2b203135f32.jpg?itok=sP8aAngO 1x"/>
+              <source media="(min-width: 1280px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/ap-images/2020/03/dd540b7b525151cd5d3fd2b203135f32.jpg?itok=awWSKODN 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/ap-images/2020/03/dd540b7b525151cd5d3fd2b203135f32.jpg?itok=sP8aAngO 2x"/>
+              <source media="(min-width: 1024px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/ap-images/2020/03/dd540b7b525151cd5d3fd2b203135f32.jpg?itok=awWSKODN 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/ap-images/2020/03/dd540b7b525151cd5d3fd2b203135f32.jpg?itok=sP8aAngO 2x"/>
+              <source media="(min-width: 992px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/ap-images/2020/03/dd540b7b525151cd5d3fd2b203135f32.jpg?itok=awWSKODN 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/ap-images/2020/03/dd540b7b525151cd5d3fd2b203135f32.jpg?itok=sP8aAngO 2x"/>
+              <source media="(min-width: 769px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/ap-images/2020/03/dd540b7b525151cd5d3fd2b203135f32.jpg?itok=awWSKODN 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/ap-images/2020/03/dd540b7b525151cd5d3fd2b203135f32.jpg?itok=sP8aAngO 2x"/>
+              <source media="(min-width: 580px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/252x141/s3/ap-images/2020/03/dd540b7b525151cd5d3fd2b203135f32.jpg?itok=_qCMImn1 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/252x1410/s3/ap-images/2020/03/dd540b7b525151cd5d3fd2b203135f32.jpg?itok=vIsGoRfK 2x"/>
+              <source type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/ap-images/2020/03/dd540b7b525151cd5d3fd2b203135f32.jpg?itok=awWSKODN 1x"/>
+            <!--[if IE 9]></video><![endif]-->
+            <img class="media__image media__element b-lazy b-responsive" loading="lazy" data-src="https://media.voltron.voanews.com/Drupal/01live-166/ap-images/2020/03/dd540b7b525151cd5d3fd2b203135f32.jpg" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039; viewBox%3D&#039;0 0 3532 2355&#039;%2F%3E" alt="President Donald Trump speaks in an address to the nation from the Oval Office at the White House about the coronavirus…" />
+
+  </picture>
+
+        
+      
+    </div>
+        
+  
+  
+
+
+</div>
+      
+</div>
+</div>
+      
+          </a>
+  </div>
+</div>
+
+    </div>
+      <div class="col-1 vertical-list__item vertical-list__item--list">
+      
+  
+
+
+<div class="teaser teaser--small">
+  <div class="teaser__content teaser__content--small">
+          <div class="eyebrow">
+        <a href="/usa/us-politics" hreflang="en">US Politics</a>
+      </div>
+        <a href="/usa/us-politics/us-lawmakers-push-trump-iran-war-powers" title="US Lawmakers Push Trump on Iran, War Powers">
+      <h2 class="teaser__title teaser__title--small"><span>US Lawmakers Push Trump on Iran, War Powers</span>
+</h2>
+    </a>
+  </div>
+  <div class="teaser__img teaser__img--small">
+    <a href="/usa/us-politics/us-lawmakers-push-trump-iran-war-powers" title="US Lawmakers Push Trump on Iran, War Powers">
+              
+            <div><div>
+  
+  
+            <div data-blazy="" class="blazy blazy--field blazy--field-media-image">
+
+
+
+                    <div class="media media--bundle--image media--blazy media--loading media--responsive media--image">
+      
+      
+        <picture>
+                <!--[if IE 9]><video style="display: none;"><![endif]-->
+              <source media="(min-width: 2000px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/reuters-pictures/2020/03/RTS31X0I.jpg?itok=OfO3KE-s 1x"/>
+              <source media="(min-width: 1280px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/reuters-pictures/2020/03/RTS31X0I.jpg?itok=ld9Mv91s 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/reuters-pictures/2020/03/RTS31X0I.jpg?itok=OfO3KE-s 2x"/>
+              <source media="(min-width: 1024px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/reuters-pictures/2020/03/RTS31X0I.jpg?itok=ld9Mv91s 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/reuters-pictures/2020/03/RTS31X0I.jpg?itok=OfO3KE-s 2x"/>
+              <source media="(min-width: 992px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/reuters-pictures/2020/03/RTS31X0I.jpg?itok=ld9Mv91s 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/reuters-pictures/2020/03/RTS31X0I.jpg?itok=OfO3KE-s 2x"/>
+              <source media="(min-width: 769px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/reuters-pictures/2020/03/RTS31X0I.jpg?itok=ld9Mv91s 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/reuters-pictures/2020/03/RTS31X0I.jpg?itok=OfO3KE-s 2x"/>
+              <source media="(min-width: 580px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/252x141/s3/reuters-pictures/2020/03/RTS31X0I.jpg?itok=KhMn8BP_ 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/252x1410/s3/reuters-pictures/2020/03/RTS31X0I.jpg?itok=98dRgfup 2x"/>
+              <source type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/reuters-pictures/2020/03/RTS31X0I.jpg?itok=ld9Mv91s 1x"/>
+            <!--[if IE 9]></video><![endif]-->
+            <img class="media__image media__element b-lazy b-responsive" loading="lazy" data-src="https://media.voltron.voanews.com/Drupal/01live-166/reuters-pictures/2020/03/RTS31X0I.jpg" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039; viewBox%3D&#039;0 0 3500 2420&#039;%2F%3E" alt="Iraqi women gather at the scene where Iran&#039;s Quds Force top commander Qassem Soleimani and Iraqi militia commander Abu Mahdi al…" />
+
+  </picture>
+
+        
+      
+    </div>
+        
+  
+  
+
+
+</div>
+      
+</div>
+</div>
+      
+          </a>
+  </div>
+</div>
+
+    </div>
+      <div class="col-1 vertical-list__item vertical-list__item--list">
+      
+  
+
+
+<div class="teaser teaser--small">
+  <div class="teaser__content teaser__content--small">
+          <div class="eyebrow">
+        <a href="/usa/us-politics" hreflang="en">US Politics</a>
+      </div>
+        <a href="/usa/us-politics/congress-poised-tighten-oversight-federal-surveillance" title="Congress Poised to Tighten Oversight of Federal Surveillance">
+      <h2 class="teaser__title teaser__title--small"><span>Congress Poised to Tighten Oversight of Federal Surveillance</span>
+</h2>
+    </a>
+  </div>
+  <div class="teaser__img teaser__img--small">
+    <a href="/usa/us-politics/congress-poised-tighten-oversight-federal-surveillance" title="Congress Poised to Tighten Oversight of Federal Surveillance">
+              
+            <div><div>
+  
+  
+            <div data-blazy="" class="blazy blazy--field blazy--field-media-image">
+
+
+
+                    <div class="media media--bundle--image media--blazy media--loading media--responsive media--image">
+      
+      
+        <picture>
+                <!--[if IE 9]><video style="display: none;"><![endif]-->
+              <source media="(min-width: 2000px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/ap-images/2019/07/e6f566fcc25967e63a34a1f390038bf2.jpg?itok=9KD56A-f 1x"/>
+              <source media="(min-width: 1280px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/ap-images/2019/07/e6f566fcc25967e63a34a1f390038bf2.jpg?itok=eb6c5Unq 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/ap-images/2019/07/e6f566fcc25967e63a34a1f390038bf2.jpg?itok=9KD56A-f 2x"/>
+              <source media="(min-width: 1024px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/ap-images/2019/07/e6f566fcc25967e63a34a1f390038bf2.jpg?itok=eb6c5Unq 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/ap-images/2019/07/e6f566fcc25967e63a34a1f390038bf2.jpg?itok=9KD56A-f 2x"/>
+              <source media="(min-width: 992px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/ap-images/2019/07/e6f566fcc25967e63a34a1f390038bf2.jpg?itok=eb6c5Unq 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/ap-images/2019/07/e6f566fcc25967e63a34a1f390038bf2.jpg?itok=9KD56A-f 2x"/>
+              <source media="(min-width: 769px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/ap-images/2019/07/e6f566fcc25967e63a34a1f390038bf2.jpg?itok=eb6c5Unq 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/ap-images/2019/07/e6f566fcc25967e63a34a1f390038bf2.jpg?itok=9KD56A-f 2x"/>
+              <source media="(min-width: 580px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/252x141/s3/ap-images/2019/07/e6f566fcc25967e63a34a1f390038bf2.jpg?itok=dwAQnOSf 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/252x1410/s3/ap-images/2019/07/e6f566fcc25967e63a34a1f390038bf2.jpg?itok=D3DY0v2D 2x"/>
+              <source type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/ap-images/2019/07/e6f566fcc25967e63a34a1f390038bf2.jpg?itok=eb6c5Unq 1x"/>
+            <!--[if IE 9]></video><![endif]-->
+            <img class="media__image media__element b-lazy b-responsive" loading="lazy" data-src="https://media.voltron.voanews.com/Drupal/01live-166/ap-images/2019/07/e6f566fcc25967e63a34a1f390038bf2.jpg" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039; viewBox%3D&#039;0 0 4896 3264&#039;%2F%3E" alt="FILE - In this June 14, 2018, file photo, the FBI seal is seen before a news conference at FBI headquarters in Washington. The FBI is grappling with a seemingly endless cycle of money laundering schemes that law enforcement officials say they’re…" />
+
+  </picture>
+
+        
+      
+    </div>
+        
+  
+  
+
+
+</div>
+      
+</div>
+</div>
+      
+          </a>
+  </div>
+</div>
+
+    </div>
+      <div class="col-1 vertical-list__item vertical-list__item--list">
+      
+  
+
+
+<div class="teaser teaser--small">
+  <div class="teaser__content teaser__content--small">
+          <div class="eyebrow">
+        <a href="/usa" hreflang="en">USA</a>
+      </div>
+        <a href="/usa/ap-votecast-state-state-look-democratic-primaries" title="">
+      <h2 class="teaser__title teaser__title--small">
+            <div> </div>
+      </h2>
+    </a>
+  </div>
+  <div class="teaser__img teaser__img--small">
+    <a href="/usa/ap-votecast-state-state-look-democratic-primaries" title="">
+              
+            <div><div>
+  
+  
+            <div data-blazy="" class="blazy blazy--field blazy--field-media-image">
+
+
+
+                    <div class="media media--bundle--image media--blazy media--loading media--responsive media--image">
+      
+      
+        <picture>
+                <!--[if IE 9]><video style="display: none;"><![endif]-->
+              <source media="(min-width: 2000px)" type="image/png" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/2020-03/March_10_Primaries_Sanders_wins_ND_Biden_ID.png?itok=1P9te3A- 1x"/>
+              <source media="(min-width: 1280px)" type="image/png" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/2020-03/March_10_Primaries_Sanders_wins_ND_Biden_ID.png?itok=EAL8-M8p 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/2020-03/March_10_Primaries_Sanders_wins_ND_Biden_ID.png?itok=1P9te3A- 2x"/>
+              <source media="(min-width: 1024px)" type="image/png" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/2020-03/March_10_Primaries_Sanders_wins_ND_Biden_ID.png?itok=EAL8-M8p 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/2020-03/March_10_Primaries_Sanders_wins_ND_Biden_ID.png?itok=1P9te3A- 2x"/>
+              <source media="(min-width: 992px)" type="image/png" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/2020-03/March_10_Primaries_Sanders_wins_ND_Biden_ID.png?itok=EAL8-M8p 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/2020-03/March_10_Primaries_Sanders_wins_ND_Biden_ID.png?itok=1P9te3A- 2x"/>
+              <source media="(min-width: 769px)" type="image/png" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/2020-03/March_10_Primaries_Sanders_wins_ND_Biden_ID.png?itok=EAL8-M8p 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/2020-03/March_10_Primaries_Sanders_wins_ND_Biden_ID.png?itok=1P9te3A- 2x"/>
+              <source media="(min-width: 580px)" type="image/png" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/252x141/s3/2020-03/March_10_Primaries_Sanders_wins_ND_Biden_ID.png?itok=a5OMJip4 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/252x1410/s3/2020-03/March_10_Primaries_Sanders_wins_ND_Biden_ID.png?itok=pkv9gb_v 2x"/>
+              <source type="image/png" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/2020-03/March_10_Primaries_Sanders_wins_ND_Biden_ID.png?itok=EAL8-M8p 1x"/>
+            <!--[if IE 9]></video><![endif]-->
+            <img class="media__image media__element b-lazy b-responsive" loading="lazy" data-src="https://media.voltron.voanews.com/Drupal/01live-166/2020-03/March_10_Primaries_Sanders_wins_ND_Biden_ID.png" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039; viewBox%3D&#039;0 0 1766 1052&#039;%2F%3E" alt="Former Vice President Joe Biden won the Democratic presidential primaries in Michigan, Missouri, Mississippi, and Idaho." />
+
+  </picture>
+
+        
+      
+    </div>
+        
+  
+  
+
+
+</div>
+      
+</div>
+</div>
+      
+          </a>
+  </div>
+</div>
+
+    </div>
+      <div class="col-1 vertical-list__item vertical-list__item--list">
+      
+  
+
+
+<div class="teaser teaser--small">
+  <div class="teaser__content teaser__content--small">
+          <div class="eyebrow">
+        <a href="/usa/us-politics" hreflang="en">US Politics</a>
+      </div>
+        <a href="/usa/us-politics/sanders-staying-democratic-presidential-race-despite-biden-leading" title="Sanders Staying in Democratic Presidential Race Despite Biden Leading">
+      <h2 class="teaser__title teaser__title--small"><span>Sanders Staying in Democratic Presidential Race Despite Biden Leading</span>
+</h2>
+    </a>
+  </div>
+  <div class="teaser__img teaser__img--small">
+    <a href="/usa/us-politics/sanders-staying-democratic-presidential-race-despite-biden-leading" title="Sanders Staying in Democratic Presidential Race Despite Biden Leading">
+              
+            <div><div>
+  
+  
+            <div data-blazy="" class="blazy blazy--field blazy--field-media-image">
+
+
+
+                    <div class="media media--bundle--image media--blazy media--loading media--responsive media--image">
+      
+      
+        <picture>
+                <!--[if IE 9]><video style="display: none;"><![endif]-->
+              <source media="(min-width: 2000px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/2020-03/ap_bernie7.jpg?itok=hVVuDl0V 1x"/>
+              <source media="(min-width: 1280px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/2020-03/ap_bernie7.jpg?itok=fsWzzaqf 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/2020-03/ap_bernie7.jpg?itok=hVVuDl0V 2x"/>
+              <source media="(min-width: 1024px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/2020-03/ap_bernie7.jpg?itok=fsWzzaqf 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/2020-03/ap_bernie7.jpg?itok=hVVuDl0V 2x"/>
+              <source media="(min-width: 992px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/2020-03/ap_bernie7.jpg?itok=fsWzzaqf 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/2020-03/ap_bernie7.jpg?itok=hVVuDl0V 2x"/>
+              <source media="(min-width: 769px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/2020-03/ap_bernie7.jpg?itok=fsWzzaqf 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/2020-03/ap_bernie7.jpg?itok=hVVuDl0V 2x"/>
+              <source media="(min-width: 580px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/252x141/s3/2020-03/ap_bernie7.jpg?itok=UBR6616W 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/252x1410/s3/2020-03/ap_bernie7.jpg?itok=F83e8A0h 2x"/>
+              <source type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/2020-03/ap_bernie7.jpg?itok=fsWzzaqf 1x"/>
+            <!--[if IE 9]></video><![endif]-->
+            <img class="media__image media__element b-lazy b-responsive" loading="lazy" data-src="https://media.voltron.voanews.com/Drupal/01live-166/2020-03/ap_bernie7.jpg" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039; viewBox%3D&#039;0 0 2905 1937&#039;%2F%3E" alt="Democratic presidential candidate Bernie Sanders walks away from the podium after speaking to reporters in Burlington, Vermont, March 11, 2020." />
+
+  </picture>
+
+        
+      
+    </div>
+        
+  
+  
+
+
+</div>
+      
+</div>
+</div>
+      
+          </a>
+  </div>
+</div>
+
+    </div>
+  </div>
+</div>
+  </div>
+
+
+              </div>
+    </div>
+  </div>
+
+</div>
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+  <!-- Background of PhotoSwipe.
+       It's a separate element as animating opacity is faster than rgba(). -->
+  <div class="pswp__bg"></div>
+
+  <!-- Slides wrapper with overflow:hidden. -->
+  <div class="pswp__scroll-wrap">
+
+    <!-- Container that holds slides.
+        PhotoSwipe keeps only 3 of them in the DOM to save memory.
+        Don't modify these 3 pswp__item elements, data is added later on. -->
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+
+    <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+    <div class="pswp__ui pswp__ui--hidden">
+
+      <div class="pswp__top-bar">
+
+        <!--  Controls are self-explanatory. Order can be changed. -->
+
+        <div class="pswp__counter"></div>
+
+        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+        <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+        <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+        <!-- Preloader demo https://codepen.io/dimsemenov/pen/yyBWoR -->
+        <!-- element will get class pswp__preloader--active when preloader is running -->
+        <div class="pswp__preloader">
+          <div class="pswp__preloader__icn">
+            <div class="pswp__preloader__cut">
+              <div class="pswp__preloader__donut"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+        <div class="pswp__share-tooltip"></div>
+      </div>
+
+      <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+      </button>
+
+      <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+      </button>
+
+      <div class="pswp__caption">
+        <div class="pswp__caption__center"></div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+</div>
+
+  </div>
+
+  </div>
+
+  </main>
+
+      <div class="site-footer">
+  <div class="site-footer__container">
+    <div class="grid site-footer__upper">
+      <div class="col-2 site-footer__social">
+                  <a class="site-footer__social-link" href="https://twitter.com/voanews"><span class="fab fa-twitter"></span><span class="sr-only">Twitter</span></a>
+                          <a class="site-footer__social-link" href="https://www.instagram.com/voanews/"><span class="fab fa-instagram"></span><span class="sr-only">Instagram</span></a>
+                          <a class="site-footer__social-link" href="https://www.facebook.com/voiceofamerica"><span class="fab fa-facebook-f"></span><span class="sr-only">Facebook</span></a>
+                          <a class="site-footer__social-link" href="https://www.youtube.com/user/VOAvideo"><span class="fab fa-youtube"></span><span class="sr-only">YouTube</span></a>
+                                        <a class="site-footer__social-link" href="/rssfeeds"><span class="fa fa-rss"></span><span class="sr-only">RSS</span></a>
+      </div>
+      <form class="col-2 site-footer__search-form" action="/search" method="GET">
+        <label class="site-footer__search-label" for="footer-search">Search VOA News</label>
+        <input placeholder="Search VOA News" class="site-footer__search" id="footer-search" type="text" name="search_api_fulltext" />
+        <input type="hidden" name="type" value="1">
+        <input type="hidden" name="sort_by" value="publication_time">
+        <button class="button site-footer__search-button fa fa-search" type="submit"><span class="site-footer__search-label">Search</span></button>
+      </form>
+    </div>
+    <div class="site-footer__lower">
+      
+    
+    
+      
+              <ul class="grid site-footer__menu">
+    
+    
+                      <li class="site-footer__menu-item col-3 site-footer__menu-item--header">
+          <a href="/usa" class="site-footer__menu-item-link site-footer__menu-item-link--header" data-drupal-link-system-path="taxonomy/term/32681">United States</a>
+                                    <ul class="site-footer__sub-menu">
+    
+                                  <div class="grid">
+        <div class="col-2 site-footer__sub-menu-column">
+                      <li class="site-footer__menu-item">
+              <a href="/usa/us-politics" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/32936">US Politics</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/usa/immigration" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/33021">Immigration</a>
+                          </li>
+                  </div>
+        <div class="col-2 site-footer__sub-menu-column">
+                      <li class="site-footer__menu-item">
+              <a href="/usa/all-about-america" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/562771">All About America</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/silicon-valley-technology" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/61">Silicon Valley and Technology</a>
+                          </li>
+                  </div>
+      </div>
+
+    
+    </ul>
+  
+                  </li>
+                      <li class="site-footer__menu-item col-3 site-footer__menu-item--header">
+          <span class="site-footer__menu-item-link site-footer__menu-item-link--header">World News</span>
+                                    <ul class="site-footer__sub-menu">
+    
+                                  <div class="grid">
+        <div class="col-2 site-footer__sub-menu-column">
+                      <li class="site-footer__menu-item">
+              <a href="/africa" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/562841">Africa</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/americas" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/562846">The Americas</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/east-asia-pacific" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/562821">East Asia Pacific</a>
+                          </li>
+                  </div>
+        <div class="col-2 site-footer__sub-menu-column">
+                      <li class="site-footer__menu-item">
+              <a href="/europe" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/32686">Europe</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/middle-east" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/562811">Middle East</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/south-central-asia" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/562866">South &amp; Central Asia</a>
+                          </li>
+                  </div>
+      </div>
+
+    
+    </ul>
+  
+                  </li>
+                      <li class="site-footer__menu-item col-3 site-footer__menu-item--header">
+          <span class="site-footer__menu-item-link site-footer__menu-item-link--header">Sections</span>
+                                    <ul class="site-footer__sub-menu">
+    
+                                  <div class="grid">
+        <div class="col-2 site-footer__sub-menu-column">
+                      <li class="site-footer__menu-item">
+              <a href="/arts-culture" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/562826">Arts &amp; Culture</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/day-photos" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/32661">Day in Photos</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/economy-business" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/66">Economy &amp; Business</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/extremism-watch" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/51">Extremism Watch</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/press-freedom" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/562871">Press Freedom</a>
+                          </li>
+                  </div>
+        <div class="col-2 site-footer__sub-menu-column">
+                      <li class="site-footer__menu-item">
+              <a href="/science-health" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/562831">Science &amp; Health</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/student-union" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/32976">VOA StudentU</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/voa-connect" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/191">VOA Connect</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/refugees" class="site-footer__menu-item-link" data-drupal-link-system-path="node/4078021">Refugees</a>
+                          </li>
+                  </div>
+      </div>
+
+    
+    </ul>
+  
+                  </li>
+                      <li class="site-footer__menu-item col-3 site-footer__menu-item--header">
+          <span class="site-footer__menu-item-link site-footer__menu-item-link--header">Voice of America</span>
+                                    <ul class="site-footer__sub-menu">
+    
+                                  <div class="grid">
+        <div class="col-2 site-footer__sub-menu-column">
+                      <li class="site-footer__menu-item">
+              <a href="https://www.insidevoa.com/p/5831.html" class="site-footer__menu-item-link">About VOA</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="https://www.insidevoa.com/p/5621.html" class="site-footer__menu-item-link">Contact VOA</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="https://www.voanews.com/terms-use-and-privacy-notice" class="site-footer__menu-item-link">Terms of Use and Privacy Notice</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/section-508" title="The United States Agency for Global Media is committed to providing access to our web pages for individuals with disabilities" class="site-footer__menu-item-link" data-drupal-link-system-path="node/4219441">Accessibility</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/voas-free-app-mobile-and-tablet-devices" class="site-footer__menu-item-link" data-drupal-link-system-path="node/3877491">Get Our Mobile App</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="http://www.insidevoa.com/p/5719.html" class="site-footer__menu-item-link">Usage Requests</a>
+                          </li>
+                  </div>
+        <div class="col-2 site-footer__sub-menu-column">
+                      <li class="site-footer__menu-item">
+              <a href="https://www.voanews.com/voa-around-world" class="site-footer__menu-item-link">VOA Around the World</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="http://pronounce.voanews.com/" class="site-footer__menu-item-link">VOA Pronunciation Guide</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="http://www.insidevoa.com/" class="site-footer__menu-item-link">Media Relations</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/voa-broadcast-frequency-schedules" class="site-footer__menu-item-link" data-drupal-link-system-path="node/3877541">Listen on the radio</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="http://direct.voa24.news/english/portal/broadcast-schedule" class="site-footer__menu-item-link">Satellite Schedule</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/subscribe" class="site-footer__menu-item-link" data-drupal-link-system-path="subscribe">Subscribe to Our Newsletters</a>
+                          </li>
+                  </div>
+      </div>
+
+    
+    </ul>
+  
+                  </li>
+      
+    
+    </ul>
+  
+
+
+  
+
+    </div>
+  </div>
+</div>
+  </div>
+
+  </div>
+
+    
+    <script type="application/json" data-drupal-selector="drupal-settings-json">{"path":{"baseUrl":"\/","scriptPath":null,"pathPrefix":"","currentPath":"node\/4219496","currentPathIsAdmin":false,"isFront":false,"currentLanguage":"en"},"pluralDelimiter":"\u0003","suppressDeprecationErrors":true,"voa_tracking_code":{"isHomePage":false,"isSearchPage":false},"blazy":{"loadInvisible":false,"offset":100,"saveViewportOffsetDelay":50},"blazyIo":{"enabled":false,"disconnect":false,"rootMargin":"0px","threshold":[0]},"voaVideoPlayer":{"_3634011-1-scwos4mp":{"title":"Sanders Vows to Press on Despite Biden Primary Victories    ","elementId":"_3634011-1-scwos4mp","partnerId":"2446332","playerId":43634011,"entryId":"1_scwos4mp","thumb":"https:\/\/media.voltron.voanews.com\/Drupal\/01live-166\/kaltura-video-thumbs\/1_o\/1_o68ie268.jpg","isLive":false,"loadMetaData":false,"duration":204,"autoplay":false}},"voaWatermarking":{"enableWatermark":false},"0":{"voaMediaSchedule":{"liveText":"LIVE"}},"baseFilePath":"\/sites\/g\/files\/cauiqe166\/files\/voa_breaking_news.html","user":{"uid":0,"permissionsHash":"6597ccbf8872701f673e5d77705e96bf9d74fe982eb111e29aac53bf6a5fbcff"}}</script>
+<script src="/sites/g/files/cauiqe166/files/js/js__47jKlDuVB8WnUBg7dHhr7G-msQG-lQY2rsdCkd_dEA.js"></script>
+<script src="/modules/custom/voa_kaltura/js/voa-video-player.js?v=1.5"></script>
+<script src="/modules/custom/voa_kaltura/js/hls.js/hls.light.min.js?v=1.5"></script>
+<script src="/sites/g/files/cauiqe166/files/js/js_GZnORaNY9QiYwcNgYK9EwhjUQIwAPWxNUbf2PLRTJHQ.js"></script>
+<script src="/modules/custom/voa_breaking_news/js/voa-breaking-news.js?v=1.1"></script>
+
+  <script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"9dbf7bf394","applicationID":"184097864,177414840","transactionName":"Yl1aZxNQDBBVV0VbDFsXeVAVWA0NG3BDRxNUVGRFDlA9EkFdS24gWlZMQQ5dDgZGaGJHAVhRS0AIXgwgW1pFQAxZVF1BTA8DAFdRQkE=","queueTime":0,"applicationTime":2493,"atts":"ThpZEVtKHx4=","errorBeacon":"bam.nr-data.net","agent":""}</script></body>
+</html>

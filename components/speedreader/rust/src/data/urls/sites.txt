@@ -1,0 +1,105 @@
+	www.reddit.com
+	news.google.com	-- aggregator only
+	www.cnn.com
+	www.nytimes.com
+	www.theguardian.com
+	news.yahoo.com -- aggregator only
+indiatimes.com
+	www.shutterstock.com -- No text-focused articles
+	www.foxnews.com
+	www.weather.com
+	www.washingtonpost.com
+	www.forbes.com
+timesofindia.indiatimes.com
+	www.huffingtonpost.com
+	www.accuweather.com -- JavaScript
+	www.usatoday.com
+	www.cnbc.com
+	www.bloomberg.com
+	www.wsj.com
+	www.reuters.com
+	www.wunderground.com -- JavaScript
+	www.drudgereport.com -- aggregator only
+	www.nbcnews.com
+economictimes.indiatimes.com
+	www.nypost.com
+www.news.com.au
+indianexpress.com
+www.usnews.com
+	www.chron.com
+www.chinadaily.com.cn
+	thehill.com
+	cbsnews.com
+www.weather.gov
+	www.time.com
+	www.dw.com
+	www.newsweek.com
+	abcnews.go.com
+www.thehindu.com
+	www.thedailybeast.com
+	www.sfgate.com
+	www.latimes.com
+	www.theatlantic.com
+www.hindustantimes.com
+www.yr.no
+	www.hollywoodreporter.com
+	www.nationalgeographic.com
+	www.variety.com
+	www.euronews.com
+	www.smh.com.au
+www.newsnow.co.uk -- aggregator only
+my.yahoo.com -- aggreator only
+www.mathrubhumi.com
+www.economist.com -- need sub to debug
+	www.voanews.com
+	chicagotribune.com
+www.irna.ir
+	www.alarabiya.net
+	www.aljazeera.com
+	dailycaller.com
+www.theroot.com
+www.bankrate.com
+fortune.com
+	www.livemint.com
+www.intellicast.com
+theconversation.com
+www.ctvnews.ca
+money.cnn.com
+www.zougla.gr
+www.bdnews24.com
+www.theglobeandmail.com
+www.france24.com
+www.telegraphindia.com
+www.nj.com
+www.prnewswire.com
+www.bostonglobe.com
+www.thestar.com
+www.rd.com
+www.thetimes.co.uk
+www.washingtonexaminer.com
+www.azcentral.com
+www.seattletimes.com
+www.theage.com.au
+www.financialexpress.com
+www.voat.co
+www.ajc.com
+www.fark.com
+www.adweek.com
+www.blastingnews.com
+	theonion.com
+www.washingtontimes.com
+www.foxbusiness.com
+www.topix.com
+www.business-standard.com
+www.oregonlive.com
+www.metoffice.gov.uk
+www.metafilter.com
+www.startribune.com
+www.philly.com
+www.mercurynews.com
+www.dallasnews.com
+
+	cnet.com
+	247sports.com
+	businessinsider.com
+	bbc.co.uk

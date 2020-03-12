@@ -55,6 +55,7 @@ cargo_build("speedreader") {
     "src/errors.rs",
     "src/lib.rs",
     "src/speedreader.rs",
+    "../src/src/whitelist.rs",
   ]
 
   rust_flags = speedreader_flags

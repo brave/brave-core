@@ -67,6 +67,7 @@ impl Whitelist {
                 "||cnet.com/roadshow/news/*".to_owned(),
                 "||cnet.com/news/*".to_owned(),
                 "||cnet.com/reviews/*".to_owned(),
+                "||cnet.com/how-to/*".to_owned(),
             ],
             declarative_rewrite: Some(RewriteRules {
                 main_content: vec![".article-main-body".to_owned(), ".hero-content".to_owned()],
@@ -745,12 +746,14 @@ impl Whitelist {
                     attribute: None,
                     element_name: "img".to_owned(),
                 }],
-                content_script: Some(r#"<script>
+                content_script: Some(
+                    r#"<script>
                 [...document.querySelectorAll(".picturefill")]
                 .map((e, i) => {
                 e.src = JSON.parse(e.parentElement.querySelector("script").innerHTML).src;
                 })
-                </script>"#.to_owned(),
+                </script>"#
+                        .to_owned(),
                 ),
                 ..RewriteRules::default()
             }),
@@ -800,9 +803,7 @@ impl Whitelist {
             domain: "variety.com".to_owned(),
             url_rules: vec![r#"/variety\.com\/.*-(\d){6,}/"#.to_owned()],
             declarative_rewrite: Some(RewriteRules {
-                main_content: vec![
-                    ".post".to_owned(),
-                ],
+                main_content: vec![".post".to_owned()],
                 main_content_cleanup: vec![
                     ".c-author__extra".to_owned(),
                     "[data-trigger=share-links-manager]".to_owned(),
@@ -817,12 +818,9 @@ impl Whitelist {
 
         self.add_configuration(SpeedReaderConfig {
             domain: "hollywoodreporter.com".to_owned(),
-            url_rules: vec![r#"/variety\.com\/.*-(\d){6,}/"#.to_owned()],
+            url_rules: vec![r#"/hollywoodreporter\.com\/.*-(\d){6,}/"#.to_owned()],
             declarative_rewrite: Some(RewriteRules {
-                main_content: vec![
-                    "article".to_owned(),
-                    ".blog-post".to_owned(),
-                ],
+                main_content: vec!["article".to_owned(), ".blog-post".to_owned()],
                 main_content_cleanup: vec![
                     ".social-share".to_owned(),
                     ".dfp-ad".to_owned(),
@@ -839,11 +837,12 @@ impl Whitelist {
                 r#"/bbc\.com\/.*-(\d){6,}/"#.to_owned(),
                 r#"/bbc\.com\/.*\/.*\/(\d){6,}/"#.to_owned(),
                 "||bbc.com/*/articles/*".to_owned(),
+                "@@||bbc.com/*/live/*".to_owned(),
             ],
             declarative_rewrite: Some(RewriteRules {
                 main_content: vec![
                     ".story-headline, .story-info, .story-body".to_owned(),
-                    "#story-page".to_owned(),   // different format
+                    "#story-page".to_owned(),     // different format
                     "section.article".to_owned(), //another different format
                     ".programmes-page.article--individual".to_owned(), // and another one
                     "article.blocks-article".to_owned(),
@@ -871,14 +870,13 @@ impl Whitelist {
                     },
                     AttributeRewrite {
                         selector: ".blocks-image".to_owned(),
-                        // attribute: Some(("src".to_owned(), "src".to_owned())),
                         attribute: None,
                         element_name: "img".to_owned(),
                     },
-                    
                 ],
                 fix_embeds: true,
-                content_script: Some(r#"<script>
+                content_script: Some(
+                    r#"<script>
                 [...document.querySelectorAll("img[data-src].blocks-image")].map((e, i) => {
                     if (e.dataset["src"]) {
                         e.src = e.dataset["src"].replace("{width}", "800xn");
@@ -889,7 +887,8 @@ impl Whitelist {
                         e.src = e.dataset["src"].replace("{width}", "800").replace("{hidpi}","");
                     }
                 })
-                </script>"#.to_owned(),
+                </script>"#
+                        .to_owned(),
                 ),
                 ..RewriteRules::default()
             }),
@@ -901,11 +900,12 @@ impl Whitelist {
                 r#"/bbc\.co.uk\/.*-(\d){6,}/"#.to_owned(),
                 r#"/bbc\.co.uk\/.*\/.*\/(\d){6,}/"#.to_owned(),
                 "||bbc.co.uk/*/articles/*".to_owned(),
+                "@@||bbc.co.uk/*/live/*".to_owned(),
             ],
             declarative_rewrite: Some(RewriteRules {
                 main_content: vec![
                     ".story-headline, .story-info, .story-body".to_owned(),
-                    "#story-page".to_owned(),   // different format
+                    "#story-page".to_owned(),     // different format
                     "section.article".to_owned(), //another different format
                     ".programmes-page.article--individual".to_owned(), // and another one
                     "article.blocks-article".to_owned(),
@@ -937,10 +937,10 @@ impl Whitelist {
                         attribute: None,
                         element_name: "img".to_owned(),
                     },
-                    
                 ],
                 fix_embeds: true,
-                content_script: Some(r#"<script>
+                content_script: Some(
+                    r#"<script>
                 [...document.querySelectorAll("img[data-src].blocks-image")].map((e, i) => {
                     if (e.dataset["src"]) {
                         e.src = e.dataset["src"].replace("{width}", "800xn");
@@ -951,8 +951,233 @@ impl Whitelist {
                         e.src = e.dataset["src"].replace("{width}", "800").replace("{hidpi}","");
                     }
                 })
-                </script>"#.to_owned(),
+                </script>"#
+                        .to_owned(),
                 ),
+                ..RewriteRules::default()
+            }),
+        });
+
+        self.add_configuration(SpeedReaderConfig {
+            domain: "reddit.com".to_owned(),
+            url_rules: vec!["||reddit.com/r/*/comments/*".to_owned()],
+            declarative_rewrite: Some(RewriteRules {
+                main_content: vec![".Post".to_owned(), ".Comment".to_owned()],
+                main_content_cleanup: vec![
+                    ".Post button".to_owned(),
+                    ".Comment button".to_owned(),
+                    ".Comment svg".to_owned(),
+                ],
+                ..RewriteRules::default()
+            }),
+        });
+
+        self.add_configuration(SpeedReaderConfig {
+            domain: "weather.com".to_owned(),
+            url_rules: vec!["||weather.com/*/news/*".to_owned()],
+            declarative_rewrite: Some(RewriteRules {
+                main_content: vec![".article-wrapper".to_owned()],
+                main_content_cleanup: vec![],
+                ..RewriteRules::default()
+            }),
+        });
+
+        self.add_configuration(SpeedReaderConfig {
+            domain: "huffingtonpost.co.uk".to_owned(),
+            url_rules: vec!["||huffingtonpost.co.uk/entry/*".to_owned()],
+            declarative_rewrite: Some(RewriteRules {
+                main_content: vec![".entry__content".to_owned(), ".entry__header".to_owned()],
+                main_content_cleanup: vec![
+                    ".share-bar".to_owned(),
+                    ".ad_spot".to_owned(),
+                    ".advertisement-label".to_owned(),
+                    ".entry__content script".to_owned(),
+                    ".top-media iframe".to_owned(),
+                    "aside.rail".to_owned(),
+                    ".cli-related-articles".to_owned(),
+                    ".js-react-hydrator".to_owned(),
+                ],
+                preprocess: vec![
+                    AttributeRewrite {
+                        selector: ".vdb_player[data-placeholder]".to_owned(),
+                        attribute: Some(("data-placeholder".to_owned(), "src".to_owned())),
+                        element_name: "img".to_owned(),
+                    },
+                    AttributeRewrite {
+                        selector: ".embed-asset div[style]".to_owned(),
+                        attribute: Some(("style".to_owned(), "data-style".to_owned())),
+                        element_name: "div".to_owned(),
+                    },
+                    AttributeRewrite {
+                        selector: ".embed-asset iframe[style]".to_owned(),
+                        attribute: Some(("style".to_owned(), "data-style".to_owned())),
+                        element_name: "iframe".to_owned(),
+                    },
+                ],
+                content_script: Some(
+                    r#"<script>
+                [...document.querySelectorAll(".embed-asset [data-style]")]
+                    .map(e => e.style = e.dataset["style"]);
+                </script>"#
+                        .to_owned(),
+                ),
+                ..RewriteRules::default()
+            }),
+        });
+
+        self.add_configuration(SpeedReaderConfig {
+            domain: "huffpost.com".to_owned(),
+            url_rules: vec!["||huffpost.com/entry/*".to_owned()],
+            declarative_rewrite: Some(RewriteRules {
+                main_content: vec![".entry__content".to_owned(), ".entry__header".to_owned()],
+                main_content_cleanup: vec![
+                    ".share-bar".to_owned(),
+                    ".ad_spot".to_owned(),
+                    ".advertisement-label".to_owned(),
+                    ".entry__content script".to_owned(),
+                    ".top-media iframe".to_owned(),
+                    "aside.rail".to_owned(),
+                    ".cli-related-articles".to_owned(),
+                    ".js-react-hydrator".to_owned(),
+                ],
+                preprocess: vec![
+                    AttributeRewrite {
+                        selector: ".vdb_player[data-placeholder]".to_owned(),
+                        attribute: Some(("data-placeholder".to_owned(), "src".to_owned())),
+                        element_name: "img".to_owned(),
+                    },
+                    AttributeRewrite {
+                        selector: ".embed-asset div[style]".to_owned(),
+                        attribute: Some(("style".to_owned(), "data-style".to_owned())),
+                        element_name: "div".to_owned(),
+                    },
+                    AttributeRewrite {
+                        selector: ".embed-asset iframe[style]".to_owned(),
+                        attribute: Some(("style".to_owned(), "data-style".to_owned())),
+                        element_name: "iframe".to_owned(),
+                    },
+                ],
+                content_script: Some(
+                    r#"<script>
+                [...document.querySelectorAll(".embed-asset [data-style]")]
+                    .map(e => e.style = e.dataset["style"]);
+                </script>"#
+                        .to_owned(),
+                ),
+                ..RewriteRules::default()
+            }),
+        });
+
+        self.add_configuration(SpeedReaderConfig {
+            domain: "bloomberg.com".to_owned(),
+            url_rules: vec![
+                "||bloomberg.com/*/articles/*".to_owned(),
+                "||bloomberg.com/*/features/*".to_owned(),
+            ],
+            declarative_rewrite: Some(RewriteRules {
+                main_content: vec![".article-content".to_owned(), ".feature-article".to_owned()],
+                main_content_cleanup: vec![
+                    ".right-rail".to_owned(),
+                    ".article-newsfeed".to_owned(),
+                    ".gateway-mobile-lede-text".to_owned(),
+                    ".video-player__overlay".to_owned(),
+                    ".left-column".to_owned(),
+                    ".share-article-button".to_owned(),
+                    ".text-to-speech".to_owned(),
+                    ".first-paragraph-image".to_owned(),
+                ],
+                ..RewriteRules::default()
+            }),
+        });
+
+        self.add_configuration(SpeedReaderConfig {
+            domain: "usnews.com".to_owned(),
+            url_rules: vec!["||usnews.com/*/articles/*".to_owned()],
+            declarative_rewrite: Some(RewriteRules {
+                main_content: vec![".content".to_owned(), ".feature-article".to_owned()],
+                main_content_cleanup: vec![
+                    ".right-rail".to_owned(),
+                    ".article-newsfeed".to_owned(),
+                    ".flex".to_owned(),
+                    ".sticky-heading".to_owned(),
+                    "svg[class^=Credit]".to_owned(),
+                    "button".to_owned(),
+                    "[class*=-hide]".to_owned(),
+                    "[class*=Hide-]".to_owned(),
+                    "[class*=LoadMore]".to_owned(),
+                ],
+                ..RewriteRules::default()
+            }),
+        });
+
+        self.add_configuration(SpeedReaderConfig {
+            domain: "smh.com.au".to_owned(),
+            url_rules: vec![r#"/smh\.com\.au\/.*\/(\w+-){3,}-(\d{6})-(p\d{3,})\.html/"#.to_owned()],
+            declarative_rewrite: Some(RewriteRules {
+                main_content: vec!["article".to_owned()],
+                main_content_cleanup: vec![".noPrint".to_owned()],
+                ..RewriteRules::default()
+            }),
+        });
+
+        self.add_configuration(SpeedReaderConfig {
+            domain: "chicagotribune.com".to_owned(),
+            url_rules: vec!["@@||chicagotribune.com/*-story.html".to_owned()],
+            declarative_rewrite: Some(RewriteRules {
+                main_content: vec!["article".to_owned()],
+                main_content_cleanup: vec![
+                    ".sharebar".to_owned(),
+                    "[data-type=recommender]".to_owned(),
+                ],
+                ..RewriteRules::default()
+            }),
+        });
+
+        self.add_configuration(SpeedReaderConfig {
+            domain: "aljazeera.com".to_owned(),
+            url_rules: vec![
+                "@@||aljazeera.com/news/*.html".to_owned(),
+                "@@||aljazeera.com/indepth/*.html".to_owned(),
+            ],
+            declarative_rewrite: Some(RewriteRules {
+                main_content: vec![
+                    ".article-heading".to_owned(),
+                    ".main-article-body".to_owned(),
+                    ".article-gallery-sec".to_owned(),
+                ],
+                main_content_cleanup: vec![
+                    ".article-embedded-card".to_owned(),
+                    ".article-readToMe-share-block".to_owned(),
+                    ".article-heading-author-name img".to_owned(),
+                ],
+                ..RewriteRules::default()
+            }),
+        });
+
+        self.add_configuration(SpeedReaderConfig {
+            domain: "dailycaller.com".to_owned(),
+            url_rules: vec![r#"/dailycaller\.com\/(\d){4}\/(\d){2}\/(\d){2}\/.*/"#.to_owned()],
+            declarative_rewrite: Some(RewriteRules {
+                main_content: vec![
+                    "article header".to_owned(),
+                    "article .article-content".to_owned(),
+                ],
+                main_content_cleanup: vec!["header button".to_owned(), "footer".to_owned()],
+                ..RewriteRules::default()
+            }),
+        });
+
+        self.add_configuration(SpeedReaderConfig {
+            domain: "theonion.com".to_owned(),
+            url_rules: vec![r#"/theonion\.com\/.*-(\d){6,}/"#.to_owned()],
+            declarative_rewrite: Some(RewriteRules {
+                main_content: vec![".js_post-content".to_owned(), "div header".to_owned()],
+                main_content_cleanup: vec![
+                    ".js_share-tools".to_owned(),
+                    ".post-tools-wrapper".to_owned(),
+                    ".js_tag-dropdown".to_owned(),
+                    ".magnifier".to_owned(),
+                ],
                 ..RewriteRules::default()
             }),
         });

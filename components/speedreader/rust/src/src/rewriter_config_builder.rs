@@ -264,13 +264,14 @@ fn correct_relative_links(
     );
 }
 
-const LAZY_MAPPINGS: [(&str, &str, &str); 6] = [
+const LAZY_MAPPINGS: [(&str, &str, &str); 7] = [
     ("[data-src]", "data-src", "src"),
     ("[data-srcset]", "data-srcset", "srcset"),
     ("[data-original]", "data-original", "src"),
     ("img[data-src-medium]", "data-src-medium", "src"),
     ("img[data-raw-src]", "data-raw-src", "src"),
     ("img[data-gl-src]", "data-gl-src", "src"),
+    ("img[data-native-src]", "data-native-src", "src"),
 ];
 
 #[inline]
@@ -296,6 +297,7 @@ fn delazify(handlers: &mut Vec<(Selector, ContentFunction)>, errors: &mut Vec<Sp
         Box::new(|el| {
             el.remove_attribute("height");
             el.remove_attribute("width");
+            el.set_attribute("load", "lazy").ok();
             Ok(())
         }),
     );

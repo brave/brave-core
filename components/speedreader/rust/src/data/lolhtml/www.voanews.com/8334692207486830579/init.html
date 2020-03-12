@@ -1,0 +1,1694 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" prefix="og: https://ogp.me/ns#">
+  <head>
+    <!-- Google Tag Manager -->
+      <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push(
+
+      {'gtm.start': new Date().getTime(),event:'gtm.js'}
+      );var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-N8MP7P');</script>
+    <!-- End Google Tag Manager -->
+    <meta charset="utf-8" /><script type="text/javascript">(window.NREUM||(NREUM={})).loader_config={licenseKey:"9dbf7bf394",applicationID:"184097864"};window.NREUM||(NREUM={}),__nr_require=function(e,n,t){function r(t){if(!n[t]){var i=n[t]={exports:{}};e[t][0].call(i.exports,function(n){var i=e[t][1][n];return r(i||n)},i,i.exports)}return n[t].exports}if("function"==typeof __nr_require)return __nr_require;for(var i=0;i<t.length;i++)r(t[i]);return r}({1:[function(e,n,t){function r(){}function i(e,n,t){return function(){return o(e,[u.now()].concat(f(arguments)),n?null:this,t),n?void 0:this}}var o=e("handle"),a=e(4),f=e(5),c=e("ee").get("tracer"),u=e("loader"),s=NREUM;"undefined"==typeof window.newrelic&&(newrelic=s);var p=["setPageViewName","setCustomAttribute","setErrorHandler","finished","addToTrace","inlineHit","addRelease"],l="api-",d=l+"ixn-";a(p,function(e,n){s[n]=i(l+n,!0,"api")}),s.addPageAction=i(l+"addPageAction",!0),s.setCurrentRouteName=i(l+"routeName",!0),n.exports=newrelic,s.interaction=function(){return(new r).get()};var m=r.prototype={createTracer:function(e,n){var t={},r=this,i="function"==typeof n;return o(d+"tracer",[u.now(),e,t],r),function(){if(c.emit((i?"":"no-")+"fn-start",[u.now(),r,i],t),i)try{return n.apply(this,arguments)}catch(e){throw c.emit("fn-err",[arguments,this,e],t),e}finally{c.emit("fn-end",[u.now()],t)}}}};a("actionText,setName,setAttribute,save,ignore,onEnd,getContext,end,get".split(","),function(e,n){m[n]=i(d+n)}),newrelic.noticeError=function(e,n){"string"==typeof e&&(e=new Error(e)),o("err",[e,u.now(),!1,n])}},{}],2:[function(e,n,t){function r(e,n){var t=e.getEntries();t.forEach(function(e){"first-paint"===e.name?c("timing",["fp",Math.floor(e.startTime)]):"first-contentful-paint"===e.name&&c("timing",["fcp",Math.floor(e.startTime)])})}function i(e,n){var t=e.getEntries();t.length>0&&c("lcp",[t[t.length-1]])}function o(e){if(e instanceof s&&!l){var n,t=Math.round(e.timeStamp);n=t>1e12?Date.now()-t:u.now()-t,l=!0,c("timing",["fi",t,{type:e.type,fid:n}])}}if(!("init"in NREUM&&"page_view_timing"in NREUM.init&&"enabled"in NREUM.init.page_view_timing&&NREUM.init.page_view_timing.enabled===!1)){var a,f,c=e("handle"),u=e("loader"),s=NREUM.o.EV;if("PerformanceObserver"in window&&"function"==typeof window.PerformanceObserver){a=new PerformanceObserver(r),f=new PerformanceObserver(i);try{a.observe({entryTypes:["paint"]}),f.observe({entryTypes:["largest-contentful-paint"]})}catch(p){}}if("addEventListener"in document){var l=!1,d=["click","keydown","mousedown","pointerdown","touchstart"];d.forEach(function(e){document.addEventListener(e,o,!1)})}}},{}],3:[function(e,n,t){function r(e,n){if(!i)return!1;if(e!==i)return!1;if(!n)return!0;if(!o)return!1;for(var t=o.split("."),r=n.split("."),a=0;a<r.length;a++)if(r[a]!==t[a])return!1;return!0}var i=null,o=null,a=/Version\/(\S+)\s+Safari/;if(navigator.userAgent){var f=navigator.userAgent,c=f.match(a);c&&f.indexOf("Chrome")===-1&&f.indexOf("Chromium")===-1&&(i="Safari",o=c[1])}n.exports={agent:i,version:o,match:r}},{}],4:[function(e,n,t){function r(e,n){var t=[],r="",o=0;for(r in e)i.call(e,r)&&(t[o]=n(r,e[r]),o+=1);return t}var i=Object.prototype.hasOwnProperty;n.exports=r},{}],5:[function(e,n,t){function r(e,n,t){n||(n=0),"undefined"==typeof t&&(t=e?e.length:0);for(var r=-1,i=t-n||0,o=Array(i<0?0:i);++r<i;)o[r]=e[n+r];return o}n.exports=r},{}],6:[function(e,n,t){n.exports={exists:"undefined"!=typeof window.performance&&window.performance.timing&&"undefined"!=typeof window.performance.timing.navigationStart}},{}],ee:[function(e,n,t){function r(){}function i(e){function n(e){return e&&e instanceof r?e:e?c(e,f,o):o()}function t(t,r,i,o){if(!l.aborted||o){e&&e(t,r,i);for(var a=n(i),f=v(t),c=f.length,u=0;u<c;u++)f[u].apply(a,r);var p=s[y[t]];return p&&p.push([b,t,r,a]),a}}function d(e,n){h[e]=v(e).concat(n)}function m(e,n){var t=h[e];if(t)for(var r=0;r<t.length;r++)t[r]===n&&t.splice(r,1)}function v(e){return h[e]||[]}function g(e){return p[e]=p[e]||i(t)}function w(e,n){u(e,function(e,t){n=n||"feature",y[t]=n,n in s||(s[n]=[])})}var h={},y={},b={on:d,addEventListener:d,removeEventListener:m,emit:t,get:g,listeners:v,context:n,buffer:w,abort:a,aborted:!1};return b}function o(){return new r}function a(){(s.api||s.feature)&&(l.aborted=!0,s=l.backlog={})}var f="nr@context",c=e("gos"),u=e(4),s={},p={},l=n.exports=i();l.backlog=s},{}],gos:[function(e,n,t){function r(e,n,t){if(i.call(e,n))return e[n];var r=t();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(e,n,{value:r,writable:!0,enumerable:!1}),r}catch(o){}return e[n]=r,r}var i=Object.prototype.hasOwnProperty;n.exports=r},{}],handle:[function(e,n,t){function r(e,n,t,r){i.buffer([e],r),i.emit(e,n,t)}var i=e("ee").get("handle");n.exports=r,r.ee=i},{}],id:[function(e,n,t){function r(e){var n=typeof e;return!e||"object"!==n&&"function"!==n?-1:e===window?0:a(e,o,function(){return i++})}var i=1,o="nr@id",a=e("gos");n.exports=r},{}],loader:[function(e,n,t){function r(){if(!x++){var e=E.info=NREUM.info,n=d.getElementsByTagName("script")[0];if(setTimeout(s.abort,3e4),!(e&&e.licenseKey&&e.applicationID&&n))return s.abort();u(y,function(n,t){e[n]||(e[n]=t)}),c("mark",["onload",a()+E.offset],null,"api");var t=d.createElement("script");t.src="https://"+e.agent,n.parentNode.insertBefore(t,n)}}function i(){"complete"===d.readyState&&o()}function o(){c("mark",["domContent",a()+E.offset],null,"api")}function a(){return O.exists&&performance.now?Math.round(performance.now()):(f=Math.max((new Date).getTime(),f))-E.offset}var f=(new Date).getTime(),c=e("handle"),u=e(4),s=e("ee"),p=e(3),l=window,d=l.document,m="addEventListener",v="attachEvent",g=l.XMLHttpRequest,w=g&&g.prototype;NREUM.o={ST:setTimeout,SI:l.setImmediate,CT:clearTimeout,XHR:g,REQ:l.Request,EV:l.Event,PR:l.Promise,MO:l.MutationObserver};var h=""+location,y={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-1167.min.js"},b=g&&w&&w[m]&&!/CriOS/.test(navigator.userAgent),E=n.exports={offset:f,now:a,origin:h,features:{},xhrWrappable:b,userAgent:p};e(1),e(2),d[m]?(d[m]("DOMContentLoaded",o,!1),l[m]("load",r,!1)):(d[v]("onreadystatechange",i),l[v]("onload",r)),c("mark",["firstbyte",f],null,"api");var x=0,O=e(6)},{}],"wrap-function":[function(e,n,t){function r(e){return!(e&&e instanceof Function&&e.apply&&!e[a])}var i=e("ee"),o=e(5),a="nr@original",f=Object.prototype.hasOwnProperty,c=!1;n.exports=function(e,n){function t(e,n,t,i){function nrWrapper(){var r,a,f,c;try{a=this,r=o(arguments),f="function"==typeof t?t(r,a):t||{}}catch(u){l([u,"",[r,a,i],f])}s(n+"start",[r,a,i],f);try{return c=e.apply(a,r)}catch(p){throw s(n+"err",[r,a,p],f),p}finally{s(n+"end",[r,a,c],f)}}return r(e)?e:(n||(n=""),nrWrapper[a]=e,p(e,nrWrapper),nrWrapper)}function u(e,n,i,o){i||(i="");var a,f,c,u="-"===i.charAt(0);for(c=0;c<n.length;c++)f=n[c],a=e[f],r(a)||(e[f]=t(a,u?f+i:i,o,f))}function s(t,r,i){if(!c||n){var o=c;c=!0;try{e.emit(t,r,i,n)}catch(a){l([a,t,r,i])}c=o}}function p(e,n){if(Object.defineProperty&&Object.keys)try{var t=Object.keys(e);return t.forEach(function(t){Object.defineProperty(n,t,{get:function(){return e[t]},set:function(n){return e[t]=n,n}})}),n}catch(r){l([r])}for(var i in e)f.call(e,i)&&(n[i]=e[i]);return n}function l(n){try{e.emit("internal-error",n)}catch(t){}}return e||(e=i),t.inPlace=u,t.flag=a,t}},{}]},{},["loader"]);</script>
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="og:site_name" content="Voice of America" />
+<link rel="canonical" href="https://www.voanews.com/usa/spacexs-20th-station-shipment-arrives-candy-science" />
+<meta http-equiv="content-language" content="en" />
+<meta property="fb:pages" content="36235438073" />
+<meta name="twitter:site" content="@VOANews" />
+<meta name="twitter:description" content="A SpaceX cargo ship arrived at the International Space Station on Monday, delivering the company&#039;s 20th batch of gear and treats.
+
+The Dragon capsule reached the orbiting lab after launching late Friday night. NASA astronauts Andrew Morgan and Jessica Meir used the station&#039;s robot arm to capture the spacecraft.
+
+The 4,300-pound (1,950-kilogram) shipment contains science experiments and equipment, as well as special goodies for the three-person crew aloft for months: grapefruit, tomatoes, Skittles, Reese&#039;s Pieces and Hot Tamales.
+
+This is the last of SpaceX&#039;s original-style Dragons." />
+<meta name="twitter:title" content="SpaceX&#039;s 20th Station Shipment Arrives With Candy, Science" />
+<meta property="og:type" content="Article" />
+<meta property="fb:app_id" content="394734098058258" />
+<meta name="description" content="A SpaceX cargo ship arrived at the International Space Station on Monday, delivering the company&#039;s 20th batch of gear and treats.
+
+The Dragon capsule reached the orbiting lab after launching late Friday night. NASA astronauts Andrew Morgan and Jessica Meir used the station&#039;s robot arm to capture the spacecraft.
+
+The 4,300-pound (1,950-kilogram) shipment contains science experiments and equipment, as well as special goodies for the three-person crew aloft for months: grapefruit, tomatoes, Skittles, Reese&#039;s Pieces and Hot Tamales.
+
+This is the last of SpaceX&#039;s original-style Dragons." />
+<meta property="og:url" content="https://www.voanews.com/usa/spacexs-20th-station-shipment-arrives-candy-science" />
+<meta name="msvalidate.01" content="3286EE554B6F672A6F2E608C02343C0E" />
+<meta property="og:title" content="SpaceX&#039;s 20th Station Shipment Arrives With Candy, Science" />
+<meta name="twitter:url" content="https://www.voanews.com/usa/spacexs-20th-station-shipment-arrives-candy-science" />
+<meta property="og:description" content="A SpaceX cargo ship arrived at the International Space Station on Monday, delivering the company&#039;s 20th batch of gear and treats.
+
+The Dragon capsule reached the orbiting lab after launching late Friday night. NASA astronauts Andrew Morgan and Jessica Meir used the station&#039;s robot arm to capture the spacecraft.
+
+The 4,300-pound (1,950-kilogram) shipment contains science experiments and equipment, as well as special goodies for the three-person crew aloft for months: grapefruit, tomatoes, Skittles, Reese&#039;s Pieces and Hot Tamales.
+
+This is the last of SpaceX&#039;s original-style Dragons." />
+<meta name="twitter:image" content="https://media.voltron.voanews.com/Drupal/01live-166/styles/710x340/s3/ap-images/2020/03/898d4122ac6fa9b47e026c02bc1494a0.jpg?itok=MTY_s5WH" />
+<meta property="og:image" content="https://media.voltron.voanews.com/Drupal/01live-166/ap-images/2020/03/898d4122ac6fa9b47e026c02bc1494a0.jpg" />
+<meta property="article:section" content="USA, Science &amp; Health, Silicon Valley &amp; Technology" />
+<meta name="apple-itunes-app" content="app-id=1414561730, app-argument=//4948560.ltr" />
+<meta property="og:image:width" content="2429" />
+<meta property="og:image:height" content="3643" />
+<meta name="Generator" content="Drupal 8 (https://www.drupal.org)" />
+<meta name="MobileOptimized" content="width" />
+<meta name="HandheldFriendly" content="true" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script src="//tags.tiqcdn.com/utag/bbg/voa-pangea/prod/utag.sync.js"></script>
+<link rel="sitemap" type="application/rss+xml" href="/sitemap.xml" />
+<link rel="manifest" href="/modules/custom/voa_pwa/js/manifest.json?voltron=universalDefender" />
+<meta name="theme-color" content="#3a79b7" />
+<link rel="shortcut icon" href="/favicon.ico" type="image/vnd.microsoft.icon" />
+<link rel="revision" href="https://www.voanews.com/usa/spacexs-20th-station-shipment-arrives-candy-science" />
+<link rel="amphtml" href="https://www.voanews.com/usa/spacexs-20th-station-shipment-arrives-candy-science?amp" />
+
+    <title>SpaceX&#039;s 20th Station Shipment Arrives With Candy, Science | Voice of America - English</title>
+    <link rel="stylesheet" media="all" href="/sites/g/files/cauiqe166/files/css/css_XP3I_T9Uz8WdC6K4pebEWkf14qwgjHABxzY0vCypCWg.css" />
+<link rel="stylesheet" media="all" href="/modules/custom/voa_breaking_news/css/voa-breaking-news.theme.css?q72xw4" />
+<link rel="stylesheet" media="all" href="/sites/g/files/cauiqe166/files/css/css_brtELhLjrGuxeYH7xiDoXcpuEL1WdiaRr1M9OKIWxMI.css" />
+
+    
+<!--[if lte IE 8]>
+<script src="/sites/g/files/cauiqe166/files/js/js_VtafjXmRvoUgAzqzYTA3Wrjkx9wcWhjP0G4ZnnqRamA.js"></script>
+<![endif]-->
+<script src="/sites/g/files/cauiqe166/files/js/js_QHqjxhGPGgZFwOfW92tmrVpssmC1sbO0zDG4TgLmaEI.js"></script>
+
+  </head>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+      <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N8MP7P"
+      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+        <a href="#main-content" class="visually-hidden focusable">
+      Skip to main content
+    </a>
+    <script type="text/javascript">var utag_data = {"slug":"spacexs-20th-station-shipment-arrives-candy-science","page_type":"article","content_type":"article","article_uid":"4217031","video_event":[],"pub_day":"09","pub_hour":"07","pub_minute":"58","pub_min":"58","pub_month":"03","pub_weekday":"Mon","pub_year":"2020","pub_date":"Monday, March 9, 2020 - 07:58","dateline":" CAPE CANAVERAL, FLA.","short_headline":null,"byline":"Associated Press","categories":"USA, Science \u0026 Health, Silicon Valley \u0026 Technology","subcontent_type":"Article","section":"USA, Science \u0026 Health, Silicon Valley \u0026 Technology","tags":"USA, Science \u0026 Health, Silicon Valley \u0026 Technology","english_section":"USA, Science \u0026 Health, Silicon Valley \u0026 Technology","page_name":"SpaceX\u0027s 20th Station Shipment Arrives With Candy, Science","page_title":"SpaceX\u0027s 20th Station Shipment Arrives With Candy, Science","long_headline":"SpaceX\u0027s 20th Station Shipment Arrives With Candy, Science","headline":"SpaceX\u0027s 20th Station Shipment Arrives With Candy, Science","runs_js":"yes","language":"English","language_service":"voa english","entity":"voa","platform":"Responsive","short_language_service":"en","platform_short":"r","property_id":"461","enviro_type":"prod","domain":"www.voanews.com","url":"www.voanews.com\/usa\/spacexs-20th-station-shipment-arrives-candy-science"}</script>
+<script type="text/javascript">
+  (function(a,b,c,d){
+  a='//tags.tiqcdn.com/utag/bbg/voa-pangea/prod/utag.js';
+  b=document;c='script';d=b.createElement(c);d.src=a;d.type='text/java'+c;d.async=true;
+  a=b.getElementsByTagName(c)[0];a.parentNode.insertBefore(d,a);
+  })();
+</script>
+
+      <div class="dialog-off-canvas-main-canvas" data-off-canvas-main-canvas>
+    <div class="l-page">
+  <div id="breaking-news-ajax"></div>
+
+      <div class="site-header">
+
+  <div class="site-header__bar">
+
+    <div class="site-header__primary">
+
+      <div class="site-header__menu">
+        <button class="button site-header__menu-item" aria-label="Open main navigation"><span class="hidden">Open main navigation</span></button>
+        <nav class="site-header__mega-menu site-header__subnav">
+          <div class="site-header__mega-menu--inner">
+            <!-- This is hidden by default -->
+            <div class="grid">
+              <div class="col-1 col--hidden-large">
+                                <div>
+  
+    
+      <div class="schedule-menu voa-media-schedule-menu-block">
+      <div class="channel-schedule-wrapper" id="channel-296-wrapper-mobile" data-menu-block-channel="296" >
+              <div class="channel-schedule__section-title">
+          <span class="channel-schedule__icon fa fa-play"></span>
+                      Live TV                  </div>
+      
+      <div class="channel-playing">
+        <img src="/core/themes/stable/images/core/throbber-active.gif"
+             alt="Please wait, loading..."/>
+      </div>
+    </div>
+
+          <div class="channel-schedule-wrapper" id="channel-266-wrapper-mobile" data-menu-block-channel="266" >
+      
+      <div class="channel-playing">
+        <img src="/core/themes/stable/images/core/throbber-active.gif"
+             alt="Please wait, loading..."/>
+      </div>
+    </div>
+
+          <div class="schedule-menu__links">
+        <div class="schedule-menu__link"><a
+            href="/watch/schedule">Full Schedule</a>
+        </div>
+        <div class="schedule-menu__link"><a
+            href="/watch/programs">All Programs</a>
+        </div>
+      </div>
+      </div>
+
+  </div>
+
+                                                <div>
+  
+    
+      <div class="schedule-menu voa-media-schedule-menu-block">
+      <div class="channel-schedule-wrapper" id="channel-246-wrapper-mobile" data-menu-block-channel="246" >
+              <div class="channel-schedule__section-title">
+          <span class="channel-schedule__icon fa fa-volume-up"></span>
+                      Live Radio                  </div>
+      
+      <div class="channel-playing">
+        <img src="/core/themes/stable/images/core/throbber-active.gif"
+             alt="Please wait, loading..."/>
+      </div>
+    </div>
+
+          <div class="channel-schedule-wrapper" id="channel-251-wrapper-mobile" data-menu-block-channel="251" >
+      
+      <div class="channel-playing">
+        <img src="/core/themes/stable/images/core/throbber-active.gif"
+             alt="Please wait, loading..."/>
+      </div>
+    </div>
+
+          <div class="channel-schedule-wrapper" id="channel-256-wrapper-mobile" data-menu-block-channel="256" >
+      
+      <div class="channel-playing">
+        <img src="/core/themes/stable/images/core/throbber-active.gif"
+             alt="Please wait, loading..."/>
+      </div>
+    </div>
+
+          <div class="schedule-menu__links">
+        <div class="schedule-menu__link"><a
+            href="/listen/schedule">Full Schedule</a>
+        </div>
+        <div class="schedule-menu__link"><a
+            href="/listen/programs">All Programs</a>
+        </div>
+      </div>
+      </div>
+
+  </div>
+
+                              </div>
+            </div>
+
+            
+    
+    
+      
+              <ul class="grid site-header__mega-menu-list">
+                              <li class="site-header__mega-menu-item col-2 col-2--full-mobile site-header__mega-menu-item--header">
+          <a href="/usa" class="site-header__mega-menu-item-link site-header__mega-menu-item-link--header" data-drupal-link-system-path="taxonomy/term/32681">United States</a>
+                                    <ul class="site-header__mega-menu-sub-list">
+                                      <div class="grid">
+        <div class="col-2 site-header__mega-menu-sub-column">
+                      <li class="site-header__mega-menu-item">
+              <a href="/usa/us-politics" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/32936">US Politics</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/usa/immigration" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/33021">Immigration</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/usa/all-about-america" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/562771">All About America</a>
+                          </li>
+                  </div>
+        <div class="col-2 site-header__mega-menu-sub-column">
+                      <li class="site-header__mega-menu-item">
+              <a href="/science-health" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/562831">Science &amp; Health</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/silicon-valley-technology" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/61">Silicon Valley &amp; Technology</a>
+                          </li>
+                  </div>
+      </div>
+        </ul>
+  
+                  </li>
+                      <li class="site-header__mega-menu-item col-2 col-2--full-mobile site-header__mega-menu-item--header">
+          <span class="site-header__mega-menu-item-link site-header__mega-menu-item-link--header">World</span>
+                                    <ul class="site-header__mega-menu-sub-list">
+                                      <div class="grid">
+        <div class="col-2 site-header__mega-menu-sub-column">
+                      <li class="site-header__mega-menu-item">
+              <a href="/africa" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/562841">Africa</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/americas" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/562846">The Americas</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/east-asia-pacific" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/562821">East Asia Pacific</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/europe" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/32686">Europe</a>
+                          </li>
+                  </div>
+        <div class="col-2 site-header__mega-menu-sub-column">
+                      <li class="site-header__mega-menu-item">
+              <a href="/extremism-watch" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/51">Extremism Watch</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/middle-east" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/562811">Middle East</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/south-central-asia" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/562866">South &amp; Central Asia</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/middle-east/voa-news-iran" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/33026">VOA News on Iran</a>
+                          </li>
+                  </div>
+      </div>
+        </ul>
+  
+                  </li>
+                      <li class="site-header__mega-menu-item col-2 col-2--full-mobile site-header__mega-menu-item--header">
+          <span class="site-header__mega-menu-item-link site-header__mega-menu-item-link--header">Sections</span>
+                                    <ul class="site-header__mega-menu-sub-list">
+                                      <div class="grid">
+        <div class="col-2 site-header__mega-menu-sub-column">
+                      <li class="site-header__mega-menu-item">
+              <a href="/arts-culture" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/562826">Arts &amp; Culture</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/day-photos" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/32661">Day in Photos</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/economy-business" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/66">Economy &amp; Business</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/press-freedom" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/562871">Press Freedom</a>
+                          </li>
+                  </div>
+        <div class="col-2 site-header__mega-menu-sub-column">
+                      <li class="site-header__mega-menu-item">
+              <a href="/plugged-greta-van-susteren" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/156">Plugged in with Greta Van Susteren</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/student-union" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/32976">VOA StudentU</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/voa-connect" class="site-header__mega-menu-item-link" data-drupal-link-system-path="taxonomy/term/191">VOA Connect</a>
+                          </li>
+                      <li class="site-header__mega-menu-item">
+              <a href="/refugees" class="site-header__mega-menu-item-link" data-drupal-link-system-path="node/4078021">Refugees</a>
+                          </li>
+                  </div>
+      </div>
+        </ul>
+  
+                  </li>
+              </ul>
+  
+
+
+  
+
+          </div>
+        </nav>
+      </div>
+
+        <div>
+    
+<div id="block-featuredmenu">
+  
+  
+              <ul class="site-header__featured-menu">
+              <li><a class="site-header__featured-menu-item" href="/usa">US News</a></li>
+              <li><a class="site-header__featured-menu-item" href="/press-freedom">Press Freedom</a></li>
+              <li><a class="site-header__featured-menu-item" href="/student-union">VOA StudentU</a></li>
+              <li><a class="site-header__featured-menu-item" href="/middle-east/voa-news-iran">VOA News on Iran</a></li>
+          </ul>
+  
+  </div>
+
+  </div>
+
+    </div>
+
+    <a href="/" class="site-header__branding"><img alt="Voice of America Logo" src="/themes/custom/voa/logo.svg"/></a>
+
+    <div class="site-header__secondary">
+      <button id="js-search-drop" class="button site-header__item">
+        <span class="site-header__icon fa fa-search"></span><span
+          class="site-header__icon-text site-header__icon-text--medium-only">Search</span>
+      </button>
+      <div class="site-header__search-drop site-header__subnav">
+        <div class="grid">
+          <div class="col-1">
+            <form class="site-header__search-form" action="/search" method="GET">
+              <label class="site-header__search-label" for="header-search">Search VOA News</label>
+              <input placeholder="Search VOA News" class="site-header__search" id="header-search" type="text"
+                     name="search_api_fulltext">
+              <input type="hidden" name="type" value="1">
+              <input type="hidden" name="sort_by" value="publication_time">
+              <button class="button site-header__search-button fa fa-search" type="submit"><span
+                  class="site-header__search-label">Search</span></button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="site-header__dropdown">
+        <button id="js-language-drop" class="button site-header__item">
+          <span class="site-header__icon fa fa-globe"></span>
+            <span class="site-header__icon-text site-header__icon-text">Lang</span>
+        </button>
+      </div>
+            <a href="/watch" id="js-watch-drop" data-target=".site-header__watch-drop" class="site-header__item site-header__item--secondary site-header__item--wide-only">
+        <span class="site-header__icon fa fa-play"></span><span class="site-header__icon-text">Live TV</span>
+      </a>
+      <div class="site-header__watch-drop site-header__subnav">
+        <div class="grid">
+          <div class="col-1">
+            <div id="watch-drop-menu">
+              <div>
+  
+    
+      <div class="schedule-menu voa-media-schedule-menu-block">
+      <div class="channel-schedule-wrapper" id="channel-296-wrapper-desktop" data-menu-block-channel="296" >
+              <div class="channel-schedule__section-title">
+          <span class="channel-schedule__icon fa fa-play"></span>
+                      Live TV                  </div>
+      
+      <div class="channel-playing">
+        <img src="/core/themes/stable/images/core/throbber-active.gif"
+             alt="Please wait, loading..."/>
+      </div>
+    </div>
+
+          <div class="channel-schedule-wrapper" id="channel-266-wrapper-desktop" data-menu-block-channel="266" >
+      
+      <div class="channel-playing">
+        <img src="/core/themes/stable/images/core/throbber-active.gif"
+             alt="Please wait, loading..."/>
+      </div>
+    </div>
+
+          <div class="schedule-menu__links">
+        <div class="schedule-menu__link"><a
+            href="/watch/schedule">Full Schedule</a>
+        </div>
+        <div class="schedule-menu__link"><a
+            href="/watch/programs">All Programs</a>
+        </div>
+      </div>
+      </div>
+
+  </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+                  <a href="/listen" id="js-listen-drop" data-target=".site-header__listen-drop" class="site-header__item site-header__item--secondary site-header__item--wide-only site-header__subnav"><span
+          class="site-header__icon fa fa-volume-up"></span><span class="site-header__icon-text">Live Radio</span></a>
+      <div class="site-header__listen-drop site-header__subnav">
+        <div class="grid">
+          <div class="col-1">
+            <div id="listen-drop-menu">
+              <div>
+  
+    
+      <div class="schedule-menu voa-media-schedule-menu-block">
+      <div class="channel-schedule-wrapper" id="channel-246-wrapper-desktop" data-menu-block-channel="246" >
+              <div class="channel-schedule__section-title">
+          <span class="channel-schedule__icon fa fa-volume-up"></span>
+                      Live Radio                  </div>
+      
+      <div class="channel-playing">
+        <img src="/core/themes/stable/images/core/throbber-active.gif"
+             alt="Please wait, loading..."/>
+      </div>
+    </div>
+
+          <div class="channel-schedule-wrapper" id="channel-251-wrapper-desktop" data-menu-block-channel="251" >
+      
+      <div class="channel-playing">
+        <img src="/core/themes/stable/images/core/throbber-active.gif"
+             alt="Please wait, loading..."/>
+      </div>
+    </div>
+
+          <div class="channel-schedule-wrapper" id="channel-256-wrapper-desktop" data-menu-block-channel="256" >
+      
+      <div class="channel-playing">
+        <img src="/core/themes/stable/images/core/throbber-active.gif"
+             alt="Please wait, loading..."/>
+      </div>
+    </div>
+
+          <div class="schedule-menu__links">
+        <div class="schedule-menu__link"><a
+            href="/listen/schedule">Full Schedule</a>
+        </div>
+        <div class="schedule-menu__link"><a
+            href="/listen/programs">All Programs</a>
+        </div>
+      </div>
+      </div>
+
+  </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+          </div>
+
+  </div>
+
+  <div class="site-header__language-drop site-header__subnav">
+    <div class="site-header__language-wrap">
+              <div class="site-header__language-region">
+          <div class="section-title site-header__language-region-title">English</div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voanews-com" href="https://voanews.com">English</a>
+              <a class="site-header__language-url" href="https://voanews.com">voanews.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title learningenglish-voanews-com" href="https://learningenglish.voanews.com">Learning English</a>
+              <a class="site-header__language-url" href="https://learningenglish.voanews.com">learningenglish.voanews.com</a>
+            </div>
+                  </div>
+              <div class="site-header__language-region">
+          <div class="section-title site-header__language-region-title">Eastern &amp; Central Europe</div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title zeriamerikes-com" href="https://zeriamerikes.com">Shqip</a>
+              <a class="site-header__language-url" href="https://zeriamerikes.com">zeriamerikes.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title ba-voanews-com" href="https://ba.voanews.com">Bosanski</a>
+              <a class="site-header__language-url" href="https://ba.voanews.com">ba.voanews.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title gr-voanews-com" href="https://gr.voanews.com">Ελληνικά</a>
+              <a class="site-header__language-url" href="https://gr.voanews.com">gr.voanews.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title mk-voanews-com" href="https://mk.voanews.com">Македонски</a>
+              <a class="site-header__language-url" href="https://mk.voanews.com">mk.voanews.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title glasamerike-net" href="https://glasamerike.net">Srpski</a>
+              <a class="site-header__language-url" href="https://glasamerike.net">glasamerike.net</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title ukrainian-voanews-com" href="https://ukrainian.voanews.com">Українська</a>
+              <a class="site-header__language-url" href="https://ukrainian.voanews.com">ukrainian.voanews.com</a>
+            </div>
+                  </div>
+              <div class="site-header__language-region">
+          <div class="section-title site-header__language-region-title">Eurasia</div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title amerikayidzayn-com" href="https://amerikayidzayn.com">Հայերեն</a>
+              <a class="site-header__language-url" href="https://amerikayidzayn.com">amerikayidzayn.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title amerikaninsesi-org" href="https://amerikaninsesi.org">Azerbaijani</a>
+              <a class="site-header__language-url" href="https://amerikaninsesi.org">amerikaninsesi.org</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title amerikiskhma-com" href="https://amerikiskhma.com">ქართული</a>
+              <a class="site-header__language-url" href="https://amerikiskhma.com">amerikiskhma.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title golos-ameriki-ru" href="https://golos-ameriki.ru">Русский</a>
+              <a class="site-header__language-url" href="https://golos-ameriki.ru">golos-ameriki.ru</a>
+            </div>
+                  </div>
+              <div class="site-header__language-region">
+          <div class="section-title site-header__language-region-title">Central Asia</div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title amerikaovozi-com" href="https://amerikaovozi.com">O‘zbek‎</a>
+              <a class="site-header__language-url" href="https://amerikaovozi.com">amerikaovozi.com</a>
+            </div>
+                  </div>
+              <div class="site-header__language-region">
+          <div class="section-title site-header__language-region-title">South Asia</div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voabangla-com" href="https://voabangla.com">বাংলা</a>
+              <a class="site-header__language-url" href="https://voabangla.com">voabangla.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title darivoa-com" href="https://darivoa.com">دری</a>
+              <a class="site-header__language-url" href="https://darivoa.com">darivoa.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title pashtovoa-com" href="https://pashtovoa.com">پښتو</a>
+              <a class="site-header__language-url" href="https://pashtovoa.com">pashtovoa.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voadeewanews-com" href="https://voadeewanews.com">وی او اې ډيوه ريډیو</a>
+              <a class="site-header__language-url" href="https://voadeewanews.com">voadeewanews.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title urduvoa-com" href="https://urduvoa.com">ارد</a>
+              <a class="site-header__language-url" href="https://urduvoa.com">urduvoa.com</a>
+            </div>
+                  </div>
+              <div class="site-header__language-region">
+          <div class="section-title site-header__language-region-title">East &amp; Southeast Asia</div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title burmese-voanews-com" href="https://burmese.voanews.com">ျမန္မာ</a>
+              <a class="site-header__language-url" href="https://burmese.voanews.com">burmese.voanews.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voacantonese-com" href="https://voacantonese.com">粤语</a>
+              <a class="site-header__language-url" href="https://voacantonese.com">voacantonese.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voachinese-com" href="https://voachinese.com">中文</a>
+              <a class="site-header__language-url" href="https://voachinese.com">voachinese.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voaindonesia-com" href="https://voaindonesia.com">Bahasa Indonesia</a>
+              <a class="site-header__language-url" href="https://voaindonesia.com">voaindonesia.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title khmer-voanews-com" href="https://khmer.voanews.com">ខ្មែរ</a>
+              <a class="site-header__language-url" href="https://khmer.voanews.com">khmer.voanews.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voacambodia-com" href="https://voacambodia.com">Khmer</a>
+              <a class="site-header__language-url" href="https://voacambodia.com">voacambodia.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voakorea-com" href="https://voakorea.com">한국어</a>
+              <a class="site-header__language-url" href="https://voakorea.com">voakorea.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title lao-voanews-com" href="https://lao.voanews.com">ລາວ</a>
+              <a class="site-header__language-url" href="https://lao.voanews.com">lao.voanews.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voathai-com" href="https://voathai.com">ไทย</a>
+              <a class="site-header__language-url" href="https://voathai.com">voathai.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voatibetan-com" href="https://voatibetan.com">བོད་ཡིག</a>
+              <a class="site-header__language-url" href="https://voatibetan.com">voatibetan.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voatiengviet-com" href="https://voatiengviet.com">Tiếng Việt</a>
+              <a class="site-header__language-url" href="https://voatiengviet.com">voatiengviet.com</a>
+            </div>
+                  </div>
+              <div class="site-header__language-region">
+          <div class="section-title site-header__language-region-title">Africa</div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voaafaanoromoo-com" href="https://voaafaanoromoo.com">Afaan Oromoo</a>
+              <a class="site-header__language-url" href="https://voaafaanoromoo.com">voaafaanoromoo.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title amharic-voanews-com" href="https://amharic.voanews.com">አማርኛ</a>
+              <a class="site-header__language-url" href="https://amharic.voanews.com">amharic.voanews.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voabambara-com" href="https://voabambara.com">Bambara</a>
+              <a class="site-header__language-url" href="https://voabambara.com">voabambara.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voaafrique-com" href="https://voaafrique.com">Français</a>
+              <a class="site-header__language-url" href="https://voaafrique.com">voaafrique.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voahausa-com" href="https://voahausa.com">Hausa</a>
+              <a class="site-header__language-url" href="https://voahausa.com">voahausa.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title radiyoyacuvoa-com" href="https://radiyoyacuvoa.com">Kinyarwanda / Kirundi</a>
+              <a class="site-header__language-url" href="https://radiyoyacuvoa.com">radiyoyacuvoa.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voandebele-com" href="https://voandebele.com">Ndebele</a>
+              <a class="site-header__language-url" href="https://voandebele.com">voandebele.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voaportugues-com" href="https://voaportugues.com">Português</a>
+              <a class="site-header__language-url" href="https://voaportugues.com">voaportugues.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voashona-com" href="https://voashona.com">Shona</a>
+              <a class="site-header__language-url" href="https://voashona.com">voashona.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voasomali-com" href="https://voasomali.com">Soomaaliga</a>
+              <a class="site-header__language-url" href="https://voasomali.com">voasomali.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voaswahili-com" href="https://voaswahili.com">Kiswahili</a>
+              <a class="site-header__language-url" href="https://voaswahili.com">voaswahili.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title tigrigna-voanews-com" href="https://tigrigna.voanews.com">ትግርኛ</a>
+              <a class="site-header__language-url" href="https://tigrigna.voanews.com">tigrigna.voanews.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voazimbabwe-com" href="https://voazimbabwe.com">Zimbabwe</a>
+              <a class="site-header__language-url" href="https://voazimbabwe.com">voazimbabwe.com</a>
+            </div>
+                  </div>
+              <div class="site-header__language-region">
+          <div class="section-title site-header__language-region-title">Middle East/North Africa</div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title ir-voanews-com" href="https://ir.voanews.com">فارسی</a>
+              <a class="site-header__language-url" href="https://ir.voanews.com">ir.voanews.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title dengiamerika-com" href="https://dengiamerika.com">كوردی</a>
+              <a class="site-header__language-url" href="https://dengiamerika.com">dengiamerika.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title dengeamerika-com" href="https://dengeamerika.com">Kurdi</a>
+              <a class="site-header__language-url" href="https://dengeamerika.com">dengeamerika.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title amerikaninsesi-com" href="https://amerikaninsesi.com">Türkçe</a>
+              <a class="site-header__language-url" href="https://amerikaninsesi.com">amerikaninsesi.com</a>
+            </div>
+                  </div>
+              <div class="site-header__language-region">
+          <div class="section-title site-header__language-region-title">Latin America</div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voanouvel-com" href="https://voanouvel.com">Creole</a>
+              <a class="site-header__language-url" href="https://voanouvel.com">voanouvel.com</a>
+            </div>
+                      <div class="site-header__language-group">
+              <a class="site-header__language-title voanoticias-com" href="https://voanoticias.com">Español</a>
+              <a class="site-header__language-url" href="https://voanoticias.com">voanoticias.com</a>
+            </div>
+                  </div>
+          </div>
+  </div>
+</div>
+  
+  <main role="main" id="main-content" tabindex="-1">
+        <div>
+    <div data-drupal-messages-fallback class="hidden"></div>
+<div id="block-voa-content">
+  
+    
+      
+
+  
+
+
+  
+  
+              
+  
+                            
+
+
+  <div class="l-content-container"><div class="article">
+  <div class="article__social">
+    <div class="article__social-container">
+      
+
+<div class="social-widget">
+      <div tabindex="0" id="share-facebook" class="fab social-widget__icon social-widget__icon--facebook" data-url="https%3A%2F%2Fwww.voanews.com%2Fusa%2Fspacexs-20th-station-shipment-arrives-candy-science">
+      <span class="fa-facebook-f"><span class="sr-only">Share on Facebook</span></span>
+    </div>
+        <div tabindex="0" id="share-twitter" class="fab social-widget__icon social-widget__icon--twitter" data-url="https%3A%2F%2Fwww.voanews.com%2Fusa%2Fspacexs-20th-station-shipment-arrives-candy-science" data-title="SpaceX%27s%2020th%20Station%20Shipment%20Arrives%20With%20Candy%2C%20Science" >
+      <span class="fa-twitter"><span class="sr-only">Share on Twitter</span></span>
+    </div>
+                <div tabindex="0" id="share-email" class="fa social-widget__icon social-widget__icon--mail" data-url="https%3A%2F%2Fwww.voanews.com%2Fusa%2Fspacexs-20th-station-shipment-arrives-candy-science" data-title="SpaceX%27s%2020th%20Station%20Shipment%20Arrives%20With%20Candy%2C%20Science">
+      <span class="fa-envelope"><span class="sr-only">Share via Email</span></span>
+    </div>
+        <div tabindex="0" id="share-print" class="fa social-widget__icon social-widget__icon--print">
+      <span class="fa-print"><span class="sr-only">Print this page</span></span>
+    </div>
+      </div>
+    </div>
+  </div>
+  <div class="article__main"><div class="page-header">
+  <span class="page-header__eyebrow eyebrow"><a href="/usa" hreflang="en">USA</a></span>
+  <h1 class="page-header__title"><span>SpaceX&#039;s 20th Station Shipment Arrives With Candy, Science</span>
+</h1>
+
+  
+  <div class="caption page-header__meta ">
+          <div class="page-header__meta-item">
+        <span>By</span>
+                  <span>Associated Press</span>              </div>
+    
+    <div class="page-header__meta-item">
+              March 09, 2020 08:31 AM
+          </div>
+          <div class="page-header__meta-item">
+        
+      </div>
+      </div>
+</div>
+<div class="article__social article__social--mobile-only">
+      
+
+<div class="social-widget">
+      <div tabindex="0" id="share-facebook-mobile" class="fab social-widget__icon social-widget__icon--facebook" data-url="https%3A%2F%2Fwww.voanews.com%2Fusa%2Fspacexs-20th-station-shipment-arrives-candy-science">
+      <span class="fa-facebook-f"><span class="sr-only">Share on Facebook</span></span>
+    </div>
+        <div tabindex="0" id="share-twitter-mobile" class="fab social-widget__icon social-widget__icon--twitter" data-url="https%3A%2F%2Fwww.voanews.com%2Fusa%2Fspacexs-20th-station-shipment-arrives-candy-science" data-title="SpaceX%27s%2020th%20Station%20Shipment%20Arrives%20With%20Candy%2C%20Science" >
+      <span class="fa-twitter"><span class="sr-only">Share on Twitter</span></span>
+    </div>
+                <div tabindex="0" id="share-email-mobile" class="fa social-widget__icon social-widget__icon--mail" data-url="https%3A%2F%2Fwww.voanews.com%2Fusa%2Fspacexs-20th-station-shipment-arrives-candy-science" data-title="SpaceX%27s%2020th%20Station%20Shipment%20Arrives%20With%20Candy%2C%20Science">
+      <span class="fa-envelope"><span class="sr-only">Share via Email</span></span>
+    </div>
+        <div tabindex="0" id="share-print-mobile" class="fa social-widget__icon social-widget__icon--print">
+      <span class="fa-print"><span class="sr-only">Print this page</span></span>
+    </div>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="col-2of3">
+        <div class="article__lightbox-available">
+                      <div class="article__featured-media"><figure class="media media--type-image media--view-mode-" itemscope="itemscope" itemtype="http://schema.org/ImageObject">
+      <a href="https://media.voltron.voanews.com/Drupal/01live-166/styles/sourced/s3/ap-images/2020/03/898d4122ac6fa9b47e026c02bc1494a0.jpg?itok=fZfOA-n6" data-size="2429x3643">
+      
+            <div>    <picture>
+                <!--[if IE 9]><video style="display: none;"><![endif]-->
+              <source srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/817x459/s3/ap-images/2020/03/898d4122ac6fa9b47e026c02bc1494a0.jpg?itok=3J48GcQa 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/817x459_retina/s3/ap-images/2020/03/898d4122ac6fa9b47e026c02bc1494a0.jpg?itok=lMU1nGwX 2x" media="(min-width: 2000px)" type="image/jpeg"/>
+              <source srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/817x459/s3/ap-images/2020/03/898d4122ac6fa9b47e026c02bc1494a0.jpg?itok=3J48GcQa 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/817x459_retina/s3/ap-images/2020/03/898d4122ac6fa9b47e026c02bc1494a0.jpg?itok=lMU1nGwX 2x" media="(min-width: 1280px)" type="image/jpeg"/>
+              <source srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/710x340/s3/ap-images/2020/03/898d4122ac6fa9b47e026c02bc1494a0.jpg?itok=MTY_s5WH 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/710x340_retina/s3/ap-images/2020/03/898d4122ac6fa9b47e026c02bc1494a0.jpg?itok=7c9ewKKJ 2x" media="(min-width: 1024px)" type="image/jpeg"/>
+              <source srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/545x307/s3/ap-images/2020/03/898d4122ac6fa9b47e026c02bc1494a0.jpg?itok=f0gYvCCb 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/576x564_retina/s3/ap-images/2020/03/898d4122ac6fa9b47e026c02bc1494a0.jpg?itok=jmcI7twz 2x" media="(min-width: 992px)" type="image/jpeg"/>
+              <source srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/892x501/s3/ap-images/2020/03/898d4122ac6fa9b47e026c02bc1494a0.jpg?itok=COBdwwFL 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/892x501_retina/s3/ap-images/2020/03/898d4122ac6fa9b47e026c02bc1494a0.jpg?itok=GlxPh2XF 2x" media="(min-width: 769px)" type="image/jpeg"/>
+              <source srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/671x377/s3/ap-images/2020/03/898d4122ac6fa9b47e026c02bc1494a0.jpg?itok=sg6gx-nK 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/671x377_retina/s3/ap-images/2020/03/898d4122ac6fa9b47e026c02bc1494a0.jpg?itok=Co9jrjqh 2x" media="(min-width: 580px)" type="image/jpeg"/>
+              <source srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/516x290/s3/ap-images/2020/03/898d4122ac6fa9b47e026c02bc1494a0.jpg?itok=XhH3e889 1x" type="image/jpeg"/>
+            <!--[if IE 9]></video><![endif]-->
+            <img src="https://media.voltron.voanews.com/Drupal/01live-166/styles/892x501/s3/ap-images/2020/03/898d4122ac6fa9b47e026c02bc1494a0.jpg?itok=COBdwwFL" alt="A Falcon 9 SpaceX rocket with a payload of approximately 60 satellites for SpaceX&#039;s Starlink broadband network lifts off from…" />
+
+  </picture>
+
+</div>
+      
+      <figcaption>
+                          FILE - A Falcon 9 SpaceX rocket with a payload of approximately 60 satellites for SpaceX&#039;s Starlink broadband network lifts off from Space Launch Complex 40 at the Cape Canaveral Air Force Station in Cape Canaveral, Fla.,Jan. 29, 2020.
+              </figcaption>
+    </a>
+  </figure>
+</div>
+          
+          <div class="article__content">
+            <div class="article__body">
+              
+            <div><p> CAPE CANAVERAL, FLA. - A SpaceX cargo ship arrived at the International Space Station on Monday, delivering the company's 20th batch of gear and treats.</p>
+
+<p>The Dragon capsule reached the orbiting lab after launching late Friday night. NASA astronauts Andrew Morgan and Jessica Meir used the station's robot arm to capture the spacecraft.</p>
+
+<p>The 4,300-pound (1,950-kilogram) shipment contains science experiments and equipment, as well as special goodies for the three-person crew aloft for months: grapefruit, tomatoes, Skittles, Reese's Pieces and Hot Tamales.</p>
+
+<p>This is the last of SpaceX's original-style Dragons. All future ones are designed to carry either cargo or crew, and will dock automatically rather than require robot-arm assistance. SpaceX has been sending up station cargo since 2012 and plans to start launching NASA astronauts this spring.</p>
+
+<p>From 260 miles (418 kilometers) up, Meir congratulated SpaceX on its many milestones, including the fact this is the third flight for this particular Dragon. Spacecraft and rocket recycling, she noted, is "the more sustainable approach that will be paramount to the future of spaceflight."</p>
+
+<p>The Dragon will remain at the orbiting lab for a month before returning to Earth with science specimens.</p>
+</div>
+      
+            </div>
+          </div>
+        </div>
+
+                  <div class="article__footer">
+                          <h2 class="section-title">Related Stories</h2>
+
+              
+<div class="grid vertical-list vertical-list--list">
+      <div class="col-1 vertical-list__item vertical-list__item--list">
+      
+
+  
+
+  
+
+
+
+<div class="teaser">
+      <div class="teaser__img">
+      <div class="teaser__img-wrap">
+                  
+            <div><div>
+  
+  
+            <div data-blazy="" class="blazy blazy--field blazy--field-media-image">
+
+
+
+                    <div class="media media--bundle--image media--blazy media--loading media--responsive media--image">
+      
+      
+        <img class="media__image media__element b-lazy b-responsive" loading="lazy" data-src="https://media.voltron.voanews.com/Drupal/01live-166/2019-08/reuters_SpaceX_starhopper_Texas_launch_27aug19.jpg" srcset="" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/269x177/s3/2019-08/reuters_SpaceX_starhopper_Texas_launch_27aug19.jpg?itok=b3FU0fOq 1x" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039; viewBox%3D&#039;0 0 6681 4454&#039;%2F%3E" alt="SpaceX&#039;s Mars Starship prototype &quot;Starhopper&quot; hovers over its launchpad during a test flight in Boca Chica, Texas, Aug. 27, 2019." />
+
+
+        
+      
+    </div>
+        
+  
+  
+
+
+</div>
+      
+</div>
+</div>
+      
+                      </div>
+    </div>
+    <div class="teaser__content">
+          <div class="eyebrow">
+        <a href="/science-health" hreflang="en">Science &amp; Health</a>
+      </div>
+        <div class="teaser__title">
+      <a class="teaser__title-link" href="/science-health/spacexs-mars-rocket-prototype-test-rattles-nerves-texas-residents" title="SpaceX&#039;s Mars Rocket Prototype Test Rattles Nerves of Texas Residents"><span>SpaceX&#039;s Mars Rocket Prototype Test Rattles Nerves of Texas Residents</span>
+</a>
+    </div>
+    <div class="teaser__text">
+      Starhopper, slowly rose about 500 feet(152m) off its launch pad in Brownsville, clearing another key hurdle in billionaire entrepreneur Elon Musk&#039;s interplanetary ambitions
+    </div>
+          <div class="teaser__author">
+        <div class="teaser__author-image">
+          <div>
+  
+  
+            <div>  <img src="https://media.voltron.voanews.com/Drupal/01live-166/styles/medium/s3/2019-10/reu_logo_ZBEs235N_400x400.jpg?h=a7e6d17b&amp;itok=osbUi2zx" width="220" height="220" alt="Reuters logo" />
+
+
+</div>
+      
+</div>
+
+        </div>
+        <div class="teaser__author-content">
+          <div class="teaser__author-name">
+            By <a class="teaser__author-link" href="/author/reuters" title="Reuters">Reuters</a>          </div>
+          <div class="teaser__publish-date">
+            Wed, 08/28/2019 - 00:31
+          </div>
+        </div>
+      </div>
+      </div>
+</div>
+
+    </div>
+      <div class="col-1 vertical-list__item vertical-list__item--list">
+      
+
+  
+
+    
+
+
+
+<div class="teaser">
+      <div class="teaser__img">
+      <div class="teaser__img-wrap">
+                  
+            <div><div>
+  
+  
+            <div data-blazy="" class="blazy blazy--field blazy--field-media-image">
+
+
+
+                    <div class="media media--bundle--image media--blazy media--loading media--responsive media--image">
+      
+      
+        <img class="media__image media__element b-lazy b-responsive" loading="lazy" data-src="https://media.voltron.voanews.com/Drupal/01live-166/2019-04/B350981E-4324-4FC9-992E-052749B76B42.jpg" srcset="" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/269x177/s3/2019-04/B350981E-4324-4FC9-992E-052749B76B42.jpg?itok=5xepEfIs 1x" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039; viewBox%3D&#039;0 0 3565 2424&#039;%2F%3E" alt="The SpaceX Falcon 9 rocket, scheduled to launch a U.S. Air Force navigation satellite, sits on Launch Complex 40, Florida, U.S., December 18, 2018." title="The SpaceX Falcon 9 rocket, scheduled to launch a U.S. Air" />
+
+
+        
+      
+    </div>
+        
+  
+  
+
+
+</div>
+      
+</div>
+</div>
+      
+                      </div>
+    </div>
+    <div class="teaser__content">
+          <div class="eyebrow">
+        <a href="/science-health" hreflang="en">Science &amp; Health</a>
+      </div>
+        <div class="teaser__title">
+      <a class="teaser__title-link" href="/science-health/storms-halt-spacexs-first-us-national-security-mission" title="Storms Halt SpaceX&#039;s First US National Security Mission"><span>Storms Halt SpaceX&#039;s First US National Security Mission</span>
+</a>
+    </div>
+    <div class="teaser__text">
+      Thunderstorms forced Elon Musk&#039;s SpaceX to postpone Thursday&#039;s launch of a navigation satellite for the U.S. military, which was poised to be the rocket company&#039;s first national security space mission for the United States.SpaceX said its Falcon 9 rocket and payload, a roughly $500 million GPS satellite built by Lockheed Martin Corp, were &quot;in good health&quot; and that it was now targeting a Saturday morning launch from Florida&#039;s Cape Canaveral.
+    </div>
+      </div>
+</div>
+
+    </div>
+  </div>
+            
+                          
+
+
+<div class="author-card">
+  <div class="author-card__photo">
+    <div>
+  
+  
+            <div>  <img src="https://media.voltron.voanews.com/Drupal/01live-166/styles/medium/s3/2019-10/ap_logo_8z9FImcv_400x400.png?h=a7e6d17b&amp;itok=0pmmQ0Oh" width="220" height="220" alt="AP logo" />
+
+
+</div>
+      
+</div>
+
+  </div>
+  <div class="author-card__content">
+    <span class="author-card__eyebrow eyebrow">Written By</span>
+    <div class="author-card__name">
+      <a href="/author/associated-press" hreflang="en">Associated Press</a>
+    </div>
+    
+      </div>
+</div>
+
+                      </div>
+        
+              </div>
+
+      <div class="col-3">
+                  
+<div class="section-content">
+      <h2 class="section-title">
+            <div>1619-2019</div>
+      </h2>
+  
+  
+            <div>
+  
+    
+    
+<div class="teaser">
+      <div class="teaser__img">
+      <div class="teaser__img-wrap">
+                  <div>
+  
+  
+            <div data-blazy="" class="blazy blazy--field blazy--field-media-image">
+
+
+
+                    <div class="media media--bundle--image media--blazy media--loading media--responsive media--image">
+      
+      
+        <img class="media__image media__element b-lazy b-responsive" loading="lazy" data-src="https://media.voltron.voanews.com/Drupal/01live-166/2019-08/Africa%20to%20America%20No%20source.png" srcset="" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/718x474/s3/2019-08/Africa%20to%20America%20No%20source.png?itok=SjsEdw9U 1x" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039; viewBox%3D&#039;0 0 819 526&#039;%2F%3E" alt="Africa to America" />
+
+
+        
+      
+    </div>
+        
+  
+  
+
+
+</div>
+      
+</div>
+
+                      </div>
+    </div>
+    <div class="teaser__content">
+        <div class="teaser__title">
+      <a class="teaser__title-link" href="https://www.voanews.com/africa-america" title="US Marks 400th Anniversary of Arrival of First Africans">US Marks 400th Anniversary of Arrival of First Africans</a>
+    </div>
+    <div class="teaser__text">
+      
+    </div>
+      </div>
+</div>
+
+</div>
+      
+</div>
+
+<div class="section-content">
+      <h2 class="section-title">
+            <div>Child Marriage</div>
+      </h2>
+  
+  
+            <div>
+  
+    
+    
+<div class="teaser">
+      <div class="teaser__img">
+      <div class="teaser__img-wrap">
+                  <div>
+  
+  
+            <div data-blazy="" class="blazy blazy--field blazy--field-media-image">
+
+
+
+                    <div class="media media--bundle--image media--blazy media--loading media--responsive media--image">
+      
+      
+        <img class="media__image media__element b-lazy b-responsive" loading="lazy" data-src="https://media.voltron.voanews.com/Drupal/01live-166/2019-08/worth-of-girl__katie.jpg" srcset="" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/718x474/s3/2019-08/worth-of-girl__katie.jpg?itok=9EK_S82A 1x" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039; viewBox%3D&#039;0 0 1920 1080&#039;%2F%3E" alt="Worth of a Girl - Katie" />
+
+
+        
+      
+    </div>
+        
+  
+  
+
+
+</div>
+      
+</div>
+
+                      </div>
+    </div>
+    <div class="teaser__content">
+        <div class="teaser__title">
+      <a class="teaser__title-link" href="https://projects.voanews.com/child-marriage/" title="The Worth of a Girl">The Worth of a Girl</a>
+    </div>
+    <div class="teaser__text">
+      
+    </div>
+      </div>
+</div>
+
+</div>
+      
+</div>
+
+
+
+
+
+  <div class="section-title__container section-title__container--centered">
+    <h2 class="section-title--callout">
+              <a href="/usa">More U.S. News</a>
+          </h2>
+  </div>
+
+
+
+
+
+
+    
+    
+    
+                                                                                  
+
+        
+  
+  <div class="section-content-widgets">
+    
+<div class="content-list">
+      
+<div class="grid vertical-list vertical-list--list">
+      <div class="col-1 vertical-list__item vertical-list__item--list">
+      
+  
+
+
+<div class="teaser teaser--small">
+  <div class="teaser__content teaser__content--small">
+          <div class="eyebrow">
+        <a href="/east-asia-pacific" hreflang="en">East Asia Pacific</a>
+      </div>
+        <a href="/east-asia-pacific/myanmar-repatriates-suspected-remains-us-wwii-servicemen" title="Myanmar Repatriates Suspected Remains of US WWII Servicemen">
+      <h2 class="teaser__title teaser__title--small"><span>Myanmar Repatriates Suspected Remains of US WWII Servicemen</span>
+</h2>
+    </a>
+  </div>
+  <div class="teaser__img teaser__img--small">
+    <a href="/east-asia-pacific/myanmar-repatriates-suspected-remains-us-wwii-servicemen" title="Myanmar Repatriates Suspected Remains of US WWII Servicemen">
+              
+            <div><div>
+  
+  
+            <div data-blazy="" class="blazy blazy--field blazy--field-media-image">
+
+
+
+                    <div class="media media--bundle--image media--blazy media--loading media--responsive media--image">
+      
+      
+        <picture>
+                <!--[if IE 9]><video style="display: none;"><![endif]-->
+              <source media="(min-width: 2000px)" type="image/jpeg" data-srcset="/s3/files/styles/192x108_retina/s3/ap-images/2020/03/3dd09d62822d730059b3e8e16e986b4f.jpg?itok=OM4J3ayI 1x"/>
+              <source media="(min-width: 1280px)" type="image/jpeg" data-srcset="/s3/files/styles/192x108/s3/ap-images/2020/03/3dd09d62822d730059b3e8e16e986b4f.jpg?itok=7wlHE0ux 1x, /s3/files/styles/192x108_retina/s3/ap-images/2020/03/3dd09d62822d730059b3e8e16e986b4f.jpg?itok=OM4J3ayI 2x"/>
+              <source media="(min-width: 1024px)" type="image/jpeg" data-srcset="/s3/files/styles/192x108/s3/ap-images/2020/03/3dd09d62822d730059b3e8e16e986b4f.jpg?itok=7wlHE0ux 1x, /s3/files/styles/192x108_retina/s3/ap-images/2020/03/3dd09d62822d730059b3e8e16e986b4f.jpg?itok=OM4J3ayI 2x"/>
+              <source media="(min-width: 992px)" type="image/jpeg" data-srcset="/s3/files/styles/192x108/s3/ap-images/2020/03/3dd09d62822d730059b3e8e16e986b4f.jpg?itok=7wlHE0ux 1x, /s3/files/styles/192x108_retina/s3/ap-images/2020/03/3dd09d62822d730059b3e8e16e986b4f.jpg?itok=OM4J3ayI 2x"/>
+              <source media="(min-width: 769px)" type="image/jpeg" data-srcset="/s3/files/styles/192x108/s3/ap-images/2020/03/3dd09d62822d730059b3e8e16e986b4f.jpg?itok=7wlHE0ux 1x, /s3/files/styles/192x108_retina/s3/ap-images/2020/03/3dd09d62822d730059b3e8e16e986b4f.jpg?itok=OM4J3ayI 2x"/>
+              <source media="(min-width: 580px)" type="image/jpeg" data-srcset="/s3/files/styles/252x141/s3/ap-images/2020/03/3dd09d62822d730059b3e8e16e986b4f.jpg?itok=Az4cRIbb 1x, /s3/files/styles/252x1410/s3/ap-images/2020/03/3dd09d62822d730059b3e8e16e986b4f.jpg?itok=Tm85iMhB 2x"/>
+              <source type="image/jpeg" data-srcset="/s3/files/styles/192x108/s3/ap-images/2020/03/3dd09d62822d730059b3e8e16e986b4f.jpg?itok=7wlHE0ux 1x"/>
+            <!--[if IE 9]></video><![endif]-->
+            <img class="media__image media__element b-lazy b-responsive" loading="lazy" data-src="https://media.voltron.voanews.com/Drupal/01live-166/ap-images/2020/03/3dd09d62822d730059b3e8e16e986b4f.jpg" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039; viewBox%3D&#039;0 0 4392 2928&#039;%2F%3E" alt="U.S. military guard of honor prepare to carry a coffin covered with U.S. national flag during repatriation ceremony at Mandalay…" />
+
+  </picture>
+
+        
+      
+    </div>
+        
+  
+  
+
+
+</div>
+      
+</div>
+</div>
+      
+          </a>
+  </div>
+</div>
+
+    </div>
+      <div class="col-1 vertical-list__item vertical-list__item--list">
+      
+  
+
+
+<div class="teaser teaser--small">
+  <div class="teaser__content teaser__content--small">
+          <div class="eyebrow">
+        <a href="/usa" hreflang="en">USA</a>
+      </div>
+        <a href="/usa/us-senators-seek-ban-federal-employees-using-tiktok-their-phones" title="US Senators Seek to Ban Federal Employees From Using TikTok on Their Phones">
+      <h2 class="teaser__title teaser__title--small"><span>US Senators Seek to Ban Federal Employees From Using TikTok on Their Phones</span>
+</h2>
+    </a>
+  </div>
+  <div class="teaser__img teaser__img--small">
+    <a href="/usa/us-senators-seek-ban-federal-employees-using-tiktok-their-phones" title="US Senators Seek to Ban Federal Employees From Using TikTok on Their Phones">
+              
+            <div><div>
+  
+  
+            <div data-blazy="" class="blazy blazy--field blazy--field-media-image">
+
+
+
+                    <div class="media media--bundle--image media--blazy media--loading media--responsive media--image">
+      
+      
+        <picture>
+                <!--[if IE 9]><video style="display: none;"><![endif]-->
+              <source media="(min-width: 2000px)" type="image/jpeg" data-srcset="/s3/files/styles/192x108_retina/s3/2020-03/2019-11-08T191512Z_56733983_RC277D9WPETX_RTRMADP_3_USA-CHINA-TIKTOK.JPG?itok=xgeacXbU 1x"/>
+              <source media="(min-width: 1280px)" type="image/jpeg" data-srcset="/s3/files/styles/192x108/s3/2020-03/2019-11-08T191512Z_56733983_RC277D9WPETX_RTRMADP_3_USA-CHINA-TIKTOK.JPG?itok=uBOICLE6 1x, /s3/files/styles/192x108_retina/s3/2020-03/2019-11-08T191512Z_56733983_RC277D9WPETX_RTRMADP_3_USA-CHINA-TIKTOK.JPG?itok=xgeacXbU 2x"/>
+              <source media="(min-width: 1024px)" type="image/jpeg" data-srcset="/s3/files/styles/192x108/s3/2020-03/2019-11-08T191512Z_56733983_RC277D9WPETX_RTRMADP_3_USA-CHINA-TIKTOK.JPG?itok=uBOICLE6 1x, /s3/files/styles/192x108_retina/s3/2020-03/2019-11-08T191512Z_56733983_RC277D9WPETX_RTRMADP_3_USA-CHINA-TIKTOK.JPG?itok=xgeacXbU 2x"/>
+              <source media="(min-width: 992px)" type="image/jpeg" data-srcset="/s3/files/styles/192x108/s3/2020-03/2019-11-08T191512Z_56733983_RC277D9WPETX_RTRMADP_3_USA-CHINA-TIKTOK.JPG?itok=uBOICLE6 1x, /s3/files/styles/192x108_retina/s3/2020-03/2019-11-08T191512Z_56733983_RC277D9WPETX_RTRMADP_3_USA-CHINA-TIKTOK.JPG?itok=xgeacXbU 2x"/>
+              <source media="(min-width: 769px)" type="image/jpeg" data-srcset="/s3/files/styles/192x108/s3/2020-03/2019-11-08T191512Z_56733983_RC277D9WPETX_RTRMADP_3_USA-CHINA-TIKTOK.JPG?itok=uBOICLE6 1x, /s3/files/styles/192x108_retina/s3/2020-03/2019-11-08T191512Z_56733983_RC277D9WPETX_RTRMADP_3_USA-CHINA-TIKTOK.JPG?itok=xgeacXbU 2x"/>
+              <source media="(min-width: 580px)" type="image/jpeg" data-srcset="/s3/files/styles/252x141/s3/2020-03/2019-11-08T191512Z_56733983_RC277D9WPETX_RTRMADP_3_USA-CHINA-TIKTOK.JPG?itok=WM_wG6kD 1x, /s3/files/styles/252x1410/s3/2020-03/2019-11-08T191512Z_56733983_RC277D9WPETX_RTRMADP_3_USA-CHINA-TIKTOK.JPG?itok=EJC3cVoJ 2x"/>
+              <source type="image/jpeg" data-srcset="/s3/files/styles/192x108/s3/2020-03/2019-11-08T191512Z_56733983_RC277D9WPETX_RTRMADP_3_USA-CHINA-TIKTOK.JPG?itok=uBOICLE6 1x"/>
+            <!--[if IE 9]></video><![endif]-->
+            <img class="media__image media__element b-lazy b-responsive" loading="lazy" data-src="https://media.voltron.voanews.com/Drupal/01live-166/2020-03/2019-11-08T191512Z_56733983_RC277D9WPETX_RTRMADP_3_USA-CHINA-TIKTOK.JPG" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039; viewBox%3D&#039;0 0 5760 3840&#039;%2F%3E" alt="Tik Tok logo is displayed on a smartphone on the U.S. flag in this illustration " />
+
+  </picture>
+
+        
+      
+    </div>
+        
+  
+  
+
+
+</div>
+      
+</div>
+</div>
+      
+          </a>
+  </div>
+</div>
+
+    </div>
+      <div class="col-1 vertical-list__item vertical-list__item--list">
+      
+  
+
+
+<div class="teaser teaser--small">
+  <div class="teaser__content teaser__content--small">
+          <div class="eyebrow">
+        <a href="/science-health/coronavirus-outbreak" hreflang="en">Coronavirus Outbreak</a>
+      </div>
+        <a href="/science-health/coronavirus-outbreak/travel-bans-vogue-governments-try-contain-coronavirus" title="Travel Bans in Vogue as Governments Try to Contain Coronavirus">
+      <h2 class="teaser__title teaser__title--small"><span>Travel Bans in Vogue as Governments Try to Contain Coronavirus</span>
+</h2>
+    </a>
+  </div>
+  <div class="teaser__img teaser__img--small">
+    <a href="/science-health/coronavirus-outbreak/travel-bans-vogue-governments-try-contain-coronavirus" title="Travel Bans in Vogue as Governments Try to Contain Coronavirus">
+              
+            <div><div>
+  
+  
+            <div data-blazy="" class="blazy blazy--field blazy--field-media-image">
+
+
+
+                    <div class="media media--bundle--image media--blazy media--loading media--responsive media--image">
+      
+      
+        <picture>
+                <!--[if IE 9]><video style="display: none;"><![endif]-->
+              <source media="(min-width: 2000px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/2020-03/reuters_new_york_airport_09Mar20.jpg?itok=jsIobER9 1x"/>
+              <source media="(min-width: 1280px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/2020-03/reuters_new_york_airport_09Mar20.jpg?itok=jDROno8b 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/2020-03/reuters_new_york_airport_09Mar20.jpg?itok=jsIobER9 2x"/>
+              <source media="(min-width: 1024px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/2020-03/reuters_new_york_airport_09Mar20.jpg?itok=jDROno8b 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/2020-03/reuters_new_york_airport_09Mar20.jpg?itok=jsIobER9 2x"/>
+              <source media="(min-width: 992px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/2020-03/reuters_new_york_airport_09Mar20.jpg?itok=jDROno8b 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/2020-03/reuters_new_york_airport_09Mar20.jpg?itok=jsIobER9 2x"/>
+              <source media="(min-width: 769px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/2020-03/reuters_new_york_airport_09Mar20.jpg?itok=jDROno8b 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/2020-03/reuters_new_york_airport_09Mar20.jpg?itok=jsIobER9 2x"/>
+              <source media="(min-width: 580px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/252x141/s3/2020-03/reuters_new_york_airport_09Mar20.jpg?itok=KrSTtqNy 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/252x1410/s3/2020-03/reuters_new_york_airport_09Mar20.jpg?itok=9KT_-VaE 2x"/>
+              <source type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/2020-03/reuters_new_york_airport_09Mar20.jpg?itok=jDROno8b 1x"/>
+            <!--[if IE 9]></video><![endif]-->
+            <img class="media__image media__element b-lazy b-responsive" loading="lazy" data-src="https://media.voltron.voanews.com/Drupal/01live-166/2020-03/reuters_new_york_airport_09Mar20.jpg" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039; viewBox%3D&#039;0 0 4096 2732&#039;%2F%3E" alt="The lines to reach TSA immigraThe lines to reach TSA immigration process are seen empty at one of its terminals at the John F. Kennedy International Airport in New York, March 9, 2020.tion process are seen empty at one of its terminals at the John F. Kennedy International Airport…" />
+
+  </picture>
+
+        
+      
+    </div>
+        
+  
+  
+
+
+</div>
+      
+</div>
+</div>
+      
+          </a>
+  </div>
+</div>
+
+    </div>
+      <div class="col-1 vertical-list__item vertical-list__item--list">
+      
+  
+
+
+<div class="teaser teaser--small">
+  <div class="teaser__content teaser__content--small">
+          <div class="eyebrow">
+        <a href="/science-health/coronavirus-outbreak" hreflang="en">Coronavirus Outbreak</a>
+      </div>
+        <a href="/science-health/coronavirus-outbreak/worst-yet-come-who-warns-after-declaring-coronavirus-outbreak" title="Worst is Yet to Come WHO Warns, After Declaring Coronavirus Outbreak a Pandemic">
+      <h2 class="teaser__title teaser__title--small"><span>Worst is Yet to Come WHO Warns, After Declaring Coronavirus Outbreak a Pandemic</span>
+</h2>
+    </a>
+  </div>
+  <div class="teaser__img teaser__img--small">
+    <a href="/science-health/coronavirus-outbreak/worst-yet-come-who-warns-after-declaring-coronavirus-outbreak" title="Worst is Yet to Come WHO Warns, After Declaring Coronavirus Outbreak a Pandemic">
+              
+            <div><div>
+  
+  
+            <div data-blazy="" class="blazy blazy--field blazy--field-media-image">
+
+
+
+                    <div class="media media--bundle--image media--blazy media--loading media--responsive media--image">
+      
+      
+        <picture>
+                <!--[if IE 9]><video style="display: none;"><![endif]-->
+              <source media="(min-width: 2000px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/2020-03/AP_20072363228187.jpg?itok=OEkBDXOA 1x"/>
+              <source media="(min-width: 1280px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/2020-03/AP_20072363228187.jpg?itok=ZY_a0RcD 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/2020-03/AP_20072363228187.jpg?itok=OEkBDXOA 2x"/>
+              <source media="(min-width: 1024px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/2020-03/AP_20072363228187.jpg?itok=ZY_a0RcD 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/2020-03/AP_20072363228187.jpg?itok=OEkBDXOA 2x"/>
+              <source media="(min-width: 992px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/2020-03/AP_20072363228187.jpg?itok=ZY_a0RcD 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/2020-03/AP_20072363228187.jpg?itok=OEkBDXOA 2x"/>
+              <source media="(min-width: 769px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/2020-03/AP_20072363228187.jpg?itok=ZY_a0RcD 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/2020-03/AP_20072363228187.jpg?itok=OEkBDXOA 2x"/>
+              <source media="(min-width: 580px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/252x141/s3/2020-03/AP_20072363228187.jpg?itok=DpKXJVII 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/252x1410/s3/2020-03/AP_20072363228187.jpg?itok=rG6TzRw9 2x"/>
+              <source type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/2020-03/AP_20072363228187.jpg?itok=ZY_a0RcD 1x"/>
+            <!--[if IE 9]></video><![endif]-->
+            <img class="media__image media__element b-lazy b-responsive" loading="lazy" data-src="https://media.voltron.voanews.com/Drupal/01live-166/2020-03/AP_20072363228187.jpg" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039; viewBox%3D&#039;0 0 3799 2533&#039;%2F%3E" alt="Two men wait at a bus stop with a screen displaying a symbol photo of the novel coronavirus in Berlin, Germany, March 12, 2020." />
+
+  </picture>
+
+        
+      
+    </div>
+        
+  
+  
+
+
+</div>
+      
+</div>
+</div>
+      
+          </a>
+  </div>
+</div>
+
+    </div>
+      <div class="col-1 vertical-list__item vertical-list__item--list">
+      
+  
+
+
+<div class="teaser teaser--small">
+  <div class="teaser__content teaser__content--small">
+          <div class="eyebrow">
+        <a href="/science-health/coronavirus-outbreak" hreflang="en">Coronavirus Outbreak</a>
+      </div>
+        <a href="/science-health/coronavirus-outbreak/tom-hanks-rita-wilson-test-positive-coronavirus-australia" title="Tom Hanks, Rita Wilson Test Positive for Coronavirus in Australia">
+      <h2 class="teaser__title teaser__title--small"><span>Tom Hanks, Rita Wilson Test Positive for Coronavirus in Australia</span>
+</h2>
+    </a>
+  </div>
+  <div class="teaser__img teaser__img--small">
+    <a href="/science-health/coronavirus-outbreak/tom-hanks-rita-wilson-test-positive-coronavirus-australia" title="Tom Hanks, Rita Wilson Test Positive for Coronavirus in Australia">
+              
+            <div><div>
+  
+  
+            <div data-blazy="" class="blazy blazy--field blazy--field-media-image">
+
+
+
+                    <div class="media media--bundle--image media--blazy media--loading media--responsive media--image">
+      
+      
+        <picture>
+                <!--[if IE 9]><video style="display: none;"><![endif]-->
+              <source media="(min-width: 2000px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/reuters-pictures/2020/03/RTS35PT5.jpg?itok=ANKnQxGi 1x"/>
+              <source media="(min-width: 1280px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/reuters-pictures/2020/03/RTS35PT5.jpg?itok=g-dFWwfx 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/reuters-pictures/2020/03/RTS35PT5.jpg?itok=ANKnQxGi 2x"/>
+              <source media="(min-width: 1024px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/reuters-pictures/2020/03/RTS35PT5.jpg?itok=g-dFWwfx 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/reuters-pictures/2020/03/RTS35PT5.jpg?itok=ANKnQxGi 2x"/>
+              <source media="(min-width: 992px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/reuters-pictures/2020/03/RTS35PT5.jpg?itok=g-dFWwfx 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/reuters-pictures/2020/03/RTS35PT5.jpg?itok=ANKnQxGi 2x"/>
+              <source media="(min-width: 769px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/reuters-pictures/2020/03/RTS35PT5.jpg?itok=g-dFWwfx 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108_retina/s3/reuters-pictures/2020/03/RTS35PT5.jpg?itok=ANKnQxGi 2x"/>
+              <source media="(min-width: 580px)" type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/252x141/s3/reuters-pictures/2020/03/RTS35PT5.jpg?itok=3JB1ZwTZ 1x, https://media.voltron.voanews.com/Drupal/01live-166/styles/252x1410/s3/reuters-pictures/2020/03/RTS35PT5.jpg?itok=ekLMXgYc 2x"/>
+              <source type="image/jpeg" data-srcset="https://media.voltron.voanews.com/Drupal/01live-166/styles/192x108/s3/reuters-pictures/2020/03/RTS35PT5.jpg?itok=g-dFWwfx 1x"/>
+            <!--[if IE 9]></video><![endif]-->
+            <img class="media__image media__element b-lazy b-responsive" loading="lazy" data-src="https://media.voltron.voanews.com/Drupal/01live-166/reuters-pictures/2020/03/RTS35PT5.jpg" src="data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D&#039;http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg&#039; viewBox%3D&#039;0 0 3000 2044&#039;%2F%3E" alt="FILE PHOTO - Actor Tom Hanks, one of the stars of the new film &quot;Cloud Atlas,&quot; poses with wife, actress Rita Wilson, as they…" />
+
+  </picture>
+
+        
+      
+    </div>
+        
+  
+  
+
+
+</div>
+      
+</div>
+</div>
+      
+          </a>
+  </div>
+</div>
+
+    </div>
+  </div>
+</div>
+  </div>
+
+
+              </div>
+    </div>
+  </div>
+
+</div>
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+  <!-- Background of PhotoSwipe.
+       It's a separate element as animating opacity is faster than rgba(). -->
+  <div class="pswp__bg"></div>
+
+  <!-- Slides wrapper with overflow:hidden. -->
+  <div class="pswp__scroll-wrap">
+
+    <!-- Container that holds slides.
+        PhotoSwipe keeps only 3 of them in the DOM to save memory.
+        Don't modify these 3 pswp__item elements, data is added later on. -->
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+
+    <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+    <div class="pswp__ui pswp__ui--hidden">
+
+      <div class="pswp__top-bar">
+
+        <!--  Controls are self-explanatory. Order can be changed. -->
+
+        <div class="pswp__counter"></div>
+
+        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+        <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+        <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+        <!-- Preloader demo https://codepen.io/dimsemenov/pen/yyBWoR -->
+        <!-- element will get class pswp__preloader--active when preloader is running -->
+        <div class="pswp__preloader">
+          <div class="pswp__preloader__icn">
+            <div class="pswp__preloader__cut">
+              <div class="pswp__preloader__donut"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+        <div class="pswp__share-tooltip"></div>
+      </div>
+
+      <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+      </button>
+
+      <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+      </button>
+
+      <div class="pswp__caption">
+        <div class="pswp__caption__center"></div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+</div>
+
+  </div>
+
+  </div>
+
+  </main>
+
+      <div class="site-footer">
+  <div class="site-footer__container">
+    <div class="grid site-footer__upper">
+      <div class="col-2 site-footer__social">
+                  <a class="site-footer__social-link" href="https://twitter.com/voanews"><span class="fab fa-twitter"></span><span class="sr-only">Twitter</span></a>
+                          <a class="site-footer__social-link" href="https://www.instagram.com/voanews/"><span class="fab fa-instagram"></span><span class="sr-only">Instagram</span></a>
+                          <a class="site-footer__social-link" href="https://www.facebook.com/voiceofamerica"><span class="fab fa-facebook-f"></span><span class="sr-only">Facebook</span></a>
+                          <a class="site-footer__social-link" href="https://www.youtube.com/user/VOAvideo"><span class="fab fa-youtube"></span><span class="sr-only">YouTube</span></a>
+                                        <a class="site-footer__social-link" href="/rssfeeds"><span class="fa fa-rss"></span><span class="sr-only">RSS</span></a>
+      </div>
+      <form class="col-2 site-footer__search-form" action="/search" method="GET">
+        <label class="site-footer__search-label" for="footer-search">Search VOA News</label>
+        <input placeholder="Search VOA News" class="site-footer__search" id="footer-search" type="text" name="search_api_fulltext" />
+        <input type="hidden" name="type" value="1">
+        <input type="hidden" name="sort_by" value="publication_time">
+        <button class="button site-footer__search-button fa fa-search" type="submit"><span class="site-footer__search-label">Search</span></button>
+      </form>
+    </div>
+    <div class="site-footer__lower">
+      
+    
+    
+      
+              <ul class="grid site-footer__menu">
+    
+    
+                      <li class="site-footer__menu-item col-3 site-footer__menu-item--header">
+          <a href="/usa" class="site-footer__menu-item-link site-footer__menu-item-link--header" data-drupal-link-system-path="taxonomy/term/32681">United States</a>
+                                    <ul class="site-footer__sub-menu">
+    
+                                  <div class="grid">
+        <div class="col-2 site-footer__sub-menu-column">
+                      <li class="site-footer__menu-item">
+              <a href="/usa/us-politics" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/32936">US Politics</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/usa/immigration" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/33021">Immigration</a>
+                          </li>
+                  </div>
+        <div class="col-2 site-footer__sub-menu-column">
+                      <li class="site-footer__menu-item">
+              <a href="/usa/all-about-america" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/562771">All About America</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/silicon-valley-technology" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/61">Silicon Valley and Technology</a>
+                          </li>
+                  </div>
+      </div>
+
+    
+    </ul>
+  
+                  </li>
+                      <li class="site-footer__menu-item col-3 site-footer__menu-item--header">
+          <span class="site-footer__menu-item-link site-footer__menu-item-link--header">World News</span>
+                                    <ul class="site-footer__sub-menu">
+    
+                                  <div class="grid">
+        <div class="col-2 site-footer__sub-menu-column">
+                      <li class="site-footer__menu-item">
+              <a href="/africa" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/562841">Africa</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/americas" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/562846">The Americas</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/east-asia-pacific" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/562821">East Asia Pacific</a>
+                          </li>
+                  </div>
+        <div class="col-2 site-footer__sub-menu-column">
+                      <li class="site-footer__menu-item">
+              <a href="/europe" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/32686">Europe</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/middle-east" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/562811">Middle East</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/south-central-asia" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/562866">South &amp; Central Asia</a>
+                          </li>
+                  </div>
+      </div>
+
+    
+    </ul>
+  
+                  </li>
+                      <li class="site-footer__menu-item col-3 site-footer__menu-item--header">
+          <span class="site-footer__menu-item-link site-footer__menu-item-link--header">Sections</span>
+                                    <ul class="site-footer__sub-menu">
+    
+                                  <div class="grid">
+        <div class="col-2 site-footer__sub-menu-column">
+                      <li class="site-footer__menu-item">
+              <a href="/arts-culture" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/562826">Arts &amp; Culture</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/day-photos" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/32661">Day in Photos</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/economy-business" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/66">Economy &amp; Business</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/extremism-watch" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/51">Extremism Watch</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/press-freedom" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/562871">Press Freedom</a>
+                          </li>
+                  </div>
+        <div class="col-2 site-footer__sub-menu-column">
+                      <li class="site-footer__menu-item">
+              <a href="/science-health" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/562831">Science &amp; Health</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/student-union" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/32976">VOA StudentU</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/voa-connect" class="site-footer__menu-item-link" data-drupal-link-system-path="taxonomy/term/191">VOA Connect</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/refugees" class="site-footer__menu-item-link" data-drupal-link-system-path="node/4078021">Refugees</a>
+                          </li>
+                  </div>
+      </div>
+
+    
+    </ul>
+  
+                  </li>
+                      <li class="site-footer__menu-item col-3 site-footer__menu-item--header">
+          <span class="site-footer__menu-item-link site-footer__menu-item-link--header">Voice of America</span>
+                                    <ul class="site-footer__sub-menu">
+    
+                                  <div class="grid">
+        <div class="col-2 site-footer__sub-menu-column">
+                      <li class="site-footer__menu-item">
+              <a href="https://www.insidevoa.com/p/5831.html" class="site-footer__menu-item-link">About VOA</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="https://www.insidevoa.com/p/5621.html" class="site-footer__menu-item-link">Contact VOA</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="https://www.voanews.com/terms-use-and-privacy-notice" class="site-footer__menu-item-link">Terms of Use and Privacy Notice</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/section-508" title="The United States Agency for Global Media is committed to providing access to our web pages for individuals with disabilities" class="site-footer__menu-item-link" data-drupal-link-system-path="node/4219441">Accessibility</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/voas-free-app-mobile-and-tablet-devices" class="site-footer__menu-item-link" data-drupal-link-system-path="node/3877491">Get Our Mobile App</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="http://www.insidevoa.com/p/5719.html" class="site-footer__menu-item-link">Usage Requests</a>
+                          </li>
+                  </div>
+        <div class="col-2 site-footer__sub-menu-column">
+                      <li class="site-footer__menu-item">
+              <a href="https://www.voanews.com/voa-around-world" class="site-footer__menu-item-link">VOA Around the World</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="http://pronounce.voanews.com/" class="site-footer__menu-item-link">VOA Pronunciation Guide</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="http://www.insidevoa.com/" class="site-footer__menu-item-link">Media Relations</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/voa-broadcast-frequency-schedules" class="site-footer__menu-item-link" data-drupal-link-system-path="node/3877541">Listen on the radio</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="http://direct.voa24.news/english/portal/broadcast-schedule" class="site-footer__menu-item-link">Satellite Schedule</a>
+                          </li>
+                      <li class="site-footer__menu-item">
+              <a href="/subscribe" class="site-footer__menu-item-link" data-drupal-link-system-path="subscribe">Subscribe to Our Newsletters</a>
+                          </li>
+                  </div>
+      </div>
+
+    
+    </ul>
+  
+                  </li>
+      
+    
+    </ul>
+  
+
+
+  
+
+    </div>
+  </div>
+</div>
+  </div>
+
+  </div>
+
+    
+    <script type="application/json" data-drupal-selector="drupal-settings-json">{"path":{"baseUrl":"\/","scriptPath":null,"pathPrefix":"","currentPath":"node\/4217031","currentPathIsAdmin":false,"isFront":false,"currentLanguage":"en"},"pluralDelimiter":"\u0003","suppressDeprecationErrors":true,"voa_tracking_code":{"isHomePage":false,"isSearchPage":false},"blazy":{"loadInvisible":false,"offset":100,"saveViewportOffsetDelay":50},"blazyIo":{"enabled":false,"disconnect":false,"rootMargin":"0px","threshold":[0]},"0":{"voaMediaSchedule":{"liveText":"LIVE"}},"baseFilePath":"\/sites\/g\/files\/cauiqe166\/files\/voa_breaking_news.html","user":{"uid":0,"permissionsHash":"6597ccbf8872701f673e5d77705e96bf9d74fe982eb111e29aac53bf6a5fbcff"}}</script>
+<script src="/sites/g/files/cauiqe166/files/js/js_lRAt-ov7PI5tNhZJUUAKlsTfWbS8eiKygu8GuxhyHe0.js"></script>
+<script src="/modules/custom/voa_breaking_news/js/voa-breaking-news.js?v=1.1"></script>
+
+  <script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"9dbf7bf394","applicationID":"184097864,177414840","transactionName":"Yl1aZxNQDBBVV0VbDFsXeVAVWA0NG3BDRxNUVGRFDlA9EkFdS24gWlZMQQ5dDgZGaGJHAVhRS0AIXgwgW1pFQAxZVF1BTA8DAFdRQkE=","queueTime":0,"applicationTime":3086,"atts":"ThpZEVtKHx4=","errorBeacon":"bam.nr-data.net","agent":""}</script></body>
+</html>
