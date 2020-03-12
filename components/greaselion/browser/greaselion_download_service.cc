@@ -40,6 +40,7 @@ const char kRunAt[] = "run_at";
 // precondition keys
 const char kRewards[] = "rewards-enabled";
 const char kTwitterTips[] = "twitter-tips-enabled";
+const char kPublisherAds[] = "publisher-ads-enabled";
 
 GreaselionPreconditionValue GreaselionRule::ParsePrecondition(
     base::DictionaryValue* root,
@@ -66,6 +67,8 @@ void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
       ParsePrecondition(preconditions_value, kRewards);
   preconditions_.twitter_tips_enabled =
       ParsePrecondition(preconditions_value, kTwitterTips);
+  preconditions_.publisher_ads_enabled =
+      ParsePrecondition(preconditions_value, kPublisherAds);
   for (const auto& urls_it : urls_value->GetList()) {
     std::string pattern_string = urls_it.GetString();
     URLPattern pattern;
@@ -110,6 +113,9 @@ bool GreaselionRule::Matches(GreaselionFeatures state) const {
     return false;
   if (!PreconditionFulfilled(preconditions_.twitter_tips_enabled,
                              state[greaselion::TWITTER_TIPS]))
+    return false;
+  if (!PreconditionFulfilled(preconditions_.publisher_ads_enabled,
+                             state[greaselion::PUBLISHER_ADS]))
     return false;
   return true;
 }

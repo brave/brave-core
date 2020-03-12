@@ -38,6 +38,7 @@ enum GreaselionPreconditionValue { kMustBeFalse, kMustBeTrue, kAny };
 struct GreaselionPreconditions {
   GreaselionPreconditionValue rewards_enabled;
   GreaselionPreconditionValue twitter_tips_enabled;
+  GreaselionPreconditionValue publisher_ads_enabled;
 };
 
 class GreaselionRule {
