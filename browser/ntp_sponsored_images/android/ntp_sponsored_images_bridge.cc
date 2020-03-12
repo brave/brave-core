@@ -13,13 +13,13 @@
 #include "base/android/jni_array.h"
 #include "base/android/jni_string.h"
 #include "base/bind.h"
+#include "base/files/file_path.h"
+#include "base/files/file_util.h"
+#include "base/task/post_task.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/ntp_sponsored_images/view_counter_service_factory.h"
 #include "brave/components/ntp_sponsored_images/browser/view_counter_service.h"
 #include "brave/build/android/jni_headers/NTPSponsoredImagesBridge_jni.h"
-#include "chrome/browser/bitmap_fetcher/bitmap_fetcher.h"
-#include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
-#include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_android.h"
 #include "content/public/browser/browser_thread.h"
@@ -39,27 +39,24 @@ using ntp_sponsored_images::ViewCounterServiceFactory;
 
 namespace {
 
-using OnImageChangedCallback =
-    base::OnceCallback<void(const BitmapFetcherService::RequestId,
-                            const SkBitmap&)>;
-
-class BitmapFetcherServiceObserver : public BitmapFetcherService::Observer {
-  public:
-    BitmapFetcherServiceObserver(OnImageChangedCallback callback)
-        : callback_(std::move(callback)) {}
-
-    ~BitmapFetcherServiceObserver() override {}
-
-    void OnImageChanged(BitmapFetcherService::RequestId request_id,
-                        const SkBitmap& image) override {
-      std::move(callback_).Run(request_id, image);
-    }
-
-  protected:
-    OnImageChangedCallback callback_;
-};
+base::Optional<std::string> ReadFileToString(const base::FilePath& path) {
+  std::string contents;
+  if (!base::ReadFileToString(path, &contents))
+    return base::Optional<std::string>();
+  return contents;
+}
 
 }  // namespace
+
+NTPSponsoredImagesBridge::NTPImageRequest::NTPImageRequest(SkBitmap* bitmap)
+    : bitmap_(bitmap) {}
+
+NTPSponsoredImagesBridge::NTPImageRequest::~NTPImageRequest() {}
+
+void NTPSponsoredImagesBridge::NTPImageRequest::OnImageDecoded(
+    const SkBitmap& bitmap) {
+  *bitmap_ = SkBitmap(bitmap);
+}
 
 NTPSponsoredImagesBridge::NTPSponsoredImagesBridge(JNIEnv* env,
                                const JavaRef<jobject>& obj,
@@ -67,7 +64,9 @@ NTPSponsoredImagesBridge::NTPSponsoredImagesBridge(JNIEnv* env,
     : weak_java_ref_(env, obj),
       view_counter_service_(NULL),
       sponsored_images_service_(NULL),
-      request_id_(-1) {
+      image_request_(new NTPImageRequest(&bitmap_)),
+      logo_image_request_(new NTPImageRequest(&logo_bitmap_)),
+      weak_factory_(this) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   profile_ = ProfileAndroid::FromProfileAndroid(j_profile);
   view_counter_service_ = ViewCounterServiceFactory::GetForProfile(profile_);
@@ -80,11 +79,8 @@ NTPSponsoredImagesBridge::NTPSponsoredImagesBridge(JNIEnv* env,
 }
 
 NTPSponsoredImagesBridge::~NTPSponsoredImagesBridge() {
-  // cancel any inflight requests
-  BitmapFetcherService* image_service =
-      BitmapFetcherServiceFactory::GetForBrowserContext(profile_);
-  image_service->CancelRequest(request_id_);
-
+  ImageDecoder::Cancel(image_request_.get());
+  ImageDecoder::Cancel(logo_image_request_.get());
   sponsored_images_service_->RemoveObserver(this);
 }
 
@@ -108,68 +104,59 @@ void NTPSponsoredImagesBridge::RegisterPageView(
   PreloadImageIfNeeded();
 }
 
-void NTPSponsoredImagesBridge::OnBitmapFetched(
-    const BitmapFetcherService::RequestId request_id,
-    const SkBitmap& bitmap) {
-  // ignore outdated requests, we only care about the latest
-  if (request_id == request_id_) {
-    bitmap_ = bitmap;
-    request_id_ = -1;
-  }
-}
-
 void NTPSponsoredImagesBridge::PreloadImageIfNeeded() {
   auto data = view_counter_service_->GetCurrentWallpaper();
   if (data.is_none())
-    LOG(ERROR)
-        << "NTP"
-        << "PreloadImageIfNeeded : data empty";
     return;
 
-  auto* image_url = data.FindStringPath("wallpaperImageUrl");
-  LOG(ERROR)
-        << "NTP"
-        << image_url;
-  if (!image_url)
+  // TODO(bridiver) - need to either expose these constants or change this
+  // to a struct instead of base::Value
+  std::string* image_path = data.FindStringPath("wallpaperImagePath");
+  if (!image_path)
     return;
 
-  if (GURL(*image_url) == GURL(image_url_))
+  if (*image_path == image_path_)
     return;
 
-  image_url_ = GURL(*image_url);
+  image_path_ = *image_path;
 
-  BitmapFetcherService* image_service =
-      BitmapFetcherServiceFactory::GetForBrowserContext(profile_);
-  if (image_service) {
-    net::NetworkTrafficAnnotationTag traffic_annotation =
-        net::DefineNetworkTrafficAnnotation("ntp_images_fetcher", R"(
-        semantics {
-          sender:
-            "NTP images fetcher"
-          description:
-            "Fetches resources related to Brave NTP."
-        }
-        policy {
-          cookies_allowed: NO
-          setting:
-            "This feature can be disabled by settings."
-          policy_exception_justification:
-            "Not implemented."
-        })");
+  ImageDecoder::Cancel(image_request_.get());
+  bitmap_.reset();
 
-    // cancel previous request
-    image_service->CancelRequest(request_id_);
+  base::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::ThreadPool(), base::MayBlock()},
+      base::BindOnce(&ReadFileToString, base::FilePath(image_path_)),
+      base::BindOnce(&NTPSponsoredImagesBridge::OnGotImageFile,
+                     weak_factory_.GetWeakPtr(),
+                     base::Unretained(image_request_.get())));
 
-    request_id_ = image_service->RequestImage(
-        GURL(image_url_),
-        // Image Service takes ownership of the observer.
-        new BitmapFetcherServiceObserver(base::BindRepeating(
-            &NTPSponsoredImagesBridge::OnBitmapFetched,
-            // base::Unretained is ok here because we cancel the request
-            // when the instance is destroyed
-            base::Unretained(this))),
-        traffic_annotation);
-  }
+  auto* logo_image_path = data.FindStringPath("logo.imagePath");
+  if (!logo_image_path)
+    return;
+
+  if (*logo_image_path != logo_image_path_)
+    return;
+
+  logo_image_path_ = *logo_image_path;
+
+  ImageDecoder::Cancel(logo_image_request_.get());
+  logo_bitmap_.reset();
+
+  base::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::ThreadPool(), base::MayBlock()},
+      base::BindOnce(&ReadFileToString, base::FilePath(*logo_image_path)),
+      base::BindOnce(&NTPSponsoredImagesBridge::OnGotImageFile,
+                     weak_factory_.GetWeakPtr(),
+                     base::Unretained(logo_image_request_.get())));
+}
+
+void NTPSponsoredImagesBridge::OnGotImageFile(
+    ImageDecoder::ImageRequest* request,
+    base::Optional<std::string> input) {
+  if (!input)
+    return;
+
+  ImageDecoder::Start(request, *input);
 }
 
 base::android::ScopedJavaLocalRef<jobject>
@@ -177,9 +164,12 @@ NTPSponsoredImagesBridge::CreateWallpaper() {
   JNIEnv* env = AttachCurrentThread();
 
   auto data = view_counter_service_->GetCurrentWallpaper();
-  if (data.is_none() || bitmap_.isNull())
+  if (data.is_none() || bitmap_.isNull()) {
     return base::android::ScopedJavaLocalRef<jobject>();
+  }
 
+  // TODO(bridiver) - need to either expose these constants or change this
+  // to a struct instead of base::Value
   auto focal_point_x = data.FindIntPath("focalPoint.x");
   auto focal_point_y = data.FindIntPath("focalPoint.y");
 
