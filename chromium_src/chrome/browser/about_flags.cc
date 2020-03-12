@@ -3,11 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_ads/common/features.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/ntp_sponsored_images/browser/features.h"
 #include "chrome/browser/about_flags.h"
 
+using brave_ads::features::kBravePublisherAds;
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using brave_sync::features::kBraveSync;
 using ntp_sponsored_images::features::kBraveNTPBrandedWallpaper;
@@ -26,6 +28,10 @@ using ntp_sponsored_images::features::kBraveNTPBrandedWallpaperDemo;
      flag_descriptions::kBraveAdblockCosmeticFilteringName,                \
      flag_descriptions::kBraveAdblockCosmeticFilteringDescription, kOsAll, \
      FEATURE_VALUE_TYPE(kBraveAdblockCosmeticFiltering)},                  \
+    {"brave-publisher-ads",                                                \
+     flag_descriptions::kBravePublisherAdsName,                            \
+     flag_descriptions::kBravePublisherAdsDescription, kOsAll,             \
+     FEATURE_VALUE_TYPE(kBravePublisherAds)},                              \
     {"brave-sync",                                                         \
      flag_descriptions::kBraveSyncName,                                    \
      flag_descriptions::kBraveSyncDescription, kOsDesktop,                 \

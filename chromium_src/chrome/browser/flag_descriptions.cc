@@ -6,6 +6,11 @@
 #include "../../../../chrome/browser/flag_descriptions.cc"
 
 namespace flag_descriptions {
+const char kBravePublisherAdsName[] =
+    "Brave Publisher Ads";
+const char kBravePublisherAdsDescription[] =
+    "Allow Brave to show ads on publisher websites where the publisher has opted-in to "
+    "display ads via Brave Rewards.";
 const char kBraveNTPBrandedWallpaperName[] =
     "New Tab Page Branded Wallpapers";
 const char kBraveNTPBrandedWallpaperDescription[] =
