@@ -328,7 +328,7 @@ void BraveNewTabMessageHandler::HandleGetBrandedWallpaperData(
   auto* service = ViewCounterServiceFactory::GetForProfile(profile_);
   ResolveJavascriptCallback(
       args->GetList()[0],
-      service ? service->GetCurrentWallpaper() : base::Value());
+      service ? service->GetCurrentWallpaperForDisplay() : base::Value());
 }
 
 void BraveNewTabMessageHandler::OnPrivatePropertiesChanged() {
