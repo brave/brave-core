@@ -9,7 +9,7 @@ function generateStaticImages (images: NewTab.Image[]) {
     Object.assign(staticImages, {
       [image.author]: {
         ...image,
-        source: require('../../../../img/newtab/' + image.source)
+        source: require('../../../../img/newtab/backgrounds/' + image.source)
       }
     })
   }

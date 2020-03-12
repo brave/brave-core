@@ -32,7 +32,7 @@ import {
   TurnOnAdsButton,
   UnsupportedMessage
 } from './style'
-import { StyledTitleTab } from '../exchange/style'
+import { StyledTitleTab } from '../widgetTitleTab'
 import Notification from './notification'
 import BrandedWallpaperNotification from './brandedWallpaperNotification'
 import { BatColorIcon, CloseStrokeIcon } from 'brave-ui/components/icons'

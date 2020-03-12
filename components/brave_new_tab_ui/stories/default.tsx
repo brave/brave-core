@@ -41,7 +41,6 @@ storiesOf('New Tab/Containers', module)
     const doNothing = (value: boolean) => value
     return (
       <NewTabPage
-        useTestingWidget={true}
         newTabData={getNewTabData(store.getState().newTabData as NewTab.State)}
         actions={actions}
         saveShowBackgroundImage={doNothing}

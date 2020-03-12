@@ -15,7 +15,6 @@ import {
   ClockWidget as Clock,
   ListWidget as List,
   RewardsWidget as Rewards,
-  ExchangeWidget as Exchange,
   WidgetStack
 } from '../../components/default'
 import * as Page from '../../components/default/page'
@@ -25,8 +24,6 @@ import VisibilityTimer from '../../helpers/visibilityTimer'
 interface Props {
   newTabData: NewTab.State
   actions: any
-  // This will be removed when the first exchange widget is added
-  useTestingWidget?: boolean
   saveShowBackgroundImage: (value: boolean) => void
   saveShowClock: (value: boolean) => void
   saveShowTopSites: (value: boolean) => void
@@ -239,30 +236,9 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   getCryptoContent () {
-    const { newTabData, useTestingWidget } = this.props
-    const { currentStackWidget } = newTabData
-
-    if (!useTestingWidget) {
-      return (
-        <>
-          {this.renderRewardsWidget(true)}
-        </>
-      )
-    }
-
     return (
       <>
-        {
-          currentStackWidget === 'rewards'
-          ? <>
-              {this.renderExchangeWidget(false)}
-              {this.renderRewardsWidget(true)}
-            </>
-          : <>
-              {this.renderRewardsWidget(false)}
-              {this.renderExchangeWidget(true)}
-            </>
-        }
+        {this.renderRewardsWidget(true)}
       </>
     )
   }
@@ -284,15 +260,6 @@ class NewTabPage extends React.Component<Props, State> {
           {this.getCryptoContent()}
         </WidgetStack>
       </Page.GridItemWidgetStack>
-    )
-  }
-
-  renderExchangeWidget (showContent: boolean) {
-    return (
-      <Exchange
-        showContent={showContent}
-        onShowContent={this.toggleStackWidget.bind(this, 'exchange')}
-      />
     )
   }
 
