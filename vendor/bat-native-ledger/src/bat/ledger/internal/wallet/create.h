@@ -27,8 +27,7 @@ class Create {
 
   ~Create();
 
-  void Start(const std::string& safetynet_token,
-      ledger::CreateWalletCallback callback);
+  void Start(ledger::CreateWalletCallback callback);
 
  private:
   std::string StringifyRequestCredentials(
@@ -46,12 +45,6 @@ class Create {
       ledger::CreateWalletCallback callback);
 
   void RegisterPersonaCallback(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
-      ledger::CreateWalletCallback callback);
-
-  void StartSafetyNetCallback(
       int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
