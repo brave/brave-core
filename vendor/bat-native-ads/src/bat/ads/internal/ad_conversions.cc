@@ -163,8 +163,8 @@ void AdConversions::StartTimer(
   const uint64_t now = Time::NowInSeconds();
 
   uint64_t start_timer_in;
-  if (info.timestamp_in_seconds < now) {
-    start_timer_in = now - info.timestamp_in_seconds;
+  if (now < info.timestamp_in_seconds) {
+    start_timer_in = info.timestamp_in_seconds - now;
   } else {
     start_timer_in = brave_base::random::Geometric(
         kExpiredAdConversionFrequency);
@@ -179,7 +179,7 @@ void AdConversions::StartTimer(
   BLOG(INFO) << "Started ad conversion timer for creative_instance_id "
       << info.creative_instance_id << " with creative set id "
           << info.creative_set_id << " which will trigger on "
-              << Time::FromDoubleT(now + start_timer_in);
+              << Time::FromDoubleT(info.timestamp_in_seconds);
 }
 
 void AdConversions::StopTimer() {
