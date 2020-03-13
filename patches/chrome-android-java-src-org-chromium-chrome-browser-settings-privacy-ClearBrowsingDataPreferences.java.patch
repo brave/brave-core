@@ -1,7 +1,16 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/privacy/ClearBrowsingDataPreferences.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/privacy/ClearBrowsingDataPreferences.java
-index aa86c648c6a067b09774afd718377ad1dd988857..ccdb785c842eed6fe6efa36dacb8928d93d63d62 100644
+index aa86c648c6a067b09774afd718377ad1dd988857..0aeb052218f4213f56dee5117fb83dd0c649c05a 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/privacy/ClearBrowsingDataPreferences.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/privacy/ClearBrowsingDataPreferences.java
+@@ -53,7 +53,7 @@ import java.util.Set;
+  * The user can choose which types of data to clear (history, cookies, etc), and the time range
+  * from which to clear data.
+  */
+-public abstract class ClearBrowsingDataPreferences extends PreferenceFragmentCompat
++public abstract class ClearBrowsingDataPreferences extends org.chromium.chrome.browser.settings.BravePreferenceFragment
+         implements BrowsingDataBridge.OnClearBrowsingDataListener,
+                    Preference.OnPreferenceClickListener, Preference.OnPreferenceChangeListener {
+     /**
 @@ -224,7 +224,7 @@ public abstract class ClearBrowsingDataPreferences extends PreferenceFragmentCom
      /**
       * @return All available {@link DialogOption} entries.

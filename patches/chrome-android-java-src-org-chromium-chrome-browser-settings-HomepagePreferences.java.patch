@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/HomepagePreferences.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/HomepagePreferences.java
+index 50b5ae811362e5a33e0cdcb32c549132d0bfe4d4..f9e426d7204fc2cf4efd575ffc5e89441707f729 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/settings/HomepagePreferences.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/HomepagePreferences.java
+@@ -17,7 +17,7 @@ import org.chromium.chrome.browser.partnercustomizations.HomepageManager;
+ /**
+  * Fragment that allows the user to configure homepage related preferences.
+  */
+-public class HomepagePreferences extends PreferenceFragmentCompat {
++public class HomepagePreferences extends org.chromium.chrome.browser.settings.BravePreferenceFragment {
+     @VisibleForTesting
+     public static final String PREF_HOMEPAGE_SWITCH = "homepage_switch";
+     private static final String PREF_HOMEPAGE_EDIT = "homepage_edit";
