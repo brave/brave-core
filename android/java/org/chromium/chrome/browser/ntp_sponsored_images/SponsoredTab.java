@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.ntp.sponsored;
+package org.chromium.chrome.browser.ntp_sponsored_images;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
-import org.chromium.chrome.browser.ntp.sponsored.NTPImage;
-import org.chromium.chrome.browser.ntp.sponsored.NTPUtil;
-import org.chromium.chrome.browser.ntp.sponsored.SponsoredImageUtil;
+import org.chromium.chrome.browser.ntp_sponsored_images.NTPImage;
+import org.chromium.chrome.browser.ntp_sponsored_images.NTPUtil;
+import org.chromium.chrome.browser.ntp_sponsored_images.SponsoredImageUtil;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.BraveRewardsHelper;

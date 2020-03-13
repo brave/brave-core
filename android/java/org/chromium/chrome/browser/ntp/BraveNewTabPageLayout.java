@@ -19,8 +19,8 @@ import org.chromium.chrome.browser.explore_sites.ExploreSitesBridge;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.tabmodel.TabModel;
-import org.chromium.chrome.browser.ntp.sponsored.SponsoredImageUtil;
-import org.chromium.chrome.browser.ntp.sponsored.NTPUtil;
+import org.chromium.chrome.browser.ntp_sponsored_images.SponsoredImageUtil;
+import org.chromium.chrome.browser.ntp_sponsored_images.NTPUtil;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 
 public class BraveNewTabPageLayout extends NewTabPageLayout {
