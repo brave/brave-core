@@ -195,13 +195,6 @@ class AdsImpl : public Ads {
   void CheckEasterEgg(
       const std::string& url);
 
-  void CheckAdConversion(
-      const std::string& url);
-  void OnGetAdConversions(
-      const std::string& url,
-      const Result result,
-      const AdConversionList& ad_conversions);
-
   void MaybeServeAdNotification(
       const bool should_serve);
   void ServeAdNotificationIfReady(

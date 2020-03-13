@@ -20,6 +20,18 @@ struct ADS_EXPORT AdConversionInfo {
       const AdConversionInfo& info);
   ~AdConversionInfo();
 
+  bool operator==(
+      const AdConversionInfo& rhs) const;
+
+  bool operator!=(
+      const AdConversionInfo& rhs) const;
+
+  enum class SortType {
+    kNone = 0,
+    kAscendingOrder,
+    kDescendingOrder
+  };
+
   std::string ToJson() const;
   Result FromJson(
       const std::string& json,
