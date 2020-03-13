@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/themes/ThemePreferences.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/themes/ThemePreferences.java
+index 4e0f8993097d6743d53d4d3bb3c3d1409d34d731..3d8501471fd9e41746c6f928063a4ad1010847aa 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/settings/themes/ThemePreferences.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/themes/ThemePreferences.java
+@@ -27,7 +27,7 @@ import java.lang.annotation.RetentionPolicy;
+ /**
+  * Fragment to manage the theme user settings.
+  */
+-public class ThemePreferences extends PreferenceFragmentCompat {
++public class ThemePreferences extends org.chromium.chrome.browser.settings.BravePreferenceFragment {
+     /**
+      * Theme preference variations. This is also used for histograms and should therefore be treated
+      * as append-only. See DarkThemePreferences in tools/metrics/histograms/enums.xml.

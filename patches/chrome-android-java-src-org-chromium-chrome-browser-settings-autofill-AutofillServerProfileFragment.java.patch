@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill/AutofillServerProfileFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill/AutofillServerProfileFragment.java
+index 35d3064b6677cef0ec948e7e4c9e55d53990f0db..7e19c21bad3d436957e0da56d07d5568c12de146 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill/AutofillServerProfileFragment.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill/AutofillServerProfileFragment.java
+@@ -21,7 +21,7 @@ import org.chromium.chrome.browser.settings.SettingsUtils;
+  * Fragment for settings page that allows user to view and edit a single server-provided address.
+  */
+ public class AutofillServerProfileFragment
+-        extends PreferenceFragmentCompat implements Preference.OnPreferenceClickListener {
++        extends org.chromium.chrome.browser.settings.BravePreferenceFragment implements Preference.OnPreferenceClickListener {
+     private String mGUID;
+ 
+     private static final String PREF_SERVER_PROFILE_DESCRIPTION = "server_profile_description";
