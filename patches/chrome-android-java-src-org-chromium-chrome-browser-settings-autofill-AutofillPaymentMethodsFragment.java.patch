@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill/AutofillPaymentMethodsFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill/AutofillPaymentMethodsFragment.java
+index a5c2fb39c7d9c8ded281a5d762a339126796313a..6961b911eec15cc13e9c0ca880ea5566d1264d99 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill/AutofillPaymentMethodsFragment.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill/AutofillPaymentMethodsFragment.java
+@@ -28,7 +28,7 @@ import org.chromium.chrome.browser.settings.ManagedPreferenceDelegate;
+  * Autofill credit cards fragment, which allows the user to edit credit cards and control
+  * payment apps.
+  */
+-public class AutofillPaymentMethodsFragment extends PreferenceFragmentCompat
++public class AutofillPaymentMethodsFragment extends org.chromium.chrome.browser.settings.BravePreferenceFragment
+         implements PersonalDataManager.PersonalDataManagerObserver {
+     private static final String PREF_PAYMENT_APPS = "payment_apps";
+ 

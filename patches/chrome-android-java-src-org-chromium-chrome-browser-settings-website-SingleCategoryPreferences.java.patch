@@ -1,0 +1,22 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/website/SingleCategoryPreferences.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/website/SingleCategoryPreferences.java
+index 0af515f4219a0ae9e8e14660e8c9df762fed1303..4d4ceb64ce56c8f392aa4a3c297223311ed2baa4 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/settings/website/SingleCategoryPreferences.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/website/SingleCategoryPreferences.java
+@@ -73,7 +73,7 @@ import java.util.Set;
+  * the websites with microphone permissions. When the user selects a site, SingleWebsitePreferences
+  * is launched to allow the user to see or modify the settings for that particular website.
+  */
+-public class SingleCategoryPreferences extends PreferenceFragmentCompat
++public class SingleCategoryPreferences extends org.chromium.chrome.browser.settings.BravePreferenceFragment
+         implements Preference.OnPreferenceChangeListener, Preference.OnPreferenceClickListener,
+                    AddExceptionPreference.SiteAddedCallback, View.OnClickListener,
+                    PreferenceManager.OnPreferenceTreeClickListener {
+@@ -402,7 +402,7 @@ public class SingleCategoryPreferences extends PreferenceFragmentCompat
+             if (queryHasChanged) getInfoForOrigins();
+             return true;
+         }
+-        return false;
++        return super.onOptionsItemSelected(item);
+     }
+ 
+     @Override

@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/sync/ManageSyncPreferences.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/sync/ManageSyncPreferences.java
+index f021570b9e1de46bacbed5e344e52147b0d5ebc4..4bfbaba81d63c0bd75a16fda33799b6ee8b5c6cf 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/settings/sync/ManageSyncPreferences.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/sync/ManageSyncPreferences.java
+@@ -49,7 +49,7 @@ import java.util.Set;
+  * Settings fragment to customize Sync options (data types, encryption). Can be accessed from
+  * {@link SyncAndServicesPreferences}.
+  */
+-public class ManageSyncPreferences extends PreferenceFragmentCompat
++public class ManageSyncPreferences extends org.chromium.chrome.browser.settings.BravePreferenceFragment
+         implements PassphraseDialogFragment.Listener, PassphraseCreationDialogFragment.Listener,
+                    PassphraseTypeDialogFragment.Listener, Preference.OnPreferenceChangeListener,
+                    ProfileSyncService.SyncStateChangedListener {
