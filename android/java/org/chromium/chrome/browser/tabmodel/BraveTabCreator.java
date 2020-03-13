@@ -16,10 +16,12 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabDelegateFactory;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.init.StartupTabPreloader;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.ntp.NewTabPage;
 import org.chromium.chrome.browser.util.UrlConstants;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.ntp_sponsored_images.SponsoredImageUtil;
+import org.chromium.chrome.browser.ntp_sponsored_images.NTPSponsoredImagesBridge;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 
 
@@ -46,10 +48,16 @@ public class BraveTabCreator extends ChromeTabCreator {
                     chromeTabbedActivity.hideOverview();
                 }
             } else {
+                initializeNTPBridge();
                 launchUrl(UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
             }
         } else {
+            initializeNTPBridge();
             launchUrl(UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
         }
+    }
+
+    private void initializeNTPBridge() {
+        NTPSponsoredImagesBridge.getInstance(Profile.getLastUsedProfile()).registerPageView();
     }
 }
