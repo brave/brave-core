@@ -18,6 +18,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader;
 
 import org.chromium.chrome.R;
+import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 
 import static org.chromium.chrome.browser.util.ViewUtils.dpToPx;
@@ -30,7 +31,8 @@ public class ImageUtils {
         return outputimage;
     }
 
-    public static Bitmap addGradient(Context context, Bitmap src, int gradientHeight) {
+    public static Bitmap addGradient(Bitmap src, int gradientHeight) {
+        Context context = ContextUtils.getApplicationContext();
         int w = src.getWidth();
         int h = src.getHeight();
         Bitmap result = Bitmap.createBitmap(src,0,0,w,h);
