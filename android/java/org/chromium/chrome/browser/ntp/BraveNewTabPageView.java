@@ -113,8 +113,6 @@ public class BraveNewTabPageView extends NewTabPageView {
         mTabImpl = (TabImpl) tab;
         mTab = tab;
 
-        mNTPSponsoredImagesBridge.registerPageView();
-
         if (mNTPSponsoredImagesBridge.getCurrentWallpaper() != null) {
             Log.i("NTP", "Wallpaper is not null");
         } else {
