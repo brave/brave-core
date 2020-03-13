@@ -23,6 +23,7 @@ void ClientMock::GeneratePastAdHistoryFromNow(
   auto ad_history = std::make_unique<AdHistory>();
   ad_history->uuid = base::GenerateGUID();
   ad_history->ad_content.uuid = uuid;
+  ad_history->ad_content.ad_action = ConfirmationType::VIEW;
 
   for (uint8_t i = 0; i < count; i++) {
     now_in_seconds -= time_offset_per_ad_in_seconds;
