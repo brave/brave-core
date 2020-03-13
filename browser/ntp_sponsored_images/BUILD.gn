@@ -24,13 +24,9 @@ source_set("ntp_sponsored_images") {
     ]
 
     deps += [
+      "//components/keyed_service/content",
+      "//components/keyed_service/core",
       "//brave/build/android:jni_headers",
-      "//ui/gfx",
-      "//url",
-    ]
-
-    public_deps = [
-      "//skia",
     ]
   }
 }
