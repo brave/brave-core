@@ -735,7 +735,7 @@ class RewardsServiceImpl : public RewardsService,
       ledger::ResultCallback callback) override;
 
   void GetAllUnblindedTokens(
-      ledger::GetAllUnblindedTokensCallback callback) override;
+      ledger::GetUnblindedTokenListCallback callback) override;
 
   void DeleteUnblindedTokens(
     const std::vector<std::string>& id_list,
@@ -778,6 +778,10 @@ class RewardsServiceImpl : public RewardsService,
       ledger::ResultCallback callback) override;
 
   void ReconcileStampReset() override;
+
+  void GetUnblindedTokensByPromotionType(
+      const std::vector<ledger::PromotionType>& promotion_types,
+      ledger::GetUnblindedTokenListCallback callback) override;
 
   // end ledger::LedgerClient
 
@@ -830,7 +834,7 @@ class RewardsServiceImpl : public RewardsService,
       ledger::PromotionPtr info);
 
   void OnGetAllUnblindedTokens(
-      ledger::GetAllUnblindedTokensCallback callback,
+      ledger::GetUnblindedTokenListCallback callback,
       ledger::UnblindedTokenList list);
 
   void OnGetAllPromotions(
@@ -876,6 +880,10 @@ class RewardsServiceImpl : public RewardsService,
   void OnGetContributionInfo(
       ledger::GetContributionInfoCallback callback,
       ledger::ContributionInfoPtr info);
+
+  void OnGetUnblindedTokensByPromotionType(
+      ledger::GetUnblindedTokenListCallback callback,
+      ledger::UnblindedTokenList list);
 
 #if defined(OS_ANDROID)
   ledger::Environment GetServerEnvironmentForAndroid();

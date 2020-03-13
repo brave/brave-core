@@ -93,7 +93,7 @@ private:
   void GetPromotion(const std::string& id, ledger::GetPromotionCallback callback) override;
   void DeletePromotionList(const std::vector<std::string>& id_list, ledger::ResultCallback callback) override;
   void SaveUnblindedTokenList(ledger::UnblindedTokenList list, ledger::ResultCallback callback) override;
-  void GetAllUnblindedTokens(ledger::GetAllUnblindedTokensCallback callback) override;
+  void GetAllUnblindedTokens(ledger::GetUnblindedTokenListCallback callback) override;
   void DeleteUnblindedTokens(const std::vector<std::string>& id_list, ledger::ResultCallback callback) override;
   void DeleteUnblindedTokensForPromotion(const std::string& promotion_id, ledger::ResultCallback callback) override;
   ledger::ClientInfoPtr GetClientInfo() override;
@@ -105,4 +105,5 @@ private:
   void UpdateContributionInfoStepAndCount(const std::string& contribution_id, const ledger::ContributionStep step, const int32_t retry_count, ledger::ResultCallback callback) override;
   void UpdateContributionInfoContributedAmount(const std::string& contribution_id, const std::string& publisher_key, ledger::ResultCallback callback) override;
   void ReconcileStampReset() override;
+  void GetUnblindedTokensByPromotionType(const std::vector<ledger::PromotionType>& promotion_types, ledger::GetUnblindedTokenListCallback callback) override;
 };

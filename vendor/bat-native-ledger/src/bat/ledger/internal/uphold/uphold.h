@@ -68,7 +68,6 @@ class Uphold {
 
   void TransferAnonToExternalWallet(
       ledger::ExternalWalletPtr wallet,
-      const bool allow_zero_balance,
       ledger::ExternalWalletCallback callback);
 
   void GenerateExternalWallet(

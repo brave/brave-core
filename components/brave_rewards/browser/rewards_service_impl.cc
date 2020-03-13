@@ -4304,7 +4304,7 @@ ledger::UnblindedTokenList GetAllUnblindedTokensOnFileTaskRunner(
 }
 
 void RewardsServiceImpl::GetAllUnblindedTokens(
-    ledger::GetAllUnblindedTokensCallback callback) {
+    ledger::GetUnblindedTokenListCallback callback) {
   base::PostTaskAndReplyWithResult(
     file_task_runner_.get(),
     FROM_HERE,
@@ -4316,7 +4316,7 @@ void RewardsServiceImpl::GetAllUnblindedTokens(
 }
 
 void RewardsServiceImpl::OnGetAllUnblindedTokens(
-    ledger::GetAllUnblindedTokensCallback callback,
+    ledger::GetUnblindedTokenListCallback callback,
     ledger::UnblindedTokenList list) {
   callback(std::move(list));
 }
@@ -4747,6 +4747,37 @@ void RewardsServiceImpl::ReconcileStampReset() {
   for (auto& observer : observers_) {
     observer.ReconcileStampReset();
   }
+}
+
+ledger::UnblindedTokenList GetUnblindedTokensByPromotionTypeOnFileTaskRunner(
+    PublisherInfoDatabase* backend,
+    const std::vector<ledger::PromotionType>& promotion_types) {
+  DCHECK(backend);
+  if (!backend) {
+    return {};
+  }
+
+  return backend->GetUnblindedTokensByPromotionType(promotion_types);
+}
+
+void RewardsServiceImpl::GetUnblindedTokensByPromotionType(
+    const std::vector<ledger::PromotionType>& promotion_types,
+    ledger::GetUnblindedTokenListCallback callback) {
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::BindOnce(&GetUnblindedTokensByPromotionTypeOnFileTaskRunner,
+        publisher_info_backend_.get(),
+        promotion_types),
+    base::BindOnce(&RewardsServiceImpl::OnGetUnblindedTokensByPromotionType,
+        AsWeakPtr(),
+        callback));
+}
+
+void RewardsServiceImpl::OnGetUnblindedTokensByPromotionType(
+    ledger::GetUnblindedTokenListCallback callback,
+    ledger::UnblindedTokenList list) {
+  callback(std::move(list));
 }
 
 }  // namespace brave_rewards

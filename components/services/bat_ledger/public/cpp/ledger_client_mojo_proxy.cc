@@ -1391,4 +1391,31 @@ void LedgerClientMojoProxy::ReconcileStampReset() {
   ledger_client_->ReconcileStampReset();
 }
 
+// static
+void LedgerClientMojoProxy::OnGetUnblindedTokensByPromotionType(
+    CallbackHolder<GetUnblindedTokensByPromotionTypeCallback>* holder,
+    ledger::UnblindedTokenList list) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(std::move(list));
+  }
+  delete holder;
+}
+
+void LedgerClientMojoProxy::GetUnblindedTokensByPromotionType(
+    const std::vector<ledger::PromotionType>& promotion_types,
+    GetUnblindedTokensByPromotionTypeCallback callback) {
+  auto* holder =
+      new CallbackHolder<GetUnblindedTokensByPromotionTypeCallback>(
+      AsWeakPtr(),
+      std::move(callback));
+  ledger_client_->GetUnblindedTokensByPromotionType(
+      promotion_types,
+      std::bind(
+          LedgerClientMojoProxy::OnGetUnblindedTokensByPromotionType,
+          holder,
+          _1));
+}
+
+
 }  // namespace bat_ledger

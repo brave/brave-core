@@ -1011,13 +1011,13 @@ void BatLedgerClientMojoProxy::SaveUnblindedTokenList(
 }
 
 void OnGetAllUnblindedTokens(
-    const ledger::GetAllUnblindedTokensCallback& callback,
+    const ledger::GetUnblindedTokenListCallback& callback,
     ledger::UnblindedTokenList list) {
   callback(std::move(list));
 }
 
 void BatLedgerClientMojoProxy::GetAllUnblindedTokens(
-    ledger::GetAllUnblindedTokensCallback callback) {
+    ledger::GetUnblindedTokenListCallback callback) {
   bat_ledger_client_->GetAllUnblindedTokens(
       base::BindOnce(&OnGetAllUnblindedTokens, std::move(callback)));
 }
@@ -1144,6 +1144,21 @@ void BatLedgerClientMojoProxy::UpdateContributionInfoContributedAmount(
 
 void BatLedgerClientMojoProxy::ReconcileStampReset() {
   bat_ledger_client_->ReconcileStampReset();
+}
+
+void OnGetUnblindedTokensByPromotionType(
+    ledger::GetUnblindedTokenListCallback callback,
+    ledger::UnblindedTokenList list) {
+  callback(std::move(list));
+}
+
+void BatLedgerClientMojoProxy::GetUnblindedTokensByPromotionType(
+    const std::vector<ledger::PromotionType>& promotion_types,
+    ledger::GetUnblindedTokenListCallback callback) {
+  bat_ledger_client_->GetUnblindedTokensByPromotionType(
+      promotion_types,
+      base::BindOnce(&OnGetUnblindedTokensByPromotionType,
+          std::move(callback)));
 }
 
 }  // namespace bat_ledger

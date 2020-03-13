@@ -49,6 +49,8 @@ bool UnBlindTokensMock(
 
 bool VerifyPublicKey(const ledger::PromotionPtr promotion);
 
+std::vector<ledger::PromotionType> GetEligiblePromotions();
+
 }  // namespace braveledger_promotion
 
 #endif  // BRAVELEDGER_PROMOTION_PROMOTION_UTIL_H_

@@ -139,6 +139,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/media/youtube.cc",
     "src/bat/ledger/internal/promotion/promotion.cc",
     "src/bat/ledger/internal/promotion/promotion.h",
+    "src/bat/ledger/internal/promotion/promotion_transfer.cc",
+    "src/bat/ledger/internal/promotion/promotion_transfer.h",
     "src/bat/ledger/internal/promotion/promotion_util.cc",
     "src/bat/ledger/internal/promotion/promotion_util.h",
     "src/bat/ledger/internal/properties/ballot_properties.cc",

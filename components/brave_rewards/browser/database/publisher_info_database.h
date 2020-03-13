@@ -164,6 +164,9 @@ class PublisherInfoDatabase {
       const std::string& contribution_id,
       const std::string& publisher_key);
 
+  ledger::UnblindedTokenList GetUnblindedTokensByPromotionType(
+      const std::vector<ledger::PromotionType>& promotion_types);
+
   // Vacuums the database. This will cause sqlite to defragment and collect
   // unused space in the file. It can be VERY SLOW.
   void Vacuum();

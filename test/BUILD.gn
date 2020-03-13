@@ -290,6 +290,7 @@ test("brave_unit_tests") {
     sources += [
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/contribution/contribution_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/contribution/contribution_unblinded_unittest.cc",
+      "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/contribution/contribution_util_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/contribution/phase_two_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/media/helper_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/media/reddit_unittest.cc",

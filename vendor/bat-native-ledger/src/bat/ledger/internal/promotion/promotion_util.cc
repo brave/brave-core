@@ -387,4 +387,10 @@ bool VerifyPublicKey(const ledger::PromotionPtr promotion) {
   return false;
 }
 
+std::vector<ledger::PromotionType> GetEligiblePromotions() {
+  return {
+    ledger::PromotionType::ADS
+  };
+}
+
 }  // namespace braveledger_promotion
