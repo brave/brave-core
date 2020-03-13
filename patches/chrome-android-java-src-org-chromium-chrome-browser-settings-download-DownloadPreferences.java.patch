@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/download/DownloadPreferences.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/download/DownloadPreferences.java
+index 5c14b8fde5af0866c03f1b000d8cbffd9f3b10a8..8d559ed6d43a3dc7baf5a39fd3bfa207c8806e28 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/settings/download/DownloadPreferences.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/download/DownloadPreferences.java
+@@ -21,7 +21,7 @@ import org.chromium.chrome.browser.settings.SettingsUtils;
+  * Fragment to keep track of all downloads related preferences.
+  */
+ public class DownloadPreferences
+-        extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
++        extends org.chromium.chrome.browser.settings.BravePreferenceFragment implements Preference.OnPreferenceChangeListener {
+     public static final String PREF_LOCATION_CHANGE = "location_change";
+     private static final String PREF_LOCATION_PROMPT_ENABLED = "location_prompt_enabled";
+     private static final String PREF_PREFETCHING_ENABLED = "prefetching_enabled";
