@@ -695,4 +695,11 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
         }
         return super.isShowingAppMenuUpdateBadge();
     }
+
+    @Override
+    public void onBottomToolbarVisibilityChanged(boolean isVisible) {
+        if (this instanceof ToolbarPhone && getMenuButtonWrapper() != null) {
+            getMenuButtonWrapper().setVisibility(isVisible ? View.GONE : View.VISIBLE);
+        }
+    }
 }
