@@ -9,7 +9,6 @@ package org.chromium.chrome.browser.ntp_sponsored_images;
 import android.support.annotation.Nullable;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
 import org.chromium.base.ObserverList;
 import org.chromium.base.ThreadUtils;
