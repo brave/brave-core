@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill_assistant/AutofillAssistantPreferences.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill_assistant/AutofillAssistantPreferences.java
+index 458cb97541b97d9fb6c85b1e3cfe4127c5ebe03f..2fd29187c995995ef63b3b2a52b135dbb57bed1b 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill_assistant/AutofillAssistantPreferences.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill_assistant/AutofillAssistantPreferences.java
+@@ -14,7 +14,7 @@ import org.chromium.chrome.R;
+ import org.chromium.chrome.browser.settings.ChromeSwitchPreference;
+ 
+ /** The "Autofill Assistant" preferences screen in Settings. */
+-public class AutofillAssistantPreferences extends PreferenceFragmentCompat {
++public class AutofillAssistantPreferences extends org.chromium.chrome.browser.settings.BravePreferenceFragment {
+     /** Autofill Assistant switch preference key name. */
+     public static final String PREF_AUTOFILL_ASSISTANT_SWITCH = "autofill_assistant_switch";
+ 

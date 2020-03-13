@@ -26,13 +26,14 @@ import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.BraveHomepagePreferences;
 import org.chromium.chrome.browser.settings.download.BraveDownloadPreferences;
 import org.chromium.chrome.browser.settings.privacy.BravePrivacyPreferences;
+import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
 
 import java.util.HashMap;
 
 // This exculdes some settings in main settings screen.
-public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
+public class BraveMainPreferencesBase extends BravePreferenceFragment {
     private static final String PREF_STANDARD_SEARCH_ENGINE = "standard_search_engine";
     private static final String PREF_PRIVATE_SEARCH_ENGINE = "private_search_engine";
     private static final String PREF_SEARCH_ENGINE_SECTION = "search_engine_section";

@@ -13,9 +13,10 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.settings.ChromeSwitchPreference;
 import org.chromium.chrome.browser.settings.SettingsUtils;
+import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 
 public class DesktopModePreferences
-        extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
+        extends BravePreferenceFragment implements Preference.OnPreferenceChangeListener {
     public static final String DESKTOP_MODE_KEY = "desktop_mode";
 
     @Override
