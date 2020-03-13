@@ -130,3 +130,7 @@ export const onPromotionFinish = (result: NewTab.RewardsResult, promotion: NewTa
   result,
   promotion
 })
+
+export const setCurrentStackWidget = (widgetId: NewTab.StackWidget) => action(types.SET_CURRENT_STACK_WIDGET, {
+  widgetId
+})
