@@ -62,6 +62,7 @@ void BraveTranslateIconView::UpdateImpl() {
   if (registry->GetInstalledExtension(google_translate_extension_id)) {
     SetVisible(false);
     TranslateBubbleView::CloseCurrentBubble();
+    return;
   }
 
   TranslateIconView::UpdateImpl();
