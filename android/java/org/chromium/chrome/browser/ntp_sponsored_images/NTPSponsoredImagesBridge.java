@@ -5,10 +5,8 @@
 
 package org.chromium.chrome.browser.ntp_sponsored_images;
 
-
-import android.support.annotation.Nullable;
-
 import android.graphics.Bitmap;
+import android.support.annotation.Nullable;
 
 import org.chromium.base.ObserverList;
 import org.chromium.base.ThreadUtils;
@@ -19,30 +17,28 @@ import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
 
 public class NTPSponsoredImagesBridge {
-    private final Profile mProfile;
     private long mNativeNTPSponsoredImagesBridge;
     private final ObserverList<NTPSponsoredImageServiceObserver> mObservers =
             new ObserverList<NTPSponsoredImageServiceObserver>();
-    private static NTPSponsoredImagesBridge sInstance;
 
     public static class Wallpaper extends NTPImage {
-        private Bitmap mBitmap;
+        private String mImagePath;
         private int mFocalPointX;
         private int mFocalPointY;
-        private Bitmap mLogoBitmap;
+        private String mLogoPath;
         private String mLogoDestinationUrl;
 
-        private Wallpaper(Bitmap bitmap, int focalPointX, int focalPointY,
-                          Bitmap logoBitmap, String logoDestinationUrl) {
-            mBitmap = bitmap;
+        private Wallpaper(String imagePath, int focalPointX, int focalPointY,
+                          String logoPath, String logoDestinationUrl) {
+            mImagePath = imagePath;
             mFocalPointX = focalPointX;
             mFocalPointY = focalPointY;
-            mLogoBitmap = logoBitmap;
+            mLogoPath = logoPath;
             mLogoDestinationUrl = logoDestinationUrl;
         }
 
-        public Bitmap getBitmap() {
-            return mBitmap;
+        public String getImagePath() {
+            return mImagePath;
         }
 
         public int getFocalPointX() {
@@ -53,12 +49,20 @@ public class NTPSponsoredImagesBridge {
             return mFocalPointY;
         }
 
-        public Bitmap getLogoBitmap() {
-            return mLogoBitmap;
+        public String getLogoPath() {
+            return mLogoPath;
         }
 
         public String getLogoDestinationUrl() {
             return mLogoDestinationUrl;
+        }
+
+        public Bitmap getBitmap() {
+            return null;
+        }
+
+        public Bitmap getLogoBitmap() {
+            return null;
         }
     }
 
@@ -66,31 +70,22 @@ public class NTPSponsoredImagesBridge {
         public abstract void onUpdated();
     }
 
-    public NTPSponsoredImagesBridge(Profile profile) {
+    public NTPSponsoredImagesBridge(long nativeNTPSponsoredImagesBridge) {
         ThreadUtils.assertOnUiThread();
-        mProfile = profile;
-        mNativeNTPSponsoredImagesBridge =
-            NTPSponsoredImagesBridgeJni.get().init(
-                    NTPSponsoredImagesBridge.this, profile);
+        mNativeNTPSponsoredImagesBridge = nativeNTPSponsoredImagesBridge;
     }
 
-    public static NTPSponsoredImagesBridge getInstance(Profile profile) {
-        if (sInstance == null) {
-            sInstance = new NTPSponsoredImagesBridge(profile);
-        }
-        return sInstance;
+    @CalledByNative
+    private static NTPSponsoredImagesBridge create(long nativeNTPSponsoredImagesBridge) {
+        return new NTPSponsoredImagesBridge(nativeNTPSponsoredImagesBridge);
     }
 
     /**
      * Destroys this instance so no further calls can be executed.
      */
+    @CalledByNative
     public void destroy() {
-        if (mNativeNTPSponsoredImagesBridge != 0) {
-            NTPSponsoredImagesBridgeJni.get().destroy(
-                    mNativeNTPSponsoredImagesBridge,
-                    NTPSponsoredImagesBridge.this);
-            mNativeNTPSponsoredImagesBridge = 0;
-        }
+        mNativeNTPSponsoredImagesBridge = 0;
         mObservers.clear();
     }
 
@@ -108,15 +103,19 @@ public class NTPSponsoredImagesBridge {
         mObservers.removeObserver(observer);
     }
 
-    static public boolean enableSponsoredImages(Profile profile) {
+    static public boolean enableSponsoredImages() {
         // return BravePrefServiceBridge.getInstance().getSafetynetCheckFailed();
         return true;
+    }
+
+    static public NTPSponsoredImagesBridge getInstance(Profile profile)  {
+        return NTPSponsoredImagesBridgeJni.get().getInstance(profile);
     }
 
     @Nullable
     public Wallpaper getCurrentWallpaper() {
         ThreadUtils.assertOnUiThread();
-        if (enableSponsoredImages(mProfile)) {
+        if (enableSponsoredImages()) {
             return NTPSponsoredImagesBridgeJni.get().getCurrentWallpaper(
                 mNativeNTPSponsoredImagesBridge, NTPSponsoredImagesBridge.this);
         } else {
@@ -131,10 +130,10 @@ public class NTPSponsoredImagesBridge {
 
     @CalledByNative
     public static Wallpaper createWallpaper(
-            Bitmap bitmap, int focalPointX, int focalPointY,
-            Bitmap logoBitmap, String logoDestinationUrl) {
-        return new Wallpaper(bitmap, focalPointX, focalPointY,
-                             logoBitmap, logoDestinationUrl);
+            String imagePath, int focalPointX, int focalPointY,
+            String logoPath, String logoDestinationUrl) {
+        return new Wallpaper(imagePath, focalPointX, focalPointY,
+                             logoPath, logoDestinationUrl);
     }
 
     @CalledByNative
@@ -146,9 +145,7 @@ public class NTPSponsoredImagesBridge {
 
     @NativeMethods
     interface Natives {
-        long init(NTPSponsoredImagesBridge caller, Profile profile);
-        void destroy(long nativeNTPSponsoredImagesBridge,
-                     NTPSponsoredImagesBridge caller);
+        NTPSponsoredImagesBridge getInstance(Profile profile);
         Wallpaper getCurrentWallpaper(long nativeNTPSponsoredImagesBridge,
                                       NTPSponsoredImagesBridge caller);
         void registerPageView(long nativeNTPSponsoredImagesBridge,

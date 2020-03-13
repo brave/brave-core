@@ -22,9 +22,9 @@
 #include "brave/build/android/jni_headers/NTPSponsoredImagesBridge_jni.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_android.h"
+#include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
-#include "third_party/skia/include/core/SkBitmap.h"
-#include "ui/gfx/android/java_bitmap.h"
 
 using base::android::AttachCurrentThread;
 using base::android::ConvertUTF8ToJavaString;
@@ -37,119 +37,75 @@ using ntp_sponsored_images::NTPSponsoredImagesService;
 using ntp_sponsored_images::ViewCounterService;
 using ntp_sponsored_images::ViewCounterServiceFactory;
 
-namespace {
+namespace ntp_sponsored_images {
 
-base::Optional<std::string> ReadFileToString(const base::FilePath& path) {
-  std::string contents;
-  if (!base::ReadFileToString(path, &contents))
-    return base::Optional<std::string>();
-  return contents;
+NTPSponsoredImagesBridgeFactory::NTPSponsoredImagesBridgeFactory()
+    : BrowserContextKeyedServiceFactory(
+          "NTPSponsoredImagesBridge",
+          BrowserContextDependencyManager::GetInstance()) {}
+NTPSponsoredImagesBridgeFactory::~NTPSponsoredImagesBridgeFactory() {}
+
+// static
+NTPSponsoredImagesBridge*
+NTPSponsoredImagesBridgeFactory::GetForProfile(Profile* profile) {
+  return static_cast<NTPSponsoredImagesBridge*>(
+      GetInstance()->GetServiceForBrowserContext(profile, true));
+}
+
+// static
+NTPSponsoredImagesBridgeFactory*
+NTPSponsoredImagesBridgeFactory::GetInstance() {
+  return base::Singleton<NTPSponsoredImagesBridgeFactory>::get();
+}
+
+KeyedService* NTPSponsoredImagesBridgeFactory::BuildServiceInstanceFor(
+      content::BrowserContext* context) const {
+  return new NTPSponsoredImagesBridge(Profile::FromBrowserContext(context));
+}
+
+bool
+NTPSponsoredImagesBridgeFactory::ServiceIsCreatedWithBrowserContext() const {
+  return true;
 }
 
 }  // namespace
 
-NTPSponsoredImagesBridge::NTPImageRequest::NTPImageRequest(SkBitmap* bitmap)
-    : bitmap_(bitmap) {}
-
-NTPSponsoredImagesBridge::NTPImageRequest::~NTPImageRequest() {}
-
-void NTPSponsoredImagesBridge::NTPImageRequest::OnImageDecoded(
-    const SkBitmap& bitmap) {
-  *bitmap_ = bitmap;
-}
-
-NTPSponsoredImagesBridge::NTPSponsoredImagesBridge(JNIEnv* env,
-                               const JavaRef<jobject>& obj,
-                               const JavaRef<jobject>& j_profile)
-    : weak_java_ref_(env, obj),
-      view_counter_service_(NULL),
-      sponsored_images_service_(NULL),
-      image_request_(new NTPImageRequest(&bitmap_)),
-      logo_image_request_(new NTPImageRequest(&logo_bitmap_)),
-      weak_factory_(this) {
+NTPSponsoredImagesBridge::NTPSponsoredImagesBridge(Profile* profile)
+    : profile_(profile),
+      view_counter_service_(ViewCounterServiceFactory::GetForProfile(profile_)),
+      sponsored_images_service_(
+          g_brave_browser_process->ntp_sponsored_images_service()) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  profile_ = ProfileAndroid::FromProfileAndroid(j_profile);
-  view_counter_service_ = ViewCounterServiceFactory::GetForProfile(profile_);
-  sponsored_images_service_ =
-      g_brave_browser_process->ntp_sponsored_images_service();
+
+  java_object_.Reset(Java_NTPSponsoredImagesBridge_create(
+      AttachCurrentThread(), reinterpret_cast<intptr_t>(this)));
 
   sponsored_images_service_->AddObserver(this);
-  // preload the first image if available
-  PreloadImageIfNeeded();
 }
 
 NTPSponsoredImagesBridge::~NTPSponsoredImagesBridge() {
-  ImageDecoder::Cancel(image_request_.get());
-  ImageDecoder::Cancel(logo_image_request_.get());
   sponsored_images_service_->RemoveObserver(this);
+  Java_NTPSponsoredImagesBridge_destroy(AttachCurrentThread(), java_object_);
 }
 
-void NTPSponsoredImagesBridge::Destroy(JNIEnv*, const JavaParamRef<jobject>&) {
-  delete this;
+static base::android::ScopedJavaLocalRef<jobject>
+JNI_NTPSponsoredImagesBridge_GetInstance(JNIEnv* env,
+                                      const JavaParamRef<jobject>& j_profile) {
+  return NTPSponsoredImagesBridge::GetInstance(env, j_profile);
 }
 
-static jlong JNI_NTPSponsoredImagesBridge_Init(JNIEnv* env,
-                                     const JavaParamRef<jobject>& obj,
-                                     const JavaParamRef<jobject>& j_profile) {
-  NTPSponsoredImagesBridge* delegate =
-      new NTPSponsoredImagesBridge(env, obj, j_profile);
-  return reinterpret_cast<intptr_t>(delegate);
+base::android::ScopedJavaLocalRef<jobject>
+NTPSponsoredImagesBridge::GetInstance(JNIEnv* env,
+                                      const JavaParamRef<jobject>& j_profile) {
+  auto* profile = ProfileAndroid::FromProfileAndroid(j_profile);
+  return ntp_sponsored_images::NTPSponsoredImagesBridgeFactory::GetInstance()
+             ->GetForProfile(profile)->java_object_;
 }
 
 void NTPSponsoredImagesBridge::RegisterPageView(
     JNIEnv* env, const JavaParamRef<jobject>& obj) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   view_counter_service_->RegisterPageView();
-  // preload the next image
-  PreloadImageIfNeeded();
-}
-
-void NTPSponsoredImagesBridge::PreloadImageIfNeeded() {
-  auto data = view_counter_service_->GetCurrentWallpaper();
-  if (data.is_none())
-    return;
-
-  // TODO(bridiver) - need to either expose these constants or change this
-  // to a struct instead of base::Value
-  std::string* image_path = data.FindStringPath("wallpaperImagePath");
-  if (!image_path || *image_path == image_path_)
-    return;
-  image_path_ = *image_path;
-
-  ImageDecoder::Cancel(image_request_.get());
-  bitmap_.reset();
-
-  base::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::ThreadPool(), base::MayBlock()},
-      base::BindOnce(&ReadFileToString, base::FilePath(image_path_)),
-      base::BindOnce(&NTPSponsoredImagesBridge::OnGotImageFile,
-                     weak_factory_.GetWeakPtr(),
-                     base::Unretained(image_request_.get())));
-
-  auto* logo_image_path = data.FindStringPath("logo.imagePath");
-  if (!logo_image_path || *logo_image_path == logo_image_path_)
-    return;
-
-  logo_image_path_ = *logo_image_path;
-
-  ImageDecoder::Cancel(logo_image_request_.get());
-  logo_bitmap_.reset();
-
-  base::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::ThreadPool(), base::MayBlock()},
-      base::BindOnce(&ReadFileToString, base::FilePath(*logo_image_path)),
-      base::BindOnce(&NTPSponsoredImagesBridge::OnGotImageFile,
-                     weak_factory_.GetWeakPtr(),
-                     base::Unretained(logo_image_request_.get())));
-}
-
-void NTPSponsoredImagesBridge::OnGotImageFile(
-    ImageDecoder::ImageRequest* request,
-    base::Optional<std::string> input) {
-  if (!input)
-    return;
-
-  ImageDecoder::Start(request, *input);
 }
 
 base::android::ScopedJavaLocalRef<jobject>
@@ -157,22 +113,26 @@ NTPSponsoredImagesBridge::CreateWallpaper() {
   JNIEnv* env = AttachCurrentThread();
 
   auto data = view_counter_service_->GetCurrentWallpaperForDisplay();
-  if (data.is_none() || bitmap_.isNull() || logo_bitmap_.isNull()) {
+  if (data.is_none())
     return base::android::ScopedJavaLocalRef<jobject>();
-  }
 
   // TODO(bridiver) - need to either expose these constants or change this
   // to a struct instead of base::Value
+  auto* image_path = data.FindStringPath("wallpaperImagePath");
+  auto* logo_image_path = data.FindStringPath("logo.imagePath");
+  if (!image_path || !logo_image_path)
+    return base::android::ScopedJavaLocalRef<jobject>();
+
   auto focal_point_x = data.FindIntPath("focalPoint.x");
   auto focal_point_y = data.FindIntPath("focalPoint.y");
   auto* logo_destination_url = data.FindStringPath("logo.destinationUrl");
 
   return Java_NTPSponsoredImagesBridge_createWallpaper(
       env,
-      gfx::ConvertToJavaBitmap(&bitmap_),
+      ConvertUTF8ToJavaString(env, *image_path),
       focal_point_x ? *focal_point_x : 0,
       focal_point_y ? *focal_point_y : 0,
-      gfx::ConvertToJavaBitmap(&logo_bitmap_),
+      ConvertUTF8ToJavaString(env, *logo_image_path),
       ConvertUTF8ToJavaString(env, logo_destination_url ? *logo_destination_url
                                                         : ""));
 }
@@ -185,14 +145,6 @@ NTPSponsoredImagesBridge::GetCurrentWallpaper(
 }
 
 void NTPSponsoredImagesBridge::OnUpdated(NTPSponsoredImagesData* data) {
-  // preload the first image
-  PreloadImageIfNeeded();
-
   JNIEnv* env = AttachCurrentThread();
-
-  ScopedJavaLocalRef<jobject> obj = weak_java_ref_.get(env);
-  if (obj.is_null())
-    return;
-
-  Java_NTPSponsoredImagesBridge_onUpdated(env, obj);
+  Java_NTPSponsoredImagesBridge_onUpdated(env, java_object_);
 }

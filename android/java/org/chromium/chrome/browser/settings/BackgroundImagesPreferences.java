@@ -24,6 +24,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 public class BackgroundImagesPreferences extends BravePreferenceFragment
         implements OnPreferenceChangeListener {
 
+    // deprecated preferences from browser-android-tabs
     public static final String PREF_SHOW_BACKGROUND_IMAGES = "show_background_images";
     public static final String PREF_SHOW_SPONSORED_IMAGES = "show_sponsored_images";
     public static final String PREF_SHOW_NON_DISTRUPTIVE_BANNER = "show_non_distruptive_banner";
@@ -39,7 +40,7 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
         super.onCreate(savedInstanceState);
         getActivity().setTitle(R.string.prefs_new_tab_page);
         SettingsUtils.addPreferencesFromResource(this, R.xml.background_images_preferences);
-        if (!NTPSponsoredImagesBridge.enableSponsoredImages(Profile.getLastUsedProfile())) {
+        if (!NTPSponsoredImagesBridge.enableSponsoredImages()) {
             removePreferenceIfPresent(PREF_SHOW_SPONSORED_IMAGES);
         }
     }
