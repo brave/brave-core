@@ -10,15 +10,13 @@
 #include <string>
 
 #include "base/android/jni_android.h"
-#include "base/android/jni_weak_ref.h"
 #include "base/compiler_specific.h"
 #include "base/macros.h"
-#include "base/memory/weak_ptr.h"
+#include "base/memory/singleton.h"
 #include "base/optional.h"
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_service.h"
-#include "chrome/browser/image_decoder.h"
-#include "third_party/skia/include/core/SkBitmap.h"
-#include "url/gurl.h"
+#include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+#include "components/keyed_service/core/keyed_service.h"
 
 class Profile;
 
@@ -31,13 +29,14 @@ using ntp_sponsored_images::NTPSponsoredImagesData;
 using ntp_sponsored_images::NTPSponsoredImagesService;
 using ntp_sponsored_images::ViewCounterService;
 
-class NTPSponsoredImagesBridge : public NTPSponsoredImagesService::Observer {
+class NTPSponsoredImagesBridge : public NTPSponsoredImagesService::Observer,
+                                 public KeyedService {
  public:
-  NTPSponsoredImagesBridge(JNIEnv* env,
-                 const base::android::JavaRef<jobject>& obj,
-                 const base::android::JavaRef<jobject>& j_profile);
+  NTPSponsoredImagesBridge(Profile* profile);
   ~NTPSponsoredImagesBridge() override;
-  void Destroy(JNIEnv*, const base::android::JavaParamRef<jobject>&);
+
+  static base::android::ScopedJavaLocalRef<jobject> GetInstance(JNIEnv* env,
+      const base::android::JavaParamRef<jobject>& j_profile);
 
   void RegisterPageView(JNIEnv* env,
                         const base::android::JavaParamRef<jobject>& obj);
@@ -45,41 +44,39 @@ class NTPSponsoredImagesBridge : public NTPSponsoredImagesService::Observer {
       JNIEnv* env, const base::android::JavaParamRef<jobject>& obj);
 
  private:
-  class NTPImageRequest : public ImageDecoder::ImageRequest {
-   public:
-    NTPImageRequest(SkBitmap* bitmap);
-    ~NTPImageRequest() override;
-
-    void OnImageDecoded(const SkBitmap& bitmap) override;
-
-   private:
-    SkBitmap* bitmap_;
-
-    DISALLOW_COPY_AND_ASSIGN(NTPImageRequest);
-  };
-
   void OnUpdated(NTPSponsoredImagesData* data) override;
   base::android::ScopedJavaLocalRef<jobject> CreateWallpaper();
-  void PreloadImageIfNeeded();
-  void OnGotImageFile(ImageDecoder::ImageRequest* request,
-                      base::Optional<std::string> input);
 
   Profile* profile_;
-  JavaObjectWeakGlobalRef weak_java_ref_;
   ViewCounterService* view_counter_service_;
   NTPSponsoredImagesService* sponsored_images_service_;
-
-  std::unique_ptr<NTPImageRequest> image_request_;
-  std::unique_ptr<NTPImageRequest> logo_image_request_;
-
-  std::string image_path_;
-  std::string logo_image_path_;
-  SkBitmap bitmap_;
-  SkBitmap logo_bitmap_;
-
-  base::WeakPtrFactory<NTPSponsoredImagesBridge> weak_factory_;
+  base::android::ScopedJavaLocalRef<jobject> java_object_;
 
   DISALLOW_COPY_AND_ASSIGN(NTPSponsoredImagesBridge);
 };
+
+namespace ntp_sponsored_images {
+
+class NTPSponsoredImagesBridgeFactory
+    : public BrowserContextKeyedServiceFactory {
+ public:
+  static NTPSponsoredImagesBridgeFactory* GetInstance();
+  static NTPSponsoredImagesBridge* GetForProfile(Profile* profile);
+
+ private:
+  friend struct base::DefaultSingletonTraits<NTPSponsoredImagesBridgeFactory>;
+
+  NTPSponsoredImagesBridgeFactory();
+  ~NTPSponsoredImagesBridgeFactory() override;
+
+  // BrowserContextKeyedServiceFactory:
+  KeyedService* BuildServiceInstanceFor(
+      content::BrowserContext* context) const override;
+  bool ServiceIsCreatedWithBrowserContext() const override;
+
+  DISALLOW_COPY_AND_ASSIGN(NTPSponsoredImagesBridgeFactory);
+};
+
+}  // namespace ntp_sponsored_images
 
 #endif  // BRAVE_BROWSER_NTP_SPONSORED_IMAGES_BROWSER_ANDROID_NTP_SPONSORED_IMAGES_BRIDGE_H_
