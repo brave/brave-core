@@ -72,8 +72,13 @@ extern const char kSyncMigrateBookmarksVersion[];
 extern const char kSyncRecordsToResend[];
 // Meta info of kSyncRecordsToResend
 extern const char kSyncRecordsToResendMeta[];
-// Flag indicates we had recovered duplicated bookmarks object ids
-extern const char kDuplicatedBookmarksRecovered[];
+// Flag indicates we had recovered duplicated bookmarks object ids (deprecated)
+// extern const char kDuplicatedBookmarksRecovered[];  // deprecated
+
+// Version indicates had recovered duplicated bookmarks object ids:
+// 1 - we had migrated object ids
+// 2 - we have migrated broken bookmarks orders
+extern const char kDuplicatedBookmarksMigrateVersion[];
 
 class Prefs {
  public:

@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <map>
+#include <set>
 #include <utility>
 #include <vector>
 
@@ -167,18 +168,19 @@ SyncRecordPtr PrepareResolvedDevice(SyncDevice* device,
   return record;
 }
 
-struct BookmarkByDateAddedComparator {
+struct IndexInParentComparator {
   bool operator()(const bookmarks::BookmarkNode* lhs,
                   const bookmarks::BookmarkNode* rhs) const {
     DCHECK(lhs);
     DCHECK(rhs);
-    DCHECK(!tools::IsTimeEmpty(lhs->date_added()));
-    DCHECK(!tools::IsTimeEmpty(rhs->date_added()));
-    return lhs->date_added() < rhs->date_added();
+    // Nodes equal by object_id we want to sort by index in parent
+    // We need that to make easier the assigning of orders in the case
+    // when orders would be re-calculated on migration of object_id
+    return lhs->parent()->GetIndexOf(lhs) < rhs->parent()->GetIndexOf(rhs);
   }
 };
-using SortedNodes =
-    std::set<const bookmarks::BookmarkNode*, BookmarkByDateAddedComparator>;
+using SortedNodes = std::multiset<const bookmarks::BookmarkNode*,
+                                  IndexInParentComparator>;
 using ObjectIdToNodes = std::map<std::string, SortedNodes>;
 
 void FillObjectsMap(const bookmarks::BookmarkNode* parent,
@@ -202,17 +204,15 @@ void ClearDuplicatedNodes(ObjectIdToNodes* object_id_nodes,
        it_object_id != object_id_nodes->end(); ++it_object_id) {
     const SortedNodes& nodes = it_object_id->second;
     if (nodes.size() > 1) {
-      // Nodes are sorted from oldest to newest, go to the second by age
-      SortedNodes::iterator it_nodes = nodes.begin();
-      ++it_nodes;
-      for (; it_nodes != nodes.end(); ++it_nodes) {
+      // Re-create all group of nodes which have the same object_id
+      for (SortedNodes::iterator it_nodes = nodes.begin();
+           it_nodes != nodes.end(); ++it_nodes) {
         const bookmarks::BookmarkNode* node = *it_nodes;
         // Copy and delete node
         const auto* parent = node->parent();
         size_t original_index = parent->GetIndexOf(node);
         model->Copy(node, parent, original_index);
         model->Remove(node);
-        brave_sync::AddBraveMetaInfo(parent->children()[original_index].get());
       }
     }
   }
@@ -815,9 +815,10 @@ void BraveProfileSyncServiceImpl::MigrateDuplicatedBookmarksObjectIds(
   DCHECK(model);
   DCHECK(model->loaded());
 
-  bool duplicated_bookmarks_recovered =
-      profile->GetPrefs()->GetBoolean(prefs::kDuplicatedBookmarksRecovered);
-  if (duplicated_bookmarks_recovered) {
+  int migrated_version = profile->GetPrefs()->GetInteger(
+      prefs::kDuplicatedBookmarksMigrateVersion);
+
+  if (migrated_version >= 1) {
     return;
   }
 
@@ -829,7 +830,7 @@ void BraveProfileSyncServiceImpl::MigrateDuplicatedBookmarksObjectIds(
   FillObjectsMap(model->root_node(), &object_id_nodes);
   ClearDuplicatedNodes(&object_id_nodes, model);
 
-  profile->GetPrefs()->SetBoolean(prefs::kDuplicatedBookmarksRecovered, true);
+  profile->GetPrefs()->SetInteger(prefs::kDuplicatedBookmarksMigrateVersion, 1);
 }
 
 std::unique_ptr<SyncRecord>

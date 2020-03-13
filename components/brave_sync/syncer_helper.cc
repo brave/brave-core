@@ -103,8 +103,8 @@ void AddBraveMetaInfo(const bookmarks::BookmarkNode* node) {
   DCHECK(!sync_timestamp.empty());
   // Set other_node to have same sync_timestamp as least added child
   if (node->parent()->type() == bookmarks::BookmarkNode::OTHER_NODE) {
-    tools::AsMutable(node->parent())->SetMetaInfo("sync_timestamp",
-                                                  sync_timestamp);
+    tools::AsMutable(node->parent())
+        ->SetMetaInfo("sync_timestamp", sync_timestamp);
   }
 }
 
