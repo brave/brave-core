@@ -205,6 +205,29 @@ export interface ContentScriptsLoaded {
   (tabId: number, url: string): ContentScriptsLoadedReturn
 }
 
+export interface ShieldsPanelActionTypes {
+  shieldsPanelDataUpdated: ShieldsPanelDataUpdated
+  shieldsToggled: ShieldsToggled
+  reportBrokenSite: ReportBrokenSite
+  resourceBlocked: ResourceBlocked
+  blockAdsTrackers: BlockAdsTrackers
+  controlsToggled: ControlsToggled
+  httpsEverywhereToggled: HttpsEverywhereToggled
+  blockJavaScript: BlockJavaScript
+  blockFingerprinting: BlockFingerprinting
+  blockCookies: BlockCookies
+  allowScriptOriginsOnce: AllowScriptOriginsOnce
+  setScriptBlockedCurrentState: SetScriptBlockedCurrentState
+  setGroupedScriptsBlockedCurrentState: SetGroupedScriptsBlockedCurrentState
+  setAllScriptsBlockedCurrentState: SetAllScriptsBlockedCurrentState
+  setFinalScriptsBlockedState: SetFinalScriptsBlockedState
+  setAdvancedViewFirstAccess: SetAdvancedViewFirstAccess
+  shieldsReady: ShieldsReady
+  generateClassIdStylesheet: GenerateClassIdStylesheet
+  cosmeticFilterRuleExceptions: CosmeticFilterRuleExceptions
+  contentScriptsLoaded: ContentScriptsLoaded
+}
+
 export type shieldPanelActions =
   ShieldsPanelDataUpdatedReturn |
   ShieldsToggledReturn |

@@ -18,5 +18,10 @@ export interface SettingsDidChange {
   (settings: Settings): SetStoreSettingsChangeReturn
 }
 
+export interface SettingsActionsTypes {
+  setStoreSettingsChange: SetStoreSettingsChange
+  settingsDidChange: SettingsDidChange
+}
+
 export type settingsActions =
   SetStoreSettingsChangeReturn

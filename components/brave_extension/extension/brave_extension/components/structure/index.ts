@@ -249,8 +249,8 @@ export const BlockedListContent = styled<{}, 'div'>('div')`
   top: 0;
   left: 0;
   background: ${p => p.theme.color.panelBackground};
-  width: 100%;
-  height: 100%;
+  width: 370px;
+  height: fit-content;
   z-index: 2;
   cursor: default;
 `

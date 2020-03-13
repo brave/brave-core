@@ -7,6 +7,7 @@ import AdsTrackersControl, { Props } from '../../../../../brave_extension/extens
 import { BlockOptions } from '../../../../../brave_extension/extension/brave_extension/types/other/blockTypes'
 import * as actionTypes from '../../../../../brave_extension/extension/brave_extension/constants/shieldsPanelTypes'
 import { shallow } from 'enzyme'
+import { ShieldsPanelActionTypes } from '../../../../../brave_extension/extension/brave_extension/types/actions/shieldsPanelActions'
 
 const fakeProps: Props = {
   isBlockedListOpen: true,
@@ -19,7 +20,9 @@ const fakeProps: Props = {
   trackers: 'allow',
   trackersBlocked: 0,
   trackersBlockedResources: [],
-  blockAdsTrackers: (setting: BlockOptions) => ({ type: actionTypes.BLOCK_ADS_TRACKERS, setting })
+  actions: {
+    blockAdsTrackers: (setting: BlockOptions) => ({ type: actionTypes.BLOCK_ADS_TRACKERS, setting })
+  } as ShieldsPanelActionTypes
 }
 
 describe('AdvancedView AdsTrackersControl component', () => {
@@ -35,7 +38,7 @@ describe('AdvancedView AdsTrackersControl component', () => {
   describe('ad control', () => {
     it('responds to the onChange event', () => {
       const value = { target: { value: true } }
-      const onChangeAdControlSelectOptions = jest.spyOn(fakeProps, 'blockAdsTrackers')
+      const onChangeAdControlSelectOptions = jest.spyOn(fakeProps.actions, 'blockAdsTrackers')
       const newProps = Object.assign(fakeProps, {
         blockAdsTrackers: onChangeAdControlSelectOptions
       })

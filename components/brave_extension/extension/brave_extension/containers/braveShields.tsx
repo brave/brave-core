@@ -17,46 +17,15 @@ import * as shieldsAPI from '../background/api/shieldsAPI'
 
 // Types
 import { Tab, PersistentData } from '../types/state/shieldsPannelState'
-import {
-  ShieldsToggled,
-  ReportBrokenSite,
-  BlockAdsTrackers,
-  HttpsEverywhereToggled,
-  BlockJavaScript,
-  BlockFingerprinting,
-  BlockCookies,
-  AllowScriptOriginsOnce,
-  SetScriptBlockedCurrentState,
-  SetGroupedScriptsBlockedCurrentState,
-  SetAllScriptsBlockedCurrentState,
-  SetFinalScriptsBlockedState,
-  SetAdvancedViewFirstAccess,
-  ShieldsReady
-} from '../types/actions/shieldsPanelActions'
-import { SetStoreSettingsChange } from '../types/actions/settingsActions'
 import { SettingsData } from '../types/other/settingsTypes'
 
 // Helpers
 import { shieldsHasFocus } from '../helpers/shieldsUtils'
+import { ShieldsPanelActionTypes } from '../types/actions/shieldsPanelActions'
+import { SettingsActionsTypes } from '../types/actions/settingsActions'
 
 interface Props {
-  actions: {
-    shieldsToggled: ShieldsToggled
-    reportBrokenSite: ReportBrokenSite
-    blockAdsTrackers: BlockAdsTrackers
-    httpsEverywhereToggled: HttpsEverywhereToggled
-    blockJavaScript: BlockJavaScript
-    blockFingerprinting: BlockFingerprinting
-    blockCookies: BlockCookies
-    allowScriptOriginsOnce: AllowScriptOriginsOnce
-    setScriptBlockedCurrentState: SetScriptBlockedCurrentState
-    setGroupedScriptsBlockedCurrentState: SetGroupedScriptsBlockedCurrentState
-    setAllScriptsBlockedCurrentState: SetAllScriptsBlockedCurrentState
-    setFinalScriptsBlockedState: SetFinalScriptsBlockedState
-    setAdvancedViewFirstAccess: SetAdvancedViewFirstAccess
-    setStoreSettingsChange: SetStoreSettingsChange
-    shieldsReady: ShieldsReady
-  }
+  actions: ShieldsPanelActionTypes & SettingsActionsTypes
   shieldsPanelTabData: Tab
   persistentData: PersistentData
   settingsData: SettingsData
@@ -94,7 +63,7 @@ export default class Shields extends React.PureComponent<Props, State> {
     // See https://github.com/brave/brave-browser/issues/6601.
     const { url }: Tab = this.props.shieldsPanelTabData
     if (shieldsHasFocus(url) === false) {
-      window.close()
+      // window.close()
     }
   }
 

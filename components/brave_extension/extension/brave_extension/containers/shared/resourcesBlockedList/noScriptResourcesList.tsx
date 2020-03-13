@@ -7,13 +7,7 @@ import * as React from 'react'
 
 // Types
 import { NoScriptEntry } from '../../../types/other/noScriptInfo'
-import {
-  AllowScriptOriginsOnce,
-  SetScriptBlockedCurrentState,
-  SetGroupedScriptsBlockedCurrentState,
-  SetAllScriptsBlockedCurrentState,
-  SetFinalScriptsBlockedState
-} from '../../../types/actions/shieldsPanelActions'
+import { ShieldsPanelActionTypes } from '../../../types/actions/shieldsPanelActions'
 
 // Components
 import {
@@ -34,11 +28,7 @@ import {
 interface Props {
   noScriptInfo: Array<any>
   maybeBlock: boolean
-  allowScriptOriginsOnce: AllowScriptOriginsOnce
-  setScriptBlockedCurrentState: SetScriptBlockedCurrentState
-  setGroupedScriptsBlockedCurrentState: SetGroupedScriptsBlockedCurrentState
-  setAllScriptsBlockedCurrentState: SetAllScriptsBlockedCurrentState
-  setFinalScriptsBlockedState: SetFinalScriptsBlockedState
+  actions: ShieldsPanelActionTypes
 }
 
 export default class NoScriptList extends React.PureComponent<Props, {}> {
@@ -47,13 +37,13 @@ export default class NoScriptList extends React.PureComponent<Props, {}> {
   }
 
   setBlockState (url: string) {
-    this.props.setScriptBlockedCurrentState(url)
-    this.props.allowScriptOriginsOnce()
+    this.props.actions.setScriptBlockedCurrentState(url)
+    this.props.actions.allowScriptOriginsOnce()
   }
 
   setBlockStateGroup (url: string, maybeBlock: boolean) {
-    this.props.setGroupedScriptsBlockedCurrentState(url, maybeBlock)
-    this.props.allowScriptOriginsOnce()
+    this.props.actions.setGroupedScriptsBlockedCurrentState(url, maybeBlock)
+    this.props.actions.allowScriptOriginsOnce()
   }
 
   getSingleScriptRow = (url: string, scriptData: NoScriptEntry, key: number, maybeBlock: boolean) => {

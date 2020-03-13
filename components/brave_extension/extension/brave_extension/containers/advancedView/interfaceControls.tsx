@@ -9,7 +9,7 @@ import AdsTrackersControl from './controls/adsTrackersControl'
 import HTTPSUpgradesControl from './controls/httpsUpgradesControl'
 
 // Types
-import { BlockAdsTrackers, HttpsEverywhereToggled } from '../../types/actions/shieldsPanelActions'
+import { ShieldsPanelActionTypes } from '../../types/actions/shieldsPanelActions'
 import { BlockOptions } from '../../types/other/blockTypes'
 
 interface CommonProps {
@@ -17,6 +17,7 @@ interface CommonProps {
   setBlockedListOpen: () => void
   hostname: string
   favicon: string
+  actions: ShieldsPanelActionTypes
 }
 
 interface AdsTrackersProps {
@@ -26,22 +27,20 @@ interface AdsTrackersProps {
   trackers: BlockOptions
   trackersBlocked: number
   trackersBlockedResources: Array<string>
-  blockAdsTrackers: BlockAdsTrackers
 }
 
 interface HTTPSUpgradesProps {
   httpsRedirected: number
   httpUpgradableResources: BlockOptions
   httpsRedirectedResources: Array<string>
-  httpsEverywhereToggled: HttpsEverywhereToggled
 }
 
 export type Props = CommonProps & AdsTrackersProps & HTTPSUpgradesProps
 
 export default class InterfaceControls extends React.PureComponent<Props, {}> {
   get commonProps (): CommonProps {
-    const { favicon, hostname, isBlockedListOpen, setBlockedListOpen } = this.props
-    return { favicon, hostname, isBlockedListOpen, setBlockedListOpen }
+    const { favicon, hostname, isBlockedListOpen, setBlockedListOpen, actions } = this.props
+    return { favicon, hostname, isBlockedListOpen, setBlockedListOpen, actions }
   }
 
   render () {
@@ -55,14 +54,12 @@ export default class InterfaceControls extends React.PureComponent<Props, {}> {
           trackers={this.props.trackers}
           trackersBlocked={this.props.trackersBlocked}
           trackersBlockedResources={this.props.trackersBlockedResources}
-          blockAdsTrackers={this.props.blockAdsTrackers}
         />
         <HTTPSUpgradesControl
           {...this.commonProps}
           httpsRedirected={this.props.httpsRedirected}
           httpUpgradableResources={this.props.httpUpgradableResources}
           httpsRedirectedResources={this.props.httpsRedirectedResources}
-          httpsEverywhereToggled={this.props.httpsEverywhereToggled}
         />
       </>
     )

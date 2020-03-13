@@ -10,16 +10,7 @@ import CookiesControl from './controls/cookiesControl'
 import DeviceRecognitionControl from './controls/deviceRecognitionControl'
 
 // Types
-import {
-  BlockJavaScript,
-  AllowScriptOriginsOnce,
-  BlockCookies,
-  BlockFingerprinting,
-  SetScriptBlockedCurrentState,
-  SetGroupedScriptsBlockedCurrentState,
-  SetAllScriptsBlockedCurrentState,
-  SetFinalScriptsBlockedState
-} from '../../types/actions/shieldsPanelActions'
+import { ShieldsPanelActionTypes } from '../../types/actions/shieldsPanelActions'
 import { BlockCookiesOptions, BlockJSOptions, BlockFPOptions } from '../../types/other/blockTypes'
 import { NoScriptInfo } from '../../types/other/noScriptInfo'
 
@@ -28,22 +19,16 @@ interface CommonProps {
   setBlockedListOpen: () => void
   hostname: string
   favicon: string
+  actions: ShieldsPanelActionTypes
 }
 
 interface JavaScriptProps {
   javascript: BlockJSOptions
   javascriptBlocked: number
   noScriptInfo: NoScriptInfo
-  blockJavaScript: BlockJavaScript
-  allowScriptOriginsOnce: AllowScriptOriginsOnce
-  setScriptBlockedCurrentState: SetScriptBlockedCurrentState
-  setGroupedScriptsBlockedCurrentState: SetGroupedScriptsBlockedCurrentState
-  setAllScriptsBlockedCurrentState: SetAllScriptsBlockedCurrentState
-  setFinalScriptsBlockedState: SetFinalScriptsBlockedState
 }
 
 interface CookiesProps {
-  blockCookies: BlockCookies
   cookies: BlockCookiesOptions
 }
 
@@ -51,15 +36,14 @@ interface FingerprintingProps {
   fingerprinting: BlockFPOptions
   fingerprintingBlocked: number
   fingerprintingBlockedResources: Array<string>
-  blockFingerprinting: BlockFingerprinting
 }
 
 export type Props = CommonProps & JavaScriptProps & CookiesProps & FingerprintingProps
 
 export default class PrivacyControls extends React.PureComponent<Props, {}> {
   get commonProps (): CommonProps {
-    const { favicon, hostname, isBlockedListOpen, setBlockedListOpen } = this.props
-    return { favicon, hostname, isBlockedListOpen, setBlockedListOpen }
+    const { favicon, hostname, isBlockedListOpen, setBlockedListOpen, actions } = this.props
+    return { favicon, hostname, isBlockedListOpen, setBlockedListOpen, actions }
   }
 
   render () {
@@ -70,24 +54,18 @@ export default class PrivacyControls extends React.PureComponent<Props, {}> {
           javascript={this.props.javascript}
           javascriptBlocked={this.props.javascriptBlocked}
           noScriptInfo={this.props.noScriptInfo}
-          blockJavaScript={this.props.blockJavaScript}
-          allowScriptOriginsOnce={this.props.allowScriptOriginsOnce}
-          setScriptBlockedCurrentState={this.props.setScriptBlockedCurrentState}
-          setGroupedScriptsBlockedCurrentState={this.props.setGroupedScriptsBlockedCurrentState}
-          setAllScriptsBlockedCurrentState={this.props.setAllScriptsBlockedCurrentState}
-          setFinalScriptsBlockedState={this.props.setFinalScriptsBlockedState}
         />
         <CookiesControl
           isBlockedListOpen={this.props.isBlockedListOpen}
           cookies={this.props.cookies}
-          blockCookies={this.props.blockCookies}
+          blockCookies={this.props.actions.blockCookies}
         />
         <DeviceRecognitionControl
           {...this.commonProps}
           fingerprintingBlocked={this.props.fingerprintingBlocked}
           fingerprinting={this.props.fingerprinting}
           fingerprintingBlockedResources={this.props.fingerprintingBlockedResources}
-          blockFingerprinting={this.props.blockFingerprinting}
+          blockFingerprinting={this.props.actions.blockFingerprinting}
         />
       </>
     )

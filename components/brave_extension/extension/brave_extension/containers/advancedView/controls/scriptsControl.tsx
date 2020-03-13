@@ -33,14 +33,7 @@ import {
 // Types
 import { BlockJSOptions } from '../../../types/other/blockTypes'
 import { NoScriptInfo } from '../../../types/other/noScriptInfo'
-import {
-  BlockJavaScript,
-  AllowScriptOriginsOnce,
-  SetScriptBlockedCurrentState,
-  SetGroupedScriptsBlockedCurrentState,
-  SetAllScriptsBlockedCurrentState,
-  SetFinalScriptsBlockedState
-} from '../../../types/actions/shieldsPanelActions'
+import { ShieldsPanelActionTypes } from '../../../types/actions/shieldsPanelActions'
 
 interface CommonProps {
   // Global props
@@ -54,12 +47,7 @@ interface JavaScriptProps {
   javascript: BlockJSOptions
   javascriptBlocked: number
   noScriptInfo: NoScriptInfo
-  blockJavaScript: BlockJavaScript
-  allowScriptOriginsOnce: AllowScriptOriginsOnce
-  setScriptBlockedCurrentState: SetScriptBlockedCurrentState
-  setGroupedScriptsBlockedCurrentState: SetGroupedScriptsBlockedCurrentState
-  setAllScriptsBlockedCurrentState: SetAllScriptsBlockedCurrentState
-  setFinalScriptsBlockedState: SetFinalScriptsBlockedState
+  actions: ShieldsPanelActionTypes
 }
 
 export type Props = CommonProps & JavaScriptProps
@@ -116,13 +104,13 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
 
   onChangeScriptsBlockedEnabled = (event: React.ChangeEvent<HTMLInputElement>) => {
     const shouldBlockJavaScript = getToggleStateViaEventTarget(event)
-    this.props.blockJavaScript(shouldBlockJavaScript)
+    this.props.actions.blockJavaScript(shouldBlockJavaScript)
   }
 
   onClickAllowScriptsOnce = () => {
-    this.props.setAllScriptsBlockedCurrentState(false)
-    this.props.setFinalScriptsBlockedState()
-    this.props.allowScriptOriginsOnce()
+    this.props.actions.setAllScriptsBlockedCurrentState(false)
+    this.props.actions.setFinalScriptsBlockedState()
+    this.props.actions.allowScriptOriginsOnce()
   }
 
   render () {
@@ -130,12 +118,8 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
       favicon,
       hostname,
       isBlockedListOpen,
-      allowScriptOriginsOnce,
       noScriptInfo,
-      setScriptBlockedCurrentState,
-      setGroupedScriptsBlockedCurrentState,
-      setAllScriptsBlockedCurrentState,
-      setFinalScriptsBlockedState
+      actions
     } = this.props
     const { scriptsBlockedOpen } = this.state
     return (
@@ -183,11 +167,7 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
               hostname={hostname}
               noScriptInfo={noScriptInfo}
               onClose={this.onOpenScriptsBlocked}
-              allowScriptOriginsOnce={allowScriptOriginsOnce}
-              setScriptBlockedCurrentState={setScriptBlockedCurrentState}
-              setGroupedScriptsBlockedCurrentState={setGroupedScriptsBlockedCurrentState}
-              setAllScriptsBlockedCurrentState={setAllScriptsBlockedCurrentState}
-              setFinalScriptsBlockedState={setFinalScriptsBlockedState}
+              actions={actions}
             />
         }
       </>

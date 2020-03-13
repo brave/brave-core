@@ -7,6 +7,7 @@ import HttpsUpgradesControl, { Props } from '../../../../../brave_extension/exte
 import { BlockOptions } from '../../../../../brave_extension/extension/brave_extension/types/other/blockTypes'
 import * as actionTypes from '../../../../../brave_extension/extension/brave_extension/constants/shieldsPanelTypes'
 import { shallow } from 'enzyme'
+import { ShieldsPanelActionTypes } from '../../../../../brave_extension/extension/brave_extension/types/actions/shieldsPanelActions'
 
 const fakeProps: Props = {
   isBlockedListOpen: true,
@@ -16,7 +17,9 @@ const fakeProps: Props = {
   httpsRedirected: 0,
   httpUpgradableResources: 'allow',
   httpsRedirectedResources: [],
-  httpsEverywhereToggled: (setting: BlockOptions) => ({ type: actionTypes.HTTPS_EVERYWHERE_TOGGLED, setting })
+  actions: {
+    httpsEverywhereToggled: (setting: BlockOptions) => ({ type: actionTypes.HTTPS_EVERYWHERE_TOGGLED, setting })
+  } as ShieldsPanelActionTypes
 }
 
 describe('AdvancedView HttpsUpgradesControl component', () => {
@@ -32,7 +35,7 @@ describe('AdvancedView HttpsUpgradesControl component', () => {
   describe('https everywhere control', () => {
     it('responds to the onChange event', () => {
       const value = { target: { value: true } }
-      const onChangeConnectionsEncryptedSwitch = jest.spyOn(fakeProps, 'httpsEverywhereToggled')
+      const onChangeConnectionsEncryptedSwitch = jest.spyOn(fakeProps.actions, 'httpsEverywhereToggled')
       const newProps = Object.assign(fakeProps, {
         httpsEverywhereToggled: onChangeConnectionsEncryptedSwitch
       })

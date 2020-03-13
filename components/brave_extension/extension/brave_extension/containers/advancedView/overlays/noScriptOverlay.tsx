@@ -7,13 +7,7 @@ import * as React from 'react'
 
 // Types
 import { NoScriptInfo } from '../../../types/other/noScriptInfo'
-import {
-  AllowScriptOriginsOnce,
-  SetScriptBlockedCurrentState,
-  SetGroupedScriptsBlockedCurrentState,
-  SetAllScriptsBlockedCurrentState,
-  SetFinalScriptsBlockedState
-} from '../../../types/actions/shieldsPanelActions'
+import { ShieldsPanelActionTypes } from '../../../types/actions/shieldsPanelActions'
 
 // Components
 import NoScriptResourcesList from '../../shared/resourcesBlockedList/noScriptResourcesList'
@@ -52,14 +46,10 @@ interface Props {
   hostname: string
   noScriptInfo: NoScriptInfo
   onClose: (event?: React.MouseEvent) => void
-  allowScriptOriginsOnce: AllowScriptOriginsOnce
-  setScriptBlockedCurrentState: SetScriptBlockedCurrentState
-  setGroupedScriptsBlockedCurrentState: SetGroupedScriptsBlockedCurrentState
-  setAllScriptsBlockedCurrentState: SetAllScriptsBlockedCurrentState
-  setFinalScriptsBlockedState: SetFinalScriptsBlockedState
+  actions: ShieldsPanelActionTypes
 }
 
-export default class CoreFeature extends React.PureComponent<Props, {}> {
+export default class NoScript extends React.PureComponent<Props, {}> {
   get noScriptInfo () {
     return this.props.noScriptInfo
   }
@@ -70,7 +60,7 @@ export default class CoreFeature extends React.PureComponent<Props, {}> {
 
   componentDidMount () {
     window.addEventListener('blur', () => {
-      this.props.setFinalScriptsBlockedState()
+      this.props.actions.setFinalScriptsBlockedState()
       window.close()
     })
   }
@@ -84,13 +74,15 @@ export default class CoreFeature extends React.PureComponent<Props, {}> {
   }
 
   blockOrAllowAll (blockOrAllow: boolean) {
-    this.props.setAllScriptsBlockedCurrentState(blockOrAllow)
-    this.props.allowScriptOriginsOnce()
+    this.props.actions.setAllScriptsBlockedCurrentState(blockOrAllow)
+    this.props.actions.allowScriptOriginsOnce()
   }
 
   setFinalScriptsBlockedState = (event?: React.MouseEvent) => {
     // indicate local state that those scripts are going to be blocked
-    this.props.setFinalScriptsBlockedState()
+    if (chrome.browserAction) {
+      this.props.actions.setFinalScriptsBlockedState()
+    }
     // close the scripts modal layer
     if (event) {
       this.props.onClose()
@@ -102,7 +94,7 @@ export default class CoreFeature extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { favicon, hostname } = this.props
+    const { favicon, hostname, actions } = this.props
     return (
       <BlockedListContent>
         <BlockedListHeader>
@@ -135,11 +127,7 @@ export default class CoreFeature extends React.PureComponent<Props, {}> {
                 <NoScriptResourcesList
                   maybeBlock={true}
                   noScriptInfo={this.generatedNoScriptData}
-                  allowScriptOriginsOnce={this.props.allowScriptOriginsOnce}
-                  setScriptBlockedCurrentState={this.props.setScriptBlockedCurrentState}
-                  setGroupedScriptsBlockedCurrentState={this.props.setGroupedScriptsBlockedCurrentState}
-                  setAllScriptsBlockedCurrentState={this.props.setAllScriptsBlockedCurrentState}
-                  setFinalScriptsBlockedState={this.props.setFinalScriptsBlockedState}
+                  actions={actions}
                 />
               </>
             )
@@ -164,11 +152,7 @@ export default class CoreFeature extends React.PureComponent<Props, {}> {
                 <NoScriptResourcesList
                   maybeBlock={false}
                   noScriptInfo={this.generatedNoScriptData}
-                  allowScriptOriginsOnce={this.props.allowScriptOriginsOnce}
-                  setScriptBlockedCurrentState={this.props.setScriptBlockedCurrentState}
-                  setGroupedScriptsBlockedCurrentState={this.props.setGroupedScriptsBlockedCurrentState}
-                  setAllScriptsBlockedCurrentState={this.props.setAllScriptsBlockedCurrentState}
-                  setFinalScriptsBlockedState={this.props.setFinalScriptsBlockedState}
+                  actions={actions}
                 />
               </>
             )

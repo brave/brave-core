@@ -32,7 +32,7 @@ import {
 } from '../../../helpers/shieldsUtils'
 
 // Types
-import { BlockAdsTrackers } from '../../../types/actions/shieldsPanelActions'
+import { ShieldsPanelActionTypes } from '../../../types/actions/shieldsPanelActions'
 import { BlockOptions } from '../../../types/other/blockTypes'
 
 interface CommonProps {
@@ -40,6 +40,7 @@ interface CommonProps {
   setBlockedListOpen: () => void
   hostname: string
   favicon: string
+  actions: ShieldsPanelActionTypes
 }
 
 interface AdsTrackersProps {
@@ -49,7 +50,6 @@ interface AdsTrackersProps {
   trackers: BlockOptions
   trackersBlocked: number
   trackersBlockedResources: Array<string>
-  blockAdsTrackers: BlockAdsTrackers
 }
 
 export type Props = CommonProps & AdsTrackersProps
@@ -114,7 +114,7 @@ export default class AdsTrackersControl extends React.PureComponent<Props, State
 
   onChange3rdPartyTrackersBlockedEnabled = (event: React.ChangeEvent<HTMLInputElement>) => {
     const shoudEnableAdsTracks = getToggleStateViaEventTarget(event)
-    this.props.blockAdsTrackers(shoudEnableAdsTracks)
+    this.props.actions.blockAdsTrackers(shoudEnableAdsTracks)
   }
 
   render () {

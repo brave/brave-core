@@ -20,38 +20,10 @@ import WebCompatWarning from './overlays/webCompatWarningOverlay'
 // Types
 import { Tab, PersistentData } from '../../types/state/shieldsPannelState'
 import { isShieldsEnabled, getFavicon } from '../../helpers/shieldsUtils'
-import {
-  ShieldsToggled,
-  ReportBrokenSite,
-  BlockAdsTrackers,
-  HttpsEverywhereToggled,
-  BlockJavaScript,
-  BlockFingerprinting,
-  BlockCookies,
-  AllowScriptOriginsOnce,
-  SetScriptBlockedCurrentState,
-  SetGroupedScriptsBlockedCurrentState,
-  SetAllScriptsBlockedCurrentState,
-  SetFinalScriptsBlockedState,
-  SetAdvancedViewFirstAccess
-} from '../../types/actions/shieldsPanelActions'
+import { ShieldsPanelActionTypes } from '../../types/actions/shieldsPanelActions'
 
 interface Props {
-  actions: {
-    shieldsToggled: ShieldsToggled
-    reportBrokenSite: ReportBrokenSite
-    blockAdsTrackers: BlockAdsTrackers
-    httpsEverywhereToggled: HttpsEverywhereToggled
-    blockJavaScript: BlockJavaScript
-    blockFingerprinting: BlockFingerprinting
-    blockCookies: BlockCookies
-    allowScriptOriginsOnce: AllowScriptOriginsOnce
-    setScriptBlockedCurrentState: SetScriptBlockedCurrentState
-    setGroupedScriptsBlockedCurrentState: SetGroupedScriptsBlockedCurrentState
-    setAllScriptsBlockedCurrentState: SetAllScriptsBlockedCurrentState
-    setFinalScriptsBlockedState: SetFinalScriptsBlockedState
-    setAdvancedViewFirstAccess: SetAdvancedViewFirstAccess
-  }
+  actions: ShieldsPanelActionTypes
   shieldsPanelTabData: Tab
   persistentData: PersistentData
   toggleAdvancedView: () => void
@@ -105,8 +77,7 @@ export default class Shields extends React.PureComponent<Props, State> {
           httpsUpgrades={shieldsPanelTabData.httpsRedirected}
           scriptsBlocked={shieldsPanelTabData.javascriptBlocked}
           fingerprintingBlocked={shieldsPanelTabData.fingerprintingBlocked}
-          shieldsToggled={actions.shieldsToggled}
-          reportBrokenSite={actions.reportBrokenSite}
+          actions={actions}
         />
         {
           this.isShieldsEnabled && (
@@ -117,6 +88,7 @@ export default class Shields extends React.PureComponent<Props, State> {
                 setBlockedListOpen={this.setBlockedListOpen}
                 hostname={shieldsPanelTabData.hostname}
                 favicon={this.favicon}
+                actions={actions}
                 // Ads/Trackers
                 ads={shieldsPanelTabData.ads}
                 adsBlocked={shieldsPanelTabData.adsBlocked}
@@ -124,12 +96,10 @@ export default class Shields extends React.PureComponent<Props, State> {
                 trackers={shieldsPanelTabData.trackers}
                 trackersBlocked={shieldsPanelTabData.trackersBlocked}
                 trackersBlockedResources={shieldsPanelTabData.trackersBlockedResources}
-                blockAdsTrackers={actions.blockAdsTrackers}
                 // HTTPS Upgrades
                 httpsRedirected={shieldsPanelTabData.httpsRedirected}
                 httpUpgradableResources={shieldsPanelTabData.httpUpgradableResources}
                 httpsRedirectedResources={shieldsPanelTabData.httpsRedirectedResources}
-                httpsEverywhereToggled={actions.httpsEverywhereToggled}
               />
               <PrivacyControls
                 // Global props
@@ -137,24 +107,17 @@ export default class Shields extends React.PureComponent<Props, State> {
                 setBlockedListOpen={this.setBlockedListOpen}
                 hostname={shieldsPanelTabData.hostname}
                 favicon={this.favicon}
+                actions={actions}
                 // JavaScript
                 javascript={shieldsPanelTabData.javascript}
                 javascriptBlocked={shieldsPanelTabData.javascriptBlocked}
                 noScriptInfo={shieldsPanelTabData.noScriptInfo}
-                blockJavaScript={actions.blockJavaScript}
-                allowScriptOriginsOnce={actions.allowScriptOriginsOnce}
-                setScriptBlockedCurrentState={actions.setScriptBlockedCurrentState}
-                setGroupedScriptsBlockedCurrentState={actions.setGroupedScriptsBlockedCurrentState}
-                setAllScriptsBlockedCurrentState={actions.setAllScriptsBlockedCurrentState}
-                setFinalScriptsBlockedState={actions.setFinalScriptsBlockedState}
                 // Cookies
-                blockCookies={actions.blockCookies}
                 cookies={shieldsPanelTabData.cookies}
                 // Fingerprinting
                 fingerprinting={shieldsPanelTabData.fingerprinting}
                 fingerprintingBlocked={shieldsPanelTabData.fingerprintingBlocked}
                 fingerprintingBlockedResources={shieldsPanelTabData.fingerprintingBlockedResources}
-                blockFingerprinting={actions.blockFingerprinting}
               />
             </>
           )

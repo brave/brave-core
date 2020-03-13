@@ -11,42 +11,15 @@ import { ShieldsPanel } from '../../components'
 import Header from './header'
 import Footer from './footer'
 
-import {
-  ShieldsToggled,
-  ReportBrokenSite,
-  BlockAdsTrackers,
-  HttpsEverywhereToggled,
-  BlockJavaScript,
-  BlockFingerprinting,
-  BlockCookies,
-  AllowScriptOriginsOnce,
-  SetScriptBlockedCurrentState,
-  SetGroupedScriptsBlockedCurrentState,
-  SetAllScriptsBlockedCurrentState,
-  SetFinalScriptsBlockedState,
-  SetAdvancedViewFirstAccess
-} from '../../types/actions/shieldsPanelActions'
+// Types
+import { Tab, PersistentData } from '../../types/state/shieldsPannelState'
+import { ShieldsPanelActionTypes } from '../../types/actions/shieldsPanelActions'
 
 // Helpers
-import { Tab, PersistentData } from '../../types/state/shieldsPannelState'
 import { getFavicon, isShieldsEnabled } from '../../helpers/shieldsUtils'
 
 interface Props {
-  actions: {
-    shieldsToggled: ShieldsToggled
-    reportBrokenSite: ReportBrokenSite
-    blockAdsTrackers: BlockAdsTrackers
-    httpsEverywhereToggled: HttpsEverywhereToggled
-    blockJavaScript: BlockJavaScript
-    blockFingerprinting: BlockFingerprinting
-    blockCookies: BlockCookies
-    allowScriptOriginsOnce: AllowScriptOriginsOnce
-    setScriptBlockedCurrentState: SetScriptBlockedCurrentState
-    setGroupedScriptsBlockedCurrentState: SetGroupedScriptsBlockedCurrentState
-    setAllScriptsBlockedCurrentState: SetAllScriptsBlockedCurrentState
-    setFinalScriptsBlockedState: SetFinalScriptsBlockedState
-    setAdvancedViewFirstAccess: SetAdvancedViewFirstAccess
-  }
+  actions: ShieldsPanelActionTypes
   shieldsPanelTabData: Tab
   persistentData: PersistentData
   toggleAdvancedView: () => void

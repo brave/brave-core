@@ -30,7 +30,7 @@ import {
 } from '../../../helpers/shieldsUtils'
 
 // Types
-import { HttpsEverywhereToggled } from '../../../types/actions/shieldsPanelActions'
+import { ShieldsPanelActionTypes } from '../../../types/actions/shieldsPanelActions'
 import { BlockOptions } from '../../../types/other/blockTypes'
 
 interface CommonProps {
@@ -38,13 +38,13 @@ interface CommonProps {
   setBlockedListOpen: () => void
   hostname: string
   favicon: string
+  actions: ShieldsPanelActionTypes
 }
 
 interface HTTPSUpgradesProps {
   httpsRedirected: number
   httpUpgradableResources: BlockOptions
   httpsRedirectedResources: Array<string>
-  httpsEverywhereToggled: HttpsEverywhereToggled
 }
 
 export type Props = CommonProps & HTTPSUpgradesProps
@@ -101,7 +101,7 @@ export default class HTTPSUpgradesControl extends React.PureComponent<Props, Sta
 
   onChangeConnectionsUpgradedToHTTPSEnabled = (event: React.ChangeEvent<HTMLInputElement>) => {
     const shouldEnableHttpsEverywhere = getToggleStateViaEventTarget(event)
-    this.props.httpsEverywhereToggled(shouldEnableHttpsEverywhere)
+    this.props.actions.httpsEverywhereToggled(shouldEnableHttpsEverywhere)
   }
 
   render () {

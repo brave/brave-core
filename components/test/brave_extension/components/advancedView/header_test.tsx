@@ -7,14 +7,16 @@ import ShieldsHeader, { Props } from '../../../../brave_extension/extension/brav
 import { BlockOptions } from '../../../../brave_extension/extension/brave_extension/types/other/blockTypes'
 import * as actionTypes from '../../../../brave_extension/extension/brave_extension/constants/shieldsPanelTypes'
 import { shallow } from 'enzyme'
+import { ShieldsPanelActionTypes } from '../../../../brave_extension/extension/brave_extension/types/actions/shieldsPanelActions'
 
 const fakeProps: Props = {
   enabled: false,
   favicon: '',
-  origin: 'https://brave.com',
   hostname: 'brave.com',
   isBlockedListOpen: true,
-  shieldsToggled: (setting: BlockOptions) => ({ type: actionTypes.SHIELDS_TOGGLED, setting }),
+  actions: {
+    shieldsToggled: (setting: BlockOptions) => ({ type: actionTypes.SHIELDS_TOGGLED, setting })
+  } as ShieldsPanelActionTypes,
   adsBlocked: 0,
   trackersBlocked: 0,
   httpsUpgrades: 0,
@@ -34,7 +36,7 @@ describe('AdvancedView Header component', () => {
 
   it('shields toggle responds to the onChange event', () => {
     const value = { target: { checked: true } }
-    const onToggleShields = jest.spyOn(fakeProps, 'shieldsToggled')
+    const onToggleShields = jest.spyOn(fakeProps.actions, 'shieldsToggled')
     const newProps = Object.assign(fakeProps, {
       shieldsToggled: onToggleShields
     })

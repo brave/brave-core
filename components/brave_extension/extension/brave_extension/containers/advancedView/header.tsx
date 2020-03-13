@@ -33,15 +33,14 @@ import {
 
 // Types
 import { BlockOptions } from '../../types/other/blockTypes'
-import { ShieldsToggled } from '../../types/actions/shieldsPanelActions'
+import { ShieldsPanelActionTypes } from '../../types/actions/shieldsPanelActions'
 
 interface CommonProps {
   enabled: boolean
   favicon: string
   hostname: string
   isBlockedListOpen: boolean
-  shieldsToggled: ShieldsToggled
-  reportBrokenSite: () => void
+  actions: ShieldsPanelActionTypes
 }
 
 interface BlockedItemsProps {
@@ -73,11 +72,11 @@ export default class Header extends React.PureComponent<Props, {}> {
 
   onToggleShieldsMain = (event: React.ChangeEvent<HTMLInputElement>) => {
     const shieldsOption: BlockOptions = event.target.checked ? 'allow' : 'block'
-    this.props.shieldsToggled(shieldsOption)
+    this.props.actions.shieldsToggled(shieldsOption)
   }
 
   onReportBrokenSite = () => {
-    this.props.reportBrokenSite()
+    this.props.actions.reportBrokenSite()
     window.close()
   }
 

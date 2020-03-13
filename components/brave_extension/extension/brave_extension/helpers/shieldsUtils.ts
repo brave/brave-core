@@ -20,7 +20,10 @@ export const getTotalResourcesBlocked = (tabData: Partial<Tab>) => {
 }
 
 export const getFavicon = (url: string) => {
-  return `chrome://favicon/size/16@1x/${ url }`
+  if (chrome.browserAction) {
+    return `chrome://favicon/size/16@1x/${ url }`
+  }
+  return ''
 }
 
 export const blockedResourcesSize = (blockedResources: number) => {

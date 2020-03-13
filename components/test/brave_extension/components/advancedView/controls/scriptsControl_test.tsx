@@ -7,6 +7,7 @@ import { shallow } from 'enzyme'
 import ScriptsControl, { Props } from '../../../../../brave_extension/extension/brave_extension/containers/advancedView/controls/scriptsControl'
 import * as actionTypes from '../../../../../brave_extension/extension/brave_extension/constants/shieldsPanelTypes'
 import { BlockJSOptions } from '../../../../../brave_extension/extension/brave_extension/types/other/blockTypes'
+import { ShieldsPanelActionTypes } from '../../../../../brave_extension/extension/brave_extension/types/actions/shieldsPanelActions'
 
 const fakeProps: Props = {
   isBlockedListOpen: true,
@@ -16,12 +17,9 @@ const fakeProps: Props = {
   javascript: 'allow',
   javascriptBlocked: 0,
   noScriptInfo: {},
-  blockJavaScript: (setting: BlockJSOptions) => ({ type: actionTypes.JAVASCRIPT_TOGGLED, setting }),
-  allowScriptOriginsOnce: () => ({ type: actionTypes.ALLOW_SCRIPT_ORIGINS_ONCE }),
-  setScriptBlockedCurrentState: () => ({ type: actionTypes.SET_SCRIPT_BLOCKED_ONCE_CURRENT_STATE, url: '' }),
-  setGroupedScriptsBlockedCurrentState: () => ({ type: actionTypes.SET_GROUPED_SCRIPTS_BLOCKED_ONCE_CURRENT_STATE, origin: '', maybeBlock: true }),
-  setAllScriptsBlockedCurrentState: () => ({ type: actionTypes.SET_ALL_SCRIPTS_BLOCKED_ONCE_CURRENT_STATE, maybeBlock: true }),
-  setFinalScriptsBlockedState: () => ({ type: actionTypes.SET_FINAL_SCRIPTS_BLOCKED_ONCE_STATE })
+  actions: {
+    blockJavaScript: (setting: BlockJSOptions) => ({ type: actionTypes.JAVASCRIPT_TOGGLED, setting })
+  } as ShieldsPanelActionTypes
 }
 
 describe('AdvancedView ScriptsControl component', () => {
@@ -37,7 +35,7 @@ describe('AdvancedView ScriptsControl component', () => {
   describe('scripts control', () => {
     it('responds to the onChange event', () => {
       const value = { target: { value: true } }
-      const onChangeScriptControlSwitch = jest.spyOn(fakeProps, 'blockJavaScript')
+      const onChangeScriptControlSwitch = jest.spyOn(fakeProps.actions, 'blockJavaScript')
       const newProps = Object.assign(fakeProps, {
         blockJavaScript: onChangeScriptControlSwitch
       })
