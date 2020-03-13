@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.settings;
+package org.chromium.chrome.browser.settings.homepage;
 
 import android.os.Bundle;
 
 import org.chromium.chrome.browser.partnercustomizations.HomepageManager;
 
-public class BraveHomepagePreferences extends HomepagePreferences {
+public class BraveHomepagePreferences extends HomepageSettings {
     private HomepageManager mHomepageManager;
 
     @Override
