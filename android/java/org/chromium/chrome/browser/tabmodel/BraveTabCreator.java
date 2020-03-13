@@ -19,7 +19,7 @@ import org.chromium.chrome.browser.init.StartupTabPreloader;
 import org.chromium.chrome.browser.ntp.NewTabPage;
 import org.chromium.chrome.browser.util.UrlConstants;
 import org.chromium.chrome.browser.BraveRewardsHelper;
-import org.chromium.chrome.browser.ntp.sponsored.SponsoredImageUtil;
+import org.chromium.chrome.browser.ntp_sponsored_images.SponsoredImageUtil;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 
 
