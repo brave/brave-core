@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -20,15 +19,10 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import java.io.File;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import android.net.Uri;
 
 import org.chromium.base.TraceEvent;
 import org.chromium.chrome.R;
 import org.chromium.base.Log;
-import org.chromium.base.PathUtils;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.ntp.NewTabPageView;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
@@ -43,15 +37,10 @@ import org.chromium.chrome.browser.ntp.sponsored.NewTabPageListener;
 import org.chromium.chrome.browser.ntp.sponsored.SponsoredImageUtil;
 import org.chromium.chrome.browser.tab.EmptyTabObserver;
 import org.chromium.chrome.browser.tab.TabObserver;
-import org.chromium.chrome.browser.util.LocaleUtils;
-import org.chromium.chrome.browser.util.ImageUtils;
 import org.chromium.chrome.browser.ntp.sponsored.NTPUtil;
 import org.chromium.chrome.browser.ntp.sponsored.SponsoredTab;
 import org.chromium.chrome.browser.tab.TabAttributes;
-
 import org.chromium.chrome.browser.ntp_sponsored_images.NTPSponsoredImagesBridge;
-
-import static org.chromium.chrome.browser.util.ViewUtils.dpToPx;
 
 public class BraveNewTabPageView extends NewTabPageView {
     private static final String TAG = "BraveNewTabPageView";
@@ -100,12 +89,10 @@ public class BraveNewTabPageView extends NewTabPageView {
             if(ntpImage == null) {
                 sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
             } else if (ntpImage instanceof NTPSponsoredImagesBridge.Wallpaper) {
-                String countryCode = LocaleUtils.getCountryCode();
-                NTPSponsoredImagesBridge.Wallpaper sponsoredImage = (NTPSponsoredImagesBridge.Wallpaper) ntpImage;
-                // File imageFile = new File(PathUtils.getDataDirectory(), countryCode + "_" + sponsoredImage.getImageURL());
-                // if(!imageFile.exists()) {
-                //     sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
-                // }
+                NTPSponsoredImagesBridge.Wallpaper mWallpaper = (NTPSponsoredImagesBridge.Wallpaper) ntpImage;
+                if(mWallpaper == null) {
+                    sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
+                }
             }
             checkForNonDistruptiveBanner(ntpImage);
             super.onConfigurationChanged(newConfig);
@@ -260,75 +247,30 @@ public class BraveNewTabPageView extends NewTabPageView {
             observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    String countryCode = LocaleUtils.getCountryCode();
-
-                    int layoutWidth = mNewTabPageLayout.getMeasuredWidth();
-                    int layoutHeight = mNewTabPageLayout.getMeasuredHeight();
-                    BitmapFactory.Options options = new BitmapFactory.Options();
-                    options.inScaled = false;
-                    options.inJustDecodeBounds = false;
-
-                    Bitmap imageBitmap = null;
-                    float imageWidth;
-                    float imageHeight;
-                    float centerPointX;
-                    float centerPointY;
+                    Bitmap wallpaperBitmap = NTPUtil.getWallpaperBitmap(ntpImage, mNewTabPageLayout.getMeasuredWidth(), mNewTabPageLayout.getMeasuredHeight());
+                    imageDrawable = new BitmapDrawable(mNewTabPageLayout.getResources(), wallpaperBitmap);
+                    mNewTabPageLayout.setBackground(imageDrawable);
 
                     if (ntpImage instanceof NTPSponsoredImagesBridge.Wallpaper) {
-                        NTPSponsoredImagesBridge.Wallpaper sponsoredImage = (NTPSponsoredImagesBridge.Wallpaper) ntpImage;
-                        // File imageFile = new File(sponsoredImage.getImageURL());
-                        try {
-                            // Uri imageFileUri = Uri.parse(sponsoredImage.getImageURL());
-                            // InputStream inputStream = ContextUtils.getApplicationContext().getContentResolver().openInputStream(imageFileUri);
-                            // imageBitmap = BitmapFactory.decodeStream(inputStream);
-                            imageBitmap = sponsoredImage.getBitmap();
-                            imageWidth = imageBitmap.getWidth();
-                            imageHeight = imageBitmap.getHeight();
-                            centerPointX = sponsoredImage.getFocalPointX() == 0 ? (imageWidth/2) : sponsoredImage.getFocalPointX();
-                            centerPointY = sponsoredImage.getFocalPointY() == 0 ? (imageHeight/2) : sponsoredImage.getFocalPointY();
-
-                            // if (SponsoredImageUtil.getSponsoredLogo() != null ) {
-                            //     ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
-                            //     sponsoredLogo.setVisibility(View.VISIBLE);
-                            //     File logoFile = new File(PathUtils.getDataDirectory(),countryCode + "_" + SponsoredImageUtil.getSponsoredLogo().getImageURL());
-                            //     Bitmap logoBitmap = BitmapFactory.decodeFile(logoFile.getPath());
-                            //     sponsoredLogo.setImageBitmap(logoBitmap);
-                            //     sponsoredLogo.setOnClickListener(new View.OnClickListener() {
-                            //         @Override
-                            //         public void onClick(View view) {
-                            //             if (SponsoredImageUtil.getSponsoredLogo().getDestinationUrl() != null) {
-                            //                 NTPUtil.openImageCredit(SponsoredImageUtil.getSponsoredLogo().getDestinationUrl());
-                            //             }
-                            //         }
-                            //     });
-                            // }
-                        } catch (Exception exc) {
-                            Log.e("NTP", exc.getMessage());
-                            return;
+                        NTPSponsoredImagesBridge.Wallpaper mWallpaper = (NTPSponsoredImagesBridge.Wallpaper) ntpImage;
+                        if (mWallpaper.getLogoBitmap() != null ) {
+                            ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
+                            sponsoredLogo.setVisibility(View.VISIBLE);
+                            sponsoredLogo.setImageBitmap(mWallpaper.getLogoBitmap());
+                            sponsoredLogo.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if (mWallpaper.getLogoDestinationUrl() != null) {
+                                        NTPUtil.openImageCredit(mWallpaper.getLogoDestinationUrl());
+                                    }
+                                }
+                            });
                         }
                     } else {
                         BackgroundImage backgroundImage = (BackgroundImage) ntpImage;
-
                         ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
                         sponsoredLogo.setVisibility(View.GONE);
-
-                        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
-                            Bitmap imageBitmapRes = BitmapFactory.decodeResource(mNewTabPageLayout.getResources(), backgroundImage.getImageDrawable(), options);
-                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                            imageBitmapRes.compress(Bitmap.CompressFormat.JPEG,50,stream);
-                            byte[] byteArray = stream.toByteArray();
-                            imageBitmap = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
-                            imageBitmapRes.recycle();
-                        } else {
-                            imageBitmap = BitmapFactory.decodeResource(mNewTabPageLayout.getResources(), backgroundImage.getImageDrawable(), options);
-                        }
-                        imageWidth = imageBitmap.getWidth();
-                        imageHeight = imageBitmap.getHeight();
-                        centerPointX = backgroundImage.getCenterPoint();
-                        centerPointY = 0;
-
                         if (backgroundImage.getImageCredit() != null) {
-
                             String imageCreditStr = String.format(mNewTabPageLayout.getResources().getString(R.string.photo_by, backgroundImage.getImageCredit().getName()));
 
                             SpannableStringBuilder spannableString = new SpannableStringBuilder(imageCreditStr);
@@ -347,68 +289,6 @@ public class BraveNewTabPageView extends NewTabPageView {
                             });
                         }
                     }
-
-                    float centerRatioX = centerPointX / imageWidth;
-
-                    float imageWHRatio = imageWidth / imageHeight;
-                    float imageHWRatio = imageHeight / imageWidth;
-
-                    int newImageWidth = (int) (layoutHeight * imageWHRatio);
-                    int newImageHeight = layoutHeight;
-
-                    if (newImageWidth < layoutWidth) {
-                        // Image is now too small so we need to adjust width and height based on
-                        // This covers landscape and strange tablet sizes.
-                        newImageWidth = layoutWidth;
-                        newImageHeight = (int) (newImageWidth * imageHWRatio);
-                    }
-
-                    int newCenterX = (int) (newImageWidth * centerRatioX);
-                    int startX = (int) (newCenterX - (layoutWidth / 2));
-                    if (newCenterX < layoutWidth / 2) {
-                        // Need to crop starting at 0 to newImageWidth - left aligned image
-                        startX = 0;
-                    } else if (newImageWidth - newCenterX < layoutWidth / 2) {
-                        // Need to crop right side of image - right aligned
-                        startX = newImageWidth - layoutWidth;
-                    }
-
-                    int startY = (newImageHeight - layoutHeight)/2;
-                    if (centerPointY > 0) {
-                        float centerRatioY = centerPointY / imageHeight;
-                        newImageWidth = layoutWidth;
-                        newImageHeight = (int) (layoutWidth * imageHWRatio);
-
-                        if (newImageHeight < layoutHeight) {
-                            newImageHeight = layoutHeight;
-                            newImageWidth = (int) (newImageHeight * imageWHRatio);
-                        }
-
-                        int newCenterY = (int) (newImageHeight * centerRatioY);
-                        startY = (int) (newCenterY - (layoutHeight / 2));
-                        if (newCenterY < layoutHeight / 2) {
-                            // Need to crop starting at 0 to newImageWidth - left aligned image
-                            startY = 0;
-                        } else if (newImageHeight - newCenterY < layoutHeight / 2) {
-                            // Need to crop right side of image - right aligned
-                            startY = newImageHeight - layoutHeight;
-                        }
-                    }
-
-                    imageBitmap = Bitmap.createScaledBitmap(imageBitmap, newImageWidth, newImageHeight, true);
-
-                    Bitmap newBitmap = Bitmap.createBitmap(imageBitmap, startX, startY, layoutWidth, (int) layoutHeight);
-                    Bitmap bitmapWithGradient = ImageUtils.addGradient(mTabImpl.getActivity(), newBitmap, dpToPx(mTabImpl.getActivity(),BOTTOM_TOOLBAR_HEIGHT));
-                    Bitmap offsetBitmap = ImageUtils.topOffset(bitmapWithGradient, dpToPx(mTabImpl.getActivity(),BOTTOM_TOOLBAR_HEIGHT));
-
-                    imageBitmap.recycle();
-                    newBitmap.recycle();
-                    bitmapWithGradient.recycle();
-
-                    // Center vertically, and crop to new center
-                    imageDrawable = new BitmapDrawable(mNewTabPageLayout.getResources(), offsetBitmap);
-                    mNewTabPageLayout.setBackground(imageDrawable);
-
                     mNewTabPageLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
             });
@@ -427,13 +307,10 @@ public class BraveNewTabPageView extends NewTabPageView {
         if(ntpImage == null) {
             sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
         } else if (ntpImage instanceof NTPSponsoredImagesBridge.Wallpaper) {
-            String countryCode = LocaleUtils.getCountryCode();
-            NTPSponsoredImagesBridge.Wallpaper sponsoredImage = (NTPSponsoredImagesBridge.Wallpaper) ntpImage;
-            // File imageFile = new File(PathUtils.getDataDirectory(), countryCode + "_" + sponsoredImage.getImageURL());
-            // if(!imageFile.exists()) {
-            //     sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
-            //     ntpImage = sponsoredTab.getTabNTPImage();
-            // }
+            NTPSponsoredImagesBridge.Wallpaper mWallpaper = (NTPSponsoredImagesBridge.Wallpaper) ntpImage;
+            if(mWallpaper == null) {
+                sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
+            }
         }
         checkForNonDistruptiveBanner(ntpImage);
         showNTPImage(ntpImage);

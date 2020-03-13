@@ -23,8 +23,6 @@ public class SponsoredImageUtil {
 
     public static final int MAX_TABS = 10;
 
-    private static SponsoredLogo sponsoredLogo;
-
 	private static List<BackgroundImage> backgroundImages = new ArrayList<BackgroundImage>(Arrays.asList(
             new BackgroundImage(R.drawable.anders_jilden, 1200, new ImageCredit("Anders Jildén", "https://unsplash.com/@andersjilden?utm_source=unsplash&utm_medium=referral&utm_content=credit")),
             new BackgroundImage(R.drawable.andreas_gucklhorn, 1160, new ImageCredit("Andreas Gücklhorn", "https://unsplash.com/@draufsicht?utm_source=unsplash&utm_medium=referral&utm_content=credit")),
@@ -43,35 +41,12 @@ public class SponsoredImageUtil {
             new BackgroundImage(R.drawable.xavier_balderas_cejudo, 1975, new ImageCredit("Xavier Balderas Cejudo", "https://unsplash.com/@xavibalderas?utm_source=unsplash&utm_medium=referral&utm_content=credit"))
     ));
 
-    private static List<SponsoredImage> sponsoredImages = new ArrayList<SponsoredImage>();
-
 	private static int backgroundImageIndex = getRandomIndex(backgroundImages.size());
-	private static int sponsoredImageIndex;
 
 	private static int tabIndex = 1;
 
-    public static SponsoredLogo getSponsoredLogo() {
-        return sponsoredLogo;
-    }
-
-    public static void setSponsoredLogo(SponsoredLogo sponsoredLg) {
-        sponsoredLogo = sponsoredLg;
-    }
-
     public static List<BackgroundImage> getBackgroundImages() {
         return backgroundImages;
-    }
-
-    public static List<SponsoredImage> getSponsoredImages() {
-        return sponsoredImages;
-    }
-
-    public static void addSponsoredImage(SponsoredImage sponsoredImage) {
-        sponsoredImages.add(sponsoredImage);
-    }
-
-    public static void clearSponsoredImages() {
-        sponsoredImages.clear();
     }
 
     public static int getTabIndex() {
@@ -95,19 +70,5 @@ public class SponsoredImageUtil {
     	BackgroundImage backgroundImage = backgroundImages.get(backgroundImageIndex);
     	backgroundImageIndex++;
     	return backgroundImage;
-    }
-
-    public static SponsoredImage getSponsoredImage() {
-    	if (sponsoredImageIndex >= sponsoredImages.size()) {
-    		sponsoredImageIndex = 0;
-    	}
-
-    	SponsoredImage sponsoredImage = sponsoredImages.get(sponsoredImageIndex);
-    	sponsoredImageIndex++;
-    	return sponsoredImage;
-    }
-
-    public static void updateSponsoredImageIndex() {
-        sponsoredImageIndex = getRandomIndex(sponsoredImages.size());
     }
 }

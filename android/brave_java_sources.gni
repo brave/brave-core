@@ -43,7 +43,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabPageView.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/IncognitoNewTabPageView.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/sponsored/BackgroundImage.java",
-  "../../brave/android/java/org/chromium/chrome/browser/ntp/sponsored/SponsoredImage.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/sponsored/NTPImage.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/sponsored/ImageCredit.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/sponsored/SponsoredImageUtil.java",
@@ -117,7 +116,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/util/PackageUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/TabUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/ConfigurationUtils.java",
-  "../../brave/android/java/org/chromium/chrome/browser/util/LocaleUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/ImageUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/widget/tile/BraveTileWithTextView.java",
   "../../brave/android/java/org/chromium/chrome/browser/tabmodel/BraveTabCreator.java"
