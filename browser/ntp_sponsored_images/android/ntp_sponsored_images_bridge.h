@@ -35,13 +35,12 @@ class NTPSponsoredImagesBridge : public NTPSponsoredImagesService::Observer,
   NTPSponsoredImagesBridge(Profile* profile);
   ~NTPSponsoredImagesBridge() override;
 
-  static base::android::ScopedJavaLocalRef<jobject> GetInstance(JNIEnv* env,
-      const base::android::JavaParamRef<jobject>& j_profile);
-
   void RegisterPageView(JNIEnv* env,
                         const base::android::JavaParamRef<jobject>& obj);
   base::android::ScopedJavaLocalRef<jobject> GetCurrentWallpaper(
       JNIEnv* env, const base::android::JavaParamRef<jobject>& obj);
+
+  base::android::ScopedJavaLocalRef<jobject> GetJavaObject();
 
  private:
   void OnUpdated(NTPSponsoredImagesData* data) override;
@@ -50,7 +49,7 @@ class NTPSponsoredImagesBridge : public NTPSponsoredImagesService::Observer,
   Profile* profile_;
   ViewCounterService* view_counter_service_;
   NTPSponsoredImagesService* sponsored_images_service_;
-  base::android::ScopedJavaLocalRef<jobject> java_object_;
+  base::android::ScopedJavaGlobalRef<jobject> java_object_;
 
   DISALLOW_COPY_AND_ASSIGN(NTPSponsoredImagesBridge);
 };
