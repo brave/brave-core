@@ -91,15 +91,14 @@ NTPSponsoredImagesBridge::~NTPSponsoredImagesBridge() {
 static base::android::ScopedJavaLocalRef<jobject>
 JNI_NTPSponsoredImagesBridge_GetInstance(JNIEnv* env,
                                       const JavaParamRef<jobject>& j_profile) {
-  return NTPSponsoredImagesBridge::GetInstance(env, j_profile);
+  auto* profile = ProfileAndroid::FromProfileAndroid(j_profile);
+  return ntp_sponsored_images::NTPSponsoredImagesBridgeFactory::GetInstance()
+             ->GetForProfile(profile)->GetJavaObject();
 }
 
 base::android::ScopedJavaLocalRef<jobject>
-NTPSponsoredImagesBridge::GetInstance(JNIEnv* env,
-                                      const JavaParamRef<jobject>& j_profile) {
-  auto* profile = ProfileAndroid::FromProfileAndroid(j_profile);
-  return ntp_sponsored_images::NTPSponsoredImagesBridgeFactory::GetInstance()
-             ->GetForProfile(profile)->java_object_;
+NTPSponsoredImagesBridge::GetJavaObject() {
+  return base::android::ScopedJavaLocalRef<jobject>(java_object_);
 }
 
 void NTPSponsoredImagesBridge::RegisterPageView(
