@@ -1780,10 +1780,13 @@ void AdsImpl::StartSustainingAdNotificationInteraction(
 }
 
 void AdsImpl::SustainAdNotificationInteractionIfNeeded() {
+  last_sustained_ad_notification_url_ = "";
+
   if (!IsStillViewingAdNotification()) {
     BLOG(INFO) << "Failed to sustain ad notification interaction, domain for "
         "the focused tab does not match the last shown ad notification for "
             << last_shown_ad_notification_.target_url;
+
     return;
   }
 
@@ -1801,6 +1804,8 @@ void AdsImpl::StopSustainingAdNotificationInteraction() {
 
   ads_client_->KillTimer(sustained_ad_notification_interaction_timer_id_);
   sustained_ad_notification_interaction_timer_id_ = 0;
+
+  last_sustained_ad_notification_url_ = "";
 }
 
 bool AdsImpl::IsSustainingAdNotificationInteraction() const {
