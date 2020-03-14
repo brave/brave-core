@@ -105,7 +105,8 @@ NTPSponsoredImagesBridge::GetInstance(JNIEnv* env,
 void NTPSponsoredImagesBridge::RegisterPageView(
     JNIEnv* env, const JavaParamRef<jobject>& obj) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  view_counter_service_->RegisterPageView();
+  if (view_counter_service_)
+    view_counter_service_->RegisterPageView();
 }
 
 base::android::ScopedJavaLocalRef<jobject>
@@ -113,7 +114,7 @@ NTPSponsoredImagesBridge::CreateWallpaper() {
   JNIEnv* env = AttachCurrentThread();
 
   auto data = view_counter_service_->GetCurrentWallpaperForDisplay();
-  if (data.is_none())
+  if (!view_counter_service_ || data.is_none())
     return base::android::ScopedJavaLocalRef<jobject>();
 
   // TODO(bridiver) - need to either expose these constants or change this
