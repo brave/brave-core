@@ -15,6 +15,26 @@
     android:paddingTop="@dimen/toolbar_height_no_shadow"
     android:visibility="gone" >
 
+    <View
+        android:id="@+id/top_gradient_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:background="@drawable/top_gradient"/>
+
+    <ImageView
+        android:id="@+id/imgView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <View
+        android:id="@+id/bottom_gradient_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:visibility="gone"
+        android:background="@drawable/bottom_gradient"/>
+
     <LinearLayout
         android:id="@+id/parent_layout"
         android:layout_width="match_parent"
