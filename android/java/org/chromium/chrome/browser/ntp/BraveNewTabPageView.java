@@ -13,12 +13,16 @@ import android.widget.TextView;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.widget.FrameLayout;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 
 import org.chromium.base.TraceEvent;
 import org.chromium.chrome.R;
@@ -41,6 +45,7 @@ import org.chromium.chrome.browser.ntp_sponsored_images.NTPUtil;
 import org.chromium.chrome.browser.ntp_sponsored_images.SponsoredTab;
 import org.chromium.chrome.browser.tab.TabAttributes;
 import org.chromium.chrome.browser.ntp_sponsored_images.NTPSponsoredImagesBridge;
+import org.chromium.chrome.browser.util.ConfigurationUtils;
 
 public class BraveNewTabPageView extends NewTabPageView {
     private static final String TAG = "BraveNewTabPageView";
@@ -112,12 +117,6 @@ public class BraveNewTabPageView extends NewTabPageView {
 
         mTabImpl = (TabImpl) tab;
         mTab = tab;
-
-        if (mNTPSponsoredImagesBridge.getCurrentWallpaper() != null) {
-            Log.i("NTP", "Wallpaper is not null");
-        } else {
-            Log.i("NTP", "Wallpaper is null");
-        }
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
             if (sponsoredTab == null)
@@ -241,56 +240,111 @@ public class BraveNewTabPageView extends NewTabPageView {
 
         if(mSharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES, true)
             && sponsoredTab != null && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
-            ViewTreeObserver observer = mNewTabPageLayout.getViewTreeObserver();
+            setBackgroundImage(ntpImage);
+            if (ntpImage instanceof NTPSponsoredImagesBridge.Wallpaper) {
+                NTPSponsoredImagesBridge.Wallpaper mWallpaper = (NTPSponsoredImagesBridge.Wallpaper) ntpImage;
+                if (mWallpaper.getLogoPath() != null ) {
+                    ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
+                    sponsoredLogo.setVisibility(View.VISIBLE);
+
+                    Uri logoFileUri = Uri.parse("file://"+ mWallpaper.getLogoPath());
+                    Drawable logoDrawable = Drawable.createFromPath(logoFileUri.getPath());
+                    sponsoredLogo.setImageDrawable(logoDrawable);
+                    sponsoredLogo.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (mWallpaper.getLogoDestinationUrl() != null) {
+                                NTPUtil.openImageCredit(mWallpaper.getLogoDestinationUrl());
+                            }
+                        }
+                    });
+                }
+            } else {
+                BackgroundImage backgroundImage = (BackgroundImage) ntpImage;
+                ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
+                sponsoredLogo.setVisibility(View.GONE);
+                if (backgroundImage.getImageCredit() != null) {
+                    String imageCreditStr = String.format(mNewTabPageLayout.getResources().getString(R.string.photo_by, backgroundImage.getImageCredit().getName()));
+
+                    SpannableStringBuilder spannableString = new SpannableStringBuilder(imageCreditStr);
+                    spannableString.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), ((imageCreditStr.length()-1) - (backgroundImage.getImageCredit().getName().length()-1)), imageCreditStr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                    TextView creditText = (TextView)mNewTabPageLayout.findViewById(R.id.credit_text);
+                    creditText.setText(spannableString);
+                    creditText.setVisibility(View.VISIBLE);
+                    creditText.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (backgroundImage.getImageCredit() != null) {
+                                NTPUtil.openImageCredit(backgroundImage.getImageCredit().getUrl());
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    }
+
+    private void setBackgroundImage(NTPImage ntpImage) {
+        ImageView bgImg = (ImageView)mNewTabPageLayout.findViewById(R.id.imgView);
+        bgImg.setScaleType(ImageView.ScaleType.MATRIX);
+
+        ViewTreeObserver observer = bgImg.getViewTreeObserver();
             observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    Bitmap wallpaperBitmap = NTPUtil.getWallpaperBitmap(ntpImage, mNewTabPageLayout.getMeasuredWidth(), mNewTabPageLayout.getMeasuredHeight());
-                    imageDrawable = new BitmapDrawable(mNewTabPageLayout.getResources(), wallpaperBitmap);
-                    mNewTabPageLayout.setBackground(imageDrawable);
-
+                    Drawable imageDrawable = null;
                     if (ntpImage instanceof NTPSponsoredImagesBridge.Wallpaper) {
-                        NTPSponsoredImagesBridge.Wallpaper mWallpaper = (NTPSponsoredImagesBridge.Wallpaper) ntpImage;
-                        if (mWallpaper.getLogoBitmap() != null ) {
-                            ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
-                            sponsoredLogo.setVisibility(View.VISIBLE);
-                            sponsoredLogo.setImageBitmap(mWallpaper.getLogoBitmap());
-                            sponsoredLogo.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    if (mWallpaper.getLogoDestinationUrl() != null) {
-                                        NTPUtil.openImageCredit(mWallpaper.getLogoDestinationUrl());
-                                    }
-                                }
-                            });
-                        }
+                        Uri imageFileUri = Uri.parse("file://"+((NTPSponsoredImagesBridge.Wallpaper)ntpImage).getImagePath());
+                        imageDrawable = Drawable.createFromPath(imageFileUri.getPath());
                     } else {
-                        BackgroundImage backgroundImage = (BackgroundImage) ntpImage;
-                        ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
-                        sponsoredLogo.setVisibility(View.GONE);
-                        if (backgroundImage.getImageCredit() != null) {
-                            String imageCreditStr = String.format(mNewTabPageLayout.getResources().getString(R.string.photo_by, backgroundImage.getImageCredit().getName()));
-
-                            SpannableStringBuilder spannableString = new SpannableStringBuilder(imageCreditStr);
-                            spannableString.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), ((imageCreditStr.length()-1) - (backgroundImage.getImageCredit().getName().length()-1)), imageCreditStr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-                            TextView creditText = (TextView)mNewTabPageLayout.findViewById(R.id.credit_text);
-                            creditText.setText(spannableString);
-                            creditText.setVisibility(View.VISIBLE);
-                            creditText.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    if (backgroundImage.getImageCredit() != null) {
-                                        NTPUtil.openImageCredit(backgroundImage.getImageCredit().getUrl());
-                                    }
-                                }
-                            });
-                        }
+                        imageDrawable = bgImg.getResources().getDrawable(((BackgroundImage)ntpImage).getImageDrawable());
                     }
-                    mNewTabPageLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                    float frameWidth = bgImg.getWidth() - bgImg.getPaddingLeft() - bgImg.getPaddingRight();
+                    float frameHeight = bgImg.getHeight() - bgImg.getPaddingTop() - bgImg.getPaddingBottom();
+
+                    float originalImageWidth = (float)imageDrawable.getIntrinsicWidth();
+                    float originalImageHeight = (float)imageDrawable.getIntrinsicHeight();
+
+                    float usedScaleFactor = 1;
+
+                    if((originalImageWidth > frameWidth ) || (originalImageHeight > frameHeight )) {
+                        // If frame is bigger than image
+                        // => Crop it, keep aspect ratio and position it at the bottom and center horizontally
+
+                        float fitHorizontallyScaleFactor = frameWidth/originalImageWidth;
+                        float fitVerticallyScaleFactor = frameHeight/originalImageHeight;
+
+                        usedScaleFactor = Math.max(fitHorizontallyScaleFactor, fitVerticallyScaleFactor);
+                    }
+
+                    float newImageWidth = originalImageWidth * usedScaleFactor;
+                    float newImageHeight = originalImageHeight * usedScaleFactor;
+
+                    Matrix matrix = bgImg.getImageMatrix();
+                    matrix.setScale(usedScaleFactor, usedScaleFactor, 0, 0); // Replaces the old matrix completly
+                    matrix.postTranslate((frameWidth - newImageWidth) /2, frameHeight - newImageHeight);
+
+                    bgImg.setImageMatrix(matrix);
+                    bgImg.setImageDrawable(imageDrawable);
+
+                    int height;
+                    if(ConfigurationUtils.isLandscape(mTabImpl.getActivity())) {
+                        height = ((2*bgImg.getHeight())/3);
+                    } else {
+                        height = (bgImg.getHeight()/3);
+                    }
+
+                    FrameLayout.LayoutParams topGradientLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, height);
+                    mNewTabPageLayout.findViewById(R.id.top_gradient_view).setLayoutParams(topGradientLayoutParams);
+
+                    FrameLayout.LayoutParams bottomGradientLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, height);
+                    mNewTabPageLayout.findViewById(R.id.bottom_gradient_view).setLayoutParams(bottomGradientLayoutParams);
+
+                    bgImg.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
             });
-        }
     }
 
     private void checkForNonDistruptiveBanner(NTPImage ntpImage) {
