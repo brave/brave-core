@@ -28,6 +28,7 @@ import org.chromium.chrome.R;
 import org.chromium.content_public.browser.LoadUrlParams;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
 import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
@@ -259,100 +260,5 @@ public class NTPUtil {
     	} else {
     		return SponsoredImageUtil.getBackgroundImage();
     	}
-    }
-
-    public static Bitmap getWallpaperBitmap(NTPImage ntpImage, int layoutWidth, int layoutHeight) {
-        Context mContext = ContextUtils.getApplicationContext();
-
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inScaled = false;
-        options.inJustDecodeBounds = false;
-
-        Bitmap imageBitmap = null;
-        float centerPointX;
-        float centerPointY;
-
-        if (ntpImage instanceof NTPSponsoredImagesBridge.Wallpaper) {
-            NTPSponsoredImagesBridge.Wallpaper mWallpaper = (NTPSponsoredImagesBridge.Wallpaper) ntpImage;
-            imageBitmap = mWallpaper.getBitmap();
-            centerPointX = mWallpaper.getFocalPointX() == 0 ? (imageBitmap.getWidth()/2) : mWallpaper.getFocalPointX();
-            centerPointY = mWallpaper.getFocalPointY() == 0 ? (imageBitmap.getHeight()/2) : mWallpaper.getFocalPointY();
-        } else {
-            BackgroundImage mBackgroundImage = (BackgroundImage) ntpImage;
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
-                Bitmap imageBitmapRes = BitmapFactory.decodeResource(mContext.getResources(), mBackgroundImage.getImageDrawable(), options);
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                imageBitmapRes.compress(Bitmap.CompressFormat.JPEG,50,stream);
-                byte[] byteArray = stream.toByteArray();
-                imageBitmap = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
-                imageBitmapRes.recycle();
-            } else {
-                imageBitmap = BitmapFactory.decodeResource(mContext.getResources(), mBackgroundImage.getImageDrawable(), options);
-            }
-
-            centerPointX = mBackgroundImage.getCenterPoint();
-            centerPointY = 0;
-        }
-        float imageWidth = imageBitmap.getWidth();
-        float imageHeight = imageBitmap.getHeight();
-
-        float centerRatioX = centerPointX / imageWidth;
-
-        float imageWHRatio = imageWidth / imageHeight;
-        float imageHWRatio = imageHeight / imageWidth;
-
-        int newImageWidth = (int) (layoutHeight * imageWHRatio);
-        int newImageHeight = layoutHeight;
-
-        if (newImageWidth < layoutWidth) {
-            // Image is now too small so we need to adjust width and height based on
-            // This covers landscape and strange tablet sizes.
-            newImageWidth = layoutWidth;
-            newImageHeight = (int) (newImageWidth * imageHWRatio);
-        }
-
-        int newCenterX = (int) (newImageWidth * centerRatioX);
-        int startX = (int) (newCenterX - (layoutWidth / 2));
-        if (newCenterX < layoutWidth / 2) {
-            // Need to crop starting at 0 to newImageWidth - left aligned image
-            startX = 0;
-        } else if (newImageWidth - newCenterX < layoutWidth / 2) {
-            // Need to crop right side of image - right aligned
-            startX = newImageWidth - layoutWidth;
-        }
-
-        int startY = (newImageHeight - layoutHeight)/2;
-        if (centerPointY > 0) {
-            float centerRatioY = centerPointY / imageHeight;
-            newImageWidth = layoutWidth;
-            newImageHeight = (int) (layoutWidth * imageHWRatio);
-
-            if (newImageHeight < layoutHeight) {
-                newImageHeight = layoutHeight;
-                newImageWidth = (int) (newImageHeight * imageWHRatio);
-            }
-
-            int newCenterY = (int) (newImageHeight * centerRatioY);
-            startY = (int) (newCenterY - (layoutHeight / 2));
-            if (newCenterY < layoutHeight / 2) {
-                // Need to crop starting at 0 to newImageWidth - left aligned image
-                startY = 0;
-            } else if (newImageHeight - newCenterY < layoutHeight / 2) {
-                // Need to crop right side of image - right aligned
-                startY = newImageHeight - layoutHeight;
-            }
-        }
-
-        imageBitmap = Bitmap.createScaledBitmap(imageBitmap, newImageWidth, newImageHeight, true);
-
-        Bitmap newBitmap = Bitmap.createBitmap(imageBitmap, startX, startY, layoutWidth, (int) layoutHeight);
-        Bitmap bitmapWithGradient = ImageUtils.addGradient(newBitmap, dpToPx(mContext, BOTTOM_TOOLBAR_HEIGHT));
-        Bitmap offsetBitmap = ImageUtils.topOffset(bitmapWithGradient, dpToPx(mContext, BOTTOM_TOOLBAR_HEIGHT));
-
-        imageBitmap.recycle();
-        newBitmap.recycle();
-        bitmapWithGradient.recycle();
-
-        return offsetBitmap;
     }
 }
