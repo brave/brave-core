@@ -11,7 +11,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import java.io.ByteArrayOutputStream;
-import android.content.SharedPreferences;
 import android.view.ViewGroup;
 import android.view.View;
 import android.view.Gravity;
@@ -27,7 +26,6 @@ import org.chromium.chrome.R;
 
 import org.chromium.content_public.browser.LoadUrlParams;
 
-import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -39,13 +37,13 @@ import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.ntp_sponsored_images.NTPImage;
 import org.chromium.chrome.browser.ntp_sponsored_images.SponsoredImageUtil;
 import org.chromium.chrome.browser.ChromeActivity;
-import org.chromium.chrome.browser.ChromeFeatureList;
-import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.util.ImageUtils;
 import org.chromium.chrome.browser.ntp_sponsored_images.NTPSponsoredImagesBridge;
+import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 
 import static org.chromium.chrome.browser.util.ViewUtils.dpToPx;
 
@@ -65,8 +63,6 @@ public class NTPUtil {
     }
 
     public static void updateOrientedUI(Context context, ViewGroup view) {
-    	SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
-
         LinearLayout parentLayout= (LinearLayout)view.findViewById(R.id.parent_layout);
         ViewGroup mainLayout = view.findViewById(R.id.ntp_main_layout);
         ViewGroup imageCreditLayout = view.findViewById(R.id.image_credit_layout);
@@ -76,8 +72,8 @@ public class NTPUtil {
 
         boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(context);
 
-        if (ConfigurationUtils.isLandscape(context) && mSharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES, true)) {
-            // In landscape          
+        if (ConfigurationUtils.isLandscape(context) && BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)) {
+            // In landscape
             parentLayout.removeView(mainLayout);
             parentLayout.removeView(imageCreditLayout);
 
@@ -184,8 +180,8 @@ public class NTPUtil {
                 nonDistruptiveBannerLayout.setVisibility(View.VISIBLE);
 
                 TextView bannerHeader = nonDistruptiveBannerLayout.findViewById(R.id.ntp_banner_header);
-                TextView bannerText = nonDistruptiveBannerLayout.findViewById(R.id.ntp_banner_text);               
-                TextView learnMoreText = nonDistruptiveBannerLayout.findViewById(R.id.ntp_banner_learn_more_text);               
+                TextView bannerText = nonDistruptiveBannerLayout.findViewById(R.id.ntp_banner_text);
+                TextView learnMoreText = nonDistruptiveBannerLayout.findViewById(R.id.ntp_banner_learn_more_text);
                 Button turnOnAdsButton = nonDistruptiveBannerLayout.findViewById(R.id.btn_turn_on_ads);
                 ImageView bannerClose = nonDistruptiveBannerLayout.findViewById(R.id.ntp_banner_close);
                 bannerClose.setOnClickListener(new View.OnClickListener() {
@@ -212,7 +208,7 @@ public class NTPUtil {
                         sponsoredTab.updateBannerPref();
                     }
                 });
-            
+
                 turnOnAdsButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -246,7 +242,7 @@ public class NTPUtil {
     }
 
     public static boolean shouldEnableNTPFeature(boolean isMoreTabs) {
-    	if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M 
+    	if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M
     		|| (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !isMoreTabs)) {
     		return true;
     	}

@@ -8,16 +8,15 @@ package org.chromium.chrome.browser.widget.tile;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.TextView;
-import android.content.SharedPreferences;
 
 import org.chromium.chrome.R;
-import org.chromium.base.ContextUtils;
-import org.chromium.chrome.browser.ntp_sponsored_images.SponsoredImageUtil;
-import org.chromium.chrome.browser.ntp_sponsored_images.NTPUtil;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
+import org.chromium.chrome.browser.ntp_sponsored_images.SponsoredImageUtil;
+import org.chromium.chrome.browser.ntp_sponsored_images.NTPUtil;
+import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.tabmodel.TabModel;
-import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 
 public class BraveTileWithTextView extends TileWithTextView {
 	public BraveTileWithTextView(Context context, AttributeSet attrs) {
@@ -31,7 +30,6 @@ public class BraveTileWithTextView extends TileWithTextView {
 
         TextView mTitleView = findViewById(R.id.tile_view_title);
 
-    	SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
         boolean isMoreTabs = false;
         ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
         if(chromeTabbedActivity != null) {
@@ -39,7 +37,7 @@ public class BraveTileWithTextView extends TileWithTextView {
             isMoreTabs = tabModel.getCount() >= SponsoredImageUtil.MAX_TABS ? true : false;
         }
 
-        if(mSharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES, true)
+        if(BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
             && NTPUtil.shouldEnableNTPFeature(isMoreTabs)) {
             mTitleView.setTextColor(getResources().getColor(android.R.color.white));
         }

@@ -9,10 +9,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.content.SharedPreferences;
 
 import org.chromium.chrome.R;
-import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.ntp.NewTabPageLayout;
 import org.chromium.chrome.browser.suggestions.tile.SiteSection;
 import org.chromium.chrome.browser.explore_sites.ExploreSitesBridge;
@@ -21,7 +19,8 @@ import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.ntp_sponsored_images.SponsoredImageUtil;
 import org.chromium.chrome.browser.ntp_sponsored_images.NTPUtil;
-import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
+import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 
 public class BraveNewTabPageLayout extends NewTabPageLayout {
     private ViewGroup mBraveStatsView;
@@ -68,7 +67,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
     @Override
     public int getMaxTileRows() {
-        SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
         boolean isMoreTabs = false;
         ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
         if(chromeTabbedActivity != null) {
@@ -76,7 +74,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             isMoreTabs = tabModel.getCount() >= SponsoredImageUtil.MAX_TABS ? true : false;
         }
 
-        if(mSharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES, true) 
+        if(BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
             && NTPUtil.shouldEnableNTPFeature(isMoreTabs)) {
             return 1;
         } else {
