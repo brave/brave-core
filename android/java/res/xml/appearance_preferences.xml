@@ -20,6 +20,6 @@
     <Preference
         android:fragment="org.chromium.chrome.browser.settings.themes.BraveThemePreferences"
         android:key="ui_theme"
-        android:title="@string/prefs_themes" />
+        android:title="@string/theme_settings" />
 
 </android.support.v7.preference.PreferenceScreen>
