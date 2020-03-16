@@ -16,7 +16,6 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Button;
 import android.content.Intent;
-import android.app.Activity;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.SpannableString;
@@ -210,7 +209,7 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment{
                 ForegroundColorSpan brOffForegroundSpan2 = new ForegroundColorSpan(getResources().getColor(R.color.brave_theme_color));
                 brOffTextSS.setSpan(brOffForegroundSpan, termsOfServiceIndex, termsOfServiceIndex + getResources().getString(R.string.terms_of_service).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 brOffTextSS.setSpan(brOffForegroundSpan2, (brOffTextSS.length()-1) - getResources().getString(R.string.hide_sponsored_images).length() , brOffTextSS.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                
+
                 bottomSheetText.setMovementMethod(LinkMovementMethod.getInstance());
                 bottomSheetText.setText(brOffTextSS);
                 break;
@@ -238,7 +237,7 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment{
 
                 ForegroundColorSpan brOnAdsOffForegroundSpan = new ForegroundColorSpan(getResources().getColor(R.color.brave_theme_color));
                 brOnAdsOffSS.setSpan(brOnAdsOffForegroundSpan, (brOnAdsOffSS.length()-1) - getResources().getString(R.string.hide_sponsored_images).length() , brOnAdsOffSS.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                
+
                 bottomSheetText.setMovementMethod(LinkMovementMethod.getInstance());
                 bottomSheetText.setText(brOnAdsOffSS);
                 break;
@@ -281,7 +280,7 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment{
                 ForegroundColorSpan brOnAdsOnForegroundSpan2 = new ForegroundColorSpan(getResources().getColor(R.color.brave_theme_color));
                 brOnAdsOnSS.setSpan(brOnAdsOnForegroundSpan, 0, getResources().getString(R.string.learn_more).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 brOnAdsOnSS.setSpan(brOnAdsOnForegroundSpan2, (brOnAdsOnSS.length()-1) - getResources().getString(R.string.hide_sponsored_images).length() , brOnAdsOnSS.length()-1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                
+
                 bottomSheetText.setMovementMethod(LinkMovementMethod.getInstance());
                 bottomSheetText.setText(brOnAdsOnSS);
                 break;
@@ -302,10 +301,10 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment{
         BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedProfile());
     }
 
-    private void reloadTab() { 
+    private void reloadTab() {
         ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
         if(chromeTabbedActivity != null) {
-            Tab currentTab = chromeTabbedActivity.getActivityTab(); 
+            Tab currentTab = chromeTabbedActivity.getActivityTab();
             SponsoredTab sponsoredTab = TabAttributes.from(currentTab).get(String.valueOf(((TabImpl)currentTab).getId()));
             sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
             TabAttributes.from(currentTab).set(String.valueOf(((TabImpl)currentTab).getId()), sponsoredTab);
