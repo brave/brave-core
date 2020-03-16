@@ -45,8 +45,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     }
 
     @Override
-    public void insertSiteSectionView() {
+    protected void insertSiteSectionView() {
         ViewGroup mainLayout = findViewById(R.id.ntp_main_layout);
+
         mSiteSectionView = SiteSection.inflateSiteSection(mainLayout);
         ViewGroup.LayoutParams layoutParams = mSiteSectionView.getLayoutParams();
         layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -66,7 +67,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     }
 
     @Override
-    public int getMaxTileRows() {
+    protected int getMaxTileRows() {
         boolean isMoreTabs = false;
         ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
         if(chromeTabbedActivity != null) {

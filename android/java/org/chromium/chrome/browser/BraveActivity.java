@@ -317,24 +317,60 @@ public abstract class BraveActivity extends ChromeActivity {
         }
     }
 
-    public void openNewOrSelectExistingTab(String url) {
+    public Tab selectExistingTab(String url) {
+        Tab tab = getActivityTab();
+        if (tab != null && tab.getUrl().equals(url)) {
+            return tab;
+        }
+
+        TabModel tabModel = getCurrentTabModel();
+        int tabIndex = TabModelUtils.getTabIndexByUrl(tabModel, url);
+
+        // Find if tab exists
+        if (tabIndex != TabModel.INVALID_TAB_INDEX){
+            tab = tabModel.getTabAt(tabIndex);
+            // Moving tab forward
+            tabModel.moveTab(tab.getId(), tabModel.getCount());
+            tabModel.setIndex(
+                    TabModelUtils.getTabIndexById(tabModel, tab.getId()),
+                    TabSelectionType.FROM_USER);
+            return tab;
+        } else {
+            return null;
+        }
+    }
+
+    public Tab openNewOrSelectExistingTab(String url) {
         TabModel tabModel = getCurrentTabModel();
         int tabRewardsIndex = TabModelUtils.getTabIndexByUrl(tabModel, url);
 
-        // Find if tab exists
-        if (tabRewardsIndex != TabModel.INVALID_TAB_INDEX){
-            Tab tab = tabModel.getTabAt(tabRewardsIndex);
-            // Moving tab forward
-            if (!getActivityTab().equals(tab)){
-                tabModel.moveTab(tab.getId(), tabModel.getCount());
-                tabModel.setIndex(
-                        TabModelUtils.getTabIndexById(tabModel, tab.getId()),
-                        TabSelectionType.FROM_USER);
-            }
+        Tab tab = selectExistingTab(url);
+        if (tab != null) {
+            return tab;
         } else { // Open a new tab
-            getTabCreator(false).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
+            return getTabCreator(false).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
         }
     }
 
     private native void nativeRestartStatsUpdater();
+
+    static public ChromeTabbedActivity getChromeTabbedActivity() {
+        for (Activity ref : ApplicationStatus.getRunningActivities()) {
+            if (!(ref instanceof ChromeTabbedActivity)) continue;
+
+            return (ChromeTabbedActivity)ref;
+        }
+
+        return null;
+    }
+
+    static public BraveActivity getBraveActivity() {
+        for (Activity ref : ApplicationStatus.getRunningActivities()) {
+            if (!(ref instanceof BraveActivity)) continue;
+
+            return (BraveActivity)ref;
+        }
+
+        return null;
+    }
 }
