@@ -294,18 +294,82 @@ public class BraveNewTabPageView extends NewTabPageView {
                 @Override
                 public void onGlobalLayout() {
                     Drawable imageDrawable = null;
+                    float centerPointX;
+                    float centerPointY;
                     if (ntpImage instanceof NTPSponsoredImagesBridge.Wallpaper) {
-                        Uri imageFileUri = Uri.parse("file://"+((NTPSponsoredImagesBridge.Wallpaper)ntpImage).getImagePath());
+                        NTPSponsoredImagesBridge.Wallpaper mWallpaper = (NTPSponsoredImagesBridge.Wallpaper)ntpImage;
+                        Uri imageFileUri = Uri.parse("file://"+ mWallpaper.getImagePath());
                         imageDrawable = Drawable.createFromPath(imageFileUri.getPath());
+                        centerPointX = mWallpaper.getFocalPointX() == 0 ? (imageDrawable.getIntrinsicWidth()/2) : mWallpaper.getFocalPointX();
+                        centerPointY = mWallpaper.getFocalPointY() == 0 ? (imageDrawable.getIntrinsicHeight()/2) : mWallpaper.getFocalPointY();
                     } else {
-                        imageDrawable = bgImg.getResources().getDrawable(((BackgroundImage)ntpImage).getImageDrawable());
+                        BackgroundImage mBackgroundImage = (BackgroundImage)ntpImage;
+                        imageDrawable = bgImg.getResources().getDrawable(mBackgroundImage.getImageDrawable());
+                        centerPointX = mBackgroundImage.getCenterPoint();
+                        centerPointY = 0;   
                     }
 
-                    float frameWidth = bgImg.getWidth() - bgImg.getPaddingLeft() - bgImg.getPaddingRight();
-                    float frameHeight = bgImg.getHeight() - bgImg.getPaddingTop() - bgImg.getPaddingBottom();
+                    int frameWidth = bgImg.getWidth() - bgImg.getPaddingLeft() - bgImg.getPaddingRight();
+                    int frameHeight = bgImg.getHeight() - bgImg.getPaddingTop() - bgImg.getPaddingBottom();
+
+                    Log.i("NTP", " Frame width : "+frameWidth+" FrameHeight : "+ frameHeight);
 
                     float originalImageWidth = (float)imageDrawable.getIntrinsicWidth();
                     float originalImageHeight = (float)imageDrawable.getIntrinsicHeight();
+
+                    Log.i("NTP", "originalImageWidth : "+originalImageWidth+" originalImageHeight : "+ originalImageHeight);
+
+                    float centerRatioX = centerPointX / originalImageWidth;
+
+                    float imageWHRatio = originalImageWidth / originalImageHeight;
+                    float imageHWRatio = originalImageHeight / originalImageWidth;
+
+                    int newImageWidth = (int) (frameHeight * imageWHRatio);
+                    int newImageHeight = frameHeight;
+
+                    if (newImageWidth < frameWidth) {
+                        // Image is now too small so we need to adjust width and height based on
+                        // This covers landscape and strange tablet sizes.
+                        newImageWidth = frameWidth;
+                        newImageHeight = (int) (newImageWidth * imageHWRatio);
+                    }
+
+                    Log.i("NTP", "newImageWidth : "+newImageWidth+" newImageHeight : "+ newImageHeight);
+
+                    int newCenterX = (int) (newImageWidth * centerRatioX);
+                    int startX = (int) (newCenterX - (frameWidth / 2));
+                    if (newCenterX < frameWidth / 2) {
+                        // Need to crop starting at 0 to newImageWidth - left aligned image
+                        startX = 0;
+                    } else if (newImageWidth - newCenterX < frameWidth / 2) {
+                        // Need to crop right side of image - right aligned
+                        startX = newImageWidth - frameWidth;
+                    }
+
+                    int startY = (newImageHeight - frameHeight)/2;
+
+                    if (centerPointY > 0) {
+                        float centerRatioY = centerPointY / originalImageHeight;
+                        newImageWidth = frameWidth;
+                        newImageHeight = (int) (frameWidth * imageHWRatio);
+
+                        if (newImageHeight < frameHeight) {
+                            newImageHeight = frameHeight;
+                            newImageWidth = (int) (newImageHeight * imageWHRatio);
+                        }
+
+                        int newCenterY = (int) (newImageHeight * centerRatioY);
+                        startY = (int) (newCenterY - (frameHeight / 2));
+                        if (newCenterY < frameHeight / 2) {
+                            // Need to crop starting at 0 to newImageWidth - left aligned image
+                            startY = 0;
+                        } else if (newImageHeight - newCenterY < frameHeight / 2) {
+                            // Need to crop right side of image - right aligned
+                            startY = newImageHeight - frameHeight;
+                        }
+                    }
+
+                    Log.i("NTP", "startX : "+startX+" startY : "+ startY);
 
                     float usedScaleFactor = 1;
 
@@ -319,12 +383,12 @@ public class BraveNewTabPageView extends NewTabPageView {
                         usedScaleFactor = Math.max(fitHorizontallyScaleFactor, fitVerticallyScaleFactor);
                     }
 
-                    float newImageWidth = originalImageWidth * usedScaleFactor;
-                    float newImageHeight = originalImageHeight * usedScaleFactor;
+                    // float newImageWidth = originalImageWidth * usedScaleFactor;
+                    // float newImageHeight = originalImageHeight * usedScaleFactor;
 
                     Matrix matrix = bgImg.getImageMatrix();
-                    matrix.setScale(usedScaleFactor, usedScaleFactor, 0, 0); // Replaces the old matrix completly
-                    matrix.postTranslate((frameWidth - newImageWidth) /2, frameHeight - newImageHeight);
+                    matrix.setScale(usedScaleFactor, usedScaleFactor, startX, startY); // Replaces the old matrix completly
+                    matrix.postTranslate( 0, (frameHeight - (originalImageHeight * usedScaleFactor)));
 
                     bgImg.setImageMatrix(matrix);
                     bgImg.setImageDrawable(imageDrawable);
