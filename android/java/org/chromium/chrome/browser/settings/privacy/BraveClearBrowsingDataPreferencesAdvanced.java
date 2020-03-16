@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-public class BraveClearBrowsingDataPreferencesAdvanced extends ClearBrowsingDataPreferencesAdvanced {
+public class BraveClearBrowsingDataPreferencesAdvanced extends ClearBrowsingDataFragmentAdvanced {
     private static final int CLEAR_DOWNLOADS = DialogOption.NUM_ENTRIES;
 
     @Override

@@ -5,47 +5,48 @@
 
 package org.chromium.chrome.browser.settings.themes;
 
-import static org.chromium.chrome.browser.preferences.ChromePreferenceKeys.DARKEN_WEBSITES_ENABLED_KEY;
-import static org.chromium.chrome.browser.preferences.ChromePreferenceKeys.UI_THEME_SETTING_KEY;
+import static org.chromium.chrome.browser.preferences.ChromePreferenceKeys.UI_THEME_DARKEN_WEBSITES_ENABLED;
+import static org.chromium.chrome.browser.preferences.ChromePreferenceKeys.UI_THEME_SETTING;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import org.chromium.chrome.R;
 import org.chromium.base.BuildInfo;
-import org.chromium.chrome.browser.ChromeFeatureList;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.settings.SettingsUtils;
+import org.chromium.chrome.browser.settings.themes.ThemeType;
 
-public class BraveThemePreferences extends ThemePreferences {
+public class BraveThemePreferences extends ThemeSettingsFragment {
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, String rootKey) {
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_theme_preferences);
-        getActivity().setTitle(getResources().getString(R.string.prefs_themes));
+        getActivity().setTitle(getResources().getString(R.string.theme_settings));
 
         SharedPreferencesManager sharedPreferencesManager = SharedPreferencesManager.getInstance();
         BraveRadioButtonGroupThemePreference radioButtonGroupThemePreference =
                 (BraveRadioButtonGroupThemePreference) findPreference(PREF_UI_THEME_PREF);
 
-        int defaultThemePref = ThemeSetting.SYSTEM_DEFAULT;
+        int defaultThemePref = ThemeType.SYSTEM_DEFAULT;
         if (!BuildInfo.isAtLeastQ()) {
             defaultThemePref = GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
-                    ? ThemeSetting.DARK
-                    : ThemeSetting.LIGHT;
+                    ? ThemeType.DARK
+                    : ThemeType.LIGHT;
         }
         radioButtonGroupThemePreference.initialize(
-                sharedPreferencesManager.readInt(UI_THEME_SETTING_KEY, defaultThemePref),
-                sharedPreferencesManager.readBoolean(DARKEN_WEBSITES_ENABLED_KEY, false));
+                sharedPreferencesManager.readInt(UI_THEME_SETTING, defaultThemePref),
+                sharedPreferencesManager.readBoolean(UI_THEME_DARKEN_WEBSITES_ENABLED, false));
 
         radioButtonGroupThemePreference.setOnPreferenceChangeListener((preference, newValue) -> {
             if (ChromeFeatureList.isEnabled(
                         ChromeFeatureList.DARKEN_WEBSITES_CHECKBOX_IN_THEMES_SETTING)) {
-                sharedPreferencesManager.writeBoolean(DARKEN_WEBSITES_ENABLED_KEY,
+                sharedPreferencesManager.writeBoolean(UI_THEME_DARKEN_WEBSITES_ENABLED,
                         radioButtonGroupThemePreference.isDarkenWebsitesEnabled());
             }
             int theme = (int) newValue;
-            sharedPreferencesManager.writeInt(UI_THEME_SETTING_KEY, theme);
+            sharedPreferencesManager.writeInt(UI_THEME_SETTING, theme);
             return true;
         });
     }

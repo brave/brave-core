@@ -10,6 +10,7 @@ import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ListView;
 
+import org.chromium.chrome.browser.settings.search_engine.SearchEngineAdapter;
 import org.chromium.chrome.R;
 
 public class BraveSearchEnginePreference extends ListFragment {

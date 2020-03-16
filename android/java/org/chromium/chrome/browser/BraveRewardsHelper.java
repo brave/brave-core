@@ -36,7 +36,7 @@ import org.chromium.chrome.browser.favicon.LargeIconBridge;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tabmodel.TabModelImpl;
-import org.chromium.chrome.browser.ui.widget.RoundedIconGenerator;
+import org.chromium.chrome.browser.favicon.RoundedIconGenerator;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 

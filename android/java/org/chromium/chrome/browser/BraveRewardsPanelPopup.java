@@ -62,7 +62,7 @@ import org.chromium.chrome.browser.dialogs.BraveAdsSignupDialog;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelImpl;
-import org.chromium.chrome.browser.tabmodel.TabLaunchType;
+import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.tabmodel.TabModelSelectorImpl;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.R;
