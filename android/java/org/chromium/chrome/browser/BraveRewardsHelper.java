@@ -193,23 +193,11 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback{
     }
 
     static public ChromeTabbedActivity getChromeTabbedActivity() {
-      for (Activity ref : ApplicationStatus.getRunningActivities()) {
-          if (!(ref instanceof ChromeTabbedActivity)) continue;
-
-          return (ChromeTabbedActivity)ref;
-      }
-
-      return null;
+      return BraveActivity.getChromeTabbedActivity();
     }
 
     static public BraveActivity getBraveActivity() {
-      for (Activity ref : ApplicationStatus.getRunningActivities()) {
-          if (!(ref instanceof BraveActivity)) continue;
-
-          return (BraveActivity)ref;
-      }
-
-      return null;
+      return BraveActivity.getBraveActivity();
     }
 
   static public String getCurrentMonth(Calendar currentTime,

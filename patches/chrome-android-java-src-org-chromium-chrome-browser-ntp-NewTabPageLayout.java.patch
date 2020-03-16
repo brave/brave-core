@@ -1,25 +1,17 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
-index db1db4f0b941c6cea83f2ca28ddc70b8e7916a90..29b95ee943646c9556533850585b904300ad918d 100644
+index db1db4f0b941c6cea83f2ca28ddc70b8e7916a90..337bbb41a18195c16603c62acb92de4c5c921a13 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
-@@ -20,6 +20,7 @@ import android.view.ViewGroup;
- import android.view.ViewStub;
- import android.widget.ImageView;
- import android.widget.LinearLayout;
-+import android.widget.FrameLayout;
- import android.widget.TextView;
- 
- import androidx.annotation.Nullable;
-@@ -62,7 +63,7 @@ import org.chromium.ui.base.DeviceFormFactor;
+@@ -62,7 +62,7 @@ import org.chromium.ui.base.DeviceFormFactor;
   * Layout for the new tab page. This positions the page elements in the correct vertical positions.
   * There are no separate phone and tablet UIs; this layout adapts based on the available space.
   */
 -public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer, VrModeObserver {
-+public class NewTabPageLayout extends FrameLayout implements TileGroup.Observer, VrModeObserver {
++public class NewTabPageLayout extends android.widget.FrameLayout implements TileGroup.Observer, VrModeObserver {
      private static final String TAG = "NewTabPageLayout";
      // Used to signify the cached resource value is unset.
      private static final int UNSET_RESOURCE_FLAG = -1;
-@@ -74,7 +75,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
+@@ -74,7 +74,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
  
      private LogoView mSearchProviderLogoView;
      private View mSearchBoxView;
@@ -28,21 +20,21 @@ index db1db4f0b941c6cea83f2ca28ddc70b8e7916a90..29b95ee943646c9556533850585b9043
      private SiteSectionViewHolder mSiteSectionViewHolder;
      private ImageView mVoiceSearchButton;
      private View mTileGridPlaceholder;
-@@ -415,7 +416,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
+@@ -415,7 +415,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
                  1f);
      }
  
 -    private void insertSiteSectionView() {
-+    public void insertSiteSectionView() {
++    protected void insertSiteSectionView() {
          mSiteSectionView = SiteSection.inflateSiteSection(this);
          ViewGroup.LayoutParams layoutParams = mSiteSectionView.getLayoutParams();
          layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-@@ -786,7 +787,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
+@@ -786,7 +786,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
          }
      }
  
 -    private static int getMaxTileRows() {
-+    public int getMaxTileRows() {
++    protected int getMaxTileRows() {
          return 2;
      }
  
