@@ -370,7 +370,7 @@ void PublisherServerList::SavePublishers(
     const std::vector<ledger::ServerPublisherPartial>& list_publisher,
     const std::vector<ledger::PublisherBanner>& list_banner,
     ParsePublisherListCallback callback) {
-  const int max_insert_records_ = 300000;
+  const int max_insert_records_ = 100000;
 
   int32_t interval = max_insert_records_;
   const auto list_size = list_publisher.size();
@@ -399,7 +399,7 @@ void PublisherServerList::SaveBanners(
     const std::vector<ledger::ServerPublisherPartial>& list_publisher,
     const std::vector<ledger::PublisherBanner>& list_banner,
     ParsePublisherListCallback callback) {
-  const int max_insert_records_ = 150000;
+  const int max_insert_records_ = 80000;
 
   int32_t interval = max_insert_records_;
   const auto list_size = list_banner.size();
