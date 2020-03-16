@@ -85,6 +85,8 @@ def get_releases(repo):
             if release['draft']:
                 draft_count = draft_count + 1
                 continue
+            if 'android' in release['tag_name'] or 'b' in release['tag_name']:
+                continue
             tag_name = str(release['tag_name'].strip().replace('v', ''))
             tag_names.append(tag_name)
             releases[tag_name] = release
