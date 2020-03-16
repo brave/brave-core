@@ -22,6 +22,9 @@ import android.text.SpannableStringBuilder;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import java.io.InputStream;
+import java.io.FileNotFoundException;
+import android.graphics.BitmapFactory;
 
 import org.chromium.base.TraceEvent;
 import org.chromium.chrome.R;
@@ -240,20 +243,24 @@ public class BraveNewTabPageView extends NewTabPageView {
             if (ntpImage instanceof NTPSponsoredImagesBridge.Wallpaper) {
                 NTPSponsoredImagesBridge.Wallpaper mWallpaper = (NTPSponsoredImagesBridge.Wallpaper) ntpImage;
                 if (mWallpaper.getLogoPath() != null ) {
-                    ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
-                    sponsoredLogo.setVisibility(View.VISIBLE);
-
-                    Uri logoFileUri = Uri.parse("file://"+ mWallpaper.getLogoPath());
-                    Drawable logoDrawable = Drawable.createFromPath(logoFileUri.getPath());
-                    sponsoredLogo.setImageDrawable(logoDrawable);
-                    sponsoredLogo.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            if (mWallpaper.getLogoDestinationUrl() != null) {
-                                NTPUtil.openImageCredit(mWallpaper.getLogoDestinationUrl());
+                    try {
+                        ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
+                        sponsoredLogo.setVisibility(View.VISIBLE);
+                        Uri logoFileUri = Uri.parse("file://"+ mWallpaper.getLogoPath());
+                        InputStream inputStream = mTabImpl.getActivity().getContentResolver().openInputStream(logoFileUri);
+                        Bitmap logoBitmap = BitmapFactory.decodeStream(inputStream);
+                        sponsoredLogo.setImageBitmap(logoBitmap);
+                        sponsoredLogo.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (mWallpaper.getLogoDestinationUrl() != null) {
+                                    NTPUtil.openImageCredit(mWallpaper.getLogoDestinationUrl());
+                                }
                             }
-                        }
-                    });
+                        });
+                    } catch(FileNotFoundException exc) {
+                        Log.e("NTP", exc.getMessage());
+                    }
                 }
             } else {
                 BackgroundImage backgroundImage = (BackgroundImage) ntpImage;
@@ -282,118 +289,21 @@ public class BraveNewTabPageView extends NewTabPageView {
     }
 
     private void setBackgroundImage(NTPImage ntpImage) {
-        ImageView bgImg = (ImageView)mNewTabPageLayout.findViewById(R.id.imgView);
-        bgImg.setScaleType(ImageView.ScaleType.MATRIX);
+        ImageView bgImageView = (ImageView)mNewTabPageLayout.findViewById(R.id.bg_image_view);
+        bgImageView.setScaleType(ImageView.ScaleType.MATRIX);
 
-        ViewTreeObserver observer = bgImg.getViewTreeObserver();
+        ViewTreeObserver observer = bgImageView.getViewTreeObserver();
             observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    Drawable imageDrawable = null;
-                    float centerPointX;
-                    float centerPointY;
-                    if (ntpImage instanceof NTPSponsoredImagesBridge.Wallpaper) {
-                        NTPSponsoredImagesBridge.Wallpaper mWallpaper = (NTPSponsoredImagesBridge.Wallpaper)ntpImage;
-                        Uri imageFileUri = Uri.parse("file://"+ mWallpaper.getImagePath());
-                        imageDrawable = Drawable.createFromPath(imageFileUri.getPath());
-                        centerPointX = mWallpaper.getFocalPointX() == 0 ? (imageDrawable.getIntrinsicWidth()/2) : mWallpaper.getFocalPointX();
-                        centerPointY = mWallpaper.getFocalPointY() == 0 ? (imageDrawable.getIntrinsicHeight()/2) : mWallpaper.getFocalPointY();
-                    } else {
-                        BackgroundImage mBackgroundImage = (BackgroundImage)ntpImage;
-                        imageDrawable = bgImg.getResources().getDrawable(mBackgroundImage.getImageDrawable());
-                        centerPointX = mBackgroundImage.getCenterPoint();
-                        centerPointY = 0;
-                    }
-
-                    int frameWidth = bgImg.getWidth() - bgImg.getPaddingLeft() - bgImg.getPaddingRight();
-                    int frameHeight = bgImg.getHeight() - bgImg.getPaddingTop() - bgImg.getPaddingBottom();
-
-                    Log.i("NTP", " Frame width : "+frameWidth+" FrameHeight : "+ frameHeight);
-
-                    float originalImageWidth = (float)imageDrawable.getIntrinsicWidth();
-                    float originalImageHeight = (float)imageDrawable.getIntrinsicHeight();
-
-                    Log.i("NTP", "originalImageWidth : "+originalImageWidth+" originalImageHeight : "+ originalImageHeight);
-
-                    float centerRatioX = centerPointX / originalImageWidth;
-
-                    float imageWHRatio = originalImageWidth / originalImageHeight;
-                    float imageHWRatio = originalImageHeight / originalImageWidth;
-
-                    int newImageWidth = (int) (frameHeight * imageWHRatio);
-                    int newImageHeight = frameHeight;
-
-                    if (newImageWidth < frameWidth) {
-                        // Image is now too small so we need to adjust width and height based on
-                        // This covers landscape and strange tablet sizes.
-                        newImageWidth = frameWidth;
-                        newImageHeight = (int) (newImageWidth * imageHWRatio);
-                    }
-
-                    Log.i("NTP", "newImageWidth : "+newImageWidth+" newImageHeight : "+ newImageHeight);
-
-                    int newCenterX = (int) (newImageWidth * centerRatioX);
-                    int startX = (int) (newCenterX - (frameWidth / 2));
-                    if (newCenterX < frameWidth / 2) {
-                        // Need to crop starting at 0 to newImageWidth - left aligned image
-                        startX = 0;
-                    } else if (newImageWidth - newCenterX < frameWidth / 2) {
-                        // Need to crop right side of image - right aligned
-                        startX = newImageWidth - frameWidth;
-                    }
-
-                    int startY = (newImageHeight - frameHeight)/2;
-
-                    if (centerPointY > 0) {
-                        float centerRatioY = centerPointY / originalImageHeight;
-                        newImageWidth = frameWidth;
-                        newImageHeight = (int) (frameWidth * imageHWRatio);
-
-                        if (newImageHeight < frameHeight) {
-                            newImageHeight = frameHeight;
-                            newImageWidth = (int) (newImageHeight * imageWHRatio);
-                        }
-
-                        int newCenterY = (int) (newImageHeight * centerRatioY);
-                        startY = (int) (newCenterY - (frameHeight / 2));
-                        if (newCenterY < frameHeight / 2) {
-                            // Need to crop starting at 0 to newImageWidth - left aligned image
-                            startY = 0;
-                        } else if (newImageHeight - newCenterY < frameHeight / 2) {
-                            // Need to crop right side of image - right aligned
-                            startY = newImageHeight - frameHeight;
-                        }
-                    }
-
-                    Log.i("NTP", "startX : "+startX+" startY : "+ startY);
-
-                    float usedScaleFactor = 1;
-
-                    if((originalImageWidth > frameWidth ) || (originalImageHeight > frameHeight )) {
-                        // If frame is bigger than image
-                        // => Crop it, keep aspect ratio and position it at the bottom and center horizontally
-
-                        float fitHorizontallyScaleFactor = frameWidth/originalImageWidth;
-                        float fitVerticallyScaleFactor = frameHeight/originalImageHeight;
-
-                        usedScaleFactor = Math.max(fitHorizontallyScaleFactor, fitVerticallyScaleFactor);
-                    }
-
-                    // float newImageWidth = originalImageWidth * usedScaleFactor;
-                    // float newImageHeight = originalImageHeight * usedScaleFactor;
-
-                    Matrix matrix = bgImg.getImageMatrix();
-                    matrix.setScale(usedScaleFactor, usedScaleFactor, startX, startY); // Replaces the old matrix completly
-                    matrix.postTranslate( 0, (frameHeight - (originalImageHeight * usedScaleFactor)));
-
-                    bgImg.setImageMatrix(matrix);
-                    bgImg.setImageDrawable(imageDrawable);
+                    Bitmap wallpaperBitmap = NTPUtil.getWallpaperBitmap(ntpImage, bgImageView.getMeasuredWidth(), bgImageView.getMeasuredHeight());
+                    bgImageView.setImageBitmap(wallpaperBitmap);
 
                     int height;
                     if(ConfigurationUtils.isLandscape(mTabImpl.getActivity())) {
-                        height = ((2*bgImg.getHeight())/3);
+                        height = ((2*bgImageView.getHeight())/3);
                     } else {
-                        height = (bgImg.getHeight()/3);
+                        height = (bgImageView.getHeight()/3);
                     }
 
                     FrameLayout.LayoutParams topGradientLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, height);
@@ -402,7 +312,7 @@ public class BraveNewTabPageView extends NewTabPageView {
                     FrameLayout.LayoutParams bottomGradientLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, height);
                     mNewTabPageLayout.findViewById(R.id.bottom_gradient_view).setLayoutParams(bottomGradientLayoutParams);
 
-                    bgImg.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    bgImageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
             });
     }
