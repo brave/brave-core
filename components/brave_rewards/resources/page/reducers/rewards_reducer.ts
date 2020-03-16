@@ -124,7 +124,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
 
       state.adsData.adsEnabled = action.payload.adsData.adsEnabled
-      state.adsData.shouldAllowAdConversionTracking = action.payload.adsData.shouldAllowAdConversionTracking
       state.adsData.adsPerHour = action.payload.adsData.adsPerHour
       state.adsData.adsUIEnabled = action.payload.adsData.adsUIEnabled
       state.adsData.adsIsSupported = action.payload.adsData.adsIsSupported
