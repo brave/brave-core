@@ -93,7 +93,7 @@ export const BlockedInfoRowText = styled<{}, 'span'>('span')`
   box-sizing: border-box;
   font-size: 12px;
   font-weight: 500;
-  line-height: 1;
+  line-height: 1.2;
   color: ${p => p.theme.color.text};
 `
 
@@ -162,7 +162,7 @@ export const LinkAction = styled<LinkActionProps, any>(Link)`
   font-size: ${p => p.size === 'small' && '12px' || 'inherit'};
   line-height: ${p => p.size === 'small' && '1'};
   font-weight: 500;
-  z-index: 2;
+  z-index: ${p => p.size === 'small' ? '1' : '2'};
 
   &:focus {
     outline-offset: initial;

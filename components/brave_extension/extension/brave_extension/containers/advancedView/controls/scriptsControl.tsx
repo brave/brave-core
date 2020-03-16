@@ -124,7 +124,7 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
     const { scriptsBlockedOpen } = this.state
     return (
       <>
-        <BlockedInfoRow id='scriptsControl' extraColumn={true}>
+        <BlockedInfoRow id='scriptsControl'>
           <BlockedInfoRowData
             disabled={this.shouldDisableResourcesRow}
             tabIndex={this.tabIndex}
@@ -133,25 +133,22 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
           >
             <ArrowDownIcon />
             <BlockedInfoRowStats id='blockScriptsStat'>{this.javascriptBlockedDisplay}</BlockedInfoRowStats>
-            <BlockedInfoRowText>{getLocale('scriptsBlocked')}</BlockedInfoRowText>
+            <BlockedInfoRowText>
+              {getLocale('scriptsBlocked')}
+              &nbsp;
+              {
+                this.shouldDisableResourcesRow === false
+                  && (
+                    <LinkAction
+                      size='small'
+                      onClick={this.onClickAllowScriptsOnce}
+                    >
+                      {getLocale('allowScriptsOnce')}
+                    </LinkAction>
+                  )
+              }
+            </BlockedInfoRowText>
           </BlockedInfoRowData>
-          {
-            this.shouldDisableResourcesRow === false
-              && (
-                <LinkAction
-                  size='small'
-                  onClick={this.onClickAllowScriptsOnce}
-                  style={{
-                    // TODO: cezaraugusto re-visit shields components.
-                    // this should be defined in the component itself and not inlined,
-                    // and ideally in a logic that is not bounded to a reusable component such as this one.
-                    zIndex: 1
-                  }}
-                >
-                  {getLocale('allowScriptsOnce')}
-                </LinkAction>
-              )
-          }
           <Toggle
             id='blockScripts'
             size='small'
