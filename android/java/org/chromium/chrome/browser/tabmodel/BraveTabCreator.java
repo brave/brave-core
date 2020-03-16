@@ -6,9 +6,7 @@
 package org.chromium.chrome.browser.tabmodel;
 
 import android.os.Build;
-import android.content.SharedPreferences;
 
-import org.chromium.base.ContextUtils;
 import org.chromium.base.Supplier;
 import org.chromium.chrome.browser.ChromeActivity;
 import org.chromium.ui.base.WindowAndroid;
@@ -22,25 +20,25 @@ import org.chromium.chrome.browser.util.UrlConstants;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.ntp_sponsored_images.SponsoredImageUtil;
 import org.chromium.chrome.browser.ntp_sponsored_images.NTPSponsoredImagesBridge;
-import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
-
+import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 
 public class BraveTabCreator extends ChromeTabCreator {
 
-	public BraveTabCreator(ChromeActivity activity, WindowAndroid nativeWindow,
-		StartupTabPreloader startupTabPreloader,
-		Supplier<TabDelegateFactory> tabDelegateFactory, boolean incognito) {
+	public BraveTabCreator(ChromeActivity activity,
+            WindowAndroid nativeWindow,
+	        StartupTabPreloader startupTabPreloader,
+	        Supplier<TabDelegateFactory> tabDelegateFactory,
+            boolean incognito) {
 		super(activity, nativeWindow, startupTabPreloader, tabDelegateFactory, incognito);
 	}
 
     @Override
     public void launchNTP() {
-        SharedPreferences mSharedPreferences = ContextUtils.getAppSharedPreferences();
-
         ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
         if(chromeTabbedActivity != null && Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
             TabModel tabModel = chromeTabbedActivity.getCurrentTabModel();
-            if (tabModel.getCount() >= SponsoredImageUtil.MAX_TABS && mSharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES, true)) {
+            if (tabModel.getCount() >= SponsoredImageUtil.MAX_TABS && BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)) {
                 if(chromeTabbedActivity.getActivityTab() != null && NewTabPage.isNTPUrl(chromeTabbedActivity.getActivityTab().getUrl())) {
                     chromeTabbedActivity.hideOverview();
                 } else {

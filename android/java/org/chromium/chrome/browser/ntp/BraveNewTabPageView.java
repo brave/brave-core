@@ -10,7 +10,6 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.widget.FrameLayout;
@@ -27,14 +26,13 @@ import android.net.Uri;
 import org.chromium.base.TraceEvent;
 import org.chromium.chrome.R;
 import org.chromium.base.Log;
-import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.ntp.NewTabPageView;
+import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.suggestions.tile.TileGroup;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabImpl;
-import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.ntp_sponsored_images.NTPImage;
 import org.chromium.chrome.browser.ntp_sponsored_images.BackgroundImage;
 import org.chromium.chrome.browser.ntp_sponsored_images.NewTabPageListener;
@@ -69,7 +67,6 @@ public class BraveNewTabPageView extends NewTabPageView {
     private SponsoredTab sponsoredTab;
 
     private NewTabPageLayout mNewTabPageLayout;
-    private SharedPreferences mSharedPreferences;
     private BitmapDrawable imageDrawable;
 
     private boolean isFromBottomSheet;
@@ -83,7 +80,6 @@ public class BraveNewTabPageView extends NewTabPageView {
         super(context, attrs);
         mProfile = Profile.getLastUsedProfile();
         mNewTabPageLayout = getNewTabPageLayout();
-        mSharedPreferences = ContextUtils.getAppSharedPreferences();
         mNTPSponsoredImagesBridge = NTPSponsoredImagesBridge.getInstance(mProfile);
     }
 
@@ -165,7 +161,7 @@ public class BraveNewTabPageView extends NewTabPageView {
         mHttpsUpgradesCountTextView.setText(getBraveStatsStringFormNumber(httpsUpgradesCount));
         mEstTimeSavedCountTextView.setText(getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000));
 
-        if(mSharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES, true)
+        if(BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
             && sponsoredTab != null && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
             mAdsBlockedTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));
             mHttpsUpgradesTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));
@@ -238,7 +234,7 @@ public class BraveNewTabPageView extends NewTabPageView {
     private void showNTPImage(NTPImage ntpImage) {
         NTPUtil.updateOrientedUI(mTabImpl.getActivity(), mNewTabPageLayout);
 
-        if(mSharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES, true)
+        if(BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
             && sponsoredTab != null && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
             setBackgroundImage(ntpImage);
             if (ntpImage instanceof NTPSponsoredImagesBridge.Wallpaper) {
@@ -306,7 +302,7 @@ public class BraveNewTabPageView extends NewTabPageView {
                         BackgroundImage mBackgroundImage = (BackgroundImage)ntpImage;
                         imageDrawable = bgImg.getResources().getDrawable(mBackgroundImage.getImageDrawable());
                         centerPointX = mBackgroundImage.getCenterPoint();
-                        centerPointY = 0;   
+                        centerPointY = 0;
                     }
 
                     int frameWidth = bgImg.getWidth() - bgImg.getPaddingLeft() - bgImg.getPaddingRight();
