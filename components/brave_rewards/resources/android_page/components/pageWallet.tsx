@@ -62,7 +62,7 @@ class PageWallet extends React.Component<Props, State> {
     return claimedPromotions.map((promotion: Rewards.Promotion) => {
       return {
         amount: promotion.amount,
-        expiresAt: new Date(promotion.expiresAt * 1000).toLocaleDateString(),
+        expiresAt: new Date(promotion.expiresAt).toLocaleDateString(),
         type: promotion.type || 0
       }
     })
