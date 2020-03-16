@@ -44,11 +44,9 @@ class ChromeImporter : public Importer {
 
   static base::nix::DesktopEnvironment GetDesktopEnvironment();
 
-  virtual void ImportBookmarks();
-  virtual void ImportHistory();
-  virtual void ImportPasswords(const base::FilePath& prefs_filename);
-  virtual void ImportCookies();
-  virtual const char* GetCookiesQueryString() const;
+  void ImportBookmarks();
+  void ImportHistory();
+  void ImportPasswords(const base::FilePath& prefs_filename);
 
   double chromeTimeToDouble(int64_t time);
 

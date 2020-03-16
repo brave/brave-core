@@ -51,9 +51,6 @@ void BraveBrowserMainExtraParts::PostBrowserStart() {
 }
 
 void BraveBrowserMainExtraParts::PreMainMessageLoopRun() {
-#if !defined(OS_ANDROID)
-  brave::AutoImportMuon();
-#endif
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
   // Want to check as early as possible because |StartupCheck()| has some
   // fixup handling for abnormal status and run it on UI thread.

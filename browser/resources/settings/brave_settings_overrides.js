@@ -131,14 +131,6 @@ BravePatching.RegisterPolymerComponentBehaviors({
           return;
         }
         this.noImportDataTypeSelected_ = this.noImportDataTypeSelected_ &&
-          !(this.getPref('import_dialog_cookies').value &&
-          this.selected_.cookies) &&
-          !(this.getPref('import_dialog_stats').value &&
-            this.selected_.stats) &&
-          !(this.getPref('import_dialog_ledger').value &&
-            this.selected_.ledger) &&
-          !(this.getPref('import_dialog_windows').value &&
-            this.selected_.windows) &&
           !(this.getPref('import_dialog_extensions').value &&
             this.selected_.extensions)
       }

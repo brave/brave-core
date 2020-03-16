@@ -13,7 +13,6 @@
 #include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/brave_paths.h"
-#include "brave/common/importer/brave_mock_importer_bridge.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/importer/imported_bookmark_entry.h"
 #include "chrome/common/importer/importer_data_types.h"
@@ -60,14 +59,14 @@ class ChromeImporterTest : public ::testing::Test {
   void SetUp() override {
     SetUpChromeProfile();
     importer_ = new ChromeImporter;
-    bridge_ = new BraveMockImporterBridge;
+    bridge_ = new MockImporterBridge;
   }
 
   base::ScopedTempDir temp_dir_;
   base::FilePath profile_dir_;
   importer::SourceProfile profile_;
   scoped_refptr<ChromeImporter> importer_;
-  scoped_refptr<BraveMockImporterBridge> bridge_;
+  scoped_refptr<MockImporterBridge> bridge_;
 };
 
 TEST_F(ChromeImporterTest, ImportHistory) {

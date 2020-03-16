@@ -30,11 +30,11 @@ class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
   void NotifyImportEnded() override;
   bool CheckForFirefoxLock(
       const importer::SourceProfile& source_profile) override;
-  // Make sure that Chrome or Brave isn't running, if import browser is Chrome
+  // Make sure that Chrome isn't running, if import browser is Chrome
   // or Brave. Show to the user a dialog that notifies that is necessary to
-  // close Chrome or Brave prior to continuing the import. Returns false iff
+  // close Chrome  prior to continuing the import. Returns false iff
   // import should be aborted.
-  bool CheckForChromeOrBraveLock(
+  bool CheckForChromeLock(
       const importer::SourceProfile& source_profile);
 
   // ShowWarningDialog() asks user to close the application that is owning the
@@ -52,7 +52,7 @@ class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
   void OnGetChromeExtensionsList(base::Optional<base::Value> extensions_list);
 #endif
 
-  // Chrome or Brave profile lock.
+  // Chrome profile lock.
   std::unique_ptr<BrowserProfileLock> browser_lock_;
 
   // Vends weak pointers for the importer to call us back.

@@ -1,8 +1,8 @@
 diff --git a/chrome/common/importer/importer_type.h b/chrome/common/importer/importer_type.h
-index c172f8a5bc534465ff4d063a52f9bb510b7e36af..88d54c3bcc91f6d2975a3c3e040cb14d20bfbfeb 100644
+index c172f8a5bc534465ff4d063a52f9bb510b7e36af..f1252eb63f413e2135202236ca40d05f129a6c7a 100644
 --- a/chrome/common/importer/importer_type.h
 +++ b/chrome/common/importer/importer_type.h
-@@ -19,11 +19,15 @@ enum ImporterType {
+@@ -19,6 +19,8 @@ enum ImporterType {
    TYPE_IE              = 0,
  #endif
    // Value 1 was the (now deleted) Firefox 2 profile importer.
@@ -11,10 +11,3 @@ index c172f8a5bc534465ff4d063a52f9bb510b7e36af..88d54c3bcc91f6d2975a3c3e040cb14d
    TYPE_FIREFOX         = 2,
  #if defined(OS_MACOSX)
    TYPE_SAFARI          = 3,
- #endif
-   // Value 4 was the (now deleted) Google Toolbar importer.
-+  // We use it for the Brave profile importer now.
-+  TYPE_BRAVE           = 4,
-   TYPE_BOOKMARKS_FILE  = 5, // Identifies a 'bookmarks.html' file.
- #if defined(OS_WIN)
-   TYPE_EDGE            = 6,

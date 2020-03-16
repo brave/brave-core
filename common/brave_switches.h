@@ -26,8 +26,6 @@ extern const char kRewards[];
 
 extern const char kDarkMode[];
 
-extern const char kUpgradeFromMuon[];
-
 extern const char kDisableMachineId[];
 
 extern const char kDisableEncryptionWin[];

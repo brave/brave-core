@@ -8,15 +8,15 @@
 
 #define ExternalProcessImporterHost BraveExternalProcessImporterHost
 
-#define BRAVE_IMPORT_DATA                               \
-  if (*types->FindBoolKey(kImportDialogExtensions))     \
+#define BRAVE_IMPORT_DATA \
+  if (prefs->GetBoolean(kImportDialogExtensions)) \
     selected_items |= importer::EXTENSIONS;
 
-#define BRAVE_SEND_BROWSER_PROFILE_DATA                                     \
-  browser_profile->SetBoolean("extensions",                                 \
-                              (browser_services & importer::EXTENSIONS) != 0);
+#define BRAVE_SEND_BROWSER_PROFILE_DATA \
+  browser_profile->SetBoolean("extensions", \
+      (browser_services & importer::EXTENSIONS) != 0);
 
-#include "../../../../../../../chrome/browser/ui/webui/settings/import_data_handler.cc"
+#include "../../../../../../../chrome/browser/ui/webui/settings/settings_import_data_handler.cc"  // NOLINT
 #undef ExternalProcessImporterHost
 #undef BRAVE_IMPORT_DATA
 #undef BRAVE_SEND_BROWSER_PROFILE_DATA

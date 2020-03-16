@@ -54,7 +54,6 @@ const char kGoogleLoginControlType[] = "brave.google_login_default";
 const char kFBEmbedControlType[] = "brave.fb_embed_default";
 const char kTwitterEmbedControlType[] = "brave.twitter_embed_default";
 const char kLinkedInEmbedControlType[] = "brave.linkedin_embed_default";
-const char kMigratedMuonProfile[] = "brave.muon.migrated_profile";
 const char kBravePaymentsPinnedItemCount[] =
     "brave.muon.import_pinned_item_count";
 const char kWebTorrentEnabled[] = "brave.webtorrent_enabled";

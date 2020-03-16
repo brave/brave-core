@@ -7,7 +7,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/scoped_blocking_call.h"
 #include "base/values.h"
-#include "brave/common/importer/brave_importer_utils.h"
 #include "brave/common/importer/chrome_importer_utils.h"
 #include "chrome/browser/importer/importer_list.h"
 #include "chrome/grit/generated_resources.h"
@@ -70,25 +69,6 @@ void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
   const std::string brandChromium("Chromium ");
   AddChromeToProfiles(profiles, chromium_profiles, chromium_user_data_folder,
                       brandChromium);
-}
-
-void DetectBraveProfiles(std::vector<importer::SourceProfile>* profiles) {
-  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
-                                                base::BlockingType::WILL_BLOCK);
-
-  base::FilePath brave_user_data_folder = GetBraveUserDataFolder();
-
-  uint16_t items = importer::NONE;
-  if (!BraveImporterCanImport(brave_user_data_folder, &items))
-    return;
-
-  importer::SourceProfile brave;
-  brave.importer_name =
-      l10n_util::GetStringUTF16(IDS_IMPORT_FROM_BRAVE);
-  brave.importer_type = importer::TYPE_BRAVE;
-  brave.services_supported = items;
-  brave.source_path = brave_user_data_folder;
-  profiles->push_back(brave);
 }
 
 }  // namespace
