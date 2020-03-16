@@ -129,7 +129,7 @@ export default function shieldsPanelReducer (
           reloadTab(tabId, true).catch(() => {
             console.error('Tab reload was not successful')
           })
-          requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
+          return requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
         })
         .catch(() => {
           console.error('Could not set shields')
