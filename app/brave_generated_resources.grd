@@ -737,6 +737,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_SITE_AND_SHIELDS_SETTINGS" desc="Label for site and shields settings in clear browsing data dialog">
         Site and Shields Settings
       </message>
+      <message name="IDS_SETTINGS_AMP_NEUTRALIZED_SETTING_LABEL" desc="Label for control to automatically redirect AMP pages to their original version">
+        Automatically redirect AMP pages to their original version
+      </message>
     </messages>
   </release>
 </grit>

@@ -183,6 +183,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       IDS_SETTINGS_REMOTE_DEBUGGING_TITLE},
     {"siteSettings",
       IDS_SETTINGS_SITE_AND_SHIELDS_SETTINGS},
+    {"ampNeutralizedSettingLabel",
+      IDS_SETTINGS_AMP_NEUTRALIZED_SETTING_LABEL},
   };
   AddLocalizedStringsBulk(html_source, localized_strings);
   html_source->AddString("webRTCLearnMoreURL",
