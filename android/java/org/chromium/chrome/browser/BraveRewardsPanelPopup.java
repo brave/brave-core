@@ -1159,8 +1159,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
               String toInsert = "<b><font color=#ffffff>" + grant[0] + " BAT</font></b> ";
 
               if (grant[2].equals(BraveRewardsPanelPopup.ADS_GRANT_TYPE) == false) {
-                  TimeZone utc = TimeZone.getTimeZone("UTC");
-                  Calendar calTime = Calendar.getInstance(utc);
+                  Calendar calTime = Calendar.getInstance();
                   calTime.setTimeInMillis(Long.parseLong(grant[1]) * 1000);
                   String date = Integer.toString(calTime.get(Calendar.MONTH) + 1) + "/" +
                           Integer.toString(calTime.get(Calendar.DAY_OF_MONTH)) + "/" +
