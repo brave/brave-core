@@ -25,7 +25,8 @@
     <ImageView
         android:id="@+id/imgView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"/>
 
     <View
         android:id="@+id/bottom_gradient_view"
