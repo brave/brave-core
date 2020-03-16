@@ -16,9 +16,11 @@ import org.chromium.base.library_loader.LibraryProcessType;
 import org.chromium.base.task.PostTask;
 import org.chromium.chrome.browser.BraveHelper;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
+import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.settings.website.WebsitePreferenceBridge;
 import org.chromium.content_public.browser.BrowserStartupController;
 import org.chromium.content_public.browser.UiThreadTaskTraits;
@@ -256,6 +258,14 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
         // View pages in Desktop mode option
         BravePrefServiceBridge.getInstance().setDesktopModeEnabled(
             BravePrefServiceBridge.getInstance().GetBooleanForContentSetting(CONTENT_SETTINGS_TYPE_DESKTOP_VIEW));
+
+        // Background image settings settings
+        if (sharedPreferences.contains(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES)) {
+            BravePrefServiceBridge.getInstance().setBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE,
+                    sharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES, true));
+            BravePrefServiceBridge.getInstance().setBoolean(BravePref.NTP_SHOW_BRANDED_BACKGROUND_IMAGE,
+                    sharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_SPONSORED_IMAGES, true));
+        }
 
         // Migrate search engines settings
         sharedPreferencesEditor.putString(BraveHelper.PRIVATE_DSE_KEYWORD,
