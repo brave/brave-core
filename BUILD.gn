@@ -79,7 +79,7 @@ if (is_android) {
       "//brave/android/sync/android_sync.js",
       "//brave/android/sync/android_sync_words.js",
       "//brave/android/sync/crypto.js",
-      "//brave/components/brave_sync/extension/brave-sync/bundles/bundle.js",
+      "//brave/components/brave_sync/extension/brave-sync-android/bundles/bundle.js",
       "//brave/LICENSE.html",
     ]
     deps = [
