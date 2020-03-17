@@ -16,6 +16,19 @@ AdConversionInfo::AdConversionInfo(
 
 AdConversionInfo::~AdConversionInfo() = default;
 
+bool AdConversionInfo::operator==(
+    const AdConversionInfo& rhs) const {
+  return creative_set_id == rhs.creative_set_id &&
+      type == rhs.type &&
+      url_pattern == rhs.url_pattern &&
+      observation_window == rhs.observation_window;
+}
+
+bool AdConversionInfo::operator!=(
+    const AdConversionInfo& rhs) const {
+  return !(*this == rhs);
+}
+
 std::string AdConversionInfo::ToJson() const {
   std::string json;
   SaveToJson(*this, &json);
