@@ -104,8 +104,7 @@ public class NTPSponsoredImagesBridge {
     }
 
     static public boolean enableSponsoredImages() {
-        // return BravePrefServiceBridge.getInstance().getSafetynetCheckFailed();
-        return true;
+        return !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed();
     }
 
     static public NTPSponsoredImagesBridge getInstance(Profile profile)  {
