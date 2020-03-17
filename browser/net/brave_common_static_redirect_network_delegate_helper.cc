@@ -10,6 +10,8 @@
 #include <vector>
 
 #include "base/command_line.h"
+#include "base/feature_list.h"
+#include "brave/common/brave_features.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/network_constants.h"
 #include "components/component_updater/component_updater_url_constants.h"
@@ -70,7 +72,8 @@ int OnBeforeURLRequest_CommonStaticRedirectWorkForGURL(
     replacements.SetQueryStr(request_url.query_piece());
     const base::CommandLine& command_line =
         *base::CommandLine::ForCurrentProcess();
-    if (!command_line.HasSwitch(switches::kUseGoUpdateDev)) {
+    if (!command_line.HasSwitch(switches::kUseGoUpdateDev) &&
+        !base::FeatureList::IsEnabled(features::kUseDevUpdaterUrl)) {
       *new_url = GURL(kBraveUpdatesExtensionsProdEndpoint)
                             .ReplaceComponents(replacements);
     } else {
