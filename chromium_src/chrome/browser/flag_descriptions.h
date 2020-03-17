@@ -9,6 +9,8 @@
 #include "../../../../chrome/browser/flag_descriptions.h"
 
 namespace flag_descriptions {
+extern const char kUseDevUpdaterUrlName[];
+extern const char kUseDevUpdaterUrlDescription[];
 extern const char kBraveNTPBrandedWallpaperName[];
 extern const char kBraveNTPBrandedWallpaperDescription[];
 extern const char kBraveNTPBrandedWallpaperDemoName[];
