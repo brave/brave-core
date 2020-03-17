@@ -7,10 +7,12 @@ package org.chromium.chrome.browser.upgrade;
 
 import android.content.Context;
 import android.content.Intent;
+import java.util.Locale;
 import android.content.SharedPreferences;
 import android.support.v4.app.JobIntentService;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.base.PathUtils;
 import org.chromium.base.Log;
 import org.chromium.base.library_loader.LibraryProcessType;
 import org.chromium.base.task.PostTask;
@@ -252,6 +254,24 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
         sharedPreferencesEditor.apply();
     }
 
+    private void removeNTPFiles() {
+        String countryCode = Locale.getDefault().getCountry();
+
+        File dataDirPath = new File(PathUtils.getDataDirectory());
+        if (null == dataDirPath) {
+            return;
+        }
+        File[] fileList = dataDirPath.listFiles();
+
+        for (File file : fileList) {
+            String filePath = file.getPath();
+            String sFileName = filePath.substring(filePath.lastIndexOf(File.separator)+1);
+            if (sFileName.startsWith(countryCode + "_")) {
+                file.delete();
+            }
+        }
+    }
+
     @Override
     protected void onHandleWork(Intent intent) {
         // Kick off the migration task only after the browser has
@@ -261,6 +281,11 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
                     .addStartupCompletedObserver(new BrowserStartupController.StartupCallback() {
                         @Override
                         public void onSuccess() {
+                            try {
+                                removeNTPFiles();
+                            } catch(Exception exc) {
+                                Log.e("NTP", "On app upgrade : " + exc.getMessage());
+                            }
                             migrateTotalStatsAndPreferences();
                             if (!migrateShieldsConfig()) {
                                 Log.e(TAG, "Failed to migrate Brave shields config settings");
