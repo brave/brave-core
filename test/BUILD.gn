@@ -307,6 +307,8 @@ test("brave_unit_tests") {
   if (brave_rewards_enabled) {
     sources += [
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/database/database_activity_info_unittest.cc",
+      "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/common/bind_util_unittest.cc",
+      "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/common/security_helper_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/contribution/contribution_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/contribution/contribution_unblinded_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/contribution/contribution_util_unittest.cc",

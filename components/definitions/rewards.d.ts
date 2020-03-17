@@ -121,11 +121,13 @@ declare namespace Rewards {
   export type CaptchaStatus = 'start' | 'wrongPosition' | 'generalError' | 'finished' | null
 
   export enum PromotionTypes {
+    UNKNOWN = -1,
     UGP = 0,
     ADS = 1
   }
 
   export enum PromotionStatus {
+    UNKNOWN = -1,
     ACTIVE = 0,
     ATTESTED = 1,
     CLAIMED = 2,
@@ -226,6 +228,7 @@ declare namespace Rewards {
   }
 
   export enum RewardsType {
+    UNKNOWN = -1,
     AUTO_CONTRIBUTE = 2,
     ONE_TIME_TIP = 8,
     RECURRING_TIP = 21

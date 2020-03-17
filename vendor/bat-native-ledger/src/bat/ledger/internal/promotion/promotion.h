@@ -52,6 +52,8 @@ class Promotion {
   void TransferTokens(
       ledger::ExternalWalletPtr wallet,
       ledger::ResultCallback callback);
+  void SetLastCheckTimerIdForTesting(uint32_t timer_id);
+  void SetRetryTimerIdForTesting(uint32_t timer_id);
 
  private:
   void OnFetch(

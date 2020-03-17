@@ -12,6 +12,58 @@
 
 namespace braveledger_bind_util {
 
+ledger::RewardsType ConvertIntToRewardsType(int type) {
+  ledger::RewardsType rewards_type = static_cast<ledger::RewardsType>(type);
+
+  switch (rewards_type) {
+    case ledger::RewardsType::AUTO_CONTRIBUTE:
+    case ledger::RewardsType::ONE_TIME_TIP:
+    case ledger::RewardsType::RECURRING_TIP: {
+      break;
+    }
+    default: {
+      rewards_type = ledger::RewardsType::UNKNOWN;
+    }
+  }
+  return rewards_type;
+}
+
+ledger::PromotionType ConvertIntToPromotionType(int type) {
+  ledger::PromotionType promotion_type =
+      static_cast<ledger::PromotionType>(type);
+
+  switch (promotion_type) {
+    case ledger::PromotionType::UGP:
+    case ledger::PromotionType::ADS: {
+      break;
+    }
+    default: {
+      promotion_type = ledger::PromotionType::UNKNOWN;
+    }
+  }
+  return promotion_type;
+}
+
+ledger::PromotionStatus ConvertIntToPromotionStatus(int type) {
+  ledger::PromotionStatus promotion_status =
+      static_cast<ledger::PromotionStatus>(type);
+
+  switch (promotion_status) {
+    case ledger::PromotionStatus::ACTIVE:
+    case ledger::PromotionStatus::ATTESTED:
+    case ledger::PromotionStatus::CLAIMED:
+    case ledger::PromotionStatus::SIGNED_TOKENS:
+    case ledger::PromotionStatus::FINISHED:
+    case ledger::PromotionStatus::OVER: {
+      break;
+    }
+    default: {
+      promotion_status = ledger::PromotionStatus::UNKNOWN;
+    }
+  }
+  return promotion_status;
+}
+
 std::string FromContributionQueueToString(ledger::ContributionQueuePtr info) {
   base::Value publishers(base::Value::Type::LIST);
   for (auto& item : info->publishers) {
@@ -57,7 +109,7 @@ ledger::ContributionQueuePtr FromStringToContributionQueue(
 
   auto* type = dictionary->FindKey("type");
   if (type && type->is_int()) {
-    queue->type = static_cast<ledger::RewardsType>(type->GetInt());
+    queue->type = ConvertIntToRewardsType(type->GetInt());
   }
 
   auto* amount = dictionary->FindKey("amount");
@@ -168,7 +220,7 @@ ledger::PromotionPtr FromStringToPromotion(const std::string& data) {
 
   auto type = dictionary->FindIntKey("type");
   if (type) {
-    promotion->type = static_cast<ledger::PromotionType>(*type);
+    promotion->type = ConvertIntToPromotionType(*type);
   }
 
   auto suggestions = dictionary->FindIntKey("suggestions");
@@ -178,7 +230,7 @@ ledger::PromotionPtr FromStringToPromotion(const std::string& data) {
 
   auto status = dictionary->FindIntKey("status");
   if (status) {
-    promotion->status = static_cast<ledger::PromotionStatus>(*status);
+    promotion->status = ConvertIntToPromotionStatus(*status);
   }
 
   auto legacy_claimed = dictionary->FindBoolKey("legacy_claimed");
