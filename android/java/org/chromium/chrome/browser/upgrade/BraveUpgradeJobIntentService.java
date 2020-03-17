@@ -15,6 +15,7 @@ import org.chromium.base.Log;
 import org.chromium.base.library_loader.LibraryProcessType;
 import org.chromium.base.task.PostTask;
 import org.chromium.chrome.browser.BraveHelper;
+import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -53,10 +54,49 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
     private static final String DSE_NAME = "Google";
     private static final String DSE_KEYWORD = "google.com";
 
+    // Old tabs bottom toolbar settings
+    private static final String BOTTOM_TOOLBAR_ENABLED_KEY = "bottom_toolbar_enabled";
+
+    // To detect update from tabs
+    private static final String PREF_STATS_PREFERENCES_NAME = "StatsPreferences";
+    private static final String PREF_WEEK_OF_INSTALLATION_NAME = "WeekOfInstallation";
+
     public static void startMigrationIfNecessary(Context context) {
+        if (BraveUpgradeJobIntentService.needToMigratePreferences()) {
+            // Migrate bottom toolbar settings
+            SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+            SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+            sharedPreferencesEditor.putBoolean(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY,
+                sharedPreferences.getBoolean(BOTTOM_TOOLBAR_ENABLED_KEY, true));
+            sharedPreferencesEditor.apply();
+        }
         // Start migration in any case as we can have only partial data
         // to migrate available
         BraveUpgradeJobIntentService.enqueueWork(context, new Intent());
+    }
+
+    private static boolean needToMigratePreferences() {
+        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+        boolean migrated = sharedPreferences.getBoolean(BraveHelper.PREF_TABS_SETTINGS_MIGRATED, false);
+        if (migrated) {
+            // Everything was already migrated
+            return false;
+        }
+
+        // Detect whether it is update from tabs
+        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+        SharedPreferences prefStatsFromTabs = ContextUtils.getApplicationContext()
+                .getSharedPreferences(PREF_STATS_PREFERENCES_NAME, 0);
+        boolean updateFormTabs = prefStatsFromTabs.contains(PREF_WEEK_OF_INSTALLATION_NAME);
+        if (!updateFormTabs) {
+            // We assume that everything was migrated in that case
+            sharedPreferencesEditor.putBoolean(BraveHelper.PREF_TABS_SETTINGS_MIGRATED, true);
+            sharedPreferencesEditor.apply();
+
+            return false;
+        }
+
+        return true;
     }
 
     private static void enqueueWork(Context context, Intent work) {
@@ -184,12 +224,10 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
     }
 
     private void migrateTotalStatsAndPreferences() {
-        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-        boolean migrated = sharedPreferences.getBoolean(BraveHelper.PREF_TABS_SETTINGS_MIGRATED, false);
-        if (migrated) {
-            // Everything was already migrated
+        if (!BraveUpgradeJobIntentService.needToMigratePreferences()) {
             return;
         }
+        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
         // Total stats migration
         long trackersBlockedCount = sharedPreferences.getLong(PREF_TRACKERS_BLOCKED_COUNT, 0);
         long adsBlockedCount = sharedPreferences.getLong(PREF_ADS_BLOCKED_COUNT, 0);
@@ -205,15 +243,6 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
             BravePrefServiceBridge.getInstance().setOldHttpsUpgradesCount(profile, httpsUpgradesCount);
         }
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-        if (trackersBlockedCount == 0 &&
-                adsBlockedCount == 0 &&
-                httpsUpgradesCount == 0) {
-            // We assume that everything was migrated in that case
-            sharedPreferencesEditor.putBoolean(BraveHelper.PREF_TABS_SETTINGS_MIGRATED, true);
-            sharedPreferencesEditor.apply();
-
-            return;
-        }
         sharedPreferencesEditor.putLong(PREF_TRACKERS_BLOCKED_COUNT, 0);
         sharedPreferencesEditor.putLong(PREF_ADS_BLOCKED_COUNT, 0);
         sharedPreferencesEditor.putLong(PREF_HTTPS_UPGRADES_COUNT, 0);
