@@ -110,7 +110,13 @@ class Promotion extends React.Component<Props, State> {
       return false
     }
 
-    return (tokens !== '0.0' && promotion.expiresAt)
+    // Promotion types other than Rewards.PromotionTypes.ADS must have
+    // a valid expiration
+    if (!promotion.expiresAt && promotion.type !== 1) {
+      return false
+    }
+
+    return tokens !== '0.0'
   }
 
   render () {
