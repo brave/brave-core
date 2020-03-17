@@ -9,6 +9,7 @@
 #include "bat/ledger/internal/database/database_activity_info.h"
 #include "bat/ledger/internal/database/database_contribution_info.h"
 #include "bat/ledger/internal/database/database_contribution_queue.h"
+#include "bat/ledger/internal/database/database_creds_batch.h"
 #include "bat/ledger/internal/database/database_media_publisher_info.h"
 #include "bat/ledger/internal/database/database_migration.h"
 #include "bat/ledger/internal/database/database_pending_contribution.h"
@@ -30,6 +31,7 @@ DatabaseMigration::DatabaseMigration(bat_ledger::LedgerImpl* ledger) :
   activity_info_ = std::make_unique<DatabaseActivityInfo>(ledger_);
   contribution_queue_ = std::make_unique<DatabaseContributionQueue>(ledger_);
   contribution_info_ = std::make_unique<DatabaseContributionInfo>(ledger_);
+  creds_batch_ = std::make_unique<DatabaseCredsBatch>(ledger_);
   media_publisher_info_ = std::make_unique<DatabaseMediaPublisherInfo>(ledger_);
   pending_contribution_ =
       std::make_unique<DatabasePendingContribution>(ledger_);
@@ -96,6 +98,10 @@ bool DatabaseMigration::Migrate(
   }
 
   if (!contribution_queue_->Migrate(transaction, target)) {
+    return false;
+  }
+
+  if (!creds_batch_->Migrate(transaction, target)) {
     return false;
   }
 

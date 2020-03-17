@@ -93,16 +93,6 @@ ledger::ContributionQueuePtr FromStringToContributionQueue(
 }
 
 std::string FromPromotionToString(const ledger::PromotionPtr info) {
-  base::Value credentials(base::Value::Type::DICTIONARY);
-  if (info->credentials) {
-    credentials.SetStringKey("tokens", info->credentials->tokens);
-    credentials.SetStringKey("blinded_creds", info->credentials->blinded_creds);
-    credentials.SetStringKey("signed_creds", info->credentials->signed_creds);
-    credentials.SetStringKey("public_key", info->credentials->public_key);
-    credentials.SetStringKey("batch_proof", info->credentials->batch_proof);
-    credentials.SetStringKey("claim_id", info->credentials->claim_id);
-  }
-
   base::Value promotion(base::Value::Type::DICTIONARY);
   promotion.SetStringKey("id", info->id);
   promotion.SetStringKey("public_keys", info->public_keys);
@@ -114,7 +104,6 @@ std::string FromPromotionToString(const ledger::PromotionPtr info) {
   promotion.SetIntKey("type", static_cast<int>(info->type));
   promotion.SetIntKey("suggestions", info->suggestions);
   promotion.SetIntKey("status", static_cast<int>(info->status));
-  promotion.SetKey("credentials", std::move(credentials));
   promotion.SetBoolKey("legacy_claimed", info->legacy_claimed);
 
   std::string json;
@@ -184,43 +173,6 @@ ledger::PromotionPtr FromStringToPromotion(const std::string& data) {
   auto legacy_claimed = dictionary->FindBoolKey("legacy_claimed");
   if (legacy_claimed) {
     promotion->legacy_claimed = *legacy_claimed;
-  }
-
-  auto* credentials = dictionary->FindDictKey("credentials");
-  if (credentials) {
-    auto creds = ledger::PromotionCreds::New();
-
-    auto* tokens = credentials->FindStringKey("tokens");
-    if (tokens) {
-      creds->tokens = *tokens;
-    }
-
-    auto* blinded_creds = credentials->FindStringKey("blinded_creds");
-    if (blinded_creds) {
-      creds->blinded_creds = *blinded_creds;
-    }
-
-    auto* signed_creds = credentials->FindStringKey("signed_creds");
-    if (signed_creds) {
-      creds->signed_creds = *signed_creds;
-    }
-
-    auto* public_key = credentials->FindStringKey("public_key");
-    if (public_key) {
-      creds->public_key = *public_key;
-    }
-
-    auto* batch_proof = credentials->FindStringKey("batch_proof");
-    if (batch_proof) {
-      creds->batch_proof = *batch_proof;
-    }
-
-    auto* claim_id = credentials->FindStringKey("claim_id");
-    if (claim_id) {
-      creds->claim_id = *claim_id;
-    }
-
-    promotion->credentials = std::move(creds);
   }
 
   return promotion;

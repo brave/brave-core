@@ -14,9 +14,9 @@ std::string GetFetchPromotionUrl(
     const std::string& payment_id,
     const std::string& platform);
 
-std::string ClaimTokensUrl(const std::string& promotion_id);
+std::string ClaimCredsUrl(const std::string& promotion_id);
 
-std::string FetchSignedTokensUrl(
+std::string FetchSignedCredsUrl(
     const std::string& promotion_id,
     const std::string& claim_id);
 

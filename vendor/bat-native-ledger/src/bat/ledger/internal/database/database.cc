@@ -7,6 +7,7 @@
 
 #include "bat/ledger/internal/database/database.h"
 #include "bat/ledger/internal/database/database_activity_info.h"
+#include "bat/ledger/internal/database/database_creds_batch.h"
 #include "bat/ledger/internal/database/database_contribution_info.h"
 #include "bat/ledger/internal/database/database_contribution_queue.h"
 #include "bat/ledger/internal/database/database_initialize.h"
@@ -30,6 +31,7 @@ Database::Database(bat_ledger::LedgerImpl* ledger) :
   activity_info_ = std::make_unique<DatabaseActivityInfo>(ledger_);
   contribution_queue_ = std::make_unique<DatabaseContributionQueue>(ledger_);
   contribution_info_ = std::make_unique<DatabaseContributionInfo>(ledger_);
+  creds_batch_ = std::make_unique<DatabaseCredsBatch>(ledger_);
   media_publisher_info_ =
       std::make_unique<DatabaseMediaPublisherInfo>(ledger_);
   multi_tables_ = std::make_unique<DatabaseMultiTables>(ledger_);
@@ -82,7 +84,6 @@ void Database::DeleteActivityInfo(
     ledger::ResultCallback callback) {
   activity_info_->DeleteRecord(publisher_key, callback);
 }
-
 
 /**
  * CONTRIBUTION INFO
@@ -167,6 +168,32 @@ void Database::DeleteContributionQueue(
 }
 
 /**
+ * CREDS BATCH
+ */
+void Database::SaveCredsBatch(
+    ledger::CredsBatchPtr info,
+    ledger::ResultCallback callback) {
+  creds_batch_->InsertOrUpdate(std::move(info), callback);
+}
+
+void Database::GetCredsBatchByTrigger(
+    const std::string& trigger_id,
+    const ledger::CredsBatchType trigger_type,
+    ledger::GetCredsBatchCallback callback) {
+  creds_batch_->GetRecordByTrigger(trigger_id, trigger_type, callback);
+}
+
+void Database::SaveSignedCreds(
+    ledger::CredsBatchPtr info,
+    ledger::ResultCallback callback) {
+  creds_batch_->SaveSignedCreds(std::move(info), callback);
+}
+
+void Database::GetAllCredsBatches(ledger::GetAllCredsBatchCallback callback) {
+  creds_batch_->GetAllRecords(callback);
+}
+
+/**
  * MEDIA PUBLISHER INFO
  */
 void Database::SaveMediaPublisherInfo(
@@ -245,6 +272,32 @@ void Database::DeletePromotionList(
     const std::vector<std::string>& ids,
     ledger::ResultCallback callback) {
   promotion_->DeleteRecordList(ids, callback);
+}
+
+void Database::SavePromotionClaimId(
+    const std::string& promotion_id,
+    const std::string& claim_id,
+    ledger::ResultCallback callback) {
+  promotion_->SaveClaimId(promotion_id, claim_id, callback);
+}
+
+void Database::UpdatePromotionStatus(
+    const std::string& promotion_id,
+    const ledger::PromotionStatus status,
+    ledger::ResultCallback callback) {
+  promotion_->UpdateStatus(promotion_id, status, callback);
+}
+
+void Database::PromotionCredentialCompleted(
+    const std::string& promotion_id,
+    ledger::ResultCallback callback) {
+  promotion_->CredentialCompleted(promotion_id, callback);
+}
+
+void Database::GetPromotionList(
+    const std::vector<std::string>& ids,
+    ledger::GetPromotionListCallback callback) {
+  promotion_->GetRecords(ids, callback);
 }
 
 /**

@@ -240,7 +240,8 @@ enum Result {
   BAT_NOT_ALLOWED = 25,
   ALREADY_EXISTS = 26,
   SAFETYNET_ATTESTATION_FAILED = 27,
-  DATABASE_INIT_FAILED = 28
+  DATABASE_INIT_FAILED = 28,
+  RETRY = 29
 };
 
 enum PublisherStatus {
@@ -356,7 +357,7 @@ enum PromotionStatus {
   ACTIVE = 0,
   ATTESTED = 1,
   CLAIMED = 2,
-  SIGNED_TOKENS = 3,
+  SIGNED_CREDS = 3,
   FINISHED = 4,
   OVER = 5
 };
@@ -372,15 +373,6 @@ struct Promotion {
   uint64 expires_at;
   uint64 claimed_at;
   bool legacy_claimed;
-  PromotionCreds? credentials;
-};
-
-struct PromotionCreds {
-  string tokens; // JSONStringArray
-  string blinded_creds; // JSONStringArray
-  string signed_creds; // JSONStringArray
-  string public_key;
-  string batch_proof;
   string claim_id;
 };
 
@@ -436,3 +428,21 @@ struct MonthlyReportInfo {
   array<TransactionReportInfo> transactions;
   array<ContributionReportInfo> contributions;
 };
+
+enum CredsBatchType {
+  NONE = 0,
+  PROMOTION = 1
+};
+
+struct CredsBatch {
+  string creds_id;
+  int32 size;
+  string creds; // JSONStringArray
+  string blinded_creds; // JSONStringArray
+  string signed_creds; // JSONStringArray
+  string public_key;
+  string batch_proof;
+  string trigger_id;
+  CredsBatchType trigger_type;
+};
+

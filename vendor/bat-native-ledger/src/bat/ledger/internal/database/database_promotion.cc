@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <stdint.h>
+
 #include <map>
 #include <utility>
 
@@ -18,7 +20,6 @@ namespace braveledger_database {
 namespace {
 
 const char table_name_[] = "promotion";
-const char creds_table_name_[] = "promotion_creds";
 
 }  // namespace
 
@@ -79,6 +80,9 @@ bool DatabasePromotion::Migrate(
     }
     case 15: {
       return MigrateToV15(transaction);
+    }
+    case 18: {
+      return MigrateToV18(transaction);
     }
     default: {
       return true;
@@ -150,6 +154,37 @@ bool DatabasePromotion::MigrateToV15(ledger::DBTransaction* transaction) {
   return creds_->Migrate(transaction, 15);
 }
 
+bool DatabasePromotion::MigrateToV18(ledger::DBTransaction* transaction) {
+  DCHECK(transaction);
+
+  const char column[] = "claim_id";
+  std::string query = base::StringPrintf(
+      "ALTER TABLE %s ADD %s TEXT",
+      table_name_,
+      column);
+
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = query;
+
+  transaction->commands.push_back(std::move(command));
+
+  query = base::StringPrintf(
+      "UPDATE %s SET claim_id = "
+      "(SELECT claim_id FROM promotion_creds as pc "
+      "WHERE pc.promotion_id = %s.promotion_id)",
+      table_name_,
+      table_name_);
+
+  command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = query;
+
+  transaction->commands.push_back(std::move(command));
+
+  return creds_->Migrate(transaction, 18);
+}
+
 void DatabasePromotion::InsertOrUpdate(
     ledger::PromotionPtr info,
     ledger::ResultCallback callback) {
@@ -183,13 +218,6 @@ void DatabasePromotion::InsertOrUpdate(
 
   transaction->commands.push_back(std::move(command));
 
-  if (info->credentials) {
-    creds_->InsertOrUpdate(
-        transaction.get(),
-        info->credentials->Clone(),
-        info->id);
-  }
-
   auto transaction_callback = std::bind(&OnResultCallback,
       _1,
       callback);
@@ -207,15 +235,10 @@ void DatabasePromotion::GetRecord(
   auto transaction = ledger::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
-      "SELECT "
-      "p.promotion_id, p.version, p.type, p.public_keys, p.suggestions, "
-      "p.approximate_value, p.status, p.expires_at, p.claimed_at,"
-      "c.tokens, c.blinded_creds, c.signed_creds, c.public_key, c.batch_proof,"
-      "c.claim_id "
-      "FROM %s as p LEFT JOIN %s as c ON p.promotion_id = c.promotion_id "
-      "WHERE p.promotion_id=?",
-      table_name_,
-      creds_table_name_);
+      "SELECT promotion_id, version, type, public_keys, suggestions, "
+      "approximate_value, status, expires_at, claimed_at, claim_id "
+      "FROM %s WHERE promotion_id=?",
+      table_name_);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::READ;
@@ -233,11 +256,6 @@ void DatabasePromotion::GetRecord(
       ledger::DBCommand::RecordBindingType::INT_TYPE,
       ledger::DBCommand::RecordBindingType::INT64_TYPE,
       ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
       ledger::DBCommand::RecordBindingType::STRING_TYPE
   };
 
@@ -277,18 +295,7 @@ void DatabasePromotion::OnGetRecord(
   info->status = static_cast<ledger::PromotionStatus>(GetIntColumn(record, 6));
   info->expires_at = GetInt64Column(record, 7);
   info->claimed_at = GetInt64Column(record, 8);
-
-  const std::string tokens = GetStringColumn(record, 9);
-  if (!tokens.empty()) {
-    auto creds = ledger::PromotionCreds::New();
-    creds->tokens = tokens;
-    creds->blinded_creds = GetStringColumn(record, 10);
-    creds->signed_creds = GetStringColumn(record, 11);
-    creds->public_key = GetStringColumn(record, 12);
-    creds->batch_proof = GetStringColumn(record, 13);
-    creds->claim_id = GetStringColumn(record, 14);
-    info->credentials = std::move(creds);
-  }
+  info->claim_id = GetStringColumn(record, 9);
 
   callback(std::move(info));
 }
@@ -299,13 +306,10 @@ void DatabasePromotion::GetAllRecords(
 
   const std::string query = base::StringPrintf(
       "SELECT "
-      "p.promotion_id, p.version, p.type, p.public_keys, p.suggestions, "
-      "p.approximate_value, p.status, p.expires_at, p.claimed_at,"
-      "c.tokens, c.blinded_creds, c.signed_creds, c.public_key, c.batch_proof,"
-      "c.claim_id "
-      "FROM %s as p LEFT JOIN %s as c ON p.promotion_id = c.promotion_id",
-      table_name_,
-      creds_table_name_);
+      "promotion_id, version, type, public_keys, suggestions, "
+      "approximate_value, status, expires_at, claimed_at, claim_id "
+      "FROM %s",
+      table_name_);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::READ;
@@ -321,11 +325,6 @@ void DatabasePromotion::GetAllRecords(
       ledger::DBCommand::RecordBindingType::INT_TYPE,
       ledger::DBCommand::RecordBindingType::INT64_TYPE,
       ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
       ledger::DBCommand::RecordBindingType::STRING_TYPE
   };
 
@@ -365,18 +364,7 @@ void DatabasePromotion::OnGetAllRecords(
         static_cast<ledger::PromotionStatus>(GetIntColumn(record_pointer, 6));
     info->expires_at = GetInt64Column(record_pointer, 7);
     info->claimed_at = GetInt64Column(record_pointer, 8);
-
-    const std::string tokens = GetStringColumn(record_pointer, 9);
-    if (!tokens.empty()) {
-      auto creds = ledger::PromotionCreds::New();
-      creds->tokens = tokens;
-      creds->blinded_creds = GetStringColumn(record_pointer, 10);
-      creds->signed_creds = GetStringColumn(record_pointer, 11);
-      creds->public_key = GetStringColumn(record_pointer, 12);
-      creds->batch_proof = GetStringColumn(record_pointer, 13);
-      creds->claim_id = GetStringColumn(record_pointer, 14);
-      info->credentials = std::move(creds);
-    }
+    info->claim_id = GetStringColumn(record_pointer, 9);
 
     map.insert(std::make_pair(info->id, std::move(info)));
   }
@@ -403,13 +391,184 @@ void DatabasePromotion::DeleteRecordList(
   command->command = query;
   transaction->commands.push_back(std::move(command));
 
-  creds_->DeleteRecordListByPromotion(transaction.get(), ids);
+  auto transaction_callback = std::bind(&OnResultCallback,
+      _1,
+      callback);
+
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+}
+
+void DatabasePromotion::SaveClaimId(
+    const std::string& promotion_id,
+    const std::string& claim_id,
+    ledger::ResultCallback callback) {
+  if (promotion_id.empty() || claim_id.empty()) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  const std::string query = base::StringPrintf(
+      "UPDATE %s SET claim_id = ?, status = ? WHERE promotion_id = ?",
+      table_name_);
+
+  auto transaction = ledger::DBTransaction::New();
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::RUN;
+  command->command = query;
+
+  BindString(command.get(), 0, claim_id);
+  BindInt(
+      command.get(),
+      1,
+      static_cast<int>(ledger::PromotionStatus::CLAIMED));
+  BindString(command.get(), 2, promotion_id);
+
+  transaction->commands.push_back(std::move(command));
 
   auto transaction_callback = std::bind(&OnResultCallback,
       _1,
       callback);
 
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+}
+
+void DatabasePromotion::UpdateStatus(
+    const std::string& promotion_id,
+    const ledger::PromotionStatus status,
+    ledger::ResultCallback callback) {
+  if (promotion_id.empty()) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  const std::string query = base::StringPrintf(
+      "UPDATE %s SET status = ? WHERE promotion_id = ?",
+      table_name_);
+
+  auto transaction = ledger::DBTransaction::New();
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::RUN;
+  command->command = query;
+
+  BindInt(command.get(), 0, static_cast<int>(status));
+  BindString(command.get(), 1, promotion_id);
+
+  transaction->commands.push_back(std::move(command));
+
+  auto transaction_callback = std::bind(&OnResultCallback,
+      _1,
+      callback);
+
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+}
+
+void DatabasePromotion::CredentialCompleted(
+    const std::string& promotion_id,
+    ledger::ResultCallback callback) {
+  if (promotion_id.empty()) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  const std::string query = base::StringPrintf(
+      "UPDATE %s SET status = ?, claimed_at = ? WHERE promotion_id = ?",
+      table_name_);
+
+  auto transaction = ledger::DBTransaction::New();
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::RUN;
+  command->command = query;
+
+  const uint64_t current_time =
+      static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+
+  BindInt(command.get(), 0,
+      static_cast<int>(ledger::PromotionStatus::FINISHED));
+  BindInt64(command.get(), 1, current_time);
+  BindString(command.get(), 2, promotion_id);
+
+  transaction->commands.push_back(std::move(command));
+
+  auto transaction_callback = std::bind(&OnResultCallback,
+      _1,
+      callback);
+
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+}
+
+void DatabasePromotion::GetRecords(
+    const std::vector<std::string>& ids,
+    ledger::GetPromotionListCallback callback) {
+  auto transaction = ledger::DBTransaction::New();
+
+  const std::string query = base::StringPrintf(
+      "SELECT "
+      "promotion_id, version, type, public_keys, suggestions, "
+      "approximate_value, status, expires_at, claimed_at, claim_id "
+      "FROM %s WHERE promotion_id IN (%s)",
+      table_name_,
+      GenerateStringInCase(ids).c_str());
+
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::READ;
+  command->command = query;
+
+  command->record_bindings = {
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::INT_TYPE,
+      ledger::DBCommand::RecordBindingType::INT_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::INT64_TYPE,
+      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      ledger::DBCommand::RecordBindingType::INT_TYPE,
+      ledger::DBCommand::RecordBindingType::INT64_TYPE,
+      ledger::DBCommand::RecordBindingType::INT64_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE
+  };
+
+  transaction->commands.push_back(std::move(command));
+
+  auto transaction_callback =
+      std::bind(&DatabasePromotion::OnGetRecords,
+          this,
+          _1,
+          callback);
+
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+}
+
+void DatabasePromotion::OnGetRecords(
+    ledger::DBCommandResponsePtr response,
+    ledger::GetPromotionListCallback callback) {
+  if (!response ||
+      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    callback({});
+    return;
+  }
+
+  ledger::PromotionList list;
+  ledger::PromotionPtr info;
+  for (auto const& record : response->result->get_records()) {
+    info = ledger::Promotion::New();
+    auto* record_pointer = record.get();
+
+    info->id = GetStringColumn(record_pointer, 0);
+    info->version = GetIntColumn(record_pointer, 1);
+    info->type =
+        static_cast<ledger::PromotionType>(GetIntColumn(record_pointer, 2));
+    info->public_keys = GetStringColumn(record_pointer, 3);
+    info->suggestions = GetInt64Column(record_pointer, 4);
+    info->approximate_value = GetDoubleColumn(record_pointer, 5);
+    info->status =
+        static_cast<ledger::PromotionStatus>(GetIntColumn(record_pointer, 6));
+    info->expires_at = GetInt64Column(record_pointer, 7);
+    info->claimed_at = GetInt64Column(record_pointer, 8);
+    info->claim_id = GetStringColumn(record_pointer, 9);
+
+    list.push_back(std::move(info));
+  }
+
+  callback(std::move(list));
 }
 
 }  // namespace braveledger_database

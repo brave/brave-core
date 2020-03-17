@@ -695,6 +695,39 @@ class LedgerImpl : public ledger::Ledger,
       const std::vector<ledger::PromotionType>& promotion_types,
       ledger::GetUnblindedTokenListCallback callback);
 
+  void SaveCredsBatch(
+      ledger::CredsBatchPtr info,
+      ledger::ResultCallback callback);
+
+  void SavePromotionClaimId(
+      const std::string& promotion_id,
+      const std::string& claim_id,
+      ledger::ResultCallback callback);
+
+  void GetCredsBatchByTrigger(
+      const std::string& trigger_id,
+      const ledger::CredsBatchType trigger_type,
+      ledger::GetCredsBatchCallback callback);
+
+  void SaveSignedCreds(
+      ledger::CredsBatchPtr info,
+      ledger::ResultCallback callback);
+
+  void UpdatePromotionStatus(
+      const std::string& promotion_id,
+      const ledger::PromotionStatus status,
+      ledger::ResultCallback callback);
+
+  void PromotionCredentialCompleted(
+      const std::string& promotion_id,
+      ledger::ResultCallback callback);
+
+  void GetAllCredsBatches(ledger::GetAllCredsBatchCallback callback);
+
+  void GetPromotionList(
+      const std::vector<std::string>& ids,
+      ledger::GetPromotionListCallback callback);
+
  private:
   void InitializeConfirmations(
       const bool execute_create_script,

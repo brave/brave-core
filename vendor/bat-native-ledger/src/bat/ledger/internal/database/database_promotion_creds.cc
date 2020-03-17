@@ -108,6 +108,9 @@ bool DatabasePromotionCreds::Migrate(
     case 15: {
       return MigrateToV15(transaction);
     }
+    case 18: {
+      return MigrateToV18(transaction);
+    }
     default: {
       return true;
     }
@@ -179,56 +182,10 @@ bool DatabasePromotionCreds::MigrateToV15(ledger::DBTransaction* transaction) {
   return true;
 }
 
-void DatabasePromotionCreds::InsertOrUpdate(
-    ledger::DBTransaction* transaction,
-    ledger::PromotionCredsPtr info,
-    const std::string& promotion_id) {
+bool DatabasePromotionCreds::MigrateToV18(ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  if (!info || promotion_id.empty()) {
-    return;
-  }
-
-  const std::string query = base::StringPrintf(
-      "INSERT OR REPLACE INTO %s "
-      "(promotion_id, tokens, blinded_creds, signed_creds, "
-      "public_key, batch_proof, claim_id) "
-      "VALUES (?, ?, ?, ?, ?, ?, ?)",
-      table_name_);
-
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
-  command->command = query;
-
-  BindString(command.get(), 0, promotion_id);
-  BindString(command.get(), 1, info->tokens);
-  BindString(command.get(), 2, info->blinded_creds);
-  BindString(command.get(), 3, info->signed_creds);
-  BindString(command.get(), 4, info->public_key);
-  BindString(command.get(), 5, info->batch_proof);
-  BindString(command.get(), 6, info->claim_id);
-
-  transaction->commands.push_back(std::move(command));
-}
-
-void DatabasePromotionCreds::DeleteRecordListByPromotion(
-    ledger::DBTransaction* transaction,
-    const std::vector<std::string>& ids) {
-  DCHECK(transaction);
-
-  if (ids.empty()) {
-    return;
-  }
-
-  const std::string query = base::StringPrintf(
-      "DELETE FROM %s WHERE promotion_id IN (%s)",
-      table_name_,
-      GenerateStringInCase(ids).c_str());
-
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::EXECUTE;
-  command->command = query;
-  transaction->commands.push_back(std::move(command));
+  return DropTable(transaction, table_name_);
 }
 
 }  // namespace braveledger_database

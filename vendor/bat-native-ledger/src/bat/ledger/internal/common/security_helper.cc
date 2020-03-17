@@ -14,33 +14,6 @@
 
 namespace braveledger_helper {
 
-std::vector<Token> Security::GenerateTokens(const int count) {
-  DCHECK_GT(count, 0);
-  std::vector<Token> tokens;
-
-  for (auto i = 0; i < count; i++) {
-    auto token = Token::random();
-    tokens.push_back(token);
-  }
-
-  return tokens;
-}
-
-std::vector<BlindedToken> Security::BlindTokens(
-    const std::vector<Token>& tokens) {
-  DCHECK_NE(tokens.size(), 0UL);
-
-  std::vector<BlindedToken> blinded_tokens;
-  for (unsigned int i = 0; i < tokens.size(); i++) {
-    auto token = tokens.at(i);
-    auto blinded_token = token.blind();
-
-    blinded_tokens.push_back(blinded_token);
-  }
-
-  return blinded_tokens;
-}
-
 std::string Security::GetBase64(const std::vector<uint8_t>& data) {
   DCHECK_NE(data.size(), 0UL);
   size_t size = 0;

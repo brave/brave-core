@@ -22,8 +22,8 @@
 #include "bat/ledger/internal/request/promotion_requests.h"
 #include "bat/ledger/internal/request/request_util.h"
 #include "bat/ledger/internal/common/bind_util.h"
-#include "bat/ledger/internal/common/security_helper.h"
 #include "bat/ledger/internal/common/time_util.h"
+#include "bat/ledger/internal/credentials/credentials_util.h"
 #include "bat/ledger/internal/promotion/promotion_util.h"
 #include "bat/ledger/internal/promotion/promotion_transfer.h"
 #include "brave_base/random.h"
@@ -83,6 +83,11 @@ Promotion::Promotion(bat_ledger::LedgerImpl* ledger) :
         (ledger)),
     transfer_(std::make_unique<PromotionTransfer>(ledger)),
     ledger_(ledger) {
+  DCHECK(ledger_);
+  credentials_ = braveledger_credentials::CredentialsFactory::Create(
+      ledger_,
+      ledger::CredsBatchType::PROMOTION);
+  DCHECK(credentials_);
 }
 
 Promotion::~Promotion() = default;
@@ -93,7 +98,7 @@ void Promotion::Initialize() {
         this,
         _1);
 
-    ledger_->GetAllPromotions(check_callback);
+    ledger_->GetAllCredsBatches(check_callback);
   }
 
   auto retry_callback = std::bind(&Promotion::Retry,
@@ -244,7 +249,7 @@ void Promotion::LegacyClaimedSaved(
   auto promotion_ptr =
       braveledger_bind_util::FromStringToPromotion(promotion_string);
 
-  ClaimTokens(std::move(promotion_ptr), [](const ledger::Result _){});
+  GetCredentials(std::move(promotion_ptr), [](const ledger::Result _){});
 }
 
 void Promotion::Claim(
@@ -335,7 +340,7 @@ void Promotion::AttestedSaved(
       promotion_ptr->id,
       callback);
 
-  ClaimTokens(std::move(promotion_ptr), claim_callback);
+  GetCredentials(std::move(promotion_ptr), claim_callback);
 }
 
 void Promotion::Complete(
@@ -393,6 +398,41 @@ void Promotion::OnTimer(const uint32_t timer_id) {
   }
 }
 
+void Promotion::GetCredentials(
+    ledger::PromotionPtr promotion,
+    ledger::ResultCallback callback) {
+  if (!promotion) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Promotion is null";
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  braveledger_credentials::CredentialsTrigger trigger;
+  trigger.id = promotion->id;
+  trigger.step = static_cast<int>(promotion->status);
+  trigger.size = promotion->suggestions;
+  trigger.type = ledger::CredsBatchType::PROMOTION;
+
+  auto creds_callback = std::bind(&Promotion::CredentialsProcessed,
+      this,
+      _1,
+      callback);
+
+  credentials_->Start(trigger, creds_callback);
+}
+
+void Promotion::CredentialsProcessed(
+    const ledger::Result result,
+    ledger::ResultCallback callback) {
+  if (result == ledger::Result::RETRY) {
+    ledger_->SetTimer(5, &retry_timer_id_);
+    callback(ledger::Result::LEDGER_OK);
+    return;
+  }
+
+  callback(result);
+}
+
 void Promotion::Retry(ledger::PromotionMap promotions) {
   HandleExpiredPromotions(ledger_, &promotions);
 
@@ -402,20 +442,12 @@ void Promotion::Retry(ledger::PromotionMap promotions) {
     }
 
     switch (promotion.second->status) {
-      case ledger::PromotionStatus::ATTESTED: {
-        ClaimTokens(promotion.second->Clone(), [](const ledger::Result _){});
-        break;
-      }
-      case ledger::PromotionStatus::CLAIMED: {
-        FetchSignedTokens(
-          promotion.second->Clone(),
-          [](const ledger::Result _){});
-        break;
-      }
-      case ledger::PromotionStatus::SIGNED_TOKENS: {
-        OnProcessSignedCredentials(
-          promotion.second->Clone(),
-          [](const ledger::Result _){});
+      case ledger::PromotionStatus::ATTESTED:
+      case ledger::PromotionStatus::CLAIMED:
+      case ledger::PromotionStatus::SIGNED_CREDS: {
+        GetCredentials(
+            std::move(promotion.second),
+            [](const ledger::Result _){});
         break;
       }
       case ledger::PromotionStatus::ACTIVE:
@@ -461,403 +493,59 @@ void Promotion::Refresh(const bool retry_after_error) {
   ledger_->SetTimer(start_timer_in, &last_check_timer_id_);
 }
 
-void Promotion::ClaimTokens(
-    ledger::PromotionPtr promotion,
-    ledger::ResultCallback callback) {
-  if (!promotion) {
-    callback(ledger::Result::LEDGER_ERROR);
+void Promotion::CheckForCorrupted(ledger::CredsBatchList list) {
+  if (list.empty()) {
     return;
   }
 
-  if (!promotion->credentials) {
-    promotion->credentials = ledger::PromotionCreds::New();
-  }
-
-  const auto tokens =
-      braveledger_helper::Security::GenerateTokens(promotion->suggestions);
-
-  base::Value tokens_list(base::Value::Type::LIST);
-  for (auto & token : tokens) {
-    auto token_base64 = token.encode_base64();
-    auto token_value = base::Value(token_base64);
-    tokens_list.GetList().push_back(std::move(token_value));
-  }
-  std::string json_tokens;
-  base::JSONWriter::Write(tokens_list, &json_tokens);
-
-  const auto blinded_tokens =
-      braveledger_helper::Security::BlindTokens(tokens);
-
-  if (blinded_tokens.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Blinded tokens are empty";
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  const std::string payment_id = ledger_->GetPaymentId();
-
-  base::Value blinded_list(base::Value::Type::LIST);
-  for (auto & token : blinded_tokens) {
-    auto token_base64 = token.encode_base64();
-    auto token_value = base::Value(token_base64);
-    blinded_list.GetList().push_back(std::move(token_value));
-  }
-  std::string json_blinded;
-  base::JSONWriter::Write(blinded_list, &json_blinded);
-
-  promotion->credentials->tokens = json_tokens;
-  promotion->credentials->blinded_creds = json_blinded;
-
-  auto save_callback = std::bind(&Promotion::ClaimTokensSaved,
-      this,
-      _1,
-      braveledger_bind_util::FromPromotionToString(promotion->Clone()),
-      callback);
-
-  ledger_->SavePromotion(promotion->Clone(), save_callback);
-}
-
-void Promotion::ClaimTokensSaved(
-    const ledger::Result result,
-    const std::string& promotion_string,
-    ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Save failed";
-    callback(result);
-    return;
-  }
-
-  auto promotion =
-      braveledger_bind_util::FromStringToPromotion(promotion_string);
-
-  if (!promotion) {
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  auto blinded_tokens = ParseStringToBaseList(
-      promotion->credentials->blinded_creds);
-
-  if (!blinded_tokens) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-    << "Blinded tokens are corrupted";
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  base::Value body(base::Value::Type::DICTIONARY);
-  body.SetStringKey("paymentId", ledger_->GetPaymentId());
-  body.SetKey("blindedCreds", base::Value(std::move(*blinded_tokens)));
-
-  std::string json;
-  base::JSONWriter::Write(body, &json);
-
-  ledger::WalletInfoProperties wallet_info = ledger_->GetWalletInfo();
-
-  const auto headers = braveledger_request_util::BuildSignHeaders(
-      "post /v1/promotions/" + promotion->id,
-      json,
-      ledger_->GetPaymentId(),
-      wallet_info.key_info_seed);
-
-  const std::string url =
-      braveledger_request_util::ClaimTokensUrl(promotion->id);
-  auto url_callback = std::bind(&Promotion::OnClaimTokens,
-      this,
-      _1,
-      _2,
-      _3,
-      braveledger_bind_util::FromPromotionToString(std::move(promotion)),
-      callback);
-
-  ledger_->LoadURL(
-      url,
-      headers,
-      json,
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::POST,
-      url_callback);
-}
-
-void Promotion::OnClaimTokens(
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
-    const std::string& promotion_string,
-    ledger::ResultCallback callback) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
-  auto promotion =
-      braveledger_bind_util::FromStringToPromotion(promotion_string);
-
-  if (response_status_code != net::HTTP_OK || !promotion) {
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  const auto claim_id = ParseClaimTokenResponse(response);
-
-  if (claim_id.empty() || !promotion->credentials) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Corrupted data";
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  promotion->status = ledger::PromotionStatus::CLAIMED;
-  promotion->credentials->claim_id = claim_id;
-
-  auto save_callback = std::bind(&Promotion::ClaimedTokensSaved,
-      this,
-      _1,
-      braveledger_bind_util::FromPromotionToString(promotion->Clone()),
-      callback);
-
-  ledger_->SavePromotion(promotion->Clone(), save_callback);
-}
-
-void Promotion::ClaimedTokensSaved(
-    const ledger::Result result,
-    const std::string& promotion_string,
-    ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
-    ledger_->SetTimer(brave_base::random::Geometric(60), &retry_timer_id_);
-    return;
-  }
-
-  auto promotion =
-      braveledger_bind_util::FromStringToPromotion(promotion_string);
-
-  FetchSignedTokens(std::move(promotion), callback);
-}
-
-void Promotion::FetchSignedTokens(
-    ledger::PromotionPtr promotion,
-    ledger::ResultCallback callback) {
-  if (!promotion || !promotion->credentials) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Corrupted data";
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  const std::string url = braveledger_request_util::FetchSignedTokensUrl(
-      promotion->id,
-      promotion->credentials->claim_id);
-  auto url_callback = std::bind(&Promotion::OnFetchSignedTokens,
-      this,
-      _1,
-      _2,
-      _3,
-      braveledger_bind_util::FromPromotionToString(std::move(promotion)),
-      callback);
-
-  ledger_->LoadURL(
-      url,
-      std::vector<std::string>(),
-      "",
-      "",
-      ledger::UrlMethod::GET,
-      url_callback);
-}
-
-void Promotion::OnFetchSignedTokens(
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
-    const std::string& promotion_string,
-    ledger::ResultCallback callback) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
-  auto promotion =
-      braveledger_bind_util::FromStringToPromotion(promotion_string);
-
-  if (response_status_code == net::HTTP_ACCEPTED) {
-    callback(ledger::Result::LEDGER_OK);
-    ledger_->SetTimer(5, &retry_timer_id_);
-    return;
-  }
-
-  if (!promotion ||
-      !promotion->credentials ||
-      response_status_code != net::HTTP_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Corrupted data";
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  base::Value parsed_response(base::Value::Type::DICTIONARY);
-  ParseSignedTokensResponse(response, &parsed_response);
-
-  if (parsed_response.DictSize() != 3) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Parsing failed";
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  std::string json_creds;
-  base::JSONWriter::Write(
-      *parsed_response.FindListKey("signed_creds"),
-      &json_creds);
-  promotion->credentials->signed_creds = json_creds;
-  promotion->credentials->public_key =
-      *parsed_response.FindStringKey("public_key");
-  promotion->credentials->batch_proof =
-      *parsed_response.FindStringKey("batch_proof");
-
-  promotion->status = ledger::PromotionStatus::SIGNED_TOKENS;
-
-  auto process_callback =
-        std::bind(&Promotion::ProcessSignedCredentials,
-            this,
-            _1,
-            promotion->id,
-            callback);
-
-  ledger_->SavePromotion(
-        promotion->Clone(),
-        process_callback);
-}
-
-void Promotion::ProcessSignedCredentials(
-    const ledger::Result result,
-    const std::string& promotion_id,
-    ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Save failed";
-    callback(result);
-    return;
-  }
-
-  auto promotion_callback = std::bind(&Promotion::OnProcessSignedCredentials,
-      this,
-      _1,
-      callback);
-
-  ledger_->GetPromotion(promotion_id, promotion_callback);
-}
-
-void Promotion::OnProcessSignedCredentials(
-    ledger::PromotionPtr promotion,
-    ledger::ResultCallback callback) {
-  if (!promotion) {
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  bool result = VerifyPublicKey(promotion->Clone());
-
-  if (!result) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-    << "Public key verification failed";
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  std::vector<std::string> unblinded_encoded_tokens;
-  std::string error;
-  if (ledger::is_testing) {
-    result = UnBlindTokensMock(promotion->Clone(), &unblinded_encoded_tokens);
-  } else {
-    result = UnBlindTokens(
-        promotion->Clone(),
-        &unblinded_encoded_tokens,
-        &error);
-  }
-
-  const auto signed_creds = ParseStringToBaseList(
-      promotion->credentials->signed_creds);
-
-  if (!result) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "UnBlindTokens: " << error;
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  SaveUnblindedTokens(std::move(promotion), unblinded_encoded_tokens, callback);
-}
-
-void Promotion::SaveUnblindedTokens(
-    ledger::PromotionPtr promotion,
-    const std::vector<std::string>& unblinded_encoded_tokens,
-    ledger::ResultCallback callback) {
-  if (!promotion) {
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  const double value = promotion->approximate_value / promotion->suggestions;
-  ledger::UnblindedTokenList list;
-  for (auto & token : unblinded_encoded_tokens) {
-    auto token_info = ledger::UnblindedToken::New();
-    token_info->token_value = token;
-    token_info->public_key = promotion->credentials->public_key;
-    token_info->value = value;
-    token_info->promotion_id = promotion->id;
-    list.push_back(std::move(token_info));
-  }
-
-  auto save_callback = std::bind(&Promotion::FinishPromotion,
-      this,
-      _1,
-      braveledger_bind_util::FromPromotionToString(std::move(promotion)),
-      callback);
-
-  ledger_->SaveUnblindedTokenList(std::move(list), save_callback);
-}
-
-void Promotion::FinishPromotion(
-    const ledger::Result result,
-    const std::string& promotion_string,
-    ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Save failed";
-    callback(result);
-    return;
-  }
-
-  auto promotion =
-      braveledger_bind_util::FromStringToPromotion(promotion_string);
-
-  if (!promotion) {
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  const uint64_t current_time =
-      static_cast<uint64_t>(base::Time::Now().ToDoubleT());
-  promotion->status = ledger::PromotionStatus::FINISHED;
-  promotion->claimed_at = current_time;
-  ledger_->SavePromotion(
-        std::move(promotion),
-        [](const ledger::Result _){});
-  callback(ledger::Result::LEDGER_OK);
-  ledger_->UnblindedTokensReady();
-}
-
-void Promotion::CheckForCorrupted(const ledger::PromotionMap& promotions) {
-  base::Value corrupted_claims(base::Value::Type::LIST);
   std::vector<std::string> corrupted_promotions;
 
-  for (auto & item : promotions) {
-    if (!item.second || !item.second->credentials) {
+  for (auto& item : list) {
+    if (!item) {
       continue;
     }
 
-    const auto signed_creds = ParseStringToBaseList(
-        item.second->credentials->signed_creds);
-
     std::vector<std::string> unblinded_encoded_tokens;
     std::string error;
-    bool result =
-        UnBlindTokens(item.second->Clone(), &unblinded_encoded_tokens, &error);
+    bool result = braveledger_credentials::UnBlindCreds(
+        *item,
+        &unblinded_encoded_tokens,
+        &error);
+
     if (!result) {
       BLOG(ledger_, ledger::LogLevel::LOG_INFO)
-      << "Promotion corrupted " << item.second->id;
-      corrupted_claims.GetList().push_back(
-          base::Value(item.second->credentials->claim_id));
-      corrupted_promotions.push_back(item.second->id);
+          << "Promotion corrupted " << item->trigger_id;
+      corrupted_promotions.push_back(item->trigger_id);
     }
   }
 
-  if (corrupted_claims.GetList().empty()) {
+  if (corrupted_promotions.empty()) {
     ledger_->SetBooleanState(ledger::kStatePromotionCorruptedMigrated, true);
+    return;
+  }
+
+  auto get_callback = std::bind(&Promotion::CorruptedPromotions,
+      this,
+      _1,
+      corrupted_promotions);
+
+  ledger_->GetPromotionList(corrupted_promotions, get_callback);
+}
+
+void Promotion::CorruptedPromotions(
+    ledger::PromotionList promotions,
+    const std::vector<std::string>& ids) {
+  base::Value corrupted_claims(base::Value::Type::LIST);
+
+  for (auto& item : promotions) {
+    if (!item) {
+      continue;
+    }
+
+    corrupted_claims.Append(base::Value(item->claim_id));
+  }
+
+  if (corrupted_claims.GetList().empty()) {
     return;
   }
 
@@ -874,7 +562,7 @@ void Promotion::CheckForCorrupted(const ledger::PromotionMap& promotions) {
       _1,
       _2,
       _3,
-      corrupted_promotions);
+      ids);
 
   ledger_->LoadURL(
       url,

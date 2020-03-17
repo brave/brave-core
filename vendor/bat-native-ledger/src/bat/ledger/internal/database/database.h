@@ -6,6 +6,8 @@
 #ifndef BRAVELEDGER_DATABASE_DATABASE_H_
 #define BRAVELEDGER_DATABASE_DATABASE_H_
 
+#include <stdint.h>
+
 #include <memory>
 #include <string>
 #include <vector>
@@ -20,6 +22,7 @@ namespace braveledger_database {
 
 class DatabaseInitialize;
 class DatabaseActivityInfo;
+class DatabaseCredsBatch;
 class DatabaseContributionInfo;
 class DatabaseContributionQueue;
 class DatabaseMediaPublisherInfo;
@@ -114,6 +117,24 @@ class Database {
       ledger::ResultCallback callback);
 
   /**
+   * CREDS BATCH
+   */
+  void SaveCredsBatch(
+      ledger::CredsBatchPtr info,
+      ledger::ResultCallback callback);
+
+  void GetCredsBatchByTrigger(
+      const std::string& trigger_id,
+      const ledger::CredsBatchType trigger_type,
+      ledger::GetCredsBatchCallback callback);
+
+  void SaveSignedCreds(
+      ledger::CredsBatchPtr info,
+      ledger::ResultCallback callback);
+
+  void GetAllCredsBatches(ledger::GetAllCredsBatchCallback callback);
+
+  /**
    * MEDIA PUBLISHER INFO
    */
   void SaveMediaPublisherInfo(
@@ -169,6 +190,24 @@ class Database {
   void DeletePromotionList(
       const std::vector<std::string>& ids,
       ledger::ResultCallback callback);
+
+  void SavePromotionClaimId(
+      const std::string& promotion_id,
+      const std::string& claim_id,
+      ledger::ResultCallback callback);
+
+  void UpdatePromotionStatus(
+      const std::string& promotion_id,
+      const ledger::PromotionStatus status,
+      ledger::ResultCallback callback);
+
+  void PromotionCredentialCompleted(
+      const std::string& promotion_id,
+      ledger::ResultCallback callback);
+
+  void GetPromotionList(
+      const std::vector<std::string>& ids,
+      ledger::GetPromotionListCallback callback);
 
   /**
    * PUBLISHER INFO
@@ -246,6 +285,7 @@ class Database {
   std::unique_ptr<DatabaseActivityInfo> activity_info_;
   std::unique_ptr<DatabaseContributionInfo> contribution_info_;
   std::unique_ptr<DatabaseContributionQueue> contribution_queue_;
+  std::unique_ptr<DatabaseCredsBatch> creds_batch_;
   std::unique_ptr<DatabasePendingContribution> pending_contribution_;
   std::unique_ptr<DatabasePromotion> promotion_;
   std::unique_ptr<DatabaseMediaPublisherInfo> media_publisher_info_;

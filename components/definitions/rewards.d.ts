@@ -129,7 +129,7 @@ declare namespace Rewards {
     ACTIVE = 0,
     ATTESTED = 1,
     CLAIMED = 2,
-    SIGNED_TOKENS = 3,
+    SIGNED_CREDS = 3,
     FINISHED = 4,
     OVER = 5
   }
