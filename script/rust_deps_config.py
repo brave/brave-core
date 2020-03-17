@@ -8,4 +8,4 @@
 # it now breaks because of urllib2 and SSL/TLS incompatibility when using Fastly
 # RUST_DEPS_PACKAGES_URL = "https://rust-pkg-brave-core.s3.brave.com"
 RUST_DEPS_PACKAGES_URL = "https://rust-pkg-brave-core.s3.amazonaws.com"
-RUST_DEPS_PACKAGE_VERSION = "0.1.2"
+RUST_DEPS_PACKAGE_VERSION = "0.1.3"
