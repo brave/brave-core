@@ -18,7 +18,7 @@ using ntp_sponsored_images::features::kBraveNTPBrandedWallpaperDemo;
     {"use-dev-updater-url",                                                \
      flag_descriptions::kUseDevUpdaterUrlName,                             \
      flag_descriptions::kUseDevUpdaterUrlDescription, kOsAll,              \
-     FEATURE_VALUE_TYPE(features::kUseDevUpdaterUrl)},                               \
+     FEATURE_VALUE_TYPE(features::kUseDevUpdaterUrl)},                     \
     {"brave-ntp-branded-wallpaper",                                        \
      flag_descriptions::kBraveNTPBrandedWallpaperName,                     \
      flag_descriptions::kBraveNTPBrandedWallpaperDescription, kOsAll,      \
