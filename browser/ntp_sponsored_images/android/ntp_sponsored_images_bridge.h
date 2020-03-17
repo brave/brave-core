@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_NTP_SPONSORED_IMAGES_BROWSER_ANDROID_NTP_SPONSORED_IMAGES_BRIDGE_H_
-#define BRAVE_BROWSER_NTP_SPONSORED_IMAGES_BROWSER_ANDROID_NTP_SPONSORED_IMAGES_BRIDGE_H_
+#ifndef BRAVE_BROWSER_NTP_SPONSORED_IMAGES_ANDROID_NTP_SPONSORED_IMAGES_BRIDGE_H_
+#define BRAVE_BROWSER_NTP_SPONSORED_IMAGES_ANDROID_NTP_SPONSORED_IMAGES_BRIDGE_H_
 
 #include <memory>
 #include <string>
@@ -32,7 +32,7 @@ using ntp_sponsored_images::ViewCounterService;
 class NTPSponsoredImagesBridge : public NTPSponsoredImagesService::Observer,
                                  public KeyedService {
  public:
-  NTPSponsoredImagesBridge(Profile* profile);
+  explicit NTPSponsoredImagesBridge(Profile* profile);
   ~NTPSponsoredImagesBridge() override;
 
   void RegisterPageView(JNIEnv* env,
@@ -78,4 +78,4 @@ class NTPSponsoredImagesBridgeFactory
 
 }  // namespace ntp_sponsored_images
 
-#endif  // BRAVE_BROWSER_NTP_SPONSORED_IMAGES_BROWSER_ANDROID_NTP_SPONSORED_IMAGES_BRIDGE_H_
+#endif  // BRAVE_BROWSER_NTP_SPONSORED_IMAGES_ANDROID_NTP_SPONSORED_IMAGES_BRIDGE_H_

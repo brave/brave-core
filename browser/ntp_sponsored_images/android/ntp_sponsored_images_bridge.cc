@@ -68,7 +68,7 @@ NTPSponsoredImagesBridgeFactory::ServiceIsCreatedWithBrowserContext() const {
   return true;
 }
 
-}  // namespace
+}  // namespace ntp_sponsored_images
 
 NTPSponsoredImagesBridge::NTPSponsoredImagesBridge(Profile* profile)
     : profile_(profile),
