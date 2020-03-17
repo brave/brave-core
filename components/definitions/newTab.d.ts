@@ -76,6 +76,7 @@ declare namespace NewTab {
   export interface PersistentState {
     showEmptyPage: boolean
     rewardsState: RewardsWidgetState
+    currentStackWidget: StackWidget
   }
 
   export interface EphemeralState {
