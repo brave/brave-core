@@ -15,20 +15,6 @@
     android:paddingTop="@dimen/toolbar_height_no_shadow"
     android:visibility="gone" >
 
-    <View
-        android:id="@+id/bottom_gradient_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:foregroundGravity="bottom"
-        android:foreground="@drawable/bottom_gradient"/>
-
-    <View
-        android:id="@+id/top_gradient_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:foregroundGravity="top"
-        android:foreground="@drawable/top_gradient"/>
-
     <ImageView
         android:id="@+id/bg_image_view"
         android:layout_width="match_parent"
