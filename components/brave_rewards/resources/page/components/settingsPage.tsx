@@ -86,7 +86,6 @@ class SettingsPage extends React.Component<Props, State> {
       this.actions.getAdsData()
     }
 
-    this.actions.checkImported()
     this.actions.fetchPromotions()
     this.actions.getRewardsMainEnabled()
     this.actions.updateAdsRewards()

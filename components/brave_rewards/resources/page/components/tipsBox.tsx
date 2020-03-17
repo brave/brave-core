@@ -11,7 +11,6 @@ import { Checkbox, Grid, Column, ControlWrapper } from 'brave-ui/components'
 import {
   DisabledContent,
   Box,
-  BoxAlert,
   TableDonation,
   List,
   Tokens,
@@ -101,14 +100,6 @@ class TipBox extends React.Component<Props, State> {
     console.log('Alert closed')
   }
 
-  importAlert = (walletImported: boolean) => {
-    return (
-      walletImported
-      ? <BoxAlert type={'tips'} onReview={this.doNothing} />
-      : null
-    )
-  }
-
   onSettingsToggle = () => {
     this.setState({ settings: !this.state.settings })
   }
@@ -175,7 +166,6 @@ class TipBox extends React.Component<Props, State> {
       ui,
       tipsList
     } = this.props.rewardsData
-    const { walletImported } = ui
     const showDisabled = firstLoad !== false || !enabledMain
     const tipRows = this.getTipsRows()
     const topRows = tipRows.slice(0, 5)
@@ -191,7 +181,6 @@ class TipBox extends React.Component<Props, State> {
         type={'donation'}
         description={getLocale('donationDesc')}
         disabledContent={showDisabled ? this.disabledContent() : null}
-        attachedAlert={this.importAlert(walletImported)}
         settingsChild={this.donationSettingsChild()}
         settingsOpened={this.state.settings}
         onSettingsClick={this.onSettingsToggle}

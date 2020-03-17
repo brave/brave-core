@@ -54,8 +54,6 @@ const char kGoogleLoginControlType[] = "brave.google_login_default";
 const char kFBEmbedControlType[] = "brave.fb_embed_default";
 const char kTwitterEmbedControlType[] = "brave.twitter_embed_default";
 const char kLinkedInEmbedControlType[] = "brave.linkedin_embed_default";
-const char kBravePaymentsPinnedItemCount[] =
-    "brave.muon.import_pinned_item_count";
 const char kWebTorrentEnabled[] = "brave.webtorrent_enabled";
 const char kHangoutsEnabled[] = "brave.hangouts_enabled";
 const char kHideBraveRewardsButton[] = "brave.hide_brave_rewards_button";
@@ -82,10 +80,6 @@ const char kBraveShieldsSettingsVersion[] = "brave.shields_settings_version";
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 const char kBraveGCMChannelStatus[] = "brave.gcm.channel_status";
 #endif
-const char kImportDialogCookies[] = "import_dialog_cookies";
-const char kImportDialogStats[] = "import_dialog_stats";
-const char kImportDialogLedger[] = "import_dialog_ledger";
-const char kImportDialogWindows[] = "import_dialog_windows";
 const char kImportDialogExtensions[] = "import_dialog_extensions";
 
 #if defined(OS_ANDROID)

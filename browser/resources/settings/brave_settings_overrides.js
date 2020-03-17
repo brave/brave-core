@@ -423,26 +423,6 @@ BravePatching.RegisterPolymerTemplateModifications({
     let innerHTML = checkBoxesParent.innerHTML
     innerHTML += `
         <settings-checkbox
-            hidden="[[!selected_.cookies]]"
-            pref="{{prefs.import_dialog_cookies}}"
-            label="${I18nBehavior.i18n('importCookies')}">
-        </settings-checkbox>
-        <settings-checkbox
-            hidden="[[!selected_.stats]]"
-            pref="{{prefs.import_dialog_stats}}"
-            label="${I18nBehavior.i18n('importStats')}">
-        </settings-checkbox>
-        <settings-checkbox
-            hidden="[[!selected_.ledger]]"
-            pref="{{prefs.import_dialog_ledger}}"
-            label="${I18nBehavior.i18n('importLedger')}">
-        </settings-checkbox>
-        <settings-checkbox
-            hidden="[[!selected_.windows]]"
-            pref="{{prefs.import_dialog_windows}}"
-            label="${I18nBehavior.i18n('importWindows')}">
-        </settings-checkbox>
-        <settings-checkbox
             hidden="[[!selected_.extensions]]"
             pref="{{prefs.import_dialog_extensions}}"
             label="${I18nBehavior.i18n('importExtensions')}">

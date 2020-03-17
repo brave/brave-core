@@ -220,7 +220,6 @@ class RewardsService : public KeyedService {
       const std::string& publisher_key,
       bool exclude) = 0;
   virtual RewardsNotificationService* GetNotificationService() const = 0;
-  virtual bool CheckImported() = 0;
   virtual void SetBackupCompleted() = 0;
   virtual void GetAutoContributeProps(
     const GetAutoContributePropsCallback& callback) = 0;

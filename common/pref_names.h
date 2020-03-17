@@ -47,7 +47,6 @@ extern const char kGoogleLoginControlType[];
 extern const char kFBEmbedControlType[];
 extern const char kTwitterEmbedControlType[];
 extern const char kLinkedInEmbedControlType[];
-extern const char kBravePaymentsPinnedItemCount[];
 extern const char kWebTorrentEnabled[];
 extern const char kHangoutsEnabled[];
 extern const char kHideBraveRewardsButton[];
@@ -73,10 +72,6 @@ extern const char kBraveShieldsSettingsVersion[];
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 extern const char kBraveGCMChannelStatus[];
 #endif
-extern const char kImportDialogCookies[];
-extern const char kImportDialogStats[];
-extern const char kImportDialogLedger[];
-extern const char kImportDialogWindows[];
 extern const char kImportDialogExtensions[];
 
 #if defined(OS_ANDROID)

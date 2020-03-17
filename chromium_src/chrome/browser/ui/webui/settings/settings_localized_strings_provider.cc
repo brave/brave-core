@@ -35,14 +35,6 @@ const char kWebRTCLearnMoreURL[] =
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
   webui::LocalizedString localized_strings[] = {
-    {"importCookies",
-      IDS_SETTINGS_IMPORT_COOKIES_CHECKBOX},
-    {"importStats",
-      IDS_SETTINGS_IMPORT_STATS_CHECKBOX},
-    {"importLedger",
-      IDS_SETTINGS_IMPORT_LEDGER_CHECKBOX},
-    {"importWindows",
-      IDS_SETTINGS_IMPORT_WINDOWS_CHECKBOX},
     {"importExtensions",
       IDS_SETTINGS_IMPORT_EXTENSIONS_CHECKBOX},
     {"siteSettingsAutoplay",

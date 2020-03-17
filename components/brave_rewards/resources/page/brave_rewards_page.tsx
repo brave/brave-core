@@ -117,10 +117,6 @@ window.cr.define('brave_rewards', function () {
     getActions().onInitAutoContributeSettings(properties)
   }
 
-  function imported (imported: boolean) {
-    getActions().onImportedCheck(imported)
-  }
-
   function adsData (adsData: Rewards.AdsData) {
     getActions().onAdsData(adsData)
   }
@@ -273,7 +269,6 @@ window.cr.define('brave_rewards', function () {
     recurringTips,
     currentTips,
     initAutoContributeSettings,
-    imported,
     adsData,
     adsHistory,
     onToggleAdThumbUp,

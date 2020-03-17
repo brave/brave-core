@@ -181,24 +181,6 @@
       <message name="IDS_CHROME_IMPORTER_LOCK_TEXT" desc="The message to be displayed in the Chrome importer lock dialog">
 	To finish importing, close all Chrome windows.
       </message>
-      <message name="IDS_BRAVE_IMPORTER_LOCK_TITLE" desc="Dialog title for Brave importer lock dialog">
-	Close Brave (old)
-      </message>
-      <message name="IDS_BRAVE_IMPORTER_LOCK_TEXT" desc="The message to be displayed in the Brave importer lock dialog">
-	To finish importing, close all Brave (old) windows.
-      </message>
-      <message name="IDS_SETTINGS_IMPORT_COOKIES_CHECKBOX" desc="Checkbox for importing cookies">
-        Cookies
-      </message>
-      <message name="IDS_SETTINGS_IMPORT_STATS_CHECKBOX" desc="Checkbox for importing stats">
-        Stats
-      </message>
-      <message name="IDS_SETTINGS_IMPORT_LEDGER_CHECKBOX" desc="Checkbox for importing ledger">
-        Brave Payments
-      </message>
-      <message name="IDS_SETTINGS_IMPORT_WINDOWS_CHECKBOX" desc="Checkbox for importing open windows and tabs">
-        Open windows and tabs
-      </message>
       <message name="IDS_SETTINGS_IMPORT_EXTENSIONS_CHECKBOX" desc="Checkbox for importing extensions list">
         Extensions
       </message>

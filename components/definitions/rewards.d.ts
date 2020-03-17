@@ -74,7 +74,6 @@ declare namespace Rewards {
       walletRecoverySuccess: boolean | null
       walletServerProblem: boolean
       walletCorrupted: boolean
-      walletImported: boolean
       onBoardingDisplayed?: boolean
       onlyAnonWallet?: boolean
     }
