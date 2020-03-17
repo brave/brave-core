@@ -325,11 +325,14 @@ public class NTPUtil {
         }
 
         imageBitmap = Bitmap.createScaledBitmap(imageBitmap, newImageWidth, newImageHeight, true);
+
         Bitmap newBitmap = Bitmap.createBitmap(imageBitmap, startX, startY, layoutWidth, (int) layoutHeight);
+        Bitmap bitmapWithGradient = ImageUtils.addGradient(newBitmap);
 
         imageBitmap.recycle();
+        newBitmap.recycle();
 
-        return newBitmap;
+        return bitmapWithGradient;
     }
 
     public static boolean shouldEnableNTPFeature(boolean isMoreTabs) {

@@ -55,7 +55,7 @@ public class ImageUtils {
         return inSampleSize;
     }
 
-    public static Bitmap addGradient(Bitmap src, int gradientHeight) {
+    public static Bitmap addGradient(Bitmap src) {
         Context context = ContextUtils.getApplicationContext();
         int w = src.getWidth();
         int h = src.getHeight();
@@ -66,9 +66,9 @@ public class ImageUtils {
         int height;
 
         if(ConfigurationUtils.isLandscape(context)) {
-            height = ((2*h)/3)+ gradientHeight;
+            height = ((2*h)/3);
         } else {
-            height = (h/3)+ gradientHeight;
+            height = (h/3);
         }
 
         Paint topPaint = new Paint();
