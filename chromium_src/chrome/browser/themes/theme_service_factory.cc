@@ -17,10 +17,6 @@
 #include "brave/browser/themes/brave_theme_helper.h"
 #endif
 
-#if !defined(OS_LINUX)
-#include "brave/browser/themes/brave_theme_service.h"
-#endif
-
 namespace {
 
 // Forward declare the original function.
@@ -52,11 +48,6 @@ const ThemeHelper& GetBraveThemeHelper(Profile* profile) {
 
 }  // namespace
 
-#if !defined(OS_LINUX)
-// On Linux ThemeServiceAuraLinux derives from BraveThemeService instead.
-#define ThemeService BraveThemeService
-#endif
-
 #define BRAVE_THEMESERVICEFACTORY_BUILDSERVICEINSTANCEFOR \
   GetBraveThemeHelper(static_cast<Profile*>(profile))
 
@@ -71,6 +62,3 @@ const ThemeHelper& GetBraveThemeHelper(Profile* profile) {
 #include "../../../../../chrome/browser/themes/theme_service_factory.cc"
 #undef BRAVE_GETTHEME_HELPER
 #undef BRAVE_THEMESERVICEFACTORY_BUILDSERVICEINSTANCEFOR
-#if !defined(OS_LINUX)
-#undef ThemeService
-#endif

@@ -8,39 +8,49 @@
 
 #include <memory>
 
-#include "chrome/browser/themes/theme_service.h"
+#include "base/memory/singleton.h"
+#include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+#include "components/keyed_service/core/keyed_service.h"
 
 namespace extensions {
 class BraveThemeEventRouter;
-}
+}  // namespace extensions
 
-class BraveThemeService : public ThemeService {
+class Profile;
+
+// For now, this class exists for BraveThemeEventRouter lifecycle.
+class BraveThemeService : public KeyedService {
  public:
-  BraveThemeService(Profile* profile, const ThemeHelper& theme_helper);
+  explicit BraveThemeService(Profile* profile);
   ~BraveThemeService() override;
 
-  // ThemeService overrides:
-  void Init() override;
-
  private:
-  friend class BraveThemeServiceTestWithoutSystemTheme;
   FRIEND_TEST_ALL_PREFIXES(BraveThemeEventRouterBrowserTest, ThemeChangeTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveThemeServiceTest, GetBraveThemeListTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveThemeServiceTest, SystemThemeChangeTest);
 
   // Own |mock_router|.
   void SetBraveThemeEventRouterForTesting(
       extensions::BraveThemeEventRouter* mock_router);
 
-  // Make BraveThemeService own BraveThemeEventRouter.
-  // BraveThemeEventRouter does its job independently with BraveThemeService
-  // because it's just native theme observer and broadcast native theme's
-  // change. Its lifecycle should be tied with profile because event
-  // broadcasting is done per profile.
-  // I think using exsiting BraveThemeService seems fine instead of creating
-  // new BrowserContextKeyedService for this.
-  // Use smart ptr for testing.
   std::unique_ptr<extensions::BraveThemeEventRouter> brave_theme_event_router_;
+};
+
+class BraveThemeServiceFactory : public BrowserContextKeyedServiceFactory {
+ public:
+  static BraveThemeService* GetForProfile(Profile* profile);
+  static BraveThemeServiceFactory* GetInstance();
+
+ private:
+  friend struct base::DefaultSingletonTraits<BraveThemeServiceFactory>;
+
+  BraveThemeServiceFactory();
+  ~BraveThemeServiceFactory() override;
+
+  // BrowserContextKeyedServiceFactory:
+  KeyedService* BuildServiceInstanceFor(
+      content::BrowserContext* context) const override;
+  bool ServiceIsCreatedWithBrowserContext() const override;
+
+  DISALLOW_COPY_AND_ASSIGN(BraveThemeServiceFactory);
 };
 
 #endif  // BRAVE_BROWSER_THEMES_BRAVE_THEME_SERVICE_H_
