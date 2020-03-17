@@ -112,8 +112,10 @@ base::android::ScopedJavaLocalRef<jobject>
 NTPSponsoredImagesBridge::CreateWallpaper() {
   JNIEnv* env = AttachCurrentThread();
 
-  auto data = view_counter_service_->GetCurrentWallpaperForDisplay();
-  if (!view_counter_service_ || data.is_none())
+  auto data = view_counter_service_
+      ? view_counter_service_->GetCurrentWallpaperForDisplay()
+      : base::Value();
+  if (data.is_none())
     return base::android::ScopedJavaLocalRef<jobject>();
 
   // TODO(bridiver) - need to either expose these constants or change this
