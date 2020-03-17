@@ -92,6 +92,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
         if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) ||
                 BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
             removePreferenceIfPresent(PREF_BRAVE_REWARDS);
+            removePreferenceIfPresent(PREF_WELCOME_TOUR);
         }
     }
 
