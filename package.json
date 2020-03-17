@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.7.51",
+  "version": "1.8.16",
   "description": "Brave Core is a set of changes, APIs, and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -302,7 +302,7 @@
     "file-loader": "^1.1.6",
     "font-awesome": "^4.7.0",
     "identity-obj-proxy": "^3.0.0",
-    "jest": "^24.5.0",
+    "jest": "^25.1.0",
     "less": "^3.7.1",
     "less-loader": "^4.0.5",
     "mkdirp": "^0.5.1",

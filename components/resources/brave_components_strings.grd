@@ -224,8 +224,6 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DESC" desc="">Earn {{currency}} by viewing Brave Ads. Ads presented are based on your interests, as inferred from your browsing behavior. No personal data or browsing history ever leaves your browser.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TITLE" desc="">Auto-Contribute</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DESC" desc="">An automatic way to support publishers and content creators. Set a monthly payment and browse normally. The Brave Verified sites you visit will receive your contributions automatically, based on your attention as measured by Brave.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_ALLOW_CONVERSION_TRACKING" desc="">Allow ad conversion detection</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_ALLOW_CONVERSION_TRACKING_DESCRIPTION" desc="">This will anonymously let Brave know that there was a response to an ad on this browser. Enabling this will increase earnings.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CURRENT_EARNINGS" desc="">Estimated pending rewards</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PAYMENT_DATE" desc="">Next payment date</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_NOTIFICATIONS_RECEIVED" desc="">Ad notifications received this month</message>
@@ -645,6 +643,11 @@
       <message name="IDS_BRAVE_UI_WALLET_VERIFIED" desc="">Verified</message>
       <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_NOTE1" desc="">Uphold may require you to verify your identity based on services requested.</message>
       <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_NOTE2" desc="">Brave Software Inc. does not process, store, or access any of the personal information that you provide to Uphold when you establish an account with them.</message>
+
+      <message name="IDS_BRAVE_UI_TAP_NETWORK_TITLE" desc="">Redeem BAT for Gift Cards</message>
+      <message name="IDS_BRAVE_UI_TAP_NETWORK_INFO" desc="">With TAP Network, you can redeem your BAT for popular name-brand gift cards.</message>
+      <message name="IDS_BRAVE_UI_TAP_NETWORK_LINK" desc="">Visit TAP.</message>
+      <message name="IDS_BRAVE_UI_TAP_NETWORK_DISCLAIMER" desc="">* Requires Uphold Verification.</message>
 
       <!-- Rewards New Tab Widget resources -->
       <message name="IDS_REWARDS_WIDGET_ABOUT_REWARDS" desc="">

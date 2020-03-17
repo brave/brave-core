@@ -187,6 +187,9 @@ class BraveProfileSyncServiceImpl
 
   BraveSyncService* GetSyncService() const override;
 
+  static void MigrateDuplicatedBookmarksObjectIds(Profile* profile,
+                                                  BookmarkModel* model);
+
  private:
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BookmarkAdded);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BookmarkDeleted);

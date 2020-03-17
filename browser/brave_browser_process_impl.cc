@@ -71,6 +71,10 @@
 #include "brave/common/tor/pref_names.h"
 #endif
 
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/speedreader_whitelist.h"
+#endif
+
 #if defined(OS_ANDROID)
 #include "chrome/browser/android/chrome_feature_list.h"
 #include "chrome/browser/android/component_updater/background_task_update_scheduler.h"
@@ -186,6 +190,9 @@ void BraveBrowserProcessImpl::StartBraveServices() {
   tracking_protection_service();
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion_download_service();
+#endif
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  speedreader_whitelist();
 #endif
   // Now start the local data files service, which calls all observers.
   local_data_files_service()->Start();
@@ -388,3 +395,14 @@ void BraveBrowserProcessImpl::CreateNotificationPlatformBridge() {
 #endif
 #endif
 }
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+speedreader::SpeedreaderWhitelist*
+BraveBrowserProcessImpl::speedreader_whitelist() {
+  if (!speedreader_whitelist_) {
+    speedreader_whitelist_.reset(new speedreader::SpeedreaderWhitelist(
+        brave_component_updater_delegate()));
+  }
+  return speedreader_whitelist_.get();
+}
+#endif  // BUILDFLAG(ENABLE_SPEEDREADER)

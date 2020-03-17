@@ -138,8 +138,7 @@ describe('newTabActions', () => {
       fingerprintingBlockedStat: 2,
       httpsUpgradesStat: 3,
       javascriptBlockedStat: 4,
-      trackersBlockedStat: 5,
-      bandwidthSavedStat: 6
+      trackersBlockedStat: 5
     }
     expect(actions.statsUpdated(stats)).toEqual({
       meta: undefined,

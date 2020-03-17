@@ -259,8 +259,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
       }
     }, {
       std::string("rewards"), {
-        { "adsAllowConversionTracking",  IDS_BRAVE_REWARDS_LOCAL_ADS_ALLOW_CONVERSION_TRACKING },  // NOLINT
-        { "adsAllowConversionTrackingDescription",  IDS_BRAVE_REWARDS_LOCAL_ADS_ALLOW_CONVERSION_TRACKING_DESCRIPTION },  // NOLINT
         { "adsCurrentEarnings",  IDS_BRAVE_REWARDS_LOCAL_ADS_CURRENT_EARNINGS },
         { "adsDesc",  IDS_BRAVE_REWARDS_LOCAL_ADS_DESC },
         { "adsDisabledTextOne",  IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT_ONE },                // NOLINT
@@ -624,7 +622,12 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "serviceTextReady", IDS_BRAVE_UI_SERVICE_TEXT_READY },
         { "showAll", IDS_BRAVE_UI_SHOW_ALL },
         { "viewedSites", IDS_BRAVE_UI_VIEWED_SITES },
-        { "termsOfService", IDS_BRAVE_UI_TERMS_OF_SERVICE }
+        { "termsOfService", IDS_BRAVE_UI_TERMS_OF_SERVICE },
+
+        { "tapNetworkTitle", IDS_BRAVE_UI_TAP_NETWORK_TITLE },
+        { "tapNetworkInfo", IDS_BRAVE_UI_TAP_NETWORK_INFO },
+        { "tapNetworkLink", IDS_BRAVE_UI_TAP_NETWORK_LINK },
+        { "tapNetworkDisclaimer", IDS_BRAVE_UI_TAP_NETWORK_DISCLAIMER }
       }
     }, {
       std::string("sync"), {

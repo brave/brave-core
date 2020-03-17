@@ -207,6 +207,15 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
             BravePrefServiceBridge.getInstance().setOldHttpsUpgradesCount(profile, httpsUpgradesCount);
         }
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+        if (trackersBlockedCount == 0 &&
+                adsBlockedCount == 0 &&
+                httpsUpgradesCount == 0) {
+            // We assume that everything was migrated in that case
+            sharedPreferencesEditor.putBoolean(BraveHelper.PREF_TABS_SETTINGS_MIGRATED, true);
+            sharedPreferencesEditor.apply();
+
+            return;
+        }
         sharedPreferencesEditor.putLong(PREF_TRACKERS_BLOCKED_COUNT, 0);
         sharedPreferencesEditor.putLong(PREF_ADS_BLOCKED_COUNT, 0);
         sharedPreferencesEditor.putLong(PREF_HTTPS_UPGRADES_COUNT, 0);

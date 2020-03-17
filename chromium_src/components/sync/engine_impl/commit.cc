@@ -92,6 +92,7 @@ brave_sync::RecordsListPtr ConvertCommitsToBraveRecords(
     if (entity.specifics().has_bookmark()) {
       const sync_pb::BookmarkSpecifics& bm_specifics =
           entity.specifics().bookmark();
+
       auto record = std::make_unique<SyncRecord>();
       record->objectData = brave_sync::jslib_const::SyncObjectData_BOOKMARK;
 
@@ -136,6 +137,17 @@ brave_sync::RecordsListPtr ConvertCommitsToBraveRecords(
           record->action = brave_sync::jslib::SyncRecord::Action::A_DELETE;
         else
           record->action = brave_sync::jslib::SyncRecord::Action::A_UPDATE;
+      }
+
+      if (entity.deleted() && entity.version() == 0 &&
+        record->objectId.empty()) {
+        // This is for recover profile after crash with duplicated object ids
+        // When doing delete of duplicated bookmark, pretend it has a new
+        // object id to got through nudge/pull cycle
+        // We are ok, if other devices would get this record, because they have
+        // nothing to delete in fact
+        record->objectId = brave_sync::tools::GenerateObjectId();
+        record->action = brave_sync::jslib::SyncRecord::Action::A_DELETE;
       }
 
       DCHECK(!record->objectId.empty());

@@ -37,6 +37,7 @@ import RestoreSites from './restoreSites'
 import RewardsButton from './rewardsButton'
 import SettingsPage from './settingsPage'
 import ShowAdsHistory from './showAdsHistory'
+import SidebarPromo from './sidebarPromo'
 import SiteBanner from './siteBanner'
 import Tab from './tab'
 import TableAdsHistory from './tableAdsHistory'
@@ -95,6 +96,7 @@ export {
   RewardsButton,
   SettingsPage,
   ShowAdsHistory,
+  SidebarPromo,
   SiteBanner,
   Tab,
   TableAdsHistory,

@@ -7,11 +7,16 @@
 #define BRAVE_COMPONENTS_BRAVE_PERF_PREDICTOR_BROWSER_P3A_BANDWIDTH_SAVINGS_PERMANENT_STATE_H_
 
 #include <list>
+#include <memory>
 
 #include "base/time/time.h"
 #include "base/values.h"
 
 class PrefService;
+
+namespace base {
+class Clock;
+}  // namespace base
 
 namespace brave_perf_predictor {
 
@@ -25,6 +30,9 @@ namespace brave_perf_predictor {
 class P3ABandwidthSavingsPermanentState {
  public:
   explicit P3ABandwidthSavingsPermanentState(PrefService* user_prefs);
+  // Constructor with injected clock for testing
+  P3ABandwidthSavingsPermanentState(PrefService* user_prefs,
+                                    std::unique_ptr<base::Clock> clock);
   ~P3ABandwidthSavingsPermanentState();
   P3ABandwidthSavingsPermanentState(const P3ABandwidthSavingsPermanentState&) =
       delete;
@@ -32,19 +40,19 @@ class P3ABandwidthSavingsPermanentState {
       const P3ABandwidthSavingsPermanentState&) = delete;
 
   void AddSavings(uint64_t delta);
-  base::Optional<uint64_t> GetFullPeriodSavingsBytes();
+  uint64_t GetFullPeriodSavingsBytes() const;
 
  private:
   struct DailySaving {
     base::Time day;
     uint64_t saving;
-    DailySaving(base::Time day, uint64_t saving): day(day), saving(saving) {}
+    DailySaving(base::Time day, uint64_t saving) : day(day), saving(saving) {}
   };
   void LoadSavingsDaily();
   void SaveSavingsDaily();
   void RecordSavingsTotal();
-  uint64_t GetSavingsTotal() const;
 
+  std::unique_ptr<base::Clock> clock_;
   std::list<DailySaving> daily_savings_;
   PrefService* user_prefs_ = nullptr;
 };

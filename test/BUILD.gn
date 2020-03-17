@@ -10,6 +10,7 @@ import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
+import("//brave/components/speedreader/buildflags.gni")
 import("//components/gcm_driver/config.gni")
 import("//testing/test.gni")
 import("//third_party/widevine/cdm/widevine.gni")
@@ -30,6 +31,15 @@ group("fix_brave_test_install_name_adblock") {
   deps = [
     "//brave/vendor/adblock_rust_ffi:test_adblock_install_name"
   ]
+}
+
+group("fix_brave_test_install_name_speedreader") {
+  testonly = true
+  if (enable_speedreader) {
+    deps = [
+      "//brave/vendor/speedreader_rust_ffi:test_speedreader_install_name",
+    ]
+  }
 }
 
 static_library("brave_test_support_unit") {
@@ -439,6 +449,8 @@ test("brave_unit_tests") {
       "//brave/components/brave_perf_predictor/browser/named_third_party_registry_unittest.cc",
       "//brave/components/brave_perf_predictor/browser/bandwidth_linreg_unittest.cc",
       "//brave/components/brave_perf_predictor/browser/bandwidth_savings_predictor_unittest.cc",
+      "//brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_permanent_state_unittest.cc",
+      "//brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker_unittest.cc",
     ]
 
     deps += [
@@ -674,6 +686,12 @@ test("brave_browser_tests") {
   if (enable_brave_wayback_machine) {
     sources += [
       "//brave/components/brave_wayback_machine/brave_wayback_machine_browsertest.cc",
+    ]
+  }
+
+  if (enable_speedreader) {
+    sources += [
+      "//brave/browser/speedreader/speedreader_browsertest.cc",
     ]
   }
 

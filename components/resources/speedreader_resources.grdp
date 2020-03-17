@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <if expr="enable_speedreader">
+     <include name="IDR_SPEEDREADER_STYLE_DESKTOP" file="../speedreader/resources/speedreader-desktop.css" type="BINDATA" />
+  </if>
+</grit-part>

@@ -189,6 +189,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void GetMonthlyReport(const base::ListValue* args);
 
   void GetAllMonthlyReportIds(const base::ListValue* args);
+  void GetCountryCode(const base::ListValue* args);
 
   void OnGetMonthlyReport(
       const uint32_t month,
@@ -304,9 +305,6 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 };
 
 namespace {
-
-const char kShouldAllowAdConversionTracking[] =
-    "shouldAllowAdConversionTracking";
 
 const int kDaysOfAdsHistory = 7;
 
@@ -469,6 +467,9 @@ void RewardsDOMHandler::RegisterMessages() {
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getMonthlyReportIds",
       base::BindRepeating(&RewardsDOMHandler::GetAllMonthlyReportIds,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.getCountryCode",
+      base::BindRepeating(&RewardsDOMHandler::GetCountryCode,
       base::Unretained(this)));
 }
 
@@ -1096,11 +1097,6 @@ void RewardsDOMHandler::GetAdsData(const base::ListValue *args) {
   auto is_enabled = ads_service_->IsEnabled();
   ads_data.SetBoolean("adsEnabled", is_enabled);
 
-  const auto should_allow_ad_conversion_tracking =
-      ads_service_->ShouldAllowAdConversionTracking();
-  ads_data.SetBoolean(kShouldAllowAdConversionTracking,
-      should_allow_ad_conversion_tracking);
-
   auto ads_per_hour = ads_service_->GetAdsPerHour();
   ads_data.SetInteger("adsPerHour", ads_per_hour);
 
@@ -1321,8 +1317,6 @@ void RewardsDOMHandler::SaveAdsSetting(const base::ListValue* args) {
     const auto is_enabled =
         value == "true" && ads_service_->IsSupportedLocale();
     ads_service_->SetEnabled(is_enabled);
-  } else if (key == kShouldAllowAdConversionTracking) {
-    ads_service_->SetAllowAdConversionTracking(value == "true");
   } else if (key == "adsPerHour") {
     ads_service_->SetAdsPerHour(std::stoull(value));
   }
@@ -1862,6 +1856,17 @@ void RewardsDOMHandler::GetAllMonthlyReportIds(const base::ListValue* args) {
   rewards_service_->GetAllMonthlyReportIds(
       base::BindOnce(&RewardsDOMHandler::OnGetAllMonthlyReportIds,
           weak_factory_.GetWeakPtr()));
+}
+
+void RewardsDOMHandler::GetCountryCode(const base::ListValue* args) {
+  if (!ads_service_ || !web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  const std::string country_code = ads_service_->GetCountryCode();
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards.countryCode", base::Value(country_code));
 }
 
 

@@ -33,12 +33,12 @@ import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
-import org.chromium.chrome.browser.offlinepages.prefetch.PrefetchConfiguration;
 import org.chromium.chrome.browser.onboarding.OnboardingActivity;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.PrefServiceBridge;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
+import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tabmodel.TabLaunchType;
@@ -89,24 +89,24 @@ public abstract class BraveActivity extends ChromeActivity {
         // Disable NTP suggestions
         PrefServiceBridge.getInstance().setBoolean(Pref.NTP_ARTICLES_SECTION_ENABLED, false);
         PrefServiceBridge.getInstance().setBoolean(Pref.NTP_ARTICLES_LIST_VISIBLE, false);
-
-        // Disable page prefetching
-        PrefetchConfiguration.setPrefetchingEnabledInSettings(false);
-
-        // Set a flag in preferences that tabs pref migration is done
-        SharedPreferences.Editor sharedPreferencesEditor =
-            ContextUtils.getAppSharedPreferences().edit();
-        sharedPreferencesEditor.putBoolean(BraveHelper.PREF_TABS_SETTINGS_MIGRATED, true);
-        sharedPreferencesEditor.apply();
     }
 
     @Override
     public boolean onMenuOrKeyboardAction(int id, boolean fromMenu) {
+        final TabImpl currentTab = (TabImpl) getActivityTab();
+        // Handle items replaced by Brave.
+        if (id == R.id.info_menu_id && currentTab != null) {
+            ShareDelegate shareDelegate = (ShareDelegate) getShareDelegateSupplier().get();
+            shareDelegate.share(currentTab, false);
+            return true;
+        }
+
         if (super.onMenuOrKeyboardAction(id, fromMenu)) {
             return true;
         }
 
-        if (getActivityTab() == null) {
+        // Handle items added by Brave.
+        if (currentTab == null) {
             return false;
         } else if (id == R.id.exit_id) {
             ApplicationLifetime.terminate(false);

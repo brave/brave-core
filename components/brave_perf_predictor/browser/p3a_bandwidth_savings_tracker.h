@@ -7,15 +7,23 @@
 #define BRAVE_COMPONENTS_BRAVE_PERF_PREDICTOR_BROWSER_P3A_BANDWIDTH_SAVINGS_TRACKER_H_
 
 #include <cstdint>
+#include <memory>
 
 class PrefRegistrySimple;
 class PrefService;
+
+namespace base {
+class Clock;
+}  // namespace base
 
 namespace brave_perf_predictor {
 
 class P3ABandwidthSavingsTracker {
  public:
   explicit P3ABandwidthSavingsTracker(PrefService* user_prefs);
+  // Constructor with injected clock for testing
+  P3ABandwidthSavingsTracker(PrefService* user_prefs,
+                             std::unique_ptr<base::Clock> clock);
   ~P3ABandwidthSavingsTracker();
   P3ABandwidthSavingsTracker(const P3ABandwidthSavingsTracker&) = delete;
   P3ABandwidthSavingsTracker& operator=(const P3ABandwidthSavingsTracker&) =
@@ -26,6 +34,7 @@ class P3ABandwidthSavingsTracker {
 
  private:
   PrefService* user_prefs_;
+  std::unique_ptr<base::Clock> clock_;  // Injected clock for testing
   void StoreSavingsHistogram(uint64_t savings_bytes);
 };
 

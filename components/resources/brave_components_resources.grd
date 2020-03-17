@@ -64,6 +64,8 @@
       <if expr="enable_brave_perf_predictor">
         <part file="../brave_perf_predictor/resources/brave_perf_predictor_resources.grdp" />
       </if>
+    
+      <part file="speedreader_resources.grdp" />
     </includes>
   </release>
 </grit>

@@ -47,7 +47,6 @@ declare namespace NewTab {
     javascriptBlockedStat: number
     httpsUpgradesStat: number
     fingerprintingBlockedStat: number
-    bandwidthSavedStat: number
   }
 
   export interface Bookmark {
@@ -59,6 +58,8 @@ declare namespace NewTab {
     url: string
   }
 
+  export type StackWidget = 'rewards' | 'exchange'
+
   export interface PersistentState {
     topSites: Site[]
     ignoredTopSites: Site[]
@@ -67,6 +68,7 @@ declare namespace NewTab {
     showEmptyPage: boolean
     bookmarks: Record<string, Bookmark>
     rewardsState: RewardsWidgetState
+    currentStackWidget: StackWidget
   }
 
   export interface EphemeralState {

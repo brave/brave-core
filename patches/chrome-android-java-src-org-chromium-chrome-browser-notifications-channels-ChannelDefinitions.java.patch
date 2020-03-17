@@ -1,7 +1,16 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelDefinitions.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelDefinitions.java
-index 62d219a61441e8d26ef71f76e2df45f17de4a4e8..d9fe43bf2e621d6338e390679de17a1a9008c2fa 100644
+index 62d219a61441e8d26ef71f76e2df45f17de4a4e8..18a9f423a7d7febb31916357e65a6d6f80f782f0 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelDefinitions.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelDefinitions.java
+@@ -45,7 +45,7 @@ public class ChannelDefinitions {
+      * set of channels returned by {@link #getStartupChannelIds()} or {@link #getLegacyChannelIds()}
+      * changes.
+      */
+-    static final int CHANNELS_VERSION = 2;
++    static final int CHANNELS_VERSION = 3;
+
+     /**
+      * To define a new channel, add the channel ID to this StringDef and add a new entry to
 @@ -55,6 +55,7 @@ public class ChannelDefinitions {
       * more detailed instructions.
       */

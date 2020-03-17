@@ -37,7 +37,8 @@ export const defaultState: Rewards.State = {
     walletImported: false,
     walletRecoverySuccess: null,
     walletServerProblem: false,
-    onBoardingDisplayed: false
+    onBoardingDisplayed: false,
+    promosDismissed: {}
   },
   autoContributeList: [],
   recurringList: [],
@@ -47,7 +48,6 @@ export const defaultState: Rewards.State = {
   tipsLoad: false,
   adsData: {
     adsEnabled: false,
-    shouldAllowAdConversionTracking: false,
     adsPerHour: 0,
     adsUIEnabled: false,
     adsIsSupported: false,
@@ -74,7 +74,8 @@ export const defaultState: Rewards.State = {
     month: -1,
     year: -1
   },
-  monthlyReportIds: []
+  monthlyReportIds: [],
+  currentCountryCode: ''
 }
 
 const cleanData = (state: Rewards.State) => {
