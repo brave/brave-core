@@ -76,7 +76,7 @@ export class App extends React.Component<Props, State> {
   }
 
   render () {
-    const { walletCreated, walletCreateFailed } = this.props.rewardsData
+    const { walletCreated, walletCreateFailed, ui } = this.props.rewardsData
 
     let props: {onReTry?: () => void} = {}
 
@@ -89,7 +89,7 @@ export class App extends React.Component<Props, State> {
     return (
       <div id='rewardsPage'>
         {
-          !walletCreated
+          !walletCreated || ui.walletCorrupted
           ? <WelcomePage
             optInAction={this.onCreateWalletClicked}
             creating={this.state.creating}
@@ -98,7 +98,7 @@ export class App extends React.Component<Props, State> {
           : null
         }
         {
-          walletCreated
+          walletCreated && !ui.walletCorrupted
           ? <SettingsPage />
           : null
         }
