@@ -4,10 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #define BRAVE_INIT { \
-  /* Add CONTENT_SETTING_ASK and make it default for autoplay*/ \
+  /* Add CONTENT_SETTING_ASK for autoplay*/ \
   content_settings_info_.erase(ContentSettingsType::AUTOPLAY); \
   website_settings_registry_->UnRegister(ContentSettingsType::AUTOPLAY); \
-  Register(ContentSettingsType::AUTOPLAY, "autoplay", CONTENT_SETTING_BLOCK, \
+  Register(ContentSettingsType::AUTOPLAY, "autoplay", CONTENT_SETTING_ALLOW, \
            WebsiteSettingsInfo::UNSYNCABLE, WhitelistedSchemes(), \
            ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, \
                          CONTENT_SETTING_ASK), \

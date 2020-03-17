@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/public/mojom/permissions/permission.mojom b/third_party/blink/public/mojom/permissions/permission.mojom
-index cbd5d28c52e220e41356c704aa4b1fde018da370..231ead27186ce5a55b3de8707e0be8fe95af18a6 100644
+index cbd5d28c52e220e41356c704aa4b1fde018da370..2edc5901d6b29f52847c4e447b779483c5e6119b 100644
 --- a/third_party/blink/public/mojom/permissions/permission.mojom
 +++ b/third_party/blink/public/mojom/permissions/permission.mojom
 @@ -25,6 +25,7 @@ enum PermissionName {
@@ -10,11 +10,3 @@ index cbd5d28c52e220e41356c704aa4b1fde018da370..231ead27186ce5a55b3de8707e0be8fe
  };
  
  // This is similar to WakeLockType in modules/wake_lock/wake_lock.idl.
-@@ -70,6 +71,7 @@ interface PermissionObserver {
- // methods to check, request, and revoke permissions. It also allows a client to
- // start listening to permission changes.
- interface PermissionService {
-+  [Sync]
-   HasPermission(PermissionDescriptor permission) => (PermissionStatus status);
-   RequestPermission(PermissionDescriptor permission, bool user_gesture)
-       => (PermissionStatus status);
