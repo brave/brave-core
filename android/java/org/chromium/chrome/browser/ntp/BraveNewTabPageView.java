@@ -299,18 +299,18 @@ public class BraveNewTabPageView extends NewTabPageView {
                     Bitmap wallpaperBitmap = NTPUtil.getWallpaperBitmap(ntpImage, bgImageView.getMeasuredWidth(), bgImageView.getMeasuredHeight());
                     bgImageView.setImageBitmap(wallpaperBitmap);
 
-                    int height;
-                    if(ConfigurationUtils.isLandscape(mTabImpl.getActivity())) {
-                        height = ((2*bgImageView.getHeight())/3);
-                    } else {
-                        height = (bgImageView.getHeight()/3);
-                    }
+                    // int height;
+                    // if(ConfigurationUtils.isLandscape(mTabImpl.getActivity())) {
+                    //     height = ((2*bgImageView.getHeight())/3);
+                    // } else {
+                    //     height = (bgImageView.getHeight()/3);
+                    // }
 
-                    FrameLayout.LayoutParams topGradientLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, height);
-                    mNewTabPageLayout.findViewById(R.id.top_gradient_view).setLayoutParams(topGradientLayoutParams);
+                    // FrameLayout.LayoutParams topGradientLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, height);
+                    // mNewTabPageLayout.findViewById(R.id.top_gradient_view).setLayoutParams(topGradientLayoutParams);
 
-                    FrameLayout.LayoutParams bottomGradientLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, height);
-                    mNewTabPageLayout.findViewById(R.id.bottom_gradient_view).setLayoutParams(bottomGradientLayoutParams);
+                    // FrameLayout.LayoutParams bottomGradientLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, height);
+                    // mNewTabPageLayout.findViewById(R.id.bottom_gradient_view).setLayoutParams(bottomGradientLayoutParams);
 
                     bgImageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
