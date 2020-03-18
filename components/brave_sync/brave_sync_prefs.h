@@ -73,7 +73,7 @@ extern const char kSyncRecordsToResend[];
 // Meta info of kSyncRecordsToResend
 extern const char kSyncRecordsToResendMeta[];
 // Flag indicates we had recovered duplicated bookmarks object ids (deprecated)
-// extern const char kDuplicatedBookmarksRecovered[];  // deprecated
+extern const char kDuplicatedBookmarksRecovered[];
 
 // Version indicates had recovered duplicated bookmarks object ids:
 // 1 - we had migrated object ids

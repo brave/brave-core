@@ -15,6 +15,7 @@
 
 void MigrateBraveSyncPrefs(PrefService* prefs) {
   prefs->ClearPref(brave_sync::prefs::kSyncPrevSeed);
+  prefs->ClearPref(brave_sync::prefs::kDuplicatedBookmarksRecovered);
 }
 
 namespace brave_sync {
@@ -43,8 +44,8 @@ const char kSyncMigrateBookmarksVersion[]
                                        = "brave_sync.migrate_bookmarks_version";
 const char kSyncRecordsToResend[] = "brave_sync_records_to_resend";
 const char kSyncRecordsToResendMeta[] = "brave_sync_records_to_resend_meta";
-// const char kDuplicatedBookmarksRecovered[] =
-//     "brave_sync_duplicated_bookmarks_recovered";  // deprecated
+const char kDuplicatedBookmarksRecovered[] =
+    "brave_sync_duplicated_bookmarks_recovered";
 const char kDuplicatedBookmarksMigrateVersion[] =
     "brave_sync_duplicated_bookmarks_migrate_version";
 
@@ -76,6 +77,7 @@ void Prefs::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   registry->RegisterListPref(prefs::kSyncRecordsToResend);
   registry->RegisterDictionaryPref(prefs::kSyncRecordsToResendMeta);
+  registry->RegisterBooleanPref(kDuplicatedBookmarksRecovered, false);
   registry->RegisterIntegerPref(prefs::kDuplicatedBookmarksMigrateVersion, 0);
 }
 
