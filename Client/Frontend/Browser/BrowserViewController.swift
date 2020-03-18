@@ -281,6 +281,7 @@ class BrowserViewController: UIViewController {
         rewardsObserver.fetchedPanelPublisher = { [weak self] publisher, tabId in
             guard let self = self, self.isViewLoaded, let tab = self.tabManager.selectedTab, tab.rewardsId == tabId else { return }
             self.publisher = publisher
+            self.tabManager.selectedTab?.publisher = publisher
             self.updateRewardsButtonState()
         }
         rewardsObserver.notificationAdded = { [weak self] _ in
@@ -1247,6 +1248,7 @@ class BrowserViewController: UIViewController {
                 break
             }
             tab.userScriptManager?.isU2FEnabled = webView.hasOnlySecureContent
+            tab.userScriptManager?.isPaymentRequestEnabled = webView.hasOnlySecureContent
             if tab.contentIsSecure && !webView.hasOnlySecureContent {
                 tab.contentIsSecure = false
             }
@@ -2116,6 +2118,10 @@ extension BrowserViewController: TabDelegate {
         
         tab.addContentScript(RewardsReporting(rewards: rewards, tab: tab), name: RewardsReporting.name())
         tab.addContentScript(AdsMediaReporting(rewards: rewards, tab: tab), name: AdsMediaReporting.name())
+        
+        #if !NO_SKUS
+        tab.addContentScript(PaymentRequestExtension(rewards: rewards, tab: tab), name: PaymentRequestExtension.name())
+        #endif
     }
 
     func tab(_ tab: Tab, willDeleteWebView webView: WKWebView) {

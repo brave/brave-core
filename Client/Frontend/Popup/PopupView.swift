@@ -489,6 +489,12 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
         }
     }
     
+    func removeAllButtons() {
+        dialogButtons.forEach { $0.button?.removeFromSuperview() }
+        dialogButtons.removeAll()
+        setNeedsLayout()
+    }
+    
     func removeButtonAtIndex(buttonIndex: Int) {
         if buttonIndex >= dialogButtons.count {
             return
