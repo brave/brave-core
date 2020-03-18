@@ -8,7 +8,7 @@ index 62d219a61441e8d26ef71f76e2df45f17de4a4e8..18a9f423a7d7febb31916357e65a6d6f
       */
 -    static final int CHANNELS_VERSION = 2;
 +    static final int CHANNELS_VERSION = 3;
-
+ 
      /**
       * To define a new channel, add the channel ID to this StringDef and add a new entry to
 @@ -55,6 +55,7 @@ public class ChannelDefinitions {
