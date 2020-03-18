@@ -24,11 +24,13 @@ class BrowserContext;
 }  // namespace content
 
 class BraveWalletController;
+class BrowserWalletDelegate;
 class Profile;
 
 class BraveWalletService : public KeyedService {
  public:
-  explicit BraveWalletService(content::BrowserContext* context);
+  explicit BraveWalletService(content::BrowserContext* context,
+      std::unique_ptr<BrowserWalletDelegate> browser_wallet_delegate);
   ~BraveWalletService() override;
 
   bool Init();

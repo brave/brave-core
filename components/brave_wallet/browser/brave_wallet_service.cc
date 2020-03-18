@@ -11,11 +11,14 @@
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_controller.h"
+#include "brave/components/brave_wallet/browser/browser_wallet_delegate.h"
 #include "content/public/browser/browser_context.h"
 
-BraveWalletService::BraveWalletService(content::BrowserContext* context)
+BraveWalletService::BraveWalletService(content::BrowserContext* context,
+      std::unique_ptr<BrowserWalletDelegate> browser_wallet_delegate)
     : context_(context),
-      controller_(new BraveWalletController(context)),
+      controller_(new BraveWalletController(context,
+          std::move(browser_wallet_delegate))),
       weak_factory_(this) {
 }
 

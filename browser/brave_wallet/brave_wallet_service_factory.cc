@@ -5,6 +5,9 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 
+#include <memory>
+
+#include "brave/browser/brave_wallet/brave_wallet_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
@@ -32,7 +35,8 @@ BraveWalletServiceFactory::~BraveWalletServiceFactory() {
 
 KeyedService* BraveWalletServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  return new BraveWalletService(Profile::FromBrowserContext(context));
+  return new BraveWalletService(Profile::FromBrowserContext(context),
+      std::make_unique<BraveWalletDelegate>());
 }
 
 content::BrowserContext* BraveWalletServiceFactory::GetBrowserContextToUse(

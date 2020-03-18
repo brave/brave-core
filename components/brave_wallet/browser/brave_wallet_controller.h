@@ -26,6 +26,7 @@
 #include "url/gurl.h"
 
 class PrefChangeRegistrar;
+class BrowserWalletDelegate;
 
 namespace base {
 class FilePath;
@@ -38,7 +39,8 @@ class BrowserContext;
 
 class BraveWalletController : extensions::ExtensionRegistryObserver {
  public:
-  explicit BraveWalletController(content::BrowserContext* context);
+  explicit BraveWalletController(content::BrowserContext* context,
+      std::unique_ptr<BrowserWalletDelegate> browser_wallet_delegate);
   ~BraveWalletController() override;
 
   void ResetCryptoWallets();
@@ -76,6 +78,7 @@ class BraveWalletController : extensions::ExtensionRegistryObserver {
  private:
   content::BrowserContext* context_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
+  std::unique_ptr<BrowserWalletDelegate> browser_wallet_delegate_;
   ScopedObserver<extensions::ExtensionRegistry,
       extensions::ExtensionRegistryObserver> extension_registry_observer_{this};
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;

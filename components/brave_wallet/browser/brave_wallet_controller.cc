@@ -13,6 +13,7 @@
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
 #include "brave/common/extensions/extension_constants.h"
+#include "brave/components/brave_wallet/browser/browser_wallet_delegate.h"
 #include "content/public/browser/browser_context.h"
 #include "base/base64.h"
 #include "crypto/aead.h"
@@ -22,10 +23,6 @@
 #include "brave/common/pref_names.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
-#include "chrome/browser/lifetime/application_lifetime.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_list.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/browser/extension_system.h"
@@ -38,8 +35,11 @@ namespace {
   }
 }
 
-BraveWalletController::BraveWalletController(content::BrowserContext* context)
-    : context_(context), extension_registry_observer_(this),
+BraveWalletController::BraveWalletController(content::BrowserContext* context,
+    std::unique_ptr<BrowserWalletDelegate> browser_wallet_delegate)
+    : context_(context),
+      browser_wallet_delegate_(std::move(browser_wallet_delegate)),
+      extension_registry_observer_(this),
       file_task_runner_(base::CreateSequencedTaskRunner(
           {base::ThreadPool(), base::MayBlock(),
            base::TaskPriority::BEST_EFFORT,
@@ -191,19 +191,7 @@ void BraveWalletController::OnCryptoWalletsReset(bool success) {
 }
 
 void BraveWalletController::CloseTabsAndRestart() {
-  // Close all CW tabs in each browser instance
-  for (auto* browser : *BrowserList::GetInstance()) {
-    auto* tab_strip = browser->tab_strip_model();
-    for (int i = 0; i < tab_strip->count(); ++i) {
-      auto* web_contents = tab_strip->GetWebContentsAt(i);
-      GURL url = web_contents->GetURL();
-      if (url.SchemeIs(content::kChromeUIScheme) &&
-          url.host() == ethereum_remote_client_host) {
-        web_contents->Close();
-      }
-    }
-  }
-  chrome::AttemptRestart();
+  browser_wallet_delegate_->CloseTabsAndRestart();
 }
 
 // Generates a random 32 byte root seed and stores it in prefs
