@@ -28,8 +28,8 @@
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_shields/browser/referrer_whitelist_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
-#include "brave/components/ntp_sponsored_images/browser/features.h"
-#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_service.h"
+#include "brave/components/ntp_background_images/browser/features.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/brave_histogram_rewrite.h"
 #include "brave/components/p3a/brave_p3a_service.h"
@@ -82,8 +82,8 @@
 #endif
 
 using brave_component_updater::BraveComponent;
-using ntp_sponsored_images::features::kBraveNTPBrandedWallpaper;
-using ntp_sponsored_images::NTPSponsoredImagesService;
+using ntp_background_images::features::kBraveNTPBrandedWallpaper;
+using ntp_background_images::NTPBackgroundImagesService;
 
 namespace {
 
@@ -223,17 +223,17 @@ BraveBrowserProcessImpl::ad_block_regional_service_manager() {
   return ad_block_regional_service_manager_.get();
 }
 
-NTPSponsoredImagesService*
-BraveBrowserProcessImpl::ntp_sponsored_images_service() {
+NTPBackgroundImagesService*
+BraveBrowserProcessImpl::ntp_background_images_service() {
   if (!base::FeatureList::IsEnabled(kBraveNTPBrandedWallpaper))
     return nullptr;
 
-  if (!ntp_sponsored_images_service_) {
-    ntp_sponsored_images_service_ =
-        std::make_unique<NTPSponsoredImagesService>(component_updater());
+  if (!ntp_background_images_service_) {
+    ntp_background_images_service_ =
+        std::make_unique<NTPBackgroundImagesService>(component_updater());
   }
 
-  return ntp_sponsored_images_service_.get();
+  return ntp_background_images_service_.get();
 }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)

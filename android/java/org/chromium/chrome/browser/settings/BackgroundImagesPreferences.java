@@ -12,7 +12,7 @@ import android.support.v7.preference.Preference.OnPreferenceChangeListener;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.ntp_sponsored_images.NTPSponsoredImagesBridge;
+import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
@@ -40,7 +40,7 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
         super.onCreate(savedInstanceState);
         getActivity().setTitle(R.string.prefs_new_tab_page);
         SettingsUtils.addPreferencesFromResource(this, R.xml.background_images_preferences);
-        if (!NTPSponsoredImagesBridge.enableSponsoredImages()) {
+        if (!NTPBackgroundImagesBridge.enableSponsoredImages()) {
             removePreferenceIfPresent(PREF_SHOW_SPONSORED_IMAGES);
         }
     }

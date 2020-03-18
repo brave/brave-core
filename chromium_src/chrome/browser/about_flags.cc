@@ -6,13 +6,13 @@
 #include "brave/common/brave_features.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/features.h"
-#include "brave/components/ntp_sponsored_images/browser/features.h"
+#include "brave/components/ntp_background_images/browser/features.h"
 #include "chrome/browser/about_flags.h"
 
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using brave_sync::features::kBraveSync;
-using ntp_sponsored_images::features::kBraveNTPBrandedWallpaper;
-using ntp_sponsored_images::features::kBraveNTPBrandedWallpaperDemo;
+using ntp_background_images::features::kBraveNTPBrandedWallpaper;
+using ntp_background_images::features::kBraveNTPBrandedWallpaperDemo;
 
 #define BRAVE_FEATURE_ENTRIES \
     {"use-dev-updater-url",                                                \

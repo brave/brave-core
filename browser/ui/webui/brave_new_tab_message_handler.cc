@@ -13,23 +13,25 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
-#include "brave/browser/ntp_sponsored_images/view_counter_service_factory.h"
+#include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_perf_predictor/browser/buildflags.h"
-#include "brave/components/ntp_sponsored_images/browser/features.h"
-#include "brave/components/ntp_sponsored_images/browser/view_counter_service.h"
-#include "brave/components/ntp_sponsored_images/common/pref_names.h"
+#include "brave/components/ntp_background_images/browser/features.h"
+#include "brave/components/ntp_background_images/browser/view_counter_service.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_features.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 
-using ntp_sponsored_images::features::kBraveNTPBrandedWallpaper;
-using ntp_sponsored_images::prefs::kNewTabPageShowBackgroundImage;
-using ntp_sponsored_images::ViewCounterServiceFactory;
+using ntp_background_images::features::kBraveNTPBrandedWallpaper;
+using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
+using ntp_background_images::prefs::kNewTabPageShowBrandedBackgroundImage;
+using ntp_background_images::prefs::kBrandedWallpaperNotificationDismissed;
+using ntp_background_images::ViewCounterServiceFactory;
 
 #if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
@@ -70,8 +72,7 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
       prefs->GetBoolean(kNewTabPageShowBackgroundImage));
   pref_data.SetBoolean(
       "brandedWallpaperOptIn",
-      prefs->GetBoolean(
-          ntp_sponsored_images::prefs::kNewTabPageShowBrandedBackgroundImage));
+      prefs->GetBoolean(kNewTabPageShowBrandedBackgroundImage));
   pref_data.SetBoolean(
       "showClock",
       prefs->GetBoolean(kNewTabPageShowClock));
@@ -86,11 +87,10 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
       prefs->GetBoolean(kNewTabPageShowRewards));
   pref_data.SetBoolean(
       "isBrandedWallpaperNotificationDismissed",
-      prefs->GetBoolean(
-          ntp_sponsored_images::prefs::kBrandedWallpaperNotificationDismissed));
+      prefs->GetBoolean(kBrandedWallpaperNotificationDismissed));
   pref_data.SetBoolean(
-    "showBinance",
-    prefs->GetBoolean(kNewTabPageShowBinance));
+      "showBinance",
+      prefs->GetBoolean(kNewTabPageShowBinance));
   return pref_data;
 }
 
@@ -219,8 +219,7 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   pref_change_registrar_.Add(kNewTabPageShowBackgroundImage,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
-  pref_change_registrar_.Add(
-    ntp_sponsored_images::prefs::kNewTabPageShowBrandedBackgroundImage,
+  pref_change_registrar_.Add(kNewTabPageShowBrandedBackgroundImage,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
   pref_change_registrar_.Add(kNewTabPageShowClock,
@@ -235,8 +234,7 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   pref_change_registrar_.Add(kNewTabPageShowRewards,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
-  pref_change_registrar_.Add(
-    ntp_sponsored_images::prefs::kBrandedWallpaperNotificationDismissed,
+  pref_change_registrar_.Add(kBrandedWallpaperNotificationDismissed,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
   pref_change_registrar_.Add(kNewTabPageShowBinance,
@@ -298,8 +296,7 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
   if (settingsKeyInput == "showBackgroundImage") {
     settingsKey = kNewTabPageShowBackgroundImage;
   } else if (settingsKeyInput == "brandedWallpaperOptIn") {
-    settingsKey =
-        ntp_sponsored_images::prefs::kNewTabPageShowBrandedBackgroundImage;
+    settingsKey = kNewTabPageShowBrandedBackgroundImage;
   } else if (settingsKeyInput == "showClock") {
     settingsKey = kNewTabPageShowClock;
   } else if (settingsKeyInput == "showTopSites") {
@@ -309,8 +306,7 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
   } else if (settingsKeyInput == "showRewards") {
     settingsKey = kNewTabPageShowRewards;
   } else if (settingsKeyInput == "isBrandedWallpaperNotificationDismissed") {
-    settingsKey =
-        ntp_sponsored_images::prefs::kBrandedWallpaperNotificationDismissed;
+    settingsKey = kBrandedWallpaperNotificationDismissed;
   } else if (settingsKeyInput == "showBinance") {
     settingsKey = kNewTabPageShowBinance;
   } else {
