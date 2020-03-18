@@ -18,7 +18,6 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/ntp_sponsored_images/browser/features.h"
-#include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_sponsored_images/browser/view_counter_service.h"
 #include "brave/components/ntp_sponsored_images/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
@@ -28,31 +27,13 @@
 #include "components/prefs/pref_service.h"
 
 using ntp_sponsored_images::features::kBraveNTPBrandedWallpaper;
-using ntp_sponsored_images::NTPSponsoredImagesData;
-using ntp_sponsored_images::ViewCounterService;
+using ntp_sponsored_images::prefs::kNewTabPageShowBackgroundImage;
+using ntp_sponsored_images::ViewCounterServiceFactory;
 
 namespace {
 
 bool IsPrivateNewTab(Profile* profile) {
   return brave::IsTorProfile(profile) || profile->IsIncognitoProfile();
-}
-
-base::DictionaryValue GetBrandedWallpaperDictionary(
-    NTPSponsoredImagesData* wallpaper,
-    size_t wallpaper_image_index) {
-  DCHECK(wallpaper_image_index >= 0 &&
-         wallpaper_image_index < wallpaper->wallpaper_image_urls().size());
-
-  base::DictionaryValue data;
-  data.SetString("wallpaperImageUrl",
-      wallpaper->wallpaper_image_urls()[wallpaper_image_index]);
-  auto logo_data = std::make_unique<base::DictionaryValue>();
-  logo_data->SetString("image", wallpaper->logo_image_url());
-  logo_data->SetString("companyName", wallpaper->logo_company_name);
-  logo_data->SetString("alt", wallpaper->logo_alt_text);
-  logo_data->SetString("destinationUrl", wallpaper->logo_destination_url);
-  data.SetDictionary("logo", std::move(logo_data));
-  return data;
 }
 
 base::DictionaryValue GetStatsDictionary(PrefService* prefs) {
@@ -326,8 +307,7 @@ void BraveNewTabMessageHandler::HandleRegisterNewTabPageView(
   AllowJavascript();
 
   // Decrement original value only if there's actual branded content
-  if (auto* service =
-      ntp_sponsored_images::ViewCounterServiceFactory::GetForProfile(profile_))
+  if (auto* service = ViewCounterServiceFactory::GetForProfile(profile_))
     service->RegisterPageView();
 }
 
@@ -335,16 +315,10 @@ void BraveNewTabMessageHandler::HandleGetBrandedWallpaperData(
     const base::ListValue* args) {
   AllowJavascript();
 
-  auto* service =
-      ntp_sponsored_images::ViewCounterServiceFactory::GetForProfile(profile_);
-  if (!service || !service->ShouldShowBrandedWallpaper()) {
-    ResolveJavascriptCallback(args->GetList()[0], base::Value());
-    return;
-  }
-  auto data = GetBrandedWallpaperDictionary(
-      service->current_wallpaper(),
-      service->GetWallpaperImageIndexToDisplay());
-  ResolveJavascriptCallback(args->GetList()[0], data);
+  auto* service = ViewCounterServiceFactory::GetForProfile(profile_);
+  ResolveJavascriptCallback(
+      args->GetList()[0],
+      service ? service->GetCurrentWallpaper() : base::Value());
 }
 
 void BraveNewTabMessageHandler::OnPrivatePropertiesChanged() {

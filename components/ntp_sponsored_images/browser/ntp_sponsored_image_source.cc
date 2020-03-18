@@ -70,7 +70,7 @@ void NTPSponsoredImageSource::StartDataRequest(
   } else {
     DCHECK(IsWallpaperPath(path));
     image_file_path =
-        images_data->wallpaper_image_files[GetWallpaperIndexFromPath(path)];
+        images_data->backgrounds[GetWallpaperIndexFromPath(path)].image_file;
   }
 
   base::PostTaskAndReplyWithResult(
@@ -127,7 +127,7 @@ int NTPSponsoredImageSource::GetWallpaperIndexFromPath(
   if (!images_data)
     return -1;
 
-  const int wallpaper_count = images_data->wallpaper_image_files.size();
+  const int wallpaper_count = images_data->backgrounds.size();
   for (int i = 0; i < wallpaper_count; ++i) {
     const std::string generated_path =
         base::StringPrintf("%s%d.jpg", kWallpaperPathPrefix, i);
