@@ -15,7 +15,7 @@ deps = {
   "vendor/bat-native-anonize": "https://github.com/brave-intl/bat-native-anonize.git@e3742ba3e8942eea9e4755d91532491871bd3116",
   "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@800f9d40b7409239ff192e0be634764e747c7a75",
   "components/brave_sync/extension/brave-sync": {
-    'url': 'https://github.com/brave/sync.git@4428f605acd31542387bfa8956dda28becaec650',
+    'url': 'https://github.com/brave/sync.git@f4b71bac02bde90178bf6b9c25c5d54e690a3c08',
     'condition': 'not checkout_android',
   },
   "components/brave_sync/extension/brave-sync-android": {
