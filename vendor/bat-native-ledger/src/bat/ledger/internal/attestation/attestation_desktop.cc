@@ -13,6 +13,7 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/attestation/attestation_desktop.h"
+#include "bat/ledger/internal/attestation_channel/channel_one.h"
 #include "bat/ledger/internal/request/attestation_requests.h"
 #include "net/http/http_status_code.h"
 
@@ -24,6 +25,12 @@ namespace braveledger_attestation {
 
 AttestationDesktop::AttestationDesktop(bat_ledger::LedgerImpl* ledger) :
     Attestation(ledger) {
+
+    // auto channel_attestation_ = std::make_unique<braveledger_attestation_channel::PrivateChannelOne>(ledger);
+
+    // auto timer_id = 0u; // how to define the timer id?
+    // uint64_t start_time_in = 1; // metrics of start_time_in 
+    // channel_attestation_->SetTimer(&timer_id, start_time_in);
 }
 
 AttestationDesktop::~AttestationDesktop() = default;
@@ -91,6 +98,7 @@ void AttestationDesktop::ParseClaimSolution(
 void AttestationDesktop::Start(
     const std::string& payload,
     StartCallback callback) {
+
   auto url_callback = std::bind(&AttestationDesktop::OnStart,
       this,
       _1,

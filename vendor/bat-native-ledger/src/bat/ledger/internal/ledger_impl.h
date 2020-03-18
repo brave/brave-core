@@ -15,6 +15,7 @@
 #include <vector>
 
 #include "base/memory/scoped_refptr.h"
+#include "bat/ledger/internal/attestation_channel/channel_one.h"
 #include "bat/confirmations/confirmations_client.h"
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/database/database.h"
@@ -62,6 +63,10 @@ class Database;
 
 namespace confirmations {
 class Confirmations;
+}
+
+namespace braveledger_attestation_channel {
+class PrivateChannelOne;
 }
 
 namespace bat_ledger {
@@ -753,6 +758,7 @@ class LedgerImpl : public ledger::Ledger,
       const std::string& publisher_key);
 
   ledger::LedgerClient* ledger_client_;
+  std::unique_ptr<braveledger_attestation_channel::PrivateChannelOne> bat_channel_attestation_;
   std::unique_ptr<braveledger_promotion::Promotion> bat_promotion_;
   std::unique_ptr<braveledger_publisher::Publisher> bat_publisher_;
   std::unique_ptr<braveledger_media::Media> bat_media_;
@@ -763,7 +769,6 @@ class LedgerImpl : public ledger::Ledger,
   std::unique_ptr<confirmations::Confirmations> bat_confirmations_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   bool initialized_task_scheduler_;
-
   bool initialized_;
   bool initializing_;
 

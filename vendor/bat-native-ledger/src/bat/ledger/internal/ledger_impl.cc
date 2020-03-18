@@ -29,6 +29,7 @@
 #include "bat/ledger/internal/static_values.h"
 #include "net/http/http_status_code.h"
 
+using namespace braveledger_attestation_channel; //  NOLINT 
 using namespace braveledger_promotion; //  NOLINT
 using namespace braveledger_publisher; //  NOLINT
 using namespace braveledger_media; //  NOLINT
@@ -54,6 +55,7 @@ namespace bat_ledger {
 
 LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     ledger_client_(client),
+    bat_channel_attestation_(new PrivateChannelOne(this)),
     bat_promotion_(new Promotion(this)),
     bat_publisher_(new Publisher(this)),
     bat_media_(new Media(this)),
@@ -101,6 +103,7 @@ void LedgerImpl::OnWalletInitializedInternal(
     bat_promotion_->Refresh(false);
     bat_contribution_->Initialize();
     bat_promotion_->Initialize();
+    bat_channel_attestation_->Initialize();
 
     // Set wallet info for Confirmations when launching the browser or creating
     // a wallet for the first time
@@ -810,6 +813,8 @@ void LedgerImpl::OneTimeTip(
 }
 
 void LedgerImpl::OnTimer(uint32_t timer_id) {
+  bat_channel_attestation_->OnTimer(timer_id);
+
   if (bat_confirmations_->OnTimer(timer_id)) {
     return;
   }
@@ -1174,6 +1179,18 @@ void LedgerImpl::NormalizeContributeWinners(
 }
 
 void LedgerImpl::SetTimer(uint64_t time_offset, uint32_t* timer_id) const {
+
+    BLOG(this, ledger::LogLevel::LOG_INFO)
+    << std::endl
+    << "============= LedgerImpl::SetTimer!: ============="
+    << std::endl
+    << timer_id
+    << "  -  "
+    << *timer_id
+    << "  -  "
+    << time_offset
+    << std::endl;
+
   ledger_client_->SetTimer(time_offset, timer_id);
 }
 

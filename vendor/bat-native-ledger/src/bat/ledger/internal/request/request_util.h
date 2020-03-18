@@ -16,6 +16,7 @@ enum class ServerTypes {
   BALANCE,
   PUBLISHER,
   PUBLISHER_DISTRO,
+  PRIVATE_CHANNEL_ONE,
   kPromotion
 };
 

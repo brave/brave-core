@@ -96,6 +96,7 @@ void Contribution::CheckContributionQueue() {
       ? 1
       : brave_base::random::Geometric(15);
 
+  BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "Contribution::CheckContributionQueue";  
   SetTimer(&queue_timer_id_, start_timer_in);
 }
 
@@ -369,6 +370,14 @@ void Contribution::InitReconcile(ledger::ContributionQueuePtr info) {
 }
 
 void Contribution::OnTimer(uint32_t timer_id) {
+
+
+  BLOG(ledger_, ledger::LogLevel::LOG_ERROR) 
+    << "===== Contribution::OnTimer ===== :: "
+    << timer_id
+    << std::endl
+    << std::endl;
+
   phase_two_->OnTimer(timer_id);
   unverified_->OnTimer(timer_id);
   uphold_->OnTimer(timer_id);
@@ -406,6 +415,7 @@ void Contribution::SetReconcileTimer() {
       (next_reconcile_stamp == 0 || next_reconcile_stamp < now) ?
         0 : next_reconcile_stamp - now;
 
+  BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "Contribution::SetReconcileTimer";
   SetTimer(&last_reconcile_timer_id_, time_to_next_reconcile);
 }
 
@@ -516,6 +526,8 @@ void Contribution::AddRetry(
   }
 
   retry_timers_[viewing_id] = 0u;
+
+  BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "Contribution::AddRetry";  
   SetTimer(&retry_timers_[viewing_id], start_timer_in);
 }
 

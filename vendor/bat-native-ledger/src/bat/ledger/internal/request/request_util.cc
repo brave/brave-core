@@ -92,6 +92,23 @@ std::string BuildUrl(
       }
       break;
     }
+    case ServerTypes::PRIVATE_CHANNEL_ONE: {
+      switch (ledger::_environment) {
+        case ledger::Environment::STAGING: {
+          url = PRIVATE_CHANNEL_ONE_STAGING_SERVER;
+          break;
+        }
+        case ledger::Environment::PRODUCTION: {
+          url = PRIVATE_CHANNEL_ONE_PRODUCTION_SERVER;
+          break;
+        }
+        case ledger::Environment::DEVELOPMENT: {
+          url = PRIVATE_CHANNEL_ONE_DEVELOPMENT_SERVER;
+          break;
+        }
+      }
+    }
+    break;
   }
 
   if (url.empty()) {

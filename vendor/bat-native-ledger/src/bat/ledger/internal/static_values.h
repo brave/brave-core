@@ -45,6 +45,13 @@
 #define PROMOTION_DEVELOPMENT_SERVER            \
 "https://grant.rewards.brave.software"
 
+#define PRIVATE_CHANNEL_ONE_STAGING_SERVER              \
+"https://private-attestation.rewards.bravesoftware.com"
+#define PRIVATE_CHANNEL_ONE_PRODUCTION_SERVER           \
+"https://private-attestation.rewards.brave.com"
+#define PRIVATE_CHANNEL_ONE_DEVELOPMENT_SERVER            \
+"https://private-attestation.rewards.brave.software"
+
 #define PREFIX_V1                       "/v1"
 #define PREFIX_V2                       "/v2"
 #define PREFIX_V3                       "/v3"
