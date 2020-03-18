@@ -8,21 +8,21 @@
 #include <string>
 #include <utility>
 
-#include "brave/common/brave_wallet_constants.h"
 #include "base/base64.h"
 #include "base/bind.h"
 #include "base/files/file_util.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
+#include "brave/common/brave_wallet_constants.h"
 #include "brave/common/extensions/extension_constants.h"
-#include "brave/components/brave_wallet/browser/browser_wallet_delegate.h"
+#include "brave/common/pref_names.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_delegate.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "crypto/aead.h"
 #include "crypto/hkdf.h"
 #include "crypto/random.h"
 #include "crypto/symmetric_key.h"
-#include "brave/common/pref_names.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -38,9 +38,9 @@ namespace {
 }
 
 BraveWalletService::BraveWalletService(content::BrowserContext* context,
-    std::unique_ptr<BrowserWalletDelegate> browser_wallet_delegate)
+    std::unique_ptr<BraveWalletDelegate> brave_wallet_delegate)
     : context_(context),
-      browser_wallet_delegate_(std::move(browser_wallet_delegate)),
+      brave_wallet_delegate_(std::move(brave_wallet_delegate)),
       extension_registry_observer_(this),
       file_task_runner_(base::CreateSequencedTaskRunner(
           {base::ThreadPool(), base::MayBlock(),
@@ -186,12 +186,12 @@ void BraveWalletService::ResetCryptoWallets(
 
 void BraveWalletService::OnCryptoWalletsReset(bool success) {
   if (success) {
-    BraveWalletService::CloseTabsAndRestart();
+    CloseTabsAndRestart();
   }
 }
 
 void BraveWalletService::CloseTabsAndRestart() {
-  browser_wallet_delegate_->CloseTabsAndRestart();
+  brave_wallet_delegate_->CloseTabsAndRestart();
 }
 
 // Generates a random 32 byte root seed and stores it in prefs
