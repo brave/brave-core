@@ -44,10 +44,9 @@ TEST_F(BraveContentSettingsUtilsTest,
                 ContentSettingsPattern::FromString("https://firstParty/*")));
 
   // file:// scheme pattern.
-  EXPECT_EQ(
-      base::nullopt,
-      ConvertPatternToWildcardSchemeAndPort(
-          ContentSettingsPattern::FromString("file:///a/b/c.zip")));
+  EXPECT_EQ(base::nullopt,
+            ConvertPatternToWildcardSchemeAndPort(
+                ContentSettingsPattern::FromString("file:///a/b/c.zip")));
 
   // Wildcard host pattern.
   EXPECT_EQ(base::nullopt,

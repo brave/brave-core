@@ -42,7 +42,7 @@ TEST_F(BraveShieldsUtilTest, GetPatternFromURL) {
   auto pattern = GetPatternFromURL(GURL());
   EXPECT_EQ(ContentSettingsPattern::Wildcard(), pattern);
 
-  // scheme is a wildcard, sould match any scheme
+  // scheme is a wildcard, should match any scheme
   pattern = GetPatternFromURL(GURL("http://brave.com"));
   EXPECT_TRUE(pattern.Matches(GURL("http://brave.com")));
   EXPECT_TRUE(pattern.Matches(GURL("http://brave.com/path1")));

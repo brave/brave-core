@@ -50,8 +50,9 @@ class BravePrefProvider : public PrefProvider,
 
  private:
   friend class BravePrefProviderTest;
-  FRIEND_TEST(BravePrefProviderTest, TestShieldsSettingsMigration);
-  FRIEND_TEST(BravePrefProviderTest, TestShieldsSettingsMigrationVersion);
+  FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest, TestShieldsSettingsMigration);
+  FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest,
+                           TestShieldsSettingsMigrationVersion);
   void MigrateShieldsSettings(bool incognito);
   void MigrateShieldsSettingsV1ToV2();
   void MigrateShieldsSettingsV1ToV2ForOneType(ContentSettingsType content_type,

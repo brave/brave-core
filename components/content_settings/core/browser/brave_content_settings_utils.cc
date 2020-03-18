@@ -25,7 +25,7 @@ const std::vector<std::string> kShieldsResourceIDs {
 
 bool CanPatternBeConvertedToWildcardSchemeAndPort(
     const ContentSettingsPattern& pattern) {
-  // 1. Wildcard is alerady in the desired state.
+  // 1. Wildcard is already in the desired state.
   // 2. Our firstParty placeholder shouldn't be converted.
   // 3. Patterns that have file:// scheme.
   // 4. We only want to convert patterns that have a specific host, so something
@@ -33,7 +33,7 @@ bool CanPatternBeConvertedToWildcardSchemeAndPort(
   if (pattern == ContentSettingsPattern::Wildcard() ||
       pattern == ContentSettingsPattern::FromString("https://firstParty/*") ||
       pattern.GetScheme() == ContentSettingsPattern::SCHEME_FILE ||
-      pattern.MatchesAllHosts())
+      pattern.MatchesAllHosts() || pattern.GetHost().empty())
     return false;
   // Check for the case when the scheme is wildcard, but the port isn't.
   if (pattern.GetScheme() == ContentSettingsPattern::SCHEME_WILDCARD) {
@@ -41,7 +41,7 @@ bool CanPatternBeConvertedToWildcardSchemeAndPort(
     return check_for_port_url.has_port();
   }
   GURL url(pattern.ToString());
-  if (url.is_empty())
+  if (!url.is_valid() || url.is_empty() || !url.has_host())
     return false;
   if (url.has_scheme())
     return !ContentSettingsPattern::IsNonWildcardDomainNonPortScheme(
@@ -68,6 +68,7 @@ base::Optional<ContentSettingsPattern> ConvertPatternToWildcardSchemeAndPort(
     const ContentSettingsPattern& pattern) {
   if (!CanPatternBeConvertedToWildcardSchemeAndPort(pattern))
     return base::nullopt;
+  DCHECK(!pattern.GetHost().empty());
   base::Optional<ContentSettingsPattern> new_pattern =
       ContentSettingsPattern::FromString("*://" + pattern.GetHost() + "/*");
   return new_pattern;

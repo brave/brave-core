@@ -154,13 +154,23 @@ class BravePrefProviderTest : public testing::Test {
     ContentSettingsRegistry::GetInstance();
   }
 
+  void SetUp() override {
+    testing::Test::SetUp();
+    testing_profile_ = TestingProfile::Builder().Build();
+  }
+
+  void TearDown() override { testing_profile_.reset(); }
+
+  TestingProfile* testing_profile() { return testing_profile_.get(); }
+
  private:
   content::BrowserTaskEnvironment task_environment_;
+  std::unique_ptr<TestingProfile> testing_profile_;
 };
 
 TEST_F(BravePrefProviderTest, TestShieldsSettingsMigration) {
-  TestingProfile testing_profile;
-  BravePrefProvider provider(testing_profile.GetPrefs(), false /* incognito */,
+  BravePrefProvider provider(testing_profile()->GetPrefs(),
+                             false /* incognito */,
                              true /* store_last_modified */);
 
   ShieldsCookieSetting cookie_settings(&provider);
@@ -238,7 +248,7 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigration) {
 
   // Migrate settings.
   // ------------------------------------------------------
-  testing_profile.GetPrefs()->SetInteger(kBraveShieldsSettingsVersion, 1);
+  testing_profile()->GetPrefs()->SetInteger(kBraveShieldsSettingsVersion, 1);
   provider.MigrateShieldsSettings(/*incognito*/ false);
 
   // Check post-migration settings.
@@ -306,8 +316,7 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigration) {
 }
 
 TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationVersion) {
-  TestingProfile testing_profile;
-  PrefService* prefs = testing_profile.GetPrefs();
+  PrefService* prefs = testing_profile()->GetPrefs();
   BravePrefProvider provider(prefs, false /* incognito */,
                              true /* store_last_modified */);
 

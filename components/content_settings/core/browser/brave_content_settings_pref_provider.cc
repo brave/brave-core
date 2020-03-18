@@ -146,6 +146,8 @@ void BravePrefProvider::RegisterProfilePrefs(
 
 void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
   // Incognito inherits from regular profile, so nothing to do.
+  // Guest doesn't inherit, but only keeps settings for the duration of the
+  // session, so also nothing to do.
   if (incognito)
     return;
   MigrateShieldsSettingsV1ToV2();
@@ -196,7 +198,7 @@ void BravePrefProvider::MigrateShieldsSettingsV1ToV2ForOneType(
   rule_iterator.reset();
 
   // Migrate.
-  DCHECK(old_rules.size() == new_rules.size());
+  DCHECK_EQ(old_rules.size(), new_rules.size());
   for (size_t i = 0; i < old_rules.size(); i++) {
     // Remove current setting.
     PrefProvider::SetWebsiteSetting(
