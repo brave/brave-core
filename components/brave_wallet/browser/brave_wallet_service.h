@@ -21,7 +21,6 @@
 #include "base/observer_list.h"
 #include "base/scoped_observer.h"
 #include "base/values.h"
-#include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_registry_observer.h"
@@ -29,7 +28,7 @@
 
 class BrowserWalletDelegate;
 class PrefChangeRegistrar;
-class Profile;
+class PrefService;
 
 namespace base {
 class FilePath;
@@ -49,7 +48,7 @@ class BraveWalletService : public KeyedService,
 
   bool Init();
 
-  void ResetCryptoWallets();
+  void ResetCryptoWallets(const base::FilePath& profile_path);
   void CloseTabsAndRestart();
   bool LoadRootSeedInfo(std::vector<uint8_t> key, std::string* seed);
 
@@ -64,9 +63,9 @@ class BraveWalletService : public KeyedService,
       const std::string& nonce, std::string* cipher_seed);
   static bool OpenSeed(const std::string& cipher_seed,
       const std::string& key, const std::string& nonce, std::string* seed);
-  static void SaveToPrefs(Profile* profile, const std::string& cipher_seed,
+  static void SaveToPrefs(PrefService* prefs, const std::string& cipher_seed,
       const std::string& nonce);
-  static bool LoadFromPrefs(Profile* profile, std::string* cipher_seed,
+  static bool LoadFromPrefs(PrefService* prefs, std::string* cipher_seed,
       std::string* nonce);
   static std::string GetRandomNonce();
   static std::string GetRandomSeed();

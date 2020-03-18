@@ -158,7 +158,8 @@ TEST_F(BraveWalletUnitTest, TestLoadFromPrefs) {
   std::string cipher_seed;
   std::string nonce;
   ASSERT_TRUE(BraveWalletService::LoadFromPrefs(
-      ProfileManager::GetActiveUserProfile(), &cipher_seed, &nonce));
+      ProfileManager::GetActiveUserProfile()->GetPrefs(),
+      &cipher_seed, &nonce));
 
   const char expected_nonce[12] = {
     200, 153, 224, 40, 58, 249, 156, 33, 152, 207, 177, 12
@@ -189,7 +190,7 @@ TEST_F(BraveWalletUnitTest, TestSaveToPrefs) {
     222, 231, 48, 93, 132, 131, 178, 177
   };
   BraveWalletService::SaveToPrefs(
-      ProfileManager::GetActiveUserProfile(),
+      ProfileManager::GetActiveUserProfile()->GetPrefs(),
       std::string(cipher_seed, base::size(cipher_seed)),
       std::string(nonce, base::size(nonce)));
 

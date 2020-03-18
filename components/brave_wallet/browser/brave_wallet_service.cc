@@ -16,6 +16,7 @@
 #include "base/task_runner_util.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/components/brave_wallet/browser/browser_wallet_delegate.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "crypto/aead.h"
 #include "crypto/hkdf.h"
@@ -46,9 +47,8 @@ BraveWalletService::BraveWalletService(content::BrowserContext* context,
            base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
     weak_factory_(this) {
-  Profile* profile = Profile::FromBrowserContext(context_);
   pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
-  pref_change_registrar_->Init(profile->GetPrefs());
+  pref_change_registrar_->Init(user_prefs::UserPrefs::Get(context_));
   pref_change_registrar_->Add(kBraveWalletWeb3Provider,
     base::Bind(&BraveWalletService::OnPreferenceChanged,
         base::Unretained(this)));
@@ -95,20 +95,19 @@ BraveWalletService::GetEthereumRemoteClientSeedFromRootSeed(
 }
 
 // static
-bool BraveWalletService::LoadFromPrefs(
-    Profile* profile,
+bool BraveWalletService::LoadFromPrefs(PrefService* prefs,
     std::string* cipher_seed, std::string* nonce) {
-  if (!profile->GetPrefs()->HasPrefPath(kBraveWalletAES256GCMSivNonce) ||
-      !profile->GetPrefs()->HasPrefPath(kBraveWalletEncryptedSeed)) {
+  if (!prefs->HasPrefPath(kBraveWalletAES256GCMSivNonce) ||
+      !prefs->HasPrefPath(kBraveWalletEncryptedSeed)) {
     return false;
   }
   if (!base::Base64Decode(
-          profile->GetPrefs()->GetString(kBraveWalletAES256GCMSivNonce),
+          prefs->GetString(kBraveWalletAES256GCMSivNonce),
           nonce)) {
     return false;
   }
   if (!base::Base64Decode(
-          profile->GetPrefs()->GetString(kBraveWalletEncryptedSeed),
+          prefs->GetString(kBraveWalletEncryptedSeed),
           cipher_seed)) {
     return false;
   }
@@ -157,7 +156,7 @@ bool BraveWalletService::SealSeed(const std::string& seed,
 // base64 encoded.  Base64 encoding is fail safe.
 // static
 void BraveWalletService::SaveToPrefs(
-    Profile* profile,
+    PrefService* prefs,
     const std::string& cipher_seed,
     const std::string& nonce) {
   // Store the seed in preferences, binary pref strings need to be
@@ -168,14 +167,14 @@ void BraveWalletService::SaveToPrefs(
   base::Base64Encode(base::StringPiece(cipher_seed.begin(),
                                       cipher_seed.end()),
       &base64_cipher_seed);
-  profile->GetPrefs()->SetString(kBraveWalletAES256GCMSivNonce, base64_nonce);
-  profile->GetPrefs()->SetString(kBraveWalletEncryptedSeed,
+  prefs->SetString(kBraveWalletAES256GCMSivNonce, base64_nonce);
+  prefs->SetString(kBraveWalletEncryptedSeed,
       base64_cipher_seed);
 }
 
-void BraveWalletService::ResetCryptoWallets() {
-  Profile* profile = Profile::FromBrowserContext(context_);
-  const base::FilePath wallet_data_path = profile->GetPath()
+void BraveWalletService::ResetCryptoWallets(
+    const base::FilePath& profile_path) {
+  const base::FilePath wallet_data_path = profile_path
       .AppendASCII("Local Extension Settings")
       .AppendASCII(ethereum_remote_client_extension_id);
 
@@ -209,11 +208,12 @@ bool BraveWalletService::LoadRootSeedInfo(std::vector<uint8_t> key,
   if (!seed) {
     return false;
   }
-  Profile* profile = Profile::FromBrowserContext(context_);
+
+  PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   // Check if we already have a nonce and seed stored in prefs.
   std::string aes_256_gcm_siv_key(key.begin(), key.end());
   if (BraveWalletService::LoadFromPrefs(
-          profile, &cipher_seed, &nonce)) {
+          prefs, &cipher_seed, &nonce)) {
     // Decrypt the existing seed.
     if (!BraveWalletService::OpenSeed(
             cipher_seed, aes_256_gcm_siv_key, nonce, seed)) {
@@ -229,7 +229,7 @@ bool BraveWalletService::LoadRootSeedInfo(std::vector<uint8_t> key,
       return false;
     }
     // Save it to prefs.
-    BraveWalletService::SaveToPrefs(profile, cipher_seed, nonce);
+    BraveWalletService::SaveToPrefs(prefs, cipher_seed, nonce);
   }
   // We should have the correct nonce size and seed size at this point
   // regardless of if it was newly genearted or retrieved from prefs.
@@ -272,17 +272,17 @@ std::string BraveWalletService::GetBitGoSeed(
 }
 
 void BraveWalletService::RemoveUnusedWeb3ProviderContentScripts() {
-  Profile* profile = Profile::FromBrowserContext(context_);
+  PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   auto* shared_user_script_master =
       extensions::ExtensionSystem::Get(context_)->shared_user_script_master();
-  auto* registry = extensions::ExtensionRegistry::Get(profile);
+  auto* registry = extensions::ExtensionRegistry::Get(context_);
   auto* metamask_extension =
       registry->enabled_extensions().GetByID(metamask_extension_id);
   auto* erc_extension =
       registry->enabled_extensions().GetByID(
           ethereum_remote_client_extension_id);
   auto provider = static_cast<BraveWalletWeb3ProviderTypes>(
-      profile->GetPrefs()->GetInteger(kBraveWalletWeb3Provider));
+      prefs->GetInteger(kBraveWalletWeb3Provider));
   if (metamask_extension) {
     shared_user_script_master->OnExtensionUnloaded(
         context_, metamask_extension,

@@ -19,5 +19,7 @@ source_set("browser") {
         "//components/keyed_service/content",
         "//components/keyed_service/core",
         "//content/public/browser",
+        "//components/prefs",
+        "//components/user_prefs",
     ]
 }
