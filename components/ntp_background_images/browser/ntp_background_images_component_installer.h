@@ -6,9 +6,10 @@
 #ifndef BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_BACKGROUND_IMAGES_COMPONENT_INSTALLER_H_
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_BACKGROUND_IMAGES_COMPONENT_INSTALLER_H_
 
+#include <string>
+
 #include "base/callback.h"
 #include "base/files/file_path.h"
-#include "brave/components/ntp_background_images/browser/regional_component_data.h"
 
 namespace component_updater {
 class ComponentUpdateService;
@@ -21,7 +22,9 @@ using OnComponentReadyCallback =
 
 void RegisterNTPBackgroundImagesComponent(
     component_updater::ComponentUpdateService* cus,
-    const RegionalComponentData& regional_component_data,
+    const std::string& component_public_key,
+    const std::string& component_id,
+    const std::string& component_name,
     OnComponentReadyCallback callback);
 
 }  // namespace ntp_background_images

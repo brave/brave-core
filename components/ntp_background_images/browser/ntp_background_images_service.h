@@ -13,10 +13,19 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "base/values.h"
+#include "components/prefs/pref_change_registrar.h"
 
 namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
+
+namespace network {
+class SharedURLLoaderFactory;
+class SimpleURLLoader;
+}  // network
+
+class PrefService;
 
 namespace ntp_background_images {
 
@@ -26,19 +35,23 @@ class NTPBackgroundImagesService {
  public:
   class Observer {
    public:
-    // Called whenever ntp sponsored images component is updated.
+    // Called whenever ntp background images component is updated.
     virtual void OnUpdated(NTPBackgroundImagesData* data) = 0;
    protected:
     virtual ~Observer() {}
   };
 
-  explicit NTPBackgroundImagesService(
-      component_updater::ComponentUpdateService* cus);
-  ~NTPBackgroundImagesService();
+  NTPBackgroundImagesService(
+      component_updater::ComponentUpdateService* cus,
+      PrefService* local_pref,
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+  virtual ~NTPBackgroundImagesService();
 
   NTPBackgroundImagesService(const NTPBackgroundImagesService&) = delete;
   NTPBackgroundImagesService& operator=(
       const NTPBackgroundImagesService&) = delete;
+
+  void Init();
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
@@ -46,8 +59,24 @@ class NTPBackgroundImagesService {
 
   NTPBackgroundImagesData* GetBackgroundImagesData() const;
 
+  bool test_data_used() const { return test_data_used_; }
+
  private:
+  friend class TestNTPBackgroundImagesService;
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest, InternalDataTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
+                           WithDefaultReferrerCodeTest1);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
+                           WithDefaultReferrerCodeTest2);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
+                           WithNonSuperReferrerCodeTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
+                           WithSuperReferrerCodeTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
+                           InstallSuperReferrerOverReferrerTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
+                           SimulateNetworkErrorTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest, CleanUpTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            NotActiveInitially);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
@@ -58,14 +87,55 @@ class NTPBackgroundImagesService {
                            IsActiveOptedIn);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            ActiveInitiallyOptedIn);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest, BasicTest);
 
-  void OnComponentReady(const base::FilePath& installed_dir);
-  void OnGetPhotoJsonData(const std::string& photo_json);
+  void OnComponentReady(bool is_super_referrer,
+                        const base::FilePath& installed_dir);
+  void OnGetComponentJsonData(const std::string& json_string);
+  void OnPreferenceChanged(const std::string& pref_name);
+  void OnGetMappingTableData(std::unique_ptr<std::string> json_string);
+
+  void GetComponentJsonData(const base::FilePath& installed_dir);
   void NotifyObservers();
+  void DetermineTargetComponent();
+  bool IsSuperReferrerCode(const std::string& referral_code);
+  std::string GetReferralPromoCode() const;
+  std::string GetCachedReferralPromoCode() const;
+  void UnRegisterSponsoredImagesComponentIfRunning();
+  bool IsAlreadyRegistered(const std::string& component_id);
 
+  // Returns true if local test data is passed via command line.
+  bool UseLocalTestData();
+  // Returns true if builtin demo data is used.
+  bool UseBuiltInDemoData();
+
+  void CleanUp();
+
+  // Check super referrer component is available for this install and start
+  // start it if we can confirm this insall comes from super referrer.
+  // Otherwise, start sponsored images component.
+  // virtual for test.
+  virtual void StartSuperReferrerComponent(
+      const std::string& super_referral_code);
+  virtual void StartSponsoredImagesComponent();
+  virtual void DownloadSuperReferrerMappingTable();
+  virtual void MonitorReferralPromoCodeChange();
+  virtual void UnRegisterSuperReferrerComponentIfRunning(
+      const std::string& referral_code);
+
+  // Used to flag what component is our last decision.
+  // If this is true, NTP SR component registration is requested lastly.
+  bool is_super_referrer_lastly_asked_component_ = false;
+  bool test_data_used_ = false;
+  base::Value mapping_table_value_;
+  component_updater::ComponentUpdateService* component_update_service_;
+  PrefService* local_pref_;
   base::FilePath installed_dir_;
   base::ObserverList<Observer>::Unchecked observer_list_;
   std::unique_ptr<NTPBackgroundImagesData> images_data_;
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  std::unique_ptr<network::SimpleURLLoader> loader_;
+  PrefChangeRegistrar pref_change_registrar_;
   base::WeakPtrFactory<NTPBackgroundImagesService> weak_factory_;
 };
 

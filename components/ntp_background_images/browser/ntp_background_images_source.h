@@ -16,7 +16,7 @@ namespace ntp_background_images {
 
 class NTPBackgroundImagesService;
 
-// This serves branded image data.
+// This serves background image data.
 class NTPBackgroundImagesSource : public content::URLDataSource {
  public:
   explicit NTPBackgroundImagesSource(NTPBackgroundImagesService* service);
@@ -28,6 +28,8 @@ class NTPBackgroundImagesSource : public content::URLDataSource {
       const NTPBackgroundImagesSource&) = delete;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest, BasicTest);
+
   // content::URLDataSource overrides:
   std::string GetSource() override;
   void StartDataRequest(const GURL& url,
@@ -42,6 +44,8 @@ class NTPBackgroundImagesSource : public content::URLDataSource {
   bool IsLogoPath(const std::string& path) const;
   bool IsWallpaperPath(const std::string& path) const;
   int GetWallpaperIndexFromPath(const std::string& path) const;
+  bool IsTopSiteIconPath(const std::string& path) const;
+  int GetTopSiteIndexFromPath(const std::string& path) const;
 
   NTPBackgroundImagesService* service_;  // not owned
   base::WeakPtrFactory<NTPBackgroundImagesSource> weak_factory_;

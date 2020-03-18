@@ -6,13 +6,18 @@
 #ifndef BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_BACKGROUND_IMAGES_UTILS_H_
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_NTP_BACKGROUND_IMAGES_UTILS_H_
 
-namespace user_prefs {
-class PrefRegistrySyncable;
+#include <memory>
 
-}  // namespace user_prefs
+class PrefRegistrySimple;
+
 namespace ntp_background_images {
 
-void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
+struct NTPBackgroundImagesData;
+
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
+
+// Include top sites data if |super_referrer| is true.
+std::unique_ptr<NTPBackgroundImagesData> GetDemoWallpaper(bool super_referrer);
 
 }  // namespace ntp_background_images
 

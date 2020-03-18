@@ -193,8 +193,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // IPFS companion extension
   registry->RegisterBooleanPref(kIPFSCompanionEnabled, false);
 
-  ntp_background_images::RegisterProfilePrefs(registry);
-
   // New Tab Page
   registry->RegisterBooleanPref(kNewTabPageShowClock, true);
   registry->RegisterBooleanPref(kNewTabPageShowTopSites, true);

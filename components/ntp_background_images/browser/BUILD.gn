@@ -12,8 +12,8 @@ static_library("browser") {
     "ntp_background_images_source.h",
     "ntp_background_images_utils.cc",
     "ntp_background_images_utils.h",
-    "regional_component_data.cc",
-    "regional_component_data.h",
+    "sponsored_images_component_data.cc",
+    "sponsored_images_component_data.h",
     "switches.cc",
     "switches.h",
     "url_constants.cc",
@@ -28,6 +28,7 @@ static_library("browser") {
     "//base",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/common",
+    "//brave/components/brave_referrals/browser",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/ntp_background_images/common",
@@ -37,6 +38,8 @@ static_library("browser") {
     "//content/public/browser",
     "//content/public/common",
     "//crypto",
+    "//services/network/public/cpp",
     "//ui/gfx/geometry",
+    "//url",
   ]
 }

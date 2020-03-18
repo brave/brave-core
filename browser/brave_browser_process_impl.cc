@@ -35,6 +35,7 @@
 #include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/services/network/public/cpp/system_request_handler.h"
 #include "chrome/browser/component_updater/component_updater_utils.h"
+#include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/common/buildflags.h"
 #include "chrome/common/chrome_paths.h"
@@ -42,6 +43,7 @@
 #include "components/component_updater/timer_update_scheduler.h"
 #include "content/public/browser/browser_thread.h"
 #include "services/network/public/cpp/resource_request.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 #if BUILDFLAG(ENABLE_NATIVE_NOTIFICATIONS)
 #include "chrome/browser/notifications/notification_platform_bridge.h"
@@ -230,7 +232,12 @@ BraveBrowserProcessImpl::ntp_background_images_service() {
 
   if (!ntp_background_images_service_) {
     ntp_background_images_service_ =
-        std::make_unique<NTPBackgroundImagesService>(component_updater());
+        std::make_unique<NTPBackgroundImagesService>(
+            component_updater(),
+            local_state(),
+            SystemNetworkContextManager::GetInstance()->
+                GetSharedURLLoaderFactory());
+    ntp_background_images_service_->Init();
   }
 
   return ntp_background_images_service_.get();

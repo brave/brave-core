@@ -9,9 +9,17 @@
 namespace ntp_background_images {
 namespace prefs {
 
-extern const char kNewTabPageShowBrandedBackgroundImage[];
+// There are two categories in Branded wallpaper.
+// The one is sponsored images wallpaper and the other is super referrer
+// wallpaper.
+extern const char kNewTabPageShowSponsoredImagesBackgroundImage[];
+extern const char kNewTabPageShowSuperReferrerBackgroundImage[];
 extern const char kBrandedWallpaperNotificationDismissed[];
 extern const char kNewTabPageShowBackgroundImage[];
+
+// Local prefs
+extern const char kNewTabPageCachedReferralPromoCode[];
+extern const char kNewTabPageCachedSuperReferrerComponentInfo[];
 
 }  // namespace prefs
 }  // namespace ntp_background_images

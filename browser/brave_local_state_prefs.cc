@@ -14,6 +14,7 @@
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_utils.h"
 #include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/components/p3a/buildflags.h"
 #include "chrome/browser/first_run/first_run.h"
@@ -44,6 +45,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_shields::RegisterPrefsForAdBlockService(registry);
   RegisterPrefsForBraveStatsUpdater(registry);
   registry->RegisterBooleanPref(kRemoteDebuggingEnabled, false);
+  ntp_background_images::RegisterLocalStatePrefs(registry);
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   RegisterPrefsForBraveReferralsService(registry);
 #endif

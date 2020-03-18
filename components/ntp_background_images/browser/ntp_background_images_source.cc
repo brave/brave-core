@@ -13,8 +13,8 @@
 #include "base/memory/ref_counted_memory.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
-#include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "content/public/browser/browser_thread.h"
 
@@ -67,6 +67,9 @@ void NTPBackgroundImagesSource::StartDataRequest(
   base::FilePath image_file_path;
   if (IsLogoPath(path)) {
     image_file_path = images_data->logo_image_file;
+  } else if (IsTopSiteIconPath(path)) {
+    image_file_path =
+        images_data->top_sites[GetTopSiteIndexFromPath(path)].image_file;
   } else {
     DCHECK(IsWallpaperPath(path));
     image_file_path =
@@ -94,7 +97,7 @@ void NTPBackgroundImagesSource::OnGotImageFile(
 }
 
 std::string NTPBackgroundImagesSource::GetMimeType(const std::string& path) {
-  if (IsLogoPath(path))
+  if (IsLogoPath(path) || IsTopSiteIconPath(path))
     return "image/png";
   return "image/jpg";
 }
@@ -108,6 +111,9 @@ bool NTPBackgroundImagesSource::IsValidPath(const std::string& path) const {
     return true;
 
   if (IsWallpaperPath(path))
+    return true;
+
+  if (IsTopSiteIconPath(path))
     return true;
 
   return false;
@@ -132,6 +138,30 @@ int NTPBackgroundImagesSource::GetWallpaperIndexFromPath(
     const std::string generated_path =
         base::StringPrintf("%s%d.jpg", kWallpaperPathPrefix, i);
     if (path.compare(generated_path) == 0)
+      return i;
+  }
+
+  return -1;
+}
+
+bool NTPBackgroundImagesSource::IsTopSiteIconPath(
+    const std::string& path) const {
+  return GetTopSiteIndexFromPath(path) != -1;
+}
+
+int NTPBackgroundImagesSource::GetTopSiteIndexFromPath(
+    const std::string& path) const {
+  auto* images_data = service_->GetBackgroundImagesData();
+  if (!images_data)
+    return -1;
+
+  if (!images_data->IsSuperReferrer())
+    return -1;
+
+  const int top_site_count = images_data->top_sites.size();
+  for (int i = 0; i < top_site_count; ++i) {
+    const auto& top_site = images_data->top_sites[i];
+    if (path.compare(top_site.image_path) == 0)
       return i;
   }
 

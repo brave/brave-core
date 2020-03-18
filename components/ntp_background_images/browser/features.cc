@@ -18,6 +18,14 @@ const base::Feature kBraveNTPBrandedWallpaper{
 const base::Feature kBraveNTPBrandedWallpaperDemo{
     "BraveNTPBrandedWallpaperDemoName",
     base::FEATURE_DISABLED_BY_DEFAULT};
+const base::Feature kBraveNTPSuperReferrerWallpaper{
+    "BraveNTPSuperReferrerWallpaperName",
+#if defined(OS_LINUX)
+    // Linux doesn't support referral install yet.
+    base::FEATURE_DISABLED_BY_DEFAULT};
+#else
+    base::FEATURE_ENABLED_BY_DEFAULT};
+#endif
 
 }  // namespace features
 }  // namespace ntp_background_images

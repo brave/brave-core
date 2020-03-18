@@ -3,13 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ntp_background_images/browser/regional_component_data.h"
+#include "brave/components/ntp_background_images/browser/sponsored_images_component_data.h"
+
+namespace ntp_background_images {
 
 // This list should be synced with the list of generateNTPSponsoredImages.js
 // and packageNTPSponsoredImagesComponents.js in brave-core-crx-packager.
-base::Optional<RegionalComponentData> GetRegionalComponentData(
+base::Optional<SponsoredImagesComponentData> GetSponsoredImagesComponentData(
     const std::string& region) {
-  static const RegionalComponentData regional_data[] = {
+  static const SponsoredImagesComponentData regional_data[] = {
       { "AF",
         "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3UQJgNrn5qHNcHU3OKhhK34FT0AN8V0+KJwBany7O3RbDh/JmZ28F18wAmq8r06XIFlxxm0vTA3YDtQ+kPzMCdk5fBIZKwVL7ikFEVV3vd3Opu26GRuJ+s9qEbgErHPGC0SHAse3FWhGKVw+sOI6bKOPUtRgmPJFeb8azE/qdVFvP8L0z3Ny0PSlu+wTb3klT0c3LVpA/2WSQLCfAZ8zvwCFDlsIoH/3oFRKgDpoWztIT15D1dfx/mAg8+j3KC8kjUBYBOHOjmTdjjQUrav4hcn39tIw83QovAEXEjy3aywSSrHP7Lg81gzJkR1EdufC+PCWPT6NQEUYSQPbNaxCtwIDAQAB",  // NOLINT
         "gleegaillfpdpepmcfpafbofocjleapf" },
@@ -750,3 +752,5 @@ base::Optional<RegionalComponentData> GetRegionalComponentData(
   }
   return base::nullopt;
 }
+
+}  // namespace ntp_background_images

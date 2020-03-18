@@ -27,7 +27,11 @@ void ViewCounterService::RegisterProfilePrefs(
   registry->RegisterBooleanPref(
       prefs::kBrandedWallpaperNotificationDismissed, false);
   registry->RegisterBooleanPref(
-      prefs::kNewTabPageShowBrandedBackgroundImage, true);
+      prefs::kNewTabPageShowSponsoredImagesBackgroundImage, true);
+  registry->RegisterBooleanPref(
+      prefs::kNewTabPageShowSuperReferrerBackgroundImage, true);
+  registry->RegisterBooleanPref(
+      prefs::kNewTabPageShowBackgroundImage, true);
 }
 
 ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
@@ -37,10 +41,11 @@ ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
       prefs_(prefs),
       is_supported_locale_(is_supported_locale) {
   DCHECK(service_);
-  // If we have a wallpaper, store it as private var.
-  // Set demo wallpaper if a flag is set.
-  if (!base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo)) {
-    service_->AddObserver(this);
+  service_->AddObserver(this);
+  if (service_->test_data_used()) {
+    // Explicitly trigger OnUpdated() because test data can be set before
+    // Observeris added to |service_|.
+    OnUpdated(service_->GetBackgroundImagesData());
   }
 
   if (auto* data = GetCurrentBrandedWallpaperData())
@@ -72,25 +77,32 @@ base::Value ViewCounterService::GetCurrentWallpaperForDisplay() const {
 
 base::Value ViewCounterService::GetCurrentWallpaper() const {
   if (GetCurrentBrandedWallpaperData()) {
-    return GetCurrentBrandedWallpaperData()->GetValueAt(
+    return GetCurrentBrandedWallpaperData()->GetBackgroundAt(
         model_.current_wallpaper_image_index());
   }
 
   return base::Value();
 }
 
+base::Value ViewCounterService::GetTopSites() const {
+  if (ShouldShowBrandedWallpaper())
+    return GetCurrentBrandedWallpaperData()->GetTopSites();
+
+  return base::Value();
+}
+
 void ViewCounterService::Shutdown() {
-  if (!base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo))
-    service_->RemoveObserver(this);
+  service_->RemoveObserver(this);
 }
 
 void ViewCounterService::OnUpdated(NTPBackgroundImagesData* data) {
-  DCHECK(
-      !base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo));
   // Data is updated, so change our stored data and reset any indexes.
   // But keep view counter until branded content is seen.
-  model_.ResetCurrentWallpaperImageIndex();
-  model_.set_total_image_count(data ? data->backgrounds.size() : 0);
+  if (data) {
+    model_.ResetCurrentWallpaperImageIndex();
+    model_.set_total_image_count(data->backgrounds.size());
+    model_.set_ignore_count_to_branded_wallpaper(data->IsSuperReferrer());
+  }
 }
 
 void ViewCounterService::OnPreferenceChanged(const std::string& pref_name) {
@@ -115,13 +127,26 @@ bool ViewCounterService::ShouldShowBrandedWallpaper() const {
 }
 
 bool ViewCounterService::IsBrandedWallpaperActive() const {
-  return is_supported_locale_ && IsBrandedWallpaperOptedIn() &&
-         GetCurrentBrandedWallpaperData();
+  if (!prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage))
+    return false;
+
+  if (!GetCurrentBrandedWallpaperData())
+    return false;
+
+  if (GetCurrentBrandedWallpaperData()->IsSuperReferrer())
+    return IsSuperReferrerWallpaperOptedIn();
+
+  return IsSponsoredImagesWallpaperOptedIn();
 }
 
-bool ViewCounterService::IsBrandedWallpaperOptedIn() const {
-  return prefs_->GetBoolean(prefs::kNewTabPageShowBrandedBackgroundImage) &&
-         prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage);
+bool ViewCounterService::IsSponsoredImagesWallpaperOptedIn() const {
+  return prefs_->GetBoolean(
+      prefs::kNewTabPageShowSponsoredImagesBackgroundImage) &&
+        is_supported_locale_;
+}
+
+bool ViewCounterService::IsSuperReferrerWallpaperOptedIn() const {
+  return prefs_->GetBoolean(prefs::kNewTabPageShowSuperReferrerBackgroundImage);
 }
 
 }  // namespace ntp_background_images

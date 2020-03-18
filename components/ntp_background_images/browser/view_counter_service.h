@@ -45,6 +45,7 @@ class ViewCounterService : public KeyedService,
 
   base::Value GetCurrentWallpaperForDisplay() const;
   base::Value GetCurrentWallpaper() const;
+  base::Value GetTopSites() const;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
@@ -67,12 +68,13 @@ class ViewCounterService : public KeyedService,
   void OnUpdated(NTPBackgroundImagesData* data) override;
 
   void ResetNotificationState();
-  bool IsBrandedWallpaperOptedIn() const;
-  // Do we have a sponsored wallpaper to show and has the user
+  bool IsSponsoredImagesWallpaperOptedIn() const;
+  bool IsSuperReferrerWallpaperOptedIn() const;
+  // Do we have a sponsored or referrer wallpaper to show and has the user
   // opted-in to showing it at some time.
   bool IsBrandedWallpaperActive() const;
-  // Should we show the sponsored wallpaper right now, in addition
-  // to the result from `IsSponsoredWallpaperActive()`.
+  // Should we show the branded wallpaper right now, in addition
+  // to the result from `IsBrandedWallpaperActive()`.
   bool ShouldShowBrandedWallpaper() const;
   // Gets the current data for branded wallpaper, if there
   // is a wallpaper active. Does not consider user opt-in
@@ -89,3 +91,4 @@ class ViewCounterService : public KeyedService,
 }  // namespace ntp_background_images
 
 #endif  // BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_VIEW_COUNTER_SERVICE_H_
+

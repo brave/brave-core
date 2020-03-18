@@ -112,6 +112,7 @@ test("brave_unit_tests") {
     "//brave/components/content_settings/core/browser/brave_content_settings_pref_provider_unittest.cc",
     "//brave/components/content_settings/core/browser/brave_content_settings_utils_unittest.cc",
     "//brave/components/ntp_background_images/browser/ntp_background_images_service_unittest.cc",
+    "//brave/components/ntp_background_images/browser/ntp_background_images_source_unittest.cc",
     "//brave/components/ntp_background_images/browser/view_counter_model_unittest.cc",
     "//brave/components/ntp_background_images/browser/view_counter_service_unittest.cc",
     "//brave/components/rappor/log_uploader_unittest.cc",

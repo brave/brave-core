@@ -3,16 +3,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/strings/string_util.h"
 #include "brave/common/brave_features.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "chrome/browser/about_flags.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
+#include "components/prefs/pref_service.h"
 
 using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using brave_sync::features::kBraveSync;
 using ntp_background_images::features::kBraveNTPBrandedWallpaper;
 using ntp_background_images::features::kBraveNTPBrandedWallpaperDemo;
+using ntp_background_images::features::kBraveNTPSuperReferrerWallpaper;
 
 #define BRAVE_FEATURE_ENTRIES \
     {"use-dev-updater-url",                                                \
@@ -34,17 +40,17 @@ using ntp_background_images::features::kBraveNTPBrandedWallpaperDemo;
     {"brave-sync",                                                         \
      flag_descriptions::kBraveSyncName,                                    \
      flag_descriptions::kBraveSyncDescription, kOsDesktop,                 \
-     FEATURE_VALUE_TYPE(kBraveSync)},
+     FEATURE_VALUE_TYPE(kBraveSync)},                                      \
+    {"brave-custom-homepage",                                              \
+     flag_descriptions::kBraveCustomHomepageName,                          \
+     flag_descriptions::kBraveCustomHomepageDescription,                   \
+     flags_ui::kOsMac | flags_ui::kOsWin | flags_ui::kOsAndroid,           \
+     FEATURE_VALUE_TYPE(kBraveNTPSuperReferrerWallpaper)},
 
 #define SetFeatureEntryEnabled SetFeatureEntryEnabled_ChromiumImpl
 #include "../../../../chrome/browser/about_flags.cc"  // NOLINT
 #undef SetFeatureEntryEnabled
-
-#include "base/strings/string_util.h"
-#include "brave/common/pref_names.h"
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile_manager.h"
-#include "components/prefs/pref_service.h"
+#undef BRAVE_FEATURE_ENTRIES
 
 namespace about_flags {
 

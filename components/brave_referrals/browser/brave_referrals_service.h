@@ -41,6 +41,8 @@ class BraveReferralsService {
       const base::DictionaryValue** request_headers_dict,
       const GURL& url);
 
+  static bool IsDefaultReferralCode(const std::string& code);
+
  private:
   void GetFirstRunTime();
   void GetFirstRunTimeDesktop();

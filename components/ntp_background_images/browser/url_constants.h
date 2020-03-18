@@ -11,6 +11,7 @@ namespace ntp_background_images {
 extern const char kBrandedWallpaperHost[];
 extern const char kLogoPath[];
 extern const char kWallpaperPathPrefix[];
+extern const char kSuperReferrerMappingTableURL[];
 
 }  // namespace ntp_background_images
 

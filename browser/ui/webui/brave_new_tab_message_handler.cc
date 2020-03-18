@@ -29,7 +29,8 @@
 
 using ntp_background_images::features::kBraveNTPBrandedWallpaper;
 using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
-using ntp_background_images::prefs::kNewTabPageShowBrandedBackgroundImage;
+using ntp_background_images::prefs::kNewTabPageShowSponsoredImagesBackgroundImage;  // NOLINT
+using ntp_background_images::prefs::kNewTabPageShowSuperReferrerBackgroundImage;
 using ntp_background_images::prefs::kBrandedWallpaperNotificationDismissed;
 using ntp_background_images::ViewCounterServiceFactory;
 
@@ -72,7 +73,10 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
       prefs->GetBoolean(kNewTabPageShowBackgroundImage));
   pref_data.SetBoolean(
       "brandedWallpaperOptIn",
-      prefs->GetBoolean(kNewTabPageShowBrandedBackgroundImage));
+      prefs->GetBoolean(kNewTabPageShowSponsoredImagesBackgroundImage));
+  pref_data.SetBoolean(
+      "superReferrerWallpaperOptIn",
+      prefs->GetBoolean(kNewTabPageShowSuperReferrerBackgroundImage));
   pref_data.SetBoolean(
       "showClock",
       prefs->GetBoolean(kNewTabPageShowClock));
@@ -219,7 +223,10 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   pref_change_registrar_.Add(kNewTabPageShowBackgroundImage,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
-  pref_change_registrar_.Add(kNewTabPageShowBrandedBackgroundImage,
+  pref_change_registrar_.Add(kNewTabPageShowSponsoredImagesBackgroundImage,
+    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
+    base::Unretained(this)));
+  pref_change_registrar_.Add(kNewTabPageShowSuperReferrerBackgroundImage,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
   pref_change_registrar_.Add(kNewTabPageShowClock,
@@ -296,7 +303,11 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
   if (settingsKeyInput == "showBackgroundImage") {
     settingsKey = kNewTabPageShowBackgroundImage;
   } else if (settingsKeyInput == "brandedWallpaperOptIn") {
-    settingsKey = kNewTabPageShowBrandedBackgroundImage;
+    // TODO(simonhong): I think above |brandedWallpaperOptIn| should be changed
+    // to |sponsoredImagesWallpaperOptIn|.
+    settingsKey = kNewTabPageShowSponsoredImagesBackgroundImage;
+  } else if (settingsKeyInput == "superReferrerWallpaperOptIn") {
+    settingsKey = kNewTabPageShowSuperReferrerBackgroundImage;
   } else if (settingsKeyInput == "showClock") {
     settingsKey = kNewTabPageShowClock;
   } else if (settingsKeyInput == "showTopSites") {
