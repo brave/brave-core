@@ -55,13 +55,4 @@ void MockLedgerClient::SavePublisherState(
   handler->OnPublisherStateSaved(ledger::Result::OK);
 }
 
-void MockLedgerClient::LoadURL(const std::string& url,
-                               const std::vector<std::string>& headers,
-                               const std::string& content,
-                               const std::string& contentType,
-                               const ledger::UrlMethod method,
-                               ledger::LoadURLCallback callback) {
-  callback(true, "{}", {});
-}
-
 }  // namespace bat_ledger

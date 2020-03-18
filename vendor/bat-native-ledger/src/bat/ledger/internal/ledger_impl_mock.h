@@ -185,14 +185,6 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD3(OnRecoverWallet,
       void(const ledger::Result, double, ledger::RecoverWalletCallback));
 
-  MOCK_METHOD6(LoadURL,
-      void(const std::string&,
-          const std::vector<std::string>&,
-          const std::string&,
-          const std::string&,
-          const ledger::UrlMethod,
-          ledger::LoadURLCallback));
-
   MOCK_METHOD5(ReconcileComplete,
       void(ledger::Result,
           const double,

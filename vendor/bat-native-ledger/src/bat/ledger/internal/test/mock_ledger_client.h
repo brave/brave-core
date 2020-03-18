@@ -29,6 +29,14 @@ class MockLedgerClient : public ledger::LedgerClient {
 
   void CreateWallet(ledger::LedgerCallbackHandler* handler) override;
 
+  MOCK_METHOD6(LoadURL,
+      void(const std::string&,
+          const std::vector<std::string>&,
+          const std::string&,
+          const std::string&,
+          const ledger::UrlMethod,
+          ledger::LoadURLCallback));
+
  protected:
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
@@ -38,12 +46,6 @@ class MockLedgerClient : public ledger::LedgerClient {
                        ledger::LedgerCallbackHandler* handler) override;
   void SavePublisherState(const std::string& publisher_state,
                           ledger::LedgerCallbackHandler* handler) override;
-  uint64_t LoadURL(const std::string& url,
-                   const std::vector<std::string>& headers,
-                   const std::string& content,
-                   const std::string& contentType,
-                   const ledger::UrlMethod method,
-                   ledger::LedgerCallbackHandler* handler) override;
 
   std::unique_ptr<ledger::Ledger> ledger_;
   std::string ledger_state_;

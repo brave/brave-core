@@ -39,7 +39,7 @@ class UpholdTest : public testing::Test {
 };
 
 TEST_F(UpholdTest, FetchBalanceConnectedWallet) {
-  EXPECT_CALL(*mock_ledger_impl_, LoadURL(_, _, _, _, _, _)).Times(0);
+  EXPECT_CALL(*mock_ledger_client_, LoadURL(_, _, _, _, _, _)).Times(0);
 
   std::map<std::string, ledger::ExternalWalletPtr> wallets;
 

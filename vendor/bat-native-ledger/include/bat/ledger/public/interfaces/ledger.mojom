@@ -274,6 +274,7 @@ struct TransferFee {
 };
 
 enum RewardsType {
+  UNKNOWN = -1,
   AUTO_CONTRIBUTE = 2,
   ONE_TIME_TIP = 8,
   RECURRING_TIP = 16,
@@ -348,11 +349,13 @@ enum Environment {
 };
 
 enum PromotionType {
+  UNKNOWN = -1,
   UGP = 0,
   ADS = 1
 };
 
 enum PromotionStatus {
+  UNKNOWN = -1,
   ACTIVE = 0,
   ATTESTED = 1,
   CLAIMED = 2,
