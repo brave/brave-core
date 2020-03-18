@@ -61,6 +61,10 @@ namespace braveledger_database {
 class Database;
 }
 
+namespace braveledger_report {
+class Report;
+}
+
 namespace confirmations {
 class Confirmations;
 }
@@ -90,8 +94,7 @@ class LedgerImpl : public ledger::Ledger,
       const bool execute_create_script,
       ledger::InitializeCallback callback) override;
 
-  void CreateWallet(const std::string& safetynet_token,
-                    ledger::CreateWalletCallback callback) override;
+  void CreateWallet(ledger::CreateWalletCallback callback) override;
 
   void SavePublisherInfo(
       ledger::PublisherInfoPtr publisher_info,
@@ -520,8 +523,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void TransferAnonToExternalWallet(
       ledger::ExternalWalletPtr wallet,
-      const bool allow_zero_balance,
-      ledger::TransferAnonToExternalWalletCallback callback);
+      ledger::TransferAnonToExternalWalletCallback callback,
+      const bool allow_zero_balance = false);
 
   void ShowNotification(
       const std::string& type,
@@ -627,7 +630,7 @@ class LedgerImpl : public ledger::Ledger,
     ledger::ResultCallback callback);
 
   virtual void GetAllUnblindedTokens(
-      ledger::GetAllUnblindedTokensCallback callback);
+      ledger::GetUnblindedTokenListCallback callback);
 
   virtual void DeleteUnblindedTokens(
       const std::vector<std::string>& id_list,
@@ -654,6 +657,7 @@ class LedgerImpl : public ledger::Ledger,
       ledger::GetContributionReportCallback callback) override;
 
   void GetIncompleteContributions(
+      const ledger::ContributionProcessor processor,
       ledger::ContributionInfoListCallback callback);
 
   virtual void GetContributionInfo(
@@ -679,6 +683,22 @@ class LedgerImpl : public ledger::Ledger,
 
   void GetAllContributions(
       ledger::ContributionInfoListCallback callback) override;
+
+  void GetMonthlyReport(
+      const ledger::ActivityMonth month,
+      const int year,
+      ledger::GetMonthlyReportCallback callback) override;
+
+  void GetAllMonthlyReportIds(
+      ledger::GetAllMonthlyReportIdsCallback callback) override;
+
+  void TransferTokens(
+      ledger::ExternalWalletPtr wallet,
+      ledger::ResultCallback callback);
+
+  void GetUnblindedTokensByPromotionType(
+      const std::vector<ledger::PromotionType>& promotion_types,
+      ledger::GetUnblindedTokenListCallback callback);
 
  private:
   void InitializeConfirmations(
@@ -767,6 +787,7 @@ class LedgerImpl : public ledger::Ledger,
   std::unique_ptr<braveledger_wallet::Wallet> bat_wallet_;
   std::unique_ptr<braveledger_database::Database> bat_database_;
   std::unique_ptr<confirmations::Confirmations> bat_confirmations_;
+  std::unique_ptr<braveledger_report::Report> bat_report_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   bool initialized_task_scheduler_;
   bool initialized_;

@@ -55,4 +55,8 @@ std::string ReportClobberedClaimsUrl() {
       ServerTypes::kPromotion);
 }
 
+std::string GetTransferTokens() {
+  return BuildUrl("/suggestions/claim", PREFIX_V1, ServerTypes::kPromotion);
+}
+
 }  // namespace braveledger_request_util

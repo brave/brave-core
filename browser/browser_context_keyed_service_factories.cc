@@ -21,6 +21,8 @@
 
 #if !defined(OS_ANDROID)
 #include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
+#else
+#include "brave/browser/ntp_sponsored_images/android/ntp_sponsored_images_bridge.h"
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
@@ -43,6 +45,8 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
 #if !defined(OS_ANDROID)
   BookmarkPrefsServiceFactory::GetInstance();
+#else
+  ntp_sponsored_images::NTPSponsoredImagesBridgeFactory::GetInstance();
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)

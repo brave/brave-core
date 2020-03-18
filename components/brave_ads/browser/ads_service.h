@@ -52,6 +52,7 @@ class AdsService : public KeyedService {
   virtual bool IsEnabled() const = 0;
   virtual void SetEnabled(
       const bool is_enabled) = 0;
+  virtual const std::string GetCountryCode() const = 0;
 
   virtual bool ShouldAllowAdConversionTracking() const = 0;
   virtual void SetAllowAdConversionTracking(

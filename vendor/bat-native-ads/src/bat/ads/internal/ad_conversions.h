@@ -6,8 +6,8 @@
 #ifndef BAT_ADS_INTERNAL_AD_CONVERSION_TRACKING_H_
 #define BAT_ADS_INTERNAL_AD_CONVERSION_TRACKING_H_
 
+#include <deque>
 #include <string>
-#include <vector>
 
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_impl.h"
@@ -32,11 +32,10 @@ class AdConversions {
   void Initialize(
       InitializeCallback callback);
 
-  void ProcessQueue();
+  void Check(
+      const std::string& url);
 
-  void AddToQueue(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id);
+  void StartTimerIfReady();
 
   bool OnTimer(
       const uint32_t timer_id);
@@ -49,15 +48,33 @@ class AdConversions {
 
   uint32_t timer_id_;
 
+  void OnGetAdConversions(
+      const std::string& url,
+      const Result result,
+      const AdConversionList& ad_conversions);
+
+  std::deque<AdHistory> FilterAdsHistory(
+      const std::deque<AdHistory>& ads_history);
+  std::deque<AdHistory> SortAdsHistory(
+      const std::deque<AdHistory>& ads_history);
+
+  AdConversionList FilterAdConversions(
+      const std::string& url,
+      const AdConversionList& ad_conversions);
+  AdConversionList SortAdConversions(
+      const AdConversionList& ad_conversions);
+
+  void AddItemToQueue(
+      const std::string& creative_instance_id,
+      const std::string& creative_set_id);
+  bool RemoveItemFromQueue(
+      const std::string& creative_instance_id);
   void ProcessQueueItem(
       const AdConversionQueueItemInfo& info);
 
   void StartTimer(
       const AdConversionQueueItemInfo& info);
   void StopTimer();
-
-  bool Remove(
-      const std::string& creative_instance_id);
 
   void SaveState();
   void OnStateSaved(

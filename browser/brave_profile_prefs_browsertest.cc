@@ -82,17 +82,28 @@ typedef FirstRunMasterPrefsBrowserTestT<kFirstRunEmptyPrefs>
     BraveProfilePrefsFirstRunBrowserTest;
 IN_PROC_BROWSER_TEST_F(BraveProfilePrefsFirstRunBrowserTest,
                        AdvancedShieldsNewUserValue) {
-  EXPECT_FALSE(
-        browser()->profile()->GetPrefs()->GetBoolean(
+  // verify value of pref (default to simple view)
+  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
           kShieldsAdvancedViewEnabled));
+  // verify that pref was set (and is not default)
+  const PrefService::Preference* pref =
+      browser()->profile()->GetPrefs()->FindPreference(
+          kShieldsAdvancedViewEnabled);
+  EXPECT_TRUE(pref->HasUserSetting());
 }
 
 // Existing Brave users should default shields to Advanced view
 IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
                        AdvancedShieldsExistingUserValue) {
+  // verify value of pref (default to advanced view)
   EXPECT_TRUE(
         browser()->profile()->GetPrefs()->GetBoolean(
           kShieldsAdvancedViewEnabled));
+  // verify that pref was set (and is not default)
+  const PrefService::Preference* pref =
+      browser()->profile()->GetPrefs()->FindPreference(
+          kShieldsAdvancedViewEnabled);
+  EXPECT_TRUE(pref->HasUserSetting());
 }
 #endif
 

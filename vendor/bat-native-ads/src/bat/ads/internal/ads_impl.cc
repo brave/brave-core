@@ -190,7 +190,7 @@ void AdsImpl::InitializeStep5(
 
   initialize_callback_(SUCCESS);
 
-  ad_conversions_->ProcessQueue();
+  ad_conversions_->StartTimerIfReady();
 
   MaybeServeAdNotification(false);
 
@@ -661,7 +661,11 @@ void AdsImpl::OnPageLoaded(
     return;
   }
 
-  CheckAdConversion(url);
+  const bool is_supported_url = IsSupportedUrl(url);
+
+  if (is_supported_url) {
+    ad_conversions_->Check(url);
+  }
 
   ExtractPurchaseIntentSignal(url);
 
@@ -691,7 +695,7 @@ void AdsImpl::OnPageLoaded(
           << last_shown_ad_notification_.target_url;
   }
 
-  if (!IsSupportedUrl(url)) {
+  if (!is_supported_url) {
     BLOG(INFO) << "Site visited " << url << ", unsupported URL";
     return;
   }
@@ -741,76 +745,6 @@ void AdsImpl::GeneratePurchaseIntentSignalHistoryEntry(
     history.timestamp_in_seconds = purchase_intent_signal.timestamp_in_seconds;
     history.weight = purchase_intent_signal.weight;
     client_->AppendToPurchaseIntentSignalHistoryForSegment(segment, history);
-  }
-}
-
-void AdsImpl::CheckAdConversion(
-    const std::string& url) {
-  DCHECK(!url.empty());
-  if (url.empty()) {
-    return;
-  }
-
-  if (!ads_client_->ShouldAllowAdConversionTracking()) {
-    return;
-  }
-
-  auto callback = std::bind(&AdsImpl::OnGetAdConversions, this, url, _1, _2);
-  ads_client_->GetAdConversions(callback);
-}
-
-void AdsImpl::OnGetAdConversions(
-    const std::string& url,
-    const Result result,
-    const AdConversionList& ad_conversions) {
-  for (const auto& ad_conversion : ad_conversions) {
-    if (!helper::Uri::MatchesWildcard(url, ad_conversion.url_pattern)) {
-      continue;
-    }
-
-    ConfirmationType confirmation_type;
-    if (ad_conversion.type == "postview") {
-      confirmation_type = ConfirmationType::kViewed;
-    } else if (ad_conversion.type == "postclick") {
-      confirmation_type = ConfirmationType::kClicked;
-    } else {
-      BLOG(WARNING) << "Unsupported ad conversion type: " << ad_conversion.type;
-      continue;
-    }
-
-    auto ads_history  = client_->GetAdsShownHistory();
-    const auto sort =
-        AdsHistorySortFactory::Build(AdsHistory::SortType::kDescendingOrder);
-    DCHECK(sort);
-    if (sort) {
-      ads_history = sort->Apply(ads_history);
-    }
-
-    for (const auto& ad : ads_history) {
-      auto ad_conversion_history = client_->GetAdConversionHistory();
-      if (ad_conversion_history.find(ad.ad_content.creative_set_id) !=
-          ad_conversion_history.end()) {
-        continue;
-      }
-
-      if (ad_conversion.creative_set_id != ad.ad_content.creative_set_id) {
-        continue;
-      }
-
-      if (confirmation_type != ad.ad_content.ad_action) {
-        continue;
-      }
-
-      const base::Time observation_window = base::Time::Now() -
-          base::TimeDelta::FromDays(ad_conversion.observation_window);
-      const base::Time time = Time::FromDoubleT(ad.timestamp_in_seconds);
-      if (observation_window > time) {
-        continue;
-      }
-
-      ad_conversions_->AddToQueue(ad.ad_content.creative_instance_id,
-          ad.ad_content.creative_set_id);
-    }
   }
 }
 
@@ -1780,10 +1714,13 @@ void AdsImpl::StartSustainingAdNotificationInteraction(
 }
 
 void AdsImpl::SustainAdNotificationInteractionIfNeeded() {
+  last_sustained_ad_notification_url_ = "";
+
   if (!IsStillViewingAdNotification()) {
     BLOG(INFO) << "Failed to sustain ad notification interaction, domain for "
         "the focused tab does not match the last shown ad notification for "
             << last_shown_ad_notification_.target_url;
+
     return;
   }
 
@@ -1801,6 +1738,8 @@ void AdsImpl::StopSustainingAdNotificationInteraction() {
 
   ads_client_->KillTimer(sustained_ad_notification_interaction_timer_id_);
   sustained_ad_notification_interaction_timer_id_ = 0;
+
+  last_sustained_ad_notification_url_ = "";
 }
 
 bool AdsImpl::IsSustainingAdNotificationInteraction() const {

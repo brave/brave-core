@@ -28,9 +28,9 @@ class DatabaseContributionInfoPublishers: public DatabaseTable {
       const std::vector<std::string>& contribution_ids,
       ContributionPublisherListCallback callback);
 
-  void GetContributionPublisherInfoMap(
+  void GetContributionPublisherPairList(
       const std::vector<std::string>& contribution_ids,
-      ContributionPublisherInfoMapCallback callback);
+      ContributionPublisherPairListCallback callback);
 
   void UpdateContributedAmount(
       const std::string& contribution_id,
@@ -56,7 +56,7 @@ class DatabaseContributionInfoPublishers: public DatabaseTable {
 
   void OnGetContributionPublisherInfoMap(
       ledger::DBCommandResponsePtr response,
-      ContributionPublisherInfoMapCallback callback);
+      ContributionPublisherPairListCallback callback);
 };
 
 }  // namespace braveledger_database

@@ -7,17 +7,22 @@ package org.chromium.chrome.browser.upgrade;
 
 import android.content.Context;
 import android.content.Intent;
+import java.util.Locale;
 import android.content.SharedPreferences;
 import android.support.v4.app.JobIntentService;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.base.PathUtils;
 import org.chromium.base.Log;
 import org.chromium.base.library_loader.LibraryProcessType;
 import org.chromium.base.task.PostTask;
 import org.chromium.chrome.browser.BraveHelper;
+import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.settings.website.WebsitePreferenceBridge;
 import org.chromium.content_public.browser.BrowserStartupController;
 import org.chromium.content_public.browser.UiThreadTaskTraits;
@@ -53,10 +58,49 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
     private static final String DSE_NAME = "Google";
     private static final String DSE_KEYWORD = "google.com";
 
+    // Old tabs bottom toolbar settings
+    private static final String BOTTOM_TOOLBAR_ENABLED_KEY = "bottom_toolbar_enabled";
+
+    // To detect update from tabs
+    private static final String PREF_STATS_PREFERENCES_NAME = "StatsPreferences";
+    private static final String PREF_WEEK_OF_INSTALLATION_NAME = "WeekOfInstallation";
+
     public static void startMigrationIfNecessary(Context context) {
+        if (BraveUpgradeJobIntentService.needToMigratePreferences()) {
+            // Migrate bottom toolbar settings
+            SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+            SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+            sharedPreferencesEditor.putBoolean(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY,
+                sharedPreferences.getBoolean(BOTTOM_TOOLBAR_ENABLED_KEY, true));
+            sharedPreferencesEditor.apply();
+        }
         // Start migration in any case as we can have only partial data
         // to migrate available
         BraveUpgradeJobIntentService.enqueueWork(context, new Intent());
+    }
+
+    private static boolean needToMigratePreferences() {
+        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+        boolean migrated = sharedPreferences.getBoolean(BraveHelper.PREF_TABS_SETTINGS_MIGRATED, false);
+        if (migrated) {
+            // Everything was already migrated
+            return false;
+        }
+
+        // Detect whether it is update from tabs
+        SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+        SharedPreferences prefStatsFromTabs = ContextUtils.getApplicationContext()
+                .getSharedPreferences(PREF_STATS_PREFERENCES_NAME, 0);
+        boolean updateFormTabs = prefStatsFromTabs.contains(PREF_WEEK_OF_INSTALLATION_NAME);
+        if (!updateFormTabs) {
+            // We assume that everything was migrated in that case
+            sharedPreferencesEditor.putBoolean(BraveHelper.PREF_TABS_SETTINGS_MIGRATED, true);
+            sharedPreferencesEditor.apply();
+
+            return false;
+        }
+
+        return true;
     }
 
     private static void enqueueWork(Context context, Intent work) {
@@ -184,12 +228,10 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
     }
 
     private void migrateTotalStatsAndPreferences() {
-        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-        boolean migrated = sharedPreferences.getBoolean(BraveHelper.PREF_TABS_SETTINGS_MIGRATED, false);
-        if (migrated) {
-            // Everything was already migrated
+        if (!BraveUpgradeJobIntentService.needToMigratePreferences()) {
             return;
         }
+        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
         // Total stats migration
         long trackersBlockedCount = sharedPreferences.getLong(PREF_TRACKERS_BLOCKED_COUNT, 0);
         long adsBlockedCount = sharedPreferences.getLong(PREF_ADS_BLOCKED_COUNT, 0);
@@ -219,6 +261,14 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
         BravePrefServiceBridge.getInstance().setDesktopModeEnabled(
             BravePrefServiceBridge.getInstance().GetBooleanForContentSetting(CONTENT_SETTINGS_TYPE_DESKTOP_VIEW));
 
+        // Background image settings settings
+        if (sharedPreferences.contains(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES)) {
+            BravePrefServiceBridge.getInstance().setBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE,
+                    sharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES, true));
+            BravePrefServiceBridge.getInstance().setBoolean(BravePref.NTP_SHOW_BRANDED_BACKGROUND_IMAGE,
+                    sharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_SPONSORED_IMAGES, true));
+        }
+
         // Migrate search engines settings
         sharedPreferencesEditor.putString(BraveHelper.PRIVATE_DSE_KEYWORD,
             sharedPreferences.getString(PREF_PRIVATE_SEARCH_ENGINE_KEYWORD, DSE_KEYWORD));
@@ -233,6 +283,24 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
         sharedPreferencesEditor.apply();
     }
 
+    private void removeNTPFiles() {
+        String countryCode = Locale.getDefault().getCountry();
+
+        File dataDirPath = new File(PathUtils.getDataDirectory());
+        if (null == dataDirPath) {
+            return;
+        }
+        File[] fileList = dataDirPath.listFiles();
+
+        for (File file : fileList) {
+            String filePath = file.getPath();
+            String sFileName = filePath.substring(filePath.lastIndexOf(File.separator)+1);
+            if (sFileName.startsWith(countryCode + "_")) {
+                file.delete();
+            }
+        }
+    }
+
     @Override
     protected void onHandleWork(Intent intent) {
         // Kick off the migration task only after the browser has
@@ -242,6 +310,11 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
                     .addStartupCompletedObserver(new BrowserStartupController.StartupCallback() {
                         @Override
                         public void onSuccess() {
+                            try {
+                                removeNTPFiles();
+                            } catch(Exception exc) {
+                                Log.e("NTP", "On app upgrade : " + exc.getMessage());
+                            }
                             migrateTotalStatsAndPreferences();
                             if (!migrateShieldsConfig()) {
                                 Log.e(TAG, "Failed to migrate Brave shields config settings");

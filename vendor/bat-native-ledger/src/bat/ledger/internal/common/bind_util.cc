@@ -249,6 +249,7 @@ std::string FromContributionToString(const ledger::ContributionInfoPtr info) {
   queue.SetIntKey("step", static_cast<int>(info->step));
   queue.SetIntKey("retry_count", info->retry_count);
   queue.SetStringKey("created_at", std::to_string(info->created_at));
+  queue.SetIntKey("processor", static_cast<int>(info->processor));
   queue.SetKey("publishers", std::move(publishers));
 
   std::string json;
@@ -305,6 +306,12 @@ ledger::ContributionInfoPtr FromStringToContribution(const std::string& data) {
   const auto* created_at = dictionary->FindStringKey("created_at");
   if (created_at) {
     contribution->created_at = std::stoull(*created_at);
+  }
+
+  const auto processor = dictionary->FindIntKey("processor");
+  if (processor) {
+    contribution->processor =
+        static_cast<ledger::ContributionProcessor>(*processor);
   }
 
   auto* publishers = dictionary->FindListKey("publishers");
@@ -376,6 +383,212 @@ void FromStringToContributionList(
 
     contribution_list->push_back(std::move(info));
   }
+}
+
+std::string FromMonthlyReportToString(ledger::MonthlyReportInfoPtr info) {
+  base::Value balance(base::Value::Type::DICTIONARY);
+  if (info->balance) {
+    balance.SetDoubleKey("grants", info->balance->grants);
+    balance.SetDoubleKey("earning_from_ads", info->balance->earning_from_ads);
+    balance.SetDoubleKey("auto_contribute", info->balance->auto_contribute);
+    balance.SetDoubleKey("recurring_donation",
+        info->balance->recurring_donation);
+    balance.SetDoubleKey("one_time_donation", info->balance->one_time_donation);
+  }
+
+  base::Value transactions(base::Value::Type::LIST);
+  for (auto& item : info->transactions) {
+    base::Value transaction(base::Value::Type::DICTIONARY);
+    transaction.SetDoubleKey("amount", item->amount);
+    transaction.SetIntKey("type", static_cast<int>(item->type));
+    transaction.SetStringKey("created_at", std::to_string(item->created_at));
+    transactions.GetList().push_back(std::move(transaction));
+  }
+
+  base::Value contributions(base::Value::Type::LIST);
+  for (auto& item : info->contributions) {
+    base::Value publishers(base::Value::Type::LIST);
+    for (auto& item_publisher : item->publishers) {
+      base::Value publisher(base::Value::Type::DICTIONARY);
+      publisher.SetStringKey("id", item_publisher->id);
+      publisher.SetDoubleKey("weight", item_publisher->weight);
+      publisher.SetStringKey("name", item_publisher->name);
+      publisher.SetStringKey("url", item_publisher->url);
+      publisher.SetStringKey("favicon_url", item_publisher->favicon_url);
+      publisher.SetIntKey("status", static_cast<int>(item_publisher->status));
+      publisher.SetStringKey("provider", item_publisher->provider);
+    }
+
+    base::Value contribution(base::Value::Type::DICTIONARY);
+    contribution.SetStringKey("contribution_id", item->contribution_id);
+    contribution.SetDoubleKey("amount", item->amount);
+    contribution.SetIntKey("type", static_cast<int>(item->type));
+    contribution.SetKey("publishers", std::move(publishers));
+    contribution.SetStringKey("created_at", std::to_string(item->created_at));
+    contributions.GetList().push_back(std::move(contribution));
+  }
+
+  base::Value monthly(base::Value::Type::DICTIONARY);
+  monthly.SetKey("balance", std::move(balance));
+  monthly.SetKey("transactions", std::move(transactions));
+  monthly.SetKey("contributions", std::move(contributions));
+
+  std::string json;
+  base::JSONWriter::Write(monthly, &json);
+
+  return json;
+}
+
+ledger::MonthlyReportInfoPtr FromStringToMonthlyReport(
+    const std::string& data) {
+  base::Optional<base::Value> value = base::JSONReader::Read(data);
+
+  if (!value || !value->is_dict()) {
+    return nullptr;
+  }
+
+  base::DictionaryValue* dictionary = nullptr;
+  if (!value->GetAsDictionary(&dictionary)) {
+    return nullptr;
+  }
+
+  auto balance_report = ledger::BalanceReportInfo::New();
+  auto* balance = dictionary->FindDictKey("balance");
+  if (balance) {
+    const auto grants = balance->FindDoubleKey("grants");
+    if (grants) {
+      balance_report->grants = *grants;
+    }
+
+    const auto earning_from_ads = balance->FindDoubleKey("earning_from_ads");
+    if (earning_from_ads) {
+      balance_report->earning_from_ads = *earning_from_ads;
+    }
+
+    const auto auto_contribute = balance->FindDoubleKey("auto_contribute");
+    if (auto_contribute) {
+      balance_report->auto_contribute = *auto_contribute;
+    }
+
+    const auto recurring_donation =
+        balance->FindDoubleKey("recurring_donation");
+    if (recurring_donation) {
+      balance_report->recurring_donation = *recurring_donation;
+    }
+
+    const auto one_time_donation = balance->FindDoubleKey("one_time_donation");
+    if (one_time_donation) {
+      balance_report->one_time_donation = *one_time_donation;
+    }
+  }
+
+  ledger::TransactionReportInfoList transaction_report;
+  auto* transactions = dictionary->FindListKey("transactions");
+  if (transactions) {
+    for (auto& item : transactions->GetList()) {
+      auto transaction = ledger::TransactionReportInfo::New();
+
+      const auto amount = item.FindDoubleKey("amount");
+      if (amount) {
+        transaction->amount = *amount;
+      }
+
+      const auto type = item.FindIntKey("type");
+      if (type) {
+        transaction->type = static_cast<ledger::ReportType>(*type);
+      }
+
+      const auto* created_at = item.FindStringKey("created_at");
+      if (created_at) {
+        transaction->created_at = std::stoull(*created_at);
+      }
+
+      transaction_report.push_back(std::move(transaction));
+    }
+  }
+
+  ledger::ContributionReportInfoList contribution_report;
+  auto* contributions = dictionary->FindListKey("contributions");
+  if (contributions) {
+    for (auto& item : contributions->GetList()) {
+      auto contribution = ledger::ContributionReportInfo::New();
+
+      const auto* contribution_id = item.FindStringKey("contribution_id");
+      if (contribution_id) {
+        contribution->contribution_id = *contribution_id;
+      }
+
+      const auto amount = item.FindDoubleKey("amount");
+      if (amount) {
+        contribution->amount = *amount;
+      }
+
+      const auto type = item.FindIntKey("type");
+      if (type) {
+        contribution->type = static_cast<ledger::ReportType>(*type);
+      }
+
+      const auto* created_at = item.FindStringKey("created_at");
+      if (created_at) {
+        contribution->created_at = std::stoull(*created_at);
+      }
+
+      ledger::PublisherInfoList publisher_list;
+      auto* publishers = item.FindListKey("publishers");
+      if (publishers) {
+        for (auto& item_publisher : publishers->GetList()) {
+          auto publisher = ledger::PublisherInfo::New();
+
+          const auto* id = item_publisher.FindStringKey("id");
+          if (id) {
+            publisher->id = *id;
+          }
+
+          const auto weight = item_publisher.FindDoubleKey("weight");
+          if (weight) {
+            publisher->weight = *weight;
+          }
+
+          const auto* name = item_publisher.FindStringKey("name");
+          if (name) {
+            publisher->name = *name;
+          }
+
+          const auto* url = item_publisher.FindStringKey("url");
+          if (url) {
+            publisher->url = *url;
+          }
+
+          const auto* favicon_url = item_publisher.FindStringKey("favicon_url");
+          if (favicon_url) {
+            publisher->favicon_url = *favicon_url;
+          }
+
+          const auto status = item_publisher.FindIntKey("status");
+          if (status) {
+            publisher->status = static_cast<ledger::PublisherStatus>(*status);
+          }
+
+          const auto* provider = item_publisher.FindStringKey("provider");
+          if (provider) {
+            publisher->provider = *provider;
+          }
+
+          publisher_list.push_back(std::move(publisher));
+        }
+      }
+
+      contribution->publishers = std::move(publisher_list);
+      contribution_report.push_back(std::move(contribution));
+    }
+  }
+
+  auto info = ledger::MonthlyReportInfo::New();
+  info->balance = std::move(balance_report);
+  info->transactions = std::move(transaction_report);
+  info->contributions = std::move(contribution_report);
+
+  return info;
 }
 
 }  // namespace braveledger_bind_util

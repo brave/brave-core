@@ -7,7 +7,7 @@ import { getLocale } from 'brave-ui/helpers'
 import { StyledWrapper, StyledTokens, StyledContent, StyledTokenValue, StyledTokenCurrency } from './style'
 
 export type Size = 'mini' | 'small' | 'normal'
-export type Type = 'contribute' | 'donation' | 'earnings' | 'default' | 'notPaid'
+export type Type = 'contribute' | 'earning' | 'default'
 
 export interface Props {
   value: string

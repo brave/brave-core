@@ -83,6 +83,7 @@ class Database {
       ledger::GetContributionReportCallback callback);
 
   void GetIncompleteContributions(
+      const ledger::ContributionProcessor processor,
       ledger::ContributionInfoListCallback callback);
 
   void UpdateContributionInfoStepAndCount(
@@ -226,7 +227,7 @@ class Database {
       ledger::ResultCallback callback);
 
   void GetAllUnblindedTokens(
-      ledger::GetAllUnblindedTokensCallback callback);
+      ledger::GetUnblindedTokenListCallback callback);
 
   void DeleteUnblindedTokens(
       const std::vector<std::string>& ids,
@@ -235,6 +236,10 @@ class Database {
   void DeleteUnblindedTokensForPromotion(
       const std::string& promotion_id,
       ledger::ResultCallback callback);
+
+  void GetUnblindedTokensByPromotionType(
+      const std::vector<ledger::PromotionType>& promotion_types,
+      ledger::GetUnblindedTokenListCallback callback);
 
  private:
   std::unique_ptr<DatabaseInitialize> initialize_;

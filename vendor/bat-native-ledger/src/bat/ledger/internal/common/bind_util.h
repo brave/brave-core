@@ -39,6 +39,10 @@ void FromStringToContributionList(
     const std::string& data,
     ledger::ContributionInfoList* contribution_list);
 
+std::string FromMonthlyReportToString(ledger::MonthlyReportInfoPtr info);
+
+ledger::MonthlyReportInfoPtr FromStringToMonthlyReport(const std::string& data);
+
 }  // namespace braveledger_bind_util
 
 #endif  // BRAVELEDGER_COMMON_BIND_UTIL_H_

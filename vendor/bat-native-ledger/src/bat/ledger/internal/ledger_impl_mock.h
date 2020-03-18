@@ -53,8 +53,7 @@ class MockLedgerImpl : public LedgerImpl {
       const bool,
       ledger::InitializeCallback));
 
-  MOCK_METHOD2(CreateWallet,
-      void(const std::string&, ledger::CreateWalletCallback));
+  MOCK_METHOD1(CreateWallet, void(ledger::CreateWalletCallback));
 
   MOCK_METHOD2(SavePublisherInfo, void(
       ledger::PublisherInfoPtr,
@@ -481,8 +480,8 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD3(TransferAnonToExternalWallet,
       void(ledger::ExternalWalletPtr,
-          const bool,
-          ledger::TransferAnonToExternalWalletCallback));
+          ledger::TransferAnonToExternalWalletCallback,
+          const bool));
 
   MOCK_METHOD3(ShowNotification,
       void(const std::string&,
@@ -580,7 +579,7 @@ class MockLedgerImpl : public LedgerImpl {
     ledger::UnblindedTokenList, ledger::ResultCallback));
 
   MOCK_METHOD1(GetAllUnblindedTokens,
-      void(ledger::GetAllUnblindedTokensCallback));
+      void(ledger::GetUnblindedTokenListCallback));
 
   MOCK_METHOD2(DeleteUnblindedTokens,
       void(const std::vector<std::string>&, ledger::ResultCallback));

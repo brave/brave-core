@@ -135,7 +135,6 @@ export interface Props {
   children?: React.ReactNode
   showSecActions?: boolean
   onSettingsClick?: () => void
-  onActivityClick?: () => void
   grants?: Grant[]
   grant?: GrantClaim
   alert?: AlertWallet | null

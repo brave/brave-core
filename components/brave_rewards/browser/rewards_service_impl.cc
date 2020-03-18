@@ -255,7 +255,7 @@ bool ResetOnFileTaskRunner(const base::FilePath& path) {
 bool ResetOnFilesTaskRunner(const std::vector<base::FilePath>& paths) {
   bool res = true;
   for (size_t i = 0; i < paths.size(); i++) {
-    if (!base::DeleteFile(paths[i], false)) {
+    if (!base::DeleteFileRecursively(paths[i])) {
       res = false;
     }
   }
@@ -518,14 +518,14 @@ void RewardsServiceImpl::CreateWallet(CreateWalletCallback callback) {
           AsWeakPtr(),
           std::move(callback));
 #if !defined(OS_ANDROID)
-      bat_ledger_->CreateWallet("", std::move(on_create));
+      bat_ledger_->CreateWallet(std::move(on_create));
 #else
       safetynet_check::ClientAttestationCallback attest_callback =
           base::BindOnce(&RewardsServiceImpl::CreateWalletAttestationResult,
               AsWeakPtr(),
               std::move(on_create));
       safetynet_check_runner_.performSafetynetCheck("",
-          std::move(attest_callback));
+          std::move(attest_callback), true);
 #endif
     }
   } else {
@@ -540,14 +540,19 @@ void RewardsServiceImpl::CreateWallet(CreateWalletCallback callback) {
 #if defined(OS_ANDROID)
 void RewardsServiceImpl::CreateWalletAttestationResult(
     bat_ledger::mojom::BatLedger::CreateWalletCallback callback,
-    bool result,
-    const std::string& result_string) {
-  if (result) {
-    bat_ledger_->CreateWallet(result_string, std::move(callback));
-  } else {
+    const bool token_received,
+    const std::string& result_string,
+    const bool attestation_passed) {
+  if (!token_received) {
     LOG(ERROR) << "CreateWalletAttestationResult error: " << result_string;
     OnWalletInitialized(ledger::Result::LEDGER_ERROR);
+    return;
   }
+  if (!attestation_passed) {
+    OnWalletInitialized(ledger::Result::SAFETYNET_ATTESTATION_FAILED);
+    return;
+  }
+  bat_ledger_->CreateWallet(std::move(callback));
 }
 #endif
 
@@ -1304,9 +1309,10 @@ void RewardsServiceImpl::OnAttestationAndroid(
     const std::string& promotion_id,
     AttestPromotionCallback callback,
     const std::string& nonce,
-    bool result,
-    const std::string& token) {
-  if (!result) {
+    const bool token_received,
+    const std::string& token,
+    const bool attestation_passed) {
+  if (!token_received) {
     std::move(callback).Run(
         static_cast<int32_t>(ledger::Result::LEDGER_ERROR),
         nullptr);
@@ -3327,50 +3333,18 @@ void RewardsServiceImpl::GetMonthlyReport(
     const uint32_t month,
     const uint32_t year,
     GetMonthlyReportCallback callback) {
-  bat_ledger_->GetBalanceReport(
+  bat_ledger_->GetMonthlyReport(
       static_cast<ledger::ActivityMonth>(month),
       year,
-      base::BindOnce(&RewardsServiceImpl::OnGetMonthlyReportBalance,
-                     AsWeakPtr(),
-                     month,
-                     year,
-                     std::move(callback)));
-}
-
-void RewardsServiceImpl::OnGetMonthlyReportBalance(
-    const uint32_t month,
-    const uint32_t year,
-    GetMonthlyReportCallback callback,
-    const ledger::Result result,
-    ledger::BalanceReportInfoPtr report) {
-  MonthlyReport monthly_report;
-  if (result != ledger::Result::LEDGER_OK || !report) {
-    std::move(callback).Run(monthly_report);
-    return;
-  }
-
-  BalanceReport converted_report;
-  LedgerToServiceBalanceReport(std::move(report), &converted_report);
-  monthly_report.balance = converted_report;
-
-  bat_ledger_->GetTransactionReport(
-      static_cast<ledger::ActivityMonth>(month),
-      year,
-      base::BindOnce(&RewardsServiceImpl::OnGetMonthlyReportTransaction,
-                     AsWeakPtr(),
-                     month,
-                     year,
-                     monthly_report,
-                     std::move(callback)));
+      base::BindOnce(&RewardsServiceImpl::OnGetMonthlyReport,
+          AsWeakPtr(),
+          std::move(callback)));
 }
 
 void ConvertLedgerToServiceTransactionReportList(
     ledger::TransactionReportInfoList list,
     std::vector<TransactionReportInfo>* converted_list) {
   DCHECK(converted_list);
-  if (!converted_list) {
-    return;
-  }
 
   TransactionReportInfo info;
   for (const auto& item : list) {
@@ -3382,39 +3356,10 @@ void ConvertLedgerToServiceTransactionReportList(
   }
 }
 
-void RewardsServiceImpl::OnGetMonthlyReportTransaction(
-    const uint32_t month,
-    const uint32_t year,
-    const MonthlyReport& report,
-    GetMonthlyReportCallback callback,
-    ledger::TransactionReportInfoList list) {
-  MonthlyReport monthly_report;
-  monthly_report = report;
-
-  std::vector<TransactionReportInfo> converted_list;
-  if (list.size() > 0) {
-    ConvertLedgerToServiceTransactionReportList(
-        std::move(list),
-        &converted_list);
-  }
-  monthly_report.transactions = converted_list;
-
-  bat_ledger_->GetContributionReport(
-      static_cast<ledger::ActivityMonth>(month),
-      year,
-      base::BindOnce(&RewardsServiceImpl::OnGetMonthlyReportContribution,
-                     AsWeakPtr(),
-                     monthly_report,
-                     std::move(callback)));
-}
-
 void ConvertLedgerToServiceContributionReportList(
     ledger::ContributionReportInfoList list,
     std::vector<ContributionReportInfo>* converted_list) {
   DCHECK(converted_list);
-  if (!converted_list) {
-    return;
-  }
 
   ContributionReportInfo info;
   for (auto& item : list) {
@@ -3430,20 +3375,36 @@ void ConvertLedgerToServiceContributionReportList(
   }
 }
 
-void RewardsServiceImpl::OnGetMonthlyReportContribution(
-    const MonthlyReport& report,
+void RewardsServiceImpl::OnGetMonthlyReport(
     GetMonthlyReportCallback callback,
-    ledger::ContributionReportInfoList list) {
+    const ledger::Result result,
+    ledger::MonthlyReportInfoPtr report) {
   MonthlyReport monthly_report;
-  monthly_report = report;
 
-  std::vector<ContributionReportInfo> converted_list;
-  if (list.size() > 0) {
-    ConvertLedgerToServiceContributionReportList(
-        std::move(list),
-        &converted_list);
+  if (result != ledger::Result::LEDGER_OK || !report) {
+    std::move(callback).Run(monthly_report);
+    return;
   }
-  monthly_report.contributions = converted_list;
+
+  BalanceReport balance_report;
+  LedgerToServiceBalanceReport(std::move(report->balance), &balance_report);
+  monthly_report.balance = balance_report;
+
+  std::vector<TransactionReportInfo> transaction_report;
+  if (!report->transactions.empty()) {
+    ConvertLedgerToServiceTransactionReportList(
+        std::move(report->transactions),
+        &transaction_report);
+  }
+  monthly_report.transactions = transaction_report;
+
+  std::vector<ContributionReportInfo> contribution_report;
+  if (!report->contributions.empty()) {
+    ConvertLedgerToServiceContributionReportList(
+        std::move(report->contributions),
+        &contribution_report);
+  }
+  monthly_report.contributions = contribution_report;
 
   std::move(callback).Run(monthly_report);
 }
@@ -3505,6 +3466,20 @@ bool RewardsServiceImpl::IsWalletInitialized() {
 void RewardsServiceImpl::ForTestingSetTestResponseCallback(
     GetTestResponseCallback callback) {
   test_response_callback_ = callback;
+}
+
+void RewardsServiceImpl::GetAllMonthlyReportIds(
+      GetAllMonthlyReportIdsCallback callback) {
+  bat_ledger_->GetAllMonthlyReportIds(
+      base::BindOnce(&RewardsServiceImpl::OnGetAllMonthlyReportIds,
+                     AsWeakPtr(),
+                     std::move(callback)));
+}
+
+void RewardsServiceImpl::OnGetAllMonthlyReportIds(
+    GetAllMonthlyReportIdsCallback callback,
+    const std::vector<std::string>& ids) {
+  std::move(callback).Run(ids);
 }
 
 }  // namespace brave_rewards

@@ -23,7 +23,8 @@ struct ADS_EXPORT AdsHistory {
 
   enum class FilterType {
     kNone = 0,
-    kConfirmationType
+    kConfirmationType,
+    kAdConversionConfirmationType
   };
 
   enum class SortType {

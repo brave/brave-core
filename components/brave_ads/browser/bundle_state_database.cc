@@ -482,7 +482,7 @@ bool BundleStateDatabase::GetCreativeAdNotifications(
     info.advertiser_id = statement.ColumnString(10);
     info.per_day = statement.ColumnInt(11);
     info.total_max = statement.ColumnInt(12);
-    info.category = statement.ColumnInt(13);
+    info.category = statement.ColumnString(13);
     ads->emplace_back(info);
   }
 

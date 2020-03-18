@@ -137,6 +137,8 @@ class AdsServiceImpl : public AdsService,
   // AdsClient implementation
   bool IsEnabled() const override;
 
+  const std::string GetCountryCode() const override;
+
   bool ShouldAllowAdConversionTracking() const override;
 
   uint64_t GetAdsPerHour() const override;

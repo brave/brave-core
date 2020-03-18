@@ -25,7 +25,7 @@ interface BatLedgerService {
 
 interface BatLedger {
   Initialize(bool execute_create_script) => (ledger.mojom.Result result);
-  CreateWallet(string safetynet_token) => (ledger.mojom.Result result);
+  CreateWallet() => (ledger.mojom.Result result);
   FetchWalletProperties() =>
       (ledger.mojom.Result result, ledger.mojom.WalletProperties properties);
 
@@ -150,6 +150,10 @@ interface BatLedger {
   GetAllContributions() => (array<ledger.mojom.ContributionInfo> list);
 
   SavePublisherInfo(ledger.mojom.PublisherInfo info) => (ledger.mojom.Result result);
+
+  GetMonthlyReport(ledger.mojom.ActivityMonth month, int32 year) => (ledger.mojom.Result result, ledger.mojom.MonthlyReportInfo report);
+
+  GetAllMonthlyReportIds() => (array<string> ids);
 };
 
 interface BatLedgerClient {

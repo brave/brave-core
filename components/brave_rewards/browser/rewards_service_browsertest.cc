@@ -240,16 +240,22 @@ class BraveRewardsBrowserTest
         ? "2018-08-01T09:53:51.258Z"
         : "null";
 
+    const std::string status = verified_wallet_
+        ? "ok"
+        : "pending";
+
     const std::string name = "Test User";
 
     return base::StringPrintf(
       "{"
         "\"name\": \"%s\","
         "\"memberAt\": \"%s\","
+        "\"status\": \"%s\","
         "\"currencies\": [\"BAT\"]"
       "}",
       name.c_str(),
-      verified.c_str());
+      verified.c_str(),
+      status.c_str());
   }
 
   std::vector<double> GetSiteBannerTipOptions(
@@ -996,7 +1002,7 @@ class BraveRewardsBrowserTest
 
   std::string RewardsPageTipSummaryAmount() const {
     std::string amount = ElementInnerText(
-        "[data-test-id=summary-tips] [color=donation] span span");
+        "[data-test-id=summary-tips] [color=contribute] span span");
     return amount + " BAT";
   }
 
@@ -1225,7 +1231,7 @@ class BraveRewardsBrowserTest
 
       // Check that tip table shows the appropriate tip amount
       const std::string selector = monthly
-          ? "[data-test-id='summary-donation']"
+          ? "[data-test-id='summary-monthly']"
           : "[data-test-id='summary-tips']";
 
       std::string page_amount = ElementInnerText(selector);
@@ -1329,11 +1335,13 @@ class BraveRewardsBrowserTest
       const std::string& viewing_id,
       const double amount,
       const int32_t type) {
-    UpdateContributionBalance(amount, true);
-
     const auto converted_result = static_cast<ledger::Result>(result);
     const auto converted_type =
         static_cast<ledger::RewardsType>(type);
+
+    if (converted_result == ledger::Result::LEDGER_OK) {
+      UpdateContributionBalance(amount, true);
+    }
 
     if (converted_type == ledger::RewardsType::AUTO_CONTRIBUTE) {
       ac_reconcile_completed_ = true;
@@ -1345,7 +1353,9 @@ class BraveRewardsBrowserTest
 
     if (converted_type == ledger::RewardsType::ONE_TIME_TIP ||
         converted_type == ledger::RewardsType::RECURRING_TIP) {
-      reconciled_tip_total_ += amount;
+      if (converted_result == ledger::Result::LEDGER_OK) {
+        reconciled_tip_total_ += amount;
+      }
 
       // Single tip tracking
       tip_reconcile_completed_ = true;
@@ -1445,7 +1455,10 @@ class BraveRewardsBrowserTest
       const double amount,
       const ledger::PublisherStatus status,
       const bool should_contribute = false,
-      const bool recurring = false) {
+      const bool recurring = false,
+      const ledger::Result result = ledger::Result::LEDGER_OK) {
+    tip_reconcile_completed_ = false;
+    pending_tip_saved_ = false;
     auto site = std::make_unique<brave_rewards::ContentSite>();
     site->id = publisher_key;
     site->name = publisher_key;
@@ -1462,7 +1475,7 @@ class BraveRewardsBrowserTest
     if (should_contribute) {
       // Wait for reconciliation to complete
       WaitForTipReconcileCompleted();
-      ASSERT_EQ(tip_reconcile_status_, ledger::Result::LEDGER_OK);
+      ASSERT_EQ(tip_reconcile_status_, result);
       return;
     }
 
@@ -2799,13 +2812,16 @@ IN_PROC_BROWSER_TEST_F(
 
   // Tip connected publisher
   const double amount = 5.0;
-  const bool should_contribute = false;
+  const bool should_contribute = true;
   TipViaCode(
       "bumpsmack.com",
       amount,
       ledger::PublisherStatus::CONNECTED,
-      should_contribute);
-  VerifyTip(amount, should_contribute, false, true);
+      should_contribute,
+      false,
+      ledger::Result::LEDGER_ERROR);
+
+  ASSERT_EQ(RewardsPageBalance(), ExpectedBalanceString());
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -2830,13 +2846,16 @@ IN_PROC_BROWSER_TEST_F(
 
   // Tip verified publisher
   const double amount = 5.0;
-  const bool should_contribute = false;
+  const bool should_contribute = true;
   TipViaCode(
       "bumpsmack.com",
       amount,
       ledger::PublisherStatus::CONNECTED,
-      should_contribute);
-  VerifyTip(amount, should_contribute, false, true);
+      should_contribute,
+      false,
+      ledger::Result::LEDGER_ERROR);
+
+  ASSERT_EQ(RewardsPageBalance(), ExpectedBalanceString());
 }
 
 // Ensure that we can make a one-time tip of a non-integral amount.

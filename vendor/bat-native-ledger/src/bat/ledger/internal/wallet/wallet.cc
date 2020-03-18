@@ -46,8 +46,7 @@ Wallet::Wallet(bat_ledger::LedgerImpl* ledger) :
 Wallet::~Wallet() {
 }
 
-void Wallet::CreateWalletIfNecessary(const std::string& safetynet_token,
-    ledger::CreateWalletCallback callback) {
+void Wallet::CreateWalletIfNecessary(ledger::CreateWalletCallback callback) {
   const auto payment_id = ledger_->GetPaymentId();
   const auto stamp = ledger_->GetBootStamp();
   const auto persona_id = ledger_->GetPersonaId();
@@ -62,7 +61,7 @@ void Wallet::CreateWalletIfNecessary(const std::string& safetynet_token,
      "We need to clear persona Id and start again";
   ledger_->SetPersonaId("");
 
-  create_->Start(safetynet_token, std::move(callback));
+  create_->Start(std::move(callback));
 }
 
 void Wallet::GetWalletProperties(
@@ -268,9 +267,12 @@ void Wallet::OnTransferAnonToExternalWallet(
     ledger::TransferAnonToExternalWalletCallback callback) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
-  if (response_status_code == net::HTTP_OK ||
-      response_status_code == net::HTTP_CONFLICT) {
+  if (response_status_code == net::HTTP_OK) {
     callback(ledger::Result::LEDGER_OK);
+    return;
+  }
+  if (response_status_code == net::HTTP_CONFLICT) {
+    callback(ledger::Result::ALREADY_EXISTS);
     return;
   }
 
@@ -281,7 +283,6 @@ void Wallet::TransferAnonToExternalWallet(
     ledger::ExternalWalletPtr wallet,
     const bool allow_zero_balance,
     ledger::TransferAnonToExternalWalletCallback callback) {
-
   FetchBalance(std::bind(&Wallet::OnTransferAnonToExternalWalletBalance,
                this,
                _1,

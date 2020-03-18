@@ -14,6 +14,12 @@ enum ContributionStep {
   STEP_SUGGESTIONS = 2
 };
 
+enum ContributionProcessor {
+  NONE = 0,
+  BRAVE_TOKENS = 1,
+  UPHOLD = 2
+};
+
 struct ContributionInfo {
   string contribution_id;
   double amount;
@@ -21,6 +27,7 @@ struct ContributionInfo {
   ContributionStep step;
   int32 retry_count;
   uint64 created_at;
+  ContributionProcessor processor;
 
   array<ContributionPublisher> publishers;
 };
@@ -422,4 +429,10 @@ struct ContributionReportInfo {
   ReportType type;
   array<PublisherInfo> publishers;
   uint64 created_at;
+};
+
+struct MonthlyReportInfo {
+  BalanceReportInfo balance;
+  array<TransactionReportInfo> transactions;
+  array<ContributionReportInfo> contributions;
 };

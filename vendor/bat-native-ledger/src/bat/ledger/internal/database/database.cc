@@ -119,8 +119,9 @@ void Database::GetContributionReport(
 }
 
 void Database::GetIncompleteContributions(
+    const ledger::ContributionProcessor processor,
     ledger::ContributionInfoListCallback callback) {
-  contribution_info_->GetIncompletedRecords(callback);
+  contribution_info_->GetIncompletedRecords(processor, callback);
 }
 
 void Database::UpdateContributionInfoStepAndCount(
@@ -329,7 +330,7 @@ void Database::SaveUnblindedTokenList(
 }
 
 void Database::GetAllUnblindedTokens(
-    ledger::GetAllUnblindedTokensCallback callback) {
+    ledger::GetUnblindedTokenListCallback callback) {
   unblinded_token_->GetAllRecords(callback);
 }
 
@@ -343,6 +344,12 @@ void Database::DeleteUnblindedTokensForPromotion(
     const std::string& promotion_id,
     ledger::ResultCallback callback) {
   unblinded_token_->DeleteRecordsForPromotion(promotion_id, callback);
+}
+
+void Database::GetUnblindedTokensByPromotionType(
+    const std::vector<ledger::PromotionType>& promotion_types,
+    ledger::GetUnblindedTokenListCallback callback) {
+  unblinded_token_->GetRecordsByPromotionType(promotion_types, callback);
 }
 
 }  // namespace braveledger_database

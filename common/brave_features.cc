@@ -19,4 +19,8 @@ const base::Feature kBraveRewards{"BraveRewards",
 #endif
 #endif  // defined(OS_ANDROID)
 
+const base::Feature kUseDevUpdaterUrl{
+    "UseDevUpdaterUrl",
+    base::FEATURE_DISABLED_BY_DEFAULT};
+
 }  // namespace features

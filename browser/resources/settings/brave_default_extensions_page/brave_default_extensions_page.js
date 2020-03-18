@@ -37,6 +37,7 @@ Polymer({
     this.onHangoutsEnabledChange_ = this.onHangoutsEnabledChange_.bind(this)
     this.onIPFSCompanionEnabledChange_ = this.onIPFSCompanionEnabledChange_.bind(this)
     this.openExtensionsPage_ = this.openExtensionsPage_.bind(this)
+    this.openKeyboardShortcutsPage_ = this.openKeyboardShortcutsPage_.bind(this)
     this.restartBrowser_ = this.restartBrowser_.bind(this)
     this.onTorEnabledChange_ = this.onTorEnabledChange_.bind(this)
 
@@ -91,6 +92,10 @@ Polymer({
 
   openExtensionsPage_: function() {
     window.open("chrome://extensions", "_self");
+  },
+
+  openKeyboardShortcutsPage_: function() {
+    window.open("chrome://extensions/shortcuts", "_self");
   },
 
   openWebStoreUrl_: function() {

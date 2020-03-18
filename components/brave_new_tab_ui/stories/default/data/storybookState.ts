@@ -9,7 +9,7 @@ function generateStaticImages (images: NewTab.Image[]) {
     Object.assign(staticImages, {
       [image.author]: {
         ...image,
-        source: require('../../../../img/newtab/' + image.source)
+        source: require('../../../../img/newtab/backgrounds/' + image.source)
       }
     })
   }
@@ -60,5 +60,6 @@ export const getNewTabData = (state: NewTab.State) => ({
     adsBlockedStat: number('Number of blocked items', 1337),
     httpsUpgradesStat: number('Number of HTTPS upgrades', 1337)
   },
-  initialDataLoaded: true
+  initialDataLoaded: true,
+  currentStackWidget: 'rewards' as NewTab.StackWidget
 })

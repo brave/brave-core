@@ -43,6 +43,7 @@ class DatabaseContributionInfo: public DatabaseTable {
       ledger::GetContributionReportCallback callback);
 
   void GetIncompletedRecords(
+      const ledger::ContributionProcessor processor,
       ledger::ContributionInfoListCallback callback);
 
   void UpdateStepAndCount(
@@ -77,6 +78,8 @@ class DatabaseContributionInfo: public DatabaseTable {
 
   bool MigrateToV16(ledger::DBTransaction* transaction);
 
+  bool MigrateToV17(ledger::DBTransaction* transaction);
+
   void OnGetRecord(
       ledger::DBCommandResponsePtr response,
       ledger::GetContributionInfoCallback callback);
@@ -95,7 +98,7 @@ class DatabaseContributionInfo: public DatabaseTable {
       ledger::GetContributionReportCallback callback);
 
   void OnGetContributionReportPublishers(
-      ContributionPublisherInfoMap publisher_map,
+      std::vector<ContributionPublisherInfoPair> publisher_pair_list,
       const std::string& contribution_list_string,
       ledger::GetContributionReportCallback callback);
 

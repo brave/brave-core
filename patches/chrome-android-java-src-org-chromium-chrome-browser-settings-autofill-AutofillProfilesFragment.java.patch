@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill/AutofillProfilesFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill/AutofillProfilesFragment.java
+index ba8a7eaea7bd1edf458065d7d85d6ee2f132e297..0a11344853175a73ca65b954930bac352fecb9af 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill/AutofillProfilesFragment.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill/AutofillProfilesFragment.java
+@@ -27,7 +27,7 @@ import org.chromium.chrome.browser.widget.prefeditor.EditorObserverForTest;
+ /**
+  * Autofill profiles fragment, which allows the user to edit autofill profiles.
+  */
+-public class AutofillProfilesFragment extends PreferenceFragmentCompat
++public class AutofillProfilesFragment extends org.chromium.chrome.browser.settings.BravePreferenceFragment
+         implements PersonalDataManager.PersonalDataManagerObserver {
+     private static EditorObserverForTest sObserverForTest;
+     static final String PREF_NEW_PROFILE = "new_profile";

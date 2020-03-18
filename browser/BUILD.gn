@@ -7,6 +7,7 @@ import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
+import("//brave/components/speedreader/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 import("//chrome/common/features.gni")
@@ -211,11 +212,6 @@ source_set("browser_process") {
       "android/brave_stats_updater_android.cc",
       "android/brave_sync_worker.cc",
       "android/brave_sync_worker.h",
-      "android/preferences/background_video_playback_tab_helper.cc",
-      "android/preferences/background_video_playback_tab_helper.h",
-      "android/preferences/brave_pref_service_bridge.cc",
-      "android/preferences/website/desktop_mode_tab_helper.cc",
-      "android/preferences/website/desktop_mode_tab_helper.h",
     ]
 
     if (brave_rewards_enabled) {
@@ -240,6 +236,7 @@ source_set("browser_process") {
     }
 
     deps += [
+      "//brave/browser/android/preferences",
       "//brave/build/android:jni_headers",
       "//chrome/android:jni_headers",
     ]
@@ -294,6 +291,10 @@ source_set("browser_process") {
     deps += [
       "//brave/components/brave_perf_predictor/browser",
     ]
+  }
+
+  if (enable_speedreader) {
+    deps += [ "//brave/components/speedreader" ]
   }
 
   if (is_win && is_official_build) {

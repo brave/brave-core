@@ -84,37 +84,36 @@ class AutoplayPermissionContextTests
   DISALLOW_COPY_AND_ASSIGN(AutoplayPermissionContextTests);
 };
 
-// Autoplay permission status should still be default(block) even for
-// insecure origin
+// Autoplay permission status should be default even for insecure origin
 TEST_F(AutoplayPermissionContextTests, TestInsecureQueryingUrl) {
   AutoplayPermissionContextTest permission_context(profile());
   GURL insecure_url("http://www.example.com");
   GURL secure_url("https://www.example.com");
 
   // Check that there is no saved content settings.
-  EXPECT_EQ(CONTENT_SETTING_BLOCK,
+  EXPECT_EQ(CONTENT_SETTING_ALLOW,
             HostContentSettingsMapFactory::GetForProfile(profile())
                 ->GetContentSetting(
                     insecure_url.GetOrigin(), insecure_url.GetOrigin(),
                     ContentSettingsType::AUTOPLAY, std::string()));
   EXPECT_EQ(
-      CONTENT_SETTING_BLOCK,
+      CONTENT_SETTING_ALLOW,
       HostContentSettingsMapFactory::GetForProfile(profile())
           ->GetContentSetting(secure_url.GetOrigin(), insecure_url.GetOrigin(),
                               ContentSettingsType::AUTOPLAY, std::string()));
   EXPECT_EQ(
-      CONTENT_SETTING_BLOCK,
+      CONTENT_SETTING_ALLOW,
       HostContentSettingsMapFactory::GetForProfile(profile())
           ->GetContentSetting(insecure_url.GetOrigin(), secure_url.GetOrigin(),
                               ContentSettingsType::AUTOPLAY, std::string()));
 
-  EXPECT_EQ(CONTENT_SETTING_BLOCK,
+  EXPECT_EQ(CONTENT_SETTING_ALLOW,
             permission_context
                 .GetPermissionStatus(nullptr /* render_frame_host */,
                                      insecure_url, insecure_url)
                 .content_setting);
 
-  EXPECT_EQ(CONTENT_SETTING_BLOCK,
+  EXPECT_EQ(CONTENT_SETTING_ALLOW,
             permission_context
                 .GetPermissionStatus(nullptr /* render_frame_host */,
                                      insecure_url, secure_url)

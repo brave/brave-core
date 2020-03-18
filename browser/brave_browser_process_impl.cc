@@ -25,7 +25,6 @@
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/components/brave_shields/browser/autoplay_whitelist_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_shields/browser/referrer_whitelist_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
@@ -69,6 +68,10 @@
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/common/tor/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/components/speedreader/speedreader_whitelist.h"
 #endif
 
 #if defined(OS_ANDROID)
@@ -178,7 +181,6 @@ void BraveBrowserProcessImpl::StartBraveServices() {
   ad_block_regional_service_manager()->Start();
   https_everywhere_service()->Start();
 
-  autoplay_whitelist_service();
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   extension_whitelist_service();
 #endif
@@ -186,6 +188,9 @@ void BraveBrowserProcessImpl::StartBraveServices() {
   tracking_protection_service();
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion_download_service();
+#endif
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  speedreader_whitelist();
 #endif
   // Now start the local data files service, which calls all observers.
   local_data_files_service()->Start();
@@ -229,16 +234,6 @@ BraveBrowserProcessImpl::ntp_sponsored_images_service() {
   }
 
   return ntp_sponsored_images_service_.get();
-}
-
-brave_shields::AutoplayWhitelistService*
-BraveBrowserProcessImpl::autoplay_whitelist_service() {
-  if (!autoplay_whitelist_service_) {
-    autoplay_whitelist_service_ =
-        brave_shields::AutoplayWhitelistServiceFactory(
-            local_data_files_service());
-  }
-  return autoplay_whitelist_service_.get();
 }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -388,3 +383,14 @@ void BraveBrowserProcessImpl::CreateNotificationPlatformBridge() {
 #endif
 #endif
 }
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+speedreader::SpeedreaderWhitelist*
+BraveBrowserProcessImpl::speedreader_whitelist() {
+  if (!speedreader_whitelist_) {
+    speedreader_whitelist_.reset(new speedreader::SpeedreaderWhitelist(
+        brave_component_updater_delegate()));
+  }
+  return speedreader_whitelist_.get();
+}
+#endif  // BUILDFLAG(ENABLE_SPEEDREADER)

@@ -33,12 +33,12 @@ import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
-import org.chromium.chrome.browser.offlinepages.prefetch.PrefetchConfiguration;
 import org.chromium.chrome.browser.onboarding.OnboardingActivity;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.PrefServiceBridge;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
+import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tabmodel.TabLaunchType;
@@ -48,6 +48,7 @@ import org.chromium.chrome.browser.tabmodel.TabSelectionType;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayout;
 import org.chromium.chrome.browser.util.BraveReferrer;
 import org.chromium.chrome.browser.util.UrlConstants;
+import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.components.bookmarks.BookmarkType;
 import org.chromium.ui.widget.Toast;
@@ -88,24 +89,24 @@ public abstract class BraveActivity extends ChromeActivity {
         // Disable NTP suggestions
         PrefServiceBridge.getInstance().setBoolean(Pref.NTP_ARTICLES_SECTION_ENABLED, false);
         PrefServiceBridge.getInstance().setBoolean(Pref.NTP_ARTICLES_LIST_VISIBLE, false);
-
-        // Disable page prefetching
-        PrefetchConfiguration.setPrefetchingEnabledInSettings(false);
-
-        // Set a flag in preferences that tabs pref migration is done
-        SharedPreferences.Editor sharedPreferencesEditor =
-            ContextUtils.getAppSharedPreferences().edit();
-        sharedPreferencesEditor.putBoolean(BraveHelper.PREF_TABS_SETTINGS_MIGRATED, true);
-        sharedPreferencesEditor.apply();
     }
 
     @Override
     public boolean onMenuOrKeyboardAction(int id, boolean fromMenu) {
+        final TabImpl currentTab = (TabImpl) getActivityTab();
+        // Handle items replaced by Brave.
+        if (id == R.id.info_menu_id && currentTab != null) {
+            ShareDelegate shareDelegate = (ShareDelegate) getShareDelegateSupplier().get();
+            shareDelegate.share(currentTab, false);
+            return true;
+        }
+
         if (super.onMenuOrKeyboardAction(id, fromMenu)) {
             return true;
         }
 
-        if (getActivityTab() == null) {
+        // Handle items added by Brave.
+        if (currentTab == null) {
             return false;
         } else if (id == R.id.exit_id) {
             ApplicationLifetime.terminate(false);
@@ -179,6 +180,9 @@ public abstract class BraveActivity extends ChromeActivity {
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
+
+        int appOpenCount = ContextUtils.getAppSharedPreferences().getInt(BackgroundImagesPreferences.PREF_APP_OPEN_COUNT, 0);
+        BackgroundImagesPreferences.setOnPreferenceValue(BackgroundImagesPreferences.PREF_APP_OPEN_COUNT , appOpenCount + 1);
 
         Context app = ContextUtils.getApplicationContext();
         if (null != app && (this instanceof ChromeTabbedActivity)) {
@@ -313,24 +317,60 @@ public abstract class BraveActivity extends ChromeActivity {
         }
     }
 
-    public void openNewOrSelectExistingTab(String url) {
+    public Tab selectExistingTab(String url) {
+        Tab tab = getActivityTab();
+        if (tab != null && tab.getUrl().equals(url)) {
+            return tab;
+        }
+
+        TabModel tabModel = getCurrentTabModel();
+        int tabIndex = TabModelUtils.getTabIndexByUrl(tabModel, url);
+
+        // Find if tab exists
+        if (tabIndex != TabModel.INVALID_TAB_INDEX){
+            tab = tabModel.getTabAt(tabIndex);
+            // Moving tab forward
+            tabModel.moveTab(tab.getId(), tabModel.getCount());
+            tabModel.setIndex(
+                    TabModelUtils.getTabIndexById(tabModel, tab.getId()),
+                    TabSelectionType.FROM_USER);
+            return tab;
+        } else {
+            return null;
+        }
+    }
+
+    public Tab openNewOrSelectExistingTab(String url) {
         TabModel tabModel = getCurrentTabModel();
         int tabRewardsIndex = TabModelUtils.getTabIndexByUrl(tabModel, url);
 
-        // Find if tab exists
-        if (tabRewardsIndex != TabModel.INVALID_TAB_INDEX){
-            Tab tab = tabModel.getTabAt(tabRewardsIndex);
-            // Moving tab forward
-            if (!getActivityTab().equals(tab)){
-                tabModel.moveTab(tab.getId(), tabModel.getCount());
-                tabModel.setIndex(
-                        TabModelUtils.getTabIndexById(tabModel, tab.getId()),
-                        TabSelectionType.FROM_USER);
-            }
+        Tab tab = selectExistingTab(url);
+        if (tab != null) {
+            return tab;
         } else { // Open a new tab
-            getTabCreator(false).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
+            return getTabCreator(false).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
         }
     }
 
     private native void nativeRestartStatsUpdater();
+
+    static public ChromeTabbedActivity getChromeTabbedActivity() {
+        for (Activity ref : ApplicationStatus.getRunningActivities()) {
+            if (!(ref instanceof ChromeTabbedActivity)) continue;
+
+            return (ChromeTabbedActivity)ref;
+        }
+
+        return null;
+    }
+
+    static public BraveActivity getBraveActivity() {
+        for (Activity ref : ApplicationStatus.getRunningActivities()) {
+            if (!(ref instanceof BraveActivity)) continue;
+
+            return (BraveActivity)ref;
+        }
+
+        return null;
+    }
 }

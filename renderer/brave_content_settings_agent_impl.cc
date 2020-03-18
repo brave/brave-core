@@ -244,14 +244,13 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool default_value) {
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
   auto origin = frame->GetDocument().GetSecurityOrigin();
   // default allow local files
-  if (origin.IsNull() || origin.Protocol().Ascii() == url::kFileScheme)
+  if (origin.IsNull() || origin.Protocol().Ascii() == url::kFileScheme) {
+    VLOG(1) << "AllowAutoplay=true because no origin or file scheme";
     return true;
-
-  bool allow = ContentSettingsAgentImpl::AllowAutoplay(default_value);
-  if (allow)
-    return true;
+  }
 
   // respect user's site blocklist, if any
+  bool ask = false;
   const GURL& primary_url = GetOriginOrURL(frame);
   const GURL& secondary_url =
       url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL();
@@ -261,42 +260,43 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool default_value) {
     if (rule.primary_pattern.Matches(primary_url) &&
         (rule.secondary_pattern == ContentSettingsPattern::Wildcard() ||
          rule.secondary_pattern.Matches(secondary_url))) {
-      if (rule.GetContentSetting() == CONTENT_SETTING_BLOCK)
+      if (rule.GetContentSetting() == CONTENT_SETTING_BLOCK) {
+        VLOG(1) << "AllowAutoplay=false because rule=CONTENT_SETTING_BLOCK";
         return false;
-    }
-  }
-
-  mojo::Remote<blink::mojom::PermissionService> permission_service;
-
-  render_frame()->GetBrowserInterfaceBroker()
-    ->GetInterface(permission_service.BindNewPipeAndPassReceiver());
-
-  if (permission_service.get()) {
-    // Check (synchronously) whether we already have permission to autoplay.
-    // This may call the autoplay whitelist service in the UI thread, which
-    // we need to wait for.
-    auto has_permission_descriptor =
-        blink::mojom::PermissionDescriptor::New();
-    has_permission_descriptor->name =
-        blink::mojom::PermissionName::AUTOPLAY;
-    blink::mojom::blink::PermissionStatus status;
-    if (permission_service->HasPermission(
-            std::move(has_permission_descriptor), &status)) {
-      allow = status == blink::mojom::PermissionStatus::GRANTED;
-      if (!allow) {
-        // Request permission (asynchronously) but exit this function without
-        // allowing autoplay. Depending on settings and previous user choices,
-        // this may display visible permissions UI, or an "autoplay blocked"
-        // message, or nothing. In any case, we can't wait for it now.
-        auto request_permission_descriptor =
-            blink::mojom::PermissionDescriptor::New();
-        request_permission_descriptor->name =
-            blink::mojom::PermissionName::AUTOPLAY;
-        permission_service->RequestPermission(
-            std::move(request_permission_descriptor), true, base::DoNothing());
+      } else if (rule.GetContentSetting() == CONTENT_SETTING_ASK) {
+        VLOG(1) << "AllowAutoplay=ask because rule=CONTENT_SETTING_ASK";
+        ask = true;
       }
     }
   }
 
+  if (ask) {
+    mojo::Remote<blink::mojom::PermissionService> permission_service;
+
+    render_frame()->GetBrowserInterfaceBroker()->GetInterface(
+        permission_service.BindNewPipeAndPassReceiver());
+
+    if (permission_service.get()) {
+      // Request permission (asynchronously) but exit this function without
+      // allowing autoplay. Depending on settings and previous user choices,
+      // this may display visible permissions UI, or an "autoplay blocked"
+      // message, or nothing. In any case, we can't wait for it now.
+      auto request_permission_descriptor =
+          blink::mojom::PermissionDescriptor::New();
+      request_permission_descriptor->name =
+          blink::mojom::PermissionName::AUTOPLAY;
+      permission_service->RequestPermission(
+          std::move(request_permission_descriptor), true, base::DoNothing());
+    }
+    return false;
+  }
+
+  bool allow = ContentSettingsAgentImpl::AllowAutoplay(default_value);
+  if (allow)
+    VLOG(1) << "AllowAutoplay=true because "
+               "ContentSettingsAgentImpl::AllowAutoplay says so";
+  else
+    VLOG(1) << "AllowAutoplay=false because "
+               "ContentSettingsAgentImpl::AllowAutoplay says so";
   return allow;
 }

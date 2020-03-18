@@ -29,7 +29,7 @@ const char kLocalDataFilesComponentBase64PublicKey[] =
     "xQIDAQAB";
 
 // The component in charge of delegating access to different DAT files
-// such as tracking protection and video autoplay whitelist
+// such as tracking protection.
 class LocalDataFilesService : public BraveComponent {
  public:
   explicit LocalDataFilesService(BraveComponent::Delegate* delegate);

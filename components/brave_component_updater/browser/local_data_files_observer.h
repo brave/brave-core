@@ -16,7 +16,7 @@ namespace brave_component_updater {
 
 // The abstract base class for observers of the local data files service,
 // which is the component that arbitrates access to various DAT files
-// like tracking protection, video autoplay whitelist, etc.
+// like tracking protection.
 class LocalDataFilesObserver {
  public:
   explicit LocalDataFilesObserver(

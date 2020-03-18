@@ -105,7 +105,12 @@ def get_previous_version_branch(version):
     if version[0] == 'v':
         version = version[1:]
     parts = version.split('.', 3)
-    parts[1] = str(int(parts[1]) - 1)
+    # TODO(bsclifton): hack used when deprecating dev channel
+    # remove me when 1.7 hits release channel
+    if int(parts[1]) == 7:
+        parts[1] = "5"
+    else:
+        parts[1] = str(int(parts[1]) - 1)
     parts[2] = 'x'
     return '.'.join(parts)
 
@@ -113,14 +118,12 @@ def get_previous_version_branch(version):
 def get_remote_channel_branches(raw_nightly_version):
     global config
     nightly_version = get_current_version_branch(raw_nightly_version)
-    dev_version = get_previous_version_branch(nightly_version)
-    beta_version = get_previous_version_branch(dev_version)
+    beta_version = get_previous_version_branch(nightly_version)
     release_version = get_previous_version_branch(beta_version)
     return {
         config.channel_names[0]: nightly_version,
-        config.channel_names[1]: dev_version,
-        config.channel_names[2]: beta_version,
-        config.channel_names[3]: release_version
+        config.channel_names[1]: beta_version,
+        config.channel_names[2]: release_version
     }
 
 
@@ -141,13 +144,13 @@ def parse_args():
                         default=None)
     parser.add_argument('--uplift-to',
                         help='starting at nightly (master), how far back to uplift the changes',
-                        default='dev')
+                        default='beta')
     parser.add_argument('--uplift-using-pr',
                         help='link to already existing pull request (number) to use as a reference for uplifting',
                         required=True)
     parser.add_argument('--start-from',
-                        help='instead of starting from nightly (default), start from dev/beta/release',
-                        default='dev')
+                        help='instead of starting from nightly (default), start from beta/release',
+                        default='beta')
     parser.add_argument('-v', '--verbose', action='store_true',
                         help='prints the output of the GitHub API calls')
     parser.add_argument('-n', '--dry-run', action='store_true',

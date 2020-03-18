@@ -36,6 +36,7 @@ declare namespace Rewards {
     contributionNonVerified: boolean
     contributionVideos: boolean
     createdTimestamp: number | null
+    currentCountryCode: string
     donationAbilityTwitter: boolean
     donationAbilityYT: boolean
     enabledAds: boolean
@@ -51,6 +52,7 @@ declare namespace Rewards {
     excludedList: ExcludedPublisher[]
     firstLoad: boolean | null
     monthlyReport: MonthlyReport
+    monthlyReportIds: string[]
     promotions?: Promotion[]
     pendingContributions: PendingContribution[]
     pendingContributionTotal: number
@@ -66,6 +68,9 @@ declare namespace Rewards {
       modalBackup: boolean
       modalRedirect: 'show' | 'hide' | 'error' | 'notAllowed'
       paymentIdCheck: boolean
+      promosDismissed?: {
+        [key: string]: boolean
+      }
       walletRecoverySuccess: boolean | null
       walletServerProblem: boolean
       walletCorrupted: boolean
@@ -88,7 +93,7 @@ declare namespace Rewards {
     year: number
     balance?: BalanceReport
     transactions?: TransactionReport[]
-    contribution?: ContributionReport[]
+    contributions?: ContributionReport[]
   }
 
   export enum ReportType {
@@ -183,6 +188,7 @@ declare namespace Rewards {
     favIcon: string
     id: string
     tipDate?: number
+    weight: number
   }
 
   export interface ExcludedPublisher {
@@ -211,7 +217,6 @@ declare namespace Rewards {
 
   export interface AdsData {
     adsEnabled: boolean
-    shouldAllowAdConversionTracking: boolean
     adsPerHour: number
     adsUIEnabled: boolean
     adsIsSupported: boolean

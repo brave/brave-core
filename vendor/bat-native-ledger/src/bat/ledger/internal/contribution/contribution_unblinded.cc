@@ -11,19 +11,14 @@
 #include "bat/ledger/internal/bat_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/contribution/contribution_unblinded.h"
+#include "bat/ledger/internal/contribution/contribution_util.h"
 #include "bat/ledger/internal/request/promotion_requests.h"
 #include "brave_base/random.h"
 #include "net/http/http_status_code.h"
 
-#include "wrapper.hpp"  // NOLINT
-
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
-
-using challenge_bypass_ristretto::UnblindedToken;
-using challenge_bypass_ristretto::VerificationKey;
-using challenge_bypass_ristretto::VerificationSignature;
 
 namespace {
 
@@ -46,35 +41,6 @@ std::string ConvertTypeToString(const ledger::RewardsType type) {
   }
 }
 
-void GenerateSuggestionMock(
-    const ledger::UnblindedToken& token,
-    const std::string& suggestion_encoded,
-    base::Value* result) {
-  result->SetStringKey("t", token.token_value);
-  result->SetStringKey("publicKey", token.public_key);
-  result->SetStringKey("signature", token.token_value);
-}
-
-void GenerateSuggestion(
-    const ledger::UnblindedToken& token,
-    const std::string& suggestion_encoded,
-    base::Value* result) {
-  UnblindedToken unblinded = UnblindedToken::decode_base64(token.token_value);
-  VerificationKey verification_key = unblinded.derive_verification_key();
-  VerificationSignature signature = verification_key.sign(suggestion_encoded);
-  const std::string pre_image = unblinded.preimage().encode_base64();
-
-  if (challenge_bypass_ristretto::exception_occurred()) {
-    challenge_bypass_ristretto::TokenException e =
-        challenge_bypass_ristretto::get_last_exception();
-    return;
-  }
-
-  result->SetStringKey("t", pre_image);
-  result->SetStringKey("publicKey", token.public_key);
-  result->SetStringKey("signature", signature.encode_base64());
-}
-
 bool HasTokenExpired(const ledger::UnblindedToken& token) {
   const uint64_t now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
 
@@ -95,13 +61,27 @@ std::string GenerateTokenPayload(
   base::Base64Encode(suggestion_json, &suggestion_encoded);
 
   base::Value credentials(base::Value::Type::LIST);
-  for (auto & item : list) {
+  for (auto& item : list) {
     base::Value token(base::Value::Type::DICTIONARY);
+    bool success;
     if (ledger::is_testing) {
-      GenerateSuggestionMock(item, suggestion_encoded, &token);
+      success = braveledger_contribution::GenerateSuggestionMock(
+          item.token_value,
+          item.public_key,
+          suggestion_encoded,
+          &token);
     } else {
-      GenerateSuggestion(item, suggestion_encoded, &token);
+      success = braveledger_contribution::GenerateSuggestion(
+          item.token_value,
+          item.public_key,
+          suggestion_encoded,
+          &token);
     }
+
+    if (!success) {
+      continue;
+    }
+
     credentials.GetList().push_back(std::move(token));
   }
 
@@ -191,7 +171,9 @@ void Unblinded::Initialize() {
   auto callback = std::bind(&Unblinded::OnGetNotCompletedContributions,
       this,
       _1);
-  ledger_->GetIncompleteContributions(callback);
+  ledger_->GetIncompleteContributions(
+      ledger::ContributionProcessor::BRAVE_TOKENS,
+      callback);
 }
 
 void Unblinded::OnGetNotCompletedContributions(

@@ -16,6 +16,7 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.util.DisplayMetrics;
 import android.widget.TextView;
+import android.os.Build;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveFeatureList;
@@ -24,15 +25,15 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.BraveHomepagePreferences;
-import org.chromium.chrome.browser.settings.download.BraveDownloadPreferences;
 import org.chromium.chrome.browser.settings.privacy.BravePrivacyPreferences;
+import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
 
 import java.util.HashMap;
 
 // This exculdes some settings in main settings screen.
-public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
+public class BraveMainPreferencesBase extends BravePreferenceFragment {
     private static final String PREF_STANDARD_SEARCH_ENGINE = "standard_search_engine";
     private static final String PREF_PRIVATE_SEARCH_ENGINE = "private_search_engine";
     private static final String PREF_SEARCH_ENGINE_SECTION = "search_engine_section";
@@ -45,8 +46,8 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
     private static final String PREF_CONTENT_SETTINGS = "content_settings";
     private static final String PREF_ABOUT_CHROME = "about_chrome";
     private static final String PREF_WELCOME_TOUR = "welcome_tour";
+    private static final String PREF_BACKGROUND_IMAGES = "backgroud_images";
     private static final String PREF_BRAVE_REWARDS = "brave_rewards";
-    private static final String PREF_DOWNLOADS = "downloads";
     private static final String PREF_HOMEPAGE = "homepage";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
@@ -93,6 +94,11 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
         if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) ||
                 BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
             removePreferenceIfPresent(PREF_BRAVE_REWARDS);
+            removePreferenceIfPresent(PREF_WELCOME_TOUR);
+        }
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            removePreferenceIfPresent(PREF_BACKGROUND_IMAGES);
         }
     }
 
@@ -168,7 +174,6 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
     private void overrideChromiumPreferences() {
         // Replace fragment.
         findPreference(PREF_PRIVACY).setFragment(BravePrivacyPreferences.class.getName());
-        findPreference(PREF_DOWNLOADS).setFragment(BraveDownloadPreferences.class.getName());
         findPreference(PREF_HOMEPAGE).setFragment(BraveHomepagePreferences.class.getName());
     }
 

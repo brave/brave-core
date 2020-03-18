@@ -41,6 +41,8 @@ using ContributionInfo = mojom::ContributionInfo;
 using ContributionInfoPtr = mojom::ContributionInfoPtr;
 using ContributionInfoList = std::vector<ContributionInfoPtr>;
 
+using ContributionProcessor = mojom::ContributionProcessor;
+
 using ContributionPublisher = mojom::ContributionPublisher;
 using ContributionPublisherPtr = mojom::ContributionPublisherPtr;
 using ContributionPublisherList =
@@ -73,6 +75,9 @@ using ExternalWalletPtr = mojom::ExternalWalletPtr;
 
 using MediaEventInfo = mojom::MediaEventInfo;
 using MediaEventInfoPtr = mojom::MediaEventInfoPtr;
+
+using MonthlyReportInfo = mojom::MonthlyReportInfo;
+using MonthlyReportInfoPtr = mojom::MonthlyReportInfoPtr;
 
 using OperatingSystem = mojom::OperatingSystem;
 

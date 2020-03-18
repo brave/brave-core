@@ -25,6 +25,7 @@
 #include "bat/ledger/internal/common/security_helper.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/promotion/promotion_util.h"
+#include "bat/ledger/internal/promotion/promotion_transfer.h"
 #include "brave_base/random.h"
 #include "net/http/http_status_code.h"
 
@@ -80,6 +81,7 @@ void HandleExpiredPromotions(
 Promotion::Promotion(bat_ledger::LedgerImpl* ledger) :
     attestation_(std::make_unique<braveledger_attestation::AttestationImpl>
         (ledger)),
+    transfer_(std::make_unique<PromotionTransfer>(ledger)),
     ledger_(ledger) {
 }
 
@@ -908,6 +910,12 @@ void Promotion::PromotionListDeleted(const ledger::Result result) {
   }
 
   ledger_->SetBooleanState(ledger::kStatePromotionCorruptedMigrated, true);
+}
+
+void Promotion::TransferTokens(
+    ledger::ExternalWalletPtr wallet,
+    ledger::ResultCallback callback) {
+  transfer_->Start(std::move(wallet), callback);
 }
 
 }  // namespace braveledger_promotion

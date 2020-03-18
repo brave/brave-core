@@ -21,6 +21,8 @@ class LedgerImpl;
 
 namespace braveledger_promotion {
 
+class PromotionTransfer;
+
 class Promotion {
  public:
   explicit Promotion(bat_ledger::LedgerImpl* ledger);
@@ -45,6 +47,10 @@ class Promotion {
 
   void ClaimTokens(
       ledger::PromotionPtr promotion,
+      ledger::ResultCallback callback);
+
+  void TransferTokens(
+      ledger::ExternalWalletPtr wallet,
       ledger::ResultCallback callback);
 
  private:
@@ -152,6 +158,7 @@ class Promotion {
   void PromotionListDeleted(const ledger::Result result);
 
   std::unique_ptr<braveledger_attestation::AttestationImpl> attestation_;
+  std::unique_ptr<PromotionTransfer> transfer_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   uint32_t last_check_timer_id_;
   uint32_t retry_timer_id_;

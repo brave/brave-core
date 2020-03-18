@@ -26,7 +26,8 @@ SafetyNetCheck::~SafetyNetCheck() {
 }
 
 bool SafetyNetCheck::clientAttestation(const std::string& nonce,
-    ClientAttestationCallback attest_callback) {
+    ClientAttestationCallback attest_callback,
+    const bool perform_attestation_on_client) {
   attest_callback_ = std::move(attest_callback);
   JNIEnv* env = base::android::AttachCurrentThread();
   base::android::ScopedJavaLocalRef<jstring> jnonce =
@@ -34,16 +35,21 @@ bool SafetyNetCheck::clientAttestation(const std::string& nonce,
   base::android::ScopedJavaLocalRef<jstring> japiKey =
     base::android::ConvertUTF8ToJavaString(env, SAFETYNET_API_KEY);
   return Java_SafetyNetCheck_clientAttestation(env, java_obj_, jnonce,
-    japiKey);
+    japiKey, perform_attestation_on_client);
 }
 
-void SafetyNetCheck::clientAttestationResult(JNIEnv* env,
-    const base::android::JavaRef<jobject>& jobj, jboolean jresult,
-    const base::android::JavaParamRef<jstring>& jresult_string) {
-  bool result = jresult;
+void SafetyNetCheck::clientAttestationResult(
+    JNIEnv* env,
+    const base::android::JavaRef<jobject>& jobj,
+    jboolean jtoken_received,
+    const base::android::JavaParamRef<jstring>& jresult_string,
+    jboolean jattestation_passed) {
+  bool token_received = jtoken_received;
+  bool attestation_passed = jattestation_passed;
   std::string result_string = base::android::ConvertJavaStringToUTF8(env,
     jresult_string);
-  std::move(attest_callback_).Run(result, result_string);
+  std::move(attest_callback_)
+      .Run(token_received, result_string, attestation_passed);
   if (runner_ != nullptr) {
     runner_->jobFinished(this);
   }
@@ -56,10 +62,12 @@ SafetyNetCheckRunner::~SafetyNetCheckRunner() {
 }
 
 void SafetyNetCheckRunner::performSafetynetCheck(const std::string& nonce,
-    ClientAttestationCallback attest_callback) {
+    ClientAttestationCallback attest_callback,
+    const bool perform_attestation_on_client) {
   jobs_.push_back(std::make_unique<SafetyNetCheck>(this));
-  if (!jobs_.back()->clientAttestation(nonce, std::move(attest_callback))) {
-    std::move(jobs_.back()->attest_callback_).Run(false, "");
+  if (!jobs_.back()->clientAttestation(nonce, std::move(attest_callback),
+      perform_attestation_on_client)) {
+    std::move(jobs_.back()->attest_callback_).Run(false, "", false);
     jobFinished(jobs_.back().get());
   }
 }

@@ -63,6 +63,12 @@ using GetBalanceReportCallback =
 using ContributionInfoListCallback =
     std::function<void(ContributionInfoList)>;
 
+using GetMonthlyReportCallback =
+    std::function<void(const ledger::Result, MonthlyReportInfoPtr)>;
+
+using GetAllMonthlyReportIdsCallback =
+    std::function<void(const std::vector<std::string>&)>;
+
 using RecoverWalletCallback = std::function<void(
     const ledger::Result,
     const double balance)>;
@@ -87,8 +93,7 @@ class LEDGER_EXPORT Ledger {
       InitializeCallback) = 0;
 
   // returns false if wallet initialization is already in progress
-  virtual void CreateWallet(const std::string& safetynet_token,
-                            CreateWalletCallback callback) = 0;
+  virtual void CreateWallet(CreateWalletCallback callback) = 0;
 
   virtual void OneTimeTip(
       const std::string& publisher_key,
@@ -345,6 +350,14 @@ class LEDGER_EXPORT Ledger {
   virtual void SavePublisherInfo(
       ledger::PublisherInfoPtr info,
       ledger::ResultCallback callback) = 0;
+
+  virtual void GetMonthlyReport(
+      const ledger::ActivityMonth month,
+      const int year,
+      ledger::GetMonthlyReportCallback callback) = 0;
+
+  virtual void GetAllMonthlyReportIds(
+      ledger::GetAllMonthlyReportIdsCallback callback) = 0;
 };
 
 }  // namespace ledger

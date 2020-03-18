@@ -66,7 +66,7 @@ TEST_F(UnblindedTest, NotEnoughFunds) {
 
   ON_CALL(*mock_ledger_impl_, GetAllUnblindedTokens(_))
     .WillByDefault(
-      Invoke([](ledger::GetAllUnblindedTokensCallback callback) {
+      Invoke([](ledger::GetUnblindedTokenListCallback callback) {
         ledger::UnblindedTokenList list;
 
         auto info = ledger::UnblindedToken::New();
@@ -92,7 +92,7 @@ TEST_F(UnblindedTest, PromotionExpiredDeleteToken) {
 
   ON_CALL(*mock_ledger_impl_, GetAllUnblindedTokens(_))
       .WillByDefault(
-        Invoke([](ledger::GetAllUnblindedTokensCallback callback) {
+        Invoke([](ledger::GetUnblindedTokenListCallback callback) {
           ledger::UnblindedTokenList list;
 
           auto info = ledger::UnblindedToken::New();
@@ -123,7 +123,7 @@ TEST_F(UnblindedTest, PromotionExpiredDeleteTokensNotEnoughFunds) {
 
   ON_CALL(*mock_ledger_impl_, GetAllUnblindedTokens(_))
       .WillByDefault(
-        Invoke([](ledger::GetAllUnblindedTokensCallback callback) {
+        Invoke([](ledger::GetUnblindedTokenListCallback callback) {
           ledger::UnblindedTokenList list;
 
           auto info = ledger::UnblindedToken::New();

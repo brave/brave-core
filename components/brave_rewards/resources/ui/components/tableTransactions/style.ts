@@ -3,14 +3,14 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled, { css } from 'styled-components'
-import { TransactionType } from './index'
+import { SummaryType as TransactionType } from '../modalActivity'
 
 const colors: Record<TransactionType, string> = {
-  deposit: '#9f22a1',
-  tipOnLike: '#696fdc',
-  donation: '#696fdc',
-  contribute: '#9752cb',
-  recurringDonation: '#696fdc'
+  grant: '#9f22a1',
+  ads: '#9752cb',
+  contribute: '#696fdc',
+  monthly: '#696fdc',
+  tip: '#696fdc'
 }
 
 const getColor = (p: StyleProps) => {

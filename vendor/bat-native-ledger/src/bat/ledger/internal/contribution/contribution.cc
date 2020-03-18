@@ -789,9 +789,8 @@ void Contribution::OnDeleteContributionQueue(const ledger::Result result) {
   CheckContributionQueue();
 }
 
-void Contribution::DeleteContributionQueue(
-    ledger::ContributionQueuePtr contribution) {
-  if (!contribution || contribution->id == 0) {
+void Contribution::DeleteContributionQueue(const uint64_t id) {
+  if (id == 0) {
     return;
   }
 
@@ -799,9 +798,7 @@ void Contribution::DeleteContributionQueue(
       this,
       _1);
 
-  ledger_->DeleteContributionQueue(
-      contribution->id,
-      callback);
+  ledger_->DeleteContributionQueue(id, callback);
 }
 
 bool Contribution::ProcessReconcileUnblindedTokens(
@@ -832,6 +829,7 @@ bool Contribution::ProcessReconcileUnblindedTokens(
   contribution->step = ledger::ContributionStep::STEP_START;
   contribution->retry_count = -1;
   contribution->created_at = now;
+  contribution->processor = ledger::ContributionProcessor::BRAVE_TOKENS;
 
   ledger::ReconcileDirections new_directions;
   bool full_amount = true;
@@ -925,6 +923,70 @@ bool Contribution::ProcessReconcileAnonize(
   return false;
 }
 
+bool Contribution::ProcessExternalWallet(
+    ledger::BalancePtr info,
+    ledger::RewardsType type,
+    const double fee,
+    const ledger::ReconcileDirections& directions) {
+  const double balance =
+      braveledger_wallet::Balance::GetPerWalletBalance(
+          ledger::kWalletUphold,
+          info->wallets);
+  if (balance == 0) {
+    return false;
+  }
+
+  const std::string contribution_id = ledger_->GenerateGUID();
+
+  const uint64_t now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+  auto contribution = ledger::ContributionInfo::New();
+  contribution->contribution_id = contribution_id;
+  contribution->amount = fee;
+  contribution->type = type;
+  contribution->step = ledger::ContributionStep::STEP_START;
+  contribution->retry_count = -1;
+  contribution->created_at = now;
+  // We should change this to NONE and update it in next phase
+  // when we add more external processors
+  contribution->processor = ledger::ContributionProcessor::UPHOLD;
+
+  ledger::ContributionPublisherList publisher_list;
+  for (auto& item : directions) {
+    auto publisher = ledger::ContributionPublisher::New();
+    publisher->contribution_id = contribution_id;
+    publisher->publisher_key = item.publisher_key;
+    publisher->total_amount =
+        (item.amount_percent * contribution->amount) / 100;
+    publisher->contributed_amount = 0;
+    publisher_list.push_back(std::move(publisher));
+  }
+
+  contribution->publishers = std::move(publisher_list);
+
+  auto save_callback = std::bind(&Contribution::OnProcessExternalWalletSaved,
+      this,
+      _1,
+      contribution_id,
+      info->wallets);
+
+  ledger_->SaveContributionInfo(std::move(contribution), save_callback);
+  return true;
+}
+
+void Contribution::OnProcessExternalWalletSaved(
+    const ledger::Result result,
+    const std::string& contribution_id,
+    base::flat_map<std::string, double> wallet_balances) {
+  auto wallets_callback = std::bind(&Contribution::OnExternalWallets,
+      this,
+      contribution_id,
+      wallet_balances,
+      _1);
+
+  // Check if we have token
+  ledger_->GetExternalWallets(wallets_callback);
+}
+
 void Contribution::ProcessReconcile(
     ledger::ContributionQueuePtr contribution,
     ledger::BalancePtr info) {
@@ -935,12 +997,12 @@ void Contribution::ProcessReconcile(
       info->total);
 
   if (!have_enough_balance) {
-    DeleteContributionQueue(contribution->Clone());
+    DeleteContributionQueue(contribution->id);
     return;
   }
 
   if (contribution->amount == 0 || contribution->publishers.empty()) {
-    DeleteContributionQueue(contribution->Clone());
+    DeleteContributionQueue(contribution->id);
     return;
   }
 
@@ -956,7 +1018,7 @@ void Contribution::ProcessReconcile(
       &anon_directions);
   if (result) {
     // contribution was processed in full
-    DeleteContributionQueue(contribution->Clone());
+    DeleteContributionQueue(contribution->id);
     return;
   }
 
@@ -969,26 +1031,20 @@ void Contribution::ProcessReconcile(
       &wallet_directions);
   if (result) {
     // contribution was processed in full
-    DeleteContributionQueue(contribution->Clone());
+    DeleteContributionQueue(contribution->id);
     return;
   }
 
-  auto wallet_reconcile = ledger::CurrentReconcileProperties();
-  wallet_reconcile.viewing_id = ledger_->GenerateGUID();
-  wallet_reconcile.fee = fee;
-  wallet_reconcile.directions = wallet_directions;
-  wallet_reconcile.type = contribution->type;
-  ledger_->AddReconcile(wallet_reconcile.viewing_id, wallet_reconcile);
+  result = ProcessExternalWallet(
+      info->Clone(),
+      contribution->type,
+      fee,
+      wallet_directions);
 
-  auto wallets_callback = std::bind(&Contribution::OnExternalWallets,
-      this,
-      wallet_reconcile.viewing_id,
-      info->wallets,
-      _1);
-
-  // Check if we have token
-  ledger_->GetExternalWallets(wallets_callback);
-  DeleteContributionQueue(contribution->Clone());
+  if (result) {
+    // contribution was processed in full
+    DeleteContributionQueue(contribution->id);
+  }
 }
 
 void Contribution::AdjustTipsAmounts(
@@ -1028,93 +1084,131 @@ void Contribution::AdjustTipsAmounts(
 }
 
 void Contribution::OnExternalWallets(
-    const std::string& viewing_id,
+    const std::string& contribution_id,
     base::flat_map<std::string, double> wallet_balances,
     std::map<std::string, ledger::ExternalWalletPtr> wallets) {
-  // In this phase we only support one wallet
-  // so we will just always pick uphold.
-  // In the future we will allow user to pick which wallet to use via UI
-  // and then we will extend this function
-  const double uphold_balance =
-      braveledger_wallet::Balance::GetPerWalletBalance(ledger::kWalletUphold,
-                                                       wallet_balances);
-  const auto reconcile = ledger_->GetReconcileById(viewing_id);
-
-  if (wallets.size() == 0 || uphold_balance < reconcile.fee) {
-    phase_one_->Complete(ledger::Result::NOT_ENOUGH_FUNDS,
-                         viewing_id,
-                         reconcile.type);
+  if (wallets.size() == 0) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "No external wallets";
+    ledger_->UpdateContributionInfoStepAndCount(
+        contribution_id,
+        ledger::ContributionStep::STEP_FAILED,
+        -1,
+        [](const ledger::Result _){});
     return;
   }
 
   ledger::ExternalWalletPtr wallet =
       braveledger_uphold::GetWallet(std::move(wallets));
-  if (!wallet || wallet->token.empty()) {
-    phase_one_->Complete(ledger::Result::LEDGER_ERROR,
-                         viewing_id,
-                         reconcile.type);
+
+  ledger_->GetContributionInfo(contribution_id,
+      std::bind(&Contribution::ExternalWalletContributionInfo,
+                this,
+                _1,
+                wallet_balances,
+                *wallet));
+}
+
+void Contribution::ExternalWalletContributionInfo(
+    ledger::ContributionInfoPtr contribution,
+    base::flat_map<std::string, double> wallet_balances,
+    const ledger::ExternalWallet& wallet) {
+  // In this phase we only support one wallet
+  // so we will just always pick uphold.
+  // In the future we will allow user to pick which wallet to use via UI
+  // and then we will extend this function
+  const double uphold_balance =
+      braveledger_wallet::Balance::GetPerWalletBalance(
+          ledger::kWalletUphold,
+          wallet_balances);
+
+  auto result = ledger::Result::LEDGER_OK;
+  if (uphold_balance < contribution->amount) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+    << "Not enough funds in uphold wallet";
+    result = ledger::Result::NOT_ENOUGH_FUNDS;
+  }
+
+  if (wallet.token.empty() ||
+      wallet.status != ledger::WalletStatus::VERIFIED) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+    << "Wallet token is empty/wallet is not verified " << wallet.status;
+    result = ledger::Result::LEDGER_ERROR;
+  }
+
+  if (result != ledger::Result::LEDGER_OK) {
+    ledger_->ContributionCompleted(
+        result,
+        contribution->amount,
+        contribution->contribution_id,
+        contribution->type);
     return;
   }
 
-  if (reconcile.type == ledger::RewardsType::AUTO_CONTRIBUTE) {
+  if (contribution->type == ledger::RewardsType::AUTO_CONTRIBUTE) {
     auto callback = std::bind(&Contribution::OnUpholdAC,
                               this,
                               _1,
                               _2,
-                              viewing_id);
-    uphold_->TransferFunds(reconcile.fee,
-                           ledger_->GetCardIdAddress(),
-                           std::move(wallet),
-                           callback);
+                              contribution->contribution_id);
+    uphold_->TransferFunds(
+        contribution->amount,
+        ledger_->GetCardIdAddress(),
+        ledger::ExternalWallet::New(wallet),
+        callback);
     return;
   }
 
-  for (const auto& direction : reconcile.directions) {
-    const auto amount = (direction.amount_percent * reconcile.fee) / 100;
+  for (const auto& publisher : contribution->publishers) {
     auto callback =
         std::bind(&Contribution::OnExternalWalletServerPublisherInfo,
           this,
           _1,
-          viewing_id,
-          static_cast<int>(amount),
-          *wallet);
+          contribution->contribution_id,
+          publisher->total_amount,
+          wallet,
+          contribution->type);
 
-    ledger_->GetServerPublisherInfo(direction.publisher_key, callback);
+    ledger_->GetServerPublisherInfo(publisher->publisher_key, callback);
   }
 }
 
 void Contribution::OnExternalWalletServerPublisherInfo(
     ledger::ServerPublisherInfoPtr info,
-    const std::string& viewing_id,
+    const std::string& contribution_id,
     double amount,
-    const ledger::ExternalWallet& wallet) {
-  const auto reconcile = ledger_->GetReconcileById(viewing_id);
-  if (!info) {
-    ledger_->ReconcileComplete(
+    const ledger::ExternalWallet& wallet,
+    const ledger::RewardsType type) {
+  if (!info || info->status != ledger::PublisherStatus::VERIFIED) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Publisher not found";
+    ledger_->ContributionCompleted(
         ledger::Result::LEDGER_ERROR,
         amount,
-        viewing_id,
-        reconcile.type);
+        contribution_id,
+        type);
     return;
   }
 
-  if (info->status != ledger::PublisherStatus::VERIFIED) {
-    auto save_callback = std::bind(&Contribution::OnSavePendingContribution,
-        this,
-        _1);
-    SavePendingContribution(
-        info->publisher_key,
-        amount,
-        static_cast<ledger::RewardsType>(reconcile.type),
-        save_callback);
-    return;
-  }
+  auto completed_callback = std::bind(&Contribution::ExternalWalletCompleted,
+      this,
+      _1,
+      amount,
+      contribution_id,
+      type);
 
   uphold_->StartContribution(
-      viewing_id,
-      info->address,
+      contribution_id,
+      std::move(info),
       amount,
-      ledger::ExternalWallet::New(wallet));
+      ledger::ExternalWallet::New(wallet),
+      completed_callback);
+}
+
+void Contribution::ExternalWalletCompleted(
+    const ledger::Result result,
+    const double amount,
+    const std::string& contribution_id,
+    const ledger::RewardsType type) {
+  ledger_->ContributionCompleted(result, amount, contribution_id, type);
 }
 
 void Contribution::OnUpholdAC(ledger::Result result,

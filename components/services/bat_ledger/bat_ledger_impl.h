@@ -32,8 +32,7 @@ class BatLedgerImpl : public mojom::BatLedger,
   void Initialize(
     const bool execute_create_script,
     InitializeCallback callback) override;
-  void CreateWallet(const std::string& safetynet_token,
-      CreateWalletCallback callback) override;
+  void CreateWallet(CreateWalletCallback callback) override;
   void FetchWalletProperties(FetchWalletPropertiesCallback callback) override;
 
   void GetAutoContributeProps(
@@ -209,6 +208,14 @@ class BatLedgerImpl : public mojom::BatLedger,
   void SavePublisherInfo(
       ledger::PublisherInfoPtr info,
       SavePublisherInfoCallback callback) override;
+
+  void GetMonthlyReport(
+      const ledger::ActivityMonth month,
+      const int year,
+      GetMonthlyReportCallback callback) override;
+
+  void GetAllMonthlyReportIds(
+      GetAllMonthlyReportIdsCallback callback) override;
 
  private:
   void SetCatalogIssuers(
@@ -391,6 +398,15 @@ class BatLedgerImpl : public mojom::BatLedger,
   static void OnSavePublisherInfo(
       CallbackHolder<SavePublisherInfoCallback>* holder,
       const ledger::Result result);
+
+  static void OnGetMonthlyReport(
+      CallbackHolder<GetMonthlyReportCallback>* holder,
+      const ledger::Result result,
+      ledger::MonthlyReportInfoPtr info);
+
+  static void OnGetAllMonthlyReportIds(
+      CallbackHolder<GetAllMonthlyReportIdsCallback>* holder,
+      const std::vector<std::string>& ids);
 
   std::unique_ptr<BatLedgerClientMojoProxy> bat_ledger_client_mojo_proxy_;
   std::unique_ptr<ledger::Ledger> ledger_;

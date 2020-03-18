@@ -80,7 +80,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "joe-gardner.webp", IDR_BRAVE_NEW_TAB_BACKGROUND8 },
         { "matt-palmer.webp", IDR_BRAVE_NEW_TAB_BACKGROUND10 },
         { "svalbard-jerol-soibam.webp", IDR_BRAVE_NEW_TAB_BACKGROUND12 },
-        { "will-christiansen-glacier-peak.webp", IDR_BRAVE_NEW_TAB_BACKGROUND13 },
+        { "will-christiansen-glacier-peak.webp", IDR_BRAVE_NEW_TAB_BACKGROUND13 },            // NOLINT
         { "will-christiansen-ice.webp", IDR_BRAVE_NEW_TAB_BACKGROUND14 },
 #endif
         // private tab
@@ -259,8 +259,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
       }
     }, {
       std::string("rewards"), {
-        { "adsAllowConversionTracking",  IDS_BRAVE_REWARDS_LOCAL_ADS_ALLOW_CONVERSION_TRACKING },  // NOLINT
-        { "adsAllowConversionTrackingDescription",  IDS_BRAVE_REWARDS_LOCAL_ADS_ALLOW_CONVERSION_TRACKING_DESCRIPTION },  // NOLINT
         { "adsCurrentEarnings",  IDS_BRAVE_REWARDS_LOCAL_ADS_CURRENT_EARNINGS },
         { "adsDesc",  IDS_BRAVE_REWARDS_LOCAL_ADS_DESC },
         { "adsDisabledTextOne",  IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT_ONE },                // NOLINT
@@ -360,9 +358,11 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "adsHistoryFilterSaved", IDS_BRAVE_UI_ADS_HISTORY_FILTER_SAVED },
         { "adsHistorySubTitle", IDS_BRAVE_UI_ADS_HISTORY_SUBTITLE },
         { "adsHistoryTitle", IDS_BRAVE_UI_ADS_HISTORY_TITLE },
+        { "adsGrantReceived", IDS_BRAVE_UI_ADS_GRANT_RECEIVED },
         { "all", IDS_BRAVE_UI_ADS_ALL },
         { "allowTip", IDS_BRAVE_UI_ALLOW_TIP },
         { "amount", IDS_BRAVE_UI_AMOUNT },
+        { "autoContribute", IDS_BRAVE_UI_BRAVE_CONTRIBUTE_TITLE },
         { "backup", IDS_BRAVE_UI_BACKUP },
         { "braveAdsDesc", IDS_BRAVE_UI_BRAVE_ADS_DESC },
         { "braveAdsDescPoints", IDS_BRAVE_UI_BRAVE_ADS_DESC_POINTS },
@@ -454,6 +454,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "monthOct", IDS_BRAVE_UI_MONTH_OCT },
         { "monthSep", IDS_BRAVE_UI_MONTH_SEP },
         { "monthlyTips", IDS_BRAVE_UI_MONTHLY_TIPS },
+        { "monthlyContributions", IDS_BRAVE_UI_MONTHLY_CONTRIBUTIONS },
         { "newGrant", IDS_BRAVE_UI_NEW_GRANT },
         { "newTokenGrant", IDS_BRAVE_UI_NEW_TOKEN_GRANT },
         { "noActivity", IDS_BRAVE_UI_NO_ACTIVITY },
@@ -473,7 +474,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "payment", IDS_BRAVE_UI_PAYMENT },
         { "paymentMonthly", IDS_BRAVE_UI_PAYMENT_MONTHLY },
         { "paymentNotMade", IDS_BRAVE_UI_PAYMENT_NOT_MADE },
-        { "paymentWarning", IDS_BRAVE_UI_PAYMENT_WARNING },
         { "pendingContributions", IDS_BRAVE_UI_PENDING_CONTRIBUTIONS },
         { "pendingContributionEmpty", IDS_BRAVE_UI_PENDING_CONTRIBUTION_EMPTY },
         { "pendingContributionRemoveAll", IDS_BRAVE_UI_PENDING_CONTRIBUTION_REMOVE_ALL },        // NOLINT
@@ -556,6 +556,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "titleETH", IDS_BRAVE_UI_TITLE_ETH},
         { "titleLTC", IDS_BRAVE_UI_TITLE_LTC},
         { "tokenGrantClaimed", IDS_BRAVE_UI_TOKEN_GRANT_CLAIMED },
+        { "tokenGrantReceived", IDS_BRAVE_UI_TOKEN_GRANT_RECEIVED },
         { "token", IDS_BRAVE_UI_TOKEN },
         { "tokens", IDS_BRAVE_UI_TOKENS },
         { "tokenGrants", IDS_BRAVE_UI_TOKEN_GRANTS },
@@ -621,7 +622,12 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "serviceTextReady", IDS_BRAVE_UI_SERVICE_TEXT_READY },
         { "showAll", IDS_BRAVE_UI_SHOW_ALL },
         { "viewedSites", IDS_BRAVE_UI_VIEWED_SITES },
-        { "termsOfService", IDS_BRAVE_UI_TERMS_OF_SERVICE }
+        { "termsOfService", IDS_BRAVE_UI_TERMS_OF_SERVICE },
+
+        { "tapNetworkTitle", IDS_BRAVE_UI_TAP_NETWORK_TITLE },
+        { "tapNetworkInfo", IDS_BRAVE_UI_TAP_NETWORK_INFO },
+        { "tapNetworkLink", IDS_BRAVE_UI_TAP_NETWORK_LINK },
+        { "tapNetworkDisclaimer", IDS_BRAVE_UI_TAP_NETWORK_DISCLAIMER }
       }
     }, {
       std::string("sync"), {

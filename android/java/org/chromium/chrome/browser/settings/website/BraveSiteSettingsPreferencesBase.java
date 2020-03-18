@@ -13,11 +13,12 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.settings.SettingsUtils;
+import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.settings.website.SiteSettingsCategory.Type;
 
 import java.util.HashMap;
 
-public class BraveSiteSettingsPreferencesBase extends PreferenceFragmentCompat {
+public class BraveSiteSettingsPreferencesBase extends BravePreferenceFragment {
     private static final String DESKTOP_MODE_CATEGORY_KEY = "desktop_mode_category";
     private static final String PLAY_YT_VIDEO_IN_BROWSER_CATEGORY_KEY = "play_yt_video_in_browser_category";
     private static final String ADS_KEY = "ads";

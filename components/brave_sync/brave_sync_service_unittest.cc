@@ -1631,3 +1631,51 @@ TEST_F(BraveSyncServiceTest, AddNonClonedBookmarkKeys) {
   EXPECT_FALSE(bookmark_copy->GetMetaInfo("version", &meta_version));
   EXPECT_TRUE(meta_version.empty());
 }
+
+TEST_F(BraveSyncServiceTest, MigrateDuplicatedBookmarksObjectIds) {
+  AsMutable(model()->other_node())->SetMetaInfo("order", kOtherNodeOrder);
+
+  const bookmarks::BookmarkNode* bookmark_a1 =
+      model()->AddURL(model()->other_node(), 0, base::ASCIIToUTF16("A1"),
+                      GURL("https://a1.com"));
+
+  AsMutable(bookmark_a1)->SetMetaInfo("object_id", "object_id_value");
+  AsMutable(bookmark_a1)->SetMetaInfo("order", "255.255.255.3");
+  AsMutable(bookmark_a1)->SetMetaInfo("sync_timestamp", "sync_timestamp_value");
+  AsMutable(bookmark_a1)->SetMetaInfo("version", "version_value");
+
+  model()->Copy(bookmark_a1, model()->other_node(), 1);
+
+  const bookmarks::BookmarkNode* bookmark_copy =
+      model()->other_node()->children().at(1).get();
+
+  std::string meta_object_id;
+  EXPECT_TRUE(bookmark_copy->GetMetaInfo("object_id", &meta_object_id));
+  EXPECT_EQ(meta_object_id, "object_id_value");
+  std::string meta_order;
+  EXPECT_TRUE(bookmark_copy->GetMetaInfo("order", &meta_order));
+  EXPECT_EQ(meta_order, "255.255.255.3");
+  std::string meta_sync_timestamp;
+  EXPECT_TRUE(
+      bookmark_copy->GetMetaInfo("sync_timestamp", &meta_sync_timestamp));
+  EXPECT_EQ(meta_sync_timestamp, "sync_timestamp_value");
+  std::string meta_version;
+  EXPECT_TRUE(bookmark_copy->GetMetaInfo("version", &meta_version));
+  EXPECT_EQ(meta_version, "version_value");
+
+  sync_service()->AddNonClonedBookmarkKeys(model());
+
+  // Do the migration
+  BraveProfileSyncServiceImpl::MigrateDuplicatedBookmarksObjectIds(profile(),
+                                                                   model());
+  bookmark_copy = model()->other_node()->children().at(1).get();
+
+  std::string meta_migrated_object_id;
+  EXPECT_TRUE(
+      bookmark_copy->GetMetaInfo("object_id", &meta_migrated_object_id));
+  EXPECT_NE(meta_migrated_object_id, "object_id_value");
+
+  std::string meta_migrated_order;
+  EXPECT_TRUE(bookmark_copy->GetMetaInfo("order", &meta_migrated_order));
+  EXPECT_NE(meta_migrated_order, "255.255.255.3");
+}

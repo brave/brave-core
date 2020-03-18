@@ -13,6 +13,7 @@
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
+#include "brave/components/speedreader/buildflags.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "extensions/buildflags/buildflags.h"
 #include "third_party/widevine/cdm/buildflags.h"
@@ -38,7 +39,6 @@ namespace brave_shields {
 class AdBlockService;
 class AdBlockCustomFiltersService;
 class AdBlockRegionalServiceManager;
-class AutoplayWhitelistService;
 class HTTPSEverywhereService;
 class ReferrerWhitelistService;
 class TrackingProtectionService;
@@ -58,6 +58,10 @@ namespace extensions {
 class BraveTorClientUpdater;
 }
 
+namespace speedreader {
+class SpeedreaderWhitelist;
+}
+
 class BraveBrowserProcessImpl : public BrowserProcessImpl {
  public:
   explicit BraveBrowserProcessImpl(StartupData* startup_data);
@@ -73,7 +77,6 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   brave_shields::AdBlockCustomFiltersService* ad_block_custom_filters_service();
   brave_shields::AdBlockRegionalServiceManager*
   ad_block_regional_service_manager();
-  brave_shields::AutoplayWhitelistService* autoplay_whitelist_service();
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   brave_component_updater::ExtensionWhitelistService*
   extension_whitelist_service();
@@ -95,6 +98,9 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   brave::BraveStatsUpdater* brave_stats_updater();
   ntp_sponsored_images::NTPSponsoredImagesService*
       ntp_sponsored_images_service();
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  speedreader::SpeedreaderWhitelist* speedreader_whitelist();
+#endif
 
  private:
   // BrowserProcessImpl overrides:
@@ -124,8 +130,6 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
       ad_block_custom_filters_service_;
   std::unique_ptr<brave_shields::AdBlockRegionalServiceManager>
       ad_block_regional_service_manager_;
-  std::unique_ptr<brave_shields::AutoplayWhitelistService>
-      autoplay_whitelist_service_;
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   std::unique_ptr<brave_component_updater::ExtensionWhitelistService>
       extension_whitelist_service_;
@@ -153,6 +157,10 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   scoped_refptr<brave::BraveP3AService> brave_p3a_service_;
   std::unique_ptr<ntp_sponsored_images::NTPSponsoredImagesService>
       ntp_sponsored_images_service_;
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  std::unique_ptr<speedreader::SpeedreaderWhitelist> speedreader_whitelist_;
+#endif
 
   SEQUENCE_CHECKER(sequence_checker_);
 

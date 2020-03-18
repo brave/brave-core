@@ -13,16 +13,15 @@ BRAVE_CORE_REPO = "brave/brave-core"
 
 
 def channels():
-    return ['nightly', 'dev', 'beta', 'release']
+    return ['nightly', 'beta', 'release']
 
 
 def get_channel_display_name():
     raw = channels()
     d = {
         raw[0]: 'Nightly',
-        raw[1]: 'Dev',
-        raw[2]: 'Beta',
-        raw[3]: 'Release'
+        raw[1]: 'Beta',
+        raw[2]: 'Release'
     }
 
     return d[release_channel()]

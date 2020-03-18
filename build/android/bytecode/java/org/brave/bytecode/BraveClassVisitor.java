@@ -9,14 +9,20 @@ import static org.objectweb.asm.Opcodes.ACC_PRIVATE;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.ASM5;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ArrayList;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.tree.AnnotationNode;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.MethodNode;
 
 class BraveClassVisitor extends ClassVisitor {
+
+    private ClassVisitor mTarget;
 
     class Method {
         public int access;
@@ -48,9 +54,12 @@ class BraveClassVisitor extends ClassVisitor {
             new HashMap<String, ArrayList<String>>();
     private Map<String, ArrayList<String>> mMakePublicMethods =
             new HashMap<String, ArrayList<String>>();
+    private Map<String, Map<String, ArrayList<String>>> mAddAnnotations =
+            new HashMap<String, Map<String, ArrayList<String>>>();
 
     public BraveClassVisitor(ClassVisitor visitor) {
-        super(ASM5, visitor);
+        super(ASM5, null);
+        mTarget = visitor;
     }
 
     protected void changeSuperName(String className, String superName) {
@@ -99,6 +108,22 @@ class BraveClassVisitor extends ClassVisitor {
         methods.add(methodName);
     }
 
+    protected void addMethodAnnotation(String className, String methodName, String annotationType) {
+        Map<String, ArrayList<String>> annotations = mAddAnnotations.get(className);
+        if (annotations == null) {
+            annotations = new HashMap<String, ArrayList<String>>();
+            mAddAnnotations.put(className, annotations);
+        }
+
+        ArrayList<String> annotationList = annotations.get(methodName);
+        if (annotationList == null) {
+            annotationList = new ArrayList<String>();
+            annotations.put(methodName, annotationList);
+        }
+
+        annotationList.add(annotationType);
+    }
+
     @Override
     public void visit(int version,
                       int access,
@@ -106,6 +131,7 @@ class BraveClassVisitor extends ClassVisitor {
                       String signature,
                       String superName,
                       String[] interfaces) {
+        super.cv = new ClassNode();
         mName = name;
         if (mSuperNames.containsKey(name)) {
             superName = mSuperNames.get(name);
@@ -150,5 +176,37 @@ class BraveClassVisitor extends ClassVisitor {
                                  method.desc,
                                  method.signature,
                                  method.exceptions);
+    }
+
+    protected ClassNode process(ClassNode source) {
+        Map<String, ArrayList<String>> annotationsForClass = mAddAnnotations.get(source.name);
+
+        if (annotationsForClass == null)
+            return source;
+
+        List<MethodNode> methods = source.methods;
+        for (MethodNode method : methods) {
+            ArrayList<String> annotations = annotationsForClass.get(method.name);
+            if (annotations != null) {
+                if (method.visibleAnnotations == null) {
+                    method.visibleAnnotations = new ArrayList<AnnotationNode>();
+                }
+                for (String annotation : annotations) {
+                    method.visibleAnnotations.add(new AnnotationNode(annotation));
+                    System.out.println("add " + annotation + " annotation to " + method.name + " in " + source.name);
+                }
+            }
+        }
+        return source;
+    }
+
+    @Override
+    public void visitEnd() {
+        super.visitEnd();
+        ClassNode source = (ClassNode)super.cv;
+        ClassNode result = process(source);
+        if (mTarget != null) {
+            result.accept(mTarget);
+        }
     }
 }

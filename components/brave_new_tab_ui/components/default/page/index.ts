@@ -84,7 +84,7 @@ export const GridItemClock = styled('section')`
   ${singleColumnSmallViewport}
 `
 
-export const GridItemRewards = styled('section')`
+export const GridItemWidgetStack = styled('section')`
   grid-column: 3 / span 1;
   grid-row-end: span 2;
   @media screen and (max-width: ${breakpointLargeBlocks}) {

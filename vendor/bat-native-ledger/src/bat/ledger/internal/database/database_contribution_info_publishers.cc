@@ -290,9 +290,9 @@ void DatabaseContributionInfoPublishers::OnGetRecordByContributionList(
   callback(std::move(list));
 }
 
-void DatabaseContributionInfoPublishers::GetContributionPublisherInfoMap(
+void DatabaseContributionInfoPublishers::GetContributionPublisherPairList(
     const std::vector<std::string>& contribution_ids,
-    ContributionPublisherInfoMapCallback callback) {
+    ContributionPublisherPairListCallback callback) {
   if (contribution_ids.empty()) {
     callback({});
     return;
@@ -339,14 +339,14 @@ void DatabaseContributionInfoPublishers::GetContributionPublisherInfoMap(
 
 void DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap(
     ledger::DBCommandResponsePtr response,
-    ContributionPublisherInfoMapCallback callback) {
+    ContributionPublisherPairListCallback callback) {
   if (!response
       || response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     callback({});
     return;
   }
 
-  ContributionPublisherInfoMap map;
+  std::vector<ContributionPublisherInfoPair> pair_list;
   for (auto const& record : response->result->get_records()) {
     auto publisher = ledger::PublisherInfo::New();
     auto* record_pointer = record.get();
@@ -360,12 +360,12 @@ void DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap(
         GetInt64Column(record_pointer, 6));
     publisher->provider = GetStringColumn(record_pointer, 7);
 
-    map.insert(std::make_pair(
+    pair_list.push_back(std::make_pair(
         GetStringColumn(record_pointer, 0),
         std::move(publisher)));
   }
 
-  callback(std::move(map));
+  callback(std::move(pair_list));
 }
 
 void DatabaseContributionInfoPublishers::UpdateContributedAmount(

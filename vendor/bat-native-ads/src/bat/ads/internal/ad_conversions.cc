@@ -4,10 +4,15 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <algorithm>
+#include <deque>
 #include <memory>
 #include <utility>
 
 #include "bat/ads/internal/ad_conversions.h"
+#include "bat/ads/internal/filters/ads_history_filter_factory.h"
+#include "bat/ads/internal/sorts/ad_conversions_sort_factory.h"
+#include "bat/ads/internal/sorts/ads_history_sort_factory.h"
+#include "bat/ads/internal/uri_helper.h"
 #include "bat/ads/internal/static_values.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/time.h"
@@ -53,7 +58,23 @@ void AdConversions::Initialize(
   LoadState();
 }
 
-void AdConversions::ProcessQueue() {
+void AdConversions::Check(
+    const std::string& url) {
+  DCHECK(is_initialized_);
+  DCHECK(!url.empty());
+
+  if (!ads_client_->ShouldAllowAdConversionTracking()) {
+    return;
+  }
+
+  BLOG(INFO) << "Checking ad conversions for " << url;
+
+  auto callback =
+      std::bind(&AdConversions::OnGetAdConversions, this, url, _1, _2);
+  ads_client_->GetAdConversions(callback);
+}
+
+void AdConversions::StartTimerIfReady() {
   DCHECK(is_initialized_);
 
   if (timer_id_ != 0) {
@@ -69,7 +90,117 @@ void AdConversions::ProcessQueue() {
   StartTimer(ad_conversion);
 }
 
-void AdConversions::AddToQueue(
+bool AdConversions::OnTimer(
+    const uint32_t timer_id) {
+  if (timer_id != timer_id_) {
+    return false;
+  }
+
+  timer_id_ = 0;
+
+  DCHECK(!queue_.empty());
+  if (queue_.empty()) {
+    return true;
+  }
+
+  AdConversionQueueItemInfo ad_conversion = queue_.front();
+  ProcessQueueItem(ad_conversion);
+
+  return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void AdConversions::OnGetAdConversions(
+    const std::string& url,
+    const Result result,
+    const AdConversionList& ad_conversions) {
+  if (result != SUCCESS) {
+    BLOG(ERROR) << "Failed to check ad conversions";
+    return;
+  }
+
+  std::deque<AdHistory> ads_history = client_->GetAdsShownHistory();
+  ads_history = FilterAdsHistory(ads_history);
+  ads_history = SortAdsHistory(ads_history);
+
+  AdConversionList new_ad_conversions = ad_conversions;
+  new_ad_conversions = FilterAdConversions(url, new_ad_conversions);
+  new_ad_conversions = SortAdConversions(new_ad_conversions);
+
+  for (const auto& ad_conversion : new_ad_conversions) {
+    for (const auto& ad : ads_history) {
+      auto ad_conversion_history = client_->GetAdConversionHistory();
+      if (ad_conversion_history.find(ad_conversion.creative_set_id) !=
+          ad_conversion_history.end()) {
+        // Creative set id has already been converted
+        continue;
+      }
+
+      if (ad_conversion.creative_set_id != ad.ad_content.creative_set_id) {
+        // Creative set id does not match
+        continue;
+      }
+
+      const base::Time observation_window = base::Time::Now() -
+          base::TimeDelta::FromDays(ad_conversion.observation_window);
+      const base::Time time = Time::FromDoubleT(ad.timestamp_in_seconds);
+      if (observation_window > time) {
+        // Observation window has expired
+        continue;
+      }
+
+      BLOG(INFO) << "Ad conversion for " << url << " with "
+          << ad_conversion.creative_set_id << " creative set id for "
+              << std::string(ad_conversion.type);
+
+      AddItemToQueue(ad.ad_content.creative_instance_id,
+          ad.ad_content.creative_set_id);
+    }
+  }
+}
+
+std::deque<AdHistory> AdConversions::FilterAdsHistory(
+    const std::deque<AdHistory>& ads_history) {
+  const auto filter = AdsHistoryFilterFactory::Build(
+      AdsHistory::FilterType::kAdConversionConfirmationType);
+  DCHECK(filter);
+
+  return filter->Apply(ads_history);
+}
+
+std::deque<AdHistory> AdConversions::SortAdsHistory(
+    const std::deque<AdHistory>& ads_history) {
+  const auto sort = AdsHistorySortFactory::Build(
+      AdsHistory::SortType::kDescendingOrder);
+  DCHECK(sort);
+
+  return sort->Apply(ads_history);
+}
+
+AdConversionList AdConversions::FilterAdConversions(
+    const std::string& url,
+    const AdConversionList& ad_conversions) {
+  AdConversionList new_ad_conversions = ad_conversions;
+  const auto iter = std::remove_if(new_ad_conversions.begin(),
+      new_ad_conversions.end(), [&](const AdConversionInfo& info) {
+    return !helper::Uri::MatchesWildcard(url, info.url_pattern);
+  });
+  new_ad_conversions.erase(iter, new_ad_conversions.end());
+
+  return new_ad_conversions;
+}
+
+AdConversionList AdConversions::SortAdConversions(
+    const AdConversionList& ad_conversions) {
+  const auto sort = AdConversionsSortFactory::Build(
+      AdConversionInfo::SortType::kDescendingOrder);
+  DCHECK(sort);
+
+  return sort->Apply(ad_conversions);
+}
+
+void AdConversions::AddItemToQueue(
     const std::string& creative_instance_id,
     const std::string& creative_set_id) {
   DCHECK(is_initialized_);
@@ -102,29 +233,28 @@ void AdConversions::AddToQueue(
 
   SaveState();
 
-  ProcessQueue();
+  StartTimerIfReady();
 }
 
-bool AdConversions::OnTimer(
-    const uint32_t timer_id) {
-  if (timer_id != timer_id_) {
+bool AdConversions::RemoveItemFromQueue(
+    const std::string& creative_instance_id) {
+  DCHECK(is_initialized_);
+
+  auto iter = std::find_if(queue_.begin(), queue_.end(),
+      [&creative_instance_id] (const auto& ad_conversion) {
+    return ad_conversion.creative_instance_id == creative_instance_id;
+  });
+
+  if (iter == queue_.end()) {
     return false;
   }
 
-  timer_id_ = 0;
+  queue_.erase(iter);
 
-  DCHECK(!queue_.empty());
-  if (queue_.empty()) {
-    return true;
-  }
-
-  AdConversionQueueItemInfo ad_conversion = queue_.front();
-  ProcessQueueItem(ad_conversion);
+  SaveState();
 
   return true;
 }
-
-///////////////////////////////////////////////////////////////////////////////
 
 void AdConversions::ProcessQueueItem(
     const AdConversionQueueItemInfo& info) {
@@ -148,9 +278,9 @@ void AdConversions::ProcessQueueItem(
         ConfirmationType::kConversion);
   }
 
-  Remove(creative_instance_id);
+  RemoveItemFromQueue(creative_instance_id);
 
-  ProcessQueue();
+  StartTimerIfReady();
 }
 
 void AdConversions::StartTimer(
@@ -163,8 +293,8 @@ void AdConversions::StartTimer(
   const uint64_t now = Time::NowInSeconds();
 
   uint64_t start_timer_in;
-  if (info.timestamp_in_seconds < now) {
-    start_timer_in = now - info.timestamp_in_seconds;
+  if (now < info.timestamp_in_seconds) {
+    start_timer_in = info.timestamp_in_seconds - now;
   } else {
     start_timer_in = brave_base::random::Geometric(
         kExpiredAdConversionFrequency);
@@ -179,7 +309,7 @@ void AdConversions::StartTimer(
   BLOG(INFO) << "Started ad conversion timer for creative_instance_id "
       << info.creative_instance_id << " with creative set id "
           << info.creative_set_id << " which will trigger on "
-              << Time::FromDoubleT(now + start_timer_in);
+              << Time::FromDoubleT(info.timestamp_in_seconds);
 }
 
 void AdConversions::StopTimer() {
@@ -191,26 +321,6 @@ void AdConversions::StopTimer() {
 
   ads_client_->KillTimer(timer_id_);
   timer_id_ = 0;
-}
-
-bool AdConversions::Remove(
-    const std::string& creative_instance_id) {
-  DCHECK(is_initialized_);
-
-  auto iter = std::find_if(queue_.begin(), queue_.end(),
-      [&creative_instance_id] (const auto& ad_conversion) {
-    return ad_conversion.creative_instance_id == creative_instance_id;
-  });
-
-  if (iter == queue_.end()) {
-    return false;
-  }
-
-  queue_.erase(iter);
-
-  SaveState();
-
-  return true;
 }
 
 void AdConversions::SaveState() {

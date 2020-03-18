@@ -56,12 +56,19 @@ void Uphold::Initialize() {
 }
 
 void Uphold::StartContribution(
-    const std::string& viewing_id,
-    const std::string& address,
+    const std::string& contribution_id,
+    ledger::ServerPublisherInfoPtr info,
     double amount,
-    ledger::ExternalWalletPtr wallet) {
-  if (address.empty()) {
-    ContributionCompleted(ledger::Result::LEDGER_ERROR, false, viewing_id);
+    ledger::ExternalWalletPtr wallet,
+    ledger::ResultCallback callback) {
+  if (!info) {
+    ContributionCompleted(
+        ledger::Result::LEDGER_ERROR,
+        false,
+        contribution_id,
+        amount,
+        "",
+        callback);
     return;
   }
 
@@ -72,12 +79,13 @@ void Uphold::StartContribution(
                             this,
                             _1,
                             _2,
-                            viewing_id,
+                            contribution_id,
                             fee,
-                            *wallet);
+                            info->publisher_key,
+                            callback);
 
   Transaction transaction;
-  transaction.address = address;
+  transaction.address = info->address;
   transaction.amount = reconcile_amount;
 
   transfer_->Start(transaction, std::move(wallet), contribution_callback);
@@ -86,26 +94,28 @@ void Uphold::StartContribution(
 void Uphold::ContributionCompleted(
     const ledger::Result result,
     const bool created,
-    const std::string& viewing_id,
+    const std::string& contribution_id,
     const double fee,
-    const ledger::ExternalWallet& wallet) {
-  const auto reconcile = ledger_->GetReconcileById(viewing_id);
-
+    const std::string& publisher_key,
+    ledger::ResultCallback callback) {
   if (result == ledger::Result::LEDGER_OK) {
     const auto current_time_seconds = base::Time::Now().ToDoubleT();
     auto transfer_fee = ledger::TransferFee::New();
-    transfer_fee->id = viewing_id;
+    transfer_fee->id = contribution_id;
     transfer_fee->amount = fee;
     transfer_fee->execution_timestamp =
         current_time_seconds + brave_base::random::Geometric(60);
     SaveTransferFee(std::move(transfer_fee));
+
+    if (!publisher_key.empty()) {
+      ledger_->UpdateContributionInfoContributedAmount(
+        contribution_id,
+        publisher_key,
+        [](const ledger::Result){});
+    }
   }
 
-  ledger_->ReconcileComplete(
-      result,
-      reconcile.fee,
-      viewing_id,
-      reconcile.type);
+  callback(result);
 }
 
 void Uphold::FetchBalance(
@@ -203,7 +213,6 @@ void Uphold::WalletAuthorization(
 
 void Uphold::TransferAnonToExternalWallet(
     ledger::ExternalWalletPtr wallet,
-    const bool allow_zero_balance,
     ledger::ExternalWalletCallback callback) {
   auto transfer_callback = std::bind(
     &Uphold::OnTransferAnonToExternalWalletCallback,
@@ -213,10 +222,7 @@ void Uphold::TransferAnonToExternalWallet(
     _1);
 
   // transfer funds from anon wallet to uphold
-  ledger_->TransferAnonToExternalWallet(
-    std::move(wallet),
-    allow_zero_balance,
-    transfer_callback);
+  ledger_->TransferAnonToExternalWallet(std::move(wallet), transfer_callback);
 }
 
 void Uphold::GenerateExternalWallet(
@@ -236,7 +242,8 @@ void Uphold::OnTransferAnonToExternalWalletCallback(
     const ledger::ExternalWallet& wallet,
     ledger::Result result) {
   auto wallet_ptr = ledger::ExternalWallet::New(wallet);
-  if (result == ledger::Result::LEDGER_OK) {
+  if (result == ledger::Result::LEDGER_OK ||
+      result == ledger::Result::ALREADY_EXISTS) {
     wallet_ptr->transferred = true;
   }
 
