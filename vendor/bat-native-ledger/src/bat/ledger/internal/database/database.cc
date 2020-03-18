@@ -300,6 +300,12 @@ void Database::GetPromotionList(
   promotion_->GetRecords(ids, callback);
 }
 
+void Database::GetPromotionListByType(
+    const std::vector<ledger::PromotionType>& types,
+    ledger::GetPromotionListCallback callback) {
+  promotion_->GetRecordsByType(types, callback);
+}
+
 /**
  * PUBLISHER INFO
  */
@@ -393,16 +399,15 @@ void Database::DeleteUnblindedTokens(
   unblinded_token_->DeleteRecordList(ids, callback);
 }
 
-void Database::DeleteUnblindedTokensForPromotion(
-    const std::string& promotion_id,
-    ledger::ResultCallback callback) {
-  unblinded_token_->DeleteRecordsForPromotion(promotion_id, callback);
+void Database::GetUnblindedTokensByTriggerIds(
+    const std::vector<std::string>& trigger_ids,
+    ledger::GetUnblindedTokenListCallback callback) {
+  unblinded_token_->GetRecordsByTriggerIds(trigger_ids, callback);
 }
 
-void Database::GetUnblindedTokensByPromotionType(
-    const std::vector<ledger::PromotionType>& promotion_types,
-    ledger::GetUnblindedTokenListCallback callback) {
-  unblinded_token_->GetRecordsByPromotionType(promotion_types, callback);
+void Database::CheckUnblindedTokensExpiration(
+    ledger::ResultCallback callback) {
+  unblinded_token_->CheckRecordsExpiration(callback);
 }
 
 }  // namespace braveledger_database

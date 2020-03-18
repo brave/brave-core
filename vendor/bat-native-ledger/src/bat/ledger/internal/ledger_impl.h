@@ -631,9 +631,9 @@ class LedgerImpl : public ledger::Ledger,
       const std::vector<std::string>& id_list,
       ledger::ResultCallback callback);
 
-  void DeleteUnblindedTokensForPromotion(
-      const std::string& promotion_id,
-      ledger::ResultCallback callback);
+  void GetUnblindedTokensByTriggerIds(
+      const std::vector<std::string>& trigger_ids,
+      ledger::GetUnblindedTokenListCallback callback);
 
   ledger::ClientInfoPtr GetClientInfo();
 
@@ -691,10 +691,6 @@ class LedgerImpl : public ledger::Ledger,
       ledger::ExternalWalletPtr wallet,
       ledger::ResultCallback callback);
 
-  void GetUnblindedTokensByPromotionType(
-      const std::vector<ledger::PromotionType>& promotion_types,
-      ledger::GetUnblindedTokenListCallback callback);
-
   void SaveCredsBatch(
       ledger::CredsBatchPtr info,
       ledger::ResultCallback callback);
@@ -727,6 +723,12 @@ class LedgerImpl : public ledger::Ledger,
   void GetPromotionList(
       const std::vector<std::string>& ids,
       ledger::GetPromotionListCallback callback);
+
+  void GetPromotionListByType(
+      const std::vector<ledger::PromotionType>& types,
+      ledger::GetPromotionListCallback callback);
+
+  void CheckUnblindedTokensExpiration(ledger::ResultCallback callback);
 
  private:
   void InitializeConfirmations(

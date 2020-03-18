@@ -356,36 +356,8 @@ void CredentialsPromotion::VerifyPublicKey(
     return;
   }
 
-  SaveUnblindedCreds(
-      std::move(promotion),
-      creds,
-      unblinded_encoded_creds,
-      trigger,
-      callback);
-}
-
-void CredentialsPromotion::SaveUnblindedCreds(
-    ledger::PromotionPtr promotion,
-    const ledger::CredsBatch& creds,
-    const std::vector<std::string>& unblinded_encoded_creds,
-    const CredentialsTrigger& trigger,
-    ledger::ResultCallback callback) {
-  if (!promotion) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Promotion is null";
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  const double value = promotion->approximate_value / promotion->suggestions;
-  ledger::UnblindedTokenList list;
-  for (auto & cred : unblinded_encoded_creds) {
-    auto unblinded = ledger::UnblindedToken::New();
-    unblinded->token_value = cred;
-    unblinded->public_key = creds.public_key;
-    unblinded->value = value;
-    unblinded->promotion_id = promotion->id;
-    list.push_back(std::move(unblinded));
-  }
+  const double cred_value =
+      promotion->approximate_value / promotion->suggestions;
 
   auto save_callback = std::bind(&CredentialsPromotion::Completed,
       this,
@@ -393,7 +365,18 @@ void CredentialsPromotion::SaveUnblindedCreds(
       trigger,
       callback);
 
-  ledger_->SaveUnblindedTokenList(std::move(list), save_callback);
+  uint64_t expires_at = 0ul;
+  if (promotion->type != ledger::PromotionType::ADS) {
+    expires_at = promotion->expires_at;
+  }
+
+  common_->SaveUnblindedCreds(
+      expires_at,
+      cred_value,
+      creds,
+      unblinded_encoded_creds,
+      trigger,
+      save_callback);
 }
 
 void CredentialsPromotion::Completed(

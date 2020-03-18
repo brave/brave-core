@@ -46,7 +46,7 @@ namespace braveledger_promotion {
 namespace {
 
 void HandleExpiredPromotions(
-    bat_ledger::LedgerImpl* ledger,
+    bat_ledger::LedgerImpl* ledger_impl,
     ledger::PromotionMap* promotions) {
   DCHECK(promotions);
   if (!promotions) {
@@ -56,8 +56,9 @@ void HandleExpiredPromotions(
   const uint64_t current_time =
       static_cast<uint64_t>(base::Time::Now().ToDoubleT());
 
+  bool check = false;
   for (auto& item : *promotions) {
-    if (!item.second) {
+    if (!item.second || item.second->status == ledger::PromotionStatus::OVER) {
       continue;
     }
 
@@ -68,11 +69,16 @@ void HandleExpiredPromotions(
 
     if (item.second->expires_at > 0 &&
         item.second->expires_at <= current_time)  {
-      item.second->status = ledger::PromotionStatus::OVER;
-
-      ledger->DeleteUnblindedTokensForPromotion(item.second->id,
+      check = true;
+      ledger_impl->UpdatePromotionStatus(
+          item.second->id,
+          ledger::PromotionStatus::OVER,
           [](const ledger::Result _){});
     }
+  }
+
+  if (check) {
+    ledger_impl->CheckUnblindedTokensExpiration([](const ledger::Result _){});
   }
 }
 

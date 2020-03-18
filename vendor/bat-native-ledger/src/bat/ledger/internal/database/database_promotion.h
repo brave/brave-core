@@ -55,6 +55,10 @@ class DatabasePromotion: public DatabaseTable {
       const std::string& promotion_id,
       ledger::ResultCallback callback);
 
+  void GetRecordsByType(
+      const std::vector<ledger::PromotionType>& types,
+      ledger::GetPromotionListCallback callback);
+
  private:
   bool CreateTableV10(ledger::DBTransaction* transaction);
 

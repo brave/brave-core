@@ -209,6 +209,10 @@ class Database {
       const std::vector<std::string>& ids,
       ledger::GetPromotionListCallback callback);
 
+  void GetPromotionListByType(
+      const std::vector<ledger::PromotionType>& types,
+      ledger::GetPromotionListCallback callback);
+
   /**
    * PUBLISHER INFO
    */
@@ -272,13 +276,11 @@ class Database {
       const std::vector<std::string>& ids,
       ledger::ResultCallback callback);
 
-  void DeleteUnblindedTokensForPromotion(
-      const std::string& promotion_id,
-      ledger::ResultCallback callback);
-
-  void GetUnblindedTokensByPromotionType(
-      const std::vector<ledger::PromotionType>& promotion_types,
+  void GetUnblindedTokensByTriggerIds(
+      const std::vector<std::string>& trigger_ids,
       ledger::GetUnblindedTokenListCallback callback);
+
+  void CheckUnblindedTokensExpiration(ledger::ResultCallback callback);
 
  private:
   std::unique_ptr<DatabaseInitialize> initialize_;

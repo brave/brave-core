@@ -26,26 +26,28 @@ class DatabaseUnblindedToken: public DatabaseTable {
 
   void GetAllRecords(ledger::GetUnblindedTokenListCallback callback);
 
+  void GetRecordsByTriggerIds(
+      const std::vector<std::string>& trigger_ids,
+      ledger::GetUnblindedTokenListCallback callback);
+
   void DeleteRecordList(
       const std::vector<std::string>& ids,
       ledger::ResultCallback callback);
 
-  void DeleteRecordsForPromotion(
-      const std::string& promotion_id,
-      ledger::ResultCallback callback);
-
-  void GetRecordsByPromotionType(
-      const std::vector<ledger::PromotionType>& promotion_types,
-      ledger::GetUnblindedTokenListCallback callback);
+  void CheckRecordsExpiration(ledger::ResultCallback callback);
 
  private:
   bool CreateTableV10(ledger::DBTransaction* transaction);
 
   bool CreateTableV15(ledger::DBTransaction* transaction);
 
+  bool CreateTableV18(ledger::DBTransaction* transaction);
+
   bool CreateIndexV10(ledger::DBTransaction* transaction);
 
   bool CreateIndexV15(ledger::DBTransaction* transaction);
+
+  bool CreateIndexV18(ledger::DBTransaction* transaction);
 
   bool MigrateToV10(ledger::DBTransaction* transaction);
 
@@ -53,11 +55,9 @@ class DatabaseUnblindedToken: public DatabaseTable {
 
   bool MigrateToV15(ledger::DBTransaction* transaction);
 
-  void OnGetAllRecords(
-      ledger::DBCommandResponsePtr response,
-      ledger::GetUnblindedTokenListCallback callback);
+  bool MigrateToV18(ledger::DBTransaction* transaction);
 
-  void OnGetRecordsByPromotionType(
+  void OnGetRecords(
       ledger::DBCommandResponsePtr response,
       ledger::GetUnblindedTokenListCallback callback);
 };

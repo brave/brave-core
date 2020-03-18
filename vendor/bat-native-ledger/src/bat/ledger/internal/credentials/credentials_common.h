@@ -9,6 +9,7 @@
 #include <stdint.h>
 
 #include <string>
+#include <vector>
 
 #include "bat/ledger/internal/credentials/credentials.h"
 #include "bat/ledger/ledger.h"
@@ -34,6 +35,14 @@ class CredentialsCommon {
   void GetSignedCredsFromResponse(
       const CredentialsTrigger& trigger,
       const std::string& response,
+      ledger::ResultCallback callback);
+
+  void SaveUnblindedCreds(
+      const uint64_t expires_at,
+      const double token_value,
+      const ledger::CredsBatch& creds,
+      const std::vector<std::string>& unblinded_encoded_creds,
+      const CredentialsTrigger& trigger,
       ledger::ResultCallback callback);
 
  private:

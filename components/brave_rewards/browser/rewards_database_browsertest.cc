@@ -685,3 +685,31 @@ IN_PROC_BROWSER_TEST_F(
     EXPECT_EQ(creds_database.batch_proof, creds_expected.batch_proof);
   }
 }
+
+IN_PROC_BROWSER_TEST_F(
+    RewardsDatabaseBrowserTest,
+    Migration_18_UnblindedToken) {
+  {
+    base::ScopedAllowBlockingForTesting allow_blocking;
+    InitDB();
+
+    EXPECT_EQ(CountTableRows("unblinded_tokens"), 80);
+
+    std::string token_id;
+    std::string creds_id;
+    uint64_t expires_at;
+    std::string query =
+        "SELECT token_id, creds_id, expires_at FROM unblinded_tokens LIMIT 1";
+    sql::Statement sql(db_.GetUniqueStatement(query.c_str()));
+    while (sql.Step()) {
+      token_id = sql.ColumnString(0);
+      creds_id = sql.ColumnString(1);
+      expires_at = sql.ColumnInt64(2);
+    }
+
+    EXPECT_EQ(token_id, "1");
+    EXPECT_EQ(creds_id.size(), 32ul);
+    EXPECT_NE(creds_id, "89c95d7b-f177-4b29-aed8-109a831f3588");
+    EXPECT_EQ(expires_at, 1640995200ul);
+  }
+}

@@ -381,7 +381,7 @@ struct UnblindedToken {
   string token_value;
   string public_key;
   double value;
-  string promotion_id;
+  string creds_id;
   uint64 expires_at;
 };
 

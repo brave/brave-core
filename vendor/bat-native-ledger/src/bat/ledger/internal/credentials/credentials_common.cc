@@ -140,4 +140,26 @@ void CredentialsCommon::GetSignedCredsFromResponse(
   ledger_->SaveSignedCreds(std::move(creds_batch), callback);
 }
 
+void CredentialsCommon::SaveUnblindedCreds(
+    const uint64_t expires_at,
+    const double token_value,
+    const ledger::CredsBatch& creds,
+    const std::vector<std::string>& unblinded_encoded_creds,
+    const CredentialsTrigger& trigger,
+    ledger::ResultCallback callback) {
+  ledger::UnblindedTokenList list;
+  ledger::UnblindedTokenPtr unblinded;
+  for (auto & cred : unblinded_encoded_creds) {
+    unblinded = ledger::UnblindedToken::New();
+    unblinded->token_value = cred;
+    unblinded->public_key = creds.public_key;
+    unblinded->value = token_value;
+    unblinded->creds_id = creds.creds_id;
+    unblinded->expires_at = expires_at;
+    list.push_back(std::move(unblinded));
+  }
+
+  ledger_->SaveUnblindedTokenList(std::move(list), callback);
+}
+
 }  // namespace braveledger_credentials

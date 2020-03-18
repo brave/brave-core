@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "bat/ledger/internal/database/database_promotion.h"
 #include "bat/ledger/internal/database/database_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -569,6 +570,52 @@ void DatabasePromotion::OnGetRecords(
   }
 
   callback(std::move(list));
+}
+
+void DatabasePromotion::GetRecordsByType(
+    const std::vector<ledger::PromotionType>& types,
+    ledger::GetPromotionListCallback callback) {
+  auto transaction = ledger::DBTransaction::New();
+
+  std::vector<std::string> in_case;
+
+  for (const auto& type : types) {
+    in_case.push_back(std::to_string(static_cast<int>(type)));
+  }
+
+  const std::string query = base::StringPrintf(
+      "SELECT promotion_id, version, type, public_keys, suggestions, "
+      "approximate_value, status, expires_at, claimed_at, claim_id "
+      "FROM %s WHERE type IN (%s)",
+      table_name_,
+      base::JoinString(in_case, ",").c_str());
+
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::READ;
+  command->command = query;
+
+  command->record_bindings = {
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::INT_TYPE,
+      ledger::DBCommand::RecordBindingType::INT_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::INT64_TYPE,
+      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      ledger::DBCommand::RecordBindingType::INT_TYPE,
+      ledger::DBCommand::RecordBindingType::INT64_TYPE,
+      ledger::DBCommand::RecordBindingType::INT64_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE
+  };
+
+  transaction->commands.push_back(std::move(command));
+
+  auto transaction_callback =
+      std::bind(&DatabasePromotion::OnGetRecords,
+          this,
+          _1,
+          callback);
+
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 }  // namespace braveledger_database

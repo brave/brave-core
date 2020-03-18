@@ -1583,10 +1583,10 @@ void LedgerImpl::DeleteUnblindedTokens(
   bat_database_->DeleteUnblindedTokens(id_list, callback);
 }
 
-void LedgerImpl::DeleteUnblindedTokensForPromotion(
-    const std::string& promotion_id,
-    ledger::ResultCallback callback) {
-  bat_database_->DeleteUnblindedTokensForPromotion(promotion_id, callback);
+void LedgerImpl::GetUnblindedTokensByTriggerIds(
+    const std::vector<std::string>& trigger_ids,
+    ledger::GetUnblindedTokenListCallback callback) {
+  bat_database_->GetUnblindedTokensByTriggerIds(trigger_ids, callback);
 }
 
 ledger::ClientInfoPtr LedgerImpl::GetClientInfo() {
@@ -1683,12 +1683,6 @@ void LedgerImpl::TransferTokens(
   bat_promotion_->TransferTokens(std::move(wallet), callback);
 }
 
-void LedgerImpl::GetUnblindedTokensByPromotionType(
-    const std::vector<ledger::PromotionType>& promotion_types,
-    ledger::GetUnblindedTokenListCallback callback) {
-  bat_database_->GetUnblindedTokensByPromotionType(promotion_types, callback);
-}
-
 void LedgerImpl::SaveCredsBatch(
     ledger::CredsBatchPtr info,
     ledger::ResultCallback callback) {
@@ -1736,6 +1730,17 @@ void LedgerImpl::GetPromotionList(
     const std::vector<std::string>& ids,
     ledger::GetPromotionListCallback callback) {
   bat_database_->GetPromotionList(ids, callback);
+}
+
+void LedgerImpl::GetPromotionListByType(
+    const std::vector<ledger::PromotionType>& types,
+    ledger::GetPromotionListCallback callback) {
+  bat_database_->GetPromotionListByType(types, callback);
+}
+
+void LedgerImpl::CheckUnblindedTokensExpiration(
+    ledger::ResultCallback callback) {
+  bat_database_->CheckUnblindedTokensExpiration(callback);
 }
 
 }  // namespace bat_ledger
