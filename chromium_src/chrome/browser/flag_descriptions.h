@@ -9,6 +9,8 @@
 #include "../../../../chrome/browser/flag_descriptions.h"
 
 namespace flag_descriptions {
+extern const char kUseDevUpdaterUrlName[];
+extern const char kUseDevUpdaterUrlDescription[];
 extern const char kBraveNTPBrandedWallpaperName[];
 extern const char kBraveNTPBrandedWallpaperDescription[];
 extern const char kBraveNTPBrandedWallpaperDemoName[];
@@ -17,6 +19,6 @@ extern const char kBraveAdblockCosmeticFilteringName[];
 extern const char kBraveAdblockCosmeticFilteringDescription[];
 extern const char kBraveSyncName[];
 extern const char kBraveSyncDescription[];
-}
+}  // namespace flag_descriptions
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_FLAG_DESCRIPTIONS_H_

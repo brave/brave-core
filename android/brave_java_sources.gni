@@ -42,6 +42,16 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabPageLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabPageView.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/IncognitoNewTabPageView.java",
+  "../../brave/android/java/org/chromium/chrome/browser/ntp_sponsored_images/BackgroundImage.java",
+  "../../brave/android/java/org/chromium/chrome/browser/ntp_sponsored_images/NTPImage.java",
+  "../../brave/android/java/org/chromium/chrome/browser/ntp_sponsored_images/ImageCredit.java",
+  "../../brave/android/java/org/chromium/chrome/browser/ntp_sponsored_images/SponsoredImageUtil.java",
+  "../../brave/android/java/org/chromium/chrome/browser/ntp_sponsored_images/NTPUtil.java",
+  "../../brave/android/java/org/chromium/chrome/browser/ntp_sponsored_images/SponsoredLogo.java",
+  "../../brave/android/java/org/chromium/chrome/browser/ntp_sponsored_images/SponsoredTab.java",
+  "../../brave/android/java/org/chromium/chrome/browser/ntp_sponsored_images/NewTabPageListener.java",
+  "../../brave/android/java/org/chromium/chrome/browser/ntp_sponsored_images/RewardsBottomSheetDialogFragment.java",
+  "../../brave/android/java/org/chromium/chrome/browser/ntp_sponsored_images/NTPSponsoredImagesBridge.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/BraveRewardsOnboardingFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/BraveRewardsService.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/BraveShieldsOnboardingFragment.java",
@@ -65,6 +75,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/qrreader/CameraSource.java",
   "../../brave/android/java/org/chromium/chrome/browser/qrreader/CameraSourcePreview.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/AppearancePreferences.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/BackgroundImagesPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BackgroundVideoPlaybackPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveHomepagePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveLicensePreferences.java",
@@ -104,6 +115,10 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/util/BraveReferrer.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/PackageUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/TabUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/util/ConfigurationUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/util/ImageUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/widget/tile/BraveTileWithTextView.java",
+  "../../brave/android/java/org/chromium/chrome/browser/tabmodel/BraveTabCreator.java"
 ]
 
 if (brave_rewards_enabled) {

@@ -6,6 +6,11 @@
 #include "../../../../chrome/browser/flag_descriptions.cc"
 
 namespace flag_descriptions {
+const char kUseDevUpdaterUrlName[] =
+    "Use dev updater url";
+const char kUseDevUpdaterUrlDescription[] =
+    "Use the dev url for the component updater. "
+    "This is for internal testing only.";
 const char kBraveNTPBrandedWallpaperName[] =
     "New Tab Page Branded Wallpapers";
 const char kBraveNTPBrandedWallpaperDescription[] =

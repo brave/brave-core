@@ -15,6 +15,7 @@
 #include "base/bind.h"
 #include "base/bind_helpers.h"
 #include "base/command_line.h"
+#include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
@@ -26,6 +27,7 @@
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
 #include "base/values.h"
+#include "brave/common/brave_features.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/network_constants.h"
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
@@ -85,7 +87,8 @@ scoped_refptr<Extension> ConvertGreaselionRuleToExtensionOnTaskRunner(
   std::string script_name = rule->name();
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
-  if (!command_line.HasSwitch(switches::kUseGoUpdateDev)) {
+  if (!command_line.HasSwitch(switches::kUseGoUpdateDev) &&
+      !base::FeatureList::IsEnabled(features::kUseDevUpdaterUrl)) {
     crypto::SHA256HashString(kBraveUpdatesExtensionsDevEndpoint + script_name,
                              raw,
                              crypto::kSHA256Length);

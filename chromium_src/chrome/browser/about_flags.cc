@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/common/brave_features.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/ntp_sponsored_images/browser/features.h"
@@ -14,6 +15,10 @@ using ntp_sponsored_images::features::kBraveNTPBrandedWallpaper;
 using ntp_sponsored_images::features::kBraveNTPBrandedWallpaperDemo;
 
 #define BRAVE_FEATURE_ENTRIES \
+    {"use-dev-updater-url",                                                \
+     flag_descriptions::kUseDevUpdaterUrlName,                             \
+     flag_descriptions::kUseDevUpdaterUrlDescription, kOsAll,              \
+     FEATURE_VALUE_TYPE(features::kUseDevUpdaterUrl)},                     \
     {"brave-ntp-branded-wallpaper",                                        \
      flag_descriptions::kBraveNTPBrandedWallpaperName,                     \
      flag_descriptions::kBraveNTPBrandedWallpaperDescription, kOsAll,      \

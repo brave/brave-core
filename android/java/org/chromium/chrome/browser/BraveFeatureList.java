@@ -7,4 +7,5 @@ package org.chromium.chrome.browser;
 
 public abstract class BraveFeatureList {
     public static final String BRAVE_REWARDS = "BraveRewards";
+    public static final String USE_DEV_UPDATER_URL = "UseDevUpdaterUrl";
 }
