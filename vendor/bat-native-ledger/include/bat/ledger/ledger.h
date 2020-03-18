@@ -93,8 +93,7 @@ class LEDGER_EXPORT Ledger {
       InitializeCallback) = 0;
 
   // returns false if wallet initialization is already in progress
-  virtual void CreateWallet(const std::string& safetynet_token,
-                            CreateWalletCallback callback) = 0;
+  virtual void CreateWallet(CreateWalletCallback callback) = 0;
 
   virtual void OneTimeTip(
       const std::string& publisher_key,

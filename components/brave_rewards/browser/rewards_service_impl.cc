@@ -518,14 +518,14 @@ void RewardsServiceImpl::CreateWallet(CreateWalletCallback callback) {
           AsWeakPtr(),
           std::move(callback));
 #if !defined(OS_ANDROID)
-      bat_ledger_->CreateWallet("", std::move(on_create));
+      bat_ledger_->CreateWallet(std::move(on_create));
 #else
       safetynet_check::ClientAttestationCallback attest_callback =
           base::BindOnce(&RewardsServiceImpl::CreateWalletAttestationResult,
               AsWeakPtr(),
               std::move(on_create));
       safetynet_check_runner_.performSafetynetCheck("",
-          std::move(attest_callback));
+          std::move(attest_callback), true);
 #endif
     }
   } else {
@@ -540,14 +540,19 @@ void RewardsServiceImpl::CreateWallet(CreateWalletCallback callback) {
 #if defined(OS_ANDROID)
 void RewardsServiceImpl::CreateWalletAttestationResult(
     bat_ledger::mojom::BatLedger::CreateWalletCallback callback,
-    bool result,
-    const std::string& result_string) {
-  if (result) {
-    bat_ledger_->CreateWallet(result_string, std::move(callback));
-  } else {
+    const bool token_received,
+    const std::string& result_string,
+    const bool attestation_passed) {
+  if (!token_received) {
     LOG(ERROR) << "CreateWalletAttestationResult error: " << result_string;
     OnWalletInitialized(ledger::Result::LEDGER_ERROR);
+    return;
   }
+  if (!attestation_passed) {
+    OnWalletInitialized(ledger::Result::SAFETYNET_ATTESTATION_FAILED);
+    return;
+  }
+  bat_ledger_->CreateWallet(std::move(callback));
 }
 #endif
 
@@ -1304,9 +1309,10 @@ void RewardsServiceImpl::OnAttestationAndroid(
     const std::string& promotion_id,
     AttestPromotionCallback callback,
     const std::string& nonce,
-    bool result,
-    const std::string& token) {
-  if (!result) {
+    const bool token_received,
+    const std::string& token,
+    const bool attestation_passed) {
+  if (!token_received) {
     std::move(callback).Run(
         static_cast<int32_t>(ledger::Result::LEDGER_ERROR),
         nullptr);
