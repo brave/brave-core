@@ -43,8 +43,7 @@ class Wallet {
 
   ~Wallet();
 
-  void CreateWalletIfNecessary(const std::string& safetynet_token,
-      ledger::CreateWalletCallback callback);
+  void CreateWalletIfNecessary(ledger::CreateWalletCallback callback);
 
   void RecoverWallet(
       const std::string& pass_phrase,
