@@ -25,27 +25,27 @@ class Credentials {
 
   virtual void Start(
       const CredentialsTrigger& trigger,
-      ledger::ResultCallback callback);
+      ledger::ResultCallback callback) = 0;
 
   virtual void Blind(
       const CredentialsTrigger& trigger,
-      ledger::ResultCallback callback);
+      ledger::ResultCallback callback) = 0;
 
   virtual void Claim(
       const ledger::Result result,
       const std::string& blinded_creds_json,
       const CredentialsTrigger& trigger,
-      ledger::ResultCallback callback);
+      ledger::ResultCallback callback) = 0;
 
   virtual void Unblind(
       ledger::CredsBatchPtr creds,
       const CredentialsTrigger& trigger,
-      ledger::ResultCallback callback);
+      ledger::ResultCallback callback) = 0;
 
   virtual void Completed(
       const ledger::Result result,
       const CredentialsTrigger& trigger,
-      ledger::ResultCallback callback);
+      ledger::ResultCallback callback) = 0;
 };
 
 }  // namespace braveledger_credentials
