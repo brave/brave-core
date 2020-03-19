@@ -26,18 +26,16 @@
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_controller.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/browser/extensions/brave_wallet_util.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
 
-BraveWalletController* GetBraveWalletController(
+BraveWalletService* GetBraveWalletService(
     content::BrowserContext* context) {
   return BraveWalletServiceFactory::GetInstance()
-      ->GetForProfile(Profile::FromBrowserContext(context))
-      ->controller();
+      ->GetForProfile(Profile::FromBrowserContext(context));
 }
 
 base::Value MakeSelectValue(const  base::string16& name,
@@ -121,10 +119,10 @@ BraveWalletGetWalletSeedFunction::Run() {
     return RespondNow(Error("Invalid input key size"));
   }
 
-  auto* controller = GetBraveWalletController(browser_context());
+  auto* service = GetBraveWalletService(browser_context());
 
   base::Value::BlobStorage blob;
-  std::string derived = controller->GetWalletSeed(params->key);
+  std::string derived = service->GetWalletSeed(params->key);
 
   if (derived.empty()) {
     return RespondNow(Error("Error getting wallet seed"));
@@ -145,10 +143,10 @@ BraveWalletGetBitGoSeedFunction::Run() {
     return RespondNow(Error("Invalid input key size"));
   }
 
-  auto* controller = GetBraveWalletController(browser_context());
+  auto* service = GetBraveWalletService(browser_context());
 
   base::Value::BlobStorage blob;
-  std::string derived = controller->GetBitGoSeed(params->key);
+  std::string derived = service->GetBitGoSeed(params->key);
 
   if (derived.empty()) {
     return RespondNow(Error("Error getting wallet seed"));
@@ -169,8 +167,9 @@ BraveWalletGetProjectIDFunction::Run() {
 
 ExtensionFunction::ResponseAction
 BraveWalletResetWalletFunction::Run() {
-  auto* controller = GetBraveWalletController(browser_context());
-  controller->ResetCryptoWallets();
+  auto* service = GetBraveWalletService(browser_context());
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  service->ResetCryptoWallets(profile->GetPath());
   return RespondNow(NoArguments());
 }
 
