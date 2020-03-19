@@ -16,7 +16,6 @@ namespace braveledger_credentials {
 struct CredentialsTrigger {
   std::string id;
   ledger::CredsBatchType type;
-  int step;
   int size;
 };
 
@@ -29,15 +28,12 @@ class Credentials {
       ledger::ResultCallback callback);
 
   virtual void Blind(
-      const ledger::Result result,
-      const std::string& blinded_creds_json,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback);
 
   virtual void Claim(
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
+      const ledger::Result result,
+      const std::string& blinded_creds_json,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback);
 

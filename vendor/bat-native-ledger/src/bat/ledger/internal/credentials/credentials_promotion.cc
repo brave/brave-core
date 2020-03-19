@@ -56,18 +56,31 @@ CredentialsPromotion::~CredentialsPromotion() = default;
 void CredentialsPromotion::Start(
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
-  switch (static_cast<ledger::PromotionStatus>(trigger.step)) {
-    case ledger::PromotionStatus::ATTESTED: {
-      auto blinded_callback = std::bind(&CredentialsPromotion::Blind,
+  auto get_callback = std::bind(&CredentialsPromotion::OnStart,
           this,
           _1,
-          _2,
           trigger,
           callback);
-      common_->GetBlindedCreds(trigger, blinded_callback);
+
+  ledger_->GetCredsBatchByTrigger(trigger.id, trigger.type, get_callback);
+}
+
+void CredentialsPromotion::OnStart(
+    ledger::CredsBatchPtr creds,
+    const CredentialsTrigger& trigger,
+    ledger::ResultCallback callback) {
+  ledger::CredsBatchStatus status = ledger::CredsBatchStatus::NONE;
+  if (creds) {
+    status = creds->status;
+  }
+
+  switch (status) {
+    case ledger::CredsBatchStatus::NONE:
+    case ledger::CredsBatchStatus::BLINDED: {
+      Blind(trigger, callback);
       break;
     }
-    case ledger::PromotionStatus::CLAIMED: {
+    case ledger::CredsBatchStatus::CLAIMED: {
       auto get_callback = std::bind(&CredentialsPromotion::FetchSignedCreds,
           this,
           _1,
@@ -76,7 +89,7 @@ void CredentialsPromotion::Start(
       ledger_->GetPromotion(trigger.id, get_callback);
       break;
     }
-    case ledger::PromotionStatus::SIGNED_CREDS: {
+    case ledger::CredsBatchStatus::SIGNED: {
       auto get_callback = std::bind(&CredentialsPromotion::Unblind,
           this,
           _1,
@@ -85,15 +98,26 @@ void CredentialsPromotion::Start(
       ledger_->GetCredsBatchByTrigger(trigger.id, trigger.type, get_callback);
       break;
     }
-    case ledger::PromotionStatus::ACTIVE:
-    case ledger::PromotionStatus::FINISHED:
-    case ledger::PromotionStatus::OVER: {
+    case ledger::CredsBatchStatus::FINISHED: {
+      callback(ledger::Result::LEDGER_OK);
       break;
     }
   }
 }
 
 void CredentialsPromotion::Blind(
+    const CredentialsTrigger& trigger,
+    ledger::ResultCallback callback) {
+  auto blinded_callback = std::bind(&CredentialsPromotion::Claim,
+      this,
+      _1,
+      _2,
+      trigger,
+      callback);
+  common_->GetBlindedCreds(trigger, blinded_callback);
+}
+
+void CredentialsPromotion::Claim(
     const ledger::Result result,
     const std::string& blinded_creds_json,
     const CredentialsTrigger& trigger,
@@ -129,7 +153,7 @@ void CredentialsPromotion::Blind(
       wallet_info.key_info_seed);
 
   const std::string url = braveledger_request_util::ClaimCredsUrl(trigger.id);
-  auto url_callback = std::bind(&CredentialsPromotion::Claim,
+  auto url_callback = std::bind(&CredentialsPromotion::OnClaim,
       this,
       _1,
       _2,
@@ -146,7 +170,7 @@ void CredentialsPromotion::Blind(
       url_callback);
 }
 
-void CredentialsPromotion::Claim(
+void CredentialsPromotion::OnClaim(
     const int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers,
@@ -182,6 +206,29 @@ void CredentialsPromotion::ClaimedSaved(
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Claim id was not saved";
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  auto save_callback = std::bind(&CredentialsPromotion::ClaimStatusSaved,
+      this,
+      _1,
+      trigger,
+      callback);
+
+  ledger_->UpdateCredsBatchStatus(
+      trigger.id,
+      trigger.type,
+      ledger::CredsBatchStatus::CLAIMED,
+      save_callback);
+}
+
+void CredentialsPromotion::ClaimStatusSaved(
+    const ledger::Result result,
+    const CredentialsTrigger& trigger,
+    ledger::ResultCallback callback) {
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Claim status not saved";
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -256,28 +303,6 @@ void CredentialsPromotion::SignedCredsSaved(
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Signed creds were not saved";
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  auto save_callback = std::bind(&CredentialsPromotion::SignedStepSaved,
-      this,
-      _1,
-      trigger,
-      callback);
-
-  ledger_->UpdatePromotionStatus(
-      trigger.id,
-      ledger::PromotionStatus::SIGNED_CREDS,
-      save_callback);
-}
-
-void CredentialsPromotion::SignedStepSaved(
-    const ledger::Result result,
-    const CredentialsTrigger& trigger,
-    ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Signed step was not saved";
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }

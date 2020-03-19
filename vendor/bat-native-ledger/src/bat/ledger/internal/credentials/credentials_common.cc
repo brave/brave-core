@@ -98,6 +98,7 @@ void CredentialsCommon::GetBlindedCreds(
   creds_batch->blinded_creds = blinded_creds_json;
   creds_batch->trigger_id = trigger.id;
   creds_batch->trigger_type = trigger.type;
+  creds_batch->status = ledger::CredsBatchStatus::BLINDED;
 
   auto save_callback = std::bind(&CredentialsCommon::BlindedCredsSaved,
       this,
@@ -159,7 +160,24 @@ void CredentialsCommon::SaveUnblindedCreds(
     list.push_back(std::move(unblinded));
   }
 
-  ledger_->SaveUnblindedTokenList(std::move(list), callback);
+  auto save_callback = std::bind(&CredentialsCommon::OnSaveUnblindedCreds,
+      this,
+      _1,
+      trigger,
+      callback);
+
+  ledger_->SaveUnblindedTokenList(std::move(list), save_callback);
+}
+
+void CredentialsCommon::OnSaveUnblindedCreds(
+    const ledger::Result result,
+    const CredentialsTrigger& trigger,
+    ledger::ResultCallback callback) {
+  ledger_->UpdateCredsBatchStatus(
+      trigger.id,
+      trigger.type,
+      ledger::CredsBatchStatus::FINISHED,
+      callback);
 }
 
 }  // namespace braveledger_credentials

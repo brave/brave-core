@@ -356,8 +356,6 @@ enum PromotionType {
 enum PromotionStatus {
   ACTIVE = 0,
   ATTESTED = 1,
-  CLAIMED = 2,
-  SIGNED_CREDS = 3,
   FINISHED = 4,
   OVER = 5
 };
@@ -434,6 +432,14 @@ enum CredsBatchType {
   PROMOTION = 1
 };
 
+enum CredsBatchStatus {
+  NONE = 0,
+  BLINDED = 1,
+  CLAIMED = 2,
+  SIGNED = 3,
+  FINISHED = 4
+};
+
 struct CredsBatch {
   string creds_id;
   int32 size;
@@ -444,5 +450,6 @@ struct CredsBatch {
   string batch_proof;
   string trigger_id;
   CredsBatchType trigger_type;
+  CredsBatchStatus status;
 };
 

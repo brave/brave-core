@@ -57,8 +57,6 @@ declare namespace RewardsExtension {
   export enum PromotionStatus {
     ACTIVE = 0,
     ATTESTED = 1,
-    CLAIMED = 2,
-    SIGNED_CREDS = 3,
     FINISHED = 4,
     OVER = 5
   }

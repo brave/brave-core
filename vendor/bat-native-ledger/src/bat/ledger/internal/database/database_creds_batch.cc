@@ -40,8 +40,12 @@ bool DatabaseCredsBatch::CreateTableV18(ledger::DBTransaction* transaction) {
         "signed_creds TEXT,"
         "public_key TEXT,"
         "batch_proof TEXT,"
-        "created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP"
+        "status INT NOT NULL DEFAULT 0,"
+        "created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,"
+        "CONSTRAINT %s_unique "
+          "UNIQUE (trigger_id, trigger_type)"
       ")",
+      table_name_,
       table_name_);
 
   auto command = ledger::DBCommand::New();
@@ -55,7 +59,13 @@ bool DatabaseCredsBatch::CreateTableV18(ledger::DBTransaction* transaction) {
 bool DatabaseCredsBatch::CreateIndexV18(ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  return this->InsertIndex(transaction, table_name_, "trigger_id");
+  bool success = this->InsertIndex(transaction, table_name_, "trigger_id");
+
+  if (!success) {
+    return false;
+  }
+
+  return this->InsertIndex(transaction, table_name_, "trigger_type");
 }
 
 bool DatabaseCredsBatch::Migrate(
@@ -88,7 +98,7 @@ bool DatabaseCredsBatch::MigrateToV18(ledger::DBTransaction* transaction) {
     return false;
   }
 
-  const std::string query = base::StringPrintf(
+  std::string query = base::StringPrintf(
       "INSERT INTO %s "
       "(creds_id, trigger_id, trigger_type, creds, blinded_creds, "
       "signed_creds, public_key, batch_proof) "
@@ -99,6 +109,19 @@ bool DatabaseCredsBatch::MigrateToV18(ledger::DBTransaction* transaction) {
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
   command->command = query;
+  transaction->commands.push_back(std::move(command));
+
+  query = base::StringPrintf(
+      "UPDATE %s SET "
+      "status = (SELECT p.status FROM %s as cb "
+      "INNER JOIN promotion as p ON cb.trigger_id = p.promotion_id)",
+      table_name_,
+      table_name_);
+
+  command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = query;
+
   transaction->commands.push_back(std::move(command));
 
   return true;
@@ -117,8 +140,8 @@ void DatabaseCredsBatch::InsertOrUpdate(
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
       "(creds_id, trigger_id, trigger_type, creds, blinded_creds, "
-      "signed_creds, public_key, batch_proof) "
-      "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      "signed_creds, public_key, batch_proof, status) "
+      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
       table_name_);
 
   auto command = ledger::DBCommand::New();
@@ -133,6 +156,7 @@ void DatabaseCredsBatch::InsertOrUpdate(
   BindString(command.get(), 5, creds->signed_creds);
   BindString(command.get(), 6, creds->public_key);
   BindString(command.get(), 7, creds->batch_proof);
+  BindInt(command.get(), 8, static_cast<int>(creds->status));
 
   transaction->commands.push_back(std::move(command));
 
@@ -152,7 +176,7 @@ void DatabaseCredsBatch::GetRecordByTrigger(
 
   const std::string query = base::StringPrintf(
       "SELECT creds_id, trigger_id, trigger_type, creds, blinded_creds, "
-      "signed_creds, public_key, batch_proof FROM %s "
+      "signed_creds, public_key, batch_proof, status FROM %s "
       "WHERE trigger_id = ? AND trigger_type = ?",
       table_name_);
 
@@ -171,7 +195,8 @@ void DatabaseCredsBatch::GetRecordByTrigger(
       ledger::DBCommand::RecordBindingType::STRING_TYPE,
       ledger::DBCommand::RecordBindingType::STRING_TYPE,
       ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::INT_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -211,6 +236,8 @@ void DatabaseCredsBatch::OnGetRecordByTrigger(
   info->signed_creds = GetStringColumn(record, 5);
   info->public_key = GetStringColumn(record, 6);
   info->batch_proof = GetStringColumn(record, 7);
+  info->status =
+      static_cast<ledger::CredsBatchStatus>(GetIntColumn(record, 8));
 
   callback(std::move(info));
 }
@@ -226,8 +253,8 @@ void DatabaseCredsBatch::SaveSignedCreds(
   auto transaction = ledger::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
-      "UPDATE %s SET signed_creds = ?, public_key = ?, batch_proof = ? "
-      "WHERE trigger_id = ? AND trigger_type = ?",
+      "UPDATE %s SET signed_creds = ?, public_key = ?, batch_proof = ?, "
+      "status = ? WHERE trigger_id = ? AND trigger_type = ?",
       table_name_);
 
   auto command = ledger::DBCommand::New();
@@ -237,8 +264,10 @@ void DatabaseCredsBatch::SaveSignedCreds(
   BindString(command.get(), 0, creds->signed_creds);
   BindString(command.get(), 1, creds->public_key);
   BindString(command.get(), 2, creds->batch_proof);
-  BindString(command.get(), 3, creds->trigger_id);
-  BindInt(command.get(), 4, static_cast<int>(creds->trigger_type));
+  BindInt(command.get(), 3,
+      static_cast<int>(ledger::CredsBatchStatus::SIGNED));
+  BindString(command.get(), 4, creds->trigger_id);
+  BindInt(command.get(), 5, static_cast<int>(creds->trigger_type));
 
   transaction->commands.push_back(std::move(command));
 
@@ -255,7 +284,7 @@ void DatabaseCredsBatch::GetAllRecords(
 
   const std::string query = base::StringPrintf(
       "SELECT creds_id, trigger_id, trigger_type, creds, blinded_creds, "
-      "signed_creds, public_key, batch_proof FROM %s",
+      "signed_creds, public_key, batch_proof, status FROM %s",
       table_name_);
 
   auto command = ledger::DBCommand::New();
@@ -270,7 +299,8 @@ void DatabaseCredsBatch::GetAllRecords(
       ledger::DBCommand::RecordBindingType::STRING_TYPE,
       ledger::DBCommand::RecordBindingType::STRING_TYPE,
       ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::INT_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -308,10 +338,45 @@ void DatabaseCredsBatch::OnGetAllRecords(
     info->signed_creds = GetStringColumn(record_pointer, 5);
     info->public_key = GetStringColumn(record_pointer, 6);
     info->batch_proof = GetStringColumn(record_pointer, 7);
+    info->status =
+        static_cast<ledger::CredsBatchStatus>(GetIntColumn(record_pointer, 8));
     list.push_back(std::move(info));
   }
 
   callback(std::move(list));
+}
+
+void DatabaseCredsBatch::UpdateStatus(
+    const std::string& trigger_id,
+    const ledger::CredsBatchType trigger_type,
+    const ledger::CredsBatchStatus status,
+    ledger::ResultCallback callback) {
+  if (trigger_id.empty()) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  auto transaction = ledger::DBTransaction::New();
+
+  const std::string query = base::StringPrintf(
+      "UPDATE %s SET status = ? WHERE trigger_id = ? AND trigger_type = ?",
+      table_name_);
+
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::RUN;
+  command->command = query;
+
+  BindInt(command.get(), 0, static_cast<int>(status));
+  BindString(command.get(), 1, trigger_id);
+  BindInt(command.get(), 2, static_cast<int>(trigger_type));
+
+  transaction->commands.push_back(std::move(command));
+
+  auto transaction_callback = std::bind(&OnResultCallback,
+      _1,
+      callback);
+
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 }  // namespace braveledger_database

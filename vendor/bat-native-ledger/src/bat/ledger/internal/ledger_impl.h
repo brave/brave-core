@@ -730,6 +730,12 @@ class LedgerImpl : public ledger::Ledger,
 
   void CheckUnblindedTokensExpiration(ledger::ResultCallback callback);
 
+  void UpdateCredsBatchStatus(
+      const std::string& trigger_id,
+      const ledger::CredsBatchType trigger_type,
+      const ledger::CredsBatchStatus status,
+      ledger::ResultCallback callback);
+
  private:
   void InitializeConfirmations(
       const bool execute_create_script,

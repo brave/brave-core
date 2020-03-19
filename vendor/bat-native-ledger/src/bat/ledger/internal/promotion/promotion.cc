@@ -305,7 +305,7 @@ void Promotion::OnCompletedAttestation(
     return;
   }
 
-  if (promotion->status == ledger::PromotionStatus::CLAIMED) {
+  if (promotion->status == ledger::PromotionStatus::FINISHED) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Promotions already claimed";
     callback(ledger::Result::GRANT_ALREADY_CLAIMED, nullptr);
     return;
@@ -415,13 +415,13 @@ void Promotion::GetCredentials(
 
   braveledger_credentials::CredentialsTrigger trigger;
   trigger.id = promotion->id;
-  trigger.step = static_cast<int>(promotion->status);
   trigger.size = promotion->suggestions;
   trigger.type = ledger::CredsBatchType::PROMOTION;
 
   auto creds_callback = std::bind(&Promotion::CredentialsProcessed,
       this,
       _1,
+      promotion->id,
       callback);
 
   credentials_->Start(trigger, creds_callback);
@@ -429,6 +429,7 @@ void Promotion::GetCredentials(
 
 void Promotion::CredentialsProcessed(
     const ledger::Result result,
+    const std::string& promotion_id,
     ledger::ResultCallback callback) {
   if (result == ledger::Result::RETRY) {
     ledger_->SetTimer(5, &retry_timer_id_);
@@ -436,7 +437,15 @@ void Promotion::CredentialsProcessed(
     return;
   }
 
-  callback(result);
+  if (result != ledger::Result::LEDGER_OK) {
+    callback(result);
+    return;
+  }
+
+  ledger_->UpdatePromotionStatus(
+      promotion_id,
+      ledger::PromotionStatus::FINISHED,
+      callback);
 }
 
 void Promotion::Retry(ledger::PromotionMap promotions) {
@@ -448,9 +457,7 @@ void Promotion::Retry(ledger::PromotionMap promotions) {
     }
 
     switch (promotion.second->status) {
-      case ledger::PromotionStatus::ATTESTED:
-      case ledger::PromotionStatus::CLAIMED:
-      case ledger::PromotionStatus::SIGNED_CREDS: {
+      case ledger::PromotionStatus::ATTESTED: {
         GetCredentials(
             std::move(promotion.second),
             [](const ledger::Result _){});
@@ -507,7 +514,9 @@ void Promotion::CheckForCorrupted(ledger::CredsBatchList list) {
   std::vector<std::string> corrupted_promotions;
 
   for (auto& item : list) {
-    if (!item) {
+    if (!item ||
+        (item->status != ledger::CredsBatchStatus::SIGNED &&
+         item->status != ledger::CredsBatchStatus::FINISHED)) {
       continue;
     }
 

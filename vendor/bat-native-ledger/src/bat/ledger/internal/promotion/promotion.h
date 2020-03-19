@@ -101,6 +101,7 @@ class Promotion {
 
   void CredentialsProcessed(
       const ledger::Result result,
+      const std::string& promotion_id,
       ledger::ResultCallback callback);
 
   void Retry(ledger::PromotionMap promotions);

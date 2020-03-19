@@ -1743,4 +1743,16 @@ void LedgerImpl::CheckUnblindedTokensExpiration(
   bat_database_->CheckUnblindedTokensExpiration(callback);
 }
 
+void LedgerImpl::UpdateCredsBatchStatus(
+    const std::string& trigger_id,
+    const ledger::CredsBatchType trigger_type,
+    const ledger::CredsBatchStatus status,
+    ledger::ResultCallback callback) {
+  bat_database_->UpdateCredsBatchStatus(
+      trigger_id,
+      trigger_type,
+      status,
+      callback);
+}
+
 }  // namespace bat_ledger

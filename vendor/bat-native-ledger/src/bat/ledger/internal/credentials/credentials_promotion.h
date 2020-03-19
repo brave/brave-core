@@ -25,20 +25,34 @@ class CredentialsPromotion : public Credentials {
       ledger::ResultCallback callback) override;
 
  private:
+  void OnStart(
+      ledger::CredsBatchPtr creds,
+      const CredentialsTrigger& trigger,
+      ledger::ResultCallback callback);
+
   void Blind(
+      const CredentialsTrigger& trigger,
+      ledger::ResultCallback callback) override;
+
+  void Claim(
       const ledger::Result result,
       const std::string& blinded_creds_json,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback) override;
 
-  void Claim(
+  void OnClaim(
       const int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
       const CredentialsTrigger& trigger,
-      ledger::ResultCallback callback) override;
+      ledger::ResultCallback callback);
 
   void ClaimedSaved(
+      const ledger::Result result,
+      const CredentialsTrigger& trigger,
+      ledger::ResultCallback callback);
+
+  void ClaimStatusSaved(
       const ledger::Result result,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback);
@@ -56,11 +70,6 @@ class CredentialsPromotion : public Credentials {
       ledger::ResultCallback callback);
 
   void SignedCredsSaved(
-      const ledger::Result result,
-      const CredentialsTrigger& trigger,
-      ledger::ResultCallback callback);
-
-  void SignedStepSaved(
       const ledger::Result result,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback);

@@ -622,18 +622,22 @@ IN_PROC_BROWSER_TEST_F(
 
     std::vector<std::string> promotion_id;
     std::vector<std::string> claim_id;
-    std::string query = "SELECT promotion_id, claim_id FROM promotion";
+    std::vector<int> status;
+    std::string query = "SELECT promotion_id, claim_id, status FROM promotion";
     sql::Statement sql(db_.GetUniqueStatement(query.c_str()));
     while (sql.Step()) {
       promotion_id.push_back(sql.ColumnString(0));
       claim_id.push_back(sql.ColumnString(1));
+      status.push_back(sql.ColumnInt(2));
     }
 
     EXPECT_EQ(promotion_id.at(0), "36baa4c3-f92d-4121-b6d9-db44cb273a02");
     EXPECT_EQ(claim_id.at(0), "402afe8d-a643-4b8c-aa1e-596e3bcc6c8a");
+    EXPECT_EQ(status.at(0), 1);
 
     EXPECT_EQ(promotion_id.at(1), "89c95d7b-f177-4b29-aed8-109a831f3588");
     EXPECT_EQ(claim_id.at(1), "4d8ddcdc-e69f-4c11-bba5-b2c6ca67e00b");
+    EXPECT_EQ(status.at(1), 4);
   }
 }
 
@@ -649,7 +653,8 @@ IN_PROC_BROWSER_TEST_F(
     ledger::CredsBatch creds_database;
     std::string query =
         "SELECT creds_id, trigger_id, trigger_type, creds, blinded_creds, "
-        "signed_creds, public_key, batch_proof FROM creds_batch LIMIT 1";
+        "signed_creds, public_key, batch_proof, status FROM creds_batch "
+        "LIMIT 1";
     sql::Statement sql(db_.GetUniqueStatement(query.c_str()));
     while (sql.Step()) {
       creds_database.trigger_id = sql.ColumnString(1);
@@ -660,6 +665,8 @@ IN_PROC_BROWSER_TEST_F(
       creds_database.signed_creds = sql.ColumnString(5);
       creds_database.public_key = sql.ColumnString(6);
       creds_database.batch_proof = sql.ColumnString(7);
+      creds_database.status =
+          static_cast<ledger::CredsBatchStatus>(sql.ColumnInt(8));
     }
 
     ledger::CredsBatch creds_expected;
@@ -683,6 +690,7 @@ IN_PROC_BROWSER_TEST_F(
     EXPECT_EQ(creds_database.signed_creds, creds_expected.signed_creds);
     EXPECT_EQ(creds_database.public_key, creds_expected.public_key);
     EXPECT_EQ(creds_database.batch_proof, creds_expected.batch_proof);
+    EXPECT_EQ(static_cast<int>(creds_database.status), 2);
   }
 }
 

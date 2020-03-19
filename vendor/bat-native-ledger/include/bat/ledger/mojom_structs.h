@@ -72,6 +72,8 @@ using CredsBatchList = std::vector<CredsBatchPtr>;
 
 using CredsBatchType = mojom::CredsBatchType;
 
+using CredsBatchStatus = mojom::CredsBatchStatus;
+
 using Environment = ledger::mojom::Environment;
 
 using ExcludeFilter = mojom::ExcludeFilter;

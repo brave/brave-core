@@ -35,6 +35,12 @@ class DatabaseCredsBatch: public DatabaseTable {
 
   void GetAllRecords(ledger::GetAllCredsBatchCallback callback);
 
+  void UpdateStatus(
+      const std::string& trigger_id,
+      const ledger::CredsBatchType trigger_type,
+      const ledger::CredsBatchStatus status,
+      ledger::ResultCallback callback);
+
  private:
   bool CreateTableV18(ledger::DBTransaction* transaction);
 

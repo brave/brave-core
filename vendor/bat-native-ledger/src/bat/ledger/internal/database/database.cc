@@ -193,6 +193,14 @@ void Database::GetAllCredsBatches(ledger::GetAllCredsBatchCallback callback) {
   creds_batch_->GetAllRecords(callback);
 }
 
+void Database::UpdateCredsBatchStatus(
+    const std::string& trigger_id,
+    const ledger::CredsBatchType trigger_type,
+    const ledger::CredsBatchStatus status,
+    ledger::ResultCallback callback) {
+  creds_batch_->UpdateStatus(trigger_id, trigger_type, status, callback);
+}
+
 /**
  * MEDIA PUBLISHER INFO
  */

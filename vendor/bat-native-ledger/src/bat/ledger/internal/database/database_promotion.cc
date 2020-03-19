@@ -183,6 +183,16 @@ bool DatabasePromotion::MigrateToV18(ledger::DBTransaction* transaction) {
 
   transaction->commands.push_back(std::move(command));
 
+  query = base::StringPrintf(
+      "UPDATE %s SET status = 1 WHERE status = 2 OR status = 3",
+      table_name_);
+
+  command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = query;
+
+  transaction->commands.push_back(std::move(command));
+
   return creds_->Migrate(transaction, 18);
 }
 
@@ -409,7 +419,7 @@ void DatabasePromotion::SaveClaimId(
   }
 
   const std::string query = base::StringPrintf(
-      "UPDATE %s SET claim_id = ?, status = ? WHERE promotion_id = ?",
+      "UPDATE %s SET claim_id = ? WHERE promotion_id = ?",
       table_name_);
 
   auto transaction = ledger::DBTransaction::New();
@@ -418,11 +428,7 @@ void DatabasePromotion::SaveClaimId(
   command->command = query;
 
   BindString(command.get(), 0, claim_id);
-  BindInt(
-      command.get(),
-      1,
-      static_cast<int>(ledger::PromotionStatus::CLAIMED));
-  BindString(command.get(), 2, promotion_id);
+  BindString(command.get(), 1, promotion_id);
 
   transaction->commands.push_back(std::move(command));
 

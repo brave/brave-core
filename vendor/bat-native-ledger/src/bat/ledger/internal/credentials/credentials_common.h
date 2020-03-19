@@ -51,6 +51,11 @@ class CredentialsCommon {
       const std::string& blinded_creds_json,
       BlindedCredsCallback callback);
 
+  void OnSaveUnblindedCreds(
+      const ledger::Result result,
+      const CredentialsTrigger& trigger,
+      ledger::ResultCallback callback);
+
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 
