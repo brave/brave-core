@@ -15,10 +15,13 @@
 #include "base/timer/timer.h"
 #include "brave/components/brave_prochlo/brave_prochlo_message.h"
 #include "brave/components/p3a/brave_p3a_log_store.h"
-#include "chrome/browser/browser_process.h"
 #include "url/gurl.h"
 
 class PrefRegistrySimple;
+
+namespace network {
+class SharedURLLoaderFactory;
+}
 
 namespace brave {
 
@@ -34,14 +37,15 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
  public:
   explicit BraveP3AService(PrefService* local_state);
 
-  static void RegisterPrefs(PrefRegistrySimple* registry);
+  static void RegisterPrefs(PrefRegistrySimple* registry, bool first_run);
 
   // Should be called right after constructor to subscribe to histogram
   // updates. Can't call it in constructor because of refcounted peculiarities.
   void InitCallbacks();
 
   // Needs a living browser process to complete the initialization.
-  void Init();
+  void Init(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
   // BraveP3ALogStore::Delegate
   std::string Serialize(base::StringPiece histogram_name,

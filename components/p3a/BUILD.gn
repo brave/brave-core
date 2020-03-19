@@ -38,12 +38,5 @@ source_set("p3a") {
     "//services/network/public/mojom",
     "//url",
   ]
-
-  if (!is_android) {
-    sources += [
-      "p3a_core_metrics.cc",
-      "p3a_core_metrics.h",
-    ]
-  }
 }
 

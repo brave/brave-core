@@ -9,11 +9,12 @@
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/brave_p3a_service.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
 #if !defined(OS_ANDROID)
 #include "brave/browser/importer/brave_importer_p3a.h"
-#include "brave/components/p3a/p3a_core_metrics.h"
+#include "brave/browser/p3a/p3a_core_metrics.h"
 #include "chrome/browser/first_run/first_run.h"
 #endif  // !defined(OS_ANDROID)
 
@@ -64,7 +65,8 @@ void BraveBrowserMainExtraParts::PreMainMessageLoopRun() {
   // Disabled on mobile platforms, see for instance issues/6176
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
   // TODO(iefremov): Maybe find a better place for this initialization.
-  g_brave_browser_process->brave_p3a_service()->Init();
+  g_brave_browser_process->brave_p3a_service()->Init(
+      g_browser_process->shared_url_loader_factory());
 #endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
 
   RecordInitialP3AValues();

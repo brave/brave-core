@@ -31,7 +31,7 @@
 #endif
 
 #if !defined(OS_ANDROID)
-#include "brave/components/p3a/p3a_core_metrics.h"
+#include "brave/browser/p3a/p3a_core_metrics.h"
 #endif  // !defined(OS_ANDROID)
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -60,7 +60,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
       base::Value(GetDefaultPrefValueForMetricsReporting()));
 
 #if BUILDFLAG(BRAVE_P3A_ENABLED)
-  brave::BraveP3AService::RegisterPrefs(registry);
+  brave::BraveP3AService::RegisterPrefs(registry,
+                                        first_run::IsChromeFirstRun());
 #endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
 
   brave_shields::RegisterShieldsP3APrefs(registry);

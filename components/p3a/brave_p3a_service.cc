@@ -27,8 +27,6 @@
 #include "brave/components/p3a/brave_p3a_uploader.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/vendor/brave_base/random.h"
-#include "chrome/browser/browser_process.h"
-#include "chrome/browser/first_run/first_run.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -102,7 +100,8 @@ BraveP3AService::BraveP3AService(PrefService* local_state)
 
 BraveP3AService::~BraveP3AService() = default;
 
-void BraveP3AService::RegisterPrefs(PrefRegistrySimple* registry) {
+void BraveP3AService::RegisterPrefs(PrefRegistrySimple* registry,
+                                    bool first_run) {
   BraveP3ALogStore::RegisterPrefs(registry);
   registry->RegisterTimePref(kLastRotationTimeStampPref, {});
   registry->RegisterBooleanPref(kP3AEnabled, true);
@@ -111,8 +110,7 @@ void BraveP3AService::RegisterPrefs(PrefRegistrySimple* registry) {
   // we don't have infobars on android.
 #if !defined(OS_ANDROID)
   // New users are shown the P3A notice via the welcome page.
-  registry->RegisterBooleanPref(kP3ANoticeAcknowledged,
-                                first_run::IsChromeFirstRun());
+  registry->RegisterBooleanPref(kP3ANoticeAcknowledged, first_run);
 #endif  // !defined(OS_ANDROID)
 }
 
@@ -125,9 +123,8 @@ void BraveP3AService::InitCallbacks() {
   }
 }
 
-void BraveP3AService::Init() {
-  DCHECK(g_browser_process);
-
+void BraveP3AService::Init(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   // Init basic prefs.
   initialized_ = true;
 
@@ -147,8 +144,7 @@ void BraveP3AService::Init() {
   InitPyxisMeta();
 
   // Init log store.
-  log_store_.reset(
-      new BraveP3ALogStore(this, g_browser_process->local_state()));
+  log_store_.reset(new BraveP3ALogStore(this, local_state_));
   log_store_->LoadPersistedUnsentLogs();
   // Store values that were recorded between calling constructor and |Init()|.
   for (const auto& entry : histogram_values_) {
@@ -171,7 +167,7 @@ void BraveP3AService::Init() {
 
   // Init other components.
   uploader_.reset(new BraveP3AUploader(
-      g_browser_process->shared_url_loader_factory(), upload_server_url_,
+      url_loader_factory, upload_server_url_,
       base::Bind(&BraveP3AService::OnLogUploadComplete, this)));
 
   upload_scheduler_.reset(new BraveP3AScheduler(
