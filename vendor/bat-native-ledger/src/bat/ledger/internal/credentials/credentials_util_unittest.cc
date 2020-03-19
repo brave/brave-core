@@ -8,21 +8,20 @@
 #include <utility>
 #include <vector>
 
-#include "bat/ledger/internal/promotion/promotion_util.h"
+#include "bat/ledger/internal/credentials/credentials_util.h"
 #include "bat/ledger/ledger.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=PromotionUtilTest.*
 
-namespace braveledger_promotion {
+namespace braveledger_credentials {
 
 class PromotionUtilTest : public testing::Test {
  public:
-  ledger::PromotionPtr GetPromotion() {
-    auto promotion = ledger::Promotion::New();
-    auto credentials = ledger::PromotionCreds::New();
+  ledger::CredsBatch GetCredsBatch() {
+    ledger::CredsBatch creds;
 
-    credentials->tokens = R"([
+    creds.creds = R"([
           "CeP4v0VvyP92xaaVz7SU5eUpFZvEyWYyTJvxep12aXH3uPhgovM81vtyi+ryoJeXDaUOJtxz1irzCp81Z0KAUqQSfv5CwjaK4mkrILvOEvD/Wfx6KjZvT+sYmlmlEJEM",
           "65AcELwGHdOKJr4TilUq2Aux7AHNLdjuPDrs470OLhgUKfocaQ7QLxJL/1NTCHSOmFUKxAos1rB1yHDTIDczkKNZob9SAC7MQSVdaFtBFppD7cGWJXwEFT/NJn36fcMB",
           "mlohXPxndvl7jdCTeV5LqjzRq+RsW401dAnHRRkWJ1bum/zXu6VAIx2qfFuwFBWuCEF7K60WE/xxev4DF7LU04Yuog3JZK+Ra8EpKB556NEr1j/gnVk31M91K3vztOMC",
@@ -45,7 +44,7 @@ class PromotionUtilTest : public testing::Test {
           "cRwjj0UtvV5IFIfWB2bFCXehyvUGKjwQibagde2Vm6e4Un609n+x9CZI1l6XlZ7QNBK740hAaowS0HYQAc8goEConDH1ptE5qeBlnrx3XP64vZ/ejWum2w+SEnp6FEIC"
         ])";
 
-    credentials->blinded_creds = R"([
+    creds.blinded_creds = R"([
           "Gggq6QFD8GszbAO2Lsjms9QtaIUGWyfcAeeXmTN0Jw0=",
           "gLmphI+RsPU5yz+q2XYENT7/Uaff+XiycP2EVVBfigY=",
           "jlc4M10scQHkUGwOVHMgbwA8RYvX9AO0rmH4aMB3RF0=",
@@ -68,7 +67,7 @@ class PromotionUtilTest : public testing::Test {
           "NKIlnAJowWE/a/yeJsHHQDPy3I0qF2A5eTfshgOKHAQ="
         ])";
 
-    credentials->signed_creds = R"([
+    creds.signed_creds = R"([
           "whyLpcq84WBfWSvRevORFeyhfdqLQnINPMpbtt8kJUM=",
           "1qgtLfj8MJihUhYRl5rE0TJZcTEAIwjxVc4QxpGlzRA=",
           "WJ3VUVIFLP3s5l4+gmEg8CeSiZ/jcAyx5mnHwZ96L30=",
@@ -91,70 +90,35 @@ class PromotionUtilTest : public testing::Test {
           "6KoAiaSu8fCBaywEayQYOQASELa9yqL245GVMbBlmWc="
         ])";
 
-    credentials->public_key = "rqQ1Tz26C4mv33ld7xpcLhuX1sWaD+s7VMnuX6cokT4=";
-    credentials->batch_proof = "xdWq0jwSs2Z9lhfpEUR1nYX/f3Q4LUa9Y1kmhGMD1At/tqGTJ0ogFREiBwhCflUl2AoQmAUSsELbHrFtC/dgAQ==";  // NOLINT
+    creds.public_key = "rqQ1Tz26C4mv33ld7xpcLhuX1sWaD+s7VMnuX6cokT4=";
+    creds.batch_proof = "xdWq0jwSs2Z9lhfpEUR1nYX/f3Q4LUa9Y1kmhGMD1At/tqGTJ0ogFREiBwhCflUl2AoQmAUSsELbHrFtC/dgAQ==";  // NOLINT
 
-    promotion->id = "36baa4c3-f92d-4121-b6d9-db44cb273a02";
-    promotion->credentials = std::move(credentials);
-
-    return promotion;
+    return creds;
   }
 };
 
-TEST_F(PromotionUtilTest, VerifyPublicKey) {
-  auto promotion = ledger::Promotion::New();
-  auto credentials = ledger::PromotionCreds::New();
-
-  // null pointer
-  bool result = VerifyPublicKey(nullptr);
-  EXPECT_EQ(result, false);
-
-  // credentials are not set
-  result = VerifyPublicKey(promotion->Clone());
-  EXPECT_EQ(result, false);
-
-  // keys are not formatted correctly
-  promotion->credentials = std::move(credentials);
-  promotion->public_keys = "fdsfsdds";
-  result = VerifyPublicKey(promotion->Clone());
-  EXPECT_EQ(result, false);
-
-  // keys doesn't match
-  promotion->public_keys = "[\"orBZ6dkSFLwBtQgI+5qXFb0dzDSm4uf+Km6AhytgUT8=\"]";
-  promotion->credentials->public_key = "dfsdfsdf";
-  result = VerifyPublicKey(promotion->Clone());
-  EXPECT_EQ(result, false);
-
-  // keys match
-  promotion->public_keys = "[\"orBZ6dkSFLwBtQgI+5qXFb0dzDSm4uf+Km6AhytgUT8=\"]";
-  promotion->credentials->public_key =
-      "orBZ6dkSFLwBtQgI+5qXFb0dzDSm4uf+Km6AhytgUT8=";
-  result = VerifyPublicKey(promotion->Clone());
-  EXPECT_EQ(result, true);
-}
-
-TEST_F(PromotionUtilTest, UnBlindTokensWorksCorrectly) {
+TEST_F(PromotionUtilTest, UnBlindCredsWorksCorrectly) {
   std::vector<std::string> unblinded_encoded_tokens;
   std::string error;
 
-  UnBlindTokens(GetPromotion(), &unblinded_encoded_tokens, &error);
+  UnBlindCreds(GetCredsBatch(), &unblinded_encoded_tokens, &error);
 
   EXPECT_EQ(error, "");
   EXPECT_EQ(unblinded_encoded_tokens.size(), 20u);
 }
 
-TEST_F(PromotionUtilTest, UnBlindTokensCredsNotCorrect) {
+TEST_F(PromotionUtilTest, UnBlindCredsCredsNotCorrect) {
   std::vector<std::string> unblinded_encoded_tokens;
   std::string error;
 
-  auto promotion = GetPromotion();
-  promotion->credentials->blinded_creds = promotion->credentials->signed_creds;
+  auto creds = GetCredsBatch();
+  creds.blinded_creds = creds.signed_creds;
 
-  UnBlindTokens(std::move(promotion), &unblinded_encoded_tokens, &error);
+  UnBlindCreds(std::move(creds), &unblinded_encoded_tokens, &error);
 
   EXPECT_EQ(error,
-      "Unblinded tokens size does not match signed tokens sent in!");
+      "Unblinded creds size does not match signed creds sent in!");
   EXPECT_EQ(unblinded_encoded_tokens.size(), 0u);
 }
 
-}  // namespace braveledger_promotion
+}  // namespace braveledger_credentials

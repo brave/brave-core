@@ -30,7 +30,11 @@ class PromotionTransfer {
       const ledger::Result result,
       ledger::ResultCallback callback);
 
-  void GetEligibleTokens(ledger::ResultCallback callback);
+  void GetEligiblePromotion(ledger::ResultCallback callback);
+
+  void GetEligibleTokens(
+      ledger::PromotionList promotions,
+      ledger::ResultCallback callback);
 
   void SendTokens(
       ledger::UnblindedTokenList list,

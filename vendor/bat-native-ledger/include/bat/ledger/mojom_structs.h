@@ -66,6 +66,14 @@ using ContributionRetry = mojom::ContributionRetry;
 
 using ContributionStep = mojom::ContributionStep;
 
+using CredsBatch = mojom::CredsBatch;
+using CredsBatchPtr = mojom::CredsBatchPtr;
+using CredsBatchList = std::vector<CredsBatchPtr>;
+
+using CredsBatchType = mojom::CredsBatchType;
+
+using CredsBatchStatus = mojom::CredsBatchStatus;
+
 using Environment = ledger::mojom::Environment;
 
 using ExcludeFilter = mojom::ExcludeFilter;
@@ -97,9 +105,6 @@ using PromotionList = std::vector<PromotionPtr>;
 using PromotionMap = std::map<std::string, PromotionPtr>;
 
 using PromotionType = mojom::PromotionType;
-
-using PromotionCreds = mojom::PromotionCreds;
-using PromotionCredsPtr = mojom::PromotionCredsPtr;
 
 using PromotionStatus = mojom::PromotionStatus;
 

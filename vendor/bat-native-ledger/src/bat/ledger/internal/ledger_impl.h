@@ -631,9 +631,9 @@ class LedgerImpl : public ledger::Ledger,
       const std::vector<std::string>& id_list,
       ledger::ResultCallback callback);
 
-  void DeleteUnblindedTokensForPromotion(
-      const std::string& promotion_id,
-      ledger::ResultCallback callback);
+  void GetUnblindedTokensByTriggerIds(
+      const std::vector<std::string>& trigger_ids,
+      ledger::GetUnblindedTokenListCallback callback);
 
   ledger::ClientInfoPtr GetClientInfo();
 
@@ -691,9 +691,50 @@ class LedgerImpl : public ledger::Ledger,
       ledger::ExternalWalletPtr wallet,
       ledger::ResultCallback callback);
 
-  void GetUnblindedTokensByPromotionType(
-      const std::vector<ledger::PromotionType>& promotion_types,
-      ledger::GetUnblindedTokenListCallback callback);
+  void SaveCredsBatch(
+      ledger::CredsBatchPtr info,
+      ledger::ResultCallback callback);
+
+  void SavePromotionClaimId(
+      const std::string& promotion_id,
+      const std::string& claim_id,
+      ledger::ResultCallback callback);
+
+  void GetCredsBatchByTrigger(
+      const std::string& trigger_id,
+      const ledger::CredsBatchType trigger_type,
+      ledger::GetCredsBatchCallback callback);
+
+  void SaveSignedCreds(
+      ledger::CredsBatchPtr info,
+      ledger::ResultCallback callback);
+
+  void UpdatePromotionStatus(
+      const std::string& promotion_id,
+      const ledger::PromotionStatus status,
+      ledger::ResultCallback callback);
+
+  void PromotionCredentialCompleted(
+      const std::string& promotion_id,
+      ledger::ResultCallback callback);
+
+  void GetAllCredsBatches(ledger::GetAllCredsBatchCallback callback);
+
+  void GetPromotionList(
+      const std::vector<std::string>& ids,
+      ledger::GetPromotionListCallback callback);
+
+  void GetPromotionListByType(
+      const std::vector<ledger::PromotionType>& types,
+      ledger::GetPromotionListCallback callback);
+
+  void CheckUnblindedTokensExpiration(ledger::ResultCallback callback);
+
+  void UpdateCredsBatchStatus(
+      const std::string& trigger_id,
+      const ledger::CredsBatchType trigger_type,
+      const ledger::CredsBatchStatus status,
+      ledger::ResultCallback callback);
 
  private:
   void InitializeConfirmations(

@@ -11,6 +11,11 @@
 
 #include "bat/ledger/internal/database/database_table.h"
 
+// DEPRECATED
+// THIS TABLE IS NOT USED ANYMORE!!
+// we only kept this file for migration purposes
+// we have creds_batch now
+
 namespace braveledger_database {
 
 class DatabasePromotionCreds: public DatabaseTable {
@@ -19,16 +24,6 @@ class DatabasePromotionCreds: public DatabaseTable {
   ~DatabasePromotionCreds() override;
 
   bool Migrate(ledger::DBTransaction* transaction, const int target) override;
-
-  void InsertOrUpdate(
-      ledger::DBTransaction* transaction,
-      ledger::PromotionCredsPtr info,
-      const std::string& promotion_id);
-
-
-  void DeleteRecordListByPromotion(
-      ledger::DBTransaction* transaction,
-      const std::vector<std::string>& ids);
 
  private:
   bool CreateTableV10(ledger::DBTransaction* transaction);
@@ -42,6 +37,8 @@ class DatabasePromotionCreds: public DatabaseTable {
   bool MigrateToV10(ledger::DBTransaction* transaction);
 
   bool MigrateToV15(ledger::DBTransaction* transaction);
+
+  bool MigrateToV18(ledger::DBTransaction* transaction);
 };
 
 }  // namespace braveledger_database

@@ -1583,10 +1583,10 @@ void LedgerImpl::DeleteUnblindedTokens(
   bat_database_->DeleteUnblindedTokens(id_list, callback);
 }
 
-void LedgerImpl::DeleteUnblindedTokensForPromotion(
-    const std::string& promotion_id,
-    ledger::ResultCallback callback) {
-  bat_database_->DeleteUnblindedTokensForPromotion(promotion_id, callback);
+void LedgerImpl::GetUnblindedTokensByTriggerIds(
+    const std::vector<std::string>& trigger_ids,
+    ledger::GetUnblindedTokenListCallback callback) {
+  bat_database_->GetUnblindedTokensByTriggerIds(trigger_ids, callback);
 }
 
 ledger::ClientInfoPtr LedgerImpl::GetClientInfo() {
@@ -1683,10 +1683,76 @@ void LedgerImpl::TransferTokens(
   bat_promotion_->TransferTokens(std::move(wallet), callback);
 }
 
-void LedgerImpl::GetUnblindedTokensByPromotionType(
-    const std::vector<ledger::PromotionType>& promotion_types,
-    ledger::GetUnblindedTokenListCallback callback) {
-  bat_database_->GetUnblindedTokensByPromotionType(promotion_types, callback);
+void LedgerImpl::SaveCredsBatch(
+    ledger::CredsBatchPtr info,
+    ledger::ResultCallback callback) {
+  bat_database_->SaveCredsBatch(std::move(info), callback);
+}
+
+void LedgerImpl::SavePromotionClaimId(
+    const std::string& promotion_id,
+    const std::string& claim_id,
+    ledger::ResultCallback callback) {
+  bat_database_->SavePromotionClaimId(promotion_id, claim_id, callback);
+}
+
+void LedgerImpl::GetCredsBatchByTrigger(
+    const std::string& trigger_id,
+    const ledger::CredsBatchType trigger_type,
+    ledger::GetCredsBatchCallback callback) {
+  bat_database_->GetCredsBatchByTrigger(trigger_id, trigger_type, callback);
+}
+
+void LedgerImpl::SaveSignedCreds(
+    ledger::CredsBatchPtr info,
+    ledger::ResultCallback callback) {
+  bat_database_->SaveSignedCreds(std::move(info), callback);
+}
+
+void LedgerImpl::UpdatePromotionStatus(
+    const std::string& promotion_id,
+    const ledger::PromotionStatus status,
+    ledger::ResultCallback callback) {
+  bat_database_->UpdatePromotionStatus(promotion_id, status, callback);
+}
+
+void LedgerImpl::PromotionCredentialCompleted(
+    const std::string& promotion_id,
+    ledger::ResultCallback callback) {
+  bat_database_->PromotionCredentialCompleted(promotion_id, callback);
+}
+
+void LedgerImpl::GetAllCredsBatches(ledger::GetAllCredsBatchCallback callback) {
+  bat_database_->GetAllCredsBatches(callback);
+}
+
+void LedgerImpl::GetPromotionList(
+    const std::vector<std::string>& ids,
+    ledger::GetPromotionListCallback callback) {
+  bat_database_->GetPromotionList(ids, callback);
+}
+
+void LedgerImpl::GetPromotionListByType(
+    const std::vector<ledger::PromotionType>& types,
+    ledger::GetPromotionListCallback callback) {
+  bat_database_->GetPromotionListByType(types, callback);
+}
+
+void LedgerImpl::CheckUnblindedTokensExpiration(
+    ledger::ResultCallback callback) {
+  bat_database_->CheckUnblindedTokensExpiration(callback);
+}
+
+void LedgerImpl::UpdateCredsBatchStatus(
+    const std::string& trigger_id,
+    const ledger::CredsBatchType trigger_type,
+    const ledger::CredsBatchStatus status,
+    ledger::ResultCallback callback) {
+  bat_database_->UpdateCredsBatchStatus(
+      trigger_id,
+      trigger_type,
+      status,
+      callback);
 }
 
 }  // namespace bat_ledger

@@ -225,7 +225,7 @@ void Unblinded::OnUnblindedTokens(
     new_item.token_value = item->token_value;
     new_item.public_key = item->public_key;
     new_item.value = item->value;
-    new_item.promotion_id = item->promotion_id;
+    new_item.creds_id = item->creds_id;
     new_item.expires_at = item->expires_at;
 
     converted_list.push_back(new_item);

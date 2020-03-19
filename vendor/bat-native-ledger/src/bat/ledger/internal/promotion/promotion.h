@@ -14,6 +14,7 @@
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/mojom_structs.h"
 #include "bat/ledger/internal/attestation/attestation_impl.h"
+#include "bat/ledger/internal/credentials/credentials_factory.h"
 
 namespace bat_ledger {
 class LedgerImpl;
@@ -44,10 +45,6 @@ class Promotion {
   void Refresh(const bool retry_after_error);
 
   void OnTimer(const uint32_t timer_id);
-
-  void ClaimTokens(
-      ledger::PromotionPtr promotion,
-      ledger::ResultCallback callback);
 
   void TransferTokens(
       ledger::ExternalWalletPtr wallet,
@@ -98,56 +95,22 @@ class Promotion {
       ledger::PromotionList promotions,
       ledger::FetchPromotionCallback callback);
 
-  void Retry(ledger::PromotionMap promotions);
-
-  void OnClaimTokens(
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
-      const std::string& promotion_string,
-      ledger::ResultCallback callback);
-
-  void ClaimedTokensSaved(
-      const ledger::Result result,
-      const std::string& promotion_string,
-      ledger::ResultCallback callback);
-
-  void ClaimTokensSaved(
-      const ledger::Result result,
-      const std::string& promotion_string,
-      ledger::ResultCallback callback);
-
-  void FetchSignedTokens(
+  void GetCredentials(
       ledger::PromotionPtr promotion,
       ledger::ResultCallback callback);
 
-  void OnFetchSignedTokens(
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
-      const std::string& promotion_string,
-      ledger::ResultCallback callback);
-
-  void ProcessSignedCredentials(
+  void CredentialsProcessed(
       const ledger::Result result,
       const std::string& promotion_id,
       ledger::ResultCallback callback);
 
-  void OnProcessSignedCredentials(
-      ledger::PromotionPtr promotion,
-      ledger::ResultCallback callback);
+  void Retry(ledger::PromotionMap promotions);
 
-  void SaveUnblindedTokens(
-      ledger::PromotionPtr promotion,
-      const std::vector<std::string>& unblinded_encoded_tokens,
-      ledger::ResultCallback callback);
+  void CheckForCorrupted(ledger::CredsBatchList list);
 
-  void FinishPromotion(
-      const ledger::Result result,
-      const std::string& promotion_string,
-      ledger::ResultCallback callback);
-
-  void CheckForCorrupted(const ledger::PromotionMap& promotions);
+  void CorruptedPromotions(
+      ledger::PromotionList promotions,
+      const std::vector<std::string>& ids);
 
   void OnCheckForCorrupted(
       const int response_status_code,
@@ -159,6 +122,7 @@ class Promotion {
 
   std::unique_ptr<braveledger_attestation::AttestationImpl> attestation_;
   std::unique_ptr<PromotionTransfer> transfer_;
+  std::unique_ptr<braveledger_credentials::Credentials> credentials_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   uint32_t last_check_timer_id_;
   uint32_t retry_timer_id_;

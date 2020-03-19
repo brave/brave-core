@@ -34,7 +34,7 @@ void PromotionTransfer::Start(
     ledger::ResultCallback callback) {
   // we only need to call old anon api once
   if (ledger_->GetBooleanState(ledger::kStateAnonTransferChecked)) {
-    GetEligibleTokens(callback);
+    GetEligiblePromotion(callback);
     return;
   }
 
@@ -65,17 +65,38 @@ void PromotionTransfer::OnAnonExternalWallet(
   }
 
   ledger_->SetBooleanState(ledger::kStateAnonTransferChecked, true);
-  GetEligibleTokens(callback);
+  GetEligiblePromotion(callback);
 }
 
-void PromotionTransfer::GetEligibleTokens(ledger::ResultCallback callback) {
+void PromotionTransfer::GetEligiblePromotion(ledger::ResultCallback callback) {
+  auto tokens_callback = std::bind(&PromotionTransfer::GetEligibleTokens,
+      this,
+      _1,
+      callback);
+
+  ledger_->GetPromotionListByType(
+      GetEligiblePromotions(),
+      tokens_callback);
+}
+void PromotionTransfer::GetEligibleTokens(
+    ledger::PromotionList promotions,
+    ledger::ResultCallback callback) {
   auto tokens_callback = std::bind(&PromotionTransfer::SendTokens,
       this,
       _1,
       callback);
 
-  ledger_->GetUnblindedTokensByPromotionType(
-      GetEligiblePromotions(),
+  std::vector<std::string> ids;
+  for (auto& promotion : promotions) {
+    if (!promotion) {
+      continue;
+    }
+
+    ids.push_back(promotion->id);
+  }
+
+  ledger_->GetUnblindedTokensByTriggerIds(
+      ids,
       tokens_callback);
 }
 

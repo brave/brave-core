@@ -10,20 +10,10 @@
 #include <string>
 #include <vector>
 
-#include "wrapper.hpp"
-
-using challenge_bypass_ristretto::Token;
-using challenge_bypass_ristretto::BlindedToken;
-
 namespace braveledger_helper {
 
 class Security {
  public:
-  static std::vector<Token> GenerateTokens(const int count);
-
-  static std::vector<BlindedToken> BlindTokens(
-      const std::vector<Token>& tokens);
-
   static std::vector<uint8_t> GetSHA256(const std::string& string);
 
   static std::string GetBase64(const std::vector<uint8_t>& data);

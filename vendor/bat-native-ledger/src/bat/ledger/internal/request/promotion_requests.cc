@@ -27,14 +27,14 @@ std::string GetFetchPromotionUrl(
   return BuildUrl(path, PREFIX_V1, ServerTypes::kPromotion);
 }
 
-std::string ClaimTokensUrl(const std::string& promotion_id) {
+std::string ClaimCredsUrl(const std::string& promotion_id) {
     const std::string& path = base::StringPrintf(
       "/promotions/%s",
       promotion_id.c_str());
   return BuildUrl(path, PREFIX_V1, ServerTypes::kPromotion);
 }
 
-std::string FetchSignedTokensUrl(
+std::string FetchSignedCredsUrl(
     const std::string& promotion_id,
     const std::string& claim_id) {
     const std::string& path = base::StringPrintf(

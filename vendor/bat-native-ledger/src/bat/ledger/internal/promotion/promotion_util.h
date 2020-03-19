@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "bat/ledger/mojom_structs.h"
-#include "base/values.h"
 
 namespace braveledger_promotion {
 
@@ -27,27 +26,6 @@ ledger::ReportType ConvertPromotionTypeToReportType(
 bool ParseFetchResponse(
     const std::string& response,
     ledger::PromotionList* list);
-
-std::string ParseClaimTokenResponse(
-    const std::string& response);
-
-void ParseSignedTokensResponse(
-    const std::string& response,
-    base::Value* result);
-
-std::unique_ptr<base::ListValue> ParseStringToBaseList(
-    const std::string& string_list);
-
-bool UnBlindTokens(
-    ledger::PromotionPtr promotion,
-    std::vector<std::string>* unblinded_encoded_tokens,
-    std::string* error);
-
-bool UnBlindTokensMock(
-    ledger::PromotionPtr promotion,
-    std::vector<std::string>* unblinded_encoded_tokens);
-
-bool VerifyPublicKey(const ledger::PromotionPtr promotion);
 
 std::vector<ledger::PromotionType> GetEligiblePromotions();
 

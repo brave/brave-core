@@ -81,6 +81,10 @@ using RunDBTransactionCallback = std::function<void(DBCommandResponsePtr)>;
 using GetCreateScriptCallback =
     std::function<void(const std::string&, const int)>;
 
+using GetCredsBatchCallback = std::function<void(CredsBatchPtr)>;
+using GetAllCredsBatchCallback = std::function<void(CredsBatchList)>;
+using GetPromotionListCallback = std::function<void(PromotionList)>;
+
 class LEDGER_EXPORT LedgerClient {
  public:
   virtual ~LedgerClient() = default;
