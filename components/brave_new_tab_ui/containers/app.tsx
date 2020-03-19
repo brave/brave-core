@@ -13,16 +13,18 @@ import NewTabPage from './newTab'
 
 // Utils
 import * as newTabActions from '../actions/new_tab_actions'
+import * as gridSitesActions from '../actions/grid_sites_actions'
 import * as PreferencesAPI from '../api/preferences'
 
 interface Props {
-  actions: any
+  actions: typeof newTabActions & typeof gridSitesActions
   newTabData: NewTab.State
+  gridSitesData: NewTab.GridSitesState
 }
 
 class DefaultPage extends React.Component<Props, {}> {
   render () {
-    const { newTabData, actions } = this.props
+    const { newTabData, gridSitesData, actions } = this.props
 
     // don't render if user prefers an empty page
     if (this.props.newTabData.showEmptyPage && !this.props.newTabData.isIncognito) {
@@ -34,6 +36,7 @@ class DefaultPage extends React.Component<Props, {}> {
       : (
         <NewTabPage
           newTabData={newTabData}
+          gridSitesData={gridSitesData}
           actions={actions}
           saveShowBackgroundImage={PreferencesAPI.saveShowBackgroundImage}
           saveShowClock={PreferencesAPI.saveShowClock}
@@ -47,12 +50,16 @@ class DefaultPage extends React.Component<Props, {}> {
 }
 
 const mapStateToProps = (state: NewTab.ApplicationState) => ({
-  newTabData: state.newTabData
+  newTabData: state.newTabData,
+  gridSitesData: state.gridSitesData
 })
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  actions: bindActionCreators(newTabActions, dispatch)
-})
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  const allActions = Object.assign({}, newTabActions, gridSitesActions)
+  return {
+    actions: bindActionCreators(allActions, dispatch)
+  }
+}
 
 export default connect(
   mapStateToProps,
