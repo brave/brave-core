@@ -225,7 +225,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   //   - BAD_REGISTRATION_RESPONSE: Request credentials call failure or malformed data
   //   - REGISTRATION_VERIFICATION_FAILED: Missing master user token
   self.initializingWallet = YES;
-  ledger->CreateWallet(std::string(), ^(ledger::Result result) {
+  ledger->CreateWallet(^(ledger::Result result) {
     const auto strongSelf = weakSelf;
     if (!strongSelf) { return; }
     NSError *error = nil;

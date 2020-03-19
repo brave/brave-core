@@ -30,8 +30,7 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   // bat_ledger::mojom::BatLedger
   void Initialize(InitializeCallback callback) override;
-  void CreateWallet(const std::string& safetynet_token,
-      CreateWalletCallback callback) override;
+  void CreateWallet(CreateWalletCallback callback) override;
   void FetchWalletProperties(FetchWalletPropertiesCallback callback) override;
 
   void GetAutoContributeProps(
