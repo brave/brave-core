@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_DOM_DOCUMENT_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_DOM_DOCUMENT_H_
 
-#include "../../../../../../third_party/blink/renderer/core/dom/document.h"
+#include "../../../../../../../third_party/blink/renderer/core/dom/document.h"
 
 using blink::Document;
 using blink::GarbageCollected;
