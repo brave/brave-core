@@ -1,0 +1,12 @@
+diff --git a/headless/BUILD.gn b/headless/BUILD.gn
+index 4b58b5081b3a87b2a05f4baaeac6bfc8a396d074..e82091b907d06bd04e964f160e323cd8f0bd8341 100644
+--- a/headless/BUILD.gn
++++ b/headless/BUILD.gn
+@@ -550,6 +550,7 @@ if (!is_component_build) {
+     ]
+     if (enable_basic_printing) {
+       deps += [ "//components/printing/renderer" ]
++      deps += [ "//components/services/pdf_compositor", "//components/services/pdf_compositor/public/mojom" ]
+     }
+   }
+ } else {
