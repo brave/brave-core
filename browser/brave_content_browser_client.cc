@@ -243,24 +243,20 @@ void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
               incognito_session_token_.GetHighForSerialization()));
     }
   }
-}
 
-void BraveContentBrowserClient::AdjustUtilityServiceProcessCommandLine(
-    const service_manager::Identity& identity,
-    base::CommandLine* command_line) {
-  ChromeContentBrowserClient::AdjustUtilityServiceProcessCommandLine(
-      identity, command_line);
-
+  if (process_type == switches::kUtilityProcess) {
 #if BUILDFLAG(ENABLE_TOR)
-  if (identity.name() == tor::mojom::kServiceName) {
-    base::FilePath path =
-        g_brave_browser_process->tor_client_updater()->GetExecutablePath();
-    if (!path.empty()) {
-      command_line->AppendSwitchPath(tor::switches::kTorExecutablePath,
-                                     path.BaseName());
-    }
-  }
+      // This is not ideal because it adds the tor executable as a switch
+      // for every utility process, but it should be ok until we land a
+      // permanent fix
+      base::FilePath path =
+          g_brave_browser_process->tor_client_updater()->GetExecutablePath();
+      if (!path.empty()) {
+        command_line->AppendSwitchPath(tor::switches::kTorExecutablePath,
+                                       path.BaseName());
+      }
 #endif
+  }
 }
 
 std::vector<std::unique_ptr<blink::URLLoaderThrottle>>
