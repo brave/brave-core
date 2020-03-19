@@ -6,7 +6,11 @@
 #ifndef BRAVE_BROWSER_BRAVE_DRM_TAB_HELPER_H_
 #define BRAVE_BROWSER_BRAVE_DRM_TAB_HELPER_H_
 
+#include <string>
+
+#include "base/scoped_observer.h"
 #include "brave/components/brave_drm/brave_drm.mojom.h"
+#include "components/component_updater/component_updater_service.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_receiver_set.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -15,7 +19,8 @@
 class BraveDrmTabHelper final
     : public content::WebContentsObserver,
       public content::WebContentsUserData<BraveDrmTabHelper>,
-      public brave_drm::mojom::BraveDRM {
+      public brave_drm::mojom::BraveDRM,
+      public component_updater::ComponentUpdateService::Observer {
  public:
   explicit BraveDrmTabHelper(content::WebContents* contents);
   ~BraveDrmTabHelper() override;
@@ -29,6 +34,9 @@ class BraveDrmTabHelper final
   // blink::mojom::BraveDRM
   void OnWidevineKeySystemAccessRequest() override;
 
+  // component_updater::ComponentUpdateService::Observer
+  void OnEvent(Events event, const std::string& id) override;
+
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 
  private:
@@ -41,6 +49,9 @@ class BraveDrmTabHelper final
 
   // True if we are notified that a page requested widevine availability.
   bool is_widevine_requested_ = false;
+
+  ScopedObserver<component_updater::ComponentUpdateService,
+                 component_updater::ComponentUpdateService::Observer> observer_;
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_DRM_TAB_HELPER_H_
