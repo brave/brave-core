@@ -928,8 +928,9 @@ void LedgerImpl::LogResponse(
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  std::string stat =
-      response_status_code == net::HTTP_OK ? "Success" : "Failure";
+  const std::string result =
+      response_status_code >= 200 && response_status_code < 300
+          ? "Success" : "Failure";
 
   std::string formatted_headers = "";
   for (auto header = headers.begin(); header != headers.end(); ++header) {
@@ -943,7 +944,7 @@ void LedgerImpl::LogResponse(
   BLOG(this, ledger::LogLevel::LOG_RESPONSE) << std::endl
     << "[ RESPONSE - " << func_name << " ]" << std::endl
     << "> time: " << std::time(nullptr) << std::endl
-    << "> result: " << stat << std::endl
+    << "> result: " << result << std::endl
     << "> http code: " << response_status_code << std::endl
     << "> response: " << response_data << std::endl
     << formatted_headers
