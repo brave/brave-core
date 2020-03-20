@@ -58,6 +58,18 @@ class BinanceGetAccessTokenFunction :
   ResponseAction Run() override;
 };
 
+class BinanceSetCodeChallengeFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("binance.setCodeChallenge", UNKNOWN)
+
+ protected:
+  ~BinanceSetCodeChallengeFunction() override {}
+  void OnChallengeResult(bool success);
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

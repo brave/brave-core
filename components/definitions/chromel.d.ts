@@ -157,6 +157,7 @@ declare namespace chrome.binance {
   const isSupportedRegion: (callback: (supported: boolean) => void) => {}
   const getClientUrl: (callback: (clientUrl: string) => void) => {}
   const getAccessToken: (code: string, callback: (success: boolean) => void) => {}
+  const setCodeChallenge: (challenge: string, callback: (success: boolean) => void) => {}
 }
 
 declare namespace chrome.rewardsNotifications {

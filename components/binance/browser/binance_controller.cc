@@ -85,7 +85,8 @@ std::string BinanceController::GetOAuthClientUrl () {
   // To do, use a better formatting solution :)
   const std::string client_url =
       oauth_url + "?response_type=code&client_id=" + client_id +
-      "&redirect_uri=" + encoded_uri + "&scope=" + oauth_scope;
+      "&redirect_uri=" + encoded_uri + "&scope=" + oauth_scope +
+      "&code_challenge=" + code_challenge_ + "&code_challenge_method=S256";
   return client_url;
 }
 
@@ -110,6 +111,13 @@ bool BinanceController::GetAccessToken(
   return OAuthRequest(oauth_path_access_token,
                     formatted_params,
                     std::move(internal_callback));
+}
+
+void BinanceController::SetCodeChallenge(
+    const std::string& challenge,
+    SetCodeChallengeCallback callback) {
+  bool success = SetCodeChallengePref(challenge);
+  std::move(callback).Run(success);
 }
 
 void BinanceController::OnGetAccessToken(
@@ -214,12 +222,35 @@ bool BinanceController::SetAccessTokens(const std::string& access_token,
   std::string encoded_encrypted_access_token;
   std::string encoded_encrypted_refresh_token;
   base::Base64Encode(encrypted_access_token, &encoded_encrypted_access_token);
-  base::Base64Encode(encrypted_refresh_token, &encoded_encrypted_refresh_token);
+  base::Base64Encode(
+      encrypted_refresh_token, &encoded_encrypted_refresh_token);
 
   Profile* profile = Profile::FromBrowserContext(context_);
-  profile->GetPrefs()->SetString(kBinanceAccessToken, encoded_encrypted_access_token);
+  profile->GetPrefs()->SetString(
+      kBinanceAccessToken, encoded_encrypted_access_token);
   profile->GetPrefs()->SetString(kBinanceRefreshToken,
       encoded_encrypted_refresh_token);
+
+  return true;
+}
+
+bool BinanceController::SetCodeChallengePref(const std::string& challenge) {
+  code_challenge_ = challenge;
+
+  std::string encrypted_code_challenge;
+
+  if (!OSCrypt::EncryptString(challenge, &encrypted_code_challenge)) {
+    LOG(ERROR) << "Could not encrypt and save Binance code challenge";
+    return false;
+  }
+
+  std::string encoded_encrypted_code_challenge;
+  base::Base64Encode(encrypted_code_challenge,
+       &encoded_encrypted_code_challenge);
+
+  Profile* profile = Profile::FromBrowserContext(context_);
+  profile->GetPrefs()->SetString(
+      kBinanceCodeChallenge, challenge);
 
   return true;
 }

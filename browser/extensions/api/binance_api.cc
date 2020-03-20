@@ -46,8 +46,8 @@ BinanceGetUserTLDFunction::Run() {
     return RespondNow(Error("Not available in Tor profile"));
   }
 
-  auto* controller = GetBinanceController(browser_context());
-  const std::string userTLD = controller->GetBinanceTLD();
+  auto* service = GetBinanceService(browser_context());
+  const std::string userTLD = service->GetBinanceTLD();
 
   return RespondNow(OneArgument(
       std::make_unique<base::Value>(userTLD)));
@@ -60,8 +60,8 @@ BinanceGetClientUrlFunction::Run() {
     return RespondNow(Error("Not available in Tor profile"));
   }
 
-  auto* controller = GetBinanceController(browser_context());
-  const std::string client_url = controller->GetOAuthClientUrl();
+  auto* service = GetBinanceService(browser_context());
+  const std::string client_url = service->GetOAuthClientUrl();
 
   return RespondNow(OneArgument(
       std::make_unique<base::Value>(client_url)));
@@ -78,8 +78,8 @@ BinanceGetAccessTokenFunction::Run() {
       binance::GetAccessToken::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  auto* controller = GetBinanceController(browser_context());
-  bool token_request = controller->GetAccessToken(params->code,
+  auto* service = GetBinanceService(browser_context());
+  bool token_request = service->GetAccessToken(params->code,
       base::BindOnce(
           &BinanceGetAccessTokenFunction::OnCodeResult, this));
 
@@ -93,6 +93,127 @@ BinanceGetAccessTokenFunction::Run() {
 
 void BinanceGetAccessTokenFunction::OnCodeResult(bool success) {
   Respond(OneArgument(std::make_unique<base::Value>(success)));
+}
+
+ExtensionFunction::ResponseAction
+BinanceGetAccountBalancesFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  if (brave::IsTorProfile(profile)) {
+    return RespondNow(Error("Not available in Tor profile"));
+  }
+
+  auto* service = GetBinanceService(browser_context());
+  bool balance_success = service->GetAccountBalances(
+      base::BindOnce(
+          &BinanceGetAccountBalancesFunction::OnGetAccountBalances,
+          this));
+
+  if (!balance_success) {
+    return RespondNow(Error("Could not send request to get balance"));
+  }
+
+  return RespondLater();
+}
+
+void BinanceGetAccountBalancesFunction::OnGetAccountBalances(
+    const std::map<std::string, std::string>& balances, bool success) {
+  auto balance_dict = std::make_unique<base::Value>(
+      base::Value::Type::DICTIONARY);
+
+  for (const auto& balance : balances) {
+    balance_dict->SetStringKey(balance.first, balance.second);
+  }
+
+  Respond(TwoArguments(std::move(balance_dict),
+                       std::make_unique<base::Value>(success)));
+}
+
+ExtensionFunction::ResponseAction
+BinanceGetConvertQuoteFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  if (brave::IsTorProfile(profile)) {
+    return RespondNow(Error("Not available in Tor profile"));
+  }
+
+  std::unique_ptr<binance::GetConvertQuote::Params> params(
+      binance::GetConvertQuote::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  auto* service = GetBinanceService(browser_context());
+  bool token_request = service->GetConvertQuote(
+      params->from, params->to, params->amount,
+      base::BindOnce(
+          &BinanceGetConvertQuoteFunction::OnQuoteResult, this));
+
+  if (!token_request) {
+    return RespondNow(
+        Error("Could not make request for access tokens"));
+  }
+
+  return RespondLater();
+}
+
+void BinanceGetConvertQuoteFunction::OnQuoteResult(
+    const std::string quote_id) {
+  Respond(OneArgument(std::make_unique<base::Value>(quote_id)));
+}
+
+ExtensionFunction::ResponseAction
+BinanceGetTickerPriceFunction::Run() {
+  std::unique_ptr<binance::GetTickerPrice::Params> params(
+      binance::GetTickerPrice::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  if (brave::IsTorProfile(profile)) {
+    return RespondNow(Error("Not available in Tor profile"));
+  }
+
+  auto* service = GetBinanceService(browser_context());
+  bool value_request = service->GetTickerPrice(params->symbol_pair,
+      base::BindOnce(
+          &BinanceGetTickerPriceFunction::OnGetTickerPrice, this));
+
+  if (!value_request) {
+    return RespondNow(
+        Error("Could not make request for BTC price"));
+  }
+
+  return RespondLater();
+}
+
+void BinanceGetTickerPriceFunction::OnGetTickerPrice(
+    const std::string& symbol_pair_price) {
+  Respond(OneArgument(std::make_unique<base::Value>(symbol_pair_price)));
+}
+
+ExtensionFunction::ResponseAction
+BinanceGetTickerVolumeFunction::Run() {
+  std::unique_ptr<binance::GetTickerVolume::Params> params(
+      binance::GetTickerVolume::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  if (brave::IsTorProfile(profile)) {
+    return RespondNow(Error("Not available in Tor profile"));
+  }
+
+  auto* service = GetBinanceService(browser_context());
+  bool value_request = service->GetTickerVolume(params->symbol_pair,
+      base::BindOnce(
+          &BinanceGetTickerVolumeFunction::OnGetTickerVolume, this));
+
+  if (!value_request) {
+    return RespondNow(
+        Error("Could not make request for Volume"));
+  }
+
+  return RespondLater();
+}
+
+void BinanceGetTickerVolumeFunction::OnGetTickerVolume(
+    const std::string& symbol_pair_volume) {
+  Respond(OneArgument(std::make_unique<base::Value>(symbol_pair_volume)));
 }
 
 ExtensionFunction::ResponseAction

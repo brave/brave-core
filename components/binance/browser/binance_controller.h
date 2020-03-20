@@ -46,8 +46,12 @@ class BinanceController {
   using GetAccessTokenCallback = base::OnceCallback<void(bool)>;
   bool GetAccessToken(const std::string& code,
       GetAccessTokenCallback callback);
+  using SetCodeChallengeCallback = base::OnceCallback<void(bool)>;
+  void SetCodeChallenge(const std::string& challenge,
+      SetCodeChallengeCallback callback);
   bool SetAccessTokens(const std::string& access_token,
                        const std::string& refresh_token);
+  bool SetCodeChallengePref(const std::string& challenge);
   std::string GetBinanceTLD();
   std::string GetOAuthClientUrl();
 
@@ -77,6 +81,7 @@ class BinanceController {
   scoped_refptr<base::SequencedTaskRunner> io_task_runner_;
   std::string access_token_;
   std::string refresh_token_;
+  std::string code_challenge_;
 
   content::BrowserContext* context_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
@@ -84,7 +89,6 @@ class BinanceController {
 
   base::WeakPtrFactory<BinanceController> weak_factory_;
 
-  FRIEND_TEST_ALL_PREFIXES(BinanceAPIBrowserTest, SetAPIKey);
   DISALLOW_COPY_AND_ASSIGN(BinanceController);
 };
 

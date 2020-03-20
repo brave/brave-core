@@ -47,6 +47,23 @@
         ]
       },
       {
+        "name": "getClientUrl",
+        "type": "function",
+        "description": "Fetches the Oauth Url for Binance",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "clientUrl",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "getAccessToken",
         "type": "function",
         "description": "Fetches the Oauth Url for Binance",

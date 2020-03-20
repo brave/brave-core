@@ -207,6 +207,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // Binance widget
   registry->RegisterStringPref(kBinanceAccessToken, "");
   registry->RegisterStringPref(kBinanceRefreshToken, "");
+  registry->RegisterStringPref(kBinanceCodeChallenge, "");
 
   // Autocomplete in address bar
   registry->RegisterBooleanPref(kAutocompleteEnabled, true);
