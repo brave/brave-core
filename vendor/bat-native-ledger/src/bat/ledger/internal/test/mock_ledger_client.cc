@@ -25,10 +25,6 @@ void MockLedgerClient::CreateWallet(ledger::CreateWalletCallback callback) {
   ledger_->CreateWallet(std::move(callback));
 }
 
-std::string MockLedgerClient::GenerateGUID() const {
-  return "guid";
-}
-
 void MockLedgerClient::Shutdown() {
   ledger_.reset();
 }

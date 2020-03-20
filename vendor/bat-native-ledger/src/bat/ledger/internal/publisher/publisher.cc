@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/guid.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -250,7 +251,7 @@ void Publisher::SaveVisitInternal(
   if (is_verified && !fav_icon.empty()) {
     if (fav_icon.find(".invalid") == std::string::npos) {
     ledger_->FetchFavIcon(fav_icon,
-                          "https://" + ledger_->GenerateGUID() + ".invalid",
+                          "https://" + base::GenerateGUID() + ".invalid",
                           std::bind(&Publisher::onFetchFavIcon,
                                     this,
                                     publisher_info->id,

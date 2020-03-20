@@ -426,10 +426,6 @@ void LedgerImpl::SavePublisherState(const std::string& data,
   ledger_client_->SavePublisherState(data, handler);
 }
 
-std::string LedgerImpl::GenerateGUID() const {
-  return ledger_client_->GenerateGUID();
-}
-
 void LedgerImpl::LogRequest(
     const std::string& url,
     const std::vector<std::string>& headers,

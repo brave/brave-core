@@ -83,8 +83,6 @@ class LedgerImpl : public ledger::Ledger,
   LedgerImpl(const LedgerImpl&) = delete;
   LedgerImpl& operator=(const LedgerImpl&) = delete;
 
-  std::string GenerateGUID() const;
-
   void Initialize(
       const bool execute_create_script,
       ledger::InitializeCallback callback) override;

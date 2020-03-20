@@ -5,6 +5,7 @@
 
 #include <utility>
 
+#include "base/guid.h"
 #include "base/values.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -92,7 +93,7 @@ void CredentialsCommon::GetBlindedCreds(
   const std::string blinded_creds_json = GetBlindedCredsJSON(blinded_creds);
 
   auto creds_batch = ledger::CredsBatch::New();
-  creds_batch->creds_id = ledger_->GenerateGUID();
+  creds_batch->creds_id = base::GenerateGUID();
   creds_batch->size = trigger.size;
   creds_batch->creds = creds_json;
   creds_batch->blinded_creds = blinded_creds_json;

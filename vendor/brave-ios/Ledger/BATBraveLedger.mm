@@ -1808,11 +1808,6 @@ BATLedgerBridge(BOOL,
   return std::string(encoded.UTF8String);
 }
 
-- (std::string)generateGUID
-{
-  return [self.commonOps generateUUID];
-}
-
 - (void)fetchFavIcon:(const std::string &)url faviconKey:(const std::string &)favicon_key callback:(ledger::FetchIconCallback)callback
 {
   if (!self.faviconFetcher) {

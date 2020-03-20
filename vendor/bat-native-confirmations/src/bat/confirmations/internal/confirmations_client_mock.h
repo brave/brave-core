@@ -53,8 +53,6 @@ class MockConfirmationsClient : public ConfirmationsClient {
   MockConfirmationsClient();
   ~MockConfirmationsClient() override;
 
-  MOCK_CONST_METHOD0(GenerateGUID, std::string());
-
   MOCK_METHOD1(OnWalletInitialized, void(
       ledger::Result result));
 

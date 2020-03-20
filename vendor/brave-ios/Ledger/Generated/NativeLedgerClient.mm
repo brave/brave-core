@@ -17,9 +17,6 @@ void NativeLedgerClient::ConfirmationsTransactionHistoryDidChange() {
 void NativeLedgerClient::FetchFavIcon(const std::string & url, const std::string & favicon_key, ledger::FetchIconCallback callback) {
   [bridge_ fetchFavIcon:url faviconKey:favicon_key callback:callback];
 }
-std::string NativeLedgerClient::GenerateGUID() const {
-  return [bridge_ generateGUID];
-}
 void NativeLedgerClient::KillTimer(const uint32_t timer_id) {
   [bridge_ killTimer:timer_id];
 }
