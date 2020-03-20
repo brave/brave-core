@@ -22,7 +22,7 @@ import org.chromium.chrome.R;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 
-import static org.chromium.chrome.browser.util.ViewUtils.dpToPx;
+import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 public class ImageUtils {
     public static Bitmap topOffset(Bitmap src, int offsetY) {

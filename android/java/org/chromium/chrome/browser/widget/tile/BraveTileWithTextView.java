@@ -16,6 +16,7 @@ import org.chromium.chrome.browser.ntp_sponsored_images.SponsoredImageUtil;
 import org.chromium.chrome.browser.ntp_sponsored_images.NTPUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.suggestions.tile.TileWithTextView;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 
 public class BraveTileWithTextView extends TileWithTextView {
