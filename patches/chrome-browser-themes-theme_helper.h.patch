@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/themes/theme_helper.h b/chrome/browser/themes/theme_helper.h
+index daac90c7015c7e39d32f947499a78e3960eade93..db68ca83823441f8e775bc8c5067bce92c789f6b 100644
+--- a/chrome/browser/themes/theme_helper.h
++++ b/chrome/browser/themes/theme_helper.h
+@@ -107,6 +107,7 @@ class ThemeHelper {
+       bool incognito,
+       const CustomThemeSupplier* theme_supplier) const;
+ 
++  BRAVE_THEME_HELPER_H_
+  private:
+   friend class theme_service_internal::ThemeServiceTest;
+ 

@@ -102,15 +102,12 @@
   <message name="IDS_SETTINGS_PROFILE_NAME_AND_PICTURE" desc="Label of the link that takes you to the page to edit your name and picture for your chrome profile.">
     Brave name and picture
   </message>
+</if>
   <message name="IDS_SETTINGS_PEOPLE_SIGN_IN_PROMPT_SECONDARY_WITH_ACCOUNT" desc="The secondary text displayed to prompt users to enable sync for an account that is alredy present in Brave.">
     Sync and personalize Brave across your devices
   </message>
-</if>
 
   <!-- Sync Page -->
-  <message name="IDS_SETTINGS_SYNC_SIGNIN" desc="The label that appears on the sync button in the options dialog when sync has not been set up by the user.">
-    Sign in to Brave
-  </message>
   <message name="IDS_SETTINGS_SYNC_DATA_ENCRYPTED_TEXT" desc="Text alerting the user that synced data is encrypted.">
     For added security, Brave will encrypt your data.
   </message>
@@ -120,14 +117,12 @@
   <message name="IDS_DRIVE_SUGGEST_PREF_DESC" desc="The documentation string of the 'Show Drive Results in Omnibox' - full description sentence">
     Brave will access your Drive to make suggestions in the address bar
   </message>
-<if expr="not chromeos">
-    <message name="IDS_SETTINGS_SYNC_SIGN_IN_PROMPT_WITH_NO_ACCOUNT" desc="The text displayed to prompt users to sign in to Brave.">
-      Sign in to sync and personalize Brave across your devices
-    </message>
-    <message name="IDS_SETTINGS_SYNC_SIGN_IN_PROMPT_WITH_ACCOUNT" desc="The text displayed to prompt users to enable sync for an account that is alredy present in Brave.">
-      Sync and personalize Brave across your devices
-    </message>
-</if>
+  <message name="IDS_SETTINGS_SYNC_SIGN_IN_PROMPT_WITH_NO_ACCOUNT" desc="The text displayed to prompt users to sign in to Brave.">
+    Sign in to sync and personalize Brave across your devices
+  </message>
+  <message name="IDS_SETTINGS_SYNC_SIGN_IN_PROMPT_WITH_ACCOUNT" desc="The text displayed to prompt users to enable sync for an account that is alredy present in Brave.">
+    Sync and personalize Brave across your devices
+  </message>
 
   <!-- Languages Page -->
   <!-- Chrome OS string is in settings_strings.grdp. -->

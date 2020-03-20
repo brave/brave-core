@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/audio_buffer.idl b/third_party/blink/renderer/modules/webaudio/audio_buffer.idl
-index 54e002a30156cd1b77b4df7a627bde781edad1a4..5f28bdce7a86ec198d24f275a0e73b3b8bd874d1 100644
+index 7491acde6b938f8e114a913181f200e94133384f..3f2e99a151baee6dbbae83f1b0a97019feca338d 100644
 --- a/third_party/blink/renderer/modules/webaudio/audio_buffer.idl
 +++ b/third_party/blink/renderer/modules/webaudio/audio_buffer.idl
-@@ -39,7 +39,7 @@
+@@ -37,7 +37,7 @@
  
      // Channel access
      readonly attribute unsigned long numberOfChannels;

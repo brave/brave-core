@@ -18,8 +18,10 @@ source_set("themes") {
       "brave_dark_mode_utils_win.cc",
       "brave_theme_service.cc",
       "brave_theme_service.h",
-      "brave_theme_service_win.cc",
-      "brave_theme_service_win.h",
+      "brave_theme_helper.cc",
+      "brave_theme_helper.h",
+      "brave_theme_helper_win.cc",
+      "brave_theme_helper_win.h",
       "theme_properties.cc",
       "theme_properties.h",
     ]

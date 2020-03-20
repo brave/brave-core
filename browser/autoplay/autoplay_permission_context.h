@@ -16,10 +16,10 @@ class AutoplayPermissionContext : public PermissionContextBase {
 
  private:
   // PermissionContextBase:
-  void UpdateTabContext(const PermissionRequestID& id,
+  void UpdateTabContext(const permissions::PermissionRequestID& id,
                         const GURL& requesting_frame,
                         bool allowed) override;
-  void NotifyPermissionSet(const PermissionRequestID& id,
+  void NotifyPermissionSet(const permissions::PermissionRequestID& id,
                            const GURL& requesting_origin,
                            const GURL& embedding_origin,
                            BrowserPermissionCallback callback,

@@ -53,8 +53,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
         // If the explore sites section exists as its own section, then space it more closely.
         int variation = ExploreSitesBridge.getVariation();
-        if (ExploreSitesBridge.isEnabled(variation)
-                && !ExploreSitesBridge.isIntegratedWithMostLikely(variation)) {
+        if (ExploreSitesBridge.isEnabled(variation)) {
             ((MarginLayoutParams) layoutParams).bottomMargin =
                     getResources().getDimensionPixelOffset(
                             R.dimen.tile_grid_layout_vertical_spacing);

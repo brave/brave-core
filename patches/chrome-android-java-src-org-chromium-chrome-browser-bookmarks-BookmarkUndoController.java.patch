@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkUndoController.java b/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkUndoController.java
-index fad6de96cf7bd17a9eb7ab828cc97544cc94e422..5595446fab060195d2f3e958c84b6c51e4d88522 100644
+index 161465661a780fd7c67049ded33f62ab6c6437b9..d48824bc52f41cb4f7cf19ce1a75a4e060eb6461 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkUndoController.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkUndoController.java
 @@ -25,6 +25,7 @@ public class BookmarkUndoController extends BookmarkModelObserver implements

@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill/AutofillPaymentMethodsFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill/AutofillPaymentMethodsFragment.java
-index a5c2fb39c7d9c8ded281a5d762a339126796313a..6961b911eec15cc13e9c0ca880ea5566d1264d99 100644
+index 7205db1f4ff9582b2938b768bd9f5d0d6a1fc88d..6ebe784918fdce6710d5bfdf5d4d14fb70e8e007 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill/AutofillPaymentMethodsFragment.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill/AutofillPaymentMethodsFragment.java
-@@ -28,7 +28,7 @@ import org.chromium.chrome.browser.settings.ManagedPreferenceDelegate;
+@@ -27,7 +27,7 @@ import org.chromium.chrome.browser.settings.ManagedPreferenceDelegate;
   * Autofill credit cards fragment, which allows the user to edit credit cards and control
   * payment apps.
   */

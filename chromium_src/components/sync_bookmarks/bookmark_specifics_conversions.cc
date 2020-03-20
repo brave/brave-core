@@ -16,10 +16,11 @@ namespace sync_bookmarks {
 sync_pb::EntitySpecifics CreateSpecificsFromBookmarkNode(
     const bookmarks::BookmarkNode* node,
     bookmarks::BookmarkModel* model,
-    bool force_favicon_load) {
+    bool force_favicon_load,
+    bool include_guid) {
   brave_sync::AddBraveMetaInfo(node);
-  return CreateSpecificsFromBookmarkNodeChromiumImpl(node, model,
-                                                     force_favicon_load);
+  return CreateSpecificsFromBookmarkNodeChromiumImpl(
+      node, model, force_favicon_load, include_guid);
 }
 
 }  // namespace sync_bookmarks

@@ -17,8 +17,11 @@
 
 BraveTranslateIconView::BraveTranslateIconView(
     CommandUpdater* command_updater,
-    PageActionIconView::Delegate* delegate)
-    : TranslateIconView(command_updater, delegate),
+    IconLabelBubbleView::Delegate* icon_label_bubble_delegate,
+    PageActionIconView::Delegate* page_action_icon_delegate)
+    : TranslateIconView(command_updater,
+                        icon_label_bubble_delegate,
+                        page_action_icon_delegate),
       weak_ptr_factory_(this) {
 }
 

@@ -34,8 +34,8 @@
 #include "brave/components/p3a/brave_histogram_rewrite.h"
 #include "brave/components/p3a/brave_p3a_service.h"
 #include "brave/services/network/public/cpp/system_request_handler.h"
+#include "chrome/browser/component_updater/component_updater_utils.h"
 #include "chrome/browser/ui/browser_list.h"
-#include "chrome/browser/ui/webui/components_ui.h"
 #include "chrome/common/buildflags.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/component_updater/component_updater_service.h"
@@ -75,7 +75,7 @@
 #endif
 
 #if defined(OS_ANDROID)
-#include "chrome/browser/android/chrome_feature_list.h"
+#include "chrome/browser/flags/android/chrome_feature_list.h"
 #include "chrome/browser/android/component_updater/background_task_update_scheduler.h"
 #else
 #include "chrome/browser/ui/browser.h"
@@ -140,7 +140,7 @@ void BraveBrowserProcessImpl::Init() {
 
   brave_component_updater::BraveOnDemandUpdater::GetInstance()->
       RegisterOnDemandUpdateCallback(
-          base::BindRepeating(&ComponentsUI::OnDemandUpdate));
+          base::BindRepeating(&component_updater::BraveOnDemandUpdate));
   UpdateBraveDarkMode();
   pref_change_registrar_.Add(
       kBraveDarkMode,

@@ -1,5 +1,5 @@
 diff --git a/components/search_engines/search_engine_type.h b/components/search_engines/search_engine_type.h
-index ff303b8f304488fd4cda3920b9268f5a8fef996c..cf3b0067baf1ee0f4e5ce43acb6445f2f6b84caa 100644
+index 707c5c8785b9c1a7d8f7b5f686024afba7e8f322..bd9f2ee0e0caa9773cffd544e2d6b1ce4647b500 100644
 --- a/components/search_engines/search_engine_type.h
 +++ b/components/search_engines/search_engine_type.h
 @@ -64,9 +64,7 @@ enum SearchEngineType {

@@ -16,6 +16,10 @@
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/prefs/pref_service.h"
 
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/profiles/profile_util.h"
+#endif
+
 namespace {
 std::set<Profile*> g_profile_set;
 }
@@ -23,8 +27,15 @@ std::set<Profile*> g_profile_set;
 // static
 tor::TorProfileService* TorProfileServiceFactory::GetForProfile(
     Profile* profile) {
+  return GetForProfile(profile, true);
+}
+
+// static
+tor::TorProfileService* TorProfileServiceFactory::GetForProfile(
+  Profile* profile,
+  bool create) {
   return static_cast<tor::TorProfileService*>(
-      GetInstance()->GetServiceForBrowserContext(profile, true));
+      GetInstance()->GetServiceForBrowserContext(profile, create));
 }
 
 // static
@@ -76,9 +87,13 @@ void TorProfileServiceFactory::BrowserContextShutdown(
   // KillTor when the last Tor incognito profile is shutting down.
   if (g_profile_set.size() == 1) {
     auto* service = static_cast<tor::TorProfileServiceImpl*>(
-      TorProfileServiceFactory::GetForProfile(
-        Profile::FromBrowserContext(context)));
-    service->KillTor();
+        TorProfileServiceFactory::GetForProfile(
+            Profile::FromBrowserContext(context), false));
+    if (service) {
+      service->KillTor();
+    } else {
+      DCHECK(!brave::IsTorProfile(context));
+    }
   }
 #endif
   BrowserContextKeyedServiceFactory::BrowserContextShutdown(context);

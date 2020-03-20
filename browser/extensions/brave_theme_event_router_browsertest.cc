@@ -8,8 +8,8 @@
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
-#include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "components/prefs/pref_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -22,10 +22,6 @@ class MockBraveThemeEventRouter : public BraveThemeEventRouter {
  public:
   using BraveThemeEventRouter::BraveThemeEventRouter;
   ~MockBraveThemeEventRouter() override {}
-
-  ui::NativeTheme* current_native_theme_for_testing() const {
-    return current_native_theme_for_testing_;
-  }
 
   MOCK_METHOD0(Notify, void());
 };

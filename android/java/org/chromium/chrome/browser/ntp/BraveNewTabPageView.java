@@ -29,6 +29,7 @@ import android.graphics.BitmapFactory;
 import org.chromium.base.TraceEvent;
 import org.chromium.chrome.R;
 import org.chromium.base.Log;
+import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.ntp.NewTabPageView;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
@@ -109,10 +110,10 @@ public class BraveNewTabPageView extends NewTabPageView {
     @Override
     public void initialize(NewTabPageManager manager, Tab tab, TileGroup.Delegate tileGroupDelegate,
             boolean searchProviderHasLogo, boolean searchProviderIsGoogle, int scrollPosition,
-            long constructedTimeNs) {
+            long constructedTimeNs, ActivityLifecycleDispatcher activityLifecycleDispatcher) {
         super.initialize(manager, tab, tileGroupDelegate,
             searchProviderHasLogo, searchProviderIsGoogle, scrollPosition,
-            constructedTimeNs);
+            constructedTimeNs, activityLifecycleDispatcher);
 
         mTabImpl = (TabImpl) tab;
         mTab = tab;
@@ -348,7 +349,7 @@ public class BraveNewTabPageView extends NewTabPageView {
 
     private TabObserver mTabObserver = new EmptyTabObserver() {
         @Override
-        public void onInteractabilityChanged(boolean interactable) {
+        public void onInteractabilityChanged(Tab tab, boolean interactable) {
             // Force a layout update if the tab is now in the foreground.
             if (interactable) {
                 if (sponsoredTab == null)

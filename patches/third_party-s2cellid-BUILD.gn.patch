@@ -1,5 +1,5 @@
 diff --git a/third_party/s2cellid/BUILD.gn b/third_party/s2cellid/BUILD.gn
-index db13b4c4dbb8d56163cf0c0deff7b54619f810a1..25be3398c4730b2589f64dfba73eef5e379a95a3 100644
+index 4bf071b99151fdd838c1012878d958be030eb7c2..e72f4d6d66bcda1c235888fd1aca827501702bf6 100644
 --- a/third_party/s2cellid/BUILD.gn
 +++ b/third_party/s2cellid/BUILD.gn
 @@ -15,6 +15,7 @@

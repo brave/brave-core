@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/resources/history/history_toolbar.js b/chrome/browser/resources/history/history_toolbar.js
+index 07fb6424108593ad59eb4022357ae997a768747d..ebf862dc49e5fbc47fc48686ed631d2020177224 100644
+--- a/chrome/browser/resources/history/history_toolbar.js
++++ b/chrome/browser/resources/history/history_toolbar.js
+@@ -4,7 +4,7 @@
+ 
+ import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+ import 'chrome://resources/cr_elements/cr_lazy_render/cr_lazy_render.m.js';
+-import 'chrome://resources/cr_elements/cr_toolbar/cr_toolbar.m.js';
++import 'chrome://brave-resources/br_elements/br_toolbar/br_toolbar.m.js'
+ import {loadTimeData} from 'chrome://resources/js/load_time_data.m.js';
+ import './shared_style.js';
+ import './strings.js';

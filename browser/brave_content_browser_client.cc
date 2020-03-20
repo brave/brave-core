@@ -47,6 +47,7 @@
 #include "content/public/common/content_switches.h"
 #include "content/public/common/service_names.mojom.h"
 #include "extensions/buildflags/buildflags.h"
+#include "net/cookies/site_for_cookies.h"
 #include "services/service_manager/public/cpp/manifest_builder.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -242,24 +243,20 @@ void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
               incognito_session_token_.GetHighForSerialization()));
     }
   }
-}
 
-void BraveContentBrowserClient::AdjustUtilityServiceProcessCommandLine(
-    const service_manager::Identity& identity,
-    base::CommandLine* command_line) {
-  ChromeContentBrowserClient::AdjustUtilityServiceProcessCommandLine(
-      identity, command_line);
-
+  if (process_type == switches::kUtilityProcess) {
 #if BUILDFLAG(ENABLE_TOR)
-  if (identity.name() == tor::mojom::kServiceName) {
-    base::FilePath path =
-        g_brave_browser_process->tor_client_updater()->GetExecutablePath();
-    if (!path.empty()) {
-      command_line->AppendSwitchPath(tor::switches::kTorExecutablePath,
-                                     path.BaseName());
-    }
-  }
+      // This is not ideal because it adds the tor executable as a switch
+      // for every utility process, but it should be ok until we land a
+      // permanent fix
+      base::FilePath path =
+          g_brave_browser_process->tor_client_updater()->GetExecutablePath();
+      if (!path.empty()) {
+        command_line->AppendSwitchPath(tor::switches::kTorExecutablePath,
+                                       path.BaseName());
+      }
 #endif
+  }
 }
 
 std::vector<std::unique_ptr<blink::URLLoaderThrottle>>
@@ -304,6 +301,7 @@ bool BraveContentBrowserClient::WillCreateURLLoaderFactory(
     mojo::PendingRemote<network::mojom::TrustedURLLoaderHeaderClient>*
         header_client,
     bool* bypass_redirect_checks,
+    bool* disable_secure_dns,
     network::mojom::URLLoaderFactoryOverridePtr* factory_override) {
   bool use_proxy = false;
   // TODO(iefremov): Skip proxying for certain requests?
@@ -315,7 +313,7 @@ bool BraveContentBrowserClient::WillCreateURLLoaderFactory(
   use_proxy |= ChromeContentBrowserClient::WillCreateURLLoaderFactory(
       browser_context, frame, render_process_id, type, request_initiator,
       std::move(navigation_id), factory_receiver, header_client,
-      bypass_redirect_checks, factory_override);
+      bypass_redirect_checks, disable_secure_dns, factory_override);
 
   return use_proxy;
 }
@@ -329,7 +327,7 @@ void BraveContentBrowserClient::CreateWebSocket(
     content::RenderFrameHost* frame,
     content::ContentBrowserClient::WebSocketFactory factory,
     const GURL& url,
-    const GURL& site_for_cookies,
+    const net::SiteForCookies& site_for_cookies,
     const base::Optional<std::string>& user_agent,
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
         handshake_client) {

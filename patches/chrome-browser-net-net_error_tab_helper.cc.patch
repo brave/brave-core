@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/net/net_error_tab_helper.cc b/chrome/browser/net/net_error_tab_helper.cc
-index 534c6c83906b214e28e90d338e5239d4a99a2fec..2a5cdee51898e7dfc05879275d4a419319064e94 100644
+index 7f17b1aaa04d0af98b64f2c056c5144da632bfef..60e2aa32319d4573bf0f71f26bd1587ca28d0aab 100644
 --- a/chrome/browser/net/net_error_tab_helper.cc
 +++ b/chrome/browser/net/net_error_tab_helper.cc
 @@ -234,6 +234,9 @@ void NetErrorTabHelper::InitializePref(WebContents* contents) {

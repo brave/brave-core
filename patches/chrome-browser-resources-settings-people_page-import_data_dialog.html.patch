@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/resources/settings/people_page/import_data_dialog.html b/chrome/browser/resources/settings/people_page/import_data_dialog.html
-index 9eb241a1aba7cb9c04c98c16c15019a48d84f50e..a350c1b1454805ebff5a53f27bbe292965d281d7 100644
+index c644c6c9fbba3df4e948f4f0d8f2fa1ebb996ce4..5f55f5a6cfb44b03d2a19e5a661fd770237e132a 100644
 --- a/chrome/browser/resources/settings/people_page/import_data_dialog.html
 +++ b/chrome/browser/resources/settings/people_page/import_data_dialog.html
 @@ -93,6 +93,26 @@
                pref="{{prefs.import_dialog_autofill_form_data}}"
-               label="$i18n{importAutofillFormData}">
+               label="$i18n{importAutofillFormData}" no-set-pref>
            </settings-checkbox>
 +          <settings-checkbox
 +              hidden="[[!selected_.cookies]]"

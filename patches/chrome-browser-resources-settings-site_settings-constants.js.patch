@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/settings/site_settings/constants.js b/chrome/browser/resources/settings/site_settings/constants.js
-index f073aa9b3db632054113bc3e0eaa19943cd3935a..a85247cb6e609d30a1dc8d23552a760642386789 100644
+index 726f9d3648f3aecbf431bdafebb7c569d8327be2..626ff962e9c234c1c693256be1177c8df3fe5335 100644
 --- a/chrome/browser/resources/settings/site_settings/constants.js
 +++ b/chrome/browser/resources/settings/site_settings/constants.js
-@@ -35,6 +35,7 @@ settings.ContentSettingsTypes = {
-   ADS: 'ads',
-   CLIPBOARD: 'clipboard',
-   SENSORS: 'sensors',
-+  AUTOPLAY: 'autoplay',
-   PAYMENT_HANDLER: 'payment-handler',
-   MIXEDSCRIPT: 'mixed-script',
-   BLUETOOTH_SCANNING: 'bluetooth-scanning',
+@@ -34,6 +34,7 @@ cr.define('settings', function() {
+     ADS: 'ads',
+     CLIPBOARD: 'clipboard',
+     SENSORS: 'sensors',
++    AUTOPLAY: 'autoplay',
+     PAYMENT_HANDLER: 'payment-handler',
+     MIXEDSCRIPT: 'mixed-script',
+     BLUETOOTH_SCANNING: 'bluetooth-scanning',

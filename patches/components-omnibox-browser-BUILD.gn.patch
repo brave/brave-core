@@ -1,8 +1,8 @@
 diff --git a/components/omnibox/browser/BUILD.gn b/components/omnibox/browser/BUILD.gn
-index f9a6fd95e47512adeded9f49e5a0f7859e3ec1ef..a5d9fa56aad605acecdf76663887797bcf62c1de 100644
+index 34eb02f5de4131ac7365a83a8811273c2623ca2a..6172e8dee684d8a43eed1622537b3264f0079f0b 100644
 --- a/components/omnibox/browser/BUILD.gn
 +++ b/components/omnibox/browser/BUILD.gn
-@@ -257,6 +257,7 @@ jumbo_static_library("browser") {
+@@ -258,6 +258,7 @@ jumbo_static_library("browser") {
    if ((!is_android || enable_vr) && !is_ios) {
      deps += [ ":vector_icons" ]
    }

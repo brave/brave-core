@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/themes/theme_service_factory.cc b/chrome/browser/themes/theme_service_factory.cc
+index 5a0d5e736cb9fa72d9d764327aa0d549cfed563b..26f81dcc1cc82d8e7b7edbc4837eebc48aa73eeb 100644
+--- a/chrome/browser/themes/theme_service_factory.cc
++++ b/chrome/browser/themes/theme_service_factory.cc
+@@ -78,6 +78,7 @@ ThemeServiceFactory::~ThemeServiceFactory() {}
+ 
+ KeyedService* ThemeServiceFactory::BuildServiceInstanceFor(
+     content::BrowserContext* profile) const {
++  BRAVE_THEMESERVICEFACTORY_BUILDSERVICEINSTANCEFOR
+ #if defined(OS_LINUX) && !defined(OS_CHROMEOS)
+   using ThemeService = ThemeServiceAuraLinux;
+ #endif

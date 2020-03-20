@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/site_settings_page/site_settings_page.js b/chrome/browser/resources/settings/site_settings_page/site_settings_page.js
-index 3296308fd50aee8c73ab3544b958ea0f1639f0f5..b2ca9713f56bf53f58867918bffe729730b17ffa 100644
+index 37677e33b25249585eb6148b5f2c1ceb321450ca..3c7a4ed55cac206a56a4c66add4ffb9a5b42697f 100644
 --- a/chrome/browser/resources/settings/site_settings_page/site_settings_page.js
 +++ b/chrome/browser/resources/settings/site_settings_page/site_settings_page.js
-@@ -98,7 +98,9 @@ Polymer({
+@@ -106,7 +106,9 @@ Polymer({
      // elements residing in this element's Shadow DOM.
      const R = settings.routes;
      const pairs = [

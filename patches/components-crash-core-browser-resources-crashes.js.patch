@@ -1,5 +1,5 @@
 diff --git a/components/crash/core/browser/resources/crashes.js b/components/crash/core/browser/resources/crashes.js
-index e5d6a728d973aae10c033177fea4ecaade532d58..3d8a27076642d57c26fcd4a2ffcb1efdef052915 100644
+index fb5d25b859fd2089b4a06cc917acfb4f4f40d889..a6610767c38dc9e870be67cb1302670f8470fb56 100644
 --- a/components/crash/core/browser/resources/crashes.js
 +++ b/components/crash/core/browser/resources/crashes.js
 @@ -130,7 +130,7 @@ function updateCrashList(
@@ -10,4 +10,4 @@ index e5d6a728d973aae10c033177fea4ecaade532d58..3d8a27076642d57c26fcd4a2ffcb1efd
 +      //crashBlock.appendChild(linkBlock); // feature disabled in Brave
      } else {
        let textContentKey;
-       if (crash.state == 'pending_user_requested') {
+       if (crash.state === 'pending_user_requested') {

@@ -1,0 +1,46 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/privacy/ClearBrowsingDataFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/privacy/ClearBrowsingDataFragment.java
+index a6584c1cdc727226d6aac1e2bc1ccdd87720114e..bda4abcb9e676435402cf93205cfa1d4201682a8 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/settings/privacy/ClearBrowsingDataFragment.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/privacy/ClearBrowsingDataFragment.java
+@@ -52,7 +52,7 @@ import java.util.Set;
+  * The user can choose which types of data to clear (history, cookies, etc), and the time range
+  * from which to clear data.
+  */
+-public abstract class ClearBrowsingDataFragment extends PreferenceFragmentCompat
++public abstract class ClearBrowsingDataFragment extends org.chromium.chrome.browser.settings.BravePreferenceFragment
+         implements BrowsingDataBridge.OnClearBrowsingDataListener,
+                    Preference.OnPreferenceClickListener, Preference.OnPreferenceChangeListener {
+     /**
+@@ -224,7 +224,7 @@ public abstract class ClearBrowsingDataFragment extends PreferenceFragmentCompat
+     /**
+      * @return All available {@link DialogOption} entries.
+      */
+-    protected static final Set<Integer> getAllOptions() {
++    protected Set<Integer> getAllOptions() {
+         assert DialogOption.CLEAR_HISTORY == 0;
+ 
+         Set<Integer> all = new ArraySet<>();
+@@ -235,6 +235,7 @@ public abstract class ClearBrowsingDataFragment extends PreferenceFragmentCompat
+     }
+ 
+     static @BrowsingDataType int getDataType(@DialogOption int type) {
++        if (BraveClearBrowsingDataPreferencesAdvanced.isValidDataType(type)) return BraveClearBrowsingDataPreferencesAdvanced.getDataType(type);
+         switch (type) {
+             case DialogOption.CLEAR_CACHE:
+                 return BrowsingDataType.CACHE;
+@@ -254,6 +255,7 @@ public abstract class ClearBrowsingDataFragment extends PreferenceFragmentCompat
+     }
+ 
+     static String getPreferenceKey(@DialogOption int type) {
++        if (BraveClearBrowsingDataPreferencesAdvanced.isValidDataType(type)) return BraveClearBrowsingDataPreferencesAdvanced.getPreferenceKey(type);
+         switch (type) {
+             case DialogOption.CLEAR_CACHE:
+                 return "clear_cache_checkbox";
+@@ -273,6 +275,7 @@ public abstract class ClearBrowsingDataFragment extends PreferenceFragmentCompat
+     }
+ 
+     static @DrawableRes int getIcon(@DialogOption int type) {
++        if (BraveClearBrowsingDataPreferencesAdvanced.isValidDataType(type)) return BraveClearBrowsingDataPreferencesAdvanced.getIcon(type);
+         switch (type) {
+             case DialogOption.CLEAR_CACHE:
+                 return R.drawable.ic_collections_grey;

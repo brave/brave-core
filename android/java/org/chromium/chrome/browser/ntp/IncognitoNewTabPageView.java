@@ -5,7 +5,7 @@
 
 package org.chromium.chrome.browser.ntp;
 
-import static org.chromium.chrome.browser.util.ViewUtils.dpToPx;
+import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -26,7 +26,7 @@ import androidx.annotation.StringRes;
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.gesturenav.HistoryNavigationLayout;
-import org.chromium.chrome.browser.util.ViewUtils;
+import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
 import org.chromium.ui.text.SpanApplier;
 import org.chromium.ui.widget.ChromeBulletSpan;
@@ -56,6 +56,20 @@ public class IncognitoNewTabPageView extends HistoryNavigationLayout {
         void loadIncognitoLearnMore();
 
         /**
+         * Enables/disables cookie controls mode as set from incognito NTP. By default
+         * nothing happens.
+         * @param enable A boolean specifying the state of third party cookie blocking in
+         *         incognito. True will enable third-party cookie blocking in incognito and false
+         *         will disable this feature.
+         * */
+        void setThirdPartyCookieBlocking(boolean enable);
+
+        /**
+         * Returns whether third-party cookies are currently being blocked.
+         * */
+        boolean shouldBlockThirdPartyCookies();
+
+        /**
          * Called when the NTP has completely finished loading (all views will be inflated
          * and any dependent resources will have been loaded).
          */
@@ -63,8 +77,8 @@ public class IncognitoNewTabPageView extends HistoryNavigationLayout {
     }
 
     /** Default constructor needed to inflate via XML. */
-    public IncognitoNewTabPageView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    public IncognitoNewTabPageView(Context context) {
+        super(context);
     }
 
     @Override

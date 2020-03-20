@@ -11,6 +11,7 @@ source_set("widevine") {
     "//chrome/browser/ui",
     "//chrome/common",
     "//components/content_settings/core/common",
+    "//components/permissions",
     "//components/subresource_filter/content/browser",
     "//content/public/browser",
     "//content/public/common",

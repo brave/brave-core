@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/debian/build.sh b/chrome/installer/linux/debian/build.sh
-index 15f9b02202331e9e0a107f682cfd169e0ab31f4e..162e4afe2770e68a3b44d75e9e77b82c3e677e40 100755
+index 0a510aa0655780511bc90677264f3610a9acd994..1555fee518ec0560a5a1d7664a0032b824261097 100755
 --- a/chrome/installer/linux/debian/build.sh
 +++ b/chrome/installer/linux/debian/build.sh
 @@ -21,7 +21,7 @@ gen_changelog() {
@@ -76,10 +76,10 @@ index 15f9b02202331e9e0a107f682cfd169e0ab31f4e..162e4afe2770e68a3b44d75e9e77b82c
  verify_channel
  
  # Some Debian packaging tools want these set.
-@@ -270,6 +285,10 @@ COMMON_DEPS=$(sed ':a;N;$!ba;s/\n/, /g' "${DEB_COMMON_DEPS}")
- COMMON_PREDEPS="dpkg (>= 1.14.0)"
- COMMON_RECOMMENDS="libu2f-udev"
- 
+@@ -271,6 +286,10 @@ COMMON_PREDEPS="dpkg (>= 1.14.0)"
+ MANUAL_RECOMMENDS="${SCRIPTDIR}/manual_recommends"
+ COMMON_RECOMMENDS=$(grep -v ^$ "${MANUAL_RECOMMENDS}" | grep -v ^# |
+                         sed ':a;N;$!ba;s/\n/, /g')
 +# Ensure that our signing key is up-to-date (brave/brave-browser#4205).
 +if [ "$CHANNEL" = "stable" ]; then
 +  COMMON_DEPS="${COMMON_DEPS}, brave-keyring"

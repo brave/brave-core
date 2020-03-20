@@ -53,9 +53,11 @@ void ImportLockDialogView::Show(gfx::NativeWindow parent,
 ImportLockDialogView::ImportLockDialogView(
     ::importer::SourceProfile source_profile,
     const base::Callback<void(bool)>& callback)
-  : source_profile_(source_profile),
-    callback_(callback) {
+    : source_profile_(source_profile), callback_(callback) {
   SetLayoutManager(std::make_unique<views::FillLayout>());
+
+  DialogDelegate::set_button_label(
+      ui::DIALOG_BUTTON_OK, l10n_util::GetStringUTF16(IDS_IMPORTER_LOCK_OK));
 
   views::Label* description_label;
   if (source_profile_.importer_type == ::importer::TYPE_CHROME) {
@@ -82,13 +84,6 @@ gfx::Size ImportLockDialogView::CalculatePreferredSize() const {
   const int width = ChromeLayoutProvider::Get()->GetDistanceMetric(
       DISTANCE_MODAL_DIALOG_PREFERRED_WIDTH);
   return gfx::Size(width, GetHeightForWidth(width));
-}
-
-base::string16 ImportLockDialogView::GetDialogButtonLabel(
-    ui::DialogButton button) const {
-  if (button == ui::DIALOG_BUTTON_OK)
-    return l10n_util::GetStringUTF16(IDS_IMPORTER_LOCK_OK);
-  return DialogDelegateView::GetDialogButtonLabel(button);
 }
 
 base::string16 ImportLockDialogView::GetWindowTitle() const {

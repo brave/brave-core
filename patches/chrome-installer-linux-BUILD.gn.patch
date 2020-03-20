@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index 64ba93f44c4a37388f794aaa55f4a29719c29229..c033dc8454b988a0dbbc72186e18b81752854274 100644
+index d2197940b4faef9d7d157a0583ab67b78a610b7c..6cd1e3f9ca7e5abaa69a38033e05e39e60fd1ef1 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
 @@ -26,8 +26,8 @@ declare_args() {
@@ -13,7 +13,7 @@ index 64ba93f44c4a37388f794aaa55f4a29719c29229..c033dc8454b988a0dbbc72186e18b817
    "$root_out_dir/crashpad_handler",
  ]
  packaging_files_shlibs = []
-@@ -156,12 +156,17 @@ action("merge_rpm_dependencies") {
+@@ -137,10 +137,15 @@ action("merge_rpm_dependencies") {
  }
  
  action("strip_chrome_binary") {
@@ -21,9 +21,7 @@ index 64ba93f44c4a37388f794aaa55f4a29719c29229..c033dc8454b988a0dbbc72186e18b817
 +  prog_name = "$root_out_dir/brave"
    debug_file = prog_name + ".debug"
    stripped_file = prog_name + ".stripped"
-   deps = [
-     "//chrome",
-   ]
+   deps = [ "//chrome" ]
 +  if (brave_chromium_build) {
 +    deps += [
 +      "//brave/build/linux:copy_exe",
@@ -32,7 +30,7 @@ index 64ba93f44c4a37388f794aaa55f4a29719c29229..c033dc8454b988a0dbbc72186e18b817
    script = "//build/gn_run_binary.py"
    sources = [
      "//buildtools/third_party/eu-strip/bin/eu-strip",
-@@ -222,7 +227,7 @@ branding_dir_100 =
+@@ -207,7 +212,7 @@ branding_dir_100 =
  copy("common_packaging_files") {
    visibility = [ ":*" ]
    sources = [
@@ -41,7 +39,7 @@ index 64ba93f44c4a37388f794aaa55f4a29719c29229..c033dc8454b988a0dbbc72186e18b817
      "common/apt.include",
      "common/default-app-block.template",
      "common/default-app.template",
-@@ -245,8 +250,8 @@ copy("common_packaging_files") {
+@@ -230,8 +235,8 @@ copy("common_packaging_files") {
      ]
    } else {
      sources += [
@@ -52,7 +50,7 @@ index 64ba93f44c4a37388f794aaa55f4a29719c29229..c033dc8454b988a0dbbc72186e18b817
      ]
    }
  
-@@ -354,6 +359,12 @@ group("installer_deps") {
+@@ -332,6 +337,12 @@ group("installer_deps") {
      "//sandbox/linux:chrome_sandbox",
      "//third_party/crashpad/crashpad/handler:crashpad_handler",
    ]
@@ -65,7 +63,7 @@ index 64ba93f44c4a37388f794aaa55f4a29719c29229..c033dc8454b988a0dbbc72186e18b817
    if (enable_nacl) {
      public_deps += [
        "//components/nacl/loader:nacl_helper",
-@@ -379,6 +390,9 @@ group("installer_deps") {
+@@ -357,6 +368,9 @@ group("installer_deps") {
  template("linux_package") {
    assert(defined(invoker.channel))
    channel = invoker.channel
@@ -75,7 +73,7 @@ index 64ba93f44c4a37388f794aaa55f4a29719c29229..c033dc8454b988a0dbbc72186e18b817
  
    if (current_cpu == "x86") {
      # The shell scripts use "ia32" instead of "x86".
-@@ -521,3 +535,6 @@ linux_package("beta") {
+@@ -493,3 +507,6 @@ linux_package("beta") {
  linux_package("unstable") {
    channel = "unstable"
  }

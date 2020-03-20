@@ -157,7 +157,7 @@ base::Value ConfirmationsImpl::GetCatalogIssuersAsDictionary(
     issuer_dictionary.SetKey("name", base::Value(issuer.second));
     issuer_dictionary.SetKey("public_key", base::Value(issuer.first));
 
-    list.GetList().push_back(std::move(issuer_dictionary));
+    list.Append(std::move(issuer_dictionary));
   }
 
   dictionary.SetKey("issuers", base::Value(std::move(list)));
@@ -209,7 +209,7 @@ base::Value ConfirmationsImpl::GetConfirmationsAsDictionary(
     confirmation_dictionary.SetKey("created",
         base::Value(confirmation.created));
 
-    list.GetList().push_back(std::move(confirmation_dictionary));
+    list.Append(std::move(confirmation_dictionary));
   }
 
   dictionary.SetKey("failed_confirmations", base::Value(std::move(list)));
@@ -234,7 +234,7 @@ base::Value ConfirmationsImpl::GetTransactionHistoryAsDictionary(
     transaction_dictionary.SetKey("confirmation_type",
         base::Value(transaction.confirmation_type));
 
-    list.GetList().push_back(std::move(transaction_dictionary));
+    list.Append(std::move(transaction_dictionary));
   }
 
   dictionary.SetKey("transactions", base::Value(std::move(list)));

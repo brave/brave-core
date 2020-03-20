@@ -23,6 +23,7 @@
 #include "mojo/public/cpp/system/data_pipe_producer.h"
 #include "mojo/public/cpp/system/string_data_source.h"
 #include "net/base/completion_repeating_callback.h"
+#include "net/cookies/site_for_cookies.h"
 #include "net/http/http_util.h"
 #include "services/network/public/cpp/features.h"
 #include "url/origin.h"
@@ -261,7 +262,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
   redirect_info.status_code = kInternalRedirectStatusCode;
   redirect_info.new_method = request_.method;
   redirect_info.new_url = redirect_url_;
-  redirect_info.new_site_for_cookies = redirect_url_;
+  redirect_info.new_site_for_cookies =
+      net::SiteForCookies::FromUrl(redirect_url_);
 
   network::mojom::URLResponseHeadPtr head =
       network::mojom::URLResponseHead::New();
@@ -336,12 +338,12 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
       OnRequestError(network::URLLoaderCompletionStatus(net::ERR_ABORTED));
       return;
     }
-    network::ResourceResponseHead response;
+    auto response = network::mojom::URLResponseHead::New();
     std::string response_data;
     brave_shields::MakeStubResponse(ctx_->mock_data_url, request_, &response,
                                     &response_data);
 
-    target_client_->OnReceiveResponse(response);
+    target_client_->OnReceiveResponse(std::move(response));
 
     // Create a data pipe for transmitting the response.
     mojo::ScopedDataPipeProducerHandle producer;
@@ -494,7 +496,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     redirect_info.status_code = override_headers_->response_code();
     redirect_info.new_method = request_.method;
     redirect_info.new_url = new_url;
-    redirect_info.new_site_for_cookies = new_url;
+    redirect_info.new_site_for_cookies = net::SiteForCookies::FromUrl(new_url);
 
     // These will get re-bound if a new request is initiated by
     // |FollowRedirect()|.

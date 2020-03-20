@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/common/content_settings.cc b/components/content_settings/core/common/content_settings.cc
-index ae7ff7f5867f385955a414a75366f4b4c6a925f6..73043a2be7a82c3b006e3abd42566fb3bc1370c2 100644
+index 12e6bca9a4fddfc32249e00e32dba61ae35b37d0..be5c9485b44a9252f0a298a2c593fe8d2e853291 100644
 --- a/components/content_settings/core/common/content_settings.cc
 +++ b/components/content_settings/core/common/content_settings.cc
-@@ -161,6 +161,7 @@ bool RendererContentSettingRules::IsRendererContentSetting(
+@@ -164,6 +164,7 @@ bool RendererContentSettingRules::IsRendererContentSetting(
           content_type == ContentSettingsType::JAVASCRIPT ||
           content_type == ContentSettingsType::CLIENT_HINTS ||
           content_type == ContentSettingsType::POPUPS ||

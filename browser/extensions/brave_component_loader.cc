@@ -15,6 +15,7 @@
 #include "brave/common/brave_wallet_constants.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_extension/grit/brave_extension.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -23,7 +24,6 @@
 #include "brave/browser/extensions/brave_wallet_util.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/webui/components_ui.h"
 #include "chrome/common/pref_names.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -52,8 +52,8 @@ BraveComponentLoader::~BraveComponentLoader() {
 }
 
 void BraveComponentLoader::OnComponentRegistered(std::string extension_id) {
-  // TODO(bridiver) - I don't think this is correct
-  ComponentsUI::OnDemandUpdate(extension_id);
+  brave_component_updater::BraveOnDemandUpdater::GetInstance()->OnDemandUpdate(
+      extension_id);
 }
 
 void BraveComponentLoader::OnComponentReady(std::string extension_id,

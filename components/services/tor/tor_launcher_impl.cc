@@ -198,7 +198,7 @@ void TorLauncherImpl::MonitorChild() {
             LOG(ERROR) << "tor exit (" << WEXITSTATUS(status) << ")";
           }
           tor_process_.Close();
-          if (crash_handler_callback_) {
+          if (connected_ && crash_handler_callback_) {
             base::ThreadTaskRunnerHandle::Get()->PostTask(
               FROM_HERE, base::BindOnce(std::move(crash_handler_callback_),
                                         pid));
@@ -211,13 +211,17 @@ void TorLauncherImpl::MonitorChild() {
   }
 #elif defined(OS_WIN)
   WaitForSingleObject(tor_process_.Handle(), INFINITE);
-  if (crash_handler_callback_)
+  if (connected_ && crash_handler_callback_)
     base::ThreadTaskRunnerHandle::Get()->PostTask(
       FROM_HERE, base::BindOnce(std::move(crash_handler_callback_),
                                 base::GetProcId(tor_process_.Handle())));
 #else
 #error unsupported platforms
 #endif
+}
+
+void TorLauncherImpl::SetDisconnected() {
+  connected_ = false;
 }
 
 }  // namespace tor

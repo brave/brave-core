@@ -50,7 +50,6 @@
 #include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "brave/components/brave_rewards/browser/rewards_database.h"
-#include "brave/components/brave_rewards/browser/rewards_fetcher_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
@@ -754,8 +753,8 @@ void RewardsServiceImpl::Shutdown() {
   BitmapFetcherService* image_service =
       BitmapFetcherServiceFactory::GetForBrowserContext(profile_);
   if (image_service) {
-    for (auto request_id : request_ids_) {
-      image_service->CancelRequest(request_id);
+    for (auto mapping : current_media_fetchers_) {
+      image_service->CancelRequest(mapping.second);
     }
   }
 
@@ -2012,9 +2011,7 @@ void RewardsServiceImpl::FetchFavIcon(const std::string& url,
     return;
   }
 
-  std::vector<std::string>::iterator it;
-  it = find(current_media_fetchers_.begin(),
-      current_media_fetchers_.end(), url);
+  auto it = current_media_fetchers_.find(url);
   if (it != current_media_fetchers_.end()) {
     LOG(WARNING) << "Already fetching favicon: " << url;
     return;
@@ -2023,16 +2020,11 @@ void RewardsServiceImpl::FetchFavIcon(const std::string& url,
   BitmapFetcherService* image_service =
       BitmapFetcherServiceFactory::GetForBrowserContext(profile_);
   if (image_service) {
-    current_media_fetchers_.emplace_back(url);
-    request_ids_.push_back(image_service->RequestImage(
-          parsedUrl,
-          // Image Service takes ownership of the observer
-          new RewardsFetcherServiceObserver(
-              favicon_key,
-              parsedUrl,
-              base::Bind(&RewardsServiceImpl::OnFetchFavIconCompleted,
-                  base::Unretained(this), callback)),
-          GetNetworkTrafficAnnotationTagForFaviconFetch()));
+    current_media_fetchers_[url] = image_service->RequestImage(
+        parsedUrl,
+        base::Bind(&RewardsServiceImpl::OnFetchFavIconCompleted,
+                   base::Unretained(this), callback, favicon_key, parsedUrl),
+        GetNetworkTrafficAnnotationTagForFaviconFetch());
   }
 }
 
@@ -2040,7 +2032,6 @@ void RewardsServiceImpl::OnFetchFavIconCompleted(
     ledger::FetchIconCallback callback,
     const std::string& favicon_key,
     const GURL& url,
-    const BitmapFetcherService::RequestId& request_id,
     const SkBitmap& image) {
   GURL favicon_url(favicon_key);
   gfx::Image gfx_image = gfx::Image::CreateFrom1xBitmap(image);
@@ -2055,17 +2046,9 @@ void RewardsServiceImpl::OnFetchFavIconCompleted(
       base::BindOnce(&RewardsServiceImpl::OnSetOnDemandFaviconComplete,
           AsWeakPtr(), favicon_url.spec(), callback));
 
-  std::vector<std::string>::iterator it_url;
-  it_url = find(current_media_fetchers_.begin(),
-      current_media_fetchers_.end(), url.spec());
+  auto it_url = current_media_fetchers_.find(url.spec());
   if (it_url != current_media_fetchers_.end()) {
     current_media_fetchers_.erase(it_url);
-  }
-
-  std::vector<BitmapFetcherService::RequestId>::iterator it_ids;
-  it_ids = find(request_ids_.begin(), request_ids_.end(), request_id);
-  if (it_ids != request_ids_.end()) {
-    request_ids_.erase(it_ids);
   }
 }
 

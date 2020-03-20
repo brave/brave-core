@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/themes/theme_helper_win.h b/chrome/browser/themes/theme_helper_win.h
+index 6978fd7d3730986faabf7059df184c9a7152a4e1..d504f07c5268e7c7002e4125d45e2dc558a17cb1 100644
+--- a/chrome/browser/themes/theme_helper_win.h
++++ b/chrome/browser/themes/theme_helper_win.h
+@@ -19,6 +19,7 @@ class ThemeHelperWin : public ThemeHelper {
+ 
+   ThemeHelperWin(const ThemeHelperWin&) = delete;
+   ThemeHelperWin& operator=(const ThemeHelperWin&) = delete;
++  BRAVE_THEME_HELPER_WIN_H_
+ 
+  private:
+   // ThemeService:

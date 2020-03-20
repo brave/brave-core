@@ -1,5 +1,5 @@
 diff --git a/tools/licenses.py b/tools/licenses.py
-index 350141f680604b297a115c8443812f9c2b8ab60a..29790d32fa05770ce26bb679222c5fa4981b5350 100755
+index 6405b31497a425c68b0486a2653071f23e515671..e957c14c924a7a405bf9e20f3c8e2ffc56ea1306 100755
 --- a/tools/licenses.py
 +++ b/tools/licenses.py
 @@ -35,6 +35,7 @@ else:
@@ -18,7 +18,7 @@ index 350141f680604b297a115c8443812f9c2b8ab60a..29790d32fa05770ce26bb679222c5fa4
  
  # Special value for 'License File' field used to indicate that the license file
  # should not be used in about:credits.
-@@ -479,7 +481,8 @@ def FindThirdPartyDirs(prune_paths, root):
+@@ -478,7 +480,8 @@ def FindThirdPartyDirs(prune_paths, root):
              if skip in dirs:
                  dirs.remove(skip)
  

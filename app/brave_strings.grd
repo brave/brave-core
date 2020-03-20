@@ -7,6 +7,35 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
     <output filename="grit/chromium_strings.h" type="rc_header">
       <emit emit_type="prepend" />
     </output>
+    <if expr="is_android">
+      <output filename="chromium_strings_af.pak" type="data_package" lang="af" />
+      <output filename="chromium_strings_as.pak" type="data_package" lang="as" />
+      <output filename="chromium_strings_az.pak" type="data_package" lang="az" />
+      <output filename="chromium_strings_be.pak" type="data_package" lang="be" />
+      <output filename="chromium_strings_bs.pak" type="data_package" lang="bs" />
+      <output filename="chromium_strings_eu.pak" type="data_package" lang="eu" />
+      <output filename="chromium_strings_fr-CA.pak" type="data_package" lang="fr-CA" />
+      <output filename="chromium_strings_gl.pak" type="data_package" lang="gl" />
+      <output filename="chromium_strings_hy.pak" type="data_package" lang="hy" />
+      <output filename="chromium_strings_is.pak" type="data_package" lang="is" />
+      <output filename="chromium_strings_ka.pak" type="data_package" lang="ka" />
+      <output filename="chromium_strings_kk.pak" type="data_package" lang="kk" />
+      <output filename="chromium_strings_km.pak" type="data_package" lang="km" />
+      <output filename="chromium_strings_ky.pak" type="data_package" lang="ky" />
+      <output filename="chromium_strings_lo.pak" type="data_package" lang="lo" />
+      <output filename="chromium_strings_mk.pak" type="data_package" lang="mk" />
+      <output filename="chromium_strings_mn.pak" type="data_package" lang="mn" />
+      <output filename="chromium_strings_my.pak" type="data_package" lang="my" />
+      <output filename="chromium_strings_ne.pak" type="data_package" lang="ne" />
+      <output filename="chromium_strings_or.pak" type="data_package" lang="or" />
+      <output filename="chromium_strings_pa.pak" type="data_package" lang="pa" />
+      <output filename="chromium_strings_si.pak" type="data_package" lang="si" />
+      <output filename="chromium_strings_sq.pak" type="data_package" lang="sq" />
+      <output filename="chromium_strings_ur.pak" type="data_package" lang="ur" />
+      <output filename="chromium_strings_uz.pak" type="data_package" lang="uz" />
+      <output filename="chromium_strings_zh-HK.pak" type="data_package" lang="zh-HK" />
+      <output filename="chromium_strings_zu.pak" type="data_package" lang="zu" />
+    </if>
     <output filename="chromium_strings_am.pak" type="data_package" lang="am" />
     <output filename="chromium_strings_ar.pak" type="data_package" lang="ar" />
     <output filename="chromium_strings_bg.pak" type="data_package" lang="bg" />
@@ -552,9 +581,6 @@ Brave is unable to recover your settings.
         <message name="IDS_ABOUT" desc="The text label of the About Brave menu item">
           About &amp;Brave
         </message>
-        <message name="IDS_ABOUT_OS" desc="The text label of the About Chrome OS menu item">
-          About &amp;Chrome OS
-        </message>
         <message name="IDS_UPDATE_NOW" desc="The text label of the Update Chrome OS Now menu item">
           Update &amp;Chrome OS
         </message>
@@ -613,7 +639,7 @@ Brave is unable to recover your settings.
       </if>
 
       <!-- about:browser-switch strings -->
-      <if expr="is_win or is_macosx or (is_linux and not is_chromeos)">
+      <if expr="is_win or is_macosx or (is_linux and not chromeos)">
         <message name="IDS_ABOUT_BROWSER_SWITCH_DESCRIPTION_UNKNOWN_BROWSER" desc="Description shown while waiting for an alternative browser to open, when the browser name is not auto-detected">
           Your system administrator has configured Brave to open an alternative browser to access <ph name="TARGET_URL_HOSTNAME">$1<ex>example.com</ex></ph>.
         </message>
@@ -640,9 +666,6 @@ Brave is unable to recover your settings.
 
       <!-- Sync/sign-in error messages -->
       <if expr="not chromeos">
-        <message name="IDS_SYNC_PASSPHRASE_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sync error bubble view when the user needs to update their sync passphrase.">
-          Brave could not sync your data. Please update your Sync passphrase.
-        </message>
         <message name="IDS_SYNC_SIGN_IN_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sign-in error bubble view when the user's sign-in credentials are out of date.">
           Brave could not sync your data because your account sign-in details are out of date.
         </message>
@@ -657,6 +680,12 @@ Brave is unable to recover your settings.
         <message name="IDS_SIGNIN_ERROR_SECONDARY_ACCOUNT_DISPLAY_SOURCE" desc="Context title shown in the notification header of sign-in error notification for Chrome OS Secondary Accounts.">
           Chrome OS System
         </message>
+        <message name="IDS_SYNC_NEEDS_KEYS_FOR_EVERYTHING_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sync error notification when the user needs to reauth to retrieve the sync encryption keys and resume sync.">
+          Chrome OS could not sync your data. Fix now.
+        </message>
+        <message name="IDS_SYNC_NEEDS_KEYS_FOR_PASSWORDS_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sync error notification when the user needs to reauth to retrieve the sync encryption keys, required to resume syncing of passwords specifically (other sync data works normally).">
+          Chrome OS could not sync your passwords. Fix now.
+        </message>
         <message name="IDS_SYNC_PASSPHRASE_ERROR_BUBBLE_VIEW_MESSAGE" desc="Message in the sync error notification when the user needs to update their sync passphrase.">
           Chrome OS could not sync your data. Please update your Sync passphrase.
         </message>
@@ -670,12 +699,6 @@ Brave is unable to recover your settings.
           Chrome OS could not sync your data due to an error signing in.
         </message>
       </if>
-      <message name="IDS_SYNC_PAUSED_REASON_CLEAR_COOKIES_ON_EXIT" desc="Info text displayed in the user menu when sync is paused due to cookies cleared on exit.">
-        You clear cookies when you quit Brave. To keep syncing, change this <ph name="COOKIE_SETTINGS_LINK">$1<ex>settings</ex></ph>.
-      </message>
-      <message name="IDS_SYNC_PAUSED_REASON_CLEAR_COOKIES_ON_EXIT_LINK_TEXT" desc="Link text part of the sync paused info text when sync is paused due to cookies cleared on exit.">
-        settings
-      </message>
 
       <!-- App list -->
       <if expr="chromeos">
@@ -855,17 +878,6 @@ Brave is unable to recover your settings.
         </message>
       </if>
 
-      <!-- Cannot update when other instances open dialog -->
-      <message name="IDS_UPDATE_OTHER_INSTANCES_SAME_USER_DIALOG_TITLE" desc="The title for the dialog shown when multiple copies of Brave are running during a requested update.">
-        Quit all copies of Brave.
-      </message>
-      <message name="IDS_UPDATE_OTHER_INSTANCES_SAME_USER_DIALOG_MESSAGE" desc="The message for the dialog shown when multiple copies of Brave are running during a requested update.">
-        Other copies of Brave are running. To update, close them.
-      </message>
-      <message name="IDS_UPDATE_OTHER_INSTANCES_OTHER_USER_AUTHENTICATION_PROMPT" desc="The window title for the other instances dialog.">
-        To update, Brave needs to stop running on this computer. This may cause other users logged into this computer to lose unsaved changes.
-      </message>
-
       <!-- Update bubble -->
       <message name="IDS_REINSTALL_APP" desc="Text for the button the user clicks to reinstall the app.">
         Reinstall Brave
@@ -900,7 +912,7 @@ Brave is unable to recover your settings.
         <message name="IDS_SYNC_UPGRADE_CLIENT" desc="Message indicating client needs to be upgraded to the latest version.">
           Update Brave to start sync
         </message>
-        <message name="IDS_SYNC_UPGRADE_CLIENT_LINK_LABEL" desc="Hyperlink text indicating client needs to be upgraded to the latest version.">
+        <message name="IDS_SYNC_UPGRADE_CLIENT_BUTTON" desc="Button indicating client needs to be upgraded to the latest version.">
           Update Brave
         </message>
       </if>

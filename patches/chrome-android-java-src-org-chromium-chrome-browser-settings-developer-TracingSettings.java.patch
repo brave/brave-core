@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/developer/TracingSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/developer/TracingSettings.java
-index 39592224a1ba7b65f9ee99dc974de588aa0f2f23..5832457797fb92d698a7434e0f41aba439008cb4 100644
+index 17745165cc1945321c7fd41f58f58b5bc6b05740..68d080427a8fb162c1f79a5be973fd09722e0282 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/developer/TracingSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/developer/TracingSettings.java
-@@ -29,7 +29,7 @@ import java.util.Set;
+@@ -30,7 +30,7 @@ import java.util.Set;
   * Settings fragment that shows options for recording a performance trace.
   */
  public class TracingSettings

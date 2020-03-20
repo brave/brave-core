@@ -222,10 +222,11 @@ bool BundleStateDatabase::InsertOrUpdateCreativeAdNotification(
     statement.BindString(5, info.end_at_timestamp);
     statement.BindString(6, info.creative_instance_id);
     statement.BindString(7, info.campaign_id);
-    statement.BindInt(8, info.daily_cap);
+    // Use BindInt64 for uint32_t types to avoid uint32_t to int32_t cast.
+    statement.BindInt64(8, info.daily_cap);
     statement.BindString(9, info.advertiser_id);
-    statement.BindInt(10, info.per_day);
-    statement.BindInt(11, info.total_max);
+    statement.BindInt64(10, info.per_day);
+    statement.BindInt64(11, info.total_max);
     statement.BindString(12, geo_target);
 
     if (!statement.Run()) {
@@ -365,7 +366,8 @@ bool BundleStateDatabase::InsertOrUpdateAdConversion(
   statement.BindString(0, info.creative_set_id);
   statement.BindString(1, info.type);
   statement.BindString(2, info.url_pattern);
-  statement.BindInt(3, info.observation_window);
+  // Use BindInt64 for uint32_t types to avoid uint32_t to int32_t cast.
+  statement.BindInt64(3, info.observation_window);
 
   return statement.Run();
 }

@@ -6,14 +6,17 @@ source_set("gcm_driver") {
     sources = [
       "brave_gcm_channel_status.cc",
       "brave_gcm_channel_status.h",
+      "brave_gcm_utils.cc",
+      "brave_gcm_utils.h",
     ]
 
     deps = [
-      "//components/gcm_driver:gcm_driver",
+      "//base",
+      "//brave/common:pref_names",
       "//components/prefs",
+      "//components/pref_registry",
       # For profile.h
       "//content/public/browser",
-      "//net",
     ]
   }
 }

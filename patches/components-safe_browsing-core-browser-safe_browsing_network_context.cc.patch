@@ -1,0 +1,13 @@
+diff --git a/components/safe_browsing/core/browser/safe_browsing_network_context.cc b/components/safe_browsing/core/browser/safe_browsing_network_context.cc
+index c22db020cfb4a7233ed8cc7f9fbe7b9f85723fb6..d5207cdc544025770e6ed2b57fd76d64df875c4a 100644
+--- a/components/safe_browsing/core/browser/safe_browsing_network_context.cc
++++ b/components/safe_browsing/core/browser/safe_browsing_network_context.cc
+@@ -77,7 +77,7 @@ class SafeBrowsingNetworkContext::SharedURLLoaderFactory
+       override {
+     DCHECK(CurrentlyOnThread(ThreadID::UI));
+     GetURLLoaderFactory()->CreateLoaderAndStart(
+-        std::move(loader), routing_id, request_id, options, request,
++        std::move(loader), routing_id, request_id, options, network::SystemRequestHandler::GetInstance()->OnBeforeSystemRequest(request),
+         std::move(client), traffic_annotation);
+   }
+ 

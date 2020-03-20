@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
-index a6b54d460c7c2f11ac7af41a0812273b82da14cf..048beed17577bd5e9036091c1283c761e8668869 100644
+index 1065b4e1e97f4c48f16537ed86fe31dc5262c655..dbc855554f88efb387eb0e6e4fa3c058df0a29c9 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
 @@ -74,7 +74,7 @@ public class NotificationPlatformBridge {
@@ -20,7 +20,7 @@ index a6b54d460c7c2f11ac7af41a0812273b82da14cf..048beed17577bd5e9036091c1283c761
          mNativeNotificationPlatformBridge = nativeNotificationPlatformBridge;
          Context context = ContextUtils.getApplicationContext();
          if (sNotificationManagerOverride != null) {
-@@ -558,7 +558,7 @@ public class NotificationPlatformBridge {
+@@ -557,7 +557,7 @@ public class NotificationPlatformBridge {
          });
      }
  
@@ -29,7 +29,7 @@ index a6b54d460c7c2f11ac7af41a0812273b82da14cf..048beed17577bd5e9036091c1283c761
              @NotificationType int notificationType, String origin, String scopeUrl,
              String profileId, boolean incognito, String title, String body, Bitmap image,
              Bitmap icon, Bitmap badge, int[] vibrationPattern, long timestamp, boolean renotify,
-@@ -692,7 +692,7 @@ public class NotificationPlatformBridge {
+@@ -665,7 +665,7 @@ public class NotificationPlatformBridge {
                          notificationId /* notificationTag */, PLATFORM_ID /* notificationId */));
      }
  

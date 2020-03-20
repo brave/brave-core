@@ -107,6 +107,11 @@
           Learn more
         </message>
       </if>
+      <if expr="is_win or is_linux or is_macosx or chromeos">
+        <message name="IDS_SAD_TAB_ERROR_CODE" desc="The message displayed on the crashed web page indicating the type of the crash.">
+          Error code: <ph name="ERROR_CODE">$1<ex>STATUS_ACCESS_VIOLATION</ex></ph>
+        </message>
+</if>
 
       <!-- New Tab -->
       <message name="IDS_NEW_TAB_TITLE" desc="Title of the new tab page, not to be confused with the action of opening a new tab.">
@@ -157,6 +162,12 @@
       </message>
       <message name="IDS_NEW_TAB_OTR_COOKIE_CONTROLS_CONTROLLED_TOOLTIP_TEXT" desc="Text displayed in the settings tooltip when third-party cookie blocking is managed or turned on by the user.">
         This setting is enforced by "<ph name="ENFORCING_SETTING">$1<ex>Block third-party cookies</ex></ph>" in "<ph name="SETTINGS_PAGE">$2<ex>Cookies and site data</ex></ph>"
+      </message>
+      <message name="IDS_NEW_TAB_OTR_THIRD_PARTY_COOKIE" desc="Label for the Block 3rd-party cookie checkbox on the Cookies category." formatter_data="android_java">
+        Block third-party cookies
+      </message>
+      <message name="IDS_NEW_TAB_OTR_THIRD_PARTY_COOKIE_SUBLABEL" desc="A sub-label below the Block 3rd-party cookie checkbox." formatter_data="android_java">
+        When on, sites can’t use your browsing activity across different sites to personalize ads. Some sites may not work properly.
       </message>
 
 </grit-part>

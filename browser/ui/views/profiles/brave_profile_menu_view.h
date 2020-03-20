@@ -11,19 +11,17 @@
 class BraveProfileMenuView : public ProfileMenuView {
  private:
   friend class ProfileMenuView;
-  friend class BraveProfileMenuViewTest;
 
-      using ProfileMenuView::ProfileMenuView;
+  using ProfileMenuView::ProfileMenuView;
   ~BraveProfileMenuView() override = default;
 
-  void AddAutofillHomeView() override;
-  void AddDiceSyncErrorView(const AvatarMenu::Item& avatar_item,
-                            sync_ui_util::AvatarSyncErrorType error,
-                            int button_string_id) override;
-
+  // Button/link actions.
   void OnExitProfileButtonClicked() override;
 
-  views::Button* current_profile_card_ = nullptr;
+  // Helper methods for building the menu.
+  void BuildIdentity() override;
+  void BuildAutofillButtons() override;
+  gfx::ImageSkia GetSyncIcon() override;
 
   DISALLOW_COPY_AND_ASSIGN(BraveProfileMenuView);
 };

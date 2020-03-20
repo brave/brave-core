@@ -25,6 +25,8 @@ class TorProfileServiceFactory : public BrowserContextKeyedServiceFactory {
  private:
   friend struct base::DefaultSingletonTraits<TorProfileServiceFactory>;
 
+  static tor::TorProfileService* GetForProfile(Profile* profile, bool create);
+
   TorProfileServiceFactory();
   ~TorProfileServiceFactory() override;
 

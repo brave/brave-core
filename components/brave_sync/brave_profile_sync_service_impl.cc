@@ -718,14 +718,15 @@ void BraveProfileSyncServiceImpl::OnRecordsSent(
   }
 }
 
-int BraveProfileSyncServiceImpl::GetDisableReasons() const {
+syncer::SyncService::DisableReasonSet
+BraveProfileSyncServiceImpl::GetDisableReasons() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   // legacy sync only support bookmark sync so we have to wait for migration
   // complete before enable sync engine
   if (IsBraveSyncEnabled() &&
       brave_sync_prefs_->GetMigratedBookmarksVersion() >= 2)
-    return syncer::SyncService::DISABLE_REASON_NONE;
+    return syncer::SyncService::DisableReasonSet();
   // kSyncManaged is set by Brave so it will contain
   // DISABLE_REASON_ENTERPRISE_POLICY and
   // SaveCardBubbleControllerImpl::ShouldShowSignInPromo will return false.

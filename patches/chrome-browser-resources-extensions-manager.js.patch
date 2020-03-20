@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/extensions/manager.js b/chrome/browser/resources/extensions/manager.js
-index b1df5c6fef5a2bd1cc2415b700a977fc0739c756..aea0dd658cf1f9a9bf1ca4bd0cf3fb9c1ce62a17 100644
+index 1b80446a0b746c228ff2d9ae0ba67c7668613a84..690a82cf13a09452300ecc1f74fff015ed7a7cd6 100644
 --- a/chrome/browser/resources/extensions/manager.js
 +++ b/chrome/browser/resources/extensions/manager.js
 @@ -5,7 +5,6 @@

@@ -249,13 +249,13 @@ std::vector<std::string> Prefs::GetRecordsToResend() const {
 void Prefs::AddToRecordsToResend(const std::string& object_id,
                                  std::unique_ptr<base::DictionaryValue> meta) {
   ListPrefUpdate list_update(pref_service_, kSyncRecordsToResend);
-  list_update->GetList().emplace_back(object_id);
+  list_update->Append(base::Value(object_id));
   SetRecordToResendMeta(object_id, std::move(meta));
 }
 
 void Prefs::RemoveFromRecordsToResend(const std::string& object_id) {
   ListPrefUpdate list_update(pref_service_, kSyncRecordsToResend);
-  base::Erase(list_update->GetList(), base::Value(object_id));
+  list_update->EraseListValue(base::Value(object_id));
   DictionaryPrefUpdate dict_update(pref_service_, kSyncRecordsToResendMeta);
   dict_update->RemoveKey(object_id);
 }

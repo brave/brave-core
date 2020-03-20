@@ -11,16 +11,13 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/embedder_support/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/prefs/pref_service.h"
-#include "components/safe_browsing/common/safe_browsing_prefs.h"
+#include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "components/spellcheck/browser/pref_names.h"
 #include "components/sync/base/pref_names.h"
 #include "brave/browser/brave_first_run_browsertest.h"
-
-#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
-#include "components/gcm_driver/gcm_channel_status_syncer.h"
-#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/components/brave_wayback_machine/pref_names.h"
@@ -70,8 +67,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   EXPECT_FALSE(
-      browser()->profile()->GetPrefs()->GetBoolean(
-          gcm::prefs::kGCMChannelStatus));
+      browser()->profile()->GetPrefs()->GetBoolean(kBraveGCMChannelStatus));
 #endif
 }
 
@@ -110,7 +106,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
                        DisableGoogleServicesByDefault) {
   EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
-      prefs::kAlternateErrorPagesEnabled));
+      embedder_support::kAlternateErrorPagesEnabled));
   EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
       spellcheck::prefs::kSpellCheckUseSpellingService));
   EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(

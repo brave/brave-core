@@ -1,8 +1,8 @@
 diff --git a/components/sync/engine_impl/syncer_proto_util.cc b/components/sync/engine_impl/syncer_proto_util.cc
-index 8e6646a69f21e6ce71d357221d1431c8e07d0163..f5c99d05d9bb6e0b12c54290890274a51c862c0f 100644
+index 25d77685283b20d8206720739f094a271362ec0b..10478e1b82d5e79e2d3a7c6579305816d471cf4c 100644
 --- a/components/sync/engine_impl/syncer_proto_util.cc
 +++ b/components/sync/engine_impl/syncer_proto_util.cc
-@@ -393,6 +393,7 @@ base::TimeDelta SyncerProtoUtil::GetThrottleDelay(
+@@ -396,6 +396,7 @@ base::TimeDelta SyncerProtoUtil::GetThrottleDelay(
  void SyncerProtoUtil::AddRequiredFieldsToClientToServerMessage(
      const SyncCycle* cycle,
      sync_pb::ClientToServerMessage* msg) {
@@ -10,7 +10,7 @@ index 8e6646a69f21e6ce71d357221d1431c8e07d0163..f5c99d05d9bb6e0b12c54290890274a5
    DCHECK(msg);
    SetProtocolVersion(msg);
    const std::string birthday = cycle->context()->birthday();
-@@ -412,6 +413,7 @@ SyncerError SyncerProtoUtil::PostClientToServerMessage(
+@@ -415,6 +416,7 @@ SyncerError SyncerProtoUtil::PostClientToServerMessage(
      ClientToServerResponse* response,
      SyncCycle* cycle,
      ModelTypeSet* partial_failure_data_types) {

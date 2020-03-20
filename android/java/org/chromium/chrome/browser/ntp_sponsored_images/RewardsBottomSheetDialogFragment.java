@@ -49,7 +49,7 @@ import org.chromium.chrome.browser.tab.TabAttributes;
 import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.chrome.R;
 
-import static org.chromium.chrome.browser.util.ViewUtils.dpToPx;
+import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment{
     private static final String BRAVE_TERMS_PAGE = "https://basicattentiontoken.org/user-terms-of-service/";

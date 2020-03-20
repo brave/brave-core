@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc b/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
-index 5415becfb495c2405d0b9991d340434807866256..1a2768e8fa61a1c52f62ce125e258dd319dfb289 100644
+index 325f61e14ac97a257280cda40aa93d3469643b6f..8c75cda668699a1e4fa806ae11fb3a19dc0410fd 100644
 --- a/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
 +++ b/third_party/blink/renderer/modules/webaudio/realtime_analyser.cc
-@@ -193,6 +193,7 @@ void RealtimeAnalyser::ConvertFloatToDb(DOMFloat32Array* destination_array) {
+@@ -197,6 +197,7 @@ void RealtimeAnalyser::ConvertFloatToDb(DOMFloat32Array* destination_array) {
        float linear_value = source[i];
        double db_mag = audio_utilities::LinearToDecibels(linear_value);
        destination[i] = float(db_mag);
@@ -10,7 +10,7 @@ index 5415becfb495c2405d0b9991d340434807866256..1a2768e8fa61a1c52f62ce125e258dd3
      }
    }
  }
-@@ -235,6 +236,7 @@ void RealtimeAnalyser::ConvertToByteData(DOMUint8Array* destination_array) {
+@@ -239,6 +240,7 @@ void RealtimeAnalyser::ConvertToByteData(DOMUint8Array* destination_array) {
        // from 0 to UCHAR_MAX.
        double scaled_value =
            UCHAR_MAX * (db_mag - min_decibels) * range_scale_factor;
@@ -18,7 +18,7 @@ index 5415becfb495c2405d0b9991d340434807866256..1a2768e8fa61a1c52f62ce125e258dd3
  
        // Clip to valid range.
        if (scaled_value < 0)
-@@ -291,6 +293,7 @@ void RealtimeAnalyser::GetFloatTimeDomainData(
+@@ -295,6 +297,7 @@ void RealtimeAnalyser::GetFloatTimeDomainData(
                         kInputBufferSize];
  
        destination[i] = value;
@@ -26,7 +26,7 @@ index 5415becfb495c2405d0b9991d340434807866256..1a2768e8fa61a1c52f62ce125e258dd3
      }
    }
  }
-@@ -316,6 +319,7 @@ void RealtimeAnalyser::GetByteTimeDomainData(DOMUint8Array* destination_array) {
+@@ -320,6 +323,7 @@ void RealtimeAnalyser::GetByteTimeDomainData(DOMUint8Array* destination_array) {
        float value =
            input_buffer[(i + write_index - fft_size + kInputBufferSize) %
                         kInputBufferSize];

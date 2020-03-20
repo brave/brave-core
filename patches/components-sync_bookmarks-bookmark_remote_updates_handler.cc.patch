@@ -1,8 +1,8 @@
 diff --git a/components/sync_bookmarks/bookmark_remote_updates_handler.cc b/components/sync_bookmarks/bookmark_remote_updates_handler.cc
-index c31275713056a2a1dd07872bc3569d54a8cfce0e..700877cd135845fe686626e821870ff0bbc3f453 100644
+index f39e969dfe0099cd6f0ce31fb63b59360b5b6b16..be7f05370b84fd7e182b6fdfda7b3754c62275e3 100644
 --- a/components/sync_bookmarks/bookmark_remote_updates_handler.cc
 +++ b/components/sync_bookmarks/bookmark_remote_updates_handler.cc
-@@ -144,6 +144,7 @@ void ApplyRemoteUpdate(
+@@ -147,6 +147,7 @@ void ApplyRemoteUpdate(
    // Compute index information before updating the |tracker|.
    const size_t old_index = size_t{old_parent->GetIndexOf(node)};
    const size_t new_index =
@@ -10,7 +10,7 @@ index c31275713056a2a1dd07872bc3569d54a8cfce0e..700877cd135845fe686626e821870ff0
        ComputeChildNodeIndex(new_parent, update_entity.unique_position, tracker);
    tracker->Update(update_entity.id, update.response_version,
                    update_entity.modification_time,
-@@ -449,9 +450,11 @@ bool BookmarkRemoteUpdatesHandler::ProcessCreate(
+@@ -474,9 +475,11 @@ bool BookmarkRemoteUpdatesHandler::ProcessCreate(
      LogProblematicBookmark(RemoteBookmarkUpdateError::kMissingParentNode);
      return false;
    }

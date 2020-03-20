@@ -47,15 +47,17 @@ void TopSitesProvider::Start(const AutocompleteInput& input,
     }
   }
 
-  for (size_t i = 0; i < matches_.size(); ++i)
+  for (size_t i = 0; i < matches_.size(); ++i) {
     matches_[i].relevance = kRelevance + matches_.size() - (i + 1);
-  if ((matches_.size() == 1) && !matches_[0].inline_autocompletion.empty() &&
-      AutocompleteMatch::AllowedToBeDefault(input, matches_[0])) {
+  }
+  if ((matches_.size() == 1) && !matches_[0].inline_autocompletion.empty()) {
     // If there's only one possible completion of the user's input and
-    // allowing completions is okay, give the match a high enough score to
-    // allow it to beat url-what-you-typed and be inlined.
-    matches_[0].relevance = 1250;
-    matches_[0].allowed_to_be_default_match = true;
+    // allowing completions truns out to be okay, give the match a high enough
+    // score to allow it to beat url-what-you-typed and be inlined.
+    matches_[0].SetAllowedToBeDefault(input);
+    if (matches_[0].allowed_to_be_default_match) {
+      matches_[0].relevance = 1250;
+    }
   }
 }
 

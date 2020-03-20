@@ -12,6 +12,7 @@
 #include "brave/browser/net/brave_proxying_web_socket.h"
 #include "brave/browser/net/brave_request_handler.h"
 #include "content/public/browser/browser_context.h"
+#include "net/cookies/site_for_cookies.h"
 
 // User data key for ResourceContextData.
 const void* const kResourceContextUserDataKey = &kResourceContextUserDataKey;
@@ -59,7 +60,7 @@ void ResourceContextData::StartProxying(
 BraveProxyingWebSocket* ResourceContextData::StartProxyingWebSocket(
     content::ContentBrowserClient::WebSocketFactory factory,
     const GURL& url,
-    const GURL& site_for_cookies,
+    const net::SiteForCookies& site_for_cookies,
     const base::Optional<std::string>& user_agent,
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
         handshake_client,

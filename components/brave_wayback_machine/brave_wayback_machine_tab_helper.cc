@@ -10,8 +10,7 @@
 #include "base/bind.h"
 #include "base/command_line.h"
 #include "base/containers/flat_set.h"
-#include "base/task/post_task.h"
-#include "base/task/task_traits.h"
+#include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_delegate.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_utils.h"
 #include "brave/components/brave_wayback_machine/pref_names.h"
@@ -58,10 +57,9 @@ void BraveWaybackMachineTabHelper::DidFinishNavigation(
       return;
 
     // Create infobar in the next loop for not blocking navigation.
-    PostTask(FROM_HERE,
-             { base::CurrentThread(), base::TaskPriority::BEST_EFFORT },
-             base::BindOnce(&BraveWaybackMachineTabHelper::CreateInfoBar,
-                            weak_factory_.GetWeakPtr()));
+    base::SequencedTaskRunnerHandle::Get()->PostTask(
+        FROM_HERE, base::BindOnce(&BraveWaybackMachineTabHelper::CreateInfoBar,
+                                  weak_factory_.GetWeakPtr()));
   }
 }
 

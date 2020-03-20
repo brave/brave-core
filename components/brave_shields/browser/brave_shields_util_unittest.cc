@@ -42,64 +42,44 @@ TEST_F(BraveShieldsUtilTest, GetPatternFromURL) {
   auto pattern = GetPatternFromURL(GURL());
   EXPECT_EQ(ContentSettingsPattern::Wildcard(), pattern);
 
-  // no scheme wildcard
+  // scheme is a wildcard, should match any scheme
   pattern = GetPatternFromURL(GURL("http://brave.com"));
   EXPECT_TRUE(pattern.Matches(GURL("http://brave.com")));
   EXPECT_TRUE(pattern.Matches(GURL("http://brave.com/path1")));
   EXPECT_TRUE(pattern.Matches(GURL("http://brave.com/path2")));
-  EXPECT_FALSE(pattern.Matches(GURL("https://brave.com")));
+  EXPECT_TRUE(pattern.Matches(GURL("https://brave.com")));
+  EXPECT_TRUE(pattern.Matches(GURL("ftp://brave.com")));
   EXPECT_FALSE(pattern.Matches(GURL("http://subdomain.brave.com")));
   EXPECT_FALSE(pattern.Matches(GURL("http://brave2.com")));
 
+  // path is a wildcard
   pattern = GetPatternFromURL(GURL("http://brave.com/path1"));
   EXPECT_TRUE(pattern.Matches(GURL("http://brave.com")));
   EXPECT_TRUE(pattern.Matches(GURL("http://brave.com/path1")));
   EXPECT_TRUE(pattern.Matches(GURL("http://brave.com/path2")));
-  EXPECT_FALSE(pattern.Matches(GURL("https://brave.com")));
   EXPECT_FALSE(pattern.Matches(GURL("http://subdomain.brave.com")));
   EXPECT_FALSE(pattern.Matches(GURL("http://brave2.com")));
 
-  // with scheme wildcard
-  pattern = GetPatternFromURL(GURL("http://brave.com"), true);
-  EXPECT_TRUE(pattern.Matches(GURL("http://brave.com")));
-  EXPECT_TRUE(pattern.Matches(GURL("http://brave.com/path1")));
-  EXPECT_TRUE(pattern.Matches(GURL("http://brave.com/path2")));
-  EXPECT_TRUE(pattern.Matches(GURL("https://brave.com")));
-  EXPECT_FALSE(pattern.Matches(GURL("http://subdomain.brave.com")));
-  EXPECT_FALSE(pattern.Matches(GURL("http://brave2.com")));
-
-  // with port
+  // port is a wildcard
   pattern = GetPatternFromURL(GURL("http://brave.com:8080"));
+  EXPECT_TRUE(pattern.Matches(GURL("http://brave.com")));
   EXPECT_TRUE(pattern.Matches(GURL("http://brave.com:8080")));
   EXPECT_TRUE(pattern.Matches(GURL("http://brave.com:8080/path1")));
   EXPECT_TRUE(pattern.Matches(GURL("http://brave.com:8080/path2")));
-  EXPECT_FALSE(pattern.Matches(GURL("https://brave.com:8080")));
-  EXPECT_FALSE(pattern.Matches(GURL("http://brave.com")));
-  EXPECT_FALSE(pattern.Matches(GURL("https://brave.com")));
+  EXPECT_TRUE(pattern.Matches(GURL("http://brave.com:5555")));
+  EXPECT_TRUE(pattern.Matches(GURL("https://brave.com")));
+  EXPECT_TRUE(pattern.Matches(GURL("https://brave.com:8080")));
   EXPECT_FALSE(pattern.Matches(GURL("http://subdomain.brave.com")));
   EXPECT_FALSE(pattern.Matches(GURL("http://brave2.com")));
 
   // with implied port
   pattern = GetPatternFromURL(GURL("https://brianbondy.com"));
-  EXPECT_EQ(pattern.ToString(), "https://brianbondy.com:443");
+  EXPECT_EQ(pattern.ToString(), "brianbondy.com");
   pattern = GetPatternFromURL(GURL("http://brianbondy.com"));
-  EXPECT_EQ(pattern.ToString(), "http://brianbondy.com:80");
+  EXPECT_EQ(pattern.ToString(), "brianbondy.com");
   // with specified port
   pattern = GetPatternFromURL(GURL("http://brianbondy.com:8080"));
-  EXPECT_EQ(pattern.ToString(), "http://brianbondy.com:8080");
-
-  // with port and scheme wildcard
-  // scheme wildcard with explicit port is not a valid pattern so this is
-  // identical to "with port"
-  pattern = GetPatternFromURL(GURL("http://brave.com:8080"), true);
-  EXPECT_TRUE(pattern.Matches(GURL("http://brave.com:8080")));
-  EXPECT_TRUE(pattern.Matches(GURL("http://brave.com:8080/path1")));
-  EXPECT_TRUE(pattern.Matches(GURL("http://brave.com:8080/path2")));
-  EXPECT_FALSE(pattern.Matches(GURL("https://brave.com:8080")));
-  EXPECT_FALSE(pattern.Matches(GURL("http://brave.com")));
-  EXPECT_FALSE(pattern.Matches(GURL("https://brave.com")));
-  EXPECT_FALSE(pattern.Matches(GURL("http://subdomain.brave.com")));
-  EXPECT_FALSE(pattern.Matches(GURL("http://brave2.com:8080")));
+  EXPECT_EQ(pattern.ToString(), "brianbondy.com");
 }
 
 TEST_F(BraveShieldsUtilTest, ControlTypeToString) {
@@ -248,11 +228,11 @@ TEST_F(BraveShieldsUtilTest, SetAdControlType_ForOrigin) {
                                         brave_shields::kAds);
   EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
 
-  // setting should not apply to different scheme
+  // setting should also apply to different scheme
   setting = map->GetContentSetting(GURL("https://brave.com"), GURL(),
                                    ContentSettingsType::PLUGINS,
                                    brave_shields::kAds);
-  EXPECT_EQ(CONTENT_SETTING_DEFAULT, setting);
+  EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
 
   // setting should not apply to default
   setting = map->GetContentSetting(
@@ -437,15 +417,15 @@ TEST_F(BraveShieldsUtilTest, SetCookieControlType_ForOrigin) {
       ContentSettingsType::PLUGINS, brave_shields::kCookies);
   EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
 
-  // override should not apply to different scheme
+  // override should also apply to different scheme
   setting = map->GetContentSetting(GURL("https://brave.com"), GURL(),
                                    ContentSettingsType::PLUGINS,
                                    brave_shields::kCookies);
-  EXPECT_EQ(CONTENT_SETTING_DEFAULT, setting);
+  EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
   setting = map->GetContentSetting(
       GURL("https://brave.com"), GURL("https://firstParty"),
       ContentSettingsType::PLUGINS, brave_shields::kCookies);
-  EXPECT_EQ(CONTENT_SETTING_DEFAULT, setting);
+  EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
 
   // override should not apply to default
   setting = map->GetContentSetting(
@@ -671,15 +651,15 @@ TEST_F(BraveShieldsUtilTest, SetFingerprintingControlType_ForOrigin) {
       ContentSettingsType::PLUGINS, brave_shields::kFingerprinting);
   EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
 
-  // override should not apply to different scheme
+  // override should also apply to different scheme
   setting = map->GetContentSetting(GURL("https://brave.com"), GURL(),
                                    ContentSettingsType::PLUGINS,
                                    brave_shields::kFingerprinting);
-  EXPECT_EQ(CONTENT_SETTING_DEFAULT, setting);
+  EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
   setting = map->GetContentSetting(
       GURL("https://brave.com"), GURL("https://firstParty"),
       ContentSettingsType::PLUGINS, brave_shields::kFingerprinting);
-  EXPECT_EQ(CONTENT_SETTING_DEFAULT, setting);
+  EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
 
   // override should not apply to default
   setting =
@@ -999,10 +979,10 @@ TEST_F(BraveShieldsUtilTest, SetNoScriptControlType_ForOrigin) {
                                         ContentSettingsType::JAVASCRIPT, "");
   EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
 
-  // setting should not apply to different scheme
+  // setting should also apply to different scheme
   setting = map->GetContentSetting(GURL("https://brave.com"), GURL(),
                                    ContentSettingsType::JAVASCRIPT, "");
-  EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
+  EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
 
   // setting should not apply to default
   setting = map->GetContentSetting(GURL(), GURL(),

@@ -1,5 +1,5 @@
 diff --git a/components/sync/engine_impl/commit.cc b/components/sync/engine_impl/commit.cc
-index 3c4eaa05c9f10d8a4ba858afd42ea5741332127f..72ba3fbe94c8661c4f0e828444d492d0ae77a66c 100644
+index 76a01993d12cccfbdd97c9252ba757428682dbb3..2d323d1feba598bad86fa49d040fb4c3c29fab38 100644
 --- a/components/sync/engine_impl/commit.cc
 +++ b/components/sync/engine_impl/commit.cc
 @@ -132,6 +132,7 @@ SyncerError Commit::PostAndProcessResponse(

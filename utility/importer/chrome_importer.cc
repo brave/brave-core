@@ -111,11 +111,11 @@ void ChromeImporter::ImportHistory() {
                                               // KEYWORD_GENERATED
 
   sql::Statement s(db.GetUniqueStatement(query));
-  s.BindInt(0, ui::PAGE_TRANSITION_CHAIN_END);
-  s.BindInt(1, ui::PAGE_TRANSITION_CORE_MASK);
-  s.BindInt(2, ui::PAGE_TRANSITION_AUTO_SUBFRAME);
-  s.BindInt(3, ui::PAGE_TRANSITION_MANUAL_SUBFRAME);
-  s.BindInt(4, ui::PAGE_TRANSITION_KEYWORD_GENERATED);
+  s.BindInt64(0, ui::PAGE_TRANSITION_CHAIN_END);
+  s.BindInt64(1, ui::PAGE_TRANSITION_CORE_MASK);
+  s.BindInt64(2, ui::PAGE_TRANSITION_AUTO_SUBFRAME);
+  s.BindInt64(3, ui::PAGE_TRANSITION_MANUAL_SUBFRAME);
+  s.BindInt64(4, ui::PAGE_TRANSITION_KEYWORD_GENERATED);
 
   std::vector<ImporterURLRow> rows;
   while (s.Step() && !cancelled()) {

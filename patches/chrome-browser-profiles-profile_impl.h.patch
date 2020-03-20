@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_impl.h b/chrome/browser/profiles/profile_impl.h
-index 7c835593998ba3b50764e5fb2887227fc1e8de25..bdaf7b5144f24ec52c3e0488e490be0f70f0044f 100644
+index c9807293b3f476d5895d52f5082d7281bf0dd046..b3b8cd51c5577306f6561fb8d7e235c4499a53cd 100644
 --- a/chrome/browser/profiles/profile_impl.h
 +++ b/chrome/browser/profiles/profile_impl.h
 @@ -169,6 +169,7 @@ class ProfileImpl : public Profile {

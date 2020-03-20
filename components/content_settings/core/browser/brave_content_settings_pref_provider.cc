@@ -9,13 +9,16 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/optional.h"
 #include "base/task/post_task.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "components/content_settings/core/browser/content_settings_pref.h"
 #include "components/content_settings/core/browser/website_settings_registry.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -119,6 +122,8 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
     }
   }
 
+  MigrateShieldsSettings(off_the_record);
+
   AddObserver(this);
   OnCookieSettingsChanged(ContentSettingsType::PLUGINS);
 }
@@ -129,6 +134,82 @@ void BravePrefProvider::ShutdownOnUIThread() {
   RemoveObserver(this);
   brave_pref_change_registrar_.RemoveAll();
   PrefProvider::ShutdownOnUIThread();
+}
+
+// static
+void BravePrefProvider::RegisterProfilePrefs(
+    user_prefs::PrefRegistrySyncable* registry) {
+  PrefProvider::RegisterProfilePrefs(registry);
+  // Register shields settings migration pref.
+  registry->RegisterIntegerPref(kBraveShieldsSettingsVersion, 1);
+}
+
+void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
+  // Incognito inherits from regular profile, so nothing to do.
+  // Guest doesn't inherit, but only keeps settings for the duration of the
+  // session, so also nothing to do.
+  if (incognito)
+    return;
+  MigrateShieldsSettingsV1ToV2();
+}
+
+void BravePrefProvider::MigrateShieldsSettingsV1ToV2() {
+  // Check if migration is needed.
+  if (prefs_->GetInteger(kBraveShieldsSettingsVersion) != 1)
+    return;
+
+  // All sources in ContentSettingsType::PLUGINS we want to migrate.
+  for (const auto& resource_id : GetShieldsResourceIDs()) {
+    MigrateShieldsSettingsV1ToV2ForOneType(ContentSettingsType::PLUGINS,
+                                           resource_id);
+  }
+
+  // ContentSettingsType::JAVASCRIPT.
+  MigrateShieldsSettingsV1ToV2ForOneType(ContentSettingsType::JAVASCRIPT,
+                                         std::string());
+
+  // Mark migration as done.
+  prefs_->SetInteger(kBraveShieldsSettingsVersion, 2);
+}
+
+void BravePrefProvider::MigrateShieldsSettingsV1ToV2ForOneType(
+    ContentSettingsType content_type,
+    const std::string& resource_id) {
+  using OldRule = std::pair<ContentSettingsPattern, ContentSettingsPattern>;
+  // Find rules that can be migrated and create replacement rules for them.
+  std::vector<OldRule> old_rules;
+  std::vector<Rule> new_rules;
+  auto rule_iterator = PrefProvider::GetRuleIterator(content_type, resource_id,
+                                                     /*off_the_record*/ false);
+  while (rule_iterator && rule_iterator->HasNext()) {
+    auto rule = rule_iterator->Next();
+    auto new_primary_pattern =
+        ConvertPatternToWildcardSchemeAndPort(rule.primary_pattern);
+    auto new_secondary_pattern =
+        ConvertPatternToWildcardSchemeAndPort(rule.secondary_pattern);
+    if (new_primary_pattern || new_secondary_pattern) {
+      old_rules.emplace_back(rule.primary_pattern, rule.secondary_pattern);
+      new_rules.emplace_back(
+          new_primary_pattern.value_or(rule.primary_pattern),
+          new_secondary_pattern.value_or(rule.secondary_pattern),
+          rule.value.Clone());
+    }
+  }
+  rule_iterator.reset();
+
+  // Migrate.
+  DCHECK_EQ(old_rules.size(), new_rules.size());
+  for (size_t i = 0; i < old_rules.size(); i++) {
+    // Remove current setting.
+    PrefProvider::SetWebsiteSetting(
+        old_rules[i].first, old_rules[i].second, content_type, resource_id,
+        ContentSettingToValue(CONTENT_SETTING_DEFAULT));
+    // Add new setting.
+    PrefProvider::SetWebsiteSetting(
+        new_rules[i].primary_pattern, new_rules[i].secondary_pattern,
+        content_type, resource_id,
+        ContentSettingToValue(ValueToContentSetting(&(new_rules[i].value))));
+  }
 }
 
 bool BravePrefProvider::SetWebsiteSetting(
