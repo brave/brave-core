@@ -7,17 +7,19 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
-import { Checkbox, Grid, Column, ControlWrapper } from 'brave-ui/components'
 import {
-  DisabledContent,
-  Box,
   BoxAlert,
   TableDonation,
   List,
   Tokens,
   ModalDonation
 } from '../../ui/components'
+import { BoxMobile } from '../../ui/components/mobile'
 import { Provider } from '../../ui/components/profile'
+import {
+  StyledListContent,
+  StyledTotalContent
+} from './style'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -30,31 +32,18 @@ interface Props extends Rewards.ComponentProps {
 
 interface State {
   modalShowAll: boolean
-  settings: boolean
 }
 
 class TipBox extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      modalShowAll: false,
-      settings: false
+      modalShowAll: false
     }
   }
 
   get actions () {
     return this.props.actions
-  }
-
-  disabledContent = () => {
-    return (
-      <DisabledContent
-        type={'donation'}
-      >
-        {getLocale('donationDisabledText1')}<br/>
-        {getLocale('donationDisabledText2')}
-      </DisabledContent>
-    )
   }
 
   getTipsRows = () => {
@@ -109,74 +98,13 @@ class TipBox extends React.Component<Props, State> {
     )
   }
 
-  onSettingsToggle = () => {
-    this.setState({ settings: !this.state.settings })
-  }
-
-  onInlineTipSettingChange = (key: string, selected: boolean) => {
-    this.actions.onInlineTipSettingChange(key, selected)
-  }
-
-  donationSettingsChild = () => {
-    const { enabledMain } = this.props.rewardsData
-    if (!enabledMain) {
-      return null
-    }
-
-    let value = this.props.rewardsData.inlineTip
-
-    if (!value) {
-      value = {
-        twitter: true,
-        reddit: true,
-        github: true
-      }
-    }
-
-    return (
-      <>
-        <Grid columns={1}>
-          <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
-            <ControlWrapper text={getLocale('donationAbility')}>
-              <Checkbox
-                value={value}
-                multiple={true}
-                onChange={this.onInlineTipSettingChange}
-              >
-                <div data-key='reddit'>{getLocale('donationAbilityReddit')}</div>
-              </Checkbox>
-              <Checkbox
-                value={value}
-                multiple={true}
-                onChange={this.onInlineTipSettingChange}
-              >
-                <div data-key='twitter'>{getLocale('donationAbilityTwitter')}</div>
-              </Checkbox>
-
-              <Checkbox
-                value={value}
-                multiple={true}
-                onChange={this.onInlineTipSettingChange}
-              >
-                <div data-key='github'>{getLocale('donationAbilityGitHub')}</div>
-              </Checkbox>
-            </ControlWrapper>
-          </Column>
-        </Grid>
-      </>
-    )
-  }
-
   render () {
     const {
       balance,
-      firstLoad,
-      enabledMain,
       ui,
       tipsList
     } = this.props.rewardsData
-    const { walletImported, onlyAnonWallet } = ui
-    const showDisabled = firstLoad !== false || !enabledMain
+    const { onlyAnonWallet } = ui
     const tipRows = this.getTipsRows()
     const topRows = tipRows.slice(0, 5)
     const numRows = tipRows && tipRows.length
@@ -185,15 +113,11 @@ class TipBox extends React.Component<Props, State> {
     const converted = utils.convertBalance(total, balance.rates)
 
     return (
-      <Box
+      <BoxMobile
+        checked={true}
         title={getLocale('donationTitle')}
         type={'donation'}
         description={getLocale('donationDesc')}
-        disabledContent={showDisabled ? this.disabledContent() : null}
-        attachedAlert={this.importAlert(walletImported)}
-        settingsChild={this.donationSettingsChild()}
-        settingsOpened={this.state.settings}
-        onSettingsClick={this.onSettingsToggle}
       >
         {
           this.state.modalShowAll
@@ -204,20 +128,24 @@ class TipBox extends React.Component<Props, State> {
           />
           : null
         }
-        <List title={getLocale('donationTotalDonations')}>
-          <Tokens onlyAnonWallet={onlyAnonWallet} value={total.toFixed(1)} converted={converted} />
+        <List title={<StyledListContent>{getLocale('donationTotalDonations')}</StyledListContent>}>
+          <StyledTotalContent>
+            <Tokens onlyAnonWallet={onlyAnonWallet} value={total.toFixed(1)} converted={converted} />
+          </StyledTotalContent>
         </List>
-        <TableDonation
-          rows={topRows}
-          allItems={allSites}
-          numItems={numRows}
-          headerColor={true}
-          onlyAnonWallet={onlyAnonWallet}
-          onShowAll={this.onModalToggle}
-        >
-          {getLocale('donationVisitSome')}
-        </TableDonation>
-      </Box>
+        <StyledListContent>
+          <TableDonation
+            rows={topRows}
+            allItems={allSites}
+            numItems={numRows}
+            headerColor={true}
+            onlyAnonWallet={onlyAnonWallet}
+            onShowAll={this.onModalToggle}
+          >
+            {getLocale('donationVisitSome')}
+          </TableDonation>
+        </StyledListContent>
+      </BoxMobile>
     )
   }
 }
