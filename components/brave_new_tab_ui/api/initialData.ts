@@ -13,7 +13,7 @@ export type InitialData = {
   preferences: preferencesAPI.Preferences
   stats: statsAPI.Stats
   privateTabData: privateTabDataAPI.PrivateTabData
-  topSites: chrome.topSites.MostVisitedURL[]
+  topSites: topSitesAPI.TopSitesData,
   brandedWallpaperData: undefined | NewTab.BrandedWallpaper
 }
 
