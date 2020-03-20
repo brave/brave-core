@@ -22,4 +22,5 @@ brave_java_cpp_enum_filter = ["//chrome/browser/notifications/notification_handl
 brave_chrome_java_srcjar_deps = [
   "//brave/android:brave_android_java_enums_srcjar",
   "//brave/android:brave_config_java",
+  "//brave/browser/android/preferences:java_enums_srcjar",
 ]

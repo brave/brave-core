@@ -62,8 +62,16 @@ ViewCounterService::GetCurrentBrandedWallpaperData() const {
   return service_->GetSponsoredImagesData();
 }
 
-base::Value ViewCounterService::GetCurrentWallpaper() const {
+base::Value ViewCounterService::GetCurrentWallpaperForDisplay() const {
   if (ShouldShowBrandedWallpaper()) {
+    return GetCurrentWallpaper();
+  }
+
+  return base::Value();
+}
+
+base::Value ViewCounterService::GetCurrentWallpaper() const {
+  if (GetCurrentBrandedWallpaperData()) {
     return GetCurrentBrandedWallpaperData()->GetValueAt(
         model_.current_wallpaper_image_index());
   }

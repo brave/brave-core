@@ -822,6 +822,108 @@ until they verify, or until 90 days have passed.
       <message name="IDS_CLEAR_DOWNLOADS_TITLE" desc="Title for Clear download in Clear Browsing Data dialog">
         Download history
       </message>
+      <message name="IDS_BRAVE_UI_CONTRIBUTION_TIPS" desc="Title for monthly tips processed notification">
+        Contributions &amp; Tips
+      </message>
+      <message name="IDS_BRAVE_UI_TIPS_PROCESSED_NOTIFICATION" desc="Message for monthly tips processed notification">
+        Your monthly tips have been processed!
+      </message>
+      <message name="IDS_BRAVE_UI_TURN_ON_ADS" desc="Prompt to turn on Ads via notification">
+        Turn on Ads
+      </message>
+      <message name="IDS_BRAVE_UI_BRAVE_ADS_LAUNCH_TITLE" desc="Message used in notification to let users know Ads is available">
+        Brave Ads has arrived!
+      </message>
+      <message name="IDS_BRAVE_UI_BRAVE_ADS_LAUNCH_MSG" desc="Message for ads launch notification">
+        Now you can earn by viewing ads.
+      </message>
+      <message name="IDS_BRAVE_UI_PENDING_CONTRIBUTION_TITLE" desc="Notification title for pending contribution type">
+        Pending Contribution
+      </message>
+       <message name="IDS_BRAVE_UI_VERIFIED_PUBLISHER_NOTIFICATION" desc="Notification text that tells user which publisher just verified">
+        Creator <ph name="PUBLISHER_NAME">%1$s<ex>brave.com</ex></ph> recently verified
+      </message>
+       <message name="IDS_BRAVE_UI_YOUR_BALANCE" desc="Your balance title">
+        Your balance
+      </message>
+       <message name="IDS_BRAVE_UI_BAP_TEXT" desc="A point name">
+        BAP
+      </message>
+      <message name="IDS_BRAVE_UI_BAT_POINTS_TEXT" desc="A token name for japan">
+        BAT Points
+      </message>
+       <message name="IDS_BRAVE_UI_POINT_GRANT_CLAIMED" desc="A message about points being claimed">
+        Point Grants Claimed
+      </message>
+      <message name="IDS_BRAVE_UI_NEW_POINT_GRANT" desc="A notification about free point grant">
+        Free Point Grant
+      </message>
+      <message name="IDS_BRAVE_UI_DETAILS" desc="Details button text">
+        Details
+      </message>
+      <message name="IDS_TOKEN" desc="Text for token">
+        token
+      </message>
+      <message name="IDS_POINT" desc="Text for point">
+        point
+      </message>
+      <message name="IDS_ONE_TIP_OPTION" desc="Text for one tip option">
+        1 <ph name="TIP">%1$s<ex>BAT</ex></ph>
+      </message>
+      <message name="IDS_FIVE_TIP_OPTION" desc="Text for five tip option">
+        5 <ph name="TIP">%1$s<ex>BAT</ex></ph>
+      </message>
+      <message name="IDS_TEN_TIP_OPTION" desc="Text for ten tip option">
+        10 <ph name="TIP">%1$s<ex>BAT</ex></ph>
+      </message>
+      <message name="IDS_PREFS_NEW_TAB_PAGE" desc="Title of New Tab Page settings.">
+        New Tab Page
+      </message>
+      <message name="IDS_SHOW_BACKGROUND_IMAGES" desc= "Title of show background images option.">
+        Show Background Images
+      </message>
+      <message name="IDS_SHOW_SPONSORED_IMAGES" desc ="Title of show sponsored images option.">
+        Show Sponsored Images
+      </message>
+      <message name="IDS_PHOTO_BY" desc="Text for image credit for background images on NTP">
+        Photo by <ph name="PHOTO_BY">%1$s</ph>
+      </message>
+      <message name="IDS_GET_PAID_TO_SEE_ADS">
+        Get paid to see this background image.
+      </message>
+      <message name="IDS_NTP_BRAVE_REWARDS_OFF_TEXT" desc="Text on NTP banner when brave rewrads is off ">
+        You&apos;ll receive 70% of the ad revenue for this private sponsorship which can be used to support web content creators. Turn on Brave Rewards to claim your share.
+      </message>
+      <message name="IDS_TURN_ON_REWARDS" desc="Text for turn on rewards button">
+        Turn on Rewards
+      </message>
+      <message name="IDS_TURN_ON_BRAVE_ADS" desc="Text for turn on brave ads button">
+        Turn on Brave Ads
+      </message>
+      <message name="IDS_NTP_TOS_TEXT" desc="Text for term of service on NTP">
+        By turning on Rewards, you agree to the <ph name="TERMS_OF_SERVICE">%1$s</ph>. You can also choose to <ph name="HIDE_SPONSORED_IMAGES">%2$s</ph>.
+      </message>
+      <message name="IDS_GET_PAID_TO_SEE_IMAGE" desc="Text description for NTP banner.">
+        Get paid to see this background image.
+      </message>
+      <message name="IDS_HIDE_SPONSORED_IMAGES" desc="Text for hide sponsored images button">
+        Hide Sponsored Images
+      </message>
+      <message name="IDS_YOU_CAN_SUPPORT_CREATORS" desc="Text description for banner on NTP.">
+        You can support web creators with tokens.\nEarn tokens by viewing privacy-respecting ads.
+      </message>
+      <message name="IDS_YOU_ARE_GETTING_PAID" desc="Text title for NTP banner.">
+          You’re getting paid to see this background image.
+      </message>
+      <message name="IDS_BR_ON_ADS_ON_TEXT" desc="Text description for NTP banner.">
+          <ph name="LEARN_MORE">%1$s</ph> about sponsored images in Brave Rewards. You can also choose to <ph name="HIDE_SPONSORED_IMAGES">%2$s</ph>.
+      </message>
+      <message name="IDS_BR_ON_ADS_ON_TEXT2" desc="Text description for NTP banner.">
+          You can also choose to <ph name="HIDE_SPONSORED_IMAGES">%1$s</ph>.
+      </message>
+      <message name="IDS_TURN_ON_BRAVE_ADS_TO_CLAIM" desc="Text description for NTP banner.">
+          Get paid to see this background image. Turn on Brave Ads to claim your share.
+      </message>
     </messages>
   </release>
 </grit>
