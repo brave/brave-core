@@ -203,6 +203,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(kBraveWalletWeb3Provider,
       static_cast<int>(BraveWalletWeb3ProviderTypes::ASK));
 
+  // Binance
+  // Binance widget
+  registry->RegisterStringPref(kBinanceAccessToken, "");
+  registry->RegisterStringPref(kBinanceRefreshToken, "");
+
   // Autocomplete in address bar
   registry->RegisterBooleanPref(kAutocompleteEnabled, true);
 

@@ -36,6 +36,28 @@ class BinanceIsSupportedRegionFunction :
   ResponseAction Run() override;
 };
 
+class BinanceGetClientUrlFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("binance.getClientUrl", UNKNOWN)
+
+ protected:
+  ~BinanceGetClientUrlFunction() override {}
+  ResponseAction Run() override;
+};
+
+class BinanceGetAccessTokenFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("binance.getAccessToken", UNKNOWN)
+
+ protected:
+  ~BinanceGetAccessTokenFunction() override {}
+  void OnCodeResult(bool success);
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

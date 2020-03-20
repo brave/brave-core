@@ -5,14 +5,36 @@
 
 #include "brave/browser/extensions/api/binance_api.h"
 
-#include <string>
 #include <memory>
+#include <string>
+#include <utility>
 
 #include "base/environment.h"
 #include "brave/browser/profiles/profile_util.h"
+
+#include "brave/common/extensions/api/binance.h"
+#include "brave/common/extensions/extension_constants.h"
+#include "brave/common/pref_names.h"
+#include "brave/browser/binance/binance_service_factory.h"
+#include "brave/components/binance/browser/binance_controller.h"
+#include "brave/components/binance/browser/binance_service.h"
 #include "brave/components/binance/browser/static_values.h"
+#include "chrome/browser/extensions/api/tabs/tabs_constants.h"
+#include "chrome/browser/extensions/extension_tab_util.h"
+#include "chrome/browser/infobars/infobar_service.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/country_codes/country_codes.h"
+#include "components/prefs/pref_service.h"
+#include "extensions/browser/extension_util.h"
+
+namespace {
+
+BinanceController* GetBinanceController(content::BrowserContext* context) {
+  return BinanceServiceFactory::GetInstance()
+      ->GetForProfile(Profile::FromBrowserContext(context))
+      ->controller();
+}
+
+}  // namespace
 
 namespace extensions {
 namespace api {
@@ -24,20 +46,53 @@ BinanceGetUserTLDFunction::Run() {
     return RespondNow(Error("Not available in Tor profile"));
   }
 
-  const std::string us_TLD = "us";
-  const std::string us_Code = "US";
-  const std::string global_TLD = "com";
-
-  const int32_t user_country_id =
-      country_codes::GetCountryIDFromPrefs(profile->GetPrefs());
-  const int32_t us_id = country_codes::CountryCharsToCountryID(
-      us_Code.at(0), us_Code.at(1));
-
-  const std::string user_TLD =
-      (user_country_id == us_id) ? us_TLD : global_TLD;
+  auto* controller = GetBinanceController(browser_context());
+  const std::string userTLD = controller->GetBinanceTLD();
 
   return RespondNow(OneArgument(
-      std::make_unique<base::Value>(user_TLD)));
+      std::make_unique<base::Value>(userTLD)));
+}
+
+ExtensionFunction::ResponseAction
+BinanceGetClientUrlFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  if (brave::IsTorProfile(profile)) {
+    return RespondNow(Error("Not available in Tor profile"));
+  }
+
+  auto* controller = GetBinanceController(browser_context());
+  const std::string client_url = controller->GetOAuthClientUrl();
+
+  return RespondNow(OneArgument(
+      std::make_unique<base::Value>(client_url)));
+}
+
+ExtensionFunction::ResponseAction
+BinanceGetAccessTokenFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  if (brave::IsTorProfile(profile)) {
+    return RespondNow(Error("Not available in Tor profile"));
+  }
+
+  std::unique_ptr<binance::GetAccessToken::Params> params(
+      binance::GetAccessToken::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  auto* controller = GetBinanceController(browser_context());
+  bool token_request = controller->GetAccessToken(params->code,
+      base::BindOnce(
+          &BinanceGetAccessTokenFunction::OnCodeResult, this));
+
+  if (!token_request) {
+    return RespondNow(
+        Error("Could not make request for access tokens"));
+  }
+
+  return RespondLater();
+}
+
+void BinanceGetAccessTokenFunction::OnCodeResult(bool success) {
+  Respond(OneArgument(std::make_unique<base::Value>(success)));
 }
 
 ExtensionFunction::ResponseAction

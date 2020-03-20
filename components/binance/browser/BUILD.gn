@@ -3,11 +3,40 @@ import("//brave/components/binance/browser/buildflags/buildflags.gni")
 
 assert(binance_enabled)
 
+declare_args() {
+  binance_client_id = ""
+  binance_client_secret = ""
+}
+
 source_set("browser") {
   public_deps = [
     "buildflags"
   ]
   sources = [
-    "static_values.h",
+    "binance_json_parser.cc",
+    "binance_json_parser.h",
+    "binance_protocol_handler.cc",
+    "binance_protocol_handler.h",
+    "binance_service.cc",
+    "binance_service.h",
+    "static_values.h"
+  ]
+
+  deps = [
+    "//base",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//content/public/browser",
+    "//services/network/public/cpp",
+    "//url",
+  ]
+  configs += [ ":binance_config" ]
+}
+
+
+config("binance_config") {
+  defines = [
+    "BINANCE_CLIENT_ID=\"$binance_client_id\"",
+    "BINANCE_CLIENT_SECRET=\"$binance_client_secret\""
   ]
 }

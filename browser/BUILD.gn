@@ -1,4 +1,5 @@
 import("//brave/build/config.gni")
+import("//brave/components/binance/buildflags.gni")
 import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
@@ -247,6 +248,15 @@ source_set("browser_process") {
       "//brave/build/android:jni_headers",
       "//chrome/android:jni_headers",
     ]
+  }
+
+  if (binance_enabled) {
+    sources += [
+      "binance/binance_service_factory.cc",
+      "binance/binance_service_factory.h",
+    ]
+
+    deps += [ "//brave/components/binance/browser" ]
   }
 
   if (enable_tor) {

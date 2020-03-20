@@ -413,6 +413,11 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       state.binanceState.authInProgress = true
       break
 
+    case types.ON_BINANCE_CLIENT_URL:
+      state = { ...state }
+      state.binanceState.binanceClientUrl = payload.clientUrl
+      break
+
     default:
       break
   }
