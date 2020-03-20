@@ -742,6 +742,22 @@
       <message name="IDS_BINANCE_WIDGET_BUY" desc="">Buy</message>
       <message name="IDS_BINANCE_WIDGET_BUY_CRYPTO" desc="">Buy Crypto</message>
       <message name="IDS_BINANCE_WIDGET_BUY_DEFAULT" desc="">I want to spend...</message>
+      <message name="IDS_BINANCE_WIDGET_WELCOME_TITLE" desc="">Purchase and trade with Binance</message>
+      <message name="IDS_BINANCE_WIDGET_SUB_TEXT" desc="">Enable Binance connection to view Binance account balance and trade crypto.</message>
+      <message name="IDS_BINANCE_WIDGET_CONNECT_TEXT" desc="">Enable Binance Connect</message>
+      <message name="IDS_BINANCE_WIDGET_DISMISS_TEXT" desc="">No thank you</message>
+      <message name="IDS_BINANCE_WIDGET_VALUE_TEXT" desc="">Equity Value (BTC)</message>
+      <message name="IDS_BINANCE_BTC_TICKER_TEXT" desc="">BTC</message>
+      <message name="IDS_BINANCE_WIDGET_DEPOSIT_LABEL" desc="">Deposit</message>
+      <message name="IDS_BINANCE_WIDGET_TRADE_LABEL" desc="">Trade</message>
+      <message name="IDS_BINANCE_WIDGET_API_KEY_HELP" desc="">Help.</message>
+      <message name="IDS_BINANCE_WIDGET_INVALID_ENTRY" desc="">Invalid entry.</message>
+      <message name="IDS_BINANCE_WIDGET_VALIDATING_CREDS" desc="">Validating your credentials...</message>
+      <message name="IDS_BINANCE_WIDGET_DISCONNECT_TITLE" desc="">Are you sure you want to disconnect?</message>
+      <message name="IDS_BINANCE_WIDGET_DISCONNECT_TEXT" desc="">Disconnecting will erase your widget settings. You will need to generate a new api key to reconnect.</message>
+      <message name="IDS_BINANCE_WIDGET_DISCONNECT_BUTTON" desc="">Disconnect</message>
+      <message name="IDS_BINANCE_WIDGET_ACCOUNT_DISCONNECTED" desc="">Account Disconnected</message>
+      <message name="IDS_BINANCE_WIDGET_CONFIGURE_BUTTON" desc="">Configure</message>
 
       <!-- WebUI brave sync resources -->
       <!-- WebUI brave sync resources: Shared Content -->

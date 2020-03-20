@@ -230,6 +230,30 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.saveShowBinance(!showBinance)
   }
 
+  setBinanceBalances = (balances: Record<string, string>) => {
+    this.props.actions.onBinanceBalances(balances)
+  }
+
+  onBinanceClientUrl = (clientUrl: string) => {
+    this.props.actions.onBinanceClientUrl(clientUrl)
+  }
+  
+  onValidAuthCode = () => {
+    this.props.actions.onValidAuthCode()
+  }
+
+  setHideBalance = (hide: boolean) => {
+    this.props.actions.setHideBalance(hide)
+  }
+
+  disconnectBinance = () => {
+    this.props.actions.disconnectBinance()
+  }
+
+  connectBinance = () => {
+    this.props.actions.connectToBinance()
+  }
+
   buyCrypto = (coin: string, amount: string, fiat: string) => {
     const { userTLD } = this.props.newTabData.binanceState
     const refCode = userTLD === 'us' ? '35089877' : '39346846'
@@ -409,6 +433,12 @@ class NewTabPage extends React.Component<Props, State> {
         preventFocus={false}
         hideWidget={this.toggleShowBinance}
         showContent={showContent}
+        onSetHideBalance={this.setHideBalance}
+        onBinanceBalances={this.setBinanceBalances}
+        onBinanceClientUrl={this.onBinanceClientUrl}
+        onConnectBinance={this.connectBinance}
+        onDisconnectBinance={this.disconnectBinance}
+        onValidAuthCode={this.onValidAuthCode}
         onBuyCrypto={this.buyCrypto}
         onBinanceUserTLD={this.onBinanceUserTLD}
         onShowContent={this.toggleStackWidget.bind(this, 'binance')}

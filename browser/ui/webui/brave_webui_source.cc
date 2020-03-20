@@ -238,7 +238,24 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         // Binance Widget
         { "binanceWidgetBuy", IDS_BINANCE_WIDGET_BUY },
         { "binanceWidgetBuyCrypto", IDS_BINANCE_WIDGET_BUY_CRYPTO },
-        { "binanceWidgetBuyDefault", IDS_BINANCE_WIDGET_BUY_DEFAULT }
+        { "binanceWidgetBuyDefault", IDS_BINANCE_WIDGET_BUY_DEFAULT },
+        { "binanceWidgetWelcomeTitle", IDS_BINANCE_WIDGET_WELCOME_TITLE },
+        { "binanceWidgetSubText", IDS_BINANCE_WIDGET_SUB_TEXT },
+        { "binanceWidgetConnectText", IDS_BINANCE_WIDGET_CONNECT_TEXT },
+        { "binanceWidgetDismissText", IDS_BINANCE_WIDGET_DISMISS_TEXT },
+        { "binanceWidgetValueText", IDS_BINANCE_WIDGET_VALUE_TEXT },
+        { "binanceWidgetBTCTickerText" , IDS_BINANCE_BTC_TICKER_TEXT },
+        { "binanceWidgetViewDetails", IDS_BRAVE_UI_VIEW_DETAILS },
+        { "binanceWidgetDepositLabel", IDS_BINANCE_WIDGET_DEPOSIT_LABEL },
+        { "binanceWidgetTradeLabel", IDS_BINANCE_WIDGET_TRADE_LABEL },
+        { "binanceWidgetInvalidEntry", IDS_BINANCE_WIDGET_INVALID_ENTRY },
+        { "binanceWidgetValidatingCreds", IDS_BINANCE_WIDGET_VALIDATING_CREDS },    // NOLINT
+        { "binanceWidgetDisconnectTitle", IDS_BINANCE_WIDGET_DISCONNECT_TITLE },    // NOLINT
+        { "binanceWidgetDisconnectText" , IDS_BINANCE_WIDGET_DISCONNECT_TEXT },     // NOLINT
+        { "binanceWidgetDisconnectButton" , IDS_BINANCE_WIDGET_DISCONNECT_BUTTON }, // NOLINT
+        { "binanceWidgetCancelText" , IDS_BRAVE_UI_CANCEL },
+        { "binanceWidgetAccountDisconnected" , IDS_BINANCE_WIDGET_ACCOUNT_DISCONNECTED }, // NOLINT
+        { "binanceWidgetConfigureButton" , IDS_BINANCE_WIDGET_CONFIGURE_BUTTON }          // NOLINT
       }
     }, {
       std::string("welcome"), {
