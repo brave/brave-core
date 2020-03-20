@@ -70,6 +70,19 @@ class BinanceSetCodeChallengeFunction :
   ResponseAction Run() override;
 };
 
+class BinanceGetAccountBalancesFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("binance.getAccountBalances", UNKNOWN)
+
+ protected:
+  ~BinanceGetAccountBalancesFunction() override {}
+  void OnGetAccountBalances(const std::map<std::string, std::string>& balances,
+                           bool success);
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

@@ -10,6 +10,75 @@
 
 namespace {
 
+std::string GetBalanceFromAssets(
+    const std::map<std::string, std::string>& balances,
+    const std::string& asset) {
+  std::string balance;
+  std::map<std::string, std::string>::const_iterator it =
+      balances.find(asset);
+  if (it != balances.end()) {
+    balance = it->second;
+  }
+  return balance;
+}
+
 typedef testing::Test BinanceJSONParserTest;
+
+TEST_F(BinanceJSONParserTest, GetAccountBalancesFromJSON) {
+  std::map<std::string, std::string> balances;
+  ASSERT_TRUE(BinanceJSONParser::GetAccountBalancesFromJSON(R"(
+      {
+        "code": "000000",
+        "message": null,
+        "data": [
+          {
+            "asset": "BNB",
+            "free": "10114.00000000",
+            "locked": "0.00000000",
+            "freeze": "999990.00000000",
+            "withdrawing": "0.00000000"
+          },
+          {
+            "asset": "BTC",
+            "free": "2.45000000",
+            "locked": "0.00000000",
+            "freeze": "999990.00000000",
+            "withdrawing": "0.00000000"
+          }
+        ]
+      })", &balances));
+
+  std::string bnb_balance = GetBalanceFromAssets(balances, "BNB");
+  std::string btc_balance = GetBalanceFromAssets(balances, "BTC");
+  ASSERT_EQ(bnb_balance, "10114.00000000");
+  ASSERT_EQ(btc_balance, "2.45000000");
+}
+
+TEST_F(BinanceJSONParserTest, GetTokensFromJSON) {
+  std::string access_token;
+  std::string refresh_token;
+
+  // Tokens are taken from documentation, examples only
+  ASSERT_TRUE(BinanceJSONParser::GetTokensFromJSON(R"(
+      {
+        "access_token": "83f2bf51-a2c4-4c2e-b7c4-46cef6a8dba5",
+        "refresh_token": "fb5587ee-d9cf-4cb5-a586-4aed72cc9bea",
+        "scope": "read",
+        "token_type": "bearer",
+        "expires_in": 30714
+      })", &access_token, "access_token"));
+
+  ASSERT_TRUE(BinanceJSONParser::GetTokensFromJSON(R"(
+      {
+        "access_token": "83f2bf51-a2c4-4c2e-b7c4-46cef6a8dba5",
+        "refresh_token": "fb5587ee-d9cf-4cb5-a586-4aed72cc9bea",
+        "scope": "read",
+        "token_type": "bearer",
+        "expires_in": 30714
+      })", &refresh_token, "refresh_token"));
+
+  ASSERT_EQ(access_token, "83f2bf51-a2c4-4c2e-b7c4-46cef6a8dba5");
+  ASSERT_EQ(refresh_token, "fb5587ee-d9cf-4cb5-a586-4aed72cc9bea");
+}
 
 }  // namespace

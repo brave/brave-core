@@ -37,12 +37,16 @@ class SimpleURLLoader;
 
 
 const char oauth_path_access_token[] = "/oauth/token";
+const char oauth_path_account_balances[] = "/oauth-api/v1/balance";
 
 class BinanceController {
  public:
   explicit BinanceController(content::BrowserContext* context);
   ~BinanceController();
 
+  using GetAccountBalancesCallback = base::OnceCallback<
+      void(const std::map<std::string, std::string>&, bool success)>;
+  bool GetAccountBalances(GetAccountBalancesCallback callback);
   using GetAccessTokenCallback = base::OnceCallback<void(bool)>;
   bool GetAccessToken(const std::string& code,
       GetAccessTokenCallback callback);
@@ -66,6 +70,9 @@ class BinanceController {
 
   base::SequencedTaskRunner* io_task_runner();
   void OnGetAccessToken(GetAccessTokenCallback callback,
+                           const int status, const std::string& body,
+                           const std::map<std::string, std::string>& headers);
+  void OnGetAccountBalances(GetAccountBalancesCallback callback,
                            const int status, const std::string& body,
                            const std::map<std::string, std::string>& headers);
   bool OAuthRequest(const std::string& path,

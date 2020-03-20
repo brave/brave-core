@@ -8,6 +8,17 @@
 #include "base/json/json_reader.h"
 
 // static
+//
+// Response Format
+//
+// {
+//   "access_token": "83f2bf51-a2c4-4c2e-b7c4-46cef6a8dba5",
+//   "refresh_token": "fb5587ee-d9cf-4cb5-a586-4aed72cc9bea",
+//   "scope": "read",
+//   "token_type": "bearer",
+//  "expires_in": 30714
+// }
+//
 bool BinanceJSONParser::GetTokensFromJSON(
     const std::string& json, std::string *value, std::string type) {
   if (!value) {
@@ -27,6 +38,57 @@ bool BinanceJSONParser::GetTokensFromJSON(
 
   if (token && token->is_string()) {
     *value = token->GetString();
+  }
+
+  return true;
+}
+
+// static
+//
+// Response Format:
+// {
+//    "code": "000000",
+//    "message": null,
+//    "data": [
+//        {
+//            "asset": "ADA",
+//            "free": "0.00000000",
+//            "locked": "0.00000000",
+//            "freeze": "1.00000000",
+//            "withdrawing": "0.00000000"
+//        }
+//    ]
+// }
+//
+bool BinanceJSONParser::GetAccountBalancesFromJSON(
+    const std::string& json, std::map<std::string, std::string>* balances) {
+  if (!balances) {
+    return false;
+  }
+
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::Value* pv_arr = records_v->FindKey("data");
+  if (pv_arr && pv_arr->is_list()) {
+    for (const base::Value &val : pv_arr->GetList()) {
+      const base::Value* asset = val.FindKey("asset");
+      const base::Value* free_amount = val.FindKey("free");
+      const base::Value* locked_amount = val.FindKey("locked");
+      if (asset && asset->is_string() &&
+          free_amount && free_amount->is_string() &&
+          locked_amount && locked_amount->is_string()) {
+        std::string asset_symbol = asset->GetString();
+        balances->insert({asset_symbol, free_amount->GetString()});
+      }
+    }
   }
 
   return true;

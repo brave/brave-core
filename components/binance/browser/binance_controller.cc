@@ -109,8 +109,32 @@ bool BinanceController::GetAccessToken(
       redirect_uri;
 
   return OAuthRequest(oauth_path_access_token,
-                    formatted_params,
-                    std::move(internal_callback));
+                     formatted_params,
+                     std::move(internal_callback));
+}
+
+bool BinanceController::GetAccountBalances(
+    GetAccountBalancesCallback callback) {
+  auto internal_callback = base::BindOnce(
+       &BinanceController::OnGetAccountBalances,
+       base::Unretained(this), std::move(callback));
+  
+  return OAuthRequest(oauth_path_account_balances,
+                      std::string("?access_token=") + access_token_,
+                      std::move(internal_callback));
+}
+
+void BinanceController::OnGetAccountBalances(
+    GetAccountBalancesCallback callback,
+    const int status, const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  std::map<std::string, std::string> balances;
+
+  if (status >= 200 && status <= 299) {
+    BinanceJSONParser::GetAccountBalancesFromJSON(body, &balances);
+  }
+
+  std::move(callback).Run(balances, IsUnauthorized(status));
 }
 
 void BinanceController::SetCodeChallenge(
@@ -279,6 +303,7 @@ bool BinanceController::LoadTokensFromPrefs() {
     LOG(ERROR) << "Could not decrypt and save Binance token info.";
     return false;
   }
+
   return true;
 }
 

@@ -390,7 +390,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       state.binanceState.hideBalance = payload.hide
       break
 
-    case types.ON_BINANCE_BALANCES:
+    case types.ON_BINANCE_ACCOUNT_BALANCES:
       state = { ...state }
       state.binanceState.accountBalances = payload.balances
       break

@@ -241,5 +241,38 @@ BinanceIsSupportedRegionFunction::Run() {
       std::make_unique<base::Value>(!is_blacklisted)));
 }
 
+ExtensionFunction::ResponseAction
+BinanceGetAccountBalancesFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  if (brave::IsTorProfile(profile)) {
+    return RespondNow(Error("Not available in Tor profile"));
+  }
+
+  auto* controller = GetBinanceController(browser_context());
+  bool balance_success = controller->GetAccountBalances(
+      base::BindOnce(
+          &BinanceGetAccountBalancesFunction::OnGetAccountBalances,
+          this));
+
+  if (!balance_success) {
+    return RespondNow(Error("Could not send request to get balance"));
+  }
+
+  return RespondLater();
+}
+
+void BinanceGetAccountBalancesFunction::OnGetAccountBalances(
+    const std::map<std::string, std::string>& balances, bool success) {
+  auto balance_dict = std::make_unique<base::Value>(
+      base::Value::Type::DICTIONARY);
+
+  for (const auto& balance : balances) {
+    balance_dict->SetStringKey(balance.first, balance.second);
+  }
+
+  Respond(TwoArguments(std::move(balance_dict),
+                       std::make_unique<base::Value>(success)));
+}
+
 }  // namespace api
 }  // namespace extensions

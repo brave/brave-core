@@ -231,7 +231,7 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   setBinanceBalances = (balances: Record<string, string>) => {
-    this.props.actions.onBinanceBalances(balances)
+    this.props.actions.onBinanceAccountBalances(balances)
   }
 
   onBinanceClientUrl = (clientUrl: string) => {
@@ -434,7 +434,7 @@ class NewTabPage extends React.Component<Props, State> {
         hideWidget={this.toggleShowBinance}
         showContent={showContent}
         onSetHideBalance={this.setHideBalance}
-        onBinanceBalances={this.setBinanceBalances}
+        onBinanceAccountBalances={this.setBinanceBalances}
         onBinanceClientUrl={this.onBinanceClientUrl}
         onConnectBinance={this.connectBinance}
         onDisconnectBinance={this.disconnectBinance}

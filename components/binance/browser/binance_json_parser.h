@@ -13,6 +13,8 @@ class BinanceJSONParser {
  public:
   static bool GetTokensFromJSON(const std::string& json,
                                 std::string *value, std::string type);
+  static bool GetAccountBalancesFromJSON(const std::string& json,
+                                        std::map<std::string, std::string>*);
 };
 
 #endif  // BRAVE_COMPONENTS_BINANCE_BROWSER_BINANCE_JSON_PARSER_H_
