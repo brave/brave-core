@@ -90,18 +90,18 @@ void UpholdCard::OnCreateIfNecessary(
   }
 
   for (const auto& it : list->GetList()) {
-    auto* label = it.FindKey("label");
-    if (!label || !label->is_string()) {
+    const auto* label = it.FindStringKey("label");
+    if (!label) {
       continue;
     }
 
-    if (label->GetString() == kCardName) {
-      auto* id = it.FindKey("id");
-      if (!id || !id->is_string()) {
+    if (*label == kCardName) {
+      const auto* id = it.FindStringKey("id");
+      if (!id) {
         continue;
       }
 
-      callback(ledger::Result::LEDGER_OK, id->GetString());
+      callback(ledger::Result::LEDGER_OK, *id);
       return;
     }
   }
@@ -169,15 +169,14 @@ void UpholdCard::OnCreate(
     return;
   }
 
-  auto* id = dictionary->FindKey("id");
-  std::string transaction_id;
-  if (!id || !id->is_string()) {
+  const auto* id = dictionary->FindStringKey("id");
+  if (!id) {
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
 
   auto wallet_ptr = ledger::ExternalWallet::New(wallet);
-  wallet_ptr->address = id->GetString();
+  wallet_ptr->address = *id;
 
   auto update_callback = std::bind(&UpholdCard::OnCreateUpdate,
                                   this,
@@ -312,19 +311,14 @@ std::map<std::string, std::string> UpholdCard::ParseGetCardAddressResponse(
       continue;
     }
 
-    auto* type_key = address->FindKey("type");
-    if (!type_key || !type_key->is_string()) {
+    const auto* type_key = address->FindStringKey("type");
+    if (!type_key) {
       continue;
     }
-    const std::string type = type_key->GetString();
+    const std::string type = *type_key;
 
-    auto* formats_key = address->FindKey("formats");
-    if (!formats_key || !formats_key->is_list()) {
-      continue;
-    }
-
-    base::ListValue* formats = nullptr;
-    if (!formats_key->GetAsList(&formats)) {
+    auto* formats = address->FindListKey("formats");
+    if (!formats) {
       continue;
     }
 
@@ -337,13 +331,12 @@ std::map<std::string, std::string> UpholdCard::ParseGetCardAddressResponse(
       continue;
     }
 
-    auto* value = format->FindKey("value");
-    if (!value || !value->is_string()) {
+    const auto* address_value = format->FindStringKey("value");
+    if (!address_value) {
       continue;
     }
-    const std::string address_value = value->GetString();
 
-    results.insert(std::make_pair(type, address_value));
+    results.insert(std::make_pair(type, *address_value));
   }
 
   return results;
@@ -460,13 +453,13 @@ void UpholdCard::OnCreateAnonAddress(
     return;
   }
 
-  auto* id = dictionary->FindKey("id");
-  if (!id || !id->is_string()) {
+  const auto* id = dictionary->FindStringKey("id");
+  if (!id) {
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK, id->GetString());
+  callback(ledger::Result::LEDGER_OK, *id);
 }
 
 }  // namespace braveledger_uphold

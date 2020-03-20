@@ -52,9 +52,9 @@ bool GitHub::GetJSONIntValue(const std::string& key,
     return false;
   }
 
-  const auto* item = dictionary->FindKey(key);
-  if (item && item->is_int()) {
-    *result = item->GetInt();
+  const auto item = dictionary->FindIntKey(key);
+  if (item) {
+    *result = *item;
     return true;
   }
   return false;
@@ -74,9 +74,9 @@ bool GitHub::GetJSONStringValue(const std::string& key,
     return false;
   }
 
-  const auto* item = dictionary->FindKey(key);
-  if (item && item->is_string()) {
-    *result = item->GetString();
+  const auto* item = dictionary->FindStringKey(key);
+  if (item) {
+    *result = *item;
     return true;
   }
   return false;

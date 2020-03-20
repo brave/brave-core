@@ -50,40 +50,40 @@ ledger::ContributionQueuePtr FromStringToContributionQueue(
     return nullptr;
   }
 
-  auto* id = dictionary->FindKey("id");
-  if (id && id->is_string()) {
-    queue->id = std::stoull(id->GetString());
+  const auto* id = dictionary->FindStringKey("id");
+  if (id) {
+    queue->id = std::stoull(*id);
   }
 
-  auto* type = dictionary->FindKey("type");
-  if (type && type->is_int()) {
-    queue->type = static_cast<ledger::RewardsType>(type->GetInt());
+  const auto type = dictionary->FindIntKey("type");
+  if (type) {
+    queue->type = static_cast<ledger::RewardsType>(*type);
   }
 
-  auto* amount = dictionary->FindKey("amount");
-  if (amount && amount->is_string()) {
-    queue->amount = std::stod(amount->GetString());
+  const auto* amount = dictionary->FindStringKey("amount");
+  if (amount) {
+    queue->amount = std::stod(*amount);
   }
 
-  auto* partial = dictionary->FindKey("partial");
-  if (partial && partial->is_bool()) {
-    queue->partial = partial->GetBool();
+  auto partial = dictionary->FindBoolKey("partial");
+  if (partial) {
+    queue->partial = *partial;
   }
 
-  auto* publishers = dictionary->FindKey("publishers");
-  if (publishers && publishers->is_list()) {
+  const auto* publishers = dictionary->FindListKey("publishers");
+  if (publishers) {
     base::ListValue publishers_list(publishers->GetList());
     for (auto& item : publishers_list) {
       auto publisher = ledger::ContributionQueuePublisher::New();
-      auto* publisher_key = item.FindKey("publisher_key");
-      if (!publisher_key || !publisher_key->is_string()) {
+      const auto* publisher_key = item.FindStringKey("publisher_key");
+      if (!publisher_key) {
         continue;
       }
-      publisher->publisher_key = publisher_key->GetString();
+      publisher->publisher_key = *publisher_key;
 
-      auto* amount_percent = item.FindKey("amount_percent");
-      if (amount_percent && amount_percent->is_string()) {
-        publisher->amount_percent = std::stod(amount_percent->GetString());
+      const auto* amount_percent = item.FindStringKey("amount_percent");
+      if (amount_percent) {
+        publisher->amount_percent = std::stod(*amount_percent);
       }
       queue->publishers.push_back(std::move(publisher));
     }

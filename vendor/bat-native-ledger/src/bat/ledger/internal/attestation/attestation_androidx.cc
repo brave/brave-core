@@ -38,18 +38,18 @@ void AttestationAndroid::ParseClaimSolution(
     return;
   }
 
-  auto* nonce = dictionary->FindKey("nonce");
-  if (!nonce || !nonce->is_string()) {
+  const auto* nonce = dictionary->FindStringKey("nonce");
+  if (!nonce) {
     return;
   }
 
-  auto* token = dictionary->FindKey("token");
-  if (!token || !token->is_string()) {
+  const auto* token = dictionary->FindStringKey("token");
+  if (!token) {
     return;
   }
 
-  result->SetStringKey("nonce", nonce->GetString());
-  result->SetStringKey("token", token->GetString());
+  result->SetStringKey("nonce", *nonce);
+  result->SetStringKey("token", *token);
 }
 
 void AttestationAndroid::Start(

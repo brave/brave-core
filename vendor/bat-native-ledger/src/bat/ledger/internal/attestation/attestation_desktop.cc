@@ -41,18 +41,18 @@ void AttestationDesktop::ParseCaptchaResponse(
     return;
   }
 
-  auto* captcha_id = dictionary->FindKey("captchaId");
-  if (!captcha_id || !captcha_id->is_string()) {
+  const auto* captcha_id = dictionary->FindStringKey("captchaId");
+  if (!captcha_id) {
     return;
   }
 
-  auto* hint = dictionary->FindKey("hint");
-  if (!hint || !hint->is_string()) {
+  const auto* hint = dictionary->FindStringKey("hint");
+  if (!hint) {
     return;
   }
 
-  result->SetStringKey("hint", hint->GetString());
-  result->SetStringKey("captchaId", captcha_id->GetString());
+  result->SetStringKey("hint", *hint);
+  result->SetStringKey("captchaId", *captcha_id);
 }
 
 void AttestationDesktop::ParseClaimSolution(
@@ -68,24 +68,24 @@ void AttestationDesktop::ParseClaimSolution(
     return;
   }
 
-  auto* captcha_id = dictionary->FindKey("captchaId");
-  if (!captcha_id || !captcha_id->is_string()) {
+  const auto* captcha_id = dictionary->FindStringKey("captchaId");
+  if (!captcha_id) {
     return;
   }
 
-  auto* x = dictionary->FindKey("x");
-  if (!x || !x->is_int()) {
+  const auto x = dictionary->FindIntKey("x");
+  if (!x) {
     return;
   }
 
-  auto* y = dictionary->FindKey("y");
-  if (!y || !y->is_int()) {
+  const auto y = dictionary->FindIntKey("y");
+  if (!y) {
     return;
   }
 
-  result->SetIntKey("x", x->GetInt());
-  result->SetIntKey("y", y->GetInt());
-  result->SetStringKey("captchaId", captcha_id->GetString());
+  result->SetIntKey("x", *x);
+  result->SetIntKey("y", *y);
+  result->SetStringKey("captchaId", *captcha_id);
 }
 
 void AttestationDesktop::Start(
