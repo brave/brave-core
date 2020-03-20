@@ -20,7 +20,6 @@
 #endif
 
 #if !defined(OS_ANDROID)
-#include "brave/browser/themes/brave_theme_service.h"
 #include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
 #else
 #include "brave/browser/ntp_sponsored_images/android/ntp_sponsored_images_bridge.h"
@@ -45,7 +44,6 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   ntp_sponsored_images::ViewCounterServiceFactory::GetInstance();
 
 #if !defined(OS_ANDROID)
-  BraveThemeServiceFactory::GetInstance();
   BookmarkPrefsServiceFactory::GetInstance();
 #else
   ntp_sponsored_images::NTPSponsoredImagesBridgeFactory::GetInstance();

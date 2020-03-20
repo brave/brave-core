@@ -9,6 +9,7 @@
 #include "brave/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "components/prefs/pref_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -35,7 +36,7 @@ IN_PROC_BROWSER_TEST_F(BraveThemeEventRouterBrowserTest,
   extensions::MockBraveThemeEventRouter* mock_router =
       new extensions::MockBraveThemeEventRouter(browser()->profile());
   BraveThemeService* service = static_cast<BraveThemeService*>(
-      BraveThemeServiceFactory::GetForProfile(browser()->profile()));
+      ThemeServiceFactory::GetForProfile(browser()->profile()));
   service->SetBraveThemeEventRouterForTesting(mock_router);
 
   EXPECT_CALL(*mock_router, Notify()).Times(1);
