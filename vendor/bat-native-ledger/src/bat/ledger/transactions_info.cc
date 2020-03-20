@@ -75,36 +75,37 @@ double TransactionsInfo::GetEstimatedPendingRewardsFromJson(
     base::DictionaryValue* dictionary) const {
   DCHECK(dictionary);
 
-  auto* value = dictionary->FindKey("estimated_pending_rewards");
+  const auto value = dictionary->FindDoubleKey("estimated_pending_rewards");
   if (!value) {
     return 0.0;
   }
 
-  return value->GetDouble();
+  return *value;
 }
 
 uint64_t TransactionsInfo::GetNextPaymentDateInSecondsFromJson(
     base::DictionaryValue* dictionary) const {
   DCHECK(dictionary);
 
-  auto* value = dictionary->FindKey("next_payment_date_in_seconds");
+  const auto* value = dictionary->FindStringKey("next_payment_date_in_seconds");
   if (!value) {
     return 0;
   }
 
-  return std::stoull(value->GetString());
+  return std::stoull(*value);
 }
 
 uint64_t TransactionsInfo::GetAdNotificationsReceivedThisMonthFromJson(
     base::DictionaryValue* dictionary) const {
   DCHECK(dictionary);
 
-  auto* value = dictionary->FindKey("ad_notifications_received_this_month");
+  const auto* value =
+      dictionary->FindStringKey("ad_notifications_received_this_month");
   if (!value) {
     return 0;
   }
 
-  return std::stoull(value->GetString());
+  return std::stoull(*value);
 }
 
 base::Value TransactionsInfo::GetTransactionsAsList() const {
@@ -134,13 +135,12 @@ TransactionList TransactionsInfo::GetTransactionsFromJson(
 
   TransactionList transactions;
 
-  auto* transactions_value = dictionary->FindKey("transactions");
+  auto* transactions_value = dictionary->FindListKey("transactions");
   if (!transactions_value) {
     return transactions;
   }
 
-  base::ListValue transactions_list_value(transactions_value->GetList());
-  for (auto& transaction_value : transactions_list_value) {
+  for (auto& transaction_value : transactions_value->GetList()) {
     base::DictionaryValue* transaction_dictionary;
     if (!transaction_value.GetAsDictionary(&transaction_dictionary)) {
       continue;
@@ -149,30 +149,28 @@ TransactionList TransactionsInfo::GetTransactionsFromJson(
     TransactionInfo info;
 
     // Timestamp
-    auto* timestamp_in_seconds_value =
-        transaction_dictionary->FindKey("timestamp_in_seconds");
+    const auto* timestamp_in_seconds_value =
+        transaction_dictionary->FindStringKey("timestamp_in_seconds");
     if (!timestamp_in_seconds_value) {
       continue;
     }
-    info.timestamp_in_seconds =
-        std::stoull(timestamp_in_seconds_value->GetString());
+    info.timestamp_in_seconds = std::stoull(*timestamp_in_seconds_value);
 
     // Estimated redemption value
-    auto* estimated_redemption_value_value =
-        transaction_dictionary->FindKey("estimated_redemption_value");
+    const auto estimated_redemption_value_value =
+        transaction_dictionary->FindDoubleKey("estimated_redemption_value");
     if (!estimated_redemption_value_value) {
       continue;
     }
-    info.estimated_redemption_value =
-        estimated_redemption_value_value->GetDouble();
+    info.estimated_redemption_value = *estimated_redemption_value_value;
 
     // Confirmation type
-    auto* confirmation_type_value =
-        transaction_dictionary->FindKey("confirmation_type");
+    const auto* confirmation_type_value =
+        transaction_dictionary->FindStringKey("confirmation_type");
     if (!confirmation_type_value) {
       continue;
     }
-    info.confirmation_type = confirmation_type_value->GetString();
+    info.confirmation_type = *confirmation_type_value;
 
     transactions.push_back(info);
   }

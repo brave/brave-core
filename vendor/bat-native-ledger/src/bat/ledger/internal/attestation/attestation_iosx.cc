@@ -37,12 +37,12 @@ std::string AttestationIOS::ParseStartPayload(
     return "";
   }
 
-  auto* key = dictionary->FindKey("publicKey");
-  if (!key || !key->is_string()) {
+  const auto* key = dictionary->FindStringKey("publicKey");
+  if (!key) {
     return "";
   }
 
-  return key->GetString();
+  return *key;
 }
 
 void AttestationIOS::ParseClaimSolution(
@@ -58,24 +58,24 @@ void AttestationIOS::ParseClaimSolution(
     return;
   }
 
-  auto* nonce = dictionary->FindKey("nonce");
-  if (!nonce || !nonce->is_string()) {
+  const auto* nonce = dictionary->FindStringKey("nonce");
+  if (!nonce) {
     return;
   }
 
-  auto* blob = dictionary->FindKey("blob");
-  if (!blob || !blob->is_string()) {
+  const auto* blob = dictionary->FindStringKey("blob");
+  if (!blob) {
     return;
   }
 
-  auto* signature = dictionary->FindKey("signature");
-  if (!signature || !signature->is_string()) {
+  const auto* signature = dictionary->FindStringKey("signature");
+  if (!signature) {
     return;
   }
 
-  result->SetStringKey("nonce", nonce->GetString());
-  result->SetStringKey("blob", blob->GetString());
-  result->SetStringKey("signature", signature->GetString());
+  result->SetStringKey("nonce", *nonce);
+  result->SetStringKey("blob", *blob);
+  result->SetStringKey("signature", *signature);
 }
 
 void AttestationIOS::Start(

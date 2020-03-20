@@ -278,25 +278,25 @@ ledger::PublisherBanner PublisherServerList::ParsePublisherBanner(
   }
 
   bool empty = true;
-  auto* title = dictionary->FindKey("title");
-  if (title && title->is_string()) {
-    banner.title = title->GetString();
+  const auto* title = dictionary->FindStringKey("title");
+  if (title) {
+    banner.title = *title;
     if (!banner.title.empty()) {
       empty = false;
     }
   }
 
-  auto* description = dictionary->FindKey("description");
-  if (description && description->is_string()) {
-    banner.description = description->GetString();
+  const auto* description = dictionary->FindStringKey("description");
+  if (description) {
+    banner.description = *description;
     if (!banner.description.empty()) {
       empty = false;
     }
   }
 
-  auto* background = dictionary->FindKey("backgroundUrl");
-  if (background && background->is_string()) {
-    banner.background = background->GetString();
+  const auto* background = dictionary->FindStringKey("backgroundUrl");
+  if (background) {
+    banner.background = *background;
 
     if (!banner.background.empty()) {
       banner.background = "chrome://rewards-image/" + banner.background;
@@ -304,9 +304,9 @@ ledger::PublisherBanner PublisherServerList::ParsePublisherBanner(
     }
   }
 
-  auto* logo = dictionary->FindKey("logoUrl");
-  if (logo && logo->is_string()) {
-    banner.logo = logo->GetString();
+  const auto* logo = dictionary->FindStringKey("logoUrl");
+  if (logo) {
+    banner.logo = *logo;
 
     if (!banner.logo.empty()) {
       banner.logo = "chrome://rewards-image/" + banner.logo;
@@ -314,8 +314,8 @@ ledger::PublisherBanner PublisherServerList::ParsePublisherBanner(
     }
   }
 
-  auto* amounts = dictionary->FindKey("donationAmounts");
-  if (amounts && amounts->is_list()) {
+  const auto* amounts = dictionary->FindListKey("donationAmounts");
+  if (amounts) {
     for (const auto& it : amounts->GetList()) {
       banner.amounts.push_back(it.GetInt());
     }
@@ -325,8 +325,8 @@ ledger::PublisherBanner PublisherServerList::ParsePublisherBanner(
     }
   }
 
-  auto* links = dictionary->FindKey("socialLinks");
-  if (links && links->is_dict()) {
+  const auto* links = dictionary->FindDictKey("socialLinks");
+  if (links) {
     for (const auto& it : links->DictItems()) {
       banner.links.insert(std::make_pair(it.first, it.second.GetString()));
     }

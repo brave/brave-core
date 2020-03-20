@@ -80,24 +80,24 @@ void GetVimeoParts(
   for (const auto& item : data->GetList()) {
     if (item.is_dict()) {
       std::map<std::string, std::string> part;
-      auto* name = item.FindKey("name");
+      const auto* name = item.FindStringKey("name");
       if (name) {
-        part.emplace("event", name->GetString());
+        part.emplace("event", *name);
       }
 
-      auto* clip_id = item.FindKey("clip_id");
+      const auto clip_id = item.FindIntKey("clip_id");
       if (clip_id) {
-        part.emplace("video_id", std::to_string(clip_id->GetInt()));
+        part.emplace("video_id", std::to_string(*clip_id));
       }
 
-      auto* product = item.FindKey("product");
+      const auto* product = item.FindStringKey("product");
       if (product) {
-        part.emplace("type", product->GetString());
+        part.emplace("type", *product);
       }
 
-      auto* video_time = item.FindKey("video_time");
+      const auto video_time = item.FindDoubleKey("video_time");
       if (video_time) {
-        part.emplace("time", std::to_string(video_time->GetDouble()));
+        part.emplace("time", std::to_string(*video_time));
       }
 
       parts->push_back(part);

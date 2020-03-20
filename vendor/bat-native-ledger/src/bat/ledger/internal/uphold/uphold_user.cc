@@ -86,19 +86,19 @@ void UpholdUser::OnGet(
     return;
   }
 
-  auto* name = dictionary->FindKey("name");
-  if (name && name->is_string()) {
-    user.name = name->GetString();
+  const auto* name = dictionary->FindStringKey("name");
+  if (name) {
+    user.name = *name;
   }
 
-  auto* member_at = dictionary->FindKey("memberAt");
-  if (member_at && member_at->is_string()) {
-    user.member_at = member_at->GetString();
+  const auto* member_at = dictionary->FindStringKey("memberAt");
+  if (member_at) {
+    user.member_at = *member_at;
     user.verified = !user.member_at.empty();
   }
 
-  auto* currencies = dictionary->FindKey("currencies");
-  if (currencies && currencies->is_list()) {
+  const auto* currencies = dictionary->FindListKey("currencies");
+  if (currencies) {
     const std::string currency = "BAT";
     auto bat_in_list = std::find(
         currencies->GetList().begin(),
@@ -107,9 +107,9 @@ void UpholdUser::OnGet(
     user.bat_not_allowed = bat_in_list == currencies->GetList().end();
   }
 
-  auto* status = dictionary->FindKey("status");
-  if (status && status->is_string()) {
-    user.status = GetStatus(status->GetString());
+  const auto* status = dictionary->FindStringKey("status");
+  if (status) {
+    user.status = GetStatus(*status);
   }
 
   callback(ledger::Result::LEDGER_OK, user);

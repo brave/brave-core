@@ -102,60 +102,59 @@ bool ParseFetchResponse(
     return false;
   }
 
-  auto* promotions = dictionary->FindKey("promotions");
-  if (promotions && promotions->is_list()) {
+  auto* promotions = dictionary->FindListKey("promotions");
+  if (promotions) {
     const auto promotion_size = promotions->GetList().size();
     for (auto& item : promotions->GetList()) {
       ledger::PromotionPtr promotion = ledger::Promotion::New();
 
-      auto* id = item.FindKey("id");
-      if (!id || !id->is_string()) {
+      const auto* id = item.FindStringKey("id");
+      if (!id) {
         continue;
       }
-      promotion->id = id->GetString();
+      promotion->id = *id;
 
-      auto* version = item.FindKey("version");
-      if (!version || !version->is_int()) {
+      const auto version = item.FindIntKey("version");
+      if (!version) {
         continue;
       }
-      promotion->version = version->GetInt();
+      promotion->version = *version;
 
-      auto* type = item.FindKey("type");
-      if (!type || !type->is_string()) {
+      const auto* type = item.FindStringKey("type");
+      if (!type) {
         continue;
       }
-      promotion->type = ConvertStringToPromotionType(type->GetString());
+      promotion->type = ConvertStringToPromotionType(*type);
 
-      auto* suggestions = item.FindKey("suggestionsPerGrant");
-      if (!suggestions || !suggestions->is_int()) {
+      const auto suggestions = item.FindIntKey("suggestionsPerGrant");
+      if (!suggestions) {
         continue;
       }
-      promotion->suggestions = suggestions->GetInt();
+      promotion->suggestions = *suggestions;
 
-      auto* approximate_value = item.FindKey("approximateValue");
-      if (!approximate_value || !approximate_value->is_string()) {
+      const auto* approximate_value = item.FindStringKey("approximateValue");
+      if (!approximate_value) {
         continue;
       }
-      promotion->approximate_value = std::stod(approximate_value->GetString());
+      promotion->approximate_value = std::stod(*approximate_value);
 
-      auto* available = item.FindKey("available");
-      if (!available || !available->is_bool()) {
+      const auto available = item.FindBoolKey("available");
+      if (!available) {
         continue;
       }
-      if (available->GetBool()) {
+      if (*available) {
         promotion->status = ledger::PromotionStatus::ACTIVE;
       } else {
         promotion->status = ledger::PromotionStatus::OVER;
       }
 
-      auto* expires_at = item.FindKey("expiresAt");
-      if (!expires_at || !expires_at->is_string()) {
+      auto* expires_at = item.FindStringKey("expiresAt");
+      if (!expires_at) {
         continue;
       }
 
       base::Time time;
-      bool success =
-          base::Time::FromUTCString(expires_at->GetString().c_str(), &time);
+      bool success =  base::Time::FromUTCString((*expires_at).c_str(), &time);
       if (success) {
         promotion->expires_at = time.ToDoubleT();
       }

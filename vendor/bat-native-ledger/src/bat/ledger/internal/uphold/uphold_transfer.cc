@@ -106,15 +106,13 @@ void UpholdTransfer::OnCreateTransaction(
     return;
   }
 
-  auto* id = dictionary->FindKey("id");
-  std::string transaction_id;
-  if (!id && !id->is_string()) {
+  const auto* id = dictionary->FindStringKey("id");
+  if (!id) {
     callback(ledger::Result::LEDGER_ERROR, false);
     return;
   }
 
-  transaction_id = id->GetString();
-  CommitTransaction(transaction_id, wallet, callback);
+  CommitTransaction(*id, wallet, callback);
 }
 
 void UpholdTransfer::CommitTransaction(const std::string& transaction_id,

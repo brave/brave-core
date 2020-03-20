@@ -185,9 +185,9 @@ void Uphold::OnFetchBalance(
     return;
   }
 
-  auto* available = dictionary->FindKey("available");
-  if (available && available->is_string()) {
-    callback(ledger::Result::LEDGER_OK, std::stod(available->GetString()));
+  const auto* available = dictionary->FindStringKey("available");
+  if (available) {
+    callback(ledger::Result::LEDGER_OK, std::stod(*available));
     return;
   }
 

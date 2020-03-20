@@ -129,9 +129,9 @@ void UpholdAuthorization::OnAuthorize(
   }
 
   std::string token;
-  auto* access_token = dictionary->FindKey("access_token");
-  if (access_token && access_token->is_string()) {
-    token = access_token->GetString();
+  const auto* access_token = dictionary->FindStringKey("access_token");
+  if (access_token) {
+    token = *access_token;
   }
 
   if (token.empty()) {
