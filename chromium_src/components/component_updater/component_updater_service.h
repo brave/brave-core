@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_COMPONENT_UPDATER_COMPONENT_UPDATER_SERVICE_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_COMPONENT_UPDATER_COMPONENT_UPDATER_SERVICE_H_
 
-#define BRAVE_COMPONENT_UPDATER_SERVICE_H_ONDEMANDUPDATER \
+#define BRAVE_COMPONENT_UPDATER_SERVICE_H_                \
  private:                                                 \
   friend void BraveOnDemandUpdate(const std::string&);    \
                                                           \
