@@ -5,26 +5,26 @@
 
 #include "brave/components/brave_shields/browser/adblock_stub_response.h"
 #include "services/network/public/cpp/resource_request.h"
-#include "services/network/public/cpp/resource_response.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 TEST(AdBlockStubResponse, ScriptDataURL) {
   std::string data_url =
       "data:application/script,<script>alert('hi');</script>";
   std::string data;
-  network::ResourceResponseHead resource_response;
+  auto resource_response = network::mojom::URLResponseHead::New();
   brave_shields::MakeStubResponse(data_url, {}, &resource_response, &data);
   ASSERT_EQ(data, "<script>alert('hi');</script>");
-  ASSERT_EQ(resource_response.mime_type, "application/script");
+  ASSERT_EQ(resource_response->mime_type, "application/script");
 }
 
 TEST(AdBlockStubResponse, HTMLDataURL) {
   std::string data_url = "data:text/html,<strong>π</strong>";
   std::string data;
-  network::ResourceResponseHead resource_response;
+  auto resource_response = network::mojom::URLResponseHead::New();
   brave_shields::MakeStubResponse(data_url, {}, &resource_response, &data);
   ASSERT_EQ(data, "<strong>π</strong>");
-  ASSERT_EQ(resource_response.mime_type, "text/html");
+  ASSERT_EQ(resource_response->mime_type, "text/html");
 }
 
 TEST(AdBlockStubResponse, HTMLDataURLPrioritizedOverRequestInfo) {
@@ -32,20 +32,20 @@ TEST(AdBlockStubResponse, HTMLDataURLPrioritizedOverRequestInfo) {
   std::string data;
   network::ResourceRequest request;
   request.headers.AddHeadersFromString("Accept: image/svg");
-  network::ResourceResponseHead resource_response;
+  auto resource_response = network::mojom::URLResponseHead::New();
   brave_shields::MakeStubResponse(data_url, request, &resource_response, &data);
   ASSERT_EQ(data, "pi");
-  ASSERT_EQ(resource_response.mime_type, "text/xml");
+  ASSERT_EQ(resource_response->mime_type, "text/xml");
 }
 
 TEST(AdBlockStubResponse, AcceptHeaderUsedNoDataURL) {
   std::string data;
   network::ResourceRequest request;
   request.headers.AddHeadersFromString("Accept: text/xml");
-  network::ResourceResponseHead resource_response;
+  auto resource_response = network::mojom::URLResponseHead::New();
   brave_shields::MakeStubResponse("", request, &resource_response, &data);
   ASSERT_EQ(data, "");
-  ASSERT_EQ(resource_response.mime_type, "text/xml");
+  ASSERT_EQ(resource_response->mime_type, "text/xml");
 }
 
 TEST(AdBlockStubResponse, HTMLDataURLNoMimeTypeUsesAcceptHeader) {
@@ -53,8 +53,8 @@ TEST(AdBlockStubResponse, HTMLDataURLNoMimeTypeUsesAcceptHeader) {
   std::string data;
   network::ResourceRequest request;
   request.headers.AddHeadersFromString("Accept: text/xml");
-  network::ResourceResponseHead resource_response;
+  auto resource_response = network::mojom::URLResponseHead::New();
   brave_shields::MakeStubResponse(data_url, request, &resource_response, &data);
   ASSERT_EQ(data, "<num>pi</num>");
-  ASSERT_EQ(resource_response.mime_type, "text/xml");
+  ASSERT_EQ(resource_response->mime_type, "text/xml");
 }

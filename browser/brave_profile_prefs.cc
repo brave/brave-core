@@ -19,10 +19,11 @@
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/common/pref_names.h"
 #include "components/content_settings/core/common/pref_names.h"
+#include "components/embedder_support/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/password_manager/core/common/password_manager_pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
-#include "components/safe_browsing/common/safe_browsing_prefs.h"
+#include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "components/signin/public/base/signin_pref_names.h"
 #include "components/sync/base/pref_names.h"
 #include "extensions/buildflags/buildflags.h"
@@ -31,10 +32,6 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
-#endif
-
-#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
-#include "components/gcm_driver/gcm_channel_status_syncer.h"
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -52,6 +49,10 @@
 #if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
+#endif
+
+#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
+#include "brave/browser/gcm_driver/brave_gcm_utils.h"
 #endif
 
 using extensions::FeatureSwitch;
@@ -103,8 +104,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   // PushMessaging
-  registry->SetDefaultPrefValue(gcm::prefs::kGCMChannelStatus,
-                                base::Value(false));
+  gcm::RegisterGCMProfilePrefs(registry);
 #endif
 
   registry->RegisterBooleanPref(kShieldsStatsBadgeVisible, true);
@@ -154,7 +154,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(prefs::kPromptForDownload, base::Value(true));
 
   // Not using chrome's web service for resolving navigation errors
-  registry->SetDefaultPrefValue(prefs::kAlternateErrorPagesEnabled,
+  registry->SetDefaultPrefValue(embedder_support::kAlternateErrorPagesEnabled,
                                 base::Value(false));
 
   // Disable safebrowsing reporting

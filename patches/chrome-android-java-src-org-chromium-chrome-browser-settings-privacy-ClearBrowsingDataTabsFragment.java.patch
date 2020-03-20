@@ -1,12 +1,12 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/privacy/ClearBrowsingDataTabsFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/privacy/ClearBrowsingDataTabsFragment.java
-index 235de722f14ec79e7844ffc9515e2ec2ecbb52aa..f5530540e27d1a3411335b7b0afdac4c15ff3e65 100644
+index b6c1393877a9f159cced14f17d497464a52080bf..74560068aa6a78953b6d3de564ab3b404392b5c4 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/privacy/ClearBrowsingDataTabsFragment.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/privacy/ClearBrowsingDataTabsFragment.java
 @@ -132,7 +132,7 @@ public class ClearBrowsingDataTabsFragment extends Fragment {
-                     fragment = new ClearBrowsingDataPreferencesBasic();
+                     fragment = new ClearBrowsingDataFragmentBasic();
                      break;
                  case 1:
--                    fragment = new ClearBrowsingDataPreferencesAdvanced();
+-                    fragment = new ClearBrowsingDataFragmentAdvanced();
 +                    fragment = new BraveClearBrowsingDataPreferencesAdvanced();
                      break;
                  default:

@@ -31,10 +31,15 @@ CHAR-LIMIT guidelines:
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit current_release="1" latest_public_release="0" output_all_resource_defines="false">
   <outputs>
+    <output filename="values-af/android_chrome_strings.xml" lang="af" type="android" />
     <output filename="values-am/android_chrome_strings.xml" lang="am" type="android" />
     <output filename="values-ar/android_chrome_strings.xml" lang="ar" type="android" />
+    <output filename="values-as/android_chrome_strings.xml" lang="as" type="android" />
+    <output filename="values-az/android_chrome_strings.xml" lang="az" type="android" />
+    <output filename="values-be/android_chrome_strings.xml" lang="be" type="android" />
     <output filename="values-bg/android_chrome_strings.xml" lang="bg" type="android" />
     <output filename="values-bn/android_chrome_strings.xml" lang="bn" type="android" />
+    <output filename="values-bs/android_chrome_strings.xml" lang="bs" type="android" />
     <output filename="values-ca/android_chrome_strings.xml" lang="ca" type="android" />
     <output filename="values-cs/android_chrome_strings.xml" lang="cs" type="android" />
     <output filename="values-da/android_chrome_strings.xml" lang="da" type="android" />
@@ -45,34 +50,52 @@ CHAR-LIMIT guidelines:
     <output filename="values-es/android_chrome_strings.xml" lang="es" type="android" />
     <output filename="values-es-rUS/android_chrome_strings.xml" lang="es-419" type="android" />
     <output filename="values-et/android_chrome_strings.xml" lang="et" type="android" />
+    <output filename="values-eu/android_chrome_strings.xml" lang="eu" type="android" />
     <output filename="values-fa/android_chrome_strings.xml" lang="fa" type="android" />
     <output filename="values-fi/android_chrome_strings.xml" lang="fi" type="android" />
     <output filename="values-tl/android_chrome_strings.xml" lang="fil" type="android" />
     <output filename="values-fr/android_chrome_strings.xml" lang="fr" type="android" />
+    <output filename="values-fr-rCA/android_chrome_strings.xml" lang="fr-CA" type="android" />
+    <output filename="values-gl/android_chrome_strings.xml" lang="gl" type="android" />
     <output filename="values-gu/android_chrome_strings.xml" lang="gu" type="android" />
     <output filename="values-hi/android_chrome_strings.xml" lang="hi" type="android" />
     <output filename="values-hr/android_chrome_strings.xml" lang="hr" type="android" />
     <output filename="values-hu/android_chrome_strings.xml" lang="hu" type="android" />
+    <output filename="values-hy/android_chrome_strings.xml" lang="hy" type="android" />
     <output filename="values-in/android_chrome_strings.xml" lang="id" type="android" />
+    <output filename="values-is/android_chrome_strings.xml" lang="is" type="android" />
     <output filename="values-it/android_chrome_strings.xml" lang="it" type="android" />
     <output filename="values-iw/android_chrome_strings.xml" lang="iw" type="android" />
     <output filename="values-ja/android_chrome_strings.xml" lang="ja" type="android" />
+    <output filename="values-ka/android_chrome_strings.xml" lang="ka" type="android" />
+    <output filename="values-kk/android_chrome_strings.xml" lang="kk" type="android" />
+    <output filename="values-km/android_chrome_strings.xml" lang="km" type="android" />
     <output filename="values-kn/android_chrome_strings.xml" lang="kn" type="android" />
     <output filename="values-ko/android_chrome_strings.xml" lang="ko" type="android" />
+    <output filename="values-ky/android_chrome_strings.xml" lang="ky" type="android" />
+    <output filename="values-lo/android_chrome_strings.xml" lang="lo" type="android" />
     <output filename="values-lt/android_chrome_strings.xml" lang="lt" type="android" />
     <output filename="values-lv/android_chrome_strings.xml" lang="lv" type="android" />
+    <output filename="values-mk/android_chrome_strings.xml" lang="mk" type="android" />
     <output filename="values-ml/android_chrome_strings.xml" lang="ml" type="android" />
+    <output filename="values-mn/android_chrome_strings.xml" lang="mn" type="android" />
     <output filename="values-mr/android_chrome_strings.xml" lang="mr" type="android" />
     <output filename="values-ms/android_chrome_strings.xml" lang="ms" type="android" />
+    <output filename="values-my/android_chrome_strings.xml" lang="my" type="android" />
+    <output filename="values-ne/android_chrome_strings.xml" lang="ne" type="android" />
     <output filename="values-nl/android_chrome_strings.xml" lang="nl" type="android" />
     <output filename="values-nb/android_chrome_strings.xml" lang="no" type="android" />
+    <output filename="values-or/android_chrome_strings.xml" lang="or" type="android" />
+    <output filename="values-pa/android_chrome_strings.xml" lang="pa" type="android" />
     <output filename="values-pl/android_chrome_strings.xml" lang="pl" type="android" />
     <output filename="values-pt-rBR/android_chrome_strings.xml" lang="pt-BR" type="android" />
     <output filename="values-pt-rPT/android_chrome_strings.xml" lang="pt-PT" type="android" />
     <output filename="values-ro/android_chrome_strings.xml" lang="ro" type="android" />
     <output filename="values-ru/android_chrome_strings.xml" lang="ru" type="android" />
+    <output filename="values-si/android_chrome_strings.xml" lang="si" type="android" />
     <output filename="values-sk/android_chrome_strings.xml" lang="sk" type="android" />
     <output filename="values-sl/android_chrome_strings.xml" lang="sl" type="android" />
+    <output filename="values-sq/android_chrome_strings.xml" lang="sq" type="android" />
     <output filename="values-sr/android_chrome_strings.xml" lang="sr" type="android" />
     <output filename="values-sv/android_chrome_strings.xml" lang="sv" type="android" />
     <output filename="values-sw/android_chrome_strings.xml" lang="sw" type="android" />
@@ -81,9 +104,13 @@ CHAR-LIMIT guidelines:
     <output filename="values-th/android_chrome_strings.xml" lang="th" type="android" />
     <output filename="values-tr/android_chrome_strings.xml" lang="tr" type="android" />
     <output filename="values-uk/android_chrome_strings.xml" lang="uk" type="android" />
+    <output filename="values-ur/android_chrome_strings.xml" lang="ur" type="android" />
+    <output filename="values-uz/android_chrome_strings.xml" lang="uz" type="android" />
     <output filename="values-vi/android_chrome_strings.xml" lang="vi" type="android" />
     <output filename="values-zh-rCN/android_chrome_strings.xml" lang="zh-CN" type="android" />
+    <output filename="values-zh-rHK/android_chrome_strings.xml" lang="zh-HK" type="android" />
     <output filename="values-zh-rTW/android_chrome_strings.xml" lang="zh-TW" type="android" />
+    <output filename="values-zu/android_chrome_strings.xml" lang="zu" type="android" />
   </outputs>
   <translations>
     <file lang="af" path="translations/android_chrome_strings_af.xtb" />
@@ -168,133 +195,10 @@ CHAR-LIMIT guidelines:
   </translations>
   <release allow_pseudo="false" seq="1">
     <messages fallback_to_english="true">
-      <!-- Generic strings -->
-      <message name="IDS_DELETED" desc="Text that announces to the user that something was deleted.">
-        Deleted
-      </message>
-      <message name="IDS_OK" desc="Label for a confirm button. Used in multiple contexts. [CHAR-LIMIT=20]">
-        OK
-      </message>
-      <message name="IDS_OK_GOT_IT" desc="Label of a button by which the user confirms that they read and understood the information or instructions. Used in multiple contexts. [CHAR-LIMIT=20]">
-        OK, got it
-      </message>
-      <message name="IDS_CANCEL" desc="Label for a cancel button. Used in multiple contexts. [CHAR-LIMIT=20]">
-        Cancel
-      </message>
-      <message name="IDS_NOT_NOW" desc="Label for a not now button. Used in multiple contexts. [CHAR-LIMIT=20]">
-        Not now
-      </message>
-      <message name="IDS_SAVE" desc="Label for a button to save a change. Used in multiple contexts. [CHAR-LIMIT=20]">
-        Save
-      </message>
-      <message name="IDS_DETAILS_LINK" desc="In 1) Settings &gt; Clean up computer (desktop), a link to open details of incompatible applications. In 2) Settings &gt; Lite mode (mobile), static title for data usage breakdown." meaning="Short for 'view details'. Link; static title.">
-        Details
-      </message>
-      <message name="IDS_DONE" desc="Label for a button to save a change or finish editing data. Used in multiple contexts. [CHAR-LIMIT=20]">
-        Done
-      </message>
-      <message name="IDS_DELETE" desc="Label for a delete button. Used in multiple contexts. [CHAR-LIMIT=20]">
-        Delete
-      </message>
-      <message name="IDS_REMOVE" desc="Label for a button to remove an item (e.g. a bookmark) from a list. [CHAR-LIMIT=20]">
-        Remove
-      </message>
-      <message name="IDS_RESET" desc="Label for a button to reset information you are editing to a default.">
-        Reset
-      </message>
-      <message name="IDS_TITLE" desc="Text indicating the title of a button or a textfield. Ued in multiple contexts. [CHAR-LIMIT=32]">
-        Title
-      </message>
-      <message name="IDS_TEXT_ON" desc="Text indicating that an option is turned on. [CHAR-LIMIT=20]">
-        On
-      </message>
-      <message name="IDS_TEXT_OFF" desc="Text indicating that an option is turned off. [CHAR-LIMIT=20]">
-        Off
-      </message>
-      <message name="IDS_LEARN_MORE" desc="Generic label for menu item to learn more about a feature. [CHAR-LIMIT=32]">
-        Learn more
-      </message>
-      <message name="IDS_MORE" desc="Generic label for a button to show more items or options. [CHAR-LIMIT=20]">
-        More
-      </message>
-      <message name="IDS_CLOSE" desc="Content description for a button to close a dialog or popup">
-        Close
-      </message>
-      <message name="IDS_NO_THANKS" desc="Generic label to say no thanks for a feature. [CHAR-LIMIT=32]">
-        No thanks
-      </message>
-      <message name="IDS_NEXT" desc="Generic label for a button to advance to the next item. [CHAR-LIMIT=20]">
-        Next
-      </message>
-      <message name="IDS_CONTINUE_BUTTON" desc="Generic label for a button to continue to the next screen. Used in multiple contexts. [CHAR-LIMIT=20]">
-        Continue
-      </message>
-      <message name="IDS_SUBMIT" desc="Generic label for a button to submit data. Used in multiple contexts. [CHAR-LIMIT=20]">
-        Submit
-      </message>
-      <message name="IDS_UNDO" desc="Generic label for a button to undo the previous action.">
-        Undo
-      </message>
-      <message name="IDS_HELP" desc="Generic label for a button that displays help for the current screen.">
-        Help
-      </message>
-      <message name="IDS_TODAY" desc="Generic Label saying the date is today.">
-        Today
-      </message>
-      <message name="IDS_YESTERDAY" desc="Generic Label saying the date is yesterday.">
-        Yesterday
-      </message>
-      <message name="IDS_SELECT" desc="Prompt for user to select something. [CHAR-LIMIT=20]">
-        Select
-      </message>
-      <message name="IDS_ADD" desc="Prompt for the user to add something, like a new address. [CHAR-LIMIT=20]">
-        Add
-      </message>
-      <message name="IDS_SHARE" desc="Content description for a button to share item(s). [CHAR-LIMIT=20]">
-        Share
-      </message>
-      <message name="IDS_SEARCH" desc="The label for a search button.">
-        Search
-      </message>
-      <message name="IDS_SHOW_INFO" desc="The label for a info button to show info.">
-        Show Info
-      </message>
-      <message name="IDS_HIDE_INFO" desc="The label for a info button to hide info.">
-        Hide Info
-      </message>
-      <message name="IDS_COPY_LINK" desc="The label for a menu item to copy a link. [CHAR-LIMIT=30]">
-        Copy link
-      </message>
-      <message name="IDS_COPIED" desc="Notification telling the user that something has been copied to the clipboard.">
-        Copied
-      </message>
-      <message name="IDS_TRY_AGAIN" desc="The label for a button allowing the user to try an action again. [CHAR-LIMIT=20]">
-        Try again
-      </message>
-      <message name="IDS_BACK" desc="Label for a back button to return to a previous UI state or screen. Used in multiple contexts. [CHAR-LIMIT=20]">
-        Back
-      </message>
-      <message name="IDS_CONFIRM" desc="Label for a confirm button. Used in multiple contexts. [CHAR-LIMIT=20]">
-        Confirm
-      </message>
-      <message name="IDS_SHOW" desc="Label for a show button. Used in multiple contexts. [CHAR-LIMIT=20]">
-        Show
-      </message>
-      <message name="IDS_USER" desc="Generic label for UI elements with information about user.">
-        User
-      </message>
-      <message name="IDS_MENU_ITEM_MOVE_UP" desc="Option in item menu. User can click the 'Move up' option to move the item up by one position in its list. [CHAR-LIMIT=24]">
-        Move up
-      </message>
-      <message name="IDS_MENU_ITEM_MOVE_DOWN" desc="Option in item menu. User can click the 'Move down' option to move the item down by one position in its list. [CHAR-LIMIT=24]">
-        Move down
-      </message>
-      <message name="IDS_MENU_ITEM_MOVE_TO_TOP" desc="Option in item menu. User can click the 'Move to top' option to move the item up to the top of its list. [CHAR-LIMIT=24]">
-        Move to top
-      </message>
+      <!-- NOTE: Generic strings used across multiple features belong in //components/browser_ui/strings/android. -->
 
       <!-- Main Preferences -->
-      <message name="IDS_PREFERENCES" desc="Title for Brave's Settings.">
+      <message name="IDS_SETTINGS" desc="Title for Brave's Settings.">
         Settings
       </message>
       <message name="IDS_MENU_HELP" desc="Menu item for opening the help page. [CHAR-LIMIT=27]">
@@ -460,8 +364,8 @@ CHAR-LIMIT guidelines:
         Cancel sync
       </message>
 
-      <!-- Search engine preferences -->
-      <message name="IDS_PREFS_SEARCH_ENGINE" desc="Title for Search Engine preferences. [CHAR-LIMIT=32]">
+      <!-- Search engine settings -->
+      <message name="IDS_SEARCH_ENGINE_SETTINGS" desc="Title for Search Engine settings. [CHAR-LIMIT=32]">
         Search engine
       </message>
       <message name="IDS_SEARCH_ENGINE_LOCATION_AND_NOTIFICATIONS_ALLOWED" desc="The text of a link displayed when location and notifications permissions for a particular search engine are allowed.">
@@ -566,11 +470,11 @@ CHAR-LIMIT guidelines:
           other {<ph name="CONTACT_PREVIEW">%1$s<ex>Jerry, 438-123-1922</ex></ph>\u2026 and <ph name="NUMBER_OF_ADDITIONAL_CONTACTS">%2$s<ex>2</ex></ph> more}}
       </message>
 
-      <!-- Save passwords preferences -->
-      <message name="IDS_PREFS_SAVED_PASSWORDS_TITLE" desc="Title for the preferences screen with saved passwords and the header for the list of saved passwords in that screen. [CHAR-LIMIT=32]">
+      <!-- Password Settings -->
+      <message name="IDS_PASSWORD_SETTINGS_TITLE" desc="Title for the settings screen with saved passwords and the header for the list of saved passwords in that screen. [CHAR-LIMIT=32]">
         Passwords
       </message>
-      <message name="IDS_PREFS_SAVED_PASSWORDS" desc="Title for the checkbox toggling whether passwords are saved or not. [CHAR-LIMIT=32]">
+      <message name="IDS_PASSWORD_SETTINGS_SAVE_PASSWORDS" desc="Title for the checkbox toggling whether passwords are saved or not. [CHAR-LIMIT=32]">
         Save passwords
       </message>
       <message name="IDS_PASSWORDS_AUTO_SIGNIN_TITLE" desc="Title for checkbox to enable automatically signing the user in to websites">
@@ -651,10 +555,10 @@ CHAR-LIMIT guidelines:
       <message name="IDS_PASSWORD_GENERATION_POPUP_CONTENT_DESCRIPTION" desc="The text announced by the screen reader when the password generation popup is shown.">
         Showing password generation popup
       </message>
-      <message name="IDS_SAVE_PASSWORD_PREFERENCES_EXPORT_ACTION_TITLE" desc="The title of a menu item to trigger exporting passwords from the password settings.">
+      <message name="IDS_PASSWORD_SETTINGS_EXPORT_ACTION_TITLE" desc="The title of a menu item to trigger exporting passwords from the password settings.">
         Export passwords…
       </message>
-      <message name="IDS_SAVE_PASSWORD_PREFERENCES_EXPORT_ACTION_DESCRIPTION" desc="The description of a menu item to trigger exporting passwords from the password settings.">
+      <message name="IDS_PASSWORD_SETTINGS_EXPORT_ACTION_DESCRIPTION" desc="The description of a menu item to trigger exporting passwords from the password settings.">
         Export passwords stored with Brave
       </message>
       <message name="IDS_SETTINGS_PASSWORDS_EXPORT_DESCRIPTION" desc="Text shown to the user who initiated exporting passwords, as a warning before any passwords have been exported.">
@@ -663,19 +567,19 @@ CHAR-LIMIT guidelines:
       <message name="IDS_SETTINGS_PASSWORDS_PREPARING_EXPORT" desc="Text shown to the user above a progress bar, informing the user that passwords are being prepared for export.">
         Preparing passwords…
       </message>
-      <message name="IDS_SAVE_PASSWORD_PREFERENCES_EXPORT_ERROR_TITLE" desc="The title of a dialog showing an error encountered during exporting passwords from the passwords settings.">
+      <message name="IDS_PASSWORD_SETTINGS_EXPORT_ERROR_TITLE" desc="The title of a dialog showing an error encountered during exporting passwords from the passwords settings.">
         Can’t export passwords
       </message>
-      <message name="IDS_SAVE_PASSWORD_PREFERENCES_EXPORT_LEARN_GOOGLE_DRIVE" desc="The label of a button in an error dialog after exporting passwords from the settings failed. The button takes the user to a help article about using Google Drive.">
+      <message name="IDS_PASSWORD_SETTINGS_EXPORT_LEARN_GOOGLE_DRIVE" desc="The label of a button in an error dialog after exporting passwords from the settings failed. The button takes the user to a help article about using Google Drive.">
         Learn how to use Google Drive
       </message>
-      <message name="IDS_SAVE_PASSWORD_PREFERENCES_EXPORT_NO_APP" desc="The explanation of the error when exporting passwords fails because the user has no Android app installed which could consume the exported data. The description is shown in the body of an alert dialog.">
+      <message name="IDS_PASSWORD_SETTINGS_EXPORT_NO_APP" desc="The explanation of the error when exporting passwords fails because the user has no Android app installed which could consume the exported data. The description is shown in the body of an alert dialog.">
         Your device doesn’t have an app to store the passwords file.
       </message>
-      <message name="IDS_SAVE_PASSWORD_PREFERENCES_EXPORT_TIPS" desc="Tips on how to fix an error with exporting passwords. They are shown in the body of an alert dialog.">
+      <message name="IDS_PASSWORD_SETTINGS_EXPORT_TIPS" desc="Tips on how to fix an error with exporting passwords. They are shown in the body of an alert dialog.">
         Try the following tips: make sure there is enough space on your device, try to export again.
       </message>
-      <message name="IDS_SAVE_PASSWORD_PREFERENCES_EXPORT_ERROR_DETAILS" desc="A short prefix to introduce a technical error message passed to the user from Android after exporting passwords through a temporary file fails. Both the prefix and the error message are shown in the body of an alert dialog.">
+      <message name="IDS_PASSWORD_SETTINGS_EXPORT_ERROR_DETAILS" desc="A short prefix to introduce a technical error message passed to the user from Android after exporting passwords through a temporary file fails. Both the prefix and the error message are shown in the body of an alert dialog.">
         Details: <ph name="ERROR_DESCRIPTION">%1$s<ex>IOException: No space left on device</ex></ph>
       </message>
 
@@ -689,7 +593,7 @@ CHAR-LIMIT guidelines:
       <message name="IDS_LOCKSCREEN_DESCRIPTION_EXPORT" desc="When a user attempts to export saved passwords in Brave's settings, Brave launches a lock screen to verify the user's identity and displays the following explanation.">
         Unlock to export your passwords
       </message>
-      <message name="IDS_SAVE_PASSWORD_PREFERENCES_EXPORT_SUBJECT" desc="Brave sets this string to be the subject of the sharing intent for sharing exported passwords. How the subject is interpreted is up to the consumer app, e.g., Google Drive will make it the filename, GMail will make it the e-mail subject. In general, it describes what is being shared.">
+      <message name="IDS_PASSWORD_SETTINGS_EXPORT_SUBJECT" desc="Brave sets this string to be the subject of the sharing intent for sharing exported passwords. How the subject is interpreted is up to the consumer app, e.g., Google Drive will make it the filename, GMail will make it the e-mail subject. In general, it describes what is being shared.">
         Brave Passwords
       </message>
 
@@ -699,6 +603,9 @@ CHAR-LIMIT guidelines:
       </message>
       <message name="IDS_OPTIONS_HOMEPAGE_EDIT_LABEL" desc="The label for the edit text field that allows the user to change the URL that is opened when they tap on the home page button in the omnibox.">
         Open this page
+      </message>
+      <message name="IDS_HOMEBUTTON_CONTEXT_MENU_SETTINGS" desc="The label displayed on home button context menu item, which navigate the user to the homepage settings.">
+        Edit homepage
       </message>
 
       <!-- Notifications preferences -->
@@ -718,8 +625,8 @@ CHAR-LIMIT guidelines:
         Search and site suggestions disabled
       </message>
 
-      <!-- Themes preferences -->
-      <message name="IDS_PREFS_THEMES" desc="Title for the Themes preferences. [CHAR-LIMIT=32]">
+      <!-- Themes settings -->
+      <message name="IDS_THEME_SETTINGS" desc="Title for the Theme settings. [CHAR-LIMIT=32]">
         Themes
       </message>
       <message name="IDS_THEMES_SYSTEM_DEFAULT_TITLE" desc="Title for the System Default option. [CHAR-LIMIT=32]">
@@ -752,15 +659,20 @@ CHAR-LIMIT guidelines:
         Sends URLs of some pages you visit to Brave, when your security is at risk
       </message>
       <message name="IDS_CONTEXTUAL_SEARCH_TITLE" desc="Name for the Contextual Search feature, which allows users to search for a term in a web page by tapping on it.">
-        Tap to Search
+        Touch to Search
+      </message>
+      <message name="IDS_CONTEXTUAL_SEARCH_TAP_DESCRIPTION" desc="Description for Contextual Search preference">
+        Learn about topics on websites without leaving the page. Touch to Search sends a word and its surrounding context to Brave Search, returning definitions, pictures, search results, and other details.
+
+Tap any word to create a search for it. To adjust your search term, long press to select. To refine your search slide the panel open, tap the expand icon to make a new tab, and then tap the search box.
       </message>
       <message name="IDS_CONTEXTUAL_SEARCH_DESCRIPTION" desc="Description for Contextual Search preference">
-        Learn about topics on websites without leaving the page. Tap to Search sends a word and its surrounding context to Brave Search, returning definitions, pictures, search results, and other details.
+        Learn about topics on websites without leaving the page. Touch to Search sends a word and its surrounding context to Brave Search, returning definitions, pictures, search results, and other details.
 
-To adjust your search term, long press to select. To refine your search, slide the panel all the way up and tap the search box.
+Long-press any word to create a search for it. To refine your search adjust the selection. You can also slide the panel open, tap the expand icon to make a new tab, and then tap the search box.
       </message>
-      <message name="IDS_CONTEXTUAL_SEARCH_SHORT_DESCRIPTION" desc="A promo message shown to users who have Tap to Search enabled to explain the new behavior and provide an option to opt out">
-        Tap to Search sends the selected word and the current page as context to Brave Search. You can turn it off in <ph name="BEGIN_LINK">&lt;link&gt;</ph>Settings<ph name="END_LINK">&lt;/link&gt;</ph>.
+      <message name="IDS_CONTEXTUAL_SEARCH_SHORT_DESCRIPTION" desc="A promo message shown to users with Touch to Search to explain the new behavior and provide an option to opt in or out">
+        Touch to Search sends the selected word and the current page as context to Brave Search. You can turn it off in <ph name="BEGIN_LINK">&lt;link&gt;</ph>Settings<ph name="END_LINK">&lt;/link&gt;</ph>.
       </message>
       <message name="IDS_CONTEXTUAL_SEARCH_ALLOW_BUTTON" desc="A button to confirm and dismiss opt out promo">
         Allow
@@ -920,6 +832,10 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_ADS_PERMISSION_TITLE" desc="Title for the ads permission [CHAR-LIMIT=32]">
          Ads
       </message>
+      <!-- TODO(crbug.com/1041009): Finalize WebXr Permissions strings -->
+      <message name="IDS_AR_PERMISSION_TITLE" desc="Title of the permission to use Augmented Reality [CHAR-LIMIT=32]">
+        Augmented Reality
+      </message>
       <message name="IDS_COOKIES_TITLE" desc="Title for the Cookies settings screen [CHAR-LIMIT=32]">
         Cookies
       </message>
@@ -952,6 +868,10 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_CLIPBOARD_PERMISSION_TITLE" desc="Title of the permission to read from clipboard [CHAR-LIMIT=32]">
         Clipboard
+      </message>
+      <!-- TODO(crbug.com/1041009): Finalize WebXr Permissions strings -->
+      <message name="IDS_VR_PERMISSION_TITLE" desc="Title of the permission to use Virtual Reality [CHAR-LIMIT=32]">
+        Virtual Reality
       </message>
       <message name="IDS_ENABLE_NOTIFICATIONS_VIBRATE_TITLE" desc="Title for the preference to enable vibration for notifications">
         Vibrate
@@ -997,6 +917,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_WEBSITE_SETTINGS_ADD_SITE_DESCRIPTION_COOKIES_BLOCK" desc="The description for the block Cookies for website dialog.">
        Block cookies for a specific site.
+      </message>
+      <message name="IDS_WEBSITE_SETTINGS_THIRD_PARTY_COOKIES_EXCEPTION_LABEL" desc="The label for site exceptions that affect third party cookies.">
+       All cookies, on this site only
       </message>
       <message name="IDS_WEBSITE_SETTINGS_ADD_SITE_DESCRIPTION_SOUND_ALLOW" desc="The description for the allow sound for website dialog.">
         Allow sound for a specific site.
@@ -1085,11 +1008,25 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_WEBSITE_SETTINGS_CATEGORY_PROTECTED_CONTENT_BLOCKED" desc="Summary text explaining that sites are blocked from playing protected content.">
         Block sites from playing protected content
       </message>
+      <!-- TODO(crbug.com/1041009): Finalize WebXr Permissions strings -->
+      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_AR_ASK" desc="Summary text explaining that sites need to ask for permission before using AR and that it is the recommended setting.">
+        Ask before allowing sites to receive camera position or map your room (recommended)
+      </message>
+      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_AR_BLOCKED" desc="Summary text explaining that sites are blocked from using AR.">
+        Block sites from receiving camera position or mapping your room
+      </message>
       <message name="IDS_WEBSITE_SETTINGS_CATEGORY_NFC_ASK" desc="Summary text explaining that sites need to ask for permission before using NFC and that it is the recommended setting.">
         Ask before allowing sites to send and receive info when you tap NFC devices (recommended)
       </message>
       <message name="IDS_WEBSITE_SETTINGS_CATEGORY_NFC_BLOCKED" desc="Summary text explaining that sites are blocked from using NFC.">
         Block sites from sending and receiving info when you tap NFC devices
+      </message>
+      <!-- TODO(crbug.com/1041009): Finalize WebXr Permissions strings -->
+      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_VR_ASK" desc="Summary text explaining that sites need to ask for permission before using VR and that it is the recommended setting.">
+        Ask before allowing sites to access your virtual reality device and data (recommended)
+      </message>
+      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_VR_BLOCKED" desc="Summary text explaining that sites are blocked from using VR.">
+        Block sites from accessing your virtual reality device and data
       </message>
       <message name="IDS_WEBSITE_SETTINGS_CATEGORY_SENSORS_ALLOWED" desc="Summary text explaining that sites are allowed to use device's sensors and that it is the recommended setting.">
         Allow sites to access sensors (recommended)
@@ -1190,8 +1127,8 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_WEBSITE_NOTIFICATION_SETTINGS" desc="Accessibility string for the notification settings">
         Open notification settings
       </message>
-      <message name="IDS_WEBSITE_SETTINGS_EMBEDDED_IN" desc="String used to indicate the embedder origin of a site">
-        Embedded in <ph name="WEBSITE_URL">%1$s<ex>google.com</ex></ph>
+      <message name="IDS_WEBSITE_SETTINGS_EMBEDDED_ON" desc="String used to indicate the embedder origin of a site">
+        Embedded on <ph name="WEBSITE_URL">%1$s<ex>google.com</ex></ph>
       </message>
 
       <!-- Single site settings -->
@@ -1199,14 +1136,14 @@ Your Brave account may have other forms of browsing history like searches and ac
         Files saved by websites appear here
       </message>
 
-      <!-- Languages preferences -->
-      <message name="IDS_PREFS_LANGUAGES" desc="Title for the Languages settings screen that allows users to manage their languages preferences. [CHAR-LIMIT=32]">
+      <!-- Language Settings -->
+      <message name="IDS_LANGUAGE_SETTINGS" desc="Title for the Languages settings screen that allows users to manage their languages preferences. [CHAR-LIMIT=32]">
         Languages
       </message>
-      <message name="IDS_PREFS_ADD_LANGUAGE" desc="Title for the screen that allows users to add languages to their preferred language list. [CHAR-LIMIT=32]">
+      <message name="IDS_ADD_LANGUAGE" desc="Title for the screen that allows users to add languages to their preferred language list. [CHAR-LIMIT=32]">
         Add language
       </message>
-      <message name="IDS_LANGUAGES_LIST_PREFS_DESCRIPTION" desc="Description on the Languages settings screen. Appears above a list of one or more languages that the user selects, to tell Brave which languages they prefer to use to read website content.">
+      <message name="IDS_LANGUAGES_LIST_DESCRIPTION" desc="Description on the Languages settings screen. Appears above a list of one or more languages that the user selects, to tell Brave which languages they prefer to use to read website content.">
         Websites will show text in your preferred language, when possible.
       </message>
       <message name="IDS_LANGUAGES_OFFER_TRANSLATE_SWITCH" desc="Appears next to the 'offer to translate' switch that controls whether or not Brave will display the Brave Translate UI on web pages that are not in the user's preferred language(s).">
@@ -1597,17 +1534,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_FAMILY_LINK_PRIVACY_POLICY_URL" desc="URL for the Family Link privacy policy" translateable="false">
         https://families.google.com/intl/$LOCALE/familylink/privacy/child-policy/
-      </message>
-
-      <!-- JavaScript dialogs -->
-      <message name="IDS_LEAVE" desc="Dialog button to leave the current page and navigate to a new page. [CHAR-LIMIT=20]">
-        Leave
-      </message>
-      <message name="IDS_RELOAD" desc="Dialog button to reload the current page. [CHAR-LIMIT=20]">
-        Reload
-      </message>
-      <message name="IDS_SUPPRESS_JS_MODAL_DIALOGS" desc="Checkbox allowing users to forgo additional prompts from a web page.">
-        Prevent this page from creating additional dialogs
       </message>
 
       <!-- Certificate viewer -->
@@ -2148,6 +2074,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_CONTEXTMENU_LOAD_ORIGINAL_IMAGE" desc="Context sensitive menu item for Lite mode low fidelity placeholder images that loads the original version in place. [CHAR-LIMIT=30]">
         Load image
       </message>
+      <message name="IDS_CONTEXTMENU_COPY_IMAGE" desc="Context sensitive menu item for copying the selected image to the system clipboard. [CHAR-LIMIT=30]">
+        Copy image
+      </message>
       <message name="IDS_CONTEXTMENU_SEARCH_WITH_GOOGLE_LENS" desc="Context sensitive menu item for deep linking into google lens. [CHAR-LIMIT=30]">
         Search with Brave Lens <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
@@ -2171,6 +2100,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_CONTEXTMENU_OPEN_IN_EPHEMERAL_TAB" desc="Context-sensitive menu item to open a quick preview of the selected linked page.   Note that 'preview' is a verb, not a noun. We're also labeling it *New* to draw attention to it when first released. The selected link will open in an overlay panel on top of the current tab which will go away easily too. [CHAR-LIMIT=30]">
         Preview page <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
+      </message>
+      <message name="IDS_CONTEXTMENU_PERFORMANCE_INFO_FAST" desc="This string is shown in the context sensitive menu for links and is shown underneath the link URL. It indicates to the user that the link's target website should load quickly. [CHAR-LIMIT=30]">
+        Fast site
       </message>
 
       <!-- Swipe refresh -->
@@ -2204,14 +2136,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_TEXT_SIZE_SIGNIFIER" desc="A typical letter of the alphabet.  This is drawn on either end of a slider bar that allows the user to change the font size.  On one end, it is drawn smaller and on the other end larger.">
         A
-      </message>
-
-      <!-- Android NFC Beam strings -->
-      <message name="IDS_NFC_BEAM_ERROR_OVERLAY_ACTIVE" desc="Android Beam error - a tab is not in the foreground [CHAR-LIMIT=40]">
-        Select a tab to beam
-      </message>
-      <message name="IDS_NFC_BEAM_ERROR_BAD_URL" desc="Android Beam error - the current tab has an invalid url [CHAR-LIMIT=40]">
-        Can’t beam current tab
       </message>
 
       <!-- Add to Home screen strings -->
@@ -2806,15 +2730,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_NTP_EXPLORE_SITES_MORE" desc="Text on a button leading to a complete view of all categories for all popular websites">
         More categories
       </message>
-      <message name="IDS_EXPLORE_SITES_DEFAULT_CATEGORY_NEWS" desc="The caption for a button that when clicked opens a UI in this tab that shows a list of websites with content related to news. [CHAR-LIMIT=12]">
-        News
-      </message>
-      <message name="IDS_EXPLORE_SITES_DEFAULT_CATEGORY_SPORTS" desc="The caption for a button that when clicked opens a UI in this tab that shows a list of websites with content related to sports. For example, soccer, cricket, football, running [CHAR-LIMIT=12]">
-        Sports
-      </message>
-      <message name="IDS_EXPLORE_SITES_DEFAULT_CATEGORY_SHOPPING" desc="The caption for a button that when clicked opens a UI in this tab that shows a list of websites with content related to shopping. [CHAR-LIMIT=12]">
-        Shopping
-      </message>
       <message name="IDS_EXPLORE_SITES_LOADING_FROM_NET" desc="Caption for an indeterminate loading spinner indicating that we are loading the data from the internet">
         Finding the best from the web…
       </message>
@@ -2829,9 +2744,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_EXPLORE_SITES_LOADING_ERROR_NEXT_STEPS_CHECK_CONNECTION" desc="Text on an error screen indicating that checking network connection can fix this error.">
         Checking your internet connection
-      </message>
-      <message name="IDS_EXPLORE_SITES_TOP_SITES_TILE" desc="A label for a button that when clicked takes the user to a tab that contains categorized links to websites that are popular in their country. [CHAR_LIMIT=12]">
-        Top sites
       </message>
       <message name="IDS_EXPLORE_SITES_IPH" desc="An in-product-help message for the explore sites feature on Android. The message encourages users to open a tab that contains categorized links to websites that are popular in their country.">
         See popular websites
@@ -2922,6 +2834,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_MENU_FIND_IN_PAGE" desc="Menu item allowing users to find text within the current page. [CHAR-LIMIT=27]">
         Find in page
       </message>
+      <message name="IDS_MENU_PAINT_PREVIEW_CAPTURE" desc="Menu item allowing users to capture a paint preview of a page. [CHAR-LIMIT=27]" translateable="false">
+        Capture Paint Preview
+      </message>
       <message name="IDS_MENU_REQUEST_DESKTOP_SITE" desc="Menu item in Brave's overflow/options menu. By default, when a user navigates to a web page, Brave shows the mobile site, that is, the version of the site designed for mobile phones. If this menu item is selected, however, Brave will try to load the 'desktop' site instead, i.e. the site designed for desktop computers or laptop computers, which have larger screens. [CHAR-LIMIT=24]">
         Desktop site
       </message>
@@ -2934,7 +2849,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_MENU_READER_MODE_PREFS" desc="Menu item to show reader mode preferences pane, which allows users to change the appearance (font size, theme, etc.) of the page. [CHAR-LIMIT=27]">
         Appearance
       </message>
-      <message name="IDS_MENU_PREFERENCES" desc="Menu item for opening browser preferences. [CHAR-LIMIT=27]">
+      <message name="IDS_MENU_SETTINGS" desc="Menu item for opening browser settings. [CHAR-LIMIT=27]">
         Settings
       </message>
       <message name="IDS_MENU_CLOSE_ALL_TABS" desc="Menu item for closing all open tabs. [CHAR-LIMIT=27]">
@@ -3126,15 +3041,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- Accessibility -->
-      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_FORWARD" desc="Content description for the forward navigation button.">
-        Go forward
-      </message>
-      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BACK" desc="Content description for the backard navigation button.">
-        Go back
-      </message>
-      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_MENU" desc="Content description for the settings menu button.">
-        More options
-      </message>
+
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_MENU_UPDATE" desc="Content description for the menu button when it is covered by the update icon that is displayed when a newer version of Brave is available.">
         Update available. More options
       </message>
@@ -3158,9 +3065,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_MIC" desc="Content description for the voice search button.">
         Start voice search
-      </message>
-      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_DELETE_URL" desc="Content description for the clear text input button.">
-        Clear input
       </message>
       <message name="IDS_ACCESSIBILITY_NEW_TAB_PAGE" desc="Accessibility text to read aloud when the user focuses the new tab view.">
         New tab
@@ -3234,18 +3138,8 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_ACCESSIBILITY_OMNIBOX_BTN_REFINE" desc="Content description for the omnibox refine button.">
         Refine
       </message>
-      <message name="IDS_ACCESSIBILITY_CANCEL_SELECTION" desc="Content description for the cancel selection button that deselects the selected items in a selectable list view.">
-        Cancel selection
-      </message>
-      <message name="IDS_ACCESSIBILITY_LIST_MENU_BUTTON" desc="Content description for the button that shows option menu for a list item.">
-        <ph name="NAME_OF_LIST_ITEM">%1$s<ex>Movie Title</ex></ph> Options
-      </message>
-      <message name="IDS_ACCESSIBILITY_TOOLBAR_SCREEN_POSITION" desc="Accessibility announcement to inform users about a toolbar's location.">
-        <ph name="ITEM_COUNT">%1$s<ex>3</ex></ph> selected.  Options available near top of the screen
-      </message>
-      <message name="IDS_ACCESSIBILITY_TOOLBAR_MULTI_SELECT" desc="Accessibility announcement to inform users about more items selected.">
-        <ph name="ITEM_COUNT">%1$s<ex>3</ex></ph> selected
-      </message>
+
+
       <message name="IDS_ACCESSIBILITY_SHARE_SELECTED_ITEMS" desc="Content description for the button to share selected items. [ICU Syntax]">
         {NUM_SELECTED, plural,
           =1 {Share 1 selected item}
@@ -3271,14 +3165,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Tabs
       </message>
 
-      <message name="IDS_SELECTED_ITEMS" desc="Content description for a number indicating how many items are selected. [ICU Syntax]">
-        {NUM_SELECTED, plural,
-          =1 {1 selected}
-          other {# selected}}
-      </message>
-      <message name="IDS_SELECT_ITEMS" desc="Label shown on toolbar asking user to select items from the list.">
-        Select items
-      </message>
       <message name="IDS_MEDIA_NOTIFICATION_LINK_TEXT" desc="Url of the current tab. The notification will display this text for the user to identify the tab to return to.">
         Touch to return to <ph name="URL_OF_THE_CURRENT_TAB">%1$s<ex>https://apprtc.appspot.com</ex></ph>
       </message>
@@ -3710,14 +3596,14 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
           Augmented Reality
         </message>
         <message name="IDS_AR_IMMERSIVE_MODE_CONSENT_TITLE" desc="Title for dialog shown when a site requests consent for starting an augmented reality session.">
-          Start Augmented Reality session?
+          Enter AR from <ph name="DOMAIN">%s<ex>example.com</ex></ph>?
         </message>
         <message name="IDS_AR_IMMERSIVE_MODE_CONSENT_MESSAGE" desc="Message for dialog shown when a site requests consent for starting an augmented reality session.">
-          For the duration of this session, the site will be able to:
+          While you're in AR, this site may be able to:
 • create a 3D map of your environment
 • track camera motion
 
-The site does NOT gain access to the camera. The camera images are only visible to you.
+Only you can see what your camera is looking at. The site can't see your camera's images.
         </message>
         <message name="IDS_AR_IMMERSIVE_MODE_CONSENT_BUTTON" desc="Confirm button for dialog shown when a site requests consent for starting an augmented reality session.">
           Enter AR
@@ -3963,6 +3849,9 @@ The site does NOT gain access to the camera. The camera images are only visible 
       <message name="IDS_PHOTO_PICKER_BROWSE" desc="The label for the Browse action in the Photo Picker (browsing for photos).">
         Browse
       </message>
+      <message name="IDS_PHOTO_PICKER_VIDEO_DURATION" desc="The label showing the duration time and current position of the video, as in: 0:01 / 0:10.">
+        <ph name="POSITION">%1$s<ex>0:01</ex></ph> / <ph name="DURATION">%2$s<ex>0:10</ex></ph>
+      </message>
 
       <!-- Interventions -->
       <message name="IDS_REDIRECT_BLOCKED_MESSAGE" desc="The message stating that a redirect (noun) was blocked on this page. This will be followed on a separate line with the address the user was being redirected to.">
@@ -3993,6 +3882,9 @@ The site does NOT gain access to the camera. The camera images are only visible 
       </message>
       <message name="IDS_PREFS_AUTOFILL_ASSISTANT_SWITCH" desc="Title for the switch toggling whether Autofill Assistant is enabled. [CHAR-LIMIT=32]">
         Assistant Triggered Checkout
+      </message>
+      <message name="IDS_PREFS_AUTOFILL_ASSISTANT_SUMMARY" desc="Description for the Autofill Assistant toggle.">
+        To help you complete tasks, Brave will receive the URLs and contents of sites on which you use Assistant, as well as information you submit through Assistant
       </message>
       <!-- Usage Stats strings -->
       <message name="IDS_USAGE_STATS_CONSENT_TITLE" desc="Title for activity authorizing Digital Wellbeing to access Brave usage data">
@@ -4063,6 +3955,35 @@ The site does NOT gain access to the camera. The camera images are only visible 
         Download
       </message>
 
+      <!-- Sharing Hub -->
+      <message name="IDS_SHARING_MORE_ICON_LABEL" desc="Icon label for the More button in the sharing hub.">
+        More
+      </message>
+
+      <message name="IDS_SHARING_COPY_URL" desc="Label for the Copy URL button in the sharing hub.">
+        Copy link
+      </message>
+
+      <message name="IDS_SHARING_SCREENSHOT" desc="Label for Screenshot button in the sharing hub.">
+        Screenshot
+      </message>
+
+      <message name="IDS_LINK_COPIED" desc="Text shown in the toast notification when Copy Link is selected in the sharing hub.">
+        Link Copied
+      </message>
+
+      <message name="IDS_QR_CODE_CAMERA_FRAMING_RECT_DESCRIPTION" desc="Text under the framing rectangle in QR code camera preview.">
+        Position QR/barcode in this frame.
+      </message>
+
+      <message name="IDS_QR_CODE_PERMISSION_DESCRIPTION" desc="Text on QR code sharing tab indicating that permissions need to be given.">
+        Please enable your camera to scan a QR code
+      </message>
+
+      <message name="IDS_QR_CODE_PERMISSION_CONTINUE_LABEL" desc="Text on button on QR code sharing tab triggering camera permission dialog.">
+        Continue
+      </message>
+
       <!-- Chime DFM module strings -->
       <message name="IDS_CHIME_MODULE_TITLE" desc="Text shown when the chime module is referenced in install start, success, failure UI (e.g. in IDS_MODULE_INSTALL_START_TEXT, which will expand to 'Installing Brave Notifications Platform for Brave…').">
         Brave Notifications Platform
@@ -4071,6 +3992,17 @@ The site does NOT gain access to the camera. The camera images are only visible 
       <!-- Image Editor DFM module strings -->
       <message name="IDS_IMAGE_EDITOR_MODULE_TITLE" desc="Text shown when the image editor module is referenced in install start, success, failure UI (e.g. in IDS_MODULE_INSTALL_START_TEXT, which will expand to 'Installing Image Editor for Brave…').">
         Image Editor
+      </message>
+
+      <!-- NFC prompt -->
+      <message name="IDS_NFC_DISABLED_ON_DEVICE_MESSAGE" desc="Text shown in a prompt to turn on NFC after user granted NFC permission to a website.">
+        To continue, turn on NFC in Android settings
+      </message>
+      <message name="IDS_NFC_PROMPT_TURN_ON" desc="Text on the positive button of the nfc prompt">
+        Turn on
+      </message>
+      <message name="IDS_ANDROID_NFC_OFF_GLOBALLY" desc="The message to show when NFC has been turned off globally in Android. Contains a link to the settings menu to enable NFC.">
+        NFC is off for this device. Turn it on in <ph name="BEGIN_LINK">&lt;link&gt;</ph>Android Settings<ph name="END_LINK">&lt;/link&gt;</ph>.
       </message>
     </messages>
   </release>

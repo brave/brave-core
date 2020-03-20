@@ -14,11 +14,14 @@ namespace gcm {
 
 class BraveGCMChannelStatus : public base::SupportsUserData::Data {
  public:
-  explicit BraveGCMChannelStatus(bool enabled) : gcm_enabled_(enabled) {}
+  explicit BraveGCMChannelStatus(Profile* profile, bool enabled);
   static BraveGCMChannelStatus* GetForProfile(Profile *profile);
-  bool IsGCMEnabled();
+
+  bool IsGCMEnabled() const;
+  void UpdateGCMDriverStatus();
 
  private:
+  Profile* profile_;
   bool gcm_enabled_;
 };
 

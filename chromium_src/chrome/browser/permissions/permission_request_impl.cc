@@ -11,7 +11,8 @@
 #undef GetMessageTextFragment
 #undef GetIconId
 
-PermissionRequest::IconId PermissionRequestImpl::GetIconId() const {
+permissions::PermissionRequest::IconId PermissionRequestImpl::GetIconId()
+    const {
 #if !defined(OS_ANDROID)
   switch (content_settings_type_) {
     case ContentSettingsType::AUTOPLAY:

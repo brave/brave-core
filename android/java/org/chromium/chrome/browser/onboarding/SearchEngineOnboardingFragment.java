@@ -7,7 +7,7 @@
 
 package org.chromium.chrome.browser.onboarding;
 
-import static org.chromium.chrome.browser.util.ViewUtils.dpToPx;
+import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 import android.app.Fragment;
 import android.os.Bundle;

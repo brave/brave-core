@@ -65,17 +65,11 @@ ContentSetting GetDefaultBlockFromControlType(ControlType type) {
 
 }  // namespace
 
-ContentSettingsPattern GetPatternFromURL(const GURL& url,
-                                         bool scheme_wildcard) {
+ContentSettingsPattern GetPatternFromURL(const GURL& url) {
   DCHECK(url.is_empty() ? url.possibly_invalid_spec() == "" : url.is_valid());
   if (url.is_empty() && url.possibly_invalid_spec() == "")
     return ContentSettingsPattern::Wildcard();
-  auto origin = url.GetOrigin();
-  return scheme_wildcard && !url.has_port()
-             ? ContentSettingsPattern::FromString("*://" + url.host() + "/*")
-             : ContentSettingsPattern::FromString(
-                   origin.scheme() + "://" + origin.host() + ":" +
-                   base::NumberToString(origin.EffectiveIntPort()) + "/*");
+  return ContentSettingsPattern::FromString("*://" + url.host() + "/*");
 }
 
 std::string ControlTypeToString(ControlType type) {
@@ -117,7 +111,7 @@ void SetBraveShieldsEnabled(Profile* profile,
 
   DCHECK(!url.is_empty()) << "url for shields setting cannot be blank";
 
-  auto primary_pattern = GetPatternFromURL(url, true);
+  auto primary_pattern = GetPatternFromURL(url);
 
   if (!primary_pattern.IsValid())
     return;
@@ -137,7 +131,7 @@ void ResetBraveShieldsEnabled(Profile* profile,
   if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS())
     return;
 
-  auto primary_pattern = GetPatternFromURL(url, true);
+  auto primary_pattern = GetPatternFromURL(url);
 
   if (!primary_pattern.IsValid())
     return;
@@ -311,7 +305,7 @@ ControlType GetFingerprintingControlType(Profile* profile, const GURL& url) {
 void SetHTTPSEverywhereEnabled(Profile* profile,
                                bool enable,
                                const GURL& url) {
-  auto primary_pattern = GetPatternFromURL(url, true);
+  auto primary_pattern = GetPatternFromURL(url);
 
   if (!primary_pattern.IsValid())
     return;
@@ -329,7 +323,7 @@ void SetHTTPSEverywhereEnabled(Profile* profile,
 void ResetHTTPSEverywhereEnabled(Profile* profile,
                                bool enable,
                                const GURL& url) {
-  auto primary_pattern = GetPatternFromURL(url, true);
+  auto primary_pattern = GetPatternFromURL(url);
 
   if (!primary_pattern.IsValid())
     return;

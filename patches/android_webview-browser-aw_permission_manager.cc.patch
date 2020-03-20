@@ -1,19 +1,19 @@
 diff --git a/android_webview/browser/aw_permission_manager.cc b/android_webview/browser/aw_permission_manager.cc
-index 6becc66533bc831075c058e282cf17900c328ea3..b0a1c8d9440dfb7708b374f0e0e5b3a32251361c 100644
+index 76651a3502bee327c1cc1bda9706588ab24c09f2..e95ccefd549efb6bc5d5df1ec67c10f833e91ee2 100644
 --- a/android_webview/browser/aw_permission_manager.cc
 +++ b/android_webview/browser/aw_permission_manager.cc
-@@ -336,6 +336,7 @@ int AwPermissionManager::RequestPermissions(
-       case PermissionType::IDLE_DETECTION:
-       case PermissionType::PERIODIC_BACKGROUND_SYNC:
+@@ -338,6 +338,7 @@ int AwPermissionManager::RequestPermissions(
        case PermissionType::NFC:
+       case PermissionType::VR:
+       case PermissionType::AR:
 +      BRAVE_PERMISSION_TYPES
          NOTIMPLEMENTED() << "RequestPermissions is not implemented for "
                           << static_cast<int>(permissions[i]);
          pending_request_raw->SetPermissionStatus(permissions[i],
-@@ -538,6 +539,7 @@ void AwPermissionManager::CancelPermissionRequest(int request_id) {
-       case PermissionType::IDLE_DETECTION:
-       case PermissionType::PERIODIC_BACKGROUND_SYNC:
+@@ -542,6 +543,7 @@ void AwPermissionManager::CancelPermissionRequest(int request_id) {
        case PermissionType::NFC:
+       case PermissionType::VR:
+       case PermissionType::AR:
 +      BRAVE_PERMISSION_TYPES
          NOTIMPLEMENTED() << "CancelPermission not implemented for "
                           << static_cast<int>(permission);

@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 32f0c22512ca4e7e67e9f8dc2611a667970824ed..f560891b8b8b6f5a3f6a4ccfadea606300ac5ef9 100644
+index 135f34dbfd00ea86128c4c04cec5ee623635d0db..fcf25fdea2aba6bdb652efee3b14e29caa3a784b 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -781,6 +781,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -789,6 +789,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
  #if defined(TOOLKIT_VIEWS)
    RegisterBrowserViewLocalPrefs(registry);
  #endif
 +  brave::RegisterLocalStatePrefs(registry);
- }
  
- // Register prefs applicable to all profiles.
-@@ -1045,6 +1046,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+   // Obsolete. See MigrateObsoleteBrowserPrefs().
+   registry->RegisterBooleanPref(kGCMChannelStatus, true);
+@@ -1040,6 +1041,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
  #endif
  
    RegisterProfilePrefsForMigration(registry);

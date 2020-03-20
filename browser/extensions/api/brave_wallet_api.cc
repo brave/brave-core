@@ -192,19 +192,19 @@ BraveWalletGetWeb3ProviderFunction::Run() {
 ExtensionFunction::ResponseAction
 BraveWalletGetWeb3ProviderListFunction::Run() {
   base::Value list(base::Value::Type::LIST);
-  list.GetList().push_back(MakeSelectValue(
+  list.Append(MakeSelectValue(
       l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_WEB3_PROVIDER_ASK),
       BraveWalletWeb3ProviderTypes::ASK));
-  list.GetList().push_back(MakeSelectValue(
+  list.Append(MakeSelectValue(
       l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_WEB3_PROVIDER_NONE),
       BraveWalletWeb3ProviderTypes::NONE));
-  list.GetList().push_back(MakeSelectValue(
+  list.Append(MakeSelectValue(
       l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_WEB3_PROVIDER_CRYPTO_WALLETS),
       BraveWalletWeb3ProviderTypes::CRYPTO_WALLETS));
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* registry = extensions::ExtensionRegistry::Get(profile);
   if (registry->ready_extensions().GetByID(metamask_extension_id)) {
-    list.GetList().push_back(MakeSelectValue(
+    list.Append(MakeSelectValue(
         l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_WEB3_PROVIDER_METAMASK),
         BraveWalletWeb3ProviderTypes::METAMASK));
   }

@@ -12,46 +12,22 @@
 
 namespace extensions {
 class BraveThemeEventRouter;
-}
+}  // namespace extensions
+
+class Profile;
 
 class BraveThemeService : public ThemeService {
  public:
-  BraveThemeService();
+  explicit BraveThemeService(Profile* profile, const ThemeHelper& theme_helper);
   ~BraveThemeService() override;
 
-  BraveThemeService(const BraveThemeService&) = delete;
-  BraveThemeService& operator=(const BraveThemeService&) = delete;
-
-  // ThemeService overrides:
-  void Init(Profile* profile) override;
-
- protected:
-  // ThemeService overrides:
-  SkColor GetDefaultColor(int id, bool incognito) const override;
-  base::Optional<SkColor> GetOmniboxColor(
-      int id,
-      bool incognito,
-      bool* has_custom_color) const override;
-
  private:
-  friend class BraveThemeServiceTestWithoutSystemTheme;
-  FRIEND_TEST_ALL_PREFIXES(BraveThemeEventRouterBrowserTest,
-                           ThemeChangeTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveThemeServiceTest, GetBraveThemeListTest);
-  FRIEND_TEST_ALL_PREFIXES(BraveThemeServiceTest, SystemThemeChangeTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveThemeEventRouterBrowserTest, ThemeChangeTest);
 
   // Own |mock_router|.
   void SetBraveThemeEventRouterForTesting(
       extensions::BraveThemeEventRouter* mock_router);
 
-  // Make BraveThemeService own BraveThemeEventRouter.
-  // BraveThemeEventRouter does its job independently with BraveThemeService
-  // because it's just native theme observer and broadcast native theme's
-  // change. Its lifecycle should be tied with profile because event
-  // broadcasting is done per profile.
-  // I think using exsiting BraveThemeService seems fine instead of creating
-  // new BrowserContextKeyedService for this.
-  // Use smart ptr for testing.
   std::unique_ptr<extensions::BraveThemeEventRouter> brave_theme_event_router_;
 };
 

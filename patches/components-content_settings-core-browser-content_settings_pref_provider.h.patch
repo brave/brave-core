@@ -1,9 +1,9 @@
 diff --git a/components/content_settings/core/browser/content_settings_pref_provider.h b/components/content_settings/core/browser/content_settings_pref_provider.h
-index 081d0c2b18cd817ca153628669ea777df5a70249..b13834488239f900ed8f474f7e41cd737ec1f474 100644
+index 401ac6f7e2142ddc2832a46e342b908b9e35ab0d..1075890c2247233e646583c5e86a89a4385f037b 100644
 --- a/components/content_settings/core/browser/content_settings_pref_provider.h
 +++ b/components/content_settings/core/browser/content_settings_pref_provider.h
-@@ -66,6 +66,7 @@ class PrefProvider : public UserModifiableProvider {
-   void SetClockForTesting(base::Clock* clock);
+@@ -65,6 +65,7 @@ class PrefProvider : public UserModifiableProvider {
+   ContentSettingsPref* GetPref(ContentSettingsType type) const;
  
   private:
 +  friend class BravePrefProvider;

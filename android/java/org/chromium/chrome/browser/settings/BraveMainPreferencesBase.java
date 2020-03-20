@@ -20,12 +20,12 @@ import android.os.Build;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveFeatureList;
-import org.chromium.chrome.browser.ChromeFeatureList;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
-import org.chromium.chrome.browser.settings.BraveHomepagePreferences;
-import org.chromium.chrome.browser.settings.privacy.BravePrivacyPreferences;
+import org.chromium.chrome.browser.settings.homepage.BraveHomepageSettings;
+import org.chromium.chrome.browser.settings.privacy.BravePrivacySettings;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
@@ -78,13 +78,12 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
 
     private void updateBravePreferences() {
         // Below prefs are removed from main settings.
-        removePreferenceIfPresent(MainPreferences.PREF_SIGN_IN);
-        removePreferenceIfPresent(MainPreferences.PREF_ACCOUNT_SECTION);
-        removePreferenceIfPresent(MainPreferences.PREF_DATA_REDUCTION);
-        removePreferenceIfPresent(MainPreferences.PREF_AUTOFILL_ASSISTANT);
-        removePreferenceIfPresent(MainPreferences.PREF_SYNC_AND_SERVICES);
-        removePreferenceIfPresent(MainPreferences.PREF_SEARCH_ENGINE);
-        removePreferenceIfPresent(MainPreferences.PREF_UI_THEME);
+        removePreferenceIfPresent(MainSettings.PREF_SIGN_IN);
+        removePreferenceIfPresent(MainSettings.PREF_ACCOUNT_SECTION);
+        removePreferenceIfPresent(MainSettings.PREF_DATA_REDUCTION);
+        removePreferenceIfPresent(MainSettings.PREF_SYNC_AND_SERVICES);
+        removePreferenceIfPresent(MainSettings.PREF_SEARCH_ENGINE);
+        removePreferenceIfPresent(MainSettings.PREF_UI_THEME);
 
         updateSearchEnginePreference();
         updateControlSectionPreferences();
@@ -129,12 +128,12 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
         findPreference(PREF_SYNC).setOrder(++order);
         findPreference(PREF_ACCESSIBILITY).setOrder(++order);
         findPreference(PREF_CONTENT_SETTINGS).setOrder(++order);
-        findPreference(MainPreferences.PREF_LANGUAGES).setOrder(++order);
-        findPreference(MainPreferences.PREF_DATA_REDUCTION).setOrder(++order);
-        findPreference(MainPreferences.PREF_DOWNLOADS).setOrder(++order);
+        findPreference(MainSettings.PREF_LANGUAGES).setOrder(++order);
+        findPreference(MainSettings.PREF_DATA_REDUCTION).setOrder(++order);
+        findPreference(MainSettings.PREF_DOWNLOADS).setOrder(++order);
         // This preference doesn't exist by default in Release mode
-        if (findPreference(MainPreferences.PREF_DEVELOPER) != null) {
-            findPreference(MainPreferences.PREF_DEVELOPER).setOrder(++order);
+        if (findPreference(MainSettings.PREF_DEVELOPER) != null) {
+            findPreference(MainSettings.PREF_DEVELOPER).setOrder(++order);
         }
         findPreference(PREF_ABOUT_CHROME).setOrder(++order);
     }
@@ -173,8 +172,8 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
 
     private void overrideChromiumPreferences() {
         // Replace fragment.
-        findPreference(PREF_PRIVACY).setFragment(BravePrivacyPreferences.class.getName());
-        findPreference(PREF_HOMEPAGE).setFragment(BraveHomepagePreferences.class.getName());
+        findPreference(PREF_PRIVACY).setFragment(BravePrivacySettings.class.getName());
+        findPreference(PREF_HOMEPAGE).setFragment(BraveHomepageSettings.class.getName());
     }
 
     private void initWelcomeTourPreference() {

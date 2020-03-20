@@ -41,4 +41,10 @@ bool BraveRewriteManifest(const std::string& extension_id,
 
 }  // namespace brave
 
-#include "../../../../extensions/browser/sandboxed_unpacker.cc"  // NOLINT
+#define BRAVE_SANDBOXEDUNPACKER_REWRITEMANIFESTFILE \
+  base::DictionaryValue* dict_manifest;             \
+  final_manifest.GetAsDictionary(&dict_manifest);   \
+  brave::BraveRewriteManifest(extension_id_, dict_manifest);
+
+#include "../../../../extensions/browser/sandboxed_unpacker.cc"
+#undef BRAVE_SANDBOXEDUNPACKER_REWRITEMANIFESTFILE

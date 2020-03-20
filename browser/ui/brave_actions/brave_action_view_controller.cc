@@ -15,10 +15,10 @@
 #include "chrome/browser/extensions/extension_view_host.h"
 #include "chrome/browser/extensions/extension_view_host_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/sessions/session_tab_helper.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/toolbar/toolbar_action_view_delegate.h"
+#include "components/sessions/content/session_tab_helper.h"
 #include "components/vector_icons/vector_icons.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/canvas.h"
@@ -90,7 +90,7 @@ gfx::Image BraveActionViewController::GetIcon(
 std::unique_ptr<BraveActionIconWithBadgeImageSource>
 BraveActionViewController::GetIconImageSource(
   content::WebContents* web_contents, const gfx::Size& size) {
-  int tab_id = SessionTabHelper::IdForTab(web_contents).id();
+  int tab_id = sessions::SessionTabHelper::IdForTab(web_contents).id();
   // generate icon
   std::unique_ptr<BraveActionIconWithBadgeImageSource> image_source(
       new BraveActionIconWithBadgeImageSource(size));

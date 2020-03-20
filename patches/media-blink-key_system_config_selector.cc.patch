@@ -1,10 +1,10 @@
 diff --git a/media/blink/key_system_config_selector.cc b/media/blink/key_system_config_selector.cc
-index 6a98a4f13f9d302f05229bbbdd4b22bbf42522e1..78b999b2d84052f13397389ffb8ed674015b2db9 100644
+index 7d2951d11747b3d95ef02fa838e091867783cc2b..d91ba81506dc6a25d58e4d52919d5ead42fb2091 100644
 --- a/media/blink/key_system_config_selector.cc
 +++ b/media/blink/key_system_config_selector.cc
-@@ -900,6 +900,7 @@ void KeySystemConfigSelector::SelectConfig(
-     return;
-   }
+@@ -911,6 +911,7 @@ void KeySystemConfigSelector::SelectConfig(
+ 
+   key_systems_->UpdateIfNeeded();
  
 +  KeySystems::GetInstance();
    std::string key_system_ascii = key_system.Ascii();

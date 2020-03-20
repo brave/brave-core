@@ -19,7 +19,7 @@ std::string FromContributionQueueToString(ledger::ContributionQueuePtr info) {
     publisher.SetStringKey("publisher_key", item->publisher_key);
     publisher.SetStringKey("amount_percent",
         std::to_string(item->amount_percent));
-    publishers.GetList().push_back(std::move(publisher));
+    publishers.Append(std::move(publisher));
   }
 
   base::Value queue(base::Value::Type::DICTIONARY);
@@ -238,7 +238,7 @@ std::string FromContributionToString(const ledger::ContributionInfoPtr info) {
     publisher.SetStringKey("publisher_key", item->publisher_key);
     publisher.SetDoubleKey("total_amount", item->total_amount);
     publisher.SetDoubleKey("contributed_amount", item->contributed_amount);
-    publishers.GetList().push_back(std::move(publisher));
+    publishers.Append(std::move(publisher));
   }
 
   base::Value queue(base::Value::Type::DICTIONARY);
@@ -346,7 +346,7 @@ std::string FromContributionListToString(ledger::ContributionInfoList list) {
   base::Value items(base::Value::Type::LIST);
 
   for (auto& contribution : list) {
-    items.GetList().push_back(
+    items.Append(
         base::Value(FromContributionToString(std::move(contribution))));
   }
 
@@ -402,7 +402,7 @@ std::string FromMonthlyReportToString(ledger::MonthlyReportInfoPtr info) {
     transaction.SetDoubleKey("amount", item->amount);
     transaction.SetIntKey("type", static_cast<int>(item->type));
     transaction.SetStringKey("created_at", std::to_string(item->created_at));
-    transactions.GetList().push_back(std::move(transaction));
+    transactions.Append(std::move(transaction));
   }
 
   base::Value contributions(base::Value::Type::LIST);
@@ -425,7 +425,7 @@ std::string FromMonthlyReportToString(ledger::MonthlyReportInfoPtr info) {
     contribution.SetIntKey("type", static_cast<int>(item->type));
     contribution.SetKey("publishers", std::move(publishers));
     contribution.SetStringKey("created_at", std::to_string(item->created_at));
-    contributions.GetList().push_back(std::move(contribution));
+    contributions.Append(std::move(contribution));
   }
 
   base::Value monthly(base::Value::Type::DICTIONARY);

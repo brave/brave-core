@@ -7,7 +7,7 @@ package org.chromium.chrome.browser.tabmodel;
 
 import android.os.Build;
 
-import org.chromium.base.Supplier;
+import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.ChromeActivity;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.chrome.browser.BraveActivity;
@@ -15,6 +15,7 @@ import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.init.StartupTabPreloader;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabDelegateFactory;
+import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.ntp_sponsored_images.SponsoredImageUtil;
 import org.chromium.chrome.browser.ntp_sponsored_images.NTPSponsoredImagesBridge;
 import org.chromium.chrome.browser.ntp.NewTabPage;

@@ -171,7 +171,7 @@ void RewardsNotificationServiceImpl::ReadRewardsNotificationsJSON() {
 }
 
 void RewardsNotificationServiceImpl::ReadRewardsNotifications(
-    const base::Value::ListStorage& root) {
+    base::Value::ConstListView root) {
   for (auto it = root.cbegin(); it != root.cend(); ++it) {
     if (!it->is_dict())
       continue;

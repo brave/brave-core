@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mac/signing/signing.py b/chrome/installer/mac/signing/signing.py
-index 18a73509f528e67c29c7ef896eee338e0970b4fa..04c0bffc6eee08f758ed47fcbf201761556f2bec 100644
+index db8787b0ea8535cde78100166b41199f9367333f..c7c4d5dd1ea7e298fb1701825e4b036034174291 100644
 --- a/chrome/installer/mac/signing/signing.py
 +++ b/chrome/installer/mac/signing/signing.py
 @@ -11,6 +11,7 @@ import os.path
@@ -12,7 +12,7 @@ index 18a73509f528e67c29c7ef896eee338e0970b4fa..04c0bffc6eee08f758ed47fcbf201761
  _PROVISIONPROFILE_DEST = 'embedded.provisionprofile'
 @@ -136,6 +137,7 @@ def get_parts(config):
              library_basename.replace('.dylib', ''),
-             verify_options=VerifyOptions.DEEP)
+             verify_options=verify_options)
  
 +    parts = AddBravePartsForSigning(parts, config)
      return parts
@@ -27,7 +27,7 @@ index 18a73509f528e67c29c7ef896eee338e0970b4fa..04c0bffc6eee08f758ed47fcbf201761
      if config.notary_user:
          # Assume if the config has notary authentication information that the
          # products will be notarized, which requires a secure timestamp.
-@@ -270,6 +272,7 @@ def sign_chrome(paths, config, sign_framework=False):
+@@ -262,6 +264,7 @@ def sign_chrome(paths, config, sign_framework=False):
                  continue
              sign_part(paths, config, part)
  

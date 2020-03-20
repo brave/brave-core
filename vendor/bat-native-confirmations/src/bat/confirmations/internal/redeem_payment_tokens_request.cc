@@ -100,7 +100,7 @@ base::Value RedeemPaymentTokensRequest::CreatePaymentRequestDTO(
 
     payment_credential.SetKey("publicKey", base::Value(token_info.public_key));
 
-    payment_credentials.GetList().push_back(std::move(payment_credential));
+    payment_credentials.Append(std::move(payment_credential));
   }
 
   return payment_credentials;

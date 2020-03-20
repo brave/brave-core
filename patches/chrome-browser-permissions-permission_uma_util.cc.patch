@@ -1,23 +1,21 @@
 diff --git a/chrome/browser/permissions/permission_uma_util.cc b/chrome/browser/permissions/permission_uma_util.cc
-index f6dd452d5f2fa800cd39cec3611fa01c899f6b98..0a681059978b661add0f1406aa6b2248565fe1f6 100644
+index 4b2611474c21b737c8a2103c0b9b97cd0d116b38..5d939ae75eda03961eedc13a0628f753bbf6a9d0 100644
 --- a/chrome/browser/permissions/permission_uma_util.cc
 +++ b/chrome/browser/permissions/permission_uma_util.cc
-@@ -65,7 +65,7 @@ namespace {
+@@ -68,7 +68,7 @@ namespace {
  
  const int kPriorCountCap = 10;
  
--std::string GetPermissionRequestString(PermissionRequestType type) {
-+std::string GetPermissionRequestString_ChromiumImpl(PermissionRequestType type) {
+-std::string GetPermissionRequestString(
++std::string GetPermissionRequestString_ChromiumImpl(
+     permissions::PermissionRequestType type) {
    switch (type) {
-     case PermissionRequestType::MULTIPLE:
-       return "AudioAndVideoCapture";
-@@ -472,6 +472,9 @@ void PermissionUmaUtil::RecordPermissionAction(
-       base::UmaHistogramEnumeration("Permissions.Action.Nfc", action,
-                                     PermissionAction::NUM);
+     case permissions::PermissionRequestType::MULTIPLE:
+@@ -574,6 +574,7 @@ void PermissionUmaUtil::RecordPermissionAction(
+       base::UmaHistogramEnumeration("Permissions.Action.AR", action,
+                                     permissions::PermissionAction::NUM);
        break;
-+    case ContentSettingsType::AUTOPLAY:
-+      BraveRecordPermissionAction(permission, secure_origin, action);
-+      break;
++    BRAVE_PERMISSIONUMAUTIL_RECORDPERMISSIONACTION
      // The user is not prompted for these permissions, thus there is no
      // permission action recorded for them.
      default:

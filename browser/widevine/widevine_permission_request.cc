@@ -14,8 +14,7 @@
 
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
 #include "base/bind.h"
-#include "base/task/post_task.h"
-#include "base/task/task_traits.h"
+#include "base/threading/sequenced_task_runner_handle.h"
 #endif
 
 WidevinePermissionRequest::WidevinePermissionRequest(
@@ -26,7 +25,8 @@ WidevinePermissionRequest::WidevinePermissionRequest(
 WidevinePermissionRequest::~WidevinePermissionRequest() {
 }
 
-PermissionRequest::IconId WidevinePermissionRequest::GetIconId() const {
+permissions::PermissionRequest::IconId WidevinePermissionRequest::GetIconId()
+    const {
   return kExtensionIcon;
 }
 
@@ -47,9 +47,8 @@ void WidevinePermissionRequest::PermissionGranted() {
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
   // Run next commands at the next loop turn to prevent this is destroyed
   // by restarting process. This should be destroyed by RequestFinished().
-  PostTask(FROM_HERE,
-           { base::CurrentThread(), base::TaskPriority::BEST_EFFORT },
-           base::BindOnce(&InstallBundleOrRestartBrowser));
+  base::SequencedTaskRunnerHandle::Get()->PostTask(
+      FROM_HERE, base::BindOnce(&InstallBundleOrRestartBrowser));
 #endif
 }
 
@@ -65,9 +64,9 @@ void WidevinePermissionRequest::RequestFinished() {
   delete this;
 }
 
-PermissionRequestType
+permissions::PermissionRequestType
 WidevinePermissionRequest::GetPermissionRequestType() const {
-  return PermissionRequestType::PERMISSION_WIDEVINE;
+  return permissions::PermissionRequestType::PERMISSION_WIDEVINE;
 }
 
 base::string16 WidevinePermissionRequest::GetExplanatoryMessageText() const {

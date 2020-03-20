@@ -1,30 +1,18 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.js b/chrome/browser/resources/settings/privacy_page/personalization_options.js
-index 29021b8c78cc17cf4a0ed89b9c47e2c07dbbfb74..5847a1544522b64223320ae052c7aac6eb35878e 100644
+index 92055e5a01fb64048723a83a0cf5d1a039f5aa6d..ae59e003fe623fcc239bd66e316b7a7fb806dee2 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.js
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.js
-@@ -40,7 +40,7 @@ Polymer({
-       },
-     },
+@@ -32,7 +32,7 @@ Polymer({
+     /** @type {settings.SyncStatus} */
+     syncStatus: Object,
  
 -    // <if expr="_google_chrome and not chromeos">
 +    // <if expr="_chromium and not chromeos">
      // TODO(dbeam): make a virtual.* pref namespace and set/get this normally
      // (but handled differently in C++).
      /** @private {chrome.settingsPrivate.PrefObject} */
-@@ -87,9 +87,11 @@ Polymer({
-     },
-   },
- 
-+  // <if expr="_google_chrome">
-   observers: [
-     'onSafeBrowsingReportingPrefChange_(prefs.safebrowsing.*)',
-   ],
-+  // </if>
- 
-   /**
-    * @return {boolean}
-@@ -103,13 +105,14 @@ Polymer({
-   ready: function() {
+@@ -83,14 +83,14 @@ Polymer({
+   ready() {
      this.browserProxy_ = settings.PrivacyPageBrowserProxyImpl.getInstance();
  
 -    // <if expr="_google_chrome and not chromeos">
@@ -35,21 +23,12 @@ index 29021b8c78cc17cf4a0ed89b9c47e2c07dbbfb74..5847a1544522b64223320ae052c7aac6
      // </if>
    },
  
-+  // <if expr="_google_chrome">
-   /**
-    * @return {boolean}
-    * @private
-@@ -143,7 +146,8 @@ Polymer({
-     };
-   },
- 
 -  // <if expr="_google_chrome and not chromeos">
-+  // </if>
 +  // <if expr="_chromium and not chromeos">
    /** @private */
-   onMetricsReportingChange_: function() {
+   onMetricsReportingChange_() {
      const enabled = this.$.metricsReportingControl.checked;
-@@ -194,6 +198,7 @@ Polymer({
+@@ -140,6 +140,7 @@ Polymer({
    },
    // </if>
  
@@ -57,7 +36,7 @@ index 29021b8c78cc17cf4a0ed89b9c47e2c07dbbfb74..5847a1544522b64223320ae052c7aac6
    /**
     * @return {boolean}
     * @private
-@@ -245,6 +250,7 @@ Polymer({
+@@ -188,6 +189,7 @@ Polymer({
      }
      this.showSignoutDialog_ = false;
    },

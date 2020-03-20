@@ -1,5 +1,5 @@
 diff --git a/components/translate/core/browser/BUILD.gn b/components/translate/core/browser/BUILD.gn
-index 5579595141a53a6d72f49e9e807f29c84590861f..843c5f25f18b8ccd6b3a64a56a5d412781382ff1 100644
+index b2f8ae2081e9f3755a49ff269fff09d9831daf68..e973b37ef850f0d5d8256b082a867871dceb9a40 100644
 --- a/components/translate/core/browser/BUILD.gn
 +++ b/components/translate/core/browser/BUILD.gn
 @@ -81,6 +81,7 @@ static_library("browser") {
@@ -9,4 +9,4 @@ index 5579595141a53a6d72f49e9e807f29c84590861f..843c5f25f18b8ccd6b3a64a56a5d4127
 +  deps += ["//brave/components/translate/core/browser"]
  }
  
- source_set("unit_tests") {
+ source_set("translate_pref_names") {

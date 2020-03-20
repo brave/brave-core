@@ -7,22 +7,49 @@
   <message name="IDS_OS_SETTINGS_ABOUT_PAGE_BUILD_DETAILS" desc="Label of the row button that clicks into Build details">
     Build Details
   </message>
+  <message name="IDS_OS_SETTINGS_ABOUT_PAGE_BUILD_DETAILS_COPY_TOOLTIP_LABEL" desc="Tooltip label that describes the build details copy button.">
+    Copy build details to clipboard
+  </message>
+  <message name="IDS_OS_SETTINGS_ABOUT_PAGE_ENTERPRISE_ENNROLLED_TITLE" desc="The title label for whether a device is enterprise enrolled.">
+    Enterprise Enrolled
+  </message>
+  <message name="IDS_OS_SETTINGS_ABOUT_ARC_STATUS_TITLE" desc="The title label for Arc status (if enabled).">
+    ARC Enabled
+  </message>
+  <message name="IDS_OS_SETTINGS_ABOUT_DEVELOPER_MODE" desc="The title label for developer mode.">
+    Developer Mode
+  </message>
 
   <!-- Profiles (OS settings) -->
+  <message name="IDS_OS_SETTINGS_PEOPLE" desc="Name of a section in the OS settings page." meaning="Profiles and their accounts.">
+    Profiles
+  </message>
   <message name="IDS_OS_SETTINGS_PROFILE_LABEL" desc="Label underneath the profile's real name, listing the email address and optionally the number of additional accounts">
     {COUNT, plural,
      =0 {<ph name="EMAIL">$1<ex>alice@example.com</ex></ph>}
      =1 {<ph name="EMAIL">$1<ex>alice@example.com</ex></ph>, +1 more account}
      other {<ph name="EMAIL">$1<ex>alice@example.com</ex></ph>, +<ph name="EXTRA_ACCOUNTS">$2<ex>2</ex></ph> more accounts}}
   </message>
-  <message name="IDS_OS_SETTINGS_SYNC_OS_APPS_CHECKBOX_LABEL" desc="Label for the checkbox which enables syncing of apps from the Google Play Store across devices.">
-    Play Store apps
+  <message name="IDS_OS_SETTINGS_SYNC_PAGE_TITLE" desc="Settings sub-page title for sync.">
+    Sync your settings
+  </message>
+  <message name="IDS_OS_SETTINGS_SYNC_TURN_ON" desc="Button label for turning on sync. Sync is capitalized because it is the proper name of a feature.">
+    Turn on Sync
+  </message>
+  <message name="IDS_OS_SETTINGS_SYNC_TURN_OFF" desc="Button label for turning off sync. Sync is capitalized because it is the proper name of a feature.">
+    Turn off Sync
+  </message>
+  <message name="IDS_OS_SETTINGS_SYNC_APPS_CHECKBOX_LABEL" desc="Label for the checkbox which enables syncing of apps across devices.">
+    Apps
   </message>
   <message name="IDS_OS_SETTINGS_SYNC_PRINTERS_CHECKBOX_LABEL" desc="Label for the checkbox which enables syncing of printers across devices.">
     Printers
   </message>
-  <message name="IDS_OS_SETTINGS_SYNC_OS_SETTINGS_CHECKBOX_LABEL" desc="Label for the checkbox which enables syncing of OS settings across devices.">
+  <message name="IDS_OS_SETTINGS_SYNC_SETTINGS_CHECKBOX_LABEL" desc="Label for the checkbox which enables syncing of OS settings across devices.">
     Settings
+  </message>
+  <message name="IDS_OS_SETTINGS_WALLPAPER_CHECKBOX_LABEL" desc="Label for the checkbox which enables syncing of wallpaper across devices.">
+    Wallpaper
   </message>
 
   <!-- Languages and Inputs (OS settings) -->
@@ -31,6 +58,11 @@
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_LIST_TITLE" desc="Title for the list of the user's preferred written languages.">
     Languages
+  </message>
+
+  <!-- Device Page (OS Settings) -->
+  <message name="IDS_OS_SETTINGS_TOUCHPAD_REVERSE_SCROLL_LABEL">
+    Reverse scrolling <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
 
   <!-- Personalization Page (OS settings) -->

@@ -103,17 +103,8 @@ const BraveClearSettingsMenuHighlightBehavior = {
   }
 }
 
-const BraveAddZoomLevelsBehavior = {
-  ready: function() {
-    this._setPageZoomLevels_(<include src="./zoom_factors.json">)
-  }
-}
-
 // Polymer Component Behavior injection (like superclasses)
 BravePatching.RegisterPolymerComponentBehaviors({
-  'settings-appearance-page': [
-    BraveAddZoomLevelsBehavior
-  ],
   'settings-clear-browsing-data-dialog': [
     BraveClearBrowsingDataOnExitBehavior
   ],
@@ -187,6 +178,9 @@ BravePatching.RegisterPolymerTemplateModifications({
     const autofillEl = getMenuElement(templateContent, '/autofill')
     const languagesEl = getMenuElement(templateContent, '/languages')
     languagesEl.insertAdjacentElement('beforebegin', autofillEl)
+    // Move privacy to advanced
+    const privacyEl = getMenuElement(templateContent, '/privacy')
+    autofillEl.insertAdjacentElement('beforebegin', privacyEl)
     // Move helptips to advanced
     const printingEl = getMenuElement(templateContent, '/printing')
     printingEl.insertAdjacentElement('afterend', helpTipsEl)
@@ -214,7 +208,7 @@ BravePatching.RegisterPolymerTemplateModifications({
   },
   'settings-basic-page': (templateContent) => {
     // Routes
-    const r = settings.router.routes_
+    const r = settings.Router.getInstance().routes_
     if (!r.BASIC) {
       console.error('[Brave Settings Overrides] Routes: could not find BASIC page')
     }
@@ -236,6 +230,12 @@ BravePatching.RegisterPolymerTemplateModifications({
       console.error('[Brave Settings Overrides] Could not move autofill route to advanced route', r)
     } else {
       r.AUTOFILL.parent = r.ADVANCED
+    }
+    // Privacy route is moved to advanced.
+    if (!r.PRIVACY || !r.ADVANCED) {
+      console.error('[Brave Settings Overrides] Could not move privacy route to advanced route', r)
+    } else {
+      r.PRIVACY.parent = r.ADVANCED
     }
     // Add 'Getting Started' section
     // Entire content is wrapped in another conditional template
@@ -341,10 +341,13 @@ BravePatching.RegisterPolymerTemplateModifications({
         console.error('[Brave Settings Overrides] Could not find advanced toggle text')
       }
       advancedToggleText.innerText = loadTimeData.getString('braveAdditionalSettingsTitle')
-      // Move autofill to after privacy
+      // Move autofill to before languages
       const sectionAutofill = getSectionElement(actualTemplate.content, 'autofill')
-      const sectionPrivacy = getSectionElement(advancedSubSectionsTemplate.content, 'privacy')
-      sectionPrivacy.insertAdjacentElement('afterend', sectionAutofill)
+      const sectionLanguages = getSectionElement(advancedSubSectionsTemplate.content, 'languages')
+      sectionLanguages.insertAdjacentElement('beforebegin', sectionAutofill)
+      // Move privacy to before autofill
+      const sectionPrivacy = getSectionElement(actualTemplate.content, 'privacy')
+      sectionAutofill.insertAdjacentElement('beforebegin', sectionPrivacy)
       // Move help tips after printing
       const sectionPrinting = getSectionElement(advancedSubSectionsTemplate.content, 'printing')
       sectionPrinting.insertAdjacentElement('afterend', sectionHelpTips)
@@ -363,18 +366,13 @@ BravePatching.RegisterPolymerTemplateModifications({
     // (we remove the People section as a separate section).
     const page = templateContent.querySelector('settings-animated-pages[section=people]')
     page.setAttribute('section', 'getStarted')
-    const profileTemplate = templateContent.querySelector('template[is="dom-if"][if="[[diceEnabled_]]"]')
-    // In chromium, the whole 'manage profile' section is only
-    // displayed if dice is enabled.
-    // Instead, always show it, but remove the google account specific entry.
-    profileTemplate.setAttribute('if', 'true')
-    const manageGoogleAccount = profileTemplate.content.querySelector('#manage-google-account')
+    const manageGoogleAccount = templateContent.querySelector('#manage-google-account')
     if (!manageGoogleAccount) {
       console.error('[Brave Settings Overrides] Could not find the google account settings item')
     }
     manageGoogleAccount.remove()
     // Edit profile item needs to know it's the first in the section
-    const firstItem = profileTemplate.content.querySelector('#edit-profile')
+    const firstItem = templateContent.querySelector('#edit-profile')
     if (!firstItem) {
       console.error('[Brave Settings Overrides] Could not find #edit-profile item in people_page')
       return

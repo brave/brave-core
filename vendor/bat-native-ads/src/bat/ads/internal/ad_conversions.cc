@@ -261,7 +261,7 @@ base::Value AdConversions::GetAsList() {
     dictionary.SetKey(kAdConversionCreativeSetIdKey,
         base::Value(ad_conversion.creative_set_id));
 
-    list.GetList().push_back(std::move(dictionary));
+    list.Append(std::move(dictionary));
   }
 
   return list;

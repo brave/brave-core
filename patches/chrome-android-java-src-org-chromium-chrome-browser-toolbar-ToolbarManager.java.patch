@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-index ee78225ee3ae799dc3c4002defdc5bcf3a478170..bab7bc99710223fa77e1e16fae5771158cd756d2 100644
+index 2240b1abd22366f3486e3f81277e4a489e7ae3ad..3dbc4defa78c8c1bfc9a6cb7f9d30effb3938b74 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-@@ -866,6 +866,7 @@ public class ToolbarManager implements ScrimObserver, ToolbarTabController, UrlF
+@@ -846,6 +846,7 @@ public class ToolbarManager implements ScrimObserver, ToolbarTabController, UrlF
      // TODO(crbug.com/1026020): Move this logic to BottomToolbar class.
      private void onShareDelegateAvailable(ShareDelegate shareDelegate) {
          final OnClickListener shareButtonListener = v -> {
@@ -10,7 +10,7 @@ index ee78225ee3ae799dc3c4002defdc5bcf3a478170..bab7bc99710223fa77e1e16fae577115
              if (BottomToolbarVariationManager.isShareButtonOnBottom()) {
                  recordBottomToolbarUseForIPH();
                  RecordUserAction.record("MobileBottomToolbarShareButton");
-@@ -879,7 +880,8 @@ public class ToolbarManager implements ScrimObserver, ToolbarTabController, UrlF
+@@ -859,7 +860,8 @@ public class ToolbarManager implements ScrimObserver, ToolbarTabController, UrlF
                  activity = ((TabImpl) tab).getActivity();
                  isIncognito = tab.isIncognito();
              }
@@ -20,7 +20,7 @@ index ee78225ee3ae799dc3c4002defdc5bcf3a478170..bab7bc99710223fa77e1e16fae577115
          };
          mShareButtonListenerSupplier.set(shareButtonListener);
      }
-@@ -1883,6 +1885,7 @@ public class ToolbarManager implements ScrimObserver, ToolbarTabController, UrlF
+@@ -1819,6 +1821,7 @@ public class ToolbarManager implements ScrimObserver, ToolbarTabController, UrlF
          boolean editingAllowed = currentTab == null || mBookmarkBridge == null
                  || mBookmarkBridge.isEditBookmarksEnabled();
          mToolbar.updateBookmarkButton(isBookmarked, editingAllowed);

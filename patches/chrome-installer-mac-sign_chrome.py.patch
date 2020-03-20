@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mac/sign_chrome.py b/chrome/installer/mac/sign_chrome.py
-index db35e6560b8a20d72414250649dac6873fd71022..07145d7e2d467bf15d97c8a7ca97e34366ef8494 100755
+index b1cb1f4beaca0f61cb4a1dff0039dcc02c2614f2..321a7c4802ed60bbb91fc918f4f33fce746a79b0 100755
 --- a/chrome/installer/mac/sign_chrome.py
 +++ b/chrome/installer/mac/sign_chrome.py
 @@ -44,6 +44,7 @@ def create_config(config_args, development):
@@ -12,7 +12,7 @@ index db35e6560b8a20d72414250649dac6873fd71022..07145d7e2d467bf15d97c8a7ca97e343
          from signing.internal_config import InternalCodeSignConfig
 @@ -53,6 +54,7 @@ def create_config(config_args, development):
          # internal config has to be available.
-         if config_class(*config_args).product == 'Google Chrome':
+         if config_class.is_chrome_branded():
              raise e
 +    """
  

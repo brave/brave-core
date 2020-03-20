@@ -1,12 +1,12 @@
 diff --git a/google_apis/google_api_keys.cc b/google_apis/google_api_keys.cc
-index d01ef89f6a86819238c3fc605764f8c965a67ab0..0f073ae2a2da54104e9ce4dcec1e3199337cc2be 100644
+index c2714269723ae98b618d9938cc9fb457fbe7fca6..2401a098cd4baed011821a97b215262720e0d3c0 100644
 --- a/google_apis/google_api_keys.cc
 +++ b/google_apis/google_api_keys.cc
-@@ -193,6 +193,7 @@ class APIKeyCache {
+@@ -202,6 +202,7 @@ class APIKeyCache {
  #if defined(OS_IOS)
    void set_api_key(const std::string& api_key) { api_key_ = api_key; }
  #endif
 +  void set_api_key_for_testing(const std::string& api_key) { api_key_ = api_key; }
    std::string api_key_non_stable() const { return api_key_non_stable_; }
    std::string api_key_remoting() const { return api_key_remoting_; }
- 
+   std::string api_key_sharing() const { return api_key_sharing_; }

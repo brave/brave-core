@@ -13,10 +13,6 @@
 #include "components/browsing_data/core/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
 
-#if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
-#include "components/gcm_driver/gcm_channel_status_syncer.h"
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #endif
@@ -114,7 +110,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   // Push Messaging Pref
-  (*s_brave_whitelist)[gcm::prefs::kGCMChannelStatus] =
+  (*s_brave_whitelist)[kBraveGCMChannelStatus] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
 

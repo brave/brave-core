@@ -11,6 +11,35 @@ are declared in tools/grit/grit_rule.gni.
     <output filename="grit/generated_resources.h" type="rc_header">
       <emit emit_type="prepend" />
     </output>
+    <if expr="is_android">
+      <output filename="generated_resources_af.pak" type="data_package" lang="af" />
+      <output filename="generated_resources_as.pak" type="data_package" lang="as" />
+      <output filename="generated_resources_az.pak" type="data_package" lang="az" />
+      <output filename="generated_resources_be.pak" type="data_package" lang="be" />
+      <output filename="generated_resources_bs.pak" type="data_package" lang="bs" />
+      <output filename="generated_resources_eu.pak" type="data_package" lang="eu" />
+      <output filename="generated_resources_fr-CA.pak" type="data_package" lang="fr-CA" />
+      <output filename="generated_resources_gl.pak" type="data_package" lang="gl" />
+      <output filename="generated_resources_hy.pak" type="data_package" lang="hy" />
+      <output filename="generated_resources_is.pak" type="data_package" lang="is" />
+      <output filename="generated_resources_ka.pak" type="data_package" lang="ka" />
+      <output filename="generated_resources_kk.pak" type="data_package" lang="kk" />
+      <output filename="generated_resources_km.pak" type="data_package" lang="km" />
+      <output filename="generated_resources_ky.pak" type="data_package" lang="ky" />
+      <output filename="generated_resources_lo.pak" type="data_package" lang="lo" />
+      <output filename="generated_resources_mk.pak" type="data_package" lang="mk" />
+      <output filename="generated_resources_mn.pak" type="data_package" lang="mn" />
+      <output filename="generated_resources_my.pak" type="data_package" lang="my" />
+      <output filename="generated_resources_ne.pak" type="data_package" lang="ne" />
+      <output filename="generated_resources_or.pak" type="data_package" lang="or" />
+      <output filename="generated_resources_pa.pak" type="data_package" lang="pa" />
+      <output filename="generated_resources_si.pak" type="data_package" lang="si" />
+      <output filename="generated_resources_sq.pak" type="data_package" lang="sq" />
+      <output filename="generated_resources_ur.pak" type="data_package" lang="ur" />
+      <output filename="generated_resources_uz.pak" type="data_package" lang="uz" />
+      <output filename="generated_resources_zh-HK.pak" type="data_package" lang="zh-HK" />
+      <output filename="generated_resources_zu.pak" type="data_package" lang="zu" />
+    </if>
     <output filename="generated_resources_am.pak" type="data_package" lang="am" />
     <output filename="generated_resources_ar.pak" type="data_package" lang="ar" />
     <output filename="generated_resources_bg.pak" type="data_package" lang="bg" />
@@ -71,10 +100,15 @@ are declared in tools/grit/grit_rule.gni.
     <!-- On Android, output some strings into Android's xml string format.
          These strings are tagged with formatter_data="android_java" -->
     <if expr="is_android">
+      <output filename="java/res/values-af/generated_resources.xml" lang="af" type="android" context="android_java" />
       <output filename="java/res/values-am/generated_resources.xml" lang="am" type="android" context="android_java" />
       <output filename="java/res/values-ar/generated_resources.xml" lang="ar" type="android" context="android_java" />
+      <output filename="java/res/values-as/generated_resources.xml" lang="as" type="android" context="android_java" />
+      <output filename="java/res/values-az/generated_resources.xml" lang="az" type="android" context="android_java" />
+      <output filename="java/res/values-be/generated_resources.xml" lang="be" type="android" context="android_java" />
       <output filename="java/res/values-bg/generated_resources.xml" lang="bg" type="android" context="android_java" />
       <output filename="java/res/values-bn/generated_resources.xml" lang="bn" type="android" context="android_java" />
+      <output filename="java/res/values-bs/generated_resources.xml" lang="bs" type="android" context="android_java" />
       <output filename="java/res/values-ca/generated_resources.xml" lang="ca" type="android" context="android_java" />
       <output filename="java/res/values-cs/generated_resources.xml" lang="cs" type="android" context="android_java" />
       <output filename="java/res/values-da/generated_resources.xml" lang="da" type="android" context="android_java" />
@@ -85,34 +119,52 @@ are declared in tools/grit/grit_rule.gni.
       <output filename="java/res/values-es/generated_resources.xml" lang="es" type="android" context="android_java" />
       <output filename="java/res/values-es-rUS/generated_resources.xml" lang="es-419" type="android" context="android_java" />
       <output filename="java/res/values-et/generated_resources.xml" lang="et" type="android" context="android_java" />
+      <output filename="java/res/values-eu/generated_resources.xml" lang="eu" type="android" context="android_java" />
       <output filename="java/res/values-fa/generated_resources.xml" lang="fa" type="android" context="android_java" />
       <output filename="java/res/values-fi/generated_resources.xml" lang="fi" type="android" context="android_java" />
       <output filename="java/res/values-tl/generated_resources.xml" lang="fil" type="android" context="android_java" />
       <output filename="java/res/values-fr/generated_resources.xml" lang="fr" type="android" context="android_java" />
+      <output filename="java/res/values-fr-rCA/generated_resources.xml" lang="fr-CA" type="android" context="android_java" />
+      <output filename="java/res/values-gl/generated_resources.xml" lang="gl" type="android" context="android_java" />
       <output filename="java/res/values-gu/generated_resources.xml" lang="gu" type="android" context="android_java" />
       <output filename="java/res/values-iw/generated_resources.xml" lang="he" type="android" context="android_java" />
       <output filename="java/res/values-hi/generated_resources.xml" lang="hi" type="android" context="android_java" />
       <output filename="java/res/values-hr/generated_resources.xml" lang="hr" type="android" context="android_java" />
       <output filename="java/res/values-hu/generated_resources.xml" lang="hu" type="android" context="android_java" />
+      <output filename="java/res/values-hy/generated_resources.xml" lang="hy" type="android" context="android_java" />
       <output filename="java/res/values-in/generated_resources.xml" lang="id" type="android" context="android_java" />
+      <output filename="java/res/values-is/generated_resources.xml" lang="is" type="android" context="android_java" />
       <output filename="java/res/values-it/generated_resources.xml" lang="it" type="android" context="android_java" />
       <output filename="java/res/values-ja/generated_resources.xml" lang="ja" type="android" context="android_java" />
+      <output filename="java/res/values-ka/generated_resources.xml" lang="ka" type="android" context="android_java" />
+      <output filename="java/res/values-kk/generated_resources.xml" lang="kk" type="android" context="android_java" />
+      <output filename="java/res/values-km/generated_resources.xml" lang="km" type="android" context="android_java" />
       <output filename="java/res/values-kn/generated_resources.xml" lang="kn" type="android" context="android_java" />
       <output filename="java/res/values-ko/generated_resources.xml" lang="ko" type="android" context="android_java" />
+      <output filename="java/res/values-ky/generated_resources.xml" lang="ky" type="android" context="android_java" />
+      <output filename="java/res/values-lo/generated_resources.xml" lang="lo" type="android" context="android_java" />
       <output filename="java/res/values-lt/generated_resources.xml" lang="lt" type="android" context="android_java" />
       <output filename="java/res/values-lv/generated_resources.xml" lang="lv" type="android" context="android_java" />
+      <output filename="java/res/values-mk/generated_resources.xml" lang="mk" type="android" context="android_java" />
       <output filename="java/res/values-ml/generated_resources.xml" lang="ml" type="android" context="android_java" />
+      <output filename="java/res/values-mn/generated_resources.xml" lang="mn" type="android" context="android_java" />
       <output filename="java/res/values-mr/generated_resources.xml" lang="mr" type="android" context="android_java" />
       <output filename="java/res/values-ms/generated_resources.xml" lang="ms" type="android" context="android_java" />
+      <output filename="java/res/values-my/generated_resources.xml" lang="my" type="android" context="android_java" />
+      <output filename="java/res/values-ne/generated_resources.xml" lang="ne" type="android" context="android_java" />
       <output filename="java/res/values-nl/generated_resources.xml" lang="nl" type="android" context="android_java" />
       <output filename="java/res/values-nb/generated_resources.xml" lang="no" type="android" context="android_java" />
+      <output filename="java/res/values-or/generated_resources.xml" lang="or" type="android" context="android_java" />
+      <output filename="java/res/values-pa/generated_resources.xml" lang="pa" type="android" context="android_java" />
       <output filename="java/res/values-pl/generated_resources.xml" lang="pl" type="android" context="android_java" />
       <output filename="java/res/values-pt-rBR/generated_resources.xml" lang="pt-BR" type="android" context="android_java" />
       <output filename="java/res/values-pt-rPT/generated_resources.xml" lang="pt-PT" type="android" context="android_java" />
       <output filename="java/res/values-ro/generated_resources.xml" lang="ro" type="android" context="android_java" />
       <output filename="java/res/values-ru/generated_resources.xml" lang="ru" type="android" context="android_java" />
+      <output filename="java/res/values-si/generated_resources.xml" lang="si" type="android" context="android_java" />
       <output filename="java/res/values-sk/generated_resources.xml" lang="sk" type="android" context="android_java" />
       <output filename="java/res/values-sl/generated_resources.xml" lang="sl" type="android" context="android_java" />
+      <output filename="java/res/values-sq/generated_resources.xml" lang="sq" type="android" context="android_java" />
       <output filename="java/res/values-sr/generated_resources.xml" lang="sr" type="android" context="android_java" />
       <output filename="java/res/values-sv/generated_resources.xml" lang="sv" type="android" context="android_java" />
       <output filename="java/res/values-sw/generated_resources.xml" lang="sw" type="android" context="android_java" />
@@ -121,9 +173,13 @@ are declared in tools/grit/grit_rule.gni.
       <output filename="java/res/values-th/generated_resources.xml" lang="th" type="android" context="android_java" />
       <output filename="java/res/values-tr/generated_resources.xml" lang="tr" type="android" context="android_java" />
       <output filename="java/res/values-uk/generated_resources.xml" lang="uk" type="android" context="android_java" />
+      <output filename="java/res/values-ur/generated_resources.xml" lang="ur" type="android" context="android_java" />
+      <output filename="java/res/values-uz/generated_resources.xml" lang="uz" type="android" context="android_java" />
       <output filename="java/res/values-vi/generated_resources.xml" lang="vi" type="android" context="android_java" />
       <output filename="java/res/values-zh-rCN/generated_resources.xml" lang="zh-CN" type="android" context="android_java" />
+      <output filename="java/res/values-zh-rHK/generated_resources.xml" lang="zh-HK" type="android" context="android_java" />
       <output filename="java/res/values-zh-rTW/generated_resources.xml" lang="zh-TW" type="android" context="android_java" />
+      <output filename="java/res/values-zu/generated_resources.xml" lang="zu" type="android" context="android_java" />
     </if>
   </outputs>
   <translations>
@@ -402,6 +458,12 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         <message name="IDS_SEARCH_RESULTS_PLURAL" desc="Message announced to screenreader users when searching completes and results are showing.">
           <ph name="RESULT_COUNT">$1<ex>15</ex></ph> results for '<ph name="SEARCH_TEXT">$2<ex>cookies</ex></ph>'
+        </message>
+        <message name="IDS_SEARCH_RESULT_BUBBLE_TEXT" desc="Text that shows in search result bubbles that point at parts of the settings UI which, when clicked, reveal new places for a search results (singular).">
+          1 result
+        </message>
+        <message name="IDS_SEARCH_RESULTS_BUBBLE_TEXT" desc="Text that shows in search result bubbles that point at parts of the settings UI which, when clicked, reveal new places for search results (plural).">
+          <ph name="NUM_RESULTS">$1<ex>5</ex></ph> results
         </message>
         <message name="IDS_SEARCH_NO_RESULTS" desc="Text description of a search that has no results.">
           No search results found
@@ -950,8 +1012,8 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_SAVE_PAGE" desc="The text label of the Save Page As menu item">
             Save page &amp;as...
           </message>
-          <message name="IDS_DISTILL_PAGE" desc="The text label of the 'Toggle distilled page contents' menu item">
-            Toggle distilled page contents
+          <message name="IDS_DISTILL_PAGE" desc="The text label of the 'Toggle reader mode' menu item">
+            Toggle reader mode
           </message>
           <message name="IDS_MORE_TOOLS_MENU" desc="The text label of the Tools submenu for touch">
             More too&amp;ls
@@ -982,6 +1044,9 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_OPEN_IN_APP_WINDOW" desc="The text label of the menu item for moving the current tab to a standalone app window">
             Open in <ph name="APP">$1<ex>Gmail App</ex></ph>
+          </message>
+          <message name="IDS_MOVE_TAB_TO_NEW_WINDOW" desc="The text label of the Move Tab to Window menu item.">
+            Move tab to new window
           </message>
         </if>
         <if expr="use_titlecase">
@@ -1021,8 +1086,8 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_SAVE_PAGE" desc="In Title Case: The text label of the Save Page As menu item">
             Save Page &amp;As...
           </message>
-          <message name="IDS_DISTILL_PAGE" desc="The text label of the 'Distill Page' menu item">
-            Distill Page
+          <message name="IDS_DISTILL_PAGE" desc="The text label of the 'Reader mode' menu item">
+            Reader mode
           </message>
           <message name="IDS_MORE_TOOLS_MENU" desc="In Title Case: The text label of the Tools submenu for touch">
             More Too&amp;ls
@@ -1053,6 +1118,9 @@ are declared in tools/grit/grit_rule.gni.
           </message>
           <message name="IDS_OPEN_IN_APP_WINDOW" desc="In Title Case: The text label of the menu item for moving the current tab to a standalone app window">
             Open in <ph name="APP">$1<ex>Gmail App</ex></ph>
+          </message>
+          <message name="IDS_MOVE_TAB_TO_NEW_WINDOW" desc="In Title Case: The text label of the Move Tab to New Window menu item.">
+            Move Tab to New Window
           </message>
         </if>
       </if>
@@ -1542,6 +1610,9 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_PROMPT_DEEP_SCANNING_DOWNLOAD" desc="Message shown in the download shelf when a download is being scanned">
         <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> is being scanned.
       </message>
+      <message name="IDS_PROMPT_CONFIRM_MIXED_CONTENT_DOWNLOAD" desc="Message shown to the user to validate the download when the download content is a mixed-content download.">
+        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> can't be downloaded securely.
+      </message>
       <message name="IDS_PROMPT_DOWNLOAD_BLOCKED_TOO_LARGE" desc="Message shown in the download shelf when a download is blocked for being too large">
         <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> is too large for cloud scanning and has been blocked from opening.
       </message>
@@ -1560,8 +1631,14 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_PROMPT_DOWNLOAD_DEEP_SCANNED_OPENED_DANGEROUS" desc="Message shown in the download shelf when a download is finished being scanned, and issues were found">
         Download contains malware.
       </message>
+      <message name="IDS_PROMPT_DOWNLOAD_MIXED_CONTENT_WARNING" desc="Message shown in the download shelf when a download is mixed content, and Brave needs to show a warning.">
+        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> can't be downloaded securely.
+      </message>
+      <message name="IDS_PROMPT_DOWNLOAD_MIXED_CONTENT_BLOCKED" desc="Message shown in the download shelf when a download is mixed content, and Brave has blocked it.">
+        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> can't be downloaded securely.
+      </message>
       <message name="IDS_PROMPT_APP_DEEP_SCANNING" desc="Message shown in the download shelf when Brave recommends uploading the file for additional scanning">
-        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> is unknown. Scan file to minimize risk.
+        Advanced Protection recommends sending <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> to Brave to check for malware.
       </message>
       <message name="IDS_BLOCK_REASON_UNCOMMON_DOWNLOAD" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is uncommon.">
         This file is not commonly downloaded and may be dangerous.
@@ -1571,6 +1648,9 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_BLOCK_REASON_GENERIC_DOWNLOAD" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it may be dangerous.">
         This type of file may harm your computer.
+      </message>
+      <message name="IDS_BLOCK_REASON_MIXED_CONTENT" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is mixed-content.">
+        This file can't be downloaded securely.
       </message>
       <message name="IDS_DEEP_SCANNED_SAFE_DESCRIPTION" desc="Message shown to the user on chrome://downloads page to explain this this download was deep scanned, and found to be safe.">
         Scan complete, no issues identified.
@@ -1822,6 +1902,9 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_DOWNLOAD_MENU_LEARN_MORE_INTERRUPTED" desc="Download context menu: Show information about interrupted downloads">
             &amp;More information
           </message>
+          <message name="IDS_DOWNLOAD_MENU_LEARN_MORE_MIXED_CONTENT" desc="Download context menu: Show information about mixed content downloads">
+            &amp;Learn more
+          </message>
         </if>
         <if expr="use_titlecase">
            <if expr="is_macosx">
@@ -1870,12 +1953,18 @@ are declared in tools/grit/grit_rule.gni.
           <message name="IDS_DOWNLOAD_MENU_LEARN_MORE_INTERRUPTED" desc="In Title Case: Download context menu: Show information about interrupted downloads">
             &amp;More Information
           </message>
+          <message name="IDS_DOWNLOAD_MENU_LEARN_MORE_MIXED_CONTENT" desc="In Title Case: Download context menu: Show information about mixed content downloads">
+            &amp;Learn More
+          </message>
         </if>  <!-- not use_titlecase -->
         <if expr="is_win">
           <message name="IDS_DOWNLOAD_MENU_ALWAYS_OPEN_PDF_IN_READER" desc="Download context menu: Always open PDFs using Adobe Reader">
             Always open in Adobe Reader
           </message>
         </if>
+        <message name="IDS_DOWNLOAD_MENU_DEEP_SCAN" desc="Download context menu: send file for deep scanning">
+          Scan file
+        </message>
       </if>
 
       <!-- Touch Bar-->
@@ -2456,7 +2545,7 @@ are declared in tools/grit/grit_rule.gni.
         Third-party cookie blocking
       </message>
       <message name="IDS_COOKIE_CONTROLS_HELP" desc="Tooltip shown in the dialog that is shown when cookie blocking is enabled.">
-        Cookies are files created by websites you visit. There are two types of cookies: First-party cookies are created by the site you visit. The site is shown on the address bar. Third-party cookies are created by other sites. These sites own some of the content, like ads or images, that you see on the website you visit.
+        Cookies are files created by websites. There are two types of cookies: First-party cookies are created by the site you visit. The site is shown on the address bar. Third-party cookies are created by other sites. These sites own some of the content, like ads or images, that you see on the website you visit.
       </message>
 
       <!-- Win certificate selector dialog strings.  -->
@@ -3323,6 +3412,12 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_TASK_MANAGER_SUBFRAME_INCOGNITO_PREFIX" desc="The prefix for a Private out-of-process-iframe process row in the Task Manager (these processes are created when site isolation is enabled, in private mode)">
           Private Subframe: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
         </message>
+        <message name="IDS_TASK_MANAGER_PORTAL_PREFIX" desc="The prefix for a portal row in the Task Manager (these processes are created when portals is enabled)">
+          Portal: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
+        </message>
+        <message name="IDS_TASK_MANAGER_PORTAL_INCOGNITO_PREFIX" desc="The prefix for a Private portal row in the Task Manager (these processes are created when portals is enabled, in private mode)">
+          Private Portal: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
+        </message>
         <message name="IDS_TASK_MANAGER_ARC_PREFIX" desc="The prefix for an ARC general process row">
           App: <ph name="ARC_PROCESS_NAME">$1<ex>com.android.systemui</ex></ph>
         </message>
@@ -3500,14 +3595,8 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_EXTENSION_ALERT_TITLE" desc="Titlebar of the extension notification alert">
         Confirm Changes
       </message>
-      <message name="IDS_EXTENSION_ALERT_ITEM_EXTERNAL" desc="A statement that an external extension has been newly installed. End users have no idea what an 'external' extension is, so we simply call them extensions.">
-        The extension "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" has been added.
-      </message>
       <message name="IDS_EXTENSION_ALERT_ITEM_BLACKLISTED" desc="A statement that an extension has been newly blacklisted. https://support.google.com/chrome/answer/1210215 contains the language on which we're basing the phrasing.">
         The extension "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" was automatically disabled.
-      </message>
-      <message name="IDS_APP_ALERT_ITEM_EXTERNAL" desc="A statement that an external packaged app has been newly installed. End users have no idea what an 'external' app is, so we simply call them apps.">
-        The app "<ph name="EXTENSION_NAME">$1<ex>Gmail</ex></ph>" has been added.
       </message>
       <message name="IDS_APP_ALERT_ITEM_BLACKLISTED" desc="A statement that a packaged app has been newly blacklisted. https://support.google.com/chrome/answer/1210215 contains the language on which we're basing the phrasing.">
         The app "<ph name="EXTENSION_NAME">$1<ex>Gmail</ex></ph>" was automatically removed.
@@ -3540,6 +3629,9 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_EXTENSION_NO_SPECIAL_PERMISSIONS" desc="Shown when the app/extension requires no special permission">
         Has no special permissions.
+      </message>
+      <message name="IDS_EXTENSION_WITHHOLD_PERMISSIONS" desc="Label next to the checkbox in the extension or app installation prompt, which indicates if a user wants to manually control which sites the extension can access.">
+        Manually control site permissions.
       </message>
 
       <message name="IDS_EXTENSION_PERMISSION_LINE" desc="Template for item in list of privileges that an extension or app has">
@@ -4319,14 +4411,23 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_EXTENSIONS_MENU_UNPIN_BUTTON_TOOLTIP" desc="The tooltip for the pinning button for individual extensions in the Extensions Menu">
         Unpin extension
       </message>
-      <message name="IDS_EXTENSIONS_MENU_ACCESSING_SITE_DATA" desc="Header for section of extensions that are able to access the current site's data">
+      <message name="IDS_EXTENSIONS_MENU_ACCESSING_SITE_DATA_SHORT" desc="Header for section of extensions that are able to access the current site's data">
+        Full access
+      </message>
+      <message name="IDS_EXTENSIONS_MENU_ACCESSING_SITE_DATA" desc="Longer explanation for section of extensions that are able to access the current site's data">
         These extensions can see and change information on this site.
       </message>
-      <message name="IDS_EXTENSIONS_MENU_WANTS_TO_ACCESS_SITE_DATA" desc="Header for section of extensions that want to access the current site's data">
-        To allow access on this site, click the extension.
+      <message name="IDS_EXTENSIONS_MENU_WANTS_TO_ACCESS_SITE_DATA_SHORT" desc="Header for section of extensions that want to access the current site's data">
+        Access requested
       </message>
-      <message name="IDS_EXTENSIONS_MENU_CANT_ACCESS_SITE_DATA" desc="Header for section of extensions that can't access the current site's data">
-        These extensions don't need access to this site.
+      <message name="IDS_EXTENSIONS_MENU_WANTS_TO_ACCESS_SITE_DATA" desc="Longer explanation for section of extensions that want to access the current site's data">
+        To give an extension access to this site, click it.
+      </message>
+      <message name="IDS_EXTENSIONS_MENU_CANT_ACCESS_SITE_DATA_SHORT" desc="Header for section of extensions that can't access the current site's data">
+        No access needed
+      </message>
+      <message name="IDS_EXTENSIONS_MENU_CANT_ACCESS_SITE_DATA" desc="Longer explanation for section of extensions that can't access the current site's data">
+        These extensions don't need to see and change information on this site.
       </message>
 
       <!-- Settings API bubble -->
@@ -4367,6 +4468,20 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_EXTENSIONS_SETTINGS_API_SECOND_LINE_HOME_AND_SEARCH" desc="Second line in the Settings API bubble. Only shown if the secondary change by the extension was both the home page and the search engine. See IDS_EXTENSIONS_SETTINGS_API_SECOND_LINE_SEARCH_ENGINE for reason for triple quotes.">
         ''' It also controls what page is shown when you click the Home button or search from the Omnibox. '''
+      </message>
+
+      <!-- Strings for the print job confirmation dialog triggered by chrome.printing -->
+      <message name="IDS_EXTENSIONS_PRINTING_API_PRINT_REQUEST_BUBBLE_TITLE" desc="Title of a bubble with print job confirmation dialog triggered by chrome.printing API">
+        Print request
+      </message>
+      <message name="IDS_EXTENSIONS_PRINTING_API_PRINT_REQUEST_BUBBLE_HEADING" desc="Heading of a bubble with print job confirmation dialog triggered by chrome.printing API">
+        "<ph name="EXTENSION_NAME">$1<ex>Managed Printing</ex></ph>" wants to print <ph name="FILE_NAME">$2<ex>sample.pdf</ex></ph> with <ph name="PRINTER_NAME">$3<ex>Lexmark CS417dn</ex></ph>.
+      </message>
+      <message name="IDS_EXTENSIONS_PRINTING_API_PRINT_REQUEST_ALLOW" desc="Text for the allow button on the print job confirmation dialog">
+        Allow
+      </message>
+      <message name="IDS_EXTENSIONS_PRINTING_API_PRINT_REQUEST_DENY" desc="Text for the deny button on the print job confirmation dialog">
+        Deny
       </message>
 
       <message name="IDS_EXTENSIONS_NTP_CONTROLLED_FIRST_LINE" desc="Text displayed as the first line in the NTP bubble when an extension has changed the new tab page.">
@@ -4721,6 +4836,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
         usage statistics
       </message>
 
+      <!-- Storage Pressure Notification Infobar/Bubble -->
+      <message name="IDS_SETTINGS_STORAGE_PRESSURE_BUBBLE_VIEW_TITLE" desc="The title for the notification warning users that they are low on disk space.">
+        Free up space to continue
+      </message>
+      <message name="IDS_SETTINGS_STORAGE_PRESSURE_BUBBLE_VIEW_MESSAGE" desc="The message for the notification warning users that they are low on disk space, asking the user if they would like to go to the settings page and clear some data.">
+        Some features on <ph name="ORIGIN">$1<ex>site.com</ex></ph> might not work until you clear data that other sites have stored on your device
+      </message>
+      <message name="IDS_SETTINGS_STORAGE_PRESSURE_BUBBLE_VIEW_BUTTON_LABEL" desc="Label for default button on storage pressure buble view which will take users to a page to manage site storage.">
+        Choose sites to clear
+      </message>
+
       <!-- Bad Flags Infobar-->
       <message name="IDS_BAD_FLAGS_WARNING_MESSAGE" desc="Message shown when an unsupported command-line flag is used. [Keep it short so it fits in the infobar.]">
         You are using an unsupported command-line flag: <ph name="BAD_FLAG">$1<ex>--no-sandbox</ex></ph>. Stability and security will suffer.
@@ -4831,7 +4957,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </if>
 
       <!-- chrome://browser-switch strings -->
-      <if expr="is_win or is_macosx or (is_linux and not is_chromeos)">
+      <if expr="is_win or is_macosx or (is_linux and not chromeos)">
         <message name="IDS_ABOUT_BROWSER_SWITCH_TITLE" desc="about:browser-switch page title">
           Legacy Browser Support
         </message>
@@ -5541,9 +5667,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_PASSWORDS_VIA_FEDERATION" desc="Text for federated credential's value.">
         with <ph name="PROVIDER">$1<ex>facebook.com</ex></ph>
       </message>
-      <message name="IDS_PASSWORDS_PAGE_VIEW_HIDE_BUTTON" desc="Text for passwords page view's button to hide a stored password">
-        Hide
-      </message>
 
       <!-- Confirm MessageBox Dialog -->
       <message name="IDS_CONFIRM_MESSAGEBOX_YES_BUTTON_LABEL" desc="Confirm MessageBox Dialog's 'Yes' button text">
@@ -6104,6 +6227,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_TAB_CXMENU_PLACEHOLDER_GROUP_TITLE" desc="The descriptive placeholder title of a group used when the user has not explicitly named a group. The plural value refers to the number of tabs in the group other than the one explicitly named. [ICU Syntax]">
           {NUM_OTHER_TABS, plural, =0 {"<ph name="TAB_TITLE">$1<ex>Brave News</ex></ph>"} =1 {"<ph name="TAB_TITLE">$1<ex>Brave News</ex></ph>" and 1 other tab} other {"<ph name="TAB_TITLE">$1<ex>Brave News</ex></ph>" and # other tabs}}
         </message>
+        <message name="IDS_TAB_CXMENU_MOVE_TABS_TO_NEW_WINDOW" desc="The label of the 'Move Tabs to New Window' Tab context menu item. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
+          {NUM_TABS, plural,
+          =1 {Move tab to new window}
+          other {Move tabs to new window}}
+        </message>
       </if>
       <if expr="use_titlecase">
         <message name="IDS_TAB_CXMENU_NEWTABTORIGHT" desc="In Title Case: The label of the 'New Tab to the Right' Tab context menu item.">
@@ -6151,9 +6279,14 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_TAB_CXMENU_PLACEHOLDER_GROUP_TITLE" desc="The descriptive placeholder title of a group used when the user has not explicitly named a group. The plural value refers to the number of tabs in the group other than the one explicitly named. [ICU Syntax]">
           {NUM_OTHER_TABS, plural, =0 {"<ph name="TAB_TITLE">$1<ex>Brave News</ex></ph>"} =1 {"<ph name="TAB_TITLE">$1<ex>Brave News</ex></ph>" and 1 Other Tab} other {"<ph name="TAB_TITLE">$1<ex>Brave News</ex></ph>" and # Other Tabs}}
         </message>
+        <message name="IDS_TAB_CXMENU_MOVE_TABS_TO_NEW_WINDOW" desc="In Title Case: The label of the 'Move Tabs to New Window' Tab context menu item. NOTE: If having no explicit # makes the phrasing awkward, feel free to add a # as necessary. [ICU Syntax]">
+          {NUM_TABS, plural,
+          =1 {Move Tab to New Window}
+          other {Move Tabs to New Window}}
+        </message>
       </if>
 
-      <!-- Tab Group Header Context Menu -->
+      <!-- Tab Group Editor Bubble -->
       <if expr="not use_titlecase">
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_NEW_TAB_IN_GROUP" desc="The label of the tab group header context menu item for adding a new tab into the current group.">
           New tab in group
@@ -6166,6 +6299,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_SEND_FEEDBACK" desc="The label of the tab group header context menu item for sending feedback for tab groups.">
           Send feedback
+        </message>
+        <message name="IDS_TAB_GROUP_HEADER_BUBBLE_TITLE_PLACEHOLDER" desc="The placeholder text to display within the input field of the tab group editor bubble for naming a tab group.">
+          Name this group
         </message>
       </if>
       <if expr="use_titlecase">
@@ -6180,6 +6316,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_TAB_GROUP_HEADER_CXMENU_SEND_FEEDBACK" desc="In Title Case: The label of the tab group header context menu item for sending feedback for tab groups.">
           Send Feedback
+        </message>
+        <message name="IDS_TAB_GROUP_HEADER_BUBBLE_TITLE_PLACEHOLDER" desc="In Title Case: The placeholder text to display within the input field of the tab group editor bubble for naming a tab group.">
+          Name This Group
         </message>
       </if>
 
@@ -6246,6 +6385,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_MEDIA_TAB_CAPTURE_WITH_AUDIO_NOTIFICATION_TEXT_DELEGATED" desc="label used in screen capture notification UI to show the screen sharing status when the stream is consumed by a tab instead of the app initiating the window picker">
         <ph name="APP_NAME">$1<ex>html5rocks.com</ex></ph> is sharing a Brave tab and audio with <ph name="TAB_NAME">$2<ex>https://google.com</ex></ph>.
+      </message>
+      <message name="IDS_MEDIA_SCREEN_CAPTURE_NOTIFICATION_HIDE" desc="Text shown on a link that hides the notification that the screen is being captured.">
+        Hide
       </message>
       <message name="IDS_MEDIA_SCREEN_CAPTURE_NOTIFICATION_SOURCE" desc="Text shown on the button that changes the screen capture source.">
         Change source
@@ -6420,8 +6562,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
           </message>
         </if>
 
-        <message name="IDS_CONTROLLED_SETTING_POLICY" desc="Text displayed in the controlled settings bubble when a setting's value is enforced by policy.">
-          This setting is enforced by your administrator.
+        <message name="IDS_CONTROLLED_SETTING_POLICY" desc="Text displayed in the controlled settings bubble when a setting's value is managed by policy.">
+          This setting is managed by your administrator.
         </message>
         <message name="IDS_CONTROLLED_SETTING_EXTENSION" desc="Text displayed in the controlled settings bubble when a setting's value is enforced by an extension.">
           This setting is enforced by the "<ph name="NAME">$1<ex>Brave Cast</ex></ph>" extension.
@@ -7062,6 +7204,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NEW_TAB_VOICE_WAITING" desc="Used to indicate that the speech recognition service is waiting for user permission to use the microphone.">
         Waiting...
       </message>
+      <message name="IDS_NEW_TAB_VOICE_SEARCH_CLOSED" desc="Message announced to screen reader users that the voice search overlay is closed.">
+        Voice search closed
+      </message>
 
       <if expr="not use_titlecase">
         <message name="IDS_NEW_TAB_APP_OPTIONS" desc="Text for the context menu item that takes the user to the options of an app. (In sentence case.)">
@@ -7484,10 +7629,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Sign-in error
       </message>
       <message name="IDS_SYNC_ERROR_BUBBLE_VIEW_TITLE" desc="Title in the sync error bubble view/notification.">
-        Sync Error
+        Sync error
       </message>
       <message name="IDS_SYNC_ERROR_USER_MENU_TITLE" desc="Title of the sync/signin error header of desktop user menu.">
         Sync isn't working
+      </message>
+      <message name="IDS_SYNC_ERROR_PASSWORDS_USER_MENU_TITLE" desc="Title of the sync/signin error header of desktop user menu.">
+        Password sync isn't working
       </message>
       <message name="IDS_SYNC_ERROR_USER_MENU_SIGNIN_MESSAGE" desc="Message of the out-of-date signin info error in the header of desktop user menu.">
         Sign-in details are out of date
@@ -7588,10 +7736,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_SYNC_STATUS_NEEDS_PASSWORD" desc="Message indicating user must re-enter their sync password.">
           Enter your passphrase to sync your data
         </message>
-        <message name="IDS_SYNC_STATUS_NEEDS_PASSWORD_LINK_LABEL" desc="Hyperlink text indicating user must re-enter their sync password.">
+        <message name="IDS_SYNC_STATUS_NEEDS_PASSWORD_BUTTON" desc="Button indicating user must re-enter their sync password.">
           Enter passphrase
         </message>
-        <message name="IDS_SYNC_STATUS_NEEDS_KEYS_LINK_LABEL" desc="Hyperlink text indicating user must reauthenticate to sync encrypted datatypes.">
+        <message name="IDS_SYNC_STATUS_NEEDS_KEYS_BUTTON" desc="Button indicating user must reauthenticate to sync encrypted datatypes.">
           Fix now
         </message>
 
@@ -7609,12 +7757,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
           </message>
         </if>
         <if expr="not chromeos">
-          <message name="IDS_SYNC_RELOGIN_LINK_LABEL" desc="The text to display on in the hyperlink when the user needs to sign in again to use sync.">
+          <message name="IDS_SYNC_RELOGIN_BUTTON" desc="The text to display on the button when the user needs to sign in again to use sync.">
             Sign in again
           </message>
         </if>
         <if expr="chromeos">
-          <message name="IDS_SYNC_RELOGIN_LINK_LABEL" desc="The text to display on in the hyperlink when the user needs to sign out and sign in again to use sync on Chrome OS.">
+          <message name="IDS_SYNC_RELOGIN_BUTTON" desc="The text to display on the button when the user needs to sign out and sign in again to use sync on Chrome OS.">
             Sign out
           </message>
           <message name="IDS_ACTIVE_DIRECTORY_PASSWORD_EXPIRED" desc="The text to display on the hyperlink when the user needs to sign out and sign in again to change their password.">
@@ -8196,14 +8344,20 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_MUTE_SITE_MAC" desc="The Mac menu item for muting the selected tab(s).">
           Mute Site
         </message>
-        <message name="IDS_PIN_TAB_MAC" desc="The Mac menu item for pinning the selected tab(s).">
-          Pin Tab
-        </message>
         <message name="IDS_MUTE_TARGET_SITE_MAC" desc="The Mac menu item for muting the selected tab(s).">
           Mute Selected Site
         </message>
+        <message name="IDS_PIN_TAB_MAC" desc="The Mac menu item for pinning the selected tab(s).">
+          Pin Tab
+        </message>
         <message name="IDS_PIN_TARGET_TAB_MAC" desc="The Mac menu item for pinning the selected tab(s).">
           Pin Selected Tab
+        </message>
+        <message name="IDS_GROUP_TAB_MAC" desc="The Mac menu item for adding the selected tab(s) to a new tab group.">
+          Group Tab
+        </message>
+        <message name="IDS_GROUP_TARGET_TAB_MAC" desc="The Mac menu item for adding the selected tab(s) to a new tab group.">
+          Group Selected Tab
         </message>
         <!-- Help menu -->
         <message name="IDS_FEEDBACK_MAC" desc="The Mac menu item to report a bug in the Help menu.">
@@ -8705,12 +8859,32 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </if>
 
       <!-- NFC permission -->
+      <message name="IDS_NFC_PERMISSION_FRAGMENT" desc="Permission request shown if the user is visiting a site that wants to use NFC. Follows a prompt: 'This site would like to:'">
+        Use NFC devices
+      </message>
       <if expr="is_android">
         <message name="IDS_NFC_INFOBAR_TEXT" desc="Text requesting permission for a site to use NFC">
           <ph name="URL">$1<ex>google.com</ex></ph> wants to send and receive info when you tap your phone on an NFC device
         </message>
         <message name="IDS_NFC_PERMISSION_TITLE" desc="Title text for dialog requesting permission for a site to use NFC">
           NFC
+        </message>
+      </if>
+
+      <!-- WebXr permissions -->
+      <!-- TODO(crbug.com/1041009): Finalize WebXr Permissions strings -->
+      <message name="IDS_VR_PERMISSION_FRAGMENT" desc="Permission request shown if the user is visiting a site that wants to use VR. Follows a prompt: 'This site would like to:">
+        Access Virtual Reality devices and data
+      </message>
+      <message name="IDS_AR_PERMISSION_FRAGMENT" desc="Permission request shown if the user is visiting a site that wants to use AR. Follows a prompt: 'This site would like to:">
+        Track camera position and map your room
+      </message>
+      <if expr="is_android">
+        <message name="IDS_VR_INFOBAR_TEXT" desc="Text requesting permission for a site to use VR">
+          <ph name="URL">$1<ex>google.com</ex></ph> wants to be able to start virtual reality sessions
+        </message>
+        <message name="IDS_AR_INFOBAR_TEXT" desc="Text requesting permission for a site to use AR">
+          <ph name="URL">$1<ex>google.com</ex></ph> wants to track camera position and map your room
         </message>
       </if>
 
@@ -8795,6 +8969,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_SHELF_CONTEXT_MENU_PIN_ENFORCED_BY_POLICY" desc="Short text for the pin/unpin context menu to tell user the setting is enforced by policy of a shelf item">
           Pinned by administrator
+        </message>
+        <message name="IDS_SHELF_CONTEXT_MENU_SWAP_WITH_NEXT" desc="Label of the context menu item allowing to swap the selected shelf item with the next one">
+          Swap with next
+        </message>
+        <message name="IDS_SHELF_CONTEXT_MENU_SWAP_WITH_PREVIOUS" desc="Label of the context menu item allowing to swap the selected shelf item with the previous one">
+          Swap with previous
         </message>
       </if>
 
@@ -9153,6 +9333,18 @@ Please help our engineers fix this problem. Tell us what happened right before y
           $1<ex>A VR-enabled website</ex>
         </ph> - VR presenting to headset
       </message>
+      <message name="IDS_TAB_AX_LABEL_UNNAMED_GROUP_FORMAT" desc="Accessibility label text for a tab, when it is in a group that has not been named by the user. Example: 'Brave Search - Part of unnamed group'">
+        <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Part of unnamed group
+      </message>
+      <message name="IDS_TAB_AX_LABEL_NAMED_GROUP_FORMAT" desc="Accessibility label text for a tab, when it is in a group that has been named by the user. Example: 'Brave Search - Part of group MyGroupName'">
+        <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Part of group <ph name="GROUP_NAME">$2</ph>
+      </message>
+      <message name="IDS_GROUP_AX_LABEL_UNNAMED_GROUP_FORMAT" desc="Accessibility label text for a tab group header, when it has not been named by the user. Example: 'Unnamed group - Brave Search and 3 other tabs'">
+        Unnamed group - <ph name="GROUP_CONTENTS">$1<ex>Brave Search and 3 other tabs</ex></ph>
+      </message>
+      <message name="IDS_GROUP_AX_LABEL_NAMED_GROUP_FORMAT" desc="Accessibility label text for a tab group header, when it has been named by the user. Example: 'Group MyGroupName - Brave Search and 3 other tabs'">
+        Group <ph name="GROUP_NAME">$1</ph> - <ph name="GROUP_CONTENTS">$2<ex>Brave Search and 3 other tabs</ex></ph>
+      </message>
 
       <!-- ProcessSingleton -->
       <message name="IDS_PROFILE_IN_USE_LINUX_QUIT" desc="Text of button in profile in use dialog to quit without doing anything.">
@@ -9389,6 +9581,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_DEVICE_CHOOSER_NO_DEVICES_FOUND_PROMPT" desc="The label shown to the user to inform them that no USB devices were found matching the requirements that the application provided.">
       No compatible devices found.
+    </message>
+    <message name="IDS_DEVICE_CHOOSER_ACCNAME_COMPATIBLE_DEVICES_LIST" desc="The accessible name for the list of compatible devices, read to screen reader users when navigating to the container.">
+      Compatible devices
     </message>
     <message name="IDS_USB_DEVICE_CHOOSER_CONNECT_BUTTON_TEXT" desc="Label on the button that closes the USB chooser popup and connects the selected device.">
       Connect
@@ -9925,6 +10120,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_CABLE_ACTIVATE_DESCRIPTION" desc="Contents of the dialog shown when the user tries to sign-in using a phone as a security key.">
         A notification was sent to your phone to confirm it's you.
       </message>
+      <message name="IDS_WEBAUTHN_CABLE_ACTIVATE_DESCRIPTION_SHORT" desc="Second line of text in an item letting the user know that they can use their phone as a security key. The user needs to check their phone and respond to a notification that will ask them to press a button on the phone's screen to confirm that they're logging in.">
+        Unlock your phone and confirm it's you
+      </message>
+      <message name="IDS_WEBAUTHN_CABLE_V2_ACTIVATE_DESCRIPTION_SHORT" desc="Second line of text in an item letting the user know that they can use their phone as a security key. The user needs to unlock their phone and open some app on their phone to complete the login process.">
+        Open the security key app on your phone
+      </message>
       <message name="IDS_WEBAUTHN_CABLE_QR_TITLE" desc="Title of a dialog that contains a QR-code for the user to scan with a mobile phone app. A QR code is a type of barcode that can be read using a smartphone's camera.">
         Pair new phone
       </message>
@@ -10075,9 +10276,40 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_DEEP_SCANNING_DIALOG_TITLE" desc="Title shown in tab modal dialog while performing a deep scan of data to see if it complies with enterprise policies">
       Scanning
     </message>
-    <message name="IDS_DEEP_SCANNING_DIALOG_MESSAGE" desc="Message shown in tab modal dialog while performing a deep scan of data to see if complies with enterprise policies">
-      Scanning files for sensitive data...
+    <message name="IDS_DEEP_SCANNING_DIALOG_UPLOAD_PENDING_MESSAGE" desc="Message shown in tab modal dialog while performing a deep scan of uploaded data to see if it complies with enterprise policies">
+      Your organization is scanning this upload for security approval.
     </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_PASTE_PENDING_MESSAGE" desc="Message shown in tab modal dialog while performing a deep scan of pasted data to see if it complies with enterprise policies">
+      Your organization is scanning the pasted data for security approval.
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_DRAG_DATA_PENDING_MESSAGE" desc="Message shown in tab modal dialog while performing a deep scan of dragged data to see if it complies with enterprise policies">
+      Your organization is scanning the dragged data for security approval.
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_DRAG_FILES_PENDING_MESSAGE" desc="Message shown in tab modal dialog while performing a deep scan of dragged files to see if they complies with enterprise policies">
+      Your organization is scanning the dragged files for security approval.
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_SUCCESS_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of data when it complies with enterprise policies">
+      Scan complete, everything's good to go.
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_UPLOAD_FAILURE_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of uploaded data when it doesn't comply with enterprise security policies">
+      This upload violates your organization's security policies and can't be completed.
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_PASTE_FAILURE_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of pasted data when it doesn't comply with enterprise security policies">
+      This data violates your organization's security policies and can't be pasted.
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_DRAG_DATA_FAILURE_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of dragged data when it doesn't comply with enterprise security policies">
+      This data violates your organization's security policies and can't be dropped.
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_DRAG_FILES_FAILURE_MESSAGE" desc="Message shown in tab modal dialog after performing a deep scan of dragged files when they doesn't comply with enterprise security policies">
+      These files violate your organization's security policies and can't be dropped.
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_TIMEOUT_MESSAGE" desc="Message shown in tab modal dialog after a deep scan times out.">
+      Something went wrong. Scanning could not be completed. Please try again.
+    </message>
+    <message name="IDS_DEEP_SCANNING_DIALOG_CANCEL_UPLOAD_BUTTON" desc="Text shown in the cancel button of a tab modal dialog while performing a deep scan of data to see if it complies with enterprise policies">
+      Cancel upload
+    </message>
+
 
     <!-- Deep scanning open now dialog strings -->
     <message name="IDS_DEEP_SCANNING_DIALOG_OPEN_NOW_TITLE" desc="Title shown in tab modal dialog when the user attempts to open a download while deep scanning is in progress">
@@ -10095,7 +10327,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Scan before opening?
     </message>
     <message name="IDS_DEEP_SCANNING_INFO_DIALOG_MESSAGE" desc="Message shown in tab modal dialog when the user opens a download that recommends deep scanning">
-      The selected file is unknown and may be dangerous. Consider scanning before opening this file.
+      The selected file is unknown and may be dangerous. Advanced Protection recommends sending this file to Brave to check for malware.
     </message>
     <message name="IDS_DEEP_SCANNING_INFO_DIALOG_ACCEPT_BUTTON" desc="The text on the accept button in tab modal dialog when the user opens a download that recommends deep scanning">
       Scan
@@ -10112,10 +10344,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Timed out
     </message>
     <message name="IDS_DEEP_SCANNING_TIMED_OUT_DIALOG_MESSAGE" desc="Message shown in tab modal dialog when the deep scanning times out.">
-      Something went wrong. The scanned file has timed out.
+      Something went wrong. Scanning could not be completed. Please try again.
     </message>
     <message name="IDS_DEEP_SCANNING_TIMED_OUT_DIALOG_ACCEPT_BUTTON" desc="The text on the accept button in tab modal dialog when deep scanning times out.">
-      Scan
+      Scan again
     </message>
     <message name="IDS_DEEP_SCANNING_TIMED_OUT_DIALOG_CANCEL_BUTTON" desc="The text on the cancel button in tab modal dialog when deep scanning times out.">
       Cancel
@@ -10147,6 +10379,35 @@ Please help our engineers fix this problem. Tell us what happened right before y
       The limit on "<ph name="APP_NAME">$1<ex>Brave Photos</ex></ph>" that your parent set ran out. You can use it for <ph name="TIME_LIMIT">$2<ex>2 hours and 30 minutes</ex></ph> tomorrow.
     </message>
 
+    <!-- Extension request -->
+    <if expr="not is_android">
+      <message name="IDS_ENTERPRISE_EXTENSION_REQUEST_APPROVED_TITLE" desc="The notification title when there are some extension requests approved.">
+        {NUM_EXTENSIONS, plural,
+          =1 {An extension has been approved}
+          other {# extensions have been approved}}
+      </message>
+      <message name="IDS_ENTERPRISE_EXTENSION_REQUEST_REJECTED_TITLE" desc="The notification title when there are some extension requests rejected.">
+        {NUM_EXTENSIONS, plural,
+          =1 {An extension has been rejected}
+          other {# extensions have been rejected}}
+      </message>
+      <message name="IDS_ENTERPRISE_EXTENSION_REQUEST_FORCE_INSTALLED_TITLE" desc="The notification title when there are some extension requests force installed.">
+        {NUM_EXTENSIONS, plural,
+          =1 {An extension has been installed by your administrator}
+          other {# extensions have been installed by your administrator}}
+      </message>
+
+      <message name="IDS_ENTERPRISE_EXTENSION_REQUEST_CLICK_TO_INSTALL" desc="The notification message that tell user how to install the approved extension.">
+        {NUM_EXTENSIONS, plural,
+          =1 {Click to install the extension}
+          other {Click to install these extensions}}
+      </message>
+      <message name="IDS_ENTERPRISE_EXTENSION_REQUEST_CLICK_TO_VIEW" desc="The notification message that show user the reviewed installed extension requests.">
+        {NUM_EXTENSIONS, plural,
+          =1 {Click to view the extension}
+          other {Click to view these extensions}}
+      </message>
+    </if>
   </messages>
 </release>
 </grit>

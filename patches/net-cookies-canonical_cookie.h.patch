@@ -1,5 +1,5 @@
 diff --git a/net/cookies/canonical_cookie.h b/net/cookies/canonical_cookie.h
-index a29d1887e0f51e924e23847b959cc182614f3982..8c37c1fc319a92c2eaef1eff77956368be7b9a54 100644
+index 8bd8b2eaccbe6b9f01da57cd29ea8f7a9d5245c6..d2bb1732140e9f44f318c03c4dbda253f4b14f6c 100644
 --- a/net/cookies/canonical_cookie.h
 +++ b/net/cookies/canonical_cookie.h
 @@ -80,6 +80,7 @@ class NET_EXPORT CanonicalCookie {

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_navigator.cc b/chrome/browser/ui/browser_navigator.cc
-index ed922d78b0f9961f6171782921fdfd287f5d1c00..afbff54bd821e3ec82b867de74d827bfd4416369 100644
+index f069d00cad74c4d22a90589bf3e58902eec0f194..0a10d489d307c1842828365857654d5cc6874eaf 100644
 --- a/chrome/browser/ui/browser_navigator.cc
 +++ b/chrome/browser/ui/browser_navigator.cc
-@@ -463,6 +463,7 @@ void Navigate(NavigateParams* params) {
+@@ -462,6 +462,7 @@ void Navigate(NavigateParams* params) {
      params->initiating_profile = source_browser->profile();
    DCHECK(params->initiating_profile);
  
@@ -10,7 +10,7 @@ index ed922d78b0f9961f6171782921fdfd287f5d1c00..afbff54bd821e3ec82b867de74d827bf
    if (!AdjustNavigateParamsForURL(params))
      return;
  
-@@ -741,6 +742,7 @@ void Navigate(NavigateParams* params) {
+@@ -728,6 +729,7 @@ void Navigate(NavigateParams* params) {
  bool IsHostAllowedInIncognito(const GURL& url) {
    std::string scheme = url.scheme();
    base::StringPiece host = url.host_piece();

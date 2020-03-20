@@ -1,0 +1,7 @@
+import("//tools/polymer/polymer.gni")
+
+# Targets for auto-generating Polymer 3 JS Modules.
+
+group("polymer3_elements") {
+  deps = [ "history:brave_history_item_module" ]
+}

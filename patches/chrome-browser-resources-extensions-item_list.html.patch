@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/extensions/item_list.html b/chrome/browser/resources/extensions/item_list.html
-index 2ea1c0f87ae69aee38ae60d3228eb99169fec430..901854a7a85cf89d91c29856d92f27eb7499ce68 100644
+index 56b2f7b6b8a659479fc8d1c55c3d9dbed1b3406d..68771c31ae011a5b1db3f8b8a6b6db05b7e03739 100644
 --- a/chrome/browser/resources/extensions/item_list.html
 +++ b/chrome/browser/resources/extensions/item_list.html
-@@ -114,5 +114,6 @@
+@@ -123,5 +123,6 @@
          </template>
        </div>
      </div>

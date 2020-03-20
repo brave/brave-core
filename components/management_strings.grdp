@@ -106,6 +106,15 @@
     <message name="IDS_MANAGEMENT_CROSTINI" desc="Message stating that administrators can see Crostini usage">
       Linux apps installed and when they were last used
     </message>
+    <message name="IDS_MANAGEMENT_CROSTINI_CONTAINER_CONFIGURATION" desc="Message stating that administrators can see Crostini usage">
+      Linux activity within the container, and can install and run Linux apps within the container
+    </message>
+    <message name="IDS_MANAGEMENT_REPORT_EXTENSIONS" desc="Message stating that administrators can see user's extensions.">
+      Which extensions you have installed
+    </message>
+    <message name="IDS_MANAGEMENT_REPORT_ANDROID_APPLICATIONS" desc="Message stating that administrators can see user's installed Android applications.">
+      Which Google Play apps you have installed
+    </message>
   </if>
 
   <!-- Strings related to extension reporting section of the management page -->
@@ -145,7 +154,7 @@
     Version information about your device and browser
   </message>
   <message name="IDS_MANAGEMENT_EXTENSION_REPORT_EXTENSIONS_PLUGINS" desc="Message explaining that an extension currently reports the user's exensions and plugins">
-    Information about installed extensions and plugins
+    Which extensions and plugins you have installed
   </message>
   <message name="IDS_MANAGEMENT_EXTENSION_REPORT_SAFE_BROWSING_WARNINGS" desc="Message explaining that an extension currently reports the user's Safe Browsing warnings and ignored warnings">
     <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;<ex>&lt;a target="_blank" href="https://example.com"&gt;</ex></ph>Safe Browsing<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> warnings
@@ -157,15 +166,15 @@
     Performance data and crash reports
   </message>
 
-  <!-- Strings related to Brave Enterprise User Protect -->
-  <message name="IDS_MANAGEMENT_THREAT_PROTECTION" desc="Title of the Brave Enterprise User Protect section of the page">
-    Brave Enterprise User Protect
+  <!-- Strings related to Enterprise Service Hooks -->
+  <message name="IDS_MANAGEMENT_THREAT_PROTECTION" desc="Title of the Enterprise Service Hooks section of the page">
+    Enterprise Service Hooks
   </message>
-  <message name="IDS_MANAGEMENT_THREAT_PROTECTION_DESCRIPTION" desc="Description of the Brave Enterprise User Protect section of the page">
-    Your administrator has enabled Brave Enterprise User Protect on your browser. Brave Enterprise User Protect has access to some of your data.
+  <message name="IDS_MANAGEMENT_THREAT_PROTECTION_DESCRIPTION" desc="Description of the Enterprise Service Hooks section of the page">
+    Your administrator has enabled Enterprise Service Hooks on your browser. These hooks have access to some of your data.
   </message>
-  <message name="IDS_MANAGEMENT_THREAT_PROTECTION_DESCRIPTION_BY" desc="Description of the Brave Enterprise User Protect section of the page">
-    <ph name="ENROLLMENT_DOMAIN">$1<ex>example.com</ex></ph> has enabled Brave Enterprise User Protect on your browser. Brave Enterprise User Protect has access to some of your data.
+  <message name="IDS_MANAGEMENT_THREAT_PROTECTION_DESCRIPTION_BY" desc="Description of the Enterprise Service Hooks section of the page">
+    <ph name="ENROLLMENT_DOMAIN">$1<ex>example.com</ex></ph> has enabled Enterprise Service Hooks on your browser. These hooks have access to some of your data.
   </message>
   <message name="IDS_MANAGEMENT_DATA_LOSS_PREVENTION_NAME" desc="Name for the data loss prevention feature">
     Data Loss Prevention
@@ -183,6 +192,6 @@
     Enterprise Reporting
   </message>
   <message name="IDS_MANAGEMENT_ENTERPRISE_REPORTING_PERMISSIONS" desc="Permissions description for the enterprise reporting feature">
-    Share data about security events that have been flagged by Brave Enterprise User Protect with your Administrator. This may include URLs of pages you visit, file names or metadata, and the username you use to sign in to your device and Brave.
+    Share data about security events that have been flagged by Enterprise Service Hooks with your administrator. This may include URLs of pages you visit, file names or metadata, and the username you use to sign in to your device and Brave.
   </message>
 </grit-part>

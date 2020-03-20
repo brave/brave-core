@@ -40,7 +40,7 @@ class RewardsNotificationServiceImpl
   const RewardsNotificationsMap& GetAllNotifications() const override;
 
   void ReadRewardsNotificationsJSON() override;
-  void ReadRewardsNotifications(const base::Value::ListStorage& root);
+  void ReadRewardsNotifications(base::Value::ConstListView root);
   void StoreRewardsNotifications() override;
 
   bool Exists(RewardsNotificationID id) const override;

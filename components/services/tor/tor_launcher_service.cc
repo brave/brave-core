@@ -15,15 +15,18 @@ namespace tor {
 void TorLauncherService::BindTorLauncherReceiver(
     service_manager::ServiceKeepalive* keepalive,
     mojo::PendingReceiver<tor::mojom::TorLauncher> receiver) {
-  receivers_.Add(
-      std::make_unique<tor::TorLauncherImpl>(keepalive->CreateRef()),
-      std::move(receiver));
+  std::unique_ptr<tor::TorLauncherImpl> launcher =
+      std::make_unique<tor::TorLauncherImpl>(keepalive->CreateRef());
+  LauncherContext ctx(launcher.get());
+  receivers_.Add(std::move(launcher), std::move(receiver), ctx);
 }
 
 TorLauncherService::TorLauncherService(
         service_manager::mojom::ServiceRequest request) :
     service_binding_(this, std::move(request)),
     service_keepalive_(&service_binding_, base::TimeDelta()) {
+  receivers_.set_disconnect_handler(base::BindRepeating(
+      &TorLauncherService::OnRemoteDisconnected, base::Unretained(this)));
 }
 
 TorLauncherService::~TorLauncherService() {}
@@ -40,6 +43,10 @@ void TorLauncherService::OnConnect(
     const std::string& interface_name,
     mojo::ScopedMessagePipeHandle receiver_pipe) {
   binders_.TryBind(interface_name, &receiver_pipe);
+}
+
+void TorLauncherService::OnRemoteDisconnected() {
+  receivers_.current_context().impl()->SetDisconnected();
 }
 
 }  // namespace tor

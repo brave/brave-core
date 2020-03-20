@@ -1,5 +1,5 @@
 diff --git a/services/network/public/cpp/BUILD.gn b/services/network/public/cpp/BUILD.gn
-index 370122e95e99f3be6ba11837f04c864f64cbceab..95f7177010fb591f0687d4095ea49ccd2db387e9 100644
+index 2873d13fb38ab091acd9efc323473319ebd27d2d..7c62394e4446b2f421d6639c65f4b54207d6ede1 100644
 --- a/services/network/public/cpp/BUILD.gn
 +++ b/services/network/public/cpp/BUILD.gn
 @@ -109,6 +109,7 @@ jumbo_component("cpp") {
@@ -8,5 +8,5 @@ index 370122e95e99f3be6ba11837f04c864f64cbceab..95f7177010fb591f0687d4095ea49ccd
  
 +  public_deps += [ "//brave/services/network/public/cpp" ]
    defines = [ "IS_NETWORK_CPP_IMPL" ]
+ }
  
-   if (is_chromecast) {

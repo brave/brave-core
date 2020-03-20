@@ -1,18 +1,18 @@
 diff --git a/chrome/browser/resources/settings/route.js b/chrome/browser/resources/settings/route.js
-index 63409309e9f378f50471be752ed49ef9e11f6bbc..17c53b00fc22d1a2a5c1b5c9d2d792832894c256 100644
+index 9698a4f43d0e1b027a8fa36f1accf4aa50c2d0d6..ae96b1709f46dc2b2afb69253946b6c0a3d6e017 100644
 --- a/chrome/browser/resources/settings/route.js
 +++ b/chrome/browser/resources/settings/route.js
-@@ -275,7 +275,9 @@ cr.define('settings', function() {
+@@ -26,7 +26,9 @@ cr.define('settings', function() {
  
      // TODO(tommycli): Find a way to refactor these repetitive category
      // routes.
 +      // <if expr="_google_chrome">
      r.SITE_SETTINGS_ADS = r.SITE_SETTINGS.createChild('ads');
 +      // </if>
-     r.SITE_SETTINGS_AUTOMATIC_DOWNLOADS =
-         r.SITE_SETTINGS.createChild('automaticDownloads');
-     r.SITE_SETTINGS_BACKGROUND_SYNC =
-@@ -398,7 +400,9 @@ cr.define('settings', function() {
+     if (loadTimeData.getBoolean('enableWebXrContentSetting')) {
+       r.SITE_SETTINGS_AR = r.SITE_SETTINGS.createChild('ar');
+     }
+@@ -161,7 +163,9 @@ cr.define('settings', function() {
        }
  
        r.PRINTING = r.ADVANCED.createSection('/printing', 'printing');

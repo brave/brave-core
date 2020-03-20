@@ -1,5 +1,5 @@
 diff --git a/chrome/tools/build/mac/BUILD.gn b/chrome/tools/build/mac/BUILD.gn
-index 2beb33b6c8a30841f408f778577126be8363d87b..8a104d27e6eb90afde028fb0dd701e3e1b0c5869 100644
+index 2189d4c9ee07a9abecd26f6e8d170b72a1210800..7501f0a2c7eddf41169fcd981722248b6a1368e4 100644
 --- a/chrome/tools/build/mac/BUILD.gn
 +++ b/chrome/tools/build/mac/BUILD.gn
 @@ -4,6 +4,7 @@
@@ -8,5 +8,5 @@ index 2beb33b6c8a30841f408f778577126be8363d87b..8a104d27e6eb90afde028fb0dd701e3e
    configs += [ "//build/config/compiler:wexit_time_destructors" ]
 +  configs += [ "//brave/common:constants_configs" ]
  
-   sources = [
-     "infoplist_strings_util.mm",
+   sources = [ "infoplist_strings_util.mm" ]
+ 

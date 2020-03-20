@@ -1,5 +1,5 @@
 diff --git a/components/bookmarks/browser/bookmark_model.h b/components/bookmarks/browser/bookmark_model.h
-index ae1ef2997adabedb362c525b58c724a9114899b9..d1d4d7091b83d3cb31740a1ee4d22c24b15fcad0 100644
+index 1dbfe99d44442a0a2ade363c404c5428385aee7c..f9b2d3ed5229c92dcad4b8daf020d3999499f0fa 100644
 --- a/components/bookmarks/browser/bookmark_model.h
 +++ b/components/bookmarks/browser/bookmark_model.h
 @@ -324,6 +324,7 @@ class BookmarkModel : public BookmarkUndoProvider,

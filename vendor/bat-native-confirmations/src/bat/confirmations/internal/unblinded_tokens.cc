@@ -36,7 +36,7 @@ base::Value UnblindedTokens::GetTokensAsList() {
         token.unblinded_token.encode_base64()));
     dictionary.SetKey("public_key", base::Value(token.public_key));
 
-    list.GetList().push_back(std::move(dictionary));
+    list.Append(std::move(dictionary));
   }
 
   return list;

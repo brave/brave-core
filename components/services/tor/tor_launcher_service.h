@@ -18,6 +18,8 @@
 
 namespace tor {
 
+class TorLauncherImpl;
+
 class TorLauncherService : public service_manager::Service {
  public:
   explicit TorLauncherService(
@@ -34,10 +36,20 @@ class TorLauncherService : public service_manager::Service {
   service_manager::ServiceBinding service_binding_;
   service_manager::ServiceKeepalive service_keepalive_;
   service_manager::BinderMap binders_;
-  mojo::UniqueReceiverSet<tor::mojom::TorLauncher> receivers_;
+
+  class LauncherContext {
+   public:
+    explicit LauncherContext(TorLauncherImpl* impl) : impl_(impl) {}
+    TorLauncherImpl* impl() const { return impl_; }
+   private:
+    TorLauncherImpl* impl_;
+  };
+  mojo::UniqueReceiverSet<tor::mojom::TorLauncher, LauncherContext> receivers_;
+
   void BindTorLauncherReceiver(
       service_manager::ServiceKeepalive* keepalive,
       mojo::PendingReceiver<tor::mojom::TorLauncher> receiver);
+  void OnRemoteDisconnected();
 
   DISALLOW_COPY_AND_ASSIGN(TorLauncherService);
 };

@@ -6,6 +6,8 @@ jumbo_component("cpp") {
     "//services/network/public/cpp:cpp",
   ]
 
+  output_name = "brave_network_cpp"
+
   sources = [
     "system_request_handler.cc",
     "system_request_handler.h",

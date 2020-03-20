@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/modules_idl_files.gni b/third_party/blink/renderer/modules/modules_idl_files.gni
-index 1bb5f1a07397e4f5c2cac8388a96976c12e21787..81919dea27f8c21e45285f1911407a0ee6228445 100644
+index f6dae1fa5263f07051235e80d47a3c6fd0e2d30c..ec0028dc1d86074637f026b2f931a9a3e63b554b 100644
 --- a/third_party/blink/renderer/modules/modules_idl_files.gni
 +++ b/third_party/blink/renderer/modules/modules_idl_files.gni
-@@ -543,6 +543,7 @@ modules_idl_files =
+@@ -556,6 +556,7 @@ modules_idl_files =
          ],
          "abspath")
  
@@ -10,7 +10,7 @@ index 1bb5f1a07397e4f5c2cac8388a96976c12e21787..81919dea27f8c21e45285f1911407a0e
  if (!is_android) {
    modules_idl_files += get_path_info([
                                         "serial/serial.idl",
-@@ -1030,6 +1031,7 @@ modules_dependency_idl_files =
+@@ -1051,6 +1052,7 @@ modules_dependency_idl_files =
            "xr/navigator_xr.idl",
          ],
          "abspath")

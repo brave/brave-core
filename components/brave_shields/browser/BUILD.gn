@@ -68,6 +68,7 @@ source_set("browser") {
     "//components/content_settings/core/browser",
     "//components/keyed_service/core",
     "//components/prefs",
+    "//components/sessions",
     "//content/public/browser",
     "//net",
     "//third_party/leveldatabase",

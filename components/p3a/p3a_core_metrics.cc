@@ -145,7 +145,7 @@ void UsagePermanentState::SaveUptimes() {
     base::DictionaryValue value;
     value.SetKey("day", base::Value(u.day.ToDoubleT()));
     value.SetKey("uptime", base::Value(u.uptime.InSecondsF()));
-    list->GetList().push_back(std::move(value));
+    list->Append(std::move(value));
   }
 }
 

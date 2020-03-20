@@ -343,10 +343,10 @@ Additional details:
   <message name="IDS_POLICY_LABEL_PUSH_POLICIES" desc="Label to indicates the policies can be pushed or not to chrome.">
     Policies push:
   </message>
-  <message name="IDS_POLICY_PUSH_POLICIES_ON" desc="Indicates the policies can be pushed to chrome.">
+  <message name="IDS_POLICY_PUSH_POLICIES_ON" desc="Label in the chrome://policy information page." meaning="Policies can be pushed to chrome.">
     On
   </message>
-  <message name="IDS_POLICY_PUSH_POLICIES_OFF" desc="Indicates the policies cannot be pushed to chrome.">
+  <message name="IDS_POLICY_PUSH_POLICIES_OFF" desc="Label in the chrome://policy information page." meaning="Policies cannot be pushed to chrome.">
     Off
   </message>
   <message name="IDS_POLICY_NEVER_FETCHED" desc="Indicates that a policy fetch was never performed before.">

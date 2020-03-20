@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/printing_page/printing_page.html b/chrome/browser/resources/settings/printing_page/printing_page.html
-index c5e5854a730e6a74a481e47d7cc60c6346aa56ea..d91aafa96b7933918a992d2d6c1164e1ea320a7d 100644
+index 4547f2e115c0626ce7dc182c5f27c136192cafa8..9edc1feda32f456712f0ae9aa48975c3ec058fd9 100644
 --- a/chrome/browser/resources/settings/printing_page/printing_page.html
 +++ b/chrome/browser/resources/settings/printing_page/printing_page.html
-@@ -28,10 +28,12 @@
+@@ -20,10 +20,12 @@
          <cr-link-row label="$i18n{localPrintersTitle}"
              on-click="onTapLocalPrinters_" external></cr-link-row>
  </if>
@@ -13,5 +13,5 @@ index c5e5854a730e6a74a481e47d7cc60c6346aa56ea..d91aafa96b7933918a992d2d6c1164e1
          </cr-link-row>
 +</if>
        </div>
- <if expr="chromeos">
-       <template is="dom-if" route-path="/cupsPrinters">
+       <template is="dom-if" route-path="/cloudPrinters">
+         <settings-subpage

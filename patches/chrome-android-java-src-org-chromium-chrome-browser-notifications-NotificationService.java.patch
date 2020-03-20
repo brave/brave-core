@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationService.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationService.java
-index 07cf0852a2707fad59f35e864a8a1814234eaebd..b8822f523ae05a93224416b961bb308cbb4883be 100644
+index baa1b123c8a648782370d8c4317479c6b2a4b382..8a415e40bab3169e8a4ed7e2d767a6b4b8e6cc97 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationService.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationService.java
 @@ -117,7 +117,7 @@ public class NotificationService extends IntentService {

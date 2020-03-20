@@ -30,6 +30,8 @@ source_set("pref_names") {
     "pref_names.cc",
     "pref_names.h",
   ]
+
+  deps = [ "//components/gcm_driver:gcm_buildflags" ]
 }
 
 source_set("switches") {
