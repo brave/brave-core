@@ -1,14 +1,13 @@
-// Copyright (c) 2020 The Brave Authors. All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // Utils
-import { debounce } from '../../common/debounce'
+import { debounce } from '../common/debounce'
 
 const keyName = 'new-tab-data'
 
-export const defaultState: NewTab.State = {
+const defaultState: NewTab.State = {
   initialDataLoaded: false,
   textDirection: window.loadTimeData.getString('textdirection'),
   featureFlagBraveNTPBrandedWallpaper: window.loadTimeData.getBoolean('featureFlagBraveNTPBrandedWallpaper'),
@@ -19,11 +18,16 @@ export const defaultState: NewTab.State = {
   showRewards: false,
   brandedWallpaperOptIn: false,
   isBrandedWallpaperNotificationDismissed: true,
+  topSites: [],
+  ignoredTopSites: [],
+  pinnedTopSites: [],
+  gridSites: [],
   showEmptyPage: false,
   isIncognito: chrome.extension.inIncognitoContext,
   useAlternativePrivateSearchEngine: false,
   isTor: false,
   isQwant: false,
+  bookmarks: {},
   stats: {
     adsBlockedStat: 0,
     javascriptBlockedStat: 0,
@@ -57,6 +61,23 @@ if (chrome.extension.inIncognitoContext) {
   defaultState.isQwant = window.loadTimeData.getBoolean('isQwant')
 }
 
+const getPersistentData = (state: NewTab.State): NewTab.PersistentState => {
+  // Don't save items which we aren't the source
+  // of data for.
+  const peristantState: NewTab.PersistentState = {
+    topSites: state.topSites,
+    ignoredTopSites: state.ignoredTopSites,
+    pinnedTopSites: state.pinnedTopSites,
+    gridSites: state.gridSites,
+    showEmptyPage: state.showEmptyPage,
+    bookmarks: state.bookmarks,
+    rewardsState: state.rewardsState,
+    currentStackWidget: state.currentStackWidget
+  }
+
+  return peristantState
+}
+
 const cleanData = (state: NewTab.State) => {
   // We need to disable linter as we defined in d.ts that this values are number,
   // but we need this check to covert from old version to a new one
@@ -76,8 +97,7 @@ const cleanData = (state: NewTab.State) => {
 export const load = (): NewTab.State => {
   const data: string | null = window.localStorage.getItem(keyName)
   let state = defaultState
-  let storedState
-
+  let storedState: NewTab.PersistentState
   if (data) {
     try {
       storedState = JSON.parse(data)
@@ -87,7 +107,7 @@ export const load = (): NewTab.State => {
         ...storedState
       }
     } catch (e) {
-      console.error('[NewTabData] Could not parse local storage data: ', e)
+      console.error('Could not parse local storage data: ', e)
     }
   }
   return cleanData(state)
@@ -95,11 +115,7 @@ export const load = (): NewTab.State => {
 
 export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
   if (data) {
-    const dataToSave = {
-      showEmptyPage: data.showEmptyPage,
-      rewardsState: data.rewardsState,
-      currentStackWidget: data.currentStackWidget
-    }
+    const dataToSave = getPersistentData(data)
     window.localStorage.setItem(keyName, JSON.stringify(dataToSave))
   }
 }, 50)

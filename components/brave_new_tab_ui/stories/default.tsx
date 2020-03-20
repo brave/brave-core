@@ -12,10 +12,9 @@ import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
 
 // Components
 import NewTabPage from '../containers/newTab'
-import * as newTabActions from '../actions/new_tab_actions'
-import * as gridSitesActions from '../actions/grid_sites_actions'
+import * as actions from '../actions/new_tab_actions'
 import store from '../store'
-import { getNewTabData, getGridSitesData } from './default/data/storybookState'
+import { getNewTabData } from './default/data/storybookState'
 
 export default function Provider ({ story }: any) {
   return (
@@ -40,13 +39,10 @@ storiesOf('New Tab/Containers', module)
   .addDecorator(story => <Provider story={story()} />)
   .add('Default', () => {
     const doNothing = (value: boolean) => value
-    const newTabData = getNewTabData(store.getState().newTabData)
-    const gridSitesData = getGridSitesData(store.getState().gridSitesData)
     return (
       <NewTabPage
-        newTabData={newTabData}
-        gridSitesData={gridSitesData}
-        actions={Object.assign({}, newTabActions, gridSitesActions)}
+        newTabData={getNewTabData(store.getState().newTabData as NewTab.State)}
+        actions={actions}
         saveShowBackgroundImage={doNothing}
         saveShowClock={doNothing}
         saveShowTopSites={doNothing}
