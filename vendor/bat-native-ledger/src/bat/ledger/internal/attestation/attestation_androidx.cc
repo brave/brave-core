@@ -10,7 +10,7 @@
 #include "base/json/json_writer.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/attestation/attestation_androidx.h"
-#include "bat/ledger/internal/request/attestation_requests.h"
+#include "bat/ledger/internal/request/request_attestation.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;

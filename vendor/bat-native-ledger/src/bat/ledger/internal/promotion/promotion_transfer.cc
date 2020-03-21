@@ -11,7 +11,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/promotion/promotion_transfer.h"
 #include "bat/ledger/internal/promotion/promotion_util.h"
-#include "bat/ledger/internal/request/promotion_requests.h"
+#include "bat/ledger/internal/request/request_promotion.h"
 #include "bat/ledger/internal/request/request_util.h"
 #include "bat/ledger/internal/state_keys.h"
 #include "net/http/http_status_code.h"
