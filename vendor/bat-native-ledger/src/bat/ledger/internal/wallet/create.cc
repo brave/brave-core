@@ -239,7 +239,7 @@ void Create::RegisterPersonaCallback(
     // should fix in
     // https://github.com/brave-intl/bat-native-anonize/issues/11
     free((void*)masterUserToken); // NOLINT
-  } else if (!braveledger_bat_helper::ignore_for_testing()) {
+  } else if (!ledger::is_testing) {
     callback(
         ledger::Result::REGISTRATION_VERIFICATION_FAILED);
     return;
