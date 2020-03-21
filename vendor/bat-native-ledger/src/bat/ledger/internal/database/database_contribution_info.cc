@@ -7,8 +7,8 @@
 #include <utility>
 
 #include "base/strings/stringprintf.h"
-#include "base/time/time.h"
 #include "bat/ledger/internal/common/bind_util.h"
+#include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/database/database_contribution_info.h"
 #include "bat/ledger/internal/database/database_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -389,7 +389,7 @@ void DatabaseContributionInfo::InsertOrUpdate(
 
   auto created_at = info->created_at;
   if (info->created_at == 0) {
-    created_at = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+    created_at = braveledger_time_util::GetCurrentTimeStamp();
   }
 
   auto transaction = ledger::DBTransaction::New();

@@ -29,4 +29,8 @@ uint32_t GetYear(const base::Time& time) {
   return exploded.year;
 }
 
+uint64_t GetCurrentTimeStamp() {
+  return static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+}
+
 }  // namespace braveledger_time_util

@@ -8,6 +8,7 @@
 
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/bat_state.h"
+#include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/state/client_state.h"
 
@@ -175,11 +176,12 @@ uint64_t BatState::GetReconcileStamp() const {
 
 void BatState::ResetReconcileStamp() {
   if (ledger::reconcile_time > 0) {
-    state_->reconcile_timestamp = braveledger_bat_helper::currentTime() +
-                                ledger::reconcile_time * 60;
+    state_->reconcile_timestamp =
+        braveledger_time_util::GetCurrentTimeStamp() +
+        ledger::reconcile_time * 60;
   } else {
-    state_->reconcile_timestamp = braveledger_bat_helper::currentTime() +
-                                braveledger_ledger::_reconcile_default_interval;
+    state_->reconcile_timestamp = braveledger_time_util::GetCurrentTimeStamp() +
+        braveledger_ledger::_reconcile_default_interval;
   }
   SaveState();
 }

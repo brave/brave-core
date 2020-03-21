@@ -10,6 +10,7 @@
 
 #include "base/strings/stringprintf.h"
 #include "base/strings/string_util.h"
+#include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/database/database_promotion.h"
 #include "bat/ledger/internal/database/database_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -486,8 +487,7 @@ void DatabasePromotion::CredentialCompleted(
   command->type = ledger::DBCommand::Type::RUN;
   command->command = query;
 
-  const uint64_t current_time =
-      static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+  const uint64_t current_time = braveledger_time_util::GetCurrentTimeStamp();
 
   BindInt(command.get(), 0,
       static_cast<int>(ledger::PromotionStatus::FINISHED));

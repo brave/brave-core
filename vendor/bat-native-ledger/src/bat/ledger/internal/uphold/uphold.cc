@@ -11,6 +11,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/bat_util.h"
+#include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/uphold/uphold_authorization.h"
 #include "bat/ledger/internal/uphold/uphold_card.h"
@@ -99,7 +100,8 @@ void Uphold::ContributionCompleted(
     const std::string& publisher_key,
     ledger::ResultCallback callback) {
   if (result == ledger::Result::LEDGER_OK) {
-    const auto current_time_seconds = base::Time::Now().ToDoubleT();
+    const auto current_time_seconds =
+        braveledger_time_util::GetCurrentTimeStamp();
     auto transfer_fee = ledger::TransferFee::New();
     transfer_fee->id = contribution_id;
     transfer_fee->amount = fee;

@@ -11,6 +11,7 @@
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/properties/wallet_info_properties.h"
 #include "bat/ledger/internal/request/request_util.h"
@@ -261,7 +262,7 @@ void Create::RegisterPersonaCallback(
   ledger_->SetCurrency(currency);
   ledger_->SetContributionAmount(fee_amount);
   ledger_->SetDays(days);
-  ledger_->SetBootStamp(braveledger_bat_helper::currentTime());
+  ledger_->SetBootStamp(braveledger_time_util::GetCurrentTimeStamp());
   ledger_->ResetReconcileStamp();
   callback(ledger::Result::WALLET_CREATED);
 }

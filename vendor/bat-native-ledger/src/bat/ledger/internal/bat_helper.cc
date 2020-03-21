@@ -456,10 +456,6 @@ std::string sign(
     "\",headers=\"" + headers + "\",signature=\"" + getBase64(signature) + "\"";
 }
 
-uint64_t currentTime() {
-  return time(0);
-}
-
 bool HasSameDomainAndPath(
     const std::string& url_to_validate,
     const std::string& domain_to_match,

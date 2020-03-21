@@ -9,6 +9,7 @@
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "bat/ledger/internal/bat_util.h"
+#include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/contribution/contribution_unblinded.h"
 #include "bat/ledger/internal/contribution/contribution_util.h"
@@ -42,7 +43,7 @@ std::string ConvertTypeToString(const ledger::RewardsType type) {
 }
 
 bool HasTokenExpired(const ledger::UnblindedToken& token) {
-  const uint64_t now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+  const auto now = braveledger_time_util::GetCurrentTimeStamp();
 
   return token.expires_at > 0 && token.expires_at < now;
 }
