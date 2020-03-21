@@ -133,7 +133,7 @@ export default class TableAdsHistory extends React.PureComponent<Props, {}> {
     return (
       <StyledCategoryContentDiv>
         <StyledCategoryName>
-          {content.category}
+          {content.category === 'untargeted' ? 'general' : content.category}
         </StyledCategoryName>
         <StyledCategoryActions>
           <CategoryLikePicker
