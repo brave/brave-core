@@ -84,15 +84,6 @@ BatLedgerClientMojoProxy::BatLedgerClientMojoProxy(
 BatLedgerClientMojoProxy::~BatLedgerClientMojoProxy() {
 }
 
-std::string BatLedgerClientMojoProxy::GenerateGUID() const {
-  if (!Connected())
-    return "";
-
-  std::string guid;
-  bat_ledger_client_->GenerateGUID(&guid);
-  return guid;
-}
-
 void OnLoadURL(const ledger::LoadURLCallback& callback,
     int32_t response_code, const std::string& response,
     const base::flat_map<std::string, std::string>& headers) {

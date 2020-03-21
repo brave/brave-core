@@ -18,7 +18,6 @@
 #include "base/containers/flat_map.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
-#include "base/guid.h"
 #include "base/i18n/time_formatting.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -738,10 +737,6 @@ void RewardsServiceImpl::RestorePublishersUI() {
 
 std::string RewardsServiceImpl::URIEncode(const std::string& value) {
   return net::EscapeQueryParamValue(value, false);
-}
-
-std::string RewardsServiceImpl::GenerateGUID() const {
-  return base::GenerateGUID();
 }
 
 void RewardsServiceImpl::Shutdown() {

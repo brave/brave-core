@@ -89,9 +89,6 @@ class LEDGER_EXPORT LedgerClient {
  public:
   virtual ~LedgerClient() = default;
 
-  // called when the wallet creation has completed
-  virtual std::string GenerateGUID() const = 0;
-
   virtual void OnWalletProperties(
       Result result,
       ledger::WalletPropertiesPtr properties) = 0;

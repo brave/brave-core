@@ -158,7 +158,6 @@ interface BatLedger {
 
 interface BatLedgerClient {
   [Sync]
-  GenerateGUID() => (string guid);
   LoadLedgerState() => (ledger.mojom.Result result, string data);
   LoadPublisherState() => (ledger.mojom.Result result, string data);
   SaveLedgerState(string ledger_state) => (ledger.mojom.Result result);

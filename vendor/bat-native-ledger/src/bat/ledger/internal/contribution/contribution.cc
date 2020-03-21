@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/guid.h"
 #include "base/time/time.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/bat_util.h"
@@ -807,7 +808,7 @@ bool Contribution::ProcessReconcileUnblindedTokens(
     return false;
   }
 
-  const std::string contribution_id = ledger_->GenerateGUID();
+  const std::string contribution_id = base::GenerateGUID();
 
   const uint64_t now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
   auto contribution = ledger::ContributionInfo::New();
@@ -868,7 +869,7 @@ bool Contribution::ProcessReconcileAnonize(
   }
 
   auto reconcile = ledger::CurrentReconcileProperties();
-  reconcile.viewing_id = ledger_->GenerateGUID();
+  reconcile.viewing_id = base::GenerateGUID();
   reconcile.fee = *fee;
   reconcile.directions = directions;
   reconcile.type = type;
@@ -924,7 +925,7 @@ bool Contribution::ProcessExternalWallet(
     return false;
   }
 
-  const std::string contribution_id = ledger_->GenerateGUID();
+  const std::string contribution_id = base::GenerateGUID();
 
   const uint64_t now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
   auto contribution = ledger::ContributionInfo::New();

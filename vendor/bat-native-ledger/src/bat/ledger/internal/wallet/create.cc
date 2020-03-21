@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/guid.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "bat/ledger/internal/bat_helper.h"
@@ -118,7 +119,7 @@ void Create::RequestCredentialsCallback(
   std::string persona_id = ledger_->GetPersonaId();
 
   if (persona_id.empty()) {
-    persona_id = ledger_->GenerateGUID();
+    persona_id = base::GenerateGUID();
     ledger_->SetPersonaId(persona_id);
   }
   // Anonize2 limit is 31 octets
@@ -159,7 +160,7 @@ void Create::RequestCredentialsCallback(
   braveledger_bat_helper::getPublicKeyFromSeed(secretKey,
                                                &publicKey,
                                                &newSecretKey);
-  std::string label = ledger_->GenerateGUID();
+  std::string label = base::GenerateGUID();
   std::string public_key_hex = braveledger_bat_helper::uint8ToHex(publicKey);
   std::string keys[3] = {"currency", "label", "publicKey"};
   std::string values[3] = {LEDGER_CURRENCY, label, public_key_hex};

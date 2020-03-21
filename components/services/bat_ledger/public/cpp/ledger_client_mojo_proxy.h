@@ -25,7 +25,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   ~LedgerClientMojoProxy() override;
 
   // bat_ledger::mojom::BatLedgerClient
-  void GenerateGUID(GenerateGUIDCallback callback) override;
   void LoadLedgerState(LoadLedgerStateCallback callback) override;
   void OnWalletProperties(
       const ledger::Result result,

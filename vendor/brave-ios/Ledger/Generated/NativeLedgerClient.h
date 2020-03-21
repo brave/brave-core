@@ -17,7 +17,6 @@ private:
 
   void ConfirmationsTransactionHistoryDidChange() override;
   void FetchFavIcon(const std::string & url, const std::string & favicon_key, ledger::FetchIconCallback callback) override;
-  std::string GenerateGUID() const override;
   void KillTimer(const uint32_t timer_id) override;
   void LoadLedgerState(ledger::OnLoadCallback callback) override;
   void LoadNicewareList(ledger::GetNicewareListCallback callback) override;

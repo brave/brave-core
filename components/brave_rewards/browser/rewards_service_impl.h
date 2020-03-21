@@ -464,7 +464,6 @@ class RewardsServiceImpl : public RewardsService,
       const ledger::Result result);
 
   // ledger::LedgerClient
-  std::string GenerateGUID() const override;
   void OnRecoverWallet(
       ledger::Result result,
       double balance);

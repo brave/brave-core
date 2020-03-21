@@ -10,7 +10,6 @@
 
 - (void)confirmationsTransactionHistoryDidChange;
 - (void)fetchFavIcon:(const std::string &)url faviconKey:(const std::string &)favicon_key callback:(ledger::FetchIconCallback)callback;
-- (std::string)generateGUID;
 - (void)killTimer:(const uint32_t)timer_id;
 - (void)loadLedgerState:(ledger::OnLoadCallback)callback;
 - (void)loadNicewareList:(ledger::GetNicewareListCallback)callback;
