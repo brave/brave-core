@@ -837,41 +837,41 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringSimple) {
 }
 
 // Test simple cosmetic filtering
-IN_PROC_BROWSER_TEST_F(CosmeticFilteringEnabledTest, CosmeticFilteringSimple) {
-  UpdateAdBlockInstanceWithRules(
-      "b.com###ad-banner\n"
-      "##.ad");
+// IN_PROC_BROWSER_TEST_F(CosmeticFilteringEnabledTest, CosmeticFilteringSimple) {
+//   UpdateAdBlockInstanceWithRules(
+//       "b.com###ad-banner\n"
+//       "##.ad");
 
-  WaitForBraveExtensionShieldsDataReady();
+//   WaitForBraveExtensionShieldsDataReady();
 
-  GURL tab_url = embedded_test_server()->GetURL("b.com",
-                                                "/cosmetic_filtering.html");
-  ui_test_utils::NavigateToURL(browser(), tab_url);
+//   GURL tab_url = embedded_test_server()->GetURL("b.com",
+//                                                 "/cosmetic_filtering.html");
+//   ui_test_utils::NavigateToURL(browser(), tab_url);
 
-  content::WebContents* contents =
-    browser()->tab_strip_model()->GetActiveWebContents();
+//   content::WebContents* contents =
+//     browser()->tab_strip_model()->GetActiveWebContents();
 
-  bool as_expected = false;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(
-              contents,
-              "checkSelector('#ad-banner', 'display', 'none')",
-              &as_expected));
-  EXPECT_TRUE(as_expected);
+//   bool as_expected = false;
+//   ASSERT_TRUE(ExecuteScriptAndExtractBool(
+//               contents,
+//               "checkSelector('#ad-banner', 'display', 'none')",
+//               &as_expected));
+//   EXPECT_TRUE(as_expected);
 
-  as_expected = false;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(
-              contents,
-              "checkSelector('.ad-banner', 'display', 'block')",
-              &as_expected));
-  EXPECT_TRUE(as_expected);
+//   as_expected = false;
+//   ASSERT_TRUE(ExecuteScriptAndExtractBool(
+//               contents,
+//               "checkSelector('.ad-banner', 'display', 'block')",
+//               &as_expected));
+//   EXPECT_TRUE(as_expected);
 
-  as_expected = false;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(
-              contents,
-              "checkSelector('.ad', 'display', 'none')",
-              &as_expected));
-  EXPECT_TRUE(as_expected);
-}
+//   as_expected = false;
+//   ASSERT_TRUE(ExecuteScriptAndExtractBool(
+//               contents,
+//               "checkSelector('.ad', 'display', 'none')",
+//               &as_expected));
+//   EXPECT_TRUE(as_expected);
+// }
 
 // Test cosmetic filtering ignores content determined to be 1st party
 IN_PROC_BROWSER_TEST_F(CosmeticFilteringEnabledTest,
@@ -947,33 +947,33 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringEnabledTest,
 }
 
 // Test rules overridden by hostname-specific exception rules
-IN_PROC_BROWSER_TEST_F(CosmeticFilteringEnabledTest, CosmeticFilteringUnhide) {
-  UpdateAdBlockInstanceWithRules(
-      "##.ad\n"
-      "b.com#@#.ad\n"
-      "###ad-banner\n"
-      "a.com#@##ad-banner");
+// IN_PROC_BROWSER_TEST_F(CosmeticFilteringEnabledTest, CosmeticFilteringUnhide) {
+//   UpdateAdBlockInstanceWithRules(
+//       "##.ad\n"
+//       "b.com#@#.ad\n"
+//       "###ad-banner\n"
+//       "a.com#@##ad-banner");
 
-  WaitForBraveExtensionShieldsDataReady();
+//   WaitForBraveExtensionShieldsDataReady();
 
-  GURL tab_url = embedded_test_server()->GetURL("b.com",
-                                                "/cosmetic_filtering.html");
-  ui_test_utils::NavigateToURL(browser(), tab_url);
+//   GURL tab_url = embedded_test_server()->GetURL("b.com",
+//                                                 "/cosmetic_filtering.html");
+//   ui_test_utils::NavigateToURL(browser(), tab_url);
 
-  content::WebContents* contents =
-    browser()->tab_strip_model()->GetActiveWebContents();
+//   content::WebContents* contents =
+//     browser()->tab_strip_model()->GetActiveWebContents();
 
-  bool as_expected = false;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(
-              contents,
-              "checkSelector('.ad', 'display', 'block')",
-              &as_expected));
-  EXPECT_TRUE(as_expected);
+//   bool as_expected = false;
+//   ASSERT_TRUE(ExecuteScriptAndExtractBool(
+//               contents,
+//               "checkSelector('.ad', 'display', 'block')",
+//               &as_expected));
+//   EXPECT_TRUE(as_expected);
 
-  as_expected = false;
-  ASSERT_TRUE(ExecuteScriptAndExtractBool(
-              contents,
-              "checkSelector('#ad-banner', 'display', 'none')",
-              &as_expected));
-  EXPECT_TRUE(as_expected);
-}
+//   as_expected = false;
+//   ASSERT_TRUE(ExecuteScriptAndExtractBool(
+//               contents,
+//               "checkSelector('#ad-banner', 'display', 'none')",
+//               &as_expected));
+//   EXPECT_TRUE(as_expected);
+// }
