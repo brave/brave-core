@@ -110,7 +110,6 @@ let observerConfig = {
   childList: true,
   attributeFilter: ['id', 'class']
 }
-cosmeticObserver.observe(document.documentElement, observerConfig)
 
 const _parseDomainCache = Object.create(null)
 const getParsedDomain = (aDomain: string) => {
@@ -338,6 +337,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   const action = typeof msg === 'string' ? msg : msg.type
   switch (action) {
     case 'cosmeticFilteringBackgroundReady': {
+      cosmeticObserver.observe(document.documentElement, observerConfig)
       backgroundReady = true
       break
     }
