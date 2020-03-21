@@ -105,9 +105,9 @@
 #define TWITCH_VOD_URL                  "https://www.twitch.tv/videos/"
 #define REDDIT_USER_URL                 "https://www.reddit.com/user/"
 #define OLD_REDDIT_DOMAIN               "old.reddit.com"
-#define MEDIA_DELIMITER                 '_'
-#define WALLET_PASSPHRASE_DELIM         ' '
-#define DICTIONARY_DELIMITER            ','
+#define MEDIA_DELIMITER                 "_"
+#define WALLET_PASSPHRASE_DELIM         " "
+#define DICTIONARY_DELIMITER            ","
 #define NICEWARE_BYTES_WRITTEN          32
 
 #define SEED_LENGTH                     32

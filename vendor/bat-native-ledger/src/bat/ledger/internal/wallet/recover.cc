@@ -6,6 +6,7 @@
 
 #include<utility>
 
+#include "base/strings/string_split.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/properties/wallet_info_properties.h"
@@ -32,8 +33,13 @@ void Recover::Start(
     const std::string& pass_phrase,
     ledger::RecoverWalletCallback callback) {
   size_t written = 0;
-  if (braveledger_bat_helper::split(pass_phrase,
-      WALLET_PASSPHRASE_DELIM).size() == 16) {
+  auto phrase_split = base::SplitString(
+      pass_phrase,
+      WALLET_PASSPHRASE_DELIM,
+      base::TRIM_WHITESPACE,
+      base::SPLIT_WANT_NONEMPTY);
+
+  if (phrase_split.size() == 16) {
     // use niceware for legacy wallet passphrases
     ledger_->LoadNicewareList(std::bind(&Recover::OnNicewareListLoaded,
         this,
@@ -60,17 +66,28 @@ void Recover::OnNicewareListLoaded(
     ledger::Result result,
     const std::string& data,
     ledger::RecoverWalletCallback callback) {
-  if (result == ledger::Result::LEDGER_OK &&
-    braveledger_bat_helper::split(pass_phrase,
-    WALLET_PASSPHRASE_DELIM).size() == 16) {
+  auto phrase_split = base::SplitString(
+      pass_phrase,
+      WALLET_PASSPHRASE_DELIM,
+      base::TRIM_WHITESPACE,
+      base::SPLIT_WANT_NONEMPTY);
+
+  if (result == ledger::Result::LEDGER_OK && phrase_split.size() == 16) {
     std::vector<uint8_t> seed;
     seed.resize(32);
     size_t written = 0;
+
+    auto data_split = base::SplitString(
+      data,
+      DICTIONARY_DELIMITER,
+      base::TRIM_WHITESPACE,
+      base::SPLIT_WANT_NONEMPTY);
+
     uint8_t nwResult = braveledger_bat_helper::niceware_mnemonic_to_bytes(
         pass_phrase,
         &seed,
         &written,
-        braveledger_bat_helper::split(data, DICTIONARY_DELIMITER));
+        data_split);
     ContinueRecover(nwResult, &written, seed, std::move(callback));
     return;
   }

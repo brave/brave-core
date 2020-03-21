@@ -7,6 +7,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/strings/string_split.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/media/helper.h"
@@ -47,12 +48,16 @@ uint64_t YouTube::GetMediaDurationFromParts(
   std::map<std::string, std::string>::const_iterator iter_st = data.find("st");
   std::map<std::string, std::string>::const_iterator iter_et = data.find("et");
   if (iter_st != data.end() && iter_et != data.end()) {
-    std::vector<std::string> start_time = braveledger_bat_helper::split(
-        iter_st->second,
-        ',');
-    std::vector<std::string> end_time = braveledger_bat_helper::split(
+    const auto start_time = base::SplitString(
+      iter_st->second,
+      ",",
+      base::TRIM_WHITESPACE,
+      base::SPLIT_WANT_NONEMPTY);
+    const auto end_time = base::SplitString(
         iter_et->second,
-        ',');
+        ",",
+        base::TRIM_WHITESPACE,
+        base::SPLIT_WANT_NONEMPTY);
     if (start_time.size() != end_time.size()) {
       return 0;
     }
@@ -60,12 +65,8 @@ uint64_t YouTube::GetMediaDurationFromParts(
     // get all the intervals and combine them.
     // (Should only be one set if there were no seeks)
     for (size_t i = 0; i < start_time.size(); i++) {
-      std::stringstream tempET(end_time[i]);
-      std::stringstream tempST(start_time[i]);
-      double st = 0;
-      double et = 0;
-      tempET >> et;
-      tempST >> st;
+      const double st = std::stod(start_time[i]);
+      const double et = std::stod(end_time[i]);
 
       // round instead of truncate
       // also make sure we include previous iterations
@@ -165,18 +166,28 @@ std::string YouTube::GetLinkType(const std::string& url) {
 // static
 std::string YouTube::GetMediaIdFromUrl(
     const std::string& url) {
-  std::vector<std::string> first_split =
-    braveledger_bat_helper::split(url, '?');
+  auto first_split = base::SplitString(
+      url,
+      "?",
+      base::TRIM_WHITESPACE,
+      base::SPLIT_WANT_NONEMPTY);
 
   if (first_split.size() < 2) {
     return std::string();
   }
 
-  std::vector<std::string> and_split =
-    braveledger_bat_helper::split(first_split[1], '&');
+  auto and_split = base::SplitString(
+      first_split[1],
+      "&",
+      base::TRIM_WHITESPACE,
+      base::SPLIT_WANT_NONEMPTY);
 
   for (const auto& item : and_split) {
-    std::vector<std::string> m_url = braveledger_bat_helper::split(item, '=');
+    auto m_url = base::SplitString(
+        item,
+        "=",
+        base::TRIM_WHITESPACE,
+        base::SPLIT_WANT_NONEMPTY);
 
     if (m_url.size() < 2) {
       continue;
@@ -218,7 +229,11 @@ std::string YouTube::GetPublisherKeyFromUrl(
     return std::string();
   }
 
-  std::vector<std::string> params = braveledger_bat_helper::split(id, '?');
+  auto params = base::SplitString(
+      id,
+      "?",
+      base::TRIM_WHITESPACE,
+      base::SPLIT_WANT_NONEMPTY);
 
   return params[0];
 }
@@ -294,7 +309,11 @@ std::string YouTube::GetUserFromUrl(const std::string& path) {
     return std::string();
   }
 
-  std::vector<std::string> params = braveledger_bat_helper::split(id, '?');
+  auto params = base::SplitString(
+      id,
+      "?",
+      base::TRIM_WHITESPACE,
+      base::SPLIT_WANT_NONEMPTY);
 
   return params[0];
 }
