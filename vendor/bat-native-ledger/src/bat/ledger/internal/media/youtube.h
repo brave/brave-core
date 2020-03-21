@@ -20,11 +20,11 @@ class LedgerImpl;
 
 namespace braveledger_media {
 
-class YouTube : public ledger::LedgerCallbackHandler {
+class YouTube {
  public:
   explicit YouTube(bat_ledger::LedgerImpl* ledger);
 
-  ~YouTube() override;
+  ~YouTube();
 
   void ProcessMedia(const std::map<std::string, std::string>& parts,
                     const ledger::VisitData& visit_data);

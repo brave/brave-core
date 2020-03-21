@@ -141,6 +141,8 @@ class BatState {
  private:
   void SaveState();
 
+  void OnSaveState(const ledger::Result result);
+
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<ledger::ClientProperties> state_;
 };

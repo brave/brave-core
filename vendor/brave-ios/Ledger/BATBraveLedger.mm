@@ -1707,10 +1707,10 @@ BATLedgerBridge(BOOL,
   [self startNotificationTimers];
 }
 
-- (void)saveLedgerState:(const std::string &)ledger_state handler:(ledger::LedgerCallbackHandler *)handler
+- (void)saveLedgerState:(const std::string &)ledger_state callback:(ledger::ResultCallback)callback
 {
   const auto result = [self.commonOps saveContents:ledger_state name:"ledger_state.json"];
-  handler->OnLedgerStateSaved(result ? ledger::Result::LEDGER_OK : ledger::Result::NO_LEDGER_STATE);
+  callback(result ? ledger::Result::LEDGER_OK : ledger::Result::NO_LEDGER_STATE);
 }
 
 - (void)loadPublisherState:(ledger::OnLoadCallback)callback
@@ -1723,10 +1723,10 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)savePublisherState:(const std::string &)publisher_state handler:(ledger::LedgerCallbackHandler *)handler
+- (void)savePublisherState:(const std::string &)publisher_state callback:(ledger::ResultCallback)callback
 {
   const auto result = [self.commonOps saveContents:publisher_state name:"publisher_state.json"];
-  handler->OnPublisherStateSaved(result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
+  callback(result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
 }
 
 - (void)loadState:(const std::string &)name callback:(ledger::OnLoadCallback)callback

@@ -20,11 +20,11 @@ class LedgerImpl;
 
 namespace braveledger_media {
 
-class Reddit : public ledger::LedgerCallbackHandler {
+class Reddit {
  public:
   explicit Reddit(bat_ledger::LedgerImpl* ledger);
 
-  ~Reddit() override;
+  ~Reddit();
 
   void ProcessActivityFromUrl(
       uint64_t window_id,

@@ -28,9 +28,9 @@ private:
   void OnReconcileComplete(ledger::Result result, const std::string & viewing_id, const double amount, const ledger::RewardsType type) override;
   void OnWalletProperties(ledger::Result result, ledger::WalletPropertiesPtr arg1) override;
   void ResetState(const std::string & name, ledger::OnResetCallback callback) override;
-  void SaveLedgerState(const std::string & ledger_state, ledger::LedgerCallbackHandler * handler) override;
+  void SaveLedgerState(const std::string & ledger_state, ledger::ResultCallback callback) override;
   void PublisherListNormalized(ledger::PublisherInfoList list) override;
-  void SavePublisherState(const std::string & publisher_state, ledger::LedgerCallbackHandler * handler) override;
+  void SavePublisherState(const std::string & publisher_state, ledger::ResultCallback callback) override;
   void SaveState(const std::string & name, const std::string & value, ledger::OnSaveCallback callback) override;
   void SetConfirmationsIsReady(const bool is_ready) override;
   void SetTimer(uint64_t time_offset, uint32_t * timer_id) override;

@@ -22,11 +22,11 @@ class LedgerImpl;
 
 namespace braveledger_media {
 
-class Vimeo : public ledger::LedgerCallbackHandler {
+class Vimeo {
  public:
   explicit Vimeo(bat_ledger::LedgerImpl* ledger);
 
-  ~Vimeo() override;
+  ~Vimeo();
 
   void ProcessMedia(const std::map<std::string, std::string>& parts);
 

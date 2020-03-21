@@ -16,7 +16,6 @@
 
 #include "bat/ledger/mojom_structs.h"
 #include "bat/ledger/export.h"
-#include "bat/ledger/ledger_callback_handler.h"
 
 namespace confirmations {
 class LogStream;
@@ -101,13 +100,15 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void LoadLedgerState(OnLoadCallback callback) = 0;
 
-  virtual void SaveLedgerState(const std::string& ledger_state,
-                               LedgerCallbackHandler* handler) = 0;
+  virtual void SaveLedgerState(
+      const std::string& ledger_state,
+      ResultCallback callback) = 0;
 
   virtual void LoadPublisherState(OnLoadCallback callback) = 0;
 
-  virtual void SavePublisherState(const std::string& publisher_state,
-                                  LedgerCallbackHandler* handler) = 0;
+  virtual void SavePublisherState(
+      const std::string& publisher_state,
+      ResultCallback callback) = 0;
 
   virtual void LoadNicewareList(ledger::GetNicewareListCallback callback) = 0;
 

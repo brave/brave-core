@@ -51,7 +51,6 @@ class SequencedTaskRunner;
 
 namespace ledger {
 class Ledger;
-class LedgerCallbackHandler;
 struct LedgerMediaPublisherInfo;
 }  // namespace ledger
 
@@ -318,13 +317,15 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnCreateWallet(CreateWalletCallback callback,
                       ledger::Result result);
-  void OnLedgerStateSaved(ledger::LedgerCallbackHandler* handler,
-                          bool success);
+  void OnLedgerStateSaved(
+      ledger::ResultCallback callback,
+      bool success);
   void OnLedgerStateLoaded(ledger::OnLoadCallback callback,
                               std::pair<std::string, base::Value> data);
   void LoadNicewareList(ledger::GetNicewareListCallback callback) override;
-  void OnPublisherStateSaved(ledger::LedgerCallbackHandler* handler,
-                             bool success);
+  void OnPublisherStateSaved(
+      ledger::ResultCallback callback,
+      bool success);
   void OnPublisherStateLoaded(ledger::OnLoadCallback callback,
                               const std::string& data);
   void OnFetchWalletProperties(const ledger::Result result,
@@ -478,10 +479,12 @@ class RewardsServiceImpl : public RewardsService,
       ledger::PromotionPtr promotion);
   void LoadLedgerState(ledger::OnLoadCallback callback) override;
   void LoadPublisherState(ledger::OnLoadCallback callback) override;
-  void SaveLedgerState(const std::string& ledger_state,
-                       ledger::LedgerCallbackHandler* handler) override;
-  void SavePublisherState(const std::string& publisher_state,
-                          ledger::LedgerCallbackHandler* handler) override;
+  void SaveLedgerState(
+      const std::string& ledger_state,
+      ledger::ResultCallback callback) override;
+  void SavePublisherState(
+      const std::string& publisher_state,
+      ledger::ResultCallback callback) override;
   void SetTimer(uint64_t time_offset, uint32_t* timer_id) override;
   void LoadURL(const std::string& url,
       const std::vector<std::string>& headers,

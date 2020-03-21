@@ -24,7 +24,6 @@
 #include "bat/ledger/internal/properties/transaction_properties.h"
 #include "bat/ledger/internal/properties/wallet_info_properties.h"
 #include "bat/ledger/internal/wallet/wallet.h"
-#include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/ledger_client.h"
 #include "bat/ledger/ledger.h"
 
@@ -70,8 +69,7 @@ class Confirmations;
 
 namespace bat_ledger {
 
-class LedgerImpl : public ledger::Ledger,
-                   public ledger::LedgerCallbackHandler {
+class LedgerImpl : public ledger::Ledger {
  public:
   typedef std::map<uint32_t,
       ledger::VisitData>::const_iterator visit_data_iter;
@@ -180,10 +178,13 @@ class LedgerImpl : public ledger::Ledger,
 
   ledger::AutoContributePropsPtr GetAutoContributeProps() override;
 
-  void SaveLedgerState(const std::string& data);
+  void SaveLedgerState(
+      const std::string& data,
+      ledger::ResultCallback callback);
 
-  void SavePublisherState(const std::string& data,
-                          ledger::LedgerCallbackHandler* handler);
+  void SavePublisherState(
+      const std::string& data,
+      ledger::ResultCallback callback);
 
   void LoadNicewareList(ledger::GetNicewareListCallback callback);
 
@@ -785,14 +786,15 @@ class LedgerImpl : public ledger::Ledger,
       const ledger::Result result,
       ledger::InitializeCallback callback);
 
-  // ledger::LedgerCallbacHandler implementation
-  void OnPublisherStateLoaded(ledger::Result result,
-                              const std::string& data,
-                              ledger::InitializeCallback callback) override;
+  void OnPublisherStateLoaded(
+      ledger::Result result,
+      const std::string& data,
+      ledger::InitializeCallback callback);
 
-  void OnLedgerStateLoaded(ledger::Result result,
-                           const std::string& data,
-                           ledger::InitializeCallback callback) override;
+  void OnLedgerStateLoaded(
+      ledger::Result result,
+      const std::string& data,
+      ledger::InitializeCallback callback);
 
   void RefreshPromotions(bool retryAfterError);
 

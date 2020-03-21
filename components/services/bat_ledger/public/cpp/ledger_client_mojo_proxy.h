@@ -38,7 +38,8 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void LoadPublisherState(LoadPublisherStateCallback callback) override;
   void SaveLedgerState(const std::string& ledger_state,
       SaveLedgerStateCallback callback) override;
-  void SavePublisherState(const std::string& publisher_state,
+  void SavePublisherState(
+      const std::string& publisher_state,
       SavePublisherStateCallback callback) override;
 
   void FetchFavIcon(const std::string& url, const std::string& favicon_key,
@@ -162,9 +163,8 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
  private:
   // workaround to pass base::OnceCallback into std::bind
-  // also serves as a wrapper for passing ledger::LedgerCallbackHandler*
   template <typename Callback>
-  class CallbackHolder : public ledger::LedgerCallbackHandler {
+  class CallbackHolder {
    public:
     CallbackHolder(base::WeakPtr<LedgerClientMojoProxy> client,
         Callback callback)
@@ -174,20 +174,18 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
     bool is_valid() { return !!client_.get(); }
     Callback& get() { return callback_; }
 
-    // ledger::LedgerCallbackHandler impl
-    void OnLedgerStateLoaded(ledger::Result result,
-        const std::string& data,
-        ledger::InitializeCallback callback) override;
-    void OnPublisherStateLoaded(ledger::Result result,
-        const std::string& data,
-        ledger::InitializeCallback callback) override;
-    void OnLedgerStateSaved(ledger::Result result) override;
-    void OnPublisherStateSaved(ledger::Result result) override;
-
    private:
     base::WeakPtr<LedgerClientMojoProxy> client_;
     Callback callback_;
   };
+
+  static void OnSavePublisherState(
+      CallbackHolder<SavePublisherStateCallback>* holder,
+      const ledger::Result result);
+
+  static void OnSaveLedgerState(
+      CallbackHolder<SaveLedgerStateCallback>* holder,
+      const ledger::Result result);
 
   static void OnLoadLedgerState(
     CallbackHolder<LoadLedgerStateCallback>* holder,

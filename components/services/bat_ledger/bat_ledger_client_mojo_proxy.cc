@@ -179,41 +179,44 @@ void BatLedgerClientMojoProxy::LoadPublisherState(
         AsWeakPtr(), std::move(callback)));
 }
 
-void BatLedgerClientMojoProxy::OnSaveLedgerState(
-    ledger::LedgerCallbackHandler* handler,
+void OnSaveLedgerState(
+    ledger::ResultCallback callback,
     const ledger::Result result) {
-  handler->OnLedgerStateSaved(result);
+  callback(result);
 }
 
 void BatLedgerClientMojoProxy::SaveLedgerState(
-    const std::string& ledger_state, ledger::LedgerCallbackHandler* handler) {
+    const std::string& ledger_state,
+    ledger::ResultCallback callback) {
   if (!Connected()) {
-    handler->OnLedgerStateSaved(ledger::Result::LEDGER_ERROR);
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
-  bat_ledger_client_->SaveLedgerState(ledger_state,
-      base::BindOnce(&BatLedgerClientMojoProxy::OnSaveLedgerState,
-        AsWeakPtr(), base::Unretained(handler)));
+  bat_ledger_client_->SaveLedgerState(
+      ledger_state,
+      base::BindOnce(&OnSaveLedgerState, std::move(callback)));
 }
 
 void BatLedgerClientMojoProxy::OnSavePublisherState(
-    ledger::LedgerCallbackHandler* handler,
+    ledger::ResultCallback callback,
     const ledger::Result result) {
-  handler->OnPublisherStateSaved(result);
+  callback(result);
 }
 
 void BatLedgerClientMojoProxy::SavePublisherState(
     const std::string& publisher_state,
-    ledger::LedgerCallbackHandler* handler) {
+    ledger::ResultCallback callback) {
   if (!Connected()) {
-    handler->OnPublisherStateSaved(ledger::Result::LEDGER_ERROR);
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
-  bat_ledger_client_->SavePublisherState(publisher_state,
+  bat_ledger_client_->SavePublisherState(
+      publisher_state,
       base::BindOnce(&BatLedgerClientMojoProxy::OnSavePublisherState,
-        AsWeakPtr(), base::Unretained(handler)));
+        AsWeakPtr(),
+        callback));
 }
 
 void BatLedgerClientMojoProxy::SetTimer(uint64_t time_offset,

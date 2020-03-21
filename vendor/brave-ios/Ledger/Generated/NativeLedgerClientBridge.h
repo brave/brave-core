@@ -21,9 +21,9 @@
 - (void)onReconcileComplete:(ledger::Result)result viewingId:(const std::string &)viewing_id type:(const ledger::RewardsType)type amount:(const double)amount;
 - (void)onWalletProperties:(ledger::Result)result arg1:(ledger::WalletPropertiesPtr)arg1;
 - (void)resetState:(const std::string &)name callback:(ledger::OnResetCallback)callback;
-- (void)saveLedgerState:(const std::string &)ledger_state handler:(ledger::LedgerCallbackHandler *)handler;
+- (void)saveLedgerState:(const std::string &)ledger_state callback:(ledger::ResultCallback)callback;
 - (void)publisherListNormalized:(ledger::PublisherInfoList)list;
-- (void)savePublisherState:(const std::string &)publisher_state handler:(ledger::LedgerCallbackHandler *)handler;
+- (void)savePublisherState:(const std::string &)publisher_state callback:(ledger::ResultCallback)callback;
 - (void)saveState:(const std::string &)name value:(const std::string &)value callback:(ledger::OnSaveCallback)callback;
 - (void)setConfirmationsIsReady:(const bool)is_ready;
 - (void)setTimer:(uint64_t)time_offset timerId:(uint32_t *)timer_id;
