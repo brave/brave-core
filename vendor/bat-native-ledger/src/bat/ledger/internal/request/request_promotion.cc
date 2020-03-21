@@ -7,7 +7,7 @@
 
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/static_values.h"
-#include "bat/ledger/internal/request/promotion_requests.h"
+#include "bat/ledger/internal/request/request_promotion.h"
 #include "bat/ledger/internal/request/request_util.h"
 
 namespace braveledger_request_util {

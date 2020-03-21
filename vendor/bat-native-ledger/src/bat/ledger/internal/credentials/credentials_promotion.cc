@@ -12,7 +12,7 @@
 #include "bat/ledger/internal/credentials/credentials_promotion.h"
 #include "bat/ledger/internal/credentials/credentials_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/request/promotion_requests.h"
+#include "bat/ledger/internal/request/request_promotion.h"
 #include "bat/ledger/internal/request/request_util.h"
 #include "net/http/http_status_code.h"
 

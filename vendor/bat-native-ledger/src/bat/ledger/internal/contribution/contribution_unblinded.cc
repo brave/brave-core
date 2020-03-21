@@ -12,7 +12,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/contribution/contribution_unblinded.h"
 #include "bat/ledger/internal/contribution/contribution_util.h"
-#include "bat/ledger/internal/request/promotion_requests.h"
+#include "bat/ledger/internal/request/request_promotion.h"
 #include "brave_base/random.h"
 #include "net/http/http_status_code.h"
 
