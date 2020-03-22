@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/bat_helper.h"
@@ -58,7 +59,14 @@ std::pair<std::string, std::string> Twitch::GetMediaIdFromParts(
         if (iter != parts.end()) {
           std::string idAddition(iter->second);
           if (idAddition.find('v') != std::string::npos) {
-            id += "_vod_" + braveledger_bat_helper::split(idAddition, 'v')[1];
+            auto additional_ids = base::SplitString(
+                idAddition,
+                "v",
+                base::TRIM_WHITESPACE,
+                base::SPLIT_WANT_NONEMPTY);
+            if (additional_ids.size() == 1) {
+              id += "_vod_" + additional_ids[0];
+            }
           }
         }
       }
@@ -427,8 +435,12 @@ void Twitch::OnMediaPublisherInfo(
 
   if (media_id.find("_vod_") != std::string::npos) {
     // VOD
-    std::vector<std::string> media_props =
-        braveledger_bat_helper::split(media_id, MEDIA_DELIMITER);
+    auto media_props = base::SplitString(
+        media_id,
+        MEDIA_DELIMITER,
+        base::TRIM_WHITESPACE,
+        base::SPLIT_WANT_NONEMPTY);
+
     if (media_props.empty()) {
       return;
     }

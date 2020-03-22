@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/strings/string_split.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/logging.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
@@ -470,19 +471,6 @@ bool HasSameDomainAndPath(
       gurl.path().substr(0, path_to_match.size()) == path_to_match;
 }
 
-std::vector<std::string> split(const std::string& s, char delim) {
-  std::stringstream ss(s);
-  std::string item;
-  std::vector<std::string> result;
-  while (getline(ss, item, delim)) {
-    if (s[0] != '\n') {
-      result.push_back(item);
-    }
-  }
-
-  return result;
-}
-
 bool ignore_for_testing() {
   return ledger::is_testing;
 }
@@ -497,9 +485,12 @@ uint8_t niceware_mnemonic_to_bytes(
     std::vector<uint8_t>* bytes_out,
     size_t* written,
     std::vector<std::string> wordDictionary) {
-  std::vector<std::string> wordList = braveledger_bat_helper::split(
+  std::vector<std::string> wordList = base::SplitString(
       toLowerCase(w),
-      WALLET_PASSPHRASE_DELIM);
+      WALLET_PASSPHRASE_DELIM,
+      base::TRIM_WHITESPACE,
+      base::SPLIT_WANT_NONEMPTY);
+
   std::vector<uint8_t> buffer(wordList.size() * 2);
 
   for (uint8_t ix = 0; ix < wordList.size(); ix++) {
