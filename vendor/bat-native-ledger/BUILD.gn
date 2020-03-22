@@ -116,6 +116,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/common/time_util.h",
     "src/bat/ledger/internal/contribution/contribution.cc",
     "src/bat/ledger/internal/contribution/contribution.h",
+    "src/bat/ledger/internal/contribution/contribution_ac.cc",
+    "src/bat/ledger/internal/contribution/contribution_ac.h",
     "src/bat/ledger/internal/contribution/contribution_monthly.cc",
     "src/bat/ledger/internal/contribution/contribution_monthly.h",
     "src/bat/ledger/internal/contribution/contribution_monthly_util.cc",

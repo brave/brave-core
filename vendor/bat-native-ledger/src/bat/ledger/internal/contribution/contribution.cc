@@ -18,6 +18,7 @@
 #include "bat/ledger/internal/common/bind_util.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/contribution/contribution.h"
+#include "bat/ledger/internal/contribution/contribution_ac.h"
 #include "bat/ledger/internal/contribution/contribution_monthly.h"
 #include "bat/ledger/internal/contribution/contribution_unblinded.h"
 #include "bat/ledger/internal/contribution/contribution_util.h"
@@ -61,6 +62,7 @@ Contribution::Contribution(bat_ledger::LedgerImpl* ledger) :
     unblinded_(std::make_unique<Unblinded>(ledger)),
     uphold_(std::make_unique<braveledger_uphold::Uphold>(ledger)),
     monthly_(std::make_unique<ContributionMonthly>(ledger, this)),
+    ac_(std::make_unique<ContributionAC>(ledger, this)),
     last_reconcile_timer_id_(0u),
     queue_timer_id_(0u) {
 }
@@ -134,61 +136,7 @@ void Contribution::StartAutoContribute(const ledger::Result result) {
     BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "Monthly contribution failed";
   }
 
-  if (!ledger_->GetRewardsMainEnabled() || !ledger_->GetAutoContribute()) {
-    return;
-  }
-
-  BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "Staring auto contribution";
-  auto filter = ledger_->CreateActivityFilter(
-      "",
-      ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED,
-      true,
-      ledger_->GetReconcileStamp(),
-      false,
-      ledger_->GetPublisherMinVisits());
-
-  ledger_->GetActivityInfoList(
-      0,
-      0,
-      std::move(filter),
-      std::bind(&Contribution::PrepareACList,
-                this,
-                _1));
-
-  ResetReconcileStamp();
-}
-
-void Contribution::PrepareACList(ledger::PublisherInfoList list) {
-  ledger::PublisherInfoList normalized_list;
-
-  ledger_->NormalizeContributeWinners(&normalized_list, &list, 0);
-
-  if (normalized_list.empty()) {
-    return;
-  }
-
-  ledger::ContributionQueuePublisherList queue_list;
-  for (const auto &item : normalized_list) {
-    if (item->percent == 0) {
-      continue;
-    }
-
-    auto publisher = ledger::ContributionQueuePublisher::New();
-    publisher->publisher_key = item->id;
-    publisher->amount_percent =  item->weight;
-    queue_list.push_back(std::move(publisher));
-  }
-
-  auto queue = ledger::ContributionQueue::New();
-  queue->type = ledger::RewardsType::AUTO_CONTRIBUTE;
-  queue->amount = ledger_->GetContributionAmount();
-  queue->partial = true;
-  queue->publishers = std::move(queue_list);
-
-  ledger_->SaveContributionQueue(
-      std::move(queue),
-      [](const ledger::Result _){});
-  CheckContributionQueue();
+  ac_->Process();
 }
 
 void Contribution::OnBalance(

@@ -25,6 +25,7 @@ class Uphold;
 
 namespace braveledger_contribution {
 
+class ContributionAC;
 class ContributionMonthly;
 class Unverified;
 class Unblinded;
@@ -87,8 +88,6 @@ class Contribution {
   void OnProcessContributionQueue(ledger::ContributionQueuePtr info);
 
   void OnSavePendingContribution(const ledger::Result result);
-
-  void PrepareACList(ledger::PublisherInfoList list);
 
   void OnBalance(
       const std::string& contribution_queue,
@@ -172,6 +171,7 @@ class Contribution {
   std::unique_ptr<Unblinded> unblinded_;
   std::unique_ptr<braveledger_uphold::Uphold> uphold_;
   std::unique_ptr<ContributionMonthly> monthly_;
+  std::unique_ptr<ContributionAC> ac_;
   uint32_t last_reconcile_timer_id_;
   std::map<std::string, uint32_t> retry_timers_;
   uint32_t queue_timer_id_;
