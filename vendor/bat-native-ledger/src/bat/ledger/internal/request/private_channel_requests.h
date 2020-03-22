@@ -12,7 +12,7 @@ namespace braveledger_request_util {
 
 std::string GetStartProtocolUrl();
 
-std::string GetResulttProtocolUrl();
+std::string GetResultProtocolUrl();
 
 
 }  // namespace braveledger_request_util

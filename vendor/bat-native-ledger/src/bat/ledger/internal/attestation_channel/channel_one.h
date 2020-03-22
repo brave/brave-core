@@ -40,6 +40,8 @@ class PrivateChannelOne {
   private:
   void StartProtocol();
 
+  void SecondRoundProtocol();
+
   void OnFirstRoundResponse(
     int response_status_code,
     const std::string& response,
