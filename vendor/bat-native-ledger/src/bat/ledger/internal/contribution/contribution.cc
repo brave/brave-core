@@ -18,6 +18,7 @@
 #include "bat/ledger/internal/common/bind_util.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/contribution/contribution.h"
+#include "bat/ledger/internal/contribution/contribution_monthly.h"
 #include "bat/ledger/internal/contribution/contribution_unblinded.h"
 #include "bat/ledger/internal/contribution/contribution_util.h"
 #include "bat/ledger/internal/contribution/unverified.h"
@@ -59,6 +60,7 @@ Contribution::Contribution(bat_ledger::LedgerImpl* ledger) :
     unverified_(std::make_unique<Unverified>(ledger, this)),
     unblinded_(std::make_unique<Unblinded>(ledger)),
     uphold_(std::make_unique<braveledger_uphold::Uphold>(ledger)),
+    monthly_(std::make_unique<ContributionMonthly>(ledger, this)),
     last_reconcile_timer_id_(0u),
     queue_timer_id_(0u) {
 }
@@ -103,121 +105,9 @@ void Contribution::OnProcessContributionQueue(
   Start(std::move(info));
 }
 
-// TODO rename to something that tells you that you are checking
-//  monthly recurring sufficient balance
 void Contribution::HasSufficientBalance(
     ledger::HasSufficientBalanceToReconcileCallback callback) {
-  ledger_->FetchBalance(
-      std::bind(&Contribution::OnSufficientBalanceWallet,
-                this,
-                _1,
-                _2,
-                callback));
-}
-
-void Contribution::OnSufficientBalanceWallet(
-    const ledger::Result result,
-    ledger::BalancePtr properties,
-    ledger::HasSufficientBalanceToReconcileCallback callback) {
-  if (result != ledger::Result::LEDGER_OK || !properties) {
-    return;
-  }
-
-  auto tips_callback =
-      std::bind(&Contribution::OnHasSufficientBalance,
-          this,
-          _1,
-          properties->total,
-          callback);
-
-  ledger_->GetRecurringTips(tips_callback);
-}
-
-void Contribution::OnHasSufficientBalance(
-    const ledger::PublisherInfoList& publisher_list,
-    const double balance,
-    ledger::HasSufficientBalanceToReconcileCallback callback) {
-  if (publisher_list.empty()) {
-    callback(true);
-    return;
-  }
-
-  const auto total = GetTotalFromRecurringVerified(publisher_list);
-  callback(balance >= total);
-}
-
-ledger::PublisherInfoList Contribution::GetVerifiedListRecurring(
-    const ledger::PublisherInfoList& list) {
-  ledger::PublisherInfoList verified;
-  ledger::PendingContributionList non_verified;
-
-  for (const auto& publisher : list) {
-    if (publisher->id.empty() || publisher->weight == 0.0) {
-      continue;
-    }
-
-    if (publisher->status != ledger::PublisherStatus::NOT_VERIFIED) {
-      verified.push_back(publisher->Clone());
-    } else {
-      auto contribution = ledger::PendingContribution::New();
-      contribution->amount = publisher->weight;
-      contribution->publisher_key = publisher->id;
-      contribution->viewing_id = "";
-      contribution->type = ledger::RewardsType::RECURRING_TIP;
-
-      non_verified.push_back(std::move(contribution));
-    }
-  }
-
-  if (non_verified.size() > 0) {
-    auto save_callback = std::bind(&Contribution::OnSavePendingContribution,
-        this,
-        _1);
-    ledger_->SavePendingContribution(std::move(non_verified), save_callback);
-  }
-
-  return verified;
-}
-
-void Contribution::OnSavePendingContribution(const ledger::Result result) {
-  ledger_->PendingContributionSaved(result);
-}
-
-void Contribution::StartRecurringTips(ledger::ResultCallback callback) {
-  ledger_->GetRecurringTips(
-      std::bind(&Contribution::PrepareRecurringList,
-                this,
-                _1,
-                callback));
-}
-
-void Contribution::PrepareRecurringList(
-    ledger::PublisherInfoList list,
-    ledger::ResultCallback callback) {
-  auto verified_list = GetVerifiedListRecurring(list);
-
-  for (const auto &item : verified_list) {
-    ledger::ContributionQueuePublisherList queue_list;
-    auto publisher = ledger::ContributionQueuePublisher::New();
-    publisher->publisher_key = item->id;
-    publisher->amount_percent = 100.0;
-    queue_list.push_back(std::move(publisher));
-
-    auto queue = ledger::ContributionQueue::New();
-    queue->type = ledger::RewardsType::RECURRING_TIP;
-    queue->amount = item->weight;
-    queue->partial = false;
-    queue->publishers = std::move(queue_list);
-
-    // TODO this should be batch insert and
-    // callback should then do what is left after this point
-    ledger_->SaveContributionQueue(
-        std::move(queue),
-        [](const ledger::Result _){});
-  }
-
-  CheckContributionQueue();
-  callback(ledger::Result::LEDGER_OK);
+  monthly_->HasSufficientBalance(callback);
 }
 
 void Contribution::ResetReconcileStamp() {
@@ -232,19 +122,18 @@ void Contribution::StartMonthlyContribution() {
   }
   BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "Staring monthly contribution";
 
-  auto callback = std::bind(&Contribution::OnStartRecurringTips,
+  auto callback = std::bind(&Contribution::StartAutoContribute,
       this,
       _1);
 
-  StartRecurringTips(callback);
+  monthly_->Process(callback);
 }
 
-void Contribution::OnStartRecurringTips(const ledger::Result result) {
-  StartAutoContribute(ledger_->GetReconcileStamp());
-  ResetReconcileStamp();
-}
+void Contribution::StartAutoContribute(const ledger::Result result) {
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "Monthly contribution failed";
+  }
 
-void Contribution::StartAutoContribute(uint64_t reconcile_stamp) {
   if (!ledger_->GetRewardsMainEnabled() || !ledger_->GetAutoContribute()) {
     return;
   }
@@ -254,7 +143,7 @@ void Contribution::StartAutoContribute(uint64_t reconcile_stamp) {
       "",
       ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED,
       true,
-      reconcile_stamp,
+      ledger_->GetReconcileStamp(),
       false,
       ledger_->GetPublisherMinVisits());
 
@@ -265,6 +154,8 @@ void Contribution::StartAutoContribute(uint64_t reconcile_stamp) {
       std::bind(&Contribution::PrepareACList,
                 this,
                 _1));
+
+  ResetReconcileStamp();
 }
 
 void Contribution::PrepareACList(ledger::PublisherInfoList list) {
@@ -293,7 +184,7 @@ void Contribution::PrepareACList(ledger::PublisherInfoList list) {
   queue->amount = ledger_->GetContributionAmount();
   queue->partial = true;
   queue->publishers = std::move(queue_list);
-  // TODO add real callback
+
   ledger_->SaveContributionQueue(
       std::move(queue),
       [](const ledger::Result _){});
@@ -388,11 +279,22 @@ void Contribution::ContributionCompleted(
     return;
   }
 
+  auto save_callback = std::bind(&Contribution::ContributionCompletedSaved,
+      this,
+      _1);
+
   ledger_->UpdateContributionInfoStepAndCount(
       contribution_id,
       ConvertResultIntoContributionStep(result),
       -1,
-      [](const ledger::Result _){});
+      save_callback);
+}
+
+void Contribution::ContributionCompletedSaved(const ledger::Result result) {
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(ledger_, ledger::LogLevel::LOG_INFO)
+        << "Contribution step and count failed";
+  }
 }
 
 void Contribution::ContributeUnverifiedPublishers() {
@@ -542,7 +444,7 @@ void Contribution::CreateNewEntry(
 
     if (queue->type == ledger::RewardsType::RECURRING_TIP ||
         queue->type == ledger::RewardsType::ONE_TIME_TIP) {
-      AdjustTipsAmounts(
+      AdjustPublisherListAmounts(
           std::move(queue->publishers),
           &publishers_new,
           &publishers_left,
@@ -654,7 +556,7 @@ void Contribution::Process(
       queue->Clone());
 }
 
-void Contribution::AdjustTipsAmounts(
+void Contribution::AdjustPublisherListAmounts(
     ledger::ContributionQueuePublisherList publishers,
     ledger::ContributionQueuePublisherList* publishers_new,
     ledger::ContributionQueuePublisherList* publishers_left,

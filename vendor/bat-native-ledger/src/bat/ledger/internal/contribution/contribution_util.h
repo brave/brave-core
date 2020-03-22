@@ -28,9 +28,6 @@ bool GenerateSuggestionMock(
     const std::string& suggestion_encoded,
     base::Value* result);
 
-double GetTotalFromRecurringVerified(
-    const ledger::PublisherInfoList& publisher_list);
-
 ledger::ContributionProcessor GetProcessor(const std::string& wallet_type);
 
 std::string GetNextProcessor(const std::string& current_processor);

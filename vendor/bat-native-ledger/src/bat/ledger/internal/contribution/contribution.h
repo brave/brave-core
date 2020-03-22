@@ -25,6 +25,7 @@ class Uphold;
 
 namespace braveledger_contribution {
 
+class ContributionMonthly;
 class Unverified;
 class Unblinded;
 
@@ -67,9 +68,6 @@ class Contribution {
   // Resets reconcile stamps
   void ResetReconcileStamp();
 
-  // Triggers contribution process for auto contribute table
-  void StartAutoContribute(uint64_t reconcile_stamp);
-
   void ContributeUnverifiedPublishers();
 
   void OneTimeTip(
@@ -77,44 +75,25 @@ class Contribution {
       const double amount,
       ledger::ResultCallback callback);
 
- private:
   void CheckContributionQueue();
+
+ private:
+  void StartAutoContribute(const ledger::Result result);
+
+  void ContributionCompletedSaved(const ledger::Result result);
 
   void ProcessContributionQueue();
 
   void OnProcessContributionQueue(ledger::ContributionQueuePtr info);
 
-  // RECURRING TIPS: from the list gets only verified publishers and
-  // save unverified to the db
-  ledger::PublisherInfoList GetVerifiedListRecurring(
-      const ledger::PublisherInfoList& all);
-
   void OnSavePendingContribution(const ledger::Result result);
 
   void PrepareACList(ledger::PublisherInfoList list);
-
-  void StartRecurringTips(ledger::ResultCallback callback);
-
-  void PrepareRecurringList(
-      ledger::PublisherInfoList list,
-      ledger::ResultCallback callback);
-
-  void OnStartRecurringTips(const ledger::Result result);
 
   void OnBalance(
       const std::string& contribution_queue,
       const ledger::Result result,
       ledger::BalancePtr info);
-
-  void OnHasSufficientBalance(
-      const ledger::PublisherInfoList& publisher_list,
-      const double balance,
-      ledger::HasSufficientBalanceToReconcileCallback callback);
-
-  void OnSufficientBalanceWallet(
-      ledger::Result result,
-      ledger::BalancePtr properties,
-      ledger::HasSufficientBalanceToReconcileCallback callback);
 
   void SavePendingContribution(
       const std::string& publisher_key,
@@ -155,7 +134,7 @@ class Contribution {
 
   void DeleteContributionQueue(const uint64_t id);
 
-  void AdjustTipsAmounts(
+  void AdjustPublisherListAmounts(
       ledger::ContributionQueuePublisherList publishers,
       ledger::ContributionQueuePublisherList* publishers_new,
       ledger::ContributionQueuePublisherList* publishers_left,
@@ -192,6 +171,7 @@ class Contribution {
   std::unique_ptr<Unverified> unverified_;
   std::unique_ptr<Unblinded> unblinded_;
   std::unique_ptr<braveledger_uphold::Uphold> uphold_;
+  std::unique_ptr<ContributionMonthly> monthly_;
   uint32_t last_reconcile_timer_id_;
   std::map<std::string, uint32_t> retry_timers_;
   uint32_t queue_timer_id_;

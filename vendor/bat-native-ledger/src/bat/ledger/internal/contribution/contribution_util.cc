@@ -73,22 +73,6 @@ bool GenerateSuggestionMock(
   return true;
 }
 
-double GetTotalFromRecurringVerified(
-    const ledger::PublisherInfoList& publisher_list) {
-  double total_recurring_amount = 0.0;
-  for (const auto& publisher : publisher_list) {
-    if (publisher->id.empty()) {
-      continue;
-    }
-
-    if (publisher->status == ledger::PublisherStatus::VERIFIED) {
-      total_recurring_amount += publisher->weight;
-    }
-  }
-
-  return total_recurring_amount;
-}
-
 ledger::ContributionProcessor GetProcessor(const std::string& wallet_type) {
   if (wallet_type == ledger::kWalletUnBlinded) {
     return ledger::ContributionProcessor::BRAVE_TOKENS;
