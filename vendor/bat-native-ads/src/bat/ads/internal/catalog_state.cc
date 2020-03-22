@@ -93,12 +93,7 @@ Result CatalogState::FromJson(
       // Segments
       auto segments = creative_set["segments"].GetArray();
       if (segments.Size() == 0) {
-        if (error_description != nullptr) {
-          *error_description = "Catalog invalid: No segments for creativeSet "
-              "with creativeSetId: " + creative_set_info.creative_set_id;
-        }
-
-        return FAILED;
+        continue;
       }
 
       for (const auto& segment : segments) {
@@ -165,12 +160,9 @@ Result CatalogState::FromJson(
 
           creative_set_info.creative_ad_notifications.push_back(creative_info);
         } else {
-          if (error_description != nullptr) {
-            *error_description = "Catalog invalid: Invalid " + code
-                +" creative for creativeInstanceId: " + creative_instance_id;
-          }
-
-          return FAILED;
+          // Unknown type
+          NOTREACHED();
+          continue;
         }
       }
 
