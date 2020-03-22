@@ -723,7 +723,12 @@ Publisher::GetAllBalanceReports() {
 void Publisher::saveState() {
   const ledger::PublisherSettingsState publisher_settings_state;
   const std::string data = publisher_settings_state.ToJson(*state_);
-  ledger_->SavePublisherState(data, this);
+
+  auto save_callback = std::bind(&Publisher::OnPublisherStateSaved,
+      this,
+      _1);
+
+  ledger_->SavePublisherState(data, save_callback);
 }
 
 bool Publisher::loadState(const std::string& data) {
@@ -737,7 +742,7 @@ bool Publisher::loadState(const std::string& data) {
   return true;
 }
 
-void Publisher::OnPublisherStateSaved(ledger::Result result) {
+void Publisher::OnPublisherStateSaved(const ledger::Result result) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
       "Could not save publisher state";

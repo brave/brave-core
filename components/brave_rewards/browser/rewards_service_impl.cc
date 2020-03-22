@@ -966,8 +966,9 @@ void RewardsServiceImpl::OnPublisherStateLoaded(
       data);
 }
 
-void RewardsServiceImpl::SaveLedgerState(const std::string& ledger_state,
-                                      ledger::LedgerCallbackHandler* handler) {
+void RewardsServiceImpl::SaveLedgerState(
+    const std::string& ledger_state,
+    ledger::ResultCallback callback) {
   if (reset_states_) {
     return;
   }
@@ -978,25 +979,29 @@ void RewardsServiceImpl::SaveLedgerState(const std::string& ledger_state,
       base::Closure(),
       base::Bind(
         &PostWriteCallback,
-        base::Bind(&RewardsServiceImpl::OnLedgerStateSaved, AsWeakPtr(),
-            base::Unretained(handler)),
+        base::Bind(&RewardsServiceImpl::OnLedgerStateSaved,
+            AsWeakPtr(),
+            callback),
         base::SequencedTaskRunnerHandle::Get()));
 
   writer.WriteNow(std::make_unique<std::string>(ledger_state));
 }
 
 void RewardsServiceImpl::OnLedgerStateSaved(
-    ledger::LedgerCallbackHandler* handler,
+    ledger::ResultCallback callback,
     bool success) {
-  if (!Connected())
+  if (!Connected()) {
     return;
+  }
 
-  handler->OnLedgerStateSaved(success ? ledger::Result::LEDGER_OK
-                                      : ledger::Result::NO_LEDGER_STATE);
+  callback(success
+           ? ledger::Result::LEDGER_OK
+           : ledger::Result::NO_LEDGER_STATE);
 }
 
-void RewardsServiceImpl::SavePublisherState(const std::string& publisher_state,
-                                      ledger::LedgerCallbackHandler* handler) {
+void RewardsServiceImpl::SavePublisherState(
+    const std::string& publisher_state,
+    ledger::ResultCallback callback) {
   if (reset_states_) {
     return;
   }
@@ -1006,21 +1011,24 @@ void RewardsServiceImpl::SavePublisherState(const std::string& publisher_state,
       base::Closure(),
       base::Bind(
         &PostWriteCallback,
-        base::Bind(&RewardsServiceImpl::OnPublisherStateSaved, AsWeakPtr(),
-            base::Unretained(handler)),
+        base::Bind(
+            &RewardsServiceImpl::OnPublisherStateSaved,
+            AsWeakPtr(),
+            callback),
         base::SequencedTaskRunnerHandle::Get()));
 
   writer.WriteNow(std::make_unique<std::string>(publisher_state));
 }
 
 void RewardsServiceImpl::OnPublisherStateSaved(
-    ledger::LedgerCallbackHandler* handler,
+    ledger::ResultCallback callback,
     bool success) {
   if (!Connected())
     return;
 
-  handler->OnPublisherStateSaved(success ? ledger::Result::LEDGER_OK
-                                         : ledger::Result::LEDGER_ERROR);
+  callback(success
+      ? ledger::Result::LEDGER_OK
+      : ledger::Result::LEDGER_ERROR);
 }
 
 void RewardsServiceImpl::LoadNicewareList(

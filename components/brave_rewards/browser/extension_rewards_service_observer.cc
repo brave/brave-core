@@ -14,7 +14,6 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "extensions/browser/event_router.h"
-#include "bat/ledger/ledger_callback_handler.h"
 
 namespace brave_rewards {
 

@@ -15,7 +15,6 @@
 #include "bat/ledger/internal/properties/publisher_properties.h"
 #include "bat/ledger/internal/properties/publisher_settings_properties.h"
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/ledger_callback_handler.h"
 
 namespace bat_ledger {
 class LedgerImpl;
@@ -33,11 +32,11 @@ using ParsePublisherListCallback = std::function<void(const ledger::Result)>;
 using DownloadServerPublisherListCallback =
     std::function<void(const ledger::Result)>;
 
-class Publisher : public ledger::LedgerCallbackHandler {
+class Publisher {
  public:
   explicit Publisher(bat_ledger::LedgerImpl* ledger);
 
-  ~Publisher() override;
+  ~Publisher();
 
   // Called when timer is triggered
   void OnTimer(uint32_t timer_id);
@@ -149,8 +148,7 @@ class Publisher : public ledger::LedgerCallbackHandler {
                                ledger::Result result,
                                ledger::PublisherInfoPtr info);
 
-  // LedgerCallbackHandler impl
-  void OnPublisherStateSaved(ledger::Result result) override;
+  void OnPublisherStateSaved(const ledger::Result result);
 
   bool IsExcluded(
       const std::string& publisher_id,

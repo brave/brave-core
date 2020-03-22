@@ -22,7 +22,7 @@ class LedgerImpl;
 
 namespace braveledger_media {
 
-class GitHub : public ledger::LedgerCallbackHandler {
+class GitHub {
  public:
   explicit GitHub(bat_ledger::LedgerImpl* ledger);
 
@@ -39,7 +39,7 @@ class GitHub : public ledger::LedgerCallbackHandler {
       const std::map<std::string, std::string> parts,
       const ledger::VisitData& visit_data);
 
-  ~GitHub() override;
+  ~GitHub();
 
  private:
   void OnMediaPublisherActivity(

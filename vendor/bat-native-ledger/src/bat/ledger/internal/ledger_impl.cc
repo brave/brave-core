@@ -417,13 +417,16 @@ void LedgerImpl::OnDatabaseInitialized(
   LoadLedgerState(on_load);
 }
 
-void LedgerImpl::SaveLedgerState(const std::string& data) {
-  ledger_client_->SaveLedgerState(data, this);
+void LedgerImpl::SaveLedgerState(
+    const std::string& data,
+    ledger::ResultCallback callback) {
+  ledger_client_->SaveLedgerState(data, callback);
 }
 
-void LedgerImpl::SavePublisherState(const std::string& data,
-                                    ledger::LedgerCallbackHandler* handler) {
-  ledger_client_->SavePublisherState(data, handler);
+void LedgerImpl::SavePublisherState(
+    const std::string& data,
+    ledger::ResultCallback callback) {
+  ledger_client_->SavePublisherState(data, callback);
 }
 
 void LedgerImpl::LogRequest(

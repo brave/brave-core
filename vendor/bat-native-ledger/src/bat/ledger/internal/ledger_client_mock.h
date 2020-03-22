@@ -68,14 +68,14 @@ class MockLedgerClient : public LedgerClient {
 
   MOCK_METHOD2(SaveLedgerState, void(
       const std::string& ledger_state,
-      ledger::LedgerCallbackHandler* handler));
+      ledger::ResultCallback callback));
 
   MOCK_METHOD1(LoadPublisherState, void(
       ledger::OnLoadCallback callback));
 
   MOCK_METHOD2(SavePublisherState, void(
       const std::string& publisher_state,
-      ledger::LedgerCallbackHandler* handler));
+      ledger::ResultCallback callback));
 
   MOCK_METHOD1(LoadNicewareList, void(
       ledger::GetNicewareListCallback callback));

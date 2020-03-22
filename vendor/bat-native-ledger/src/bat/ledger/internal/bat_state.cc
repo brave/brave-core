@@ -11,6 +11,8 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/state/client_state.h"
 
+using std::placeholders::_1;
+
 namespace braveledger_bat_state {
 
 BatState::BatState(bat_ledger::LedgerImpl* ledger) :
@@ -56,7 +58,20 @@ bool BatState::LoadState(const std::string& data) {
 void BatState::SaveState() {
   const ledger::ClientState client_state;
   const std::string data = client_state.ToJson(*state_);
-  ledger_->SaveLedgerState(data);
+
+  auto save_callback = std::bind(&BatState::OnSaveState,
+      this,
+      _1);
+
+  ledger_->SaveLedgerState(data, save_callback);
+}
+
+void BatState::OnSaveState(const ledger::Result result) {
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+        << "Ledger state was not save successfully";
+    return;
+  }
 }
 
 void BatState::AddReconcile(const std::string& viewing_id,

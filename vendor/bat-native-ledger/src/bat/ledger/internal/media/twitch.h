@@ -21,11 +21,11 @@ class LedgerImpl;
 
 namespace braveledger_media {
 
-class Twitch : public ledger::LedgerCallbackHandler {
+class Twitch {
  public:
   explicit Twitch(bat_ledger::LedgerImpl* ledger);
 
-  ~Twitch() override;
+  ~Twitch();
 
   void OnMediaActivityError(const ledger::VisitData& visit_data,
                             uint64_t window_id);
