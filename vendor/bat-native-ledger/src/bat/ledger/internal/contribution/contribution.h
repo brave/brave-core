@@ -27,6 +27,7 @@ namespace braveledger_contribution {
 
 class ContributionAC;
 class ContributionMonthly;
+class ContributionTip;
 class Unverified;
 class Unblinded;
 
@@ -87,28 +88,10 @@ class Contribution {
 
   void OnProcessContributionQueue(ledger::ContributionQueuePtr info);
 
-  void OnSavePendingContribution(const ledger::Result result);
-
   void OnBalance(
       const std::string& contribution_queue,
       const ledger::Result result,
       ledger::BalancePtr info);
-
-  void SavePendingContribution(
-      const std::string& publisher_key,
-      double amount,
-      const ledger::RewardsType type,
-      ledger::ResultCallback callback);
-
-  void OneTimeTipServerPublisher(
-      ledger::ServerPublisherInfoPtr server_info,
-      const std::string& publisher_key,
-      double amount,
-      ledger::ResultCallback callback);
-
-  void OnSavePendingOneTimeTip(
-      const ledger::Result result,
-      ledger::ResultCallback callback);
 
   void CreateNewEntry(
       const std::string& wallet_type,
@@ -132,12 +115,6 @@ class Contribution {
       ledger::BalancePtr balance);
 
   void DeleteContributionQueue(const uint64_t id);
-
-  void AdjustPublisherListAmounts(
-      ledger::ContributionQueuePublisherList publishers,
-      ledger::ContributionQueuePublisherList* publishers_new,
-      ledger::ContributionQueuePublisherList* publishers_left,
-      double reduce_fee_for);
 
   void OnExternalWallets(
       const std::string& contribution_id,
@@ -172,6 +149,7 @@ class Contribution {
   std::unique_ptr<braveledger_uphold::Uphold> uphold_;
   std::unique_ptr<ContributionMonthly> monthly_;
   std::unique_ptr<ContributionAC> ac_;
+  std::unique_ptr<ContributionTip> tip_;
   uint32_t last_reconcile_timer_id_;
   std::map<std::string, uint32_t> retry_timers_;
   uint32_t queue_timer_id_;

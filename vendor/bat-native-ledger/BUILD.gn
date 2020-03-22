@@ -122,6 +122,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/contribution/contribution_monthly.h",
     "src/bat/ledger/internal/contribution/contribution_monthly_util.cc",
     "src/bat/ledger/internal/contribution/contribution_monthly_util.h",
+    "src/bat/ledger/internal/contribution/contribution_tip.cc",
+    "src/bat/ledger/internal/contribution/contribution_tip.h",
     "src/bat/ledger/internal/contribution/contribution_unblinded.cc",
     "src/bat/ledger/internal/contribution/contribution_unblinded.h",
     "src/bat/ledger/internal/contribution/contribution_util.cc",

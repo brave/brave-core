@@ -129,4 +129,38 @@ bool HaveEnoughFundsToContribute(
   return true;
 }
 
+void AdjustPublisherListAmounts(
+    ledger::ContributionQueuePublisherList publishers,
+    ledger::ContributionQueuePublisherList* publishers_new,
+    ledger::ContributionQueuePublisherList* publishers_left,
+    double reduce_fee_for) {
+  DCHECK(publishers_new && publishers_left);
+
+  for (auto& item : publishers) {
+    if (reduce_fee_for == 0) {
+      publishers_left->push_back(std::move(item));
+      continue;
+    }
+
+    if (item->amount_percent <= reduce_fee_for) {
+      publishers_new->push_back(item->Clone());
+      reduce_fee_for -= item->amount_percent;
+      continue;
+    }
+
+    if (item->amount_percent > reduce_fee_for) {
+      // primary wallet
+      const auto original_weight = item->amount_percent;
+      item->amount_percent = reduce_fee_for;
+      publishers_new->push_back(item->Clone());
+
+      // second wallet
+      item->amount_percent = original_weight - reduce_fee_for;
+      publishers_left->push_back(item->Clone());
+
+      reduce_fee_for = 0;
+    }
+  }
+}
+
 }  // namespace braveledger_contribution

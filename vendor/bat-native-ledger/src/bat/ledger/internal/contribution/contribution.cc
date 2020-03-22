@@ -20,6 +20,7 @@
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/contribution/contribution_ac.h"
 #include "bat/ledger/internal/contribution/contribution_monthly.h"
+#include "bat/ledger/internal/contribution/contribution_tip.h"
 #include "bat/ledger/internal/contribution/contribution_unblinded.h"
 #include "bat/ledger/internal/contribution/contribution_util.h"
 #include "bat/ledger/internal/contribution/unverified.h"
@@ -63,6 +64,7 @@ Contribution::Contribution(bat_ledger::LedgerImpl* ledger) :
     uphold_(std::make_unique<braveledger_uphold::Uphold>(ledger)),
     monthly_(std::make_unique<ContributionMonthly>(ledger, this)),
     ac_(std::make_unique<ContributionAC>(ledger, this)),
+    tip_(std::make_unique<ContributionTip>(ledger, this)),
     last_reconcile_timer_id_(0u),
     queue_timer_id_(0u) {
 }
@@ -253,85 +255,7 @@ void Contribution::OneTimeTip(
     const std::string& publisher_key,
     const double amount,
     ledger::ResultCallback callback) {
-  if (publisher_key.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-      "Failed to do tip due to missing publisher key";
-    callback(ledger::Result::NOT_FOUND);
-    return;
-  }
-
-  const auto server_callback =
-    std::bind(&Contribution::OneTimeTipServerPublisher,
-        this,
-        _1,
-        publisher_key,
-        amount,
-        callback);
-
-  ledger_->GetServerPublisherInfo(publisher_key, server_callback);
-}
-
-void Contribution::SavePendingContribution(
-    const std::string& publisher_key,
-    double amount,
-    const ledger::RewardsType type,
-    ledger::ResultCallback callback) {
-  auto contribution = ledger::PendingContribution::New();
-  contribution->publisher_key = publisher_key;
-  contribution->amount = amount;
-  contribution->type = type;
-
-  ledger::PendingContributionList list;
-  list.push_back(std::move(contribution));
-
-  ledger_->SavePendingContribution(std::move(list), callback);
-}
-
-void Contribution::OneTimeTipServerPublisher(
-    ledger::ServerPublisherInfoPtr server_info,
-    const std::string& publisher_key,
-    double amount,
-    ledger::ResultCallback callback) {
-  auto status = ledger::PublisherStatus::NOT_VERIFIED;
-  if (server_info) {
-    status =  server_info->status;
-  }
-
-  // Save to the pending list if not verified
-  if (status == ledger::PublisherStatus::NOT_VERIFIED) {
-    auto save_callback = std::bind(&Contribution::OnSavePendingOneTimeTip,
-        this,
-        _1,
-        callback);
-    SavePendingContribution(
-        publisher_key,
-        amount,
-        ledger::RewardsType::ONE_TIME_TIP,
-        save_callback);
-    return;
-  }
-
-  ledger::ContributionQueuePublisherList queue_list;
-  auto publisher = ledger::ContributionQueuePublisher::New();
-  publisher->publisher_key = publisher_key;
-  publisher->amount_percent = 100.0;
-  queue_list.push_back(std::move(publisher));
-
-  auto queue = ledger::ContributionQueue::New();
-  queue->type = ledger::RewardsType::ONE_TIME_TIP;
-  queue->amount = amount;
-  queue->partial = false;
-  queue->publishers = std::move(queue_list);
-
-  Start(std::move(queue));
-  callback(ledger::Result::LEDGER_OK);
-}
-
-void Contribution::OnSavePendingOneTimeTip(
-    const ledger::Result result,
-    ledger::ResultCallback callback) {
-  ledger_->PendingContributionSaved(result);
-  callback(result);
+  tip_->Process(publisher_key, amount, callback);
 }
 
 void Contribution::OnDeleteContributionQueue(const ledger::Result result) {
@@ -502,40 +426,6 @@ void Contribution::Process(
       GetNextProcessor(""),
       balance->Clone(),
       queue->Clone());
-}
-
-void Contribution::AdjustPublisherListAmounts(
-    ledger::ContributionQueuePublisherList publishers,
-    ledger::ContributionQueuePublisherList* publishers_new,
-    ledger::ContributionQueuePublisherList* publishers_left,
-    double reduce_fee_for) {
-  DCHECK(publishers_new && publishers_left);
-
-  for (auto& item : publishers) {
-    if (reduce_fee_for == 0) {
-      publishers_left->push_back(std::move(item));
-      continue;
-    }
-
-    if (item->amount_percent <= reduce_fee_for) {
-      publishers_new->push_back(item->Clone());
-      reduce_fee_for -= item->amount_percent;
-      continue;
-    }
-
-    if (item->amount_percent > reduce_fee_for) {
-      // primary wallet
-      const auto original_weight = item->amount_percent;
-      item->amount_percent = reduce_fee_for;
-      publishers_new->push_back(item->Clone());
-
-      // second wallet
-      item->amount_percent = original_weight - reduce_fee_for;
-      publishers_left->push_back(item->Clone());
-
-      reduce_fee_for = 0;
-    }
-  }
 }
 
 void Contribution::OnExternalWallets(
