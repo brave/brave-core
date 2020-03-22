@@ -19,13 +19,13 @@
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/contribution/contribution_ac.h"
+#include "bat/ledger/internal/contribution/contribution_external_wallet.h"
 #include "bat/ledger/internal/contribution/contribution_monthly.h"
 #include "bat/ledger/internal/contribution/contribution_tip.h"
 #include "bat/ledger/internal/contribution/contribution_unblinded.h"
 #include "bat/ledger/internal/contribution/contribution_util.h"
 #include "bat/ledger/internal/contribution/unverified.h"
 #include "bat/ledger/internal/uphold/uphold.h"
-#include "bat/ledger/internal/uphold/uphold_util.h"
 #include "bat/ledger/internal/wallet/balance.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "brave_base/random.h"
@@ -67,6 +67,11 @@ Contribution::Contribution(bat_ledger::LedgerImpl* ledger) :
     tip_(std::make_unique<ContributionTip>(ledger, this)),
     last_reconcile_timer_id_(0u),
     queue_timer_id_(0u) {
+  DCHECK(ledger_);
+  external_wallet_ = std::make_unique<ContributionExternalWallet>(
+      ledger,
+      this,
+      uphold_.get());
 }
 
 Contribution::~Contribution() = default;
@@ -376,13 +381,7 @@ void Contribution::OnEntrySaved(
   } else if (current_wallet_type == ledger::kWalletAnonymous) {
     // TODO implement
   } else if (current_wallet_type == ledger::kWalletUphold) {
-    auto wallets_callback = std::bind(&Contribution::OnExternalWallets,
-        this,
-        contribution_id,
-        _1);
-
-    // Check if we have token
-    ledger_->GetExternalWallets(wallets_callback);
+    external_wallet_->Process(contribution_id);
   }
 
   if (queue->amount > 0) {
@@ -426,142 +425,6 @@ void Contribution::Process(
       GetNextProcessor(""),
       balance->Clone(),
       queue->Clone());
-}
-
-void Contribution::OnExternalWallets(
-    const std::string& contribution_id,
-    std::map<std::string, ledger::ExternalWalletPtr> wallets) {
-  if (wallets.size() == 0) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "No external wallets";
-    ledger_->UpdateContributionInfoStepAndCount(
-        contribution_id,
-        ledger::ContributionStep::STEP_FAILED,
-        -1,
-        [](const ledger::Result _){});
-    return;
-  }
-
-  ledger::ExternalWalletPtr wallet =
-      braveledger_uphold::GetWallet(std::move(wallets));
-
-  ledger_->GetContributionInfo(contribution_id,
-      std::bind(&Contribution::ExternalWalletContributionInfo,
-                this,
-                _1,
-                *wallet));
-}
-
-void Contribution::ExternalWalletContributionInfo(
-    ledger::ContributionInfoPtr contribution,
-    const ledger::ExternalWallet& wallet) {
-  // In this phase we only support one wallet
-  // so we will just always pick uphold.
-  // In the future we will allow user to pick which wallet to use via UI
-  // and then we will extend this function
-  if (wallet.token.empty() ||
-      wallet.status != ledger::WalletStatus::VERIFIED) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-    << "Wallet token is empty/wallet is not verified " << wallet.status;
-    ledger_->ContributionCompleted(
-        ledger::Result::LEDGER_ERROR,
-        contribution->amount,
-        contribution->contribution_id,
-        contribution->type);
-  }
-
-  if (contribution->type == ledger::RewardsType::AUTO_CONTRIBUTE) {
-    auto callback = std::bind(&Contribution::OnUpholdAC,
-                              this,
-                              _1,
-                              _2,
-                              contribution->contribution_id);
-    uphold_->TransferFunds(
-        contribution->amount,
-        ledger_->GetCardIdAddress(),
-        ledger::ExternalWallet::New(wallet),
-        callback);
-    return;
-  }
-
-  for (const auto& publisher : contribution->publishers) {
-    auto callback =
-        std::bind(&Contribution::OnExternalWalletServerPublisherInfo,
-          this,
-          _1,
-          contribution->contribution_id,
-          publisher->total_amount,
-          wallet,
-          contribution->type);
-
-    ledger_->GetServerPublisherInfo(publisher->publisher_key, callback);
-  }
-}
-
-void Contribution::OnExternalWalletServerPublisherInfo(
-    ledger::ServerPublisherInfoPtr info,
-    const std::string& contribution_id,
-    double amount,
-    const ledger::ExternalWallet& wallet,
-    const ledger::RewardsType type) {
-  if (!info) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Publisher not found";
-    ledger_->ContributionCompleted(
-        ledger::Result::LEDGER_ERROR,
-        amount,
-        contribution_id,
-        type);
-    return;
-  }
-
-  if (info->status != ledger::PublisherStatus::VERIFIED) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Publisher not verified";
-
-    auto save_callback = std::bind(&Contribution::OnSavePendingContribution,
-        this,
-        _1);
-
-    SavePendingContribution(info->publisher_key, amount, type, save_callback);
-
-    ledger_->ContributionCompleted(
-        ledger::Result::LEDGER_ERROR,
-        amount,
-        contribution_id,
-        type);
-    return;
-  }
-
-  auto completed_callback = std::bind(&Contribution::ExternalWalletCompleted,
-      this,
-      _1,
-      amount,
-      contribution_id,
-      type);
-
-  uphold_->StartContribution(
-      contribution_id,
-      std::move(info),
-      amount,
-      ledger::ExternalWallet::New(wallet),
-      completed_callback);
-}
-
-void Contribution::ExternalWalletCompleted(
-    const ledger::Result result,
-    const double amount,
-    const std::string& contribution_id,
-    const ledger::RewardsType type) {
-  ledger_->ContributionCompleted(result, amount, contribution_id, type);
-}
-
-void Contribution::OnUpholdAC(ledger::Result result,
-                              bool created,
-                              const std::string& contribution_id) {
-  if (result != ledger::Result::LEDGER_OK) {
-    // TODO(nejczdovc): add retries
-    return;
-  }
-
-  // TODO implement
 }
 
 }  // namespace braveledger_contribution

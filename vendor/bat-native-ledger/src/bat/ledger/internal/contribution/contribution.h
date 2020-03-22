@@ -26,6 +26,7 @@ class Uphold;
 namespace braveledger_contribution {
 
 class ContributionAC;
+class ContributionExternalWallet;
 class ContributionMonthly;
 class ContributionTip;
 class Unverified;
@@ -116,32 +117,7 @@ class Contribution {
 
   void DeleteContributionQueue(const uint64_t id);
 
-  void OnExternalWallets(
-      const std::string& contribution_id,
-      std::map<std::string, ledger::ExternalWalletPtr> wallets);
-
-  void ExternalWalletContributionInfo(
-      ledger::ContributionInfoPtr contribution,
-      const ledger::ExternalWallet& wallet);
-
-  void OnExternalWalletServerPublisherInfo(
-      ledger::ServerPublisherInfoPtr info,
-      const std::string& contribution_id,
-      double amount,
-      const ledger::ExternalWallet& wallet,
-      const ledger::RewardsType type);
-
-  void OnUpholdAC(ledger::Result result,
-                  bool created,
-                  const std::string& contribution_id);
-
   void OnDeleteContributionQueue(const ledger::Result result);
-
-  void ExternalWalletCompleted(
-      const ledger::Result result,
-      const double amount,
-      const std::string& contribution_id,
-      const ledger::RewardsType type);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<Unverified> unverified_;
@@ -150,6 +126,7 @@ class Contribution {
   std::unique_ptr<ContributionMonthly> monthly_;
   std::unique_ptr<ContributionAC> ac_;
   std::unique_ptr<ContributionTip> tip_;
+  std::unique_ptr<ContributionExternalWallet> external_wallet_;
   uint32_t last_reconcile_timer_id_;
   std::map<std::string, uint32_t> retry_timers_;
   uint32_t queue_timer_id_;
