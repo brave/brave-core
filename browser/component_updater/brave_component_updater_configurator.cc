@@ -11,8 +11,11 @@
 #include <string>
 #include <vector>
 
+#include "base/command_line.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/version.h"
+#include "brave/common/brave_switches.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
@@ -58,6 +61,16 @@ int BraveConfigurator::InitialDelay() const {
 }
 
 int BraveConfigurator::NextCheckDelay() const {
+  auto* command = base::CommandLine::ForCurrentProcess();
+  if (command->HasSwitch(switches::kComponentUpdateIntervalInSec)) {
+    int interval = 0;
+    if (base::StringToInt(command->GetSwitchValueASCII(
+                              switches::kComponentUpdateIntervalInSec),
+                          &interval)) {
+      DCHECK_GE(interval, 1);
+      return interval;
+    }
+  }
   return configurator_impl_.NextCheckDelay();
 }
 
