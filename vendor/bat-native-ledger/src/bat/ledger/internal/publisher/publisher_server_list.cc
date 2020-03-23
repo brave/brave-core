@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "base/json/json_reader.h"
-#include "base/time/time.h"
+#include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/publisher/publisher_server_list.h"
 #include "bat/ledger/internal/state_keys.h"
@@ -95,9 +95,7 @@ void PublisherServerList::OnParsePublisherList(
   uint64_t new_time = 0ull;
   if (result == ledger::Result::LEDGER_OK) {
     ledger_->ContributeUnverifiedPublishers();
-
-    base::Time now = base::Time::Now();
-    new_time = static_cast<uint64_t>(now.ToDoubleT());
+    new_time = braveledger_time_util::GetCurrentTimeStamp();
   }
 
   ledger_->SetUint64State(ledger::kStateServerPublisherListStamp, new_time);
@@ -145,8 +143,7 @@ uint64_t PublisherServerList::GetTimerTime(
     return start_timer_in;
   }
 
-  base::Time now = base::Time::Now();
-  uint64_t now_seconds = static_cast<uint64_t>(now.ToDoubleT());
+  uint64_t now_seconds = braveledger_time_util::GetCurrentTimeStamp();
 
   // check if last_download doesn't exist or have erroneous value.
   // (start_timer_in == 0) is expected to call callback function immediately.

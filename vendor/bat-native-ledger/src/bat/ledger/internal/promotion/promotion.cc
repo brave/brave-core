@@ -13,7 +13,6 @@
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/string_util.h"
-#include "base/time/time.h"
 #include "bat/ledger/internal/bat_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/state_keys.h"
@@ -53,8 +52,7 @@ void HandleExpiredPromotions(
     return;
   }
 
-  const uint64_t current_time =
-      static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+  const uint64_t current_time = braveledger_time_util::GetCurrentTimeStamp();
 
   bool check = false;
   for (auto& item : *promotions) {
@@ -380,7 +378,7 @@ void Promotion::ProcessFetchedPromotions(
     const ledger::Result result,
     ledger::PromotionList promotions,
     ledger::FetchPromotionCallback callback) {
-  const uint64_t now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+  const uint64_t now = braveledger_time_util::GetCurrentTimeStamp();
   ledger_->SetUint64State(ledger::kStatePromotionLastFetchStamp, now);
   last_check_timer_id_ = 0;
   const bool retry = result != ledger::Result::LEDGER_OK &&
@@ -485,7 +483,7 @@ void Promotion::Refresh(const bool retry_after_error) {
       "Failed to refresh promotion, will try again in " << start_timer_in;
   } else {
     const auto default_time = braveledger_ledger::_promotion_load_interval;
-    const uint64_t now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+    const uint64_t now = braveledger_time_util::GetCurrentTimeStamp();
     const uint64_t last_promo_stamp =
         ledger_->GetUint64State(ledger::kStatePromotionLastFetchStamp);
 

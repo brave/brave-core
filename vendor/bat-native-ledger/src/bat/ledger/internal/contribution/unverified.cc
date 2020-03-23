@@ -5,6 +5,7 @@
 
 #include <utility>
 
+#include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/contribution/unverified.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
@@ -58,14 +59,13 @@ void Unverified::OnContributeUnverifiedPublishers(
     return;
   }
 
-  base::Time now = base::Time::Now();
-  double now_seconds = now.ToDoubleT();
+  const auto now = braveledger_time_util::GetCurrentTimeStamp();
 
   ledger::PendingContributionInfoPtr current;
 
   for (const auto& item : list) {
     // remove pending contribution if it's over expiration date
-    if (now_seconds > item->expiration_date) {
+    if (now > item->expiration_date) {
       ledger_->RemovePendingContribution(
           item->id,
           std::bind(&Unverified::OnRemovePendingContribution,

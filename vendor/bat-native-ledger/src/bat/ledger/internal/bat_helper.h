@@ -85,8 +85,6 @@ std::string sign(
     const std::string& key_id,
     const std::vector<uint8_t>& secretKey);
 
-uint64_t currentTime();
-
 bool ignore_for_testing();
 
 void set_ignore_for_testing(bool ignore);

@@ -8,6 +8,7 @@
 
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
+#include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/database/database_pending_contribution.h"
 #include "bat/ledger/internal/database/database_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -355,7 +356,7 @@ void DatabasePendingContribution::InsertOrUpdateList(
   }
 
   auto transaction = ledger::DBTransaction::New();
-  const uint64_t now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+  const uint64_t now = braveledger_time_util::GetCurrentTimeStamp();
 
   const std::string query = base::StringPrintf(
     "INSERT INTO %s (pending_contribution_id, publisher_id, amount, "

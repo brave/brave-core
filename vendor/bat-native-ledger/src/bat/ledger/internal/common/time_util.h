@@ -6,6 +6,8 @@
 #ifndef BRAVELEDGER_COMMON_TIME_UTIL_H_
 #define BRAVELEDGER_COMMON_TIME_UTIL_H_
 
+#include <stdint.h>
+
 #include <string>
 
 #include "base/time/time.h"
@@ -20,6 +22,8 @@ ledger::ActivityMonth GetMonth(const base::Time& time);
 uint32_t GetCurrentYear();
 
 uint32_t GetYear(const base::Time& time);
+
+uint64_t GetCurrentTimeStamp();
 
 }  // namespace braveledger_time_util
 

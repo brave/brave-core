@@ -10,7 +10,7 @@
 
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "base/time/time.h"
+#include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/database/database_unblinded_token.h"
 #include "bat/ledger/internal/database/database_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -478,8 +478,7 @@ void DatabaseUnblindedToken::DeleteRecordList(
 
 void DatabaseUnblindedToken::CheckRecordsExpiration(
     ledger::ResultCallback callback) {
-  const uint64_t current_time =
-      static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+  const uint64_t current_time = braveledger_time_util::GetCurrentTimeStamp();
 
   auto transaction = ledger::DBTransaction::New();
 
