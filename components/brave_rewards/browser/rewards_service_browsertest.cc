@@ -3033,3 +3033,30 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ShowMonthlyIfACOff) {
 
   WaitForSelector(popup_contents, "#panel-donate-monthly");
 }
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ShowACPercentInThePanel) {
+  EnableRewards();
+
+  VisitPublisher("3zsistemi.si", true);
+
+  GURL url = https_server()->GetURL("3zsistemi.si", "/");
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+
+  // Open the Rewards popup
+  content::WebContents *popup_contents = OpenRewardsPopup();
+  ASSERT_TRUE(popup_contents);
+
+  {
+    content::EvalJsResult js_result = EvalJs(
+        popup_contents,
+        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
+        "delay(0).then(() => "
+        "  document.querySelector(\"[data-test-id='attention-score']\")"
+        "  .innerHTML);",
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+        content::ISOLATED_WORLD_ID_CONTENT_END);
+    EXPECT_NE(js_result.ExtractString().find("100%"), std::string::npos);
+  }
+}

@@ -222,7 +222,9 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
                   </StyledAttentionScoreTitle>
                 </StyledColumn>
                 <StyledColumn size={'1'}>
-                  <StyledAttentionScore>{attentionScore}%</StyledAttentionScore>
+                  <StyledAttentionScore data-test-id={'attention-score'}>
+                    {attentionScore}%
+                  </StyledAttentionScore>
                 </StyledColumn>
               </StyledGrid>
             </StyledScoreWrapper>
