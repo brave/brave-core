@@ -93,3 +93,36 @@ bool BinanceJSONParser::GetAccountBalancesFromJSON(
 
   return true;
 }
+
+// static
+//
+// Response Format:
+// {
+//   "code": "XXXX",
+//   "data": {
+//     ...
+//   }
+// }
+bool BinanceJSONParser::GetQuoteIDFromJSON(
+    const std::string& json, std::string *quote_id) {
+  if (!quote_id) {
+    return false;
+  }
+
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::Value* id = records_v->FindKey("code");
+
+  if (id && id->is_string()) {
+    *quote_id = id->GetString();
+  }
+
+  return true;
+}

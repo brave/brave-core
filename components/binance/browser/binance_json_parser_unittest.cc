@@ -81,4 +81,19 @@ TEST_F(BinanceJSONParserTest, GetTokensFromJSON) {
   ASSERT_EQ(refresh_token, "fb5587ee-d9cf-4cb5-a586-4aed72cc9bea");
 }
 
+TEST_F(BinanceJSONParserTest, GetQuoteIDFromJSON) {
+  std::map<std::string, std::string> balances;
+  ASSERT_TRUE(BinanceJSONParser::GetQuoteIDFromJSON(R"(
+      {
+        "data": {
+          "quoteId" : "12345"
+        }
+      })", &balances));
+
+  std::string bnb_balance = GetBalanceFromAssets(balances, "BNB");
+  std::string btc_balance = GetBalanceFromAssets(balances, "BTC");
+  ASSERT_EQ(bnb_balance, "10114.00000000");
+  ASSERT_EQ(btc_balance, "2.45000000");
+}
+
 }  // namespace

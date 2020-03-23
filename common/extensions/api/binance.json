@@ -196,6 +196,35 @@
             ]
           }
         ]
+      },
+      {
+        "name": "getConvertQuote",
+        "type": "function",
+        "description": "Gets a quote for a given conversion",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "from"
+          },
+          {
+            "type": "string",
+            "name": "to"
+          },
+          {
+            "type": "string",
+            "name": "amount"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "quoteId",
+                "type": "string"
+              }
+            ]
+          }
+        ]
       }
     ],
     "types": [

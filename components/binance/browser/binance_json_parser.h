@@ -15,6 +15,8 @@ class BinanceJSONParser {
                                 std::string *value, std::string type);
   static bool GetAccountBalancesFromJSON(const std::string& json,
                                         std::map<std::string, std::string>*);
+  static bool GetQuoteIDFromJSON(const std::string& json,
+                                 std::string *quote_id);
 };
 
 #endif  // BRAVE_COMPONENTS_BINANCE_BROWSER_BINANCE_JSON_PARSER_H_

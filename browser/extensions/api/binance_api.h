@@ -83,6 +83,18 @@ class BinanceGetAccountBalancesFunction :
   ResponseAction Run() override;
 };
 
+class BinanceGetConvertQuoteFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("binance.getConvertQuote", UNKNOWN)
+
+ protected:
+  ~BinanceGetConvertQuoteFunction() override {}
+  void OnQuoteResult(const std::string quote_id);
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

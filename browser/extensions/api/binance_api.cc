@@ -274,5 +274,35 @@ void BinanceGetAccountBalancesFunction::OnGetAccountBalances(
                        std::make_unique<base::Value>(success)));
 }
 
+ExtensionFunction::ResponseAction
+BinanceGetConvertQuoteFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  if (brave::IsTorProfile(profile)) {
+    return RespondNow(Error("Not available in Tor profile"));
+  }
+
+  std::unique_ptr<binance::GetConvertQuote::Params> params(
+      binance::GetConvertQuote::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  auto* controller = GetBinanceController(browser_context());
+  bool token_request = controller->GetConvertQuote(
+      params->from, params->to, params->amount,
+      base::BindOnce(
+          &BinanceGetConvertQuoteFunction::OnQuoteResult, this));
+
+  if (!token_request) {
+    return RespondNow(
+        Error("Could not make request for access tokens"));
+  }
+
+  return RespondLater();
+}
+
+void BinanceGetConvertQuoteFunction::OnQuoteResult(
+    const std::string quote_id) {
+  Respond(OneArgument(std::make_unique<base::Value>(quote_id)));
+}
+
 }  // namespace api
 }  // namespace extensions

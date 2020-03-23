@@ -38,6 +38,7 @@ class SimpleURLLoader;
 
 const char oauth_path_access_token[] = "/oauth/token";
 const char oauth_path_account_balances[] = "/oauth-api/v1/balance";
+const char oauth_path_convert_quote[] = "oauth-api/v1/ocbs/quote";
 
 class BinanceController {
  public:
@@ -50,6 +51,11 @@ class BinanceController {
   using GetAccessTokenCallback = base::OnceCallback<void(bool)>;
   bool GetAccessToken(const std::string& code,
       GetAccessTokenCallback callback);
+  using GetConvertQuoteCallback = base::OnceCallback<void(const std::string)>;
+  bool GetConvertQuote(const std::string& from,
+      const std::string& to,
+      const std::string& amount,
+      GetConvertQuoteCallback callback);
   using SetCodeChallengeCallback = base::OnceCallback<void(bool)>;
   void SetCodeChallenge(const std::string& challenge,
       SetCodeChallengeCallback callback);
@@ -69,6 +75,9 @@ class BinanceController {
                               const std::map<std::string, std::string>&)>;
 
   base::SequencedTaskRunner* io_task_runner();
+  void OnGetConvertQuote(GetConvertQuoteCallback callback,
+                           const int status, const std::string& body,
+                           const std::map<std::string, std::string>& headers);
   void OnGetAccessToken(GetAccessTokenCallback callback,
                            const int status, const std::string& body,
                            const std::map<std::string, std::string>& headers);

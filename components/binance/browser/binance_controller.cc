@@ -322,6 +322,43 @@ std::string BinanceController::GetBinanceTLD() {
   return (user_country_id == us_id) ? usTLD : globalTLD;
 }
 
+bool BinanceController::GetConvertQuote(
+    const std::string& from,
+    const std::string& to,
+    const std::string& amount,
+    GetConvertQuoteCallback callback) {
+  auto internal_callback = base::BindOnce(
+      &BinanceController::OnGetConvertQuote,
+      base::Unretained(this), std::move(callback));
+
+  const std::string from_param = std::string("&fromAsset=" + from);
+  const std::string to_param = std::string("&toAsset=" + to);
+  const std::string base_param = std::string("&baseAsset=" + to);
+  const std::string amount_param = std::string("&amount=" + amount);
+  const std::string access_param = std::string("?access_token=") + access_token_;
+
+  const std::string formatted_params =
+      access_param + amount_param + base_param +
+      to_param + from_param;
+
+  return OAuthRequest(oauth_path_convert_quote,
+                     formatted_params,
+                     std::move(internal_callback));
+}
+
+void BinanceController::OnGetConvertQuote(
+    GetConvertQuoteCallback callback,
+    const int status, const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  std::string quote_id;
+
+  if (status >= 200 && status <= 299) {
+    BinanceJSONParser::GetQuoteIDFromJSON(body, &quote_id);
+  }
+
+  std::move(callback).Run(quote_id);
+}
+
 base::SequencedTaskRunner* BinanceController::io_task_runner() {
   if (!io_task_runner_) {
     io_task_runner_ = base::CreateSequencedTaskRunner(
