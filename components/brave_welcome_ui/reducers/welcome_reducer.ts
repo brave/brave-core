@@ -20,7 +20,20 @@ const welcomeReducer: Reducer<Welcome.State | undefined> = (state: Welcome.State
   const startingState = state
   switch (action.type) {
     case types.IMPORT_BROWSER_DATA_REQUESTED:
-      chrome.send('importData', [payload])
+      const importTypes = {
+        import_dialog_autofill_form_data: true,
+        import_dialog_bookmarks: true,
+        import_dialog_history: true,
+        import_dialog_saved_passwords: true,
+        import_dialog_search_engine: true,
+        // TODO(simonhong): Remove below import types when we stop supporting
+        // import from muon.
+        import_dialog_cookies: false,
+        import_dialog_stats: false,
+        import_dialog_ledger: false,
+        import_dialog_windows: false
+      }
+      chrome.send('importData', [payload, importTypes])
       break
     case types.GO_TO_TAB_REQUESTED:
       window.open(payload.url, payload.target)
