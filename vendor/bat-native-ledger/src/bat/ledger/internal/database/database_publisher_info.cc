@@ -323,7 +323,8 @@ void DatabasePublisherInfo::GetPanelRecord(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&DatabasePublisherInfo::OnGetRecord,
+  auto transaction_callback = std::bind(
+      &DatabasePublisherInfo::OnGetPanelRecord,
       this,
       _1,
       callback);
