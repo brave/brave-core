@@ -14,41 +14,41 @@
         android:title="@string/clear_browsing_data_tab_period_title"
         app:singleLine="true" />
 
-    <org.chromium.chrome.browser.settings.ClearBrowsingDataCheckBoxPreference
+    <org.chromium.chrome.browser.settings.privacy.ClearBrowsingDataCheckBoxPreference
         android:key="clear_history_checkbox"
         android:persistent="false"
         android:title="@string/clear_history_title"
         android:summary="@string/clear_browsing_history_summary" />
 
-    <org.chromium.chrome.browser.settings.ClearBrowsingDataCheckBoxPreference
+    <org.chromium.chrome.browser.settings.privacy.ClearBrowsingDataCheckBoxPreference
         android:key="clear_cookies_checkbox"
         android:persistent="false"
         android:title="@string/clear_cookies_and_site_data_title"
         android:summary="@string/clear_cookies_and_site_data_summary_basic" />
 
-    <org.chromium.chrome.browser.settings.ClearBrowsingDataCheckBoxPreference
+    <org.chromium.chrome.browser.settings.privacy.ClearBrowsingDataCheckBoxPreference
         android:key="clear_cache_checkbox"
         android:persistent="false"
         android:title="@string/clear_cache_title" />
 
     <!-- TODO(samartnik): disabling option as it requires futher research
          At the moment causes issue https://github.com/brave/brave-browser/issues/8737 -->
-    <!-- <org.chromium.chrome.browser.settings.ClearBrowsingDataCheckBoxPreference
+    <!-- <org.chromium.chrome.browser.settings.privacy.ClearBrowsingDataCheckBoxPreference
         android:key="clear_downloads_checkbox"
         android:persistent="false"
         android:title="@string/clear_downloads_title" /> -->
 
-    <org.chromium.chrome.browser.settings.ClearBrowsingDataCheckBoxPreference
+    <org.chromium.chrome.browser.settings.privacy.ClearBrowsingDataCheckBoxPreference
         android:key="clear_passwords_checkbox"
         android:persistent="false"
         android:title="@string/clear_passwords_title" />
 
-    <org.chromium.chrome.browser.settings.ClearBrowsingDataCheckBoxPreference
+    <org.chromium.chrome.browser.settings.privacy.ClearBrowsingDataCheckBoxPreference
         android:key="clear_form_data_checkbox"
         android:persistent="false"
         android:title="@string/clear_form_data_title" />
 
-    <org.chromium.chrome.browser.settings.ClearBrowsingDataCheckBoxPreference
+    <org.chromium.chrome.browser.settings.privacy.ClearBrowsingDataCheckBoxPreference
         android:key="clear_site_settings_checkbox"
         android:persistent="false"
         android:title="@string/prefs_site_settings" />
