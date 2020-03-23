@@ -27,7 +27,7 @@ class Create {
 
   ~Create();
 
-  void Start(ledger::CreateWalletCallback callback);
+  void Start(ledger::ResultCallback callback);
 
  private:
   std::string StringifyRequestCredentials(
@@ -42,13 +42,13 @@ class Create {
       int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
-      ledger::CreateWalletCallback callback);
+      ledger::ResultCallback callback);
 
   void RegisterPersonaCallback(
       int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
-      ledger::CreateWalletCallback callback);
+      ledger::ResultCallback callback);
 
   std::string GetAnonizeProof(const std::string& registrarVK,
                               const std::string& id,

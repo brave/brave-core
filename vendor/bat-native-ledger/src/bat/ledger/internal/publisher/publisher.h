@@ -62,7 +62,7 @@ class Publisher {
   void SetPublisherExclude(
       const std::string& publisher_id,
       const ledger::PublisherExclude& exclude,
-      ledger::SetPublisherExcludeCallback callback);
+      ledger::ResultCallback callback);
 
   void setPublisherAllowNonVerified(const bool& allow);
 
@@ -193,7 +193,7 @@ class Publisher {
     ledger::PublisherExclude exclude,
     ledger::Result result,
     ledger::PublisherInfoPtr publisher_info,
-    ledger::SetPublisherExcludeCallback callback);
+    ledger::ResultCallback callback);
 
   void calcScoreConsts(const uint64_t& min_duration_seconds);
 

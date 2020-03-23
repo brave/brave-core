@@ -20,11 +20,11 @@
 - (void)onPanelPublisherInfo:(ledger::Result)result publisherInfo:(ledger::PublisherInfoPtr)publisher_info windowId:(uint64_t)windowId;
 - (void)onReconcileComplete:(ledger::Result)result viewingId:(const std::string &)viewing_id type:(const ledger::RewardsType)type amount:(const double)amount;
 - (void)onWalletProperties:(ledger::Result)result arg1:(ledger::WalletPropertiesPtr)arg1;
-- (void)resetState:(const std::string &)name callback:(ledger::OnResetCallback)callback;
+- (void)resetState:(const std::string &)name callback:(ledger::ResultCallback)callback;
 - (void)saveLedgerState:(const std::string &)ledger_state callback:(ledger::ResultCallback)callback;
 - (void)publisherListNormalized:(ledger::PublisherInfoList)list;
 - (void)savePublisherState:(const std::string &)publisher_state callback:(ledger::ResultCallback)callback;
-- (void)saveState:(const std::string &)name value:(const std::string &)value callback:(ledger::OnSaveCallback)callback;
+- (void)saveState:(const std::string &)name value:(const std::string &)value callback:(ledger::ResultCallback)callback;
 - (void)setConfirmationsIsReady:(const bool)is_ready;
 - (void)setTimer:(uint64_t)time_offset timerId:(uint32_t *)timer_id;
 - (std::string)URIEncode:(const std::string &)value;
@@ -45,7 +45,7 @@
 - (void)clearState:(const std::string&)name;
 - (void)getExternalWallets:(ledger::GetExternalWalletsCallback)callback;
 - (void)saveExternalWallet:(const std::string &)wallet_type wallet:(ledger::ExternalWalletPtr)wallet;
-- (void)showNotification:(const std::string &)type args:(const std::vector<std::string>&)args callback:(ledger::ShowNotificationCallback)callback;
+- (void)showNotification:(const std::string &)type args:(const std::vector<std::string>&)args callback:(ledger::ResultCallback)callback;
 - (void)setTransferFee:(const std::string&)wallet_type transfer_fee:(ledger::TransferFeePtr)transfer_fee;
 - (void)removeTransferFee:(const std::string&)wallet_type id:(const std::string&)id;
 - (ledger::TransferFeeList)getTransferFees:(const std::string&)wallet_type;

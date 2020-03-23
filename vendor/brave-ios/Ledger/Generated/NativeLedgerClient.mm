@@ -47,7 +47,7 @@ void NativeLedgerClient::OnReconcileComplete(ledger::Result result, const std::s
 void NativeLedgerClient::OnWalletProperties(ledger::Result result, ledger::WalletPropertiesPtr arg1) {
   [bridge_ onWalletProperties:result arg1:std::move(arg1)];
 }
-void NativeLedgerClient::ResetState(const std::string & name, ledger::OnResetCallback callback) {
+void NativeLedgerClient::ResetState(const std::string & name, ledger::ResultCallback callback) {
   [bridge_ resetState:name callback:callback];
 }
 void NativeLedgerClient::SaveLedgerState(const std::string & ledger_state, ledger::ResultCallback callback) {
@@ -59,7 +59,7 @@ void NativeLedgerClient::PublisherListNormalized(ledger::PublisherInfoList list)
 void NativeLedgerClient::SavePublisherState(const std::string & publisher_state, ledger::ResultCallback callback) {
   [bridge_ savePublisherState:publisher_state callback:callback];
 }
-void NativeLedgerClient::SaveState(const std::string & name, const std::string & value, ledger::OnSaveCallback callback) {
+void NativeLedgerClient::SaveState(const std::string & name, const std::string & value, ledger::ResultCallback callback) {
   [bridge_ saveState:name value:value callback:callback];
 }
 void NativeLedgerClient::SetConfirmationsIsReady(const bool is_ready) {
@@ -122,7 +122,7 @@ void NativeLedgerClient::GetExternalWallets(ledger::GetExternalWalletsCallback c
 void NativeLedgerClient::SaveExternalWallet(const std::string& wallet_type, ledger::ExternalWalletPtr wallet) {
   [bridge_ saveExternalWallet:wallet_type wallet:std::move(wallet)];
 }
-void NativeLedgerClient::ShowNotification(const std::string& type, const std::vector<std::string>& args, ledger::ShowNotificationCallback callback) {
+void NativeLedgerClient::ShowNotification(const std::string& type, const std::vector<std::string>& args, ledger::ResultCallback callback) {
   [bridge_ showNotification:type args:args callback:callback];
 }
 void NativeLedgerClient::SetTransferFee(const std::string& wallet_type, ledger::TransferFeePtr transfer_fee) {

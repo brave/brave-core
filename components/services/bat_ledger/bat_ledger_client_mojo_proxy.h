@@ -72,11 +72,11 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
 
   void SaveState(const std::string& name,
                  const std::string& value,
-                 ledger::OnSaveCallback callback) override;
+                 ledger::ResultCallback callback) override;
   void LoadState(const std::string& name,
                  ledger::OnLoadCallback callback) override;
   void ResetState(const std::string& name,
-                  ledger::OnResetCallback callback) override;
+                  ledger::ResultCallback callback) override;
   void SetBooleanState(const std::string& name, bool value) override;
   bool GetBooleanState(const std::string& name) const override;
   void SetIntegerState(const std::string& name, int value) override;
@@ -116,7 +116,7 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void ShowNotification(
       const std::string& type,
       const std::vector<std::string>& args,
-      ledger::ShowNotificationCallback callback) override;
+      ledger::ResultCallback callback) override;
 
 
   ledger::TransferFeeList GetTransferFees(

@@ -46,7 +46,7 @@ Wallet::Wallet(bat_ledger::LedgerImpl* ledger) :
 Wallet::~Wallet() {
 }
 
-void Wallet::CreateWalletIfNecessary(ledger::CreateWalletCallback callback) {
+void Wallet::CreateWalletIfNecessary(ledger::ResultCallback callback) {
   const auto payment_id = ledger_->GetPaymentId();
   const auto stamp = ledger_->GetBootStamp();
   const auto persona_id = ledger_->GetPersonaId();
@@ -228,7 +228,7 @@ void Wallet::ExternalWalletAuthorization(
 
 void Wallet::OnDisconnectWallet(
     const std::string& wallet_type,
-    ledger::DisconnectWalletCallback callback,
+    ledger::ResultCallback callback,
     std::map<std::string, ledger::ExternalWalletPtr> wallets) {
   if (wallets.size() == 0) {
     callback(ledger::Result::LEDGER_ERROR);
@@ -250,7 +250,7 @@ void Wallet::OnDisconnectWallet(
 
 void Wallet::DisconnectWallet(
       const std::string& wallet_type,
-      ledger::DisconnectWalletCallback callback) {
+      ledger::ResultCallback callback) {
   auto wallet_callback = std::bind(&Wallet::OnDisconnectWallet,
                                    this,
                                    wallet_type,
@@ -264,7 +264,7 @@ void Wallet::OnTransferAnonToExternalWallet(
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers,
-    ledger::TransferAnonToExternalWalletCallback callback) {
+    ledger::ResultCallback callback) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
   if (response_status_code == net::HTTP_OK) {
@@ -282,7 +282,7 @@ void Wallet::OnTransferAnonToExternalWallet(
 void Wallet::TransferAnonToExternalWallet(
     ledger::ExternalWalletPtr wallet,
     const bool allow_zero_balance,
-    ledger::TransferAnonToExternalWalletCallback callback) {
+    ledger::ResultCallback callback) {
   FetchBalance(std::bind(&Wallet::OnTransferAnonToExternalWalletBalance,
                this,
                _1,
@@ -297,7 +297,7 @@ void Wallet::OnTransferAnonToExternalWalletBalance(
     ledger::BalancePtr properties,
     const ledger::ExternalWallet& wallet,
     const bool allow_zero_balance,
-    ledger::TransferAnonToExternalWalletCallback callback) {
+    ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK || !properties) {
     callback(ledger::Result::LEDGER_ERROR);
     return;
@@ -407,7 +407,7 @@ void Wallet::OnTransferAnonToExternalWalletAddress(
     const std::string& anon_address,
     const std::string& new_address,
     const std::string& user_funds,
-    ledger::TransferAnonToExternalWalletCallback callback) {
+    ledger::ResultCallback callback) {
   if ((result != ledger::Result::LEDGER_OK &&
       result != ledger::Result::ALREADY_EXISTS)
       || anon_address.empty()) {

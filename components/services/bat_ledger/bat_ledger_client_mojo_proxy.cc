@@ -306,7 +306,7 @@ void BatLedgerClientMojoProxy::PublisherListNormalized(
 void BatLedgerClientMojoProxy::SaveState(
     const std::string& name,
     const std::string& value,
-    ledger::OnSaveCallback callback) {
+    ledger::ResultCallback callback) {
   if (!Connected()) {
     callback(ledger::Result::LEDGER_ERROR);
     return;
@@ -331,7 +331,7 @@ void BatLedgerClientMojoProxy::LoadState(
 
 void BatLedgerClientMojoProxy::ResetState(
     const std::string& name,
-    ledger::OnResetCallback callback) {
+    ledger::ResultCallback callback) {
   if (!Connected()) {
     callback(ledger::Result::LEDGER_ERROR);
     return;
@@ -504,7 +504,7 @@ void BatLedgerClientMojoProxy::SaveExternalWallet(
 }
 
 void OnShowNotification(
-    const ledger::ShowNotificationCallback& callback,
+    const ledger::ResultCallback& callback,
     const ledger::Result result) {
   callback(result);
 }
@@ -512,7 +512,7 @@ void OnShowNotification(
 void BatLedgerClientMojoProxy::ShowNotification(
     const std::string& type,
     const std::vector<std::string>& args,
-    ledger::ShowNotificationCallback callback) {
+    ledger::ResultCallback callback) {
   bat_ledger_client_->ShowNotification(
       type,
       args,

@@ -27,11 +27,11 @@ private:
   void OnPanelPublisherInfo(ledger::Result result, ledger::PublisherInfoPtr publisher_info, uint64_t windowId) override;
   void OnReconcileComplete(ledger::Result result, const std::string & viewing_id, const double amount, const ledger::RewardsType type) override;
   void OnWalletProperties(ledger::Result result, ledger::WalletPropertiesPtr arg1) override;
-  void ResetState(const std::string & name, ledger::OnResetCallback callback) override;
+  void ResetState(const std::string & name, ledger::ResultCallback callback) override;
   void SaveLedgerState(const std::string & ledger_state, ledger::ResultCallback callback) override;
   void PublisherListNormalized(ledger::PublisherInfoList list) override;
   void SavePublisherState(const std::string & publisher_state, ledger::ResultCallback callback) override;
-  void SaveState(const std::string & name, const std::string & value, ledger::OnSaveCallback callback) override;
+  void SaveState(const std::string & name, const std::string & value, ledger::ResultCallback callback) override;
   void SetConfirmationsIsReady(const bool is_ready) override;
   void SetTimer(uint64_t time_offset, uint32_t * timer_id) override;
   std::string URIEncode(const std::string & value) override;
@@ -52,7 +52,7 @@ private:
   void ClearState(const std::string& name) override;
   void GetExternalWallets(ledger::GetExternalWalletsCallback callback) override;
   void SaveExternalWallet(const std::string& wallet_type, ledger::ExternalWalletPtr wallet) override;
-  void ShowNotification(const std::string& type, const std::vector<std::string>& args,  ledger::ShowNotificationCallback callback) override;
+  void ShowNotification(const std::string& type, const std::vector<std::string>& args,  ledger::ResultCallback callback) override;
   void SetTransferFee(const std::string& wallet_type, ledger::TransferFeePtr transfer_fee) override;
   ledger::TransferFeeList GetTransferFees(const std::string& wallet_type) override;
   void RemoveTransferFee(const std::string& wallet_type, const std::string& id) override;

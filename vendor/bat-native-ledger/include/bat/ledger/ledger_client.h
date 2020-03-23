@@ -48,16 +48,13 @@ using GetNicewareListCallback =
 using FetchIconCallback = std::function<void(bool, const std::string&)>;
 using LoadURLCallback = std::function<void(const int, const std::string&,
     const std::map<std::string, std::string>& headers)>;
-using OnSaveCallback = std::function<void(const Result)>;
 using OnLoadCallback = std::function<void(const Result,
                                           const std::string&)>;
-using OnResetCallback = std::function<void(const Result)>;
 using PendingContributionInfoListCallback =
     std::function<void(PendingContributionInfoList)>;
 using PendingContributionsTotalCallback = std::function<void(double)>;
 using GetExternalWalletsCallback =
     std::function<void(std::map<std::string, ledger::ExternalWalletPtr>)>;
-using ShowNotificationCallback = std::function<void(const Result)>;
 using GetServerPublisherInfoCallback =
     std::function<void(ledger::ServerPublisherInfoPtr)>;
 using ResultCallback = std::function<void(const Result)>;
@@ -150,11 +147,11 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void SaveState(const std::string& name,
                          const std::string& value,
-                         ledger::OnSaveCallback callback) = 0;
+                         ledger::ResultCallback callback) = 0;
   virtual void LoadState(const std::string& name,
                          ledger::OnLoadCallback callback) = 0;
   virtual void ResetState(const std::string& name,
-                          ledger::OnResetCallback callback) = 0;
+                          ledger::ResultCallback callback) = 0;
 
   virtual void SetBooleanState(const std::string& name, bool value) = 0;
   virtual bool GetBooleanState(const std::string& name) const = 0;
@@ -197,7 +194,7 @@ class LEDGER_EXPORT LedgerClient {
   virtual void ShowNotification(
       const std::string& type,
       const std::vector<std::string>& args,
-      ledger::ShowNotificationCallback callback) = 0;
+      ledger::ResultCallback callback) = 0;
 
   virtual void SetTransferFee(
       const std::string& wallet_type,

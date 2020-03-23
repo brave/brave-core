@@ -1531,7 +1531,7 @@ void RewardsServiceImpl::OnGetTransactionHistory(
 
 void RewardsServiceImpl::SaveState(const std::string& name,
                                    const std::string& value,
-                                   ledger::OnSaveCallback callback) {
+                                   ledger::ResultCallback callback) {
   if (reset_states_) {
     return;
   }
@@ -1562,7 +1562,7 @@ void RewardsServiceImpl::LoadState(
 
 void RewardsServiceImpl::ResetState(
     const std::string& name,
-    ledger::OnResetCallback callback) {
+    ledger::ResultCallback callback) {
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&ResetOnFileTaskRunner,
@@ -1597,7 +1597,7 @@ void RewardsServiceImpl::OnResetTheWholeState(
 }
 
 void RewardsServiceImpl::OnSavedState(
-  ledger::OnSaveCallback callback, bool success) {
+  ledger::ResultCallback callback, bool success) {
   if (!Connected())
     return;
   callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
@@ -1733,7 +1733,7 @@ void RewardsServiceImpl::KillTimer(uint32_t timer_id) {
 }
 
 void RewardsServiceImpl::OnResetState(
-  ledger::OnResetCallback callback, bool success) {
+  ledger::ResultCallback callback, bool success) {
   if (!Connected())
     return;
   callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
@@ -3047,7 +3047,7 @@ void RewardsServiceImpl::DisconnectWallet(const std::string& wallet_type) {
 void RewardsServiceImpl::ShowNotification(
       const std::string& type,
       const std::vector<std::string>& args,
-      ledger::ShowNotificationCallback callback) {
+      ledger::ResultCallback callback) {
   if (type.empty()) {
     callback(ledger::Result::LEDGER_ERROR);
     return;

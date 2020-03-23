@@ -43,7 +43,7 @@ class Wallet {
 
   ~Wallet();
 
-  void CreateWalletIfNecessary(ledger::CreateWalletCallback callback);
+  void CreateWalletIfNecessary(ledger::ResultCallback callback);
 
   void RecoverWallet(
       const std::string& pass_phrase,
@@ -68,12 +68,12 @@ class Wallet {
 
   void DisconnectWallet(
       const std::string& wallet_type,
-      ledger::DisconnectWalletCallback callback);
+      ledger::ResultCallback callback);
 
   void TransferAnonToExternalWallet(
       ledger::ExternalWalletPtr wallet,
       const bool allow_zero_balance,
-      ledger::TransferAnonToExternalWalletCallback callback);
+      ledger::ResultCallback callback);
 
   void GetAnonWalletStatus(ledger::ResultCallback callback);
 
@@ -97,21 +97,21 @@ class Wallet {
 
   void OnDisconnectWallet(
     const std::string& wallet_type,
-    ledger::DisconnectWalletCallback callback,
+    ledger::ResultCallback callback,
     std::map<std::string, ledger::ExternalWalletPtr> wallets);
 
   void OnTransferAnonToExternalWallet(
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers,
-    ledger::TransferAnonToExternalWalletCallback callback);
+    ledger::ResultCallback callback);
 
   void OnTransferAnonToExternalWalletBalance(
       ledger::Result result,
       ledger::BalancePtr properties,
       const ledger::ExternalWallet& wallet,
       const bool allow_zero_balance,
-      ledger::TransferAnonToExternalWalletCallback callback);
+      ledger::ResultCallback callback);
 
   std::string GetClaimPayload(
       const std::string user_funds,
@@ -123,7 +123,7 @@ class Wallet {
       const std::string& anon_address,
       const std::string& new_address,
       const std::string& user_funds,
-      ledger::TransferAnonToExternalWalletCallback callback);
+      ledger::ResultCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<Create> create_;

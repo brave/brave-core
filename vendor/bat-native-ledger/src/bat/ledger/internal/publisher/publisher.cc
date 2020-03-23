@@ -399,7 +399,7 @@ void Publisher::OnPublisherInfoSaved(const ledger::Result result) {
 void Publisher::SetPublisherExclude(
     const std::string& publisher_id,
     const ledger::PublisherExclude& exclude,
-    ledger::SetPublisherExcludeCallback callback) {
+    ledger::ResultCallback callback) {
   ledger_->GetPublisherInfo(
     publisher_id,
     std::bind(&Publisher::OnSetPublisherExclude,
@@ -414,7 +414,7 @@ void Publisher::OnSetPublisherExclude(
     ledger::PublisherExclude exclude,
     ledger::Result result,
     ledger::PublisherInfoPtr publisher_info,
-    ledger::SetPublisherExcludeCallback callback) {
+    ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK &&
       result != ledger::Result::NOT_FOUND) {
     callback(result);
