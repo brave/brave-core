@@ -31,7 +31,7 @@ const PrepopulatedEngine duckduckgo = {
   NULL,
   NULL,
   0,
-  SEARCH_ENGINE_OTHER,
+  SEARCH_ENGINE_DUCKDUCKGO,
   PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
 };
 
@@ -52,7 +52,7 @@ const PrepopulatedEngine duckduckgo_de = {
   NULL,
   NULL,
   0,
-  SEARCH_ENGINE_OTHER,
+  SEARCH_ENGINE_DUCKDUCKGO,
   PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE,
 };
 
@@ -73,7 +73,7 @@ const PrepopulatedEngine duckduckgo_au_nz_ie = {
   NULL,
   NULL,
   0,
-  SEARCH_ENGINE_OTHER,
+  SEARCH_ENGINE_DUCKDUCKGO,
   PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE,
 };
 
@@ -95,7 +95,7 @@ const PrepopulatedEngine duckduckgo_lite = {
   NULL,
   NULL,
   0,
-  SEARCH_ENGINE_OTHER,
+  SEARCH_ENGINE_DUCKDUCKGO,
   PREPOPULATED_ENGINE_ID_DUCKDUCKGO_LITE,
 };
 #endif
@@ -117,7 +117,7 @@ const PrepopulatedEngine qwant = {
   NULL,
   NULL,
   0,
-  SEARCH_ENGINE_OTHER,
+  SEARCH_ENGINE_QWANT,
   PREPOPULATED_ENGINE_ID_QWANT,
 };
 

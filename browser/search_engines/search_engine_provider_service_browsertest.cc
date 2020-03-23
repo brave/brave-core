@@ -28,7 +28,6 @@
 #include "brave/browser/tor/tor_launcher_factory.h"
 #endif
 
-// using SearchEngineProviderServiceTest = InProcessBrowserTest;
 class SearchEngineProviderServiceTest : public InProcessBrowserTest {
  public:
   void SetUpOnMainThread() override {
