@@ -467,10 +467,6 @@ bool HasSameDomainAndPath(
       gurl.path().substr(0, path_to_match.size()) == path_to_match;
 }
 
-bool ignore_for_testing() {
-  return ledger::is_testing;
-}
-
 std::string toLowerCase(std::string word) {
   std::transform(word.begin(), word.end(), word.begin(), ::tolower);
   return word;
