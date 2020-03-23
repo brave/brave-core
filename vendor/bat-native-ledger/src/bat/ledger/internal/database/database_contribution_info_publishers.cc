@@ -17,7 +17,7 @@ namespace braveledger_database {
 
 namespace {
 
-const char table_name_[] = "contribution_info_publishers";
+const char kTableName[] = "contribution_info_publishers";
 
 }  // namespace
 
@@ -47,7 +47,7 @@ bool DatabaseContributionInfoPublishers::CreateTableV11(
         "    FOREIGN KEY (publisher_key) "
         "    REFERENCES publisher_info (publisher_id)"
       ")",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -68,7 +68,7 @@ bool DatabaseContributionInfoPublishers::CreateTableV15(
         "total_amount DOUBLE NOT NULL,"
         "contributed_amount DOUBLE"
       ")",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -82,26 +82,26 @@ bool DatabaseContributionInfoPublishers::CreateIndexV11(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  bool success = this->InsertIndex(transaction, table_name_, "contribution_id");
+  bool success = this->InsertIndex(transaction, kTableName, "contribution_id");
 
   if (!success) {
     return false;
   }
 
-  return this->InsertIndex(transaction, table_name_, "publisher_key");
+  return this->InsertIndex(transaction, kTableName, "publisher_key");
 }
 
 bool DatabaseContributionInfoPublishers::CreateIndexV15(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  bool success = this->InsertIndex(transaction, table_name_, "contribution_id");
+  bool success = this->InsertIndex(transaction, kTableName, "contribution_id");
 
   if (!success) {
     return false;
   }
 
-  return this->InsertIndex(transaction, table_name_, "publisher_key");
+  return this->InsertIndex(transaction, kTableName, "publisher_key");
 }
 
 bool DatabaseContributionInfoPublishers::Migrate(
@@ -126,7 +126,7 @@ bool DatabaseContributionInfoPublishers::MigrateToV11(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  if (!DropTable(transaction, table_name_)) {
+  if (!DropTable(transaction, kTableName)) {
     return false;
   }
 
@@ -147,9 +147,9 @@ bool DatabaseContributionInfoPublishers::MigrateToV15(
 
   const std::string temp_table_name = base::StringPrintf(
       "%s_temp",
-      table_name_);
+      kTableName);
 
-  if (!RenameDBTable(transaction, table_name_, temp_table_name)) {
+  if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
     return false;
   }
 
@@ -179,7 +179,7 @@ bool DatabaseContributionInfoPublishers::MigrateToV15(
   if (!MigrateDBTable(
       transaction,
       temp_table_name,
-      table_name_,
+      kTableName,
       columns,
       true)) {
     return false;
@@ -198,13 +198,13 @@ void DatabaseContributionInfoPublishers::InsertOrUpdate(
 
   const std::string query_delete = base::StringPrintf(
     "DELETE FROM %s WHERE contribution_id = ? AND publisher_key = ?",
-    table_name_);
+    kTableName);
 
   const std::string query = base::StringPrintf(
     "INSERT INTO %s "
     "(contribution_id, publisher_key, total_amount, contributed_amount) "
     "VALUES (?, ?, ?, ?)",
-    table_name_);
+    kTableName);
 
   for (const auto& publisher : info->publishers) {
     auto command_delete = ledger::DBCommand::New();
@@ -240,7 +240,7 @@ void DatabaseContributionInfoPublishers::GetRecordByContributionList(
   const std::string query = base::StringPrintf(
     "SELECT contribution_id, publisher_key, total_amount, contributed_amount "
     "FROM %s WHERE contribution_id IN (%s)",
-    table_name_,
+    kTableName,
     GenerateStringInCase(contribution_ids).c_str());
 
   auto command = ledger::DBCommand::New();
@@ -268,8 +268,8 @@ void DatabaseContributionInfoPublishers::GetRecordByContributionList(
 void DatabaseContributionInfoPublishers::OnGetRecordByContributionList(
     ledger::DBCommandResponsePtr response,
     ContributionPublisherListCallback callback) {
-  if (!response
-      || response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+  if (!response ||
+      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     callback({});
     return;
   }
@@ -308,7 +308,7 @@ void DatabaseContributionInfoPublishers::GetContributionPublisherPairList(
     "LEFT JOIN server_publisher_info AS spi "
     "ON spi.publisher_key = cip.publisher_key "
     "WHERE cip.contribution_id IN (%s)",
-    table_name_,
+    kTableName,
     GenerateStringInCase(contribution_ids).c_str());
 
   auto command = ledger::DBCommand::New();
@@ -340,8 +340,8 @@ void DatabaseContributionInfoPublishers::GetContributionPublisherPairList(
 void DatabaseContributionInfoPublishers::OnGetContributionPublisherInfoMap(
     ledger::DBCommandResponsePtr response,
     ContributionPublisherPairListCallback callback) {
-  if (!response
-      || response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+  if (!response ||
+      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     callback({});
     return;
   }
@@ -383,7 +383,7 @@ void DatabaseContributionInfoPublishers::UpdateContributedAmount(
       "UPDATE %s SET contributed_amount="
       "(SELECT total_amount WHERE contribution_id = ? AND publisher_key = ?) "
       "WHERE contribution_id = ? AND publisher_key = ?;",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::RUN;

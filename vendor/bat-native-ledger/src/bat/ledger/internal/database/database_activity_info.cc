@@ -15,7 +15,7 @@ using std::placeholders::_1;
 
 namespace {
 
-const char table_name_[] = "activity_info";
+const char kTableName[] = "activity_info";
 
 std::string GenerateActivityFilterQuery(
     const int start,
@@ -138,9 +138,7 @@ DatabaseActivityInfo::DatabaseActivityInfo(
 DatabaseActivityInfo::~DatabaseActivityInfo() = default;
 
 bool DatabaseActivityInfo::CreateTableV1(ledger::DBTransaction* transaction) {
-  if (!transaction) {
-    return false;
-  }
+  DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
@@ -157,8 +155,8 @@ bool DatabaseActivityInfo::CreateTableV1(ledger::DBTransaction* transaction) {
         "    REFERENCES publisher_info (publisher_id)"
         "    ON DELETE CASCADE"
       ")",
-      table_name_,
-      table_name_);
+      kTableName,
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -169,9 +167,7 @@ bool DatabaseActivityInfo::CreateTableV1(ledger::DBTransaction* transaction) {
 }
 
 bool DatabaseActivityInfo::CreateTableV2(ledger::DBTransaction* transaction) {
-  if (!transaction) {
-    return false;
-  }
+  DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
@@ -189,8 +185,8 @@ bool DatabaseActivityInfo::CreateTableV2(ledger::DBTransaction* transaction) {
         "    REFERENCES publisher_info (publisher_id)"
         "    ON DELETE CASCADE"
       ")",
-      table_name_,
-      table_name_);
+      kTableName,
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -201,9 +197,7 @@ bool DatabaseActivityInfo::CreateTableV2(ledger::DBTransaction* transaction) {
 }
 
 bool DatabaseActivityInfo::CreateTableV4(ledger::DBTransaction* transaction) {
-  if (!transaction) {
-    return false;
-  }
+  DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
@@ -223,8 +217,8 @@ bool DatabaseActivityInfo::CreateTableV4(ledger::DBTransaction* transaction) {
         "    REFERENCES publisher_info (publisher_id)"
         "    ON DELETE CASCADE"
       ")",
-      table_name_,
-      table_name_);
+      kTableName,
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -235,9 +229,7 @@ bool DatabaseActivityInfo::CreateTableV4(ledger::DBTransaction* transaction) {
 }
 
 bool DatabaseActivityInfo::CreateTableV6(ledger::DBTransaction* transaction) {
-  if (!transaction) {
-    return false;
-  }
+  DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
@@ -255,8 +247,8 @@ bool DatabaseActivityInfo::CreateTableV6(ledger::DBTransaction* transaction) {
         "    REFERENCES publisher_info (publisher_id)"
         "    ON DELETE CASCADE"
       ")",
-      table_name_,
-      table_name_);
+      kTableName,
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -267,9 +259,7 @@ bool DatabaseActivityInfo::CreateTableV6(ledger::DBTransaction* transaction) {
 }
 
 bool DatabaseActivityInfo::CreateTableV15(ledger::DBTransaction* transaction) {
-  if (!transaction) {
-    return false;
-  }
+  DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
@@ -283,7 +273,7 @@ bool DatabaseActivityInfo::CreateTableV15(ledger::DBTransaction* transaction) {
         "CONSTRAINT activity_unique "
         "UNIQUE (publisher_id, reconcile_stamp)"
       ")",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -294,43 +284,33 @@ bool DatabaseActivityInfo::CreateTableV15(ledger::DBTransaction* transaction) {
 }
 
 bool DatabaseActivityInfo::CreateIndexV2(ledger::DBTransaction* transaction) {
-  if (!transaction) {
-    return false;
-  }
+  DCHECK(transaction);
 
-  return this->InsertIndex(transaction, table_name_, "publisher_id");
+  return this->InsertIndex(transaction, kTableName, "publisher_id");
 }
 
 bool DatabaseActivityInfo::CreateIndexV4(ledger::DBTransaction* transaction) {
-  if (!transaction) {
-    return false;
-  }
+  DCHECK(transaction);
 
-  return this->InsertIndex(transaction, table_name_, "publisher_id");
+  return this->InsertIndex(transaction, kTableName, "publisher_id");
 }
 
 bool DatabaseActivityInfo::CreateIndexV6(ledger::DBTransaction* transaction) {
-  if (!transaction) {
-    return false;
-  }
+  DCHECK(transaction);
 
-  return this->InsertIndex(transaction, table_name_, "publisher_id");
+  return this->InsertIndex(transaction, kTableName, "publisher_id");
 }
 
 bool DatabaseActivityInfo::CreateIndexV15(ledger::DBTransaction* transaction) {
-  if (!transaction) {
-    return false;
-  }
+  DCHECK(transaction);
 
-  return this->InsertIndex(transaction, table_name_, "publisher_id");
+  return this->InsertIndex(transaction, kTableName, "publisher_id");
 }
 
 bool DatabaseActivityInfo::Migrate(
     ledger::DBTransaction* transaction,
     const int target) {
-  if (!transaction) {
-    return false;
-  }
+  DCHECK(transaction);
 
   switch (target) {
     case 1: {
@@ -358,7 +338,9 @@ bool DatabaseActivityInfo::Migrate(
 }
 
 bool DatabaseActivityInfo::MigrateToV1(ledger::DBTransaction* transaction) {
-  if (!DropTable(transaction, table_name_)) {
+  DCHECK(transaction);
+
+  if (!DropTable(transaction, kTableName)) {
     return false;
   }
 
@@ -370,9 +352,11 @@ bool DatabaseActivityInfo::MigrateToV1(ledger::DBTransaction* transaction) {
 }
 
 bool DatabaseActivityInfo::MigrateToV2(ledger::DBTransaction* transaction) {
+  DCHECK(transaction);
+
   const std::string query = base::StringPrintf(
       "ALTER TABLE %s ADD reconcile_stamp INTEGER DEFAULT 0 NOT NULL;",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -383,11 +367,13 @@ bool DatabaseActivityInfo::MigrateToV2(ledger::DBTransaction* transaction) {
 }
 
 bool DatabaseActivityInfo::MigrateToV4(ledger::DBTransaction* transaction) {
+  DCHECK(transaction);
+
   const std::string temp_table_name = base::StringPrintf(
       "%s_temp",
-      table_name_);
+      kTableName);
 
-  if (!RenameDBTable(transaction, table_name_, temp_table_name)) {
+  if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
     return false;
   }
 
@@ -419,13 +405,13 @@ bool DatabaseActivityInfo::MigrateToV4(ledger::DBTransaction* transaction) {
   if (!MigrateDBTable(
       transaction,
       temp_table_name,
-      table_name_,
+      kTableName,
       columns,
       true)) {
     return false;
   }
 
-  query = base::StringPrintf("UPDATE %s SET visits=5;", table_name_);
+  query = base::StringPrintf("UPDATE %s SET visits=5;", kTableName);
   command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
   command->command = query;
@@ -435,9 +421,11 @@ bool DatabaseActivityInfo::MigrateToV4(ledger::DBTransaction* transaction) {
 }
 
 bool DatabaseActivityInfo::MigrateToV5(ledger::DBTransaction* transaction) {
+  DCHECK(transaction);
+
   const std::string query = base::StringPrintf(
       "UPDATE %s SET visits = 1 WHERE visits = 0",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -448,11 +436,13 @@ bool DatabaseActivityInfo::MigrateToV5(ledger::DBTransaction* transaction) {
 }
 
 bool DatabaseActivityInfo::MigrateToV6(ledger::DBTransaction* transaction) {
+  DCHECK(transaction);
+
   const std::string temp_table_name = base::StringPrintf(
       "%s_temp",
-      table_name_);
+      kTableName);
 
-  if (!RenameDBTable(transaction, table_name_, temp_table_name)) {
+  if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
     return false;
   }
 
@@ -486,7 +476,7 @@ bool DatabaseActivityInfo::MigrateToV6(ledger::DBTransaction* transaction) {
   if (!MigrateDBTable(
       transaction,
       temp_table_name,
-      table_name_,
+      kTableName,
       columns,
       true,
       group_by)) {
@@ -497,11 +487,13 @@ bool DatabaseActivityInfo::MigrateToV6(ledger::DBTransaction* transaction) {
 }
 
 bool DatabaseActivityInfo::MigrateToV15(ledger::DBTransaction* transaction) {
+  DCHECK(transaction);
+
   const std::string temp_table_name = base::StringPrintf(
       "%s_temp",
-      table_name_);
+      kTableName);
 
-  if (!RenameDBTable(transaction, table_name_, temp_table_name)) {
+  if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
     return false;
   }
 
@@ -533,7 +525,7 @@ bool DatabaseActivityInfo::MigrateToV15(ledger::DBTransaction* transaction) {
   if (!MigrateDBTable(
       transaction,
       temp_table_name,
-      table_name_,
+      kTableName,
       columns,
       true)) {
     return false;
@@ -570,7 +562,9 @@ void DatabaseActivityInfo::InsertOrUpdateList(
 void DatabaseActivityInfo::CreateInsertOrUpdate(
     ledger::DBTransaction* transaction,
     ledger::PublisherInfoPtr info) {
-  if (!info || !transaction) {
+  DCHECK(transaction);
+
+  if (!info) {
     return;
   }
 
@@ -579,7 +573,7 @@ void DatabaseActivityInfo::CreateInsertOrUpdate(
       "(publisher_id, duration, score, percent, "
       "weight, reconcile_stamp, visits) "
       "VALUES (?, ?, ?, ?, ?, ?, ?)",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::RUN;
@@ -619,7 +613,7 @@ void DatabaseActivityInfo::GetRecordsList(
     "LEFT JOIN server_publisher_info AS spi "
     "ON spi.publisher_key = pi.publisher_id "
     "WHERE 1 = 1",
-    table_name_);
+    kTableName);
 
   query += GenerateActivityFilterQuery(start, limit, filter->Clone());
 
@@ -703,7 +697,7 @@ void DatabaseActivityInfo::DeleteRecord(
 
   const std::string query = base::StringPrintf(
       "DELETE FROM %s WHERE publisher_id = ? AND reconcile_stamp = ?",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::RUN;

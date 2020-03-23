@@ -22,10 +22,7 @@ bool DropTable(
     ledger::DBTransaction* transaction,
     const std::string& table_name) {
   DCHECK(!table_name.empty());
-
-  if (!transaction) {
-    return false;
-  }
+  DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
       "PRAGMA foreign_keys = off;"
@@ -78,10 +75,7 @@ bool MigrateDBTable(
   DCHECK_NE(from, to);
   DCHECK(!from.empty());
   DCHECK(!to.empty());
-
-  if (!transaction) {
-    return false;
-  }
+  DCHECK(transaction);
 
   std::string query = "PRAGMA foreign_keys = off;";
 
@@ -130,10 +124,7 @@ bool RenameDBTable(
     const std::string& from,
     const std::string& to) {
   DCHECK_NE(from, to);
-
-  if (!transaction) {
-    return false;
-  }
+  DCHECK(transaction);
 
   const auto query = base::StringPrintf(
       "ALTER TABLE %s RENAME TO %s;",

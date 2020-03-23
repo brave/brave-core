@@ -17,7 +17,7 @@ namespace braveledger_database {
 
 namespace {
 
-const char table_name_[] = "media_publisher_info";
+const char kTableName[] = "media_publisher_info";
 
 }  // namespace
 
@@ -41,8 +41,8 @@ bool DatabaseMediaPublisherInfo::CreateTableV1(
         "    REFERENCES publisher_info (publisher_id)"
         "    ON DELETE CASCADE"
       ")",
-      table_name_,
-      table_name_);
+      kTableName,
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -61,7 +61,7 @@ bool DatabaseMediaPublisherInfo::CreateTableV15(
         "media_key TEXT NOT NULL PRIMARY KEY UNIQUE,"
         "publisher_id LONGVARCHAR NOT NULL"
       ")",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -75,13 +75,13 @@ bool DatabaseMediaPublisherInfo::CreateIndexV15(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  bool success = this->InsertIndex(transaction, table_name_, "media_key");
+  bool success = this->InsertIndex(transaction, kTableName, "media_key");
 
   if (!success) {
     return false;
   }
 
-  return this->InsertIndex(transaction, table_name_, "publisher_id");
+  return this->InsertIndex(transaction, kTableName, "publisher_id");
 }
 
 bool DatabaseMediaPublisherInfo::Migrate(
@@ -106,7 +106,7 @@ bool DatabaseMediaPublisherInfo::MigrateToV1(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  if (!DropTable(transaction, table_name_)) {
+  if (!DropTable(transaction, kTableName)) {
     return false;
   }
 
@@ -123,9 +123,9 @@ bool DatabaseMediaPublisherInfo::MigrateToV15(
 
   const std::string temp_table_name = base::StringPrintf(
       "%s_temp",
-      table_name_);
+      kTableName);
 
-  if (!RenameDBTable(transaction, table_name_, temp_table_name)) {
+  if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
     return false;
   }
 
@@ -145,7 +145,7 @@ bool DatabaseMediaPublisherInfo::MigrateToV15(
   if (!MigrateDBTable(
       transaction,
       temp_table_name,
-      table_name_,
+      kTableName,
       columns,
       true)) {
     return false;
@@ -167,7 +167,7 @@ void DatabaseMediaPublisherInfo::InsertOrUpdate(
 
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s (media_key, publisher_id) VALUES (?, ?)",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::RUN;
@@ -202,7 +202,7 @@ void DatabaseMediaPublisherInfo::GetRecord(
       "LEFT JOIN server_publisher_info AS spi "
       "ON spi.publisher_key = pi.publisher_id "
       "WHERE mpi.media_key=?",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::READ;
@@ -234,8 +234,8 @@ void DatabaseMediaPublisherInfo::GetRecord(
 void DatabaseMediaPublisherInfo::OnGetRecord(
     ledger::DBCommandResponsePtr response,
     ledger::PublisherInfoCallback callback) {
-  if (!response
-      || response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+  if (!response ||
+      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     callback(ledger::Result::LEDGER_ERROR, {});
     return;
   }

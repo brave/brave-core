@@ -17,8 +17,8 @@ namespace braveledger_database {
 
 namespace {
 
-const char table_name_[] = "contribution_queue_publishers";
-const char parent_table_name_[] = "contribution_queue";
+const char kTableName[] = "contribution_queue_publishers";
+const char kParentTableName[] = "contribution_queue";
 
 }  // namespace
 
@@ -47,10 +47,10 @@ bool DatabaseContributionQueuePublishers::CreateTableV9(
         "    REFERENCES %s (contribution_queue_id) "
         "    ON DELETE CASCADE"
       ")",
-      table_name_,
-      table_name_,
-      table_name_,
-      parent_table_name_);
+      kTableName,
+      kTableName,
+      kTableName,
+      kParentTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -70,7 +70,7 @@ bool DatabaseContributionQueuePublishers::CreateTableV15(
         "publisher_key TEXT NOT NULL,"
         "amount_percent DOUBLE NOT NULL"
       ")",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -85,13 +85,13 @@ bool DatabaseContributionQueuePublishers::CreateIndexV15(
   DCHECK(transaction);
 
   bool success =
-      this->InsertIndex(transaction, table_name_, "contribution_queue_id");
+      this->InsertIndex(transaction, kTableName, "contribution_queue_id");
 
   if (!success) {
     return false;
   }
 
-  return this->InsertIndex(transaction, table_name_, "publisher_key");
+  return this->InsertIndex(transaction, kTableName, "publisher_key");
 }
 
 bool DatabaseContributionQueuePublishers::Migrate(
@@ -116,7 +116,7 @@ bool DatabaseContributionQueuePublishers::MigrateToV9(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  if (!DropTable(transaction, table_name_)) {
+  if (!DropTable(transaction, kTableName)) {
     return false;
   }
 
@@ -133,9 +133,9 @@ bool DatabaseContributionQueuePublishers::MigrateToV15(
 
   const std::string temp_table_name = base::StringPrintf(
       "%s_temp",
-      table_name_);
+      kTableName);
 
-  if (!RenameDBTable(transaction, table_name_, temp_table_name)) {
+  if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
     return false;
   }
 
@@ -156,7 +156,7 @@ bool DatabaseContributionQueuePublishers::MigrateToV15(
   if (!MigrateDBTable(
       transaction,
       temp_table_name,
-      table_name_,
+      kTableName,
       columns,
       true)) {
     return false;
@@ -178,7 +178,7 @@ void DatabaseContributionQueuePublishers::InsertOrUpdate(
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
       "(contribution_queue_id, publisher_key, amount_percent) VALUES (?, ?, ?)",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::RUN;
@@ -212,7 +212,7 @@ void DatabaseContributionQueuePublishers::GetRecordsByQueueId(
   const std::string query = base::StringPrintf(
       "SELECT publisher_key, amount_percent "
       "FROM %s WHERE contribution_queue_id = ?",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::READ;
@@ -239,8 +239,8 @@ void DatabaseContributionQueuePublishers::GetRecordsByQueueId(
 void DatabaseContributionQueuePublishers::OnGetRecordsByQueueId(
     ledger::DBCommandResponsePtr response,
     ContributionQueuePublishersListCallback callback) {
-  if (!response
-      || response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+  if (!response ||
+      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     callback({});
     return;
   }
@@ -270,7 +270,7 @@ void DatabaseContributionQueuePublishers::DeleteRecordsByQueueId(
 
   const std::string query = base::StringPrintf(
       "DELETE FROM %s WHERE contribution_queue_id = ?",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::RUN;

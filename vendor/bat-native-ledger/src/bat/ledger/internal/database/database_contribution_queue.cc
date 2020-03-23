@@ -18,7 +18,7 @@ namespace braveledger_database {
 
 namespace {
 
-const char table_name_[] = "contribution_queue";
+const char kTableName[] = "contribution_queue";
 
 }  // namespace
 
@@ -42,7 +42,7 @@ bool DatabaseContributionQueue::CreateTableV9(
         "partial INTEGER NOT NULL DEFAULT 0,"
         "created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL"
       ")",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -74,7 +74,7 @@ bool DatabaseContributionQueue::MigrateToV9(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  if (!DropTable(transaction, table_name_)) {
+  if (!DropTable(transaction, kTableName)) {
     return false;
   }
 
@@ -109,7 +109,7 @@ void DatabaseContributionQueue::InsertOrUpdate(
   const std::string query = base::StringPrintf(
     "INSERT OR REPLACE INTO %s (contribution_queue_id, type, amount, partial) "
     "VALUES (?, ?, ?, ?)",
-    table_name_);
+    kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::RUN;
@@ -133,7 +133,7 @@ void DatabaseContributionQueue::InsertOrUpdate(
     const std::string new_query = base::StringPrintf(
         "SELECT contribution_queue_id FROM %s "
         "ORDER BY contribution_queue_id DESC LIMIT 1",
-    table_name_);
+    kTableName);
 
     auto new_command = ledger::DBCommand::New();
     new_command->type = ledger::DBCommand::Type::READ;
@@ -162,8 +162,8 @@ void DatabaseContributionQueue::OnInsertOrUpdate(
     const std::string& queue_string,
     const uint64_t id,
     ledger::ResultCallback callback) {
-  if (!response
-      || response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+  if (!response ||
+      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -201,7 +201,7 @@ void DatabaseContributionQueue::GetFirstRecord(
   const std::string query = base::StringPrintf(
       "SELECT contribution_queue_id, type, amount, partial "
       "FROM %s ORDER BY contribution_queue_id ASC LIMIT 1",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::READ;
@@ -228,8 +228,8 @@ void DatabaseContributionQueue::GetFirstRecord(
 void DatabaseContributionQueue::OnGetFirstRecord(
     ledger::DBCommandResponsePtr response,
     ledger::GetFirstContributionQueueCallback callback) {
-  if (!response
-      || response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+  if (!response ||
+      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     callback(nullptr);
     return;
   }
@@ -286,7 +286,7 @@ void DatabaseContributionQueue::DeleteRecord(
 
   const std::string query = base::StringPrintf(
       "DELETE FROM %s WHERE contribution_queue_id = ?",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::RUN;

@@ -19,8 +19,8 @@ namespace braveledger_database {
 
 namespace {
 
-const char table_name_[] = "contribution_info";
-const char child_table_name_[] = "contribution_info_publishers";
+const char kTableName[] = "contribution_info";
+const char kChildTableName[] = "contribution_info_publishers";
 
 ledger::ReportType ConvertRewardsTypeToReportType(
     const ledger::RewardsType type) {
@@ -68,7 +68,7 @@ bool DatabaseContributionInfo::CreateTableV2(
         "    REFERENCES publisher_info (publisher_id)"
         "    ON DELETE CASCADE"
       ")",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -95,7 +95,7 @@ bool DatabaseContributionInfo::CreateTableV8(
         "    REFERENCES publisher_info (publisher_id)"
         "    ON DELETE CASCADE"
       ")",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -119,7 +119,7 @@ bool DatabaseContributionInfo::CreateTableV11(
         "created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,"
         "PRIMARY KEY (contribution_id)"
       ")",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -133,14 +133,14 @@ bool DatabaseContributionInfo::CreateIndexV2(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  return this->InsertIndex(transaction, table_name_, "publisher_id");
+  return this->InsertIndex(transaction, kTableName, "publisher_id");
 }
 
 bool DatabaseContributionInfo::CreateIndexV8(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  return this->InsertIndex(transaction, table_name_, "publisher_id");
+  return this->InsertIndex(transaction, kTableName, "publisher_id");
 }
 
 bool DatabaseContributionInfo::Migrate(
@@ -176,7 +176,7 @@ bool DatabaseContributionInfo::Migrate(
 bool DatabaseContributionInfo::MigrateToV2(ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  if (!DropTable(transaction, table_name_)) {
+  if (!DropTable(transaction, kTableName)) {
     return false;
   }
 
@@ -196,9 +196,9 @@ bool DatabaseContributionInfo::MigrateToV8(ledger::DBTransaction* transaction) {
 
   const std::string temp_table_name = base::StringPrintf(
       "%s_temp",
-      table_name_);
+      kTableName);
 
-  if (!RenameDBTable(transaction, table_name_, temp_table_name)) {
+  if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
     return false;
   }
 
@@ -229,7 +229,7 @@ bool DatabaseContributionInfo::MigrateToV8(ledger::DBTransaction* transaction) {
   if (!MigrateDBTable(
       transaction,
       temp_table_name,
-      table_name_,
+      kTableName,
       columns,
       true)) {
     return false;
@@ -243,9 +243,9 @@ bool DatabaseContributionInfo::MigrateToV11(
 
   const std::string temp_table_name = base::StringPrintf(
       "%s_temp",
-      table_name_);
+      kTableName);
 
-  if (!RenameDBTable(transaction, table_name_, temp_table_name)) {
+  if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
     return false;
   }
 
@@ -303,7 +303,7 @@ bool DatabaseContributionInfo::MigrateToV11(
       "INSERT INTO %s "
       "(contribution_id, amount, type, step, retry_count, created_at) "
       "SELECT contribution_id, amount, type, -1, -1, date FROM %s",
-      table_name_,
+      kTableName,
       temp_table_name.c_str());
 
   command = ledger::DBCommand::New();
@@ -321,7 +321,7 @@ bool DatabaseContributionInfo::MigrateToV11(
         "amount, "
         "amount "
       "FROM %s WHERE publisher_id IS NOT NULL AND publisher_id != \"\"",
-      child_table_name_,
+      kChildTableName,
       temp_table_name.c_str());
 
   command = ledger::DBCommand::New();
@@ -352,7 +352,7 @@ bool DatabaseContributionInfo::MigrateToV16(
       "(CASE WHEN datetime(created_at, 'unixepoch') IS NULL "
       " THEN strftime('%%s', datetime(created_at)) "
       " ELSE created_at END)",
-      table_name_);
+      kTableName);
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
   command->command = query;
@@ -368,7 +368,7 @@ bool DatabaseContributionInfo::MigrateToV17(
   const char column[] = "processor";
   const std::string query = base::StringPrintf(
       "ALTER TABLE %s ADD %s INTEGER NOT NULL DEFAULT 1",
-      table_name_,
+      kTableName,
       column);
 
   auto command = ledger::DBCommand::New();
@@ -399,7 +399,7 @@ void DatabaseContributionInfo::InsertOrUpdate(
       "(contribution_id, amount, type, step, retry_count, created_at, "
       "processor) "
       "VALUES (?, ?, ?, ?, ?, ?, ?)",
-    table_name_);
+    kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::RUN;
@@ -434,7 +434,7 @@ void DatabaseContributionInfo::GetRecord(
     "ci.processor "
     "FROM %s as ci "
     "WHERE ci.contribution_id = ?",
-    table_name_);
+    kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::READ;
@@ -465,8 +465,8 @@ void DatabaseContributionInfo::GetRecord(
 void DatabaseContributionInfo::OnGetRecord(
     ledger::DBCommandResponsePtr response,
     ledger::GetContributionInfoCallback callback) {
-  if (!response
-      || response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+  if (!response ||
+      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     callback(nullptr);
     return;
   }
@@ -524,7 +524,7 @@ void DatabaseContributionInfo::GetAllRecords(
     "SELECT ci.contribution_id, ci.amount, ci.type, ci.step, ci.retry_count,"
     "ci.processor "
     "FROM %s as ci ",
-    table_name_);
+    kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::READ;
@@ -573,8 +573,8 @@ void DatabaseContributionInfo::GetOneTimeTips(
       "WHERE strftime('%%m',  datetime(ci.created_at, 'unixepoch')) = ? AND "
       "strftime('%%Y', datetime(ci.created_at, 'unixepoch')) = ? "
       "AND ci.type = ?",
-      table_name_,
-      child_table_name_);
+      kTableName,
+      kChildTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::READ;
@@ -612,8 +612,8 @@ void DatabaseContributionInfo::GetOneTimeTips(
 void DatabaseContributionInfo::OnGetOneTimeTips(
     ledger::DBCommandResponsePtr response,
     ledger::PublisherInfoListCallback callback) {
-  if (!response
-      || response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+  if (!response ||
+      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     callback({});
     return;
   }
@@ -655,7 +655,7 @@ void DatabaseContributionInfo::GetContributionReport(
       "FROM %s as ci "
       "WHERE strftime('%%m',  datetime(ci.created_at, 'unixepoch')) = ? AND "
       "strftime('%%Y', datetime(ci.created_at, 'unixepoch')) = ?",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::READ;
@@ -687,8 +687,8 @@ void DatabaseContributionInfo::GetContributionReport(
 void DatabaseContributionInfo::OnGetContributionReport(
     ledger::DBCommandResponsePtr response,
     ledger::GetContributionReportCallback callback) {
-  if (!response
-      || response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+  if (!response ||
+      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     callback({});
     return;
   }
@@ -763,7 +763,7 @@ void DatabaseContributionInfo::GetIncompletedRecords(
       "SELECT ci.contribution_id, ci.amount, ci.type, ci.step, ci.retry_count, "
       "ci.processor "
       "FROM %s as ci WHERE ci.step > 0 AND ci.processor = ?",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::READ;
@@ -794,8 +794,8 @@ void DatabaseContributionInfo::GetIncompletedRecords(
 void DatabaseContributionInfo::OnGetList(
     ledger::DBCommandResponsePtr response,
     ledger::ContributionInfoListCallback callback) {
-  if (!response
-      || response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+  if (!response ||
+      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     callback({});
     return;
   }
@@ -867,7 +867,7 @@ void DatabaseContributionInfo::UpdateStepAndCount(
 
   const std::string query = base::StringPrintf(
     "UPDATE %s SET step=?, retry_count=? WHERE contribution_id = ?;",
-    table_name_);
+    kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::RUN;
