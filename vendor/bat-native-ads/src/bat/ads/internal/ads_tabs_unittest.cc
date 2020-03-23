@@ -49,7 +49,7 @@ class AdsTabsTest : public ::testing::Test {
         .WillRepeatedly(
             Invoke([this](
                 const std::string& name,
-                OnLoadCallback callback) {
+                LoadCallback callback) {
               auto path = GetTestDataPath();
               path = path.AppendASCII(name);
 
@@ -67,7 +67,7 @@ class AdsTabsTest : public ::testing::Test {
             Invoke([](
                 const std::string& name,
                 const std::string& value,
-                OnSaveCallback callback) {
+                ResultCallback callback) {
               callback(SUCCESS);
             }));
 
@@ -75,7 +75,7 @@ class AdsTabsTest : public ::testing::Test {
         .WillRepeatedly(
             Invoke([this](
                 const std::string& language,
-                OnLoadCallback callback) {
+                LoadCallback callback) {
               auto path = GetResourcesPath();
               path = path.AppendASCII("user_models");
               path = path.AppendASCII("languages");

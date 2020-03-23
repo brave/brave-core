@@ -57,7 +57,7 @@ class ConfirmationsUnblindedTokensTest : public ::testing::Test {
         .WillRepeatedly(
             Invoke([this](
                 const std::string& name,
-                OnLoadCallback callback) {
+                LoadCallback callback) {
               auto path = GetTestDataPath();
               path = path.AppendASCII(name);
 
@@ -75,7 +75,7 @@ class ConfirmationsUnblindedTokensTest : public ::testing::Test {
             Invoke([](
                 const std::string& name,
                 const std::string& value,
-                OnSaveCallback callback) {
+                ResultCallback callback) {
               callback(SUCCESS);
             }));
 

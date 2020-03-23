@@ -370,7 +370,7 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
             confirmationType:[NSString stringWithUTF8String:std::string(confirmationType).c_str()]];
 }
 
-- (void)getCreativeAdNotifications:(const std::vector<std::string> &)categories callback:(ads::OnGetCreativeAdNotificationsCallback)callback
+- (void)getCreativeAdNotifications:(const std::vector<std::string> &)categories callback:(ads::GetCreativeAdNotificationsCallback)callback
 {
   if (![self isAdsServiceRunning]) { return; }
 
@@ -387,7 +387,7 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
   callback(ads::Result::SUCCESS, categories, found_ads);
 }
 
-- (void)getAdConversions:(ads::OnGetAdConversionsCallback)callback
+- (void)getAdConversions:(ads::GetAdConversionsCallback)callback
 {
   // TODO(khickinson): To be implemented
   if (![self isAdsServiceRunning]) { return; }
@@ -491,7 +491,7 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
 
 #pragma mark - File IO
 
-- (void)load:(const std::string &)name callback:(ads::OnLoadCallback)callback
+- (void)load:(const std::string &)name callback:(ads::LoadCallback)callback
 {
   const auto contents = [self.commonOps loadContentsFromFileWithName:name];
   if (contents.empty()) {
@@ -516,7 +516,7 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
   return std::string(contents.UTF8String);
 }
 
-- (void)loadSampleBundle:(ads::OnLoadSampleBundleCallback)callback
+- (void)loadSampleBundle:(ads::LoadSampleBundleCallback)callback
 {
   const auto bundle = [NSBundle bundleForClass:[BATBraveAds class]];
   const auto path = [bundle pathForResource:@"sample_bundle" ofType:@"json"];
@@ -533,7 +533,7 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
   callback(ads::Result::SUCCESS, std::string(contents.UTF8String));
 }
 
-- (void)loadUserModelForLanguage:(const std::string &)language callback:(ads::OnLoadCallback)callback
+- (void)loadUserModelForLanguage:(const std::string &)language callback:(ads::LoadCallback)callback
 {
   const auto bundle = [NSBundle bundleForClass:[BATBraveAds class]];
   const auto languageKey = [[[NSString stringWithUTF8String:language.c_str()] substringToIndex:2] lowercaseString];
@@ -553,7 +553,7 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
   callback(ads::Result::SUCCESS, std::string(contents.UTF8String));
 }
 
-- (void)reset:(const std::string &)name callback:(ads::OnResetCallback)callback
+- (void)reset:(const std::string &)name callback:(ads::ResultCallback)callback
 {
   if ([self.commonOps removeFileWithName:name]) {
     callback(ads::Result::SUCCESS);
@@ -562,7 +562,7 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
   }
 }
 
-- (void)save:(const std::string &)name value:(const std::string &)value callback:(ads::OnSaveCallback)callback
+- (void)save:(const std::string &)name value:(const std::string &)value callback:(ads::ResultCallback)callback
 {
   if ([self.commonOps saveContents:value name:name]) {
     callback(ads::Result::SUCCESS);
@@ -571,7 +571,7 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
   }
 }
 
-- (void)saveBundleState:(std::unique_ptr<ads::BundleState>)state callback:(ads::OnSaveCallback)callback
+- (void)saveBundleState:(std::unique_ptr<ads::BundleState>)state callback:(ads::ResultCallback)callback
 {
   if (state.get() == nullptr) {
     callback(ads::Result::FAILED);

@@ -62,7 +62,7 @@ class MockAdsClient : public AdsClient {
 
   MOCK_CONST_METHOD2(LoadUserModelForLanguage, void(
       const std::string& language,
-      OnLoadCallback callback));
+      LoadCallback callback));
 
   MOCK_CONST_METHOD0(IsForeground, bool());
 
@@ -103,32 +103,32 @@ class MockAdsClient : public AdsClient {
   MOCK_METHOD3(Save, void(
       const std::string& name,
       const std::string& value,
-      OnSaveCallback callback));
+      ResultCallback callback));
 
   MOCK_METHOD2(SaveBundleState, void(
       std::unique_ptr<BundleState> state,
-      OnSaveCallback callback));
+      ResultCallback callback));
 
   MOCK_METHOD2(Load, void(
       const std::string& name,
-      OnLoadCallback callback));
+      LoadCallback callback));
 
   MOCK_METHOD1(LoadJsonSchema, std::string(
       const std::string& name));
 
   MOCK_METHOD1(LoadSampleBundle, void(
-      OnLoadSampleBundleCallback callback));
+      LoadSampleBundleCallback callback));
 
   MOCK_METHOD2(Reset, void(
       const std::string& name,
-      OnResetCallback callback));
+      ResultCallback callback));
 
   MOCK_METHOD2(GetCreativeAdNotifications, void(
       const std::vector<std::string>& categories,
-      OnGetCreativeAdNotificationsCallback callback));
+      GetCreativeAdNotificationsCallback callback));
 
   MOCK_METHOD1(GetAdConversions, void(
-      OnGetAdConversionsCallback callback));
+      GetAdConversionsCallback callback));
 
   MOCK_CONST_METHOD1(EventLog, void(
       const std::string& json));

@@ -36,8 +36,8 @@ class Catalog {
 
   IssuersInfo GetIssuers() const;
 
-  void Save(const std::string& json, OnSaveCallback callback);
-  void Reset(OnSaveCallback callback);
+  void Save(const std::string& json, ResultCallback callback);
+  void Reset(ResultCallback callback);
 
  private:
   AdsClient* ads_client_;  // NOT OWNED
