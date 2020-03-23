@@ -11,7 +11,6 @@
 #include <vector>
 
 #include "base/optional.h"
-#include "base/unguessable_token.h"
 #include "chrome/browser/chrome_content_browser_client.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/content_browser_client.h"
@@ -104,8 +103,8 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       CreateThrottlesForNavigation(content::NavigationHandle* handle) override;
 
  private:
-  base::UnguessableToken session_token_;
-  base::UnguessableToken incognito_session_token_;
+  uint64_t session_token_;
+  uint64_t incognito_session_token_;
 
   void OnAllowGoogleAuthChanged();
 
