@@ -16,7 +16,7 @@ namespace braveledger_database {
 
 namespace {
 
-const char table_name_[] = "creds_batch";
+const char kTableName[] = "creds_batch";
 
 }  // namespace
 
@@ -45,8 +45,8 @@ bool DatabaseCredsBatch::CreateTableV18(ledger::DBTransaction* transaction) {
         "CONSTRAINT %s_unique "
           "UNIQUE (trigger_id, trigger_type)"
       ")",
-      table_name_,
-      table_name_);
+      kTableName,
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -59,13 +59,13 @@ bool DatabaseCredsBatch::CreateTableV18(ledger::DBTransaction* transaction) {
 bool DatabaseCredsBatch::CreateIndexV18(ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  bool success = this->InsertIndex(transaction, table_name_, "trigger_id");
+  bool success = this->InsertIndex(transaction, kTableName, "trigger_id");
 
   if (!success) {
     return false;
   }
 
-  return this->InsertIndex(transaction, table_name_, "trigger_type");
+  return this->InsertIndex(transaction, kTableName, "trigger_type");
 }
 
 bool DatabaseCredsBatch::Migrate(
@@ -86,7 +86,7 @@ bool DatabaseCredsBatch::Migrate(
 bool DatabaseCredsBatch::MigrateToV18(ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  if (!DropTable(transaction, table_name_)) {
+  if (!DropTable(transaction, kTableName)) {
     return false;
   }
 
@@ -104,7 +104,7 @@ bool DatabaseCredsBatch::MigrateToV18(ledger::DBTransaction* transaction) {
       "signed_creds, public_key, batch_proof) "
       "SELECT hex(randomblob(16)), promotion_id, 1, tokens, blinded_creds, "
       "signed_creds, public_key, batch_proof FROM promotion_creds",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -115,8 +115,8 @@ bool DatabaseCredsBatch::MigrateToV18(ledger::DBTransaction* transaction) {
       "UPDATE %s SET "
       "status = (SELECT p.status FROM %s as cb "
       "INNER JOIN promotion as p ON cb.trigger_id = p.promotion_id)",
-      table_name_,
-      table_name_);
+      kTableName,
+      kTableName);
 
   command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -142,7 +142,7 @@ void DatabaseCredsBatch::InsertOrUpdate(
       "(creds_id, trigger_id, trigger_type, creds, blinded_creds, "
       "signed_creds, public_key, batch_proof, status) "
       "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::RUN;
@@ -178,7 +178,7 @@ void DatabaseCredsBatch::GetRecordByTrigger(
       "SELECT creds_id, trigger_id, trigger_type, creds, blinded_creds, "
       "signed_creds, public_key, batch_proof, status FROM %s "
       "WHERE trigger_id = ? AND trigger_type = ?",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::READ;
@@ -255,7 +255,7 @@ void DatabaseCredsBatch::SaveSignedCreds(
   const std::string query = base::StringPrintf(
       "UPDATE %s SET signed_creds = ?, public_key = ?, batch_proof = ?, "
       "status = ? WHERE trigger_id = ? AND trigger_type = ?",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::RUN;
@@ -285,7 +285,7 @@ void DatabaseCredsBatch::GetAllRecords(
   const std::string query = base::StringPrintf(
       "SELECT creds_id, trigger_id, trigger_type, creds, blinded_creds, "
       "signed_creds, public_key, batch_proof, status FROM %s",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::READ;
@@ -360,7 +360,7 @@ void DatabaseCredsBatch::UpdateStatus(
 
   const std::string query = base::StringPrintf(
       "UPDATE %s SET status = ? WHERE trigger_id = ? AND trigger_type = ?",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::RUN;

@@ -21,7 +21,7 @@ namespace braveledger_database {
 
 namespace {
 
-const char table_name_[] = "promotion";
+const char kTableName[] = "promotion";
 
 }  // namespace
 
@@ -49,7 +49,7 @@ bool DatabasePromotion::CreateTableV10(ledger::DBTransaction* transaction) {
         "created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,"
         "PRIMARY KEY (promotion_id)"
       ")",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -62,7 +62,7 @@ bool DatabasePromotion::CreateTableV10(ledger::DBTransaction* transaction) {
 bool DatabasePromotion::CreateIndexV10(ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  return this->InsertIndex(transaction, table_name_, "promotion_id");
+  return this->InsertIndex(transaction, kTableName, "promotion_id");
 }
 
 bool DatabasePromotion::Migrate(
@@ -95,7 +95,7 @@ bool DatabasePromotion::Migrate(
 bool DatabasePromotion::MigrateToV10(ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  if (!DropTable(transaction, table_name_)) {
+  if (!DropTable(transaction, kTableName)) {
     return false;
   }
 
@@ -120,7 +120,7 @@ bool DatabasePromotion::MigrateToV13(ledger::DBTransaction* transaction) {
   const char column[] = "claimed_at";
   const std::string query = base::StringPrintf(
       "ALTER TABLE %s ADD %s TIMESTAMP",
-      table_name_,
+      kTableName,
       column);
 
   auto command = ledger::DBCommand::New();
@@ -138,9 +138,9 @@ bool DatabasePromotion::MigrateToV14(ledger::DBTransaction* transaction) {
       "UPDATE %s SET approximate_value = "
       "(SELECT (suggestions * 0.25) FROM %s as ps "
       "WHERE ps.promotion_id = %s.promotion_id)",
-      table_name_,
-      table_name_,
-      table_name_);
+      kTableName,
+      kTableName,
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -162,7 +162,7 @@ bool DatabasePromotion::MigrateToV18(ledger::DBTransaction* transaction) {
   const char column[] = "claim_id";
   std::string query = base::StringPrintf(
       "ALTER TABLE %s ADD %s TEXT",
-      table_name_,
+      kTableName,
       column);
 
   auto command = ledger::DBCommand::New();
@@ -175,8 +175,8 @@ bool DatabasePromotion::MigrateToV18(ledger::DBTransaction* transaction) {
       "UPDATE %s SET claim_id = "
       "(SELECT claim_id FROM promotion_creds as pc "
       "WHERE pc.promotion_id = %s.promotion_id)",
-      table_name_,
-      table_name_);
+      kTableName,
+      kTableName);
 
   command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -186,7 +186,7 @@ bool DatabasePromotion::MigrateToV18(ledger::DBTransaction* transaction) {
 
   query = base::StringPrintf(
       "UPDATE %s SET status = 1 WHERE status = 2 OR status = 3",
-      table_name_);
+      kTableName);
 
   command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -212,7 +212,7 @@ void DatabasePromotion::InsertOrUpdate(
       "(promotion_id, version, type, public_keys, suggestions, "
       "approximate_value, status, expires_at, claimed_at) "
       "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::RUN;
@@ -250,7 +250,7 @@ void DatabasePromotion::GetRecord(
       "SELECT promotion_id, version, type, public_keys, suggestions, "
       "approximate_value, status, expires_at, claimed_at, claim_id "
       "FROM %s WHERE promotion_id=?",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::READ;
@@ -285,8 +285,8 @@ void DatabasePromotion::GetRecord(
 void DatabasePromotion::OnGetRecord(
     ledger::DBCommandResponsePtr response,
     ledger::GetPromotionCallback callback) {
-  if (!response
-      || response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+  if (!response ||
+      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     callback({});
     return;
   }
@@ -321,7 +321,7 @@ void DatabasePromotion::GetAllRecords(
       "promotion_id, version, type, public_keys, suggestions, "
       "approximate_value, status, expires_at, claimed_at, claim_id "
       "FROM %s",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::READ;
@@ -354,8 +354,8 @@ void DatabasePromotion::GetAllRecords(
 void DatabasePromotion::OnGetAllRecords(
     ledger::DBCommandResponsePtr response,
     ledger::GetAllPromotionsCallback callback) {
-  if (!response
-      || response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+  if (!response ||
+      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     callback({});
     return;
   }
@@ -394,7 +394,7 @@ void DatabasePromotion::DeleteRecordList(
 
   const std::string query = base::StringPrintf(
       "DELETE FROM %s WHERE promotion_id IN (%s)",
-      table_name_,
+      kTableName,
       GenerateStringInCase(ids).c_str());
 
   auto transaction = ledger::DBTransaction::New();
@@ -421,7 +421,7 @@ void DatabasePromotion::SaveClaimId(
 
   const std::string query = base::StringPrintf(
       "UPDATE %s SET claim_id = ? WHERE promotion_id = ?",
-      table_name_);
+      kTableName);
 
   auto transaction = ledger::DBTransaction::New();
   auto command = ledger::DBCommand::New();
@@ -451,7 +451,7 @@ void DatabasePromotion::UpdateStatus(
 
   const std::string query = base::StringPrintf(
       "UPDATE %s SET status = ? WHERE promotion_id = ?",
-      table_name_);
+      kTableName);
 
   auto transaction = ledger::DBTransaction::New();
   auto command = ledger::DBCommand::New();
@@ -480,7 +480,7 @@ void DatabasePromotion::CredentialCompleted(
 
   const std::string query = base::StringPrintf(
       "UPDATE %s SET status = ?, claimed_at = ? WHERE promotion_id = ?",
-      table_name_);
+      kTableName);
 
   auto transaction = ledger::DBTransaction::New();
   auto command = ledger::DBCommand::New();
@@ -513,7 +513,7 @@ void DatabasePromotion::GetRecords(
       "promotion_id, version, type, public_keys, suggestions, "
       "approximate_value, status, expires_at, claimed_at, claim_id "
       "FROM %s WHERE promotion_id IN (%s)",
-      table_name_,
+      kTableName,
       GenerateStringInCase(ids).c_str());
 
   auto command = ledger::DBCommand::New();
@@ -593,7 +593,7 @@ void DatabasePromotion::GetRecordsByType(
       "SELECT promotion_id, version, type, public_keys, suggestions, "
       "approximate_value, status, expires_at, claimed_at, claim_id "
       "FROM %s WHERE type IN (%s)",
-      table_name_,
+      kTableName,
       base::JoinString(in_case, ",").c_str());
 
   auto command = ledger::DBCommand::New();

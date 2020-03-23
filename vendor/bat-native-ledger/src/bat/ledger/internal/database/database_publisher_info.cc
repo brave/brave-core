@@ -16,7 +16,7 @@ using std::placeholders::_1;
 
 namespace {
 
-const char table_name_[] = "publisher_info";
+const char kTableName[] = "publisher_info";
 
 }  // namespace
 
@@ -30,9 +30,7 @@ DatabasePublisherInfo::DatabasePublisherInfo(
 DatabasePublisherInfo::~DatabasePublisherInfo() = default;
 
 bool DatabasePublisherInfo::CreateTableV1(ledger::DBTransaction* transaction) {
-  if (!transaction) {
-    return false;
-  }
+  DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
@@ -44,7 +42,7 @@ bool DatabasePublisherInfo::CreateTableV1(ledger::DBTransaction* transaction) {
         "url TEXT NOT NULL,"
         "provider TEXT NOT NULL"
       ")",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -55,9 +53,7 @@ bool DatabasePublisherInfo::CreateTableV1(ledger::DBTransaction* transaction) {
 }
 
 bool DatabasePublisherInfo::CreateTableV7(ledger::DBTransaction* transaction) {
-  if (!transaction) {
-    return false;
-  }
+  DCHECK(transaction);
 
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
@@ -68,7 +64,7 @@ bool DatabasePublisherInfo::CreateTableV7(ledger::DBTransaction* transaction) {
         "url TEXT NOT NULL,"
         "provider TEXT NOT NULL"
       ")",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -81,9 +77,7 @@ bool DatabasePublisherInfo::CreateTableV7(ledger::DBTransaction* transaction) {
 bool DatabasePublisherInfo::Migrate(
     ledger::DBTransaction* transaction,
     const int target) {
-  if (!transaction) {
-    return false;
-  }
+  DCHECK(transaction);
 
   switch (target) {
     case 1: {
@@ -99,7 +93,9 @@ bool DatabasePublisherInfo::Migrate(
 }
 
 bool DatabasePublisherInfo::MigrateToV1(ledger::DBTransaction* transaction) {
-  if (!DropTable(transaction, table_name_)) {
+  DCHECK(transaction);
+
+  if (!DropTable(transaction, kTableName)) {
     return false;
   }
 
@@ -111,11 +107,13 @@ bool DatabasePublisherInfo::MigrateToV1(ledger::DBTransaction* transaction) {
 }
 
 bool DatabasePublisherInfo::MigrateToV7(ledger::DBTransaction* transaction) {
+  DCHECK(transaction);
+
   const std::string temp_table_name = base::StringPrintf(
       "%s_old",
-      table_name_);
+      kTableName);
 
-  if (!RenameDBTable(transaction, table_name_, temp_table_name)) {
+  if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
     return false;
   }
 
@@ -135,7 +133,7 @@ bool DatabasePublisherInfo::MigrateToV7(ledger::DBTransaction* transaction) {
   if (!MigrateDBTable(
       transaction,
       temp_table_name,
-      table_name_,
+      kTableName,
       columns,
       true)) {
     return false;
@@ -161,8 +159,8 @@ void DatabasePublisherInfo::InsertOrUpdate(
       "(SELECT IFNULL( "
       "(SELECT favicon FROM %s "
       "WHERE publisher_id = ?), \"\")));",
-      table_name_,
-      table_name_);
+      kTableName,
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::RUN;
@@ -181,7 +179,7 @@ void DatabasePublisherInfo::InsertOrUpdate(
   if (!favicon.empty() && !info->provider.empty()) {
     const std::string query_icon = base::StringPrintf(
         "UPDATE %s SET favIcon = ? WHERE publisher_id = ?;",
-        table_name_);
+        kTableName);
 
     auto command_icon = ledger::DBCommand::New();
     command_icon->type = ledger::DBCommand::Type::RUN;
@@ -221,7 +219,7 @@ void DatabasePublisherInfo::GetRecord(
     "LEFT JOIN server_publisher_info AS spi "
     "ON spi.publisher_key = pi.publisher_id "
     "WHERE publisher_id=?",
-    table_name_);
+    kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::READ;
@@ -300,7 +298,7 @@ void DatabasePublisherInfo::GetPanelRecord(
     "LEFT JOIN server_publisher_info AS spi "
     "ON spi.publisher_key = pi.publisher_id "
     "WHERE pi.publisher_id = ? LIMIT 1",
-    table_name_);
+    kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::READ;
@@ -366,7 +364,7 @@ void DatabasePublisherInfo::RestorePublishers(ledger::ResultCallback callback) {
   auto transaction = ledger::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "UPDATE %s SET excluded=? WHERE excluded=?",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::RUN;
@@ -400,7 +398,7 @@ void DatabasePublisherInfo::GetExcludedList(
     "LEFT JOIN server_publisher_info AS spi "
     "ON spi.publisher_key = pi.publisher_id "
     "WHERE pi.excluded = 1",
-    table_name_);
+    kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::READ;

@@ -14,7 +14,7 @@ using std::placeholders::_1;
 
 namespace {
 
-const char table_name_[] = "server_publisher_banner";
+const char kTableName[] = "server_publisher_banner";
 
 }  // namespace
 
@@ -45,8 +45,8 @@ bool DatabaseServerPublisherBanner::CreateTableV7(
       "    REFERENCES server_publisher_info (publisher_key)"
       "    ON DELETE CASCADE"
       ")",
-      table_name_,
-      table_name_);
+      kTableName,
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -68,7 +68,7 @@ bool DatabaseServerPublisherBanner::CreateTableV15(
       "background TEXT,"
       "logo TEXT"
       ")",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -82,14 +82,14 @@ bool DatabaseServerPublisherBanner::CreateIndexV7(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  return this->InsertIndex(transaction, table_name_, "publisher_key");
+  return this->InsertIndex(transaction, kTableName, "publisher_key");
 }
 
 bool DatabaseServerPublisherBanner::CreateIndexV15(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  return this->InsertIndex(transaction, table_name_, "publisher_key");
+  return this->InsertIndex(transaction, kTableName, "publisher_key");
 }
 
 bool DatabaseServerPublisherBanner::Migrate(
@@ -115,7 +115,7 @@ bool DatabaseServerPublisherBanner::MigrateToV7(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  if (!DropTable(transaction, table_name_)) {
+  if (!DropTable(transaction, kTableName)) {
     return false;
   }
 
@@ -144,9 +144,9 @@ bool DatabaseServerPublisherBanner::MigrateToV15(
 
   const std::string temp_table_name = base::StringPrintf(
       "%s_temp",
-      table_name_);
+      kTableName);
 
-  if (!RenameDBTable(transaction, table_name_, temp_table_name)) {
+  if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
     return false;
   }
 
@@ -176,7 +176,7 @@ bool DatabaseServerPublisherBanner::MigrateToV15(
   if (!MigrateDBTable(
       transaction,
       temp_table_name,
-      table_name_,
+      kTableName,
       columns,
       true)) {
     return false;
@@ -206,7 +206,7 @@ void DatabaseServerPublisherBanner::InsertOrUpdateList(
       "INSERT OR REPLACE INTO %s "
       "(publisher_key, title, description, background, logo) "
       "VALUES (?, ?, ?, ?, ?)",
-      table_name_);
+      kTableName);
 
   for (const auto& info : list) {
     auto command = ledger::DBCommand::New();
@@ -240,7 +240,7 @@ void DatabaseServerPublisherBanner::GetRecord(
       "SELECT title, description, background, logo "
       "FROM %s "
       "WHERE publisher_key=?",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::READ;
@@ -271,8 +271,8 @@ void DatabaseServerPublisherBanner::OnGetRecord(
     ledger::DBCommandResponsePtr response,
     const std::string& publisher_key,
     ledger::PublisherBannerCallback callback) {
-  if (!response
-      || response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+  if (!response ||
+      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     callback(nullptr);
     return;
   }

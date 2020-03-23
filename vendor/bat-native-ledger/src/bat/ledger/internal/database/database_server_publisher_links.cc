@@ -14,7 +14,7 @@ using std::placeholders::_1;
 
 namespace {
 
-const char table_name_[] = "server_publisher_links";
+const char kTableName[] = "server_publisher_links";
 
 }  // namespace
 
@@ -43,9 +43,9 @@ bool DatabaseServerPublisherLinks::CreateTableV7(
       "    REFERENCES server_publisher_info (publisher_key)"
       "    ON DELETE CASCADE"
       ")",
-      table_name_,
-      table_name_,
-      table_name_);
+      kTableName,
+      kTableName,
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -67,8 +67,8 @@ bool DatabaseServerPublisherLinks::CreateTableV15(
       "CONSTRAINT %s_unique "
       "    UNIQUE (publisher_key, provider)"
       ")",
-      table_name_,
-      table_name_);
+      kTableName,
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -82,14 +82,14 @@ bool DatabaseServerPublisherLinks::CreateIndexV7(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  return this->InsertIndex(transaction, table_name_, "publisher_key");
+  return this->InsertIndex(transaction, kTableName, "publisher_key");
 }
 
 bool DatabaseServerPublisherLinks::CreateIndexV15(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  return this->InsertIndex(transaction, table_name_, "publisher_key");
+  return this->InsertIndex(transaction, kTableName, "publisher_key");
 }
 
 bool DatabaseServerPublisherLinks::Migrate(
@@ -115,7 +115,7 @@ bool DatabaseServerPublisherLinks::MigrateToV7(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  if (!DropTable(transaction, table_name_)) {
+  if (!DropTable(transaction, kTableName)) {
     return false;
   }
 
@@ -136,9 +136,9 @@ bool DatabaseServerPublisherLinks::MigrateToV15(
 
   const std::string temp_table_name = base::StringPrintf(
       "%s_temp",
-      table_name_);
+      kTableName);
 
-  if (!RenameDBTable(transaction, table_name_, temp_table_name)) {
+  if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
     return false;
   }
 
@@ -166,7 +166,7 @@ bool DatabaseServerPublisherLinks::MigrateToV15(
   if (!MigrateDBTable(
       transaction,
       temp_table_name,
-      table_name_,
+      kTableName,
       columns,
       true)) {
     return false;
@@ -194,7 +194,7 @@ void DatabaseServerPublisherLinks::InsertOrUpdate(
       "INSERT OR REPLACE INTO %s "
       "(publisher_key, provider, link) "
       "VALUES (?, ?, ?)",
-      table_name_);
+      kTableName);
 
     auto command = ledger::DBCommand::New();
     command->type = ledger::DBCommand::Type::RUN;
@@ -213,7 +213,7 @@ void DatabaseServerPublisherLinks::GetRecord(
   auto transaction = ledger::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "SELECT provider, link FROM %s WHERE publisher_key=?",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::READ;
@@ -240,8 +240,8 @@ void DatabaseServerPublisherLinks::GetRecord(
 void DatabaseServerPublisherLinks::OnGetRecord(
     ledger::DBCommandResponsePtr response,
     ServerPublisherLinksCallback callback) {
-  if (!response
-      || response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+  if (!response ||
+      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     callback({});
     return;
   }

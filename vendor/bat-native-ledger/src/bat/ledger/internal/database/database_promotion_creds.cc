@@ -17,8 +17,8 @@ namespace braveledger_database {
 
 namespace {
 
-const char table_name_[] = "promotion_creds";
-const char parent_table_name_[] = "promotion";
+const char kTableName[] = "promotion_creds";
+const char kParentTableName[] = "promotion";
 
 }  // namespace
 
@@ -46,9 +46,9 @@ bool DatabasePromotionCreds::CreateTableV10(
           "FOREIGN KEY (promotion_id) "
           "REFERENCES %s (promotion_id) ON DELETE CASCADE"
       ")",
-      table_name_,
-      table_name_,
-      parent_table_name_);
+      kTableName,
+      kTableName,
+      kParentTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -72,7 +72,7 @@ bool DatabasePromotionCreds::CreateTableV15(
         "batch_proof TEXT,"
         "claim_id TEXT"
       ")",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -86,14 +86,14 @@ bool DatabasePromotionCreds::CreateIndexV10(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  return this->InsertIndex(transaction, table_name_, "promotion_id");
+  return this->InsertIndex(transaction, kTableName, "promotion_id");
 }
 
 bool DatabasePromotionCreds::CreateIndexV15(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  return this->InsertIndex(transaction, table_name_, "promotion_id");
+  return this->InsertIndex(transaction, kTableName, "promotion_id");
 }
 
 bool DatabasePromotionCreds::Migrate(
@@ -120,7 +120,7 @@ bool DatabasePromotionCreds::Migrate(
 bool DatabasePromotionCreds::MigrateToV10(ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  if (!DropTable(transaction, table_name_)) {
+  if (!DropTable(transaction, kTableName)) {
     return false;
   }
 
@@ -140,9 +140,9 @@ bool DatabasePromotionCreds::MigrateToV15(ledger::DBTransaction* transaction) {
 
   const std::string temp_table_name = base::StringPrintf(
       "%s_temp",
-      table_name_);
+      kTableName);
 
-  if (!RenameDBTable(transaction, table_name_, temp_table_name)) {
+  if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
     return false;
   }
 
@@ -174,7 +174,7 @@ bool DatabasePromotionCreds::MigrateToV15(ledger::DBTransaction* transaction) {
   if (!MigrateDBTable(
       transaction,
       temp_table_name,
-      table_name_,
+      kTableName,
       columns,
       true)) {
     return false;
@@ -185,7 +185,7 @@ bool DatabasePromotionCreds::MigrateToV15(ledger::DBTransaction* transaction) {
 bool DatabasePromotionCreds::MigrateToV18(ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  return DropTable(transaction, table_name_);
+  return DropTable(transaction, kTableName);
 }
 
 }  // namespace braveledger_database

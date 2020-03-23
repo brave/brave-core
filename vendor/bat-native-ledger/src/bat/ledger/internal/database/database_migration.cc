@@ -89,6 +89,8 @@ void DatabaseMigration::Start(
 bool DatabaseMigration::Migrate(
     ledger::DBTransaction* transaction,
     const int target) {
+  DCHECK(transaction);
+
   if (!activity_info_->Migrate(transaction, target)) {
     return false;
   }

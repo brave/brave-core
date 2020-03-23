@@ -19,7 +19,7 @@ namespace {
 
 // TODO(https://github.com/brave/brave-browser/issues/7144):
 //  rename to recurring_tip
-const char table_name_[] = "recurring_donation";
+const char kTableName[] = "recurring_donation";
 
 }  // namespace
 
@@ -43,8 +43,8 @@ bool DatabaseRecurringTip::CreateTableV2(ledger::DBTransaction* transaction) {
         "    REFERENCES publisher_info (publisher_id)"
         "    ON DELETE CASCADE"
       ")",
-      table_name_,
-      table_name_);
+      kTableName,
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -63,7 +63,7 @@ bool DatabaseRecurringTip::CreateTableV15(ledger::DBTransaction* transaction) {
         "amount DOUBLE DEFAULT 0 NOT NULL,"
         "added_date INTEGER DEFAULT 0 NOT NULL"
       ")",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -76,13 +76,13 @@ bool DatabaseRecurringTip::CreateTableV15(ledger::DBTransaction* transaction) {
 bool DatabaseRecurringTip::CreateIndexV2(ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  return this->InsertIndex(transaction, table_name_, "publisher_id");
+  return this->InsertIndex(transaction, kTableName, "publisher_id");
 }
 
 bool DatabaseRecurringTip::CreateIndexV15(ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  return this->InsertIndex(transaction, table_name_, "publisher_id");
+  return this->InsertIndex(transaction, kTableName, "publisher_id");
 }
 
 bool DatabaseRecurringTip::Migrate(
@@ -106,7 +106,7 @@ bool DatabaseRecurringTip::Migrate(
 bool DatabaseRecurringTip::MigrateToV2(ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  if (!DropTable(transaction, table_name_)) {
+  if (!DropTable(transaction, kTableName)) {
     return false;
   }
 
@@ -126,9 +126,9 @@ bool DatabaseRecurringTip::MigrateToV15(ledger::DBTransaction* transaction) {
 
   const std::string temp_table_name = base::StringPrintf(
       "%s_temp",
-      table_name_);
+      kTableName);
 
-  if (!RenameDBTable(transaction, table_name_, temp_table_name)) {
+  if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
     return false;
   }
 
@@ -156,7 +156,7 @@ bool DatabaseRecurringTip::MigrateToV15(ledger::DBTransaction* transaction) {
   if (!MigrateDBTable(
       transaction,
       temp_table_name,
-      table_name_,
+      kTableName,
       columns,
       true)) {
     return false;
@@ -178,7 +178,7 @@ void DatabaseRecurringTip::InsertOrUpdate(
       "INSERT OR REPLACE INTO %s "
       "(publisher_id, amount, added_date) "
       "VALUES (?, ?, ?)",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::RUN;
@@ -208,7 +208,7 @@ void DatabaseRecurringTip::GetAllRecords(
     "INNER JOIN publisher_info AS pi ON rd.publisher_id = pi.publisher_id "
     "LEFT JOIN server_publisher_info AS spi "
     "ON spi.publisher_key = pi.publisher_id ",
-    table_name_);
+    kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::READ;
@@ -238,8 +238,8 @@ void DatabaseRecurringTip::GetAllRecords(
 void DatabaseRecurringTip::OnGetAllRecords(
     ledger::DBCommandResponsePtr response,
     ledger::PublisherInfoListCallback callback) {
-  if (!response
-      || response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+  if (!response ||
+      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     callback({});
     return;
   }
@@ -277,7 +277,7 @@ void DatabaseRecurringTip::DeleteRecord(
 
   const std::string query = base::StringPrintf(
     "DELETE FROM %s WHERE publisher_id = ?",
-    table_name_);
+    kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::RUN;

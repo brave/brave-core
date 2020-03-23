@@ -14,7 +14,7 @@ using std::placeholders::_1;
 
 namespace {
 
-const char table_name_[] = "server_publisher_info";
+const char kTableName[] = "server_publisher_info";
 
 }  // namespace
 
@@ -40,7 +40,7 @@ bool DatabaseServerPublisherInfo::CreateTableV7(
       "excluded INTEGER DEFAULT 0 NOT NULL,"
       "address TEXT NOT NULL"
       ")",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -54,7 +54,7 @@ bool DatabaseServerPublisherInfo::CreateIndexV7(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  return this->InsertIndex(transaction, table_name_, "publisher_key");
+  return this->InsertIndex(transaction, kTableName, "publisher_key");
 }
 
 bool DatabaseServerPublisherInfo::Migrate(
@@ -79,7 +79,7 @@ bool DatabaseServerPublisherInfo::MigrateToV7(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  if (!DropTable(transaction, table_name_)) {
+  if (!DropTable(transaction, kTableName)) {
     return false;
   }
 
@@ -107,7 +107,7 @@ bool DatabaseServerPublisherInfo::MigrateToV15(
 
 void DatabaseServerPublisherInfo::DeleteAll(ledger::ResultCallback callback) {
   auto transaction = ledger::DBTransaction::New();
-  const std::string query = base::StringPrintf("DELETE FROM %s", table_name_);
+  const std::string query = base::StringPrintf("DELETE FROM %s", kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -133,7 +133,7 @@ void DatabaseServerPublisherInfo::InsertOrUpdatePartialList(
       "INSERT OR REPLACE INTO %s "
       "(publisher_key, status, excluded, address) "
       "VALUES (?, ?, ?, ?)",
-      table_name_);
+      kTableName);
 
   auto transaction = ledger::DBTransaction::New();
   for (const auto& info : list) {
@@ -184,7 +184,7 @@ void DatabaseServerPublisherInfo::OnGetRecordBanner(
   const std::string query = base::StringPrintf(
       "SELECT status, excluded, address "
       "FROM %s WHERE publisher_key=?",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::READ;
@@ -220,8 +220,8 @@ void DatabaseServerPublisherInfo::OnGetRecord(
     const std::string& publisher_key,
     const ledger::PublisherBanner& banner,
     ledger::GetServerPublisherInfoCallback callback) {
-  if (!response
-      || response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+  if (!response ||
+      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     callback(nullptr);
     return;
   }

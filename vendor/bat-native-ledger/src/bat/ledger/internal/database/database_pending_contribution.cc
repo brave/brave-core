@@ -20,7 +20,7 @@ namespace braveledger_database {
 
 namespace {
 
-const char table_name_[] = "pending_contribution";
+const char kTableName[] = "pending_contribution";
 
 }  // namespace
 
@@ -47,8 +47,8 @@ bool DatabasePendingContribution::CreateTableV3(
         "    REFERENCES publisher_info (publisher_id)"
         "    ON DELETE CASCADE"
       ")",
-      table_name_,
-      table_name_);
+      kTableName,
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -74,8 +74,8 @@ bool DatabasePendingContribution::CreateTableV8(
         "    REFERENCES publisher_info (publisher_id)"
         "    ON DELETE CASCADE"
       ")",
-      table_name_,
-      table_name_);
+      kTableName,
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -102,8 +102,8 @@ bool DatabasePendingContribution::CreateTableV12(
         "    REFERENCES publisher_info (publisher_id)"
         "    ON DELETE CASCADE"
       ")",
-      table_name_,
-      table_name_);
+      kTableName,
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -126,7 +126,7 @@ bool DatabasePendingContribution::CreateTableV15(
         "viewing_id LONGVARCHAR NOT NULL,"
         "type INTEGER NOT NULL"
       ")",
-      table_name_);
+      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
@@ -140,28 +140,28 @@ bool DatabasePendingContribution::CreateIndexV3(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  return this->InsertIndex(transaction, table_name_, "publisher_id");
+  return this->InsertIndex(transaction, kTableName, "publisher_id");
 }
 
 bool DatabasePendingContribution::CreateIndexV8(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  return this->InsertIndex(transaction, table_name_, "publisher_id");
+  return this->InsertIndex(transaction, kTableName, "publisher_id");
 }
 
 bool DatabasePendingContribution::CreateIndexV12(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  return this->InsertIndex(transaction, table_name_, "publisher_id");
+  return this->InsertIndex(transaction, kTableName, "publisher_id");
 }
 
 bool DatabasePendingContribution::CreateIndexV15(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  return this->InsertIndex(transaction, table_name_, "publisher_id");
+  return this->InsertIndex(transaction, kTableName, "publisher_id");
 }
 
 bool DatabasePendingContribution::Migrate(
@@ -192,7 +192,7 @@ bool DatabasePendingContribution::MigrateToV3(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
 
-  if (!DropTable(transaction, table_name_)) {
+  if (!DropTable(transaction, kTableName)) {
     return false;
   }
 
@@ -213,9 +213,9 @@ bool DatabasePendingContribution::MigrateToV8(
 
   const std::string temp_table_name = base::StringPrintf(
       "%s_temp",
-      table_name_);
+      kTableName);
 
-  if (!RenameDBTable(transaction, table_name_, temp_table_name)) {
+  if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
     return false;
   }
 
@@ -245,7 +245,7 @@ bool DatabasePendingContribution::MigrateToV8(
   if (!MigrateDBTable(
       transaction,
       temp_table_name,
-      table_name_,
+      kTableName,
       columns,
       true)) {
     return false;
@@ -260,9 +260,9 @@ bool DatabasePendingContribution::MigrateToV12(
 
   const std::string temp_table_name = base::StringPrintf(
       "%s_temp",
-      table_name_);
+      kTableName);
 
-  if (!RenameDBTable(transaction, table_name_, temp_table_name)) {
+  if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
     return false;
   }
 
@@ -292,7 +292,7 @@ bool DatabasePendingContribution::MigrateToV12(
   if (!MigrateDBTable(
       transaction,
       temp_table_name,
-      table_name_,
+      kTableName,
       columns,
       true)) {
     return false;
@@ -306,9 +306,9 @@ bool DatabasePendingContribution::MigrateToV15(
 
   const std::string temp_table_name = base::StringPrintf(
       "%s_temp",
-      table_name_);
+      kTableName);
 
-  if (!RenameDBTable(transaction, table_name_, temp_table_name)) {
+  if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
     return false;
   }
 
@@ -339,7 +339,7 @@ bool DatabasePendingContribution::MigrateToV15(
   if (!MigrateDBTable(
       transaction,
       temp_table_name,
-      table_name_,
+      kTableName,
       columns,
       true)) {
     return false;
@@ -361,7 +361,7 @@ void DatabasePendingContribution::InsertOrUpdateList(
   const std::string query = base::StringPrintf(
     "INSERT INTO %s (pending_contribution_id, publisher_id, amount, "
     "added_date, viewing_id, type) VALUES (?, ?, ?, ?, ?, ?)",
-    table_name_);
+    kTableName);
 
   for (const auto& item : list) {
     auto command = ledger::DBCommand::New();
@@ -390,7 +390,7 @@ void DatabasePendingContribution::GetReservedAmount(
   auto transaction = ledger::DBTransaction::New();
   const std::string query = base::StringPrintf(
     "SELECT SUM(amount) FROM %s",
-    table_name_);
+    kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::READ;
@@ -414,8 +414,8 @@ void DatabasePendingContribution::GetReservedAmount(
 void DatabasePendingContribution::OnGetReservedAmount(
     ledger::DBCommandResponsePtr response,
     ledger::PendingContributionsTotalCallback callback) {
-  if (!response
-      || response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+  if (!response ||
+      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     callback(0.0);
     return;
   }
@@ -441,7 +441,7 @@ void DatabasePendingContribution::GetAllRecords(
     "INNER JOIN publisher_info AS pi ON pc.publisher_id = pi.publisher_id "
     "LEFT JOIN server_publisher_info AS spi "
     "ON spi.publisher_key = pi.publisher_id",
-    table_name_);
+    kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::READ;
@@ -475,8 +475,8 @@ void DatabasePendingContribution::GetAllRecords(
 void DatabasePendingContribution::OnGetAllRecords(
     ledger::DBCommandResponsePtr response,
     ledger::PendingContributionInfoListCallback callback) {
-  if (!response
-      || response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+  if (!response ||
+      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     callback({});
     return;
   }
@@ -520,7 +520,7 @@ void DatabasePendingContribution::DeleteRecord(
   auto transaction = ledger::DBTransaction::New();
   const std::string query = base::StringPrintf(
     "DELETE FROM %s WHERE pending_contribution_id = ?",
-    table_name_);
+    kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::RUN;
@@ -540,7 +540,7 @@ void DatabasePendingContribution::DeleteRecord(
 void DatabasePendingContribution::DeleteAllRecords(
     ledger::ResultCallback callback) {
   auto transaction = ledger::DBTransaction::New();
-  const std::string query = base::StringPrintf("DELETE FROM %s", table_name_);
+  const std::string query = base::StringPrintf("DELETE FROM %s", kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::RUN;
