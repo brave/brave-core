@@ -11,6 +11,98 @@
 #include "bat/ledger/internal/request/request_util.h"
 #include "bat/ledger/internal/common/security_helper.h"
 
+namespace {
+
+std::string BuildBalanceUrl() {
+  std::string url;
+  switch (ledger::_environment) {
+    case ledger::Environment::STAGING:
+      url = BALANCE_STAGING_SERVER;
+      break;
+    case ledger::Environment::PRODUCTION:
+      url = BALANCE_PRODUCTION_SERVER;
+      break;
+    case ledger::Environment::DEVELOPMENT:
+      url = BALANCE_DEVELOPMENT_SERVER;
+      break;
+  }
+
+  return url;
+}
+
+std::string BuildPublisherUrl() {
+  std::string url;
+  switch (ledger::_environment) {
+    case ledger::Environment::STAGING:
+      url = PUBLISHER_STAGING_SERVER;
+      break;
+    case ledger::Environment::PRODUCTION:
+      url = PUBLISHER_PRODUCTION_SERVER;
+      break;
+    case ledger::Environment::DEVELOPMENT:
+      url = PUBLISHER_DEVELOPMENT_SERVER;
+      break;
+  }
+
+  return url;
+}
+
+std::string BuildPublisherDistroUrl() {
+  std::string url;
+  switch (ledger::_environment) {
+    case ledger::Environment::STAGING:
+      url = PUBLISHER_DISTRO_STAGING_SERVER;
+      break;
+    case ledger::Environment::PRODUCTION:
+      url = PUBLISHER_DISTRO_PRODUCTION_SERVER;
+      break;
+    case ledger::Environment::DEVELOPMENT:
+      url = PUBLISHER_DISTRO_DEVELOPMENT_SERVER;
+      break;
+  }
+
+  return url;
+}
+
+std::string BuildLedgerUrl() {
+  std::string url;
+  switch (ledger::_environment) {
+    case ledger::Environment::STAGING:
+      url = LEDGER_STAGING_SERVER;
+      break;
+    case ledger::Environment::PRODUCTION:
+      url = LEDGER_PRODUCTION_SERVER;
+      break;
+    case ledger::Environment::DEVELOPMENT:
+      url = LEDGER_DEVELOPMENT_SERVER;
+      break;
+  }
+
+  return url;
+}
+
+std::string BuildPromotionUrl() {
+  std::string url;
+  switch (ledger::_environment) {
+    case ledger::Environment::STAGING: {
+      url = PROMOTION_STAGING_SERVER;
+      break;
+    }
+    case ledger::Environment::PRODUCTION: {
+      url = PROMOTION_PRODUCTION_SERVER;
+      break;
+    }
+    case ledger::Environment::DEVELOPMENT: {
+      url = PROMOTION_DEVELOPMENT_SERVER;
+      break;
+    }
+  }
+
+  return url;
+}
+
+}  // namespace
+
 namespace braveledger_request_util {
 
 std::string BuildUrl(
@@ -20,82 +112,29 @@ std::string BuildUrl(
   std::string url;
   switch (server) {
     case ServerTypes::BALANCE: {
-      switch (ledger::_environment) {
-        case ledger::Environment::STAGING:
-          url = BALANCE_STAGING_SERVER;
-          break;
-        case ledger::Environment::PRODUCTION:
-          url = BALANCE_PRODUCTION_SERVER;
-          break;
-        case ledger::Environment::DEVELOPMENT:
-          url = BALANCE_DEVELOPMENT_SERVER;
-          break;
-      }
+      url = BuildBalanceUrl();
       break;
     }
     case ServerTypes::PUBLISHER: {
-      switch (ledger::_environment) {
-        case ledger::Environment::STAGING:
-          url = PUBLISHER_STAGING_SERVER;
-          break;
-        case ledger::Environment::PRODUCTION:
-          url = PUBLISHER_PRODUCTION_SERVER;
-          break;
-        case ledger::Environment::DEVELOPMENT:
-          url = PUBLISHER_DEVELOPMENT_SERVER;
-          break;
-      }
+      url = BuildPublisherUrl();
       break;
     }
     case ServerTypes::PUBLISHER_DISTRO: {
-      switch (ledger::_environment) {
-        case ledger::Environment::STAGING:
-          url = PUBLISHER_DISTRO_STAGING_SERVER;
-          break;
-        case ledger::Environment::PRODUCTION:
-          url = PUBLISHER_DISTRO_PRODUCTION_SERVER;
-          break;
-        case ledger::Environment::DEVELOPMENT:
-          url = PUBLISHER_DISTRO_DEVELOPMENT_SERVER;
-          break;
-      }
+      url = BuildPublisherDistroUrl();
       break;
     }
     case ServerTypes::LEDGER: {
-      switch (ledger::_environment) {
-        case ledger::Environment::STAGING:
-          url = LEDGER_STAGING_SERVER;
-          break;
-        case ledger::Environment::PRODUCTION:
-          url = LEDGER_PRODUCTION_SERVER;
-          break;
-        case ledger::Environment::DEVELOPMENT:
-          url = LEDGER_DEVELOPMENT_SERVER;
-          break;
-      }
+      url = BuildLedgerUrl();
       break;
     }
     case ServerTypes::kPromotion: {
-      switch (ledger::_environment) {
-        case ledger::Environment::STAGING: {
-          url = PROMOTION_STAGING_SERVER;
-          break;
-        }
-        case ledger::Environment::PRODUCTION: {
-          url = PROMOTION_PRODUCTION_SERVER;
-          break;
-        }
-        case ledger::Environment::DEVELOPMENT: {
-          url = PROMOTION_DEVELOPMENT_SERVER;
-          break;
-        }
-      }
+      url = BuildPromotionUrl();
       break;
     }
   }
 
   if (url.empty()) {
-    DCHECK(false);
+    NOTREACHED();
     return "";
   }
 
