@@ -74,6 +74,8 @@ source_set("browser_process") {
     "search_engines/search_engine_provider_service_factory.h",
     "search_engines/search_engine_provider_util.cc",
     "search_engines/search_engine_provider_util.h",
+    "search_engines/search_engine_tracker.cc",
+    "search_engines/search_engine_tracker.h",
     "search_engines/tor_window_search_engine_provider_service.cc",
     "search_engines/tor_window_search_engine_provider_service.h",
     "search_engines/search_engine_provider_service.cc",

@@ -8,6 +8,7 @@
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_shields/cookie_pref_service_factory.h"
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
+#include "brave/browser/search_engines/search_engine_tracker.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
@@ -41,6 +42,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 #endif
   TorProfileServiceFactory::GetInstance();
   SearchEngineProviderServiceFactory::GetInstance();
+  SearchEngineTrackerFactory::GetInstance();
   ntp_sponsored_images::ViewCounterServiceFactory::GetInstance();
 
 #if !defined(OS_ANDROID)
