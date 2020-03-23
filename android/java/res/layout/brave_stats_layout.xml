@@ -92,14 +92,4 @@
                 android:text="@string/brave_stats_text_time" />
         </LinearLayout>
     </LinearLayout>
-    <ImageView
-        android:id="@+id/brave_stats_shadow"
-        android:src="@drawable/toolbar_shadow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:scaleType="fitXY"
-        android:contentDescription="@null" />
 </LinearLayout>

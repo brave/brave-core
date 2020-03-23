@@ -1,0 +1,40 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
+index db1db4f0b941c6cea83f2ca28ddc70b8e7916a90..337bbb41a18195c16603c62acb92de4c5c921a13 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
+@@ -62,7 +62,7 @@ import org.chromium.ui.base.DeviceFormFactor;
+  * Layout for the new tab page. This positions the page elements in the correct vertical positions.
+  * There are no separate phone and tablet UIs; this layout adapts based on the available space.
+  */
+-public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer, VrModeObserver {
++public class NewTabPageLayout extends android.widget.FrameLayout implements TileGroup.Observer, VrModeObserver {
+     private static final String TAG = "NewTabPageLayout";
+     // Used to signify the cached resource value is unset.
+     private static final int UNSET_RESOURCE_FLAG = -1;
+@@ -74,7 +74,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
+ 
+     private LogoView mSearchProviderLogoView;
+     private View mSearchBoxView;
+-    private ViewGroup mSiteSectionView;
++    protected ViewGroup mSiteSectionView;
+     private SiteSectionViewHolder mSiteSectionViewHolder;
+     private ImageView mVoiceSearchButton;
+     private View mTileGridPlaceholder;
+@@ -415,7 +415,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
+                 1f);
+     }
+ 
+-    private void insertSiteSectionView() {
++    protected void insertSiteSectionView() {
+         mSiteSectionView = SiteSection.inflateSiteSection(this);
+         ViewGroup.LayoutParams layoutParams = mSiteSectionView.getLayoutParams();
+         layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+@@ -786,7 +786,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
+         }
+     }
+ 
+-    private static int getMaxTileRows() {
++    protected int getMaxTileRows() {
+         return 2;
+     }
+ 

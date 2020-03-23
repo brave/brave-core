@@ -10,12 +10,43 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.widget.FrameLayout;
+import android.view.View;
+import android.view.ViewTreeObserver;
+import android.content.res.Configuration;
+import android.os.Build;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import java.io.InputStream;
+import java.io.FileNotFoundException;
+import android.graphics.BitmapFactory;
 
 import org.chromium.base.TraceEvent;
 import org.chromium.chrome.R;
+import org.chromium.base.Log;
 import org.chromium.chrome.browser.ntp.NewTabPageView;
+import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.suggestions.tile.TileGroup;
+import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabImpl;
+import org.chromium.chrome.browser.ntp_sponsored_images.NTPImage;
+import org.chromium.chrome.browser.ntp_sponsored_images.BackgroundImage;
+import org.chromium.chrome.browser.ntp_sponsored_images.NewTabPageListener;
+import org.chromium.chrome.browser.ntp_sponsored_images.SponsoredImageUtil;
+import org.chromium.chrome.browser.tab.EmptyTabObserver;
+import org.chromium.chrome.browser.tab.TabObserver;
+import org.chromium.chrome.browser.ntp_sponsored_images.NTPUtil;
+import org.chromium.chrome.browser.ntp_sponsored_images.SponsoredTab;
+import org.chromium.chrome.browser.tab.TabAttributes;
+import org.chromium.chrome.browser.ntp_sponsored_images.NTPSponsoredImagesBridge;
+import org.chromium.chrome.browser.util.ConfigurationUtils;
 
 public class BraveNewTabPageView extends NewTabPageView {
     private static final String TAG = "BraveNewTabPageView";
@@ -24,15 +55,77 @@ public class BraveNewTabPageView extends NewTabPageView {
     private static final String PREF_ADS_BLOCKED_COUNT = "ads_blocked_count";
     private static final String PREF_HTTPS_UPGRADES_COUNT = "https_upgrades_count";
     private static final short MILLISECONDS_PER_ITEM = 50;
+    private static final int BOTTOM_TOOLBAR_HEIGHT = 56;
 
     private TextView mAdsBlockedCountTextView;
     private TextView mHttpsUpgradesCountTextView;
+    private TextView mEstTimeSavedCountTextView;
+    private TextView mAdsBlockedTextView;
+    private TextView mHttpsUpgradesTextView;
     private TextView mEstTimeSavedTextView;
     private Profile mProfile;
 
+    private TabImpl mTabImpl;
+    private Tab mTab;
+    private SponsoredTab sponsoredTab;
+
+    private NewTabPageLayout mNewTabPageLayout;
+    private BitmapDrawable imageDrawable;
+
+    private boolean isFromBottomSheet;
+
+    private NTPSponsoredImagesBridge mNTPSponsoredImagesBridge;
+
+    // TODO - call NTPSponsoredImagesBridge.getCurrentWallpaper
+    // if null then display regular background image
+    // on every NTP load call NTPSponsoredImagesBridge.registerPageView()
     public BraveNewTabPageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mProfile = Profile.getLastUsedProfile();
+        mNewTabPageLayout = getNewTabPageLayout();
+        mNTPSponsoredImagesBridge = NTPSponsoredImagesBridge.getInstance(mProfile);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        if (sponsoredTab != null && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
+            NTPImage ntpImage = sponsoredTab.getTabNTPImage();
+            if(ntpImage == null) {
+                sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
+            } else if (ntpImage instanceof NTPSponsoredImagesBridge.Wallpaper) {
+                NTPSponsoredImagesBridge.Wallpaper mWallpaper = (NTPSponsoredImagesBridge.Wallpaper) ntpImage;
+                if(mWallpaper == null) {
+                    sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
+                }
+            }
+            checkForNonDistruptiveBanner(ntpImage);
+            super.onConfigurationChanged(newConfig);
+            showNTPImage(ntpImage);
+        } else {
+            super.onConfigurationChanged(newConfig);
+        }
+    }
+
+    @Override
+    public void initialize(NewTabPageManager manager, Tab tab, TileGroup.Delegate tileGroupDelegate,
+            boolean searchProviderHasLogo, boolean searchProviderIsGoogle, int scrollPosition,
+            long constructedTimeNs) {
+        super.initialize(manager, tab, tileGroupDelegate,
+            searchProviderHasLogo, searchProviderIsGoogle, scrollPosition,
+            constructedTimeNs);
+
+        mTabImpl = (TabImpl) tab;
+        mTab = tab;
+
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            if (sponsoredTab == null)
+                initilizeSponsoredTab();
+            NTPImage ntpImage = sponsoredTab.getTabNTPImage();
+            checkForNonDistruptiveBanner(ntpImage);
+            showNTPImage(ntpImage);
+        } else if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.M && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mTabImpl.addObserver(mTabObserver);
+        }
     }
 
     @Override
@@ -42,7 +135,11 @@ public class BraveNewTabPageView extends NewTabPageView {
         ViewGroup braveStatsView = (ViewGroup) getNewTabPageLayout().findViewById(R.id.brave_stats);
         mAdsBlockedCountTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_ads_count);
         mHttpsUpgradesCountTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_https_count);
-        mEstTimeSavedTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_time_count);
+        mEstTimeSavedCountTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_time_count);
+
+        mAdsBlockedTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_ads);
+        mHttpsUpgradesTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_https);
+        mEstTimeSavedTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_time);
     }
 
     @Override
@@ -65,7 +162,16 @@ public class BraveNewTabPageView extends NewTabPageView {
 
         mAdsBlockedCountTextView.setText(getBraveStatsStringFormNumber(adsBlockedCount));
         mHttpsUpgradesCountTextView.setText(getBraveStatsStringFormNumber(httpsUpgradesCount));
-        mEstTimeSavedTextView.setText(getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000));
+        mEstTimeSavedCountTextView.setText(getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000));
+
+        if(BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
+            && sponsoredTab != null && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
+            mAdsBlockedTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));
+            mHttpsUpgradesTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));
+            mEstTimeSavedTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));
+            mEstTimeSavedCountTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));
+        }
+
         TraceEvent.end(TAG + ".updateBraveStats()");
     }
 
@@ -127,4 +233,151 @@ public class BraveNewTabPageView extends NewTabPageView {
         }
         return result;
     }
+
+    private void showNTPImage(NTPImage ntpImage) {
+        NTPUtil.updateOrientedUI(mTabImpl.getActivity(), mNewTabPageLayout);
+
+        if(BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
+            && sponsoredTab != null && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
+            setBackgroundImage(ntpImage);
+            if (ntpImage instanceof NTPSponsoredImagesBridge.Wallpaper) {
+                NTPSponsoredImagesBridge.Wallpaper mWallpaper = (NTPSponsoredImagesBridge.Wallpaper) ntpImage;
+                if (mWallpaper.getLogoPath() != null ) {
+                    try {
+                        ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
+                        sponsoredLogo.setVisibility(View.VISIBLE);
+                        Uri logoFileUri = Uri.parse("file://"+ mWallpaper.getLogoPath());
+                        InputStream inputStream = mTabImpl.getActivity().getContentResolver().openInputStream(logoFileUri);
+                        Bitmap logoBitmap = BitmapFactory.decodeStream(inputStream);
+                        sponsoredLogo.setImageBitmap(logoBitmap);
+                        sponsoredLogo.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (mWallpaper.getLogoDestinationUrl() != null) {
+                                    NTPUtil.openImageCredit(mWallpaper.getLogoDestinationUrl());
+                                }
+                            }
+                        });
+                    } catch(FileNotFoundException exc) {
+                        Log.e("NTP", exc.getMessage());
+                    }
+                }
+            } else {
+                BackgroundImage backgroundImage = (BackgroundImage) ntpImage;
+                ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
+                sponsoredLogo.setVisibility(View.GONE);
+                if (backgroundImage.getImageCredit() != null) {
+                    String imageCreditStr = String.format(mNewTabPageLayout.getResources().getString(R.string.photo_by, backgroundImage.getImageCredit().getName()));
+
+                    SpannableStringBuilder spannableString = new SpannableStringBuilder(imageCreditStr);
+                    spannableString.setSpan(new android.text.style.StyleSpan(android.graphics.Typeface.BOLD), ((imageCreditStr.length()-1) - (backgroundImage.getImageCredit().getName().length()-1)), imageCreditStr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                    TextView creditText = (TextView)mNewTabPageLayout.findViewById(R.id.credit_text);
+                    creditText.setText(spannableString);
+                    creditText.setVisibility(View.VISIBLE);
+                    creditText.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (backgroundImage.getImageCredit() != null) {
+                                NTPUtil.openImageCredit(backgroundImage.getImageCredit().getUrl());
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    }
+
+    private void setBackgroundImage(NTPImage ntpImage) {
+        ImageView bgImageView = (ImageView)mNewTabPageLayout.findViewById(R.id.bg_image_view);
+        bgImageView.setScaleType(ImageView.ScaleType.MATRIX);
+
+        ViewTreeObserver observer = bgImageView.getViewTreeObserver();
+            observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    Bitmap wallpaperBitmap = NTPUtil.getWallpaperBitmap(ntpImage, bgImageView.getMeasuredWidth(), bgImageView.getMeasuredHeight());
+                    bgImageView.setImageBitmap(wallpaperBitmap);
+
+                    // int height;
+                    // if(ConfigurationUtils.isLandscape(mTabImpl.getActivity())) {
+                    //     height = ((2*bgImageView.getHeight())/3);
+                    // } else {
+                    //     height = (bgImageView.getHeight()/3);
+                    // }
+
+                    // FrameLayout.LayoutParams topGradientLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, height);
+                    // mNewTabPageLayout.findViewById(R.id.top_gradient_view).setLayoutParams(topGradientLayoutParams);
+
+                    // FrameLayout.LayoutParams bottomGradientLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, height);
+                    // mNewTabPageLayout.findViewById(R.id.bottom_gradient_view).setLayoutParams(bottomGradientLayoutParams);
+
+                    bgImageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            });
+    }
+
+    private void checkForNonDistruptiveBanner(NTPImage ntpImage) {
+        int brOption = NTPUtil.checkForNonDistruptiveBanner(ntpImage, sponsoredTab);
+        if (SponsoredImageUtil.BR_INVALID_OPTION != brOption) {
+            NTPUtil.showNonDistruptiveBanner(mTabImpl.getActivity(), mNewTabPageLayout, brOption, sponsoredTab, newTabPageListener);
+        }
+    }
+
+    private void checkAndShowNTPImage() {
+        NTPImage ntpImage = sponsoredTab.getTabNTPImage();
+        if(ntpImage == null) {
+            sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
+        } else if (ntpImage instanceof NTPSponsoredImagesBridge.Wallpaper) {
+            NTPSponsoredImagesBridge.Wallpaper mWallpaper = (NTPSponsoredImagesBridge.Wallpaper) ntpImage;
+            if(mWallpaper == null) {
+                sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
+            }
+        }
+        checkForNonDistruptiveBanner(ntpImage);
+        showNTPImage(ntpImage);
+    }
+
+    private void initilizeSponsoredTab() {
+        if (TabAttributes.from(mTab).get(String.valueOf((mTabImpl).getId())) == null) {
+            SponsoredTab mSponsoredTab = new SponsoredTab(mNTPSponsoredImagesBridge);
+            TabAttributes.from(mTab).set(String.valueOf((mTabImpl).getId()), mSponsoredTab);
+        }
+        sponsoredTab = TabAttributes.from(mTab).get(String.valueOf((mTabImpl).getId()));
+    }
+
+    private TabObserver mTabObserver = new EmptyTabObserver() {
+        @Override
+        public void onInteractabilityChanged(boolean interactable) {
+            // Force a layout update if the tab is now in the foreground.
+            if (interactable) {
+                if (sponsoredTab == null)
+                    initilizeSponsoredTab();
+                if(!sponsoredTab.isMoreTabs()) {
+                    checkAndShowNTPImage();
+                }
+            } else {
+                if(!isFromBottomSheet){
+                    mNewTabPageLayout.setBackgroundResource(0);
+                    if (imageDrawable != null && imageDrawable.getBitmap() != null && !imageDrawable.getBitmap().isRecycled()) {
+                        imageDrawable.getBitmap().recycle();
+                    }
+                }
+            }
+        }
+    };
+
+    private NewTabPageListener newTabPageListener = new NewTabPageListener() {
+        @Override
+        public void updateInteractableFlag(boolean isBottomSheet) {
+            isFromBottomSheet = isBottomSheet;
+        }
+
+        @Override
+        public void updateNTPImage() {
+            if (sponsoredTab == null)
+                initilizeSponsoredTab();
+            checkAndShowNTPImage();
+        }
+    };
 }

@@ -105,8 +105,11 @@ base::Value NTPSponsoredImagesData::GetValueAt(size_t index) {
   data.SetBoolKey("isSponsorship", true);
   data.SetStringKey("wallpaperImageUrl",
                     wallpaper_image_urls()[index]);
+  data.SetStringKey("wallpaperImagePath",
+                    backgrounds[index].image_file.AsUTF8Unsafe());
   base::Value logo_data(base::Value::Type::DICTIONARY);
   logo_data.SetStringKey("image", logo_image_url());
+  logo_data.SetStringKey("imagePath", logo_image_file.AsUTF8Unsafe());
   logo_data.SetStringKey("companyName", logo_company_name);
   logo_data.SetStringKey("alt", logo_alt_text);
   logo_data.SetStringKey("destinationUrl", logo_destination_url);
