@@ -270,12 +270,8 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
         }
 
         // Migrate search engines settings
-        sharedPreferencesEditor.putString(BraveHelper.PRIVATE_DSE_KEYWORD,
-            sharedPreferences.getString(PREF_PRIVATE_SEARCH_ENGINE_KEYWORD, DSE_KEYWORD));
         sharedPreferencesEditor.putString(BraveHelper.PRIVATE_DSE_SHORTNAME,
             sharedPreferences.getString(PREF_PRIVATE_SEARCH_ENGINE, DSE_NAME));
-        sharedPreferencesEditor.putString(BraveHelper.STANDARD_DSE_KEYWORD,
-            sharedPreferences.getString(PREF_STANDARD_SEARCH_ENGINE_KEYWORD, DSE_KEYWORD));
         sharedPreferencesEditor.putString(BraveHelper.STANDARD_DSE_SHORTNAME,
             sharedPreferences.getString(PREF_STANDARD_SEARCH_ENGINE, DSE_NAME));
 
