@@ -31,6 +31,7 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 
 GURL BinanceController::oauth_endpoint_("https://accounts.binance.com");
+GURL BinanceController::api_endpoint_("https://api.binance.com");
 
 namespace {
 
@@ -108,7 +109,7 @@ bool BinanceController::GetAccessToken(
       id_param + "&client_secret=" + secret_param + "&redirect_uri=" +
       redirect_uri;
 
-  return OAuthRequest(oauth_path_access_token,
+  return OAuthRequest(false, oauth_path_access_token,
                      formatted_params,
                      std::move(internal_callback));
 }
@@ -119,7 +120,7 @@ bool BinanceController::GetAccountBalances(
        &BinanceController::OnGetAccountBalances,
        base::Unretained(this), std::move(callback));
   
-  return OAuthRequest(oauth_path_account_balances,
+  return OAuthRequest(false, oauth_path_account_balances,
                       std::string("?access_token=") + access_token_,
                       std::move(internal_callback));
 }
@@ -160,11 +161,13 @@ void BinanceController::OnGetAccessToken(
   std::move(callback).Run(IsUnauthorized(status));
 }
 
-bool BinanceController::OAuthRequest(const std::string& path,
+bool BinanceController::OAuthRequest(bool use_version_one,
+                                     const std::string& path,
                                      const std::string& query_params,
                                      URLRequestCallback callback) {
-  std::string oauth_url = oauth_endpoint_.spec();
-  std::string request_url = oauth_url + path + query_params;
+  std::string base_url = use_version_one ?
+      api_endpoint_.spec() : oauth_endpoint_.spec();             
+  std::string request_url = base_url + path + query_params;
   auto request = std::make_unique<network::ResourceRequest>();
 
   request->url = GURL(request_url);
@@ -341,7 +344,7 @@ bool BinanceController::GetConvertQuote(
       access_param + amount_param + base_param +
       to_param + from_param;
 
-  return OAuthRequest(oauth_path_convert_quote,
+  return OAuthRequest(false, oauth_path_convert_quote,
                      formatted_params,
                      std::move(internal_callback));
 }
@@ -357,6 +360,54 @@ void BinanceController::OnGetConvertQuote(
   }
 
   std::move(callback).Run(quote_id);
+}
+
+bool BinanceController::GetTickerPrice(
+    const std::string& symbol_pair,
+    GetTickerPriceCallback callback) {
+  auto internal_callback = base::BindOnce(
+      &BinanceController::OnGetTickerPrice,
+      base::Unretained(this), std::move(callback));
+  const std::string formatted_params =
+        std::string("?symbol=") + symbol_pair;
+  return OAuthRequest(true, api_path_ticker_price,
+                     formatted_params,
+                     std::move(internal_callback));
+}
+
+bool BinanceController::GetTickerVolume(
+    const std::string& symbol_pair,
+    GetTickerVolumeCallback callback) {
+  auto internal_callback = base::BindOnce(
+      &BinanceController::OnGetTickerVolume,
+      base::Unretained(this), std::move(callback));
+  const std::string formatted_params =
+        std::string("?symbol=") + symbol_pair;
+  return OAuthRequest(true, api_path_ticker_volume,
+                    formatted_params,
+                    std::move(internal_callback));
+}
+
+void BinanceController::OnGetTickerPrice(
+    GetTickerPriceCallback callback,
+    const int status, const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  std::string symbol_pair_price = "0.00";
+  if (status >= 200 && status <= 299) {
+    BinanceJSONParser::GetTickerPriceFromJSON(body, &symbol_pair_price);
+  }
+  std::move(callback).Run(symbol_pair_price);
+}
+
+void BinanceController::OnGetTickerVolume(
+    GetTickerPriceCallback callback,
+    const int status, const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  std::string symbol_pair_volume = "0";
+  if (status >= 200 && status <= 299) {
+    BinanceJSONParser::GetTickerVolumeFromJSON(body, &symbol_pair_volume);
+  }
+  std::move(callback).Run(symbol_pair_volume);
 }
 
 base::SequencedTaskRunner* BinanceController::io_task_runner() {

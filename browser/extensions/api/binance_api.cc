@@ -304,5 +304,63 @@ void BinanceGetConvertQuoteFunction::OnQuoteResult(
   Respond(OneArgument(std::make_unique<base::Value>(quote_id)));
 }
 
+ExtensionFunction::ResponseAction
+BinanceGetTickerPriceFunction::Run() {
+  std::unique_ptr<binance::GetTickerPrice::Params> params(
+      binance::GetTickerPrice::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  if (brave::IsTorProfile(profile)) {
+    return RespondNow(Error("Not available in Tor profile"));
+  }
+
+  auto* controller = GetBinanceController(browser_context());
+  bool value_request = controller->GetTickerPrice(params->symbol_pair,
+      base::BindOnce(
+          &BinanceGetTickerPriceFunction::OnGetTickerPrice, this));
+
+  if (!value_request) {
+    return RespondNow(
+        Error("Could not make request for BTC price"));
+  }
+
+  return RespondLater();
+}
+
+void BinanceGetTickerPriceFunction::OnGetTickerPrice(
+    const std::string& symbol_pair_price) {
+  Respond(OneArgument(std::make_unique<base::Value>(symbol_pair_price)));
+}
+
+ExtensionFunction::ResponseAction
+BinanceGetTickerVolumeFunction::Run() {
+  std::unique_ptr<binance::GetTickerVolume::Params> params(
+      binance::GetTickerVolume::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  if (brave::IsTorProfile(profile)) {
+    return RespondNow(Error("Not available in Tor profile"));
+  }
+
+  auto* controller = GetBinanceController(browser_context());
+  bool value_request = controller->GetTickerVolume(params->symbol_pair,
+      base::BindOnce(
+          &BinanceGetTickerVolumeFunction::OnGetTickerVolume, this));
+
+  if (!value_request) {
+    return RespondNow(
+        Error("Could not make request for Volume"));
+  }
+
+  return RespondLater();
+}
+
+void BinanceGetTickerVolumeFunction::OnGetTickerVolume(
+    const std::string& symbol_pair_volume) {
+  Respond(OneArgument(std::make_unique<base::Value>(symbol_pair_volume)));
+}
+
 }  // namespace api
 }  // namespace extensions

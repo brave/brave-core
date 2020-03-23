@@ -126,3 +126,57 @@ bool BinanceJSONParser::GetQuoteIDFromJSON(
 
   return true;
 }
+
+// static
+bool BinanceJSONParser::GetTickerPriceFromJSON(
+    const std::string& json, std::string* symbol_pair_price) {
+  if (!symbol_pair_price) {
+    return false;
+  }
+  // Response format:
+  // {
+  //   "symbol": "BTCUSDT",
+  //   "price": "7137.98000000"
+  // }
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& parsed_response = value_with_error.value;
+  if (!parsed_response) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::Value* price = parsed_response->FindKey("price");
+  if (!price || !price->is_string()) {
+    return false;
+  }
+
+  *symbol_pair_price = price->GetString();
+  return true;
+}
+
+// static
+bool BinanceJSONParser::GetTickerVolumeFromJSON(
+    const std::string& json, std::string* symbol_pair_volume) {
+  if (!symbol_pair_volume) {
+    return false;
+  }
+
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& parsed_response = value_with_error.value;
+  if (!parsed_response) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::Value* volume = parsed_response->FindKey("volume");
+  if (!volume || !volume->is_string()) {
+    return false;
+  }
+
+  *symbol_pair_volume = volume->GetString();
+  return true;
+}

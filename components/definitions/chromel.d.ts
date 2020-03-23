@@ -160,6 +160,8 @@ declare namespace chrome.binance {
   const setCodeChallenge: (challenge: string, callback: (success: boolean) => void) => {}
   const getAccountBalances: (callback: (balances: Record<string, string>, unauthorized: boolean) => void) => {}
   const getConvertQuote: (from: string, to: string, amount: string, callback: (quoteId: string) => void) => {}
+  const getTickerPrice: (symbolPair: string, callback: (symbolPairValue: string) => void) => {}
+  const getTickerVolume: (symbolPair: string, callback: (symbolPairVolume: string) => void) => {}
 }
 
 declare namespace chrome.rewardsNotifications {

@@ -96,4 +96,14 @@ TEST_F(BinanceJSONParserTest, GetQuoteIDFromJSON) {
   ASSERT_EQ(btc_balance, "2.45000000");
 }
 
+TEST_F(BinanceJSONParserTest, GetTickerPriceFromJSON) {
+  std::string symbol_pair_price;
+  ASSERT_TRUE(BinanceJSONParser::GetTickerPriceFromJSON(R"(
+      {
+        "symbol": "BTCUSDT",
+        "price": "7137.98000000"
+      })", &symbol_pair_price));
+  ASSERT_EQ(symbol_pair_price, "7137.98000000");
+}
+
 }  // namespace

@@ -95,6 +95,30 @@ class BinanceGetConvertQuoteFunction :
   ResponseAction Run() override;
 };
 
+class BinanceGetTickerPriceFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("binance.getTickerPrice", UNKNOWN)
+
+ protected:
+  ~BinanceGetTickerPriceFunction() override {}
+  void OnGetTickerPrice(const std::string& symbol_pair_price);
+
+  ResponseAction Run() override;
+};
+
+class BinanceGetTickerVolumeFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("binance.getTickerVolume", UNKNOWN)
+
+ protected:
+  ~BinanceGetTickerVolumeFunction() override {}
+  void OnGetTickerVolume(const std::string& symbol_pair_volume);
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

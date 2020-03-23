@@ -38,7 +38,10 @@ class SimpleURLLoader;
 
 const char oauth_path_access_token[] = "/oauth/token";
 const char oauth_path_account_balances[] = "/oauth-api/v1/balance";
-const char oauth_path_convert_quote[] = "oauth-api/v1/ocbs/quote";
+const char oauth_path_convert_quote[] = "/oauth-api/v1/ocbs/quote";
+
+const char api_path_ticker_price[] = "/api/v3/ticker/price";
+const char api_path_ticker_volume[] = "/api/v3/ticker/24hr";
 
 class BinanceController {
  public:
@@ -62,11 +65,18 @@ class BinanceController {
   bool SetAccessTokens(const std::string& access_token,
                        const std::string& refresh_token);
   bool SetCodeChallengePref(const std::string& challenge);
+  using GetTickerPriceCallback = base::OnceCallback<void(const std::string&)>;
+  using GetTickerVolumeCallback = base::OnceCallback<void(const std::string&)>;
+  bool GetTickerPrice(const std::string& symbol_pair,
+      GetTickerPriceCallback callback);
+  bool GetTickerVolume(const std::string& symbol_pair,
+      GetTickerVolumeCallback callback);
   std::string GetBinanceTLD();
   std::string GetOAuthClientUrl();
 
  private:
   static GURL oauth_endpoint_;
+  static GURL api_endpoint_;
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
@@ -84,7 +94,14 @@ class BinanceController {
   void OnGetAccountBalances(GetAccountBalancesCallback callback,
                            const int status, const std::string& body,
                            const std::map<std::string, std::string>& headers);
-  bool OAuthRequest(const std::string& path,
+  void OnGetTickerPrice(GetTickerPriceCallback callback,
+                        const int status, const std::string& body,
+                        const std::map<std::string, std::string>& headers);
+  void OnGetTickerVolume(GetTickerVolumeCallback callback,
+                        const int status, const std::string& body,
+                        const std::map<std::string, std::string>& headers);
+  bool OAuthRequest(bool use_version_one,
+                    const std::string& path,
                     const std::string& query_params,
                     URLRequestCallback callback);
   bool LoadTokensFromPrefs();
