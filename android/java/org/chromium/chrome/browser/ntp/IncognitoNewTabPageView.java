@@ -17,6 +17,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,7 +26,6 @@ import androidx.annotation.StringRes;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.gesturenav.HistoryNavigationLayout;
 import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
 import org.chromium.ui.text.SpanApplier;
@@ -34,7 +34,7 @@ import org.chromium.ui.widget.ChromeBulletSpan;
 /**
  * The New Tab Page for use in the incognito profile.
  */
-public class IncognitoNewTabPageView extends HistoryNavigationLayout {
+public class IncognitoNewTabPageView extends FrameLayout {
     private IncognitoNewTabPageManager mManager;
     private boolean mFirstShow = true;
     private NewTabPageScrollView mScrollView;
@@ -77,8 +77,8 @@ public class IncognitoNewTabPageView extends HistoryNavigationLayout {
     }
 
     /** Default constructor needed to inflate via XML. */
-    public IncognitoNewTabPageView(Context context) {
-        super(context);
+    public IncognitoNewTabPageView(Context context, AttributeSet attrs) {
+        super(context, attrs);
     }
 
     @Override
