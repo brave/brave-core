@@ -127,6 +127,19 @@ bool DatabaseUnblindedToken::CreateIndexV18(
   return this->InsertIndex(transaction, kTableName, "creds_id");
 }
 
+bool DatabaseUnblindedToken::CreateIndexV20(
+    ledger::DBTransaction* transaction) {
+  DCHECK(transaction);
+
+  bool success = this->InsertIndex(transaction, kTableName, "creds_id");
+
+  if (!success) {
+    return false;
+  }
+
+  return this->InsertIndex(transaction, kTableName, "redeem_id");
+}
+
 bool DatabaseUnblindedToken::Migrate(
     ledger::DBTransaction* transaction,
     const int target) {
@@ -144,6 +157,9 @@ bool DatabaseUnblindedToken::Migrate(
     }
     case 18: {
       return MigrateToV18(transaction);
+    }
+    case 20: {
+      return MigrateToV20(transaction);
     }
     default: {
       return true;
@@ -311,6 +327,37 @@ bool DatabaseUnblindedToken::MigrateToV18(ledger::DBTransaction* transaction) {
   return true;
 }
 
+bool DatabaseUnblindedToken::MigrateToV20(ledger::DBTransaction* transaction) {
+  DCHECK(transaction);
+
+  std::string query =
+      "DROP INDEX IF EXISTS unblinded_tokens_creds_id_index;";
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = query;
+  transaction->commands.push_back(std::move(command));
+
+
+  query = base::StringPrintf(
+      "ALTER TABLE %s ADD redeemed_at TIMESTAMP NOT NULL DEFAULT 0;"
+      "ALTER TABLE %s ADD redeem_id TEXT;"
+      "ALTER TABLE %s ADD redeem_type INTEGER NOT NULL DEFAULT 0;",
+      kTableName,
+      kTableName,
+      kTableName);
+
+  command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = query;
+  transaction->commands.push_back(std::move(command));
+
+  if (!CreateIndexV20(transaction)) {
+    return false;
+  }
+
+  return true;
+}
+
 void DatabaseUnblindedToken::InsertOrUpdateList(
     ledger::UnblindedTokenList list,
     ledger::ResultCallback callback) {
@@ -422,8 +469,10 @@ void DatabaseUnblindedToken::GetRecordsByTriggerIds(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabaseUnblindedToken::DeleteRecordList(
+void DatabaseUnblindedToken::MarkRecordListAsSpent(
     const std::vector<std::string>& ids,
+    ledger::RewardsType redeem_type,
+    const std::string& redeem_id,
     ledger::ResultCallback callback) {
   if (ids.empty()) {
     callback(ledger::Result::LEDGER_ERROR);
@@ -433,38 +482,18 @@ void DatabaseUnblindedToken::DeleteRecordList(
   auto transaction = ledger::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
-      "DELETE FROM %s WHERE token_id IN (%s)",
+      "UPDATE %s SET redeemed_at = ?, redeem_id = ?, redeem_type = ? "
+      "WHERE token_id IN (%s)",
       kTableName,
       GenerateStringInCase(ids).c_str());
-
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::EXECUTE;
-  command->command = query;
-
-  transaction->commands.push_back(std::move(command));
-
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
-}
-
-void DatabaseUnblindedToken::CheckRecordsExpiration(
-    ledger::ResultCallback callback) {
-  const uint64_t current_time = braveledger_time_util::GetCurrentTimeStamp();
-
-  auto transaction = ledger::DBTransaction::New();
-
-  const std::string query = base::StringPrintf(
-      "DELETE FROM %s WHERE expires_at < ?",
-      kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::RUN;
   command->command = query;
 
-  BindInt64(command.get(), 0, current_time);
+  BindInt64(command.get(), 0, braveledger_time_util::GetCurrentTimeStamp());
+  BindString(command.get(), 1, redeem_id);
+  BindInt(command.get(), 2, static_cast<int>(redeem_type));
 
   transaction->commands.push_back(std::move(command));
 
@@ -475,7 +504,7 @@ void DatabaseUnblindedToken::CheckRecordsExpiration(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabaseUnblindedToken::GetRecordsByBatchTypes(
+void DatabaseUnblindedToken::GetSpendableRecordListByBatchTypes(
     const std::vector<ledger::CredsBatchType>& batch_types,
     ledger::GetUnblindedTokenListCallback callback) {
   if (batch_types.empty()) {
@@ -495,7 +524,9 @@ void DatabaseUnblindedToken::GetRecordsByBatchTypes(
       "SELECT ut.token_id, ut.token_value, ut.public_key, ut.value, "
       "ut.creds_id, ut.expires_at FROM %s as ut "
       "INNER JOIN creds_batch as cb ON cb.creds_id = ut.creds_id "
-      "WHERE cb.trigger_type IN (%s)",
+      "WHERE ut.redeemed_at = 0 AND "
+      "(ut.expires_at > strftime('%%s','now') OR ut.expires_at = 0) AND "
+      "cb.trigger_type IN (%s)",
       kTableName,
       base::JoinString(in_case, ",").c_str());
 

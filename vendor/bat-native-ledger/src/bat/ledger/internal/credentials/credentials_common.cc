@@ -211,6 +211,7 @@ void CredentialsCommon::RedeemTokens(
       _2,
       _3,
       token_id_list,
+      redeem,
       callback);
 
   std::string payload;
@@ -244,6 +245,7 @@ void CredentialsCommon::OnRedeemTokens(
     const std::string& response,
     const std::map<std::string, std::string>& headers,
     const std::vector<std::string>& token_id_list,
+    const CredentialsRedeem& redeem,
     ledger::ResultCallback callback) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
@@ -252,7 +254,14 @@ void CredentialsCommon::OnRedeemTokens(
     return;
   }
 
-  ledger_->DeleteUnblindedTokens(token_id_list, callback);
+  std::string id;
+  if (!redeem.contribution_id.empty()) {
+    id = redeem.contribution_id;
+  } else if (!redeem.order_id.empty()) {
+    id = redeem.order_id;
+  }
+
+  ledger_->MarkUblindedTokensAsSpent(token_id_list, redeem.type, id, callback);
 }
 
 }  // namespace braveledger_credentials

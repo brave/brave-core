@@ -66,6 +66,7 @@ class CredentialsCommon {
       const std::string& response,
       const std::map<std::string, std::string>& headers,
       const std::vector<std::string>& token_id_list,
+      const CredentialsRedeem& redeem,
       ledger::ResultCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED

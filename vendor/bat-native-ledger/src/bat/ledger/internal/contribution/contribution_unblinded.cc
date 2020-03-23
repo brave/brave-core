@@ -23,12 +23,6 @@ using std::placeholders::_3;
 
 namespace {
 
-bool HasTokenExpired(const ledger::UnblindedToken& token) {
-  const auto now = braveledger_time_util::GetCurrentTimeStamp();
-
-  return token.expires_at > 0 && token.expires_at < now;
-}
-
 bool GetStatisticalVotingWinner(
     double dart,
     const double amount,
@@ -129,7 +123,7 @@ void Unblinded::GetContributionInfoAndUnblindedTokens(
       _1,
       contribution_id,
       callback);
-  ledger_->GetUnblindedTokensByBatchTypes(types, get_callback);
+  ledger_->GetSpendableUnblindedTokensByBatchTypes(types, get_callback);
 }
 
 void Unblinded::OnUnblindedTokens(
@@ -189,23 +183,13 @@ void Unblinded::PrepareTokens(
 
   double current_amount = 0.0;
   std::vector<ledger::UnblindedToken> token_list;
-  std::vector<std::string> delete_list;
   for (auto & item : list) {
-    if (HasTokenExpired(item)) {
-      delete_list.push_back(std::to_string(item.id));
-      continue;
-    }
-
     if (current_amount >= contribution->amount) {
       break;
     }
 
     current_amount += item.value;
     token_list.push_back(item);
-  }
-
-  if (delete_list.size() > 0) {
-    ledger_->DeleteUnblindedTokens(delete_list, [](const ledger::Result _){});
   }
 
   if (current_amount < contribution->amount) {
@@ -396,6 +380,7 @@ void Unblinded::OnProcessTokens(
     redeem.type = contribution->type;
     redeem.processor = contribution->processor;
     redeem.token_list = token_list;
+    redeem.contribution_id = contribution->contribution_id;
 
     credentials_->RedeemTokens(redeem, redeem_callback);
     return;

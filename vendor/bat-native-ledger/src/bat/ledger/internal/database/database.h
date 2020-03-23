@@ -320,20 +320,19 @@ class Database {
       ledger::UnblindedTokenList list,
       ledger::ResultCallback callback);
 
-  void DeleteUnblindedTokens(
+  void MarkUblindedTokensAsSpent(
       const std::vector<std::string>& ids,
+      ledger::RewardsType redeem_type,
+      const std::string& redeem_id,
       ledger::ResultCallback callback);
 
   void GetUnblindedTokensByTriggerIds(
       const std::vector<std::string>& trigger_ids,
       ledger::GetUnblindedTokenListCallback callback);
 
-  void CheckUnblindedTokensExpiration(ledger::ResultCallback callback);
-
-  void GetUnblindedTokensByBatchTypes(
+  void GetSpendableUnblindedTokensByBatchTypes(
       const std::vector<ledger::CredsBatchType>& batch_types,
       ledger::GetUnblindedTokenListCallback callback);
-
 
  private:
   std::unique_ptr<DatabaseInitialize> initialize_;
