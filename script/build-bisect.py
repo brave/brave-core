@@ -86,6 +86,9 @@ def get_releases(repo):
                 draft_count = draft_count + 1
                 continue
             tag_name = str(release['tag_name'].strip().replace('v', ''))
+            # skip "android" releases and others not matching version format
+            if not tag_name.replace('.','').isdigit():
+                continue
             tag_names.append(tag_name)
             releases[tag_name] = release
         page = page + 1
@@ -293,6 +296,8 @@ def get_github_token():
         if result == 'undefined':
             raise Exception('`BRAVE_GITHUB_TOKEN` value not found!')
         return result
+    else:
+        return github_token
 
 
 def get_nearest_index(version, index_to_get, default):
