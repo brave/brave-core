@@ -16,7 +16,6 @@
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/browser/binance/binance_service_factory.h"
-#include "brave/components/binance/browser/binance_controller.h"
 #include "brave/components/binance/browser/binance_service.h"
 #include "brave/components/binance/browser/static_values.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
@@ -28,10 +27,9 @@
 
 namespace {
 
-BinanceController* GetBinanceController(content::BrowserContext* context) {
+BinanceService* GetBinanceService(content::BrowserContext* context) {
   return BinanceServiceFactory::GetInstance()
-      ->GetForProfile(Profile::FromBrowserContext(context))
-      ->controller();
+      ->GetForProfile(Profile::FromBrowserContext(context));
 }
 
 }  // namespace
@@ -248,8 +246,8 @@ BinanceGetAccountBalancesFunction::Run() {
     return RespondNow(Error("Not available in Tor profile"));
   }
 
-  auto* controller = GetBinanceController(browser_context());
-  bool balance_success = controller->GetAccountBalances(
+  auto* service = GetBinanceService(browser_context());
+  bool balance_success = service->GetAccountBalances(
       base::BindOnce(
           &BinanceGetAccountBalancesFunction::OnGetAccountBalances,
           this));
@@ -285,8 +283,8 @@ BinanceGetConvertQuoteFunction::Run() {
       binance::GetConvertQuote::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  auto* controller = GetBinanceController(browser_context());
-  bool token_request = controller->GetConvertQuote(
+  auto* service = GetBinanceService(browser_context());
+  bool token_request = service->GetConvertQuote(
       params->from, params->to, params->amount,
       base::BindOnce(
           &BinanceGetConvertQuoteFunction::OnQuoteResult, this));
@@ -315,8 +313,8 @@ BinanceGetTickerPriceFunction::Run() {
     return RespondNow(Error("Not available in Tor profile"));
   }
 
-  auto* controller = GetBinanceController(browser_context());
-  bool value_request = controller->GetTickerPrice(params->symbol_pair,
+  auto* service = GetBinanceService(browser_context());
+  bool value_request = service->GetTickerPrice(params->symbol_pair,
       base::BindOnce(
           &BinanceGetTickerPriceFunction::OnGetTickerPrice, this));
 
@@ -344,8 +342,8 @@ BinanceGetTickerVolumeFunction::Run() {
     return RespondNow(Error("Not available in Tor profile"));
   }
 
-  auto* controller = GetBinanceController(browser_context());
-  bool value_request = controller->GetTickerVolume(params->symbol_pair,
+  auto* service = GetBinanceService(browser_context());
+  bool value_request = service->GetTickerVolume(params->symbol_pair,
       base::BindOnce(
           &BinanceGetTickerVolumeFunction::OnGetTickerVolume, this));
 
