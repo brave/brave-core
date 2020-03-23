@@ -33,7 +33,7 @@ Create::Create(bat_ledger::LedgerImpl* ledger) :
 Create::~Create() {
 }
 
-void Create::Start(ledger::CreateWalletCallback callback) {
+void Create::Start(ledger::ResultCallback callback) {
   auto on_req = std::bind(&Create::RequestCredentialsCallback,
                             this,
                             _1,
@@ -109,7 +109,7 @@ void Create::RequestCredentialsCallback(
       int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
-      ledger::CreateWalletCallback callback) {
+      ledger::ResultCallback callback) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
   if (response_status_code != net::HTTP_OK) {
@@ -213,7 +213,7 @@ void Create::RegisterPersonaCallback(
       int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
-      ledger::CreateWalletCallback callback) {
+      ledger::ResultCallback callback) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
   if (response_status_code != net::HTTP_OK) {

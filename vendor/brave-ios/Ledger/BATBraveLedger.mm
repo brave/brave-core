@@ -1740,7 +1740,7 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)resetState:(const std::string &)name callback:(ledger::OnResetCallback)callback
+- (void)resetState:(const std::string &)name callback:(ledger::ResultCallback)callback
 {
   const auto key = [NSString stringWithUTF8String:name.c_str()];
   self.state[key] = nil;
@@ -1753,7 +1753,7 @@ BATLedgerBridge(BOOL,
   });
 }
 
-- (void)saveState:(const std::string &)name value:(const std::string &)value callback:(ledger::OnSaveCallback)callback
+- (void)saveState:(const std::string &)name value:(const std::string &)value callback:(ledger::ResultCallback)callback
 {
   const auto key = [NSString stringWithUTF8String:name.c_str()];
   self.state[key] = [NSString stringWithUTF8String:value.c_str()];
@@ -1900,7 +1900,7 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)showNotification:(const std::string &)type args:(const std::vector<std::string>&)args callback:(ledger::ShowNotificationCallback)callback
+- (void)showNotification:(const std::string &)type args:(const std::vector<std::string>&)args callback:(ledger::ResultCallback)callback
 {
   const auto notificationID = [NSString stringWithUTF8String:type.c_str()];
   const auto info = [[NSMutableDictionary<NSNumber *, NSString *> alloc] init];

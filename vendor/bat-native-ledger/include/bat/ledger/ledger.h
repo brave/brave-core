@@ -42,18 +42,12 @@ using ExternalWalletCallback = std::function<void(
     ledger::ExternalWalletPtr)>;
 using ExternalWalletAuthorizationCallback =
     std::function<void(ledger::Result, std::map<std::string, std::string>)>;
-using DisconnectWalletCallback = std::function<void(ledger::Result)>;
-using TransferAnonToExternalWalletCallback =
-    std::function<void(ledger::Result)>;
 using FetchPromotionCallback =
     std::function<void(ledger::Result, ledger::PromotionList)>;
-using SetPublisherExcludeCallback = std::function<void(ledger::Result)>;
 using ClaimPromotionCallback =
     std::function<void(const ledger::Result, const std::string&)>;
 using RewardsInternalsInfoCallback =
     std::function<void(ledger::RewardsInternalsInfoPtr)>;
-using CreateWalletCallback = std::function<void(ledger::Result)>;
-using InitializeCallback = std::function<void(ledger::Result)>;
 using AttestPromotionCallback =
     std::function<void(const ledger::Result, ledger::PromotionPtr promotion)>;
 
@@ -90,10 +84,10 @@ class LEDGER_EXPORT Ledger {
 
   virtual void Initialize(
       const bool execute_create_script,
-      InitializeCallback) = 0;
+      ResultCallback) = 0;
 
   // returns false if wallet initialization is already in progress
-  virtual void CreateWallet(CreateWalletCallback callback) = 0;
+  virtual void CreateWallet(ResultCallback callback) = 0;
 
   virtual void OneTimeTip(
       const std::string& publisher_key,
@@ -232,7 +226,7 @@ class LEDGER_EXPORT Ledger {
   virtual void SetPublisherExclude(
       const std::string& publisher_id,
       const ledger::PublisherExclude& exclude,
-      SetPublisherExcludeCallback callback) = 0;
+      ResultCallback callback) = 0;
 
   virtual void RestorePublishers(ledger::ResultCallback callback) = 0;
 
@@ -328,7 +322,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void DisconnectWallet(
       const std::string& wallet_type,
-      ledger::DisconnectWalletCallback callback) = 0;
+      ledger::ResultCallback callback) = 0;
 
   virtual void GetAllPromotions(ledger::GetAllPromotionsCallback callback) = 0;
 

@@ -18,9 +18,9 @@ using Result = ::ledger::Result;
 const auto SUCCESS = ::ledger::Result::LEDGER_OK;
 const auto FAILED = ::ledger::Result::LEDGER_ERROR;
 
-using OnSaveCallback = ::ledger::OnSaveCallback;
+using OnSaveCallback = ::ledger::ResultCallback;
 using OnLoadCallback = ::ledger::OnLoadCallback;
-using OnResetCallback = ::ledger::OnResetCallback;
+using OnResetCallback = ::ledger::ResultCallback;
 using URLRequestCallback = ::ledger::LoadURLCallback;
 
 using ConfirmationsClient = ::ledger::LedgerClient;

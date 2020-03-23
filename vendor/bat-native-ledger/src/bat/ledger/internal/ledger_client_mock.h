@@ -127,7 +127,7 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD3(SaveState, void(
       const std::string& name,
       const std::string& value,
-      ledger::OnSaveCallback callback));
+      ledger::ResultCallback callback));
 
   MOCK_METHOD2(LoadState, void(
       const std::string& name,
@@ -135,7 +135,7 @@ class MockLedgerClient : public LedgerClient {
 
   MOCK_METHOD2(ResetState, void(
       const std::string& name,
-      ledger::OnResetCallback callback));
+      ledger::ResultCallback callback));
 
   MOCK_METHOD2(SetBooleanState, void(
       const std::string& name,
@@ -220,7 +220,7 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD3(ShowNotification, void(
       const std::string& type,
       const std::vector<std::string>& args,
-      ledger::ShowNotificationCallback callback));
+      ledger::ResultCallback callback));
 
   MOCK_METHOD2(SetTransferFee, void(
       const std::string& wallet_type,

@@ -83,9 +83,9 @@ class LedgerImpl : public ledger::Ledger {
 
   void Initialize(
       const bool execute_create_script,
-      ledger::InitializeCallback callback) override;
+      ledger::ResultCallback callback) override;
 
-  void CreateWallet(ledger::CreateWalletCallback callback) override;
+  void CreateWallet(ledger::ResultCallback callback) override;
 
   void SavePublisherInfo(
       ledger::PublisherInfoPtr publisher_info,
@@ -196,7 +196,7 @@ class LedgerImpl : public ledger::Ledger {
   void LoadPublisherState(ledger::OnLoadCallback callback);
 
   void OnWalletInitializedInternal(ledger::Result result,
-                                   ledger::InitializeCallback callback);
+                                   ledger::ResultCallback callback);
 
   void OnWalletProperties(ledger::Result result,
                           const ledger::WalletProperties&);
@@ -259,7 +259,7 @@ class LedgerImpl : public ledger::Ledger {
   void SetPublisherExclude(
       const std::string& publisher_id,
       const ledger::PublisherExclude& exclude,
-      ledger::SetPublisherExcludeCallback callback) override;
+      ledger::ResultCallback callback) override;
 
   void RestorePublishers(ledger::ResultCallback callback) override;
 
@@ -513,16 +513,16 @@ class LedgerImpl : public ledger::Ledger {
 
   void DisconnectWallet(
       const std::string& wallet_type,
-      ledger::DisconnectWalletCallback callback) override;
+      ledger::ResultCallback callback) override;
 
   void TransferAnonToExternalWallet(
       ledger::ExternalWalletPtr wallet,
-      ledger::TransferAnonToExternalWalletCallback callback,
+      ledger::ResultCallback callback,
       const bool allow_zero_balance = false);
 
   void ShowNotification(
       const std::string& type,
-      ledger::ShowNotificationCallback callback,
+      ledger::ResultCallback callback,
       const std::vector<std::string>& args = {});
 
   void DeleteActivityInfo(
@@ -738,12 +738,12 @@ class LedgerImpl : public ledger::Ledger {
  private:
   void InitializeConfirmations(
       const bool execute_create_script,
-      ledger::InitializeCallback callback);
+      ledger::ResultCallback callback);
 
   void OnConfirmationsInitialized(
       const bool success,
       const bool execute_create_script,
-      ledger::InitializeCallback callback);
+      ledger::ResultCallback callback);
 
   void OnLoad(ledger::VisitDataPtr visit_data,
               const uint64_t& current_time) override;
@@ -784,17 +784,17 @@ class LedgerImpl : public ledger::Ledger {
 
   void OnDatabaseInitialized(
       const ledger::Result result,
-      ledger::InitializeCallback callback);
+      ledger::ResultCallback callback);
 
   void OnPublisherStateLoaded(
       ledger::Result result,
       const std::string& data,
-      ledger::InitializeCallback callback);
+      ledger::ResultCallback callback);
 
   void OnLedgerStateLoaded(
       ledger::Result result,
       const std::string& data,
-      ledger::InitializeCallback callback);
+      ledger::ResultCallback callback);
 
   void RefreshPromotions(bool retryAfterError);
 

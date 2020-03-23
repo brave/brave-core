@@ -93,7 +93,7 @@ LedgerImpl::~LedgerImpl() {
 
 void LedgerImpl::OnWalletInitializedInternal(
     ledger::Result result,
-    ledger::InitializeCallback callback) {
+    ledger::ResultCallback callback) {
   initializing_ = false;
   callback(result);
   if (result == ledger::Result::LEDGER_OK ||
@@ -116,7 +116,7 @@ void LedgerImpl::OnWalletInitializedInternal(
 
 void LedgerImpl::Initialize(
     const bool execute_create_script,
-    ledger::InitializeCallback callback) {
+    ledger::ResultCallback callback) {
   DCHECK(!initializing_);
   if (initializing_) {
     BLOG(this, ledger::LogLevel::LOG_ERROR) <<
@@ -131,7 +131,7 @@ void LedgerImpl::Initialize(
 
 void LedgerImpl::InitializeConfirmations(
     const bool execute_create_script,
-    ledger::InitializeCallback callback) {
+    ledger::ResultCallback callback) {
   confirmations::_environment = ledger::_environment;
   confirmations::_is_debug = ledger::is_debug;
 
@@ -149,13 +149,13 @@ void LedgerImpl::InitializeConfirmations(
 void LedgerImpl::OnConfirmationsInitialized(
     const bool success,
     const bool execute_create_script,
-    ledger::InitializeCallback callback) {
+    ledger::ResultCallback callback) {
   if (!success) {
     BLOG(this, ledger::LogLevel::LOG_ERROR) <<
         "Failed to initialize confirmations";
   }
 
-  ledger::InitializeCallback finish_callback =
+  ledger::ResultCallback finish_callback =
       std::bind(&LedgerImpl::OnWalletInitializedInternal,
           this,
           _1,
@@ -168,7 +168,7 @@ void LedgerImpl::OnConfirmationsInitialized(
   bat_database_->Initialize(execute_create_script, database_callback);
 }
 
-void LedgerImpl::CreateWallet(ledger::CreateWalletCallback callback) {
+void LedgerImpl::CreateWallet(ledger::ResultCallback callback) {
   if (initializing_) {
     return;
   }
@@ -328,7 +328,7 @@ void LedgerImpl::LoadLedgerState(ledger::OnLoadCallback callback) {
 void LedgerImpl::OnLedgerStateLoaded(
     ledger::Result result,
     const std::string& data,
-    ledger::InitializeCallback callback) {
+    ledger::ResultCallback callback) {
   if (result == ledger::Result::LEDGER_OK) {
     if (!bat_state_->LoadState(data)) {
       BLOG(this, ledger::LogLevel::LOG_ERROR) <<
@@ -374,7 +374,7 @@ void LedgerImpl::LoadPublisherState(ledger::OnLoadCallback callback) {
 void LedgerImpl::OnPublisherStateLoaded(
     ledger::Result result,
     const std::string& data,
-    ledger::InitializeCallback callback) {
+    ledger::ResultCallback callback) {
   if (result == ledger::Result::LEDGER_OK) {
     if (!bat_publisher_->loadState(data)) {
       BLOG(this, ledger::LogLevel::LOG_ERROR) <<
@@ -401,7 +401,7 @@ void LedgerImpl::OnPublisherStateLoaded(
 
 void LedgerImpl::OnDatabaseInitialized(
     const ledger::Result result,
-    ledger::InitializeCallback callback) {
+    ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(this, ledger::LogLevel::LOG_ERROR) <<
       "Database could not be initialized. Error: " << result;
@@ -511,7 +511,7 @@ void LedgerImpl::SaveMediaVisit(const std::string& publisher_id,
 void LedgerImpl::SetPublisherExclude(
     const std::string& publisher_id,
     const ledger::PublisherExclude& exclude,
-    ledger::SetPublisherExcludeCallback callback) {
+    ledger::ResultCallback callback) {
   bat_publisher_->SetPublisherExclude(publisher_id, exclude, callback);
 }
 
@@ -1372,13 +1372,13 @@ void LedgerImpl::ExternalWalletAuthorization(
 
 void LedgerImpl::DisconnectWallet(
       const std::string& wallet_type,
-      ledger::DisconnectWalletCallback callback) {
+      ledger::ResultCallback callback) {
   bat_wallet_->DisconnectWallet(wallet_type, callback);
 }
 
 void LedgerImpl::TransferAnonToExternalWallet(
     ledger::ExternalWalletPtr wallet,
-    ledger::TransferAnonToExternalWalletCallback callback,
+    ledger::ResultCallback callback,
     const bool allow_zero_balance) {
   bat_wallet_->TransferAnonToExternalWallet(
     std::move(wallet),
@@ -1388,7 +1388,7 @@ void LedgerImpl::TransferAnonToExternalWallet(
 
 void LedgerImpl::ShowNotification(
       const std::string& type,
-      ledger::ShowNotificationCallback callback,
+      ledger::ResultCallback callback,
       const std::vector<std::string>& args) {
   ledger_client_->ShowNotification(type, args, callback);
 }

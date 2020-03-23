@@ -343,10 +343,10 @@ class RewardsServiceImpl : public RewardsService,
                                  ledger::PublisherInfoListCallback callback,
                                  ledger::PublisherInfoList list);
   void OnTimer(uint32_t timer_id);
-  void OnSavedState(ledger::OnSaveCallback callback, bool success);
+  void OnSavedState(ledger::ResultCallback callback, bool success);
   void OnLoadedState(ledger::OnLoadCallback callback,
                      const std::string& value);
-  void OnResetState(ledger::OnResetCallback callback,
+  void OnResetState(ledger::ResultCallback callback,
                                  bool success);
   void OnTipPublisherInfoSaved(
       const ledger::Result result,
@@ -537,11 +537,11 @@ class RewardsServiceImpl : public RewardsService,
                      int log_level) const override;
   void SaveState(const std::string& name,
                  const std::string& value,
-                 ledger::OnSaveCallback callback) override;
+                 ledger::ResultCallback callback) override;
   void LoadState(const std::string& name,
                  ledger::OnLoadCallback callback) override;
   void ResetState(const std::string& name,
-                  ledger::OnResetCallback callback) override;
+                  ledger::ResultCallback callback) override;
   void SetBooleanState(const std::string& name, bool value) override;
   bool GetBooleanState(const std::string& name) const override;
   void SetIntegerState(const std::string& name, int value) override;
@@ -572,7 +572,7 @@ class RewardsServiceImpl : public RewardsService,
   void ShowNotification(
       const std::string& type,
       const std::vector<std::string>& args,
-      ledger::ShowNotificationCallback callback) override;
+      ledger::ResultCallback callback) override;
 
   void SetTransferFee(
       const std::string& wallet_type,

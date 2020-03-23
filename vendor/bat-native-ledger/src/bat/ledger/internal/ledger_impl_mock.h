@@ -49,9 +49,9 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD2(Initialize, void(
       const bool,
-      ledger::InitializeCallback));
+      ledger::ResultCallback));
 
-  MOCK_METHOD1(CreateWallet, void(ledger::CreateWalletCallback));
+  MOCK_METHOD1(CreateWallet, void(ledger::ResultCallback));
 
   MOCK_METHOD2(SavePublisherInfo, void(
       ledger::PublisherInfoPtr,
@@ -155,7 +155,7 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD1(LoadPublisherState, void(ledger::OnLoadCallback));
 
   MOCK_METHOD2(OnWalletInitializedInternal,
-      void(ledger::Result, ledger::InitializeCallback));
+      void(ledger::Result, ledger::ResultCallback));
 
   MOCK_METHOD2(OnWalletProperties,
       void(ledger::Result,
@@ -216,7 +216,7 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD3(SetPublisherExclude,
       void(const std::string&,
           const ledger::PublisherExclude&,
-          ledger::SetPublisherExcludeCallback));
+          ledger::ResultCallback));
 
   MOCK_METHOD1(RestorePublishers, void(ledger::ResultCallback));
 
@@ -474,16 +474,16 @@ class MockLedgerImpl : public LedgerImpl {
           ledger::ExternalWalletAuthorizationCallback));
 
   MOCK_METHOD2(DisconnectWallet,
-      void(const std::string&, ledger::DisconnectWalletCallback));
+      void(const std::string&, ledger::ResultCallback));
 
   MOCK_METHOD3(TransferAnonToExternalWallet,
       void(ledger::ExternalWalletPtr,
-          ledger::TransferAnonToExternalWalletCallback,
+          ledger::ResultCallback,
           const bool));
 
   MOCK_METHOD3(ShowNotification,
       void(const std::string&,
-          ledger::ShowNotificationCallback,
+          ledger::ResultCallback,
           const std::vector<std::string>&));
 
   MOCK_METHOD2(DeleteActivityInfo,
