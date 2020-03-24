@@ -11,7 +11,6 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/permissions/permission_request_manager.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/subresource_filter/chrome_subresource_filter_client.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/pref_registry/pref_registry_syncable.h"
@@ -87,8 +86,6 @@ void EnableWidevineCdmComponent(content::WebContents* web_contents) {
 
   SetWidevineOptedIn(true);
   RegisterWidevineCdmComponent(g_brave_browser_process->component_updater());
-  ChromeSubresourceFilterClient::FromWebContents(web_contents)
-      ->OnReloadRequested();
 }
 #endif
 
