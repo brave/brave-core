@@ -1,4 +1,4 @@
-/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+2/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -8,13 +8,13 @@ package org.chromium.chrome.browser.ntp_background_images;
 import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
 
-import org.chromium.base.ObserverList;
-import org.chromium.base.ThreadUtils;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.NativeMethods;
-import org.chromium.chrome.browser.ntp_background_images.NTPImage;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.base.ObserverList;
+import org.chromium.base.ThreadUtils;
 import org.chromium.chrome.browser.BraveFeatureList;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.ntp_background_images.NTPImage;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
 
