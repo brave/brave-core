@@ -48,8 +48,20 @@ describe('welcomeReducer', () => {
         payload: 0
       })
 
+      const importTypes = {
+        import_dialog_autofill_form_data: true,
+        import_dialog_bookmarks: true,
+        import_dialog_history: true,
+        import_dialog_saved_passwords: true,
+        import_dialog_search_engine: true,
+        import_dialog_cookies: false,
+        import_dialog_stats: false,
+        import_dialog_ledger: false,
+        import_dialog_windows: false
+      }
+
       expect(importBrowserProfileRequestStub).toBeCalledTimes(1)
-      expect(importBrowserProfileRequestStub).toBeCalledWith('importData', [0])
+      expect(importBrowserProfileRequestStub).toBeCalledWith('importData', [0, importTypes])
     })
   })
 
