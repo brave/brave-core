@@ -39,7 +39,7 @@ export const images: NewTab.Image[] = [
     'name': 'ntp-fall-2019-6',
     'source': 'ben-karpinski.webp',
     'author': 'Ben Karpinski',
-    'link': 'https://www.benkarpinski.com/landscapes',
+    'link': 'http://bklandscapes.com',
     'originalUrl': 'Contributor sent the hi-res version through email',
     'license': 'used with permission'
   },
