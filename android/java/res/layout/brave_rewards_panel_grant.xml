@@ -80,6 +80,8 @@
             android:layout_gravity="center"
             android:fontFamily="sans-serif"
             android:textSize="14sp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
             android:textColor="#FFFFFF"
             android:visibility="gone"/>
     </FrameLayout>

@@ -36,6 +36,9 @@ public class BraveRewardsNativeWorker {
     public static final int REWARDS_NOTIFICATION_IMPENDING_CONTRIBUTION = 5;
     public static final int REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS = 6;
     public static final int REWARDS_NOTIFICATION_BACKUP_WALLET = 7;
+    public static final int REWARDS_NOTIFICATION_TIPS_PROCESSED = 8;
+    public static final int REWARDS_NOTIFICATION_ADS_ONBOARDING = 9;
+    public static final int REWARDS_NOTIFICATION_VERIFIED_PUBLISHER = 10;
 
     public static final int LEDGER_OK = 0;
     public static final int LEDGER_ERROR = 1;
@@ -389,6 +392,12 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    public boolean IsAnonWallet() {
+        synchronized(lock) {
+            return nativeIsAnonWallet(mNativeBraveRewardsNativeWorker);
+        }
+    }
+
     @CalledByNative
     public void OnGetRewardsMainEnabled(boolean enabled) {
         int oldRewardsStatus = rewardsStatus;
@@ -520,6 +529,9 @@ public class BraveRewardsNativeWorker {
     @CalledByNative
     public void OnGrantFinish(int result) {
         grantClaimInProcess = false;
+        for(BraveRewardsObserver observer : mObservers) {
+            observer.OnGrantFinish(result);
+        }
     }
 
     @CalledByNative
@@ -591,4 +603,5 @@ public class BraveRewardsNativeWorker {
     private native void nativeFetchGrants(long nativeBraveRewardsNativeWorker);
     private native int nativeGetAdsPerHour(long nativeBraveRewardsNativeWorker);
     private native void nativeSetAdsPerHour(long nativeBraveRewardsNativeWorker, int value);
+    private native boolean nativeIsAnonWallet(long nativeBraveRewardsNativeWorker);
 }

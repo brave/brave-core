@@ -298,7 +298,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         privacy-invading ads and trackers so you can browse without being followed around the web.
       </message>
       <message name="IDS_EARN_TOKENS" desc="Partial Text for brave rewards page">
-        Earn tokens
+        Earn <ph name="TOKEN">%1$s<ex>token</ex></ph>s
       </message>
       <message name="IDS_BRAVE_REWARDS_ONBOARDING_TITLE" desc="Title for brave rewards page">
         Brave Rewards
@@ -447,7 +447,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
 the next Internet.
       </message>
       <message name="IDS_BRAVE_UI_WELCOME_DESC_TWO" desc="Get paid for viewing ads and pay it forward to support your favorite content creators.">
-        You can now earn tokens for
+        You can now earn <ph name="TOKEN">%1$s<ex>token</ex></ph>s for
 watching privacy-respecting ads.
       </message>
       <message name="IDS_BRAVE_UI_WELCOME_BUTTON_TEXT_TWO" desc="Button to join Brave Rewards">
@@ -548,7 +548,7 @@ month...
         <ph name="MONTH">%1$s<ex>DECEMBER</ex></ph> <ph name="YEAR">%2$s<ex>2018</ex></ph>
       </message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_DESCRIPTION" desc="A notication message description about auto-contribute">
-        You've contributed <ph name="BAT_VALUE">%1$s<ex>50</ex></ph> BAT.
+        You've contributed <ph name="BAT_VALUE">%1$s<ex>50</ex></ph>  <ph name="BAT_TEXT">%2$s<ex>BAT</ex></ph>.
       </message>
       <message name="IDS_BRAVE_UI_NOTIFICATION_DESC_NO_FUNDS" desc="A notification about not enough funds">
         Your scheduled monthly payment for Auto-Contribute and monthly tips could not be completed due to insufficient funds. We'll try again in 30 days.
@@ -569,7 +569,7 @@ month...
         Brave Ads
       </message>
       <message name="IDS_BRAVE_UI_NEW_GRANT" desc="A notification about free token grant">
-        A free token grant is available.
+         A free <ph name="TOKEN">%1$s<ex>token</ex></ph> grant is available.
       </message>
       <message name="IDS_BRAVE_ADS_YOU_EARNED" desc='Brave Ads "You earned" text'>
         You've earned
@@ -608,12 +608,12 @@ month...
         on Twitch
       </message>
       <message name="IDS_BRAVE_UI_RESERVED_AMOUNT_TEXT" desc="A message that some amount of tokens reserved for non verified publishers">
-        You've designated <ph name="BAT_VALUE">%1$s<ex>50</ex></ph> BAT for creators who haven't
+        You've designated <ph name="BAT_VALUE">%1$s<ex>50</ex></ph>  <ph name="BAT_TEXT">%2$s<ex>BAT</ex></ph> for creators who haven't
 yet signed up to receive contributions. Your browser will keep trying to contribute
 until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_BRAVE_UI_NOT_ENOUGH_TOKENS" desc="Message if not enough tokens to make a tip">
-        not enough tokens
+        not enough <ph name="TOKEN">%1$s<ex>token</ex></ph>s
       </message>
       <message name="IDS_BRAVE_UI_PLEASE" desc="Part of a message about not enough tokens to pay">
         please

@@ -1398,6 +1398,11 @@ void RewardsServiceImpl::LoadURL(
   // Loading Twitter requires credentials
   if (request->url.DomainIs("twitter.com")) {
     request->credentials_mode = network::mojom::CredentialsMode::kInclude;
+
+#if defined(OS_ANDROID)
+    request->headers.SetHeader(net::HttpRequestHeaders::kUserAgent, "DESKTOP");
+#endif
+
   } else {
     request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   }
