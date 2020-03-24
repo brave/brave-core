@@ -13,6 +13,8 @@ import org.chromium.base.ThreadUtils;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.chrome.browser.ntp_sponsored_images.NTPImage;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
 
@@ -104,7 +106,8 @@ public class NTPSponsoredImagesBridge {
     }
 
     static public boolean enableSponsoredImages() {
-        return !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed();
+        return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
+        && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed();
     }
 
     static public NTPSponsoredImagesBridge getInstance(Profile profile)  {
