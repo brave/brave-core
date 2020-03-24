@@ -44,6 +44,7 @@ bool IsBackgroundVideoPlaybackEnabled(content::WebContents* contents) {
     if (host.find("www.youtube.com") != std::string::npos ||
         host.find("youtube.com") != std::string::npos ||
         host.find("m.youtube.com") != std::string::npos) {
+        content::RenderFrameHost::AllowInjectingJavaScript();
         return true;
     }
   }

@@ -17,6 +17,7 @@ import org.chromium.base.Log;
 import org.chromium.base.library_loader.LibraryProcessType;
 import org.chromium.base.task.PostTask;
 import org.chromium.chrome.browser.BraveHelper;
+import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
@@ -227,9 +228,10 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
         return true;
     }
 
-    private void migrateTotalStatsAndPreferences() {
+    private boolean migrateTotalStatsAndPreferences() {
+        boolean needToRestart = false;
         if (!BraveUpgradeJobIntentService.needToMigratePreferences()) {
-            return;
+            return needToRestart;
         }
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
         // Total stats migration
@@ -252,8 +254,12 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
         sharedPreferencesEditor.putLong(PREF_HTTPS_UPGRADES_COUNT, 0);
 
         // Background video playback migration
-        BravePrefServiceBridge.getInstance().setBackgroundVideoPlaybackEnabled(
-            BravePrefServiceBridge.getInstance().GetBooleanForContentSetting(CONTENT_SETTINGS_TYPE_PLAY_VIDEO_IN_BACKGROUND));
+        if (BravePrefServiceBridge.getInstance().getBackgroundVideoPlaybackEnabled() != BravePrefServiceBridge.getInstance()
+                .GetBooleanForContentSetting(CONTENT_SETTINGS_TYPE_PLAY_VIDEO_IN_BACKGROUND)) {
+            needToRestart = true;
+            BravePrefServiceBridge.getInstance().setBackgroundVideoPlaybackEnabled(BravePrefServiceBridge.getInstance()
+                    .GetBooleanForContentSetting(CONTENT_SETTINGS_TYPE_PLAY_VIDEO_IN_BACKGROUND));
+        }
         // Play YT links in Brave option
         BravePrefServiceBridge.getInstance().setPlayYTVideoInBrowserEnabled(
             BravePrefServiceBridge.getInstance().GetBooleanForContentSetting(CONTENT_SETTINGS_TYPE_PLAY_YT_VIDEO_IN_BROWSER));
@@ -277,6 +283,7 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
 
         sharedPreferencesEditor.putBoolean(BraveHelper.PREF_TABS_SETTINGS_MIGRATED, true);
         sharedPreferencesEditor.apply();
+        return needToRestart;
     }
 
     private void removeNTPFiles() {
@@ -311,9 +318,10 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
                             } catch(Exception exc) {
                                 Log.e("NTP", "On app upgrade : " + exc.getMessage());
                             }
-                            migrateTotalStatsAndPreferences();
+                            boolean needToRestart = migrateTotalStatsAndPreferences();
                             if (!migrateShieldsConfig()) {
                                 Log.e(TAG, "Failed to migrate Brave shields config settings");
+                                finalizeMigration(needToRestart);
                                 return;
                             }
 
@@ -328,8 +336,10 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
                             File migratedName = new File(dataDir, SHIELDS_CONFIG_MIGRATED_FILENAME);
                             if (!oldName.renameTo(migratedName)) {
                                 Log.e(TAG, "Failed to rename migrated Brave shields config file");
+                                finalizeMigration(needToRestart);
                                 return;
                             }
+                            finalizeMigration(needToRestart);
                         }
 
                         @Override
@@ -339,6 +349,14 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
                                             + "BrowserStartupController.StartupCallback failed");
                         }
                     });
+        });
+    }
+
+    private void finalizeMigration(boolean needToRestart) {
+        if (!needToRestart) return;
+        // Restart the app to apply migrated options
+        PostTask.postTask(UiThreadTaskTraits.DEFAULT, () -> {
+            BraveRelaunchUtils.restart();
         });
     }
 }
