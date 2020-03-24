@@ -79,10 +79,6 @@ std::string CreateConfirmationRequest::CreateConfirmationRequestDTO(
   auto type = std::string(info.type);
   payload.SetKey("type", base::Value(type));
 
-  if (!info.channel_id.empty()) {
-    payload.SetKey("channelId", base::Value(info.channel_id));
-  }
-
   std::string json;
   base::JSONWriter::Write(payload, &json);
 
