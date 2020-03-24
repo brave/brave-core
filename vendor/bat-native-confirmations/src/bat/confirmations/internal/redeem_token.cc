@@ -17,8 +17,6 @@
 #include "bat/confirmations/internal/time.h"
 #include "bat/confirmations/internal/token_info.h"
 #include "bat/confirmations/internal/confirmation_info.h"
-#include "url/gurl.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
 #include "base/logging.h"
 #include "base/guid.h"
@@ -150,9 +148,6 @@ void RedeemToken::CreateConfirmation(
 
   confirmation_info.id = base::GenerateGUID();
   confirmation_info.creative_instance_id = ad_info.creative_instance_id;
-  const std::string tld_plus_1 = GetDomainAndRegistry(GURL(ad_info.target_url),
-      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-  confirmation_info.channel_id = tld_plus_1;
   confirmation_info.type = confirmation_type;
   confirmation_info.token_info = token_info;
 
