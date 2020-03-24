@@ -293,7 +293,6 @@
     "@types/storybook__react": "^4.0.2",
     "acorn": "^7.1.1",
     "babel-loader": "^8.1.0",
-    "babel-register": "^6.26.0",
     "brave-ui": "github:brave/brave-ui#46c68d1629824811c013d8ca1c11e627cdbd9ef4",
     "css-loader": "^2.1.1",
     "csstype": "^2.5.5",
