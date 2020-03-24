@@ -17,7 +17,7 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
   private let networkMonitor = NWPathMonitor()
   let state: RewardsState
   let ledgerObserver: LedgerObserver
-  weak var currentNotification: RewardsNotification?
+  var currentNotification: RewardsNotification?
   private var recurringTipAmount: Double = 0.0
   private var publisher: PublisherInfo?
   
@@ -106,8 +106,9 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
     reloadUIState()
     setupPublisherView(publisherSummaryView)
     view.layoutIfNeeded()
-    startNotificationObserver()
     startNetworkObserver()
+    
+    NotificationCenter.default.addObserver(self, selector: #selector(notificationAdded(_:)), name: BraveLedger.NotificationAdded, object: nil)
   }
   
   override func viewWillAppear(_ animated: Bool) {
@@ -586,13 +587,6 @@ extension WalletViewController {
 }
 
 extension WalletViewController {
-  
-  func startNotificationObserver() {
-    // Stopping as a precaution
-    // Add observer
-    NotificationCenter.default.addObserver(self, selector: #selector(notificationAdded(_:)), name: BraveLedger.NotificationAdded, object: nil)
-    loadNextNotification()
-  }
   
   @objc private func notificationAdded(_ notification: Notification) {
     // TODO: Filter notification?
