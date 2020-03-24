@@ -37,16 +37,16 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.suggestions.tile.TileGroup;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabImpl;
-import org.chromium.chrome.browser.ntp_sponsored_images.NTPImage;
-import org.chromium.chrome.browser.ntp_sponsored_images.BackgroundImage;
-import org.chromium.chrome.browser.ntp_sponsored_images.NewTabPageListener;
-import org.chromium.chrome.browser.ntp_sponsored_images.SponsoredImageUtil;
+import org.chromium.chrome.browser.ntp_background_images.NTPImage;
+import org.chromium.chrome.browser.ntp_background_images.BackgroundImage;
+import org.chromium.chrome.browser.ntp_background_images.NewTabPageListener;
+import org.chromium.chrome.browser.ntp_background_images.SponsoredImageUtil;
 import org.chromium.chrome.browser.tab.EmptyTabObserver;
 import org.chromium.chrome.browser.tab.TabObserver;
-import org.chromium.chrome.browser.ntp_sponsored_images.NTPUtil;
-import org.chromium.chrome.browser.ntp_sponsored_images.SponsoredTab;
+import org.chromium.chrome.browser.ntp_background_images.NTPUtil;
+import org.chromium.chrome.browser.ntp_background_images.SponsoredTab;
 import org.chromium.chrome.browser.tab.TabAttributes;
-import org.chromium.chrome.browser.ntp_sponsored_images.NTPSponsoredImagesBridge;
+import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 
 public class BraveNewTabPageView extends NewTabPageView {
@@ -75,16 +75,16 @@ public class BraveNewTabPageView extends NewTabPageView {
 
     private boolean isFromBottomSheet;
 
-    private NTPSponsoredImagesBridge mNTPSponsoredImagesBridge;
+    private NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
 
-    // TODO - call NTPSponsoredImagesBridge.getCurrentWallpaper
+    // TODO - call NTPBackgroundImagesBridge.getCurrentWallpaper
     // if null then display regular background image
-    // on every NTP load call NTPSponsoredImagesBridge.registerPageView()
+    // on every NTP load call NTPBackgroundImagesBridge.registerPageView()
     public BraveNewTabPageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mProfile = Profile.getLastUsedProfile();
         mNewTabPageLayout = getNewTabPageLayout();
-        mNTPSponsoredImagesBridge = NTPSponsoredImagesBridge.getInstance(mProfile);
+        mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
     }
 
     @Override
@@ -93,8 +93,8 @@ public class BraveNewTabPageView extends NewTabPageView {
             NTPImage ntpImage = sponsoredTab.getTabNTPImage();
             if(ntpImage == null) {
                 sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
-            } else if (ntpImage instanceof NTPSponsoredImagesBridge.Wallpaper) {
-                NTPSponsoredImagesBridge.Wallpaper mWallpaper = (NTPSponsoredImagesBridge.Wallpaper) ntpImage;
+            } else if (ntpImage instanceof NTPBackgroundImagesBridge.Wallpaper) {
+                NTPBackgroundImagesBridge.Wallpaper mWallpaper = (NTPBackgroundImagesBridge.Wallpaper) ntpImage;
                 if(mWallpaper == null) {
                     sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
                 }
@@ -241,8 +241,8 @@ public class BraveNewTabPageView extends NewTabPageView {
         if(BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
             && sponsoredTab != null && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
             setBackgroundImage(ntpImage);
-            if (ntpImage instanceof NTPSponsoredImagesBridge.Wallpaper) {
-                NTPSponsoredImagesBridge.Wallpaper mWallpaper = (NTPSponsoredImagesBridge.Wallpaper) ntpImage;
+            if (ntpImage instanceof NTPBackgroundImagesBridge.Wallpaper) {
+                NTPBackgroundImagesBridge.Wallpaper mWallpaper = (NTPBackgroundImagesBridge.Wallpaper) ntpImage;
                 if (mWallpaper.getLogoPath() != null ) {
                     try {
                         ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
@@ -329,8 +329,8 @@ public class BraveNewTabPageView extends NewTabPageView {
         NTPImage ntpImage = sponsoredTab.getTabNTPImage();
         if(ntpImage == null) {
             sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
-        } else if (ntpImage instanceof NTPSponsoredImagesBridge.Wallpaper) {
-            NTPSponsoredImagesBridge.Wallpaper mWallpaper = (NTPSponsoredImagesBridge.Wallpaper) ntpImage;
+        } else if (ntpImage instanceof NTPBackgroundImagesBridge.Wallpaper) {
+            NTPBackgroundImagesBridge.Wallpaper mWallpaper = (NTPBackgroundImagesBridge.Wallpaper) ntpImage;
             if(mWallpaper == null) {
                 sponsoredTab.setNTPImage(SponsoredImageUtil.getBackgroundImage());
             }
@@ -341,7 +341,7 @@ public class BraveNewTabPageView extends NewTabPageView {
 
     private void initilizeSponsoredTab() {
         if (TabAttributes.from(mTab).get(String.valueOf((mTabImpl).getId())) == null) {
-            SponsoredTab mSponsoredTab = new SponsoredTab(mNTPSponsoredImagesBridge);
+            SponsoredTab mSponsoredTab = new SponsoredTab(mNTPBackgroundImagesBridge);
             TabAttributes.from(mTab).set(String.valueOf((mTabImpl).getId()), mSponsoredTab);
         }
         sponsoredTab = TabAttributes.from(mTab).get(String.valueOf((mTabImpl).getId()));

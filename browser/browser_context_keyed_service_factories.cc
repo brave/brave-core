@@ -13,7 +13,7 @@
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
-#include "brave/browser/ntp_sponsored_images/view_counter_service_factory.h"
+#include "brave/browser/ntp_background_images/view_counter_service_factory.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -23,7 +23,7 @@
 #if !defined(OS_ANDROID)
 #include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
 #else
-#include "brave/browser/ntp_sponsored_images/android/ntp_sponsored_images_bridge.h"
+#include "brave/browser/ntp_background_images/android/ntp_background_images_bridge.h"
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
@@ -43,12 +43,12 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
   TorProfileServiceFactory::GetInstance();
   SearchEngineProviderServiceFactory::GetInstance();
   SearchEngineTrackerFactory::GetInstance();
-  ntp_sponsored_images::ViewCounterServiceFactory::GetInstance();
+  ntp_background_images::ViewCounterServiceFactory::GetInstance();
 
 #if !defined(OS_ANDROID)
   BookmarkPrefsServiceFactory::GetInstance();
 #else
-  ntp_sponsored_images::NTPSponsoredImagesBridgeFactory::GetInstance();
+  ntp_background_images::NTPBackgroundImagesBridgeFactory::GetInstance();
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)

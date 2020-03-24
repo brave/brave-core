@@ -50,9 +50,9 @@ class GreaselionDownloadService;
 #endif
 }  // namespace greaselion
 
-namespace ntp_sponsored_images {
-class NTPSponsoredImagesService;
-}  // namespace ntp_sponsored_images
+namespace ntp_background_images {
+class NTPBackgroundImagesService;
+}  // namespace ntp_background_images
 
 namespace extensions {
 class BraveTorClientUpdater;
@@ -96,8 +96,8 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   BraveWidevineBundleManager* brave_widevine_bundle_manager();
 #endif
   brave::BraveStatsUpdater* brave_stats_updater();
-  ntp_sponsored_images::NTPSponsoredImagesService*
-      ntp_sponsored_images_service();
+  ntp_background_images::NTPBackgroundImagesService*
+      ntp_background_images_service();
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderWhitelist* speedreader_whitelist();
 #endif
@@ -155,8 +155,8 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   std::unique_ptr<BraveWidevineBundleManager> brave_widevine_bundle_manager_;
 #endif
   scoped_refptr<brave::BraveP3AService> brave_p3a_service_;
-  std::unique_ptr<ntp_sponsored_images::NTPSponsoredImagesService>
-      ntp_sponsored_images_service_;
+  std::unique_ptr<ntp_background_images::NTPBackgroundImagesService>
+      ntp_background_images_service_;
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   std::unique_ptr<speedreader::SpeedreaderWhitelist> speedreader_whitelist_;

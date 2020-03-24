@@ -111,9 +111,9 @@ test("brave_unit_tests") {
     "//brave/components/brave_shields/browser/https_everywhere_recently_used_cache_unittest.cpp",
     "//brave/components/content_settings/core/browser/brave_content_settings_pref_provider_unittest.cc",
     "//brave/components/content_settings/core/browser/brave_content_settings_utils_unittest.cc",
-    "//brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_service_unittest.cc",
-    "//brave/components/ntp_sponsored_images/browser/view_counter_model_unittest.cc",
-    "//brave/components/ntp_sponsored_images/browser/view_counter_service_unittest.cc",
+    "//brave/components/ntp_background_images/browser/ntp_background_images_service_unittest.cc",
+    "//brave/components/ntp_background_images/browser/view_counter_model_unittest.cc",
+    "//brave/components/ntp_background_images/browser/view_counter_service_unittest.cc",
     "//brave/components/rappor/log_uploader_unittest.cc",
     "//brave/components/translate/core/browser/translate_language_list_unittest.cc",
     "//brave/third_party/libaddressinput/chromium/chrome_metadata_source_unittest.cc",
@@ -127,7 +127,7 @@ test("brave_unit_tests") {
 
   deps = [
     "//brave/browser/safebrowsing",
-    "//brave/components/ntp_sponsored_images/browser",
+    "//brave/components/ntp_background_images/browser",
     "//brave/vendor/brave_base",
     "//chrome:browser_dependencies",
     "//chrome:child_dependencies",

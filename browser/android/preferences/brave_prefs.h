@@ -7,7 +7,7 @@
 
 #include <cstddef>
 
-#include "brave/components/ntp_sponsored_images/common/pref_names.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "build/build_config.h"
 
 // A preference exposed to Java.
@@ -22,8 +22,8 @@ enum BravePref {
 
 // The indices must match value of Pref.
 const char* const kBravePrefsExposedToJava[] = {
-    ntp_sponsored_images::prefs::kNewTabPageShowBrandedBackgroundImage,
-    ntp_sponsored_images::prefs::kNewTabPageShowBackgroundImage,
+    ntp_background_images::prefs::kNewTabPageShowBrandedBackgroundImage,
+    ntp_background_images::prefs::kNewTabPageShowBackgroundImage,
 };
 
 static const int kBravePrefOffset = 10000;

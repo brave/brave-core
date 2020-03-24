@@ -1,0 +1,32 @@
+source_set("ntp_background_images") {
+  sources = [
+    "view_counter_service_factory.cc",
+    "view_counter_service_factory.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/ntp_background_images/browser",
+    "//brave/components/ntp_background_images/common",
+    "//brave/common",
+    "//brave/components/brave_ads/browser",
+    "//chrome/common",
+    "//content/public/browser",
+    "//components/keyed_service/content",
+    "//components/prefs",
+    "//components/pref_registry",
+  ]
+
+  if (is_android) {
+    sources += [
+      "android/ntp_background_images_bridge.cc",
+      "android/ntp_background_images_bridge.h",
+    ]
+
+    deps += [
+      "//components/keyed_service/content",
+      "//components/keyed_service/core",
+      "//brave/build/android:jni_headers",
+    ]
+  }
+}

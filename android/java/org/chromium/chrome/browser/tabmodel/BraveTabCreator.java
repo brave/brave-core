@@ -16,8 +16,8 @@ import org.chromium.chrome.browser.init.StartupTabPreloader;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabDelegateFactory;
 import org.chromium.chrome.browser.tab.TabLaunchType;
-import org.chromium.chrome.browser.ntp_sponsored_images.SponsoredImageUtil;
-import org.chromium.chrome.browser.ntp_sponsored_images.NTPSponsoredImagesBridge;
+import org.chromium.chrome.browser.ntp_background_images.SponsoredImageUtil;
+import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp.NewTabPage;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
@@ -54,6 +54,6 @@ public class BraveTabCreator extends ChromeTabCreator {
     }
 
     private void registerPageView() {
-        NTPSponsoredImagesBridge.getInstance(Profile.getLastUsedProfile()).registerPageView();
+        NTPBackgroundImagesBridge.getInstance(Profile.getLastUsedProfile()).registerPageView();
     }
 }
