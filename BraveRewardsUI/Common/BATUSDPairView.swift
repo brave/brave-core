@@ -25,7 +25,7 @@ class BATUSDPairView: UIStackView {
     
     // Defaults
     spacing = 5.0
-    alignment = .bottom
+    alignment = .lastBaseline
     
     batContainer.kindLabel.text = Strings.BAT
     batContainer.amountLabel.text = "0"

@@ -2,43 +2,51 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-struct PaymentRequest: Decodable {
-    struct MethodData: Decodable {
-        struct SupportedInstrumentsData: Decodable {
-            let supportedNetworks: [String]
-            let supportedTypes: [String]?
+public enum PaymentRequestResponse {
+    /// The user cancelled the payment
+    case cancelled
+    /// The user successfully completed payment and received an order resposne
+    /// from the server
+    case completed(_ response: String)
+}
+
+public struct PaymentRequest: Decodable {
+    public struct MethodData: Decodable {
+        public struct SupportedInstrumentsData: Decodable {
+            public let supportedNetworks: [String]
+            public let supportedTypes: [String]?
         }
         
-        let supportedMethods: String
-        let data: SupportedInstrumentsData?
+        public let supportedMethods: String
+        public let data: SupportedInstrumentsData?
     }
     
-    struct Details: Decodable {
-        struct Item: Decodable {
-            let label: String
-            let amount: Amount
+    public struct Details: Decodable {
+        public struct Item: Decodable {
+            public let label: String
+            public let amount: Amount
             
-            struct Amount: Decodable {
-                let currency: String
-                let value: String
+            public struct Amount: Decodable {
+                public let currency: String
+                public let value: String
             }
         }
-        let total: Item
-        let displayItems: [Item]
+        public let total: Item
+        public let displayItems: [Item]
     }
     
     // name of the message passed from JS to Swift
-    let name: String
+    public let name: String
     
     // PaymentRequest methodData and details: https://developer.mozilla.org/en-US/docs/Web/API/PaymentRequest/PaymentRequest
-    let methodData: [MethodData]
-    let details: Details
+    public let methodData: [MethodData]
+    public let details: Details
     
     private enum PaymentKeys: String, CodingKey {
         case name, methodData, details
     }
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: PaymentKeys.self)
         let methodDataString = try values.decode(String.self, forKey: .methodData)
         let detailsString = try values.decode(String.self, forKey: .details)

@@ -281,7 +281,6 @@ class BrowserViewController: UIViewController {
         rewardsObserver.fetchedPanelPublisher = { [weak self] publisher, tabId in
             guard let self = self, self.isViewLoaded, let tab = self.tabManager.selectedTab, tab.rewardsId == tabId else { return }
             self.publisher = publisher
-            self.tabManager.selectedTab?.publisher = publisher
             self.updateRewardsButtonState()
         }
         rewardsObserver.notificationAdded = { [weak self] _ in
@@ -2120,7 +2119,7 @@ extension BrowserViewController: TabDelegate {
         tab.addContentScript(AdsMediaReporting(rewards: rewards, tab: tab), name: AdsMediaReporting.name())
         
         #if !NO_SKUS
-        tab.addContentScript(PaymentRequestExtension(rewards: rewards, tab: tab), name: PaymentRequestExtension.name())
+        tab.addContentScript(PaymentRequestExtension(rewards: rewards, tab: tab, paymentRequested: self.paymentRequested), name: PaymentRequestExtension.name())
         #endif
     }
 
