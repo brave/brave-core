@@ -15,10 +15,7 @@ import android.widget.LinearLayout;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
-import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.components.search_engines.TemplateUrl;
-
-import java.util.List;
 
 public class BraveDuckDuckGoOfferView extends LinearLayout {
     public static String DDG_SEARCH_ENGINE_SHORT_NAME = "DuckDuckGo";
@@ -66,8 +63,8 @@ public class BraveDuckDuckGoOfferView extends LinearLayout {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                TemplateUrl templateUrl =
-                                        getTemplateUrlByShortName(DDG_SEARCH_ENGINE_SHORT_NAME);
+                                TemplateUrl templateUrl = BraveSearchEngineUtils
+                                        .getTemplateUrlByShortName(DDG_SEARCH_ENGINE_SHORT_NAME);
                                 if (templateUrl != null) {
                                     BraveSearchEngineUtils.setDSEPrefs(templateUrl, true);
                                     BraveSearchEngineUtils.updateActiveDSE(true);
@@ -77,16 +74,5 @@ public class BraveDuckDuckGoOfferView extends LinearLayout {
                         })
                 .setNegativeButton(R.string.ddg_offer_negative, null)
                 .show();
-    }
-
-    private TemplateUrl getTemplateUrlByShortName(String name) {
-        List<TemplateUrl> templateUrls = TemplateUrlServiceFactory.get().getTemplateUrls();
-        for (int index = 0; index < templateUrls.size(); ++index) {
-          TemplateUrl templateUrl = templateUrls.get(index);
-          if (templateUrl.getShortName().equals(name)) {
-              return templateUrl;
-          }
-        }
-        return null;
     }
 }
