@@ -654,7 +654,7 @@ void DatabaseContributionInfo::GetContributionReport(
       "SELECT ci.contribution_id, ci.amount, ci.type, ci.created_at "
       "FROM %s as ci "
       "WHERE strftime('%%m',  datetime(ci.created_at, 'unixepoch')) = ? AND "
-      "strftime('%%Y', datetime(ci.created_at, 'unixepoch')) = ?",
+      "strftime('%%Y', datetime(ci.created_at, 'unixepoch')) = ? AND step = ?",
       kTableName);
 
   auto command = ledger::DBCommand::New();
@@ -665,6 +665,8 @@ void DatabaseContributionInfo::GetContributionReport(
 
   BindString(command.get(), 0, formatted_month);
   BindString(command.get(), 1, std::to_string(year));
+  BindInt(command.get(), 2,
+      static_cast<int>(ledger::ContributionStep::STEP_COMPLETED));
 
   command->record_bindings = {
       ledger::DBCommand::RecordBindingType::STRING_TYPE,
