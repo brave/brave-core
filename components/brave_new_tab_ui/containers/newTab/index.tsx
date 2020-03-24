@@ -213,7 +213,7 @@ class NewTabPage extends React.Component<Props, State> {
       showRewards
     } = this.props.newTabData
 
-    if (currentStackWidget === 'rewards') {
+    if (currentStackWidget === 'rewards' && showRewards) {
       this.props.actions.setCurrentStackWidget('binance')
     } else if (!showBinance) {
       this.props.actions.setCurrentStackWidget('rewards')
@@ -229,7 +229,7 @@ class NewTabPage extends React.Component<Props, State> {
       showRewards
     } = this.props.newTabData
 
-    if (currentStackWidget === 'binance') {
+    if (currentStackWidget === 'binance' && showBinance) {
       this.props.actions.setCurrentStackWidget('rewards')
     } else if (!showRewards) {
       this.props.actions.setCurrentStackWidget('binance')
@@ -244,7 +244,7 @@ class NewTabPage extends React.Component<Props, State> {
     const refParams = `ref=${refCode}&utm_source=brave`
 
     if (userTLD === 'us') {
-      window.open(`https://www.binance.us/en/buy-sell-crypto?crypto=${coin}&amount=${amount}&${refParams}`, '_blank')
+      window.open(`https://www.binance.us/en/buy-sell-crypto?coin=${coin}&amount=${amount}&${refParams}`, '_blank')
     } else {
       window.open(`https://www.binance.com/en/buy-sell-crypto?fiat=${fiat}&crypto=${coin}&amount=${amount}&${refParams}`, '_blank')
     }
