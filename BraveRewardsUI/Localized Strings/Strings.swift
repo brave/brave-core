@@ -102,7 +102,7 @@ internal extension Strings {
     return NSLocalizedString("BraveRewardsNotificationTokenGrantTitle", bundle: .rewardsUI, value: "Token Grants", comment: "")
   }
   static let learnMoreBraveAdsBody = NSLocalizedString("BraveRewardsLearnMoreBraveAdsBody", bundle: .rewardsUI, value: "Get paid to view relevant ads that respect your privacy.", comment: "")
-  static let autoContributeToUnverifiedSites = NSLocalizedString("BraveRewardsAutoContributeToUnverifiedSites", bundle: .rewardsUI, value: "Allow contribution to non-verified sites", comment: "")
+  static let autoContributeToUnverifiedSites = NSLocalizedString("BraveRewardsAutoContributeToUnverifiedSites", bundle: .rewardsUI, value: "Show non-verified sites in list", comment: "")
   static let learnMoreWhyTitle = NSLocalizedString("BraveRewardsLearnMoreWhyTitle", bundle: .rewardsUI, value: "Why Brave Rewards?", comment: "")
   static let attention = NSLocalizedString("BraveRewardsAttention", bundle: .rewardsUI, value: "Attention", comment: "")
   static let exclude = NSLocalizedString("BraveRewardsExclude", bundle: .rewardsUI, value: "Exclude", comment: "")
