@@ -23,7 +23,7 @@ export const WidgetWrapper = styled<{}, 'div'>('div')`
   font-family: ${p => p.theme.fontFamily.body};
   overflow: hidden;
   min-width: 284px;
-  background-image: linear-gradient(140deg, #1F2327 0%, #000000 100%);
+  background-image: linear-gradient(140deg, #1F2327 0%, #000000 85%);
 `
 
 export const Header = styled<StyleProps, 'div'>('div')`
