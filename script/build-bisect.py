@@ -87,7 +87,7 @@ def get_releases(repo):
                 continue
             tag_name = str(release['tag_name'].strip().replace('v', ''))
             # skip "android" releases and others not matching version format
-            if not tag_name.replace('.','').isdigit():
+            if not tag_name.replace('.', '').isdigit():
                 continue
             tag_names.append(tag_name)
             releases[tag_name] = release
