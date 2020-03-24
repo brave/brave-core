@@ -31,10 +31,12 @@
         android:persistent="false"
         android:title="@string/clear_cache_title" />
 
-    <org.chromium.chrome.browser.settings.ClearBrowsingDataCheckBoxPreference
+    <!-- TODO(samartnik): disabling option as it requires futher research
+         At the moment causes issue https://github.com/brave/brave-browser/issues/8737 -->
+    <!-- <org.chromium.chrome.browser.settings.ClearBrowsingDataCheckBoxPreference
         android:key="clear_downloads_checkbox"
         android:persistent="false"
-        android:title="@string/clear_downloads_title" />
+        android:title="@string/clear_downloads_title" /> -->
 
     <org.chromium.chrome.browser.settings.ClearBrowsingDataCheckBoxPreference
         android:key="clear_passwords_checkbox"
