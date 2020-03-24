@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2020 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Verify wallet activity dimensions -->
+    <dimen name="verify_wallet_header1_font_size_land">22sp</dimen>
+    <dimen name="verify_wallet_header2_font_size_land">18sp</dimen>
+    <dimen name="verify_wallet_header3_font_size_land">16sp</dimen>
+    <dimen name="verify_wallet_header4_font_size_land">11sp</dimen>
+    <dimen name="verify_wallet_btn_size_land">36dp</dimen>
+    <dimen name="verify_wallet_margin1_land">18dp</dimen>
+    <dimen name="verify_wallet_margin2_land">16dp</dimen>
+    <dimen name="verify_wallet_margin3_land">12dp</dimen>
+</resources>

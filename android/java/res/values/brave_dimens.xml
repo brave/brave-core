@@ -11,4 +11,24 @@
     <dimen name="onboarding_bottom_sheet_height">250dp</dimen>
     <dimen name="onboarding_counter_layout_height">350dp</dimen>
     <dimen name="onboarding_counter_height">250dp</dimen>
+
+    <!-- Verify wallet activity dimensions -->
+    <dimen name="verify_wallet_header1_font_size">14sp</dimen>
+    <dimen name="verify_wallet_header2_font_size">12sp</dimen>
+    <dimen name="verify_wallet_header3_font_size">10sp</dimen>
+    <dimen name="verify_wallet_header4_font_size">10sp</dimen>
+    <dimen name="verify_wallet_btn_size">26dp</dimen>
+    <dimen name="verify_wallet_margin1">10dp</dimen>
+    <dimen name="verify_wallet_margin2">7dp</dimen>
+    <dimen name="verify_wallet_margin3">4dp</dimen>
+
+
+    <dimen name="verify_wallet_header1_font_size_land">14sp</dimen>
+    <dimen name="verify_wallet_header2_font_size_land">12sp</dimen>
+    <dimen name="verify_wallet_header3_font_size_land">10sp</dimen>
+    <dimen name="verify_wallet_header4_font_size_land">10sp</dimen>
+    <dimen name="verify_wallet_btn_size_land">26dp</dimen>
+    <dimen name="verify_wallet_margin1_land">10dp</dimen>
+    <dimen name="verify_wallet_margin2_land">7dp</dimen>
+    <dimen name="verify_wallet_margin3_land">4dp</dimen>
 </resources>
