@@ -77,7 +77,6 @@ class Tab: NSObject {
     var mimeType: String?
     var isEditing: Bool = false
     var shouldClassifyLoadsForAds = true
-    var publisher: PublisherInfo?
  
     // When viewing a non-HTML content type in the webview (like a PDF document), this URL will
     // point to a tempfile containing the content so it can be shared to external applications.
@@ -85,10 +84,6 @@ class Tab: NSObject {
 
     fileprivate var _noImageMode = false
 
-    var rewards: BraveRewards? {
-        let appDelegate = UIApplication.shared.delegate as? AppDelegate
-        return appDelegate?.browserViewController.rewards
-    }
     /// Returns true if this tab's URL is known, and it's longer than we want to store.
     var urlIsTooLong: Bool {
         guard let url = self.url else {

@@ -22,6 +22,7 @@ class LoaderView: UIView {
   enum Size {
     case small
     case normal
+    case large
     
     fileprivate var size: CGSize {
       switch self {
@@ -29,6 +30,8 @@ class LoaderView: UIView {
         return CGSize(width: 16, height: 16)
       case .normal:
         return CGSize(width: 32, height: 32)
+      case .large:
+        return CGSize(width: 64, height: 64)
       }
     }
     
@@ -38,6 +41,8 @@ class LoaderView: UIView {
         return 2.0
       case .normal:
         return 3.0
+      case .large:
+        return 4.0
       }
     }
   }
