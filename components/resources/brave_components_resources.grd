@@ -40,12 +40,6 @@
 
       <!-- Imagery links -->
       <if expr="not is_android">
-        <include name="IDR_BRAVE_NEW_TAB_DUMMY_BRANDED_WALLPAPER_BG_1" file="../img/newtab/dummy-branded-wallpaper/background-1.jpg" type="BINDATA" />
-        <include name="IDR_BRAVE_NEW_TAB_DUMMY_BRANDED_WALLPAPER_BG_2" file="../img/newtab/dummy-branded-wallpaper/background-2.jpg" type="BINDATA" />
-        <include name="IDR_BRAVE_NEW_TAB_DUMMY_BRANDED_WALLPAPER_BG_3" file="../img/newtab/dummy-branded-wallpaper/background-3.jpg" type="BINDATA" />
-        <include name="IDR_BRAVE_NEW_TAB_DUMMY_BRANDED_WALLPAPER_LOGO" file="../img/newtab/dummy-branded-wallpaper/logo.png" type="BINDATA" />
-        <include name="IDR_BRAVE_NEW_TAB_DUMMY_BRANDED_WALLPAPER_BRAVE_ICON" file="../img/newtab/dummy-branded-wallpaper/brave.png" type="BINDATA" />
-        <include name="IDR_BRAVE_NEW_TAB_DUMMY_BRANDED_WALLPAPER_BAT_ICON" file="../img/newtab/dummy-branded-wallpaper/bat.png" type="BINDATA" />
         <include name="IDR_BRAVE_NEW_TAB_BACKGROUND1" file="../img/newtab/backgrounds/anders-jilden.webp" type="BINDATA" />
         <include name="IDR_BRAVE_NEW_TAB_BACKGROUND2" file="../img/newtab/backgrounds/andreas-gucklhorn.webp" type="BINDATA" />
         <include name="IDR_BRAVE_NEW_TAB_BACKGROUND3" file="../img/newtab/backgrounds/andy-mai.webp" type="BINDATA" />
@@ -66,7 +60,7 @@
       <if expr="enable_brave_perf_predictor">
         <part file="../brave_perf_predictor/resources/brave_perf_predictor_resources.grdp" />
       </if>
-    
+
       <part file="speedreader_resources.grdp" />
     </includes>
   </release>

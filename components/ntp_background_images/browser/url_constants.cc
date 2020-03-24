@@ -10,8 +10,9 @@ namespace ntp_background_images {
 const char kBrandedWallpaperHost[] = "branded-wallpaper";
 const char kLogoPath[] = "logo.png";
 const char kWallpaperPathPrefix[] = "wallpaper-";
-// TODO(simonhong): Use prod url before merging.
 const char kSuperReferrerMappingTableURL[] =
+    "https://brave-ntp-crx-input.s3-us-west-2.amazonaws.com/superreferrer/map-table.json";  // NOLINT
+const char kSuperReferrerMappingTableDevURL[] =
     "https://brave-ntp-crx-input-dev.s3-us-west-2.amazonaws.com/superreferrer/map-table.json";  // NOLINT
 
 }  // namespace ntp_background_images

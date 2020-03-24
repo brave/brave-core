@@ -12,12 +12,7 @@ class PrefRegistrySimple;
 
 namespace ntp_background_images {
 
-struct NTPBackgroundImagesData;
-
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
-
-// Include top sites data if |super_referrer| is true.
-std::unique_ptr<NTPBackgroundImagesData> GetDemoWallpaper(bool super_referrer);
 
 }  // namespace ntp_background_images
 

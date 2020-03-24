@@ -16,6 +16,7 @@
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
+#include "brave/common/brave_switches.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/locale_helper.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
@@ -44,6 +45,8 @@ namespace ntp_background_images {
 namespace {
 
 constexpr int kMaxBodySize = 1024 * 1024;
+
+constexpr char kDemoSuperReferrerCode[] = "TECHNIK";
 
 constexpr char kNTPSIManifestFile[] = "photo.json";
 constexpr char kNTPSRManifestFile[] = "data.json";
@@ -120,6 +123,14 @@ const net::NetworkTrafficAnnotationTag& GetNetworkTrafficAnnotationTag() {
   return network_traffic_annotation_tag;
 }
 
+std::string GetSuperReferrerMappingTableURL() {
+  const base::CommandLine& command_line =
+        *base::CommandLine::ForCurrentProcess();
+  if (command_line.HasSwitch(::switches::kUseGoUpdateDev))
+    return kSuperReferrerMappingTableDevURL;
+  return kSuperReferrerMappingTableURL;
+}
+
 }  // namespace
 
 NTPBackgroundImagesService::NTPBackgroundImagesService(
@@ -135,7 +146,7 @@ NTPBackgroundImagesService::NTPBackgroundImagesService(
 NTPBackgroundImagesService::~NTPBackgroundImagesService() = default;
 
 void NTPBackgroundImagesService::Init() {
-  if (UseLocalTestData() || UseBuiltInDemoData())
+  if (UseLocalTestData())
     return;
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
@@ -152,7 +163,7 @@ void NTPBackgroundImagesService::Init() {
 
 void NTPBackgroundImagesService::DownloadSuperReferrerMappingTable() {
   auto request = std::make_unique<network::ResourceRequest>();
-  request->url = GURL(kSuperReferrerMappingTableURL);
+  request->url = GURL(GetSuperReferrerMappingTableURL());
   request->load_flags =
       net::LOAD_DO_NOT_SEND_COOKIES | net::LOAD_DO_NOT_SAVE_COOKIES;
   loader_ = network::SimpleURLLoader::Create(
@@ -528,6 +539,9 @@ std::string NTPBackgroundImagesService::GetReferralPromoCode() const {
 }
 
 std::string NTPBackgroundImagesService::GetCachedReferralPromoCode() const {
+  if (base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo))
+    return kDemoSuperReferrerCode;
+
   return local_pref_->GetString(prefs::kNewTabPageCachedReferralPromoCode);
 }
 
@@ -547,18 +561,6 @@ bool NTPBackgroundImagesService::UseLocalTestData() {
   }
 
   return false;
-}
-
-bool NTPBackgroundImagesService::UseBuiltInDemoData() {
-  if (!base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo))
-    return false;
-
-  DVLOG(2) << __func__ << ": Use built-in demo data";
-  test_data_used_ = true;
-  images_data_ = GetDemoWallpaper(
-      base::FeatureList::IsEnabled(features::kBraveNTPSuperReferrerWallpaper));
-
-  return true;
 }
 
 }  // namespace ntp_background_images

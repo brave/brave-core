@@ -106,8 +106,6 @@ class NTPBackgroundImagesService {
 
   // Returns true if local test data is passed via command line.
   bool UseLocalTestData();
-  // Returns true if builtin demo data is used.
-  bool UseBuiltInDemoData();
 
   void CleanUp();
 

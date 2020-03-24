@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/feature_list.h"
+#include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/sponsored_images_component_data.h"
 
 namespace ntp_background_images {
@@ -11,6 +13,15 @@ namespace ntp_background_images {
 // and packageNTPSponsoredImagesComponents.js in brave-core-crx-packager.
 base::Optional<SponsoredImagesComponentData> GetSponsoredImagesComponentData(
     const std::string& region) {
+  if (base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo)) {
+    static const SponsoredImagesComponentData demo_data = {
+        "DEMO",
+        "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAw+cUN/flbETi5zyjp4tRW4ustichzvFqeY4ayWpi/r+TwRgUaf0IyK2GYZF1xBsiuGO3B321ptcF7lpru32dxc2GUX7GLVHnYw+kM9bfw3WVqLPXVozCbyjqCW8IQXuUljOJ4tD9gJe8xvBeZ/WKg2K+7sYuhov6mcbBoUd4WLZW+89ryuBfZFi/4U6MX4Hemsw40Z3KHf/gAHpXXeU65Sqb8AhVMp0nckaX5u4vN09OTHLPAmCZmps5TcExoYwSPQaFK+6HrUV0/66Xw3kqo05CvN3bCC1UlDk3KAffg3LZ8u1E3gFcwK6xSjHYknGOuxabTVS6cNGECOEWKVsURwIDAQAB",  // NOLINT
+        "bejfdgcfgammhkbdmbaohoknehcdnbmn"
+    };
+    return demo_data;
+  }
+
   static const SponsoredImagesComponentData regional_data[] = {
       { "AF",
         "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3UQJgNrn5qHNcHU3OKhhK34FT0AN8V0+KJwBany7O3RbDh/JmZ28F18wAmq8r06XIFlxxm0vTA3YDtQ+kPzMCdk5fBIZKwVL7ikFEVV3vd3Opu26GRuJ+s9qEbgErHPGC0SHAse3FWhGKVw+sOI6bKOPUtRgmPJFeb8azE/qdVFvP8L0z3Ny0PSlu+wTb3klT0c3LVpA/2WSQLCfAZ8zvwCFDlsIoH/3oFRKgDpoWztIT15D1dfx/mAg8+j3KC8kjUBYBOHOjmTdjjQUrav4hcn39tIw83QovAEXEjy3aywSSrHP7Lg81gzJkR1EdufC+PCWPT6NQEUYSQPbNaxCtwIDAQAB",  // NOLINT
