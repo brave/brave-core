@@ -14,6 +14,7 @@ struct ExternalWallet {
   ExternalWallet();
   ~ExternalWallet();
   ExternalWallet(const ExternalWallet& properties);
+  std::string toJson();
 
   std::string token;
   std::string address;

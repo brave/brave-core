@@ -16,6 +16,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/browser/balance.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
+#include "brave/components/brave_rewards/browser/external_wallet.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
@@ -59,7 +60,7 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
         const base::android::JavaParamRef<jobject>& jcaller, int tabId,
         const base::android::JavaParamRef<jstring>& host);
 
-    double GetWalletBalance(JNIEnv* env,
+    base::android::ScopedJavaLocalRef<jstring> GetWalletBalance(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj);
 
     double GetWalletRate(JNIEnv* env,
@@ -86,7 +87,7 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     bool GetPublisherExcluded(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj, uint64_t tabId);
 
-    bool GetPublisherVerified(JNIEnv* env,
+    int GetPublisherStatus(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj, uint64_t tabId);
 
     void GetCurrentBalanceReport(JNIEnv* env,
@@ -165,6 +166,19 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
                        const base::android::JavaParamRef<jobject>& obj,
                        jint value);
 
+    void GetExternalWallet(JNIEnv* env,
+        const base::android::JavaParamRef<jobject>& obj,
+        const base::android::JavaParamRef<jstring>& wallet_type);
+
+    void DisconnectWallet(JNIEnv* env,
+        const base::android::JavaParamRef<jobject>& obj,
+        const base::android::JavaParamRef<jstring>& wallet_type);
+
+    void ProcessRewardsPageUrl(JNIEnv* env,
+        const base::android::JavaParamRef<jobject>& obj,
+        const base::android::JavaParamRef<jstring>& path,
+        const base::android::JavaParamRef<jstring>& query);
+
     void OnAdsResetTheWholeState(bool sucess);
 
     void OnResetTheWholeState(bool sucess);
@@ -233,7 +247,22 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     void OnClaimPromotion(const int32_t result,
         std::unique_ptr<brave_rewards::Promotion> promotion);
 
+    void OnGetExternalWallet(const int32_t result,
+        std::unique_ptr<brave_rewards::ExternalWallet> wallet);
+
+    void OnDisconnectWallet(
+      brave_rewards::RewardsService* rewards_service,
+      int32_t result,
+      const std::string& wallet_type) override;
+
+    void OnProcessRewardsPageUrl(int32_t result,
+        const std::string& wallet_type, const std::string& action,
+        const std::map<std::string, std::string>& args);
+
  private:
+    std::string StdStrStrMapToJsonString(
+        const std::map<std::string, std::string>& args);
+
     void OnBalance(int32_t result,
         std::unique_ptr<brave_rewards::Balance> balance);
     JavaObjectWeakGlobalRef weak_java_brave_rewards_native_worker_;

@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,11 +60,14 @@ import org.chromium.ui.widget.Toast;
 @JNINamespace("chrome::android")
 public abstract class BraveActivity extends ChromeActivity {
     public static final int SITE_BANNER_REQUEST_CODE = 33;
+    public static final int VERIFY_WALLET_ACTIVITY_REQUEST_CODE = 34;
+    public static final int USER_WALLET_ACTIVITY_REQUEST_CODE = 35;
     public static final String ADD_FUNDS_URL = "chrome://rewards/#add-funds";
     public static final String REWARDS_SETTINGS_URL = "chrome://rewards/";
     public static final String REWARDS_AC_SETTINGS_URL = "chrome://rewards/contribute";
     public static final String REWARDS_LEARN_MORE_URL = "https://brave.com/faq-rewards/#unclaimed-funds";
     private static final String PREF_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
+    public static final String OPEN_URL = "open_url";
 
     /**
      * Settings for sending local notification reminders.
@@ -317,6 +321,22 @@ public abstract class BraveActivity extends ChromeActivity {
         }
     }
 
+    public void dismissRewardsPanel() {
+        BraveToolbarLayout layout = (BraveToolbarLayout)findViewById(R.id.toolbar);
+        assert layout != null;
+        if (layout != null) {
+            layout.dismissRewardsPanel();
+        }
+    }
+
+    public void openRewardsPanel() {
+        BraveToolbarLayout layout = (BraveToolbarLayout)findViewById(R.id.toolbar);
+        assert layout != null;
+        if (layout != null) {
+            layout.openRewardsPanel();
+        }
+    }
+
     public Tab selectExistingTab(String url) {
         Tab tab = getActivityTab();
         if (tab != null && tab.getUrl().equals(url)) {
@@ -372,5 +392,21 @@ public abstract class BraveActivity extends ChromeActivity {
         }
 
         return null;
+    }
+
+    @Override
+    public void onActivityResult (int requestCode, int resultCode,
+            Intent data) {
+        if (resultCode == RESULT_OK &&
+                (requestCode == VERIFY_WALLET_ACTIVITY_REQUEST_CODE ||
+                requestCode == USER_WALLET_ACTIVITY_REQUEST_CODE ||
+                requestCode == SITE_BANNER_REQUEST_CODE) ) {
+            dismissRewardsPanel();
+            String open_url = data.getStringExtra(BraveActivity.OPEN_URL);
+            if (! TextUtils.isEmpty(open_url)) {
+                openNewOrSelectExistingTab(open_url);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

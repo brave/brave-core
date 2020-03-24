@@ -5,6 +5,12 @@
 
 #include "brave/components/brave_rewards/browser/balance.h"
 
+#include <memory>
+#include <utility>
+
+#include "base/values.h"
+#include "base/json/json_writer.h"
+
 namespace brave_rewards {
 
 Balance::Balance() : total(0.0) {}
@@ -15,6 +21,27 @@ Balance::Balance(const Balance& properties) {
   total = properties.total;
   rates = properties.rates;
   wallets = properties.wallets;
+}
+
+std::string Balance::toJson() {
+  std::string json_str_root;
+  base::DictionaryValue json_root;
+  json_root.SetDoubleKey(kJsonTotal, total);
+
+  auto json_rates = std::make_unique<base::DictionaryValue>();
+  for (const auto & item : rates) {
+    json_rates->SetDoubleKey(item.first, item.second);
+  }
+  json_root.SetDictionary(kJsonRates, std::move(json_rates));
+
+  auto json_wallets = std::make_unique<base::DictionaryValue>();
+  for (const auto & item : wallets) {
+    json_wallets->SetDoubleKey(item.first, item.second);
+  }
+  json_root.SetDictionary(kJsonWallets, std::move(json_wallets));
+
+  base::JSONWriter::Write(json_root, &json_str_root);
+  return json_str_root;
 }
 
 }  // namespace brave_rewards
