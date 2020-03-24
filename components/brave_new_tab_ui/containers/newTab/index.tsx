@@ -240,10 +240,11 @@ class NewTabPage extends React.Component<Props, State> {
 
   buyCrypto = (coin: string, amount: string, fiat: string) => {
     const { userTLD } = this.props.newTabData.binanceState
-    const refParams = 'ref=39346846&utm_source=brave'
+    const refCode = userTLD === 'us' ? '35089877' : '39346846'
+    const refParams = `ref=${refCode}&utm_source=brave`
 
     if (userTLD === 'us') {
-      window.open(`https://www.binance.${userTLD}/en/buy-sell-crypto?coin=${coin}&amount=${amount}&${refParams}`, '_blank')
+      window.open(`https://www.binance.us/en/buy-sell-crypto?crypto=${coin}&amount=${amount}&${refParams}`, '_blank')
     } else {
       window.open(`https://www.binance.com/en/buy-sell-crypto?fiat=${fiat}&crypto=${coin}&amount=${amount}&${refParams}`, '_blank')
     }
