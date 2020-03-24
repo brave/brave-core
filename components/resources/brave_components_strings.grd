@@ -644,8 +644,8 @@
       <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_NOTE1" desc="">Uphold may require you to verify your identity based on services requested.</message>
       <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_NOTE2" desc="">Brave Software Inc. does not process, store, or access any of the personal information that you provide to Uphold when you establish an account with them.</message>
 
-      <message name="IDS_BRAVE_UI_TAP_NETWORK_TITLE" desc="">Buy Gift Cards with BAT</message>
-      <message name="IDS_BRAVE_UI_TAP_NETWORK_INFO" desc="">With TAP Network, you can use BAT to buy popular name-brand gift cards.</message>
+      <message name="IDS_BRAVE_UI_TAP_NETWORK_TITLE" desc="">Redeem BAT for Gift Cards</message>
+      <message name="IDS_BRAVE_UI_TAP_NETWORK_INFO" desc="">With TAP Network, you can redeem your BAT for popular name-brand gift cards.</message>
       <message name="IDS_BRAVE_UI_TAP_NETWORK_LINK" desc="">Visit TAP.</message>
       <message name="IDS_BRAVE_UI_TAP_NETWORK_DISCLAIMER" desc="">* Requires Uphold Verification.</message>
 
