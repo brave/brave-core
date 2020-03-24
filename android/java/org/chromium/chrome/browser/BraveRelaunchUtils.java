@@ -61,6 +61,10 @@ public class BraveRelaunchUtils {
         alertDialog.show();
     }
 
+    public static void restart() {
+        BraveRelaunchUtilsJni.get().restart();
+    }
+
     @NativeMethods
     interface Natives {
         void restart();
