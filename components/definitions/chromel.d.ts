@@ -152,6 +152,10 @@ declare namespace chrome.braveRewards {
   const getAnonWalletStatus: (callback: (result: RewardsExtension.Result) => void) => {}
 }
 
+declare namespace chrome.binance {
+  const getUserTLD: (callback: (userTLD: string) => void) => {}
+}
+
 declare namespace chrome.rewardsNotifications {
   const addNotification: (type: number, args: string[], id: string) => {}
   const deleteNotification: (id: string) => {}

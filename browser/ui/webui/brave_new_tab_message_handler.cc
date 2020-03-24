@@ -88,6 +88,9 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
       "isBrandedWallpaperNotificationDismissed",
       prefs->GetBoolean(
           ntp_sponsored_images::prefs::kBrandedWallpaperNotificationDismissed));
+  pref_data.SetBoolean(
+    "showBinance",
+    prefs->GetBoolean(kNewTabPageShowBinance));
   return pref_data;
 }
 
@@ -236,6 +239,9 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
     ntp_sponsored_images::prefs::kBrandedWallpaperNotificationDismissed,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
+  pref_change_registrar_.Add(kNewTabPageShowBinance,
+    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
+    base::Unretained(this)));
 }
 
 void BraveNewTabMessageHandler::OnJavascriptDisallowed() {
@@ -305,6 +311,8 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
   } else if (settingsKeyInput == "isBrandedWallpaperNotificationDismissed") {
     settingsKey =
         ntp_sponsored_images::prefs::kBrandedWallpaperNotificationDismissed;
+  } else if (settingsKeyInput == "showBinance") {
+    settingsKey = kNewTabPageShowBinance;
   } else {
     LOG(ERROR) << "Invalid setting key";
     return;
