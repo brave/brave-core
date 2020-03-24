@@ -822,7 +822,8 @@ bool Contribution::ProcessReconcileUnblindedTokens(
   ledger::ReconcileDirections new_directions;
   bool full_amount = true;
   if (balance < *fee) {
-    contribution->amount = *fee - balance;
+    *fee = *fee - balance;
+    contribution->amount = balance;
     full_amount = false;
 
     if (type == ledger::RewardsType::RECURRING_TIP ||
@@ -832,6 +833,8 @@ bool Contribution::ProcessReconcileUnblindedTokens(
           &new_directions,
           leftovers,
           balance);
+    } else {
+      new_directions = directions;
     }
   } else {
     new_directions = directions;
@@ -950,6 +953,15 @@ bool Contribution::ProcessExternalWallet(
   }
 
   contribution->publishers = std::move(publisher_list);
+
+  if (type == ledger::RewardsType::AUTO_CONTRIBUTE) {
+    auto reconcile = ledger::CurrentReconcileProperties();
+    reconcile.viewing_id = contribution_id;
+    reconcile.fee = fee;
+    reconcile.directions = directions;
+    reconcile.type = contribution->type;
+    ledger_->AddReconcile(reconcile.viewing_id, reconcile);
+  }
 
   auto save_callback = std::bind(&Contribution::OnProcessExternalWalletSaved,
       this,

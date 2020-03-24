@@ -329,7 +329,7 @@ void Unblinded::PreparePublishers(
 ledger::ContributionPublisherList Unblinded::PrepareAutoContribution(
     const std::vector<ledger::UnblindedToken>& list,
     ledger::ContributionInfoPtr contribution) {
-  if (!contribution || list.size() == 0) {
+  if (!contribution || list.size() == 0 || contribution->publishers.empty()) {
     return {};
   }
 

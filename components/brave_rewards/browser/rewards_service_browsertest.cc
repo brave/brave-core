@@ -142,6 +142,14 @@ namespace brave_test_resp {
   std::string uphold_auth_resp_;
   std::string uphold_transactions_resp_;
   std::string uphold_commit_resp_;
+
+  std::string contribution_;
+  std::string reconcile_;
+  std::string current_reconcile_;
+  std::string register_;
+  std::string register_credential_;
+  std::string surveyor_voting_;
+  std::string surveyor_voting_credential_;
 }  // namespace brave_test_resp
 
 class BraveRewardsBrowserTest
@@ -391,6 +399,30 @@ class BraveRewardsBrowserTest
         braveledger_uphold::GetAPIUrl("/v0/me"),
         base::CompareCase::INSENSITIVE_ASCII)) {
       *response = GetUpholdUser();
+    } else if (URLMatches(url, WALLET_PROPERTIES, PREFIX_V2,
+                          ServerTypes::LEDGER)) {
+      GURL gurl(url);
+      if (gurl.has_query()) {
+        *response = brave_test_resp::reconcile_;
+      } else {
+        *response = brave_test_resp::current_reconcile_;
+      }
+
+    } else if (URLMatches(url, RECONCILE_CONTRIBUTION, PREFIX_V2,
+                          ServerTypes::LEDGER)) {
+      *response = brave_test_resp::contribution_;
+    } else if (URLMatches(url, REGISTER_VIEWING, PREFIX_V2,
+                          ServerTypes::LEDGER)) {
+      if (url.find(REGISTER_VIEWING "/") != std::string::npos)
+        *response = brave_test_resp::register_credential_;
+      else
+        *response = brave_test_resp::register_;
+    } else if (URLMatches(url, SURVEYOR_BATCH_VOTING, PREFIX_V2,
+                          ServerTypes::LEDGER)) {
+      if (url.find(SURVEYOR_BATCH_VOTING "/") != std::string::npos)
+        *response = brave_test_resp::surveyor_voting_credential_;
+      else
+        *response = brave_test_resp::surveyor_voting_;
     }
   }
 
@@ -454,6 +486,16 @@ class BraveRewardsBrowserTest
 
     wait_for_multiple_tip_completed_loop_.reset(new base::RunLoop);
     wait_for_multiple_tip_completed_loop_->Run();
+  }
+
+  void WaitForMultipleACReconcileCompleted(int32_t needed) {
+    multiple_ac_reconcile_needed_ = needed;
+    if (multiple_ac_reconcile_completed_) {
+      return;
+    }
+
+    wait_for_multiple_ac_completed_loop_.reset(new base::RunLoop);
+    wait_for_multiple_ac_completed_loop_->Run();
   }
 
   void WaitForInsufficientFundsNotification() {
@@ -711,6 +753,26 @@ class BraveRewardsBrowserTest
     ASSERT_TRUE(base::ReadFileToString(
         path.AppendASCII("uphold_commit_resp.json"),
         &brave_test_resp::uphold_commit_resp_));
+
+    ASSERT_TRUE(
+        base::ReadFileToString(path.AppendASCII("contribution_resp.json"),
+                               &brave_test_resp::contribution_));
+    ASSERT_TRUE(base::ReadFileToString(path.AppendASCII("reconcile_resp.json"),
+                                       &brave_test_resp::reconcile_));
+    ASSERT_TRUE(
+        base::ReadFileToString(path.AppendASCII("current_reconcile_resp.json"),
+                               &brave_test_resp::current_reconcile_));
+    ASSERT_TRUE(base::ReadFileToString(path.AppendASCII("register_resp.json"),
+                                       &brave_test_resp::register_));
+    ASSERT_TRUE(base::ReadFileToString(
+        path.AppendASCII("register_credential_resp.json"),
+        &brave_test_resp::register_credential_));
+    ASSERT_TRUE(
+        base::ReadFileToString(path.AppendASCII("surveyor_voting_resp.json"),
+                               &brave_test_resp::surveyor_voting_));
+    ASSERT_TRUE(base::ReadFileToString(
+        path.AppendASCII("surveyor_voting_credential_resp.json"),
+        &brave_test_resp::surveyor_voting_credential_));
   }
 
   void UpdateContributionBalance(double amount, bool verified = false) {
@@ -1349,6 +1411,17 @@ class BraveRewardsBrowserTest
       if (wait_for_ac_completed_loop_) {
         wait_for_ac_completed_loop_->Quit();
       }
+
+      // Multiple ac
+      multiple_ac_reconcile_count_++;
+      multiple_ac_reconcile_status_.push_back(converted_result);
+
+      if (multiple_ac_reconcile_count_ == multiple_ac_reconcile_needed_) {
+        multiple_ac_reconcile_completed_ = true;
+        if (wait_for_multiple_ac_completed_loop_) {
+          wait_for_multiple_ac_completed_loop_->Quit();
+        }
+      }
     }
 
     if (converted_type == ledger::RewardsType::ONE_TIME_TIP ||
@@ -1484,6 +1557,22 @@ class BraveRewardsBrowserTest
     UpdateContributionBalance(amount, should_contribute);
   }
 
+  void SetUpUpholdWallet(
+      const double balance,
+      const ledger::WalletStatus status = ledger::WalletStatus::VERIFIED) {
+    verified_wallet_ = true;
+    external_balance_ = balance;
+
+    auto wallet = ledger::ExternalWallet::New();
+    wallet->token = "token";
+    wallet->address = external_wallet_address_;
+    wallet->status = status;
+    wallet->one_time_string = "";
+    wallet->user_name = "Brave Test";
+    wallet->transferred = true;
+    rewards_service()->SaveExternalWallet("uphold", std::move(wallet));
+  }
+
   MOCK_METHOD1(OnGetEnvironment, void(ledger::Environment));
   MOCK_METHOD1(OnGetDebug, void(bool));
   MOCK_METHOD1(OnGetReconcileTime, void(int32_t));
@@ -1511,8 +1600,16 @@ class BraveRewardsBrowserTest
   bool ac_reconcile_completed_ = false;
   ledger::Result ac_reconcile_status_ = ledger::Result::LEDGER_ERROR;
   std::unique_ptr<base::RunLoop> wait_for_tip_completed_loop_;
+
+  std::unique_ptr<base::RunLoop> wait_for_multiple_ac_completed_loop_;
+  bool multiple_ac_reconcile_completed_ = false;
+  int32_t multiple_ac_reconcile_count_ = 0;
+  int32_t multiple_ac_reconcile_needed_ = 0;
+  std::vector<ledger::Result> multiple_ac_reconcile_status_;
+
   bool tip_reconcile_completed_ = false;
   ledger::Result tip_reconcile_status_ = ledger::Result::LEDGER_ERROR;
+
   std::unique_ptr<base::RunLoop> wait_for_multiple_tip_completed_loop_;
   bool multiple_tip_reconcile_completed_ = false;
   int32_t multiple_tip_reconcile_count_ = 0;
@@ -1541,7 +1638,6 @@ class BraveRewardsBrowserTest
   double verified_wallet_ = false;
   const std::string external_wallet_address_ =
       "abe5f454-fedd-4ea9-9203-470ae7315bb3";
-  bool first_url_ac_called_ = false;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RenderWelcome) {
@@ -2050,7 +2146,6 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContributeWhenACOff) {
 
   // Trigger contribution process
   rewards_service()->StartMonthlyContributionForTest();
-  ASSERT_FALSE(first_url_ac_called_);
 }
 
 // #6 - Tip verified publisher
@@ -2659,17 +2754,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
                        TipWithVerifiedWallet) {
-  verified_wallet_ = true;
-  external_balance_ = 50.0;
-
-  auto wallet = ledger::ExternalWallet::New();
-  wallet->token = "token";
-  wallet->address = external_wallet_address_;
-  wallet->status = ledger::WalletStatus::VERIFIED;
-  wallet->one_time_string = "";
-  wallet->user_name = "Brave Test";
-  wallet->transferred = true;
-  rewards_service()->SaveExternalWallet("uphold", std::move(wallet));
+  SetUpUpholdWallet(50.0);
 
   // Enable Rewards
   EnableRewards();
@@ -2689,17 +2774,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
                        MultipleTipsProduceMultipleFeesWithVerifiedWallet) {
-  verified_wallet_ = true;
-  external_balance_ = 50.0;
-
-  auto wallet = ledger::ExternalWallet::New();
-  wallet->token = "token";
-  wallet->address = external_wallet_address_;
-  wallet->status = ledger::WalletStatus::VERIFIED;
-  wallet->one_time_string = "";
-  wallet->user_name = "Brave Test";
-  wallet->transferred = true;
-  rewards_service()->SaveExternalWallet("uphold", std::move(wallet));
+  SetUpUpholdWallet(50.0);
 
   // Enable Rewards
   EnableRewards();
@@ -2760,17 +2835,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipConnectedPublisherAnon) {
 IN_PROC_BROWSER_TEST_F(
     BraveRewardsBrowserTest,
     TipConnectedPublisherAnonAndConnected) {
-  verified_wallet_ = true;
-  external_balance_ = 50.0;
-
-  auto wallet = ledger::ExternalWallet::New();
-  wallet->token = "token";
-  wallet->address = external_wallet_address_;
-  wallet->status = ledger::WalletStatus::CONNECTED;
-  wallet->one_time_string = "";
-  wallet->user_name = "Brave Test";
-  wallet->transferred = true;
-  rewards_service()->SaveExternalWallet("uphold", std::move(wallet));
+  SetUpUpholdWallet(50.0);
 
   // Enable Rewards
   EnableRewards();
@@ -2793,17 +2858,7 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(
     BraveRewardsBrowserTest,
     TipConnectedPublisherConnected) {
-  verified_wallet_ = true;
-  external_balance_ = 50.0;
-
-  auto wallet = ledger::ExternalWallet::New();
-  wallet->token = "token";
-  wallet->address = external_wallet_address_;
-  wallet->status = ledger::WalletStatus::CONNECTED;
-  wallet->one_time_string = "";
-  wallet->user_name = "Brave Test";
-  wallet->transferred = true;
-  rewards_service()->SaveExternalWallet("uphold", std::move(wallet));
+  SetUpUpholdWallet(50.0, ledger::WalletStatus::CONNECTED);
 
   // Enable Rewards
   EnableRewards();
@@ -2827,17 +2882,7 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(
     BraveRewardsBrowserTest,
     TipConnectedPublisherVerified) {
-  verified_wallet_ = true;
-  external_balance_ = 50.0;
-
-  auto wallet = ledger::ExternalWallet::New();
-  wallet->token = "token";
-  wallet->address = external_wallet_address_;
-  wallet->status = ledger::WalletStatus::VERIFIED;
-  wallet->one_time_string = "";
-  wallet->user_name = "Brave Test";
-  wallet->transferred = true;
-  rewards_service()->SaveExternalWallet("uphold", std::move(wallet));
+  SetUpUpholdWallet(50.0);
 
   // Enable Rewards
   EnableRewards();
@@ -3032,4 +3077,48 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ShowMonthlyIfACOff) {
   ASSERT_TRUE(popup_contents);
 
   WaitForSelector(popup_contents, "#panel-donate-monthly");
+}
+
+IN_PROC_BROWSER_TEST_F(
+    BraveRewardsBrowserTest,
+    SplitProcessorAutoContribution) {
+  SetUpUpholdWallet(50.0);
+
+  EnableRewards();
+
+  // Claim promotion using panel (30BAT)
+  const bool use_panel = true;
+  ClaimPromotion(use_panel);
+
+  VisitPublisher("3zsistemi.si", true);
+
+  // 30 form unblinded and 20 from uphold
+  rewards_service()->SetContributionAmount(50.0);
+
+  // Trigger contribution process
+  rewards_service()->StartMonthlyContributionForTest();
+
+  // Wait for reconciliation to complete successfully
+  WaitForMultipleACReconcileCompleted(2);
+  ASSERT_EQ(multiple_ac_reconcile_status_[0], ledger::Result::LEDGER_OK);
+  ASSERT_EQ(multiple_ac_reconcile_status_[1], ledger::Result::LEDGER_OK);
+
+  // Check monthly report
+  ASSERT_TRUE(ExecJs(contents(),
+      "document.querySelector(\"[data-test-id='showMonthlyReport']\").click();",
+      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+      content::ISOLATED_WORLD_ID_CONTENT_END));
+
+
+  WaitForSelector(contents(), "#transactionTable");
+
+  ASSERT_NE(ElementInnerText("#transactionTable").find("-30.0BAT"),
+      std::string::npos);
+
+  ASSERT_NE(ElementInnerText("#transactionTable").find("-20.0BAT"),
+      std::string::npos);
+
+  // Check that summary table shows the appropriate contribution
+  ASSERT_NE(ElementInnerText("[color=contribute]").find("-50.0BAT"),
+      std::string::npos);
 }

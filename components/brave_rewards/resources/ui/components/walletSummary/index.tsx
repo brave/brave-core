@@ -193,7 +193,7 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
           </div>
           {
             onActivity
-            ? <StyledActivity onClick={onActivity}>
+            ? <StyledActivity onClick={onActivity} data-test-id={'showMonthlyReport'}>
               <StyledActivityIcon>
                 <WalletInfoIcon />
               </StyledActivityIcon>
