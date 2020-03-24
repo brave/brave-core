@@ -100,6 +100,7 @@ class SettingsViewController: UIViewController {
         hidesToggle: !ledger.isEnabled,
         animated: animated
       )
+      $0.monthlyTipsSection.setSectionEnabled(ledger.isEnabled, animated: animated)
       $0.tipsSection.setSectionEnabled(ledger.isEnabled, animated: animated)
     }
   }
