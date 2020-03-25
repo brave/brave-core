@@ -492,44 +492,16 @@ if (is_mac) {
     ]
   }
 
-  # This copies //chrome:chrome_app target to avoid patching.
-  # So, need to sync with it.
-  mac_app_bundle("chrome_app") {
-    output_name = chrome_product_full_name
-
-    info_plist_target = ":brave_app_plist"
-
-    extra_substitutions = [
-      "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id",
-      "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
-      "CHROMIUM_CREATOR=$chrome_mac_creator_code",
+  brave_tweak_info_plist("brave_helper_plist") {
+    info_plist = "$root_gen_dir/chrome/chrome_helper_plist_tweaked.plist"
+    args = [
+      "--brave_channel=" + brave_channel,
+      "--brave_product_dir_name=" + brave_product_dir_name,
+      "--brave_version=" + brave_version,
     ]
-
-    sources = [
-      "//chrome/app/chrome_exe_main_mac.cc",
-    ]
-
-    extra_configs = [ "//build/config/compiler:wexit_time_destructors" ]
 
     deps = [
-      "//chrome:chrome_app_strings_bundle_data",
-      "//chrome:chrome_resources",
-      "//chrome:chrome_versioned_bundle_data",
-      "//chrome/common:buildflags",
-      "//chrome/common:version_header",
+      "//chrome:chrome_helper_plist"
     ]
-
-    if (enable_sparkle) {
-      deps += [ "//brave/vendor/sparkle:sparkle_resources_bundle_data" ]
-    }
-
-    if (enable_stripping) {
-      # At link time, preserve the global symbols specified in the .exports
-      # file. All other global symbols will be marked as private. The default
-      # //build/config/mac:strip_all config will then remove the remaining
-      # local and debug symbols.
-      ldflags = [ "-Wl,-exported_symbols_list," +
-                  rebase_path("//chrome/app/app.exports", root_build_dir) ]
-    }
   }
 }
