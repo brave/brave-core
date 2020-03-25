@@ -254,14 +254,11 @@ bool DatabaseUnblindedToken::MigrateToV18(ledger::DBTransaction* transaction) {
   transaction->commands.push_back(std::move(command));
 
   query = base::StringPrintf(
-      "UPDATE %s SET "
-      "creds_id = (SELECT cb.creds_id FROM %s as ut "
-      "INNER JOIN creds_batch as cb ON cb.trigger_id = ut.promotion_id), "
-      "expires_at = (SELECT p.expires_at FROM %s as ut "
-      "INNER JOIN promotion as p ON p.promotion_id = ut.promotion_id "
-      "WHERE p.type = 0)",
-      kTableName,
-      kTableName,
+      "UPDATE %s as ut SET "
+      "creds_id = (SELECT creds_id FROM creds_batch as cb "
+      "WHERE cb.trigger_id = ut.promotion_id), "
+      "expires_at = IFNULL((SELECT p.expires_at FROM promotion as p "
+      "WHERE p.promotion_id = ut.promotion_id AND p.type = 0), 0)",
       kTableName);
 
   command = ledger::DBCommand::New();
