@@ -24,7 +24,7 @@ const base::Feature kBraveNTPSuperReferralWallpaper{
     // Linux doesn't support referral install yet.
     base::FEATURE_DISABLED_BY_DEFAULT};
 #else
-    base::FEATURE_ENABLED_BY_DEFAULT};
+    base::FEATURE_DISABLED_BY_DEFAULT};
 #endif
 
 }  // namespace features

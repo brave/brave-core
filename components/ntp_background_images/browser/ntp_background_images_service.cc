@@ -150,7 +150,8 @@ void NTPBackgroundImagesService::Init() {
     return;
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-  if (base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper)) {
+  if (enable_super_referral_for_test_ ||
+      base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper)) {
     // Download mapping table first. Then determine which component should be
     // registered.
     DownloadSuperReferralMappingTable();

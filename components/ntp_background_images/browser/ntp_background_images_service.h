@@ -63,6 +63,7 @@ class NTPBackgroundImagesService {
 
  private:
   friend class TestNTPBackgroundImagesService;
+  friend class NTPBackgroundImagesServiceTest;
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest, InternalDataTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
                            WithDefaultReferralCodeTest1);
@@ -76,6 +77,8 @@ class NTPBackgroundImagesService {
                            InstallSuperReferralOverReferralTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
                            SimulateNetworkErrorTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
+                           BasicSuperReferralTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest, CleanUpTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            NotActiveInitially);
@@ -134,6 +137,7 @@ class NTPBackgroundImagesService {
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<network::SimpleURLLoader> loader_;
   PrefChangeRegistrar pref_change_registrar_;
+  bool enable_super_referral_for_test_ = false;
   base::WeakPtrFactory<NTPBackgroundImagesService> weak_factory_;
 };
 

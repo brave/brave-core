@@ -8,6 +8,7 @@
 
 #include "base/test/task_environment.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
@@ -24,50 +25,6 @@ const char kTestEmptyComponent[] = R"(
         "schemaVersion": 1
     })";
 
-  // Super referral wallpaper json data.
-const char kTestSuperReferral[] = R"(
-    {
-      "schemaVersion": 1,
-      "logo": {
-        "imageUrl": "logo.png",
-        "alt": "Technikke: For music lovers",
-        "companyName": "Technikke",
-        "destinationUrl": "https://www.brave.com/?from-super-referreer-demo"
-      },
-      "wallpapers": [
-        {
-          "imageUrl": "background-1.jpg",
-          "focalPoint": { "x": 3988, "y": 2049}
-        },
-        {
-          "imageUrl": "background-2.jpg",
-          "focalPoint": { "x": 5233, "y": 3464}
-        },
-        {
-          "imageUrl": "background-3.jpg"
-        }
-      ],
-      "topSites": [
-        {
-          "name": "Brave",
-          "destinationUrl": "https://brave.com/",
-          "backgroundColor": "#e22919",
-          "iconUrl": "brave.png"
-        },
-        {
-          "name": "Wiki",
-          "destinationUrl": "https://wikipedia.org/",
-          "backgroundColor": "#e22919",
-          "iconUrl": "wikipedia.png"
-        },
-        {
-          "name": "BAT",
-          "destinationUrl": "https://basicattentiontoken.org/",
-          "backgroundColor": "#e22919",
-          "iconUrl": "bat.png"
-        }
-      ]
-    })";
 
 class TestObserver : public NTPBackgroundImagesService::Observer {
  public:
@@ -139,6 +96,9 @@ class NTPBackgroundImagesServiceTest : public testing::Test {
     service_.reset(new TestNTPBackgroundImagesService(
         nullptr, &pref_service_,
         base::MakeRefCounted<network::TestSharedURLLoaderFactory>()));
+#if !defined(OS_LINUX)
+    service_->enable_super_referral_for_test_ = true;
+#endif
     service_->Init();
   }
 
@@ -247,20 +207,6 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   data = service_->GetBackgroundImagesData();
   EXPECT_FALSE(data);
 
-  service_->images_data_.reset();
-  observer.called_ = false;
-  observer.data_ = nullptr;
-  service_->OnGetComponentJsonData(kTestSuperReferral);
-  data = service_->GetBackgroundImagesData();
-  EXPECT_TRUE(data);
-  const size_t wallpaper_count = 3;
-  const size_t top_site_count = 3;
-  EXPECT_EQ(wallpaper_count, data->wallpaper_image_urls().size());
-  EXPECT_EQ(top_site_count, data->top_sites.size());
-  EXPECT_TRUE(data->IsSuperReferral());
-  EXPECT_FALSE(*data->GetBackgroundAt(0).FindBoolKey("isSponsored"));
-  EXPECT_TRUE(observer.called_);
-
   service_->RemoveObserver(&observer);
 }
 
@@ -278,6 +224,8 @@ TEST_F(NTPBackgroundImagesServiceTest, LinuxTest) {
 }
 
 #else
+
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 const char kTestMappingTable[] = R"(
     {
         "schemaVersion": 1,
@@ -292,6 +240,74 @@ const char kTestMappingTable[] = R"(
           "companyName": "Numeric software"
         }
     })";
+
+  // Super referral wallpaper json data.
+const char kTestSuperReferral[] = R"(
+    {
+      "schemaVersion": 1,
+      "logo": {
+        "imageUrl": "logo.png",
+        "alt": "Technikke: For music lovers",
+        "companyName": "Technikke",
+        "destinationUrl": "https://www.brave.com/?from-super-referreer-demo"
+      },
+      "wallpapers": [
+        {
+          "imageUrl": "background-1.jpg",
+          "focalPoint": { "x": 3988, "y": 2049}
+        },
+        {
+          "imageUrl": "background-2.jpg",
+          "focalPoint": { "x": 5233, "y": 3464}
+        },
+        {
+          "imageUrl": "background-3.jpg"
+        }
+      ],
+      "topSites": [
+        {
+          "name": "Brave",
+          "destinationUrl": "https://brave.com/",
+          "backgroundColor": "#e22919",
+          "iconUrl": "brave.png"
+        },
+        {
+          "name": "Wiki",
+          "destinationUrl": "https://wikipedia.org/",
+          "backgroundColor": "#e22919",
+          "iconUrl": "wikipedia.png"
+        },
+        {
+          "name": "BAT",
+          "destinationUrl": "https://basicattentiontoken.org/",
+          "backgroundColor": "#e22919",
+          "iconUrl": "bat.png"
+        }
+      ]
+    })";
+
+TEST_F(NTPBackgroundImagesServiceTest, BasicSuperReferralTest) {
+  Init();
+  TestObserver observer;
+  service_->AddObserver(&observer);
+
+  service_->images_data_.reset();
+  observer.called_ = false;
+  observer.data_ = nullptr;
+  service_->OnGetComponentJsonData(kTestSuperReferral);
+  auto* data = service_->GetBackgroundImagesData();
+  EXPECT_TRUE(data);
+
+  const size_t wallpaper_count = 3;
+  const size_t top_site_count = 3;
+  EXPECT_EQ(wallpaper_count, data->wallpaper_image_urls().size());
+  EXPECT_EQ(top_site_count, data->top_sites.size());
+  EXPECT_TRUE(data->IsSuperReferral());
+  EXPECT_FALSE(*data->GetBackgroundAt(0).FindBoolKey("isSponsored"));
+  EXPECT_TRUE(observer.called_);
+
+  service_->RemoveObserver(&observer);
+}
 
 // Test default referral code and first run.
 // Sponsored Images component will be run after promo code set to pref.
@@ -457,6 +473,8 @@ TEST_F(NTPBackgroundImagesServiceTest, CleanUpTest) {
   EXPECT_TRUE(pref_service_.FindPreference(
       prefs::kNewTabPageCachedSuperReferralComponentInfo)->IsDefaultValue());
 }
+
+#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
 #endif  // OS_LINUX
 
