@@ -1,22 +1,7 @@
 diff --git a/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl b/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl
-index 4371777bcd68c6e334d12a0ba5fd38874cdbdd49..f46a720b4973b707d01fe33e08667f09764c105d 100644
+index 4371777bcd68c6e334d12a0ba5fd38874cdbdd49..657e9eee13c50f92b11cf5c77aee825c3a561bac 100644
 --- a/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl
 +++ b/third_party/blink/renderer/modules/canvas/offscreencanvas2d/offscreen_canvas_rendering_context_2d.idl
-@@ -62,10 +62,10 @@
-     void stroke(Path2D path);
-     void clip(optional CanvasFillRule winding);
-     void clip(Path2D path, optional CanvasFillRule winding);
--    [HighEntropy, MeasureAs=OffscreenCanvasIsPointInPath] boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
--    [HighEntropy, MeasureAs=OffscreenCanvasIsPointInPath] boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
--    [HighEntropy, MeasureAs=OffscreenCanvasIsPointInStroke] boolean isPointInStroke(unrestricted double x, unrestricted double y);
--    [HighEntropy, MeasureAs=OffscreenCanvasIsPointInStroke] boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);
-+    [CallWith=ScriptState, HighEntropy, MeasureAs=OffscreenCanvasIsPointInPath] boolean isPointInPath(unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
-+    [CallWith=ScriptState, HighEntropy, MeasureAs=OffscreenCanvasIsPointInPath] boolean isPointInPath(Path2D path, unrestricted double x, unrestricted double y, optional CanvasFillRule winding);
-+    [CallWith=ScriptState, HighEntropy, MeasureAs=OffscreenCanvasIsPointInStroke] boolean isPointInStroke(unrestricted double x, unrestricted double y);
-+    [CallWith=ScriptState, HighEntropy, MeasureAs=OffscreenCanvasIsPointInStroke] boolean isPointInStroke(Path2D path, unrestricted double x, unrestricted double y);
- 
-     // text (see also the CanvasDrawingStyles interface)
-     void fillText(DOMString text, unrestricted double x, unrestricted double y, optional unrestricted double maxWidth);
 @@ -80,7 +80,7 @@
      // pixel manipulation
      [RaisesException] ImageData createImageData(ImageData imagedata);
@@ -26,12 +11,3 @@ index 4371777bcd68c6e334d12a0ba5fd38874cdbdd49..f46a720b4973b707d01fe33e08667f09
      [RaisesException] void putImageData(ImageData imagedata, long dx, long dy);
      [RaisesException] void putImageData(ImageData imagedata, long dx, long dy, long dirtyX, long dirtyY, long dirtyWidth, long dirtyHeight);
  
-@@ -98,7 +98,7 @@
- 
-     // dashed lines
-     void setLineDash(sequence<unrestricted double> dash);
--    sequence<unrestricted double> getLineDash();
-+    [CallWith=ScriptState] sequence<unrestricted double> getLineDash();
-     attribute unrestricted double lineDashOffset;
- 
-     // text

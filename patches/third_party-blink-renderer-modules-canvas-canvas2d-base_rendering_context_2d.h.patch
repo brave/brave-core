@@ -1,39 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h
-index a823b929d4c0f492eaca09bd07beccd9bbb60f7c..d03e5bd899771b0de2af1b0484dab77a12fc91cb 100644
+index a823b929d4c0f492eaca09bd07beccd9bbb60f7c..8f4fc6ec9bedebf278a3d29cb18d6ce54f842bc3 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h
-@@ -50,7 +50,7 @@ class MODULES_EXPORT BaseRenderingContext2D : public GarbageCollectedMixin,
-   double miterLimit() const;
-   void setMiterLimit(double);
- 
--  const Vector<double>& getLineDash() const;
-+  const Vector<double>& getLineDash(ScriptState*) const;
-   void setLineDash(const Vector<double>&);
- 
-   double lineDashOffset() const;
-@@ -108,15 +108,17 @@ class MODULES_EXPORT BaseRenderingContext2D : public GarbageCollectedMixin,
-   void clip(const String& winding = "nonzero");
-   void clip(Path2D*, const String& winding = "nonzero");
- 
--  bool isPointInPath(const double x,
-+  bool isPointInPath(ScriptState*,
-+                     const double x,
-                      const double y,
-                      const String& winding = "nonzero");
--  bool isPointInPath(Path2D*,
-+  bool isPointInPath(ScriptState*,
-+                     Path2D*,
-                      const double x,
-                      const double y,
-                      const String& winding = "nonzero");
--  bool isPointInStroke(const double x, const double y);
--  bool isPointInStroke(Path2D*, const double x, const double y);
-+  bool isPointInStroke(ScriptState*, const double x, const double y);
-+  bool isPointInStroke(ScriptState*, Path2D*, const double x, const double y);
- 
-   void clearRect(double x, double y, double width, double height);
-   void fillRect(double x, double y, double width, double height);
-@@ -195,7 +197,7 @@ class MODULES_EXPORT BaseRenderingContext2D : public GarbageCollectedMixin,
+@@ -195,7 +195,7 @@ class MODULES_EXPORT BaseRenderingContext2D : public GarbageCollectedMixin,
  
    // For deferred canvases this will have the side effect of drawing recorded
    // commands in order to finalize the frame

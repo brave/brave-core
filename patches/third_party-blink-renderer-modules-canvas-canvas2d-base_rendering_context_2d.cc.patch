@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
-index 9ce2506096723d04b7aab6267d5c452cfe0424e8..7f391d85fce6472b50d8a08eb74bb8cc05c99dd8 100644
+index 9ce2506096723d04b7aab6267d5c452cfe0424e8..1769789c2c4fb55e6e917a60ca57e3aa8f0e7389 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.cc
 @@ -10,6 +10,7 @@
@@ -10,76 +10,7 @@ index 9ce2506096723d04b7aab6267d5c452cfe0424e8..7f391d85fce6472b50d8a08eb74bb8cc
  #include "third_party/blink/public/common/features.h"
  #include "third_party/blink/renderer/core/css/cssom/css_url_image_value.h"
  #include "third_party/blink/renderer/core/css/parser/css_parser.h"
-@@ -351,7 +352,12 @@ void BaseRenderingContext2D::setShadowColor(const String& color_string) {
-   ModifiableState().SetShadowColor(color.Rgb());
- }
- 
--const Vector<double>& BaseRenderingContext2D::getLineDash() const {
-+const Vector<double>& BaseRenderingContext2D::getLineDash(ScriptState* script_state) const {
-+  static const Vector<double> emptyVector;
-+  LocalDOMWindow* window = LocalDOMWindow::From(script_state);
-+  if (window && !AllowFingerprinting(window->GetFrame())) {
-+    return emptyVector;
-+  }
-   return GetState().LineDash();
- }
- 
-@@ -779,16 +785,26 @@ void BaseRenderingContext2D::clip(Path2D* dom_path,
-   ClipInternal(dom_path->GetPath(), winding_rule_string);
- }
- 
--bool BaseRenderingContext2D::isPointInPath(const double x,
-+bool BaseRenderingContext2D::isPointInPath(ScriptState* script_state,
-+                                           const double x,
-                                            const double y,
-                                            const String& winding_rule_string) {
-+  LocalDOMWindow* window = LocalDOMWindow::From(script_state);
-+  if (window && !AllowFingerprinting(window->GetFrame())) {
-+    return false;
-+  }
-   return IsPointInPathInternal(path_, x, y, winding_rule_string);
- }
- 
--bool BaseRenderingContext2D::isPointInPath(Path2D* dom_path,
-+bool BaseRenderingContext2D::isPointInPath(ScriptState* script_state,
-+                                           Path2D* dom_path,
-                                            const double x,
-                                            const double y,
-                                            const String& winding_rule_string) {
-+  LocalDOMWindow* window = LocalDOMWindow::From(script_state);
-+  if (window && !AllowFingerprinting(window->GetFrame())) {
-+    return false;
-+  }
-   return IsPointInPathInternal(dom_path->GetPath(), x, y, winding_rule_string);
- }
- 
-@@ -813,13 +829,23 @@ bool BaseRenderingContext2D::IsPointInPathInternal(
-                        SkFillTypeToWindRule(ParseWinding(winding_rule_string)));
- }
- 
--bool BaseRenderingContext2D::isPointInStroke(const double x, const double y) {
-+bool BaseRenderingContext2D::isPointInStroke(ScriptState* script_state,
-+                                             const double x, const double y) {
-+  LocalDOMWindow* window = LocalDOMWindow::From(script_state);
-+  if (window && !AllowFingerprinting(window->GetFrame())) {
-+    return false;
-+  }
-   return IsPointInStrokeInternal(path_, x, y);
- }
- 
--bool BaseRenderingContext2D::isPointInStroke(Path2D* dom_path,
-+bool BaseRenderingContext2D::isPointInStroke(ScriptState* script_state,
-+                                             Path2D* dom_path,
-                                              const double x,
-                                              const double y) {
-+  LocalDOMWindow* window = LocalDOMWindow::From(script_state);
-+  if (window && !AllowFingerprinting(window->GetFrame())) {
-+    return false;
-+  }
-   return IsPointInStrokeInternal(dom_path->GetPath(), x, y);
- }
- 
-@@ -1545,11 +1571,16 @@ ImageData* BaseRenderingContext2D::createImageData(
+@@ -1545,11 +1546,16 @@ ImageData* BaseRenderingContext2D::createImageData(
  }
  
  ImageData* BaseRenderingContext2D::getImageData(

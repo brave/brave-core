@@ -28,13 +28,6 @@ namespace {
 
 const char kIframeID[] = "test";
 
-const char kPointInPathScript[] =
-    "var canvas = document.createElement('canvas');"
-    "var ctx = canvas.getContext('2d');"
-    "ctx.rect(10, 10, 100, 100);"
-    "ctx.stroke();"
-    "domAutomationController.send(ctx.isPointInPath(10, 10));";
-
 const char kGetImageDataScript[] =
     "var canvas = document.createElement('canvas');"
     "var ctx = canvas.getContext('2d');"
@@ -289,119 +282,6 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
 
   base::ScopedTempDir temp_user_data_dir_;
 };
-
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
-                       BlockThirdPartyFPByDefault) {
-  ContentSettingsForOneType fp_settings;
-  content_settings()->GetSettingsForOneType(ContentSettingsType::PLUGINS,
-                                            brave_shields::kFingerprinting,
-                                            &fp_settings);
-  EXPECT_EQ(fp_settings.size(), 0u)
-      << "There should not be any visible fingerprinting rules.";
-
-  NavigateToPageWithIframe();
-
-  bool isPointInPath;
-  EXPECT_TRUE(ExecuteScriptAndExtractBool(contents(), kPointInPathScript,
-                                          &isPointInPath));
-  EXPECT_TRUE(isPointInPath);
-
-  NavigateIframe();
-  EXPECT_TRUE(ExecuteScriptAndExtractBool(child_frame(), kPointInPathScript,
-                                          &isPointInPath));
-  EXPECT_FALSE(isPointInPath);
-}
-
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest, BlockFP) {
-  BlockFingerprinting();
-
-  ContentSettingsForOneType fp_settings;
-  content_settings()->GetSettingsForOneType(ContentSettingsType::PLUGINS,
-                                            brave_shields::kFingerprinting,
-                                            &fp_settings);
-  EXPECT_EQ(fp_settings.size(), 2u);
-
-  NavigateToPageWithIframe();
-
-  bool isPointInPath;
-  EXPECT_TRUE(ExecuteScriptAndExtractBool(contents(), kPointInPathScript,
-                                          &isPointInPath));
-  EXPECT_FALSE(isPointInPath);
-
-  NavigateIframe();
-  EXPECT_TRUE(ExecuteScriptAndExtractBool(child_frame(), kPointInPathScript,
-                                          &isPointInPath));
-  EXPECT_FALSE(isPointInPath);
-}
-
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest, AllowFP) {
-  AllowFingerprinting();
-
-  ContentSettingsForOneType fp_settings;
-  content_settings()->GetSettingsForOneType(ContentSettingsType::PLUGINS,
-                                            brave_shields::kFingerprinting,
-                                            &fp_settings);
-  EXPECT_EQ(fp_settings.size(), 2u);
-
-  NavigateToPageWithIframe();
-
-  bool isPointInPath;
-  EXPECT_TRUE(ExecuteScriptAndExtractBool(contents(), kPointInPathScript,
-                                          &isPointInPath));
-  EXPECT_TRUE(isPointInPath);
-
-  NavigateIframe();
-  EXPECT_TRUE(ExecuteScriptAndExtractBool(child_frame(), kPointInPathScript,
-                                          &isPointInPath));
-  EXPECT_TRUE(isPointInPath);
-}
-
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
-                       BlockThirdPartyFP) {
-  Block3PFingerprinting();
-
-  ContentSettingsForOneType fp_settings;
-  content_settings()->GetSettingsForOneType(ContentSettingsType::PLUGINS,
-                                            brave_shields::kFingerprinting,
-                                            &fp_settings);
-  EXPECT_EQ(fp_settings.size(), 2u);
-
-  NavigateToPageWithIframe();
-
-  bool isPointInPath;
-  EXPECT_TRUE(ExecuteScriptAndExtractBool(contents(), kPointInPathScript,
-                                          &isPointInPath));
-  EXPECT_TRUE(isPointInPath);
-
-  NavigateIframe();
-  EXPECT_TRUE(ExecuteScriptAndExtractBool(child_frame(), kPointInPathScript,
-                                          &isPointInPath));
-  EXPECT_FALSE(isPointInPath);
-}
-
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
-                       BlockFPShieldsDown) {
-  BlockFingerprinting();
-  ShieldsDown();
-
-  ContentSettingsForOneType fp_settings;
-  content_settings()->GetSettingsForOneType(ContentSettingsType::PLUGINS,
-                                            brave_shields::kFingerprinting,
-                                            &fp_settings);
-  EXPECT_EQ(fp_settings.size(), 2u);
-
-  NavigateToPageWithIframe();
-
-  bool isPointInPath;
-  EXPECT_TRUE(ExecuteScriptAndExtractBool(contents(), kPointInPathScript,
-                                          &isPointInPath));
-  EXPECT_TRUE(isPointInPath);
-
-  NavigateIframe();
-  EXPECT_TRUE(ExecuteScriptAndExtractBool(child_frame(), kPointInPathScript,
-                                          &isPointInPath));
-  EXPECT_TRUE(isPointInPath);
-}
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
                        Block3PFPGetImageData) {
