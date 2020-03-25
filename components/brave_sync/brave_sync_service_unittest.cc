@@ -1647,36 +1647,50 @@ TEST_F(BraveSyncServiceTest, MigrateDuplicatedBookmarksObjectIds) {
 
   model()->Copy(bookmark_a1, model()->other_node(), 1);
 
-  const bookmarks::BookmarkNode* bookmark_copy =
-      model()->other_node()->children().at(1).get();
+  model()->Copy(bookmark_a1, model()->other_node(), 2);
 
-  std::string meta_object_id;
-  EXPECT_TRUE(bookmark_copy->GetMetaInfo("object_id", &meta_object_id));
-  EXPECT_EQ(meta_object_id, "object_id_value");
-  std::string meta_order;
-  EXPECT_TRUE(bookmark_copy->GetMetaInfo("order", &meta_order));
-  EXPECT_EQ(meta_order, "255.255.255.3");
-  std::string meta_sync_timestamp;
-  EXPECT_TRUE(
-      bookmark_copy->GetMetaInfo("sync_timestamp", &meta_sync_timestamp));
-  EXPECT_EQ(meta_sync_timestamp, "sync_timestamp_value");
-  std::string meta_version;
-  EXPECT_TRUE(bookmark_copy->GetMetaInfo("version", &meta_version));
-  EXPECT_EQ(meta_version, "version_value");
+  for (size_t i = 1; i <= 2; ++i) {
+    const bookmarks::BookmarkNode* bookmark_copy =
+        model()->other_node()->children().at(i).get();
+
+    // Verify fields after copying
+    std::string meta_object_id;
+    EXPECT_TRUE(bookmark_copy->GetMetaInfo("object_id", &meta_object_id));
+    EXPECT_EQ(meta_object_id, "object_id_value");
+    std::string meta_order;
+    EXPECT_TRUE(bookmark_copy->GetMetaInfo("order", &meta_order));
+    EXPECT_EQ(meta_order, "255.255.255.3");
+    std::string meta_sync_timestamp;
+    EXPECT_TRUE(
+        bookmark_copy->GetMetaInfo("sync_timestamp", &meta_sync_timestamp));
+    EXPECT_EQ(meta_sync_timestamp, "sync_timestamp_value");
+    std::string meta_version;
+    EXPECT_TRUE(bookmark_copy->GetMetaInfo("version", &meta_version));
+    EXPECT_EQ(meta_version, "version_value");
+
+    // Simulate all bookmarks don`t have added time, as a worse case,
+    // but happened on live profile
+    AsMutable(bookmark_copy)->set_date_added(base::Time());
+  }
 
   sync_service()->AddNonClonedBookmarkKeys(model());
 
   // Do the migration
   BraveProfileSyncServiceImpl::MigrateDuplicatedBookmarksObjectIds(profile(),
                                                                    model());
-  bookmark_copy = model()->other_node()->children().at(1).get();
 
-  std::string meta_migrated_object_id;
-  EXPECT_TRUE(
-      bookmark_copy->GetMetaInfo("object_id", &meta_migrated_object_id));
-  EXPECT_NE(meta_migrated_object_id, "object_id_value");
-
-  std::string meta_migrated_order;
-  EXPECT_TRUE(bookmark_copy->GetMetaInfo("order", &meta_migrated_order));
-  EXPECT_NE(meta_migrated_order, "255.255.255.3");
+  // All the bookmarks after migration must not have sync meta info
+  for (size_t i = 0; i <= 2; ++i) {
+    const bookmarks::BookmarkNode* bookmark =
+        model()->other_node()->children().at(i).get();
+    std::string migrated_object_id;
+    std::string migrated_order;
+    std::string migrated_sync_timestamp;
+    std::string migrated_version;
+    EXPECT_FALSE(bookmark->GetMetaInfo("object_id", &migrated_object_id));
+    EXPECT_FALSE(bookmark->GetMetaInfo("order", &migrated_order));
+    EXPECT_FALSE(
+        bookmark->GetMetaInfo("sync_timestamp", &migrated_sync_timestamp));
+    EXPECT_FALSE(bookmark->GetMetaInfo("version", &migrated_version));
+  }
 }
