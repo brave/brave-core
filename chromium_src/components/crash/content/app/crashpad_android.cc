@@ -10,7 +10,7 @@
 namespace crashpad {
 
 namespace {
-const char brave_crash_url[] = "https://laptop-updates.brave.com/1/bc-crashes";
+const char brave_crash_url[] = "https://cr.brave.com";
 }
 
 class BraveCrashpadClient {
