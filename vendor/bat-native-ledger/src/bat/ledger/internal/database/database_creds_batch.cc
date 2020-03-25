@@ -112,10 +112,9 @@ bool DatabaseCredsBatch::MigrateToV18(ledger::DBTransaction* transaction) {
   transaction->commands.push_back(std::move(command));
 
   query = base::StringPrintf(
-      "UPDATE %s SET "
-      "status = (SELECT p.status FROM %s as cb "
-      "INNER JOIN promotion as p ON cb.trigger_id = p.promotion_id)",
-      kTableName,
+      "UPDATE %s as cb SET "
+      "status = (SELECT p.status FROM promotion as p "
+      "WHERE cb.trigger_id = p.promotion_id)",
       kTableName);
 
   command = ledger::DBCommand::New();

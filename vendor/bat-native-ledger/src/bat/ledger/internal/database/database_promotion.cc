@@ -172,10 +172,9 @@ bool DatabasePromotion::MigrateToV18(ledger::DBTransaction* transaction) {
   transaction->commands.push_back(std::move(command));
 
   query = base::StringPrintf(
-      "UPDATE %s SET claim_id = "
+      "UPDATE %s as p SET claim_id = "
       "(SELECT claim_id FROM promotion_creds as pc "
-      "WHERE pc.promotion_id = %s.promotion_id)",
-      kTableName,
+      "WHERE pc.promotion_id = p.promotion_id)",
       kTableName);
 
   command = ledger::DBCommand::New();
