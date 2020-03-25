@@ -544,7 +544,7 @@
                   "contribute": {
                     "type": "number"
                   },
-                  "donation": {
+                  "monthly": {
                     "type": "number"
                   },
                   "grant": {

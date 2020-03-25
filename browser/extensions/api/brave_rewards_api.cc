@@ -449,7 +449,7 @@ void BraveRewardsGetBalanceReportFunction::OnBalanceReport(
   data->SetDoubleKey("contribute", report.auto_contribute);
   data->SetDoubleKey("grant", report.grants);
   data->SetDoubleKey("tips", report.one_time_donation);
-  data->SetDoubleKey("donation", report.recurring_donation);
+  data->SetDoubleKey("monthly", report.recurring_donation);
   Respond(OneArgument(std::move(data)));
 }
 
