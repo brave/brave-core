@@ -57,7 +57,7 @@ bool BraveCrashpadClient::StartHandler(
     bool asynchronous_start) {
   return crash_reporter::GetCrashpadClient().StartHandler(
       handler, database, metrics_dir,
-      "https://laptop-updates.brave.com/1/bc-crashes", annotations, arguments,
+      "https://cr.brave.com", annotations, arguments,
       restartable, asynchronous_start);
 }
 
