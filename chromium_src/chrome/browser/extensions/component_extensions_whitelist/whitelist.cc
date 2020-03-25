@@ -10,16 +10,18 @@
 #include "base/stl_util.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/components/brave_extension/grit/brave_extension.h"
-#include "components/grit/brave_components_resources.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
+#include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
+#include "components/grit/brave_components_resources.h"
+
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
 #endif
+
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
 #include "brave/components/brave_sync/grit/brave_sync_resources.h"
 #endif
-#include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 
 namespace extensions {
 
