@@ -26,6 +26,16 @@ class BinanceGetUserTLDFunction :
   ResponseAction Run() override;
 };
 
+class BinanceIsSupportedRegionFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("binance.isSupportedRegion", UNKNOWN)
+
+ protected:
+  ~BinanceIsSupportedRegionFunction() override {}
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

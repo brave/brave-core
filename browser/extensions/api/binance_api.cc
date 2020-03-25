@@ -10,6 +10,7 @@
 
 #include "base/environment.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/components/binance/browser/static_values.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/country_codes/country_codes.h"
 
@@ -37,6 +38,31 @@ BinanceGetUserTLDFunction::Run() {
 
   return RespondNow(OneArgument(
       std::make_unique<base::Value>(user_TLD)));
+}
+
+ExtensionFunction::ResponseAction
+BinanceIsSupportedRegionFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  if (brave::IsTorProfile(profile)) {
+    return RespondNow(Error("Not available in Tor profile"));
+  }
+
+  bool is_blacklisted = false;
+  const int32_t user_country_id =
+      country_codes::GetCountryIDFromPrefs(profile->GetPrefs());
+
+  for (const auto& country : binance::kBinanceBlacklistRegions) {
+    const int id = country_codes::CountryCharsToCountryID(
+        country.at(0), country.at(1));
+
+    if (id == user_country_id) {
+      is_blacklisted = true;
+      break;
+    }
+  }
+
+  return RespondNow(OneArgument(
+      std::make_unique<base::Value>(!is_blacklisted)));
 }
 
 }  // namespace api

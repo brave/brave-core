@@ -1,0 +1,13 @@
+import("//brave/build/config.gni")
+import("//brave/components/binance/browser/buildflags/buildflags.gni")
+
+assert(binance_enabled)
+
+source_set("browser") {
+  public_deps = [
+    "buildflags"
+  ]
+  sources = [
+    "static_values.h",
+  ]
+}
