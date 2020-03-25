@@ -102,7 +102,7 @@ def Main(argv):
     output_path = options.plist_output
 
   if options.brave_channel:
-    plist['BraveChannelID'] = options.brave_channel
+    plist['KSChannelID'] = options.brave_channel
 
   plist['CrProductDirName'] = options.brave_product_dir_name
 
