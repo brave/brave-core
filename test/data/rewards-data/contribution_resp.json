@@ -1,0 +1,16 @@
+{
+  "signature":"28a00fb8a4b663b9a6e38e8e712a3df, iay57CDbWSG9Y2z39QVgx0nSSexW4OAWwjQdBuq+EN 4BaXMtejRWXjKZ17aAfWLkj08t8ClSQCXFUo0QPkQvL 1 CdbDycAPfzVRsfT3p3jH8pdyFjuW1cySuu68jcovI0n 3p+RP29bqtPgACqJn98xWhUepfoV1ZQ2o4LfTOyHY9H\n",
+  "payload":{
+    "adFree":{
+      "fee":{
+        "USD":5
+      },
+      "votes":100,
+      "altcurrency":"BAT",
+      "probi":"25000000000000000000"
+    }
+  },
+  "surveyorId":"FuznYc8NaAXt+At2S+DdaM/rsEyHWd3vFpLpbCLm/z7",
+  "surveyVK":"==========ANONLOGIN_VK_BEG==========\n6SWJBmkQXkPm1/0Sge4ezHWVXRCtdbGFwcb5XZnjEH2 O4cvn69IzJiH5znUsFK45e4KNoccd4vHmtaozGQgEj 1\n2MHE1Qepdw64bc69nN58JDslzeI36AHr5VfRQfmB/VC 6xtkMq6YI56oVETjouerencG2CJ4pP1Y0PPEPWAyi84 1\n6belVbSubm7yHJFFD5JIz8BwCUBGzHawZH/ILqiSZGh 6r6Rpi8hGcQWa+regtXCtzx5uJI+BG3dzln6/DuKVGe 1\n9XqLkmga7sBZRBeESqNIs2HlUr71C7VQ13mG1Ias2W mg+JzzbVuJKLYABVE975tWtKT0o7dxJOBk16zUdNhc 1\n8yNeactDzb+RTNHNIrQSsvT00wEDP0cRdMkrD0vQW5A 4tga6SJf+aU3ewRmEa2+azykll3d77VTsfvTCVFbNWb y3h8BC+KIIU54hv02sISKzRpSMN3kam1sFfY6Dp2Xq 31AENnYtE0dGLqMhr0t+pDKx/dPJ1rO4hncDfqfaj2Z 1 0\n===========ANONLOGIN_VK_END==========",
+  "registrarVK":"==========ANONLOGIN_VK_BEG==========\nx3EmZXFb2jD7OocZz6l7o638S45k2kKrX5BrWp1Ox+ ANJXSauJVPNHKl/mmakFwxbkwJkJzfXe+c9+jxFtuX6 1\n5xMuqWE8J7HIHbW/UEJwFELYjTWRF10x7LMd7s46MVT 4DC6LqGM8zLz1pCsHA3qab48gkpeiQpNZAdb9owFvU6 1\n1tADCD6LdrEDQQDhRy1ijjAfhV9uKwlKKuhD6xXyPAZ BLOzUy+ZZh48riPnAHnUGal+ceCclccZXmoXXx92WHW 1\n7VRDst4U4iaT/9QNCwajEaqgRNtKPV1Dp5QuMjP019h HucbxBMGGAZBNLXGzfKsTlF+wAdmOFAvBRAo8i2Azd 1\n5SLk8SphICEkF+CNhN5g7IX2ih+Tb6w14LLlwupKw7y 96ANsdHzg0pwo2DDWOyAh1YPnION196pIT9xwISFZTA 3ef5G5d2c8cctdK4LuaxlSeEf1OZ100Sy5un5EjuHJB 77yFnY61GM7PHd6q3TLs2QS6c9PfrXD2idxaFq2DMd 1 0\n===========ANONLOGIN_VK_END=========="
+}

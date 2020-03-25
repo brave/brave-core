@@ -185,6 +185,7 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
 
     return (
       <TableTransactions
+        id={'transactionTable'}
         rows={transactionRows}
       >
         {getLocale('noActivity')}
