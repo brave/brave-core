@@ -18,7 +18,7 @@ using brave_shields::features::kBraveAdblockCosmeticFiltering;
 using brave_sync::features::kBraveSync;
 using ntp_background_images::features::kBraveNTPBrandedWallpaper;
 using ntp_background_images::features::kBraveNTPBrandedWallpaperDemo;
-using ntp_background_images::features::kBraveNTPSuperReferrerWallpaper;
+using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 
 #define BRAVE_FEATURE_ENTRIES \
     {"use-dev-updater-url",                                                \
@@ -45,7 +45,7 @@ using ntp_background_images::features::kBraveNTPSuperReferrerWallpaper;
      flag_descriptions::kBraveCustomHomepageName,                          \
      flag_descriptions::kBraveCustomHomepageDescription,                   \
      flags_ui::kOsMac | flags_ui::kOsWin | flags_ui::kOsAndroid,           \
-     FEATURE_VALUE_TYPE(kBraveNTPSuperReferrerWallpaper)},
+     FEATURE_VALUE_TYPE(kBraveNTPSuperReferralWallpaper)},
 
 #define SetFeatureEntryEnabled SetFeatureEntryEnabled_ChromiumImpl
 #include "../../../../chrome/browser/about_flags.cc"  // NOLINT

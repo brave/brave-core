@@ -53,7 +53,7 @@ struct NTPBackgroundImagesData {
   // Returns empty list value if this data is for regional wallpaper.
   base::Value GetTopSites() const;
 
-  bool IsSuperReferrer() const;
+  bool IsSuperReferral() const;
 
   std::string logo_image_url() const;
   std::vector<std::string> wallpaper_image_urls() const;

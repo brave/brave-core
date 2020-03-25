@@ -23,7 +23,7 @@
 
 namespace ntp_background_images {
 
-std::unique_ptr<NTPBackgroundImagesData> GetDemoWallpaper(bool super_referrer) {
+std::unique_ptr<NTPBackgroundImagesData> GetDemoWallpaper(bool super_referral) {
   auto demo = std::make_unique<NTPBackgroundImagesData>();
   demo->url_prefix = "chrome://newtab/ntp-dummy-brandedwallpaper/";
   demo->backgrounds = {
@@ -35,7 +35,7 @@ std::unique_ptr<NTPBackgroundImagesData> GetDemoWallpaper(bool super_referrer) {
   demo->logo_company_name = "Technikke";
   demo->logo_destination_url = "https://brave.com";
 
-  if (super_referrer) {
+  if (super_referral) {
     demo->top_sites = {
       { "Brave", "https://brave.com", "brave.png",
         base::FilePath(FILE_PATH_LITERAL("brave.png")) },
@@ -75,7 +75,7 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
 
   void EnableSRPref(bool enable) {
     prefs()->SetBoolean(
-        prefs::kNewTabPageShowSuperReferrerBackgroundImage, enable);
+        prefs::kNewTabPageShowSuperReferralBackgroundImage, enable);
   }
 
   sync_preferences::TestingPrefServiceSyncable* prefs() { return &prefs_; }

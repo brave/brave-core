@@ -155,7 +155,7 @@ int NTPBackgroundImagesSource::GetTopSiteIndexFromPath(
   if (!images_data)
     return -1;
 
-  if (!images_data->IsSuperReferrer())
+  if (!images_data->IsSuperReferral())
     return -1;
 
   const int top_site_count = images_data->top_sites.size();

@@ -29,7 +29,7 @@ void ViewCounterService::RegisterProfilePrefs(
   registry->RegisterBooleanPref(
       prefs::kNewTabPageShowSponsoredImagesBackgroundImage, true);
   registry->RegisterBooleanPref(
-      prefs::kNewTabPageShowSuperReferrerBackgroundImage, true);
+      prefs::kNewTabPageShowSuperReferralBackgroundImage, true);
   registry->RegisterBooleanPref(
       prefs::kNewTabPageShowBackgroundImage, true);
 }
@@ -101,7 +101,7 @@ void ViewCounterService::OnUpdated(NTPBackgroundImagesData* data) {
   if (data) {
     model_.ResetCurrentWallpaperImageIndex();
     model_.set_total_image_count(data->backgrounds.size());
-    model_.set_ignore_count_to_branded_wallpaper(data->IsSuperReferrer());
+    model_.set_ignore_count_to_branded_wallpaper(data->IsSuperReferral());
   }
 }
 
@@ -133,8 +133,8 @@ bool ViewCounterService::IsBrandedWallpaperActive() const {
   if (!GetCurrentBrandedWallpaperData())
     return false;
 
-  if (GetCurrentBrandedWallpaperData()->IsSuperReferrer())
-    return IsSuperReferrerWallpaperOptedIn();
+  if (GetCurrentBrandedWallpaperData()->IsSuperReferral())
+    return IsSuperReferralWallpaperOptedIn();
 
   return IsSponsoredImagesWallpaperOptedIn();
 }
@@ -145,8 +145,8 @@ bool ViewCounterService::IsSponsoredImagesWallpaperOptedIn() const {
         is_supported_locale_;
 }
 
-bool ViewCounterService::IsSuperReferrerWallpaperOptedIn() const {
-  return prefs_->GetBoolean(prefs::kNewTabPageShowSuperReferrerBackgroundImage);
+bool ViewCounterService::IsSuperReferralWallpaperOptedIn() const {
+  return prefs_->GetBoolean(prefs::kNewTabPageShowSuperReferralBackgroundImage);
 }
 
 }  // namespace ntp_background_images

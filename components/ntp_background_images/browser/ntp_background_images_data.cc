@@ -148,7 +148,7 @@ bool NTPBackgroundImagesData::IsValid() const {
   return (!backgrounds.empty() && !logo_destination_url.empty());
 }
 
-bool NTPBackgroundImagesData::IsSuperReferrer() const {
+bool NTPBackgroundImagesData::IsSuperReferral() const {
   return IsValid() && !top_sites.empty();
 }
 
@@ -160,11 +160,11 @@ base::Value NTPBackgroundImagesData::GetBackgroundAt(size_t index) {
     return data;
 
   if (!theme_name.empty()) {
-    DCHECK(IsSuperReferrer());
+    DCHECK(IsSuperReferral());
     data.SetStringKey("themeName", theme_name);
   }
 
-  data.SetBoolKey("isSponsored", !IsSuperReferrer());
+  data.SetBoolKey("isSponsored", !IsSuperReferral());
   data.SetStringKey("wallpaperImageUrl",
                     wallpaper_image_urls()[index]);
   data.SetStringKey("wallpaperImagePath",

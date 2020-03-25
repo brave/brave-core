@@ -39,7 +39,7 @@ class NTPBackgroundImagesSourceTest : public testing::Test {
 };
 
 TEST_F(NTPBackgroundImagesSourceTest, BasicTest) {
-  // Valid super referrer component json data.
+  // Valid super referral component json data.
   const std::string test_json_string_referral = R"(
       {
         "schemaVersion": 1,

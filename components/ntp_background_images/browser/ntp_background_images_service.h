@@ -65,15 +65,15 @@ class NTPBackgroundImagesService {
   friend class TestNTPBackgroundImagesService;
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest, InternalDataTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
-                           WithDefaultReferrerCodeTest1);
+                           WithDefaultReferralCodeTest1);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
-                           WithDefaultReferrerCodeTest2);
+                           WithDefaultReferralCodeTest2);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
-                           WithNonSuperReferrerCodeTest);
+                           WithNonSuperReferralCodeTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
-                           WithSuperReferrerCodeTest);
+                           WithSuperReferralCodeTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
-                           InstallSuperReferrerOverReferrerTest);
+                           InstallSuperReferralOverReferralTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
                            SimulateNetworkErrorTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest, CleanUpTest);
@@ -89,7 +89,7 @@ class NTPBackgroundImagesService {
                            ActiveInitiallyOptedIn);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest, BasicTest);
 
-  void OnComponentReady(bool is_super_referrer,
+  void OnComponentReady(bool is_super_referral,
                         const base::FilePath& installed_dir);
   void OnGetComponentJsonData(const std::string& json_string);
   void OnPreferenceChanged(const std::string& pref_name);
@@ -98,7 +98,7 @@ class NTPBackgroundImagesService {
   void GetComponentJsonData(const base::FilePath& installed_dir);
   void NotifyObservers();
   void DetermineTargetComponent();
-  bool IsSuperReferrerCode(const std::string& referral_code);
+  bool IsSuperReferralCode(const std::string& referral_code);
   std::string GetReferralPromoCode() const;
   std::string GetCachedReferralPromoCode() const;
   void UnRegisterSponsoredImagesComponentIfRunning();
@@ -109,21 +109,21 @@ class NTPBackgroundImagesService {
 
   void CleanUp();
 
-  // Check super referrer component is available for this install and start
-  // start it if we can confirm this insall comes from super referrer.
+  // Check super referral component is available for this install and start
+  // start it if we can confirm this insall comes from super referral.
   // Otherwise, start sponsored images component.
   // virtual for test.
-  virtual void StartSuperReferrerComponent(
+  virtual void StartSuperReferralComponent(
       const std::string& super_referral_code);
   virtual void StartSponsoredImagesComponent();
-  virtual void DownloadSuperReferrerMappingTable();
+  virtual void DownloadSuperReferralMappingTable();
   virtual void MonitorReferralPromoCodeChange();
-  virtual void UnRegisterSuperReferrerComponentIfRunning(
+  virtual void UnRegisterSuperReferralComponentIfRunning(
       const std::string& referral_code);
 
   // Used to flag what component is our last decision.
   // If this is true, NTP SR component registration is requested lastly.
-  bool is_super_referrer_lastly_asked_component_ = false;
+  bool is_super_referral_lastly_asked_component_ = false;
   bool test_data_used_ = false;
   base::Value mapping_table_value_;
   component_updater::ComponentUpdateService* component_update_service_;

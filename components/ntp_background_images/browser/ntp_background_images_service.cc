@@ -46,7 +46,7 @@ namespace {
 
 constexpr int kMaxBodySize = 1024 * 1024;
 
-constexpr char kDemoSuperReferrerCode[] = "TECHNIK";
+constexpr char kDemoSuperReferralCode[] = "TECHNIK";
 
 constexpr char kNTPSIManifestFile[] = "photo.json";
 constexpr char kNTPSRManifestFile[] = "data.json";
@@ -60,7 +60,7 @@ void DeleteComponentFolder(const base::FilePath& component_dir) {
 }
 
 // If registered component is for sponsored images wallpaper, it has photo.json
-// in |installed_dir|. Otherwise, it has data.json for super referrer.
+// in |installed_dir|. Otherwise, it has data.json for super referral.
 std::string ReadComponentJsonData(const base::FilePath& installed_dir) {
   const auto ntp_si_manifest_path =
       installed_dir.AppendASCII(kNTPSIManifestFile);
@@ -87,7 +87,7 @@ std::string ReadComponentJsonData(const base::FilePath& installed_dir) {
   return contents;
 }
 
-bool IsValidSuperReferrerComponentInfo(const base::Value& component_info) {
+bool IsValidSuperReferralComponentInfo(const base::Value& component_info) {
   if (!component_info.is_dict())
     return false;
 
@@ -108,10 +108,10 @@ const net::NetworkTrafficAnnotationTag& GetNetworkTrafficAnnotationTag() {
           sender:
             "Brave NTP Background Images Service"
           description:
-            "Download Super referrer component mapping table"
+            "Download Super referral component mapping table"
           trigger:
             "When the browser needs to check whether this installation was by
-             a 'super referrer'"
+             a 'super referral'"
           data: "component mapping table"
           destination: WEBSITE
         }
@@ -123,12 +123,12 @@ const net::NetworkTrafficAnnotationTag& GetNetworkTrafficAnnotationTag() {
   return network_traffic_annotation_tag;
 }
 
-std::string GetSuperReferrerMappingTableURL() {
+std::string GetSuperReferralMappingTableURL() {
   const base::CommandLine& command_line =
         *base::CommandLine::ForCurrentProcess();
   if (command_line.HasSwitch(::switches::kUseGoUpdateDev))
-    return kSuperReferrerMappingTableDevURL;
-  return kSuperReferrerMappingTableURL;
+    return kSuperReferralMappingTableDevURL;
+  return kSuperReferralMappingTableURL;
 }
 
 }  // namespace
@@ -150,10 +150,10 @@ void NTPBackgroundImagesService::Init() {
     return;
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-  if (base::FeatureList::IsEnabled(features::kBraveNTPSuperReferrerWallpaper)) {
+  if (base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper)) {
     // Download mapping table first. Then determine which component should be
     // registered.
-    DownloadSuperReferrerMappingTable();
+    DownloadSuperReferralMappingTable();
     return;
   }
 #endif
@@ -161,9 +161,9 @@ void NTPBackgroundImagesService::Init() {
   StartSponsoredImagesComponent();
 }
 
-void NTPBackgroundImagesService::DownloadSuperReferrerMappingTable() {
+void NTPBackgroundImagesService::DownloadSuperReferralMappingTable() {
   auto request = std::make_unique<network::ResourceRequest>();
-  request->url = GURL(GetSuperReferrerMappingTableURL());
+  request->url = GURL(GetSuperReferralMappingTableURL());
   request->load_flags =
       net::LOAD_DO_NOT_SEND_COOKIES | net::LOAD_DO_NOT_SAVE_COOKIES;
   loader_ = network::SimpleURLLoader::Create(
@@ -214,7 +214,7 @@ void NTPBackgroundImagesService::UnRegisterSponsoredImagesComponentIfRunning() {
   }
 }
 
-void NTPBackgroundImagesService::StartSuperReferrerComponent(
+void NTPBackgroundImagesService::StartSuperReferralComponent(
     const std::string& super_referral_code) {
   DCHECK(mapping_table_value_.is_dict());
 
@@ -224,21 +224,21 @@ void NTPBackgroundImagesService::StartSuperReferrerComponent(
     return;
   }
 
-  is_super_referrer_lastly_asked_component_ = true;
+  is_super_referral_lastly_asked_component_ = true;
   if (IsAlreadyRegistered(*value->FindStringKey(kComponentID)))
     return;
 
-  local_pref_->Set(prefs::kNewTabPageCachedSuperReferrerComponentInfo, *value);
+  local_pref_->Set(prefs::kNewTabPageCachedSuperReferralComponentInfo, *value);
 
   UnRegisterSponsoredImagesComponentIfRunning();
 
   DVLOG(2) << __func__ << ": Start NTP SR component";
-  DCHECK(IsValidSuperReferrerComponentInfo(*value));
+  DCHECK(IsValidSuperReferralComponentInfo(*value));
   RegisterNTPBackgroundImagesComponent(
       component_update_service_,
       *value->FindStringKey(kPublicKey),
       *value->FindStringKey(kComponentID),
-      base::StringPrintf("NTP Super Referrer (%s)",
+      base::StringPrintf("NTP Super Referral (%s)",
                          value->FindStringKey(kCompanyName)->c_str()),
       base::BindRepeating(&NTPBackgroundImagesService::OnComponentReady,
                           weak_factory_.GetWeakPtr(),
@@ -253,12 +253,12 @@ void NTPBackgroundImagesService::StartSponsoredImagesComponent() {
   if (!data)
     return;
 
-  is_super_referrer_lastly_asked_component_ = false;
+  is_super_referral_lastly_asked_component_ = false;
   if (IsAlreadyRegistered(data->component_id))
     return;
 
   // If SI is not running, unregister SR if it is running now.
-  UnRegisterSuperReferrerComponentIfRunning(GetCachedReferralPromoCode());
+  UnRegisterSuperReferralComponentIfRunning(GetCachedReferralPromoCode());
 
   DVLOG(2) << __func__ << ": Start NTP SI component";
   RegisterNTPBackgroundImagesComponent(
@@ -271,7 +271,7 @@ void NTPBackgroundImagesService::StartSponsoredImagesComponent() {
                           false));
 }
 
-void NTPBackgroundImagesService::UnRegisterSuperReferrerComponentIfRunning(
+void NTPBackgroundImagesService::UnRegisterSuperReferralComponentIfRunning(
     const std::string& referral_code) {
   if (!mapping_table_value_.is_dict())
     return;
@@ -305,17 +305,17 @@ void NTPBackgroundImagesService::OnGetMappingTableData(
     DVLOG(2) << __func__ << ": Failed to fetch mapping table."
                          << " Start NTP SR or SI.";
     const auto* value = local_pref_->Get(
-        prefs::kNewTabPageCachedSuperReferrerComponentInfo);
+        prefs::kNewTabPageCachedSuperReferralComponentInfo);
     // If we don't get proper mapping table by network error or any reason,
-    // start SR if this install comes from valid super referrer install.
+    // start SR if this install comes from valid super referral install.
     // If not, start SI component.
-    if (IsValidSuperReferrerComponentInfo(*value)) {
+    if (IsValidSuperReferralComponentInfo(*value)) {
       // Generate temporal mapping table that only includes current install
       // because rest of the code assumes |mapping_table_value_| is valid.
       const std::string cached_promo_code = GetCachedReferralPromoCode();
       mapping_table_value_ = base::Value(base::Value::Type::DICTIONARY);
       mapping_table_value_.SetKey(cached_promo_code, value->Clone());
-      StartSuperReferrerComponent(cached_promo_code);
+      StartSuperReferralComponent(cached_promo_code);
       return;
     }
     StartSponsoredImagesComponent();
@@ -323,7 +323,7 @@ void NTPBackgroundImagesService::OnGetMappingTableData(
   }
 
   if (!mapping_table_value->is_dict()) {
-    DVLOG(2) << __func__ << ": We don't have any super referrer."
+    DVLOG(2) << __func__ << ": We don't have any super referral."
                          << " Mapping table is empty.";
     StartSponsoredImagesComponent();
     return;
@@ -374,28 +374,28 @@ void NTPBackgroundImagesService::DetermineTargetComponent() {
   }
 
   // Current one is not default promo code.
-  // Then, check current promo code is super referrer or not.
-  if (IsSuperReferrerCode(cached_promo_code)) {
+  // Then, check current promo code is super referral or not.
+  if (IsSuperReferralCode(cached_promo_code)) {
     DVLOG(2) << __func__
-             << ": Super referrer (" << cached_promo_code << ") is detected";
-    StartSuperReferrerComponent(cached_promo_code);
+             << ": Super referral (" << cached_promo_code << ") is detected";
+    StartSuperReferralComponent(cached_promo_code);
     return;
   }
 
   DVLOG(2) << __func__
-           << ": Non super referrer (" << cached_promo_code << ") is detected";
+           << ": Non super referral (" << cached_promo_code << ") is detected";
   StartSponsoredImagesComponent();
 }
 
 void NTPBackgroundImagesService::CleanUp() {
-  if (IsSuperReferrerCode(GetCachedReferralPromoCode()))
+  if (IsSuperReferralCode(GetCachedReferralPromoCode()))
     return;
 
   // If browser gets invalid NTP SR component during the runtime, it's cleaned
   // up by unregistering. If not, we should cleanup assets explicitely.
   const auto* value = local_pref_->Get(
-      prefs::kNewTabPageCachedSuperReferrerComponentInfo);
-  if (IsValidSuperReferrerComponentInfo(*value)) {
+      prefs::kNewTabPageCachedSuperReferralComponentInfo);
+  if (IsValidSuperReferralComponentInfo(*value)) {
     const std::string id = *value->FindStringKey(kComponentID);
     base::FilePath component_dir;
     base::PathService::Get(chrome::DIR_USER_DATA, &component_dir);
@@ -404,13 +404,13 @@ void NTPBackgroundImagesService::CleanUp() {
       FROM_HERE, {base::ThreadPool(), base::MayBlock()},
       base::BindOnce(&DeleteComponentFolder, component_dir));
     local_pref_->ClearPref(prefs::kNewTabPageCachedReferralPromoCode);
-    local_pref_->ClearPref(prefs::kNewTabPageCachedSuperReferrerComponentInfo);
+    local_pref_->ClearPref(prefs::kNewTabPageCachedSuperReferralComponentInfo);
     DVLOG(2) << __func__ << ": Delete ended compaign's component folder at "
                          << component_dir;
   }
 }
 
-bool NTPBackgroundImagesService::IsSuperReferrerCode(
+bool NTPBackgroundImagesService::IsSuperReferralCode(
     const std::string& referral_code) {
   if (!mapping_table_value_.is_dict())
     return false;
@@ -439,7 +439,7 @@ NTPBackgroundImagesService::GetBackgroundImagesData() const {
 }
 
 void NTPBackgroundImagesService::OnComponentReady(
-    bool is_super_referrer,
+    bool is_super_referral,
     const base::FilePath& installed_dir) {
   // Early return for test data because any components are not used when test
   // data is used.
@@ -458,9 +458,9 @@ void NTPBackgroundImagesService::OnComponentReady(
   // One example is - we register NTP SI if we don't have cached referall code.
   // When referral service fetched a code, we can register NTP SR if it's super
   // referral code.
-  if (is_super_referrer != is_super_referrer_lastly_asked_component_) {
+  if (is_super_referral != is_super_referral_lastly_asked_component_) {
     const std::string code = GetCachedReferralPromoCode();
-    is_super_referrer ? UnRegisterSuperReferrerComponentIfRunning(code)
+    is_super_referral ? UnRegisterSuperReferralComponentIfRunning(code)
                       : UnRegisterSponsoredImagesComponentIfRunning();
     return;
   }
@@ -480,21 +480,21 @@ void NTPBackgroundImagesService::GetComponentJsonData(
 
 void NTPBackgroundImagesService::OnGetComponentJsonData(
     const std::string& json_string) {
-  const bool was_super_referrer =
-      images_data_ && images_data_->IsSuperReferrer();
+  const bool was_super_referral =
+      images_data_ && images_data_->IsSuperReferral();
   images_data_.reset(new NTPBackgroundImagesData(json_string, installed_dir_));
   NotifyObservers();
 
-  if (was_super_referrer && !images_data_->IsValid()) {
+  if (was_super_referral && !images_data_->IsValid()) {
     DVLOG(2) << __func__ << ": NTP SR campaign ends. Start NTP SI.";
-    // If super referrer component is not valid, it means its campaign is ended.
+    // If super referral component is not valid, it means its campaign is ended.
     // Start NTP SI component now. And, we don't need NPT SR component anymore.
     // StartSponsoredImagesComponent() will unregister currently registered SR
     // first and then start SI component.
     StartSponsoredImagesComponent();
     // Clear cached referral promo code.
     local_pref_->ClearPref(prefs::kNewTabPageCachedReferralPromoCode);
-    local_pref_->ClearPref(prefs::kNewTabPageCachedSuperReferrerComponentInfo);
+    local_pref_->ClearPref(prefs::kNewTabPageCachedSuperReferralComponentInfo);
     // Also, that SR will be removed from mapping table. So, this install can't
     // register that SR anymore regardless of current kReferralPromoCode after
     // next launches.
@@ -521,13 +521,13 @@ void NTPBackgroundImagesService::OnPreferenceChanged(
     local_pref_->SetString(prefs::kNewTabPageCachedReferralPromoCode,
                            new_referral_code);
 
-    // If previous referrer is super referrer and current referrer another
-    // super referrer, we should unregister previous one.
+    // If previous referral is super referral and current referral is another
+    // super referral, we should unregister previous one.
     if (previous_referral_code != new_referral_code) {
-      DVLOG(2) << __func__ << ": Referrer was changed from "
+      DVLOG(2) << __func__ << ": Referral was changed from "
                            << previous_referral_code << " to "
                            << new_referral_code;
-      UnRegisterSuperReferrerComponentIfRunning(previous_referral_code);
+      UnRegisterSuperReferralComponentIfRunning(previous_referral_code);
     }
 
     DetermineTargetComponent();
@@ -540,7 +540,7 @@ std::string NTPBackgroundImagesService::GetReferralPromoCode() const {
 
 std::string NTPBackgroundImagesService::GetCachedReferralPromoCode() const {
   if (base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo))
-    return kDemoSuperReferrerCode;
+    return kDemoSuperReferralCode;
 
   return local_pref_->GetString(prefs::kNewTabPageCachedReferralPromoCode);
 }

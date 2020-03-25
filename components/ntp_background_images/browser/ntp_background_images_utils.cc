@@ -16,7 +16,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kNewTabPageCachedReferralPromoCode,
                                std::string());
   registry->RegisterDictionaryPref(
-      prefs::kNewTabPageCachedSuperReferrerComponentInfo);
+      prefs::kNewTabPageCachedSuperReferralComponentInfo);
 }
 
 }  // namespace ntp_background_images

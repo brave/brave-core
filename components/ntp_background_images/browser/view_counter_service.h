@@ -69,8 +69,8 @@ class ViewCounterService : public KeyedService,
 
   void ResetNotificationState();
   bool IsSponsoredImagesWallpaperOptedIn() const;
-  bool IsSuperReferrerWallpaperOptedIn() const;
-  // Do we have a sponsored or referrer wallpaper to show and has the user
+  bool IsSuperReferralWallpaperOptedIn() const;
+  // Do we have a sponsored or referral wallpaper to show and has the user
   // opted-in to showing it at some time.
   bool IsBrandedWallpaperActive() const;
   // Should we show the branded wallpaper right now, in addition

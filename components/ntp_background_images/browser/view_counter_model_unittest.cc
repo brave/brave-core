@@ -66,7 +66,7 @@ TEST(ViewCounterModelTest, NTPSponsoredImagesTest) {
   model.RegisterPageView();
 }
 
-TEST(ViewCounterModelTest, NTPSuperReferrerTest) {
+TEST(ViewCounterModelTest, NTPSuperReferralTest) {
   ViewCounterModel model;
   model.set_ignore_count_to_branded_wallpaper(true);
   model.set_total_image_count(kTestImageCount);

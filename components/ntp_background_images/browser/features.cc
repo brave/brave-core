@@ -18,8 +18,8 @@ const base::Feature kBraveNTPBrandedWallpaper{
 const base::Feature kBraveNTPBrandedWallpaperDemo{
     "BraveNTPBrandedWallpaperDemoName",
     base::FEATURE_DISABLED_BY_DEFAULT};
-const base::Feature kBraveNTPSuperReferrerWallpaper{
-    "BraveNTPSuperReferrerWallpaperName",
+const base::Feature kBraveNTPSuperReferralWallpaper{
+    "BraveNTPSuperReferralWallpaperName",
 #if defined(OS_LINUX)
     // Linux doesn't support referral install yet.
     base::FEATURE_DISABLED_BY_DEFAULT};
