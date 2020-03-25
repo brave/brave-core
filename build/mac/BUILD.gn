@@ -62,7 +62,7 @@ if (skip_signing) {
     ]
 
     deps = [
-      "//brave:chrome_app",
+      "//chrome:chrome_app",
       "//chrome/installer/mac"
     ]
 
@@ -107,7 +107,7 @@ if (skip_signing) {
         getenv("SIGN_WIDEVINE_PASSPHRASE"),
       ]
 
-      deps = [ "//brave:chrome_app" ]
+      deps = [ "//chrome:chrome_app" ]
     }
   }
 } else {
@@ -121,7 +121,7 @@ if (skip_signing) {
     shell_script = "//brave/build/mac/sign_app.sh"
 
     deps = [
-      "//brave:chrome_app",
+      "//chrome:chrome_app",
       "//chrome/installer/mac",
       ":copies",
     ]
@@ -329,7 +329,7 @@ if (skip_signing) {
       "--pkgdir",
       rebase_path(packaging_dir),
       "--mac_provisioning_profile",
-      rebase_path(provisioning_profile)
+      rebase_path(provisioning_profile),
     ]
     deps = [
       ":sign_dmg",
