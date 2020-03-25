@@ -557,7 +557,8 @@ class PageWallet extends React.Component<Props, State> {
                 tokens: publisher.weight.toFixed(1),
                 converted: utils.convertBalance(publisher.weight, balance.rates)
               },
-              type: this.getSummaryType(contribution.type)
+              type: this.getSummaryType(contribution.type),
+              date: contribution.created_at
             }
           })
           .concat(records)
