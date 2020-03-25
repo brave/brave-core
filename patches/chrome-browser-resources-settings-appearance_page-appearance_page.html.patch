@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/appearance_page/appearance_page.html b/chrome/browser/resources/settings/appearance_page/appearance_page.html
-index bdbf90e2482d817ca0cfddb1fe5b0d7c1de58258..9bb5d2a70a62848821d5a2189ad0de096279a3c1 100644
+index bdbf90e2482d817ca0cfddb1fe5b0d7c1de58258..ba390f3a7419f006071adfe7482ce4ff9860ffef 100644
 --- a/chrome/browser/resources/settings/appearance_page/appearance_page.html
 +++ b/chrome/browser/resources/settings/appearance_page/appearance_page.html
 @@ -18,6 +18,12 @@
@@ -20,7 +20,7 @@ index bdbf90e2482d817ca0cfddb1fe5b0d7c1de58258..9bb5d2a70a62848821d5a2189ad0de09
          focus-config="[[focusConfig_]]">
        <div route-path="default">
 +<if expr="not _google_chrome">
-+        <settings-brave-appearance-theme prefs="{{prefs}}"></settings-brave-appearance-theme>
++        <settings-brave-appearance-top prefs="{{prefs}}"></settings-brave-appearance-top>
 +</if>
          <div class="settings-row continuation" id="themeRow"
              hidden="[[!pageVisibility.setTheme]]">

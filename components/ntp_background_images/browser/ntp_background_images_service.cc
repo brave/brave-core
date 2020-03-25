@@ -33,6 +33,7 @@
 #include "chrome/common/chrome_paths.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/web_ui_data_source.h"
 #include "net/base/load_flags.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -562,6 +563,20 @@ bool NTPBackgroundImagesService::UseLocalTestData() {
   }
 
   return false;
+}
+
+void NTPBackgroundImagesService::InitializeWebUIDataSource(
+    content::WebUIDataSource* html_source) {
+  std::string theme_name;
+  // theme name from component manifest and company name from mapping table
+  // are same string.
+  const auto* value = local_pref_->Get(
+        prefs::kNewTabPageCachedSuperReferralComponentInfo);
+  if (base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper) &&
+      IsValidSuperReferralComponentInfo(*value)) {
+    theme_name = *value->FindStringKey(kCompanyName);
+  }
+  html_source->AddString("superReferralThemeName", theme_name);
 }
 
 }  // namespace ntp_background_images

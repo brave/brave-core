@@ -12,8 +12,8 @@ const char kBrandedWallpaperNotificationDismissed[] =
     "brave.branded_wallpaper_notification_dismissed";
 const char kNewTabPageShowSponsoredImagesBackgroundImage[] =
     "brave.new_tab_page.show_branded_background_image";
-const char kNewTabPageShowSuperReferralBackgroundImage[] =
-    "brave.new_tab_page.show_super_referral_background_image";
+const char kNewTabPageSuperReferralThemesOption[] =
+    "brave.new_tab_page.super_referral_themes_option";
 const char kNewTabPageShowBackgroundImage[] =
     "brave.new_tab_page.show_background_image";
 

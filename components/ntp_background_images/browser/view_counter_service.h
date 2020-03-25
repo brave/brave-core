@@ -48,6 +48,13 @@ class ViewCounterService : public KeyedService,
   base::Value GetTopSites() const;
 
  private:
+  // Sync with themeValues in brave_appearance_page.js
+  enum ThemesOption {
+    DEFAULT,
+    SUPER_REFERRAL,
+  };
+
+  friend class NTPBackgroundImagesViewCounterTest;
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            NotActiveInitially);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,

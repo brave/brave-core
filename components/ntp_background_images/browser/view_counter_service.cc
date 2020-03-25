@@ -28,8 +28,10 @@ void ViewCounterService::RegisterProfilePrefs(
       prefs::kBrandedWallpaperNotificationDismissed, false);
   registry->RegisterBooleanPref(
       prefs::kNewTabPageShowSponsoredImagesBackgroundImage, true);
-  registry->RegisterBooleanPref(
-      prefs::kNewTabPageShowSuperReferralBackgroundImage, true);
+  // Integer type is used because this pref is used by radio button group in
+  // appearance settings. Super referral is disabled when it is set to DEFAULT.
+  registry->RegisterIntegerPref(
+      prefs::kNewTabPageSuperReferralThemesOption, SUPER_REFERRAL);
   registry->RegisterBooleanPref(
       prefs::kNewTabPageShowBackgroundImage, true);
 }
@@ -146,7 +148,8 @@ bool ViewCounterService::IsSponsoredImagesWallpaperOptedIn() const {
 }
 
 bool ViewCounterService::IsSuperReferralWallpaperOptedIn() const {
-  return prefs_->GetBoolean(prefs::kNewTabPageShowSuperReferralBackgroundImage);
+  return prefs_->GetInteger(prefs::kNewTabPageSuperReferralThemesOption) ==
+             SUPER_REFERRAL;
 }
 
 }  // namespace ntp_background_images

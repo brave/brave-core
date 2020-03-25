@@ -30,7 +30,6 @@
 using ntp_background_images::features::kBraveNTPBrandedWallpaper;
 using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
 using ntp_background_images::prefs::kNewTabPageShowSponsoredImagesBackgroundImage;  // NOLINT
-using ntp_background_images::prefs::kNewTabPageShowSuperReferralBackgroundImage;
 using ntp_background_images::prefs::kBrandedWallpaperNotificationDismissed;
 using ntp_background_images::ViewCounterServiceFactory;
 
@@ -74,9 +73,6 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
   pref_data.SetBoolean(
       "brandedWallpaperOptIn",
       prefs->GetBoolean(kNewTabPageShowSponsoredImagesBackgroundImage));
-  pref_data.SetBoolean(
-      "superReferralWallpaperOptIn",
-      prefs->GetBoolean(kNewTabPageShowSuperReferralBackgroundImage));
   pref_data.SetBoolean(
       "showClock",
       prefs->GetBoolean(kNewTabPageShowClock));
@@ -226,9 +222,6 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   pref_change_registrar_.Add(kNewTabPageShowSponsoredImagesBackgroundImage,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
-  pref_change_registrar_.Add(kNewTabPageShowSuperReferralBackgroundImage,
-    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
-    base::Unretained(this)));
   pref_change_registrar_.Add(kNewTabPageShowClock,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
@@ -306,8 +299,6 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     // TODO(simonhong): I think above |brandedWallpaperOptIn| should be changed
     // to |sponsoredImagesWallpaperOptIn|.
     settingsKey = kNewTabPageShowSponsoredImagesBackgroundImage;
-  } else if (settingsKeyInput == "superReferralWallpaperOptIn") {
-    settingsKey = kNewTabPageShowSuperReferralBackgroundImage;
   } else if (settingsKeyInput == "showClock") {
     settingsKey = kNewTabPageShowClock;
   } else if (settingsKeyInput == "showTopSites") {

@@ -399,6 +399,34 @@ BravePatching.RegisterPolymerTemplateModifications({
       }
     }
   },
+  'settings-appearance-page': (templateContent) => {
+    // W/o super referral, we don't need to themes link option with themes sub
+    // page.
+    if (loadTimeData.getString('superReferralThemeName') === '')
+      return
+
+    // Routes
+    const r = settings.Router.getInstance().routes_
+    if (!r.APPEARANCE) {
+      console.error('[Brave Settings Overrides] Routes: could not find APPEARANCE page')
+    }
+    r.THEMES = r.APPEARANCE.createChild('/themes');
+    // Hide chromium's theme section. It's replaced with our themes page.
+    const theme = templateContent.getElementById('themeRow')
+    theme.setAttribute('hidden', 'true')
+    const pages = templateContent.getElementById('pages')
+    const themes = document.createElement('template')
+    themes.setAttribute('is', 'dom-if')
+    themes.setAttribute('route-path', '/themes')
+    themes.innerHTML = `
+      <settings-subpage
+          associated-control="[[$$('#themes-subpage-trigger')]]"
+          page-title="${I18nBehavior.i18n('themes')}">
+        <settings-brave-appearance-themes prefs="{{prefs}}">
+        </settings-brave-appearance-themes>
+      </settings-subpage> `
+    pages.appendChild(themes)
+  },
   'settings-people-page': (templateContent) => {
     // People page needs to think it's in the getStarted section, since it is
     // (we remove the People section as a separate section).

@@ -74,8 +74,10 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
   }
 
   void EnableSRPref(bool enable) {
-    prefs()->SetBoolean(
-        prefs::kNewTabPageShowSuperReferralBackgroundImage, enable);
+    prefs()->SetInteger(
+        prefs::kNewTabPageSuperReferralThemesOption,
+        enable ? ViewCounterService::SUPER_REFERRAL
+               : ViewCounterService::DEFAULT);
   }
 
   sync_preferences::TestingPrefServiceSyncable* prefs() { return &prefs_; }

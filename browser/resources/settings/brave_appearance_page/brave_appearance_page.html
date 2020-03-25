@@ -2,10 +2,14 @@
 
 <link rel="import" href="chrome://resources/html/i18n_behavior.html">
 <link rel="import" href="chrome://resources/cr_elements/md_select_css.html">
+<link rel="import" href="chrome://brave-resources/br_elements/br_toolbar/br_toolbar.html">
 <link rel="import" href="brave_appearance_browser_proxy.html">
+<link rel="import" href="../controls/settings_radio_group.html">
 <link rel="import" href="../settings_shared_css.html">
 <link rel="import" href="../settings_vars_css.html">
-<dom-module id="settings-brave-appearance-theme">
+<link rel="import" href="../page_visibility.html">
+
+<dom-module id="settings-brave-appearance-top">
   <template>
     <style include="settings-shared md-select iron-flex">
     </style>
@@ -21,9 +25,88 @@
         </template>
       </select>
     </div>
+    <template is="dom-if" if="[[useThemesSubPage_()]]">
+      <cr-link-row class="hr" id="themes-subpage-trigger"
+          label="$i18n{themes}" on-click="onThemeTap_"
+          role-description="$i18n{subpageArrowRoleDescription}">
+      </cr-link-row>
+    </template>
   </template>
   <script src="brave_appearance_page.js"></script>
 </dom-module>
+
+<dom-module id="settings-brave-appearance-themes">
+  <template>
+    <style include="settings-shared md-select iron-flex">
+      /* The theme mixes a link and a cr-button divided by a separator with
+       * grit expressions and dom-if templates. That leads to a tricky thing
+       * to style correctly, these are a workaround. */
+      #themeRow cr-button {
+        margin-inline-end: 20px;
+      }
+
+      #themeRow .separator {
+        margin-inline-start: 0;
+      }
+
+      .radio-group {
+        margin-left: 80px;
+        margin-bottom: 20px;
+      }
+    </style>
+
+    <div class="radio-group">
+      <settings-radio-group
+          pref="{{prefs.brave.new_tab_page.super_referral_themes_option}}">
+        <controlled-radio-button name="[[themeValues_.DEFAULT]]"
+            pref="{{prefs.brave.new_tab_page.super_referral_themes_option}}"
+            label="Brave Default">
+        </controlled-radio-button>
+        <controlled-radio-button name="[[themeValues_.SUPER_REFERRAL]]"
+            pref="{{prefs.brave.new_tab_page.super_referral_themes_option}}"
+            label="[[getSuperReferralThemeName_()]]">
+        </controlled-radio-button>
+      </settings-radio-group>
+    </div>
+    <div class="settings-box block first">
+      <div class="hr settings-row continuation" id="themeRow">
+        <cr-link-row class="label first"
+            label="$i18n{appearanceSettingsGetMoreThemes}"
+            sub-label="[[themeSublabel_]]"
+            on-click="openThemeUrl_" external></cr-link-row>
+<if expr="not is_linux">
+        <template is="dom-if" if="[[prefs.extensions.theme.id.value]]">
+          <div class="separator"></div>
+          <cr-button id="useDefault" on-click="onUseDefaultTap_">
+            $i18n{resetToDefaultTheme}
+          </cr-button>
+        </template>
+</if>
+<if expr="is_linux">
+        <div class="settings-row continuation"
+            hidden="[[!showThemesSecondary_(
+                prefs.extensions.theme.id.value, useSystemTheme_)]]"
+            id="themesSecondaryActions">
+          <div class="separator"></div>
+          <template is="dom-if" if="[[showUseClassic_(
+              prefs.extensions.theme.id.value, useSystemTheme_)]]" restamp>
+            <cr-button id="useDefault" on-click="onUseDefaultTap_">
+              $i18n{useClassicTheme}
+            </cr-button>
+          </template>
+          <template is="dom-if" if="[[showUseSystem_(
+              prefs.extensions.theme.id.value, useSystemTheme_)]]" restamp>
+            <cr-button id="useSystem" on-click="onUseSystemTap_">
+              $i18n{useSystemTheme}
+            </cr-button>
+          </template>
+        </div>
+</if>
+      </div>
+    </div>
+  </template>
+</dom-module>
+
 <dom-module id="settings-brave-appearance-toolbar">
   <template>
     <style include="settings-shared md-select iron-flex">

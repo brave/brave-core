@@ -13,7 +13,7 @@ namespace prefs {
 // The one is sponsored images wallpaper and the other is super referral
 // wallpaper.
 extern const char kNewTabPageShowSponsoredImagesBackgroundImage[];
-extern const char kNewTabPageShowSuperReferralBackgroundImage[];
+extern const char kNewTabPageSuperReferralThemesOption[];
 extern const char kBrandedWallpaperNotificationDismissed[];
 extern const char kNewTabPageShowBackgroundImage[];
 

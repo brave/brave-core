@@ -20,6 +20,10 @@ namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
 
+namespace content {
+class WebUIDataSource;
+}  // namespace content
+
 namespace network {
 class SharedURLLoaderFactory;
 class SimpleURLLoader;
@@ -60,6 +64,8 @@ class NTPBackgroundImagesService {
   NTPBackgroundImagesData* GetBackgroundImagesData() const;
 
   bool test_data_used() const { return test_data_used_; }
+
+  void InitializeWebUIDataSource(content::WebUIDataSource* html_source);
 
  private:
   friend class TestNTPBackgroundImagesService;
