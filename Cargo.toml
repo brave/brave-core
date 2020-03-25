@@ -5,7 +5,7 @@ authors = ["Brian R. Bondy <netzen@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-adblock = { version = "~0.2.1", git = "https://github.com/brave/adblock-rust", rev = "fab2ae2b21bb4be052faa1d70dde34c61628a910" }
+adblock = { version = "~0.2.6", git = "https://github.com/brave/adblock-rust", rev = "f4bb88aae3a6b0b3b040126584d3881136cc6c82" }
 serde_json = "1.0"
 libc = "0.2"
 

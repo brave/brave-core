@@ -17,14 +17,16 @@ FilterList::FilterList(const std::string& uuid,
                        const std::vector<std::string>& langs,
                        const std::string& support_url,
                        const std::string& component_id,
-                       const std::string& base64_public_key)
+                       const std::string& base64_public_key,
+                       const std::string& desc)
     : uuid(uuid),
       url(url),
       title(title),
       langs(langs),
       support_url(support_url),
       component_id(component_id),
-      base64_public_key(base64_public_key) {}
+      base64_public_key(base64_public_key),
+      desc(desc) {}
 
 FilterList::FilterList(const FilterList& other) = default;
 
@@ -64,7 +66,8 @@ std::vector<FilterList>& FilterList::GetFilterLists(const std::string &category)
              langs,
              l.support_url,
              l.component_id,
-             l.base64_public_key));
+             l.base64_public_key,
+             l.desc));
   }
   return list;
 }
