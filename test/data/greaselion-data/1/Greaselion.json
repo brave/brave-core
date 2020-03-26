@@ -25,5 +25,31 @@
         "scripts": [
             "scripts/example-com.js"
         ]
+    },
+    {
+        "urls": [
+            "http://runat1.b.com/*"
+        ],
+        "run_at": "document_start",
+        "scripts": [
+            "scripts/b-com.js"
+        ]
+    },
+    {
+        "urls": [
+            "http://runat2.b.com/*"
+        ],
+        "run_at": "document_end",
+        "scripts": [
+            "scripts/b-com.js"
+        ]
+    },
+    {
+        "urls": [
+            "http://runat3.b.com/*"
+        ],
+        "scripts": [
+            "scripts/b-com.js"
+        ]
     }
 ]
