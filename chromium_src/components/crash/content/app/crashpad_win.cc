@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -22,7 +23,7 @@ class BraveCrashpadClient {
   bool SetHandlerIPCPipe(const std::wstring& ipc_pipe);
 };
 
-} // namespace crashpad
+}  // namespace crashpad
 
 namespace crash_reporter {
 
@@ -33,7 +34,7 @@ crashpad::BraveCrashpadClient& GetBraveCrashpadClient() {
   return *client;
 }
 
-} // namespace crash_reporter
+}  // namespace crash_reporter
 
 #define COMPONENTS_CRASH_CONTENT_APP_CRASHPAD_H_
 #define GetCrashpadClient GetBraveCrashpadClient
@@ -69,4 +70,4 @@ bool BraveCrashpadClient::SetHandlerIPCPipe(const std::wstring& ipc_pipe) {
   return crash_reporter::GetCrashpadClient().SetHandlerIPCPipe(ipc_pipe);
 }
 
-} // namespace crashpad
+}  // namespace crashpad
