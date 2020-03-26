@@ -59,7 +59,7 @@ std::vector<std::string> NativeAdsClient::GetUserModelLanguages() const {
   return [bridge_ getUserModelLanguages];
 }
 
-void NativeAdsClient::LoadUserModelForLanguage(const std::string & language, ads::OnLoadCallback callback) const {
+void NativeAdsClient::LoadUserModelForLanguage(const std::string & language, ads::LoadCallback callback) const {
   [bridge_ loadUserModelForLanguage:language callback:callback];
 }
 
@@ -99,15 +99,15 @@ void NativeAdsClient::URLRequest(const std::string & url, const std::vector<std:
   [bridge_ URLRequest:url headers:headers content:content contentType:content_type method:method callback:callback];
 }
 
-void NativeAdsClient::Save(const std::string & name, const std::string & value, ads::OnSaveCallback callback) {
+void NativeAdsClient::Save(const std::string & name, const std::string & value, ads::ResultCallback callback) {
   [bridge_ save:name value:value callback:callback];
 }
 
-void NativeAdsClient::Load(const std::string & name, ads::OnLoadCallback callback) {
+void NativeAdsClient::Load(const std::string & name, ads::LoadCallback callback) {
   [bridge_ load:name callback:callback];
 }
 
-void NativeAdsClient::Reset(const std::string & name, ads::OnResetCallback callback) {
+void NativeAdsClient::Reset(const std::string & name, ads::ResultCallback callback) {
   [bridge_ reset:name callback:callback];
 }
 
@@ -115,19 +115,19 @@ std::string NativeAdsClient::LoadJsonSchema(const std::string & name) {
   return [bridge_ loadJsonSchema:name];
 }
 
-void NativeAdsClient::LoadSampleBundle(ads::OnLoadSampleBundleCallback callback) {
+void NativeAdsClient::LoadSampleBundle(ads::LoadSampleBundleCallback callback) {
   [bridge_ loadSampleBundle:callback];
 }
 
-void NativeAdsClient::SaveBundleState(std::unique_ptr<ads::BundleState> state, ads::OnSaveCallback callback) {
+void NativeAdsClient::SaveBundleState(std::unique_ptr<ads::BundleState> state, ads::ResultCallback callback) {
   [bridge_ saveBundleState:std::move(state) callback:callback];
 }
 
-void NativeAdsClient::GetCreativeAdNotifications(const std::vector<std::string> & categories, ads::OnGetCreativeAdNotificationsCallback callback) {
+void NativeAdsClient::GetCreativeAdNotifications(const std::vector<std::string> & categories, ads::GetCreativeAdNotificationsCallback callback) {
   [bridge_ getCreativeAdNotifications:categories callback:callback];
 }
 
-void NativeAdsClient::GetAdConversions(ads::OnGetAdConversionsCallback callback) {
+void NativeAdsClient::GetAdConversions(ads::GetAdConversionsCallback callback) {
   [bridge_ getAdConversions:callback];
 }
 

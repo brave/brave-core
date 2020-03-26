@@ -223,12 +223,12 @@ class AdsServiceImpl : public AdsService,
       const std::unique_ptr<std::string> response_body);
 
   void OnGetCreativeAdNotifications(
-      const ads::OnGetCreativeAdNotificationsCallback& callback,
+      const ads::GetCreativeAdNotificationsCallback& callback,
       const std::vector<std::string>& categories,
       const ads::CreativeAdNotificationList& ads);
 
   void OnGetAdConversions(
-      const ads::OnGetAdConversionsCallback& callback,
+      const ads::GetAdConversionsCallback& callback,
       const ads::AdConversionList& ad_conversions);
 
   void OnGetAdsHistory(
@@ -264,16 +264,16 @@ class AdsServiceImpl : public AdsService,
       const bool flagged);
 
   void OnSaveBundleState(
-      const ads::OnSaveCallback& callback,
+      const ads::ResultCallback& callback,
       const bool success);
   void OnLoaded(
-      const ads::OnLoadCallback& callback,
+      const ads::LoadCallback& callback,
       const std::string& value);
   void OnSaved(
-      const ads::OnSaveCallback& callback,
+      const ads::ResultCallback& callback,
       const bool success);
   void OnReset(
-      const ads::OnResetCallback& callback,
+      const ads::ResultCallback& callback,
       const bool success);
 
   void OnTimer(
@@ -377,7 +377,7 @@ class AdsServiceImpl : public AdsService,
   std::vector<std::string> GetUserModelLanguages() const override;
   void LoadUserModelForLanguage(
       const std::string& language,
-      ads::OnLoadCallback callback) const override;
+      ads::LoadCallback callback) const override;
 
   void ShowNotification(
       std::unique_ptr<ads::AdNotificationInfo> info) override;
@@ -415,30 +415,30 @@ class AdsServiceImpl : public AdsService,
   void Save(
       const std::string& name,
       const std::string& value,
-      ads::OnSaveCallback callback) override;
+      ads::ResultCallback callback) override;
   void Load(
       const std::string& name,
-      ads::OnLoadCallback callback) override;
+      ads::LoadCallback callback) override;
   void Reset(
       const std::string& name,
-      ads::OnResetCallback callback) override;
+      ads::ResultCallback callback) override;
 
   std::string LoadJsonSchema(
       const std::string& name) override;
 
   void LoadSampleBundle(
-      ads::OnLoadSampleBundleCallback callback) override;
+      ads::LoadSampleBundleCallback callback) override;
 
   void SaveBundleState(
       std::unique_ptr<ads::BundleState> bundle_state,
-      ads::OnSaveCallback callback) override;
+      ads::ResultCallback callback) override;
 
   void GetCreativeAdNotifications(
       const std::vector<std::string>& categories,
-      ads::OnGetCreativeAdNotificationsCallback callback) override;
+      ads::GetCreativeAdNotificationsCallback callback) override;
 
   void GetAdConversions(
-      ads::OnGetAdConversionsCallback callback) override;
+      ads::GetAdConversionsCallback callback) override;
 
   void EventLog(
       const std::string& json) const override;

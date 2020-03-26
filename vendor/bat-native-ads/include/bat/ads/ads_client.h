@@ -44,18 +44,17 @@ class ADS_EXPORT LogStream {
   virtual std::ostream& stream() = 0;
 };
 
-using OnSaveCallback = std::function<void(const Result)>;
-using OnLoadCallback = std::function<void(const Result, const std::string&)>;
+using ResultCallback = std::function<void(const Result)>;
 
-using OnResetCallback = std::function<void(const Result)>;
+using LoadCallback = std::function<void(const Result, const std::string&)>;
 
-using OnGetCreativeAdNotificationsCallback = std::function<void(const Result,
+using GetCreativeAdNotificationsCallback = std::function<void(const Result,
     const std::vector<std::string>&, const CreativeAdNotificationList&)>;
 
-using OnGetAdConversionsCallback = std::function<void(const Result,
+using GetAdConversionsCallback = std::function<void(const Result,
     const AdConversionList&)>;
 
-using OnLoadSampleBundleCallback = std::function<void(const Result,
+using LoadSampleBundleCallback = std::function<void(const Result,
     const std::string&)>;
 
 using URLRequestCallback = std::function<void(const int, const std::string&,
@@ -120,7 +119,7 @@ class ADS_EXPORT AdsClient {
   // https://github.com/brave-intl/bat-native-usermodel/blob/master/README.md
   virtual void LoadUserModelForLanguage(
       const std::string& language,
-      OnLoadCallback callback) const = 0;
+      LoadCallback callback) const = 0;
 
   // Should return |true| if the browser is active in the foreground; otherwise,
   // should return |false|
@@ -188,20 +187,20 @@ class ADS_EXPORT AdsClient {
   virtual void Save(
       const std::string& name,
       const std::string& value,
-      OnSaveCallback callback) = 0;
+      ResultCallback callback) = 0;
 
   // Should save the bundle state to persistent storage. The callback takes one
   // argument — |Result| should be set to |SUCCESS| if successful; otherwise,
   // should be set to |FAILED|
   virtual void SaveBundleState(
       std::unique_ptr<BundleState> state,
-      OnSaveCallback callback) = 0;
+      ResultCallback callback) = 0;
 
   // Should load a value from persistent storage. The callback takes 2 arguments
   // — |Result| should be set to |SUCCESS| if successful; otherwise, should be
   // set to |FAILED|. |value| should contain the persisted value
   virtual void Load(
-      const std::string& name, OnLoadCallback callback) = 0;
+      const std::string& name, LoadCallback callback) = 0;
 
   // Should load a JSON schema from persistent storage, schemas are a dependency
   // of the application and should be bundled accordingly, the following file
@@ -222,13 +221,13 @@ class ADS_EXPORT AdsClient {
   // arguments — |Result| should be set to |SUCCESS| if successful; otherwise,
   // should be set to |FAILED|. |value| should contain the sample bundle
   virtual void LoadSampleBundle(
-      OnLoadSampleBundleCallback callback) = 0;
+      LoadSampleBundleCallback callback) = 0;
 
   // Should reset a previously persisted value. The callback takes one argument
   // — |Result| should be set to |SUCCESS| if successful; otherwise, should be
   // set to |FAILED|
   virtual void Reset(
-      const std::string& name, OnResetCallback callback) = 0;
+      const std::string& name, ResultCallback callback) = 0;
 
   // Should fetch all creative ad notifications for the specified |category|
   // where the current time is between the ad |start_timestamp| and
@@ -238,14 +237,14 @@ class ADS_EXPORT AdsClient {
   // category. |ads| should contain an array of ads
   virtual void GetCreativeAdNotifications(
       const std::vector<std::string>& categories,
-      OnGetCreativeAdNotificationsCallback callback) = 0;
+      GetCreativeAdNotificationsCallback callback) = 0;
 
   // Should fetch all ad conversions from the previously persisted bundle state.
   // The callback takes 2 arguments — |Result| should be set to |SUCCESS| if
   // successful; otherwise, should be set to |FAILED|. |ad_conversions| should
   // contain an array of ad conversions
   virtual void GetAdConversions(
-      OnGetAdConversionsCallback callback) = 0;
+      GetAdConversionsCallback callback) = 0;
 
   // Should log an event
   virtual void EventLog(

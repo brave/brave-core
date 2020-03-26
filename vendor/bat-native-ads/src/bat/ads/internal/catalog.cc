@@ -59,11 +59,11 @@ IssuersInfo Catalog::GetIssuers() const {
   return catalog_state_->issuers;
 }
 
-void Catalog::Save(const std::string& json, OnSaveCallback callback) {
+void Catalog::Save(const std::string& json, ResultCallback callback) {
   ads_client_->Save(_catalog_resource_name, json, callback);
 }
 
-void Catalog::Reset(OnSaveCallback callback) {
+void Catalog::Reset(ResultCallback callback) {
   ads_client_->Reset(_catalog_resource_name, callback);
 }
 

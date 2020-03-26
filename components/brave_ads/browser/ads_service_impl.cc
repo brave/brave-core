@@ -962,7 +962,7 @@ bool AdsServiceImpl::CanShowBackgroundNotifications() const {
 }
 
 void AdsServiceImpl::OnGetCreativeAdNotifications(
-    const ads::OnGetCreativeAdNotificationsCallback& callback,
+    const ads::GetCreativeAdNotificationsCallback& callback,
     const std::vector<std::string>& categories,
     const ads::CreativeAdNotificationList& ads) {
   if (!connected()) {
@@ -975,7 +975,7 @@ void AdsServiceImpl::OnGetCreativeAdNotifications(
 }
 
 void AdsServiceImpl::OnGetAdConversions(
-    const ads::OnGetAdConversionsCallback& callback,
+    const ads::GetAdConversionsCallback& callback,
     const ads::AdConversionList& ad_conversions) {
   if (!connected()) {
     return;
@@ -1104,7 +1104,7 @@ void AdsServiceImpl::OnToggleFlagAd(
 }
 
 void AdsServiceImpl::OnSaveBundleState(
-    const ads::OnSaveCallback& callback,
+    const ads::ResultCallback& callback,
     const bool success) {
   if (!connected()) {
     return;
@@ -1114,7 +1114,7 @@ void AdsServiceImpl::OnSaveBundleState(
 }
 
 void AdsServiceImpl::OnLoaded(
-    const ads::OnLoadCallback& callback,
+    const ads::LoadCallback& callback,
     const std::string& value) {
   if (!connected()) {
     return;
@@ -1127,7 +1127,7 @@ void AdsServiceImpl::OnLoaded(
 }
 
 void AdsServiceImpl::OnSaved(
-    const ads::OnSaveCallback& callback,
+    const ads::ResultCallback& callback,
     const bool success) {
   if (!connected()) {
     return;
@@ -1137,7 +1137,7 @@ void AdsServiceImpl::OnSaved(
 }
 
 void AdsServiceImpl::OnReset(
-    const ads::OnResetCallback& callback,
+    const ads::ResultCallback& callback,
     const bool success) {
   if (!connected()) {
     return;
@@ -1930,7 +1930,7 @@ std::string AdsServiceImpl::LoadDataResourceAndDecompressIfNeeded(
 
 void AdsServiceImpl::LoadUserModelForLanguage(
     const std::string& language,
-    ads::OnLoadCallback callback) const {
+    ads::LoadCallback callback) const {
   const auto resource_id = GetUserModelResourceId(language);
   const auto user_model = LoadDataResourceAndDecompressIfNeeded(resource_id);
   callback(ads::Result::SUCCESS, user_model);
@@ -2052,7 +2052,7 @@ void AdsServiceImpl::URLRequest(
 void AdsServiceImpl::Save(
     const std::string& name,
     const std::string& value,
-    ads::OnSaveCallback callback) {
+    ads::ResultCallback callback) {
   base::ImportantFileWriter writer(
       base_path_.AppendASCII(name), file_task_runner_);
 
@@ -2069,7 +2069,7 @@ void AdsServiceImpl::Save(
 
 void AdsServiceImpl::Load(
     const std::string& name,
-    ads::OnLoadCallback callback) {
+    ads::LoadCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&LoadOnFileTaskRunner, base_path_.AppendASCII(name)),
       base::BindOnce(&AdsServiceImpl::OnLoaded,
@@ -2079,7 +2079,7 @@ void AdsServiceImpl::Load(
 
 void AdsServiceImpl::Reset(
     const std::string& name,
-    ads::OnResetCallback callback) {
+    ads::ResultCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&ResetOnFileTaskRunner, base_path_.AppendASCII(name)),
       base::BindOnce(&AdsServiceImpl::OnReset,
@@ -2093,7 +2093,7 @@ std::string AdsServiceImpl::LoadJsonSchema(
 }
 
 void AdsServiceImpl::LoadSampleBundle(
-    ads::OnLoadSampleBundleCallback callback) {
+    ads::LoadSampleBundleCallback callback) {
   const auto resource_id =
       GetSchemaResourceId(ads::_bundle_schema_resource_name);
 
@@ -2105,7 +2105,7 @@ void AdsServiceImpl::LoadSampleBundle(
 
 void AdsServiceImpl::SaveBundleState(
     std::unique_ptr<ads::BundleState> bundle_state,
-    ads::OnSaveCallback callback) {
+    ads::ResultCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&SaveBundleStateOnFileTaskRunner,
                     base::Passed(std::move(bundle_state)),
@@ -2117,7 +2117,7 @@ void AdsServiceImpl::SaveBundleState(
 
 void AdsServiceImpl::GetCreativeAdNotifications(
     const std::vector<std::string>& categories,
-    ads::OnGetCreativeAdNotificationsCallback callback) {
+    ads::GetCreativeAdNotificationsCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&GetCreativeAdNotificationsOnFileTaskRunner,
           categories, bundle_state_backend_.get()),
@@ -2126,7 +2126,7 @@ void AdsServiceImpl::GetCreativeAdNotifications(
 }
 
 void AdsServiceImpl::GetAdConversions(
-    ads::OnGetAdConversionsCallback callback) {
+    ads::GetAdConversionsCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&GetAdConversionsOnFileTaskRunner,
           bundle_state_backend_.get()),
