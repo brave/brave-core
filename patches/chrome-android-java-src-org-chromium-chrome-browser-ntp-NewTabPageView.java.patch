@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageView.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageView.java
-index 411094df3c36bd516d9c52f5c1d513cae33ec1b1..788880ab14f03edef191fae8792ded95a1a7f6cc 100644
+index 7a1b1b945f89bfe7bd25e1f837a5c43f5eadcabe..cd77cc5adc6d65f910b180792597ab1c7485b794 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageView.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageView.java
-@@ -199,6 +199,7 @@ public class NewTabPageView extends FrameLayout {
+@@ -198,6 +198,7 @@ public class NewTabPageView extends FrameLayout {
          mRecyclerView.setAdapter(newTabPageAdapter);
          mRecyclerView.getLinearLayoutManager().scrollToPosition(scrollPosition);
  

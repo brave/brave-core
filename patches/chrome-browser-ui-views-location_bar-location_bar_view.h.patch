@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.h b/chrome/browser/ui/views/location_bar/location_bar_view.h
-index baeba401df2e36187a4f93f3eb8a2076b86e62bf..d3ef526cbfdad7aaefc4feb1da9270ca33350127 100644
+index 6ee9457c3daf10e6bee50bd822c8694416969180..afd7cf00bf63637a696c1c2e6de17afc3501b52f 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.h
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.h
-@@ -107,6 +107,7 @@ class LocationBarView : public LocationBar,
+@@ -106,6 +106,7 @@ class LocationBarView : public LocationBar,
    int GetBorderRadius() const;
  
    // Initializes the LocationBarView.
@@ -10,7 +10,7 @@ index baeba401df2e36187a4f93f3eb8a2076b86e62bf..d3ef526cbfdad7aaefc4feb1da9270ca
    void Init();
  
    // True if this instance has been initialized by calling Init, which can only
-@@ -159,6 +160,7 @@ class LocationBarView : public LocationBar,
+@@ -158,6 +159,7 @@ class LocationBarView : public LocationBar,
  
    // Updates the controller, and, if |contents| is non-null, restores saved
    // state that the tab holds.
@@ -18,7 +18,7 @@ index baeba401df2e36187a4f93f3eb8a2076b86e62bf..d3ef526cbfdad7aaefc4feb1da9270ca
    void Update(const content::WebContents* contents);
  
    // Clears the location bar's state for |contents|.
-@@ -178,6 +180,7 @@ class LocationBarView : public LocationBar,
+@@ -177,6 +179,7 @@ class LocationBarView : public LocationBar,
    void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
    gfx::Size GetMinimumSize() const override;
    gfx::Size CalculatePreferredSize() const override;
@@ -26,7 +26,7 @@ index baeba401df2e36187a4f93f3eb8a2076b86e62bf..d3ef526cbfdad7aaefc4feb1da9270ca
    void Layout() override;
    void OnThemeChanged() override;
    void ChildPreferredSizeChanged(views::View* child) override;
-@@ -228,6 +231,7 @@ class LocationBarView : public LocationBar,
+@@ -227,6 +230,7 @@ class LocationBarView : public LocationBar,
                                       on_icon_fetched) const override;
  
   private:

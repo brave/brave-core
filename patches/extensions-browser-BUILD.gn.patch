@@ -1,5 +1,5 @@
 diff --git a/extensions/browser/BUILD.gn b/extensions/browser/BUILD.gn
-index f1f2857db07c4b96d2df1ede94e8d87a0cd422c4..5730daa7e4048e24195d6fb222b5226b998a3dad 100644
+index c65bf1a827f31cec70d713da675348c830498be0..474fd6039b70f3b62c26d7a9a6cf812b6e9f16b9 100644
 --- a/extensions/browser/BUILD.gn
 +++ b/extensions/browser/BUILD.gn
 @@ -402,6 +402,7 @@ jumbo_source_set("browser_sources") {

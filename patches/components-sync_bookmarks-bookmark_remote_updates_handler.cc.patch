@@ -1,18 +1,18 @@
 diff --git a/components/sync_bookmarks/bookmark_remote_updates_handler.cc b/components/sync_bookmarks/bookmark_remote_updates_handler.cc
-index f39e969dfe0099cd6f0ce31fb63b59360b5b6b16..be7f05370b84fd7e182b6fdfda7b3754c62275e3 100644
+index 500e604acdf5e94883176726e029105445114b43..9c433804be2faf468f89ca337c03301c7b9f3e62 100644
 --- a/components/sync_bookmarks/bookmark_remote_updates_handler.cc
 +++ b/components/sync_bookmarks/bookmark_remote_updates_handler.cc
-@@ -147,6 +147,7 @@ void ApplyRemoteUpdate(
+@@ -150,6 +150,7 @@ void ApplyRemoteUpdate(
    // Compute index information before updating the |tracker|.
    const size_t old_index = size_t{old_parent->GetIndexOf(node)};
    const size_t new_index =
 +    BRAVE_APPLY_REMOTE_UPDATE
        ComputeChildNodeIndex(new_parent, update_entity.unique_position, tracker);
-   tracker->Update(update_entity.id, update.response_version,
+   tracker->Update(tracked_entity, update.response_version,
                    update_entity.modification_time,
-@@ -474,9 +475,11 @@ bool BookmarkRemoteUpdatesHandler::ProcessCreate(
-     LogProblematicBookmark(RemoteBookmarkUpdateError::kMissingParentNode);
-     return false;
+@@ -494,9 +495,11 @@ BookmarkRemoteUpdatesHandler::ProcessCreate(
+     LogProblematicBookmark(RemoteBookmarkUpdateError::kParentNotFolder);
+     return nullptr;
    }
 +  BRAVE_PROCESS_CREATE_1
    const bookmarks::BookmarkNode* bookmark_node =

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/site_settings/constants.js b/chrome/browser/resources/settings/site_settings/constants.js
-index 726f9d3648f3aecbf431bdafebb7c569d8327be2..626ff962e9c234c1c693256be1177c8df3fe5335 100644
+index c34cdcf313c606ad69616eb67f6d572e80db947b..cdf7d1b20c1745859d5dad2b2c56038c627415e8 100644
 --- a/chrome/browser/resources/settings/site_settings/constants.js
 +++ b/chrome/browser/resources/settings/site_settings/constants.js
-@@ -34,6 +34,7 @@ cr.define('settings', function() {
+@@ -35,6 +35,7 @@ cr.define('settings', function() {
      ADS: 'ads',
      CLIPBOARD: 'clipboard',
      SENSORS: 'sensors',

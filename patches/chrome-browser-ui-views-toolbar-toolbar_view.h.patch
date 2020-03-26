@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.h b/chrome/browser/ui/views/toolbar/toolbar_view.h
-index 2042bb75893ec161f3cb5acc480c2f07473b8523..7103cb29700b4e2ca383e4dca4a9bf02c32686ce 100644
+index 21510da06867ca1e2b286010c44be71d33ae5168..1e039e2a559aaf6d767abdd1ce0c3d39fda6f8bf 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.h
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.h
-@@ -94,12 +94,14 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -93,12 +93,14 @@ class ToolbarView : public views::AccessiblePaneView,
    ~ToolbarView() override;
  
    // Create the contents of the Browser Toolbar.
@@ -17,7 +17,7 @@ index 2042bb75893ec161f3cb5acc480c2f07473b8523..7103cb29700b4e2ca383e4dca4a9bf02
    void Update(content::WebContents* tab);
  
    // Updates the visibility of the custom tab bar, potentially animating the
-@@ -130,6 +132,7 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -129,6 +131,7 @@ class ToolbarView : public views::AccessiblePaneView,
        IntentPickerResponse callback);
  
    // Shows a bookmark bubble and anchors it appropriately.
@@ -25,7 +25,7 @@ index 2042bb75893ec161f3cb5acc480c2f07473b8523..7103cb29700b4e2ca383e4dca4a9bf02
    void ShowBookmarkBubble(const GURL& url,
                            bool already_bookmarked,
                            bookmarks::BookmarkBubbleObserver* observer);
-@@ -196,6 +199,7 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -195,6 +198,7 @@ class ToolbarView : public views::AccessiblePaneView,
    void ChildPreferredSizeChanged(views::View* child) override;
  
   protected:
@@ -33,7 +33,7 @@ index 2042bb75893ec161f3cb5acc480c2f07473b8523..7103cb29700b4e2ca383e4dca4a9bf02
    // AccessiblePaneView:
    bool SetPaneFocusAndFocusDefault() override;
  
-@@ -245,6 +249,7 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -242,6 +246,7 @@ class ToolbarView : public views::AccessiblePaneView,
    views::View* GetViewForDrop() override;
  
    // Loads the images for all the child views.

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/people_page/people_page.html b/chrome/browser/resources/settings/people_page/people_page.html
-index 86eb5d3dc664afd86b315d8d35ca61336d0fe3bf..ef9507f7708e86c802cac961301351c70a2820e0 100644
+index 7080cadeae9e73f2881060021f89085a2de0b20e..960fff03b16a2c9ff27a9530291e99ceef7d1ccf 100644
 --- a/chrome/browser/resources/settings/people_page/people_page.html
 +++ b/chrome/browser/resources/settings/people_page/people_page.html
-@@ -156,12 +156,14 @@
+@@ -147,12 +147,14 @@
            </div>
          </template> <!-- if="[[!shouldShowSyncAccountControl_()]]" -->
  

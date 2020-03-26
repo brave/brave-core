@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/res/layout/custom_tabs_toolbar.xml b/chrome/android/java/res/layout/custom_tabs_toolbar.xml
-index d276ec4ae74d09539ab35ccd88144428a899122a..21213b2010e28b336457f85a20bee79532febe76 100644
+index 00a9c318afe2b53de0e6c8555770661fd6170671..b3bb40378590abaea76d5718dc2d556e1522a472 100644
 --- a/chrome/android/java/res/layout/custom_tabs_toolbar.xml
 +++ b/chrome/android/java/res/layout/custom_tabs_toolbar.xml
 @@ -96,6 +96,7 @@
