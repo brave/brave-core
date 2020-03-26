@@ -24,10 +24,6 @@ source_set("utility") {
 
   if (!is_android) {
     sources += [
-      "importer/brave_external_process_importer_bridge.cc",
-      "importer/brave_external_process_importer_bridge.h",
-      "importer/brave_importer.cc",
-      "importer/brave_importer.h",
       "importer/brave_profile_import_impl.cc",
       "importer/brave_profile_import_impl.h",
       "importer/chrome_importer.cc",

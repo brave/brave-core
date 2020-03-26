@@ -181,24 +181,6 @@
       <message name="IDS_CHROME_IMPORTER_LOCK_TEXT" desc="The message to be displayed in the Chrome importer lock dialog">
 	To finish importing, close all Chrome windows.
       </message>
-      <message name="IDS_BRAVE_IMPORTER_LOCK_TITLE" desc="Dialog title for Brave importer lock dialog">
-	Close Brave (old)
-      </message>
-      <message name="IDS_BRAVE_IMPORTER_LOCK_TEXT" desc="The message to be displayed in the Brave importer lock dialog">
-	To finish importing, close all Brave (old) windows.
-      </message>
-      <message name="IDS_SETTINGS_IMPORT_COOKIES_CHECKBOX" desc="Checkbox for importing cookies">
-        Cookies
-      </message>
-      <message name="IDS_SETTINGS_IMPORT_STATS_CHECKBOX" desc="Checkbox for importing stats">
-        Stats
-      </message>
-      <message name="IDS_SETTINGS_IMPORT_LEDGER_CHECKBOX" desc="Checkbox for importing ledger">
-        Brave Payments
-      </message>
-      <message name="IDS_SETTINGS_IMPORT_WINDOWS_CHECKBOX" desc="Checkbox for importing open windows and tabs">
-        Open windows and tabs
-      </message>
       <message name="IDS_SETTINGS_IMPORT_EXTENSIONS_CHECKBOX" desc="Checkbox for importing extensions list">
         Extensions
       </message>
@@ -229,13 +211,6 @@
         Google Widevine is a piece of Digital Rights Management (DRM) code that we at Brave Software do not own and cannot inspect. The Google Widevine code is loaded from Google servers, not from our servers. It is loaded only when you enable this option. We discourage the use of DRM, but we respect user choice and acknowledge that some Brave users would like to use services that require it.
 
 By installing this extension, you are agreeing to the Google Widevine Terms of Use. You agree that Brave is not responsible for any damages or losses in connection with your use of Google Widevine.
-      </message>
-      <!-- Brave Importer -->
-      <message name="IDS_IMPORT_FROM_BRAVE" desc="browser combo box: Brave">
-        Brave (old)
-      </message>
-      <message name="IDS_BOOKMARK_GROUP_FROM_BRAVE" desc="The group name of bookmarks from Brave">
-        Imported From Brave
       </message>
       <!-- Autoplay -->
       <message name="IDS_AUTOPLAY_PERMISSION_FRAGMENT" desc="Permission request shown if the user is visiting a site that wants to autoplay media. Follows a prompt: 'This site would like to:'">

@@ -66,8 +66,6 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
   brave_shields::RegisterShieldsP3APrefs(registry);
 #if !defined(OS_ANDROID)
-  RegisterPrefsForMuonMigration(registry);
-
   BraveWindowTracker::RegisterPrefs(registry);
   BraveUptimeTracker::RegisterPrefs(registry);
   dark_mode::RegisterBraveDarkModeLocalStatePrefs(registry);

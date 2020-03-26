@@ -31,14 +31,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
   s_brave_whitelist->insert(chromium_prefs.begin(), chromium_prefs.end());
   // Add Brave values to the whitelist
   // import data
-  (*s_brave_whitelist)[kImportDialogCookies] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kImportDialogStats] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kImportDialogLedger] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kImportDialogWindows] =
-      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kImportDialogExtensions] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // Default Brave shields

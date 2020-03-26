@@ -26,12 +26,7 @@ const welcomeReducer: Reducer<Welcome.State | undefined> = (state: Welcome.State
         import_dialog_history: true,
         import_dialog_saved_passwords: true,
         import_dialog_search_engine: true,
-        // TODO(simonhong): Remove below import types when we stop supporting
-        // import from muon.
-        import_dialog_cookies: false,
-        import_dialog_stats: false,
-        import_dialog_ledger: false,
-        import_dialog_windows: false
+        import_dialog_extensions: true
       }
       chrome.send('importData', [payload, importTypes])
       break

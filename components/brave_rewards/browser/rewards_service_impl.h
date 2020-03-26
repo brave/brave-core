@@ -181,7 +181,6 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& publisher_key,
       bool exclude) override;
   RewardsNotificationService* GetNotificationService() const override;
-  bool CheckImported() override;
   void SetBackupCompleted() override;
   void GetRewardsInternalsInfo(
       GetRewardsInternalsInfoCallback callback) override;

@@ -1,29 +1,24 @@
 diff --git a/chrome/browser/importer/importer_list.cc b/chrome/browser/importer/importer_list.cc
-index c5ad71a4002d7926cc05e3928e486cf8275d5d2d..1f09d3f847ecb2afa2e64e6dfc86bb5c74d3c2ea 100644
+index c5ad71a4002d7926cc05e3928e486cf8275d5d2d..0295370bb56fca72725c5f5c69595fc630b55560 100644
 --- a/chrome/browser/importer/importer_list.cc
 +++ b/chrome/browser/importer/importer_list.cc
-@@ -150,21 +150,37 @@ std::vector<importer::SourceProfile> DetectSourceProfilesWorker(
- #if defined(OS_WIN)
+@@ -151,20 +151,30 @@ std::vector<importer::SourceProfile> DetectSourceProfilesWorker(
    if (shell_integration::IsFirefoxDefaultBrowser()) {
      DetectFirefoxProfiles(locale, &profiles);
-+    DetectBraveProfiles(&profiles);
      DetectBuiltinWindowsProfiles(&profiles);
 +    DetectChromeProfiles(&profiles);
    } else {
      DetectBuiltinWindowsProfiles(&profiles);
-+    DetectBraveProfiles(&profiles);
      DetectFirefoxProfiles(locale, &profiles);
 +    DetectChromeProfiles(&profiles);
    }
  #elif defined(OS_MACOSX)
    if (shell_integration::IsFirefoxDefaultBrowser()) {
      DetectFirefoxProfiles(locale, &profiles);
-+    DetectBraveProfiles(&profiles);
      DetectSafariProfiles(&profiles);
 +    DetectChromeProfiles(&profiles);
    } else {
      DetectSafariProfiles(&profiles);
-+    DetectBraveProfiles(&profiles);
      DetectFirefoxProfiles(locale, &profiles);
 +    DetectChromeProfiles(&profiles);
    }
@@ -31,10 +26,8 @@ index c5ad71a4002d7926cc05e3928e486cf8275d5d2d..1f09d3f847ecb2afa2e64e6dfc86bb5c
 -  DetectFirefoxProfiles(locale, &profiles);
 +  if (shell_integration::IsFirefoxDefaultBrowser()) {
 +    DetectFirefoxProfiles(locale, &profiles);
-+    DetectBraveProfiles(&profiles);
 +    DetectChromeProfiles(&profiles);
 +  } else {
-+    DetectBraveProfiles(&profiles);
 +    DetectChromeProfiles(&profiles);
 +    DetectFirefoxProfiles(locale, &profiles);
 +  }

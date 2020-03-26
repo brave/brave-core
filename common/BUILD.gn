@@ -56,11 +56,6 @@ source_set("common") {
     "brave_paths.h",
     "common_message_generator.cc",
     "common_message_generator.h",
-    "importer/brave_referral.cc",
-    "importer/brave_referral.h",
-    "importer/importer_constants.h",
-    "importer/imported_browser_window.cc",
-    "importer/imported_browser_window.h",
     "resource_bundle_helper.cc",
     "resource_bundle_helper.h",
     "translate_network_constants.cc",
@@ -73,13 +68,9 @@ source_set("common") {
 
   if (!is_android) {
     sources += [
-      "importer/brave_importer_utils.cc",
-      "importer/brave_importer_utils.h",
-      "importer/brave_ledger.cc",
-      "importer/brave_ledger.h",
-      "importer/brave_stats.h",
       "importer/chrome_importer_utils.cc",
       "importer/chrome_importer_utils.h",
+      "importer/importer_constants.h",
     ]
   }
 
@@ -110,21 +101,18 @@ source_set("common") {
 
   if (is_mac) {
     sources += [
-      "importer/brave_importer_utils_mac.mm",
       "importer/chrome_importer_utils_mac.mm",
     ]
   }
 
   if (is_linux) {
     sources += [
-      "importer/brave_importer_utils_linux.cc",
       "importer/chrome_importer_utils_linux.cc",
     ]
   }
 
   if (is_win) {
     sources += [
-      "importer/brave_importer_utils_win.cc",
       "importer/chrome_importer_utils_win.cc",
     ]
   }

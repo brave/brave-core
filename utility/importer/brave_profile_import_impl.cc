@@ -9,8 +9,6 @@
 
 #include "base/command_line.h"
 #include "base/strings/utf_string_conversions.h"
-#include "chrome/grit/generated_resources.h"
-#include "ui/base/l10n/l10n_util.h"
 
 void BraveProfileImportImpl::StartImport(
     const importer::SourceProfile& source_profile,
@@ -30,15 +28,6 @@ void BraveProfileImportImpl::StartImport(
     command_line->AppendSwitch("import-brave");
   }
 
-  base::flat_map<uint32_t, std::string> brave_localized_strings =
-      localized_strings;
-  brave_localized_strings.try_emplace(
-      IDS_IMPORT_FROM_BRAVE,
-      l10n_util::GetStringUTF8(IDS_IMPORT_FROM_BRAVE));
-  brave_localized_strings.try_emplace(
-      IDS_BOOKMARK_GROUP_FROM_BRAVE,
-      l10n_util::GetStringUTF8(IDS_BOOKMARK_GROUP_FROM_BRAVE));
-
   ProfileImportImpl::StartImport(
-      source_profile, items, brave_localized_strings, std::move(observer));
+      source_profile, items, localized_strings, std::move(observer));
 }

@@ -51,9 +51,6 @@ void RecordImporterP3A(importer::ImporterType type) {
   case importer::TYPE_CHROME:
     metric = ImporterSource::kChrome;
     break;
-  case importer::TYPE_BRAVE:
-    metric = ImporterSource::kBrave;
-    break;
   }
 
   UMA_HISTOGRAM_ENUMERATION("Brave.Importer.ImporterSource", metric,

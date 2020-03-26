@@ -2483,17 +2483,6 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
   }
 }
 
-bool RewardsServiceImpl::CheckImported() {
-  PrefService* prefs = profile_->GetOriginalProfile()->GetPrefs();
-  const int pinned_item_count = prefs->GetInteger(
-      kBravePaymentsPinnedItemCount);
-  if (pinned_item_count > 0) {
-    prefs->SetInteger(kBravePaymentsPinnedItemCount, 0);
-  }
-
-  return pinned_item_count > 0;
-}
-
 void RewardsServiceImpl::SetBackupCompleted() {
   profile_->GetPrefs()->SetBoolean(prefs::kRewardsBackupSucceeded, true);
 }

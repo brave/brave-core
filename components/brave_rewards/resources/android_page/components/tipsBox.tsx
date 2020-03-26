@@ -8,7 +8,6 @@ import { connect } from 'react-redux'
 
 // Components
 import {
-  BoxAlert,
   TableDonation,
   List,
   Tokens,
@@ -88,14 +87,6 @@ class TipBox extends React.Component<Props, State> {
 
   doNothing = () => {
     console.log('Alert closed')
-  }
-
-  importAlert = (walletImported: boolean) => {
-    return (
-      walletImported
-      ? <BoxAlert type={'tips'} onReview={this.doNothing} />
-      : null
-    )
   }
 
   render () {

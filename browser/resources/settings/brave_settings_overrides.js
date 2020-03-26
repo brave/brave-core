@@ -131,14 +131,6 @@ BravePatching.RegisterPolymerComponentBehaviors({
           return;
         }
         this.noImportDataTypeSelected_ = this.noImportDataTypeSelected_ &&
-          !(this.getPref('import_dialog_cookies').value &&
-          this.selected_.cookies) &&
-          !(this.getPref('import_dialog_stats').value &&
-            this.selected_.stats) &&
-          !(this.getPref('import_dialog_ledger').value &&
-            this.selected_.ledger) &&
-          !(this.getPref('import_dialog_windows').value &&
-            this.selected_.windows) &&
           !(this.getPref('import_dialog_extensions').value &&
             this.selected_.extensions)
       }
@@ -430,26 +422,6 @@ BravePatching.RegisterPolymerTemplateModifications({
     let checkBoxesParent = templateContent.querySelector('#browserSelect').parentElement
     let innerHTML = checkBoxesParent.innerHTML
     innerHTML += `
-        <settings-checkbox
-            hidden="[[!selected_.cookies]]"
-            pref="{{prefs.import_dialog_cookies}}"
-            label="${I18nBehavior.i18n('importCookies')}">
-        </settings-checkbox>
-        <settings-checkbox
-            hidden="[[!selected_.stats]]"
-            pref="{{prefs.import_dialog_stats}}"
-            label="${I18nBehavior.i18n('importStats')}">
-        </settings-checkbox>
-        <settings-checkbox
-            hidden="[[!selected_.ledger]]"
-            pref="{{prefs.import_dialog_ledger}}"
-            label="${I18nBehavior.i18n('importLedger')}">
-        </settings-checkbox>
-        <settings-checkbox
-            hidden="[[!selected_.windows]]"
-            pref="{{prefs.import_dialog_windows}}"
-            label="${I18nBehavior.i18n('importWindows')}">
-        </settings-checkbox>
         <settings-checkbox
             hidden="[[!selected_.extensions]]"
             pref="{{prefs.import_dialog_extensions}}"

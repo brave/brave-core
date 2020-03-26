@@ -12,7 +12,6 @@
 #include "base/task/task_traits.h"
 #include "brave/browser/importer/brave_importer_lock_dialog.h"
 #include "brave/browser/importer/brave_importer_p3a.h"
-#include "brave/browser/importer/brave_profile_lock.h"
 #include "brave/browser/importer/chrome_profile_lock.h"
 #include "brave/common/importer/chrome_importer_utils.h"
 #include "brave/common/importer/importer_constants.h"
@@ -95,26 +94,21 @@ bool BraveExternalProcessImporterHost::CheckForFirefoxLock(
   if (!ExternalProcessImporterHost::CheckForFirefoxLock(source_profile))
     return false;
 
-  return CheckForChromeOrBraveLock(source_profile);
+  return CheckForChromeLock(source_profile);
 }
 
-bool BraveExternalProcessImporterHost::CheckForChromeOrBraveLock(
+bool BraveExternalProcessImporterHost::CheckForChromeLock(
     const importer::SourceProfile& source_profile) {
-  if (!(source_profile.importer_type == importer::TYPE_CHROME ||
-        source_profile.importer_type == importer::TYPE_BRAVE))
+  if (source_profile.importer_type != importer::TYPE_CHROME)
     return true;
 
   DCHECK(!browser_lock_.get());
 
-  if (source_profile.importer_type == importer::TYPE_CHROME) {
-    // Extract the user data directory from the path of the profile to be
-    // imported, because we can only lock/unlock the entire user directory with
-    // ProcessSingleton.
-    base::FilePath user_data_dir = source_profile.source_path.DirName();
-    browser_lock_.reset(new ChromeProfileLock(user_data_dir));
-  } else {  // source_profile.importer_type == importer::TYPE_BRAVE
-    browser_lock_.reset(new BraveProfileLock(source_profile.source_path));
-  }
+  // Extract the user data directory from the path of the profile to be
+  // imported, because we can only lock/unlock the entire user directory with
+  // ProcessSingleton.
+  base::FilePath user_data_dir = source_profile.source_path.DirName();
+  browser_lock_.reset(new ChromeProfileLock(user_data_dir));
 
   browser_lock_->Lock();
   if (browser_lock_->HasAcquired())

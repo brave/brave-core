@@ -178,8 +178,6 @@ test("brave_unit_tests") {
       "//brave/browser/ui/views/accelerator_table_unittest.cc",
       "//brave/chromium_src/chrome/browser/profiles/profile_avatar_icon_util_unittest.cc",
       "//brave/chromium_src/chrome/browser/ui/bookmarks/brave_bookmark_context_menu_controller_unittest.cc",
-      "//brave/common/importer/brave_mock_importer_bridge.cc",
-      "//brave/common/importer/brave_mock_importer_bridge.h",
       "//brave/components/invalidation/push_client_channel_unittest.cc",
       "//chrome/browser/push_messaging/push_messaging_app_identifier_unittest.cc",
       "//chrome/browser/push_messaging/push_messaging_notification_manager_unittest.cc",
@@ -195,7 +193,6 @@ test("brave_unit_tests") {
       "//components/gcm_driver/gcm_driver_unittest.cc",
       "../browser/importer/chrome_profile_lock_unittest.cc",
       "../utility/importer/chrome_importer_unittest.cc",
-      "../utility/importer/brave_importer_unittest.cc",
 
       # These tests should probably work on Android and compile, but don't pass currently
       "//brave/browser/autocomplete/brave_autocomplete_provider_client_unittest.cc",

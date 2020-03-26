@@ -35,10 +35,6 @@ const char kDisableBraveWaybackMachineExtension[] =
 // Valid values are: "dark" | "light".
 const char kDarkMode[] = "dark-mode";
 
-// Triggers auto-import of profile data from Brave browser-laptop/Muon, if
-// available.
-const char kUpgradeFromMuon[] = "upgrade-from-muon";
-
 // Allows disabling the machine ID generation on Windows.
 const char kDisableMachineId[] = "disable-machine-id";
 

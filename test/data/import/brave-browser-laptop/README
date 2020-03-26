@@ -1,9 +1,0 @@
-Since Brave browser-laptop is based on Chromium (via Muon/Electron), most of the notes from the ChromeImporter test data README (`../chrome/README`) are also applicable here.
-
-# Generating test data
-
-Unlike Chrome/Chromium, Brave browser-laptop does not support multiple profiles, so if you use Brave as your regular web browser, it may not be immediately obvious how you can create a separate profile for the purpose of generating test data. You can specify a custom user data directory with the `--user-data-dir` flag, e.g on macOS:
-
-    TEST_UDD=/path/to/test/user/data/dir
-    mkdir -p $TEST_UDD
-    /Applications/Brave.app/Contents/MacOS/Brave --user-data-dir=$TEST_UDD

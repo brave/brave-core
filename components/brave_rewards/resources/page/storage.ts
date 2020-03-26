@@ -34,7 +34,6 @@ export const defaultState: Rewards.State = {
     modalRedirect: 'hide',
     paymentIdCheck: true,
     walletCorrupted: false,
-    walletImported: false,
     walletRecoverySuccess: null,
     walletServerProblem: false,
     onBoardingDisplayed: false,

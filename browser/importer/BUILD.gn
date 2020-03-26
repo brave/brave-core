@@ -2,19 +2,11 @@ import("//build/config/features.gni")
 
 source_set("importer") {
   sources = [
-    "brave_external_process_importer_client.cc",
-    "brave_external_process_importer_client.h",
     "brave_external_process_importer_host.cc",
     "brave_external_process_importer_host.h",
     "brave_importer_lock_dialog.h",
     "brave_importer_p3a.cc",
     "brave_importer_p3a.h",
-    "brave_in_process_importer_bridge.cc",
-    "brave_in_process_importer_bridge.h",
-    "brave_profile_writer.cc",
-    "brave_profile_writer.h",
-    "brave_profile_lock.cc",
-    "brave_profile_lock.h",
     "browser_profile_lock.h",
     "chrome_profile_lock.cc",
     "chrome_profile_lock.h",
@@ -23,9 +15,6 @@ source_set("importer") {
   deps = [
     "//base",
     "//brave/common",
-    "//brave/common:pref_names",
-    "//brave/components/brave_rewards/browser",
-    "//chrome/browser/ui",
     # For buildflags.h included from chrome/browser/browser_process.h, we are
     # not including chrome/browser here because of circular dependency.
     # We should refactor this in the future to be able to add chrome/browser
@@ -35,13 +24,8 @@ source_set("importer") {
     # For profile_import.mojom.h from external_process_importer_client.h.
     # brave_external_process_importer_client.cc refers it indirectly.
     "//chrome/common/importer:interfaces",
-    "//components/prefs",
-    "//components/search_engines",
     "//content/public/browser",
     "//extensions/buildflags",
-    "//net",
-    "//services/network/public/mojom",
-    "//ui/base",
     "//ui/gfx:native_widget_types",
   ]
 }
