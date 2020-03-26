@@ -166,6 +166,57 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjection) {
   EXPECT_EQ(title, "Altered");
 }
 
+IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionDocumentStart) {
+  ASSERT_TRUE(InstallMockExtension());
+  GURL url = embedded_test_server()->GetURL("runat1.b.com", "/intercept.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(contents));
+  EXPECT_EQ(url, contents->GetURL());
+  std::string title;
+  ASSERT_TRUE(
+      ExecuteScriptAndExtractString(contents,
+                                    "window.domAutomationController.send("
+                                    "document.title)",
+                                    &title));
+  EXPECT_EQ(title, "SCRIPT_FIRST");
+}
+
+IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionDocumentEnd) {
+  ASSERT_TRUE(InstallMockExtension());
+  GURL url = embedded_test_server()->GetURL("runat2.b.com", "/intercept.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(contents));
+  EXPECT_EQ(url, contents->GetURL());
+  std::string title;
+  ASSERT_TRUE(
+      ExecuteScriptAndExtractString(contents,
+                                    "window.domAutomationController.send("
+                                    "document.title)",
+                                    &title));
+  EXPECT_EQ(title, "PAGE_FIRST");
+}
+
+IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionRunAtDefault) {
+  ASSERT_TRUE(InstallMockExtension());
+  GURL url = embedded_test_server()->GetURL("runat3.b.com", "/intercept.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(contents));
+  EXPECT_EQ(url, contents->GetURL());
+  std::string title;
+  ASSERT_TRUE(
+      ExecuteScriptAndExtractString(contents,
+                                    "window.domAutomationController.send("
+                                    "document.title)",
+                                    &title));
+  EXPECT_EQ(title, "PAGE_FIRST");
+}
+
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionWithPrecondition) {
   ASSERT_TRUE(InstallMockExtension());
 

@@ -46,6 +46,7 @@ class GreaselionRule {
   void Parse(base::DictionaryValue* preconditions_value,
              base::ListValue* urls_value,
              base::ListValue* scripts_value,
+             const std::string& run_at_value,
              const base::FilePath& resource_dir);
   ~GreaselionRule();
 
@@ -53,6 +54,9 @@ class GreaselionRule {
   std::string name() const { return name_; }
   std::vector<std::string> url_patterns() const { return url_patterns_; }
   std::vector<base::FilePath> scripts() const { return scripts_; }
+  std::string run_at() const {
+    return run_at_;
+  }
 
  private:
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner();
@@ -64,6 +68,7 @@ class GreaselionRule {
   std::string name_;
   std::vector<std::string> url_patterns_;
   std::vector<base::FilePath> scripts_;
+  std::string run_at_;
   GreaselionPreconditions preconditions_;
   base::WeakPtrFactory<GreaselionRule> weak_factory_;
   DISALLOW_COPY_AND_ASSIGN(GreaselionRule);
