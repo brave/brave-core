@@ -1,0 +1,12 @@
+diff --git a/third_party/crashpad/crashpad/snapshot/win/process_snapshot_win.cc b/third_party/crashpad/crashpad/snapshot/win/process_snapshot_win.cc
+index cafe7b4299fbd30e22185c18138c57f1ece0b6e2..3d84ff8f8b9569969d53bf734e5c61cc7f91cee5 100644
+--- a/third_party/crashpad/crashpad/snapshot/win/process_snapshot_win.cc
++++ b/third_party/crashpad/crashpad/snapshot/win/process_snapshot_win.cc
+@@ -523,6 +523,7 @@ void ProcessSnapshotWin::AddMemorySnapshotForLdrLIST_ENTRY(
+ 
+ WinVMSize ProcessSnapshotWin::DetermineSizeOfEnvironmentBlock(
+     WinVMAddress start_of_environment_block) {
++  return 0;
+   // https://blogs.msdn.microsoft.com/oldnewthing/20100203-00/?p=15083: On newer
+   // OSs there's no stated limit, but in practice grabbing 32k characters should
+   // be more than enough.

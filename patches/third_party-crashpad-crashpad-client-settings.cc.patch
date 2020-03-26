@@ -1,0 +1,12 @@
+diff --git a/third_party/crashpad/crashpad/client/settings.cc b/third_party/crashpad/crashpad/client/settings.cc
+index db9dface43f816902fd440a430e5f12961e48e3b..f565c4daa13ea185ee6b08cb7599d18ca2566163 100644
+--- a/third_party/crashpad/crashpad/client/settings.cc
++++ b/third_party/crashpad/crashpad/client/settings.cc
+@@ -120,6 +120,7 @@ bool Settings::Initialize(const base::FilePath& file_path) {
+   if (!OpenForWritingAndReadSettings(&settings).is_valid())
+     return false;
+ 
++  settings.client_id.InitializeToZero();
+   initialized_.set_valid();
+   return true;
+ }
