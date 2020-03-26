@@ -258,6 +258,7 @@ BravePatching.RegisterPolymerTemplateModifications({
       console.error('[Brave Settings Overrides] Could not move privacy route to advanced route', r)
     } else {
       r.PRIVACY.parent = r.ADVANCED
+      r.CLEAR_BROWSER_DATA.parent = r.ADVANCED
     }
     // Add 'Getting Started' section
     // Entire content is wrapped in another conditional template
