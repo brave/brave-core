@@ -1156,7 +1156,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 continue;
               }
 
-              String toInsert = "<b><font color=#ffffff>" + grant[0] + " BAT</font></b> ";
+              String toInsert = "<b><font color=#ffffff>" + grant[0] + " " + batPointsText + "</font></b> ";
 
               if (grant[2].equals(BraveRewardsPanelPopup.ADS_GRANT_TYPE) == false) {
                   Calendar calTime = Calendar.getInstance();
