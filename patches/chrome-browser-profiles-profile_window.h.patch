@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/profile_window.h b/chrome/browser/profiles/profile_window.h
-index 00014301cdb506f01e0c6632c8d35b8ea7f40584..1d01d4e519c0c8705ce5c21eb28b99351115c706 100644
+index 6ba35ca6f4384892e87a132567fda82834d62b36..b17f08c9bbf4fc03ee328c34e7183037b484da13 100644
 --- a/chrome/browser/profiles/profile_window.h
 +++ b/chrome/browser/profiles/profile_window.h
-@@ -87,6 +87,7 @@ void SwitchToProfile(const base::FilePath& path,
+@@ -85,6 +85,7 @@ void SwitchToProfile(const base::FilePath& path,
  
  // Opens a Browser for the guest profile and runs |callback| if it isn't null.
  void SwitchToGuestProfile(ProfileManager::CreateCallback callback);
@@ -10,7 +10,7 @@ index 00014301cdb506f01e0c6632c8d35b8ea7f40584..1d01d4e519c0c8705ce5c21eb28b9935
  
  // Returns true if |profile| has potential profile switch targets, ie there's at
  // least one other profile available to switch to, not counting guest. This is
-@@ -103,6 +104,7 @@ void CreateAndSwitchToNewProfile(ProfileManager::CreateCallback callback,
+@@ -101,6 +102,7 @@ void CreateAndSwitchToNewProfile(ProfileManager::CreateCallback callback,
  // Closes all browser windows that belong to the guest profile and opens the
  // user manager.
  void CloseGuestProfileWindows();

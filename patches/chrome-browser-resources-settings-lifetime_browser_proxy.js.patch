@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/lifetime_browser_proxy.js b/chrome/browser/resources/settings/lifetime_browser_proxy.js
-index dae61c384ea5472bb178c855daf314284d023377..cb4a029ffdcb68f0a73f53e9bc8e975aa9df65a4 100644
+index d109348290ecf852da38a0da26abac5798f9d89c..1b825fde7f16f17a6d75126a8cb1670e47314d05 100644
 --- a/chrome/browser/resources/settings/lifetime_browser_proxy.js
 +++ b/chrome/browser/resources/settings/lifetime_browser_proxy.js
-@@ -11,6 +11,13 @@ cr.define('settings', function() {
+@@ -15,6 +15,13 @@ cr.define('settings', function() {
      // Triggers a browser relaunch.
      relaunch() {}
  
@@ -16,7 +16,7 @@ index dae61c384ea5472bb178c855daf314284d023377..cb4a029ffdcb68f0a73f53e9bc8e975a
      // <if expr="chromeos">
      // First signs out current user and then performs a restart.
      signOutAndRestart() {}
-@@ -39,6 +46,13 @@ cr.define('settings', function() {
+@@ -41,6 +48,13 @@ cr.define('settings', function() {
        chrome.send('relaunch');
      }
  

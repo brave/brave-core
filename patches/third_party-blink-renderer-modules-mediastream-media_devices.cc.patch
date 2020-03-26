@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/mediastream/media_devices.cc b/third_party/blink/renderer/modules/mediastream/media_devices.cc
-index ad4d5666dc83d5991838f76bb0255fa6982cf15b..fb308f0ff45c3106d3095d5baabdf4da3bd21886 100644
+index 40a9642a4160877f3d79dc55cfe5181fecb0049d..cc0e54c48722b2bbf6dc515c39db27a60580c811 100644
 --- a/third_party/blink/renderer/modules/mediastream/media_devices.cc
 +++ b/third_party/blink/renderer/modules/mediastream/media_devices.cc
 @@ -6,6 +6,7 @@

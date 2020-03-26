@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/util/google_update_settings.cc b/chrome/installer/util/google_update_settings.cc
-index 81969fb4994f01110e17385acfe7f2bfaf3f9302..49374ed4823b68dd7534f1ca0385bef6fbd6b623 100644
+index 350eb833bc2fcfc7bc6f679c25252698703bf5c3..b57803773977301ebe136413b71a27be9f0deaae 100644
 --- a/chrome/installer/util/google_update_settings.cc
 +++ b/chrome/installer/util/google_update_settings.cc
-@@ -29,7 +29,11 @@ using base::win::RegKey;
+@@ -30,7 +30,11 @@ using base::win::RegKey;
  using installer::InstallationState;
  
  const wchar_t GoogleUpdateSettings::kPoliciesKey[] =
@@ -14,7 +14,7 @@ index 81969fb4994f01110e17385acfe7f2bfaf3f9302..49374ed4823b68dd7534f1ca0385bef6
  const wchar_t GoogleUpdateSettings::kUpdatePolicyValue[] = L"UpdateDefault";
  const wchar_t GoogleUpdateSettings::kDownloadPreferencePolicyValue[] =
      L"DownloadPreference";
-@@ -41,6 +45,10 @@ const wchar_t GoogleUpdateSettings::kCheckPeriodOverrideMinutes[] =
+@@ -42,6 +46,10 @@ const wchar_t GoogleUpdateSettings::kCheckPeriodOverrideMinutes[] =
  const int GoogleUpdateSettings::kCheckPeriodOverrideMinutesMax =
      60 * 24 * 7 * 6;
  

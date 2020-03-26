@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
-index 77e782fe4391753187a7dd28fa7b4fc6ba2447c4..89a290a4a49bad3527e5cb3b92d1ffe8dec1e051 100644
+index b161fde9714c8780d223dcd5316f158f1aa67834..7fb5552ebf321828422392a2cd8453af4305d76d 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
-@@ -72,7 +72,7 @@ import org.chromium.ui.vr.VrModeObserver;
+@@ -73,7 +73,7 @@ import org.chromium.ui.vr.VrModeObserver;
   * Layout for the new tab page. This positions the page elements in the correct vertical positions.
   * There are no separate phone and tablet UIs; this layout adapts based on the available space.
   */
@@ -11,7 +11,7 @@ index 77e782fe4391753187a7dd28fa7b4fc6ba2447c4..89a290a4a49bad3527e5cb3b92d1ffe8
      private static final String TAG = "NewTabPageLayout";
      // Used to signify the cached resource value is unset.
      private static final int UNSET_RESOURCE_FLAG = -1;
-@@ -84,7 +84,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
+@@ -85,7 +85,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
  
      private LogoView mSearchProviderLogoView;
      private SearchBoxContainerView mSearchBoxContainerView;
@@ -20,7 +20,7 @@ index 77e782fe4391753187a7dd28fa7b4fc6ba2447c4..89a290a4a49bad3527e5cb3b92d1ffe8
      private SiteSectionViewHolder mSiteSectionViewHolder;
      private ImageView mVoiceSearchButton;
      private View mTileGridPlaceholder;
-@@ -423,7 +423,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
+@@ -427,7 +427,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
                  1f);
      }
  
@@ -29,7 +29,7 @@ index 77e782fe4391753187a7dd28fa7b4fc6ba2447c4..89a290a4a49bad3527e5cb3b92d1ffe8
          mSiteSectionView = SiteSection.inflateSiteSection(this);
          ViewGroup.LayoutParams layoutParams = mSiteSectionView.getLayoutParams();
          layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-@@ -788,7 +788,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
+@@ -792,7 +792,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
          }
      }
  

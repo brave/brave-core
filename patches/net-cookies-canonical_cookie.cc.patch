@@ -1,5 +1,5 @@
 diff --git a/net/cookies/canonical_cookie.cc b/net/cookies/canonical_cookie.cc
-index f7d20322d8ebc0dd804ea1e1388e625fafccba27..453e781df9d94bc3fac407796f72939301da6efe 100644
+index f8c98061eb7247e46baf798353fa320ce80e16fa..4bc53d4c041ea1f401000f90822ecb36aa42d452 100644
 --- a/net/cookies/canonical_cookie.cc
 +++ b/net/cookies/canonical_cookie.cc
 @@ -248,6 +248,7 @@ Time CanonicalCookie::CanonExpiration(const ParsedCookie& pc,

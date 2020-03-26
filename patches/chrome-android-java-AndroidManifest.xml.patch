@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 16820374338adc755e4795c1a8a07997cd620bac..a3c4d705ff3e338c7c8f0ae5f0f3cc5ef19e4653 100644
+index a18cd3d5572951b7bada82907e9eb48df5b47a3c..4aa022393170dee6afac8353fcf54cb0cb6c77d3 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -34,7 +34,9 @@ by a child template that "extends" this file.
@@ -12,7 +12,7 @@ index 16820374338adc755e4795c1a8a07997cd620bac..a3c4d705ff3e338c7c8f0ae5f0f3cc5e
      <uses-permission-sdk-23 android:name="android.permission.REORDER_TASKS"/>
      <uses-permission-sdk-23 android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
  
-@@ -43,22 +45,32 @@ by a child template that "extends" this file.
+@@ -43,23 +45,33 @@ by a child template that "extends" this file.
      {% if target_sdk_version|int > 27 or target_sdk_version == "Q" %}
          <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
      {% endif %}
@@ -35,6 +35,7 @@ index 16820374338adc755e4795c1a8a07997cd620bac..a3c4d705ff3e338c7c8f0ae5f0f3cc5e
 +<!--
      <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
 +-->
+     <uses-permission-sdk-23 android:name="android.permission.USE_BIOMETRIC"/>
      <uses-permission-sdk-23 android:name="android.permission.USE_FINGERPRINT"/>
      <uses-permission android:name="android.permission.VIBRATE"/>
      <uses-permission android:name="android.permission.WAKE_LOCK"/>
@@ -45,7 +46,7 @@ index 16820374338adc755e4795c1a8a07997cd620bac..a3c4d705ff3e338c7c8f0ae5f0f3cc5e
      {% set enable_vr = enable_vr|default(0) %}
      {% if enable_vr == "true" %}
      <!-- Indicates use of Android's VR-mode, available only on Android N+. -->
-@@ -99,7 +111,9 @@ by a child template that "extends" this file.
+@@ -100,7 +112,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
  
@@ -55,7 +56,7 @@ index 16820374338adc755e4795c1a8a07997cd620bac..a3c4d705ff3e338c7c8f0ae5f0f3cc5e
  
      {% block extra_uses_permissions %}
      {% endblock %}
-@@ -125,6 +139,7 @@ by a child template that "extends" this file.
+@@ -126,6 +140,7 @@ by a child template that "extends" this file.
      <!-- Set android:largeHeap to "true" to allow more than the default
           Java heap limit (32Mb on Nexus S, 48Mb on Xoom). -->
      <application android:name="{% block application_name %}org.chromium.chrome.browser.ChromeApplication{% endblock %}"
@@ -63,7 +64,7 @@ index 16820374338adc755e4795c1a8a07997cd620bac..a3c4d705ff3e338c7c8f0ae5f0f3cc5e
          android:icon="@drawable/ic_launcher"
          android:roundIcon="@drawable/ic_launcher_round"
          android:label="{% block application_label %}@string/app_name{% endblock %}"
-@@ -175,6 +190,7 @@ by a child template that "extends" this file.
+@@ -176,6 +191,7 @@ by a child template that "extends" this file.
          <!-- ARCore APK integration -->
          <!-- This tag indicates that this application optionally uses ARCore. -->
          <meta-data android:name="com.google.ar.core" android:value="optional" />
@@ -71,7 +72,7 @@ index 16820374338adc755e4795c1a8a07997cd620bac..a3c4d705ff3e338c7c8f0ae5f0f3cc5e
          {% endif %}
  
          <!-- Cast support -->
-@@ -1290,6 +1306,7 @@ android:value="true" />
+@@ -1295,6 +1311,7 @@ android:value="true" />
          </activity>
          {% endif %}
  

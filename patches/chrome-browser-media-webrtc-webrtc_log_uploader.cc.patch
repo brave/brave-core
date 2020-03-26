@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/media/webrtc/webrtc_log_uploader.cc b/chrome/browser/media/webrtc/webrtc_log_uploader.cc
-index 1b386f4a80396229c4c82961ba26bb972ba64d47..32726cb50c9b070abd5e75222f2c5facd0450223 100644
+index 61851b8c669f674aab76ebdbb97fffaf438bfbff..84f3f51903b5d26d00501aedd471a2dfe20dbc28 100644
 --- a/chrome/browser/media/webrtc/webrtc_log_uploader.cc
 +++ b/chrome/browser/media/webrtc/webrtc_log_uploader.cc
 @@ -442,6 +442,7 @@ std::string WebRtcLogUploader::CompressLog(WebRtcLogBuffer* buffer) {

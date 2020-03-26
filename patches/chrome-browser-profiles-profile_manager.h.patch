@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_manager.h b/chrome/browser/profiles/profile_manager.h
-index f4c3c9e25190f0734f5fc585d706ffdb221d6264..cef7b27f8c7646ea3d75107005e1f84235f792ff 100644
+index 3e1e28ea7d0e9c90d0c2189dae6ba6a394582aac..e67f1e0d57cfd01f56a0291fd2d3cff8c86b1180 100644
 --- a/chrome/browser/profiles/profile_manager.h
 +++ b/chrome/browser/profiles/profile_manager.h
 @@ -148,7 +148,7 @@ class ProfileManager : public content::NotificationObserver,
@@ -36,7 +36,7 @@ index f4c3c9e25190f0734f5fc585d706ffdb221d6264..cef7b27f8c7646ea3d75107005e1f842
    void DoFinalInitForServices(Profile* profile, bool go_off_the_record);
    void DoFinalInitLogging(Profile* profile);
  
-@@ -358,7 +360,7 @@ class ProfileManager : public content::NotificationObserver,
+@@ -361,7 +363,7 @@ class ProfileManager : public content::NotificationObserver,
  
    // Apply settings for profiles created by the system rather than users: The
    // (desktop) Guest User profile and (desktop) System Profile.

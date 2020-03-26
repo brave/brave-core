@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index 4bf9895408296493db9aaff1e9e3094786464cd7..8abb10b5d2eec14d7ac09e457b1a9c6ed0f5abfe 100644
+index 872970e6dcd5dc83ee4180748be4be86c6850e6d..97afb44b4316181f979a6dca88feec1d29002f9a 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
 @@ -15,6 +15,7 @@
@@ -42,15 +42,15 @@ index 4bf9895408296493db9aaff1e9e3094786464cd7..8abb10b5d2eec14d7ac09e457b1a9c6e
  <if expr="chromeos">
      <settings-toggle-button pref="{{prefs.cros.metrics.reportingEnabled}}"
 @@ -64,6 +70,8 @@
-         sub-label="$i18n{enableLoggingDesc}">
+         sub-label="$i18n{enablePersonalizationLoggingDesc}">
      </settings-toggle-button>
  </if><!-- chromeos -->
 +</if><!-- _google_chrome -->
 +<if expr="_chromium">
  <if expr="not chromeos">
      <settings-toggle-button id="metricsReportingControl"
-         pref="[[metricsReportingPref_]]" label="$i18n{enableLogging}"
-@@ -77,12 +85,14 @@
+         pref="[[metricsReportingPref_]]"
+@@ -78,12 +86,14 @@
        </template>
      </settings-toggle-button>
  </if><!-- not chromeos -->
@@ -66,7 +66,7 @@ index 4bf9895408296493db9aaff1e9e3094786464cd7..8abb10b5d2eec14d7ac09e457b1a9c6e
  <if expr="_google_chrome">
      <settings-toggle-button id="spellCheckControl"
          pref="{{prefs.spellcheck.use_spelling_service}}"
-@@ -101,6 +111,7 @@
+@@ -102,6 +112,7 @@
        </settings-toggle-button>
      </template>
  
@@ -74,7 +74,7 @@ index 4bf9895408296493db9aaff1e9e3094786464cd7..8abb10b5d2eec14d7ac09e457b1a9c6e
      <template is="dom-if" if="[[showSignoutDialog_]]" restamp>
        <settings-signout-dialog sync-status="[[syncStatus]]"
            on-close="onSignoutDialogClosed_">
-@@ -112,6 +123,7 @@
+@@ -113,6 +124,7 @@
        <div>$i18n{restartToApplyChanges}</div>
        <cr-button on-click="onRestartTap_">$i18n{restart}</cr-button>
      </cr-toast>

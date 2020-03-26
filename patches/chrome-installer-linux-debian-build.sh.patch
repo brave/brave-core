@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/debian/build.sh b/chrome/installer/linux/debian/build.sh
-index 0a510aa0655780511bc90677264f3610a9acd994..1555fee518ec0560a5a1d7664a0032b824261097 100755
+index c8e2130d81c95692c4298a6418f2bf00c78c4d5e..bdd0a2098752863de7fe20c635e9d97c4c85083a 100755
 --- a/chrome/installer/linux/debian/build.sh
 +++ b/chrome/installer/linux/debian/build.sh
 @@ -21,7 +21,7 @@ gen_changelog() {
@@ -58,7 +58,7 @@ index 0a510aa0655780511bc90677264f3610a9acd994..1555fee518ec0560a5a1d7664a0032b8
  }
  
  process_opts() {
-@@ -259,6 +263,17 @@ fi
+@@ -253,6 +257,17 @@ fi
  eval $(sed -e "s/^\([^=]\+\)=\(.*\)$/export \1='\2'/" \
    "${BUILDDIR}/installer/theme/BRANDING")
  
@@ -76,7 +76,7 @@ index 0a510aa0655780511bc90677264f3610a9acd994..1555fee518ec0560a5a1d7664a0032b8
  verify_channel
  
  # Some Debian packaging tools want these set.
-@@ -271,6 +286,10 @@ COMMON_PREDEPS="dpkg (>= 1.14.0)"
+@@ -266,6 +281,10 @@ COMMON_PREDEPS="dpkg (>= 1.14.0)"
  MANUAL_RECOMMENDS="${SCRIPTDIR}/manual_recommends"
  COMMON_RECOMMENDS=$(grep -v ^$ "${MANUAL_RECOMMENDS}" | grep -v ^# |
                          sed ':a;N;$!ba;s/\n/, /g')
