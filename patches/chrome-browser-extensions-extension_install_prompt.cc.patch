@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/extension_install_prompt.cc b/chrome/browser/extensions/extension_install_prompt.cc
-index b03355f04f54ffe007d94a3899194e5117ea718f..7e8ac59546bb18a5c7cbebc0e7b11d877a95e493 100644
+index 081b1dba7c13c599c934b90a6473b52afc5f5f5a..45ed600f4c05545ae66fcd0298b497e38bdcc163 100644
 --- a/chrome/browser/extensions/extension_install_prompt.cc
 +++ b/chrome/browser/extensions/extension_install_prompt.cc
 @@ -13,6 +13,7 @@
@@ -9,8 +9,8 @@ index b03355f04f54ffe007d94a3899194e5117ea718f..7e8ac59546bb18a5c7cbebc0e7b11d87
 +#include "brave/browser/extensions/brave_extension_install_prompt.h"
  #include "chrome/browser/extensions/extension_install_prompt_show_params.h"
  #include "chrome/browser/extensions/extension_util.h"
- #include "chrome/browser/extensions/permissions_updater.h"
-@@ -507,7 +508,7 @@ void ExtensionInstallPrompt::ShowDialog(
+ #include "chrome/browser/profiles/profile.h"
+@@ -491,7 +492,7 @@ void ExtensionInstallPrompt::ShowDialog(
      const SkBitmap* icon,
      const ShowDialogCallback& show_dialog_callback) {
    ShowDialog(done_callback, extension, icon,

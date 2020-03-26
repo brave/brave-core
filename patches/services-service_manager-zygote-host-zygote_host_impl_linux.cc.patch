@@ -1,5 +1,5 @@
 diff --git a/services/service_manager/zygote/host/zygote_host_impl_linux.cc b/services/service_manager/zygote/host/zygote_host_impl_linux.cc
-index d43cc31c1a710088e692c6b3a0c0e5775093dc52..1b64514830aebd2f4e86ef0d4c2bf91516cdcbc2 100644
+index 08ecc3c80c0acccae26dca0ccf46441204d809dc..c08730cb708c68c65e0a0adb585c7295c0d22c45 100644
 --- a/services/service_manager/zygote/host/zygote_host_impl_linux.cc
 +++ b/services/service_manager/zygote/host/zygote_host_impl_linux.cc
 @@ -114,13 +114,9 @@ void ZygoteHostImpl::Init(const base::CommandLine& command_line) {

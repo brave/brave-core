@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/media/autoplay_policy.cc b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
-index 955e551050111da593ca52f63a6dcc1d3dd221d4..d9dc733060eefa40609262320c67d93071806b10 100644
+index 9e03caf66bbe9b7971de431e5bcb60abd8d1511a..26f21c9543db8e0d9ecc0e3b49e5bc9bd6521ea4 100644
 --- a/third_party/blink/renderer/core/html/media/autoplay_policy.cc
 +++ b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
-@@ -306,10 +306,12 @@ bool AutoplayPolicy::IsGestureNeededForPlayback() const {
+@@ -308,10 +308,12 @@ bool AutoplayPolicy::IsGestureNeededForPlayback() const {
    if (!IsLockedPendingUserGesture())
      return false;
  

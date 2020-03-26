@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/homepage/HomepageSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/homepage/HomepageSettings.java
-index adc23a019d6efc4d2e7400c8d47f8c89481cf154..5bf845b378aa7dd94d10944807962120f63feb01 100644
+index 92505eebfeb70fd4d1756887688d05996c4321f7..10c860e4a0cab72b57540c925e769a1630ec2fc3 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/homepage/HomepageSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/homepage/HomepageSettings.java
-@@ -21,7 +21,7 @@ import org.chromium.chrome.browser.settings.SettingsUtils;
+@@ -28,7 +28,7 @@ import org.chromium.components.url_formatter.UrlFormatter;
  /**
   * Fragment that allows the user to configure homepage related preferences.
   */

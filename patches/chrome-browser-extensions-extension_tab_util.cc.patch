@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/extension_tab_util.cc b/chrome/browser/extensions/extension_tab_util.cc
-index d94480c53ca2942ad318a9b00844f41ee03ffcbf..f61c5877fe50843628c4415fc0468db4bb3954d5 100644
+index b9ad3a7dea2e9201535b4c6b57c21ed6fae6dc69..b5a0be1361701aa7485af8cfc42ac1542377be75 100644
 --- a/chrome/browser/extensions/extension_tab_util.cc
 +++ b/chrome/browser/extensions/extension_tab_util.cc
-@@ -763,6 +763,7 @@ bool ExtensionTabUtil::IsKillURL(const GURL& url) {
+@@ -767,6 +767,7 @@ bool ExtensionTabUtil::IsKillURL(const GURL& url) {
    GURL fixed_url =
        url_formatter::FixupURL(url.possibly_invalid_spec(), std::string());
    if (!fixed_url.SchemeIs(content::kChromeUIScheme))

@@ -1,5 +1,5 @@
 diff --git a/components/sync/engine/sync_engine.h b/components/sync/engine/sync_engine.h
-index 3f9c99bdcabf841b1fc622f183778ff4184e2d72..7296b1d43b01713d3ef05acd0b424207dfe9e684 100644
+index 322cbdaaadcb455baab2c19a273e96e129f0b819..cdaa6788bbea7a41c2c454f58339adf616d3d645 100644
 --- a/components/sync/engine/sync_engine.h
 +++ b/components/sync/engine/sync_engine.h
 @@ -79,6 +79,7 @@ class SyncEngine : public ModelTypeConfigurer {

@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/util/BUILD.gn b/chrome/installer/util/BUILD.gn
-index 0f5e97d02fe8e955ff6cb3d865f84fb75e8a4c8a..9abde952e44ef68227a9cbcf96e474fc6c1aaebe 100644
+index dae16bd9569eb23ce882df850bfe0295d1a9f2e9..9f93eae6e11e551c59c41130c474cfd54cea2347 100644
 --- a/chrome/installer/util/BUILD.gn
 +++ b/chrome/installer/util/BUILD.gn
-@@ -220,7 +220,20 @@ generate_embedded_i18n("generate_strings") {
+@@ -224,7 +224,20 @@ generate_embedded_i18n("generate_strings") {
  
    output_file_name_base = "installer_util_strings"
  

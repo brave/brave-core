@@ -1,8 +1,8 @@
 diff --git a/content/public/test/browser_test_utils.cc b/content/public/test/browser_test_utils.cc
-index da8e2dc1ed5974a2393f92949aaf7832ce55b470..9bd61cdc7324e4ccd0752d20b1572f0df93a253f 100644
+index aa20fa5f9e375e5a369f28ea2bbf296a3aa760d5..389a0a533c5425859af0204fac3995aa9a049e3f 100644
 --- a/content/public/test/browser_test_utils.cc
 +++ b/content/public/test/browser_test_utils.cc
-@@ -1887,6 +1887,7 @@ bool SetCookie(BrowserContext* browser_context,
+@@ -1906,6 +1906,7 @@ bool SetCookie(BrowserContext* browser_context,
        ->GetNetworkContext()
        ->GetCookieManager(cookie_manager.BindNewPipeAndPassReceiver());
    std::unique_ptr<net::CanonicalCookie> cc(net::CanonicalCookie::Create(

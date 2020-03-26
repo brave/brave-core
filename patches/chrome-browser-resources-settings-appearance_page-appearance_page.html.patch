@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/appearance_page/appearance_page.html b/chrome/browser/resources/settings/appearance_page/appearance_page.html
-index bdbf90e2482d817ca0cfddb1fe5b0d7c1de58258..9bb5d2a70a62848821d5a2189ad0de096279a3c1 100644
+index fc68a42c1a6e349bbbba7170506cac1f250b25de..b2e30e892ce0bda3131aa9eef2a51aad41e09f57 100644
 --- a/chrome/browser/resources/settings/appearance_page/appearance_page.html
 +++ b/chrome/browser/resources/settings/appearance_page/appearance_page.html
-@@ -18,6 +18,12 @@
+@@ -21,6 +21,12 @@
  <link rel="import" href="../settings_vars_css.html">
  <link rel="import" href="home_url_input.html">
  
@@ -15,7 +15,7 @@ index bdbf90e2482d817ca0cfddb1fe5b0d7c1de58258..9bb5d2a70a62848821d5a2189ad0de09
  <dom-module id="settings-appearance-page">
    <template>
      <style include="settings-shared md-select iron-flex">
-@@ -44,6 +50,9 @@
+@@ -47,6 +53,9 @@
      <settings-animated-pages id="pages" section="appearance"
          focus-config="[[focusConfig_]]">
        <div route-path="default">
@@ -25,7 +25,7 @@ index bdbf90e2482d817ca0cfddb1fe5b0d7c1de58258..9bb5d2a70a62848821d5a2189ad0de09
          <div class="settings-row continuation" id="themeRow"
              hidden="[[!pageVisibility.setTheme]]">
            <cr-link-row class="first" hidden="[[!pageVisibility.setTheme]]"
-@@ -116,6 +125,9 @@
+@@ -119,6 +128,9 @@
              </settings-radio-group>
            </div>
          </template>

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/tracing/crash_service_uploader.cc b/chrome/browser/tracing/crash_service_uploader.cc
-index fb5c354c729fd9a345fbac808379bedb60fb0cf3..4560a829122ec47d86b62db9c106f2e32e2efca0 100644
+index 4e801eea7d5f44d3838701e60e1f5e242a4e8602..1e467e3347f3e2d07b22addf5f7621bed16c90cc 100644
 --- a/chrome/browser/tracing/crash_service_uploader.cc
 +++ b/chrome/browser/tracing/crash_service_uploader.cc
-@@ -40,7 +40,7 @@ using std::string;
+@@ -41,7 +41,7 @@ using std::string;
  
  namespace {
  

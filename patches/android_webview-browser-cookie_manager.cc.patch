@@ -1,8 +1,8 @@
 diff --git a/android_webview/browser/cookie_manager.cc b/android_webview/browser/cookie_manager.cc
-index 984dc5b55e1d75e2e408c4108baf1fd98d927de6..b092a1ff66365ff41485baa9f209ee38262eaf58 100644
+index 4344f15143f75d56a2253586792f7b644eaf25c4..9245d3e8dd35f5172f93fca36c6155e30a8a44bc 100644
 --- a/android_webview/browser/cookie_manager.cc
 +++ b/android_webview/browser/cookie_manager.cc
-@@ -438,7 +438,7 @@ void CookieManager::SetCookieHelper(const GURL& host,
+@@ -478,7 +478,7 @@ void CookieManager::SetCookieHelper(const GURL& host,
  
    net::CanonicalCookie::CookieInclusionStatus status;
    std::unique_ptr<net::CanonicalCookie> cc(
@@ -10,4 +10,4 @@ index 984dc5b55e1d75e2e408c4108baf1fd98d927de6..b092a1ff66365ff41485baa9f209ee38
 +      net::CanonicalCookie::Create(BRAVE_SETCOOKIEHELPER, new_host, value, base::Time::Now(),
                                     base::nullopt /* server_time */, &status));
  
-   if (!cc) {
+   if (!cc || !should_allow_cookie) {

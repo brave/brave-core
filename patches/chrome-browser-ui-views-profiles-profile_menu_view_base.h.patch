@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_menu_view_base.h b/chrome/browser/ui/views/profiles/profile_menu_view_base.h
-index e1e103c41109a9bbdd291e3e1aaf223503b1cf91..52cf1098fe31f2d05ee227dc6feb26cdaade8114 100644
+index a3ddb11eeeaad2d28555f899b76cd1b082bc0217..a19e9bcea089ad4f9f04b4d6de69aa6aab6b6470 100644
 --- a/chrome/browser/ui/views/profiles/profile_menu_view_base.h
 +++ b/chrome/browser/ui/views/profiles/profile_menu_view_base.h
-@@ -141,6 +141,7 @@ class ProfileMenuViewBase : public content::WebContentsDelegate,
+@@ -147,6 +147,7 @@ class ProfileMenuViewBase : public content::WebContentsDelegate,
  
    views::Button* anchor_button() const { return anchor_button_; }
  

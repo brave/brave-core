@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/chrome.release b/chrome/installer/mini_installer/chrome.release
-index 1352dc18e31ea9e775949620db9e29fb1ba86ac0..2df1f312961706b0cd2a41f4157affc9587939cc 100644
+index 358dbff5bc2bbfd8887b06b3170d4727ed842648..6e01e6ad766513c6d8e70724659a905f18d123f2 100644
 --- a/chrome/installer/mini_installer/chrome.release
 +++ b/chrome/installer/mini_installer/chrome.release
 @@ -6,7 +6,7 @@
@@ -24,7 +24,7 @@ index 1352dc18e31ea9e775949620db9e29fb1ba86ac0..2df1f312961706b0cd2a41f4157affc9
  chrome_child.dll: %(VersionDir)s\
 +chrome_child.dll.sig: %(VersionDir)s\
  chrome_elf.dll: %(VersionDir)s\
- chrome_watcher.dll: %(VersionDir)s\
+ chrome_pwa_launcher.exe: %(VersionDir)s\
  d3dcompiler_47.dll: %(VersionDir)s\
 @@ -63,6 +68,7 @@ MEIPreload\preloaded_data.pb: %(VersionDir)s\MEIPreload\
  

@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/page_info/page_info_ui.cc b/chrome/browser/ui/page_info/page_info_ui.cc
-index a12aff6505a9e2b8bda67ac64eab07e68235fd10..f12923a294ebb61d5c4d3572b103490c0870ef92 100644
+index 38f48905784266a85ccb0f2decfadbd9b6d089ea..73323f92e97b8fc39615b94938ad65dcab9fa01d 100644
 --- a/chrome/browser/ui/page_info/page_info_ui.cc
 +++ b/chrome/browser/ui/page_info/page_info_ui.cc
-@@ -32,6 +32,7 @@
+@@ -30,6 +30,7 @@
  #if defined(OS_ANDROID)
  #include "chrome/browser/android/android_theme_resources.h"
  #else
 +#include "brave/app/vector_icons/vector_icons.h"
  #include "chrome/app/vector_icons/vector_icons.h"
- #include "chrome/browser/profiles/profile.h"
- #include "chrome/common/pref_names.h"
-@@ -618,6 +619,9 @@ const gfx::ImageSkia PageInfoUI::GetPermissionIcon(const PermissionInfo& info,
+ #include "components/prefs/pref_service.h"
+ #include "media/base/media_switches.h"
+@@ -616,6 +617,9 @@ const gfx::ImageSkia PageInfoUI::GetPermissionIcon(const PermissionInfo& info,
      case ContentSettingsType::USB_GUARD:
        icon = &vector_icons::kUsbIcon;
        break;
