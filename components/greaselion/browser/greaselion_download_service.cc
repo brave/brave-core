@@ -42,16 +42,12 @@ const char kRewards[] = "rewards-enabled";
 const char kTwitterTips[] = "twitter-tips-enabled";
 
 GreaselionPreconditionValue GreaselionRule::ParsePrecondition(
-    base::DictionaryValue* root,
-    const char* key) {
-  base::Value* node = nullptr;
-  GreaselionPreconditionValue value = kAny;
-  if (root) {
-    node = root->FindKeyOfType(key, base::Value::Type::BOOLEAN);
-    if (node)
-      value = node->GetBool() ? kMustBeTrue : kMustBeFalse;
+    const base::Value& value) {
+  GreaselionPreconditionValue condition = kAny;
+  if (value.is_bool()) {
+    condition = value.GetBool() ? kMustBeTrue : kMustBeFalse;
   }
-  return value;
+  return condition;
 }
 
 GreaselionRule::GreaselionRule(const std::string& name)
@@ -62,10 +58,20 @@ void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
                            base::ListValue* scripts_value,
                            const std::string& run_at_value,
                            const base::FilePath& resource_dir) {
-  preconditions_.rewards_enabled =
-      ParsePrecondition(preconditions_value, kRewards);
-  preconditions_.twitter_tips_enabled =
-      ParsePrecondition(preconditions_value, kTwitterTips);
+  if (preconditions_value) {
+    for (const auto& kv : preconditions_value->DictItems()) {
+      GreaselionPreconditionValue condition = ParsePrecondition(kv.second);
+      if (kv.first == kRewards) {
+        preconditions_.rewards_enabled = condition;
+      } else if (kv.first == kTwitterTips) {
+        preconditions_.twitter_tips_enabled = condition;
+      } else {
+        LOG(INFO) << "Greaselion encountered an unknown precondition: "
+            << kv.first;
+        has_unknown_preconditions_ = true;
+      }
+    }
+  }
   for (const auto& urls_it : urls_value->GetList()) {
     std::string pattern_string = urls_it.GetString();
     URLPattern pattern;
