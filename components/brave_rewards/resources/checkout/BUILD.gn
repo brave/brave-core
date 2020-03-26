@@ -1,0 +1,9 @@
+import("//brave/components/common/typescript.gni")
+
+transpile_web_ui("checkout") {
+  entry_points = [
+    ["brave_rewards_checkout", rebase_path("brave_rewards_checkout.tsx")]
+  ]
+
+  resource_name = "brave_rewards_checkout"
+}

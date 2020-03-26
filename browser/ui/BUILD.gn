@@ -333,6 +333,8 @@ source_set("ui") {
       sources += [
         "webui/brave_tip_ui.cc",
         "webui/brave_tip_ui.h",
+        "webui/brave_checkout_ui.cc",
+        "webui/brave_checkout_ui.h",
       ]
     }
 
@@ -340,6 +342,7 @@ source_set("ui") {
       "//brave/components/brave_rewards/resources:page_generated_resources",
       "//brave/components/brave_rewards/resources:internals_generated_resources",
       "//brave/components/brave_rewards/resources:tip_generated_resources",
+      "//brave/components/brave_rewards/resources:checkout_generated_resources",
     ]
   }
 

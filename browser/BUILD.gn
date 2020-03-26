@@ -200,6 +200,8 @@ source_set("browser_process") {
 
   if (!is_android) {
     sources += [
+      "brave_rewards/checkout_dialog.cc",
+      "brave_rewards/checkout_dialog.h",
       "brave_rewards/tip_dialog.cc",
       "brave_rewards/tip_dialog.h",
       "p3a/p3a_core_metrics.cc",
