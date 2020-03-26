@@ -200,7 +200,7 @@ declare namespace Rewards {
   export interface BalanceReport {
     ads: number
     contribute: number
-    donation: number
+    monthly: number
     grant: number
     tips: number
   }
