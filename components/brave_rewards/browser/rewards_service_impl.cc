@@ -38,6 +38,7 @@
 #include "brave/base/containers/utils.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/common/brave_channel_info.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
@@ -3272,6 +3273,8 @@ ledger::ClientInfoPtr GetDesktopClientInfo() {
   #else
     info->os = ledger::OperatingSystem::UNDEFINED;
   #endif
+
+  info->channel = brave::GetChannelName();
 
   return info;
 }

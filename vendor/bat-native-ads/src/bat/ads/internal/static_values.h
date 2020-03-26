@@ -65,6 +65,11 @@ const uint64_t kRetryDownloadingCatalogAfterSeconds =
 const std::map<int, std::vector<std::string>> kSupportedRegionsSchemas = {
   // Append newly supported regions with a new schema version and update
   // |kSupportedRegionsSchemaVersionNumber| to match the new version
+
+  // |kLargeAnonymityCountryCodes| and |kOtherCountryCodes| in
+  // bat-native-confirmations/src/bat/confirmations/internal/static_values.h
+  // must be updated to reflect newly supported regions
+
   //
   //   Format: { schema_version : { region... } }
   {

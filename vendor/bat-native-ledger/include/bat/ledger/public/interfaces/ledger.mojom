@@ -399,6 +399,7 @@ enum OperatingSystem {
 struct ClientInfo {
   Platform platform;
   OperatingSystem os;
+  string channel;
 };
 
 struct RecurringTip {

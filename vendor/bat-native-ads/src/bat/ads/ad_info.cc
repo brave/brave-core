@@ -51,6 +51,10 @@ Result AdInfo::FromJson(
     target_url = document["url"].GetString();
   }
 
+  if (document.HasMember("geo_target")) {
+    geo_target = document["geo_target"].GetString();
+  }
+
   return SUCCESS;
 }
 
@@ -70,6 +74,9 @@ void SaveToJson(
 
   writer->String("url");
   writer->String(info.target_url.c_str());
+
+  writer->String("geo_target");
+  writer->String(info.geo_target.c_str());
 
   writer->EndObject();
 }

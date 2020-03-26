@@ -1242,6 +1242,7 @@ void LedgerImpl::ConfirmAd(
   confirmations_ad_info.creative_set_id = ad_info.creative_set_id;
   confirmations_ad_info.category = ad_info.category;
   confirmations_ad_info.target_url = ad_info.target_url;
+  confirmations_ad_info.geo_target = ad_info.geo_target;
 
   bat_confirmations_->ConfirmAd(confirmations_ad_info,
       confirmations::ConfirmationType(confirmation_type));

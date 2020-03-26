@@ -4,18 +4,25 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/confirmations/confirmation_type.h"
+#include "bat/confirmations/internal/confirmations_impl.h"
 #include "bat/confirmations/internal/confirmation_info.h"
 #include "bat/confirmations/internal/token_info.h"
 #include "bat/confirmations/internal/create_confirmation_request.h"
 #include "bat/confirmations/internal/ads_serve_helper.h"
+#include "bat/confirmations/internal/platform_info.h"
 #include "bat/confirmations/internal/security_helper.h"
+#include "bat/confirmations/internal/static_values.h"
 #include "base/logging.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
 
 namespace confirmations {
 
-CreateConfirmationRequest::CreateConfirmationRequest() = default;
+CreateConfirmationRequest::CreateConfirmationRequest(
+    ConfirmationsImpl* confirmations)
+    : confirmations_(confirmations) {
+  DCHECK(confirmations_);
+}
 
 CreateConfirmationRequest::~CreateConfirmationRequest() = default;
 
@@ -64,8 +71,11 @@ std::string CreateConfirmationRequest::GetContentType() const {
 }
 
 std::string CreateConfirmationRequest::CreateConfirmationRequestDTO(
-    const ConfirmationInfo& info) const {
+    const ConfirmationInfo& info,
+    const std::string& build_channel,
+    const std::string& platform) const {
   DCHECK(!info.creative_instance_id.empty());
+  DCHECK(!build_channel.empty());
 
   base::Value payload(base::Value::Type::DICTIONARY);
 
@@ -78,6 +88,20 @@ std::string CreateConfirmationRequest::CreateConfirmationRequestDTO(
 
   auto type = std::string(info.type);
   payload.SetKey("type", base::Value(type));
+
+  if (build_channel == "release") {
+    if (IsLargeAnonymityCountryCode(info.country_code)) {
+      payload.SetKey("countryCode", base::Value(info.country_code));
+    } else {
+      if (IsOtherCountryCode(info.country_code)) {
+        payload.SetKey("countryCode", base::Value("??"));
+      }
+    }
+  }
+
+  payload.SetKey("platform", base::Value(platform));
+
+  payload.SetKey("buildChannel", base::Value(build_channel));
 
   std::string json;
   base::JSONWriter::Write(payload, &json);
@@ -110,6 +134,26 @@ std::string CreateConfirmationRequest::CreateCredential(
   std::string credential_base64 = helper::Security::GetBase64(credential);
 
   return credential_base64;
+}
+
+bool CreateConfirmationRequest::IsLargeAnonymityCountryCode(
+    const std::string& country_code) const {
+  const auto iter = kLargeAnonymityCountryCodes.find(country_code);
+  if (iter == kLargeAnonymityCountryCodes.end()) {
+    return false;
+  }
+
+  return iter->second;
+}
+
+bool CreateConfirmationRequest::IsOtherCountryCode(
+    const std::string& country_code) const {
+  const auto iter = kOtherCountryCodes.find(country_code);
+  if (iter == kOtherCountryCodes.end()) {
+    return false;
+  }
+
+  return iter->second;
 }
 
 }  // namespace confirmations

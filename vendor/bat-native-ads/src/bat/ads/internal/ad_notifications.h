@@ -87,6 +87,9 @@ class AdNotifications {
   bool GetTargetUrlFromDictionary(
       base::DictionaryValue* dictionary,
       std::string* value) const;
+  bool GetGeoTargetFromDictionary(
+      base::DictionaryValue* dictionary,
+      std::string* value) const;
 
   bool GetStringFromDictionary(
     const std::string& key,

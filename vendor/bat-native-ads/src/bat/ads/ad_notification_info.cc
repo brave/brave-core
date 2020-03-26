@@ -101,6 +101,9 @@ void SaveToJson(
   writer->String("url");
   writer->String(info.target_url.c_str());
 
+  writer->String("geo_target");
+  writer->String(info.geo_target.c_str());
+
   writer->EndObject();
 }
 

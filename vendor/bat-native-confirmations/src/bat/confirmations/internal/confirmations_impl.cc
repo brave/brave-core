@@ -48,6 +48,10 @@ ConfirmationsImpl::ConfirmationsImpl(
 
 ConfirmationsImpl::~ConfirmationsImpl() = default;
 
+ConfirmationsClient* ConfirmationsImpl::get_client() const {
+  return confirmations_client_;
+}
+
 void ConfirmationsImpl::Initialize(
     OnInitializeCallback callback) {
   BLOG(INFO) << "Initializing confirmations";
@@ -1134,6 +1138,7 @@ void ConfirmationsImpl::ConfirmAd(
       << std::endl << "  creativeSetId: " << info.creative_set_id
       << std::endl << "  category: " << info.category
       << std::endl << "  targetUrl: " << info.target_url
+      << std::endl << "  geoTarget: " << info.geo_target
       << std::endl << "  confirmationType: " << std::string(confirmation_type);
 
   redeem_token_->Redeem(info, confirmation_type);

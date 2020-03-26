@@ -34,6 +34,7 @@ struct ConfirmationInfo {
   BlindedToken blinded_payment_token;
   std::string credential;
   uint64_t timestamp_in_seconds;
+  std::string country_code;
   bool created;
 };
 
