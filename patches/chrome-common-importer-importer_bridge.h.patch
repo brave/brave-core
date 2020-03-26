@@ -1,29 +1,12 @@
 diff --git a/chrome/common/importer/importer_bridge.h b/chrome/common/importer/importer_bridge.h
-index b4250c91d1b83ea920b3de9cd6b1a7929b30ffc5..a1b4d74fd1cb2d0b2125b2f4c3bc4dfbe89c291d 100644
+index b4250c91d1b83ea920b3de9cd6b1a7929b30ffc5..da3567e08fae6f01d3b518378ccaa9eac5aa81ca 100644
 --- a/chrome/common/importer/importer_bridge.h
 +++ b/chrome/common/importer/importer_bridge.h
-@@ -58,6 +58,24 @@ class ImporterBridge : public base::RefCountedThreadSafe<ImporterBridge> {
-   virtual void SetAutofillFormData(
-       const std::vector<ImporterAutofillFormDataEntry>& entries) = 0;
+@@ -78,6 +78,7 @@ class ImporterBridge : public base::RefCountedThreadSafe<ImporterBridge> {
+   // external import process, since the importer only needs a few strings.
+   virtual base::string16 GetLocalizedString(int message_id) = 0;
  
-+  virtual void SetCookies(
-+      const std::vector<net::CanonicalCookie>& cookies) {}
-+
-+  virtual void UpdateStats(
-+      const BraveStats& stats) {}
-+
-+  virtual void UpdateLedger(
-+      const BraveLedger& ledger) {}
-+
-+  virtual void UpdateReferral(
-+      const BraveReferral& referral) {}
-+
-+  virtual void UpdateWindows(
-+      const ImportedWindowState& windowState) {}
-+
-+  virtual void UpdateSettings(
-+      const SessionStoreSettings& settings) {}
-+
-   // Notifies the coordinator that the import operation has begun.
-   virtual void NotifyStarted() = 0;
++  BRAVE_IMPORTER_BRIDGE_H
+  protected:
+   friend class base::RefCountedThreadSafe<ImporterBridge>;
  

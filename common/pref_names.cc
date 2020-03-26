@@ -83,6 +83,11 @@ const char kBraveShieldsSettingsVersion[] = "brave.shields_settings_version";
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 const char kBraveGCMChannelStatus[] = "brave.gcm.channel_status";
 #endif
+const char kImportDialogCookies[] = "import_dialog_cookies";
+const char kImportDialogStats[] = "import_dialog_stats";
+const char kImportDialogLedger[] = "import_dialog_ledger";
+const char kImportDialogWindows[] = "import_dialog_windows";
+const char kImportDialogExtensions[] = "import_dialog_extensions";
 
 #if defined(OS_ANDROID)
 const char kDesktopModeEnabled[] = "brave.desktop_mode_enabled";

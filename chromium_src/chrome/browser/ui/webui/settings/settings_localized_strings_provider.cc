@@ -28,16 +28,6 @@ void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 namespace settings {
 
-void BraveAddImportDataStrings(content::WebUIDataSource* html_source) {
-  webui::LocalizedString localized_strings[] = {
-      {"importCookies", IDS_SETTINGS_IMPORT_COOKIES_CHECKBOX},
-      {"importStats", IDS_SETTINGS_IMPORT_STATS_CHECKBOX},
-      {"importLedger", IDS_SETTINGS_IMPORT_LEDGER_CHECKBOX},
-      {"importWindows", IDS_SETTINGS_IMPORT_WINDOWS_CHECKBOX},
-  };
-  AddLocalizedStringsBulk(html_source, localized_strings);
-}
-
 const char kWebRTCLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360017989132-How-do-I-change-my-Privacy-Settings-#webrtc";
@@ -45,6 +35,16 @@ const char kWebRTCLearnMoreURL[] =
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
   webui::LocalizedString localized_strings[] = {
+    {"importCookies",
+      IDS_SETTINGS_IMPORT_COOKIES_CHECKBOX},
+    {"importStats",
+      IDS_SETTINGS_IMPORT_STATS_CHECKBOX},
+    {"importLedger",
+      IDS_SETTINGS_IMPORT_LEDGER_CHECKBOX},
+    {"importWindows",
+      IDS_SETTINGS_IMPORT_WINDOWS_CHECKBOX},
+    {"importExtensions",
+      IDS_SETTINGS_IMPORT_EXTENSIONS_CHECKBOX},
     {"siteSettingsAutoplay",
       IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY},
     {"siteSettingsCategoryAutoplay",
@@ -203,7 +203,6 @@ void BraveAddResources(content::WebUIDataSource* html_source,
 
 void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
                               Profile* profile) {
-  BraveAddImportDataStrings(html_source);
   BraveAddCommonStrings(html_source, profile);
   BraveAddResources(html_source, profile);
   BravePrivacyHandler::AddLoadTimeData(html_source, profile);

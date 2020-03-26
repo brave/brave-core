@@ -5,19 +5,22 @@
 
 #include "brave/browser/importer/brave_external_process_importer_host.h"
 #include "brave/browser/importer/brave_profile_writer.h"
+#include "brave/common/pref_names.h"
 
 #define ProfileWriter BraveProfileWriter
 #define ExternalProcessImporterHost BraveExternalProcessImporterHost
 
 #define BRAVE_IMPORT_DATA                               \
-  if (*types->FindBoolKey(prefs::kImportDialogCookies)) \
+  if (*types->FindBoolKey(kImportDialogCookies)) \
     selected_items |= importer::COOKIES;                \
-  if (*types->FindBoolKey(prefs::kImportDialogStats))   \
+  if (*types->FindBoolKey(kImportDialogStats))   \
     selected_items |= importer::STATS;                  \
-  if (*types->FindBoolKey(prefs::kImportDialogLedger))  \
+  if (*types->FindBoolKey(kImportDialogLedger))  \
     selected_items |= importer::LEDGER;                 \
-  if (*types->FindBoolKey(prefs::kImportDialogWindows)) \
-    selected_items |= importer::WINDOWS;
+  if (*types->FindBoolKey(kImportDialogWindows)) \
+    selected_items |= importer::WINDOWS; \
+  if (*types->FindBoolKey(kImportDialogExtensions))     \
+    selected_items |= importer::EXTENSIONS;
 
 #define BRAVE_SEND_BROWSER_PROFILE_DATA                                     \
   browser_profile->SetBoolean("cookies",                                    \
@@ -27,7 +30,9 @@
   browser_profile->SetBoolean("ledger",                                     \
                               (browser_services & importer::LEDGER) != 0);  \
   browser_profile->SetBoolean("windows",                                    \
-                              (browser_services & importer::WINDOWS) != 0);
+                              (browser_services & importer::WINDOWS) != 0); \
+  browser_profile->SetBoolean("extensions",                                 \
+                              (browser_services & importer::EXTENSIONS) != 0);
 
 #include "../../../../../../../chrome/browser/ui/webui/settings/import_data_handler.cc"
 #undef ProfileWriter

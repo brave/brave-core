@@ -3,11 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/webui/settings/brave_import_data_handler.h"
+#include "brave/utility/importer/brave_external_process_importer_bridge.h"
 
-namespace settings {
-
-BraveImportDataHandler::BraveImportDataHandler() = default;
-BraveImportDataHandler::~BraveImportDataHandler() = default;
-
-}  // namespace settings
+#define ExternalProcessImporterBridge BraveExternalProcessImporterBridge
+#include "../../../../../chrome/utility/importer/profile_import_impl.cc"
+#undef  ExternalProcessImporterBridge

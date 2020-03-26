@@ -74,6 +74,11 @@ extern const char kBraveShieldsSettingsVersion[];
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 extern const char kBraveGCMChannelStatus[];
 #endif
+extern const char kImportDialogCookies[];
+extern const char kImportDialogStats[];
+extern const char kImportDialogLedger[];
+extern const char kImportDialogWindows[];
+extern const char kImportDialogExtensions[];
 
 #if defined(OS_ANDROID)
 extern const char kDesktopModeEnabled[];

@@ -38,6 +38,7 @@ source_set("importer") {
     "//components/prefs",
     "//components/search_engines",
     "//content/public/browser",
+    "//extensions/buildflags",
     "//net",
     "//services/network/public/mojom",
     "//ui/base",

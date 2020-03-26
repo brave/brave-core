@@ -12,8 +12,8 @@
 #include "chrome/utility/importer/external_process_importer_bridge.h"
 #include "net/cookies/canonical_cookie.h"
 
-class BraveExternalProcessImporterBridge :
-                                      public ExternalProcessImporterBridge {
+class BraveExternalProcessImporterBridge
+    : public ExternalProcessImporterBridge {
  public:
   // |observer| must outlive this object.
   BraveExternalProcessImporterBridge(
@@ -26,7 +26,6 @@ class BraveExternalProcessImporterBridge :
   void UpdateReferral(const BraveReferral& referral) override;
   void UpdateWindows(const ImportedWindowState& windowState) override;
   void UpdateSettings(const SessionStoreSettings& settings) override;
-
 
  private:
   ~BraveExternalProcessImporterBridge() override;

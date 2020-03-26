@@ -3,15 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "../../../../../chrome/browser/importer/importer_list.cc"  // NOLINT
-
+#include "base/files/file_path.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/scoped_blocking_call.h"
 #include "base/values.h"
 #include "brave/common/importer/brave_importer_utils.h"
 #include "brave/common/importer/chrome_importer_utils.h"
+#include "chrome/browser/importer/importer_list.h"
 #include "chrome/grit/generated_resources.h"
+#include "ui/base/l10n/l10n_util.h"
 
+namespace {
 void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
                          base::ListValue* chrome_profiles,
                          const base::FilePath& user_data_folder,
@@ -88,3 +90,7 @@ void DetectBraveProfiles(std::vector<importer::SourceProfile>* profiles) {
   brave.source_path = brave_user_data_folder;
   profiles->push_back(brave);
 }
+
+}  // namespace
+
+#include "../../../../../chrome/browser/importer/importer_list.cc"

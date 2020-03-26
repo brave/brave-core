@@ -1,25 +1,21 @@
 diff --git a/chrome/common/importer/importer_data_types.h b/chrome/common/importer/importer_data_types.h
-index 0fc90c62398a93eb89568ce78c8ded2bc9b232b6..91632164e1b45fafb5befb71557993c87fe29462 100644
+index 0fc90c62398a93eb89568ce78c8ded2bc9b232b6..61d3d5425a728a5b004ed4536d64d4e895510616 100644
 --- a/chrome/common/importer/importer_data_types.h
 +++ b/chrome/common/importer/importer_data_types.h
-@@ -31,7 +31,10 @@ enum ImportItem {
+@@ -31,7 +31,7 @@ enum ImportItem {
    SEARCH_ENGINES     = 1 << 4,
    HOME_PAGE          = 1 << 5,
    AUTOFILL_FORM_DATA = 1 << 6,
 -  ALL                = (1 << 7) - 1  // All the bits should be 1, hence the -1.
-+  STATS              = 1 << 7,
-+  LEDGER             = 1 << 8,
-+  WINDOWS            = 1 << 9,
-+  ALL                = (1 << 10) - 1  // All the bits should be 1, hence the -1.
++  BRAVE_IMPORT_ITEM
  };
  
  // Information about a profile needed by an importer to do import work.
-@@ -83,6 +86,8 @@ enum VisitSource {
+@@ -83,6 +83,7 @@ enum VisitSource {
    VISIT_SOURCE_FIREFOX_IMPORTED = 1,
    VISIT_SOURCE_IE_IMPORTED = 2,
    VISIT_SOURCE_SAFARI_IMPORTED = 3,
-+  VISIT_SOURCE_CHROME_IMPORTED = 4,
-+  VISIT_SOURCE_BRAVE_IMPORTED = 5,
++  BRAVE_VISIT_SOURCE
  };
  
  }  // namespace importer

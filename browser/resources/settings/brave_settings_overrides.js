@@ -113,7 +113,37 @@ BravePatching.RegisterPolymerComponentBehaviors({
   ],
   'settings-ui': [
     BraveClearSettingsMenuHighlightBehavior
-  ]
+  ],
+  'settings-import-data-dialog': [{
+    registered: function () {
+      const oldPrefsChanged = this.prefsChanged_
+      if (!oldPrefsChanged) {
+        console.error('[Brave Settings Overrides] cannot find prefsChanged_ on ImportDataDialog')
+        return
+      }
+      this.prefsChanged_ = function () {
+        if (typeof this.noImportDataTypeSelected_ !== 'boolean') {
+          console.error('[Brave Settings Overrides] cannot find noImportDataTypeSelected_ on ImportDataDialog')
+          return
+        }
+        oldPrefsChanged.apply(this)
+        if (this.selected_ == undefined || this.prefs == undefined) {
+          return;
+        }
+        this.noImportDataTypeSelected_ = this.noImportDataTypeSelected_ &&
+          !(this.getPref('import_dialog_cookies').value &&
+          this.selected_.cookies) &&
+          !(this.getPref('import_dialog_stats').value &&
+            this.selected_.stats) &&
+          !(this.getPref('import_dialog_ledger').value &&
+            this.selected_.ledger) &&
+          !(this.getPref('import_dialog_windows').value &&
+            this.selected_.windows) &&
+          !(this.getPref('import_dialog_extensions').value &&
+            this.selected_.extensions)
+      }
+    }
+  }]
 })
 
 // Templates
@@ -396,6 +426,38 @@ BravePatching.RegisterPolymerTemplateModifications({
       version.innerHTML = '<a id="release-notes" target="_blank" href="https://brave.com/latest/">' + version.innerHTML + '</a>'
     }
   },
+  'settings-import-data-dialog': (templateContent) => {
+    let checkBoxesParent = templateContent.querySelector('#browserSelect').parentElement
+    let innerHTML = checkBoxesParent.innerHTML
+    innerHTML += `
+        <settings-checkbox
+            hidden="[[!selected_.cookies]]"
+            pref="{{prefs.import_dialog_cookies}}"
+            label="${I18nBehavior.i18n('importCookies')}">
+        </settings-checkbox>
+        <settings-checkbox
+            hidden="[[!selected_.stats]]"
+            pref="{{prefs.import_dialog_stats}}"
+            label="${I18nBehavior.i18n('importStats')}">
+        </settings-checkbox>
+        <settings-checkbox
+            hidden="[[!selected_.ledger]]"
+            pref="{{prefs.import_dialog_ledger}}"
+            label="${I18nBehavior.i18n('importLedger')}">
+        </settings-checkbox>
+        <settings-checkbox
+            hidden="[[!selected_.windows]]"
+            pref="{{prefs.import_dialog_windows}}"
+            label="${I18nBehavior.i18n('importWindows')}">
+        </settings-checkbox>
+        <settings-checkbox
+            hidden="[[!selected_.extensions]]"
+            pref="{{prefs.import_dialog_extensions}}"
+            label="${I18nBehavior.i18n('importExtensions')}">
+        </settings-checkbox>
+    `
+    checkBoxesParent.innerHTML = innerHTML
+  }
 })
 
 // Icons

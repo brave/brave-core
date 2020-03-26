@@ -1,18 +1,8 @@
 diff --git a/chrome/browser/importer/importer_list.cc b/chrome/browser/importer/importer_list.cc
-index c5ad71a4002d7926cc05e3928e486cf8275d5d2d..a39dbe11b33a51a9c46e89b67c2723d9f9558f28 100644
+index c5ad71a4002d7926cc05e3928e486cf8275d5d2d..1f09d3f847ecb2afa2e64e6dfc86bb5c74d3c2ea 100644
 --- a/chrome/browser/importer/importer_list.cc
 +++ b/chrome/browser/importer/importer_list.cc
-@@ -29,6 +29,9 @@
- #include "chrome/common/importer/edge_importer_utils_win.h"
- #endif
- 
-+void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles);
-+void DetectBraveProfiles(std::vector<importer::SourceProfile>* profiles);
-+
- namespace {
- 
- #if defined(OS_WIN)
-@@ -150,21 +153,37 @@ std::vector<importer::SourceProfile> DetectSourceProfilesWorker(
+@@ -150,21 +150,37 @@ std::vector<importer::SourceProfile> DetectSourceProfilesWorker(
  #if defined(OS_WIN)
    if (shell_integration::IsFirefoxDefaultBrowser()) {
      DetectFirefoxProfiles(locale, &profiles);
