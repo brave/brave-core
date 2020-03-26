@@ -36,8 +36,8 @@ extern const char kGreaselionConfigFileVersion[];
 enum GreaselionPreconditionValue { kMustBeFalse, kMustBeTrue, kAny };
 
 struct GreaselionPreconditions {
-  GreaselionPreconditionValue rewards_enabled;
-  GreaselionPreconditionValue twitter_tips_enabled;
+  GreaselionPreconditionValue rewards_enabled = kAny;
+  GreaselionPreconditionValue twitter_tips_enabled = kAny;
 };
 
 class GreaselionRule {
@@ -57,11 +57,11 @@ class GreaselionRule {
   std::string run_at() const {
     return run_at_;
   }
+  bool has_unknown_preconditions() const { return has_unknown_preconditions_; }
 
  private:
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner();
-  GreaselionPreconditionValue ParsePrecondition(base::DictionaryValue* root,
-                                                const char* key);
+  GreaselionPreconditionValue ParsePrecondition(const base::Value& value);
   bool PreconditionFulfilled(GreaselionPreconditionValue precondition,
                              bool value) const;
 
@@ -70,6 +70,7 @@ class GreaselionRule {
   std::vector<base::FilePath> scripts_;
   std::string run_at_;
   GreaselionPreconditions preconditions_;
+  bool has_unknown_preconditions_ = false;
   base::WeakPtrFactory<GreaselionRule> weak_factory_;
   DISALLOW_COPY_AND_ASSIGN(GreaselionRule);
 };
