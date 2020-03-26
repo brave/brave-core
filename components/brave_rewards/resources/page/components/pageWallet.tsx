@@ -675,7 +675,7 @@ class PageWallet extends React.Component<Props, State> {
         return
       }
 
-      const date = new Date(Date.UTC(parseInt(items[0], 10), parseInt(items[1], 10) - 1, 1))
+      const date = new Date(Date.UTC(parseInt(items[0], 10), parseInt(items[1], 10) - 1, 10))
       result[id] = new Intl.DateTimeFormat('default', { month: 'long', year: 'numeric' }).format(date)
     })
 
