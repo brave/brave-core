@@ -18,8 +18,8 @@ import {
 } from './style'
 
 export interface DialogFrameProps {
-  onClose: () => void
   children: React.ReactNode
+  onClose?: () => void
   showTitle?: boolean
   showBackground?: boolean
 }
@@ -37,9 +37,12 @@ export function DialogFrame (props: DialogFrameProps) {
           </>
         }
         </TitleContainer>
-        <CloseButton onClick={props.onClose}>
-          <CloseStrokeIcon />
-        </CloseButton>
+        {
+          !props.onClose ? null :
+            <CloseButton onClick={props.onClose}>
+              <CloseStrokeIcon />
+            </CloseButton>
+        }
       </TopBar>
       <Content>
         {props.children}

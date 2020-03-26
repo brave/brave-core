@@ -403,6 +403,46 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_PROMOTIONS" desc="">Promotions</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_CONTRIBUTIONS" desc="">Contributions</message>
 
+      <!-- WebUI brave rewards checkout resources -->
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_ADD_FUNDS_TITLE" desc="">Add Funds</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_ADD_FUNDS_SUBTITLE" desc="">Add BAT to your wallet using your credit card</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_CURRENT_BALANCE" desc="">Current Balance</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_BAT_NEEDED" desc="">BAT needed</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_SELECT_AMOUNT" desc="">Select amount to add</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_TRANSACTION_FEE" desc="">Transaction Fee</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_ORDER_TOTAL" desc="">Order Total</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_ENTER_CARD_INFO" desc="">Enter credit card info</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_ADD_FUNDS_LINK_TEXT" desc="">Add Funds</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_ADD_FUNDS_BUTTON_TEXT" desc="">Add Funds &amp; Purchase</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_ADD_FUNDS_TOS" desc="">By clicking Add Funds &amp; Purchase, you agree to &lt;a target="_blank" href="javascript:void 0">Brave’s Terms of Sale&lt;/a&gt;.</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_CARD_NUMBER" desc="">Card number</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_EXPIRATION" desc="">Expiration</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_SECURITY_CODE" desc="">Security code</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_SAVE_CARD" desc="">Save this card</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_TITLE" desc="">Checkout</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_GO_BACK" desc="">Go Back</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_ITEM_SELECTED" desc="">Item Selected</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_GOOD_TO_GO" desc="">You’re good to go!</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_ENJOY_PURCHASE" desc="">Enjoy your purchase.</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_PAYMENT_METHOD_TITLE" desc="">Payment Method</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_PAYMENT_PROCESSING" desc="">Your payment is being processed…</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_CONFIRM_BUTTON_TEXT" desc="">Confirm</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_CONFIRM_TOS" desc="">By clicking Confirm, you agree to &lt;a target="_blank" href="#">Brave’s Terms of Sale&lt;/a&gt;.</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_USE_CARD" desc="">Use credit card</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_CONTINUE_WITH_CARD" desc="">Continue with credit card</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_CONTINUE_WITH_CARD_SUBTEXT" desc="">Make a one-time purchase using a credit card instead.</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_PAY_WITH_BAT_BUTTON_TEXT" desc="">Pay with BAT</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_PAY_WITH_BAT_TOS" desc="">By clicking Pay with BAT, you agree to &lt;a target="_blank" href="#"&gt;Brave’s Terms of Sale&lt;/a&gt;.</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_NOT_ENOUGH_FUNDS" desc="">You don't have enough tokens to buy this item.</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_USE_TOKEN_BALANCE" desc="">Use your token balance</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_UPDATED" desc="">Updated</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_ENABLE_REWARDS_TITLE" desc="">Enable Brave Rewards to continue.</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_ENABLE_REWARDS_TEXT" desc="">To purchase this item, you need to earn tokens. Turn on Brave Rewards to earn.</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_ENABLE_REWARDS_LEARN_MORE" desc="">&lt;a href="javascript:void 0"&gt;Learn more.&lt;/a&gt;</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_ENABLE_REWARDS_BUTTON_TEXT" desc="">Enable Brave Rewards</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_ENABLE_REWARDS_TERMS" desc="">By clicking Enable Brave Rewards, you agree to &lt;a target="_blank" href="https://basicattentiontoken.org/user-terms-of-service"&gt;Brave Reward’s Terms of Service&lt;/a&gt;.</message>
+      <message name="IDS_BRAVE_REWARDS_CHECKOUT_ERROR_HAS_OCCURRED" desc="">Hmmm... Something went wrong.</message>
+
       <!-- WebUI brave ui resources -->
       <message name="IDS_BRAVE_UI_ABOUT" desc="">about</message>
       <message name="IDS_BRAVE_UI_ACCEPT" desc="">Accept</message>

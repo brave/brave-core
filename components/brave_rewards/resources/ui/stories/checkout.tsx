@@ -12,6 +12,7 @@ import { PaymentMethodPanel } from '../components/checkout/paymentMethodPanel'
 import { AddFundsPanel } from '../components/checkout/addFundsPanel'
 import { EnableRewardsPanel } from '../components/checkout/enableRewardsPanel'
 import { LoadingPanel } from '../components/checkout/loadingPanel'
+import { ErrorPanel } from '../components/checkout/errorPanel'
 import { PaymentProcessing } from '../components/checkout/paymentProcessing'
 import { PaymentComplete } from '../components/checkout/paymentComplete'
 
@@ -146,7 +147,7 @@ storiesOf('Rewards/Checkout', module)
   .add('Processing', () => {
     return (
       <LocaleContext.Provider value={localeData}>
-        <DialogFrame showTitle={true} onClose={onDialogClose}>
+        <DialogFrame showTitle={true}>
           <PaymentProcessing />
         </DialogFrame>
       </LocaleContext.Provider>
@@ -178,6 +179,18 @@ storiesOf('Rewards/Checkout', module)
         <DialogFrame showTitle={true} onClose={onDialogClose}>
           <LoadingPanel
             text={knobs.text('text', 'Loading')}
+          />
+        </DialogFrame>
+      </LocaleContext.Provider>
+    )
+  })
+  .add('Error', () => {
+    return (
+      <LocaleContext.Provider value={localeData}>
+        <DialogFrame showTitle={true} onClose={onDialogClose}>
+          <ErrorPanel
+            text={knobs.text('text', 'Hmmm... Something went wrong.')}
+            details={knobs.text('details', 'Error Code: 0xdeadbeef')}
           />
         </DialogFrame>
       </LocaleContext.Provider>

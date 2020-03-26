@@ -9,23 +9,23 @@ export function VectorImage () {
     <svg width='120' height='111' xmlns='http://www.w3.org/2000/svg'>
       <defs>
         <linearGradient x1='9.648%' y1='-75.503%' x2='58.161%' y2='69.005%' id='a'>
-          <stop stop-color='#CFD3FA' offset='0%'/>
-          <stop stop-color='#2638FA' offset='100%'/>
+          <stop stopColor='#CFD3FA' offset='0%'/>
+          <stop stopColor='#2638FA' offset='100%'/>
         </linearGradient>
         <linearGradient x1='0%' y1='50.706%' x2='100%' y2='50.706%' id='b'>
-          <stop stop-color='#FB542B' offset='0%'/>
-          <stop stop-color='#E3380E' offset='100%'/>
+          <stop stopColor='#FB542B' offset='0%'/>
+          <stop stopColor='#E3380E' offset='100%'/>
         </linearGradient>
         <linearGradient x1='.643%' y1='49.357%' x2='99.357%' y2='49.357%' id='c'>
-          <stop stop-color='#392DD1' offset='0%'/>
-          <stop stop-color='#A91B78' offset='100%'/>
+          <stop stopColor='#392DD1' offset='0%'/>
+          <stop stopColor='#A91B78' offset='100%'/>
         </linearGradient>
         <linearGradient x1='35.192%' y1='0%' x2='146.327%' y2='222.965%' id='d'>
-          <stop stop-color='#392DD1' offset='0%'/>
-          <stop stop-color='#FF4343' offset='100%'/>
+          <stop stopColor='#392DD1' offset='0%'/>
+          <stop stopColor='#FF4343' offset='100%'/>
         </linearGradient>
       </defs>
-      <g fill-rule='nonzero' fill='none'>
+      <g fillRule='nonzero' fill='none'>
         <circle fill='url(#a)' cx='68' cy='104' r='7'/>
         <ellipse fill='#FFF' cx='36.171' cy='7.586' rx='6.96' ry='6.958'/>
         <circle fill='url(#b)' cx='108.69' cy='58.104' r='10.403'/>

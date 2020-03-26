@@ -320,6 +320,14 @@ source_set("browser_process") {
       ]
     } else {
       sources += [
+        "brave_rewards/checkout_dialog_controller.cc",
+        "brave_rewards/checkout_dialog_controller.h",
+        "brave_rewards/checkout_dialog_message_handler.cc",
+        "brave_rewards/checkout_dialog_message_handler.h",
+        "brave_rewards/checkout_dialog_params.cc",
+        "brave_rewards/checkout_dialog_params.h",
+        "brave_rewards/checkout_dialog.cc",
+        "brave_rewards/checkout_dialog.h",
         "brave_rewards/tip_dialog.cc",
         "brave_rewards/tip_dialog.h",
       ]
