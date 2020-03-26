@@ -7,5 +7,5 @@ export const getTotalContributions = (report: NewTab.RewardsBalanceReport) => {
     return 0.0
   }
 
-  return report.tips + report.contribute + report.donation
+  return report.tips + report.contribute + report.monthly
 }

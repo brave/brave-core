@@ -19,7 +19,7 @@ export const defaultState: RewardsExtension.State = {
   balanceReport: {
     ads: 0.0,
     contribute: 0.0,
-    donation: 0.0,
+    monthly: 0.0,
     grant: 0.0,
     tips: 0.0
   },
