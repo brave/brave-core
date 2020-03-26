@@ -21,8 +21,11 @@ class PaymentRequestExtension: NSObject {
     fileprivate var token: String
     
     fileprivate enum PaymentRequestErrors: String {
-        case NotSupportedError = "NotSupportedError"
-        case AbortError = "AbortError"
+        case notSupportedError = "NotSupportedError"
+        case abortError = "AbortError"
+        case typeError = "TypeError"
+        case rangeError = "RangeError"
+        case unknownError = "UnknownError"
     }
     
     private let paymentRequested: PaymentRequestHandler
@@ -61,19 +64,32 @@ extension PaymentRequestExtension: TabContentScript {
             let messageData = try JSONSerialization.data(withJSONObject: body, options: [])
             let body = try JSONDecoder().decode(PaymentRequest.self, from: messageData)
             if body.name != "payment-request-show" {
+                sendPaymentRequestError(errorName: PaymentRequestErrors.unknownError.rawValue, errorMessage: Strings.clientErrorMessage)
                 return
             }
             
             guard body.methodData.contains(where: {$0.supportedMethods.lowercased() == "bat"}) else {
-                sendPaymentRequestError(errorName: PaymentRequestErrors.NotSupportedError.rawValue, errorMessage: Strings.unsupportedInstrumentMessage)
+                sendPaymentRequestError(errorName: PaymentRequestErrors.notSupportedError.rawValue, errorMessage: Strings.unsupportedInstrumentMessage)
                 return
             }
             
+            // All currencies should match
+            guard body.details.displayItems.map({$0.amount.currency}).allSatisfy({ $0 == body.details.total.amount.currency }) else {
+                sendPaymentRequestError(errorName: PaymentRequestErrors.typeError.rawValue, errorMessage: Strings.invalidDetailsMessage)
+                return
+            }
+            
+            // Sum of individual items does not match the total
+            guard Double(body.details.total.amount.value) == body.details.displayItems.compactMap({(Double($0.amount.value) )}).reduce(0, +) else {
+                sendPaymentRequestError(errorName: PaymentRequestErrors.rangeError.rawValue, errorMessage: Strings.invalidDetailsMessage)
+                return
+            }
+
             paymentRequested(body) { response in
                 switch response {
                 case .cancelled:
                     ensureMainThread {
-                        self.sendPaymentRequestError(errorName: PaymentRequestErrors.AbortError.rawValue, errorMessage: Strings.userCancelledMessage)
+                        self.sendPaymentRequestError(errorName: PaymentRequestErrors.abortError.rawValue, errorMessage: Strings.userCancelledMessage)
                     }
                 case .completed(let response):
                     ensureMainThread {
@@ -87,7 +103,8 @@ extension PaymentRequestExtension: TabContentScript {
                 }
             }
         } catch {
-            log.error(error)
+            sendPaymentRequestError(errorName: PaymentRequestErrors.typeError.rawValue, errorMessage: Strings.invalidDetailsMessage)
+            return
         }
             
     }
@@ -97,4 +114,6 @@ extension Strings {
     //Errors
     public static let unsupportedInstrumentMessage = NSLocalizedString("unsupportedInstrumentMessage", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Unsupported payment instruments", comment: "Error message if list of Payment Instruments doesn't include BAT")
     public static let userCancelledMessage = NSLocalizedString("userCancelledMessage", tableName: "BraveShared", bundle: Bundle.braveShared, value: "User cancelled", comment: "Error message if the payment workflow is canceled by the user")
+    public static let invalidDetailsMessage = NSLocalizedString("invalidDetailsMessage", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Invalid details in payment request", comment: "Error message if details don't have the right type or values")
+    public static let clientErrorMessage = NSLocalizedString("clientErrorMessage", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Client error", comment: "Client is in an invalid state which caused the error")
 }
