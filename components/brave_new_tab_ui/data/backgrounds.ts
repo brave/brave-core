@@ -71,7 +71,7 @@ export const images: NewTab.Image[] = [
     'name': 'ntp-fall-2019-13',
     'source': 'will-christiansen-glacier-peak.webp',
     'author': 'Will Christiansen',
-    'link': 'www.theskyfolk.com',
+    'link': 'https://www.theskyfolk.com',
     'originalUrl': 'Contributor sent the hi-res version through email',
     'license': 'used with permission'
   },
@@ -79,7 +79,7 @@ export const images: NewTab.Image[] = [
     'name': 'ntp-fall-2019-14',
     'source': 'will-christiansen-ice.webp',
     'author': 'Will Christiansen',
-    'link': 'www.theskyfolk.com',
+    'link': 'https://www.theskyfolk.com',
     'originalUrl': 'Contributor sent the hi-res version through email',
     'license': 'used with permission'
   }
