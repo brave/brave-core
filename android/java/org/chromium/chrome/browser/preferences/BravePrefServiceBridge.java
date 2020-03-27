@@ -189,6 +189,22 @@ public class BravePrefServiceBridge {
         BravePrefServiceBridgeJni.get().setString(preference, value);
     }
 
+    public void setReferralAndroidFirstRunTimestamp(long time) {
+        BravePrefServiceBridgeJni.get().setReferralAndroidFirstRunTimestamp(time);
+    }
+
+    public void setReferralCheckedForPromoCodeFile(boolean value) {
+        BravePrefServiceBridgeJni.get().setReferralCheckedForPromoCodeFile(value);
+    }
+
+    public void setReferralPromoCode(String promoCode) {
+        BravePrefServiceBridgeJni.get().setReferralPromoCode(promoCode);
+    }
+
+    public void setReferralDownloadId(String downloadId) {
+        BravePrefServiceBridgeJni.get().setReferralDownloadId(downloadId);
+    }
+
     @NativeMethods
     interface Natives {
         void setHTTPSEEnabled(boolean enabled);
@@ -236,5 +252,9 @@ public class BravePrefServiceBridge {
         String getString(int preference);
         void setString(int preference, String value);
 
+        void setReferralAndroidFirstRunTimestamp(long time);
+        void setReferralCheckedForPromoCodeFile(boolean value);
+        void setReferralPromoCode(String promoCode);
+        void setReferralDownloadId(String downloadId);
     }
 }
