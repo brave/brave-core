@@ -10,9 +10,13 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/command_line.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
+#include "brave/browser/ui/views/toolbar/speedreader_button.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/speedreader/speedreader_pref_names.h"
+#include "brave/components/speedreader/speedreader_switches.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/defaults.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -131,9 +135,25 @@ void BraveToolbarView::Init() {
       ui::EF_LEFT_MOUSE_BUTTON | ui::EF_MIDDLE_MOUSE_BUTTON);
   bookmark_->Init();
 
+  // Speedreader.
+  base::CommandLine* cmdline = base::CommandLine::ForCurrentProcess();
+  if (cmdline->HasSwitch(speedreader::kEnableSpeedreader)) {
+    const bool speedreader_on = profile->GetPrefs()->GetBoolean(
+        speedreader::kSpeedreaderEnabled);
+    speedreader_ = new SpeedreaderButton(this, speedreader_on);
+    speedreader_->set_triggerable_event_flags(
+        ui::EF_LEFT_MOUSE_BUTTON | ui::EF_MIDDLE_MOUSE_BUTTON);
+    speedreader_->Init();
+  }
+
   DCHECK(location_bar_);
   AddChildViewAt(bookmark_, GetIndexOf(location_bar_));
   bookmark_->UpdateImage();
+  if (speedreader_) {
+    AddChildViewAt(speedreader_, GetIndexOf(location_bar_));
+    speedreader_->UpdateImage();
+  }
+
   brave_initialized_ = true;
 }
 
@@ -157,6 +177,8 @@ void BraveToolbarView::OnThemeChanged() {
 
   if (display_mode_ == DisplayMode::NORMAL && bookmark_)
     bookmark_->UpdateImage();
+  if (display_mode_ == DisplayMode::NORMAL && speedreader_)
+    speedreader_->UpdateImage();
 }
 
 void BraveToolbarView::OnProfileAdded(const base::FilePath& profile_path) {
@@ -173,6 +195,8 @@ void BraveToolbarView::LoadImages() {
   ToolbarView::LoadImages();
   if (bookmark_)
     bookmark_->UpdateImage();
+  if (speedreader_)
+    speedreader_->UpdateImage();
 }
 
 void BraveToolbarView::Update(content::WebContents* tab) {
@@ -181,6 +205,9 @@ void BraveToolbarView::Update(content::WebContents* tab) {
   if (bookmark_) {
     bookmark_->SetVisible(browser_defaults::bookmarks_enabled &&
                           edit_bookmarks_enabled_.GetValue());
+  }
+  if (speedreader_) {
+    speedreader_->SetVisible(true);
   }
   // Remove avatar menu if only a single user profile exists.
   // Always show if private / tor / guest window, as an indicator.
@@ -230,7 +257,7 @@ void BraveToolbarView::Layout() {
 
   if (!location_bar_is_wide_.GetValue()) {
     ResetLocationBarBounds();
-    ResetBookmarkButtonBounds();
+    ResetButtonBounds();
   }
 }
 
@@ -250,15 +277,23 @@ void BraveToolbarView::ResetLocationBarBounds() {
                            location_bar_->height());
 }
 
-void BraveToolbarView::ResetBookmarkButtonBounds() {
+void BraveToolbarView::ResetButtonBounds() {
   DCHECK_EQ(DisplayMode::NORMAL, display_mode_);
 
-  if (!bookmark_ || !bookmark_->GetVisible())
-    return;
+  int button_right_margin = GetLayoutConstant(TOOLBAR_STANDARD_SPACING);
 
-  const int button_right_margin = GetLayoutConstant(TOOLBAR_STANDARD_SPACING);
-  const int bookmark_width = bookmark_->GetPreferredSize().width();
-  const int bookmark_x =
-      location_bar_->x() - bookmark_width - button_right_margin;
-  bookmark_->SetX(bookmark_x);
+  if (bookmark_ && bookmark_->GetVisible()) {
+    const int bookmark_width = bookmark_->GetPreferredSize().width();
+    const int bookmark_x =
+        location_bar_->x() - bookmark_width - button_right_margin;
+    bookmark_->SetX(bookmark_x);
+    button_right_margin = bookmark_x;
+  }
+
+  if (speedreader_ && speedreader_->GetVisible()) {
+    const int speedreader_width = speedreader_->GetPreferredSize().width();
+    const int speedreader_x =
+        button_right_margin - speedreader_width;// - GetLayoutConstant(TOOLBAR_STANDARD_SPACING);;
+    speedreader_->SetX(speedreader_x);
+  }
 }

@@ -86,6 +86,10 @@ grit("strings") {
     "grit/brave_components_strings.h",
   ]
 
+  defines = [
+    "enable_speedreader=$enable_speedreader",
+  ]
+
   foreach(locale, locales_with_fake_bidi) {
     outputs += [ "brave_components_strings_$locale.pak" ]
   }

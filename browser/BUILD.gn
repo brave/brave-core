@@ -313,6 +313,12 @@ source_set("browser_process") {
   }
 
   if (enable_speedreader) {
+    sources += [
+      "//brave/browser/speedreader/speedreader_service_factory.cc",
+      "//brave/browser/speedreader/speedreader_service_factory.h",
+      "//brave/browser/speedreader/speedreader_tab_helper.cc",
+      "//brave/browser/speedreader/speedreader_tab_helper.h",
+    ]
     deps += [ "//brave/components/speedreader" ]
   }
 

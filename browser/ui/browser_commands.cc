@@ -8,6 +8,7 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/tor/tor_profile_service.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/components/speedreader/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -19,6 +20,13 @@
 #include "chrome/common/pref_names.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/browser/speedreader/speedreader_service_factory.h"
+#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "brave/browser/ui/views/toolbar/speedreader_button.h"
+#include "brave/components/speedreader/speedreader_service.h"
+#endif
 
 using content::WebContents;
 
@@ -60,6 +68,29 @@ void OpenGuestProfile() {
   DCHECK(service);
   DCHECK(service->GetBoolean(prefs::kBrowserGuestModeEnabled));
   profiles::SwitchToGuestProfile(ProfileManager::CreateCallback());
+}
+
+void ToggleSpeedreader(Browser* browser) {
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  speedreader::SpeedreaderService* service =
+      speedreader::SpeedreaderServiceFactory::GetForProfile(browser->profile());
+  if (service) {
+    service->ToggleSpeedreader();
+
+    // TODO(iefremov): We probably should do it with lesser amount of hacks.
+    BrowserView* view = static_cast<BrowserView*>(browser->window());
+    SpeedreaderButton* button =
+        static_cast<BraveToolbarView*>(view->toolbar())->speedreader_button();
+    if (button) {
+      button->Toggle();
+    }
+
+    WebContents* contents = browser->tab_strip_model()->GetActiveWebContents();
+    if (contents) {
+      contents->GetController().Reload(content::ReloadType::NORMAL, false);
+    }
+  }
+#endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 }
 
 }  // namespace brave

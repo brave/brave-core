@@ -136,6 +136,8 @@ source_set("ui") {
       "views/tabs/brave_tab_context_menu_contents.h",
       "views/toolbar/bookmark_button.cc",
       "views/toolbar/bookmark_button.h",
+      "views/toolbar/speedreader_button.cc",
+      "views/toolbar/speedreader_button.h",
     ]
 
     if (enable_sparkle) {

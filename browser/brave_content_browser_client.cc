@@ -97,6 +97,9 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/browser/speedreader/speedreader_service_factory.h"
+#include "brave/browser/speedreader/speedreader_tab_helper.h"
+#include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_switches.h"
 #include "brave/components/speedreader/speedreader_throttle.h"
 #include "brave/components/speedreader/speedreader_whitelist.h"
@@ -285,6 +288,14 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   const auto* cmd_line = base::CommandLine::ForCurrentProcess();
   if (cmd_line->HasSwitch(speedreader::kEnableSpeedreader)) {
+    Profile* profile = Profile::FromBrowserContext(browser_context);
+    DCHECK(profile);
+    const bool enabled = speedreader::SpeedreaderServiceFactory::
+        GetForProfile(profile)->IsEnabled();
+
+    if (!enabled) {
+      return result;
+    }
     // Work only with casual main frame navigations.
     if (request.url.SchemeIsHTTPOrHTTPS() &&
         request.resource_type ==
@@ -296,6 +307,13 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
           whitelist->IsWhitelisted(request.url)) {
         result.push_back(std::make_unique<speedreader::SpeedReaderThrottle>(
                          base::ThreadTaskRunnerHandle::Get()));
+
+        // Notify the tab helper. We assume that whitelist is accurate, i.e.
+        // the tab helper will assume that the page was distilled.
+        auto* web_contents = wc_getter.Run();
+        speedreader::SpeedreaderTabHelper* tab_helper =
+            speedreader::SpeedreaderTabHelper::FromWebContents(web_contents);
+        tab_helper->SetActive();
       }
     }
   }
