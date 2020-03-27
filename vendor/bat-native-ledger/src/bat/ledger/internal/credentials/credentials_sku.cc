@@ -363,4 +363,10 @@ void CredentialsSKU::Completed(
   callback(result);
 }
 
+void CredentialsSKU::RedeemTokens(
+    const CredentialsRedeem& redeem,
+    ledger::ResultCallback callback) {
+  common_->RedeemTokens(redeem, callback);
+}
+
 }  // namespace braveledger_credentials

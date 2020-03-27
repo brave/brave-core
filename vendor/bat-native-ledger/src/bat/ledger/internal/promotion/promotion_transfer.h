@@ -7,9 +7,11 @@
 #define BRAVELEDGER_PROMOTION_TRANSFER_H_
 
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
 
+#include "bat/ledger/internal/credentials/credentials_factory.h"
 #include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
@@ -36,18 +38,12 @@ class PromotionTransfer {
       ledger::PromotionList promotions,
       ledger::ResultCallback callback);
 
-  void SendTokens(
+  void OnGetEligibleTokens(
       ledger::UnblindedTokenList list,
       ledger::ResultCallback callback);
 
-  void DeleteTokens(
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
-      const std::vector<std::string>& sent_ids,
-      ledger::ResultCallback callback);
-
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  std::unique_ptr<braveledger_credentials::Credentials> credentials_;
 };
 
 }  // namespace braveledger_promotion

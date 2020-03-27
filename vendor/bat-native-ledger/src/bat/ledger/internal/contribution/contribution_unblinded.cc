@@ -5,13 +5,13 @@
 
 #include <utility>
 
-#include "base/base64.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "bat/ledger/internal/bat_util.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/contribution/contribution_unblinded.h"
+#include "bat/ledger/internal/contribution/contribution_sku.h"
 #include "bat/ledger/internal/contribution/contribution_util.h"
 #include "bat/ledger/internal/request/request_promotion.h"
 #include "brave_base/random.h"
@@ -23,80 +23,10 @@ using std::placeholders::_3;
 
 namespace {
 
-std::string ConvertTypeToString(const ledger::RewardsType type) {
-  switch (static_cast<int>(type)) {
-    case static_cast<int>(ledger::RewardsType::AUTO_CONTRIBUTE): {
-      return "auto-contribute";
-    }
-    case static_cast<int>(ledger::RewardsType::ONE_TIME_TIP): {
-      return "oneoff-tip";
-    }
-    case static_cast<int>(ledger::RewardsType::RECURRING_TIP): {
-      return "recurring-tip";
-    }
-    default: {
-      // missing conversion, returning dummy value.
-      NOTREACHED();
-      return "oneoff-tip";
-    }
-  }
-}
-
 bool HasTokenExpired(const ledger::UnblindedToken& token) {
   const auto now = braveledger_time_util::GetCurrentTimeStamp();
 
   return token.expires_at > 0 && token.expires_at < now;
-}
-
-std::string GenerateTokenPayload(
-    const std::string& publisher_key,
-    ledger::ContributionInfoPtr contribution,
-    const std::vector<ledger::UnblindedToken>& list) {
-  if (!contribution) {
-    return "";
-  }
-
-  base::Value suggestion(base::Value::Type::DICTIONARY);
-  suggestion.SetStringKey("type", ConvertTypeToString(contribution->type));
-  suggestion.SetStringKey("channel", publisher_key);
-
-  std::string suggestion_json;
-  base::JSONWriter::Write(suggestion, &suggestion_json);
-  std::string suggestion_encoded;
-  base::Base64Encode(suggestion_json, &suggestion_encoded);
-
-  base::Value credentials(base::Value::Type::LIST);
-  for (auto& item : list) {
-    base::Value token(base::Value::Type::DICTIONARY);
-    bool success;
-    if (ledger::is_testing) {
-      success = braveledger_contribution::GenerateSuggestionMock(
-          item.token_value,
-          item.public_key,
-          suggestion_encoded,
-          &token);
-    } else {
-      success = braveledger_contribution::GenerateSuggestion(
-          item.token_value,
-          item.public_key,
-          suggestion_encoded,
-          &token);
-    }
-
-    if (!success) {
-      continue;
-    }
-
-    credentials.Append(std::move(token));
-  }
-
-  base::Value payload(base::Value::Type::DICTIONARY);
-  payload.SetStringKey("suggestion", suggestion_encoded);
-  payload.SetKey("credentials", std::move(credentials));
-
-  std::string json;
-  base::JSONWriter::Write(payload, &json);
-  return json;
 }
 
 bool GetStatisticalVotingWinner(
@@ -168,6 +98,11 @@ int32_t GetRetryCount(
 namespace braveledger_contribution {
 
 Unblinded::Unblinded(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {
+  DCHECK(ledger_);
+  credentials_ = braveledger_credentials::CredentialsFactory::Create(
+      ledger_,
+      ledger::CredsBatchType::PROMOTION);
+  DCHECK(credentials_);
 }
 
 Unblinded::~Unblinded() = default;
@@ -424,11 +359,13 @@ void Unblinded::OnProcessTokens(
         contribution->contribution_id,
         publisher->publisher_key);
 
-    SendTokens(
-        publisher->publisher_key,
-        std::move(contribution),
-        token_list,
-        callback);
+    braveledger_credentials::CredentialsRedeem redeem;
+    redeem.publisher_key = publisher->publisher_key;
+    redeem.type = contribution->type;
+    redeem.processor = contribution->processor;
+    redeem.token_list = token_list;
+
+    credentials_->RedeemTokens(redeem, callback);
     return;
   }
 
@@ -486,62 +423,6 @@ void Unblinded::CheckIfCompleted(ledger::ContributionInfoPtr contribution) {
   }
 
   SetTimer(contribution->contribution_id);
-}
-
-void Unblinded::SendTokens(
-    const std::string& publisher_key,
-    ledger::ContributionInfoPtr contribution,
-    const std::vector<ledger::UnblindedToken>& list,
-    ledger::ResultCallback callback) {
-  if (publisher_key.empty() || list.empty() || !contribution) {
-    return callback(ledger::Result::LEDGER_ERROR);
-  }
-
-  std::vector<std::string> token_id_list;
-  for (auto & item : list) {
-    token_id_list.push_back(std::to_string(item.id));
-  }
-
-  auto url_callback = std::bind(&Unblinded::OnSendTokens,
-      this,
-      _1,
-      _2,
-      _3,
-      token_id_list,
-      callback);
-
-  const std::string payload = GenerateTokenPayload(
-      publisher_key,
-      contribution->Clone(),
-      list);
-
-  const std::string url =
-      braveledger_request_util::GetReedemTokensUrl(
-          contribution->type,
-          contribution->processor);
-
-  ledger_->LoadURL(
-      url,
-      std::vector<std::string>(),
-      payload,
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::POST,
-      url_callback);
-}
-
-void Unblinded::OnSendTokens(
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
-    const std::vector<std::string>& token_id_list,
-    ledger::ResultCallback callback) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
-  if (response_status_code != net::HTTP_OK) {
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  ledger_->DeleteUnblindedTokens(token_id_list, callback);
 }
 
 void Unblinded::ContributionCompleted(

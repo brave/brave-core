@@ -24,6 +24,10 @@ class CredentialsSKU : public Credentials {
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback) override;
 
+  void RedeemTokens(
+      const CredentialsRedeem& redeem,
+      ledger::ResultCallback callback) override;
+
  private:
   void OnStart(
       ledger::CredsBatchPtr creds,

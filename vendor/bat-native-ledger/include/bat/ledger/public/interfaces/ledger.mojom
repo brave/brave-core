@@ -280,6 +280,7 @@ enum RewardsType {
   AUTO_CONTRIBUTE = 2,
   ONE_TIME_TIP = 8,
   RECURRING_TIP = 16,
+  TRANSFER = 17
 };
 
 enum ReportType {

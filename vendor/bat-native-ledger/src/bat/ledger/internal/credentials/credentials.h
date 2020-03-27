@@ -10,6 +10,7 @@
 #include <string>
 
 #include "bat/ledger/ledger.h"
+#include "bat/ledger/internal/credentials/credentials_redeem.h"
 #include "bat/ledger/internal/credentials/credentials_trigger.h"
 
 namespace braveledger_credentials {
@@ -40,6 +41,10 @@ class Credentials {
   virtual void Completed(
       const ledger::Result result,
       const CredentialsTrigger& trigger,
+      ledger::ResultCallback callback) = 0;
+
+  virtual void RedeemTokens(
+      const CredentialsRedeem& redeem,
       ledger::ResultCallback callback) = 0;
 };
 

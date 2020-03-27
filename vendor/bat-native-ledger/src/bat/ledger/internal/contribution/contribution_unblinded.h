@@ -9,9 +9,11 @@
 #include <stdint.h>
 
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
 
+#include "bat/ledger/internal/credentials/credentials_factory.h"
 #include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
@@ -114,6 +116,7 @@ class Unblinded {
   void DoRetry(ledger::ContributionInfoPtr contribution);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  std::unique_ptr<braveledger_credentials::Credentials> credentials_;
   std::map<std::string, uint32_t> retry_timers_;
 };
 

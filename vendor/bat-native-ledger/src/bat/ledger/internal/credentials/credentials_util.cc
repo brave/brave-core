@@ -5,6 +5,7 @@
 
 #include <utility>
 
+#include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "bat/ledger/internal/credentials/credentials_util.h"
@@ -12,11 +13,11 @@
 #include "wrapper.hpp"  // NOLINT
 
 using challenge_bypass_ristretto::BatchDLEQProof;
-using challenge_bypass_ristretto::BlindedToken;
 using challenge_bypass_ristretto::PublicKey;
 using challenge_bypass_ristretto::SignedToken;
-using challenge_bypass_ristretto::Token;
 using challenge_bypass_ristretto::UnblindedToken;
+using challenge_bypass_ristretto::VerificationKey;
+using challenge_bypass_ristretto::VerificationSignature;
 
 namespace braveledger_credentials {
 
@@ -184,6 +185,133 @@ bool UnBlindCredsMock(
   }
 
   return true;
+}
+
+std::string ConvertRewardTypeToString(const ledger::RewardsType type) {
+  switch (type) {
+    case ledger::RewardsType::AUTO_CONTRIBUTE: {
+      return "auto-contribute";
+    }
+    case ledger::RewardsType::ONE_TIME_TIP: {
+      return "oneoff-tip";
+    }
+    case ledger::RewardsType::RECURRING_TIP: {
+      return "recurring-tip";
+    }
+    case ledger::RewardsType::TRANSFER: {
+      return "";
+    }
+  }
+}
+
+void GenerateCredentials(
+    const std::vector<ledger::UnblindedToken>& token_list,
+    const std::string& body,
+    base::Value* credentials) {
+  DCHECK(credentials);
+
+  for (auto& item : token_list) {
+    base::Value token(base::Value::Type::DICTIONARY);
+    bool success;
+    if (ledger::is_testing) {
+      success = GenerateSuggestionMock(
+          item.token_value,
+          item.public_key,
+          body,
+          &token);
+    } else {
+      success = GenerateSuggestion(
+          item.token_value,
+          item.public_key,
+          body,
+          &token);
+    }
+
+    if (!success) {
+      continue;
+    }
+
+    credentials->Append(std::move(token));
+  }
+}
+
+bool GenerateSuggestion(
+    const std::string& token_value,
+    const std::string& public_key,
+    const std::string& body,
+    base::Value* result) {
+  if (token_value.empty() || public_key.empty() || body.empty()) {
+    return false;
+  }
+
+  UnblindedToken unblinded = UnblindedToken::decode_base64(token_value);
+  VerificationKey verification_key = unblinded.derive_verification_key();
+  VerificationSignature signature = verification_key.sign(body);
+  const std::string pre_image = unblinded.preimage().encode_base64();
+
+  if (challenge_bypass_ristretto::exception_occurred()) {
+    challenge_bypass_ristretto::TokenException e =
+        challenge_bypass_ristretto::get_last_exception();
+    return false;
+  }
+
+  result->SetStringKey("t", pre_image);
+  result->SetStringKey("publicKey", public_key);
+  result->SetStringKey("signature", signature.encode_base64());
+  return true;
+}
+
+bool GenerateSuggestionMock(
+    const std::string& token_value,
+    const std::string& public_key,
+    const std::string& body,
+    base::Value* result) {
+  result->SetStringKey("t", token_value);
+  result->SetStringKey("publicKey", public_key);
+  result->SetStringKey("signature", token_value);
+  return true;
+}
+
+std::string GenerateRedeemTokensPayload(const CredentialsRedeem& redeem) {
+  base::Value suggestion(base::Value::Type::DICTIONARY);
+  suggestion.SetStringKey(
+      "type",
+      ConvertRewardTypeToString(redeem.type));
+  if (!redeem.order_id.empty()) {
+    suggestion.SetStringKey("orderId", redeem.order_id);
+  }
+  suggestion.SetStringKey("channel", redeem.publisher_key);
+
+  std::string suggestion_json;
+  base::JSONWriter::Write(suggestion, &suggestion_json);
+  std::string suggestion_encoded;
+  base::Base64Encode(suggestion_json, &suggestion_encoded);
+
+  base::Value credentials(base::Value::Type::LIST);
+  GenerateCredentials(redeem.token_list, suggestion_encoded, &credentials);
+
+  base::Value payload(base::Value::Type::DICTIONARY);
+  payload.SetStringKey("suggestion", suggestion_encoded);
+  payload.SetKey("credentials", std::move(credentials));
+
+  std::string json;
+  base::JSONWriter::Write(payload, &json);
+  return json;
+}
+
+std::string GenerateTransferTokensPayload(
+    const CredentialsRedeem& redeem,
+    const std::string& payment_id) {
+  base::Value credentials(base::Value::Type::LIST);
+  GenerateCredentials(redeem.token_list, payment_id, &credentials);
+
+  base::Value body(base::Value::Type::DICTIONARY);
+  body.SetStringKey("paymentId", payment_id);
+  body.SetKey("credentials", std::move(credentials));
+
+  std::string json;
+  base::JSONWriter::Write(body, &json);
+  return json;
 }
 
 }  // namespace braveledger_credentials

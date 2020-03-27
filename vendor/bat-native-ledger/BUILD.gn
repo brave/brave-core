@@ -143,6 +143,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/credentials/credentials_factory.h",
     "src/bat/ledger/internal/credentials/credentials_promotion.cc",
     "src/bat/ledger/internal/credentials/credentials_promotion.h",
+    "src/bat/ledger/internal/credentials/credentials_redeem.cc",
+    "src/bat/ledger/internal/credentials/credentials_redeem.h",
     "src/bat/ledger/internal/credentials/credentials_sku.cc",
     "src/bat/ledger/internal/credentials/credentials_sku.h",
     "src/bat/ledger/internal/credentials/credentials_trigger.cc",

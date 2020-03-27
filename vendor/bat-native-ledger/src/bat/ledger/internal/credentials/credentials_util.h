@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/values.h"
+#include "bat/ledger/internal/credentials/credentials_redeem.h"
 #include "bat/ledger/mojom_structs.h"
 
 #include "wrapper.hpp"
@@ -39,6 +40,31 @@ namespace braveledger_credentials {
   bool UnBlindCredsMock(
       const ledger::CredsBatch& creds,
       std::vector<std::string>* unblinded_encoded_creds);
+
+  std::string ConvertRewardTypeToString(const ledger::RewardsType type);
+
+  void GenerateCredentials(
+      const std::vector<ledger::UnblindedToken>& token_list,
+      const std::string& body,
+      base::Value* credentials);
+
+  bool GenerateSuggestion(
+      const std::string& token_value,
+      const std::string& public_key,
+      const std::string& suggestion_encoded,
+      base::Value* result);
+
+  bool GenerateSuggestionMock(
+      const std::string& token_value,
+      const std::string& public_key,
+      const std::string& suggestion_encoded,
+      base::Value* result);
+
+  std::string GenerateRedeemTokensPayload(const CredentialsRedeem& redeem);
+
+  std::string GenerateTransferTokensPayload(
+      const CredentialsRedeem& redeem,
+      const std::string& payment_id);
 
 }  // namespace braveledger_credentials
 

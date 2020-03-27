@@ -418,4 +418,10 @@ void CredentialsPromotion::Completed(
   ledger_->UnblindedTokensReady();
 }
 
+void CredentialsPromotion::RedeemTokens(
+    const CredentialsRedeem& redeem,
+    ledger::ResultCallback callback) {
+  common_->RedeemTokens(redeem, callback);
+}
+
 }  // namespace braveledger_credentials
