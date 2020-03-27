@@ -5,15 +5,57 @@
 
 #include "brave/browser/brave_drm_tab_helper.h"
 
+#include <algorithm>
+#include <vector>
+
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/common/pref_names.h"
+#include "chrome/browser/browser_process_impl.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
 
+using component_updater::ComponentUpdateService;
+
+namespace {
+
+// Copied from widevine_cdm_component_installer.cc.
+// There is no shared constant value.
+constexpr char kWidevineComponentId[] = "oimompecagnajdejgnnjijobebaeigek";
+
+bool IsAlreadyRegistered(ComponentUpdateService* cus) {
+  std::vector<std::string> component_ids;
+  component_ids = cus->GetComponentIDs();
+  return std::find(component_ids.begin(),
+                   component_ids.end(),
+                   kWidevineComponentId) != component_ids.end();
+}
+
+content::WebContents* GetActiveWebContents() {
+  if (Browser* browser = chrome::FindLastActive())
+    return browser->tab_strip_model()->GetActiveWebContents();
+  return nullptr;
+}
+
+void ReloadIfActive(content::WebContents* web_contents) {
+  if (GetActiveWebContents() == web_contents)
+    web_contents->GetController().Reload(content::ReloadType::NORMAL, false);
+}
+
+}  // namespace
+
 BraveDrmTabHelper::BraveDrmTabHelper(content::WebContents* contents)
-    : WebContentsObserver(contents), receivers_(contents, this) {}
+    : WebContentsObserver(contents),
+      receivers_(contents, this),
+      observer_(this) {
+  auto* updater = g_browser_process->component_updater();
+  // We don't need to observe if widevine is already registered.
+  if (!IsAlreadyRegistered(updater))
+    observer_.Add(updater);
+}
 
 BraveDrmTabHelper::~BraveDrmTabHelper() {}
 
@@ -44,6 +86,17 @@ void BraveDrmTabHelper::OnWidevineKeySystemAccessRequest() {
   if (ShouldShowWidevineOptIn() && !is_permission_requested_) {
     is_permission_requested_ = true;
     RequestWidevinePermission(web_contents());
+  }
+}
+
+void BraveDrmTabHelper::OnEvent(Events event, const std::string& id) {
+  if (event == ComponentUpdateService::Observer::Events::COMPONENT_UPDATED &&
+      id == kWidevineComponentId) {
+    // When widevine is ready to use, only active tab that requests widevine is
+    // reloaded automatically. Then, stop observing component update.
+    if (is_widevine_requested_)
+      ReloadIfActive(web_contents());
+    observer_.RemoveAll();
   }
 }
 
