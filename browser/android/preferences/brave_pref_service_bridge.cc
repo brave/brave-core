@@ -14,6 +14,7 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "chrome/browser/android/preferences/pref_service_bridge.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_android.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -243,6 +244,34 @@ jboolean JNI_BravePrefServiceBridge_GetBooleanForContentSetting(JNIEnv* env,
   }
 
   return false;
+}
+
+void JNI_BravePrefServiceBridge_SetReferralAndroidFirstRunTimestamp(
+    JNIEnv* env,
+    jlong time) {
+  return g_browser_process->local_state()->SetTime(
+      kReferralAndroidFirstRunTimestamp, base::Time::FromJavaTime(time));
+}
+
+void JNI_BravePrefServiceBridge_SetReferralCheckedForPromoCodeFile(
+    JNIEnv* env,
+    jboolean value) {
+  return g_browser_process->local_state()->SetBoolean(
+      kReferralCheckedForPromoCodeFile, value);
+}
+
+void JNI_BravePrefServiceBridge_SetReferralPromoCode(
+    JNIEnv* env,
+    const JavaParamRef<jstring>& promoCode) {
+  return g_browser_process->local_state()->SetString(
+      kReferralPromoCode, ConvertJavaStringToUTF8(env, promoCode));
+}
+
+void JNI_BravePrefServiceBridge_SetReferralDownloadId(
+    JNIEnv* env,
+    const JavaParamRef<jstring>& downloadId) {
+  return g_browser_process->local_state()->SetString(
+      kReferralDownloadID, ConvertJavaStringToUTF8(env, downloadId));
 }
 
 static jboolean JNI_BravePrefServiceBridge_GetBoolean(
