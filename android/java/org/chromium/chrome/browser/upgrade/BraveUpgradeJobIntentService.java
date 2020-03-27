@@ -7,6 +7,8 @@ package org.chromium.chrome.browser.upgrade;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import java.util.Locale;
 import android.content.SharedPreferences;
 import android.support.v4.app.JobIntentService;
@@ -65,6 +67,8 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
     // To detect update from tabs
     private static final String PREF_STATS_PREFERENCES_NAME = "StatsPreferences";
     private static final String PREF_WEEK_OF_INSTALLATION_NAME = "WeekOfInstallation";
+    private static final String PREF_STATS_URPC_NAME = "UserReferalProgramCode";
+    private static final String PREF_STATS_DOWNLOAD_ID_NAME = "DownloadId";
 
     public static void startMigrationIfNecessary(Context context) {
         if (BraveUpgradeJobIntentService.needToMigratePreferences()) {
@@ -233,6 +237,26 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
         if (!BraveUpgradeJobIntentService.needToMigratePreferences()) {
             return needToRestart;
         }
+
+        // Migrate referral data
+        SharedPreferences prefStatsFromTabs = ContextUtils.getApplicationContext()
+                .getSharedPreferences(PREF_STATS_PREFERENCES_NAME, 0);
+        String urpc = prefStatsFromTabs.getString(PREF_STATS_URPC_NAME, null);
+        if (urpc != null && !urpc.isEmpty()) {
+            BravePrefServiceBridge.getInstance().setReferralPromoCode(urpc);
+            BravePrefServiceBridge.getInstance().setReferralCheckedForPromoCodeFile(true);
+            String downloadId = prefStatsFromTabs.getString(PREF_STATS_DOWNLOAD_ID_NAME, "");
+            BravePrefServiceBridge.getInstance().setReferralDownloadId(downloadId);
+            PackageInfo info = null;
+            try {
+                info = ContextUtils.getApplicationContext().getPackageManager()
+                        .getPackageInfo(ContextUtils.getApplicationContext().getPackageName(), 0);
+                BravePrefServiceBridge.getInstance().setReferralAndroidFirstRunTimestamp(info.firstInstallTime);
+            } catch (NameNotFoundException e) {
+                Log.e(TAG, "Could not get package info: " + e);
+            }
+        }
+
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
         // Total stats migration
         long trackersBlockedCount = sharedPreferences.getLong(PREF_TRACKERS_BLOCKED_COUNT, 0);
