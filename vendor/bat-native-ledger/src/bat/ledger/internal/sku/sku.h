@@ -32,6 +32,11 @@ class SKU {
       ledger::ExternalWalletPtr wallet,
       ledger::SKUOrderCallback callback);
 
+  void Process(
+      const std::vector<ledger::SKUOrderItem>& items,
+      ledger::ExternalWalletPtr wallet,
+      ledger::SKUOrderCallback callback);
+
  private:
   void GetOrder(
       const ledger::Result result,
@@ -43,6 +48,12 @@ class SKU {
   void CreateTransaction(
       ledger::SKUOrderPtr order,
       const std::string& destination,
+      const ledger::ExternalWallet& wallet,
+      ledger::SKUOrderCallback callback);
+
+  void OnServerPublisherInfo(
+      ledger::ServerPublisherInfoPtr info,
+      const std::string& order_string,
       const ledger::ExternalWallet& wallet,
       ledger::SKUOrderCallback callback);
 

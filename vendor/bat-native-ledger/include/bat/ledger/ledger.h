@@ -354,6 +354,11 @@ class LEDGER_EXPORT Ledger {
 
   virtual void GetAllMonthlyReportIds(
       ledger::GetAllMonthlyReportIdsCallback callback) = 0;
+
+  virtual void ProcessSKU(
+      const std::vector<ledger::SKUOrderItem>& items,
+      ledger::ExternalWalletPtr wallet,
+      ledger::SKUOrderCallback callback) = 0;
 };
 
 }  // namespace ledger

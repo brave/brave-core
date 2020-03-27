@@ -27,9 +27,12 @@ ledger::SKUTransactionType GetTransactionTypeFromWalletType(
     return ledger::SKUTransactionType::UPHOLD;
   }
 
-  if (wallet_type == ledger::kWalletAnonymous ||
-      wallet_type == ledger::kWalletUnBlinded) {
+  if (wallet_type == ledger::kWalletAnonymous) {
     return ledger::SKUTransactionType::ANONYMOUS_CARD;
+  }
+
+  if (wallet_type == ledger::kWalletUnBlinded) {
+    return ledger::SKUTransactionType::TOKENS;
   }
 
   NOTREACHED();
@@ -112,6 +115,11 @@ void SKUTransaction::OnTransfer(
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
         << "Transaction for order failed " << transaction.order_id;
     callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  if (external_transaction_id.empty()) {
+    callback(ledger::Result::LEDGER_OK);
     return;
   }
 

@@ -103,7 +103,8 @@ std::string ConvertTransactionTypeToString(
     case ledger::SKUTransactionType::ANONYMOUS_CARD: {
       return "anonymous-card";
     }
-    case ledger::SKUTransactionType::NONE: {
+    case ledger::SKUTransactionType::NONE:
+    case ledger::SKUTransactionType::TOKENS: {
       return "";
     }
   }

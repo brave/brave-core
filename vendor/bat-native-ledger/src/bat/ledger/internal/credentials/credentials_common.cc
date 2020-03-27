@@ -182,6 +182,7 @@ void CredentialsCommon::RedeemTokens(
     const CredentialsRedeem& redeem,
     ledger::ResultCallback callback) {
   if (redeem.publisher_key.empty() || redeem.token_list.empty()) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Pub key / token list empty";
     return callback(ledger::Result::LEDGER_ERROR);
   }
 

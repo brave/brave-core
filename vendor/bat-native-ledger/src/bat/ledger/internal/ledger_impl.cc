@@ -1700,4 +1700,14 @@ void LedgerImpl::BraveSKU(
       callback);
 }
 
+void LedgerImpl::ProcessSKU(
+    const std::vector<ledger::SKUOrderItem>& items,
+    ledger::ExternalWalletPtr wallet,
+    ledger::SKUOrderCallback callback) {
+  bat_sku_->Process(
+      items,
+      std::move(wallet),
+      callback);
+}
+
 }  // namespace bat_ledger

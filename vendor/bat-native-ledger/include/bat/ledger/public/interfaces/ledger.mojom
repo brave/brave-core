@@ -280,7 +280,8 @@ enum RewardsType {
   AUTO_CONTRIBUTE = 2,
   ONE_TIME_TIP = 8,
   RECURRING_TIP = 16,
-  TRANSFER = 17
+  TRANSFER = 17,
+  PAYMENT = 18
 };
 
 enum ReportType {
@@ -501,7 +502,8 @@ struct SKUOrderItem {
 enum SKUTransactionType {
   NONE = 0,
   UPHOLD = 1,
-  ANONYMOUS_CARD = 2
+  ANONYMOUS_CARD = 2,
+  TOKENS = 3
 };
 
 enum SKUTransactionStatus {

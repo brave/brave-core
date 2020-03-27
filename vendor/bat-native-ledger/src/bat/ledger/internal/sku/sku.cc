@@ -5,6 +5,8 @@
 
 #include <utility>
 
+#include "bat/ledger/global_constants.h"
+#include "bat/ledger/internal/common/bind_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/sku/sku.h"
 
@@ -37,6 +39,21 @@ void SKU::Brave(
       callback);
 
   order_->Create(items, create_callback, contribution_id);
+}
+
+void SKU::Process(
+    const std::vector<ledger::SKUOrderItem>& items,
+    ledger::ExternalWalletPtr wallet,
+    ledger::SKUOrderCallback callback) {
+  auto create_callback = std::bind(&SKU::GetOrder,
+      this,
+      _1,
+      _2,
+      "",
+      *wallet,
+      callback);
+
+  order_->Create(items, create_callback, "");
 }
 
 void SKU::GetOrder(
@@ -72,6 +89,19 @@ void SKU::CreateTransaction(
     return;
   }
 
+  if (destination.empty() && wallet.type == ledger::kWalletUphold) {
+    auto publisher_callback =
+        std::bind(&SKU::OnServerPublisherInfo,
+          this,
+          _1,
+          braveledger_bind_util::FromSKUOrderToString(std::move(order)),
+          wallet,
+          callback);
+
+    ledger_->GetServerPublisherInfo(order->merchant_id, publisher_callback);
+    return;
+  }
+
   auto create_callback = std::bind(&SKU::OnTransactionCompleted,
       this,
       _1,
@@ -83,6 +113,27 @@ void SKU::CreateTransaction(
       destination,
       wallet,
       create_callback);
+}
+
+void SKU::OnServerPublisherInfo(
+    ledger::ServerPublisherInfoPtr info,
+    const std::string& order_string,
+    const ledger::ExternalWallet& wallet,
+    ledger::SKUOrderCallback callback) {
+  auto order = braveledger_bind_util::FromStringToSKUOrder(order_string);
+  if (!order || !info) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Order/Publisher not found";
+    callback(ledger::Result::LEDGER_ERROR, "");
+    return;
+  }
+
+  if (info->address.empty()) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Publisher address is empty";
+    callback(ledger::Result::LEDGER_ERROR, "");
+    return;
+  }
+
+  CreateTransaction(std::move(order), info->address, wallet, callback);
 }
 
 void SKU::OnTransactionCompleted(

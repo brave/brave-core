@@ -35,6 +35,11 @@ class ContributionSKU {
       const std::string& contribution_id,
       ledger::ExternalWalletPtr wallet);
 
+  void Merchant(
+      const ledger::SKUTransaction& transaction,
+      const std::string& destination,
+      ledger::TransactionCallback callback);
+
  private:
   void Start(
       const std::string& contribution_id,
@@ -61,6 +66,21 @@ class ContributionSKU {
       const ledger::Result result,
       const std::string& contribution_id,
       const ledger::RewardsType type);
+
+  void GetUnblindedTokens(
+      ledger::UnblindedTokenList list,
+      const ledger::SKUTransaction& transaction,
+      const std::string& destination,
+      ledger::TransactionCallback callback);
+
+  void GerOrderMerchant(
+      ledger::SKUOrderPtr order,
+      const braveledger_credentials::CredentialsRedeem& redeem,
+      ledger::TransactionCallback callback);
+
+  void OnRedeemTokens(
+      const ledger::Result result,
+      ledger::TransactionCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   Contribution* contribution_;   // NOT OWNED

@@ -201,6 +201,9 @@ std::string ConvertRewardTypeToString(const ledger::RewardsType type) {
     case ledger::RewardsType::TRANSFER: {
       return "";
     }
+    case ledger::RewardsType::PAYMENT: {
+      return "payment";
+    }
   }
 }
 

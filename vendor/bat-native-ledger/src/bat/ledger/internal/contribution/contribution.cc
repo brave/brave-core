@@ -507,6 +507,11 @@ void Contribution::TransferFunds(
     return;
   }
 
+  if (wallet->type == ledger::kWalletUnBlinded) {
+    sku_->Merchant(transaction, destination, callback);
+    return;
+  }
+
   NOTREACHED();
   BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
       << "Wallet type not supported: " << wallet->type;

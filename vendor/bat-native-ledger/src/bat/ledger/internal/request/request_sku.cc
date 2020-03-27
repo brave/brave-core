@@ -12,7 +12,8 @@ namespace {
 
 std::string GetTransactionSuffix(const ledger::SKUTransactionType type) {
   switch (type) {
-    case ledger::SKUTransactionType::NONE: {
+    case ledger::SKUTransactionType::NONE:
+    case ledger::SKUTransactionType::TOKENS: {
       return "";
     }
     case ledger::SKUTransactionType::UPHOLD: {

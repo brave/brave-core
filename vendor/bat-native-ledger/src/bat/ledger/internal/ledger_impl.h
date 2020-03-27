@@ -711,6 +711,11 @@ class LedgerImpl : public ledger::Ledger {
       ledger::ExternalWalletPtr wallet,
       ledger::SKUOrderCallback callback);
 
+  void ProcessSKU(
+      const std::vector<ledger::SKUOrderItem>& items,
+      ledger::ExternalWalletPtr wallet,
+      ledger::SKUOrderCallback callback) override;
+
  private:
   void InitializeConfirmations(
       const bool execute_create_script,

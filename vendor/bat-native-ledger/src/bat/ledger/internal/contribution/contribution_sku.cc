@@ -232,4 +232,88 @@ void ContributionSKU::Completed(
   contribution_->StartUnblinded(contribution_id);
 }
 
+void ContributionSKU::Merchant(
+    const ledger::SKUTransaction& transaction,
+    const std::string& destination,
+    ledger::TransactionCallback callback) {
+  auto get_callback = std::bind(&ContributionSKU::GetUnblindedTokens,
+      this,
+      _1,
+      transaction,
+      destination,
+      callback);
+  ledger_->GetAllUnblindedTokens(get_callback);
+}
+
+void ContributionSKU::GetUnblindedTokens(
+    ledger::UnblindedTokenList list,
+    const ledger::SKUTransaction& transaction,
+    const std::string& destination,
+    ledger::TransactionCallback callback) {
+  if (list.empty()) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "List is empty";
+    callback(ledger::Result::LEDGER_ERROR, "");
+    return;
+  }
+
+  std::vector<ledger::UnblindedToken> token_list;
+  double current_amount = 0.0;
+  for (auto& item : list) {
+    if (current_amount >= transaction.amount) {
+      break;
+    }
+
+    current_amount += item->value;
+    token_list.push_back(*item);
+  }
+
+  if (current_amount < transaction.amount) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Not enough funds";
+    callback(ledger::Result::NOT_ENOUGH_FUNDS, "");
+    return;
+  }
+
+  braveledger_credentials::CredentialsRedeem redeem;
+  redeem.publisher_key = "";
+  redeem.type = ledger::RewardsType::PAYMENT;
+  redeem.processor = ledger::ContributionProcessor::BRAVE_TOKENS;
+  redeem.token_list = token_list;
+  redeem.order_id = transaction.order_id;
+
+  auto get_callback = std::bind(&ContributionSKU::GerOrderMerchant,
+      this,
+      _1,
+      redeem,
+      callback);
+
+  ledger_->GetSKUOrder(transaction.order_id, get_callback);
+}
+
+void ContributionSKU::GerOrderMerchant(
+    ledger::SKUOrderPtr order,
+    const braveledger_credentials::CredentialsRedeem& redeem,
+    ledger::TransactionCallback callback) {
+  if (!order) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Order was not found";
+    callback(ledger::Result::LEDGER_ERROR, "");
+    return;
+  }
+
+  braveledger_credentials::CredentialsRedeem new_redeem = redeem;
+  new_redeem.publisher_key = order->location;
+
+  auto creds_callback = std::bind(&ContributionSKU::OnRedeemTokens,
+      this,
+      _1,
+      callback);
+
+  credentials_->RedeemTokens(new_redeem, creds_callback);
+}
+
+void ContributionSKU::OnRedeemTokens(
+    const ledger::Result result,
+    ledger::TransactionCallback callback) {
+  callback(result, "");
+}
+
 }  // namespace braveledger_contribution
