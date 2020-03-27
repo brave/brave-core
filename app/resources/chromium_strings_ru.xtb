@@ -6,7 +6,7 @@
 <translation id="4947625801334180582">Brave Beta</translation>
 <translation id="2566435362010629810">Brave Dev</translation>
 <translation id="6373767849825830651">Brave – браузер, который открывает веб-страницы и приложения за секунды. Он быстр, стабилен в работе и прост в использовании. Встроенная в Brave защита от мошенничества и вредоносного ПО обеспечивает максимально безопасную работу в Интернете.</translation>
-<translation id="680297041157509674">Brave OS</translation>
+<translation id="4331809312908958774">Brave OS</translation>
 <translation id="4847979153841887006">Логотип Brave</translation>
 <translation id="7339898014177206373">Новое окно</translation>
 <translation id="5516268345616100622">Диспетчер задач – Brave</translation>
@@ -18,8 +18,8 @@
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
 <translation id="8992261409816268381">Brave Software Inc</translation>
 <translation id="8121009781989288430">© The Brave Authors, <ph name="YEAR"/> . Все права защищены.</translation>
-<translation id="2310890394934209120">Brave OS обязана своим появлением дополнительному <ph name="BEGIN_LINK_CROS_OSS"/>программному обеспечению с открытым исходным кодом<ph name="END_LINK_CROS_OSS"/>.</translation>
-<translation id="8160794320557846790">Brave OS, как и <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (бета-версия)<ph name="END_LINK_LINUX_OSS"/>, работает благодаря дополнительному <ph name="BEGIN_LINK_CROS_OSS"/>программному обеспечению с открытым исходным кодом<ph name="END_LINK_CROS_OSS"/>.</translation>
+<translation id="6368958679917195344">Brave OS обязана своим появлением дополнительному <ph name="BEGIN_LINK_CROS_OSS"/>программному обеспечению с открытым исходным кодом<ph name="END_LINK_CROS_OSS"/>.</translation>
+<translation id="1662639173275167396">Brave OS, как и <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (бета-версия)<ph name="END_LINK_LINUX_OSS"/>, работает благодаря дополнительному <ph name="BEGIN_LINK_CROS_OSS"/>программному обеспечению с открытым исходным кодом<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="6913582816347128893">В работе Brave могут возникать сбои, так как браузер больше не поддерживает Mac OS X 10.9.</translation>
 <translation id="7977787072794666032">В работе Brave могут возникать сбои, так как браузер больше не поддерживает Windows XP и Windows Vista.</translation>
 <translation id="189297655255130768">Brave не отвечает. Перезапустить сейчас?</translation>
@@ -27,7 +27,7 @@
 <translation id="335632367599648646">Вы действительно хотите удалить Brave?</translation>
 <translation id="5590013613412457132">Удаление Brave</translation>
 <translation id="5019879183386042809">Назначить Brave браузером по умолчанию</translation>
-<translation id="5063987220091207247">Brave OS не может открыть эту страницу</translation>
+<translation id="707769633889902835">Brave OS не может открыть эту страницу</translation>
 <translation id="4065288863231444640">Разрешить Brave работать в фоновом режиме</translation>
 <translation id="6797402139308059782">Разрешить Brave работать в фоновом режиме</translation>
 <translation id="2585240446624043880">Brave не может выполнять операции чтения и записи в своем каталоге: <ph name="USER_DATA_DIRECTORY"/></translation>
@@ -35,8 +35,12 @@
 <translation id="1489465648257900784">Вы не можете использовать данный профиль, поскольку он относится к более новой версии Brave.
 
 Некоторые возможности могут быть недоступны. Выберите другой профиль или используйте актуальную версию Brave.</translation>
-<translation id="1065672644894730302">Не удается получить настройки. Некоторые функции могут быть недоступны, а изменения настроек не будут сохраняться.</translation>
-<translation id="3403365884036456766">Файл настроек поврежден или недействителен. Brave не может восстановить ваши параметры.</translation>
+<translation id="1065672644894730302">Не удается получить настройки.
+
+Некоторые функции могут быть недоступны, а изменения настроек не будут сохраняться.</translation>
+<translation id="3403365884036456766">Файл настроек поврежден или недействителен.
+
+Brave не может восстановить ваши параметры.</translation>
 <translation id="1477146545787277177">Произошел сбой Brave. Перезапустить?</translation>
 <translation id="5785919770853225148">Этот пароль будет сохранен в аккаунте Brave. Вам не нужно его запоминать.</translation>
 <translation id="8211837073776713955">Brave сообщит вам, если возникнет проблема с безопасностью ваших паролей.</translation>
@@ -69,7 +73,7 @@
 <translation id="5874882355102994015">Если отсутствует встроенная программа для работы с PDF-файлами, предварительный просмотр в Brave невозможен.</translation>
 <translation id="8880183781256147665">Добавление в Brave...</translation>
 <translation id="3561569806301739367">Brave заблокировал файл <ph name="FILE_NAME"/> как потенциально опасный.</translation>
-<translation id="9067428552314418522">Brave заблокировал этот файл как опасный.</translation>
+<translation id="9067428552314418522">Этот файл опасен, так что Brave заблокировал его</translation>
 <translation id="4168372721886011198">Brave заблокировал файл <ph name="FILE_NAME"/> как опасный.</translation>
 <translation id="89367911614620585">Brave заблокировал этот файл как потенциально опасный.</translation>
 <translation id="9183662282810237335">Закрыть Brave?</translation>
@@ -91,8 +95,7 @@
 <translation id="9071554113102421877">&amp;Открыть в Brave</translation>
 <translation id="2176825726964012531">О &amp;Brave</translation>
 <translation id="5450493308072741203">Обновить &amp;Brave</translation>
-<translation id="1421502046520299169">О &amp;Brave OS</translation>
-<translation id="2534623228451928732">Обновить &amp;Brave OS</translation>
+<translation id="61852838583753520">Обновить &amp;Brave OS</translation>
 <translation id="8447483940522230788">Помощник по Brave</translation>
 <translation id="5477319665405831211">Синхронизируйте данные Brave на всех устройствах</translation>
 <translation id="8132634101975074716">Добро пожаловать в Brave!</translation>
@@ -106,19 +109,18 @@
 <translation id="5380963249588143069">Ваш системный администратор задал настройки, согласно которым Brave должен запускать <ph name="ALTERNATIVE_BROWSER_NAME"/> для доступа к сайту <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656">Адрес <ph name="USER_EMAIL_ADDRESS"/> уже использовался в Brave</translation>
 <translation id="1384923383737428730">На компьютере обнаружено вредоносное ПО. Brave может удалить его, восстановить настройки и отключить расширения. Это вернет браузер в обычное состояние.</translation>
-<translation id="8919921662052966648">Brave не удалось синхронизировать данные. Обновите кодовую фразу в Sync.</translation>
 <translation id="2262856633481902138">Brave не удалось синхронизировать данные, поскольку ваши учетные сведения устарели.</translation>
 <translation id="5419189641394808652">Brave не удалось синхронизировать данные, поскольку служба Sync недоступна для вашего домена.</translation>
 <translation id="2577755334620061182">Brave не удалось синхронизировать данные из-за ошибки входа в систему.</translation>
-<translation id="8583885258305961947">Brave OS</translation>
-<translation id="3968006371075376562">Не удалось синхронизировать данные. Обновите кодовую фразу в Sync.</translation>
-<translation id="6746636977031158624">Не удалось выполнить синхронизацию, так как учетные данные устарели.</translation>
-<translation id="2999152167963026588">Не удалось синхронизировать данные, поскольку сервис Sync недоступен в вашем домене.</translation>
-<translation id="1459786048951724030">Не удалось синхронизировать данные из-за ошибки входа в аккаунт.</translation>
-<translation id="6813094029720377619">Вы удаляете файлы cookie при выходе из Brave. Чтобы продолжить синхронизацию, измените <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
-<translation id="3340978935015468852">настройках</translation>
+<translation id="2644798301485385923">Brave OS</translation>
+<translation id="7916016681687251387">Не удалось синхронизировать данные. Войдите, чтобы исправить эту ошибку.</translation>
+<translation id="2341767445688917208">Не удалось синхронизировать пароли. Войдите, чтобы исправить эту ошибку.</translation>
+<translation id="123620459398936149">Не удалось синхронизировать данные. Обновите кодовую фразу в Sync.</translation>
+<translation id="9026991721384951619">Не удалось выполнить синхронизацию, так как учетные данные устарели.</translation>
+<translation id="7419046106786626209">Не удалось синхронизировать данные, поскольку сервис Sync недоступен в вашем домене.</translation>
+<translation id="4480040274068703980">Не удалось синхронизировать данные из-за ошибки входа в аккаунт.</translation>
 <translation id="300669147395456190">Приложения Brave</translation>
-<translation id="3421950102518690868">Прежде чем приступать к работе, ознакомьтесь с Условиями использования на сайте <ph name="DOMAIN"/> и примите их. Эти условия не дополняют, не заменяют и не ограничивают Условий использования Brave OS.</translation>
+<translation id="2398566204186296120">Прежде чем приступать к работе, ознакомьтесь с Условиями использования на сайте <ph name="DOMAIN"/> и примите их. Эти условия не дополняют, не заменяют и не ограничивают Условий использования Brave OS.</translation>
 <translation id="3293668930608086049">Brave использует камеру и микрофон.</translation>
 <translation id="8919461291440820124">Brave использует микрофон.</translation>
 <translation id="3205074487970075628">Brave использует камеру.</translation>
@@ -157,12 +159,9 @@
 <translation id="4805806622840861220">Перезапустить Brave</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Для Brave доступно обновление. Оно будет установлено при перезапуске браузера.}=1{Для Brave доступно обновление. Оно будет установлено при перезапуске браузера. Окно в режиме инкогнито не будет открыто повторно.}one{Для Brave доступно обновление. Оно будет установлено при перезапуске браузера. # окно в режиме инкогнито не будет открыто повторно.}few{Для Brave доступно обновление. Оно будет установлено при перезапуске браузера. # окна в режиме инкогнито не будут открыты повторно.}many{Для Brave доступно обновление. Оно будет установлено при перезапуске браузера. # окон в режиме инкогнито не будут открыты повторно.}other{Для Brave доступно обновление. Оно будет установлено при перезапуске браузера. # окна в режиме инкогнито не будут открыты повторно.}}</translation>
 <translation id="2799223571221894425">Перезапустить</translation>
-<translation id="2522086024276534909">Перезапуск Brave OS</translation>
-<translation id="8183252473547465084">Перезагрузите Brave OS, чтобы установить обновление.</translation>
+<translation id="5062123544085870375">Перезапуск Brave OS</translation>
+<translation id="2063848847527508675">Перезагрузите Brave OS, чтобы установить обновление.</translation>
 <translation id="5895138241574237353">Перезапустить</translation>
-<translation id="8887390605192156061">Закройте все экземпляры Brave</translation>
-<translation id="1801551749768408825">Запущены другие экземпляры Brave. Чтобы выполнить обновление, закройте их.</translation>
-<translation id="2632141563911437138">Чтобы выполнить обновление, необходимо остановить работу Brave. В результате могут быть потеряны несохраненные изменения, внесенные другими пользователями на этом компьютере.</translation>
 <translation id="5875673934455379806">Переустановить Brave</translation>
 <translation id="2097604701283463988">Версия Brave устарела</translation>
 <translation id="5173820533850252773">Версия Brave устарела</translation>
@@ -183,7 +182,7 @@
 <translation id="7798069806040634998">Для скачивания файлов браузеру Brave требуется доступ к хранилищу.</translation>
 <translation id="7685904775439037072">Когда вы предоставите доступ Brave, веб-сайты также смогут запрашивать у вас доступ.</translation>
 <translation id="1744365871163268756">Подождите, пока Brave устанавливает последние обновления системы</translation>
-<translation id="7808415789955822133">Условия использования Brave OS</translation>
+<translation id="7408085963519505752">Условия использования Brave OS</translation>
 <translation id="7207456302801184289">Добро пожаловать в Brave</translation>
 <translation id="3507835409099344374">Открыть настройки уведомлений Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Доступно обновление Brave}=1{Доступно обновление Brave}one{Обновление Brave доступно # день}few{Обновление Brave доступно # дня}many{Обновление Brave доступно # дней}other{Обновление Brave доступно # дня}}</translation>
@@ -202,16 +201,16 @@
 <translation id="1786715389543715322">Обновление Brave (<ph name="PROGRESS_PERCENT"/>)…</translation>
 <translation id="2182657378556811785">Чтобы завершить обновление, перезапустите Brave.</translation>
 <translation id="8208853227947884571">Вы используете последнюю версию Brave</translation>
-<translation id="6686872257969654608">О Brave OS</translation>
-<translation id="7674116293463255181">Чтобы посмотреть, обновлена ли операционная система устройства, перейдите в <ph name="LINK_BEGIN"/>настройки Brave OS<ph name="LINK_END"/>.</translation>
-<translation id="2280363356796735201">Справка Brave OS</translation>
+<translation id="573759479754913123">О Brave OS</translation>
+<translation id="7573289029918943991">Чтобы посмотреть, обновлена ли операционная система устройства, перейдите в <ph name="LINK_BEGIN"/>настройки Brave OS<ph name="LINK_END"/>.</translation>
+<translation id="3395323229510056640">Справка Brave OS</translation>
 <translation id="38898988211673781">Удалять файлы cookie и данные сайтов при выходе из Brave</translation>
 <translation id="5253815230176279256">Brave Software Pay (скопирована в Brave)</translation>
 <translation id="5468853758063275923">Brave используется как браузер по умолчанию</translation>
 <translation id="1775322105159056176">Brave не удалось определить или задать браузер по умолчанию</translation>
 <translation id="6915252145142862992">Это дополнительная установка Brave. Его нельзя сделать браузером по умолчанию.</translation>
 <translation id="6235873178214143377">Если нужного параметра нет на этой странице, откройте <ph name="LINK_BEGIN"/>настройки браузера Brave<ph name="LINK_END"/>.</translation>
-<translation id="4459296183696059108">Если нужного параметра нет на этой странице, откройте <ph name="LINK_BEGIN"/>настройки Brave OS<ph name="LINK_END"/>.</translation>
+<translation id="5657226924540934362">Если нужного параметра нет на этой странице, откройте <ph name="LINK_BEGIN"/>настройки Brave OS<ph name="LINK_END"/>.</translation>
 <translation id="2312399718665761438">Для проверки правописания Brave отправляет введенный вами текст в Brave Software.</translation>
 <translation id="8586264863973514035">Чтобы изменения вступили в силу, перезапустите Brave.</translation>
 <translation id="7021823858304886493">Разрешить вход в Brave</translation>
@@ -220,7 +219,6 @@
 <translation id="5853262807109651878">С устройства будут удалены объекты (<ph name="ITEMS_COUNT"/>). Чтобы восстановить данные позже, войдите в Brave как <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Данные о работе в браузере будут удалены с устройства. Чтобы восстановить их позже, войдите в Brave как <ph name="USER_EMAIL"/>.</translation>
 <translation id="4518479204315969707">Имя и изображение профиля Brave</translation>
-<translation id="82609232232243542">Войдите в Brave</translation>
 <translation id="8372880274820509128">В целях повышения безопасности Brave шифрует ваши данные.</translation>
 <translation id="7445061995866044926">Выйти из Brave?</translation>
 <translation id="7453070689008684791">Brave получит доступ к вашему Brave Software Диску, чтобы вы могли просматривать рекомендации в адресной строке.</translation>

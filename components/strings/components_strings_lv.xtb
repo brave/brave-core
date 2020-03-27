@@ -112,7 +112,6 @@
 <translation id="981121421437150478">Bezsaistē</translation>
 <translation id="5171045022955879922">Meklējiet vai ievadiet URL.</translation>
 <translation id="803771048473350947">Fails</translation>
-<translation id="6268185425799226387">Brave Software disks</translation>
 <translation id="2982481275546140226">Notīrīt datus</translation>
 <translation id="8425213833346101688">Mainīt</translation>
 <translation id="8009225694047762179">Pārvaldīt paroles</translation>
@@ -141,6 +140,8 @@
 <translation id="2215727959747642672">Faila rediģēšana</translation>
 <translation id="6545864417968258051">Bluetooth meklēšana</translation>
 <translation id="534295439873310000">NFC ierīces</translation>
+<translation id="4943703118917034429">Virtuālā realitāte</translation>
+<translation id="3513704683820682405">Papildinātā realitāte</translation>
 <translation id="5039804452771397117">Atļaut</translation>
 <translation id="7053983685419859001">Bloķēt</translation>
 <translation id="57838592816432529">Izslēgt skaņu</translation>
@@ -194,8 +195,8 @@
 <translation id="5565735124758917034">Aktīvs</translation>
 <translation id="7805768142964895445">Statuss</translation>
 <translation id="6915804003454593391">Lietotājs:</translation>
-<translation id="5916664084637901428">Iesl.</translation>
-<translation id="5860033963881614850">Izsl.</translation>
+<translation id="5921185718311485855">Iesl.</translation>
+<translation id="1019413721762100891">Izsl.</translation>
 <translation id="7961015016161918242">Nekad</translation>
 <translation id="8294431847097064396">Avots</translation>
 <translation id="1056898198331236512">Brīdinājums</translation>
@@ -205,7 +206,6 @@
 <translation id="6965978654500191972">Ierīce</translation>
 <translation id="4728558894243024398">Platforma</translation>
 <translation id="2380886658946992094">Juridiskā atruna</translation>
-<translation id="5939847200023027600">PDF burtliča pakalpojums</translation>
 <translation id="1588438908519853928">Parasts</translation>
 <translation id="1974060860693918893">Papildu</translation>
 <translation id="5308380583665731573">Pievienošana</translation>

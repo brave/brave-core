@@ -1,47 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sl">
-<translation id="6910211073230771657">Izbrisano</translation>
-<translation id="6965382102122355670">V redu</translation>
-<translation id="5301954838959518834">V redu, razumem</translation>
-<translation id="7658239707568436148">Prekliči</translation>
-<translation id="3479552764303398839">Ne zdaj</translation>
-<translation id="5317780077021120954">Shrani</translation>
-<translation id="4570913071927164677">Podrobnosti</translation>
-<translation id="8730621377337864115">Končano</translation>
-<translation id="8261506727792406068">Izbriši</translation>
-<translation id="1181037720776840403">Odstrani</translation>
-<translation id="5939518447894949180">Ponastavi</translation>
-<translation id="4002066346123236978">Naslov</translation>
-<translation id="5916664084637901428">Vklopljeno</translation>
-<translation id="5860033963881614850">Izklopljeno</translation>
-<translation id="6165508094623778733">Več o tem</translation>
-<translation id="6042308850641462728">Več</translation>
-<translation id="6040143037577758943">Zapri</translation>
-<translation id="780301667611848630">Ne, hvala</translation>
-<translation id="1201402288615127009">Naprej</translation>
-<translation id="2359808026110333948">Naprej</translation>
-<translation id="2653659639078652383">Pošlji</translation>
-<translation id="2079545284768500474">Razveljavi</translation>
-<translation id="7649070708921625228">Pomoč</translation>
-<translation id="2148716181193084225">Danes</translation>
-<translation id="7781829728241885113">Včeraj</translation>
-<translation id="6945221475159498467">Izberi</translation>
-<translation id="7791543448312431591">Dodaj</translation>
-<translation id="6527303717912515753">Skupna raba</translation>
-<translation id="1383876407941801731">Išči</translation>
-<translation id="3115898365077584848">Pokaži informacije</translation>
-<translation id="3295602654194328831">Skrij informacije</translation>
-<translation id="3987993985790029246">Kopiranje povezave</translation>
-<translation id="2704606927547763573">Kopirano</translation>
-<translation id="8725066075913043281">Poskusite znova</translation>
-<translation id="385051799172605136">Nazaj</translation>
-<translation id="8131740175452115882">Potrdi</translation>
-<translation id="5300589172476337783">Pokaži</translation>
-<translation id="1124772482545689468">Uporabnik</translation>
-<translation id="8609465669617005112">Premakni navzgor</translation>
-<translation id="6746124502594467657">Premakni dol</translation>
-<translation id="8249310407154411074">Na vrh</translation>
 <translation id="8428213095426709021">Nastavitve</translation>
 <translation id="2498359688066513246">Pomoč in povratne inform.</translation>
 <translation id="8378714024927312812">Upravlja vaša organizacija</translation>
@@ -159,7 +118,7 @@
 <translation id="6914783257214138813">Gesla bodo vidna vsakomur, ki si lahko ogleda izvoženo datoteko z gesli.</translation>
 <translation id="2321086116217818302">Pripravljanje gesel …</translation>
 <translation id="8445448999790540984">Gesel ni mogoče izvoziti</translation>
-<translation id="3066461326500799725">Naučite se uporabljati Brave Software Drive</translation>
+<translation id="5139940364318403933">Naučite se uporabljati Brave Software Drive</translation>
 <translation id="729975465115245577">V napravi ni aplikacije za shranjevanje datoteke z gesli.</translation>
 <translation id="7682724950699840886">Poskusite ta nasveta: poskrbite, da je v napravi dovolj prostora, ali poskusite znova izvoziti.</translation>
 <translation id="1129510026454351943">Podrobnosti: <ph name="ERROR_DESCRIPTION"/></translation>
@@ -169,6 +128,7 @@
 <translation id="230699814587342492">Gesla za Brave</translation>
 <translation id="6075798973483050474">Urejanje domače strani</translation>
 <translation id="854522910157234410">Odpri to stran</translation>
+<translation id="8127542551745560481">Urejanje domače strani</translation>
 <translation id="2482878487686419369">Obvestila</translation>
 <translation id="6255999984061454636">Predlogi za vsebino</translation>
 <translation id="805047784848435650">Na podlagi zgodovine brskanja</translation>
@@ -184,12 +144,16 @@
 <translation id="1943176487615318915">Zaradi zaznavanja nevarnih aplikacij in spletnih mest Brave Googlu pošlje URL-je nekaterih strani, ki jih obiščete, omejene podatke o sistemu in vsebino nekaterih strani</translation>
 <translation id="3181954750937456830">Varno brskanje (ščiti vas in napravo pred nevarnimi spletnimi mesti)</translation>
 <translation id="7315322926489145388">Googlu pošlje URL-je nekaterih strani, ki jih obiščete, kadar je ogrožena vaša varnost</translation>
-<translation id="2063713494490388661">Iskanje z dotikom</translation>
-<translation id="2369463299479365221">Več informacij o temah na spletnih mestih, ne da bi zapustili stran. Funkcija »Iskanje z dotikom« pošlje besedo in njeno sobesedilo Iskanju Brave Software in vrne definicije, slike, rezultate iskanja in druge podrobnosti.
+<translation id="3738139272394829648">Dotaknite se za iskanje</translation>
+<translation id="7865281998841143447">Preberite več o temah na spletnih mestih, ne da bi vam bilo treba zapustiti stran. Funkcija »Iskanje z dotikom« pošlje besedo in njeno sobesedilo Iskanju Brave Software in vrne definicije, slike, rezultate iskanja in druge podrobnosti.
 
-Če želite prilagoditi iskalno poizvedbo, jo izberite z daljšim dotikom. Če želite podrobneje nastaviti iskanje, potisnite podokno povsem navzgor in se dotaknite iskalnega polja.</translation>
-<translation id="2930742481329940825">Funkcija »Iskanje z dotikom« zagotovi, da sta izbrana beseda in trenutna stran poslani kot kontekst v Iskanje Brave Software. Izklopite jo lahko v <ph name="BEGIN_LINK"/>nastavitvah<ph name="END_LINK"/>.</translation>
+Dotaknite se poljubne besede, če želite ustvariti iskanje zanjo. Če želite prilagoditi iskalno poizvedbo, jo za dalj časa pritisnite, da jo izberete. Če želite izboljšati iskanje, s podrsanjem odprite podokno, dotaknite se ikone za razširitev, da odprete nov zavihek, nato pa se dotaknite iskalnega polja.</translation>
+<translation id="3292859206215580147">Preberite več o temah na spletnih mestih, ne da bi vam bilo treba zapustiti stran. Funkcija »Iskanje z dotikom« pošlje besedo in njeno sobesedilo Iskanju Brave Software in vrne definicije, slike, rezultate iskanja in druge podrobnosti.
+
+Za dalj časa pritisnite poljubno besedo, če želite ustvariti iskanje zanjo. Če želite izboljšati iskanje, prilagodite izbor. Prav tako lahko s podrsanjem odprete podokno, se dotaknete ikone za razširitev, da odprete nov zavihek, nato pa se dotaknete iskalnega polja.</translation>
+<translation id="6209156474097347789">»Dotaknite se za iskanje« pošlje izbrano besedo in trenutno strank kot kontekst Iskanju Brave Software. To lahko izklopite v <ph name="BEGIN_LINK"/>nastavitvah<ph name="END_LINK"/>.</translation>
 <translation id="5039804452771397117">Dovoli</translation>
+<translation id="780301667611848630">Ne, hvala</translation>
 <translation id="1406000523432664303">»Ne sledi«</translation>
 <translation id="6232535412751077445">Če omogočite možnost »Ne sledi«, bo zahteva vključena v vaš promet brskanja. Učinek je odvisen od odziva spletnega mesta na zahtevo in od tega, kako si zahtevo razlaga.
 
@@ -242,6 +206,7 @@ V Brave Software Računu so morda druge vrste zgodovine brskanja, kot so iskanja
 <translation id="6295158916970320988">Vsa spletna mesta</translation>
 <translation id="8380167699614421159">To spletno mesto prikazuje vsiljive ali zavajajoče oglase</translation>
 <translation id="1919345977826869612">Oglasi</translation>
+<translation id="3513704683820682405">Razširjena resničnost</translation>
 <translation id="6447842834002726250">Piškotki</translation>
 <translation id="6196640612572343990">Blokiraj piškotke drugih spletnih mest</translation>
 <translation id="6782111308708962316">Drugim spletnim mestom prepreči shranjevanje in branje podatkov piškotkov</translation>
@@ -259,6 +224,7 @@ V Brave Software Računu so morda druge vrste zgodovine brskanja, kot so iskanja
 <translation id="5649053991847567735">Samodejni prenosi</translation>
 <translation id="6181444274883918285">Dodaj izjemo za spletno mesto</translation>
 <translation id="5313967007315987356">Dodajanje mesta</translation>
+<translation id="7791543448312431591">Dodaj</translation>
 <translation id="1369915414381695676">Spletno mesto <ph name="SITE_NAME"/> je bilo dodano</translation>
 <translation id="2621115761605608342">Dovoli JavaScript za določeno spletno mesto.</translation>
 <translation id="8801436777607969138">Preprečevanje JavaScripta za določeno spletno mesto.</translation>
@@ -266,6 +232,7 @@ V Brave Software Računu so morda druge vrste zgodovine brskanja, kot so iskanja
 <translation id="358794129225322306">Dovoli spletnemu mestu samodejni prenos več datotek.</translation>
 <translation id="4008040567710660924">Omogočanje piškotkov za določeno spletno mesto.</translation>
 <translation id="8958424370300090006">Blokiranje piškotkov za določeno spletno mesto.</translation>
+<translation id="2537296579376733324">Vsi piškotki, samo na tem spletnem mestu</translation>
 <translation id="7882806643839505685">Dovolitev zvoka za določeno spletno mesto.</translation>
 <translation id="4468959413250150279">Izklop zvoka za določeno spletno mesto.</translation>
 <translation id="1994173015038366702">URL spletnega mesta</translation>
@@ -292,8 +259,12 @@ V Brave Software Računu so morda druge vrste zgodovine brskanja, kot so iskanja
 <translation id="2107397443965016585">Prikaži poziv, preden se spletnim mestom dovoli predvajanje zaščitene vsebine (priporočeno)</translation>
 <translation id="2910701580606108292">Prikaži poziv, preden se spletnim mestom dovoli predvajanje zaščitene vsebine</translation>
 <translation id="757524316907819857">Prepreči spletnim mestom predvajanje zaščitene vsebine</translation>
+<translation id="4935305910887312910">Vprašaj, preden se spletnim mestom dovoli prejemanje položaja kamere ali preslikavanje sobe (priporočeno)</translation>
+<translation id="884828189055900810">Spletnim mestom prepreči prejemanje položaja kamere ali preslikavanje sobe</translation>
 <translation id="5710871682236653961">Poziv, preden se spletnim mestom dovoli pošiljanje in prejemanje podatkov, ko se dotaknete naprav s tehnologijo NFC (priporočeno)</translation>
 <translation id="7572498721684305250">Blokiranje, da spletna mesta pošiljajo in prejemajo podatke, ko se dotaknete naprav s tehnologijo NFC</translation>
+<translation id="3312292613668865961">Vprašaj, preden se spletnim mestom dovoli dostop do naprav in podatkov za navidezno resničnost (priporočeno)</translation>
+<translation id="8698438463325761328">Spletnim mestom prepreči dostop do naprav in podatkov za navidezno resničnost</translation>
 <translation id="3277252321222022663">Spletnim mestom dovoli dostop do tipal (priporočeno)</translation>
 <translation id="5048398596102334565">Spletnim mestom dovoli dostop do tipal gibanja (priporočeno)</translation>
 <translation id="8816026460808729765">Preprečevanje spletnim mestom dostopa do tipal</translation>
@@ -325,7 +296,7 @@ V Brave Software Računu so morda druge vrste zgodovine brskanja, kot so iskanja
 <translation id="119944043368869598">Izbriši vse</translation>
 <translation id="2490684707762498678">Upravlja aplikacija <ph name="APP_NAME"/></translation>
 <translation id="5516455585884385570">Odpiranje nastavitev obvestil</translation>
-<translation id="1404122904123200417">Vdelano v URL <ph name="WEBSITE_URL"/></translation>
+<translation id="1242008676835033345">Vdelano v <ph name="WEBSITE_URL"/></translation>
 <translation id="129382876167171263">Datoteke, ki jih shranijo spletna mesta, so prikazane tukaj</translation>
 <translation id="4181841719683918333">Jeziki</translation>
 <translation id="2647434099613338025">Dodaj jezik</translation>
@@ -380,6 +351,7 @@ V Brave Software Računu so morda druge vrste zgodovine brskanja, kot so iskanja
 <translation id="4913161338056004800">Ponastavitev statističnih podatkov</translation>
 <translation id="1856325424225101786">Želite ponastaviti lahki način?</translation>
 <translation id="3658159451045945436">Ponastavitev izbriše zgodovino prihrankov pri prenosu podatkov, vključno s seznamom obiskanih spletnih mest.</translation>
+<translation id="5939518447894949180">Ponastavi</translation>
 <translation id="3295530008794733555">Brskajte hitreje. Uporabite manj podatkov.</translation>
 <translation id="7340390500800578919">Brave v lahkem načinu naloži strani hitreje in uporabi do 60 odstotkov manj podatkov. Brave zaradi optimiziranja strani, ki jih obiščete, Googlu pošlje vaš spletni promet. <ph name="BEGIN_LINK"/>Več o tem<ph name="END_LINK"/></translation>
 <translation id="4538018662093857852">Vklop lahkega načina</translation>
@@ -443,9 +415,6 @@ V Brave Software Računu so morda druge vrste zgodovine brskanja, kot so iskanja
 <translation id="4256782883801055595">Odprtokodne licence</translation>
 <translation id="1138681184697033370">Pogoji storitve za Brave</translation>
 <translation id="7392539049993970338">Obvestilo o zasebnosti za Brave</translation>
-<translation id="2677748264148917807">Zapusti</translation>
-<translation id="5556459405103347317">Znova naloži</translation>
-<translation id="1623104350909869708">Tej strani prepreči, da bi ustvarila dodatna pogovorna okna</translation>
 <translation id="2968755619301702150">Pregledovalnik potrdil</translation>
 <translation id="1360432990279830238">Odjava in izklop sinhronizacije?</translation>
 <translation id="8581481290581777242">Ali želite izbrisati podatke v Chromu iz te naprave?</translation>
@@ -532,6 +501,7 @@ V Brave Software Računu so morda druge vrste zgodovine brskanja, kot so iskanja
 <translation id="7998918019931843664">Vnovično odpiranje zaprtega zavihka</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/>, zavihek</translation>
 <translation id="4452411734226507615">Zapiranje zavihka <ph name="TAB_TITLE"/></translation>
+<translation id="6040143037577758943">Zapri</translation>
 <translation id="7243308994586599757">Možnosti so na voljo pri dnu zaslona</translation>
 <translation id="4060598801229743805">Možnosti so na voljo blizu vrha zaslona</translation>
 <translation id="2810645512293415242">Poenostavljena stran zaradi prihranka pri prenosu podatkov in hitrejšega nalaganja.</translation>
@@ -566,6 +536,7 @@ V Brave Software Računu so morda druge vrste zgodovine brskanja, kot so iskanja
 <translation id="4432792777822557199">Strani v jeziku <ph name="SOURCE_LANGUAGE"/> bodo od zdaj naprej prevedene v jezik <ph name="TARGET_LANGUAGE"/></translation>
 <translation id="8339163506404995330">Strani v jeziku <ph name="LANGUAGE"/> ne bodo prevedene</translation>
 <translation id="5447765697759493033">To spletno mesto ne bo prevedeno</translation>
+<translation id="7658239707568436148">Prekliči</translation>
 <translation id="4880127995492972015">Prevedi …</translation>
 <translation id="641643625718530986">Tiskanje …</translation>
 <translation id="8909135823018751308">Skupna raba …</translation>
@@ -599,6 +570,7 @@ V Brave Software Računu so morda druge vrste zgodovine brskanja, kot so iskanja
 <translation id="8073388330009372546">Odpri sliko na novem zavihku</translation>
 <translation id="6649642165559792194">Predogled slike <ph name="BEGIN_NEW"/>Novo<ph name="END_NEW"/></translation>
 <translation id="3269093882174072735">Naloži sliko</translation>
+<translation id="6671495933530132209">Kopiraj sliko</translation>
 <translation id="3845332215609790146">Iskanje z Brave Software Lens <ph name="BEGIN_NEW"/>Novo<ph name="END_NEW"/></translation>
 <translation id="5578795271662203820">Za iskanje te slike uporabi <ph name="SEARCH_ENGINE"/></translation>
 <translation id="3384347053049321195">Skupna raba slike</translation>
@@ -606,6 +578,7 @@ V Brave Software Računu so morda druge vrste zgodovine brskanja, kot so iskanja
 <translation id="6475951671322991020">Prenos videoposnetka</translation>
 <translation id="2317945146070194624">Odpiranje na novem zavihku v Chromu</translation>
 <translation id="7975379999046275268">Predogled strani <ph name="BEGIN_NEW"/>Novo<ph name="END_NEW"/></translation>
+<translation id="2012973609889389923">Hitro spletno mesto</translation>
 <translation id="6112702117600201073">Osveževanje strani</translation>
 <translation id="6990079615885386641">Prenos aplikacije iz Trgovine Brave Software Play: <ph name="APP_ACTION"/></translation>
 <translation id="2414886740292270097">Temno</translation>
@@ -615,8 +588,6 @@ V Brave Software Računu so morda druge vrste zgodovine brskanja, kot so iskanja
 <translation id="5016205925109358554">Serif</translation>
 <translation id="2593272815202181319">Stalna širina</translation>
 <translation id="9206873250291191720">A</translation>
-<translation id="654446541061731451">Izberite zavihek za prenos</translation>
-<translation id="8719023831149562936">Trenutnega zavihka ni mogoče prenesti</translation>
 <translation id="2139186145475833000">Dodajanje na začetni zaslon</translation>
 <translation id="4616150815774728855">Odpri <ph name="WEBAPK_NAME"/></translation>
 <translation id="2122601567107267586">Aplikacije ni bilo mogoče odpreti</translation>
@@ -702,6 +673,7 @@ V Brave Software Računu so morda druge vrste zgodovine brskanja, kot so iskanja
 <translation id="3616113530831147358">Zvok</translation>
 <translation id="9219103736887031265">Slike</translation>
 <translation id="656065428026159829">Prikaži več</translation>
+<translation id="6042308850641462728">Več</translation>
 <translation id="8250920743982581267">Dokumenti</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# datoteka}one{# datoteka}two{# datoteki}few{# datoteke}other{# datotek}}</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{# slika}one{# slika}two{# sliki}few{# slike}other{# slik}}</translation>
@@ -792,15 +764,11 @@ V Brave Software Računu so morda druge vrste zgodovine brskanja, kot so iskanja
 <translation id="7542481630195938534">Prejemanje predlogov ni mogoče</translation>
 <translation id="5013696553129441713">Ni novih predlogov</translation>
 <translation id="7444811645081526538">Več kategorij</translation>
-<translation id="6709133671862442373">Novice</translation>
-<translation id="1264974993859112054">Šport</translation>
-<translation id="9139318394846604261">Nakupovanje</translation>
 <translation id="3912508018559818924">Iskanje najboljšega v spletu …</translation>
 <translation id="526421993248218238">Te strani ni mogoče naložiti</translation>
 <translation id="614940544461990577">Poskusite:</translation>
 <translation id="3288003805934695103">znova naložiti stran</translation>
 <translation id="2353636109065292463">Preverjanje internetne povezave</translation>
-<translation id="2858138569776157458">Najb. prilj.</translation>
 <translation id="8364299278605033898">Ogled priljubljenih spletnih mest</translation>
 <translation id="1171770572613082465">Oglejte si priljubljena spletna mesta z dotikom gumba »Najb. prilj.«</translation>
 <translation id="5233638681132016545">Nov zavihek</translation>
@@ -834,8 +802,10 @@ V Brave Software Računu so morda druge vrste zgodovine brskanja, kot so iskanja
 <translation id="4452548195519783679">Zaznamek ustvarjen v mapi <ph name="FOLDER_NAME"/></translation>
 <translation id="8063895661287329888">Zaznamka ni bilo mogoče dodati.</translation>
 <translation id="2842985007712546952">Nadrejena mapa</translation>
+<translation id="6945221475159498467">Izberi</translation>
 <translation id="9065203028668620118">Uredi</translation>
 <translation id="4405224443901389797">Premakni v …</translation>
+<translation id="8261506727792406068">Izbriši</translation>
 <translation id="5170568018924773124">Prikaži v mapi</translation>
 <translation id="8035133914807600019">Nova mapa …</translation>
 <translation id="4532845899244822526">Izbira mape</translation>
@@ -871,16 +841,14 @@ V Brave Software Računu so morda druge vrste zgodovine brskanja, kot so iskanja
 <translation id="1113597929977215864">Pokaži poenostavljen pogled</translation>
 <translation id="1513352483775369820">Zaznamki in spletna zgodovina</translation>
 <translation id="4939482511480190003">Pomagajte izboljšati Brave. <ph name="BEGIN_LINK"/>Sodelujte v anketi.<ph name="END_LINK"/></translation>
-<translation id="2501278716633472235">Nazaj</translation>
-<translation id="5596627076506792578">Več možnosti</translation>
 <translation id="3522247891732774234">Posodobitev je na voljo. Več možnosti.</translation>
 <translation id="6773423637732432200">Posodobitev Chroma ni mogoča. Več možnosti.</translation>
+<translation id="1383876407941801731">Išči</translation>
 <translation id="3328801116991980348">Podatki o mestu</translation>
 <translation id="5391532827096253100">Povezava s tem spletnim mestom ni varna. Podatki o spletnem mestu.</translation>
 <translation id="6206551242102657620">Povezava je varna. Podatki o spletnem mestu.</translation>
 <translation id="6963642900430330478">Ta stran je nevarna. Podatki o spletnem mestu.</translation>
 <translation id="9070377983101773829">Začni glasovno iskanje</translation>
-<translation id="8676374126336081632">Izbriši vnos</translation>
 <translation id="4968908871398201967">Način brez beleženja zgodovine</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> odprt zavihek, dotaknite se, če želite preklopiti med zavihki}one{<ph name="OPEN_TABS_MANY"/> odprt zavihek, dotaknite se, če želite preklopiti med zavihki}two{<ph name="OPEN_TABS_MANY"/> odprta zavihka, dotaknite se, če želite preklopiti med zavihki}few{<ph name="OPEN_TABS_MANY"/> odprti zavihki, dotaknite se, če želite preklopiti med zavihki}other{<ph name="OPEN_TABS_MANY"/> odprtih zavihkov, dotaknite se, če želite preklopiti med zavihki}}</translation>
 <translation id="2369533728426058518">odpiranje zavihkov</translation>
@@ -888,6 +856,7 @@ V Brave Software Računu so morda druge vrste zgodovine brskanja, kot so iskanja
 <translation id="932327136139879170">Domov</translation>
 <translation id="2707726405694321444">Osveži stran</translation>
 <translation id="2891154217021530873">Ustavi nalaganje strani</translation>
+<translation id="1201402288615127009">Naprej</translation>
 <translation id="6710213216561001401">Nazaj</translation>
 <translation id="9080642952018487277">Vstopi v način brez beleženja zgodovine</translation>
 <translation id="4883379392681899581">Zapusti način brez beleženja zgodovine</translation>
@@ -896,18 +865,12 @@ V Brave Software Računu so morda druge vrste zgodovine brskanja, kot so iskanja
 <translation id="3377025655491224618">Zavihek brez beleženja zgodovine</translation>
 <translation id="584427517463557805">Izberi zavihek brez beleženja zgodovine</translation>
 <translation id="2268044343513325586">Izboljšaj iskanje</translation>
-<translation id="7846076177841592234">Prekliči izbor</translation>
-<translation id="6216432067784365534">Možnosti za <ph name="NAME_OF_LIST_ITEM"/></translation>
-<translation id="7087918508125750058">Št. izbranih: <ph name="ITEM_COUNT"/>. Možnosti so na voljo na zgornjem delu zaslona.</translation>
-<translation id="7250468141469952378">Št. izbranih: <ph name="ITEM_COUNT"/></translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{Delitev 1 izbranega elementa z drugimi}one{Delitev # izbranega elementa z drugimi}two{Delitev # izbranih elementov z drugimi}few{Delitev # izbranih elementov z drugimi}other{Delitev # izbranih elementov z drugimi}}</translation>
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Odstranitev 1 izbranega elementa}one{Odstranitev # izbranega elementa}two{Odstranitev # izbranih elementov}few{Odstranitev # izbranih elementov}other{Odstranitev # izbranih elementov}}</translation>
 <translation id="1283039547216852943">Dotaknite se za razširitev</translation>
 <translation id="5962718611393537961">Dotik za strnitev</translation>
 <translation id="3123734510202723619">Obvestila</translation>
 <translation id="8076492880354921740">Zavihki</translation>
-<translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 izbran}one{# izbran}two{# izbrana}few{# izbrani}other{# izbranih}}</translation>
-<translation id="6818926723028410516">Izberite elemente</translation>
 <translation id="4797039098279997504">Dotaknite se, če se želite vrniti na <ph name="URL_OF_THE_CURRENT_TAB"/></translation>
 <translation id="6766758767654711248">Dotaknite se, če želite na spletno mesto</translation>
 <translation id="429312253194641664">Spletno mesto predvaja predstavnost</translation>
@@ -1024,13 +987,12 @@ V Brave Software Računu so morda druge vrste zgodovine brskanja, kot so iskanja
 <translation id="1875543012935658554">Znova odprite Brave.</translation>
 <translation id="79859296434321399">Če si želite ogledati vsebino v razširjeni resničnosti, namestite ARCore</translation>
 <translation id="8558485628462305855">Če si želite ogledati vsebino v razširjeni resničnosti, posodobite ARCore</translation>
-<translation id="3513704683820682405">Razširjena resničnost</translation>
-<translation id="5475862044948910901">Želite začeti sejo razširjene resničnosti?</translation>
-<translation id="7365126855094612066">Med trajanjem seje lahko spletno mesto:
-• ustvari 3D-zemljevid okolja
-• spremlja premikanje kamere
+<translation id="6410973561433500075">Ali želite zagnati razširjeno resničnost z domene <ph name="DOMAIN"/>?</translation>
+<translation id="3849365399446680203">Med uporabo razširjene resničnosti lahko to spletno mesto:
+• ustvari 3D-zemljevid okolja,
+• spremlja premikanje fotoaparata.
 
-Spletno mesto NIMA dostopa do kamere. Posnetki kamere so vidni samo vam.</translation>
+Samo vam je vidno, kam je usmerjen fotoaparat. Spletno mesto si ne more ogledati slik fotoaparata.</translation>
 <translation id="1188239144602654184">Začni RR</translation>
 <translation id="473775607612524610">Posodobi</translation>
 <translation id="3133489217401741157">Nameščanje modula <ph name="MODULE"/> za Brave …</translation>
@@ -1098,6 +1060,7 @@ Spletno mesto NIMA dostopa do kamere. Posnetki kamere so vidni samo vam.</transl
 <translation id="723171743924126238">Izberite slike</translation>
 <translation id="8751914237388039244">Izberite sliko</translation>
 <translation id="1989112275319619282">Brskanje</translation>
+<translation id="8921772741368021346"><ph name="POSITION"/>/<ph name="DURATION"/></translation>
 <translation id="7055152154916055070">Preusmeritev je preprečena:</translation>
 <translation id="5524843473235508879">Preusmeritev je bila blokirana.</translation>
 <translation id="6573096386450695060">Vedno dovoli</translation>
@@ -1106,6 +1069,7 @@ Spletno mesto NIMA dostopa do kamere. Posnetki kamere so vidni samo vam.</transl
 <translation id="9137013805542155359">Pokaži izvirno besedilo</translation>
 <translation id="6361779936989026201">Pomočnik Brave Software v Chromu</translation>
 <translation id="7291387454912369099">Dokončanje nakupa s Pomočnikom</translation>
+<translation id="9037412730408024068">Zaradi zagotavljanja pomoči pri dokončanju opravil bo Brave Software prejel URL-je in vsebino spletnih mest, na katerih uporabljate Pomočnika, ter podatke, ki jih pošljete prek Pomočnika.</translation>
 <translation id="4565206163201411670">Ali želite svojo dejavnost v Chromu prikazati v Digitalni dobrobiti?</translation>
 <translation id="9055113864158719823">Ogledate si lahko spletna mesta, ki jih obiščete v Chromu, in zanje nastavite merilnike časa.\n\nBrave Software dobi podatke o spletnih mestih, za katere nastavite merilnike časa, in o tem, kako dolgo traja vaš obisk teh mest. Te podatke uporabljamo za izboljšanje Digitalne dobrobiti.</translation>
 <translation id="4596514158372210596">Odstranitev dejavnosti v Chromu iz Digitalne dobrobiti</translation>
@@ -1121,10 +1085,20 @@ Spletno mesto NIMA dostopa do kamere. Posnetki kamere so vidni samo vam.</transl
 <translation id="246532703174860178">Skupna raba</translation>
 <translation id="2517472476991765520">Išči</translation>
 <translation id="8628973420740315031">Če želite deliti z osebami v bližini, naj optično preberejo to kodo QR</translation>
+<translation id="3987993985790029246">Kopiranje povezave</translation>
+<translation id="4250229828105606438">Posnetek zaslona</translation>
+<translation id="6201345951596836663">Povezava je kopirana</translation>
+<translation id="6597891566292541626">Črtno kodo/kodo QR postavite v ta okvir.</translation>
+<translation id="3140134512074889489">Omogočite fotoaparat, če želite optično prebrati kodo QR</translation>
+<translation id="2359808026110333948">Naprej</translation>
 <translation id="7339921667754113786">Googlovo okolje za obvestila</translation>
 <translation id="8516012719330875537">Urejevalnik slik</translation>
+<translation id="6092062101542170135">Če želite nadaljevati, v nastavitvah za Android vklopite tehnologijo NFC</translation>
+<translation id="5860491529813859533">Vklopi</translation>
+<translation id="8926666909099850184">Tehnologija NFC je izklopljena za to napravo. Vklopite jo v <ph name="BEGIN_LINK"/>nastavitvah za Android<ph name="END_LINK"/>.</translation>
 <translation id="4808319664292298116">Želite zagnati navidezno resničnost z domene <ph name="DOMAIN"/>?</translation>
 <translation id="4353114845960720315">Med uporabo navidezne resničnosti lahko to spletno mesto o vas izve to:</translation>
-<translation id="118069123878619799">– vaše fizične poteze, na primer višina,</translation>
-<translation id="5819762621475381970">– tloris sobe.</translation>
+<translation id="4574741712540401491">•  <ph name="LIST_ITEM_TEXT"/></translation>
+<translation id="2099625543891475722">vaše fizične poteze, na primer višina,</translation>
+<translation id="4660838440047236328">tloris sobe.</translation>
 </translationbundle>

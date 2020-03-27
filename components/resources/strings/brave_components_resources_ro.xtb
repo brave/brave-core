@@ -4,6 +4,7 @@
 <translation id="4339730410920731698">Reclame și trackere blocate</translation>
 <translation id="2313532038420432247">Actualizări HTTPS</translation>
 <translation id="7679428712334662192">Timp Estimativ Salvat</translation>
+<translation id="8411095021655121794">Estimare economisire lățime de bandă</translation>
 <translation id="5206618227023752085">Siteul de sus a fost eliminat.</translation>
 <translation id="2079545284768500474">Anulare acțiune</translation>
 <translation id="6040143037577758943">Închide</translation>
@@ -16,13 +17,17 @@
 <translation id="8344569602005188545">ore</translation>
 <translation id="7100907433458266664">zi</translation>
 <translation id="4971389353431353387">zile</translation>
+<translation id="2116364690062294218">B</translation>
+<translation id="3123243061080120667">KB</translation>
+<translation id="977224059380370527">MB</translation>
+<translation id="8776285424728638733">GB</translation>
 <translation id="8427933533533814946">Fotografie de</translation>
 <translation id="7108338896283013870">Ascunde</translation>
 <translation id="7115515527894388910">Editați preferințele</translation>
 <translation id="7606029853066610626">Vizualizare și Administrare Bookmark</translation>
 <translation id="5550994254534676787">Vizualizare istoric navigare</translation>
 <translation id="1742484101357469636">Setări tablou de bord</translation>
-<translation id="5783793537552649286">Afișează Imagine de fundal</translation>
+<translation id="5783793537552649286">Afișare imagine fundal</translation>
 <translation id="7275773481201277457">Afișare date statistice Brave</translation>
 <translation id="6836061097810262923">Afișare ceas</translation>
 <translation id="8643377320501056697">Afișare site-uri de top</translation>
@@ -84,11 +89,9 @@
 <translation id="7954950242989581218">Navigați în siguranță</translation>
 <translation id="2188651882929633653">Brave Shields blochează lucrurile ciudate care încearcă să vă păcălească pe internet inclusiv majoritatea reclamelor. Setați Shields ca dezactivat dacă un site pare să nu funcționeze. Brave folosește <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>statistici de produs complet private<ph name="END_LINK_P3A">&lt;/a&gt;</ph> pentru a estima utilizarea totală a anumitor funcții. Puteți dezactiva această opțiune în <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Setări<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Reclame</translation>
-<translation id="2364310432103707426">Câștigați {{currency}} vizionând reclame Brave. Reclamele prezentate sunt bazate pe interesele dvs., deduse din comportamentul dvs. de navigare. Datele personale sau istoricul dvs. de navigare nu părăsesc niciodată browserul dvs.</translation>
+<translation id="2128226640852355533">Câștigați {{currency}} vizualizând Brave Ads. Reclamele prezentate sunt alese în funcție de interesele dvs., care sunt deduse din comportamentul dvs. de navigare pe internet. Datele personale și istoricul navigării rămân în browser-ul dumneavoastră</translation>
 <translation id="6112368337882254910">Contribuție automată</translation>
 <translation id="3742599705619405136">Orice mod automat de a sprijini editorii și creatorii de conținut. Setați o plată lunară și navigați normal. Siteurile verificate de Brave pe care le vizitați vor primi contribuțiile dumneavoastră automat, în funcție de atenția dumneavoastră măsurată de Brave.</translation>
-<translation id="8949527283651381130">Permite detectarea conversiei reclamelor</translation>
-<translation id="2184191362610545393">Prin această acțiune, Brave va fi anunțat în mod anonim că a existat un răspuns la o reclamă în acest browser. Activarea acesteia va spori câștigurile.</translation>
 <translation id="20281847067919078">Recompense în așteptare estimate</translation>
 <translation id="8593551638387217772">Data următoarei plăți</translation>
 <translation id="319209088187794725">Notificări de reclame primite luna aceasta</translation>
@@ -195,7 +198,7 @@
 <translation id="1642443162274867084">Portofelul a fost creat</translation>
 <translation id="5094577350232361255">despre</translation>
 <translation id="4918086044614829423">Accept</translation>
-<translation id="6832986780040139899">©2016–2018 Brave Software. Brave este marcă înregistrată a Brave Software. Numele siteurilor pot fi mărci înregistrate ale proprietarilor siteurilor.</translation>
+<translation id="5916290544882167205">Brave Software. Brave este o marcă înregistrată a Brave Software. Este posibil ca numele site-urilor să fie mărci sau mărci înregistrate ale proprietarilor site-urilor.</translation>
 <translation id="9026369588205476247">Pentru a vă proteja confidențialitatea, acest extras de cont Brave Rewards nu este salvat, înregistrat sau trecut în jurnal decât pe dispozitivul dvs. (computerul pe care îl folosiți). Dacă pierdeți datele de pe dispozitivul dvs., nu veți putea obține acest extras din partea Brave.</translation>
 <translation id="1036277985068412734">adaugă fonduri</translation>
 <translation id="3587482841069643663">Toate</translation>
@@ -204,6 +207,7 @@
 <translation id="2631006050119455616">S-a salvat</translation>
 <translation id="2155330833364281539">Reclame pe care le-ați primit în ultimele {{totalDays}} zile</translation>
 <translation id="8863685593846905344">Istoric reclame</translation>
+<translation id="2777306694585938662">Au fost primite răsplăți pentru reclame</translation>
 <translation id="5212777575344695266">Marcați ca inadecvat</translation>
 <translation id="2111256234277361810">Marcați ca inadecvat ✓</translation>
 <translation id="8988332871810963281">Nu există niciun istoric de reclame Brave</translation>
@@ -313,9 +317,8 @@
 <translation id="6381574025952123568">Soldul de deschidere</translation>
 <translation id="532275381857891532">Istoric reclame pe 7 zile</translation>
 <translation id="4923459931733593730">Plată</translation>
-<translation id="4021593982164260556">Plată efectuată în fiecare {{day}} zi din fiecare lună.</translation>
+<translation id="5693657857413982604">Plata se face în data de {{day}} a fiecărei luni.</translation>
 <translation id="6104680658798556671">Plata nu a fost efectuată.</translation>
-<translation id="2834888581291358924">Când soldul dvs. este insuficient pentru a acoperi total combinat al Contribuției automate și al contribuțiilor dvs. lunare, aceste plăți sunt omise pentru această perioadă.</translation>
 <translation id="3138528956349114724">Site-urile fixate sunt acum</translation>
 <translation id="2337632028350283479">Iată cum funcționează contribuțiile lunare:</translation>
 <translation id="6457273203091513039">Contribuțiile lunare nu se scad din plata dvs. pentru Contribuția automată. Acestea sunt separate.</translation>
@@ -388,6 +391,7 @@
 <translation id="4588241643143931775">Bitcoin (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
 <translation id="8746837129291133068">Litecoin (LTC)</translation>
+<translation id="6367285596431004439">A fost primită o acordare de token-uri</translation>
 <translation id="9212459913845238740">Granturi de puncte revendicate</translation>
 <translation id="768850953428043522">puncte</translation>
 <translation id="3043542281656021374">Punct</translation>
@@ -463,6 +467,10 @@
 <translation id="4569155249847375786">Verificat</translation>
 <translation id="8465442795593991224">Uphold s-ar putea să solicite să vă verificați identitatea pe baza serviciilor solicitate.</translation>
 <translation id="723054503945711909">Brave Software Inc. nu procesează, nu stochează sau nu accesează nicio informație personală pe care o furnizați Uphold când creați un cont.</translation>
+<translation id="7404779623219601861">Transformați BAT în carduri cadou</translation>
+<translation id="6215565499749144110">Prin intermediul rețelei TAP, vă puteți transforma BAT-urile în carduri cadou pentru mărci la modă.</translation>
+<translation id="526152301446370337">Vizitați TAP.</translation>
+<translation id="6915065518766963119">* Necesită verificare Uphold.</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Aflați mai multe<ph name="LINK_END"/> despre Brave Rewards</translation>
 <translation id="5826706758731195747">Activând Recompensele, acceptați <ph name="LINK_BEGIN"/>Condițiile de utilizare<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Câștigurile estimate deocamdată pentru luna aceasta</translation>
@@ -476,6 +484,7 @@
 <translation id="8092889639392847252">Puteți fi plătit pentru a vizualiza această imagine de fundal sponsorizată.</translation>
 <translation id="2542495049135486284">Încercați din nou Recompensele Brave și dați mai departe pe măsură ce câștigați!</translation>
 <translation id="53513464591392992">Activați Brave Rewards și veți fi plătit pentru a viziona reclame care respectă confidențialitatea.</translation>
+<translation id="8463996294416161140">Activați <ph name="PRODUCT_NAME"/> pentru a revendica partea dumneavoastră. Puteți alege și să <ph name="LINK_BEGIN"/>ascundeți imaginile sponsorizate<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">Bravo!</translation>
 <translation id="764235488372037377">Recompensele dvs. din Reclame sunt aici</translation>
 <translation id="7091215606170476659">Aveți un grant UGP de la Brave.</translation>

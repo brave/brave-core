@@ -58,7 +58,6 @@
 <translation id="7053983685419859001">አግድ</translation>
 <translation id="5806601733251372221">የ Brave መከላከያዎች</translation>
 <translation id="2880356288762235261">በድረ ገጽ ውስጥ ክትትል ሳይደረግብዎ ለማሰስ እንዲችሉ ግላዊ መብትን የሚጋፉ ማስታወቂያዎችና ተከታታዮች</translation>
-<translation id="6980054221517850750">ቶክኖች አግኝ</translation>
 <translation id="3333887201479867589">ናይ Brave ሽልማታት</translation>
 <translation id="1789842587755069541">የግላዊ መብት የሚያከብሩ ማስታወቂያዎችን በማየት። ተወዳጅ ድረ ገጾችዎንና ፈጣሪዎችን ለመደገፍ ይጠቀሙባቸው።</translation>
 <translation id="821707262661492716">ግላዊነት የሚያከብሩ ማስታወቅያዎችን በማየት።</translation>
@@ -114,13 +113,11 @@
 <translation id="4254029385847607686">ታህሳስ</translation>
 <translation id="1916285746997567466">ቀጣዩን ኢንተርኔት 
 ለማየት ይዘጋጁ።</translation>
-<translation id="1071131306814166204">አሁን ግላዊነት የሚያከብሩ ማስታወቂያዎችን በማየትዎ 
-ቶክኖችን ማግኘት ይችላሉ።</translation>
 <translation id="1327938628925645979">ሽልማቶችን ተቀላቀል</translation>
 <translation id="5567439033041178034">ተጨማሪ መረጃ ያግኙ</translation>
 <translation id="3780605330121608425">ኪስዎ</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
+<translation id="3826081199286264109">USD</translation>
 <translation id="2104073734684466851">ብድሮች</translation>
 <translation id="1165667598801520610">የማስታወቅያ ፈንድ</translation>
 <translation id="8428213095426709021">ቅንብሮች</translation>
@@ -149,13 +146,12 @@
 <translation id="5463954686005964104">ይህን ገፅ በወር ምክር ይስጡ</translation>
 <translation id="7530570094705720669">ቋት መፍጠር</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
-<translation id="4781696154289395607"><ph name="BAT_VALUE"/> BAT አስተዋጽኦ አድርገዋል።</translation>
 <translation id="7997676409547731821">በቂ ገንዘብ ባለመኖሩ ምክንያት የእርስዎ ወርሐዊ የክፍያ መርሃ ግብር ለራስ-አስተዋፅኦ እና ለወርሃዊ ምክሮች ወርሃዊ ክፍያዎ መጠናቀቅ አልቻለም። በ 30 ቀናት ውስጥ እንደገና እንሞክራለን።</translation>
 <translation id="5306913077198665897">ጠቃሚ ምክርዎን ለማስኬድ ችግር ነበር፣ እባከዎ እንደገና ይሞክሩ።</translation>
 <translation id="2429828319207652823">የእርስዎን አስተዋፅኦ በማካሄድ ላይ ችግር ነበር</translation>
 <translation id="3453206261112715431">ነፃ የቶክን ብድር</translation>
 <translation id="6417420737057016607">የብሬቭ ማስታቂያዎች</translation>
-<translation id="606865182719489911">ነፃ የቶክን ብድር ይገኛል፡፡</translation>
+<translation id="5497435273900537730">ነጻ <ph name="TOKEN"/> ግራንት ዝግጁ ነው።</translation>
 <translation id="8689997599821157251">አግኝተዋል</translation>
 <translation id="7550470870580166294">በቂ ያልሆነ ተቀማጭ</translation>
 <translation id="2775064702681588061">የእርስዎ Brave Rewards መለያ ተቀማጭ ገንዘብ በመጠባበቅ ላይ ነው።</translation>
@@ -168,10 +164,6 @@
 <translation id="4292832015778676417">ከማስታወቂያዎች የተገኘ</translation>
 <translation id="683765328936486920">YouTube ላይ</translation>
 <translation id="8969049974285901797">Twitch ላይ</translation>
-<translation id="3692362746128814480"><ph name="BAT_VALUE"/> BAT የሚያክል መጠንን መዋጮ
-ለመቀበል ላልተመዘገቡ ፈጣሪዎች ሰይመዋል። አሳሽዎ እነርሱ እስከሚያረጋግጡ ድረስ 
-ወይም 90 ቀናት እስከሚያልፍ ድረስ ለማዋጣት ይሞክራል።</translation>
-<translation id="853714875140407133">በቂ ቶክንስ የሉም</translation>
 <translation id="6940273954212603510">እባክዎ</translation>
 <translation id="1036277985068412734">ፈንድ ይጨምሩ</translation>
 <translation id="3492491948683276944">ወርሐዊ ጠቃሚ ምክር ሙላ</translation>
@@ -234,4 +226,39 @@
 <translation id="6336451774241870485">አዲስ የግል ትር</translation>
 <translation id="6199596294742117349">ይህ ማንነትን የማያሳውቅ ትር ነው</translation>
 <translation id="5858455511731621847">በግል ትሮች ውስጥ የሚጎበኟቸው ጣቢያዎች በቅርብ ባይቀመጡም፣ ለ ISP፣ ለአሰሪዎ ወይም ለሚጎበኟቸው ጣቢያዎች እርስዎነ ስም አልባ ወይም ስውር አያደርጉዎትም።</translation>
+<translation id="5789441016350810005">አሳሹ በስተጀርባ እያሉ የተላኩ የ Brave ማስታወቂያዎች</translation>
+<translation id="7127980134843952133">የአውርድ ታሪክ</translation>
+<translation id="3690140184638701871">አስተዋጽኦዎች &amp;amp; ጠቃሚ ምክሮች</translation>
+<translation id="844921671123185605">የእርስዎ ወርሃዊ ጠቃሚ ምክሮች ተካሂደዋል!</translation>
+<translation id="3124090095880236567">ማስታወቂያዎችን ያብሩ</translation>
+<translation id="2975780980638932742">የBrave ማስታወቂያዎች ደርሰዋል!</translation>
+<translation id="7655723274266132226">አሁን ማስታወቂያዎችን በማየት ገቢ ማግኘት ይችላሉ።</translation>
+<translation id="7541582550122501404">በሒደት ላይ ያለ መዋጮ</translation>
+<translation id="8520059774736886747">ፈጣሪ  <ph name="የአሳታሚ ስም"/> በቅርቡ የተረጋገጠ</translation>
+<translation id="7924320838799747606">ቀሪ ሂሳብዎ</translation>
+<translation id="6160106411363856968">BAP</translation>
+<translation id="1081826981536899387">የ BAT ነጥቦች</translation>
+<translation id="9212459913845238740">የተጠየቁ የነጥብ ብድሮች</translation>
+<translation id="2132683977638223450">የነፃ ነጥብ ብድር</translation>
+<translation id="4522570452068850558">ዝርዝሮች</translation>
+<translation id="1486343603936278248">ቶክን</translation>
+<translation id="8713995420537272453">ነጥብ</translation>
+<translation id="6678056861663824314">1 <ph name="TIP"/></translation>
+<translation id="4065726515175370979">5 <ph name="TIP"/></translation>
+<translation id="8171148564903208264">10 <ph name="TIP"/></translation>
+<translation id="7781069478569868053">የአዲስ ትር ገጽ</translation>
+<translation id="8522669544471808198">የዳራ ምስሎችን አሳይ</translation>
+<translation id="3870475560794762985">ስፖንሰር የተደረጉ ምስሎችን አሳይ</translation>
+<translation id="8297488609722895137">ፎቶ በ <ph name="PHOTO_BY"/></translation>
+<translation id="3794079107601824147">ይህን የዳራ ምስል ለማየት ክፍያ ያግኙ።</translation>
+<translation id="4836823081419522426">ለዚህ የግል ስፖንሰርሺፕ ከማስታወቂያ ገቢ ውስጥ 70%  ያገኛሉ፤ ይህም የድር ይዘት ፈጣሪዎችን ለመደገፍ ሊውል ይችላል። ድርሻዎን ለመጠየቅ የ Brave ሽልማቶችን አብራ።</translation>
+<translation id="7307847920988946894">ሽልማቶችን አብራ</translation>
+<translation id="1605521356929094020">የ Brave ማስታወቂያዎችን ያብሩ</translation>
+<translation id="1647482814782886825">ሽልማቶችን በማብራትዎ፣ በ <ph name="ደንቦችና ሁኔታዎች"/> ተስማምተዋል ማለት ነው፤ <ph name="ስፖንሰር የተደረጉ ምስሎችን ደብቅ"/> መምረጥም ይችላሉ።</translation>
+<translation id="7136586167396205364">ስፖንሰር የተደረጉ ምስሎችን ደብቅ</translation>
+<translation id="2927095357213611519">የድር ፈጣሪዎችን በቶክኖች መደገፍ ይችላሉ። \nEar ግላዊነት የሚያከብሩ ማስታወቅያዎችን በማየቶ ቶክን ያግኙ።</translation>
+<translation id="4016415345213871193">እርስ’ዎ ይህን የዳራ ምስል ለማየት ክፍያ እያገኙ ነው።</translation>
+<translation id="5895280237921845725"><ph name="LEARN_MORE"/> በ Brave ሽልማቶች ውስጥ ስፖንሰር ስለተደረጉ ምስሎች።   <ph name="HIDE_SPONSORED_IMAGES"/> መምረጥም ይችላሉ።</translation>
+<translation id="1908278071064820219"><ph name="HIDE_SPONSORED_IMAGES"/> መምረጥም ይችላሉ።</translation>
+<translation id="7931660128190969207">ይህን የዳራ ምስል ለማየት ክፍያ ያግኙ። ድርሻዎን ለመጠየቅ የ Brave ማስታወቂያዎችን ያብሩ።</translation>
 </translationbundle>

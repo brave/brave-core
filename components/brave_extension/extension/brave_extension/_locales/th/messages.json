@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "การจดจำอุปกรณ์ข้ามไซต์ถูกบล็อก",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "การพิมพ์ลายนิ้วมือระหว่างเว็บไซต์ถูกบล็อค",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "การพยายามจดจำอุปกรณ์ถูกบล็อก",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "การพิมพ์ลายนิ้วมือถูกบล็อค",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "การพยายามจดจำอุปกรณ์ทั้งหมดถูกบล็อก",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "การพิมพ์ลายนิ้วมือทั้งหมดได้รับอนุญาตแล้ว",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "ความพยายามในการรู้จำอุปกรณ์",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "การพิมพ์ลายนิ้วมือ",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "สคริปต์บนไซต์นี้",

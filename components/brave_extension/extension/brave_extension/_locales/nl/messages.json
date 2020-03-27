@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "De Brave-extensie",
+    "message": "De Brave extensie",
     "description": "The name of the the extension."
   },
   "shields": {
@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Cross-site pogingen tot apparaatherkenning geblokkeerd",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "Vingerafdruk tussen sites geblokkeerd",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Pogingen tot apparaatherkenning geblokkeerd",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "Vingerafdrukpogingen geblokkeerd",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Alle pogingen tot apparaatherkenning zijn toegestaan",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "Alle vingerafdrukpogingen zijn toegestaan",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Pogingen voor apparaatherkenning",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "Vingerafdrukpogingen",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "Scripts op deze site",
@@ -144,7 +144,7 @@
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
   },
   "applyOnce": {
-    "message": "Eenmaal toepassen",
+    "message": "Eenmalig toepassen",
     "description": "Message for action in dynamic list of resources blocked to *apply once*"
   },
   "changeDefaults": {

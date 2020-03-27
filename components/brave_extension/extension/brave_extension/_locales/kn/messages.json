@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "ಕ್ರಾಸ್‌-ಸೈಟ್ ಸಾಧನ ಗುರುತಿಸುವಿಕೆಯನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "ಕ್ರಾಸ್-ಸೈಟ್ ಫಿಂಗರ್‌ಪ್ರಿಂಟ್ ಮಾಡುವಿಕೆಯನ್ನು ನಿರ್ಬಂಧಿಸಿ",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "ಸಾಧನ ಗುರುತಿಸುವಿಕೆಯ ಪ್ರಯತ್ನಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "ಫಿಂಗರ್‌ಪ್ರಿಂಟ್ ಮಾಡುವ ಪ್ರಯತ್ನಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "ಎಲ್ಲ ಸಾಧನ ಗುರುತಿಸುವಿಕೆ ಪ್ರಯತ್ನಗಳನ್ನು ಅನುಮತಿಸಲಾಗಿದೆ",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "ಎಲ್ಲಾ ಫಿಂಗರ್‌ಪ್ರಿಂಟ್ ಮಾಡುವ ಪ್ರಯತ್ನಗಳನ್ನು ಅನುಮತಿಸಲಾಗಿದೆ",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "ಸಾಧನ ಗುರುತಿಸುವಿಕೆ ಪ್ರಯತ್ನಗಳು",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "ಫಿಂಗರ್‌ಪ್ರಿಂಟ್ ಮಾಡುವ ಪ್ರಯತ್ನಗಳು",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "ಸೈಟ್‌ನಲ್ಲಿರುವ ಲಿಪಿಗಳು",

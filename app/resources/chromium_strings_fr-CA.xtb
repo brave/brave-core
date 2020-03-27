@@ -3,7 +3,7 @@
 <translationbundle lang="fr-CA">
 <translation id="939305735877869636">Brave</translation>
 <translation id="6373767849825830651">Brave est un navigateur Web qui exécute les pages Web et les applications à une vitesse fulgurante. Il est rapide, stable et simple d'utilisation. Naviguez sur Internet en toute sécurité, en bénéficiant de la protection offerte par Brave contre les logiciels malveillants et l'hameçonnage.</translation>
-<translation id="680297041157509674">Brave OS</translation>
+<translation id="4331809312908958774">Brave OS</translation>
 <translation id="4847979153841887006">Logo de Brave</translation>
 <translation id="7339898014177206373">Nouvelle fenêtre</translation>
 <translation id="5516268345616100622">Gestionnaire de tâches – Brave</translation>
@@ -15,8 +15,8 @@
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="8992261409816268381">Les auteurs de Brave</translation>
 <translation id="8121009781989288430">© <ph name="YEAR"/> Les auteurs de Brave. Tous droits réservés.</translation>
-<translation id="2310890394934209120">Brave OS fonctionne grâce à d'autres <ph name="BEGIN_LINK_CROS_OSS"/>logiciels libres<ph name="END_LINK_CROS_OSS"/>.</translation>
-<translation id="8160794320557846790">Brave OS fonctionne grâce à d'autres <ph name="BEGIN_LINK_CROS_OSS"/>logiciels libres<ph name="END_LINK_CROS_OSS"/>, tout comme <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (bêta)<ph name="END_LINK_LINUX_OSS"/>.</translation>
+<translation id="6368958679917195344">Brave OS fonctionne grâce à d'autres <ph name="BEGIN_LINK_CROS_OSS"/>logiciels libres<ph name="END_LINK_CROS_OSS"/>.</translation>
+<translation id="1662639173275167396">Brave OS fonctionne grâce à d'autres <ph name="BEGIN_LINK_CROS_OSS"/>logiciels libres<ph name="END_LINK_CROS_OSS"/>, tout comme <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (bêta)<ph name="END_LINK_LINUX_OSS"/>.</translation>
 <translation id="6913582816347128893">Il se peut que Brave ne fonctionne pas correctement, car il n'est plus compatible avec Mac OS X 10.9.</translation>
 <translation id="7977787072794666032">Il se peut que Brave ne fonctionne pas correctement, car il n'est plus compatible avec Windows XP ni Windows Vista</translation>
 <translation id="189297655255130768">Brave ne répond pas. Voulez-vous le relancer maintenant?</translation>
@@ -24,7 +24,7 @@
 <translation id="335632367599648646">Voulez-vous vraiment désinstaller Brave?</translation>
 <translation id="5590013613412457132">Désinstaller Brave</translation>
 <translation id="5019879183386042809">Faire de Brave le navigateur par défaut</translation>
-<translation id="5063987220091207247">Brave OS ne peut pas ouvrir cette page.</translation>
+<translation id="707769633889902835">Brave OS ne peut pas ouvrir cette page.</translation>
 <translation id="4065288863231444640">Laisser Brave s'exécuter en arrière-plan</translation>
 <translation id="6797402139308059782">Laisser Brave fonctionner en arrière-plan</translation>
 <translation id="2585240446624043880">Brave ne peut pas lire et écrire dans son répertoire de données :
@@ -94,8 +94,7 @@ Brave est incapable de récupérer vos paramètres.</translation>
 <translation id="9071554113102421877">&amp;Ouvrir dans Brave</translation>
 <translation id="2176825726964012531">À propos de &amp;Brave</translation>
 <translation id="5450493308072741203">Mettre à jour &amp;Brave</translation>
-<translation id="1421502046520299169">À propos de &amp;Brave OS</translation>
-<translation id="2534623228451928732">Mise à jour de &amp;Brave OS</translation>
+<translation id="61852838583753520">Mise à jour de &amp;Brave OS</translation>
 <translation id="8447483940522230788">Aide de Brave</translation>
 <translation id="5477319665405831211">Synchroniser et personnaliser Brave sur vos appareils</translation>
 <translation id="8132634101975074716">Vous êtes connecté à Brave!</translation>
@@ -109,19 +108,18 @@ Brave est incapable de récupérer vos paramètres.</translation>
 <translation id="5380963249588143069">Votre administrateur système a configuré Brave de manière à ouvrir <ph name="ALTERNATIVE_BROWSER_NAME"/> pour accéder à <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> utilisait précédemment Brave</translation>
 <translation id="1384923383737428730">Nous avons trouvé un logiciel nuisible sur votre ordinateur. Brave peut le supprimer, restaurer vos paramètres et désactiver les extensions pour que votre navigateur puisse fonctionner normalement de nouveau.</translation>
-<translation id="8919921662052966648">Échec de synchronisation de vos données dans Brave. Veuillez mettre à jour votre phrase de passe de synchronisation.</translation>
 <translation id="2262856633481902138">Brave n'a pas pu synchroniser vos données, car vos renseignements de connexion ne sont plus à jour.</translation>
 <translation id="5419189641394808652">Brave n'a pas pu synchroniser vos données, car la synchronisation n'est pas offerte pour votre nom de domaine.</translation>
 <translation id="2577755334620061182">Brave n'a pas pu synchroniser vos données, car une erreur s'est produite lors de la connexion.</translation>
-<translation id="8583885258305961947">Système Brave OS</translation>
-<translation id="3968006371075376562">Échec de synchronisation de vos données dans Brave OS. Veuillez mettre à jour votre phrase de passe de synchronisation.</translation>
-<translation id="6746636977031158624">Brave OS n'a pas pu synchroniser vos données, car vos renseignements de connexion ne sont plus à jour.</translation>
-<translation id="2999152167963026588">Brave OS n'a pas pu synchroniser vos données, car la synchronisation n'est pas offerte pour votre nom de domaine.</translation>
-<translation id="1459786048951724030">Brave OS ne peut pas synchroniser vos données, car une erreur s'est produite lors de la connexion.</translation>
-<translation id="6813094029720377619">Vous effacez les témoins lorsque vous quittez Brave. Pour continuer la synchronisation, modifiez ce paramètre : <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
-<translation id="3340978935015468852">paramètres</translation>
+<translation id="2644798301485385923">Système Brave OS</translation>
+<translation id="7916016681687251387">Brave OS n'a pas pu synchroniser vos données. Corrigez le problème maintenant.</translation>
+<translation id="2341767445688917208">Brave OS n'a pas pu synchroniser vos mots de passe. Corrigez le problème maintenant.</translation>
+<translation id="123620459398936149">Échec de synchronisation de vos données dans Brave OS. Veuillez mettre à jour votre phrase de passe de synchronisation.</translation>
+<translation id="9026991721384951619">Brave OS n'a pas pu synchroniser vos données, car vos renseignements de connexion ne sont plus à jour.</translation>
+<translation id="7419046106786626209">Brave OS n'a pas pu synchroniser vos données, car la synchronisation n'est pas offerte pour votre nom de domaine.</translation>
+<translation id="4480040274068703980">Brave OS ne peut pas synchroniser vos données, car une erreur s'est produite lors de la connexion.</translation>
 <translation id="300669147395456190">Applications de Brave</translation>
-<translation id="3421950102518690868"><ph name="DOMAIN"/> exige que vous lisiez et acceptiez les présentes conditions d'utilisation pour utiliser cet appareil. Ces dernières n'étendent, ne modifient ni ne restreignent les conditions d'utilisation de Brave OS.</translation>
+<translation id="2398566204186296120"><ph name="DOMAIN"/> exige que vous lisiez et acceptiez les présentes conditions d'utilisation pour utiliser cet appareil. Ces dernières n'étendent, ne modifient ni ne restreignent les conditions d'utilisation de Brave OS.</translation>
 <translation id="3293668930608086049">Brave utilise votre caméra et votre microphone</translation>
 <translation id="8919461291440820124">Brave se sert de votre microphone.</translation>
 <translation id="3205074487970075628">Brave utilise votre caméra.</translation>
@@ -154,12 +152,9 @@ Brave est incapable de récupérer vos paramètres.</translation>
 <translation id="4805806622840861220">Relancer Brave</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Une nouvelle mise à jour de Brave est proposée et sera appliquée dès que vous le relancerez.}=1{Une nouvelle mise à jour de Brave est proposée et sera appliquée dès que vous le relancerez. Votre fenêtre de navigation privée ne sera pas rouverte.}one{Une nouvelle mise à jour de Brave est proposée et sera appliquée dès que vous le relancerez. Votre fenêtre de navigation privée ne sera pas rouverte.}other{Une nouvelle mise à jour de Brave est proposée et sera appliquée dès que vous le relancerez. Vos # fenêtres de navigation privée ne seront pas rouvertes.}}</translation>
 <translation id="2799223571221894425">Redémarrer</translation>
-<translation id="2522086024276534909">Redémarrer Brave OS</translation>
-<translation id="8183252473547465084">Redémarrez Brave OS pour appliquer la mise à jour.</translation>
+<translation id="5062123544085870375">Redémarrer Brave OS</translation>
+<translation id="2063848847527508675">Redémarrez Brave OS pour appliquer la mise à jour.</translation>
 <translation id="5895138241574237353">Redémarrer</translation>
-<translation id="8887390605192156061">Quitter toutes les instances en cours de Brave.</translation>
-<translation id="1801551749768408825">D'autres instances de Brave sont en cours d'exécution. Pour effectuer la mise à jour, fermez-les.</translation>
-<translation id="2632141563911437138">Pour installer la mise à jour, vous devez fermer Brave sur cet ordinateur. Cela pourrait engendrer la perte de modifications non enregistrées pour d'autres utilisateurs connectés à cet ordinateur.</translation>
 <translation id="5875673934455379806">Réinstaller Brave</translation>
 <translation id="2097604701283463988">Brave n'est pas à jour</translation>
 <translation id="5173820533850252773">Brave n'est pas à jour</translation>
@@ -180,7 +175,7 @@ Brave est incapable de récupérer vos paramètres.</translation>
 <translation id="7798069806040634998">Brave a besoin d'accéder au stockage pour télécharger des fichiers</translation>
 <translation id="7685904775439037072">Lorsque Brave y aura accès, les sites Web pourront vous demander l'accès.</translation>
 <translation id="1744365871163268756">Veuillez patienter pendant que Brave installe les dernières mises à jour système.</translation>
-<translation id="7808415789955822133">Conditions d'utilisation de Brave OS</translation>
+<translation id="7408085963519505752">Conditions d'utilisation de Brave OS</translation>
 <translation id="7207456302801184289">Bienvenue dans Brave</translation>
 <translation id="3507835409099344374">Accéder aux paramètres de notification Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Une mise à jour de Brave est proposée}=1{Une mise à jour de Brave est proposée}one{Une mise à jour de Brave est proposée depuis # jour}other{Une mise à jour de Brave est proposée depuis # jours}}</translation>
@@ -199,16 +194,16 @@ Brave est incapable de récupérer vos paramètres.</translation>
 <translation id="1786715389543715322">Mise à jour de Brave en cours (<ph name="PROGRESS_PERCENT"/>)…</translation>
 <translation id="2182657378556811785">La mise à jour est presque terminée! Il ne reste plus qu'à relancer Brave.</translation>
 <translation id="8208853227947884571">Brave est à jour</translation>
-<translation id="6686872257969654608">À propos de Brave OS</translation>
-<translation id="7674116293463255181">Pour voir si votre appareil est à jour, sélectionnez les <ph name="LINK_BEGIN"/>paramètres de Brave OS<ph name="LINK_END"/></translation>
-<translation id="2280363356796735201">Obtenir de l'aide pour Brave OS</translation>
+<translation id="573759479754913123">À propos de Brave OS</translation>
+<translation id="7573289029918943991">Pour voir si votre appareil est à jour, sélectionnez les <ph name="LINK_BEGIN"/>paramètres de Brave OS<ph name="LINK_END"/></translation>
+<translation id="3395323229510056640">Obtenir de l'aide pour Brave OS</translation>
 <translation id="38898988211673781">Effacer les témoins et les données des sites lorsque vous quittez Brave</translation>
 <translation id="5253815230176279256">Brave Software Pay (copiée dans Brave)</translation>
 <translation id="5468853758063275923">Brave est votre navigateur par défaut</translation>
 <translation id="1775322105159056176">Brave ne parvient pas à déterminer quel est le navigateur par défaut ou à le définir</translation>
 <translation id="6915252145142862992">Cette installation de Brave est secondaire. Celui-ci ne peut donc pas servir de navigateur par défaut.</translation>
 <translation id="6235873178214143377">Si un paramètre ne s'affiche pas sur cette page, consultez les <ph name="LINK_BEGIN"/>paramètres du navigateur Brave<ph name="LINK_END"/></translation>
-<translation id="4459296183696059108">Si un paramètre ne s'affiche pas sur cette page, consultez les <ph name="LINK_BEGIN"/>paramètres de Brave OS<ph name="LINK_END"/></translation>
+<translation id="5657226924540934362">Si un paramètre ne s'affiche pas sur cette page, consultez les <ph name="LINK_BEGIN"/>paramètres de Brave OS<ph name="LINK_END"/></translation>
 <translation id="2312399718665761438">Pour corriger les fautes d'orthographe, Brave envoie le texte que vous entrez dans des zones de texte à Brave Software</translation>
 <translation id="8586264863973514035">Pour appliquer vos modifications, relancez Brave</translation>
 <translation id="7021823858304886493">Autoriser la connexion à Brave</translation>
@@ -217,7 +212,6 @@ Brave est incapable de récupérer vos paramètres.</translation>
 <translation id="5853262807109651878">Cette action entraînera la suppression de <ph name="ITEMS_COUNT"/> éléments de cet appareil. Pour récupérer vos données plus tard, connectez-vous à Brave en tant que <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Cette action entraînera la suppression de vos données de navigation sur cet appareil. Pour récupérer vos données plus tard, connectez-vous à Brave en tant que <ph name="USER_EMAIL"/>.</translation>
 <translation id="4518479204315969707">Nom et image Brave</translation>
-<translation id="82609232232243542">Connexion à Brave</translation>
 <translation id="8372880274820509128">Pour une sécurité accrue, Brave va chiffrer vos données.</translation>
 <translation id="7445061995866044926">Se déconnecter de Brave?</translation>
 <translation id="7453070689008684791">Brave accédera à votre Disque pour faire des suggestions dans la barre d'adresse</translation>

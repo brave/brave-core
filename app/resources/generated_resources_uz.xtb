@@ -38,6 +38,8 @@
 <translation id="8419098111404128271">“<ph name="SEARCH_TEXT"/>” uchun qidiruv natijalari</translation>
 <translation id="6377268785556383139">“<ph name="SEARCH_TEXT"/>” uchun bitta natija</translation>
 <translation id="6000758707621254961">“<ph name="SEARCH_TEXT"/>” uchun <ph name="RESULT_COUNT"/> ta natija</translation>
+<translation id="5359910752122114278">1 ta natija</translation>
+<translation id="2295864384543949385"><ph name="NUM_RESULTS"/> ta natija</translation>
 <translation id="3303855915957856445">Qidiruv hech qanday natija bermadi</translation>
 <translation id="8967866634928501045">Ko‘rsatish uchun Alt+Shift+A tugmalarini bosing</translation>
 <translation id="998747458861718449">Kodini ko‘rish</translation>
@@ -178,7 +180,7 @@
 <translation id="5329858601952122676">&amp;O‘chirish</translation>
 <translation id="4608500690299898628">&amp;Qidirish...</translation>
 <translation id="3712897371525859903">Sahifani &amp;saqlab olish...</translation>
-<translation id="2369105924912929484">Nofaol sahifa kontentlarini chiqarish va olib tashlash</translation>
+<translation id="3200941271596533635">Mutolaa rejimiga kirish/chiqish</translation>
 <translation id="6607831829715835317">Qo‘shimcha &amp;asboblar</translation>
 <translation id="3994878504415702912">&amp;Matn o‘lchami</translation>
 <translation id="4779083564647765204">Masshtab</translation>
@@ -189,14 +191,16 @@
 <translation id="6095984072944024315">−</translation>
 <translation id="1689945336726856614">&amp;URLdan nusxa olish</translation>
 <translation id="2119349053129246860"><ph name="APP"/> orqali ochish</translation>
+<translation id="7855678561139483478">Varaqni yangi oynaga olish</translation>
 <translation id="3285322247471302225">Yangi &amp;ichki oyna</translation>
 <translation id="8879284080359814990">&amp;Ichki oyna sifatida ko‘rsatish</translation>
 <translation id="176587472219019965">&amp;Yangi oyna</translation>
 <translation id="7973394300052703468">Yangi &amp;inkognito oynasi</translation>
 <translation id="5157635116769074044">Ushbu sahifani bosh ekranga qadab qo‘yish...</translation>
 <translation id="5830720307094128296">Sahifani &amp;saqlab olish...</translation>
-<translation id="4672657274720418656">Sahifani siqish</translation>
+<translation id="3608436266458100337">O‘qish rejimi</translation>
 <translation id="7853747251428735">Qo‘shimcha &amp;vositalar</translation>
+<translation id="6390020764191254941">Varaqni yangi oynaga olish</translation>
 <translation id="4109135793348361820">Oynani <ph name="USER_NAME"/> (<ph name="USER_EMAIL"/>) foydalanuvchisi ish stoliga ko‘chirish</translation>
 <translation id="8642947597466641025">Matnni yiriklashtirish</translation>
 <translation id="7134098520442464001">Matn hajmini kichraytirish</translation>
@@ -334,16 +338,18 @@
 <translation id="6285120108426285413">“<ph name="FILE_NAME"/>” faylini yuklab olish tavsiya etilmaydi, chunki bu fayl kompyuteringiz uchun xavfli bo‘lishi mumkin.</translation>
 <translation id="1463112138205428654"><ph name="FILE_NAME"/> fayli Kengaytirilgan himoya tomonidan bloklandi.</translation>
 <translation id="3615579745882581859"><ph name="FILE_NAME"/> tekshirilmoqda.</translation>
+<translation id="2620215283731032047"><ph name="FILE_NAME"/> faylini xavfsiz yuklab olish imkonsiz.</translation>
 <translation id="7859938049767853383"><ph name="FILE_NAME"/> fayli juda katta hajmdaligi uchun bulutli tekshiruvdan oʻtmadi va ochilishi bloklandi.</translation>
 <translation id="2896909745808647285"><ph name="FILE_NAME"/> fayli shifrlanganligi uchun ochilishi bloklandi.</translation>
 <translation id="2693982916035708855">Tekshiruv hech qanday muammosiz yakunlandi.</translation>
 <translation id="8855501062415172277"><ph name="FILE_NAME"/> faylida maxfiy kontent bor.</translation>
 <translation id="1061745542578250838"><ph name="FILE_NAME"/> fayli ichida virusli kontent mavjudligi ehtimoli tufayli bloklandi.</translation>
 <translation id="6651823585377804376">Yuklab olingan fayl zararli kontentga ega.</translation>
-<translation id="1863552924692672565"><ph name="FILE_NAME"/> nomaʼlum fayl. Xavfsizlik yuzasidan uni antivirus orqali tekshiring.</translation>
+<translation id="7483136042182425287">Kengaytirilgan himoya <ph name="FILE_NAME"/> faylni Brave Softwarega zararli dastur emasligini aniqlash uchun yuborishni tavsiya qiladi.</translation>
 <translation id="4907161631261076876">Bu faylni yuklab olish tavsiya etilmaydi, chunki u zararli bo‘lishi mumkin.</translation>
 <translation id="6102043788063419338">Bu fayl Kengaytirilgan himoya tomonidan bloklandi.</translation>
 <translation id="2773802008104670137">Bu turdagi fayllar kompyuteringizga zararli bo‘lishi mumkin.</translation>
+<translation id="2835294513443818940">Bu faylni xavfsiz yuklab olish imkonsiz.</translation>
 <translation id="2557378327156922632">Bu faylda maxfiy kontent bor.</translation>
 <translation id="3952230510293296226">Bu fayl tarkibida maxfiy kontent borligi uchun bloklandi.</translation>
 <translation id="614611931938947795">Bu fayl juda katta hajmdaligi uchun bulutli tekshiruvdan oʻtmadi va ochilishi bloklandi.</translation>
@@ -418,6 +424,7 @@
 <translation id="7253521419891527137">&amp;Batafsil ma’lumot</translation>
 <translation id="8708671767545720562">&amp;Qo‘shimcha ma’lumot</translation>
 <translation id="424726838611654458">Har doim Adobe Reader dasturida ochish</translation>
+<translation id="2020225359413970060">Faylni skanerlash</translation>
 <translation id="8546930481464505581">Tegish panelini sozlash</translation>
 <translation id="5171045022955879922">Qidiring yoki URL manzili kiriting</translation>
 <translation id="8323167517179506834">URL manzil kiriting</translation>
@@ -563,7 +570,7 @@
 <translation id="3297560592877881986">Ayrim saytlar sahifalarini yuklashda tashqi cookie fayllarni ishlatadi. Agar sayt ishlamasa, cookie fayllar bloklanishini bekor qilib koʻring.</translation>
 <translation id="1243398753772016127">Saytlar reklamalarni sizga moslashtirish uchun brauzerdagi faoliyatingizni kuzata olmaydi</translation>
 <translation id="8734674662128056360">Tashqi cookie fayllari bloklanishi</translation>
-<translation id="2448734521821581858">Cookie fayllar saytlarga tashrif buyurilganda yaratiladigan fayllardir. Cookie fayllar ikki xil boʻladi: Ichkilari saytlarga kirganingizda yaratiladi. Saytlar manzillar qatorida chiqadi. Tashqi cookie fayllar boshqa saytlar tomonidan yaratiladi. Bunday saytlarga ochilgan sahifadagi kontent, reklama yoki rasmlar tegishli boʻlishi mumkin.</translation>
+<translation id="3784472333786002075">Cookie fayllar — veb-saytlar tomonidan yaratilgan fayllar. Cookie fayllar ikki xil boʻladi: Ichki cookielar saytlarga kirganingizda yaratiladi. Saytlar manzillar qatorida chiqadi. Tashqi cookie fayllar boshqa saytlar tomonidan yaratiladi. Bunday saytlarga ochilgan sahifadagi kontent, reklama yoki rasmlar tegishli boʻlishi mumkin.</translation>
 <translation id="5154702632169343078">Subyekt</translation>
 <translation id="5851868085455377790">Noshir</translation>
 <translation id="2841837950101800123">Ta’minotchi</translation>
@@ -813,6 +820,8 @@ Ochiq eksponenta (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bit):
 <translation id="2087822576218954668">Chop etish: <ph name="PRINT_NAME"/></translation>
 <translation id="8859174528519900719">Subramka: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="1799432502220762862">Inkognito rejimidagi quyi freym: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="7454548535253569100">Portal: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Inkognito rejimidagi portal: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="2348176352564285430">Ilova: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="786073089922909430">Xizmat: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="7663719505383602579">Qabul qiluvchi: <ph name="ARC_PROCESS_NAME"/></translation>
@@ -823,7 +832,7 @@ Ochiq eksponenta (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bit):
 <translation id="7171242884588191792">Brave fayl vositalari</translation>
 <translation id="3183139917765991655">Profillar importi</translation>
 <translation id="2190069059097339078">Wi-Fi ruxsat parametrlarini qabul qilish</translation>
-<translation id="7685901961038216503">BraveOS tizim tasvirini yozish vositasi</translation>
+<translation id="5920835625712313205">BraveOS tizim tasvirini yozish vositasi</translation>
 <translation id="4873312501243535625">Media fayllar tekshiruvi</translation>
 <translation id="5972666587303800813">No-op</translation>
 <translation id="1545775234664667895">“<ph name="THEME_NAME"/>” mavzusi o‘rnatildi</translation>
@@ -865,9 +874,7 @@ Ochiq eksponenta (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bit):
 <translation id="175772926354468439">Mavzuni yoqish</translation>
 <translation id="5267531627648004734">Brave‘dan olib tashlash</translation>
 <translation id="4998873842614926205">O‘zgarishlarni tasdiqlash</translation>
-<translation id="5699533844376998780">“<ph name="EXTENSION_NAME"/>” kengaytmasi qo‘shildi.</translation>
 <translation id="1799071797295057738">“<ph name="EXTENSION_NAME"/>” kengaytmasi avtomatik o‘chirib qo‘yildi.</translation>
-<translation id="6449285849137521213">“<ph name="EXTENSION_NAME"/>” ilovasi qo‘shildi.</translation>
 <translation id="5238278114306905396">“<ph name="EXTENSION_NAME"/>” ilovasi avtomatik o‘chirildi.</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="4522570452068850558">Tafsilotlar</translation>
@@ -877,6 +884,7 @@ Ochiq eksponenta (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bit):
 <translation id="1485015260175968628">Ruxsatlar:</translation>
 <translation id="3788401245189148511">Ruxsatlar:</translation>
 <translation id="1965624977906726414">Maxsus ruxsat talab qilmaydi.</translation>
+<translation id="2753677631968972007">Sayt ruxsatlarini qoʻlda boshqarish.</translation>
 <translation id="2886771036282400576">• <ph name="PERMISSION"/></translation>
 <translation id="5588033542900357244">(<ph name="RATING_COUNT"/>)</translation>
 <translation id="2124930039827422115">{1,plural, =1{Bitta foydalanuvchi <ph name="AVERAGE_RATING"/> baho bergan.}other{# ta foydalanuvchi <ph name="AVERAGE_RATING"/> baho bergan.}}</translation>
@@ -966,7 +974,7 @@ Ochiq eksponenta (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bit):
 <translation id="3584169441612580296">Kompyuteringizdagi rasmlar, musiqa va boshqa mediafayllarni ko‘rish va o‘zgartirishga ruxsat</translation>
 <translation id="5457459357461771897">Kompyuteringizdagi rasmlar, musiqa va boshqa mediafayllarni ko‘rish va o‘chirib yuborishga ruxsat</translation>
 <translation id="3270965368676314374">Kompyuteringizdagi rasmlar, musiqa va boshqa mediafayllarni ko‘rish, o‘zgartirish va o‘chirib yuborishga ruxsat</translation>
-<translation id="3919562953666287643">Ma’lumotlarni Brave Software Drive hisobingizga saqlash</translation>
+<translation id="1285484354230578868">Ma’lumotlarni Brave Software Drive hisobingizga saqlash</translation>
 <translation id="378312418865624974">Bu kompyuterning alohida identifikatorini ko‘rish</translation>
 <translation id="5094721898978802975">Ichki o‘rnatilgan va bir biriga bog‘langan ilovalar bilan aloqa o‘rnatish</translation>
 <translation id="4876895919560854374">Ekranni qulflash va qulfdan chiqarish</translation>
@@ -1000,7 +1008,7 @@ Ochiq eksponenta (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bit):
 <translation id="1616298854599875024">Umumiy modul hisoblanmagan <ph name="IMPORT_NAME"/> kengaytmasini import qilib bo‘lmadi</translation>
 <translation id="2131077480075264">“<ph name="APP_NAME"/>” ilovasini o‘rnatib bo‘lmadi, chunki “<ph name="IMPORT_NAME"/>” ruxsat bermadi.</translation>
 <translation id="1875387611427697908">Buni faqat <ph name="CHROME_WEB_STORE"/> sahifasidan qo‘shish mumkin</translation>
-<translation id="7613251087357271190">Manifest faylida “kiosk_only” atributi mavjud ilovalarni Brave OS‘da faqatgina kiosk rejimida o‘rnatish mumkin</translation>
+<translation id="3862788408946266506">Manifest faylida “kiosk_only” atributi mavjud ilovalarni Brave OS‘da faqatgina kiosk rejimida o‘rnatish mumkin</translation>
 <translation id="3834775135533257713">“<ph name="TO_INSTALL_APP_NAME"/>” ilovasi o‘rnatilmadi, chunki u “<ph name="INSTALLED_APP_NAME"/>” ilovasi bilan moslasha olmayapti.</translation>
 <translation id="144518587530125858">Mavzu uchun “<ph name="IMAGE_PATH"/>” yuklab bo‘lmadi.</translation>
 <translation id="6567688344210276845">Sahifadagi amal uchun “<ph name="ICON"/>” ikonkasini yuklab bo‘lmadi.</translation>
@@ -1105,9 +1113,12 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="3288047731229977326">Dasturchi rejimida ishga tushirilgan kengaytmalar kompyuteringizga ziyon yetkazishi mumkin. Agar dasturchi bo‘lmasangiz xavfsizlik maqsadlarida ularni o‘chirib qo‘yishingiz kerak.</translation>
 <translation id="8827289157496676362">Kengaytmani mahkamlash</translation>
 <translation id="5372579129492968947">Kengaytmani yechib olish</translation>
+<translation id="2502719318159902502">Toʻliq ruxsat</translation>
 <translation id="3929426037718431833">Bu kengaytmalar mazkur saytdagi maʼlumotlarni koʻrishi va oʻzgartirishi mumkin.</translation>
-<translation id="1435979430299962295">Bu saytga kirishga ruxsat berish uchun kengaytmani bosing.</translation>
-<translation id="6890912377247906520">Bu kengaytmalar uchun mazkur saytga ruxsat zarur emas</translation>
+<translation id="7364591875953874521">Ruxsat talab qiladigan kengaytmalar</translation>
+<translation id="6032715498678347852">Kengaytmani bosib, unga bu sayt uchun ruxsat berish mumkin.</translation>
+<translation id="6241844896329831164">Ruxsat talab qilmaydigan kengaytmalar</translation>
+<translation id="4046013316139505482">Bu kengaytmalar mazkur saytdagi maʼlumotlarni koʻrishi va oʻzgartirishi kerak emas.</translation>
 <translation id="5521078259930077036">Bu boshqa bosh sahifami?</translation>
 <translation id="7760004034676677601">Bu boshqa bosh sahifami?</translation>
 <translation id="5956585768868398362">Bu boshqa qidiruv sahifasimi?</translation>
@@ -1120,6 +1131,8 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="1729533290416704613">Bundan tashqari kengaytma Omniboksda so‘rovlar kiritishda foydalaniladigan birlamchi qidiruv tizimini o‘zgartirib qo‘ydi.</translation>
 <translation id="5627086634964711283">Bundan tashqari, kengaytma “Boshi” tugmasi bosilganda ko‘rsatiladigan bosh sahifani o‘zgartirib qo‘ydi.</translation>
 <translation id="5965661248935608907">Bundan tashqari kengaytma Bosh sahifa tugmasini bosganingizda yoki Omnibox orqali qidiruvda qaysi sahifa ko‘rsatilishini tayinlaydi.</translation>
+<translation id="2654553774144920065">Chop etish talabi</translation>
+<translation id="6846178040388691741">“<ph name="EXTENSION_NAME"/>” kengaytmasi <ph name="FILE_NAME"/> faylini <ph name="PRINTER_NAME"/> printerida chop etmoqchi.</translation>
 <translation id="4613271546271159013">Kengaytmalardan biri yangi ichki oynada ko‘rsatiladigan sahifani o‘zgartirdi.</translation>
 <translation id="6196854373336333322">“<ph name="EXTENSION_NAME"/>” kengaytmasi proksi-server sozlamalarini nazorat qiladi. U internetda bajargan ishlaringizni o‘zgartirishi, buzishi yoki bildirmasdan eshitishi mumkin. Agar bu haqda eshitmagan bo‘lsangiz, uni o‘chirib qo‘yganingiz yaxshi.</translation>
 <translation id="8351419472474436977">Bu kengaytma proksi-server sozlamalarini boshqaradi. Demak siz uzatayotgan ma’lumotlarni kuzatishi yoki o‘zgartirishi, hamda internet aloqasini uzib qo‘yishi ham mumkin. Agar buni bilmagan bo‘lsangiz, kengaytmani o‘chirib qo‘yishingiz mumkin.</translation>
@@ -1218,6 +1231,9 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="4668721319092543482">“<ph name="PLUGIN_NAME"/>” plaginini yoqish uchun bosing</translation>
 <translation id="8358685469073206162">Sahifalar tiklansinmi?</translation>
 <translation id="5620612546311710611">foydalanish statistikasi</translation>
+<translation id="6847125920277401289">Davom etish uchun xotiradan joy oching</translation>
+<translation id="1333489022424033687">Qurilmangizda boshqa saytlar tomonidan saqlangan maʼlumotlar tozalanmaguncha ayrim <ph name="ORIGIN"/> funksiyalari yaxshi ishlamasligi mumkin</translation>
+<translation id="6897363604023044284">Tozalash uchun saytlarni tanlang</translation>
 <translation id="8871696467337989339">Siz qo‘llab-quvvatlanmaydigan buyruq qatori bayroqchasidan (<ph name="BAD_FLAG"/>) foydalanyapsiz. Tizim barqarorligi va havfsizligi buziladi.</translation>
 <translation id="9140067245205650184">Siz mos kelmaydigan bayroqcha funksiyasidan foydalanyapsiz: <ph name="BAD_FLAG"/>. Barqarorlik va xavfsizlikka zarar yetishi mumkin.</translation>
 <translation id="4094647278880271855">Siz moslanmagan muhit qiymatidan foydalanyapsiz: <ph name="BAD_VAR"/>. Barqarorlik va xavfsizlikka zarar tegishi mumkin.</translation>
@@ -1439,7 +1455,6 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="5578059481725149024">Avtomatik kirish</translation>
 <translation id="6810613314571580006">Saqlangan hisob ma’lumotlaridan foydalanib veb-saytlarga avtomatik kirish. Bu funksiya o‘chirilsa, har safar veb-saytga kirishdan oldin to‘ldirish so‘raladi.</translation>
 <translation id="5454166040603940656"><ph name="PROVIDER"/> yordamida</translation>
-<translation id="7108338896283013870">Berkitish</translation>
 <translation id="1426410128494586442">Ha</translation>
 <translation id="4250680216510889253">Yo‘q</translation>
 <translation id="7473891865547856676">Yo‘q, rahmat</translation>
@@ -1481,7 +1496,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="7052237160939977163">Unumdorlik kuzatuvi ma’lumotlarini jo‘natish</translation>
 <translation id="5526928694260255286"><ph name="BEGIN_LINK"/>Bluetooth jurnali<ph name="END_LINK"/> biriktirilsin (Brave Software ichki tekshiruvi uchun)</translation>
 <translation id="3047644958362961983">Bu axborot Assistent muammosini yaxshiroq tushunishga yordam beradi. Axborot 90 kungacha saqlanadi va faqatgina muayyan jamoa yoki muhandislar tomonidan ishlatiladi.</translation>
-<translation id="1705635099498185261">Bluetooth muammolarini yaxshiroq o‘rganish uchun Brave Softwarerlar o‘z hisobotlarida qo‘shimcha Bluetooth jurnallarini biriktirishi mumkin. Agar bu afzalik yoniq bo‘lsa, xabaringizga joriy seansingizdagi btsnoop va HCI jurnallari biriktirilib, iloji borisha PII olib tashlangan holda yuboriladi. Bu jurnallar Brave OS mahsulot guruhi menejerlariga Listnr vositasida ham ko‘rinmaydi. Jurnallar 90 kundan keyin tozalanadi.</translation>
+<translation id="8545590844135745781">Bluetooth muammolarini yaxshiroq o‘rganish uchun Brave Softwarerlar o‘z hisobotlarida qo‘shimcha Bluetooth jurnallarini biriktirishi mumkin. Agar bu afzalik yoniq bo‘lsa, xabaringizga joriy seansingizdagi btsnoop va HCI jurnallari biriktirilib, iloji borisha PII olib tashlangan holda yuboriladi. Bu jurnallar Brave OS mahsulot guruhi menejerlariga Listnr vositasida ham ko‘rinmaydi. Jurnallar 90 kundan keyin tozalanadi.</translation>
 <translation id="4206323443866416204">Fikr-mulohaza</translation>
 <translation id="3681311097828166361">Fikr-mulohaza uchun rahmat! Hozir internet bilan aloqa yo‘qligi sababli xabaringiz keyinroq yuboriladi.</translation>
 <translation id="8713570323158206935"><ph name="BEGIN_LINK1"/>Tizim haqidagi ma’lumotlarni<ph name="END_LINK1"/> jo‘natish</translation>
@@ -1573,6 +1588,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="255747371423522804">Mavjud guruhga kiritish</translation>
 <translation id="2977480621796371840">Guruhdan chiqarish</translation>
 <translation id="8975562453115131273">{NUM_OTHER_TABS,plural, =0{“<ph name="TAB_TITLE"/>”}=1{“<ph name="TAB_TITLE"/>” va yana 1 ta varaq}other{“<ph name="TAB_TITLE"/>” va yana # ta varaq}}</translation>
+<translation id="8177318697334260664">{NUM_TABS,plural, =1{Varaqni yangi oynaga olish}other{Varaqlarni yangi oynaga olish}}</translation>
 <translation id="5876851302954717356">Oʻng tomonda yangi varaq ochish</translation>
 <translation id="4322394346347055525">Boshqa ichki oynalarni yopish</translation>
 <translation id="1166212789817575481">O‘ng tomondagi ichki oynalarni yopish</translation>
@@ -1583,13 +1599,16 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="7353887511974462734">Mavjud guruhga kiritish</translation>
 <translation id="6964760285928603117">Guruhdan chiqarish</translation>
 <translation id="5548159762883465903">{NUM_OTHER_TABS,plural, =0{“<ph name="TAB_TITLE"/>”}=1{“<ph name="TAB_TITLE"/>” va yana 1 ta varaq}other{“<ph name="TAB_TITLE"/>” va yana # ta varaq}}</translation>
+<translation id="8162984717805647492">{NUM_TABS,plural, =1{Varaqni yangi oynaga olish}other{Varaqlarni yangi oynaga olish}}</translation>
 <translation id="2894757982205307093">Joriy guruhda yangi varaq ochish</translation>
 <translation id="4460014764210899310">Guruhni bekor qilish</translation>
 <translation id="4871719318659334896">Guruhni yopish</translation>
 <translation id="945522503751344254">Fikr-mulohaza</translation>
+<translation id="934244546219308557">Bu guruhni nomlang</translation>
 <translation id="8781834595282316166">Joriy guruhda yangi varaq ochish</translation>
 <translation id="1780152987505130652">Guruhni yopish</translation>
 <translation id="8041089156583427627">Fikr-mulohaza</translation>
+<translation id="8263336784344783289">Bu guruhni nomlang</translation>
 <translation id="2278562042389100163">Brauzer oynasini ochish</translation>
 <translation id="756445078718366910">Brauzer oynasini ochish</translation>
 <translation id="1165039591588034296">Xatolik</translation>
@@ -1637,12 +1656,11 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="6280912520669706465">ARC</translation>
 <translation id="4728558894243024398">Platforma</translation>
 <translation id="7022562585984256452">Bosh sahifa sozlandi.</translation>
-<translation id="7274626204661209194">Brave Software virtual printeri</translation>
+<translation id="8069615408251337349">Brave Software virtual printeri</translation>
 <translation id="4973307593867026061">Printerlarni qo‘shish</translation>
-<translation id="9052208328806230490">Printerlaringizni <ph name="EMAIL"/> hisobi yordamida <ph name="CLOUD_PRINT_NAME"/>’da qayddan o‘tkazdingiz</translation>
 <translation id="3792890930871100565">Printerlarni o‘chirish</translation>
 <translation id="5038863510258510803">Yoqilmoqda...</translation>
-<translation id="8206354486702514201">Bu parametr administrator tomonidan yoqilgan.</translation>
+<translation id="8264024885325823677">Bu sozlama administrator tomonidan boshqariladi.</translation>
 <translation id="1116779635164066733">Bu sozlamani “<ph name="NAME"/>” kengaytmasi boshqaradi.</translation>
 <translation id="4620809267248568679">Bu parametr kengaytma tomonidan kuchga kiritilgan.</translation>
 <translation id="4846680374085650406">Parametr administrator tavsiyasi asosida sozlangan.</translation>
@@ -1794,6 +1812,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="8780443667474968681">Ovozli qidiruv o‘chiq.</translation>
 <translation id="8371695176452482769">Gapiring</translation>
 <translation id="2942560570858569904">Kutilmoqda...</translation>
+<translation id="6097600385983390082">Ovozli qidiruv yopiq</translation>
 <translation id="6436164536244065364">Internet-do‘konda ko‘rish</translation>
 <translation id="5258992782919386492">Shu qurilmaga oʻrnatish</translation>
 <translation id="3331974543021145906">Ilova haqida</translation>
@@ -1877,8 +1896,9 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="8978154919215542464">Yoniq (hamma narsani sinxronlash)</translation>
 <translation id="1487335504823219454">Yoniq – foydalanuvchi sozlamalari</translation>
 <translation id="1887442540531652736">Kirishda xatolik yuz berdi</translation>
-<translation id="7979036127916589816">Sinxronlash xatoligi</translation>
+<translation id="8627706565932943526">Sinxronlash xatoligi</translation>
 <translation id="7605594153474022051">Sinxronizatsiya ishlamayapti</translation>
+<translation id="7646772052135772216">Parollar sinxronizatsiyasi ishlamadi</translation>
 <translation id="1648943974594387137">Hisob ma’lumotlari eskirgan</translation>
 <translation id="9148126808321036104">Qaytadan kiring</translation>
 <translation id="2638087589890736295">Sinxronizatsiyani boshlash uchun kodli iborani kiriting</translation>
@@ -2046,9 +2066,11 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="3007771295016901659">Varaqni nusxalash</translation>
 <translation id="9085256200913095638">Tanlangan varaqni nusxalash</translation>
 <translation id="2973324205039581528">Sayt ovozini o‘chirish</translation>
-<translation id="21133533946938348">Ichki oynani qadab qo‘yish</translation>
 <translation id="4025039777635956441">Tanlangan saytni ovozsiz qilish</translation>
+<translation id="21133533946938348">Ichki oynani qadab qo‘yish</translation>
 <translation id="1296911687402551044">Tanlangan varaqni mahkamlash</translation>
+<translation id="2082187087049518845">Varaqni guruhlash</translation>
+<translation id="4811503964269049987">Belgilangan varaqni guruhlash</translation>
 <translation id="2007404777272201486">Muammo haqida xabar yuborish...</translation>
 <translation id="3118319026408854581"><ph name="PRODUCT_NAME"/> yordam markazi</translation>
 <translation id="6721972322305477112">&amp;Fayl</translation>
@@ -2171,8 +2193,13 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="7108634116785509031"><ph name="HOST"/> kamerangizdan foydalanmoqchi</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> ekraningizni namoyish qilmoqchi</translation>
 <translation id="4275663329226226506">Kamera va mikrofon</translation>
+<translation id="5804427196348435412">NFC qurilmalarni ishlatish</translation>
 <translation id="131405271941274527"><ph name="URL"/> sayti NFC orqali axborot almashinishga ruxsat soʻramoqda</translation>
 <translation id="6268718011101775129">NFC</translation>
+<translation id="6767115174726603949">Virtual reallik qurilmalari va maʼlumotlariga ruxsat</translation>
+<translation id="1884930769492918228">Kamera joylashuvini aniqlash va xonani proyeksiyalash</translation>
+<translation id="3383210070657133526"><ph name="URL"/> virtual reallik seansini boshlamoqchi</translation>
+<translation id="4357784477082216550"><ph name="URL"/> kamera joylashuvini aniqlab, xonangizni proyeksiyalamoqchi</translation>
 <translation id="8962918469425892674">Bu sayt harakat yoki yorug‘lik sensorlaridan foydalanmoqda.</translation>
 <translation id="4532646538815530781">Bu saytda harakat sensorlari ishlatilyapti.</translation>
 <translation id="6057381398996433816">Bu sayt uchun harakat va yorug‘lik sensorlaridan foydalanish taqiqlandi</translation>
@@ -2194,6 +2221,8 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="1997484222658892567"><ph name="URL"/> sayti katta hajmdagi ma’lumotlarni kompyuteringizda doimiy saqlashga ruxsat so‘ramoqda</translation>
 <translation id="7648992873808071793">Fayllarni bu qurilmada saqlash</translation>
 <translation id="8871551568777368300">Administrator tomonidan qadalgan</translation>
+<translation id="4723140812774948886">Keyingisiga almashtirish</translation>
+<translation id="540495485885201800">Avvalgisiga almashtirish</translation>
 <translation id="4110895898888439383">Internetni yuqori kontrastli rejimda kezish</translation>
 <translation id="614940544461990577">Quyidagilarni bajaring:</translation>
 <translation id="7325437708553334317">Yuqori kontrast kengaytmasi</translation>
@@ -2238,7 +2267,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="2505324914378689427">{SCREEN_INDEX,plural, =1{Ekran #}other{Ekran #}}</translation>
 <translation id="839736845446313156">Ro‘yxaytdan o‘tish</translation>
 <translation id="6285120908535925801">{NUM_PRINTER,plural, =1{Tarmoqda yangi printer}other{Tarmoqda yangi printerlar}}</translation>
-<translation id="2656240156816412333">{NUM_PRINTER,plural, =1{Brave Software Virtual printer xizmatiga printer qo‘shing va hujjatlarni istalgan qurilmadan turib chop etishga yuboring.}other{Brave Software Virtual printer xizmatiga # ta printer qo‘shing va hujjatlarni istalgan qurilmadan turib chop etishga yuboring.}}</translation>
+<translation id="1653526288038954982">{NUM_PRINTER,plural, =1{Brave Software Virtual printer xizmatiga printer qo‘shing va hujjatlarni istalgan qurilmadan turib chop etishga yuboring.}other{Brave Software Virtual printer xizmatiga # ta printer qo‘shing va hujjatlarni istalgan qurilmadan turib chop etishga yuboring.}}</translation>
 <translation id="409579654357498729">Virtual printerga qo‘shish</translation>
 <translation id="4628757576491864469">Qurilmalar</translation>
 <translation id="6915804003454593391">Foydalanuvchi:</translation>
@@ -2248,7 +2277,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="1895934970388272448">Bu jarayonni tugallash uchun registratsiyani printerda tasdiqlashingiz kerak - hoziroq tekshiring.</translation>
 <translation id="551752069230578406">Hisobga printer qo‘shilmoqda. Bu bir necha daqiqa vaqtingizni olishi mumkin...</translation>
 <translation id="2384436799579181135">Xatolik yuz berdi. Printeringizni tekshiring va qaytadan urining.</translation>
-<translation id="2569908351567260524">Brave Software virtual printeriga ulanilgan printer</translation>
+<translation id="1327074568633507428">Brave Software virtual printeriga ulanilgan printer</translation>
 <translation id="6782994146626179935">Brave Software bulutli texnologiyalari qurilmasi</translation>
 <translation id="7140928199327930795">Boshqa qurilmalar mavjud emas.</translation>
 <translation id="8213577208796878755">Yana bir qurilma mavjud.</translation>
@@ -2261,11 +2290,10 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="6711610692002680394">Yangi qurilmani ro‘yxatdan o‘tkazish uchun Brave hisobingizga kiring</translation>
 <translation id="8931394284949551895">Yangi qurilmalar</translation>
 <translation id="3752673729237782832">Mening qurilmalarim</translation>
-<translation id="1721937473331968728">Kompyuterga ulangan oddiy printerlarni <ph name="CLOUD_PRINT_NAME"/> xizmatiga qo‘shish mumkin.</translation>
 <translation id="715118844758971915">Oddiy printerlar</translation>
 <translation id="4263757076580287579">Printerni ro‘yxatdan o‘tkazish bekor qilindi.</translation>
 <translation id="8152091997436726702">Printerni ro‘yxatdan o‘tkazish davomida kutish vaqti tugadi. Bu jarayonni tugallash uchun, printerni ro‘yxat o‘tkazishni tasdiqlash zarur.</translation>
-<translation id="2057904164277279211">Hujjatlar chop etilishi uchun <ph name="BEGIN_LINK_HELP"/>Brave Software serverlariga yuborildi<ph name="END_LINK_HELP"/>. Printerlaringiz va printer tarixini <ph name="BEGIN_LINK_DASHBOARD"/>Brave Software Virtual printer shaxsiy kabineti<ph name="END_LINK_DASHBOARD"/> orqali ko‘rish, tahrirlash va boshqarish mumkin.</translation>
+<translation id="2624930408905606513">Hujjatlar chop etilishi uchun <ph name="BEGIN_LINK_HELP"/>Brave Software serverlariga yuborildi<ph name="END_LINK_HELP"/>. Printerlaringiz va printer tarixini <ph name="BEGIN_LINK_DASHBOARD"/>Brave Software Virtual printer shaxsiy kabineti<ph name="END_LINK_DASHBOARD"/> orqali ko‘rish, tahrirlash va boshqarish mumkin.</translation>
 <translation id="3082780749197361769">Bu ichki oyna kamera yoki mikrofoningizdan foydalanmoqda.</translation>
 <translation id="3578594933904494462">Bu ichki oynadagi kontentga umumiy ruxsat ochilgan.</translation>
 <translation id="4449996769074858870">Bu ichki oynada audio ijro etilmoqda.</translation>
@@ -2290,6 +2318,10 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="8980951173413349704"><ph name="WINDOW_TITLE"/> – ishdan chiqdi</translation>
 <translation id="6579705087617859690"><ph name="WINDOW_TITLE"/> - Ekran namoyish qilinmoqda</translation>
 <translation id="8588868914509452556"><ph name="WINDOW_TITLE"/> – garnituraga VR kontent namoyish etilmoqda</translation>
+<translation id="608531959444400877"><ph name="WINDOW_TITLE"/> – nomsiz guruhning qismi</translation>
+<translation id="1130589222747246278"><ph name="WINDOW_TITLE"/> – <ph name="GROUP_NAME"/> guruhi qismi</translation>
+<translation id="7102928824073746774">Nomsiz guruh – <ph name="GROUP_CONTENTS"/></translation>
+<translation id="1846880379134204029"><ph name="GROUP_NAME"/> guruhi – <ph name="GROUP_CONTENTS"/></translation>
 <translation id="3590194807845837023">Profilni qulfdan chiqarish va qayta ishga tushirish</translation>
 <translation id="7624337243375417909">caps lock o‘chiq</translation>
 <translation id="6798780071646309401">caps lock yoniq</translation>
@@ -2353,6 +2385,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="3271648667212143903"><ph name="ORIGIN"/> qurilmangizga ulanmoqchi</translation>
 <translation id="7945031593909029181">“<ph name="CHROME_EXTENSION_NAME"/>” kengaytmasi qurilmangizga ulanmoqchi</translation>
 <translation id="3949790930165450333"><ph name="DEVICE_NAME"/> (<ph name="DEVICE_ID"/>)</translation>
+<translation id="2010501376126504057">Mos qurilmalar</translation>
 <translation id="5308380583665731573">Ulanish</translation>
 <translation id="8480869669560681089">Notanish qurilma (<ph name="VENDOR_NAME"/>)</translation>
 <translation id="1500297251995790841">Noma’lum qurilma [<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>]</translation>
@@ -2485,6 +2518,8 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="8818958672113348984">Telefon orqali tasdiqlash</translation>
 <translation id="6112931163620622315">Telefoningizni tekshiring</translation>
 <translation id="5605758115928394442">Telefoningizga bildirishnoma yuborildi. Shaxsingizni tasdiqlang.</translation>
+<translation id="139911022479327130">Telefonni qulfdan chiqaring va shaxsingizni tasdiqlang</translation>
+<translation id="2537464584626495441">Telefoningizda elektron kalit ilovasini oching</translation>
 <translation id="7378962964415201590">Yangi telefon ulash</translation>
 <translation id="4774824109040330448">QR kodni telefoningizdagi mos autentifikator ilova yordamida skanerlang.</translation>
 <translation id="7685087414635069102">PIN kodni kiritish zarur</translation>
@@ -2518,18 +2553,33 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="4349828822184870497">Foydali</translation>
 <translation id="6876469544038980967">Foydasiz</translation>
 <translation id="5286194356314741248">Qidiruv</translation>
-<translation id="3637561406135221044">Fayllarda maxfiy maʼlumotlar borligi tekshirilmoqda...</translation>
+<translation id="8236123533334037984">Bu yuklama tashkilotingiz xavfsizlik tizimi tomonidan tekshirilmoqda.</translation>
+<translation id="2925054096976782003">Joylangan maʼlumotlar tashkilotingiz xavfsizlik tizimi tomonidan tekshirilmoqda.</translation>
+<translation id="5068377946749700758">Tortib tashlangan maʼlumotlar tashkilotingiz xavfsizlik tizimi tomonidan tekshirilmoqda.</translation>
+<translation id="176273057789108760">Tortib tashlangan fayllar tashkilotingiz xavfsizlik tizimi tomonidan tekshirilmoqda.</translation>
+<translation id="2877030408509021795">Tekshiruv yakunlandi, hammasi joyida</translation>
+<translation id="5313628438272378649">Bu yuklama tashkilot xavfsizlik siyosatiga zid va bajarilmaydi.</translation>
+<translation id="4429030830601238961">Bu maʼlumotlar tashkilot xavfsizlik siyosatiga zid va joylanmaydi.</translation>
+<translation id="3635241501480133979">Bu maʼlumotlar tashkilot xavfsizlik siyosatiga zid va shu sababli ularni tortib tashlash imkonsiz.</translation>
+<translation id="7086467953285486445">Bu fayllar tashkilot xavfsizlik siyosatiga zid va shu sababli ularni tortib tashlash imkonsiz.</translation>
+<translation id="2959127025785722291">Xatolik yuz berdi. Oxirigacha tekshirilmadi. Qaytadan urining.</translation>
+<translation id="6462438303393708881">Yuklashni bekor qilish</translation>
 <translation id="2878782256107578644">Skanerlanmoqda, hozir ochilsinmi?</translation>
 <translation id="6098793583803863900">Notanish fayl tarkibida viruslar mavjudligi tekshirilmoqda.</translation>
 <translation id="7584578941316704630">Ochishdan oldin tekshirilsinmi?</translation>
-<translation id="1039850285407663109">Tanlangan fayl nomaʼlum va zararli boʻlishi mumkin. Uni ochishdan oldin antivirus orqali tekshiring.</translation>
+<translation id="8494182771797646687">Tanlangan fayl nomaʼlum va zararli boʻlishi mumkin. Kengaytirilgan himoya bu faylni Brave Softwarega zararli dastur emasligini aniqlash uchun yuborishni tavsiya qiladi.</translation>
 <translation id="2587922766792651800">Kutish vaqti tugadi</translation>
-<translation id="8106661353233173262">Xatolik yuz berdi. Fayl tekshiruvi uchun ajratilgan vaqt tugadi.</translation>
+<translation id="4404136731284211429">Yana qidirish</translation>
 <translation id="6428450836711225518">Telefon raqamingizni tasdiqlang</translation>
 <translation id="8742371904523228557"><ph name="ORIGIN"/> sayti uchun tasdiq kodingiz: <ph name="ONE_TIME_CODE"/></translation>
 <translation id="6518133107902771759">Tasdiqlash</translation>
 <translation id="5678293144564424498">Ilova pauza qilindi</translation>
 <translation id="1282420830958964167">Ota-onangiz tomonidan belgilangan <ph name="APP_NAME"/> ilovasidan foydalanish vaqti tugadi. Ertaga yana <ph name="TIME_LIMIT"/> ishlata olasiz.</translation>
+<translation id="3821372858277557370">{NUM_EXTENSIONS,plural, =1{Kengaytma tasdiqlandi}other{# ta kengaytma tasdiqlandi}}</translation>
+<translation id="6930161297841867798">{NUM_EXTENSIONS,plural, =1{Kengaytma rad etildi}other{# ta kengaytma rad etildi}}</translation>
+<translation id="5523149538118225875">{NUM_EXTENSIONS,plural, =1{Kengaytma administrator tomonidan oʻrnatildi}other{# ta kengaytma administrator tomonidan oʻrnatildi}}</translation>
+<translation id="2073148037220830746">{NUM_EXTENSIONS,plural, =1{Kengaytmani oʻrnatish uchun bosing}other{Kengaytmalarni oʻrnatish uchun bosing}}</translation>
+<translation id="5203920255089865054">{NUM_EXTENSIONS,plural, =1{Kengaytmani ochish uchun bosing}other{Bu kengaytmalarni ochish uchun bosing}}</translation>
 <translation id="394984172568887996">IE brauzeridan import qilinganlar</translation>
 <translation id="1543284117603151572">EDGE brauzeridan import qilinganlar</translation>
 <translation id="5502500733115278303">Firefox brauzeridan import qilinganlar</translation>
@@ -2685,6 +2735,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="5070556616376997776">Siz inkognito rejimidasiz</translation>
 <translation id="2199298570273670671">Xato</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: Sinxronizatsiya ishlamayapti</translation>
+<translation id="1605544918554600534"><ph name="PROFILE_NAME"/>: parollar sinxronizatsiyasi ishlamayapti</translation>
 <translation id="7307129035224081534">Vaqtincha to‘xtatildi</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>: sinxronizatsiya to‘xtatilgan</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (boshqariladigan profil)</translation>
@@ -2705,7 +2756,6 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="1372841398847029212">Hisobingizga sinxronlash</translation>
 <translation id="2538361623464451692">Sinxronlash yoqilmagan</translation>
 <translation id="1316495628809031177">Sinxronizatsiya pauza qilingan</translation>
-<translation id="7786207843293321886">Mehmon seansidan chiqish</translation>
 <translation id="2335111415680198280">{0,plural, =1{# ta oynani yopish}other{# ta oynani yopish}}</translation>
 <translation id="2329597144923131178">Xatcho‘plar, tarix, parollar va boshqa sozlamalarni barcha qurilmalaringizda sinxronlash uchun hisobingizga kiring.</translation>
 <translation id="7029809446516969842">Parollar</translation>
@@ -2715,14 +2765,10 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="5287425679749926365">Hisoblar</translation>
 <translation id="4801448226354548035">Hisoblarni yashirish</translation>
 <translation id="2935225303485967257">Foydalanuvchilarni boshqarish</translation>
-<translation id="7388222713940428051">Mehmon rejimida oyna ochish</translation>
-<translation id="127668050356036882">Barcha oynalarni yopish</translation>
 <translation id="8966809848145604011">Boshqalar</translation>
 <translation id="1464258312790801189">Hisoblar</translation>
 <translation id="6655458902729017087">Hisoblarni yashirish</translation>
 <translation id="688280436658139163">Foydalanuvchilarni boshqarish</translation>
-<translation id="2666990579225592931">Mehmon rejimida oyna ochish</translation>
-<translation id="5869948122057593679">Barcha oynalarni yopish</translation>
 <translation id="4133080584509825342">Foydalanuvchini tahrirlash, <ph name="PROFILE_NAME"/></translation>
 <translation id="4848862725510532982">Foydalanuvchini tahrirlash, <ph name="PROFILE_NAME"/> , <ph name="USERNAME"/></translation>
 <translation id="3294437725009624529">Mehmon</translation>
@@ -2865,11 +2911,19 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="7388044238629873883">Deyarli tamom!</translation>
 <translation id="8688579245973331962">Ismingizni topolmadingizmi?</translation>
 <translation id="4222772810963087151">Nashr axboroti</translation>
+<translation id="8867228703146808825">Nashr tavsilotlarini klipbordga nusxalash</translation>
+<translation id="6532663472409656417">Korporativ domenda qayd qilingan</translation>
+<translation id="1549275686094429035">ARC yoniq</translation>
+<translation id="7121438501124788993">Dasturchi rejimi</translation>
+<translation id="6315812488257290136">Odamlar</translation>
 <translation id="4382131447572146376">{COUNT,plural, =0{<ph name="EMAIL"/>}=1{<ph name="EMAIL"/> va yana 1 ta hisob}other{<ph name="EMAIL"/> va yana <ph name="EXTRA_ACCOUNTS"/> ta hisob}}</translation>
-<translation id="1060881073479695738">Play Market ilovalari</translation>
+<translation id="7434635829372401939">Sozlamalarni sinxronlash</translation>
+<translation id="3181825792072797598">Sinxronizatsiyani yoqish</translation>
+<translation id="2547583314137677375">Sinxronizatsiya qilmaslik</translation>
 <translation id="6985607387932385770">Printerlar</translation>
 <translation id="7788444488075094252">Tillar va matn kiritish</translation>
 <translation id="4181841719683918333">Tillar</translation>
+<translation id="6785915470941880363">Teskari varaqlash <ph name="LINK_BEGIN"/>Batafsil<ph name="LINK_END"/></translation>
 <translation id="6340526405444716530">Personalizatsiya</translation>
 <translation id="8818152010000655963">Fon rasmi</translation>
 <translation id="7289225569524511578">Fon rasmlari ilovasini oching</translation>
@@ -2888,7 +2942,8 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="7456142309650173560">dev</translation>
 <translation id="6647838571840953560">Hozir “<ph name="CHANNEL_NAME"/>” kanalida</translation>
 <translation id="9057354806206861646">Jadvalni yangilash</translation>
-<translation id="7737456446569756884">Bu qurilmadagi dasturlar va xavfsizlik sozlamalari <ph name="MONTH_AND_YEAR"/> sanasigacha avtomatik yangilanadi.</translation>
+<translation id="2600522410036850735">Bu qurilmadagi dasturlar va xavfsizlik sozlamalari <ph name="MONTH_AND_YEAR"/> sanasigacha avtomatik yangilanadi. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Batafsil&lt;/a&gt;</translation>
+<translation id="903797871439633902">Bu <ph name="DEVICE_TYPE"/> qurilmasidagi DT va xavfsizlik sozlamalari uchun oxirgi avtomatik yangilanish. Keyingi chiqadigan yangilanishlar uchun qurilmaning yangiroq modeli kerak boʻladi. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Batafsil&lt;/a&gt;</translation>
 <translation id="4297219207642690536">Qayta ishga tushirish va asliga qaytarish</translation>
 <translation id="4716483597559580346">Xavfsizlikni oshirish uchun qurilmani zavod sozlamalariga qaytaring</translation>
 <translation id="4089922565956168950">Bu yangilanish Bravebook qurilmangizni ilk sozlamalarga qaytaradi va undagi foydalanuvchi ma’lumotlarini tozalaydi.</translation>
@@ -2902,11 +2957,9 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/> qurilmangizdagi Brave OS versiyasi yangi</translation>
 <translation id="3688526734140524629">Boshqa versiyani tanlash</translation>
 <translation id="6410328738210026208">Boshqa kanal tanlash va Powerwash amalini ishga tushirish</translation>
-<translation id="1979280758666859181">Siz <ph name="PRODUCT_NAME"/>‘ning ancha eski versiyasidan yangilanish kanaliga o‘tyapsiz. O‘zgartirishlar kuchga kirishi uchun kanal versiyasi qurilmangizdagi joriy versiya bilan bir xil bo‘lishi kerak.</translation>
 <translation id="7728668285692163452">Kanal o‘zgarishi keyinroq tatbiq qilinadi</translation>
 <translation id="5495466433285976480">Qayta o‘chirib yoqishdan so‘ng barcha mahalliy hisoblar, fayllar, ma’lumotlar va boshqa sozlamalar o‘chirib yuboriladi. Barcha foydalanuvchilar hisobga qaytadan kirishlari kerak bo‘ladi.</translation>
 <translation id="8101987792947961127">Qurilmani keyingi marta qayta ishga tushirishda Powerwash amali bajarilishi kerak</translation>
-<translation id="1414648216875402825"><ph name="PRODUCT_NAME"/>’ning beqaror versiyasiga yangilanmoqdasiz, unda yakunlanmagan xususiyatlar bor. Qotib qolishlar va kamchiliklar uchraydi. Ehtiyotkorlik bilan davom eting.</translation>
 <translation id="6103681770816982672">Diqqat! Siz dasturchilar versiyasiga o‘tmoqdasiz.</translation>
 <translation id="8807632654848257479">Barqaror</translation>
 <translation id="830868413617744215">Beta</translation>
@@ -2941,6 +2994,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="5901630391730855834">Sariq</translation>
 <translation id="161042844686301425">Havorang</translation>
 <translation id="4115378294792113321">Siyohrang</translation>
+<translation id="548137908954174608">Jonli izohlarni yoqish</translation>
 <translation id="6981982820502123353">Maxsus imkoniyatlar</translation>
 <translation id="5840822070878669614">Brave internet-do‘konida ochish</translation>
 <translation id="6073903501322152803">Maxsus imkoniyatlar qo‘shish</translation>
@@ -2999,7 +3053,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="8758418656925882523">Diktovkani yoqish (ovoz bilan matn kiritish)</translation>
 <translation id="7580671184200851182">Bir xil audioni barcha karnaylar orqali ijro qilish (mono audio)</translation>
 <translation id="1361872463926621533">Ochilganda tovush ijro etish</translation>
-<translation id="1189418886587279221">Qurilmani yanada qulayroq qilish uchun maxsus imkoniyatlarni yoqing.</translation>
+<translation id="1714644264617423774">Qurilmani yanada qulayroq qilish uchun maxsus imkoniyatlarni yoqing. <ph name="LINK_BEGIN"/>Batafsil<ph name="LINK_END"/></translation>
 <translation id="48704129375571883">Qo‘chimcha funksiyalarni qo‘shish</translation>
 <translation id="7230787553283372882">Matn hajmini sozlash</translation>
 <translation id="214169863967063661">Tashqi ko‘rinish sozlamalarini ochish</translation>
@@ -3050,6 +3104,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="7288013116963835700"><ph name="DEVICE_TYPE"/> qurilmasi uchun Linux tizimini olib tashlash</translation>
 <translation id="7933634003144813719">Umumiy jildlarni boshqarish</translation>
 <translation id="2214018885812055163">Umumiy jildlar</translation>
+<translation id="7396017167185131589">Ulashilgan jildlar shu yerda chiqadi</translation>
 <translation id="6697690052557311665">Fayllar ilovasida jild ustida sichqonchaning oʻng tugmasini bosing va “Linux bilan ulashish” bandini tanlang.</translation>
 <translation id="7932969338829957666">Ulashilgan jildlar Linuxda <ph name="BASE_DIR"/> manziliga ulangan.</translation>
 <translation id="3726137731714254362">Jildlar olib tashlansa, ulashuvi toʻxtatiladi, lekin fayllari tozalanmaydi.</translation>
@@ -3073,10 +3128,15 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="1327495825214193325">ADB tuzatish vositalarini yoqish uchun <ph name="DEVICE_TYPE"/> qurilmasini oʻchirib yoqish zarur. ADB vositasini oʻchirish uchun qurilmani zavod sozlamalariga qaytarish kerak.</translation>
 <translation id="8082390128630131497">Agar ADB tuzatish vositasi oʻchirilsa, ushbu <ph name="DEVICE_TYPE"/> qurilmasi sozlamalari asliga qaytariladi. Barcha hisoblar va qurilmadagi maʼlumotlar tozalanadi.</translation>
 <translation id="1630768113285622200">Oʻchirib yoqish va davom etish</translation>
+<translation id="8539766201049804895">Yangilash</translation>
+<translation id="6973611239564315524">Debian 10 (Buster) versiyasi chiqdi</translation>
+<translation id="1508575541972276599">Joriy versiya: Debian 9 (Stretch)</translation>
 <translation id="1679806121152819234">Virtual mashina plagini</translation>
 <translation id="1878541307036593717">Ruxsatlarni sozlash</translation>
 <translation id="7508054832109420082">Printerlardan foydalanishga ruxsat berish</translation>
 <translation id="2258855745387252834">Fayllar ilovasida jild ustida sichqonchaning oʻng tugmasini bosing va “VM plagini bilan ulashish” bandini tanlang.</translation>
+<translation id="4997384734315285248">Plugin VM plaginini oʻchirish</translation>
+<translation id="5454360575035671759">Virtual mashina plagini olib tashlansa, virtual mashinangiz oʻchib ketadi. Ichidagi ilovalar, sozlamalar va maʼlumotlari bilan. Davom ettirilsinmi?</translation>
 <translation id="2714393097308983682">Brave Software Play Market</translation>
 <translation id="572155275267014074">Android sozlamalari</translation>
 <translation id="7201042526153088083"><ph name="DEVICE_TYPE"/> qurilmasida Brave Software Play Marketdan ilova va oʻyinlarni yuklab oling &lt;a target="_blank" href="<ph name="URL"/>"&gt;Batafsil&lt;/a&gt;</translation>
@@ -3114,8 +3174,8 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="883304095704384301">Agar qidirayotgan narsangiz topilmagan bo‘lsa, <ph name="BEGIN_LINK_CHROMIUM"/>Brave Software Brave yordam markazi<ph name="END_LINK_CHROMIUM"/> sahifasiga o‘ting</translation>
 <translation id="6406708970972405507">Sozlamalar – <ph name="SECTION_TITLE"/></translation>
 <translation id="3019285239893817657">Quyi sahifa tugmasi</translation>
-<translation id="5860033963881614850">O‘chiq</translation>
-<translation id="5916664084637901428">Yoniq</translation>
+<translation id="379509625511193653">Yoqilmagan</translation>
+<translation id="6762833852331690540">Yoniq</translation>
 <translation id="1378613616312864539">Bu parametr <ph name="NAME"/> kengaytmasi tomonidan boshqariladi</translation>
 <translation id="8465252176946159372">Yaroqli emas</translation>
 <translation id="8647834505253004544">Yaroqsiz veb-manzil kiritildi</translation>
@@ -3175,7 +3235,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="7136694880210472378">Birlamchi bo‘lsin</translation>
 <translation id="1153356358378277386">Ulangan qurilmalar</translation>
 <translation id="4481530544597605423">Uzilgan qurilmalar</translation>
-<translation id="4576541033847873020">Bluetooth qurilma ulash</translation>
+<translation id="6238624845858322552">Bluetooth qurilmaga ulanish</translation>
 <translation id="4870903493621965035">Hech qanday qurilma ulanmagan</translation>
 <translation id="1303671224831497365">Bluetooth qurilmalari topilmadi</translation>
 <translation id="5842497610951477805">Bluetooth yoniq</translation>
@@ -3282,14 +3342,16 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="5648166631817621825">Oxirgi 7 kun</translation>
 <translation id="8571213806525832805">Oxirgi 4 hafta</translation>
 <translation id="6979737339423435258">Shu kungacha</translation>
+<translation id="1043818413152647937">Bu ilovalarning maʼlumotlari ham tozalansinmi?</translation>
 <translation id="3399432415385675819">Bildirishnomalar kelmay qoladi</translation>
 <translation id="3459509316159669723">Chop etish</translation>
-<translation id="1563008449513980623">Brave Software Virtual printer xizmatidagi printerlarni sozlash yoki boshqarish</translation>
+<translation id="7063957500469387217">Brave Software Virtual printer xizmatidagi printerlarni sozlash yoki boshqarish</translation>
 <translation id="8185331656081929126">Tarmoqdagi yangi printerlar haqida xabar qilinsin</translation>
 <translation id="6451180435462401570">Brave Software Virtual printer qurilmalarini boshqarish</translation>
-<translation id="1815579292149538864">CUPS printerlarni sozlash va boshqarish.</translation>
+<translation id="1805888043020974594">Bosma server</translation>
+<translation id="3184536091884214176">CUPS printerlarni sozlash va boshqarish. <ph name="LINK_BEGIN"/>Batafsil<ph name="LINK_END"/></translation>
 <translation id="8030656706657716245">Printer qo‘shish</translation>
-<translation id="893254996965966411">Topilgan printerlarni profilga saqlash yoki yangi printer kiritish.</translation>
+<translation id="4142518881503042940">Topilgan printerlarni profilga saqlash yoki yangi printer kiritish. <ph name="LINK_BEGIN"/>Batafsil<ph name="LINK_END"/></translation>
 <translation id="2152281589789213846">Profilingizga printerlarni kiritish</translation>
 <translation id="4940364377601827259">Saqlash uchun <ph name="PRINTER_COUNT"/> ta printer topildi.</translation>
 <translation id="5060332552815861872">Saqlash uchun 1 ta printer topildi.</translation>
@@ -3305,6 +3367,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="1472675084647422956">Yana</translation>
 <translation id="168991973552362966">Yaqin-atrofdagi printerni qo‘shish</translation>
 <translation id="3038612606416062604">Printerni o‘zingiz qo‘shing</translation>
+<translation id="740810853557944681">Bosma server kiritish</translation>
 <translation id="8002274832045662704">Kengaytirilgan printer sozlamalari</translation>
 <translation id="2818476747334107629">Printer tafsilotlari</translation>
 <translation id="4890773143211625964">Qo‘shimcha printer sozlamalarini ko‘rsatish</translation>
@@ -3323,7 +3386,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="2266957463645820432">USB orqali IPP (IPPUSB)</translation>
 <translation id="8086015605808120405"><ph name="PRINTER_NAME"/> sozlanmoqda...</translation>
 <translation id="4665014895760275686">Ishlab chiqaruvchi</translation>
-<translation id="4561098487691395071">Yoki printeringiz uchun PPD faylni tanlang</translation>
+<translation id="5043913660911154449">Yoki printeringiz PPD faylini tanlang <ph name="LINK_BEGIN"/>Batafsil<ph name="LINK_END"/></translation>
 <translation id="1418954524306642206">Printeringiz PPD faylini tanlang</translation>
 <translation id="1989112275319619282">Tanlash</translation>
 <translation id="3625481642044239431">Yaroqsiz fayl tanlandi. Qaytadan urining.</translation>
@@ -3344,16 +3407,22 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="2910318910161511225">Tarmoqqa ulaning va qaytadan urining</translation>
 <translation id="4972129977812092092">Printer sozlamalari</translation>
 <translation id="5696679855467848181">Joriy PPD fayl: <ph name="PPD_NAME"/></translation>
-<translation id="3016329696181678353"><ph name="PRINTER_NAME"/> printeri avtomatik sozlanmadi. Printer uchun batafsil axborotlarni kiriting.</translation>
+<translation id="6300718114348072351"><ph name="PRINTER_NAME"/> printeri avtomatik sozlanmadi. Printer uchun batafsil axborotlarni kiriting. <ph name="LINK_BEGIN"/>Batafsil<ph name="LINK_END"/></translation>
 <translation id="804786196054284061">Yakuniy foydalanuvchi litsenziyasi kelishuvi</translation>
 <translation id="6318944945640833942">Printer aniqlanmadi. Printer manzilini qayta kiriting.</translation>
 <translation id="2434449159125086437">Printer sozlanmadi. Sozlamalarni tekshiring va qaytadan urining.</translation>
+<translation id="8541462173655894684">Bosma serverda hech qanday printer topilmadi</translation>
+<translation id="4833683849865011483">Bosma serverda 1 ta printer topildi</translation>
+<translation id="3711945201266135623">Bosma serverda <ph name="NUM_PRINTERS"/> ta printer topildi</translation>
+<translation id="244231003699905658">Xato manzil. Manzilni tekshirib, qaytadan urining.</translation>
+<translation id="3479685872808224578">Bosma server topilmadi. Manzilni tekshirib, qaytadan urining.</translation>
+<translation id="7434969625063495310">Bosma server kiritilmadi. Server sozlamalarini tekshiring va qaytadan urining.</translation>
 <translation id="4733793249294335256">Jild</translation>
 <translation id="7754704193130578113">Har bir faylni yuklashdan oldin qayerga saqlash so‘ralsin</translation>
-<translation id="5713072761819014678">Brave Software Drive hisobini uzib qo‘yish</translation>
+<translation id="6474884162850599008">Brave Software Drive hisobini uzib qo‘yish</translation>
 <translation id="486635084936119914">Ba’zi turdagi fayllar yuklab olinishi bilan avtomatik ochilsin</translation>
 <translation id="3653160965917900914">Fayllarni tarmoqda ulashish</translation>
-<translation id="5763315388120433852">Tarmoqdagi fayl ulashuvlarini sozlash yoki boshqarish.</translation>
+<translation id="4906490889887219338">Tarmoqdagi fayl ulashuvlarini sozlash yoki boshqarish. <ph name="LINK_BEGIN"/>Batafsil<ph name="LINK_END"/></translation>
 <translation id="5734697361979786483">Fayllarni ulashish sozlamasini kiritish</translation>
 <translation id="247051149076336810">Fayllarni ulashish manzili</translation>
 <translation id="5247051749037287028">Ko‘rinadigan nom (ixtiyoriy)</translation>
@@ -3663,10 +3732,10 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="5302048478445481009">Til</translation>
 <translation id="6388429472088318283">Tillarni qidirish</translation>
 <translation id="2690024944919328218">Til sozlamalarini ko‘rsatish</translation>
-<translation id="768549422429443215">Tillar kiritish yoki roʻyxatni qayta tartiblash.</translation>
+<translation id="8218847192766059983">Tillar kiritish yoki roʻyxatni qayta tartiblash. <ph name="BEGIN_LINK"/>Batafsil<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">Tizim matni shu tilda chiqadi</translation>
 <translation id="2366260648632264559">Tizim matnlari shu tilda chiqsin</translation>
-<translation id="7216595297012131718">Tillar tartibi parametrlaringizga asoslangan</translation>
+<translation id="8336721153892716270">Tizim <ph name="LANGUAGE"/> tilida chiqishi uchun qurilmani qayta ishga tushiring.</translation>
 <translation id="5972708806901999743">Boshiga ko‘chirish</translation>
 <translation id="8609465669617005112">Tepaga o‘tish</translation>
 <translation id="6746124502594467657">Pastga tushish</translation>
@@ -3710,6 +3779,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="3181954750937456830">Saytlarni xavfsiz kezish (sizni va qurilmangizni xavfli saytlardan himoya qiladi)</translation>
 <translation id="7315322926489145388">Xavfli vaziyatlarda siz tashrif buyurgan ayrim URL manzillarni Brave Software serverlariga yuboradi</translation>
 <translation id="4991384657077828949">Brave xavfsizligini yaxshilashga yordam bering</translation>
+<translation id="1641113438599504367">Saytlarni xavfsiz kezish</translation>
 <translation id="1943176487615318915">Xavfli ilova saytlarni aniqlashda Brave siz tashrif buyuradigan saytlarning URL manzillari, tizim axboroti va ayrim sahifalardagi kontentlarni Brave Software serverlariga yuboradi</translation>
 <translation id="918192811481327695">Brave funksiyalari va unumdorligini yaxshilashga yordam bering</translation>
 <translation id="9063160602596686558">Foydalanish statistikasi va ishdan chiqish hisobotlari avtomatik tarzda Brave Software serverlariga yuborilsin</translation>
@@ -3720,6 +3790,9 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="5282733140964383898">Agar “Kuzatilmasin” parametri yoniq bo‘lsa, brauzer so‘rovlariga maxsus buyruq qo‘shiladi. Natijasi sayt so‘rovga javob berishi va so‘rov qanday ma’noda tushunilganligiga bog‘liq bo‘ladi. Masalan, qaysi sahifalarga kirganligingizdan qat’i nazar, ba’zi saytlarda reklama e’lonlari ko‘rsatilishi mumkin. Boshqa saytlar esa brauzer faoliyati haqidagi ma’lumotlarni to‘plashda (masalan, xavfsizlikni takomillashtirish, veb-saytlarida kontent, xizmatlar va reklama ko‘rsatish hamda hisobot uchun statistika yig‘ish) va bu ma’lumotlardan foydalanishda davom etmoqda. <ph name="BEGIN_LINK"/>Batafsil<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Tekshirilgan ruxsat xizmatini yoqish</translation>
 <translation id="5557991081552967863">Uyqu rejimida Wi-Fi tarmog‘iga ulanganlikcha qolsin</translation>
+<translation id="7536333565791380193">Kengaytirilgan himoya</translation>
+<translation id="8525226238722561998">Brave Software Kengaytirilgan himoya dasturi</translation>
+<translation id="1229550669565092839">Shaxsiy Brave Software hisoblarini barcha maqsadli hujumlardan himoya qiladi</translation>
 <translation id="1521442365706402292">Sertifikatlarni boshqarish</translation>
 <translation id="7075625805486468288">HTTPS/SSL sertifikatlari va sozlamalarini boshqarish</translation>
 <translation id="8871974300055371298">Kontent sozlamalari</translation>
@@ -3739,13 +3812,15 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="2336381494582898602">Powerwash</translation>
 <translation id="4275830172053184480">Qurilmangizni qayta yuklang</translation>
 <translation id="6555432686520421228"><ph name="IDS_SHORT_PRODUCT_NAME"/> qurilmasida barcha foydalanuvchilar hisoblarini o‘chirish va zavod sozlamalarini tiklash.</translation>
-<translation id="4055023634561256217">Powerwash yordamida zavod sozlamarini tiklashdan avval, qurilmani qaytadan ishga tushirish kerak.</translation>
+<translation id="5470735824776589490">Powerwash yordamida dastlabki sozlamarini tiklashdan oldin qurilmani qaytadan ishga tushirish kerak. <ph name="LINK_BEGIN"/>Batafsil<ph name="LINK_END"/></translation>
 <translation id="3223531857777746191">Asliga qaytarish tugmasi</translation>
 <translation id="1506061864768559482">Qidiruv tizimi</translation>
 <translation id="7807067443225230855">Qidiruv va assistent</translation>
 <translation id="2203682048752833055"><ph name="BEGIN_LINK"/>Manzil qatorida<ph name="END_LINK"/> ishlatiladigan qidiruv tizimi</translation>
 <translation id="1432581352905426595">Qidiruv tizimlarini boshqarish</translation>
 <translation id="2862205630718215619">Brave Software Assistent</translation>
+<translation id="8959699239363253085">Yoniq</translation>
+<translation id="971479617738309149">Yoqilmagan</translation>
 <translation id="6978121630131642226">Qidiruv tizimlari</translation>
 <translation id="1383876407941801731">Qidiruv</translation>
 <translation id="6410668567036790476">Qidiruv tizimi qo‘shish</translation>
@@ -3761,6 +3836,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="3735919318855093557">Asistentdan “Ok Brave Software” deb aytib foydalanish Batareya quvvatini tejash uchun “Yoniq” boʻlishi kerak (tavsiya etiladi). Assistent faqatgina qurilma quvvat manbaiga ulanganda yoki quvvatlanayotganda chiqadi.</translation>
 <translation id="5825412242012995131">Yoqilgan (tavsiya etiladi)</translation>
 <translation id="5067399438976153555">Har doim yoniq</translation>
+<translation id="6175644081330715138">Yoqilmagan</translation>
 <translation id="5419405654816502573">Voice Match</translation>
 <translation id="1803545009660609783">Qayta kiritish</translation>
 <translation id="5355099869024327351">Sizga bildirishnomalar chiqishi uchun Assistentni ishga tushiradi.</translation>
@@ -3776,6 +3852,10 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="967624055006145463">Ishlatilgan joy</translation>
 <translation id="2787354132612937472">—</translation>
 <translation id="1919345977826869612">Reklamalar</translation>
+<translation id="3513704683820682405">Boyitilgan reallik</translation>
+<translation id="7653295403398566475">Sayt kamerangiz joylashuvini aniqlashi yoki xonangizni proyeksiyalashidan oldin ruxsat olsin</translation>
+<translation id="3350244554415289209">Sayt kamerangiz joylashuvini aniqlashi yoki xonangizni proyeksiyalashidan oldin ruxsat olsin (tavsiya etiladi)</translation>
+<translation id="4507164039066603071">Saytlarga kamerangiz joylashuvini aniqlash yoki xonangizni proyeksiyalashni taqiqlash</translation>
 <translation id="5649053991847567735">Avtomatik yuklamalar</translation>
 <translation id="3744111561329211289">Orqa fonda sinxronlash</translation>
 <translation id="5518219166343146486">Saytlar klipbordga nusxalangan matn va rasmlarni ko‘rmoqchi bo‘lganda xabar berilsin</translation>
@@ -3784,6 +3864,10 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="2546283357679194313">Cookie fayllari va sayt ma’lumotlari</translation>
 <translation id="3668823961463113931">Ishlov berish vositalari</translation>
 <translation id="5689516760719285838">Joylashuv</translation>
+<translation id="6972629891077993081">HID qurilmalar</translation>
+<translation id="1815181278146012280">Sayt HID qurilmalardan foydalanmoqchi bo‘lganda ruxsat so‘ralsin</translation>
+<translation id="5147103632304200977">Sayt HID qurilmalardan foydalanmoqchi bo‘lganda ruxsat so‘ralsin (tavsiya etiladi)</translation>
+<translation id="967398046773905967">Saytlarga HID qurilmalardan foydalanishni taqiqlash</translation>
 <translation id="9219103736887031265">Rasmlar</translation>
 <translation id="2025891858974379949">Zararli kontent</translation>
 <translation id="5075910247684008552">Himoyalangan saytlarda zararli kontent avtomatik bloklanadi</translation>
@@ -3799,6 +3883,10 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="6612358246767739896">Himoyalangan kontent</translation>
 <translation id="4252852543720145436">Himoyalangan kontent identifikatorlari</translation>
 <translation id="3955193568934677022">Saytlarga himoyalangan kontentni ijro qilish uchun ruxsat berish (tavsiya etiladi)</translation>
+<translation id="4943703118917034429">Virtual reallik</translation>
+<translation id="7034615910652881882">Sayt virtual reallik qurilmalari yoki maʼlumotlaridan foydalanishi oldidan ruxsat olsin</translation>
+<translation id="7448625729116931228">Sayt virtual reallik qurilmalari yoki maʼlumotlaridan foydalanishi oldidan ruxsat olsin (tavsiya etiladi)</translation>
+<translation id="2868184003987917410">Saytlarga virtual reallik qurilmalari yoki maʼlumotlardan foydalanishni taqiqlash</translation>
 <translation id="4115080753528843955">Ba’zi axborot xizmatlari himoyalangan kontent ruxsatlarini boshqarish uchun maxsus identifikatorlardan foydalanadi</translation>
 <translation id="225240747099314620">Himoyalangan kontent ma’lumotlari uchun identifikatorlardan foydalanishga ruxsat berish (kompyuterni qaytadan ishga tushirish talab qilinishi mumkin)</translation>
 <translation id="7311079019872751559">Sinov jarayonidan tashqaridagi plaginlarga ruxsat</translation>
@@ -3888,6 +3976,12 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="2096715839409389970">Tashqi cookie fayllarni tozalash</translation>
 <translation id="7828731929332799387">Bunda tashqi saytlardagi barcha cookie fayllari va sayt maʼlumotlari tozalanadi. Davom ettirilsinmi?</translation>
 <translation id="2537296579376733324">Barcha cookie fayllar, faqat shu saytda</translation>
+<translation id="4488502501195719518">Barcha maʼlumotlar oʻchirib tashlansinmi?</translation>
+<translation id="93610034168535821">Saytlar ishlatgan jami xotira:</translation>
+<translation id="4336434711095810371">Barcha maʼlumotlarni tozalash</translation>
+<translation id="2112004299911874330">Saytlar joylagan <ph name="TOTAL_USAGE"/> maʼlumot tozalab tashlanadi.</translation>
+<translation id="5549467165017213645">Oʻrnatilgan ilovalar va saytlar joylagan <ph name="TOTAL_USAGE"/> maʼlumot tozalab tashlanadi.</translation>
+<translation id="1743846852744439013">Barcha saytlardagi hisobingizdan avtomatik chiqarilasiz (shuningdek, ochiq varaqlardan ham).</translation>
 <translation id="6011449291337289699">Sayt ma’lumotlarini tozalash</translation>
 <translation id="8339059274628563283"><ph name="SITE"/> saytining mahalliy ma’lumotlari</translation>
 <translation id="4090947011087001172"><ph name="SITE"/> saytidagi ruxsatlar asliga qaytarilsinmi?</translation>
@@ -3900,18 +3994,19 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="5300287940468717207">Sayt huquqlari tiklansinmi?</translation>
 <translation id="2734760316755174687"><ph name="SITE_GROUP_NAME"/> guruhidagi saytlarda ham barcha huquqlar tiklanadi</translation>
 <translation id="3255355328033513170"><ph name="SITE_GROUP_NAME"/> va ichidagi saytlar tomonidan saqlangan barcha maʼlumotlar tozalanadi. Cookie fayllari ham. Bu saytlardagi seanslaringiz yakunlanadi, hatto ochiq varaqlarda ham.</translation>
-<translation id="5691180005790455277"><ph name="SITE_GROUP_NAME"/> va unga tegishli saytlar joylashtirgan barcha maʼlumot va cookie fayllar tozalab tashlanadi.</translation>
+<translation id="7665940458857700755">Bunda <ph name="SITE_GROUP_NAME"/> saytlar guruhidan saqlangan barcha maʼlumotlar va cookie fayllar tozalab tashlanadi.</translation>
+<translation id="6472804939621540371"><ph name="SITE_GROUP_NAME"/> va unga tegishli saytlardan saqlangan barcha maʼlumot, cookie fayllar va oʻrnatilgan ilovalar tozalab tashlanadi.</translation>
+<translation id="8068809649322155577"><ph name="SITE_GROUP_NAME"/> va unga tegishli saytlardan saqlangan barcha maʼlumot, cookie fayllar va oʻrnatilgan ilovalar tozalab tashlanadi.</translation>
 <translation id="2055585478631012616">Bu saytlardagi hisobingizdan avtomatik chiqarilasiz (shuningdek, ochiq varaqlardan ham)</translation>
 <translation id="46733273239502219">Oʻrnatilgan ilovalardagi oflayn maʼlumotlar ham tozalab tashlanadi.</translation>
+<translation id="1393787139683794508">Bunda <ph name="ORIGIN_NAME"/> saytidan saqlangan barcha maʼlumotlar va cookie fayllar tozalab tashlanadi.</translation>
+<translation id="8986651757229422279">Bunda <ph name="ORIGIN_NAME"/> saytidan saqlangan barcha maʼlumotlar, cookie fayllar va oʻrnatilgan ilovalar tozalab tashlanadi.</translation>
 <translation id="3127156390846601284">Bu amal qurilmangizdagi barcha saytlarni o‘chirib yuboradi. Baribir davom etilsinmi?</translation>
 <translation id="150411034776756821"><ph name="SITE"/> saytini olib tashlash</translation>
 <translation id="577624874850706961">Cookie fayllari qidiruvi</translation>
-<translation id="6196640612572343990">Tashqi cookie-fayllarni bloklash.</translation>
-<translation id="5472133193607270166">Agar yoqilsa, saytlar reklamalarni sizga moslashtirish uchun brauzerdagi faoliyatingizni kuzata olmaydi. Ayrim saytlar nosoz ishlashi mumkin.</translation>
 <translation id="1274977772557788323">Adobe Flash Player xotirasi sozlamalari</translation>
 <translation id="1281501490173223206">Faqatgina joriy inkognito seans</translation>
-<translation id="3479035826743782247">Joriy inkognito seans</translation>
-<translation id="4750220700975225">Joriy inkognito seans (<ph name="EMBEDDING"/>)</translation>
+<translation id="5566692924079383101">Joriy inkognito seansi tugashi bilan bu istisno avtomatik olib tashlanadi</translation>
 <translation id="383891835335927981">Hech qanday sayt uchun masshtab tayinlanmagan</translation>
 <translation id="3566721612727112615">Birorta ham sayt qo‘shilmagan</translation>
 <translation id="8098574385249290065">Ovoz ijrosi Bravening o‘ziga havola (tavsiya etiladi)</translation>
@@ -3923,6 +4018,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="882854468542856424">Saytlarga atrofdagi Bluetooth qurilmalarni tekshirishni taqiqlash</translation>
 <translation id="5763751966069581670">Hech qanday USB qurilma topilmadi</translation>
 <translation id="1863182668524159459">Hech qanday ketma-ket port topilmadi</translation>
+<translation id="7431719494109538750">Hech qanday HID qurilmasi topilmadi</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">Sayt qo‘shish</translation>
 <translation id="5052499409147950210">Saytni tahrirlash</translation>
@@ -3949,7 +4045,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="80974698889265265">PIN kodlar bir xil emas</translation>
 <translation id="4708794300267213770">Qurilma uyqu rejimidan chiqarilishida ekran qulfi ko‘rsatilsin</translation>
 <translation id="6064217302520318294">Ekran qulfi</translation>
-<translation id="7228523857728654909">Ekran qulfi va kirish</translation>
+<translation id="6532206849875187177">Xavfsizlik va kirish</translation>
 <translation id="9201220332032049474">Ekran qulfi parametrlari</translation>
 <translation id="7728570244950051353">Uyqu rejimida ekran qulflansin</translation>
 <translation id="93393615658292258">Faqat parol</translation>
@@ -3965,7 +4061,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="1582955169539260415">oʻchirish: [<ph name="FINGERPRINT_NAME"/>]</translation>
 <translation id="1927632033341042996">Barmoq izi <ph name="NEW_FINGER_NUMBER"/></translation>
 <translation id="7665369617277396874">Hisob qo‘shish</translation>
-<translation id="3751920775577969594">Kirilgan hisoblaringizni boshqaring. Brave va Brave Software Play marketdagi saytlar, ilovalar va kengaytmalar bu hisoblardan berilgan ruxsatlar asosida xizmatlarni sizga yanada mosroq va qulayroq qilishda foydalanishi mumkin.</translation>
+<translation id="1091996356964485258">Kirilgan hisoblaringizni boshqaring. Brave va Brave Software Play marketdagi saytlar, ilovalar va kengaytmalar bu hisoblardan berilgan ruxsatlar asosida xizmatlarni sizga yanada mosroq va qulayroq qilishda foydalanishi mumkin. &lt;a&gt;Batafsil&lt;/a&gt;</translation>
 <translation id="1987317783729300807">Hisoblar</translation>
 <translation id="3953834000574892725">Hisoblarim</translation>
 <translation id="8418661265246754237">Brave Software Hisoblar</translation>
@@ -3985,6 +4081,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="1587907146729660231">Quvvat tugmasiga barmoq bilan tegining</translation>
 <translation id="176193854664720708">Barmoq izi sensori quvvat tugmasida joylashgan. Istalgan barmoq bilan unga asta tegining.</translation>
 <translation id="3615073365085224194">Barmoq izi skaneriga barmogʻingizni tekizing</translation>
+<translation id="7354341762311560488">Barmoq izi sensori klaviaturaning quyi chap burchagidagi tugma. Istalgan barmoq bilan unga asta tegining.</translation>
 <translation id="899676909165543803">Barmoq izi sensori klaviaturaning quyi oʻng burchagidagi tugma. Istalgan barmoq bilan unga asta tegining.</translation>
 <translation id="4535767533210902251">Barmoq izi sensori klaviaturaning tepa oʻng burchagidagi tugma. Istalgan barmoq bilan unga asta tegining.</translation>
 <translation id="7189965711416741966">Barmoq izi qo‘shildi.</translation>
@@ -3994,9 +4091,8 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="7345706641791090287">Parolni tasdiqlang</translation>
 <translation id="381202950560906753">Yana qo‘shish</translation>
 <translation id="6968288415730398122">Ekran qulfini sozlash uchun parolingizni kiriting</translation>
-<translation id="4103091233824664032">Ekran qulfi va kirishni sozlash uchun parolingizni kiriting</translation>
+<translation id="202918510990975568">Xavfsizlik va kirish parametrlarini sozlash uchun parolingizni kiriting</translation>
 <translation id="5449551289610225147">Parol noto‘g‘ri</translation>
-<translation id="5374359983950678924">Rasmni o‘zgartirish</translation>
 <translation id="6984299437918708277">Kirish ekranida hisobingizda ko‘rsatiladigan rasmni tanlang</translation>
 <translation id="1367951781824006909">Fayl tanlang</translation>
 <translation id="6681668084120808868">Suratga olish</translation>
@@ -4018,12 +4114,12 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="2537178555904266562">Parollar sinxronlanmadi</translation>
 <translation id="4326270470840334364">Chunki bu hisob <ph name="DOMAIN"/> domeni tomonidan boshqariladi. Xatcho‘plar, tarix, parol va boshqa sozlamalar bu qurilmadan o‘chiriladi, lekin mavjud ma’lumotlaringiz Brave Software hisobingizda saqlanib qoladi va ular bilan <ph name="BEGIN_LINK"/>Brave Software Shaxsiy kabinet<ph name="END_LINK"/> orqali ishlash mumkin.</translation>
 <translation id="6906406176003824042">Profilni almashtirish</translation>
-<translation id="6739923123728562974">Yorliqni ish stolida ko‘rsatish</translation>
 <translation id="3699920817649120894">Sinxronizatsiya va moslashtirish yoqilsinmi?</translation>
 <translation id="5643620609347735571">Tozalash va davom etish</translation>
 <translation id="5602765853043467355">Qurilmadagi xatcho‘plar, tarix, parollar va boshqa ma’lumotlarni tozalash</translation>
 <translation id="4089235344645910861">Sozlamalar saqlandi. Sinxronizatsiya boshlandi.</translation>
-<translation id="7548737591211512046">Xatcho‘plar, tarix va boshqa sozlamalaringizni barcha qurilmalaringizda sinxronlash uchun o‘z hisobingizga kiring. Tizimga kirish birdaniga barcha Brave Software xizmatlarida amalga oshadi.</translation>
+<translation id="6739923123728562974">Yorliqni ish stolida ko‘rsatish</translation>
+<translation id="3911916960062976098">Bukmarklar, tarix, parollar va boshqa sozlamalarni barcha qurilmalaringizda sinxronlash uchun hisobingizga kiring. Tizimga kirish birdaniga barcha Brave Software xizmatlarida amalga oshadi. <ph name="LINK_BEGIN"/>Batafsil<ph name="LINK_END"/></translation>
 <translation id="2951604498031550705">Endi xatcho‘plar, brauzer tarixi va boshqa sozlamalaringiz Brave Software hisobingizga sinxronlanmaydi. Shunday bo‘lsa-da, mavjud ma’lumotlaringiz Brave Software hisobingizda saqlanib qoladi. Ular bilan <ph name="BEGIN_LINK"/>Brave Software Shaxsiy kabinet<ph name="END_LINK"/> orqali ishlash mumkin.</translation>
 <translation id="3169352093514419465">Brave Software hisobingizdan chiqarilasiz. Xatcho‘p, tarix va parollaringiz boshqa sinxronlanmaydi.</translation>
 <translation id="8588866096426746242">Profil statistikasini ko‘rsatish</translation>
@@ -4044,7 +4140,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="5117427536932535467">Mavzular va fon rasmlari</translation>
 <translation id="7257173066616499747">Wi-Fi tarmoqlari</translation>
 <translation id="3268451620468152448">Ochiq ichki oynalar</translation>
-<translation id="5241892180459725878">Brave Software Drive qidiruv tavsiyalari</translation>
+<translation id="3831436149286513437">Brave Software Drive qidiruv tavsiyalari</translation>
 <translation id="2120297377148151361">Brauzerdagi amallar</translation>
 <translation id="5833397272224757657">Moslashtirish uchun brauzerdagi faoliyatingiz, siz kirgan sahifalar va brauzerda amalga oshirilgan ishlardan foydalanadi.</translation>
 <translation id="8135094938656535588">Brave Software shaxsiy kabinetidagi sinxronlangan ma’lumotlarni boshqarish</translation>
@@ -4117,8 +4213,6 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="8044899503464538266">Sekin</translation>
 <translation id="7019805045859631636">Tez</translation>
 <translation id="4850669014075537160">Sahifani aylantirish</translation>
-<translation id="4828937774870308359">Teskari</translation>
-<translation id="2016430552235416146">Odatiy</translation>
 <translation id="2497229222757901769">Sichqoncha tezligi</translation>
 <translation id="6586451623538375658">Sichqoncha tugmalarining o‘rnini almashtirish</translation>
 <translation id="221872881068107022">Teskari aylantirish</translation>
@@ -4173,6 +4267,8 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="8669284339312441707">Iliqroq</translation>
 <translation id="1864400682872660285">Salqinroq</translation>
 <translation id="7721179060400456005">Oynalarning ekranlarni qamrab olishiga ruxsat berish</translation>
+<translation id="4998430619171209993">Yoniq</translation>
+<translation id="787268756490971083">Yoqilmagan</translation>
 <translation id="3441653493275994384">Ekran</translation>
 <translation id="4095507791297118304">Asosiy ekran</translation>
 <translation id="1792619191750875668">Kengaytirilgan ekran</translation>
@@ -4205,6 +4301,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="4598556348158889687">Xotira boshqaruvi</translation>
 <translation id="8868626022555786497">Band</translation>
 <translation id="8688672835843460752">Bo‘sh</translation>
+<translation id="3188257591659621405">Fayllarim</translation>
 <translation id="7366909168761621528">Brauzer tarixi</translation>
 <translation id="5568144734023334204">Android xotirasi</translation>
 <translation id="938339467127511841">Linux xotirasi (Beta)</translation>
@@ -4223,7 +4320,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="1529891865407786369">Quvvat manbai</translation>
 <translation id="354060433403403521">Quvvatlash moslamasi</translation>
 <translation id="2127372758936585790">Kam quvvatli zaryadlovchi vosita</translation>
-<translation id="4964673849688379040">Tekshirilmoqda...</translation>
+<translation id="286674810810214575">Quvvat manbalari tekshirilmoqda…</translation>
 <translation id="4569747168316751899">Nofaol holatda</translation>
 <translation id="2610157865375787051">Uyqu rejimi</translation>
 <translation id="6212168817037875041">Ekranni o‘chirish</translation>
@@ -4332,10 +4429,12 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="5173668317844998239">Elektron kalitga barmoq izlari kiritish va saqlanganlarini olib tashlash</translation>
 <translation id="4836504898754963407">Barmoq izlari</translation>
 <translation id="6028117231645531007">Barmoq izi qo‘shish</translation>
-<translation id="570302979952009979">Bu barmoq izini nomlang</translation>
+<translation id="4814378367953456825">Bu barmoq izini nomlang</translation>
 <translation id="4549791035683739768">Elektron kalitingizda barmoq izlari topilmadi</translation>
 <translation id="3971764089670057203">Bu elektron kalitdagi barmoq izlari</translation>
 <translation id="8557022314818157177">Barmoq izi yozib olinguncha elektron kalitga teginib turing</translation>
+<translation id="7836850009646241041">Elektron kalit tugmasini qayta bosib turing</translation>
+<translation id="4878718769565915065">Bu elektron kalitga barmoq izi kiritilmadi</translation>
 <translation id="6592808042417736307">Barmoq izingiz olindi</translation>
 <translation id="1750172676754093297">Bu elektron kalitdan hech qanday barmoq izi saqlanmaydi</translation>
 <translation id="8842594465773264717">Bu barmoq izini olib tashlash</translation>
@@ -4346,6 +4445,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="698524779381350301">Quyidagi saytlarda avtomatik ruxsat berilsin</translation>
 <translation id="2915102088417824677">Faollik jurnalini ochish</translation>
 <translation id="1744108098763830590">orqa fondagi sahifa</translation>
+<translation id="6549966385318247177">Nomaqbul kontenti borligi uchun bloklandi.</translation>
 <translation id="3378572629723696641">Bu kengaytma shikastlangan bo‘lishi mumkin.</translation>
 <translation id="4348766275249686434">Xatolar haqidagi ma’lumotlarni to‘plash</translation>
 <translation id="4927753642311223124">Hech qanday bildirishnoma yo‘q.</translation>
@@ -4403,6 +4503,8 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="3970114302595058915">ID</translation>
 <translation id="3777806571986431400">Kengaytma yoqilgan</translation>
 <translation id="6851497530878285708">Bu ilova yoqilgan</translation>
+<translation id="5860033963881614850">O‘chiq</translation>
+<translation id="5916664084637901428">Yoniq</translation>
 <translation id="5018207570537526145">Kengaytma saytini ochish</translation>
 <translation id="4617270414136722281">Kengaytma parametrlari</translation>
 <translation id="7152478047064750137">Bu kengaytma hech qanday maxsus ruxsat talab qilmaydi</translation>
@@ -4438,6 +4540,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="8023801379949507775">Kengaytmalarni hoziroq yangilash</translation>
 <translation id="2187906491731510095">Kengaytmalar yangilandi</translation>
 <translation id="2870909136778269686">Yangilanmoqda…</translation>
+<translation id="7879631849810108578">Tugmalar birikmasi kiritildi: <ph name="IDS_SHORT_SET_COMMAND"/></translation>
 <translation id="2501797496290880632">Tezkor tugmalarni ko‘rsating</translation>
 <translation id="4477015793815781985">Birikma Ctrl, Alt yoki ⌘ tugmalaridan iborat bo‘lishi zarur</translation>
 <translation id="7000347579424117903">Tugmalar birikmasi Ctrl, Alt yoki Search tugmasi bilan boshlanishi lozim</translation>
@@ -4445,6 +4548,14 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="8447409163267621480">Tugmalar birikmasi Ctrl yoki Alt tugmasi bilan boshlanishi lozim</translation>
 <translation id="3365598184818502391">Ctrl yoki Alt tugmasini bosing</translation>
 <translation id="1688935057616748272">Harf kiriting</translation>
+<translation id="1579879232130925590">Brave – tezkor va himoyalangan brauzer</translation>
+<translation id="964057662886721376">Ayrim kengaytmalar brauzer ishlashini sekinlashtirishi mumkin, masalan, aynan beruxsat oʻrnatilgan kengaytmalar</translation>
+<translation id="1499271269825557605">Kengaytmani tanimasangiz yoki brauzer kutganingizdek ishlamasa, kengaytmalarni bu yerdan faolsizlantirishingiz yoki boshqarishingiz mumkin.</translation>
+<translation id="2382818385048255866">Kengaytmalarni tekshiring</translation>
+<translation id="3900789207771372462">Ayrim kengaytmalar brauzerdagi faoliyatingizni, shuningdek, shaxsiy maʼlumotlaringizni ham kuzatishi mumkin.</translation>
+<translation id="6772339735733515807">Kengaytmalarni boshqarish</translation>
+<translation id="1510515462062582289">Bu sahifada Brave Software Brave brauzerida oʻrnatilgan barcha kengaytmalarni koʻrishingiz mumkin.</translation>
+<translation id="2810390687497823527">Kengaytmani tanimasangiz yoki brauzer kutganingizdek ishlamasa, kengaytmalarni bu yerdan faolsizlantirishingiz yoki boshqarishingiz mumkin.</translation>
 <translation id="4479424953165245642">Kiosk dasturlarni boshqarish</translation>
 <translation id="6619801788773578757">Kiosk dasturini qo‘shish</translation>
 <translation id="8045923671629973368">Dastur identifikatori yoki internet-do‘kon URL manzilini kiriting</translation>
@@ -4454,7 +4565,6 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="8143442547342702591">Yaroqsiz dastur</translation>
 <translation id="720110658997053098">Qurilmani har doim kiosk rejimida ishga tushirish</translation>
 <translation id="1909880997794698664">Qurilma har doim kiosk rejimida ishga tushirilsinmi?</translation>
-<translation id="1512210426710821809">Bu amalni bekor qilish uchun <ph name="IDS_SHORT_PRODUCT_OS_NAME"/> tizimini qaytadan o‘rnatish zarur</translation>
 <translation id="8281886186245836920">Tashlab ketish</translation>
 <translation id="2342740338116612727">Bukmarklar biriktirildi</translation>
 <translation id="7835178595033117206">Xatcho‘p olib tashlandi</translation>
@@ -4488,7 +4598,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="1031362278801463162">Ma’lumotlar oldindan ko‘rish uchun yuklanmoqda</translation>
 <translation id="6147020289383635445">Chop etishdan avvalgi ko‘rinishni yuklashda xatolik yuz berdi.</translation>
 <translation id="5877584842898320529">Bu printer mavjud emas yoki noto‘g‘ri o‘rnatilgan.<ph name="BR"/> Uni tekshirib ko‘ring yoki boshqasini tanlang.</translation>
-<translation id="7413400642818115607">Tanlangan Brave Software Virtual printer qurilmasining ta’minoti to‘xtatilgan. <ph name="BR"/> Bu printerni tizim sozlamalari orqali ulab ko‘ring.</translation>
+<translation id="6645437135153136856">Tanlangan Brave Software Virtual printer qurilmasining ta’minoti to‘xtatilgan. <ph name="BR"/> Bu printerni tizim sozlamalari orqali ulab ko‘ring.</translation>
 <translation id="5828633471261496623">Chop etilmoqda...</translation>
 <translation id="6295855836753816081">Saqlanmoqda...</translation>
 <translation id="3587482841069643663">Barchasi</translation>
@@ -4508,7 +4618,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="3706463572498736864">Varaqdagi sahifalar soni</translation>
 <translation id="2249605167705922988">m-n, 1-5, 8, 11-13</translation>
 <translation id="5746169159649715125">PDF sifatida saqlash</translation>
-<translation id="1955272076204612657">Brave Software Drive omboriga saqlash</translation>
+<translation id="6532101170117367231">Brave Software Drive omboriga saqlash</translation>
 <translation id="2580924999637585241">Jami: <ph name="NUMBER_OF_SHEETS"/><ph name="SHEETS_LABEL"/></translation>
 <translation id="73174032666024687"><ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/></translation>
 <translation id="4091434297613116013">qog‘oz varaqlari</translation>
@@ -4539,7 +4649,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="6991665348624301627">Belgilangan manzil tanlang</translation>
 <translation id="8800004011501252845">Bu uchun manzillar ko‘rsatilmoqda:</translation>
 <translation id="8996526648899750015">Hisob qo‘shish...</translation>
-<translation id="5002959368039764681">Brave Software Docs va boshqa bulutli saqlash muhitlariga chop etish. Brave Software virtual printeridan foydalanish uchun <ph name="BEGIN_LINK"/>tizimga kiring<ph name="END_LINK"/>.</translation>
+<translation id="6723354935081862304">Brave Software Docs va boshqa bulutli saqlash muhitlariga chop etish. Brave Software virtual printeridan foydalanish uchun <ph name="BEGIN_LINK"/>tizimga kiring<ph name="END_LINK"/>.</translation>
 <translation id="2150139952286079145">Belgilangan manzillarni qidirish</translation>
 <translation id="8569682776816196752">Mo‘ljal joylar topilmadi</translation>
 <translation id="7885253890047913815">Oxirgi ishlatilgan</translation>
@@ -4575,10 +4685,7 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="1526560967942511387">Nomlanmagan hujjat</translation>
 <translation id="5269977353971873915">Chop etib bo‘lmadi</translation>
 <translation id="7385854874724088939">Chop etish vaqtida xatolik yuz berdi. Printeringizni tekshiring va qaytadan urinib ko‘ring.</translation>
-<translation id="1197979282329025000"><ph name="PRINTER_NAME"/> printeri xususiyatlari haqidagi ma’lumotlarni qabul qilishda xatolik yuz berdi. Printerni <ph name="CLOUD_PRINT_NAME"/> yordamida ro‘yxatdan o‘tkazib bo‘lmadi.</translation>
 <translation id="9004952710076978168">Noma‘lum printer haqidagi bildirishnoma qabul qilindi.</translation>
-<translation id="2202898655984161076">Printerlar ro‘yxatini yuklashda xatolik yuz berdi. Ba’zi printerlar <ph name="CLOUD_PRINT_NAME"/> yordamida ro‘yxatdan o‘tkazilmagan bo‘lishi mumkin.</translation>
-<translation id="3220586366024592812"><ph name="CLOUD_PRINT_NAME"/> konnektori ishdan chiqdi. Qayta ishga tushirilsinmi?</translation>
 <translation id="6904655473976120856">Chiqish uchun ilova tugmasini bosing</translation>
 <translation id="8909833622202089127">Sayt joylashuvingizni kuzatmoqda</translation>
 <translation id="375636864092143889">Sayt mikrofondan foydalanmoqda</translation>
@@ -4619,8 +4726,8 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="8076492880354921740">Varaqlar</translation>
 <translation id="4808319664292298116"><ph name="DOMAIN"/> orqali VR rejimiga kirilsinmi?</translation>
 <translation id="4353114845960720315">VR seansida bu sayt ayrim axborotlar ishlatilishini taniy oladi, jumladan:</translation>
-<translation id="118069123878619799">- boʻy kabi jismoniy xususiyatlaringiz</translation>
-<translation id="5819762621475381970">- xonangiz dizayni</translation>
+<translation id="2099625543891475722">boʻy kabi jismoniy xususiyatlaringiz</translation>
+<translation id="4660838440047236328">xonangiz dizayni</translation>
 <translation id="1146678959555564648">Virtual reallikka kirish</translation>
 <translation id="2794233252405721443">Sayt bloklangan</translation>
 <translation id="1721312023322545264">Bu sahifaga o‘tish uchun <ph name="NAME"/> ruxsati zarur</translation>
@@ -4636,9 +4743,9 @@ Kalit faylini ishonchli joyda saqlang. U kengaytmaning yangi versiyalarini yarat
 <translation id="4858792381671956233">Bu saytni ko‘rishingiz uchun ruxsat so‘rovi ota-onangizga jo‘natildi</translation>
 <translation id="3498215018399854026">Ota-onangiz bilan bog‘lanib bo‘lmadi. Qaytadan urinib ko‘ring.</translation>
 <translation id="8012647001091218357">Aynan hozir ota-onangiz bilan bog‘lanib bo‘lmadi. Qayta urinib ko‘ring.</translation>
-<translation id="3479539252931486093">Bu sayt bloklanmasligi kerakmidi? <ph name="BEGIN_LINK"/>Bizga xabar qiling<ph name="END_LINK"/></translation>
+<translation id="1396259464226642517">Xatolik yuz berdimi? <ph name="BEGIN_LINK"/>Bizga xabar qiling<ph name="END_LINK"/></translation>
 <translation id="3586931643579894722">Tafsilotlarni yopish</translation>
-<translation id="7444046173054089907">Bu sayt bloklangan</translation>
+<translation id="5558125320634132440">Bu sayt tarkibida voyaga yetganlar uchun kontent borligi sababli bloklandi</translation>
 <translation id="6778737459546443941">Ota-onangiz tomonidan hali tasdiqlanmagan</translation>
 <translation id="8620436878122366504">Ota-onangiz tomonidan hali tasdiqlanmagan</translation>
 <translation id="6563469144985748109">Administrator tomonidan hali tasdiqlanmagan</translation>

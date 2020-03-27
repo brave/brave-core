@@ -3,7 +3,7 @@
 <translationbundle lang="be">
 <translation id="939305735877869636">Brave</translation>
 <translation id="6373767849825830651">Brave – гэта вэб-браўзер, які апрацоўвае вэб-старонкі і запускае праграмы з неймавернай хуткасцю: хуткі, стабільны і просты ў выкарыстанні. Павышаная бяспека прагляду вэб-старонак забяспечваецца ўбудаванай у Brave аховай ад шкодных праграм і фішынгу.</translation>
-<translation id="680297041157509674">Brave OS</translation>
+<translation id="4331809312908958774">Brave OS</translation>
 <translation id="4847979153841887006">Лагатып Brave</translation>
 <translation id="7339898014177206373">Новае акно</translation>
 <translation id="5516268345616100622">Менеджар заданняў – Brave</translation>
@@ -15,8 +15,8 @@
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
 <translation id="8992261409816268381">Аўтары Brave</translation>
 <translation id="8121009781989288430">Аўтарскія правы: стваральнікі Brave, <ph name="YEAR"/>. Усе правы абароненыя.</translation>
-<translation id="2310890394934209120">Brave OS працуе дзякуючы дадатковаму <ph name="BEGIN_LINK_CROS_OSS"/>праграмнаму забеспячэнню з адкрытым зыходным кодам<ph name="END_LINK_CROS_OSS"/>.</translation>
-<translation id="8160794320557846790">Brave OS працуе дзякуючы дадатковаму <ph name="BEGIN_LINK_CROS_OSS"/>праграмнаму забеспячэнню з адкрытым зыходным кодам<ph name="END_LINK_CROS_OSS"/>, як і <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (бэта-версія)<ph name="END_LINK_LINUX_OSS"/>.</translation>
+<translation id="6368958679917195344">Brave OS працуе дзякуючы дадатковаму <ph name="BEGIN_LINK_CROS_OSS"/>праграмнаму забеспячэнню з адкрытым зыходным кодам<ph name="END_LINK_CROS_OSS"/>.</translation>
+<translation id="1662639173275167396">Brave OS працуе дзякуючы дадатковаму <ph name="BEGIN_LINK_CROS_OSS"/>праграмнаму забеспячэнню з адкрытым зыходным кодам<ph name="END_LINK_CROS_OSS"/>, як і <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (бэта-версія)<ph name="END_LINK_LINUX_OSS"/>.</translation>
 <translation id="6913582816347128893">Brave на Mac OS X 10.9 больш не падтрымліваецца і таму можа працаваць няправільна.</translation>
 <translation id="7977787072794666032">Браўзер Brave больш не падтрымліваецца на Windows XP і Windows Vista, таму можа працаваць няправільна</translation>
 <translation id="189297655255130768">Brave не адказвае. Перазапусціць яго?</translation>
@@ -24,7 +24,7 @@
 <translation id="335632367599648646">Сапраўды выдаліць Brave?</translation>
 <translation id="5590013613412457132">Выдаліць Brave</translation>
 <translation id="5019879183386042809">Зрабіць Brave стандартным браўзерам</translation>
-<translation id="5063987220091207247">Сістэме Brave OS не ўдалося адкрыць гэту старонку.</translation>
+<translation id="707769633889902835">Сістэме Brave OS не ўдалося адкрыць гэту старонку.</translation>
 <translation id="4065288863231444640">Дазволіць браўзеру Brave працаваць у фоне</translation>
 <translation id="6797402139308059782">Дазволіць Brave выконвацца ў фонавым рэжыме</translation>
 <translation id="2585240446624043880">Brave не можа чытаць з каталога даных і запісваць у яго:
@@ -94,8 +94,7 @@
 <translation id="9071554113102421877">&amp;Адкрыць у Brave</translation>
 <translation id="2176825726964012531">Пра &amp;Brave</translation>
 <translation id="5450493308072741203">Абнавіць &amp;Brave</translation>
-<translation id="1421502046520299169">Пра &amp;Brave OS</translation>
-<translation id="2534623228451928732">Абнавіць &amp;Brave OS</translation>
+<translation id="61852838583753520">Абнавіць &amp;Brave OS</translation>
 <translation id="8447483940522230788">Памочнік Brave</translation>
 <translation id="5477319665405831211">Сінхранізуйце і персаналізуйце Brave на сваіх прыладах</translation>
 <translation id="8132634101975074716">Вы ўвайшлі ў Brave!</translation>
@@ -109,19 +108,18 @@
 <translation id="5380963249588143069">Ваш сістэмны адміністратар наладзіў Brave так, каб для доступу да <ph name="TARGET_URL_HOSTNAME"/> адкрываўся браўзер <ph name="ALTERNATIVE_BROWSER_NAME"/>.</translation>
 <translation id="2591326305549412656">Карыстальнік <ph name="USER_EMAIL_ADDRESS"/> раней выкарыстоўваў Brave</translation>
 <translation id="1384923383737428730">На камп'ютары знойдзена шкоднае ПЗ. Brave можа яго выдаліць, аднавіць налады і выключыць пашырэнні, каб браўзер змог зноў нармальна працаваць.</translation>
-<translation id="8919921662052966648">Сінхранізаваць даныя ў браўзеры Brave не ўдалося. Абнавіце фразу-пароль для сінхранізацыі.</translation>
 <translation id="2262856633481902138">Сінхранізаваць даныя ў браўзеры Brave не ўдалося: даныя ўліковага запісу для ўваходу састарэлі.</translation>
 <translation id="5419189641394808652">Браўзеру Brave не ўдалося сінхранізаваць даныя: для вашага дамена сінхранізацыя недаступная.</translation>
 <translation id="2577755334620061182">Brave не змог сінхранізаваць даныя з-за памылкі ўваходу.</translation>
-<translation id="8583885258305961947">Сістэма Brave OS</translation>
-<translation id="3968006371075376562">Сістэме Brave OS не ўдалося сінхранізаваць даныя. Абнавіце фразу-пароль для сінхранізацыі.</translation>
-<translation id="6746636977031158624">Сінхранізаваць даныя ў сістэме Brave OS не ўдалося: даныя ўліковага запісу для ўваходу састарэлі.</translation>
-<translation id="2999152167963026588">Сістэме Brave OS не ўдалося сінхранізаваць вашы даныя: для вашага дамена сінхранізацыя недаступная.</translation>
-<translation id="1459786048951724030">Brave OS не змог сінхранізаваць даныя з-за памылкі ўваходу.</translation>
-<translation id="6813094029720377619">Пры выхадзе з браўзера Brave файлы cookie выдаляюцца. Каб сінхранізацыя працавала, змяніце гэтыя <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
-<translation id="3340978935015468852">налады</translation>
+<translation id="2644798301485385923">Сістэма Brave OS</translation>
+<translation id="7916016681687251387">Сістэме Brave OS не ўдалося сінхранізаваць даныя. Вырашыце праблему.</translation>
+<translation id="2341767445688917208">Сістэме Brave OS не ўдалося сінхранізаваць паролі. Вырашыце праблему.</translation>
+<translation id="123620459398936149">Сістэме Brave OS не ўдалося сінхранізаваць даныя. Абнавіце фразу-пароль для сінхранізацыі.</translation>
+<translation id="9026991721384951619">Сінхранізаваць даныя ў сістэме Brave OS не ўдалося: даныя ўліковага запісу для ўваходу састарэлі.</translation>
+<translation id="7419046106786626209">Сістэме Brave OS не ўдалося сінхранізаваць вашы даныя: для вашага дамена сінхранізацыя недаступная.</translation>
+<translation id="4480040274068703980">Brave OS не змог сінхранізаваць даныя з-за памылкі ўваходу.</translation>
 <translation id="300669147395456190">Праграмы Brave</translation>
-<translation id="3421950102518690868"><ph name="DOMAIN"/> патрабуе ад вас прачытаць і прыняць наступныя Умовы выкарыстання, перш чым пачаць карыстацца прыладай. Гэтыя ўмовы не пашыраюць, не змяняюць і не абмяжоўваюць Умовы выкарыстання Brave OS.</translation>
+<translation id="2398566204186296120"><ph name="DOMAIN"/> патрабуе ад вас прачытаць і прыняць наступныя Умовы выкарыстання, перш чым пачаць карыстацца прыладай. Гэтыя ўмовы не пашыраюць, не змяняюць і не абмяжоўваюць Умовы выкарыстання Brave OS.</translation>
 <translation id="3293668930608086049">Brave выкарыстоўвае камеру і мікрафон.</translation>
 <translation id="8919461291440820124">Brave выкарыстоўвае ваш мікрафон.</translation>
 <translation id="3205074487970075628">Brave выкарыстоўвае камеру.</translation>
@@ -154,12 +152,9 @@
 <translation id="4805806622840861220">Перазапусціць Brave</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Даступна новае абнаўленне для Brave. Яно будзе прыменена пасля перазапуску.}=1{Даступна новае абнаўленне для Brave. Яно будзе прыменена пасля перазапуску. Акно ў рэжыме інкогніта не будзе адкрыта паўторна.}one{Даступна новае абнаўленне для Brave. Яно будзе прыменена пасля перазапуску. # акно ў рэжыме інкогніта не будзе адкрыта паўторна.}few{Даступна новае абнаўленне для Brave. Яно будзе прыменена пасля перазапуску. # акны ў рэжыме інкогніта не будуць адкрыты паўторна.}many{Даступна новае абнаўленне для Brave. Яно будзе прыменена пасля перазапуску. # вокнаў у рэжыме інкогніта не будуць адкрыты паўторна.}other{Даступна новае абнаўленне для Brave. Яно будзе прыменена пасля перазапуску. # акна ў рэжыме інкогніта не будуць адкрыты паўторна.}}</translation>
 <translation id="2799223571221894425">Перазапусціць</translation>
-<translation id="2522086024276534909">Перазапусціце Brave OS</translation>
-<translation id="8183252473547465084">Каб прымяніць абнаўленне, трэба перазапусціць Brave OS.</translation>
+<translation id="5062123544085870375">Перазапусціце Brave OS</translation>
+<translation id="2063848847527508675">Каб прымяніць абнаўленне, трэба перазапусціць Brave OS.</translation>
 <translation id="5895138241574237353">Перазапусціць</translation>
-<translation id="8887390605192156061">Выхад з усіх копій Brave.</translation>
-<translation id="1801551749768408825">Працуюць іншыя копіі Brave. Каб завяршыць абнаўленне, закрыйце іх.</translation>
-<translation id="2632141563911437138">Для абнаўлення браўзеру Brave трэба спыніць працу на гэтым камп'ютары. Іншыя карыстальнікі, якія ўвайшлі на камп'ютар, могуць страціць незахаваныя змены.</translation>
 <translation id="5875673934455379806">Пераўсталяваць Brave</translation>
 <translation id="2097604701283463988">Brave састарэў</translation>
 <translation id="5173820533850252773">Brave састарэў</translation>
@@ -180,7 +175,7 @@
 <translation id="7798069806040634998">Для спампоўвання файлаў браўзеру Brave патрабуецца доступ да сховішча</translation>
 <translation id="7685904775439037072">Як толькі Brave атрымае дазвол, вэб-сайты змогуць запытваць у вас доступ.</translation>
 <translation id="1744365871163268756">Пачакайце, пакуль Brave усталюе апошнія абнаўленні сістэмы.</translation>
-<translation id="7808415789955822133">Умовы Brave OS</translation>
+<translation id="7408085963519505752">Умовы Brave OS</translation>
 <translation id="7207456302801184289">Вас вітае Brave</translation>
 <translation id="3507835409099344374">Перайсці ў налады апавяшчэнняў Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Ёсць абнаўленне Brave}=1{Ёсць абнаўленне Brave}one{Абнаўленне Brave выйшла # дзень таму}few{Абнаўленне Brave выйшла # дні таму}many{Абнаўленне Brave выйшла # дзён таму}other{Абнаўленне Brave выйшла # дня таму}}</translation>
@@ -199,9 +194,9 @@
 <translation id="1786715389543715322">Brave абнаўляецца (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="2182657378556811785">Амаль гатова! Каб завяршыць абнаўленне, перазапусціце Brave.</translation>
 <translation id="8208853227947884571">Brave абноўлены</translation>
-<translation id="6686872257969654608">Пра Brave OS</translation>
-<translation id="7674116293463255181">Каб даведацца, ці абноўлена прылада, адкрыйце <ph name="LINK_BEGIN"/>Налады Brave OS<ph name="LINK_END"/></translation>
-<translation id="2280363356796735201">Дапамога па Brave OS</translation>
+<translation id="573759479754913123">Пра Brave OS</translation>
+<translation id="7573289029918943991">Каб даведацца, ці абноўлена прылада, адкрыйце <ph name="LINK_BEGIN"/>Налады Brave OS<ph name="LINK_END"/></translation>
+<translation id="3395323229510056640">Дапамога па Brave OS</translation>
 <translation id="38898988211673781">Выдаліць файлы cookie і даныя сайтаў пры выхадзе з браўзера Brave</translation>
 <translation id="5253815230176279256">Brave Software Pay (скапіравана ў Brave)</translation>
 <translation id="5468853758063275923">Brave з'яўляецца стандартным браўзерам</translation>
@@ -209,7 +204,7 @@
 <translation id="6915252145142862992">Гэта другасны ўсталяваны экзэмпляр Brave – яго нельга зрабіць стандартным браўзерам.</translation>
 <translation id="6235873178214143377">Калі налада адсутнічае на гэтай старонцы, перайдзіце ў <ph name="LINK_BEGIN"/>
       налады браўзера Brave<ph name="LINK_END"/></translation>
-<translation id="4459296183696059108">Калі налада адсутнічае на гэтай старонцы, перайдзіце ў <ph name="LINK_BEGIN"/>
+<translation id="5657226924540934362">Калі налада адсутнічае на гэтай старонцы, перайдзіце ў <ph name="LINK_BEGIN"/>
       налады Brave OS<ph name="LINK_END"/></translation>
 <translation id="2312399718665761438">Для выпраўлення арфаграфічных памылак Brave адпраўляе ў Brave Software тэкст, які вы набіраеце ў тэкставых палях</translation>
 <translation id="8586264863973514035">Каб прымяніць змяненні, перазапусціце Brave</translation>
@@ -219,7 +214,6 @@
 <translation id="5853262807109651878">З гэтай прылады будзе выдалена наступная колькасць элементаў: <ph name="ITEMS_COUNT"/>. Каб потым атрымаць свае даныя, увайдзіце ў Brave як <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Гэта дзеянне выдаліць з прылады даныя прагляду старонак у інтэрнэце. Каб потым атрымаць свае даныя, увайдзіце ва ўліковы запіс Brave як <ph name="USER_EMAIL"/>.</translation>
 <translation id="4518479204315969707">Імя і фота профілю Brave</translation>
-<translation id="82609232232243542">Увайдзіце ў Brave</translation>
 <translation id="8372880274820509128">Для большай бяспекі Brave будзе шыфраваць даныя.</translation>
 <translation id="7445061995866044926">Выйсці з уліковага запісу ў браўзеры Brave?</translation>
 <translation id="7453070689008684791">Каб выводзіць прапановы ў адрасным радку, браўзер Brave будзе карыстацца доступам да вашага Дыска</translation>

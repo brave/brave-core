@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Utambuzi wa kifaa kwenye tovuti umezuiwa",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "Majaribio ya kuchukua alama za vidole katika tovuti yamezuiwa",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Majaribio ya kutambua kifaa yamezuia",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "Majaribio ya kuchukua alama za vidole yamezuiwa",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Majaribio yote ya utambuzi wa vifaa yameruhusiwa",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "Majaribio yote ya kuchukua alama za vidole yamekubaliwa",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Majaribio ya kutambua kifaa",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "Majaribio ya kuchukua alama za vidole",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "Maandishi kwenye tovuti hii",

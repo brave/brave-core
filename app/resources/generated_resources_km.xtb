@@ -38,6 +38,8 @@
 <translation id="8419098111404128271">លទ្ធផល​ស្វែងរក​សម្រាប់ '<ph name="SEARCH_TEXT"/>'</translation>
 <translation id="6377268785556383139">លទ្ធផល 1 សម្រាប់ '<ph name="SEARCH_TEXT"/>'</translation>
 <translation id="6000758707621254961">លទ្ធផល <ph name="RESULT_COUNT"/> សម្រាប់ '<ph name="SEARCH_TEXT"/>'</translation>
+<translation id="5359910752122114278">លទ្ធផល 1</translation>
+<translation id="2295864384543949385">លទ្ធផល <ph name="NUM_RESULTS"/></translation>
 <translation id="3303855915957856445">រកមិនឃើញលទ្ធផលស្វែងរកទេ</translation>
 <translation id="8967866634928501045">ចុច Alt Shift A ដើម្បី​បង្ហាញ</translation>
 <translation id="998747458861718449">ធ្វើការត្រួតពិនិត្យ</translation>
@@ -178,7 +180,7 @@
 <translation id="5329858601952122676">លុប</translation>
 <translation id="4608500690299898628">ស្វែងរក...</translation>
 <translation id="3712897371525859903">រក្សាទុកទំព័រជា...</translation>
-<translation id="2369105924912929484">បិទ/បើកខ្លឹមសារទំព័រដែលបានចម្រាញ់</translation>
+<translation id="3200941271596533635">បិទ/បើកមុខងារអាន</translation>
 <translation id="6607831829715835317">ឧបករណ៍ច្រើនទៀត</translation>
 <translation id="3994878504415702912">ពង្រីក</translation>
 <translation id="4779083564647765204">ពង្រីក</translation>
@@ -189,14 +191,16 @@
 <translation id="6095984072944024315">−</translation>
 <translation id="1689945336726856614">ចម្លង &amp;URL</translation>
 <translation id="2119349053129246860">បើកនៅក្នុង <ph name="APP"/></translation>
+<translation id="7855678561139483478">ផ្លាស់ទី​ផ្ទាំង​ទៅ​វិនដូ​ថ្មី</translation>
 <translation id="3285322247471302225">ផ្ទាំងថ្មី</translation>
 <translation id="8879284080359814990">បង្ហាញជាផ្ទាំង</translation>
 <translation id="176587472219019965">ផ្ទាំងថ្មី</translation>
 <translation id="7973394300052703468">ផ្ទាំងអនាមិកថ្មី</translation>
 <translation id="5157635116769074044">ដៅទំព័រនេះដើម្បី ចាប់ផ្តើម អេក្រង់...</translation>
 <translation id="5830720307094128296">រក្សាទុកទំព័រជា...</translation>
-<translation id="4672657274720418656">ឌីសស្ទៀលទំព័រ</translation>
+<translation id="3608436266458100337">របៀបកម្មវិធីអាន</translation>
 <translation id="7853747251428735">ឧបករណ៍ច្រើនទៀត</translation>
+<translation id="6390020764191254941">ផ្លាស់ទី​ផ្ទាំង​ទៅ​វិនដូ​ថ្មី</translation>
 <translation id="4109135793348361820">ផ្លាស់ទីផ្ទាំងទៅ <ph name="USER_NAME"/> (<ph name="USER_EMAIL"/>)</translation>
 <translation id="8642947597466641025">ធ្វើឲ្យអត្ថបទធំជាងមុន</translation>
 <translation id="7134098520442464001">ធ្វើឲ្យអត្ថបទតូចជាងមុន</translation>
@@ -334,16 +338,18 @@
 <translation id="6285120108426285413">ជាទូទៅ <ph name="FILE_NAME"/> មិនត្រូវបានទាញយកទេ ហើយវាអាចបង្កគ្រោះថ្នាក់។</translation>
 <translation id="1463112138205428654"><ph name="FILE_NAME"/> ត្រូវបានទប់ស្កាត់​ដោយ​ការការពារ​កម្រិតខ្ពស់។</translation>
 <translation id="3615579745882581859">កំពុង​ស្កេន <ph name="FILE_NAME"/> ។</translation>
+<translation id="2620215283731032047">មិនអាច​ទាញយក <ph name="FILE_NAME"/> ដោយសុវត្ថិភាពបានទេ។</translation>
 <translation id="7859938049767853383"><ph name="FILE_NAME"/> មាន​ទំហំ​ធំពេកសម្រាប់ការស្កេន​តាមរយៈពពក និងត្រូវបាន​ទប់ស្កាត់មិនឱ្យបើក។</translation>
 <translation id="2896909745808647285">បាន​អ៊ីនគ្រីប និងបានទប់ស្កាត់ <ph name="FILE_NAME"/> ​មិនឱ្យបើក។</translation>
 <translation id="2693982916035708855">បានបញ្ចប់​ការស្កេន មិនមានបញ្ហាទេ។</translation>
 <translation id="8855501062415172277"><ph name="FILE_NAME"/> មានខ្លឹមសាររសើប។</translation>
 <translation id="1061745542578250838"><ph name="FILE_NAME"/> មានខ្លឹមសាររសើប និងត្រូវបានទប់ស្កាត់។</translation>
 <translation id="6651823585377804376">ការទាញយក​មានកម្មវិធីគ្រោះថ្នាក់។</translation>
-<translation id="1863552924692672565">មិនស្គាល់ <ph name="FILE_NAME"/> ទេ។ សូមស្កេនឯកសារ ដើម្បីកាត់​បន្ថយហានិភ័យ។</translation>
+<translation id="7483136042182425287">ការ​ការពារ​កម្រិតខ្ពស់ណែនាំឱ្យផ្ញើ <ph name="FILE_NAME"/> ទៅ Brave Software ដើម្បីពិនិត្យរកកម្មវិធីគ្រោះថ្នាក់។</translation>
 <translation id="4907161631261076876">ឯកសារនេះមិនមានការទាញយកជាទូទៅនោះទេ ហើយវាអាចនឹងបង្កគ្រោះថ្នាក់។</translation>
 <translation id="6102043788063419338">ឯកសារ​នេះ​ត្រូវបានទប់ស្កាត់​ដោយ​ការការពារ​កម្រិតខ្ពស់។</translation>
 <translation id="2773802008104670137">ប្រភេទឯកសារនេះអាចនឹងបង្កគ្រោះថ្នាក់ដល់កុំព្យូទ័ររបស់អ្នក។</translation>
+<translation id="2835294513443818940">មិនអាចទាញយកឯកសារនេះ​ដោយសុវត្ថិភាពបានទេ។</translation>
 <translation id="2557378327156922632">ឯកសារនេះ​មានខ្លឹមសារ​រសើប។</translation>
 <translation id="3952230510293296226">ឯកសារនេះ​ត្រូវបាន​ទប់ស្កាត់ ដោយសារ​វាមានខ្លឹមសារ​រសើប។</translation>
 <translation id="614611931938947795">ឯកសារនេះ​មាន​ទំហំ​ធំពេកសម្រាប់ការស្កេន​តាមរយៈពពក និងត្រូវបាន​ទប់ស្កាត់មិនឱ្យបើក។</translation>
@@ -418,6 +424,7 @@
 <translation id="7253521419891527137">ស្វែងយល់បន្ថែម</translation>
 <translation id="8708671767545720562">ព័ត៌មានបន្ថែម</translation>
 <translation id="424726838611654458">បើកនៅក្នុង Adobe Reader ជានិច្ច</translation>
+<translation id="2020225359413970060">ស្កេន​ឯកសារ</translation>
 <translation id="8546930481464505581">កំណត់​របារ​ប៉ះ​តាមបំណង</translation>
 <translation id="5171045022955879922">ស្វែងរក ឬវាយបញ្ចូល URL</translation>
 <translation id="8323167517179506834">វាយបញ្ចូល URL</translation>
@@ -563,7 +570,7 @@
 <translation id="3297560592877881986">គេហទំព័រ​មួយចំនួន​ប្រើ​ខូគីភាគីទីបី ដើម្បី​ផ្ទុក​ទំព័រ​របស់​ពួកគេ។ ប្រសិនបើ​គេហទំព័រ​មិនដំណើរការ អ្នកអាច​សាកល្បង​បិទការ​ទប់ស្កាត់ខូគី។</translation>
 <translation id="1243398753772016127">គេហទំព័រ​មិនអាចប្រើ​សកម្មភាព​រុករក​តាមអ៊ីនធឺណិត​របស់អ្នក​នៅលើ​គេហទំព័រ​ផ្សេងៗគ្នា ដើម្បីកំណត់​ការផ្សាយ​ពាណិជ្ជកម្ម​ឱ្យ​ស្របតាម​បុគ្គលបានទេ</translation>
 <translation id="8734674662128056360">ការទប់ស្កាត់​ខូគី​ភាគីទីបី</translation>
-<translation id="2448734521821581858">ខូគី​ជាឯកសារ​ដែលបង្កើត​ដោយ​គេហទំព័រ​ដែលអ្នក​ចូលមើល។ ខូគី​មានពីរ​ប្រភេទ៖ ខូគី​ភាគីទីមួយ​បង្កើត​ដោយ​គេហទំព័រ​ដែលអ្នកមើល។ គេហទំព័រ​នេះ​បង្ហាញ​នៅលើ​របារអាសយដ្ឋាន។ ខូគី​ភាគីទីបី​បង្កើត​ដោយ​គេហទំព័រ​ផ្សេងទៀត។ គេហទំព័រ​ទាំងនេះ​គឺជាម្ចាស់​នៃខ្លឹមសារ​មួយចំនួន ​ដូចជា​ការផ្សាយពាណិជ្ជកម្ម ឬរូបភាព ដែលអ្នក​ឃើញ​នៅលើ​គេហទំព័រ​ដែលអ្នកចូលមើលជាដើម។</translation>
+<translation id="3784472333786002075">ខូគី​គឺជាឯកសារ​ដែលបង្កើត​ដោយ​គេហទំព័រ។ ខូគី​មានពីរ​ប្រភេទ៖ ខូគី​ភាគីទីមួយ​បង្កើត​ដោយ​គេហទំព័រ​ដែលអ្នក​ចូលមើល។ គេហទំព័រ​នេះ​បង្ហាញ​នៅលើ​របារអាសយដ្ឋាន។ ខូគី​ភាគីទីបី​បង្កើត​ដោយ​គេហទំព័រ​ផ្សេងទៀត។ គេហទំព័រ​ទាំងនេះ​គឺជាម្ចាស់​នៃខ្លឹមសារ​មួយចំនួន ​ដូចជា​ការផ្សាយពាណិជ្ជកម្ម ឬរូបភាព ដែលអ្នក​ឃើញ​នៅលើ​គេហទំព័រ​ដែលអ្នកចូលមើលជាដើម។</translation>
 <translation id="5154702632169343078">ភាគីវិញ្ញាបនប័ត្រ</translation>
 <translation id="5851868085455377790">អ្នកចេញផ្សាយ</translation>
 <translation id="2841837950101800123">ក្រុមហ៊ុនផ្តល់សេវាកម្ម</translation>
@@ -814,6 +821,8 @@
 <translation id="2087822576218954668">បោះពុម្ព៖ <ph name="PRINT_NAME"/></translation>
 <translation id="8859174528519900719">ហ្វ្រេមរង៖ <ph name="SUBFRAME_SITE"/></translation>
 <translation id="1799432502220762862">ហ្វ្រេមរងអនាមិក៖ <ph name="SUBFRAME_SITE"/></translation>
+<translation id="7454548535253569100">ច្រក៖ <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">ច្រក​ឯកជន៖ <ph name="SUBFRAME_SITE"/></translation>
 <translation id="2348176352564285430">កម្មវិធី៖ <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="786073089922909430">សេវាកម្ម៖ <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="7663719505383602579">អ្នកទទួល៖ <ph name="ARC_PROCESS_NAME"/></translation>
@@ -824,7 +833,7 @@
 <translation id="7171242884588191792">ការប្រើប្រាស់​ឯកសារ Brave</translation>
 <translation id="3183139917765991655">កម្មវិធីនាំចូលប្រវត្តិរូប</translation>
 <translation id="2190069059097339078">កម្មវិធីទទួលព័ត៌មានសម្គាល់អត្តសញ្ញាណ WiFi</translation>
-<translation id="7685901961038216503">ឧបករណ៍សរសេរកូដរូបភាពលើប្រព័ន្ធ Brave OS</translation>
+<translation id="5920835625712313205">ឧបករណ៍សរសេរកូដរូបភាពលើប្រព័ន្ធ Brave OS</translation>
 <translation id="4873312501243535625">ឧបករណ៍ពិនិត្យឯកសារកំសាន្ត</translation>
 <translation id="5972666587303800813">សេវាកម្ម No-op</translation>
 <translation id="1545775234664667895">បានដំឡើង​រចនាប័ទ្ម "<ph name="THEME_NAME"/>"</translation>
@@ -867,9 +876,7 @@
 <translation id="175772926354468439">បើកដំណើរការធីម</translation>
 <translation id="5267531627648004734">ដកចេញពី Brave</translation>
 <translation id="4998873842614926205">អះអាងការប្តូរ</translation>
-<translation id="5699533844376998780">កម្មវិធីបន្ថែម "<ph name="EXTENSION_NAME"/>" ត្រូវបានបន្ថែម។</translation>
 <translation id="1799071797295057738">ផ្នែកបន្ថែម "<ph name="EXTENSION_NAME"/>" ត្រូវបានបិទដោយស្វ័យប្រវត្តិ</translation>
-<translation id="6449285849137521213">កម្មវិធី "<ph name="EXTENSION_NAME"/>" ត្រូវបានបន្ថែម។</translation>
 <translation id="5238278114306905396">កម្មវិធី "<ph name="EXTENSION_NAME"/>" ត្រូវបានដកចេញដោយស្វ័យប្រវត្តិ។</translation>
 <translation id="6965382102122355670">យល់ព្រម</translation>
 <translation id="4522570452068850558">ព័ត៌មានលំអិត</translation>
@@ -879,6 +886,7 @@
 <translation id="1485015260175968628">ឥឡូវនេះវាអាច៖</translation>
 <translation id="3788401245189148511">វាអាច៖</translation>
 <translation id="1965624977906726414">គ្មានការអនុញ្ញាតពិសេសទេ។</translation>
+<translation id="2753677631968972007">គ្រប់គ្រង​ការអនុញ្ញាតគេហទំព័រដោយផ្ទាល់។</translation>
 <translation id="2886771036282400576">• <ph name="PERMISSION"/></translation>
 <translation id="5588033542900357244">(<ph name="RATING_COUNT"/>)</translation>
 <translation id="2124930039827422115">{1,plural, =1{បាន​វាយ​តម្លៃ <ph name="AVERAGE_RATING"/> ដោយ​អ្នកប្រើប្រាស់​ម្នាក់។}other{បាន​វាយ​តម្លៃ <ph name="AVERAGE_RATING"/> ដោយ​អ្នកប្រើប្រាស់ # នាក់។}}</translation>
@@ -968,7 +976,7 @@
 <translation id="3584169441612580296">អាន និងប្តូររូបថត តន្ត្រី និងកំសាន្តផ្សេងទៀតពីកុំព្យូទ័ររបស់អ្នក</translation>
 <translation id="5457459357461771897">អាន និងលុបរូបថត តន្ត្រី និងកំសាន្តផ្សេងទៀតពីកុំព្យូទ័ររបស់អ្នក</translation>
 <translation id="3270965368676314374">អាន ប្តូរ និងលុបរូបថត តន្ត្រី និងកំសាន្តផ្សេងទៀតពីកុំព្យូទ័ររបស់អ្នក</translation>
-<translation id="3919562953666287643">ផ្ទុកទិន្នន័យនៅក្នុងគណនី Brave Software Drive របស់អ្នក</translation>
+<translation id="1285484354230578868">ផ្ទុកទិន្នន័យនៅក្នុងគណនី Brave Software Drive របស់អ្នក</translation>
 <translation id="378312418865624974">អានឧបករណ៍សម្គាល់ពិសេសសម្រាប់កុំព្យូទ័រនេះ</translation>
 <translation id="5094721898978802975">ទំនាក់ទំនងជាមួយកម្មវិធីដើមសហប្រតិបត្តិការ</translation>
 <translation id="4876895919560854374">ចាក់សោ ឬដោះសោអេក្រង់</translation>
@@ -1002,7 +1010,7 @@
 <translation id="1616298854599875024">មិនអាច​នាំចូល​កម្មវិធីបន្ថែម "<ph name="IMPORT_NAME"/>" បាន​ទេ ដោយសារ​វា​មិនមែន​ជា​ម៉ូឌុល​ដែលបានចែករំលែក</translation>
 <translation id="2131077480075264">មិនអាចតំឡើង "<ph name="APP_NAME"/>" ទេ ពីព្រោះវាមិនត្រូវបានអនុញ្ញាតដោយ "<ph name="IMPORT_NAME"/>"</translation>
 <translation id="1875387611427697908">វាអាចត្រូវបានបញ្ចូលពី <ph name="CHROME_WEB_STORE"/> តែប៉ុណ្ណោះ</translation>
-<translation id="7613251087357271190">កម្មវិធី​ដែល​មាន​លក្ខណៈ​មេនីហ្វេសថ៍ 'kiosk_only' ត្រូវបាន​ដំឡើង​ជា​មុខងារបញ្ជរ Brave OS</translation>
+<translation id="3862788408946266506">កម្មវិធី​ដែល​មាន​លក្ខណៈ​មេនីហ្វេសថ៍ 'kiosk_only' ត្រូវបាន​ដំឡើង​ជា​មុខងារបញ្ជរ Brave OS</translation>
 <translation id="3834775135533257713">មិនអាចបន្ថែមកម្មវិធី "<ph name="TO_INSTALL_APP_NAME"/>" បានទេ ព្រោះវាមិនត្រូវគ្នាជាមួយ "<ph name="INSTALLED_APP_NAME"/>"</translation>
 <translation id="144518587530125858">មិនអាចដំណើរការ '<ph name="IMAGE_PATH"/>' សម្រាប់ធីមទេ។</translation>
 <translation id="6567688344210276845">មិនអាចដំណើរការរូបតំណាង '<ph name="ICON"/>' សម្រាប់សកម្មភាពទំព័របានទេ។</translation>
@@ -1107,9 +1115,12 @@
 <translation id="3288047731229977326">កម្មវិធីបន្ថែមដែលដំណើរការនៅក្នុងរបៀបអ្នកអភិវឌ្ឈន៍អាចបង្កគ្រោះថ្នាក់ដល់កុំព្យូទ័ររបស់អ្នក។ ប្រសិនបើអ្នកមិនមែនជាអ្នកអភិវឌ្ឍន៍ អ្នកគួរតែបិទដំណើរការកម្មវិធីបន្ថែមទាំងនេះដែលដំណើរការនៅក្នុងរបៀបអ្នកអភិវឌ្ឍន៍ដើម្បីឲ្យមានសុវត្ថិភាព។</translation>
 <translation id="8827289157496676362">ខ្ទាស់កម្មវិធីបន្ថែម​</translation>
 <translation id="5372579129492968947">ដក​ខ្ទាស់កម្មវិធីបន្ថែម​</translation>
+<translation id="2502719318159902502">ការចូលប្រើពេញលេញ</translation>
 <translation id="3929426037718431833">កម្មវិធី​បន្ថែម​ទាំងនេះ​អាច​មើល និង​ប្ដូរ​ព័ត៌មាន​នៅលើ​គេហទំព័រ​នេះ​។</translation>
-<translation id="1435979430299962295">ដើម្បី​អនុញ្ញាតឱ្យ​ចូលប្រើប្រាស់​នៅលើ​គេហទំព័រ​នេះ សូម​ចុចលើ​កម្មវិធី​បន្ថែម​។</translation>
-<translation id="6890912377247906520">កម្មវិធី​បន្ថែម​ទាំងនេះ​មិន​ត្រូវការ​សិទ្ធិចូល​ប្រើប្រាស់​គេហទំព័រ​នេះ​ទេ​។</translation>
+<translation id="7364591875953874521">បាន​ស្នើសុំ​ការ​ចូលប្រើ</translation>
+<translation id="6032715498678347852">ដើម្បី​ផ្ដល់សិទ្ធិឱ្យ​កម្មវិធី​បន្ថែមចូលប្រើ​គេហទំព័រនេះ សូម​ចុចវា។</translation>
+<translation id="6241844896329831164">មិន​តម្រូវឱ្យមានការចូលប្រើទេ</translation>
+<translation id="4046013316139505482">កម្មវិធី​បន្ថែម​ទាំងនេះ​មិនត្រូវការ​មើល និង​ប្ដូរ​ព័ត៌មាន​នៅលើ​គេហទំព័រ​នេះទេ។</translation>
 <translation id="5521078259930077036">តើនេះជាទំព័រដើមដែលអ្នកចង់បានឬ?</translation>
 <translation id="7760004034676677601">តើនេះជាទំព័រនៅពេលចាប់ផ្តើមដែលអ្នកចង់បាន?</translation>
 <translation id="5956585768868398362">តើនេះជាទំព័រស្វែងរកដែលអ្នកចង់បានឬ?</translation>
@@ -1122,6 +1133,8 @@
 <translation id="1729533290416704613">វាក៏គ្រប់គ្រងអ្វីដែលទំព័របានបង្ហាញផងដែរ នៅពេលអ្នកស្វែងរកពីប្រអប់អូមនី។</translation>
 <translation id="5627086634964711283">វាក៏គ្រប់គ្រងអ្វីដែលទំព័របានបង្ហាញផងដែរ នៅពេលដែលអ្នក ចុចប៊ូតុង ទំព័រដើម។</translation>
 <translation id="5965661248935608907">វាក៏គ្រប់គ្រងអ្វីដែលទំព័របានបង្ហាញផងដែរ នៅពេលដែលអ្នកចុចប៊ូតុង ទំព័រដើម ឬស្វែងរកពីប្រអប់អូមនី។</translation>
+<translation id="2654553774144920065">សំណើសុំ​បោះពុម្ព</translation>
+<translation id="6846178040388691741">"<ph name="EXTENSION_NAME"/>" ចង់​បោះពុម្ព <ph name="FILE_NAME"/> ដោយប្រើ <ph name="PRINTER_NAME"/>។</translation>
 <translation id="4613271546271159013">កម្មវិធីបន្ថែមបានប្តូរអ្វីដែលទំព័របានបង្ហាញ នៅពេលអ្នកបើកផ្ទាំងថ្មី។</translation>
 <translation id="6196854373336333322">កម្មវិធីបន្ថែម "<ph name="EXTENSION_NAME"/>" បានគ្រប់គ្រងការកំណត់ប្រូកស៊ីរបស់អ្នក មានន័យថាវាអាចប្តូរ បំបែក និងលួចតាមដានអ្វីទាំងអស់ដែលអ្នកធ្វើនៅលើអ៊ីនធឺណិត។ ប្រសិនបើអ្នកមិនប្រាកដថាហេតុអ្វីការប្តូរនេះបានកើតឡើង អ្នកប្រហែលជាមិនចង់បានវាទេ។</translation>
 <translation id="8351419472474436977">កម្មវិធីបន្ថែមនេះបានគ្រប់គ្រងការកំណត់ប្រូកស៊ីរបស់អ្នក មានន័យថាវាអាចប្តូរ បំបែក និងលួចតាមដានអ្វីដែលធ្វើនៅលើអ៊ីនធឺណិតទាំងអស់។ ប្រសិនបើអ្នកមិនប្រាកដថាហេតុអ្វីការប្តូរនេះបានកើតឡើង អ្នកប្រហែលជាមិនចង់បានវាទេ។</translation>
@@ -1220,6 +1233,9 @@
 <translation id="4668721319092543482">ចុចដើម្បីបើកដំណើរការ <ph name="PLUGIN_NAME"/></translation>
 <translation id="8358685469073206162">ស្តារទំព័រ?</translation>
 <translation id="5620612546311710611">ស្ថិតិការប្រើប្រាស់</translation>
+<translation id="6847125920277401289">បង្កើន​ទំហំផ្ទុក ដើម្បីបន្ត</translation>
+<translation id="1333489022424033687">មុខងារ​មួយចំនួន​នៅលើ <ph name="ORIGIN"/> ប្រហែលជា​មិនដំណើរការទេ រហូតទាល់តែ​អ្នក​សម្អាតទិន្នន័យ​ដែល​គេហទំព័រ​ផ្សេងទៀត​បានរក្សាទុក​នៅលើ​ឧបករណ៍​របស់អ្នក</translation>
+<translation id="6897363604023044284">ជ្រើសរើស​គេហទំព័រ ដើម្បី​សម្អាត​ទិន្នន័យ​ដែលបាន​រក្សាទុក</translation>
 <translation id="8871696467337989339">អ្នកកំពុងប្រើទង់អត្ថបទបញ្ជាដែលមិនគាំទ្រ៖ <ph name="BAD_FLAG"/>។ ស្ថេរភាព និងសុវត្ថិភាពជួបបញ្ហា។</translation>
 <translation id="9140067245205650184">អ្នក​កំពុង​ប្រើ​ទង់​មុខងារ​ដែល​មិន​អាច​ប្រើបាន៖ <ph name="BAD_FLAG"/> ។ ស្ថិរភាព និងសុវត្ថិភាពនឹងជួបបញ្ហា។</translation>
 <translation id="4094647278880271855">អ្នកកំពុងប្រើប្រាស់​អថេរ​មជ្ឈដ្ឋាន​ដែលមិន​ស្គាល់៖ <ph name="BAD_VAR"/> ។ នឹងមាន​បញ្ហាផ្នែកស្ថិរភាព និងសុវត្ថិភាព​។</translation>
@@ -1441,7 +1457,6 @@
 <translation id="5578059481725149024">ចូល​ដោយស្វ័យប្រវត្តិ</translation>
 <translation id="6810613314571580006">ចូលគេហទំព័រដោយស្វ័យប្រវត្តិដោយប្រើព័ត៌មានអត្តសញ្ញាណដែលបានផ្ទុក។ នៅពេលលក្ខណៈពិសេសនោះបិទដំណើរការ អ្នកនឹងត្រូវបានស្នើឲ្យធ្វើការបញ្ជាក់មុនពេលចូលគេហទំព័រម្តងៗ។</translation>
 <translation id="5454166040603940656">ជាមួយ <ph name="PROVIDER"/></translation>
-<translation id="7108338896283013870">លាក់</translation>
 <translation id="1426410128494586442">បាទ/ចាស</translation>
 <translation id="4250680216510889253">ទេ</translation>
 <translation id="7473891865547856676">ទេ អរគុណ</translation>
@@ -1483,7 +1498,7 @@
 <translation id="7052237160939977163">ផ្ញើទិន្នន័យតាមដានប្រតិបត្តិការ</translation>
 <translation id="5526928694260255286">ភ្ជាប់<ph name="BEGIN_LINK"/>កំណត់ហេតុ​ប៊្លូធូស<ph name="END_LINK"/> (ផ្ទៃក្នុង Brave Software)</translation>
 <translation id="3047644958362961983">ព័ត៌មាននេះ​ជួយឱ្យយើងយល់ពី​បញ្ហា​របស់ជំនួយការអ្នក​បានប្រសើរជាងមុន។ ព័ត៌មាន​ត្រូវបានរក្សា​ទុករហូតដល់ 90 ថ្ងៃ ហើយការចូលប្រើត្រូវបានដាក់រឹតបន្តឹងចំពោះ​ក្រុមការងារ​ផ្នែក​វិស្វកម្ម និង​ផ្នែក​មតិកែលម្អ​ដែលសមស្រប។</translation>
-<translation id="1705635099498185261">ដើម្បី​កំណត់បញ្ហាប៊្លូធូស​ឱ្យកាន់តែ​ប្រសើរ បុគ្គលិក Brave Software អាចរាប់បញ្ចូល​កំណត់ហេតុ​ប៊្លូធូសបន្ថែម​ដោយប្រើ​របាយការណ៍​មតិកែលម្អ​របស់គេ។ នៅពេល​ជម្រើសនេះ​ត្រូវបាន​ពិនិត្យ របាយការណ៍​របស់អ្នក​នឹងរាប់បញ្ចូល​កំណត់ហេតុ btsnoop និង HCI ពីរយៈពេលចូលប្រើបច្ចុប្បន្ន​របស់អ្នក ដែលបាន​សម្អាតដើម្បីលុប PII ឱ្យបានច្រើនតាមដែល​អាចធ្វើ​បាន។ សិទ្ធិចូលប្រើ​កំណត់ហេតុ​ទាំងនេះនឹង​ត្រូវបាន​រឹតបន្តឹង​ដោយអ្នកគ្រប់គ្រង​ក្រុមផលិតផល​ Brave OS នៅក្នុងក្រុមហ៊ុន Listnr ។ កំណត់ហេតុ​នឹងត្រូវបាន​បោសសម្អាត​បន្ទាប់ពី​រយៈពេល 90 ថ្ងៃ។</translation>
+<translation id="8545590844135745781">ដើម្បី​កំណត់បញ្ហាប៊្លូធូស​ឱ្យកាន់តែ​ប្រសើរ បុគ្គលិក Brave Software អាចរាប់បញ្ចូល​កំណត់ហេតុ​ប៊្លូធូសបន្ថែម​ដោយប្រើ​របាយការណ៍​មតិកែលម្អ​របស់គេ។ នៅពេល​ជម្រើសនេះ​ត្រូវបាន​ពិនិត្យ របាយការណ៍​របស់អ្នក​នឹងរាប់បញ្ចូល​កំណត់ហេតុ btsnoop និង HCI ពីរយៈពេលចូលប្រើបច្ចុប្បន្ន​របស់អ្នក ដែលបាន​សម្អាតដើម្បីលុប PII ឱ្យបានច្រើនតាមដែល​អាចធ្វើ​បាន។ សិទ្ធិចូលប្រើ​កំណត់ហេតុ​ទាំងនេះនឹង​ត្រូវបាន​រឹតបន្តឹង​ដោយអ្នកគ្រប់គ្រង​ក្រុមផលិតផល​ Brave OS នៅក្នុងក្រុមហ៊ុន Listnr ។ កំណត់ហេតុ​នឹងត្រូវបាន​បោសសម្អាត​បន្ទាប់ពី​រយៈពេល 90 ថ្ងៃ។</translation>
 <translation id="4206323443866416204">របាយការណ៍មតិស្ថាបនា</translation>
 <translation id="3681311097828166361">សូមអរគុណសម្រាប់មតិរបស់អ្នក។ ដោយសារបច្ចុប្បន្ននេះអ្នកស្ថិតនៅក្រៅបណ្តាញ របាយការណ៍របស់អ្នកនឹងត្រូវបានផ្ញើនៅពេលក្រោយ។</translation>
 <translation id="8713570323158206935">ផ្ញើ <ph name="BEGIN_LINK1"/>ព័ត៌មានប្រព័ន្ធ<ph name="END_LINK1"/></translation>
@@ -1575,6 +1590,7 @@
 <translation id="255747371423522804">បញ្ចូលទៅក្រុម​ដែលមានស្រាប់</translation>
 <translation id="2977480621796371840">លុបចេញ​ពីក្រុម</translation>
 <translation id="8975562453115131273">{NUM_OTHER_TABS,plural, =0{"<ph name="TAB_TITLE"/>"}=1{"<ph name="TAB_TITLE"/>" និងផ្ទាំង 1 ទៀត}other{"<ph name="TAB_TITLE"/>" និងផ្ទាំង # ទៀត}}</translation>
+<translation id="8177318697334260664">{NUM_TABS,plural, =1{ផ្លាស់ទី​ផ្ទាំង​ទៅ​វិនដូ​ថ្មី}other{ផ្លាស់ទី​ផ្ទាំង​ទៅ​វិនដូ​ថ្មី}}</translation>
 <translation id="5876851302954717356">ផ្ទាំងថ្មី​ទៅខាង​ស្ដាំ</translation>
 <translation id="4322394346347055525">បិទផ្ទាំងផ្សេងទៀត</translation>
 <translation id="1166212789817575481">បិទផ្ទាំងទៅខាងស្តាំ</translation>
@@ -1585,13 +1601,16 @@
 <translation id="7353887511974462734">បញ្ចូលទៅក្រុម​ដែលមានស្រាប់</translation>
 <translation id="6964760285928603117">លុបចេញ​ពីក្រុម</translation>
 <translation id="5548159762883465903">{NUM_OTHER_TABS,plural, =0{"<ph name="TAB_TITLE"/>"}=1{"<ph name="TAB_TITLE"/>" និងផ្ទាំង 1 ទៀត}other{"<ph name="TAB_TITLE"/>" និងផ្ទាំង # ទៀត}}</translation>
+<translation id="8162984717805647492">{NUM_TABS,plural, =1{ផ្លាស់ទី​ផ្ទាំង​ទៅ​វិនដូ​ថ្មី}other{ផ្លាស់ទី​ផ្ទាំង​ទៅ​វិនដូ​ថ្មី}}</translation>
 <translation id="2894757982205307093">ផ្ទាំងថ្មី​នៅក្នុងក្រុម</translation>
 <translation id="4460014764210899310">បំបែក​ក្រុម</translation>
 <translation id="4871719318659334896">បិទក្រុម</translation>
 <translation id="945522503751344254">ផ្ញើមតិ</translation>
+<translation id="934244546219308557">ដាក់​ឈ្មោះ​ឱ្យក្រុម​នេះ</translation>
 <translation id="8781834595282316166">ផ្ទាំងថ្មី​នៅក្នុងក្រុម</translation>
 <translation id="1780152987505130652">បិទក្រុម</translation>
 <translation id="8041089156583427627">ផ្ញើមតិ</translation>
+<translation id="8263336784344783289">ដាក់​ឈ្មោះឱ្យ​ក្រុម​នេះ</translation>
 <translation id="2278562042389100163">បើកផ្ទាំងកម្មវិធីរុករក</translation>
 <translation id="756445078718366910">បើកផ្ទាំងកម្មវិធីរុករក</translation>
 <translation id="1165039591588034296">កំហុសឆ្គង</translation>
@@ -1639,12 +1658,11 @@
 <translation id="6280912520669706465">ARC</translation>
 <translation id="4728558894243024398">អង្គប្រតិបត្តិការ</translation>
 <translation id="7022562585984256452">ទំព័រដើមរបស់អ្នកត្រូវបានកំណត់។</translation>
-<translation id="7274626204661209194">Brave Software Cloud Print</translation>
+<translation id="8069615408251337349">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">បន្ថែមម៉ាស៊ីនបោះពុម្ព</translation>
-<translation id="9052208328806230490">អ្នកបានចុះឈ្មោះម៉ាស៊ីនបោះពុម្ពរបស់អ្នកជាមួយ <ph name="CLOUD_PRINT_NAME"/> ដោយប្រើគណនី <ph name="EMAIL"/></translation>
 <translation id="3792890930871100565">ផ្តាច់ម៉ាស៊ីនបោះពុម្ព</translation>
 <translation id="5038863510258510803">កំពុងបើកដំណើរការ...</translation>
-<translation id="8206354486702514201">ការកំណត់នេះត្រូវបានអនុវត្តដោយអ្នកគ្រប់គ្រងរបស់អ្នក។</translation>
+<translation id="8264024885325823677">ការកំណត់នេះត្រូវបានគ្រប់គ្រងដោយអ្នកគ្រប់គ្រងរបស់អ្នក។</translation>
 <translation id="1116779635164066733">ការកំណត់​នេះ​ត្រូវ​បាន​អនុវត្ត​ដោយ​កម្មវិធី​បន្ថែម "<ph name="NAME"/>" ។</translation>
 <translation id="4620809267248568679">ការកំណត់នេះត្រូវបានអនុវត្តដោយកម្មវិធីបន្ថែម។</translation>
 <translation id="4846680374085650406">អ្នកកំពុងធ្វើតាមការណែនាំរបស់អ្នកគ្រប់គ្រងសម្រាប់ការកំណត់នេះ។</translation>
@@ -1796,6 +1814,7 @@
 <translation id="8780443667474968681">ការស្វែង​រកតាម​សំឡេង​ត្រូវបាន​បិទ។</translation>
 <translation id="8371695176452482769">និយាយឥឡូវនេះ</translation>
 <translation id="2942560570858569904">កំពុង​រង់ចាំ...</translation>
+<translation id="6097600385983390082">បានបិទ​ការស្វែងរក​តាម​សំឡេង</translation>
 <translation id="6436164536244065364">មើលនៅក្នុង Web Store</translation>
 <translation id="5258992782919386492">ដំឡើងនៅលើឧបករណ៍នេះ</translation>
 <translation id="3331974543021145906">ព័ត៌មានកម្មវិធី</translation>
@@ -1879,8 +1898,9 @@
 <translation id="8978154919215542464">បើក - ធ្វើសមកាលកម្មទាំងអស់</translation>
 <translation id="1487335504823219454">បើក - ការកំណត់ផ្ទាល់ខ្លួន</translation>
 <translation id="1887442540531652736">មាន​បញ្ហា​ក្នុង​ការ​ចូលគណនី</translation>
-<translation id="7979036127916589816">កំហុសឆ្គងសមកម្ម</translation>
+<translation id="8627706565932943526">កំហុសឆ្គងសមកម្ម</translation>
 <translation id="7605594153474022051">សមកាលកម្មមិនដំណើរការទេ</translation>
+<translation id="7646772052135772216">សមកាល​កម្ម​ពាក្យសម្ងាត់​មិន​ដំណើរការ​ទេ</translation>
 <translation id="1648943974594387137">ព័ត៌មានលម្អិតសម្រាប់ចូលគណនីហួសសម័យហើយ</translation>
 <translation id="9148126808321036104">ចូលម្តងទៀត</translation>
 <translation id="2638087589890736295">តម្រូវឲ្យមានឃ្លាសម្ងាត់ដើម្បីចាប់ផ្តើមធ្វើសមកាលកម្ម</translation>
@@ -2048,9 +2068,11 @@
 <translation id="3007771295016901659">ចម្លងផ្ទាំង</translation>
 <translation id="9085256200913095638">បង្កើតផ្ទាំងដែលបានជ្រើសរើសស្ទួន</translation>
 <translation id="2973324205039581528">បិទសំឡេង​ទំព័រ</translation>
-<translation id="21133533946938348">ដៅផ្ទាំង</translation>
 <translation id="4025039777635956441">បិទ​គេហទំព័រ​ដែលបាន​ជ្រើសរើស</translation>
+<translation id="21133533946938348">ដៅផ្ទាំង</translation>
 <translation id="1296911687402551044">ខ្ទាស់ផ្ទាំងដែលបានជ្រើសរើស</translation>
+<translation id="2082187087049518845">ផ្ទាំងក្រុម</translation>
+<translation id="4811503964269049987">បញ្ចូលផ្ទាំង​ដែលបានជ្រើសរើស​ទៅក្នុងក្រុម</translation>
 <translation id="2007404777272201486">រាយការណ៍បញ្ហា...</translation>
 <translation id="3118319026408854581">ជំនួយ <ph name="PRODUCT_NAME"/></translation>
 <translation id="6721972322305477112">ឯកសារ</translation>
@@ -2173,8 +2195,13 @@
 <translation id="7108634116785509031"><ph name="HOST"/> ចង់ប្រើ​កាមេរ៉ា​របស់អ្នក</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> ចង់ចែករំលែកអេក្រង់​របស់អ្នក</translation>
 <translation id="4275663329226226506">កំសាន្ត</translation>
+<translation id="5804427196348435412">ប្រើ​ឧបករណ៍ NFC</translation>
 <translation id="131405271941274527"><ph name="URL"/> ចង់ផ្ញើ និង​ទទួលព័ត៌មាន នៅពេល​អ្នកចុច​ទូរសព្ទ​របស់អ្នក នៅលើ​ឧបករណ៍ NFC</translation>
 <translation id="6268718011101775129">NFC</translation>
+<translation id="6767115174726603949">ចូលប្រើ​ទិន្នន័យ និងឧបករណ៍ VR</translation>
+<translation id="1884930769492918228">តាមដាន​ទីតាំងកាមេរ៉ា និងគូសផែនទី​បន្ទប់របស់អ្នក</translation>
+<translation id="3383210070657133526"><ph name="URL"/> ចង់មាន​លទ្ធភាពចាប់ផ្ដើម​ការប្រើប្រាស់ VR</translation>
+<translation id="4357784477082216550"><ph name="URL"/> ចង់តាមដាន​ទីតាំងកាមេរ៉ា និងគូស​ផែនទីបន្ទប់​របស់អ្នក</translation>
 <translation id="8962918469425892674">គេហទំព័រ​នេះ​កំពុង​ប្រើ​ឧបករណ៍​ចាប់​ពន្លឺ ឬ​ឧបករណ៍​ចាប់​​ចលនា​។​</translation>
 <translation id="4532646538815530781">គេហទំព័រ​នេះ​កំពុង​ប្រើ​ឧបករណ៍​ចាប់​ចលនា។</translation>
 <translation id="6057381398996433816">គេហទំព័រ​នេះ​ត្រូវបាន​ទប់ស្កាត់​មិនឱ្យ​ប្រើប្រាស់ឧបករណ៍​ចាប់ពន្លឺ និងឧបករណ៍​ចាប់ចលនា។</translation>
@@ -2196,6 +2223,8 @@
 <translation id="1997484222658892567"><ph name="URL"/> ចង់ផ្ទុក​ទិន្នន័យ​ទំហំ​ធំ​នៅលើ​កុំព្យូទ័រ​មូលដ្ឋាន​របស់អ្នក​ជាអចិន្ត្រៃយ៍</translation>
 <translation id="7648992873808071793">ផ្ទុកឯកសារនៅលើឧបករណ៍នេះ</translation>
 <translation id="8871551568777368300">បានដៅដោយអ្នកគ្រប់គ្រង</translation>
+<translation id="4723140812774948886">ប្ដូរជាមួយធាតុបន្ទាប់</translation>
+<translation id="540495485885201800">ប្ដូរជាមួយ​ធាតុពីមុន</translation>
 <translation id="4110895898888439383">រុក​រក​បណ្ដាញ​ដោយប្រើ​មុខងារ​ភាពដិត​កម្រិត​ខ្ពស់</translation>
 <translation id="614940544461990577">សាកល្បង៖</translation>
 <translation id="7325437708553334317">កម្មវិធីបន្ថែមដែលមានភាពដិតកម្រិតខ្ពស់</translation>
@@ -2240,7 +2269,7 @@
 <translation id="2505324914378689427">{SCREEN_INDEX,plural, =1{អេក្រង់ទី #}other{អេក្រង់ទី #}}</translation>
 <translation id="839736845446313156">ចុះឈ្មោះ</translation>
 <translation id="6285120908535925801">{NUM_PRINTER,plural, =1{ម៉ាស៊ីនបោះពុម្ពថ្មីនៅលើបណ្តាញរបស់អ្នក}other{ម៉ាស៊ីនបោះពុម្ពថ្មីនៅលើបណ្តាញរបស់អ្នក}}</translation>
-<translation id="2656240156816412333">{NUM_PRINTER,plural, =1{បន្ថែមម៉ាស៊ីនបោះពុម្ពទៅ Brave Software Cloud Print ដូច្នេះអ្នកអាចបោះពុម្ពពីគ្រប់ទីកន្លែង។}other{បន្ថែមម៉ាស៊ីនបោះពុម្ព # ទៅ Brave Software Cloud Print ដូច្នេះអ្នកអាចបោះពុម្ពពីគ្រប់ទីកន្លែង។}}</translation>
+<translation id="1653526288038954982">{NUM_PRINTER,plural, =1{បន្ថែមម៉ាស៊ីនបោះពុម្ពទៅ Brave Software Cloud Print ដូច្នេះអ្នកអាចបោះពុម្ពពីគ្រប់ទីកន្លែង។}other{បន្ថែមម៉ាស៊ីនបោះពុម្ព # ទៅ Brave Software Cloud Print ដូច្នេះអ្នកអាចបោះពុម្ពពីគ្រប់ទីកន្លែង។}}</translation>
 <translation id="409579654357498729">បន្ថែម Cloud Print</translation>
 <translation id="4628757576491864469">ឧបករណ៍</translation>
 <translation id="6915804003454593391">អ្នកប្រើ៖</translation>
@@ -2250,7 +2279,7 @@
 <translation id="1895934970388272448">អ្នកត្រូវអះអាងការចុះឈ្មោះនៅលើម៉ាស៊ីនបោះពុម្ពរបស់អ្នកដើម្បីបញ្ចប់ដំណើរការនេះ - ពិនិត្យវាឥឡូវនេះ។</translation>
 <translation id="551752069230578406">កំពុងបន្ថែមម៉ាស៊ីនបោះពុម្ពទៅគណនីរបស់អ្នក - វាអាចចំណាយពេលមួយភ្លែត...</translation>
 <translation id="2384436799579181135">មានបញ្ហាកើតឡើង។ សូម​ពិនិត្យ​ម៉ាស៊ីន​បោះពុម្ព​របស់អ្នក រួច​ព្យាយាម​ម្តងទៀត។</translation>
-<translation id="2569908351567260524">ម៉ាស៊ីនបោះពុម្ពនៅលើ Brave Software Cloud Print</translation>
+<translation id="1327074568633507428">ម៉ាស៊ីនបោះពុម្ពនៅលើ Brave Software Cloud Print</translation>
 <translation id="6782994146626179935">ឧបករណ៍នៅលើឧបករណ៍ Brave Software Cloud</translation>
 <translation id="7140928199327930795">គ្មានឧបករណ៍ផ្សេងទៀតទេ។</translation>
 <translation id="8213577208796878755">ឧបករណ៍មួយផ្សេងទៀតដែលមាន។</translation>
@@ -2263,11 +2292,10 @@
 <translation id="6711610692002680394">អ្នកត្រូវចូលទៅ Brave ដើម្បីចុះឈ្មោះឧបករណ៍ថ្មី</translation>
 <translation id="8931394284949551895">ឧបករណ៍ថ្មី</translation>
 <translation id="3752673729237782832">ឧបករណ៍របស់ខ្ញុំ</translation>
-<translation id="1721937473331968728">អ្នកអាចបន្ថែមម៉ាស៊ីនបោះពុម្ពក្លាសិកទៅកុំព្យូទ័ររបស់អ្នកទៅ <ph name="CLOUD_PRINT_NAME"/>។</translation>
 <translation id="715118844758971915">ម៉ាស៊ីនបោះពុម្ពក្លាសិក</translation>
 <translation id="4263757076580287579">ការចុះឈ្មោះម៉ាស៊ីនបោះពុម្ពត្រូវបានបដិសេធ។</translation>
 <translation id="8152091997436726702">ការចុះឈ្មោះម៉ាស៊ីនបោះពុម្ពបានអស់ពេល។ ដើម្បីចុះឈ្មោះម៉ាស៊ីនបោះពុម្ព អ្នកត្រូវតែអះអាងការចុះឈ្មោះនៅលើម៉ាស៊ីនបោះពុម្ព។</translation>
-<translation id="2057904164277279211">ឯកសារ<ph name="BEGIN_LINK_HELP"/>ត្រូវបាន​ផ្ញើទៅ Brave Software<ph name="END_LINK_HELP"/> ដើម្បី​រៀបចំ​បោះពុម្ព​។ មើល កែសម្រួល និង​គ្រប់គ្រង​ម៉ាសីុន​បោះពុម្ព និងប្រវត្តិ​ម៉ាសីុន​បោះពុម្ព​របស់អ្នក​នៅលើ​ផ្ទាំងគ្រប់គ្រង​របស់ <ph name="BEGIN_LINK_DASHBOARD"/>Brave Software បោះពុម្ព​តាម​ពពក<ph name="END_LINK_DASHBOARD"/>។</translation>
+<translation id="2624930408905606513">ឯកសារ<ph name="BEGIN_LINK_HELP"/>ត្រូវបាន​ផ្ញើទៅ Brave Software<ph name="END_LINK_HELP"/> ដើម្បី​រៀបចំ​បោះពុម្ព​។ មើល កែសម្រួល និង​គ្រប់គ្រង​ម៉ាសីុន​បោះពុម្ព និងប្រវត្តិ​ម៉ាសីុន​បោះពុម្ព​របស់អ្នក​នៅលើ​ផ្ទាំងគ្រប់គ្រង​របស់ <ph name="BEGIN_LINK_DASHBOARD"/>Brave Software បោះពុម្ព​តាម​ពពក<ph name="END_LINK_DASHBOARD"/>។</translation>
 <translation id="3082780749197361769">ផ្ទាំងនេះកំពុងប្រើកាមេរ៉ា ឬម៉ៃក្រូហ្វូនរបស់អ្នក។</translation>
 <translation id="3578594933904494462">មាតិការបស់ផ្ទាំងនេះកំពុងត្រូវបានចែករំលែក។</translation>
 <translation id="4449996769074858870">ផ្ទាំងនេះកំពុងលេខសម្លេង។</translation>
@@ -2292,6 +2320,10 @@
 <translation id="8980951173413349704"><ph name="WINDOW_TITLE"/> - បាន​គាំង​</translation>
 <translation id="6579705087617859690"><ph name="WINDOW_TITLE"/> - បាន​ចែក​រំលែក​ខ្លឹមសារ​លើអេក្រង់ដើម</translation>
 <translation id="8588868914509452556"><ph name="WINDOW_TITLE"/> - VR ដែលកំពុងបង្ហាញទៅ​ឧបករណ៍មើល VR</translation>
+<translation id="608531959444400877"><ph name="WINDOW_TITLE"/> - ផ្នែកនៃក្រុមដែលមិនបានដាក់ឈ្មោះ</translation>
+<translation id="1130589222747246278"><ph name="WINDOW_TITLE"/> - ផ្នែកនៃក្រុម <ph name="GROUP_NAME"/></translation>
+<translation id="7102928824073746774">ក្រុមដែលមិនបានដាក់ឈ្មោះ - <ph name="GROUP_CONTENTS"/></translation>
+<translation id="1846880379134204029">ក្រុម <ph name="GROUP_NAME"/> - <ph name="GROUP_CONTENTS"/></translation>
 <translation id="3590194807845837023">ដោះសោទម្រង់ ហើយបើកដំណើរការឡើងវិញ</translation>
 <translation id="7624337243375417909">បិទពុម្ពអក្សរធំ</translation>
 <translation id="6798780071646309401">បើកពុម្ពអក្សរធំ</translation>
@@ -2355,6 +2387,7 @@
 <translation id="3271648667212143903"><ph name="ORIGIN"/> ចង់ភ្ជាប់</translation>
 <translation id="7945031593909029181">"<ph name="CHROME_EXTENSION_NAME"/>" ចង់ភ្ជាប់ទៅ</translation>
 <translation id="3949790930165450333"><ph name="DEVICE_NAME"/> (<ph name="DEVICE_ID"/>)</translation>
+<translation id="2010501376126504057">ឧបករណ៍​ដែល​ត្រូវគ្នា</translation>
 <translation id="5308380583665731573">ភ្ជាប់</translation>
 <translation id="8480869669560681089">ឧបករណ៍​មិន​ស្គាល់​ពី​ <ph name="VENDOR_NAME"/></translation>
 <translation id="1500297251995790841">ឧបករណ៍មិនស្គាល់ [<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>]</translation>
@@ -2487,6 +2520,8 @@
 <translation id="8818958672113348984">ផ្ទៀងផ្ទាត់​តាមរយៈ​ទូរសព្ទ​របស់អ្នក</translation>
 <translation id="6112931163620622315">ពិនិត្យមើល​ទូរសព្ទ​របស់អ្នក</translation>
 <translation id="5605758115928394442">ការជូនដំណឹង​ត្រូវបានផ្ញើ​ទៅទូរសព្ទ​របស់អ្នក ដើម្បីបញ្ជាក់ថា​ពិតជាអ្នក។</translation>
+<translation id="139911022479327130">ដោះសោទូរសព្ទរបស់អ្នក រួចបញ្ជាក់ថាជាអ្នក</translation>
+<translation id="2537464584626495441">បើក​កម្មវិធីសោសុវត្ថិភាពនៅលើទូរសព្ទរបស់អ្នក</translation>
 <translation id="7378962964415201590">ផ្គូផ្គង​ទូរសព្ទ​ថ្មី</translation>
 <translation id="4774824109040330448">ស្កេន​កូដ QR ដោយប្រើ​កម្មវិធី​ផ្ទៀងផ្ទាត់​ដែល​ត្រូវគ្នា នៅលើ​ទូរសព្ទ​របស់អ្នក។</translation>
 <translation id="7685087414635069102">តម្រូវឱ្យមានកូដ PIN</translation>
@@ -2520,18 +2555,33 @@
 <translation id="4349828822184870497">មានប្រយោជន៍</translation>
 <translation id="6876469544038980967">គ្មាន​ប្រយោជន៍</translation>
 <translation id="5286194356314741248">កំពុង​ស្កេន</translation>
-<translation id="3637561406135221044">កំពុងស្កេន​ឯកសារ​រកមើល​ទិន្នន័យ​រសើប...</translation>
+<translation id="8236123533334037984">ស្ថាប័នរបស់អ្នក​កំពុងស្កេន​ការបង្ហោះនេះ ដើម្បីទទួលបាន​ការយល់ព្រម​ផ្នែកសុវត្ថិភាព។</translation>
+<translation id="2925054096976782003">ស្ថាប័នរបស់អ្នក​កំពុងស្កេនទិន្នន័យដែលបានដាក់ចូល សម្រាប់​ការយល់ព្រមលើផ្នែកសុវត្ថិភាព។</translation>
+<translation id="5068377946749700758">ស្ថាប័នរបស់អ្នក​កំពុងស្កេន​ទិន្នន័យដែលបានអូសចូល សម្រាប់ការយល់ព្រម​លើផ្នែកសុវត្ថិភាព។</translation>
+<translation id="176273057789108760">ស្ថាប័នរបស់អ្នកកំពុងស្កេនឯកសារ​ដែលបានអូសចូល សម្រាប់ការ​យល់ព្រមលើផ្នែកសុវត្ថិភាព។</translation>
+<translation id="2877030408509021795">ការស្កេន​បានបញ្ចប់ អ្វីគ្រប់យ៉ាង​គ្មានបញ្ហាទេ។</translation>
+<translation id="5313628438272378649">ការបង្ហោះនេះ​បំពានគោលការណ៍​សុវត្ថិភាព​របស់ស្ថាប័នអ្នក និងមិនអាច​បញ្ចប់បានទេ។</translation>
+<translation id="4429030830601238961">ទិន្នន័យនេះ​បំពាន​គោលការណ៍សុវត្ថិភាព​ស្ថាប័ន​របស់អ្នក និងមិនអាចដាក់ចូលបានទេ។</translation>
+<translation id="3635241501480133979">ទិន្នន័យនេះ​បំពាន​គោលការណ៍សុវត្ថិភាព​ស្ថាប័នរបស់អ្នក​ និងមិនអាចអូសចូលបានទេ។</translation>
+<translation id="7086467953285486445">ឯកសារទាំងនេះ​បំពាន​គោលការណ៍សុវត្ថិភាព​ស្ថាប័នរបស់អ្នក និងមិនអាចអូសចូលបានទេ។</translation>
+<translation id="2959127025785722291">មានអ្វីមួយខុសប្រក្រតី។ មិន​អាចបញ្ចប់ការស្កេនបានទេ។ សូមព្យាយាមម្ដងទៀត។</translation>
+<translation id="6462438303393708881">បោះបង់​ការ​បង្ហោះ</translation>
 <translation id="2878782256107578644">ការស្កេនកំពុងដំណើរការ បើកឥឡូវនេះឬ?</translation>
 <translation id="6098793583803863900">កំពុង​ស្កេន​រក​ខ្លឹមសារ​គ្រោះថ្នាក់​នៅក្នុង​ឯកសារ​មិនស្គាល់។</translation>
 <translation id="7584578941316704630">ស្កេនមុនពេល​បើកឬ?</translation>
-<translation id="1039850285407663109">មិនស្គាល់ឯកសារ​ដែលបាន​ជ្រើសរើសទេ ហើយឯកសារនេះអាច​បង្កគ្រោះថ្នាក់។ សូមពិចារណា​ធ្វើការស្កេន មុនពេលបើក​ឯកសារនេះ។</translation>
+<translation id="8494182771797646687">មិនស្គាល់ឯកសារ​ដែលបាន​ជ្រើសរើសទេ ហើយឯកសារនេះអាច​បង្កគ្រោះថ្នាក់។ ការ​ការពារ​កម្រិតខ្ពស់ណែនាំឱ្យផ្ញើឯកសារនេះទៅ Brave Software ដើម្បីពិនិត្យរកកម្មវិធីគ្រោះថ្នាក់។</translation>
 <translation id="2587922766792651800">អស់ម៉ោង​ហើយ</translation>
-<translation id="8106661353233173262">មានអ្វីមួយ​ខុសប្រក្រតី។ ឯកសារ​ដែលបានស្កេន​បានអស់ម៉ោងហើយ។</translation>
+<translation id="4404136731284211429">ស្កេនម្តងទៀត</translation>
 <translation id="6428450836711225518">ផ្ទៀងផ្ទាត់​លេខ​ទូរសព្ទ​របស់​អ្នក</translation>
 <translation id="8742371904523228557"><ph name="ONE_TIME_CODE"/> គឺជាលេខកូដ​របស់អ្នកសម្រាប់ <ph name="ORIGIN"/></translation>
 <translation id="6518133107902771759">ផ្ទៀងផ្ទាត់</translation>
 <translation id="5678293144564424498">បាន​ផ្អាកកម្មវិធី</translation>
 <translation id="1282420830958964167">បានអស់ម៉ោង​នៃការ​ប្រើប្រាស់ "<ph name="APP_NAME"/>" ដែលមាតាបិតា​របស់អ្នក​បានកំណត់​​ហើយ។ អ្នកអាចប្រើ​កម្មវិធីនេះ​​រយៈពេល <ph name="TIME_LIMIT"/> នៅថ្ងៃស្អែក។</translation>
+<translation id="3821372858277557370">{NUM_EXTENSIONS,plural, =1{កម្មវិធីបន្ថែមមួយ​ត្រូវបាន​អនុញ្ញាតហើយ}other{កម្មវិធីបន្ថែម # ត្រូវបាន​អនុញ្ញាតហើយ}}</translation>
+<translation id="6930161297841867798">{NUM_EXTENSIONS,plural, =1{កម្មវិធីបន្ថែមមួយ​ត្រូវបានច្រានចោល}other{កម្មវិធីបន្ថែម # ត្រូវបានច្រានចោល}}</translation>
+<translation id="5523149538118225875">{NUM_EXTENSIONS,plural, =1{កម្មវិធីបន្ថែមមួយ​ត្រូវបានដំឡើង​ដោយអ្នកគ្រប់គ្រង​របស់អ្នក}other{កម្មវិធីបន្ថែម # ត្រូវបានដំឡើង​ដោយអ្នកគ្រប់គ្រង​របស់អ្នក}}</translation>
+<translation id="2073148037220830746">{NUM_EXTENSIONS,plural, =1{ចុចដើម្បីដំឡើង​កម្មវិធីបន្ថែម}other{ចុចដើម្បីដំឡើង​កម្មវិធីបន្ថែម​ទាំងនេះ}}</translation>
+<translation id="5203920255089865054">{NUM_EXTENSIONS,plural, =1{ចុចដើម្បីមើល​កម្មវិធីបន្ថែម}other{ចុចដើម្បីមើល​កម្មវិធីបន្ថែម​ទាំងនេះ}}</translation>
 <translation id="394984172568887996">បាននាំចូលពី IE</translation>
 <translation id="1543284117603151572">បាននាំចូលពី Edge</translation>
 <translation id="5502500733115278303">បាននាំចូលពី Firefox</translation>
@@ -2687,6 +2737,7 @@
 <translation id="5070556616376997776">អ្នក​កំពុង​ប្រើ​មុខងារ​ឯកជន</translation>
 <translation id="2199298570273670671">បញ្ហា</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>៖ សមកាលកម្ម​មិន​ដំណើរការទេ</translation>
+<translation id="1605544918554600534"><ph name="PROFILE_NAME"/>៖ សមកាល​កម្ម​ពាក្យសម្ងាត់​មិន​ដំណើរការ​ទេ</translation>
 <translation id="7307129035224081534">បានផ្អាក</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/>៖ ​សមកាលកម្មបានផ្អាក</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (បានគ្រប់គ្រង)</translation>
@@ -2707,7 +2758,6 @@
 <translation id="1372841398847029212">ធ្វើសមកាលកម្មទៅគណនីរបស់អ្នក</translation>
 <translation id="2538361623464451692">បាន​បិទ​ការ​ធ្វើ​សម​កាល​កម្ម</translation>
 <translation id="1316495628809031177">សមកាល​កម្មត្រូវ​បានផ្អាក</translation>
-<translation id="7786207843293321886">ចាកចេញពីរបៀបភ្ញៀវ</translation>
 <translation id="2335111415680198280">{0,plural, =1{បិទវិនដូ #}other{បិទវិនដូ #}}</translation>
 <translation id="2329597144923131178">ចូលគណនីដើម្បីទទួលយកចំណាំ ប្រវត្តិ ពាក្យសម្ងាត់ និងការកំណត់ផ្សេងទៀតរបស់អ្នកទៅលើឧបករណ៍ទាំងអស់របស់អ្នក។</translation>
 <translation id="7029809446516969842">ពាក្យសម្ងាត់</translation>
@@ -2717,14 +2767,10 @@
 <translation id="5287425679749926365">គណនីរបស់អ្នក</translation>
 <translation id="4801448226354548035">លាក់គណនី</translation>
 <translation id="2935225303485967257">គ្រប់គ្រងមនុស្ស</translation>
-<translation id="7388222713940428051">បើក​វិនដូភ្ញៀវ</translation>
-<translation id="127668050356036882">បិទផ្ទាំងវិនដូរបស់អ្នកទាំងអស់</translation>
 <translation id="8966809848145604011">មនុស្ស​ផ្សេងទៀត</translation>
 <translation id="1464258312790801189">គណនីរបស់អ្នក</translation>
 <translation id="6655458902729017087">លាក់គណនី</translation>
 <translation id="688280436658139163">គ្រប់គ្រងមនុស្ស</translation>
-<translation id="2666990579225592931">បើក​វិនដូភ្ញៀវ</translation>
-<translation id="5869948122057593679">បិទ​វិនដូទាំងអស់​​របស់អ្នក</translation>
 <translation id="4133080584509825342">កែសម្រួលបុគ្គល, <ph name="PROFILE_NAME"/></translation>
 <translation id="4848862725510532982">កែសម្រួលបុគ្គល <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
 <translation id="3294437725009624529">ភ្ញៀវ</translation>
@@ -2867,11 +2913,19 @@
 <translation id="7388044238629873883">អ្នកជិតបញ្ចប់ហើយ!</translation>
 <translation id="8688579245973331962">តើអ្នកមិនឃើញឈ្មោះរបស់អ្នកទេឬ?</translation>
 <translation id="4222772810963087151">ព័ត៌មានលម្អិត​អំពី​កំណែបង្កើត</translation>
+<translation id="8867228703146808825">ចម្លងព័ត៌មានលម្អិត​អំពីកំណែបង្កើត​ទៅឃ្លីបបត</translation>
+<translation id="6532663472409656417">បានចុះឈ្មោះ​សហគ្រាស</translation>
+<translation id="1549275686094429035">បានបើក ARC</translation>
+<translation id="7121438501124788993">មុខងារ​អ្នកអភិវឌ្ឍន៍</translation>
+<translation id="6315812488257290136">មនុស្ស</translation>
 <translation id="4382131447572146376">{COUNT,plural, =0{<ph name="EMAIL"/>}=1{<ph name="EMAIL"/>, +1 គណនីទៀត}other{<ph name="EMAIL"/>, +<ph name="EXTRA_ACCOUNTS"/> គណនីទៀត}}</translation>
-<translation id="1060881073479695738">កម្មវិធី​នៅលើ Play Store</translation>
+<translation id="7434635829372401939">ធ្វើសមកាលកម្ម​ការកំណត់​របស់អ្នក</translation>
+<translation id="3181825792072797598">បើក​សមកាលកម្ម</translation>
+<translation id="2547583314137677375">បិទ​សមកាលកម្ម</translation>
 <translation id="6985607387932385770">ម៉ាស៊ីន​បោះពុម្ព</translation>
 <translation id="7788444488075094252">ភាសា និងធាតុបញ្ចូល</translation>
 <translation id="4181841719683918333">ភាសា</translation>
+<translation id="6785915470941880363">ការរំកិលបញ្រ្ចាស <ph name="LINK_BEGIN"/>ស្វែងយល់បន្ថែម<ph name="LINK_END"/></translation>
 <translation id="6340526405444716530">ការកំណត់ឱ្យស្រប​តាមបុគ្គល</translation>
 <translation id="8818152010000655963">ផ្ទាំងរូបភាព</translation>
 <translation id="7289225569524511578">បើិកកម្មវិធីផ្ទាំងរូបភាពនេះ</translation>
@@ -2890,7 +2944,8 @@
 <translation id="7456142309650173560">dev</translation>
 <translation id="6647838571840953560">បច្ចុប្បន្ននេះនៅលើ <ph name="CHANNEL_NAME"/></translation>
 <translation id="9057354806206861646">កាលវិភាគ​ដំឡើងកំណែ</translation>
-<translation id="7737456446569756884">ឧបករណ៍នេះ​នឹងទទួលបាន​កំណែកម្មវិធី និងសុវត្ថិភាពថ្មី​ដោយស្វ័យប្រវត្តិ រហូតដល់ខែ <ph name="MONTH_AND_YEAR"/>។</translation>
+<translation id="2600522410036850735">ឧបករណ៍នេះ​នឹងទទួលបាន​កំណែកម្មវិធី និងសុវត្ថិភាពថ្មី​ដោយស្វ័យប្រវត្តិ រហូតដល់ខែ <ph name="MONTH_AND_YEAR"/>។ &lt;a target="_blank" href="<ph name="URL"/>"&gt;ស្វែងយល់បន្ថែម&lt;/a&gt;</translation>
+<translation id="903797871439633902">នេះគឺជា​កំណែថ្មី​របស់កម្មវិធី និង​សុវត្ថិភាព​ចុងក្រោយ​ដែលបានដំឡើង​ដោយស្វ័យប្រវត្តិ​សម្រាប់ <ph name="DEVICE_TYPE"/> នេះ។ ដើម្បី​ទទួលបាន​កំណែថ្មីក្នុងពេលអនាគត សូមប្ដូរទៅប្រើម៉ូដែលថ្មីជាងនេះ។ &lt;a target="_blank" href="<ph name="URL"/>"&gt;ស្វែងយល់បន្ថែម&lt;/a&gt;</translation>
 <translation id="4297219207642690536">ចាប់ផ្តើម​ឡើងវិញ និងកំណត់​ឡើងវិញ</translation>
 <translation id="4716483597559580346">ផៅអឺវ៉ស់សម្រាប់​សុវត្ថិភាព​បន្ថែម</translation>
 <translation id="4089922565956168950">ការដំឡើង​កំណែនេះ​នឹង​កំណត់ Bravebook របស់អ្នកឡើងវិញ និងលុបទិន្នន័យ​អ្នកប្រើប្រាស់បច្ចុប្បន្នចេញ។</translation>
@@ -2904,11 +2959,9 @@
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/> របស់អ្នក​ជា​កំណែថ្មី​ហើយ</translation>
 <translation id="3688526734140524629">ប្តូរបណ្តាញ</translation>
 <translation id="6410328738210026208">ប្តូរបណ្តាញ និង Powerwash</translation>
-<translation id="1979280758666859181">អ្នកកំពុងប្តូរទៅបណ្តាញដែលមានកំណែចាស់នៃ <ph name="PRODUCT_NAME"/>។ ការប្តូរបណ្តាញនឹងត្រូវបានអនុវត្ត នៅពេលដែលកំណែបណ្តាញនោះត្រូវគ្នាជាមួយកំណែបច្ចុប្បន្នដែលបានតំឡើងនៅលើឧបករណ៍របស់អ្នក។</translation>
 <translation id="7728668285692163452">ការប្តូរ​បណ្តាញ​នឹង​ត្រូវបាន​អនុវត្ត​នៅ​ពេលក្រោយ</translation>
 <translation id="5495466433285976480">វានឹងដកអ្នកប្រើមូលដ្ឋាន ឯកសារ ទិន្នន័យ និងការកំណត់ផ្សេងទៀតទាំងអស់ចេញ បន្ទាប់ពីការចាប់ផ្តើមឡើងវិញរបស់អ្នកលើកក្រោយ។ អ្នកប្រើទាំងអស់នឹងត្រូវចូលម្តងទៀត។</translation>
 <translation id="8101987792947961127">តម្រូវឲ្យមាន Powerwash នៅលើពេលបិទបើកដំណើរការឡើងវិញនៅពេលបន្ទាប់</translation>
-<translation id="1414648216875402825">អ្នកកំពុងធ្វើបច្ចុប្បន្នភាពកំណែមិនថេរនៃ <ph name="PRODUCT_NAME"/> ដែលផ្ទុកលក្ខណៈពិសេសដែលនៅក្នុងប្រតិបត្តិការនៅឡើយ។ ការគាំង និងកំហុសដែលបានមិនបានរំពឹងទុកនឹងកើតមាន។ សូមបន្តដោយប្រុងប្រយ័ត្ន។</translation>
 <translation id="6103681770816982672">ការព្រមាន៖ អ្នកកំពុងឆ្លាស់ទៅបណ្តាញអ្នកអភិវឌ្ឍន៍</translation>
 <translation id="8807632654848257479">ថេរ</translation>
 <translation id="830868413617744215">បែតា</translation>
@@ -2943,6 +2996,7 @@
 <translation id="5901630391730855834">លឿង</translation>
 <translation id="161042844686301425">បៃតងខ្ចី</translation>
 <translation id="4115378294792113321">ស្វាយខ្ចី</translation>
+<translation id="548137908954174608">បើកអក្សររត់​ក្នុងពេល​ជាក់ស្ដែង</translation>
 <translation id="6981982820502123353">លទ្ធភាពប្រើប្រាស់</translation>
 <translation id="5840822070878669614">បើក Brave Web Store</translation>
 <translation id="6073903501322152803">បន្ថែមលក្ខណៈពិសេសលទ្ធភាពចូលប្រើ</translation>
@@ -3001,7 +3055,7 @@
 <translation id="8758418656925882523">បើក​ការសរសេរ​តាមអាន (និយាយ​ដើម្បី​វាយបញ្ចូល)</translation>
 <translation id="7580671184200851182">ចាក់សម្លេងតែមួយតាមរយៈឧបករណ៍បំពងសម្លេងទាំងអស់ (សម្លេងម៉ូណូ)</translation>
 <translation id="1361872463926621533">ចាក់សំឡេង​នៅពេលចាប់ផ្តើម</translation>
-<translation id="1189418886587279221">បើកដំណើរការលក្ខណៈពិសេសលទ្ធភាពប្រើប្រាស់ដើម្បីធ្វើឲ្យឧបករណ៍របស់អ្នកងាយស្រួលប្រើជាងមុន។</translation>
+<translation id="1714644264617423774">បើក​មុខងារភាពងាយប្រើ ដើម្បីធ្វើឱ្យ​ឧបករណ៍​របស់អ្នក​ងាយស្រួលប្រើ​ជាងមុន។ <ph name="LINK_BEGIN"/>ស្វែងយល់បន្ថែម<ph name="LINK_END"/></translation>
 <translation id="48704129375571883">បន្ថែមលក្ខណៈពិសេសបន្ថែម</translation>
 <translation id="7230787553283372882">ប្តូរទំហំអក្សររបស់អ្នកតាមបំណង</translation>
 <translation id="214169863967063661">បើកការកំណត់រូបរាង</translation>
@@ -3052,6 +3106,7 @@
 <translation id="7288013116963835700">លុប Linux សម្រាប់ <ph name="DEVICE_TYPE"/></translation>
 <translation id="7933634003144813719">គ្រប់គ្រង​ថត​រួម</translation>
 <translation id="2214018885812055163">ថតដែលបាន​ចែករំលែក</translation>
+<translation id="7396017167185131589">ថត​ដែលបានចែករំលែក​នឹងបង្ហាញនៅទីនេះ</translation>
 <translation id="6697690052557311665">សូមចុចខាងស្តាំ​នៅលើថត​នៅក្នុងកម្មវិធីឯកសារ រួចជ្រើសរើស "ចែករំលែក​ជាមួយ Linux" ដើម្បីចែករំលែក​ជាការស្រេច។</translation>
 <translation id="7932969338829957666">មានថត​ដែលបាន​ចែករំលែក​​នៅក្នុង Linux នៅ <ph name="BASE_DIR"/> ។</translation>
 <translation id="3726137731714254362">ការលុបថតចេញ​ពីទីនេះនឹងបញ្ឈប់​ការចែករំលែក ប៉ុន្តែនឹងមិន​លុបឯកសារទេ។</translation>
@@ -3075,10 +3130,15 @@
 <translation id="1327495825214193325">តម្រូវឱ្យមាន​ការចាប់ផ្ដើម <ph name="DEVICE_TYPE"/> នេះឡើងវិញ ដើម្បីបើក​ការជួសជុល ADB។ ការបិទការជួសជុល​ ADB តម្រូវឱ្យ​កំណត់​ការកំណត់ឱ្យដូចដើមឡើងវិញ។</translation>
 <translation id="8082390128630131497">ការបិទ​ការជួសជុល ADB នឹងកំណត់ <ph name="DEVICE_TYPE"/> នេះដូចដើមឡើងវិញ។ គណនីអ្នកប្រើប្រាស់ និងទិន្នន័យ​មូលដ្ឋានទាំងអស់​នឹងត្រូវបាន​លុប។</translation>
 <translation id="1630768113285622200">ចាប់ផ្ដើម​ឡើងវិញ និងបន្ត</translation>
+<translation id="8539766201049804895">ដំឡើងកំណែ</translation>
+<translation id="6973611239564315524">មានកំណែថ្មី​សម្រាប់ដំឡើង​ទៅ Debian 10 (Buster)</translation>
+<translation id="1508575541972276599">កំណែ​បច្ចុប្បន្ន​គឺ Debian 9 (Stretch)</translation>
 <translation id="1679806121152819234">Plugin VM</translation>
 <translation id="1878541307036593717">រៀបចំ​ការអនុញ្ញាត</translation>
 <translation id="7508054832109420082">ផ្ដល់សិទ្ធិចូលប្រើ​ទៅម៉ាស៊ីនបោះពុម្ព</translation>
 <translation id="2258855745387252834">ដើម្បី​ចែករំលែក សូមចុចខាងស្ដាំ​លើ​ថត​នៅក្នុង​កម្មវិធី Files រួច​ជ្រើសរើស "ចែករំលែក​ជាមួយ Plugin VM"។</translation>
+<translation id="4997384734315285248">លុប​ Plugin VM</translation>
+<translation id="5454360575035671759">ការលុប Plugin VM នឹងលុប VM របស់អ្នក។ សកម្មភាព​នេះរួមបញ្ចូល​ទាំងកម្មវិធី ការកំណត់ និងទិន្នន័យ​របស់ VM ផងដែរ។ តើអ្នក​ប្រាកដថា​ចង់បន្ត​ដែរទេ?</translation>
 <translation id="2714393097308983682">ហាង Brave Software Play</translation>
 <translation id="572155275267014074">ការ​កំណត់ Android</translation>
 <translation id="7201042526153088083">ដំឡើង​កម្មវិធី និង​ហ្គេមពី Brave Software Play នៅលើ <ph name="DEVICE_TYPE"/> របស់អ្នក។ &lt;a target="_blank" href="<ph name="URL"/>"&gt;ស្វែងយល់បន្ថែម&lt;/a&gt;</translation>
@@ -3116,8 +3176,8 @@
 <translation id="883304095704384301">សូមចូលទៅកាន់<ph name="BEGIN_LINK_CHROMIUM"/>ជំនួយ Brave Software Brave<ph name="END_LINK_CHROMIUM"/> ប្រសិនបើអ្នកមិនអាចរកឃើញអ្វីដែលអ្នកកំពុងរក</translation>
 <translation id="6406708970972405507">ការកំណត់ - <ph name="SECTION_TITLE"/></translation>
 <translation id="3019285239893817657">ប៊ូតុង​ទំព័ររង</translation>
-<translation id="5860033963881614850">បិទ</translation>
-<translation id="5916664084637901428">បើក</translation>
+<translation id="379509625511193653">បិទ</translation>
+<translation id="6762833852331690540">បើក</translation>
 <translation id="1378613616312864539"><ph name="NAME"/> កំពុងគ្រប់គ្រងការកំណត់នេះ</translation>
 <translation id="8465252176946159372">គ្មានសុពលភាពទេ</translation>
 <translation id="8647834505253004544">មិនមែនជា​អាសយដ្ឋាន​ទំព័រ​ដែល​ត្រឹមត្រូវ​ទេ</translation>
@@ -3177,7 +3237,7 @@
 <translation id="7136694880210472378">ដាក់ជាលំនាំដើម</translation>
 <translation id="1153356358378277386">ឧបករណ៍​ដែល​បាន​ផ្គូផ្គង</translation>
 <translation id="4481530544597605423">ឧបករណ៍​ដែល​ឈប់​ផ្គូផ្គង</translation>
-<translation id="4576541033847873020">ផ្គូផ្គង​ឧបករណ៍​ប៊្លូធូស</translation>
+<translation id="6238624845858322552">ភ្ជាប់​ទៅ​ឧបករណ៍​ប៊្លូធូស</translation>
 <translation id="4870903493621965035">គ្មាន​ឧបករណ៍​ដែល​បាន​ផ្គូផ្គង​ទេ</translation>
 <translation id="1303671224831497365">រកមិនឃើញឧបករណ៍ប៊្លូធូសទេ</translation>
 <translation id="5842497610951477805">បើក​ប៊្លូធូស</translation>
@@ -3284,14 +3344,16 @@
 <translation id="5648166631817621825">7 ថ្ងៃមុន</translation>
 <translation id="8571213806525832805">4 សប្តាហ៍មុន</translation>
 <translation id="6979737339423435258">គ្រប់​ពេល</translation>
+<translation id="1043818413152647937">សម្អាត​ទិន្នន័យ​ពីកម្មវិធី​ទាំងនេះ​ផងដែរ​ឬ?</translation>
 <translation id="3399432415385675819">ការជូនដំណឹងនឹងត្រូវបានបិទ</translation>
 <translation id="3459509316159669723">កំពុងបោះពុម្ព</translation>
-<translation id="1563008449513980623">ដំឡើង ឬគ្រប់គ្រងម៉ាស៊ីនបោះពុម្ពនៅក្នុង Brave Software Cloud Print</translation>
+<translation id="7063957500469387217">ដំឡើង ឬគ្រប់គ្រងម៉ាស៊ីនបោះពុម្ពនៅក្នុង Brave Software Cloud Print</translation>
 <translation id="8185331656081929126">បង្ហាញការជូនដំណឹង នៅពេលម៉ាស៊ីនបោះពុម្ពថ្មីត្រូវបានរកឃើញនៅលើបណ្តាញ</translation>
 <translation id="6451180435462401570">គ្រប់គ្រងឧបករណ៍ Cloud Print</translation>
-<translation id="1815579292149538864">រៀបចំ ឬ​គ្រប់គ្រង​ម៉ាស៊ីន​បោះពុម្ព CUPS ។</translation>
+<translation id="1805888043020974594">ម៉ាស៊ីនមេបោះពុម្ព</translation>
+<translation id="3184536091884214176">រៀបចំ ឬគ្រប់គ្រង​ម៉ាស៊ីនបោះពុម្ពដែលប្រើប្រព័ន្ធ CUPS។ <ph name="LINK_BEGIN"/>ស្វែងយល់បន្ថែម<ph name="LINK_END"/></translation>
 <translation id="8030656706657716245">បន្ថែម​ម៉ាស៊ីន​បោះពុម្ព</translation>
-<translation id="893254996965966411">រក្សាទុក​ម៉ាស៊ីន​បោះពុម្ព​ដែលបានរកឃើញ​ទៅក្នុង​កម្រងព័ត៌មាន​របស់អ្នក ឬបញ្ចូល​ម៉ាស៊ីន​បោះពុម្ពថ្មី។</translation>
+<translation id="4142518881503042940">រក្សាទុក​ម៉ាស៊ីន​បោះពុម្ព​ដែលបានរកឃើញ​ទៅក្នុង​កម្រងព័ត៌មាន​របស់អ្នក ឬបញ្ចូល​ម៉ាស៊ីន​បោះពុម្ពថ្មី។ <ph name="LINK_BEGIN"/>ស្វែងយល់បន្ថែម<ph name="LINK_END"/></translation>
 <translation id="2152281589789213846">បញ្ចូលម៉ាស៊ីន​បោះពុម្ព​ទៅ​ក្នុងកម្រងព័ត៌មាន​របស់អ្នក</translation>
 <translation id="4940364377601827259">មាន​ម៉ាស៊ីន​បោះពុម្ព​ <ph name="PRINTER_COUNT"/> សម្រាប់​រក្សាទុក​។</translation>
 <translation id="5060332552815861872">មាន​ម៉ាស៊ីន​បោះពុម្ព​ 1 សម្រាប់​រក្សាទុក។</translation>
@@ -3307,6 +3369,7 @@
 <translation id="1472675084647422956">បង្ហាញ​ច្រើនទៀត</translation>
 <translation id="168991973552362966">បន្ថែម​ម៉ាស៊ីន​បោះពុម្ព​នៅ​ក្បែរ</translation>
 <translation id="3038612606416062604">បន្ថែម​ម៉ាស៊ីន​បោះពុម្ព​ដោយ​ផ្ទាល់</translation>
+<translation id="740810853557944681">បញ្ចូល​ម៉ាស៊ីនមេបោះពុម្ព</translation>
 <translation id="8002274832045662704">ការកំណត់រចនាសម្ព័ន្ធ​ម៉ាស៊ីនបោះពុម្ពកម្រិតខ្ពស់</translation>
 <translation id="2818476747334107629">ព័ត៌មានលម្អិតម៉ាស៊ីនបោះពុម្ព</translation>
 <translation id="4890773143211625964">បង្ហាញជម្រើសម៉ាស៊ីនបោះពុម្ពកម្រិតខ្ពស់</translation>
@@ -3325,7 +3388,7 @@
 <translation id="2266957463645820432">IPP ពីលើ USB (IPPUSB)</translation>
 <translation id="8086015605808120405">កំពុងកំណត់រចនាសម្ព័ន្ធ <ph name="PRINTER_NAME"/> ...</translation>
 <translation id="4665014895760275686">ក្រុមហ៊ុនផលិត</translation>
-<translation id="4561098487691395071">ឬបញ្ជាក់​ PPD ម៉ាស៊ីនបោះពុម្ព​របស់អ្នក</translation>
+<translation id="5043913660911154449">ឬបញ្ជាក់ PPD ម៉ាស៊ីន​បោះពុម្ព​របស់អ្នក <ph name="LINK_BEGIN"/>ស្វែងយល់បន្ថែម<ph name="LINK_END"/></translation>
 <translation id="1418954524306642206">រុករកដើម្បី​បញ្ជាក់ PPD ម៉ាស៊ីនបោះពុម្ព​របស់អ្នក</translation>
 <translation id="1989112275319619282">រុករក</translation>
 <translation id="3625481642044239431">បានជ្រើសរើស​ឯកសារ​មិនត្រឹមត្រូវ។ សូមព្យាយាម​ម្ដងទៀត។</translation>
@@ -3346,16 +3409,22 @@
 <translation id="2910318910161511225">សូមភ្ជាប់​បណ្តាញ រួច​ព្យាយាម​ម្តងទៀត</translation>
 <translation id="4972129977812092092">កែសម្រួលម៉ាស៊ីនបោះពុម្ព</translation>
 <translation id="5696679855467848181">កំពុងប្រើ​ឯកសារ PPD បច្ចុប្បន្ន៖ <ph name="PPD_NAME"/></translation>
-<translation id="3016329696181678353">មិនអាចកំណត់​រចនាសម្ព័ន្ធ <ph name="PRINTER_NAME"/> ដោយស្វ័យប្រវត្តិ​បានទេ។ សូមបញ្ជាក់​ព័ត៌មានលម្អិតម៉ាស៊ីនបោះពុម្ព​កម្រិតខ្ពស់។</translation>
+<translation id="6300718114348072351">មិនអាចកំណត់​រចនាសម្ព័ន្ធ <ph name="PRINTER_NAME"/> ដោយស្វ័យប្រវត្តិ​បានទេ។ សូមបញ្ជាក់​ព័ត៌មានលម្អិត​ម៉ាស៊ីនបោះពុម្ព​កម្រិតខ្ពស់។ <ph name="LINK_BEGIN"/>ស្វែងយល់បន្ថែម<ph name="LINK_END"/></translation>
 <translation id="804786196054284061">កិច្ចព្រមព្រៀង​អាជ្ញាបណ្ណ​របស់​អ្នកប្រើប្រាស់​ចុងក្រោយ</translation>
 <translation id="6318944945640833942">រកមិនឃើញ​ម៉ាស៊ីន​បោះពុម្ព​ទេ។ សូមបញ្ចូល​អាសយដ្ឋាន​ម៉ាស៊ីន​បោះពុម្ព​ម្តងទៀត។</translation>
 <translation id="2434449159125086437">មិនអាច​រៀបចំ​ម៉ាស៊ីនបោះពុម្ព​បានទេ។ សូមពិនិត្យមើល​ការកំណត់រចនាសម្ព័ន្ធ រួចព្យាយាម​ម្តងទៀត។</translation>
+<translation id="8541462173655894684">រកមិនឃើញម៉ាស៊ីនបោះពុម្ពណាមួយពីម៉ាស៊ីនមេបោះពុម្ពទេ</translation>
+<translation id="4833683849865011483">បានរកឃើញម៉ាស៊ីនបោះពុម្ព 1 ពីម៉ាស៊ីនមេបោះពុម្ព</translation>
+<translation id="3711945201266135623">បានរកឃើញម៉ាស៊ីនបោះពុម្ព <ph name="NUM_PRINTERS"/> ពីម៉ាស៊ីនមេបោះពុម្ព</translation>
+<translation id="244231003699905658">អាសយដ្ឋាន​មិន​ត្រឹមត្រូវ។ សូមពិនិត្យអាសយដ្ឋាន រួចព្យាយាមម្តងទៀត។</translation>
+<translation id="3479685872808224578">រកមិនឃើញ​ម៉ាស៊ីនមេបោះពុម្ពទេ។ សូមពិនិត្យអាសយដ្ឋាន រួចព្យាយាមម្តងទៀត។</translation>
+<translation id="7434969625063495310">មិន​អាចបញ្ចូល​ម៉ាស៊ីនមេបោះពុម្ព​បានទេ។ សូមពិនិត្យ​ការកំណត់រចនាសម្ព័ន្ធរបស់ម៉ាស៊ីនមេ រួចព្យាយាមម្ដងទៀត។</translation>
 <translation id="4733793249294335256">ទីតាំង</translation>
 <translation id="7754704193130578113">សួររកកន្លែងរក្សាទុកឯកសារនីមួយៗមុនពេលទាញយក</translation>
-<translation id="5713072761819014678">ផ្តាច់គណនី Brave Software Drive</translation>
+<translation id="6474884162850599008">ផ្តាច់គណនី Brave Software Drive</translation>
 <translation id="486635084936119914">បើក​ប្រភេទឯកសារជាក់លាក់ដោយស្វ័យប្រវត្តិ បន្ទាប់ពីទាញយករួចហើយ</translation>
 <translation id="3653160965917900914">ការចែករំលែក​ឯកសារ​តាមបណ្ដាញ</translation>
-<translation id="5763315388120433852">រៀបចំ ឬ​គ្រប់គ្រង​ការចែក​រំលែក​ឯកសារ​តាមបណ្ដាញ។</translation>
+<translation id="4906490889887219338">រៀបចំ ឬ​គ្រប់គ្រង​ការចែក​រំលែក​ឯកសារ​តាមបណ្ដាញ។ <ph name="LINK_BEGIN"/>ស្វែងយល់បន្ថែម<ph name="LINK_END"/></translation>
 <translation id="5734697361979786483">បញ្ចូលឧបករណ៍​ចែករំលែក​ឯកសារ</translation>
 <translation id="247051149076336810">URL សម្រាប់​ចែក​រំលែក​ឯកសារ</translation>
 <translation id="5247051749037287028">ឈ្មោះ​បង្ហាញ​ (ជាជម្រើស)</translation>
@@ -3665,10 +3734,10 @@
 <translation id="5302048478445481009">ភាសា</translation>
 <translation id="6388429472088318283">ភាសា​សម្រាប់​ការ​ស្វែងរក</translation>
 <translation id="2690024944919328218">បង្ហាញជម្រើសភាសា</translation>
-<translation id="768549422429443215">បញ្ចូលភាសា ឬ​តម្រៀបបញ្ជី​ឡើងវិញ។</translation>
+<translation id="8218847192766059983">បញ្ចូលភាសា ឬ​តម្រៀបបញ្ជី​ឡើងវិញ។ <ph name="BEGIN_LINK"/>ស្វែងយល់បន្ថែម<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">អក្សរប្រព័ន្ធ​បង្ហាញ​ជាភាសានេះ</translation>
 <translation id="2366260648632264559">បង្ហាញ​អក្សរប្រព័ន្ធជាភាសានេះ</translation>
-<translation id="7216595297012131718">បញ្ជាទិញ​ភាសា​ដោយ​ផ្អែក​លើ​ចំណូលចិត្ត​របស់​អ្នក</translation>
+<translation id="8336721153892716270">ចាប់ផ្ដើម​ឧបករណ៍​ឡើងវិញ ដើម្បី​បង្ហាញ​អក្សរ​ប្រព័ន្ធ​ជា​ភាសា​<ph name="LANGUAGE"/></translation>
 <translation id="5972708806901999743">ផ្លាស់ទីទៅលើ</translation>
 <translation id="8609465669617005112">រំកិលទៅលើ</translation>
 <translation id="6746124502594467657">រំកិលចុះ</translation>
@@ -3712,6 +3781,7 @@
 <translation id="3181954750937456830">មុខងាររុករក​ដោយ​សុវត្ថិភាព (ការពារអ្នក​ និងឧបករណ៍​របស់អ្នក​ពីគេហទំព័រ​គ្រោះថ្នាក់)</translation>
 <translation id="7315322926489145388">ផ្ញើ​ URL​ របស់​ទំព័រ​មួយចំនួន​ដែលអ្នក​ចូលមើល​ទៅ Brave Software នៅពេលអ្នកជួបហានិភ័យ​ផ្នែកសុវត្ថិភាព</translation>
 <translation id="4991384657077828949">ជួយ​កែលម្អ​សុវត្ថិភាព Brave</translation>
+<translation id="1641113438599504367">ការរុករកសុវត្ថិភាព</translation>
 <translation id="1943176487615318915">ដើម្បី​រកមើល​កម្មវិធី​ និងគេហទំព័រ​គ្រោះថ្នាក់ Brave ផ្ញើ​ URL របស់ទំព័រ​មួយចំនួន​ដែលអ្នកចូលមើល ព្រមទាំងខ្លឹមសារទំព័រ និងព័ត៌មានប្រព័ន្ធមួយចំនួន​ទៅ Brave Software</translation>
 <translation id="918192811481327695">ជួយ​កែលម្អ​មុខងារ និង​ប្រតិបត្តិការ​របស់ Brave</translation>
 <translation id="9063160602596686558">ផ្ញើស្ថិតិប្រើប្រាស់ និងរបាយការណ៍អំពីការគាំងទៅ Brave Software ដោយស្វ័យប្រវត្តិ</translation>
@@ -3722,6 +3792,9 @@
 <translation id="5282733140964383898">ការបើកមុខងារ "កុំតាមដាន" មានន័យថាការស្នើសុំនឹងត្រូវរាប់បញ្ចូលជាមួយចរាចរណ៍នៃការរុករករបស់អ្នក។ ផលប៉ះពាល់ទាំងឡាយគឺអាស្រ័យលើថាតើគេហទំព័រឆ្លើយតបទៅនឹងការស្នើសុំ ឬអត់ និងរបៀបដែលការស្នើសុំត្រូវបានបកស្រាយ។ ឧទាហរណ៍៖ គេហទំព័រមួយចំនួនអាចឆ្លើយតបទៅនឹងការស្នើសុំនេះដោយបង្ហាញពាណិជ្ជកម្មដល់អ្នកដោយមិនផ្អែកលើគេហទំព័រផ្សេងទៀតដែលអ្នកបានចូលទៅកាន់ទេ។ គេហទំព័រជាច្រើននឹងនៅតែប្រមូល និងប្រើប្រាស់ទិន្នន័យរុករករបស់អ្នកដដែល។ ឧទាហរណ៍ដើម្បីពង្រឹងសុវត្ថិភាព ដើម្បីផ្តល់មាតិកា សេវាកម្ម ពាណិជ្ជកម្ម និងការណែនាំនៅលើគេហទំព័ររបស់ពួកគេ និងដើម្បីបង្កើតស្ថិតិរបាយការណ៍។ <ph name="BEGIN_LINK"/>ស្វែងយល់​បន្ថែម<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">បើកដំណើរការចូលប្រើដែលបានផ្ទៀងផ្ទាត់</translation>
 <translation id="5557991081552967863">ដាក់ឲ្យ Wi-Fi បន្តបើកអំឡុងពេលទុកចោល</translation>
+<translation id="7536333565791380193">សុវត្ថិភាព​កម្រិតខ្ពស់</translation>
+<translation id="8525226238722561998">កម្មវិធី​ការពារ​កម្រិតខ្ពស់​របស់ Brave Software</translation>
+<translation id="1229550669565092839">ការពារ​គណនី Brave Software ផ្ទាល់ខ្លួន​របស់​អ្នកគ្រប់គ្នា​ដែលប្រឈម​នឹងហានិភ័យ​នៃការវាយប្រហារ​តាមគោលដៅ</translation>
 <translation id="1521442365706402292">គ្រប់គ្រងវិញ្ញាបនប័ត្រ</translation>
 <translation id="7075625805486468288">គ្រប់គ្រងវិញ្ញាបនបត្រ HTTPS/SSL និងការកំណត់</translation>
 <translation id="8871974300055371298">ការកំណត់មាតិកា</translation>
@@ -3741,13 +3814,15 @@
 <translation id="2336381494582898602">Powerwash</translation>
 <translation id="4275830172053184480">ចាប់ផ្តើមឧបករណ៍របស់អ្នកឡើងវិញ</translation>
 <translation id="6555432686520421228">ដកគណនីអ្នកប្រើទាំងអស់ចេញ ហើយកំណត់ <ph name="IDS_SHORT_PRODUCT_NAME"/> ឧបករណ៍របស់អ្នកដើម្បីធ្វើឲ្យវាដូចរបស់ថ្មី។</translation>
-<translation id="4055023634561256217">តម្រូវឲ្យមានការចាប់ផ្តើមឡើងវិញ មុនពេលឧបករណ៍របស់អ្នកអាចកំណត់ឡើងវិញជាមួយ Powerwash។</translation>
+<translation id="5470735824776589490">តម្រូវឱ្យ​ចាប់ផ្តើមឡើងវិញ មុនពេលអាចកំណត់​ឧបករណ៍​របស់អ្នកឡើងវិញ​ដោយប្រើ Powerwash។ <ph name="LINK_BEGIN"/>ស្វែងយល់បន្ថែម<ph name="LINK_END"/></translation>
 <translation id="3223531857777746191">ប៊ូតុង​កំណត់ឡើងវិញ</translation>
 <translation id="1506061864768559482">ម៉ាស៊ីនស្វែងរក</translation>
 <translation id="7807067443225230855">ស្វែងរក និងជំនួយការ</translation>
 <translation id="2203682048752833055">ម៉ាស៊ីន​ស្វែងរក​ដែល​ប្រើ​នៅក្នុង <ph name="BEGIN_LINK"/>របារ​អាសយដ្ឋាន<ph name="END_LINK"/></translation>
 <translation id="1432581352905426595">គ្រប់គ្រងម៉ាស៊ីនស្វែងរក</translation>
 <translation id="2862205630718215619">Brave Software ជំនួយការ</translation>
+<translation id="8959699239363253085">បើក</translation>
+<translation id="971479617738309149">បិទ</translation>
 <translation id="6978121630131642226">ម៉ាស៊ីនស្វែងរក</translation>
 <translation id="1383876407941801731">ស្វែងរក</translation>
 <translation id="6410668567036790476">បន្ថែមម៉ាស៊ីនស្វែងរក</translation>
@@ -3763,6 +3838,7 @@
 <translation id="3735919318855093557">ចូលប្រើ​ជំនួយការ​របស់អ្នក នៅពេលអ្នក​និយាយថា "Ok Brave Software"។ ដើម្បី​សន្សំសំចៃ​ថ្ម សូម​ជ្រើសរើស “បើក (បានណែនាំ)”។ ជំនួយការ​របស់អ្នក​នឹងឆ្លើយតប នៅពេល​ឧបករណ៍​របស់អ្នកដោតភ្លើង ឬកំពុងសាកថ្ម​តែប៉ុណ្ណោះ។</translation>
 <translation id="5825412242012995131">បើក (បានណែនាំ)</translation>
 <translation id="5067399438976153555">បើកជានិច្ច</translation>
+<translation id="6175644081330715138">បិទ</translation>
 <translation id="5419405654816502573">Voice Match</translation>
 <translation id="1803545009660609783">បង្ហាត់ឡើងវិញ</translation>
 <translation id="5355099869024327351">អនុញ្ញាតឱ្យ​ជំនួយ​ការ​​បង្ហាញ​ការជូនដំណឹង​ដល់អ្នក</translation>
@@ -3778,6 +3854,10 @@
 <translation id="967624055006145463">​ទិន្នន័យដែល​បាន​រក្សា​ទុក</translation>
 <translation id="2787354132612937472">—</translation>
 <translation id="1919345977826869612">ពាណិជ្ជកម្ម</translation>
+<translation id="3513704683820682405">AR</translation>
+<translation id="7653295403398566475">សួរ​នៅពេល​គេហទំព័រ​ចង់ចូលប្រើទីតាំងកាមេរ៉ារបស់អ្នក ឬកំណត់ទីតាំងបន្ទប់របស់អ្នក</translation>
+<translation id="3350244554415289209">សួរ​នៅពេល​គេហទំព័រ​ចង់ចូលប្រើទីតាំងកាមេរ៉ារបស់អ្នក ឬកំណត់​ទីតាំងបន្ទប់របស់អ្នក (បាន​ណែនាំ)</translation>
+<translation id="4507164039066603071">កុំអនុញ្ញាត​ឱ្យគេហទំព័រ​ចូលប្រើ​ទីតាំងកាមេរ៉ារបស់អ្នក ឬកំណត់​ទីតាំងបន្ទប់របស់អ្នក</translation>
 <translation id="5649053991847567735">ទាញយកស្វ័យប្រវត្តិ</translation>
 <translation id="3744111561329211289">សមកាលកម្មផ្ទៃខាងក្រោយ</translation>
 <translation id="5518219166343146486">សួរនៅពេល​ដែល​ទំព័រ​ចង់​មើល​អត្ថបទ និង​រូបភាព​ដែល​បាន​ចម្លង​ទៅ​អង្គចងចាំ</translation>
@@ -3786,6 +3866,10 @@
 <translation id="2546283357679194313">ខុកឃី និងទិន្នន័យគេហទំព័រ</translation>
 <translation id="3668823961463113931">ឧបករណ៍ដោះស្រាយ</translation>
 <translation id="5689516760719285838">ទីតាំង</translation>
+<translation id="6972629891077993081">ឧបករណ៍ HID</translation>
+<translation id="1815181278146012280">សួរ​នៅពេល​ដែល​គេហទំព័រ​ចង់ចូលប្រើ​ឧបករណ៍ HID</translation>
+<translation id="5147103632304200977">សួរ​នៅពេល​គេហទំព័រ​ចង់ចូលប្រើ​ឧបករណ៍ HID (បាន​ណែនាំ)</translation>
+<translation id="967398046773905967">កុំអនុញ្ញាត​ឱ្យគេហទំព័រ​ណាមួយ​ចូលប្រើ​ឧបករណ៍ HID</translation>
 <translation id="9219103736887031265">រូបភាព</translation>
 <translation id="2025891858974379949">ខ្លឹមសារ​ដែលគ្មាន​សុវត្ថិភាព</translation>
 <translation id="5075910247684008552">ខ្លឹមសារ​ដែលគ្មាន​សុវត្ថិភាព​ត្រូវបាន​ទប់ស្កាត់​តាម​លំនាំដើម​នៅលើ​គេហទំព័រដែលមានសុវត្ថិភាព</translation>
@@ -3801,6 +3885,10 @@
 <translation id="6612358246767739896">មាតិកាដែលបានការពារ</translation>
 <translation id="4252852543720145436">តម្លៃ​សម្គាល់​ខ្លឹមសារ​ដែលបាន​ការពារ</translation>
 <translation id="3955193568934677022">អនុញ្ញាត​ឲ្យ​ទំព័រ​ចាក់​មាតិកា​ដែលមាន​ការ​ការពារ (ត្រូវបាន​ណែនាំ)</translation>
+<translation id="4943703118917034429">VR</translation>
+<translation id="7034615910652881882">សួរ​នៅពេលគេហទំព័រចង់ចូលប្រើទិន្នន័យ/ឧបករណ៍ VR របស់អ្នក</translation>
+<translation id="7448625729116931228">សួរ​នៅពេលគេហទំព័រចង់ចូលប្រើទិន្នន័យ/ឧបករណ៍ VR របស់អ្នក (បានណែនាំ)</translation>
+<translation id="2868184003987917410">កុំអនុញ្ញាត​ឱ្យគេហទំព័រ​ចូលប្រើ​ទិន្នន័យ/ឧបករណ៍ VR របស់អ្នក</translation>
 <translation id="4115080753528843955">សេវាកម្ម​មាតិកា​មួយ​ចំនួន​ប្រើ​លេខ​កូដសម្គាល់​ពិសេស​ ដើម្បី​ផ្តល់​សិទ្ធិក្នុងការ​ចូលប្រើប្រាស់​មាតិកា​ដែល​មាន​ការ​ការពារ</translation>
 <translation id="225240747099314620">អនុញ្ញាតឧបករណ៍សម្គាល់សម្រាប់មាតិកាដែលបានការពារ (អាចតម្រូវឲ្យមានការចាប់ផ្តើមកុំព្យូទ័រឡើងវិញ)</translation>
 <translation id="7311079019872751559">ការចូលប្រើកម្មវិធីជំនួយដែលមិនបានសេនបក់</translation>
@@ -3890,6 +3978,12 @@
 <translation id="2096715839409389970">សម្អាតខូគីភាគីទីបី</translation>
 <translation id="7828731929332799387">សកម្មភាព​នេះនឹងលុបខូគីទាំងអស់ និងទិន្នន័យគេហទំព័រ​ដែលមាននៅក្នុងបរិបទភាគីទីបី។ តើ​អ្នក​ចង់​បន្ត​ដែរទេ?</translation>
 <translation id="2537296579376733324">ខូគីទាំងអស់ នៅលើគេហទំព័រនេះតែប៉ុណ្ណោះ</translation>
+<translation id="4488502501195719518">សម្អាត​ទិន្នន័យ​ទាំងអស់ឬ?</translation>
+<translation id="93610034168535821">ទំហំផ្ទុក​សរុប​ដែលប្រើ​ដោយ​គេហទំព័រ៖</translation>
+<translation id="4336434711095810371">សម្អាត​ទិន្នន័យ​ទាំងអស់</translation>
+<translation id="2112004299911874330">សកម្មភាពនេះនឹងសម្អាតទិន្នន័យទំហំ <ph name="TOTAL_USAGE"/> ដែលបានរក្សាទុកដោយគេហទំព័រ។</translation>
+<translation id="5549467165017213645">សកម្មភាពនេះនឹងសម្អាតទិន្នន័យទំហំ <ph name="TOTAL_USAGE"/> ដែលបានរក្សាទុកដោយគេហទំព័រ និងកម្មវិធីដែលបានដំឡើង។</translation>
+<translation id="1743846852744439013">អ្នកនឹង​ត្រូវនាំចេញ​ពី​គេហទំព័រ​ទាំងអស់ រួមទាំង​នៅក្នុង​ផ្ទាំងបើកទាំងឡាយ​ផងដែរ។</translation>
 <translation id="6011449291337289699">ជម្រះទិន្នន័យគេហទំព័រ</translation>
 <translation id="8339059274628563283"><ph name="SITE"/> បានផ្ទុកទិន្នន័យជាមូលដ្ឋាន</translation>
 <translation id="4090947011087001172">កំណត់​ការអនុញ្ញាត​គេហទំព័រ​ឡើងវិញ​សម្រាប់ <ph name="SITE"/>?</translation>
@@ -3902,18 +3996,19 @@
 <translation id="5300287940468717207">កំណត់​ការ​អនុញ្ញាត​គេហទំព័រ​ឡើងវិញ?</translation>
 <translation id="2734760316755174687">គេហទំព័រ​ដែលស្ថិត​ក្រោម​ <ph name="SITE_GROUP_NAME"/> ក៏នឹងត្រូវកំណត់​ឡើងវិញ​ផងដែរ។</translation>
 <translation id="3255355328033513170">ទិន្នន័យ​ទាំងអស់​ដែលបាន​រក្សាទុក​ដោយ <ph name="SITE_GROUP_NAME"/> និងគេហទំព័រ​ទាំងឡាយដែលស្ថិតក្រោមការ​គ្រប់គ្រងរបស់វានឹង​ត្រូវបានលុប។ ទិន្នន័យ​នេះរួមទាំងខូគីផងដែរ។ អ្នកនឹង​ត្រូវបាន​បង្ខំឱ្យចាក​ចេញពីគេហទំព័រ​ទាំងនេះ រួមទាំងនៅក្នុង​ផ្ទាំងបើកផងដែរ។</translation>
-<translation id="5691180005790455277">ទិន្នន័យ និង​ខូគី​ទាំងអស់​ដែលបានរក្សាទុកដោយ <ph name="SITE_GROUP_NAME"/> និង​គេហទំព័រ​ទាំងឡាយ​ដែល​ស្ថិតក្រោម​ការគ្រប់គ្រង​របស់វា​នឹង​ត្រូវ​សម្អាត​។</translation>
+<translation id="7665940458857700755">សកម្មភាពនេះនឹង​សម្អាត​ទិន្នន័យ និងខូគីទាំងអស់​ដែលបានរក្សាទុកដោយ <ph name="SITE_GROUP_NAME"/> និងគេហទំព័រទាំងឡាយដែលស្ថិតក្រោមការគ្រប់គ្រងរបស់វា។</translation>
+<translation id="6472804939621540371">សកម្មភាពនេះនឹងសម្អាតទិន្នន័យ និង​ខូគី​ទាំងអស់​ដែលបានរក្សាទុកដោយ <ph name="SITE_GROUP_NAME"/> គេហទំព័រទាំងឡាយដែលស្ថិតក្រោមការគ្រប់គ្រងរបស់វា និងកម្មវិធី​ដែលវាបានដំឡើង។</translation>
+<translation id="8068809649322155577">សកម្មភាពនេះនឹងសម្អាតទិន្នន័យ និង​ខូគី​ទាំងអស់​ដែលបានរក្សាទុកដោយ <ph name="SITE_GROUP_NAME"/> គេហទំព័រទាំងឡាយដែលស្ថិតក្រោមការគ្រប់គ្រងរបស់វា និងកម្មវិធី​ដែលវាបានដំឡើង។</translation>
 <translation id="2055585478631012616">អ្នក​នឹង​ត្រូវ​នាំចេញ​ពី​គេហទំព័រ​ទាំងនេះ រួមទាំង​នៅក្នុង​ផ្ទាំង​បើក​ផងដែរ</translation>
 <translation id="46733273239502219">​ទិន្នន័យ​ដែលបានផ្ទុកក្នុងឧបករណ៍របស់កម្មវិធី​ដែលបាន​ដំឡើង​ក៏នឹង​ត្រូវ​សម្អាត​ផងដែរ</translation>
+<translation id="1393787139683794508">សកម្មភាព​នេះនឹងសម្អាត​ទិន្នន័យ និងខូគីទាំងអស់​ដែលបានរក្សាទុកដោយ <ph name="ORIGIN_NAME"/>។</translation>
+<translation id="8986651757229422279">សកម្មភាពភាពនេះនឹង​សម្អាត​ទិន្នន័យ និងខូគីទាំងអស់​ដែលបានរក្សាទុកដោយ <ph name="ORIGIN_NAME"/> និងកម្មវិធីដែលវាបានដំឡើង។</translation>
 <translation id="3127156390846601284">វានឹងលុបទិន្នន័យទាំងឡាយដែលបានផ្ទុកនៅលើឧបករណ៍របស់អ្នកសម្រាប់គេហទំព័រទាំងអស់ដែលបានបង្ហាញ។ តើអ្នកចង់បន្តដែរទេ?</translation>
 <translation id="150411034776756821">លុប <ph name="SITE"/></translation>
 <translation id="577624874850706961">ស្វែងរកខុកឃី</translation>
-<translation id="6196640612572343990">រារាំង​ខូគី​ភាគី​ទីបី</translation>
-<translation id="5472133193607270166">នៅពេលបើក គេហទំព័រ​មិនអាចប្រើ​សកម្មភាព​រុករក​តាមអ៊ីនធឺណិត​របស់អ្នក​នៅលើ​គេហទំព័រ​ផ្សេងៗគ្នា ដើម្បីកំណត់​ការផ្សាយ​ពាណិជ្ជកម្ម​ឱ្យ​ស្របតាម​បុគ្គលបានទេ។ គេហទំព័រ​មួយចំនួន​ប្រហែលជា​ដំណើរការ​មិនត្រឹមត្រូវទេ។</translation>
 <translation id="1274977772557788323">ការកំណត់ទំហំផ្ទុកទិន្នន័យ Adobe Flash Player</translation>
 <translation id="1281501490173223206">វេនប្រើអនាមិកបច្ចុប្បន្នប៉ុណ្ណោះ</translation>
-<translation id="3479035826743782247">វេនប្រើអនាមិកបច្ចុប្បន្ន</translation>
-<translation id="4750220700975225">វេនប្រើអនាមិកបច្ចុប្បន្ន (<ph name="EMBEDDING"/>)</translation>
+<translation id="5566692924079383101">ការលើកលែងនេះ​នឹងត្រូវលុបដោយស្វ័យប្រវត្តិ បន្ទាប់ពីអ្នកចាកចេញពីវគ្គឯកជនបច្ចុប្បន្ន</translation>
 <translation id="383891835335927981">គ្មាន​ទំព័រ​ដែល​បាន​ពង្រីក ឬ​បង្រួម​ទេ</translation>
 <translation id="3566721612727112615">មិនបានបន្ថែមគេហទំព័រទេ</translation>
 <translation id="8098574385249290065">អនុញ្ញាត​ឱ្យ Brave ជ្រើសរើស​ថា​តើពេលណាដែលគេហទំព័រ​អាច​ចាក់​សំឡេង​បាន (បានណែនាំ)</translation>
@@ -3925,6 +4020,7 @@
 <translation id="882854468542856424">កុំអនុញ្ញាតឱ្យ​គេហទំព័រ​ណាមួយ​រកឃើញ​ឧបករណ៍​ប៊្លូធូសដែលនៅជិត</translation>
 <translation id="5763751966069581670">រកមិនឃើញឧបករណ៍ USB ទេ</translation>
 <translation id="1863182668524159459">រក​មិនឃើញ​រន្ធ​ស៊េរី​ទេ</translation>
+<translation id="7431719494109538750">រកមិនឃើញ​ឧបករណ៍ HID ទេ</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">បញ្ចូល​ទំព័រ</translation>
 <translation id="5052499409147950210">កែ​សម្រួល​ទំព័រ</translation>
@@ -3951,7 +4047,7 @@
 <translation id="80974698889265265">កូដ PIN មិនត្រូវគ្នាទេ</translation>
 <translation id="4708794300267213770">បង្ហាញអេក្រង់ចាក់សោនៅពេលភ្ញាក់ពីដំណេក</translation>
 <translation id="6064217302520318294">ការចាក់សោអេក្រង់</translation>
-<translation id="7228523857728654909">ការចាក់សោ​អេក្រង់ និងការ​ចូលគណនី</translation>
+<translation id="6532206849875187177">សុវត្ថិភាព និងការចូលគណនី</translation>
 <translation id="9201220332032049474">ជម្រើស​ចាក់សោអេក្រង់</translation>
 <translation id="7728570244950051353">អេក្រង់ចាក់សោ​ពីមុខងារដេក</translation>
 <translation id="93393615658292258">ពាក្យសម្ងាត់តែប៉ុណ្ណោះ</translation>
@@ -3967,7 +4063,7 @@
 <translation id="1582955169539260415">លុប [<ph name="FINGERPRINT_NAME"/>]</translation>
 <translation id="1927632033341042996">ម្រាមដៃ <ph name="NEW_FINGER_NUMBER"/></translation>
 <translation id="7665369617277396874">បន្ថែមគណនី</translation>
-<translation id="3751920775577969594">គ្រប់គ្រង​គណនី​ដែលអ្នក​បានចូល។ គេហទំព័រ កម្មវិធី និង​កម្មវិធីបន្ថែម​នៅក្នុង Brave និង Brave Software Play អាចប្រើ​គណនីទាំងនេះ ដើម្បីកំណត់​បទពិសោធន៍​ប្រើប្រាស់តាមបំណង​របស់អ្នក ដោយផ្អែកលើ​ការអនុញ្ញាត។</translation>
+<translation id="1091996356964485258">គ្រប់គ្រង​គណនី​ដែលអ្នក​បានចូល។ គេហទំព័រ កម្មវិធី និង​កម្មវិធីបន្ថែម​នៅក្នុង Brave និង Brave Software Play អាចប្រើ​គណនីទាំងនេះ ដើម្បីកំណត់​បទពិសោធន៍​ប្រើប្រាស់តាមបំណង​របស់អ្នក ដោយផ្អែកលើ​ការអនុញ្ញាត។ &lt;a&gt;ស្វែងយល់បន្ថែម&lt;/a&gt;</translation>
 <translation id="1987317783729300807">គណនី</translation>
 <translation id="3953834000574892725">គណនី​របស់ខ្ញុំ</translation>
 <translation id="8418661265246754237">គណនី Brave Software</translation>
@@ -3987,6 +4083,7 @@
 <translation id="1587907146729660231">ចុចប៊ូតុង​ថាមពល​ដោយប្រើម្រាម​ដៃរបស់អ្នក</translation>
 <translation id="176193854664720708">ឧ​បករណ៍ចាប់ស្នាមម្រាមដៃ​ស្ថិតនៅក្នុងប៊ូតុងថាមពល។ សូមប៉ះវាថ្នមៗដោយប្រើម្រាមដៃ។</translation>
 <translation id="3615073365085224194">ប៉ះ​ឧបករណ៍​ចាប់ស្នាមម្រាមដៃដោយប្រើម្រាម​ដៃរបស់អ្នក</translation>
+<translation id="7354341762311560488">ឧបករណ៍​ចាប់ស្នាម​ម្រាមដៃគឺជាគ្រាប់ចុច​ខាងឆ្វេង​ដៃនៅផ្នែកខាងក្រោម​ក្ដារ​ចុចរបស់អ្នក។ សូមប៉ះឧបករណ៍​ចាប់ស្នាម​ម្រាមដៃនេះ​ថ្នមៗដោយប្រើម្រាមដៃណាមួយ។</translation>
 <translation id="899676909165543803">ឧបករណ៍​ចាប់ស្នាម​ម្រាមដៃគឺជាគ្រាប់ចុច​ខាងស្ដាំ​ដៃនៅផ្នែកខាងក្រោម​ក្ដារ​ចុចរបស់អ្នក។ សូមប៉ះឧបករណ៍​ចាប់ស្នាម​ម្រាមដៃនេះ​ថ្នមៗដោយប្រើម្រាមដៃណាមួយ។</translation>
 <translation id="4535767533210902251">ឧបករណ៍​ចាប់ស្នាម​ម្រាមដៃគឺជាគ្រាប់ចុច​ខាងស្ដាំ​ដៃនៅផ្នែកខាងលើ​ក្តារ​ចុចរបស់អ្នក។ សូមប៉ះឧបករណ៍​ចាប់ស្នាម​ម្រាមដៃនេះ​ថ្នមៗដោយប្រើម្រាមដៃណាមួយ។</translation>
 <translation id="7189965711416741966">បាន​បញ្ចូល​ស្នាម​ម្រាមដៃ​រួច​ហើយ។</translation>
@@ -3996,9 +4093,8 @@
 <translation id="7345706641791090287">បញ្ជាក់ពាក្យសម្ងាត់របស់អ្នក</translation>
 <translation id="381202950560906753">បញ្ចូលស្នាមម្រាមដៃផ្សេងទៀត</translation>
 <translation id="6968288415730398122">បញ្ចូល​ពាក្យសម្ងាត់​របស់អ្នក​ ដើម្បី​កំណត់​រចនាសម្ព័ន្ធ​ការចាក់សោ​អេក្រង់</translation>
-<translation id="4103091233824664032">បញ្ចូល​ពាក្យសម្ងាត់​របស់អ្នក ដើម្បី​កំណត់​រចនាសម្ព័ន្ធ​ការចាក់សោ​អេក្រង់ និង​ការចូល​គណនី</translation>
+<translation id="202918510990975568">បញ្ចូល​ពាក្យសម្ងាត់​របស់អ្នក ដើម្បី​កំណត់​រចនាសម្ព័ន្ធ​សុវត្ថិភាព និងការចូលគណនី</translation>
 <translation id="5449551289610225147">ពាក្យ​សម្ងាត់​មិន​ត្រឹមត្រូវ</translation>
-<translation id="5374359983950678924">ប្តូររូបភាព</translation>
 <translation id="6984299437918708277">ជ្រើសរើស​រូបភាព​មួយ ដែលត្រូវ​បង្ហាញ​សម្រាប់​គណនី​របស់អ្នក​នៅលើ​អេក្រង់ចូល</translation>
 <translation id="1367951781824006909">ជ្រើសរើសឯកសារមួយ</translation>
 <translation id="6681668084120808868">ថតរូបភាព</translation>
@@ -4020,12 +4116,12 @@
 <translation id="2537178555904266562">មានបញ្ហា​ក្នុងការ​ធ្វើសមកាលកម្ម​ពាក្យសម្ងាត់</translation>
 <translation id="4326270470840334364">ចំណាំ ប្រវត្តិ ពាក្យសម្ងាត់ និងការកំណត់ផ្សេងទៀតរបស់អ្នកនឹងត្រូវបានសម្អាតពីឧបករណ៍នេះ ដោយសារតែគណនីនេះគ្រប់គ្រងដោយ <ph name="DOMAIN"/> ។ ទោះបីជាយ៉ាងណាក៏ដោយ ទិន្នន័យរបស់អ្នកនៅតែផ្ទុកក្នុងគណនី Brave Software របស់អ្នកដដែល ហើយអ្នកអាចគ្រប់គ្រងវានៅលើ <ph name="BEGIN_LINK"/>Brave Software ផ្ទាំងគ្រប់គ្រង<ph name="END_LINK"/>។</translation>
 <translation id="6906406176003824042">កែសម្រួលមនុស្ស</translation>
-<translation id="6739923123728562974">បង្ហាញផ្លូវកាត់អេក្រង់ដើម</translation>
 <translation id="3699920817649120894">បិទ​សមកាលកម្ម និង​ការកំណត់​ឱ្យស្រប​តាមបុគ្គល?</translation>
 <translation id="5643620609347735571">សម្អាត ហើយបន្ត</translation>
 <translation id="5602765853043467355">សម្អាត​ចំណាំ ប្រវត្តិ ពាក្យ​សម្ងាត់ និងអ្វីៗ​ជាច្រើនទៀត​ពីឧបករណ៍​នេះ</translation>
 <translation id="4089235344645910861">បានរក្សាទុក​ការកំណត់។ ​បានចាប់ផ្ដើមសមកាលកម្ម។</translation>
-<translation id="7548737591211512046">ចូល​​គណនីដើម្បី​ទទួល​បាន​ចំណាំ ប្រវត្តិ ពាក្យសម្ងាត់ និង​ការកំណត់​ផ្សេងទៀត​​នៅលើ​ឧបករណ៍​របស់អ្នក​ទាំងអស់។ អ្នក​ក៏នឹង​ត្រូវបាន​នាំចូលទៅ​កាន់សេវាកម្ម Brave Software របស់អ្នក​ដោយ​ស្វ័យប្រវត្តិ​ផងដែរ។</translation>
+<translation id="6739923123728562974">បង្ហាញផ្លូវកាត់អេក្រង់ដើម</translation>
+<translation id="3911916960062976098">ចូលគណនី ដើម្បី​ទទួលបាន​ចំណាំ ប្រវត្តិ ពាក្យសម្ងាត់ និងការកំណត់​ផ្សេងទៀត​របស់អ្នកនៅលើ​ឧបករណ៍​ទាំងអស់​របស់អ្នក។ អ្នក​ក៏នឹង​ចូល​​សេវាកម្ម Brave Software របស់អ្នក​ដោយស្វ័យប្រវត្តិ​ផងដែរ។ <ph name="LINK_BEGIN"/>ស្វែងយល់បន្ថែម<ph name="LINK_END"/></translation>
 <translation id="2951604498031550705">ការផ្លាស់ប្តូរនៅលើចំណាំ ប្រវត្តិ ពាក្យសម្ងាត់ និងការកំណត់ផ្សេងទៀតរបស់អ្នក នឹងមិនអាចធ្វើសមកាលកម្មទៅគណនី Brave Software របស់អ្នកបានទៀតទេ។ ទោះបីជាយ៉ាងណាក៏ដោយ ទិន្នន័យដែលមានស្រាប់របស់អ្នកនៅតែផ្ទុកក្នុងគណនី Brave Software ដដែល ហើយអ្នកអាចគ្រប់គ្រងវានៅលើ <ph name="BEGIN_LINK"/>Brave Software ផ្ទាំងគ្រប់គ្រង<ph name="END_LINK"/>។</translation>
 <translation id="3169352093514419465">សកម្មភាព​នេះនឹង​នាំ​អ្នកចេញ​ពីគណនី Brave Software របស់អ្នក។ ចំណាំ ប្រវត្តិ ពាក្យសម្ងាត់ និង​អ្វីៗជា​ច្រើនទៀត​របស់អ្នកនឹងលែង​ធ្វើសមកាលកម្ម​ទៀតហើយ។</translation>
 <translation id="8588866096426746242">បង្ហាញ​ស្ថិតិ​កម្រង​ព័ត៌មាន</translation>
@@ -4046,7 +4142,7 @@
 <translation id="5117427536932535467">ធីម &amp; ផ្ទាំងរូបភាព</translation>
 <translation id="7257173066616499747">បណ្តាញ Wi-Fi</translation>
 <translation id="3268451620468152448">បើកផ្ទាំង</translation>
-<translation id="5241892180459725878">ការណែនាំនៃ​ការស្វែងរកក្នុង Brave Software ថាស</translation>
+<translation id="3831436149286513437">ការណែនាំនៃ​ការស្វែងរកក្នុង Brave Software ថាស</translation>
 <translation id="2120297377148151361">សកម្មភាព និងអន្តរ​កម្ម</translation>
 <translation id="5833397272224757657">ប្រើប្រាស់​ខ្លឹមសារ​នៅលើគេហ​ទំព័រដែល​អ្នកចូលមើល ព្រមទាំងអន្តរកម្ម និង​សកម្មភាពនៅ​លើ​កម្មវិធី​​រុករកតាមអ៊ីនធឺណិត ​ដើម្បី​ផ្ដល់​ការកំណត់ដែល​ស្រប​នឹង​អ្នក</translation>
 <translation id="8135094938656535588">គ្រប់គ្រងទិន្នន័យដែលបានធ្វើសមកាលកម្មនៅលើ Brave Software ផ្ទាំងព័ត៌មាន</translation>
@@ -4119,8 +4215,6 @@
 <translation id="8044899503464538266">យឺត</translation>
 <translation id="7019805045859631636">លឿន</translation>
 <translation id="4850669014075537160">ការេមូរ</translation>
-<translation id="4828937774870308359">អូស្រ្តាលី</translation>
-<translation id="2016430552235416146">បែបចាស់</translation>
 <translation id="2497229222757901769">ល្បឿនកណ្តុរ</translation>
 <translation id="6586451623538375658">អូសប៊ូតុងកណ្តុរបឋម</translation>
 <translation id="221872881068107022">ការរំកិលបញ្រ្ចាស</translation>
@@ -4175,6 +4269,8 @@
 <translation id="8669284339312441707">កាន់តែលឿង</translation>
 <translation id="1864400682872660285">កាន់តែខៀវ​</translation>
 <translation id="7721179060400456005">អនុញ្ញាតឲ្យវិនដូគ្របដណ្តប់លើការបង្ហាញ</translation>
+<translation id="4998430619171209993">បើក</translation>
+<translation id="787268756490971083">បិទ</translation>
 <translation id="3441653493275994384">អេក្រង់</translation>
 <translation id="4095507791297118304">អេក្រង់ចម្បង</translation>
 <translation id="1792619191750875668">អេក្រង់បន្ថែម</translation>
@@ -4207,6 +4303,7 @@
 <translation id="4598556348158889687">ការគ្រប់គ្រងទំហំផ្ទុក</translation>
 <translation id="8868626022555786497">បានប្រើ</translation>
 <translation id="8688672835843460752">អាចប្រើបាន</translation>
+<translation id="3188257591659621405">ឯកសារ​របស់ខ្ញុំ​</translation>
 <translation id="7366909168761621528">ទិន្នន័យរុករក</translation>
 <translation id="5568144734023334204">ទំហំផ្ទុក Android</translation>
 <translation id="938339467127511841">ទំហំផ្ទុក Linux (បេតា)</translation>
@@ -4225,7 +4322,7 @@
 <translation id="1529891865407786369">ប្រភព​ថាមពល</translation>
 <translation id="354060433403403521">ដុំសាក</translation>
 <translation id="2127372758936585790">ឆ្នាំងសាកផ្តល់ថាមពលទាប</translation>
-<translation id="4964673849688379040">កំពុងពិនិត្យមើល...</translation>
+<translation id="286674810810214575">កំពុង​ពិនិត្យមើល​ប្រភព​ថាមពល...</translation>
 <translation id="4569747168316751899">នៅពេល​នៅស្ងៀម</translation>
 <translation id="2610157865375787051">ដេក</translation>
 <translation id="6212168817037875041">បិទ​អេក្រង់</translation>
@@ -4334,10 +4431,12 @@
 <translation id="5173668317844998239">បញ្ចូល និង​លុប​ស្នាមម្រាមដៃ​ដែលបាន​រក្សាទុក​នៅលើ​សោសុវត្ថិភាព​របស់អ្នក</translation>
 <translation id="4836504898754963407">គ្រប់គ្រងស្នាមម្រាមដៃ</translation>
 <translation id="6028117231645531007">បញ្ចូល​ស្នាមម្រាមដៃ</translation>
-<translation id="570302979952009979">ជ្រើសរើស​ឈ្មោះ​សម្រាប់​ស្នាមម្រាមដៃនេះ</translation>
+<translation id="4814378367953456825">បញ្ចូល​ឈ្មោះ​សម្រាប់​ស្នាមម្រាមដៃនេះ</translation>
 <translation id="4549791035683739768">គ្មានស្នាម​ម្រាមដៃ​ត្រូវបាន​រក្សាទុក​នៅលើ​សោសុវត្ថិភាព​របស់អ្នកទេ</translation>
 <translation id="3971764089670057203">ស្នាម​ម្រាមដៃនៅលើ​សោសុវត្ថិភាពនេះ</translation>
 <translation id="8557022314818157177">បន្ត​ចុច​សោសុវត្ថិភាព​ រហូតទាល់តែ​ថតបាន​ស្នាមម្រាមដៃ​របស់អ្នក</translation>
+<translation id="7836850009646241041">សាកល្បងប៉ះ​សោសុវត្ថិភាពរបស់អ្នកម្ដងទៀត</translation>
+<translation id="4878718769565915065">ការបញ្ចូល​ស្នាមម្រាមដៃ​ទៅក្នុងសោសុវត្ថិភាពនេះមិនបានសម្រេចទេ</translation>
 <translation id="6592808042417736307">បានថត​ស្នាមម្រាមដៃ​របស់អ្នក​ហើយ</translation>
 <translation id="1750172676754093297">សោសុវត្ថិភាពរបស់អ្នក​មិនអាច​រក្សាទុក​ស្នាមម្រាមដៃ​បានទេ</translation>
 <translation id="8842594465773264717">លុប​ស្នាមម្រាមដៃ​នេះ</translation>
@@ -4348,6 +4447,7 @@
 <translation id="698524779381350301">អនុញ្ញាតឱ្យចូលប្រើ​នៅលើគេហទំព័រ​ខាងក្រោម​ដោយស្វ័យប្រវត្តិ</translation>
 <translation id="2915102088417824677">មើល​កំណត់ហេតុ​សកម្មភាព</translation>
 <translation id="1744108098763830590">ទំព័រផ្ទៃខាងក្រោយ</translation>
+<translation id="6549966385318247177">កម្មវិធី​បន្ថែម​នេះត្រូវបានទប់ស្កាត់​ ដោយសារមាន​ខ្លឹមសារសម្រាប់​មនុស្សពេញវ័យ។</translation>
 <translation id="3378572629723696641">កម្មវិធីបន្ថែមនេះអាចមានបញ្ហា។</translation>
 <translation id="4348766275249686434">ប្រមូលកំហុសឆ្គង</translation>
 <translation id="4927753642311223124">គ្មានអ្វីដែលគួរមើលនៅទីនេះទេ ទៅមុខបន្ត។</translation>
@@ -4405,6 +4505,8 @@
 <translation id="3970114302595058915">លេខ​សម្គាល់</translation>
 <translation id="3777806571986431400">កម្មវិធីបន្ថែមបានបើកដំណើរការ</translation>
 <translation id="6851497530878285708">បានបើក​កម្មវិធី</translation>
+<translation id="5860033963881614850">បិទ</translation>
+<translation id="5916664084637901428">បើក</translation>
 <translation id="5018207570537526145">បើក​គេហទំព័រ​កម្ម​វិធី​បន្ថែម</translation>
 <translation id="4617270414136722281">ជម្រើស​កម្មវិធី​បន្ថែម</translation>
 <translation id="7152478047064750137">កម្មវិធី​បន្ថែម​នេះ​មិន​តម្រូវ​ឱ្យ​មាន​ការអនុញ្ញាត​ពិសេសទេ</translation>
@@ -4440,6 +4542,7 @@
 <translation id="8023801379949507775">ធ្វើបច្ចុប្បន្នភាពកម្មវិធីបន្ថែមឥឡូវនេះ</translation>
 <translation id="2187906491731510095">បាន​ដំឡើង​ជំនាន់​កម្មវិធី​បន្ថែម​</translation>
 <translation id="2870909136778269686">កំពុង​ធ្វើ​បច្ចុប្បន្នភាព...</translation>
+<translation id="7879631849810108578">បានកំណត់​ផ្លូវកាត់​៖ <ph name="IDS_SHORT_SET_COMMAND"/></translation>
 <translation id="2501797496290880632">វាយបញ្ចូលផ្លូវកាត់</translation>
 <translation id="4477015793815781985">រួម​បញ្ចូល Ctrl, Alt ឬ ⌘</translation>
 <translation id="7000347579424117903">រួមទាំង Ctrl, Alt ឬ Search</translation>
@@ -4447,6 +4550,14 @@
 <translation id="8447409163267621480">រួមមាន Ctrl ឬ Alt</translation>
 <translation id="3365598184818502391">ប្រើ Ctrl ឬ Alt</translation>
 <translation id="1688935057616748272">វាយ​បញ្ចូល​អក្សរ</translation>
+<translation id="1579879232130925590">Brave ដែលមាន​សុវត្ថិភាព និង​ដំណើរការ​លឿន​ជាងមុន</translation>
+<translation id="964057662886721376">កម្មវិធី​បន្ថែម​មួយចំនួន​អាច​ធ្វើឱ្យ​ដំណើរការ​យឺត ជាពិសេស​កម្មវិធី​បន្ថែម​ដែល​អ្នក​មិនមាន​បំណង​ដំឡើង​។</translation>
+<translation id="1499271269825557605">ប្រសិនបើ​អ្នក​មិន​ស្គាល់​កម្មវិធី​បន្ថែម ឬ​ប្រសិនបើ​កម្មវិធី​រុករក​តាមអ៊ីនធឺណិត​របស់អ្នក​មិន​ដំណើរការ​ដូច​ការរំពឹងទុក​ទេ អ្នក​អាច​បិទ ឬ​ប្ដូរ​កម្មវិធី​បន្ថែម​តាមបំណង​នៅទីនេះ​។</translation>
+<translation id="2382818385048255866">ពិនិត្យមើល​កម្មវិធី​បន្ថែម​របស់អ្នក</translation>
+<translation id="3900789207771372462">កម្មវិធី​បន្ថែម​មួយចំនួន​អាច​មើលឃើញ​សកម្មភាព​រុករក​តាមអ៊ីនធឺណិត​របស់អ្នក រួមទាំង​ព័ត៌មាន​ផ្ទាល់ខ្លួន​ផងដែរ​។</translation>
+<translation id="6772339735733515807">គ្រប់គ្រង​កម្មវិធី​បន្ថែម​របស់​អ្នក</translation>
+<translation id="1510515462062582289">នៅលើ​ទំព័រ​នេះ អ្នក​អាច​មើលឃើញ​កម្មវិធី​បន្ថែម​ទាំងអស់​ដែលដំឡើង​នៅក្នុង Brave​។</translation>
+<translation id="2810390687497823527">ប្រសិនបើ​អ្នក​មិន​ស្គាល់​កម្មវិធី​បន្ថែម ឬ​ប្រសិនបើ​កម្មវិធី​រុករក​តាមអ៊ីនធឺណិត​របស់អ្នក​មិន​ដំណើរការ​ដូច​ការរំពឹងទុក​ទេ អ្នក​អាច​បិទ ឬ​ប្ដូរ​កម្មវិធី​បន្ថែម​តាមបំណង​នៅទីនេះ​។</translation>
 <translation id="4479424953165245642">គ្រប់គ្រងកម្មវិធីបញ្ជរ</translation>
 <translation id="6619801788773578757">បញ្ចូលកម្មវិធីបញ្ជរ</translation>
 <translation id="8045923671629973368">បញ្ចូលលេខសម្គាល់កម្មវិធី ឬ URL របស់​ webstore</translation>
@@ -4456,7 +4567,6 @@
 <translation id="8143442547342702591">កម្មវិធីគ្មានសុពលភាព</translation>
 <translation id="720110658997053098">កំណត់ឧបករណ៍នេះឱ្យដំណើរការមុខងារបញ្ជរជាអចិន្ត្រៃយ៍</translation>
 <translation id="1909880997794698664">តើអ្នកប្រាកដថាចង់រក្សាទុកឧបករណ៍នេះជាអចិន្ត្រៃយ៍នៅក្នុងរបៀបបញ្ជរទេ?</translation>
-<translation id="1512210426710821809">មធ្យោបាយ​តែមួយគត់​ក្នុងការត្រឡប់សកម្មភាពនេះវិញ​គឺត្រូវ​ដំឡើង <ph name="IDS_SHORT_PRODUCT_OS_NAME"/> ឡើងវិញ</translation>
 <translation id="8281886186245836920">រំលង</translation>
 <translation id="2342740338116612727">បានបញ្ចូល​ចំណាំ</translation>
 <translation id="7835178595033117206">បាន​លុប​​​ចំណាំ​</translation>
@@ -4490,7 +4600,7 @@
 <translation id="1031362278801463162">កំពុងដំណើរការការពិនិត្យមើល</translation>
 <translation id="6147020289383635445">ការមើលមុនបោះពុម្ពបានបរាជ័យ។</translation>
 <translation id="5877584842898320529">មិនមានម៉ាស៊ីនបោះពុម្ពដែលបានជ្រើសរើស ឬវាមិនត្រូវបានដំឡើងដោយត្រឹមត្រូវទេ។ <ph name="BR"/>សូមពិនិត្យមើលម៉ាស៊ីនបោះពុម្ពរបស់អ្នក ឬសាកល្បងជ្រើសរើសម៉ាស៊ីនបោះពុម្ពផ្សេងទៀត។</translation>
-<translation id="7413400642818115607">ឧបករណ៍ Brave Software បោះពុម្ពតាមពពកដែលបាន​ជ្រើសរើស​មិន​អាច​ប្រើ​បាន​ទៀតទេ។ <ph name="BR"/>សូមសាក​ល្បង​រៀបចំ​ម៉ាស៊ីនបោះពុម្ព​នៅ​ក្នុងការកំណត់​ប្រព័ន្ធកុំព្យូទ័រ​របស់អ្នក។</translation>
+<translation id="6645437135153136856">ឧបករណ៍ Brave Software បោះពុម្ពតាមពពកដែលបាន​ជ្រើសរើស​មិន​អាច​ប្រើ​បាន​ទៀតទេ។ <ph name="BR"/>សូមសាក​ល្បង​រៀបចំ​ម៉ាស៊ីនបោះពុម្ព​នៅ​ក្នុងការកំណត់​ប្រព័ន្ធកុំព្យូទ័រ​របស់អ្នក។</translation>
 <translation id="5828633471261496623">កំពុងបោះពុម្ព...</translation>
 <translation id="6295855836753816081">កំពុងរក្សាទុក…</translation>
 <translation id="3587482841069643663">ទាំងអស់</translation>
@@ -4510,7 +4620,7 @@
 <translation id="3706463572498736864">ទំព័រក្នុង​មួយសន្លឹក</translation>
 <translation id="2249605167705922988">ឧទាហរណ៍ 1-5, 8, 11-13</translation>
 <translation id="5746169159649715125">រក្សាទុកជា PDF</translation>
-<translation id="1955272076204612657">រក្សាទុក​ក្នុង Brave Software ថាស</translation>
+<translation id="6532101170117367231">រក្សាទុក​ក្នុង Brave Software ថាស</translation>
 <translation id="2580924999637585241">សរុប៖ <ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/></translation>
 <translation id="73174032666024687"><ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/></translation>
 <translation id="4091434297613116013">ផ្ទាំងក្រដាស</translation>
@@ -4541,7 +4651,7 @@
 <translation id="6991665348624301627">ជ្រើសរើសគោលដៅ</translation>
 <translation id="8800004011501252845">កំពុងបង្ហាញគោលដៅសម្រាប់</translation>
 <translation id="8996526648899750015">បន្ថែមគណនី...</translation>
-<translation id="5002959368039764681">បោះពុម្ពទៅ Brave Software Docs និងគោលដៅក្លោតដ៏ទៃទៀត។ <ph name="BEGIN_LINK"/>ចូល<ph name="END_LINK"/> ដើម្បីបោះពុម្ពទៅ Brave Software Cloud Print។</translation>
+<translation id="6723354935081862304">បោះពុម្ពទៅ Brave Software Docs និងគោលដៅក្លោតដ៏ទៃទៀត។ <ph name="BEGIN_LINK"/>ចូល<ph name="END_LINK"/> ដើម្បីបោះពុម្ពទៅ Brave Software Cloud Print។</translation>
 <translation id="2150139952286079145">គោលដៅស្វែងរក</translation>
 <translation id="8569682776816196752">គ្មានគោលដៅត្រូវបានរកឃើញទេ</translation>
 <translation id="7885253890047913815">គោលដៅកន្លងទៅថ្មីៗ</translation>
@@ -4577,10 +4687,7 @@
 <translation id="1526560967942511387">ឯកសារគ្មានចំណងជើង</translation>
 <translation id="5269977353971873915">ការបោះពុម្ពបានបរាជ័យ</translation>
 <translation id="7385854874724088939">Something went wrong when trying to print.  Please check your printer and try again.</translation>
-<translation id="1197979282329025000">កំហុសឆ្គងមួយបានកើតឡើង ខណៈពេលកំពុងទាញយកសមត្ថភាពម៉ាស៊ីនបោះពុម្ពសម្រាប់ម៉ាស៊ីនបោះពុម្ពវិញ <ph name="PRINTER_NAME"/>។ ម៉ាស៊ីនបោះពុម្ពនេះមិនអាចចុះឈ្មោះជាមួយ <ph name="CLOUD_PRINT_NAME"/> ទេ។</translation>
 <translation id="9004952710076978168">បានទទួលការជូនដំណឹងពីម៉ាស៊ីនបោះពុម្ពដែលមិនស្គាល់។</translation>
-<translation id="2202898655984161076">មានបញ្ហាកើតឡើងនៅក្នុងបញ្ជីម៉ាស៊ីនបោះពុម្ពក្នុងបញ្ជី។ ម៉ាស៊ីនបោះពុម្ពរបស់អ្នកមួយចំនួនប្រហែលមិនអាចចុះឈ្មោះដោយជោគជ័យជាមួយ <ph name="CLOUD_PRINT_NAME"/> ទេ។</translation>
-<translation id="3220586366024592812">ដំណើរការឧបករណ៍ភ្ជាប់ <ph name="CLOUD_PRINT_NAME"/> បានគាំង។ ចាប់ផ្តើមឡើងវិញ?</translation>
 <translation id="6904655473976120856">ចុច​ប៊ូតុងកម្មវិធី​ដើម្បី​ចាកចេញ</translation>
 <translation id="8909833622202089127">ទំព័រ​កំពុងតាមដាន​ទីតាំង​របស់អ្នក</translation>
 <translation id="375636864092143889">ទំព័រ​កំពុងប្រើ​មីក្រូហ្វូន​របស់អ្នក</translation>
@@ -4621,8 +4728,8 @@
 <translation id="8076492880354921740">ផ្ទាំង</translation>
 <translation id="4808319664292298116">ចូលក្នុង VR ពី <ph name="DOMAIN"/> ដែរទេ?</translation>
 <translation id="4353114845960720315">នៅពេល​អ្នកនៅក្នុង VR គេហទំព័រនេះ​ប្រហែលជាអាច​ដឹងអំពី៖</translation>
-<translation id="118069123878619799">- លក្ខណៈ​ពិសេស​ផ្នែករាងកាយ​របស់អ្នក ដូចជា​កម្ពស់​ជាដើម</translation>
-<translation id="5819762621475381970">- ប្លង់​បន្ទប់​របស់អ្នក</translation>
+<translation id="2099625543891475722">លក្ខណសម្បត្តិនៃរាងកាយ​របស់អ្នក ដូចជា​កម្ពស់​ជាដើម</translation>
+<translation id="4660838440047236328">ប្លង់​បន្ទប់​របស់អ្នក</translation>
 <translation id="1146678959555564648">បញ្ចូល VR</translation>
 <translation id="2794233252405721443">បានរារាំងទំព័រ</translation>
 <translation id="1721312023322545264">អ្នកត្រូវការការអនុញ្ញាតពី <ph name="NAME"/> ដើម្បីចូលទៅកាន់ទំព័រនេះ</translation>
@@ -4638,9 +4745,9 @@
 <translation id="4858792381671956233">អ្នកបានសាកសួរមាតាបិតារបស់អ្នក ថាអ្នកអាចចូលទៅទំព័រនេះបានដែរទេ</translation>
 <translation id="3498215018399854026">យើងមិនអាចទាក់ទងទៅកាន់ឪពុកម្តាយរបស់អ្នកទេនាពេលបច្ចុប្បន្ន។ សូមព្យាយាមម្តងទៀត។</translation>
 <translation id="8012647001091218357">យើងមិនអាចទាក់ទងឪពុកម្តាយរបស់អ្នកទេនាពេលបច្ចុប្បន្ន។ សូមព្យាយាមម្តងទៀត។</translation>
-<translation id="3479539252931486093">តើវាកើតឡើងដោយមិនបានរំពឹងទុកឬ? <ph name="BEGIN_LINK"/>សូមមេត្តាឲ្យយើងដឹង<ph name="END_LINK"/></translation>
+<translation id="1396259464226642517">តើលទ្ធផលនេះខុសពីការរំពឹងទុកមែនទេ? <ph name="BEGIN_LINK"/>ផ្ញើមតិកែលម្អ<ph name="END_LINK"/></translation>
 <translation id="3586931643579894722">លាក់ព័ត៌មានលំអិត</translation>
-<translation id="7444046173054089907">ទំព័រនេះត្រូវបានរារាំង</translation>
+<translation id="5558125320634132440">គេហទំព័រនេះ​ត្រូវបាន​ទប់ស្កាត់ ដោយសារ​វាអាចមាន​ខ្លឹមសារ​សម្រាប់​មនុស្សពេញវ័យ</translation>
 <translation id="6778737459546443941">មាតាបិតារបស់អ្នកមិនទាន់យល់ព្រមនៅឡើយទេ</translation>
 <translation id="8620436878122366504">មាតាបិតារបស់អ្នកមិនទាន់យល់ព្រមនៅឡើយទេ</translation>
 <translation id="6563469144985748109">អ្នកគ្រប់គ្រងរបស់អ្នកមិនទាន់យល់ព្រមនៅឡើយទេ</translation>

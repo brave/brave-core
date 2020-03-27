@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "क्रॉस-साइट उपकरण की पहचान ब्लॉक की गई",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "क्रॉस-साइट फ़िंगरप्रिंटिंग ब्लॉक है",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "उपकरण की पहचान के प्रयासों को ब्लॉक किया गया",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "फ़िंगरप्रिंटिंग के प्रयास ब्लॉक हो गए हैं",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "उपकरण की पहचान के सभी प्रयासों की अनुमति है",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "फ़िंगरप्रिंटिंग के सभी प्रयासों की अनुमति है",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "डिवाइस के पहचान का प्रयास",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "फ़िंगरप्रिंटिंग के प्रयास",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "इस साइट में उपलब्ध स्क्रिप्ट्स",

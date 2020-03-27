@@ -11,12 +11,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") n'est pas autorisé dans Brave.</translation>
 <translation id="7450557937477381864">Fermez Chrome</translation>
 <translation id="7008934821596358692">Pour terminer l'importation, fermez toutes les fenêtres Chrome.</translation>
-<translation id="5735465527556462863">Fermer Brave (ancien)</translation>
-<translation id="7737066986958447692">Pour terminer l'importation, fermez toutes les fenêtres Brave (ancien).</translation>
-<translation id="6447842834002726250">Cookies</translation>
-<translation id="4983925687993168579">Statistiques</translation>
-<translation id="6165477144235978006">Paiements Brave</translation>
-<translation id="3489524616427966890">Ouvrir les fenêtres et les onglets</translation>
 <translation id="3699882589215410581">Installer et exécuter Widevine</translation>
 <translation id="8926389886865778422">Ne plus afficher ce message</translation>
 <translation id="4726634924419692905">Demandez quand un site veut installer Widevine sur votre ordinateur.</translation>
@@ -27,8 +21,6 @@
 <translation id="8410111618231938546">Google Widevine fait partie du code de Gestion des droits numériques (GDN) que nous, Brave Software, ne pouvons pas inspecter et dont nous ne sommes pas propriétaires. Le code de Google Widevine est téléchargé à partir des serveurs de Google, et non de nos serveurs. Il n'est téléchargé que lorsque vous activez cette option. Nous n'encourageons pas l'utilisation de GDN, mais respectons le choix de l'utilisateur et reconnaissons que certains utilisateurs de Brave souhaiteraient utiliser des services pour lesquels cela est nécessaire.
 
 En installant cette extension, vous acceptez les conditions d'utilisation de Google Widevine. Vous acceptez le fait que Brave ne peut être tenu responsable pour aucun dommage ou aucune perte en rapport avec votre utilisation de Google Widevine.</translation>
-<translation id="6499845530162974140">Brave (ancien)</translation>
-<translation id="3198814717959506569">Importé depuis Brave</translation>
 <translation id="453977518730680921">Médias en lecture automatique</translation>
 <translation id="410351446219883937">Lecture automatique</translation>
 <translation id="2240268017737062801">Demander lorsqu'un site veut lire automatiquement un média</translation>
@@ -70,19 +62,22 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="130615081792797568">Vue simple</translation>
 <translation id="2360360976480535628">Vue avancée</translation>
 <translation id="5709627087332022422">Bloquer les trackers intersites</translation>
-<translation id="9075744464571452108">Reconnaissance de périphérique</translation>
+<translation id="6447842834002726250">Cookies</translation>
+<translation id="6522412052085018663">Collecte de l'empreinte digitale d'appareil</translation>
 <translation id="3570081523466826008">Mettre à niveau les connexions vers HTTPS</translation>
 <translation id="4824468494729001999">Bloquer les scripts</translation>
-<translation id="8526521192921341404">Autoriser les connexions Google</translation>
+<translation id="519861640102428255">Apparence</translation>
+<translation id="4800195524776354947">Afficher le nombre d'éléments bloqués sur l'icône de boucliers</translation>
+<translation id="7498695072878479744">Autoriser les boutons de connexion Google sur les sites tiers</translation>
 <translation id="863171915776379000">Autoriser les connexions Facebook et les publications intégrées</translation>
 <translation id="5165042248369837294">Autoriser les tweets intégrés de Twitter</translation>
 <translation id="958971637207126733">Autoriser les publications LinkedIn intégrées</translation>
 <translation id="4699812599455071925">Seulement bloquer les cookies intersites</translation>
 <translation id="5657156137487675418">Autoriser tous les cookies</translation>
 <translation id="6883611015375728278">Bloquer tous les cookies</translation>
-<translation id="3084022390368021391">Seulement bloquer les tentatives intersites de reconnaissance du périphérique</translation>
-<translation id="1847422622180531843">Autoriser toutes les tentatives de reconnaissance du périphérique</translation>
-<translation id="8375051111011093523">Bloquer toutes les tentatives de reconnaissance du périphérique</translation>
+<translation id="5572437114858031185">Bloquer seulement les tentatives de collecte de l'empreinte digitale d'appareil intersites</translation>
+<translation id="5079032039521408559">Autoriser toutes les tentatives de collecte de l'empreinte digitale d'appareil</translation>
+<translation id="6447141055227658942">Bloquer toutes les tentatives de collecte d'empreinte digitale d'appareil</translation>
 <translation id="8942080017911802454">Politique de gestion des adresses IP WebRTC</translation>
 <translation id="6165508094623778733">En savoir plus</translation>
 <translation id="8798099450830957504">Par défaut</translation>
@@ -104,6 +99,7 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="2356070529366658676">Demander</translation>
 <translation id="7701040980221191251">Aucun</translation>
 <translation id="1085027414516521238">MetaMask</translation>
+<translation id="3905324891414560921">Fournisseur Web3 pour l'utilisation de Dapps</translation>
 <translation id="6554397389149987360">Utilise le composant Hangouts pour activer le partage d'écran et d'autres fonctionnalités dans le navigateur.</translation>
 <translation id="1765684547504191670">Utilise le routeur média pour activer Chromecast dans le navigateur.</translation>
 <translation id="9156965752763025780">Vos modifications seront prises en compte au prochain redémarrage de Brave.</translation>
@@ -164,6 +160,7 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="4394049700291259645">Désactiver</translation>
 <translation id="6469509880167172749">Envoyez automatiquement des analyses de produits entièrement privées à Brave</translation>
 <translation id="7090566321964540749">Ces informations anonymes permettent seulement à Brave d'estimer l'utilisation globale de certaines fonctionnalités.</translation>
+<translation id="9111960429693394744">Souhaitez-vous utiliser les portefeuilles pour cryptomonnaie de Brave ou MetaMask pour les Dapps ?</translation>
 <translation id="7583735190612229830">Configurez les portefeuilles de crypto-monnaies pour interagir avec cette application et d'autres applications similaires.</translation>
 <translation id="8337117349965899723">Utiliser des portefeuilles de crypto-monnaies</translation>
 <translation id="5756155765711979898">Utiliser MetaMask</translation>
@@ -177,4 +174,9 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="4474155171896946103">Ajouter tous les onglets aux favoris...</translation>
 <translation id="2336228925368920074">Ajouter tous les onglets aux favoris...</translation>
 <translation id="796831669370432378">Pour ajouter un signet, cliquez sur le bouton signet à côté de la barre d'adresse</translation>
+<translation id="4989337484121655457">Accès complet au disque requis</translation>
+<translation id="8025559074845816210">Brave a besoin d'un accès complet au disque pour importer vos signets depuis Safari.</translation>
+<translation id="8515328844674404333">Apprenez comment autoriser l'accès complet au disque dans vos préférences système.</translation>
+<translation id="6414878884710400018">Ouvrir les préférences système</translation>
+<translation id="5570470519803062774">Paramètres du site et des boucliers</translation>
 </translationbundle>

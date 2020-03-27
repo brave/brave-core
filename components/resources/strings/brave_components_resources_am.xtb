@@ -4,6 +4,7 @@
 <translation id="4339730410920731698">ማስታወቅያና መከታተያዎች ተዘግተዋል</translation>
 <translation id="2313532038420432247">HTTPS ማዘመን</translation>
 <translation id="7679428712334662192">የተቆጠበ ግምታዊ ጊዜ</translation>
+<translation id="8411095021655121794">የተቆጠበ ግምታዊ የባንድ ስፋት</translation>
 <translation id="5206618227023752085">ከላይ ያለው ድህረገፅ ተነስቷል።</translation>
 <translation id="2079545284768500474">ቀልብስ</translation>
 <translation id="6040143037577758943">ዝጋ</translation>
@@ -16,6 +17,10 @@
 <translation id="8344569602005188545">ሰዓታት</translation>
 <translation id="7100907433458266664">ቀን</translation>
 <translation id="4971389353431353387">ቀናት</translation>
+<translation id="2116364690062294218">B</translation>
+<translation id="3123243061080120667">KB</translation>
+<translation id="977224059380370527">MB</translation>
+<translation id="8776285424728638733">GB</translation>
 <translation id="8427933533533814946">ፎቶ በ</translation>
 <translation id="7108338896283013870">ደብቅ</translation>
 <translation id="7115515527894388910">ምርጫዎን ያስተካክሉ</translation>
@@ -84,11 +89,9 @@
 <translation id="7954950242989581218">ደህንነቱ በተጠበቀና አስተማማኝ በሆነ መንገድ ያስሱ</translation>
 <translation id="2188651882929633653">የ Brave ጋሻ በድረ ገጽ ላይ እርስዎን ለመከታተል የሚሞክሩ አስቸጋሪ ነገሮችን ያግዳል ፤ አብዛኞችን ማስታወቂያዎች ይጨምራል። ድረ ገጹ የማይ ሰራ ከሆነ ለ “down” ጋሻ አዘጋጅ። <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>Brave የተወሰኑ ባህርያትን አጠቃላይ አጠቃቀም ለመገመት ሙሉ በሙሉ ግላዊ የምርት ትንተናን ይጠቀማል።<ph name="END_LINK_P3A">&lt;/a&gt;</ph>  ይህን ለማጥፋት ወደ <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph> መግባት ይችላሉ።</translation>
 <translation id="1919345977826869612">ማስታወቂያዎች</translation>
-<translation id="2364310432103707426">Brave ads በማየት {{currency}} ያግኙ። ማስታወቂያዎች በፍላጎት ከማሰሻ ባህርይዎ ጋር ተይይዘው ይቀርባሉ። የግል መረጃ ወይ የማሰስ ታሪክዎ በጭራሽ ከማሰሻዎ አይወጣም።</translation>
+<translation id="2128226640852355533">Brave ads በማየት {{currency}} ያግኙ። ማስታወቂያዎች በፍላጎት ከማሰሻ ባህርይዎ ጋር ተይይዘው ይቀርባሉ። የግል መረጃ ወይ የማሰስ ታሪክዎ በጭራሽ ከማሰሻዎ አይወጣም።</translation>
 <translation id="6112368337882254910">የራስ-አስተዋፅዎ</translation>
 <translation id="3742599705619405136">አሳታሚዎችንና የይዘት ፈጣሪዎችን ለማገዝ አውቶማቲክ መንገድ። ወርሀዊ ክፍያ አዘጋጅተው በተለመደ መልኩ ያስሱ። እርስዎ የሚጎበኟቸው በ Brave የተረጋገጡ ድረ ገጾች በራስ ሰር መንገድ የእርስዎ መዋጮዎች የሚደርሳቸው ሲሆን ይህም በ Brave በሚለካው የእርስዎ ትኩረት መጠን ልክ ነው።</translation>
-<translation id="8949527283651381130">የማስታወቂያ ቅየራ ግኝትን ፍቀድ</translation>
-<translation id="2184191362610545393">ይህ በዚህ አሳሽ ላይ ለማስታወቂያ ምላሽ መሰጠቱን ስም አልባ በሆነ መንገድ ለ Brave ያሳውቃል። ይህን ማንቃት ገቢዎችን ይጨምራል።</translation>
 <translation id="20281847067919078">ያልተጠናቀቁ ሽልማቶች በግምት</translation>
 <translation id="8593551638387217772">ቀጣይ የክፍያ ቀን</translation>
 <translation id="319209088187794725">በዚህ ወር የደረሰዎት የማስታወቂያ ማሳወቂያዎች</translation>
@@ -195,7 +198,7 @@
 <translation id="1642443162274867084">ማስቀመጫ ተፈጥሯል</translation>
 <translation id="5094577350232361255">ስለ</translation>
 <translation id="4918086044614829423">ይቀበሉ</translation>
-<translation id="6832986780040139899">©2016–2018 ብሬቭ ሶፍትዌር፤ Brave ለብሬቭ ሶፍትዌር የተመዘገበ የንግድ ምልክት ነው፡፡ የገፅ ስሞች ምናልባት የንግድ ምልክት ወይም የተመዘገቡ የገፁ ባለቤቶች የንግድ ምልክቶች ናቸው፡፡</translation>
+<translation id="5916290544882167205">Brave ሶፍትዌር።  Brave ለ Brave ሶፍትዌር የተመዘገበ የንግድ ምልክት ነው። የገጽ ስሞች ምናልባት የገጹ ባለቤት የንግድ ምልክቶች ወይም የተመዘገቡ  የንግድ ምልክቶች ናቸው።</translation>
 <translation id="9026369588205476247">ሚስጥሮን ለመጠበቅ ይህ የብሬቭ ቃል አይቀመጥም፣ አይመዘገብም ወይ ከመሳርያዎ ውጪ በሌላ መሳርያ (ይህም ኮምፒተር ነው) ላይ መግባት አይችልም፡፡ በመሳርያዎ ላይ መረጃ ቢጠፋቦት ከብሬቭ መውሰድ አይቻልም፡፡</translation>
 <translation id="1036277985068412734">ፈንድ ይጨምሩ</translation>
 <translation id="3587482841069643663">ሁሉም</translation>
@@ -204,6 +207,7 @@
 <translation id="2631006050119455616">የተቀመጡ</translation>
 <translation id="2155330833364281539">ባለፉት {{ጠቅላላቀናት}} ቀናት ውስጥ የተቀበሏቸው ማስታወቂያዎች።</translation>
 <translation id="8863685593846905344">የማስታወቂያዎች ታሪክ</translation>
+<translation id="2777306694585938662">የማስታወቂያ ሽልማቶች ደርሰዋል</translation>
 <translation id="5212777575344695266">አግባብነት የለውም ብለው ምልክት ያድርጉበት</translation>
 <translation id="2111256234277361810">አግባብነት የለውም ብለው ምልክት ያድርጉበት ✓</translation>
 <translation id="8988332871810963281">በአሁኑ ጊዜ የ Brave ማስታወቂያዎች ታሪክ የለም</translation>
@@ -313,9 +317,8 @@
 <translation id="6381574025952123568">ሒሳብ መክፈት</translation>
 <translation id="532275381857891532">የ 7 ቀን ማስታወቂያዎች ታሪክ</translation>
 <translation id="4923459931733593730">ክፍያ</translation>
-<translation id="4021593982164260556">ክፍያዎች በየወሩ በ ቀን {{ቀን}}ይካሄዳል፡፡</translation>
+<translation id="5693657857413982604">ክፍያ በየወሩ በ {{ቀን}}ይፈጸማል።</translation>
 <translation id="6104680658798556671">ክፍያ አልተፈፀመም፡፡</translation>
-<translation id="2834888581291358924">ቀሪ ሂሳብዎ አጠቃላይ የራስ-አስተዋፅኦና ወርሐዊ መዋጮዎችዎነ ምክሮችን መሸፈን ካልቻለ፣ ለዚህ ግዜ እነዚህ ክፍያዎች ይታለፋሉ።</translation>
 <translation id="3138528956349114724">የተሰጡ ጣቢያዎች አሁን ናቸው</translation>
 <translation id="2337632028350283479">ወርሃዊ መዋጮዎች የሚሰሩት እንደዚህ ነው፡-</translation>
 <translation id="6457273203091513039">ወርሃዊ መዋጮዎች ከራስ-ድጎማ ክፍያዎ አይወጡም። እነርሱ የተለዩ ናቸው።</translation>
@@ -388,6 +391,7 @@
 <translation id="4588241643143931775">BitCoin (BTC)</translation>
 <translation id="4837149400263828922">ኢቲሩም (ETH)</translation>
 <translation id="8746837129291133068">Litecoin (LTC)</translation>
+<translation id="6367285596431004439">የቶክን ብድር ደርሷል</translation>
 <translation id="9212459913845238740">የተጠየቁ የነጥብ ብድሮች</translation>
 <translation id="768850953428043522">ነጥቦች</translation>
 <translation id="3043542281656021374">ነጥብ</translation>
@@ -463,6 +467,10 @@
 <translation id="4569155249847375786">ተረጋግጧል</translation>
 <translation id="8465442795593991224">በተጠየቁ አገልግሎቶች ላይ ተመስርተው ማንነትዎን እንዲያረጋግጡ ድጋፍ ሊጠይቅዎ ይችላል፡፡</translation>
 <translation id="723054503945711909">ከእነሱ ጋር አካውንት ሲያበቁ Brave Software Inc. ለሚደግፉት የሰጡትን ማንኛውንም መረጃ አይሠራም ፣ አያከማችም ወይም አይደርስበትም።</translation>
+<translation id="7404779623219601861">ለስጦታ ካርዶች BAT መልሰው ያግኙ</translation>
+<translation id="6215565499749144110">በ TAP አውታረ መረብ፣ ታዋቂ ስም ላላቸው የብራንድ ስጦታ ካርዶች BAT መልሰው ማግኘት ይችላሉ።</translation>
+<translation id="526152301446370337">ይጎብኙ።</translation>
+<translation id="6915065518766963119">* የመስቀያ ማረጋገጫ ያስፈልገዋል።</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>ስለ Brave Rewards<ph name="LINK_END"/> ተጨማሪ መረጃ ያግኙ</translation>
 <translation id="5826706758731195747">ሽልማቶችን በማብራትዎ፣ በ <ph name="LINK_BEGIN"/>ደንቦችና ሁኔታዎች ተስማምተዋል ማለት ነው <ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">እስካሁን በዚህ ወር የተገኘ ግምታዊ ገቢ</translation>

@@ -116,7 +116,6 @@
 <translation id="981121421437150478">Offline</translation>
 <translation id="5171045022955879922">Vyhľadajte alebo zadajte webovú adresu</translation>
 <translation id="803771048473350947">Súbor</translation>
-<translation id="6268185425799226387">Disk Brave Software</translation>
 <translation id="2982481275546140226">Vymazať dáta</translation>
 <translation id="8425213833346101688">Zmeniť</translation>
 <translation id="8009225694047762179">Spravovať heslá</translation>
@@ -145,6 +144,8 @@
 <translation id="2215727959747642672">Úprava súborov</translation>
 <translation id="6545864417968258051">Vyhľadávanie zariadení Bluetooth</translation>
 <translation id="534295439873310000">Zariadenia NFC</translation>
+<translation id="4943703118917034429">Virtuálna realita</translation>
+<translation id="3513704683820682405">Rozšírená realita</translation>
 <translation id="5039804452771397117">Povoliť</translation>
 <translation id="7053983685419859001">Blokovať</translation>
 <translation id="57838592816432529">Vypnúť zvuk</translation>
@@ -198,8 +199,8 @@
 <translation id="5565735124758917034">Aktívne</translation>
 <translation id="7805768142964895445">Stav</translation>
 <translation id="6915804003454593391">Používateľ:</translation>
-<translation id="5916664084637901428">Zapnuté</translation>
-<translation id="5860033963881614850">Vypnuté</translation>
+<translation id="5921185718311485855">Zapnuté</translation>
+<translation id="1019413721762100891">Vypnuté</translation>
 <translation id="7961015016161918242">Nikdy</translation>
 <translation id="8294431847097064396">Zdroj</translation>
 <translation id="1056898198331236512">Varování</translation>
@@ -209,7 +210,6 @@
 <translation id="6965978654500191972">Zariadenie</translation>
 <translation id="4728558894243024398">Platforma</translation>
 <translation id="2380886658946992094">Právne</translation>
-<translation id="5939847200023027600">Služba PDF Compositor</translation>
 <translation id="1588438908519853928">Normálny</translation>
 <translation id="1974060860693918893">Rozšírené</translation>
 <translation id="5308380583665731573">Pripojenie</translation>

@@ -3,7 +3,7 @@
 <translationbundle lang="ko">
 <translation id="939305735877869636">Brave</translation>
 <translation id="6373767849825830651">Brave은 빠른 속도로 웹페이지와 애플리케이션을 실행하는 웹 브라우저입니다. 빠르고 안정적이며 사용하기에 편리합니다. Brave에 내장된 멀웨어 및 악성 코드 방지 기능을 사용하여 더욱 안전하게 웹을 검색하세요.</translation>
-<translation id="680297041157509674">Brave OS</translation>
+<translation id="4331809312908958774">Brave OS</translation>
 <translation id="4847979153841887006">Brave 로고</translation>
 <translation id="7339898014177206373">새 창</translation>
 <translation id="5516268345616100622">작업 관리자 - Brave</translation>
@@ -15,8 +15,8 @@
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="8992261409816268381">The Brave Authors</translation>
 <translation id="8121009781989288430">Copyright <ph name="YEAR"/> The Brave Authors. All rights reserved.</translation>
-<translation id="2310890394934209120">Brave OS는 추가 <ph name="BEGIN_LINK_CROS_OSS"/>오픈소스 소프트웨어<ph name="END_LINK_CROS_OSS"/>를 사용했습니다.</translation>
-<translation id="8160794320557846790"><ph name="BEGIN_LINK_LINUX_OSS"/>Linux(베타)<ph name="END_LINK_LINUX_OSS"/>와 마찬가지로, Brave OS는 추가 <ph name="BEGIN_LINK_CROS_OSS"/>오픈소스 소프트웨어<ph name="END_LINK_CROS_OSS"/>를 사용하여 개발되었습니다.</translation>
+<translation id="6368958679917195344">Brave OS는 추가 <ph name="BEGIN_LINK_CROS_OSS"/>오픈소스 소프트웨어<ph name="END_LINK_CROS_OSS"/>를 사용했습니다.</translation>
+<translation id="1662639173275167396"><ph name="BEGIN_LINK_LINUX_OSS"/>Linux(베타)<ph name="END_LINK_LINUX_OSS"/>와 마찬가지로, Brave OS는 추가 <ph name="BEGIN_LINK_CROS_OSS"/>오픈소스 소프트웨어<ph name="END_LINK_CROS_OSS"/>를 사용하여 개발되었습니다.</translation>
 <translation id="6913582816347128893">Mac OS X 10.9에서 더 이상 Brave을 지원하지 않으므로 Brave이 올바르게 작동하지 않을 수 있습니다.</translation>
 <translation id="7977787072794666032">Windows XP 또는 Windows Vista에서 더 이상 Brave을 지원하지 않으므로 Brave이 올바르게 작동하지 않을 수 있습니다</translation>
 <translation id="189297655255130768">Brave이 응답하지 않습니다. 다시 시작하시겠습니까?</translation>
@@ -24,7 +24,7 @@
 <translation id="335632367599648646">Brave을 제거하시겠습니까?</translation>
 <translation id="5590013613412457132">Brave 설치 제거</translation>
 <translation id="5019879183386042809">Brave을 기본 브라우저로 설정</translation>
-<translation id="5063987220091207247">Brave OS에서 이 페이지를 열 수 없음</translation>
+<translation id="707769633889902835">Brave OS에서 이 페이지를 열 수 없음</translation>
 <translation id="4065288863231444640">백그라운드에서 Brave을 실행</translation>
 <translation id="6797402139308059782">백그라운드에서 Brave을 실행</translation>
 <translation id="2585240446624043880">Brave에서 데이터 디렉토리를 읽고 쓸 수 없습니다.
@@ -94,8 +94,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="9071554113102421877">&amp;Brave에서 열기</translation>
 <translation id="2176825726964012531">Brave 정보</translation>
 <translation id="5450493308072741203">Brave 업데이트</translation>
-<translation id="1421502046520299169">Brave OS 정보</translation>
-<translation id="2534623228451928732">Brave OS 업데이트</translation>
+<translation id="61852838583753520">Brave OS 업데이트</translation>
 <translation id="8447483940522230788">Brave 도우미</translation>
 <translation id="5477319665405831211">모든 기기에서 Brave을 동기화하고 맞춤설정하세요.</translation>
 <translation id="8132634101975074716">Brave에 로그인했습니다.</translation>
@@ -109,19 +108,18 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="5380963249588143069">시스템 관리자가 <ph name="TARGET_URL_HOSTNAME"/> 액세스를 위해 <ph name="ALTERNATIVE_BROWSER_NAME"/>을(를) 열도록 Brave을 구성했습니다.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/>에서 이전에 Brave을 사용한 적이 있음</translation>
 <translation id="1384923383737428730">컴퓨터에 유해한 소프트웨어가 있습니다. Brave에서 유해한 소프트웨어를 삭제하고, 설정을 복원하고, 확장 프로그램을 사용 중지하여 브라우저가 다시 정상적으로 작동하도록 할 수 있습니다.</translation>
-<translation id="8919921662052966648">Brave에서 데이터를 동기화하지 못했습니다. 동기화 암호를 업데이트하시기 바랍니다.</translation>
 <translation id="2262856633481902138">계정의 로그인 세부정보가 오래되어 Brave에서 데이터를 동기화하지 못했습니다.</translation>
 <translation id="5419189641394808652">도메인에서 동기화를 사용할 수 없어 Brave에서 데이터를 동기화하지 못했습니다.</translation>
 <translation id="2577755334620061182">로그인 중 오류가 발생하여 Brave에서 데이터를 동기화하지 못했습니다.</translation>
-<translation id="8583885258305961947">Brave OS 시스템</translation>
-<translation id="3968006371075376562">Brave OS에서 데이터를 동기화하지 못했습니다. 동기화 암호를 업데이트하세요.</translation>
-<translation id="6746636977031158624">계정의 로그인 세부정보가 오래되어 Brave OS에서 데이터를 동기화하지 못했습니다.</translation>
-<translation id="2999152167963026588">내 도메인에서 동기화를 사용할 수 없으므로 Brave OS에서 데이터를 동기화하지 못했습니다.</translation>
-<translation id="1459786048951724030">로그인 중 오류가 발생하여 Brave OS에서 데이터를 동기화하지 못했습니다.</translation>
-<translation id="6813094029720377619">Brave을 종료할 때 쿠키를 삭제합니다. 동기화를 계속하려면 이 <ph name="COOKIE_SETTINGS_LINK"/>을(를) 변경하세요.</translation>
-<translation id="3340978935015468852">설정</translation>
+<translation id="2644798301485385923">Brave OS 시스템</translation>
+<translation id="7916016681687251387">Brave OS에서 데이터를 동기화할 수 없습니다. 지금 문제를 해결해 주세요.</translation>
+<translation id="2341767445688917208">Brave OS에서 비밀번호를 동기화할 수 없습니다. 지금 문제를 해결해 주세요.</translation>
+<translation id="123620459398936149">Brave OS에서 데이터를 동기화하지 못했습니다. 동기화 암호를 업데이트하세요.</translation>
+<translation id="9026991721384951619">계정의 로그인 세부정보가 오래되어 Brave OS에서 데이터를 동기화하지 못했습니다.</translation>
+<translation id="7419046106786626209">내 도메인에서 동기화를 사용할 수 없으므로 Brave OS에서 데이터를 동기화하지 못했습니다.</translation>
+<translation id="4480040274068703980">로그인 중 오류가 발생하여 Brave OS에서 데이터를 동기화하지 못했습니다.</translation>
 <translation id="300669147395456190">Brave 앱</translation>
-<translation id="3421950102518690868">이 기기를 사용하기 전에 <ph name="DOMAIN"/>에서 다음 서비스 약관을 읽고 동의해야 합니다. 이 약관은 Brave OS 약관을 확장, 수정 또는 제한하지 않습니다.</translation>
+<translation id="2398566204186296120">이 기기를 사용하기 전에 <ph name="DOMAIN"/>에서 다음 서비스 약관을 읽고 동의해야 합니다. 이 약관은 Brave OS 약관을 확장, 수정 또는 제한하지 않습니다.</translation>
 <translation id="3293668930608086049">Brave이 카메라와 마이크를 사용 중입니다.</translation>
 <translation id="8919461291440820124">Brave이 마이크를 사용 중입니다.</translation>
 <translation id="3205074487970075628">Brave이 카메라를 사용 중입니다.</translation>
@@ -154,12 +152,9 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="4805806622840861220">Brave 다시 시작</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{새 Brave 업데이트가 있습니다. Brave을 다시 실행하면 업데이트가 바로 적용됩니다.}=1{새 Brave 업데이트가 있습니다. Brave을 다시 실행하면 업데이트가 바로 적용됩니다. 시크릿 창이 다시 열리지 않습니다.}other{새 Brave 업데이트가 있습니다. Brave을 다시 실행하면 업데이트가 바로 적용됩니다. 시크릿 창 #개가 다시 열리지 않습니다.}}</translation>
 <translation id="2799223571221894425">다시 시작</translation>
-<translation id="2522086024276534909">Brave OS 다시 시작</translation>
-<translation id="8183252473547465084">업데이트를 적용하려면 Brave OS를 다시 시작해야 합니다.</translation>
+<translation id="5062123544085870375">Brave OS 다시 시작</translation>
+<translation id="2063848847527508675">업데이트를 적용하려면 Brave OS를 다시 시작해야 합니다.</translation>
 <translation id="5895138241574237353">다시 시작</translation>
-<translation id="8887390605192156061">모든 Brave 버전 종료</translation>
-<translation id="1801551749768408825">다른 Brave 버전이 실행 중입니다. 업데이트하려면 실행 중인 버전을 종료하세요.</translation>
-<translation id="2632141563911437138">업데이트하려면 이 컴퓨터에서 Brave 실행을 중단해야 합니다. 중단하면 이 컴퓨터에 로그인한 다른 사용자가 저장하지 않은 변경 사항을 잃을 수 있습니다.</translation>
 <translation id="5875673934455379806">Brave 재설치</translation>
 <translation id="2097604701283463988">Brave이 이전 버전임</translation>
 <translation id="5173820533850252773">Brave이 이전 버전임</translation>
@@ -180,7 +175,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="7798069806040634998">파일을 다운로드하려면 Brave에 저장소 액세스 권한이 있어야 합니다</translation>
 <translation id="7685904775439037072">Brave에 액세스 권한을 부여하면 웹사이트에서 액세스 권한을 요청할 수 있게 됩니다.</translation>
 <translation id="1744365871163268756">Brave에서 최신 시스템 업데이트를 설치하는 동안 잠시 기다려 주세요.</translation>
-<translation id="7808415789955822133">Brave OS 용어</translation>
+<translation id="7408085963519505752">Brave OS 용어</translation>
 <translation id="7207456302801184289">Brave에 오신 것을 환영합니다.</translation>
 <translation id="3507835409099344374">Brave 알림 설정으로 이동</translation>
 <translation id="1026406809507858026">{0,plural, =0{Brave 업데이트 출시}=1{Brave 업데이트 출시}other{Brave 업데이트가 출시된 지 #일 지남}}</translation>
@@ -199,9 +194,9 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="1786715389543715322">Brave 업데이트 중(<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="2182657378556811785">업데이트가 거의 완료되었습니다. 업데이트를 완료하려면 Brave을 다시 시작하세요.</translation>
 <translation id="8208853227947884571">Brave이 최신 버전임</translation>
-<translation id="6686872257969654608">Brave OS 정보</translation>
-<translation id="7674116293463255181">기기가 최신 버전인지 확인하려면 <ph name="LINK_BEGIN"/>Brave OS 설정<ph name="LINK_END"/>으로 이동하세요.</translation>
-<translation id="2280363356796735201">Brave OS 도움말 보기</translation>
+<translation id="573759479754913123">Brave OS 정보</translation>
+<translation id="7573289029918943991">기기가 최신 버전인지 확인하려면 <ph name="LINK_BEGIN"/>Brave OS 설정<ph name="LINK_END"/>으로 이동하세요.</translation>
+<translation id="3395323229510056640">Brave OS 도움말 보기</translation>
 <translation id="38898988211673781">Brave을 종료할 때 쿠키 및 사이트 데이터 삭제</translation>
 <translation id="5253815230176279256">Brave Software Pay(Brave에 복사됨)</translation>
 <translation id="5468853758063275923">Brave이 기본 브라우저로 설정되어 있습니다.</translation>
@@ -209,7 +204,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="6915252145142862992">Brave의 보조 설치이며 기본 브라우저로 설정할 수 없습니다.</translation>
 <translation id="6235873178214143377">페이지에 표시되지 않는 설정이 있다면 <ph name="LINK_BEGIN"/>
       Brave 브라우저 설정<ph name="LINK_END"/>을 확인해 보세요.</translation>
-<translation id="4459296183696059108">페이지에 표시되지 않는 설정이 있다면 <ph name="LINK_BEGIN"/>
+<translation id="5657226924540934362">페이지에 표시되지 않는 설정이 있다면 <ph name="LINK_BEGIN"/>
       Brave OS 설정<ph name="LINK_END"/>을 확인해 보세요.</translation>
 <translation id="2312399718665761438">맞춤법 오류를 수정하기 위해 Brave에서 사용자가 입력하는 텍스트를 Brave Software로 전송합니다.</translation>
 <translation id="8586264863973514035">변경사항을 적용하려면 Brave을 다시 실행하세요.</translation>
@@ -219,7 +214,6 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="5853262807109651878">항목 <ph name="ITEMS_COUNT"/>개가 기기에서 삭제됩니다. 나중에 데이터를 가져오려면 Brave에 <ph name="USER_EMAIL"/>(으)로 로그인하세요.</translation>
 <translation id="4784414698887946907">인터넷 사용 기록이 기기에서 삭제됩니다. 나중에 데이터를 가져오려면 Brave에 <ph name="USER_EMAIL"/>(으)로 로그인하세요.</translation>
 <translation id="4518479204315969707">Brave 이름 및 사진</translation>
-<translation id="82609232232243542">Brave에 로그인</translation>
 <translation id="8372880274820509128">보안 강화를 위해 Brave에서 사용자 데이터를 암호화합니다.</translation>
 <translation id="7445061995866044926">Brave에서 로그아웃</translation>
 <translation id="7453070689008684791">Brave에서 내 드라이브에 액세스하여 주소 표시줄에 추천 검색어를 표시합니다.</translation>

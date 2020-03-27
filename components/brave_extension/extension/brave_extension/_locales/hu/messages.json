@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Webhelyközi eszközfelismerés letiltva",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "Más webhely általi ujjlenyomatos azonosítás letiltva ",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Letiltott eszközfelismerési próbálkozások",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "Blokkolt ujjlenyomatos azonosítási kísérletek",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Minden eszközfelismerési próbálkozás engedélyezve",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "Minden ujjlenyomatos azonosítási kísérlet engedélyezve",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Készülék felismerésére irányuló próbálkozások",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "Ujjlenyomatos azonosítási kísérletek",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "Parancsfájlok ezen az oldalon",

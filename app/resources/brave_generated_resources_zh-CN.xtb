@@ -11,12 +11,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/>(Brave中不允许使用扩展ID“<ph name="EXTENSION_ID"/>”）。</translation>
 <translation id="7450557937477381864">关闭 Chrome</translation>
 <translation id="7008934821596358692">如要完成导出，请关闭所有 Chrome 窗口。</translation>
-<translation id="5735465527556462863">关闭 Brave（旧）</translation>
-<translation id="7737066986958447692">如要完成导出，请关闭所有 Brave（旧）窗口。</translation>
-<translation id="6447842834002726250">Cookie</translation>
-<translation id="4983925687993168579">统计数据</translation>
-<translation id="6165477144235978006">Brave 支付</translation>
-<translation id="3489524616427966890">打开窗口和标签页</translation>
 <translation id="3699882589215410581">安装并运行 Widevine</translation>
 <translation id="8926389886865778422">不再询问</translation>
 <translation id="4726634924419692905">网站希望在计算机上安装 Widevine 时询问。</translation>
@@ -27,8 +21,6 @@
 <translation id="8410111618231938546">Google Widevine 是一款数字版权管理（DRM）代码，Brave Software 不拥有这些代码，也无法检查。 Google Widevine 代码是从 Google 服务器加载的，而不是从我们的服务器加载的。仅在启用此选项时才会加载它。我们不鼓励使用 DRM，但我们尊重用户选择并了解某些 Brave 用户希望使用需要它的服务。
 
 安装此扩展程序即表示您同意 Google Widevine 使用条款。您同意 Brave对您使用 Google Widevine所造成的任何损害或损失概不负责。</translation>
-<translation id="6499845530162974140">Brave（旧）</translation>
-<translation id="3198814717959506569">已从 Brave 导出</translation>
 <translation id="453977518730680921">自动播放媒体</translation>
 <translation id="410351446219883937">自动播放</translation>
 <translation id="2240268017737062801">当网站要播放媒体时询问您</translation>
@@ -70,19 +62,22 @@
 <translation id="130615081792797568">简单视图</translation>
 <translation id="2360360976480535628">高级视图</translation>
 <translation id="5709627087332022422">拦截跨站点跟踪器</translation>
-<translation id="9075744464571452108">设备识别</translation>
+<translation id="6447842834002726250">Cookie</translation>
+<translation id="6522412052085018663">指纹识别</translation>
 <translation id="3570081523466826008">升级为 HTTPS 连接</translation>
 <translation id="4824468494729001999">拦截脚本</translation>
-<translation id="8526521192921341404">允许 Google 登录</translation>
+<translation id="519861640102428255">外&amp;amp; 观</translation>
+<translation id="4800195524776354947">在屏蔽图标上显示被拦截的项目的数量</translation>
+<translation id="7498695072878479744">第三方网站上的 Google 登录按钮可用</translation>
 <translation id="863171915776379000">Facebook 登录和嵌入式帖子可用</translation>
 <translation id="5165042248369837294">允许 Twitter 嵌入推文</translation>
 <translation id="958971637207126733">允许 LinkedIn 嵌入帖子</translation>
 <translation id="4699812599455071925">仅拦截跨站点 cookie</translation>
 <translation id="5657156137487675418">允许所有 cookies</translation>
 <translation id="6883611015375728278">拦截所有 cookies</translation>
-<translation id="3084022390368021391">仅拦截跨站点设备识别尝试</translation>
-<translation id="1847422622180531843">允许所有设备识别尝试</translation>
-<translation id="8375051111011093523">拦截所有设备识别尝试</translation>
+<translation id="5572437114858031185">仅拦截跨站点指纹识别尝试</translation>
+<translation id="5079032039521408559">允许所有指纹识别尝试</translation>
+<translation id="6447141055227658942">拦截所有指纹识别尝试</translation>
 <translation id="8942080017911802454">WebRTC IP 处理策略</translation>
 <translation id="6165508094623778733">了解更多</translation>
 <translation id="8798099450830957504">默认</translation>
@@ -179,4 +174,9 @@
 <translation id="4474155171896946103">为所有标签页添加书签...</translation>
 <translation id="2336228925368920074">为所有标签页添加书签...</translation>
 <translation id="796831669370432378">要添加书签，请点击地址栏旁边的书签按钮</translation>
+<translation id="4989337484121655457">需要完全的磁盘访问权限</translation>
+<translation id="8025559074845816210">Brave  需要完全的磁盘访问权限才能从 Safari 导入书签。</translation>
+<translation id="8515328844674404333">了解如何从系统偏好设置中授予完全的磁盘访问权限。</translation>
+<translation id="6414878884710400018">打开系统偏好设置</translation>
+<translation id="5570470519803062774">站点和屏蔽设置</translation>
 </translationbundle>

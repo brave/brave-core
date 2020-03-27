@@ -112,7 +112,6 @@
 <translation id="981121421437150478">Sense connexió</translation>
 <translation id="5171045022955879922">Cerqueu o escriviu l'URL</translation>
 <translation id="803771048473350947">Fitxer</translation>
-<translation id="6268185425799226387">Brave Software Drive</translation>
 <translation id="2982481275546140226">Esborrar les dades</translation>
 <translation id="8425213833346101688">Canvia</translation>
 <translation id="8009225694047762179">Gestiona les contrasenyes</translation>
@@ -141,6 +140,8 @@
 <translation id="2215727959747642672">Edició de fitxers</translation>
 <translation id="6545864417968258051">Cerca de dispositius Bluetooth</translation>
 <translation id="534295439873310000">Dispositius amb NFC</translation>
+<translation id="4943703118917034429">Realitat virtual</translation>
+<translation id="3513704683820682405">Realitat augmentada</translation>
 <translation id="5039804452771397117">Permet</translation>
 <translation id="7053983685419859001">Bloqueja</translation>
 <translation id="57838592816432529">Silencia</translation>
@@ -194,8 +195,8 @@
 <translation id="5565735124758917034">Actiu</translation>
 <translation id="7805768142964895445">Estat</translation>
 <translation id="6915804003454593391">Usuari:</translation>
-<translation id="5916664084637901428">Activat</translation>
-<translation id="5860033963881614850">Desactivat</translation>
+<translation id="5921185718311485855">Activat</translation>
+<translation id="1019413721762100891">Desactivat</translation>
 <translation id="7961015016161918242">Mai</translation>
 <translation id="8294431847097064396">Font</translation>
 <translation id="1056898198331236512">Advertiment</translation>
@@ -205,7 +206,6 @@
 <translation id="6965978654500191972">Dispositiu</translation>
 <translation id="4728558894243024398">Plataforma</translation>
 <translation id="2380886658946992094">Legal</translation>
-<translation id="5939847200023027600">Servei de composició de PDF</translation>
 <translation id="1588438908519853928">Normal</translation>
 <translation id="1974060860693918893">Configuració avançada</translation>
 <translation id="5308380583665731573">Connecta</translation>

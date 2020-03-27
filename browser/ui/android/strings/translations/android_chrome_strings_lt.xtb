@@ -1,47 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="lt">
-<translation id="6910211073230771657">Ištrintas</translation>
-<translation id="6965382102122355670">Gerai</translation>
-<translation id="5301954838959518834">Gerai, supratau</translation>
-<translation id="7658239707568436148">Atšaukti</translation>
-<translation id="3479552764303398839">Ne dabar</translation>
-<translation id="5317780077021120954">Išsaugoti</translation>
-<translation id="4570913071927164677">Išsami informacija</translation>
-<translation id="8730621377337864115">Atlikta</translation>
-<translation id="8261506727792406068">Ištrinti</translation>
-<translation id="1181037720776840403">Pašalinti</translation>
-<translation id="5939518447894949180">Nustatyti iš naujo</translation>
-<translation id="4002066346123236978">Pavadinimas</translation>
-<translation id="5916664084637901428">Įjungta</translation>
-<translation id="5860033963881614850">Išjungta</translation>
-<translation id="6165508094623778733">Sužinokite daugiau</translation>
-<translation id="6042308850641462728">Daugiau</translation>
-<translation id="6040143037577758943">Uždaryti</translation>
-<translation id="780301667611848630">Ačiū, ne</translation>
-<translation id="1201402288615127009">Kitas</translation>
-<translation id="2359808026110333948">Tęskite</translation>
-<translation id="2653659639078652383">Pateikti</translation>
-<translation id="2079545284768500474">Anuliuoti</translation>
-<translation id="7649070708921625228">Žinynas</translation>
-<translation id="2148716181193084225">Šiandien</translation>
-<translation id="7781829728241885113">Vakar</translation>
-<translation id="6945221475159498467">Pasirinkti</translation>
-<translation id="7791543448312431591">Pridėti</translation>
-<translation id="6527303717912515753">Bendrinti</translation>
-<translation id="1383876407941801731">Ieškoti</translation>
-<translation id="3115898365077584848">Rodyti informaciją</translation>
-<translation id="3295602654194328831">Slėpti informaciją</translation>
-<translation id="3987993985790029246">Kop. nuor.</translation>
-<translation id="2704606927547763573">Nukopij.</translation>
-<translation id="8725066075913043281">Bandyti dar kartą</translation>
-<translation id="385051799172605136">Atgal</translation>
-<translation id="8131740175452115882">Patvirtinti</translation>
-<translation id="5300589172476337783">Rodyti</translation>
-<translation id="1124772482545689468">Naudotojas</translation>
-<translation id="8609465669617005112">Perkelti į viršų</translation>
-<translation id="6746124502594467657">Perkelti žemyn</translation>
-<translation id="8249310407154411074">Perkelti į viršų</translation>
 <translation id="8428213095426709021">Nustatymai</translation>
 <translation id="2498359688066513246">Pagalba ir atsiliepimai</translation>
 <translation id="8378714024927312812">Tvarko jūsų organizacija</translation>
@@ -159,7 +118,7 @@
 <translation id="6914783257214138813">Jūsų slaptažodžiai bus matomi visiems, kurie gali peržiūrėti eksportuotą failą.</translation>
 <translation id="2321086116217818302">Ruošiami slaptažodžiai…</translation>
 <translation id="8445448999790540984">Nepavyksta eksportuoti slaptažodžių</translation>
-<translation id="3066461326500799725">Sužinokite, kaip naudoti „Brave Software Drive“</translation>
+<translation id="5139940364318403933">Sužinokite, kaip naudoti „Brave Software Drive“</translation>
 <translation id="729975465115245577">Įrenginyje nėra slaptažodžių failo saugojimo programos.</translation>
 <translation id="7682724950699840886">Išbandykite nurodytus patarimus: įsitikinkite, kad įrenginyje yra pakankamai vietos, ir bandykite eksportuoti dar kartą.</translation>
 <translation id="1129510026454351943">Išsami informacija: <ph name="ERROR_DESCRIPTION"/></translation>
@@ -169,6 +128,7 @@
 <translation id="230699814587342492">„Brave“ slaptažodžiai</translation>
 <translation id="6075798973483050474">Redaguoti pagrindinį puslapį</translation>
 <translation id="854522910157234410">Atidaryti šį puslapį</translation>
+<translation id="8127542551745560481">Redaguoti pagrindinį puslapį</translation>
 <translation id="2482878487686419369">Pranešimai</translation>
 <translation id="6255999984061454636">Turinio pasiūlymai</translation>
 <translation id="805047784848435650">Pagal naršymo istoriją</translation>
@@ -184,12 +144,16 @@
 <translation id="1943176487615318915">Tam, kad būtų aptiktos pavojingos programos ir svetainės, „Brave“ siunčia „Brave Software“ kai kurių puslapių, kuriuose lankotės, URL, ribotą sistemos informaciją ir kai kurių puslapių turinį</translation>
 <translation id="3181954750937456830">Saugus naršymas (apsaugo jus ir jūsų įrenginį nuo pavojingų svetainių)</translation>
 <translation id="7315322926489145388">Siunčia „Brave Software“ kai kurių puslapių, kuriuose lankotės, URL, kai kyla pavojus jūsų saugai</translation>
-<translation id="2063713494490388661">Paliesti ir ieškoti</translation>
-<translation id="2369463299479365221">Sužinokite apie temas svetainėse neišėję iš puslapio. Naudojant Paiešką palietus siunčiamas žodis ir jo kontekstas „Brave Software“ paieškai, kuri pateikia apibrėžimų, nuotraukų, paieškos rezultatų ir kitos išsamios informacijos.
+<translation id="3738139272394829648">Paieška palietus</translation>
+<translation id="7865281998841143447">Sužinokite apie temas svetainėse neišėję iš puslapio. Naudojant Paiešką palietus, žodis ir jo kontekstas siunčiami „Brave Software“ paieškai, kuri pateikia apibrėžimų, nuotraukų, paieškos rezultatų ir kitos išsamios informacijos.
 
-Jei norite koreguoti paieškos terminą, paspauskite ir laikykite, kad jį pasirinktumėte. Kad patikslintumėte paiešką, slinkite skydeliu į viršų ir palieskite paieškos laukelį.</translation>
-<translation id="2930742481329940825">Naudojant Paiešką palietus siunčiamas žodis ir jo kontekstas „Brave Software“ paieškai. Šią funkciją galite išjungti skiltyje <ph name="BEGIN_LINK"/>„Nustatymai“<ph name="END_LINK"/>.</translation>
+Palieskite bet kurį žodį, kad sukurtumėte jo paiešką. Jei norite koreguoti paieškos terminą, palaikykite paspaudę ir pasirinkite. Jei norite patikslinti paiešką, atidarykite skydelį, palieskite išskleidimo piktogramą, kad būtų sukurtas naujas skirtukas, ir palieskite paieškos laukelį.</translation>
+<translation id="3292859206215580147">Sužinokite apie temas svetainėse neišėję iš puslapio. Naudojant Paiešką palietus, žodis ir jo kontekstas siunčiami „Brave Software“ paieškai, kuri pateikia apibrėžimų, nuotraukų, paieškos rezultatų ir kitos išsamios informacijos.
+
+Palaikykite paspaudę bet kurį žodį, kad sukurtumėte jo paiešką. Jei norite patikslinti paiešką, pakoreguokite pasirinkimą. Taip pat galite atidaryti skydelį, paliesti išskleidimo piktogramą, kad būtų sukurtas naujas skirtukas, ir paliesti paieškos laukelį.</translation>
+<translation id="6209156474097347789">Paieška palietus siunčia pasirinktą žodį ir esamą puslapį kaip kontekstą „Brave Software“ paieškai. Galite išjungti šią funkciją <ph name="BEGIN_LINK"/>nustatymuose<ph name="END_LINK"/>.</translation>
 <translation id="5039804452771397117">Leisti</translation>
+<translation id="780301667611848630">Ačiū, ne</translation>
 <translation id="1406000523432664303">Funkcija „Nestebėti“</translation>
 <translation id="6232535412751077445">Įgalinus funkciją „Nestebėti“, užklausa bus įtraukta į naršymo srautą. Poveikis priklauso nuo to, ar svetainė atsako į užklausą ir kaip užklausa interpretuojama.
 
@@ -242,6 +206,7 @@ Adresu <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> gali b�
 <translation id="6295158916970320988">Visos svetainės</translation>
 <translation id="8380167699614421159">Šioje svetainėje rodomi nepageidaujami arba klaidinantys skelbimai</translation>
 <translation id="1919345977826869612">Skelbimai</translation>
+<translation id="3513704683820682405">Išplėstoji realybė</translation>
 <translation id="6447842834002726250">Slapukai</translation>
 <translation id="6196640612572343990">Blokuoti trečiosios šalies slapukus</translation>
 <translation id="6782111308708962316">Neleisti trečiosios šalies svetainėms išsaugoti ir skaityti slapukų duomenų</translation>
@@ -259,6 +224,7 @@ Adresu <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> gali b�
 <translation id="5649053991847567735">Automatiškai atsisiųsti</translation>
 <translation id="6181444274883918285">Pridėti svetainės išimtį</translation>
 <translation id="5313967007315987356">Pridėti svetainę</translation>
+<translation id="7791543448312431591">Pridėti</translation>
 <translation id="1369915414381695676">Pridėta svetainė <ph name="SITE_NAME"/></translation>
 <translation id="2621115761605608342">Leisti „JavaScript“ konkrečioje svetainėje.</translation>
 <translation id="8801436777607969138">Blokuoti „JavaScript“ konkrečioje svetainėje.</translation>
@@ -266,6 +232,7 @@ Adresu <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> gali b�
 <translation id="358794129225322306">Leisti svetainei automatiškai atsisiųsti kelis failus.</translation>
 <translation id="4008040567710660924">Leisti konkrečios svetainės slapukus.</translation>
 <translation id="8958424370300090006">Blokuoti konkrečios svetainės slapukus.</translation>
+<translation id="2537296579376733324">Visi slapukai, tik svetainėje</translation>
 <translation id="7882806643839505685">Konkrečios svetainės garso leidimas.</translation>
 <translation id="4468959413250150279">Konkrečios svetainės garso išjungimas.</translation>
 <translation id="1994173015038366702">Svetainės URL</translation>
@@ -292,8 +259,12 @@ Adresu <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> gali b�
 <translation id="2107397443965016585">Paklausti prieš leidžiant svetainėms leisti saugomą turinį (rekomenduojama)</translation>
 <translation id="2910701580606108292">Paklausti prieš leidžiant svetainėms leisti saugomą turinį</translation>
 <translation id="757524316907819857">Užblokuoti svetaines, kad neleistų apsaugoto turinio</translation>
+<translation id="4935305910887312910">Klausti prieš leidžiant svetainėms gauti kameros padėtį ar susieti patalpą (rekomenduojama)</translation>
+<translation id="884828189055900810">Neleisti svetainėms gauti kameros padėties ar susieti patalpos</translation>
 <translation id="5710871682236653961">Klausti prieš leidžiant svetainėms siųsti ir gauti informaciją palietus ALR įrenginius (rekomenduojama)</translation>
 <translation id="7572498721684305250">Blokuoti svetainėse informacijos siuntimą ir gavimą palietus ALR įrenginius</translation>
+<translation id="3312292613668865961">Klausti prieš leidžiant svetainėms pasiekti virtualiosios realybės įrenginį ir duomenis (rekomenduojama)</translation>
+<translation id="8698438463325761328">Neleisti svetainėms pasiekti virtualiosios realybės įrenginio ir duomenų</translation>
 <translation id="3277252321222022663">Leidžiama svetainėms pasiekti jutiklius (rekomenduojama)</translation>
 <translation id="5048398596102334565">Leidžiama svetainėms pasiekti judesio jutiklius (rekomenduojama)</translation>
 <translation id="8816026460808729765">Svetainės blokuojamos, kad nepasiektų jutiklių</translation>
@@ -325,7 +296,7 @@ Adresu <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> gali b�
 <translation id="119944043368869598">Valyti viską</translation>
 <translation id="2490684707762498678">Tvarko „<ph name="APP_NAME"/>“</translation>
 <translation id="5516455585884385570">Atidaryti pranešimų nustatymus</translation>
-<translation id="1404122904123200417">Įterpta į <ph name="WEBSITE_URL"/></translation>
+<translation id="1242008676835033345">Įterpta <ph name="WEBSITE_URL"/></translation>
 <translation id="129382876167171263">Svetainių išsaugoti failai rodomi čia</translation>
 <translation id="4181841719683918333">Kalbos</translation>
 <translation id="2647434099613338025">Pridėti kalbą</translation>
@@ -380,6 +351,7 @@ Adresu <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> gali b�
 <translation id="4913161338056004800">Iš naujo nustatyti statistiką</translation>
 <translation id="1856325424225101786">Nustatyti supaprastintąjį režimą iš naujo?</translation>
 <translation id="3658159451045945436">Nustačius iš naujo, bus ištrinta sutaupytų duomenų istorija, įskaitant aplankytų svetainių sąrašą.</translation>
+<translation id="5939518447894949180">Nustatyti iš naujo</translation>
 <translation id="3295530008794733555">Naršykite greičiau. Naudokite mažiau duomenų.</translation>
 <translation id="7340390500800578919">Kai įjungtas supaprastintasis režimas, „Brave“ sparčiau įkelia puslapius ir sunaudoja iki 60 proc. mažiau duomenų. „Brave“ siunčia žiniatinklio srauto duomenis sistemai „Brave Software“, kad optimizuotų puslapius, kuriuose lankotės. <ph name="BEGIN_LINK"/>Sužinokite daugiau<ph name="END_LINK"/></translation>
 <translation id="4538018662093857852">Įjungti supaprastintąjį režimą</translation>
@@ -443,9 +415,6 @@ Adresu <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> gali b�
 <translation id="4256782883801055595">Atvirojo šaltinio licencijos</translation>
 <translation id="1138681184697033370">„Brave“ paslaugų teikimo sąlygos</translation>
 <translation id="7392539049993970338">„Brave“ privatumo pranešimas</translation>
-<translation id="2677748264148917807">Išeiti</translation>
-<translation id="5556459405103347317">Įkelti iš naujo</translation>
-<translation id="1623104350909869708">Neleisti šiam puslapiui kurti papildomų dialogo langų</translation>
 <translation id="2968755619301702150">Sertifikato peržiūros priemonė</translation>
 <translation id="1360432990279830238">Atsijungti ir išjungti sinchronizavimą?</translation>
 <translation id="8581481290581777242">Išvalyti jūsų „Brave“ duomenis iš šio įrenginio?</translation>
@@ -532,6 +501,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>iš naujo nustatykit
 <translation id="7998918019931843664">Iš naujo atidarykite uždarytą skirtuko lapą</translation>
 <translation id="8853345339104747198">„<ph name="TAB_TITLE"/>“, skirtukas</translation>
 <translation id="4452411734226507615">Uždaryti skirtuką „<ph name="TAB_TITLE"/>“</translation>
+<translation id="6040143037577758943">Uždaryti</translation>
 <translation id="7243308994586599757">Parinktys pasiekiamos netoli ekrano apačios</translation>
 <translation id="4060598801229743805">Parinktys pasiekiamos netoli ekrano viršaus</translation>
 <translation id="2810645512293415242">Supaprastintas puslapis, kad būtų galima saugoti duomenis ir greičiau įkelti.</translation>
@@ -566,6 +536,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>iš naujo nustatykit
 <translation id="4432792777822557199">Puslapiai, parašyti <ph name="SOURCE_LANGUAGE"/>, nuo dabar bus verčiami į <ph name="TARGET_LANGUAGE"/></translation>
 <translation id="8339163506404995330">Puslapiai, parašyti <ph name="LANGUAGE"/>, verčiami nebus</translation>
 <translation id="5447765697759493033">Ši svetainė nebus verčiama</translation>
+<translation id="7658239707568436148">Atšaukti</translation>
 <translation id="4880127995492972015">Versti…</translation>
 <translation id="641643625718530986">Spausdinti…</translation>
 <translation id="8909135823018751308">Bendrinti…</translation>
@@ -599,6 +570,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>iš naujo nustatykit
 <translation id="8073388330009372546">Atid. vaizdą nauj. skirt. lap.</translation>
 <translation id="6649642165559792194">Peržiūrėti vaizdą <ph name="BEGIN_NEW"/>Naujas<ph name="END_NEW"/></translation>
 <translation id="3269093882174072735">Įkelti vaizdą</translation>
+<translation id="6671495933530132209">Kopijuoti vaizdą</translation>
 <translation id="3845332215609790146">Ieškoti su „Brave Software Lens“ <ph name="BEGIN_NEW"/>Nauja<ph name="END_NEW"/></translation>
 <translation id="5578795271662203820">Ieškoti „<ph name="SEARCH_ENGINE"/>“ šio vaizdo</translation>
 <translation id="3384347053049321195">Bendrinti vaizdą</translation>
@@ -606,6 +578,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>iš naujo nustatykit
 <translation id="6475951671322991020">Atsisiųsti vaizdo įrašą</translation>
 <translation id="2317945146070194624">Atidaryti naujame „Brave“ skirtuke</translation>
 <translation id="7975379999046275268">Peržiūrėti puslapį <ph name="BEGIN_NEW"/>Naujas<ph name="END_NEW"/></translation>
+<translation id="2012973609889389923">Sparti svetainė</translation>
 <translation id="6112702117600201073">Puslapio atnaujinimas</translation>
 <translation id="6990079615885386641">Gauti programą iš „Brave Software Play“ parduotuvės: <ph name="APP_ACTION"/></translation>
 <translation id="2414886740292270097">Tamsi</translation>
@@ -615,8 +588,6 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>iš naujo nustatykit
 <translation id="5016205925109358554">Su užraitais</translation>
 <translation id="2593272815202181319">Lygiaplotis</translation>
 <translation id="9206873250291191720">A</translation>
-<translation id="654446541061731451">Kad perduotumėte, pasirinkite skirtuką</translation>
-<translation id="8719023831149562936">Negalima perduoti esamo skirtuko</translation>
 <translation id="2139186145475833000">Pridėti prie pagr. ekrano</translation>
 <translation id="4616150815774728855">Atidaryti „<ph name="WEBAPK_NAME"/>“</translation>
 <translation id="2122601567107267586">Nepavyko atidaryti programos</translation>
@@ -702,6 +673,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>iš naujo nustatykit
 <translation id="3616113530831147358">Garsas</translation>
 <translation id="9219103736887031265">Vaizdai</translation>
 <translation id="656065428026159829">Žr. daugiau</translation>
+<translation id="6042308850641462728">Daugiau</translation>
 <translation id="8250920743982581267">Dokumentai</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# failas}one{# failas}few{# failai}many{# failo}other{# failų}}</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{# vaizdas}one{# vaizdas}few{# vaizdai}many{# vaizdo}other{# vaizdų}}</translation>
@@ -792,15 +764,11 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>iš naujo nustatykit
 <translation id="7542481630195938534">Nepavyksta gauti pasiūlymų</translation>
 <translation id="5013696553129441713">Nėra jokių naujų pasiūlymų</translation>
 <translation id="7444811645081526538">Daugiau kategorijų</translation>
-<translation id="6709133671862442373">Naujienos</translation>
-<translation id="1264974993859112054">Sportas</translation>
-<translation id="9139318394846604261">Apsipirkimas</translation>
 <translation id="3912508018559818924">Ieškoma geriausio žiniatinklio turinio…</translation>
 <translation id="526421993248218238">Nepavyko įkelti šio puslapio</translation>
 <translation id="614940544461990577">Pabandykite atlikti toliau nurodytus veiksmus.</translation>
 <translation id="3288003805934695103">Iš naujo įkelti puslapį</translation>
 <translation id="2353636109065292463">Tikrinamas interneto ryšys</translation>
-<translation id="2858138569776157458">Popul. svet.</translation>
 <translation id="8364299278605033898">Žr. populiarias svetaines</translation>
 <translation id="1171770572613082465">Žr. populiarias svetaines palietę mygtuką „Populiariausios svetainės“</translation>
 <translation id="5233638681132016545">Naujas skirtukas</translation>
@@ -834,8 +802,10 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>iš naujo nustatykit
 <translation id="4452548195519783679">Sukurta „<ph name="FOLDER_NAME"/>“ žymė</translation>
 <translation id="8063895661287329888">Nepavyko pridėti žymės.</translation>
 <translation id="2842985007712546952">Viršaplankis</translation>
+<translation id="6945221475159498467">Pasirinkti</translation>
 <translation id="9065203028668620118">Redaguoti</translation>
 <translation id="4405224443901389797">Perkelti į…</translation>
+<translation id="8261506727792406068">Ištrinti</translation>
 <translation id="5170568018924773124">Rodyti aplanke</translation>
 <translation id="8035133914807600019">Naujas aplankas…</translation>
 <translation id="4532845899244822526">Pasirinkti aplanką</translation>
@@ -871,16 +841,14 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>iš naujo nustatykit
 <translation id="1113597929977215864">Rodyti supaprastintą rodinį</translation>
 <translation id="1513352483775369820">Žymių ir žiniatinklio istorija</translation>
 <translation id="4939482511480190003">Padėkite tobulinti „Brave“. <ph name="BEGIN_LINK"/>Dalyvaukite apklausoje<ph name="END_LINK"/></translation>
-<translation id="2501278716633472235">Grįžti</translation>
-<translation id="5596627076506792578">Daugiau parinkčių</translation>
 <translation id="3522247891732774234">Pasiekiamas naujinys. Daugiau parinkčių</translation>
 <translation id="6773423637732432200">Nepavyksta atnaujinti „Brave“. Daugiau parinkčių.</translation>
+<translation id="1383876407941801731">Ieškoti</translation>
 <translation id="3328801116991980348">Svetainės informacija</translation>
 <translation id="5391532827096253100">Ryšys su šia svetaine nėra saugus. Svetainės informacija</translation>
 <translation id="6206551242102657620">Ryšys yra saugus. Svetainės informacija</translation>
 <translation id="6963642900430330478">Šis puslapis yra pavojingas. Svetainės informacija</translation>
 <translation id="9070377983101773829">Pradėti paiešką balsu</translation>
-<translation id="8676374126336081632">Išvalyti įvestą tekstą</translation>
 <translation id="4968908871398201967">Inkognito režimas</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> atidarytas skirtukas; palieskite, kad perjungtumėte skirtukus}one{<ph name="OPEN_TABS_MANY"/> atidarytas skirtukas; palieskite, kad perjungtumėte skirtukus}few{<ph name="OPEN_TABS_MANY"/> atidaryti skirtukai; palieskite, kad perjungtumėte skirtukus}many{<ph name="OPEN_TABS_MANY"/> atidaryto skirtuko; palieskite, kad perjungtumėte skirtukus}other{<ph name="OPEN_TABS_MANY"/> atidarytų skirtukų; palieskite, kad perjungtumėte skirtukus}}</translation>
 <translation id="2369533728426058518">atidaryti skirtukus</translation>
@@ -888,6 +856,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>iš naujo nustatykit
 <translation id="932327136139879170">Kontaktinė namų informacija</translation>
 <translation id="2707726405694321444">Atnaujinti puslapį</translation>
 <translation id="2891154217021530873">Sustabdyti puslapio įkėlimą</translation>
+<translation id="1201402288615127009">Kitas</translation>
 <translation id="6710213216561001401">Ankstesnis</translation>
 <translation id="9080642952018487277">Įjungti inkognito režimą</translation>
 <translation id="4883379392681899581">Išeiti iš inkognito režimo</translation>
@@ -896,18 +865,12 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>iš naujo nustatykit
 <translation id="3377025655491224618">Inkognito skirtukas</translation>
 <translation id="584427517463557805">Pasirinktas inkognito skirtukas</translation>
 <translation id="2268044343513325586">Patikslinti</translation>
-<translation id="7846076177841592234">Atšaukti pasirinkimą</translation>
-<translation id="6216432067784365534">„<ph name="NAME_OF_LIST_ITEM"/>“ parinktys</translation>
-<translation id="7087918508125750058">Pasirinkta: <ph name="ITEM_COUNT"/>. Parinktys pasiekiamos netoli ekrano viršaus</translation>
-<translation id="7250468141469952378">Pasirinkta: <ph name="ITEM_COUNT"/></translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{Bendrinti 1 pasirinktą elementą}one{Bendrinti # pasirinktą elementą}few{Bendrinti # pasirinktus elementus}many{Bendrinti # pasirinkto elemento}other{Bendrinti # pasirinktų elementų}}</translation>
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Pašalinti 1 pasirinktą elementą}one{Pašalinti # pasirinktą elementą}few{Pašalinti # pasirinktus elementus}many{Pašalinti # pasirinkto elemento}other{Pašalinti # pasirinktų elementų}}</translation>
 <translation id="1283039547216852943">Palieskite ir išskleiskite</translation>
 <translation id="5962718611393537961">Palieskite ir sutraukite</translation>
 <translation id="3123734510202723619">Pranešimai</translation>
 <translation id="8076492880354921740">Skirtukai</translation>
-<translation id="7066151586745993502">{NUM_SELECTED,plural, =1{Pasirinktas 1 elementas}one{Pasirinktas # elementas}few{Pasirinkti # elementai}many{Pasirinkta # elemento}other{Pasirinkta # elementų}}</translation>
-<translation id="6818926723028410516">Pasirinkite elementus</translation>
 <translation id="4797039098279997504">Palieskite, kad grįžtumėte į <ph name="URL_OF_THE_CURRENT_TAB"/></translation>
 <translation id="6766758767654711248">Palieskite, kad apsilankytumėte svetainėje</translation>
 <translation id="429312253194641664">Svetainėje leidžiama medija</translation>
@@ -1024,13 +987,12 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>iš naujo nustatykit
 <translation id="1875543012935658554">Iš naujo atidarykite „Brave“.</translation>
 <translation id="79859296434321399">Norėdami peržiūrėti išplėstosios realybės turinį įdiekite „ARCore“</translation>
 <translation id="8558485628462305855">Norėdami peržiūrėti išplėstosios realybės turinį atnaujinkite „ARCore“</translation>
-<translation id="3513704683820682405">Išplėstoji realybė</translation>
-<translation id="5475862044948910901">Pradėti išplėstosios realybės seansą?</translation>
-<translation id="7365126855094612066">Vykstant šiam seansui svetainė galės:
+<translation id="6410973561433500075">Įjungti AR režimą iš <ph name="DOMAIN"/>?</translation>
+<translation id="3849365399446680203">AR režimu ši svetainė gali:
 • kurti jūsų aplinkos 3D žemėlapį;
 • stebėti fotoaparato judesį.
 
-Svetainė NETURI prieigos prie fotoaparato. Fotoaparato vaizdai matomi tik jums.</translation>
+Tik jūs galite matyti vaizdą iš fotoaparato. Svetainė negali matyti fotoaparato vaizdų.</translation>
 <translation id="1188239144602654184">Įveskite AR</translation>
 <translation id="473775607612524610">Atnaujinti</translation>
 <translation id="3133489217401741157">Įdiegiamas „Brave“ skirtas modulis „<ph name="MODULE"/>“…</translation>
@@ -1098,6 +1060,7 @@ Svetainė NETURI prieigos prie fotoaparato. Fotoaparato vaizdai matomi tik jums.
 <translation id="723171743924126238">Pasirinkti vaizdus</translation>
 <translation id="8751914237388039244">Pasirinkti vaizdą</translation>
 <translation id="1989112275319619282">Naršyti</translation>
+<translation id="8921772741368021346"><ph name="POSITION"/> / <ph name="DURATION"/></translation>
 <translation id="7055152154916055070">Peradresavimas užblokuotas:</translation>
 <translation id="5524843473235508879">Peradresavimas užblokuotas.</translation>
 <translation id="6573096386450695060">Visada leisti</translation>
@@ -1106,6 +1069,7 @@ Svetainė NETURI prieigos prie fotoaparato. Fotoaparato vaizdai matomi tik jums.
 <translation id="9137013805542155359">Rodyti originalą</translation>
 <translation id="6361779936989026201">„Brave Software Assistant“ sistemoje</translation>
 <translation id="7291387454912369099">„Assistant“ suaktyvin. mokėjimas</translation>
+<translation id="9037412730408024068">Kad padėtų atlikti užduotis, „Brave Software“ gaus svetainių, kuriose naudojate Padėjėją, URL ir turinį bei informaciją, kurią pateikiate naudodami Padėjėją.</translation>
 <translation id="4565206163201411670">Rodyti „Brave“ veiklą Skaitmeninės gerovės programoje?</translation>
 <translation id="9055113864158719823">Galite peržiūrėti svetaines, kuriose lankotės naudodami „Brave“, ir nustatyti jų laikmačius.\n\n„Brave Software“ gauna informaciją apie svetaines, kurių laikmačius nustatote, ir apie apsilankymų jose trukmę. Ši informacija naudojama norint patobulinti Skaitmeninės gerovės funkcijas.</translation>
 <translation id="4596514158372210596">„Brave“ veiklos pašalinimas iš Skaitmeninės gerovės</translation>
@@ -1121,10 +1085,20 @@ Svetainė NETURI prieigos prie fotoaparato. Fotoaparato vaizdai matomi tik jums.
 <translation id="246532703174860178">Bendrinti</translation>
 <translation id="2517472476991765520">Nuskaityti</translation>
 <translation id="8628973420740315031">Jei norite bendrinti su netoliese esančiais žmonėmis, leiskite jiems nuskaityti šį QR kodą</translation>
+<translation id="3987993985790029246">Kop. nuor.</translation>
+<translation id="4250229828105606438">Ekrano kopija</translation>
+<translation id="6201345951596836663">Nuoroda nukopijuota</translation>
+<translation id="6597891566292541626">QR / brūkšninis kodas turėtų būti įdėtas į šį rėmelį.</translation>
+<translation id="3140134512074889489">Įjunkite fotoaparatą, kad galėtumėte nuskaityti QR kodą</translation>
+<translation id="2359808026110333948">Tęskite</translation>
 <translation id="7339921667754113786">„Brave Software“ pranešimų platforma</translation>
 <translation id="8516012719330875537">Vaizdų redagavimo priemonė</translation>
+<translation id="6092062101542170135">Jei norite tęsti, „Android“ nustatymuose įjunkite ALR</translation>
+<translation id="5860491529813859533">Įjungti</translation>
+<translation id="8926666909099850184">ALR išjungtas šiame įrenginyje. Įjunkite ALR <ph name="BEGIN_LINK"/>„Android“ nustatymuose<ph name="END_LINK"/>.</translation>
 <translation id="4808319664292298116">Pradėti VR iš <ph name="DOMAIN"/>?</translation>
 <translation id="4353114845960720315">VR režimu ši svetainė gali sužinoti apie jus tam tikros informacijos:</translation>
-<translation id="118069123878619799">- jūsų fizines savybes, pavyzdžiui, ūgį;</translation>
-<translation id="5819762621475381970">- patalpos išdėstymą;</translation>
+<translation id="4574741712540401491">•  <ph name="LIST_ITEM_TEXT"/></translation>
+<translation id="2099625543891475722">jūsų fizines savybes, pavyzdžiui, ūgį;</translation>
+<translation id="4660838440047236328">patalpos išdėstymą.</translation>
 </translationbundle>

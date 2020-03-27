@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "ক্রশ-সাইট ডিভাইস শনাক্তকরণ ব্লক করা হয়েছে",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "ক্রস-সাইট আঙুলের ছাপ দেওয়ার বিষয়টা অবরুদ্ধ রয়েছে",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "ডিভাইস শনাক্তকরণ প্রচেষ্টাগুলি ব্লক করা হয়েছে",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "আঙুলের ছাপ দেওয়ার প্রচেষ্টা অবরুদ্ধ রয়েছে",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "সমস্ত ডিভাইস শনাক্তকরণের প্রচেষ্টাগুলি অনুমোদিত করা হয়েছে",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "সমস্ত আঙুলের ছাপ দেওয়ার প্রচেষ্টা অনুমোদিত রয়েছে",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "ডিভাইস শনাক্তকরণ প্রচেষ্টাগুলি",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "আঙুলের ছাপ দেওয়ার প্রচেষ্টাগুলি",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "এই সাইটটিতে থাকা স্ক্রিপ্টগুলি",

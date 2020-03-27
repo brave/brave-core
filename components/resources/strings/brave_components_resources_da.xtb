@@ -4,6 +4,7 @@
 <translation id="4339730410920731698">Annoncer og trackere blokeret</translation>
 <translation id="2313532038420432247">HTTPS Opgraderinger</translation>
 <translation id="7679428712334662192">Anslået mængde tid sparet</translation>
+<translation id="8411095021655121794">Estimeret sparet båndbredde</translation>
 <translation id="5206618227023752085">Topside fjernet.</translation>
 <translation id="2079545284768500474">Fortryd</translation>
 <translation id="6040143037577758943">Luk</translation>
@@ -16,6 +17,10 @@
 <translation id="8344569602005188545">timer</translation>
 <translation id="7100907433458266664">dag</translation>
 <translation id="4971389353431353387">dage</translation>
+<translation id="2116364690062294218">B</translation>
+<translation id="3123243061080120667">KB</translation>
+<translation id="977224059380370527">MB</translation>
+<translation id="8776285424728638733">GB</translation>
 <translation id="8427933533533814946">Foto af</translation>
 <translation id="7108338896283013870">Skjul</translation>
 <translation id="7115515527894388910">Rediger indstillinger</translation>
@@ -84,11 +89,9 @@
 <translation id="7954950242989581218">Brows trygt og sikkert</translation>
 <translation id="2188651882929633653">Brave Shields blokerer de ækle ting, som prøver at spore dig på nettet, herunder de fleste annoncer. Sæt Shields til at være “nede”, hvis en side ikke ser ud til at virke. Brave bruger <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>fuldstændig private produktanalyser<ph name="END_LINK_P3A">&lt;/a&gt;</ph> til at anslå det generelle forbrug af visse funktioner. Du kan slå dette fra under <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Indstillinger<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Reklamer</translation>
-<translation id="2364310432103707426">Tjen {{currency}} ved at se Brave-annoncer. Viste annoncer er baseret på dine interesser, som er udledt af din browser-adfærd. Ingen personlige data eller browser-historik forlader nogensinde din browser.</translation>
+<translation id="2128226640852355533">Tjen {{currency}} på at se Brave Ads. De viste reklamer er baseret på dine interesser med udgangspunkt i din browse-adfærd. Ingen personlige data eller browsing-historik forlader på noget tidspunkt din browser.</translation>
 <translation id="6112368337882254910">Auto-Bidrag</translation>
 <translation id="3742599705619405136">En automatisk måde at støtte udgivere og indholdsskabere på. Indstil en månedlig betaling og browse som normalt. De Brave-verificerede sider du besøger, vil modtage dine donationer automatisk baseret på din opmærksomhed målt af Brave.</translation>
-<translation id="8949527283651381130">Tillad registrering af annoncekonvertering</translation>
-<translation id="2184191362610545393">Dette giver Brave anonym besked om at der var et svar på en annonce på denne browser. Indtjeningen kan øges ved at aktivere dette.</translation>
 <translation id="20281847067919078">Anslåede afventende bonusser</translation>
 <translation id="8593551638387217772">Næste betalingsdato</translation>
 <translation id="319209088187794725">Annoncenotifikationer modtaget i denne måned</translation>
@@ -195,7 +198,7 @@
 <translation id="1642443162274867084">Pung oprettet</translation>
 <translation id="5094577350232361255">om</translation>
 <translation id="4918086044614829423">Accepter</translation>
-<translation id="6832986780040139899">©2016–2018 Brave Software. Brave er et registreret varemærke af Brave Software. Sidenavne kan være varemærker eller registrerede varemærker af sideejeren.</translation>
+<translation id="5916290544882167205">Brave Software. Brave er et registreret varemærke under Brave Software. Siders navne kan være varemærker eller registrerede varemærker tilhørende sidens ejer.</translation>
 <translation id="9026369588205476247">For at beskytte din anonymitet bliver denne opgørelse over Brave Rewards ikke gemt, arkiveret eller logget nogen steder udover på denne enhed (denne computer). Den kan ikke hentes igen fra Brave i tilfælde af datatab på din enhed.</translation>
 <translation id="1036277985068412734">tilføj midler</translation>
 <translation id="3587482841069643663">Alle</translation>
@@ -204,6 +207,7 @@
 <translation id="2631006050119455616">Gemt</translation>
 <translation id="2155330833364281539">Reklamer som du har modtaget inden for de sidste {{totalDays}} dage</translation>
 <translation id="8863685593846905344">Reklamehistorik</translation>
+<translation id="2777306694585938662">Reklame-rewards modtaget</translation>
 <translation id="5212777575344695266">Marker som upassende</translation>
 <translation id="2111256234277361810">Marker som upassende ✓</translation>
 <translation id="8988332871810963281">Der er på nuværende tidspunkt ingen Brave Ads historik</translation>
@@ -313,9 +317,8 @@
 <translation id="6381574025952123568">Åbningssaldo</translation>
 <translation id="532275381857891532">7-dages Reklamehistorik</translation>
 <translation id="4923459931733593730">Betaling</translation>
-<translation id="4021593982164260556">Betaling gennemføres hver den {{dag}}. i hver måned.</translation>
+<translation id="5693657857413982604">Betaling foretaget den {{day}} hver måned.</translation>
 <translation id="6104680658798556671">Betaling ikke gennemført</translation>
-<translation id="2834888581291358924">Når din saldo ikke er tilstrækkelig til at dække den samlede sum af automatiske bidrag og dine månedlige bidrag, bliver disse betalinger sprunget over i denne periode.</translation>
 <translation id="3138528956349114724">Fastgjorte sider er nu</translation>
 <translation id="2337632028350283479">Sådan fungerer månedlige bidrag:</translation>
 <translation id="6457273203091513039">Månedlige bidrag bliver ikke trukket fra din automatiske bidragsbetaling. De er adskilte.</translation>
@@ -388,6 +391,7 @@
 <translation id="4588241643143931775">Bitcoin (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
 <translation id="8746837129291133068">Litecoin (LTC)</translation>
+<translation id="6367285596431004439">Token-tilskud modtaget</translation>
 <translation id="9212459913845238740">Du har nu bedt om dine pointbevillinger</translation>
 <translation id="768850953428043522">point</translation>
 <translation id="3043542281656021374">Point</translation>
@@ -463,6 +467,10 @@
 <translation id="4569155249847375786">Bekræftet</translation>
 <translation id="8465442795593991224">Uphold vil muligvis bede dig om at bekræfte din identitet, baseret på hvilke tjenester der bruges.</translation>
 <translation id="723054503945711909">Brave Software Inc. hverken behandler, opbevarer, eller benytter sig af den personlige information som du overlader til Uphold når du opretter en konto ved dem.</translation>
+<translation id="7404779623219601861">Indløs BAT for gavekort</translation>
+<translation id="6215565499749144110">Med TAP Network kan du indløse din BAT for populære gavekort til mærkevarer.</translation>
+<translation id="526152301446370337">Besøg TAP.</translation>
+<translation id="6915065518766963119">* Kræver støtte-verificering.</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Få mere at vide<ph name="LINK_END"/> om Brave Rewards</translation>
 <translation id="5826706758731195747">Ved at slå Rewards til accepterer du <ph name="LINK_BEGIN"/>Tjenestevilkår<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Estimeret optjening for denne måned</translation>
@@ -476,6 +484,7 @@
 <translation id="8092889639392847252">Bliv betalt for at se dette sponsorerede baggrundsbillede.</translation>
 <translation id="2542495049135486284">Prøv Brave Belønninger igen og giv det videre mens du optjener!</translation>
 <translation id="53513464591392992">Slå Brave Rewards til og bliv betalt for at se privatlivsrespekterende annoncer.</translation>
+<translation id="8463996294416161140">Aktivér <ph name="PRODUCT_NAME"/> for at få din andel. Du kan også vælge at <ph name="LINK_BEGIN"/>skjule sponsorerede billeder<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">Sådan!</translation>
 <translation id="764235488372037377">Dine belønninger fra reklamer er her</translation>
 <translation id="7091215606170476659">Du har en UGP bevilling fra Brave</translation>

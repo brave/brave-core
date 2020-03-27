@@ -11,12 +11,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID rozšíření "<ph name="EXTENSION_ID"/>") není v Brave povoleno.</translation>
 <translation id="7450557937477381864">Zavřít Chrome</translation>
 <translation id="7008934821596358692">Pro dokončení importu zavřete všechna okna prohlížeče Chrome.</translation>
-<translation id="5735465527556462863">Zavřít prohlížeč Brave (předchozí verzi)</translation>
-<translation id="7737066986958447692">Import dokončíte zavřením všech oken prohlížeče Brave (předchozí verze).</translation>
-<translation id="6447842834002726250">Soubory cookie</translation>
-<translation id="4983925687993168579">Statistiky</translation>
-<translation id="6165477144235978006">Platby Brave</translation>
-<translation id="3489524616427966890">Otevřená okna a karty</translation>
 <translation id="3699882589215410581">Nainstalovat a spustit Widevine</translation>
 <translation id="8926389886865778422">Dotaz již nezobrazovat</translation>
 <translation id="4726634924419692905">Zobrazit dotaz, když bude stránka chtít do vašeho počítače nainstalovat doplněk Widevine.</translation>
@@ -27,8 +21,6 @@
 <translation id="8410111618231938546">Google Widevine je kód pro správu digitálních práv (DRM), který ve společnosti Brave Software nevlastníme a nemůžeme jej kontrolovat. Kód Google Widevine je nahráván ze serverů Google, ne z našich serverů. Nahraje se pouze po povolení této možnosti. Používání DRM nedoporučujeme, ale respektujeme volbu uživatele a uznáváme, že někteří uživatelé Brave by rádi využívali služby, které DRM vyžadují.
 
 Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Google Widevine. Souhlasíte s tím, že společnost Brave neodpovídá za škody ani ztráty související s používáním služby Google Widevine.</translation>
-<translation id="6499845530162974140">Prohlížeč Brave (předchozí verze)</translation>
-<translation id="3198814717959506569">Importováno z Brave</translation>
 <translation id="453977518730680921">Automaticky přehrávat média</translation>
 <translation id="410351446219883937">Automatické přehrávání</translation>
 <translation id="2240268017737062801">Dotázat se, pokud stránka hodlá automaticky spouštět multimediální soubory</translation>
@@ -70,19 +62,22 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="130615081792797568">Jednoduché zobrazení</translation>
 <translation id="2360360976480535628">Pokročilé zobrazení</translation>
 <translation id="5709627087332022422">Blokovat trackery mezi weby</translation>
-<translation id="9075744464571452108">Rozpoznání zařízení</translation>
+<translation id="6447842834002726250">Soubory cookie</translation>
+<translation id="6522412052085018663">Získávání otisku</translation>
 <translation id="3570081523466826008">Upgradovat spojení k HTTPS</translation>
 <translation id="4824468494729001999">Blokovat skripty</translation>
-<translation id="8526521192921341404">Povolit přihlašování pomocí Google</translation>
+<translation id="519861640102428255">Vzhled a dojem</translation>
+<translation id="4800195524776354947">Ukázat na ikoně štítů počet zablokovaných položek</translation>
+<translation id="7498695072878479744">Povolit na webech třetích stran přihlašovací tlačítka Google</translation>
 <translation id="863171915776379000">Povolit přihlašování na Facebook a sdílení příspěvků</translation>
 <translation id="5165042248369837294">Povolit sdílení tweetů z Twitteru</translation>
 <translation id="958971637207126733">Povolit příspěvky vložené na LinkedIn</translation>
 <translation id="4699812599455071925">Blokovat pouze soubory cookies třetích stran</translation>
 <translation id="5657156137487675418">Povolit všechny soubory cookies</translation>
 <translation id="6883611015375728278">Blokovat všechny soubory cookie</translation>
-<translation id="3084022390368021391">Blokovat pouze pokusy o rozpoznání zařízení třetích stran</translation>
-<translation id="1847422622180531843">Povolit všechny pokusy o rozpoznání zařízení</translation>
-<translation id="8375051111011093523">Blokovat všechny pokusy o rozpoznání zařízení</translation>
+<translation id="5572437114858031185">Blokovat jen pokusy o získání otisku napříč weby</translation>
+<translation id="5079032039521408559">Povolit všechny pokusy o získání otisku</translation>
+<translation id="6447141055227658942">Blokovat všechny pokusy o získání otisku</translation>
 <translation id="8942080017911802454">Pravidla pro zacházení s webovým protokolem WebRTC</translation>
 <translation id="6165508094623778733">Zjistit více</translation>
 <translation id="8798099450830957504">Výchozí</translation>
@@ -104,6 +99,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="2356070529366658676">Zeptat se</translation>
 <translation id="7701040980221191251">Žádné</translation>
 <translation id="1085027414516521238">MetaMask</translation>
+<translation id="3905324891414560921">Web3 poskytovatel pro využívání Dapps</translation>
 <translation id="6554397389149987360">Používá komponentu Hangouts k umožnění sdílení obrazovek a dalších funkcí prohlížeče.</translation>
 <translation id="1765684547504191670">Využívá Media Router komponent umožňující Chromecast v prohlížeči.</translation>
 <translation id="9156965752763025780">Změny se projeví po příštím restartu prohlížeče Brave.</translation>
@@ -164,6 +160,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="4394049700291259645">Deaktivovat</translation>
 <translation id="6469509880167172749">Automaticky posílat zcela soukromé produktové analýzy společnosti Brave</translation>
 <translation id="7090566321964540749">Tyto anonymní informace prohlížeči Brave umožní pouze odhadnout celkové využití určitých funkcí.</translation>
+<translation id="9111960429693394744">Chcete pro Dapps použít kryptopeněženky Brave nebo MetaMask?</translation>
 <translation id="7583735190612229830">Pro vzájemné fungování s touto aplikací a dalšími podobnými si Nastavte peněženky Crypto.</translation>
 <translation id="8337117349965899723">Použít peněženky Crypto</translation>
 <translation id="5756155765711979898">Použít MetaMask</translation>
@@ -177,4 +174,9 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="4474155171896946103">Přidat do záložek všechny karty...</translation>
 <translation id="2336228925368920074">Přidat do záložek všechny karty...</translation>
 <translation id="796831669370432378">Chcete-li přidat záložku, klikněte na tlačítko záložky vedle adresního řádku</translation>
+<translation id="4989337484121655457">Vyžadován plný přístup k disku</translation>
+<translation id="8025559074845816210">Pro import záložek ze Safari potřebuje Brave plný přístup k disku.</translation>
+<translation id="8515328844674404333">Podívejte se, jak udělit plný přístup k disku v předvolbách systému.</translation>
+<translation id="6414878884710400018">Otevřít předvolby systému</translation>
+<translation id="5570470519803062774">Nastavení webů a štítů</translation>
 </translationbundle>

@@ -11,12 +11,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID de extensión "<ph name="EXTENSION_ID"/>") no se permite en Brave.</translation>
 <translation id="7450557937477381864">Cerrar Chrome</translation>
 <translation id="7008934821596358692">Para finalizar la importación, cierra todas las ventanas de Chrome.</translation>
-<translation id="5735465527556462863">Cerrar Brave (anterior)</translation>
-<translation id="7737066986958447692">Para finalizar la importación, cierre todas las ventanas de Brave (anterior).</translation>
-<translation id="6447842834002726250">Cookies</translation>
-<translation id="4983925687993168579">Estadísticas</translation>
-<translation id="6165477144235978006">Pagos de Brave</translation>
-<translation id="3489524616427966890">Abrir ventanas y pestañas</translation>
 <translation id="3699882589215410581">Instalar y ejecutar Widevine</translation>
 <translation id="8926389886865778422">No volver a preguntar</translation>
 <translation id="4726634924419692905">Preguntarme cuando un sitio intente instalar Widevine en mi computadora.</translation>
@@ -27,8 +21,6 @@
 <translation id="8410111618231938546">El código de Google Wide Vine se carga desde los servidores de Google, no desde nuestros servidores. Se carga solo cuando habilita esta opción. Desaconsejamos el uso de DRM, pero respetamos la elección del usuario y reconocemos que algunos usuarios de Brave desean utilizar los servicios cuando son requeridos.
 
 Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al instalar esta extensión aceptas que Brave no es responsable de los daños o pérdidas relacionadas con el uso de Google Widevine.</translation>
-<translation id="6499845530162974140">Brave (anterior)</translation>
-<translation id="3198814717959506569">Importado Desde Brave</translation>
 <translation id="453977518730680921">Reproducir automáticamente el contenido multimedia</translation>
 <translation id="410351446219883937">Reproducir automáticamente</translation>
 <translation id="2240268017737062801">Preguntarme cuando un sitio intente reproducir automáticamente contenido multimedia</translation>
@@ -70,19 +62,22 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="130615081792797568">Vista simple</translation>
 <translation id="2360360976480535628">Vista avanzada</translation>
 <translation id="5709627087332022422">Bloquear los rastreadores entre sitios</translation>
-<translation id="9075744464571452108">Reconocimiento de dispositivos</translation>
+<translation id="6447842834002726250">Cookies</translation>
+<translation id="6522412052085018663">Reconocimiento de huellas digitales</translation>
 <translation id="3570081523466826008">Actualizar las conexiones a HTTPS</translation>
 <translation id="4824468494729001999">Bloquear scripts</translation>
-<translation id="8526521192921341404">Permitir iniciar sesión con Google</translation>
+<translation id="519861640102428255">Ve y siente</translation>
+<translation id="4800195524776354947">Mostrar la cantidad de elementos bloqueados en el ícono de Escudos</translation>
+<translation id="7498695072878479744">Permitir botones de inicio de sesión de Google en sitios externos</translation>
 <translation id="863171915776379000">Permitir publicaciones integradas e inicios de sesión de Facebook</translation>
 <translation id="5165042248369837294">Permitir tuits integrados de Twitter</translation>
 <translation id="958971637207126733">Permitir publicaciones integradas de LinkedIn</translation>
 <translation id="4699812599455071925">Solo bloquear cookies entre sitios</translation>
 <translation id="5657156137487675418">Permitir todas las cookies</translation>
 <translation id="6883611015375728278">Bloquear todas las cookies</translation>
-<translation id="3084022390368021391">Solo bloquear los intentos de reconocimiento de dispositivos entre sitios</translation>
-<translation id="1847422622180531843">Permitir todos los intentos de reconocimiento de dispositivos</translation>
-<translation id="8375051111011093523">Bloquear todos los intentos de reconocimiento de dispositivos</translation>
+<translation id="5572437114858031185">Solo bloquear los intentos de reconocimiento de huellas digitales entre sitios</translation>
+<translation id="5079032039521408559">Permitir todos los intentos de reconocimiento de huellas digitales</translation>
+<translation id="6447141055227658942">Bloquear todos los intentos de reconocimiento de huellas digitales</translation>
 <translation id="8942080017911802454">Política de manejo de WebRTC IP</translation>
 <translation id="6165508094623778733">Aprender más</translation>
 <translation id="8798099450830957504">Predeterminado</translation>
@@ -104,6 +99,7 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="2356070529366658676">Preguntar</translation>
 <translation id="7701040980221191251">Ninguno</translation>
 <translation id="1085027414516521238">MetaMask</translation>
+<translation id="3905324891414560921">Proveedor de web3 para usar Dapps</translation>
 <translation id="6554397389149987360">Usa el componente Hangouts para compartir la pantalla y habilitar otras funciones en el navegador.</translation>
 <translation id="1765684547504191670">Usa el componente Router multimedia para habilitar Chromecast en el navegador.</translation>
 <translation id="9156965752763025780">Los cambios se aplicarán la próxima vez que inicies Brave.</translation>
@@ -164,6 +160,7 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="4394049700291259645">Inhabilitar</translation>
 <translation id="6469509880167172749">Envía automáticamente análisis del producto totalmente privados a Brave</translation>
 <translation id="7090566321964540749">Esta información anónima solo le permite a Brave calcular el uso general de determinadas funciones.</translation>
+<translation id="9111960429693394744">¿Deseas usar MetaMask o Crypto Wallets de Brave para Dapps?</translation>
 <translation id="7583735190612229830">Instala Crypto Wallets para interactuar con esta aplicación y otras similares.</translation>
 <translation id="8337117349965899723">Usar Crypto Wallets</translation>
 <translation id="5756155765711979898">Usar MetaMask</translation>
@@ -177,4 +174,9 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="4474155171896946103">Agregar a favoritos todas las pestañas...</translation>
 <translation id="2336228925368920074">Agregar a favoritos todas las pestañas...</translation>
 <translation id="796831669370432378">Para agregar a favoritos, haz clic en el botón de favoritos junto a la barra de direcciones.</translation>
+<translation id="4989337484121655457">Se requiere acceso completo al disco</translation>
+<translation id="8025559074845816210">Brave necesita el acceso completo al disco para importar tus marcadores de Safari.</translation>
+<translation id="8515328844674404333">Aprende cómo otorgar acceso completo al disco desde las preferencias del sistema.</translation>
+<translation id="6414878884710400018">Abrir las preferencias del sistema</translation>
+<translation id="5570470519803062774">Configuración de escudos y sitio</translation>
 </translationbundle>

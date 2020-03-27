@@ -58,7 +58,6 @@
 <translation id="7053983685419859001">مسدود کردن</translation>
 <translation id="5806601733251372221">سپرهای ایمنی Brave</translation>
 <translation id="2880356288762235261">آگهی‌های ناقض حریم خصوصی و ردگیرها، برای اینکه بتوانید در وب بدون ردگیری جستجو کنید.</translation>
-<translation id="6980054221517850750">کسب کردن توکن‌ها</translation>
 <translation id="3333887201479867589">پاداش‌های Brave</translation>
 <translation id="1789842587755069541">برای دیدن آگهی‌هایی که به حریم خصوصی احترام می‌گذارند. برای حمایت از سایت‌ها و پدیدآورندگان مورد علاقه‌تان از اینها استفاده کنید.</translation>
 <translation id="821707262661492716">برای دیدن آگهی‌هایی که به حریم شخصی احترام می‌گذارند.</translation>
@@ -114,13 +113,11 @@
 <translation id="4254029385847607686">دسامبر</translation>
 <translation id="1916285746997567466">خودتان را برای تجربه کردن اینترنت
 نسل بعد آماده کنید.</translation>
-<translation id="1071131306814166204">اکنون می‌توانید با تماشای آگهی‌هایی که به
-حریم خصوصی احترام می‌گذارند توکن کسب کنید.</translation>
 <translation id="1327938628925645979">پیوستن به پاداش‌ها</translation>
 <translation id="5567439033041178034">بیشتر بدانید</translation>
 <translation id="3780605330121608425">کیف پول شما</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
+<translation id="3826081199286264109">USD</translation>
 <translation id="2104073734684466851">امتیازها</translation>
 <translation id="1165667598801520610">افزودن سرمایه</translation>
 <translation id="8428213095426709021">تنظیمات</translation>
@@ -149,13 +146,12 @@
 <translation id="5463954686005964104">انعام ماهانه به این سایت</translation>
 <translation id="7530570094705720669">ایجاد کیف پول</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
-<translation id="4781696154289395607">شما <ph name="BAT_VALUE"/> BAT کمک کرده‌اید.</translation>
 <translation id="7997676409547731821">به‌دلیل کافی نبودن وجه، انجام دادن پرداخت ماهیانه زمان‌بندی‌شده شما برای کمک خودکار و انعام ماهانه امکان‌پذیر نبود. 30 روز دیگر دوباره تلاش خواهیم کرد.</translation>
 <translation id="5306913077198665897">پردازش انعام شما با مشکل روبرو شد، لطفاً دوباره تلاش کنید.</translation>
 <translation id="2429828319207652823">مشکلی در پردازش کمکتان وجود داشت.</translation>
 <translation id="3453206261112715431">امتیاز توکن رایگان</translation>
 <translation id="6417420737057016607">آگهی‌های Brave</translation>
-<translation id="606865182719489911">امتیار توکن رایگانی دردسترس است.</translation>
+<translation id="5497435273900537730">یک هدیه <ph name="TOKEN"/> رایگان در دسترس است.</translation>
 <translation id="8689997599821157251">کسب‌شده ازسوی شما</translation>
 <translation id="7550470870580166294">سرمایه ناکافی</translation>
 <translation id="2775064702681588061">حساب «پاداش‌های Brave» منتظر سپرده است.</translation>
@@ -168,10 +164,6 @@
 <translation id="4292832015778676417">دریافت‌شده از آگهی‌ها</translation>
 <translation id="683765328936486920">در YouTube</translation>
 <translation id="8969049974285901797">در Twitch</translation>
-<translation id="3692362746128814480">شما <ph name="BAT_VALUE"/> BAT برای پدیدآورندگانی اختصاص داده‌اید
-که هنوز برای دریافت کمکثبت نام نکرده‌اند. مرورگر شما تلاش برای اعطای کمک را تا زمان تأیید شدن
-آنها، یا پس از گذشت 90 روز ادامه خواهد داد.</translation>
-<translation id="853714875140407133">توکن کافی نیست</translation>
 <translation id="6940273954212603510">لطفاً</translation>
 <translation id="1036277985068412734">افزودن سرمایه</translation>
 <translation id="3492491948683276944">تنظیم انعام ماهانه</translation>
@@ -234,4 +226,39 @@
 <translation id="6336451774241870485">برگه خصوصی جدید</translation>
 <translation id="6199596294742117349">این برگه خصوصی است</translation>
 <translation id="5858455511731621847">با اینکه سایت‌های بازدیدشده شما در برگه‌های خصوصی به‌صورت محلی ذخیره نمی‌شوند، اما این برگه‌ها باعث نمی‌شود تا شما برای ISP، کارفرما یا سایت‌های بازدیدشده ناشناس یا غیرقابل مشاهده باشید.</translation>
+<translation id="5789441016350810005">وقتی مرورگر در پس‌زمینه بود، «آگهی‌های Brave» ارسال شد</translation>
+<translation id="7127980134843952133">سابقه بارگیری</translation>
+<translation id="3690140184638701871">مشارکت و انعام</translation>
+<translation id="844921671123185605">انعام ماهانه شما پردازش شده است!</translation>
+<translation id="3124090095880236567">روشن کردن آگهی‌ها</translation>
+<translation id="2975780980638932742">«آگهی‌های Brave» رسیدند!</translation>
+<translation id="7655723274266132226">اکنون می‌توانید با مشاهده آگهی‌ها، دریافت کنید.</translation>
+<translation id="7541582550122501404">مشارکت در حال انتظار</translation>
+<translation id="8520059774736886747">سازنده <ph name="PUBLISHER_NAME"/> اخیراً تأیید شده است</translation>
+<translation id="7924320838799747606">موجودی شما</translation>
+<translation id="6160106411363856968">BAP</translation>
+<translation id="1081826981536899387">امتیازهای BAT</translation>
+<translation id="9212459913845238740">هدایای امتیاز مطالبه شد</translation>
+<translation id="2132683977638223450">امتیاز هدیه رایگان</translation>
+<translation id="4522570452068850558">جزئیات</translation>
+<translation id="1486343603936278248">توکن</translation>
+<translation id="8713995420537272453">امتیاز</translation>
+<translation id="6678056861663824314">1 <ph name="TIP"/></translation>
+<translation id="4065726515175370979">5 <ph name="TIP"/></translation>
+<translation id="8171148564903208264">10 <ph name="TIP"/></translation>
+<translation id="7781069478569868053">صفحه برگه جدید</translation>
+<translation id="8522669544471808198">نمایش تصاویر پس‌زمینه</translation>
+<translation id="3870475560794762985">نمایش تصاویر حمایت‌شده</translation>
+<translation id="8297488609722895137">عکس از <ph name="PHOTO_BY"/></translation>
+<translation id="3794079107601824147">برای مشاهده این تصویر پس‌زمینه، پول دریافت کنید.</translation>
+<translation id="4836823081419522426">شما 70 درصد درآمد آگهی برای این حمایت مالی خصوصی را دریافت خواهید کرد که می‌توانید از آن برای پشتیبانی از سازندگان محتوای وب استفاده کنید. برای مطالبه سهم خود، «پاداش‌های Brave» را روشن کنید.</translation>
+<translation id="7307847920988946894">روشن کردن «پاداش‌ها»</translation>
+<translation id="1605521356929094020">روشن کردن «آگهی‌های Brave»</translation>
+<translation id="1647482814782886825">با خاموش کردن «پاداش‌ها»، موافقت خود را با <ph name="TERMS_OF_SERVICE"/> اعلام می‌کنید. همچنین می‌توانید <ph name="HIDE_SPONSORED_IMAGES"/> را انتخاب کنید.</translation>
+<translation id="7136586167396205364">تصاویر حمایت‌شده را پنهان کنید</translation>
+<translation id="2927095357213611519">شما می‌توانید با توکن‌ها از سازندگان وب حمایت کنید.\nبا مشاهده آگهی‌های رعایت‌کننده حریم خصوصی، توکن دریافت کنید.</translation>
+<translation id="4016415345213871193">برای مشاهده این تصویر پس‌زمینه، پول دریافت می‌کنید.</translation>
+<translation id="5895280237921845725">درباره تصاویر حمایت‌شده در «پاداش‌های Brave»، <ph name="LEARN_MORE"/>. همچنین می‌توانید با تصمیم خود <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="1908278071064820219">همچنین می‌توانید با تصمیم خود <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="7931660128190969207">برای مشاهده این تصویر پس‌زمینه پول دریافت کنید. برای مطالبه سهم خود، «آگهی‌های Brave» را روشن کنید.</translation>
 </translationbundle>

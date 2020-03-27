@@ -11,12 +11,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") is not allowed in Brave.</translation>
 <translation id="7450557937477381864">Close Chrome</translation>
 <translation id="7008934821596358692">To finish importing, close all Chrome windows.</translation>
-<translation id="5735465527556462863">Close Brave (old)</translation>
-<translation id="7737066986958447692">To finish importing, close all Brave (old) windows.</translation>
-<translation id="6447842834002726250">Cookies</translation>
-<translation id="4983925687993168579">Stats</translation>
-<translation id="6165477144235978006">Brave Payments</translation>
-<translation id="3489524616427966890">Open windows and tabs</translation>
 <translation id="3699882589215410581">Install and run Widevine</translation>
 <translation id="8926389886865778422">Don't ask again</translation>
 <translation id="4726634924419692905">Ask when a site wants to install Widevine on your computer.</translation>
@@ -27,8 +21,6 @@
 <translation id="8410111618231938546">Google Widevine is a piece of Digital Rights Management (DRM) code that we at Brave Software do not own and cannot inspect. The Google Widevine code is loaded from Google servers, not from our servers. It is loaded only when you enable this option. We discourage the use of DRM, but we respect user choice and acknowledge that some Brave users would like to use services that require it.
 
 By installing this extension, you are agreeing to the Google Widevine Terms of Use. You agree that Brave is not responsible for any damages or losses in connection with your use of Google Widevine.</translation>
-<translation id="6499845530162974140">Brave (old)</translation>
-<translation id="3198814717959506569">Imported From Brave</translation>
 <translation id="453977518730680921">Autoplay media</translation>
 <translation id="410351446219883937">Autoplay</translation>
 <translation id="2240268017737062801">Ask when a site wants to autoplay media</translation>
@@ -70,19 +62,22 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="130615081792797568">Simple view</translation>
 <translation id="2360360976480535628">Advanced view</translation>
 <translation id="5709627087332022422">Block cross-site trackers</translation>
-<translation id="9075744464571452108">Device recognition</translation>
+<translation id="6447842834002726250">Cookies</translation>
+<translation id="6522412052085018663">Fingerprinting</translation>
 <translation id="3570081523466826008">Upgrade connections to HTTPS</translation>
 <translation id="4824468494729001999">Block scripts</translation>
-<translation id="8526521192921341404">Allow Google logins</translation>
+<translation id="519861640102428255">Look &amp;amp; Feel</translation>
+<translation id="4800195524776354947">Show the number of blocked items on the Shields icon</translation>
+<translation id="7498695072878479744">Allow Google login buttons on third-party sites</translation>
 <translation id="863171915776379000">Allow Facebook logins and embedded posts</translation>
 <translation id="5165042248369837294">Allow Twitter embedded tweets</translation>
 <translation id="958971637207126733">Allow LinkedIn embedded posts</translation>
 <translation id="4699812599455071925">Only block cross-site cookies</translation>
 <translation id="5657156137487675418">Allow all cookies</translation>
 <translation id="6883611015375728278">Block all cookies</translation>
-<translation id="3084022390368021391">Only block cross-site device recognition attempts</translation>
-<translation id="1847422622180531843">Allow all device recognition attempts</translation>
-<translation id="8375051111011093523">Block all device recognition attempts</translation>
+<translation id="5572437114858031185">Only block cross-site fingerprinting attempts</translation>
+<translation id="5079032039521408559">Allow all fingerprinting attempts</translation>
+<translation id="6447141055227658942">Block all fingerprinting attempts</translation>
 <translation id="8942080017911802454">WebRTC IP Handling Policy</translation>
 <translation id="6165508094623778733">Learn more</translation>
 <translation id="8798099450830957504">Default</translation>
@@ -104,6 +99,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="2356070529366658676">Ask</translation>
 <translation id="7701040980221191251">None</translation>
 <translation id="1085027414516521238">MetaMask</translation>
+<translation id="3905324891414560921">Web3 provider for using Dapps</translation>
 <translation id="6554397389149987360">Uses Hangouts component to enable screen sharing and other features in the browser.</translation>
 <translation id="1765684547504191670">Uses Media Router component to enable Chromecast in the browser.</translation>
 <translation id="9156965752763025780">Your changes will take effect the next time you relaunch Brave.</translation>
@@ -164,6 +160,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="4394049700291259645">Disable</translation>
 <translation id="6469509880167172749">Automatically send completely private product analytics to Brave</translation>
 <translation id="7090566321964540749">This anonymous info only lets Brave estimate the overall usage of certain features.</translation>
+<translation id="9111960429693394744">Would you like to use Brave's Crypto Wallets or MetaMask for Dapps?</translation>
 <translation id="7583735190612229830">Set up Crypto Wallets to interact with this app and others like it.</translation>
 <translation id="8337117349965899723">Use Crypto Wallets</translation>
 <translation id="5756155765711979898">Use MetaMask</translation>
@@ -177,4 +174,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="4474155171896946103">Bookmark all tabs...</translation>
 <translation id="2336228925368920074">Bookmark All Tabs...</translation>
 <translation id="796831669370432378">To add a bookmark, click the bookmark button next to the address bar</translation>
+<translation id="4989337484121655457">Full Disk Access required</translation>
+<translation id="8025559074845816210">Brave needs Full Disk Access to import your Bookmarks from Safari.</translation>
+<translation id="8515328844674404333">Learn how to grant Full Disk Access from your System Preferences.</translation>
+<translation id="6414878884710400018">Open System Preferences</translation>
+<translation id="5570470519803062774">Site and shields settings</translation>
 </translationbundle>

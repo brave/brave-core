@@ -11,12 +11,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID extensie "<ph name="EXTENSION_ID"/>") nu este permis în Brave.</translation>
 <translation id="7450557937477381864">Închide Chrome</translation>
 <translation id="7008934821596358692">Pentru finalizarea importului, închideți toate ferestrele Chrome.</translation>
-<translation id="5735465527556462863">Închidere Brave (vechi)</translation>
-<translation id="7737066986958447692">Pentru finalizarea importului, închideți toate ferestrele Brave (vechi).</translation>
-<translation id="6447842834002726250">Cookie-uri</translation>
-<translation id="4983925687993168579">Statistici</translation>
-<translation id="6165477144235978006">Plăți Brave</translation>
-<translation id="3489524616427966890">Deschidere ferestre și file</translation>
 <translation id="3699882589215410581">Instalați și rulați Widevine</translation>
 <translation id="8926389886865778422">Nu mai întreba</translation>
 <translation id="4726634924419692905">Solicită când un site intenționează să instaleze Widevine pe calculator.</translation>
@@ -27,8 +21,6 @@
 <translation id="8410111618231938546">Google Widevine este parte din codul de Administrarea Drepturilor Digitale (ADD) care nu este deținut de Brave și nu-l putem inspecta. Codul Google Widevine este încărcat din serverele Google, nu din serverele noastre. Este încărcat doar când activați această opțiune. Noi descurajăm utilizarea ADD, dar respectăm alegerea utilizatorului și confirmăm că unii utilizatori Brave doresc să utilizeze servicii care necesită acest cod.
 
 Instalând această extensie, sunteți de acord cu termenii de utilizare ai Google Widevine. Sunteți de acord că Brave nu este responsabil pentru nicio problemă sau pierdere a conexiunii în timpul utilizării Google Widevine.</translation>
-<translation id="6499845530162974140">Brave (vechi)</translation>
-<translation id="3198814717959506569">Importat din Brave</translation>
 <translation id="453977518730680921">Autoredare media</translation>
 <translation id="410351446219883937">Redare automată</translation>
 <translation id="2240268017737062801">Întrebați când un site vrea să redea automat media</translation>
@@ -70,19 +62,22 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="130615081792797568">Vizualizare simplă</translation>
 <translation id="2360360976480535628">Vizualizare avansată</translation>
 <translation id="5709627087332022422">Blocați trackerele inter-site-uri</translation>
-<translation id="9075744464571452108">Recunoașterea dispozitivului</translation>
+<translation id="6447842834002726250">Cookie-uri</translation>
+<translation id="6522412052085018663">Amprentare</translation>
 <translation id="3570081523466826008">Upgrade conexiuni la HTTPS</translation>
 <translation id="4824468494729001999">Blocare scripturi</translation>
-<translation id="8526521192921341404">Permite autentificările prin Google</translation>
+<translation id="519861640102428255">Aspect și stil</translation>
+<translation id="4800195524776354947">Ascunde numărul de elemente blocate afișat pe pictograma Shields</translation>
+<translation id="7498695072878479744">Permite butoane de conectare Google pe site-uri terțe</translation>
 <translation id="863171915776379000">Permite conectările Facebook și postările încorporate</translation>
 <translation id="5165042248369837294">Permite tweet-uri încorporate Twitter</translation>
 <translation id="958971637207126733">Permite postări LinkedIn încorporate</translation>
 <translation id="4699812599455071925">Blocați doar cookie-urile inter-site-uri</translation>
 <translation id="5657156137487675418">Permite toate cookie-urile</translation>
 <translation id="6883611015375728278">Blochează toate cookie-urile</translation>
-<translation id="3084022390368021391">Blocați numai încercările de recunoaștere a dispozitivului inter-site-uri</translation>
-<translation id="1847422622180531843">Permiteți toate încercările de recunoaștere a dispozitivului</translation>
-<translation id="8375051111011093523">Blocați toate încercările de recunoaștere a dispozitivului</translation>
+<translation id="5572437114858031185">Blochează doar încercările de amprentare inter-site</translation>
+<translation id="5079032039521408559">Permite toate încercările de amprentare</translation>
+<translation id="6447141055227658942">Blochează toate încercările de amprentare</translation>
 <translation id="8942080017911802454">Politica de manevrare a WebRTC IP</translation>
 <translation id="6165508094623778733">Aflați mai multe</translation>
 <translation id="8798099450830957504">Prestabilit</translation>
@@ -104,6 +99,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="2356070529366658676">Întreabă-mă</translation>
 <translation id="7701040980221191251">Niciuna</translation>
 <translation id="1085027414516521238">MetaMask</translation>
+<translation id="3905324891414560921">Furnizor Web3 pentru folosirea Dapps</translation>
 <translation id="6554397389149987360">Utilizează componenta Hangouts pentru activarea partajării ecranului și alte funcții din browser.</translation>
 <translation id="1765684547504191670">Folosește componenta Media Router pentru a activa Chromecast în browser.</translation>
 <translation id="9156965752763025780">Modificările dvs. vor intra în vigoare următoarea dată când reporniți Brave.</translation>
@@ -164,6 +160,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="4394049700291259645">Dezactivează</translation>
 <translation id="6469509880167172749">Trimiteți automat statistici de produs complet private către Brave</translation>
 <translation id="7090566321964540749">Folosind aceste informații anonime, Brave poate numai să estimeze utilizarea totală a anumitor funcții.</translation>
+<translation id="9111960429693394744">Doriți să folosiți Crypto Wallets de la Brave sau MetaMask pentru Dapps?</translation>
 <translation id="7583735190612229830">Configurați Portofele de criptomonede să interacționeze cu această aplicație și altele similare.</translation>
 <translation id="8337117349965899723">Folosiți Portofele de criptomonede</translation>
 <translation id="5756155765711979898">Folosiți MetaMask</translation>
@@ -177,4 +174,9 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="4474155171896946103">Marchează toate filele...</translation>
 <translation id="2336228925368920074">Marchează toate filele...</translation>
 <translation id="796831669370432378">Pentru a adăuga un marcaj, apăsați butonul de marcare de lângă bara de adrese</translation>
+<translation id="4989337484121655457">Este necesar Accesul deplin la disc</translation>
+<translation id="8025559074845816210">Brave are nevoie de Acces deplin la disk pentru a importa Marcajele dvs. din Safari.</translation>
+<translation id="8515328844674404333">Învățați cum să acordați Acces deplin la disc din Preferințele de sistem.</translation>
+<translation id="6414878884710400018">Deschide Preferințele de sistem</translation>
+<translation id="5570470519803062774">Setări Site și Shields</translation>
 </translationbundle>

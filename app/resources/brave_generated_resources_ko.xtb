@@ -11,12 +11,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>")은(는) Brave에서 허용되지 않습니다.</translation>
 <translation id="7450557937477381864">Chrome 닫기</translation>
 <translation id="7008934821596358692">가져오기를 완료하려면 모든 Chrome 창을 닫아야 합니다.</translation>
-<translation id="5735465527556462863">Brave(구버전) 닫기</translation>
-<translation id="7737066986958447692">가져오기를 완료하려면 모든 Brave(구버전) 창을 닫으세요.</translation>
-<translation id="6447842834002726250">쿠키</translation>
-<translation id="4983925687993168579">통계</translation>
-<translation id="6165477144235978006">Brave Payments</translation>
-<translation id="3489524616427966890">창과 탭 열기</translation>
 <translation id="3699882589215410581">Widevine 설치 및 실행</translation>
 <translation id="8926389886865778422">이 메시지 그만 보기</translation>
 <translation id="4726634924419692905">사이트가 언제 컴퓨터에 Widevine을 설치할지 묻습니다.</translation>
@@ -27,8 +21,6 @@
 <translation id="8410111618231938546">Google Widevine는 Brave Software가 소유하거나 관리 할 수 없는 디지털 권한 관리(DRM) 코드입니다. Google Widevine 코드는 우리의 서버가 아닌 Google 서버에서 로드합니다. 이 기능을 활성화 한 경우에만 로드 되며, 우리는 DRM 사용을 권장하지 않지만 사용자의 선택을 존중하며, 일부 Brave 사용자는 이 서비스가 필요함을 인정합니다.
 
  이 확장 프로그램을 설치하면 Google Widevine의 이용 약관에 동의하게 됩니다. 당신은 Brave가 Google Widevine 사용과 관련하여 발생한 어떠한 손해 및 손실에 대해 책임지지 않음을 동의하게 됩니다.</translation>
-<translation id="6499845530162974140">Brave(구버전)</translation>
-<translation id="3198814717959506569">Brave에서 가져오기</translation>
 <translation id="453977518730680921">미디어 자동 재생</translation>
 <translation id="410351446219883937">자동 재생</translation>
 <translation id="2240268017737062801">사이트가 언제 미디어를  자동재생하기를 원하는지 묻기</translation>
@@ -59,7 +51,7 @@
 <translation id="2515126961943087659">Bat 광고 서비스</translation>
 <translation id="7924918279836988121">배트 원장 서비스</translation>
 <translation id="4472575034687746823">시작하기</translation>
-<translation id="3400357268283240774">추가 설</translation>
+<translation id="3400357268283240774">추가 설정</translation>
 <translation id="6303294677342628402">보호</translation>
 <translation id="7133511168130368997">웹에서 귀하를 따라오는 추적기 및 광고를 차단하세요.</translation>
 <translation id="2761825942249694703">이는 기본 Shields 설정입니다. 특정 사이트에 대해 Shields 패널에서 무언가를 바꾸지 않는 한 모든 웹사이트에 적용됩니다. 이를 바꾼다고 해도 기존 사이트별 설정에는 영향을 미치지 않습니다.</translation>
@@ -70,19 +62,22 @@
 <translation id="130615081792797568">간단한 보기</translation>
 <translation id="2360360976480535628">고급 보기</translation>
 <translation id="5709627087332022422">사이트 간 추적기 차단</translation>
-<translation id="9075744464571452108">기기 인식</translation>
+<translation id="6447842834002726250">쿠키</translation>
+<translation id="6522412052085018663">핑거프린팅</translation>
 <translation id="3570081523466826008">HTTPS 연결 업그레이드</translation>
 <translation id="4824468494729001999">스크립트 차단</translation>
-<translation id="8526521192921341404">구글 로그인 허용</translation>
+<translation id="519861640102428255">룩 &amp;amp; 필</translation>
+<translation id="4800195524776354947">방패 아이콘에 차단된 항목 수 표시</translation>
+<translation id="7498695072878479744">타사 사이트에서 Google 로그인 버튼 허용</translation>
 <translation id="863171915776379000">Facebook 로그인 및 내장 포스트를 허용합니다</translation>
 <translation id="5165042248369837294">Twitter 내장 트윗을 허용합니다</translation>
 <translation id="958971637207126733">LinkedIn 내장 포스트 허용</translation>
 <translation id="4699812599455071925">사이트 간 쿠키만 차단</translation>
 <translation id="5657156137487675418">모든 쿠키 허용</translation>
 <translation id="6883611015375728278">모든 쿠키 차단</translation>
-<translation id="3084022390368021391">사이트 간 기기 인식 시도만 차단</translation>
-<translation id="1847422622180531843">모든 기기 인식 시도 허용</translation>
-<translation id="8375051111011093523">모든 기기 인식 시도 차단</translation>
+<translation id="5572437114858031185">교차 사이트 핑거프린팅 시도만 차단</translation>
+<translation id="5079032039521408559">모든 핑거프린팅 시도 허용</translation>
+<translation id="6447141055227658942">모든 핑거프린팅 시도 차단</translation>
 <translation id="8942080017911802454">WebRTC IP 취급 정책</translation>
 <translation id="6165508094623778733">더 알아보기</translation>
 <translation id="8798099450830957504">기본값</translation>
@@ -99,11 +94,12 @@
 <translation id="1360441190790440400">Linux와 동일</translation>
 <translation id="1336940801687497203">Windows와 동일</translation>
 <translation id="8721331068159819483">macOS와 동일</translation>
-<translation id="6786747875388722282">익스텐션들</translation>
+<translation id="6786747875388722282">확장 프로그램</translation>
 <translation id="2896916411183256228">브라우저에 직접 토렌트를 표시하려면 웹 토렌트를 사용하세요. 토렌트 파일들과 마그넷 링크들을 지원하세요.</translation>
 <translation id="2356070529366658676">확인</translation>
 <translation id="7701040980221191251">없음</translation>
 <translation id="1085027414516521238">메타마스크</translation>
+<translation id="3905324891414560921">Dapps 사용을 위한 Web3 제공자</translation>
 <translation id="6554397389149987360">화면 공유와 다른 기능들을 브라우저에서 사용하시려면 행아웃 요소들을 사용하세요.</translation>
 <translation id="1765684547504191670">브라우저에서 Chromecast를 활성화하기 위해 Media Router 콤포넌트를 사용합니다.</translation>
 <translation id="9156965752763025780">변경사항은 다음에 Brave을 다시 시작할 때 적용됩니다.</translation>
@@ -164,6 +160,7 @@
 <translation id="4394049700291259645">사용 중지</translation>
 <translation id="6469509880167172749">비밀이 완전히 보장되는 제품 애널리틱스를 자동으로 Brave에 전송합니다</translation>
 <translation id="7090566321964540749">이 익명 정보는 Brave가 특정 기능의 전체 사용량을 추정하는 데만 사용됩니다.</translation>
+<translation id="9111960429693394744">Dapps에 Brave의 Crypto Wallets 또는 MetaMask를 사용하시겠습니까?</translation>
 <translation id="7583735190612229830">크립토 월렛을 설정하여 이 앱 및 기타 비슷한 앱과 소통하십시오.</translation>
 <translation id="8337117349965899723">크립토 월렛 사용</translation>
 <translation id="5756155765711979898">메타마스크 사용</translation>
@@ -177,4 +174,9 @@
 <translation id="4474155171896946103">모든 탭 북마크...</translation>
 <translation id="2336228925368920074">모든 탭 북마크...</translation>
 <translation id="796831669370432378">북마크를 추가하려면 주소 표시줄 옆에 있는 북마크 버튼을 클릭하세요</translation>
+<translation id="4989337484121655457">전체 디스크 액세스 권한(Full Disk Access) 필요</translation>
+<translation id="8025559074845816210">Safari에서 책갈피를 가져오려면 Brave에 전체 디스크 액세스 권한(Full Disk Access)이 필요합니다.</translation>
+<translation id="8515328844674404333">시스템 환경 설정(System Preferences)에서 전체 디스크 액세스 권한(Full Disk Access)을 부여하는 방법을 배웁니다.</translation>
+<translation id="6414878884710400018">시스템 환경 설정(System Preferences) 열기</translation>
+<translation id="5570470519803062774">사이트 및 방패 설정</translation>
 </translationbundle>

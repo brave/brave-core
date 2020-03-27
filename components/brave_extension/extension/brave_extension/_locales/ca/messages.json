@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Reconeixement de dispositius entre llocs bloquejats",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "S'ha bloquejat l'identificador d'empremta dactilar creuada",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Intents de reconeixement de dispositius bloquejats",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "Intents d'identificació per empremta dactilar bloquejats",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Tots els intents de reconeixement de dispositius permesos",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "Es permeten tots els intents d'identificació per empremta dactilar",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Intents de reconeixement de dispositiu",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "Intents d'identificació per empremta dactilar",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "Hi ha seqüències d'ordres en aquest lloc",

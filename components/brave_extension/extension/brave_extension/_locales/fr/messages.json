@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Reconnaissance intersite du périphérique bloquée !",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "Collecte de l'empreinte digitale intersite bloquée",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Tentatives de reconnaissance du périphérique bloquées",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "Tentatives de collecte de l'empreinte digitale d'appareil bloquées",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Toutes les tentatives de reconnaissance du périphérique sont autorisées",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "Toutes les tentatives de collecte de l'empreinte digitale d'appareil sont autorisées.",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Tentatives de reconnaissance de l'appareil",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "Tentatives de collecte de l'empreinte digitale d'appareil",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "Scripts sur ce site",

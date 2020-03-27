@@ -85,6 +85,9 @@
 <translation id="5327248766486351172">Nazwa</translation>
 <translation id="7400418766976504921">Adres URL</translation>
 <translation id="397105322502079400">Obliczanie...</translation>
+<translation id="7192203810768312527">Zwolni <ph name="SIZE"/>. Niektóre strony mogą ładować się wolnej, podczas kolejnej wizyty.</translation>
+<translation id="6337133576188860026">Zwolni niecałe <ph name="SIZE"/>. Niektóre strony mogą ładować się wolnej, podczas kolejnej wizyty.</translation>
+<translation id="2316887270356262533">Zwolni niecałe 1 MB. Niektóre strony mogą ładować się wolnej, podczas kolejnej wizyty.</translation>
 <translation id="7701040980221191251">Brak</translation>
 <translation id="8428213095426709021">Ustawienia</translation>
 <translation id="765676359832457558">Ukryj ustawienia zaawansowane</translation>
@@ -177,7 +180,6 @@ spróbuj go z niej usunąć i dodać ponownie.</translation>
 <translation id="981121421437150478">Offline</translation>
 <translation id="5171045022955879922">Wyszukaj lub wpisz URL</translation>
 <translation id="803771048473350947">Plik</translation>
-<translation id="6268185425799226387">Dysk Brave</translation>
 <translation id="2982481275546140226">Wyczyść Dane</translation>
 <translation id="8425213833346101688">Zmień</translation>
 <translation id="8009225694047762179">Zarządzaj hasłami</translation>
@@ -212,6 +214,8 @@ spróbuj go z niej usunąć i dodać ponownie.</translation>
 <translation id="2215727959747642672">Edytowanie pliku</translation>
 <translation id="6545864417968258051">Skanowanie Bluetooth</translation>
 <translation id="534295439873310000">Urządzenia z funkcją NFC</translation>
+<translation id="4943703118917034429">Rzeczywistość wirtualna</translation>
+<translation id="3513704683820682405">Rzeczywistość rozszerzona</translation>
 <translation id="5039804452771397117">Zezwalaj</translation>
 <translation id="7053983685419859001">Zablokuj</translation>
 <translation id="57838592816432529">Wycisz</translation>
@@ -225,6 +229,7 @@ spróbuj go z niej usunąć i dodać ponownie.</translation>
 <translation id="4165986682804962316">Ustawienia</translation>
 <translation id="9011424611726486705">Otwórz ustawienia strony</translation>
 <translation id="5932224571077948991">Na tej stronie wyświetlają się uciążliwe lub wprowadzające w błąd reklamy</translation>
+<translation id="1916770123977586577">Odśwież stronę, aby zastosować ustawienia</translation>
 <translation id="7878562273885520351">Ktoś mógł poznać Twoje hasło</translation>
 <translation id="1089439967362294234">Zmień hasło</translation>
 <translation id="9008201768610948239">Ignoruj</translation>
@@ -267,8 +272,8 @@ spróbuj go z niej usunąć i dodać ponownie.</translation>
 <translation id="5565735124758917034">Aktywny</translation>
 <translation id="7805768142964895445">Status</translation>
 <translation id="6915804003454593391">Użytkownik:</translation>
-<translation id="5916664084637901428">Włączone</translation>
-<translation id="5860033963881614850">Wył.</translation>
+<translation id="5921185718311485855">Włączone</translation>
+<translation id="1019413721762100891">Wył.</translation>
 <translation id="7961015016161918242">Nigdy</translation>
 <translation id="8294431847097064396">Źródło</translation>
 <translation id="1056898198331236512">Uwaga</translation>
@@ -282,7 +287,6 @@ spróbuj go z niej usunąć i dodać ponownie.</translation>
 <translation id="1374692235857187091">Index-4x6 (pocztówka)</translation>
 <translation id="1086953900555227778">Index-5x8</translation>
 <translation id="2380886658946992094">Informacje prawne</translation>
-<translation id="5939847200023027600">Usługa PDF Compositor</translation>
 <translation id="1588438908519853928">Normalny</translation>
 <translation id="1974060860693918893">Zaawansowane</translation>
 <translation id="5308380583665731573">Połącz</translation>
