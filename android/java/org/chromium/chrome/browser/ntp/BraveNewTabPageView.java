@@ -29,6 +29,7 @@ import android.graphics.BitmapFactory;
 import org.chromium.base.TraceEvent;
 import org.chromium.chrome.R;
 import org.chromium.base.Log;
+import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.ntp.NewTabPageView;
 import org.chromium.chrome.browser.preferences.BravePref;
@@ -41,6 +42,7 @@ import org.chromium.chrome.browser.ntp_background_images.NTPImage;
 import org.chromium.chrome.browser.ntp_background_images.BackgroundImage;
 import org.chromium.chrome.browser.ntp_background_images.NewTabPageListener;
 import org.chromium.chrome.browser.ntp_background_images.SponsoredImageUtil;
+import org.chromium.chrome.browser.ntp_background_images.FetchWallpaperWorkerTask;
 import org.chromium.chrome.browser.tab.EmptyTabObserver;
 import org.chromium.chrome.browser.tab.TabObserver;
 import org.chromium.chrome.browser.ntp_background_images.NTPUtil;
@@ -64,6 +66,7 @@ public class BraveNewTabPageView extends NewTabPageView {
     private TextView mAdsBlockedTextView;
     private TextView mHttpsUpgradesTextView;
     private TextView mEstTimeSavedTextView;
+    private ImageView bgImageView;
     private Profile mProfile;
 
     private TabImpl mTabImpl;
@@ -72,6 +75,8 @@ public class BraveNewTabPageView extends NewTabPageView {
 
     private NewTabPageLayout mNewTabPageLayout;
     private BitmapDrawable imageDrawable;
+
+    private FetchWallpaperWorkerTask mWorkerTask;
 
     private boolean isFromBottomSheet;
 
@@ -85,6 +90,30 @@ public class BraveNewTabPageView extends NewTabPageView {
         mProfile = Profile.getLastUsedProfile();
         mNewTabPageLayout = getNewTabPageLayout();
         mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
+            if (sponsoredTab == null)
+                initilizeSponsoredTab();
+            NTPImage ntpImage = sponsoredTab.getTabNTPImage();
+            checkForNonDistruptiveBanner(ntpImage);
+            showNTPImage(ntpImage);
+        } else if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.M && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mTabImpl.addObserver(mTabObserver);
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        Log.i("NTP", "View destroyed");
+        if(mWorkerTask != null && mWorkerTask.getStatus() == AsyncTask.Status.RUNNING) {
+            mWorkerTask.cancel(true);
+            mWorkerTask = null;
+        }
+        super.onDetachedFromWindow();
     }
 
     @Override
@@ -117,16 +146,6 @@ public class BraveNewTabPageView extends NewTabPageView {
 
         mTabImpl = (TabImpl) tab;
         mTab = tab;
-
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            if (sponsoredTab == null)
-                initilizeSponsoredTab();
-            NTPImage ntpImage = sponsoredTab.getTabNTPImage();
-            checkForNonDistruptiveBanner(ntpImage);
-            showNTPImage(ntpImage);
-        } else if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.M && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mTabImpl.addObserver(mTabObserver);
-        }
     }
 
     @Override
@@ -290,28 +309,15 @@ public class BraveNewTabPageView extends NewTabPageView {
     }
 
     private void setBackgroundImage(NTPImage ntpImage) {
-        ImageView bgImageView = (ImageView)mNewTabPageLayout.findViewById(R.id.bg_image_view);
+        bgImageView = (ImageView)mNewTabPageLayout.findViewById(R.id.bg_image_view);
         bgImageView.setScaleType(ImageView.ScaleType.MATRIX);
 
         ViewTreeObserver observer = bgImageView.getViewTreeObserver();
             observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    Bitmap wallpaperBitmap = NTPUtil.getWallpaperBitmap(ntpImage, bgImageView.getMeasuredWidth(), bgImageView.getMeasuredHeight());
-                    bgImageView.setImageBitmap(wallpaperBitmap);
-
-                    // int height;
-                    // if(ConfigurationUtils.isLandscape(mTabImpl.getActivity())) {
-                    //     height = ((2*bgImageView.getHeight())/3);
-                    // } else {
-                    //     height = (bgImageView.getHeight()/3);
-                    // }
-
-                    // FrameLayout.LayoutParams topGradientLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, height);
-                    // mNewTabPageLayout.findViewById(R.id.top_gradient_view).setLayoutParams(topGradientLayoutParams);
-
-                    // FrameLayout.LayoutParams bottomGradientLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, height);
-                    // mNewTabPageLayout.findViewById(R.id.bottom_gradient_view).setLayoutParams(bottomGradientLayoutParams);
+                    mWorkerTask = new FetchWallpaperWorkerTask(ntpImage, bgImageView.getMeasuredWidth(), bgImageView.getMeasuredHeight(), wallpaperRetrievedCallback);
+                    mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
                     bgImageView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
@@ -379,6 +385,12 @@ public class BraveNewTabPageView extends NewTabPageView {
             if (sponsoredTab == null)
                 initilizeSponsoredTab();
             checkAndShowNTPImage();
+        }
+    };
+    private FetchWallpaperWorkerTask.WallpaperRetrievedCallback wallpaperRetrievedCallback= new FetchWallpaperWorkerTask.WallpaperRetrievedCallback() {
+        @Override
+        public void wallpaperRetrieved(Bitmap wallpaperBitmap) {
+            bgImageView.setImageBitmap(wallpaperBitmap);
         }
     };
 }
