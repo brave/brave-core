@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index fe09f99a91e3b1d2abfb335ec2771d1ed8592d87..215d10793582bb49e89451250b4b1fd214076542 100644
+index fe09f99a91e3b1d2abfb335ec2771d1ed8592d87..a486a9238b6a1b7d935faefab2345922092cc864 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -184,6 +184,10 @@ if (!is_android && !is_mac) {
@@ -31,7 +31,7 @@ index fe09f99a91e3b1d2abfb335ec2771d1ed8592d87..215d10793582bb49e89451250b4b1fd2
        "//chrome/common:buildflags",
        "//chrome/common:version_header",
      ]
-+    deps += [ "//brave:brave_app_plist" ]
++    deps += [ "//brave:brave_app" ]
  
      if (enable_stripping) {
        # At link time, preserve the global symbols specified in the .exports
