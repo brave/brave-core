@@ -24,8 +24,9 @@ export const getCharForSite = (
   return name.charAt(0).toUpperCase()
 }
 
-export const generateGridSiteId = (currentIndex: number): string => {
-  return `topsite-${currentIndex}-${Date.now()}`
+export const generateGridSiteId = (): string => {
+  const randomNumber = Math.floor(Math.random() * 10000)
+  return `topsite-${randomNumber}-${Date.now()}`
 }
 
 export const generateGridSiteFavicon = (url: string): string => {
@@ -53,21 +54,25 @@ export const isExistingGridSite = (
 
 export const generateGridSiteProperties = (
   index: number,
-  topSite: chrome.topSites.MostVisitedURL
+  topSite: chrome.topSites.MostVisitedURL,
+  fromLegacyData?: boolean
 ): NewTab.Site => {
   return {
-    ...topSite,
-    id: generateGridSiteId(index),
+    title: topSite.title,
+    url: topSite.url,
+    id: generateGridSiteId(),
     letter: getCharForSite(topSite),
     favicon: generateGridSiteFavicon(topSite.url),
-    pinnedIndex: undefined,
+    // In the legacy version of topSites the pinnedIndex
+    // was the site index itself.
+    pinnedIndex: fromLegacyData ? index : undefined,
     bookmarkInfo: undefined
   }
 }
 
 export const getGridSitesWhitelist = (
   topSites: chrome.topSites.MostVisitedURL[]
-): chrome.topSites.MostVisitedURL[] => {
+  ): chrome.topSites.MostVisitedURL[] => {
   const defaultChromeWebStoreUrl: string = 'https://chrome.google.com/webstore'
   const filteredGridSites: chrome.topSites.MostVisitedURL[] = topSites
     .filter(site => {
@@ -75,4 +80,38 @@ export const getGridSitesWhitelist = (
       return !site.url.startsWith(defaultChromeWebStoreUrl)
     })
   return filteredGridSites
+}
+
+export const generateGridSitesFromLegacyEntries = (
+  legacyTopSites: NewTab.LegacySite[] | undefined
+) => {
+  const newGridSites: NewTab.Site[] = []
+
+  if (
+    // Due to a race condition, legacyTopSites can
+    // be undefined when first called.
+    legacyTopSites === undefined ||
+    legacyTopSites.length === 0
+  ) {
+    return []
+  }
+
+  for (const topSite of legacyTopSites) {
+    newGridSites
+      .push(generateGridSiteProperties(topSite.index, topSite, true))
+  }
+
+  return newGridSites
+}
+
+export function filterFromExcludedSites (
+  sitesData: NewTab.Site[],
+  removedSitesData: NewTab.Site[]
+): NewTab.Site[] {
+  return sitesData
+    .filter((site: NewTab.Site) => {
+      // In updatedGridSites we only want sites not removed by the user
+      return removedSitesData
+        .every((removedSite: NewTab.Site) => removedSite.url !== site.url)
+    })
 }

@@ -94,11 +94,10 @@ describe('new tab util files tests', () => {
 
   describe('generateGridSiteId', () => {
     it('returns the id with the correct structure', () => {
-      const index: number = 1337
       // Test via startsWith to avoid calling Date.now() which
       // will often fail all tests
-      const assertion: string = newTabUtils.generateGridSiteId(index)
-      expect(assertion.startsWith(`topsite-${index}`))
+      const assertion: string = newTabUtils.generateGridSiteId()
+      expect(assertion.startsWith(`topsite-`))
         .toBe(true)
     })
   })

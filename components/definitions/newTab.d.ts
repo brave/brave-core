@@ -40,6 +40,21 @@ declare namespace NewTab {
     bookmarkInfo: chrome.bookmarks.BookmarkTreeNode | undefined
   }
 
+  // This is preserved for migration reasons.
+  // Do not tyoe new code using this interface.
+  export interface LegacySite {
+    index: number
+    url: string
+    title: string
+    favicon: string
+    letter: string
+    thumb: string
+    themeColor: string
+    computedThemeColor: string
+    pinned: boolean
+    bookmarked?: Bookmark
+  }
+
   export interface Stats {
     adsBlockedStat: number
     javascriptBlockedStat: number
@@ -58,10 +73,16 @@ declare namespace NewTab {
 
   export type StackWidget = 'rewards' | 'binance'
 
+  export interface LegacyState {
+    pinnedTopSites: Site[]
+    ignoredTopSites: Site[]
+  }
+
   export interface GridSitesState {
     removedSites: Site[]
     gridSites: Site[]
     shouldShowSiteRemovedNotification: boolean
+    legacy: LegacyState
   }
 
   export interface PageState {

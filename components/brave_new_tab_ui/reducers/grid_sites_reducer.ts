@@ -28,6 +28,21 @@ export const gridSitesReducer: Reducer<NewTab.GridSitesState | undefined> = (
 
   switch (action.type) {
     case types.GRID_SITES_SET_FIRST_RENDER_DATA: {
+
+      // If there are legacy values from a previous
+      // storage, update first render data with it
+      state = gridSitesState
+        .gridSitesReducerSetFirstRenderDataFromLegacy(
+          state,
+          startingState.legacy
+        )
+      // Now that we stored the legacy reference, delete it
+      // so it won't override gridSites in further updates
+      if (startingState.legacy) {
+        delete startingState.legacy
+      }
+
+      // New profiles just store what comes from Chromium
       state = gridSitesState
         .gridSitesReducerSetFirstRenderData(state, payload.topSites)
       break

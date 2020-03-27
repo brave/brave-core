@@ -6,7 +6,7 @@
 // Utils
 import { debounce } from '../../common/debounce'
 
-const keyName = 'new-tab-data'
+export const keyName = 'new-tab-data'
 
 export const defaultState: NewTab.State = {
   initialDataLoaded: false,

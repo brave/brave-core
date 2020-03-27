@@ -5,13 +5,39 @@
 
 // Utils
 import { debounce } from '../../common/debounce'
+import { keyName as newTabKeyName } from './new_tab_storage'
+import { generateGridSitesFromLegacyEntries } from '../helpers/newTabUtils'
+const keyName = 'grid-sites-data-v1'
 
-const keyName = 'grid-sites-data'
+const newTabData: any = window.localStorage.getItem(newTabKeyName)
+const parsedNewTabData = JSON.parse(newTabData)
+
+const getNewTabData = () => {
+  if (parsedNewTabData == null) {
+    return {
+      pinnedTopSites: [],
+      ignoredTopSites: []
+    }
+  }
+  return parsedNewTabData
+}
 
 export const initialGridSitesState: NewTab.GridSitesState = {
   gridSites: [],
   removedSites: [],
-  shouldShowSiteRemovedNotification: false
+  shouldShowSiteRemovedNotification: false,
+  legacy: {
+    // Store legacy pinnedTopSites so users
+    // migrating to this new storage won't lose
+    // data. Once this change hits the release channel
+    // we are safe to remove this bridge
+    pinnedTopSites: generateGridSitesFromLegacyEntries(
+      getNewTabData().pinnedTopSites
+    ),
+    ignoredTopSites: generateGridSitesFromLegacyEntries(
+      getNewTabData().ignoredTopSites
+    )
+  }
 }
 
 export const load = (): NewTab.GridSitesState => {

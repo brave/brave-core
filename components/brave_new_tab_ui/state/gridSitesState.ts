@@ -8,8 +8,30 @@ import {
   isExistingGridSite,
   getGridSitesWhitelist,
   isGridSitePinned,
-  isGridSiteBookmarked
+  isGridSiteBookmarked,
+  filterFromExcludedSites
 } from '../helpers/newTabUtils'
+
+export function gridSitesReducerSetFirstRenderDataFromLegacy (
+  state: NewTab.GridSitesState,
+  legacyState: NewTab.LegacyState | undefined
+) {
+  if (legacyState === undefined) {
+    return state
+  }
+  const { ignoredTopSites, pinnedTopSites } = legacyState
+
+  if (ignoredTopSites.length > 0) {
+    for (const ignoredTopSite of ignoredTopSites) {
+      state = gridSitesReducerRemoveSite(state, ignoredTopSite)
+    }
+  }
+
+  if (pinnedTopSites.length > 0) {
+    state = gridSitesReducerAddSiteOrSites(state, pinnedTopSites)
+  }
+  return state
+}
 
 export function gridSitesReducerSetFirstRenderData (
   state: NewTab.GridSitesState,
@@ -25,7 +47,12 @@ export function gridSitesReducerSetFirstRenderData (
     }
     newGridSites.push(generateGridSiteProperties(index, topSite))
   }
-  state = gridSitesReducerAddSiteOrSites(state, newGridSites)
+
+  // If there are removed sites coming from a legacy storage,
+  // ensure they get filtered.
+  const sitesToAdd = filterFromExcludedSites(newGridSites, state.removedSites)
+  state = gridSitesReducerAddSiteOrSites(state, sitesToAdd)
+
   return state
 }
 
@@ -87,12 +114,8 @@ export function gridSitesReducerRemoveSite (
     removedSites: [ ...state.removedSites, removedSite ]
   }
 
-  const filterRemovedFromGridSites = state.gridSites
-    .filter((site: NewTab.Site) => {
-      // In updatedGridSites we only want sites not removed by the user
-      return state.removedSites
-        .every((removedSite: NewTab.Site) => removedSite.url !== site.url)
-    })
+  const filterRemovedFromGridSites =
+    filterFromExcludedSites(state.gridSites, state.removedSites)
   state = gridSitesReducerDataUpdated(state, filterRemovedFromGridSites)
   return state
 }
