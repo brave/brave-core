@@ -141,7 +141,8 @@ scoped_refptr<Extension> ConvertGreaselionRuleToExtensionOnTaskRunner(
   // Copy the script files to our extension directory.
   for (auto script : rule->scripts()) {
     if (!base::CopyFile(script, temp_dir.GetPath().Append(script.BaseName()))) {
-      LOG(ERROR) << "Could not copy Greaselion script";
+      LOG(ERROR) << "Could not copy Greaselion script at path: "
+          << script.LossyDisplayName();
       return nullptr;
     }
   }
