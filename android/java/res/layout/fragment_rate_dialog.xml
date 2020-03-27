@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2019 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/rate_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="8dp"
+        android:text="@string/how_would_you_rate"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold" />
+
+    <RatingBar
+        android:id="@+id/brave_rb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:scaleX="0.85"
+        android:scaleY="0.85"
+        android:stepSize="1"
+        android:layout_gravity="center" />
+
+    <LinearLayout
+        android:id="@+id/brave_rate_action_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_never"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:foregroundTint="@color/onboarding_radio_button_active"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/never"
+            android:textColor="@color/onboarding_gray" />
+
+        <Button
+            android:id="@+id/btn_maybe_later"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:foregroundTint="@color/onboarding_radio_button_active"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/maybe_later"
+            android:textColor="@color/onboarding_orange" />
+
+    </LinearLayout>
+
+</LinearLayout>
