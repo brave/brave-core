@@ -10,6 +10,8 @@ import os
 import subprocess
 import sys
 
+from signing import model
+
 # Construct path to signing modules in chrome/installer/mac/signing
 signing_path = os.path.realpath(os.path.dirname(os.path.realpath(__file__)))
 signing_path = os.path.realpath(os.path.join(
@@ -20,6 +22,7 @@ sys.path.append(signing_path)
 import signing.model    # noqa: E402
 import signing.signing  # noqa: E402
 
+brave_channel = os.environ.get('BRAVE_CHANNEL')
 sign_widevine_cert = os.environ.get('SIGN_WIDEVINE_CERT')
 sign_widevine_key = os.environ.get('SIGN_WIDEVINE_KEY')
 sign_widevine_passwd = os.environ.get('SIGN_WIDEVINE_PASSPHRASE')
@@ -138,5 +141,9 @@ def GetBraveSigningConfig(config_class, development, mac_provisioning_profile=No
         @property
         def run_spctl_assess(self):
             return True
+
+        @property
+        def distributions(self):
+            return [model.Distribution(channel=brave_channel)]
 
     return ProvisioningProfileCodeSignConfig
