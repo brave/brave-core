@@ -11,7 +11,7 @@ export const isHttpOrHttps = (url?: string) => {
 }
 
 export const getCharForSite = (
-  topSite: chrome.topSites.MostVisitedURL
+  topSite: chrome.topSites.MostVisitedURL | NewTab.DefaultTopSite
 ): string => {
   let hostname: string = '?'
   if (!topSite.title) {
@@ -50,6 +50,20 @@ export const isExistingGridSite = (
   topOrGridSite: chrome.topSites.MostVisitedURL | NewTab.Site
 ): boolean => {
   return sitesData.some(site => site.url === topOrGridSite.url)
+}
+
+export const generateGridSitePropertiesFromDefaultTopSite = (
+  defaultTopSite: NewTab.DefaultTopSite
+): NewTab.Site => {
+  return {
+    title: defaultTopSite.title,
+    url: defaultTopSite.url,
+    id: generateGridSiteId(),
+    letter: getCharForSite(defaultTopSite),
+    favicon: defaultTopSite.favicon,
+    pinnedIndex: defaultTopSite.pinnedIndex,
+    bookmarkInfo: undefined
+  }
 }
 
 export const generateGridSiteProperties = (

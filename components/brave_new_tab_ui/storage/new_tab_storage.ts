@@ -11,7 +11,7 @@ export const keyName = 'new-tab-data'
 export const defaultState: NewTab.State = {
   initialDataLoaded: false,
   textDirection: window.loadTimeData.getString('textdirection'),
-  featureFlagBraveNTPBrandedWallpaper: window.loadTimeData.getBoolean('featureFlagBraveNTPBrandedWallpaper'),
+  featureFlagBraveNTPSponsoredImagesWallpaper: window.loadTimeData.getBoolean('featureFlagBraveNTPSponsoredImagesWallpaper'),
   showBackgroundImage: false,
   showStats: false,
   showClock: false,

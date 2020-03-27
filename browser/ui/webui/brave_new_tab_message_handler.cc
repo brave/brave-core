@@ -9,6 +9,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/json/json_writer.h"
 #include "base/values.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
@@ -121,8 +122,9 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
   } else {
     is_ads_supported_locale_ = ads_service_->IsSupportedLocale();
   }
+
   source->AddBoolean(
-      "featureFlagBraveNTPBrandedWallpaper",
+      "featureFlagBraveNTPSponsoredImagesWallpaper",
       base::FeatureList::IsEnabled(kBraveNTPBrandedWallpaper) &&
       is_ads_supported_locale_);
   // Private Tab info
@@ -182,6 +184,11 @@ void BraveNewTabMessageHandler::RegisterMessages() {
     "getBrandedWallpaperData",
     base::BindRepeating(
       &BraveNewTabMessageHandler::HandleGetBrandedWallpaperData,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+    "getDefaultTopSitesData",
+    base::BindRepeating(
+      &BraveNewTabMessageHandler::HandleGetDefaultTopSitesData,
       base::Unretained(this)));
 }
 
@@ -335,6 +342,16 @@ void BraveNewTabMessageHandler::HandleGetBrandedWallpaperData(
   ResolveJavascriptCallback(
       args->GetList()[0],
       service ? service->GetCurrentWallpaperForDisplay() : base::Value());
+}
+
+void BraveNewTabMessageHandler::HandleGetDefaultTopSitesData(
+    const base::ListValue* args) {
+  AllowJavascript();
+
+  auto* service = ViewCounterServiceFactory::GetForProfile(profile_);
+  ResolveJavascriptCallback(
+      args->GetList()[0],
+      service ? service->GetTopSites(true) : base::Value());
 }
 
 void BraveNewTabMessageHandler::OnPrivatePropertiesChanged() {

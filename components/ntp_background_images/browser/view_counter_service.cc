@@ -86,9 +86,11 @@ base::Value ViewCounterService::GetCurrentWallpaper() const {
   return base::Value();
 }
 
-base::Value ViewCounterService::GetTopSites() const {
-  if (ShouldShowBrandedWallpaper())
-    return GetCurrentBrandedWallpaperData()->GetTopSites();
+base::Value ViewCounterService::GetTopSites(bool for_webui) const {
+  if (auto* data = GetCurrentBrandedWallpaperData()) {
+    if (data->IsSuperReferral())
+      return GetCurrentBrandedWallpaperData()->GetTopSites(for_webui);
+  }
 
   return base::Value();
 }
@@ -150,6 +152,10 @@ bool ViewCounterService::IsSponsoredImagesWallpaperOptedIn() const {
 bool ViewCounterService::IsSuperReferralWallpaperOptedIn() const {
   return prefs_->GetInteger(prefs::kNewTabPageSuperReferralThemesOption) ==
              SUPER_REFERRAL;
+}
+
+bool ViewCounterService::IsSuperReferral() const {
+  return service_->IsSuperReferral();
 }
 
 }  // namespace ntp_background_images

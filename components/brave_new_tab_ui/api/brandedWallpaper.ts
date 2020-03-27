@@ -7,6 +7,10 @@ export function getBrandedWallpaper (): Promise<undefined | NewTab.BrandedWallpa
   return window.cr.sendWithPromise<undefined | NewTab.BrandedWallpaper>('getBrandedWallpaperData')
 }
 
+export function getDefaultTopSites (): Promise<undefined | NewTab.DefaultTopSite[]> {
+  return window.cr.sendWithPromise<undefined | NewTab.DefaultTopSite[]>('getDefaultTopSitesData')
+}
+
 export function registerViewCount (): Promise<void> {
   return window.cr.sendWithPromise<void>('registerNewTabPageView')
 }

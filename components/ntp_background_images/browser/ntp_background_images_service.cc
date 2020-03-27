@@ -579,4 +579,12 @@ void NTPBackgroundImagesService::InitializeWebUIDataSource(
   html_source->AddString("superReferralThemeName", theme_name);
 }
 
+bool NTPBackgroundImagesService::IsSuperReferral() const {
+  const auto* value = local_pref_->Get(
+        prefs::kNewTabPageCachedSuperReferralComponentInfo);
+  return
+      base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper) &&
+      IsValidSuperReferralComponentInfo(*value);
+}
+
 }  // namespace ntp_background_images

@@ -13,6 +13,7 @@ declare namespace NewTab {
   }
 
   export interface BrandedWallpaper {
+    isSponsored: boolean
     wallpaperImageUrl: string
     logo: BrandedWallpaperLogo
   }
@@ -104,7 +105,7 @@ declare namespace NewTab {
   export interface EphemeralState {
     initialDataLoaded: boolean
     textDirection: string
-    featureFlagBraveNTPBrandedWallpaper: boolean
+    featureFlagBraveNTPSponsoredImagesWallpaper: boolean
     isIncognito: boolean
     useAlternativePrivateSearchEngine: boolean
     isTor: boolean
@@ -213,6 +214,13 @@ declare namespace NewTab {
     total: number
     rates: Record<string, number>
     wallets: Record<string, number>
+  }
+
+  export interface DefaultTopSite {
+    pinnedIndex: number
+    url: string
+    title: string
+    favicon: string
   }
 
   // In-memory state is a superset of PersistentState

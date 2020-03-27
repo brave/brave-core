@@ -50,8 +50,10 @@ struct NTPBackgroundImagesData {
   bool IsValid() const;
   // Generate Value with background image at |index|.
   base::Value GetBackgroundAt(size_t index);
-  // Returns empty list value if this data is for regional wallpaper.
-  base::Value GetTopSites() const;
+  // Returns empty list value if this data is for sponsored images wallpaper.
+  // Use different key string for webui. NTP WebUI uses different key name for
+  // top sites values.
+  base::Value GetTopSites(bool for_webui = false) const;
 
   bool IsSuperReferral() const;
 

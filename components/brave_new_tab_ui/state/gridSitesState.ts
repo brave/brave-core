@@ -5,6 +5,7 @@
 
 import {
   generateGridSiteProperties,
+  generateGridSitePropertiesFromDefaultTopSite,
   isExistingGridSite,
   getGridSitesWhitelist,
   isGridSitePinned,
@@ -31,6 +32,19 @@ export function gridSitesReducerSetFirstRenderDataFromLegacy (
   if (pinnedTopSites.length > 0) {
     state = gridSitesReducerAddSiteOrSites(state, pinnedTopSites)
   }
+  return state
+}
+
+export function gridSitesReducerSetDefaultTopSites (
+  state: NewTab.GridSitesState,
+  defaultTopSites: NewTab.DefaultTopSite[]
+): NewTab.GridSitesState {
+  const newGridSites: NewTab.Site[] = []
+  for (const defaultTopSite of defaultTopSites) {
+    newGridSites.push(generateGridSitePropertiesFromDefaultTopSite(defaultTopSite))
+  }
+
+  state = gridSitesReducerAddSiteOrSites(state, newGridSites)
   return state
 }
 

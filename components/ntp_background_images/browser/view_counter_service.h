@@ -45,7 +45,9 @@ class ViewCounterService : public KeyedService,
 
   base::Value GetCurrentWallpaperForDisplay() const;
   base::Value GetCurrentWallpaper() const;
-  base::Value GetTopSites() const;
+  base::Value GetTopSites(bool for_webui = false) const;
+
+  bool IsSuperReferral() const;
 
  private:
   // Sync with themeValues in brave_appearance_page.js

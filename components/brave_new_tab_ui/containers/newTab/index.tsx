@@ -665,7 +665,7 @@ class NewTabPage extends React.Component<Props, State> {
               showRewards={newTabData.showRewards}
               showBinance={newTabData.showBinance}
               brandedWallpaperOptIn={newTabData.brandedWallpaperOptIn}
-              allowBrandedWallpaperUI={newTabData.featureFlagBraveNTPBrandedWallpaper}
+              allowSponsoredWallpaperUI={newTabData.featureFlagBraveNTPSponsoredImagesWallpaper}
               toggleShowRewards={this.toggleShowRewards}
               toggleShowBinance={this.toggleShowBinance}
               binanceSupported={binanceState.binanceSupported}

@@ -50,6 +50,13 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         brandedWallpaperData: initialDataPayload.brandedWallpaperData,
         ...initialDataPayload.privateTabData
       }
+      if (state.brandedWallpaperData && !state.brandedWallpaperData.isSponsored) {
+        // Update feature flag if this is super referral wallpaper.
+        state = {
+          ...state,
+          featureFlagBraveNTPSponsoredImagesWallpaper: false
+        }
+      }
       // TODO(petemill): only get backgroundImage if no sponsored background this time.
       // ...We would also have to set the value at the action
       // the branded wallpaper is turned off. Since this is a cheap string API

@@ -36,7 +36,7 @@ export interface Props {
   showClock: boolean
   showTopSites: boolean
   brandedWallpaperOptIn: boolean
-  allowBrandedWallpaperUI: boolean
+  allowSponsoredWallpaperUI: boolean
   showRewards: boolean
   showBinance: boolean
   binanceSupported: boolean
@@ -88,7 +88,7 @@ export default class Settings extends React.PureComponent<Props, {}> {
       showTopSites,
       showRewards,
       brandedWallpaperOptIn,
-      allowBrandedWallpaperUI,
+      allowSponsoredWallpaperUI,
       onClick,
       toggleShowBinance,
       showBinance,
@@ -115,7 +115,7 @@ export default class Settings extends React.PureComponent<Props, {}> {
                 size='small'
               />
             </SettingsRow>
-            {allowBrandedWallpaperUI &&
+            {allowSponsoredWallpaperUI &&
             <SettingsRow isChildSetting={true}>
               <SettingsText>{getLocale('brandedWallpaperOptIn')}</SettingsText>
               <Toggle

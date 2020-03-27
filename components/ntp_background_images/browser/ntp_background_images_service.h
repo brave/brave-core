@@ -67,6 +67,9 @@ class NTPBackgroundImagesService {
 
   void InitializeWebUIDataSource(content::WebUIDataSource* html_source);
 
+  // This can return quickly whether current install is super referral.
+  bool IsSuperReferral() const;
+
  private:
   friend class TestNTPBackgroundImagesService;
   friend class NTPBackgroundImagesServiceTest;

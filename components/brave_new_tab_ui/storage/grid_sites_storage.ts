@@ -8,6 +8,7 @@ import { debounce } from '../../common/debounce'
 import { keyName as newTabKeyName } from './new_tab_storage'
 import { generateGridSitesFromLegacyEntries } from '../helpers/newTabUtils'
 const keyName = 'grid-sites-data-v1'
+const defaultTopSitesAppliedToPinnedSitesKeyName = 'default-top-sites'
 
 const newTabData: any = window.localStorage.getItem(newTabKeyName)
 const parsedNewTabData = JSON.parse(newTabData)
@@ -65,3 +66,11 @@ export const debouncedSave = debounce<NewTab.GridSitesState>((data: NewTab.GridS
     window.localStorage.setItem(keyName, JSON.stringify(data))
   }
 }, 50)
+
+export const isDefaultTopSitesAddedToPinnedSites = (): boolean => {
+  return window.localStorage.getItem(defaultTopSitesAppliedToPinnedSitesKeyName) !== null
+}
+
+export const setDefaultTopSitesAddedToPinnedSites = () => {
+  window.localStorage.setItem(defaultTopSitesAppliedToPinnedSitesKeyName, 'set')
+}

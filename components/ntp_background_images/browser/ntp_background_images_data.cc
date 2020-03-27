@@ -179,14 +179,20 @@ base::Value NTPBackgroundImagesData::GetBackgroundAt(size_t index) {
   return data;
 }
 
-base::Value NTPBackgroundImagesData::GetTopSites() const {
+base::Value NTPBackgroundImagesData::GetTopSites(bool for_webui) const {
   base::Value top_sites_list_value(base::Value::Type::LIST);
+  int index = 0;
   for (const auto& top_site : top_sites) {
     base::Value top_site_value(base::Value::Type::DICTIONARY);
-    top_site_value.SetStringKey("name", top_site.name);
-    top_site_value.SetStringKey("destinationUrl", top_site.destination_url);
-    top_site_value.SetStringKey("backgroundColor", top_site.background_color);
-    top_site_value.SetStringKey("iconUrl", url_prefix + top_site.image_path);
+    top_site_value.SetStringKey(for_webui ? "title" : "name", top_site.name);
+    top_site_value.SetStringKey(for_webui ? "url" : "destinationUrl",
+                                top_site.destination_url);
+    top_site_value.SetStringKey(for_webui? "favicon" : "iconUrl",
+                                url_prefix + top_site.image_path);
+    if (for_webui)
+      top_site_value.SetIntKey("pinnedIndex", index++);
+    if (!for_webui)
+      top_site_value.SetStringKey("backgroundColor", top_site.background_color);
     top_sites_list_value.Append(std::move(top_site_value));
   }
   return top_sites_list_value;
