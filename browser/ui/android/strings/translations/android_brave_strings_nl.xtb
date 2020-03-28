@@ -58,7 +58,7 @@
 <translation id="7053983685419859001">Blokkeren</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
 <translation id="2880356288762235261">privacy-inbreukmakende advertenties en trackers zodat je kunt browsen zonder op internet te worden gevolgd.</translation>
-<translation id="8537217141725709400">Verdien <ph name="TOKENS"/>s</translation>
+<translation id="8537217141725709400">Verdien <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="1789842587755069541">voor het bekijken van advertenties die privacy respecteren. Gebruik ze om je favoriete sites en makers te ondersteunen.</translation>
 <translation id="821707262661492716">voor het bekijken van advertenties die privacy respecteren.</translation>
@@ -113,7 +113,7 @@
 <translation id="8280223431922155812">NOVEMBER</translation>
 <translation id="4254029385847607686">DECEMBER</translation>
 <translation id="1916285746997567466">Maak je klaar om het volgende internet te ervaren.</translation>
-<translation id="3540580927110899945">Je kunt nu <ph name="TOKENS"/>s verdienen voor het bekijken van
+<translation id="3540580927110899945">Je kunt nu <ph name="TOKEN"/>s verdienen voor het bekijken van
 privacy-respecterende advertenties.</translation>
 <translation id="1327938628925645979">DOE MEE MET BELONINGEN</translation>
 <translation id="5567439033041178034">LEER MEER</translation>
@@ -169,7 +169,7 @@ deze maand...</translation>
 <translation id="683765328936486920">op Youtube</translation>
 <translation id="8969049974285901797">op Twitch</translation>
 <translation id="4376933248999950592">Je hebt <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/> aangewezen voor ontwikkelaars die zich nog niet hebben aangemeld om bijdragen te ontvangen. Je browser blijft proberen bij te dragen totdat ze verifiëren, of tot er 90 dagen zijn verstreken.</translation>
-<translation id="3101693828171454453">niet genoeg <ph name="TOKENS"/>s</translation>
+<translation id="3101693828171454453">niet genoeg <ph name="TOKEN"/>s</translation>
 <translation id="6940273954212603510">alsjeblieft</translation>
 <translation id="1036277985068412734">voeg geld toe</translation>
 <translation id="3492491948683276944">stel maandelijkse fooi in</translation>
@@ -251,7 +251,7 @@ deze maand...</translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="8713995420537272453">punt</translation>
 <translation id="6678056861663824314">1 <ph name="TIP"/></translation>
-<translation id="4065726515175370979">5 <ph name="TIPS"/></translation>
+<translation id="4065726515175370979">5 <ph name="TIP"/></translation>
 <translation id="8171148564903208264">10 <ph name="TIP"/></translation>
 <translation id="7781069478569868053">Nieuwe tabbladpagina</translation>
 <translation id="8522669544471808198">Achtergrondafbeeldingen weergeven</translation>

@@ -261,11 +261,11 @@
 <translation id="4836823081419522426">Вы будете получать 70% рекламного дохода от этого частного спонсорства. Данные средства можно использовать для поддержки создателей веб-контента. Включите Brave Rewards, чтобы забрать вашу долю.</translation>
 <translation id="7307847920988946894">Включить Rewards</translation>
 <translation id="1605521356929094020">Включить Brave Ads</translation>
-<translation id="1647482814782886825">Включая Rewards, вы соглашаетесь с <ph name="УСЛОВИЯМИ_ПРЕДОСТАВЛЕНИЯ_УСЛУГ"/>. Также вы можете <ph name="СКРЫТЬ_СПОНСОРСКИЕ_ИЗОБРАЖЕНИЯ"/>.</translation>
+<translation id="1647482814782886825">Включая Rewards, вы соглашаетесь с <ph name="TERMS_OF_SERVICE"/>. Также вы можете <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
 <translation id="7136586167396205364">Скрыть спонсорские изображения</translation>
 <translation id="2927095357213611519">Вы можете поддержать создателей веб-контента токенами.\nЗарабатывайте токены, просматривая рекламу, которая уважает вашу конфиденциальность.</translation>
 <translation id="4016415345213871193">Вы получаете деньги за просмотр этого фонового изображения.</translation>
-<translation id="5895280237921845725"><ph name="УЗНАЙТЕ_БОЛЬШЕ"/> о спонсорских изображениях в Brave Rewards. Также вы можете <ph name="СКРЫТЬ_СПОНСОРСКИЕ_ИЗОБРАЖЕНИЯ"/>.</translation>
-<translation id="1908278071064820219">Также вы можете <ph name="СКРЫТЬ_СПОНСОРСКИЕ_ИЗОБРАЖЕНИЯ"/>.</translation>
+<translation id="5895280237921845725"><ph name="LEARN_MORE"/> о спонсорских изображениях в Brave Rewards. Также вы можете <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="1908278071064820219">Также вы можете <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
 <translation id="7931660128190969207">Получите деньги за просмотр этого фонового изображения. Включите Brave Ads, чтобы забрать свою долю.</translation>
 </translationbundle>

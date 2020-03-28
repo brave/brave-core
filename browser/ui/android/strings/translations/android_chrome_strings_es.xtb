@@ -327,15 +327,15 @@ Es posible que tu cuenta Brave tenga otros tipos de historial de navegación, co
 <translation id="6545864417968258051">Búsqueda de dispositivos Bluetooth</translation>
 <translation id="4411535500181276704">Modo básico</translation>
 <translation id="7821588508402923572">El ahorro de datos aparecerá aquí</translation>
-<translation id="2131665479022868825">Datos ahorrados: <ph name="data"/></translation>
-<translation id="8569404424186215731">desde el <ph name="date"/></translation>
+<translation id="2131665479022868825">Datos ahorrados: <ph name="DATA"/></translation>
+<translation id="8569404424186215731">desde el <ph name="DATE"/></translation>
 <translation id="3252158532344029638">En el modo básico, Brave carga las páginas más rápido y reduce el uso de datos hasta un 60 por ciento.</translation>
 <translation id="1438581767753657407">Cuando el modo de bajo consumo está activado, Brave utiliza sus servidores para que las páginas se carguen más rápido. El modo de bajo consumo reescribe páginas muy lentas para cargar únicamente el contenido esencial. El modo de bajo consumo no se aplica a las pestañas privadas.</translation>
 <translation id="6159335304067198720"><ph name="PERCENT"/> de ahorro de datos</translation>
 <translation id="7494974237137038751">de datos ahorrados</translation>
 <translation id="6111020039983847643">de datos utilizados</translation>
-<translation id="7413229368719586778">Fecha de inicio: <ph name="date"/></translation>
-<translation id="1782483593938241562">Fecha de finalización: <ph name="date"/></translation>
+<translation id="7413229368719586778">Fecha de inicio: <ph name="DATE"/></translation>
+<translation id="1782483593938241562">Fecha de finalización: <ph name="DATE"/></translation>
 <translation id="2728754400939377704">Ordenar por sitio web</translation>
 <translation id="5864174910718532887">Detalles: ordenados por nombre del sitio web</translation>
 <translation id="116280672541001035">Usados</translation>
@@ -344,8 +344,8 @@ Es posible que tu cuenta Brave tenga otros tipos de historial de navegación, co
 <translation id="2631006050119455616">Ahorrados</translation>
 <translation id="6643649862576733715">Ordenar por cantidad de datos ahorrados</translation>
 <translation id="7302081693174882195">Detalles: ordenados por cantidad de datos ahorrados</translation>
-<translation id="4179980317383591987"><ph name="amount"/> usados</translation>
-<translation id="5937580074298050696">Ahorro: <ph name="amount"/></translation>
+<translation id="4179980317383591987"><ph name="AMOUNT"/> usados</translation>
+<translation id="5937580074298050696">Ahorro: <ph name="AMOUNT"/></translation>
 <translation id="2156074688469523661">Sitios web restantes (<ph name="NUMBER_OF_SITES"/>)</translation>
 <translation id="7138678301420049075">Otro</translation>
 <translation id="4913161338056004800">Borrar estadísticas</translation>
@@ -360,11 +360,11 @@ Es posible que tu cuenta Brave tenga otros tipos de historial de navegación, co
 <translation id="7606077192958116810">El modo básico está activado. Configúralo en Ajustes.</translation>
 <translation id="4714588616299687897">Ahorra hasta un 60% de tus datos</translation>
 <translation id="1006927014032731288">Los servidores de Brave optimizan las páginas web que visitas.</translation>
-<translation id="3257320067425202300">Brave te ha permitido ahorrar <ph name="megabytes"/> MB</translation>
+<translation id="3257320067425202300">Brave te ha permitido ahorrar <ph name="MEGABYTES"/> MB</translation>
 <translation id="5813223329348543512">Brave te ha permitido ahorrar <ph name="GIGABYTES"/> GB</translation>
 <translation id="8266862848225348053">Ubicación de las descargas</translation>
 <translation id="7077143737582773186">Tarjeta SD</translation>
-<translation id="7762668264895820836">Tarjeta SD <ph name="sd_card_number"/></translation>
+<translation id="7762668264895820836">Tarjeta SD <ph name="SD_CARD_NUMBER"/></translation>
 <translation id="6341580099087024258">Preguntar dónde guardar los archivos</translation>
 <translation id="6192333916571137726">Descargar archivo</translation>
 <translation id="1672586136351118594">No volver a mostrar</translation>
@@ -388,7 +388,7 @@ Es posible que tu cuenta Brave tenga otros tipos de historial de navegación, co
 <translation id="3334729583274622784">¿Cambiar la extensión del archivo?</translation>
 <translation id="107147699690128016">Si cambias la extensión del archivo, el archivo podría abrirse en una aplicación diferente y convertirse en un riesgo potencial para tu dispositivo.</translation>
 <translation id="8541922081612557424">Información de Brave</translation>
-<translation id="5311273890481188673">Copyright © <ph name="year"/> The Brave Authors. Todos los derechos reservados.</translation>
+<translation id="5311273890481188673">Copyright © <ph name="YEAR"/> The Brave Authors. Todos los derechos reservados.</translation>
 <translation id="1416550906796893042">Versión de la aplicación</translation>
 <translation id="7493994139787901920"><ph name="VERSION"/> (actualizada el <ph name="TIME_SINCE_UPDATE"/>)</translation>
 <translation id="7596558890252710462">Sistema operativo</translation>
@@ -511,7 +511,7 @@ Para cambiar esta opción, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>restablec
 <translation id="545042621069398927">Acelerando descarga.</translation>
 <translation id="7925590027513907933">{FILE_COUNT,plural, =1{Descargando archivo.}other{Descargando # archivos.}}</translation>
 <translation id="543509235395288790">Descargando <ph name="COUNT"/> archivos (<ph name="MEGABYTES"/>).</translation>
-<translation id="4988210275050210843">Descargando archivo (<ph name="megabytes"/>).</translation>
+<translation id="4988210275050210843">Descargando archivo (<ph name="MEGABYTES"/>).</translation>
 <translation id="4763829664323285145">{FILE_COUNT,plural, =1{Se ha completado 1 descarga.}other{Se han completado # descargas.}}</translation>
 <translation id="5162754098604580781">{FILE_COUNT,plural, =1{No se ha podido completar 1 descarga.}other{No se han podido completar # descargas.}}</translation>
 <translation id="1141800923049248244">{FILE_COUNT,plural, =1{Hay 1 descarga pendiente.}other{Hay # descargas pendientes.}}</translation>
@@ -633,9 +633,9 @@ Para cambiar esta opción, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>restablec
 <translation id="3692944402865947621">No se ha podido descargar <ph name="FILE_NAME"/> porque no se puede acceder a la ubicación del almacenamiento.</translation>
 <translation id="604996488070107836">No ha sido posible descargar el archivo <ph name="FILE_NAME"/> debido a un error desconocido.</translation>
 <translation id="6738867403308150051">Descargando…</translation>
-<translation id="7176368934862295254"><ph name="kilobytes"/> KB</translation>
-<translation id="2402980924095424747"><ph name="megabytes"/> MB</translation>
-<translation id="6608650720463149374"><ph name="gigabytes"/> GB</translation>
+<translation id="7176368934862295254"><ph name="KILOBYTES"/> KB</translation>
+<translation id="2402980924095424747"><ph name="MEGABYTES"/> MB</translation>
+<translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
 <translation id="3991845972263764475"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / ?</translation>
 <translation id="1923695749281512248"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / <ph name="FILE_SIZE_WITH_UNITS"/></translation>
 <translation id="3029613699374795922">KB descargados: <ph name="KBS"/></translation>
@@ -663,9 +663,9 @@ Para cambiar esta opción, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>restablec
 <translation id="7375125077091615385">Tipo:</translation>
 <translation id="5765780083710877561">Descripción:</translation>
 <translation id="4881695831933465202">Abrir</translation>
-<translation id="3542235761944717775"><ph name="kilobytes"/> KB disponibles</translation>
+<translation id="3542235761944717775"><ph name="KILOBYTES"/> KB disponibles</translation>
 <translation id="8051695050440594747"><ph name="MEGABYTES"/> MB disponible(s)</translation>
-<translation id="5424588387303617268"><ph name="gigabytes"/> GB disponibles</translation>
+<translation id="5424588387303617268"><ph name="GIGABYTES"/> GB disponibles</translation>
 <translation id="5793665092639000975">Usando <ph name="SPACE_USED"/> de <ph name="SPACE_AVAILABLE"/></translation>
 <translation id="3587482841069643663">Todo</translation>
 <translation id="4988526792673242964">Páginas</translation>
@@ -1001,7 +1001,7 @@ Para cambiar esta opción, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>restablec
 Solo tú podrás ver lo que está viendo tu cámara. El sitio web no podrá verlo.</translation>
 <translation id="1188239144602654184">Acceder a RA</translation>
 <translation id="473775607612524610">Actualizar</translation>
-<translation id="3133489217401741157">Instalando <ph name="module"/> para Brave…</translation>
+<translation id="3133489217401741157">Instalando <ph name="MODULE"/> para Brave…</translation>
 <translation id="1791662854739702043">Ubicación</translation>
 <translation id="5131234170665854056">No se puede instalar <ph name="MODULE"/> para Brave</translation>
 <translation id="2567385386134582609">IMAGEN</translation>
@@ -1026,7 +1026,7 @@ Solo tú podrás ver lo que está viendo tu cámara. El sitio web no podrá verl
 <translation id="5817715962196959877">Ahora Brave descarga los archivos más rápido</translation>
 <translation id="3976396876660209797">Quita esta combinación de teclas y vuelve a crearla</translation>
 <translation id="6766622839693428701">Desliza el dedo hacia abajo para cerrarla.</translation>
-<translation id="1028699632127661925">Enviando a <ph name="device_name"/>...</translation>
+<translation id="1028699632127661925">Enviando a <ph name="DEVICE_NAME"/>...</translation>
 <translation id="1303507811548703290"><ph name="DOMAIN"/> - Enviado desde <ph name="DEVICE_NAME"/></translation>
 <translation id="5357811892247919462">Pestaña recibida</translation>
 <translation id="9104217018994036254">Lista de dispositivos con los que puedes compartir una pestaña.</translation>
@@ -1034,7 +1034,7 @@ Solo tú podrás ver lo que está viendo tu cámara. El sitio web no podrá verl
 <translation id="2904414404539560095">La lista de dispositivos con los que puedes compartir una pestaña está abierta y ocupa toda la pantalla.</translation>
 <translation id="4135200667068010335">La lista de dispositivos con los que puedes compartir una pestaña está cerrada.</translation>
 <translation id="5292796745632149097">Enviar a</translation>
-<translation id="1386674309198842382">Activo desde hace <ph name="last_updated"/> días</translation>
+<translation id="1386674309198842382">Activo desde hace <ph name="LAST_UPDATED"/> días</translation>
 <translation id="7971136598759319605">Activo hace 1 día</translation>
 <translation id="1521774566618522728">Activo hoy</translation>
 <translation id="3631987586758005671">Compartiendo con <ph name="DEVICE_NAME"/></translation>

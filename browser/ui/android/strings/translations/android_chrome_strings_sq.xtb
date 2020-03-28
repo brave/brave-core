@@ -685,7 +685,7 @@ Për të ndryshuar këtë cilësim, <ph name="BEGIN_LINK"/>rivendos sinkronizimi
 <translation id="7810647596859435254">Hape me...</translation>
 <translation id="5655963694829536461">Kërko te shkarkimet e tua</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
-<translation id="3871488358748532257">&lt;ph name="DESCRIPTION"&gt;%1$s&lt;ex&gt;www.example.com&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION"/></translation>
 <translation id="1883903952484604915">Skedarët e mi</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Këtu shfaqen artikujt, të cilët mund t'i lexosh edhe kur je jashtë linje</translation>
