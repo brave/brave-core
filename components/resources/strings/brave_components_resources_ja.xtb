@@ -4,6 +4,7 @@
 <translation id="4339730410920731698">ブロックされた広告とトラッカー</translation>
 <translation id="2313532038420432247">HTTPSアップグレード</translation>
 <translation id="7679428712334662192">節約できた時間(推定)</translation>
+<translation id="8411095021655121794">節約された推定帯域幅</translation>
 <translation id="5206618227023752085">トップサイトが削除されました</translation>
 <translation id="2079545284768500474">取り消す</translation>
 <translation id="6040143037577758943">閉じる</translation>
@@ -16,13 +17,17 @@
 <translation id="8344569602005188545">時間</translation>
 <translation id="7100907433458266664">日</translation>
 <translation id="4971389353431353387">日</translation>
+<translation id="2116364690062294218">B（バイト）</translation>
+<translation id="3123243061080120667">KB（キロバイト）</translation>
+<translation id="977224059380370527">MB（メガバイト）</translation>
+<translation id="8776285424728638733">GB（ギガバイト）</translation>
 <translation id="8427933533533814946">撮影者</translation>
 <translation id="7108338896283013870">隠す</translation>
 <translation id="7115515527894388910">設定を変更する</translation>
 <translation id="7606029853066610626">ブックマークの表示と管理</translation>
 <translation id="5550994254534676787">あなたのサイト閲覧履歴を表示する</translation>
 <translation id="1742484101357469636">ダッシュボードの設定</translation>
-<translation id="5783793537552649286">背景画像を表示する</translation>
+<translation id="5783793537552649286">背景画像を表示</translation>
 <translation id="7275773481201277457">Braveのデータを表示</translation>
 <translation id="6836061097810262923">時計を表示</translation>
 <translation id="8643377320501056697">トップサイトを表示</translation>
@@ -84,11 +89,9 @@
 <translation id="7954950242989581218">安心・安全にブラウズする</translation>
 <translation id="2188651882929633653">Braveシールドは、ウェブのあらゆる場所でユーザーを追跡しようとする不気味なファイルをブロックします。これにはほとんどの広告が含まれます。特定のサイトがうまく動かない時は、シールドを「ダウン」に設定してみてください。Braveは<ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>完全に匿名の製品分析<ph name="END_LINK_P3A">&lt;/a&gt;</ph>を使い、特定の機能が全体でどの程度使われているか予測します。これは<ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>設定<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>でオフにできます。</translation>
 <translation id="1919345977826869612">広告</translation>
-<translation id="2364310432103707426">Braveの広告を見ることで{{通貨}}を受け取りましょう。表示される広告は、あなたの閲覧行動から推測された、あなたの関心に基づいたものになっています。いかなる個人データや閲覧履歴も、あなたのブラウザから外部に出ていくことはありません。</translation>
+<translation id="2128226640852355533">Brave広告を表示することによって、{{currency}}を稼げます。表示される広告は、閲覧行動から推測されるように、あなたの興味に基づいています。個人データや閲覧履歴がブラウザーから離れることはありません。</translation>
 <translation id="6112368337882254910">自動支援</translation>
 <translation id="3742599705619405136">パブリッシャーとコンテンツ制作者を自動的に支援する方法。月々支払いを設定して通常通りに閲覧してください。あなたが訪問するBrave検証済みサイトは、Braveが測定するあなたのアテンションに基づき、あなたからの寄付を自動で受け取ることになります。</translation>
-<translation id="8949527283651381130">広告コンバージョンの検出を可能にする</translation>
-<translation id="2184191362610545393">これは、このブラウザ上の広告に反応があったことをBraveに匿名で知らせます。これを有効にすると、報酬が増えます。</translation>
 <translation id="20281847067919078">保留中の推定報酬額</translation>
 <translation id="8593551638387217772">次回支払日</translation>
 <translation id="319209088187794725">今月受け取った広告通知</translation>
@@ -195,7 +198,7 @@
 <translation id="1642443162274867084">ウォレット作成</translation>
 <translation id="5094577350232361255">について</translation>
 <translation id="4918086044614829423">承諾</translation>
-<translation id="6832986780040139899">©2016–2018 Brave Software。BraveはBrave Softwareの登録商標です。サイトの名称はこのサイト所有者の商標、または登録商標です。</translation>
+<translation id="5916290544882167205">「Brave Software」。Braveは、「Brave Software」の登録商標です。サイト名は、サイト所有者の商標または登録商標である可能性があります。</translation>
 <translation id="9026369588205476247">プライバシーの保護のため、このBrave Rewardsステートメントはあなたのデバイス（このコンピュータ）以外の場所に保管・保存・記録されません。万が一あなたのデバイスからデータが損なわれた場合、Brave側から再発行することはできません。</translation>
 <translation id="1036277985068412734">資金を追加する</translation>
 <translation id="3587482841069643663">すべて</translation>
@@ -204,6 +207,7 @@
 <translation id="2631006050119455616">保存されました</translation>
 <translation id="2155330833364281539">過去{{totalDays}}日間に受け取った広告</translation>
 <translation id="8863685593846905344">広告履歴</translation>
+<translation id="2777306694585938662">受け取った広告報酬</translation>
 <translation id="5212777575344695266">不適切としてマーク</translation>
 <translation id="2111256234277361810">不適切 ✓ としてマーク</translation>
 <translation id="8988332871810963281">現在のところBrave Adsの履歴はありません</translation>
@@ -313,9 +317,8 @@
 <translation id="6381574025952123568">当初残高</translation>
 <translation id="532275381857891532">7日間の広告履歴</translation>
 <translation id="4923459931733593730">支払い</translation>
-<translation id="4021593982164260556">支払いは毎月{{day}}日に行われます。</translation>
+<translation id="5693657857413982604">お支払いは毎月{{day}}日ごとに行われます。</translation>
 <translation id="6104680658798556671">未払いです。</translation>
-<translation id="2834888581291358924">自動貢献と毎月の貢献の合計額をカバーするのに十分な残高が残っていない場合、この期間、これらの支払いはスキップされます。</translation>
 <translation id="3138528956349114724">固定されたサイトは現在</translation>
 <translation id="2337632028350283479">毎月の貢献の仕組み：</translation>
 <translation id="6457273203091513039">毎月の貢献は「Auto-Contribute (自動貢献)」支払いから出るものではありません。これらは別々のものです。</translation>
@@ -388,6 +391,7 @@
 <translation id="4588241643143931775">ビットコイン (BTC)</translation>
 <translation id="4837149400263828922">イーサリアム (ETH)</translation>
 <translation id="8746837129291133068">ライトコイン (LTC)</translation>
+<translation id="6367285596431004439">受け取ったトークン付与</translation>
 <translation id="9212459913845238740">取得済みの付与ポイント</translation>
 <translation id="768850953428043522">ポイント</translation>
 <translation id="3043542281656021374">ポイント</translation>
@@ -463,6 +467,10 @@
 <translation id="4569155249847375786">確認済み</translation>
 <translation id="8465442795593991224">Upholdはリクエストされたサービスに基づき、あなたの身元の確認を行う必要性がある場合があります。</translation>
 <translation id="723054503945711909">Brave Software Inc.は、あなたがUpholdのアカウントを開設する際にUpholdに提供する個人情報の処理、保存、アクセスを行いません。</translation>
+<translation id="7404779623219601861">BATをギフトカードと交換する</translation>
+<translation id="6215565499749144110">TAPネットワークを使用すると、BATを人気の有名ブランドのギフトカードと交換できます。</translation>
+<translation id="526152301446370337">TAPにアクセスしてください。</translation>
+<translation id="6915065518766963119">*「Uphold検証」が必要です。</translation>
 <translation id="4360054110030715117">Brave Rewardsに関する<ph name="LINK_BEGIN"/>詳細を確認<ph name="LINK_END"/></translation>
 <translation id="5826706758731195747">Rewardsをオンにすることにより、<ph name="LINK_BEGIN"/>サービス規約<ph name="LINK_END"/>に同意したことになります。</translation>
 <translation id="8344084848798035850">今月のこれまでの推定収益</translation>
@@ -476,6 +484,7 @@
 <translation id="8092889639392847252">このスポンサー背景画像を見て、支払いを受けましょう。</translation>
 <translation id="2542495049135486284">もう一度Brave Rewardsを試してみませんか？獲得したポイントで誰かを応援しましょう。</translation>
 <translation id="53513464591392992">Brave Rewardsをオンにし、プライバシーを尊重する広告を見て報酬を受け取りましょう。</translation>
+<translation id="8463996294416161140">あなたの取り分を獲得するには、<ph name="PRODUCT_NAME"/>をオンにします。<ph name="LINK_BEGIN"/>「スポンサー付き画像を非表示」<ph name="LINK_END"/>を選択することもできます。</translation>
 <translation id="8568666589217601917">おめでとうございます！</translation>
 <translation id="764235488372037377">Adsから得た報酬はこちらです！</translation>
 <translation id="7091215606170476659">UGPからポイントが付与されました。</translation>

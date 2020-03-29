@@ -4,6 +4,7 @@
 <translation id="4339730410920731698">آگهی‌ها و ردیاب‌ها مسدود شدند</translation>
 <translation id="2313532038420432247">به‌روزرسانی‌های HTTPS</translation>
 <translation id="7679428712334662192">زمان تخمینی ذخیره شد</translation>
+<translation id="8411095021655121794">پهنای باند تخمینی ذخیره‌شده</translation>
 <translation id="5206618227023752085">سایت برتر برداشته شد.</translation>
 <translation id="2079545284768500474">واگرد</translation>
 <translation id="6040143037577758943">بستن</translation>
@@ -16,6 +17,10 @@
 <translation id="8344569602005188545">ساعت</translation>
 <translation id="7100907433458266664">روز</translation>
 <translation id="4971389353431353387">روز</translation>
+<translation id="2116364690062294218">بایت</translation>
+<translation id="3123243061080120667">کیلوبایت</translation>
+<translation id="977224059380370527">مگابایت</translation>
+<translation id="8776285424728638733">گیگابایت</translation>
 <translation id="8427933533533814946">عکس از</translation>
 <translation id="7108338896283013870">عدم نمایش</translation>
 <translation id="7115515527894388910">ویرایش اولویت‌ها</translation>
@@ -84,11 +89,9 @@
 <translation id="7954950242989581218">امن و ایمن مرور کنید</translation>
 <translation id="2188651882929633653">«سپر ایمنی Brave» محتوای مشکوکی را که تلاش می‌کند شما را در وب ردیابی کند، مسدود می‌کند شامل بسیاری از آگهی‌ها. «سپر ایمنی» را تنظیم کنید تا اگر سایتی کار نمی‌کند، آن را ببندد. Brave از <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>تجزیه‌وتحلیل‌های کاملاً خصوصی محصول<ph name="END_LINK_P3A">&lt;/a&gt;</ph>  برای تخمین استفاده کلی از بعضی از قابلیت‌ها استفاده می‌کند. می‌توانید این گزینه را در <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>تنظیمات<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph> خاموش کنید.</translation>
 <translation id="1919345977826869612">آگهی‌ها</translation>
-<translation id="2364310432103707426">با تماشای آگهی در Brave، ‏{{currency}} دریافت کنید. آگهی‌ها براساس علایق شما، که از رفتار شما در مرور وب به آنها پی می‌بریم، ارائه می‌شوند. هیچ داده خصوصی یا سابقه مروری از مرورگرتان خارج نمی‌شود.</translation>
+<translation id="2128226640852355533">با تماشای آگهی‌های Brave، ‏{{currency}} دریافت کنید. آگهی‌ها بر اساس علایق شما، که از رفتار شما در مرور وب به آنها پی می‌بریم، ارائه می‌شوند. هیچ داده خصوصی یا سابقه مروری از مرورگرتان خارج نمی‌شود.</translation>
 <translation id="6112368337882254910">کمک خودکار</translation>
 <translation id="3742599705619405136">شیوه‌ای خودکار برای حمایت از ناشران و پدیدآورندگان محتوا. پرداخت ماهانه‌ای تنظیم کنید و به‌طور معمول وب را مرور کنید. سایت‌های مورد تأیید Brave که بازدید می‌کنید، کمک‌های مالی شما را براساس توجهتان، که توسط Brave سنجیده می‌شود، به‌طور خودکار دریافت می‌کنند.</translation>
-<translation id="8949527283651381130">مجاز بودن تشخیص تبدیل آگهی</translation>
-<translation id="2184191362610545393">این گزینه به‌طور ناشناسی به Brave امکان می‌دهد که از وجود پاسخ به آگهی در این مرورگر اطلاع پیدا کند. فعال کردن این گزینه درآمدها را افزایش می‌دهد.</translation>
 <translation id="20281847067919078">پاداش‌های تخمینی معلق</translation>
 <translation id="8593551638387217772">تاریخ پرداخت بعدی</translation>
 <translation id="319209088187794725">اعلان‌های آگهی که این ماه دریافت شدند</translation>
@@ -195,7 +198,7 @@
 <translation id="1642443162274867084">کیف پول ایجاد شد</translation>
 <translation id="5094577350232361255">درباره</translation>
 <translation id="4918086044614829423">پذیرفتن</translation>
-<translation id="6832986780040139899">©2016–2018 Brave Software‏. Brave نشان تجاری ثبت‌شده Brave Software است. ممکن است نام سایت‌ها، نشان‌های تجاری یا نشان‌های تجاری ثبت‌شده مالک آن سایت‌ها باشد.</translation>
+<translation id="5916290544882167205">Brave Software‏. Brave نشان تجاری ثبت‌شده Brave Software است. ممکن است نام سایت‌ها، نشان‌های تجاری یا نشان‌های تجاری ثبت‌شده مالک آن سایت‌ها باشد.</translation>
 <translation id="9026369588205476247">برای محافظت از حریم خصوصی‌تان، این صورت‌حساب «پاداش‌های Brave» در جایی به‌جز دستگاهتان (این رایانه) ذخیره، ضبط یا گزارش نمی‌شود. در صورت از دست رفتن داده در دستگاهتان، نمی‌توان این صورت‌حساب را از Brave بازیابی کرد.</translation>
 <translation id="1036277985068412734">افزودن سرمایه</translation>
 <translation id="3587482841069643663">همه</translation>
@@ -204,6 +207,7 @@
 <translation id="2631006050119455616">ذخیره شد</translation>
 <translation id="2155330833364281539">تبلیغاتی که در {{totalDays}} روز گذشته دریافت کرده‌اید</translation>
 <translation id="8863685593846905344">تاریخچه تبلیغات</translation>
+<translation id="2777306694585938662">پاداش‌های آگهی‌ها دریافت‌شده</translation>
 <translation id="5212777575344695266">علامت‌گذاری به عنوان نامناسب</translation>
 <translation id="2111256234277361810">علامت‌گذاری به عنوان نامناسب ✓</translation>
 <translation id="8988332871810963281">در حال حاضر تاریخچه تبلیغات Brave وجود ندارد</translation>
@@ -313,9 +317,8 @@
 <translation id="6381574025952123568">موجودی اولیه</translation>
 <translation id="532275381857891532">تاریخچه 7 روزه تبلیغات</translation>
 <translation id="4923459931733593730">پرداخت</translation>
-<translation id="4021593982164260556">پرداخت {{day}}ام هر ماه انجام می‌شود.</translation>
+<translation id="5693657857413982604">پرداخت {{day}}ام هر ماه انجام می‌شود.</translation>
 <translation id="6104680658798556671">پرداخت انجام نشد.</translation>
-<translation id="2834888581291358924">وقتی موجودی‌تان برای پوشش مجموع «کمک خودکار» و کمک‌های ماهانه کافی نباشد، در آن دوره از این پرداخت‌ها صرف‌نظر می‌شود.</translation>
 <translation id="3138528956349114724">سایت‌های پین‌شده اکنون به این صورت هستند</translation>
 <translation id="2337632028350283479">نحوه کار کمک‌های ماهانه به این صورت است:</translation>
 <translation id="6457273203091513039">کمک‌های ماهانه ازطریق پرداخت «کمک خودکار» ارائه نمی‌شوند. این کمک‌ها مجزا هستند.</translation>
@@ -388,6 +391,7 @@
 <translation id="4588241643143931775">بیت‌کوین (BTC)</translation>
 <translation id="4837149400263828922">اتریوم (ETH)</translation>
 <translation id="8746837129291133068">لایت‌کوین (LTC)</translation>
+<translation id="6367285596431004439">امتیاز توکن مطالبه شد</translation>
 <translation id="9212459913845238740">هدایای امتیاز مطالبه شد</translation>
 <translation id="768850953428043522">امتیازها</translation>
 <translation id="3043542281656021374">امتیاز</translation>
@@ -463,6 +467,10 @@
 <translation id="4569155249847375786">تأیید شد</translation>
 <translation id="8465442795593991224">ممکن است Uphold شما را ملزم به تأیید هویتتان بر اساس خدمات درخواستی کند.</translation>
 <translation id="723054503945711909">Brave Software Inc.اطلاعات شخصی را که در زمان ایجاد یک حساب با Uphold در اختیار آنها قرار داده‌اید، پردازش و ذخیره‌سازی نخواهد کرد و به آنها دسترسی نخواهد داشت.</translation>
+<translation id="7404779623219601861">نقد کردن BAT برای کارت‌های هدیه</translation>
+<translation id="6215565499749144110">با شبکه TAP، می‌توانید BAT خود را برای کارت‌های هدیه با برند معروف نقد کنید.</translation>
+<translation id="526152301446370337">از TAP بازدید کنید.</translation>
+<translation id="6915065518766963119">* به تأیید نگهداری نیاز دارد.</translation>
 <translation id="4360054110030715117">درباره Brave Rewards، ‏<ph name="LINK_BEGIN"/>بیشتر بدانید<ph name="LINK_END"/></translation>
 <translation id="5826706758731195747">با روشن کردن «پاداش‌ها»، موافقت خود با <ph name="LINK_BEGIN"/>شرایط خدمات<ph name="LINK_END"/> را اعلام می‌کنید.</translation>
 <translation id="8344084848798035850">درآمد تخمینی این ماه تاکنون</translation>
@@ -476,6 +484,7 @@
 <translation id="8092889639392847252">برای مشاهده این تصویر پس‌زمینه حمایت‌شده پول دریافت کنید.</translation>
 <translation id="2542495049135486284">«پاداش‌های Brave» را مجدداً امتحان کنید و به‌محض دریافت، آن را با دیگران سهیم شوید!</translation>
 <translation id="53513464591392992">Brave Rewards را روشن کنید و با تماشای آگهی‌های رعایت‌کننده حریم خصوصی، پاداش دریافت کنید.</translation>
+<translation id="8463996294416161140">برای مطالبه سهم خود، <ph name="PRODUCT_NAME"/> را روشن کنید. همچنین می‌توانید با تصمیم خود o <ph name="LINK_BEGIN"/>تصاویر حمایت‌شده را پنهان کنید<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">کارتان عالی بود!</translation>
 <translation id="764235488372037377">پاداش‌های شما از «آگهی‌ها» اینجا است</translation>
 <translation id="7091215606170476659">شما دارای هدیه UGP از Brave هستید.</translation>

@@ -3,7 +3,7 @@
 <translationbundle lang="sr">
 <translation id="939305735877869636">Brave</translation>
 <translation id="6373767849825830651">Brave је веб прегледач који покреће веб-странице и апликације муњевитом брзином. Брз је, стабилан и једноставан за коришћење. Прегледајте Веб безбедније са заштитом од малвера и „пецања“ која је уграђена у Brave.</translation>
-<translation id="680297041157509674">Brave ОС</translation>
+<translation id="4331809312908958774">Brave ОС</translation>
 <translation id="4847979153841887006">Brave логотип</translation>
 <translation id="7339898014177206373">Нови прозор</translation>
 <translation id="5516268345616100622">Менаџер задатака – Brave</translation>
@@ -15,8 +15,8 @@
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
 <translation id="8992261409816268381">The Brave Authors</translation>
 <translation id="8121009781989288430">Ауторска права <ph name="YEAR"/>. Аутори Brave-а. Сва права задржана.</translation>
-<translation id="2310890394934209120">Brave ОС омогућава додатни <ph name="BEGIN_LINK_CROS_OSS"/>софтвер отвореног кода<ph name="END_LINK_CROS_OSS"/>.</translation>
-<translation id="8160794320557846790">Brave ОС је омогућен захваљујући додатном <ph name="BEGIN_LINK_CROS_OSS"/>софтверу са отвореним кодом<ph name="END_LINK_CROS_OSS"/>, као што је <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (бета)<ph name="END_LINK_LINUX_OSS"/>.</translation>
+<translation id="6368958679917195344">Brave ОС омогућава додатни <ph name="BEGIN_LINK_CROS_OSS"/>софтвер отвореног кода<ph name="END_LINK_CROS_OSS"/>.</translation>
+<translation id="1662639173275167396">Brave ОС је омогућен захваљујући додатном <ph name="BEGIN_LINK_CROS_OSS"/>софтверу са отвореним кодом<ph name="END_LINK_CROS_OSS"/>, као што је <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (бета)<ph name="END_LINK_LINUX_OSS"/>.</translation>
 <translation id="6913582816347128893">Brave можда неће исправно функционисати зато што више није подржан на систему Mac OS X 10.9.</translation>
 <translation id="7977787072794666032">Brave можда неће исправно функционисати зато што више није подржан на Windows XP-у или Windows Vista-и</translation>
 <translation id="189297655255130768">Brave не реагује. Желите ли да га одмах поново покренете?</translation>
@@ -24,7 +24,7 @@
 <translation id="335632367599648646">Јесте ли сигурни да желите да деинсталирате Brave?</translation>
 <translation id="5590013613412457132">Деинсталирај Brave</translation>
 <translation id="5019879183386042809">Подеси Brave за подразумевани прегледач</translation>
-<translation id="5063987220091207247">Brave ОС не може да отвори ову страницу.</translation>
+<translation id="707769633889902835">Brave ОС не може да отвори ову страницу.</translation>
 <translation id="4065288863231444640">Нека Brave ради у позадини</translation>
 <translation id="6797402139308059782">Нека Brave ради у позадини</translation>
 <translation id="2585240446624043880">Brave не може да чита податке из директоријума са подацима нити да их уписује у њега:
@@ -94,8 +94,7 @@ Brave не може да врати подешавања.</translation>
 <translation id="9071554113102421877">&amp;Отвори у Brave-у</translation>
 <translation id="2176825726964012531">О &amp;Brave-у</translation>
 <translation id="5450493308072741203">Ажурирај &amp;Brave</translation>
-<translation id="1421502046520299169">О &amp;Brave ОС-у</translation>
-<translation id="2534623228451928732">Ажурирај &amp;Brave ОС</translation>
+<translation id="61852838583753520">Ажурирај &amp;Brave ОС</translation>
 <translation id="8447483940522230788">Brave помагач</translation>
 <translation id="5477319665405831211">Синхронизујте и персонализујте Brave на свим уређајима</translation>
 <translation id="8132634101975074716">Пријављени сте на Brave!</translation>
@@ -109,19 +108,18 @@ Brave не може да врати подешавања.</translation>
 <translation id="5380963249588143069">Администратор система је конфигурисао Brave да отвара прегледач <ph name="ALTERNATIVE_BROWSER_NAME"/> да би приступао <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656">Корисник <ph name="USER_EMAIL_ADDRESS"/> је претходно користио Brave</translation>
 <translation id="1384923383737428730">На рачунару постоји штетан софтвер. Brave може да га уклони, врати подешавања и онемогући додатке да би прегледач могао поново да ради уобичајено.</translation>
-<translation id="8919921662052966648">Brave не може да синхронизује податке. Ажурирајте приступну фразу за Синхронизацију.</translation>
 <translation id="2262856633481902138">Brave не може да синхронизује податке зато што су подаци за пријављивање на налог застарели.</translation>
 <translation id="5419189641394808652">Brave не може да синхронизује податке јер Синхронизација није доступна за домен.</translation>
 <translation id="2577755334620061182">Brave не може да синхронизује податке због грешке при пријављивању.</translation>
-<translation id="8583885258305961947">Систем Brave ОС</translation>
-<translation id="3968006371075376562">Brave ОС не може да синхронизује податке. Ажурирајте приступну фразу за Синхронизацију.</translation>
-<translation id="6746636977031158624">Brave ОС не може да синхронизује податке зато што су подаци за пријављивање на налог застарели.</translation>
-<translation id="2999152167963026588">Brave ОС не може да синхронизује податке јер Синхронизација није доступна за домен.</translation>
-<translation id="1459786048951724030">Brave ОС не може да синхронизује податке због грешке при пријављивању.</translation>
-<translation id="6813094029720377619">Када изађете из Brave-а, колачићи се бришу. Да бисте наставили са синхронизацијом, промените подешавање <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
-<translation id="3340978935015468852">подешавања</translation>
+<translation id="2644798301485385923">Систем Brave ОС</translation>
+<translation id="7916016681687251387">Brave ОС није успео да синхронизује податке. Решите проблем.</translation>
+<translation id="2341767445688917208">Brave ОС није успео да синхронизује лозинке. Решите проблем.</translation>
+<translation id="123620459398936149">Brave ОС не може да синхронизује податке. Ажурирајте приступну фразу за Синхронизацију.</translation>
+<translation id="9026991721384951619">Brave ОС не може да синхронизује податке зато што су подаци за пријављивање на налог застарели.</translation>
+<translation id="7419046106786626209">Brave ОС не може да синхронизује податке јер Синхронизација није доступна за домен.</translation>
+<translation id="4480040274068703980">Brave ОС не може да синхронизује податке због грешке при пријављивању.</translation>
 <translation id="300669147395456190">Brave апликације</translation>
-<translation id="3421950102518690868"><ph name="DOMAIN"/> захтева да прочитате и прихватите следеће Услове коришћења услуге пре него што почнете да користите овај уређај. Ови услови не представљају проширење, измену или ограничење Услова за Brave ОС.</translation>
+<translation id="2398566204186296120"><ph name="DOMAIN"/> захтева да прочитате и прихватите следеће Услове коришћења услуге пре него што почнете да користите овај уређај. Ови услови не представљају проширење, измену или ограничење Услова за Brave ОС.</translation>
 <translation id="3293668930608086049">Brave користи камеру и микрофон.</translation>
 <translation id="8919461291440820124">Brave користи микрофон.</translation>
 <translation id="3205074487970075628">Brave користи камеру.</translation>
@@ -154,12 +152,9 @@ Brave не може да врати подешавања.</translation>
 <translation id="4805806622840861220">Поново покрени Brave</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Ново ажурирање за Brave је доступно и примениће се чим га поново покренете.}=1{Ново ажурирање за Brave је доступно и примениће се чим га поново покренете. Прозор без архивирања се неће поново отворити.}one{Ново ажурирање за Brave је доступно и примениће се чим га поново покренете. # прозор без архивирања се неће поново отворити.}few{Ново ажурирање за Brave је доступно и примениће се чим га поново покренете. # прозора без архивирања се неће поново отворити.}other{Ново ажурирање за Brave је доступно и примениће се чим га поново покренете. # прозора без архивирања се неће поново отворити.}}</translation>
 <translation id="2799223571221894425">Поново покрени</translation>
-<translation id="2522086024276534909">Рестартујте Brave ОС</translation>
-<translation id="8183252473547465084">Треба да рестартујете Brave ОС да бисте применили ажурирање.</translation>
+<translation id="5062123544085870375">Рестартујте Brave ОС</translation>
+<translation id="2063848847527508675">Треба да рестартујете Brave ОС да бисте применили ажурирање.</translation>
 <translation id="5895138241574237353">Покрени поново</translation>
-<translation id="8887390605192156061">Затворите све копије Brave-а.</translation>
-<translation id="1801551749768408825">Друге копије Brave-а су активне. Да бисте обавили ажурирање, затворите их.</translation>
-<translation id="2632141563911437138">Brave треба да престане са радом на овом рачунару да бисте га ажурирали. Због тога ће други корисници пријављени на овом рачунару можда изгубити несачуване промене.</translation>
 <translation id="5875673934455379806">Поново инсталирај Brave</translation>
 <translation id="2097604701283463988">Brave је застарео</translation>
 <translation id="5173820533850252773">Brave је застарео</translation>
@@ -180,7 +175,7 @@ Brave не може да врати подешавања.</translation>
 <translation id="7798069806040634998">Brave тражи приступ меморијском простору да би преузимао датотеке</translation>
 <translation id="7685904775439037072">Када Brave добије приступ, веб-сајтови ће моћи да затраже приступ.</translation>
 <translation id="1744365871163268756">Сачекајте да Brave инсталира најновија ажурирања система.</translation>
-<translation id="7808415789955822133">Brave ОС услови</translation>
+<translation id="7408085963519505752">Brave ОС услови</translation>
 <translation id="7207456302801184289">Добро дошли у Brave</translation>
 <translation id="3507835409099344374">Иди на подешавања обавештења за Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Ажурирање за Brave је доступно}=1{Ажурирање за Brave је доступно}one{Ажурирање за Brave је доступно већ # дан}few{Ажурирање за Brave је доступно већ # дана}other{Ажурирање за Brave је доступно већ # дана}}</translation>
@@ -199,9 +194,9 @@ Brave не може да врати подешавања.</translation>
 <translation id="1786715389543715322">Ажурирање Brave-а (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="2182657378556811785">Ажурирање је скоро готово! Поново покрените Brave да бисте довршили ажурирање.</translation>
 <translation id="8208853227947884571">Brave је ажуриран</translation>
-<translation id="6686872257969654608">О Brave ОС-у</translation>
-<translation id="7674116293463255181">Да бисте проверили да ли је уређај ажуриран, идите у <ph name="LINK_BEGIN"/>Подешавања Brave ОС-а<ph name="LINK_END"/></translation>
-<translation id="2280363356796735201">Пронађите помоћ за Brave OS</translation>
+<translation id="573759479754913123">О Brave ОС-у</translation>
+<translation id="7573289029918943991">Да бисте проверили да ли је уређај ажуриран, идите у <ph name="LINK_BEGIN"/>Подешавања Brave ОС-а<ph name="LINK_END"/></translation>
+<translation id="3395323229510056640">Пронађите помоћ за Brave OS</translation>
 <translation id="38898988211673781">Обриши колачиће и податке о сајтовима кад изађем из Brave-а</translation>
 <translation id="5253815230176279256">Brave Software Pay (копирано у Brave)</translation>
 <translation id="5468853758063275923">Brave је подразумевани прегледач</translation>
@@ -209,7 +204,7 @@ Brave не може да врати подешавања.</translation>
 <translation id="6915252145142862992">Ово је секундарна инсталација Brave-а па не можете да га подесите као подразумевани прегледач.</translation>
 <translation id="6235873178214143377">Ако се подешавање не приказује на овој страници, потражите га у <ph name="LINK_BEGIN"/>
       подешавањима Brave прегледача<ph name="LINK_END"/></translation>
-<translation id="4459296183696059108">Ако се подешавање не приказује на овој страници, потражите га у <ph name="LINK_BEGIN"/>
+<translation id="5657226924540934362">Ако се подешавање не приказује на овој страници, потражите га у <ph name="LINK_BEGIN"/>
       подешавањима Brave ОС-а<ph name="LINK_END"/></translation>
 <translation id="2312399718665761438">Да би исправио правописне грешке, Brave шаље Brave Software-овим серверима текст који уносите у поља за текст.</translation>
 <translation id="8586264863973514035">Да бисте применили промене, поново покрените Brave</translation>
@@ -219,7 +214,6 @@ Brave не може да врати подешавања.</translation>
 <translation id="5853262807109651878">Овим ћете избрисати <ph name="ITEMS_COUNT"/> ставке(и) са овог уређаја. Да бисте касније вратили податке, пријавите се у Brave као <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Овим ћете избрисати податке прегледања са овог уређаја. Да бисте касније вратили податке, пријавите се у Brave као <ph name="USER_EMAIL"/>.</translation>
 <translation id="4518479204315969707">Назив и слика Brave профила</translation>
-<translation id="82609232232243542">Пријављивање у Brave</translation>
 <translation id="8372880274820509128">Brave ће шифровати податке ради додатне сигурности.</translation>
 <translation id="7445061995866044926">Желите ли да се одјавите из Brave-а?</translation>
 <translation id="7453070689008684791">Brave ће приступати Диску да би приказивао предлоге на траци за адресу</translation>

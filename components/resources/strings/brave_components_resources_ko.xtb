@@ -4,6 +4,7 @@
 <translation id="4339730410920731698">광고 및 추적기 차단됨</translation>
 <translation id="2313532038420432247">HTTPS 업그레이드</translation>
 <translation id="7679428712334662192">절약된 시간 예상</translation>
+<translation id="8411095021655121794">절약된 예상 대역폭</translation>
 <translation id="5206618227023752085">맨 위 사이트 제거됨.</translation>
 <translation id="2079545284768500474">원상태로 돌리기</translation>
 <translation id="6040143037577758943">닫기</translation>
@@ -16,6 +17,10 @@
 <translation id="8344569602005188545">시간</translation>
 <translation id="7100907433458266664">일</translation>
 <translation id="4971389353431353387">일</translation>
+<translation id="2116364690062294218">B</translation>
+<translation id="3123243061080120667">KB</translation>
+<translation id="977224059380370527">MB</translation>
+<translation id="8776285424728638733">GB</translation>
 <translation id="8427933533533814946">다음의 촬영자가 찍은 사진:</translation>
 <translation id="7108338896283013870">숨기기</translation>
 <translation id="7115515527894388910">즐겨찾기 편집하기</translation>
@@ -84,11 +89,9 @@
 <translation id="7954950242989581218">안전하게 검색하세요</translation>
 <translation id="2188651882929633653">Brave Shields는 대부분의 광고를 포함하여, 웹에서 사용자를 추적하려 하는 섬뜩한 것들을 차단합니다. 사이트가 작동하지 않는 경우 Shields를 “다운”으로 설정하세요. Brave는 <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>비밀이 완전히 보장되는 제품 애널리틱스<ph name="END_LINK_P3A">&lt;/a&gt;</ph>를 사용하여 특정 기능의 전체 사용량을 추정합니다. 이 기능은 <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>설정<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>에서 끌 수 있습니다.</translation>
 <translation id="1919345977826869612">광고</translation>
-<translation id="2364310432103707426">Brave 광고를 시청하고 {{currency}}을(를) 얻으세요. 시청자의 검색 행동에서 추론한 관심사를 토대로 광고가 제시됩니다. 개인 데이터 또는 검색 기록이 브라우저 외부로 이동하지 않습니다.</translation>
+<translation id="2128226640852355533">Brave 광고를 보고 {{currency}}을(를) 받으세요. 광고는 인터넷 사용 행동에서 유추한 관심사를 기반으로 제시됩니다. 개인 데이터 또는 인터넷 사용 기록이 브라우저 밖으로 이동하지 않습니다.</translation>
 <translation id="6112368337882254910">자동 기부</translation>
 <translation id="3742599705619405136">발행자 및 콘텐츠 제작자를 자동으로 후원하는 방법입니다. 월별 지불 금액을 설정하고 평소와 같이 탐색하세요. Brave가 측정하는 귀하의 관심에 기반하여, 방문하시는 Brave 인증 사이트가 자동으로 귀하의 기부금을 받게 됩니다.</translation>
-<translation id="8949527283651381130">광고 전환 감지를 허용합니다</translation>
-<translation id="2184191362610545393">이 브라우저에서 광고에 대한 반응이 있었음을 익명으로 Brave에 알려줍니다. 이 기능을 활성화하면 수입이 증가합니다.</translation>
 <translation id="20281847067919078">보류 중인 예상 보상금</translation>
 <translation id="8593551638387217772">다음 결제일</translation>
 <translation id="319209088187794725">이번 달에 받은 광고 알림</translation>
@@ -195,7 +198,7 @@
 <translation id="1642443162274867084">월렛 생성됨</translation>
 <translation id="5094577350232361255">대하여</translation>
 <translation id="4918086044614829423">수락</translation>
-<translation id="6832986780040139899">©2016–2018 Brave 소프트웨어. Brave는 Brave 소프트웨어의 등록 상표입니다. 사이트 이름은 사이트 소유자의 상표 혹은 등록 상표일 수 있습니다.</translation>
+<translation id="5916290544882167205">Brave Software. Brave는 Brave Software의 등록 상표입니다. 사이트 이름은 사이트 소유자의 상표 또는 등록 상표일 수 있습니다.</translation>
 <translation id="9026369588205476247">개인 정보를 보호하기 위해 이 Brave Rewards 내역은 귀하의 기기(컴퓨터) 외에 그 어느 곳에도 저장되거나, 기록되거나 로그되지 않습니다. 귀하의 기기에서 데이터 손실이 발생하는 경우 Brave에서는 복구 조치할 수 없습니다.</translation>
 <translation id="1036277985068412734">자금 추가히기</translation>
 <translation id="3587482841069643663">전체</translation>
@@ -204,6 +207,7 @@
 <translation id="2631006050119455616">저장됨</translation>
 <translation id="2155330833364281539">지난 {{totalDays}}일 동안 받은 광고</translation>
 <translation id="8863685593846905344">광고 기록</translation>
+<translation id="2777306694585938662">광고 보상 받음</translation>
 <translation id="5212777575344695266">부적절한 것으로 표시</translation>
 <translation id="2111256234277361810">부적절한 것으로 표시 ✓</translation>
 <translation id="8988332871810963281">현재 Brave Ads 기록이 없습니다</translation>
@@ -313,9 +317,8 @@
 <translation id="6381574025952123568">개시잔액</translation>
 <translation id="532275381857891532">7일 광고 기록</translation>
 <translation id="4923459931733593730">결제</translation>
-<translation id="4021593982164260556">결제는 매달 {{day}}일에 됩니다.</translation>
+<translation id="5693657857413982604">매월 {{day}}일에 지불합니다.</translation>
 <translation id="6104680658798556671">결제가 되지 않았습니다.</translation>
-<translation id="2834888581291358924">잔액이 자동 기부 및 월 기부금 총액을 충당하기에 충분하지 않은 경우에는 이 기간 동안 해당 결제를 건너뜁니다.</translation>
 <translation id="3138528956349114724">현재 고정된 사이트:</translation>
 <translation id="2337632028350283479">월 기부금의 작동 방식:</translation>
 <translation id="6457273203091513039">월 기부금은 자동 기부 결제에 포함되지 않습니다. 이 둘은 별개입니다.</translation>
@@ -388,6 +391,7 @@
 <translation id="4588241643143931775">비트코인 (BTC))</translation>
 <translation id="4837149400263828922">이더리움 (ETH)</translation>
 <translation id="8746837129291133068">라이트코인 ((LTC))</translation>
+<translation id="6367285596431004439">토큰 적립 받음</translation>
 <translation id="9212459913845238740">포인트 보조금 청구됨</translation>
 <translation id="768850953428043522">포인트</translation>
 <translation id="3043542281656021374">포인트</translation>
@@ -463,6 +467,10 @@
 <translation id="4569155249847375786">검증 완료됨</translation>
 <translation id="8465442795593991224">Uphold가 요청된 서비스에 기반하여 귀하의 신원 확인을 요구할 수도 있습니다.</translation>
 <translation id="723054503945711909">Brave Software Inc.는 계정을 만들 때 Uphold에 제공된 개인 정보를 처리, 저장, 또는 액세스하지 않습니다.</translation>
+<translation id="7404779623219601861">BAT와 기프트 카드 교환</translation>
+<translation id="6215565499749144110">TAP 네트워크를 사용하면 인기 있는 유명 브랜드 기프트 카드와 BAT를 교환할 수 있습니다.</translation>
+<translation id="526152301446370337">TAP을 방문하세요.</translation>
+<translation id="6915065518766963119">* Uphold 검증이 필요합니다.</translation>
 <translation id="4360054110030715117">Brave 상금에 대한 <ph name="LINK_BEGIN"/>자세한 정보 보기<ph name="LINK_END"/></translation>
 <translation id="5826706758731195747">상금을 켜면 <ph name="LINK_BEGIN"/>서비스 약관<ph name="LINK_END"/>에 동의하게 됩니다.</translation>
 <translation id="8344084848798035850">이번 달까지의 예상 수익</translation>
@@ -476,6 +484,7 @@
 <translation id="8092889639392847252">이 스폰서 배경 이미지를 보고 상금을 받으세요.</translation>
 <translation id="2542495049135486284">Brave (브레이브) 리워드를 다시 해 보시고 받으시는 대로 선행을 베푸세요!</translation>
 <translation id="53513464591392992">Brave 상금을 켜고 개인정보를 보호하는 광고를 시청하면 상금을 얻을 수 있습니다.</translation>
+<translation id="8463996294416161140">내 몫을 신청하려면 <ph name="PRODUCT_NAME"/>를 켜세요. <ph name="LINK_BEGIN"/>스폰서 이미지 숨기기<ph name="LINK_END"/>를 선택할 수도 있습니다.</translation>
 <translation id="8568666589217601917">정말 멋지네요!</translation>
 <translation id="764235488372037377">광고에서 받은 리워드가 여기 있습니다</translation>
 <translation id="7091215606170476659">Brave (브레이브)로부터 UGP 보조금이 있습니다.</translation>

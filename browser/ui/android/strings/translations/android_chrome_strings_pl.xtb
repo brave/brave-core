@@ -1,47 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="pl">
-<translation id="6910211073230771657">Usunięto</translation>
-<translation id="6965382102122355670">OK</translation>
-<translation id="5301954838959518834">Rozumiem</translation>
-<translation id="7658239707568436148">Anuluj</translation>
-<translation id="3479552764303398839">Nie teraz</translation>
-<translation id="5317780077021120954">Zapisz</translation>
-<translation id="4570913071927164677">Szczegóły</translation>
-<translation id="8730621377337864115">Gotowe</translation>
-<translation id="8261506727792406068">Usuń</translation>
-<translation id="1181037720776840403">Usuń</translation>
-<translation id="5939518447894949180">Resetuj</translation>
-<translation id="4002066346123236978">Tytuł</translation>
-<translation id="5916664084637901428">Włączone</translation>
-<translation id="5860033963881614850">Wyłączone</translation>
-<translation id="6165508094623778733">Więcej informacji</translation>
-<translation id="6042308850641462728">Więcej</translation>
-<translation id="6040143037577758943">Zamknij</translation>
-<translation id="780301667611848630">Nie, dziękuję</translation>
-<translation id="1201402288615127009">Dalej</translation>
-<translation id="2359808026110333948">Dalej</translation>
-<translation id="2653659639078652383">Prześlij</translation>
-<translation id="2079545284768500474">Cofnij</translation>
-<translation id="7649070708921625228">Pomoc</translation>
-<translation id="2148716181193084225">Dzisiaj</translation>
-<translation id="7781829728241885113">Wczoraj</translation>
-<translation id="6945221475159498467">Wybierz</translation>
-<translation id="7791543448312431591">Dodaj</translation>
-<translation id="6527303717912515753">Udostępnij</translation>
-<translation id="1383876407941801731">Szukaj</translation>
-<translation id="3115898365077584848">Pokaż informacje</translation>
-<translation id="3295602654194328831">Ukryj informacje</translation>
-<translation id="3987993985790029246">Kopiuj link</translation>
-<translation id="2704606927547763573">Skopiowane</translation>
-<translation id="8725066075913043281">Spróbuj ponownie</translation>
-<translation id="385051799172605136">Wstecz</translation>
-<translation id="8131740175452115882">Potwierdź</translation>
-<translation id="5300589172476337783">Pokaż</translation>
-<translation id="1124772482545689468">Użytkownik</translation>
-<translation id="8609465669617005112">W górę</translation>
-<translation id="6746124502594467657">W dół</translation>
-<translation id="8249310407154411074">Przenieś na początek</translation>
 <translation id="8428213095426709021">Ustawienia</translation>
 <translation id="2498359688066513246">Pomoc i opinie</translation>
 <translation id="8378714024927312812">Zarządzane przez Twoją organizację</translation>
@@ -159,7 +118,7 @@
 <translation id="6914783257214138813">Twoje hasła będą widoczne dla każdego, kto może zobaczyć wyeksportowany plik.</translation>
 <translation id="2321086116217818302">Przygotowuję hasła…</translation>
 <translation id="8445448999790540984">Nie można wyeksportować haseł</translation>
-<translation id="3066461326500799725">Dowiedz się, jak używać Dysku Brave Software</translation>
+<translation id="5139940364318403933">Dowiedz się, jak używać Dysku Brave Software</translation>
 <translation id="729975465115245577">Na urządzeniu nie ma aplikacji umożliwiającej zapisanie pliku z hasłami.</translation>
 <translation id="7682724950699840886">Skorzystaj z tych wskazówek: upewnij się, że masz wystarczająco dużo miejsca na urządzeniu, i ponownie spróbuj wyeksportować hasła.</translation>
 <translation id="1129510026454351943">Szczegóły: <ph name="ERROR_DESCRIPTION"/></translation>
@@ -169,6 +128,7 @@
 <translation id="230699814587342492">Hasła w Brave</translation>
 <translation id="6075798973483050474">Edytuj stronę główną</translation>
 <translation id="854522910157234410">Otwórz tę stronę</translation>
+<translation id="8127542551745560481">Edytuj stronę główną</translation>
 <translation id="2482878487686419369">Powiadomienia</translation>
 <translation id="6255999984061454636">Polecane treści</translation>
 <translation id="805047784848435650">Na podstawie Twojej historii przeglądania</translation>
@@ -184,12 +144,16 @@
 <translation id="1943176487615318915">Aby wykrywać niebezpieczne aplikacje i witryny, Brave wysyła do Brave Software adresy URL i część zawartości niektórych odwiedzanych przez Ciebie stron, a także niektóre informacje o systemie</translation>
 <translation id="3181954750937456830">Bezpieczne przeglądanie (chroni Ciebie i Twoje urządzenie przed niebezpiecznymi witrynami)</translation>
 <translation id="7315322926489145388">Gdy Twoje bezpieczeństwo jest zagrożone, wysyła do Brave Software adresy URL odwiedzanych stron</translation>
-<translation id="2063713494490388661">Kliknij, by wyszukać</translation>
-<translation id="2369463299479365221">Poznaj tematy w witrynach bez opuszczania strony. Funkcja Kliknij, by wyszukać kopiuje słowo wraz z kontekstem i wkleja je w wyszukiwarce Brave Software. Dzięki temu otrzymujesz definicje, grafiki, wyniki wyszukiwania i inne informacje.
+<translation id="3738139272394829648">Dotknij, by wyszukać</translation>
+<translation id="7865281998841143447">Poznaj tematy omawiane w witrynach, nie opuszczając strony. Funkcja „Dotknij, by wyszukać” wysyła słowo i najbliższy kontekst do wyszukiwarki Brave Software, a następnie zwraca definicje, zdjęcia, wyniki wyszukiwania i inne informacje.
 
-Jeśli chcesz dostosować wyszukiwane hasło, naciśnij je i przytrzymaj, by je zaznaczyć. Aby doprecyzować wyszukiwanie, przesuń panel do samej góry i kliknij pole wyszukiwania.</translation>
-<translation id="2930742481329940825">Funkcja Kliknij, by wyszukać wysyła zaznaczone słowo i bieżącą stronę jako kontekst do wyszukiwarki Brave Software. Możesz ją wyłączyć w <ph name="BEGIN_LINK"/>ustawieniach<ph name="END_LINK"/>.</translation>
+Kliknij dowolne słowo, by rozpocząć wyszukiwanie. Aby dostosować wyszukiwane słowo, przytrzymaj je. Aby doprecyzować wyszukiwanie, wysuń panel, kliknij ikonę rozwijania, by utworzyć nową kartę, a potem kliknij pole wyszukiwania.</translation>
+<translation id="3292859206215580147">Poznaj tematy omawiane w witrynach, nie opuszczając strony. Funkcja „Dotknij, by wyszukać” wysyła słowo i najbliższy kontekst do wyszukiwarki Brave Software, a następnie zwraca definicje, zdjęcia, wyniki wyszukiwania i inne informacje.
+
+Przytrzymaj dowolne słowo, by rozpocząć wyszukiwanie. Jeśli chcesz je doprecyzować, dostosuj zakres zaznaczenia. Możesz też wysunąć panel, kliknąć ikonę rozwijania, by utworzyć nową kartę, a potem kliknąć pole wyszukiwania.</translation>
+<translation id="6209156474097347789">Funkcja „Dotknij, by wyszukać” wysyła zaznaczone słowo i bieżącą stronę jako kontekst do wyszukiwarki Brave Software. Możesz ją wyłączyć w <ph name="BEGIN_LINK"/>ustawieniach<ph name="END_LINK"/>.</translation>
 <translation id="5039804452771397117">Zezwalaj</translation>
+<translation id="780301667611848630">Nie, dziękuję</translation>
 <translation id="1406000523432664303">„Bez śledzenia”</translation>
 <translation id="6232535412751077445">Włączenie opcji „Bez śledzenia” oznacza, że podczas przeglądania będzie wysyłane żądanie. Jego wynik zależy od tego, czy strona na nie odpowie oraz jak zostanie ono zinterpretowane.
 
@@ -242,6 +206,7 @@ Na stronie <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> na 
 <translation id="6295158916970320988">Wszystkie witryny</translation>
 <translation id="8380167699614421159">Na tej stronie wyświetlają się uciążliwe lub wprowadzające w błąd reklamy</translation>
 <translation id="1919345977826869612">Reklamy</translation>
+<translation id="3513704683820682405">Rzeczywistość rozszerzona</translation>
 <translation id="6447842834002726250">Pliki cookie</translation>
 <translation id="6196640612572343990">Blokuj pliki cookie innych firm</translation>
 <translation id="6782111308708962316">Nie pozwalaj witrynom innych firm zapisywać ani odczytywać danych z plików cookie</translation>
@@ -259,6 +224,7 @@ Na stronie <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> na 
 <translation id="5649053991847567735">Pobieranie automatyczne</translation>
 <translation id="6181444274883918285">Dodaj witrynę do wyjątków</translation>
 <translation id="5313967007315987356">Dodaj stronę</translation>
+<translation id="7791543448312431591">Dodaj</translation>
 <translation id="1369915414381695676">Strona <ph name="SITE_NAME"/> została dodana</translation>
 <translation id="2621115761605608342">Zezwól na użycie JavaScriptu w określonej witrynie.</translation>
 <translation id="8801436777607969138">Zablokuj JavaScript w określonej witrynie.</translation>
@@ -266,6 +232,7 @@ Na stronie <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> na 
 <translation id="358794129225322306">Zezwól stronie na automatyczne pobieranie wielu plików.</translation>
 <translation id="4008040567710660924">Zezwalaj na pliki cookie z określonej strony internetowej.</translation>
 <translation id="8958424370300090006">Blokuj pliki cookie z określonej strony internetowej.</translation>
+<translation id="2537296579376733324">Wszystkie pliki cookie, tylko w tej witrynie</translation>
 <translation id="7882806643839505685">Zezwalaj na dźwięk na określonej stronie.</translation>
 <translation id="4468959413250150279">Wycisz dźwięk na konkretnej stronie.</translation>
 <translation id="1994173015038366702">URL strony</translation>
@@ -292,8 +259,12 @@ Na stronie <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> na 
 <translation id="2107397443965016585">Pytaj, zanim pozwolisz stronom na odtwarzanie treści chronionej (zalecane)</translation>
 <translation id="2910701580606108292">Pytaj, zanim zezwolisz stronom na odtwarzanie treści chronionej</translation>
 <translation id="757524316907819857">Blokuj odtwarzanie treści chronionej na stronach</translation>
+<translation id="4935305910887312910">Pytaj, zanim zezwolisz stronom na śledzenie pozycji kamery lub mapowanie pomieszczenia (zalecane)</translation>
+<translation id="884828189055900810">Nie zezwalaj stronom na śledzenie pozycji kamery ani mapowanie pomieszczenia</translation>
 <translation id="5710871682236653961">Pytaj, zanim zezwolisz stronom na wysyłanie i odbieranie informacji po dotknięciu urządzeń z funkcją NFC (zalecane)</translation>
 <translation id="7572498721684305250">Nie zezwalaj stronom na wysyłanie i odbieranie informacji po dotknięciu urządzeń z funkcją NFC</translation>
+<translation id="3312292613668865961">Pytaj, zanim zezwolisz stronom na dostęp do urządzenia i danych rzeczywistości wirtualnej (zalecane)</translation>
+<translation id="8698438463325761328">Zablokuj wszystkim stronom dostęp do urządzenia i danych rzeczywistości wirtualnej</translation>
 <translation id="3277252321222022663">Zezwalaj stronom na dostęp do czujników (zalecane)</translation>
 <translation id="5048398596102334565">Zezwalaj stronom na dostęp do czujników ruchu (zalecane)</translation>
 <translation id="8816026460808729765">Blokuj stronom dostęp do czujników</translation>
@@ -325,7 +296,7 @@ Na stronie <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> na 
 <translation id="119944043368869598">Wyczyść wszystko</translation>
 <translation id="2490684707762498678">Zarządzane przez <ph name="APP_NAME"/></translation>
 <translation id="5516455585884385570">Otwórz ustawienia powiadomień</translation>
-<translation id="1404122904123200417">Umieszczone na <ph name="WEBSITE_URL"/></translation>
+<translation id="1242008676835033345">Umieszczono na <ph name="WEBSITE_URL"/></translation>
 <translation id="129382876167171263">W tym miejscu pojawiają się pliki zapisane przez witryny</translation>
 <translation id="4181841719683918333">Języki</translation>
 <translation id="2647434099613338025">Dodaj język</translation>
@@ -380,6 +351,7 @@ Na stronie <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> na 
 <translation id="4913161338056004800">Resetuj statystyki</translation>
 <translation id="1856325424225101786">Zresetować wersję uproszczoną?</translation>
 <translation id="3658159451045945436">Resetowanie usuwa historię oszczędzania danych, w tym listę odwiedzonych stron.</translation>
+<translation id="5939518447894949180">Resetuj</translation>
 <translation id="3295530008794733555">Szybsze przeglądanie. Mniejsze zużycie danych.</translation>
 <translation id="7340390500800578919">W wersji uproszczonej Brave szybciej ładuje strony, używając nawet o 60% mniej danych. Aby optymalizować strony, które odwiedzasz, Brave przesyła informacje o historii przeglądania do Brave Software. <ph name="BEGIN_LINK"/>Więcej informacji<ph name="END_LINK"/></translation>
 <translation id="4538018662093857852">Włącz wersję uproszczoną</translation>
@@ -443,9 +415,6 @@ Na stronie <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> na 
 <translation id="4256782883801055595">Licencje open source</translation>
 <translation id="1138681184697033370">Warunki korzystania z Brave</translation>
 <translation id="7392539049993970338">Informacje na temat ochrony prywatności w Brave</translation>
-<translation id="2677748264148917807">Wyjdź</translation>
-<translation id="5556459405103347317">Odśwież</translation>
-<translation id="1623104350909869708">Zapobiegaj wyświetlaniu dodatkowych okien dialogowych na tej stronie</translation>
 <translation id="2968755619301702150">Przeglądarka certyfikatów</translation>
 <translation id="1360432990279830238">Wylogować i wyłączyć synchronizację?</translation>
 <translation id="8581481290581777242">Usunąć dane Brave z tego urządzenia?</translation>
@@ -532,6 +501,7 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="7998918019931843664">Otwórz ponownie zamkniętą kartę</translation>
 <translation id="8853345339104747198">Karta <ph name="TAB_TITLE"/></translation>
 <translation id="4452411734226507615">Zamknij kartę <ph name="TAB_TITLE"/></translation>
+<translation id="6040143037577758943">Zamknij</translation>
 <translation id="7243308994586599757">Opcje dostępne u dołu ekranu</translation>
 <translation id="4060598801229743805">Opcje dostępne na górze ekranu</translation>
 <translation id="2810645512293415242">Uproszczona wersja strony pozwala szybciej zapisywać i wczytywać dane.</translation>
@@ -566,6 +536,7 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="4432792777822557199">Od teraz strony, których językiem jest <ph name="SOURCE_LANGUAGE"/>, będą tłumaczone na <ph name="TARGET_LANGUAGE"/></translation>
 <translation id="8339163506404995330">Strony, których językiem jest <ph name="LANGUAGE"/>, nie będą tłumaczone</translation>
 <translation id="5447765697759493033">Ta strona nie zostanie przetłumaczona</translation>
+<translation id="7658239707568436148">Anuluj</translation>
 <translation id="4880127995492972015">Przetłumacz…</translation>
 <translation id="641643625718530986">Drukuj…</translation>
 <translation id="8909135823018751308">Udostępnij…</translation>
@@ -599,6 +570,7 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="8073388330009372546">Otwórz grafikę w nowej karcie</translation>
 <translation id="6649642165559792194">Wyświetl podgląd obrazu <ph name="BEGIN_NEW"/>Nowość<ph name="END_NEW"/></translation>
 <translation id="3269093882174072735">Wczytaj obraz</translation>
+<translation id="6671495933530132209">Kopiuj grafikę</translation>
 <translation id="3845332215609790146">Szukaj z Obiektywem Brave Software <ph name="BEGIN_NEW"/>Nowość<ph name="END_NEW"/></translation>
 <translation id="5578795271662203820">Szukaj tej grafiki w <ph name="SEARCH_ENGINE"/></translation>
 <translation id="3384347053049321195">Udostępnij zdjęcie</translation>
@@ -606,6 +578,7 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="6475951671322991020">Pobierz film</translation>
 <translation id="2317945146070194624">Otwórz w nowej karcie Brave</translation>
 <translation id="7975379999046275268">Wyświetl podgląd strony <ph name="BEGIN_NEW"/>Nowość<ph name="END_NEW"/></translation>
+<translation id="2012973609889389923">Szybka witryna</translation>
 <translation id="6112702117600201073">Odświeżam stronę</translation>
 <translation id="6990079615885386641">Pobierz aplikację ze sklepu Brave Software Play: <ph name="APP_ACTION"/></translation>
 <translation id="2414886740292270097">Ciemny</translation>
@@ -615,8 +588,6 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="5016205925109358554">Szeryfowa</translation>
 <translation id="2593272815202181319">Stała szerokość znaków</translation>
 <translation id="9206873250291191720">A</translation>
-<translation id="654446541061731451">Wybierz kartę do przesłania</translation>
-<translation id="8719023831149562936">Nie można przesłać bieżącej karty</translation>
 <translation id="2139186145475833000">Dodaj do ekranu głównego</translation>
 <translation id="4616150815774728855">Otwórz <ph name="WEBAPK_NAME"/></translation>
 <translation id="2122601567107267586">Nie udało się otworzyć aplikacji</translation>
@@ -702,6 +673,7 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="3616113530831147358">Dźwięk</translation>
 <translation id="9219103736887031265">Grafika</translation>
 <translation id="656065428026159829">Pokaż więcej</translation>
+<translation id="6042308850641462728">Więcej</translation>
 <translation id="8250920743982581267">Dokumenty</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# plik}few{# pliki}many{# plików}other{# pliku}}</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{# obraz}few{# obrazy}many{# obrazów}other{# obrazu}}</translation>
@@ -792,15 +764,11 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="7542481630195938534">Nie można uzyskać sugestii</translation>
 <translation id="5013696553129441713">Brak nowych sugestii</translation>
 <translation id="7444811645081526538">Więcej kategorii</translation>
-<translation id="6709133671862442373">Wiadomości</translation>
-<translation id="1264974993859112054">Sport</translation>
-<translation id="9139318394846604261">Zakupy</translation>
 <translation id="3912508018559818924">Szukam najlepszych treści w internecie…</translation>
 <translation id="526421993248218238">Nie udało się wczytać tej strony</translation>
 <translation id="614940544461990577">Wypróbuj te rozwiązania:</translation>
 <translation id="3288003805934695103">Odśwież stronę</translation>
 <translation id="2353636109065292463">Sprawdzanie połączenia z internetem</translation>
-<translation id="2858138569776157458">Popularne</translation>
 <translation id="8364299278605033898">Zobacz najpopularniejsze strony</translation>
 <translation id="1171770572613082465">Zobacz najpopularniejsze strony, klikając przycisk „Popularne”</translation>
 <translation id="5233638681132016545">Nowa karta</translation>
@@ -834,8 +802,10 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="4452548195519783679">Utworzono zakładkę w folderze <ph name="FOLDER_NAME"/></translation>
 <translation id="8063895661287329888">Nie udało się dodać zakładki.</translation>
 <translation id="2842985007712546952">Folder nadrzędny</translation>
+<translation id="6945221475159498467">Wybierz</translation>
 <translation id="9065203028668620118">Edytuj</translation>
 <translation id="4405224443901389797">Przenieś do…</translation>
+<translation id="8261506727792406068">Usuń</translation>
 <translation id="5170568018924773124">Pokaż w folderze</translation>
 <translation id="8035133914807600019">Nowy folder…</translation>
 <translation id="4532845899244822526">Wybierz folder</translation>
@@ -871,16 +841,14 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="1113597929977215864">Pokaż widok uproszczony</translation>
 <translation id="1513352483775369820">Zakładki i historia online</translation>
 <translation id="4939482511480190003">Pomóż w ulepszaniu Brave. <ph name="BEGIN_LINK"/>Wypełnij ankietę<ph name="END_LINK"/></translation>
-<translation id="2501278716633472235">Wróć</translation>
-<translation id="5596627076506792578">Więcej opcji</translation>
 <translation id="3522247891732774234">Dostępna jest aktualizacja. Więcej opcji</translation>
 <translation id="6773423637732432200">Nie udało się zaktualizować Brave. Więcej opcji</translation>
+<translation id="1383876407941801731">Szukaj</translation>
 <translation id="3328801116991980348">Informacje o witrynie</translation>
 <translation id="5391532827096253100">Twoje połączenie z tą witryną nie jest bezpieczne. Informacje o witrynie</translation>
 <translation id="6206551242102657620">Połączenie jest bezpieczne. Informacje o witrynie</translation>
 <translation id="6963642900430330478">Ta strona jest niebezpieczna. Informacje o witrynie</translation>
 <translation id="9070377983101773829">Rozpocznij wyszukiwanie głosowe</translation>
-<translation id="8676374126336081632">Wyczyść wpisany tekst</translation>
 <translation id="4968908871398201967">Tryb prywatny</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> otwarta karta. Kliknij, by przełączyć się między kartami}few{<ph name="OPEN_TABS_MANY"/> otwarte karty. Kliknij, by przełączyć się między kartami}many{<ph name="OPEN_TABS_MANY"/> otwartych kart. Kliknij, by przełączyć się między kartami}other{<ph name="OPEN_TABS_MANY"/> otwartej karty. Kliknij, by przełączyć się między kartami}}</translation>
 <translation id="2369533728426058518">otwarte karty</translation>
@@ -888,6 +856,7 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="932327136139879170">Strona główna</translation>
 <translation id="2707726405694321444">Odśwież stronę</translation>
 <translation id="2891154217021530873">Zatrzymaj wczytywanie strony</translation>
+<translation id="1201402288615127009">Dalej</translation>
 <translation id="6710213216561001401">Wstecz</translation>
 <translation id="9080642952018487277">Włącz tryb prywatny</translation>
 <translation id="4883379392681899581">Opuść tryb prywatny</translation>
@@ -896,18 +865,12 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="3377025655491224618">Karta prywatna</translation>
 <translation id="584427517463557805">Wybrane karty prywatne</translation>
 <translation id="2268044343513325586">Zawęź</translation>
-<translation id="7846076177841592234">Anuluj wybór</translation>
-<translation id="6216432067784365534"><ph name="NAME_OF_LIST_ITEM"/> – opcje</translation>
-<translation id="7087918508125750058">Wybrano <ph name="ITEM_COUNT"/>. Opcje dostępne na górze ekranu</translation>
-<translation id="7250468141469952378">Wybrano <ph name="ITEM_COUNT"/></translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{Udostępnij 1 wybrany element}few{Udostępnij # wybrane elementy}many{Udostępnij # wybranych elementów}other{Udostępnij # wybranego elementu}}</translation>
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Usuń 1 wybrany element}few{Usuń # wybrane elementy}many{Usuń # wybranych elementów}other{Usuń # wybranego elementu}}</translation>
 <translation id="1283039547216852943">Kliknij, by rozwinąć</translation>
 <translation id="5962718611393537961">Kliknij, by zwinąć</translation>
 <translation id="3123734510202723619">Komunikaty</translation>
 <translation id="8076492880354921740">Karty</translation>
-<translation id="7066151586745993502">{NUM_SELECTED,plural, =1{Wybrano 1}few{Wybrano #}many{Wybrano #}other{Wybrano #}}</translation>
-<translation id="6818926723028410516">Wybierz elementy</translation>
 <translation id="4797039098279997504">Kliknij, by wrócić na <ph name="URL_OF_THE_CURRENT_TAB"/></translation>
 <translation id="6766758767654711248">Kliknij, by przejść do strony</translation>
 <translation id="429312253194641664">Strona odtwarza multimedia</translation>
@@ -1024,13 +987,12 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="1875543012935658554">Uruchom ponownie Brave.</translation>
 <translation id="79859296434321399">Aby oglądać treści rzeczywistości rozszerzonej, zainstaluj ARCore</translation>
 <translation id="8558485628462305855">Aby oglądać treści rzeczywistości rozszerzonej, zaktualizuj ARCore</translation>
-<translation id="3513704683820682405">Rzeczywistość rozszerzona</translation>
-<translation id="5475862044948910901">Rozpocząć sesję rzeczywistości rozszerzonej?</translation>
-<translation id="7365126855094612066">W czasie trwania sesji strona będzie mogła:
-• tworzyć mapę 3D Twojego otoczenia,
+<translation id="6410973561433500075">Włączyć tryb AR z domeny <ph name="DOMAIN"/>?</translation>
+<translation id="3849365399446680203">Gdy włączysz tryb AR, ta strona będzie mogła:
+• tworzyć mapę 3D Twojego otoczenia,
 • śledzić ruch kamery.
 
-Witryna NIE uzyskuje dostępu do kamery. Tylko Ty widzisz rejestrowany obraz.</translation>
+Obraz z kamery będziesz widzieć tylko Ty. Strona nie będzie mieć do niego dostępu.</translation>
 <translation id="1188239144602654184">Włącz AR</translation>
 <translation id="473775607612524610">Aktualizuj</translation>
 <translation id="3133489217401741157">Instaluję moduł <ph name="MODULE"/> do Brave…</translation>
@@ -1098,6 +1060,7 @@ Witryna NIE uzyskuje dostępu do kamery. Tylko Ty widzisz rejestrowany obraz.</t
 <translation id="723171743924126238">Wybierz zdjęcia</translation>
 <translation id="8751914237388039244">Wybierz obraz</translation>
 <translation id="1989112275319619282">Przeglądaj</translation>
+<translation id="8921772741368021346"><ph name="POSITION"/>/<ph name="DURATION"/></translation>
 <translation id="7055152154916055070">Zablokowano przekierowanie:</translation>
 <translation id="5524843473235508879">Przekierowanie zostało zablokowane.</translation>
 <translation id="6573096386450695060">Zawsze zezwalaj</translation>
@@ -1106,6 +1069,7 @@ Witryna NIE uzyskuje dostępu do kamery. Tylko Ty widzisz rejestrowany obraz.</t
 <translation id="9137013805542155359">Pokaż tekst oryginalny</translation>
 <translation id="6361779936989026201">Asystent Brave Software w Brave</translation>
 <translation id="7291387454912369099">Płatność przez Asystenta</translation>
+<translation id="9037412730408024068">Aby pomóc Ci w wykonywaniu zadań, Brave Software będzie otrzymywać adresy URL i zawartość stron, na których używasz Asystenta, a także informacje, które przekazujesz za pomocą Asystenta</translation>
 <translation id="4565206163201411670">Pokazywać Twoją aktywność w Brave w Cyfrowej równowadze?</translation>
 <translation id="9055113864158719823">Możesz wyświetlić strony otwierane w Brave i ustawić dla nich liczniki czasu.\n\nBrave Software otrzymuje informacje o stronach, dla których masz ustawione liczniki czasu, i o tym, jak długo je przeglądasz. Używamy tych informacji do udoskonalania Cyfrowej równowagi.</translation>
 <translation id="4596514158372210596">Usuwa Twoją aktywność w Brave z Cyfrowej równowagi</translation>
@@ -1121,10 +1085,20 @@ Witryna NIE uzyskuje dostępu do kamery. Tylko Ty widzisz rejestrowany obraz.</t
 <translation id="246532703174860178">Udostępnij</translation>
 <translation id="2517472476991765520">Skanuj</translation>
 <translation id="8628973420740315031">Aby udostępniać pliki użytkownikom w pobliżu, pozwól im zeskanować ten kod QR</translation>
+<translation id="3987993985790029246">Kopiuj link</translation>
+<translation id="4250229828105606438">Zrzut ekranu</translation>
+<translation id="6201345951596836663">Link został skopiowany</translation>
+<translation id="6597891566292541626">Umieść kod QR lub kod kreskowy w tej ramce.</translation>
+<translation id="3140134512074889489">Włącz kamerę, by zeskanować kod QR</translation>
+<translation id="2359808026110333948">Dalej</translation>
 <translation id="7339921667754113786">Platforma powiadomień Brave Software</translation>
 <translation id="8516012719330875537">Edytor obrazów</translation>
+<translation id="6092062101542170135">Aby kontynuować, włącz NFC w ustawieniach Androida</translation>
+<translation id="5860491529813859533">Włącz</translation>
+<translation id="8926666909099850184">Funkcja NFC na tym urządzeniu jest wyłączona. Włącz ją w <ph name="BEGIN_LINK"/>Ustawieniach Androida<ph name="END_LINK"/>.</translation>
 <translation id="4808319664292298116">Włączyć tryb VR z domeny <ph name="DOMAIN"/>?</translation>
 <translation id="4353114845960720315">Gdy używasz VR, strona może poznać te informacje:</translation>
-<translation id="118069123878619799">– Twoje cechy fizyczne, np wzrost;</translation>
-<translation id="5819762621475381970">– układ Twojego pokoju.</translation>
+<translation id="4574741712540401491">• <ph name="LIST_ITEM_TEXT"/></translation>
+<translation id="2099625543891475722">Twoje cechy fizyczne, np. wzrost;</translation>
+<translation id="4660838440047236328">układ Twojego pokoju.</translation>
 </translationbundle>

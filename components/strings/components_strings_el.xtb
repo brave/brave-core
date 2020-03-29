@@ -112,7 +112,6 @@
 <translation id="981121421437150478">Εκτός σύνδεσης</translation>
 <translation id="5171045022955879922">Αναζήτηση ή πληκτρολόγηση διεύθυνσης URL</translation>
 <translation id="803771048473350947">Αρχείο</translation>
-<translation id="6268185425799226387">Brave Software Drive</translation>
 <translation id="2982481275546140226">Καθαρισμός Δεδομένων</translation>
 <translation id="8425213833346101688">Αλλαγή</translation>
 <translation id="8009225694047762179">Διαχείριση Κωδικός πρόσβασης</translation>
@@ -141,6 +140,8 @@
 <translation id="2215727959747642672">Επεξεργασία αρχείου</translation>
 <translation id="6545864417968258051">Σάρωση Bluetooth</translation>
 <translation id="534295439873310000">Συσκευές NFC</translation>
+<translation id="4943703118917034429">Εικονική πραγματικότητα</translation>
+<translation id="3513704683820682405">Επαυξημένη πραγματικότητα</translation>
 <translation id="5039804452771397117">Αποδοχή</translation>
 <translation id="7053983685419859001">Φραγή</translation>
 <translation id="57838592816432529">Σίγαση</translation>
@@ -194,8 +195,8 @@
 <translation id="5565735124758917034">Ενεργό</translation>
 <translation id="7805768142964895445">Κατάσταση</translation>
 <translation id="6915804003454593391">Χρήστης</translation>
-<translation id="5916664084637901428">Ενεργό</translation>
-<translation id="5860033963881614850">Ανενεργό</translation>
+<translation id="5921185718311485855">Ενεργό</translation>
+<translation id="1019413721762100891">Ανενεργό</translation>
 <translation id="7961015016161918242">Ποτέ</translation>
 <translation id="8294431847097064396">Πηγή</translation>
 <translation id="1056898198331236512">Προειδοποίηση</translation>
@@ -205,7 +206,6 @@
 <translation id="6965978654500191972">Συσκευή</translation>
 <translation id="4728558894243024398">Πλατφόρμα</translation>
 <translation id="2380886658946992094">Νόμιμος</translation>
-<translation id="5939847200023027600">Υπηρεσία δημιουργίας PDF</translation>
 <translation id="1588438908519853928">Κανονική λειτουργία</translation>
 <translation id="1974060860693918893">Σύνθετες</translation>
 <translation id="5308380583665731573">Σύνδεση</translation>

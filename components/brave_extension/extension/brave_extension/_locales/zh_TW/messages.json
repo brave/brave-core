@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "已封鎖跨站裝置識別",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "跨站指紋已封鎖",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "已封鎖裝置識別嘗試",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "已封鎖指紋嘗試",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "已允許所有裝置識別嘗試",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "已允許所有指紋嘗試",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "嘗試識別裝置",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "指紋嘗試",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "此網站的 scripts",

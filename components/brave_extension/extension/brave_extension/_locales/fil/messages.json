@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Na-block ang cross-site na pagkilala sa device",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "Na-block ang cross-site na pag-fingerprint",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Na-block ang mga pagtangkang kilalanin ang device",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "Na-block ang mga pagsubok na mag-fingerprint",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Pinapayagan ang lahat ng pagtangkang kilalanin ang device",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "Pinapayagan ang lahat ng pagsubok na mag-fingerprint",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Mga pagtangkang kilalanin ang device",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "Mga pagsubok na mag-fingerprint",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "Mga script sa site na ito",

@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Η μεταξύ ιστοτόπων αναγνώριση συσκευής αποκλείστηκε",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "Η διατοποθεσιακή αποτύπωση αποκλείστηκε",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Οι προσπάθειες αναγνώρισης συσκευής αποκλείστηκαν",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "Εμποδίστηκαν προσπάθειες αποτύπωσης",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Όλες οι προσπάθειες αναγνώρισης συσκευής επιτρέπονται",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "Επιτρέπονται όλες οι προσπάθειες αποτύπωσης",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Προσπάθειες αναγνώρισης συσκευής",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "Προσπάθειες αποτύπωσης",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "Scripts σε αυτή την ιστοσελίδα",

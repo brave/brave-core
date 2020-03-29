@@ -56,7 +56,7 @@
     "description": "Message for the scripts blocked row label"
   },
   "connectionsUpgradedHTTPS": {
-    "message": "Подключения обновлены до HTTPS",
+    "message": "Подключение по HTTPS",
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
   "connectionUpgradedHTTPS": {
@@ -68,7 +68,7 @@
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "Сторонние трекеры заблокированы",
+    "message": "Сторонние cookies заблокированы",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Сторонние отпечатки заблокированы",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "Межсайтовый фингерпринтинг заблокирован",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Цифровые отпечатки заблокированы",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "Попытки фингерпринтинга заблокированы",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Цифровые отпечатки разрешены",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "Все попытки фингерпринтинга разрешены",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Попыток распознавания устройства",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "Попытки фингерпринтинга",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "Скриптов на данном сайте",

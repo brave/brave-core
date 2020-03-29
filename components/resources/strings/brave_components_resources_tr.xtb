@@ -4,6 +4,7 @@
 <translation id="4339730410920731698">Reklamlar ve İz Sürücüler Engellendi</translation>
 <translation id="2313532038420432247">HTTPS Yükseltmeleri</translation>
 <translation id="7679428712334662192">Tahmini Tasarruf Zamanı</translation>
+<translation id="8411095021655121794">Tahmini Bant Genişliği Kaydedildi</translation>
 <translation id="5206618227023752085">En iyi site kaldırıldı.</translation>
 <translation id="2079545284768500474">Geri al</translation>
 <translation id="6040143037577758943">Kapat</translation>
@@ -16,13 +17,17 @@
 <translation id="8344569602005188545">saatler</translation>
 <translation id="7100907433458266664">gün</translation>
 <translation id="4971389353431353387">günler</translation>
+<translation id="2116364690062294218">B</translation>
+<translation id="3123243061080120667">KB</translation>
+<translation id="977224059380370527">MB</translation>
+<translation id="8776285424728638733">GB</translation>
 <translation id="8427933533533814946">Fotoğraf sahibi</translation>
 <translation id="7108338896283013870">Gizle</translation>
 <translation id="7115515527894388910">Tercih Ekle</translation>
 <translation id="7606029853066610626">Yer İşaretlerini Görüntüleyin ve Yönetin</translation>
 <translation id="5550994254534676787">Tarayıcı geçmişinizi görüntüleyin</translation>
 <translation id="1742484101357469636">Kontrol Paneli Ayarları</translation>
-<translation id="5783793537552649286">Arka Plan Görselini Göster</translation>
+<translation id="5783793537552649286">Arka Plan Resmini Göster</translation>
 <translation id="7275773481201277457">Brave İstatistiklerini Göster</translation>
 <translation id="6836061097810262923">Saati Göster</translation>
 <translation id="8643377320501056697">En Popüler Siteleri Göster</translation>
@@ -84,11 +89,9 @@
 <translation id="7954950242989581218">Sağ salim tarayın</translation>
 <translation id="2188651882929633653">Brave Shields, çoğu reklam dâhil olmak üzere sizi webde izlemeye çalışan sinsi şeyleri engeller. Bir site çalışmıyor gibi görünüyorsa, Shields'ı aşağı olarak ayarlayın. Brave, belirli özelliklerin genel kullanımını tahmin etmek için <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>tamamıyla gizli ürün analizi<ph name="END_LINK_P3A">&lt;/a&gt;</ph> kullanır. Bunu <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Ayarlar<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>'da kapatabilirsiniz.</translation>
 <translation id="1919345977826869612">Reklamlar</translation>
-<translation id="2364310432103707426">Brave ads'e bakarak {{currency}} kazan. Reklamlar, tarama davranışınızdan çıkarsanan ilgileriniz temel alınarak sunulur. Hiçbir kişisel veri veya tarama geçmişi asla tarayıcınızı terk etmez.</translation>
+<translation id="2128226640852355533">Brave Ads'i görüntüleyerek {{currency}} kazanın. Gösterilen reklamlar, tarama davranışınızdan esinlenilerek ilgi alanlarınıza göredir. Tarayıcınızdan hiçbir kişisel veri ya da tarama geçmişi alınmaz.</translation>
 <translation id="6112368337882254910">Otomatik-Katkı</translation>
 <translation id="3742599705619405136">Yayıncıları ve içerik oluşturucuları desteklemenin otomatik bir yolu. Aylık bir ödeme ayarlayın ve normal şekilde gezinin. Ziyaret ettiğiniz Brave Verified siteleri, Brave tarafından ölçülen ilginize bağlı olarak katkılarınızı otomatik olarak alır.</translation>
-<translation id="8949527283651381130">Reklam dönüştürme algılamasına izin ver</translation>
-<translation id="2184191362610545393">Bu, bu tarayıcıda bir reklama yanıt geldiğini isim vermeden Brave'e bildirecek. Bunu etkinleştirmek kazançları artıracaktır.</translation>
 <translation id="20281847067919078">Beklemedeki tahmini ödüller</translation>
 <translation id="8593551638387217772">Sonraki ödeme tarihi</translation>
 <translation id="319209088187794725">Bu ay alınan reklam bildirimleri</translation>
@@ -195,7 +198,7 @@
 <translation id="1642443162274867084">Cüzdan yaratıldı</translation>
 <translation id="5094577350232361255">hakkında</translation>
 <translation id="4918086044614829423">Kabul et</translation>
-<translation id="6832986780040139899">Brave Yazılım. Brave, Brave Yazılımın tescil edilmiş markasıdır. Site isimleri site sahibinin markası veya tescil edilmiş markası olabilir.</translation>
+<translation id="5916290544882167205">Brave Software. Brave, Brave Software'in tescilli bir markasıdır. Site isimleri marka ya da site sahibinin tescilli markası olabilir.</translation>
 <translation id="9026369588205476247">Gizliliğinizi korumak için bu Brave Ödülleri açıklaması cihazınızdan başka hiçbir yere (bu bilgisayar) kaydedilmedi, dosyalanmadı ya da listelenmedi. Cihazınızda veri kaybı yaşanması halinde Brave üzerinden geri getirilemez.</translation>
 <translation id="1036277985068412734">para ekle</translation>
 <translation id="3587482841069643663">Tümü</translation>
@@ -204,6 +207,7 @@
 <translation id="2631006050119455616">Kaydedildi</translation>
 <translation id="2155330833364281539">Geçtiğimiz {{totalDays}} gün içinde aldığınız reklamlartediğini sorun.</translation>
 <translation id="8863685593846905344">Reklam geçmişi</translation>
+<translation id="2777306694585938662">Reklam ödülleri alındı</translation>
 <translation id="5212777575344695266">Uygunsuz Olarak İşaretle</translation>
 <translation id="2111256234277361810">Uygunsuz Olarak İşaretle ✓</translation>
 <translation id="8988332871810963281">Şu anda hiçbir Brave Reklam geçmişi yok</translation>
@@ -313,9 +317,8 @@
 <translation id="6381574025952123568">Açılış Bilançosu</translation>
 <translation id="532275381857891532">7 günlük reklam geçmişi</translation>
 <translation id="4923459931733593730">Ödeme</translation>
-<translation id="4021593982164260556">Ödeme her ayın {{day}}. günü yapılır.</translation>
+<translation id="5693657857413982604">Ödeme her ayın {{day}}. günü yapılır.</translation>
 <translation id="6104680658798556671">Ödeme yapılmadı.</translation>
-<translation id="2834888581291358924">Bakineniz Auto-Contribute ve aylık bağışlarınızın toplam tutarını karşılamak için yeterli değilse, bu ödemeler bu dönem için es geçilir.</translation>
 <translation id="3138528956349114724">Sabitlenmiş siteler şu anda</translation>
 <translation id="2337632028350283479">Aylık bağışlar şu şekilde çalışır:</translation>
 <translation id="6457273203091513039">Aylık bağışlarınız Auto-Contribute ödemelerinizden gelmez. Onlar ayrıdır.</translation>
@@ -388,6 +391,7 @@
 <translation id="4588241643143931775">Bitcoin (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
 <translation id="8746837129291133068">Litecoin (LTC)</translation>
+<translation id="6367285596431004439">Token bağışı alındı</translation>
 <translation id="9212459913845238740">Alınan Puan Bağışları</translation>
 <translation id="768850953428043522">puanlar</translation>
 <translation id="3043542281656021374">Puan</translation>
@@ -463,6 +467,10 @@
 <translation id="4569155249847375786">Doğrulandı</translation>
 <translation id="8465442795593991224">Onaylama, talep ettiğiniz hizmetlere bağlı olarak kimliğinizi doğrulamanızı gerektirebilir.</translation>
 <translation id="723054503945711909">Brave Software Inc. onlarla bir hesap oluştururken, onaylama için verdiğiniz kişisel bilgilerin hiçbirini işlemez, saklamaz veya erişemez.</translation>
+<translation id="7404779623219601861">Hediye Kartları için BAT Kullanın</translation>
+<translation id="6215565499749144110">TAP Ağı ile, BAT'nizi popüler isim yapmış markalı hediye kartları için kullanabilirsiniz.</translation>
+<translation id="526152301446370337">TAP'yi ziyaret edin.</translation>
+<translation id="6915065518766963119">* Uphold Doğrulaması Gerekir</translation>
 <translation id="4360054110030715117">Brave Rewards hakkında <ph name="LINK_BEGIN"/>daha fazla öğren<ph name="LINK_END"/>.</translation>
 <translation id="5826706758731195747">Rewards'u açarak <ph name="LINK_BEGIN"/>Hizmet Şartlarını<ph name="LINK_END"/> kabul edersiniz.</translation>
 <translation id="8344084848798035850">Bu ay şu ana kadarki tahmini kazanç</translation>
@@ -476,6 +484,7 @@
 <translation id="8092889639392847252">Bu sponsorlu arka plan görseline bakmak için para alın.</translation>
 <translation id="2542495049135486284">Brave Ödüller'i tekrar deneyin ve kazandıkça bağışta bulunun!</translation>
 <translation id="53513464591392992">Brave Rewards'u aç ve gizliliğe saygı duyan reklamlara bakarak para kazan.</translation>
+<translation id="8463996294416161140">Payınızı talep etmek için <ph name="PRODUCT_NAME"/> 'ı etkinleştirin. Ayrıca <ph name="LINK_BEGIN"/>sponsorlu resimleri gizlemeyi<ph name="LINK_END"/> de seçebilirsiniz.</translation>
 <translation id="8568666589217601917">Tebrikler!</translation>
 <translation id="764235488372037377">Reklamlardan aldığınız ödül burada</translation>
 <translation id="7091215606170476659">Brave'den bir UGP bağışınız var.</translation>

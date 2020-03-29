@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Recunoașterea dispozitivului inter-site-uri este blocată",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "Amprentarea între site-uri a fost blocată",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Încercările de recunoaștere a dispozitivului sunt blocate",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "Blocare încercări de amprentare",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Toate încercările de recunoaștere a dispozitivului sunt permise",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "Toate încercările de amprentare sunt permise",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Încercări recunoaștere dispozitiv",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "Încercări de amprentare",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "Scripturi pe acest site",

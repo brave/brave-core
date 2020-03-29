@@ -4,6 +4,7 @@
 <translation id="4339730410920731698">Blokirani oglasi i elementi za praćenje</translation>
 <translation id="2313532038420432247">Nadogradnje HTTPS-a</translation>
 <translation id="7679428712334662192">Procjena ušteđenog vremena</translation>
+<translation id="8411095021655121794">Spremljena procjena širine raspona</translation>
 <translation id="5206618227023752085">Uklonjeno je mrežno mjesto s vrha.</translation>
 <translation id="2079545284768500474">Poništi</translation>
 <translation id="6040143037577758943">Zatvori</translation>
@@ -16,6 +17,10 @@
 <translation id="8344569602005188545">sati</translation>
 <translation id="7100907433458266664">dan</translation>
 <translation id="4971389353431353387">dani</translation>
+<translation id="2116364690062294218">B</translation>
+<translation id="3123243061080120667">KB</translation>
+<translation id="977224059380370527">MB</translation>
+<translation id="8776285424728638733">GB</translation>
 <translation id="8427933533533814946">Vlasnik fotografije</translation>
 <translation id="7108338896283013870">Sakrij preglednik</translation>
 <translation id="7115515527894388910">Uredi postavke</translation>
@@ -84,11 +89,9 @@
 <translation id="7954950242989581218">Sigurno pretraživanje</translation>
 <translation id="2188651882929633653">Štitom se Brave blokiraju neželjene stvari kojima se pokušava pratiti vaše pretraživanje interneta uključujući većinom oglase. Postavite Štitove prema “dolje” ako se čini da mrežno mjesto ne radi. Brave upotrebljava <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>u potpunosti privatno analiziranje proizvoda<ph name="END_LINK_P3A">&lt;/a&gt;</ph> kako bi se procijenilo ukupno korištenje određenim značajkama. Možete isključiti ovu značajku u stavci <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Postavke<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Oglasi</translation>
-<translation id="2364310432103707426">Zaradite {{currency}} gledanjem Brave Ads. Prikazani oglasi temelje se na vašim interesima, pretpostavljenima na temelju vašeg ponašanja pri pregledavanju. Osobni podatci i povijest pregledavanja nikad ne napuštaju vaš preglednik.</translation>
+<translation id="2128226640852355533">Zaradite {{currency}} gledanjem oglasa Brave. Prikazani oglasi temelje se na vašim interesima, pretpostavljenima na temelju vašeg ponašanja pri pregledavanju. Osobni podatci i povijest pregledavanja nikad ne napuštaju vaš preglednik.</translation>
 <translation id="6112368337882254910">Automatski doprinosi</translation>
 <translation id="3742599705619405136">Automatski način za pružanje podrške izdavačima i stvarateljima sadržaja. Postavite mjesečno plaćanje i nastavite uobičajeno pregledavati internet. Provjerena mrežna mjesta Brave koje posjetite automatski primaju vaše doprinose na temelju pažnje koju posvećujete, a koja se mjeri preglednikom Brave.</translation>
-<translation id="8949527283651381130">Dopusti otkrivanje konverzije oglasa</translation>
-<translation id="2184191362610545393">Ovom se radnjom omogućava pregledniku Brave očitavanje da postoji odaziv na oglas u ovom pregledniku. Omogućavanjem se ove značajke povećava zarada.</translation>
 <translation id="20281847067919078">Procijenjene nagrade na čekanju</translation>
 <translation id="8593551638387217772">Sljedeći datum plaćanja</translation>
 <translation id="319209088187794725">Primljene obavijesti oglasa ovog mjeseca</translation>
@@ -195,7 +198,7 @@
 <translation id="1642443162274867084">Stvoreni novčanik</translation>
 <translation id="5094577350232361255">opis</translation>
 <translation id="4918086044614829423">Prihvati</translation>
-<translation id="6832986780040139899">©2016 –2018 Brave Software. Brave je registrirani zaštitni znak tvrtke Brave Software. Nazivi mrežnih mjesta mogu biti zaštitni znakovi ili registrirani zaštitni znakovi vlasnika tih mjesta.</translation>
+<translation id="5916290544882167205">Brave Software. Brave je registrirani zaštitni znak poduzeća Brave Software. Nazivi mrežnih mjesta mogu biti zaštitni znakovi ili registrirani zaštitni znakovi vlasnika tih mjesta.</translation>
 <translation id="9026369588205476247">Radi zaštite vaše privatnosti ova izjava o sustavu nagrada u pregledniku Brave ne sprema se, ne zapisuje niti evidentira nigdje osim na vašem uređaju (ovo računalo). Ne može se dohvatiti iz preglednika Brave u slučaju gubitka podataka s vašeg uređaja.</translation>
 <translation id="1036277985068412734">dodaj sredstva</translation>
 <translation id="3587482841069643663">Sve</translation>
@@ -204,6 +207,7 @@
 <translation id="2631006050119455616">Spremljeno</translation>
 <translation id="2155330833364281539">Broj oglasa koje ste primili u posljednja/ih {{totalDays}} dana</translation>
 <translation id="8863685593846905344">Povijest oglasa</translation>
+<translation id="2777306694585938662">Primljene nagrade za oglase</translation>
 <translation id="5212777575344695266">Označi kao neprikladno</translation>
 <translation id="2111256234277361810">Označi kao neprikladno ✓</translation>
 <translation id="8988332871810963281">Trenutačno nema povijest oglasa Brave</translation>
@@ -313,9 +317,8 @@
 <translation id="6381574025952123568">Početno stanje</translation>
 <translation id="532275381857891532">Sedmodnevna povijest oglasa</translation>
 <translation id="4923459931733593730">Plaćanje</translation>
-<translation id="4021593982164260556">Plaćanje s izvršava {{day}}. dana svakog mjeseca.</translation>
+<translation id="5693657857413982604">Plaćanje se obavlja svakog {{day}} dana u mjesecu.</translation>
 <translation id="6104680658798556671">Plaćanje nije izvršeno.</translation>
-<translation id="2834888581291358924">Kada stanje vaših raspoloživih sredstava nije dovoljno za plaćanje ukupnog iznosa automatskih i ponavljajućih doprinosa, ta se plaćanja preskaču za ovo razdoblje.</translation>
 <translation id="3138528956349114724">Prikvačena mrežna mjesta sada su</translation>
 <translation id="2337632028350283479">Ovako funkcioniraju mjesečni doprinosi:</translation>
 <translation id="6457273203091513039">Mjesečni doprinosi ne uzimaju se iz vaše uplate automatskog doprinosa. Te su uplate odvojene.</translation>
@@ -388,6 +391,7 @@
 <translation id="4588241643143931775">Bitcoin (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
 <translation id="8746837129291133068">Litecoin (LTC)</translation>
+<translation id="6367285596431004439">Primljeno odobrenje za token</translation>
 <translation id="9212459913845238740">Zatražena odobrenja za bodove</translation>
 <translation id="768850953428043522">bodovi</translation>
 <translation id="3043542281656021374">Bod</translation>
@@ -463,6 +467,10 @@
 <translation id="4569155249847375786">Provjereno</translation>
 <translation id="8465442795593991224">Uslugom se Uphold može zahtijevati provjera vašeg identiteta na temelju traženih usluga.</translation>
 <translation id="723054503945711909">Poduzeće Brave Software Inc. ne obrađuje, ne pohranjuje niti pristupa nijednom osobnom podatku koji ste ustupili usluzi Uphold prilikom stvaranja računa na navedenoj usluzi.</translation>
+<translation id="7404779623219601861">Zatraži BAT za darovne kartice</translation>
+<translation id="6215565499749144110">Uz mrežu TAP možete zatražiti svoje BAT-ove za darovne kartice popularnih trgovačkih marki.</translation>
+<translation id="526152301446370337">Posjetite TAP.</translation>
+<translation id="6915065518766963119">* Zahtijeva se podržana provjera.</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Saznajte više<ph name="LINK_END"/> o Brave Rewards</translation>
 <translation id="5826706758731195747">Uključivanjem značajke Nagrade slažete se s <ph name="LINK_BEGIN"/>Odredbama pružanja usluge<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Trenutačno procijenjena zarada ovog mjeseca</translation>

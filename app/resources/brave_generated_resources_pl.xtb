@@ -3,7 +3,7 @@
 <translationbundle lang="pl">
 <translation id="3333887201479867589">Nagrody Brave</translation>
 <translation id="7942180974165298215">Blokada reklam Brave</translation>
-<translation id="4615489450165434530">Zgłoś uszkodzoną witrynę</translation>
+<translation id="4615489450165434530">Zgłoś uszkodzoną stronę</translation>
 <translation id="6406506848690869874">Synchronizacja</translation>
 <translation id="5655621391922317800">Portfele kryptowalut</translation>
 <translation id="2445484935443597917">Utwórz nowy profil</translation>
@@ -11,12 +11,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") - to rozszerzenie nie jest dozwolone w Brave.</translation>
 <translation id="7450557937477381864">Zamknij Chrome</translation>
 <translation id="7008934821596358692">Aby zakończyć importowanie, zamknij wszystkie okna przeglądarki Chrome.</translation>
-<translation id="5735465527556462863">Zamknij Brave (starą wersję)</translation>
-<translation id="7737066986958447692">Aby zakończyć importowanie, zamknij wszystkie okna przeglądarki Brave (starej wersji).</translation>
-<translation id="6447842834002726250">Pliki cookie</translation>
-<translation id="4983925687993168579">Statystyki</translation>
-<translation id="6165477144235978006">Płatności Brave</translation>
-<translation id="3489524616427966890">Otwieraj okna  i karty</translation>
 <translation id="3699882589215410581">Zainstaluj i uruchom Widevine</translation>
 <translation id="8926389886865778422">Nie pytaj ponownie</translation>
 <translation id="4726634924419692905">Pytaj, gdy strona chce zainstalować Widevine na komputerze</translation>
@@ -27,8 +21,6 @@
 <translation id="8410111618231938546">Google Widevine to fragment kodu zarządzania prawami cyfrowymi (DRM), który nie należy do Brave Software i którego nie jesteśmy w stanie kontrolować. Kod Google Widevine wczytywany jest z serwerów Google, a nie z naszych. Jest wczytywany tylko wtedy, gdy włączysz taką opcję. Odradzamy używanie DRM, ale szanujemy wybór użytkownika i przyjmujemy do wiadomości, że niektórzy użytkownicy Brave chcą korzystać z usług, które tego wymagają.
 
 Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Google Widevine. Akceptujesz to, że Brave nie ponosi odpowiedzialności za jakiekolwiek szkody lub straty związane z używaniem Google Widevine.</translation>
-<translation id="6499845530162974140">Brave (stara wersja)</translation>
-<translation id="3198814717959506569">Zaimportowano z Brave</translation>
 <translation id="453977518730680921">Automatycznie odtwarzaj multimedia</translation>
 <translation id="410351446219883937">Automatyczne odtwarzanie</translation>
 <translation id="2240268017737062801">Zapytaj, kiedy strona chce odtwarzać automatycznie multimedia</translation>
@@ -70,19 +62,22 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="130615081792797568">Widok podstawowy</translation>
 <translation id="2360360976480535628">Widok zaawansowany</translation>
 <translation id="5709627087332022422">Zablokuj skrypty śledzące</translation>
-<translation id="9075744464571452108">Rozpoznawanie urządzenia</translation>
+<translation id="6447842834002726250">Pliki cookie</translation>
+<translation id="6522412052085018663">Logowanie odciskiem palca</translation>
 <translation id="3570081523466826008">Aktualizacje HTTPS</translation>
 <translation id="4824468494729001999">Zablokuj skrypty</translation>
-<translation id="8526521192921341404">Zezwalaj na logowania w Google</translation>
+<translation id="519861640102428255">Spójrz &amp;amp; Poczuj</translation>
+<translation id="4800195524776354947">Wyświetlaj liczbę zablokowanych elementów na ikonie Shield.</translation>
+<translation id="7498695072878479744">Zezwól na przyciski logowania Google na witrynach innych firm</translation>
 <translation id="863171915776379000">Zezwalaj na logowanie za pomocą konta Facebook i osadzone posty</translation>
 <translation id="5165042248369837294">Zezwalaj na osadzone Tweety</translation>
 <translation id="958971637207126733">Zezwalaj na osadzone posty LinkedIn</translation>
 <translation id="4699812599455071925">Zablokuj pliki cookie stron trzecich</translation>
 <translation id="5657156137487675418">Zezwól na wszystkie pliki cookie</translation>
 <translation id="6883611015375728278">Zablokuj wszystkie pliki cookie</translation>
-<translation id="3084022390368021391">Zablokuj rozpoznawanie urządzenia przez strony trzecie</translation>
-<translation id="1847422622180531843">Zezwól na rozpoznawanie urządzenia</translation>
-<translation id="8375051111011093523">Zablokuj rozpoznawanie urządzenia</translation>
+<translation id="5572437114858031185">Blokuj wyłącznie próby logowania odciskiem palca z innych stron</translation>
+<translation id="5079032039521408559">Zezwalaj na wszystkie próby logowania odciskiem palca</translation>
+<translation id="6447141055227658942">Blokuj wszystkie próby logowania odciskiem palca</translation>
 <translation id="8942080017911802454">Polityka obsługi WebRTC IP</translation>
 <translation id="6165508094623778733">Dowiedz się więcej</translation>
 <translation id="8798099450830957504">Domyślne</translation>
@@ -104,6 +99,7 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="2356070529366658676">Pytaj</translation>
 <translation id="7701040980221191251">Brak</translation>
 <translation id="1085027414516521238">MetaMask</translation>
+<translation id="3905324891414560921">Dostawca sieci Web3 dla zdecentralizowanych aplikacji (Dapps)</translation>
 <translation id="6554397389149987360">Stosuj komponent Hangouts, aby umożliwić udostępnianie ekranu i inne funkcje w przeglądarce.</translation>
 <translation id="1765684547504191670">Stosuj komponent Media Router, aby umożliwić działanie Chromecast w przeglądarce.</translation>
 <translation id="9156965752763025780">Zmiany zostaną zastosowane po ponownym uruchomieniu Brave.</translation>
@@ -164,6 +160,7 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="4394049700291259645">Wyłącz</translation>
 <translation id="6469509880167172749">Automatycznie przesyłaj Brave całkowicie prywatne analizy dotyczące produktu</translation>
 <translation id="7090566321964540749">Te anonimowe informacje pozwalają Brave oszacować jedynie ogólny poziom korzystania z określonych funkcji.</translation>
+<translation id="9111960429693394744">Czy chciał(a)byś używać portfeli kryptowalutowych Brave lub MetaMask do korzystania ze zdecentralizowanych aplikacji (Dapps)?</translation>
 <translation id="7583735190612229830">Skonfiguruj portfele kryptowalut do interakcji z tą aplikacją i innymi podobnymi.</translation>
 <translation id="8337117349965899723">Korzystaj z portfeli kryptowalut</translation>
 <translation id="5756155765711979898">Korzystaj z MetaMask</translation>
@@ -176,4 +173,9 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="4474155171896946103">Dodaj wszystkie karty do zakładek...</translation>
 <translation id="2336228925368920074">Dodaj wszystkie karty do zakładek...</translation>
 <translation id="796831669370432378">Aby dodać zakładkę, kliknij przycisk zakładki obok paska adresu</translation>
+<translation id="4989337484121655457">Wymagany jest pełny dostęp do dysku</translation>
+<translation id="8025559074845816210">Brave wymaga pełnego dostępu do dysku, aby zaimportować Twoje zakładki z przeglądarki Safari.</translation>
+<translation id="8515328844674404333">Dowiedz się, jak udzielić pełnego dostępu do dysku w preferencjach systemowych.</translation>
+<translation id="6414878884710400018">Otwórz Preferencje systemowe</translation>
+<translation id="5570470519803062774">Ustawienia witryny i opcji Shields</translation>
 </translationbundle>

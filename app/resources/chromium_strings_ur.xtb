@@ -3,7 +3,7 @@
 <translationbundle lang="ur">
 <translation id="939305735877869636">Brave</translation>
 <translation id="6373767849825830651">‏Brave ایک ایسا ویب براؤزر ہے جو ویب صفحات اور ایپلیکیشنز کو روشنی کی رفتار سے چلاتا ہے۔ Brave میں پہلے سے شامل میلویئر اور فریب دہی تحفظ کے ساتھ ویب کو مزید محفوظ طور پر براؤز کریں۔</translation>
-<translation id="680297041157509674">Brave OS</translation>
+<translation id="4331809312908958774">Brave OS</translation>
 <translation id="4847979153841887006">‏Brave کا لوگو</translation>
 <translation id="7339898014177206373">نئی ونڈو</translation>
 <translation id="5516268345616100622">‏ٹاسک مینیجر - Brave</translation>
@@ -15,8 +15,8 @@
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="8992261409816268381">‏Brave مصنّفین</translation>
 <translation id="8121009781989288430">‏کاپی رائٹ ‎<ph name="YEAR"/> The Brave Authors۔ جملہ حقوق محفوظ۔</translation>
-<translation id="2310890394934209120">‏Brave OS اضافی <ph name="BEGIN_LINK_CROS_OSS"/>اوپن سورس سافٹ ویئر<ph name="END_LINK_CROS_OSS"/> کے ذریعے ممکن ہو پایا ہے۔</translation>
-<translation id="8160794320557846790">‏Brave OS کو اضافی <ph name="BEGIN_LINK_CROS_OSS"/>اوپن سورس سافٹ ویئر<ph name="END_LINK_CROS_OSS"/> کے ذریعے ممکن بنایا جاتا ہے، جیسے کہ <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (بی ٹا)<ph name="END_LINK_LINUX_OSS"/>۔</translation>
+<translation id="6368958679917195344">‏Brave OS اضافی <ph name="BEGIN_LINK_CROS_OSS"/>اوپن سورس سافٹ ویئر<ph name="END_LINK_CROS_OSS"/> کے ذریعے ممکن ہو پایا ہے۔</translation>
+<translation id="1662639173275167396">‏Brave OS کو اضافی <ph name="BEGIN_LINK_CROS_OSS"/>اوپن سورس سافٹ ویئر<ph name="END_LINK_CROS_OSS"/> کے ذریعے ممکن بنایا جاتا ہے، جیسے کہ <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (بی ٹا)<ph name="END_LINK_LINUX_OSS"/>۔</translation>
 <translation id="6913582816347128893">‏ممکن ہے کہ Brave ٹھیک طریقے سے کام نہ کرے کیونکہ یہ اب Mac OS X 10.9 پر تعاون یافتہ نہیں ہے۔</translation>
 <translation id="7977787072794666032">‏ممکن ہے کہ Brave ٹھیک طریقے سے کام نہ کرے کیونکہ یہ اب Windows XP یا Windows Vista پر تعاون یافتہ نہیں ہے</translation>
 <translation id="189297655255130768">‏Brave جواب نہیں دے رہا ہے۔ ابھی دوبارہ شروع کریں؟</translation>
@@ -24,7 +24,7 @@
 <translation id="335632367599648646">‏کیا آپ واقعی Brave کو ان انسٹال کرنا چاہتے ہیں؟</translation>
 <translation id="5590013613412457132">‏Brave اَن انسٹال کریں</translation>
 <translation id="5019879183386042809">‏Brave کو ڈیفالٹ براؤزر بنائیں</translation>
-<translation id="5063987220091207247">‏Brave OS یہ صفحہ نہیں کھول سکتا ہے۔</translation>
+<translation id="707769633889902835">‏Brave OS یہ صفحہ نہیں کھول سکتا ہے۔</translation>
 <translation id="4065288863231444640">‏Brave کو پس منظر میں چلنے دیں</translation>
 <translation id="6797402139308059782">‏Brave کو پس منظر میں چلنے دیں</translation>
 <translation id="2585240446624043880">‏Brave اپنی ڈیٹا ڈائریکٹری میں پڑھ اور لکھ نہیں سکتا ہے:
@@ -94,8 +94,7 @@ Brave آپ کی ترتیبات کو بازیافت کرنے سے قاصر ہے۔
 <translation id="9071554113102421877">‏Brave میں &amp;کھولیں</translation>
 <translation id="2176825726964012531">‏Brave&amp; کے بارے میں</translation>
 <translation id="5450493308072741203">‏‎Brave کو اپ ڈیٹ کریں</translation>
-<translation id="1421502046520299169">‏‎&amp;Brave OS کے بارے میں</translation>
-<translation id="2534623228451928732">‏‎&amp;Brave OS کو اپ ڈیٹ کریں</translation>
+<translation id="61852838583753520">‏‎&amp;Brave OS کو اپ ڈیٹ کریں</translation>
 <translation id="8447483940522230788">‏Brave ہیلپر</translation>
 <translation id="5477319665405831211">‏اپنے آلات پر Brave کو مطابقت پذیر اور ذاتی نوعیت کا بنائیں</translation>
 <translation id="8132634101975074716">‏آپ Brave میں سائن ان ہیں!</translation>
@@ -109,19 +108,18 @@ Brave آپ کی ترتیبات کو بازیافت کرنے سے قاصر ہے۔
 <translation id="5380963249588143069">‏آپ کے سسٹم کے منتظم نے <ph name="TARGET_URL_HOSTNAME"/> تک رسائی حاصل کرنے کیلئے Brave کو <ph name="ALTERNATIVE_BROWSER_NAME"/> کھولنے کیلئے کنفیگر کیا ہے۔</translation>
 <translation id="2591326305549412656">‏<ph name="USER_EMAIL_ADDRESS"/> پہلے Brave کا استعمال کر رہا تھا</translation>
 <translation id="1384923383737428730">‏آپ کے کمپیوٹر میں نقصان دہ سافٹ ویئر ہے۔ Brave اسے ہٹا کر آپ کی ترتیبات بحال اور ایکسٹینشنز کو غیر فعال کر سکتا ہے تاکہ آپ کا براؤزر دوبارہ حسب معمول کام کر سکے۔</translation>
-<translation id="8919921662052966648">‏Brave آپ کے ڈیٹا کی مطابقت پذیری نہیں کر سکا۔ براہ کرم اپنی Sync کا پاس فریز اپ ڈیٹ کریں۔</translation>
 <translation id="2262856633481902138">‏Brave آپ کے اکاؤنٹ کی سائن ان تفصیلات پرانی ہونے کی وجہ سے آپ کے ڈیٹا کی مطابقت پذیری نہیں کر سکا۔</translation>
 <translation id="5419189641394808652">‏Brave آپ کا ڈیٹا مطابقت پذیر نہیں کر سکا کیونکہ مطابقت پذیری آپ کے ڈومین کیلئے دستیاب نہیں ہے۔</translation>
 <translation id="2577755334620061182">‏Brave سائن ان میں ایک خرابی ہونے کی وجہ سے آپ کے ڈیٹا کی مطابقت پذیری نہیں کر سکا۔</translation>
-<translation id="8583885258305961947">‏Brave OS سسٹم</translation>
-<translation id="3968006371075376562">‏Brave OS آپ کے ڈیٹا کی مطابقت پذیری نہیں کر سکا۔ براہ کرم اپنے Sync پاس فریز کو اپ ڈیٹ کریں۔</translation>
-<translation id="6746636977031158624">‏Brave OS آپ کے اکاؤنٹ کی سائن ان تفصیلات پرانی ہونے کی وجہ سے آپ کے ڈیٹا کی مطابقت پذیری نہیں کر سکا۔</translation>
-<translation id="2999152167963026588">‏Brave OS آپ کے ڈیٹا کی مطابقت پذیری نہیں کر سکا کیونکہ Sync آپ کے ڈومین کیلئے دستیاب نہیں ہے۔</translation>
-<translation id="1459786048951724030">‏Brave OS سائن ان میں ایک خرابی کی وجہ سے آپ کے ڈیٹا کی مطابقت پذیری نہیں کر سکا۔</translation>
-<translation id="6813094029720377619">‏Brave چھوڑنے پر آپ کوکیز اور سائٹ کا ڈیٹا صاف کرتے ہیں۔ مطابقت پذیری جاری رکھنے کے لئے، یہ<ph name="COOKIE_SETTINGS_LINK"/> تبدیل کریں۔</translation>
-<translation id="3340978935015468852">ترتیبات</translation>
+<translation id="2644798301485385923">‏Brave OS سسٹم</translation>
+<translation id="7916016681687251387">‏Brave OS آپ کے ڈیٹا کی مطابقت پذیری نہیں کر سکا۔ ابھی درست کریں۔</translation>
+<translation id="2341767445688917208">‏Brave OS آپ کے پاس ورڈز کی مطابقت پذیری نہیں کر سکا۔ ابھی درست کریں۔</translation>
+<translation id="123620459398936149">‏Brave OS آپ کے ڈیٹا کی مطابقت پذیری نہیں کر سکا۔ براہ کرم اپنے Sync پاس فریز کو اپ ڈیٹ کریں۔</translation>
+<translation id="9026991721384951619">‏Brave OS آپ کے اکاؤنٹ کی سائن ان تفصیلات پرانی ہونے کی وجہ سے آپ کے ڈیٹا کی مطابقت پذیری نہیں کر سکا۔</translation>
+<translation id="7419046106786626209">‏Brave OS آپ کے ڈیٹا کی مطابقت پذیری نہیں کر سکا کیونکہ Sync آپ کے ڈومین کیلئے دستیاب نہیں ہے۔</translation>
+<translation id="4480040274068703980">‏Brave OS سائن ان میں ایک خرابی کی وجہ سے آپ کے ڈیٹا کی مطابقت پذیری نہیں کر سکا۔</translation>
 <translation id="300669147395456190">‏Brave ایپس</translation>
-<translation id="3421950102518690868">‏<ph name="DOMAIN"/> تقاضہ کرتا ہے کہ آپ یہ آلہ استعمال کرنے سے پہلے مندرجہ ذیل سروس کی شرائط کو پڑھیں اور قبول کریں۔ یہ شرائط Brave OS شرائط کی ایکسٹینشن، ان میں ترمیم یا انہیں محدود نہیں کرتی ہیں۔</translation>
+<translation id="2398566204186296120">‏<ph name="DOMAIN"/> تقاضہ کرتا ہے کہ آپ یہ آلہ استعمال کرنے سے پہلے مندرجہ ذیل سروس کی شرائط کو پڑھیں اور قبول کریں۔ یہ شرائط Brave OS شرائط کی ایکسٹینشن، ان میں ترمیم یا انہیں محدود نہیں کرتی ہیں۔</translation>
 <translation id="3293668930608086049">‏Brave آپ کا کیمرا اور مائیکروفون استعمال کر رہا ہے۔</translation>
 <translation id="8919461291440820124">‏Brave آپ کا مائیکروفون استعمال کر رہا ہے۔</translation>
 <translation id="3205074487970075628">‏Brave آپ کا کیمرا استعمال کر رہا ہے۔</translation>
@@ -154,12 +152,9 @@ Brave آپ کی ترتیبات کو بازیافت کرنے سے قاصر ہے۔
 <translation id="4805806622840861220">‏Brave کو دوبارہ شروع کریں</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{‏Brave کیلئے ایک نیا اپ ڈیٹ دستیاب ہے اور جیسے ہی آپ اسے بند کر کے دوبارہ چلائیں گے اسے لاگو کر دیا جائے گا۔}=1{‏Brave کیلئے ایک نیا اپ ڈیٹ دستیاب ہے اور جیسے ہی آپ اسے بند کر کے دوبارہ چلائیں گے اسے لاگو کر دیا جائے گا۔ آپ کی پوشیدگی ونڈو دوبارہ نہیں کھلے گی۔}other{‏Brave کیلئے ایک نیا اپ ڈیٹ دستیاب ہے اور جیسے ہی آپ اسے بند کر کے دوبارہ چلائیں گے اسے لاگو کر دیا جائے گا۔ آپ کی # پوشیدگی ونڈوز دوبارہ نہیں کھلیں گی۔}}</translation>
 <translation id="2799223571221894425">دوبارہ شروع کریں</translation>
-<translation id="2522086024276534909">‏Brave OS کو ری سٹارٹ کریں</translation>
-<translation id="8183252473547465084">‏اپ ڈیٹ لاگو کرنے کیلئے Brave OS کو دوبارہ شروع کرنے کی ضرورت ہے۔</translation>
+<translation id="5062123544085870375">‏Brave OS کو ری سٹارٹ کریں</translation>
+<translation id="2063848847527508675">‏اپ ڈیٹ لاگو کرنے کیلئے Brave OS کو دوبارہ شروع کرنے کی ضرورت ہے۔</translation>
 <translation id="5895138241574237353">دوبارہ شروع کریں</translation>
-<translation id="8887390605192156061">‏Brave کی تمام کاپیاں بند کریں۔</translation>
-<translation id="1801551749768408825">‏Brave کی دیگر کاپیاں فعال ہیں۔ اپ ڈیٹ کرنے کے لیے، انہیں بند کریں۔</translation>
-<translation id="2632141563911437138">‏اپ ڈیٹ کرنے کے لیے، Brave کا اس کمپیوٹر پر چلنا بند ہونا ضروری ہے۔ اس وجہ سے اس کمپیوٹر پر لاگ ان کیے ہوئے دیگر صارفین کی غیر محفوظ کردہ تبدیلیاں ضائع ہو سکتی ہیں۔</translation>
 <translation id="5875673934455379806">‏Brave کو دوبارہ انسٹال کریں</translation>
 <translation id="2097604701283463988">‏Brave پرانا ہے</translation>
 <translation id="5173820533850252773">‏Brave پرانا ہے</translation>
@@ -180,7 +175,7 @@ Brave آپ کی ترتیبات کو بازیافت کرنے سے قاصر ہے۔
 <translation id="7798069806040634998">‏Brave کو فائلیں ڈاؤن لوڈ کرنے کیلئے اسٹوریج تک رسائی درکار ہے</translation>
 <translation id="7685904775439037072">‏Brave کو رسائی مل جانے کے بعد، ویب سائٹس آپ سے رسائی طلب کر سکیں گی۔</translation>
 <translation id="1744365871163268756">‏براہ کرم انتظار کریں یہاں تک کہ Brave تازہ ترین سسٹم اپ ڈیٹس انسٹال کر دے۔</translation>
-<translation id="7808415789955822133">‏Brave OS کی شرائط</translation>
+<translation id="7408085963519505752">‏Brave OS کی شرائط</translation>
 <translation id="7207456302801184289">‏Brave میں خوش آمدید</translation>
 <translation id="3507835409099344374">‏Brave کی اطلاع کی ترتیبات پر جائیں</translation>
 <translation id="1026406809507858026">{0,plural, =0{‏Brave کا اپ ڈیٹ دستیاب ہے}=1{‏Brave کا اپ ڈیٹ دستیاب ہے}other{‏Brave کا اپ ڈیٹ # دن سے دستیاب ہے}}</translation>
@@ -199,9 +194,9 @@ Brave آپ کی ترتیبات کو بازیافت کرنے سے قاصر ہے۔
 <translation id="1786715389543715322">‏Brave کو اپ ڈیٹ کیا جا رہا ہے (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="2182657378556811785">‏تقریباً اپ ٹو ڈیٹ! اپ ڈیٹ کرنے کو مکمل کرنے کیلئے Brave کو دوبارہ شروع کریں۔</translation>
 <translation id="8208853227947884571">‏Brave اپ ٹو ڈیٹ ہے</translation>
-<translation id="6686872257969654608">‏Brave OS کے بارے میں</translation>
-<translation id="7674116293463255181">‏یہ دیکھنے کی لیے کہ کیا آپ کا آلہ اپ ٹو ڈیٹ ہے، <ph name="LINK_BEGIN"/>Brave OS کی ترتیبات<ph name="LINK_END"/> پر جائیں</translation>
-<translation id="2280363356796735201">‏Brave OS کے بارے میں مدد حاصل کریں</translation>
+<translation id="573759479754913123">‏Brave OS کے بارے میں</translation>
+<translation id="7573289029918943991">‏یہ دیکھنے کی لیے کہ کیا آپ کا آلہ اپ ٹو ڈیٹ ہے، <ph name="LINK_BEGIN"/>Brave OS کی ترتیبات<ph name="LINK_END"/> پر جائیں</translation>
+<translation id="3395323229510056640">‏Brave OS کے بارے میں مدد حاصل کریں</translation>
 <translation id="38898988211673781">‏Brave چھوڑنے پر کوکیز اور سائٹ کا ڈیٹا صاف کریں</translation>
 <translation id="5253815230176279256">‏Brave Software Pay ‏(Brave میں کاپی کر دیا گیا)</translation>
 <translation id="5468853758063275923">‏Brave آپ کا ڈیفالٹ براؤزر ہے</translation>
@@ -209,7 +204,7 @@ Brave آپ کی ترتیبات کو بازیافت کرنے سے قاصر ہے۔
 <translation id="6915252145142862992">‏یہ Brave کا ثانوی انسٹالیشن ہے اور اسے آپ کا ڈیفالٹ براؤزر نہیں بنایا جا سکتا ہے۔</translation>
 <translation id="6235873178214143377">‏اگر اس صفحے پر کوئی ترتیب دکھائی نہیں دے رہی ہے تو اپنے <ph name="LINK_BEGIN"/>
       Brave براؤزر کی ترتیبات<ph name="LINK_END"/> میں دیکھیں</translation>
-<translation id="4459296183696059108">‏اگر اس صفحے پر کوئی ترتیب دکھائی نہیں دے رہی ہے تو اپنے <ph name="LINK_BEGIN"/>
+<translation id="5657226924540934362">‏اگر اس صفحے پر کوئی ترتیب دکھائی نہیں دے رہی ہے تو اپنے <ph name="LINK_BEGIN"/>
       Brave OS کی ترتیبات<ph name="LINK_END"/> میں دیکھیں</translation>
 <translation id="2312399718665761438">‏ہجے کی غلطیاں ٹھیک کرنے کے لیے آپ ٹیکسٹ فیلڈز میں جو ٹیکسٹ ٹائپ کرتے ہیں Brave اسے Brave Software کو بھیجتا ہے</translation>
 <translation id="8586264863973514035">‏اپنی تبدیلیوں کو لاگو کرنے کیلئے، Brave کو دوبارہ شروع کریں</translation>
@@ -219,7 +214,6 @@ Brave آپ کی ترتیبات کو بازیافت کرنے سے قاصر ہے۔
 <translation id="5853262807109651878">‏یہ اس آلہ سے <ph name="ITEMS_COUNT"/> آئٹمز کو حذف کر دے گا۔ بعد میں اپنے ڈیٹا کی بازیافت کرنے کیلئے، Brave میں <ph name="USER_EMAIL"/> کے بطور سائن ان کریں۔</translation>
 <translation id="4784414698887946907">‏یہ اس آلہ سے آپ کے براؤزنگ ڈیٹا کو حذف کر دے گا۔ بعد میں اپنے ڈیٹا کی بازیافت کرنے کیلئے، Brave میں <ph name="USER_EMAIL"/> کے بطور سائن ان کریں۔</translation>
 <translation id="4518479204315969707">‏Brave کا نام اور اس کی تصویر</translation>
-<translation id="82609232232243542">‏Brave میں سائن ان کریں</translation>
 <translation id="8372880274820509128">‏اضافی سیکیورٹی کیلئے، Brave آپ کا ڈیٹا مرموز کر دے گا۔</translation>
 <translation id="7445061995866044926">‏Brave سے سائن آؤٹ کریں؟</translation>
 <translation id="7453070689008684791">‏پتہ بار میں تجاویز پیش کرنے کے لیے Brave آپ کی Drive تک رسائی حاصل کرے گا</translation>

@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "זיהוי מכשיר מרובה-אתרים (cross-site) נחסם",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "טביעות אצבע חוצי אתרים נחסמו",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "ניסיונות לזיהוי המכשיר נחסמו",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "ניסיונות טביעת אצבע נחסמו",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "כל הניסיונות לזיהוי המכשיר הותרו",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "כל ניסיונות טביעת האצבע מותרים",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "נסיונות זיהוי התקן",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "ניסיונות טביעת אצבע",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "פקודות באתר זה",

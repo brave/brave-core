@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "跨站点设备识别已拦截",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "跨站点指纹识别已拦截",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "设备识别尝试已拦截",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "指纹识别尝试已拦截",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "已允许所有设备识别",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "所有指纹识别尝试已允许",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "设备识别尝试",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "指纹识别尝试",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "此网站上的脚本",

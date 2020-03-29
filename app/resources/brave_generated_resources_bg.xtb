@@ -11,12 +11,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID на разширението "<ph name="EXTENSION_ID"/>") не е разрешено в Brave.</translation>
 <translation id="7450557937477381864">Затваряне на Chrome</translation>
 <translation id="7008934821596358692">За да завършите импортирането, затворете всички прозорци на Chrome.</translation>
-<translation id="5735465527556462863">Затваряне на Brave (стара версия)</translation>
-<translation id="7737066986958447692">За да завършите импортирането, затворете всички прозорци на Brave (стара версия).</translation>
-<translation id="6447842834002726250">„Бисквитки“</translation>
-<translation id="4983925687993168579">Статистика</translation>
-<translation id="6165477144235978006">Brave Payments</translation>
-<translation id="3489524616427966890">Отваряне на прозорци и раздели</translation>
 <translation id="3699882589215410581">Инсталирайте и стартирайте Widevine</translation>
 <translation id="8926389886865778422">Без повторно питане</translation>
 <translation id="4726634924419692905">Запитване, когато даден сайт иска да инсталира Widevine на вашия компютър.</translation>
@@ -27,8 +21,6 @@
 <translation id="8410111618231938546">Google Widevine е част от кода за управление на цифровите права (DRM), който ние в Brave Software не притежаваме и не можем да проверим. Кодът на Google Widevine се зарежда от сървърите на Google, а не от нашите сървъри. Той се зарежда само когато активирате тази опция. Ние не подкрепяме употребата на DRM, но уважаваме избора на потребителя и признаваме, че някои потребители на Brave биха искали да използват услуги, които го изискват.
 
 Чрез инсталирането на това разширение приемате Общите условия на Google Widevine. Вие се съгласявате, че Brave не носи отговорност за щети или загуби във връзка с използването на Google Widevine.</translation>
-<translation id="6499845530162974140">Brave (стара версия)</translation>
-<translation id="3198814717959506569">Импортирано от Brave</translation>
 <translation id="453977518730680921">Автоматично възпр. на медия</translation>
 <translation id="410351446219883937">Автоматично изпълнение</translation>
 <translation id="2240268017737062801">Попитайте, когато даден сайт иска автоматично да възпроизвежда медия</translation>
@@ -70,19 +62,22 @@
 <translation id="130615081792797568">Опростен изглед</translation>
 <translation id="2360360976480535628">Разширен изглед</translation>
 <translation id="5709627087332022422">Блокиране на тракери между сайтовете</translation>
-<translation id="9075744464571452108">Разпознаване на устройството</translation>
+<translation id="6447842834002726250">„Бисквитки“</translation>
+<translation id="6522412052085018663">Пръстови отпечатъци</translation>
 <translation id="3570081523466826008">Надстройване на връзките към HTTPS</translation>
 <translation id="4824468494729001999">Блокиране на скриптове</translation>
-<translation id="8526521192921341404">Разрешаване на вход в Google</translation>
+<translation id="519861640102428255">Изглед &amp;amp; усещане</translation>
+<translation id="4800195524776354947">Покажете броя на блокираните елементи на иконата Shields</translation>
+<translation id="7498695072878479744">Разрешаване на бутони за вход в Google на сайтове на трети страни</translation>
 <translation id="863171915776379000">Разреши влизане с Фейсбук и вградени публикации</translation>
 <translation id="5165042248369837294">Разреши вградени туитове на Twitter</translation>
 <translation id="958971637207126733">Разреши вградени публикации на LinkedIn</translation>
 <translation id="4699812599455071925">Блокирайте само бисквитките от различни сайтове</translation>
 <translation id="5657156137487675418">Разрешаване на всички „бисквитки“</translation>
 <translation id="6883611015375728278">Блокиране на всички „бисквитки“</translation>
-<translation id="3084022390368021391">Блокирайте само опити за разпознаване на устройства от различни сайтове</translation>
-<translation id="1847422622180531843">Разрешаване на всички опити за разпознаване на устройство</translation>
-<translation id="8375051111011093523">Блокиране на всички опити за разпознаване на устройството</translation>
+<translation id="5572437114858031185">Блокирайте само опити за снемане на пръстови отпечатъци от различни сайтове</translation>
+<translation id="5079032039521408559">Разрешаване на всички опити за снемане на отпечатъци</translation>
+<translation id="6447141055227658942">Блокирайте всички опити за снемане на отпечатъци</translation>
 <translation id="8942080017911802454">WebRTC IP политика за боравене</translation>
 <translation id="6165508094623778733">Научете повече</translation>
 <translation id="8798099450830957504">По подразбиране</translation>
@@ -104,6 +99,7 @@
 <translation id="2356070529366658676">Попитайте ме</translation>
 <translation id="7701040980221191251">Няма</translation>
 <translation id="1085027414516521238">MetaMask</translation>
+<translation id="3905324891414560921">Доставчик на Web3 за използване на Dapps</translation>
 <translation id="6554397389149987360">Използвайте "Hangouts" компоненти, за да разрешите споделяне на екрана и други функции в браузъра.</translation>
 <translation id="1765684547504191670">Използва медия рутер компонент, за да разреши Chromecast в браузъра.</translation>
 <translation id="9156965752763025780">Промените ви ще влязат в сила следващия път, когато стартирате отново Brave.</translation>
@@ -164,6 +160,7 @@
 <translation id="4394049700291259645">Деактивиране</translation>
 <translation id="6469509880167172749">Автоматично изпращайте изцяло поверителни анализи на продукти на Brave</translation>
 <translation id="7090566321964540749">Тази анонимна информация само позволява на Brave да оцени цялостното използване на определени функции.</translation>
+<translation id="9111960429693394744">Искате ли да използвате крипто портфейли на Brave или MetaMask за Dapps?</translation>
 <translation id="7583735190612229830">Настройте Крипто портфейли да взаимодействат с това приложение и други като него.</translation>
 <translation id="8337117349965899723">Използвайте крипто портфейли</translation>
 <translation id="5756155765711979898">Използвайте MetaMask</translation>
@@ -177,4 +174,9 @@
 <translation id="4474155171896946103">Запазване на отметки към всички раздели…</translation>
 <translation id="2336228925368920074">Запазване на отметки към всички раздели...</translation>
 <translation id="796831669370432378">За да добавите отметка, щракнете върху бутона за отметка до адресната лента</translation>
+<translation id="4989337484121655457">Изисква се пълен достъп до диска</translation>
+<translation id="8025559074845816210">Brave има нужда от пълен достъп до дискове, за да импортира отметките ви от Safari.</translation>
+<translation id="8515328844674404333">Научете как да предоставите пълен достъп до диска от вашите системни предпочитания.</translation>
+<translation id="6414878884710400018">Отворете Системни предпочитания</translation>
+<translation id="5570470519803062774">Настройки на сайта и щитове</translation>
 </translationbundle>

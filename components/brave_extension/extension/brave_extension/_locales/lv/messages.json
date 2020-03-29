@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Bloķēta starpvieņu ierīces atpazīšana",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "Bloķētie starpvietņu identificējošās ciparvirknes veidošanas mēģinājumi",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Bloķēti ierīces atpazīšanas mēģinājumi",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "Bloķētie identificējošās ciparvirknes veidošanas mēģinājumi",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Atļauti visi ierīču atpazīšanas mēģinājumi",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "Visi identificējošās ciparvirknes veidošanas mēģinājumi ir atļauti",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Ierīces atpazīšanas mēģinājumi",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "Identificējošās ciparvirknes veidošanas mēģinājumi",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "Skripti šajā vietnē",

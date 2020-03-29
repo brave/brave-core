@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Міжсайтове відстеження заблоковано",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "Міжсайтове розпізнавання відбитків пальців блоковане",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Спроби визначення пристрою заблоковані.",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "Блоковані спроби зчитування відбитків пальців",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Усі спроби визначення пристрою дозволені",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "Всі спроби зчитування відбитків пальців дозволені",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Спроби розпізнавання пристрою",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "Спроби зчитування відбитків пальців",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "Скрипти на цьому сайті",
