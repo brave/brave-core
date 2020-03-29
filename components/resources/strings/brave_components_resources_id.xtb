@@ -4,6 +4,7 @@
 <translation id="4339730410920731698">Iklan dan Pelacak Diblokir</translation>
 <translation id="2313532038420432247">Peningkatan HTTPS</translation>
 <translation id="7679428712334662192">± Waktu Dihemat</translation>
+<translation id="8411095021655121794">Perkiraan Penghematan Kuota Data</translation>
 <translation id="5206618227023752085">Situs teratas dihapus.</translation>
 <translation id="2079545284768500474">Urungkan</translation>
 <translation id="6040143037577758943">Tutup</translation>
@@ -16,6 +17,10 @@
 <translation id="8344569602005188545">jam</translation>
 <translation id="7100907433458266664">hari</translation>
 <translation id="4971389353431353387">hari</translation>
+<translation id="2116364690062294218">B</translation>
+<translation id="3123243061080120667">KB</translation>
+<translation id="977224059380370527">MB</translation>
+<translation id="8776285424728638733">GB</translation>
 <translation id="8427933533533814946">Foto oleh</translation>
 <translation id="7108338896283013870">Sembunyikan</translation>
 <translation id="7115515527894388910">Edit Setelan</translation>
@@ -84,11 +89,9 @@
 <translation id="7954950242989581218">Ramban dengan aman dan selamat</translation>
 <translation id="2188651882929633653">Perisai Brave memblokir hal-hal menyeramkan yang mencoba melacak Anda di web termasuk berbagai iklan. Atur Perisai menjadi “turun” jika situs tampaknya tidak bekerja. Brave menggunakan <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>analitis produk yang sepenuhnya pribadi<ph name="END_LINK_P3A">&lt;/a&gt;</ph> untuk memperkirakan penggunaan keseluruhan dari fitur tertentu. Anda dapat mematikannya dalam <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Setelan<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Iklan</translation>
-<translation id="2364310432103707426">Dapatkan {{currency}} dengan melihat iklan Brave. Iklan yang ditampilkan berbasis minat Anda, yang diperkirakan dari pola penelusuran internet Anda. Tidak ada data pribadi atau riwayat penelusuran internet yang dikirimkan ke luar dari peramban Anda.</translation>
+<translation id="2128226640852355533">Dapatkan {{currency}} dengan melihat Iklan Brave. Iklan yang ditampilkan berbasis minat Anda, yang diperkirakan dari pola penelusuran internet Anda. Tidak ada data pribadi atau riwayat penelusuran internet yang dikirimkan ke luar dari peramban Anda.</translation>
 <translation id="6112368337882254910">Kontribusi Otomatis</translation>
 <translation id="3742599705619405136">Sebuah cara otomatis untuk mendukung penerbit dan kreator konten. Atur pembayaran bulanan dan ramban seperti biasa. Situs Brave Verified yang Anda kunjungi akan menerima kontribusi Anda secara otomatis, berdasarkan atensi Anda sebagaimana diukur oleh Brave.</translation>
-<translation id="8949527283651381130">Izinkan deteksi konversi iklan</translation>
-<translation id="2184191362610545393">Hal ini akan memungkinkan Brave mengetahui secara anonim bahwa ada tanggapan terhadap suatu iklan pada peramban ini. Mengaktifkan ini akan meningkatkan pendapatan.</translation>
 <translation id="20281847067919078">Estimasi reward tertunda</translation>
 <translation id="8593551638387217772">Tanggal pembayaran berikutnya</translation>
 <translation id="319209088187794725">Pemberitahuan iklan yang diterima bulan ini</translation>
@@ -195,7 +198,7 @@
 <translation id="1642443162274867084">Dompet dibuat</translation>
 <translation id="5094577350232361255">sekitar</translation>
 <translation id="4918086044614829423">Terima</translation>
-<translation id="6832986780040139899">©2016–2018 Brave Software. Brave adalah merek dagang terdaftar dari Brave Software. Nama situs mungkin merupakan merek dagang atau merek dagang terdaftar dari pemilik situs.</translation>
+<translation id="5916290544882167205">Brave Software. Brave adalah merek dagang dari Brave Software. Nama situs mungkin merk dagang atau merek terdaftar dari pemilik situs.</translation>
 <translation id="9026369588205476247">Untuk melindungi privasi Anda, laporan Brave Rewards ini tidak simpan, direkam, atau dicatat di mana pun selain di perangkat Anda (komputer ini). Ini tidak dapat diambil kembali dari Brave saat ada kehilangan data di perangkat Anda.</translation>
 <translation id="1036277985068412734">tambah dana</translation>
 <translation id="3587482841069643663">Semua</translation>
@@ -204,6 +207,7 @@
 <translation id="2631006050119455616">Disimpan</translation>
 <translation id="2155330833364281539">Iklan yang Anda terima dalam {{totalDays}} hari ini</translation>
 <translation id="8863685593846905344">Riwayat Iklan</translation>
+<translation id="2777306694585938662">Imbalan iklan yang diterima</translation>
 <translation id="5212777575344695266">Tandai Sebagai Tidak Pantas</translation>
 <translation id="2111256234277361810">Tandai Sebagai Tidak Pantas ✓</translation>
 <translation id="8988332871810963281">Saat ini tidak ada riwayat iklan Brave</translation>
@@ -313,9 +317,8 @@
 <translation id="6381574025952123568">Saldo Awal</translation>
 <translation id="532275381857891532">Riwayat Iklan 7 hari</translation>
 <translation id="4923459931733593730">Pembayaran</translation>
-<translation id="4021593982164260556">Pembayaran dilakukan setiap hari ke-{{day}} setiap bulan.</translation>
+<translation id="5693657857413982604">Pembayaran dilakukan pada tanggal {{day}} tiap bulan.</translation>
 <translation id="6104680658798556671">Pembayaran tidak dilakukan.</translation>
-<translation id="2834888581291358924">Apabila saldo Anda tidak mencukupi untuk memenuhi total gabungan dari Kontribusi-Otomatis dan kontribusi bulanan Anda, maka pada periode ini pembayaran tersebut tidak dilakukan.</translation>
 <translation id="3138528956349114724">Situs tersemat kini</translation>
 <translation id="2337632028350283479">Inilah cara kerja kontribusi bulanan:</translation>
 <translation id="6457273203091513039">Kontribusi bulanan tidak berasal dari pembayaran Kontribusi Otomatis Anda. Keduanya terpisah.</translation>
@@ -388,6 +391,7 @@
 <translation id="4588241643143931775">Bitcoin (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
 <translation id="8746837129291133068">Litecoin (LTC)</translation>
+<translation id="6367285596431004439">Hibah token diterima</translation>
 <translation id="9212459913845238740">Hibah Poin Telah Diambil</translation>
 <translation id="768850953428043522">poin</translation>
 <translation id="3043542281656021374">Poin</translation>
@@ -463,6 +467,10 @@
 <translation id="4569155249847375786">Terverifikasi</translation>
 <translation id="8465442795593991224">Uphold mungkin memerlukan verifikasi identitas Anda berdasarkan layanan yang diminta.</translation>
 <translation id="723054503945711909">Brave Software Inc. tidak memproses, menyimpan, atau mengakses informasi pribadi apa pun yang Anda berikan kepada Uphold ketika Anda membuat akun dengan mereka.</translation>
+<translation id="7404779623219601861">Tukar BAT dengan Kartu Hadiah</translation>
+<translation id="6215565499749144110">Dengan jaringan TAP, Anda bisa menukar BAT dengan kartu hadiah dari barang-barang merek terkenal.</translation>
+<translation id="526152301446370337">Kunjungi TAP.</translation>
+<translation id="6915065518766963119">* Harus Lolos Verifikasi</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/> tentang Brave Rewards</translation>
 <translation id="5826706758731195747">Dengan mengaktifkan Rewards, Anda menyatakan setuju terhadap <ph name="LINK_BEGIN"/>Ketentuan Layanan<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Perkiraan penghasilan sejauh ini pada bulan berjalan</translation>
@@ -476,6 +484,7 @@
 <translation id="8092889639392847252">Dapatkan imbalan untuk melihat gambar latar belakang bersponsor ini.</translation>
 <translation id="2542495049135486284">Cobalah Brave Rewards lagi dan sumbangkan saat terkumpul!</translation>
 <translation id="53513464591392992">Aktifkan Brave Rewards dan dapatkan imbalan untuk melihat iklan yang menghormati privasi.</translation>
+<translation id="8463996294416161140">Aktifkan <ph name="PRODUCT_NAME"/> untuk mendapat bagian. Anda juga bisa memilih untuk <ph name="LINK_BEGIN"/>menyembunyikan gambar bersponsor<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">Bagus Sekali!</translation>
 <translation id="764235488372037377">Reward iklan untuk Anda sudah ada</translation>
 <translation id="7091215606170476659">Anda mendapat hibah UGP dari Brave.</translation>

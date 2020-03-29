@@ -39,6 +39,7 @@
 <translation id="2359808026110333948">Fortsett</translation>
 <translation id="4378154925671717803">Telefon</translation>
 <translation id="8131740175452115882">Bekreft</translation>
+<translation id="4901778704868714008">Lagre...</translation>
 <translation id="8968766641738584599">Lagre kortet</translation>
 <translation id="860043288473659153">Kortinnehavers navn</translation>
 <translation id="869891660844655955">Utløpsdato</translation>
@@ -66,15 +67,18 @@
 <translation id="5327248766486351172">Navn</translation>
 <translation id="7400418766976504921">Nettadresse</translation>
 <translation id="397105322502079400">Beregner …</translation>
+<translation id="3987940399970879459">Mindre enn 1 MB</translation>
 <translation id="7701040980221191251">Ingen</translation>
 <translation id="8428213095426709021">Innstillinger</translation>
 <translation id="9038649477754266430">Bruk en prediksjonstjeneste for å laste inn sider raskere</translation>
 <translation id="4850886885716139402">Visning</translation>
 <translation id="7180611975245234373">Last inn på nytt</translation>
+<translation id="7485870689360869515">Ingen data funnet.</translation>
 <translation id="1426410128494586442">Ja</translation>
 <translation id="4250680216510889253">Nei</translation>
 <translation id="4522570452068850558">Detaljer</translation>
 <translation id="3586931643579894722">Skjul detaljer</translation>
+<translation id="5510766032865166053">Den kan ha blitt flyttet eller slettet.</translation>
 <translation id="614940544461990577">Prøv dette:</translation>
 <translation id="4943872375798546930">Ingen resultater</translation>
 <translation id="8688672835843460752">Tilgjengelig</translation>
@@ -104,6 +108,7 @@
 <translation id="8041089156583427627">Send tilbakemelding</translation>
 <translation id="7552846755917812628">Prøv følgende tips:</translation>
 <translation id="3960299545138990065">Start Brave på nytt</translation>
+<translation id="2108755909498034140">Start datamaskinen din på nytt</translation>
 <translation id="4275830172053184480">Start enheten din på nytt</translation>
 <translation id="413544239732274901">Lær mer</translation>
 <translation id="7554791636758816595">Ny fane</translation>
@@ -112,7 +117,6 @@
 <translation id="981121421437150478">Uten nett</translation>
 <translation id="5171045022955879922">Søk, eller skriv inn en nettadresse</translation>
 <translation id="803771048473350947">Fil</translation>
-<translation id="6268185425799226387">Brave Software Disk</translation>
 <translation id="2982481275546140226">Slett data</translation>
 <translation id="8425213833346101688">Endre</translation>
 <translation id="8009225694047762179">Administrer passord</translation>
@@ -123,6 +127,7 @@
 <translation id="8680536109547170164"><ph name="QUERY"/>, svar, <ph name="ANSWER"/></translation>
 <translation id="7714464543167945231">Sertifikat</translation>
 <translation id="4235360514405112390">Gyldig</translation>
+<translation id="8288807391153049143">Vis sertifikat</translation>
 <translation id="6447842834002726250">Informasjonskapsler</translation>
 <translation id="1919345977826869612">Reklamer</translation>
 <translation id="6612358246767739896">Beskyttet innhold</translation>
@@ -141,6 +146,8 @@
 <translation id="2215727959747642672">Filredigering</translation>
 <translation id="6545864417968258051">Bluetooth-skanning</translation>
 <translation id="534295439873310000">NFC-enheter</translation>
+<translation id="4943703118917034429">Virtuell virkelighet</translation>
+<translation id="3513704683820682405">Utvidet virkelighet</translation>
 <translation id="5039804452771397117">Tillat</translation>
 <translation id="7053983685419859001">Blokker</translation>
 <translation id="57838592816432529">Kutt lyden</translation>
@@ -153,6 +160,8 @@
 <translation id="8763927697961133303">USB-enhet</translation>
 <translation id="4165986682804962316">Nettstedsinnstillinger</translation>
 <translation id="9011424611726486705">Åpne nettstedsinnstillinger</translation>
+<translation id="2337852623177822836">Instilling kontrollert av din administrator</translation>
+<translation id="301521992641321250">Blokkert automatisk</translation>
 <translation id="5932224571077948991">Nettstedet viser forstyrrende eller villedende annonser</translation>
 <translation id="7878562273885520351">Passordet ditt kan være kompromittert</translation>
 <translation id="1089439967362294234">Endre passord</translation>
@@ -194,8 +203,8 @@
 <translation id="5565735124758917034">Aktiv</translation>
 <translation id="7805768142964895445">Status</translation>
 <translation id="6915804003454593391">Bruker:</translation>
-<translation id="5916664084637901428">På</translation>
-<translation id="5860033963881614850">Av</translation>
+<translation id="5921185718311485855">På</translation>
+<translation id="1019413721762100891">Av</translation>
 <translation id="7961015016161918242">Aldri</translation>
 <translation id="8294431847097064396">Kilde</translation>
 <translation id="1056898198331236512">Advarsel</translation>
@@ -205,10 +214,12 @@
 <translation id="6965978654500191972">Enhet</translation>
 <translation id="4728558894243024398">Plattform</translation>
 <translation id="2380886658946992094">Juridisk</translation>
-<translation id="5939847200023027600">PDF-komposisjonstjeneste</translation>
 <translation id="1588438908519853928">Normal</translation>
 <translation id="1974060860693918893">Avansert</translation>
+<translation id="9128870381267983090">Koble til nettverk</translation>
+<translation id="3715597595485130451">Koble til Wi-Fi</translation>
 <translation id="5308380583665731573">Koble til</translation>
+<translation id="5250209940322997802">Koble til nettverk</translation>
 <translation id="2501278716633472235">Gå tilbake</translation>
 <translation id="1736420071277903564">Datamaskin</translation>
 <translation id="3906954721959377182">Nettbrett</translation>

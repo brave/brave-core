@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "تشخیص دستگاه بین سایتی مسدود شد",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "تشخیص اثر انگشت بین سایتی مسدود شد",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "تلاش‌های تشخیص دستگاه مسدود شدند",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "تلاش‌های تشخیص اثر انگشت مسدود شدند",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "همه تلاش‌های تشخیص دستگاه مجاز شدند",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "همه تلاش‌های تشخیص اثر انگشت مجاز شدند",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "تلاش‌های تشخیص دستگاه",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "تلاش‌های تشخیص اثر انگشت",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "اسکریپت‌های این سایت",

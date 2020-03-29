@@ -3,7 +3,7 @@
 <translationbundle lang="kn">
 <translation id="939305735877869636">Brave</translation>
 <translation id="6373767849825830651">Brave ಒಂದು ವೆಬ್ ಬ್ರೌಸರ್ ಆಗಿದ್ದು ವೆಬ್‌ಪುಟಗಳನ್ನು ಮತ್ತು ಅಪ್ಲಿಕೇಶನ್‌ಗಳನ್ನು ವೇಗದೊಂದಿಗೆ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತದೆ. ಇದು ವೇಗವಾದ, ಸ್ಥಿರವಾದ, ಮತ್ತು ಬಳಸಲು ಸುಲಭವಾಗಿದೆ. ಮಾಲ್‌ವೇರ್‌ನೊಂದಿಗೆ ಹೆಚ್ಚು ಸುರಕ್ಷಿತವಾಗಿ ಹಾಗೂ Brave ನಲ್ಲಿ ವಿನ್ಯಾಸಗೊಳಿಸಲಾದ ಫಿಶಿಂಗ್ ಸುರಕ್ಷೆಯೊಂದಿಗೆ ವೆಬ್ ಅನ್ನು ಬ್ರೌಸ್ ಮಾಡಿ.</translation>
-<translation id="680297041157509674">Brave OS</translation>
+<translation id="4331809312908958774">Brave OS</translation>
 <translation id="4847979153841887006">Brave ಲೋಗೋ</translation>
 <translation id="7339898014177206373">ಹೊಸ ವಿಂಡೊ</translation>
 <translation id="5516268345616100622">ಕಾರ್ಯನಿರ್ವಾಹಕ - Brave</translation>
@@ -15,8 +15,8 @@
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="8992261409816268381">Brave ಲೇಖಕರು</translation>
 <translation id="8121009781989288430">ಹಕ್ಕುಸ್ವಾಮ್ಯ <ph name="YEAR"/> Brave ಲೇಖಕರು. ಎಲ್ಲಾ ಹಕ್ಕುಗಳನ್ನು ಕಾಯ್ದಿರಿಸಲಾಗಿದೆ.</translation>
-<translation id="2310890394934209120">ಹೆಚ್ಚುವರಿ <ph name="BEGIN_LINK_CROS_OSS"/>ತೆರೆದ ಮೂಲ ಸಾಫ್ಟ್‌ವೇರ್<ph name="END_LINK_CROS_OSS"/> ನಿಂದ Brave OS ಮಾಡಲು ಸಾಧ್ಯ.</translation>
-<translation id="8160794320557846790">ಹೆಚ್ಚುವರಿ <ph name="BEGIN_LINK_CROS_OSS"/>ಓಪನ್ ಸೋರ್ಸ್ ಸಾಫ್ಟ್‌ವೇರ್‌<ph name="END_LINK_CROS_OSS"/> ನಿಂದ Brave OS ನ ರಚನೆ, ಹಾಗೆಯೇ <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (ಬೀಟಾ)<ph name="END_LINK_LINUX_OSS"/> ರಚನೆ ಸಹ ಸಾಧ್ಯವಾಯಿತು.</translation>
+<translation id="6368958679917195344">ಹೆಚ್ಚುವರಿ <ph name="BEGIN_LINK_CROS_OSS"/>ಓಪನ್ ಸೋರ್ಸ್ ಸಾಫ್ಟ್‌ವೇರ್<ph name="END_LINK_CROS_OSS"/> ನಿಂದ Brave OS ಮಾಡಲು ಸಾಧ್ಯ.</translation>
+<translation id="1662639173275167396">Brave OS ಅನ್ನು, <ph name="BEGIN_LINK_LINUX_OSS"/>Linux ನಂತೆಯೇ (ಬೀಟಾ)<ph name="END_LINK_LINUX_OSS"/> ಹೆಚ್ಚುವರಿ <ph name="BEGIN_LINK_CROS_OSS"/>ಓಪನ್ ಸೋರ್ಸ್ ಸಾಫ್ಟ್‌ವೇರ್‌ನ<ph name="END_LINK_CROS_OSS"/> ಸಹಾಯದಿಂದ ಒದಗಿಸಲಾಗಿದೆ.</translation>
 <translation id="6913582816347128893">Mac OS X 10.9 ನಲ್ಲಿ Brave ಇನ್ನು ಮುಂದೆ ಬೆಂಬಲಿಸದೇ ಇರುವುದರಿಂದ ಅದು ಸರಿಯಾಗಿ ಕಾರ್ಯನಿರ್ವಹಿಸದೇ ಇರಬಹುದು.</translation>
 <translation id="7977787072794666032">Windows XP ಅಥವಾ Windows Vista ದಲ್ಲಿ Brave ಗೆ ಈಗ ಬೆಂಬಲವಿಲ್ಲದೇ ಇರುವುದರಿಂದ ಅದು ಸರಿಯಾಗಿ ಕಾರ್ಯನಿರ್ವಹಿಸದೇ ಇರಬಹುದು</translation>
 <translation id="189297655255130768">Brave ಸ್ಪಂದಿಸುತ್ತಿಲ್ಲ. ಇದೀಗ ಮರುಪ್ರಾರಂಭಿಸುವುದೇ?</translation>
@@ -24,7 +24,7 @@
 <translation id="335632367599648646">Brave ಅನ್‌ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?</translation>
 <translation id="5590013613412457132">Brave ಅನ್‌ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ</translation>
 <translation id="5019879183386042809">Brave ಅನ್ನು ಡಿಫಾಲ್ಟ್ ಬ್ರೌಸರ್ ಮಾಡಿ</translation>
-<translation id="5063987220091207247">Brave OS ಗೆ ಈ ಪುಟ ತೆರೆಯಲಾಗುವುದಿಲ್ಲ.</translation>
+<translation id="707769633889902835">Brave OS ಗೆ ಈ ಪುಟ ತೆರೆಯಲಾಗುವುದಿಲ್ಲ.</translation>
 <translation id="4065288863231444640">Brave ಹಿನ್ನೆಲೆಯಲ್ಲಿ ರನ್ ಆಗಲು ಅನುಮತಿಸಿ</translation>
 <translation id="6797402139308059782">Brave ಹಿನ್ನೆಲೆಯಲ್ಲಿ ಚಾಲನೆಗೊಳ್ಳಲು ಅನುಮತಿಸಿ</translation>
 <translation id="2585240446624043880">Brave ಗೆ ಇದರ ಡೇಟಾ ಡೈರೆಕ್ಟರಿಯನ್ನು ಓದಲಾಗುವುದಿಲ್ಲ ಮತ್ತು ಬರೆಯಲಾಗುವುದಿಲ್ಲ: <ph name="USER_DATA_DIRECTORY"/></translation>
@@ -86,8 +86,7 @@
 <translation id="9071554113102421877">&amp;Brave ನಲ್ಲಿ ತೆರೆಯಿರಿ</translation>
 <translation id="2176825726964012531">&amp;Brave ಕುರಿತು</translation>
 <translation id="5450493308072741203">&amp;Brave ಅಪ್‌ಡೇಟ್‌ ಮಾಡಿ</translation>
-<translation id="1421502046520299169">&amp;Brave OS ಕುರಿತು</translation>
-<translation id="2534623228451928732">&amp;Brave OS ಅನ್ನು ಅಪ್‌ಡೇಟ್‌ ಮಾಡಿ</translation>
+<translation id="61852838583753520">&amp;Brave OS ಅನ್ನು ಅಪ್‌ಡೇಟ್‌ ಮಾಡಿ</translation>
 <translation id="8447483940522230788">Brave ಸಹಾಯಕ</translation>
 <translation id="5477319665405831211">ನಿಮ್ಮ ಎಲ್ಲಾ ಸಾಧನಗಳಲ್ಲಿ Brave ಅನ್ನು ಸಿಂಕ್ ಮಾಡಿ ಮತ್ತು ವೈಯಕ್ತೀಕರಿಸಿ</translation>
 <translation id="8132634101975074716">ನೀವು Brave ಗೆ ಸೈನ್ ಇನ್ ಮಾಡಿರುವಿರಿ!</translation>
@@ -101,19 +100,18 @@
 <translation id="5380963249588143069"><ph name="TARGET_URL_HOSTNAME"/> ಗೆ ಪ್ರವೇಶ ಪಡೆಯುವುದಕ್ಕಾಗಿ <ph name="ALTERNATIVE_BROWSER_NAME"/> ಅನ್ನು ತೆರೆಯಲು, ನಿಮ್ಮ ಸಿಸ್ಟಂ ನಿರ್ವಾಹಕರು Brave ಅನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಿದ್ದಾರೆ.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> ಅವರು ಮೊದಲಿನಿಂದಲೆ Brave ಬಳಸುತ್ತಿದ್ದರು</translation>
 <translation id="1384923383737428730">ನಿಮ್ಮ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿ ಹಾನಿಕಾರಕ ಸಾಫ್ಟ್‌ವೇರ್ ಕಂಡುಬಂದಿದೆ. Brave ಅದನ್ನು ತೆಗೆದುಹಾಕಬಹುದು, ನಿಮ್ಮ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಮರುಸ್ಥಾಪಿಸಬಹುದು ಮತ್ತು ನಿಮ್ಮ ಬ್ರೌಸರ್ ಅನ್ನು ಪುನಃ ಸಾಮಾನ್ಯವಾಗಿ ಕಾರ್ಯನಿರ್ವಹಿಸುವಂತೆ ಮಾಡಲು ವಿಸ್ತರಣೆಗಳನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಬಹುದು.</translation>
-<translation id="8919921662052966648">Brave ಗೆ ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಸಿಂಕ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ಸಿಂಕ್ ಪಾಸ್‌ಫ್ರೇಸ್ ಅನ್ನು ಅಪ್‌ಡೇಟ್‌ ಮಾಡಿ.</translation>
 <translation id="2262856633481902138">ನಿಮ್ಮ ಖಾತೆಯ ಸೈನ್ ಇನ್ ವಿವರಗಳ ಅವಧಿ ಮುಗಿದಿರುವ ಕಾರಣ ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಸಿಂಕ್ ಮಾಡಲು Brave ಗೆ ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.</translation>
 <translation id="5419189641394808652">ನಿಮ್ಮ ಡೊಮೇನ್‌ನಲ್ಲಿ ಸಿಂಕ್ ಸೌಲಭ್ಯ ಲಭ್ಯವಿಲ್ಲದ ಕಾರಣ Brave ಗೆ ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಸಿಂಕ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.</translation>
 <translation id="2577755334620061182">ಸೈನ್ ಇನ್ ಮಾಡುವಲ್ಲಿ ದೋಷವಿರುವ ಕಾರಣ ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಸಿಂಕ್ ಮಾಡಲು Brave ಗೆ ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.</translation>
-<translation id="8583885258305961947">Brave OS ಸಿಸ್ಟಂ</translation>
-<translation id="3968006371075376562">ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಸಿಂಕ್ ಮಾಡಲು Brave OS ಗೆ ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ನಿಮ್ಮ ಸಿಂಕ್ ಪಾಸ್‌ಫ್ರೇಸ್ ಅನ್ನು ಅಪ್‌ಡೇಟ್‌ ಮಾಡಿ.</translation>
-<translation id="6746636977031158624">ನಿಮ್ಮ ಖಾತೆಯ ಸೈನ್ ಇನ್ ವಿವರಗಳು ತೀರಾ ಹಳೆಯದಾಗಿರುವ ಕಾರಣ ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಸಿಂಕ್ ಮಾಡಲು Brave OS ಗೆ ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.</translation>
-<translation id="2999152167963026588">ನಿಮ್ಮ ಡೊಮೇನ್‌ನಲ್ಲಿ ಸಿಂಕ್ ಮಾಡುವ ಸೌಲಭ್ಯವಿಲ್ಲದ ಕಾರಣ ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಸಿಂಕ್ ಮಾಡಲು Brave OS ಗೆ ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ.</translation>
-<translation id="1459786048951724030">ಸೈನ್ ಇನ್ ಮಾಡುವಲ್ಲಿ ದೋಷವಿರುವ ಕಾರಣ ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಸಿಂಕ್ ಮಾಡಲು Brave OS ಗೆ ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ.</translation>
-<translation id="6813094029720377619">Brave ನಿಂದ ನಿರ್ಗಮಿಸಿದಾಗ ಕುಕೀಗಳನ್ನು ನೀವು ತೆರವುಗೊಳಿಸುತ್ತೀರಿ. ಸಿಂಕ್ ಮಾಡುವುದನ್ನು ಮುಂದುವರಿಸಲು, ಈ <ph name="COOKIE_SETTINGS_LINK"/> ಅನ್ನು ಬದಲಾಯಿಸಿ.</translation>
-<translation id="3340978935015468852">ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
+<translation id="2644798301485385923">Brave OS ಸಿಸ್ಟಂ</translation>
+<translation id="7916016681687251387">ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಸಿಂಕ್ ಮಾಡಲು Brave OS ಗೆ ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಈಗಲೇ ಸರಿಪಡಿಸಿ.</translation>
+<translation id="2341767445688917208">ನಿಮ್ಮ ಪಾಸ್‌ವರ್ಡ್ ಅನ್ನು ಸಿಂಕ್ ಮಾಡಲು Brave OS ಗೆ ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಈಗಲೇ ಸರಿಪಡಿಸಿ.</translation>
+<translation id="123620459398936149">ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಸಿಂಕ್ ಮಾಡಲು Brave OS ಗೆ ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ನಿಮ್ಮ ಸಿಂಕ್ ಪಾಸ್‌ಫ್ರೇಸ್ ಅನ್ನು ಅಪ್‌ಡೇಟ್‌ ಮಾಡಿ.</translation>
+<translation id="9026991721384951619">ನಿಮ್ಮ ಖಾತೆಯ ಸೈನ್ ಇನ್ ವಿವರಗಳು ತೀರಾ ಹಳೆಯದಾಗಿರುವ ಕಾರಣ ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಸಿಂಕ್ ಮಾಡಲು Brave OS ಗೆ ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.</translation>
+<translation id="7419046106786626209">ನಿಮ್ಮ ಡೊಮೇನ್‌ನಲ್ಲಿ ಸಿಂಕ್ ಮಾಡುವ ಸೌಲಭ್ಯವಿಲ್ಲದ ಕಾರಣ ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಸಿಂಕ್ ಮಾಡಲು Brave OS ಗೆ ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ.</translation>
+<translation id="4480040274068703980">ಸೈನ್ ಇನ್ ಮಾಡುವಲ್ಲಿ ದೋಷವಿರುವ ಕಾರಣ ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಸಿಂಕ್ ಮಾಡಲು Brave OS ಗೆ ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ.</translation>
 <translation id="300669147395456190">Brave ಅಪ್ಲಿಕೇಶನ್‌ಗಳು</translation>
-<translation id="3421950102518690868"><ph name="DOMAIN"/> ಈ ಸಾಧನವನ್ನು ಬಳಸುವ ಮೊದಲು ಕೆಳಗಿನ ಸೇವಾ ನಿಯಗಳನ್ನು ನೀವು ಓದುವ ಹಾಗೂ ಸಮ್ಮತಿಸುವ ಅವಶ್ಯಕತೆ ಇದೆ. ಈ ನಿಯಮಗಳು ವಿಸ್ತರಗೊಳ್ಳುವುದಿಲ್ಲ, ಮಾರ್ಪಡಾಗುವುದಿಲ್ಲ, ಅಥವಾ Brave OS ನಿಯಮಗಳನ್ನು ಉಲ್ಲಂಘಿಸುವುದಿಲ್ಲ.</translation>
+<translation id="2398566204186296120"><ph name="DOMAIN"/> ಈ ಸಾಧನವನ್ನು ಬಳಸುವ ಮೊದಲು ಕೆಳಗಿನ ಸೇವಾ ನಿಯಗಳನ್ನು ನೀವು ಓದುವ ಹಾಗೂ ಸಮ್ಮತಿಸುವ ಅವಶ್ಯಕತೆ ಇದೆ. ಈ ನಿಯಮಗಳು ವಿಸ್ತರಗೊಳ್ಳುವುದಿಲ್ಲ, ಮಾರ್ಪಡಾಗುವುದಿಲ್ಲ, ಅಥವಾ Brave OS ನಿಯಮಗಳನ್ನು ಉಲ್ಲಂಘಿಸುವುದಿಲ್ಲ.</translation>
 <translation id="3293668930608086049">Brave ನಿಮ್ಮ ಕ್ಯಾಮರಾ ಮತ್ತು ಮೈಕ್ರೋಫೋನ್ ಬಳಸುತ್ತಿದೆ.</translation>
 <translation id="8919461291440820124">Brave ನಿಮ್ಮ ಮೈಕ್ರೋಫೋನ್ ಬಳಸುತ್ತಿದೆ.</translation>
 <translation id="3205074487970075628">Brave ನಿಮ್ಮ ಕ್ಯಾಮರಾ ಬಳಸುತ್ತಿದೆ.</translation>
@@ -146,12 +144,9 @@
 <translation id="4805806622840861220">Brave ಮರುಪ್ರಾರಂಭಿಸಿ</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Brave ಗಾಗಿ ಹೊಸತೊಂದು ಅಪ್‌ಡೇಟ್ ಲಭ್ಯವಿದೆ ಮತ್ತು ನೀವು ಮರುಪ್ರಾರಂಭಿಸಿದ ಕೂಡಲೇ ಅದನ್ನು ಅನ್ವಯಿಸಲಾಗುತ್ತದೆ.}=1{Brave ಗಾಗಿ ಹೊಸತೊಂದು ಅಪ್‌ಡೇಟ್ ಲಭ್ಯವಿದೆ ಮತ್ತು ನೀವು ಮರುಪ್ರಾರಂಭಿಸಿದ ಕೂಡಲೇ ಅದನ್ನು ಅನ್ವಯಿಸಲಾಗುತ್ತದೆ. ನಿಮ್ಮ ಅಜ್ಞಾತ ವಿಂಡೋವನ್ನು ತೆರೆಯಲಾಗುವುದಿಲ್ಲ.}one{Brave ಗಾಗಿ ಹೊಸತೊಂದು ಅಪ್‌ಡೇಟ್ ಲಭ್ಯವಿದೆ ಮತ್ತು ನೀವು ಮರುಪ್ರಾರಂಭಿಸಿದ ಕೂಡಲೇ ಅದನ್ನು ಅನ್ವಯಿಸಲಾಗುತ್ತದೆ. ನಿಮ್ಮ # ಅಜ್ಞಾತ ವಿಂಡೋಗಳನ್ನು ತೆರೆಯಲಾಗುವುದಿಲ್ಲ.}other{Brave ಗಾಗಿ ಹೊಸತೊಂದು ಅಪ್‌ಡೇಟ್ ಲಭ್ಯವಿದೆ ಮತ್ತು ನೀವು ಮರುಪ್ರಾರಂಭಿಸಿದ ಕೂಡಲೇ ಅದನ್ನು ಅನ್ವಯಿಸಲಾಗುತ್ತದೆ. ನಿಮ್ಮ # ಅಜ್ಞಾತ ವಿಂಡೋಗಳನ್ನು ತೆರೆಯಲಾಗುವುದಿಲ್ಲ.}}</translation>
 <translation id="2799223571221894425">ಮರುಪ್ರಾರಂಭಿಸು</translation>
-<translation id="2522086024276534909">Brave OS ಮರುಪ್ರಾರಂಭಿಸಿ</translation>
-<translation id="8183252473547465084">ಅಪ್‌ಡೇಟ್ ಅನ್ವಯಿಸಲು Brave OS ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಬೇಕಾಗುತ್ತದೆ.</translation>
+<translation id="5062123544085870375">Brave OS ಮರುಪ್ರಾರಂಭಿಸಿ</translation>
+<translation id="2063848847527508675">ಅಪ್‌ಡೇಟ್ ಅನ್ವಯಿಸಲು Brave OS ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಬೇಕಾಗುತ್ತದೆ.</translation>
 <translation id="5895138241574237353">ಮರುಪ್ರಾರಂಭಿಸಿ</translation>
-<translation id="8887390605192156061">Brave ನ ಎಲ್ಲಾ ನಕಲುಗಳನ್ನು ತ್ಯಜಿಸಿ.</translation>
-<translation id="1801551749768408825">Brave ನ ಇತರ ನಕಲುಗಳು ರನ್ ಆಗುತ್ತಿವೆ. ಅಪ್‌ಡೇಟ್ ಮಾಡಲು, ಅವುಗಳನ್ನು ಮುಚ್ಚಿರಿ.</translation>
-<translation id="2632141563911437138">ಅಪ್‌ಡೇಟ್ ಮಾಡಲು, ಈ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿ ರನ್ ಆಗುತ್ತಿರುವ Brave ಅನ್ನು ನಿಲ್ಲಿಸಬೇಕಾಗುತ್ತದೆ. ಇದರಿಂದಾಗಿ ಈ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿ ಲಾಗ್ ಇನ್ ಆಗಿರುವ ಇತರ ಬಳಕೆದಾರರು ತಮ್ಮ ಉಳಿಸಲಾಗದ ಬದಲಾವಣೆಗಳನ್ನು ಕಳೆದುಕೊಳ್ಳಬಹುದು.</translation>
 <translation id="5875673934455379806">Brave ಅನ್ನು ಮರುಸ್ಥಾಪಿಸು</translation>
 <translation id="2097604701283463988">Brave ನ ಅವಧಿ ಮುಗಿದಿದೆ</translation>
 <translation id="5173820533850252773">Brave ನ ಅವಧಿ ಮುಗಿದಿದೆ</translation>
@@ -172,7 +167,7 @@
 <translation id="7798069806040634998">ಫೈಲ್‌ಗಳನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲು Brave ಗೆ ಸಂಗ್ರಹಣೆಯನ್ನು ಪ್ರವೇಶಿಸುವ ಅಗತ್ಯವಿದೆ</translation>
 <translation id="7685904775439037072">Brave ಒಮ್ಮೆ ಪ್ರವೇಶವನ್ನು ಪಡೆದ ಬಳಿಕ, ಪ್ರವೇಶಕ್ಕಾಗಿ ನಿಮ್ಮನ್ನು ಕೇಳಲು ವೆಬ್‍ಸೈಟ್‍ಗಳಿಗೆ ಸಾಧ್ಯವಾಗುತ್ತದೆ.</translation>
 <translation id="1744365871163268756">ದಯವಿಟ್ಟು ಇತ್ತೀಚಿನ ಸಿಸ್ಟಂ ನವೀಕರಣಗಳನ್ನು Brave ಸ್ಥಾಪಿಸುವಾಗ ಕಾಯಿರಿ.</translation>
-<translation id="7808415789955822133">Brave OS ನಿಯಮಗಳು</translation>
+<translation id="7408085963519505752">Brave OS ನಿಯಮಗಳು</translation>
 <translation id="7207456302801184289">Brave ಗೆ ಸುಸ್ವಾಗತ</translation>
 <translation id="3507835409099344374">Brave ಅಧಿಸೂಚನೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳಿಗೆ ಹೋಗಿ</translation>
 <translation id="1026406809507858026">{0,plural, =0{Brave ಅಪ್‌ಡೇಟ್ ಲಭ್ಯವಿದೆ}=1{Brave ಅಪ್‌ಡೇಟ್ ಲಭ್ಯವಿದೆ}one{# ದಿನಗಳ ಮಟ್ಟಿಗೆ Brave ಅಪ್‌ಡೇಟ್ ಲಭ್ಯವಿದೆ}other{# ದಿನಗಳ ಮಟ್ಟಿಗೆ Brave ಅಪ್‌ಡೇಟ್ ಲಭ್ಯವಿದೆ}}</translation>
@@ -191,16 +186,16 @@
 <translation id="1786715389543715322">Brave ಅಪ್‌ಡೇಟ್ ಮಾಡಲಾಗುತ್ತಿದೆ (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="2182657378556811785">ಬಹುಪಾಲು ನವೀಕೃತವಾಗಿದೆ! ಅಪ್‌ಡೇಟ್ ಮಾಡುವುದನ್ನು ಮುಗಿಸಲು Brave ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಿ.</translation>
 <translation id="8208853227947884571">Brave ಅಪ್‌ ಟು ಡೇಟ್‌ ಆಗಿದೆ</translation>
-<translation id="6686872257969654608">Brave OS ಕುರಿತು</translation>
-<translation id="7674116293463255181">ನಿಮ್ಮ ಸಾಧನ ಅಪ್ ಟು ಡೇಟ್ ಆಗಿದೆಯೇ ಎಂಬುದನ್ನು ನೋಡಲು, <ph name="LINK_BEGIN"/>Brave OS ಸೆಟ್ಟಿಂಗ್‌ಗಳಿಗೆ<ph name="LINK_END"/> ಹೋಗಿ</translation>
-<translation id="2280363356796735201">Brave OS ಕುರಿತಾಗಿ ಸಹಾಯ ಪಡೆಯಿರಿ</translation>
+<translation id="573759479754913123">Brave OS ಕುರಿತು</translation>
+<translation id="7573289029918943991">ನಿಮ್ಮ ಸಾಧನ ಅಪ್ ಟು ಡೇಟ್ ಆಗಿದೆಯೇ ಎಂಬುದನ್ನು ನೋಡಲು, <ph name="LINK_BEGIN"/>Brave OS ಸೆಟ್ಟಿಂಗ್‌ಗಳಿಗೆ<ph name="LINK_END"/> ಹೋಗಿ</translation>
+<translation id="3395323229510056640">Brave OS ಕುರಿತಾಗಿ ಸಹಾಯ ಪಡೆಯಿರಿ</translation>
 <translation id="38898988211673781">ನೀವು Brave ನಿಂದ ನಿರ್ಗಮಿಸಿದಾಗ ಕುಕೀಗಳು ಮತ್ತು ಸೈಟ್ ಡೇಟಾವನ್ನು ತೆರವುಗೊಳಿಸಿ</translation>
 <translation id="5253815230176279256">Brave Software Pay (Brave ಗೆ ನಕಲಿಸಲಾಗಿದೆ)</translation>
 <translation id="5468853758063275923">Brave ನಿಮ್ಮ ಡಿಫಾಲ್ಟ್ ಬ್ರೌಸರ್ ಆಗಿದೆ.</translation>
 <translation id="1775322105159056176">ಡಿಫಾಲ್ಟ್ ಬ್ರೌಸರ್ ಅನ್ನು ನಿರ್ಧರಿಸಲು ಅಥವಾ ಹೊಂದಿಸಲು Brave ಗೆ ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ</translation>
 <translation id="6915252145142862992">ಇದು Brave ನ ದ್ವಿತೀಯ ಸ್ಥಾಪನೆಯಾಗಿದೆ ಮತ್ತು ಅದನ್ನು ನಿಮ್ಮ ಡಿಫಾಲ್ಟ್ ಬ್ರೌಸರ್ ಆಗಿ ಮಾಡಲಾಗುವುದಿಲ್ಲ.</translation>
 <translation id="6235873178214143377">ಈ ಪುಟದಲ್ಲಿ ಸೆಟ್ಟಿಂಗ್ ಒಂದು ಕಾಣಿಸದಿದ್ದರೆ, ನಿಮ್ಮ <ph name="LINK_BEGIN"/>Brave ಬ್ರೌಸರ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ<ph name="LINK_END"/> ನೋಡಿರಿ</translation>
-<translation id="4459296183696059108">ಈ ಪುಟದಲ್ಲಿ ಸೆಟ್ಟಿಂಗ್ ಒಂದು ಕಾಣಿಸದಿದ್ದರೆ, ನಿಮ್ಮ <ph name="LINK_BEGIN"/>Brave OS ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ<ph name="LINK_END"/> ನೋಡಿರಿ</translation>
+<translation id="5657226924540934362">ಈ ಪುಟದಲ್ಲಿ ಸೆಟ್ಟಿಂಗ್ ಒಂದು ಕಾಣಿಸದಿದ್ದರೆ, ನಿಮ್ಮ <ph name="LINK_BEGIN"/>Brave OS ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ<ph name="LINK_END"/> ನೋಡಿರಿ</translation>
 <translation id="2312399718665761438">ಕಾಗುಣಿತ ದೋಷಗಳನ್ನು ಸರಿಪಡಿಸಲು, ನೀವು ಪಠ್ಯ ಕ್ಷೇತ್ರಗಳಲ್ಲಿ ಟೈಪ್ ಮಾಡುವ ಪಠ್ಯವನ್ನು Brave, Brave Software ಗೆ ಕಳುಹಿಸುತ್ತದೆ</translation>
 <translation id="8586264863973514035">ನಿಮ್ಮ ಬದಲಾವಣೆಗಳನ್ನು ಅನ್ವಯಿಸಲು, Brave ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಿ</translation>
 <translation id="7021823858304886493">Brave ಸೈನ್-ಇನ್ ಅನ್ನು ಅನುಮತಿಸಿ</translation>
@@ -209,7 +204,6 @@
 <translation id="5853262807109651878">ಈ ಸಾಧನದಿಂದ <ph name="ITEMS_COUNT"/> ಐಟಂಗಳನ್ನು ಇದು ಅಳಿಸುತ್ತದೆ. ನಂತರ ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಮರುಪಡೆಯಲು, <ph name="USER_EMAIL"/> ನಂತೆ Brave ಗೆ ಸೈನ್‌ಇನ್ ಮಾಡಿ.</translation>
 <translation id="4784414698887946907">ಈ ಸಾಧನದಿಂದ ನಿಮ್ಮ ಬ್ರೌಸಿಂಗ್ ಡೇಟಾವನ್ನು ಇದು ಅಳಿಸುತ್ತದೆ. ನಂತರ ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಮರುಪಡೆಯಲು, <ph name="USER_EMAIL"/> ನಂತೆ Brave ಗೆ ಸೈನ್‌ ಇನ್ ಮಾಡಿ.</translation>
 <translation id="4518479204315969707">Brave ಹೆಸರು ಮತ್ತು ಚಿತ್ರ</translation>
-<translation id="82609232232243542">Brave ಗೆ ಸೈನ್ ಇನ್ ಮಾಡಿ</translation>
 <translation id="8372880274820509128">ಹೆಚ್ಚುವರಿ ಭದ್ರತೆಗಾಗಿ, Brave ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಎನ್‌ಕ್ರಿಪ್ಟ್ ಮಾಡುತ್ತದೆ.</translation>
 <translation id="7445061995866044926">Brave ನಿಂದ ಸೈನ್‌ ಔಟ್‌ ಮಾಡುವುದೇ?</translation>
 <translation id="7453070689008684791">ವಿಳಾಸಪಟ್ಟಿಯಲ್ಲಿ ಸಲಹೆ ನೀಡಲು, Brave ನಿಮ್ಮ ಡ್ರೈವ್‌ಗೆ ಪ್ರವೇಶಿಸುತ್ತದೆ</translation>

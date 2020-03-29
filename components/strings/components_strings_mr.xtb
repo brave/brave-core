@@ -109,7 +109,6 @@
 <translation id="981121421437150478">ऑफलाइन</translation>
 <translation id="5171045022955879922">URL शोधा किंवा टाइप करा</translation>
 <translation id="803771048473350947">फाइल</translation>
-<translation id="6268185425799226387">Brave Software ड्राइव्ह</translation>
 <translation id="8425213833346101688">बदल करा</translation>
 <translation id="8009225694047762179">पासवर्ड व्यवस्थापित करा</translation>
 <translation id="3810973564298564668">व्यवस्थापित करा</translation>
@@ -136,6 +135,8 @@
 <translation id="2215727959747642672">फाइलचे संपादन</translation>
 <translation id="6545864417968258051">ब्लूटूथ स्कॅन करत आहे</translation>
 <translation id="534295439873310000">NFC डिव्हाइस</translation>
+<translation id="4943703118917034429">आभासी वास्तविकता</translation>
+<translation id="3513704683820682405">ऑगमेंटेड रिअ‍ॅलिटी</translation>
 <translation id="5039804452771397117">परवानगी द्या</translation>
 <translation id="7053983685419859001">अवरोधित करा</translation>
 <translation id="57838592816432529">निःशब्द करा</translation>
@@ -186,8 +187,8 @@
 <translation id="5565735124758917034">सक्रिय</translation>
 <translation id="7805768142964895445">स्थिती</translation>
 <translation id="6915804003454593391">वापरकर्ता:</translation>
-<translation id="5916664084637901428">चालू</translation>
-<translation id="5860033963881614850">बंद</translation>
+<translation id="5921185718311485855">चालू</translation>
+<translation id="1019413721762100891">बंद</translation>
 <translation id="7961015016161918242">कधीही नाही</translation>
 <translation id="8294431847097064396">स्रोत</translation>
 <translation id="1056898198331236512">चेतावणी</translation>
@@ -196,7 +197,6 @@
 <translation id="5720705177508910913">वर्तमान वापरकर्ता</translation>
 <translation id="6965978654500191972">डिव्हाइस</translation>
 <translation id="4728558894243024398">प्लॅटफॉर्म</translation>
-<translation id="5939847200023027600">पीडीएफ कंपोझिटर सेवा</translation>
 <translation id="1588438908519853928">सामान्य</translation>
 <translation id="1974060860693918893">प्रगत</translation>
 <translation id="5308380583665731573">कनेक्‍ट करा</translation>

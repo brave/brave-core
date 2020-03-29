@@ -2,8 +2,9 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="nl">
 <translation id="4339730410920731698">Advertenties en trackers geblokkeerd</translation>
-<translation id="2313532038420432247">HTTPS Upgrades</translation>
+<translation id="2313532038420432247">HTTPS Opwaarderingen</translation>
 <translation id="7679428712334662192">Geschatte tijd bespaard</translation>
+<translation id="8411095021655121794">Geschatte bespaarde bandbreedte</translation>
 <translation id="5206618227023752085">Bovenste site verwijderd.</translation>
 <translation id="2079545284768500474">Ongedaan maken</translation>
 <translation id="6040143037577758943">Sluiten</translation>
@@ -16,13 +17,17 @@
 <translation id="8344569602005188545">uren</translation>
 <translation id="7100907433458266664">dag</translation>
 <translation id="4971389353431353387">dagen</translation>
+<translation id="2116364690062294218">B</translation>
+<translation id="3123243061080120667">KB</translation>
+<translation id="977224059380370527">MB</translation>
+<translation id="8776285424728638733">GB</translation>
 <translation id="8427933533533814946">Foto gemaakt door</translation>
 <translation id="7108338896283013870">Verbergen</translation>
 <translation id="7115515527894388910">Voorkeuren Bewerken</translation>
 <translation id="7606029853066610626">Bladwijzers Bekijken en Beheren</translation>
 <translation id="5550994254534676787">Bekijk je browsegeschiedenis.</translation>
 <translation id="1742484101357469636">Dashboard-instellingen</translation>
-<translation id="5783793537552649286">Laat achtergrondafbeelding zien</translation>
+<translation id="5783793537552649286">Achtergrondafbeelding weergeven</translation>
 <translation id="7275773481201277457">Brave Statistieken Weergeven</translation>
 <translation id="6836061097810262923">Klok weergeven</translation>
 <translation id="8643377320501056697">Topsites Weergeven</translation>
@@ -84,11 +89,9 @@
 <translation id="7954950242989581218">Blader veilig en wel</translation>
 <translation id="2188651882929633653">Brave Shields blokkeert de enge dingen die je proberen te volgen op het web inclusief de meeste advertenties. Stel Shields in op “down” als een site niet lijkt te werken. Brave gebruikt <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>volledig privé productanalyses<ph name="END_LINK_P3A">&lt;/a&gt;</ph>om het totale gebruik van bepaalde functies te schatten. U kunt dit uitschakelen in  <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Advertenties</translation>
-<translation id="2364310432103707426">Verdien {{currency}} door Brave advertenties te bekijken. Advertenties worden vertoond op basis van je interesses, zoals gezien aan je browsegedrag. Er zal geen persoonlijke data of zoekgeschiedenis je browser verlaten.</translation>
+<translation id="2128226640852355533">Verdien {{currency}} door advertenties van Brave te bekijken. De gepresenteerde advertenties zijn gebaseerd op jouw interesses, zoals afgeleid uit je browsegedrag. Geen persoonlijke gegevens of browsergeschiedenis verlaten ooit je browser.</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
-<translation id="3742599705619405136">Een automatische manier om uitgevers en makers van inhoud te ondersteunen. Stel een maandelijkse betaling in en browse zoals je normaal doet. De dor Brave geverifieerde sites die je bezoekt ontvangen je bijdragen automatisch, op basis van jouw aandacht zoals gemeten door Brave.</translation>
-<translation id="8949527283651381130">Sta advertentieconversie-herkenning toe</translation>
-<translation id="2184191362610545393">Dit zal Brave anoniem laten weten dat er een reactie was op een advertentie op deze browser. Dit inschakelen zal inkomsten verhogen.</translation>
+<translation id="3742599705619405136">Een automatische manier om uitgevers en makers van inhoud te ondersteunen. Stel een maandelijkse betaling in en browse zoals je normaal doet. De door Brave geverifieerde sites die je bezoekt ontvangen je bijdragen automatisch, op basis van jouw aandacht zoals gemeten door Brave.</translation>
 <translation id="20281847067919078">Geschatte openstaande beloningen</translation>
 <translation id="8593551638387217772">Volgende betaaldatum</translation>
 <translation id="319209088187794725">Aantal meldingen van advertenties deze maand ontvangen</translation>
@@ -122,7 +125,7 @@
 <translation id="1847863811689960237">Beloon creators voor de content die je verblijdt.</translation>
 <translation id="4129489167302464118">Je maandelijkse betaling wordt verdeeld over de websites die je bezoekt.</translation>
 <translation id="4898632353264854950">Tijdens het browsen verschijnen er websites.</translation>
-<translation id="3024485967181749006">Totale aantal tips voor deze maand</translation>
+<translation id="3024485967181749006">Totale aantal fooien voor deze maand</translation>
 <translation id="5055577484189948413">Totale bijdragen deze maand</translation>
 <translation id="4153752809523809915">Heb je vandaag al je favoriete maker van content een tip gegeven?</translation>
 <translation id="1165667598801520610">Voeg geld toe</translation>
@@ -144,7 +147,7 @@
 <translation id="3905400818082450708">Reddit</translation>
 <translation id="6032511312767282174">GitHub</translation>
 <translation id="2635094637295383009">Twitter</translation>
-<translation id="3920963435109110161">Geef meteen een tip als je edelstenen vindt.</translation>
+<translation id="3920963435109110161">Geef meteen een fooi als je juweeltjes vindt.</translation>
 <translation id="3642432959491988696">Laat anderen het weten met een korte tweet.</translation>
 <translation id="5984081903757971165">{{balance}} {{currency}} is herstel. Je walletsleutel is geverifieerd en succesvol geladen.</translation>
 <translation id="1083279119532577005">Wallet hersteld!</translation>
@@ -158,7 +161,7 @@
 <translation id="6965382102122355670">OK</translation>
 <translation id="7210234701206674260">Brave Rewards ondervindt problemen. Probeer het later opnieuw.</translation>
 <translation id="570208820610947248">We hebben gezien dat er iets aan de hand is met je wallet. Voordat er transacties kunnen worden verwerkt, moet je de back-up van je wallet herstellen.</translation>
-<translation id="7797604753681168055">Nu herstellen</translation>
+<translation id="7797604753681168055">Nu herstellen!</translation>
 <translation id="5549059668721746831">Datum volgende maandelijkse bijdrage</translation>
 <translation id="6231182869178328516">Ik heb <ph name="NAME"/> zojuist een fooi gegeven via de Brave Browser. Ontdek meer op https://brave.com/tips.</translation>
 <translation id="8404935570206006581">FooiVanBrave</translation>
@@ -195,7 +198,7 @@
 <translation id="1642443162274867084">Wallet aangemaakt</translation>
 <translation id="5094577350232361255">over</translation>
 <translation id="4918086044614829423">Accepteren</translation>
-<translation id="6832986780040139899">©2016–2018 Brave Software. Brave is een geregistreerd handelsmerk van Brave Software. Namen van websites kunnen handelsmerken of geregistreerde handelsmerken van de eigenaar van de website zijn.</translation>
+<translation id="5916290544882167205">Brave Software. Brave is een geregistreerd handelsmerk van Brave Software. Sitenamen kunnen handelsmerken of geregistreerde handelsmerken zijn van de site-eigenaar.</translation>
 <translation id="9026369588205476247">Om je privacy te beschermen is dit Brave Rewards afschrift niet opgeslagen of bewaard buiten je apparaat (deze computer). Het kan niet achterhaald worden via Brave indien je de data op je apparaat verliest.</translation>
 <translation id="1036277985068412734">voeg geld toe</translation>
 <translation id="3587482841069643663">Alles</translation>
@@ -204,6 +207,7 @@
 <translation id="2631006050119455616">Opgeslagen</translation>
 <translation id="2155330833364281539">Advertenties die je de afgelopen {{totalDays}} dagen hebt ontvangen</translation>
 <translation id="8863685593846905344">Advertentiegeschiedenis</translation>
+<translation id="2777306694585938662">Advertentiebeloningen ontvangen</translation>
 <translation id="5212777575344695266">Markeren als ongepast</translation>
 <translation id="2111256234277361810">Markeren als ongepast ✓</translation>
 <translation id="8988332871810963281">Er is momenteel geen geschiedenis van Brave Ads</translation>
@@ -254,9 +258,9 @@
 <translation id="2157162992285072267">Sleep dit logo op de</translation>
 <translation id="4805054577224376281">doel</translation>
 <translation id="1346059596910821859">Tip</translation>
-<translation id="245015745140252435">Tip bedrag</translation>
+<translation id="245015745140252435">Fooi bedrag</translation>
 <translation id="4114667046481794032">Bijdragebedrag</translation>
-<translation id="3520817231440482449">Geef deze website Maandelijks een Tip.</translation>
+<translation id="3520817231440482449">Geef deze website Maandelijks een Fooi.</translation>
 <translation id="1827184134638345603">Stuur een Tip…</translation>
 <translation id="7928243298881209869">Je eerste maandelijkse bijdrage wordt verstuurd op:</translation>
 <translation id="6045860799501892362">Stel maandelijkse bijdrage in</translation>
@@ -288,7 +292,7 @@
 <translation id="9115913704608474258">November</translation>
 <translation id="7828956995407538686">Oktober</translation>
 <translation id="5502713021410870035">September</translation>
-<translation id="5737831580668469027">Maandelijkse bijdragen!</translation>
+<translation id="5737831580668469027">Maandelijkse Bijdragen!</translation>
 <translation id="606865182719489911">Er is een gratis token als beloning beschikbaar.</translation>
 <translation id="2487641031722095938">Het is uw geluksdag!</translation>
 <translation id="6255773350565723852">Je gift komt eraan.</translation>
@@ -308,15 +312,14 @@
 <translation id="4921250468871504777">Oké</translation>
 <translation id="7866482334467279021">op</translation>
 <translation id="1166682575529520472">Maandelijks</translation>
-<translation id="8370173854533168890">Eén keer</translation>
-<translation id="9182287025588539628">Eenmalige Tips</translation>
+<translation id="8370173854533168890">Eénmalig</translation>
+<translation id="9182287025588539628">Eenmalige Fooien</translation>
 <translation id="6381574025952123568">Initieel tegoed</translation>
 <translation id="532275381857891532">7-daagse advertentiegeschiedenis</translation>
 <translation id="4923459931733593730">Betaling</translation>
-<translation id="4021593982164260556">Betaling wordt elke {{day}}de dag van de maand uitgevoerd</translation>
+<translation id="5693657857413982604">Betaling geschiedt elke {{day}} van de maand.</translation>
 <translation id="6104680658798556671">Betaling niet uitgevoerd</translation>
-<translation id="2834888581291358924">Wanneer je saldo niet hoog genoeg is om het totaalbedrag aan Auto-Contribute en maandelijkse bijdragen te dekken, worden deze betalingen voor deze periode overgeslagen.</translation>
-<translation id="3138528956349114724">Vastgezette sites zijn nu</translation>
+<translation id="3138528956349114724">Vastgepinde sites zijn nu</translation>
 <translation id="2337632028350283479">Dit is hoe maandelijkse bijdragen werken:</translation>
 <translation id="6457273203091513039">Maandelijkse bijdragen worden niet gemaakt vanuit je Auto-Contribute betaling. Dit gaat apart.</translation>
 <translation id="9099396904827413228">Aan elke site wordt maandelijks een vast bedrag betaald.</translation>
@@ -339,7 +342,7 @@
 <translation id="2160578257818656558">Je hebt {{reservedAmount}} {{currency}} toegewezen aan makers die zich nog niet hebben aangemeld voor het ontvangen van bijdragen. Je browser blijft proberen je bijdragen te versturen tot ze verifiëren of tot er 90 dagen zijn verstreken.</translation>
 <translation id="8759753423332885148">Meer informatie.</translation>
 <translation id="3157931365184549694">Herstellen</translation>
-<translation id="1797334173232638045">Je vastgezette sites zijn verplaatst naar</translation>
+<translation id="1797334173232638045">Je vastgepinde sites zijn verplaatst naar</translation>
 <translation id="3626186271103896082">Maak een backup van je wallet</translation>
 <translation id="5717619667204259673">Bewaar deze herstelsleutel op een veilige plek.</translation>
 <translation id="4699702339303280827">Je kunt altijd deze sleutel gebruiken om je wallet terug te krijgen als er iets met je browser of computer gebeurt. Zorg er wel voor dat je je sleutel goed bewaard, want wie je sleutel heeft, kan je wallet stelen. Het is waarschijnlijk het veiligst om de sleutel ergens op te schrijven of te bewaren bij andere belangrijke gegevens.</translation>
@@ -374,7 +377,7 @@
 <translation id="259138486959961679">Bekijk alle {{numItems}} artikels</translation>
 <translation id="7857284676033058221">Bekijk alle {{numSites}} websites</translation>
 <translation id="1549705559752367917">Fooi versturen</translation>
-<translation id="3536298624341433814">Verzend mijn Tip.</translation>
+<translation id="3536298624341433814">Verzend mijn Fooi.</translation>
 <translation id="8428213095426709021">Instellingen</translation>
 <translation id="1792148354504719133">website</translation>
 <translation id="5944430251223015324">websites</translation>
@@ -388,6 +391,7 @@
 <translation id="4588241643143931775">Bitcoin (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
 <translation id="8746837129291133068">Litecoin (LTC)</translation>
+<translation id="6367285596431004439">Tokentoekenning ontvangen</translation>
 <translation id="9212459913845238740">Geclaimde puntenbeurzen</translation>
 <translation id="768850953428043522">punten</translation>
 <translation id="3043542281656021374">Punt</translation>
@@ -463,6 +467,10 @@
 <translation id="4569155249847375786">Geverifieerd</translation>
 <translation id="8465442795593991224">Uphold kan je vragen je identiteit te verifiëren op basis van de gevraagde diensten.</translation>
 <translation id="723054503945711909">Brave Software Inc. verwerkt, bewaart of heeft geen toegang tot de persoonlijke informatie die je verstrekt aan Uphold wanneer je een account bij hen aanmaakt.</translation>
+<translation id="7404779623219601861">BAT inwisselen voor cadeaubonnen</translation>
+<translation id="6215565499749144110">Met TAP Network kun je je BAT inwisselen voor populaire cadeaubonnen van bekende merken.</translation>
+<translation id="526152301446370337">Ga naar TAP.</translation>
+<translation id="6915065518766963119">* Vereist verdere verificatie.</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Leer meer<ph name="LINK_END"/> over Brave Rewards</translation>
 <translation id="5826706758731195747">Door Rewards aan te zetten, ga je akkoord met de <ph name="LINK_BEGIN"/>Algemene Voorwaarden<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Geschatte inkomsten tot nu toe deze maand</translation>
@@ -476,6 +484,7 @@
 <translation id="8092889639392847252">Krijg betaald om deze gesponsorde achtergrondafbeelding te bekijken.</translation>
 <translation id="2542495049135486284">Probeer Brave Rewards opnieuw en betaal het door terwijl u verdient!</translation>
 <translation id="53513464591392992">Zet Brave Rewards aan en krijg betaald om privacyvriendelijke advertenties te zien.</translation>
+<translation id="8463996294416161140">Schakel in <ph name="PRODUCT_NAME"/> om jouw deel te claimen. Je kan er ook voor kiezen om <ph name="LINK_BEGIN"/>verberg gesponsorde afbeeldingen<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">Goed gedaan!</translation>
 <translation id="764235488372037377">Uw beloningen uit advertenties zijn hier</translation>
 <translation id="7091215606170476659">U heeft een UGP-beurs van Brave.</translation>
@@ -504,7 +513,7 @@
 <translation id="5591129654353352557">Opgeslagen site-instellingen</translation>
 <translation id="7859704718976024901">Browsegeschiedenis</translation>
 <translation id="2339730291919608488">Synchronisatieketen verlaten</translation>
-<translation id="4332558599726753990">Sync-configuratie</translation>
+<translation id="4332558599726753990">Synchronisatie-configuratie</translation>
 <translation id="298546024891487702">Je moet Brave installeren op alle apparaten die je wilt synchroniseren. Begin een synchronisatieketen om ze te koppelen, die je gebruikt om veilig al je apparaten aan elkaar te verbinden.</translation>
 <translation id="6200528822592747640">Een nieuwe synchronisatieketen starten</translation>
 <translation id="5184726904895809379">Ik heb een synchronisatiecode</translation>
@@ -515,7 +524,7 @@
 <translation id="6388211659394268749">Als je weer wilt deelnemen aan een synchronisatieketen, kies je 'Een code van een synchronisatieketen invoeren'.</translation>
 <translation id="6500099041876719317">Opmerking: als je dit apparaat uit de synchronisatieketen verwijdert, worden eerder gesynchroniseerde gegevens op het apparaat niet gewist.</translation>
 <translation id="6647265259633328698">Waarschuwing!</translation>
-<translation id="7226983081288498250">Als je</translation>
+<translation id="7226983081288498250">Verwijderen</translation>
 <translation id="1810742624536999850">verwijdert, wordt deze synchronisatieketen ook verwijderd.</translation>
 <translation id="3263262632668102801">De lokale gegevens op dit apparaat blijven behouden, maar alle gegevens in de cache van Brave Sync worden verwijderd.</translation>
 <translation id="9209629396585743369">Je kunt een nieuwe synchronisatieketen starten of synchroniseren met een nieuw apparaat door de code van de synchronisatieketen in te voeren.</translation>

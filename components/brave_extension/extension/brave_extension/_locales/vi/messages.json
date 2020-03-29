@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Đã chặn nhận diện thiết bị trên mọi website",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "Đã chặn theo dõi dấu vân tay trên toàn website",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Đã chặn các nỗ lực nhận diện thiết bị",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "Đã chặn các ý định theo dõi dấu vân tay",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Đã cho phép mọi nỗ lực nhận diện thiết bị",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "Đã cho phép mọi ý định theo dõi dấu vân tay",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Các nỗ lực nhận dạng thiết bị",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "Ý định theo dõi dấu vân tay",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "Các script trên trang web này",

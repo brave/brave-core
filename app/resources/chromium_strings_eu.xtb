@@ -3,7 +3,7 @@
 <translationbundle lang="eu">
 <translation id="939305735877869636">Brave</translation>
 <translation id="6373767849825830651">Web-orriak eta aplikazioak tximista bezain azkar abiarazten dituen web-arakatzailea da Brave. Bizkorra, egonkorra eta erabiltzeko erraza da. Brave-ek malwarearen eta phishingaren aurka dituen babes inkorporatuei esker, seguruago ibiliko zara Interneten.</translation>
-<translation id="680297041157509674">Brave OS</translation>
+<translation id="4331809312908958774">Brave OS</translation>
 <translation id="4847979153841887006">Brave logotipoa</translation>
 <translation id="7339898014177206373">Leiho berria</translation>
 <translation id="5516268345616100622">Ataza-kudeatzailea - Brave</translation>
@@ -15,8 +15,8 @@
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="8992261409816268381">Brave egileak</translation>
 <translation id="8121009781989288430">Copyright <ph name="YEAR"/> Brave-en egileak. Eskubide guztiak erreserbatuta.</translation>
-<translation id="2310890394934209120">Brave OS sistemak <ph name="BEGIN_LINK_CROS_OSS"/>kode irekiko software<ph name="END_LINK_CROS_OSS"/> gehigarria behar du existitu ahal izateko.</translation>
-<translation id="8160794320557846790"><ph name="BEGIN_LINK_LINUX_OSS"/>Linux (beta)<ph name="END_LINK_LINUX_OSS"/> eta <ph name="BEGIN_LINK_CROS_OSS"/>kode irekiko antzeko software<ph name="END_LINK_CROS_OSS"/> gehigarriei esker da posible Brave OS.</translation>
+<translation id="6368958679917195344">Brave OS sistemak <ph name="BEGIN_LINK_CROS_OSS"/>kode irekiko software<ph name="END_LINK_CROS_OSS"/> gehigarria behar du existitu ahal izateko.</translation>
+<translation id="1662639173275167396"><ph name="BEGIN_LINK_LINUX_OSS"/>Linux (beta)<ph name="END_LINK_LINUX_OSS"/> eta <ph name="BEGIN_LINK_CROS_OSS"/>kode irekiko antzeko software<ph name="END_LINK_CROS_OSS"/> gehigarriei esker da posible Brave OS.</translation>
 <translation id="6913582816347128893">Brave-ek agian ez du behar bezala funtzionatuko ez delako jada onartzen Mac OS X 10.9 bertsioan.</translation>
 <translation id="7977787072794666032">Brave-ek agian ez du behar bezala funtzionatuko, jada ez baita bateragarria Windows XP eta Windows Vista-rekin</translation>
 <translation id="189297655255130768">Brave-ek ez du eranzuten. Berrabiarazi nahi duzu?</translation>
@@ -24,7 +24,7 @@
 <translation id="335632367599648646">Ziur Brave desinstalatu nahi duzula?</translation>
 <translation id="5590013613412457132">Desinstalatu Brave</translation>
 <translation id="5019879183386042809">Ezarri Brave arakatzaile lehenetsi gisa</translation>
-<translation id="5063987220091207247">Brave sistema eragileak ezin du ireki orri hau.</translation>
+<translation id="707769633889902835">Brave sistema eragileak ezin du ireki orri hau.</translation>
 <translation id="4065288863231444640">Onartu Brave atzeko planoan abiaraztea</translation>
 <translation id="6797402139308059782">Onartu Brave atzeko planoan abiaraztea</translation>
 <translation id="2585240446624043880">Brave-ek ezin du irakurri bere datu-direktorioa eta ezin du idatzi bertan:
@@ -94,8 +94,7 @@ Brave-ek ezin ditu ezarpenak berreskuratu.</translation>
 <translation id="9071554113102421877">&amp;Ireki Brave-en</translation>
 <translation id="2176825726964012531">&amp;Brave arakatzaileari buruz</translation>
 <translation id="5450493308072741203">Eguneratu &amp;Brave</translation>
-<translation id="1421502046520299169">&amp;Brave OS sistema eragileari buruz</translation>
-<translation id="2534623228451928732">Eguneratu &amp;Brave OS</translation>
+<translation id="61852838583753520">Eguneratu &amp;Brave OS</translation>
 <translation id="8447483940522230788">Brave laguntzailea</translation>
 <translation id="5477319665405831211">Sinkronizatu eta pertsonalizatu Brave gailu guzietan</translation>
 <translation id="8132634101975074716">Brave-en saioa hasi duzu.</translation>
@@ -109,19 +108,18 @@ Brave-ek ezin ditu ezarpenak berreskuratu.</translation>
 <translation id="5380963249588143069">Sistemaren administratzailearen konfigurazioaren arabera, Brave-ek <ph name="ALTERNATIVE_BROWSER_NAME"/> arakatzailea ireki behar du <ph name="TARGET_URL_HOSTNAME"/> helbidera joateko.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> Brave erabiltzen ari da lehendik ere</translation>
 <translation id="1384923383737428730">Software kaltegarria duzu ordenagailuan. Brave-ek hura kendu, ezarpenak leheneratu eta luzapenak desgai ditzake, arakatzaileak ohiko moduan funtziona dezan berriro.</translation>
-<translation id="8919921662052966648">Brave arakatzaileak ezin izan ditu sinkronizatu zure datuak. Eguneratu sinkronizatzeko pasaesaldia.</translation>
 <translation id="2262856633481902138">Brave-ek ezin izan ditu zure datuak sinkronizatu kontuan saioa hasteko datuak iraungi egin direlako.</translation>
 <translation id="5419189641394808652">Brave-ek ezin izan dizkizu sinkronizatu datuak sinkronizazioa ez dagoelako erabilgarri zure domeinuan.</translation>
 <translation id="2577755334620061182">Saio-hasieraren errore bat dela-eta, Brave arakatzaileak ezin izan ditu sinkronizatu zure datuak.</translation>
-<translation id="8583885258305961947">Brave OS sistema</translation>
-<translation id="3968006371075376562">Brave OS sistema eragileak ezin izan ditu sinkronizatu zure datuak. Eguneratu sinkronizatzeko pasaesaldia.</translation>
-<translation id="6746636977031158624">Brave OS sistemak ezin izan ditu zure datuak sinkronizatu kontuan saioa hasteko datuak iraungi egin direlako.</translation>
-<translation id="2999152167963026588">Brave OS sistema eragileak ezin izan ditu sinkronizatu zure datuak sinkronizazioa ez dagoelako erabilgarri zure domeinuan.</translation>
-<translation id="1459786048951724030">Saioa hastean gertatu den errore bat dela-eta, Brave OS sistemak ezin izan ditu sinkronizatu zure datuak.</translation>
-<translation id="6813094029720377619">Brave-etik irteten zarenean, cookieak garbitzen dira. Sinkronizatzen jarraitzeko, aldatu <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
-<translation id="3340978935015468852">ezarpenak</translation>
+<translation id="2644798301485385923">Brave OS sistema</translation>
+<translation id="7916016681687251387">Brave OS sistema eragileak ezin izan ditu sinkronizatu datuak. Konpondu arazoa.</translation>
+<translation id="2341767445688917208">Brave OS sistema eragileak ezin izan ditu sinkronizatu pasahitzak. Konpondu arazoa.</translation>
+<translation id="123620459398936149">Brave OS sistema eragileak ezin izan ditu sinkronizatu zure datuak. Eguneratu sinkronizatzeko pasaesaldia.</translation>
+<translation id="9026991721384951619">Brave OS sistemak ezin izan ditu zure datuak sinkronizatu kontuan saioa hasteko datuak iraungi egin direlako.</translation>
+<translation id="7419046106786626209">Brave OS sistema eragileak ezin izan ditu sinkronizatu zure datuak sinkronizazioa ez dagoelako erabilgarri zure domeinuan.</translation>
+<translation id="4480040274068703980">Saioa hastean gertatu den errore bat dela-eta, Brave OS sistemak ezin izan ditu sinkronizatu zure datuak.</translation>
 <translation id="300669147395456190">Brave aplikazioak</translation>
-<translation id="3421950102518690868">Gailua erabili aurretik, <ph name="DOMAIN"/> domeinuak jarraian azalduko diren Zerbitzu-baldintza irakurtzeko eta onartzeko eskatzen dizu. Baldintzok ez dituzte Brave OS Baldintzak hedatuko, aldatuko edo mugatuko.</translation>
+<translation id="2398566204186296120">Gailua erabili aurretik, <ph name="DOMAIN"/> domeinuak jarraian azalduko diren Zerbitzu-baldintza irakurtzeko eta onartzeko eskatzen dizu. Baldintzok ez dituzte Brave OS Baldintzak hedatuko, aldatuko edo mugatuko.</translation>
 <translation id="3293668930608086049">Brave kamera eta mikrofonoa erabiltzen ari da.</translation>
 <translation id="8919461291440820124">Brave zure mikrofonoa erabiltzen ari da.</translation>
 <translation id="3205074487970075628">Brave zure kamera erabiltzen ari da.</translation>
@@ -154,12 +152,9 @@ Brave-ek ezin ditu ezarpenak berreskuratu.</translation>
 <translation id="4805806622840861220">Berrabiarazi Brave</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Brave-en eguneratze bat erabilgarri dago eta sistema eragilea berrabiarazten duzunean aplikatuko da.}=1{Brave-en eguneratze bat erabilgarri dago eta sistema eragilea berrabiarazten duzunean aplikatuko da. Ezkutuko moduko leihoa ez da berriro irekiko.}other{Brave-en eguneratze bat erabilgarri dago eta sistema eragilea berrabiarazten duzunean aplikatuko da. Ezkutuko moduko # leihoak ez dira berriro irekiko.}}</translation>
 <translation id="2799223571221894425">Abiarazi berriro</translation>
-<translation id="2522086024276534909">Berrabiarazi Brave OS</translation>
-<translation id="8183252473547465084">Eguneratzea aplikatzeko, berrabiarazi egin behar da Brave sistema eragilea.</translation>
+<translation id="5062123544085870375">Berrabiarazi Brave OS</translation>
+<translation id="2063848847527508675">Eguneratzea aplikatzeko, berrabiarazi egin behar da Brave sistema eragilea.</translation>
 <translation id="5895138241574237353">Berrabiarazi</translation>
-<translation id="8887390605192156061">Itxi Brave-en kopia guztiak.</translation>
-<translation id="1801551749768408825">Brave-en beste kopia batzuk dituzu abian. Eguneratu nahi baduzu, itxi itzazu.</translation>
-<translation id="2632141563911437138">Brave eguneratzeko, geldiarazi egin behar dituzu ordenagailuan abian dituen instantziak. Hori eginez gero, ordenagailuan saioa hasita daukaten erabiltzaileek galdu egin ditzakete gordeta ez dituzten aldaketak.</translation>
 <translation id="5875673934455379806">Instalatu berriro Brave</translation>
 <translation id="2097604701283463988">Brave zaharkituta dago</translation>
 <translation id="5173820533850252773">Brave zaharkituta dago</translation>
@@ -180,7 +175,7 @@ Brave-ek ezin ditu ezarpenak berreskuratu.</translation>
 <translation id="7798069806040634998">Brave-ek fitxategiak deskargatzearren memorian sartzeko baimena behar du</translation>
 <translation id="7685904775439037072">Brave-ek sarbidea duenean, webguneek sarbidea eskatuko dizute.</translation>
 <translation id="1744365871163268756">Itxaron Brave-ek sistemaren azken eguneratzeak instalatu arte.</translation>
-<translation id="7808415789955822133">Brave OS sistema eragilearen baldintzak</translation>
+<translation id="7408085963519505752">Brave OS sistema eragilearen baldintzak</translation>
 <translation id="7207456302801184289">Ongi etorri Brave-era</translation>
 <translation id="3507835409099344374">Joan Brave-en jakinarazpen-ezarpenetara</translation>
 <translation id="1026406809507858026">{0,plural, =0{Brave arakatzailearen eguneratze bat dago erabilgarri}=1{Brave arakatzailearen eguneratze bat dago erabilgarri}other{Brave arakatzailearen eguneratze batek # egun daramatza erabilgarri}}</translation>
@@ -199,9 +194,9 @@ Brave-ek ezin ditu ezarpenak berreskuratu.</translation>
 <translation id="1786715389543715322">Brave eguneratzen (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="2182657378556811785">Ia amaitu dugu! Eguneratzen amaitzeko, berrabiarazi Brave.</translation>
 <translation id="8208853227947884571">Eguneratuta dago Brave</translation>
-<translation id="6686872257969654608">Brave sistema eragileari buruz</translation>
-<translation id="7674116293463255181">Gailua eguneratuta dagoen ikusteko, joan <ph name="LINK_BEGIN"/>Brave OS sistemaren ezarpenetara<ph name="LINK_END"/></translation>
-<translation id="2280363356796735201">Lortu Brave sistema eragilea erabiltzeko laguntza</translation>
+<translation id="573759479754913123">Brave sistema eragileari buruz</translation>
+<translation id="7573289029918943991">Gailua eguneratuta dagoen ikusteko, joan <ph name="LINK_BEGIN"/>Brave OS sistemaren ezarpenetara<ph name="LINK_END"/></translation>
+<translation id="3395323229510056640">Lortu Brave sistema eragilea erabiltzeko laguntza</translation>
 <translation id="38898988211673781">Garbitu cookieak eta webguneen datuak Brave-etik irteten zarenean</translation>
 <translation id="5253815230176279256">Brave Software Pay (Brave-en kopiatu da)</translation>
 <translation id="5468853758063275923">Brave da arakatzaile lehenetsia</translation>
@@ -209,7 +204,7 @@ Brave-ek ezin ditu ezarpenak berreskuratu.</translation>
 <translation id="6915252145142862992">Brave-en bigarren mailako instalazio bat da hau; beraz, ezin duzu ezarri arakatzaile lehenetsi gisa.</translation>
 <translation id="6235873178214143377">Ezarpenen bat orri honetan agertzen ez bada, bila ezazu <ph name="LINK_BEGIN"/>
       Brave-en arakatze-ezarpenetan.<ph name="LINK_END"/></translation>
-<translation id="4459296183696059108">Ezarpenen bat orri honetan agertzen ez bada, bila ezazu <ph name="LINK_BEGIN"/>
+<translation id="5657226924540934362">Ezarpenen bat orri honetan agertzen ez bada, bila ezazu <ph name="LINK_BEGIN"/>
       Brave-en sistema eragilearen ezarpenetan.<ph name="LINK_END"/></translation>
 <translation id="2312399718665761438">Ortografia-akatsak konpondu ahal izateko, testu-eremuetan idazten duzun testua Brave Software-ri bidaltzen dio Brave-ek</translation>
 <translation id="8586264863973514035">Aldaketak aplikatzeko, berrabiarazi Brave</translation>
@@ -219,7 +214,6 @@ Brave-ek ezin ditu ezarpenak berreskuratu.</translation>
 <translation id="5853262807109651878">Gailuko <ph name="ITEMS_COUNT"/> elementu ezabatuko dira. Geroago datuak eskuratu nahi izanez gero, hasi saioa Brave-en <ph name="USER_EMAIL"/> gisa.</translation>
 <translation id="4784414698887946907">Gailuko arakatze-datuak ezabatuko dira. Geroago datuak eskuratu nahi izanez gero, hasi saioa Brave-en <ph name="USER_EMAIL"/> gisa.</translation>
 <translation id="4518479204315969707">Brave profileko izena eta argazkia</translation>
-<translation id="82609232232243542">Hasi saioa Brave-en</translation>
 <translation id="8372880274820509128">Segurtasun gehiago izateko, Brave-ek datuak enkriptatuko ditu.</translation>
 <translation id="7445061995866044926">Brave-eko saioa amaitu?</translation>
 <translation id="7453070689008684791">Brave-ek zure Drive unitatea atzituko du helbide-barran iradokizunak egiteko</translation>

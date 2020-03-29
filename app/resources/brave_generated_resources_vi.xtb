@@ -11,12 +11,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (ID phần mở rộng "<ph name="EXTENSION_ID"/>") không được phép trong Brave.</translation>
 <translation id="7450557937477381864">Đóng Chrome</translation>
 <translation id="7008934821596358692">Để hoàn tất nhập, hãy đóng mọi cửa sổ Chrome.</translation>
-<translation id="5735465527556462863">Đóng Brave (cũ)</translation>
-<translation id="7737066986958447692">Để hoàn tất quá trình nhập, hãy đóng tất cả cửa sổ Brave (cũ).</translation>
-<translation id="6447842834002726250">Cookie</translation>
-<translation id="4983925687993168579">Thống kê</translation>
-<translation id="6165477144235978006">Thanh toán Brave</translation>
-<translation id="3489524616427966890">Cửa sổ và tab đang mở</translation>
 <translation id="3699882589215410581">Cài và chạy Widevine</translation>
 <translation id="8926389886865778422">Đừng hỏi lại</translation>
 <translation id="4726634924419692905">Hỏi khi một website muốn cài đặt Widevine trên máy tính của bạn.</translation>
@@ -27,8 +21,6 @@
 <translation id="8410111618231938546">Google Widevine là một phần của mã Quản lý Quyền Kỹ thuật số (Digital Rights Management hay DRM) mà chúng tôi tại Brave Software không sở hữu và không thể kiểm tra. Mã Google Widevine được tải từ các máy chủ của Google chứ không phải từ các máy chủ của chúng tôi. Mã này chỉ được tải khi bạn bật tùy chọn này. Chúng tôi không khuyến khích sử dụng DRM, nhưng chúng tôi tôn trọng lựa chọn của người dùng và thừa nhận rằng một số người dùng Brave muốn sử dụng các dịch vụ cần tới mã đó.
 
 Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với các Điều khoản Sử dụng của Google Widevine. Bạn đồng ý rằng Brave không chịu trách nhiệm đối với bất kỳ thiệt hại hoặc tổn thất nào liên quan đến việc bạn sử dụng Google Widevine.</translation>
-<translation id="6499845530162974140">Brave (cũ)</translation>
-<translation id="3198814717959506569">Đã nhập từ Brave</translation>
 <translation id="453977518730680921">Tự động phát truyền thông đa phương tiện</translation>
 <translation id="410351446219883937">Tự động phát</translation>
 <translation id="2240268017737062801">Hỏi khi nào trang muốn tự động phát phương tiện</translation>
@@ -70,19 +62,22 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="130615081792797568">Chế độ xem đơn giản</translation>
 <translation id="2360360976480535628">Chế độ xem nâng cao</translation>
 <translation id="5709627087332022422">Chặn các bộ theo dõi trên mọi website</translation>
-<translation id="9075744464571452108">Nhận diện thiết bị</translation>
+<translation id="6447842834002726250">Cookie</translation>
+<translation id="6522412052085018663">Dấu vân tay</translation>
 <translation id="3570081523466826008">Nâng cấp các kết nối thành HTTPS</translation>
 <translation id="4824468494729001999">Chặn các tập lệnh script</translation>
-<translation id="8526521192921341404">Cho phép sử dụng thông tin đăng nhập của Google</translation>
+<translation id="519861640102428255">Giao diện</translation>
+<translation id="4800195524776354947">Hiển thị số lượng các mục bị chặn trên biểu tượng Khiên</translation>
+<translation id="7498695072878479744">Cho phép các nút đăng nhập Google trên các website bên thứ ba</translation>
 <translation id="863171915776379000">Cho phép đăng nhập và nhúng bài viết Facebook</translation>
 <translation id="5165042248369837294">Cho phép nhúng bài viết Twitter</translation>
 <translation id="958971637207126733">Cho phép các bài viết nhúng trên LinkedIn</translation>
 <translation id="4699812599455071925">Chỉ chặn cookie trên các website khác nhau</translation>
 <translation id="5657156137487675418">Cho phép mọi cookie.</translation>
 <translation id="6883611015375728278">Chặn tất cả cookie</translation>
-<translation id="3084022390368021391">Chỉ chặn các nỗ lực nhận diện thiết bị trên mọi website</translation>
-<translation id="1847422622180531843">Cho phép mọi nỗ lực nhận diện thiết bị</translation>
-<translation id="8375051111011093523">Chặn mọi nỗ lực nhận diện thiết bị</translation>
+<translation id="5572437114858031185">Chỉ chặn các ý định theo dõi dấu vân tay trên toàn website</translation>
+<translation id="5079032039521408559">Cho phép mọi ý định theo dõi dấu vân tay</translation>
+<translation id="6447141055227658942">Chặn mọi ý định theo dõi dấu vân tay</translation>
 <translation id="8942080017911802454">Cơ chế Xử lý IP WebRTC</translation>
 <translation id="6165508094623778733">Tìm hiểu thêm</translation>
 <translation id="8798099450830957504">Mặc định</translation>
@@ -104,6 +99,7 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="2356070529366658676">Yêu cầu</translation>
 <translation id="7701040980221191251">Không</translation>
 <translation id="1085027414516521238">MetaMask</translation>
+<translation id="3905324891414560921">Nhà cung cấp Web3 để sử dụng Dapp</translation>
 <translation id="6554397389149987360">Sử dụng thành phần của Hangouts để cho phép chia sẻ màn hình và các tính năng khác trong trình duyệt.</translation>
 <translation id="1765684547504191670">Sử dụng cấu phần Bộ định tuyến Phương tiện để bật Chromecast trong trình duyệt.</translation>
 <translation id="9156965752763025780">Các thay đổi của bạn sẽ có hiệu lực vào lần tới khi bạn chạy lại Brave.</translation>
@@ -164,6 +160,7 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="4394049700291259645">Vô hiệu hóa</translation>
 <translation id="6469509880167172749">Tự động gửi dữ liệu phân tích sản phẩm hoàn toàn riêng tư đến Brave</translation>
 <translation id="7090566321964540749">Thông tin ẩn danh này chỉ cho phép Brave ước tính mức độ sử dụng tổng thể của một số tính năng nhất định.</translation>
+<translation id="9111960429693394744">Bạn muốn sử dụng Ví tiền Điện tử hay MetaMask của Brave cho các Dapp?</translation>
 <translation id="7583735190612229830">Thiết lập Crypto Wallets để tương tác với ứng dụng này và các ứng dụng khác giống như vậy.</translation>
 <translation id="8337117349965899723">Dùng Crypto Wallets</translation>
 <translation id="5756155765711979898">Dùng MetaMask</translation>
@@ -177,4 +174,9 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="4474155171896946103">Đánh dấu tất cả các tab...</translation>
 <translation id="2336228925368920074">Đánh dấu trang Tất cả các Tab...</translation>
 <translation id="796831669370432378">Để thêm dấu trang, hãy nhấp vào nút dấu trang kế bên thanh địa chỉ</translation>
+<translation id="4989337484121655457">Cần được Truy cập Toàn bộ Ổ đĩa</translation>
+<translation id="8025559074845816210">Brave cần Truy cập Toàn bộ Ổ đĩa để có thể nhập các Dấu trang của bạn từ Safari.</translation>
+<translation id="8515328844674404333">Tìm hiểu cách cho phép Truy cập Toàn bộ Ổ đĩa từ mục cài đặt Ưu tiên Hệ thống (System  Preferences) của bạn.</translation>
+<translation id="6414878884710400018">Mở cài đặt Ưu tiên Hệ thống</translation>
+<translation id="5570470519803062774">Cài đặt Trang và Khiên</translation>
 </translationbundle>

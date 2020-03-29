@@ -112,7 +112,6 @@
 <translation id="981121421437150478">Sin conexión</translation>
 <translation id="5171045022955879922">Buscar o escribir URL</translation>
 <translation id="803771048473350947">Archivo</translation>
-<translation id="6268185425799226387">Brave Software Drive</translation>
 <translation id="2982481275546140226">Borrar datos</translation>
 <translation id="8425213833346101688">Cambiar</translation>
 <translation id="8009225694047762179">Administrar contraseñas</translation>
@@ -141,6 +140,8 @@
 <translation id="2215727959747642672">Edición de archivo</translation>
 <translation id="6545864417968258051">Búsqueda de dispositivos Bluetooth</translation>
 <translation id="534295439873310000">Dispositivos NFC</translation>
+<translation id="4943703118917034429">Realidad virtual</translation>
+<translation id="3513704683820682405">Realidad aumentada</translation>
 <translation id="5039804452771397117">Permitir</translation>
 <translation id="7053983685419859001">Bloquear</translation>
 <translation id="57838592816432529">Silenciar</translation>
@@ -194,8 +195,8 @@
 <translation id="5565735124758917034">Activo</translation>
 <translation id="7805768142964895445">Estado</translation>
 <translation id="6915804003454593391">Usuario:</translation>
-<translation id="5916664084637901428">Activada</translation>
-<translation id="5860033963881614850">Desactivado</translation>
+<translation id="5921185718311485855">Activada</translation>
+<translation id="1019413721762100891">Desactivado</translation>
 <translation id="7961015016161918242">Nunca</translation>
 <translation id="8294431847097064396">Fuente</translation>
 <translation id="1056898198331236512">Advertencia</translation>
@@ -205,7 +206,6 @@
 <translation id="6965978654500191972">Dispositivo</translation>
 <translation id="4728558894243024398">Plataforma</translation>
 <translation id="2380886658946992094">Información legal</translation>
-<translation id="5939847200023027600">Servicio para crear PDF</translation>
 <translation id="1588438908519853928">Normal</translation>
 <translation id="1974060860693918893">Avanzada</translation>
 <translation id="5308380583665731573">Conectar</translation>

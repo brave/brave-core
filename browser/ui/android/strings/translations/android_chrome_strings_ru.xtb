@@ -1,47 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ru">
-<translation id="6910211073230771657">Удалено</translation>
-<translation id="6965382102122355670">ОК</translation>
-<translation id="5301954838959518834">ОК</translation>
-<translation id="7658239707568436148">Отмена</translation>
-<translation id="3479552764303398839">Не сейчас</translation>
-<translation id="5317780077021120954">Сохранить</translation>
-<translation id="4570913071927164677">Подробнее…</translation>
-<translation id="8730621377337864115">Готово</translation>
-<translation id="8261506727792406068">Удалить</translation>
-<translation id="1181037720776840403">Удалить</translation>
-<translation id="5939518447894949180">Сбросить</translation>
-<translation id="4002066346123236978">Название</translation>
-<translation id="5916664084637901428">ВКЛ</translation>
-<translation id="5860033963881614850">ВЫКЛ</translation>
-<translation id="6165508094623778733">Подробнее...</translation>
-<translation id="6042308850641462728">Ещё</translation>
-<translation id="6040143037577758943">Закрыть</translation>
-<translation id="780301667611848630">Спасибо, не надо</translation>
-<translation id="1201402288615127009">Далее</translation>
-<translation id="2359808026110333948">Продолжить</translation>
-<translation id="2653659639078652383">Отправить</translation>
-<translation id="2079545284768500474">Отмена</translation>
-<translation id="7649070708921625228">Справка</translation>
-<translation id="2148716181193084225">Сегодня</translation>
-<translation id="7781829728241885113">Вчера</translation>
-<translation id="6945221475159498467">Выбрать</translation>
-<translation id="7791543448312431591">Добавить</translation>
-<translation id="6527303717912515753">Поделиться</translation>
-<translation id="1383876407941801731">Поиск</translation>
-<translation id="3115898365077584848">Показать информацию</translation>
-<translation id="3295602654194328831">Скрыть информацию</translation>
-<translation id="3987993985790029246">Копировать ссылку</translation>
-<translation id="2704606927547763573">Скопировано</translation>
-<translation id="8725066075913043281">Повторить попытку</translation>
-<translation id="385051799172605136">Назад</translation>
-<translation id="8131740175452115882">Подтвердить</translation>
-<translation id="5300589172476337783">Показать</translation>
-<translation id="1124772482545689468">Пользователь</translation>
-<translation id="8609465669617005112">Переместить вверх</translation>
-<translation id="6746124502594467657">Переместить вниз</translation>
-<translation id="8249310407154411074">Переместить в начало</translation>
 <translation id="8428213095426709021">Настройки</translation>
 <translation id="2498359688066513246">Справка/отзыв</translation>
 <translation id="8378714024927312812">Управляется вашей организацией</translation>
@@ -159,7 +118,7 @@
 <translation id="6914783257214138813">Ваши пароли будут видны всем, у кого есть доступ к файлу экспорта.</translation>
 <translation id="2321086116217818302">Подготовка паролей…</translation>
 <translation id="8445448999790540984">Не удалось экспортировать пароли</translation>
-<translation id="3066461326500799725">Открыть справочную статью</translation>
+<translation id="5139940364318403933">Открыть справочную статью</translation>
 <translation id="729975465115245577">На устройстве не установлено приложение для хранения файлов паролей.</translation>
 <translation id="7682724950699840886">Убедитесь, что на вашем устройстве достаточно свободного места. Затем снова попробуйте экспортировать пароли.</translation>
 <translation id="1129510026454351943">Сведения об ошибке: <ph name="ERROR_DESCRIPTION"/></translation>
@@ -169,6 +128,7 @@
 <translation id="230699814587342492">Пароли Brave</translation>
 <translation id="6075798973483050474">Изменение главной страницы</translation>
 <translation id="854522910157234410">Открыть эту страницу</translation>
+<translation id="8127542551745560481">Изменить главную страницу</translation>
 <translation id="2482878487686419369">Уведомления</translation>
 <translation id="6255999984061454636">Предлагаемый контент</translation>
 <translation id="805047784848435650">На основе вашей истории просмотров</translation>
@@ -184,12 +144,16 @@
 <translation id="1943176487615318915">Для обнаружения опасных приложений и сайтов Brave отправляет в Brave Software URL некоторых страниц, которые вы открываете, контент на них, а также определенные сведения о системе</translation>
 <translation id="3181954750937456830">Безопасный просмотр (защищает вас и ваше устройство от опасных сайтов)</translation>
 <translation id="7315322926489145388">При угрозе безопасности отправлять в Brave Software URL некоторых страниц, которые вы открываете</translation>
-<translation id="2063713494490388661">Нажмите для поиска</translation>
-<translation id="2369463299479365221">Ищите картинки, определения и другую информацию, не покидая выбранную страницу. Просто выберите слово, и оно будет отправлено в Brave Software Поиск вместе с контекстом.
+<translation id="3738139272394829648">Быстрый поиск</translation>
+<translation id="7865281998841143447">Эта функция позволяет искать картинки, определения и другую информацию, не покидая открытую страницу. Просто выберите слово, и оно будет отправлено в Brave Software Поиск вместе с контекстом.
 
-Чтобы задать новый поисковый запрос, нажмите на нужное слово и не отпускайте палец. Чтобы уточнить запрос, прокрутите панель вверх и коснитесь окна поиска.</translation>
-<translation id="2930742481329940825">Быстрый поиск отправляет в Brave Software выбранное слово, а также – в качестве контекста – текущую страницу. Отключить эту функцию можно в <ph name="BEGIN_LINK"/>настройках<ph name="END_LINK"/>.</translation>
+Чтобы задать новый поисковый запрос, нажмите на любое слово. Чтобы изменить поисковой запрос, нажмите на слово и удерживайте. Чтобы уточнить запрос, раскройте панель, нажмите на значок "Развернуть", чтобы открыть новую вкладку, и коснитесь окна поиска.</translation>
+<translation id="3292859206215580147">Эта функция позволяет искать картинки, определения и другую информацию, не покидая открытую страницу. Просто выберите слово, и оно будет отправлено в Brave Software Поиск вместе с контекстом.
+
+Чтобы задать новый поисковый запрос, нажмите на любое слово и удерживайте. Чтобы уточнить запрос, измените область выделения или раскройте панель, нажмите на значок "Развернуть", чтобы открыть новую вкладку, и коснитесь окна поиска.</translation>
+<translation id="6209156474097347789">Функция "Нажмите для поиска" отправляет в Brave Software выбранное слово, а также текущую страницу в качестве контекста. Включить или отключить эту функцию можно в <ph name="BEGIN_LINK"/>настройках<ph name="END_LINK"/>.</translation>
 <translation id="5039804452771397117">Разрешить</translation>
+<translation id="780301667611848630">Спасибо, не надо</translation>
 <translation id="1406000523432664303">Запрет отслеживания</translation>
 <translation id="6232535412751077445">Если вы запретите отслеживание, в запросы браузера будет включена специальная команда. Сайты могут интерпретировать ее и отвечать на нее по-разному.
 
@@ -242,6 +206,7 @@
 <translation id="6295158916970320988">Все сайты</translation>
 <translation id="8380167699614421159">Этот сайт показывает навязчивую или вводящую в заблуждение рекламу</translation>
 <translation id="1919345977826869612">Реклама</translation>
+<translation id="3513704683820682405">Дополненная реальность</translation>
 <translation id="6447842834002726250">Файлы сookie</translation>
 <translation id="6196640612572343990">Блокировать сторонние файлы cookie</translation>
 <translation id="6782111308708962316">Запретить сторонним веб-сайтам сохранять и просматривать файлы cookie</translation>
@@ -259,6 +224,7 @@
 <translation id="5649053991847567735">Автоматическое скачивание</translation>
 <translation id="6181444274883918285">Добавить исключение</translation>
 <translation id="5313967007315987356">Добавить сайт</translation>
+<translation id="7791543448312431591">Добавить</translation>
 <translation id="1369915414381695676">Добавлен сайт <ph name="SITE_NAME"/></translation>
 <translation id="2621115761605608342">Разрешить JavaScript для конкретного сайта.</translation>
 <translation id="8801436777607969138">Блокировать код JavaScript на определенном сайте.</translation>
@@ -266,6 +232,7 @@
 <translation id="358794129225322306">Разрешить сайту автоматически скачивать несколько файлов.</translation>
 <translation id="4008040567710660924">Разрешить определенному сайту сохранять файлы cookie.</translation>
 <translation id="8958424370300090006">Блокировать файлы cookie для определенного сайта.</translation>
+<translation id="2537296579376733324">Все файлы cookie только на этом сайте</translation>
 <translation id="7882806643839505685">Включить звуки на определенном сайте.</translation>
 <translation id="4468959413250150279">Отключить звуки на определенном сайте.</translation>
 <translation id="1994173015038366702">Адрес сайта</translation>
@@ -292,8 +259,12 @@
 <translation id="2107397443965016585">Запрашивать разрешение на воспроизведение защищенного контента (рекомендуется)</translation>
 <translation id="2910701580606108292">Запрашивать разрешение на воспроизведение защищенного контента</translation>
 <translation id="757524316907819857">Запретить сайтам воспроизводить защищенный контент</translation>
+<translation id="4935305910887312910">Запрашивать для сайтов разрешение на составление плана комнаты и отслеживание положения камеры (рекомендуется)</translation>
+<translation id="884828189055900810">Закрыть сайтам доступ к составлению плана комнаты и отслеживанию положения камеры</translation>
 <translation id="5710871682236653961">Запрашивать для сайтов разрешение на обмен информацией через NFC (рекомендуется).</translation>
 <translation id="7572498721684305250">Запретить сайтам обмен информацией через NFC.</translation>
+<translation id="3312292613668865961">Запрашивать для сайтов разрешение на доступ к устройствам и данным виртуальной реальности (рекомендуется)</translation>
+<translation id="8698438463325761328">Закрыть сайтам доступ к устройствам и данным виртуальной реальности</translation>
 <translation id="3277252321222022663">Предоставить сайтам доступ к датчикам (рекомендуется)</translation>
 <translation id="5048398596102334565">Предоставить сайтам доступ к датчикам движения (рекомендуется)</translation>
 <translation id="8816026460808729765">Закрыть сайтам доступ к датчикам</translation>
@@ -325,7 +296,7 @@
 <translation id="119944043368869598">Удалить все</translation>
 <translation id="2490684707762498678">Под управлением приложения "<ph name="APP_NAME"/>"</translation>
 <translation id="5516455585884385570">Перейти в настройки уведомлений</translation>
-<translation id="1404122904123200417">Встроено в <ph name="WEBSITE_URL"/></translation>
+<translation id="1242008676835033345">Встроено на сайте <ph name="WEBSITE_URL"/></translation>
 <translation id="129382876167171263">Здесь появятся файлы, сохраненные сайтами.</translation>
 <translation id="4181841719683918333">Языки</translation>
 <translation id="2647434099613338025">Добавить язык</translation>
@@ -380,6 +351,7 @@
 <translation id="4913161338056004800">Сбросить статистику</translation>
 <translation id="1856325424225101786">Сбросить упрощенный режим?</translation>
 <translation id="3658159451045945436">Будет удалена вся информация о сэкономленных данных, в том числе список просмотренных сайтов.</translation>
+<translation id="5939518447894949180">Сбросить</translation>
 <translation id="3295530008794733555">Быстрый просмотр сайтов и экономия трафика</translation>
 <translation id="7340390500800578919">В упрощенном режиме Brave быстрее загружает страницы и экономит до 60 % трафика. Чтобы оптимизировать страницы, которые вы посещаете, Brave отправляет ваш интернет-трафик в Brave Software. <ph name="BEGIN_LINK"/>Подробнее…<ph name="END_LINK"/></translation>
 <translation id="4538018662093857852">Включить упрощенный режим</translation>
@@ -443,9 +415,6 @@
 <translation id="4256782883801055595">Лицензии на ПО с открытым кодом</translation>
 <translation id="1138681184697033370">Условия использования Brave</translation>
 <translation id="7392539049993970338">Примечание о конфиденциальности Brave</translation>
-<translation id="2677748264148917807">Закрыть</translation>
-<translation id="5556459405103347317">Перезагрузить</translation>
-<translation id="1623104350909869708">Запретить создание дополнительных диалоговых окон на этой странице</translation>
 <translation id="2968755619301702150">Просмотр сертификатов</translation>
 <translation id="1360432990279830238">Выйти и отключить синхронизацию?</translation>
 <translation id="8581481290581777242">Удалить данные Brave с этого устройства?</translation>
@@ -532,6 +501,7 @@
 <translation id="7998918019931843664">Восстановить закрытую вкладку</translation>
 <translation id="8853345339104747198">Вкладка "<ph name="TAB_TITLE"/>"</translation>
 <translation id="4452411734226507615">Закрыть вкладку "<ph name="TAB_TITLE"/>"</translation>
+<translation id="6040143037577758943">Закрыть</translation>
 <translation id="7243308994586599757">Доступные параметры указаны в нижней части экрана</translation>
 <translation id="4060598801229743805">Меню доступно в верхней части экрана</translation>
 <translation id="2810645512293415242">Страница была открыта в упрощенном виде, чтобы уменьшить объем трафика и время загрузки.</translation>
@@ -566,6 +536,7 @@
 <translation id="4432792777822557199">Страницы на этом языке (<ph name="SOURCE_LANGUAGE"/>) будут автоматически переводиться на <ph name="TARGET_LANGUAGE"/></translation>
 <translation id="8339163506404995330">Страницы на этом языке (<ph name="LANGUAGE"/>) не будут переводиться автоматически</translation>
 <translation id="5447765697759493033">Этот сайт не будет переводиться автоматически</translation>
+<translation id="7658239707568436148">Отмена</translation>
 <translation id="4880127995492972015">Перевести…</translation>
 <translation id="641643625718530986">Печать</translation>
 <translation id="8909135823018751308">Поделиться...</translation>
@@ -599,6 +570,7 @@
 <translation id="8073388330009372546">Открыть в новой вкладке</translation>
 <translation id="6649642165559792194">Просмотреть изображение <ph name="BEGIN_NEW"/>Новинка<ph name="END_NEW"/></translation>
 <translation id="3269093882174072735">Загрузить изображение</translation>
+<translation id="6671495933530132209">Копировать изображение</translation>
 <translation id="3845332215609790146">Найти через Brave Software Объектив <ph name="BEGIN_NEW"/>Новинка<ph name="END_NEW"/></translation>
 <translation id="5578795271662203820">Найти это изображение в <ph name="SEARCH_ENGINE"/></translation>
 <translation id="3384347053049321195">Поделиться изображением</translation>
@@ -606,6 +578,7 @@
 <translation id="6475951671322991020">Скачать видео</translation>
 <translation id="2317945146070194624">Открыть в новой вкладке</translation>
 <translation id="7975379999046275268">Просмотреть страницу <ph name="BEGIN_NEW"/>Новинка<ph name="END_NEW"/></translation>
+<translation id="2012973609889389923">Быстрая загрузка</translation>
 <translation id="6112702117600201073">Обновление страницы</translation>
 <translation id="6990079615885386641">Приложение в Brave Software Play Маркете: <ph name="APP_ACTION"/></translation>
 <translation id="2414886740292270097">Темный</translation>
@@ -615,8 +588,6 @@
 <translation id="5016205925109358554">С засечками</translation>
 <translation id="2593272815202181319">Моноширинный</translation>
 <translation id="9206873250291191720">А</translation>
-<translation id="654446541061731451">Выберите вкладку для передачи</translation>
-<translation id="8719023831149562936">Не удалось передать текущую вкладку</translation>
 <translation id="2139186145475833000">Добавить на главный экран</translation>
 <translation id="4616150815774728855">Открыть <ph name="WEBAPK_NAME"/></translation>
 <translation id="2122601567107267586">Не удалось открыть приложение</translation>
@@ -702,6 +673,7 @@
 <translation id="3616113530831147358">Аудио</translation>
 <translation id="9219103736887031265">Картинки</translation>
 <translation id="656065428026159829">Ещё</translation>
+<translation id="6042308850641462728">Ещё</translation>
 <translation id="8250920743982581267">Документы</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# файл}one{# файл}few{# файла}many{# файлов}other{# файла}}</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{# изображение}one{# изображение}few{# изображения}many{# изображений}other{# изображения}}</translation>
@@ -792,15 +764,11 @@
 <translation id="7542481630195938534">Не удалось загрузить рекомендации</translation>
 <translation id="5013696553129441713">Новых рекомендаций нет</translation>
 <translation id="7444811645081526538">Все категории</translation>
-<translation id="6709133671862442373">Новости</translation>
-<translation id="1264974993859112054">Спорт</translation>
-<translation id="9139318394846604261">Покупки</translation>
 <translation id="3912508018559818924">Загрузка данных из Интернета…</translation>
 <translation id="526421993248218238">Не удалось загрузить страницу</translation>
 <translation id="614940544461990577">Попробуйте сделать следующее:</translation>
 <translation id="3288003805934695103">Обновите страницу.</translation>
 <translation id="2353636109065292463">Проверка подключения к Интернету</translation>
-<translation id="2858138569776157458">Топ сайтов</translation>
 <translation id="8364299278605033898">Показать популярные сайты</translation>
 <translation id="1171770572613082465">Чтобы перейти к списку популярных сайтов, нажмите кнопку "Топ сайтов"</translation>
 <translation id="5233638681132016545">Новая вкладка</translation>
@@ -834,8 +802,10 @@
 <translation id="4452548195519783679">Закладка добавлена в папку "<ph name="FOLDER_NAME"/>"</translation>
 <translation id="8063895661287329888">Не удалось добавить закладку.</translation>
 <translation id="2842985007712546952">Родительская папка</translation>
+<translation id="6945221475159498467">Выбрать</translation>
 <translation id="9065203028668620118">Изменить</translation>
 <translation id="4405224443901389797">Переместить в…</translation>
+<translation id="8261506727792406068">Удалить</translation>
 <translation id="5170568018924773124">Показать в папке</translation>
 <translation id="8035133914807600019">Создать папку…</translation>
 <translation id="4532845899244822526">Выбор папки</translation>
@@ -871,16 +841,14 @@
 <translation id="1113597929977215864">Упрощенный просмотр</translation>
 <translation id="1513352483775369820">Закладки и история поиска</translation>
 <translation id="4939482511480190003">Помогите улучшить Brave. <ph name="BEGIN_LINK"/>Пройти опрос<ph name="END_LINK"/></translation>
-<translation id="2501278716633472235">Назад</translation>
-<translation id="5596627076506792578">Ещё</translation>
 <translation id="3522247891732774234">Доступно обновление. Другие параметры…</translation>
 <translation id="6773423637732432200">Не удалось обновить Brave. Другие настройки</translation>
+<translation id="1383876407941801731">Поиск</translation>
 <translation id="3328801116991980348">Информация о сайте</translation>
 <translation id="5391532827096253100">Подключение к сайту не защищено. Информация о сайте</translation>
 <translation id="6206551242102657620">Подключение защищено. Информация о сайте</translation>
 <translation id="6963642900430330478">Эта страница представляет опасность. Информация о сайте</translation>
 <translation id="9070377983101773829">Голосовой поиск</translation>
-<translation id="8676374126336081632">Очистить</translation>
 <translation id="4968908871398201967">Приватный режим</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{Открыта <ph name="OPEN_TABS_ONE"/> вкладка. Нажмите для переключения.}one{Открыта <ph name="OPEN_TABS_MANY"/> вкладка. Нажмите для переключения.}few{Открыто <ph name="OPEN_TABS_MANY"/> вкладки. Нажмите для переключения.}many{Открыто <ph name="OPEN_TABS_MANY"/> вкладок. Нажмите для переключения.}other{Открыто <ph name="OPEN_TABS_MANY"/> вкладки. Нажмите для переключения.}}</translation>
 <translation id="2369533728426058518">открыть вкладки</translation>
@@ -888,6 +856,7 @@
 <translation id="932327136139879170">Главная страница</translation>
 <translation id="2707726405694321444">Обновить страницу</translation>
 <translation id="2891154217021530873">Остановить загрузку страницы</translation>
+<translation id="1201402288615127009">Далее</translation>
 <translation id="6710213216561001401">Назад</translation>
 <translation id="9080642952018487277">Войдите в приватный режим</translation>
 <translation id="4883379392681899581">Выйти из частного режима</translation>
@@ -896,18 +865,12 @@
 <translation id="3377025655491224618">Приватная вкладка</translation>
 <translation id="584427517463557805">Выбранная личная вкладка</translation>
 <translation id="2268044343513325586">Уточнить</translation>
-<translation id="7846076177841592234">Отменить выбор</translation>
-<translation id="6216432067784365534"><ph name="NAME_OF_LIST_ITEM"/>: параметры</translation>
-<translation id="7087918508125750058">Выбрано: <ph name="ITEM_COUNT"/>. Меню находится в верхней части экрана.</translation>
-<translation id="7250468141469952378">Выбрано: <ph name="ITEM_COUNT"/></translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{Поделиться 1 выбранным объектом}one{Поделиться # выбранным объектом}few{Поделиться # выбранными объектами}many{Поделиться # выбранными объектами}other{Поделиться # выбранного объекта}}</translation>
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{Удалить 1 выбранный объект}one{Удалить # выбранный объект}few{Удалить # выбранных объекта}many{Удалить # выбранных объектов}other{Удалить # выбранного объекта}}</translation>
 <translation id="1283039547216852943">Нажмите, чтобы развернуть</translation>
 <translation id="5962718611393537961">Нажмите, чтобы свернуть</translation>
 <translation id="3123734510202723619">Оповещения</translation>
 <translation id="8076492880354921740">Вкладки</translation>
-<translation id="7066151586745993502">{NUM_SELECTED,plural, =1{Выбран 1 объект}one{Выбран # объект}few{Выбрано # объекта}many{Выбрано # объектов}other{Выбрано # объекта}}</translation>
-<translation id="6818926723028410516">Выберите объекты</translation>
 <translation id="4797039098279997504">Нажмите, чтобы вернуться на страницу <ph name="URL_OF_THE_CURRENT_TAB"/>.</translation>
 <translation id="6766758767654711248">Нажмите, чтобы перейти на сайт</translation>
 <translation id="429312253194641664">На сайте воспроизводятся медиафайлы</translation>
@@ -1024,13 +987,12 @@
 <translation id="1875543012935658554">Снова запустите браузер Brave.</translation>
 <translation id="79859296434321399">Чтобы просматривать контент в режиме дополненной реальности, установите приложение ARCore.</translation>
 <translation id="8558485628462305855">Чтобы просматривать контент в режиме дополненной реальности, обновите приложение ARCore.</translation>
-<translation id="3513704683820682405">Дополненная реальность</translation>
-<translation id="5475862044948910901">Начать сеанс дополненной реальности?</translation>
-<translation id="7365126855094612066">Во время сеанса сайт сможет:
+<translation id="6410973561433500075">Войти в режим дополненной реальности на сайте <ph name="DOMAIN"/>?</translation>
+<translation id="3849365399446680203">В этом режиме сайт может:
 • создавать 3D-карту места, в котором вы находитесь;
 • отслеживать движение камеры.
 
-Сайту НЕ будет предоставлен доступ к камере. Изображения с камеры будете видеть только вы.</translation>
+Только вы будете видеть то, что попадает в объектив камеры. Сайт не получит доступ к этим изображениям.</translation>
 <translation id="1188239144602654184">Начать</translation>
 <translation id="473775607612524610">Обновить</translation>
 <translation id="3133489217401741157">Установка модуля "<ph name="MODULE"/>" для Brave…</translation>
@@ -1098,6 +1060,7 @@
 <translation id="723171743924126238">Выберите изображения</translation>
 <translation id="8751914237388039244">Выберите фото</translation>
 <translation id="1989112275319619282">Выбрать</translation>
+<translation id="8921772741368021346"><ph name="POSITION"/>/<ph name="DURATION"/></translation>
 <translation id="7055152154916055070">Заблокирована попытка переадресации:</translation>
 <translation id="5524843473235508879">Попытка переадресации заблокирована.</translation>
 <translation id="6573096386450695060">Разрешать всегда</translation>
@@ -1106,6 +1069,7 @@
 <translation id="9137013805542155359">Показать оригинал</translation>
 <translation id="6361779936989026201">Brave Software Ассистент в Brave</translation>
 <translation id="7291387454912369099">Оплата через Ассистента</translation>
+<translation id="9037412730408024068">Выполнять действия в Brave с помощью Ассистента: отправлять в Brave Software контент и URL сайтов, а также информацию, сообщаемую Ассистенту</translation>
 <translation id="4565206163201411670">Показать данные о ваших действиях в Brave в сервисе "Цифровое благополучие"?</translation>
 <translation id="9055113864158719823">Вы сможете просматривать список сайтов, посещенных в Brave, и устанавливать для них таймеры.\n\nВ Brave Software будут отправляться сведения о сайтах, для которых настроены таймеры, и времени их посещения. Мы собираем эти данные, чтобы улучшать сервис "Цифровое благополучие".</translation>
 <translation id="4596514158372210596">Удалить данные о действиях в Brave из сервиса "Цифровое благополучие"</translation>
@@ -1121,10 +1085,20 @@
 <translation id="246532703174860178">Поделиться</translation>
 <translation id="2517472476991765520">Искать</translation>
 <translation id="8628973420740315031">Чтобы предоставить доступ пользователю поблизости, попросите его отсканировать этот QR-код.</translation>
+<translation id="3987993985790029246">Копировать ссылку</translation>
+<translation id="4250229828105606438">Скриншот</translation>
+<translation id="6201345951596836663">Ссылка скопирована.</translation>
+<translation id="6597891566292541626">Поместите QR-код или штрихкод в эту рамку.</translation>
+<translation id="3140134512074889489">Разрешите камере сканировать QR-коды.</translation>
+<translation id="2359808026110333948">Продолжить</translation>
 <translation id="7339921667754113786">Платформа уведомлений Brave Software</translation>
 <translation id="8516012719330875537">Редактор изображений</translation>
+<translation id="6092062101542170135">Чтобы продолжить, включите NFC в настройках Android.</translation>
+<translation id="5860491529813859533">Включить</translation>
+<translation id="8926666909099850184">Функция NFC на этом устройстве отключена. Включите ее в <ph name="BEGIN_LINK"/>настройках Android<ph name="END_LINK"/>.</translation>
 <translation id="4808319664292298116">Войти в режим виртуальной реальности на сайте <ph name="DOMAIN"/>?</translation>
 <translation id="4353114845960720315">Когда вы находитесь в этом режиме, сайт может:</translation>
-<translation id="118069123878619799">– получить представление о параметрах вашего тела, например о росте;</translation>
-<translation id="5819762621475381970">– узнать планировку комнаты, в которой вы находитесь.</translation>
+<translation id="4574741712540401491">• <ph name="LIST_ITEM_TEXT"/></translation>
+<translation id="2099625543891475722">получить представление о параметрах вашего тела, например о росте;</translation>
+<translation id="4660838440047236328">узнать планировку комнаты, в которой вы находитесь.</translation>
 </translationbundle>

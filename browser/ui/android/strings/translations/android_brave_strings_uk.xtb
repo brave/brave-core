@@ -58,7 +58,7 @@
 <translation id="7053983685419859001">Заблокувати</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
 <translation id="2880356288762235261">рекламу та трекери, що порушують конфіденційність, щоб мати змогу користуватись інтернетом без стеження.</translation>
-<translation id="6980054221517850750">Заробляйте токени</translation>
+<translation id="8537217141725709400">Заробляйте <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Винагороди Brave</translation>
 <translation id="1789842587755069541">для перегляду конфіденційної реклами. Використовуйте їх для підтримки ваших улюблених сайтів та розробників.</translation>
 <translation id="821707262661492716">за перегляд реклами, що не порушуватиме вашу конфіденційність.</translation>
@@ -113,12 +113,13 @@
 <translation id="8280223431922155812">ЛИСТОПАД</translation>
 <translation id="4254029385847607686">ГРУДЕНЬ</translation>
 <translation id="1916285746997567466">Приготуйтесь відчути інтернет наступного рівня.</translation>
-<translation id="1071131306814166204">Тепер ви можете заробляти токени за перегляд реклами, що не порушуватиме вашу конфіденційність.</translation>
+<translation id="3540580927110899945">Зараз ви можете заробляти <ph name="TOKEN"/>s переглядаючи рекламу, що поважає приватність.</translation>
 <translation id="1327938628925645979">ПРИЄДНАТИСЬ ДО НАГОРОД</translation>
 <translation id="5567439033041178034">ДІЗНАТИСЬ БІЛЬШЕ</translation>
 <translation id="3780605330121608425">Ваш гаманець</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
+<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="3826081199286264109">Долари США</translation>
 <translation id="2104073734684466851">Пожертвування</translation>
 <translation id="1165667598801520610">Додати кошти</translation>
 <translation id="8428213095426709021">Налаштування</translation>
@@ -144,13 +145,13 @@
 <translation id="5463954686005964104">Давайте цьому сайту гроші щомісяця</translation>
 <translation id="7530570094705720669">Створюємо гаманець</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
-<translation id="4781696154289395607">Ви зробили свій внесок <ph name="BAT_VALUE"/> BAT.</translation>
+<translation id="4751553692764711651">Ви зробили внесок <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/>.</translation>
 <translation id="7997676409547731821">Вашу заплановану оплату автоматичного внеску та щомісячні чайові не вдалось переказати через нестачу коштів. Ми спробуємо знову за 30 діб.</translation>
 <translation id="5306913077198665897">При обробці вашого переказу чайових виникла проблема. Будь ласка, спробуйте знову пізніше.</translation>
 <translation id="2429828319207652823">Під час обробки вашого внеску виникла проблема.</translation>
 <translation id="3453206261112715431">Безкоштовний грант з токенів</translation>
 <translation id="6417420737057016607">Оголошення Brave</translation>
-<translation id="606865182719489911">Доступні безкоштовні токени</translation>
+<translation id="5497435273900537730">Доступний безкоштовний грант з <ph name="TOKEN"/>.</translation>
 <translation id="8689997599821157251">Ви заробили</translation>
 <translation id="7550470870580166294">Недостатньо коштів</translation>
 <translation id="2775064702681588061">Ваш Brave Rewards аккаунт чекає на депозит.</translation>
@@ -163,8 +164,8 @@
 <translation id="4292832015778676417">зароблено за рекламні оголошення</translation>
 <translation id="683765328936486920">на YouTube</translation>
 <translation id="8969049974285901797">на Twitch</translation>
-<translation id="3692362746128814480">Ви виділили <ph name="BAT_VALUE"/> BAT творцям, що ще не зареєструвались для отримання внесків. Ваш веб-переглядач і далі намагатиметься переказати внесок, поки вони не підтвердять свою особу чи поки не спливе 90 діб.</translation>
-<translation id="853714875140407133">недостатньо токенів</translation>
+<translation id="4376933248999950592">Ви призначили <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/> для творців, які ще не зареєструвались для отримання внесків.  Ваш браузер буде продовжувати спроби зробити внесок до моменту їхньої верифікації або поки не пройде 90 днів.</translation>
+<translation id="3101693828171454453">не достатньо <ph name="TOKEN"/>s</translation>
 <translation id="6940273954212603510">будь ласка</translation>
 <translation id="1036277985068412734">додати кошти</translation>
 <translation id="3492491948683276944">встановити щомісячні чайові</translation>
@@ -228,4 +229,39 @@
 <translation id="6336451774241870485">Нова приватна вкладка</translation>
 <translation id="6199596294742117349">Це — Приватна вкладка</translation>
 <translation id="5858455511731621847">Навіть те, що сайти, які ви переглядаєте у режимі приватності не зберігаються локально, не робить вас анонімом та невидимим для провайдера, роботодавця або відвіданих вами сайтів.</translation>
+<translation id="5789441016350810005">Реклама Brave, надіслана, коли браузер у фоновому режимі</translation>
+<translation id="7127980134843952133">Завантажити історію</translation>
+<translation id="3690140184638701871">Внески та amp;amp; Чайові</translation>
+<translation id="844921671123185605">Ваші місячні чайові були оброблені!</translation>
+<translation id="3124090095880236567">Увімкнути Рекламу</translation>
+<translation id="2975780980638932742">Прийшла Реклама Brave!</translation>
+<translation id="7655723274266132226">Тепер ви можете заробляти, переглядаючи рекламу.</translation>
+<translation id="7541582550122501404">Внески в очікуванні</translation>
+<translation id="8520059774736886747">Створювача <ph name="PUBLISHER_NAME"/> нещодавно підтверджено</translation>
+<translation id="7924320838799747606">Ваш баланс</translation>
+<translation id="6160106411363856968">BAP</translation>
+<translation id="1081826981536899387">Бали BAT</translation>
+<translation id="9212459913845238740">Запитано грантів у балах</translation>
+<translation id="2132683977638223450">Грант безкоштовних балів</translation>
+<translation id="4522570452068850558">Деталі</translation>
+<translation id="1486343603936278248">токен</translation>
+<translation id="8713995420537272453">бал</translation>
+<translation id="6678056861663824314">1 <ph name="TIP"/></translation>
+<translation id="4065726515175370979">5 <ph name="TIP"/></translation>
+<translation id="8171148564903208264">10 <ph name="TIP"/></translation>
+<translation id="7781069478569868053">Сторінка нової вкладки</translation>
+<translation id="8522669544471808198">Показати фонові зображення</translation>
+<translation id="3870475560794762985">Показати спонсоровані зображення</translation>
+<translation id="8297488609722895137">Фото зроблене <ph name="PHOTO_BY"/></translation>
+<translation id="3794079107601824147">Отримайте плату за перегляд цього фонового зображення.</translation>
+<translation id="4836823081419522426">Ви отримаєте 70% доходу від реклами за це приванте спонсорство, який можна використати, щоб підтримати творців веб-контенту. Увімкніть Винагороди Brave, щоб забрати свою частку.</translation>
+<translation id="7307847920988946894">Увімкнути Винагороди</translation>
+<translation id="1605521356929094020">Увімкнути Рекламу Brave</translation>
+<translation id="1647482814782886825">Вмикаючи Винагороди, ви погоджуєтесь з <ph name="TERMS_OF_SERVICE"/>. Ви так само можете вибрати<ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="7136586167396205364">Сховати Спонсоровані Зображення</translation>
+<translation id="2927095357213611519">Ви можете підтримати веб-творців токенами.\nЗаробляйте токени, переглядаючи рекламу, що поважає приватність.</translation>
+<translation id="4016415345213871193">Вам’ платять, щоб бачити це фонове зображення.</translation>
+<translation id="5895280237921845725"><ph name="LEARN_MORE"/> про спонсоровані зображення у Винагородах Brave. Ви так само можете вибрати <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="1908278071064820219">Ви так само можете вибрати <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="7931660128190969207">Хай вам заплатять, щоб бачити це фонове зображення. Увімкніть Рекламу Brave, щоб забрати свою частку.</translation>
 </translationbundle>

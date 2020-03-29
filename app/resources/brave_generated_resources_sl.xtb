@@ -11,12 +11,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") ni dovoljena v brskalniku Brave.</translation>
 <translation id="7450557937477381864">Zapri Chrome</translation>
 <translation id="7008934821596358692">Če želite končati uvoz, zaprite vsa okna v brskalniku Chrome.</translation>
-<translation id="5735465527556462863">Zapri Brave (staro)</translation>
-<translation id="7737066986958447692">Če želite končati uvažanje, zaprite vsa (stara) okna v brskalniku Brave.</translation>
-<translation id="6447842834002726250">Piškotki</translation>
-<translation id="4983925687993168579">Statistični podatki</translation>
-<translation id="6165477144235978006">Plačila Brave Payments</translation>
-<translation id="3489524616427966890">Odpri okna in zavihke</translation>
 <translation id="3699882589215410581">Namesti in zaženi Widevine</translation>
 <translation id="8926389886865778422">Ne sprašuj več</translation>
 <translation id="4726634924419692905">Vprašaj, ko želi spletno mesto namestiti Widevine na vaš računalnik</translation>
@@ -27,8 +21,6 @@
 <translation id="8410111618231938546">Google Widevine je del kode za upravljanje digitalnih pravic (DRM), ki ni v lasti družbe Brave Software in ga ne moremo pregledati. Koda Google Widevine je naložena iz strežnikov Google, ne iz naših strežnikov. Naloži se le, če omogočite to možnost. Uporabo DRM-ja odsvetujemo, a kljub temu spoštujemo izbiro uporabnika in se zavedamo, da nekateri uporabniki Brave želijo uporabljati storitve, za katere je potrebna uporaba DRM-ja.
 
 Če namestite to razširitev, se strinjate s pogoji uporabe Google Widevine. S tem soglašate, da družba Brave ni odgovorna za morebitno škodo ali izgube v zvezi z vašo uporabo orodja Google Widevine.</translation>
-<translation id="6499845530162974140">Brave (staro)</translation>
-<translation id="3198814717959506569">Uvoženo iz brskalnika Brave</translation>
 <translation id="453977518730680921">Samodejno predvajanje posnetkov</translation>
 <translation id="410351446219883937">Samodejno predvajanje</translation>
 <translation id="2240268017737062801">Vprašaj, če želi spletno mesto samodejno predvajati posnetek</translation>
@@ -70,19 +62,22 @@
 <translation id="130615081792797568">Preprost pogled</translation>
 <translation id="2360360976480535628">Napredni pogled</translation>
 <translation id="5709627087332022422">Blokiraj sledilce med mesti</translation>
-<translation id="9075744464571452108">Prepoznavanje naprave</translation>
+<translation id="6447842834002726250">Piškotki</translation>
+<translation id="6522412052085018663">Ustvarjanje prstnih odtisov</translation>
 <translation id="3570081523466826008">Posodobi povezave na HTTPS</translation>
 <translation id="4824468494729001999">Blokiraj skripte</translation>
-<translation id="8526521192921341404">Dovoli prijave Google</translation>
+<translation id="519861640102428255">Poglejte &amp;amp; občutite</translation>
+<translation id="4800195524776354947">Pokaži število blokiranih elementov na ikoni Shields</translation>
+<translation id="7498695072878479744">Dovoli gumbe za prijavo Google na spletnih mestih drugih ponudnikov</translation>
 <translation id="863171915776379000">Dovoli prijavo v Facebook in vdelane objave nanj</translation>
 <translation id="5165042248369837294">Dovoli vdelane tvite s Twitterja</translation>
 <translation id="958971637207126733">Dovoli vdelane objave z LinkedIna</translation>
 <translation id="4699812599455071925">Blokiraj piškotke med mesti</translation>
 <translation id="5657156137487675418">Dovoli vse piškotke</translation>
 <translation id="6883611015375728278">Blokiraj vse piškotke</translation>
-<translation id="3084022390368021391">Blokiraj samo poskuse za prepoznavanje naprave med mesti</translation>
-<translation id="1847422622180531843">Dovoli vse poskuse za prepoznavanje naprave</translation>
-<translation id="8375051111011093523">Blokiraj vse poskuse za prepoznavanje naprave</translation>
+<translation id="5572437114858031185">Blokiraj samo poskuse ustvarjanja prstnih odtisov med mesti</translation>
+<translation id="5079032039521408559">Dovoli vse poskuse ustvarjanja prstnih odtisov</translation>
+<translation id="6447141055227658942">Blokiraj vse poskuse ustvarjanja prstnih odtisov</translation>
 <translation id="8942080017911802454">Pravila za obravnavanje IP-naslova WebRTC</translation>
 <translation id="6165508094623778733">Več o tem</translation>
 <translation id="8798099450830957504">Privzeto</translation>
@@ -104,6 +99,7 @@
 <translation id="2356070529366658676">Vprašaj</translation>
 <translation id="7701040980221191251">Brez</translation>
 <translation id="1085027414516521238">MetaMask</translation>
+<translation id="3905324891414560921">Ponudnik Web3 za uporabo Dapps</translation>
 <translation id="6554397389149987360">Uporabi komponento Hangouts za omogočanje skupne rabe zaslona in drugih funkcij v brskalniku.</translation>
 <translation id="1765684547504191670">Uporablja komponento Media Router, da omogoči Chromecast v brskalniku.</translation>
 <translation id="9156965752763025780">Spremembe bodo začele veljati ob naslednjem zagonu Bravea.</translation>
@@ -164,6 +160,7 @@
 <translation id="4394049700291259645">Onemogoči</translation>
 <translation id="6469509880167172749">Samodejno pošlji popolnoma zasebno analizo izdelkov na Brave</translation>
 <translation id="7090566321964540749">Ta anonimna informacija programski opremi Brave samo omogoča, da oceni splošno uporabo nekaterih funkcij.</translation>
+<translation id="9111960429693394744">Želite uporabiti kripto denarnice Brave ali MetaMask za Dapps?</translation>
 <translation id="7583735190612229830">Nastavite kripto denarnice za interakcijo s to aplikacijo in drugimi podobnimi.</translation>
 <translation id="8337117349965899723">Uporabi kripto denarnice</translation>
 <translation id="5756155765711979898">Uporabi funkcijo MetaMask</translation>
@@ -177,4 +174,9 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank
 <translation id="4474155171896946103">Dodaj vse zavihke med zaznamke ...</translation>
 <translation id="2336228925368920074">Dodaj vse zavihke med zaznamke ...</translation>
 <translation id="796831669370432378">Če želite strani dodati med zaznamke, kliknite gumb za zaznamke v naslovni vrstici</translation>
+<translation id="4989337484121655457">Potreben je popoln dostop do diska</translation>
+<translation id="8025559074845816210">Brave potrebuje popoln dostop do diska, če želite uvoziti svoje zaznamke iz brskalnika Safari.</translation>
+<translation id="8515328844674404333">Izvedite, kako odobriti popoln dostop do diska v vaših sistemskih nastavitvah.</translation>
+<translation id="6414878884710400018">Odpri prednostne nastavitve sistema</translation>
+<translation id="5570470519803062774">Nastavitve spletne strani in ščita</translation>
 </translationbundle>

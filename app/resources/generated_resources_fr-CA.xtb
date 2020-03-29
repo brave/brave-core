@@ -38,6 +38,8 @@
 <translation id="8419098111404128271">Résultats de recherche pour « <ph name="SEARCH_TEXT"/> »</translation>
 <translation id="6377268785556383139">1 résultat trouvé pour « <ph name="SEARCH_TEXT"/> »</translation>
 <translation id="6000758707621254961"><ph name="RESULT_COUNT"/> résultats trouvés pour « <ph name="SEARCH_TEXT"/> »</translation>
+<translation id="5359910752122114278">1 résultat</translation>
+<translation id="2295864384543949385"><ph name="NUM_RESULTS"/> résultats</translation>
 <translation id="3303855915957856445">Aucun résultat de recherche n'a été trouvé</translation>
 <translation id="8967866634928501045">Appuyez sur Alt+Maj+A pour afficher</translation>
 <translation id="998747458861718449">I&amp;nspecter</translation>
@@ -178,7 +180,7 @@
 <translation id="5329858601952122676">&amp;Supprimer</translation>
 <translation id="4608500690299898628">Rec&amp;hercher...</translation>
 <translation id="3712897371525859903">Enregistrer la p&amp;age sous...</translation>
-<translation id="2369105924912929484">Basculer le contenu de la page distillé</translation>
+<translation id="3200941271596533635">Basculer le mode Lecteur</translation>
 <translation id="6607831829715835317">Autres outi&amp;ls</translation>
 <translation id="3994878504415702912">&amp;Zoom</translation>
 <translation id="4779083564647765204">Zoom</translation>
@@ -189,14 +191,16 @@
 <translation id="6095984072944024315">−</translation>
 <translation id="1689945336726856614">Copier l'&amp;URL</translation>
 <translation id="2119349053129246860">Ouvrir dans <ph name="APP"/></translation>
+<translation id="7855678561139483478">Déplacer l'onglet vers une nouvelle fenêtre</translation>
 <translation id="3285322247471302225">Nouvel ongle&amp;t</translation>
 <translation id="8879284080359814990">&amp;Afficher en tant qu'onglet</translation>
 <translation id="176587472219019965">&amp;Nouvelle fenêtre</translation>
 <translation id="7973394300052703468">Nouvelle fenêtre de navigation pr&amp;ivée</translation>
 <translation id="5157635116769074044">Épingler cette page à l'écran de démarrage...</translation>
 <translation id="5830720307094128296">Enregistrer la p&amp;age sous…</translation>
-<translation id="4672657274720418656">Convertir la page</translation>
+<translation id="3608436266458100337">Mode Lecteur</translation>
 <translation id="7853747251428735">Plus d'outils</translation>
+<translation id="6390020764191254941">Déplacer l'onglet vers une nouvelle fenêtre</translation>
 <translation id="4109135793348361820">Déplacer la fenêtre vers le bureau de <ph name="USER_NAME"/> (<ph name="USER_EMAIL"/>)</translation>
 <translation id="8642947597466641025">Augmenter la taille du texte</translation>
 <translation id="7134098520442464001">Réduire la taille du texte</translation>
@@ -334,16 +338,18 @@
 <translation id="6285120108426285413">Le fichier <ph name="FILE_NAME"/> n'est pas souvent téléchargé et peut être dangereux.</translation>
 <translation id="1463112138205428654"><ph name="FILE_NAME"/> a été bloqué par la protection avancée.</translation>
 <translation id="3615579745882581859">Le fichier <ph name="FILE_NAME"/> est en train d'être analysé.</translation>
+<translation id="2620215283731032047"><ph name="FILE_NAME"/> ne peut pas être téléchargé de manière sécuritaire.</translation>
 <translation id="7859938049767853383">La taille de <ph name="FILE_NAME"/> est trop grande pour l'analyse dans le nuage, et son ouverture a été bloquée.</translation>
 <translation id="2896909745808647285"><ph name="FILE_NAME"/> est chiffré, et son ouverture a été bloquée.</translation>
 <translation id="2693982916035708855">Recherche terminée : aucun problème détecté.</translation>
 <translation id="8855501062415172277"><ph name="FILE_NAME"/> contient des éléments sensibles.</translation>
 <translation id="1061745542578250838"><ph name="FILE_NAME"/> contient des éléments sensibles et a été bloqué.</translation>
 <translation id="6651823585377804376">Le téléchargement contient un logiciel malveillant.</translation>
-<translation id="1863552924692672565"><ph name="FILE_NAME"/> est inconnu. Analyser le fichier pour minimiser le risque.</translation>
+<translation id="7483136042182425287">La protection avancée recommande d'envoyer <ph name="FILE_NAME"/> à Brave Software afin de vérifier la présence de logiciels malveillants.</translation>
 <translation id="4907161631261076876">Ce fichier n'est pas souvent téléchargé et peut être dangereux.</translation>
 <translation id="6102043788063419338">Ce fichier a été bloqué par la protection avancée.</translation>
 <translation id="2773802008104670137">Ce type de fichier peut endommager votre ordinateur.</translation>
+<translation id="2835294513443818940">Ce fichier ne peut pas être téléchargé de manière sécuritaire.</translation>
 <translation id="2557378327156922632">Ce fichier contient des éléments sensibles.</translation>
 <translation id="3952230510293296226">Ce fichier a été bloqué parce qu'il contient des éléments sensibles.</translation>
 <translation id="614611931938947795">La taille de ce fichier est trop grande pour l'analyse dans le nuage, et son ouverture a été bloquée.</translation>
@@ -418,6 +424,7 @@
 <translation id="7253521419891527137">En savoir p&amp;lus</translation>
 <translation id="8708671767545720562">Infor&amp;mation supplémentaire</translation>
 <translation id="424726838611654458">Toujours ouvrir dans Adobe Reader</translation>
+<translation id="2020225359413970060">Analyser le fichier</translation>
 <translation id="8546930481464505581">Personnaliser la barre tactile</translation>
 <translation id="5171045022955879922">Effectuez une recherche ou entrez une adresse URL</translation>
 <translation id="8323167517179506834">Entrer une adresse URL</translation>
@@ -563,7 +570,7 @@
 <translation id="3297560592877881986">Certains sites utilisent des témoins tiers pour charger leurs pages. Si un site ne fonctionne pas, vous pouvez essayer de désactiver le blocage de témoins.</translation>
 <translation id="1243398753772016127">Les sites ne peuvent pas utiliser votre activité de navigation sur différent sites afin de personnaliser les annonces</translation>
 <translation id="8734674662128056360">Blocage de témoins tiers</translation>
-<translation id="2448734521821581858">Les témoins sont des fichiers créés par les sites Web que vous visitez. Il y a deux types de témoins : les témoins directs sont ceux que créent les sites que vous visitez. Le site en question figure dans la barre d'adresse. Les témoins tiers sont ceux que créent d'autres sites. Ces sites possèdent certains types de contenu, comme des annonces et des images, que vous voyez sur les sites que vous visitez.</translation>
+<translation id="3784472333786002075">Les témoins sont des fichiers créés par les sites Web. Il y a deux types de témoins : les témoins directs sont ceux que créent les sites que vous visitez. Le site en question figure dans la barre d'adresse. Les témoins tiers sont ceux que créent d'autres sites. Ces sites possèdent certains types de contenu, comme des annonces et des images, que vous voyez sur les sites que vous visitez.</translation>
 <translation id="5154702632169343078">Destinataire</translation>
 <translation id="5851868085455377790">Émetteur</translation>
 <translation id="2841837950101800123">Fournisseur</translation>
@@ -813,6 +820,8 @@
 <translation id="2087822576218954668">Imprimer : <ph name="PRINT_NAME"/></translation>
 <translation id="8859174528519900719">Sous-cadre : <ph name="SUBFRAME_SITE"/></translation>
 <translation id="1799432502220762862">Sous-cadre de navigation privée : <ph name="SUBFRAME_SITE"/></translation>
+<translation id="7454548535253569100">Portail : <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Portail de navigation privée : <ph name="SUBFRAME_SITE"/></translation>
 <translation id="2348176352564285430">Application : <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="786073089922909430">Service : <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="7663719505383602579">Récepteur : <ph name="ARC_PROCESS_NAME"/></translation>
@@ -823,7 +832,7 @@
 <translation id="7171242884588191792">Utilitaires de fichiers Brave</translation>
 <translation id="3183139917765991655">Importateur de profils</translation>
 <translation id="2190069059097339078">Acquéreur d'authentifiant Wi-Fi</translation>
-<translation id="7685901961038216503">Générateur d'image du système Brave OS</translation>
+<translation id="5920835625712313205">Générateur d'image du système Brave OS</translation>
 <translation id="4873312501243535625">Vérificateur de fichier multimédia</translation>
 <translation id="5972666587303800813">Service non opérationnel</translation>
 <translation id="1545775234664667895">Thème installé : « <ph name="THEME_NAME"/> »</translation>
@@ -866,9 +875,7 @@
 <translation id="175772926354468439">Activer le thème</translation>
 <translation id="5267531627648004734">Supprimer de Brave Software Brave</translation>
 <translation id="4998873842614926205">Confirmer les changements</translation>
-<translation id="5699533844376998780">L'extension « <ph name="EXTENSION_NAME"/> » a été ajoutée.</translation>
 <translation id="1799071797295057738">L'extension « <ph name="EXTENSION_NAME"/> » a été désactivée automatiquement.</translation>
-<translation id="6449285849137521213">L'application « <ph name="EXTENSION_NAME"/> » a été installée.</translation>
 <translation id="5238278114306905396">L'application « <ph name="EXTENSION_NAME"/> » a été automatiquement supprimée.</translation>
 <translation id="6965382102122355670">OK</translation>
 <translation id="4522570452068850558">Détails</translation>
@@ -878,6 +885,7 @@
 <translation id="1485015260175968628">Elle peut maintenant :</translation>
 <translation id="3788401245189148511">Elle pourrait :</translation>
 <translation id="1965624977906726414">Cette application fonctionne sans autorisation spéciale.</translation>
+<translation id="2753677631968972007">Gérer manuellement les autorisations des sites.</translation>
 <translation id="2886771036282400576">• <ph name="PERMISSION"/></translation>
 <translation id="5588033542900357244">(<ph name="RATING_COUNT"/>)</translation>
 <translation id="2124930039827422115">{1,plural, =1{Notée <ph name="AVERAGE_RATING"/> par un utilisateur.}one{Notée <ph name="AVERAGE_RATING"/> par # utilisateur.}other{Notée <ph name="AVERAGE_RATING"/> par # utilisateurs.}}</translation>
@@ -967,7 +975,7 @@
 <translation id="3584169441612580296">Lire et modifier les photos, la musique et les autres médias stockés sur votre ordinateur</translation>
 <translation id="5457459357461771897">Accéder aux photos, à la musique et aux autres fichiers multimédias stockés sur votre ordinateur et les supprimer</translation>
 <translation id="3270965368676314374">Lire, modifier et supprimer les photos, la musique et les autres fichiers multimédias stockés sur votre ordinateur</translation>
-<translation id="3919562953666287643">Stocker les données dans votre compte Brave Software Disque</translation>
+<translation id="1285484354230578868">Stocker les données dans votre compte Brave Software Disque</translation>
 <translation id="378312418865624974">Lire un identificateur unique pour cet ordinateur</translation>
 <translation id="5094721898978802975">Permettre la communication avec les applications natives associées</translation>
 <translation id="4876895919560854374">Verrouiller et déverrouiller l'écran</translation>
@@ -1001,7 +1009,7 @@
 <translation id="1616298854599875024">Impossible d'importer l'extension « <ph name="IMPORT_NAME"/> », car il ne s'agit pas d'un module partagé</translation>
 <translation id="2131077480075264">Impossible d'installer « <ph name="APP_NAME"/> », car elle n'est pas autorisée par « <ph name="IMPORT_NAME"/> »</translation>
 <translation id="1875387611427697908">Cet élément doit être installé à partir de la <ph name="CHROME_WEB_STORE"/></translation>
-<translation id="7613251087357271190">L'application dont le fichier de configuration comporte un attribut « kiosk_only » doit être installée en mode Kiosque pour Brave OS</translation>
+<translation id="3862788408946266506">L'application dont le fichier de configuration comporte un attribut « kiosk_only » doit être installée en mode Kiosque pour Brave OS</translation>
 <translation id="3834775135533257713">Impossible d'ajouter l'application « <ph name="TO_INSTALL_APP_NAME"/> », car elle crée un conflit avec « <ph name="INSTALLED_APP_NAME"/> ».</translation>
 <translation id="144518587530125858">Impossible de charger « <ph name="IMAGE_PATH"/> » pour le thème.</translation>
 <translation id="6567688344210276845">Impossible de charger l'icône « <ph name="ICON"/> » d'action de page.</translation>
@@ -1106,9 +1114,12 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="3288047731229977326">Les extensions exécutées en mode développeur peuvent nuire à votre ordinateur. Si vous n'êtes pas un développeur, nous vous recommandons de désactiver celles-ci afin d'assurer la sécurité de votre ordinateur.</translation>
 <translation id="8827289157496676362">Épingler l'extension</translation>
 <translation id="5372579129492968947">Annuler l'épinglage de l'extension</translation>
+<translation id="2502719318159902502">Accès complet</translation>
 <translation id="3929426037718431833">Ces extensions peuvent consulter et modifier l'information sur ce site.</translation>
-<translation id="1435979430299962295">Pour autoriser l'accès sur ce site, cliquez sur l'extension.</translation>
-<translation id="6890912377247906520">Ces extensions n'ont pas besoin d'accéder à ce site.</translation>
+<translation id="7364591875953874521">Accès demandé</translation>
+<translation id="6032715498678347852">Pour autoriser une extension à accéder à ce site, cliquez dessus.</translation>
+<translation id="6241844896329831164">Aucun accès nécessaire</translation>
+<translation id="4046013316139505482">Ces extensions n'ont pas besoin de consulter ni de modifier l'information sur ce site.</translation>
 <translation id="5521078259930077036">Est-ce bien la page d'accueil à laquelle vous vous attendiez?</translation>
 <translation id="7760004034676677601">Est-ce bien la page de démarrage à laquelle vous vous attendiez?</translation>
 <translation id="5956585768868398362">Est-ce bien la page de recherche à laquelle vous vous attendiez?</translation>
@@ -1121,6 +1132,8 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="1729533290416704613">Elle définit également quelle page s'affiche lorsque vous effectuez une recherche dans l'omnibox.</translation>
 <translation id="5627086634964711283">Elle définit également la page qui s'affiche lorsque vous cliquez sur le bouton Accueil.</translation>
 <translation id="5965661248935608907">Elle définit également quelle page s'affiche lorsque vous cliquez sur le bouton Accueil ou que vous effectuez une recherche dans l'omnibox.</translation>
+<translation id="2654553774144920065">Demande d'impression</translation>
+<translation id="6846178040388691741">« <ph name="EXTENSION_NAME"/> » souhaite imprimer <ph name="FILE_NAME"/> avec <ph name="PRINTER_NAME"/>.</translation>
 <translation id="4613271546271159013">Une extension a changé la page qui s'affiche lorsque vous ouvrez un nouvel onglet.</translation>
 <translation id="6196854373336333322">L'extension « <ph name="EXTENSION_NAME"/> » a pris le contrôle de vos paramètres de mandataire, ce qui signifie qu'elle peut modifier ou espionner tout ce que vous faites en ligne. Si vous ne savez pas pourquoi ce changement s'est produit, vous ne voulez probablement pas l'accepter.</translation>
 <translation id="8351419472474436977">Cette extension a pris le contrôle de vos paramètres de mandataire, ce qui signifie qu'elle peut modifier ou espionner tout ce que vous faites en ligne. Si vous ne savez pas pourquoi ce changement s'est produit, vous ne voulez probablement pas l'accepter.</translation>
@@ -1219,6 +1232,9 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="4668721319092543482">Cliquez pour activer le plugiciel <ph name="PLUGIN_NAME"/></translation>
 <translation id="8358685469073206162">Restaurer les pages qui étaient ouvertes?</translation>
 <translation id="5620612546311710611">statistiques d'utilisation</translation>
+<translation id="6847125920277401289">Libérez de l'espace pour continuer</translation>
+<translation id="1333489022424033687">Certaines fonctionnalités de <ph name="ORIGIN"/> risquent de ne pas fonctionner si vous n'effacez pas les données que d'autres sites ont stockées sur votre appareil</translation>
+<translation id="6897363604023044284">Choisir les sites à effacer</translation>
 <translation id="8871696467337989339">Vous utilisez un indicateur de ligne de commande qui n'est pas pris en charge, <ph name="BAD_FLAG"/>, ce qui va nuire à la stabilité et à la sécurité.</translation>
 <translation id="9140067245205650184">Vous utilisez un indicateur de fonctionnalité non pris en charge : <ph name="BAD_FLAG"/>, ce qui va nuire à la stabilité et à la sécurité.</translation>
 <translation id="4094647278880271855">Vous utilisez une variable d'environnement incompatible : <ph name="BAD_VAR"/>. Cela aura un impact sur la stabilité et la sécurité.</translation>
@@ -1440,7 +1456,6 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="5578059481725149024">Connexion automatique</translation>
 <translation id="6810613314571580006">Connexion automatique à des sites Web à l'aide d'identifiants enregistrés. Lorsque la fonctionnalité est désactivée, une confirmation vous est demandée avant chaque connexion à un site Web.</translation>
 <translation id="5454166040603940656">avec <ph name="PROVIDER"/></translation>
-<translation id="7108338896283013870">Masquer</translation>
 <translation id="1426410128494586442">Oui</translation>
 <translation id="4250680216510889253">Non</translation>
 <translation id="7473891865547856676">Non merci</translation>
@@ -1482,7 +1497,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="7052237160939977163">Envoyer des données de suivi des performances</translation>
 <translation id="5526928694260255286">Associer les <ph name="BEGIN_LINK"/>journaux Bluetooth<ph name="END_LINK"/> (données internes de Brave Software)</translation>
 <translation id="3047644958362961983">Ces données nous aident à mieux comprendre le problème que vous éprouvez avec votre Assistant. Elles sont stockées pendant 90 jours, et l'accès est limité aux équipes d'ingénierie et de rétroaction appropriées.</translation>
-<translation id="1705635099498185261">Pour un meilleur diagnostic des problèmes liés au Bluetooth, les employés de Brave Software peuvent inclure des journaux Bluetooth supplémentaires dans leurs rapports de commentaires. Lorsque cette option est cochée, votre rapport inclut les journaux btsnoop et HCI de votre session en cours, qui sont anonymisés de façon à supprimer autant de données personnelles que possible. L'accès à ces journaux est réservé aux gestionnaires du groupe de produits Brave OS dans Listnr. Les journaux seront supprimés définitivement au bout de 90 jours.</translation>
+<translation id="8545590844135745781">Pour un meilleur diagnostic des problèmes liés au Bluetooth, les employés de Brave Software peuvent inclure des journaux Bluetooth supplémentaires dans leurs rapports de commentaires. Lorsque cette option est cochée, votre rapport inclut les journaux btsnoop et HCI de votre session en cours, qui sont anonymisés de façon à supprimer autant de données personnelles que possible. L'accès à ces journaux est réservé aux gestionnaires du groupe de produits Brave OS dans Listnr. Les journaux seront supprimés définitivement au bout de 90 jours.</translation>
 <translation id="4206323443866416204">Rapport de commentaire</translation>
 <translation id="3681311097828166361">Nous vous remercions de vos commentaires. Vous êtes actuellement hors connexion, et votre rapport sera envoyé plus tard.</translation>
 <translation id="8713570323158206935">Envoyer de l'<ph name="BEGIN_LINK1"/>information du système<ph name="END_LINK1"/></translation>
@@ -1574,6 +1589,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="255747371423522804">Ajouter à un groupe existant</translation>
 <translation id="2977480621796371840">Supprimer du groupe</translation>
 <translation id="8975562453115131273">{NUM_OTHER_TABS,plural, =0{« <ph name="TAB_TITLE"/> »}=1{« <ph name="TAB_TITLE"/> » et 1 autre onglet}one{« <ph name="TAB_TITLE"/> » et # autre onglet}other{« <ph name="TAB_TITLE"/> » et # autres onglets}}</translation>
+<translation id="8177318697334260664">{NUM_TABS,plural, =1{Déplacer l'onglet vers une nouvelle fenêtre}one{Déplacer l'onglet vers une nouvelle fenêtre}other{Déplacer les onglets vers une nouvelle fenêtre}}</translation>
 <translation id="5876851302954717356">Nouvel onglet à droite</translation>
 <translation id="4322394346347055525">Fermer les autres onglets</translation>
 <translation id="1166212789817575481">Fermer les onglets à la droite</translation>
@@ -1584,13 +1600,16 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="7353887511974462734">Ajouter à un groupe existant</translation>
 <translation id="6964760285928603117">Supprimer du groupe</translation>
 <translation id="5548159762883465903">{NUM_OTHER_TABS,plural, =0{« <ph name="TAB_TITLE"/> »}=1{« <ph name="TAB_TITLE"/> » et 1 autre onglet}one{« <ph name="TAB_TITLE"/> » et # autre onglet}other{« <ph name="TAB_TITLE"/> » et # autres onglets}}</translation>
+<translation id="8162984717805647492">{NUM_TABS,plural, =1{Déplacer l'onglet vers une nouvelle fenêtre}one{Déplacer l'onglet vers une nouvelle fenêtre}other{Déplacer les onglets vers une nouvelle fenêtre}}</translation>
 <translation id="2894757982205307093">Nouvel onglet dans le groupe</translation>
 <translation id="4460014764210899310">Dégrouper</translation>
 <translation id="4871719318659334896">Fermer le groupe</translation>
 <translation id="945522503751344254">Envoyer un commentaire à Brave Software</translation>
+<translation id="934244546219308557">Nommer ce groupe</translation>
 <translation id="8781834595282316166">Nouvel onglet dans le groupe</translation>
 <translation id="1780152987505130652">Fermer le groupe</translation>
 <translation id="8041089156583427627">Envoyer des commentaires</translation>
+<translation id="8263336784344783289">Nommer ce groupe</translation>
 <translation id="2278562042389100163">Ouvrir une fenêtre de navigateur</translation>
 <translation id="756445078718366910">Ouvrir une fenêtre du navigateur</translation>
 <translation id="1165039591588034296">Erreur</translation>
@@ -1638,12 +1657,11 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="6280912520669706465">ARC</translation>
 <translation id="4728558894243024398">Plateforme</translation>
 <translation id="7022562585984256452">Votre page d'accueil a été définie.</translation>
-<translation id="7274626204661209194">Brave Software Cloud Print</translation>
+<translation id="8069615408251337349">Brave Software Cloud Print</translation>
 <translation id="4973307593867026061">Ajouter des imprimantes</translation>
-<translation id="9052208328806230490">Vous avez enregistré vos imprimantes dans <ph name="CLOUD_PRINT_NAME"/> en utilisant le compte <ph name="EMAIL"/></translation>
 <translation id="3792890930871100565">Déconnecter les imprimantes</translation>
 <translation id="5038863510258510803">Activation en cours…</translation>
-<translation id="8206354486702514201">Votre administrateur impose la valeur associée à ce paramètre.</translation>
+<translation id="8264024885325823677">C'est votre administrateur qui gère ce paramètre.</translation>
 <translation id="1116779635164066733">L'extension « <ph name="NAME"/> » impose la valeur attribuée à ce paramètre.</translation>
 <translation id="4620809267248568679">Une extension impose la valeur attribuée à ce paramètre.</translation>
 <translation id="4846680374085650406">Vous suivez la recommandation de l'administrateur pour ce paramètre.</translation>
@@ -1795,6 +1813,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="8780443667474968681">La recherche vocale a été désactivée.</translation>
 <translation id="8371695176452482769">Parlez maintenant</translation>
 <translation id="2942560570858569904">En attente…</translation>
+<translation id="6097600385983390082">Recherche vocale fermée</translation>
 <translation id="6436164536244065364">Afficher dans la boutique Brave Web Store</translation>
 <translation id="5258992782919386492">Installer sur cet appareil</translation>
 <translation id="3331974543021145906">Détails de l'application</translation>
@@ -1878,8 +1897,9 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="8978154919215542464">Activé - tout synchroniser</translation>
 <translation id="1487335504823219454">Paramètres personnalisés activés</translation>
 <translation id="1887442540531652736">Erreur de connexion</translation>
-<translation id="7979036127916589816">Erreur de synchronisation</translation>
+<translation id="8627706565932943526">Erreur de synchronisation</translation>
 <translation id="7605594153474022051">La synchronisation ne fonctionne pas</translation>
+<translation id="7646772052135772216">La synchronisation des mots de passe ne fonctionne pas</translation>
 <translation id="1648943974594387137">Les renseignements de connexion ne sont plus à jour</translation>
 <translation id="9148126808321036104">Connectez-vous de nouveau</translation>
 <translation id="2638087589890736295">Une phrase de passe est requise pour commencer la synchronisation</translation>
@@ -2048,9 +2068,11 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="3007771295016901659">Dupliquer l'onglet</translation>
 <translation id="9085256200913095638">Dupliquer l'onglet sélectionné</translation>
 <translation id="2973324205039581528">Désactiver le son sur le site</translation>
-<translation id="21133533946938348">Épingler l'onglet</translation>
 <translation id="4025039777635956441">Désactiver le son pour le site sélectionné</translation>
+<translation id="21133533946938348">Épingler l'onglet</translation>
 <translation id="1296911687402551044">Épingler l'onglet sélectionné</translation>
+<translation id="2082187087049518845">Ajouter l'onglet à un groupe</translation>
+<translation id="4811503964269049987">Ajouter l'onglet sélectionné à un groupe</translation>
 <translation id="2007404777272201486">Signaler un problème...</translation>
 <translation id="3118319026408854581">Aide de <ph name="PRODUCT_NAME"/></translation>
 <translation id="6721972322305477112">&amp;Fichier</translation>
@@ -2173,8 +2195,13 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="7108634116785509031">L'hôte <ph name="HOST"/> veut utiliser votre appareil photo</translation>
 <translation id="3691267899302886494">L'hôte <ph name="HOST"/> veut partager votre écran</translation>
 <translation id="4275663329226226506">Médias</translation>
+<translation id="5804427196348435412">Utiliser des appareils NFC</translation>
 <translation id="131405271941274527"><ph name="URL"/> souhaite vous envoyer et recevoir de l'information lorsque vous touchez votre téléphone sur un appareil NFC</translation>
 <translation id="6268718011101775129">NFC</translation>
+<translation id="6767115174726603949">Accéder aux appareils et aux données de réalité virtuelle</translation>
+<translation id="1884930769492918228">Faire le suivi de la position de l'appareil photo et cartographier votre pièce</translation>
+<translation id="3383210070657133526"><ph name="URL"/> vous demande la permission de démarrer des sessions de réalité virtuelle</translation>
+<translation id="4357784477082216550"><ph name="URL"/> souhaite faire le suivi de la position de l'appareil photo et cartographier votre pièce</translation>
 <translation id="8962918469425892674">Ce site utilise des capteurs de mouvement ou de luminosité.</translation>
 <translation id="4532646538815530781">Ce site utilise des capteurs de mouvement.</translation>
 <translation id="6057381398996433816">L'utilisation de capteurs de mouvement et de luminosité a été bloquée pour ce site.</translation>
@@ -2196,6 +2223,8 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="1997484222658892567">L'URL <ph name="URL"/> veut stocker de façon permanente de grandes quantités de données sur votre ordinateur local</translation>
 <translation id="7648992873808071793">Enregistrer des fichiers sur cet appareil</translation>
 <translation id="8871551568777368300">Épinglé par l'administrateur</translation>
+<translation id="4723140812774948886">Échanger avec le suivant</translation>
+<translation id="540495485885201800">Échanger avec le précédent</translation>
 <translation id="4110895898888439383">Parcourir le Web en mode de contraste élevé</translation>
 <translation id="614940544461990577">Essayez :</translation>
 <translation id="7325437708553334317">Extension Contraste élevé</translation>
@@ -2240,7 +2269,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="2505324914378689427">{SCREEN_INDEX,plural, =1{Écran #}one{Écran #}other{Écran #}}</translation>
 <translation id="839736845446313156">S'inscrire</translation>
 <translation id="6285120908535925801">{NUM_PRINTER,plural, =1{Nouvelle imprimante sur le réseau}one{Nouvelle imprimante sur le réseau}other{Nouvelles imprimantes sur le réseau}}</translation>
-<translation id="2656240156816412333">{NUM_PRINTER,plural, =1{Ajoutez l'imprimante à Brave Software Cloud Print pour imprimer des documents où que vous soyez.}one{Ajoutez # imprimante à Brave Software Cloud Print pour imprimer des documents où que vous soyez.}other{Ajoutez # imprimantes à Brave Software Cloud Print pour imprimer des documents où que vous soyez.}}</translation>
+<translation id="1653526288038954982">{NUM_PRINTER,plural, =1{Ajoutez l'imprimante à Brave Software Cloud Print pour imprimer des documents où que vous soyez.}one{Ajoutez # imprimante à Brave Software Cloud Print pour imprimer des documents où que vous soyez.}other{Ajoutez # imprimantes à Brave Software Cloud Print pour imprimer des documents où que vous soyez.}}</translation>
 <translation id="409579654357498729">Ajouter à Brave Software Cloud Print</translation>
 <translation id="4628757576491864469">Appareils</translation>
 <translation id="6915804003454593391">Utilisateur :</translation>
@@ -2250,7 +2279,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="1895934970388272448">Vous devez confirmer l'enregistrement de votre imprimante sur celle-ci pour terminer le processus. Merci de vous en assurer dès maintenant.</translation>
 <translation id="551752069230578406">Ajout de l'imprimante à votre compte. Cette opération peut prendre quelques instants…</translation>
 <translation id="2384436799579181135">Une erreur s'est produite. Veuillez vérifier votre imprimante, puis réessayer.</translation>
-<translation id="2569908351567260524">Imprimante connectée à Brave Software Cloud Print</translation>
+<translation id="1327074568633507428">Imprimante connectée à Brave Software Cloud Print</translation>
 <translation id="6782994146626179935">Appareil infonuagique Brave Software</translation>
 <translation id="7140928199327930795">Aucun autre périphérique accessible.</translation>
 <translation id="8213577208796878755">Un autre périphérique visible.</translation>
@@ -2263,11 +2292,10 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="6711610692002680394">Vous devez vous connecter à Brave pour enregistrer de nouveaux appareils.</translation>
 <translation id="8931394284949551895">Nouveaux appareils</translation>
 <translation id="3752673729237782832">Mes appareils</translation>
-<translation id="1721937473331968728">Vous pouvez ajouter des imprimantes standards connectées à votre ordinateur à <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="715118844758971915">Imprimantes classiques</translation>
 <translation id="4263757076580287579">L'enregistrement de l'imprimante a été annulé.</translation>
 <translation id="8152091997436726702">L'enregistrement de l'imprimante a expiré. Pour enregistrer une imprimante, vous devez confirmer l'enregistrement sur l'imprimante.</translation>
-<translation id="2057904164277279211">Les documents sont <ph name="BEGIN_LINK_HELP"/>envoyés à Brave Software<ph name="END_LINK_HELP"/> pour les préparer à l'impression. Affichez, modifiez et gérez vos imprimantes et votre historique d'imprimantes dans le <ph name="BEGIN_LINK_DASHBOARD"/>tableau de bord Brave Software Cloud Print<ph name="END_LINK_DASHBOARD"/>.</translation>
+<translation id="2624930408905606513">Les documents sont <ph name="BEGIN_LINK_HELP"/>envoyés à Brave Software<ph name="END_LINK_HELP"/> pour les préparer à l'impression. Affichez, modifiez et gérez vos imprimantes et votre historique d'imprimantes dans le <ph name="BEGIN_LINK_DASHBOARD"/>tableau de bord Brave Software Cloud Print<ph name="END_LINK_DASHBOARD"/>.</translation>
 <translation id="3082780749197361769">Cet onglet utilise votre caméra ou votre microphone.</translation>
 <translation id="3578594933904494462">Le contenu de cet onglet est en cours de partage.</translation>
 <translation id="4449996769074858870">Cet onglet lit du contenu audio.</translation>
@@ -2292,6 +2320,10 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="8980951173413349704"><ph name="WINDOW_TITLE"/> - Plantage</translation>
 <translation id="6579705087617859690"><ph name="WINDOW_TITLE"/> – Contenu du bureau partagé</translation>
 <translation id="8588868914509452556"><ph name="WINDOW_TITLE"/> - Présentation RV en cours dans le casque</translation>
+<translation id="608531959444400877"><ph name="WINDOW_TITLE"/> : fait partie d'un groupe sans nom</translation>
+<translation id="1130589222747246278"><ph name="WINDOW_TITLE"/> : fait partie du groupe <ph name="GROUP_NAME"/></translation>
+<translation id="7102928824073746774">Groupe sans nom : <ph name="GROUP_CONTENTS"/></translation>
+<translation id="1846880379134204029">Groupe <ph name="GROUP_NAME"/> : <ph name="GROUP_CONTENTS"/></translation>
 <translation id="3590194807845837023">Déverrouiller le profil et relancer</translation>
 <translation id="7624337243375417909">verrouillage des majuscules désactivé</translation>
 <translation id="6798780071646309401">verrouillage des majuscules activé</translation>
@@ -2355,6 +2387,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="3271648667212143903"><ph name="ORIGIN"/> veut se connecter</translation>
 <translation id="7945031593909029181">L'extension « <ph name="CHROME_EXTENSION_NAME"/> » veut se connecter</translation>
 <translation id="3949790930165450333"><ph name="DEVICE_NAME"/> (<ph name="DEVICE_ID"/>)</translation>
+<translation id="2010501376126504057">Appareils compatibles</translation>
 <translation id="5308380583665731573">Connecter</translation>
 <translation id="8480869669560681089">Appareil inconnu de <ph name="VENDOR_NAME"/></translation>
 <translation id="1500297251995790841">Appareil inconnu [<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>]</translation>
@@ -2487,6 +2520,8 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="8818958672113348984">Vérifier par l'intermédiaire de votre téléphone</translation>
 <translation id="6112931163620622315">Vérifier votre téléphone</translation>
 <translation id="5605758115928394442">Nous avons envoyé une notification à votre téléphone pour confirmer votre identité.</translation>
+<translation id="139911022479327130">Déverrouillez votre téléphone et confirmez qu'il s'agit bien de vous</translation>
+<translation id="2537464584626495441">Ouvrez l'application de clé de sécurité sur votre téléphone</translation>
 <translation id="7378962964415201590">Associer un nouveau téléphone</translation>
 <translation id="4774824109040330448">Numérisez le code QR avec une application d'authentification compatible sur votre téléphone.</translation>
 <translation id="7685087414635069102">NIP requis</translation>
@@ -2520,18 +2555,33 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="4349828822184870497">Utile</translation>
 <translation id="6876469544038980967">Pas utile</translation>
 <translation id="5286194356314741248">Recherche en cours…</translation>
-<translation id="3637561406135221044">Recherche de données sensibles dans les fichiers en cours…</translation>
+<translation id="8236123533334037984">Votre organisation analyse ces données téléversées à des fins de sécurité.</translation>
+<translation id="2925054096976782003">Votre organisation analyse les données collées pour en vérifier la conformité.</translation>
+<translation id="5068377946749700758">Votre organisation analyse les données déposées pour en vérifier la conformité.</translation>
+<translation id="176273057789108760">Votre organisation analyse les fichiers déplacés pour en vérifier la conformité.</translation>
+<translation id="2877030408509021795">L'analyse est terminée. Tout est en ordre.</translation>
+<translation id="5313628438272378649">Ce téléversement viole les politiques de votre organisation et ne peut pas être traité.</translation>
+<translation id="4429030830601238961">Ces données violent les politiques de sécurité de votre organisation et ne peuvent pas être collées.</translation>
+<translation id="3635241501480133979">Ces données violent les politiques de sécurité de votre organisation et ne peuvent pas être déposées.</translation>
+<translation id="7086467953285486445">Ces fichiers violent les politiques de sécurité de votre organisation et ne peuvent pas être déposés.</translation>
+<translation id="2959127025785722291">Il y a eu un problème. Impossible de terminer l'analyse. Veuillez réessayer.</translation>
+<translation id="6462438303393708881">Annuler le téléversement</translation>
 <translation id="2878782256107578644">Analyse en cours. Ouvrir maintenant?</translation>
 <translation id="6098793583803863900">Un fichier inconnu est en cours d'analyse afin de vérifier que son contenu n'est pas dangereux.</translation>
 <translation id="7584578941316704630">Analyser avant d'ouvrir?</translation>
-<translation id="1039850285407663109">Le fichier sélectionné est inconnu et peut être dangereux. Envisagez d'analyser ce fichier avant de l'ouvrir.</translation>
+<translation id="8494182771797646687">Le fichier sélectionné est inconnu et peut être dangereux. La protection avancée recommande d'envoyer ce fichier à Brave Software afin de vérifier la présence de logiciels malveillants.</translation>
 <translation id="2587922766792651800">Délai dépassé</translation>
-<translation id="8106661353233173262">Un problème s'est produit. Le fichier analysé a expiré.</translation>
+<translation id="4404136731284211429">Analyser à nouveau</translation>
 <translation id="6428450836711225518">Vérifier votre numéro de téléphone</translation>
 <translation id="8742371904523228557"><ph name="ONE_TIME_CODE"/> est votre code pour <ph name="ORIGIN"/></translation>
 <translation id="6518133107902771759">Vérifier</translation>
 <translation id="5678293144564424498">Application en pause</translation>
 <translation id="1282420830958964167">La limite fixée par ton parent pour « <ph name="APP_NAME"/> » a expiré. Tu pourras l'utiliser à nouveau demain pendant <ph name="TIME_LIMIT"/>.</translation>
+<translation id="3821372858277557370">{NUM_EXTENSIONS,plural, =1{Une extension a été approuvée}one{# extension a été approuvée}other{# extensions ont été approuvées}}</translation>
+<translation id="6930161297841867798">{NUM_EXTENSIONS,plural, =1{Une extension a été refusée}one{# extension a été refusée}other{# extensions ont été refusées}}</translation>
+<translation id="5523149538118225875">{NUM_EXTENSIONS,plural, =1{Votre administrateur a installé une extension}one{Votre administrateur a installé # extension}other{Votre administrateur a installé # extensions}}</translation>
+<translation id="2073148037220830746">{NUM_EXTENSIONS,plural, =1{Cliquer pour installer l'extension}one{Cliquer pour installer cette extension}other{Cliquer pour installer ces extensions}}</translation>
+<translation id="5203920255089865054">{NUM_EXTENSIONS,plural, =1{Cliquer pour afficher l'extension}one{Cliquer pour afficher cette extension}other{Cliquer pour afficher ces extensions}}</translation>
 <translation id="394984172568887996">Importés d'Internet Explorer</translation>
 <translation id="1543284117603151572">Importé à partir d'Edge</translation>
 <translation id="5502500733115278303">Importés de Firefox</translation>
@@ -2687,6 +2737,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="5070556616376997776">Vous êtes en mode de navigation privée</translation>
 <translation id="2199298570273670671">Erreur</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/> : la synchronisation ne fonctionne pas</translation>
+<translation id="1605544918554600534"><ph name="PROFILE_NAME"/> : la synchronisation des mots de passe ne fonctionne pas</translation>
 <translation id="7307129035224081534">Suspendue</translation>
 <translation id="3860104611854310167"><ph name="PROFILE_NAME"/> : synchronisation interrompue</translation>
 <translation id="140520891692800925"><ph name="PROFILE_DISPLAY_NAME"/> (supervisé)</translation>
@@ -2707,7 +2758,6 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="1372841398847029212">Synchroniser vers votre compte</translation>
 <translation id="2538361623464451692">Synchronisation désactivée</translation>
 <translation id="1316495628809031177">Synchronisation interrompue</translation>
-<translation id="7786207843293321886">Fermer la session d'invité</translation>
 <translation id="2335111415680198280">{0,plural, =1{Fermer # fenêtre}one{Fermer # fenêtre}other{Fermer # fenêtres}}</translation>
 <translation id="2329597144923131178">Connectez-vous pour synchroniser favoris, historique, mots de passe et autres sur vos appareils.</translation>
 <translation id="7029809446516969842">Mots de passe</translation>
@@ -2717,14 +2767,10 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="5287425679749926365">Vos comptes</translation>
 <translation id="4801448226354548035">Masquer les comptes</translation>
 <translation id="2935225303485967257">Gérer les personnes</translation>
-<translation id="7388222713940428051">Ouvrir une fenêtre d'invité</translation>
-<translation id="127668050356036882">Fermer toutes vos fenêtres</translation>
 <translation id="8966809848145604011">Autres personnes</translation>
 <translation id="1464258312790801189">Vos comptes</translation>
 <translation id="6655458902729017087">Masquer les comptes</translation>
 <translation id="688280436658139163">Gérer les personnes</translation>
-<translation id="2666990579225592931">Ouvrir une fenêtre d'invité</translation>
-<translation id="5869948122057593679">Fermer toutes vos fenêtres</translation>
 <translation id="4133080584509825342">Modifier la personne, <ph name="PROFILE_NAME"/></translation>
 <translation id="4848862725510532982">Modifier la personne, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
 <translation id="3294437725009624529">Invité</translation>
@@ -2867,11 +2913,19 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="7388044238629873883">Vous avez presque terminé!</translation>
 <translation id="8688579245973331962">Vous ne trouvez pas votre nom?</translation>
 <translation id="4222772810963087151">Détails de la version</translation>
+<translation id="8867228703146808825">Copier les renseignements de la version dans le presse-papier</translation>
+<translation id="6532663472409656417">Inscrit à une entreprise</translation>
+<translation id="1549275686094429035">Technologie ARC activée</translation>
+<translation id="7121438501124788993">Mode Concepteur</translation>
+<translation id="6315812488257290136">Personnes</translation>
 <translation id="4382131447572146376">{COUNT,plural, =0{<ph name="EMAIL"/>}=1{<ph name="EMAIL"/>, + 1 autre compte}one{<ph name="EMAIL"/>, + <ph name="EXTRA_ACCOUNTS"/> autre compte}other{<ph name="EMAIL"/>, + <ph name="EXTRA_ACCOUNTS"/> autres comptes}}</translation>
-<translation id="1060881073479695738">Applications Play Store</translation>
+<translation id="7434635829372401939">Synchroniser vos paramètres</translation>
+<translation id="3181825792072797598">Activer la synchronisation</translation>
+<translation id="2547583314137677375">Désactiver la synchronisation</translation>
 <translation id="6985607387932385770">Imprimantes</translation>
 <translation id="7788444488075094252">Langues et entrée</translation>
 <translation id="4181841719683918333">Langues</translation>
+<translation id="6785915470941880363">Défilement inversé <ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/></translation>
 <translation id="6340526405444716530">Personnalisation</translation>
 <translation id="8818152010000655963">Fond d'écran</translation>
 <translation id="7289225569524511578">Ouvrir l'application des fonds d'écran</translation>
@@ -2890,7 +2944,8 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="7456142309650173560">concepteur</translation>
 <translation id="6647838571840953560">Version actuelle : <ph name="CHANNEL_NAME"/></translation>
 <translation id="9057354806206861646">Mettre à jour le calendrier</translation>
-<translation id="7737456446569756884">Cet appareil recevra automatiquement les mises à jour logicielles et de sécurité jusqu'en <ph name="MONTH_AND_YEAR"/>.</translation>
+<translation id="2600522410036850735">Cet appareil recevra les mises à jour logicielles et de sécurité jusqu'en <ph name="MONTH_AND_YEAR"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;En savoir plus&lt;/a&gt;</translation>
+<translation id="903797871439633902">Il s'agit de la dernière mise à jour logicielle et de sécurité pour ce <ph name="DEVICE_TYPE"/>. Pour recevoir les mises à jour ultérieures, procurez-vous un modèle plus récent. &lt;a target="_blank" href="<ph name="URL"/>"&gt;En savoir plus&lt;/a&gt;</translation>
 <translation id="4297219207642690536">Redémarrer et réinitialiser</translation>
 <translation id="4716483597559580346">Powerwash pour une sécurité accrue</translation>
 <translation id="4089922565956168950">Cette mise à niveau réinitialise votre Bravebook et supprime les données de l'utilisateur actuel.</translation>
@@ -2904,11 +2959,9 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="1871615898038944731">Votre <ph name="DEVICE_TYPE"/> est à jour</translation>
 <translation id="3688526734140524629">Changer de version</translation>
 <translation id="6410328738210026208">Changement de version et réinitialisation « Powerwash »</translation>
-<translation id="1979280758666859181">Vous passez à un canal ayant une ancienne version de <ph name="PRODUCT_NAME"/>. Le changement de canal sera appliqué lorsque la version du canal correspondra à la version actuellement installée sur votre appareil.</translation>
 <translation id="7728668285692163452">Le changement de version sera appliqué plus tard</translation>
 <translation id="5495466433285976480">Cette fonctionnalité a pour effet de supprimer tous les utilisateurs, les fichiers, les données et les autres paramètres locaux au prochain redémarrage. Tous les utilisateurs devront se reconnecter.</translation>
 <translation id="8101987792947961127">Réinitialisation « Powerwash » nécessaire au prochain démarrage</translation>
-<translation id="1414648216875402825">Vous passez à une version instable de <ph name="PRODUCT_NAME"/> qui contient des fonctionnalités en cours de développement. Des plantages et des bogues inattendus peuvent se produire. Nous vous recommandons d'agir avec précaution.</translation>
 <translation id="6103681770816982672">Avertissement : vous êtes sur le point de passer à la version développeur</translation>
 <translation id="8807632654848257479">Stable</translation>
 <translation id="830868413617744215">Bêta</translation>
@@ -2943,6 +2996,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="5901630391730855834">Jaune</translation>
 <translation id="161042844686301425">Cyan</translation>
 <translation id="4115378294792113321">Magenta</translation>
+<translation id="548137908954174608">Activer la transcription instantanée</translation>
 <translation id="6981982820502123353">Accessibilité</translation>
 <translation id="5840822070878669614">Ouvrir la boutique en ligne Brave Web Store</translation>
 <translation id="6073903501322152803">Ajouter des fonctionnalités d'accessibilité</translation>
@@ -3001,7 +3055,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="8758418656925882523">Activer la fonction de dictée (parler pour entrer du texte)</translation>
 <translation id="7580671184200851182">Diffuser le même son sur tous les haut-parleurs (son mono)</translation>
 <translation id="1361872463926621533">Émettre un son au démarrage</translation>
-<translation id="1189418886587279221">Activer les fonctionnalités d'accessibilité afin de faciliter l'utilisation de votre appareil.</translation>
+<translation id="1714644264617423774">Activez les fonctionnalités d'accessibilité afin de faciliter l'utilisation de votre appareil. <ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/></translation>
 <translation id="48704129375571883">Ajouter des fonctionnalités supplémentaires</translation>
 <translation id="7230787553283372882">Personnalisez la taille de votre texte</translation>
 <translation id="214169863967063661">Ouvrir les paramètres d'apparence</translation>
@@ -3052,6 +3106,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="7288013116963835700">Supprimer Linux pour <ph name="DEVICE_TYPE"/></translation>
 <translation id="7933634003144813719">Gérer les dossiers partagés</translation>
 <translation id="2214018885812055163">Dossiers partagés</translation>
+<translation id="7396017167185131589">Les dossiers partagés s'afficheront ici</translation>
 <translation id="6697690052557311665">Pour partager les fichiers, faites un clic droit sur un dossier dans l'application Fichiers, puis sélectionnez « Partager avec Linux ».</translation>
 <translation id="7932969338829957666">Sur Linux, les dossiers partagés sont accessibles ici : <ph name="BASE_DIR"/>.</translation>
 <translation id="3726137731714254362">La suppression de dossiers dans cet emplacement arrêtera le partage, mais ne supprimera pas les fichiers.</translation>
@@ -3075,10 +3130,15 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="1327495825214193325">Pour activer le débogage PDA, vous devez redémarrer cet appareil <ph name="DEVICE_TYPE"/>. Pour désactiver votre appareil, vous devez le réinitialiser à ses paramètres par défaut.</translation>
 <translation id="8082390128630131497">Le fait de désactiver le débogage PDA va réinitialiser cet appareil <ph name="DEVICE_TYPE"/> à ses paramètres par défaut. Tous les comptes d'utilisateur et toutes les données locales seront supprimés.</translation>
 <translation id="1630768113285622200">Redémarrer et continuer</translation>
+<translation id="8539766201049804895">Mettre à niveau</translation>
+<translation id="6973611239564315524">Une mise à jour de Debian 10 (Buster) est offerte</translation>
+<translation id="1508575541972276599">La version actuelle est Debian 9 (Stretch)</translation>
 <translation id="1679806121152819234">MV de plugiciels</translation>
 <translation id="1878541307036593717">Configurer les autorisations</translation>
 <translation id="7508054832109420082">Accorder l'accès aux imprimantes</translation>
 <translation id="2258855745387252834">Pour partager les fichiers, faites un clic droit sur un dossier dans l'application Fichiers, puis sélectionnez « Partager avec la MV des plugiciels ».</translation>
+<translation id="4997384734315285248">Désinstaller Plugin VM</translation>
+<translation id="5454360575035671759">La suppression de Plugin VM supprimera également votre MV. Cela comprend ses applications, ses paramètres et ses données. Souhaitez-vous vraiment continuer?</translation>
 <translation id="2714393097308983682">Brave Software Play Store</translation>
 <translation id="572155275267014074">Paramètres Android</translation>
 <translation id="7201042526153088083">Installez des applications et des jeux de Brave Software Play sur votre <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;En savoir plus&lt;/a&gt;</translation>
@@ -3116,8 +3176,8 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="883304095704384301">Accédez à l'<ph name="BEGIN_LINK_CHROMIUM"/>aide Brave Software Brave<ph name="END_LINK_CHROMIUM"/> si vous ne parvenez pas à trouver ce que vous recherchez</translation>
 <translation id="6406708970972405507">Paramètres – <ph name="SECTION_TITLE"/></translation>
 <translation id="3019285239893817657">Bouton pour accéder à la sous-page</translation>
-<translation id="5860033963881614850">Désactivé</translation>
-<translation id="5916664084637901428">Activé</translation>
+<translation id="379509625511193653">Désactivé</translation>
+<translation id="6762833852331690540">Activé</translation>
 <translation id="1378613616312864539"><ph name="NAME"/> commande ce paramètre</translation>
 <translation id="8465252176946159372">Non valide</translation>
 <translation id="8647834505253004544">Adresse Web non valide</translation>
@@ -3177,7 +3237,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="7136694880210472378">Utiliser par défaut</translation>
 <translation id="1153356358378277386">Appareils associés</translation>
 <translation id="4481530544597605423">Appareils dissociés</translation>
-<translation id="4576541033847873020">Associer un appareil Bluetooth</translation>
+<translation id="6238624845858322552">Connecter à un appareil Bluetooth</translation>
 <translation id="4870903493621965035">Aucun appareil associé</translation>
 <translation id="1303671224831497365">Aucun appareil Bluetooth trouvé</translation>
 <translation id="5842497610951477805">Activer le Bluetooth</translation>
@@ -3284,14 +3344,16 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="5648166631817621825">Sept derniers jours</translation>
 <translation id="8571213806525832805">Quatre dernières semaines</translation>
 <translation id="6979737339423435258">Toutes les périodes</translation>
+<translation id="1043818413152647937">Effacer également les données issues de ces applications?</translation>
 <translation id="3399432415385675819">Les notifications seront désactivées</translation>
 <translation id="3459509316159669723">Impression</translation>
-<translation id="1563008449513980623">Configurer ou gérer les imprimantes dans Brave Software Cloud Print.</translation>
+<translation id="7063957500469387217">Configurer ou gérer les imprimantes dans Brave Software Cloud Print.</translation>
 <translation id="8185331656081929126">Afficher des notifications lorsque de nouvelles imprimantes sont détectées sur le réseau</translation>
 <translation id="6451180435462401570">Gérer les appareils Brave Software Cloud Print</translation>
-<translation id="1815579292149538864">Configurer ou gérer les imprimantes CUPS.</translation>
+<translation id="1805888043020974594">Serveur d'impression</translation>
+<translation id="3184536091884214176">Configurez ou gérez les imprimantes CUPS. <ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/></translation>
 <translation id="8030656706657716245">Ajouter une imprimante</translation>
-<translation id="893254996965966411">Enregistrez les imprimantes détectées dans votre profil ou ajoutez-en une.</translation>
+<translation id="4142518881503042940">Enregistrez les imprimantes détectées dans votre profil ou ajoutez-en une. <ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/></translation>
 <translation id="2152281589789213846">Ajouter des imprimantes à votre profil</translation>
 <translation id="4940364377601827259">Il y a <ph name="PRINTER_COUNT"/> imprimantes à enregistrer.</translation>
 <translation id="5060332552815861872">Il y a 1 imprimante à enregistrer.</translation>
@@ -3307,6 +3369,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="1472675084647422956">Plus</translation>
 <translation id="168991973552362966">Ajouter une imprimante à proximité</translation>
 <translation id="3038612606416062604">Ajouter une imprimante manuellement</translation>
+<translation id="740810853557944681">Ajouter un serveur d'impression</translation>
 <translation id="8002274832045662704">Configuration avancée d'imprimante</translation>
 <translation id="2818476747334107629">Détails de l'imprimante</translation>
 <translation id="4890773143211625964">Afficher les options d'imprimante avancées</translation>
@@ -3325,7 +3388,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="2266957463645820432">IPP sur USB (IPPUSB)</translation>
 <translation id="8086015605808120405">Configuration de <ph name="PRINTER_NAME"/> en cours</translation>
 <translation id="4665014895760275686">Fabricant</translation>
-<translation id="4561098487691395071">Ou spécifiez le fichier PPD de l'imprimante</translation>
+<translation id="5043913660911154449">Ou encore, sélectionnez le fichier PPD de votre imprimante <ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/></translation>
 <translation id="1418954524306642206">Naviguez pour sélectionner le fichier PPD de votre imprimante</translation>
 <translation id="1989112275319619282">Parcourir</translation>
 <translation id="3625481642044239431">Fichier sélectionné non valide. Réessayez.</translation>
@@ -3346,16 +3409,22 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="2910318910161511225">Connectez-vous à un réseau et réessayez</translation>
 <translation id="4972129977812092092">Modifier l'imprimante</translation>
 <translation id="5696679855467848181">Fichier PPD en cours d'utilisation : <ph name="PPD_NAME"/></translation>
-<translation id="3016329696181678353">Impossible de configurer automatiquement l'imprimante <ph name="PRINTER_NAME"/>. Veuillez spécifier les détails avancés de l'imprimante.</translation>
+<translation id="6300718114348072351">Impossible de configurer automatiquement l'imprimante <ph name="PRINTER_NAME"/>. Veuillez spécifier les détails avancés de l'imprimante. <ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/></translation>
 <translation id="804786196054284061">Contrat de licence pour utilisateur final</translation>
 <translation id="6318944945640833942">Impossible de détecter une imprimante. Veuillez entrer l'adresse de l'imprimante à nouveau.</translation>
 <translation id="2434449159125086437">Impossible de configurer l'imprimante. Veuillez vérifier la configuration, puis réessayez.</translation>
+<translation id="8541462173655894684">Aucune imprimante n'a été trouvée sur le serveur d'impression</translation>
+<translation id="4833683849865011483">1 imprimante a été trouvée sur le serveur d'impression</translation>
+<translation id="3711945201266135623"><ph name="NUM_PRINTERS"/> imprimantes ont été trouvées sur le serveur d'impression</translation>
+<translation id="244231003699905658">Adresse incorrecte. Veuillez vérifier l'adresse, puis réessayez.</translation>
+<translation id="3479685872808224578">Impossible de détecter le serveur d'impression. Veuillez vérifier l'adresse, puis réessayez.</translation>
+<translation id="7434969625063495310">Impossible d'ajouter le serveur d'impression. Veuillez vérifier la configuration du serveur, puis réessayer.</translation>
 <translation id="4733793249294335256">Emplacement</translation>
 <translation id="7754704193130578113">Toujours demander où enregistrer les fichiers</translation>
-<translation id="5713072761819014678">Se déconnecter du compte Brave Software Disque</translation>
+<translation id="6474884162850599008">Se déconnecter du compte Brave Software Disque</translation>
 <translation id="486635084936119914">Ouvrir automatiquement certains types de fichiers après le téléchargement</translation>
 <translation id="3653160965917900914">Partages de fichiers sur le réseau</translation>
-<translation id="5763315388120433852">Configurer ou gérer les partages de fichiers sur le réseau.</translation>
+<translation id="4906490889887219338">Configurez ou gérez les partages de fichiers sur le réseau. <ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/></translation>
 <translation id="5734697361979786483">Ajouter un partage de fichier</translation>
 <translation id="247051149076336810">URL de partage de fichiers</translation>
 <translation id="5247051749037287028">Nom à afficher (facultatif)</translation>
@@ -3665,10 +3734,10 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="5302048478445481009">Langue</translation>
 <translation id="6388429472088318283">Rechercher des langues</translation>
 <translation id="2690024944919328218">Afficher les options de langue</translation>
-<translation id="768549422429443215">Ajoutez des langues ou triez la liste de nouveau.</translation>
+<translation id="8218847192766059983">Ajoutez des langues ou réorganisez la liste. <ph name="BEGIN_LINK"/>En savoir plus<ph name="END_LINK"/></translation>
 <translation id="8813969267212093033">Le texte du système est affiché dans cette langue</translation>
 <translation id="2366260648632264559">Afficher le texte du système dans cette langue</translation>
-<translation id="7216595297012131718">Classer les langues en fonction de vos préférences</translation>
+<translation id="8336721153892716270">Redémarrer l'appareil pour que le texte du système soit en <ph name="LANGUAGE"/></translation>
 <translation id="5972708806901999743">Déplacer en haut de la liste</translation>
 <translation id="8609465669617005112">Déplacer vers le haut</translation>
 <translation id="6746124502594467657">Déplacer vers le bas</translation>
@@ -3712,6 +3781,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="3181954750937456830">Navigation sécurisée (vous protège, vous et votre appareil, des sites dangereux)</translation>
 <translation id="7315322926489145388">Envoie des URL de certaines pages que vous visitez à Brave Software, lorsque votre sécurité pourrait être compromise</translation>
 <translation id="4991384657077828949">Contribuer à améliorer la sécurité de Brave</translation>
+<translation id="1641113438599504367">Navigation sécurisée</translation>
 <translation id="1943176487615318915">Pour détecter les applications et les sites dangereux, Brave envoie à Brave Software l'URL de certaines pages que vous visitez, certaines données système et du contenu partiel des pages en question</translation>
 <translation id="918192811481327695">Nous aider à améliorer les fonctionnalités et les performances de Brave</translation>
 <translation id="9063160602596686558">Envoie automatiquement des statistiques d'utilisation et des rapports d'erreur à Brave Software</translation>
@@ -3722,6 +3792,9 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="5282733140964383898">Si vous interdisez le suivi, une demande sera incluse dans les transferts liés à votre navigation. Les résultats obtenus dépendent de la réponse du site (s'il répond ou non) et de la manière dont il interprète la demande. Par exemple, certains sites Web peuvent répondre à cette demande en diffusant des annonces qui ne sont pas déterminées en fonction des autres sites Web que vous avez consultés. Toutefois, nombre d'entre eux recueillent et utilisent vos données de navigation afin, par exemple, d'améliorer la sécurité ou d'afficher du contenu, des services, des annonces et des recommandations, ou encore pour générer des statistiques pour la création de rapports. <ph name="BEGIN_LINK"/>En savoir plus<ph name="END_LINK"/></translation>
 <translation id="4090103403438682346">Activer l'accès validé</translation>
 <translation id="5557991081552967863">Maintenir la connexion Wi-Fi active en mode Veille</translation>
+<translation id="7536333565791380193">Sécurité avancée</translation>
+<translation id="8525226238722561998">Programme de protection avancée de Brave Software</translation>
+<translation id="1229550669565092839">Protège les comptes Brave Software personnels des utilisateurs susceptibles d'être victimes d'attaques ciblées</translation>
 <translation id="1521442365706402292">Gérer les certificats</translation>
 <translation id="7075625805486468288">Gérer les certificats et paramètres HTTPS/SSL</translation>
 <translation id="8871974300055371298">Paramètres de contenu</translation>
@@ -3741,13 +3814,15 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="2336381494582898602">Powerwash</translation>
 <translation id="4275830172053184480">Redémarrer l'appareil</translation>
 <translation id="6555432686520421228">Supprime tous les comptes utilisateur et réinitialise votre appareil <ph name="IDS_SHORT_PRODUCT_NAME"/> qui devient comme neuf.</translation>
-<translation id="4055023634561256217">Vous devez redémarrer votre appareil avant de pouvoir faire une réinitialisation « Powerwash ».</translation>
+<translation id="5470735824776589490">Vous devez redémarrer votre appareil avant de pouvoir faire une réinitialisation Powerwash. <ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/></translation>
 <translation id="3223531857777746191">Bouton de réinitialisation</translation>
 <translation id="1506061864768559482">Moteur de recherche</translation>
 <translation id="7807067443225230855">Recherche et Assistant Brave Software</translation>
 <translation id="2203682048752833055">Moteur de recherche utilisé dans la <ph name="BEGIN_LINK"/>barre d'adresse<ph name="END_LINK"/></translation>
 <translation id="1432581352905426595">Gérer les moteurs de recherche</translation>
 <translation id="2862205630718215619">Assistant Brave Software</translation>
+<translation id="8959699239363253085">Activé</translation>
+<translation id="971479617738309149">Désactivé</translation>
 <translation id="6978121630131642226">Moteurs de recherche</translation>
 <translation id="1383876407941801731">Rechercher</translation>
 <translation id="6410668567036790476">Ajouter un moteur de recherche</translation>
@@ -3763,6 +3838,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="3735919318855093557">Accédez à l'Assistant Brave Software lorsque vous dites « Ok Brave Software ». Pour économiser la pile, sélectionnez « Activé (recommandé) ». Votre Assistant répondra seulement votre lorsque votre appareil sera branché ou en recharge.</translation>
 <translation id="5825412242012995131">Activé (recommandé)</translation>
 <translation id="5067399438976153555">Toujours activé</translation>
+<translation id="6175644081330715138">Désactivé</translation>
 <translation id="5419405654816502573">Fonction Voice Match</translation>
 <translation id="1803545009660609783">Recommencer l'apprentissage</translation>
 <translation id="5355099869024327351">Permet à l'Assistant Brave Software de vous montrer des notifications</translation>
@@ -3778,6 +3854,10 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="967624055006145463">Données stockées</translation>
 <translation id="2787354132612937472">—</translation>
 <translation id="1919345977826869612">Annonces</translation>
+<translation id="3513704683820682405">Réalité augmentée</translation>
+<translation id="7653295403398566475">Demander une autorisation lorsqu'un site veut accéder à la position de votre appareil photo ou cartographier votre pièce</translation>
+<translation id="3350244554415289209">Demander une autorisation lorsqu'un site veut accéder à la position de votre appareil photo ou cartographier votre pièce (recommandé)</translation>
+<translation id="4507164039066603071">Ne pas autoriser les sites à accéder à la position de votre appareil photo ni à cartographier votre pièce</translation>
 <translation id="5649053991847567735">Téléchargements automatiques</translation>
 <translation id="3744111561329211289">Synchronisation en arrière-plan</translation>
 <translation id="5518219166343146486">Demander lorsqu'un site veut voir le texte et les images copiés dans le presse-papiers</translation>
@@ -3786,6 +3866,10 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="2546283357679194313">Témoins et données de site</translation>
 <translation id="3668823961463113931">Gestionnaires</translation>
 <translation id="5689516760719285838">Lieu</translation>
+<translation id="6972629891077993081">Appareils HID</translation>
+<translation id="1815181278146012280">Demander une autorisation lorsqu'un site veut accéder à des appareils HID</translation>
+<translation id="5147103632304200977">Demander une autorisation lorsqu'un site veut accéder à des appareils HID (recommandé)</translation>
+<translation id="967398046773905967">N'autoriser aucun site à accéder à des appareils HID</translation>
 <translation id="9219103736887031265">Images</translation>
 <translation id="2025891858974379949">Contenu non sécurisé</translation>
 <translation id="5075910247684008552">Le contenu non sécurisé est bloqué par défaut sur les sites sécurisés</translation>
@@ -3801,6 +3885,10 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="6612358246767739896">Contenu protégé</translation>
 <translation id="4252852543720145436">Identifiants de contenu protégé</translation>
 <translation id="3955193568934677022">Autoriser les sites à lire le contenu protégé (recommandé)</translation>
+<translation id="4943703118917034429">Réalité virtuelle</translation>
+<translation id="7034615910652881882">Demander une autorisation lorsqu'un site veut accéder à vos appareils ou à vos données de réalité virtuelle</translation>
+<translation id="7448625729116931228">Demander une autorisation lorsqu'un site veut accéder à vos appareils ou à vos données de réalité virtuelle (recommandé)</translation>
+<translation id="2868184003987917410">Ne pas autoriser les sites à accéder à vos appareils ni à vos données de réalité virtuelle</translation>
 <translation id="4115080753528843955">Certains services de contenu utilisent des identifiants uniques dans le but d'autoriser l'accès au contenu protégé</translation>
 <translation id="225240747099314620">Autoriser les identificateurs de contenu protégé (le redémarrage de l'ordinateur peut être nécessaire)</translation>
 <translation id="7311079019872751559">Accès aux plugiciels hors carré de sable</translation>
@@ -3890,6 +3978,12 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="2096715839409389970">Effacer les témoins tiers</translation>
 <translation id="7828731929332799387">Cela supprimera tous les témoins et les données des sites proposés dans les contextes tiers. Voulez-vous continuer?</translation>
 <translation id="2537296579376733324">Tous les témoins, sur ce site seulement</translation>
+<translation id="4488502501195719518">Effacer toutes les données?</translation>
+<translation id="93610034168535821">Espace de stockage total utilisé par les sites :</translation>
+<translation id="4336434711095810371">Effacer toutes les données</translation>
+<translation id="2112004299911874330">Cette action effacera <ph name="TOTAL_USAGE"/> des données stockées par les sites.</translation>
+<translation id="5549467165017213645">Cette action effacera <ph name="TOTAL_USAGE"/> des données stockées par les sites et les applications installées.</translation>
+<translation id="1743846852744439013">Vous serez déconnecté de tous les sites, y compris dans les onglets ouverts.</translation>
 <translation id="6011449291337289699">Effacer les données du site</translation>
 <translation id="8339059274628563283">Données du site <ph name="SITE"/> stockées localement</translation>
 <translation id="4090947011087001172">Réinitialiser les autorisations du site <ph name="SITE"/>?</translation>
@@ -3902,18 +3996,19 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="5300287940468717207">Réinitialiser les autorisations de sites?</translation>
 <translation id="2734760316755174687">Les sites sous <ph name="SITE_GROUP_NAME"/> seront également réinitialisés.</translation>
 <translation id="3255355328033513170">Toutes les données stockées par le groupe <ph name="SITE_GROUP_NAME"/> et par tout site subordonné seront supprimées. Cela comprend les témoins. Vous serez déconnecté de ces sites, y compris dans les onglets ouverts.</translation>
-<translation id="5691180005790455277">Toutes les données et tous les témoins stockés par <ph name="SITE_GROUP_NAME"/> et les sites qui lui sont subordonnés seront supprimés.</translation>
+<translation id="7665940458857700755">Cette action effacera toutes les données et tous les témoins stockés par <ph name="SITE_GROUP_NAME"/> et les sites qui lui sont subordonnés.</translation>
+<translation id="6472804939621540371">Cette action effacera toutes les données et tous les témoins stockés par <ph name="SITE_GROUP_NAME"/>, par tout site subordonné et par son application installée.</translation>
+<translation id="8068809649322155577">Cette action effacera toutes les données et tous les témoins stockés par <ph name="SITE_GROUP_NAME"/>, par tout site subordonné et par ses applications installées.</translation>
 <translation id="2055585478631012616">Vous serez déconnecté de ces sites, y compris dans les onglets ouverts</translation>
 <translation id="46733273239502219">Les données hors ligne dans les applications installées seront également effacées</translation>
+<translation id="1393787139683794508">Cette action effacera toutes les données et tous les témoins stockés par <ph name="ORIGIN_NAME"/>.</translation>
+<translation id="8986651757229422279">Cette action effacera toutes les données et tous les témoins stockés par <ph name="ORIGIN_NAME"/> et son application installée.</translation>
 <translation id="3127156390846601284">Cette action entraînera la suppression de toutes les données stockées sur votre appareil pour tous les sites affichés. Souhaitez-vous continuer?</translation>
 <translation id="150411034776756821">Supprimer <ph name="SITE"/></translation>
 <translation id="577624874850706961">Chercher des témoins</translation>
-<translation id="6196640612572343990">Bloquer les témoins de tiers</translation>
-<translation id="5472133193607270166">Lorsque cette option est activée, les sites ne peuvent pas utiliser votre activité de navigation sur différents sites afin de personnaliser les annonces. Certains sites pourraient ne pas fonctionner correctement.</translation>
 <translation id="1274977772557788323">Paramètres de stockage d'Adobe Flash Player</translation>
 <translation id="1281501490173223206">Session de navigation privée active uniquement</translation>
-<translation id="3479035826743782247">Session de navigation privée active</translation>
-<translation id="4750220700975225">Session de navigation privée active (<ph name="EMBEDDING"/>)</translation>
+<translation id="5566692924079383101">Cette exception sera automatiquement supprimée lorsque vous aurez quitté la session de navigation privée en cours</translation>
 <translation id="383891835335927981">Aucun site n'a fait l'objet d'un zoom avant ou arrière</translation>
 <translation id="3566721612727112615">Aucun site ajouté</translation>
 <translation id="8098574385249290065">Autoriser Brave à choisir lorsque des sites peuvent faire jouer du son (recommandé)</translation>
@@ -3925,6 +4020,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="882854468542856424">Ne pas autoriser les sites à rechercher les appareils Bluetooth à proximité</translation>
 <translation id="5763751966069581670">Aucun appareil USB trouvé</translation>
 <translation id="1863182668524159459">Aucun port série n'a été trouvé</translation>
+<translation id="7431719494109538750">Aucun appareil HID trouvé</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">Ajouter un site</translation>
 <translation id="5052499409147950210">Modifier le site</translation>
@@ -3951,7 +4047,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="80974698889265265">Les NIP ne correspondent pas</translation>
 <translation id="4708794300267213770">Afficher l'écran de verrouillage au réveil</translation>
 <translation id="6064217302520318294">Verrouillage de l'écran</translation>
-<translation id="7228523857728654909">Verrouillage de l'écran et connexion</translation>
+<translation id="6532206849875187177">Sécurité et connexion</translation>
 <translation id="9201220332032049474">Options de verrouillage de l'écran</translation>
 <translation id="7728570244950051353">Verrouiller l'écran en mode veille</translation>
 <translation id="93393615658292258">Mot de passe seulement</translation>
@@ -3967,7 +4063,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="1582955169539260415">supprimer [<ph name="FINGERPRINT_NAME"/>]</translation>
 <translation id="1927632033341042996">Doigt <ph name="NEW_FINGER_NUMBER"/></translation>
 <translation id="7665369617277396874">Ajouter un compte</translation>
-<translation id="3751920775577969594">Gérez vos comptes auxquels vous êtes connecté. Les sites Web, les applications et les extensions dans Brave et dans Brave Software Play peuvent utiliser ces comptes pour personnaliser votre expérience, selon les autorisations accordées.</translation>
+<translation id="1091996356964485258">Gérez vos comptes auxquels vous êtes connecté. Les sites Web, les applications et les extensions dans Brave et dans Brave Software Play peuvent utiliser ces comptes pour personnaliser votre expérience, selon les autorisations accordées. &lt;a&gt;En savoir plus&lt;/a&gt;</translation>
 <translation id="1987317783729300807">Comptes</translation>
 <translation id="3953834000574892725">Mes comptes</translation>
 <translation id="8418661265246754237">Comptes Brave Software</translation>
@@ -3987,6 +4083,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="1587907146729660231">Touchez l'interrupteur avec votre doigt</translation>
 <translation id="176193854664720708">Le capteur d'empreintes digitales est situé au niveau de l'interrupteur. Touchez-le doucement avec n'importe quel doigt.</translation>
 <translation id="3615073365085224194">Touchez le capteur d'empreintes digitales avec votre doigt</translation>
+<translation id="7354341762311560488">Le capteur d'empreintes digitales se trouve sur la touche dans le coin inférieur gauche de votre clavier. Touchez-le doucement avec n'importe quel doigt.</translation>
 <translation id="899676909165543803">Le capteur d'empreintes digitales se trouve sur la touche dans le coin inférieur droit de votre clavier. Touchez-le doucement avec n'importe quel doigt.</translation>
 <translation id="4535767533210902251">Le capteur d'empreintes digitales se trouve sur la touche dans le coin supérieur droit de votre clavier. Touchez-le doucement avec n'importe quel doigt.</translation>
 <translation id="7189965711416741966">Empreinte digitale ajoutée.</translation>
@@ -3996,9 +4093,8 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="7345706641791090287">Confirmer votre mot de passe</translation>
 <translation id="381202950560906753">Ajouter une autre empreinte digitale</translation>
 <translation id="6968288415730398122">Entrez votre mot de passe pour configurer le verrouillage de l'écran</translation>
-<translation id="4103091233824664032">Entrez votre mot de passe pour configurer le verrouillage de l'écran et la connexion</translation>
+<translation id="202918510990975568">Entrez votre mot de passe pour configurer la sécurité et la connexion</translation>
 <translation id="5449551289610225147">Mot de passe non valide</translation>
-<translation id="5374359983950678924">Changer d'image</translation>
 <translation id="6984299437918708277">Choisissez l'image associée à votre compte qui apparaîtra à l'écran de connexion</translation>
 <translation id="1367951781824006909">Choisir un fichier</translation>
 <translation id="6681668084120808868">Prendre une photo</translation>
@@ -4020,12 +4116,12 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="2537178555904266562">Erreur lors de la synchronisation des mots de passe</translation>
 <translation id="4326270470840334364">Comme ce compte est géré par <ph name="DOMAIN"/>, vos favoris, votre historique, vos mots de passe et autres paramètres seront supprimés de cet appareil. Cependant, vos données resteront stockées dans votre compte Brave Software et peuvent être gérées sur <ph name="BEGIN_LINK"/>Brave Software Dashboard<ph name="END_LINK"/>.</translation>
 <translation id="6906406176003824042">Modifier la personne</translation>
-<translation id="6739923123728562974">Afficher le raccourci du bureau</translation>
 <translation id="3699920817649120894">Désactiver la synchronisation et la personnalisation?</translation>
 <translation id="5643620609347735571">Effacer et continuer</translation>
 <translation id="5602765853043467355">Effacer les favoris, l'historique, les mots de passe et autres de cet appareil</translation>
 <translation id="4089235344645910861">Paramètres enregistrés. Synchronisation lancée.</translation>
-<translation id="7548737591211512046">Connectez-vous pour accéder à vos favoris, votre historique, vos mots de passe et autres paramètres sur tous vos appareils. Vous serez également automatiquement connecté à vos services Brave Software.</translation>
+<translation id="6739923123728562974">Afficher le raccourci du bureau</translation>
+<translation id="3911916960062976098">Connectez-vous pour synchroniser vos favoris, votre historique, vos mots de passe et d'autres paramètres sur tous vos appareils. Vous serez également automatiquement connecté à vos services Brave Software. <ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/></translation>
 <translation id="2951604498031550705">Les modifications apportées à vos favoris, à votre historique, à vos mots de passe et autres paramètres ne seront plus synchronisés avec votre compte Brave Software. Cependant, vos données existantes resteront stockées dans votre compte Brave Software et peuvent être gérées sur <ph name="BEGIN_LINK"/>Brave Software Dashboard<ph name="END_LINK"/>.</translation>
 <translation id="3169352093514419465">Cela vous déconnectera de vos comptes Brave Software. Vos favoris, votre historique, vos mots de passe et autres ne seront plus synchronisés.</translation>
 <translation id="8588866096426746242">Afficher les statistiques de profil</translation>
@@ -4046,7 +4142,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="5117427536932535467">Thèmes et fonds d'écran</translation>
 <translation id="7257173066616499747">Réseaux Wi-Fi</translation>
 <translation id="3268451620468152448">Onglets ouverts</translation>
-<translation id="5241892180459725878">Suggestions de recherche dans Brave Software Disque</translation>
+<translation id="3831436149286513437">Suggestions de recherche dans Brave Software Disque</translation>
 <translation id="2120297377148151361">Activité et interactions</translation>
 <translation id="5833397272224757657">Utilise le contenu de sites que vous consultez, ainsi que l'activité du navigateur et les interactions avec celui-ci pour la personnalisation</translation>
 <translation id="8135094938656535588">Gérer les données synchronisées sur Brave Software Tableau de bord</translation>
@@ -4119,8 +4215,6 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="8044899503464538266">Lent</translation>
 <translation id="7019805045859631636">Rapide</translation>
 <translation id="4850669014075537160">Défilement</translation>
-<translation id="4828937774870308359">Australien</translation>
-<translation id="2016430552235416146">Traditionnel</translation>
 <translation id="2497229222757901769">Vitesse de la souris</translation>
 <translation id="6586451623538375658">Inverser les boutons de la souris</translation>
 <translation id="221872881068107022">Défilement inversé</translation>
@@ -4175,6 +4269,8 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="8669284339312441707">Plus chaud</translation>
 <translation id="1864400682872660285">Plus froid</translation>
 <translation id="7721179060400456005">Autoriser les fenêtres à s'afficher sur plusieurs écrans</translation>
+<translation id="4998430619171209993">Activé</translation>
+<translation id="787268756490971083">Désactivé</translation>
 <translation id="3441653493275994384">Écran</translation>
 <translation id="4095507791297118304">Affichage principal</translation>
 <translation id="1792619191750875668">Affichage étendu</translation>
@@ -4207,6 +4303,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="4598556348158889687">Gestion du stockage</translation>
 <translation id="8868626022555786497">Utilisé</translation>
 <translation id="8688672835843460752">Disponible</translation>
+<translation id="3188257591659621405">Mes fichiers</translation>
 <translation id="7366909168761621528">Données de navigation</translation>
 <translation id="5568144734023334204">Espace de stockage pour Android</translation>
 <translation id="938339467127511841">Stockage Linux (bêta)</translation>
@@ -4225,7 +4322,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="1529891865407786369">Source d'énergie</translation>
 <translation id="354060433403403521">Adaptateur c.a.</translation>
 <translation id="2127372758936585790">Chargeur de faible puissance</translation>
-<translation id="4964673849688379040">Vérification en cours...</translation>
+<translation id="286674810810214575">Vérification des sources d'alimentation en cours…</translation>
 <translation id="4569747168316751899">Lorsqu'il est inactif</translation>
 <translation id="2610157865375787051">Veille</translation>
 <translation id="6212168817037875041">Désactiver l'écran</translation>
@@ -4334,10 +4431,12 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="5173668317844998239">Ajoutez et supprimez des empreintes digitales enregistrées sur votre clé de sécurité</translation>
 <translation id="4836504898754963407">Gérer les empreintes digitales</translation>
 <translation id="6028117231645531007">Ajouter une empreinte digitale</translation>
-<translation id="570302979952009979">Choisissez un nom pour cette empreinte digitale</translation>
+<translation id="4814378367953456825">Entrez un nom pour cette empreinte digitale</translation>
 <translation id="4549791035683739768">Votre clé de sécurité ne contient aucune empreinte digitale enregistrée</translation>
 <translation id="3971764089670057203">Empreintes digitales sur cette clé de sécurité</translation>
 <translation id="8557022314818157177">Continuez à toucher votre clé de sécurité jusqu'à ce que votre empreinte digitale soit capturée</translation>
+<translation id="7836850009646241041">Essayez de toucher votre clé de sécurité à nouveau</translation>
+<translation id="4878718769565915065">L'ajout d'une empreinte digitale à cette clé de sécurité a échoué</translation>
 <translation id="6592808042417736307">Votre empreinte digitale a été capturée</translation>
 <translation id="1750172676754093297">Cette clé de sécurité ne peut pas stocker d'empreintes digitales</translation>
 <translation id="8842594465773264717">Supprimer cette empreinte digitale</translation>
@@ -4348,6 +4447,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="698524779381350301">Autoriser automatiquement l'accès aux sites suivants</translation>
 <translation id="2915102088417824677">Consulter le journal d'activité</translation>
 <translation id="1744108098763830590">page en arrière-plan</translation>
+<translation id="6549966385318247177">Ce site a été bloqué en raison de contenu pour adultes.</translation>
 <translation id="3378572629723696641">Cette extension a peut-être été corrompue.</translation>
 <translation id="4348766275249686434">Recueillir les erreurs</translation>
 <translation id="4927753642311223124">Aucune notification.</translation>
@@ -4405,6 +4505,8 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="3970114302595058915">Identifiant</translation>
 <translation id="3777806571986431400">Extension activée</translation>
 <translation id="6851497530878285708">Application activée</translation>
+<translation id="5860033963881614850">Désactivé</translation>
+<translation id="5916664084637901428">Activé</translation>
 <translation id="5018207570537526145">Ouvrir le site Web pour les extensions</translation>
 <translation id="4617270414136722281">Options de l'extension</translation>
 <translation id="7152478047064750137">Cette extension fonctionne sans autorisation spéciale</translation>
@@ -4440,6 +4542,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="8023801379949507775">Mettre à jour les extensions maintenant</translation>
 <translation id="2187906491731510095">Extensions mises à jour</translation>
 <translation id="2870909136778269686">Mise à jour en cours…</translation>
+<translation id="7879631849810108578">Raccourci clavier configuré : <ph name="IDS_SHORT_SET_COMMAND"/></translation>
 <translation id="2501797496290880632">Entrez un raccourci</translation>
 <translation id="4477015793815781985">Incluez la touche Ctrl, Alt ou ⌘</translation>
 <translation id="7000347579424117903">Incluez la touche Ctrl, Alt ou Recherche</translation>
@@ -4447,6 +4550,14 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="8447409163267621480">Vous devez inclure la touche Ctrl ou Alt</translation>
 <translation id="3365598184818502391">Utilisez la touche Ctrl ou Alt</translation>
 <translation id="1688935057616748272">Entrez une lettre</translation>
+<translation id="1579879232130925590">Un Brave plus sain et plus performant</translation>
+<translation id="964057662886721376">Certaines extensions peuvent ralentir Brave, surtout celles que vous n'aviez pas l'intention d'installer.</translation>
+<translation id="1499271269825557605">Si vous ne reconnaissez pas une extension, ou si votre navigateur ne fonctionne pas comme prévu, vous pouvez désactiver ou personnaliser les extensions ici.</translation>
+<translation id="2382818385048255866">Vérifiez vos extensions</translation>
+<translation id="3900789207771372462">Certaines extensions peuvent accéder à votre activité de navigation, ce qui peut inclure vos renseignements personnels.</translation>
+<translation id="6772339735733515807">Gérez vos extensions</translation>
+<translation id="1510515462062582289">Vous pouvez voir dans cette page toutes les extensions installées dans Brave.</translation>
+<translation id="2810390687497823527">Si vous ne reconnaissez pas une extension, ou si votre navigateur ne fonctionne pas comme prévu, vous pouvez désactiver ou personnaliser les extensions ici.</translation>
 <translation id="4479424953165245642">Gérer les applications de kiosque</translation>
 <translation id="6619801788773578757">Ajouter une application de kiosque</translation>
 <translation id="8045923671629973368">Entrer l'identifiant de l'application ou l'URL de la boutique en ligne</translation>
@@ -4456,7 +4567,6 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="8143442547342702591">Application non valide</translation>
 <translation id="720110658997053098">Conserver cet appareil en mode kiosque de manière permanente</translation>
 <translation id="1909880997794698664">Voulez-vous vraiment garder cet appareil en mode kiosque de manière permanente?</translation>
-<translation id="1512210426710821809">La seule façon d'annuler cette action consiste à réinstaller <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
 <translation id="8281886186245836920">Passer</translation>
 <translation id="2342740338116612727">Favoris ajoutés</translation>
 <translation id="7835178595033117206">Favori supprimé</translation>
@@ -4490,7 +4600,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="1031362278801463162">Chargement de l'aperçu...</translation>
 <translation id="6147020289383635445">Échec de création de l'aperçu avant impression.</translation>
 <translation id="5877584842898320529">L'imprimante sélectionnée n'est pas accessible ou n'est pas installée correctement. <ph name="BR"/> Veuillez vérifier votre imprimante ou essayez d'en sélectionner une autre.</translation>
-<translation id="7413400642818115607">L'appareil Brave Software Cloud Print sélectionné n'est plus pris en charge. <ph name="BR"/> Essayez de configurer l'imprimante dans les paramètres système de votre ordinateur.</translation>
+<translation id="6645437135153136856">L'appareil Brave Software Cloud Print sélectionné n'est plus pris en charge. <ph name="BR"/> Essayez de configurer l'imprimante dans les paramètres système de votre ordinateur.</translation>
 <translation id="5828633471261496623">Impression...</translation>
 <translation id="6295855836753816081">Enregistrement en cours...</translation>
 <translation id="3587482841069643663">Tous</translation>
@@ -4510,7 +4620,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="3706463572498736864">Pages par feuille</translation>
 <translation id="2249605167705922988">par exemple : 1-5, 8 ou 11-13</translation>
 <translation id="5746169159649715125">Enregistrer au format PDF</translation>
-<translation id="1955272076204612657">Enregistrer dans Brave Software Disque</translation>
+<translation id="6532101170117367231">Enregistrer dans Brave Software Disque</translation>
 <translation id="2580924999637585241">Total : <ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/></translation>
 <translation id="73174032666024687"><ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/></translation>
 <translation id="4091434297613116013">feuilles de papier</translation>
@@ -4541,7 +4651,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="6991665348624301627">Sélectionnez une destination</translation>
 <translation id="8800004011501252845">Affichage des destinations pour</translation>
 <translation id="8996526648899750015">Ajouter un compte…</translation>
-<translation id="5002959368039764681">Imprimer dans Brave Software Documents et d'autres ressources infonuagiques. <ph name="BEGIN_LINK"/>Connectez-vous<ph name="END_LINK"/> pour imprimer dans Brave Software Cloud Print.</translation>
+<translation id="6723354935081862304">Imprimer dans Brave Software Documents et d'autres ressources infonuagiques. <ph name="BEGIN_LINK"/>Connectez-vous<ph name="END_LINK"/> pour imprimer dans Brave Software Cloud Print.</translation>
 <translation id="2150139952286079145">Rechercher des destinations</translation>
 <translation id="8569682776816196752">Aucune destination trouvée</translation>
 <translation id="7885253890047913815">Destinations récentes</translation>
@@ -4577,10 +4687,7 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="1526560967942511387">Document sans titre</translation>
 <translation id="5269977353971873915">Échec de l'impression</translation>
 <translation id="7385854874724088939">Une erreur s'est produite lors de l'impression. Veuillez vérifier votre imprimante et essayer de nouveau.</translation>
-<translation id="1197979282329025000">Une erreur s'est produite lors de la récupération des capacités d'impression de l'imprimante <ph name="PRINTER_NAME"/>. Cette imprimante n'a pas pu être enregistrée dans <ph name="CLOUD_PRINT_NAME"/>.</translation>
 <translation id="9004952710076978168">Réception d'une notification pour une imprimante inconnue.</translation>
-<translation id="2202898655984161076">Un problème est survenu lors de la création de la liste des imprimantes. Certaines de vos imprimantes ne sont peut-être pas correctement enregistrées dans <ph name="CLOUD_PRINT_NAME"/>.</translation>
-<translation id="3220586366024592812">Le processus du connecteur <ph name="CLOUD_PRINT_NAME"/> est tombé en panne. Voulez-vous le redémarrer?</translation>
 <translation id="6904655473976120856">Appuyez sur le bouton Application pour fermer</translation>
 <translation id="8909833622202089127">Le site effectue le suivi de votre position</translation>
 <translation id="375636864092143889">Le site utilise votre microphone</translation>
@@ -4621,8 +4728,8 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="8076492880354921740">Onglets</translation>
 <translation id="4808319664292298116">Démarrer la RV à partir de <ph name="DOMAIN"/>?</translation>
 <translation id="4353114845960720315">Lorsque vous êtes en mode RV, ce site pourrait en apprendre davantage sur :</translation>
-<translation id="118069123878619799">- Vos caractéristiques physiques, comme votre taille</translation>
-<translation id="5819762621475381970">- La disposition de votre pièce</translation>
+<translation id="2099625543891475722">vos caractéristiques physiques, comme votre taille;</translation>
+<translation id="4660838440047236328">la disposition de votre pièce.</translation>
 <translation id="1146678959555564648">Activer la réalité virtuelle</translation>
 <translation id="2794233252405721443">Site bloqué</translation>
 <translation id="1721312023322545264">Il vous faut l'autorisation de <ph name="NAME"/> pour consulter ce site</translation>
@@ -4638,9 +4745,9 @@ https://support.google.com/chrome/?p=applescript</translation>
 <translation id="4858792381671956233">Tu as demandé l'autorisation de tes parents pour consulter ce site</translation>
 <translation id="3498215018399854026">Impossible de joindre l’un de vos parents pour le moment. Veuillez réessayer.</translation>
 <translation id="8012647001091218357">Impossible de joindre vos parents pour le moment. Veuillez réessayer.</translation>
-<translation id="3479539252931486093">C'était inattendu? <ph name="BEGIN_LINK"/>Dites-le-nous<ph name="END_LINK"/></translation>
+<translation id="1396259464226642517">Ce résultat était-il inattendu? <ph name="BEGIN_LINK"/>Envoyer des commentaires<ph name="END_LINK"/></translation>
 <translation id="3586931643579894722">Masquer les détails</translation>
-<translation id="7444046173054089907">Ce site est bloqué</translation>
+<translation id="5558125320634132440">Ce site a été bloqué, car il est possible qu'il comporte du contenu réservé aux adultes</translation>
 <translation id="6778737459546443941">L'un de tes parents n'a pas encore donné son autorisation</translation>
 <translation id="8620436878122366504">Tes parents n'ont pas encore donné leur autorisation</translation>
 <translation id="6563469144985748109">Votre gestionnaire n'a pas encore donné son autorisation</translation>

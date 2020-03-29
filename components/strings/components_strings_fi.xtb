@@ -19,20 +19,27 @@
 <translation id="1008557486741366299">Ei nyt</translation>
 <translation id="1036348656032585052">Poista käytöstä</translation>
 <translation id="8105368624971345109">Poista käytöstä</translation>
+<translation id="4989809363548539747">Tämä laajennus ei ole tuettu</translation>
 <translation id="1175364870820465910">Tulo&amp;sta...</translation>
 <translation id="129553762522093515">Hiljattain suljetut välilehdet</translation>
 <translation id="8870413625673593573">Hiljattain suljetut</translation>
+<translation id="1594030484168838125">Valitse</translation>
 <translation id="385051799172605136">Edellinen</translation>
 <translation id="7481312909269577407">Seuraava</translation>
 <translation id="2740531572673183784">Ok</translation>
 <translation id="4881695831933465202">Avaa</translation>
 <translation id="6710213216561001401">Edellinen</translation>
 <translation id="1201402288615127009">Seuraava</translation>
+<translation id="2824775600643448204">Osoite- ja hakupalkki</translation>
 <translation id="5713644099811900409">Brave Software-tilisi avulla</translation>
+<translation id="5851548754964597211">Välilehtilista</translation>
+<translation id="2495083838625180221">JSON-jäsennin</translation>
 <translation id="3157931365184549694">Palauta</translation>
+<translation id="187918866476621466">Avaa aloitussivut</translation>
 <translation id="5040262127954254034">Tietosuoja</translation>
 <translation id="3061707000357573562">Virheenkorjauspalvelu</translation>
 <translation id="1914326953223720820">Purkupalvelu</translation>
+<translation id="4926159001844873046"><ph name="SITE"/> sanoo</translation>
 <translation id="1623104350909869708">Estä tätä sivua luomasta muita viestejä</translation>
 <translation id="2677748264148917807">Poistu</translation>
 <translation id="5556459405103347317">Lataa uudelleen</translation>
@@ -42,6 +49,7 @@
 <translation id="8968766641738584599">Tallenna kortti</translation>
 <translation id="860043288473659153">Kortinhaltijan nimi</translation>
 <translation id="869891660844655955">Vanhenemispäivämäärä</translation>
+<translation id="769721561045429135">Sinulla on juuri nyt kortteja, joita voi käyttää vain tällä laitteella. Klikkaa Jatka tarkastellaksesi kortteja.</translation>
 <translation id="5457113250005438886">Ei pätevä</translation>
 <translation id="6518133107902771759">Vahvista</translation>
 <translation id="8987927404178983737">Kuukausi</translation>
@@ -75,6 +83,8 @@
 <translation id="4250680216510889253">Ei</translation>
 <translation id="4522570452068850558">Tiedot</translation>
 <translation id="3586931643579894722">Piilota lisätiedot</translation>
+<translation id="3226128629678568754">Paina uudelleenlatauspainiketta lähettääksesi uudelleen sivuun lataamiseen vaadittavat tiedot.</translation>
+<translation id="7549584377607005141">Tämän verkkosivun näyttäminen oikein vaatii tietoja, jotka olet syöttänyt aiemmin. Voit lähettää nämä tiedot uudelleen, mutta niin tehdessäsi toistat toiminnot, jotka tämä sivu aiemmin suoritti.</translation>
 <translation id="614940544461990577">Kokeile seuraavia toimenpiteitä:</translation>
 <translation id="4943872375798546930">Ei tuloksia</translation>
 <translation id="8688672835843460752">Saatavilla</translation>
@@ -112,7 +122,6 @@
 <translation id="981121421437150478">Offline</translation>
 <translation id="5171045022955879922">Kirjoita hakusanoja tai URL-osoite</translation>
 <translation id="803771048473350947">Tiedosto</translation>
-<translation id="6268185425799226387">Brave Software Drive</translation>
 <translation id="2982481275546140226">Tyhjennä data</translation>
 <translation id="8425213833346101688">Vaihda</translation>
 <translation id="8009225694047762179">Salasanojen hallinta</translation>
@@ -121,6 +130,7 @@
 <translation id="6831043979455480757">Käännä</translation>
 <translation id="2473195200299095979">Käännä tämä sivu</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>, vastaus, <ph name="ANSWER"/></translation>
+<translation id="5710435578057952990">Tämän verkkosivuston identiteettiä ei ole vahvistettu.</translation>
 <translation id="7714464543167945231">Varmenne</translation>
 <translation id="4235360514405112390">Pätevä</translation>
 <translation id="6447842834002726250">Evästeet</translation>
@@ -141,6 +151,8 @@
 <translation id="2215727959747642672">Tiedostojen muokkaus</translation>
 <translation id="6545864417968258051">Bluetooth-haku</translation>
 <translation id="534295439873310000">NFC-laitteet</translation>
+<translation id="4943703118917034429">Virtuaalitodellisuus</translation>
+<translation id="3513704683820682405">Lisätty todellisuus</translation>
 <translation id="5039804452771397117">Salli</translation>
 <translation id="7053983685419859001">Estä</translation>
 <translation id="57838592816432529">Mykistä</translation>
@@ -157,6 +169,7 @@
 <translation id="7878562273885520351">Salasanasi on saattanut vaarantua.</translation>
 <translation id="1089439967362294234">Vaihda salasana</translation>
 <translation id="9008201768610948239">Ohita</translation>
+<translation id="5344579389779391559">Tämä sivu saattaa yrittää veloittaa sinulta rahaa.</translation>
 <translation id="1186201132766001848">Tarkista salasanat</translation>
 <translation id="5979084224081478209">Tarkista salasanat</translation>
 <translation id="10614374240317010">Ei tallenneta</translation>
@@ -165,6 +178,7 @@
 <translation id="5087580092889165836">Lisää kortti</translation>
 <translation id="2154484045852737596">Muokkaa korttia</translation>
 <translation id="4923459931733593730">Maksu</translation>
+<translation id="8103161714697287722">Maksutapa</translation>
 <translation id="7764225426217299476">Lisää osoite</translation>
 <translation id="5595485650161345191">Osoitteen muokkaus</translation>
 <translation id="5659593005791499971">Sähköposti</translation>
@@ -194,8 +208,8 @@
 <translation id="5565735124758917034">Aktiivinen</translation>
 <translation id="7805768142964895445">Tila</translation>
 <translation id="6915804003454593391">Käyttäjä:</translation>
-<translation id="5916664084637901428">Käytössä</translation>
-<translation id="5860033963881614850">Päältä</translation>
+<translation id="5921185718311485855">Käytössä</translation>
+<translation id="1019413721762100891">Päältä</translation>
 <translation id="7961015016161918242">Ei koskaan</translation>
 <translation id="8294431847097064396">Lähde</translation>
 <translation id="1056898198331236512">Varoitus</translation>
@@ -205,10 +219,10 @@
 <translation id="6965978654500191972">Laite</translation>
 <translation id="4728558894243024398">Käyttöympäristö</translation>
 <translation id="2380886658946992094">Juridiikka</translation>
-<translation id="5939847200023027600">PDF-koontipalvelu</translation>
 <translation id="1588438908519853928">Normaali</translation>
 <translation id="1974060860693918893">Lisäasetukset</translation>
 <translation id="5308380583665731573">Muodosta yhteys</translation>
+<translation id="6251924700383757765">Tietosuojakäytäntö</translation>
 <translation id="2501278716633472235">Takaisin</translation>
 <translation id="1736420071277903564">Tietokone</translation>
 <translation id="3906954721959377182">Tabletti</translation>
@@ -223,10 +237,13 @@
 <translation id="9137013805542155359">Näytä alkuperäinen</translation>
 <translation id="8725066075913043281">Yritä uudelleen</translation>
 <translation id="5684874026226664614">Hups, tätä sivua ei voi kääntää.</translation>
+<translation id="4482953324121162758">Tätä sivustoa ei tulla kääntämään.</translation>
 <translation id="583281660410589416">Tuntematon</translation>
 <translation id="9170848237812810038">K&amp;umoa</translation>
 <translation id="2972581237482394796">&amp;Tee uudelleen</translation>
+<translation id="5329858041417644019">Selaimesi ei ole hallinnoitu</translation>
 <translation id="6786747875388722282">Laajennukset</translation>
 <translation id="5804241973901381774">Käyttöluvat</translation>
 <translation id="8004582292198964060">Selain</translation>
+<translation id="1240347957665416060">Laitteesi nimi</translation>
 </translationbundle>

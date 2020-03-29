@@ -1,47 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ja">
-<translation id="6910211073230771657">削除済み</translation>
-<translation id="6965382102122355670">OK</translation>
-<translation id="5301954838959518834">OK</translation>
-<translation id="7658239707568436148">キャンセル</translation>
-<translation id="3479552764303398839">後で</translation>
-<translation id="5317780077021120954">保存</translation>
-<translation id="4570913071927164677">詳細</translation>
-<translation id="8730621377337864115">完了</translation>
-<translation id="8261506727792406068">削除</translation>
-<translation id="1181037720776840403">削除</translation>
-<translation id="5939518447894949180">リセット</translation>
-<translation id="4002066346123236978">タイトル</translation>
-<translation id="5916664084637901428">オン</translation>
-<translation id="5860033963881614850">オフ</translation>
-<translation id="6165508094623778733">詳細</translation>
-<translation id="6042308850641462728">もっと見る</translation>
-<translation id="6040143037577758943">閉じる</translation>
-<translation id="780301667611848630">いいえ</translation>
-<translation id="1201402288615127009">次へ</translation>
-<translation id="2359808026110333948">続行</translation>
-<translation id="2653659639078652383">送信</translation>
-<translation id="2079545284768500474">元に戻す</translation>
-<translation id="7649070708921625228">ヘルプ</translation>
-<translation id="2148716181193084225">今日</translation>
-<translation id="7781829728241885113">昨日</translation>
-<translation id="6945221475159498467">選択</translation>
-<translation id="7791543448312431591">追加</translation>
-<translation id="6527303717912515753">共有</translation>
-<translation id="1383876407941801731">検索</translation>
-<translation id="3115898365077584848">情報を表示</translation>
-<translation id="3295602654194328831">情報を表示しない</translation>
-<translation id="3987993985790029246">リンクのコピー</translation>
-<translation id="2704606927547763573">コピーしました</translation>
-<translation id="8725066075913043281">やり直し</translation>
-<translation id="385051799172605136">戻る</translation>
-<translation id="8131740175452115882">確認</translation>
-<translation id="5300589172476337783">表示</translation>
-<translation id="1124772482545689468">ユーザー</translation>
-<translation id="8609465669617005112">上に移動</translation>
-<translation id="6746124502594467657">下に移動</translation>
-<translation id="8249310407154411074">一番上に移動</translation>
 <translation id="8428213095426709021">設定</translation>
 <translation id="2498359688066513246">ヘルプとフィードバック</translation>
 <translation id="8378714024927312812">組織によって管理されています</translation>
@@ -159,7 +118,7 @@
 <translation id="6914783257214138813">エクスポートしたファイルを閲覧できるユーザーにパスワードを知られてしまう可能性があります。</translation>
 <translation id="2321086116217818302">パスワードを準備しています…</translation>
 <translation id="8445448999790540984">パスワードをエクスポートできません</translation>
-<translation id="3066461326500799725">Brave Software ドライブの使い方を見る</translation>
+<translation id="5139940364318403933">Brave Software ドライブの使い方を見る</translation>
 <translation id="729975465115245577">お使いのデバイスにはパスワード ファイルを保存するためのアプリがインストールされていません。</translation>
 <translation id="7682724950699840886">推奨される対策: デバイスに十分な空き容量があることを確認し、再度エクスポートを試します。</translation>
 <translation id="1129510026454351943">詳細: <ph name="ERROR_DESCRIPTION"/></translation>
@@ -169,6 +128,7 @@
 <translation id="230699814587342492">Brave パスワード</translation>
 <translation id="6075798973483050474">ホームページの編集</translation>
 <translation id="854522910157234410">このページを開く</translation>
+<translation id="8127542551745560481">ホームページを編集</translation>
 <translation id="2482878487686419369">通知</translation>
 <translation id="6255999984061454636">おすすめのコンテンツ</translation>
 <translation id="805047784848435650">閲覧履歴から</translation>
@@ -184,12 +144,16 @@
 <translation id="1943176487615318915">危険なアプリやサイトを検出するために、アクセスした一部のページの URL と限定的なシステム情報、一部のページ コンテンツが Brave から Brave Software に送信されます</translation>
 <translation id="3181954750937456830">セーフ ブラウジング（危険なサイトからユーザーとデバイスを保護します）</translation>
 <translation id="7315322926489145388">セキュリティ上のリスクがある場合に、アクセスした一部のページの URL が Brave Software に送信されます</translation>
-<translation id="2063713494490388661">タップして検索</translation>
-<translation id="2369463299479365221">ウェブサイト上のトピックについてページを移動せずに調べられます。「タップして検索」では、単語とその周囲のコンテキストが Brave Software 検索に送信され、定義、画像、検索結果などの情報が返されます。
+<translation id="3738139272394829648">タップして検索</translation>
+<translation id="7865281998841143447">ウェブサイト上のトピックについて、ページを移動せずに調べることができます。「タップして検索」では、単語とその周囲のコンテキストが Brave Software 検索に送信され、定義、画像、検索結果などの情報が返されます。
 
-検索用語を長押しするとその用語が選択され、選択範囲を調整できます。検索結果を絞り込むには、パネルを上にスライドして検索ボックスをタップします。</translation>
-<translation id="2930742481329940825">「タップして検索」では選択した単語と現在のページがコンテキストとして Brave Software 検索に送信されます。これは [<ph name="BEGIN_LINK"/>設定<ph name="END_LINK"/>] で無効にすることができます。</translation>
+単語をタップすると、その単語が検索されます。検索キーワードを調整するには、長押しして検索範囲を選択します。検索を絞り込むには、表示されたパネルをスライドして展開アイコンをタップし、新しいタブで検索ボックスをタップします。</translation>
+<translation id="3292859206215580147">ウェブサイト上のトピックについて、ページを移動せずに調べることができます。「タップして検索」では、単語とその周囲のコンテキストが Brave Software 検索に送信され、定義、画像、検索結果などの情報が返されます。
+
+単語を長押しすると、その単語が検索されます。検索を絞り込むには、選択範囲を調整します。表示されたパネルをスライドして展開アイコンをタップし、新しいタブで検索ボックスをタップして検索を絞り込むこともできます。</translation>
+<translation id="6209156474097347789">「タップして検索」では選択したキーワードと現在のページがコンテキストとして Brave Software 検索に送信されます。これは [<ph name="BEGIN_LINK"/>設定<ph name="END_LINK"/>] で無効にすることができます。</translation>
 <translation id="5039804452771397117">許可</translation>
+<translation id="780301667611848630">いいえ</translation>
 <translation id="1406000523432664303">「トラッキング拒否」</translation>
 <translation id="6232535412751077445">「トラッキング拒否」を有効にすると、リクエストが閲覧トラフィックに含まれるようになります。ウェブサイトがリクエストに応答するかどうか、またリクエストがどのように解釈されるかによって、この影響は異なります。
 
@@ -242,6 +206,7 @@
 <translation id="6295158916970320988">すべてのサイト</translation>
 <translation id="8380167699614421159">このサイトでは煩わしい広告や誤解を招く広告が表示されます</translation>
 <translation id="1919345977826869612">広告</translation>
+<translation id="3513704683820682405">拡張現実（AR）</translation>
 <translation id="6447842834002726250">Cookie</translation>
 <translation id="6196640612572343990">サードパーティの Cookie をブロックする</translation>
 <translation id="6782111308708962316">サードパーティのウェブサイトが Cookie データを保存したり読み取ったりできないようにします</translation>
@@ -259,6 +224,7 @@
 <translation id="5649053991847567735">自動ダウンロード</translation>
 <translation id="6181444274883918285">サイトの例外を追加</translation>
 <translation id="5313967007315987356">サイトを追加</translation>
+<translation id="7791543448312431591">追加</translation>
 <translation id="1369915414381695676">サイト <ph name="SITE_NAME"/> を追加しました</translation>
 <translation id="2621115761605608342">特定のサイトに対して JavaScript を許可します。</translation>
 <translation id="8801436777607969138">特定のサイトで JavaScript をブロックします。</translation>
@@ -266,6 +232,7 @@
 <translation id="358794129225322306">複数ファイルの自動ダウンロードをサイトに許可します。</translation>
 <translation id="4008040567710660924">特定のサイトの Cookie を許可します。</translation>
 <translation id="8958424370300090006">特定のサイトの Cookie をブロックします。</translation>
+<translation id="2537296579376733324">すべての Cookie（このサイトのみ）</translation>
 <translation id="7882806643839505685">特定のサイトに対して音声の再生を許可します。</translation>
 <translation id="4468959413250150279">特定のサイトの音声をミュートします。</translation>
 <translation id="1994173015038366702">サイトの URL</translation>
@@ -292,8 +259,12 @@
 <translation id="2107397443965016585">保護されたコンテンツの再生をサイトに許可する前に確認する（推奨）</translation>
 <translation id="2910701580606108292">保護されたコンテンツの再生をサイトに許可する前に確認する</translation>
 <translation id="757524316907819857">サイトでの保護されたコンテンツの再生をブロックする</translation>
+<translation id="4935305910887312910">サイトにカメラ位置の取得または室内のマッピングを許可する前に確認します（推奨）</translation>
+<translation id="884828189055900810">サイトによるカメラ位置の取得または室内のマッピングをブロックします</translation>
 <translation id="5710871682236653961">NFC デバイスをタップしたとき、情報の送受信をサイトに許可するかどうかを確認する（推奨）</translation>
 <translation id="7572498721684305250">NFC デバイスをタップしたとき、サイトによる情報の送受信をブロックする</translation>
+<translation id="3312292613668865961">サイトにバーチャル リアリティ デバイスとデータへのアクセスを許可する前に確認します（推奨）</translation>
+<translation id="8698438463325761328">サイトによるバーチャル リアリティ デバイスとデータへのアクセスをブロックします</translation>
 <translation id="3277252321222022663">サイトによるセンサーへのアクセスを許可する（推奨）</translation>
 <translation id="5048398596102334565">サイトによるモーション センサーへのアクセスを許可する（推奨）</translation>
 <translation id="8816026460808729765">サイトによるセンサーへのアクセスをブロックする</translation>
@@ -325,7 +296,7 @@
 <translation id="119944043368869598">すべて削除</translation>
 <translation id="2490684707762498678"><ph name="APP_NAME"/> で管理</translation>
 <translation id="5516455585884385570">通知設定を開く</translation>
-<translation id="1404122904123200417">埋め込み先: <ph name="WEBSITE_URL"/></translation>
+<translation id="1242008676835033345"><ph name="WEBSITE_URL"/> に埋め込まれたページ</translation>
 <translation id="129382876167171263">ウェブサイトによって保存されたファイルがここに表示されます</translation>
 <translation id="4181841719683918333">言語</translation>
 <translation id="2647434099613338025">言語の追加</translation>
@@ -380,6 +351,7 @@
 <translation id="4913161338056004800">統計情報をリセット</translation>
 <translation id="1856325424225101786">ライトモードをリセットしますか？</translation>
 <translation id="3658159451045945436">リセットすると、アクセスしたサイトのリストなど、節約したデータの履歴が削除されます。</translation>
+<translation id="5939518447894949180">リセット</translation>
 <translation id="3295530008794733555">高速ブラウジングで、データ使用量も抑えることができます。</translation>
 <translation id="7340390500800578919">ライトモードを使用すると、Brave でページの読み込みが高速化され、データ使用量も最大 60% 抑えることができます。アクセスするページを最適化するため、ウェブ トラフィックが Brave から Brave Software に送信されます。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>
 <translation id="4538018662093857852">ライトモードをオンにする</translation>
@@ -443,9 +415,6 @@
 <translation id="4256782883801055595">オープンソース ライセンス</translation>
 <translation id="1138681184697033370">Brave 利用規約</translation>
 <translation id="7392539049993970338">Brave のプライバシーに関するお知らせ</translation>
-<translation id="2677748264148917807">このページを離れる</translation>
-<translation id="5556459405103347317">再読み込み</translation>
-<translation id="1623104350909869708">このページで追加のダイアログが作成されないようにする</translation>
 <translation id="2968755619301702150">証明書ビューア</translation>
 <translation id="1360432990279830238">ログアウトして同期をオフにしますか？</translation>
 <translation id="8581481290581777242">Brave データをこのデバイスから削除しますか？</translation>
@@ -532,6 +501,7 @@
 <translation id="7998918019931843664">閉じたタブを開く</translation>
 <translation id="8853345339104747198">「<ph name="TAB_TITLE"/>」タブ</translation>
 <translation id="4452411734226507615">「<ph name="TAB_TITLE"/>」タブを閉じます</translation>
+<translation id="6040143037577758943">閉じる</translation>
 <translation id="7243308994586599757">画面の下の方にオプションがあります</translation>
 <translation id="4060598801229743805">画面の上部にあるオプション</translation>
 <translation id="2810645512293415242">簡易版ページを使用してデータの保存と読み込みを高速化します。</translation>
@@ -566,6 +536,7 @@
 <translation id="4432792777822557199">今後、<ph name="SOURCE_LANGUAGE"/>のページは<ph name="TARGET_LANGUAGE"/>に翻訳されます</translation>
 <translation id="8339163506404995330"><ph name="LANGUAGE"/>のページは翻訳されません</translation>
 <translation id="5447765697759493033">このサイトは翻訳されません</translation>
+<translation id="7658239707568436148">キャンセル</translation>
 <translation id="4880127995492972015">翻訳…</translation>
 <translation id="641643625718530986">印刷...</translation>
 <translation id="8909135823018751308">共有...</translation>
@@ -599,6 +570,7 @@
 <translation id="8073388330009372546">新しいタブで画像を開く</translation>
 <translation id="6649642165559792194">画像をプレビュー <ph name="BEGIN_NEW"/>New<ph name="END_NEW"/></translation>
 <translation id="3269093882174072735">画像を読み込む</translation>
+<translation id="6671495933530132209">画像をコピー</translation>
 <translation id="3845332215609790146">Brave Software レンズで検索<ph name="BEGIN_NEW"/>New<ph name="END_NEW"/></translation>
 <translation id="5578795271662203820">この画像を <ph name="SEARCH_ENGINE"/> で検索</translation>
 <translation id="3384347053049321195">画像を共有</translation>
@@ -606,6 +578,7 @@
 <translation id="6475951671322991020">動画をダウンロード</translation>
 <translation id="2317945146070194624">新しい Brave タブで開く</translation>
 <translation id="7975379999046275268">ページをプレビュー <ph name="BEGIN_NEW"/>New<ph name="END_NEW"/></translation>
+<translation id="2012973609889389923">高速なサイト</translation>
 <translation id="6112702117600201073">ページを更新しています</translation>
 <translation id="6990079615885386641">Brave Software Play ストアからアプリを入手: <ph name="APP_ACTION"/></translation>
 <translation id="2414886740292270097">暗</translation>
@@ -615,8 +588,6 @@
 <translation id="5016205925109358554">Serif</translation>
 <translation id="2593272815202181319">等幅</translation>
 <translation id="9206873250291191720">A</translation>
-<translation id="654446541061731451">ビームするにはタブを選択してください</translation>
-<translation id="8719023831149562936">現在のタブはビームできません</translation>
 <translation id="2139186145475833000">ホーム画面に追加</translation>
 <translation id="4616150815774728855"><ph name="WEBAPK_NAME"/> を起動</translation>
 <translation id="2122601567107267586">アプリを開けませんでした</translation>
@@ -702,6 +673,7 @@
 <translation id="3616113530831147358">音声</translation>
 <translation id="9219103736887031265">画像</translation>
 <translation id="656065428026159829">もっと見る</translation>
+<translation id="6042308850641462728">もっと見る</translation>
 <translation id="8250920743982581267">ドキュメント</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# 件のファイル}other{# 件のファイル}}</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{# 個の画像}other{# 個の画像}}</translation>
@@ -792,15 +764,11 @@
 <translation id="7542481630195938534">おすすめの記事を取得できません</translation>
 <translation id="5013696553129441713">新しいおすすめ記事はありません</translation>
 <translation id="7444811645081526538">その他のカテゴリ</translation>
-<translation id="6709133671862442373">ニュース</translation>
-<translation id="1264974993859112054">スポーツ</translation>
-<translation id="9139318394846604261">ショッピング</translation>
 <translation id="3912508018559818924">ウェブで最適なデータを探しています。</translation>
 <translation id="526421993248218238">ページを読み込めません</translation>
 <translation id="614940544461990577">次をお試しください</translation>
 <translation id="3288003805934695103">ページを再読み込みする</translation>
 <translation id="2353636109065292463">インターネット接続を確認しています</translation>
-<translation id="2858138569776157458">上位のサイト</translation>
 <translation id="8364299278605033898">人気のウェブサイトを表示します</translation>
 <translation id="1171770572613082465">人気のウェブサイトを表示するには、[上位のサイト] ボタンをタップします</translation>
 <translation id="5233638681132016545">新しいタブ</translation>
@@ -834,8 +802,10 @@
 <translation id="4452548195519783679">「<ph name="FOLDER_NAME"/>」にブックマークしました</translation>
 <translation id="8063895661287329888">ブックマークを追加できませんでした。</translation>
 <translation id="2842985007712546952">親フォルダ</translation>
+<translation id="6945221475159498467">選択</translation>
 <translation id="9065203028668620118">編集</translation>
 <translation id="4405224443901389797">移動…</translation>
+<translation id="8261506727792406068">削除</translation>
 <translation id="5170568018924773124">フォルダを開く</translation>
 <translation id="8035133914807600019">新しいフォルダ...</translation>
 <translation id="4532845899244822526">フォルダの選択</translation>
@@ -871,16 +841,14 @@
 <translation id="1113597929977215864">簡易表示する</translation>
 <translation id="1513352483775369820">ブックマークとウェブ履歴</translation>
 <translation id="4939482511480190003">Brave の品質向上にご協力ください。<ph name="BEGIN_LINK"/>アンケートに回答する<ph name="END_LINK"/></translation>
-<translation id="2501278716633472235">戻る</translation>
-<translation id="5596627076506792578">その他のオプション</translation>
 <translation id="3522247891732774234">アップデートが見つかりました。その他のオプション</translation>
 <translation id="6773423637732432200">Brave を更新できません。その他のオプション</translation>
+<translation id="1383876407941801731">検索</translation>
 <translation id="3328801116991980348">サイト情報</translation>
 <translation id="5391532827096253100">このサイトへの接続は保護されていません。サイト情報</translation>
 <translation id="6206551242102657620">接続は保護されています。サイト情報</translation>
 <translation id="6963642900430330478">このページは危険です。サイト情報</translation>
 <translation id="9070377983101773829">音声検索を開始</translation>
-<translation id="8676374126336081632">入力内容を消去</translation>
 <translation id="4968908871398201967">プライベートモード</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> 個のタブが開いています。タブを切り替えるにはタップします}other{<ph name="OPEN_TABS_MANY"/> 個のタブが開いています。タブを切り替えるにはタップします}}</translation>
 <translation id="2369533728426058518">開いているタブ</translation>
@@ -888,6 +856,7 @@
 <translation id="932327136139879170">ホーム</translation>
 <translation id="2707726405694321444">ページを更新</translation>
 <translation id="2891154217021530873">ページの読み込みを停止</translation>
+<translation id="1201402288615127009">次へ</translation>
 <translation id="6710213216561001401">前へ</translation>
 <translation id="9080642952018487277">プライベートモードに入ります</translation>
 <translation id="4883379392681899581">プライベートモードを終了します</translation>
@@ -896,18 +865,12 @@
 <translation id="3377025655491224618">プライベートタブ</translation>
 <translation id="584427517463557805">選択されたプライベートタブ</translation>
 <translation id="2268044343513325586">絞り込み</translation>
-<translation id="7846076177841592234">選択解除</translation>
-<translation id="6216432067784365534"><ph name="NAME_OF_LIST_ITEM"/> のオプション</translation>
-<translation id="7087918508125750058"><ph name="ITEM_COUNT"/> 件選択されています。オプションは画面上部にあります</translation>
-<translation id="7250468141469952378"><ph name="ITEM_COUNT"/> 件選択されています</translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{1 件の選択されたアイテムを共有します}other{# 件の選択されたアイテムを共有します}}</translation>
 <translation id="1628019612362412531">{NUM_SELECTED,plural, =1{選択された 1 件のアイテムを削除します}other{選択された # 件のアイテムを削除します}}</translation>
 <translation id="1283039547216852943">タップして展開</translation>
 <translation id="5962718611393537961">タップして折りたたむ</translation>
 <translation id="3123734510202723619">お知らせ</translation>
 <translation id="8076492880354921740">タブ</translation>
-<translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 件のアイテムを選択済み}other{# 件のアイテムを選択済み}}</translation>
-<translation id="6818926723028410516">アイテムを選択</translation>
 <translation id="4797039098279997504">タップすると <ph name="URL_OF_THE_CURRENT_TAB"/> に戻ります</translation>
 <translation id="6766758767654711248">タップしてサイトに移動する</translation>
 <translation id="429312253194641664">サイトでメディアが再生されています</translation>
@@ -1024,13 +987,12 @@
 <translation id="1875543012935658554">Brave を再度開きます。</translation>
 <translation id="79859296434321399">拡張現実（AR）コンテンツを表示するには ARCore をインストールしてください</translation>
 <translation id="8558485628462305855">拡張現実（AR）コンテンツを表示するには ARCore を更新してください</translation>
-<translation id="3513704683820682405">拡張現実（AR）</translation>
-<translation id="5475862044948910901">拡張現実セッションを開始しますか？</translation>
-<translation id="7365126855094612066">このセッションの間、サイトでは次の操作が可能になります。
+<translation id="6410973561433500075"><ph name="DOMAIN"/> で AR を使用しますか？</translation>
+<translation id="3849365399446680203">AR の使用中、このサイトで次の処理が行われる場合があります。
 • 環境の 3D マップを作成する
 • カメラの動きを追跡する
 
-カメラへのアクセスがサイトに許可されることはなく、他の誰かにカメラの映像が見られることはありません。</translation>
+カメラが写している内容は自分にしか見えません。サイト側ではカメラの画像は見えません。</translation>
 <translation id="1188239144602654184">AR を開始</translation>
 <translation id="473775607612524610">更新</translation>
 <translation id="3133489217401741157">Brave 用の <ph name="MODULE"/> をインストールしています…</translation>
@@ -1098,6 +1060,7 @@
 <translation id="723171743924126238">画像を選択</translation>
 <translation id="8751914237388039244">画像を選択</translation>
 <translation id="1989112275319619282">閲覧</translation>
+<translation id="8921772741368021346"><ph name="POSITION"/> / <ph name="DURATION"/></translation>
 <translation id="7055152154916055070">リダイレクトがブロックされました</translation>
 <translation id="5524843473235508879">リダイレクトがブロックされました。</translation>
 <translation id="6573096386450695060">常に許可</translation>
@@ -1106,6 +1069,7 @@
 <translation id="9137013805542155359">原文のページを表示</translation>
 <translation id="6361779936989026201">Brave の Brave Software アシスタント</translation>
 <translation id="7291387454912369099">アシスタントによる購入手続き</translation>
+<translation id="9037412730408024068">タスクを完了するため、アシスタントを使用したサイトの URL とコンテンツ、およびアシスタントで送信した情報が Brave Software に送られます。</translation>
 <translation id="4565206163201411670">Brave のアクティビティを Digital Wellbeing で表示しますか？</translation>
 <translation id="9055113864158719823">Brave でアクセスしたサイトを表示し、タイマーを設定できます。\n\nタイマーを設定したサイトの情報と、サイトでの滞在時間に関する情報が Brave Software に送信されます。送信した情報は Digital Wellbeing の改善に役立てられます。</translation>
 <translation id="4596514158372210596">Brave のアクティビティを Digital Wellbeing から削除</translation>
@@ -1121,10 +1085,20 @@
 <translation id="246532703174860178">共有</translation>
 <translation id="2517472476991765520">スキャン</translation>
 <translation id="8628973420740315031">近くのユーザーと共有するには、この QR コードをスキャンしてもらいます</translation>
+<translation id="3987993985790029246">リンクのコピー</translation>
+<translation id="4250229828105606438">スクリーンショット</translation>
+<translation id="6201345951596836663">リンクをコピーしました</translation>
+<translation id="6597891566292541626">QR コードまたはバーコードをこの枠内に合わせてください。</translation>
+<translation id="3140134512074889489">QR コードをスキャンするにはカメラを有効にしてください</translation>
+<translation id="2359808026110333948">続行</translation>
 <translation id="7339921667754113786">Brave Software 通知プラットフォーム</translation>
 <translation id="8516012719330875537">画像エディタ</translation>
+<translation id="6092062101542170135">続行するには、Android の設定で NFC をオンにしてください。</translation>
+<translation id="5860491529813859533">オンにする</translation>
+<translation id="8926666909099850184">このデバイスでは NFC がオフになっています。<ph name="BEGIN_LINK"/>Android の設定<ph name="END_LINK"/>でオンにしてください。</translation>
 <translation id="4808319664292298116"><ph name="DOMAIN"/> で VR を使用しますか？</translation>
 <translation id="4353114845960720315">VR の使用中、このサイトで次の情報が把握される場合があります。</translation>
-<translation id="118069123878619799">- あなたの身体的特徴（身長など）</translation>
-<translation id="5819762621475381970">- あなたの部屋のレイアウト</translation>
+<translation id="4574741712540401491">•  <ph name="LIST_ITEM_TEXT"/></translation>
+<translation id="2099625543891475722">あなたの身体的特徴（身長など）</translation>
+<translation id="4660838440047236328">あなたの部屋のレイアウト</translation>
 </translationbundle>

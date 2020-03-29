@@ -11,12 +11,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (شناسه افزونه "<ph name="EXTENSION_ID"/>") در Brave مجاز نیست.</translation>
 <translation id="7450557937477381864">بستن Chrome</translation>
 <translation id="7008934821596358692">برای تکمیل وارد کردن، همه پنجره‌های Chrome را ببندید.</translation>
-<translation id="5735465527556462863">بستن Brave (قدیمی)</translation>
-<translation id="7737066986958447692">برای تکمیل وارد کردن، همه پنجره‌های Brave (قدیمی) را ببندید.</translation>
-<translation id="6447842834002726250">کوکی‌ها</translation>
-<translation id="4983925687993168579">آمار</translation>
-<translation id="6165477144235978006">پرداخت‌های Brave</translation>
-<translation id="3489524616427966890">باز کردن پنجره‌ها و برگه‌ها</translation>
 <translation id="3699882589215410581">Widevine را نصب و اجرا کنید</translation>
 <translation id="8926389886865778422">دوباره سؤال نشود</translation>
 <translation id="4726634924419692905">زمانی که یک سایت می‌خواهد Widevine را روی رایانه‌تان نصب کند، سؤال بپرسد.</translation>
@@ -27,8 +21,6 @@
 <translation id="8410111618231938546">Google Widevine قطعه‌ای از کد «مدیریت حقوق دیجیتال» (DRM) است که ما (Brave Software) مالک آن نیستیم و نمی‌توانیم آن را بازبینی کنیم. کد Google Widevine از سرورهای Google - نه سرورهای ما - بارگیری می‌شود. این کد فقط در صورتی بارگیری می‌شود که این گزینه را فعال کنید. کاربران را به استفاده از DRM تشویق نمی‌کنیم، اما به انتخاب کاربران احترام می‌گذاریم و اذعان داریم بعضی از کاربران Brave تمایل دارند از سرویس‌هایی که به DRM نیاز دارند استفاده کنند.
 
 با نصب این افزونه، «شرایط استفاده از Google Widevine» را می‌پذیرید و موافقت می‌کنید Brave مسئول هرگونه خسارت یا زیان مرتبط با استفاده شما از Google Widevine نیست.</translation>
-<translation id="6499845530162974140">Brave (قدیمی)</translation>
-<translation id="3198814717959506569">واردشده از Brave</translation>
 <translation id="453977518730680921">پخش خودکار رسانه</translation>
 <translation id="410351446219883937">پخش خودکار</translation>
 <translation id="2240268017737062801">‏وقتی سایتی می‌خواهد رسانه را پخش خودکار کند سؤال شود</translation>
@@ -70,19 +62,22 @@
 <translation id="130615081792797568">نمای ساده</translation>
 <translation id="2360360976480535628">نمای پیشرفته</translation>
 <translation id="5709627087332022422">مسدود کردن ردیاب‌های بین سایتی</translation>
-<translation id="9075744464571452108">تشخیص دستگاه</translation>
+<translation id="6447842834002726250">کوکی‌ها</translation>
+<translation id="6522412052085018663">تشخیص اثر انگشت</translation>
 <translation id="3570081523466826008">ارتقاء اتصال‌ها به HTTPS</translation>
 <translation id="4824468494729001999">مسدود کردن اسکریپت‌ها</translation>
-<translation id="8526521192921341404">اجازه ورود به حساب‌های Google را بدهید</translation>
+<translation id="519861640102428255">ظاهر و حس</translation>
+<translation id="4800195524776354947">نمایش تعداد موارد مسدودشده روی نماد سپر ایمنی</translation>
+<translation id="7498695072878479744">مجاز کردن دکمه‌های ورود به سیستم Google در سایت‌های شخص ثالث</translation>
 <translation id="863171915776379000">مجاز کردن ورود به سیستم‌ها و پست‌های جاسازی‌شده</translation>
 <translation id="5165042248369837294">مجاز کردن توییت‌های جاسازی‌شده Twitter</translation>
 <translation id="958971637207126733">مجاز کردن پست‌های جاسازی‌شده LinkedIn</translation>
 <translation id="4699812599455071925">فقط کوکی‌های بین سایتی مسدود شوند</translation>
 <translation id="5657156137487675418">مجاز کردن همه کوکی‌ها</translation>
 <translation id="6883611015375728278">مسدود کردن همه کوکی‌ها</translation>
-<translation id="3084022390368021391">فقط تلاش‌های تشخیص دستگاه بین سایتی مسدود می‌شود</translation>
-<translation id="1847422622180531843">همه تلاش‌های تشخیص دستگاه مجاز شوند</translation>
-<translation id="8375051111011093523">همه تلاش‌های تشخیص دستگاه مسدود می‌شوند</translation>
+<translation id="5572437114858031185">فقط مسدود کردن تلاش‌های تشخیص اثر انگشت بین سایتی</translation>
+<translation id="5079032039521408559">مجاز کردن همه تلاش‌های تشخیص اثر انگشت</translation>
+<translation id="6447141055227658942">مسدود کردن همه تلاش‌های تشخیص اثر انگشت</translation>
 <translation id="8942080017911802454">خط‌مشی مدیریت WebRTC IP</translation>
 <translation id="6165508094623778733">بیشتر بدانید</translation>
 <translation id="8798099450830957504">پیش‌فرض</translation>
@@ -104,6 +99,7 @@
 <translation id="2356070529366658676">سؤال شود</translation>
 <translation id="7701040980221191251">هیچ کدام</translation>
 <translation id="1085027414516521238">MetaMask</translation>
+<translation id="3905324891414560921">ارائه‌دهنده Web3 برای استفاده از Dapps</translation>
 <translation id="6554397389149987360">از مؤلفه‌های Hangouts برای فعال کردن اشتراک‌گذاری صفحه و سایر ویژگی‌ها در مرورگر استفاده می‌کند.</translation>
 <translation id="1765684547504191670">از مؤلفه «رهیاب رسانه» برای فعال کردن Chromecast در مرورگر استفاده می‌کند.</translation>
 <translation id="9156965752763025780">‏دفعه بعدی که Brave را مجدداً راه‌اندازی می‌کنید، این تغییرات اعمال می‌شوند.</translation>
@@ -164,6 +160,7 @@
 <translation id="4394049700291259645">غیر فعال کردن</translation>
 <translation id="6469509880167172749">‏ارسال خودکار تجزیه‌وتحلیل کاملاً خصوصی محصول به Brave</translation>
 <translation id="7090566321964540749">این اطلاعات ناشناس فقط به Brave اجازه می‌دهد استفاده کلی از بعضی از قابلیت‌ها را تخمین بزند.</translation>
+<translation id="9111960429693394744">مایلید از کیف پول‌های رمزگذاری‌شده Brave یا MetaMask برای Dapps استفاده کنید؟</translation>
 <translation id="7583735190612229830">برای داشتن تعامل با این برنامه و برنامه‌های دیگر مشابه آن، «کیف پول رمزنگاری‌شده» را تنظیم کنید.</translation>
 <translation id="8337117349965899723">استفاده از «کیف پول‌های رمزنگاری‌شده»</translation>
 <translation id="5756155765711979898">استفاده از MetaMask</translation>
@@ -177,4 +174,9 @@
 <translation id="4474155171896946103">نشانک‌گذاری همه برگه‌ها...</translation>
 <translation id="2336228925368920074">نشانک‌گذاری همه برگه‌ها...</translation>
 <translation id="796831669370432378">برای افزودن نشانک، روی دکمه نشانک در کنار نوار نشانی کلیک کنید</translation>
+<translation id="4989337484121655457">دسترسی کامل به دیسک الزامی است</translation>
+<translation id="8025559074845816210">Brave برای وارد کردن «نشانک‌ها» از Safari، به مجوز دسترسی کامل به دیسک نیاز دارد.</translation>
+<translation id="8515328844674404333">از «تنظیمات برگزیده سیستم» خود، با نحوه اعطای مجوز دسترسی کامل به دیسک آشنا شوید.</translation>
+<translation id="6414878884710400018">باز کردن تنظیمات برگزیده سیستم</translation>
+<translation id="5570470519803062774">تنظیمات سایت و سپر ایمنی</translation>
 </translationbundle>

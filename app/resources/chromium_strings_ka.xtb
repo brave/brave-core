@@ -3,7 +3,7 @@
 <translationbundle lang="ka">
 <translation id="939305735877869636">ქრომინუმი</translation>
 <translation id="6373767849825830651">Brave არის ვებ ბრაუზერი, რომელიც ვებგვერდებს და აპლიკაციებს ელვისებური სისწრაფით ხსნის. ის არის სწრაფი, სტაბილური და გამოსაყენებლად მარტივი. დაათვალიერეთ ვები უფრო უსაფრთხოდ Brave-ში ჩაშენებული საზიანო პროგრამული უზრუნველყოფისა და თაღლითობისგან დაცვის საშუალებით.</translation>
-<translation id="680297041157509674">Brave OS</translation>
+<translation id="4331809312908958774">Brave OS</translation>
 <translation id="4847979153841887006">Brave-ის ლოგო</translation>
 <translation id="7339898014177206373">ახალი ფანჯარა</translation>
 <translation id="5516268345616100622">დავალებათა მენეჯერი - Brave</translation>
@@ -15,8 +15,8 @@
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> — Brave Canary</translation>
 <translation id="8992261409816268381">Brave-ის ავტორები</translation>
 <translation id="8121009781989288430">Copyright <ph name="YEAR"/> The Brave Authors. ყველა უფლება დაცულია.</translation>
-<translation id="2310890394934209120">Brave OS-ს უზრუნველყოფს დამატებითი <ph name="BEGIN_LINK_CROS_OSS"/>ღია წყაროს პროგრამული უზრუნველყოფა<ph name="END_LINK_CROS_OSS"/>.</translation>
-<translation id="8160794320557846790">Brave OS-ს უზრუნველყოფს ისეთი დამატებითი <ph name="BEGIN_LINK_CROS_OSS"/>ღია კოდის პროგრამული უზრუნველყოფა<ph name="END_LINK_CROS_OSS"/>, როგორიცაა <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (ბეტა)<ph name="END_LINK_LINUX_OSS"/>.</translation>
+<translation id="6368958679917195344">Brave OS-ს უზრუნველყოფს დამატებითი <ph name="BEGIN_LINK_CROS_OSS"/>ღია წყაროს პროგრამული უზრუნველყოფა<ph name="END_LINK_CROS_OSS"/>.</translation>
+<translation id="1662639173275167396">Brave OS-ს უზრუნველყოფს ისეთი დამატებითი <ph name="BEGIN_LINK_CROS_OSS"/>ღია კოდის პროგრამული უზრუნველყოფა<ph name="END_LINK_CROS_OSS"/>, როგორიცაა <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (ბეტა)<ph name="END_LINK_LINUX_OSS"/>.</translation>
 <translation id="6913582816347128893">Brave-მა შეიძლება არასწორად იმუშაოს, რადგან ის აღარ არის მხარდაჭერილი Mac OS X 10.9-ზე.</translation>
 <translation id="7977787072794666032">Brave-მა შეიძლება არასწორად იმუშაოს, რადგან ის აღარ არის მხარდაჭერილი Windows XP-სა და Windows Vista-ზე</translation>
 <translation id="189297655255130768">Brave არ პასუხობს. გავუშვათ ხელახლა?</translation>
@@ -24,7 +24,7 @@
 <translation id="335632367599648646">ნამდვილად გსურთ მოახდინოთ Brave-ის დეინსტალაცია?</translation>
 <translation id="5590013613412457132">Brave-ის დეინსტალაცია</translation>
 <translation id="5019879183386042809">Brave გახდეს ნაგულისხმევი ბრაუზერი</translation>
-<translation id="5063987220091207247">Brave OS ვერ ხსნის ამ გვერდს.</translation>
+<translation id="707769633889902835">Brave OS ვერ ხსნის ამ გვერდს.</translation>
 <translation id="4065288863231444640">Brave-ისთვის ფონურ რეჟიმში მუშაობის დაშვება</translation>
 <translation id="6797402139308059782">დავრთოთ ნება Brave-ს გაშვებული იყოს ფონურ რეჟიმში</translation>
 <translation id="2585240446624043880">Brave ვერ ახერხებს თავის მონაცემთა დირექტორიაში წაკითხვას და ჩაწერის განხორციელებას:
@@ -94,8 +94,7 @@ Brave ვერ შეძლებს თქვენი პარამეტ�
 <translation id="9071554113102421877">Brave-ში &amp;გახსნა</translation>
 <translation id="2176825726964012531">Brave-ის შ&amp;ესახებ</translation>
 <translation id="5450493308072741203">განაახლეთ &amp;Brave</translation>
-<translation id="1421502046520299169">&amp;Brave OS-ის შესახებ</translation>
-<translation id="2534623228451928732">&amp;Brave OS-ის განახლება</translation>
+<translation id="61852838583753520">&amp;Brave OS-ის განახლება</translation>
 <translation id="8447483940522230788">Brave-ის დამხმარე</translation>
 <translation id="5477319665405831211">მოახდინეთ Brave-ის სინქრონიზაცია და პერსონალიზება თქვენს ყველა მოწყობილობას შორის</translation>
 <translation id="8132634101975074716">თქვენ შესული ხართ Brave-ში!</translation>
@@ -109,19 +108,18 @@ Brave ვერ შეძლებს თქვენი პარამეტ�
 <translation id="5380963249588143069">თქვენი სისტემის ადმინისტრატორმა მოახდინა Brave-ის კონფიგურაცია იმგვარად, რომ <ph name="TARGET_URL_HOSTNAME"/>-ზე წვდომისთვის საჭიროა <ph name="ALTERNATIVE_BROWSER_NAME"/>-ის გახსნა.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> ადრე იყენებდა Brave-ს</translation>
 <translation id="1384923383737428730">თქვენს კომპიუტერზე აღმოჩენილია საზიანო პროგრამული უზრუნველყოფა. Brave-ს შეუძლია მისი ამოშლა, თქვენი პარამეტრების აღდგენა და გაფართოებების გათიშვა, რომ ბრაუზერმა კვლავ ნორმალურად იმუშაოს.</translation>
-<translation id="8919921662052966648">Brave-მა ვერ დაასინქრონა თქვენი მონაცემები. განაახლეთ სინქრონიზაციის საიდუმლო ფრაზა.</translation>
 <translation id="2262856633481902138">Brave-მა ვერ დაასინქრონა თქვენი მონაცემები, რადგან თქვენს ანგარიშზე შესვლის დეტალები მოძველდა.</translation>
 <translation id="5419189641394808652">Brave-მა ვერ დაასინქრონა თქვენი მონაცემები, რადგან სინქრონიზაცია თქვენი დომენისთვის არ არის ხელმისაწვდომი.</translation>
 <translation id="2577755334620061182">შესვლასთან დაკავშირებული არსებული შეცდომის გამო, Brave მა ვერ შეძლო თქვენი მონაცებების სინქრონიზაცია.</translation>
-<translation id="8583885258305961947">Brave OS სისტემა</translation>
-<translation id="3968006371075376562">Brave OS-მა ვერ დაასინქრონა თქვენი მონაცემები. განაახლეთ სინქრონიზაციის საიდუმლო ფრაზა.</translation>
-<translation id="6746636977031158624">Brave OS-მა ვერ დაასინქრონა თქვენი მონაცემები, რადგან თქვენი ანგარიშის შესვლის დეტალები მოძველდა.</translation>
-<translation id="2999152167963026588">Brave OS-ის საშუალებით ვერ მოხერხდა თქვენი მონაცემების სინქრონიზაცია, რადგან თქვენს დომენზე სინქრონიზაცია მიუწვდომელია.</translation>
-<translation id="1459786048951724030">Brave OS-მა ვერ დაასინქრონა თქვენი მონაცემები შესვლის შეცდომის გამო.</translation>
-<translation id="6813094029720377619">Brave-იდან გასვლისას ქუქი-ჩანაწერები გაასუფთავეთ. სინქრონიზაციის შესანარჩუნებლად შეცვალეთ ეს <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
-<translation id="3340978935015468852">პარამეტრები</translation>
+<translation id="2644798301485385923">Brave OS სისტემა</translation>
+<translation id="7916016681687251387">Brave OS-მა ვერ მოახერხა თქვენი მონაცემების სინქრონიზაცია. შეასწორეთ ახლავე.</translation>
+<translation id="2341767445688917208">Brave OS-მა ვერ მოახერხა თქვენი პაროლების სინქრონიზაცია. შეასწორეთ ახლავე.</translation>
+<translation id="123620459398936149">Brave OS-მა ვერ დაასინქრონა თქვენი მონაცემები. განაახლეთ სინქრონიზაციის საიდუმლო ფრაზა.</translation>
+<translation id="9026991721384951619">Brave OS-მა ვერ დაასინქრონა თქვენი მონაცემები, რადგან თქვენი ანგარიშის შესვლის დეტალები მოძველდა.</translation>
+<translation id="7419046106786626209">Brave OS-ის საშუალებით ვერ მოხერხდა თქვენი მონაცემების სინქრონიზაცია, რადგან თქვენს დომენზე სინქრონიზაცია მიუწვდომელია.</translation>
+<translation id="4480040274068703980">Brave OS-მა ვერ დაასინქრონა თქვენი მონაცემები შესვლის შეცდომის გამო.</translation>
 <translation id="300669147395456190">Brave პროგრამები</translation>
-<translation id="3421950102518690868"><ph name="DOMAIN"/> მოითხოვს, რომ დაეთანხმოთ შემდეგ წესებს და პირობებს ამ მოწყობილობის გამოყენებამდე. ეს წესები არ წარმოადგენს Brave OS-ის პირობების დამატებას, არ ცვლის და არ ზღუდავს მათ.</translation>
+<translation id="2398566204186296120"><ph name="DOMAIN"/> მოითხოვს, რომ დაეთანხმოთ შემდეგ წესებს და პირობებს ამ მოწყობილობის გამოყენებამდე. ეს წესები არ წარმოადგენს Brave OS-ის პირობების დამატებას, არ ცვლის და არ ზღუდავს მათ.</translation>
 <translation id="3293668930608086049">Brave იყენებს თქვენს კამერას და მიკროფონს.</translation>
 <translation id="8919461291440820124">Brave იყენებს თქვენს მიკროფონს.</translation>
 <translation id="3205074487970075628">Brave იყენებს თქვენს კამერას.</translation>
@@ -154,12 +152,9 @@ Brave ვერ შეძლებს თქვენი პარამეტ�
 <translation id="4805806622840861220">Brave-ის ხელახლა გაშვება</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{ხელმისაწვდომია Brave-ის განახლება, რომელიც მას მიესადაგება ხელახლა გაშვებისთანავე.}=1{ხელმისაწვდომია Brave-ის განახლება, რომელიც მას მიესადაგება ხელახლა გაშვებისთანავე. თქვენი ინკოგნიტო ფანჯარა ხელახლა არ გაიხსნება.}other{ხელმისაწვდომია Brave-ის განახლება, რომელიც მას მიესადაგება ხელახლა გაშვებისთანავე. თქვენი # ინკოგნიტო ფანჯარა ხელახლა არ გაიხსნება.}}</translation>
 <translation id="2799223571221894425">ხელახლა გაშვება</translation>
-<translation id="2522086024276534909">გადატვირთეთ Brave OS</translation>
-<translation id="8183252473547465084">განახლების მისასადაგებლად, Brave OS უნდა გადაიტვირთოს.</translation>
+<translation id="5062123544085870375">გადატვირთეთ Brave OS</translation>
+<translation id="2063848847527508675">განახლების მისასადაგებლად, Brave OS უნდა გადაიტვირთოს.</translation>
 <translation id="5895138241574237353">გადატვირთვა</translation>
-<translation id="8887390605192156061">დაასრულეთ Brave-ის ყველა გაშვებული ასლის მუშაობა.</translation>
-<translation id="1801551749768408825">გაშვებულია Brave-ის სხვა ასლები. გასაახლებლად დახურეთ ისინი.</translation>
-<translation id="2632141563911437138">გასაახლებლად Brave-მა უნდა შეწყვიტოს მუშაობა ამ კომპიუტერზე. აღნიშნულის შედეგად ამ კომპიუტერში შესულმა სხვა მომხმარებლებმა შესაძლოა დაკარგონ შეუნახავი ცვლილებები.</translation>
 <translation id="5875673934455379806">Brave-ის ხელახალი ინსტალაცია</translation>
 <translation id="2097604701283463988">Brave მოძველდა</translation>
 <translation id="5173820533850252773">Brave მოძველდა</translation>
@@ -180,7 +175,7 @@ Brave ვერ შეძლებს თქვენი პარამეტ�
 <translation id="7798069806040634998">ფაილების ჩამოსატვირთად Brave საჭიროებს მეხსიერებაზე წვდომას</translation>
 <translation id="7685904775439037072">Brave-ისთვის წვდომის მინიჭების შემდეგ ცალკეული ვებსაიტები შეძლებს თქვენგან წვდომის მოთხოვნას.</translation>
 <translation id="1744365871163268756">დაელოდეთ, სანამ Brave დააინსტალირებს სისტემის უახლეს განახლებებს.</translation>
-<translation id="7808415789955822133">Brave OS ტერმინები</translation>
+<translation id="7408085963519505752">Brave OS ტერმინები</translation>
 <translation id="7207456302801184289">მოგესალმებათ Brave!</translation>
 <translation id="3507835409099344374">Brave-ის შეტყობინების პარამეტრებზე გადასვლა</translation>
 <translation id="1026406809507858026">{0,plural, =0{ხელმისაწვდომია Brave-ის განახლება}=1{ხელმისაწვდომია Brave-ის განახლება}other{უკვე # დღეა, რაც ხელმისაწვდომია Brave-ის განახლება}}</translation>
@@ -199,16 +194,16 @@ Brave ვერ შეძლებს თქვენი პარამეტ�
 <translation id="1786715389543715322">მიმდინარეობს Brave-ის განახლება (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="2182657378556811785">განახლება თითქმის მზად არის! დასასრულებლად, ხელახლა გაუშვით Brave.</translation>
 <translation id="8208853227947884571">Brave განახლებულია</translation>
-<translation id="6686872257969654608">Brave-ის OS-ის შესახებ</translation>
-<translation id="7674116293463255181">თქვენი მოწყობილობის განახლების სტატუსის სანახავად გადადით <ph name="LINK_BEGIN"/>Brave OS-ის პარამეტრებზე<ph name="LINK_END"/></translation>
-<translation id="2280363356796735201">Brave OS-თან დაკავშირებული დახმარების მიღება</translation>
+<translation id="573759479754913123">Brave-ის OS-ის შესახებ</translation>
+<translation id="7573289029918943991">თქვენი მოწყობილობის განახლების სტატუსის სანახავად გადადით <ph name="LINK_BEGIN"/>Brave OS-ის პარამეტრებზე<ph name="LINK_END"/></translation>
+<translation id="3395323229510056640">Brave OS-თან დაკავშირებული დახმარების მიღება</translation>
 <translation id="38898988211673781">ქუქი-ჩანაწერებისა და საიტების მონაცემების გასუფთავება Brave-იდან გასვლისას</translation>
 <translation id="5253815230176279256">Brave Software Pay (Brave-ში კოპირებული)</translation>
 <translation id="5468853758063275923">Brave თქვენი ნაგულისხმევი ბრაუზერია</translation>
 <translation id="1775322105159056176">Brave ნაგულისხმევ ბრაუზერს ვერ საზღვრავს, ან ვერ აყენებს</translation>
 <translation id="6915252145142862992">ეს Brave-ის მეორადი ინსტალაცია არის და ნაგულისხმევ ბრაუზერად ის ვერ დაყენდება.</translation>
 <translation id="6235873178214143377">თუ პარამეტრი ამ გვერდზე არ გამოჩნდება, ცადეთ მისი პოვნა <ph name="LINK_BEGIN"/>Brave ბრაუზერის პარამეტრებში<ph name="LINK_END"/></translation>
-<translation id="4459296183696059108">თუ პარამეტრი ამ გვერდზე არ გამოჩნდება, ცადეთ მისი პოვნა <ph name="LINK_BEGIN"/>Brave OS-ის პარამეტრებში<ph name="LINK_END"/></translation>
+<translation id="5657226924540934362">თუ პარამეტრი ამ გვერდზე არ გამოჩნდება, ცადეთ მისი პოვნა <ph name="LINK_BEGIN"/>Brave OS-ის პარამეტრებში<ph name="LINK_END"/></translation>
 <translation id="2312399718665761438">მართლწერის შეცდომების გასასწორებლად, Brave თქვენ მიერ ტექსტის ველში აკრეფილ ტექსტებს Brave Software-ს უგზავნის</translation>
 <translation id="8586264863973514035">ცვლილებების მისასადაგებლად ხელახლა გაუშვით Brave</translation>
 <translation id="7021823858304886493">Brave-ში შესვლის დაშვება</translation>
@@ -217,7 +212,6 @@ Brave ვერ შეძლებს თქვენი პარამეტ�
 <translation id="5853262807109651878">ეს მოქმედება წაშლის <ph name="ITEMS_COUNT"/> ერთეულს ამ მოწყობილობიდან. თქვენი მონაცემების მოგვიანებით მისაღებად, შედით Brave-ში, როგორც <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">ეს მოქმედება წაშლის თქვენს დათვალიერების მონაცემებს ამ მოწყობილობიდან. თქვენი მონაცემების მოგვიანებით მისაღებად, შედით Brave-ში, როგორც <ph name="USER_EMAIL"/>.</translation>
 <translation id="4518479204315969707">სახელი და სურათი Brave-ში</translation>
-<translation id="82609232232243542">შედით Brave-ში</translation>
 <translation id="8372880274820509128">დამატებითი უსაფრთხოებისთვის, Brave თქვენს მონაცემებს დაშიფრავს.</translation>
 <translation id="7445061995866044926">გსურთ Brave-იდან გამოსვლა?</translation>
 <translation id="7453070689008684791">Brave-ს ექნება წვდომა თქვენს Drive-ზე მისამართთა ზოლში შემოთავაზებების უზრუნველსაყოფად</translation>

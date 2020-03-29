@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Cross-site rozpoznanie zariadenia zablokované",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "Odtlačky prstov na viacerých stránkach blokované",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Pokusy o rozpoznanie zariadenia boli zablokované",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "Pokusy s odtlačkami prstov zablokované",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Všetky pokusy o rozpoznanie zariadení povolené",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "Všetky pokusy s odtlačkami prstov sú povolené",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Pokusy o rozpoznanie zariadenia",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "Pokusy s odtlačkami prstov",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "Skripty na tejto stránke",

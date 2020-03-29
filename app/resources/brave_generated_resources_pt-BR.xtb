@@ -11,12 +11,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (a extenção ID "<ph name="EXTENSION_ID"/>") não é permitida na Brave.</translation>
 <translation id="7450557937477381864">Fechar o Chrome</translation>
 <translation id="7008934821596358692">Para concluir a importação, feche todas as janelas do Chrome.</translation>
-<translation id="5735465527556462863">Fechar Brave (antigo)</translation>
-<translation id="7737066986958447692">Para finalizar a importação, feche todas as janelas do Brave (antigo).</translation>
-<translation id="6447842834002726250">Cookies</translation>
-<translation id="4983925687993168579">Estatísticas</translation>
-<translation id="6165477144235978006">Brave Payments</translation>
-<translation id="3489524616427966890">Janelas e guias abertas</translation>
 <translation id="3699882589215410581">Instalar e iniciar Widevine</translation>
 <translation id="8926389886865778422">Não perguntar novamente</translation>
 <translation id="4726634924419692905">Perguntar quando um website quiser instalar Widevine no seu computador</translation>
@@ -27,8 +21,6 @@
 <translation id="8410111618231938546">O Google Widevine é um código de Gerenciamento de Direitos Digitais (DRM) que nós da Brave Software não possuímos e não podemos inspecionar. O código do Google Widevine é carregado dos servidores do Google, não dos nossos servidores. Ele é carregado apenas quando você ativa essa opção. Desencorajamos o uso de DRM, mas respeitamos a escolha do usuário e reconhecemos que alguns usuários do Brave gostariam de usar serviços que o exigem.
 
 Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevine. Você concorda que o Brave não é responsável por quaisquer danos ou perdas relacionadas ao seu uso do Google Widevine.</translation>
-<translation id="6499845530162974140">Brave (antigo)</translation>
-<translation id="3198814717959506569">Importar do Brave</translation>
 <translation id="453977518730680921">Mídia de reprodução automática</translation>
 <translation id="410351446219883937">Reprodução automática</translation>
 <translation id="2240268017737062801">Perguntar quando um site desejar reproduzir mídia automaticamente</translation>
@@ -70,19 +62,22 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="130615081792797568">Visualização simples</translation>
 <translation id="2360360976480535628">Visualização avançada</translation>
 <translation id="5709627087332022422">Bloquear trackers intersite</translation>
-<translation id="9075744464571452108">Reconhecimento de dispositivo</translation>
+<translation id="6447842834002726250">Cookies</translation>
+<translation id="6522412052085018663">Impressão digital</translation>
 <translation id="3570081523466826008">Fazer upgrade das conexões para HTTPS</translation>
 <translation id="4824468494729001999">Bloquear scripts</translation>
-<translation id="8526521192921341404">Permitir logins do Google</translation>
+<translation id="519861640102428255">Aparência e comportamento</translation>
+<translation id="4800195524776354947">Mostrar o número de itens bloqueados no ícone do escudo</translation>
+<translation id="7498695072878479744">Permitir botões de login do Google em sites de terceiros</translation>
 <translation id="863171915776379000">Permitir logins do Facebook e publicações incorporadas</translation>
 <translation id="5165042248369837294">Permitir tuítes incorporados do Twitter</translation>
 <translation id="958971637207126733">Permitir postagens incorporadas no LinkedIn</translation>
 <translation id="4699812599455071925">Apenas bloquear cookies intersite</translation>
 <translation id="5657156137487675418">Permitir todos os cookies</translation>
 <translation id="6883611015375728278">Bloquear todos os cookies</translation>
-<translation id="3084022390368021391">Apenas bloquear tentativas de reconhecimento de dispositivo intersite</translation>
-<translation id="1847422622180531843">Permitir todas as tentativas de reconhecimento de dispositivo</translation>
-<translation id="8375051111011093523">Bloquear todas as tentativas de reconhecimento de dispositivo</translation>
+<translation id="5572437114858031185">Bloquear tentativas de impressão digital somente entre sites</translation>
+<translation id="5079032039521408559">Permitir todas as tentativas de impressão digital</translation>
+<translation id="6447141055227658942">Bloquear todas as tentativas de impressão digital</translation>
 <translation id="8942080017911802454">Política de Tratamento de IP WebRTC</translation>
 <translation id="6165508094623778733">Saber mais</translation>
 <translation id="8798099450830957504">Padrão</translation>
@@ -104,6 +99,7 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="2356070529366658676">Perguntar</translation>
 <translation id="7701040980221191251">Nenhum</translation>
 <translation id="1085027414516521238">MetaMask</translation>
+<translation id="3905324891414560921">Provedor Web3 para usar Dapps (aplicativos descentralizados)</translation>
 <translation id="6554397389149987360">Usa o componente Hangouts para ativar o compartilhamento de tela e outros recursos no navegador.</translation>
 <translation id="1765684547504191670">Usa um componente de Roteador de Mídia para habilitar Chromecast no navegador</translation>
 <translation id="9156965752763025780">As alterações entrarão em vigor na próxima vez que você reiniciar o Brave.</translation>
@@ -164,6 +160,7 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="4394049700291259645">Desativar</translation>
 <translation id="6469509880167172749">Envie automaticamente análises de produtos completamente privadas para o Brave</translation>
 <translation id="7090566321964540749">Estas informações anônimas permitem ao Brave estimar o uso geral de determinados recursos.</translation>
+<translation id="9111960429693394744">Gostaria de usar as carteiras de criptomoedas do Brave ou o MetaMask para Dapps?</translation>
 <translation id="7583735190612229830">Defina Carteiras Criptografadas para interagir com este aplicativo e outros como ele.</translation>
 <translation id="8337117349965899723">Usar Carteiras Criptografadas</translation>
 <translation id="5756155765711979898">Usar MetaMask</translation>
@@ -177,4 +174,9 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="4474155171896946103">Adicionar todas as guias aos favoritos...</translation>
 <translation id="2336228925368920074">Adicionar todas as guias aos favoritos...</translation>
 <translation id="796831669370432378">Para adicionar um marcador, clique no botão do marcador próximo à barra de endereço</translation>
+<translation id="4989337484121655457">É necessário acesso total ao disco</translation>
+<translation id="8025559074845816210">O Brave precisa de acesso total ao disco para importar seus favoritos do Safari.</translation>
+<translation id="8515328844674404333">Aprenda a conceder acesso total ao disco em suas preferências de sistema.</translation>
+<translation id="6414878884710400018">Abrir preferências de sistema</translation>
+<translation id="5570470519803062774">Configurações de site e segurança (escudos)</translation>
 </translationbundle>

@@ -11,12 +11,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") nije dozvoljeno u Brejvu</translation>
 <translation id="7450557937477381864">Zatvorite Hrom pregledač</translation>
 <translation id="7008934821596358692">Da biste završili uvoz, zatvorite sve prozore u Chrome-u.</translation>
-<translation id="5735465527556462863">Zatvorite Brave (staro)</translation>
-<translation id="7737066986958447692">Za završetak uvoza zatvorte sve prozore pregledača Brave (staro).</translation>
-<translation id="6447842834002726250">Колачићи</translation>
-<translation id="4983925687993168579">Statistike</translation>
-<translation id="6165477144235978006">Brave uplate</translation>
-<translation id="3489524616427966890">Otvoreni prozori i kartice</translation>
 <translation id="3699882589215410581">Instaliraj i pokreni Vajdvajn</translation>
 <translation id="8926389886865778422">Не питај ме поново</translation>
 <translation id="4726634924419692905">Pitajte kada sajt želi da instalira „Widevine” na Vaš računar.</translation>
@@ -27,8 +21,6 @@
 <translation id="8410111618231938546">Google Widevine je deo Digital Rights Management (DRM) koda koji mi u Brave softveru ne posedujemo i ne možemo da ispitujemo. Google Widevine kod se učitava sa Google servera, a ne sa naših servera. Učitava se samo kada omogućite ovu opciju. Mi odvraćamo od upotrebe DRM-a, ali poštujemo izbor korisnika i razumemo da neki Brave korisnici žele da koriste usluge koje to zahtevaju.
 
 Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišćenja. Slažete se da Brave nije odgovoran za bilo kakve štete ili gubitke u vezi sa vašom upotrebom Google Widevine.</translation>
-<translation id="6499845530162974140">Brave (staro)</translation>
-<translation id="3198814717959506569">Uvezeno iz Brave-a</translation>
 <translation id="453977518730680921">Automatsko puštanje medija</translation>
 <translation id="410351446219883937">Automatsko puštanje</translation>
 <translation id="2240268017737062801">Pitaj kada veb lokacija želi automatsko puštanje medija</translation>
@@ -70,19 +62,22 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="130615081792797568">Jednostavan prikaz</translation>
 <translation id="2360360976480535628">Prikaz više opcija</translation>
 <translation id="5709627087332022422">Blokiraj višelokacijska praćenja</translation>
-<translation id="9075744464571452108">Prepoznavanje uređaja</translation>
+<translation id="6447842834002726250">Колачићи</translation>
+<translation id="6522412052085018663">Beleženje posebnih obeležja</translation>
 <translation id="3570081523466826008">Nadogradi veze u HTTPS</translation>
 <translation id="4824468494729001999">Blokiraj skripte</translation>
-<translation id="8526521192921341404">Dozvoli prijavljivanja na Google</translation>
+<translation id="519861640102428255">Pogledaj &amp;amp; Oseti</translation>
+<translation id="4800195524776354947">Pokaži broj blokiranih stavki na Štit ikonici</translation>
+<translation id="7498695072878479744">Dozvoli Google tastere za prijavljivanje na lokacijama treće strane</translation>
 <translation id="863171915776379000">Dozvoli prijavljivanje putem Facebook-a i ugrađene objave</translation>
 <translation id="5165042248369837294">Dozvoli Twitter ugrađene tvitove</translation>
 <translation id="958971637207126733">Dozvolite ugrađene objave Linkedinu</translation>
 <translation id="4699812599455071925">Blokiraj samo višelokacijske kolačiće</translation>
 <translation id="5657156137487675418">Dozvoli sve kolačiće</translation>
 <translation id="6883611015375728278">Blokirati sve kolačiće</translation>
-<translation id="3084022390368021391">Blokiraj samo višelokacijske pokušaje prepoznavanja uređaja</translation>
-<translation id="1847422622180531843">Dozvoli sve pokušaje prepoznavanja uređaja</translation>
-<translation id="8375051111011093523">Blokiraj sve pokušaje prepoznavanja uređaja</translation>
+<translation id="5572437114858031185">Samo blokirajte višelokacijske pokušaje beleženja posebnih obeležja</translation>
+<translation id="5079032039521408559">Dozvoli sve pokušaje beleženja posebnih obeležja</translation>
+<translation id="6447141055227658942">Blokirajte sva beleženje posebnih obeležja</translation>
 <translation id="8942080017911802454">Smernice za obradu WebRTC IP-a</translation>
 <translation id="6165508094623778733">Nauči više</translation>
 <translation id="8798099450830957504">Подразумевано</translation>
@@ -104,6 +99,7 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="2356070529366658676">Питај</translation>
 <translation id="7701040980221191251">Ниједна</translation>
 <translation id="1085027414516521238">MetaMask</translation>
+<translation id="3905324891414560921">Web3 dobavljač za korišćenje Dapps-a</translation>
 <translation id="6554397389149987360">Koristi komponentu Hangouts da biste omogućili deljenje ekrana i druge funkcije u pregledaču.</translation>
 <translation id="1765684547504191670">Koristi komponentu Media Router-a da bi omogućio Chromecast u pregledaču.</translation>
 <translation id="9156965752763025780">Промене ће ступити на снагу када следећи пут поново покренете Brave.</translation>
@@ -164,6 +160,7 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="4394049700291259645">Онемогући</translation>
 <translation id="6469509880167172749">Automatski pošalji potpuno privatnu analitiku proizvoda Brave-u</translation>
 <translation id="7090566321964540749">Ova anonimna informacija samo Brave-u dozvoljava da procenjuje ukupno korišćenje određenih karakteristika.</translation>
+<translation id="9111960429693394744">Da li želite da koristite kripto novčanike Brave-a ili MetaMask za Dapps?</translation>
 <translation id="7583735190612229830">Podesi kripto novčanik za interakciju sa ovom aplikacijom i nekim drugim sličnim aplikacijama.</translation>
 <translation id="8337117349965899723">Koristite kripto novčanik</translation>
 <translation id="5756155765711979898">Koristi MetaMask</translation>
@@ -177,4 +174,9 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="4474155171896946103">Обележи све картице...</translation>
 <translation id="2336228925368920074">Обележи све картице...</translation>
 <translation id="796831669370432378">Da biste dodali obeleživač, kliknite dugne za obeleživanje koje se nalazi pored trake adresa</translation>
+<translation id="4989337484121655457">Potreban je pristup celom disku</translation>
+<translation id="8025559074845816210">Brave-u je potreban Pristup celom disku da uveze vaše obeleživače iz Safarija.</translation>
+<translation id="8515328844674404333">Naučite kako da odobrite Pristup celom disku iz vašeg Sistema željenih postavki</translation>
+<translation id="6414878884710400018">Otvoren sistem željenih postavki</translation>
+<translation id="5570470519803062774">Podešavanja lokacije i štitova</translation>
 </translationbundle>

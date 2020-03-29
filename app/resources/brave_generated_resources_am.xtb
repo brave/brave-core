@@ -11,12 +11,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") በብሬቭ ውስጥ አይፈቀድም፡፡</translation>
 <translation id="7450557937477381864">ክሮም ዝጋ</translation>
 <translation id="7008934821596358692">ማስተላለፍ ለመጨረስ፣ ሁሉኑም የክሮም ዊንደው ይዝጉ፡፡</translation>
-<translation id="5735465527556462863">ብሬቭን ይዝጉ (የድሮ)</translation>
-<translation id="7737066986958447692">ማስገባትዎን ለመጨረስ ሁሉንም የብሬቭ (የድሮ) መስኮቶች ይዝጉ::</translation>
-<translation id="6447842834002726250">ኩኪዎች</translation>
-<translation id="4983925687993168579">ሁነት</translation>
-<translation id="6165477144235978006">የብሬቭ ክፍያዎች</translation>
-<translation id="3489524616427966890">መስኮቶችን እና ትሮችን ክፈት</translation>
 <translation id="3699882589215410581">ዊንድቬን ገጥመው ይክፈቱ</translation>
 <translation id="8926389886865778422">ደግመው አይጠይቁ</translation>
 <translation id="4726634924419692905">አንድ ጣቢያ በኮምፒተርዎ ላይ Widevine ን ለመጫን ሲፈልግ ይጠይቁ።</translation>
@@ -27,8 +21,6 @@
 <translation id="8410111618231938546">Google Widevine የዲጂታል መብት አስተዳደር (DRM) አካል የሆነ ኮድ ሲሆን እኛ ብሬቭ ሶፍትዌር ባለቤትነት የሌለንና ምርመራ ማካሄድ አንችልም፡፡ Google Widevine ኮድ ከኛ ሰርቨር ሳይሆን ከ Google ሰርቨር ማግኘት ይችላሉ፡፡ የሚጀምረው ይህን አማራጭ ካበራቹህ ብቻ ነው፡፡ DRM እንዲጠቀሙ አናበረታታም፣ ቢሆንም የተጠቃሚዎቻችንን ምርጫ እናከብራለን እንዲሁም አንድ አንድ የብሬቭ ተጠቃሚዎች ይህን የሚጠይቅ አገልግሎት መጠቀም እንደሚፈልጉ እውቅና እነሰታለን፡፡
  
  ይህን ቅጥያ ሲገጥሙ፣ በGoogle Widevine የአጠቃቀም ሕግ እየተስማሙ ነው፡፡ ከGoogle Widevine ሲጠቀሙ ለሚገጥሞት አደጋ ወይ የግንኙነት መቋረጥ ብሬቭ ሀላፊነት እንደማይወስድ ይስማማሉ፡፡</translation>
-<translation id="6499845530162974140">ብሬቭ (የድሮ)</translation>
-<translation id="3198814717959506569">ከብሬቭ ኢምፖርት የተደረገ</translation>
 <translation id="453977518730680921">ሚድያ አውቶፕለይ</translation>
 <translation id="410351446219883937">አውቶፕለይ</translation>
 <translation id="2240268017737062801">ድህረ ገፁ ሚድያ አውቶ ፕለይ ማድረግ ሲፈልግ ጠይቅ</translation>
@@ -70,19 +62,22 @@
 <translation id="130615081792797568">ቀላል እይታ</translation>
 <translation id="2360360976480535628">የላቀ እይታ</translation>
 <translation id="5709627087332022422">ድረ ገጽ ተሻጋሪ ተከታታዮችን አግድ።</translation>
-<translation id="9075744464571452108">መሳሪያ ማወቂያ</translation>
+<translation id="6447842834002726250">ኩኪዎች</translation>
+<translation id="6522412052085018663">የጣት አሻራ መውሰድ</translation>
 <translation id="3570081523466826008">ትስስሩን ወደ HTTPS አሳድግ</translation>
 <translation id="4824468494729001999">ስክሪፕቶችን አግድ</translation>
-<translation id="8526521192921341404">የ Google በመለያ መግቢያዎችን ፍቀድ</translation>
+<translation id="519861640102428255">ተመልከት &amp;amp; ይሰማህ</translation>
+<translation id="4800195524776354947">የታገዱ ንጥሎችን በጋሻዎች አዶ ላይ አሳይ</translation>
+<translation id="7498695072878479744">የ Google መግቢያ መጫኛ ቁልፎችን በሶስተኛ ወገን ጣቢያዎች ላይ ይፍቀዱ</translation>
 <translation id="863171915776379000">የ Facebook መግቢያዎች እና አካቶዎችን ፍቀድ</translation>
 <translation id="5165042248369837294">በTwitter የተከተተ ትዊት ይፍቀዱ</translation>
 <translation id="958971637207126733">LinkedIn ያካተታቸውን ልጥፎችን ፍቀድ</translation>
 <translation id="4699812599455071925">ድረ ገጽ ተሻጋሪ ኩኪዎችን ብቻ አግድ</translation>
 <translation id="5657156137487675418">ለሁሉም ኩኪ ይፍቀዱ</translation>
 <translation id="6883611015375728278">ሁሉን ኩኪ ይከላከሉ</translation>
-<translation id="3084022390368021391">ድረ ገጽ ተሻጋሪ የመሳሪያ ማወቂያ ሙከራዎችን ብቻ አግድ</translation>
-<translation id="1847422622180531843">ሁሉንም የመሳሪያ ማወቂያ ሙከራዎች ፍቀድ</translation>
-<translation id="8375051111011093523">ሁሉንም የመሳሪያ ማወቅ ሙከራዎች አግድ</translation>
+<translation id="5572437114858031185">ድረ ገጽ ተሻጋሪ የጣት አሻራ መውሰድ ሙከራዎችን ብቻ አግድ</translation>
+<translation id="5079032039521408559">ሁሉንም የጣት አሻራ መውሰድ ሙከራዎች ይፍቀዱ</translation>
+<translation id="6447141055227658942">ሁሉንም የጣት አሻራ መውሰድ ሙከራዎች ይከልክሉ</translation>
 <translation id="8942080017911802454">WebRTC IP ማስተዳደርያ ፖሊሲ</translation>
 <translation id="6165508094623778733">የበለጠ ይወቁ</translation>
 <translation id="8798099450830957504">እንደወረደ</translation>
@@ -104,6 +99,7 @@
 <translation id="2356070529366658676">ጠይቅ</translation>
 <translation id="7701040980221191251">ምንም</translation>
 <translation id="1085027414516521238">MetaMask</translation>
+<translation id="3905324891414560921">Dapps ለመጠቀም የ Web3 አቅራቢ</translation>
 <translation id="6554397389149987360">በማሰሻው ላይ የማያ መጋራትን እና ሌሎች ባህሪያትን ለመጠቀም የ Hangouts ክፍሎችን ይጠቀሙ።</translation>
 <translation id="1765684547504191670">በማሰሺያው ውስጥ Chromecast ን ለማንቃት የሚዲያ ራውተር አካልን ተጠቀም።</translation>
 <translation id="9156965752763025780">ለውጦችዎ Brave በሚያስጀምሩበት ቀጣዩ ጊዜ ላይ ይተገበራሉ።</translation>
@@ -164,6 +160,7 @@
 <translation id="4394049700291259645">አሰናክል</translation>
 <translation id="6469509880167172749">የግል ውጤቶችን ትንተና ወደ Brave በራስ ሰር መንገድ ላክ</translation>
 <translation id="7090566321964540749">ይህ ስም አልባ መረጃ Brave የተወሰኑ ባህርያትን አጠቃላይ አጠቃቀም እንዲገምት ብቻ ያስችለዋል።</translation>
+<translation id="9111960429693394744">የ Brave Crypto ዋሌቶችን ወይም MetaMask  ለ Dapps መጠቀም ይፈልጋሉ?</translation>
 <translation id="7583735190612229830">ከዚህ መተግበሪያና ከሌሎች ተመሳሳይ መተግበሪያዎች ጋር ለመገናኘት የ Crypto ዋሌቶችን አዘጋጅ።</translation>
 <translation id="8337117349965899723">የ Crypto ዋሌቶችን ተጠቀም</translation>
 <translation id="5756155765711979898">MetaMask ተጠቀም</translation>
@@ -177,4 +174,9 @@
 <translation id="4474155171896946103">ለሁሉም ትሮች ዕልባት አብጅ...</translation>
 <translation id="2336228925368920074">ለሁሉም ትሮች ዕልባት አብጅ...</translation>
 <translation id="796831669370432378">ዕልባት ለማከል፣ ከአድራሻ አሞሌው አጠገብ ያለውን ቁልፍ ጠቅ ያድርጉ</translation>
+<translation id="4989337484121655457">የሙሉ ዲስክ ተደራሽነት ያስፈልጋል</translation>
+<translation id="8025559074845816210">Brave ዕልባቶችዎን ከ Safari ለማምጣት ሙሉ የዲስክ ተደራሽነት ያስፈልገዋል።</translation>
+<translation id="8515328844674404333">ከስርዓት ምርጫዎችዎ ሙሉ የዲስክ ተደራሽነት እንዴት ማግኘት እንደሚችሉ ይወቁ።</translation>
+<translation id="6414878884710400018">የስርዓት ምርጫዎችን ክፈት</translation>
+<translation id="5570470519803062774">የጣቢያ እና ጋሻዎች ቅንብሮች</translation>
 </translationbundle>

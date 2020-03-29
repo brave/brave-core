@@ -11,12 +11,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") ei ole sallittu Bravessa.</translation>
 <translation id="7450557937477381864">Sulje Chrome</translation>
 <translation id="7008934821596358692">Sulje kaikki Chrome-ikkunat lopettaaksesi tuonnin.</translation>
-<translation id="5735465527556462863">Sulje (vanha)</translation>
-<translation id="7737066986958447692">Kun lopetat tuonnin, sulke kaikki Brave-ikkunat (vanha)</translation>
-<translation id="6447842834002726250">Evästeet</translation>
-<translation id="4983925687993168579">Tilastot</translation>
-<translation id="6165477144235978006">Brave-maksut</translation>
-<translation id="3489524616427966890">Avaa ikkunat ja välilehdet</translation>
 <translation id="3699882589215410581">Asenna ja suorita Widevine</translation>
 <translation id="8926389886865778422">Älä kysy uudestaan</translation>
 <translation id="4726634924419692905">Kysy, jos sivusto tahtoo asentaa Widevinen tietokoneellesi.</translation>
@@ -27,8 +21,6 @@
 <translation id="8410111618231938546">Google Widevine on osa digitaalisen käyttöoikeuksien hallinnan (DRM) koodia, jota me Brave Softwarella emme omista tai voi tarkkailla. Google Widevine -koodi ladataan Googlen palvelimilta, ei meidän palvelimiltamme. Se ladataan vain, kun sallit tämän vaihtoehdon. Emme suosittele DRM:n käyttöä, mutta kunnioitamme käyttäjiemme valintaa ja tiedostamme, että jotkut Braven käyttäjät saattavat haluta käyttää palveluita, jotka vaativat sitä.
 
 Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyväksyt, että Brave ei ole vastuussa mistään vahingoista tai menetyksistä, jotka liittyvät Google Widevinen käyttöön.</translation>
-<translation id="6499845530162974140">Sulje (vanha)</translation>
-<translation id="3198814717959506569">Tuotu Brave:sta</translation>
 <translation id="453977518730680921">Toista media automaattisesti</translation>
 <translation id="410351446219883937">Toista automaattisesti</translation>
 <translation id="2240268017737062801">Kysy, kun sivusto haluaa toistaa mediaa automaattisesti</translation>
@@ -46,16 +38,16 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="5802665280774361839">Näytä automaattinen täydennys osoiterivillä</translation>
 <translation id="7965178729203412357">Uusi Tor-identiteetti</translation>
 <translation id="8511502469534942133">Uusi Tor-yhteys tätä sivustoa varten</translation>
-<translation id="8784924142044142231">Poistu Torista</translation>
+<translation id="8784924142044142231">Poistu Tor-verkosta</translation>
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">Avaa Tor-ikkuna</translation>
 <translation id="1434416574322382019">Uusi Tor-yksityisikkuna</translation>
 <translation id="4703780849509456860">Avaa linkki yksityisessä ikkunassa tai Tor-selaimessa</translation>
-<translation id="3488584642074079080">Avaa linkki Braven yksityisessä ikkunassa Torilla.</translation>
-<translation id="6313675821927505581">Uusi yksityisikkuna käyttäen Toria</translation>
-<translation id="2638041073279639246">Avaa linkki yksityisessä ikkunassa käyttäen Toria</translation>
-<translation id="3425600262621021599">Avaa linkki Braven yksityisikkunassa käyttäen Toria</translation>
-<translation id="3155170474926428993">Tor -laukaisin</translation>
+<translation id="3488584642074079080">Avaa linkki Braven yksityisessä ikkunassa Tor-verkossa</translation>
+<translation id="6313675821927505581">Uusi yksityisikkuna käyttäen Tor-verkkoa</translation>
+<translation id="2638041073279639246">Avaa linkki yksityisessä ikkunassa käyttäen Tor-verkkoa</translation>
+<translation id="3425600262621021599">Avaa linkki Braven yksityisikkunassa käyttäen Tor-verkkoa</translation>
+<translation id="3155170474926428993">Tor-laukaisin</translation>
 <translation id="2515126961943087659">Bat-mainospalvelu</translation>
 <translation id="7924918279836988121">BAT-tilikirjapalvelu</translation>
 <translation id="4472575034687746823">Aloita</translation>
@@ -70,19 +62,22 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="130615081792797568">Yksinkertainen näkymä</translation>
 <translation id="2360360976480535628">Edistynyt näkymä</translation>
 <translation id="5709627087332022422">Estä cross-site-seuraimet</translation>
-<translation id="9075744464571452108">Laitteentunnistus</translation>
+<translation id="6447842834002726250">Evästeet</translation>
+<translation id="6522412052085018663">Sormenjälkitunnistaminen</translation>
 <translation id="3570081523466826008">Nosta yhteystasoksi HTTPS</translation>
 <translation id="4824468494729001999">Estä komentosarjat</translation>
-<translation id="8526521192921341404">Salli Google-kirjautumiset</translation>
+<translation id="519861640102428255">Katso ja kokeile</translation>
+<translation id="4800195524776354947">Näytä estettyjen kohteiden lukumäärä Suojakilpi-kuvakkessa</translation>
+<translation id="7498695072878479744">Salli Googlen kirjautumispainikkeet kolmansien osapuolten sivustoille</translation>
 <translation id="863171915776379000">Salli Facebookin sisäänkirjautumiset ja upotetut julkaisut</translation>
 <translation id="5165042248369837294">Salli Twitterin upotetut tviitit</translation>
 <translation id="958971637207126733">Salli LinkedIn-upotuksen sisältävät julkaisut</translation>
 <translation id="4699812599455071925">Estä vain cross-site-evästeet</translation>
 <translation id="5657156137487675418">Salli kaikki evästeet</translation>
 <translation id="6883611015375728278">Estä kaikki evästeet</translation>
-<translation id="3084022390368021391">Estä vain cross-site-laitteentunnistusyritykset</translation>
-<translation id="1847422622180531843">Salli kaikki laitteentunnistusyritykset</translation>
-<translation id="8375051111011093523">Estä kaikki laitteentunnistusyritykset</translation>
+<translation id="5572437114858031185">Estä ainoastaan sivustojen välisen sormenjälkitunnistuksen asetusyritykset</translation>
+<translation id="5079032039521408559">Salli kaikki sormenjälkitunnistuksen asetusyritykset</translation>
+<translation id="6447141055227658942">Estä kaikki sormenjälkitunnistuksen asetusyritykset</translation>
 <translation id="8942080017911802454">WebRTC IP käsittelykäytäntö</translation>
 <translation id="6165508094623778733">Lisätietoa</translation>
 <translation id="8798099450830957504">Oletus</translation>
@@ -104,6 +99,7 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="2356070529366658676">Kysy</translation>
 <translation id="7701040980221191251">Ei mitään</translation>
 <translation id="1085027414516521238">MetaMask</translation>
+<translation id="3905324891414560921">Web3-palveluntarjoaja Dappseille</translation>
 <translation id="6554397389149987360">Käytä Hangouts-komponenttia ruudunjaon sekä muiden ominaisuuksien käytön mahdollistamiseen selaimessa.</translation>
 <translation id="1765684547504191670">Käyttää mediareititin-komponenttia ottamaan Chromecastin käyttöön selaimessa.</translation>
 <translation id="9156965752763025780">Muutokset tulevat voimaan, kun käynnistät Bravein seuraavan kerran.</translation>
@@ -164,6 +160,7 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="4394049700291259645">Poista käytöstä</translation>
 <translation id="6469509880167172749">Lähetä Bravelle automaattisesti täysin yksityisenä pysyvää tuoteanalytiikkaa</translation>
 <translation id="7090566321964540749">Tämä anonyymi tieto sallii Braven arvioida tiettyjen ominaisuuksien kokonaiskäyttöä.</translation>
+<translation id="9111960429693394744">Haluatko käyttää Braven Kryptokukkaroita vai MetaMaskia Dappseille?</translation>
 <translation id="7583735190612229830">Asenna kryptokukkaroita ollaksesi vuorovaikutuksessa tämän sovelluksen ja muiden sen kaltaisten kanssa.</translation>
 <translation id="8337117349965899723">Käytä kryptokukkaroita</translation>
 <translation id="5756155765711979898">Käytä MetaMaskia</translation>
@@ -177,4 +174,9 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="4474155171896946103">Lisää kaikki välilehdet kirjanmerkkeihin...</translation>
 <translation id="2336228925368920074">Lisää kaikki välilehdet kirjanmerkkeihin...</translation>
 <translation id="796831669370432378">Lisää kirjainmerkki napauttamalla kirjainmerkkipainiketta, joka on osoitepalkin vieressä</translation>
+<translation id="4989337484121655457">Tarvitaan levyn täydet käyttöoikeudet</translation>
+<translation id="8025559074845816210">Brave tarvitsee levyn täydet käyttöoikeudet voidakseen tuoda kirjanmerkkisi Safarista.</translation>
+<translation id="8515328844674404333">Opi antamaan levyn täydet käyttöoikeudet järjestelmäasetuksistasi.</translation>
+<translation id="6414878884710400018">Avaa järjestelmäasetukset</translation>
+<translation id="5570470519803062774">Sivuston ja suojien asetukset</translation>
 </translationbundle>

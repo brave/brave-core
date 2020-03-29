@@ -11,12 +11,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") की Brave में अनुमति नहीं है।</translation>
 <translation id="7450557937477381864">क्रोम को बंद करें</translation>
 <translation id="7008934821596358692">आयात समाप्त करने के लिए, सभी क्रोम विंडोज़ बंद करें।</translation>
-<translation id="5735465527556462863">Brave (पुराना) बंद करें</translation>
-<translation id="7737066986958447692">आयात खत्म करने के लिए, सभी Brave (पुराना) विंडोज बंद करें।</translation>
-<translation id="6447842834002726250">कुकी</translation>
-<translation id="4983925687993168579">आँकड़े</translation>
-<translation id="6165477144235978006">Brave भुगतान</translation>
-<translation id="3489524616427966890">एक से अधिक विंडो और टैब खोलें</translation>
 <translation id="3699882589215410581">Widevine को इंस्टॉल करें और चलाएँ</translation>
 <translation id="8926389886865778422">दोबारा न पूछें</translation>
 <translation id="4726634924419692905">जब कोई साइट आपके कंप्यूटर पर Widevine स्थापित करना चाहती है तब पूछें</translation>
@@ -28,8 +22,6 @@
 
 
 इस एक्सटेंशन को इन्स्टॉल करने के साथ, आप Google Wivedine के उपयोग की शर्तों से सहमत हो रहे हैं| आप सहमत हैं की Google Wivedine के प्रयोग से किसी क्षति या नुकसान के सम्बन्ध में Brave ज़िम्मेदार नहीं है|</translation>
-<translation id="6499845530162974140">Brave (पुराना)</translation>
-<translation id="3198814717959506569">Brave से आयातित</translation>
 <translation id="453977518730680921">मीडिया स्वतः चालू</translation>
 <translation id="410351446219883937">स्वतः प्ले</translation>
 <translation id="2240268017737062801">पूछें जब कोई साइट मीडिया को स्वतः चलाना चाहती है</translation>
@@ -71,19 +63,22 @@
 <translation id="130615081792797568">सरल व्यू</translation>
 <translation id="2360360976480535628">उन्नत व्यू</translation>
 <translation id="5709627087332022422">क्रॉस-साइट ट्रैकर्स को ब्लॉक करें</translation>
-<translation id="9075744464571452108">उपकरण की पहचान</translation>
+<translation id="6447842834002726250">कुकी</translation>
+<translation id="6522412052085018663">फ़िंगरप्रिंटिंग</translation>
 <translation id="3570081523466826008">कनेक्शन को HTTPS पर अपग्रेड करें</translation>
 <translation id="4824468494729001999">स्क्रिप्ट ब्लॉक करें</translation>
-<translation id="8526521192921341404">Google लॉगिन की अनुमति दें</translation>
+<translation id="519861640102428255">देखें और महसूस करें</translation>
+<translation id="4800195524776354947">शील्ड्स आइकन पर ब्लॉक किए गए वस्तुओं की संख्या दिखाएँ</translation>
+<translation id="7498695072878479744">अन्य पक्ष के साइटों पर Google लॉगिन बटन की अनुमति दें</translation>
 <translation id="863171915776379000">Facebook लॉगिन और एम्बेडेड पोस्ट की अनुमति दें</translation>
 <translation id="5165042248369837294">Twitter एम्बेडेड ट्वीट की अनुमति दें</translation>
 <translation id="958971637207126733">LinkedIn एम्बेडेड पोस्ट की अनुमति दें</translation>
 <translation id="4699812599455071925">केवल क्रॉस-साइट कुकीज़ को ब्लॉक करें</translation>
 <translation id="5657156137487675418">सभी कूकीज को अनुमति दें</translation>
 <translation id="6883611015375728278">सभी कुकी को रोकें</translation>
-<translation id="3084022390368021391">केवल क्रॉस-साइट उपकरण की पहचान के प्रयासों को ब्लॉक करें</translation>
-<translation id="1847422622180531843">उपकरण की पहचान के सभी प्रयासों की अनुमति दें</translation>
-<translation id="8375051111011093523">उपकरण की पहचान के सभी प्रयासों को ब्लॉक करें</translation>
+<translation id="5572437114858031185">केवल क्रॉस-साइट फ़िंगरप्रिंटिंग के प्रयासों को ब्लॉक करें</translation>
+<translation id="5079032039521408559">फ़िंगरप्रिंटिंग के सभी प्रयासों की अनुमति दें</translation>
+<translation id="6447141055227658942">फिंगरप्रिंटिंग के सभी प्रयासों को ब्लॉक करें`</translation>
 <translation id="8942080017911802454">वेबआरटीसी आईपी हैंडलिंग नीति</translation>
 <translation id="6165508094623778733">अधिक जानें</translation>
 <translation id="8798099450830957504">सामान्य</translation>
@@ -105,6 +100,7 @@
 <translation id="2356070529366658676">पूछें</translation>
 <translation id="7701040980221191251">कुछ नहीं</translation>
 <translation id="1085027414516521238">MetaMask</translation>
+<translation id="3905324891414560921">Dapps का उपयोग करने के लिए वेब3</translation>
 <translation id="6554397389149987360">ब्राउज़र में स्क्रीन साझा करने और अन्य सुविधाओं के लिए हैंगऑउट के घटकों का उपयोग करें।</translation>
 <translation id="1765684547504191670">ब्राउज़र में क्रोमकास्ट को सक्रीय करने के लिए मीडिया राउटर घटक का उपयोग करता है।</translation>
 <translation id="9156965752763025780">अगली बार आपके द्वारा क्रोमियम पुन: लॉन्‍च करने पर आपके परिवर्तन प्रभावी होंगे.</translation>
@@ -165,6 +161,7 @@
 <translation id="4394049700291259645">बंद करें</translation>
 <translation id="6469509880167172749">पूरी तरह से निजी प्रोडक्ट एनालिटिक्स को स्वचालित रूप से Brave को भेजें</translation>
 <translation id="7090566321964540749">यह अज्ञात जानकारी केवल Brave को कुछ फ़ीचर्स के समग्र उपयोग का अनुमान लगाने देती है.</translation>
+<translation id="9111960429693394744">क्या आप Dapps के लिए Brave के क्रिप्टो वॉलेट या मेटामास्क का उपयोग करना चाहेंगे?</translation>
 <translation id="7583735190612229830">इस ऐप और इसके जैसे अन्य ऐप के साथ जुड़ने के लिए क्रिप्टो वॉलेट सेट करें।</translation>
 <translation id="8337117349965899723">क्रिप्टो वॉलेट का उपयोग करें</translation>
 <translation id="5756155765711979898">मेटामास्क का उपयोग करें</translation>
@@ -178,4 +175,9 @@
 <translation id="4474155171896946103">सभी टैब बुकमार्क करें...</translation>
 <translation id="2336228925368920074">सभी टैब बुकमार्क करें...</translation>
 <translation id="796831669370432378">बुकमार्क जोड़ने के लिए, एड्रेस बार के आगे बुकमार्क बटन पर क्लिक करें</translation>
+<translation id="4989337484121655457">पूर्ण डिस्क एक्सेस की आवश्यकता है</translation>
+<translation id="8025559074845816210">आपके बुकमार्क को Safari से इम्पोर्ट करने के लिए Brave को पुरे डिस्क के एक्सेस के आवश्यकता है।</translation>
+<translation id="8515328844674404333">अपने सिस्टम प्रेफ़रेंस से पूर्ण डिस्क एक्सेस देने का तरीका जानें।</translation>
+<translation id="6414878884710400018">सिस्टम प्रेफ़रेंस शुरू करें</translation>
+<translation id="5570470519803062774">साइट और शील्ड सेटिंग</translation>
 </translationbundle>

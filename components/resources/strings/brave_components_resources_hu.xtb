@@ -4,6 +4,7 @@
 <translation id="4339730410920731698">Hirdetések és nyomkövetők blokkolva</translation>
 <translation id="2313532038420432247">HTTPS frissítések</translation>
 <translation id="7679428712334662192">Becsült idő elmentve</translation>
+<translation id="8411095021655121794">Becsült megtakarított sávszélesség</translation>
 <translation id="5206618227023752085">Felső oldal eltávolítva.</translation>
 <translation id="2079545284768500474">Visszavonás</translation>
 <translation id="6040143037577758943">Bezárás</translation>
@@ -16,6 +17,10 @@
 <translation id="8344569602005188545">óra</translation>
 <translation id="7100907433458266664">nap</translation>
 <translation id="4971389353431353387">nap</translation>
+<translation id="2116364690062294218">B</translation>
+<translation id="3123243061080120667">KB</translation>
+<translation id="977224059380370527">MB</translation>
+<translation id="8776285424728638733">GB</translation>
 <translation id="8427933533533814946">Fényképezte</translation>
 <translation id="7108338896283013870">Elrejtés</translation>
 <translation id="7115515527894388910">Beállítások szerkesztése</translation>
@@ -84,11 +89,9 @@
 <translation id="7954950242989581218">Böngéssz biztonságban</translation>
 <translation id="2188651882929633653">A Brave Shields blokkolja azokat a ronda cuccokat, amelyek követnének a neten ideértve a hirdetések zömét is. Állítsd a Shields-t “lent” állásba, ha úgy tűnik, hogy egy oldal nem működik. A Brave <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>teljes mértékben anonimizált termékanalízis<ph name="END_LINK_P3A">&lt;/a&gt;</ph> használatával becsüli meg az egyes funkciók összesített használatát. Kikapcsolhatod a <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Beállítások<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>; menüben.</translation>
 <translation id="1919345977826869612">Hirdetések</translation>
-<translation id="2364310432103707426">Keressen {{currency}}-t Brave hirdetések megtekintésével. A megjelenített hirdetések a böngészési viselkedése alapján megfelelnek az érdeklődésének. Személyes adat és böngészési előzmény nem hagyja el a böngészőjét.</translation>
+<translation id="2128226640852355533">{{currency}}-t szerezhet Brave Ads-hirdetések megtekintésével. A megjelenített hirdetések az Ön érdeklődésén alapulnak, a böngészési szokásai alapján. A böngészőjét semmilyen személyes adat vagy böngészési előzmény nem hagyja el.</translation>
 <translation id="6112368337882254910">Automatikus Támogatás</translation>
 <translation id="3742599705619405136">Automatikus módja a kiadók és tartalomkészítők támogatásának. Állítsa be a havi összeget, és böngésszen a megszokott módon. A meglátogatott, Brave által hitelesített webhelyek automatikusan megkapják a hozzájárulást az ön figyelme alapján, amit a Brave mér.</translation>
-<translation id="8949527283651381130">Engedélyezze a hirdetés konverzió felismerését</translation>
-<translation id="2184191362610545393">Ezzel a Brave automatikusan tudni fogja, hogy ebből a böngészőből válasz érkezett a hirdetésre. Az engedélyezése növeli a bevételeket.</translation>
 <translation id="20281847067919078">Várható függőben lévő jutalmak</translation>
 <translation id="8593551638387217772">Következő fizetés dátuma</translation>
 <translation id="319209088187794725">Ebben a hónapban kapott reklámértesítések</translation>
@@ -195,7 +198,7 @@
 <translation id="1642443162274867084">Pénztárca létrehozva</translation>
 <translation id="5094577350232361255">névjegy</translation>
 <translation id="4918086044614829423">Elfogadás</translation>
-<translation id="6832986780040139899">©2016–2018 Brave Software. A Brave a Brave Software bejegyzett védjegye. Az oldalak nevei az oldal tulajdonosának védjegyei vagy bejegyzett védjegyei.</translation>
+<translation id="5916290544882167205">Brave Software. A Brave a Brave Software bejegyzett védjegye. A webhelynevek a megfelelő webhelytulajdonos védjegyei vagy bejegyzett védjegyei lehetnek.</translation>
 <translation id="9026369588205476247">Személyes adatai védelme érdekében ezt a Brave nyilatkozatot sehol sem mentették el, naplózták vagy rögzítették az eszközén (ezen a számítógépen) kívül. Eszköze adatvesztése esetén a Brave nem tudja helyreállítani.</translation>
 <translation id="1036277985068412734">pénz hozzáadása</translation>
 <translation id="3587482841069643663">Mind</translation>
@@ -204,6 +207,7 @@
 <translation id="2631006050119455616">Mentve</translation>
 <translation id="2155330833364281539">Az elmúlt {{totalDays}} napban kapott hirdetések</translation>
 <translation id="8863685593846905344">Hirdetési előzmények</translation>
+<translation id="2777306694585938662">Kapott hirdetési jutalmak</translation>
 <translation id="5212777575344695266">Megjelölés nem helyénvalóként</translation>
 <translation id="2111256234277361810">Megjelölés nem helyénvalóként ✓</translation>
 <translation id="8988332871810963281">Jelenleg nincsenek Brave Ads előzmények</translation>
@@ -313,9 +317,8 @@
 <translation id="6381574025952123568">Nyitóegyenleg</translation>
 <translation id="532275381857891532">Hirdetési előzmények az elmúlt 7 napból</translation>
 <translation id="4923459931733593730">Fizetés</translation>
-<translation id="4021593982164260556">A fizetés minden hónap {{day}}. napján történik.</translation>
+<translation id="5693657857413982604">A kifizetés minden hónap {{day}}. napján történik.</translation>
 <translation id="6104680658798556671">A fizetést nem végezték el.</translation>
-<translation id="2834888581291358924">Ha az egyenlege nem elegendő az Automatikus hozzájárulás és a havi hozzájárulások összegére, a fizetést átteszzük erről a periódusról.</translation>
 <translation id="3138528956349114724">Jelenlegi rögzített oldalak</translation>
 <translation id="2337632028350283479">Így működnek a havi hozzájárulások:</translation>
 <translation id="6457273203091513039">A havi kiadások nem az automatikus hozzájárulásból származnak. Ezek külön dolgok.</translation>
@@ -388,6 +391,7 @@
 <translation id="4588241643143931775">Bitcoin (BTC)</translation>
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
 <translation id="8746837129291133068">Litecoin (LTC)</translation>
+<translation id="6367285596431004439">Tokenes jutalom</translation>
 <translation id="9212459913845238740">Igényelt pontjóváírások</translation>
 <translation id="768850953428043522">pontok</translation>
 <translation id="3043542281656021374">Pont</translation>
@@ -463,6 +467,10 @@
 <translation id="4569155249847375786">Ellenőrzött</translation>
 <translation id="8465442795593991224">A kért szolgáltatások alapján szükség lehet rá, hogy az Uphold felé igazolja személyazonosságát .</translation>
 <translation id="723054503945711909">A Brave Software Inc. nem kezeli, nem  tárolja, valamint nem nem fér hozzá az Uphold számára a fiók létesítésekor megadott személyes adatai egyikéhez sem.</translation>
+<translation id="7404779623219601861">BAT beváltása ajándékkártyákért</translation>
+<translation id="6215565499749144110">A TAP Network hálózatában BAT-pontjait ajándékutalványokra válthatja közkedvelt márkáktól.</translation>
+<translation id="526152301446370337">Keresse fel a TAP webhelyét.</translation>
+<translation id="6915065518766963119">* Uphold-ellenőrzést igényel.</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Tudjon meg többet<ph name="LINK_END"/> a Brave Rewards-ról</translation>
 <translation id="5826706758731195747">A Rewards bekapcsolásával, beleegyezik a <ph name="LINK_BEGIN"/>Szolgáltatási feltételekbe<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Becsült kereset eddig a hónapban</translation>
@@ -476,6 +484,7 @@
 <translation id="8092889639392847252">Keressen pénzt ennek a szponzorált háttérképnek a megtekintésével.</translation>
 <translation id="2542495049135486284">Próbálja ki újra a Brave Rewardsot, és adja tovább, ahogy keres!</translation>
 <translation id="53513464591392992">Kapcsolja be a Brave Rewards-ot és keressen pénzt adatvédelmet tisztelő hirdetésekkel.</translation>
+<translation id="8463996294416161140">Kapcsolja be a <ph name="PRODUCT_NAME"/> funkciót, hogy megkapja a részesedését. Ha szeretné, <ph name="LINK_BEGIN"/>el is rejtheti a szponzorált képeket<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">Csak így tovább!</translation>
 <translation id="764235488372037377">Ads jutalmai itt találhatók</translation>
 <translation id="7091215606170476659">UGP jóváírása van a Brave-től</translation>

@@ -80,20 +80,20 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "クロスサイトの利用者端末識別をブロック",
-    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
+    "message": "ブロックされたクロスサイトフィンガープリント",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "全ての利用者端末識別をブロック",
-    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
+    "message": "ブロックされたフィンガープリント試行",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "全ての利用者端末識別を許可",
-    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
+    "message": "許可されたすべてのフィンガープリント試行",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "利用者端末識別",
-    "description": "Message for the device recognition attempts blocked panel"
+    "message": "フィンガープリント試行",
+    "description": "Message for the fingerprinting attempts blocked panel"
   },
   "scriptsOnThisSite": {
     "message": "このサイトのスクリプト",

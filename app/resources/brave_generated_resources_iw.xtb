@@ -11,12 +11,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (extension ID "<ph name="EXTENSION_ID"/>") לא נתמך ב-Brave.</translation>
 <translation id="7450557937477381864">סגירת Chrome</translation>
 <translation id="7008934821596358692">על מנת לסיים את הייבוא, סגרו את כל חלונות הדפדפן.</translation>
-<translation id="5735465527556462863">סגירת Brave (ישן)</translation>
-<translation id="7737066986958447692">כדי לסיים את הייבוא, סגרו את כל חלונות Brave (ישן).</translation>
-<translation id="6447842834002726250">‏קובצי Cookie</translation>
-<translation id="4983925687993168579">סטטיסטיקות</translation>
-<translation id="6165477144235978006">תשלומי Brave</translation>
-<translation id="3489524616427966890">פתיחת חלונות וכרטיסיות</translation>
 <translation id="3699882589215410581">התקינו והפעילו Widevine</translation>
 <translation id="8926389886865778422">אל תשאל שוב</translation>
 <translation id="4726634924419692905">שאל כאשר אתר רוצה להתקין Widevine במחשבך.</translation>
@@ -27,8 +21,6 @@
 <translation id="8410111618231938546">Google Widevine הוא מקטע קוד של ניהול זכויות דיגיטליות (DRM), שאיננו שייך לנו ב-Brave Software ואין באפשרותנו לפקח עליו. הקוד של Google Widevine הנטען ישירות מהשרתים של Google, ולא מהשרתים שלנו. הוא נטען רק בעת הפעלת אפשרות זו. אנחנו לא מעודדים שימוש ב-DRM, אך מכבדים את הבחירה של המשתמש ומודעים לכך שחלק מהמשתמשים של Brave מעדיפים להשתמש בשירותים אשר דורשים זאת.
 
 בעת התקנת התוסף הזה, אתם מסכימים לתנאי השימוש של Google Widevine. אתם מסכימים גם ש-Brave אינם אחראים לכל נזקים או הפסדים בהקשר השימוש שלכם ב-Google Widevine.</translation>
-<translation id="6499845530162974140">Brave (ישן)</translation>
-<translation id="3198814717959506569">מיובא מ-Brave</translation>
 <translation id="453977518730680921">ניגון אוטומטי של מדיה</translation>
 <translation id="410351446219883937">הפעלה אוטומטית</translation>
 <translation id="2240268017737062801">שאלו אותי כאשר אתר רוצה לנגן מדיה בצורה אוטומטית</translation>
@@ -71,19 +63,22 @@
 <translation id="130615081792797568">תצוגה רגילה</translation>
 <translation id="2360360976480535628">תצוגה מתקדמת</translation>
 <translation id="5709627087332022422">חסום עוקבים מרובי-אתרים (cross-site)</translation>
-<translation id="9075744464571452108">זיהוי מכשיר</translation>
+<translation id="6447842834002726250">‏קובצי Cookie</translation>
+<translation id="6522412052085018663">טביעת אצבע</translation>
 <translation id="3570081523466826008">שדרג חיבורים ל-HTTPS</translation>
 <translation id="4824468494729001999">חסום סקריפטים</translation>
-<translation id="8526521192921341404">אפשר התחברות באמצעות גוגל</translation>
+<translation id="519861640102428255">מראה  &amp;amp; תחושה</translation>
+<translation id="4800195524776354947">הצג את מספר הפריטים החסומים בסמל Shields</translation>
+<translation id="7498695072878479744">אפשר לחצני כניסה של גוגל באתרי צד שלישי</translation>
 <translation id="863171915776379000">התר/י התחברויות לפייסבוק ופוסטים מוטבעים</translation>
 <translation id="5165042248369837294">אפשר ציוצי טוויטר מוטבעים</translation>
 <translation id="958971637207126733">נא לאפשר פוסטים מוטבעים</translation>
 <translation id="4699812599455071925">חסום קבצי cookies מרובי-אתרים (cross-site) בלבד</translation>
 <translation id="5657156137487675418">הרשאת כל קבצי העוגיות</translation>
 <translation id="6883611015375728278">חסימת כל העוגיות</translation>
-<translation id="3084022390368021391">חסום רק ניסיונות מרובי-אתרים (cross-site) לזיהוי המכשיר</translation>
-<translation id="1847422622180531843">התר את כל הניסיונות לזיהוי המכשיר</translation>
-<translation id="8375051111011093523">חסום את כל הניסיונות לזיהוי המכשיר</translation>
+<translation id="5572437114858031185">חסום רק ניסיונות טביעת אצבע חוצי אתרים</translation>
+<translation id="5079032039521408559">אפשר את כל ניסיונות טביעת האצבע</translation>
+<translation id="6447141055227658942">חסום את כל ניסיונות טביעת האצבע</translation>
 <translation id="8942080017911802454">WebRTC IP מדיניות תפעול</translation>
 <translation id="6165508094623778733">למדו עוד</translation>
 <translation id="8798099450830957504">ברירת מחדל</translation>
@@ -105,6 +100,7 @@
 <translation id="2356070529366658676">שאל</translation>
 <translation id="7701040980221191251">ללא</translation>
 <translation id="1085027414516521238">MetaMask</translation>
+<translation id="3905324891414560921">ספק Web3 לשימוש ב-Dapps</translation>
 <translation id="6554397389149987360">משתמש ברכיב Hangouts כדי לאפשר שיתוף מסך ותכונות אחרות בדפדפן.</translation>
 <translation id="1765684547504191670">נעשה שימוש ברכיב Media Router כדי לאפשר את Chromecast בדפדפן.</translation>
 <translation id="9156965752763025780">‏השינויים שביצעת ייכנסו לתוקף בפעם הבאה שתפעיל מחדש את Brave‏.</translation>
@@ -165,6 +161,7 @@
 <translation id="4394049700291259645">השבת</translation>
 <translation id="6469509880167172749">שלח באופן אוטומטי אנליטיקות מוצר פרטיות לחלוטין אל Brave</translation>
 <translation id="7090566321964540749">מידע אנונימי זה רק מאפשר ל-Brave להעריך את השימוש הכולל בתכונות מסוימות.</translation>
+<translation id="9111960429693394744">האם ברצונך להשתמש בארנקי הקריפטו של Brave או ב-MetaMask עבור Dapps?</translation>
 <translation id="7583735190612229830">הגדר/י ארנקי קריפטו כדי לקיים אינטראקציה עם אפליקציה זו ואחרות כמוה.</translation>
 <translation id="8337117349965899723">השתמש בארנקי קריפטו</translation>
 <translation id="5756155765711979898">השתמש ב-MetaMask</translation>
@@ -177,4 +174,9 @@
 <translation id="4474155171896946103">צור סימניה לכל הכרטיסיות...</translation>
 <translation id="2336228925368920074">צור סימניה לכל הכרטיסיות...</translation>
 <translation id="796831669370432378">כדי להוסיף סימנייה, לחצו על כפתור הסימנייה שליד שורת הכתובת</translation>
+<translation id="4989337484121655457">דרושה גישה מלאה לדיסק</translation>
+<translation id="8025559074845816210">Brave זקוק לגישה מלאה לדיסק כדי לייבא את הסימניות שלך מ-Safari.</translation>
+<translation id="8515328844674404333">למד/י כיצד להעניק גישה מלאה לדיסק מהעדפות המערכת שלך.</translation>
+<translation id="6414878884710400018">פתח את העדפות המערכת</translation>
+<translation id="5570470519803062774">הגדרות אתר ו-Shields</translation>
 </translationbundle>

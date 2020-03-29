@@ -88,7 +88,7 @@
     "description": "CTA for sending tip form site banner"
   },
   "enableTips": {
-    "message": "İpuçlarını Etkinleştir",
+    "message": "Bahşişleri Etkinleştir",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "for": {
@@ -444,7 +444,7 @@
     "description": "Icon label for Reddit tips"
   },
   "githubTipsHoverText": {
-    "message": "Bir İpucu Gönder",
+    "message": "Bir bahşiş gönder",
     "description": "Hover text for GitHub tips action"
   },
   "githubTipsIconLabel": {

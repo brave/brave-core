@@ -11,12 +11,6 @@
 <translation id="120759863357279975"><ph name="EXTENSION_NAME"/> (amb identificador d'extensió "<ph name="EXTENSION_ID"/>") no es permet a Brave.</translation>
 <translation id="7450557937477381864">Tanqueu Chrome</translation>
 <translation id="7008934821596358692">Per a finalitzar la importació tanqueu totes les finestres de Chrome</translation>
-<translation id="5735465527556462863">Tanca Brave (antic)</translation>
-<translation id="7737066986958447692">Per finalitzar la importació, tanca totes les finestres de Brave (antic).</translation>
-<translation id="6447842834002726250">Galetes</translation>
-<translation id="4983925687993168579">Estadístiques</translation>
-<translation id="6165477144235978006">Pagaments a Brave</translation>
-<translation id="3489524616427966890">Obre finestres i pestanyes</translation>
 <translation id="3699882589215410581">Instal·la i executa Widevine</translation>
 <translation id="8926389886865778422">No m'ho tornis a preguntar</translation>
 <translation id="4726634924419692905">Pregunta quan un lloc vulgui instal·lar Widevine al teu ordinador.</translation>
@@ -27,8 +21,6 @@
 <translation id="8410111618231938546">Google Widevine és una part del codi de Gestió de Drets Digitals (DRM) que a Brave Software no tenim i no podem inspeccionar. El codi de Google Widevine es carrega dels servidors de Google, no dels nostres servidors. Es carrega només quan habiliteu aquesta opció. No encoratgem la utilització del DRM, però respectem l'elecció de l'usuari i sabem que a alguns usuaris de Brave els agradaria poder utilitzar els serveis que ho requereixen. 
 
 En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevine. Accepteu que Brave no es fa responsable dels danys o pèrdues relacionats amb el vostre ús de Google Widevine.</translation>
-<translation id="6499845530162974140">Brave (antic)</translation>
-<translation id="3198814717959506569">Importat de Brave</translation>
 <translation id="453977518730680921">Reproducció automàtica multimèdia</translation>
 <translation id="410351446219883937">Reproducció automàtica</translation>
 <translation id="2240268017737062801">Pregunta quan un lloc vol fer reproducció automàtica</translation>
@@ -71,19 +63,22 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="130615081792797568">Vista senzilla</translation>
 <translation id="2360360976480535628">Vista avançada</translation>
 <translation id="5709627087332022422">Bloquejar rastrejadors entre llocs</translation>
-<translation id="9075744464571452108">Reconeixement de dispositius</translation>
+<translation id="6447842834002726250">Galetes</translation>
+<translation id="6522412052085018663">Identificació per empremta dactilar</translation>
 <translation id="3570081523466826008">Actualitzar connexions a HTTPS</translation>
 <translation id="4824468494729001999">Bloquejar scripts</translation>
-<translation id="8526521192921341404">Permet inicis de sessió de Google</translation>
+<translation id="519861640102428255">Mireu &amp;amp; Sentiu</translation>
+<translation id="4800195524776354947">Mostrar el nombre d'elements bloquejats a la icona dels escuts</translation>
+<translation id="7498695072878479744">Permetre els botons d'inici de sessió de Google en llocs de tercers</translation>
 <translation id="863171915776379000">Permet l'inici de sessió i publicacions incrustades de Facebook</translation>
 <translation id="5165042248369837294">Permet tuits incrustats de Twitter</translation>
 <translation id="958971637207126733">Permet publicacions incrustades de LinkedIn</translation>
 <translation id="4699812599455071925">Bloqueja només les galetes entre llocs</translation>
 <translation id="5657156137487675418">Permet totes les galetes</translation>
 <translation id="6883611015375728278">Bloqueja totes les galetes</translation>
-<translation id="3084022390368021391">Bloqueja només els intents de reconeixement de dispositius entre llocs</translation>
-<translation id="1847422622180531843">Permet tots els intents de reconeixement de dispositius</translation>
-<translation id="8375051111011093523">Bloqueja tots els intents de reconeixement de dispositius</translation>
+<translation id="5572437114858031185">Bloquegeu només els intents d'identificació per empremta dactilar de llocs creuats</translation>
+<translation id="5079032039521408559">Permetre tots els intents d'identificació per empremta dactilar</translation>
+<translation id="6447141055227658942">Bloquejar tots els intents d'identificació per empremta dactilar</translation>
 <translation id="8942080017911802454">Política de gestió del WebRTC IP</translation>
 <translation id="6165508094623778733">Saber més</translation>
 <translation id="8798099450830957504">Predeterminat</translation>
@@ -105,6 +100,7 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="2356070529366658676">Pregunta-ho</translation>
 <translation id="7701040980221191251">Cap</translation>
 <translation id="1085027414516521238">MetaMask</translation>
+<translation id="3905324891414560921">Proveïdor web3 per utilitzar Dapps</translation>
 <translation id="6554397389149987360">Fa servir un component de Hangouts per permetre que es comparteixi la pantalla i altres característiques al navegador.</translation>
 <translation id="1765684547504191670">Fa servir el component Media Router per habilitar Chromecast al navegador.</translation>
 <translation id="9156965752763025780">Els canvis s'aplicaran la propera vegada que reinicieu Brave.</translation>
@@ -165,6 +161,7 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="4394049700291259645">Desactiva</translation>
 <translation id="6469509880167172749">Envieu analítiques de productes completament privades a Brave automàticament</translation>
 <translation id="7090566321964540749">Aquesta informació anònima només permet a Brave d'estimar l'ús global de determinades característiques.</translation>
+<translation id="9111960429693394744">Voldrieu fer servir els moneders Crypto de Brave o MetaMask per Dapps?</translation>
 <translation id="7583735190612229830">Estableix criptomoneders per interactuar amb aquesta app i d'altres similars.</translation>
 <translation id="8337117349965899723">Fes servir un criptomoneder</translation>
 <translation id="5756155765711979898">Fes servir MetaMask</translation>
@@ -178,4 +175,9 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="4474155171896946103">Afegeix totes les pestanyes a les adreces d'interès...</translation>
 <translation id="2336228925368920074">Afegeix totes les pestanyes a les adreces d'interès...</translation>
 <translation id="796831669370432378">Per a afegir un marcador, cliqueu el botó del marcador al costat de la barra d'adreces</translation>
+<translation id="4989337484121655457">Es requereix accés complet al disc</translation>
+<translation id="8025559074845816210">Brave necessita un accés complet al disc per importar les vostres adreces d'interès des de Safari.</translation>
+<translation id="8515328844674404333">Obtingueu més informació sobre com es pot concedir Accés Complet al Disc des de les Preferències del Sistema.</translation>
+<translation id="6414878884710400018">Obriu les preferències del sistema</translation>
+<translation id="5570470519803062774">Configuració del Lloc i dels Escuts</translation>
 </translationbundle>
