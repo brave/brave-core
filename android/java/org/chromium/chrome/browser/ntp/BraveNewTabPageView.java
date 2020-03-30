@@ -19,6 +19,13 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import java.io.InputStream;
+import java.io.FileNotFoundException;
+import android.graphics.BitmapFactory;
+import android.support.design.widget.FloatingActionButton;
 
 import org.chromium.base.TraceEvent;
 import org.chromium.chrome.R;
@@ -43,7 +50,7 @@ import org.chromium.chrome.browser.ntp_background_images.NTPUtil;
 import org.chromium.chrome.browser.ntp_background_images.SponsoredTab;
 import org.chromium.chrome.browser.tab.TabAttributes;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
-import org.chromium.chrome.browser.util.ConfigurationUtils;
+import org.chromium.chrome.browser.ntp_background_images.SuperReferralShareDialogFragment;
 
 public class BraveNewTabPageView extends NewTabPageView {
     private static final String TAG = "BraveNewTabPageView";
@@ -154,6 +161,16 @@ public class BraveNewTabPageView extends NewTabPageView {
         mAdsBlockedTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_ads);
         mHttpsUpgradesTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_https);
         mEstTimeSavedTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_time);
+
+        FloatingActionButton mSuperReferralLogo = (FloatingActionButton) getNewTabPageLayout().findViewById(R.id.super_referral_logo);
+        mSuperReferralLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SuperReferralShareDialogFragment mSuperReferralShareDialogFragment = new SuperReferralShareDialogFragment();
+                // mSuperReferralShareDialogFragment.setCancelable(false);
+                mSuperReferralShareDialogFragment.show(mTabImpl.getActivity().getSupportFragmentManager(), "SuperReferralShareDialogFragment");
+            }
+        });
     }
 
     @Override
