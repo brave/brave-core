@@ -56,4 +56,6 @@ export const SettingsWrapper = styled<{}, 'div'>('div')`
   position: relative;
   display: flex;
   justify-content: flex-end;
+  margin-right: 8px;
+  border-right: 1px solid rgba(255, 255, 255, 0.6);
 `

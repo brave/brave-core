@@ -257,6 +257,8 @@ export const Navigation = styled<{}, 'nav'>('nav')`
   align-self: flex-end;
   display: flex;
   justify-content: flex-end;
+  height: 40px;
+  align-items: center;
 `
 
 interface IconButtonProps {
@@ -265,10 +267,10 @@ interface IconButtonProps {
 }
 
 export const IconLink = styled<{}, 'a'>('a')`
-  display: flex;
+  display: block;
   width: 24px;
   height: 24px;
-  margin: 12px;
+  margin: 8px;
   cursor: pointer;
   color: #ffffff;
   opacity: 0.7;
@@ -286,8 +288,7 @@ export const IconButton = styled<IconButtonProps, 'button'>('button')`
   height: 24px;
   padding: 0;
   border: none;
-  margin: 7px;
-  margin: ${p => p.isClickMenu ? 7 : 12}px;
+  margin: ${p => p.isClickMenu ? '7' : '0 12'}px;
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;
@@ -295,5 +296,27 @@ export const IconButton = styled<IconButtonProps, 'button'>('button')`
   transition: opacity 0.15s ease, filter 0.15s ease;
   &:hover {
     opacity: 0.95;
+  }
+`
+
+export const IconButtonSideText = styled<{}, 'label'>('label')`
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  margin-right: 24px;
+  color: #ffffff;
+  cursor: pointer;
+
+  &:focus-within {
+    /* get the browser defaults */
+    outline-color: rgba(0, 103, 244, 0.247);
+    outline-style: auto;
+    outline-width: 5px;
+  }
+
+  > ${IconButton} {
+    margin-left: 0;
+    /* No need to show the outline since the parent is handling it */
+    outline: 0;
   }
 `
