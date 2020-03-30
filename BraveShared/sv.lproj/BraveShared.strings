@@ -437,7 +437,7 @@
 "FindInPageDoneButtonAccessibilityLabel" = "Klar";
 
 /* Find %@ text in page. */
-"FindInPageFormat" = "Sök på \"%@\"";
+"FindInPageFormat" = "Sök på ”%@”";
 
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "Nästa resultat på sidan";
@@ -560,7 +560,7 @@
 "NewBookmarkTitle" = "Nytt bokmärke";
 
 /* Title for new folder popup */
-"NewFolder" = "Ny mapp ";
+"NewFolder" = "Ny mapp";
 
 /* Default name for creating a new folder. */
 "NewFolderDefaultName" = "Ny mapp";
@@ -653,7 +653,7 @@
 "OpenImageInNewTab" = "Öppna bild i ny flik";
 
 /* Context menu option for opening a link in a new private tab */
-"OpenNewPrivateTabButtonTitle" = "Öppna i ny privat flik ";
+"OpenNewPrivateTabButtonTitle" = "Öppna i ny privat flik";
 
 /* Context menu item for opening a link in a new tab */
 "OpenNewTabButtonTitle" = "Öppna i ny flik";
@@ -758,7 +758,7 @@
 "ReaderModeFontTypeButtonAccessibilityHint" = "Ändrar typsnitt.";
 
 /* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadingContentDisplayText" = "Laddar innehåll...";
+"ReaderModeLoadingContentDisplayText" = "Laddar innehåll ...";
 
 /* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
 "ReaderModeLoadOriginalLinkText" = "Ladda standardsida";
@@ -770,7 +770,7 @@
 "ReaderModeSmallerFontButtonAccessibilityLabel" = "Minska textstorleken";
 
 /* Button for smaller reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
-"ReaderModeSmallerFontButtonTitle" = "-";
+"ReaderModeSmallerFontButtonTitle" = "–";
 
 /* Accessibility hint for the color theme setting buttons in reader mode display settings */
 "ReaderModeThemeButtonAccessibilityHint" = "Ändrar färgtemat.";
@@ -968,7 +968,7 @@
 "SuppressAlertsActionTitle" = "Undertryck varningar";
 
 /* Sync settings section title */
-"Sync" = "Synkronisera ";
+"Sync" = "Synkronisera";
 
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "Lägg till fler enheter";
@@ -980,13 +980,13 @@
 "SyncAddDeviceScan" = "Synka kedje-QR-kod";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "På din andra mobila enhet navigerar du till synkronisering på panelen för inställningar och trycker på knappen \"Skanna synkroniseringskod\". Använd din kamera för att skanna QR koden nedan.\nBehandla den här koden som ett lösenord. Om någon får tag i den kan de läsa och ändra dina synkroniserade data.";
+"SyncAddDeviceScanDescription" = "På din andra mobila enhet navigerar du till synkronisering på panelen för inställningar och trycker på knappen ”Skanna synkroniseringskod”. Använd din kamera för att skanna QR koden nedan.\n\n Behandla den här koden som ett lösenord. Om någon får tag i den kan de läsa och ändra dina synkroniserade data.";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Ange synkroniseringskoden";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Navigera på din enhet till synkronisera på inställningspanelen och tryck på knappen ”%@”. Ange den synkroniserade kedjekoden som visas nedan.\nBehandla den här koden som ett lösenord. Om någon får tag i den kan de läsa och ändra dina synkroniserade data.";
+"SyncAddDeviceWordsDescription" = "Navigera på din enhet till synkronisera på inställningspanelen och tryck på knappen ”%@”. Ange den synkroniserade kedjekoden som visas nedan.\n\n Behandla den här koden som ett lösenord. Om någon får tag i den kan de läsa och ändra dina synkroniserade data.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Ande kodord";
@@ -1070,7 +1070,7 @@
 "SyncToDevice" = "Synkronisera med enhet";
 
 /* Sync to existing device description */
-"SyncToDeviceDescription" = "Använd en synkroniserad enhet för att gå till Inställningar > Synkronisering > Lägg till enhet och skanna koden som visas på skärmen.";
+"SyncToDeviceDescription" = "Använd en synkroniserad enhet för att gå till Inställningar -> Synkronisering. Lägg ”Add Device” och skanna koden som visas på skärmen.";
 
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "Det gick inte att skapa en ny synkroniseringsgrupp.";

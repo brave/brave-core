@@ -44,7 +44,7 @@
 "OBRewardsAgreementDetail" = "Ved å slå på Rewards, godtar du";
 
 /* Detail text for rewards agreement onboarding screen */
-"OBRewardsAgreementDetailLink" = "vilkårene for bruk";
+"OBRewardsAgreementDetailLink" = "Vilkår for bruk";
 
 /* Title for rewards agreement onboarding screen */
 "OBRewardsAgreementTitle" = "Brave Rewards";

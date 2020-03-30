@@ -7,3 +7,9 @@
 /* Error handling U2F registration. */
 "U2FRegistrationError" = "Galat dalam meregistrasi kunci keamanan Anda";
 
+/* Error message if list of Payment Instruments doesn't include BAT */
+"unsupportedInstrumentMessage" = "Instrumen pembayaran tidak didukung";
+
+/* Error message if the payment workflow is canceled by the user */
+"userCancelledMessage" = "Pengguna telah membatalkan";
+

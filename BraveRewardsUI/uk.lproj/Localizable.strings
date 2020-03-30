@@ -104,7 +104,7 @@
 "BraveRewardsAutoContributeSupportedSites" = "Підтримувані сайти";
 
 /* No comment provided by engineer. */
-"BraveRewardsAutoContributeToUnverifiedSites" = "Дозволити внески для неперевірених сайтів";
+"BraveRewardsAutoContributeToUnverifiedSites" = "Додати до списку непідтверджені вебсайти";
 
 /* No comment provided by engineer. */
 "BraveRewardsAutoContributeToVideos" = "Дозволити внески для відео";
@@ -499,6 +499,12 @@
 /* Message that is displayed when user disables auto-contribute */
 "DisabledAutoContributeMessage" = "Винагороджуйте авторів вмісту, що вам подобається. Ваш місячний платіж буде розподілено між сайтами, які ви відвідуєте.";
 
+/* Message that is displayed on monthly contribution section when user disables rewards */
+"DisabledMonthlyContributionMessage" = "Ваші щомісячні внески надсилатимуться кожні 30 днів.";
+
+/* Message that is displayed on tips section when user disables rewards */
+"DisabledTipsMessage" = "Якщо ви знайшли надзвичайний уміст, то можете надіслати авторові невеликий платіж. Якщо хочете, напишіть твіт, щоб розказати про нього іншим.";
+
 /* No comment provided by engineer. */
 "DisclaimerInformation" = "Натискаючи «Приєднатися до програми Rewards», ви підтверджуєте, що прочитали та погоджуєтеся з Умовами надання послуг та Політикою конфіденційності.";
 
@@ -513,6 +519,12 @@
 
 /* The title of the screen that shows a list of excluded sites for Auto-Contribute */
 "ExclusionListTitle" = "Сайти, що додано до винятків";
+
+/* No comment provided by engineer. */
+"LedgerDatabaseMigrationFailedBody" = "Під час завантаження інформації з Rewards сталася помилка. Інформація про ваші дії щодо винагород буде записуватися наново.\n\nЯкщо у вас виникли запитання або проблеми, зверніться до служби підтримки: support@brave.com";
+
+/* No comment provided by engineer. */
+"LedgerInitializationFailedTitle" = "На жаль, сталась якась помилка…";
 
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "Торкніться тут, щоб дізнатися більше.";
@@ -621,6 +633,51 @@
 
 /* No comment provided by engineer. */
 "RewardsOptInPrefix" = "Підготуйтеся до Інтернету майбутнього.";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsBody" = "Щоб купити цей товар, треба заробити токени. Для цього ввімкніть Brave Rewards.";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsButtonTitle" = "Увімкнути Brave Rewards";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsDisclaimer" = "Натискаючи кнопку «Увімкнути Brave Rewards», ви погоджуєтеся з Умовами використання Brave Rewards.";
+
+/* The hyperlinked portion of the copy: 'By tapping Enable Brave Rewards, you agree to Brave Reward’s Terms of Service.' */
+"SKUEnableRewardsDisclaimerLink" = "Умовами використання.";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsTitle" = "Щоб продовжити, увімкніть Brave Rewards.";
+
+/* '%@' becomes 'BAT' or 'BAP' based on region */
+"SKUPurchaseBuyWithBAT" = "Купити за %@";
+
+/* No comment provided by engineer. */
+"SKUPurchaseCompletedBody" = "Вітаємо з покупкою.";
+
+/* No comment provided by engineer. */
+"SKUPurchaseCompletedTitle" = "Усе готово!";
+
+/* First '%@' becomes 'Buy with BAT' or 'Buy with BAP' based on region. Second '%@' becomes 'Brave’s Terms of Sale' */
+"SKUPurchaseDisclaimerInformation" = "Натискаючи на кнопку «%1$@», ви погоджуєтеся із цим документом: %2$@.";
+
+/* Should be the same text as shown */
+"SKUPurchaseDisclaimerInformationLink" = "Умови продажу Brave";
+
+/* '%@' becomes 'BAT' or 'BAP' based on region' */
+"SKUPurchaseInsufficientFunds" = "Недостатньо %@ для цієї покупки.";
+
+/* No comment provided by engineer. */
+"SKUPurchaseItemSelected" = "Обраний товар";
+
+/* No comment provided by engineer. */
+"SKUPurchaseOrderTotal" = "Повна вартість замовлення";
+
+/* No comment provided by engineer. */
+"SKUPurchaseProcessing" = "Ваш платіж обробляється…";
+
+/* No comment provided by engineer. */
+"SKUPurchaseTitle" = "Підтвердити покупку";
 
 /* No comment provided by engineer. */
 "TermsOfServiceURL" = "Умови обслуговування";

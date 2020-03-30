@@ -104,7 +104,7 @@
 "BraveRewardsAutoContributeSupportedSites" = "Sites compatíveis";
 
 /* No comment provided by engineer. */
-"BraveRewardsAutoContributeToUnverifiedSites" = "Permitir contribuição para sites não verificados";
+"BraveRewardsAutoContributeToUnverifiedSites" = "Mostrar sites não verificados na lista";
 
 /* No comment provided by engineer. */
 "BraveRewardsAutoContributeToVideos" = "Permitir contribuição para vídeos";
@@ -499,6 +499,12 @@
 /* Message that is displayed when user disables auto-contribute */
 "DisabledAutoContributeMessage" = "Apoie os criadores do conteúdo que você adora. Seu pagamento mensal é distribuído entre os sites que você acessa.";
 
+/* Message that is displayed on monthly contribution section when user disables rewards */
+"DisabledMonthlyContributionMessage" = "Suas contribuições mensais serão enviadas a cada 30 dias.";
+
+/* Message that is displayed on tips section when user disables rewards */
+"DisabledTipsMessage" = "Faça uma contribuição imediatamente quando encontrar algo interessante. Se quiser, conte para seus seguidores com um tweet rápido.";
+
 /* No comment provided by engineer. */
 "DisclaimerInformation" = "Ao clicar em \"Participar do Rewards\", você indica que leu e concordou com os Termos de Serviço e a Política de Privacidade.";
 
@@ -513,6 +519,12 @@
 
 /* The title of the screen that shows a list of excluded sites for Auto-Contribute */
 "ExclusionListTitle" = "Sites excluídos";
+
+/* No comment provided by engineer. */
+"LedgerDatabaseMigrationFailedBody" = "Houve um problema ao carregar suas informações do Rewards. Seus detalhes de atividade do Rewards serão reiniciados.\n\nEm caso de problemas ou dúvidas, entre em contato com support@brave.com";
+
+/* No comment provided by engineer. */
+"LedgerInitializationFailedTitle" = "Algo deu errado…";
 
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "Toque aqui para saber mais.";
@@ -621,6 +633,51 @@
 
 /* No comment provided by engineer. */
 "RewardsOptInPrefix" = "Prepare-se para conhecer a nova internet.";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsBody" = "Para comprar este item, você precisa ganhar tokens. Para começar a ganhar, ative o Brave Rewards.";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsButtonTitle" = "Ativar o Brave Rewards";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsDisclaimer" = "Ao tocar em \"Ativar o Brave Rewards\", você concorda com os Termos de Serviço do Brave Rewards.";
+
+/* The hyperlinked portion of the copy: 'By tapping Enable Brave Rewards, you agree to Brave Reward’s Terms of Service.' */
+"SKUEnableRewardsDisclaimerLink" = "Termos de Serviço";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsTitle" = "Ative o Brave Rewards para continuar.";
+
+/* '%@' becomes 'BAT' or 'BAP' based on region */
+"SKUPurchaseBuyWithBAT" = "Comprar com %@";
+
+/* No comment provided by engineer. */
+"SKUPurchaseCompletedBody" = "Aproveite sua compra.";
+
+/* No comment provided by engineer. */
+"SKUPurchaseCompletedTitle" = "Tudo pronto!";
+
+/* First '%@' becomes 'Buy with BAT' or 'Buy with BAP' based on region. Second '%@' becomes 'Brave’s Terms of Sale' */
+"SKUPurchaseDisclaimerInformation" = "Ao clicar em \"%1$@\", você concorda com os %2$@.";
+
+/* Should be the same text as shown */
+"SKUPurchaseDisclaimerInformationLink" = "Termos de Compra do Brave";
+
+/* '%@' becomes 'BAT' or 'BAP' based on region' */
+"SKUPurchaseInsufficientFunds" = "Você não tem %@s suficientes para realizar esta compra.";
+
+/* No comment provided by engineer. */
+"SKUPurchaseItemSelected" = "Item selecionado";
+
+/* No comment provided by engineer. */
+"SKUPurchaseOrderTotal" = "Total do pedido";
+
+/* No comment provided by engineer. */
+"SKUPurchaseProcessing" = "Seu pagamento está sendo processado…";
+
+/* No comment provided by engineer. */
+"SKUPurchaseTitle" = "Confirmar compra";
 
 /* No comment provided by engineer. */
 "TermsOfServiceURL" = "Termos de Serviço";

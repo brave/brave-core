@@ -7,3 +7,9 @@
 /* Error handling U2F registration. */
 "U2FRegistrationError" = "セキュリティキーの登録エラー";
 
+/* Error message if list of Payment Instruments doesn't include BAT */
+"unsupportedInstrumentMessage" = "サポートされていない決済手段";
+
+/* Error message if the payment workflow is canceled by the user */
+"userCancelledMessage" = "ユーザが購入をキャンセルしました";
+
