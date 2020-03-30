@@ -13,8 +13,7 @@ import SiteRemovalNotification from './notification'
 import {
   ClockWidget as Clock,
   RewardsWidget as Rewards,
-  BinanceWidget as Binance,
-  WidgetStack
+  BinanceWidget as Binance
 } from '../../components/default'
 import * as Page from '../../components/default/page'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
@@ -28,6 +27,7 @@ import { isGridSitePinned } from '../../helpers/newTabUtils'
 import { SortEnd } from 'react-sortable-hoc'
 import * as newTabActions from '../../actions/new_tab_actions'
 import * as gridSitesActions from '../../actions/grid_sites_actions'
+import { getLocale } from '../../../common/locale'
 
 interface Props {
   newTabData: NewTab.State
@@ -188,21 +188,6 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
-  toggleShowCrypto = () => {
-    const { currentStackWidget, binanceState, showRewards } = this.props.newTabData
-
-    if (!binanceState.binanceSupported) {
-      this.props.saveShowRewards(!showRewards)
-      return
-    }
-
-    if (currentStackWidget === 'rewards') {
-      this.toggleShowRewards()
-    } else {
-      this.toggleShowBinance()
-    }
-  }
-
   toggleShowRewards = () => {
     const {
       currentStackWidget,
@@ -309,6 +294,14 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.setUserTLDAutoSet()
   }
 
+  learnMoreRewards = () => {
+    window.open('https://brave.com/brave-rewards/', '_blank')
+  }
+
+  learnMoreBinance = () => [
+    window.open('https://brave.com/binance/', '_blank')
+  ]
+
   getCryptoContent () {
     const { currentStackWidget } = this.props.newTabData
 
@@ -331,7 +324,7 @@ class NewTabPage extends React.Component<Props, State> {
 
   renderCryptoContent () {
     const { newTabData } = this.props
-    const { textDirection, showRewards, showBinance } = newTabData
+    const { showRewards, showBinance } = newTabData
 
     if (!showRewards && !showBinance) {
       return null
@@ -339,14 +332,7 @@ class NewTabPage extends React.Component<Props, State> {
 
     return (
       <Page.GridItemWidgetStack>
-        <WidgetStack
-          menuPosition={'left'}
-          textDirection={textDirection}
-          preventFocus={false}
-          hideWidget={this.toggleShowCrypto}
-        >
-          {this.getCryptoContent()}
-        </WidgetStack>
+        {this.getCryptoContent()}
       </Page.GridItemWidgetStack>
     )
   }
@@ -355,7 +341,8 @@ class NewTabPage extends React.Component<Props, State> {
     const { newTabData } = this.props
     const {
       rewardsState,
-      showRewards: rewardsWidgetOn
+      showRewards: rewardsWidgetOn,
+      textDirection
     } = newTabData
     const isShowingBrandedWallpaper = GetIsShowingBrandedWallpaper(this.props)
     const shouldShowBrandedWallpaperNotification = GetShouldShowBrandedWallpaperNotification(this.props)
@@ -368,6 +355,14 @@ class NewTabPage extends React.Component<Props, State> {
     return (
       <Rewards
         {...rewardsState}
+        widgetTitle={getLocale('rewardsWidgetBraveRewards')}
+        onLearnMore={this.learnMoreRewards}
+        menuPosition={'left'}
+        isCrypto={true}
+        isCryptoTab={!showContent}
+        textDirection={textDirection}
+        preventFocus={false}
+        hideWidget={this.toggleShowRewards}
         showContent={showContent}
         onShowContent={this.toggleStackWidget.bind(this, 'rewards')}
         onCreateWallet={this.createWallet}
@@ -386,7 +381,7 @@ class NewTabPage extends React.Component<Props, State> {
 
   renderBinanceWidget (showContent: boolean) {
     const { newTabData } = this.props
-    const { binanceState, showBinance } = newTabData
+    const { binanceState, showBinance, textDirection } = newTabData
 
     if (!showBinance || !binanceState.binanceSupported) {
       return null
@@ -395,6 +390,14 @@ class NewTabPage extends React.Component<Props, State> {
     return (
       <Binance
         {...binanceState}
+        isCrypto={true}
+        isCryptoTab={!showContent}
+        menuPosition={'left'}
+        widgetTitle={'Binance'}
+        onLearnMore={this.learnMoreBinance}
+        textDirection={textDirection}
+        preventFocus={false}
+        hideWidget={this.toggleShowBinance}
         showContent={showContent}
         onBuyCrypto={this.buyCrypto}
         onBinanceUserTLD={this.onBinanceUserTLD}
@@ -447,6 +450,7 @@ class NewTabPage extends React.Component<Props, State> {
           {newTabData.showStats &&
           <Page.GridItemStats>
             <Stats
+              widgetTitle={getLocale('statsTitle')}
               textDirection={newTabData.textDirection}
               stats={newTabData.stats}
               hideWidget={this.toggleShowStats}
@@ -457,6 +461,7 @@ class NewTabPage extends React.Component<Props, State> {
           {newTabData.showClock &&
           <Page.GridItemClock>
             <Clock
+              widgetTitle={getLocale('clockTitle')}
               textDirection={newTabData.textDirection}
               hideWidget={this.toggleShowClock}
               menuPosition={'left'}
@@ -469,6 +474,7 @@ class NewTabPage extends React.Component<Props, State> {
               <Page.GridItemTopSites>
                 <TopSitesGrid
                   actions={actions}
+                  widgetTitle={getLocale('topSitesTitle')}
                   gridSites={gridSitesData.gridSites}
                   menuPosition={'right'}
                   hideWidget={this.toggleShowTopSites}

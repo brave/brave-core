@@ -13,6 +13,10 @@ export interface WidgetProps {
   hideWidget?: HideWidgetFunction
   preventFocus?: boolean
   textDirection: string
+  isCrypto?: boolean
+  isCryptoTab?: boolean
+  widgetTitle?: string
+  onLearnMore?: () => void
 }
 
 export interface WidgetState {
@@ -32,20 +36,27 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
       this.setState({ widgetMenuPersist: !this.state.widgetMenuPersist })
     }
 
+    persistWidgetHover = () => {
+      this.setState({ widgetMenuPersist: true })
+    }
+
     unpersistWidgetHover = () => {
       this.setState({ widgetMenuPersist: false })
     }
 
     render () {
-      const { menuPosition, hideWidget, textDirection, preventFocus } = this.props
+      const { menuPosition, hideWidget, textDirection, preventFocus, isCrypto, isCryptoTab, widgetTitle, onLearnMore } = this.props
       const { widgetMenuPersist } = this.state
 
       return (
         <StyledWidgetContainer
           menuPosition={menuPosition}
           textDirection={textDirection}
+          onMouseLeave={this.unpersistWidgetHover}
         >
           <StyledWidget
+            isCrypto={isCrypto}
+            isCryptoTab={isCryptoTab}
             widgetMenuPersist={widgetMenuPersist}
             preventFocus={preventFocus}
           >
@@ -53,12 +64,15 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
           </StyledWidget>
           {hideWidget && !preventFocus &&
           <WidgetMenu
+            widgetTitle={widgetTitle}
+            onLearnMore={onLearnMore}
             widgetMenuPersist={widgetMenuPersist}
             toggleWidgetHover={this.toggleWidgetHover}
             textDirection={textDirection}
             menuPosition={menuPosition}
             hideWidget={hideWidget as HideWidgetFunction}
             unpersistWidgetHover={this.unpersistWidgetHover}
+            onMouseEnter={this.persistWidgetHover}
           />
           }
         </StyledWidgetContainer>

@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import createWidget from '../widget/index'
 import {
   WidgetWrapper,
   Copy,
@@ -51,7 +52,7 @@ interface Props {
   onSetUserTLDAutoSet: () => void
 }
 
-export default class Binance extends React.PureComponent<Props, State> {
+class Binance extends React.PureComponent<Props, State> {
   private fiatList: string[]
   private usCurrencies: string[]
   private comCurrencies: string[]
@@ -291,3 +292,5 @@ export default class Binance extends React.PureComponent<Props, State> {
     )
   }
 }
+
+export const BinanceWidget = createWidget(Binance)
