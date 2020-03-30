@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/tracing/settings/TracingSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/tracing/settings/TracingSettings.java
+index a8b0f537d404a2c430b9ae90c16d993d52ebb14c..56910f68bb1894f1da4c913c14005d6c3c25f310 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/tracing/settings/TracingSettings.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/tracing/settings/TracingSettings.java
+@@ -30,7 +30,7 @@ import java.util.Set;
+  * Settings fragment that shows options for recording a performance trace.
+  */
+ public class TracingSettings
+-        extends PreferenceFragmentCompat implements TracingController.Observer {
++        extends org.chromium.chrome.browser.settings.BravePreferenceFragment implements TracingController.Observer {
+     static final String NON_DEFAULT_CATEGORY_PREFIX = "disabled-by-default-";
+ 
+     @VisibleForTesting
