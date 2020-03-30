@@ -22,7 +22,7 @@
 
 SpeedreaderButton::SpeedreaderButton(views::ButtonListener* listener, bool on)
     : ToolbarButton(listener), on_(on) {
-  SetID(VIEW_ID_SPEEDREADER_BUTTON);
+  SetID(BRAVE_VIEW_ID_SPEEDREADER_BUTTON);
   set_tag(IDC_TOGGLE_SPEEDREADER);
   SetAccessibleName(l10n_util::GetStringUTF16(IDS_ACCNAME_FORWARD));
 }

@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/view_ids.h b/chrome/browser/ui/view_ids.h
+index f3c70a6e6686d460f6631606b3d8a72698634363..7d3b4887ea1b8e12a0de6a41feb5eb612292391d 100644
+--- a/chrome/browser/ui/view_ids.h
++++ b/chrome/browser/ui/view_ids.h
+@@ -104,6 +104,8 @@ enum ViewID {
+   // IDs for the WebUI-based tab strip. See https://crbug.com/989131.
+   VIEW_ID_WEBUI_TAB_STRIP_TAB_COUNTER,
+   VIEW_ID_WEBUI_TAB_STRIP_NEW_TAB_BUTTON,
++
++  BRAVE_VIEW_IDS
+ };
+ 
+ #endif  // CHROME_BROWSER_UI_VIEW_IDS_H_
