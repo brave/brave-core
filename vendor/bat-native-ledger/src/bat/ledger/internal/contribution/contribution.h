@@ -90,9 +90,16 @@ class Contribution {
 
   void SKUAutoContribution(
       const std::string& contribution_id,
-      ledger::ExternalWalletPtr wallet);
+      ledger::ExternalWalletPtr wallet,
+      ledger::ResultCallback callback);
 
-  void StartUnblinded(const std::string& contribution_id);
+  void StartUnblinded(
+      const std::string& contribution_id,
+      ledger::ResultCallback callback);
+
+  void RetryUnblinded(
+      const std::string& contribution_id,
+      ledger::ResultCallback callback);
 
  private:
   void StartAutoContribute(const ledger::Result result);
@@ -102,6 +109,10 @@ class Contribution {
   void ProcessContributionQueue();
 
   void OnProcessContributionQueue(ledger::ContributionQueuePtr info);
+
+  void CheckNotCompletedContributions();
+
+  void NotCompletedContributions(ledger::ContributionInfoList list);
 
   void OnBalance(
       const std::string& contribution_queue,
@@ -121,10 +132,10 @@ class Contribution {
       const std::string& queue_string);
 
   void OnQueueSaved(
-    const ledger::Result result,
-    const std::string& wallet_type,
-    const ledger::Balance& balance,
-    const std::string& queue_string);
+      const ledger::Result result,
+      const std::string& wallet_type,
+      const ledger::Balance& balance,
+      const std::string& queue_string);
 
   void Process(
       ledger::ContributionQueuePtr queue,
@@ -133,6 +144,28 @@ class Contribution {
   void DeleteContributionQueue(const uint64_t id);
 
   void OnDeleteContributionQueue(const ledger::Result result);
+
+  void RetryUnblindedContribution(
+      ledger::ContributionInfoPtr contribution,
+      ledger::ResultCallback callback);
+
+  void Result(
+      const ledger::Result result,
+      const std::string& contribution_id);
+
+  void FinishContribution(
+      ledger::ContributionInfoPtr contribution,
+      const ledger::Result result);
+
+  void SetRetryTimer(
+      const std::string& contribution_id,
+      const uint64_t& start_timer_in = 0);
+
+  void SetRetryCounter(ledger::ContributionInfoPtr contribution);
+
+  void Retry(
+      const ledger::Result result,
+      const std::string& contribution_string);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<Unverified> unverified_;

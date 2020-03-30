@@ -28,16 +28,24 @@ class ContributionExternalWallet {
 
   ~ContributionExternalWallet();
 
-  void Process(const std::string& contribution_id);
+  void Process(
+      const std::string& contribution_id,
+      ledger::ResultCallback callback);
+
+  void Retry(
+      ledger::ContributionInfoPtr contribution,
+      ledger::ResultCallback callback);
 
  private:
   void OnExternalWallets(
+      std::map<std::string, ledger::ExternalWalletPtr> wallets,
       const std::string& contribution_id,
-      std::map<std::string, ledger::ExternalWalletPtr> wallets);
+      ledger::ResultCallback callback);
 
   void ContributionInfo(
       ledger::ContributionInfoPtr contribution,
-      const ledger::ExternalWallet& wallet);
+      const ledger::ExternalWallet& wallet,
+      ledger::ResultCallback callback);
 
   void OnAC(
       const ledger::Result result,
@@ -51,13 +59,14 @@ class ContributionExternalWallet {
       const std::string& contribution_id,
       const double amount,
       const ledger::ExternalWallet& wallet,
-      const ledger::RewardsType type);
+      const ledger::RewardsType type,
+      const bool single_publisher,
+      ledger::ResultCallback callback);
 
   void Completed(
       const ledger::Result result,
-      const double amount,
-      const std::string& contribution_id,
-      const ledger::RewardsType type);
+      const bool single_publisher,
+      ledger::ResultCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   Contribution* contribution_;   // NOT OWNED

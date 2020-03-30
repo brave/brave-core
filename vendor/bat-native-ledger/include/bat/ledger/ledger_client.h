@@ -88,6 +88,7 @@ using TransactionCallback =
     std::function<void(const ledger::Result, const std::string&)>;
 
 using GetSKUOrderCallback = std::function<void(SKUOrderPtr)>;
+using GetSKUTransactionCallback = std::function<void(SKUTransactionPtr)>;
 
 class LEDGER_EXPORT LedgerClient {
  public:

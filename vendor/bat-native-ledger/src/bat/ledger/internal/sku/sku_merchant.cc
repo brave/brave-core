@@ -7,59 +7,41 @@
 
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/common/bind_util.h"
+#include "bat/ledger/internal/sku/sku_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/sku/sku.h"
+#include "bat/ledger/internal/sku/sku_merchant.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
 
 namespace braveledger_sku {
 
-SKU::SKU(bat_ledger::LedgerImpl* ledger) :
+SKUMerchant::SKUMerchant(bat_ledger::LedgerImpl* ledger) :
     ledger_(ledger),
-    order_(std::make_unique<SKUOrder>(ledger)),
-    transaction_(std::make_unique<SKUTransaction>(ledger)) {
+    common_(std::make_unique<SKUCommon>(ledger)) {
   DCHECK(ledger_);
 }
 
-SKU::~SKU() = default;
+SKUMerchant::~SKUMerchant() = default;
 
-void SKU::Brave(
-    const std::string& destination,
+void SKUMerchant::Process(
     const std::vector<ledger::SKUOrderItem>& items,
-    const std::string& contribution_id,
     ledger::ExternalWalletPtr wallet,
-    ledger::SKUOrderCallback callback) {
-  auto create_callback = std::bind(&SKU::GetOrder,
+    ledger::SKUOrderCallback callback,
+    const std::string& contribution_id) {
+  auto create_callback = std::bind(&SKUMerchant::OrderCreated,
       this,
       _1,
       _2,
-      destination,
       *wallet,
       callback);
 
-  order_->Create(items, create_callback, contribution_id);
+  common_->CreateOrder(items, create_callback);
 }
 
-void SKU::Process(
-    const std::vector<ledger::SKUOrderItem>& items,
-    ledger::ExternalWalletPtr wallet,
-    ledger::SKUOrderCallback callback) {
-  auto create_callback = std::bind(&SKU::GetOrder,
-      this,
-      _1,
-      _2,
-      "",
-      *wallet,
-      callback);
-
-  order_->Create(items, create_callback, "");
-}
-
-void SKU::GetOrder(
+void SKUMerchant::OrderCreated(
     const ledger::Result result,
     const std::string& order_id,
-    const std::string& destination,
     const ledger::ExternalWallet& wallet,
     ledger::SKUOrderCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
@@ -68,30 +50,28 @@ void SKU::GetOrder(
     return;
   }
 
-  auto get_callback = std::bind(&SKU::CreateTransaction,
+  auto get_callback = std::bind(&SKUMerchant::OnOrder,
       this,
       _1,
-      destination,
       wallet,
       callback);
 
   ledger_->GetSKUOrder(order_id, get_callback);
 }
 
-void SKU::CreateTransaction(
+void SKUMerchant::OnOrder(
     ledger::SKUOrderPtr order,
-    const std::string& destination,
     const ledger::ExternalWallet& wallet,
     ledger::SKUOrderCallback callback) {
   if (!order) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Order not found";
-    callback(ledger::Result::LEDGER_ERROR, "");
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Order is null";
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
-  if (destination.empty() && wallet.type == ledger::kWalletUphold) {
+  if (wallet.type == ledger::kWalletUphold) {
     auto publisher_callback =
-        std::bind(&SKU::OnServerPublisherInfo,
+        std::bind(&SKUMerchant::OnServerPublisherInfo,
           this,
           _1,
           braveledger_bind_util::FromSKUOrderToString(std::move(order)),
@@ -102,20 +82,10 @@ void SKU::CreateTransaction(
     return;
   }
 
-  auto create_callback = std::bind(&SKU::OnTransactionCompleted,
-      this,
-      _1,
-      order->order_id,
-      callback);
-
-  transaction_->Create(
-      std::move(order),
-      destination,
-      wallet,
-      create_callback);
+  common_->CreateTransaction(std::move(order), "", wallet, callback);
 }
 
-void SKU::OnServerPublisherInfo(
+void SKUMerchant::OnServerPublisherInfo(
     ledger::ServerPublisherInfoPtr info,
     const std::string& order_string,
     const ledger::ExternalWallet& wallet,
@@ -133,21 +103,15 @@ void SKU::OnServerPublisherInfo(
     return;
   }
 
-  CreateTransaction(std::move(order), info->address, wallet, callback);
+  common_->CreateTransaction(std::move(order), info->address, wallet, callback);
 }
 
-void SKU::OnTransactionCompleted(
-    const ledger::Result result,
+void SKUMerchant::Retry(
     const std::string& order_id,
+    ledger::ExternalWalletPtr wallet,
     ledger::SKUOrderCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Order status was not updated";
-    callback(ledger::Result::LEDGER_ERROR, "");
-    return;
-  }
-
-  callback(ledger::Result::LEDGER_OK, order_id);
+  // We will implement retry logic when we will have more complex flows,
+  // right now there is nothing to retry
 }
 
 }  // namespace braveledger_sku

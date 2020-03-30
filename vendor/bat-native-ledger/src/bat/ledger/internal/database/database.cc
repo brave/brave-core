@@ -123,10 +123,19 @@ void Database::GetContributionReport(
   contribution_info_->GetContributionReport(month, year, callback);
 }
 
-void Database::GetIncompleteContributions(
-    const ledger::ContributionProcessor processor,
+void Database::GetNotCompletedContributions(
     ledger::ContributionInfoListCallback callback) {
-  contribution_info_->GetIncompletedRecords(processor, callback);
+  contribution_info_->GetNotCompletedRecords(callback);
+}
+
+void Database::UpdateContributionInfoStep(
+    const std::string& contribution_id,
+    const ledger::ContributionStep step,
+    ledger::ResultCallback callback) {
+  contribution_info_->UpdateStep(
+      contribution_id,
+      step,
+      callback);
 }
 
 void Database::UpdateContributionInfoStepAndCount(
@@ -413,6 +422,22 @@ void Database::GetSKUOrder(
   sku_order_->GetRecord(order_id, callback);
 }
 
+void Database::GetSKUOrderByContributionId(
+    const std::string& contribution_id,
+    ledger::GetSKUOrderCallback callback) {
+  sku_order_->GetRecordByContributionId(contribution_id, callback);
+}
+
+void Database::SaveContributionIdForSKUOrder(
+      const std::string& order_id,
+      const std::string& contribution_id,
+      ledger::ResultCallback callback) {
+  sku_order_->SaveContributionIdForSKUOrder(
+      order_id,
+      contribution_id,
+      callback);
+}
+
 /**
  * SKU TRANSACTION
  */
@@ -430,6 +455,12 @@ void Database::SaveSKUExternalTransaction(
       transaction_id,
       external_transaction_id,
       callback);
+}
+
+void Database::GetSKUTransactionByOrderId(
+    const std::string& order_id,
+    ledger::GetSKUTransactionCallback callback) {
+  sku_transaction_->GetRecordByOrderId(order_id, callback);
 }
 
 /**

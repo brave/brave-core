@@ -6,65 +6,28 @@
 #ifndef BRAVELEDGER_SKU_H_
 #define BRAVELEDGER_SKU_H_
 
-#include <memory>
+#include <map>
 #include <string>
 #include <vector>
 
-#include "bat/ledger/internal/sku/sku_order.h"
-#include "bat/ledger/internal/sku/sku_transaction.h"
 #include "bat/ledger/ledger.h"
-
-namespace bat_ledger {
-class LedgerImpl;
-}
 
 namespace braveledger_sku {
 
 class SKU {
  public:
-  explicit SKU(bat_ledger::LedgerImpl* ledger);
-  ~SKU();
+  virtual ~SKU() = default;
 
-  void Brave(
-      const std::string& destination,
-      const std::vector<ledger::SKUOrderItem>& items,
-      const std::string& contribution_id,
+  virtual void Retry(
+      const std::string& order_id,
       ledger::ExternalWalletPtr wallet,
-      ledger::SKUOrderCallback callback);
+      ledger::SKUOrderCallback callback) = 0;
 
-  void Process(
+  virtual void Process(
       const std::vector<ledger::SKUOrderItem>& items,
       ledger::ExternalWalletPtr wallet,
-      ledger::SKUOrderCallback callback);
-
- private:
-  void GetOrder(
-      const ledger::Result result,
-      const std::string& order_id,
-      const std::string& destination,
-      const ledger::ExternalWallet& wallet,
-      ledger::SKUOrderCallback callback);
-
-  void CreateTransaction(
-      ledger::SKUOrderPtr order,
-      const std::string& destination,
-      const ledger::ExternalWallet& wallet,
-      ledger::SKUOrderCallback callback);
-
-  void OnServerPublisherInfo(
-      ledger::ServerPublisherInfoPtr info,
-      const std::string& order_string,
-      const ledger::ExternalWallet& wallet,
-      ledger::SKUOrderCallback callback);
-
-  void OnTransactionCompleted(
-      const ledger::Result result,
-      const std::string& order_id,
-      ledger::SKUOrderCallback callback);
-
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  std::unique_ptr<SKUOrder> order_;
-  std::unique_ptr<SKUTransaction> transaction_;
+      ledger::SKUOrderCallback callback,
+      const std::string& contribution_id = "") = 0;
 };
 
 }  // namespace braveledger_sku

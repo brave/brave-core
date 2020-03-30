@@ -276,25 +276,30 @@ bool GenerateSuggestionMock(
 }
 
 std::string GenerateRedeemTokensPayload(const CredentialsRedeem& redeem) {
-  base::Value suggestion(base::Value::Type::DICTIONARY);
-  suggestion.SetStringKey(
+  base::Value data(base::Value::Type::DICTIONARY);
+  data.SetStringKey(
       "type",
       ConvertRewardTypeToString(redeem.type));
   if (!redeem.order_id.empty()) {
-    suggestion.SetStringKey("orderId", redeem.order_id);
+    data.SetStringKey("orderId", redeem.order_id);
   }
-  suggestion.SetStringKey("channel", redeem.publisher_key);
+  data.SetStringKey("channel", redeem.publisher_key);
 
-  std::string suggestion_json;
-  base::JSONWriter::Write(suggestion, &suggestion_json);
-  std::string suggestion_encoded;
-  base::Base64Encode(suggestion_json, &suggestion_encoded);
+  const bool is_sku =
+      redeem.processor == ledger::ContributionProcessor::UPHOLD ||
+      redeem.processor == ledger::ContributionProcessor::BRAVE_USER_FUNDS;
+
+  std::string data_json;
+  base::JSONWriter::Write(data, &data_json);
+  std::string data_encoded;
+  base::Base64Encode(data_json, &data_encoded);
 
   base::Value credentials(base::Value::Type::LIST);
-  GenerateCredentials(redeem.token_list, suggestion_encoded, &credentials);
+  GenerateCredentials(redeem.token_list, data_encoded, &credentials);
 
+  const std::string data_key = is_sku ? "vote" : "suggestion";
   base::Value payload(base::Value::Type::DICTIONARY);
-  payload.SetStringKey("suggestion", suggestion_encoded);
+  payload.SetStringKey(data_key, data_encoded);
   payload.SetKey("credentials", std::move(credentials));
 
   std::string json;

@@ -7,9 +7,18 @@
 
 #include "base/json/json_reader.h"
 #include "base/values.h"
+#include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/sku/sku_util.h"
+#include "bat/ledger/internal/uphold/uphold_util.h"
 
 namespace braveledger_sku {
+
+const char kAnonCardDestinationDev[] =
+    "9094c3f2-b3ae-438f-bd59-92aaad92de5c";
+const char kAnonCardDestinationStaging[] =
+    "6654ecb0-6079-4f6c-ba58-791cc890a561";
+const char kAnonCardDestinationProduction[] =
+    "4cad865e-fea3-486c-a0d6-07c1f187e282";
 
 ledger::SKUOrderPtr ParseOrderCreateResponse(
     const std::string& response,
@@ -108,6 +117,36 @@ std::string ConvertTransactionTypeToString(
       return "";
     }
   }
+}
+
+std::string GetBraveDestination(const std::string& wallet_type) {
+  if (wallet_type == ledger::kWalletUphold) {
+    return braveledger_uphold::GetACAddress();
+  }
+
+  if (wallet_type == ledger::kWalletAnonymous) {
+    return GetAnonCardDestination();
+  }
+
+  NOTREACHED();
+  return "";
+}
+
+std::string GetAnonCardDestination() {
+  if (ledger::_environment == ledger::Environment::PRODUCTION) {
+    return kAnonCardDestinationProduction;
+  }
+
+  if (ledger::_environment == ledger::Environment::STAGING) {
+    return kAnonCardDestinationStaging;
+  }
+
+  if (ledger::_environment == ledger::Environment::DEVELOPMENT) {
+    return kAnonCardDestinationDev;
+  }
+
+  NOTREACHED();
+  return kAnonCardDestinationDev;
 }
 
 }  // namespace braveledger_sku

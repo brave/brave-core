@@ -164,4 +164,68 @@ void DatabaseSKUTransaction::SaveExternalTransaction(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
+void DatabaseSKUTransaction::GetRecordByOrderId(
+    const std::string& order_id,
+    ledger::GetSKUTransactionCallback callback) {
+  auto transaction = ledger::DBTransaction::New();
+
+  const std::string query = base::StringPrintf(
+    "SELECT transaction_id, order_id, external_transaction_id, amount, type, "
+    "status FROM %s WHERE order_id = ?",
+    kTableName);
+
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::READ;
+  command->command = query;
+
+  BindString(command.get(), 0, order_id);
+
+  command->record_bindings = {
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::INT_TYPE,
+      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      ledger::DBCommand::RecordBindingType::INT_TYPE
+  };
+
+  transaction->commands.push_back(std::move(command));
+
+  auto transaction_callback = std::bind(&DatabaseSKUTransaction::OnGetRecord,
+      this,
+      _1,
+      callback);
+
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+}
+
+void DatabaseSKUTransaction::OnGetRecord(
+    ledger::DBCommandResponsePtr response,
+    ledger::GetSKUTransactionCallback callback) {
+  if (!response ||
+      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+    callback(nullptr);
+    return;
+  }
+
+  if (response->result->get_records().size() != 1) {
+    callback(nullptr);
+    return;
+  }
+
+  auto* record = response->result->get_records()[0].get();
+
+  auto info = ledger::SKUTransaction::New();
+  info->transaction_id = GetStringColumn(record, 0);
+  info->order_id = GetStringColumn(record, 1);
+  info->external_transaction_id = GetStringColumn(record, 2);
+  info->amount = GetDoubleColumn(record, 3);
+  info->type =
+      static_cast<ledger::SKUTransactionType>(GetIntColumn(record, 4));
+  info->status =
+      static_cast<ledger::SKUTransactionStatus>(GetIntColumn(record, 5));
+
+  callback(std::move(info));
+}
+
 }  // namespace braveledger_database

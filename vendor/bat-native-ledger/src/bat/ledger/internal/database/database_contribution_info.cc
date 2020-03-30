@@ -762,22 +762,19 @@ void DatabaseContributionInfo::OnGetContributionReportPublishers(
   callback(std::move(report_list));
 }
 
-void DatabaseContributionInfo::GetIncompletedRecords(
-    const ledger::ContributionProcessor processor,
+void DatabaseContributionInfo::GetNotCompletedRecords(
     ledger::ContributionInfoListCallback callback) {
   auto transaction = ledger::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT ci.contribution_id, ci.amount, ci.type, ci.step, ci.retry_count, "
       "ci.processor "
-      "FROM %s as ci WHERE ci.step > 0 AND ci.processor = ?",
+      "FROM %s as ci WHERE ci.step > 0",
       kTableName);
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::READ;
   command->command = query;
-
-  BindInt(command.get(), 0, static_cast<int>(processor));
 
   command->record_bindings = {
       ledger::DBCommand::RecordBindingType::STRING_TYPE,
@@ -859,6 +856,37 @@ void DatabaseContributionInfo::OnGetListPublishers(
   }
 
   callback(std::move(contribution_list));
+}
+
+void DatabaseContributionInfo::UpdateStep(
+      const std::string& contribution_id,
+      const ledger::ContributionStep step,
+      ledger::ResultCallback callback) {
+  if (contribution_id.empty()) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  auto transaction = ledger::DBTransaction::New();
+
+  const std::string query = base::StringPrintf(
+    "UPDATE %s SET step=?, retry_count=0 WHERE contribution_id = ?",
+    kTableName);
+
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::RUN;
+  command->command = query;
+
+  BindInt(command.get(), 0, static_cast<int>(step));
+  BindString(command.get(), 1, contribution_id);
+
+  transaction->commands.push_back(std::move(command));
+
+  auto transaction_callback = std::bind(&OnResultCallback,
+      _1,
+      callback);
+
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
 void DatabaseContributionInfo::UpdateStepAndCount(

@@ -11,7 +11,10 @@ enum ContributionStep {
   STEP_COMPLETED = -1,
   STEP_NO = 0,
   STEP_START = 1,
-  STEP_SUGGESTIONS = 2
+  STEP_PREPARE = 2,
+  STEP_RESERVE = 3,
+  STEP_EXTERNAL_TRANSACTION = 4,
+  STEP_CREDS = 5
 };
 
 enum ContributionProcessor {
@@ -243,7 +246,8 @@ enum Result {
   ALREADY_EXISTS = 26,
   SAFETYNET_ATTESTATION_FAILED = 27,
   DATABASE_INIT_FAILED = 28,
-  RETRY = 29
+  RETRY = 29,
+  RETRY_SHORT = 30
 };
 
 enum PublisherStatus {
@@ -463,11 +467,10 @@ struct CredsBatch {
 
 enum SKUOrderStatus {
   NONE = 0,
-  CREATED = 1,
-  PENDING = 2,
-  PAID = 3,
-  FULFILLED = 4,
-  CANCELED = 5
+  PENDING = 1,
+  PAID = 2,
+  FULFILLED = 3,
+  CANCELED = 4
 };
 
 struct SKUOrder {

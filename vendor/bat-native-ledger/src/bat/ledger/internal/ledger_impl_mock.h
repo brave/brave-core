@@ -532,6 +532,11 @@ class MockLedgerImpl : public LedgerImpl {
       const std::string& contribution_id,
       ledger::GetContributionInfoCallback callback));
 
+  MOCK_METHOD3(UpdateContributionInfoStep, void(
+      const std::string& contribution_id,
+      const ledger::ContributionStep step,
+      ledger::ResultCallback callback));
+
   MOCK_METHOD4(UpdateContributionInfoStepAndCount, void(
       const std::string& contribution_id,
       const ledger::ContributionStep step,

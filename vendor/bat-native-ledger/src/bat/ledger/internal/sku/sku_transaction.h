@@ -28,6 +28,11 @@ class SKUTransaction {
       const ledger::ExternalWallet& wallet,
       ledger::ResultCallback callback);
 
+  void SendExternalTransaction(
+      const ledger::Result result,
+      const ledger::SKUTransaction& transaction,
+      ledger::ResultCallback callback);
+
  private:
   void OnTransactionSaved(
       const ledger::Result result,
@@ -43,11 +48,6 @@ class SKUTransaction {
       ledger::ResultCallback callback);
 
   void OnSaveSKUExternalTransaction(
-      const ledger::Result result,
-      const ledger::SKUTransaction& transaction,
-      ledger::ResultCallback callback);
-
-  void SendExternalTransaction(
       const ledger::Result result,
       const ledger::SKUTransaction& transaction,
       ledger::ResultCallback callback);

@@ -266,7 +266,7 @@ void CredentialsSKU::OnFetchSignedCreds(
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
   if (response_status_code == net::HTTP_ACCEPTED) {
-    callback(ledger::Result::RETRY);
+    callback(ledger::Result::RETRY_SHORT);
     return;
   }
 

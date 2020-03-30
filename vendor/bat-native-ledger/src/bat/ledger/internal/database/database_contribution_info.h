@@ -42,9 +42,12 @@ class DatabaseContributionInfo: public DatabaseTable {
       const int year,
       ledger::GetContributionReportCallback callback);
 
-  void GetIncompletedRecords(
-      const ledger::ContributionProcessor processor,
-      ledger::ContributionInfoListCallback callback);
+  void GetNotCompletedRecords(ledger::ContributionInfoListCallback callback);
+
+  void UpdateStep(
+      const std::string& contribution_id,
+      const ledger::ContributionStep step,
+      ledger::ResultCallback callback);
 
   void UpdateStepAndCount(
       const std::string& contribution_id,

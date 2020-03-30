@@ -233,4 +233,72 @@ void DatabaseSKUOrder::OnGetRecordItems(
   callback(std::move(order));
 }
 
+void DatabaseSKUOrder::GetRecordByContributionId(
+    const std::string& contribution_id,
+    ledger::GetSKUOrderCallback callback) {
+  auto transaction = ledger::DBTransaction::New();
+
+  const std::string query = base::StringPrintf(
+      "SELECT order_id, total_amount, merchant_id, location, status, "
+      "created_at FROM %s WHERE contribution_id = ?",
+      kTableName);
+
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::READ;
+  command->command = query;
+
+  BindString(command.get(), 0, contribution_id);
+
+  command->record_bindings = {
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::INT_TYPE,
+      ledger::DBCommand::RecordBindingType::INT64_TYPE
+  };
+
+  transaction->commands.push_back(std::move(command));
+
+  auto transaction_callback = std::bind(&DatabaseSKUOrder::OnGetRecord,
+      this,
+      _1,
+      callback);
+
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+}
+
+void DatabaseSKUOrder::SaveContributionIdForSKUOrder(
+    const std::string& order_id,
+    const std::string& contribution_id,
+    ledger::ResultCallback callback) {
+  if (order_id.empty() || contribution_id.empty()) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+        << "Order/contribution id is empty";
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  auto transaction = ledger::DBTransaction::New();
+
+  const std::string query = base::StringPrintf(
+      "UPDATE %s SET contribution_id = ? WHERE order_id = ?",
+      kTableName);
+
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::RUN;
+  command->command = query;
+
+  BindString(command.get(), 0, contribution_id);
+  BindString(command.get(), 1, order_id);
+
+  transaction->commands.push_back(std::move(command));
+
+  auto transaction_callback = std::bind(&OnResultCallback,
+      _1,
+      callback);
+
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+}
+
 }  // namespace braveledger_database

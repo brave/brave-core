@@ -27,8 +27,7 @@ SKUOrder::~SKUOrder() = default;
 
 void SKUOrder::Create(
     const std::vector<ledger::SKUOrderItem>& items,
-    ledger::SKUOrderCallback callback,
-    const std::string& contribution_id) {
+    ledger::SKUOrderCallback callback) {
   base::Value order_items(base::Value::Type::LIST);
   for (const auto& item : items) {
     base::Value order_item(base::Value::Type::DICTIONARY);
@@ -49,7 +48,6 @@ void SKUOrder::Create(
       _2,
       _3,
       items,
-      contribution_id,
       callback);
 
   const std::string url = braveledger_request_util::GetCreateOrderURL();
@@ -68,7 +66,6 @@ void SKUOrder::OnCreate(
     const std::string& response,
     const std::map<std::string, std::string>& headers,
     const std::vector<ledger::SKUOrderItem>& order_items,
-    const std::string& contribution_id,
     ledger::SKUOrderCallback callback) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
   if (response_status_code != net::HTTP_CREATED) {
@@ -84,8 +81,6 @@ void SKUOrder::OnCreate(
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
-
-  order->contribution_id = contribution_id;
 
   auto save_callback = std::bind(&SKUOrder::OnCreateSave,
       this,

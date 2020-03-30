@@ -28,12 +28,20 @@ class DatabaseSKUTransaction: public DatabaseTable {
       const std::string& external_transaction_id,
       ledger::ResultCallback callback);
 
+  void GetRecordByOrderId(
+      const std::string& order_id,
+      ledger::GetSKUTransactionCallback callback);
+
  private:
   bool CreateTableV19(ledger::DBTransaction* transaction);
 
   bool CreateIndexV19(ledger::DBTransaction* transaction);
 
   bool MigrateToV19(ledger::DBTransaction* transaction);
+
+  void OnGetRecord(
+      ledger::DBCommandResponsePtr response,
+      ledger::GetSKUTransactionCallback callback);
 };
 
 }  // namespace braveledger_database

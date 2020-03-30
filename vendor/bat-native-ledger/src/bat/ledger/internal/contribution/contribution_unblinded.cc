@@ -34,9 +34,7 @@ bool GetStatisticalVotingWinner(
     const double amount,
     const std::vector<ledger::ContributionPublisher>& list,
     braveledger_contribution::Winners* winners) {
-  if (!winners) {
-    return false;
-  }
+  DCHECK(winners);
 
   double upper = 0.0;
   for (auto& item : list) {
@@ -66,7 +64,12 @@ void GetStatisticalVotingWinners(
     const double amount,
     const ledger::ContributionPublisherList& list,
     braveledger_contribution::Winners* winners) {
+  DCHECK(winners);
   std::vector<ledger::ContributionPublisher> converted_list;
+
+  if (total_votes == 0 || list.empty()) {
+    return;
+  }
 
   for (auto& item : list) {
     ledger::ContributionPublisher new_item;
@@ -83,16 +86,6 @@ void GetStatisticalVotingWinners(
   }
 }
 
-int32_t GetRetryCount(
-    const ledger::ContributionStep step,
-    ledger::ContributionInfoPtr contribution) {
-  if (!contribution || step != contribution->step) {
-    return 0;
-  }
-
-  return contribution->retry_count + 1;
-}
-
 }  // namespace
 
 namespace braveledger_contribution {
@@ -107,35 +100,22 @@ Unblinded::Unblinded(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {
 
 Unblinded::~Unblinded() = default;
 
-void Unblinded::Initialize() {
-  auto callback = std::bind(&Unblinded::OnGetNotCompletedContributions,
-      this,
-      _1);
-  ledger_->GetIncompleteContributions(
-      ledger::ContributionProcessor::BRAVE_TOKENS,
-      callback);
-}
-
-void Unblinded::OnGetNotCompletedContributions(
-    ledger::ContributionInfoList list) {
-  if (list.size() == 0) {
+void Unblinded::Start(
+    const std::string& contribution_id,
+    ledger::ResultCallback callback) {
+  if (contribution_id.empty()) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution id is empty";
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
-  if (!list[0]) {
-    return;
-  }
-
-  DoRetry(std::move(list[0]));
-}
-
-void Unblinded::Start(const std::string& contribution_id) {
   GetContributionInfoAndUnblindedTokens(
       contribution_id,
       std::bind(&Unblinded::PrepareTokens,
           this,
           _1,
-          _2));
+          _2,
+          callback));
 }
 
 void Unblinded::GetContributionInfoAndUnblindedTokens(
@@ -154,7 +134,8 @@ void Unblinded::OnUnblindedTokens(
     const std::string& contribution_id,
     GetContributionInfoAndUnblindedTokensCallback callback) {
   if (list.empty()) {
-    ContributionCompleted(ledger::Result::NOT_ENOUGH_FUNDS, nullptr);
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Token list is empty";
+    callback(nullptr, {});
     return;
   }
 
@@ -188,20 +169,19 @@ void Unblinded::OnGetContributionInfo(
 
 void Unblinded::PrepareTokens(
     ledger::ContributionInfoPtr contribution,
-    const std::vector<ledger::UnblindedToken>& list) {
+    const std::vector<ledger::UnblindedToken>& list,
+    ledger::ResultCallback callback) {
   if (!contribution) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution not found";
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
-  const int32_t retry_count = GetRetryCount(
-      ledger::ContributionStep::STEP_START,
-      contribution->Clone());
-
-  ledger_->UpdateContributionInfoStepAndCount(
-      contribution->contribution_id,
-      ledger::ContributionStep::STEP_START,
-      retry_count,
-      [](const ledger::Result){});
+  if (list.empty()) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Not enough funds";
+    callback(ledger::Result::NOT_ENOUGH_FUNDS);
+    return;
+  }
 
   double current_amount = 0.0;
   std::vector<ledger::UnblindedToken> token_list;
@@ -225,19 +205,23 @@ void Unblinded::PrepareTokens(
   }
 
   if (current_amount < contribution->amount) {
-    ContributionCompleted(
-        ledger::Result::NOT_ENOUGH_FUNDS,
-        std::move(contribution));
+    callback(ledger::Result::NOT_ENOUGH_FUNDS);
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Not enough funds";
     return;
   }
 
-  PreparePublishers(token_list, std::move(contribution));
+  // TODO(https://github.com/brave/brave-browser/issues/8887):
+  // we should reserve this tokens and add step STEP_RESERVE
+  PreparePublishers(token_list, std::move(contribution), callback);
 }
 
 void Unblinded::PreparePublishers(
     const std::vector<ledger::UnblindedToken>& list,
-    ledger::ContributionInfoPtr contribution) {
+    ledger::ContributionInfoPtr contribution,
+    ledger::ResultCallback callback) {
   if (!contribution) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution not found";
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
@@ -246,24 +230,35 @@ void Unblinded::PreparePublishers(
         PrepareAutoContribution(list, contribution->Clone());
 
     if (publisher_list.empty()) {
-      ContributionCompleted(
-        ledger::Result::AC_TABLE_EMPTY,
-        std::move(contribution));
+      BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Publisher list empty";
+      callback(ledger::Result::AC_TABLE_EMPTY);
       return;
     }
 
     contribution->publishers = std::move(publisher_list);
 
+    auto save_callback = std::bind(&Unblinded::OnPrepareAutoContribution,
+        this,
+        _1,
+        contribution->contribution_id,
+        callback);
+
     ledger_->SaveContributionInfo(
       contribution->Clone(),
-      std::bind(&Unblinded::OnPrepareAutoContribution,
-          this,
-          _1,
-          contribution->contribution_id));
+      save_callback);
     return;
   }
 
-  ProcessTokens(contribution->contribution_id);
+  auto save_callback = std::bind(&Unblinded::PrepareStepSaved,
+      this,
+      _1,
+      contribution->contribution_id,
+      callback);
+
+  ledger_->UpdateContributionInfoStep(
+      contribution->contribution_id,
+      ledger::ContributionStep::STEP_PREPARE,
+      save_callback);
 }
 
 ledger::ContributionPublisherList Unblinded::PrepareAutoContribution(
@@ -302,40 +297,65 @@ ledger::ContributionPublisherList Unblinded::PrepareAutoContribution(
 
 void Unblinded::OnPrepareAutoContribution(
     const ledger::Result result,
-    const std::string& contribution_id) {
+    const std::string& contribution_id,
+    ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    SetTimer(contribution_id);
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution not saved";
+    callback(ledger::Result::RETRY);
     return;
   }
 
-  ProcessTokens(contribution_id);
+  auto save_callback = std::bind(&Unblinded::PrepareStepSaved,
+      this,
+      _1,
+      contribution_id,
+      callback);
+
+  ledger_->UpdateContributionInfoStep(
+      contribution_id,
+      ledger::ContributionStep::STEP_PREPARE,
+      save_callback);
 }
 
-void Unblinded::ProcessTokens(const std::string& contribution_id) {
+void Unblinded::PrepareStepSaved(
+    const ledger::Result result,
+    const std::string& contribution_id,
+    ledger::ResultCallback callback) {
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Prepare step was not saved";
+    callback(ledger::Result::RETRY);
+    return;
+  }
+
+  ProcessTokens(contribution_id, callback);
+}
+
+void Unblinded::ProcessTokens(
+    const std::string& contribution_id,
+    ledger::ResultCallback callback) {
+  // TODO(https://github.com/brave/brave-browser/issues/8887):
+  // here we should fetch reserved tokens so that in OnProcessTokens
+  // no additional computing is needed
   GetContributionInfoAndUnblindedTokens(
       contribution_id,
       std::bind(&Unblinded::OnProcessTokens,
           this,
           _1,
-          _2));
+          _2,
+          callback));
 }
 
 void Unblinded::OnProcessTokens(
     ledger::ContributionInfoPtr contribution,
-    const std::vector<ledger::UnblindedToken>& list) {
-  if (!contribution) {
+    const std::vector<ledger::UnblindedToken>& list,
+    ledger::ResultCallback callback) {
+  if (!contribution || contribution->publishers.empty()) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution not found";
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
-  const int32_t retry_count = GetRetryCount(
-      ledger::ContributionStep::STEP_SUGGESTIONS,
-      contribution->Clone());
-
-  ledger_->UpdateContributionInfoStepAndCount(
-      contribution->contribution_id,
-      ledger::ContributionStep::STEP_SUGGESTIONS,
-      retry_count,
-      [](const ledger::Result){});
+  bool single_publisher = contribution->publishers.size() == 1;
 
   for (auto& publisher : contribution->publishers) {
     if (publisher->total_amount == publisher->contributed_amount) {
@@ -353,11 +373,13 @@ void Unblinded::OnProcessTokens(
       token_list.push_back(item);
     }
 
-    auto callback = std::bind(&Unblinded::TokenProcessed,
+    auto redeem_callback = std::bind(&Unblinded::TokenProcessed,
         this,
         _1,
         contribution->contribution_id,
-        publisher->publisher_key);
+        publisher->publisher_key,
+        single_publisher,
+        callback);
 
     braveledger_credentials::CredentialsRedeem redeem;
     redeem.publisher_key = publisher->publisher_key;
@@ -365,134 +387,78 @@ void Unblinded::OnProcessTokens(
     redeem.processor = contribution->processor;
     redeem.token_list = token_list;
 
-    credentials_->RedeemTokens(redeem, callback);
+    credentials_->RedeemTokens(redeem, redeem_callback);
     return;
   }
 
-  ContributionCompleted(ledger::Result::LEDGER_OK, std::move(contribution));
+  // we processed all publishers
+  callback(ledger::Result::LEDGER_OK);
 }
 
 void Unblinded::TokenProcessed(
     const ledger::Result result,
     const std::string& contribution_id,
-    const std::string& publisher_key) {
+    const std::string& publisher_key,
+    const bool single_publisher,
+    ledger::ResultCallback callback) {
   if (result == ledger::Result::LEDGER_OK) {
-    auto callback = std::bind(&Unblinded::OnTokenProcessed,
+    auto save_callback = std::bind(&Unblinded::ContributionAmountSaved,
         this,
         _1,
-        contribution_id);
+        contribution_id,
+        single_publisher,
+        callback);
 
     ledger_->UpdateContributionInfoContributedAmount(
         contribution_id,
         publisher_key,
-        callback);
+        save_callback);
     return;
   }
 
-  SetTimer(contribution_id);
+  BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+      << "Tokens were not processed correctly";
+  callback(ledger::Result::RETRY);
 }
 
-void Unblinded::OnTokenProcessed(
+void Unblinded::ContributionAmountSaved(
     const ledger::Result result,
-    const std::string& contribution_id) {
-  ledger_->GetContributionInfo(
-      contribution_id,
-      std::bind(&Unblinded::CheckIfCompleted,
-                this,
-                _1));
-}
-
-void Unblinded::CheckIfCompleted(ledger::ContributionInfoPtr contribution) {
-  if (!contribution) {
-    return;
-  }
-
-  bool completed = true;
-  for (auto& publisher : contribution->publishers) {
-    if (publisher->total_amount == publisher->contributed_amount) {
-      continue;
-    }
-
-    completed = false;
-    break;
-  }
-
-  if (completed) {
-    ContributionCompleted(ledger::Result::LEDGER_OK, std::move(contribution));
-    return;
-  }
-
-  SetTimer(contribution->contribution_id);
-}
-
-void Unblinded::ContributionCompleted(
-    const ledger::Result result,
-    ledger::ContributionInfoPtr contribution) {
-  if (!contribution) {
-    return;
-  }
-
-  ledger_->ContributionCompleted(
-      result,
-      contribution->amount,
-      contribution->contribution_id,
-      contribution->type);
-}
-
-void Unblinded::SetTimer(
     const std::string& contribution_id,
-    const uint64_t& start_timer_in) {
-  if (contribution_id.empty()) {
+    const bool single_publisher,
+    ledger::ResultCallback callback) {
+  if (single_publisher) {
+    callback(result);
     return;
   }
 
-  if (!retry_timers_[contribution_id]) {
-    retry_timers_[contribution_id] = 0u;
-  }
-
-  uint64_t timer_seconds = start_timer_in;
-  if (ledger::short_retries) {
-    timer_seconds = 1;
-  } else if (start_timer_in == 0) {
-    timer_seconds = brave_base::random::Geometric(45);
-  }
-
-  BLOG(ledger_, ledger::LogLevel::LOG_INFO)
-    << "Timer will start in "
-    << timer_seconds;
-
-  ledger_->SetTimer(timer_seconds, &retry_timers_[contribution_id]);
+  callback(ledger::Result::RETRY);
 }
 
-void Unblinded::OnTimer(uint32_t timer_id) {
-  for (std::pair<std::string, uint32_t> const& value : retry_timers_) {
-    if (value.second == timer_id) {
-      std::string contribution_id = value.first;
-      CheckStep(contribution_id);
-      retry_timers_[contribution_id] = 0u;
-    }
-  }
-}
-
-void Unblinded::CheckStep(const std::string& contribution_id) {
-  auto callback = std::bind(&Unblinded::DoRetry,
-      this,
-      _1);
-  ledger_->GetContributionInfo(contribution_id, callback);
-}
-
-void Unblinded::DoRetry(ledger::ContributionInfoPtr contribution) {
+void Unblinded::Retry(
+    ledger::ContributionInfoPtr contribution,
+    ledger::ResultCallback callback) {
   if (!contribution) {
+    return;
+  }
+
+  const bool is_not_tokens =
+      contribution->processor != ledger::ContributionProcessor::BRAVE_TOKENS;
+
+  const bool is_not_uphold_ac =
+      contribution->processor == ledger::ContributionProcessor::UPHOLD &&
+      contribution->type != ledger::RewardsType::AUTO_CONTRIBUTE;
+
+  if (is_not_tokens && is_not_uphold_ac) {
     return;
   }
 
   if (contribution->step == ledger::ContributionStep::STEP_START) {
-    Start(contribution->contribution_id);
+    Start(contribution->contribution_id, callback);
     return;
   }
 
-  if (contribution->step == ledger::ContributionStep::STEP_SUGGESTIONS) {
-    ProcessTokens(contribution->contribution_id);
+  if (contribution->step == ledger::ContributionStep::STEP_PREPARE) {
+    ProcessTokens(contribution->contribution_id, callback);
     return;
   }
 

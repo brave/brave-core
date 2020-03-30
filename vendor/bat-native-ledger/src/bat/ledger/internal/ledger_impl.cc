@@ -27,7 +27,8 @@
 #include "bat/ledger/internal/report/report.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/media/helper.h"
-#include "bat/ledger/internal/sku/sku.h"
+#include "bat/ledger/internal/sku/sku_factory.h"
+#include "bat/ledger/internal/sku/sku_merchant.h"
 #include "bat/ledger/internal/static_values.h"
 #include "net/http/http_status_code.h"
 
@@ -66,7 +67,6 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     bat_wallet_(new Wallet(this)),
     bat_database_(new Database(this)),
     bat_report_(new Report(this)),
-    bat_sku_(new SKU(this)),
     initialized_task_scheduler_(false),
     initialized_(false),
     initializing_(false),
@@ -85,6 +85,11 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
   task_runner_ = base::CreateSequencedTaskRunner(
       {base::ThreadPool(), base::MayBlock(), base::TaskPriority::BEST_EFFORT,
        base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+
+  bat_sku_ = braveledger_sku::SKUFactory::Create(
+      this,
+      braveledger_sku::SKUType::kMerchant);
+  DCHECK(bat_sku_);
 }
 
 LedgerImpl::~LedgerImpl() {
@@ -1496,16 +1501,25 @@ void LedgerImpl::GetContributionReport(
   bat_database_->GetContributionReport(month, year, callback);
 }
 
-void LedgerImpl::GetIncompleteContributions(
-    const ledger::ContributionProcessor processor,
+void LedgerImpl::GetNotCompletedContributions(
     ledger::ContributionInfoListCallback callback) {
-  bat_database_->GetIncompleteContributions(processor, callback);
+  bat_database_->GetNotCompletedContributions(callback);
 }
 
 void LedgerImpl::GetContributionInfo(
     const std::string& contribution_id,
     ledger::GetContributionInfoCallback callback) {
   bat_database_->GetContributionInfo(contribution_id, callback);
+}
+
+void LedgerImpl::UpdateContributionInfoStep(
+    const std::string& contribution_id,
+    const ledger::ContributionStep step,
+    ledger::ResultCallback callback) {
+  bat_database_->UpdateContributionInfoStep(
+      contribution_id,
+      step,
+      callback);
 }
 
 void LedgerImpl::UpdateContributionInfoStepAndCount(
@@ -1686,28 +1700,33 @@ void LedgerImpl::GetSKUOrder(
   bat_database_->GetSKUOrder(order_id, callback);
 }
 
-void LedgerImpl::BraveSKU(
-    const std::string& destination,
-    const std::vector<ledger::SKUOrderItem>& items,
-    const std::string& contribution_id,
-    ledger::ExternalWalletPtr wallet,
-    ledger::SKUOrderCallback callback) {
-  bat_sku_->Brave(
-      destination,
-      items,
-      contribution_id,
-      std::move(wallet),
-      callback);
-}
-
 void LedgerImpl::ProcessSKU(
     const std::vector<ledger::SKUOrderItem>& items,
     ledger::ExternalWalletPtr wallet,
     ledger::SKUOrderCallback callback) {
-  bat_sku_->Process(
-      items,
-      std::move(wallet),
+  bat_sku_->Process(items, std::move(wallet), callback);
+}
+
+void LedgerImpl::GetSKUOrderByContributionId(
+    const std::string& contribution_id,
+    ledger::GetSKUOrderCallback callback) {
+  bat_database_->GetSKUOrderByContributionId(contribution_id, callback);
+}
+
+void LedgerImpl::SaveContributionIdForSKUOrder(
+    const std::string& order_id,
+    const std::string& contribution_id,
+    ledger::ResultCallback callback) {
+  bat_database_->SaveContributionIdForSKUOrder(
+      order_id,
+      contribution_id,
       callback);
+}
+
+void LedgerImpl::GetSKUTransactionByOrderId(
+    const std::string& order_id,
+    ledger::GetSKUTransactionCallback callback) {
+  bat_database_->GetSKUTransactionByOrderId(order_id, callback);
 }
 
 }  // namespace bat_ledger

@@ -50,7 +50,7 @@ std::string GetReedemTokensUrl(
   std::string path = "/suggestions";
   if (processor == ledger::ContributionProcessor::UPHOLD ||
       processor == ledger::ContributionProcessor::BRAVE_USER_FUNDS) {
-    path = "/v1/autocontribute/votes";
+    path = "/votes";
   }
 
   return BuildUrl(path, PREFIX_V1, ServerTypes::kPromotion);

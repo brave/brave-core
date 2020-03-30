@@ -30,7 +30,7 @@ std::string GetTransactionPayload(
     const std::string payment_id,
     const std::vector<uint8_t>& seed) {
   base::Value denomination(base::Value::Type::DICTIONARY);
-  denomination.SetStringKey("amount", std::to_string(amount));
+  denomination.SetStringKey("amount", base::StringPrintf("%g", amount));
   denomination.SetStringKey("currency", "BAT");
 
   base::Value octets(base::Value::Type::DICTIONARY);

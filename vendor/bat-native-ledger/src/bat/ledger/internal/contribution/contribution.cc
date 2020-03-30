@@ -82,10 +82,9 @@ Contribution::~Contribution() = default;
 
 void Contribution::Initialize() {
   uphold_->Initialize();
-  unblinded_->Initialize();
 
-  // Process contribution queue
   CheckContributionQueue();
+  CheckNotCompletedContributions();
 }
 
 void Contribution::CheckContributionQueue() {
@@ -116,6 +115,29 @@ void Contribution::OnProcessContributionQueue(
 
   queue_in_progress_ = true;
   Start(std::move(info));
+}
+
+void Contribution::CheckNotCompletedContributions() {
+  auto get_callback = std::bind(&Contribution::NotCompletedContributions,
+      this,
+      _1);
+
+  ledger_->GetNotCompletedContributions(get_callback);
+}
+
+void Contribution::NotCompletedContributions(
+    ledger::ContributionInfoList list) {
+  if (list.size() == 0) {
+    return;
+  }
+
+  for (auto& item : list) {
+    if (!item) {
+      continue;
+    }
+
+    SetRetryCounter(std::move(item));
+  }
 }
 
 void Contribution::HasSufficientBalance(
@@ -181,7 +203,21 @@ void Contribution::Start(ledger::ContributionQueuePtr info) {
 void Contribution::OnTimer(uint32_t timer_id) {
   unverified_->OnTimer(timer_id);
   uphold_->OnTimer(timer_id);
-  unblinded_->OnTimer(timer_id);
+
+  for (std::pair<std::string, uint32_t> const& value : retry_timers_) {
+    if (value.second != timer_id) {
+      continue;
+    }
+
+    std::string contribution_id = value.first;
+    retry_timers_[contribution_id] = 0u;
+
+    auto callback = std::bind(&Contribution::SetRetryCounter,
+        this,
+        _1);
+    ledger_->GetContributionInfo(contribution_id, callback);
+    return;
+  }
 
   if (timer_id == last_reconcile_timer_id_) {
     last_reconcile_timer_id_ = 0;
@@ -313,7 +349,7 @@ void Contribution::CreateNewEntry(
   contribution->amount = queue->amount;
   contribution->type = queue->type;
   contribution->step = ledger::ContributionStep::STEP_START;
-  contribution->retry_count = -1;
+  contribution->retry_count = 0;
   contribution->created_at = now;
   contribution->processor = GetProcessor(wallet_type);
 
@@ -392,16 +428,29 @@ void Contribution::OnEntrySaved(
   }
 
   if (wallet_type == ledger::kWalletUnBlinded) {
-    unblinded_->Start(contribution_id);
+    auto result_callback = std::bind(&Contribution::Result,
+      this,
+      _1,
+      contribution_id);
+
+    StartUnblinded(contribution_id, result_callback);
   } else if (wallet_type == ledger::kWalletAnonymous) {
     auto wallet = ledger::ExternalWallet::New();
     wallet->type = wallet_type;
 
-    sku_->AnonUserFunds(
-        contribution_id,
-        std::move(wallet));
+    auto result_callback = std::bind(&Contribution::Result,
+      this,
+      _1,
+      contribution_id);
+
+    sku_->AnonUserFunds(contribution_id, std::move(wallet), result_callback);
   } else if (wallet_type == ledger::kWalletUphold) {
-    external_wallet_->Process(contribution_id);
+    auto result_callback = std::bind(&Contribution::Result,
+        this,
+        _1,
+        contribution_id);
+
+    external_wallet_->Process(contribution_id, result_callback);
   }
 
   if (queue->amount > 0) {
@@ -508,7 +557,7 @@ void Contribution::TransferFunds(
   }
 
   if (wallet->type == ledger::kWalletUnBlinded) {
-    sku_->Merchant(transaction, destination, callback);
+    sku_->Merchant(transaction, callback);
     return;
   }
 
@@ -519,12 +568,172 @@ void Contribution::TransferFunds(
 
 void Contribution::SKUAutoContribution(
     const std::string& contribution_id,
-    ledger::ExternalWalletPtr wallet) {
-  sku_->AutoContribution(contribution_id, std::move(wallet));
+    ledger::ExternalWalletPtr wallet,
+    ledger::ResultCallback callback) {
+  sku_->AutoContribution(contribution_id, std::move(wallet), callback);
 }
 
-void Contribution::StartUnblinded(const std::string& contribution_id) {
-  unblinded_->Start(contribution_id);
+void Contribution::StartUnblinded(
+    const std::string& contribution_id,
+    ledger::ResultCallback callback) {
+  unblinded_->Start(contribution_id, callback);
+}
+
+void Contribution::RetryUnblinded(
+    const std::string& contribution_id,
+    ledger::ResultCallback callback) {
+
+  auto get_callback = std::bind(&Contribution::RetryUnblindedContribution,
+      this,
+      _1,
+      callback);
+
+  ledger_->GetContributionInfo(contribution_id, get_callback);
+}
+
+void Contribution::RetryUnblindedContribution(
+    ledger::ContributionInfoPtr contribution,
+    ledger::ResultCallback callback) {
+  unblinded_->Retry(std::move(contribution), callback);
+}
+
+void Contribution::Result(
+    const ledger::Result result,
+    const std::string& contribution_id) {
+  if (result == ledger::Result::RETRY_SHORT) {
+    SetRetryTimer(contribution_id, 5);
+    return;
+  }
+
+  if (result == ledger::Result::RETRY) {
+    SetRetryTimer(contribution_id);
+    return;
+  }
+
+  auto get_callback = std::bind(&Contribution::FinishContribution,
+      this,
+      _1,
+      result);
+
+  ledger_->GetContributionInfo(contribution_id, get_callback);
+}
+
+void Contribution::FinishContribution(
+    ledger::ContributionInfoPtr contribution,
+    const ledger::Result result) {
+  if (!contribution) {
+    return;
+  }
+
+  ledger_->ContributionCompleted(
+      result,
+      contribution->amount,
+      contribution->contribution_id,
+      contribution->type);
+}
+
+void Contribution::SetRetryTimer(
+    const std::string& contribution_id,
+    const uint64_t& start_timer_in) {
+  if (contribution_id.empty()) {
+    return;
+  }
+
+  if (!retry_timers_[contribution_id]) {
+    retry_timers_[contribution_id] = 0u;
+  }
+
+  uint64_t timer_seconds = start_timer_in;
+  if (ledger::short_retries) {
+    timer_seconds = 1;
+  } else if (start_timer_in == 0) {
+    timer_seconds = brave_base::random::Geometric(45);
+  }
+
+  BLOG(ledger_, ledger::LogLevel::LOG_INFO)
+    << "Timer for contribution retry ("
+    << contribution_id
+    << ") will start in "
+    << timer_seconds;
+
+  ledger_->SetTimer(timer_seconds, &retry_timers_[contribution_id]);
+}
+
+void Contribution::SetRetryCounter(ledger::ContributionInfoPtr contribution) {
+  if (contribution->retry_count == 3) {
+    ledger_->ContributionCompleted(
+        ledger::Result::LEDGER_ERROR,
+        contribution->amount,
+        contribution->contribution_id,
+        contribution->type);
+    return;
+  }
+
+  auto save_callback = std::bind(&Contribution::Retry,
+      this,
+      _1,
+      braveledger_bind_util::FromContributionToString(contribution->Clone()));
+
+  ledger_->UpdateContributionInfoStepAndCount(
+      contribution->contribution_id,
+      contribution->step,
+      contribution->retry_count + 1,
+      save_callback);
+}
+
+void Contribution::Retry(
+    const ledger::Result result,
+    const std::string& contribution_string) {
+  if (result != ledger::Result::LEDGER_OK) {
+    return;
+  }
+
+  auto contribution = braveledger_bind_util::FromStringToContribution(
+      contribution_string);
+
+  if (!contribution) {
+    return;
+  }
+
+  // negative steps are final steps, nothing to retry
+  if (static_cast<int>(contribution->step) < 0) {
+    return;
+  }
+
+  BLOG(ledger_, ledger::LogLevel::LOG_INFO)
+      << "Retrying contribution ("
+      << contribution->contribution_id
+      << ") on step "
+      << contribution->step;
+
+  auto result_callback = std::bind(&Contribution::Result,
+    this,
+    _1,
+    contribution->contribution_id);
+
+  switch (contribution->processor) {
+    case ledger::ContributionProcessor::BRAVE_TOKENS: {
+      unblinded_->Retry(contribution->Clone(), result_callback);
+      return;
+    }
+    case ledger::ContributionProcessor::UPHOLD: {
+      if (contribution->type == ledger::RewardsType::AUTO_CONTRIBUTE) {
+        sku_->Retry(contribution->Clone(), result_callback);
+        return;
+      }
+
+      external_wallet_->Retry(contribution->Clone(), result_callback);
+      return;
+    }
+    case ledger::ContributionProcessor::BRAVE_USER_FUNDS: {
+      sku_->Retry(contribution->Clone(), result_callback);
+      return;
+    }
+    case ledger::ContributionProcessor::NONE: {
+      Result(ledger::Result::LEDGER_ERROR, contribution->contribution_id);
+      return;
+    }
+  }
 }
 
 }  // namespace braveledger_contribution

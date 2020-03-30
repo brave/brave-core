@@ -26,46 +26,61 @@ ContributionExternalWallet::ContributionExternalWallet(
 
 ContributionExternalWallet::~ContributionExternalWallet() = default;
 
-void ContributionExternalWallet::Process(const std::string& contribution_id) {
+void ContributionExternalWallet::Process(
+    const std::string& contribution_id,
+    ledger::ResultCallback callback) {
+  if (contribution_id.empty()) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution id is empty";
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
   auto wallets_callback = std::bind(
       &ContributionExternalWallet::OnExternalWallets,
       this,
+      _1,
       contribution_id,
-      _1);
+      callback);
 
   // Check if we have token
   ledger_->GetExternalWallets(wallets_callback);
 }
 
 void ContributionExternalWallet::OnExternalWallets(
+    std::map<std::string, ledger::ExternalWalletPtr> wallets,
     const std::string& contribution_id,
-    std::map<std::string, ledger::ExternalWalletPtr> wallets) {
-  if (wallets.size() == 0) {
+    ledger::ResultCallback callback) {
+  if (wallets.empty()) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "No external wallets";
-    ledger_->UpdateContributionInfoStepAndCount(
-        contribution_id,
-        ledger::ContributionStep::STEP_FAILED,
-        -1,
-        [](const ledger::Result _){});
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
   ledger::ExternalWalletPtr wallet =
       braveledger_uphold::GetWallet(std::move(wallets));
 
-  ledger_->GetContributionInfo(
-      contribution_id,
-      std::bind(&ContributionExternalWallet::ContributionInfo,
-                this,
-                _1,
-                *wallet));
+  if (!wallet) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "External wallet null";
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  auto get_callback = std::bind(&ContributionExternalWallet::ContributionInfo,
+      this,
+      _1,
+      *wallet,
+      callback);
+
+  ledger_->GetContributionInfo(contribution_id, get_callback);
 }
 
 void ContributionExternalWallet::ContributionInfo(
     ledger::ContributionInfoPtr contribution,
-    const ledger::ExternalWallet& wallet) {
+    const ledger::ExternalWallet& wallet,
+    ledger::ResultCallback callback) {
   if (!contribution) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution is null";
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
@@ -76,33 +91,44 @@ void ContributionExternalWallet::ContributionInfo(
   if (wallet.token.empty() ||
       wallet.status != ledger::WalletStatus::VERIFIED) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Wallet token is empty/wallet is not verified " << wallet.status;
-    ledger_->ContributionCompleted(
-        ledger::Result::LEDGER_ERROR,
-        contribution->amount,
-        contribution->contribution_id,
-        contribution->type);
+        << "Wallet token is empty/wallet is not verified. Wallet status: "
+        << wallet.status;
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
   }
 
   if (contribution->type == ledger::RewardsType::AUTO_CONTRIBUTE) {
     contribution_->SKUAutoContribution(
         contribution->contribution_id,
-        ledger::ExternalWallet::New(wallet));
+        ledger::ExternalWallet::New(wallet),
+        callback);
     return;
   }
 
+  bool single_publisher = contribution->publishers.size() == 1;
+
   for (const auto& publisher : contribution->publishers) {
-    auto callback =
+    if (publisher->total_amount == publisher->contributed_amount) {
+      continue;
+    }
+
+    auto get_callback =
         std::bind(&ContributionExternalWallet::OnServerPublisherInfo,
           this,
           _1,
           contribution->contribution_id,
           publisher->total_amount,
           wallet,
-          contribution->type);
+          contribution->type,
+          single_publisher,
+          callback);
 
-    ledger_->GetServerPublisherInfo(publisher->publisher_key, callback);
+    ledger_->GetServerPublisherInfo(publisher->publisher_key, get_callback);
+    return;
   }
+
+  // we processed all publishers
+  callback(ledger::Result::LEDGER_OK);
 }
 
 void ContributionExternalWallet::OnSavePendingContribution(
@@ -115,14 +141,12 @@ void ContributionExternalWallet::OnServerPublisherInfo(
     const std::string& contribution_id,
     const double amount,
     const ledger::ExternalWallet& wallet,
-    const ledger::RewardsType type) {
+    const ledger::RewardsType type,
+    const bool single_publisher,
+    ledger::ResultCallback callback) {
   if (!info) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Publisher not found";
-    ledger_->ContributionCompleted(
-        ledger::Result::LEDGER_ERROR,
-        amount,
-        contribution_id,
-        type);
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
@@ -143,37 +167,40 @@ void ContributionExternalWallet::OnServerPublisherInfo(
     list.push_back(std::move(contribution));
 
     ledger_->SavePendingContribution(std::move(list), save_callback);
-
-    ledger_->ContributionCompleted(
-        ledger::Result::LEDGER_ERROR,
-        amount,
-        contribution_id,
-        type);
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
-  auto completed_callback =
-      std::bind(&ContributionExternalWallet::Completed,
-          this,
-          _1,
-          amount,
-          contribution_id,
-          type);
+  auto uphold_callback = std::bind(&ContributionExternalWallet::Completed,
+      this,
+      _1,
+      single_publisher,
+      callback);
 
   uphold_->StartContribution(
       contribution_id,
       std::move(info),
       amount,
       ledger::ExternalWallet::New(wallet),
-      completed_callback);
+      uphold_callback);
 }
 
 void ContributionExternalWallet::Completed(
     const ledger::Result result,
-    const double amount,
-    const std::string& contribution_id,
-    const ledger::RewardsType type) {
-  ledger_->ContributionCompleted(result, amount, contribution_id, type);
+    const bool single_publisher,
+    ledger::ResultCallback callback) {
+  if (single_publisher) {
+    callback(result);
+    return;
+  }
+
+  callback(ledger::Result::RETRY);
+}
+
+void ContributionExternalWallet::Retry(
+    ledger::ContributionInfoPtr contribution,
+    ledger::ResultCallback callback) {
+  Process(contribution->contribution_id, callback);
 }
 
 }  // namespace braveledger_contribution

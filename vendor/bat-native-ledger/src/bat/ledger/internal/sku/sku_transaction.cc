@@ -132,6 +132,7 @@ void SKUTransaction::OnTransfer(
       transaction_new,
       callback);
 
+  // We save SKUTransactionStatus::COMPLETED status in this call
   ledger_->SaveSKUExternalTransaction(
       transaction.transaction_id,
       external_transaction_id,
@@ -165,6 +166,12 @@ void SKUTransaction::SendExternalTransaction(
     const ledger::Result result,
     const ledger::SKUTransaction& transaction,
     ledger::ResultCallback callback) {
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Order status not updated";
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
   // we only want to report external transaction id when we have it
   // we don't have it for all transactions
   if (transaction.external_transaction_id.empty()) {
@@ -213,6 +220,8 @@ void SKUTransaction::OnSendExternalTransaction(
     ledger::ResultCallback callback) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
   if (response_status_code != net::HTTP_CREATED) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+        << "External transaction not sent";
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
