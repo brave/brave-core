@@ -5,7 +5,7 @@
 // Utils
 import { getMessage } from '../background/api/locale_api'
 
-interface TweetResonse {
+interface TweetResponse {
   text: string,
   user: {
     name: string,
@@ -15,7 +15,7 @@ interface TweetResonse {
   created_at: string
 }
 
-interface UserResonse {
+interface UserResponse {
   id_str: string
 }
 
@@ -76,7 +76,7 @@ const getTweetMetaData = (tweet: Element, tweetId: string): Promise<RewardsTip.M
   }
 
   return getTweetDetails(tweetId)
-    .then((tweetDetails: TweetResonse) => {
+    .then((tweetDetails: TweetResponse) => {
       const mediaMetadata: RewardsTip.MediaMetaData = {
         mediaType: 'twitter',
         twitterName: tweetDetails.user.name,
@@ -311,11 +311,7 @@ document.addEventListener('visibilitychange', function () {
   }
 })
 
-// Our backend parses the DOM to determine the user ID for a Twitter
-// profile page. In old Twitter, the profile page includes the
-// associated user ID. However, in new Twitter, the profile page
-// doesn't include the user ID. In order to work around this limitation,
-// we call the Twitter API to retrieve the user ID and then pass it
+// Call the Twitter API to retrieve the user ID and then pass it
 // to our backend using an alternate profile page URL. This allows us
 // to pass the user ID to our backend without the need to make additional
 // API changes to accomodate a user ID.
@@ -324,22 +320,17 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   switch (action) {
     case 'getProfileUrl': {
       const screenName = msg.screenName
-      if (newTwitter) {
-        getUserDetails(screenName)
-          .then((userDetails: UserResonse) => {
-            const userId = userDetails.id_str
-            const profileUrl = `https://twitter.com/intent/user?user_id=${userId}&screen_name=${screenName}`
-            sendResponse({ profileUrl })
-          }).catch(error => {
-            console.error(`Failed to fetch user details for ${screenName}: ${error.message}`)
-            return Promise.reject(error)
-          })
-        // Must return true for asynchronous calls to sendResponse
-        return true
-      } else {
-        sendResponse({ profileUrl: `https://twitter.com/${screenName}` })
-      }
-      return false
+      getUserDetails(screenName)
+        .then((userDetails: UserResponse) => {
+          const userId = userDetails.id_str
+          const profileUrl = `https://twitter.com/intent/user?user_id=${userId}&screen_name=${screenName}`
+          sendResponse({ profileUrl })
+        }).catch(error => {
+          console.error(`Failed to fetch user details for ${screenName}: ${error.message}`)
+          return Promise.reject(error)
+        })
+      // Must return true for asynchronous calls to sendResponse
+      return true
     }
     default:
       return false
