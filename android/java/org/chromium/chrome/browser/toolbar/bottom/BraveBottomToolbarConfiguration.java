@@ -1,9 +1,9 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.flags;
+package org.chromium.chrome.browser.toolbar.bottom;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -16,7 +16,7 @@ import org.chromium.chrome.browser.ChromeActivity;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 
-public class BraveFeatureUtilities {
+public class BraveBottomToolbarConfiguration {
     private static final int SMALL_SCREEN_WIDTH = 360;
     private static final int SMALL_SCREEN_HEIGHT = 640;
 
@@ -57,3 +57,4 @@ public class BraveFeatureUtilities {
         return (width <= SMALL_SCREEN_WIDTH) && (height <= SMALL_SCREEN_HEIGHT);
     }
 }
+
