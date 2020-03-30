@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/night_mode/settings/ThemeSettingsFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/night_mode/settings/ThemeSettingsFragment.java
+index 17dc8a46660b23c549a89036039648e5f2eece7a..b08bd19f311e0a70bdb8880ed445dff9e92cadba 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/night_mode/settings/ThemeSettingsFragment.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/night_mode/settings/ThemeSettingsFragment.java
+@@ -23,7 +23,7 @@ import org.chromium.ui.UiUtils;
+ /**
+  * Fragment to manage the theme user settings.
+  */
+-public class ThemeSettingsFragment extends PreferenceFragmentCompat {
++public class ThemeSettingsFragment extends org.chromium.chrome.browser.settings.BravePreferenceFragment {
+     static final String PREF_UI_THEME_PREF = "ui_theme_pref";
+ 
+     @Override

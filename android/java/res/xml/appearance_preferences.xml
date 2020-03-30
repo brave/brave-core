@@ -18,7 +18,7 @@
         android:summaryOff="@string/text_off" />
 
     <Preference
-        android:fragment="org.chromium.chrome.browser.settings.themes.BraveThemePreferences"
+        android:fragment="org.chromium.chrome.browser.night_mode.settings.BraveThemePreferences"
         android:key="ui_theme"
         android:title="@string/theme_settings" />
 
