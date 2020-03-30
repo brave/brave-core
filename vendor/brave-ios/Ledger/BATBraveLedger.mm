@@ -203,7 +203,9 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   
   BLOG(ledger::LogLevel::LOG_DEBUG) << "DB: Migrate from CoreData? " << (executeMigrateScript ? "YES" : "NO") << std::endl;
   ledger->Initialize(executeMigrateScript, ^(ledger::Result result){
-    self.initialized = result == ledger::Result::LEDGER_OK;
+    self.initialized = (result == ledger::Result::LEDGER_OK ||
+                        result == ledger::Result::NO_LEDGER_STATE ||
+                        result == ledger::Result::NO_PUBLISHER_STATE);
     self.initializing = NO;
     if (self.initialized) {
       self.prefs[kMigrationSucceeded] = @(YES);
@@ -255,6 +257,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   }
   // Can we even check the DB
   if (!rewardsDatabase) {
+    BLOG(ledger::LogLevel::LOG_DEBUG) << "DB: No rewards database object" << std::endl;
     return YES;
   }
   // Check integrity of the new DB. Safe to assume if `publisher_info` table
@@ -273,6 +276,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   // restart from scratch
   if (response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     [self resetRewardsDatabase];
+    BLOG(ledger::LogLevel::LOG_DEBUG) << "DB: Failed to run transaction with status: " << std::to_string(static_cast<int>(response->status)) << std::endl;
     return YES;
   }
   
@@ -281,6 +285,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   // Restart from scratch
   if (record.empty() || record.front()->fields.empty()) {
     [self resetRewardsDatabase];
+    BLOG(ledger::LogLevel::LOG_DEBUG) << "DB: Migrate because we couldnt find tables in sqlite_master" << std::endl;
     return YES;
   }
   
