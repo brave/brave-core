@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/language/settings/LanguageSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/language/settings/LanguageSettings.java
+index 22d84ffee1a4f8ce2e0bf35bab19e08fe627555b..a0f99c076d3249e166235235a662a039374415e9 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/language/settings/LanguageSettings.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/language/settings/LanguageSettings.java
+@@ -23,7 +23,7 @@ import org.chromium.chrome.browser.settings.SettingsUtils;
+  * seamlessly find and manage their languages preferences across platforms.
+  */
+ public class LanguageSettings
+-        extends PreferenceFragmentCompat implements AddLanguageFragment.Launcher {
++        extends org.chromium.chrome.browser.settings.BravePreferenceFragment implements AddLanguageFragment.Launcher {
+     private static final int REQUEST_CODE_ADD_LANGUAGES = 1;
+ 
+     // The keys for each preference shown on the languages page.
