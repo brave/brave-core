@@ -173,6 +173,7 @@ class Binance extends React.PureComponent<Props, State> {
     this.usCurrencies = currencyData.usCurrencies
     this.comCurrencies = currencyData.comCurrencies
     this.currencyNames =  {
+      'BAT': 'Basic Attention Token',
       'BTC': 'Bitcoin',
       'ETH': 'Ethereum',
       'XRP': 'Ripple',
@@ -584,7 +585,7 @@ class Binance extends React.PureComponent<Props, State> {
           />
         </ListItem>
         {currencyList.map((asset: string) => {
-          const cleanName = currencyNames[asset]
+          const cleanName = currencyNames[asset] || asset
           const lowerAsset = asset.toLowerCase()
           const lowerName = cleanName.toLowerCase()
           const lowerSearch = currentDepositSearch.toLowerCase()
