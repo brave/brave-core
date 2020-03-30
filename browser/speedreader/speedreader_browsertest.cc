@@ -7,8 +7,10 @@
 
 #include "base/bind.h"
 #include "base/path_service.h"
+#include "brave/app/brave_command_ids.h"
 #include "brave/common/brave_paths.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test_utils.h"
@@ -47,6 +49,7 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
+  chrome::ExecuteCommand(browser(), IDC_TOGGLE_SPEEDREADER);
   const GURL url = https_server_.GetURL(kTestPage);
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents =
@@ -62,4 +65,11 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
   // style is injected.
   EXPECT_LT(0ull, content::EvalJs(rfh, kGetStyle).ExtractString().size());
   EXPECT_GT(4096ull, content::EvalJs(rfh, kGetContent).ExtractString().size());
+
+  // Check that disabled speedreader doesn't affect the page.
+  chrome::ExecuteCommand(browser(), IDC_TOGGLE_SPEEDREADER);
+  ui_test_utils::NavigateToURL(browser(), url);
+  EXPECT_LT(106000ull,
+            content::EvalJs(rfh, kGetContent).ExtractString().size());
+
 }
