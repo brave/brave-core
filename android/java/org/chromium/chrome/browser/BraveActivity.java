@@ -51,6 +51,8 @@ import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayout;
 import org.chromium.chrome.browser.util.BraveReferrer;
 import org.chromium.chrome.browser.util.UrlConstants;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
+import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.components.bookmarks.BookmarkType;
 import org.chromium.ui.widget.Toast;
@@ -207,6 +209,8 @@ public abstract class BraveActivity extends ChromeActivity {
         if (onboardingActivity == null) {
             OnboardingPrefManager.getInstance().showOnboarding(this, false);
         }
+
+        BravePrefServiceBridge.getInstance().setInteger(BravePref.NTP_SHOW_SUPER_REFERRAL_THEMES_OPTION, 1);
     }
 
     @Override
