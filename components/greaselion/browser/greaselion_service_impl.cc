@@ -115,9 +115,11 @@ scoped_refptr<Extension> ConvertGreaselionRuleToExtensionOnTaskRunner(
   auto content_script = std::make_unique<base::DictionaryValue>();
   content_script->Set(extensions::manifest_keys::kMatches, std::move(matches));
   content_script->Set(extensions::manifest_keys::kJs, std::move(js_files));
-  // All Greaselion scripts run at document end.
+  // All Greaselion scripts default to document end.
   content_script->SetStringPath(extensions::manifest_keys::kRunAt,
-                                extensions::manifest_values::kRunAtDocumentEnd);
+      rule->run_at() == extensions::manifest_values::kRunAtDocumentStart
+        ? extensions::manifest_values::kRunAtDocumentStart
+        : extensions::manifest_values::kRunAtDocumentEnd);
 
   auto content_scripts = std::make_unique<base::ListValue>();
   content_scripts->Append(std::move(content_script));
@@ -141,7 +143,8 @@ scoped_refptr<Extension> ConvertGreaselionRuleToExtensionOnTaskRunner(
   // Copy the script files to our extension directory.
   for (auto script : rule->scripts()) {
     if (!base::CopyFile(script, temp_dir.GetPath().Append(script.BaseName()))) {
-      LOG(ERROR) << "Could not copy Greaselion script";
+      LOG(ERROR) << "Could not copy Greaselion script at path: "
+          << script.LossyDisplayName();
       return nullptr;
     }
   }
@@ -219,7 +222,7 @@ void GreaselionServiceImpl::CreateAndInstallExtensions() {
   std::vector<std::unique_ptr<GreaselionRule>>* rules =
       download_service_->rules();
   for (const std::unique_ptr<GreaselionRule>& rule : *rules) {
-    if (rule->Matches(state_)) {
+    if (rule->Matches(state_) && rule->has_unknown_preconditions() == false) {
       pending_installs_ += 1;
     }
   }
@@ -229,7 +232,7 @@ void GreaselionServiceImpl::CreateAndInstallExtensions() {
     return;
   }
   for (const std::unique_ptr<GreaselionRule>& rule : *rules) {
-    if (rule->Matches(state_)) {
+    if (rule->Matches(state_) && rule->has_unknown_preconditions() == false) {
       // Convert script file to component extension. This must run on extension
       // file task runner, which was passed in in the constructor.
       base::PostTaskAndReplyWithResult(

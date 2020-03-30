@@ -10,6 +10,7 @@
 
 #include "base/base_paths.h"
 #include "base/bind.h"
+#include "base/files/file_path_watcher.h"
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
@@ -21,6 +22,7 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
+#include "brave/components/greaselion/browser/switches.h"
 
 using brave_component_updater::LocalDataFilesObserver;
 using brave_component_updater::LocalDataFilesService;
@@ -34,21 +36,18 @@ const char kRuleNameFormat[] = "greaselion-%zu";
 const char kPreconditions[] = "preconditions";
 const char kURLs[] = "urls";
 const char kScripts[] = "scripts";
+const char kRunAt[] = "run_at";
 // precondition keys
 const char kRewards[] = "rewards-enabled";
 const char kTwitterTips[] = "twitter-tips-enabled";
 
 GreaselionPreconditionValue GreaselionRule::ParsePrecondition(
-    base::DictionaryValue* root,
-    const char* key) {
-  base::Value* node = nullptr;
-  GreaselionPreconditionValue value = kAny;
-  if (root) {
-    node = root->FindKeyOfType(key, base::Value::Type::BOOLEAN);
-    if (node)
-      value = node->GetBool() ? kMustBeTrue : kMustBeFalse;
+    const base::Value& value) {
+  GreaselionPreconditionValue condition = kAny;
+  if (value.is_bool()) {
+    condition = value.GetBool() ? kMustBeTrue : kMustBeFalse;
   }
-  return value;
+  return condition;
 }
 
 GreaselionRule::GreaselionRule(const std::string& name)
@@ -57,11 +56,22 @@ GreaselionRule::GreaselionRule(const std::string& name)
 void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
                            base::ListValue* urls_value,
                            base::ListValue* scripts_value,
-                           const base::FilePath& root_dir) {
-  preconditions_.rewards_enabled =
-      ParsePrecondition(preconditions_value, kRewards);
-  preconditions_.twitter_tips_enabled =
-      ParsePrecondition(preconditions_value, kTwitterTips);
+                           const std::string& run_at_value,
+                           const base::FilePath& resource_dir) {
+  if (preconditions_value) {
+    for (const auto& kv : preconditions_value->DictItems()) {
+      GreaselionPreconditionValue condition = ParsePrecondition(kv.second);
+      if (kv.first == kRewards) {
+        preconditions_.rewards_enabled = condition;
+      } else if (kv.first == kTwitterTips) {
+        preconditions_.twitter_tips_enabled = condition;
+      } else {
+        LOG(INFO) << "Greaselion encountered an unknown precondition: "
+            << kv.first;
+        has_unknown_preconditions_ = true;
+      }
+    }
+  }
   for (const auto& urls_it : urls_value->GetList()) {
     std::string pattern_string = urls_it.GetString();
     URLPattern pattern;
@@ -72,11 +82,11 @@ void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
       return;
     }
     url_patterns_.push_back(pattern_string);
+    run_at_ = run_at_value;
   }
   for (const auto& scripts_it : scripts_value->GetList()) {
-    base::FilePath script_path =
-        root_dir.AppendASCII(kGreaselionConfigFileVersion)
-            .AppendASCII(scripts_it.GetString());
+    base::FilePath script_path = resource_dir.AppendASCII(
+        scripts_it.GetString());
     if (script_path.ReferencesParent()) {
       LOG(ERROR) << "Malformed filename in Greaselion configuration";
     } else {
@@ -113,9 +123,50 @@ bool GreaselionRule::Matches(GreaselionFeatures state) const {
 GreaselionDownloadService::GreaselionDownloadService(
     LocalDataFilesService* local_data_files_service)
     : LocalDataFilesObserver(local_data_files_service), weak_factory_(this) {
+#if !defined(OFFICIAL_BUILD)
+  // Force local path
+  base::FilePath forced_local_path(
+      base::CommandLine::ForCurrentProcess()->GetSwitchValueNative(
+          switches::kGreaselionDataPath));
+  if (!forced_local_path.empty()) {
+    is_dev_mode_ = true;
+    resource_dir_ = forced_local_path;
+    LoadDirectlyFromResourcePath();
+    dev_mode_path_watcher_ = std::make_unique<base::FilePathWatcher>();
+    if (!dev_mode_path_watcher_->Watch(resource_dir_,
+        true /*recursive*/,
+        base::Bind(&GreaselionDownloadService::OnDevModeLocalFileChanged,
+            weak_factory_.GetWeakPtr()))) {
+      LOG(ERROR) << "Greaselion could not watch filesystem for changes"
+          << " at path " << resource_dir_.LossyDisplayName();
+    }
+  }
+#endif
   DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
+void GreaselionDownloadService::OnDevModeLocalFileChanged(
+    const base::FilePath& path, bool error) {
+  if (error) {
+    LOG(ERROR) << "Greaselion got an error watching for file changes."
+        << " Stopping watching.";
+    dev_mode_path_watcher_.reset();
+    return;
+  }
+  LOG(INFO) << "Greaselion found a file change and will now reload all rules.";
+  LoadDirectlyFromResourcePath();
+}
+
+void GreaselionDownloadService::LoadDirectlyFromResourcePath() {
+  base::FilePath dat_file_path =
+      resource_dir_.AppendASCII(kGreaselionConfigFile);
+  base::PostTaskAndReplyWithResult(
+      GetTaskRunner().get(), FROM_HERE,
+      base::BindOnce(&brave_component_updater::GetDATFileAsString,
+                    dat_file_path),
+      base::BindOnce(&GreaselionDownloadService::OnDATFileDataReady,
+                    weak_factory_.GetWeakPtr()));
+}
 GreaselionDownloadService::~GreaselionDownloadService() {}
 
 void GreaselionDownloadService::OnDATFileDataReady(std::string contents) {
@@ -141,9 +192,13 @@ void GreaselionDownloadService::OnDATFileDataReady(std::string contents) {
     rule_dict->GetList(kURLs, &urls_value);
     base::ListValue* scripts_value = nullptr;
     rule_dict->GetList(kScripts, &scripts_value);
+    const std::string* run_at_ptr = rule_it.FindStringPath(kRunAt);
+    const std::string run_at_value = run_at_ptr ? *run_at_ptr : "";
+
     std::unique_ptr<GreaselionRule> rule = std::make_unique<GreaselionRule>(
         base::StringPrintf(kRuleNameFormat, rules_.size()));
-    rule->Parse(preconditions_value, urls_value, scripts_value, install_dir_);
+    rule->Parse(preconditions_value, urls_value, scripts_value,
+        run_at_value, resource_dir_);
     rules_.push_back(std::move(rule));
   }
   for (Observer& observer : observers_)
@@ -154,16 +209,11 @@ void GreaselionDownloadService::OnComponentReady(
     const std::string& component_id,
     const base::FilePath& install_dir,
     const std::string& manifest) {
-  install_dir_ = install_dir;
-  base::FilePath dat_file_path =
-      install_dir.AppendASCII(kGreaselionConfigFileVersion)
-          .AppendASCII(kGreaselionConfigFile);
-  base::PostTaskAndReplyWithResult(
-      GetTaskRunner().get(), FROM_HERE,
-      base::BindOnce(&brave_component_updater::GetDATFileAsString,
-                     dat_file_path),
-      base::BindOnce(&GreaselionDownloadService::OnDATFileDataReady,
-                     weak_factory_.GetWeakPtr()));
+  if (is_dev_mode_) {
+    return;
+  }
+  resource_dir_ = install_dir.AppendASCII(kGreaselionConfigFileVersion);
+  LoadDirectlyFromResourcePath();
 }
 
 std::vector<std::unique_ptr<GreaselionRule>>*
