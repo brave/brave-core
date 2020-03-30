@@ -198,6 +198,40 @@ describe('new tab util files tests', () => {
       expect(Object.keys(assertion).every(item => expected.includes(item)))
         .toBe(true)
     })
+    describe('generateGridSitesFromLegacyEntries', () => {
+      const legacyUrlList: NewTab.LegacySite = [{
+        index: 1337,
+        url: 'https://brave.com',
+        title: 'brave',
+        favicon: '',
+        letter: 'b',
+        thumb: '',
+        themeColor: '',
+        computedThemeColor: '',
+        pinned: undefined,
+        bookmarked: undefined
+      }]
+
+      it('exclude all old properties of a top site', () => {
+        const assertion = newTabUtils.generateGridSitesFromLegacyEntries(legacyUrlList)
+        expect(assertion[0]).not.toHaveProperty('index')
+        expect(assertion[0]).not.toHaveProperty('thumb')
+        expect(assertion[0]).not.toHaveProperty('themeColor')
+        expect(assertion[0]).not.toHaveProperty('computedThemeColor')
+        expect(assertion[0]).not.toHaveProperty('pinned')
+        expect(assertion[0]).not.toHaveProperty('bookmarked')
+      })
+      it('include all new properties of a top site', () => {
+        const assertion = newTabUtils.generateGridSitesFromLegacyEntries(legacyUrlList)
+        expect(assertion[0]).toHaveProperty('id')
+        expect(assertion[0]).toHaveProperty('pinnedIndex')
+        expect(assertion[0]).toHaveProperty('bookmarkInfo')
+      })
+      it('set pinnedIndex to be the same as the top site index', () => {
+        const assertion = newTabUtils.generateGridSitesFromLegacyEntries(legacyUrlList)
+        expect(assertion[0].pinnedIndex).toBe(1337)
+      })
+    })
   })
   describe('getGridSitesWhitelist', () => {
     it('excludes https://chrome.google.com/webstore from list', () => {
@@ -211,6 +245,35 @@ describe('new tab util files tests', () => {
         { url: 'https://tmz.com', title: 'tmz' }
       ]
       expect(newTabUtils.getGridSitesWhitelist(topSites)).toHaveLength(1)
+    })
+  })
+  describe('filterFromExcludedSites', () => {
+    const sitesData: NewTab.Site = [{
+      id: '',
+      url: 'https://brave.com',
+      title: 'brave',
+      favicon: '',
+      letter: '',
+      pinnedIndex: undefined,
+      bookmarkInfo: undefined
+    }]
+    it('filter sites already included in the sites list', () => {
+      const removedSitesData = [ ...sitesData ]
+      const assertion = newTabUtils.filterFromExcludedSites(sitesData, removedSitesData)
+      expect(assertion).toHaveLength(0)
+    })
+    it('does filter sites not included in the sites list', () => {
+      const removedSitesData = [{
+        id: '',
+        url: 'https://new_site.com',
+        title: 'new_site',
+        favicon: '',
+        letter: '',
+        pinnedIndex: undefined,
+        bookmarkInfo: undefined
+      }]
+      const assertion = newTabUtils.filterFromExcludedSites(sitesData, removedSitesData)
+      expect(assertion).toHaveLength(1)
     })
   })
 })
