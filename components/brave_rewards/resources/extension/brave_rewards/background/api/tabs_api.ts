@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const isTwitterURL = (url: URL) => {
-  return url && url.hostname.endsWith('.twitter.com')
+  return url && (url.hostname.endsWith('.twitter.com') || url.hostname === 'twitter.com')
 }
 
 const getTwitterScreenName = (url: URL) => {
