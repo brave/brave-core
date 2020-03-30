@@ -55,6 +55,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/ntp_background_images/RewardsBottomSheetDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp_background_images/NTPBackgroundImagesBridge.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp_background_images/FetchWallpaperWorkerTask.java",
+  "../../brave/android/java/org/chromium/chrome/browser/ntp_background_images/SuperReferralShareDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/BraveRewardsOnboardingFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/BraveRewardsService.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/BraveShieldsOnboardingFragment.java",

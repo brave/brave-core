@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2020 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:layout_margin="16dp"
+    android:background="@drawable/brave_sync_cover_general" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/brave_sync_qr_rounded"
+        android:layout_gravity="center"
+        android:layout_margin="16dp" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/share_brave_with_your_friends"
+            android:textColor="@android:color/black"
+            android:fontFamily="sans-serif"
+            android:textStyle="bold"/>
+
+        <ImageView android:id="@+id/share_qr_code_image"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            android:contentDescription="@null" />
+
+        <Button
+            android:id="@+id/btn_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/orange_rounded_button"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:text="@string/share"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/onboarding_text_size"
+            style="?android:attr/borderlessButtonStyle"/>
+
+    </LinearLayout>
+
+</ScrollView>
