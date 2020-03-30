@@ -8,7 +8,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="16dp"
     android:orientation="vertical">
 
     <TextView
@@ -16,6 +15,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:text="@string/how_would_you_rate"
         android:textSize="20sp"
@@ -32,6 +34,39 @@
         android:stepSize="1"
         android:layout_gravity="center" />
 
+    <TextView
+        android:id="@+id/feedback_title_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/feedback"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/rate_feedback_et"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:ems="10"
+        android:background="@drawable/rate_feedback_background"
+        android:gravity="top|left"
+        android:inputType="textMultiLine|textCapSentences"
+        android:lines="8"
+        android:maxLines="10"
+        android:minLines="6"
+        android:padding="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:scrollbars="vertical"
+        android:textColorHint="@color/onboarding_gray"
+        android:hint="Suggest us what went wrong and we\'ll work on it!"
+        android:visibility="gone" />
+
     <LinearLayout
         android:id="@+id/brave_rate_action_layout"
         android:layout_width="match_parent"
@@ -39,7 +74,7 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
-        <Button
+        <!-- <Button
             android:id="@+id/btn_never"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -63,7 +98,34 @@
             android:clickable="true"
             android:focusable="true"
             android:text="@string/maybe_later"
-            android:textColor="@color/onboarding_orange" />
+            android:textColor="@color/onboarding_orange" /> -->
+
+
+            <Button
+                android:id="@+id/rate_negative_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/never"
+                android:clickable="true"
+                android:background="@android:color/transparent"
+                android:foreground="?attr/selectableItemBackground"
+                android:textColor="@color/onboarding_gray"
+                android:textAllCaps="false"
+                android:gravity="center"/>
+
+            <Button
+                android:id="@+id/rate_positive_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/maybe_later"
+                android:clickable="true"
+                android:background="@android:color/transparent"
+                android:foreground="?attr/selectableItemBackground"
+                android:textColor="@color/onboarding_orange"
+                android:textAllCaps="false"
+                android:gravity="center"/>
 
     </LinearLayout>
 
