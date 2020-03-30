@@ -7,3 +7,9 @@
 /* Error handling U2F registration. */
 "U2FRegistrationError" = "注册安全密钥时出错";
 
+/* Error message if list of Payment Instruments doesn't include BAT */
+"unsupportedInstrumentMessage" = "不支持的支付方式";
+
+/* Error message if the payment workflow is canceled by the user */
+"userCancelledMessage" = "用户已取消";
+

@@ -104,7 +104,7 @@
 "BraveRewardsAutoContributeSupportedSites" = "Støttede nettsteder";
 
 /* No comment provided by engineer. */
-"BraveRewardsAutoContributeToUnverifiedSites" = "Tillat bidrag til ikke-verifiserte nettsteder";
+"BraveRewardsAutoContributeToUnverifiedSites" = "Vis ikke-verifiserte nettsteder i listen";
 
 /* No comment provided by engineer. */
 "BraveRewardsAutoContributeToVideos" = "Tillat bidrag til videoer";
@@ -499,6 +499,12 @@
 /* Message that is displayed when user disables auto-contribute */
 "DisabledAutoContributeMessage" = "Gi skaperne belønning for innholdet du elsker. Din månedlige betaling blir distribuert over nettstedene du besøker.";
 
+/* Message that is displayed on monthly contribution section when user disables rewards */
+"DisabledMonthlyContributionMessage" = "De månedlige bidragene dine vil bli sendt hver 30. dag.";
+
+/* Message that is displayed on tips section when user disables rewards */
+"DisabledTipsMessage" = "Tips umiddelbart når du finner juveler. Dersom du ønsker det, la folk få vite det med en kjapp tvitring.";
+
 /* No comment provided by engineer. */
 "DisclaimerInformation" = "Ved å klikke på «Bli med i Rewards» angir du at du har lest og godtatt vilkårene for bruk og personvernerklæringen.";
 
@@ -513,6 +519,12 @@
 
 /* The title of the screen that shows a list of excluded sites for Auto-Contribute */
 "ExclusionListTitle" = "Ekskluderte nettsteder";
+
+/* No comment provided by engineer. */
+"LedgerDatabaseMigrationFailedBody" = "Det oppstod et problem under lasting av Rewards-informasjonen din. Rewards-aktiviteten din vi startes på nytt.\n\nVennligst kontakt support@brave.com ved eventuelle problemer eller spørsmål";
+
+/* No comment provided by engineer. */
+"LedgerInitializationFailedTitle" = "Beklager, noe gikk galt ...";
 
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "Trykk her for å få mer informasjon.";
@@ -539,7 +551,7 @@
 "NotificationContributeNotificationError" = "Det oppstod et problem under behandlingen av bidraget.";
 
 /* We show this string in the notification when contribution is successful */
-"NotificationContributeSuccess" = "Du har bidratt med % @";
+"NotificationContributeSuccess" = "Du har bidratt med %@";
 
 /* We show this string in notification when tip fails */
 "NotificationContributeTipError" = "Klarer ikke å sende tipsen din. Prøv igjen senere.";
@@ -621,6 +633,51 @@
 
 /* No comment provided by engineer. */
 "RewardsOptInPrefix" = "Gjør deg klar til å oppleve neste generasjon Internett.";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsBody" = "Får å kjøpe denne varen, må du opptjene poletter. Slå på Brave Rewards for å opptjene.";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsButtonTitle" = "Aktiver Brave Rewards";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsDisclaimer" = "Ved å trykke på aktiver Brave Rewards, går du med på Brave Rewards’ vilkår for bruk.";
+
+/* The hyperlinked portion of the copy: 'By tapping Enable Brave Rewards, you agree to Brave Reward’s Terms of Service.' */
+"SKUEnableRewardsDisclaimerLink" = "Vilkår for bruk.";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsTitle" = "Aktiver Brave Rewards for å fortsette.";
+
+/* '%@' becomes 'BAT' or 'BAP' based on region */
+"SKUPurchaseBuyWithBAT" = "Kjøp med %@";
+
+/* No comment provided by engineer. */
+"SKUPurchaseCompletedBody" = "Kos deg med kjøpet ditt.";
+
+/* No comment provided by engineer. */
+"SKUPurchaseCompletedTitle" = "Du er klar!";
+
+/* First '%@' becomes 'Buy with BAT' or 'Buy with BAP' based on region. Second '%@' becomes 'Brave’s Terms of Sale' */
+"SKUPurchaseDisclaimerInformation" = "Ved å trykke på '%1$@', går du med på %2$@.";
+
+/* Should be the same text as shown */
+"SKUPurchaseDisclaimerInformationLink" = "Braves salgsvilkår";
+
+/* '%@' becomes 'BAT' or 'BAP' based on region' */
+"SKUPurchaseInsufficientFunds" = "Du har ikke nok %@ til å gjøre dette kjøpet.";
+
+/* No comment provided by engineer. */
+"SKUPurchaseItemSelected" = "Valgt vare";
+
+/* No comment provided by engineer. */
+"SKUPurchaseOrderTotal" = "Total bestilling";
+
+/* No comment provided by engineer. */
+"SKUPurchaseProcessing" = "Betalingen din behandles ...";
+
+/* No comment provided by engineer. */
+"SKUPurchaseTitle" = "Bekreft kjøp";
 
 /* No comment provided by engineer. */
 "TermsOfServiceURL" = "Vilkår for bruk";

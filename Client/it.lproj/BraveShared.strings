@@ -7,3 +7,9 @@
 /* Error handling U2F registration. */
 "U2FRegistrationError" = "Errore durante la registrazione della chiave di sicurezza";
 
+/* Error message if list of Payment Instruments doesn't include BAT */
+"unsupportedInstrumentMessage" = "Strumenti di pagamento non supportati";
+
+/* Error message if the payment workflow is canceled by the user */
+"userCancelledMessage" = "Annullato dall’utente";
+

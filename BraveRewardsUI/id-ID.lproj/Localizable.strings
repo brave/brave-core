@@ -104,7 +104,7 @@
 "BraveRewardsAutoContributeSupportedSites" = "Situs yang didukung";
 
 /* No comment provided by engineer. */
-"BraveRewardsAutoContributeToUnverifiedSites" = "Izinkan kontribusi ke situs yang tidak diverifikasi";
+"BraveRewardsAutoContributeToUnverifiedSites" = "Tampilkan situs yang tidak terverifikasi di dalam daftar";
 
 /* No comment provided by engineer. */
 "BraveRewardsAutoContributeToVideos" = "Izinkan kontribusi untuk video";
@@ -499,6 +499,12 @@
 /* Message that is displayed when user disables auto-contribute */
 "DisabledAutoContributeMessage" = "Beri penghargaan kepada pembuat konten yang kontennya Anda sukai. Pembayaran bulanan Anda dapat didistribusikan di seluruh situs yang Anda kunjungi.";
 
+/* Message that is displayed on monthly contribution section when user disables rewards */
+"DisabledMonthlyContributionMessage" = "Kontribusi bulanan Anda akan dikirim setiap 30 hari.";
+
+/* Message that is displayed on tips section when user disables rewards */
+"DisabledTipsMessage" = "Berikan tip langsung di tempat saat Anda menemukan video yang bagus. Jika menginginkannya, Anda dapat memberi tahu kepada orang lain melalui cuitan singkat.";
+
 /* No comment provided by engineer. */
 "DisclaimerInformation" = "Dengan mengklik 'Gabung Hadiah', berarti Anda menyatakan bahwa Anda telah membaca dan menyetujui Persyaratan Layanan dan Kebijakan Privasi.";
 
@@ -513,6 +519,12 @@
 
 /* The title of the screen that shows a list of excluded sites for Auto-Contribute */
 "ExclusionListTitle" = "Situs yang dikecualikan";
+
+/* No comment provided by engineer. */
+"LedgerDatabaseMigrationFailedBody" = "Terjadi masalah saat memuat informasi Reward Anda. Detail tentang kegiatan pemberian hadiah Anda akan dimulai kembali.\n\nHarap hubungi support@brave.com jika menemui masalah atau kekhawatiran apa pun.";
+
+/* No comment provided by engineer. */
+"LedgerInitializationFailedTitle" = "Maaf, sepertinya ada yang salah...";
 
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "Ketuk di sini untuk mempelajari selengkapnya.";
@@ -621,6 +633,51 @@
 
 /* No comment provided by engineer. */
 "RewardsOptInPrefix" = "Bersiaplah untuk menikmati pengalaman Internet tingkat berikutnya.";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsBody" = "Agar dapat membeli barang ini, Anda perlu mendapatkan token. Aktifkan Brave rewards untuk mendapatkannya.";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsButtonTitle" = "Aktifkan Brave Rewards";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsDisclaimer" = "Dengan mengetuk Aktifkan Brave Rewards, Anda telah menyetujui Syarat Layanan Brave Rewards.";
+
+/* The hyperlinked portion of the copy: 'By tapping Enable Brave Rewards, you agree to Brave Reward’s Terms of Service.' */
+"SKUEnableRewardsDisclaimerLink" = "Syarat Layanan.";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsTitle" = "Aktifkan Brave Rewards untuk Melanjutkan.";
+
+/* '%@' becomes 'BAT' or 'BAP' based on region */
+"SKUPurchaseBuyWithBAT" = "Beli dengan %@";
+
+/* No comment provided by engineer. */
+"SKUPurchaseCompletedBody" = "Silakan menikmati pembelian Anda.";
+
+/* No comment provided by engineer. */
+"SKUPurchaseCompletedTitle" = "Anda telah berhasil!";
+
+/* First '%@' becomes 'Buy with BAT' or 'Buy with BAP' based on region. Second '%@' becomes 'Brave’s Terms of Sale' */
+"SKUPurchaseDisclaimerInformation" = "Dengan mengklik '%1$@', Anda setuju untuk %2$@.";
+
+/* Should be the same text as shown */
+"SKUPurchaseDisclaimerInformationLink" = "Syarat Penjualan Brave";
+
+/* '%@' becomes 'BAT' or 'BAP' based on region' */
+"SKUPurchaseInsufficientFunds" = "Anda tak memiliki %@ yang mencukupi untuk melakukan pembelian ini.";
+
+/* No comment provided by engineer. */
+"SKUPurchaseItemSelected" = "Barang yang Dipilih";
+
+/* No comment provided by engineer. */
+"SKUPurchaseOrderTotal" = "Total Pesanan";
+
+/* No comment provided by engineer. */
+"SKUPurchaseProcessing" = "Pembayaran Anda sedang diproses...";
+
+/* No comment provided by engineer. */
+"SKUPurchaseTitle" = "Mengonfirmasi Pembelian";
 
 /* No comment provided by engineer. */
 "TermsOfServiceURL" = "Persyaratan Layanan";

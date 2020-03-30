@@ -104,7 +104,7 @@
 "BraveRewardsAutoContributeSupportedSites" = "支持的站點";
 
 /* No comment provided by engineer. */
-"BraveRewardsAutoContributeToUnverifiedSites" = "允許贊助未驗證的站點";
+"BraveRewardsAutoContributeToUnverifiedSites" = "在清單中顯示未驗證的網站";
 
 /* No comment provided by engineer. */
 "BraveRewardsAutoContributeToVideos" = "允許贊助影片";
@@ -499,6 +499,12 @@
 /* Message that is displayed when user disables auto-contribute */
 "DisabledAutoContributeMessage" = "為您喜愛的內容獎勵創作者。 您的每月付款將分配至您所瀏覽的網站中。";
 
+/* Message that is displayed on monthly contribution section when user disables rewards */
+"DisabledMonthlyContributionMessage" = "您的每月贊助將每 30 天發送一次。";
+
+/* Message that is displayed on tips section when user disables rewards */
+"DisabledTipsMessage" = "發現好東西時就給點小費吧。如果您想要的話，可以快速發佈推文讓大家知道。";
+
 /* No comment provided by engineer. */
 "DisclaimerInformation" = "按下「加入獎勵」，表示您已閱讀並同意服務條款和隱私政策。";
 
@@ -513,6 +519,12 @@
 
 /* The title of the screen that shows a list of excluded sites for Auto-Contribute */
 "ExclusionListTitle" = "排除的網站";
+
+/* No comment provided by engineer. */
+"LedgerDatabaseMigrationFailedBody" = "載入您的 Rewards 資訊時發生問題。您的獎勵活動詳情將會重新啟動。\n\n如有任何問題或疑慮，請聯絡 support@brave.com";
+
+/* No comment provided by engineer. */
+"LedgerInitializationFailedTitle" = "很抱歉，發生錯誤...";
 
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "點選此處了解更多資訊。";
@@ -621,6 +633,51 @@
 
 /* No comment provided by engineer. */
 "RewardsOptInPrefix" = "準備體驗新一代網際網路。";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsBody" = "若要購買此項目，您必須賺取代幣。啟用 Brave Rewards 以賺取代幣。";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsButtonTitle" = "啟用 Brave Rewards";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsDisclaimer" = "點選「啟用 Brave Rewards」即表示您同意 Brave Rewards 的服務條款。";
+
+/* The hyperlinked portion of the copy: 'By tapping Enable Brave Rewards, you agree to Brave Reward’s Terms of Service.' */
+"SKUEnableRewardsDisclaimerLink" = "服務條款。";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsTitle" = "啟用 Brave Rewards 以繼續。";
+
+/* '%@' becomes 'BAT' or 'BAP' based on region */
+"SKUPurchaseBuyWithBAT" = "使用 %@ 購買";
+
+/* No comment provided by engineer. */
+"SKUPurchaseCompletedBody" = "盡情享受您的購買。";
+
+/* No comment provided by engineer. */
+"SKUPurchaseCompletedTitle" = "您可以開始使用了！";
+
+/* First '%@' becomes 'Buy with BAT' or 'Buy with BAP' based on region. Second '%@' becomes 'Brave’s Terms of Sale' */
+"SKUPurchaseDisclaimerInformation" = "按下「%1$@」，即表示您同意 %2$@。";
+
+/* Should be the same text as shown */
+"SKUPurchaseDisclaimerInformationLink" = "Brave 的銷售條款";
+
+/* '%@' becomes 'BAT' or 'BAP' based on region' */
+"SKUPurchaseInsufficientFunds" = "您沒有足夠的 %@ 來完成這次購買。";
+
+/* No comment provided by engineer. */
+"SKUPurchaseItemSelected" = "選取的項目";
+
+/* No comment provided by engineer. */
+"SKUPurchaseOrderTotal" = "訂單總計";
+
+/* No comment provided by engineer. */
+"SKUPurchaseProcessing" = "您的付款正在處理中...";
+
+/* No comment provided by engineer. */
+"SKUPurchaseTitle" = "確認購買";
 
 /* No comment provided by engineer. */
 "TermsOfServiceURL" = "服務條款";

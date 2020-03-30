@@ -62,19 +62,19 @@
 "AuthenticationImmediately" = "Umiddelbart";
 
 /* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app with attempts remaining */
-"AuthenticationIncorrectAttemptsRemaining" = "Ugyldig passkode. Prøv igjen. (Gjenværende forsøk: %d).";
+"AuthenticationIncorrectAttemptsRemaining" = "Ugyldig passkode. Prøv igjen (Gjenværende forsøk: %d).";
 
 /* Touch ID prompt subtitle when accessing logins */
 "AuthenticationLoginsTouchReason" = "Bruk fingeravtrykket ditt for å få tilgang til innlogginger nå.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "For mange mislykkede forsøk.\nPrøv igjen om %d minutter.";
+"AuthenticationMaximumAttemptsReached" = "For mange mislykkede forsøk.\n Prøv igjen om %d minutter.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
 "AuthenticationMaximumAttemptsReachedNoTime" = "Maksimalt antall forsøk nådd. Vennligst prøv igjen senere.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReachedOneMinute" = "For mange mislykkede forsøk.\nPrøv igjen om 1 minutt.";
+"AuthenticationMaximumAttemptsReachedOneMinute" = "For mange mislykkede forsøk.\n Prøv igjen om 1 minutt.";
 
 /* Label for the Passcode item in Settings */
 "AuthenticationPasscode" = "Passkode for innlogging";
@@ -410,7 +410,7 @@
 "ErrorPagesVisitOnceButton" = "Besøk siden allikevel";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "Est. tid \nspart";
+"EstTimerSaved" = "Est. tid \nSpart";
 
 /* %@ will launch an external application */
 "ExternalAppURLAlertMessage" = "%@ vil starte en ekstern app";
@@ -437,7 +437,7 @@
 "FindInPageDoneButtonAccessibilityLabel" = "Ferdig";
 
 /* Find %@ text in page. */
-"FindInPageFormat" = "Finn «%@\"";
+"FindInPageFormat" = "Finn «%@»";
 
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "Neste resultat på side";
@@ -758,7 +758,7 @@
 "ReaderModeFontTypeButtonAccessibilityHint" = "Endrer fonttypen.";
 
 /* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadingContentDisplayText" = "Laster innhold...";
+"ReaderModeLoadingContentDisplayText" = "Laster innhold ...";
 
 /* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
 "ReaderModeLoadOriginalLinkText" = "Last inn original side";
@@ -770,7 +770,7 @@
 "ReaderModeSmallerFontButtonAccessibilityLabel" = "Reduser tekststørrelse";
 
 /* Button for smaller reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
-"ReaderModeSmallerFontButtonTitle" = "-";
+"ReaderModeSmallerFontButtonTitle" = "–";
 
 /* Accessibility hint for the color theme setting buttons in reader mode display settings */
 "ReaderModeThemeButtonAccessibilityHint" = "Endrer fargetema.";
@@ -896,7 +896,7 @@
 "ShareLinkActionTitle" = "Del lenke";
 
 /* Title for sharing url menu item */
-"ShareWithMenuItem" = "Lagre med...";
+"ShareWithMenuItem" = "Lagre med ...";
 
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "ShieldsDefaults" = "Shield standardverdier";
@@ -980,13 +980,13 @@
 "SyncAddDeviceScan" = "QR-kode for synkkjede";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "Gå til Sync i innstillingene på den andre mobilenheten din, og trykk på knappen for «Skann synkkode». Bruk kameraet ditt til å skanne QR-koden nedenfor.\nBehandle denne koden som et passord. Hvis noen får tak i det, kan de lese og endre de synkroniserte dataene dine.";
+"SyncAddDeviceScanDescription" = "Gå til Sync i innstillingene på den andre mobilenheten din, og trykk på knappen for «Skann synkkode». Bruk kameraet ditt til å skanne QR-koden nedenfor.\n\n Behandle denne koden som et passord. Hvis noen får tak i det, kan de lese og endre de synkroniserte dataene dine.";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Angi synkkoden";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Gå til Sync i innstillingene på mobilenheten din, og trykk på knappen for «%@». Legg inn synklenke-kodeordene som vises nedenfor\nBehandle denne koden som et passord. Hvis noen får tak i det, kan de lese og endre de synkroniserte dataene dine.";
+"SyncAddDeviceWordsDescription" = "Gå til Sync i innstillingene på mobilenheten din, og trykk på knappen for «%@». Legg inn synklenke-kodeordene som vises nedenfor\n\n Behandle denne koden som et passord. Hvis noen får tak i det, kan de lese og endre de synkroniserte dataene dine.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Skriv inn kodeord";
@@ -1058,7 +1058,7 @@
 "SyncSettingsHeader" = "På oversikten under ser du alle enhetene i synkkjeden din. Alle enhetene kan administreres fra enhver av de andre enhetene.";
 
 /* Switch back to camera button */
-"SyncSwitchBackToCameraButton" = "Jeg bruker kameraet mitt…";
+"SyncSwitchBackToCameraButton" = "Jeg bruker kameraet mitt …";
 
 /* Tablet or phone button title */
 "SyncTabletOrMobileDevice" = "Nettbrett eller telefon";
@@ -1178,7 +1178,7 @@
 "Today" = "I dag";
 
 /* Shields Trackers Stat */
-"TrackersrBlocked" = "Sporingsprogrammer \nblokkert";
+"TrackersrBlocked" = "Sporingsprogrammer \nBlokkert";
 
 /* Sync Alert */
 "UnableToConnectDescription" = "Kan ikke bli med i synkgruppen. Sjekk ordene du skrev inn, og prøv igjen.";

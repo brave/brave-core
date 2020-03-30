@@ -26,7 +26,7 @@
 "OBDidntSeeAdButton" = "Jag såg ingen annons";
 
 /* A generic error body for onboarding */
-"OBErrorDetails" = "Någonting gick fel när din plånbok skapades. Försök igen.";
+"OBErrorDetails" = "Någonting gick fel när din plånbok skapades. Försök igen";
 
 /* No comment provided by engineer. */
 "OBErrorOkay" = "Okej";

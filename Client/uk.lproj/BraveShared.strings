@@ -7,3 +7,9 @@
 /* Error handling U2F registration. */
 "U2FRegistrationError" = "Помилка реєстрації вашого ключа безпеки";
 
+/* Error message if list of Payment Instruments doesn't include BAT */
+"unsupportedInstrumentMessage" = "Інструменти оплати не підтримуються";
+
+/* Error message if the payment workflow is canceled by the user */
+"userCancelledMessage" = "Скасував користувач";
+
