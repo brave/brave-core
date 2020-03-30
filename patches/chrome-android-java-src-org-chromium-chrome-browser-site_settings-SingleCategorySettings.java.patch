@@ -1,8 +1,8 @@
-diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/website/SingleCategorySettings.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/website/SingleCategorySettings.java
-index 2e24ca31012dac3411ba5f4edb67be73d9925552..921cbad4d8357c35f005642ca208e6e8e0b1c672 100644
---- a/chrome/android/java/src/org/chromium/chrome/browser/settings/website/SingleCategorySettings.java
-+++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/website/SingleCategorySettings.java
-@@ -73,7 +73,7 @@ import java.util.Set;
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/site_settings/SingleCategorySettings.java b/chrome/android/java/src/org/chromium/chrome/browser/site_settings/SingleCategorySettings.java
+index 6a25cd6017790bf153781ca1be210e41824649c2..407acb17dfecb23d403e074cb63c6f1da04ecb1b 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/site_settings/SingleCategorySettings.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/site_settings/SingleCategorySettings.java
+@@ -75,7 +75,7 @@ import java.util.Set;
   * the websites with microphone permissions. When the user selects a site, SingleWebsiteSettings
   * is launched to allow the user to see or modify the settings for that particular website.
   */
@@ -11,7 +11,7 @@ index 2e24ca31012dac3411ba5f4edb67be73d9925552..921cbad4d8357c35f005642ca208e6e8
          implements Preference.OnPreferenceChangeListener, Preference.OnPreferenceClickListener,
                     AddExceptionPreference.SiteAddedCallback, View.OnClickListener,
                     PreferenceManager.OnPreferenceTreeClickListener {
-@@ -401,7 +401,7 @@ public class SingleCategorySettings extends PreferenceFragmentCompat
+@@ -408,7 +408,7 @@ public class SingleCategorySettings extends PreferenceFragmentCompat
              if (queryHasChanged) getInfoForOrigins();
              return true;
          }
