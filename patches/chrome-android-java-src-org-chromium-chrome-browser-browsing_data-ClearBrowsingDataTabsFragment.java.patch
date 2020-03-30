@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/browsing_data/ClearBrowsingDataTabsFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/browsing_data/ClearBrowsingDataTabsFragment.java
+index c452db8b6abc8d5d5bea72d8b03ecafc9e0d0d0e..41f749213aba4580876810b3885e05493634537c 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/browsing_data/ClearBrowsingDataTabsFragment.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/browsing_data/ClearBrowsingDataTabsFragment.java
+@@ -136,7 +136,7 @@ public class ClearBrowsingDataTabsFragment extends Fragment {
+                     fragment = new ClearBrowsingDataFragmentBasic();
+                     break;
+                 case 1:
+-                    fragment = new ClearBrowsingDataFragmentAdvanced();
++                    fragment = new BraveClearBrowsingDataPreferencesAdvanced();
+                     break;
+                 default:
+                     throw new RuntimeException("invalid position: " + position);
