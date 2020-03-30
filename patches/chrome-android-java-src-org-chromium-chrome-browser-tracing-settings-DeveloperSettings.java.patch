@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/tracing/settings/DeveloperSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/tracing/settings/DeveloperSettings.java
+index 6b41808d568199620aebba6afaf4ae5e24d02670..48506917906c959d41303083b902447b496725f5 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/tracing/settings/DeveloperSettings.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/tracing/settings/DeveloperSettings.java
+@@ -19,7 +19,7 @@ import org.chromium.components.version_info.VersionConstants;
+ /**
+  * Settings fragment containing preferences aimed at Chrome and web developers.
+  */
+-public class DeveloperSettings extends PreferenceFragmentCompat {
++public class DeveloperSettings extends org.chromium.chrome.browser.settings.BravePreferenceFragment {
+     private static final String UI_PREF_BETA_STABLE_HINT = "beta_stable_hint";
+ 
+     // Non-translated strings:
