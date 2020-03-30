@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextualsearch/ContextualSearchPreferenceFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/contextualsearch/ContextualSearchPreferenceFragment.java
+index 01bfe957125184b797c75923bba9b700634b91bb..026553ab1ab77d5d2bf971f5af0a5332568a0e05 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/contextualsearch/ContextualSearchPreferenceFragment.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/contextualsearch/ContextualSearchPreferenceFragment.java
+@@ -17,7 +17,7 @@ import org.chromium.chrome.browser.settings.SettingsUtils;
+ /**
+  * Fragment to manage the Contextual Search preference and to explain to the user what it does.
+  */
+-public class ContextualSearchPreferenceFragment extends PreferenceFragmentCompat {
++public class ContextualSearchPreferenceFragment extends org.chromium.chrome.browser.settings.BravePreferenceFragment {
+     private static final String PREF_CONTEXTUAL_SEARCH_SWITCH = "contextual_search_switch";
+ 
+     @Override
