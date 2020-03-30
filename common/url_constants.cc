@@ -10,6 +10,7 @@ const char kChromeExtensionScheme[] = "chrome-extension";
 const char kBraveUIScheme[] = "brave";
 const char kMagnetScheme[] = "magnet";
 const char kRewardsScheme[] = "rewards";
+const char kBinanceScheme[] = "binance";
 const char kWidevineMoreInfoURL[] = "https://www.eff.org/issues/drm";
 const char kWidevineTOS[] = "https://policies.google.com/terms";
 const char kRewardsUpholdSupport[] = "https://uphold.com/en/brave/support";

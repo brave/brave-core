@@ -14,6 +14,7 @@
 #include "brave/common/brave_features.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/network_constants.h"
+#include "brave/components/binance/browser/buildflags/buildflags.h"
 #include "components/component_updater/component_updater_url_constants.h"
 #include "extensions/buildflags/buildflags.h"
 #include "extensions/common/url_pattern.h"
@@ -82,6 +83,18 @@ int OnBeforeURLRequest_CommonStaticRedirectWorkForGURL(
     }
     return net::OK;
   }
+
+#if BUILDFLAG(BINANCE_ENABLED)
+  static URLPattern binance_oauth_pattern(
+      URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kBinanceOauthURLPattern);
+  if (binance_oauth_pattern.MatchesURL(request_url)) {
+    GURL::Replacements replacements;
+      replacements.SetQueryStr(request_url.query_piece());
+    *new_url = GURL(kBinanceOauthURLHandler)
+      .ReplaceComponents(replacements);
+    return net::OK;
+  }
+#endif
 
   if (chromecast_pattern.MatchesURL(request_url)) {
     replacements.SetSchemeStr("https");
