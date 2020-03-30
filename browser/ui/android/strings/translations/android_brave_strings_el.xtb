@@ -58,7 +58,7 @@
 <translation id="7053983685419859001">Φραγή</translation>
 <translation id="5806601733251372221">Ασπίδες του Brave</translation>
 <translation id="2880356288762235261">τις διαφημίσεις που δε σέβονται το απόρρητο και τους ανιχνευτές , ώστε να μπορείτε να περιηγείστε στο διαδίκτυο, χωρίς να σας παρακολουθούν.</translation>
-<translation id="6980054221517850750">Κερδίστε μάρκες</translation>
+<translation id="8537217141725709400">Κερδίστε <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Ανταμοιβές Brave</translation>
 <translation id="1789842587755069541">για να βλέπετε διαφημίσεις που σέβονται την ιδιωτικότητα. Χρησιμοποιήστε τις για να υποστηρίξετε τους αγαπημένους σας ιστότοπους και δημιουργούς.</translation>
 <translation id="821707262661492716">για να βλέπετε διαφημίσεις που σέβονται την ιδιωτικότητα.</translation>
@@ -114,13 +114,14 @@
 <translation id="4254029385847607686">ΔΕΚΕΜΒΡΙΟΣ</translation>
 <translation id="1916285746997567466">Ετοιμαστείτε να ζήσετε
 το Διαδίκτυο του μέλλοντος.</translation>
-<translation id="1071131306814166204">Τώρα μπορείτε να κερδίσετε μάρκες 
-βλέποντας διαφημίσεις, που σέβονται την ιδιωτικότητα.</translation>
+<translation id="3540580927110899945">Μπορείτε τώρα να κερδίσετε <ph name="TOKEN"/>s για
+παρακολούθηση διαφημίσεων που σέβονται την ιδιωτικότητα.</translation>
 <translation id="1327938628925645979">ΕΓΓΡΑΦΕΙΤΕ ΣΤΙΣ ΑΝΤΑΜΟΙΒΕΣ</translation>
 <translation id="5567439033041178034">ΜΑΘΕΤΕ ΠΕΡΙΣΣΟΤΕΡΑ</translation>
 <translation id="3780605330121608425">Το πορτοφόλι σας</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
+<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="3826081199286264109">USD</translation>
 <translation id="2104073734684466851">Επιχορηγήσεις</translation>
 <translation id="1165667598801520610">Προσθήκη Κεφαλαίων</translation>
 <translation id="8428213095426709021">Ρυθμίσεις</translation>
@@ -148,13 +149,13 @@
 <translation id="5463954686005964104">Αποστολή tip σε αυτή την ιστοσελίδα μηνιαίως</translation>
 <translation id="7530570094705720669">Δημιουργία πορτοφολιού</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
-<translation id="4781696154289395607">Συνεισφέρατε  <ph name="BAT_VALUE"/> BAT.</translation>
+<translation id="4751553692764711651">Έχετε συνεισφέρει <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/>.</translation>
 <translation id="7997676409547731821">Η προγραμματισμένη μηνιαία πληρωμή σας για το Auto-Contribute και τις μηνιαίες συμβουλές δεν μπόρεσε να ολοκληρωθεί εξαιτίας ανεπαρκών κεφαλαίων. Θα προσπαθήσουμε ξανά σε 30 ημέρες.</translation>
 <translation id="5306913077198665897">Παρουσιάστηκε πρόβλημα κατά την επεξεργασία της συμβουλής σας, παρακαλούμε δοκιμάστε ξανά.</translation>
 <translation id="2429828319207652823">Παρουσιάστηκε σφάλμα κατά την επεξεργασία της εισφοράς σου.</translation>
 <translation id="3453206261112715431">Δωρεάν Χορηγία Τόκεν</translation>
 <translation id="6417420737057016607">Διαφημίσεις Brave</translation>
-<translation id="606865182719489911">Μια χορήγηση δωρεάν μάρκας είναι διαθέσιμη.</translation>
+<translation id="5497435273900537730">Μια δωρεάν <ph name="TOKEN"/> είναι διαθέσιμη ως χορηγία.</translation>
 <translation id="8689997599821157251">Έχετε κερδίσει</translation>
 <translation id="7550470870580166294">Ανεπαρκείς Πόροι</translation>
 <translation id="2775064702681588061">Ο λογαριασμός σας Ανταμοιβών Brave αναμένει μια κατάθεση.</translation>
@@ -167,10 +168,10 @@
 <translation id="4292832015778676417">κέρδη από διαφημίσεις</translation>
 <translation id="683765328936486920">στο YouTube</translation>
 <translation id="8969049974285901797">στο Twitch</translation>
-<translation id="3692362746128814480">Έχετε επισημανθεί <ph name="BAT_VALUE"/> BAT ως δημιουργός που δεν έχει
-ακόμη εγγραφεί, ώστε να λαμβάνει εισφορές. Το πρόγραμμα περιήγησης θα συνεχίσει να προσπαθεί να δεχτεί εισφορές,
-μέχρι να εξακριβωθούν τα στοιχεία σας ή μέχρι να περάσουν 90 ημέρες.</translation>
-<translation id="853714875140407133">ανεπαρκείς μάρκες</translation>
+<translation id="4376933248999950592">Έχετε καθορίσει <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/> για τους δημιουργούς που δεν έχουν
+ακόμη εγγραφεί για να λαμβάνουν συνεισφορές. Το πρόγραμμα περιήγησης θα συνεχίσει να προσπαθεί να συνεισφέρει
+μέχρι να επαληθεύσουν ή μέχρι να περάσουν 90 ημέρες.</translation>
+<translation id="3101693828171454453">ανεπαρκείς <ph name="TOKEN"/>s</translation>
 <translation id="6940273954212603510">παρακαλούμε</translation>
 <translation id="1036277985068412734">προσθέστε κεφάλαια</translation>
 <translation id="3492491948683276944">ορίστε μηνιαία συμβουλή</translation>
@@ -234,4 +235,39 @@
 <translation id="6336451774241870485">Νέα καρτέλα ανώνυμης περιήγησης</translation>
 <translation id="6199596294742117349">Αυτή είναι μία Ιδιωτική Καρτέλα</translation>
 <translation id="5858455511731621847">Αν και οι ιστότοποι που επισκέπτεστε σε ιδιωτικές καρτέλες δεν αποθηκεύονται σε τοπικό επίπεδο, δεν σας κάνουν ανώνυμους ή αόρατους στον ISP σας, στον εργοδότη σας ή στους ιστότοπους που επισκέπτεστε.</translation>
+<translation id="5789441016350810005">Διαφημίσεις Brave που αποστέλλονται όταν το πρόγραμμα περιήγησης βρίσκεται στο παρασκήνιο</translation>
+<translation id="7127980134843952133">Ιστορικό λήψεων</translation>
+<translation id="3690140184638701871">Συνεισφορές &amp;amp; Συμβουλές</translation>
+<translation id="844921671123185605">Έχει γίνει επεξεργασία των μηνιαίων φιλοδωρημάτων σας!</translation>
+<translation id="3124090095880236567">Ενεργοποιήστε τις Διαφημίσεις</translation>
+<translation id="2975780980638932742">Έφτασαν οι Διαφημίσεις Brave!</translation>
+<translation id="7655723274266132226">Τώρα μπορείτε να κερδίσετε βλέποντας διαφημίσεις.</translation>
+<translation id="7541582550122501404">Εκκρεμής Συνεισφορά</translation>
+<translation id="8520059774736886747">Ο δημιουργός <ph name="PUBLISHER_NAME"/> επαληθεύτηκε πρόσφατα</translation>
+<translation id="7924320838799747606">Το υπόλοιπό σας</translation>
+<translation id="6160106411363856968">BAP</translation>
+<translation id="1081826981536899387">Πόντοι BAT</translation>
+<translation id="9212459913845238740">Χορηγίες Πόντων που Διεκδικήθηκαν</translation>
+<translation id="2132683977638223450">Χορήγηση Δωρεάν Πόντου</translation>
+<translation id="4522570452068850558">Λεπτομέρειες</translation>
+<translation id="1486343603936278248">μάρκα</translation>
+<translation id="8713995420537272453">πόντος</translation>
+<translation id="6678056861663824314">1 <ph name="TIP"/></translation>
+<translation id="4065726515175370979">5 <ph name="TIP"/></translation>
+<translation id="8171148564903208264">10 <ph name="TIP"/></translation>
+<translation id="7781069478569868053">Νέα Καρτέλα Σελίδας</translation>
+<translation id="8522669544471808198">Εμφάνιση Εικόνων Φόντου</translation>
+<translation id="3870475560794762985">Εμφάνιση Επιχορηγούμενων Εικόνων</translation>
+<translation id="8297488609722895137">Φωτογραφία από <ph name="PHOTO_BY"/></translation>
+<translation id="3794079107601824147">Πληρωθείτε για να δείτε αυτήν την εικόνα φόντου.</translation>
+<translation id="4836823081419522426">Θα λάβετε το 70% των εσόδων από διαφημίσεις για αυτήν την ιδιωτική χορηγία, η οποία μπορεί να χρησιμοποιηθεί για την υποστήριξη των δημιουργών περιεχομένου ιστού. Ενεργοποιήστε τις Ανταμοιβές Brave για να διεκδικήσετε το μερίδιο σας.</translation>
+<translation id="7307847920988946894">Ενεργοποιήστε τις Ανταμοιβές</translation>
+<translation id="1605521356929094020">Ενεργοποιήστε τις Διαφημίσεις Brave</translation>
+<translation id="1647482814782886825">Ενεργοποιώντας τις Ανταμοιβές, συμφωνείτε με τους <ph name="TERMS_OF_SERVICE"/>. Μπορείτε επίσης να επιλέξετε να <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="7136586167396205364">Απόκρυψη Επιχορηγούμενων Εικόνων</translation>
+<translation id="2927095357213611519">Μπορείτε να υποστηρίξετε δημιουργούς ιστού με μάρκες.\nΚερδίστε μάρκες βλέποντας διαφημίσεις που σέβονται την ιδιωτικότητα.</translation>
+<translation id="4016415345213871193">Πληρώνεστε για να βλέπετε αυτήν την εικόνα φόντου.</translation>
+<translation id="5895280237921845725"><ph name="LEARN_MORE"/> σχετικά με τις επιχορηγούμενες εικόνες στις Ανταμοιβές Brave. Μπορείτε επίσης να επιλέξετε να <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="1908278071064820219">Μπορείτε επίσης να επιλέξετε να <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="7931660128190969207">Πληρωθείτε για να δείτε αυτήν την εικόνα φόντου. Ενεργοποιήστε τις Διαφημίσεις Brave για να διεκδικήσετε το μερίδιο σας</translation>
 </translationbundle>

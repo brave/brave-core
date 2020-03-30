@@ -58,7 +58,6 @@
 <translation id="7053983685419859001">I-block</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
 <translation id="2880356288762235261">mga ad at tracker na lumalabag sa privacy para makapag-browse ka nang hindi ka sinusundan sa web.</translation>
-<translation id="6980054221517850750">Magkaroon ng mga token</translation>
 <translation id="3333887201479867589">Mga Reward ng Brave</translation>
 <translation id="1789842587755069541">para sa pagtingin sa mga ad na nagpapahalaga sa privacy. Gamitin ang mga ito para suportahan ang iyong mga paboritong site at creator.</translation>
 <translation id="821707262661492716">para sa pagtingin sa mga ad na nagpapahalaga sa privacy.</translation>
@@ -114,13 +113,11 @@
 <translation id="4254029385847607686">DISYEMBRE</translation>
 <translation id="1916285746997567466">Maghandang maranasan
 ang susunod na Internet.</translation>
-<translation id="1071131306814166204">Maaari ka na ngayong makakuha ng mga token sa pamamagitan ng
-panonood ng mga ad na nagpapahalaga sa privacy.</translation>
 <translation id="1327938628925645979">SUMALI SA REWARDS</translation>
 <translation id="5567439033041178034">MATUTO PA</translation>
 <translation id="3780605330121608425">Ang iyong wallet</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
+<translation id="3826081199286264109">USD</translation>
 <translation id="2104073734684466851">Mga grant</translation>
 <translation id="1165667598801520610">Magdagdag ng Mga Pondo</translation>
 <translation id="8428213095426709021">Mga Setting</translation>
@@ -149,13 +146,12 @@ buwang ito...</translation>
 <translation id="5463954686005964104">Nagbigay ng tip sa site na ito buwan-buwan</translation>
 <translation id="7530570094705720669">Ginagawa ang wallet</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
-<translation id="4781696154289395607">Nag-ambag ka ng <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">Hindi makumpleto ang iyong nakaiskedyul na buwan-buwang pagbabayad para sa Awtomatikong Pag-ambag at mga buwan-buwang tip dahil sa hindi sapat na mga pondo. Susubukan naming muli pagkalipas ng 30 araw.</translation>
 <translation id="5306913077198665897">Nagkaproblema sa pagpoproseso sa iyong tip, pakisubukang muli.</translation>
 <translation id="2429828319207652823">Nagkaroon ng problema sa pagproseso sa iyong pag-ambag.</translation>
 <translation id="3453206261112715431">Libreng Grant para sa Token</translation>
 <translation id="6417420737057016607">Brave Ads</translation>
-<translation id="606865182719489911">Available ang isang libreng grant para sa token.</translation>
+<translation id="5497435273900537730">May available na libreng <ph name="TOKEN"/> grant.</translation>
 <translation id="8689997599821157251">Kumita ka</translation>
 <translation id="7550470870580166294">Hindi Sapat ang Pondo</translation>
 <translation id="2775064702681588061">Naghihintay ng deposito ang iyong Brave Rewards account.</translation>
@@ -168,10 +164,6 @@ buwang ito...</translation>
 <translation id="4292832015778676417">kinita sa ads</translation>
 <translation id="683765328936486920">sa YouTube</translation>
 <translation id="8969049974285901797">sa Twitch</translation>
-<translation id="3692362746128814480">Nagtakda ka ng <ph name="BAT_VALUE"/> BAT para sa mga creator na hindi 
-pa nagsa-sign up para makatanggap ng mga ambag. Patuloy na susubukan ng iyong browser na mag-ambag
-hanggang sa mag-verify sila o hanggang sa lumipas ang 90 araw.</translation>
-<translation id="853714875140407133">hindi sapat na mga token</translation>
 <translation id="6940273954212603510">mangyaring</translation>
 <translation id="1036277985068412734">magdagdag ng mga pondo</translation>
 <translation id="3492491948683276944">itakda ang buwan-buwang tip</translation>
@@ -234,4 +226,39 @@ hanggang sa mag-verify sila o hanggang sa lumipas ang 90 araw.</translation>
 <translation id="6336451774241870485">Bagong pribadong tab</translation>
 <translation id="6199596294742117349">Pribadong Tab ito.</translation>
 <translation id="5858455511731621847">Kahit na hindi lokal na naka-save ang mga site na iyong binibisita sa mga pribadong tab, hindi ka ginagawa ng mga ito na hindi kilala o hindi nakikita ng ISP, empleyo, at mga site na binibisita mo.</translation>
+<translation id="5789441016350810005">Ipinapadala ang Mga Ad ng Brave kapag nasa background ang browser</translation>
+<translation id="7127980134843952133">Kasaysayan ng pag-download</translation>
+<translation id="3690140184638701871">Mga Kontribusyon at Tip</translation>
+<translation id="844921671123185605">Naiproseso na ang iyong mga buwanang tip!</translation>
+<translation id="3124090095880236567">I-on ang Mga Ad</translation>
+<translation id="2975780980638932742">Narito na ang Mga Ad sa Brave!</translation>
+<translation id="7655723274266132226">Maaari ka nang kumita ngayon sa pamamagitan ng panonood ng mga ad.</translation>
+<translation id="7541582550122501404">Nakabinbing Kontribusyon</translation>
+<translation id="8520059774736886747">Nag-verify kamakailan ang creator na si <ph name="PUBLISHER_NAME"/></translation>
+<translation id="7924320838799747606">Ang iyong balanse</translation>
+<translation id="6160106411363856968">BAP</translation>
+<translation id="1081826981536899387">Mga Puntos sa BAT</translation>
+<translation id="9212459913845238740">Na-claim na ang Mga Grant para sa Puntos</translation>
+<translation id="2132683977638223450">Libreng Grant para sa Puntos</translation>
+<translation id="4522570452068850558">Mga Detalye</translation>
+<translation id="1486343603936278248">token</translation>
+<translation id="8713995420537272453">puntos</translation>
+<translation id="6678056861663824314">1 <ph name="TIP"/></translation>
+<translation id="4065726515175370979">5 <ph name="TIP"/></translation>
+<translation id="8171148564903208264">10 <ph name="TIP"/></translation>
+<translation id="7781069478569868053">Page ng Bagong Tab</translation>
+<translation id="8522669544471808198">Ipakita ang Mga Larawan sa Background</translation>
+<translation id="3870475560794762985">Ipakita ang Mga Naka-sponsor na Larawan</translation>
+<translation id="8297488609722895137">Larawan ni <ph name="PHOTO_BY"/></translation>
+<translation id="3794079107601824147">Mabayaran para tingnan ang larawan sa background na ito.</translation>
+<translation id="4836823081419522426">Matatanggap mo ang 70% ng kita sa ad para sa pribadong sponsorship na ito na magagamit para suportahan ang mga creator ng content sa web. I-on ang Mga Reward sa Brave para i-claim ang iyong share.</translation>
+<translation id="7307847920988946894">I-on ang Mga Reward</translation>
+<translation id="1605521356929094020">I-on ang Mga Ad sa Brave</translation>
+<translation id="1647482814782886825">Sa pamamagitan ng pag-on sa Mga Reward, sumasang-ayon ka sa <ph name="TERMS_OF_SERVICE"/>. Maaari mo ring piliing <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="7136586167396205364">Itago ang Mga Naka-sponsor na Larawan</translation>
+<translation id="2927095357213611519">Maaari mong suportahan ang mga creator sa web gamit ang mga token.\nMakakuha ng mga token sa pamamagitan ng panonood ng mga ad na nagpapahalaga sa privacy.</translation>
+<translation id="4016415345213871193">Binabayaran ka para tingnan ang larawan sa background na ito.</translation>
+<translation id="5895280237921845725"><ph name="LEARN_MORE"/>tungkol sa mga naka-sponsor na larawan sa Mga Reward sa Brave. Maaari mo ring piliing <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="1908278071064820219">Maaari mo ring piliing <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="7931660128190969207">Mabayaran para tingnan ang larawan sa background na ito. I-on ang Mga Ad sa Brave para i-claim ang iyong share.</translation>
 </translationbundle>

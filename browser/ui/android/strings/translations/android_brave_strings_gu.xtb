@@ -58,7 +58,6 @@
 <translation id="7053983685419859001">અવરોધિત કરો</translation>
 <translation id="5806601733251372221">Brave શિલ્ડ્સ</translation>
 <translation id="2880356288762235261">ગોપનીયતા-આક્રમણ કરતી જાહેરાતો અને ટ્રેકર્સ જેથી તમે વેબની આસપાસ અનુસર્યા વિના બ્રાઉઝ કરી શકો.</translation>
-<translation id="6980054221517850750">ટોકન કમાવો</translation>
 <translation id="3333887201479867589">Brave પુરસ્કારો</translation>
 <translation id="1789842587755069541">મોબાઇલ સંસ્કરણોનો ઉપયોગ કરો. તમારી મનપસંદ સાઇટો અને નિર્માતાઓને ટેકો આપવા માટે તેનો ઉપયોગ કરો.</translation>
 <translation id="821707262661492716">Brave પુરસ્કારો સંચાલિત કરો.</translation>
@@ -114,13 +113,10 @@
 <translation id="4254029385847607686">ડિસેમ્બર</translation>
 <translation id="1916285746997567466">આગલા ઇન્ટરનેટનો અનુભવ 
 કરવા માટે તૈયાર રહેજો.</translation>
-<translation id="1071131306814166204">હવે તમે ગોપનીયતા-આદર આપતી 
-જાહેરાતો જોવા માટે ટોકન કમાવી શકો છો.</translation>
 <translation id="1327938628925645979">પુરસ્કારોમાં જોડાવો</translation>
 <translation id="5567439033041178034">વધુ જાણો</translation>
 <translation id="3780605330121608425">તમારું વૉલેટ</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE"/> યુએસ ડૉલર</translation>
 <translation id="2104073734684466851">અનુદાનો</translation>
 <translation id="1165667598801520610">ભંડોળ ઉમેરો</translation>
 <translation id="8428213095426709021">સેટિંગ્સ</translation>
@@ -148,13 +144,11 @@
 <translation id="5463954686005964104">આ સાઇટને માસિક ટીપ આપો</translation>
 <translation id="7530570094705720669">વૉલેટ બનાવી રહ્યા છીએ</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
-<translation id="4781696154289395607">તમે <ph name="BAT_VALUE"/> BAT નો ફાળો આપ્યો છે.</translation>
 <translation id="7997676409547731821">અપૂરતા ભંડોળને કારણે આપમેળે-ફાળો અને માસિક ટીપ્સ માટે તમારું શેડ્યૂલ કરેલ માસિક ચુકવણી પૂર્ણ થઈ શક્યું નથી. અમે 30 દિવસમાં ફરી પ્રયાસ કરીશું.</translation>
 <translation id="5306913077198665897">તમારી ટીપ પર પ્રક્રિયા કરવામાં સમસ્યા આવી, કૃપયા ફરી પ્રયાસ કરો.</translation>
 <translation id="2429828319207652823">તમારા યોગદાન પર પ્રક્રિયા કરવામાં સમસ્યા આવી.</translation>
 <translation id="3453206261112715431">નિ:શુલ્ક ટોકન અનુદાન</translation>
 <translation id="6417420737057016607">Brave જાહેરાતો</translation>
-<translation id="606865182719489911">નિ:શુલ્ક ટોકન અનુદાન ઉપલબ્ધ છે.</translation>
 <translation id="8689997599821157251">તમે કમાયા</translation>
 <translation id="7550470870580166294">અપૂરતું ભંડોળ</translation>
 <translation id="2775064702681588061">તમારું Brave પુરસ્કારો ખાતું એક ડિપોઝિટની રાહ જોઈ રહ્યું છે.</translation>
@@ -167,10 +161,6 @@
 <translation id="4292832015778676417">જાહેરાતો દ્વારા કમાયા</translation>
 <translation id="683765328936486920">YouTube પર</translation>
 <translation id="8969049974285901797">Twitch પર</translation>
-<translation id="3692362746128814480">તમે યોગદાન પ્રાપ્ત કરવા માટે હજી સુધી સાઇન અપ કર્યા નથી 
-તેવા નિર્માતાઓ માટે <ph name="BAT_VALUE"/> BAT નિયુક્ત કર્યા છે. તમારું બ્રાઉઝર તેઓની ચકાસણી કરે ત્યાં સુધી 
-અથવા 90 દિવસ પસાર ન થાય ત્યાં સુધી યોગદાન આપવાનો પ્રયત્ન કરશે.</translation>
-<translation id="853714875140407133">પર્યાપ્ત ટોકન નથી</translation>
 <translation id="6940273954212603510">કૃપયા કરીને</translation>
 <translation id="1036277985068412734">ભંડોળ ઉમેરો</translation>
 <translation id="3492491948683276944">માસિક ટીપ સેટ કરો</translation>
