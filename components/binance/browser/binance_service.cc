@@ -159,7 +159,7 @@ void BinanceService::OnGetAccessToken(
     SetAccessTokens(access_token, refresh_token);
   }
 
-  std::move(callback).Run(IsUnauthorized(status));
+  std::move(callback).Run(!IsUnauthorized(status));
 }
 
 bool BinanceService::OAuthRequest(bool use_version_one,
