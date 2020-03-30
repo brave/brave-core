@@ -6,13 +6,13 @@
 
 <android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <org.chromium.chrome.browser.settings.website.SiteSettingsPreference
-        android:fragment="org.chromium.chrome.browser.settings.website.DesktopModePreferences"
+    <org.chromium.chrome.browser.site_settings.SiteSettingsPreference
+        android:fragment="org.chromium.chrome.browser.site_settings.DesktopModePreferences"
         android:key="desktop_mode_category"
         android:icon="@drawable/settings_desktop_mode"
         android:title="@string/settings_desktop_mode_title" />
-    <org.chromium.chrome.browser.settings.website.SiteSettingsPreference
-        android:fragment="org.chromium.chrome.browser.settings.website.PlayYTVideoInBrowserPreferences"
+    <org.chromium.chrome.browser.site_settings.SiteSettingsPreference
+        android:fragment="org.chromium.chrome.browser.site_settings.PlayYTVideoInBrowserPreferences"
         android:key="play_yt_video_in_browser_category"
         android:icon="@drawable/settings_play_yt_video_in_browser"
         android:title="@string/settings_play_yt_video_in_browser_title" />
