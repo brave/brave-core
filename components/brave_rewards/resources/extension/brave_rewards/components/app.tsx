@@ -12,6 +12,7 @@ import {
 } from '../../../ui/components'
 import { BatColorIcon, WalletAddIcon } from 'brave-ui/components/icons'
 import { WalletState } from '../../../ui/components/walletWrapper'
+import { getTabData } from '../background/api/tabs_api'
 
 // Components
 import Panel from './panel'
@@ -159,8 +160,7 @@ export class RewardsPanel extends React.Component<Props, State> {
                 // give up
                 clearInterval(interval)
 
-                const rewardsPanelActions = require('../background/actions/rewardsPanelActions').default
-                rewardsPanelActions.onTabRetrieved(tab)
+                getTabData(tabId)
               }
             }
           })
@@ -176,7 +176,7 @@ export class RewardsPanel extends React.Component<Props, State> {
             }
           })
         } else {
-          this.props.actions.onTabRetrieved(tab)
+          getTabData(tabId)
         }
       }
       let tab = tabs[0]
@@ -185,10 +185,10 @@ export class RewardsPanel extends React.Component<Props, State> {
         if (url && url.host.endsWith('.twitch.tv')) {
           pollData(tab, tab.id, url)
         } else {
-          this.props.actions.onTabRetrieved(tab)
+          getTabData(tab.id)
         }
-      } else {
-        this.props.actions.onTabRetrieved(tab)
+      } else if (tab.id) {
+        getTabData(tab.id)
       }
     })
   }
