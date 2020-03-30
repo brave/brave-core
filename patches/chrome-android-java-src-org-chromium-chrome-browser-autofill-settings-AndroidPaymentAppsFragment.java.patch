@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AndroidPaymentAppsFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AndroidPaymentAppsFragment.java
+index 178be18639bf862d6292995d4e8fb0da008c7d7d..3447e61e8d57cf018cb283e33aacfa9bc16b76b0 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AndroidPaymentAppsFragment.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AndroidPaymentAppsFragment.java
+@@ -27,7 +27,7 @@ import java.util.Map;
+ /**
+  * Preference fragment to allow users to control use of the Android payment apps on device.
+  */
+-public class AndroidPaymentAppsFragment extends PreferenceFragmentCompat {
++public class AndroidPaymentAppsFragment extends org.chromium.chrome.browser.settings.BravePreferenceFragment {
+     @Override
+     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+         getActivity().setTitle(R.string.payment_apps_title);
