@@ -71,5 +71,4 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
   ui_test_utils::NavigateToURL(browser(), url);
   EXPECT_LT(106000ull,
             content::EvalJs(rfh, kGetContent).ExtractString().size());
-
 }
