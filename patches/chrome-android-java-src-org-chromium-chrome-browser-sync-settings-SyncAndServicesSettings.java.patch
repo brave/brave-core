@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/SyncAndServicesSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/SyncAndServicesSettings.java
+index d022999465f0e674ffc8b9c3ce821089932e5112..29da932f759716fd8bc8736f86e084dc7f2c686e 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/SyncAndServicesSettings.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/SyncAndServicesSettings.java
+@@ -73,7 +73,7 @@ import org.chromium.ui.widget.ButtonCompat;
+ /**
+  * Settings fragment to enable Sync and other services that communicate with Google.
+  */
+-public class SyncAndServicesSettings extends PreferenceFragmentCompat
++public class SyncAndServicesSettings extends org.chromium.chrome.browser.settings.BravePreferenceFragment
+         implements PassphraseDialogFragment.Listener, Preference.OnPreferenceChangeListener,
+                    ProfileSyncService.SyncStateChangedListener,
+                    SettingsActivity.OnBackPressedListener {
