@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/tracing/settings/TracingCategoriesSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/tracing/settings/TracingCategoriesSettings.java
+index 7df5aa0990686125a5d25dba08ed8d4ec41d2904..011045017a4777979d51a53dd7e0362feeef78d5 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/tracing/settings/TracingCategoriesSettings.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/tracing/settings/TracingCategoriesSettings.java
+@@ -27,7 +27,7 @@ import java.util.Set;
+  * passed to the fragment via an extra (EXTRA_CATEGORY_TYPE).
+  */
+ public class TracingCategoriesSettings
+-        extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
++        extends org.chromium.chrome.browser.settings.BravePreferenceFragment implements Preference.OnPreferenceChangeListener {
+     public static final String EXTRA_CATEGORY_TYPE = "type";
+ 
+     // Non-translated strings:
