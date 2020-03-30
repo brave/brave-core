@@ -7,7 +7,6 @@ transpile_web_ui("brave_extension") {
   entry_points = [
     ["brave_extension", rebase_path("braveShieldsPanel.tsx")],
     ["brave_extension_background", rebase_path("background.ts")],
-    ["content", rebase_path("content.ts")],
     ["content_dapps", rebase_path("content_dapps.ts")],
     ["content_cosmetic", rebase_path("content_cosmetic.ts")],
     ["webstore", rebase_path("webstore.ts")],

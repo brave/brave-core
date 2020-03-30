@@ -37,8 +37,7 @@ import {
 import { reloadTab } from '../api/tabsAPI'
 import {
   injectClassIdStylesheet,
-  applyAdblockCosmeticFilters,
-  applyCSSCosmeticFilters
+  applyAdblockCosmeticFilters
 } from '../api/cosmeticFilterAPI'
 
 // Helpers
@@ -65,7 +64,6 @@ export default function shieldsPanelReducer (
         state = shieldsPanelState.resetBlockingResources(state, action.tabId)
         state = noScriptState.resetNoScriptInfo(state, action.tabId, new window.URL(action.url).origin)
       }
-      applyCSSCosmeticFilters(action.tabId, getHostname(action.url))
       break
     }
     case windowTypes.WINDOW_REMOVED: {
