@@ -58,7 +58,7 @@
 <translation id="7053983685419859001">Bloquear</translation>
 <translation id="5806601733251372221">Escudos Brave</translation>
 <translation id="2880356288762235261">Anúncios invasivos e rastreadores para que você possa navegar sem ser seguido pela internet.</translation>
-<translation id="6980054221517850750">Receber tokens</translation>
+<translation id="8537217141725709400">Ganhe <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Recompensas Brave</translation>
 <translation id="1789842587755069541">para ver anúncios que respeitam sua privacidade. Use os anúncios para apoiar seus sites e criadores de conteúdo favoritos.</translation>
 <translation id="821707262661492716">para ver anúncios que respeitam sua privacidade.</translation>
@@ -113,12 +113,13 @@
 <translation id="8280223431922155812">NOVEMBRO</translation>
 <translation id="4254029385847607686">DEZEMBRO</translation>
 <translation id="1916285746997567466">Prepare-se para experimentar a próxima internet.</translation>
-<translation id="1071131306814166204">Você agora pode ganhar tokens ao assistir anúncios que respeitem sua privacidade.</translation>
+<translation id="3540580927110899945">Agora você pode ganhar <ph name="TOKEN"/>s assistindo a anúncios que respeitam sua privacidade.</translation>
 <translation id="1327938628925645979">JUNTE-SE AO PROGRAMA DE RECOMPENSAS</translation>
 <translation id="5567439033041178034">SAIBA MAIS</translation>
 <translation id="3780605330121608425">Sua carteira</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
+<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="3826081199286264109">USD</translation>
 <translation id="2104073734684466851">Doações</translation>
 <translation id="1165667598801520610">Adicionar Fundos</translation>
 <translation id="8428213095426709021">Configurações</translation>
@@ -143,13 +144,13 @@
 <translation id="5463954686005964104">Doar mensalmente para este site</translation>
 <translation id="7530570094705720669">Criando carteira</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
-<translation id="4781696154289395607">Você contribuiu <ph name="BAT_VALUE"/> BAT.</translation>
+<translation id="4751553692764711651">Você contribuiu com <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/>.</translation>
 <translation id="7997676409547731821">Seu pagamento mensal agendado na opção de contribuição automática e doações mensais não pôde ser concluído porque não há saldo suficiente. Tentaremos novamente em 30 dias.</translation>
 <translation id="5306913077198665897">Houve um problema no processamento da sua doação. Por favor, tente novamente.</translation>
 <translation id="2429828319207652823">Houve um problema ao processar sua contribuição.</translation>
 <translation id="3453206261112715431">Auxílio Token Gratuito</translation>
 <translation id="6417420737057016607">Anúncios Corajosos</translation>
-<translation id="606865182719489911">Uma concessão gratuita de token está disponível.</translation>
+<translation id="5497435273900537730">Uma doação grátis de <ph name="TOKEN"/> está disponível.</translation>
 <translation id="8689997599821157251">Você ganhou</translation>
 <translation id="7550470870580166294">Fundos Insuficientes</translation>
 <translation id="2775064702681588061">Sua conta de Recompensas do Brave está aguardando um depósito.</translation>
@@ -162,8 +163,10 @@
 <translation id="4292832015778676417">ganhou de anúncios</translation>
 <translation id="683765328936486920">no YouTube</translation>
 <translation id="8969049974285901797">na Twitch</translation>
-<translation id="3692362746128814480">Você enviou You've designated <ph name="BAT_VALUE"/> BAT para criadores que ainda não estão inscritos para receberem contribuições. Seu navegador continuará tentando enviar as contribuições até que eles sejam verificados ou até um prazo de 90 dias.</translation>
-<translation id="853714875140407133">tokens insuficientes</translation>
+<translation id="4376933248999950592">Você designou <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/> para desenvolvedores que ainda
+não se cadastraram para receber contribuições. Seu navegador continuará tentando realizar a contribuição
+até que eles sejam verificados ou até que 90 dias se passem.</translation>
+<translation id="3101693828171454453">quantia insuficiente de <ph name="TOKEN"/>s</translation>
 <translation id="6940273954212603510">por favor</translation>
 <translation id="1036277985068412734">adicionar fundos</translation>
 <translation id="3492491948683276944">definir doação mensal</translation>
@@ -227,4 +230,39 @@
 <translation id="6336451774241870485">Nova aba privada</translation>
 <translation id="6199596294742117349">Esta é uma Guia Privada</translation>
 <translation id="5858455511731621847">Embora os sites que você visita em guias privadas não sejam salvos localmente, eles não o tornam anônimo ou invisível para o seu ISP, seu empregador ou para os sites que você está visitando.</translation>
+<translation id="5789441016350810005">Brave Ads enviados quando o navegador está em segundo plano</translation>
+<translation id="7127980134843952133">Histórico de downloads</translation>
+<translation id="3690140184638701871">Contribuições e gorjetas</translation>
+<translation id="844921671123185605">Suas gorjetas mensais foram processadas!</translation>
+<translation id="3124090095880236567">Ativar o Ads</translation>
+<translation id="2975780980638932742">O Brave Ads chegou!</translation>
+<translation id="7655723274266132226">Agora você pode ganhar dinheiro visualizando anúncios.</translation>
+<translation id="7541582550122501404">Contribuição pendente</translation>
+<translation id="8520059774736886747">Desenvolvedor <ph name="PUBLISHER_NAME"/> verificado recentemente</translation>
+<translation id="7924320838799747606">Seu saldo</translation>
+<translation id="6160106411363856968">BAP</translation>
+<translation id="1081826981536899387">Pontos BAT</translation>
+<translation id="9212459913845238740">Doações de pontos reivindicadas</translation>
+<translation id="2132683977638223450">Doação de pontos grátis</translation>
+<translation id="4522570452068850558">Detalhes</translation>
+<translation id="1486343603936278248">token</translation>
+<translation id="8713995420537272453">ponto</translation>
+<translation id="6678056861663824314">1 <ph name="TIP"/></translation>
+<translation id="4065726515175370979">5 <ph name="TIP"/></translation>
+<translation id="8171148564903208264">10 <ph name="TIP"/></translation>
+<translation id="7781069478569868053">Página Nova guia</translation>
+<translation id="8522669544471808198">Mostrar imagens de plano de fundo</translation>
+<translation id="3870475560794762985">Mostrar imagens patrocinadas</translation>
+<translation id="8297488609722895137">Foto de <ph name="PHOTO_BY"/></translation>
+<translation id="3794079107601824147">Seja pago para ver esta imagem de plano de fundo.</translation>
+<translation id="4836823081419522426">Você vai receber 70% da receita do anúncio desse patrocínio privado, que pode ser usada para apoiar os desenvolvedores de conteúdo para a web. Ative o Brave Rewards para reivindicar sua parte.</translation>
+<translation id="7307847920988946894">Ativar o Rewards</translation>
+<translation id="1605521356929094020">Ativar o Brave Ads</translation>
+<translation id="1647482814782886825">Ao ativar o Rewards, você está de acordo com os <ph name="TERMS_OF_SERVICE"/>. Você também pode optar por <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="7136586167396205364">Ocultar imagens patrocinadas</translation>
+<translation id="2927095357213611519">Você pode apoiar os desenvolvedores web com tokens.\nGanhe tokens visualizando anúncios que respeitam sua privacidade.</translation>
+<translation id="4016415345213871193">Você está sendo pago para ver esta imagem de plano de fundo.</translation>
+<translation id="5895280237921845725"><ph name="LEARN_MORE"/> sobre imagens patrocinadas no Brave Rewards. Você também pode optar por <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="1908278071064820219">Você também pode optar por <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="7931660128190969207">Seja pago para ver esta imagem de plano de fundo. Ative o Brave Ads para reivindicar sua parte.</translation>
 </translationbundle>

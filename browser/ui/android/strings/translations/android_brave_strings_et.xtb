@@ -58,7 +58,6 @@
 <translation id="7053983685419859001">Blokeeri</translation>
 <translation id="5806601733251372221">Brave'i kaitse</translation>
 <translation id="2880356288762235261">privaatsust rikkuvad reklaamid ja jälitajad, et sirvida internetis ilma jälgimiseta.</translation>
-<translation id="6980054221517850750">Teeni tokeneid</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="1789842587755069541">privaatsust austavate reklaamide nägemise eest. Nendega toetad oma lemmiklehti ja loojaid.</translation>
 <translation id="821707262661492716">privaatsust austavate reklaamide eest.</translation>
@@ -114,13 +113,10 @@
 <translation id="4254029385847607686">DETSEMBER</translation>
 <translation id="1916285746997567466">Koge
 uudset internetti.</translation>
-<translation id="1071131306814166204">Nüüd saad teenida tokeneid
-privaatsust austavate reklaamide vaatamise eest.</translation>
 <translation id="1327938628925645979">LIITU REWARDSIGA</translation>
 <translation id="5567439033041178034">LOE LISAKS</translation>
 <translation id="3780605330121608425">Teie rahakott</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="2104073734684466851">Võimalused</translation>
 <translation id="1165667598801520610">Lisa vahendeid</translation>
 <translation id="8428213095426709021">Seaded</translation>
@@ -149,13 +145,11 @@ pole...</translation>
 <translation id="5463954686005964104">Premeeri seda veebisaiti igakuiselt</translation>
 <translation id="7530570094705720669">Rahakoti loomine</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
-<translation id="4781696154289395607">Oled annetanud <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">Automaatsete panustamiste ja igakuiste preemiate kavandatud makseid ei saanud ebapiisavate vahendite tõttu teostada. Proovime uuesti 30 päeva pärast.</translation>
 <translation id="5306913077198665897">Preemia töötlemisel ilmnes probleem, proovige uuesti.</translation>
 <translation id="2429828319207652823">Panustamise töötlemisel tekkis tõrge.</translation>
 <translation id="3453206261112715431">Tasuta tokenivõimalus</translation>
 <translation id="6417420737057016607">Brave'i reklaamid</translation>
-<translation id="606865182719489911">Tasuta tokenivõimalus on saadaval.</translation>
 <translation id="8689997599821157251">Olete teeninud</translation>
 <translation id="7550470870580166294">Ebapiisavad vahendid</translation>
 <translation id="2775064702681588061">Sinu Brave Rewards konto ootab sissemakset.</translation>
@@ -168,10 +162,6 @@ pole...</translation>
 <translation id="4292832015778676417">reklaamidest saadud</translation>
 <translation id="683765328936486920">YouTube'is</translation>
 <translation id="8969049974285901797">Twitch'is</translation>
-<translation id="3692362746128814480">Oled eraldanud <ph name="BAT_VALUE"/> BAT loojatele, kes pole
-veel registreerunud annetusi vastu võtma. Brauser üritab jätkata annetamist
-kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
-<translation id="853714875140407133">pole piisavalt tokeneid</translation>
 <translation id="6940273954212603510">palun</translation>
 <translation id="1036277985068412734">lisa vahendeid</translation>
 <translation id="3492491948683276944">seadista igakuine premeerimine</translation>
@@ -224,6 +214,7 @@ kuniks nad on kinnitatud või kuni on möödunud 90 päeva.</translation>
 <translation id="327726072512457161">Seadetest väljumine</translation>
 <translation id="8050847734948770789">Luba Brave Rewards</translation>
 <translation id="9187185473011056079">Olen käsi!</translation>
+<translation id="8185825081026121627">Teeni Basic Attention Token-eid, vaadates privaatsust säilitavaid Brave Rewards reklaame.</translation>
 <translation id="5321518976657560663">Taastamise viga</translation>
 <translation id="4114170343590425996">Brave Rewardsi taastamisel ilmnes viga. Käivita Brave uuesti ja ürita taas.</translation>
 <translation id="6393502589311632553">Näita reklaame, kui Brave’i ei kasutata</translation>
