@@ -37,8 +37,8 @@ GURL BinanceService::api_endpoint_("https://api.binance.com");
 namespace {
 
 // To do, Add as env var
-const std::string client_secret = "";
-const std::string client_id = "Fx5sIiTEI5";
+const std::string client_secret(BINANCE_CLIENT_SECRET);
+const std::string client_id(BINANCE_CLIENT_ID);
 const std::string oauth_url =
     "https://accounts.binance.com/en/oauth/authorize";
 const std::string encoded_uri =
