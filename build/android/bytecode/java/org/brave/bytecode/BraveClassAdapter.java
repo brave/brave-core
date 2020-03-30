@@ -11,6 +11,7 @@ public class BraveClassAdapter {
     public static ClassVisitor createAdapter(ClassVisitor chain) {
         chain = new BraveBookmarkModelClassAdapter(chain);
         chain = new BraveMainPreferenceBaseClassAdapter(chain);
+        chain = new BraveAndroidSyncSettingsClassAdapter(chain);
         return chain;
     }
 }

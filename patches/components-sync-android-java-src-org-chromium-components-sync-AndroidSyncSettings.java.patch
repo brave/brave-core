@@ -1,0 +1,55 @@
+diff --git a/components/sync/android/java/src/org/chromium/components/sync/AndroidSyncSettings.java b/components/sync/android/java/src/org/chromium/components/sync/AndroidSyncSettings.java
+index 84a8b66912a2f6847771486e62556b772c192fd2..57e756941d38433c21fb7aaa4bcd472044894cb9 100644
+--- a/components/sync/android/java/src/org/chromium/components/sync/AndroidSyncSettings.java
++++ b/components/sync/android/java/src/org/chromium/components/sync/AndroidSyncSettings.java
+@@ -55,11 +55,11 @@ public class AndroidSyncSettings {
+ 
+     private Account mAccount;
+ 
+-    private boolean mIsSyncable;
++    protected boolean mIsSyncable;
+ 
+-    private boolean mChromeSyncEnabled;
++    protected boolean mChromeSyncEnabled;
+ 
+-    private boolean mMasterSyncEnabled;
++    protected boolean mMasterSyncEnabled;
+ 
+     private final ObserverList<AndroidSyncSettingsObserver> mObservers =
+             new ObserverList<AndroidSyncSettingsObserver>();
+@@ -77,7 +77,7 @@ public class AndroidSyncSettings {
+             if (sInstance == null) {
+                 SyncContentResolverDelegate contentResolver =
+                         new SystemSyncContentResolverDelegate();
+-                sInstance = new AndroidSyncSettings(contentResolver);
++                sInstance = new BraveAndroidSyncSettings(contentResolver);
+             }
+             return sInstance;
+         }
+@@ -103,7 +103,7 @@ public class AndroidSyncSettings {
+      * @param callback Callback that will be called after updating account is finished. Boolean
+      *                 passed to the callback indicates whether syncability was changed.
+      */
+-    private AndroidSyncSettings(SyncContentResolverDelegate syncContentResolverDelegate,
++    public AndroidSyncSettings(SyncContentResolverDelegate syncContentResolverDelegate,
+             @Nullable Callback<Boolean> callback) {
+         mContractAuthority = ContextUtils.getApplicationContext().getPackageName();
+         mSyncContentResolverDelegate = syncContentResolverDelegate;
+@@ -211,7 +211,7 @@ public class AndroidSyncSettings {
+         }
+     }
+ 
+-    private void setChromeSyncEnabled(boolean value) {
++    protected void setChromeSyncEnabled(boolean value) {
+         synchronized (mLock) {
+             updateSyncability(null);
+             if (value == mChromeSyncEnabled || mAccount == null) return;
+@@ -295,7 +295,7 @@ public class AndroidSyncSettings {
+      *
+      * @return Whether either chromeSyncEnabled or masterSyncEnabled changed.
+      */
+-    private boolean updateCachedSettings() {
++    protected boolean updateCachedSettings() {
+         synchronized (mLock) {
+             boolean oldChromeSyncEnabled = mChromeSyncEnabled;
+             boolean oldMasterSyncEnabled = mMasterSyncEnabled;
