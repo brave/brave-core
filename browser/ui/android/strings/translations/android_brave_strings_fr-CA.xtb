@@ -58,7 +58,7 @@
 <translation id="7053983685419859001">Bloquer</translation>
 <translation id="5806601733251372221">Boucliers de Brave</translation>
 <translation id="2880356288762235261">des publicités envahissant la vie privée et des traqueurs pour que vous puissiez naviguer sans être suivi sur le Web.</translation>
-<translation id="6980054221517850750">Obtenir des jetons</translation>
+<translation id="8537217141725709400">Gagnez <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Récompenses de Brave</translation>
 <translation id="1789842587755069541">pour voir des annonces respectueuses de la vie privée. Utilisez-les pour soutenir vos sites et créateurs préférés.</translation>
 <translation id="821707262661492716">pour avoir vu des annonces respectueuses de la vie privée.</translation>
@@ -113,12 +113,13 @@
 <translation id="8280223431922155812">NOVEMBRE</translation>
 <translation id="4254029385847607686">DÉCEMBRE</translation>
 <translation id="1916285746997567466">Préparez-vous à vivre l'expérience du prochain Internet.</translation>
-<translation id="1071131306814166204">Vous pouvez maintenant gagner des jetons en regardant des publicités qui respectent votre vie privée.</translation>
+<translation id="3540580927110899945">Vous pouvez désormais gagner <ph name="TOKEN"/>s pour regarder des publicités respectueuses de la vie privée.</translation>
 <translation id="1327938628925645979">REJOIGNEZ LES RÉCOMPENSES</translation>
 <translation id="5567439033041178034">EN SAVOIR PLUS</translation>
 <translation id="3780605330121608425">Votre portefeuille</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
+<translation id="7837083325641186736"><ph name="VALUE"/></translation>
+<translation id="3826081199286264109">USD</translation>
 <translation id="2104073734684466851">Subventions</translation>
 <translation id="1165667598801520610">Ajouter des fonds</translation>
 <translation id="8428213095426709021">Paramètres</translation>
@@ -147,13 +148,13 @@ mois-ci...</translation>
 <translation id="5463954686005964104">Verser un pourboire à ce site chaque mois</translation>
 <translation id="7530570094705720669">Création de portefeuille</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
-<translation id="4781696154289395607">Vous avez contribué avec <ph name="BAT_VALUE"/> BAT.</translation>
+<translation id="4751553692764711651">Vous avez apporté une contribution de <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/>.</translation>
 <translation id="7997676409547731821">Votre paiement mensuel prévu pour la contribution automatique et les pourboires mensuels n'a pas pu être effectué en raison de fonds insuffisants. Nous réessaierons dans 30 jours.</translation>
 <translation id="5306913077198665897">Il y a eu un problème dans le traitement de votre pourboire, veuillez réessayer.</translation>
 <translation id="2429828319207652823">Il y a eu un problème pour traiter votre contribution.</translation>
 <translation id="3453206261112715431">Attribution gratuite de jetons</translation>
 <translation id="6417420737057016607">Annonces de Brave</translation>
-<translation id="606865182719489911">Une subvention symbolique gratuite est disponible.</translation>
+<translation id="5497435273900537730">Une attribution gratuite de <ph name="TOKEN"/> est disponible.</translation>
 <translation id="8689997599821157251">Vous avez obtenu</translation>
 <translation id="7550470870580166294">Fonds insuffisants</translation>
 <translation id="2775064702681588061">Votre compte de récompenses de Brave est en attente d'un dépôt.</translation>
@@ -166,10 +167,8 @@ mois-ci...</translation>
 <translation id="4292832015778676417">gagnés grâce aux annonces</translation>
 <translation id="683765328936486920">sur YouTube</translation>
 <translation id="8969049974285901797">sur Twitch</translation>
-<translation id="3692362746128814480">Vous avez désigné <ph name="BAT_VALUE"/> BAT pour les créateurs qui ne se sont pas
-encore inscrits pour recevoir des contributions. Votre navigateur continuera d'essayer de contribuer
-jusqu'à ce qu'ils vérifient, ou jusqu'à ce que 90 jours se soient écoulés.</translation>
-<translation id="853714875140407133">pas suffisamment de jetons</translation>
+<translation id="4376933248999950592">Vous avez désigné <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/> pour les créateurs qui ne se sont pas encore inscrits pour recevoir des contributions. Votre navigateur continuera à essayer de contribuer jusqu'à ce qu'ils effectuent la vérification, ou jusqu'à ce que 90 jours se soient écoulés.</translation>
+<translation id="3101693828171454453">pas assez de <ph name="TOKEN"/>s</translation>
 <translation id="6940273954212603510">veuillez</translation>
 <translation id="1036277985068412734">ajouter des fonds</translation>
 <translation id="3492491948683276944">Fixez un pourboire par mois</translation>
@@ -233,4 +232,39 @@ jusqu'à ce qu'ils vérifient, ou jusqu'à ce que 90 jours se soient écoulés.<
 <translation id="6336451774241870485">Nouvel onglet de navigation privée</translation>
 <translation id="6199596294742117349">Ceci est un onglet privé</translation>
 <translation id="5858455511731621847">Même si les sites que vous visitez dans des onglets privés ne sont pas enregistrés localement, ils ne vous rendent pas anonyme ou invisible pour votre FAI, votre employeur ou les sites que vous visitez.</translation>
+<translation id="5789441016350810005">Publicités de Brave envoyées lorsque le navigateur est en arrière-plan</translation>
+<translation id="7127980134843952133">Télécharger l'historique</translation>
+<translation id="3690140184638701871">Contributions et pourboires</translation>
+<translation id="844921671123185605">Vos pourboires mensuels ont été traités!</translation>
+<translation id="3124090095880236567">Activez les publicités</translation>
+<translation id="2975780980638932742">Brave Ads est arrivé!</translation>
+<translation id="7655723274266132226">Vous pouvez maintenant gagner de l'argent en regardant des publicités.</translation>
+<translation id="7541582550122501404">Contribution en attente</translation>
+<translation id="8520059774736886747">Créateur <ph name="PUBLISHER_NAME"/> récemment vérifié</translation>
+<translation id="7924320838799747606">Votre solde</translation>
+<translation id="6160106411363856968">BAP</translation>
+<translation id="1081826981536899387">Points BAT</translation>
+<translation id="9212459913845238740">Octroi de points réclamés</translation>
+<translation id="2132683977638223450">Attribution de points gratuits</translation>
+<translation id="4522570452068850558">Détails</translation>
+<translation id="1486343603936278248">jeton</translation>
+<translation id="8713995420537272453">point</translation>
+<translation id="6678056861663824314">1 <ph name="TIP"/></translation>
+<translation id="4065726515175370979">5 <ph name="TIP"/></translation>
+<translation id="8171148564903208264">10 <ph name="TIP"/></translation>
+<translation id="7781069478569868053">Nouvel onglet</translation>
+<translation id="8522669544471808198">Afficher les images de fond</translation>
+<translation id="3870475560794762985">Afficher les images sponsorisées</translation>
+<translation id="8297488609722895137">Photo de <ph name="PHOTO_BY"/></translation>
+<translation id="3794079107601824147">Faites-vous payer pour voir cette image de fond.</translation>
+<translation id="4836823081419522426">Vous recevrez 70 % des recettes publicitaires de ce parrainage privé, qui peut être utilisé pour soutenir les créateurs de contenu Web. Activez le programme Brave Récompenses pour réclamer votre part.</translation>
+<translation id="7307847920988946894">Activez les récompenses</translation>
+<translation id="1605521356929094020">Activez les publicités Brave</translation>
+<translation id="1647482814782886825">En activant les récompenses, vous activez les <ph name="TERMS_OF_SERVICE"/>. Vous pouvez également choisir de <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="7136586167396205364">Cacher les images sponsorisées</translation>
+<translation id="2927095357213611519">Vous pouvez aider les créateurs de sites Web avec des jetons.\nGagnez des jetons en regardant des publicités respectueuses de la vie privée.</translation>
+<translation id="4016415345213871193">Vous recevez une rémunération pour voir cette image de fond.</translation>
+<translation id="5895280237921845725"><ph name="LEARN_MORE"/> à propos des images sponsorisées dans Brave Récompenses. Vous pouvez également choisir de <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="1908278071064820219">Vous pouvez également choisir de <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="7931660128190969207">Faites-vous payer pour voir cette image de fond. Activez les publicités Brave pour réclamer votre part.</translation>
 </translationbundle>

@@ -58,7 +58,6 @@
 <translation id="7053983685419859001">Block</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
 <translation id="2880356288762235261">privacy-invading ads and trackers so you can browse without being followed around the web.</translation>
-<translation id="6980054221517850750">Earn tokens</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="1789842587755069541">for seeing privacy-respecting ads. Use them to support your favourite sites and creators.</translation>
 <translation id="821707262661492716">for seeing privacy-respecting ads.</translation>
@@ -114,13 +113,11 @@
 <translation id="4254029385847607686">DECEMBER</translation>
 <translation id="1916285746997567466">Get ready to experience
 the next Internet.</translation>
-<translation id="1071131306814166204">You can now earn tokens for
-watching privacy-respecting ads.</translation>
 <translation id="1327938628925645979">JOIN REWARDS</translation>
 <translation id="5567439033041178034">LEARN MORE</translation>
 <translation id="3780605330121608425">Your wallet</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
+<translation id="3826081199286264109">USD</translation>
 <translation id="2104073734684466851">Grants</translation>
 <translation id="1165667598801520610">Add Funds</translation>
 <translation id="8428213095426709021">Settings</translation>
@@ -149,13 +146,12 @@ month ...</translation>
 <translation id="5463954686005964104">Tip this site monthly</translation>
 <translation id="7530570094705720669">Creating wallet</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
-<translation id="4781696154289395607">You've contributed <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">Your scheduled monthly payment for Auto-Contribute and monthly tips could not be completed due to insufficient funds. We'll try again in 30 days.</translation>
 <translation id="5306913077198665897">There was a problem processing your tip, please try again.</translation>
 <translation id="2429828319207652823">There was a problem processing your contribution.</translation>
 <translation id="3453206261112715431">Free Token Grant</translation>
 <translation id="6417420737057016607">Brave Ads</translation>
-<translation id="606865182719489911">A free token grant is available.</translation>
+<translation id="5497435273900537730">A free <ph name="TOKEN"/> grant is available.</translation>
 <translation id="8689997599821157251">You've earned</translation>
 <translation id="7550470870580166294">Insufficient Funds</translation>
 <translation id="2775064702681588061">Your Brave Rewards account is waiting for a deposit.</translation>
@@ -168,10 +164,6 @@ month ...</translation>
 <translation id="4292832015778676417">earned from ads</translation>
 <translation id="683765328936486920">on YouTube</translation>
 <translation id="8969049974285901797">on Twitch</translation>
-<translation id="3692362746128814480">You've designated <ph name="BAT_VALUE"/> BAT for creators who haven't
-yet signed up to receive contributions. Your browser will keep trying to contribute
-until they verify, or until 90 days have passed.</translation>
-<translation id="853714875140407133">not enough tokens</translation>
 <translation id="6940273954212603510">please</translation>
 <translation id="1036277985068412734">add funds</translation>
 <translation id="3492491948683276944">set monthly tip</translation>
@@ -234,4 +226,39 @@ until they verify, or until 90 days have passed.</translation>
 <translation id="6336451774241870485">New Private tab</translation>
 <translation id="6199596294742117349">This is a private tab</translation>
 <translation id="5858455511731621847">Even though sites you visit in private tabs are not saved locally, they do not make you anonymous or invisible to your ISP, your employer or the sites you are visiting.</translation>
+<translation id="5789441016350810005">Brave Ads sent when browser is in the background</translation>
+<translation id="7127980134843952133">Download history</translation>
+<translation id="3690140184638701871">Contributions &amp;amp; Tips</translation>
+<translation id="844921671123185605">Your monthly tips have been processed!</translation>
+<translation id="3124090095880236567">Turn on Ads</translation>
+<translation id="2975780980638932742">Brave Ads has arrived!</translation>
+<translation id="7655723274266132226">Now you can earn by viewing ads.</translation>
+<translation id="7541582550122501404">Pending contribution</translation>
+<translation id="8520059774736886747">Creator <ph name="PUBLISHER_NAME"/> recently verified</translation>
+<translation id="7924320838799747606">Your balance</translation>
+<translation id="6160106411363856968">BAP</translation>
+<translation id="1081826981536899387">BAT Points</translation>
+<translation id="9212459913845238740">Point Grants claimed</translation>
+<translation id="2132683977638223450">Free Point Grant</translation>
+<translation id="4522570452068850558">Details</translation>
+<translation id="1486343603936278248">token</translation>
+<translation id="8713995420537272453">point</translation>
+<translation id="6678056861663824314">1 <ph name="TIP"/></translation>
+<translation id="4065726515175370979">5 <ph name="TIP"/></translation>
+<translation id="8171148564903208264">10 <ph name="TIP"/></translation>
+<translation id="7781069478569868053">New tab page</translation>
+<translation id="8522669544471808198">Show background images</translation>
+<translation id="3870475560794762985">Show sponsored images</translation>
+<translation id="8297488609722895137">Photo by <ph name="PHOTO_BY"/></translation>
+<translation id="3794079107601824147">Get paid to see this background image.</translation>
+<translation id="4836823081419522426">You'll receive 70% of the ad revenue for this private sponsorship which can be used to support web content creators. Turn on Brave Rewards to claim your share.</translation>
+<translation id="7307847920988946894">Turn on Rewards</translation>
+<translation id="1605521356929094020">Turn on Brave Ads</translation>
+<translation id="1647482814782886825">By turning on Rewards, you agree to the <ph name="TERMS_OF_SERVICE"/>. You can also choose to <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="7136586167396205364">Hide sponsored images</translation>
+<translation id="2927095357213611519">You can support web creators with tokens.\nEarn tokens by viewing privacy-respecting ads.</translation>
+<translation id="4016415345213871193">You’re getting paid to see this background image.</translation>
+<translation id="5895280237921845725"><ph name="LEARN_MORE"/> about sponsored images in Brave Rewards. You can also choose to <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="1908278071064820219">You can also choose to <ph name="HIDE_SPONSORED_IMAGES"/>.</translation>
+<translation id="7931660128190969207">Get paid to see this background image. Turn on Brave Ads to claim your share.</translation>
 </translationbundle>
