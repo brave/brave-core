@@ -1,7 +1,7 @@
-diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill/AutofillProfilesFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill/AutofillProfilesFragment.java
-index d39f827e6fd75d2c5c927800bafc4716336db8e0..a79be879806cfd616694ba2e1ff8d5262f898d1f 100644
---- a/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill/AutofillProfilesFragment.java
-+++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/autofill/AutofillProfilesFragment.java
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AutofillProfilesFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AutofillProfilesFragment.java
+index 3ce7b2a9a1c48c6b2034de2e911fa98602597c28..bb4733eb98e0a5c170b8388870ac9f4b37c804b4 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AutofillProfilesFragment.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AutofillProfilesFragment.java
 @@ -30,7 +30,7 @@ import org.chromium.chrome.browser.settings.ManagedPreferenceDelegate;
  /**
   * Autofill profiles fragment, which allows the user to edit autofill profiles.
