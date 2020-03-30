@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/datareduction/settings/DataReductionPreferenceFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/datareduction/settings/DataReductionPreferenceFragment.java
+index a076bf7aa4b027d95d8c51f2881d42cd2d92340c..34b740df6fdb04c634098e14372461f1734db901 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/datareduction/settings/DataReductionPreferenceFragment.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/datareduction/settings/DataReductionPreferenceFragment.java
+@@ -34,7 +34,7 @@ import java.util.Locale;
+ /**
+  * Settings fragment that allows the user to configure Data Saver.
+  */
+-public class DataReductionPreferenceFragment extends PreferenceFragmentCompat {
++public class DataReductionPreferenceFragment extends org.chromium.chrome.browser.settings.BravePreferenceFragment {
+     public static final String FROM_MAIN_MENU = "FromMainMenu";
+ 
+     public static final String PREF_DATA_REDUCTION_SWITCH = "data_reduction_switch";
