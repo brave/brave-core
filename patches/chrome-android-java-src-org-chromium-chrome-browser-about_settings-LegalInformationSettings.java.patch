@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/about_settings/LegalInformationSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/about_settings/LegalInformationSettings.java
+index e1ad179731c8fa19f16e043f5c5785585c666615..a8aa05b2758ba4dad207dd0d1102f5434d8b1cff 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/about_settings/LegalInformationSettings.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/about_settings/LegalInformationSettings.java
+@@ -14,7 +14,7 @@ import org.chromium.chrome.browser.settings.SettingsUtils;
+ /**
+  * Fragment to display legal information about Chrome.
+  */
+-public class LegalInformationSettings extends PreferenceFragmentCompat {
++public class LegalInformationSettings extends org.chromium.chrome.browser.settings.BravePreferenceFragment {
+     @Override
+     public void onCreatePreferences(Bundle savedInstanceState, String s) {
+         SettingsUtils.addPreferencesFromResource(this, R.xml.legal_information_preferences);
