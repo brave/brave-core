@@ -557,7 +557,8 @@ class PageWallet extends React.Component<Props, State> {
                 tokens: publisher.weight.toFixed(1),
                 converted: utils.convertBalance(publisher.weight, balance.rates)
               },
-              type: this.getSummaryType(contribution.type)
+              type: this.getSummaryType(contribution.type),
+              date: contribution.created_at
             }
           })
           .concat(records)
@@ -675,7 +676,7 @@ class PageWallet extends React.Component<Props, State> {
         return
       }
 
-      const date = new Date(Date.UTC(parseInt(items[0], 10), parseInt(items[1], 10) - 1, 1))
+      const date = new Date(Date.UTC(parseInt(items[0], 10), parseInt(items[1], 10) - 1, 10))
       result[id] = new Intl.DateTimeFormat('default', { month: 'long', year: 'numeric' }).format(date)
     })
 

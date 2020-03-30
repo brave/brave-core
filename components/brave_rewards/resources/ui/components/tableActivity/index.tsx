@@ -102,10 +102,7 @@ export default class TableActivity extends React.PureComponent<Props, {}> {
 
     if (this.props.showDate) {
       cells.push({
-        content: getLocale('date'),
-        customStyle: {
-          'text-align': 'right'
-        }
+        content: getLocale('date')
       })
     }
 
