@@ -4,7 +4,8 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 type SessionId = string | null
-type Header = { name: string, value: string }
+
+type TwitterAuthCallback = (() => void) | null
 
 const twitterAuthHeaderNames = [
   'authorization',
@@ -13,7 +14,9 @@ const twitterAuthHeaderNames = [
 ]
 const authTokenCookieRegex = /[; ]_twitter_sess=([^\s;]*)/
 
+let twitterAuthCallback: TwitterAuthCallback = null
 let twitterAuthHeaders = {}
+
 let lastSessionId: SessionId = null
 
 function readTwitterSessionCookie (cookiesString: string): SessionId {
@@ -36,6 +39,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   }
 })
 
+localStorage.removeItem('twitterAuthHeaders')
+
 // Grab auth headers from twitter's normal requests
 chrome.webRequest.onSendHeaders.addListener(
   // Listener
@@ -50,9 +55,14 @@ chrome.webRequest.onSendHeaders.addListener(
             // clear cached auth data when session changes
             lastSessionId = currentSessionId
             twitterAuthHeaders = { }
+            localStorage.removeItem('twitterAuthHeaders')
           }
         } else if (twitterAuthHeaderNames.includes(header.name) || header.name.startsWith('x-twitter-')) {
           twitterAuthHeaders[header.name] = header.value
+          localStorage.setItem('twitterAuthHeaders', JSON.stringify(twitterAuthHeaders))
+          if (twitterAuthCallback) {
+            twitterAuthCallback()
+          }
         }
       }
     }
@@ -68,3 +78,7 @@ chrome.webRequest.onSendHeaders.addListener(
     'requestHeaders',
     'extraHeaders'  // need cookies
   ])
+
+export const setTwitterAuthCallback = (callback: TwitterAuthCallback) => {
+  twitterAuthCallback = callback
+}
