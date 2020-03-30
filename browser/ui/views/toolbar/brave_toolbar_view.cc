@@ -293,7 +293,7 @@ void BraveToolbarView::ResetButtonBounds() {
   if (speedreader_ && speedreader_->GetVisible()) {
     const int speedreader_width = speedreader_->GetPreferredSize().width();
     const int speedreader_x =
-        button_right_margin - speedreader_width;// - GetLayoutConstant(TOOLBAR_STANDARD_SPACING);;
+        button_right_margin - speedreader_width;
     speedreader_->SetX(speedreader_x);
   }
 }
