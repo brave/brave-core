@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/settings/NotificationSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/settings/NotificationSettings.java
+index d1bfeebc3f07156937a9989e2098dbb13ba19349..904af8a216189481e336d857c7806c61cbbdc73f 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/settings/NotificationSettings.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/settings/NotificationSettings.java
+@@ -27,7 +27,7 @@ import org.chromium.components.content_settings.ContentSettingsType;
+  * notification channels at the top level and links to website specific notifications. This is only
+  * used on pre-O devices, devices on Android O+ will link to the Android notification settings.
+  */
+-public class NotificationSettings extends PreferenceFragmentCompat {
++public class NotificationSettings extends org.chromium.chrome.browser.settings.BravePreferenceFragment {
+     // These are package-private to be used in tests.
+     static final String PREF_FROM_WEBSITES = "from_websites";
+     static final String PREF_SUGGESTIONS = "content_suggestions";
