@@ -5,7 +5,7 @@
 <org.chromium.chrome.browser.ntp.BraveNewTabPageLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/tools"
     android:id="@+id/ntp_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -95,7 +95,7 @@
 
         </LinearLayout>
 
-         <FrameLayout
+        <FrameLayout
             android:id="@+id/image_credit_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -124,5 +124,34 @@
     </LinearLayout>
 
     <include layout="@layout/ntp_non_distruptive_banner"/>
+
+    <!-- <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="16dp"
+        android:shape="ring"
+        card_view:cardElevation="6dp"
+        card_view:cardCornerRadius="50dp"
+        card_view:cardPreventCornerOverlap="false">
+
+        <ImageView
+            android:id="@+id/super_referral_logo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="8dp"
+            android:src="@drawable/qrcode_light"
+            android:contentDescription="@null"/>
+
+    </android.support.v7.widget.CardView> -->
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/super_referral_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/qrcode_light"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="16dp"
+        app:backgroundTint="@android:color/white"/>
 
 </org.chromium.chrome.browser.ntp.BraveNewTabPageLayout>
