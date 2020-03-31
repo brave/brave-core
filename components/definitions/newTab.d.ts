@@ -18,6 +18,7 @@ declare namespace NewTab {
   }
   export interface ApplicationState {
     newTabData: State | undefined
+    gridSitesData: GridSitesState | undefined
   }
 
   export interface Image {
@@ -30,6 +31,18 @@ declare namespace NewTab {
   }
 
   export interface Site {
+    id: string
+    url: string
+    title: string
+    favicon: string
+    letter: string
+    pinnedIndex: number | undefined
+    bookmarkInfo: chrome.bookmarks.BookmarkTreeNode | undefined
+  }
+
+  // This is preserved for migration reasons.
+  // Do not tyoe new code using this interface.
+  export interface LegacySite {
     index: number
     url: string
     title: string
@@ -60,13 +73,29 @@ declare namespace NewTab {
 
   export type StackWidget = 'rewards' | 'binance'
 
-  export interface PersistentState {
-    topSites: Site[]
-    ignoredTopSites: Site[]
+  export interface LegacyState {
     pinnedTopSites: Site[]
+    ignoredTopSites: Site[]
+  }
+
+  export interface GridSitesState {
+    removedSites: Site[]
     gridSites: Site[]
+    shouldShowSiteRemovedNotification: boolean
+    legacy: LegacyState
+  }
+
+  export interface PageState {
     showEmptyPage: boolean
-    bookmarks: Record<string, Bookmark>
+  }
+
+  export interface RewardsState {
+    rewardsState: RewardsWidgetState
+    currentStackWidget: StackWidget
+  }
+
+  export interface PersistentState {
+    showEmptyPage: boolean
     rewardsState: RewardsWidgetState
     currentStackWidget: StackWidget
     binanceState: BinanceWidgetState
@@ -82,7 +111,7 @@ declare namespace NewTab {
     isQwant: boolean
     backgroundImage?: Image
     gridLayoutSize?: 'small'
-    showSiteRemovalNotification?: boolean
+    showGridSiteRemovedNotification?: boolean
     showBackgroundImage: boolean
     showStats: boolean
     showClock: boolean
