@@ -34,11 +34,11 @@
 
   SecondRoundArtefacts SecondRound(const char* enc_input, int size, const char* client_sk) {
 
-  uint enc_buffer_size = 296; // get as input
+  uint enc_buffer_size = get_size_response(enc_input);
   uint8_t enc_buffer[enc_buffer_size];  
   parse_str_response(enc_input, enc_buffer);
 
-  uint sk_buffer_size = 32; // get as input
+  uint sk_buffer_size = get_size_response(client_sk);
   uint8_t sk_buffer[sk_buffer_size];  
   parse_str_response(client_sk, sk_buffer);
 

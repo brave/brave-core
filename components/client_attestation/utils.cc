@@ -32,12 +32,23 @@ void parse_str_response(const char* ptr, uint8_t* dst) {
   // remove parenthesis 
   str.pop_back();
   str.erase(str.begin());
-  const char* std_ptr = str.c_str(); 
+  const char* str_ptr = str.c_str(); 
 
-  base::CStringTokenizer token(std_ptr, std_ptr + std::strlen(std_ptr), ", ");
+  base::CStringTokenizer token(str_ptr, str_ptr + std::strlen(str_ptr), ", ");
   uint i = 0;
   while (token.GetNext()) {
     dst[i] = std::stoi(token.token().c_str());
     i++;
   }
+}
+
+int get_size_response(const char* ptr) {
+  std::string str(ptr);
+  const char* str_ptr = str.c_str(); 
+  base::CStringTokenizer token(str_ptr, str_ptr + std::strlen(str_ptr), ", ");
+  int i = 0;
+  while (token.GetNext()) {
+    i++;
+  }
+  return i;
 }

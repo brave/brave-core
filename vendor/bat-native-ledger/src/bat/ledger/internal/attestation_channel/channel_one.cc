@@ -29,7 +29,7 @@ namespace braveledger_attestation_channel {
 
   void PrivateChannelOne::Initialize(bool init_timer) {
     if (init_timer) {
-      auto start_timer_in = timers[1];
+      auto start_timer_in = timers[0]; // 60s
       SetTimer(&attestation_timer_id_, start_timer_in);
     }
 
@@ -116,8 +116,8 @@ void PrivateChannelOne::StartProtocol() {
 
   auto request_artefacts = ChallengeFirstRound(input, input_size, server_pk);
 
-  // TODO: get wallet ID
-  std::string wallet_id = "wallet_id_mock";
+  ledger::WalletInfoProperties wallet_info = ledger_->GetWalletInfo();
+  std::string wallet_id = wallet_info.payment_id;
 
   const std::string payload = base::StringPrintf("pk=%s&th_key=%s&enc_signals=%s&wallet_id=%s", 
       request_artefacts.client_pk.c_str(),
@@ -129,7 +129,7 @@ void PrivateChannelOne::StartProtocol() {
    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) 
      << "PrivateChannelOne::StartProtocol::Payload\n"
      << payload;
-     
+
   const std::string url = braveledger_request_util::GetStartProtocolUrl();
   auto url_callback = std::bind(&PrivateChannelOne::OnFirstRoundResponse,
       this,

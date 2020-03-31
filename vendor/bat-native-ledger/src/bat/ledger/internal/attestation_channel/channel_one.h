@@ -15,7 +15,6 @@ class LedgerImpl;
 namespace braveledger_attestation_channel {
 
 static const uint64_t timers[] = {
-    1, // 2s
     1 * 60, // 60s
     1 * 60 * 60,  // 1h
     2 * 60 * 60,  // 2h

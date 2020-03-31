@@ -10,4 +10,6 @@ std::string convert_to_str(const uint8_t* ptr, int size);
 
 void parse_str_response(const char* ptr, uint8_t* dst);
 
+int get_size_response(const char* ptr);
+
 #endif  // BRAVE_COMPONENTS_CLIENT_ATTESTATION_UTILS_H_
