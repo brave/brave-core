@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeActivity.java
+index 3fdc4ba9b8005026571356579e2a0ca645746d55..228d4a0702ae126bdf7665da6e7fe2b211602ff9 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeActivity.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeActivity.java
+@@ -758,7 +758,7 @@ public abstract class ChromeActivity<C extends ChromeActivityComponent>
+ 
+         IntentHandler.setTestIntentsEnabled(
+                 CommandLine.getInstance().hasSwitch(ContentSwitches.ENABLE_TEST_INTENTS));
+-        mIntentHandler = new IntentHandler(createIntentHandlerDelegate(), getPackageName());
++        mIntentHandler = new BraveIntentHandler(createIntentHandlerDelegate(), getPackageName());
+ 
+         // This also ensures that subsequent native library and resource loading takes place
+         // immediately, needed by restored tabs that use DFM.
