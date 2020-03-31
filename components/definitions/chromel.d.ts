@@ -157,7 +157,7 @@ declare namespace chrome.binance {
   const isSupportedRegion: (callback: (supported: boolean) => void) => {}
   const getClientUrl: (callback: (clientUrl: string) => void) => {}
   const getAccessToken: (code: string, callback: (success: boolean) => void) => {}
-  const setCodeChallenge: (challenge: string, callback: (success: boolean) => void) => {}
+  const setCodeChallenge: (verifier: string, challenge: string, callback: (success: boolean) => void) => {}
   const getAccountBalances: (callback: (balances: Record<string, string>, unauthorized: boolean) => void) => {}
   const getConvertQuote: (from: string, to: string, amount: string, callback: (quoteId: string) => void) => {}
   const getTickerPrice: (symbolPair: string, callback: (symbolPairValue: string) => void) => {}

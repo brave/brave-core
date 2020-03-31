@@ -17,7 +17,7 @@
   return (btcUSDPriceNumber * btcBalanceNumber).toFixed(2)
 }
 
-const generateRandomString = () => {
+export const generateRandomString = () => {
   const array = new Uint32Array(28)
   window.crypto.getRandomValues(array)
   return Array.from(array, dec => ('0' + dec.toString(16)).substr(-2)).join('')
@@ -38,12 +38,7 @@ const base64encode = (hashed: ArrayBuffer) => {
   return window.btoa(binary);
 }
 
-const generateCodeChallenge = async (verifier: string) => {
+export const generateCodeChallenge = async (verifier: string) => {
   const hashed = await sha256(verifier)
   return base64encode(hashed)
-}
-
-export const getCodeChallenge = async () => {
-  const challenge = await generateCodeChallenge(generateRandomString())
-  return challenge
 }

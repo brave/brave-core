@@ -89,7 +89,7 @@ import busdIcon from './assets/busd.png'
 import ethIcon from './assets/eth.png'
 import xrpIcon from './assets/xrp.png'
 import partyIcon from './assets/party.png'
-import { getUSDPrice, getCodeChallenge } from '../../../binance-utils'
+import { getUSDPrice, generateRandomString, generateCodeChallenge } from '../../../binance-utils'
 
 interface State {
   fiatShowing: boolean
@@ -201,9 +201,9 @@ class Binance extends React.PureComponent<Props, State> {
       })
     }
 
-    const codeChallenge = await getCodeChallenge()
-
-    chrome.binance.setCodeChallenge(codeChallenge, (success: boolean) => {
+    const codeVerifier = generateRandomString()
+    const codeChallenge = await generateCodeChallenge(codeVerifier)
+    chrome.binance.setCodeChallenge(codeVerifier, codeChallenge, (success: boolean) => {
       if (success) {
         chrome.binance.getClientUrl((clientUrl: string) => {
           this.props.onBinanceClientUrl(clientUrl)

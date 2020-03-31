@@ -62,11 +62,12 @@ class BinanceService : public KeyedService {
       const std::string& amount,
       GetConvertQuoteCallback callback);
   using SetCodeChallengeCallback = base::OnceCallback<void(bool)>;
-  void SetCodeChallenge(const std::string& challenge,
+  void SetCodeChallenge(const std::string& verifier,
+      const std::string& challenge,
       SetCodeChallengeCallback callback);
   bool SetAccessTokens(const std::string& access_token,
                        const std::string& refresh_token);
-  bool SetCodeChallengePref(const std::string& challenge);
+  bool SetCodeChallengePref(const std::string& verifier, const std::string& challenge);
   using GetTickerPriceCallback = base::OnceCallback<void(const std::string&)>;
   using GetTickerVolumeCallback = base::OnceCallback<void(const std::string&)>;
   bool GetTickerPrice(const std::string& symbol_pair,
@@ -102,9 +103,7 @@ class BinanceService : public KeyedService {
   void OnGetTickerVolume(GetTickerVolumeCallback callback,
                         const int status, const std::string& body,
                         const std::map<std::string, std::string>& headers);
-  bool OAuthRequest(bool use_version_one,
-                    const std::string& path,
-                    const std::string& query_params,
+  bool OAuthRequest(const GURL& url, const std::string& post_data,
                     URLRequestCallback callback);
   bool LoadTokensFromPrefs();
   bool IsUnauthorized(int status);
@@ -117,6 +116,7 @@ class BinanceService : public KeyedService {
   std::string access_token_;
   std::string refresh_token_;
   std::string code_challenge_;
+  std::string code_verifier_;
 
   content::BrowserContext* context_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;

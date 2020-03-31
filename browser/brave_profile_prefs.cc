@@ -208,6 +208,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kBinanceAccessToken, "");
   registry->RegisterStringPref(kBinanceRefreshToken, "");
   registry->RegisterStringPref(kBinanceCodeChallenge, "");
+  registry->RegisterStringPref(kBinanceCodeVerifier, "");
 
   // Autocomplete in address bar
   registry->RegisterBooleanPref(kAutocompleteEnabled, true);
