@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveUI
 
 class SettingsAdSectionView: SettingsSectionView {
   
@@ -77,7 +78,7 @@ class SettingsAdSectionView: SettingsSectionView {
       bodyLabel.alpha = alpha
       titleLabel.alpha = alpha
       
-      titleLabel.appearanceTextColor = isSupported ? BraveUX.adsTintColor : Colors.grey200
+      titleLabel.appearanceTextColor = isSupported ? BraveUX.adsTintColor : Colors.grey700
     }
   }
   

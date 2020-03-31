@@ -6,6 +6,7 @@ import UIKit
 import Shared
 import BraveShared
 import BraveRewardsUI
+import BraveUI
 
 extension NTPLearnMoreViewController {
     enum NTPButtonType {
@@ -104,7 +105,7 @@ extension NTPLearnMoreViewController {
             $0.setTitle(title, for: .normal)
             $0.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
             $0.appearanceTextColor = .white
-            $0.backgroundColor = BraveUX.blurple400
+            $0.backgroundColor = Colors.blurple500
             $0.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
             $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 25, bottom: 12, right: 25)
             $0.tintColor = .white

@@ -3,16 +3,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveUI
 
 class TippingOverviewView: UIView {
   private struct UX {
-    static let backgroundColor = Colors.blurple800
-    static let headerBackgroundColor = Colors.grey300
+    static let backgroundColor = Colors.blurple100
+    static let headerBackgroundColor = Colors.grey600
     static let headerHeight: CGFloat = 98.0
-    static let faviconBackgroundColor = Colors.neutral800
+    static let faviconBackgroundColor = Colors.neutral100
     static let faviconSize = CGSize(width: 88.0, height: 88.0)
-    static let titleColor = Colors.grey100
-    static let bodyColor = Colors.grey200
+    static let titleColor = Colors.grey800
+    static let bodyColor = Colors.grey700
   }
   
   let dismissButton = DismissButton().then {
@@ -61,7 +62,7 @@ class TippingOverviewView: UIView {
   }
   
   let disclaimerView = LinkLabel().then {
-    $0.appearanceTextColor = Colors.grey200
+    $0.appearanceTextColor = Colors.grey700
     $0.font = UIFont.systemFont(ofSize: 12.0)
     $0.textContainerInset = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
     $0.text = "\(Strings.tippingUnverifiedDisclaimer) \(Strings.disclaimerLearnMore)"

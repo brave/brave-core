@@ -3,6 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import UIKit
+import BraveUI
 
 /// Container for all of the purchase information
 class SKUPurchaseDetailsView: UIView {
@@ -10,7 +11,7 @@ class SKUPurchaseDetailsView: UIView {
     static let backgroundColor = UIColor(hex: 0xF1F1F2)// Colors.blurple800
     static let headerHeight: CGFloat = 60
     static let titleColor = UIColor(hex: 0x392dd1)
-    static let bodyColor = Colors.grey200
+    static let bodyColor = Colors.grey700
   }
   
   let dismissButton = DismissButton()
@@ -40,7 +41,7 @@ class SKUPurchaseDetailsView: UIView {
     $0.textAlignment = .center
     $0.text = Strings.SKUPurchaseTitle
     $0.font = .systemFont(ofSize: 18, weight: .semibold)
-    $0.appearanceTextColor = Colors.grey100
+    $0.appearanceTextColor = Colors.grey800
   }
   
   let itemDetailTitleLabel = UILabel().then {
@@ -64,16 +65,16 @@ class SKUPurchaseDetailsView: UIView {
   let orderAmountLabels = BATUSDPairView(
     batAmountConfig: {
       $0.font = .systemFont(ofSize: 22.0, weight: .semibold)
-      $0.appearanceTextColor = Colors.grey000
+      $0.appearanceTextColor = Colors.grey900
     },
     batKindConfig: {
       $0.text = Strings.BAT
       $0.font = .systemFont(ofSize: 18.0)
-      $0.appearanceTextColor = Colors.grey000
+      $0.appearanceTextColor = Colors.grey900
     },
     usdConfig: {
       $0.font = .systemFont(ofSize: 16.0)
-      $0.appearanceTextColor = Colors.grey200
+      $0.appearanceTextColor = Colors.grey700
     }
   )
   
@@ -93,7 +94,7 @@ class SKUPurchaseDetailsView: UIView {
         $0.textAlignment = .center
         $0.numberOfLines = 0
         $0.font = .systemFont(ofSize: 14.0)
-        $0.appearanceTextColor = Colors.grey000
+        $0.appearanceTextColor = Colors.grey900
       })
     )
   }
@@ -212,16 +213,16 @@ class SKUPurchaseWalletBalanceView: UIView {
   let amountLabels = BATUSDPairView(
     batAmountConfig: {
       $0.font = .systemFont(ofSize: 18.0, weight: .medium)
-      $0.appearanceTextColor = Colors.grey000
+      $0.appearanceTextColor = Colors.grey900
     },
     batKindConfig: {
       $0.text = Strings.BAT
       $0.font = .systemFont(ofSize: 16.0)
-      $0.appearanceTextColor = Colors.grey000
+      $0.appearanceTextColor = Colors.grey900
     },
     usdConfig: {
       $0.font = .systemFont(ofSize: 14.0)
-      $0.appearanceTextColor = Colors.grey200
+      $0.appearanceTextColor = Colors.grey700
     }
   )
   
@@ -240,7 +241,7 @@ class SKUPurchaseWalletBalanceView: UIView {
       .view(UILabel().then {
         $0.text = Strings.walletHeaderTitle
         $0.font = .systemFont(ofSize: 15.0, weight: .semibold)
-        $0.appearanceTextColor = Colors.grey000
+        $0.appearanceTextColor = Colors.grey900
       }),
       .view(UIStackView().then {
         $0.spacing = 10

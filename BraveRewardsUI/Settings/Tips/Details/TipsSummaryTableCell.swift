@@ -3,14 +3,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveUI
 
 class TipsSummaryTableCell: UITableViewCell, TableViewReusable {
   
   let batValueView = CurrencyContainerView(amountLabelConfig: {
-    $0.appearanceTextColor = Colors.neutral200
+    $0.appearanceTextColor = Colors.neutral700
     $0.font = .systemFont(ofSize: 14.0, weight: .semibold)
   }, kindLabelConfig: {
-    $0.appearanceTextColor = Colors.neutral200
+    $0.appearanceTextColor = Colors.neutral700
     $0.text = Strings.BAT
     $0.font = .systemFont(ofSize: 13.0)
   })

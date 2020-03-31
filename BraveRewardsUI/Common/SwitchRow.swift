@@ -3,13 +3,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveUI
 
 class SwitchRow: UIStackView {
   
   var valueChanged: ((Bool) -> Void)?
   
   private struct UX {
-    static let textColor = Colors.grey200
+    static let textColor = Colors.grey700
   }
   
   let textLabel = UILabel().then {

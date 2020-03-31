@@ -18,7 +18,7 @@ extension PopoverController {
     }
     
     /// The direction the arrow faces
-    enum ArrowDirection {
+    public enum ArrowDirection {
         /// The arrow faces upwards like: ▴
         case up
         /// The arrow faces downwards like: ▾

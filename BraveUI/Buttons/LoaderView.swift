@@ -17,9 +17,9 @@ private class LoaderLayer: CALayer {
 }
 
 /// A Brave styled activity indicator view
-class LoaderView: UIView {
+public class LoaderView: UIView {
   /// The size of the indicator
-  enum Size {
+  public enum Size {
     case small
     case normal
     case large
@@ -47,25 +47,25 @@ class LoaderView: UIView {
     }
   }
   
-  override class var layerClass: AnyClass {
+  override public class var layerClass: AnyClass {
     return LoaderLayer.self
   }
   
-  private(set) var isAnimating: Bool = false
+  private(set) public var isAnimating: Bool = false
   
-  func start() {
+  public func start() {
     isAnimating = true
     loaderLayer.add(rotateAnimation, forKey: "rotation")
   }
   
-  func stop() {
+  public func stop() {
     isAnimating = false
     loaderLayer.removeAnimation(forKey: "rotation")
   }
   
-  let size: Size
+  public let size: Size
   
-  init(size: Size) {
+  public init(size: Size) {
     self.size = size
     
     super.init(frame: CGRect(origin: .zero, size: size.size))
@@ -74,20 +74,20 @@ class LoaderView: UIView {
     (layer as? LoaderLayer)?.parent = self
   }
   
-  override var tintColor: UIColor! {
+  override public var tintColor: UIColor! {
     didSet {
       loaderLayer.strokeColor = tintColor.cgColor
     }
   }
   
-  override func layoutSubviews() {
+  override public func layoutSubviews() {
     super.layoutSubviews()
     
     loaderLayer.frame = bounds
     loaderLayer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
   }
   
-  override var intrinsicContentSize: CGSize {
+  override public var intrinsicContentSize: CGSize {
     return size.size
   }
   
@@ -98,20 +98,24 @@ class LoaderView: UIView {
   
   // MARK: - Private
   
-  private var rotateAnimation = CABasicAnimation(keyPath: "transform.rotation").then {
-    $0.repeatCount = .infinity
-//    $0.timingFunction = CAMediaTimingFunction(name: .easeIn)
-    $0.duration = 0.75
-    $0.fromValue = 0
-    $0.toValue = CGFloat.pi * 2
-  }
+  private var rotateAnimation: CABasicAnimation = {
+    let anim = CABasicAnimation(keyPath: "transform.rotation")
+    anim.repeatCount = .infinity
+    //    $0.timingFunction = CAMediaTimingFunction(name: .easeIn)
+    anim.duration = 0.75
+    anim.fromValue = 0
+    anim.toValue = CGFloat.pi * 2
+    return anim
+  }()
   
-  private lazy var loaderLayer = CAShapeLayer().then {
-    $0.lineCap = .round
-    $0.strokeEnd = 0.5
-    $0.strokeColor = tintColor.cgColor
-    $0.lineWidth = size.lineWidth
-    $0.fillColor = nil
-    $0.path = UIBezierPath(ovalIn: bounds.insetBy(dx: size.lineWidth / 2.0, dy: size.lineWidth / 2.0)).cgPath
-  }
+  private lazy var loaderLayer: CAShapeLayer = {
+    let layer = CAShapeLayer()
+    layer.lineCap = .round
+    layer.strokeEnd = 0.5
+    layer.strokeColor = tintColor.cgColor
+    layer.lineWidth = size.lineWidth
+    layer.fillColor = nil
+    layer.path = UIBezierPath(ovalIn: bounds.insetBy(dx: size.lineWidth / 2.0, dy: size.lineWidth / 2.0)).cgPath
+    return layer
+  }()
 }

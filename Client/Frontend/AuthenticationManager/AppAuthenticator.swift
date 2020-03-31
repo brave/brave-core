@@ -7,6 +7,7 @@ import Shared
 import SwiftKeychainWrapper
 import LocalAuthentication
 import pop
+import BraveUI
 
 /// Displays a app-wide authentication prompt if the user has a passcode enabled
 class AppAuthenticator {

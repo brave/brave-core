@@ -5,6 +5,7 @@
 import UIKit
 import BraveRewards
 import BraveShared
+import BraveUI
 
 enum PublisherMediaType: String {
   case youtube

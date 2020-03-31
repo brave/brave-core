@@ -3,6 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import UIKit
+import BraveUI
 
 /// Simply a label with a wide amount of padding around it
 class EmptyWalletSummaryView: UIView {
@@ -13,7 +14,7 @@ class EmptyWalletSummaryView: UIView {
     let label = UILabel().then {
       $0.text = Strings.noActivitiesYet
       $0.textAlignment = .center
-      $0.appearanceTextColor = Colors.grey400
+      $0.appearanceTextColor = Colors.grey500
       $0.font = .systemFont(ofSize: 20.0)
       $0.numberOfLines = 0
     }

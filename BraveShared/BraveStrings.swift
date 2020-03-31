@@ -748,3 +748,20 @@ extension Strings {
         public static let closeShieldsMenu = NSLocalizedString("PopoverShieldsMenuClose", bundle: Bundle.braveShared, value: "Close Shields Menu", comment: "Description for closing the `Brave Shields` popover menu that is displayed.")
     }
 }
+
+// MARK: - Shields
+extension Strings {
+    public static let braveShieldsStatusTitle = NSLocalizedString("BraveShieldsStatusTitle", bundle: Bundle.braveShared, value: "Brave Shields", comment: "Context: 'Brave Shields Up' or 'Brave Shields Down'")
+    public static let braveShieldsStatusValueUp = NSLocalizedString("BraveShieldsStatusValueUp", bundle: Bundle.braveShared, value: "Up", comment: "Context: The 'Up' in 'Brave Shields Up'")
+    public static let braveShieldsStatusValueDown = NSLocalizedString("BraveShieldsStatusValueDown", bundle: Bundle.braveShared, value: "Down", comment: "Context: The 'Down' in 'Brave Shields Down'")
+    public static let braveShieldsBlockedCountLabel = NSLocalizedString("BraveShieldsBlockedCountLabel", bundle: Bundle.braveShared, value: "Ads and other creepy things blocked", comment: "The number of ads and trackers blocked will be next to this")
+    public static let braveShieldsBlockedInfoButtonAccessibilityLabel = NSLocalizedString("BraveShieldsBlockedInfoButtonAccessibilityLabel", bundle: Bundle.braveShared, value: "Learn more", comment: "What the screen reader will read out when the user has VoiceOver on and taps on the question-mark info button on the shields panel")
+    public static let braveShieldsSiteBroken = NSLocalizedString("BraveShieldsSiteBroken", bundle: Bundle.braveShared, value: "If this site appears broken, try Shields down", comment: "")
+    public static let braveShieldsAdvancedControls = NSLocalizedString("BraveShieldsAdvancedControls", bundle: Bundle.braveShared, value: "Advanced controls", comment: "")
+    public static let aboutBraveShieldsTitle = NSLocalizedString("AboutBraveShields", bundle: Bundle.braveShared, value: "About Brave Shields", comment: "The title of the screen explaining Brave Shields")
+    public static let aboutBraveShieldsBody = NSLocalizedString("AboutBraveShields", bundle: Bundle.braveShared, value: "Sites often include cookies and scripts which try to identify you and your device. They want to work out who you are and follow you across the web — tracking what you do on every site.\n\nBrave blocks these things so that you can browse without being followed around.", comment: "The body of the screen explaining Brave Shields")
+    public static let shieldsDownDisclaimer = NSLocalizedString("ShieldsDownDisclaimer", bundle: Bundle.braveShared, value: "You're browsing this site without Brave's privacy protections. Does it not work right with Shields up?", comment: "")
+    public static let reportABrokenSite = NSLocalizedString("ReportABrokenSite", bundle: Bundle.braveShared, value: "Report a broken site", comment: "")
+    public static let braveShieldsGlobalControls = NSLocalizedString("BraveShieldsGlobalControls", bundle: Bundle.braveShared, value: "Global Controls", comment: "")
+    public static let braveShieldsGlobalChangeButton = NSLocalizedString("BraveShieldsGlobalChangeButton", bundle: Bundle.braveShared, value: "Change global Shields defaults", comment: "")
+}

@@ -5,6 +5,7 @@
 import Foundation
 import UIKit
 import BraveRewards
+import BraveUI
 
 /// A controller for displaying BATValue options with their equivalent dollar value.
 /// When the user selects an option, the selected index is returned in the completion block.
@@ -38,17 +39,17 @@ class BATValueOptionsSelectionViewController: OptionsSelectionViewController<BAT
     let dollarAmount = ledger?.dollarStringForBATAmount(options[indexPath.row].doubleValue) ?? ""
     
     let attributedText = NSMutableAttributedString(string: displayString, attributes: [
-      .foregroundColor: Colors.grey100,
+      .foregroundColor: Colors.grey800,
       .font: UIFont.systemFont(ofSize: 14.0, weight: .medium)
     ])
     
     attributedText.append(NSAttributedString(string: " \(Strings.BAT)", attributes: [
-      .foregroundColor: Colors.grey200,
+      .foregroundColor: Colors.grey700,
       .font: UIFont.systemFont(ofSize: 12.0)
     ]))
     
     attributedText.append(NSAttributedString(string: " (\(dollarAmount))", attributes: [
-      .foregroundColor: Colors.grey200,
+      .foregroundColor: Colors.grey700,
       .font: UIFont.systemFont(ofSize: 10.0)
     ]))
     

@@ -2,14 +2,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import Foundation
+import UIKit
+import SnapKit
 
-class Button: UIButton {
+/// A generic Button with a few extras:
+///   - Showing a loader inside it
+///   - Flipping the image placement
+///   - Applying a larger hit area without adjusting the bounds
+///   - Sizing correctly when adding setting `titleEdgeInsets` and `imageEdgeInsets`
+open class Button: UIButton {
   
   // MARK: - Activity
   
   /// Where the loader should go when it begins animating
-  enum LoaderPlacement {
+  public enum LoaderPlacement {
     /// Hides any title/image and centers the loader
     case replacesContent
     /// To the right of the title
@@ -17,11 +23,11 @@ class Button: UIButton {
   }
   
   /// Set an activity indicator you would like to see in this button
-  var loaderView: LoaderView?
+  open var loaderView: LoaderView?
   
-  var loaderPlacement: LoaderPlacement = .replacesContent
+  open var loaderPlacement: LoaderPlacement = .replacesContent
   
-  var isLoading: Bool = false {
+  open var isLoading: Bool = false {
     didSet {
       guard let loaderView = loaderView else {
         fatalError()
@@ -86,9 +92,9 @@ class Button: UIButton {
   
   // MARK: - Image Placement
   
-  var flipImageOrigin: Bool = false
+  open var flipImageOrigin: Bool = false
   
-  override func imageRect(forContentRect contentRect: CGRect) -> CGRect {
+  override open func imageRect(forContentRect contentRect: CGRect) -> CGRect {
     var frame = super.imageRect(forContentRect: contentRect)
     if flipImageOrigin {
       frame.origin.x = super.titleRect(forContentRect: contentRect).maxX - frame.width - imageEdgeInsets.right + imageEdgeInsets.left + titleEdgeInsets.right - titleEdgeInsets.left
@@ -96,7 +102,7 @@ class Button: UIButton {
     return frame
   }
   
-  override func titleRect(forContentRect contentRect: CGRect) -> CGRect {
+  override open func titleRect(forContentRect contentRect: CGRect) -> CGRect {
     var frame = super.titleRect(forContentRect: contentRect)
     if flipImageOrigin {
       frame.origin.x -= imageRect(forContentRect: contentRect).width
@@ -104,18 +110,20 @@ class Button: UIButton {
     return frame
   }
   
-  override var intrinsicContentSize: CGSize {
+  override open var intrinsicContentSize: CGSize {
     var size = super.intrinsicContentSize
     size.width += abs(imageEdgeInsets.left) + abs(imageEdgeInsets.right) +
       abs(titleEdgeInsets.left) + abs(titleEdgeInsets.right)
+    size.height += max(abs(titleEdgeInsets.top) + abs(titleEdgeInsets.bottom),
+                       abs(imageEdgeInsets.top) + abs(imageEdgeInsets.bottom))
     return size
   }
   
   // MARK: - Touch Extension
   
-  var hitTestSlop: UIEdgeInsets = .zero
+  public var hitTestSlop: UIEdgeInsets = .zero
   
-  override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+  override public func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
     if bounds.inset(by: hitTestSlop).contains(point) {
       return true
     }

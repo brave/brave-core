@@ -3,12 +3,13 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import UIKit
+import BraveUI
 
 /// The loading view
 class SKUPurchaseProcessingView: UIView {
   
   let loaderView = LoaderView(size: .large).then {
-    $0.tintColor = Colors.blurple400
+    $0.tintColor = Colors.blurple500
     $0.setContentHuggingPriority(.required, for: .vertical)
     $0.setContentHuggingPriority(.required, for: .horizontal)
   }
@@ -34,7 +35,7 @@ class SKUPurchaseProcessingView: UIView {
       $0.text = Strings.SKUPurchaseProcessing
       $0.textAlignment = .center
       $0.numberOfLines = 0
-      $0.appearanceTextColor = Colors.grey000
+      $0.appearanceTextColor = Colors.grey900
       $0.font = .systemFont(ofSize: 15)
     })
   }

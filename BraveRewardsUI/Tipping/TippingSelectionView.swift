@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveUI
 
 class TippingOption: NSObject {
   var value: BATValue
@@ -134,7 +135,7 @@ class TippingSelectionView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
     
-    backgroundColor = Colors.blurple500
+    backgroundColor = Colors.blurple400
     
     monthlyToggleButton.addTarget(self, action: #selector(tappedMonthlyToggle), for: .touchUpInside)
     
@@ -215,7 +216,7 @@ extension TippingSelectionView {
   // "wallet balance X BAT"
   fileprivate class WalletBalanceView: UIStackView {
     let titleLabel = UILabel().then {
-      $0.appearanceTextColor = Colors.blurple700
+      $0.appearanceTextColor = Colors.blurple200
       $0.font = .systemFont(ofSize: 12.0)
       $0.text = Strings.tippingWalletBalanceTitle
     }

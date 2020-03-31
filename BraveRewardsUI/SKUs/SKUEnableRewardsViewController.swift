@@ -4,6 +4,7 @@
 
 import UIKit
 import BraveRewards
+import BraveUI
 
 /// Popup shown to enable rewards if the user doesn't have it enabled and they
 /// tap a BUY with BAT button
@@ -75,7 +76,7 @@ public class SKUEnableRewardsViewController: UIViewController, UIViewControllerT
 }
 
 extension SKUEnableRewardsViewController: BasicAnimationControllerDelegate {
-  func animatePresentation(context: UIViewControllerContextTransitioning) {
+  public func animatePresentation(context: UIViewControllerContextTransitioning) {
     context.containerView.addSubview(view)
     view.snp.makeConstraints {
       $0.edges.equalToSuperview()
@@ -96,7 +97,7 @@ extension SKUEnableRewardsViewController: BasicAnimationControllerDelegate {
     }, completion: nil)
     context.completeTransition(true)
   }
-  func animateDismissal(context: UIViewControllerContextTransitioning) {
+  public func animateDismissal(context: UIViewControllerContextTransitioning) {
     // Animate
     UIView.animate(withDuration: 0.15) {
       self.enableRewardsView.backgroundView.alpha = 0.0
@@ -130,7 +131,7 @@ public class SKUEnableRewardsView: UIView {
   let titleLabel = UILabel().then {
     $0.text = Strings.SKUEnableRewardsTitle
     $0.textAlignment = .center
-    $0.appearanceTextColor = Colors.grey000
+    $0.appearanceTextColor = Colors.grey900
     $0.font = .systemFont(ofSize: 18, weight: .semibold)
     $0.numberOfLines = 0
   }
@@ -138,13 +139,13 @@ public class SKUEnableRewardsView: UIView {
   let bodyLabel = UILabel().then {
     $0.text = Strings.SKUEnableRewardsBody
     $0.textAlignment = .center
-    $0.appearanceTextColor = Colors.grey000
+    $0.appearanceTextColor = Colors.grey900
     $0.font = .systemFont(ofSize: 15)
     $0.numberOfLines = 0
   }
   
   let enableRewardsButton = FilledActionButton(type: .system).then {
-    $0.appearanceBackgroundColor = Colors.blurple400
+    $0.appearanceBackgroundColor = Colors.blurple500
     $0.setTitle(String(format: Strings.SKUEnableRewardsButtonTitle), for: .normal)
     $0.titleLabel?.font = .systemFont(ofSize: 16.0, weight: .semibold)
   }
@@ -152,7 +153,7 @@ public class SKUEnableRewardsView: UIView {
   let termsLabel = LinkLabel().then {
     $0.textAlignment = .center
     $0.font = .systemFont(ofSize: 13)
-    $0.textColor = Colors.grey000
+    $0.textColor = Colors.grey900
     $0.linkColor = BraveUX.braveOrange
     $0.text = Strings.SKUEnableRewardsDisclaimer
     $0.setURLInfo([Strings.SKUEnableRewardsDisclaimerLink: "terms"])

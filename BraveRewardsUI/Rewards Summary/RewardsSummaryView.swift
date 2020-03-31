@@ -3,11 +3,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveUI
 
 class RewardsSummaryView: UIView {
   private struct UX {
-    static let monthYearColor = Colors.blurple400
-    static let gradientColors: [UIColor] = [Colors.blurple800, .white, .white]
+    static let monthYearColor = Colors.blurple500
+    static let gradientColors: [UIColor] = [Colors.blurple100, .white, .white]
     static let gradientLocations: [NSNumber] = [ 0.0, 0.4, 1.0 ]
     static let buttonHeight = 48.0
   }

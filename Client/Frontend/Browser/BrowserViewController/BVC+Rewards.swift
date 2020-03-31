@@ -8,6 +8,7 @@ import BraveRewardsUI
 import Data
 import Shared
 import BraveShared
+import BraveUI
 
 private let log = Logger.rewardsLogger
 
@@ -37,16 +38,6 @@ struct RewardsHelper {
                 log.debug(logOutput)
             }
         }, withFlush: nil)
-    }
-}
-
-// Since BraveRewardsUI is a separate framework, we have to implement Popover conformance here.
-extension RewardsPanelController: PopoverContentComponent {
-    var extendEdgeIntoArrow: Bool {
-        return true
-    }
-    var isPanToDismissEnabled: Bool {
-        return self.visibleViewController === self.viewControllers.first
     }
 }
 

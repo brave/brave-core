@@ -94,7 +94,7 @@ extension CustomPropertyAnimator {
   ///   - values: The values to write to the parent.
   ///
   /// - returns: An animatable property object to be used in pop animations.
-  static func animatableProperty(
+  public static func animatableProperty(
     name: String,
     reading: @escaping (_ parent: Self) -> [CGFloat],
     writing: @escaping (_ parent: Self, _ values: [CGFloat]) -> Void,

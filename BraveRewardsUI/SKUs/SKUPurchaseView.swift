@@ -5,6 +5,7 @@
 import UIKit
 import SnapKit
 import pop
+import BraveUI
 
 public class SKUPurchaseView: UIView {
   
@@ -206,7 +207,7 @@ public class SKUPurchaseView: UIView {
 }
 
 extension SKUPurchaseView: BasicAnimationControllerDelegate {
-  func animatePresentation(context: UIViewControllerContextTransitioning) {
+  public func animatePresentation(context: UIViewControllerContextTransitioning) {
     context.containerView.addSubview(self)
     snp.makeConstraints {
       $0.edges.equalToSuperview()
@@ -240,7 +241,7 @@ extension SKUPurchaseView: BasicAnimationControllerDelegate {
     })
     context.completeTransition(true)
   }
-  func animateDismissal(context: UIViewControllerContextTransitioning) {
+  public func animateDismissal(context: UIViewControllerContextTransitioning) {
     // Animate
     let isWideLayout = context.containerView.traitCollection.horizontalSizeClass == .regular
     UIView.animate(withDuration: 0.15) {

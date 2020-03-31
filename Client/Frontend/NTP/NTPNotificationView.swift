@@ -5,7 +5,7 @@
 import UIKit
 import Shared
 import BraveShared
-import BraveRewardsUI
+import BraveUI
 
 struct NTPNotificationViewConfig {
     var headerText: String?
@@ -64,7 +64,7 @@ class NTPNotificationView: UIStackView {
     lazy var primaryButton = RoundInterfaceButton(type: .system).then {
         $0.setTitle(config.primaryButtonConfig?.text, for: .normal)
         $0.appearanceTextColor = .white
-        $0.backgroundColor = BraveUX.blurple400
+        $0.backgroundColor = Colors.blurple500
         $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 25, bottom: 12, right: 25)
         $0.tintColor = .white

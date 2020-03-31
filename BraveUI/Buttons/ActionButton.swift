@@ -2,11 +2,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import Foundation
+import UIKit
+import BraveShared
 
-class ActionButton: Button {
+open class ActionButton: Button {
   
-  override init(frame: CGRect) {
+  override public init(frame: CGRect) {
     super.init(frame: frame)
     
     backgroundColor = .clear
@@ -15,17 +16,17 @@ class ActionButton: Button {
   }
   
   @available(*, unavailable)
-  required init(coder: NSCoder) {
+  required public init(coder: NSCoder) {
     fatalError()
   }
   
-  override func layoutSubviews() {
+  override open func layoutSubviews() {
     super.layoutSubviews()
    
     layer.cornerRadius = bounds.height / 2.0
   }
   
-  override var tintColor: UIColor! {
+  override open var tintColor: UIColor! {
     didSet {
       appearanceTextColor = tintColor
       layer.borderColor = tintColor.withAlphaComponent(0.5).cgColor
@@ -33,19 +34,19 @@ class ActionButton: Button {
   }
 }
 
-class FilledActionButton: Button {
-  override init(frame: CGRect) {
+open class FilledActionButton: Button {
+  override public init(frame: CGRect) {
     super.init(frame: frame)
     
     tintColor = .white
   }
   
   @available(*, unavailable)
-  required init(coder: NSCoder) {
+  required public init(coder: NSCoder) {
     fatalError()
   }
   
-  override func layoutSubviews() {
+  override open func layoutSubviews() {
     super.layoutSubviews()
     
     layer.cornerRadius = bounds.height / 2.0

@@ -7,6 +7,7 @@ import SnapKit
 import BraveRewards
 import Network
 import BraveShared
+import BraveUI
 
 protocol WalletContentView: AnyObject {
   var innerScrollView: UIScrollView? { get }
@@ -347,7 +348,7 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
       if isLocal {
         rewardsSummaryView.rewardsSummaryButton.isEnabled = false
         
-        self.view.backgroundColor = Colors.blurple800
+        self.view.backgroundColor = Colors.blurple100
         walletView.contentView = rewardsSummaryView
         
         rewardsSummaryView.rewardsSummaryButton.snp.remakeConstraints {
@@ -487,7 +488,7 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
       if isExpanding {
         contentView?.alpha = 0.0
         self.rewardsSummaryView.monthYearLabel.alpha = 1.0
-        self.view.backgroundColor = Colors.blurple800
+        self.view.backgroundColor = Colors.blurple100
       } else {
         contentView?.alpha = 1.0
         self.rewardsSummaryView.monthYearLabel.alpha = 0.0

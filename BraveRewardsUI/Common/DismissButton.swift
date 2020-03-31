@@ -3,13 +3,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveUI
 
+/// A circular button with an X icon 
 class DismissButton: Button {
   
   private struct UX {
     static let dismissButtonSize = CGSize(width: 28.0, height: 28.0)
     static let defaultBackgroundColor = UIColor(white: 1.0, alpha: 0.8)
-    static let defaultImageTintColor = Colors.grey400
+    static let defaultImageTintColor = Colors.grey500
   }
   
   var defaultBackgroundColor: UIColor

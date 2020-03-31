@@ -2,7 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
+import UIKit
 
 /// A Label that allows clickable links (or data-detectors)
 final public class LinkLabel: UITextView {
@@ -51,7 +51,7 @@ final public class LinkLabel: UITextView {
     }
   }
   
-  var linkFont: UIFont? {
+  public var linkFont: UIFont? {
     didSet {
       updateLinkFont()
     }
@@ -68,7 +68,7 @@ final public class LinkLabel: UITextView {
   }
   
   /// Converts the text into attributed text for display
-  func updateText(urlInfo: [String: String]) {
+  public func updateText(urlInfo: [String: String]) {
     let attributedString = { () -> NSAttributedString in
       let paragraphStyle = NSMutableParagraphStyle()
       paragraphStyle.alignment = self.textAlignment
@@ -161,8 +161,8 @@ final public class LinkLabel: UITextView {
   // MARK: - Private
   
   private struct UX {
-    static let textColor = Colors.grey900
-    static let linkColor = Colors.blue500
+    static let textColor = Colors.grey000
+    static let linkColor = Colors.blue400
   }
 }
 
@@ -181,11 +181,4 @@ extension LinkLabel: UITextViewDelegate {
     let startIndex = offset(from: beginningOfDocument, to: range.start)
     return attributedText.attribute(.link, at: startIndex, effectiveRange: nil) != nil
   }
-}
-
-public struct DisclaimerLinks {
-  public static let termsOfUseURL = "https://brave.com/terms-of-use/"
-  public static let policyURL = "https://brave.com/privacy/#rewards"
-  public static let unclaimedFundsURL = "https://brave.com/faq-rewards/#unclaimed-funds"
-  public static let termsOfSaleURL = "https://brave.com/terms-of-sale/" // TODO: Replace with correct URL (https://github.com/brave/brave-ios/issues/2383)
 }

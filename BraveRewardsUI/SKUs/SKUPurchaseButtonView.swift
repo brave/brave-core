@@ -3,6 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import UIKit
+import BraveUI
 
 /// Container for the "Buy with BAT" and T&C's buttons
 class SKUPurchaseButtonView: UIView {
@@ -21,7 +22,7 @@ class SKUPurchaseButtonView: UIView {
   }
   
   let buyButton = FilledActionButton(type: .system).then {
-    $0.appearanceBackgroundColor = Colors.blurple400
+    $0.appearanceBackgroundColor = Colors.blurple500
     $0.setTitle(String(format: Strings.SKUPurchaseBuyWithBAT, Strings.BAT), for: .normal)
     $0.titleLabel?.font = .systemFont(ofSize: 16.0, weight: .semibold)
   }
@@ -30,7 +31,7 @@ class SKUPurchaseButtonView: UIView {
     let buyWithBat = String(format: Strings.SKUPurchaseBuyWithBAT, Strings.BAT)
     $0.linkColor = BraveUX.braveOrange
     $0.text = String(format: Strings.SKUPurchaseDisclaimerInformation, buyWithBat, Strings.SKUPurchaseDisclaimerInformationLink)
-    $0.appearanceTextColor = Colors.grey000
+    $0.appearanceTextColor = Colors.grey900
     $0.font = .systemFont(ofSize: 12.0)
     $0.textAlignment = .center
     $0.updateText(urlInfo: [Strings.SKUPurchaseDisclaimerInformationLink: "terms-of-sale"])

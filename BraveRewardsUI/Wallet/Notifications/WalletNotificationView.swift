@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveUI
 
 class WalletNotificationView: UIView {
   
@@ -23,7 +24,7 @@ class WalletNotificationView: UIView {
     
     closeButton.do {
       $0.setImage(UIImage(frameworkResourceNamed: "close-icon").alwaysTemplate, for: .normal)
-      $0.tintColor = Colors.grey300
+      $0.tintColor = Colors.grey600
       $0.contentMode = .center
     }
     

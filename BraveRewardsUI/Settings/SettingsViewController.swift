@@ -67,7 +67,7 @@ class SettingsViewController: UIViewController {
     super.viewWillAppear(animated)
     
     // Not sure why this has to be set on the nav controller specifically instead of just this controller
-    navigationController?.preferredContentSize = CGSize(width: RewardsUX.preferredPanelSize.width, height: 1000)
+    preferredContentSize = CGSize(width: RewardsUX.preferredPanelSize.width, height: 1000)
     
     updateGrantsSection()
   }
