@@ -8,40 +8,41 @@
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/permissions/permission_request.h"
 
+namespace permissions {
 namespace {
 
-std::string GetPermissionRequestString_ChromiumImpl(
-    permissions::PermissionRequestType type);
+std::string GetPermissionRequestString_ChromiumImpl(PermissionRequestType type);
 void BraveRecordPermissionAction(ContentSettingsType permission,
                                  bool secure_origin,
-                                 permissions::PermissionAction action);
+                                 PermissionAction action);
 
-std::string GetPermissionRequestString(
-    permissions::PermissionRequestType type) {
-  if (type == permissions::PermissionRequestType::PERMISSION_AUTOPLAY)
+std::string GetPermissionRequestString(PermissionRequestType type) {
+  if (type == PermissionRequestType::PERMISSION_AUTOPLAY)
     return "Autoplay";
-  if (type == permissions::PermissionRequestType::PERMISSION_WIDEVINE)
+  if (type == PermissionRequestType::PERMISSION_WIDEVINE)
     return "Widevine";
-  if (type == permissions::PermissionRequestType::PERMISSION_WALLET)
+  if (type == PermissionRequestType::PERMISSION_WALLET)
     return "Wallet";
   return GetPermissionRequestString_ChromiumImpl(type);
 }
 
 }  // namespace
+}  // namespace permissions
 
 #define BRAVE_PERMISSIONUMAUTIL_RECORDPERMISSIONACTION              \
   case ContentSettingsType::AUTOPLAY:                               \
     BraveRecordPermissionAction(permission, secure_origin, action); \
     break; \
 
-#include "../../../../../chrome/browser/permissions/permission_uma_util.cc"  // NOLINT
+#include "../../../../components/permissions/permission_uma_util.cc"
 #undef BRAVE_PERMISSIONUMAUTIL_RECORDPERMISSIONACTION
 
+namespace permissions {
 namespace {
 
 void BraveRecordPermissionAction(ContentSettingsType permission,
                                  bool secure_origin,
-                                 permissions::PermissionAction action) {
+                                 PermissionAction action) {
   switch (permission) {
     case ContentSettingsType::AUTOPLAY:
       PERMISSION_ACTION_UMA(secure_origin, "Permissions.Action.Autoplay",
@@ -55,3 +56,4 @@ void BraveRecordPermissionAction(ContentSettingsType permission,
 }
 
 }  // namespace
+}  // namespace permissions
