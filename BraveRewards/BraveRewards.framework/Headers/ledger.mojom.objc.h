@@ -22,6 +22,13 @@ typedef NS_ENUM(NSInteger, BATContributionStep) {
 } NS_SWIFT_NAME(ContributionStep);
 
 
+typedef NS_ENUM(NSInteger, BATContributionProcessor) {
+  BATContributionProcessorNone = 0,
+  BATContributionProcessorBraveTokens = 1,
+  BATContributionProcessorUphold = 2,
+} NS_SWIFT_NAME(ContributionProcessor);
+
+
 typedef NS_ENUM(NSInteger, BATExcludeFilter) {
   BATExcludeFilterFilterAll = -1,
   BATExcludeFilterFilterDefault = 0,
@@ -75,6 +82,7 @@ typedef NS_ENUM(NSInteger, BATResult) {
   BATResultAlreadyExists = 26,
   BATResultSafetynetAttestationFailed = 27,
   BATResultDatabaseInitFailed = 28,
+  BATResultRetry = 29,
 } NS_SWIFT_NAME(Result);
 
 
@@ -161,8 +169,6 @@ typedef NS_ENUM(NSInteger, BATPromotionType) {
 typedef NS_ENUM(NSInteger, BATPromotionStatus) {
   BATPromotionStatusActive = 0,
   BATPromotionStatusAttested = 1,
-  BATPromotionStatusClaimed = 2,
-  BATPromotionStatusSignedTokens = 3,
   BATPromotionStatusFinished = 4,
   BATPromotionStatusOver = 5,
 } NS_SWIFT_NAME(PromotionStatus);
@@ -183,8 +189,23 @@ typedef NS_ENUM(NSInteger, BATOperatingSystem) {
 } NS_SWIFT_NAME(OperatingSystem);
 
 
+typedef NS_ENUM(NSInteger, BATCredsBatchType) {
+  BATCredsBatchTypeNone = 0,
+  BATCredsBatchTypePromotion = 1,
+} NS_SWIFT_NAME(CredsBatchType);
 
-@class BATContributionInfo, BATContributionPublisher, BATPublisherInfo, BATPublisherBanner, BATPendingContribution, BATPendingContributionInfo, BATVisitData, BATWalletProperties, BATBalance, BATAutoContributeProps, BATMediaEventInfo, BATExternalWallet, BATBalanceReportInfo, BATActivityInfoFilterOrderPair, BATActivityInfoFilter, BATReconcileInfo, BATRewardsInternalsInfo, BATServerPublisherInfo, BATServerPublisherPartial, BATTransferFee, BATContributionQueue, BATContributionQueuePublisher, BATPromotion, BATPromotionCreds, BATUnblindedToken, BATClientInfo, BATRecurringTip, BATTransactionReportInfo, BATContributionReportInfo;
+
+typedef NS_ENUM(NSInteger, BATCredsBatchStatus) {
+  BATCredsBatchStatusNone = 0,
+  BATCredsBatchStatusBlinded = 1,
+  BATCredsBatchStatusClaimed = 2,
+  BATCredsBatchStatusSigned = 3,
+  BATCredsBatchStatusFinished = 4,
+} NS_SWIFT_NAME(CredsBatchStatus);
+
+
+
+@class BATContributionInfo, BATContributionPublisher, BATPublisherInfo, BATPublisherBanner, BATPendingContribution, BATPendingContributionInfo, BATVisitData, BATWalletProperties, BATBalance, BATAutoContributeProps, BATMediaEventInfo, BATExternalWallet, BATBalanceReportInfo, BATActivityInfoFilterOrderPair, BATActivityInfoFilter, BATReconcileInfo, BATRewardsInternalsInfo, BATServerPublisherInfo, BATServerPublisherPartial, BATTransferFee, BATContributionQueue, BATContributionQueuePublisher, BATPromotion, BATUnblindedToken, BATClientInfo, BATRecurringTip, BATTransactionReportInfo, BATContributionReportInfo, BATMonthlyReportInfo, BATCredsBatch;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -196,6 +217,7 @@ NS_SWIFT_NAME(ContributionInfo)
 @property (nonatomic) BATContributionStep step;
 @property (nonatomic) int32_t retryCount;
 @property (nonatomic) uint64_t createdAt;
+@property (nonatomic) BATContributionProcessor processor;
 @property (nonatomic, copy) NSArray<BATContributionPublisher *> * publishers;
 @end
 
@@ -420,16 +442,6 @@ NS_SWIFT_NAME(Promotion)
 @property (nonatomic) uint64_t expiresAt;
 @property (nonatomic) uint64_t claimedAt;
 @property (nonatomic) bool legacyClaimed;
-@property (nonatomic, copy, nullable) BATPromotionCreds * credentials;
-@end
-
-NS_SWIFT_NAME(PromotionCreds)
-@interface BATPromotionCreds : NSObject <NSCopying>
-@property (nonatomic, copy) NSString * tokens;
-@property (nonatomic, copy) NSString * blindedCreds;
-@property (nonatomic, copy) NSString * signedCreds;
-@property (nonatomic, copy) NSString * publicKey;
-@property (nonatomic, copy) NSString * batchProof;
 @property (nonatomic, copy) NSString * claimId;
 @end
 
@@ -439,7 +451,7 @@ NS_SWIFT_NAME(UnblindedToken)
 @property (nonatomic, copy) NSString * tokenValue;
 @property (nonatomic, copy) NSString * publicKey;
 @property (nonatomic) double value;
-@property (nonatomic, copy) NSString * promotionId;
+@property (nonatomic, copy) NSString * credsId;
 @property (nonatomic) uint64_t expiresAt;
 @end
 
@@ -470,6 +482,27 @@ NS_SWIFT_NAME(ContributionReportInfo)
 @property (nonatomic) BATReportType type;
 @property (nonatomic, copy) NSArray<BATPublisherInfo *> * publishers;
 @property (nonatomic) uint64_t createdAt;
+@end
+
+NS_SWIFT_NAME(MonthlyReportInfo)
+@interface BATMonthlyReportInfo : NSObject <NSCopying>
+@property (nonatomic, copy) BATBalanceReportInfo * balance;
+@property (nonatomic, copy) NSArray<BATTransactionReportInfo *> * transactions;
+@property (nonatomic, copy) NSArray<BATContributionReportInfo *> * contributions;
+@end
+
+NS_SWIFT_NAME(CredsBatch)
+@interface BATCredsBatch : NSObject <NSCopying>
+@property (nonatomic, copy) NSString * credsId;
+@property (nonatomic) int32_t size;
+@property (nonatomic, copy) NSString * creds;
+@property (nonatomic, copy) NSString * blindedCreds;
+@property (nonatomic, copy) NSString * signedCreds;
+@property (nonatomic, copy) NSString * publicKey;
+@property (nonatomic, copy) NSString * batchProof;
+@property (nonatomic, copy) NSString * triggerId;
+@property (nonatomic) BATCredsBatchType triggerType;
+@property (nonatomic) BATCredsBatchStatus status;
 @end
 
 NS_ASSUME_NONNULL_END
