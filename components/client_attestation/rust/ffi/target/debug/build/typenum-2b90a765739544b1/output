@@ -1,2 +1,0 @@
-cargo:rustc-env=TYPENUM_BUILD_OP=/Users/gpestana/brave/brave-browser/src/brave/components/client_attestation/rust/ffi/target/debug/build/typenum-2b90a765739544b1/out/consts.rs
-cargo:rustc-env=TYPENUM_BUILD_CONSTS=/Users/gpestana/brave/brave-browser/src/brave/components/client_attestation/rust/ffi/target/debug/build/typenum-2b90a765739544b1/out/op.rs
