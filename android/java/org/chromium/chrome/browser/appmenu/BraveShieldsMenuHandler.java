@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.appmenu;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.TypedArray;
 import android.view.Menu;
 import android.view.View;
@@ -67,7 +68,7 @@ public class BraveShieldsMenuHandler {
 
     private final static float LAST_ITEM_SHOW_FRACTION = 0.5f;
 
-    private final Activity mActivity;
+    private final Context mContext;
     private final int mMenuResourceId;
     private Menu mMenu;
     private ListPopupWindow mPopup;
@@ -82,14 +83,14 @@ public class BraveShieldsMenuHandler {
 
     /**
      * Constructs a BraveShieldsMenuHandler object.
-     * @param activity Activity that is using the BraveShieldsMenu.
+     * @param context Context that is using the BraveShieldsMenu.
      * @param menuResourceId Resource Id that should be used as the source for the menu items.
      */
-    public BraveShieldsMenuHandler(Activity activity, int menuResourceId) {
-        mActivity = activity;
+    public BraveShieldsMenuHandler(Context context, int menuResourceId) {
+        mContext = context;
         mMenuResourceId = menuResourceId;
         mAdapter = null;
-        mHardwareButtonMenuAnchor = activity.findViewById(R.id.menu_anchor_stub);
+        mHardwareButtonMenuAnchor = ((Activity)mContext).findViewById(R.id.menu_anchor_stub);
     }
 
     public void addStat(int tabId, String block_type, String subresource) {
@@ -127,11 +128,11 @@ public class BraveShieldsMenuHandler {
 
     public void show(View anchorView, String host, String title, int tabId,
             Profile profile) {
-        int rotation = mActivity.getWindowManager().getDefaultDisplay().getRotation();
+        int rotation = ((Activity)mContext).getWindowManager().getDefaultDisplay().getRotation();
         // This fixes the bug where the bottom of the menu starts at the top of
         // the keyboard, instead of overlapping the keyboard as it should.
-        int displayHeight = mActivity.getResources().getDisplayMetrics().heightPixels;
-        int widthHeight = mActivity.getResources().getDisplayMetrics().widthPixels;
+        int displayHeight = mContext.getResources().getDisplayMetrics().heightPixels;
+        int widthHeight = mContext.getResources().getDisplayMetrics().widthPixels;
         int currentDisplayWidth = widthHeight;
 
         // In appcompat 23.2.1, DisplayMetrics are not updated after rotation change. This is a
@@ -148,7 +149,7 @@ public class BraveShieldsMenuHandler {
         }
         if (anchorView == null) {
             Rect rect = new Rect();
-            mActivity.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
+            ((Activity)mContext).getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
             int statusBarHeight = rect.top;
             mHardwareButtonMenuAnchor.setY((displayHeight - statusBarHeight));
 
@@ -157,23 +158,23 @@ public class BraveShieldsMenuHandler {
         }
 
         if (mMenu == null) {
-            PopupMenu tempMenu = new PopupMenu(mActivity, anchorView);
+            PopupMenu tempMenu = new PopupMenu(mContext, anchorView);
             tempMenu.inflate(mMenuResourceId);
             mMenu = tempMenu.getMenu();
         }
-        ContextThemeWrapper wrapper = new ContextThemeWrapper(mActivity, R.style.OverflowMenuThemeOverlay);
+        ContextThemeWrapper wrapper = new ContextThemeWrapper(mContext, R.style.OverflowMenuThemeOverlay);
         Point pt = new Point();
-        mActivity.getWindowManager().getDefaultDisplay().getSize(pt);
+        ((Activity)mContext).getWindowManager().getDefaultDisplay().getSize(pt);
         // Get the height and width of the display.
         Rect appRect = new Rect();
-        mActivity.getWindow().getDecorView().getWindowVisibleDisplayFrame(appRect);
+        ((Activity)mContext).getWindow().getDecorView().getWindowVisibleDisplayFrame(appRect);
 
         // Use full size of window for abnormal appRect.
         if (appRect.left < 0 && appRect.top < 0) {
             appRect.left = 0;
             appRect.top = 0;
-            appRect.right = mActivity.getWindow().getDecorView().getWidth();
-            appRect.bottom = mActivity.getWindow().getDecorView().getHeight();
+            appRect.right = ((Activity)mContext).getWindow().getDecorView().getWidth();
+            appRect.bottom = ((Activity)mContext).getWindow().getDecorView().getHeight();
         }
 
         mPopup = new ListPopupWindow(wrapper, null, android.R.attr.popupMenuStyle);
@@ -293,7 +294,7 @@ public class BraveShieldsMenuHandler {
         final int fhttpsUpgrades = httpsUpgrades;
         final int fscriptsBlocked = scriptsBlocked;
         final int ffingerprintsBlocked = fingerprintsBlocked;
-        mActivity.runOnUiThread(new Runnable() {
+        ((Activity)mContext).runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (!isShowing()) {
