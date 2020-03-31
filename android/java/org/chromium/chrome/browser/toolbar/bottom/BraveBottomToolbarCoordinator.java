@@ -39,6 +39,7 @@ public class BraveBottomToolbarCoordinator
     private SearchAccelerator mSearchAccelerator;
     private BottomToolbarNewTabButton mNewTabButton;
     private ActivityTabProvider mBraveTabProvider;
+    private OnClickListener mOriginalHomeButtonListener;
 
     private final Context mContext = ContextUtils.getApplicationContext();
 
@@ -50,6 +51,7 @@ public class BraveBottomToolbarCoordinator
         super(stub, tabProvider, homeButtonListener, searchAcceleratorListener, shareButtonListener,
                 tabsSwitcherLongClickListner, themeColorProvider);
         mBraveTabProvider = tabProvider;
+        mOriginalHomeButtonListener = homeButtonListener;
     }
 
     @Override
@@ -99,7 +101,7 @@ public class BraveBottomToolbarCoordinator
             final OnClickListener homeButtonListener = v -> {
                 final boolean isHomepageEnabled = HomepageManager.isHomepageEnabled();
                 if (isHomepageEnabled) {
-                    TabUtils.openHomepage();
+                    mOriginalHomeButtonListener.onClick(v);
                 } else {
                     TabUtils.openNewTab();
                 }
