@@ -3,15 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/permissions/permission_request_impl.h"
+#include "components/permissions/permission_request_impl.h"
+
+#include "components/grit/brave_components_strings.h"
 
 #define GetIconId GetIconId_ChromiumImpl
 #define GetMessageTextFragment GetMessageTextFragment_ChromiumImpl
-#include "../../../../../chrome/browser/permissions/permission_request_impl.cc"
+#include "../../../../components/permissions/permission_request_impl.cc"
 #undef GetMessageTextFragment
 #undef GetIconId
 
-permissions::PermissionRequest::IconId PermissionRequestImpl::GetIconId()
+namespace permissions {
+
+PermissionRequest::IconId PermissionRequestImpl::GetIconId()
     const {
 #if !defined(OS_ANDROID)
   switch (content_settings_type_) {
@@ -35,3 +39,5 @@ base::string16 PermissionRequestImpl::GetMessageTextFragment() const {
   }
   return l10n_util::GetStringUTF16(message_id);
 }
+
+}  // namespace permissions
