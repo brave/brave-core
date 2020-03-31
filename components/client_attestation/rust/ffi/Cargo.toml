@@ -1,0 +1,25 @@
+[package]
+name = "client-attestation-ffi"
+version = "0.1.0"
+authors = ["Goncalo Pestana <gpestana@brave.com>"]
+edition = "2018"
+
+[dependencies]
+brave_client_attestation = { path = "./client-attestation" }
+libc = "0.2"
+
+[lib]
+crate-type = [
+    "cdylib",
+    "staticlib",
+]
+name = "client_attestation"
+
+[features]
+cbindgen = []
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"

@@ -101,6 +101,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "content/public/common/resource_type.h"
 #endif
 
+//#if BUILDFLAG(ENABLE_CLIENT_ATTESTATION)
+#include "brave/components/client_attestation/client_attestation_loader.h"
+//#endif
+
 namespace {
 
 bool HandleURLReverseOverrideRewrite(GURL* url,

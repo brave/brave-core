@@ -1,0 +1,1 @@
+cargo:rustc-cfg=feature="use_arch"

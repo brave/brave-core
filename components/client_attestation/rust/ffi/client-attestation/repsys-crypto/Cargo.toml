@@ -1,0 +1,29 @@
+[package]
+name = "repsys_crypto"
+version = "0.1.0"
+authors = ["panpap <panpap@brave.com>"]
+edition = "2018"
+
+[dependencies]
+curve25519-dalek = { version = "2.0.0", default-features = false, features = ["serde"] }
+zkp = "0.7.0"
+elgamal_ristretto = { git = "https://github.com/iquerejeta/elgamal"}
+rand_core = { version = "0.5.1", default-features = false }
+clear_on_drop = { version = "0.2" }
+sha2 = "0.8.0"
+hex = "0.3.2"
+vrf = "0.2.0"
+pairing = { version = "0.14.2", features = ["u128-support"] }
+raw-cpuid = "7.0.3"
+serde = { version = "1.0", features = ["derive"] }
+bincode = "1"
+
+[dev-dependencies]
+criterion = "0.2"
+
+[features]
+default = ["std", "u64_backend"]
+std = ["curve25519-dalek/std"]
+nightly = ["curve25519-dalek/nightly", "clear_on_drop/nightly"]
+u64_backend = ["curve25519-dalek/u64_backend"]
+u32_backend = ["curve25519-dalek/u32_backend"]

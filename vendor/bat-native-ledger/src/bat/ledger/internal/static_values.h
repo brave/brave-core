@@ -46,11 +46,17 @@
 "https://grant.rewards.brave.software"
 
 #define PRIVATE_CHANNEL_ONE_STAGING_SERVER              \
-"https://private-attestation.rewards.bravesoftware.com"
+"http://0.0.0.0:80"
+//"https://en2k9azwks5h.x.pipedream.net"
+//"https://private-attestation.rewards.bravesoftware.com"
 #define PRIVATE_CHANNEL_ONE_PRODUCTION_SERVER           \
-"https://private-attestation.rewards.brave.com"
+"http://0.0.0.0:80"
+//"https://en2k9azwks5h.x.pipedream.net"
+//"https://private-attestation.rewards.brave.com"
 #define PRIVATE_CHANNEL_ONE_DEVELOPMENT_SERVER            \
-"https://private-attestation.rewards.brave.software"
+"http://0.0.0.0:80"
+//"https://en2k9azwks5h.x.pipedream.net"
+//"https://private-attestation.rewards.brave.software"
 
 #define PREFIX_V1                       "/v1"
 #define PREFIX_V2                       "/v2"
@@ -135,6 +141,11 @@ static const uint8_t g_hkdfSalt[] = {
     158, 84, 125, 69, 246, 207, 162, 247, 107, 172, 37, 34, 53,
     246, 105, 20, 215, 5, 248, 154, 179, 191, 46, 17, 6, 72, 210,
     91, 10, 169, 145, 248, 22, 147, 117, 24, 105, 12};
+
+static const uint8_t PRIVATE_CHANNEL_SERVER_PK[] = {
+    96, 179, 19, 106, 75, 154, 132, 11, 79, 217, 186, 113, 163, 
+    180, 124, 247, 114, 160, 241, 45, 150, 31, 151, 226, 27, 183, 45, 247, 
+    180, 116, 201, 9};
 
 static const double _d = 1.0 / (30.0 * 1000.0);
 

@@ -1,0 +1,66 @@
+# Copyright 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+import("config.gni")
+import("//brave/build/cargo.gni")
+import("//brave/test/testing.gni")
+
+config("external_config") {
+  include_dirs = [ "include" ]
+  defines = [
+    "NO_CXXEXCEPTIONS=1"
+  ]
+}
+
+source_set("client_attestation_ffi") {
+  public_configs = [ ":external_config" ]
+
+  sources = [
+    "src/client_attestation.cpp",
+    #"include/client_attestation.hpp"
+  ]
+
+  deps = [
+    "//base",
+    ":client_attestation"
+  ]
+
+  libs = [ client_attestation_lib_path ]
+
+  if (is_mac || is_ios ) {
+    libs += [
+      "Security.framework"
+    ]
+  }
+}
+
+if (client_attestation_shared_lib_install_name != "") {
+  fix_testing_install_name("test_client_attestation_install_name") {
+    current_path = client_attestation_shared_lib_install_name
+    new_path = "@executable_path/" + rebase_path(client_attestation_lib_path, root_build_dir)
+  }
+} else {
+    group("test_client_attestation_install_name") {}
+}
+
+cargo_build("client_attestation") {
+  inputs = [
+    #"build.rs",
+    "Cargo.toml",
+    "cbindgen.toml",
+    #"src/wrapper.hpp",
+    "src/client_attestation.hpp",
+    "src/lib.rs",
+  ]
+
+  rust_flags = client_attestation_flags
+  output = client_attestation_lib_path
+
+  manifest_path = "Cargo.toml"
+
+  build_path = client_attestation_build_path
+
+  target = client_attestation_target
+}

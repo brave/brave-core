@@ -1,0 +1,75 @@
+declare_args() {
+  use_client_attestation_shared_lib = is_mac
+  client_attestation_flags = ""
+}
+
+client_attestation_shared_lib_install_name = ""
+
+if (use_client_attestation_shared_lib && client_attestation_flags == "") {
+  if (!is_component_build) {
+    client_attestation_shared_lib_install_name = "@loader_path/../../Libraries/libclient_attestation.dylib"
+    client_attestation_flags = "-C link-args=-Wl,-install_name,$client_attestation_shared_lib_install_name"
+  }
+}
+
+client_attestation_build_path = "$root_gen_dir/client_attestation/out"
+
+client_attestation_lib_path = client_attestation_build_path
+
+client_attestation_target = ""
+
+# See https://forge.rust-lang.org/platform-support.html for possible targets
+if (is_win) {
+  if (current_cpu == "x86") {
+    client_attestation_flags += " -C target-feature=+crt-static"
+    client_attestation_target = "i686-pc-windows-msvc"
+  } else if (current_cpu == "x64") {
+    client_attestation_target = "x86_64-pc-windows-msvc"
+  }
+} else if (is_mac) {
+  if (current_cpu == "x64") {
+    client_attestation_target = "x86_64-apple-darwin"
+  }
+} else if (is_linux) {
+  if (current_cpu == "x64") {
+    client_attestation_target = "x86_64-unknown-linux-gnu"
+  }
+} else if (is_android) {
+  if (current_cpu == "arm") {
+    client_attestation_target = "arm-linux-androideabi"
+  } else if (current_cpu == "arm64") {
+    client_attestation_target = "aarch64-linux-android"
+  } else if (current_cpu == "x86") {
+    client_attestation_target = "i686-linux-android"
+  } else if (current_cpu == "x64") {
+    client_attestation_target = "x86_64-linux-android"
+  }
+} else if (is_ios) {
+  if (current_cpu == "arm64") {
+    client_attestation_target = "aarch64-apple-ios"
+  } else if (current_cpu == "x64") {
+    client_attestation_target = "x86_64-apple-ios"
+  }
+}
+
+if (client_attestation_target != "") {
+  client_attestation_lib_path += "/" + client_attestation_target
+}
+
+if (is_debug) {
+  client_attestation_lib_path += "/debug"
+} else {
+  client_attestation_lib_path += "/release"
+}
+
+if (is_win) {
+  client_attestation_lib_path += "/client_attestation.lib"
+} else if (is_linux || is_android || is_ios) {
+  client_attestation_lib_path += "/libclient_attestation.a"
+} else if (is_mac) {
+  if (use_client_attestation_shared_lib) {
+    client_attestation_lib_path += "/libclient_attestation.dylib"
+  } else {
+    client_attestation_lib_path += "/libclient_attestation.a"
+  }
+}

@@ -31,7 +31,7 @@ class PrivateChannelOne {
     
     ~PrivateChannelOne();
 
-    void Initialize();
+    void Initialize(bool init_timer);
 
     void SetTimer(uint32_t* timer_id, uint64_t start_timer_in = 0);
 
@@ -40,9 +40,21 @@ class PrivateChannelOne {
   private:
   void StartProtocol();
 
-  void SecondRoundProtocol();
+  void SecondRoundProtocol(
+    const std::string& encrypted_input,
+    std::string client_sk,
+    std::string wallet_id,
+    int input_size);
+
+  void OnServerPublicKeyResponse(
+    int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers);
 
   void OnFirstRoundResponse(
+    std::string client_sk,
+    std::string wallet_id,
+    int input_size,
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers);
@@ -53,6 +65,7 @@ class PrivateChannelOne {
     const std::map<std::string, std::string>& headers);
 
     bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+    const uint8_t* server_pk;
     uint32_t attestation_timer_id_;
 };
 

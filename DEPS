@@ -1,7 +1,8 @@
 use_relative_paths = True
 
 deps = {
-  "vendor/client_attestation_ffi": "https://github.com/brave-experiments/client-attestation-ffi.git@e3f75b0e42f102f8c2ead28ee675c70e807b3989",
+ "components/client_attestation": "https://github.com/brave-experiments/client-attestation-ffi.git@e3f75b0e42f102f8c2ead28ee675c70e807b3989",
+
   "vendor/adblock_rust_ffi": "https://github.com/brave/adblock-rust-ffi.git@5c9ed5ab387cb14e9c9af41d3d9b5eb4fc71f3e4",
   "vendor/extension-whitelist": "https://github.com/brave/extension-whitelist.git@7843f62e26a23c51336330e220e9d7992680aae9",
   "vendor/hashset-cpp": "https://github.com/brave/hashset-cpp.git@6eab0271d014ff09bd9f38abe1e0c117e13e9aa9",

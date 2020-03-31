@@ -10,6 +10,8 @@
 
 namespace braveledger_request_util {
 
+std::string GetServerPublicKey();
+
 std::string GetStartProtocolUrl();
 
 std::string GetResultProtocolUrl();

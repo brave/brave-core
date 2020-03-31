@@ -10,6 +10,7 @@ if (is_android) {
 }
 
 dep_base = rebase_path("../..", "//")
+dep_components_base = rebase_path("../../components", "//")
 
 config("external_config") {
   visibility = [ ":*" ]
@@ -316,7 +317,7 @@ source_set("ledger") {
     rebase_path("bat-native-tweetnacl:tweetnacl", dep_base),
     rebase_path("bat-native-rapidjson", dep_base),
     rebase_path("challenge_bypass_ristretto_ffi", dep_base),
-    rebase_path("client_attestation_ffi", dep_base),
+    rebase_path("./components/client_attestation", dep_components_base),
     rebase_path("brave_base", dep_base),
   ]
 

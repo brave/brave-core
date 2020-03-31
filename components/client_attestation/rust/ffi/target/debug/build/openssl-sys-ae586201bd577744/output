@@ -1,0 +1,56 @@
+cargo:rustc-cfg=const_fn
+cargo:rerun-if-env-changed=X86_64_APPLE_DARWIN_OPENSSL_LIB_DIR
+X86_64_APPLE_DARWIN_OPENSSL_LIB_DIR unset
+cargo:rerun-if-env-changed=OPENSSL_LIB_DIR
+OPENSSL_LIB_DIR unset
+cargo:rerun-if-env-changed=X86_64_APPLE_DARWIN_OPENSSL_INCLUDE_DIR
+X86_64_APPLE_DARWIN_OPENSSL_INCLUDE_DIR unset
+cargo:rerun-if-env-changed=OPENSSL_INCLUDE_DIR
+OPENSSL_INCLUDE_DIR unset
+cargo:rerun-if-env-changed=X86_64_APPLE_DARWIN_OPENSSL_DIR
+X86_64_APPLE_DARWIN_OPENSSL_DIR unset
+cargo:rerun-if-env-changed=OPENSSL_DIR
+OPENSSL_DIR unset
+cargo:rustc-link-search=native=/usr/local/opt/openssl@1.1/lib
+cargo:include=/usr/local/opt/openssl@1.1/include
+OPT_LEVEL = Some("0")
+TARGET = Some("x86_64-apple-darwin")
+HOST = Some("x86_64-apple-darwin")
+CC_x86_64-apple-darwin = None
+CC_x86_64_apple_darwin = None
+HOST_CC = None
+CC = None
+CFLAGS_x86_64-apple-darwin = None
+CFLAGS_x86_64_apple_darwin = None
+HOST_CFLAGS = None
+CFLAGS = None
+CRATE_CC_NO_DEFAULTS = None
+DEBUG = Some("true")
+CARGO_CFG_TARGET_FEATURE = Some("fxsr,sse,sse2,sse3,ssse3")
+running: "cc" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-I" "/usr/local/opt/openssl@1.1/include" "-Wall" "-Wextra" "-E" "build/expando.c"
+exit code: 0
+cargo:rustc-cfg=osslconf="OPENSSL_NO_SSL3_METHOD"
+cargo:conf=OPENSSL_NO_SSL3_METHOD
+cargo:rustc-cfg=ossl101
+cargo:rustc-cfg=ossl102
+cargo:rustc-cfg=ossl102f
+cargo:rustc-cfg=ossl102h
+cargo:rustc-cfg=ossl110
+cargo:rustc-cfg=ossl110f
+cargo:rustc-cfg=ossl110g
+cargo:rustc-cfg=ossl110h
+cargo:rustc-cfg=ossl111
+cargo:rustc-cfg=ossl111b
+cargo:rustc-cfg=ossl111c
+cargo:version_number=1010104f
+cargo:version=111
+cargo:rerun-if-env-changed=X86_64_APPLE_DARWIN_OPENSSL_LIBS
+X86_64_APPLE_DARWIN_OPENSSL_LIBS unset
+cargo:rerun-if-env-changed=OPENSSL_LIBS
+OPENSSL_LIBS unset
+cargo:rerun-if-env-changed=X86_64_APPLE_DARWIN_OPENSSL_STATIC
+X86_64_APPLE_DARWIN_OPENSSL_STATIC unset
+cargo:rerun-if-env-changed=OPENSSL_STATIC
+OPENSSL_STATIC unset
+cargo:rustc-link-lib=dylib=ssl
+cargo:rustc-link-lib=dylib=crypto

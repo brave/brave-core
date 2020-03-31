@@ -10,13 +10,17 @@
 #include "bat/ledger/internal/request/attestation_requests.h"
 #include "bat/ledger/internal/request/request_util.h"
 
-namespace braveledger_request_util {
+namespace braveledger_request_util  {
 
-std::string GetStartProtocolUrl() {
-  return BuildUrl("/start", PREFIX_V1, ServerTypes::PRIVATE_CHANNEL_ONE);
-}
+  std::string GetServerPublicKey() {
+    return BuildUrl("/meta", PREFIX_V1, ServerTypes::PRIVATE_CHANNEL_ONE);
+  }
 
-std::string GetResultProtocolUrl() {
-  return BuildUrl("/result", PREFIX_V1, ServerTypes::PRIVATE_CHANNEL_ONE);
-}
+  std::string GetStartProtocolUrl() {
+    return BuildUrl("/attestation/start", PREFIX_V1, ServerTypes::PRIVATE_CHANNEL_ONE);
+  }
+
+  std::string GetResultProtocolUrl() {
+    return BuildUrl("/attestation/result", PREFIX_V1, ServerTypes::PRIVATE_CHANNEL_ONE);
+  }
 }

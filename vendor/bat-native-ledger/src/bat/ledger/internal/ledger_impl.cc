@@ -106,7 +106,7 @@ void LedgerImpl::OnWalletInitializedInternal(
     bat_promotion_->Refresh(false);
     bat_contribution_->Initialize();
     bat_promotion_->Initialize();
-    bat_channel_attestation_->Initialize();
+    bat_channel_attestation_->Initialize(true);
 
     // Set wallet info for Confirmations when launching the browser or creating
     // a wallet for the first time

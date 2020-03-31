@@ -1,0 +1,49 @@
+import("//build/buildflag_header.gni")
+import("//brave/components/client_attestation/buildflags.gni")
+import("//brave/components/client_attestation/rust/ffi/config.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "ENABLE_CLIENT_ATTESTATION=$enable_client_attestation",
+  ]
+}
+
+source_set("client_attestation") {
+  sources = [
+    "client_attestation_loader.cc", 
+    "client_attestation_loader.h",
+    "utils.cc",
+    "utils.h",
+  ]
+
+  deps = [
+    "//brave/components/resources",
+    "//brave/components/client_attestation:buildflags",
+    "//brave/components/client_attestation/rust/ffi:client_attestation_ffi",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
+    "//ui/base",  # For ResourceBundle, consider getting rid of this?
+    "//url",
+  ]
+
+  public_deps = [
+    ":client_attestation_libs"
+  ]
+}
+
+if (is_mac) {
+  bundle_data("client_attestation_libs") {
+    sources = [
+      client_attestation_lib_path,
+    ]
+    outputs = [
+      "{{bundle_contents_dir}}/Libraries/{{source_file_part}}",
+    ]
+    public_deps = [
+      "//brave/components/client_attestation/rust/ffi:client_attestation",
+    ]
+  }
+} else {
+  group("client_attestation_libs") {}
+}

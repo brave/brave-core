@@ -1,0 +1,24 @@
+TARGET = Some("x86_64-apple-darwin")
+OPT_LEVEL = Some("0")
+HOST = Some("x86_64-apple-darwin")
+CC_x86_64-apple-darwin = None
+CC_x86_64_apple_darwin = None
+HOST_CC = None
+CC = None
+CFLAGS_x86_64-apple-darwin = None
+CFLAGS_x86_64_apple_darwin = None
+HOST_CFLAGS = None
+CFLAGS = None
+CRATE_CC_NO_DEFAULTS = None
+DEBUG = Some("true")
+CARGO_CFG_TARGET_FEATURE = Some("fxsr,sse,sse2,sse3,ssse3")
+running: "cc" "-O0" "-ffunction-sections" "-fdata-sections" "-fPIC" "-g" "-fno-omit-frame-pointer" "-m64" "-Wall" "-Wextra" "-o" "/Users/gpestana/brave/brave-browser/src/brave/components/client_attestation/rust/ffi/target/debug/build/clear_on_drop-ccbd706e6131f9f6/out/src/hide.o" "-c" "src/hide.c"
+exit code: 0
+AR_x86_64-apple-darwin = None
+AR_x86_64_apple_darwin = None
+HOST_AR = None
+AR = None
+running: "ar" "crs" "/Users/gpestana/brave/brave-browser/src/brave/components/client_attestation/rust/ffi/target/debug/build/clear_on_drop-ccbd706e6131f9f6/out/libclear_on_drop.a" "/Users/gpestana/brave/brave-browser/src/brave/components/client_attestation/rust/ffi/target/debug/build/clear_on_drop-ccbd706e6131f9f6/out/src/hide.o"
+exit code: 0
+cargo:rustc-link-lib=static=clear_on_drop
+cargo:rustc-link-search=native=/Users/gpestana/brave/brave-browser/src/brave/components/client_attestation/rust/ffi/target/debug/build/clear_on_drop-ccbd706e6131f9f6/out
