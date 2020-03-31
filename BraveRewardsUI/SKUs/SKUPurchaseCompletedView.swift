@@ -3,6 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import UIKit
+import BraveUI
 
 /// The loading view
 class SKUPurchaseCompletedView: UIView {
@@ -30,7 +31,7 @@ class SKUPurchaseCompletedView: UIView {
       }),
       .view(UILabel().then {
         $0.text = Strings.SKUPurchaseCompletedTitle
-        $0.appearanceTextColor = Colors.grey000
+        $0.appearanceTextColor = Colors.grey900
         $0.textAlignment = .center
         $0.numberOfLines = 0
         $0.font = .systemFont(ofSize: 18, weight: .semibold)
@@ -38,7 +39,7 @@ class SKUPurchaseCompletedView: UIView {
       .customSpace(4),
       .view(UILabel().then {
         $0.text = Strings.SKUPurchaseCompletedBody
-        $0.appearanceTextColor = Colors.grey000
+        $0.appearanceTextColor = Colors.grey900
         $0.textAlignment = .center
         $0.numberOfLines = 0
         $0.font = .systemFont(ofSize: 14)

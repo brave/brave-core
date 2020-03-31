@@ -5,6 +5,7 @@
 import UIKit
 import BraveRewards
 import BraveShared
+import BraveUI
 
 public class SKUPurchaseViewController: UIViewController, UIViewControllerTransitioningDelegate {
   

@@ -4,20 +4,21 @@
 
 import UIKit
 import SnapKit
+import BraveUI
 
 class DetailActionableRow: Button {
   
   let textLabel = UILabel().then {
     $0.font = .systemFont(ofSize: 14.0)
-    $0.appearanceTextColor = Colors.grey200
+    $0.appearanceTextColor = Colors.grey700
     $0.numberOfLines = 0
   }
   
   let batValueView = CurrencyContainerView(amountLabelConfig: {
-    $0.appearanceTextColor = Colors.purple300
+    $0.appearanceTextColor = Colors.purple600
     $0.font = .systemFont(ofSize: 14.0, weight: .semibold)
   }, kindLabelConfig: {
-    $0.appearanceTextColor = Colors.grey200
+    $0.appearanceTextColor = Colors.grey700
     $0.text = Strings.BAT
     $0.font = .systemFont(ofSize: 13.0)
   })
@@ -34,7 +35,7 @@ class DetailActionableRow: Button {
     super.init(frame: frame)
     setImage(UIImage(frameworkResourceNamed: "right-arrow").alwaysTemplate, for: .normal)
     contentHorizontalAlignment = .right
-    tintColor = Colors.grey200
+    tintColor = Colors.grey700
     setContentHuggingPriority(.required, for: .horizontal)
     addSubview(textLabel)
     addSubview(batValueView)

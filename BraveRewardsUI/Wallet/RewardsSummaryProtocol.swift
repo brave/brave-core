@@ -5,6 +5,7 @@
 import Foundation
 import BraveRewards
 import BraveShared
+import BraveUI
 
 enum RewardsSummaryLink: String {
   case learnMore = "learn-more"
@@ -90,7 +91,7 @@ extension RewardsSummaryProtocol {
           }
           return str
         }()
-        $0.appearanceTextColor = Colors.grey200
+        $0.appearanceTextColor = Colors.grey700
       })
     }
     
@@ -101,14 +102,14 @@ extension RewardsSummaryProtocol {
       let text = String(format: Strings.contributingToUnverifiedSites, batAmountText)
       
       labels.append(LinkLabel().then {
-        $0.appearanceTextColor = Colors.grey200
+        $0.appearanceTextColor = Colors.grey700
         $0.font = UIFont.systemFont(ofSize: 12.0)
         $0.text = "\(text) \(Strings.disclaimerLearnMore)"
         $0.setURLInfo([Strings.disclaimerLearnMore: RewardsSummaryLink.learnMore.rawValue])
       })
       
       labels.append(LinkLabel().then {
-        $0.appearanceTextColor = Colors.grey200
+        $0.appearanceTextColor = Colors.grey700
         $0.font = UIFont.systemFont(ofSize: 12.0)
         $0.text = Strings.showAllPendingContributions
         $0.setURLInfo([Strings.showAllPendingContributions: RewardsSummaryLink.showPendingContributions.rawValue])

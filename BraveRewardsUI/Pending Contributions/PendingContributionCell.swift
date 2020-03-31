@@ -3,6 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import UIKit
+import BraveUI
 
 class PendingContributionCell: UITableViewCell, TableViewReusable {
   
@@ -21,13 +22,13 @@ class PendingContributionCell: UITableViewCell, TableViewReusable {
   }
   
   let tokenView = BATUSDPairView(batAmountConfig: {
-    $0.appearanceTextColor = Colors.grey100
+    $0.appearanceTextColor = Colors.grey800
     $0.font = .systemFont(ofSize: 14.0, weight: .medium)
   }, batKindConfig: {
-    $0.appearanceTextColor = Colors.grey100
+    $0.appearanceTextColor = Colors.grey800
     $0.font = .systemFont(ofSize: 12.0)
   }, usdConfig: {
-    $0.appearanceTextColor = Colors.grey200
+    $0.appearanceTextColor = Colors.grey700
     $0.font = .systemFont(ofSize: 10.0)
   }).then {
     $0.axis = .vertical

@@ -3,13 +3,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveUI
 
 class TippingConfirmationView: UIView {
   struct UX {
-    static let backgroundColor = Colors.blurple000.withAlphaComponent(0.95)
-    static let faviconBackgroundColor = Colors.neutral800
+    static let backgroundColor = Colors.blurple900.withAlphaComponent(0.95)
+    static let faviconBackgroundColor = Colors.neutral100
     static let faviconSize = CGSize(width: 92.0, height: 92.0)
-    static let confirmationTextColor = Colors.grey600
+    static let confirmationTextColor = Colors.grey300
   }
   
   let stackView = UIStackView().then {

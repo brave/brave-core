@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveUI
 
 struct WalletAlertNotification {
   struct Category {
@@ -59,7 +60,7 @@ class WalletAlertNotificationView: WalletNotificationView {
         string: title,
         attributes: [
           .font: UIFont.systemFont(ofSize: 15.0, weight: .semibold),
-          .foregroundColor: Colors.grey100,
+          .foregroundColor: Colors.grey800,
         ]
       ))
       string.append(NSAttributedString(
@@ -71,7 +72,7 @@ class WalletAlertNotificationView: WalletNotificationView {
       string: notification.body,
       attributes: [
         .font: UIFont.systemFont(ofSize: 15.0),
-        .foregroundColor: Colors.grey100,
+        .foregroundColor: Colors.grey800,
       ]
     ))
     return string

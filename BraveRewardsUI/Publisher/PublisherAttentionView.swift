@@ -3,17 +3,18 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveUI
 
 class PublisherAttentionView: UIView {
   
   let titleLabel = UILabel().then {
-    $0.appearanceTextColor = Colors.grey000
+    $0.appearanceTextColor = Colors.grey900
     $0.text = Strings.attention
     $0.font = .systemFont(ofSize: 14.0)
   }
   /// Either "X%" or "–"
   let valueLabel = UILabel().then {
-    $0.appearanceTextColor = Colors.grey000
+    $0.appearanceTextColor = Colors.grey900
     $0.font = .systemFont(ofSize: 14.0, weight: .semibold)
     $0.textAlignment = .right
     $0.setContentHuggingPriority(.required, for: .horizontal)

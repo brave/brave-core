@@ -4,14 +4,15 @@
 
 import UIKit
 import pop
+import BraveUI
 
 public class AdView: UIView {
   let adContentButton = AdContentButton()
   let openSwipeButton = AdSwipeButton(contentType: .text(Strings.open, textColor: .white)).then {
-    $0.backgroundColor = Colors.blurple400
+    $0.backgroundColor = Colors.blurple500
   }
   let dislikeSwipeButton = AdSwipeButton(contentType: .image(UIImage(frameworkResourceNamed: "thumbsdown"))).then {
-    $0.backgroundColor = Colors.red300
+    $0.backgroundColor = Colors.red600
   }
   
   public override init(frame: CGRect) {

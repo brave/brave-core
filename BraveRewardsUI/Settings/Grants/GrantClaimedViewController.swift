@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveUI
 
 private let claimGrantDateFormatter = DateFormatter().then {
   $0.dateStyle = .short
@@ -150,7 +151,7 @@ extension GrantClaimedViewController {
 extension GrantClaimedViewController {
   private class InfoView: UIView {
     private struct UX {
-      static let infoAccentTextColor = Colors.magenta300
+      static let infoAccentTextColor = Colors.magenta600
     }
     
     let freeTokenAmountLabel: UILabel
@@ -182,7 +183,7 @@ extension GrantClaimedViewController {
       
       amountTitleLabel.text = isAdsGrant ? Strings.adsGrantsClaimedAmountTitle : Strings.grantsClaimedAmountTitle
       
-      backgroundColor = Colors.neutral800
+      backgroundColor = Colors.neutral100
       
       layer.cornerRadius = 6.0
       

@@ -6,7 +6,7 @@ import UIKit
 
 public let PopoverArrowHeight: CGFloat = 8.0
 
-public class PopoverNavigationController: UINavigationController {
+open class PopoverNavigationController: UINavigationController, PopoverContentComponent {
   
   private class NavigationBar: UINavigationBar {
     override var frame: CGRect {
@@ -28,7 +28,7 @@ public class PopoverNavigationController: UINavigationController {
     }
   }
   
-  init() {
+  public init() {
     super.init(navigationBarClass: NavigationBar.self, toolbarClass: Toolbar.self)
     modalPresentationStyle = .currentContext
   }
@@ -46,7 +46,7 @@ public class PopoverNavigationController: UINavigationController {
   }
   
   @available(*, unavailable)
-  required init(coder: NSCoder) {
+  required public init(coder: NSCoder) {
     fatalError()
   }
   
@@ -55,9 +55,12 @@ public class PopoverNavigationController: UINavigationController {
     set { } // swiftlint:disable:this unused_setter_value
   }
   
-  public override func viewDidLoad() {
+  open override func viewDidLoad() {
     super.viewDidLoad()
     activateFullscreenDismiss()
+    if let vc = viewControllers.first {
+      preferredContentSize = vc.preferredContentSize
+    }
   }
   
   func activateFullscreenDismiss() {
@@ -82,6 +85,18 @@ public class PopoverNavigationController: UINavigationController {
       navBarFrame.origin.y = additionalSafeAreaInsets.top
       navigationBar.frame = navBarFrame
     }
+  }
+  
+  public var extendEdgeIntoArrow: Bool {
+    return true
+  }
+  
+  public var isPanToDismissEnabled: Bool {
+    return self.visibleViewController === self.viewControllers.first
+  }
+  
+  override public func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
+    self.preferredContentSize = container.preferredContentSize
   }
 }
 

@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveUI
 
 enum UserWalletStatus {
   /// The user should not see anything user wallet related. This shows the old

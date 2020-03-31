@@ -20,6 +20,7 @@ import BraveRewardsUI
 import BraveRewards
 import StoreKit
 import SafariServices
+import BraveUI
 
 private let log = Logger.browserLogger
 

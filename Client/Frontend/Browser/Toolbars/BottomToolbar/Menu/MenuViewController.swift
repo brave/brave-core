@@ -5,6 +5,7 @@
 import UIKit
 import Storage
 import Shared
+import BraveUI
 
 private class MenuCell: UITableViewCell {
     let iconView = UIImageView()

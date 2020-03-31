@@ -4,6 +4,7 @@
 
 import UIKit
 import BraveRewards
+import BraveUI
 
 class AutoContributeDetailViewController: UIViewController {
   private var ledgerObserver: LedgerObserver

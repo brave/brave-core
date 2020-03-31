@@ -4,6 +4,7 @@
 
 import UIKit
 import BraveRewards
+import BraveUI
 
 extension TippingViewController {
   
@@ -30,12 +31,12 @@ extension TippingViewController {
           
           let text = NSMutableAttributedString(string: "\(Strings.tippingRecurringDetails)\n", attributes: [
             .font: UIFont.systemFont(ofSize: 14.0, weight: .medium),
-            .foregroundColor: Colors.grey600
+            .foregroundColor: Colors.grey300
           ])
           
           text.append(NSAttributedString(string: recurringDate, attributes: [
             .font: UIFont.systemFont(ofSize: 14.0, weight: .medium),
-            .foregroundColor: Colors.orange400
+            .foregroundColor: Colors.orange500
           ]))
           
           text.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: text.length))

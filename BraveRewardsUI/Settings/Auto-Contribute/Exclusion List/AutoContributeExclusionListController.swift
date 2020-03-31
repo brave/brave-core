@@ -4,6 +4,7 @@
 
 import UIKit
 import BraveRewards
+import BraveUI
 
 final class AutoContributeExclusionListController: UIViewController {
   private let state: RewardsState
@@ -182,7 +183,7 @@ extension AutoContributeExclusionListController: UITableViewDataSource {
         handler(true)
       }
     )
-    action.backgroundColor = Colors.blurple400
+    action.backgroundColor = Colors.blurple500
     let config = UISwipeActionsConfiguration(
       actions: [
         action

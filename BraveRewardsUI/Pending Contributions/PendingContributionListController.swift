@@ -4,10 +4,11 @@
 
 import UIKit
 import BraveRewards
+import BraveUI
 
 extension RewardsType {
   fileprivate var tableHeaderView: TableHeaderRowView {
-    return TableHeaderRowView(columns: [.init(title: displayString.uppercased(), width: .percentage(1.0))], tintColor: Colors.grey300)
+    return TableHeaderRowView(columns: [.init(title: displayString.uppercased(), width: .percentage(1.0))], tintColor: Colors.grey600)
   }
 }
 
