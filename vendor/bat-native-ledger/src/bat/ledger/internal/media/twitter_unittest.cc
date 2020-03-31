@@ -113,7 +113,7 @@ TEST(MediaTwitterTest, GetUserNameFromUrl) {
 
   // web intent path
   result = braveledger_media::Twitter::GetUserNameFromUrl(
-      "https://twitter.com/intent/emerick?screen_name=emerick");
+      "intent/user?screen_name=emerick");
   ASSERT_EQ(result, "emerick");
 }
 
@@ -123,14 +123,11 @@ TEST(MediaTwitterTest, IsExcludedPath) {
   ASSERT_EQ(result, true);
 
   // path is simple excluded link
-  result =
-      braveledger_media::Twitter::IsExcludedPath("/home");
+  result = braveledger_media::Twitter::IsExcludedPath("/home");
   ASSERT_EQ(result, true);
 
   // path is simple excluded link with trailing /
-  result =
-      braveledger_media::Twitter::IsExcludedPath("/home/");
-  ASSERT_EQ(result, true);
+  result = braveledger_media::Twitter::IsExcludedPath("/home/");
   ASSERT_EQ(result, true);
 
   // path is complex excluded link
@@ -139,18 +136,33 @@ TEST(MediaTwitterTest, IsExcludedPath) {
   ASSERT_EQ(result, true);
 
   // path is complex excluded link two levels
+  result = braveledger_media::Twitter::IsExcludedPath("/i/settings");
+  ASSERT_EQ(result, true);
+
+  // path contains excluded screen name in query string
   result =
-      braveledger_media::Twitter::IsExcludedPath("/i/settings");
+      braveledger_media::Twitter::IsExcludedPath("/foo?screen_name=home");
+  ASSERT_EQ(result, true);
+
+  // path has trailing / and contains excluded screen name in query string
+  result = braveledger_media::Twitter::IsExcludedPath("/foo/?screen_name=home");
   ASSERT_EQ(result, true);
 
   // path is random link
-  result =
-      braveledger_media::Twitter::IsExcludedPath("/asdfs/asdfasdf/");
+  result = braveledger_media::Twitter::IsExcludedPath("/asdfs/asdfasdf/");
   ASSERT_EQ(result, false);
 
   // path is not excluded link
+  result = braveledger_media::Twitter::IsExcludedPath("/emerick");
+  ASSERT_EQ(result, false);
+
+  // path has no screen name in query string
+  result = braveledger_media::Twitter::IsExcludedPath("/asdfs?foo=asdfasdf");
+  ASSERT_EQ(result, false);
+
+  // path contains a non-excluded screen name in query string
   result =
-      braveledger_media::Twitter::IsExcludedPath("/emerick");
+      braveledger_media::Twitter::IsExcludedPath("/foo?screen_name=emerick");
   ASSERT_EQ(result, false);
 }
 
