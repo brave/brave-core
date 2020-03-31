@@ -126,7 +126,7 @@ declare namespace NewTab {
   export interface RewardsBalanceReport {
     ads: number
     contribute: number
-    donation: number
+    monthly: number
     grant: number
     tips: number
   }

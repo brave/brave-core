@@ -2,8 +2,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import BigNumber from 'bignumber.js'
-
 export let actions: any = null
 
 export const getActions = () => actions
@@ -38,15 +36,6 @@ export const generateContributionMonthly = (list: number[], rates: Record<string
       converted: convertBalance(item, rates)
     }
   })
-}
-
-export const tipsTotal = (report: Rewards.BalanceReport) => {
-  if (!report) {
-    return '0.0'
-  }
-
-  const tips = new BigNumber(report.tips)
-  return new BigNumber(report.donation).plus(tips).dividedBy('1e18').toFixed(1, BigNumber.ROUND_DOWN)
 }
 
 export const tipsListTotal = (list: Rewards.Publisher[]) => {
