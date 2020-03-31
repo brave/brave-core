@@ -213,9 +213,6 @@
 By installing this extension, you are agreeing to the Google Widevine Terms of Use. You agree that Brave is not responsible for any damages or losses in connection with your use of Google Widevine.
       </message>
       <!-- Autoplay -->
-      <message name="IDS_AUTOPLAY_PERMISSION_FRAGMENT" desc="Permission request shown if the user is visiting a site that wants to autoplay media. Follows a prompt: 'This site would like to:'">
-        Autoplay media
-      </message>
       <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY" desc="Label for autoplay site settings.">
         Autoplay
       </message>

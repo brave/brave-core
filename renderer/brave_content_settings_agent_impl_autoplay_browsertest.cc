@@ -105,8 +105,8 @@ class BraveContentSettingsAgentImplAutoplayTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplAutoplayTest,
                        AllowAutoplay) {
   std::string result;
-  PermissionRequestManager* manager = PermissionRequestManager::FromWebContents(
-      contents());
+  permissions::PermissionRequestManager* manager =
+      permissions::PermissionRequestManager::FromWebContents(contents());
   auto popup_prompt_factory =
       std::make_unique<MockPermissionPromptFactory>(manager);
 
@@ -129,8 +129,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplAutoplayTest,
                        BlockAutoplay) {
   std::string result;
   BlockAutoplay();
-  PermissionRequestManager* manager = PermissionRequestManager::FromWebContents(
-      contents());
+  permissions::PermissionRequestManager* manager =
+      permissions::PermissionRequestManager::FromWebContents(contents());
   auto popup_prompt_factory =
       std::make_unique<MockPermissionPromptFactory>(manager);
 
