@@ -18,6 +18,7 @@ typedef struct {
   const char *support_url;
   const char *component_id;
   const char *base64_public_key;
+  const char *desc;
 } C_FList;
 
 /**
@@ -62,6 +63,7 @@ void engine_destroy(C_Engine *engine);
 
 /**
  * Returns a stylesheet containing all generic cosmetic rules that begin with any of the provided class and id selectors
+ *
  * The leading '.' or '#' character should not be provided
  */
 char *engine_hidden_class_id_selectors(C_Engine *engine,

@@ -21,6 +21,7 @@ pub struct FList {
     support_url: *const c_char,
     component_id: *const c_char,
     base64_public_key: *const c_char,
+    desc: *const c_char,
 }
 
 /// Create a new `Engine`.
@@ -207,6 +208,9 @@ pub unsafe extern "C" fn filter_list_get(category: *const c_char, i: size_t) -> 
             .expect("Error: CString::new()")
             .into_raw(),
         base64_public_key: CString::new(list.base64_public_key)
+            .expect("Error: CString::new()")
+            .into_raw(),
+        desc: CString::new(list.desc)
             .expect("Error: CString::new()")
             .into_raw(),
     };

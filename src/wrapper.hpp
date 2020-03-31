@@ -18,7 +18,8 @@ class FilterList {
              const std::vector<std::string>& langs,
              const std::string& support_url,
              const std::string& component_id,
-             const std::string& base64_public_key);
+             const std::string& base64_public_key,
+             const std::string& desc);
   FilterList(const FilterList& other);
   ~FilterList();
 
@@ -32,6 +33,7 @@ class FilterList {
   const std::string support_url;
   const std::string component_id;
   const std::string base64_public_key;
+  const std::string desc;
 
 private:
   static std::vector<FilterList>& GetFilterLists(const std::string &category);
