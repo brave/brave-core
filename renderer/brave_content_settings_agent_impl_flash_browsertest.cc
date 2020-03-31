@@ -153,14 +153,15 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplFlashBrowserTest,
       kFlashPluginExists, &len));
   ASSERT_EQ(len, 0);
 
-  PermissionRequestManager* manager = PermissionRequestManager::FromWebContents(
-      contents());
+  permissions::PermissionRequestManager* manager =
+      permissions::PermissionRequestManager::FromWebContents(contents());
 
   auto popup_prompt_factory =
       std::make_unique<MockPermissionPromptFactory>(manager);
 
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
-  popup_prompt_factory->set_response_type(PermissionRequestManager::ACCEPT_ALL);
+  popup_prompt_factory->set_response_type(
+      permissions::PermissionRequestManager::ACCEPT_ALL);
 
   PageReloadWaiter reload_waiter(contents());
 
