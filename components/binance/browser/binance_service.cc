@@ -42,7 +42,7 @@ const std::string client_id(BINANCE_CLIENT_ID);
 const std::string oauth_url =
     "https://accounts.binance.com/en/oauth/authorize";
 const std::string encoded_uri =
-    "https%3A%2F%2Fwww.brave.com%2Fbinance%2Foauth%2Fcallback";
+    "com.brave.binance%3A%2F%2Fauthorization";
 const std::string oauth_scope = "user:email,user:address";
 
 const unsigned int kRetriesCountOnNetworkChange = 1;
