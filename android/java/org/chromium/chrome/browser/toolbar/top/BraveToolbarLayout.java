@@ -74,7 +74,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   private HomeButton mHomeButton;
   private FrameLayout mShieldsLayout;
   private FrameLayout mRewardsLayout;
-  private ChromeActivity mMainActivity;
   private BraveShieldsMenuHandler mBraveShieldsMenuHandler;
   private TabModelSelectorTabObserver mTabModelSelectorTabObserver;
   private TabModelSelectorTabModelObserver mTabModelSelectorTabModelObserver;
@@ -133,12 +132,11 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           mBraveRewardsButton.setOnLongClickListener(this);
       }
 
-      mMainActivity = (ChromeActivity) getContext();
-      mBraveShieldsMenuHandler = new BraveShieldsMenuHandler(mMainActivity, R.menu.brave_shields_menu);
+      mBraveShieldsMenuHandler = new BraveShieldsMenuHandler(getContext(), R.menu.brave_shields_menu);
       mBraveShieldsMenuHandler.addObserver(new BraveShieldsMenuObserver() {
           @Override
           public void onMenuTopShieldsChanged(boolean isOn, boolean isTopShield) {
-              Tab currentTab = mMainActivity.getActivityTab();
+              Tab currentTab = getToolbarDataProvider().getTab();
               if (currentTab == null) {
                   return;
               }
@@ -159,7 +157,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           @Override
           public void blockEvent(int tabId, String block_type, String subresource) {
               mBraveShieldsMenuHandler.addStat(tabId, block_type, subresource);
-              Tab currentTab = mMainActivity.getActivityTab();
+              Tab currentTab = getToolbarDataProvider().getTab();
               if (currentTab == null || currentTab.getId() != tabId) {
                   return;
               }
@@ -210,7 +208,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       // We might miss events before calling setTabModelSelector, so we need
       // to proactively update the shields button state here, otherwise shields
       // might sometimes show as disabled while it is actually enabled.
-      updateBraveShieldsButtonState(mMainActivity.getActivityTab());
+      updateBraveShieldsButtonState(getToolbarDataProvider().getTab());
       mTabModelSelectorTabObserver = new TabModelSelectorTabObserver(selector) {
             @Override
             public void onShown(Tab tab, @TabSelectionType int type) {
@@ -220,7 +218,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
             @Override
             public void onPageLoadStarted(Tab tab, String url) {
-                if (mMainActivity.getActivityTab() == tab) {
+                if (getToolbarDataProvider().getTab() == tab) {
                     updateBraveShieldsButtonState(tab);
                 }
                 mBraveShieldsMenuHandler.clearBraveShieldsCount(tab.getId());
@@ -228,7 +226,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
             @Override
             public void onPageLoadFinished(final Tab tab, String url) {
-                if (mMainActivity.getActivityTab() == tab) {
+                if (getToolbarDataProvider().getTab() == tab) {
                     mBraveShieldsMenuHandler.updateHost(url);
                     updateBraveShieldsButtonState(tab);
                 }
@@ -236,7 +234,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
             @Override
             public void onDidFinishNavigation(Tab tab, NavigationHandle navigation) {
-                if (mMainActivity.getActivityTab() == tab && mBraveRewardsNativeWorker != null
+                if (getToolbarDataProvider().getTab() == tab && mBraveRewardsNativeWorker != null
                         && !tab.isIncognito()) {
                     mBraveRewardsNativeWorker.OnNotifyFrontTabUrlChanged(tab.getId(), tab.getUrl());
                 }
@@ -251,7 +249,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       mTabModelSelectorTabModelObserver = new TabModelSelectorTabModelObserver(selector) {
             @Override
             public void didSelectTab(Tab tab, @TabSelectionType int type, int lastId) {
-                if (mMainActivity.getActivityTab() == tab &&
+                if (getToolbarDataProvider().getTab() == tab &&
                     mBraveRewardsNativeWorker != null &&
                     !tab.isIncognito()) {
                     mBraveRewardsNativeWorker.OnNotifyFrontTabUrlChanged(tab.getId(), tab.getUrl());
@@ -262,22 +260,12 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
   @Override
   public void onClick(View v) {
-      if (mMainActivity == null || mBraveShieldsMenuHandler == null) {
+      if (mBraveShieldsMenuHandler == null) {
           assert false;
           return;
       }
       if (mBraveShieldsButton == v && mBraveShieldsButton != null) {
-          try {
-              if (mMainActivity.getFullscreenManager() != null
-                      && mMainActivity.getFullscreenManager().getPersistentFullscreenMode()) {
-                  return;
-              }
-          } catch (IllegalStateException exc) {
-              // We are on a finishing or destroying phase right now. Just do
-              // nothing in that case
-              return;
-          }
-          Tab currentTab = mMainActivity.getActivityTab();
+          Tab currentTab = getToolbarDataProvider().getTab();
           if (currentTab == null) {
               return;
           }
