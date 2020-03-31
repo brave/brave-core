@@ -129,33 +129,33 @@ void DatabaseServerPublisherInfo::InsertOrUpdatePartialList(
     return;
   }
 
-  const std::string query;
+  std::string query;
   query.reserve(9000000); // reserve 9 MB as 85 * 100,000 = 8,500,000.
-  query.append(base::StringPrintf(
+  query += base::StringPrintf(
       "INSERT INTO %s "
       "(publisher_key, status, excluded, address) "
       "VALUES ",
-      table_name_));
-  const std::string value;
+      table_name_);
+  std::string value;
   value.reserve(90);
 
   auto transaction = ledger::DBTransaction::New();
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::RUN;
   for (const auto& info : list) {
-    if (value != NULL) {
-      query.concat(",");
+    if (value != "") {
+      query += ",";
     }
-    value = base::StringPrintf("('%s', %d, %d, '%s')", 
+    value = base::StringPrintf("('%s', %d, %d, '%s')",
       // let's assume we'll want 85 characters per insert
-      info.publisher_key, // 36 characters
+      info.publisher_key.c_str(), // 36 characters
       static_cast<int>(info.status), // 1 character
       info.excluded, // 1 character
-      info.address, // 36
+      info.address.c_str() // 36
     );
-    query.concat(value);
+    query += value;
   }
-  query.concat(";");
+  query += ";";
   command->command = query;
 
   auto transaction_callback = std::bind(&OnResultCallback,
