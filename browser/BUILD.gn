@@ -115,7 +115,6 @@ source_set("browser_process") {
     "content_settings",
     "download",
     "net",
-    "permissions",
     "profiles",
     "renderer_context_menu",
     "ui",
