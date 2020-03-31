@@ -18,6 +18,7 @@
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/http/http_request_headers.h"
 #include "net/test/embedded_test_server/http_request.h"
@@ -29,11 +30,21 @@ namespace {
 const char kIframeID[] = "test";
 
 const char kGetImageDataScript[] =
+    "var adder = (a, x) => a + x;"
     "var canvas = document.createElement('canvas');"
+    "canvas.width = 16;"
+    "canvas.height = 16;"
     "var ctx = canvas.getContext('2d');"
-    "ctx.rect(10, 10, 100, 100);"
+    "ctx.rect(0, 0, 16, 16);"
+    "ctx.fillStyle = 'black';"
     "ctx.fill();"
-    "domAutomationController.send(ctx.getImageData(0, 0, 10, 10).data.length);";
+    "ctx.rect(5, 10, 10, 4);"
+    "ctx.fillStyle = 'white';"
+    "ctx.fill();"
+    "domAutomationController.send(ctx.getImageData(0, 0, canvas.width, "
+    "canvas.height).data.reduce(adder));";
+
+const int kExpectedImageDataHash = 261040;
 
 const char kEmptyCookie[] = "";
 
@@ -283,73 +294,23 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   base::ScopedTempDir temp_user_data_dir_;
 };
 
+// See https://github.com/brave/brave-browser/issues/8937
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
-                       Block3PFPGetImageData) {
-  Block3PFingerprinting();
-
-  ContentSettingsForOneType fp_settings;
-  content_settings()->GetSettingsForOneType(ContentSettingsType::PLUGINS,
-                                            brave_shields::kFingerprinting,
-                                            &fp_settings);
-  EXPECT_EQ(fp_settings.size(), 2u);
-
+                       DISABLED_FarbleGetImageData) {
   NavigateToPageWithIframe();
 
-  int bufLen = -1;
+  int hash = -1;
   EXPECT_TRUE(
-      ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &bufLen));
-  EXPECT_EQ(400, bufLen);
+      ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
+  EXPECT_EQ(kExpectedImageDataHash, hash);
 
+  // The iframe should have the same result as the top frame because farbling is
+  // based on the top frame's session token.
+  hash = -1;
   NavigateIframe();
   EXPECT_TRUE(
-      ExecuteScriptAndExtractInt(child_frame(), kGetImageDataScript, &bufLen));
-  EXPECT_EQ(0, bufLen);
-}
-
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
-                       BlockFPGetImageData) {
-  BlockFingerprinting();
-
-  ContentSettingsForOneType fp_settings;
-  content_settings()->GetSettingsForOneType(ContentSettingsType::PLUGINS,
-                                            brave_shields::kFingerprinting,
-                                            &fp_settings);
-  EXPECT_EQ(fp_settings.size(), 2u);
-
-  NavigateToPageWithIframe();
-
-  int bufLen = -1;
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &bufLen));
-  EXPECT_EQ(0, bufLen);
-
-  NavigateIframe();
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractInt(child_frame(), kGetImageDataScript, &bufLen));
-  EXPECT_EQ(0, bufLen);
-}
-
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
-                       AllowFPGetImageData) {
-  AllowFingerprinting();
-
-  ContentSettingsForOneType fp_settings;
-  content_settings()->GetSettingsForOneType(ContentSettingsType::PLUGINS,
-                                            brave_shields::kFingerprinting,
-                                            &fp_settings);
-  EXPECT_EQ(fp_settings.size(), 2u);
-
-  NavigateToPageWithIframe();
-
-  int bufLen = -1;
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &bufLen));
-  EXPECT_EQ(400, bufLen);
-
-  NavigateIframe();
-  EXPECT_TRUE(
-      ExecuteScriptAndExtractInt(child_frame(), kGetImageDataScript, &bufLen));
-  EXPECT_EQ(400, bufLen);
+      ExecuteScriptAndExtractInt(child_frame(), kGetImageDataScript, &hash));
+  EXPECT_EQ(kExpectedImageDataHash, hash);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,

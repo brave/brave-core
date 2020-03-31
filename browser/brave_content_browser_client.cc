@@ -11,8 +11,8 @@
 
 #include "base/bind.h"
 #include "base/json/json_reader.h"
+#include "base/rand_util.h"
 #include "base/task/post_task.h"
-#include "base/unguessable_token.h"
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/brave_tor_client_updater.h"
@@ -122,10 +122,9 @@ bool HandleURLRewrite(GURL* url, content::BrowserContext* browser_context) {
 }  // namespace
 
 BraveContentBrowserClient::BraveContentBrowserClient(StartupData* startup_data)
-    : ChromeContentBrowserClient(startup_data) {
-  session_token_ = base::UnguessableToken::Create();
-  incognito_session_token_ = base::UnguessableToken::Create();
-}
+    : ChromeContentBrowserClient(startup_data),
+      session_token_(base::RandUint64()),
+      incognito_session_token_(base::RandUint64()) {}
 
 BraveContentBrowserClient::~BraveContentBrowserClient() {}
 
@@ -227,21 +226,22 @@ void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
   std::string process_type =
       command_line->GetSwitchValueASCII(switches::kProcessType);
   if (process_type == switches::kRendererProcess) {
-    content::RenderProcessHost* process =
-        content::RenderProcessHost::FromID(child_process_id);
-    Profile* profile =
-        process ? Profile::FromBrowserContext(process->GetBrowserContext())
-                : nullptr;
-    if (profile && !profile->IsOffTheRecord()) {
-      command_line->AppendSwitchASCII(
-          "brave_session_token",
-          base::NumberToString(session_token_.GetHighForSerialization()));
-    } else {
-      command_line->AppendSwitchASCII(
-          "brave_session_token",
-          base::NumberToString(
-              incognito_session_token_.GetHighForSerialization()));
+    uint64_t session_token =
+        12345;  // the kinda thing an idiot would have on his luggage
+    if (!command_line->HasSwitch(switches::kTestType)) {
+      content::RenderProcessHost* process =
+          content::RenderProcessHost::FromID(child_process_id);
+      Profile* profile =
+          process ? Profile::FromBrowserContext(process->GetBrowserContext())
+                  : nullptr;
+      if (profile && !profile->IsOffTheRecord()) {
+        session_token = session_token_;
+      } else {
+        session_token = incognito_session_token_;
+      }
     }
+    command_line->AppendSwitchASCII("brave_session_token",
+                                    base::NumberToString(session_token));
   }
 
   if (process_type == switches::kUtilityProcess) {
