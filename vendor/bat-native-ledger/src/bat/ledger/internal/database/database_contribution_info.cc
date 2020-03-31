@@ -572,7 +572,7 @@ void DatabaseContributionInfo::GetOneTimeTips(
       "ON spi.publisher_key = pi.publisher_id "
       "WHERE strftime('%%m',  datetime(ci.created_at, 'unixepoch')) = ? AND "
       "strftime('%%Y', datetime(ci.created_at, 'unixepoch')) = ? "
-      "AND ci.type = ?",
+      "AND ci.type = ? AND ci.step = ?",
       kTableName,
       kChildTableName);
 
@@ -586,6 +586,8 @@ void DatabaseContributionInfo::GetOneTimeTips(
   BindString(command.get(), 1, std::to_string(year));
   BindInt(command.get(), 2,
       static_cast<int>(ledger::RewardsType::ONE_TIME_TIP));
+  BindInt(command.get(), 3,
+      static_cast<int>(ledger::ContributionStep::STEP_COMPLETED));
 
   command->record_bindings = {
       ledger::DBCommand::RecordBindingType::STRING_TYPE,
