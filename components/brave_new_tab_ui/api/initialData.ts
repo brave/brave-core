@@ -24,7 +24,6 @@ export type PreInitialRewardsData = {
 }
 
 export type InitialRewardsData = {
-  onlyAnonWallet: boolean
   adsEstimatedEarnings: number
   report: NewTab.RewardsBalanceReport
   balance: NewTab.RewardsBalance
@@ -63,6 +62,28 @@ export async function getInitialData (): Promise<InitialData> {
   }
 }
 
+export async function getBinanceBlackList (): Promise<any> {
+  try {
+    const [
+      onlyAnonWallet,
+      isSupportedRegion
+    ] = await Promise.all([
+      new Promise(resolve => chrome.braveRewards.onlyAnonWallet((onlyAnonWallet: boolean) => {
+        resolve(!!onlyAnonWallet)
+      })),
+      new Promise(resolve => chrome.binance.isSupportedRegion((supported: boolean) => {
+        resolve(!!supported)
+      }))
+    ])
+    return {
+      isSupportedRegion,
+      onlyAnonWallet
+    }
+  } catch (err) {
+    throw Error(err)
+  }
+}
+
 export async function getRewardsPreInitialData (): Promise<PreInitialRewardsData> {
   try {
     const [
@@ -93,14 +114,10 @@ export async function getRewardsPreInitialData (): Promise<PreInitialRewardsData
 export async function getRewardsInitialData (): Promise<InitialRewardsData> {
   try {
     const [
-      onlyAnonWallet,
       adsEstimatedEarnings,
       report,
       balance
     ] = await Promise.all([
-      new Promise(resolve => chrome.braveRewards.onlyAnonWallet((onlyAnonWallet: boolean) => {
-        resolve(!!onlyAnonWallet)
-      })),
       new Promise(resolve => chrome.braveRewards.getAdsEstimatedEarnings((adsEstimatedEarnings: number) => {
         resolve(adsEstimatedEarnings)
       })),
@@ -116,7 +133,6 @@ export async function getRewardsInitialData (): Promise<InitialRewardsData> {
       })
     ])
     return {
-      onlyAnonWallet,
       adsEstimatedEarnings,
       report,
       balance

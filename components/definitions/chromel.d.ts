@@ -154,6 +154,7 @@ declare namespace chrome.braveRewards {
 
 declare namespace chrome.binance {
   const getUserTLD: (callback: (userTLD: string) => void) => {}
+  const isSupportedRegion: (callback: (supported: boolean) => void) => {}
 }
 
 declare namespace chrome.rewardsNotifications {

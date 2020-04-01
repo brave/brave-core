@@ -103,3 +103,11 @@ export const setInitialAsset = (initialAsset: string) => action(types.SET_INITIA
 })
 
 export const setUserTLDAutoSet = () => action(types.SET_USER_TLD_AUTO_SET)
+
+export const setOnlyAnonWallet = (onlyAnonWallet: boolean) => action(types.SET_ONLY_ANON_WALLET, {
+  onlyAnonWallet
+})
+
+export const setBinanceSupported = (supported: boolean) => action(types.SET_BINANCE_SUPPORTED, {
+  supported
+})

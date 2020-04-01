@@ -284,7 +284,6 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
     case types.SET_INITIAL_REWARDS_DATA:
       const initialRewardsDataPayload = payload as InitialRewardsData
       const newRewardsState = {
-        onlyAnonWallet: initialRewardsDataPayload.onlyAnonWallet,
         balance: initialRewardsDataPayload.balance,
         totalContribution: getTotalContributions(initialRewardsDataPayload.report),
         adsEstimatedEarnings: initialRewardsDataPayload.adsEstimatedEarnings
@@ -359,6 +358,28 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         binanceState: {
           ...state.binanceState,
           userTLDAutoSet: true
+        }
+      }
+      break
+
+    case types.SET_ONLY_ANON_WALLET:
+      state = { ...state }
+      state = {
+        ...state,
+        rewardsState: {
+          ...state.rewardsState,
+          onlyAnonWallet: payload.onlyAnonWallet
+        }
+      }
+      break
+
+    case types.SET_BINANCE_SUPPORTED:
+      state = { ...state }
+      state = {
+        ...state,
+        binanceState: {
+          ...state.binanceState,
+          binanceSupported: payload.supported
         }
       }
       break

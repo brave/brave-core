@@ -28,6 +28,23 @@
             ]
           }
         ]
+      },
+      {
+        "name": "isSupportedRegion",
+        "type": "function",
+        "description": "Checks if region is supported to show the widget",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "supported",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
       }
     ],
     "types": [
