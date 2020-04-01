@@ -309,8 +309,9 @@ export const IconButtonSideText = styled<IconButtonSideTextProps, 'label'>('labe
   align-items: center;
   margin-right: ${p => p.textDirection === 'ltr' && '24px'};
   margin-left: ${p => p.textDirection === 'rtl' && '24px'};
-  color: #ffffff;
+  color: inherit;
   cursor: pointer;
+  user-select: none;
 
   &:focus-within {
     /* get the browser defaults */
