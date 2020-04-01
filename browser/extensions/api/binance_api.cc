@@ -226,7 +226,7 @@ BinanceIsSupportedRegionFunction::Run() {
   const int32_t user_country_id =
       country_codes::GetCountryIDFromPrefs(profile->GetPrefs());
 
-  for (const auto& country : binance::kBinanceBlacklistRegions) {
+  for (const auto& country : ::binance::kBinanceBlacklistRegions) {
     const int id = country_codes::CountryCharsToCountryID(
         country.at(0), country.at(1));
 
