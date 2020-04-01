@@ -476,6 +476,16 @@ action("create_dist_zips") {
 }
 
 if (is_mac) {
+  group("brave_app") {
+    deps = [
+      ":brave_app_plist"
+    ]
+
+    if (enable_sparkle) {
+      deps += [ "//brave/vendor/sparkle:sparkle_resources_bundle_data" ]
+    }
+  }
+
   brave_tweak_info_plist("brave_app_plist") {
     info_plist = "$root_gen_dir/chrome/chrome_app_plist_tweaked.plist"
 
