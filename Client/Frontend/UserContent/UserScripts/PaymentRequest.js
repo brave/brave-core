@@ -6,11 +6,24 @@ Object.defineProperty(window, '$<paymentreqcallback>', {
   value: {}
 });
 
+class $<paymentresponsedetails> {
+  constructor (orderId) {
+    this.orderId = orderId
+  }
+}
+
+class $<paymentresponse> {
+  constructor (orderId) {
+    this.details = new $<paymentresponsedetails>(orderId)
+    this.methodName = "bat"
+  }
+}
+
 Object.defineProperty($<paymentreqcallback>, 'paymentreq_postCreate', {
   value:
-    function (response, errorName, errorMessage) {
+    function (orderId, errorName, errorMessage) {
       if (errorName.length == 0) {
-        $<paymentreqcallback>.resolve(response);
+        $<paymentreqcallback>.resolve(new $<paymentresponse>(orderId));
         return;
       }
       $<paymentreqcallback>.reject(new DOMException(errorMessage, errorName));

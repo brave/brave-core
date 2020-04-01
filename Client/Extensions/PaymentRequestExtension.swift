@@ -91,10 +91,9 @@ extension PaymentRequestExtension: TabContentScript {
                     ensureMainThread {
                         self.sendPaymentRequestError(errorName: PaymentRequestErrors.abortError.rawValue, errorMessage: Strings.userCancelledMessage)
                     }
-                case .completed(let response):
+                case .completed(let orderId):
                     ensureMainThread {
-                        let trimmed = response.components(separatedBy: .newlines).joined()
-                        self.tab?.webView?.evaluateJavaScript("PaymentRequestCallback\(self.token).paymentreq_postCreate('\(trimmed)', '', '')") { _, error in
+                        self.tab?.webView?.evaluateJavaScript("PaymentRequestCallback\(self.token).paymentreq_postCreate('\(orderId)', '', '')") { _, error in
                             if error != nil {
                                 log.error(error)
                             }
