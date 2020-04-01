@@ -22,6 +22,7 @@
 #include "brave/browser/extensions/api/brave_action_api.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/extensions/extension_constants.h"
+#include "brave/components/brave_rewards/browser/rewards_service_browsertest_utils.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
@@ -268,7 +269,9 @@ class BraveRewardsBrowserTest
 
   std::vector<double> GetSiteBannerTipOptions(
       content::WebContents* site_banner) {
-    WaitForSelector(site_banner, "[data-test-id=amount-wrapper] div span");
+    rewards_service_browsertest_utils::WaitForElementToAppear(
+        site_banner,
+        "[data-test-id=amount-wrapper] div span");
     auto options = content::EvalJs(
         site_banner,
         R"(
@@ -290,6 +293,9 @@ class BraveRewardsBrowserTest
 
   static std::vector<double> GetRewardsPopupTipOptions(
       content::WebContents* popup) {
+    rewards_service_browsertest_utils::WaitForElementToAppear(
+        popup,
+        "option:not(:disabled)");
     auto options = content::EvalJs(
         popup,
         R"_(
@@ -514,104 +520,6 @@ class BraveRewardsBrowserTest
     wait_for_recurring_tip_saved_loop_->Run();
   }
 
-  void WaitForSelector(content::WebContents* contents,
-      const std::string& selector) const {
-    auto script = content::JsReplace(
-        "new Promise((resolve) => {"
-        "  let count = 20;"
-        "  let interval = setInterval(function() {"
-        "    if (count == 0) {"
-        "      clearInterval(interval);"
-        "      resolve(false);"
-        "    } else {"
-        "      count -= 1;"
-        "    }"
-        "    const element = document.querySelector($1);"
-        "    if (element) {"
-        "      clearInterval(interval);"
-        "      resolve(true);"
-        "    }"
-        "  }, 500);"
-        "});",
-        selector);
-    auto js_result = EvalJs(
-        contents,
-        script,
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END);
-    ASSERT_TRUE(js_result.ExtractBool());
-  }
-
-  void DragAndDrop(
-      content::WebContents* contents,
-      const std::string& drag_selector,
-      const std::string& drop_selector) {
-    const std::string js_code = base::StringPrintf(
-        R"(
-					var triggerDragAndDrop = function (selectorDrag, selectorDrop) {
-
-					  // function for triggering mouse events
-					  var fireMouseEvent = function (type, elem, centerX, centerY) {
-					    var evt = document.createEvent('MouseEvents');
-					    evt.initMouseEvent(type, true, true, window, 1, 1, 1, centerX,
-					                       centerY, false, false, false, false, 0, elem);
-					    elem.dispatchEvent(evt);
-					  };
-
-					  // fetch target elements
-					  var elemDrag = document.querySelector(selectorDrag);
-					  var elemDrop = document.querySelector(selectorDrop);
-					  if (!elemDrag || !elemDrop) return false;
-
-					  // calculate positions
-					  var pos = elemDrag.getBoundingClientRect();
-					  var center1X = Math.floor((pos.left + pos.right) / 2);
-					  var center1Y = Math.floor((pos.top + pos.bottom) / 2);
-					  pos = elemDrop.getBoundingClientRect();
-					  var center2X = Math.floor((pos.left + pos.right) / 2);
-					  var center2Y = Math.floor((pos.top + pos.bottom) / 2);
-
-					  // mouse over dragged element and mousedown
-					  fireMouseEvent('mousemove', elemDrag, center1X, center1Y);
-					  fireMouseEvent('mouseenter', elemDrag, center1X, center1Y);
-					  fireMouseEvent('mouseover', elemDrag, center1X, center1Y);
-					  fireMouseEvent('mousedown', elemDrag, center1X, center1Y);
-
-					  // start dragging process over to drop target
-					  fireMouseEvent('dragstart', elemDrag, center1X, center1Y);
-					  fireMouseEvent('drag', elemDrag, center1X, center1Y);
-					  fireMouseEvent('mousemove', elemDrag, center1X, center1Y);
-					  fireMouseEvent('drag', elemDrag, center2X, center2Y);
-					  fireMouseEvent('mousemove', elemDrop, center2X, center2Y);
-
-					  // trigger dragging process on top of drop target
-					  fireMouseEvent('mouseenter', elemDrop, center2X, center2Y);
-					  fireMouseEvent('dragenter', elemDrop, center2X, center2Y);
-					  fireMouseEvent('mouseover', elemDrop, center2X, center2Y);
-					  fireMouseEvent('dragover', elemDrop, center2X, center2Y);
-
-					  // release dragged element on top of drop target
-					  fireMouseEvent('drop', elemDrop, center2X, center2Y);
-					  fireMouseEvent('dragend', elemDrag, center2X, center2Y);
-					  fireMouseEvent('mouseup', elemDrag, center2X, center2Y);
-
-					  return true;
-					};
-
-					triggerDragAndDrop(
-						'%s',
-						'%s')
-        )",
-        drag_selector.c_str(),
-        drop_selector.c_str());
-    content::EvalJsResult jsResult = EvalJs(
-        contents,
-        js_code,
-        content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES,
-        content::ISOLATED_WORLD_ID_CONTENT_END);
-    ASSERT_TRUE(jsResult.ExtractBool());
-  }
-
   void AddNotificationServiceObserver() {
     rewards_service_->GetNotificationService()->AddObserver(this);
   }
@@ -704,7 +612,9 @@ class BraveRewardsBrowserTest
 
     // Wait for the popup to load
     popup_observer.Wait();
-    WaitForSelector(popup_contents, "[data-test-id='rewards-panel']");
+    rewards_service_browsertest_utils::WaitForElementToAppear(
+        popup_contents,
+        "[data-test-id='rewards-panel']");
 
     return popup_contents;
   }
@@ -839,28 +749,12 @@ class BraveRewardsBrowserTest
     ui_test_utils::NavigateToURL(browser(), page_url);
     WaitForLoadStop(contents());
     // Opt in and create wallet to enable rewards
-    ASSERT_TRUE(ExecJs(contents(),
-      "document.querySelector(\"[data-test-id='optInAction']\").click();",
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END));
-    content::EvalJsResult jsResult = EvalJs(contents(),
-      "new Promise((resolve) => {"
-      "var count = 10;"
-      "var interval = setInterval(function() {"
-      "  if (count == 0) {"
-      "    clearInterval(interval);"
-      "    resolve(false);"
-      "  } else {"
-      "    count -= 1;"
-      "  }"
-      "  if (document.querySelector(\"[data-test-id2='enableMain']\")) {"
-      "    clearInterval(interval);"
-      "    resolve(true);"
-      "  }"
-      "}, 500);});",
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END);
-    ASSERT_TRUE(jsResult.ExtractBool());
+    rewards_service_browsertest_utils::WaitForElementThenClick(
+        contents(),
+        "[data-test-id='optInAction']");
+    rewards_service_browsertest_utils::WaitForElementToAppear(
+        contents(),
+        "[data-test-id2='enableMain']");
   }
 
   void EnableRewardsViaCode() {
@@ -894,23 +788,21 @@ class BraveRewardsBrowserTest
 
     // Claim promotion via settings page or panel, as instructed
     if (use_panel) {
-      ASSERT_TRUE(ExecJs(contents,
-                         "document.getElementsByTagName('button')[0].click();",
-                         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                         content::ISOLATED_WORLD_ID_CONTENT_END));
-    } else {
-      WaitForSelector(contents, "[data-test-id='claimGrant']");
-      ASSERT_TRUE(ExecJs(
+      rewards_service_browsertest_utils::WaitForElementThenClick(
           contents,
-          "document.querySelector(\"[data-test-id='claimGrant']\").click();",
-          content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-          content::ISOLATED_WORLD_ID_CONTENT_END));
+          "button");
+    } else {
+      rewards_service_browsertest_utils::WaitForElementThenClick(
+          contents,
+          "[data-test-id='claimGrant']");
     }
 
     // Wait for CAPTCHA
-    WaitForSelector(contents, "[data-test-id='captcha']");
+    rewards_service_browsertest_utils::WaitForElementToAppear(
+        contents,
+        "[data-test-id='captcha']");
 
-    DragAndDrop(
+    rewards_service_browsertest_utils::DragAndDrop(
         contents,
         "[data-test-id=\"captcha-triangle\"]",
         "[data-test-id=\"captcha-drop\"]");
@@ -928,44 +820,20 @@ class BraveRewardsBrowserTest
     // Check that promotion notification shows the appropriate amount
     const std::string selector =
         use_panel ? "[id='root']" : "[data-test-id='newTokenGrant']";
-
-    WaitForSelector(contents, selector);
-
-    content::EvalJsResult js_result = EvalJs(
+    rewards_service_browsertest_utils::WaitForElementToContain(
         contents,
-        content::JsReplace(
-            "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-            "delay(0).then(() => "
-            "  document.querySelector($1).innerText);",
-            selector),
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END);
-    EXPECT_NE(js_result.ExtractString().find("Free Token Grant"),
-              std::string::npos);
-    EXPECT_NE(js_result.ExtractString().find("30.0 BAT"), std::string::npos);
+        selector,
+        "Free Token Grant");
+    rewards_service_browsertest_utils::WaitForElementToContain(
+        contents,
+        selector,
+        "30.0 BAT");
 
     // Dismiss the promotion notification
     if (use_panel) {
-      content::EvalJsResult jsResult = EvalJs(contents,
-      "new Promise((resolve) => {"
-      "let count = 10;"
-      "let interval = setInterval(function() {"
-      "  if (count == 0) {"
-      "    clearInterval(interval);"
-      "    resolve(false);"
-      "  } else {"
-      "    count -= 1;"
-      "  }"
-      "  const button = document.getElementById(\"grant-completed-ok\");"
-      "  if (button) {"
-      "    clearInterval(interval);"
-      "    button.click();"
-      "    resolve(true);"
-      "  }"
-      "}, 500);});",
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END);
-      ASSERT_TRUE(jsResult.ExtractBool());
+      rewards_service_browsertest_utils::WaitForElementThenClick(
+          contents, "#"
+                    "grant-completed-ok");
     }
   }
 
@@ -988,15 +856,10 @@ class BraveRewardsBrowserTest
     WaitForPublisherListNormalized();
 
     // Make sure site appears in auto-contribute table
-    content::EvalJsResult js_result = EvalJs(
+    rewards_service_browsertest_utils::WaitForElementToEqual(
         contents(),
-        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-        "delay(1000).then(() => "
-        "  document.querySelector(\"[data-test-id='ac_link_" + publisher + "']"
-        "\").innerText);",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END);
-    EXPECT_STREQ(js_result.ExtractString().c_str(), publisher.c_str());
+        "[data-test-id='ac_link_" + publisher + "']",
+        publisher);
 
     if (verified) {
       // A verified site has two images associated with it, the site's
@@ -1025,61 +888,18 @@ class BraveRewardsBrowserTest
     }
   }
 
-  std::string ElementInnerText(const std::string& selector,
-                               int delay_ms = 0) const {
-    auto script = content::JsReplace(
-        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-        "delay($1).then(() => document.querySelector($2).innerText);",
-        delay_ms,
-        selector);
-
-    auto js_result = EvalJs(
-        contents(),
-        script,
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END);
-
-    return js_result.ExtractString();
-  }
-
-  std::string RewardsPageBalance() const {
-    return ElementInnerText("[data-test-id='balance']", 1000);
-  }
-
-  std::string RewardsPagePendingContributions() const {
-    std::string pending_text = ElementInnerText(
-        "[data-test-id='pending-contribution-box']",
-        500);
-
-    // The pending text is of the form "You’ve designated 1.0 BAT for..."
-    size_t start = pending_text.find("designated ");
-    assert(start != std::string::npos);
-    start += 11;
-
-    size_t end = pending_text.find(" for");
-    assert(start != std::string::npos);
-
-    return pending_text.substr(start, end - start);
-  }
-
   std::string RewardsPageTipSummaryAmount() const {
-    std::string amount = ElementInnerText(
+    const std::string amount =
+        rewards_service_browsertest_utils::WaitForElementThenGetContent(
+        contents(),
         "[data-test-id=summary-tips] [color=contribute] span span");
     return amount + " BAT";
-  }
-
-  std::string ExpectedPendingBalanceString() const {
-    return GetPendingBalance() + " BAT";
-  }
-
-  std::string ExpectedBalanceString() const {
-    return GetBalance() + " BAT";
   }
 
   std::string ExpectedTipSummaryAmountString() const {
     // The tip summary page formats 2.4999 as 2.4, so we do the same here.
     double truncated_amount = floor(reconciled_tip_total_ * 10) / 10;
-    return BalanceDoubleToString(-truncated_amount) + " BAT";
+    return BalanceDoubleToString(-truncated_amount);
   }
 
   void ActivateTabAtIndex(int index) const {
@@ -1089,28 +909,9 @@ class BraveRewardsBrowserTest
   }
 
   void RefreshPublisherListUsingRewardsPopup() const {
-    content::EvalJsResult js_result = EvalJs(
+    rewards_service_browsertest_utils::WaitForElementThenClick(
         OpenRewardsPopup(),
-        "new Promise((resolve) => {"
-        "let count = 10;"
-        "let interval = setInterval(function() {"
-        "  if (count == 0) {"
-        "    clearInterval(interval);"
-        "    resolve(false);"
-        "  } else {"
-        "    count -= 1;"
-        "  }"
-        "  const button = "
-        "document.querySelector(\"[data-test-id='unverified-check-button']\");"
-        "  if (button) {"
-        "    clearInterval(interval);"
-        "    button.click();"
-        "    resolve(true);"
-        "  }"
-        "}, 500);});",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END);
-      ASSERT_TRUE(js_result.ExtractBool());
+        "[data-test-id='unverified-check-button']");
   }
 
   content::WebContents* OpenSiteBanner(ContributionType banner_type) const {
@@ -1126,29 +927,10 @@ class BraveRewardsBrowserTest
         ? "[type='tip-monthly']"
         : "[type='tip']";
 
-    // Click button to initiate sending a tip
-    content::EvalJsResult js_result = EvalJs(
-      popup_contents,
-      content::JsReplace(
-      "new Promise((resolve) => {"
-      "let count = 10;"
-      "var interval = setInterval(function() {"
-      "  if (count === 0) {"
-      "    clearInterval(interval);"
-      "    resolve('');"
-      "  } else {"
-      "    count -= 1;"
-      "  }"
-      "  const tipButton = document.querySelector($1);"
-      "  if (tipButton) {"
-      "    clearInterval(interval);"
-      "    tipButton.click();"
-      "    resolve(true);"
-      "  }"
-      "}, 500);});",
-      buttonSelector),
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END);
+    // Click button to initiate sending a tip.
+    rewards_service_browsertest_utils::WaitForElementThenClick(
+        popup_contents,
+        buttonSelector);
 
     // Wait for the site banner to load
     site_banner_observer.Wait();
@@ -1192,26 +974,17 @@ class BraveRewardsBrowserTest
     const std::string amount_str = base::StringPrintf("%2.1f", amount);
 
     // Select the tip amount (default is 1.0 BAT)
-    ASSERT_TRUE(ExecJs(
+    std::string amount_selector = base::StringPrintf(
+        "div:nth-of-type(%u)>[data-test-id=amount-wrapper]",
+        selection + 1);
+    rewards_service_browsertest_utils::WaitForElementThenClick(
         site_banner_contents,
-        content::JsReplace(
-        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-        "delay(0).then(() => "
-        "  document.querySelectorAll(\"[data-test-id='amount-wrapper']\")[$1]"
-        "  .click());",
-        selection),
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END));
+        amount_selector);
 
     // Send the tip
-    ASSERT_TRUE(ExecJs(
+    rewards_service_browsertest_utils::WaitForElementThenClick(
         site_banner_contents,
-        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-        "delay(0).then(() => "
-        "  document.querySelector(\"[data-test-id='send-tip-button']\")"
-        "  .click());",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END));
+        "[data-test-id='send-tip-button']");
 
     // Signal that direct tip was made and update wallet with new
     // balance
@@ -1255,21 +1028,22 @@ class BraveRewardsBrowserTest
     // Make sure that thank you banner shows correct publisher data
     // (domain and amount)
     {
-      content::EvalJsResult js_result = EvalJs(
+      rewards_service_browsertest_utils::WaitForElementToContain(
           site_banner_contents,
-          "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-          "delay(1000).then(() => "
-          "  document.documentElement.innerText);",
-          content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-          content::ISOLATED_WORLD_ID_CONTENT_END);
-      EXPECT_NE(js_result.ExtractString().find(
-          confirmationText), std::string::npos);
-      EXPECT_NE(js_result.ExtractString().find(
-           "" + amount_str + " BAT"), std::string::npos);
-      EXPECT_NE(js_result.ExtractString().find(
-          "Share the good news:"), std::string::npos);
-      EXPECT_NE(js_result.ExtractString().find(
-           "" + GetBalance() + " BAT"), std::string::npos);
+          "body",
+          confirmationText);
+      rewards_service_browsertest_utils::WaitForElementToContain(
+          site_banner_contents,
+          "body",
+          amount_str + " BAT");
+      rewards_service_browsertest_utils::WaitForElementToContain(
+          site_banner_contents,
+          "body",
+          "Share the good news:");
+      rewards_service_browsertest_utils::WaitForElementToContain(
+          site_banner_contents,
+          "body",
+          "" + GetBalance() + " BAT");
     }
 
     VerifyTip(amount, should_contribute, type == ContributionType::MonthlyTip);
@@ -1289,64 +1063,47 @@ class BraveRewardsBrowserTest
 
     if (should_contribute) {
       // Make sure that balance is updated correctly
-      ASSERT_EQ(RewardsPageBalance(), ExpectedBalanceString());
+      IsBalanceCorrect();
 
       // Check that tip table shows the appropriate tip amount
       const std::string selector = monthly
           ? "[data-test-id='summary-monthly']"
           : "[data-test-id='summary-tips']";
 
-      std::string page_amount = ElementInnerText(selector);
-      ASSERT_NE(page_amount.find("-" + BalanceDoubleToString(amount) + "BAT"),
-          std::string::npos);
-    } else {
-      // Make sure that balance did not change
-      ASSERT_EQ(RewardsPageBalance(), ExpectedBalanceString());
-
-      // Make sure that pending contribution box shows the correct
-      // amount
-      ASSERT_EQ(RewardsPagePendingContributions(),
-          ExpectedPendingBalanceString());
-
-      // Check that tip table shows no tip
-      {
-        content::EvalJsResult js_result = EvalJs(
-            contents(),
-            "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-            "delay(0).then(() => "
-            "  document.querySelectorAll(\"[type='donation']\")[1]"
-            "    .parentElement.parentElement.innerText);",
-            content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-            content::ISOLATED_WORLD_ID_CONTENT_END);
-        EXPECT_NE(
-            js_result.ExtractString().find("Total tips this month\n0.0BAT"),
-            std::string::npos);
-      }
+      rewards_service_browsertest_utils::WaitForElementToContain(
+          contents(),
+          selector,
+          "-" + BalanceDoubleToString(amount) + "BAT");
+      return;
     }
+
+    // Make sure that balance did not change
+    IsBalanceCorrect();
+
+    // Make sure that pending contribution box shows the correct
+    // amount
+    IsPendingBalanceCorrect();
+
+    rewards_service_browsertest_utils::WaitForElementToEqual(
+        contents(),
+        "#tip-box-total",
+        "0.0BAT0.00 USD");
   }
 
-  bool IsMediaTipsInjected() {
-    content::EvalJsResult js_result =
-        EvalJs(contents(),
-               "new Promise((resolve) => {"
-               "let count = 10;"
-               "var interval = setInterval(function() {"
-               "  if (count === 0) {"
-               "    clearInterval(interval);"
-               "    resolve(false);"
-               "  } else {"
-               "    count -= 1;"
-               "  }"
-               "  const braveTipActions"
-               "    = document.querySelectorAll(\".action-brave-tip\");"
-               "  if (braveTipActions && braveTipActions.length === 1) {"
-               "    clearInterval(interval);"
-               "    resolve(true);"
-               "  }"
-               "}, 500);});",
-               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-               content::ISOLATED_WORLD_ID_CONTENT_END);
-    return js_result.ExtractBool();
+  void IsBalanceCorrect() {
+    const std::string balance = GetBalance() + " BAT";
+    rewards_service_browsertest_utils::WaitForElementToEqual(
+        contents(),
+        "[data-test-id='balance']",
+        balance);
+  }
+
+  void IsPendingBalanceCorrect() {
+    const std::string balance = GetPendingBalance() + " BAT";
+    rewards_service_browsertest_utils::WaitForElementToContain(
+        contents(),
+        "[data-test-id='pending-contribution-box']",
+        balance);
   }
 
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
@@ -1532,6 +1289,7 @@ class BraveRewardsBrowserTest
       const ledger::Result result = ledger::Result::LEDGER_OK) {
     tip_reconcile_completed_ = false;
     pending_tip_saved_ = false;
+
     auto site = std::make_unique<brave_rewards::ContentSite>();
     site->id = publisher_key;
     site->name = publisher_key;
@@ -1653,48 +1411,25 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleRewards) {
   EnableRewards();
 
   // Toggle rewards off
-  content::EvalJsResult toggleOffResult = EvalJs(contents(),
-      "document.querySelector(\"[data-test-id2='enableMain']\").click();"
-      "new Promise((resolve) => {"
-      "var count = 10;"
-      "var interval = setInterval(function() {"
-      "  if (count == 0) {"
-      "    clearInterval(interval);"
-      "    resolve(false);"
-      "  } else {"
-      "    count -= 1;"
-      "  }"
-      "  if (document.querySelector(\"[data-test-id2='enableMain']\")) {"
-      "    clearInterval(interval);"
-      "    resolve(document.querySelector(\"[data-test-id2='enableMain']\")"
-      "      .getAttribute(\"data-toggled\") === 'false');"
-      "  }"
-      "}, 500);});",
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END);
-  ASSERT_TRUE(toggleOffResult.ExtractBool());
+  rewards_service_browsertest_utils::WaitForElementThenClick(
+      contents(),
+      "[data-test-id2='enableMain']");
+  std::string value =
+      rewards_service_browsertest_utils::WaitForElementThenGetAttribute(
+        contents(),
+        "[data-test-id2='enableMain']",
+        "data-toggled");
+  ASSERT_STREQ(value.c_str(), "false");
 
   // Toggle rewards back on
-  content::EvalJsResult toggleOnResult = EvalJs(contents(),
-      "document.querySelector(\"[data-test-id2='enableMain']\").click();"
-      "new Promise((resolve) => {"
-      "var count = 10;"
-      "var interval = setInterval(function() {"
-      "  if (count == 0) {"
-      "    clearInterval(interval);"
-      "    resolve(false);"
-      "  } else {"
-      "    count -= 1;"
-      "  }"
-      "  if (document.querySelector(\"[data-test-id2='enableMain']\")) {"
-      "    clearInterval(interval);"
-      "    resolve(document.querySelector(\"[data-test-id2='enableMain']\")"
-      "      .getAttribute(\"data-toggled\") === 'true');"
-      "  }"
-      "}, 500);});",
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END);
-  ASSERT_TRUE(toggleOnResult.ExtractBool());
+  rewards_service_browsertest_utils::WaitForElementThenClick(
+      contents(),
+      "[data-test-id2='enableMain']");
+  value = rewards_service_browsertest_utils::WaitForElementThenGetAttribute(
+      contents(),
+      "[data-test-id2='enableMain']",
+      "data-toggled");
+  ASSERT_STREQ(value.c_str(), "true");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleAutoContribute) {
@@ -1705,82 +1440,36 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleAutoContribute) {
   EXPECT_TRUE(WaitForLoadStop(contents()));
 
   // toggle auto contribute off
-  content::EvalJsResult toggleOffResult = EvalJs(contents(),
-    "let toggleClicked = false;"
-    "new Promise((resolve) => {"
-    "var count = 10;"
-    "var interval = setInterval(function() {"
-    "  if (count == 0) {"
-    "    clearInterval(interval);"
-    "    resolve(false);"
-    "  } else {"
-    "    count -= 1;"
-    "  }"
-    "  if (document.querySelector(\"[data-test-id2='autoContribution']\")) {"
-    "    if (!toggleClicked) {"
-    "      toggleClicked = true;"
-    "      document.querySelector("
-    "          \"[data-test-id2='autoContribution']\").click();"
-    "    } else {"
-    "      clearInterval(interval);"
-    "      resolve(document.querySelector("
-    "          \"[data-test-id2='autoContribution']\")"
-    "        .getAttribute(\"data-toggled\") === 'false');"
-    "    }"
-    "  }"
-    "}, 500);});",
-    content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-    content::ISOLATED_WORLD_ID_CONTENT_END);
-  ASSERT_TRUE(toggleOffResult.ExtractBool());
+  rewards_service_browsertest_utils::WaitForElementThenClick(
+      contents(),
+      "[data-test-id2='autoContribution']");
+  std::string value =
+      rewards_service_browsertest_utils::WaitForElementThenGetAttribute(
+        contents(),
+        "[data-test-id2='autoContribution']",
+        "data-toggled");
+  ASSERT_STREQ(value.c_str(), "false");
 
   // toggle auto contribute back on
-  content::EvalJsResult toggleOnResult = EvalJs(
+  rewards_service_browsertest_utils::WaitForElementThenClick(
       contents(),
-      "document.querySelector(\"[data-test-id2='autoContribution']\").click();"
-      "new Promise((resolve) => {"
-      "var count = 10;"
-      "var interval = setInterval(function() {"
-      "  if (count == 0) {"
-      "    clearInterval(interval);"
-      "    resolve(false);"
-      "  } else {"
-      "    count -= 1;"
-      "  }"
-      "  if (document.querySelector(\"[data-test-id2='autoContribution']\")) {"
-      "    clearInterval(interval);"
-      "    "
-      "resolve(document.querySelector(\"[data-test-id2='autoContribution']\")"
-      "      .getAttribute(\"data-toggled\") === 'true');"
-      "  }"
-      "}, 500);});",
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END);
-  ASSERT_TRUE(toggleOnResult.ExtractBool());
+      "[data-test-id2='autoContribution']");
+  value = rewards_service_browsertest_utils::WaitForElementThenGetAttribute(
+      contents(),
+      "[data-test-id2='autoContribution']",
+      "data-toggled");
+  ASSERT_STREQ(value.c_str(), "true");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ActivateSettingsModal) {
   EnableRewards();
 
-  content::EvalJsResult modalResult = EvalJs(
+  rewards_service_browsertest_utils::WaitForElementThenClick(
       contents(),
-      "document.querySelector(\"[data-test-id='settingsButton']\").click();"
-      "new Promise((resolve) => {"
-      "var count = 10;"
-      "var interval = setInterval(function() {"
-      "  if (count == 0) {"
-      "    clearInterval(interval);"
-      "    resolve(false);"
-      "  } else {"
-      "    count -= 1;"
-      "  }"
-      "  if (document.getElementById('modal')) {"
-      "    clearInterval(interval);"
-      "    resolve(document.getElementById('modal') != null);"
-      "  }"
-      "}, 500);});",
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END);
-  ASSERT_TRUE(modalResult.ExtractBool());
+      "[data-test-id='settingsButton']");
+  rewards_service_browsertest_utils::WaitForElementToAppear(
+      contents(),
+      "#modal");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsSingleArg) {
@@ -2015,44 +1704,24 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
   // Retrieve the inner text of the wallet panel and verify that it
   // looks as expected
-  {
-    content::EvalJsResult js_result = EvalJs(
+  rewards_service_browsertest_utils::WaitForElementToContain(
       popup_contents,
-      "new Promise((resolve) => {"
-      "let count = 10;"
-      "var interval = setInterval(function() {"
-      "  if (count === 0) {"
-      "    clearInterval(interval);"
-      "    resolve('');"
-      "  } else {"
-      "    count -= 1;"
-      "  }"
-      "  const walletPanel = document.querySelector(\"[id='wallet-panel']\");"
-      "  if (walletPanel) {"
-      "    clearInterval(interval);"
-      "    resolve(walletPanel.innerText);"
-      "  }"
-      "}, 500);});",
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END);
-    EXPECT_NE(js_result.ExtractString().find("Brave Verified Creator"),
-              std::string::npos);
-    EXPECT_NE(js_result.ExtractString().find(publisher), std::string::npos);
-  }
+      "[id='wallet-panel']",
+      "Brave Verified Creator");
+  rewards_service_browsertest_utils::WaitForElementToContain(
+      popup_contents,
+      "[id='wallet-panel']",
+      publisher);
 
   // Retrieve the inner HTML of the wallet panel and verify that it
   // contains the expected favicon
   {
-    content::EvalJsResult js_result = EvalJs(
-        popup_contents,
-        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-        "delay(0).then(() => "
-        "  document.querySelector(\"[id='wallet-panel']\").innerHTML);",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END);
     const std::string favicon =
         "chrome://favicon/size/48@2x/https://" + publisher;
-    EXPECT_NE(js_result.ExtractString().find(favicon), std::string::npos);
+    rewards_service_browsertest_utils::WaitForElementToContainHTML(
+        popup_contents,
+        "#wallet-panel",
+        favicon);
   }
 }
 
@@ -2097,11 +1766,13 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContribution) {
   ASSERT_EQ(ac_reconcile_status_, ledger::Result::LEDGER_OK);
 
   // Make sure that balance is updated correctly
-  ASSERT_EQ(RewardsPageBalance(), ExpectedBalanceString());
+  IsBalanceCorrect();
 
   // Check that summary table shows the appropriate contribution
-  ASSERT_NE(ElementInnerText("[color=contribute]").find("-20.0BAT"),
-      std::string::npos);
+  rewards_service_browsertest_utils::WaitForElementToContain(
+      contents(),
+      "[color=contribute]",
+      "-20.0BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContributeWhenACOff) {
@@ -2116,33 +1787,15 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContributeWhenACOff) {
   VisitPublisher("duckduckgo.com", verified);
 
   // toggle auto contribute off
-  content::EvalJsResult toggleOffResult = EvalJs(contents(),
-    "let toggleClicked = false;"
-    "new Promise((resolve) => {"
-    "var count = 10;"
-    "var interval = setInterval(function() {"
-    "  if (count == 0) {"
-    "    clearInterval(interval);"
-    "    resolve(false);"
-    "  } else {"
-    "    count -= 1;"
-    "  }"
-    "  if (document.querySelector(\"[data-test-id2='autoContribution']\")) {"
-    "    if (!toggleClicked) {"
-    "      toggleClicked = true;"
-    "      document.querySelector("
-    "          \"[data-test-id2='autoContribution']\").click();"
-    "    } else {"
-    "      clearInterval(interval);"
-    "      resolve(document.querySelector("
-    "          \"[data-test-id2='autoContribution']\")"
-    "        .getAttribute(\"data-toggled\") === 'false');"
-    "    }"
-    "  }"
-    "}, 500);});",
-    content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-    content::ISOLATED_WORLD_ID_CONTENT_END);
-  ASSERT_TRUE(toggleOffResult.ExtractBool());
+  rewards_service_browsertest_utils::WaitForElementThenClick(
+      contents(),
+      "[data-test-id2='autoContribution']");
+  std::string value =
+      rewards_service_browsertest_utils::WaitForElementThenGetAttribute(
+        contents(),
+        "[data-test-id2='autoContribution']",
+        "data-toggled");
+  ASSERT_STREQ(value.c_str(), "false");
 
   // Trigger contribution process
   rewards_service()->StartMonthlyContributionForTest();
@@ -2214,7 +1867,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TwitterTipsInjectedOnTwitter) {
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media tips injection is active
-  EXPECT_TRUE(IsMediaTipsInjected());
+  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), true);
 }
 
 // Brave tip icon is not injected when visiting Twitter while Brave
@@ -2228,7 +1881,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media tips injection is not active
-  EXPECT_FALSE(IsMediaTipsInjected());
+  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), false);
 }
 
 // Brave tip icon is injected when visiting old Twitter
@@ -2244,7 +1897,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media tips injection is active
-  EXPECT_TRUE(IsMediaTipsInjected());
+  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), true);
 }
 
 // Brave tip icon is not injected when visiting old Twitter while
@@ -2258,7 +1911,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media tips injection is not active
-  EXPECT_FALSE(IsMediaTipsInjected());
+  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), false);
 }
 
 // Brave tip icon is not injected into non-Twitter sites
@@ -2274,7 +1927,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media tips injection is not active
-  EXPECT_FALSE(IsMediaTipsInjected());
+  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), false);
 }
 
 // Brave tip icon is injected when visiting Reddit
@@ -2289,7 +1942,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RedditTipsInjectedOnReddit) {
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media Tips injection is active
-  EXPECT_TRUE(IsMediaTipsInjected());
+  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), true);
 }
 
 // Brave tip icon is not injected when visiting Reddit
@@ -2302,7 +1955,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media Tips injection is not active
-  EXPECT_FALSE(IsMediaTipsInjected());
+  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), false);
 }
 
 // Brave tip icon is not injected when visiting Reddit
@@ -2318,7 +1971,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media Tips injection is not active
-  EXPECT_FALSE(IsMediaTipsInjected());
+  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), false);
 }
 
 // Brave tip icon is injected when visiting GitHub
@@ -2333,7 +1986,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, GitHubTipsInjectedOnGitHub) {
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media Tips injection is active
-  EXPECT_TRUE(IsMediaTipsInjected());
+  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), true);
 }
 
 // Brave tip icon is not injected when visiting GitHub while Brave
@@ -2347,7 +2000,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media Tips injection is not active
-  EXPECT_FALSE(IsMediaTipsInjected());
+  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), false);
 }
 
 // Brave tip icon is not injected when not visiting GitHub
@@ -2363,7 +2016,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 
   // Ensure that Media Tips injection is not active
-  EXPECT_FALSE(IsMediaTipsInjected());
+  rewards_service_browsertest_utils::IsMediaTipsInjected(contents(), false);
 }
 
 // Check pending contributions
@@ -2381,46 +2034,16 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   // Tip unverified publisher
   TipPublisher(publisher, ContributionType::OneTimeTip);
 
-  // Check that link for pending is shown
-  {
-    content::EvalJsResult js_result = EvalJs(
-        contents(),
-        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-        "delay(0).then(() => "
-        "  document.querySelector(\"[data-test-id='reservedAllLink']\")"
-        "    .parentElement.parentElement.innerText);",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END);
-    EXPECT_NE(
-        js_result.ExtractString().find("Show all pending contributions"),
-        std::string::npos);
-  }
-
-  // Open modal
-  {
-    ASSERT_TRUE(ExecJs(contents(),
-        "if (document.querySelector(\"[data-test-id='reservedAllLink']\")) {"
-        "  document.querySelector("
-        "      \"[data-test-id='reservedAllLink']\").click();"
-        "}",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END));
-  }
+  // Check that link for pending is shown and open modal
+  rewards_service_browsertest_utils::WaitForElementThenClick(
+      contents(),
+      "[data-test-id='reservedAllLink']");
 
   // Make sure that table is populated
-  {
-    content::EvalJsResult js_result = EvalJs(
-        contents(),
-        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-        "delay(0).then(() => "
-        " document.querySelector(\"[id='pendingContributionTable']\")"
-        "    .getElementsByTagName('a')[0].innerText);",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END);
-    EXPECT_NE(
-        js_result.ExtractString().find(publisher),
-        std::string::npos);
-  }
+  rewards_service_browsertest_utils::WaitForElementToContain(
+      contents(),
+      "[id='pendingContributionTable'] a",
+      publisher);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
@@ -2548,7 +2171,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   EXPECT_TRUE(is_showing_notification);
 }
 
-// Test whether rewards is diabled in private profile.
+// Test whether rewards is disabled in private profile.
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, PrefsTestInPrivateWindow) {
   EnableRewards();
   auto* profile = browser()->profile();
@@ -2560,9 +2183,9 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, PrefsTestInPrivateWindow) {
       brave_rewards::prefs::kBraveRewardsEnabled));
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
-                       ProcessPendingContributions) {
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ProcessPendingContributions) {
   AddNotificationServiceObserver();
+
   alter_publisher_list_ = true;
 
   EnableRewards();
@@ -2602,49 +2225,38 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   UpdateContributionBalance(-25.0, false);  // update pending balance
 
   // Make sure that balance is updated correctly
-  ASSERT_EQ(RewardsPageBalance(), ExpectedBalanceString());
+  IsBalanceCorrect();
 
   // Check that wallet summary shows the appropriate tip amount
-  ASSERT_EQ(RewardsPageTipSummaryAmount(), ExpectedTipSummaryAmountString());
+  rewards_service_browsertest_utils::WaitForElementToEqual(
+      contents(),
+      "[data-test-id=summary-tips] [color=contribute] span span",
+      ExpectedTipSummaryAmountString());
 
   // Make sure that pending contribution box shows the correct
   // amount
-  ASSERT_EQ(RewardsPagePendingContributions(), ExpectedPendingBalanceString());
+  IsPendingBalanceCorrect();
 
   // Open the Rewards popup
-  {
-    content::WebContents* popup_contents = OpenRewardsPopup();
-    ASSERT_TRUE(popup_contents);
+  content::WebContents* popup_contents = OpenRewardsPopup();
+  ASSERT_TRUE(popup_contents);
 
-    // Check if verified notification is shown
-    content::EvalJsResult js_result = EvalJs(
-        popup_contents,
-        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-        "delay(500).then(() => "
-        "  document.querySelector(\"[id='root']\").innerText);",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END);
-    EXPECT_NE(js_result.ExtractString().find("3zsistemi.si"),
-          std::string::npos);
+  // Check if verified notification is shown
+  rewards_service_browsertest_utils::WaitForElementToContain(
+      popup_contents,
+      "#root",
+      "3zsistemi.si");
 
-    // Close notification
-    ASSERT_TRUE(ExecJs(popup_contents,
-        "  document.querySelector("
-        "      \"[data-test-id='notification-close']\").click();",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END));
+  // Close notification
+  rewards_service_browsertest_utils::WaitForElementThenClick(
+      popup_contents,
+      "[data-test-id=notification-close]");
 
-    // Check if insufficient funds notification is shown
-    content::EvalJsResult js_result2 = EvalJs(
-        popup_contents,
-        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-        "delay(500).then(() => "
-        "  document.querySelector(\"[id='root']\").innerText);",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END);
-    EXPECT_NE(js_result2.ExtractString().find("Insufficient Funds"),
-          std::string::npos);
-  }
+  // Check if insufficient funds notification is shown
+  rewards_service_browsertest_utils::WaitForElementToContain(
+      popup_contents,
+      "#root",
+      "Insufficient Funds");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RewardsPanelDefaultTipChoices) {
@@ -2708,25 +2320,18 @@ IN_PROC_BROWSER_TEST_F(
   ASSERT_EQ(tip_options, std::vector<double>({ 5, 10, 20 }));
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
-                       NotVerifedWallet) {
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, NotVerifiedWallet) {
   EnableRewards();
 
   // Click on verify button
-  {
-    ASSERT_TRUE(ExecJs(contents(),
-        "  document.getElementById(\"verify-wallet-button\").click();",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END));
-  }
+  rewards_service_browsertest_utils::WaitForElementThenClick(
+      contents(),
+      "#verify-wallet-button");
 
   // Click on verify button in on boarding
-  {
-    ASSERT_TRUE(ExecJs(contents(),
-        "  document.getElementById(\"on-boarding-verify-button\").click();",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END));
-  }
+  rewards_service_browsertest_utils::WaitForElementThenClick(
+      contents(),
+      "#on-boarding-verify-button");
 
   // Check if we are redirected to uphold
   {
@@ -2767,9 +2372,6 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       ledger::PublisherStatus::VERIFIED,
       should_contribute);
   VerifyTip(amount, should_contribute, false, true);
-
-  // Stop observing the Rewards service
-  rewards_service()->RemoveObserver(this);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
@@ -2808,9 +2410,6 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   for (auto const& value : transfer_fees) {
     ASSERT_EQ(value.second->amount, tip_fee);
   }
-
-  // Stop observing the Rewards service
-  rewards_service()->RemoveObserver(this);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipConnectedPublisherAnon) {
@@ -2867,7 +2466,7 @@ IN_PROC_BROWSER_TEST_F(
 
   // Tip connected publisher
   const double amount = 5.0;
-  const bool should_contribute = true;
+  const bool should_contribute = false;
   TipViaCode(
       "bumpsmack.com",
       amount,
@@ -2876,7 +2475,13 @@ IN_PROC_BROWSER_TEST_F(
       false,
       ledger::Result::LEDGER_ERROR);
 
-  ASSERT_EQ(RewardsPageBalance(), ExpectedBalanceString());
+  IsBalanceCorrect();
+
+  // Make sure that tips table is empty
+  rewards_service_browsertest_utils::WaitForElementToEqual(
+      contents(),
+      "#tips-table > div > div",
+      "Have you tipped your favorite content creator today?");
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -2889,9 +2494,9 @@ IN_PROC_BROWSER_TEST_F(
   contents()->GetController().Reload(content::ReloadType::NORMAL, true);
   EXPECT_TRUE(WaitForLoadStop(contents()));
 
-  // Tip verified publisher
+  // Tip connected publisher
   const double amount = 5.0;
-  const bool should_contribute = true;
+  const bool should_contribute = false;
   TipViaCode(
       "bumpsmack.com",
       amount,
@@ -2900,7 +2505,13 @@ IN_PROC_BROWSER_TEST_F(
       false,
       ledger::Result::LEDGER_ERROR);
 
-  ASSERT_EQ(RewardsPageBalance(), ExpectedBalanceString());
+  IsBalanceCorrect();
+
+  // Make sure that tips table is empty
+  rewards_service_browsertest_utils::WaitForElementToEqual(
+      contents(),
+      "#tips-table > div > div",
+      "Have you tipped your favorite content creator today?");
 }
 
 // Ensure that we can make a one-time tip of a non-integral amount.
@@ -2971,16 +2582,13 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   ASSERT_EQ(ac_reconcile_status_, ledger::Result::LEDGER_OK);
 
   // Make sure that balance is updated correctly
-  {
-    const std::string result = RewardsPageBalance();
-    EXPECT_NE(result.find(ExpectedBalanceString()), std::string::npos);
-  }
+  IsBalanceCorrect();
 
   // Check that summary table shows the appropriate contribution
-  {
-    const std::string result = ElementInnerText("[color='contribute']");
-    EXPECT_NE(result.find("-5.0BAT"), std::string::npos);
-  }
+  rewards_service_browsertest_utils::WaitForElementToContain(
+      contents(),
+      "[color='contribute']",
+      "-5.0BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
@@ -3036,16 +2644,15 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   ASSERT_EQ(ac_reconcile_status_, ledger::Result::LEDGER_OK);
 
   // Make sure that balance is updated correctly
-  {
-    const std::string result = RewardsPageBalance();
-    EXPECT_NE(result.find(ExpectedBalanceString()), std::string::npos);
-  }
+  IsBalanceCorrect();
 
   // Check that summary table shows the appropriate contribution
-  {
-    const std::string result = ElementInnerText("[color='contribute']");
-    EXPECT_NE(result.find("-5.0BAT"), std::string::npos);
-  }
+
+  // Check that summary table shows the appropriate contribution
+  rewards_service_browsertest_utils::WaitForElementToContain(
+      contents(),
+      "[color='contribute']",
+      "-5.0BAT");
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -3076,7 +2683,9 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ShowMonthlyIfACOff) {
   content::WebContents *popup_contents = OpenRewardsPopup();
   ASSERT_TRUE(popup_contents);
 
-  WaitForSelector(popup_contents, "#panel-donate-monthly");
+  rewards_service_browsertest_utils::WaitForElementToAppear(
+      popup_contents,
+      "#panel-donate-monthly");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ShowACPercentInThePanel) {
@@ -3093,17 +2702,11 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ShowACPercentInThePanel) {
   content::WebContents *popup_contents = OpenRewardsPopup();
   ASSERT_TRUE(popup_contents);
 
-  {
-    content::EvalJsResult js_result = EvalJs(
-        popup_contents,
-        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-        "delay(0).then(() => "
-        "  document.querySelector(\"[data-test-id='attention-score']\")"
-        "  .innerHTML);",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END);
-    EXPECT_NE(js_result.ExtractString().find("100%"), std::string::npos);
-  }
+  const std::string score =
+      rewards_service_browsertest_utils::WaitForElementThenGetContent(
+          popup_contents,
+          "[data-test-id='attention-score']");
+  EXPECT_NE(score.find("100%"), std::string::npos);
 }
 
 IN_PROC_BROWSER_TEST_F(
@@ -3130,22 +2733,27 @@ IN_PROC_BROWSER_TEST_F(
   ASSERT_EQ(multiple_ac_reconcile_status_[0], ledger::Result::LEDGER_OK);
   ASSERT_EQ(multiple_ac_reconcile_status_[1], ledger::Result::LEDGER_OK);
 
-  // Check monthly report
-  ASSERT_TRUE(ExecJs(contents(),
-      "document.querySelector(\"[data-test-id='showMonthlyReport']\").click();",
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END));
+  rewards_service_browsertest_utils::WaitForElementThenClick(
+      contents(),
+      "[data-test-id='showMonthlyReport']");
 
+  rewards_service_browsertest_utils::WaitForElementToAppear(
+      contents(),
+      "#transactionTable");
 
-  WaitForSelector(contents(), "#transactionTable");
+  rewards_service_browsertest_utils::WaitForElementToContain(
+      contents(),
+      "#transactionTable",
+      "-30.0BAT");
 
-  ASSERT_NE(ElementInnerText("#transactionTable").find("-30.0BAT"),
-      std::string::npos);
-
-  ASSERT_NE(ElementInnerText("#transactionTable").find("-20.0BAT"),
-      std::string::npos);
+  rewards_service_browsertest_utils::WaitForElementToContain(
+      contents(),
+      "#transactionTable",
+      "-20.0BAT");
 
   // Check that summary table shows the appropriate contribution
-  ASSERT_NE(ElementInnerText("[color=contribute]").find("-50.0BAT"),
-      std::string::npos);
+  rewards_service_browsertest_utils::WaitForElementToContain(
+      contents(),
+      "[color=contribute]",
+      "-50.0BAT");
 }

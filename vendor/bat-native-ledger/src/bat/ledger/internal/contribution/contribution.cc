@@ -1192,12 +1192,11 @@ void Contribution::OnExternalWalletServerPublisherInfo(
   if (info->status != ledger::PublisherStatus::VERIFIED) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Publisher not verified";
 
-    // we don't need callback as there is nothing to report back
-    SavePendingContribution(
-        info->publisher_key,
-        amount,
-        type,
-        [](const ledger::Result){});
+    auto save_callback = std::bind(&Contribution::OnSavePendingContribution,
+        this,
+        _1);
+
+    SavePendingContribution(info->publisher_key, amount, type, save_callback);
 
     ledger_->ContributionCompleted(
         ledger::Result::LEDGER_ERROR,

@@ -195,9 +195,10 @@ class TipBox extends React.Component<Props, State> {
           : null
         }
         <List title={getLocale('donationTotalDonations')}>
-          <Tokens onlyAnonWallet={onlyAnonWallet} value={total.toFixed(1)} converted={converted} />
+          <Tokens id={'tip-box-total'} onlyAnonWallet={onlyAnonWallet} value={total.toFixed(1)} converted={converted} />
         </List>
         <TableDonation
+          id={'tips-table'}
           rows={topRows}
           allItems={allSites}
           numItems={numRows}
