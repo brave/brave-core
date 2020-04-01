@@ -176,7 +176,6 @@ Polymer({
    * @private
    */
   handleSyncStatus_: function(syncStatus) {
-    console.error(syncStatus);
     this.syncStatus = syncStatus;
   },
 
@@ -218,7 +217,6 @@ Polymer({
 
   /** @protected */
   currentRouteChanged: function() {
-    console.error(settings.getCurrentRoute());
     if (settings.getCurrentRoute() == settings.routes.BRAVE_SYNC_SETUP) {
       this.onNavigateToPage_();
       return;
@@ -342,7 +340,6 @@ Polymer({
    * @private
    */
   handlePageStatusChanged_: function(pageStatus) {
-    console.error(pageStatus);
     switch (pageStatus) {
       case settings.PageStatus.SPINNER:
       case settings.PageStatus.TIMEOUT:

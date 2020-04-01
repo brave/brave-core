@@ -2,15 +2,18 @@
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 
-#define BRAVE_REGISTER_MESSAGES                                    \
-  web_ui()->RegisterMessageCallback(                               \
-      "SyncSetupSetSyncCode",                                      \
-      base::BindRepeating(&PeopleHandler::HandleSetSyncCode,       \
-                          base::Unretained(this)));                \
-  web_ui()->RegisterMessageCallback(                               \
-      "SyncPrefsDispatch",                                         \
-      base::BindRepeating(&PeopleHandler::HandleSyncPrefsDispatch, \
+#define BRAVE_REGISTER_MESSAGES                              \
+  web_ui()->RegisterMessageCallback(                         \
+      "SyncSetupSetSyncCode",                                \
+      base::BindRepeating(&PeopleHandler::HandleSetSyncCode, \
+                          base::Unretained(this)));          \
+  web_ui()->RegisterMessageCallback(                         \
+      "SyncSetupGetSyncCode",                                \
+      base::BindRepeating(&PeopleHandler::HandleGetSyncCode, \
                           base::Unretained(this)));
+
+#define BRAVE_HANDLE_SHOW_SETUP_UI \
+  profile_->GetPrefs()->SetBoolean(brave_sync::prefs::kSyncEnabled, true);
 
 #include "../../../../../../../chrome/browser/ui/webui/settings/people_handler.cc"
 #undef BRAVE_REGISTER_MESSAGES
