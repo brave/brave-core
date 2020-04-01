@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/extension_install_prompt.h b/chrome/browser/extensions/extension_install_prompt.h
-index 21899f6a1ca8ebb9ca04837ef700f6251de2fa5e..56cdc5d8f216a840d4657565b2241a441610bddd 100644
+index f797a6e2bde19ecf91443a27f97c1a227b06e54a..cdc89811407db706a540a791361831038a881f85 100644
 --- a/chrome/browser/extensions/extension_install_prompt.h
 +++ b/chrome/browser/extensions/extension_install_prompt.h
-@@ -88,7 +88,7 @@ class ExtensionInstallPrompt {
+@@ -86,7 +86,7 @@ class ExtensionInstallPrompt {
    class Prompt {
     public:
      explicit Prompt(PromptType type);
@@ -11,20 +11,11 @@ index 21899f6a1ca8ebb9ca04837ef700f6251de2fa5e..56cdc5d8f216a840d4657565b2241a44
  
      void AddPermissionSet(const extensions::PermissionSet& permissions);
      void AddPermissionMessages(
-@@ -104,7 +104,7 @@ class ExtensionInstallPrompt {
-     PromptType type() const { return type_; }
+@@ -167,6 +167,7 @@ class ExtensionInstallPrompt {
  
-     // Getters for UI element labels.
--    base::string16 GetDialogTitle() const;
-+    virtual base::string16 GetDialogTitle() const;
-     int GetDialogButtons() const;
-     // Returns the empty string when there should be no "accept" button.
-     base::string16 GetAcceptButtonLabel() const;
-@@ -168,6 +168,7 @@ class ExtensionInstallPrompt {
+     bool has_webstore_data() const { return has_webstore_data_; }
  
++    BRAVE_EXTENSION_INSTALL_PROMPT_H
     private:
-     friend class base::RefCountedThreadSafe<Prompt>;
-+    friend class BravePrompt;
- 
      bool ShouldDisplayRevokeButton() const;
  
