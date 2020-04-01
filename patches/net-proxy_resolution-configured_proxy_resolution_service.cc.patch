@@ -1,0 +1,12 @@
+diff --git a/net/proxy_resolution/configured_proxy_resolution_service.cc b/net/proxy_resolution/configured_proxy_resolution_service.cc
+index 33f1061d0ed1d7afb0dba0184d040c083269f19f..72a51d95479b13aecaff91a323f5f74fb8635cd9 100644
+--- a/net/proxy_resolution/configured_proxy_resolution_service.cc
++++ b/net/proxy_resolution/configured_proxy_resolution_service.cc
+@@ -1048,6 +1048,7 @@ int ConfiguredProxyResolutionService::TryToCompleteSynchronously(
+   config_->value().proxy_rules().Apply(url, result);
+   result->set_traffic_annotation(
+       MutableNetworkTrafficAnnotationTag(config_->traffic_annotation()));
++  BRAVE_TRY_TO_COMPLETE_SYNCHRONOUSLY
+ 
+   return OK;
+ }
