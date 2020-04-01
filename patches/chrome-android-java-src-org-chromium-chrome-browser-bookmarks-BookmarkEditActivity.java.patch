@@ -1,19 +1,19 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkEditActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkEditActivity.java
-index 958ceaf32885402fe94e2462704922fafed465b9..9ed03f2fcf678b6b01ea7b32afde6ea339f034e1 100644
+index ddad1aaabedab67882bb5236a74c4a9f8ad1d49f..be0db3e531410b0c5158dd22e8a7dc728cd60efd 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkEditActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkEditActivity.java
-@@ -140,6 +140,7 @@ public class BookmarkEditActivity extends SynchronousInitializationActivity {
-                     mModel.getBookmarkById(mBookmarkId).getUrl();
+@@ -141,6 +141,7 @@ public class BookmarkEditActivity extends SynchronousInitializationActivity {
+             final GURL originalUrl = new GURL(mModel.getBookmarkById(mBookmarkId).getUrl());
              final String title = mTitleEditText.getTrimmedText();
              final String url = mUrlEditText.getTrimmedText();
 +            final String originalTitle = mModel.getBookmarkById(mBookmarkId).getTitle(); boolean sendToSyncWorker = !mTitleEditText.isEmpty() && !title.equals(originalTitle);
  
              if (!mTitleEditText.isEmpty()) {
                  mModel.setBookmarkTitle(mBookmarkId, title);
-@@ -150,8 +151,10 @@ public class BookmarkEditActivity extends SynchronousInitializationActivity {
-                 String fixedUrl = UrlFormatter.fixupUrl(url);
-                 if (fixedUrl != null && !fixedUrl.equals(originalUrl)) {
-                     mModel.setBookmarkUrl(mBookmarkId, fixedUrl);
+@@ -151,8 +152,10 @@ public class BookmarkEditActivity extends SynchronousInitializationActivity {
+                 GURL fixedUrl = UrlFormatter.fixupUrl(url);
+                 if (fixedUrl.isValid() && !fixedUrl.equals(originalUrl)) {
+                     mModel.setBookmarkUrl(mBookmarkId, fixedUrl.getSpec());
 +                    sendToSyncWorker = true;
                  }
              }

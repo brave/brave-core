@@ -1,10 +1,10 @@
 diff --git a/chrome/android/java/res/menu/website_preferences_menu.xml b/chrome/android/java/res/menu/website_preferences_menu.xml
-index 41a465537e3eaa9addf3c6b17ebfacc3951138ef..f47abfc5d78de4e3d7d06de11eb045f59e6c2234 100644
+index 6371709bb96312fe31a1f4e48eee546e4e8bd746..e6c35c0b4398d43727137bb172b1c3f23fc9d316 100644
 --- a/chrome/android/java/res/menu/website_preferences_menu.xml
 +++ b/chrome/android/java/res/menu/website_preferences_menu.xml
 @@ -9,4 +9,5 @@
            android:title="@string/search"
            app:showAsAction="always"
-           app:actionViewClass="android.support.v7.widget.SearchView" />
+           app:actionViewClass="androidx.appcompat.widget.SearchView" />
 +    <item android:id="@+id/close_menu_id" android:icon="@drawable/btn_close" android:title="@string/settings_exit" app:showAsAction="ifRoom" app:iconTint="@color/standard_mode_tint" />
  </menu>

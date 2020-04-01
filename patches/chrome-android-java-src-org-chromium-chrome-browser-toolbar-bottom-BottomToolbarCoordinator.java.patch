@@ -1,17 +1,17 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java
-index 19475da4bf833ec8f517497cd413499769ce32ec..a1af2ff1d1cfe05c2c8c818bd8dbb6230eafb870 100644
+index c7531b702b2a2e5b966af50ce97409a62a78efef..e733defe9b68f8ff45bdf120f15fca973b4f5bd2 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java
-@@ -28,7 +28,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
-  */
- class BottomToolbarCoordinator {
+@@ -43,7 +43,7 @@ class BottomToolbarCoordinator {
+             new CachedMetrics.ActionEvent("MobileToolbarOmniboxAcceleratorTap");
+ 
      /** The browsing mode bottom toolbar component */
 -    private final BrowsingModeBottomToolbarCoordinator mBrowsingModeCoordinator;
 +    protected final BrowsingModeBottomToolbarCoordinator mBrowsingModeCoordinator;
  
      /** The tab switcher mode bottom toolbar component */
      private TabSwitcherBottomToolbarCoordinator mTabSwitcherModeCoordinator;
-@@ -40,8 +40,8 @@ class BottomToolbarCoordinator {
+@@ -55,8 +55,8 @@ class BottomToolbarCoordinator {
      private final ThemeColorProvider mThemeColorProvider;
  
      /** The overview mode manager. */
@@ -22,18 +22,18 @@ index 19475da4bf833ec8f517497cd413499769ce32ec..a1af2ff1d1cfe05c2c8c818bd8dbb623
  
      /** The activity tab provider. */
      private ActivityTabProvider mTabProvider;
-@@ -62,7 +62,7 @@ class BottomToolbarCoordinator {
-             ThemeColorProvider themeColorProvider) {
-         View root = stub.inflate();
+@@ -103,7 +103,7 @@ class BottomToolbarCoordinator {
+             setUrlBarFocusAction.onResult(LocationBar.OmniboxFocusReason.ACCELERATOR_TAP);
+         };
  
 -        mBrowsingModeCoordinator = new BrowsingModeBottomToolbarCoordinator(root, tabProvider,
 +        mBrowsingModeCoordinator = new BraveBrowsingModeBottomToolbarCoordinator(root, tabProvider,
-                 homeButtonListener, searchAcceleratorListener, shareButtonListenerSupplier,
+                 homeButtonListener, searchAcceleratorListener, mShareButtonListenerSupplier,
                  tabsSwitcherLongClickListner);
  
-@@ -164,4 +164,5 @@ class BottomToolbarCoordinator {
-         }
-         mThemeColorProvider.destroy();
+@@ -263,4 +263,5 @@ class BottomToolbarCoordinator {
+             listener.onClick(v);
+         };
      }
 +    public void updateBookmarkButton(boolean isBookmarked, boolean editingAllowed) {if (mBrowsingModeCoordinator != null) {((BraveBrowsingModeBottomToolbarCoordinator)mBrowsingModeCoordinator).updateBookmarkButton(isBookmarked, editingAllowed);}}
  }
