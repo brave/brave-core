@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.graphics.PorterDuff;
 import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
@@ -59,6 +60,7 @@ import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.content_public.browser.NavigationHandle;
 import org.chromium.ui.interpolators.BakedBezierInterpolator;
 import org.chromium.ui.widget.Toast;
+import org.chromium.ui.UiUtils;
 
 import java.net.URL;
 import java.util.List;
@@ -109,6 +111,16 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   @Override
   protected void onFinishInflate() {
       super.onFinishInflate();
+
+      if (this instanceof ToolbarTablet) {
+          ImageButton forwardButton = findViewById(R.id.forward_button);
+          if (forwardButton != null) {
+              final Drawable forwardButtonDrawable = UiUtils.getTintedDrawable(
+                      getContext(), R.drawable.btn_right_tablet, R.color.standard_mode_tint);
+              forwardButton.setImageDrawable(forwardButtonDrawable);
+          }
+      }
+
       mShieldsLayout = (FrameLayout) findViewById(R.id.brave_shields_button_layout);
       mRewardsLayout = (FrameLayout) findViewById(R.id.brave_rewards_button_layout);
       mBraveRewardsNotificationsCount = (TextView) findViewById(R.id.br_notifications_count);
