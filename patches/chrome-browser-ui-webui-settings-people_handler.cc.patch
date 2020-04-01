@@ -1,18 +1,7 @@
 diff --git a/chrome/browser/ui/webui/settings/people_handler.cc b/chrome/browser/ui/webui/settings/people_handler.cc
-index 6dc8e03ca5ac6e10a59708d75796fa99a24eada1..845e27f8d54912d026c6ab7b9143548943dabce7 100644
+index 6dc8e03ca5ac6e10a59708d75796fa99a24eada1..29393972bcac72094e938970da2f0df137319847 100644
 --- a/chrome/browser/ui/webui/settings/people_handler.cc
 +++ b/chrome/browser/ui/webui/settings/people_handler.cc
-@@ -299,8 +299,8 @@ void PeopleHandler::RegisterMessages() {
-       base::BindRepeating(&PeopleHandler::HandleGetSyncStatus,
-                           base::Unretained(this)));
-   web_ui()->RegisterMessageCallback(
--      "SyncPrefsDispatch",
--      base::BindRepeating(&PeopleHandler::HandleSyncPrefsDispatch,
-+      "SyncSetupGetSyncCode",
-+      base::BindRepeating(&PeopleHandler::HandleGetSyncCode,
-                           base::Unretained(this)));
- #if defined(OS_CHROMEOS)
-   web_ui()->RegisterMessageCallback(
 @@ -337,6 +337,7 @@ void PeopleHandler::RegisterMessages() {
        "SyncStartKeyRetrieval",
        base::BindRepeating(&PeopleHandler::HandleStartKeyRetrieval,
@@ -21,14 +10,21 @@ index 6dc8e03ca5ac6e10a59708d75796fa99a24eada1..845e27f8d54912d026c6ab7b91435489
  }
  
  void PeopleHandler::OnJavascriptAllowed() {
-@@ -896,8 +897,8 @@ std::unique_ptr<base::DictionaryValue> PeopleHandler::GetSyncStatusDictionary()
+@@ -616,6 +617,7 @@ void PeopleHandler::HandleShowSetupUI(const base::ListValue* args) {
+ 
+   syncer::SyncService* service = GetSyncService();
+ 
++  BRAVE_HANDLE_SHOW_SETUP_UI
+   if (service && !sync_blocker_)
+     sync_blocker_ = service->GetSetupInProgressHandle();
+ 
+@@ -896,8 +898,7 @@ std::unique_ptr<base::DictionaryValue> PeopleHandler::GetSyncStatusDictionary()
    sync_status->SetBoolean(
        "firstSetupInProgress",
        service && !disallowed_by_policy && service->IsSetupInProgress() &&
 -          !service->GetUserSettings()->IsFirstSetupComplete() &&
 -          identity_manager->HasPrimaryAccount());
 +          !service->GetUserSettings()->IsFirstSetupComplete());
-+          // identity_manager->HasPrimaryAccount());
  
    const sync_ui_util::StatusLabels status_labels =
        sync_ui_util::GetStatusLabels(profile_);

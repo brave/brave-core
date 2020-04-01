@@ -151,7 +151,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 
   // Brave's sync protocol does not use the sync service url
   command_line.AppendSwitchASCII(switches::kSyncServiceURL,
-                                 "https://no-thanks.invalid");
+                                 "http://localhost:8295/v2");
 
   // Enabled features.
   const std::unordered_set<const char*> enabled_features = {

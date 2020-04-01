@@ -1,0 +1,25 @@
+diff --git a/components/sync/engine_impl/net/sync_server_connection_manager.cc b/components/sync/engine_impl/net/sync_server_connection_manager.cc
+index c210064c1766a0dec727b58e93140b2e28406f4b..a6438b648dc7487e43039f3fa1490703f9795e10 100644
+--- a/components/sync/engine_impl/net/sync_server_connection_manager.cc
++++ b/components/sync/engine_impl/net/sync_server_connection_manager.cc
+@@ -225,13 +225,13 @@ bool SyncServerConnectionManager::PostBufferToPath(
+     PostBufferParams* params,
+     const std::string& path,
+     const std::string& access_token) {
+-  if (access_token.empty()) {
+-    params->response.server_status = HttpResponse::SYNC_AUTH_ERROR;
+-    // Print a log to distinguish this "known failure" from others.
+-    DVLOG(1) << "ServerConnectionManager forcing SYNC_AUTH_ERROR due to missing"
+-                " access token";
+-    return false;
+-  }
++  // if (access_token.empty()) {
++  //   params->response.server_status = HttpResponse::SYNC_AUTH_ERROR;
++  //   // Print a log to distinguish this "known failure" from others.
++  //   DVLOG(1) << "ServerConnectionManager forcing SYNC_AUTH_ERROR due to missing"
++  //               " access token";
++  //   return false;
++  // }
+ 
+   if (cancelation_signal_->IsSignalled()) {
+     params->response.server_status = HttpResponse::CONNECTION_UNAVAILABLE;

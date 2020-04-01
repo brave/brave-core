@@ -197,8 +197,6 @@ Polymer({
    * @private
    */
   computeShowSetupButtons_: function() {
-    console.error(this.syncStatus);
-    // return true;
     return !this.hideButtons && !!this.syncStatus.firstSetupInProgress;
   },
 
@@ -219,7 +217,6 @@ Polymer({
   onSetupConfirm_: function() {
     if (!this.passphrase) {
       this.passphrase = this.$$('#enterSyncCode').value;
-      console.error(this.passphrase);
     }
     this.fire('sync-setup-done', true);
   },
