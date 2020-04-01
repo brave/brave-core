@@ -299,11 +299,16 @@ export const IconButton = styled<IconButtonProps, 'button'>('button')`
   }
 `
 
-export const IconButtonSideText = styled<{}, 'label'>('label')`
+interface IconButtonSideTextProps {
+  textDirection: string
+}
+
+export const IconButtonSideText = styled<IconButtonSideTextProps, 'label'>('label')`
   display: grid;
   grid-template-columns: auto auto;
   align-items: center;
-  margin-right: 24px;
+  margin-right: ${p => p.textDirection === 'ltr' && '24px'};
+  margin-left: ${p => p.textDirection === 'rtl' && '24px'};
   color: #ffffff;
   cursor: pointer;
 
@@ -315,7 +320,8 @@ export const IconButtonSideText = styled<{}, 'label'>('label')`
   }
 
   > ${IconButton} {
-    margin-left: 0;
+    margin-left: ${p => p.textDirection === 'ltr' && '0'};
+    margin-right: ${p => p.textDirection === 'rtl' && '0'};
     /* No need to show the outline since the parent is handling it */
     outline: 0;
   }

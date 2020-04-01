@@ -95,8 +95,12 @@ export default class Settings extends React.PureComponent<Props, {}> {
       binanceSupported
     } = this.props
     return (
-      <SettingsWrapper title={getLocale('dashboardSettingsTitle')} innerRef={this.settingsMenuRef}>
-        <IconButtonSideText>
+      <SettingsWrapper
+        textDirection={textDirection}
+        title={getLocale('dashboardSettingsTitle')}
+        innerRef={this.settingsMenuRef}
+      >
+        <IconButtonSideText textDirection={textDirection}>
           <IconButton onClick={onClick} onKeyDown={this.onKeyPressSettings}><SettingsIcon/></IconButton>
           {getLocale('customize')}
         </IconButtonSideText>
