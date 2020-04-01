@@ -1,25 +1,16 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index dd59ffa4ffb9bd12d28e10aa64dc7dcfdabc0849..c79bb7f6cfb1704e6e9f528e85c4adda5165328c 100644
+index 9b03adc50dce38eee225deaa1ec112388f70cabd..f04a6cf15bc4929579f73c2456d6d7a867930fd5 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -35,7 +35,7 @@ import("java_sources.gni")
- import("static_initializers.gni")
- import("trichrome.gni")
- 
--chrome_public_manifest_package = "org.chromium.chrome"
-+declare_args() { chrome_public_manifest_package = "org.chromium.chrome" }
- chrome_public_test_manifest_package = "org.chromium.chrome.tests"
- 
- chrome_public_jinja_variables =
-@@ -162,6 +162,7 @@ android_resources("chrome_app_java_resources") {
-     "//third_party/android_deps:com_android_support_preference_v7_java",
-     "//third_party/android_deps:com_android_support_recyclerview_v7_java",
+@@ -196,6 +196,7 @@ android_resources("chrome_app_java_resources") {
+     "//third_party/android_deps:androidx_recyclerview_recyclerview_java",
+     "//third_party/android_deps:com_android_support_design_java",
    ]
 +  deps += brave_chrome_app_java_resources_deps resource_dirs += brave_chrome_app_java_resources_dirs
    custom_package = "org.chromium.chrome"
  }
  
-@@ -377,6 +378,7 @@ android_library("chrome_java") {
+@@ -444,6 +445,7 @@ android_library("chrome_java") {
    ]
  
    deps += feed_deps
@@ -27,7 +18,7 @@ index dd59ffa4ffb9bd12d28e10aa64dc7dcfdabc0849..c79bb7f6cfb1704e6e9f528e85c4adda
  
    srcjar_deps = [
      ":chrome_android_java_enums_srcjar",
-@@ -427,6 +429,7 @@ android_library("chrome_java") {
+@@ -489,6 +491,7 @@ android_library("chrome_java") {
      "//content/public/browser:contacts_picker_properties_requested_javagen",
      "//net:effective_connection_type_java",
    ]
@@ -35,15 +26,15 @@ index dd59ffa4ffb9bd12d28e10aa64dc7dcfdabc0849..c79bb7f6cfb1704e6e9f528e85c4adda
  
    android_manifest_for_lint = chrome_public_android_manifest
  
-@@ -532,6 +535,7 @@ group("jni_headers") {
-     "//chrome/browser/touch_to_fill/android:jni_headers",
+@@ -596,6 +599,7 @@ group("jni_headers") {
+     "//chrome/browser/ui/android/favicon:jni_headers",
      "//chrome/browser/util:jni_headers",
    ]
 +  public_deps += ["//brave/build/android:jni_headers"]
  }
  
  action("chrome_android_java_google_api_keys_srcjar") {
-@@ -1392,6 +1396,7 @@ if (current_toolchain == default_toolchain) {
+@@ -1506,6 +1510,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
