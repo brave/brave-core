@@ -5,7 +5,6 @@ assert(binance_enabled)
 
 declare_args() {
   binance_client_id = ""
-  binance_client_secret = ""
 }
 
 source_set("browser") {
@@ -36,7 +35,6 @@ source_set("browser") {
 
 config("binance_config") {
   defines = [
-    "BINANCE_CLIENT_ID=\"$binance_client_id\"",
-    "BINANCE_CLIENT_SECRET=\"$binance_client_secret\""
+    "BINANCE_CLIENT_ID=\"$binance_client_id\""
   ]
 }
