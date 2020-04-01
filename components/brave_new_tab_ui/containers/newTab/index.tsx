@@ -237,7 +237,7 @@ class NewTabPage extends React.Component<Props, State> {
   onBinanceClientUrl = (clientUrl: string) => {
     this.props.actions.onBinanceClientUrl(clientUrl)
   }
-  
+
   onValidAuthCode = () => {
     this.props.actions.onValidAuthCode()
   }

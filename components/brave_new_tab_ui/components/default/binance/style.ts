@@ -377,8 +377,8 @@ export const BackArrow = styled<{}, 'div'>('div')`
 export const ListInfo = styled<StyleProps, 'div'>('div')`
   float: ${p => `${p.position}`};
   min-width: 83px;
-  font-size: ${p => p.isAsset ? '16px': 'inherit'};
-  margin-top: ${p => p.isAsset ? '4': '0'}px;
+  font-size: ${p => p.isAsset ? '16px' : 'inherit'};
+  margin-top: ${p => p.isAsset ? '4' : '0'}px;
 
   ${p => {
     if (p.position === 'right') {
@@ -505,7 +505,7 @@ export const Percent = styled<{}, 'div'>('div')`
 export const BuySellButton = styled(ConnectButton)`
   padding: 5px;
   margin: 5px 0px;
-  background: ${p => p.isBuy ? '#3BB260': '#DD5353'};
+  background: ${p => p.isBuy ? '#3BB260' : '#DD5353'};
 `
 
 export const AvailableLabel = styled<{}, 'span'>('span')`
@@ -537,7 +537,7 @@ export const ConvertInfoWrapper = styled<StyleProps, 'div'>('div')`
 export const ConvertInfoItem = styled<StyleProps, 'div'>('div')`
   margin: 5px 0;
   overflow-y: auto;
-  margin-top: ${p => p.isLast? '15' : '5'}px;
+  margin-top: ${p => p.isLast ? '15' : '5'}px;
 `
 
 export const StyledEmoji = styled<{}, 'div'>('div')`

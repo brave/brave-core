@@ -69,7 +69,7 @@ void LoadNewTabURL(
 
 }  // namespace
 
-namespace binance{
+namespace binance {
 
 void HandleBinanceProtocol(const GURL& url,
                            content::WebContents::OnceGetter web_contents_getter,

@@ -172,14 +172,14 @@ class Binance extends React.PureComponent<Props, State> {
     this.fiatList = currencyData.fiatList
     this.usCurrencies = currencyData.usCurrencies
     this.comCurrencies = currencyData.comCurrencies
-    this.currencyNames =  {
+    this.currencyNames = {
       'BAT': 'Basic Attention Token',
       'BTC': 'Bitcoin',
       'ETH': 'Ethereum',
       'XRP': 'Ripple',
       'BNB': 'Binance Coin',
       'BCH': 'Bitcoin Cash',
-      'BUSD': 'US Dollar'     
+      'BUSD': 'US Dollar'
     }
   }
 
@@ -338,7 +338,7 @@ class Binance extends React.PureComponent<Props, State> {
     const { accountBalances } = this.props
     const { currentConvertAmount } = this.state
 
-    if (parseInt(currentConvertAmount) > parseInt(accountBalances['BTC'])) {
+    if (parseInt(currentConvertAmount, 10) > parseInt(accountBalances['BTC'], 10)) {
       this.setState({ insufficientFunds: true })
     } else {
       // Temporary
@@ -404,9 +404,47 @@ class Binance extends React.PureComponent<Props, State> {
     })
   }
 
+  finishConvert = () => {
+    this.setState({
+      convertSuccess: false,
+      showConvertPreview: false,
+      selectedView: 'deposit'
+    })
+  }
+
+  setCurrentDepositSearch = ({ target }) => {
+    this.setState({
+      currentDepositSearch: target.value
+    })
+  }
+
+  setCurrentConvertAmount = ({ target }) => {
+    this.setState({ currentConvertAmount: target.value })
+  }
+
+  setCurrentTradeSearch = ({ target }) => {
+    this.setState({ currentTradeSearch: target.value })
+  }
+
+  setCurrentTradeAsset = (asset: string) => {
+    this.setState({ currentTradeAsset: asset })
+  }
+
+  showConvertPreview = () => {
+    this.setState({ showConvertPreview: true })
+  }
+
+  dismissConvertPreview = () => {
+    this.setState({
+      currentConvertFrom: '',
+      currentConvertTo: '',
+      showConvertPreview: false
+    })
+  }
+
   renderTitle () {
     const { selectedView } = this.state
-    const { showContent, userAuthed, authInProgress } = this.props    
+    const { showContent, userAuthed, authInProgress } = this.props
 
     return (
       <Header>
@@ -475,14 +513,8 @@ class Binance extends React.PureComponent<Props, State> {
         <InvalidTitle>
           {`You converted ${currentConvertAmount} BTC ${currentConvertFrom} to ${currentConvertTo}!`}
         </InvalidTitle>
-        <ConnectButton isSmall={true} onClick={() => {
-            this.setState({
-              convertSuccess: false,
-              showConvertPreview: false,
-              selectedView: 'deposit'
-            })
-          }}>
-            {'Continue'}
+        <ConnectButton isSmall={true} onClick={this.finishConvert}>
+          {'Continue'}
         </ConnectButton>
       </InvalidWrapper>
     )
@@ -501,7 +533,7 @@ class Binance extends React.PureComponent<Props, State> {
           {'Retry'}
         </GenButton>
       </InvalidWrapper>
-    )    
+    )
   }
 
   renderCurrentDepositAsset = () => {
@@ -512,9 +544,9 @@ class Binance extends React.PureComponent<Props, State> {
         <ListItem>
           <DetailIcons>
             <BackArrow>
-              <CaratLeftIcon onClick={() => {
-                this.setCurrentDepositAsset.bind(this, '')
-              }}/>
+              <CaratLeftIcon
+                onClick={this.setCurrentDepositAsset.bind(this, '')}
+              />
             </BackArrow>
             <ListImg src={this.getAssetIcon(currentDepositAsset)} />
           </DetailIcons>
@@ -524,8 +556,7 @@ class Binance extends React.PureComponent<Props, State> {
           <AssetLabel>
             {`(${this.currencyNames[currentDepositAsset]})`}
           </AssetLabel>
-          <AssetQR>
-          </AssetQR>
+          <AssetQR/>
         </ListItem>
         <DetailArea>
           <MemoArea>
@@ -552,7 +583,7 @@ class Binance extends React.PureComponent<Props, State> {
             </MemoInfo>
           </MemoArea>
         </DetailArea>
-      </>   
+      </>
     )
   }
 
@@ -573,9 +604,7 @@ class Binance extends React.PureComponent<Props, State> {
           <SearchInput
             type={'text'}
             placeholder={'Search'}
-            onChange={({ target }) => {
-              this.setState({ currentDepositSearch: target.value })
-            }}
+            onChange={this.setCurrentDepositSearch}
           />
         </ListItem>
         {currencyList.map((asset: string) => {
@@ -634,7 +663,7 @@ class Binance extends React.PureComponent<Props, State> {
                 }
               </BlurIcon>
             </TradeLabel>
-          </ListInfo>          
+          </ListInfo>
         </BTCSummary>
         {currencyList.map((asset: string) => {
           return (
@@ -653,7 +682,7 @@ class Binance extends React.PureComponent<Props, State> {
                 </Balance>
                 <Converted isBTC={false} hideBalance={hideBalance}>
                   {`= $${btcBalanceValue}`}
-                </Converted>                
+                </Converted>
               </ListInfo>
             </ListItem>
           )
@@ -664,7 +693,7 @@ class Binance extends React.PureComponent<Props, State> {
 
   renderConvertConfirm = () => {
     const { currentConvertAmount, currentConvertTo } = this.state
-    const receivedAmount = currentConvertAmount === '6' ? '0': '0'
+    const receivedAmount = currentConvertAmount === '6' ? '0' : '0'
 
     return (
       <InvalidWrapper>
@@ -693,18 +722,12 @@ class Binance extends React.PureComponent<Props, State> {
           <ConnectButton isSmall={true} onClick={this.processConvert}>
             {`Confirm`}
           </ConnectButton>
-          <DismissAction onClick={() => {
-            this.setState({
-              currentConvertFrom: '',
-              currentConvertTo: '',
-              showConvertPreview: false
-            })
-          }}>
+          <DismissAction onClick={this.dismissConvertPreview}>
             {'Cancel'}
           </DismissAction>
         </ActionsWrapper>
       </InvalidWrapper>
-    )   
+    )
   }
 
   renderConvertView = () => {
@@ -726,9 +749,7 @@ class Binance extends React.PureComponent<Props, State> {
               type={'text'}
               placeholder={'I want to convert...'}
               value={currentConvertAmount}
-              onChange={({ target }) => {
-                this.setState({ currentConvertAmount: target.value })
-              }}
+              onChange={this.setCurrentConvertAmount}
             />
             <FiatDropdown>
               <span>
@@ -741,9 +762,7 @@ class Binance extends React.PureComponent<Props, State> {
           </FiatInputWrapper>
           <AssetDropdown
             itemsShowing={this.state.currenciesShowing}
-            onClick={() => { this.setState({
-              currenciesShowing: !this.state.currenciesShowing
-            })}}
+            onClick={this.toggleCurrenciesShowing}
           >
             <AssetDropdownLabel>
               {currentConvertTo || 'BNB'}
@@ -756,7 +775,7 @@ class Binance extends React.PureComponent<Props, State> {
             this.state.currenciesShowing
             ? <AssetItems>
                 {currencyList.map((asset: string, i: number) => {
-                  if (asset === 'ETH' || asset == 'BNB') {
+                  if (asset === 'ETH' || asset === 'BNB') {
                     return null
                   }
 
@@ -775,11 +794,7 @@ class Binance extends React.PureComponent<Props, State> {
           }
         </BuyPromptWrapper>
         <ActionsWrapper>
-          <ConnectButton onClick={() => {
-            this.setState({
-              showConvertPreview: true
-            })
-          }}>
+          <ConnectButton onClick={this.showConvertPreview}>
             {`Preview Conversion`}
           </ConnectButton>
           <DismissAction onClick={this.setSelectedView.bind(this, 'deposit')}>
@@ -804,15 +819,11 @@ class Binance extends React.PureComponent<Props, State> {
           <SearchInput
             type={'text'}
             placeholder={'Search trading pairs'}
-            onChange={({ target }) => {
-              this.setState({ currentTradeSearch: target.value
-            })}}
+            onChange={this.setCurrentTradeSearch}
           />
         </ListItem>
         <ListItem
-          onClick={() => { this.setState({
-            currentTradeAsset: `BTC / USDT`
-          })}}
+          onClick={this.setCurrentTradeAsset.bind(this, 'BTC / USDT')}
         >
           <ListInfo position={'left'}>
             <TradeLabel>
@@ -830,7 +841,7 @@ class Binance extends React.PureComponent<Props, State> {
             <TradeLabel>
               {`$${btcBalanceValue}`}
             </TradeLabel>
-          </ListInfo>          
+          </ListInfo>
         </ListItem>
         {Object.keys(assetBTCValues).map((pair: string) => {
           const lowerPair = pair.toLowerCase()
@@ -846,9 +857,7 @@ class Binance extends React.PureComponent<Props, State> {
             <ListItem
               key={`trade-${pair}`}
               style={{ cursor: 'pointer' }}
-              onClick={() => { this.setState({
-                currentTradeAsset: `${pair} / BTC`
-              })}}
+              onClick={this.setCurrentTradeAsset.bind(this, `${pair} / BTC`)}
             >
               <ListInfo position={'left'}>
                 <TradeLabel>
@@ -895,22 +904,26 @@ class Binance extends React.PureComponent<Props, State> {
         <NavigationBar>
           <NavigationItem
             isActive={selectedView === 'deposit'}
-            onClick={this.setSelectedView.bind(this, 'deposit')}>
+            onClick={this.setSelectedView.bind(this, 'deposit')}
+          >
             {'Deposit'}
           </NavigationItem>
           <NavigationItem
             isActive={selectedView === 'convert'}
-            onClick={this.setSelectedView.bind(this, 'convert')}>
+            onClick={this.setSelectedView.bind(this, 'convert')}
+          >
             {'Convert'}
           </NavigationItem>
           <NavigationItem
             isActive={selectedView === 'summary'}
-            onClick={this.setSelectedView.bind(this, 'summary')}>
+            onClick={this.setSelectedView.bind(this, 'summary')}
+          >
             {'Summary'}
           </NavigationItem>
           <NavigationItem
             isActive={selectedView === 'buy'}
-            onClick={this.setSelectedView.bind(this, 'buy')}>
+            onClick={this.setSelectedView.bind(this, 'buy')}
+          >
             {'Buy'}
           </NavigationItem>
         </NavigationBar>
@@ -1041,7 +1054,7 @@ class Binance extends React.PureComponent<Props, State> {
 
   render () {
     const { disconnectInProgress, showConvertPreview, insufficientFunds, convertSuccess } = this.state
-    const { showContent } = this.props 
+    const { showContent } = this.props
 
     if (!showContent) {
       return this.renderTitleTab()
@@ -1084,7 +1097,7 @@ class Binance extends React.PureComponent<Props, State> {
         {this.renderTitle()}
         {this.renderRoutes()}
       </WidgetWrapper>
-    )    
+    )
   }
 }
 

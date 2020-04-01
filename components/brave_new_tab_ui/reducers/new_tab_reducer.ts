@@ -309,7 +309,6 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
 
     case types.ON_BINANCE_USER_TLD:
       state = { ...state }
-      
       state = {
         ...state,
         binanceState: {

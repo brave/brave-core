@@ -87,7 +87,9 @@ std::string GetCodeChallenge(const std::string& code_verifier) {
   crypto::SHA256HashString(code_verifier,
                            raw,
                            crypto::kSHA256Length);
-  base::Base64Encode(base::StringPiece(raw, crypto::kSHA256Length), &code_challenge);
+  base::Base64Encode(base::StringPiece(raw,
+                                       crypto::kSHA256Length),
+                                       &code_challenge);
 
   // Binance expects the following conversions for the base64 encoded value:
   std::replace(code_challenge.begin(), code_challenge.end(), '+', '-');
@@ -292,7 +294,8 @@ bool BinanceService::LoadTokensFromPrefs() {
 
   std::string encrypted_access_token;
   std::string encrypted_refresh_token;
-  if (!base::Base64Decode(encoded_encrypted_access_token, &encrypted_access_token) ||
+  if (!base::Base64Decode(encoded_encrypted_access_token,
+                          &encrypted_access_token) ||
       !base::Base64Decode(encoded_encrypted_refresh_token,
                           &encrypted_refresh_token)) {
     LOG(ERROR) << "Could not Base64 decode Binance token info.";
