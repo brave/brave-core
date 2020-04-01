@@ -1,11 +1,11 @@
 diff --git a/third_party/blink/public/mojom/permissions/permission.mojom b/third_party/blink/public/mojom/permissions/permission.mojom
-index be5e3edcdfbd8b437a3b55723dc816cbfae79a9b..101b8ac633810d9a9ee5fe2ff26f817b6a0831fa 100644
+index 8b2409fe513cd1afb9ba373d6ab25d42bedf2ad5..18e67432f93082c583d890245f4cb699823b7f5d 100644
 --- a/third_party/blink/public/mojom/permissions/permission.mojom
 +++ b/third_party/blink/public/mojom/permissions/permission.mojom
-@@ -25,6 +25,7 @@ enum PermissionName {
-   PERIODIC_BACKGROUND_SYNC,
+@@ -26,6 +26,7 @@ enum PermissionName {
    WAKE_LOCK,
    NFC,
+   STORAGE_ACCESS,
 +  AUTOPLAY,
  };
  

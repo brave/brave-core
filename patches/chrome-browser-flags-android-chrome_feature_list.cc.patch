@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/flags/android/chrome_feature_list.cc b/chrome/browser/flags/android/chrome_feature_list.cc
-index c877d3adbd7599834ce3302f27d1ee86abba3a33..157d16063431bb3451a888252dd2acd5f0b507c3 100644
+index d79112677ca4c906b9c86da87034305043852c13..dc72daf0fa5bd568cd5419334dce0f8291f3c447 100644
 --- a/chrome/browser/flags/android/chrome_feature_list.cc
 +++ b/chrome/browser/flags/android/chrome_feature_list.cc
 @@ -252,6 +252,7 @@ const base::Feature* kFeaturesExposedToJava[] = {
@@ -7,6 +7,6 @@ index c877d3adbd7599834ce3302f27d1ee86abba3a33..157d16063431bb3451a888252dd2acd5
  
  const base::Feature* FindFeatureExposedToJava(const std::string& feature_name) {
 +  BRAVE_FIND_FEATURE_EXPOSED_TO_JAVA
-   for (size_t i = 0; i < base::size(kFeaturesExposedToJava); ++i) {
-     if (kFeaturesExposedToJava[i]->name == feature_name)
-       return kFeaturesExposedToJava[i];
+   for (const auto* feature : kFeaturesExposedToJava) {
+     if (feature->name == feature_name)
+       return feature;

@@ -1,17 +1,17 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index 73c0640175a256cf35b30760339349a07b5cb567..7fd99daa8dd73f8ddce26e8e413afa7db3180660 100644
+index ae9f5ce8953f367917748c3013e7d9cf910675e5..5c2e0b24c1d10d394a35f13808b6827e23920d22 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-@@ -169,7 +169,7 @@ import java.util.Locale;
-  * This is the main activity for ChromeMobile when not running in document mode.  All the tabs
+@@ -177,7 +177,7 @@ import java.util.Locale;
   * are accessible via a chrome specific tab switching UI.
   */
--public class ChromeTabbedActivity extends ChromeActivity {
-+public class ChromeTabbedActivity extends BraveActivity {
+ public class ChromeTabbedActivity
+-        extends ChromeActivity<ChromeActivityComponent> implements AccessibilityUtil.Observer {
++        extends BraveActivity<ChromeActivityComponent> implements AccessibilityUtil.Observer {
      private static final String TAG = "ChromeTabbedActivity";
  
      private static final String HELP_URL_PREFIX = "https://support.google.com/chrome/";
-@@ -1612,7 +1612,7 @@ public class ChromeTabbedActivity extends ChromeActivity {
+@@ -1571,7 +1571,7 @@ public class ChromeTabbedActivity
  
      @Override
      public AppMenuPropertiesDelegate createAppMenuPropertiesDelegate() {
@@ -20,19 +20,19 @@ index 73c0640175a256cf35b30760339349a07b5cb567..7fd99daa8dd73f8ddce26e8e413afa7d
                  getMultiWindowModeStateDispatcher(), getTabModelSelector(), getToolbarManager(),
                  getWindow().getDecorView(), this,
                  mOverviewModeController.mOverviewModeBehaviorSupplier,
-@@ -1625,9 +1625,9 @@ public class ChromeTabbedActivity extends ChromeActivity {
-             return new TabbedModeTabDelegateFactory(
-                     this, getAppBrowserControlsVisibilityDelegate(), getShareDelegateSupplier());
-         };
+@@ -1595,9 +1595,9 @@ public class ChromeTabbedActivity
+                 }
+             };
+         }
 -        return Pair.create(new ChromeTabCreator(this, getWindowAndroid(), getStartupTabPreloader(),
 +        return Pair.create(new org.chromium.chrome.browser.tabmodel.BraveTabCreator(this, getWindowAndroid(), getStartupTabPreloader(),
-                                    tabDelegateFactorySupplier, false),
+                                    tabDelegateFactorySupplier, false, overviewNTPCreator),
 -                new ChromeTabCreator(this, getWindowAndroid(), getStartupTabPreloader(),
 +                new org.chromium.chrome.browser.tabmodel.BraveTabCreator(this, getWindowAndroid(), getStartupTabPreloader(),
-                         tabDelegateFactorySupplier, true));
+                         tabDelegateFactorySupplier, true, overviewNTPCreator));
      }
  
-@@ -2012,7 +2012,7 @@ public class ChromeTabbedActivity extends ChromeActivity {
+@@ -1974,7 +1974,7 @@ public class ChromeTabbedActivity
          }
      }
  
