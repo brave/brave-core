@@ -5,20 +5,24 @@
 
 package org.chromium.components.sync;
 
-
+// see org.brave.bytecode.BraveAndroidSyncSettingsAdapter
 public class BraveAndroidSyncSettings extends AndroidSyncSettings {
+    private boolean mIsSyncable;
+
+    private boolean mChromeSyncEnabled;
+
+    private boolean mMasterSyncEnabled;
+
 	public BraveAndroidSyncSettings(SyncContentResolverDelegate syncContentResolverDelegate) {
         super(syncContentResolverDelegate, null);
     }
 
-    @Override
-    protected void setChromeSyncEnabled(boolean value) {
+    public void setChromeSyncEnabled(boolean value) {
     	mChromeSyncEnabled = false;
     	notifyObservers();
     }
 
-    @Override
-    protected boolean updateCachedSettings() {
+    public boolean updateCachedSettings() {
     	boolean oldChromeSyncEnabled = mChromeSyncEnabled;
         boolean oldMasterSyncEnabled = mMasterSyncEnabled;
 
