@@ -40,6 +40,18 @@ bool IsBlockedResource(const GURL& gurl) {
 
 bool IsWhitelistedFingerprintingException(const GURL& firstPartyOrigin,
     const GURL& subresourceUrl) {
+  // Always allow embeds from public.tableau.com while fingerprinting
+  // protections are being reworked to need less exceptions.
+  static const std::vector<URLPattern> embed_exceptions = {
+    URLPattern(URLPattern::SCHEME_ALL, "https://public.tableau.com/*"),
+    URLPattern(URLPattern::SCHEME_ALL, "https://www.arcgis.com/*"),
+  };
+  for (const auto exception : embed_exceptions) {
+    if (exception.MatchesURL(subresourceUrl)) {
+      return true;
+    }
+  }
+
   static std::map<URLPattern, std::vector<URLPattern> > whitelist_patterns = {
     {
       URLPattern(URLPattern::SCHEME_ALL, "https://uphold.com/"),
