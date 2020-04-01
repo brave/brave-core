@@ -34,7 +34,7 @@ const std::vector<std::string> kOnlyAnonWalletCountries = {
 
   const std::map<std::string, uint64_t> kUInt64Options = {
       {ledger::kOptionPublisherListRefreshInterval,
-       base::Time::kHoursPerDay * base::Time::kSecondsPerHour}
+       7* base::Time::kHoursPerDay * base::Time::kSecondsPerHour}
 #else
   const std::map<std::string, bool> kBoolOptions = {};
 
@@ -48,7 +48,7 @@ const std::vector<std::string> kOnlyAnonWalletCountries = {
 
   const std::map<std::string, uint64_t> kUInt64Options = {
       {ledger::kOptionPublisherListRefreshInterval,
-       base::Time::kHoursPerDay * base::Time::kSecondsPerHour}
+       3 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour}
 #endif
 };
 
