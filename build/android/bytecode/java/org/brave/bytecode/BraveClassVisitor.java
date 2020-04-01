@@ -260,10 +260,6 @@ class BraveClassVisitor extends ClassVisitor {
                                      String desc,
                                      String signature,
                                      String[] exceptions) {
-        if (name.equals("AndroidSyncSettings")) {
-            System.out.println(name);
-            System.out.println(signature);
-        }
         Method method = new Method(access, name, desc, signature, exceptions);
         if (shouldDeleteMethod(name)) {
             System.out.println("delete " + name + " from " + mName);
