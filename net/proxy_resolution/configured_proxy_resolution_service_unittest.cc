@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "net/proxy_resolution/proxy_resolution_service.h"
+#include "net/proxy_resolution/configured_proxy_resolution_service.h"
 
 #include <string>
 
@@ -21,28 +21,30 @@ using net::test::IsOk;
 
 namespace net {
 
-class ProxyResolutionServiceTest : public TestWithTaskEnvironment {
+class ConfiguredProxyResolutionServiceTest : public TestWithTaskEnvironment {
  public:
-  ProxyResolutionServiceTest() = default;
-  ~ProxyResolutionServiceTest() override = default;
+  ConfiguredProxyResolutionServiceTest() = default;
+  ~ConfiguredProxyResolutionServiceTest() override = default;
 
   void SetUp() override {
     const std::string proxy_uri("socks5://127.0.0.1:5566");
-    service_ = std::make_unique<ProxyResolutionService>(
+    service_ = std::make_unique<ConfiguredProxyResolutionService>(
         std::make_unique<ProxyConfigServiceTor>(proxy_uri),
         std::make_unique<MockAsyncProxyResolverFactory>(false),
         nullptr);
   }
 
-  ProxyResolutionService* GetProxyResolutionService() { return service_.get(); }
+  ConfiguredProxyResolutionService* GetProxyResolutionService() {
+    return service_.get();
+  }
 
  private:
-  std::unique_ptr<ProxyResolutionService> service_;
-  DISALLOW_COPY_AND_ASSIGN(ProxyResolutionServiceTest);
+  std::unique_ptr<ConfiguredProxyResolutionService> service_;
+  DISALLOW_COPY_AND_ASSIGN(ConfiguredProxyResolutionServiceTest);
 };
 
-TEST_F(ProxyResolutionServiceTest, TorProxy) {
-  ProxyResolutionService* service = GetProxyResolutionService();
+TEST_F(ConfiguredProxyResolutionServiceTest, TorProxy) {
+  ConfiguredProxyResolutionService* service = GetProxyResolutionService();
   const GURL site_url("https://check.torproject.org/");
   const std::string isolation_key =
       ProxyConfigServiceTor::CircuitIsolationKey(site_url);
@@ -50,7 +52,7 @@ TEST_F(ProxyResolutionServiceTest, TorProxy) {
   ProxyInfo info;
   TestCompletionCallback callback;
   RecordingBoundTestNetLog log;
-  std::unique_ptr<ProxyResolutionService::Request> request;
+  std::unique_ptr<ConfiguredProxyResolutionService::Request> request;
   int rv =
       service->ResolveProxy(site_url, std::string(), NetworkIsolationKey(),
                             &info, callback.callback(), &request, log.bound());
