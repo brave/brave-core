@@ -41,7 +41,7 @@ const char client_id[] = BINANCE_CLIENT_ID;
 const char oauth_host[] = "accounts.binance.com";
 const char api_host[] = "api.binance.com";
 const char oauth_callback[] = "com.brave.binance://authorization";
-const char oauth_scope[] = "user:email,user:address";
+const char oauth_scope[] = "user:email,user:address,asset:balance";
 const GURL oauth_url("https://accounts.binance.com/en/oauth/authorize");
 const unsigned int kRetriesCountOnNetworkChange = 1;
 
@@ -144,7 +144,7 @@ bool BinanceService::GetAccessToken(const std::string& code,
   url = net::AppendQueryParameter(url, "client_id", client_id);
   url = net::AppendQueryParameter(url, "code_verifier", code_verifier_);
   url = net::AppendQueryParameter(url, "redirect_uri", oauth_callback);
-  return OAuthRequest(base_url, url.query(), std::move(internal_callback));
+  return OAuthRequest(base_url, "POST", url.query(), std::move(internal_callback));
 }
 
 bool BinanceService::GetAccountBalances(GetAccountBalancesCallback callback) {
@@ -152,7 +152,7 @@ bool BinanceService::GetAccountBalances(GetAccountBalancesCallback callback) {
       base::Unretained(this), std::move(callback));
   GURL url = GetURLWithPath(oauth_host, oauth_path_account_balances);
   url = net::AppendQueryParameter(url, "access_token", access_token_);
-  return OAuthRequest(url, "", std::move(internal_callback));
+  return OAuthRequest(url, "GET", "", std::move(internal_callback));
 }
 
 void BinanceService::OnGetAccountBalances(GetAccountBalancesCallback callback,
@@ -164,7 +164,7 @@ void BinanceService::OnGetAccountBalances(GetAccountBalancesCallback callback,
     BinanceJSONParser::GetAccountBalancesFromJSON(body, &balances);
   }
 
-  std::move(callback).Run(balances, IsUnauthorized(status));
+  std::move(callback).Run(balances, !IsUnauthorized(status));
 }
 
 void BinanceService::OnGetAccessToken(
@@ -184,6 +184,7 @@ void BinanceService::OnGetAccessToken(
 }
 
 bool BinanceService::OAuthRequest(const GURL &url,
+                                  const std::string& method,
                                   const std::string& post_data,
                                   URLRequestCallback callback) {
   auto request = std::make_unique<network::ResourceRequest>();
@@ -192,7 +193,7 @@ bool BinanceService::OAuthRequest(const GURL &url,
                         net::LOAD_DO_NOT_SAVE_COOKIES |
                         net::LOAD_BYPASS_CACHE |
                         net::LOAD_DISABLE_CACHE;
-  request->method = "POST";
+  request->method = method;
 
   auto url_loader = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());
@@ -338,7 +339,7 @@ bool BinanceService::GetConvertQuote(
   url = net::AppendQueryParameter(url, "baseAsset", to);
   url = net::AppendQueryParameter(url, "amount", amount);
   url = net::AppendQueryParameter(url, "access_token", access_token_);
-  return OAuthRequest(url, "", std::move(internal_callback));
+  return OAuthRequest(url, "POST", "", std::move(internal_callback));
 }
 
 void BinanceService::OnGetConvertQuote(
@@ -359,7 +360,7 @@ bool BinanceService::GetTickerPrice(
       base::Unretained(this), std::move(callback));
   GURL url = GetURLWithPath(api_host, api_path_ticker_price);
   url = net::AppendQueryParameter(url, "symbol", symbol_pair);
-  return OAuthRequest(url, "", std::move(internal_callback));
+  return OAuthRequest(url, "POST", "", std::move(internal_callback));
 }
 
 bool BinanceService::GetTickerVolume(
@@ -369,7 +370,7 @@ bool BinanceService::GetTickerVolume(
       base::Unretained(this), std::move(callback));
   GURL url = GetURLWithPath(api_host, api_path_ticker_volume);
   url = net::AppendQueryParameter(url, "symbol", symbol_pair);
-  return OAuthRequest(url, "", std::move(internal_callback));
+  return OAuthRequest(url, "POST", "", std::move(internal_callback));
 }
 
 void BinanceService::OnGetTickerPrice(

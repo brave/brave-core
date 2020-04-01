@@ -98,8 +98,8 @@ class BinanceService : public KeyedService {
   void OnGetTickerVolume(GetTickerVolumeCallback callback,
                         const int status, const std::string& body,
                         const std::map<std::string, std::string>& headers);
-  bool OAuthRequest(const GURL& url, const std::string& post_data,
-                    URLRequestCallback callback);
+  bool OAuthRequest(const GURL& url, const std::string& method,
+      const std::string& post_data, URLRequestCallback callback);
   bool LoadTokensFromPrefs();
   bool IsUnauthorized(int status);
   void OnURLLoaderComplete(
