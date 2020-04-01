@@ -99,16 +99,7 @@ public class SKUPurchaseViewController: UIViewController, UIViewControllerTransi
       // TODO: Remove this tip when we integrate with shared libs (https://github.com/brave/brave-ios/issues/2383)
       self.rewards.ledger.tipPublisherDirectly(self.publisher, amount: amount, currency: "BAT") { result in
         self.purchaseView.viewState = .complete
-        self.responseHandler(.completed("""
-                        {
-                          "requestId": "a62c29b3-f840-47cd-b895-4573d3190227",
-                          "methodName": "bat",
-                          "details": {
-                            "transaction_id": "bcbbd947-346d-439f-96b4-101bbd966675",
-                            "message": "Payment for Ethiopian Coffee!"
-                          }
-                        }
-                    """))
+        self.responseHandler(.completed("04b5ec6e-d06e-4ad7-87b7-0e298d3ec444"))
       }
     }
   }

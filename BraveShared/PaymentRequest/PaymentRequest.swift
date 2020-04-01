@@ -7,7 +7,7 @@ public enum PaymentRequestResponse {
     case cancelled
     /// The user successfully completed payment and received an order resposne
     /// from the server
-    case completed(_ response: String)
+    case completed(_ orderId: String)
 }
 
 public struct PaymentRequest: Decodable {
