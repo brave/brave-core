@@ -8,9 +8,8 @@ import { SettingsMenu, SettingsRow, SettingsText, SettingsTitle, SettingsWrapper
 import { ListWidget, Tile, TileActionsContainer, TileAction, TileFavicon } from './gridSites'
 import { SiteRemovalNotification, SiteRemovalText, SiteRemovalAction } from './notification'
 import { ClockWidget } from './clock'
-import RewardsWidget from './rewards'
-import { WidgetStack } from './widgetStack'
-import BinanceWidget from './binance'
+import { RewardsWidget } from './rewards'
+import { BinanceWidget } from './binance'
 import createWidget from './widget'
 
 export * from './page'
@@ -33,7 +32,6 @@ export {
   SettingsTitle,
   SettingsWrapper,
   RewardsWidget,
-  WidgetStack,
   BinanceWidget,
   createWidget
 }

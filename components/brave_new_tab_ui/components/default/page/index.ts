@@ -89,8 +89,7 @@ export const GridItemWidgetStack = styled('section')`
   grid-column: 3 / span 1;
   grid-row-end: span 2;
   @media screen and (max-width: ${breakpointLargeBlocks}) {
-    grid-column: 2 / span 2;
-    justify-self: end;
+    max-width: 284px;
   }
 `
 
@@ -262,6 +261,7 @@ export const Navigation = styled<{}, 'nav'>('nav')`
 
 interface IconButtonProps {
   clickDisabled?: boolean
+  isClickMenu?: boolean
 }
 
 export const IconLink = styled<{}, 'a'>('a')`
@@ -286,7 +286,8 @@ export const IconButton = styled<IconButtonProps, 'button'>('button')`
   height: 24px;
   padding: 0;
   border: none;
-  margin: 12px;
+  margin: 7px;
+  margin: ${p => p.isClickMenu ? 7 : 12}px;
   cursor: pointer;
   color: #ffffff;
   background-color: transparent;

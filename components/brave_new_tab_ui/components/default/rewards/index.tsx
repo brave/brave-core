@@ -3,6 +3,7 @@
 * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import createWidget from '../widget/index'
 import { convertBalance } from '../../../../brave_rewards/resources/page/utils'
 import { getLocale, splitStringForTag } from '../../../../common/locale'
 
@@ -69,7 +70,7 @@ const enum AmountItemType {
   TIPS = 1
 }
 
-export default class Rewards extends React.PureComponent<RewardsProps, {}> {
+class Rewards extends React.PureComponent<RewardsProps, {}> {
 
   getButtonText = (isAds: boolean = false) => {
     if (isAds) {
@@ -397,3 +398,5 @@ export default class Rewards extends React.PureComponent<RewardsProps, {}> {
     )
   }
 }
+
+export const RewardsWidget = createWidget(Rewards)
