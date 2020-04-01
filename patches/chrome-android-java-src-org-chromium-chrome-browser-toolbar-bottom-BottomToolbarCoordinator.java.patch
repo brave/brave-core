@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java
-index c7531b702b2a2e5b966af50ce97409a62a78efef..e733defe9b68f8ff45bdf120f15fca973b4f5bd2 100644
+index c7531b702b2a2e5b966af50ce97409a62a78efef..fca795089f42b922cddbfb66b5065eafc440c404 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java
 @@ -43,7 +43,7 @@ class BottomToolbarCoordinator {
@@ -31,7 +31,25 @@ index c7531b702b2a2e5b966af50ce97409a62a78efef..e733defe9b68f8ff45bdf120f15fca97
                  homeButtonListener, searchAcceleratorListener, mShareButtonListenerSupplier,
                  tabsSwitcherLongClickListner);
  
-@@ -263,4 +263,5 @@ class BottomToolbarCoordinator {
+@@ -232,13 +232,16 @@ class BottomToolbarCoordinator {
+ 
+     private void onShareDelegateAvailable(ShareDelegate shareDelegate) {
+         final OnClickListener shareButtonListener = v -> {
++/*
+             if (BottomToolbarVariationManager.isShareButtonOnBottom()) {
+                 recordBottomToolbarUseForIPH();
+                 RecordUserAction.record("MobileBottomToolbarShareButton");
+             }
+ 
++*/
+             Tab tab = mTabProvider.get();
+-            shareDelegate.share(tab, /*shareDirectly=*/false);
++            tab.GetActivity().addOrEditBookmark(tab);
++//        shareDelegate.share(tab, /*shareDirectly=*/false);
+         };
+ 
+         mShareButtonListenerSupplier.set(shareButtonListener);
+@@ -263,4 +266,5 @@ class BottomToolbarCoordinator {
              listener.onClick(v);
          };
      }

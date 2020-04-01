@@ -1,26 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-index 2240b1abd22366f3486e3f81277e4a489e7ae3ad..3dbc4defa78c8c1bfc9a6cb7f9d30effb3938b74 100644
+index f1b5eec21633f3c75567d12ceb54f02ce3be6906..32a5df30fa8b1f7eeee814c77492f497cea862d7 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-@@ -846,6 +846,7 @@ public class ToolbarManager implements ScrimObserver, ToolbarTabController, UrlF
-     // TODO(crbug.com/1026020): Move this logic to BottomToolbar class.
-     private void onShareDelegateAvailable(ShareDelegate shareDelegate) {
-         final OnClickListener shareButtonListener = v -> {
-+/*
-             if (BottomToolbarVariationManager.isShareButtonOnBottom()) {
-                 recordBottomToolbarUseForIPH();
-                 RecordUserAction.record("MobileBottomToolbarShareButton");
-@@ -859,7 +860,8 @@ public class ToolbarManager implements ScrimObserver, ToolbarTabController, UrlF
-                 activity = ((TabImpl) tab).getActivity();
-                 isIncognito = tab.isIncognito();
-             }
--            shareDelegate.share(tab, /*shareDirectly=*/false);
-+*///        shareDelegate.share(tab, /*shareDirectly=*/false);
-+            mActivity.addOrEditBookmark(mActivity.getActivityTab());
-         };
-         mShareButtonListenerSupplier.set(shareButtonListener);
-     }
-@@ -1819,6 +1821,7 @@ public class ToolbarManager implements ScrimObserver, ToolbarTabController, UrlF
+@@ -1649,6 +1649,7 @@ public class ToolbarManager implements ScrimObserver, ToolbarTabController, UrlF
          boolean editingAllowed = currentTab == null || mBookmarkBridge == null
                  || mBookmarkBridge.isEditBookmarksEnabled();
          mToolbar.updateBookmarkButton(isBookmarked, editingAllowed);
