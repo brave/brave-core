@@ -71,8 +71,6 @@ extern const char kOtherBookmarksMigrated[];
 extern const char kBraveShieldsSettingsVersion[];
 extern const char kBinanceAccessToken[];
 extern const char kBinanceRefreshToken[];
-extern const char kBinanceCodeChallenge[];
-extern const char kBinanceCodeVerifier[];
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 extern const char kBraveGCMChannelStatus[];
 #endif

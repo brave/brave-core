@@ -61,13 +61,8 @@ class BinanceService : public KeyedService {
       const std::string& to,
       const std::string& amount,
       GetConvertQuoteCallback callback);
-  using SetCodeChallengeCallback = base::OnceCallback<void(bool)>;
-  void SetCodeChallenge(const std::string& verifier,
-      const std::string& challenge,
-      SetCodeChallengeCallback callback);
   bool SetAccessTokens(const std::string& access_token,
                        const std::string& refresh_token);
-  bool SetCodeChallengePref(const std::string& verifier, const std::string& challenge);
   using GetTickerPriceCallback = base::OnceCallback<void(const std::string&)>;
   using GetTickerVolumeCallback = base::OnceCallback<void(const std::string&)>;
   bool GetTickerPrice(const std::string& symbol_pair,

@@ -309,12 +309,7 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
   } else if (settingsKeyInput == "showRewards") {
     settingsKey = kNewTabPageShowRewards;
   } else if (settingsKeyInput == "isBrandedWallpaperNotificationDismissed") {
-<<<<<<< HEAD
     settingsKey = kBrandedWallpaperNotificationDismissed;
-=======
-    settingsKey =
-        ntp_sponsored_images::prefs::kBrandedWallpaperNotificationDismissed;
->>>>>>> Initial NTP widget with buy support
   } else if (settingsKeyInput == "showBinance") {
     settingsKey = kNewTabPageShowBinance;
   } else {

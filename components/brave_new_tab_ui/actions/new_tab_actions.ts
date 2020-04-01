@@ -112,10 +112,6 @@ export const setBinanceSupported = (supported: boolean) => action(types.SET_BINA
   supported
 })
 
-export const onBinanceBalances = (balances: Record<string, string>) => action(types.ON_BINANCE_BALANCES, {
-  balances
-})
-
 export const onBinanceClientUrl = (clientUrl: string) => action(types.ON_BINANCE_CLIENT_URL, {
   clientUrl
 })

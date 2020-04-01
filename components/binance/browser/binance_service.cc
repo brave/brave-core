@@ -14,6 +14,7 @@
 #include "base/containers/flat_set.h"
 #include "base/files/file_enumerator.h"
 #include "base/files/file_util.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
@@ -27,6 +28,8 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
+#include "crypto/random.h"
+#include "crypto/sha2.h"
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -69,6 +72,34 @@ GURL GetURLWithPath(const std::string& host, const std::string& path) {
   return GURL(std::string(url::kHttpsScheme) + "://" + host).Resolve(path);
 }
 
+std::string GetHexEncodedCryptoRandomSeed() {
+  const size_t kSeedByteLength = 28;
+  // crypto::RandBytes is fail safe.
+  uint8_t random_seed_bytes[kSeedByteLength];
+  crypto::RandBytes(random_seed_bytes, kSeedByteLength);
+  return base::HexEncode(
+      reinterpret_cast<char*>(random_seed_bytes), kSeedByteLength);
+}
+
+std::string GetCodeChallenge(const std::string& code_verifier) {
+  std::string code_challenge;
+  char raw[crypto::kSHA256Length] = {0};
+  crypto::SHA256HashString(code_verifier,
+                           raw,
+                           crypto::kSHA256Length);
+  base::Base64Encode(base::StringPiece(raw, crypto::kSHA256Length), &code_challenge);
+
+  // Binance expects the following conversions for the base64 encoded value:
+  std::replace(code_challenge.begin(), code_challenge.end(), '+', '-');
+  std::replace(code_challenge.begin(), code_challenge.end(), '/', '_');
+  code_challenge.erase(std::find_if(code_challenge.rbegin(),
+      code_challenge.rend(), [](int ch) {
+    return ch != '=';
+  }).base(), code_challenge.end());
+
+  return code_challenge;
+}
+
 }  // namespace
 
 BinanceService::BinanceService(content::BrowserContext* context)
@@ -84,6 +115,14 @@ BinanceService::~BinanceService() {
 }
 
 std::string BinanceService::GetOAuthClientUrl() {
+  // The code_challenge_ value is derived from the code_verifier value.
+  // Step 1 of the oauth process uses the code_challenge_ value.
+  // Step 4 of the oauth process uess the code_verifer_.
+  // We never need to persist these values, they are just used to get an
+  // access token.
+  code_verifier_ = GetHexEncodedCryptoRandomSeed();
+  code_challenge_ = GetCodeChallenge(code_verifier_);
+
   GURL url(oauth_url);
   url = net::AppendQueryParameter(url, "response_type", "code");
   url = net::AppendQueryParameter(url, "client_id", client_id);
@@ -126,13 +165,6 @@ void BinanceService::OnGetAccountBalances(GetAccountBalancesCallback callback,
   }
 
   std::move(callback).Run(balances, IsUnauthorized(status));
-}
-
-void BinanceService::SetCodeChallenge(const std::string& verifier,
-                                      const std::string& challenge,
-                                      SetCodeChallengeCallback callback) {
-  bool success = SetCodeChallengePref(verifier, challenge);
-  std::move(callback).Run(success);
 }
 
 void BinanceService::OnGetAccessToken(
@@ -246,39 +278,6 @@ bool BinanceService::SetAccessTokens(const std::string& access_token,
       kBinanceAccessToken, encoded_encrypted_access_token);
   profile->GetPrefs()->SetString(kBinanceRefreshToken,
       encoded_encrypted_refresh_token);
-
-  return true;
-}
-
-bool BinanceService::SetCodeChallengePref(const std::string& verifier,
-                                          const std::string& challenge) {
-  code_challenge_ = challenge;
-  code_verifier_ = verifier;
-
-  std::string encrypted_code_verifier;
-  if (!OSCrypt::EncryptString(verifier, &encrypted_code_verifier)) {
-    return false;
-  }
-
-  std::string encrypted_code_challenge;
-  if (!OSCrypt::EncryptString(challenge, &encrypted_code_challenge)) {
-    LOG(ERROR) << "Could not encrypt and save Binance code challenge";
-    return false;
-  }
-
-  std::string encoded_encrypted_code_verifier;
-  base::Base64Encode(encrypted_code_verifier,
-       &encoded_encrypted_code_verifier);
-
-  std::string encoded_encrypted_code_challenge;
-  base::Base64Encode(encrypted_code_challenge,
-       &encoded_encrypted_code_challenge);
-
-  Profile* profile = Profile::FromBrowserContext(context_);
-  profile->GetPrefs()->SetString(
-      kBinanceCodeChallenge, challenge);
-  profile->GetPrefs()->SetString(
-      kBinanceCodeVerifier, verifier);
 
   return true;
 }
