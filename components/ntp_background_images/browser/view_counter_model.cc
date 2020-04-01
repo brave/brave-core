@@ -9,8 +9,8 @@
 
 namespace ntp_background_images {
 
-ViewCounterModel::ViewCounterModel()
-    : count_to_branded_wallpaper_(kInitialCountToBrandedWallpaper) {
+ViewCounterModel::ViewCounterModel() {
+  Reset();
 }
 
 ViewCounterModel::~ViewCounterModel() = default;
@@ -47,6 +47,13 @@ void ViewCounterModel::RegisterPageView() {
     current_wallpaper_image_index_++;
     current_wallpaper_image_index_ %= total_image_count_;
   }
+}
+
+void ViewCounterModel::Reset() {
+  count_to_branded_wallpaper_ = kInitialCountToBrandedWallpaper;
+  current_wallpaper_image_index_ = 0;
+  total_image_count_ = -1;
+  ignore_count_to_branded_wallpaper_ = false;
 }
 
 }  // namespace ntp_background_images

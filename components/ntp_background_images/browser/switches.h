@@ -13,7 +13,8 @@ namespace switches {
 // Allows forcing background images to use a local directory to find the json
 // (photo.json for sponsored images or data.json for super referral) rule file
 // and associated images.
-extern const char kNTPBrandedDataPathForTesting[];
+extern const char kNTPSponsoredImagesDataPathForTesting[];
+extern const char kNTPSuperReferralDataPathForTesting[];
 
 }  // namespace switches
 

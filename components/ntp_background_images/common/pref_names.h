@@ -18,8 +18,8 @@ extern const char kBrandedWallpaperNotificationDismissed[];
 extern const char kNewTabPageShowBackgroundImage[];
 
 // Local prefs
-extern const char kNewTabPageCachedReferralPromoCode[];
 extern const char kNewTabPageCachedSuperReferralComponentInfo[];
+extern const char kNewTabPageCachedSuperReferralFaviconList[];
 
 }  // namespace prefs
 }  // namespace ntp_background_images

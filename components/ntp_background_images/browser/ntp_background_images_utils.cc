@@ -13,10 +13,10 @@
 namespace ntp_background_images {
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterStringPref(prefs::kNewTabPageCachedReferralPromoCode,
-                               std::string());
   registry->RegisterDictionaryPref(
       prefs::kNewTabPageCachedSuperReferralComponentInfo);
+  registry->RegisterListPref(
+      prefs::kNewTabPageCachedSuperReferralFaviconList);
 }
 
 }  // namespace ntp_background_images

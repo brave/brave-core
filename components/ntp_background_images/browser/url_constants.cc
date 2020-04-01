@@ -10,6 +10,8 @@ namespace ntp_background_images {
 const char kBrandedWallpaperHost[] = "branded-wallpaper";
 const char kLogoPath[] = "logo.png";
 const char kWallpaperPathPrefix[] = "wallpaper-";
+const char kSuperReferralPath[] = "super-referral/";
+const char kSponsoredImagesPath[] = "sponsored-images/";
 const char kSuperReferralMappingTableURL[] =
     "https://brave-ntp-crx-input.s3-us-west-2.amazonaws.com/superreferrer/map-table.json";  // NOLINT
 const char kSuperReferralMappingTableDevURL[] =

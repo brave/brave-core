@@ -44,17 +44,19 @@ class TestNTPBackgroundImagesService : public NTPBackgroundImagesService {
  public:
   using NTPBackgroundImagesService::NTPBackgroundImagesService;
 
-  void StartSuperReferralComponent(
-      const std::string& super_referral_code) override {
-    NTPBackgroundImagesService::StartSuperReferralComponent(
-        super_referral_code);
-    current_referral_code_ = super_referral_code;
-    super_referral_component_started_ = true;
+  void CheckSuperReferralComponent() override {
+    NTPBackgroundImagesService::CheckSuperReferralComponent();
+    checked_super_referral_component_ = true;
   }
 
-  void StartSponsoredImagesComponent() override {
-    NTPBackgroundImagesService::StartSponsoredImagesComponent();
+  void RegisterSponsoredImagesComponent() override {
+    NTPBackgroundImagesService::RegisterSponsoredImagesComponent();
     sponsored_images_component_started_ = true;
+  }
+
+  void RegisterSuperReferralComponent() override {
+    NTPBackgroundImagesService::RegisterSuperReferralComponent();
+    super_referral_component_started_ = true;
   }
 
   void DownloadSuperReferralMappingTable() override {
@@ -67,19 +69,23 @@ class TestNTPBackgroundImagesService : public NTPBackgroundImagesService {
     referral_promo_code_change_monitored_ = true;
   }
 
-  void UnRegisterSuperReferralComponentIfRunning(
-      const std::string& referral_code) override {
-    NTPBackgroundImagesService::UnRegisterSuperReferralComponentIfRunning(
-        referral_code);
-    unregistered_referral_code_ = referral_code;
+  void MarkThisInstallIsNotSuperReferralForever() override {
+    NTPBackgroundImagesService::MarkThisInstallIsNotSuperReferralForever();
+    marked_this_install_is_not_super_referral_forever_ = true;
   }
 
-  std::string current_referral_code_;
-  std::string unregistered_referral_code_;
+  void UnRegisterSuperReferralComponent() override {
+    NTPBackgroundImagesService::UnRegisterSuperReferralComponent();
+    unregistered_super_referral_component_ = true;
+  }
+
   bool super_referral_component_started_ = false;
+  bool checked_super_referral_component_ = false;
   bool sponsored_images_component_started_ = false;
   bool mapping_table_requested_ = false;
   bool referral_promo_code_change_monitored_ = false;
+  bool marked_this_install_is_not_super_referral_forever_ = false;
+  bool unregistered_super_referral_component_ = false;
 };
 
 class NTPBackgroundImagesServiceTest : public testing::Test {
@@ -94,11 +100,8 @@ class NTPBackgroundImagesServiceTest : public testing::Test {
 
   void Init() {
     service_.reset(new TestNTPBackgroundImagesService(
-        nullptr, &pref_service_,
+        nullptr, &pref_service_, base::FilePath(),
         base::MakeRefCounted<network::TestSharedURLLoaderFactory>()));
-#if !defined(OS_LINUX)
-    service_->enable_super_referral_for_test_ = true;
-#endif
     service_->Init();
   }
 
@@ -109,8 +112,8 @@ class NTPBackgroundImagesServiceTest : public testing::Test {
 
 TEST_F(NTPBackgroundImagesServiceTest, BasicTest) {
   Init();
-  // By default manager doesn't have data.
-  EXPECT_EQ(service_->GetBackgroundImagesData(), nullptr);
+  // NTP SI Component is registered always at start.
+  EXPECT_TRUE(service_->sponsored_images_component_started_);
 }
 
 TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
@@ -119,16 +122,16 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   service_->AddObserver(&observer);
 
   // Check with json file w/o schema version with empty object.
-  service_->images_data_.reset();
-  service_->OnGetComponentJsonData("{}");
-  EXPECT_EQ(nullptr, service_->GetBackgroundImagesData());
+  service_->si_images_data_.reset();
+  service_->OnGetComponentJsonData(false, "{}");
+  EXPECT_EQ(nullptr, service_->GetBackgroundImagesData(false));
 
   // Check with json file with empty object.
-  service_->images_data_.reset();
+  service_->si_images_data_.reset();
   observer.called_ = false;
   observer.data_ = nullptr;
-  service_->OnGetComponentJsonData(kTestEmptyComponent);
-  auto* data = service_->GetBackgroundImagesData();
+  service_->OnGetComponentJsonData(false, kTestEmptyComponent);
+  auto* data = service_->GetBackgroundImagesData(false);
   EXPECT_EQ(data, nullptr);
   EXPECT_TRUE(observer.called_);
   EXPECT_TRUE(observer.data_->logo_alt_text.empty());
@@ -156,11 +159,11 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
               }
           ]
       })";
-  service_->images_data_.reset();
+  service_->si_images_data_.reset();
   observer.called_ = false;
   observer.data_ = nullptr;
-  service_->OnGetComponentJsonData(test_json_string);
-  data = service_->GetBackgroundImagesData();
+  service_->OnGetComponentJsonData(false, test_json_string);
+  data = service_->GetBackgroundImagesData(false);
   EXPECT_TRUE(data);
   EXPECT_TRUE(data->IsValid());
   EXPECT_FALSE(data->IsSuperReferral());
@@ -200,11 +203,11 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
             }
         ]
     })";
-  service_->images_data_.reset();
+  service_->si_images_data_.reset();
   observer.called_ = false;
   observer.data_ = nullptr;
-  service_->OnGetComponentJsonData(test_json_string_higher_schema);
-  data = service_->GetBackgroundImagesData();
+  service_->OnGetComponentJsonData(false, test_json_string_higher_schema);
+  data = service_->GetBackgroundImagesData(false);
   EXPECT_FALSE(data);
 
   service_->RemoveObserver(&observer);
@@ -245,6 +248,7 @@ const char kTestMappingTable[] = R"(
 const char kTestSuperReferral[] = R"(
     {
       "schemaVersion": 1,
+      "themeName": "Technikke",
       "logo": {
         "imageUrl": "logo.png",
         "alt": "Technikke: For music lovers",
@@ -291,11 +295,11 @@ TEST_F(NTPBackgroundImagesServiceTest, BasicSuperReferralTest) {
   TestObserver observer;
   service_->AddObserver(&observer);
 
-  service_->images_data_.reset();
+  service_->sr_images_data_.reset();
   observer.called_ = false;
   observer.data_ = nullptr;
-  service_->OnGetComponentJsonData(kTestSuperReferral);
-  auto* data = service_->GetBackgroundImagesData();
+  service_->OnGetComponentJsonData(true, kTestSuperReferral);
+  auto* data = service_->GetBackgroundImagesData(true);
   EXPECT_TRUE(data);
 
   const size_t wallpaper_count = 3;
@@ -314,164 +318,95 @@ TEST_F(NTPBackgroundImagesServiceTest, BasicSuperReferralTest) {
 TEST_F(NTPBackgroundImagesServiceTest, WithDefaultReferralCodeTest1) {
   Init();
 
-  // Initially, mapping table is downloaded.
-  EXPECT_TRUE(service_->mapping_table_requested_);
-  EXPECT_FALSE(service_->referral_promo_code_change_monitored_);
-  EXPECT_FALSE(service_->super_referral_component_started_);
-  EXPECT_FALSE(service_->sponsored_images_component_started_);
-
-  service_->OnGetMappingTableData(
-      std::make_unique<std::string>(kTestMappingTable));
-
-  // Referral code is not fetched from referrals service.
-  // If current referral code is emoty, start SI component by default.
-  // Promo code change monitoring is started.
-  EXPECT_TRUE(service_->referral_promo_code_change_monitored_);
+  // Initially, only SI is started and pref is monitored to get referral code.
   EXPECT_TRUE(service_->sponsored_images_component_started_);
+  EXPECT_TRUE(service_->referral_promo_code_change_monitored_);
+  EXPECT_TRUE(service_->checked_super_referral_component_);
+  EXPECT_FALSE(service_->mapping_table_requested_);
   EXPECT_FALSE(service_->super_referral_component_started_);
+  EXPECT_FALSE(service_->marked_this_install_is_not_super_referral_forever_);
 
   // If default code is set, SI component is started.
-  service_->sponsored_images_component_started_ = false;
   pref_service_.SetString(kReferralPromoCode, "BRV001");
-  EXPECT_FALSE(service_->super_referral_component_started_);
-  EXPECT_TRUE(service_->sponsored_images_component_started_);
+  EXPECT_TRUE(service_->marked_this_install_is_not_super_referral_forever_);
 }
 
 // Test default referral code and not first run.
 // Sponsored Images component will be run after getting mapping table.
 TEST_F(NTPBackgroundImagesServiceTest, WithDefaultReferralCodeTest2) {
   pref_service_.SetString(kReferralPromoCode, "BRV001");
+  pref_service_.Set(prefs::kNewTabPageCachedSuperReferralComponentInfo,
+                    base::Value(base::Value::Type::DICTIONARY));
   Init();
 
-  // Initially, mapping table is downloaded.
-  EXPECT_TRUE(service_->mapping_table_requested_);
-  EXPECT_FALSE(service_->referral_promo_code_change_monitored_);
-  EXPECT_FALSE(service_->super_referral_component_started_);
-  EXPECT_FALSE(service_->sponsored_images_component_started_);
-
-  service_->OnGetMappingTableData(
-      std::make_unique<std::string>(kTestMappingTable));
-
-  // Check referral promo code is copied to cached promo code pref.
-  EXPECT_EQ("BRV001",
-            pref_service_.GetString(prefs::kNewTabPageCachedReferralPromoCode));
-
-  // Default code is already set. SI is started.
-  EXPECT_TRUE(service_->referral_promo_code_change_monitored_);
+  // Initially, SI is started and SR checking is done.
+  // This will not monitor prefs change because we already marked this is not
+  // the super referral.
   EXPECT_TRUE(service_->sponsored_images_component_started_);
+  EXPECT_TRUE(service_->checked_super_referral_component_);
+  EXPECT_FALSE(service_->mapping_table_requested_);
+  EXPECT_FALSE(service_->referral_promo_code_change_monitored_);
   EXPECT_FALSE(service_->super_referral_component_started_);
 }
 
 // Test non default referral code but it's not super referral.
 // Sponsored Images component will be run after getting mapping table.
 TEST_F(NTPBackgroundImagesServiceTest, WithNonSuperReferralCodeTest) {
+  Init();
+
+  EXPECT_TRUE(service_->sponsored_images_component_started_);
+  EXPECT_TRUE(service_->checked_super_referral_component_);
+  EXPECT_TRUE(service_->referral_promo_code_change_monitored_);
+  EXPECT_FALSE(service_->mapping_table_requested_);
+  EXPECT_FALSE(service_->super_referral_component_started_);
+
   pref_service_.SetString(kReferralPromoCode, "BRV002");
 
-  Init();
-  // If non-default code is set, mapping table is requested.
-  EXPECT_FALSE(service_->sponsored_images_component_started_);
-  EXPECT_FALSE(service_->super_referral_component_started_);
+  // Mapping table is requested because it's not a default code.
   EXPECT_TRUE(service_->mapping_table_requested_);
+  EXPECT_FALSE(service_->marked_this_install_is_not_super_referral_forever_);
 
-  // If it's not super-referral, regional wallpaper is started.
+  // If it's not super-referral, we mark this install is not a valid SR.
   service_->OnGetMappingTableData(
       std::make_unique<std::string>(kTestMappingTable));
-  EXPECT_TRUE(service_->sponsored_images_component_started_);
+
+  EXPECT_TRUE(service_->marked_this_install_is_not_super_referral_forever_);
   EXPECT_FALSE(service_->super_referral_component_started_);
 }
 
 TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
-  pref_service_.SetString(kReferralPromoCode, "BRV003");
-
   Init();
 
-  // If it's super-referral, referral wallpaper is started.
-  service_->OnGetMappingTableData(
-      std::make_unique<std::string>(kTestMappingTable));
-  EXPECT_TRUE(service_->super_referral_component_started_);
-  EXPECT_FALSE(service_->sponsored_images_component_started_);
-
-  // Got super referral component
-  service_->OnGetComponentJsonData(kTestSuperReferral);
-  auto* data = service_->GetBackgroundImagesData();
-  EXPECT_TRUE(data->IsSuperReferral());
-
-  // Simulate compaign ends and check sponsored images component is started.
-  EXPECT_FALSE(service_->sponsored_images_component_started_);
-  EXPECT_FALSE(pref_service_.FindPreference(
-      prefs::kNewTabPageCachedReferralPromoCode)->IsDefaultValue());
-  EXPECT_FALSE(pref_service_.FindPreference(
-      prefs::kNewTabPageCachedSuperReferralComponentInfo)->IsDefaultValue());
-  service_->OnGetComponentJsonData(kTestEmptyComponent);
   EXPECT_TRUE(service_->sponsored_images_component_started_);
-  // Check cached referral promo code is cleared if campaign ends.
-  EXPECT_TRUE(pref_service_.FindPreference(
-      prefs::kNewTabPageCachedReferralPromoCode)->IsDefaultValue());
-  EXPECT_TRUE(pref_service_.FindPreference(
-      prefs::kNewTabPageCachedSuperReferralComponentInfo)->IsDefaultValue());
-}
-
-// Install super referral again and check previous install was unregistered
-// and new SR is registered.
-TEST_F(NTPBackgroundImagesServiceTest, InstallSuperReferralOverReferralTest) {
-  pref_service_.SetString(kReferralPromoCode, "BRV004");
-
-  Init();
-  service_->OnGetMappingTableData(
-      std::make_unique<std::string>(kTestMappingTable));
-  EXPECT_TRUE(service_->super_referral_component_started_);
-  EXPECT_FALSE(service_->sponsored_images_component_started_);
-  EXPECT_EQ("BRV004", service_->current_referral_code_);
-
-  service_->super_referral_component_started_ = false;
-  pref_service_.SetString(kReferralPromoCode, "BRV003");
-  EXPECT_TRUE(service_->super_referral_component_started_);
-  EXPECT_EQ("BRV004", service_->unregistered_referral_code_);
-  EXPECT_EQ("BRV003", service_->current_referral_code_);
-}
-
-TEST_F(NTPBackgroundImagesServiceTest, SimulateNetworkErrorTest) {
-  Init();
-
-  // If there is no cached super referral component info, NTP SI component is
-  // registered.
-  service_->OnGetMappingTableData(nullptr);
-  EXPECT_TRUE(service_->sponsored_images_component_started_);
+  EXPECT_TRUE(service_->checked_super_referral_component_);
+  EXPECT_TRUE(service_->referral_promo_code_change_monitored_);
+  EXPECT_FALSE(service_->mapping_table_requested_);
   EXPECT_FALSE(service_->super_referral_component_started_);
 
-  // If there is cached super referral component info, NTP SR component is
-  // registered.
-  service_->sponsored_images_component_started_ = false;
   pref_service_.SetString(kReferralPromoCode, "BRV003");
-  base::Value value(base::Value::Type::DICTIONARY);
-  value.SetStringKey("publicKey", "ABCDEFGHIJKLMN");
-  value.SetStringKey("componentID", "abcdefghijklmn");
-  value.SetStringKey("companyName", "Brave software");
-  pref_service_.Set(prefs::kNewTabPageCachedSuperReferralComponentInfo, value);
 
-  service_->OnGetMappingTableData(nullptr);
-  EXPECT_TRUE(service_->super_referral_component_started_);
-  EXPECT_FALSE(service_->sponsored_images_component_started_);
-}
+  // Mapping table is requested because it's not a default code.
+  EXPECT_TRUE(service_->mapping_table_requested_);
+  EXPECT_FALSE(service_->marked_this_install_is_not_super_referral_forever_);
 
-TEST_F(NTPBackgroundImagesServiceTest, CleanUpTest) {
-  Init();
-
-  // If campaign ended component info is remained, clean it up.
-  pref_service_.SetString(prefs::kNewTabPageCachedReferralPromoCode, "BRV010");
-  base::Value value(base::Value::Type::DICTIONARY);
-  value.SetStringKey("publicKey", "ABCDEFGHIJKLMN");
-  value.SetStringKey("componentID", "abcdefghijklmn");
-  value.SetStringKey("companyName", "Brave software");
-  pref_service_.Set(prefs::kNewTabPageCachedSuperReferralComponentInfo, value);
-
-  // NTP SI is started because BRV010 ref code is not super referral.
   service_->OnGetMappingTableData(
       std::make_unique<std::string>(kTestMappingTable));
-  EXPECT_TRUE(service_->sponsored_images_component_started_);
-  // Check cached info is cleared.
-  EXPECT_TRUE(pref_service_.FindPreference(
+
+  // This is super referral code. So, start SR component.
+  EXPECT_TRUE(service_->super_referral_component_started_);
+  EXPECT_FALSE(service_->marked_this_install_is_not_super_referral_forever_);
+
+  // Got super referral component
+  service_->OnGetComponentJsonData(true, kTestSuperReferral);
+  auto* data = service_->GetBackgroundImagesData(true);
+  EXPECT_TRUE(data->IsSuperReferral());
+
+  EXPECT_FALSE(pref_service_.FindPreference(
       prefs::kNewTabPageCachedSuperReferralComponentInfo)->IsDefaultValue());
+  service_->OnGetComponentJsonData(true, kTestEmptyComponent);
+
+  EXPECT_TRUE(service_->marked_this_install_is_not_super_referral_forever_);
+  EXPECT_TRUE(service_->unregistered_super_referral_component_);
 }
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)

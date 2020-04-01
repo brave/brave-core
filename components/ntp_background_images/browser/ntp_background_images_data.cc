@@ -61,7 +61,8 @@ NTPBackgroundImagesData::NTPBackgroundImagesData()
 
 NTPBackgroundImagesData::NTPBackgroundImagesData(
     const std::string& json_string,
-    const base::FilePath& base_dir)
+    const base::FilePath& installed_dir,
+    const base::FilePath& top_sites_favicon_cache_dir)
     : NTPBackgroundImagesData() {
   base::Optional<base::Value> json_value = base::JSONReader::Read(json_string);
   if (!json_value) {
@@ -88,7 +89,7 @@ NTPBackgroundImagesData::NTPBackgroundImagesData(
   }
 
   if (auto* url = json_value->FindStringPath(kLogoImageURLPath))
-    logo_image_file = base_dir.AppendASCII(*url);
+    logo_image_file = installed_dir.AppendASCII(*url);
 
   if (auto* alt_text = json_value->FindStringPath(kLogoAltPath))
     logo_alt_text = *alt_text;
@@ -103,7 +104,7 @@ NTPBackgroundImagesData::NTPBackgroundImagesData(
   if (auto* wallpapers = json_value->FindListPath(kWallpapersPath)) {
     for (const auto& wallpaper : wallpapers->GetList()) {
       backgrounds.push_back({
-        base_dir.AppendASCII(
+        installed_dir.AppendASCII(
             *wallpaper.FindStringPath(kWallpaperImageURLPath)),
         { wallpaper.FindIntPath(kWallpaperFocalPointXPath).value_or(0),
           wallpaper.FindIntPath(kWallpaperFocalPointYPath).value_or(0) }
@@ -126,7 +127,7 @@ NTPBackgroundImagesData::NTPBackgroundImagesData(
 
       if (auto* url = top_site_value.FindStringPath(kTopSiteIconURLPath)) {
         site.image_path = *url;
-        site.image_file = base_dir.AppendASCII(*url);
+        site.image_file = top_sites_favicon_cache_dir.AppendASCII(*url);
       }
 
       // TopSite should have all properties.
@@ -149,7 +150,7 @@ bool NTPBackgroundImagesData::IsValid() const {
 }
 
 bool NTPBackgroundImagesData::IsSuperReferral() const {
-  return IsValid() && !top_sites.empty();
+  return IsValid() && !theme_name.empty();
 }
 
 base::Value NTPBackgroundImagesData::GetBackgroundAt(size_t index) {
@@ -159,10 +160,8 @@ base::Value NTPBackgroundImagesData::GetBackgroundAt(size_t index) {
   if (!IsValid())
     return data;
 
-  if (!theme_name.empty()) {
-    DCHECK(IsSuperReferral());
+  if (!theme_name.empty())
     data.SetStringKey("themeName", theme_name);
-  }
 
   data.SetBoolKey("isSponsored", !IsSuperReferral());
   data.SetStringKey("wallpaperImageUrl",
@@ -179,6 +178,11 @@ base::Value NTPBackgroundImagesData::GetBackgroundAt(size_t index) {
   return data;
 }
 
+std::string NTPBackgroundImagesData::GetURLPrefix() const {
+  return url_prefix + (IsSuperReferral() ? kSuperReferralPath
+                                         : kSponsoredImagesPath);
+}
+
 base::Value NTPBackgroundImagesData::GetTopSites(bool for_webui) const {
   base::Value top_sites_list_value(base::Value::Type::LIST);
   int index = 0;
@@ -188,7 +192,7 @@ base::Value NTPBackgroundImagesData::GetTopSites(bool for_webui) const {
     top_site_value.SetStringKey(for_webui ? "url" : "destinationUrl",
                                 top_site.destination_url);
     top_site_value.SetStringKey(for_webui? "favicon" : "iconUrl",
-                                url_prefix + top_site.image_path);
+                                GetURLPrefix() + top_site.image_path);
     if (for_webui)
       top_site_value.SetIntKey("pinnedIndex", index++);
     if (!for_webui)
@@ -199,13 +203,13 @@ base::Value NTPBackgroundImagesData::GetTopSites(bool for_webui) const {
 }
 
 std::string NTPBackgroundImagesData::logo_image_url() const {
-  return url_prefix + kLogoPath;
+  return GetURLPrefix() + kLogoPath;
 }
 
 std::vector<std::string> NTPBackgroundImagesData::wallpaper_image_urls() const {
   std::vector<std::string> wallpaper_image_urls;
   for (size_t i = 0; i < backgrounds.size(); i++) {
-    const std::string wallpaper_image_url = url_prefix + base::StringPrintf(
+    const std::string wallpaper_image_url = GetURLPrefix() + base::StringPrintf(
         "%s%zu.jpg", kWallpaperPathPrefix, i);
     wallpaper_image_urls.push_back(wallpaper_image_url);
   }

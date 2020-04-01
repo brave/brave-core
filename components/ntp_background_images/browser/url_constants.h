@@ -13,6 +13,8 @@ extern const char kLogoPath[];
 extern const char kWallpaperPathPrefix[];
 extern const char kSuperReferralMappingTableURL[];
 extern const char kSuperReferralMappingTableDevURL[];
+extern const char kSuperReferralPath[];
+extern const char kSponsoredImagesPath[];
 
 }  // namespace ntp_background_images
 

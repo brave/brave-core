@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/files/file_path.h"
 #include "base/gtest_prod_util.h"
@@ -48,6 +49,7 @@ class NTPBackgroundImagesService {
   NTPBackgroundImagesService(
       component_updater::ComponentUpdateService* cus,
       PrefService* local_pref,
+      const base::FilePath& user_data_dir,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   virtual ~NTPBackgroundImagesService();
 
@@ -61,14 +63,21 @@ class NTPBackgroundImagesService {
   void RemoveObserver(Observer* observer);
   bool HasObserver(Observer* observer);
 
-  NTPBackgroundImagesData* GetBackgroundImagesData() const;
+  NTPBackgroundImagesData* GetBackgroundImagesData(bool super_referral) const;
 
   bool test_data_used() const { return test_data_used_; }
 
   void InitializeWebUIDataSource(content::WebUIDataSource* html_source);
 
-  // This can return quickly whether current install is super referral.
+  // This api can be used for fast checking before SR component registration.
+  // NOTE: SR Data could not be availble even if this returns true because
+  // component data loading could not be finished yet.
+  // Use this api just for checking whether this install is SR.
+  // This returns true when we certainly know this install is SR.
+  // If this returns false, we don't know this install is SR or not for now.
+  // So, don't assume this install is not SR if this returns false.
   bool IsSuperReferral() const;
+  std::vector<std::string> GetCachedTopSitesFaviconList() const;
 
  private:
   friend class TestNTPBackgroundImagesService;
@@ -83,12 +92,7 @@ class NTPBackgroundImagesService {
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
                            WithSuperReferralCodeTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
-                           InstallSuperReferralOverReferralTest);
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
-                           SimulateNetworkErrorTest);
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
                            BasicSuperReferralTest);
-  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest, CleanUpTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            NotActiveInitially);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
@@ -103,50 +107,42 @@ class NTPBackgroundImagesService {
 
   void OnComponentReady(bool is_super_referral,
                         const base::FilePath& installed_dir);
-  void OnGetComponentJsonData(const std::string& json_string);
+  void OnGetComponentJsonData(bool is_super_referral,
+                              const std::string& json_string);
   void OnPreferenceChanged(const std::string& pref_name);
   void OnGetMappingTableData(std::unique_ptr<std::string> json_string);
 
-  void GetComponentJsonData(const base::FilePath& installed_dir);
-  void NotifyObservers();
-  void DetermineTargetComponent();
-  bool IsSuperReferralCode(const std::string& referral_code);
   std::string GetReferralPromoCode() const;
-  std::string GetCachedReferralPromoCode() const;
-  void UnRegisterSponsoredImagesComponentIfRunning();
-  bool IsAlreadyRegistered(const std::string& component_id);
 
-  // Returns true if local test data is passed via command line.
-  bool UseLocalTestData();
+  void CacheTopSitesFaviconList();
+  void RestoreCachedTopSitesFaviconList();
 
-  void CleanUp();
+  // Return true if test data is passed.
+  bool UseLocalSponsoredImagesestData();
+  bool UseLocalSuperReferralTestData();
 
-  // Check super referral component is available for this install and start
-  // start it if we can confirm this insall comes from super referral.
-  // Otherwise, start sponsored images component.
   // virtual for test.
-  virtual void StartSuperReferralComponent(
-      const std::string& super_referral_code);
-  virtual void StartSponsoredImagesComponent();
+  virtual void CheckSuperReferralComponent();
+  virtual void RegisterSponsoredImagesComponent();
+  virtual void RegisterSuperReferralComponent();
   virtual void DownloadSuperReferralMappingTable();
   virtual void MonitorReferralPromoCodeChange();
-  virtual void UnRegisterSuperReferralComponentIfRunning(
-      const std::string& referral_code);
+  virtual void UnRegisterSuperReferralComponent();
+  virtual void MarkThisInstallIsNotSuperReferralForever();
 
-  // Used to flag what component is our last decision.
-  // If this is true, NTP SR component registration is requested lastly.
-  bool is_super_referral_lastly_asked_component_ = false;
+  std::vector<std::string> cached_top_site_favicon_list_;
   bool test_data_used_ = false;
-  base::Value mapping_table_value_;
   component_updater::ComponentUpdateService* component_update_service_;
   PrefService* local_pref_;
-  base::FilePath installed_dir_;
+  const base::FilePath top_sites_favicon_cache_dir_;
+  base::FilePath si_installed_dir_;
+  base::FilePath sr_installed_dir_;
   base::ObserverList<Observer>::Unchecked observer_list_;
-  std::unique_ptr<NTPBackgroundImagesData> images_data_;
+  std::unique_ptr<NTPBackgroundImagesData> si_images_data_;
+  std::unique_ptr<NTPBackgroundImagesData> sr_images_data_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<network::SimpleURLLoader> loader_;
   PrefChangeRegistrar pref_change_registrar_;
-  bool enable_super_referral_for_test_ = false;
   base::WeakPtrFactory<NTPBackgroundImagesService> weak_factory_;
 };
 

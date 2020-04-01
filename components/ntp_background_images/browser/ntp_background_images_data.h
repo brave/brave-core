@@ -41,7 +41,8 @@ struct Background {
 struct NTPBackgroundImagesData {
   NTPBackgroundImagesData();
   NTPBackgroundImagesData(const std::string& json_string,
-                         const base::FilePath& base_dir);
+                          const base::FilePath& installed_dir,
+                          const base::FilePath& top_sites_favicon_cache_dir);
   NTPBackgroundImagesData(const NTPBackgroundImagesData& data);
   NTPBackgroundImagesData& operator=(const NTPBackgroundImagesData& data);
   NTPBackgroundImagesData(NTPBackgroundImagesData&& data);
@@ -56,6 +57,8 @@ struct NTPBackgroundImagesData {
   base::Value GetTopSites(bool for_webui = false) const;
 
   bool IsSuperReferral() const;
+
+  std::string GetURLPrefix() const;
 
   std::string logo_image_url() const;
   std::vector<std::string> wallpaper_image_urls() const;

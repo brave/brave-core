@@ -144,6 +144,10 @@ NTPBackgroundImagesBridge::GetCurrentWallpaper(
 }
 
 void NTPBackgroundImagesBridge::OnUpdated(NTPBackgroundImagesData* data) {
+  // Don't have interest about in-effective component data update.
+  if (data == view_counter_service_->GetCurrentBrandedWallpaperData())
+    return;
+
   JNIEnv* env = AttachCurrentThread();
   Java_NTPBackgroundImagesBridge_onUpdated(env, java_object_);
 }

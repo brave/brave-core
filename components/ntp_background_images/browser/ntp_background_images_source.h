@@ -12,6 +12,10 @@
 #include "base/optional.h"
 #include "content/public/browser/url_data_source.h"
 
+namespace base {
+class FilePath;
+}  // namespace base
+
 namespace ntp_background_images {
 
 class NTPBackgroundImagesService;
@@ -38,14 +42,16 @@ class NTPBackgroundImagesSource : public content::URLDataSource {
   std::string GetMimeType(const std::string& path) override;
   bool AllowCaching() override;
 
+  void GetImageFile(const base::FilePath& image_file_path,
+                    GotDataCallback callback);
   void OnGotImageFile(GotDataCallback callback,
                       base::Optional<std::string> input);
   bool IsValidPath(const std::string& path) const;
   bool IsLogoPath(const std::string& path) const;
   bool IsWallpaperPath(const std::string& path) const;
   int GetWallpaperIndexFromPath(const std::string& path) const;
-  bool IsTopSiteIconPath(const std::string& path) const;
-  int GetTopSiteIndexFromPath(const std::string& path) const;
+  bool IsTopSiteFaviconPath(const std::string& path) const;
+  base::FilePath GetTopSiteFaviconFilePath(const std::string& path) const;
 
   NTPBackgroundImagesService* service_;  // not owned
   base::WeakPtrFactory<NTPBackgroundImagesSource> weak_factory_;

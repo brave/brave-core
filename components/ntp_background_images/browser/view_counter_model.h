@@ -31,6 +31,8 @@ class ViewCounterModel {
   void RegisterPageView();
   void ResetCurrentWallpaperImageIndex();
 
+  void Reset();
+
  private:
   static const int kInitialCountToBrandedWallpaper = 1;
   static const int kRegularCountToBrandedWallpaper = 3;
@@ -38,8 +40,8 @@ class ViewCounterModel {
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest, NTPSponsoredImagesTest);
 
   int current_wallpaper_image_index_ = 0;
-  int count_to_branded_wallpaper_;
-  int total_image_count_ = -1;
+  int count_to_branded_wallpaper_ = 0;
+  int total_image_count_ = 0;
   bool ignore_count_to_branded_wallpaper_ = false;
 };
 

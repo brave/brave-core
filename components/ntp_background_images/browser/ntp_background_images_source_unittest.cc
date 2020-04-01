@@ -27,7 +27,7 @@ class NTPBackgroundImagesSourceTest : public testing::Test {
     ntp_background_images::RegisterLocalStatePrefs(registry);
     brave::RegisterPrefsForBraveReferralsService(registry);
     service_.reset(new NTPBackgroundImagesService(
-        nullptr, &local_pref_,
+        nullptr, &local_pref_, base::FilePath(),
         base::MakeRefCounted<network::TestSharedURLLoaderFactory>()));
     source_.reset(new NTPBackgroundImagesSource(service_.get()));
   }
@@ -43,6 +43,7 @@ TEST_F(NTPBackgroundImagesSourceTest, BasicTest) {
   const std::string test_json_string_referral = R"(
       {
         "schemaVersion": 1,
+        "themeName": "Technikke",
         "logo": {
           "imageUrl": "logo.png",
           "alt": "Technikke: For music lovers",
@@ -80,19 +81,21 @@ TEST_F(NTPBackgroundImagesSourceTest, BasicTest) {
           }
         ]
       })";
-  service_->OnGetComponentJsonData(test_json_string_referral);
+  service_->OnGetComponentJsonData(true, test_json_string_referral);
   EXPECT_FALSE(source_->AllowCaching());
-  EXPECT_TRUE(source_->IsTopSiteIconPath("bat.png"));
-  EXPECT_FALSE(source_->IsTopSiteIconPath("logo.png"));
-  EXPECT_TRUE(source_->IsWallpaperPath("wallpaper-1.jpg"));
-  EXPECT_TRUE(source_->IsValidPath("brave.png"));
-  EXPECT_FALSE(source_->IsValidPath("abcd.png"));
-  EXPECT_EQ("image/png", source_->GetMimeType("logo.png"));
-  EXPECT_EQ("image/jpg", source_->GetMimeType("wallpaper-2.jpg"));
-  EXPECT_EQ(0, source_->GetWallpaperIndexFromPath("wallpaper-0.jpg"));
-  EXPECT_EQ(-1, source_->GetWallpaperIndexFromPath("wallpaper-3.jpg"));
-  EXPECT_EQ(1, source_->GetTopSiteIndexFromPath("wikipedia.png"));
-  EXPECT_EQ(-1, source_->GetTopSiteIndexFromPath("abcd.png"));
+  EXPECT_TRUE(source_->IsTopSiteFaviconPath("super-referral/bat.png"));
+  EXPECT_FALSE(source_->IsTopSiteFaviconPath("super-referral/logo.png"));
+  EXPECT_TRUE(source_->IsWallpaperPath("super-referral/wallpaper-1.jpg"));
+  EXPECT_TRUE(source_->IsValidPath("super-referral/brave.png"));
+  EXPECT_FALSE(source_->IsValidPath("super-duper/brave.png"));
+  EXPECT_FALSE(source_->IsValidPath("super-referral/abcd.png"));
+  EXPECT_EQ("image/png", source_->GetMimeType("super-referral/logo.png"));
+  EXPECT_EQ(
+      "image/jpg", source_->GetMimeType("super-referral/wallpaper-2.jpg"));
+  EXPECT_EQ(
+      0, source_->GetWallpaperIndexFromPath("super-referral/wallpaper-0.jpg"));
+  EXPECT_EQ(
+      -1, source_->GetWallpaperIndexFromPath("super-referral/wallpaper-3.jpg"));
 }
 
 }  // namespace ntp_background_images

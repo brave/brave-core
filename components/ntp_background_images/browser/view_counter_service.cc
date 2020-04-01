@@ -47,7 +47,7 @@ ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
   if (service_->test_data_used()) {
     // Explicitly trigger OnUpdated() because test data can be set before
     // Observeris added to |service_|.
-    OnUpdated(service_->GetBackgroundImagesData());
+    OnUpdated(GetCurrentBrandedWallpaperData());
   }
 
   if (auto* data = GetCurrentBrandedWallpaperData())
@@ -60,13 +60,20 @@ ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
   pref_change_registrar_.Add(brave_ads::prefs::kEnabled,
       base::BindRepeating(&ViewCounterService::OnPreferenceChanged,
       base::Unretained(this)));
+  pref_change_registrar_.Add(prefs::kNewTabPageSuperReferralThemesOption,
+      base::BindRepeating(&ViewCounterService::OnPreferenceChanged,
+      base::Unretained(this)));
 }
 
 ViewCounterService::~ViewCounterService() = default;
 
 NTPBackgroundImagesData*
 ViewCounterService::GetCurrentBrandedWallpaperData() const {
-  return service_->GetBackgroundImagesData();
+  auto* sr_data = service_->GetBackgroundImagesData(true /* for_sr */);
+  if (sr_data && IsSuperReferralWallpaperOptedIn())
+    return sr_data;
+
+  return service_->GetBackgroundImagesData(false);
 }
 
 base::Value ViewCounterService::GetCurrentWallpaperForDisplay() const {
@@ -100,6 +107,11 @@ void ViewCounterService::Shutdown() {
 }
 
 void ViewCounterService::OnUpdated(NTPBackgroundImagesData* data) {
+  // We can get non effective component update because
+  // NTPBackgroundImagesService can manage SI and SR both.
+  if (data != GetCurrentBrandedWallpaperData())
+    return;
+
   // Data is updated, so change our stored data and reset any indexes.
   // But keep view counter until branded content is seen.
   if (data) {
@@ -109,7 +121,22 @@ void ViewCounterService::OnUpdated(NTPBackgroundImagesData* data) {
   }
 }
 
+void ViewCounterService::ResetModel() {
+  if (auto* data = GetCurrentBrandedWallpaperData()) {
+    model_.Reset();
+    model_.set_total_image_count(data->backgrounds.size());
+    model_.set_ignore_count_to_branded_wallpaper(data->IsSuperReferral());
+  }
+}
+
 void ViewCounterService::OnPreferenceChanged(const std::string& pref_name) {
+  if (pref_name == prefs::kNewTabPageSuperReferralThemesOption) {
+    // Reset view counter model because
+    ResetModel();
+    return;
+  }
+
+  // Other prefs changes are used for notification state.
   ResetNotificationState();
 }
 
@@ -131,14 +158,16 @@ bool ViewCounterService::ShouldShowBrandedWallpaper() const {
 }
 
 bool ViewCounterService::IsBrandedWallpaperActive() const {
+  // We don't show SI and SR both if user disables bg image.
   if (!prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage))
     return false;
 
   if (!GetCurrentBrandedWallpaperData())
     return false;
 
-  if (GetCurrentBrandedWallpaperData()->IsSuperReferral())
-    return IsSuperReferralWallpaperOptedIn();
+  if (GetCurrentBrandedWallpaperData()->IsSuperReferral() &&
+      IsSuperReferralWallpaperOptedIn())
+    return true;
 
   return IsSponsoredImagesWallpaperOptedIn();
 }

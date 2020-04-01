@@ -47,7 +47,17 @@ class ViewCounterService : public KeyedService,
   base::Value GetCurrentWallpaper() const;
   base::Value GetTopSites(bool for_webui = false) const;
 
+  // This api can be used for fast checking before SR component registration.
+  // NOTE: SR Data could not be availble even if this returns true.
+  // Use this api just for checking whether this install is SR.
+  // This returns true if we certainly know this install is SR.
+  // If this returns false, we don't know this install is SR or not for now.
   bool IsSuperReferral() const;
+
+  // Gets the current data for branded wallpaper, if there
+  // is a wallpaper active. Does not consider user opt-in
+  // status, or consider whether the wallpaper should be shown.
+  NTPBackgroundImagesData* GetCurrentBrandedWallpaperData() const;
 
  private:
   // Sync with themeValues in brave_appearance_page.js
@@ -85,10 +95,8 @@ class ViewCounterService : public KeyedService,
   // Should we show the branded wallpaper right now, in addition
   // to the result from `IsBrandedWallpaperActive()`.
   bool ShouldShowBrandedWallpaper() const;
-  // Gets the current data for branded wallpaper, if there
-  // is a wallpaper active. Does not consider user opt-in
-  // status, or consider whether the wallpaper should be shown.
-  NTPBackgroundImagesData* GetCurrentBrandedWallpaperData() const;
+
+  void ResetModel();
 
   NTPBackgroundImagesService* service_ = nullptr;  // not owned
   PrefService* prefs_ = nullptr;  // not owned

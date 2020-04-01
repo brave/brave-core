@@ -17,10 +17,10 @@ const char kNewTabPageSuperReferralThemesOption[] =
 const char kNewTabPageShowBackgroundImage[] =
     "brave.new_tab_page.show_background_image";
 
-extern const char kNewTabPageCachedReferralPromoCode[] =
-    "brave.new_tab_page.cached_referral_promo_code";
-
 extern const char kNewTabPageCachedSuperReferralComponentInfo[] =
     "brave.new_tab_page.cached_super_referral_component_info";
+extern const char kNewTabPageCachedSuperReferralFaviconList[] =
+    "brave.new_tab_page.cached_super_referral_favicon_list";
+
 }  // namespace prefs
 }  // namespace ntp_background_images
