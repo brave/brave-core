@@ -1633,6 +1633,33 @@ TEST_F(BraveSyncServiceTest, AddNonClonedBookmarkKeys) {
   EXPECT_TRUE(meta_version.empty());
 }
 
+namespace {
+
+void SetBraveMeta(const bookmarks::BookmarkNode* node,
+                  const std::string& object_id,
+                  const std::string& order,
+                  const std::string& sync_timestamp,
+                  const std::string& version) {
+  bookmarks::BookmarkNode* mutable_node = AsMutable(node);
+  mutable_node->SetMetaInfo("object_id", object_id);
+  mutable_node->SetMetaInfo("order", order);
+  mutable_node->SetMetaInfo("sync_timestamp", sync_timestamp);
+  mutable_node->SetMetaInfo("version", version);
+}
+
+void GetAllNodes(const bookmarks::BookmarkNode* parent,
+                 std::set<const bookmarks::BookmarkNode*>* all_nodes) {
+  for (size_t i = 0; i < parent->children().size(); ++i) {
+    const bookmarks::BookmarkNode* current_child = parent->children()[i].get();
+    all_nodes->insert(current_child);
+    if (current_child->is_folder()) {
+      GetAllNodes(current_child, all_nodes);
+    }
+  }
+}
+
+}  //  namespace
+
 TEST_F(BraveSyncServiceTest, MigrateDuplicatedBookmarksObjectIds) {
   AsMutable(model()->other_node())->SetMetaInfo("order", kOtherNodeOrder);
 
@@ -1640,37 +1667,44 @@ TEST_F(BraveSyncServiceTest, MigrateDuplicatedBookmarksObjectIds) {
       model()->AddURL(model()->other_node(), 0, base::ASCIIToUTF16("A1"),
                       GURL("https://a1.com"));
 
-  AsMutable(bookmark_a1)->SetMetaInfo("object_id", "object_id_value");
-  AsMutable(bookmark_a1)->SetMetaInfo("order", "255.255.255.3");
-  AsMutable(bookmark_a1)->SetMetaInfo("sync_timestamp", "sync_timestamp_value");
-  AsMutable(bookmark_a1)->SetMetaInfo("version", "version_value");
+  SetBraveMeta(bookmark_a1, "object_id_value", "255.255.255.3",
+               "sync_timestamp_value", "version_value");
 
   model()->Copy(bookmark_a1, model()->other_node(), 1);
 
   model()->Copy(bookmark_a1, model()->other_node(), 2);
 
-  for (size_t i = 1; i <= 2; ++i) {
-    const bookmarks::BookmarkNode* bookmark_copy =
-        model()->other_node()->children().at(i).get();
+  const bookmarks::BookmarkNode* folder_f1 =
+      model()->AddFolder(model()->other_node(), 3, base::ASCIIToUTF16("F1"));
+  SetBraveMeta(folder_f1, "object_id_value", "255.255.255.5",
+               "sync_timestamp_value", "version_value");
 
+  const bookmarks::BookmarkNode* bookmark_b1 = model()->AddURL(
+      folder_f1, 0, base::ASCIIToUTF16("B1"), GURL("https://b1.com"));
+  SetBraveMeta(bookmark_b1, "object_id_value", "255.255.255.5.1",
+               "sync_timestamp_value", "version_value");
+
+  model()->Copy(folder_f1, model()->other_node(), 4);
+  model()->Copy(folder_f1, model()->other_node(), 5);
+  model()->Move(model()->other_node()->children()[5].get(), folder_f1, 0);
+
+  std::set<const bookmarks::BookmarkNode*> all_nodes;
+  GetAllNodes(model()->other_node(), &all_nodes);
+  for (const bookmarks::BookmarkNode* node : all_nodes) {
     // Verify fields after copying
     std::string meta_object_id;
-    EXPECT_TRUE(bookmark_copy->GetMetaInfo("object_id", &meta_object_id));
+    EXPECT_TRUE(node->GetMetaInfo("object_id", &meta_object_id));
     EXPECT_EQ(meta_object_id, "object_id_value");
-    std::string meta_order;
-    EXPECT_TRUE(bookmark_copy->GetMetaInfo("order", &meta_order));
-    EXPECT_EQ(meta_order, "255.255.255.3");
     std::string meta_sync_timestamp;
-    EXPECT_TRUE(
-        bookmark_copy->GetMetaInfo("sync_timestamp", &meta_sync_timestamp));
+    EXPECT_TRUE(node->GetMetaInfo("sync_timestamp", &meta_sync_timestamp));
     EXPECT_EQ(meta_sync_timestamp, "sync_timestamp_value");
     std::string meta_version;
-    EXPECT_TRUE(bookmark_copy->GetMetaInfo("version", &meta_version));
+    EXPECT_TRUE(node->GetMetaInfo("version", &meta_version));
     EXPECT_EQ(meta_version, "version_value");
 
     // Simulate all bookmarks don`t have added time, as a worse case,
     // but happened on live profile
-    AsMutable(bookmark_copy)->set_date_added(base::Time());
+    AsMutable(node)->set_date_added(base::Time());
   }
 
   sync_service()->AddNonClonedBookmarkKeys(model());
@@ -1680,9 +1714,9 @@ TEST_F(BraveSyncServiceTest, MigrateDuplicatedBookmarksObjectIds) {
                                                                    model());
 
   // All the bookmarks after migration must not have sync meta info
-  for (size_t i = 0; i <= 2; ++i) {
-    const bookmarks::BookmarkNode* bookmark =
-        model()->other_node()->children().at(i).get();
+  all_nodes.clear();
+  GetAllNodes(model()->other_node(), &all_nodes);
+  for (const bookmarks::BookmarkNode* bookmark : all_nodes) {
     std::string migrated_object_id;
     std::string migrated_order;
     std::string migrated_sync_timestamp;
