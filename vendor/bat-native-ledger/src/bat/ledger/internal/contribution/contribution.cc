@@ -1178,8 +1178,26 @@ void Contribution::OnExternalWalletServerPublisherInfo(
     double amount,
     const ledger::ExternalWallet& wallet,
     const ledger::RewardsType type) {
-  if (!info || info->status != ledger::PublisherStatus::VERIFIED) {
+  if (!info) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Publisher not found";
+    ledger_->ContributionCompleted(
+        ledger::Result::LEDGER_ERROR,
+        amount,
+        contribution_id,
+        type);
+    return;
+  }
+
+  if (info->status != ledger::PublisherStatus::VERIFIED) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Publisher not verified";
+
+    // we don't need callback as there is nothing to report back
+    SavePendingContribution(
+        info->publisher_key,
+        amount,
+        type,
+        [](const ledger::Result){});
+
     ledger_->ContributionCompleted(
         ledger::Result::LEDGER_ERROR,
         amount,
