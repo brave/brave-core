@@ -76,8 +76,7 @@ extern const char kSyncRecordsToResendMeta[];
 extern const char kDuplicatedBookmarksRecovered[];
 
 // Version indicates had recovered duplicated bookmarks object ids:
-// 1 - we had migrated object ids
-// 2 - we have migrated broken bookmarks orders
+// 2 - we had migrated object ids
 extern const char kDuplicatedBookmarksMigrateVersion[];
 
 class Prefs {
