@@ -1,13 +1,13 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelsUpdater.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelsUpdater.java
-index d49ba4549b2a4de6e3d3503d3bb664d9b686b8c5..7294e66716e3a7dbf1b94aa753d61730107067bc 100644
+index 18f95e7235f9ec0398b0f91901792bb6be304885..fa6c39f3eeba76cd6dda24695b02815ab4d3662c 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelsUpdater.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelsUpdater.java
-@@ -36,7 +36,7 @@ public class ChannelsUpdater {
+@@ -35,7 +35,7 @@ public class ChannelsUpdater {
          public static final ChannelsUpdater INSTANCE = Build.VERSION.SDK_INT < Build.VERSION_CODES.O
                  ? new ChannelsUpdater(false /* isAtLeastO */, null, null, -1)
-                 : new ChannelsUpdater(true /* isAtLeastO */, ContextUtils.getAppSharedPreferences(),
--                          new ChannelsInitializer(new NotificationManagerProxyImpl(
-+                          new ChannelsInitializer(new org.chromium.chrome.browser.notifications.BraveNotificationManagerProxyImpl(
-                                                           ContextUtils.getApplicationContext()),
-                                   ContextUtils.getApplicationContext().getResources()),
-                           ChannelDefinitions.CHANNELS_VERSION);
+                 : new ChannelsUpdater(true /* isAtLeastO */, SharedPreferencesManager.getInstance(),
+-                        new ChannelsInitializer(new NotificationManagerProxyImpl(
++                        new ChannelsInitializer(new org.chromium.chrome.browser.notifications.BraveNotificationManagerProxyImpl(
+                                                         ContextUtils.getApplicationContext()),
+                                 ContextUtils.getApplicationContext().getResources()),
+                         ChannelDefinitions.CHANNELS_VERSION);

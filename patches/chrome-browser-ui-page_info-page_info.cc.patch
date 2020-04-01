@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/ui/page_info/page_info.cc b/chrome/browser/ui/page_info/page_info.cc
-index 0f5ee4eaf00340bd1036605174b69cb13f0b4c0a..3f1c6eb0a5fd43a4d4ff3fe696d1060176f5fa38 100644
+index 918adb7c9628e68ba367e5dff25910536976d03b..0f1f87c99100aea01c964d726c663be0cbac1a3c 100644
 --- a/chrome/browser/ui/page_info/page_info.cc
 +++ b/chrome/browser/ui/page_info/page_info.cc
-@@ -173,6 +173,7 @@ bool ShouldShowPermission(
-     HostContentSettingsMap* content_settings,
-     content::WebContents* web_contents,
-     TabSpecificContentSettings* tab_specific_content_settings) {
+@@ -172,6 +172,7 @@ bool ShouldShowPermission(const PageInfoUI::PermissionInfo& info,
+                           HostContentSettingsMap* content_settings,
+                           content::WebContents* web_contents,
+                           bool changed_since_last_page_load) {
 +  if (!BraveShouldShowPermission(info, web_contents)) return false;
    // Note |ContentSettingsType::ADS| will show up regardless of its default
    // value when it has been activated on the current origin.

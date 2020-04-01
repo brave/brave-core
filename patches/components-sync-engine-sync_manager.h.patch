@@ -1,12 +1,12 @@
 diff --git a/components/sync/engine/sync_manager.h b/components/sync/engine/sync_manager.h
-index 16aee17d067b29470ac81bc5d3ed995e4a5277a7..5f6c90bf08611a7c0922047072a1d89d892fc4a7 100644
+index dda74a6b330b84d67e8dac386f9aa5ea1548aded..2eda3885bb0257a3128e585ca3ab4ccc982dbe4c 100644
 --- a/components/sync/engine/sync_manager.h
 +++ b/components/sync/engine/sync_manager.h
-@@ -255,6 +255,7 @@ class SyncManager {
+@@ -256,6 +256,7 @@ class SyncManager {
      std::string cache_guid;
      std::string birthday;
      std::string bag_of_chips;
 +    BRAVE_SYNC_MANAGER_INIT_ARGS_H
-   };
  
-   // The state of sync the feature. If the user turned on sync explicitly, it
+     // List of observers to be added to AllStatus.
+     std::vector<SyncStatusObserver*> sync_status_observers;
