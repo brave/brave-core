@@ -1,0 +1,13 @@
+diff --git a/components/sync/engine_impl/sync_manager_impl.cc b/components/sync/engine_impl/sync_manager_impl.cc
+index 9b153faac8199895d243a0db28fe382dba869f70..b7901f085b5f93bf5e841c86e96e8652eae310b3 100644
+--- a/components/sync/engine_impl/sync_manager_impl.cc
++++ b/components/sync/engine_impl/sync_manager_impl.cc
+@@ -388,7 +388,7 @@ void SyncManagerImpl::Init(InitArgs* args) {
+       args->poll_interval);
+   scheduler_ = args->engine_components_factory->BuildScheduler(
+       name_, cycle_context_.get(), args->cancelation_signal,
+-      args->enable_local_sync_backend);
++      true);
+ 
+   scheduler_->Start(SyncScheduler::CONFIGURATION_MODE, base::Time());
+ 

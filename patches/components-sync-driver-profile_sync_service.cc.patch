@@ -1,0 +1,36 @@
+diff --git a/components/sync/driver/profile_sync_service.cc b/components/sync/driver/profile_sync_service.cc
+index f3956a3fcd7cbcfe74d81be242b2877075a9b189..01e951d44ea5bbda49a5fe5692991265fdc12470 100644
+--- a/components/sync/driver/profile_sync_service.cc
++++ b/components/sync/driver/profile_sync_service.cc
+@@ -536,6 +536,7 @@ void ProfileSyncService::StartUpSlowEngineComponents() {
+   params.report_unrecoverable_error_function =
+       base::BindRepeating(ReportUnrecoverableError, channel_);
+   sync_prefs_.GetInvalidationVersions(&params.invalidation_versions);
++  BRAVE_SET_POLL_INTERVAL
+   params.poll_interval = sync_prefs_.GetPollInterval();
+   if (params.poll_interval.is_zero()) {
+     params.poll_interval =
+@@ -1214,6 +1215,7 @@ void ProfileSyncService::TriggerRefresh(const ModelTypeSet& types) {
+ }
+ 
+ bool ProfileSyncService::IsSignedIn() const {
++  BRAVE_IS_SIGNED_IN
+   // Sync is logged in if there is a non-empty account id.
+   return !GetAuthenticatedAccountInfo().account_id.empty();
+ }
+@@ -1726,6 +1728,7 @@ void ProfileSyncService::GetAllNodesForDebugging(
+ }
+ 
+ CoreAccountInfo ProfileSyncService::GetAuthenticatedAccountInfo() const {
++  BRAVE_GET_AUTHENTICATED_ACCOUNT_INFO
+   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+   if (!auth_manager_) {
+     // Some crashes on iOS (crbug.com/962384) suggest that ProfileSyncService
+@@ -1738,6 +1741,7 @@ CoreAccountInfo ProfileSyncService::GetAuthenticatedAccountInfo() const {
+ }
+ 
+ bool ProfileSyncService::IsAuthenticatedAccountPrimary() const {
++  return true;
+   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+   if (!auth_manager_) {
+     // This is a precautionary check to be consistent with the check in
