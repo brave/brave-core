@@ -52,8 +52,24 @@ export const SettingsText = styled<{}, 'span'>('span')`
   font-weight: normal;
 `
 
-export const SettingsWrapper = styled<{}, 'div'>('div')`
+interface SettingsWrapperProps {
+  textDirection: string
+}
+
+export const SettingsWrapper = styled<SettingsWrapperProps, 'div'>('div')`
   position: relative;
   display: flex;
   justify-content: flex-end;
+  font-family: ${p => p.theme.fontFamily.heading};
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.8);
+  margin-right: ${p => p.textDirection === 'ltr' && '8px'};
+  margin-left: ${p => p.textDirection === 'rtl' && '8px'};
+  border-right: ${p => p.textDirection === 'ltr' && '1px solid rgba(255, 255, 255, 0.6)'};
+  border-left: ${p => p.textDirection === 'rtl' && '1px solid rgba(255, 255, 255, 0.6)'};
+
+  &:hover {
+    color: #ffffff;
+  }
 `

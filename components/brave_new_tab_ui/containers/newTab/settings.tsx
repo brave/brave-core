@@ -4,7 +4,15 @@
 
 import * as React from 'react'
 
-import { SettingsMenu, SettingsRow, SettingsText, SettingsTitle, SettingsWrapper, IconButton } from '../../components/default'
+import {
+  SettingsMenu,
+  SettingsRow,
+  SettingsText,
+  SettingsTitle,
+  SettingsWrapper,
+  IconButton,
+  IconButtonSideText
+} from '../../components/default'
 
 import { Toggle } from '../../components/toggle'
 
@@ -87,8 +95,15 @@ export default class Settings extends React.PureComponent<Props, {}> {
       binanceSupported
     } = this.props
     return (
-      <SettingsWrapper title={getLocale('dashboardSettingsTitle')} innerRef={this.settingsMenuRef}>
-        <IconButton onClick={onClick} onKeyDown={this.onKeyPressSettings}><SettingsIcon/></IconButton>
+      <SettingsWrapper
+        textDirection={textDirection}
+        title={getLocale('dashboardSettingsTitle')}
+        innerRef={this.settingsMenuRef}
+      >
+        <IconButtonSideText textDirection={textDirection}>
+          <IconButton onClick={onClick} onKeyDown={this.onKeyPressSettings}><SettingsIcon/></IconButton>
+          {getLocale('customize')}
+        </IconButtonSideText>
         {showSettingsMenu &&
           <SettingsMenu textDirection={textDirection}>
             <SettingsTitle>{getLocale('dashboardSettingsTitle')}</SettingsTitle>
@@ -157,7 +172,7 @@ export default class Settings extends React.PureComponent<Props, {}> {
             </SettingsRow>
         </SettingsMenu>
       }
-    </SettingsWrapper>
+      </SettingsWrapper>
     )
   }
 }
