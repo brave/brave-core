@@ -8,9 +8,9 @@ use url::Url;
 
 fn main() {
     let url = Url::parse("http://example.com/hello/world/hello?again").unwrap();
-    let frag1 = fs::read_to_string("./examples/html/bbc_new.html").expect("err to string");
-    let frag2 = fs::read_to_string("./examples/html/bbc_new1.html").expect("err to string");
-    let frag3 = fs::read_to_string("./examples/html/bbc_new2.html").expect("err to string");
+    let frag1 = fs::read_to_string("data/classifier/bbc_new.html").expect("err to string");
+    let frag2 = fs::read_to_string("data/classifier/bbc_new1.html").expect("err to string");
+    let frag3 = fs::read_to_string("data/classifier/bbc_new2.html").expect("err to string");
 
     let mut streamer = FeatureExtractorStreamer::try_new(&url).unwrap();
 

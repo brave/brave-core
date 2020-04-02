@@ -101,7 +101,7 @@ mod tests {
 
     #[test]
     fn test_extract_title() {
-        let mut file = File::open("./tests/samples/simple_title/title.html").unwrap();
+        let mut file = File::open("../../data/tests-samples/simple_title/title.html").unwrap();
         let url = Url::parse("https://example.com").unwrap();
         let product = extract(&mut file, &url).unwrap();
         assert_eq!(product.title, "This is title");

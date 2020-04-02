@@ -27,7 +27,7 @@ fn main() {
 
     let client = reqwest::blocking::Client::new();
     let data = client.get(article_url)
-        .header(reqwest::header::COOKIE, "forbesbeta=A; forbes_t=%7B%22cd%22%3A39%7D; notice_behavior=expressed,eu; client_id=b3f483f643eea514579b7927fd8be579acc; notice_gdpr_prefs=0,1,2:1a8b5228dd7ff0717196863a5d28ce6c; notice_preferences=2:1a8b5228dd7ff0717196863a5d28ce6c; fadve2etid=P5525432051621425152; fadve2etidvcnt=5")
+        .header(reqwest::header::COOKIE, "")
         .send()
         .unwrap()
         .text()

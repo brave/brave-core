@@ -17,7 +17,7 @@ use markup5ever_rcdom::{Handle, Node};
 use std::rc::Rc;
 use std::vec::Vec;
 
-static SAMPLES_PATH: &str = "./tests/samples/";
+static SAMPLES_PATH: &str = "data/tests-samples/";
 
 pub fn extract_flattened_tree(
     handle: Handle,

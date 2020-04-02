@@ -6,7 +6,7 @@ use std::fs::File;
 use std::io::Read;
 use url::Url;
 
-static SAMPLES_PATH: &str = "./tests/samples/";
+static SAMPLES_PATH: &str = "../../data/tests-samples/";
 
 fn load_test_files(test_name: &str) -> String {
     let mut expected = "".to_owned();

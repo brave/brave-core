@@ -34,7 +34,7 @@ async fn stream_content(article_url: &str) -> Result<(), Box<dyn Error>> {
     let client = reqwest::Client::new();
     let mut data = client
         .get(url.as_str())
-        .header("cookie", r#"ak_bmsc=AEB01875E960E09409944E33D4597AFD17C2D4959E760000E40F6A5E55A29653~plry66ui5n98EPrNxoQTKOLj8Wg3cVAQuAzQRTqDoMpVCDIp156fwKetK5p1w2p6ZqXZPnERj+/5jo++3eqKVRmFQkLBJVYHwM8BY6AdB287jlqZEnIWsEnoMJrqUJLYQpvmM5lDcgsVfml4d5XC0SORZYa2npgePVh3JNNJE2y2GQWPZGb6tYQ3243FCtdhwg6kd+ZM0Ve1YvQAxiszITiLPFoBXX81BrVXRV7TC2esM=; akacd_www=2177452799~rv=1~id=2004d884ec131cb84c8fe4fba2b38caf; usn_session_id=8400918821399149; usn_visitor_id=840091882130455; usprivacy=1YNY; s_cc=true; s_fid=1FB9048EEEADFC8F-39EFCF918DBA7473; s_sq=%5B%5BB%5D%5D; utag_main=v_id:0170ce4e173a0014b810ce3fb77402079001707100fb8$_sn:1$_ss:0$_pn:2%3Bexp-session$_st:1584011013865$ses_id:1584009189178%3Bexp-session$_prevpage:www.usnews.com%2Fnews%2Fnational-news%2Farticles%2F2020-03-11%2Ftrump-suspends-travel-from-europe-amid-coronavirus-pandemic%3Bexp-1584012813859; ac_user_id=acq8qs54ij801sp0c20977ffaccf7e4343e37b27f8d4e907570fa7f4e4e322c5373966e85b203e9; bm_sv=A8866B3B77B0E345C7247A539DDA335E~jNmb4SE3Xqm87YlPW6Or/p0i3CAvhrt81MEZa3hGTp1lx4/NPeXaTIuJaM+RvwHN0vVgok0hXuNXwskE0Ku6y1qbiCWF2nWYcMLgofxd0izJMODQBt9cKUdDzdf5xFzbrEwq0mr1+y5Z56kE/xgjaJANSwtQrGUxD783ZM6Q1Zs="#)
+        .header("cookie", r#""#)
         .header("referer", "https://www.usnews.com/")
         .header("sec-fetch-dest", "document")
         .header("sec-fetch-mode", "navigate")
