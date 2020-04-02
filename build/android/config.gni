@@ -1,6 +1,7 @@
 import("//brave/android/brave_java_sources.gni")
 import("//brave/build/android/bytecode/java_sources.gni")
 import("//brave/components/sync/android/java_sources.gni")
+import("//ui/android/features.gni")
 
 declare_args() {
   brave_android_manifest_includes = []
@@ -25,3 +26,15 @@ brave_chrome_java_srcjar_deps = [
   "//brave/android:brave_config_java",
   "//brave/browser/android/preferences:java_enums_srcjar",
 ]
+
+brave_chrome_app_java_resources_deps = [
+  "//brave/build/android:android_brave_strings_grd",
+]
+
+brave_chrome_app_java_resources_dirs = [
+  "//brave/android/java/res",
+]
+
+if (enable_android_night_mode) {
+  brave_chrome_app_java_resources_dirs += [ "//brave/android/java/res_night" ]
+}
