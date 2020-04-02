@@ -24,6 +24,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 import android.support.v4.app.DialogFragment;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.util.DisplayMetrics;
 import android.content.res.Configuration;
