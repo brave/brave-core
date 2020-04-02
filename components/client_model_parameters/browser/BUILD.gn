@@ -1,0 +1,10 @@
+static_library("browser") {
+  sources = [
+    "client_model_parameter_service.cc",
+    "client_model_parameter_service.h",
+  ]
+
+  deps = [
+    "//base",
+  ]
+}
