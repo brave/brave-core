@@ -1,2 +1,0 @@
-! reuters.com
-||reuters.com/article/*

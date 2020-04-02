@@ -1,2 +1,0 @@
-! usatoday.com
-||usatoday.com/story/*

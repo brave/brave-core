@@ -1,4 +1,0 @@
-! cnbc.com article pages have www.cnbc.com/yyyy/mm/dd/name.html format
-! failing to extract images properly
-/cnbc.com\/(\d){4}\/(\d){2}\/(\d){2}\/.*.html/
-||cnbc.com/select/*/

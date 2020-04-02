@@ -1,2 +1,0 @@
-! theguardian.com format: www.theguardian.com/CATEGORY/YYYY/mon/dd/name
-/theguardian.com\/.*\/(\d){4}\/\w+\/(\d){2}\/.*/

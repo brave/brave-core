@@ -1,3 +1,0 @@
-! cnn.com
-/cnn.com\/(\d){4}\/(\d){2}\/(\d){2}\/.*index.html/
-||cnn.com/*/article/*/index.html
