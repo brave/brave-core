@@ -18,7 +18,7 @@ std::string GetChannelName() {
   // Keystone keys don't live in the framework.
   NSBundle* bundle = base::mac::OuterBundle();
 
-  NSString* channel = [bundle objectForInfoDictionaryKey:@"BraveChannelID"];
+  NSString* channel = [bundle objectForInfoDictionaryKey:@"KSChannelID"];
 
   // Only ever return "", "unknown", "beta", "dev", or "nightly" in an official
   // build.

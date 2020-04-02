@@ -1,5 +1,5 @@
 diff --git a/components/crash/content/app/breakpad_linux.cc b/components/crash/content/app/breakpad_linux.cc
-index 27683246750c4e0eaec83cfe81e170ea326d1814..e7575cd269ca5dc5924bee991b2ce3590ccbdd38 100644
+index 27683246750c4e0eaec83cfe81e170ea326d1814..f74e214fa09052ae24eca94dddeea84453767fdf 100644
 --- a/components/crash/content/app/breakpad_linux.cc
 +++ b/components/crash/content/app/breakpad_linux.cc
 @@ -103,8 +103,12 @@ namespace {
@@ -7,7 +7,7 @@ index 27683246750c4e0eaec83cfe81e170ea326d1814..e7575cd269ca5dc5924bee991b2ce359
  uint64_t g_crash_loop_before_time = 0;
  #else
 +#if defined(BRAVE_CHROMIUM_BUILD)
-+const char kUploadURL[] = "https://laptop-updates.brave.com/1/bc-crashes";
++const char kUploadURL[] = "https://cr.brave.com";
 +#else
  const char kUploadURL[] = "https://clients2.google.com/cr/report";
  #endif

@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index c38d03923119b07ee31ea1665bf2079da5c8c423..babfb335e21c4485226f48a9c72bffb2aafa811f 100644
+index c38d03923119b07ee31ea1665bf2079da5c8c423..0fc734521e63193f4171ebabd6597cfeea30cecd 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -209,6 +209,10 @@ if (!is_android && !is_mac) {
@@ -13,27 +13,29 @@ index c38d03923119b07ee31ea1665bf2079da5c8c423..babfb335e21c4485226f48a9c72bffb2
  
        deps += [
          ":chrome_dll",
-@@ -575,6 +579,11 @@ if (is_win) {
+@@ -574,11 +578,12 @@ if (is_win) {
+       "--bundle_id=$chrome_mac_bundle_id",
      ]
    }
++  copy("brave_app_plist") { deps = [ "//brave:brave_app_plist" ] sources = [ "$root_gen_dir/brave/brave_app_plist_tweaked.plist" ] outputs = [ "$root_gen_dir/chrome/{{source_file_part}}" ] }
  
-+if (brave_chromium_build) {
-+  group("chrome_app") {
-+    public_deps = [ "//brave:chrome_app", ]
-+  }
-+} else {
    mac_app_bundle("chrome_app") {
      output_name = chrome_product_full_name
  
-@@ -620,6 +629,7 @@ if (is_win) {
-       ]
-     }
-   }
-+}
+-    info_plist_target = ":chrome_app_plist"
++    info_plist_target = ":brave_app_plist"
+     extra_substitutions = [
+       "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id",
+       "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
+@@ -598,6 +603,7 @@ if (is_win) {
+       "//chrome/common:buildflags",
+       "//chrome/common:version_header",
+     ]
++    deps += [ "//brave:brave_app" ]
  
-   compiled_action("chrome_app_strings") {
-     tool = "//chrome/tools/build/mac:infoplist_strings_tool"
-@@ -649,7 +659,7 @@ if (is_win) {
+     if (enable_stripping) {
+       # At link time, preserve the global symbols specified in the .exports
+@@ -649,7 +655,7 @@ if (is_win) {
      args =
          [
            "-b",
@@ -42,27 +44,43 @@ index c38d03923119b07ee31ea1665bf2079da5c8c423..babfb335e21c4485226f48a9c72bffb2
            "-v",
            rebase_path(chrome_version_file, root_build_dir),
            "-g",
-@@ -730,7 +740,7 @@ if (is_win) {
-       # framework itself, that would cause a cyclical dependency. Instead,
+@@ -731,6 +737,7 @@ if (is_win) {
        # this dependency directly copies the file into the framework's
        # resources directory.
--      public_deps += [ ":chrome_framework_widevine_signature" ]
-+      #public_deps += [ ":chrome_framework_widevine_signature" ]
+       public_deps += [ ":chrome_framework_widevine_signature" ]
++      public_deps -= [ ":chrome_framework_widevine_signature" ]
      }
    }
  
-@@ -1220,6 +1230,10 @@ if (is_win) {
+@@ -769,6 +776,7 @@ if (is_win) {
+       "--scm=0",
+     ]
+   }
++  copy("brave_helper_plist") { deps = [ "//brave:brave_helper_plist" ] sources = [ "$root_gen_dir/brave/brave_helper_plist_tweaked.plist" ] outputs = [ "$root_gen_dir/chrome/{{source_file_part}}" ] }
+ 
+   compile_entitlements("entitlements") {
+     entitlements_templates = [ "app/app-entitlements.plist" ]
+@@ -787,7 +795,7 @@ if (is_win) {
+ 
+       output_name = chrome_helper_name + invoker.helper_name_suffix
+ 
+-      info_plist_target = ":chrome_helper_plist"
++      info_plist_target = ":brave_helper_plist"
+       extra_substitutions = [
+         "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id",
+         "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
+@@ -1220,6 +1228,10 @@ if (is_win) {
      if (is_chrome_branded) {
        deps += [ ":default_apps" ]
      }
 +    if (brave_chromium_build) {
-+      deps += [ "//brave:framework_bundle_data", ]
++      deps += [ "//brave:framework_bundle_data" ]
 +      if (defined(chrome_framework_version)) { framework_contents += [ "Frameworks", ] }
 +    }
  
      ldflags = [ "-Wl,-install_name,@executable_path/../Frameworks/$chrome_framework_name.framework/Versions/$chrome_version_full/$chrome_framework_name" ]
  
-@@ -1388,6 +1402,7 @@ if (is_win) {
+@@ -1388,6 +1400,7 @@ if (is_win) {
  
  group("browser_dependencies") {
    public_deps = [
@@ -70,7 +88,7 @@ index c38d03923119b07ee31ea1665bf2079da5c8c423..babfb335e21c4485226f48a9c72bffb2
      "//chrome/browser",
      "//chrome/common",
      "//components/gwp_asan/buildflags",
-@@ -1460,13 +1475,14 @@ group("child_dependencies") {
+@@ -1460,6 +1473,7 @@ group("child_dependencies") {
        # this is OK because all of content is linked into one library.
        "//content/browser",
      ]
@@ -78,15 +96,7 @@ index c38d03923119b07ee31ea1665bf2079da5c8c423..babfb335e21c4485226f48a9c72bffb2
    }
  }
  
- if (is_win) {
-   process_version_rc_template("chrome_exe_version") {
-     sources = [
--      "app/chrome_exe.ver",
-+      "//brave/app/brave_exe.ver",
-     ]
-     output = "$target_gen_dir/chrome_exe_version.rc"
-   }
-@@ -1529,6 +1545,7 @@ group("resources") {
+@@ -1529,6 +1543,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",
