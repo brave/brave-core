@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.net.Uri;
 import android.view.LayoutInflater;
+import android.widget.LinearLayout;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +25,13 @@ import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
+import android.util.DisplayMetrics;
+import android.content.res.Configuration;
 
 import org.chromium.chrome.R;
+
+import org.chromium.ui.base.DeviceFormFactor;
+import org.chromium.chrome.browser.util.ConfigurationUtils;
 
 public class RateDialogFragment extends DialogFragment implements RatingBar.OnRatingBarChangeListener, View.OnClickListener {
 
@@ -43,6 +49,12 @@ public class RateDialogFragment extends DialogFragment implements RatingBar.OnRa
 		super.onCreate(savedInstanceState);
 	}
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setDialogParams();
+    }
+
 	@Override
 	public void onResume() {
 	 	super.onResume();
@@ -57,6 +69,8 @@ public class RateDialogFragment extends DialogFragment implements RatingBar.OnRa
 	        	else return false;
 	        }
 	    });
+
+        setDialogParams();
 	}
  
 	@Override
@@ -134,5 +148,27 @@ public class RateDialogFragment extends DialogFragment implements RatingBar.OnRa
 
         mPositiveButton.setText(getResources().getString(R.string.submit));
         mNegativeButton.setText(getResources().getString(android.R.string.cancel));
+    }
+
+    private void setDialogParams() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int mDeviceHeight = displayMetrics.heightPixels;
+        int mDeviceWidth = displayMetrics.widthPixels;
+
+        ViewGroup.LayoutParams params = getDialog().getWindow().getAttributes();
+        boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
+        boolean isLandscape = ConfigurationUtils.isLandscape(getActivity());
+        if(isTablet) {
+            params.width = (int) (0.5 * mDeviceWidth);
+        } else {
+            if(isLandscape) {
+                params.width = (int) (0.5 * mDeviceWidth);    
+            } else {
+                params.width = (int) (0.9 * mDeviceWidth);
+            }
+        }
+        params.height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
     }
 }
