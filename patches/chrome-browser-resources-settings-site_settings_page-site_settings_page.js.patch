@@ -1,14 +1,89 @@
 diff --git a/chrome/browser/resources/settings/site_settings_page/site_settings_page.js b/chrome/browser/resources/settings/site_settings_page/site_settings_page.js
-index 37677e33b25249585eb6148b5f2c1ceb321450ca..3c7a4ed55cac206a56a4c66add4ffb9a5b42697f 100644
+index 712a0a7f73f75108bb3f326a9ecfc67252f84a6b..8fca8551cb68264b2db30bb06b9b0721a8545856 100644
 --- a/chrome/browser/resources/settings/site_settings_page/site_settings_page.js
 +++ b/chrome/browser/resources/settings/site_settings_page/site_settings_page.js
-@@ -106,7 +106,9 @@ Polymer({
-     // elements residing in this element's Shadow DOM.
-     const R = settings.routes;
-     const pairs = [
-+      // <if expr="_google_chrome">
-       [R.SITE_SETTINGS_ADS, 'ads'],
-+      // </if>
-       [R.SITE_SETTINGS_ALL, 'all-sites'],
-       [R.SITE_SETTINGS_AUTOMATIC_DOWNLOADS, 'automatic-downloads'],
-       [R.SITE_SETTINGS_BACKGROUND_SYNC, 'background-sync'],
+@@ -41,6 +41,7 @@ cr.define('settings', function() {
+     // The following list is ordered alphabetically by |id|. The order in which
+     // these appear in the UI is determined elsewhere in this file.
+     const categoryList = [
++/*
+       {
+         route: settings.routes.SITE_SETTINGS_ADS,
+         id: Id.ADS,
+@@ -51,6 +52,7 @@ cr.define('settings', function() {
+         shouldShow: () =>
+             loadTimeData.getBoolean('enableSafeBrowsingSubresourceFilter'),
+       },
++*/
+       {
+         route: settings.routes.SITE_SETTINGS_AR,
+         id: Id.AR,
+@@ -68,6 +70,15 @@ cr.define('settings', function() {
+         enabledLabel: 'siteSettingsAutoDownloadAsk',
+         disabledLabel: 'siteSettingsAutoDownloadBlock',
+       },
++      {
++        route: settings.routes.SITE_SETTINGS_AUTOPLAY,
++        id: Id.AUTOPLAY,
++        label: 'siteSettingsAutoplay',
++        icon: 'cr:extension',
++        enabledLabel: 'siteSettingsAutoplayAsk',
++        disabledLabel: 'siteSettingsBlocked',
++      },
++/*
+       {
+         route: settings.routes.SITE_SETTINGS_BACKGROUND_SYNC,
+         id: Id.BACKGROUND_SYNC,
+@@ -76,6 +87,7 @@ cr.define('settings', function() {
+         enabledLabel: 'siteSettingsAllowRecentlyClosedSites',
+         disabledLabel: 'siteSettingsBackgroundSyncBlocked',
+       },
++*/
+       {
+         route: settings.routes.SITE_SETTINGS_BLUETOOTH_DEVICES,
+         id: Id.BLUETOOTH_DEVICES,
+@@ -353,13 +365,15 @@ cr.define('settings', function() {
+                 Id.MIC,
+                 Id.SENSORS,
+                 Id.NOTIFICATIONS,
++                Id.AUTOPLAY,
+                 Id.JAVASCRIPT,
+                 Id.PLUGINS,
+                 Id.IMAGES,
+                 Id.POPUPS,
++/*
+                 Id.ADS,
+                 Id.BACKGROUND_SYNC,
+-                Id.SOUND,
++*/
+                 Id.AUTOMATIC_DOWNLOADS,
+                 Id.UNSANDBOXED_PLUGINS,
+                 Id.PROTOCOL_HANDLERS,
+@@ -390,7 +404,9 @@ cr.define('settings', function() {
+               Id.CAMERA,
+               Id.MIC,
+               Id.NOTIFICATIONS,
++/*
+               Id.BACKGROUND_SYNC,
++*/
+             ]),
+             permissionsAdvanced: buildItemListFromIds([
+               Id.SENSORS,
+@@ -410,6 +426,7 @@ cr.define('settings', function() {
+               Id.VR,
+             ]),
+             contentBasic: buildItemListFromIds([
++              Id.AUTOPLAY,
+               Id.COOKIES,
+               Id.JAVASCRIPT,
+               Id.PLUGINS,
+@@ -418,7 +435,9 @@ cr.define('settings', function() {
+             ]),
+             contentAdvanced: buildItemListFromIds([
+               Id.SOUND,
++/*
+               Id.ADS,
++*/
+               Id.ZOOM_LEVELS,
+               'pdfDocuments',
+               // <if expr="chromeos">
