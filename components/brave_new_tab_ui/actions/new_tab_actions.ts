@@ -129,3 +129,26 @@ export const disconnectBinance = () => action(types.DISCONNECT_BINANCE)
 export const onBinanceAccountBalances = (balances: Record<string, string>) => action(types.ON_BINANCE_ACCOUNT_BALANCES, {
   balances
 })
+
+export const onBTCUSDPrice = (price: string) => action(types.ON_BTC_USD_PRICE, {
+  price
+})
+
+export const onBTCUSDVolume = (volume: string) => action(types.ON_BTC_USD_VOLUME, {
+  volume
+})
+
+export const onAssetBTCPrice = (ticker: string, price: string) => action(types.ON_ASSET_BTC_PRICE, {
+  ticker,
+  price
+})
+
+export const onAssetBTCVolume = (ticker: string, volume: string) => action(types.ON_ASSET_BTC_VOLUME, {
+  ticker,
+  volume
+})
+
+export const onAssetUSDPrice = (ticker: string, price: string) => action(types.ON_ASSET_USD_PRICE, {
+  ticker,
+  price
+})

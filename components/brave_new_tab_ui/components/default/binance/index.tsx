@@ -141,6 +141,11 @@ interface Props {
   onDisconnectBinance: () => void
   onConnectBinance: () => void
   onValidAuthCode: () => void
+  onBTCUSDPrice: (value: string) => void
+  onBTCUSDVolume: (volume: string) => void
+  onAssetBTCVolume: (ticker: string, volume: string) => void
+  onAssetUSDPrice: (ticker: string, price: string) => void
+  onAssetBTCPrice: (ticker: string, price: string) => void
 }
 
 class Binance extends React.PureComponent<Props, State> {
@@ -229,6 +234,27 @@ class Binance extends React.PureComponent<Props, State> {
   fetchBalance = () => {
     chrome.binance.getAccountBalances((balances: Record<string, string>, success: boolean) => {
       if (success) {
+        chrome.binance.getTickerPrice('BTCUSDT', (price: string) => {
+          this.props.onBTCUSDPrice(price)
+        })
+        chrome.binance.getTickerVolume('BTCUSDT', (volume: string) => {
+          this.props.onBTCUSDVolume(volume)
+        })
+
+        for (let ticker in balances) {
+          if (ticker !== 'BTC') {
+            chrome.binance.getTickerVolume(`${ticker}BTC`, (volume: string) => {
+              this.props.onAssetBTCVolume(ticker, volume)
+            })
+            chrome.binance.getTickerPrice(`${ticker}BTC`, (price: string) => {
+              this.props.onAssetBTCPrice(ticker, price)
+            })
+            chrome.binance.getTickerPrice(`${ticker}USDT`, (price: string) => {
+              this.props.onAssetUSDPrice(ticker, price)
+            })
+          }
+        }
+
         this.props.onBinanceAccountBalances(balances)
       }
     })
@@ -638,7 +664,7 @@ class Binance extends React.PureComponent<Props, State> {
   }
 
   renderSummaryView = () => {
-    const { accountBalances, btcBalanceValue, hideBalance, userTLD } = this.props
+    const { accountBalances, btcBalanceValue, hideBalance, userTLD, assetUSDValues } = this.props
     const currencyList = userTLD === 'us' ? this.usCurrencies : this.comCurrencies
 
     return (
@@ -682,7 +708,7 @@ class Binance extends React.PureComponent<Props, State> {
                   {accountBalances[asset]}
                 </Balance>
                 <Converted isBTC={false} hideBalance={hideBalance}>
-                  {`= $${btcBalanceValue}`}
+                  {`= $${assetUSDValues[asset]}`}
                 </Converted>
               </ListInfo>
             </ListItem>

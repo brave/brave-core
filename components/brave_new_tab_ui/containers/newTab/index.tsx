@@ -270,6 +270,26 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.onBinanceUserTLD(userTLD)
   }
 
+  setBTCUSDPrice = (price: string) => {
+    this.props.actions.onBTCUSDPrice(price)
+  }
+
+  setBTCUSDVolume = (volume: string) => {
+    this.props.actions.onBTCUSDVolume(volume)
+  }
+
+  setAssetBTCPrice = (ticker: string, price: string) => {
+    this.props.actions.onAssetBTCPrice(ticker, price)
+  }
+
+  setAssetUSDPrice = (ticker: string, price: string) => {
+    this.props.actions.onAssetUSDPrice(ticker, price)
+  }
+
+  setAssetBTCVolume = (ticker: string, volume: string) => {
+    this.props.actions.onAssetBTCVolume(ticker, volume)
+  }
+
   disableBrandedWallpaper = () => {
     this.props.saveBrandedWallpaperOptIn(false)
   }
@@ -446,6 +466,11 @@ class NewTabPage extends React.Component<Props, State> {
         onSetInitialAsset={this.setInitialAsset}
         onSetInitialFiat={this.setInitialFiat}
         onSetUserTLDAutoSet={this.setUserTLDAutoSet}
+        onBTCUSDPrice={this.setBTCUSDPrice}
+        onBTCUSDVolume={this.setBTCUSDVolume}
+        onAssetBTCPrice={this.setAssetBTCPrice}
+        onAssetUSDPrice={this.setAssetUSDPrice}
+        onAssetBTCVolume={this.setAssetBTCVolume}
       />
     )
   }

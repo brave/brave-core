@@ -82,18 +82,16 @@ TEST_F(BinanceJSONParserTest, GetTokensFromJSON) {
 }
 
 TEST_F(BinanceJSONParserTest, GetQuoteIDFromJSON) {
-  std::map<std::string, std::string> balances;
+  std::string quote_id;
   ASSERT_TRUE(BinanceJSONParser::GetQuoteIDFromJSON(R"(
       {
+        "code": "12345",
         "data": {
           "quoteId" : "12345"
         }
-      })", &balances));
+      })", &quote_id));
 
-  std::string bnb_balance = GetBalanceFromAssets(balances, "BNB");
-  std::string btc_balance = GetBalanceFromAssets(balances, "BTC");
-  ASSERT_EQ(bnb_balance, "10114.00000000");
-  ASSERT_EQ(btc_balance, "2.45000000");
+  ASSERT_EQ(quote_id, "12345");
 }
 
 TEST_F(BinanceJSONParserTest, GetTickerPriceFromJSON) {
@@ -104,6 +102,16 @@ TEST_F(BinanceJSONParserTest, GetTickerPriceFromJSON) {
         "price": "7137.98000000"
       })", &symbol_pair_price));
   ASSERT_EQ(symbol_pair_price, "7137.98000000");
+}
+
+TEST_F(BinanceJSONParserTest, GetTickerVolumeFromJSON) {
+  std::string symbol_pair_volume;
+  ASSERT_TRUE(BinanceJSONParser::GetTickerVolumeFromJSON(R"(
+      {
+        "symbol": "BTCUSDT",
+        "volume": "99849.90399800"
+      })", &symbol_pair_volume));
+  ASSERT_EQ(symbol_pair_volume, "99849.90399800");
 }
 
 }  // namespace

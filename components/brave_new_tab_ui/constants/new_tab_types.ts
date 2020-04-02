@@ -38,7 +38,12 @@ export const enum types {
   ON_VALID_AUTH_CODE = '@@newtab/ON_VALID_AUTH_CODE',
   SET_HIDE_BALANCE = '@@newtab/SET_HIDE_BALANCE',
   CONNECT_TO_BINANCE = '@@newtab/CONNECT_TO_BINANCE',
-  DISCONNECT_BINANCE = '@@newtab/DISCONNECT_BINANCE'
+  DISCONNECT_BINANCE = '@@newtab/DISCONNECT_BINANCE',
+  ON_BTC_USD_PRICE = '@@newtab/ON_BTC_USD_PRICE',
+  ON_BTC_USD_VOLUME = '@@newtab/ON_BTC_USD_VOLUME',
+  ON_ASSET_BTC_VOLUME = '@@newtab/ON_ASSET_BTC_VOLUME',
+  ON_ASSET_BTC_PRICE = '@@newtab/ON_ASSET_BTC_PRICE',
+  ON_ASSET_USD_PRICE = '@@newtab/ON_ASSET_USD_PRICE'
 }
 
 export type DismissBrandedWallpaperNotificationPayload = {
