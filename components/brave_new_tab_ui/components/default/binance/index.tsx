@@ -412,17 +412,17 @@ class Binance extends React.PureComponent<Props, State> {
     })
   }
 
-  setCurrentDepositSearch = ({ target }) => {
+  setCurrentDepositSearch = ({ target }: any) => {
     this.setState({
       currentDepositSearch: target.value
     })
   }
 
-  setCurrentConvertAmount = ({ target }) => {
+  setCurrentConvertAmount = ({ target }: any) => {
     this.setState({ currentConvertAmount: target.value })
   }
 
-  setCurrentTradeSearch = ({ target }) => {
+  setCurrentTradeSearch = ({ target }: any) => {
     this.setState({ currentTradeSearch: target.value })
   }
 
@@ -445,6 +445,7 @@ class Binance extends React.PureComponent<Props, State> {
   renderTitle () {
     const { selectedView } = this.state
     const { showContent, userAuthed, authInProgress } = this.props
+    const isUS = this.props.userTLD === 'us'
 
     return (
       <Header>
@@ -457,17 +458,17 @@ class Binance extends React.PureComponent<Props, State> {
           </StyledTitleText>
         </StyledTitle>
         {
-            userAuthed && selectedView !== 'buy' && selectedView !== 'convert'
-            ? <ActionTray>
-                <ActionItem onClick={this.disconnectBinance}>
-                  <DisconnectIcon />
-                </ActionItem>
-              </ActionTray>
-            : !userAuthed && !authInProgress && showContent
-              ? <ConnectPrompt onClick={this.connectBinance}>
-                  {'Connect'}
-                </ConnectPrompt>
-              : null
+          userAuthed && selectedView !== 'buy' && selectedView !== 'convert'
+          ? <ActionTray>
+              <ActionItem onClick={this.disconnectBinance}>
+                <DisconnectIcon />
+              </ActionItem>
+            </ActionTray>
+          : !userAuthed && !authInProgress && showContent && !isUS
+            ? <ConnectPrompt onClick={this.connectBinance}>
+                {'Connect'}
+              </ConnectPrompt>
+            : null
           }
       </Header>
     )
