@@ -114,4 +114,22 @@ TEST_F(BinanceJSONParserTest, GetTickerVolumeFromJSON) {
   ASSERT_EQ(symbol_pair_volume, "99849.90399800");
 }
 
+TEST_F(BinanceJSONParserTest, GetDepositInfoFromJSON) {
+  std::string deposit_address;
+  std::string deposit_url;
+  ASSERT_TRUE(BinanceJSONParser::GetDepositInfoFromJSON(R"(
+      {
+        "code": "0000",
+        "message": "null",
+        "data": {
+          "coin": "BTC",
+          "address": "112tfsHDk6Yk8PbNnTVkv7yPox4aWYYDtW",
+          "url": "https://btc.com/112tfsHDk6Yk8PbNnTVkv7yPox4aWYYDtW",
+          "time": 1566366289000
+        }
+      })", &deposit_address, &deposit_url));
+  ASSERT_EQ(deposit_address, "112tfsHDk6Yk8PbNnTVkv7yPox4aWYYDtW");
+  ASSERT_EQ(deposit_url, "https://btc.com/112tfsHDk6Yk8PbNnTVkv7yPox4aWYYDtW");
+}
+
 }  // namespace

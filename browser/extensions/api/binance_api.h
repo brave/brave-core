@@ -107,6 +107,20 @@ class BinanceGetTickerVolumeFunction :
   ResponseAction Run() override;
 };
 
+class BinanceGetDepositInfoFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("binance.getDepositInfo", UNKNOWN)
+
+ protected:
+  ~BinanceGetDepositInfoFunction() override {}
+  void OnGetDepositInfo(const std::string& deposit_address,
+                        const std::string& deposit_url,
+                        bool success);
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

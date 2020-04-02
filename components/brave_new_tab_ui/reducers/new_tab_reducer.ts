@@ -474,6 +474,19 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       state.binanceState.assetUSDValues[payload.ticker] = payload.price
       break
 
+    case types.ON_ASSET_DEPOSIT_INFO:
+      const { symbol, address, url } = payload
+      if (!symbol || !address || !url) {
+        break
+      }
+
+      state = { ...state }
+      state.binanceState.assetDepositInfo[symbol] = {
+        address,
+        url
+      }
+      break
+
     default:
       break
   }

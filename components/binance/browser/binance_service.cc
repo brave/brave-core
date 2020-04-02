@@ -41,7 +41,7 @@ const char client_id[] = BINANCE_CLIENT_ID;
 const char oauth_host[] = "accounts.binance.com";
 const char api_host[] = "api.binance.com";
 const char oauth_callback[] = "com.brave.binance://authorization";
-const char oauth_scope[] = "user:email,user:address,asset:balance";
+const char oauth_scope[] = "user:email,user:address,asset:balance,use:address";
 const GURL oauth_url("https://accounts.binance.com/en/oauth/authorize");
 const unsigned int kRetriesCountOnNetworkChange = 1;
 
@@ -396,6 +396,32 @@ void BinanceService::OnGetTickerVolume(
     BinanceJSONParser::GetTickerVolumeFromJSON(body, &symbol_pair_volume);
   }
   std::move(callback).Run(symbol_pair_volume);
+}
+
+bool BinanceService::GetDepositInfo(const std::string& symbol,
+                                    GetDepositInfoCallback callback) {
+  auto internal_callback = base::BindOnce(&BinanceService::OnGetDepositInfo,
+      base::Unretained(this), std::move(callback));
+  GURL url = GetURLWithPath(oauth_host, oauth_path_deposit_info);
+  url = net::AppendQueryParameter(url, "coin", symbol);
+  url = net::AppendQueryParameter(url, "access_token", access_token_);
+  return OAuthRequest(url, "GET", "", std::move(internal_callback));
+}
+
+void BinanceService::OnGetDepositInfo(
+    GetDepositInfoCallback callback,
+    const int status, const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  std::string deposit_address;
+  std::string deposit_url;
+
+  if (status >= 200 && status <= 299) {
+    BinanceJSONParser::GetDepositInfoFromJSON(
+        body, &deposit_address, &deposit_url);
+  }
+
+  std::move(callback).Run(
+      deposit_address, deposit_url, !IsUnauthorized(status));
 }
 
 base::SequencedTaskRunner* BinanceService::io_task_runner() {

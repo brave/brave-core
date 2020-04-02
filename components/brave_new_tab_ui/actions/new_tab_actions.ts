@@ -152,3 +152,9 @@ export const onAssetUSDPrice = (ticker: string, price: string) => action(types.O
   ticker,
   price
 })
+
+export const onAssetDepositInfo = (symbol: string, address: string, url: string) => action(types.ON_ASSET_DEPOSIT_INFO, {
+  symbol,
+  address,
+  url
+})

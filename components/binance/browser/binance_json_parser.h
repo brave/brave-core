@@ -20,7 +20,10 @@ class BinanceJSONParser {
   static bool GetTickerPriceFromJSON(const std::string& json,
                                      std::string* symbol_pair_price);
   static bool GetTickerVolumeFromJSON(const std::string& json,
-                                     std::string* symbol_pair_volume);
+                                      std::string* symbol_pair_volume);
+  static bool GetDepositInfoFromJSON(const std::string& json,
+                                     std::string* address,
+                                     std::string *url);
 };
 
 #endif  // BRAVE_COMPONENTS_BINANCE_BROWSER_BINANCE_JSON_PARSER_H_

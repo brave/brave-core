@@ -180,3 +180,59 @@ bool BinanceJSONParser::GetTickerVolumeFromJSON(
   *symbol_pair_volume = volume->GetString();
   return true;
 }
+
+// static
+//
+// Response Format:
+//
+// {
+//    "code": "000000",
+//    "message": null,
+//    "data": {
+//      "coin": "BTC",
+//      "address": "112tfsHDk6Yk8PbNnTVkv7yPox4aWYYDtW",
+//      "tag": "",
+//      "url": "https://btc.com/112tfsHDk6Yk8PbNnTVkv7yPox4aWYYDtW",
+//      "time": 1566366289000
+//    },
+//    "success": true
+// }
+//
+bool BinanceJSONParser::GetDepositInfoFromJSON(
+    const std::string& json, std::string *address, std::string *url) {
+  if (!address || !url) {
+    return false;
+  }
+
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::DictionaryValue* response_dict;
+  if (!records_v->GetAsDictionary(&response_dict)) {
+    return false;
+  }
+
+  const base::DictionaryValue* data_dict;
+  if (!response_dict->GetDictionary("data", &data_dict)) {
+    return false;
+  }
+
+  std::string deposit_url;
+  std::string deposit_address;
+
+  if (!data_dict->GetString("url", &deposit_url)||
+      !data_dict->GetString("address", &deposit_address)) {
+    return false;
+  }
+
+  *url = deposit_url;
+  *address = deposit_address;
+  return true;
+}

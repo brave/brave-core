@@ -290,6 +290,10 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.onAssetBTCVolume(ticker, volume)
   }
 
+  setAssetDepositInfo = (symbol: string, address: string, url: string) => {
+    this.props.actions.onAssetDepositInfo(symbol, address, url)
+  }
+
   disableBrandedWallpaper = () => {
     this.props.saveBrandedWallpaperOptIn(false)
   }
@@ -471,6 +475,7 @@ class NewTabPage extends React.Component<Props, State> {
         onAssetBTCPrice={this.setAssetBTCPrice}
         onAssetUSDPrice={this.setAssetUSDPrice}
         onAssetBTCVolume={this.setAssetBTCVolume}
+        onAssetDepositInfo={this.setAssetDepositInfo}
       />
     )
   }

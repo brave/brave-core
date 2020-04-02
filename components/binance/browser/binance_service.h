@@ -41,6 +41,7 @@ class Profile;
 const char oauth_path_access_token[] = "/oauth/token";
 const char oauth_path_account_balances[] = "/oauth-api/v1/balance";
 const char oauth_path_convert_quote[] = "/oauth-api/v1/ocbs/quote";
+const char oauth_path_deposit_info[] = "/oauth-api/v1/get-charge-address";
 
 const char api_path_ticker_price[] = "/api/v3/ticker/price";
 const char api_path_ticker_volume[] = "/api/v3/ticker/24hr";
@@ -69,6 +70,11 @@ class BinanceService : public KeyedService {
       GetTickerPriceCallback callback);
   bool GetTickerVolume(const std::string& symbol_pair,
       GetTickerVolumeCallback callback);
+  using GetDepositInfoCallback = base::OnceCallback<void(const std::string&,
+                                                         const std::string&,
+                                                         bool success)>;
+  bool GetDepositInfo(const std::string& symbol,
+      GetDepositInfoCallback callback);                                                                                                  
   std::string GetBinanceTLD();
   std::string GetOAuthClientUrl();
 
@@ -98,6 +104,9 @@ class BinanceService : public KeyedService {
   void OnGetTickerVolume(GetTickerVolumeCallback callback,
                         const int status, const std::string& body,
                         const std::map<std::string, std::string>& headers);
+  void OnGetDepositInfo(GetDepositInfoCallback callback,
+                        const int status, const std::string& body,
+                        const std::map<std::string, std::string>& headers);                        
   bool OAuthRequest(const GURL& url, const std::string& method,
       const std::string& post_data, URLRequestCallback callback);
   bool LoadTokensFromPrefs();

@@ -49,7 +49,6 @@ import {
   MemoInfo,
   DetailLabel,
   DetailInfo,
-  CopyButton,
   ListIcon,
   SearchInput,
   ListLabel,
@@ -128,6 +127,7 @@ interface Props {
   btcPrice: string
   btcVolume: string
   binanceClientUrl: string
+  assetDepositInfo: Record<string, any>
   onShowContent: () => void
   onBuyCrypto: (coin: string, amount: string, fiat: string) => void
   onBinanceUserTLD: (userTLD: NewTab.BinanceTLD) => void
@@ -146,6 +146,7 @@ interface Props {
   onAssetBTCVolume: (ticker: string, volume: string) => void
   onAssetUSDPrice: (ticker: string, price: string) => void
   onAssetBTCPrice: (ticker: string, price: string) => void
+  onAssetDepositInfo: (symbol: string, address: string, url: string) => void
 }
 
 class Binance extends React.PureComponent<Props, State> {
@@ -253,6 +254,9 @@ class Binance extends React.PureComponent<Props, State> {
               this.props.onAssetUSDPrice(ticker, price)
             })
           }
+          chrome.binance.getDepositInfo(ticker, (address: string, url: string) => {
+            this.props.onAssetDepositInfo(ticker, address, url)
+          })
         }
 
         this.props.onBinanceAccountBalances(balances)
@@ -565,6 +569,8 @@ class Binance extends React.PureComponent<Props, State> {
 
   renderCurrentDepositAsset = () => {
     const { currentDepositAsset } = this.state
+    const { assetDepositInfo } = this.props
+    const { address } = assetDepositInfo[currentDepositAsset]
 
     return (
       <>
@@ -589,23 +595,10 @@ class Binance extends React.PureComponent<Props, State> {
           <MemoArea>
             <MemoInfo>
               <DetailLabel>
-                {`${currentDepositAsset} Memo`}
-              </DetailLabel>
-              <DetailInfo>
-                {`XXXXXXX`}
-              </DetailInfo>
-            </MemoInfo>
-            <CopyButton>
-              {'Copy'}
-            </CopyButton>
-          </MemoArea>
-          <MemoArea>
-            <MemoInfo>
-              <DetailLabel>
                 {`${currentDepositAsset} Deposit Address`}
               </DetailLabel>
               <DetailInfo>
-                {`XXXXXX`}
+                {`${address}`}
               </DetailInfo>
             </MemoInfo>
           </MemoArea>

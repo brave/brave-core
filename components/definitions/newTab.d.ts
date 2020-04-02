@@ -158,6 +158,7 @@ declare namespace NewTab {
     btcPrice: string
     btcVolume: string
     binanceClientUrl: string
+    assetDepositInfo: Record<string, any>
   }
 
   export type BinanceTLD = 'us' | 'com'

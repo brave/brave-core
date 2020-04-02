@@ -240,5 +240,38 @@ BinanceIsSupportedRegionFunction::Run() {
       std::make_unique<base::Value>(!is_blacklisted)));
 }
 
+ExtensionFunction::ResponseAction
+BinanceGetDepositInfoFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  if (brave::IsTorProfile(profile)) {
+    return RespondNow(Error("Not available in Tor profile"));
+  }
+
+  std::unique_ptr<binance::GetDepositInfo::Params> params(
+      binance::GetDepositInfo::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  auto* service = GetBinanceService(browser_context());
+  bool info_request = service->GetDepositInfo(params->symbol,
+      base::BindOnce(
+          &BinanceGetDepositInfoFunction::OnGetDepositInfo, this));
+
+  if (!info_request) {
+    return RespondNow(
+        Error("Could not make request for Volume"));
+  }
+
+  return RespondLater();
+}
+
+void BinanceGetDepositInfoFunction::OnGetDepositInfo(
+    const std::string& deposit_address,
+    const std::string& deposit_url,
+    bool success) {
+  Respond(TwoArguments(
+      std::make_unique<base::Value>(deposit_address),
+      std::make_unique<base::Value>(deposit_url)));
+}
+
 }  // namespace api
 }  // namespace extensions

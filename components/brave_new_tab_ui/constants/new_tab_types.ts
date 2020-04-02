@@ -43,7 +43,8 @@ export const enum types {
   ON_BTC_USD_VOLUME = '@@newtab/ON_BTC_USD_VOLUME',
   ON_ASSET_BTC_VOLUME = '@@newtab/ON_ASSET_BTC_VOLUME',
   ON_ASSET_BTC_PRICE = '@@newtab/ON_ASSET_BTC_PRICE',
-  ON_ASSET_USD_PRICE = '@@newtab/ON_ASSET_USD_PRICE'
+  ON_ASSET_USD_PRICE = '@@newtab/ON_ASSET_USD_PRICE',
+  ON_ASSET_DEPOSIT_INFO = '@@newtab/ON_ASSET_DEPOSIT_INFO'
 }
 
 export type DismissBrandedWallpaperNotificationPayload = {
