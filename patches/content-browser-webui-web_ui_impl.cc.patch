@@ -1,0 +1,12 @@
+diff --git a/content/browser/webui/web_ui_impl.cc b/content/browser/webui/web_ui_impl.cc
+index 432b1dd9679335509c0fc4bb536946121a6644ea..04602cc678c35f48ba2ee6ffbd37d1c986bf9fa8 100644
+--- a/content/browser/webui/web_ui_impl.cc
++++ b/content/browser/webui/web_ui_impl.cc
+@@ -87,6 +87,7 @@ WebUIImpl::WebUIImpl(WebContentsImpl* contents)
+       web_contents_(contents),
+       web_contents_observer_(new MainFrameNavigationObserver(this, contents)) {
+   DCHECK(contents);
++  BRAVE_WEB_UI_IMPL
+ }
+ 
+ WebUIImpl::~WebUIImpl() {
