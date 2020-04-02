@@ -260,6 +260,13 @@ void JNI_BravePrefServiceBridge_SetReferralCheckedForPromoCodeFile(
       kReferralCheckedForPromoCodeFile, value);
 }
 
+void JNI_BravePrefServiceBridge_SetReferralReportedInstall(
+    JNIEnv* env,
+    jboolean value) {
+  return g_browser_process->local_state()->SetBoolean(
+      kReferralReportedInstall, value);
+}
+
 void JNI_BravePrefServiceBridge_SetReferralPromoCode(
     JNIEnv* env,
     const JavaParamRef<jstring>& promoCode) {

@@ -89,6 +89,7 @@ class BraveReferralsService {
   std::unique_ptr<network::SimpleURLLoader> referral_init_loader_;
   std::unique_ptr<network::SimpleURLLoader> referral_finalization_check_loader_;
   std::unique_ptr<base::RepeatingTimer> fetch_referral_headers_timer_;
+  std::unique_ptr<base::RepeatingTimer> installation_timer_;
   std::unique_ptr<base::RepeatingTimer> finalization_checks_timer_;
   PrefService* pref_service_;
   std::string promo_code_;

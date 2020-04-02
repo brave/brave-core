@@ -53,6 +53,9 @@ const int kFetchReferralHeadersFrequency = 60 * 60 * 24;
 // Perform finalization checks once a day.
 const int kFinalizationChecksFrequency = 60 * 60 * 24;
 
+// Report installation once a day.
+const int kReportInstallationFrequency = 60 * 60 * 24;
+
 // Maximum size of the referral server response in bytes.
 const int kMaxReferralServerResponseSizeBytes = 1024 * 1024;
 
@@ -145,10 +148,10 @@ void BraveReferralsService::Start() {
 
   // On first run, read the promo code from user-data-dir and
   // initialize the referral.
-  bool checked_for_promo_code_file =
-      pref_service_->GetBoolean(kReferralCheckedForPromoCodeFile);
+  bool reported_installation =
+      pref_service_->GetBoolean(kReferralReportedInstall);
   std::string download_id = pref_service_->GetString(kReferralDownloadID);
-  if (!checked_for_promo_code_file && download_id.empty())
+  if (!reported_installation && download_id.empty())
     task_runner_->PostTaskAndReply(
         FROM_HERE,
         base::Bind(&BraveReferralsService::ReadPromoCode,
@@ -160,6 +163,7 @@ void BraveReferralsService::Start() {
 }
 
 void BraveReferralsService::Stop() {
+  installation_timer_.reset();
   finalization_checks_timer_.reset();
   fetch_referral_headers_timer_.reset();
   initialized_ = false;
@@ -295,6 +299,15 @@ void BraveReferralsService::OnReferralInitLoadComplete(
 #endif
   }
 
+  // We have reported an installation to promo server. We can kill the timer
+  // and ensure we don't send this request anymore.
+  pref_service_->SetBoolean(kReferralReportedInstall, true);
+  if (installation_timer_) {
+    // TODO: Just reset() here instead, and timer stops by going out of scope and stops?
+    installation_timer_->Stop();
+    DCHECK(!installation_timer_->IsRunning());
+  }
+
   task_runner_->PostTask(FROM_HERE,
                          base::Bind(&BraveReferralsService::DeletePromoCodeFile,
                                     base::Unretained(this)));
@@ -342,7 +355,19 @@ void BraveReferralsService::OnReadPromoCodeComplete() {
   pref_service_->SetBoolean(kReferralCheckedForPromoCodeFile, true);
   if (!promo_code_.empty()) {
     pref_service_->SetString(kReferralPromoCode, promo_code_);
-    InitReferral();
+
+    // Tell Referral server we have installed the browser.
+    DCHECK(!installation_timer_);
+    installation_timer_ = std::make_unique<base::RepeatingTimer>();
+    installation_timer_->Start(
+                    FROM_HERE,
+                    base::TimeDelta::FromSeconds(
+                            brave_base::random::Geometric(kReportInstallationFrequency)),
+                    this, &BraveReferralsService::InitReferral);
+    DCHECK(installation_timer_->IsRunning());
+  } else {
+    // No referral code, no point of reporting it.
+    pref_service_->SetBoolean(kReferralReportedInstall, true);
   }
 }
 
