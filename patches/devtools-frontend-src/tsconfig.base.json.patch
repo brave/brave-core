@@ -1,0 +1,12 @@
+diff --git a/tsconfig.base.json b/tsconfig.base.json
+index a88f49eaa993afe3a7408bc2f34a1b3f7f3909d1..c0c4d7f2660a9d760dbd7dd17841df42fc7990cb 100644
+--- a/tsconfig.base.json
++++ b/tsconfig.base.json
+@@ -8,6 +8,7 @@
+     },
+     "checkJs": true,
+     "allowJs": true,
++    "moduleResolution": "node",
+ 
+     "noEmitOnError": true,
+ 
