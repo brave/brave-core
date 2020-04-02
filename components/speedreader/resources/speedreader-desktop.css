@@ -3,8 +3,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: 1.95552em;
-  line-height: 1.2141em;
+  font-size: 2em;
+  line-height: 1em;
   margin-top: 0;
   margin-bottom: 0.5em;
 }
@@ -15,12 +15,13 @@ h2 {
 }
 
 h3 {
-  font-size: 1.25em;
+  font-size: 1.5em;
   line-height: 1em;
 }
 
 h4, h5, h6 {
-  font-size: 1em;
+  font-size: 1.5em;
+  line-height: 1em;
   margin: 1em 0;
 }
 
@@ -80,6 +81,7 @@ a[href] {
 
 #article {
   text-rendering: optimizeLegibility;
+  font-family: "Times New Roman", Times, serif;
 }
 
 #article * {
@@ -235,7 +237,7 @@ body.watch #article .float {
 }
 
 #article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
-  font-family: -apple-system-font;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 #article .leading-image, #article figure, #article .auxiliary, #article .pullquote {
@@ -252,13 +254,18 @@ body:not(.watch) figure:not(.float) {
 }
 
 hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
   background: rgba(0, 0, 0, 0.2);
   height: 1px;
   border: 0;
 }
 
 pre {
-  font-family: -apple-system-ui-monospaced, Menlo;
+  font-family: "Lucida Console", Courier, monospace;
   font-size: 0.87em;
   line-height: 1.45em;
 }
@@ -396,9 +403,9 @@ iframe {
     margin: 0 auto;
   }
   /* Readable margins. */
-  body #article {
+  /* body #article {
     max-width: 83.2ex;
-  }
+  } */
 }
 
 /* Use slightly smaller page padding when vertically constrained. */
