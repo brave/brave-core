@@ -183,23 +183,18 @@ bool NotificationHelperWin::IsFocusAssistEnabled() const {
 }
 
 bool NotificationHelperWin::IsNotificationsEnabled() {
-#if !defined(OFFICIAL_BUILD)
-  LOG(WARNING) << "Unable to detect the status of native notifications on non"
-      " official builds as the app is not code signed";
-  return true;
-#else
   HRESULT hr = InitializeToastNotifier();
   auto* notifier = notifier_.Get();
   if (!notifier || FAILED(hr)) {
     LOG(ERROR) << "Failed to initialize toast notifier";
-    return false;
+    return true;
   }
 
   ABI::Windows::UI::Notifications::NotificationSetting setting;
   hr = notifier->get_Setting(&setting);
   if (FAILED(hr)) {
     LOG(ERROR) << "Failed to get notification settings from toast notifier";
-    return false;
+    return true;
   }
 
   switch (setting) {
@@ -233,7 +228,6 @@ bool NotificationHelperWin::IsNotificationsEnabled() {
       return false;
     }
   }
-#endif
 }
 
 base::string16 NotificationHelperWin::GetAppId() const {
