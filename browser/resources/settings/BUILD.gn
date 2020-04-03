@@ -14,7 +14,7 @@ grit("resources") {
     "enable_brave_wayback_machine=$enable_brave_wayback_machine",
   ]
 
-  source_is_generated = optimize_webui
+  enable_input_discovery_for_gn_analyze = optimize_webui
 
   outputs = [
     "grit/brave_settings_resources.h",
