@@ -1,16 +1,8 @@
 diff --git a/chrome/installer/mini_installer/mini_installer.cc b/chrome/installer/mini_installer/mini_installer.cc
-index 73e6240800f3c72bd96c91971c53a19516e1b0f1..788f6dd2f3f90dc496688c7f0c412b490db23e77 100644
+index 73e6240800f3c72bd96c91971c53a19516e1b0f1..10d2da1f86c685e177d253e8672499ce58270c4c 100644
 --- a/chrome/installer/mini_installer/mini_installer.cc
 +++ b/chrome/installer/mini_installer/mini_installer.cc
-@@ -27,6 +27,7 @@
- // "Community Additions" comment on MSDN here:
- // http://msdn.microsoft.com/en-us/library/windows/desktop/aa387694.aspx
- #define SystemFunction036 NTAPI SystemFunction036
-+#define StandardReferralCodeLen 6
- #include <NTSecAPI.h>
- #undef SystemFunction036
-
-@@ -63,7 +64,7 @@ struct Context {
+@@ -63,7 +63,7 @@ struct Context {
  // TODO(grt): Frame this in terms of whether or not the brand supports
  // integation with Omaha, where Google Update is the Google-specific fork of
  // the open-source Omaha project.
@@ -19,25 +11,27 @@ index 73e6240800f3c72bd96c91971c53a19516e1b0f1..788f6dd2f3f90dc496688c7f0c412b49
  // Opens the Google Update ClientState key. If |binaries| is false, opens the
  // key for Google Chrome or Chrome SxS (canary). If |binaries| is true and an
  // existing multi-install Chrome is being updated, opens the key for the
-@@ -144,6 +145,141 @@ void SetInstallerFlags(const Configuration& configuration) {
+@@ -144,6 +144,146 @@ void SetInstallerFlags(const Configuration& configuration) {
  }
  #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
  
 +#if defined(BRAVE_CHROMIUM_BUILD)
++#define StandardReferralCodeLen 6
 +bool ParseStandardReferralCode(const wchar_t* filename, ReferralCodeString& referral_code) {
 +  // Scan backwards for last dash in filename.
-+  const wchar_t* scan = filename + lstrlenW(filename) - 1;
++  const wchar_t* anchor = filename + lstrlen(filename) - 1;
++  const wchar_t* scan = anchor;
 +  while (scan != filename && *scan != L'-')
 +    --scan;
 +
 +  if (*scan++ != L'-')
 +    return false;
 +
-+  // Standard referral code is 6 characters.
++  if (anchor - scan != StandardReferralCodeLen)
++    return false;
++
 +  wchar_t* ref_code = scan;
 +  wchar_t ref_code_normalized[StandardReferralCodeLen];
-+  if (lstrlenW(ref_code) != StandardReferralCodeLen)
-+    return false;
 +
 +  // Ensure that first half of referral code is alphabetic.
 +  for (int i = 0; i < 3; ++i) {
@@ -52,8 +46,11 @@ index 73e6240800f3c72bd96c91971c53a19516e1b0f1..788f6dd2f3f90dc496688c7f0c412b49
 +      return false;
 +  }
 +
-+  lstrcpyW(ref_code_normalized, ref_code);
-+  (void) CharUpperW((LPWSTR)ref_code_normalized);
++  if (!SafeStrCopy(ref_code_normalized, StandardReferralCodeLen, ref_code))
++    return false;
++
++  SafeStrASCIIUpper(ref_code_normalized, StandardReferralCodeLen);
++
 +  if (!referral_code.assign(ref_code_normalized))
 +    return false;
 +
@@ -63,7 +60,7 @@ index 73e6240800f3c72bd96c91971c53a19516e1b0f1..788f6dd2f3f90dc496688c7f0c412b49
 +bool ParseExtendedReferralCode(const wchar_t* filename, ReferralCodeString& referral_code) {
 +  // Scan backwards for second-to-last dash in filename, since this
 +  // type of referral code has an embedded dash.
-+  const wchar_t* scan = filename + lstrlenW(filename) - 1;
++  const wchar_t* scan = filename + lstrlen(filename) - 1;
 +  while (scan != filename && *scan != L'-')
 +    --scan;
 +
@@ -79,7 +76,7 @@ index 73e6240800f3c72bd96c91971c53a19516e1b0f1..788f6dd2f3f90dc496688c7f0c412b49
 +  // Ensure that referral code is alphabetic.
 +  const wchar_t* ref_code = scan;
 +  int dashes = 0;
-+  for (int i = 0; i < lstrlenW(ref_code); ++i) {
++  for (int i = 0; i < lstrlen(ref_code); ++i) {
 +    if ((ref_code[i] < L'a' || ref_code[i] > L'z') &&
 +        (ref_code[i] < L'A' || ref_code[i] > L'Z') && (ref_code[i] != L'-'))
 +      return NULL;
@@ -101,7 +98,7 @@ index 73e6240800f3c72bd96c91971c53a19516e1b0f1..788f6dd2f3f90dc496688c7f0c412b49
 +                       ReferralCodeString& referral_code) {
 +  PathString filename;
 +  if (!filename.assign(
-+          GetNameFromPathExt(installer_filename, lstrlenW(installer_filename))))
++          GetNameFromPathExt(installer_filename, lstrlen(installer_filename))))
 +    return false;
 +
 +  // Strip extension from filename.
@@ -161,7 +158,7 @@ index 73e6240800f3c72bd96c91971c53a19516e1b0f1..788f6dd2f3f90dc496688c7f0c412b49
  // Gets the setup.exe path from Registry by looking at the value of Uninstall
  // string.  |size| is measured in wchar_t units.
  ProcessExitResult GetSetupExePathForAppGuid(bool system_level,
-@@ -528,6 +664,21 @@ ProcessExitResult RunSetup(const Configuration& configuration,
+@@ -528,6 +668,21 @@ ProcessExitResult RunSetup(const Configuration& configuration,
    // on to setup.exe
    AppendCommandLineFlags(configuration.command_line(), &cmd_line);
  
@@ -183,7 +180,7 @@ index 73e6240800f3c72bd96c91971c53a19516e1b0f1..788f6dd2f3f90dc496688c7f0c412b49
    return RunProcessAndWait(setup_exe.get(), cmd_line.get(),
                             RUN_SETUP_FAILED_FILE_NOT_FOUND,
                             RUN_SETUP_FAILED_PATH_NOT_FOUND,
-@@ -875,7 +1026,7 @@ ProcessExitResult WMain(HMODULE module) {
+@@ -875,7 +1030,7 @@ ProcessExitResult WMain(HMODULE module) {
    if (!GetWorkDir(module, &base_path, &exit_code))
      return exit_code;
  
@@ -192,7 +189,7 @@ index 73e6240800f3c72bd96c91971c53a19516e1b0f1..788f6dd2f3f90dc496688c7f0c412b49
    // Set the magic suffix in registry to try full installer next time. We ignore
    // any errors here and we try to set the suffix for user level unless
    // GoogleUpdateIsMachine=1 is present in the environment or --system-level is
-@@ -900,7 +1051,7 @@ ProcessExitResult WMain(HMODULE module) {
+@@ -900,7 +1055,7 @@ ProcessExitResult WMain(HMODULE module) {
    if (ShouldDeleteExtractedFiles())
      DeleteExtractedFiles(base_path.get(), archive_path.get(), setup_path.get());
  
