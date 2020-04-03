@@ -340,6 +340,7 @@ public class BraveNewTabPageView extends NewTabPageView {
             TabAttributes.from(mTab).set(String.valueOf((mTabImpl).getId()), mSponsoredTab);
         }
         sponsoredTab = TabAttributes.from(mTab).get(String.valueOf((mTabImpl).getId()));
+        mNTPBackgroundImagesBridge.getTopSites();
     }
 
     private TabObserver mTabObserver = new EmptyTabObserver() {
