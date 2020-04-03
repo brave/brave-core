@@ -7,7 +7,7 @@ grit("resources") {
   source = "extensions_resources.grd"
 
   # The .grd contains references to generated files.
-  source_is_generated = true
+  enable_input_discovery_for_gn_analyze = true
   grit_flags = [
     "-E",
     "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
