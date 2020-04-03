@@ -25,6 +25,7 @@
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 
 using base::android::AttachCurrentThread;
 using base::android::ConvertUTF8ToJavaString;
@@ -134,6 +135,42 @@ NTPBackgroundImagesBridge::CreateWallpaper() {
       ConvertUTF8ToJavaString(env, *logo_image_path),
       ConvertUTF8ToJavaString(env, logo_destination_url ? *logo_destination_url
                                                         : ""));
+}
+
+void NTPBackgroundImagesBridge::GetTopSites(
+  JNIEnv* env, const JavaParamRef<jobject>& obj) {
+
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+
+  std::vector<ntp_background_images::TopSite> top_sites = view_counter_service_
+      ? view_counter_service_->GetTopSitesVectorData()
+      : std::vector<ntp_background_images::TopSite>{};
+
+  for (const auto& top_site : top_sites) {
+    // auto* name = top_site.name;
+    // auto* destination_url = top_site.destination_url;
+    // auto* background_color = top_site.background_color;
+    // auto* image_path = top_site.image_path;
+
+    LOG(ERROR) << "NTP" << "name : " << top_site.name;
+    LOG(ERROR) << "NTP" << "destination_url : " << top_site.destination_url;
+    LOG(ERROR) << "NTP" << "background_color : " << top_site.background_color;
+    LOG(ERROR) << "NTP" << "image_path : " << top_site.image_path;
+  }
+  // if (data.is_none())
+  //   return base::android::ScopedJavaLocalRef<jobject>();
+
+  // TODO(bridiver) - need to either expose these constants or change this
+  // to a struct instead of base::Value
+
+  // return Java_NTPBackgroundImagesBridge_createWallpaper(
+  //     env,
+  //     ConvertUTF8ToJavaString(env, *image_path),
+  //     focal_point_x ? *focal_point_x : 0,
+  //     focal_point_y ? *focal_point_y : 0,
+  //     ConvertUTF8ToJavaString(env, *logo_image_path),
+  //     ConvertUTF8ToJavaString(env, logo_destination_url ? *logo_destination_url
+  //                                                       : ""));
 }
 
 base::android::ScopedJavaLocalRef<jobject>
