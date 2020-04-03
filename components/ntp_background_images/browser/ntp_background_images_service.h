@@ -120,9 +120,6 @@ class NTPBackgroundImagesService {
 
   void ScheduleMappingTabRetryTimer();
 
-  // Return true if test data is passed.
-  bool UseLocalSponsoredImagesestData();
-  bool UseLocalSuperReferralTestData();
   void RegisterDemoSuperReferralComponent();
 
   // virtual for test.

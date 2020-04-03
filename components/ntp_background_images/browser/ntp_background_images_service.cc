@@ -174,7 +174,9 @@ NTPBackgroundImagesService::NTPBackgroundImagesService(
 
 NTPBackgroundImagesService::~NTPBackgroundImagesService() = default;
 
-bool NTPBackgroundImagesService::UseLocalSponsoredImagesestData() {
+void NTPBackgroundImagesService::Init() {
+  RestoreCachedTopSitesFaviconList();
+
   // Flag override for testing or demo purposes
   base::FilePath forced_local_path(
       base::CommandLine::ForCurrentProcess()->GetSwitchValueNative(
@@ -184,38 +186,24 @@ bool NTPBackgroundImagesService::UseLocalSponsoredImagesestData() {
     DVLOG(2) << __func__ << ": NTP SI test data will be loaded"
              << " from local path at: " << forced_local_path.LossyDisplayName();
     OnComponentReady(false, forced_local_path);
-    return true;
-  }
-
-  return false;
-}
-
-bool NTPBackgroundImagesService::UseLocalSuperReferralTestData() {
-  // Flag override for testing or demo purposes
-  base::FilePath forced_local_path(
-      base::CommandLine::ForCurrentProcess()->GetSwitchValueNative(
-          switches::kNTPSuperReferralDataPathForTesting));
-  if (!forced_local_path.empty()) {
-    test_data_used_ = true;
-    DVLOG(2) << __func__ << ": NTP SR test data will be loaded"
-             << " from local path at: " << forced_local_path.LossyDisplayName();
-    OnComponentReady(false, forced_local_path);
-    return true;
-  }
-
-  return false;
-}
-
-void NTPBackgroundImagesService::Init() {
-  RestoreCachedTopSitesFaviconList();
-
-  if (!UseLocalSponsoredImagesestData())
+  } else {
     RegisterSponsoredImagesComponent();
+  }
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   if (base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper)) {
-    if (!UseLocalSuperReferralTestData())
+    // Flag override for testing or demo purposes
+    base::FilePath forced_local_path(
+        base::CommandLine::ForCurrentProcess()->GetSwitchValueNative(
+            switches::kNTPSuperReferralDataPathForTesting));
+    if (!forced_local_path.empty()) {
+      test_data_used_ = true;
+      DVLOG(2) << __func__ << ": NTP SR test data will be loaded"
+               << " from local path at: " << forced_local_path.LossyDisplayName();
+      OnComponentReady(false, forced_local_path);
+    } else {
       CheckSuperReferralComponent();
+    }
   }
 #endif
 }
