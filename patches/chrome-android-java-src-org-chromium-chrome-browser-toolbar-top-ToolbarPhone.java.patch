@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index 7ae3dad4ca2754573c56eea9419d7347771e8fcc..4ca44c8f49452be3f4bc5a28b1e20b6beb04fd8d 100644
+index d0e312498d3e7cef40f3676d51edd22b8bc4aafe..8232e1dd1471b4c83f571aa8ad3b251fc76c1c91 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 @@ -92,7 +92,7 @@ import java.util.List;
@@ -62,7 +62,7 @@ index 7ae3dad4ca2754573c56eea9419d7347771e8fcc..4ca44c8f49452be3f4bc5a28b1e20b6b
          mUrlFocusLayoutAnimator = new AnimatorSet();
          mUrlFocusLayoutAnimator.playTogether(animators);
  
-@@ -2843,6 +2849,7 @@ public class ToolbarPhone extends ToolbarLayout implements Invalidator.Client, O
+@@ -2849,6 +2855,7 @@ public class ToolbarPhone extends ToolbarLayout implements Invalidator.Client, O
  
      @Override
      public void onBottomToolbarVisibilityChanged(boolean isVisible) {

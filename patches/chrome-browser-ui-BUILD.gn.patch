@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 1d04b98ce3544c8654ab321cdbef707446b584cc..33994cdbc3667172cb5491b24097fa1cdbd358fc 100644
+index 1e9de5eaa18f89b89905e1e4d567123635c20bff..4fcfb74e92e9e3514a573ab4123a603b0f5ad8cc 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -613,6 +613,9 @@ jumbo_static_library("ui") {
+@@ -607,6 +607,9 @@ jumbo_static_library("ui") {
      "//ui/webui",
      "//v8:v8_version",
    ]
@@ -12,7 +12,7 @@ index 1d04b98ce3544c8654ab321cdbef707446b584cc..33994cdbc3667172cb5491b24097fa1c
    allow_circular_includes_from +=
        [ "//chrome/browser/ui/webui/bluetooth_internals" ]
  
-@@ -2601,10 +2604,13 @@ jumbo_static_library("ui") {
+@@ -2599,10 +2602,13 @@ jumbo_static_library("ui") {
        ]
        deps += [ "//google_update" ]
      } else {

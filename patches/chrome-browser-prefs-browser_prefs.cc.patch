@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 06574f36a167f7f28cfe6af007022737e17502fc..1f4ce00281e7a9d53e4bf2d22e629e1c89ac06b9 100644
+index 28441480d78191b1fd63ed9238b33b2bc6ad099a..2da182f36628c37c9cc783d801424b1cc3845005 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -819,6 +819,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -829,6 +829,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
  #if defined(TOOLKIT_VIEWS)
    RegisterBrowserViewLocalPrefs(registry);
  #endif
@@ -10,7 +10,7 @@ index 06574f36a167f7f28cfe6af007022737e17502fc..1f4ce00281e7a9d53e4bf2d22e629e1c
  
    // Obsolete. See MigrateObsoleteBrowserPrefs().
    registry->RegisterBooleanPref(kGCMChannelStatus, true);
-@@ -1083,6 +1084,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -1095,6 +1096,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
  #endif
  
    RegisterProfilePrefsForMigration(registry);

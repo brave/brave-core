@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java
-index 2f63df74c7a7444f81945854bebffb69db5cfa00..42102b76be4015d5ca216e19fc3f64af73076c78 100644
+index 41d1d92745aaaf27f0407c025a5dd6aaba4b68fd..cb0e4bd87d43f1b85de9bbfd7a0fe8e632d9b6c8 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java
-@@ -41,7 +41,7 @@ import java.util.Map;
+@@ -44,7 +44,7 @@ import java.util.Map;
  /**
   * The main settings screen, shown when the user first opens Settings.
   */

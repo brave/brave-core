@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/night_mode/settings/ThemeSettingsFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/night_mode/settings/ThemeSettingsFragment.java
-index 17dc8a46660b23c549a89036039648e5f2eece7a..b08bd19f311e0a70bdb8880ed445dff9e92cadba 100644
+index 02a30988975722a372af4fef4259e668a69ecf32..b181b63649d193355639ac03f0e2e3d2cba35de2 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/night_mode/settings/ThemeSettingsFragment.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/night_mode/settings/ThemeSettingsFragment.java
 @@ -23,7 +23,7 @@ import org.chromium.ui.UiUtils;

@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AutofillPaymentMethodsFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AutofillPaymentMethodsFragment.java
-index be9ceae4670c54c767810ba5c35de76592658ec2..e4af5f1ec0b2e7da878abc83e7775826f34e8cd2 100644
+index 314e7b3ea90ee9b10a94b98c973a02f6d18933a1..6acc65331dd44b5332914be4df19e4d6f10f46d9 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AutofillPaymentMethodsFragment.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AutofillPaymentMethodsFragment.java
-@@ -31,7 +31,7 @@ import org.chromium.chrome.browser.settings.ManagedPreferenceDelegate;
+@@ -31,7 +31,7 @@ import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
   * payment apps.
   * TODO(crbug.com/949269): Add tests for AutofillProfilesFragment.
   */

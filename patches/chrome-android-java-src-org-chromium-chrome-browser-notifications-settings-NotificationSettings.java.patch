@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/settings/NotificationSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/settings/NotificationSettings.java
-index d1bfeebc3f07156937a9989e2098dbb13ba19349..904af8a216189481e336d857c7806c61cbbdc73f 100644
+index bdb3f61b7aca3a8f11969c2bb64b96e509f9c3ed..4b3a49b3d48de244dc3f790186710e77c6457c20 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/settings/NotificationSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/settings/NotificationSettings.java
 @@ -27,7 +27,7 @@ import org.chromium.components.content_settings.ContentSettingsType;

@@ -1,8 +1,8 @@
 diff --git a/build/android/bytecode/BUILD.gn b/build/android/bytecode/BUILD.gn
-index 5d651d29e795f8116fedcf6b7370bcdcefef0ee9..9e3546ada8e63301a91bfaf0699f50fd860bff52 100644
+index 7a9d3044259a3f7dfca7de1acaf075797bd9cc47..bf9bda47d146461d3d9fa24dd8341abc9e6cd2e7 100644
 --- a/build/android/bytecode/BUILD.gn
 +++ b/build/android/bytecode/BUILD.gn
-@@ -16,6 +16,7 @@ java_binary("java_bytecode_rewriter") {
+@@ -15,6 +15,7 @@ java_binary("java_bytecode_rewriter") {
      "java/org/chromium/bytecode/ThreadAssertionClassAdapter.java",
      "java/org/chromium/bytecode/TypeUtils.java",
    ]

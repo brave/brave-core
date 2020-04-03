@@ -1,8 +1,8 @@
 diff --git a/services/service_manager/sandbox/win/sandbox_win.cc b/services/service_manager/sandbox/win/sandbox_win.cc
-index 5eaed19bf922fc6ea2774c93abf7453fd1464f8e..8d6c81f39cdd247aad5bec9f517b03f4f5dd2be8 100644
+index a4ac5af2494529e11e5605c8cae8166e1b92900c..b1b84409f02d1c4cee65ef64b41b853650b5be3c 100644
 --- a/services/service_manager/sandbox/win/sandbox_win.cc
 +++ b/services/service_manager/sandbox/win/sandbox_win.cc
-@@ -863,6 +863,7 @@ sandbox::ResultCode SandboxWin::StartSandboxedProcess(
+@@ -873,6 +873,7 @@ sandbox::ResultCode SandboxWin::StartSandboxedProcess(
            service_manager::switches::kNoSandbox)) {
      base::LaunchOptions options;
      options.handles_to_inherit = handles_to_inherit;
