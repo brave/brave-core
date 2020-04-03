@@ -46,8 +46,9 @@ namespace {
 
 constexpr int kMappingTableRetryIntervalInHours = 5;
 constexpr int kMaxBodySize = 1024 * 1024;
-
-constexpr char kDemoSuperReferralCode[] = "TECHNIK";
+constexpr char kDemoSRPublicKey[] = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzx4iuIBtK/rwFj0JZAfe8ASztzvdPmJNy6HNFxgghzqbfVxDgWCc6zLEYD6ZPwzWcADpcIjd6g4UQ5RobNniYg9leC82K91ed/Jrl/tlTSeYnSe3YUmBl5mkTxiYH6PWC+fomEqx31GrRcOAi6TXdbnPWd/uD/v+hw+6ro7wOPfWySHDC557cZufRTQt8or9ulqr8kcyUIRnH7cF4b4aUEZtHyDuS2qtfB/62OFj50CRBFaxKdhVDnZ72O8YWk0SdCH95vnQFLkVtxwtpABi5deHN79DEmbOWkcfxi6vojg8LZEBFYmayBQD8qBNVI7PBNsCTczIHrZyYDLwmG9BAQIDAQAB";  // NOLINT
+constexpr char kDemoSRComponentID[] = "icmficngdmhjligpkfmififbfffcgoef";
+constexpr char kDemoSRThemeName[] = "Technikke";
 
 constexpr char kNTPSIManifestFile[] = "photo.json";
 constexpr char kNTPSRManifestFile[] = "data.json";
@@ -241,6 +242,11 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
 }
 
 void NTPBackgroundImagesService::CheckSuperReferralComponent() {
+  if (base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo)) {
+    RegisterDemoSuperReferralComponent();
+    return;
+  }
+
   if (local_pref_->FindPreference(
           prefs::kNewTabPageCachedSuperReferralComponentInfo)->
               IsDefaultValue()) {
@@ -288,6 +294,17 @@ void NTPBackgroundImagesService::OnPreferenceChanged(
                        << " Let's check this code is super referral or not"
                        << " after downloading mapping table.";
   DownloadSuperReferralMappingTable();
+}
+
+void NTPBackgroundImagesService::RegisterDemoSuperReferralComponent() {
+  RegisterNTPBackgroundImagesComponent(
+      component_update_service_,
+      kDemoSRPublicKey,
+      kDemoSRComponentID,
+      base::StringPrintf("NTP Super Referral (%s)", kDemoSRThemeName),
+      base::BindRepeating(&NTPBackgroundImagesService::OnComponentReady,
+                          weak_factory_.GetWeakPtr(),
+                          true));
 }
 
 void NTPBackgroundImagesService::RegisterSuperReferralComponent() {
@@ -500,8 +517,6 @@ void NTPBackgroundImagesService::UnRegisterSuperReferralComponent() {
 }
 
 std::string NTPBackgroundImagesService::GetReferralPromoCode() const {
-  if (base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo))
-    return kDemoSuperReferralCode;
   return local_pref_->GetString(kReferralPromoCode);
 }
 

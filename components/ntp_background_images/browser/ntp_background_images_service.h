@@ -123,6 +123,7 @@ class NTPBackgroundImagesService {
   // Return true if test data is passed.
   bool UseLocalSponsoredImagesestData();
   bool UseLocalSuperReferralTestData();
+  void RegisterDemoSuperReferralComponent();
 
   // virtual for test.
   virtual void CheckSuperReferralComponent();
