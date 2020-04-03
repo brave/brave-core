@@ -1,0 +1,13 @@
+diff --git a/chrome/installer/mac/signing/config_factory.py b/chrome/installer/mac/signing/config_factory.py
+index 0689fb6476e741b711454aeaf4ac7c20d5e4f989..c303bb474dcf4036fc1e8d8b6985af20ae2e4f62 100644
+--- a/chrome/installer/mac/signing/config_factory.py
++++ b/chrome/installer/mac/signing/config_factory.py
+@@ -8,6 +8,8 @@ def get_class():
+     # First look up the processed Chromium config.
+     from chromium_config import ChromiumCodeSignConfig
+     config_class = ChromiumCodeSignConfig
++    from signing_helper import GetBraveSigningConfig
++    config_class = GetBraveSigningConfig(config_class)
+ 
+     # Then search for the internal config for Google Chrome.
+     try:
