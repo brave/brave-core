@@ -102,6 +102,12 @@ base::Value ViewCounterService::GetTopSites(bool for_webui) const {
   return base::Value();
 }
 
+std::vector<TopSite> ViewCounterService::GetTopSitesVectorData() const {
+  if (auto* data = GetCurrentBrandedWallpaperData())
+    return data->top_sites;
+  return {};
+}
+
 void ViewCounterService::Shutdown() {
   service_->RemoveObserver(this);
 }

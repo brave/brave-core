@@ -24,6 +24,7 @@ class PrefRegistrySyncable;
 namespace ntp_background_images {
 
 struct NTPBackgroundImagesData;
+struct TopSite;
 
 class ViewCounterService : public KeyedService,
                            public NTPBackgroundImagesService::Observer {
@@ -46,6 +47,7 @@ class ViewCounterService : public KeyedService,
   base::Value GetCurrentWallpaperForDisplay() const;
   base::Value GetCurrentWallpaper() const;
   base::Value GetTopSites(bool for_webui = false) const;
+  std::vector<TopSite> GetTopSitesVectorData() const;
 
   // This api can be used for fast checking before SR component registration.
   // NOTE: SR Data could not be availble even if this returns true.

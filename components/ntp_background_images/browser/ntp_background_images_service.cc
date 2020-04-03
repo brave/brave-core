@@ -44,6 +44,7 @@ namespace ntp_background_images {
 
 namespace {
 
+constexpr int kMappingTableRetryIntervalInHours = 5;
 constexpr int kMaxBodySize = 1024 * 1024;
 
 constexpr char kDemoSuperReferralCode[] = "TECHNIK";
@@ -321,10 +322,22 @@ void NTPBackgroundImagesService::DownloadSuperReferralMappingTable() {
       kMaxBodySize);
 }
 
+void NTPBackgroundImagesService::ScheduleMappingTabRetryTimer() {
+  mapping_table_retry_timer_ = std::make_unique<base::OneShotTimer>();
+  mapping_table_retry_timer_->Start(
+      FROM_HERE,
+      base::TimeDelta::FromHours(kMappingTableRetryIntervalInHours),
+      base::BindOnce(
+          &NTPBackgroundImagesService::DownloadSuperReferralMappingTable,
+          base::Unretained(this)));
+}
+
 void NTPBackgroundImagesService::OnGetMappingTableData(
     std::unique_ptr<std::string> json_string) {
   if (!json_string) {
     DVLOG(2) << __func__ << ": Failed to fetch mapping table.";
+    DVLOG(2) << __func__ << ": Schedule re-trying mapping table download.";
+    ScheduleMappingTabRetryTimer();
     return;
   }
 

@@ -14,6 +14,7 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "base/timer/timer.h"
 #include "base/values.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -117,6 +118,8 @@ class NTPBackgroundImagesService {
   void CacheTopSitesFaviconList();
   void RestoreCachedTopSitesFaviconList();
 
+  void ScheduleMappingTabRetryTimer();
+
   // Return true if test data is passed.
   bool UseLocalSponsoredImagesestData();
   bool UseLocalSuperReferralTestData();
@@ -143,6 +146,7 @@ class NTPBackgroundImagesService {
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<network::SimpleURLLoader> loader_;
   PrefChangeRegistrar pref_change_registrar_;
+  std::unique_ptr<base::OneShotTimer> mapping_table_retry_timer_;
   base::WeakPtrFactory<NTPBackgroundImagesService> weak_factory_;
 };
 
