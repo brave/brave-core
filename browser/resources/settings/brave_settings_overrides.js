@@ -422,8 +422,8 @@ BravePatching.RegisterPolymerTemplateModifications({
       <settings-subpage
           associated-control="[[$$('#themes-subpage-trigger')]]"
           page-title="${I18nBehavior.i18n('themes')}">
-        <settings-brave-appearance-themes prefs="{{prefs}}">
-        </settings-brave-appearance-themes>
+        <settings-brave-appearance-super-referral prefs="{{prefs}}">
+        </settings-brave-appearance-super-referral>
       </settings-subpage> `
     pages.appendChild(themes)
   },
