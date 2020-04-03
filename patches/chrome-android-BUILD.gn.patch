@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index dd59ffa4ffb9bd12d28e10aa64dc7dcfdabc0849..dd6cff83b144e5e7a572b97d883e4db6e8e302aa 100644
+index dd59ffa4ffb9bd12d28e10aa64dc7dcfdabc0849..c79bb7f6cfb1704e6e9f528e85c4adda5165328c 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -35,7 +35,7 @@ import("java_sources.gni")
@@ -15,7 +15,7 @@ index dd59ffa4ffb9bd12d28e10aa64dc7dcfdabc0849..dd6cff83b144e5e7a572b97d883e4db6
      "//third_party/android_deps:com_android_support_preference_v7_java",
      "//third_party/android_deps:com_android_support_recyclerview_v7_java",
    ]
-+  deps += ["//brave/build/android:android_brave_strings_grd"]
++  deps += brave_chrome_app_java_resources_deps resource_dirs += brave_chrome_app_java_resources_dirs
    custom_package = "org.chromium.chrome"
  }
  
