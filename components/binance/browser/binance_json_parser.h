@@ -8,6 +8,7 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 class BinanceJSONParser {
  public:
@@ -24,6 +25,15 @@ class BinanceJSONParser {
   static bool GetDepositInfoFromJSON(const std::string& json,
                                      std::string* address,
                                      std::string *url);
+  static bool GetQuoteInfoFromJSON(const std::string& json,
+                                   std::string* quote_id,
+                                   std::string* quote_price,
+                                   std::string* total_fee,
+                                   std::string* total_amount);
+  static bool GetConfirmStatusFromJSON(const std::string& json,
+                                       std::string *success_status);
+  static bool GetConvertAssetsFromJSON(const std::string& json,
+    std::map<std::string, std::vector<std::string>>* assets);
 };
 
 #endif  // BRAVE_COMPONENTS_BINANCE_BROWSER_BINANCE_JSON_PARSER_H_

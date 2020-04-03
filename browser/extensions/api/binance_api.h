@@ -8,6 +8,7 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 #include "extensions/browser/extension_function.h"
 
@@ -78,7 +79,10 @@ class BinanceGetConvertQuoteFunction :
 
  protected:
   ~BinanceGetConvertQuoteFunction() override {}
-  void OnQuoteResult(const std::string quote_id);
+  void OnQuoteResult(const std::string& quote_id,
+                     const std::string& quote_price,
+                     const std::string& total_fee,
+                     const std::string& total_amount);
 
   ResponseAction Run() override;
 };
@@ -117,6 +121,31 @@ class BinanceGetDepositInfoFunction :
   void OnGetDepositInfo(const std::string& deposit_address,
                         const std::string& deposit_url,
                         bool success);
+
+  ResponseAction Run() override;
+};
+
+class BinanceConfirmConvertFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("binance.confirmConvert", UNKNOWN)
+
+ protected:
+  ~BinanceConfirmConvertFunction() override {}
+  void OnConfirmConvert(bool success);
+
+  ResponseAction Run() override;
+};
+
+class BinanceGetConvertAssetsFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("binance.getConvertAssets", UNKNOWN)
+
+ protected:
+  ~BinanceGetConvertAssetsFunction() override {}
+  void OnGetConvertAssets(
+      const std::map<std::string, std::vector<std::string>>& assets);
 
   ResponseAction Run() override;
 };

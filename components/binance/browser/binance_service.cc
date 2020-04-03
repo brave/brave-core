@@ -41,7 +41,8 @@ const char client_id[] = BINANCE_CLIENT_ID;
 const char oauth_host[] = "accounts.binance.com";
 const char api_host[] = "api.binance.com";
 const char oauth_callback[] = "com.brave.binance://authorization";
-const char oauth_scope[] = "user:email,user:address,asset:balance,use:address";
+const char oauth_scope[] =
+    "user:email,user:address,asset:balance,use:address,asset:ocbs";
 const GURL oauth_url("https://accounts.binance.com/en/oauth/authorize");
 const unsigned int kRetriesCountOnNetworkChange = 1;
 
@@ -146,7 +147,8 @@ bool BinanceService::GetAccessToken(const std::string& code,
   url = net::AppendQueryParameter(url, "client_id", client_id);
   url = net::AppendQueryParameter(url, "code_verifier", code_verifier_);
   url = net::AppendQueryParameter(url, "redirect_uri", oauth_callback);
-  return OAuthRequest(base_url, "POST", url.query(), std::move(internal_callback));
+  return OAuthRequest(
+      base_url, "POST", url.query(), std::move(internal_callback));
 }
 
 bool BinanceService::GetAccountBalances(GetAccountBalancesCallback callback) {
@@ -350,10 +352,14 @@ void BinanceService::OnGetConvertQuote(
     const int status, const std::string& body,
     const std::map<std::string, std::string>& headers) {
   std::string quote_id;
+  std::string quote_price;
+  std::string total_fee;
+  std::string total_amount;
   if (status >= 200 && status <= 299) {
-    BinanceJSONParser::GetQuoteIDFromJSON(body, &quote_id);
+    BinanceJSONParser::GetQuoteInfoFromJSON(
+        body, &quote_id, &quote_price, &total_fee, &total_amount);
   }
-  std::move(callback).Run(quote_id);
+  std::move(callback).Run(quote_id, quote_price, total_fee, total_amount);
 }
 
 bool BinanceService::GetTickerPrice(
@@ -422,6 +428,50 @@ void BinanceService::OnGetDepositInfo(
 
   std::move(callback).Run(
       deposit_address, deposit_url, !IsUnauthorized(status));
+}
+
+bool BinanceService::ConfirmConvert(const std::string& quote_id,
+                                    ConfirmConvertCallback callback) {
+  auto internal_callback = base::BindOnce(&BinanceService::OnConfirmConvert,
+      base::Unretained(this), std::move(callback));
+  GURL url = GetURLWithPath(oauth_host, oauth_path_convert_confirm);
+  url = net::AppendQueryParameter(url, "quoteId", quote_id);
+  url = net::AppendQueryParameter(url, "access_token", access_token_);
+  return OAuthRequest(url, "POST", url.query(), std::move(internal_callback));
+}
+
+void BinanceService::OnConfirmConvert(
+    ConfirmConvertCallback callback,
+    const int status, const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  std::string success_status;
+
+  if (status >= 200 && status <= 299) {
+    BinanceJSONParser::GetConfirmStatusFromJSON(body, &success_status);
+  }
+
+  bool success = success_status != "FAIL";
+  std::move(callback).Run(success);
+}
+
+bool BinanceService::GetConvertAssets(GetConvertAssetsCallback callback) {
+  auto internal_callback = base::BindOnce(&BinanceService::OnGetConvertAssets,
+      base::Unretained(this), std::move(callback));
+  GURL url = GetURLWithPath(oauth_host, oauth_path_convert_assets);
+  url = net::AppendQueryParameter(url, "access_token", access_token_);
+  return OAuthRequest(url, "GET", "", std::move(internal_callback));
+}
+
+void BinanceService::OnGetConvertAssets(GetConvertAssetsCallback callback,
+    const int status, const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  std::map<std::string, std::vector<std::string>> assets;
+
+  if (status >= 200 && status <= 299) {
+    BinanceJSONParser::GetConvertAssetsFromJSON(body, &assets);
+  }
+
+  std::move(callback).Run(assets);
 }
 
 base::SequencedTaskRunner* BinanceService::io_task_runner() {

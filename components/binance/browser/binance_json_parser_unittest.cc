@@ -8,6 +8,8 @@
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 
+// npm run test -- brave_unit_tests --filter=BinanceJSONParserTest.*
+
 namespace {
 
 std::string GetBalanceFromAssets(
@@ -81,19 +83,6 @@ TEST_F(BinanceJSONParserTest, GetTokensFromJSON) {
   ASSERT_EQ(refresh_token, "fb5587ee-d9cf-4cb5-a586-4aed72cc9bea");
 }
 
-TEST_F(BinanceJSONParserTest, GetQuoteIDFromJSON) {
-  std::string quote_id;
-  ASSERT_TRUE(BinanceJSONParser::GetQuoteIDFromJSON(R"(
-      {
-        "code": "12345",
-        "data": {
-          "quoteId" : "12345"
-        }
-      })", &quote_id));
-
-  ASSERT_EQ(quote_id, "12345");
-}
-
 TEST_F(BinanceJSONParserTest, GetTickerPriceFromJSON) {
   std::string symbol_pair_price;
   ASSERT_TRUE(BinanceJSONParser::GetTickerPriceFromJSON(R"(
@@ -130,6 +119,55 @@ TEST_F(BinanceJSONParserTest, GetDepositInfoFromJSON) {
       })", &deposit_address, &deposit_url));
   ASSERT_EQ(deposit_address, "112tfsHDk6Yk8PbNnTVkv7yPox4aWYYDtW");
   ASSERT_EQ(deposit_url, "https://btc.com/112tfsHDk6Yk8PbNnTVkv7yPox4aWYYDtW");
+}
+
+TEST_F(BinanceJSONParserTest, GetQuoteInfoFromJSON) {
+  std::string quote_id;
+  std::string quote_price;
+  std::string total_fee;
+  std::string total_amount;
+  ASSERT_TRUE(BinanceJSONParser::GetQuoteInfoFromJSON(R"(
+      {
+        "code": "000000",
+        "message": null,
+        "data": {
+          "quoteId": "b5481fb7f8314bb2baf55aa6d4fcf068",
+          "quotePrice": 1094.01086957,
+          "tradeFee": 8,
+          "railFee": 0,
+          "totalFee": 8,
+          "totalAmount": 100649,
+          "showPrice": 1094.01086957
+        }
+      })", &quote_id, &quote_price, &total_fee, &total_amount));
+  ASSERT_EQ(quote_id, "b5481fb7f8314bb2baf55aa6d4fcf068");
+  ASSERT_EQ(quote_price, "1094.000000");
+  ASSERT_EQ(total_fee, "8.000000");
+  ASSERT_EQ(total_amount, "100649.000000");
+}
+
+TEST_F(BinanceJSONParserTest, GetConfirmStatusFromJSON) {
+  std::string success;
+  ASSERT_TRUE(BinanceJSONParser::GetConfirmStatusFromJSON(R"(
+      {
+        "code": "000000",
+        "message": null,
+        "data": {
+            "quoteId": "b5481fb7f8314bb2baf55aa6d4fcf068",
+            "status": "FAIL",
+            "orderId": "ab0ab6cfd62240d79e10347fc5000bc4",
+            "fromAsset": "BNB",
+            "toAsset": "TRX",
+            "sourceAmount": 100,
+            "obtainAmount": 100649,
+            "tradeFee": 8,
+            "price": 1094.01086957,
+            "feeType": 1,
+            "feeRate": 0.08000000,
+            "fixFee": 13.00000000
+        }
+      })", &success));
+  ASSERT_EQ(success, "FAIL");
 }
 
 }  // namespace

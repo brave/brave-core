@@ -40,7 +40,9 @@ class Profile;
 
 const char oauth_path_access_token[] = "/oauth/token";
 const char oauth_path_account_balances[] = "/oauth-api/v1/balance";
+const char oauth_path_convert_assets[] = "/oauth-api/v1/ocbs/support-coins";
 const char oauth_path_convert_quote[] = "/oauth-api/v1/ocbs/quote";
+const char oauth_path_convert_confirm[] = "/oauth-api/v1/ocbs/confirm";
 const char oauth_path_deposit_info[] = "/oauth-api/v1/get-charge-address";
 
 const char api_path_ticker_price[] = "/api/v3/ticker/price";
@@ -57,7 +59,10 @@ class BinanceService : public KeyedService {
   using GetAccessTokenCallback = base::OnceCallback<void(bool)>;
   bool GetAccessToken(const std::string& code,
       GetAccessTokenCallback callback);
-  using GetConvertQuoteCallback = base::OnceCallback<void(const std::string)>;
+  using GetConvertQuoteCallback = base::OnceCallback<void(const std::string&,
+                                                          const std::string&,
+                                                          const std::string&,
+                                                          const std::string&)>;
   bool GetConvertQuote(const std::string& from,
       const std::string& to,
       const std::string& amount,
@@ -74,7 +79,13 @@ class BinanceService : public KeyedService {
                                                          const std::string&,
                                                          bool success)>;
   bool GetDepositInfo(const std::string& symbol,
-      GetDepositInfoCallback callback);                                                                                                  
+      GetDepositInfoCallback callback);
+  using ConfirmConvertCallback = base::OnceCallback<void(bool)>;
+  bool ConfirmConvert(const std::string& quote_id,
+      ConfirmConvertCallback callback);
+  using GetConvertAssetsCallback = base::OnceCallback<
+      void(const std::map<std::string, std::vector<std::string>>&)>;
+  bool GetConvertAssets(GetConvertAssetsCallback callback);
   std::string GetBinanceTLD();
   std::string GetOAuthClientUrl();
 
@@ -106,7 +117,13 @@ class BinanceService : public KeyedService {
                         const std::map<std::string, std::string>& headers);
   void OnGetDepositInfo(GetDepositInfoCallback callback,
                         const int status, const std::string& body,
-                        const std::map<std::string, std::string>& headers);                        
+                        const std::map<std::string, std::string>& headers);
+  void OnConfirmConvert(ConfirmConvertCallback callback,
+                        const int status, const std::string& body,
+                        const std::map<std::string, std::string>& headers);
+  void OnGetConvertAssets(GetConvertAssetsCallback callback,
+                          const int status, const std::string& body,
+                          const std::map<std::string, std::string>& headers);
   bool OAuthRequest(const GURL& url, const std::string& method,
       const std::string& post_data, URLRequestCallback callback);
   bool LoadTokensFromPrefs();

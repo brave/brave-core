@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/environment.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -153,8 +154,14 @@ BinanceGetConvertQuoteFunction::Run() {
 }
 
 void BinanceGetConvertQuoteFunction::OnQuoteResult(
-    const std::string quote_id) {
-  Respond(OneArgument(std::make_unique<base::Value>(quote_id)));
+    const std::string& quote_id, const std::string& quote_price,
+    const std::string& total_fee, const std::string& total_amount) {
+  auto quote = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
+  quote->SetStringKey("id", quote_id);
+  quote->SetStringKey("price", quote_price);
+  quote->SetStringKey("fee", total_fee);
+  quote->SetStringKey("amount", total_amount);
+  Respond(OneArgument(std::move(quote)));
 }
 
 ExtensionFunction::ResponseAction
@@ -271,6 +278,71 @@ void BinanceGetDepositInfoFunction::OnGetDepositInfo(
   Respond(TwoArguments(
       std::make_unique<base::Value>(deposit_address),
       std::make_unique<base::Value>(deposit_url)));
+}
+
+ExtensionFunction::ResponseAction
+BinanceConfirmConvertFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  if (brave::IsTorProfile(profile)) {
+    return RespondNow(Error("Not available in Tor profile"));
+  }
+
+  std::unique_ptr<binance::ConfirmConvert::Params> params(
+      binance::ConfirmConvert::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  auto* service = GetBinanceService(browser_context());
+  bool confirm_request = service->ConfirmConvert(params->quote_id,
+      base::BindOnce(
+          &BinanceConfirmConvertFunction::OnConfirmConvert, this));
+
+  if (!confirm_request) {
+    return RespondNow(
+        Error("Could not confirm conversion"));
+  }
+
+  return RespondLater();
+}
+
+void BinanceConfirmConvertFunction::OnConfirmConvert(bool success) {
+  Respond(OneArgument(std::make_unique<base::Value>(success)));
+}
+
+ExtensionFunction::ResponseAction
+BinanceGetConvertAssetsFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  if (brave::IsTorProfile(profile)) {
+    return RespondNow(Error("Not available in Tor profile"));
+  }
+
+  auto* service = GetBinanceService(browser_context());
+  bool asset_request = service->GetConvertAssets(base::BindOnce(
+          &BinanceGetConvertAssetsFunction::OnGetConvertAssets, this));
+
+  if (!asset_request) {
+    return RespondNow(
+        Error("Could not retrieve supported convert assets"));
+  }
+
+  return RespondLater();
+}
+
+void BinanceGetConvertAssetsFunction::OnGetConvertAssets(
+    const std::map<std::string, std::vector<std::string>>& assets) {
+  std::unique_ptr<base::DictionaryValue> asset_dict(
+      new base::DictionaryValue());
+
+  for (const auto& asset : assets) {
+    auto supported = std::make_unique<base::ListValue>();
+    if (!asset.second.empty()) {
+      for (auto const& ticker : asset.second) {
+        supported->Append(ticker);
+      }
+    }
+    asset_dict->SetList(asset.first, std::move(supported));
+  }
+
+  Respond(OneArgument(std::move(asset_dict)));
 }
 
 }  // namespace api

@@ -128,8 +128,26 @@
             "name": "callback",
             "parameters": [
               {
-                "name": "quoteId",
-                "type": "string"
+                "name": "quote",
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "quote id"
+                  },
+                  "price": {
+                    "type": "string",
+                    "description": "quote price"
+                  },
+                  "fee": {
+                    "type": "string",
+                    "description": "convert fee"
+                  },
+                  "amount": {
+                    "type": "string",
+                    "description": "total amount to be recieved"
+                  }
+                }
               }
             ]
           }
@@ -194,6 +212,44 @@
               {
                 "name": "depositURL",
                 "type": "string"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "confirmConvert",
+        "type": "function",
+        "description": "Confirms a conversion given a quote id",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "quoteId"
+          }, {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "success",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getConvertAssets",
+        "type": "function",
+        "description": "Gets a list of supported convert assets and their respective tradeables",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "supportedAssets",
+                "type": "object",
+                "additionalProperties": { "type": "string" }
               }
             ]
           }
