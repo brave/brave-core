@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/upgrade_detector/upgrade_detector_impl.cc b/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
-index 7c85028e1a97487adeff330a27b9eeec54d3efb8..d4549ff20eeb0b8b5d4f3c9da1a807ef35fcaa1a 100644
+index 4e396c995c439dfeaf1260fab722117f0cca90b9..07bad8b91d42ddfa6de895e3148c0401db45819d 100644
 --- a/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
 +++ b/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
 @@ -459,7 +459,7 @@ void UpgradeDetectorImpl::Init() {
- #if defined(OS_WIN)
-   // Only enable upgrade notifications for Google Chrome builds. Chromium does
-   // not use an auto-updater.
--  if (!BUILDFLAG(GOOGLE_CHROME_BRANDING))
-+  if (!BUILDFLAG(GOOGLE_CHROME_BRANDING)) && (!(defined(BRAVE_CHROMIUM_BUILD)) && defined(OFFICIAL_BUILD)))
-     return;
- #elif defined(OS_MACOSX)
-   // Only enable upgrade notifications if the updater (Keystone) is present.
+ 
+   // On Windows, only enable upgrade notifications for Google Chrome builds.
+   // Chromium does not use an auto-updater.
+-#if !defined(OS_WIN) || BUILDFLAG(GOOGLE_CHROME_BRANDING)
++#if !defined(OS_WIN) || BUILDFLAG(GOOGLE_CHROME_BRANDING) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
+ 
+   // On macOS, only enable upgrade notifications if the updater (Keystone) is
+   // present.
