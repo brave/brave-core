@@ -1,17 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/site_settings/ChosenObjectSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/site_settings/ChosenObjectSettings.java
-index 46a8f69a21ef6ce6b914e48d32d917a0846eb5bb..d91bca6fa33ce8132d32737385a4db5a1b8fb6ec 100644
+index e3ad44adfd849b0d390cb8e797e2049aab40decf..aa03e6403e64ce52b7d5aa8a7f2d7a935c0da9cf 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/site_settings/ChosenObjectSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/site_settings/ChosenObjectSettings.java
-@@ -37,7 +37,7 @@ import java.util.Locale;
-  * Shows a particular chosen object (e.g. a USB device) and the list of sites that have been
-  * granted access to it by the user.
-  */
--public class ChosenObjectSettings extends PreferenceFragmentCompat {
-+public class ChosenObjectSettings extends org.chromium.chrome.browser.settings.BravePreferenceFragment {
-     public static final String EXTRA_OBJECT_INFOS = "org.chromium.chrome.preferences.object_infos";
-     public static final String EXTRA_SITES = "org.chromium.chrome.preferences.site_set";
-     public static final String EXTRA_CATEGORY =
-@@ -136,7 +136,7 @@ public class ChosenObjectSettings extends PreferenceFragmentCompat {
+@@ -134,7 +134,7 @@ public class ChosenObjectSettings extends SiteSettingsPreferenceFragment {
                      null);
              return true;
          }
