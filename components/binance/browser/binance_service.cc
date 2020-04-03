@@ -42,7 +42,7 @@ const char oauth_host[] = "accounts.binance.com";
 const char api_host[] = "api.binance.com";
 const char oauth_callback[] = "com.brave.binance://authorization";
 const char oauth_scope[] =
-    "user:email,user:address,asset:balance,use:address,asset:ocbs";
+    "user:email,user:address,asset:balance,asset:ocbs";
 const GURL oauth_url("https://accounts.binance.com/en/oauth/authorize");
 const unsigned int kRetriesCountOnNetworkChange = 1;
 
