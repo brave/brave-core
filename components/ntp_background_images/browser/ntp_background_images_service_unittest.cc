@@ -235,12 +235,12 @@ const char kTestMappingTable[] = R"(
         "BRV003": {
           "publicKey": "ABCDEFGHIJKLMN",
           "componentID": "abcdefghijklmn",
-          "companyName": "Alphabet software"
+          "themeName": "Alphabet software"
         },
         "BRV004": {
           "publicKey": "1234567890",
           "componentID": "0123456789",
-          "companyName": "Numeric software"
+          "themeName": "Numeric software"
         }
     })";
 
