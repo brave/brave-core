@@ -85,6 +85,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   private BraveShieldsContentSettingsObserver mBraveShieldsContentSettingsObserver;
   private TextView mBraveRewardsNotificationsCount;
   private boolean mShieldsLayoutIsColorBackground;
+  private int mCurrentToolbarColor;
 
   private boolean mIsPublisherVerified;
   private boolean mIsNotificationPosted;
@@ -200,11 +201,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           mRewardsLayout.setVisibility(View.VISIBLE);
       }
       if (mShieldsLayout != null) {
-          if (this instanceof ToolbarTablet) {
-              mShieldsLayout.setBackgroundColor(
-                      ChromeColors.getDefaultThemeColor(getResources(), isIncognito()));
-              mShieldsLayoutIsColorBackground = true;
-          }
+          updateShieldsLayoutBackground(!(mRewardsLayout != null && mRewardsLayout.getVisibility() == View.VISIBLE));
           mShieldsLayout.setVisibility(View.VISIBLE);
       }
       mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
@@ -367,7 +364,13 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   }
 
   protected void updateModernLocationBarColor(int color) {
-      mShieldsLayout.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+      mCurrentToolbarColor = color;
+      if (mShieldsLayout != null) {
+          mShieldsLayout.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+          if (mShieldsLayoutIsColorBackground) {
+              mShieldsLayout.setBackgroundColor(ChromeColors.getDefaultThemeColor(getResources(), isIncognito()));
+          }
+      }
       if (mRewardsLayout != null) {
           mRewardsLayout.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
       }
@@ -412,12 +415,14 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       if (mRewardsLayout == null) return;
       if (isIncognito()) {
           mRewardsLayout.setVisibility(View.GONE);
+          updateShieldsLayoutBackground(true);
       } else if (isNativeLibraryReady() &&
               ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) &&
               !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed() &&
               !sharedPreferences.getBoolean(
                       AppearancePreferences.PREF_HIDE_BRAVE_REWARDS_ICON, false)) {
           mRewardsLayout.setVisibility(View.VISIBLE);
+          updateShieldsLayoutBackground(false);
       }
   }
 
@@ -448,11 +453,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           BravePrefServiceBridge.getInstance().setSafetynetCheckFailed(true);
           if (mRewardsLayout != null && mShieldsLayout != null) {
               mRewardsLayout.setVisibility(View.GONE);
-              if (this instanceof ToolbarTablet) {
-                  mShieldsLayout.setBackgroundDrawable(
-                      ApiCompatibilityUtils.getDrawable(getContext().getResources(), R.drawable.modern_toolbar_background_grey_end_segment));
-                  mShieldsLayoutIsColorBackground = false;
-              }
+              updateShieldsLayoutBackground(true);
           }
           // Show message
           AlertDialog.Builder alert = new AlertDialog.Builder(getContext(), R.style.Theme_Chromium_AlertDialog);
@@ -641,16 +642,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   public void onThemeColorChanged(int color, boolean shouldAnimate) {
       final int textBoxColor = ToolbarColors.getTextBoxColorForToolbarBackgroundInNonNativePage(
               getResources(), color, isIncognito());
-      if (mShieldsLayout != null) {
-          mShieldsLayout.getBackground().setColorFilter(textBoxColor, PorterDuff.Mode.SRC_IN);
-          if (mShieldsLayoutIsColorBackground) {
-              mShieldsLayout.setBackgroundColor(
-                      ChromeColors.getDefaultThemeColor(getResources(), isIncognito()));
-          }
-      }
-      if (mRewardsLayout != null) {
-          mRewardsLayout.getBackground().setColorFilter(textBoxColor, PorterDuff.Mode.SRC_IN);
-      }
+      updateModernLocationBarColor(textBoxColor);
   }
 
     /**
@@ -701,5 +693,19 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
         if (this instanceof ToolbarPhone && getMenuButtonWrapper() != null) {
             getMenuButtonWrapper().setVisibility(isVisible ? View.GONE : View.VISIBLE);
         }
+    }
+
+    private void updateShieldsLayoutBackground(boolean rounded) {
+        if (!(this instanceof ToolbarTablet) || (mShieldsLayout == null)) return;
+
+        if (rounded) {
+            mShieldsLayout.setBackgroundDrawable(ApiCompatibilityUtils.getDrawable(getContext().getResources(),
+                    R.drawable.modern_toolbar_background_grey_end_segment));
+            mShieldsLayoutIsColorBackground = false;
+        } else {
+            mShieldsLayout.setBackgroundColor(ChromeColors.getDefaultThemeColor(getResources(), isIncognito()));
+            mShieldsLayoutIsColorBackground = true;
+        }
+        updateModernLocationBarColor(mCurrentToolbarColor);
     }
 }
