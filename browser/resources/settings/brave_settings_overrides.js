@@ -167,7 +167,7 @@ BravePatching.RegisterPolymerTemplateModifications({
     const appearanceBrowserEl = getMenuElement(templateContent, '/appearance')
     getStartedEl.insertAdjacentElement('afterend', appearanceBrowserEl)
     // Add New Tab item
-    const newTabEl = createMenuElement(loadTimeData.getString('braveNewTab'), '/braveNewTab', 'brave_settings:new-tab')
+    const newTabEl = createMenuElement(loadTimeData.getString('braveNewTab'), '/newTab', 'brave_settings:new-tab')
     appearanceBrowserEl.insertAdjacentElement('afterend', newTabEl)
     // Add Sync and Help Tips item
     const helpTipsEl = createMenuElement(loadTimeData.getString('braveHelpTips'), '/braveHelpTips', 'brave_settings:help')
@@ -245,7 +245,7 @@ BravePatching.RegisterPolymerTemplateModifications({
     r.EXTENSIONS = r.BASIC.createSection('/extensions', 'extensions')
     r.BRAVE_SYNC = r.BASIC.createSection('/braveSync', 'braveSync')
     r.BRAVE_HELP_TIPS = r.BASIC.createSection('/braveHelpTips', 'braveHelpTips')
-    r.BRAVE_NEW_TAB = r.BASIC.createSection('/braveNewTab', 'braveNewTab')
+    r.BRAVE_NEW_TAB = r.BASIC.createSection('/newTab', 'newTab')
     if (!r.SITE_SETTINGS) {
       console.error('[Brave Settings Overrides] Routes: could not find SITE_SETTINGS page')
     }
@@ -334,9 +334,9 @@ BravePatching.RegisterPolymerTemplateModifications({
       const sectionNewTab = document.createElement('template')
       sectionNewTab.setAttribute('is', 'dom-if')
       sectionNewTab.setAttribute('restamp', true)
-      sectionNewTab.setAttribute('if', '[[showPage_(pageVisibility.braveNewTab)]]')
+      sectionNewTab.setAttribute('if', '[[showPage_(pageVisibility.newTab)]]')
       sectionNewTab.innerHTML = `
-        <settings-section page-title="${loadTimeData.getString('braveNewTab')}" section="braveNewTab">
+        <settings-section page-title="${loadTimeData.getString('braveNewTab')}" section="newTab">
           <settings-brave-new-tab-page prefs="{{prefs}}"></settings-brave-new-tab-page>
         </settings-section>
       `
