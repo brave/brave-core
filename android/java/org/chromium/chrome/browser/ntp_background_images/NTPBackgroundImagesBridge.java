@@ -130,6 +130,11 @@ public class NTPBackgroundImagesBridge {
                 mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this);
     }
 
+    public void getTopSites() {
+        NTPBackgroundImagesBridgeJni.get().getTopSites(
+                mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this);
+    }
+
     @CalledByNative
     public static Wallpaper createWallpaper(
             String imagePath, int focalPointX, int focalPointY,
@@ -151,6 +156,8 @@ public class NTPBackgroundImagesBridge {
         Wallpaper getCurrentWallpaper(long nativeNTPBackgroundImagesBridge,
                                       NTPBackgroundImagesBridge caller);
         void registerPageView(long nativeNTPBackgroundImagesBridge,
+                              NTPBackgroundImagesBridge caller);
+        void getTopSites(long nativeNTPBackgroundImagesBridge,
                               NTPBackgroundImagesBridge caller);
     }
 }
