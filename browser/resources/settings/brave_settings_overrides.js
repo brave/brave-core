@@ -166,13 +166,16 @@ BravePatching.RegisterPolymerTemplateModifications({
     // Move Appearance item
     const appearanceBrowserEl = getMenuElement(templateContent, '/appearance')
     getStartedEl.insertAdjacentElement('afterend', appearanceBrowserEl)
+    // Add New Tab item
+    const newTabEl = createMenuElement(loadTimeData.getString('braveNewTab'), '/braveNewTab', 'brave_settings:new-tab')
+    appearanceBrowserEl.insertAdjacentElement('afterend', newTabEl)
     // Add Sync and Help Tips item
     const helpTipsEl = createMenuElement(loadTimeData.getString('braveHelpTips'), '/braveHelpTips', 'brave_settings:help')
     if (loadTimeData.getBoolean('isSyncDisabled')) {
-      appearanceBrowserEl.insertAdjacentElement('afterend', helpTipsEl)
+      newTabEl.insertAdjacentElement('afterend', helpTipsEl)
     } else {
       const syncEl = createMenuElement(loadTimeData.getString('braveSync'), '/braveSync', 'brave_settings:sync')
-      appearanceBrowserEl.insertAdjacentElement('afterend', syncEl)
+      newTabEl.insertAdjacentElement('afterend', syncEl)
       syncEl.insertAdjacentElement('afterend', helpTipsEl)
     }
     // Add Shields item
@@ -242,6 +245,7 @@ BravePatching.RegisterPolymerTemplateModifications({
     r.EXTENSIONS = r.BASIC.createSection('/extensions', 'extensions')
     r.BRAVE_SYNC = r.BASIC.createSection('/braveSync', 'braveSync')
     r.BRAVE_HELP_TIPS = r.BASIC.createSection('/braveHelpTips', 'braveHelpTips')
+    r.BRAVE_NEW_TAB = r.BASIC.createSection('/braveNewTab', 'braveNewTab')
     if (!r.SITE_SETTINGS) {
       console.error('[Brave Settings Overrides] Routes: could not find SITE_SETTINGS page')
     }
@@ -327,13 +331,24 @@ BravePatching.RegisterPolymerTemplateModifications({
           <settings-brave-help-tips-page prefs="{{prefs}}"></settings-brave-help-tips-page>
         </settings-section>
       `
+      const sectionNewTab = document.createElement('template')
+      sectionNewTab.setAttribute('is', 'dom-if')
+      sectionNewTab.setAttribute('restamp', true)
+      sectionNewTab.setAttribute('if', '[[showPage_(pageVisibility.braveNewTab)]]')
+      sectionNewTab.innerHTML = `
+        <settings-section page-title="${loadTimeData.getString('braveNewTab')}" section="braveNewTab">
+          <settings-brave-new-tab-page prefs="{{prefs}}"></settings-brave-new-tab-page>
+        </settings-section>
+      `
       // Get Started at top
       basicPageEl.insertAdjacentElement('afterbegin', sectionGetStarted)
       // Move Appearance item
       const sectionAppearance = getSectionElement(actualTemplate.content, 'appearance')
       sectionGetStarted.insertAdjacentElement('afterend', sectionAppearance)
+      // Insert New Tab
+      sectionAppearance.insertAdjacentElement('afterend', sectionNewTab)
       // Insert sync
-      sectionAppearance.insertAdjacentElement('afterend', sectionSync)
+      sectionNewTab.insertAdjacentElement('afterend', sectionSync)
       // Insert shields
       sectionSync.insertAdjacentElement('afterend', sectionShields)
       // Insert Social Blocking

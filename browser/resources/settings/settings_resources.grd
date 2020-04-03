@@ -51,6 +51,11 @@
       <structure name="IDR_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_BROWSER_PROXY_JS" file="brave_default_extensions_page/brave_default_extensions_browser_proxy.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_PAGE_JS" file="brave_default_extensions_page/brave_default_extensions_page.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_PAGE_HTML" file="brave_default_extensions_page/brave_default_extensions_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+     <!-- brave new tab -->
+      <structure name="IDR_SETTINGS_BRAVE_NEW_TAB_BROWSER_PROXY_HTML" file="brave_new_tab_page/brave_new_tab_browser_proxy.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_BRAVE_NEW_TAB_BROWSER_PROXY_JS" file="brave_new_tab_page/brave_new_tab_browser_proxy.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_BRAVE_NEW_TAB_PAGE_JS" file="brave_new_tab_page/brave_new_tab_page.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_BRAVE_NEW_TAB_PAGE_HTML" file="brave_new_tab_page/brave_new_tab_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
     </structures>
     <includes>
       <include name="IDR_SETTINGS_BRAVE_STAMP" file="brave_unpack.stamp" type="BINDATA" />

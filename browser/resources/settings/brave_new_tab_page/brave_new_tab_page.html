@@ -1,0 +1,70 @@
+<link rel="import" href="chrome://resources/html/polymer.html">
+
+<link rel="import" href="chrome://resources/html/i18n_behavior.html">
+<link rel="import" href="chrome://resources/cr_elements/md_select_css.html">
+<link rel="import" href="brave_new_tab_browser_proxy.html">
+<link rel="import" href="../settings_shared_css.html">
+<link rel="import" href="../settings_vars_css.html">
+
+<dom-module id="settings-brave-new-tab-page">
+  <template>
+    <style include="settings-shared md-select iron-flex">
+      .primary-title {
+        font-weight: 700;
+        padding-top: 1em;
+        font-size: 1.05em;
+      }
+      .nested-section {
+        margin-inline-start: 1.5em;
+        margin-top: -0.5em;
+      }
+      .borderless {
+        border: none;
+      }
+      .normalize-margin {
+        margin: 0 -1.5em 1em;
+      }
+    </style>
+    <div class="settings-box first">
+      <div class="flex">
+        <div class="label primary-title">$i18n{braveNewTabCustomizeDashboard}</div>
+        <div class="normalize-margin">
+          <settings-toggle-button id="showBackgroundImageControlType"
+              class="secondary borderless"
+              pref="{{prefs.brave.new_tab_page.show_background_image}}"
+              label="$i18n{braveNewTabBackgroundImages}">
+          </settings-toggle-button>
+          <settings-toggle-button
+              class="nested-section borderless"
+              pref="[[toggleBrandedBackgroundOption_(prefs.brave.new_tab_page.show_background_image.value, prefs.brave.new_tab_page.show_branded_background_image)]]"
+              disabled="{{!prefs.brave.new_tab_page.show_background_image.value}}"
+              label="$i18n{braveNewTabSponsoredImages}">
+          </settings-toggle-button>
+        </div>
+      </div>
+    </div>
+    <div class="flex">
+      <settings-toggle-button
+          pref="{{prefs.brave.new_tab_page.show_stats}}"
+          label="$i18n{braveNewTabStats}">
+      </settings-toggle-button>
+      <settings-toggle-button
+          pref="{{prefs.brave.new_tab_page.show_rewards}}"
+          label="$i18n{braveNewTabBraveRewards}">
+      </settings-toggle-button>
+      <settings-toggle-button
+          pref="{{prefs.brave.new_tab_page.show_binance}}"
+          label="$i18n{braveNewTabBinance}">
+      </settings-toggle-button>
+      <settings-toggle-button
+          pref="{{prefs.brave.new_tab_page.show_top_sites}}"
+          label="$i18n{braveNewTabTopSites}">
+      </settings-toggle-button>
+      <settings-toggle-button
+          pref="{{prefs.brave.new_tab_page.show_clock}}"
+          label="$i18n{braveNewTabClock}">
+      </settings-toggle-button>
+    </div>
+  </template>
+  <script src="brave_new_tab_page.js"></script>
+</dom-module>
