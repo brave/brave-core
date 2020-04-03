@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
+
 #include "bat/ads/ads.h"
 
 #include "bat/ads/internal/ads_impl.h"
@@ -28,12 +30,12 @@ Ads* Ads::CreateInstance(
 
 bool Ads::IsSupportedLocale(
     const std::string& locale) {
-  const auto region = GetRegion(locale);
+  const std::string region = GetRegion(locale);
 
   for (const auto& schema : kSupportedRegionsSchemas) {
-    const std::map<std::string, bool> regions = schema.second;
-    const auto it = regions.find(region);
-    if (it != regions.end()) {
+    const std::vector<std::string> regions = schema.second;
+    const auto iter = std::find(regions.begin(), regions.end(), region);
+    if (iter != regions.end()) {
       return true;
     }
   }
@@ -44,7 +46,7 @@ bool Ads::IsSupportedLocale(
 bool Ads::IsNewlySupportedLocale(
     const std::string& locale,
     const int last_schema_version) {
-  const auto region = GetRegion(locale);
+  const std::string region = GetRegion(locale);
 
   for (const auto& schema : kSupportedRegionsSchemas) {
     const int schema_version = schema.first;
@@ -52,9 +54,9 @@ bool Ads::IsNewlySupportedLocale(
       continue;
     }
 
-    const std::map<std::string, bool> regions = schema.second;
-    const auto it = regions.find(region);
-    if (it != regions.end()) {
+    const std::vector<std::string> regions = schema.second;
+    const auto iter = std::find(regions.begin(), regions.end(), region);
+    if (iter != regions.end()) {
       return true;
     }
   }
