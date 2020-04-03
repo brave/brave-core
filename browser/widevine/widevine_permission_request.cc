@@ -7,7 +7,7 @@
 
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/app/vector_icons/vector_icons.h"
+#include "components/vector_icons/vector_icons.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "third_party/widevine/cdm/buildflags.h"
@@ -27,7 +27,7 @@ WidevinePermissionRequest::~WidevinePermissionRequest() {
 
 permissions::PermissionRequest::IconId WidevinePermissionRequest::GetIconId()
     const {
-  return kExtensionIcon;
+  return vector_icons::kExtensionIcon;
 }
 
 base::string16 WidevinePermissionRequest::GetMessageTextFragment() const {
