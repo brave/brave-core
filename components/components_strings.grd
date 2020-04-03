@@ -256,6 +256,7 @@
     <file path="strings/components_strings_sl.xtb" lang="sl" />
     <file path="strings/components_strings_sq.xtb" lang="sq" />
     <file path="strings/components_strings_sr.xtb" lang="sr" />
+    <file path="strings/components_strings_sr-Latn.xtb" lang="sr-Latn" />
     <file path="strings/components_strings_sv.xtb" lang="sv" />
     <file path="strings/components_strings_sw.xtb" lang="sw" />
     <file path="strings/components_strings_ta.xtb" lang="ta" />
@@ -273,7 +274,6 @@
   </translations>
   <release seq="1" allow_pseudo="false">
     <messages fallback_to_english="true">
-      <part file="app_modal_strings.grdp" />
       <part file="autofill_assistant_strings.grdp" />
       <part file="autofill_payments_strings.grdp" />
       <part file="autofill_strings.grdp" />
@@ -288,6 +288,7 @@
       <part file="find_in_page_strings.grdp" />
       <part file="flags_strings.grdp" />
       <part file="history_strings.grdp" />
+      <part file="javascript_dialogs_strings.grdp" />
       <part file="login_dialog_strings.grdp" />
       <part file="media_message_center_strings.grdp" />
       <part file="new_or_sad_tab_strings.grdp" />
@@ -298,6 +299,7 @@
       <part file="password_manager_strings.grdp" />
       <part file="payments_strings.grdp" />
       <part file="pdf_strings.grdp" />
+      <part file="permissions_strings.grdp" />
       <part file="policy_strings.grdp" />
       <part file="print_media_strings.grdp" />
       <part file="printing_component_strings.grdp" />

@@ -17,7 +17,7 @@
       Updating Brave (<ph name="PROGRESS_PERCENT">$1<ex>90%</ex></ph>)
     </message>
     <message name="IDS_SETTINGS_UPGRADE_SUCCESSFUL_RELAUNCH" desc="Status label: Successfully updated Brave">
-      Nearly up to date! Relaunch Brave to finish updating.
+      Nearly up to date! Relaunch Brave to finish updating. Private windows won't reopen.
     </message>
     <message name="IDS_SETTINGS_UPGRADE_UP_TO_DATE" desc="Status label: Already up to date (Brave)">
       Brave is up to date
@@ -88,6 +88,26 @@
     By turning this off, you can sign in to Brave sites like Gmail without signing in to Brave
   </message>
 
+  <!-- Safety check -->
+  <message name="IDS_SETTINGS_SAFETY_CHECK_PARENT_PRIMARY_LABEL_BEFORE" desc="This text describes what the safety check is. (It's an area of the Settings page where users can quickly check whether their safety-related settings are fully protecting them.)">
+    Brave can help keep you safe from data breaches, bad extensions, and more
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_UPDATES_FAILED_OFFLINE" desc="This text describes that Brave cannot check for updates because there currently is no internet connection.">
+    Brave can't check for updates. Try checking your internet connection.
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_UPDATES_FAILED" desc="This text describes that Brave cannot update due to an unknown error.">
+    Brave didn't update, something went wrong. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Fix Brave update problems and failed updates.<ph name="END_LINK">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_PASSWORDS_SIGNED_OUT" desc="This text points out that the password check can only run when the user is signed in.">
+    Brave can't check your passwords because you're not signed in
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_SAFE_BROWSING_DISABLED" desc="This text points out that Safe Browsing is disabled and that the user is not protected.">
+    Safe Browsing is off. Brave recommends turning it on.
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_EXTENSIONS_ERROR" desc="This text describes that safety check could not check extensions for an unkown reason.">
+    Brave can't check your extensions. Try again later.
+  </message>
+
   <!-- Profiles Page -->
   <message name="IDS_SETTINGS_SYNC_DISCONNECT_DELETE_PROFILE_WARNING_WITH_COUNTS_SINGULAR" desc="Warning message displayed in the Sign out of Brave dialog that indicates profile browsing data will be removed from the device.">
     This will delete 1 item from this device. To retrieve your data later, sign in to Brave as <ph name="USER_EMAIL">$1<ex>foo@example.com</ex></ph>.
@@ -119,9 +139,6 @@
   </message>
   <message name="IDS_SETTINGS_SYNC_SIGN_IN_PROMPT_WITH_NO_ACCOUNT" desc="The text displayed to prompt users to sign in to Brave.">
     Sign in to sync and personalize Brave across your devices
-  </message>
-  <message name="IDS_SETTINGS_SYNC_SIGN_IN_PROMPT_WITH_ACCOUNT" desc="The text displayed to prompt users to enable sync for an account that is alredy present in Brave.">
-    Sync and personalize Brave across your devices
   </message>
 
   <!-- Languages Page -->

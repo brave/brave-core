@@ -1,0 +1,137 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
+<grit-part>
+  <if expr="not is_android">
+    <message name="IDS_GEOLOCATION_INFOBAR_TEXT" desc="Text requesting permission for a site to access the user's physical location">
+      <ph name="URL">$1<ex>maps.google.com</ex></ph> wants to use your computer's location
+    </message>
+  </if>
+  <if expr="is_android">
+    <message name="IDS_GEOLOCATION_INFOBAR_TEXT" desc="Mobile: Text requesting permission for a site to access the user's physical location">
+      <ph name="URL">$1<ex>maps.google.com</ex></ph> wants to use your device's location
+    </message>
+    <message name="IDS_ACCESSIBILITY_EVENTS_INFOBAR_TEXT" desc="Text requesting permission for a site to listen to accessibility events, for example if the user has a screen reader or braille device enabled">
+      <ph name="URL">$1<ex>maps.google.com</ex></ph> wants to respond to accessibility events
+    </message>
+    <message name="IDS_CLIPBOARD_INFOBAR_TEXT" desc="Text requesting permission for a site to read data from the system clipboard">
+      <ph name="URL">$1<ex>maps.google.com</ex></ph> wants to see text and images copied to the clipboard
+    </message>
+    <message name="IDS_NFC_INFOBAR_TEXT" desc="Text requesting permission for a site to use NFC">
+      <ph name="URL">$1<ex>google.com</ex></ph> wants to send and receive info when you tap your phone on an NFC device
+    </message>
+    <message name="IDS_VR_INFOBAR_TEXT" desc="Text requesting permission for a site to use VR">
+      <ph name="URL">$1<ex>google.com</ex></ph> wants to use your virtual reality device and data
+    </message>
+    <message name="IDS_AR_INFOBAR_TEXT" desc="Text requesting permission for a site to use AR">
+      <ph name="URL">$1<ex>google.com</ex></ph> wants to create a 3D map of your surroundings and track camera position
+    </message>
+    <message name="IDS_NOTIFICATION_QUIET_PERMISSION_PROMPT_TITLE" desc="Text used as notification title when requesting permission for Web Notifications via a notification.">
+      Notifications for <ph name="ORIGIN">$1<ex>example.com</ex></ph> are blocked
+    </message>
+    <message name="IDS_NOTIFICATION_QUIET_PERMISSION_PROMPT_MESSAGE" desc="Text used as notification message when requesting permission for Web Notifications via a notification.">
+      Notifications are automatically blocked for all sites except ones you allow
+    </message>
+    <message name="IDS_MEDIA_CAPTURE_AUDIO_ONLY_INFOBAR_TEXT" desc="Text requesting permission for a site to access the computer's microphone.">
+      <ph name="HOST">$1<ex>html5rocks.com</ex></ph> wants to use your microphone
+    </message>
+    <message name="IDS_MEDIA_CAPTURE_VIDEO_ONLY_INFOBAR_TEXT" desc="Text requesting permission for a site to access the computer's camera.">
+      <ph name="HOST">$1<ex>html5rocks.com</ex></ph> wants to use your camera
+    </message>
+    <message name="IDS_NOTIFICATIONS_INFOBAR_TEXT" desc="Text requesting permission for Web Notifications.">
+      <ph name="site">$1<ex>mail.google.com</ex></ph> wants to send you notifications
+    </message>
+    <message name="IDS_MIDI_SYSEX_INFOBAR_TEXT" desc="Text requesting permission for a site to access MIDI devices with system exclusive messages.">
+      <ph name="URL">$1<ex>www.google.com</ex></ph> wants to get full control of your MIDI devices
+    </message>
+    <message name="IDS_STORAGE_ACCESS_INFOBAR_TEXT" desc="Permission request shown if the user is visiting a site needs access to its data while it is embedded into another site.">
+      <ph name="EMBEDDED_URL">$1<ex>news.site</ex></ph> wants to use cookies and site data on <ph name="TOP_LEVEL_URL">$2<ex>content_domain.site</ex></ph>
+    </message>
+    <message name="IDS_INFOBAR_UPDATE_PERMISSIONS_BUTTON_TEXT" desc="Button text shown when Brave does not have the necessary permission required to complete the requested tasks (e.g. a website has request location information, but Brave is missing that Android permission).">
+      Continue
+    </message>
+    <message name="IDS_MEDIA_CAPTURE_AUDIO_AND_VIDEO_INFOBAR_TEXT" desc="Text requesting permission for a site to access the computer's microphone and camera.">
+      <ph name="HOST">$1<ex>html5rocks.com</ex></ph> wants to use your camera and microphone
+    </message>
+  </if>
+  <if expr="is_android or chromeos">
+    <message name="IDS_PROTECTED_MEDIA_IDENTIFIER_PERMISSION_FRAGMENT" desc="Permission fragment shown in the permissions bubble when a web page requests access to the computer's protected media identifier.">
+      Know your unique device identifier
+    </message>
+    <message name="IDS_PROTECTED_MEDIA_IDENTIFIER_PER_ORIGIN_PROVISIONING_INFOBAR_TEXT" desc="Text requesting permission for a site to access protected media identifier. It shows the origin of the URL.">
+      <ph name="URL">$1<ex>https://www.youtube.com</ex></ph> wants to play protected content. Your device’s identity will be verified by Brave.
+    </message>
+    <message name="IDS_PROTECTED_MEDIA_IDENTIFIER_PER_DEVICE_PROVISIONING_INFOBAR_TEXT" desc="Text requesting permission for a site to access protected media identifier. It shows the origin of the URL.">
+      <ph name="URL">$1<ex>https://www.youtube.com</ex></ph> wants to play protected content. Your device's identity will be verified by Brave and may be accessed by this site.
+    </message>
+  </if>
+  <message name="IDS_GEOLOCATION_INFOBAR_PERMISSION_FRAGMENT" desc="Permission fragment used in the permission bubble, after 'This site wants to:' asking for permission to access the user's physical location.">
+    Know your location
+  </message>
+  <message name="IDS_NOTIFICATION_PERMISSIONS_FRAGMENT" desc="Permission sentence fragment to show following the prompt 'This site wants to:' in a permissions request">
+    Show notifications
+  </message>
+  <message name="IDS_MIDI_SYSEX_PERMISSION_FRAGMENT" desc="Permission asked in the permission bubble when a URL wants to access MIDI devices with system exclusive messages, along with other permissions requests. Preceded by the prompt 'This site would like to:'">
+    Use your MIDI devices
+  </message>
+  <message name="IDS_FLASH_PERMISSION_FRAGMENT" desc="Permission asked in the permission bubble when a URL wants to use Flash Plugins on the page. Preceded by the prompt 'This site would like to:'. 'Flash' is the name of a plugin and should not be translated.">
+    Run Flash
+  </message>
+  <message name="IDS_FLASH_PERMISSION_WARNING_FRAGMENT" desc="Warning in the permission bubble when a URL wants to use Flash Plugins on the page.">
+    Flash Player will no longer be supported after December 2020.
+  </message>
+  <message name="IDS_MEDIA_CAPTURE_AUDIO_ONLY_PERMISSION_FRAGMENT" desc="Permission fragment shown in the permissions bubble when a web page requests access to the computer's microphone.">
+    Use your microphone
+  </message>
+  <message name="IDS_MEDIA_CAPTURE_VIDEO_ONLY_PERMISSION_FRAGMENT" desc="Permission fragment shown in the permissions bubble when a web page requests access to the computer's camera.">
+    Use your camera
+  </message>
+  <message name="IDS_ACCESSIBILITY_EVENTS_PERMISSION_FRAGMENT" desc="Permission request shown if the user is visiting a site that wants to respond to accessibility events, for example if the user is using a screen reader and the site has custom accessibility features. Follows a prompt: 'This site would like to:'">
+    Respond to Accessibility Events
+  </message>
+  <message name="IDS_CLIPBOARD_PERMISSION_FRAGMENT" desc="Permission request shown if the user is visiting a site that wants to read data from the system clipboard. Follows a prompt: 'This site would like to:'">
+    See text and images copied to the clipboard
+  </message>
+  <message name="IDS_NFC_PERMISSION_FRAGMENT" desc="Permission request shown if the user is visiting a site that wants to use NFC. Follows a prompt: 'This site would like to:'">
+    Use NFC devices
+  </message>
+  <message name="IDS_VR_PERMISSION_FRAGMENT" desc="Permission request shown if the user is visiting a site that wants to use VR. Follows a prompt: 'This site would like to:">
+    Use virtual reality devices and data
+  </message>
+  <message name="IDS_AR_PERMISSION_FRAGMENT" desc="Permission request shown if the user is visiting a site that wants to use AR. Follows a prompt: 'This site would like to:">
+    Create a 3D map of your surroundings and track camera position
+  </message>
+  <message name="IDS_STORAGE_ACCESS_PERMISSION_FRAGMENT" desc="Permission request shown if the user is visiting a site needs access to its data while it is embedded into another site. Follows a prompt: 'This site would like to:">
+    Access cookies and site data.
+
+Do you want to allow <ph name="EMBEDDED_URL">$1<ex>news.site</ex></ph> to use cookies and site data on <ph name="TOP_LEVEL_URL">$2<ex>content_domain.site</ex></ph>?
+
+This will otherwise be blocked by your privacy settings. This will allow the content you interacted with to work correctly, but may allow <ph name="EMBEDDED_URL">$1<ex>news.site</ex></ph> to track your activity.
+  </message>
+  <message name="IDS_PERMISSION_ALLOW" desc="Label on button to allow a permissions request.">
+    Allow
+  </message>
+  <message name="IDS_PERMISSION_DENY" desc="Label on button to deny a permissions request.">
+    Block
+  </message>
+
+  <!-- Quota messages -->
+  <if expr="is_android">
+    <message name="IDS_REQUEST_QUOTA_INFOBAR_TEXT" desc="Mobile: For Android device. Text requesting permission for a site to use a new (larger) quota to persistently store data on the device (e.g. for persistent-type filesystem).">
+      <ph name="URL">$1<ex>html5rocks.com</ex></ph> wants to permanently store data on your device
+    </message>
+    <message name="IDS_REQUEST_LARGE_QUOTA_INFOBAR_TEXT" desc="Mobile: For Android device. Text requesting permission for a site to use a new (larger) quota to persistently store large data on the user's device (e.g. for persistent-type filesystem).">
+      <ph name="URL">$1<ex>html5rocks.com</ex></ph> wants to permanently store large data on your device
+    </message>
+  </if>
+  <if expr="not is_android">
+    <message name="IDS_REQUEST_QUOTA_INFOBAR_TEXT" desc="Text requesting permission for a site to use a new (larger) quota to persistently store data on the user's local computer (e.g. for persistent-type filesystem).">
+      <ph name="URL">$1<ex>html5rocks.com</ex></ph> wants to permanently store data on your local computer
+    </message>
+    <message name="IDS_REQUEST_LARGE_QUOTA_INFOBAR_TEXT" desc="Text requesting permission for a site to use a new (larger) quota to persistently store large data on the user's local computer (e.g. for persistent-type filesystem).">
+      <ph name="URL">$1<ex>html5rocks.com</ex></ph> wants to permanently store large data on your local computer
+    </message>
+  </if>
+  <message name="IDS_REQUEST_QUOTA_PERMISSION_FRAGMENT" desc="Permission fragment presented in the permission bubble when the webapp requests new larger quota to persistently store data on the device. Follows a 'This site would like to:' prompt.">
+    Store files on this device
+  </message>
+</grit-part>

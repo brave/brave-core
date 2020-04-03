@@ -47,6 +47,15 @@
     <message name="IDS_PDF_TOOLTIP_FIT_WIDTH" desc="Button tooltip for the button which zooms a PDF so that the width of a single page fills the window horizontally">
       Fit to width
     </message>
+    <!-- TODO(nigi): Remove the translateable="false" attributes for messages
+    IDS_PDF_TOOLTIP_TWO_UP_VIEW_ENABLE and IDS_PDF_TOOLTIP_TWO_UP_VIEW_DISABLE
+    once their tooltips are finalized. -->
+    <message name="IDS_PDF_TOOLTIP_TWO_UP_VIEW_ENABLE" desc="Button tooltip for the button which enables displaying two pages of a PDF on the screen horizontally" translateable="false">
+      Enable two-up view
+    </message>
+    <message name="IDS_PDF_TOOLTIP_TWO_UP_VIEW_DISABLE" desc="Button tooltip for the button which stops displaying two pages of a PDF on the screen horizontally" translateable="false">
+      Disable two-up view
+    </message>
     <message name="IDS_PDF_TOOLTIP_ZOOM_IN" desc="Button tooltip for the button which zooms in a PDF, so that the document appears larger">
       Zoom in
     </message>
@@ -59,12 +68,12 @@
     <message name="IDS_PDF_PAGE_INDEX" desc="Accessible label for each page, describing the page number">
       {COUNT, plural,
          =1 {Page 1}
-         other {Page #}}
+         other {Page {COUNT}}}
     </message>
     <message name="IDS_PDF_DOCUMENT_PAGE_COUNT" desc="Accessible name of PDF document. It gives information about the number of pages in the PDF file">
-      PDF document containing {COUNT, plural,
-      =1 {1 page}
-      other {# pages}}
+      {COUNT, plural,
+      =1 {PDF document containing {COUNT} page}
+      other {PDF document containing {COUNT} pages}}
     </message>
     <if expr="chromeos">
       <message name="IDS_PDF_DISCARD_FORM_CHANGES" desc="Title for a dialog that informs the user that the changes they have made to a form will be lost if they continue">
