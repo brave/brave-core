@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/site_settings_page/site_settings_page.js b/chrome/browser/resources/settings/site_settings_page/site_settings_page.js
-index 712a0a7f73f75108bb3f326a9ecfc67252f84a6b..8fca8551cb68264b2db30bb06b9b0721a8545856 100644
+index c02b2e5edea29fda05324be17e9b229d977f55f2..d4df50138cbbb0233ebc03a39af7918a86ca8a96 100644
 --- a/chrome/browser/resources/settings/site_settings_page/site_settings_page.js
 +++ b/chrome/browser/resources/settings/site_settings_page/site_settings_page.js
-@@ -41,6 +41,7 @@ cr.define('settings', function() {
+@@ -27,6 +27,7 @@
      // The following list is ordered alphabetically by |id|. The order in which
      // these appear in the UI is determined elsewhere in this file.
      const categoryList = [
@@ -10,7 +10,7 @@ index 712a0a7f73f75108bb3f326a9ecfc67252f84a6b..8fca8551cb68264b2db30bb06b9b0721
        {
          route: settings.routes.SITE_SETTINGS_ADS,
          id: Id.ADS,
-@@ -51,6 +52,7 @@ cr.define('settings', function() {
+@@ -37,6 +38,7 @@
          shouldShow: () =>
              loadTimeData.getBoolean('enableSafeBrowsingSubresourceFilter'),
        },
@@ -18,7 +18,7 @@ index 712a0a7f73f75108bb3f326a9ecfc67252f84a6b..8fca8551cb68264b2db30bb06b9b0721
        {
          route: settings.routes.SITE_SETTINGS_AR,
          id: Id.AR,
-@@ -68,6 +70,15 @@ cr.define('settings', function() {
+@@ -54,6 +56,15 @@
          enabledLabel: 'siteSettingsAutoDownloadAsk',
          disabledLabel: 'siteSettingsAutoDownloadBlock',
        },
@@ -34,7 +34,7 @@ index 712a0a7f73f75108bb3f326a9ecfc67252f84a6b..8fca8551cb68264b2db30bb06b9b0721
        {
          route: settings.routes.SITE_SETTINGS_BACKGROUND_SYNC,
          id: Id.BACKGROUND_SYNC,
-@@ -76,6 +87,7 @@ cr.define('settings', function() {
+@@ -62,6 +73,7 @@
          enabledLabel: 'siteSettingsAllowRecentlyClosedSites',
          disabledLabel: 'siteSettingsBackgroundSyncBlocked',
        },
@@ -42,7 +42,7 @@ index 712a0a7f73f75108bb3f326a9ecfc67252f84a6b..8fca8551cb68264b2db30bb06b9b0721
        {
          route: settings.routes.SITE_SETTINGS_BLUETOOTH_DEVICES,
          id: Id.BLUETOOTH_DEVICES,
-@@ -353,13 +365,15 @@ cr.define('settings', function() {
+@@ -339,13 +351,15 @@
                  Id.MIC,
                  Id.SENSORS,
                  Id.NOTIFICATIONS,
@@ -59,7 +59,7 @@ index 712a0a7f73f75108bb3f326a9ecfc67252f84a6b..8fca8551cb68264b2db30bb06b9b0721
                  Id.AUTOMATIC_DOWNLOADS,
                  Id.UNSANDBOXED_PLUGINS,
                  Id.PROTOCOL_HANDLERS,
-@@ -390,7 +404,9 @@ cr.define('settings', function() {
+@@ -376,7 +390,9 @@
                Id.CAMERA,
                Id.MIC,
                Id.NOTIFICATIONS,
@@ -69,7 +69,7 @@ index 712a0a7f73f75108bb3f326a9ecfc67252f84a6b..8fca8551cb68264b2db30bb06b9b0721
              ]),
              permissionsAdvanced: buildItemListFromIds([
                Id.SENSORS,
-@@ -410,6 +426,7 @@ cr.define('settings', function() {
+@@ -396,6 +412,7 @@
                Id.VR,
              ]),
              contentBasic: buildItemListFromIds([
@@ -77,7 +77,7 @@ index 712a0a7f73f75108bb3f326a9ecfc67252f84a6b..8fca8551cb68264b2db30bb06b9b0721
                Id.COOKIES,
                Id.JAVASCRIPT,
                Id.PLUGINS,
-@@ -418,7 +435,9 @@ cr.define('settings', function() {
+@@ -404,7 +421,9 @@
              ]),
              contentAdvanced: buildItemListFromIds([
                Id.SOUND,

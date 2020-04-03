@@ -1,5 +1,5 @@
 diff --git a/content/public/test/browser_test_utils.cc b/content/public/test/browser_test_utils.cc
-index aa20fa5f9e375e5a369f28ea2bbf296a3aa760d5..389a0a533c5425859af0204fac3995aa9a049e3f 100644
+index d7f88a819505305d690e35b3b78862c1b9fd8f5e..0754ca74f7041521aa32c33a36fd91946d612fda 100644
 --- a/content/public/test/browser_test_utils.cc
 +++ b/content/public/test/browser_test_utils.cc
 @@ -1906,6 +1906,7 @@ bool SetCookie(BrowserContext* browser_context,

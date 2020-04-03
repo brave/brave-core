@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkEditActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkEditActivity.java
-index ddad1aaabedab67882bb5236a74c4a9f8ad1d49f..be0db3e531410b0c5158dd22e8a7dc728cd60efd 100644
+index 978407aeba7de3bd394762e4ca8964df4b0647b2..a5ac285bac31cb4f616e66292fe88e6e890b8852 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkEditActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkEditActivity.java
 @@ -141,6 +141,7 @@ public class BookmarkEditActivity extends SynchronousInitializationActivity {

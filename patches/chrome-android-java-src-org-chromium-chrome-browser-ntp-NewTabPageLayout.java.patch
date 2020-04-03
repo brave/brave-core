@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
-index b161fde9714c8780d223dcd5316f158f1aa67834..7fb5552ebf321828422392a2cd8453af4305d76d 100644
+index 480e1d231b5e311270d529298a29145971af62cc..238eb0021d848943fd166794a9431fab9ffc3a20 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageLayout.java
 @@ -73,7 +73,7 @@ import org.chromium.ui.vr.VrModeObserver;
@@ -20,7 +20,7 @@ index b161fde9714c8780d223dcd5316f158f1aa67834..7fb5552ebf321828422392a2cd8453af
      private SiteSectionViewHolder mSiteSectionViewHolder;
      private ImageView mVoiceSearchButton;
      private View mTileGridPlaceholder;
-@@ -427,7 +427,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
+@@ -430,7 +430,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
                  1f);
      }
  
@@ -29,7 +29,7 @@ index b161fde9714c8780d223dcd5316f158f1aa67834..7fb5552ebf321828422392a2cd8453af
          mSiteSectionView = SiteSection.inflateSiteSection(this);
          ViewGroup.LayoutParams layoutParams = mSiteSectionView.getLayoutParams();
          layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-@@ -792,7 +792,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
+@@ -795,7 +795,7 @@ public class NewTabPageLayout extends LinearLayout implements TileGroup.Observer
          }
      }
  

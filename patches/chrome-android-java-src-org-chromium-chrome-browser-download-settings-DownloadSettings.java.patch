@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/download/settings/DownloadSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/download/settings/DownloadSettings.java
-index faeccca2a91787e73facdbb1ad3dfd5ee9db3136..45a607aae34c49273bd1c25dc07d876636e16138 100644
+index 3b288e2021a4f26751765606871a17789ac0b0bb..6bc724d84588e0a8ad9f18efd8a9f122c96550a3 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/download/settings/DownloadSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/download/settings/DownloadSettings.java
-@@ -21,7 +21,7 @@ import org.chromium.chrome.browser.settings.SettingsUtils;
+@@ -21,7 +21,7 @@ import org.chromium.components.browser_ui.settings.SettingsUtils;
   * Fragment containing Download settings.
   */
  public class DownloadSettings

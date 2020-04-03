@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone.java
-index 8c96d2201c445dba9657db2ba90cb86cb7590a72..5cf8fa5d1d7fd175f92e78cce4211b36fcfff02a 100644
+index 2d5c7f94389664cdfad0e4764477043f0735bc3e..43fce29710826b322b18691dfdca43e4a5e54241 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/TabSwitcherModeTTPhone.java
-@@ -292,6 +292,7 @@ public class TabSwitcherModeTTPhone extends OptimizedFrameLayout
+@@ -291,6 +291,7 @@ public class TabSwitcherModeTTPhone extends OptimizedFrameLayout
          if (BottomToolbarVariationManager.isTabSwitcherOnBottom() && !shouldShowIncognitoToggle()) {
              mToggleTabStackButton.setVisibility(isVisible ? GONE : VISIBLE);
          }

@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/tracing/settings/TracingCategoriesSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/tracing/settings/TracingCategoriesSettings.java
-index 7df5aa0990686125a5d25dba08ed8d4ec41d2904..011045017a4777979d51a53dd7e0362feeef78d5 100644
+index 8b6b8076eac903277e05a1cb2031068efb8149d6..f6454b3ff14684883d5063cb12cc9501e13408ba 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/tracing/settings/TracingCategoriesSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/tracing/settings/TracingCategoriesSettings.java
 @@ -27,7 +27,7 @@ import java.util.Set;

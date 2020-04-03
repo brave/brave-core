@@ -1,17 +1,17 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java
-index c7531b702b2a2e5b966af50ce97409a62a78efef..fca795089f42b922cddbfb66b5065eafc440c404 100644
+index 949ac0ed0ac7d0c2b5ebcbc628e60d7e8d2d6e08..79e88e544c9d45a2eb2c219ffcf5ffe7d50f8df3 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java
-@@ -43,7 +43,7 @@ class BottomToolbarCoordinator {
-             new CachedMetrics.ActionEvent("MobileToolbarOmniboxAcceleratorTap");
- 
+@@ -39,7 +39,7 @@ import org.chromium.components.feature_engagement.Tracker;
+  */
+ class BottomToolbarCoordinator {
      /** The browsing mode bottom toolbar component */
 -    private final BrowsingModeBottomToolbarCoordinator mBrowsingModeCoordinator;
 +    protected final BrowsingModeBottomToolbarCoordinator mBrowsingModeCoordinator;
  
      /** The tab switcher mode bottom toolbar component */
      private TabSwitcherBottomToolbarCoordinator mTabSwitcherModeCoordinator;
-@@ -55,8 +55,8 @@ class BottomToolbarCoordinator {
+@@ -51,8 +51,8 @@ class BottomToolbarCoordinator {
      private final ThemeColorProvider mThemeColorProvider;
  
      /** The overview mode manager. */
@@ -22,7 +22,7 @@ index c7531b702b2a2e5b966af50ce97409a62a78efef..fca795089f42b922cddbfb66b5065eaf
  
      /** The activity tab provider. */
      private ActivityTabProvider mTabProvider;
-@@ -103,7 +103,7 @@ class BottomToolbarCoordinator {
+@@ -99,7 +99,7 @@ class BottomToolbarCoordinator {
              setUrlBarFocusAction.onResult(LocationBar.OmniboxFocusReason.ACCELERATOR_TAP);
          };
  
@@ -31,7 +31,7 @@ index c7531b702b2a2e5b966af50ce97409a62a78efef..fca795089f42b922cddbfb66b5065eaf
                  homeButtonListener, searchAcceleratorListener, mShareButtonListenerSupplier,
                  tabsSwitcherLongClickListner);
  
-@@ -232,13 +232,16 @@ class BottomToolbarCoordinator {
+@@ -228,13 +228,16 @@ class BottomToolbarCoordinator {
  
      private void onShareDelegateAvailable(ShareDelegate shareDelegate) {
          final OnClickListener shareButtonListener = v -> {
@@ -49,7 +49,7 @@ index c7531b702b2a2e5b966af50ce97409a62a78efef..fca795089f42b922cddbfb66b5065eaf
          };
  
          mShareButtonListenerSupplier.set(shareButtonListener);
-@@ -263,4 +266,5 @@ class BottomToolbarCoordinator {
+@@ -260,4 +263,5 @@ class BottomToolbarCoordinator {
              listener.onClick(v);
          };
      }
