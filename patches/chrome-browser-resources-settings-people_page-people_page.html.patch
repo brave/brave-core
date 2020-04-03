@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/people_page/people_page.html b/chrome/browser/resources/settings/people_page/people_page.html
-index 7080cadeae9e73f2881060021f89085a2de0b20e..960fff03b16a2c9ff27a9530291e99ceef7d1ccf 100644
+index 96b3755acc7d81e569b41dd5c52031a4b6e14bdb..27818f38ee83f369448d6539dced20d6a0314852 100644
 --- a/chrome/browser/resources/settings/people_page/people_page.html
 +++ b/chrome/browser/resources/settings/people_page/people_page.html
 @@ -147,12 +147,14 @@
@@ -16,4 +16,4 @@ index 7080cadeae9e73f2881060021f89085a2de0b20e..960fff03b16a2c9ff27a9530291e99ce
 +-->
  
  <if expr="not chromeos">
-         <cr-link-row id="manage-google-account"
+         <template is="dom-if" if="[[signinAllowed_]]">

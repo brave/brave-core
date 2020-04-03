@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index ae9f5ce8953f367917748c3013e7d9cf910675e5..5c2e0b24c1d10d394a35f13808b6827e23920d22 100644
+index 8fd4f00557ac71fb86e7ce6ae3b6a00dd24d2589..6a4175eb49d16103164f636f3a602d2bc906d1c2 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-@@ -177,7 +177,7 @@ import java.util.Locale;
+@@ -178,7 +178,7 @@ import java.util.Locale;
   * are accessible via a chrome specific tab switching UI.
   */
  public class ChromeTabbedActivity
@@ -11,7 +11,7 @@ index ae9f5ce8953f367917748c3013e7d9cf910675e5..5c2e0b24c1d10d394a35f13808b6827e
      private static final String TAG = "ChromeTabbedActivity";
  
      private static final String HELP_URL_PREFIX = "https://support.google.com/chrome/";
-@@ -1571,7 +1571,7 @@ public class ChromeTabbedActivity
+@@ -1576,7 +1576,7 @@ public class ChromeTabbedActivity
  
      @Override
      public AppMenuPropertiesDelegate createAppMenuPropertiesDelegate() {
@@ -20,7 +20,7 @@ index ae9f5ce8953f367917748c3013e7d9cf910675e5..5c2e0b24c1d10d394a35f13808b6827e
                  getMultiWindowModeStateDispatcher(), getTabModelSelector(), getToolbarManager(),
                  getWindow().getDecorView(), this,
                  mOverviewModeController.mOverviewModeBehaviorSupplier,
-@@ -1595,9 +1595,9 @@ public class ChromeTabbedActivity
+@@ -1600,9 +1600,9 @@ public class ChromeTabbedActivity
                  }
              };
          }
@@ -32,7 +32,7 @@ index ae9f5ce8953f367917748c3013e7d9cf910675e5..5c2e0b24c1d10d394a35f13808b6827e
                          tabDelegateFactorySupplier, true, overviewNTPCreator));
      }
  
-@@ -1974,7 +1974,7 @@ public class ChromeTabbedActivity
+@@ -1979,7 +1979,7 @@ public class ChromeTabbedActivity
          }
      }
  

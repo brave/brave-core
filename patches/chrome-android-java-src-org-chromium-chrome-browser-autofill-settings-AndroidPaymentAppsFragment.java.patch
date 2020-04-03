@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AndroidPaymentAppsFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AndroidPaymentAppsFragment.java
-index 178be18639bf862d6292995d4e8fb0da008c7d7d..3447e61e8d57cf018cb283e33aacfa9bc16b76b0 100644
+index b4c1ed38f0ca5381ef408a5e3930a4cb37579941..3dd400eeacffe4599968143ae66125484da8b87b 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AndroidPaymentAppsFragment.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AndroidPaymentAppsFragment.java
 @@ -27,7 +27,7 @@ import java.util.Map;

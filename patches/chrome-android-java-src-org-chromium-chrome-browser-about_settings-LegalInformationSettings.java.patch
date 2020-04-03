@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/about_settings/LegalInformationSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/about_settings/LegalInformationSettings.java
-index e1ad179731c8fa19f16e043f5c5785585c666615..a8aa05b2758ba4dad207dd0d1102f5434d8b1cff 100644
+index 311d83081767b6fe6582480a6818bc76ebecf2c0..14d0a89891c0ae13d656f6f1469172f0484250c8 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/about_settings/LegalInformationSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/about_settings/LegalInformationSettings.java
-@@ -14,7 +14,7 @@ import org.chromium.chrome.browser.settings.SettingsUtils;
+@@ -14,7 +14,7 @@ import org.chromium.components.browser_ui.settings.SettingsUtils;
  /**
   * Fragment to display legal information about Chrome.
   */
