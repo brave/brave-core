@@ -1,0 +1,12 @@
+diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
+index 3d5e4dede0ba6f01b5d002e46e835a16b6eb3a45..27fb13271336fb1e245321513b5041743c936e80 100644
+--- a/build/config/compiler/BUILD.gn
++++ b/build/config/compiler/BUILD.gn
+@@ -1593,6 +1593,7 @@ config("chromium_code") {
+     # use_libfuzzer: https://crbug.com/1063180
+     if (!is_nacl && !use_libfuzzer) {
+       cflags += [ "-Wunreachable-code" ]
++      cflags -= [ "-Wunreachable-code" ]
+     }
+ 
+     # Thread safety analysis is broken under nacl: https://crbug.com/982423.
