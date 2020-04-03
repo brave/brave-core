@@ -209,6 +209,9 @@
     <message name="IDS_PAYMENTS_PAY_BUTTON" desc="The label for the button that finishes the payment process. Sentence-cased." formatter_data="android_java">
       Pay
     </message>
+    <message name="IDS_PAYMENTS_CONTINUE_BUTTON" desc="The label for the button that continues to the payment handler window. Sentence-cased." formatter_data="android_java">
+      Continue
+    </message>
     <message name="IDS_PAYMENTS_ADD_CONTACT" desc="Text on a button that lets a user add new contact details, like the user's full name, an email address or a phone number. Sentence-cased." formatter_data="android_java">
       Add contact info
     </message>
@@ -232,6 +235,9 @@
     </message>
     <message name="IDS_PAYMENTS_PAY_BUTTON" desc="The label for the button that finishes the payment process. Title-Cased.">
       Pay
+    </message>
+    <message name="IDS_PAYMENTS_CONTINUE_BUTTON" desc="The label for the button that continues to the payment handler window. Title-Cased.">
+      Continue
     </message>
     <message name="IDS_PAYMENTS_ADD_CONTACT" desc="Text on a button that lets a user add new contact details, like the user's full name, an email address or a phone number. Title-Cased.">
       Add Contact Info

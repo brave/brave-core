@@ -178,6 +178,7 @@ CHAR-LIMIT guidelines:
     <file lang="sl" path="translations/android_chrome_strings_sl.xtb" />
     <file lang="sq" path="translations/android_chrome_strings_sq.xtb" />
     <file lang="sr" path="translations/android_chrome_strings_sr.xtb" />
+    <file lang="sr-Latn" path="translations/android_chrome_strings_sr-Latn.xtb" />
     <file lang="sv" path="translations/android_chrome_strings_sv.xtb" />
     <file lang="sw" path="translations/android_chrome_strings_sw.xtb" />
     <file lang="ta" path="translations/android_chrome_strings_ta.xtb" />
@@ -203,18 +204,6 @@ CHAR-LIMIT guidelines:
       </message>
       <message name="IDS_MENU_HELP" desc="Menu item for opening the help page. [CHAR-LIMIT=27]">
         Help &amp; feedback
-      </message>
-      <message name="IDS_MANAGED_BY_YOUR_ORGANIZATION" desc="Popup message when the user clicks a UI element that has been disabled by enterprise policy.">
-        Managed by your organization
-      </message>
-      <message name="IDS_MANAGED_BY_YOUR_PARENTS" desc="Popup message when the user clicks a UI element that has been disabled by their parents.">
-        Managed by your parents
-      </message>
-      <message name="IDS_MANAGED_BY_YOUR_PARENT" desc="Popup message when the user clicks a UI element that has been disabled by their parent.">
-        Managed by your parent
-      </message>
-      <message name="IDS_MANAGED_SETTINGS_CANNOT_BE_RESET" desc="Popup message when the user clicks a UI element that resets a list of settings that include managed settings.">
-        Managed settings cannot be reset
       </message>
       <message name="IDS_PREFS_SECTION_BASICS" desc="Title of &quot;Basics&quot; section of preferences. [CHAR-LIMIT=32]">
         Basics
@@ -495,8 +484,14 @@ CHAR-LIMIT guidelines:
       <message name="IDS_MANAGE_PASSWORDS_TEXT" desc="Text for link to manage passwords on Account Central.">
         View and manage saved passwords in your <ph name="BEGIN_LINK">&lt;link&gt;</ph>Brave Account<ph name="END_LINK">&lt;/link&gt;</ph>
       </message>
+      <message name="IDS_PHONE_AS_SECURITY_KEY_TEXT" desc="Text for link to use phone as a security key. A 'security key' is physical device used for authentication, usually as part of two-factor security. This option allows a phone to be used in place of a dedicated security key.">
+        Use phone as a security key
+      </message>
       <message name="IDS_SAVED_PASSWORDS_NONE_TEXT" desc="Text when there are no saved passwords/exceptions.">
         Saved passwords will appear here.
+      </message>
+      <message name="IDS_PASSWORD_NO_RESULT" desc="Text when a password search returned no results.">
+        Can’t find that password. Check your spelling and try again.
       </message>
       <message name="IDS_PASSWORD_ENTRY_VIEWER_TITLE" desc="Title of the overview screen for a saved password.">
         Saved password
@@ -598,14 +593,17 @@ CHAR-LIMIT guidelines:
       </message>
 
       <!-- Homepage preferences -->
-      <message name="IDS_OPTIONS_HOMEPAGE_EDIT_TITLE" desc="The title of the screen that allows users to change the URL that opens when they tap on the home page button in the omnibox.">
-        Edit home page
+      <message name="IDS_OPTIONS_HOMEPAGE_EDIT_HINT" desc="Hint for the text edit on Homepage Preference setting, guiding user to enter their customized homepage setting">
+        Enter custom web address
       </message>
-      <message name="IDS_OPTIONS_HOMEPAGE_EDIT_LABEL" desc="The label for the edit text field that allows the user to change the URL that is opened when they tap on the home page button in the omnibox.">
+      <message name="IDS_OPTIONS_HOMEPAGE_EDIT_TITLE" desc="The title of the screen that allows users to change the URL that opens when they tap on the homepage button in the omnibox. This string is also used as a long-press menu item that navigates the user to the homepage settings.">
+        Edit homepage
+      </message>
+      <message name="IDS_OPTIONS_HOMEPAGE_EDIT_LABEL" desc="The label for the edit text field that allows the user to change the URL that is opened when they tap on the homepage button in the omnibox.">
         Open this page
       </message>
-      <message name="IDS_HOMEBUTTON_CONTEXT_MENU_SETTINGS" desc="The label displayed on home button context menu item, which navigate the user to the homepage settings.">
-        Edit homepage
+      <message name="IDS_OPTIONS_HOMEPAGE_CHROME_HOMEPAGE" desc="The option that allows user to set Brave's new tab page as the homepage.">
+        Brave’s homepage
       </message>
 
       <!-- Notifications preferences -->
@@ -664,12 +662,12 @@ CHAR-LIMIT guidelines:
       <message name="IDS_CONTEXTUAL_SEARCH_TAP_DESCRIPTION" desc="Description for Contextual Search preference">
         Learn about topics on websites without leaving the page. Touch to Search sends a word and its surrounding context to Brave Search, returning definitions, pictures, search results, and other details.
 
-Tap any word to create a search for it. To adjust your search term, long press to select. To refine your search slide the panel open, tap the expand icon to make a new tab, and then tap the search box.
+Tap any word to search. To refine your search, touch &amp; hold to select more or fewer words. To edit your search, open the panel, tap the icon to open in a new tab, and make your changes in the search box.
       </message>
       <message name="IDS_CONTEXTUAL_SEARCH_DESCRIPTION" desc="Description for Contextual Search preference">
         Learn about topics on websites without leaving the page. Touch to Search sends a word and its surrounding context to Brave Search, returning definitions, pictures, search results, and other details.
 
-Long-press any word to create a search for it. To refine your search adjust the selection. You can also slide the panel open, tap the expand icon to make a new tab, and then tap the search box.
+Touch &amp; hold any word to search. To refine your search, select more or fewer words. To edit your search, open the panel, tap the icon to open in a new tab, and make your changes in the search box.
       </message>
       <message name="IDS_CONTEXTUAL_SEARCH_SHORT_DESCRIPTION" desc="A promo message shown to users with Touch to Search to explain the new behavior and provide an option to opt in or out">
         Touch to Search sends the selected word and the current page as context to Brave Search. You can turn it off in <ph name="BEGIN_LINK">&lt;link&gt;</ph>Settings<ph name="END_LINK">&lt;/link&gt;</ph>.
@@ -832,9 +830,8 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_ADS_PERMISSION_TITLE" desc="Title for the ads permission [CHAR-LIMIT=32]">
          Ads
       </message>
-      <!-- TODO(crbug.com/1041009): Finalize WebXr Permissions strings -->
       <message name="IDS_AR_PERMISSION_TITLE" desc="Title of the permission to use Augmented Reality [CHAR-LIMIT=32]">
-        Augmented Reality
+        Augmented reality
       </message>
       <message name="IDS_COOKIES_TITLE" desc="Title for the Cookies settings screen [CHAR-LIMIT=32]">
         Cookies
@@ -869,9 +866,8 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_CLIPBOARD_PERMISSION_TITLE" desc="Title of the permission to read from clipboard [CHAR-LIMIT=32]">
         Clipboard
       </message>
-      <!-- TODO(crbug.com/1041009): Finalize WebXr Permissions strings -->
       <message name="IDS_VR_PERMISSION_TITLE" desc="Title of the permission to use Virtual Reality [CHAR-LIMIT=32]">
-        Virtual Reality
+        Virtual reality
       </message>
       <message name="IDS_ENABLE_NOTIFICATIONS_VIBRATE_TITLE" desc="Title for the preference to enable vibration for notifications">
         Vibrate
@@ -927,6 +923,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_WEBSITE_SETTINGS_ADD_SITE_DESCRIPTION_SOUND_BLOCK" desc="The description for the mute sound for website dialog.">
         Mute sound for a specific site.
       </message>
+      <message name="IDS_WEBSITE_SETTINGS_COOKIE_INFO" desc="Text describing cookie and third-party cookie settings.">
+        Cookies are files created by websites you visit. Sites use them to remember your preferences. Third-party cookies are created by other sites. These sites own some of the content, like ads or images, that you see on the webpage you visit.
+      </message>
       <message name="IDS_WEBSITE_SETTINGS_ADD_SITE_SITE_URL" desc="The label for the input field where the user can type a website URL.">
         Site URL
       </message>
@@ -969,18 +968,37 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_WEBSITE_SETTINGS_EXCEPTIONS_GROUP_HEADING" desc="The heading for a list of websites that have been granted an exception to access a particular permission, e.g. to access the user's location.">
         Exceptions
       </message>
-      <message name="IDS_ACCESSIBILITY_EXPANDED_GROUP" desc="The accessibility text to read when the selected widget is expanded.">
-        Expanded - click to collapse.
-      </message>
-      <message name="IDS_ACCESSIBILITY_COLLAPSED_GROUP" desc="The accessibility text to read when the selected widget is collapsed.">
-        Collapsed - click to expand.
-      </message>
       <message name="IDS_WEBSITE_SETTINGS_CATEGORY_ALLOWED_RECOMMENDED" desc="Summary text explaining that a permission is allowed, which is the recommended setting.">
         Allowed (recommended)
       </message>
+
+      <!-- Cookie settings strings. -->
       <message name="IDS_WEBSITE_SETTINGS_CATEGORY_COOKIE_ALLOWED" desc="Summary text explaining that sites are allowed to use cookies and that it is the recommended setting.">
         Allow sites to save and read cookie data (recommended)
       </message>
+      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_COOKIE_ALLOW_TITLE" desc="Text used to explain the allow cookies option in settings">
+        Allow cookies
+      </message>
+      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_COOKIE_BLOCK_THIRD_PARTY_INCOGNITO_TITLE" desc="Text used to explain the block third-party cookies in private option in settings">
+        Block third-party cookies in Private
+      </message>
+      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_COOKIE_BLOCK_THIRD_PARTY_TITLE" desc="Text used to explain the block third-party cookies option in settings">
+        Block third-party cookies
+      </message>
+      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_COOKIE_BLOCK_TITLE" desc="Text used to explain the block cookies option in settings">
+        Block all cookies (not recommended)
+      </message>
+      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_COOKIE_ALLOW_ADDITION" desc="Additional text used to explain the allow cookies option in settings">
+        Sites will work normally
+      </message>
+      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_COOKIE_BLOCK_THIRD_PARTY_ADDITION" desc="Additional text used to explain the block third-party cookies option in settings">
+        Features on some sites may break
+      </message>
+      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_COOKIE_BLOCK_ADDITION" desc="Additional text used to explain the block cookies option in settings">
+        Features on many sites may break
+      </message>
+
+
       <message name="IDS_WEBSITE_SETTINGS_CATEGORY_JAVASCRIPT_ALLOWED" desc="Summary text explaining that sites are allowed to run Javascript and that it is the recommended setting.">
         Allow sites to run JavaScript (recommended)
       </message>
@@ -1008,12 +1026,11 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_WEBSITE_SETTINGS_CATEGORY_PROTECTED_CONTENT_BLOCKED" desc="Summary text explaining that sites are blocked from playing protected content.">
         Block sites from playing protected content
       </message>
-      <!-- TODO(crbug.com/1041009): Finalize WebXr Permissions strings -->
       <message name="IDS_WEBSITE_SETTINGS_CATEGORY_AR_ASK" desc="Summary text explaining that sites need to ask for permission before using AR and that it is the recommended setting.">
-        Ask before allowing sites to receive camera position or map your room (recommended)
+        Ask before allowing sites to create a 3D map of your surroundings or track camera position (recommended)
       </message>
       <message name="IDS_WEBSITE_SETTINGS_CATEGORY_AR_BLOCKED" desc="Summary text explaining that sites are blocked from using AR.">
-        Block sites from receiving camera position or mapping your room
+        Block sites from creating a 3D map of your surroundings or tracking camera position
       </message>
       <message name="IDS_WEBSITE_SETTINGS_CATEGORY_NFC_ASK" desc="Summary text explaining that sites need to ask for permission before using NFC and that it is the recommended setting.">
         Ask before allowing sites to send and receive info when you tap NFC devices (recommended)
@@ -1021,12 +1038,11 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_WEBSITE_SETTINGS_CATEGORY_NFC_BLOCKED" desc="Summary text explaining that sites are blocked from using NFC.">
         Block sites from sending and receiving info when you tap NFC devices
       </message>
-      <!-- TODO(crbug.com/1041009): Finalize WebXr Permissions strings -->
       <message name="IDS_WEBSITE_SETTINGS_CATEGORY_VR_ASK" desc="Summary text explaining that sites need to ask for permission before using VR and that it is the recommended setting.">
-        Ask before allowing sites to access your virtual reality device and data (recommended)
+        Ask before allowing sites to use your virtual reality device and data (recommended)
       </message>
       <message name="IDS_WEBSITE_SETTINGS_CATEGORY_VR_BLOCKED" desc="Summary text explaining that sites are blocked from using VR.">
-        Block sites from accessing your virtual reality device and data
+        Block sites from using your virtual reality device and data
       </message>
       <message name="IDS_WEBSITE_SETTINGS_CATEGORY_SENSORS_ALLOWED" desc="Summary text explaining that sites are allowed to use device's sensors and that it is the recommended setting.">
         Allow sites to access sensors (recommended)
@@ -1520,17 +1536,23 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_OPEN_SOURCE_LICENSE_URL" desc="URL for open source license" translateable="false">
         chrome://credits
       </message>
-      <message name="IDS_TERMS_OF_SERVICE_TITLE" desc="Title for terms of service">
+      <message name="IDS_GOOGLE_TERMS_OF_SERVICE_TITLE" desc="Title for Brave terms of service">
         Brave Terms of Service
+      </message>
+      <message name="IDS_GOOGLE_TERMS_OF_SERVICE_URL" desc="URL for Brave terms of service" translateable="false">
+        https://policies.google.com/terms
+      </message>
+      <message name="IDS_CHROME_ADDITIONAL_TERMS_OF_SERVICE_TITLE" desc="Title for Brave and Chrome OS addtional terms of service">
+        Brave &amp; Chrome OS Additional Terms of Service
+      </message>
+      <message name="IDS_CHROME_ADDITIONAL_TERMS_OF_SERVICE_URL" desc="URL for Brave and Chrome OS additional terms of service" translateable="false">
+        https://www.google.com/chrome/terms/
       </message>
       <message name="IDS_PRIVACY_NOTICE_TITLE" desc="Title for the Brave privacy notice">
         Brave Privacy Notice
       </message>
       <message name="IDS_CHROME_PRIVACY_NOTICE_URL" desc="URL for the Brave privacy notice" translateable="false">
         https://www.google.com/intl/$LOCALE/chrome/browser/privacy/
-      </message>
-      <message name="IDS_CHROME_TERMS_OF_SERVICE_URL" desc="URL for Brave Terms of Service" translateable="false">
-        https://www.google.com/intl/$LOCALE/chrome/browser/privacy/eula_text.html
       </message>
       <message name="IDS_FAMILY_LINK_PRIVACY_POLICY_URL" desc="URL for the Family Link privacy policy" translateable="false">
         https://families.google.com/intl/$LOCALE/familylink/privacy/child-policy/
@@ -1598,6 +1620,12 @@ Your Brave account may have other forms of browsing history like searches and ac
 
       <message name="IDS_SIGN_IN_SYNC" desc="Sync preference title in signed-in prefs and prefix for notification related to sync [CHAR-LIMIT=32]">
         Sync
+      </message>
+      <message name="IDS_SEARCH_AND_BROWSE_CATEGORY" desc="Category to show the search and browse improvement toggle. [CHAR-LIMT=32]">
+        Search and browse
+      </message>
+      <message name="IDS_SYNCING_CATEGORY" desc="Category to separate search and browse section with sync related data types. [CHAR-LIMT=32]">
+        Syncing
       </message>
       <message name="IDS_SYNC_EVERYTHING_PREF" desc="Title for preference which enables sync'ing of all data types. [CHAR-LIMT=32]">
         Sync everything
@@ -2009,18 +2037,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- Runtime permission strings -->
-      <message name="IDS_INFOBAR_MISSING_CAMERA_PERMISSION_TEXT" desc="Text shown in an infobar when a website has requested access to the camera capabilities, but Brave is missing the Android camera permission.">
-        Brave needs permission to access your camera for this site.
-      </message>
-      <message name="IDS_INFOBAR_MISSING_MICROPHONE_PERMISSION_TEXT" desc="Text shown in an infobar when a website has requested access to the microphone capabilities, but Brave is missing the Android microphone permission.">
-        Brave needs permission to access your microphone for this site.
-      </message>
-      <message name="IDS_INFOBAR_MISSING_MICROPHONE_CAMERA_PERMISSIONS_TEXT" desc="Text shown in an infobar when a website has requested access to the microphone and camera capabilities, but Brave is missing the Android microphone and camera permissions.">
-        Brave needs permission to access your camera and microphone for this site.
-      </message>
-      <message name="IDS_INFOBAR_MISSING_LOCATION_PERMISSION_TEXT" desc="Text shown in an infobar when a website has requested access to the location capabilities, but Brave is missing the Android location permission.">
-        Brave needs access to your location to share your location with this site.
-      </message>
       <message name="IDS_MISSING_STORAGE_PERMISSION_DOWNLOAD_EDUCATION_TEXT" desc="Text shown educating the user that Brave is missing the Android storage permission, which is required to download files.">
         Brave needs storage access to download files.
       </message>
@@ -2174,6 +2190,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_PAGE_INFO_SITE_SETTINGS_BUTTON" desc="Text in the button that opens a website's Site Settings from the Page Info dialog.">
         Site settings
       </message>
+      <message name="IDS_PAGE_INFO_PERMISSIONS_TITLE" desc="Label used in the Page Info dialog above the permissions list.">
+        Permissions
+      </message>
       <message name="IDS_PAGE_INFO_INSTANT_APP_BUTTON" desc="Text in the button that opens an Android Instant app that is associated with the website's URL.">
         Open Instant App
       </message>
@@ -2190,10 +2209,13 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Blocked
       </message>
       <message name="IDS_PAGE_INFO_ANDROID_PERMISSION_BLOCKED" desc="The label used in the Page Info dialog to indicate a permission has been blocked within Android settings">
-        Turned off in Android Settings
+        Turned off in Android settings
       </message>
       <message name="IDS_PAGE_INFO_ANDROID_LOCATION_BLOCKED" desc="The label used in the Page Info dialog to indicate that location has been been disabled for the device in Android settings">
         Turned off for this device
+      </message>
+      <message name="IDS_PAGE_INFO_ANDROID_NFC_UNSUPPORTED" desc="The label used in the Page Info dialog to indicate NFC is not supported by this device">
+        This device can't read NFC
       </message>
       <message name="IDS_PAGE_INFO_CONNECTION_OFFLINE" desc="Message to display in the page info bubble when viewing and offline page.">
         You are viewing an offline copy of this page from <ph name="CREATION_TIME">%1$s<ex>Feb 9, 2016</ex></ph>
@@ -2534,17 +2556,17 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_FRE_ACTIVITY_LABEL" desc="Label for first run dialog in Android Recents.">
         Brave First Run Experience
       </message>
-      <message name="IDS_FRE_TOS_AND_PRIVACY" desc="Message explaining that use of Brave is governed by Brave's terms of service and privacy notice.">
-        By using this application, you agree to Brave’s <ph name="BEGIN_LINK1">&lt;LINK1&gt;</ph>Terms of Service<ph name="END_LINK1">&lt;/LINK1&gt;</ph> and <ph name="BEGIN_LINK2">&lt;LINK2&gt;</ph>Privacy Notice<ph name="END_LINK2">&lt;/LINK2&gt;</ph>.
+      <message name="IDS_FRE_TOS" desc="Message explaining that use of Brave is governed by terms of service.">
+        By using Brave, you agree to the <ph name="BEGIN_LINK1">&lt;LINK1&gt;</ph>Brave Terms of Service<ph name="END_LINK1">&lt;/LINK1&gt;</ph>, and the <ph name="BEGIN_LINK2">&lt;LINK2&gt;</ph>Brave and Chrome OS Additional Terms of Service<ph name="END_LINK2">&lt;/LINK2&gt;</ph>.
       </message>
-      <message name="IDS_FRE_TOS_AND_PRIVACY_CHILD_ACCOUNT" desc="Message explaining that use of Brave is governed by Brave's terms of service and privacy notice, and Family Link's privacy notice for children.">
-        By using this application, you agree to Brave’s <ph name="BEGIN_LINK1">&lt;LINK1&gt;</ph>Terms of Service<ph name="END_LINK1">&lt;/LINK1&gt;</ph> and <ph name="BEGIN_LINK2">&lt;LINK2&gt;</ph>Privacy Notice<ph name="END_LINK2">&lt;/LINK2&gt;</ph>, and the <ph name="BEGIN_LINK3">&lt;LINK3&gt;</ph>Privacy Notice for Brave Accounts Managed with Family Link<ph name="END_LINK3">&lt;/LINK3&gt;</ph>.
+      <message name="IDS_FRE_TOS_AND_PRIVACY_CHILD_ACCOUNT" desc="Message explaining that use of Brave is governed by Brave's terms of service, and Family Link's privacy notice for children.">
+        By using Brave, you agree to the <ph name="BEGIN_LINK1">&lt;LINK1&gt;</ph>Brave Terms of Service<ph name="END_LINK1">&lt;/LINK1&gt;</ph>, and the <ph name="BEGIN_LINK2">&lt;LINK2&gt;</ph>Brave and Chrome OS Additional Terms of Service<ph name="END_LINK2">&lt;/LINK2&gt;</ph>. The <ph name="BEGIN_LINK3">&lt;LINK3&gt;</ph>Privacy Notice for Brave Accounts Managed with Family Link<ph name="END_LINK3">&lt;/LINK3&gt;</ph> also applies.
       </message>
-      <message name="IDS_LIGHTWEIGHT_FRE_ASSOCIATED_APP_TOS_AND_PRIVACY" desc="Message explaining that use of Brave is governed by Brave's terms of service and privacy notice.">
-        <ph name="APP_NAME">%1$s<ex>Brave Maps</ex></ph> will open in Brave. By continuing, you agree to Brave’s <ph name="BEGIN_LINK1">&lt;LINK1&gt;</ph>Terms of Service<ph name="END_LINK1">&lt;/LINK1&gt;</ph> and <ph name="BEGIN_LINK2">&lt;LINK2&gt;</ph>Privacy Notice<ph name="END_LINK2">&lt;/LINK2&gt;</ph>.
+      <message name="IDS_LIGHTWEIGHT_FRE_ASSOCIATED_APP_TOS" desc="Message explaining that use of Brave is governed by Brave's terms of service.">
+        <ph name="APP_NAME">%1$s<ex>Brave Maps</ex></ph> will open in Brave. By continuing, you agree to the <ph name="BEGIN_LINK1">&lt;LINK1&gt;</ph>Brave Terms of Service<ph name="END_LINK1">&lt;/LINK1&gt;</ph>, and the <ph name="BEGIN_LINK2">&lt;LINK2&gt;</ph>Brave and Chrome OS Additional Terms of Service<ph name="END_LINK2">&lt;/LINK2&gt;</ph>.
       </message>
-      <message name="IDS_LIGHTWEIGHT_FRE_ASSOCIATED_APP_TOS_AND_PRIVACY_CHILD_ACCOUNT" desc="Message explaining that use of Brave is governed by Brave's terms of service and privacy notice, and Family Link's privacy notice for children.">
-        <ph name="APP_NAME">%1$s<ex>Brave Maps</ex></ph> will open in Brave. By continuing, you agree to Brave's <ph name="BEGIN_LINK1">&lt;LINK1&gt;</ph>Terms of Service<ph name="END_LINK1">&lt;/LINK1&gt;</ph> and <ph name="BEGIN_LINK2">&lt;LINK2&gt;</ph>Privacy Notice<ph name="END_LINK2">&lt;/LINK2&gt;</ph>, and the <ph name="BEGIN_LINK3">&lt;LINK3&gt;</ph>Privacy Notice for Brave Accounts Managed with Family Link<ph name="END_LINK3">&lt;/LINK3&gt;</ph>.
+      <message name="IDS_LIGHTWEIGHT_FRE_ASSOCIATED_APP_TOS_AND_PRIVACY_CHILD_ACCOUNT" desc="Message explaining that use of Brave is governed by Brave's terms of service, and Family Link's privacy notice for children.">
+        <ph name="APP_NAME">%1$s<ex>Brave Maps</ex></ph> will open in Brave. By continuing, you agree to the <ph name="BEGIN_LINK1">&lt;LINK1&gt;</ph>Brave Terms of Service<ph name="END_LINK1">&lt;/LINK1&gt;</ph>, and the <ph name="BEGIN_LINK2">&lt;LINK2&gt;</ph>Brave and Chrome OS Additional Terms of Service<ph name="END_LINK2">&lt;/LINK2&gt;</ph>. The <ph name="BEGIN_LINK3">&lt;LINK3&gt;</ph>Privacy Notice for Brave Accounts Managed with Family Link<ph name="END_LINK3">&lt;/LINK3&gt;</ph> also applies.
       </message>
       <message name="IDS_FRE_SEND_REPORT_CHECK" desc="Text for asking the user to allow sending stats and crash reports">
         Help make Brave better by sending usage statistics and crash reports to Brave.
@@ -2834,8 +2856,8 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_MENU_FIND_IN_PAGE" desc="Menu item allowing users to find text within the current page. [CHAR-LIMIT=27]">
         Find in page
       </message>
-      <message name="IDS_MENU_PAINT_PREVIEW_CAPTURE" desc="Menu item allowing users to capture a paint preview of a page. [CHAR-LIMIT=27]" translateable="false">
-        Capture Paint Preview
+      <message name="IDS_MENU_PAINT_PREVIEW_SHOW" desc="Menu item allowing users to capture and show a paint preview of a page. [CHAR-LIMIT=27]" translateable="false">
+        Show Paint Preview
       </message>
       <message name="IDS_MENU_REQUEST_DESKTOP_SITE" desc="Menu item in Brave's overflow/options menu. By default, when a user navigates to a web page, Brave shows the mobile site, that is, the version of the site designed for mobile phones. If this menu item is selected, however, Brave will try to load the 'desktop' site instead, i.e. the site designed for desktop computers or laptop computers, which have larger screens. [CHAR-LIMIT=24]">
         Desktop site
@@ -2929,7 +2951,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Search your bookmarks
       </message>
       <message name="IDS_BOOKMARK_NO_RESULT" desc="Text explaining that no bookmarks are found to match a search query">
-        No bookmarks found
+        Can’t find that bookmark. Check your spelling or add a new bookmark.
       </message>
       <message name="IDS_EDIT_BOOKMARK" desc="The string prompting the user to edit the content of a bookmark. [CHAR-LIMIT=30]">
         Edit bookmark
@@ -2986,6 +3008,14 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
 
       <message name="IDS_OFFLINE_INDICATOR_VIEW_OFFLINE_CONTENT" desc="A text label on the snackbar widget to bring up the list of offline content.">
         See downloads
+      </message>
+
+      <!-- Offline indicator v2 -->
+      <message name="IDS_OFFLINE_INDICATOR_V2_OFFLINE_TEXT" desc="Text to be displayed in the status indicator above the toolbar that lets the users know they are offline.">
+        No internet connection
+      </message>
+      <message name="IDS_OFFLINE_INDICATOR_V2_BACK_ONLINE_TEXT" desc="Text to be displayed in the status indicator above the toolbar when the device goes back online.">
+        Back online
       </message>
 
       <!-- Find in page -->
@@ -3053,15 +3083,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_SITE_INFO" desc="Content description for the page icon that gives more site information when clicked. The icon can be a magnifier for search result pages, or other icons representing the page state.">
         Site information
-      </message>
-      <message name="IDS_ACCESSIBILITY_SECURITY_BTN_WARN" desc="Content description for the security icon for pages with insecure passive content. The content description also includes the call to action for opening the page info bubble (Site information).">
-        Your connection to this site is not secure. Site information
-      </message>
-      <message name="IDS_ACCESSIBILITY_SECURITY_BTN_SECURE" desc="Content description for the security icon for pages with a valid certificate. The content description also includes the call to action for opening the page info bubble (Site information).">
-        Connection is secure. Site information
-      </message>
-      <message name="IDS_ACCESSIBILITY_SECURITY_BTN_DANGEROUS" desc="Content description for the security icon for dangerous pages. The content description also includes the call to action for opening the page info bubble (Site information).">
-        This page is dangerous. Site information
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_MIC" desc="Content description for the voice search button.">
         Start voice search
@@ -3437,6 +3458,21 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_ACCESSIBILITY_PLAY_VIDEO" desc="The accessibility string for the play video button.">
         Play video
       </message>
+      <message name="IDS_ACCESSIBILITY_PAUSE_VIDEO" desc="The accessibility string for the pause video button.">
+        Pause video
+      </message>
+      <message name="IDS_ACCESSIBILITY_MUTE_VIDEO" desc="The accessibility string for the mute video button.">
+        Mute video
+      </message>
+      <message name="IDS_ACCESSIBILITY_UNMUTE_VIDEO" desc="The accessibility string for the unmute video button.">
+        Unmute video
+      </message>
+      <message name="IDS_ACCESSIBILITY_VIDEO_PLAYER" desc="The accessibility string for the video player.">
+        Video player
+      </message>
+      <message name="IDS_ACCESSIBILITY_PLAYBACK_TIME" desc="The accessibility string for how much time has elapsed while viewing the video and how long the video is in total.">
+        Elapsed time <ph name="ELAPSED_TIME">%1$s<ex>0:01</ex></ph> of <ph name="TOTAL_TIME">%2$s<ex>0:45</ex></ph>.
+      </message>
 
       <!-- Special locale UI strings -->
       <message name="IDS_SEARCH_WITH_SOGOU" desc="Text telling the user that the search engine will be switched to Sogou.">
@@ -3757,6 +3793,14 @@ Only you can see what your camera is looking at. The site can't see your camera'
         Go to Brave settings
       </message>
 
+      <!-- Sharing Hub -->
+      <message name="IDS_SHARING_HUB_NO_DEVICES_AVAILABLE_TEXT" desc="Text to show when no device targets are available for sharing.">
+        To share this page to another device, turn on sync in Brave settings on the other device
+      </message>
+      <message name="IDS_SHARING_HUB_SYNC_DISABLED_TEXT" desc="Text to show when sync is disabled on the current device.">
+        To share this page to another device, turn on sync in Brave settings
+      </message>
+
       <!-- ClickToCall -->
       <message name="IDS_CLICK_TO_CALL_NOTIFICATION_TEXT" desc="Text displayed in a click to call notification to call on a number.">
         Tap to make call
@@ -3980,8 +4024,40 @@ Only you can see what your camera is looking at. The site can't see your camera'
         Please enable your camera to scan a QR code
       </message>
 
+      <message name="IDS_QR_CODE_OPEN_SETTINGS_DESCRIPTION" desc="Text on QR code sharing tab indicating that user needs to open settings to give camera permission.">
+        To scan a QR code, change your settings so that Brave can use your camera
+      </message>
+
       <message name="IDS_QR_CODE_PERMISSION_CONTINUE_LABEL" desc="Text on button on QR code sharing tab triggering camera permission dialog.">
         Continue
+      </message>
+
+      <message name="IDS_QR_CODE_NO_CAMERA_ERROR" desc="Error text shown when no camera is found.">
+        To scan a QR code, use a device with a camera.
+      </message>
+
+      <message name="IDS_QR_CODE_DISABLED_CAMERA_ERROR" desc="Error text shown when the camera is disabled by the device policy manager.">
+        The organization that manages your device has turned off your camera.
+      </message>
+
+      <message name="IDS_QR_CODE_IN_USE_CAMERA_ERROR" desc="Error text shown when the camera is in use by other apps.">
+        Can't open your camera. Restart your device and try again.
+      </message>
+
+      <message name="IDS_QR_CODE_HARDWARE_CAMERA_ERROR" desc="Error text shown when the camera cannot start due to a hardware error.">
+        Can't open your camera. Something went wrong.
+      </message>
+
+      <message name="IDS_QR_CODE_OPEN_SETTINGS_LABEL" desc="Text on button on QR code sharing tab triggering Android settings.">
+        Open Settings
+      </message>
+
+      <message name="IDS_QR_CODE_NOT_A_URL_LABEL" desc="Text on toast on QR code scanning tab indicating that the QR Code does not correspond to a URL and can not be opened.">
+        This QR Code is not a URL: <ph name="QrCodeValue">%1$s<ex>QR Code Text</ex></ph>
+      </message>
+
+      <message name="IDS_QR_CODE_FILENAME_PREFIX" desc="File name prefix for downloaded qrcode that is followed by timestamp.">
+        chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS">%1$s<ex>1582667748515</ex></ph>
       </message>
 
       <!-- Chime DFM module strings -->
@@ -3995,14 +4071,28 @@ Only you can see what your camera is looking at. The site can't see your camera'
       </message>
 
       <!-- NFC prompt -->
-      <message name="IDS_NFC_DISABLED_ON_DEVICE_MESSAGE" desc="Text shown in a prompt to turn on NFC after user granted NFC permission to a website.">
-        To continue, turn on NFC in Android settings
-      </message>
-      <message name="IDS_NFC_PROMPT_TURN_ON" desc="Text on the positive button of the nfc prompt">
-        Turn on
-      </message>
       <message name="IDS_ANDROID_NFC_OFF_GLOBALLY" desc="The message to show when NFC has been turned off globally in Android. Contains a link to the settings menu to enable NFC.">
         NFC is off for this device. Turn it on in <ph name="BEGIN_LINK">&lt;link&gt;</ph>Android Settings<ph name="END_LINK">&lt;/link&gt;</ph>.
+      </message>
+      <message name="IDS_ANDROID_NFC_UNSUPPORTED" desc="The message to show when NFC is not supported globally in Android">
+        This device can't read NFC
+      </message>
+
+      <!-- Paint Preview Demo -->
+      <message name="IDS_PAINT_PREVIEW_DEMO_CAPTURE_SUCCESS" desc="Toast message displayed when paint preview capture finishes successfully. Used in paint preview demo mode." translateable="false">
+        Paint Preview captured successfully.
+      </message>
+      <message name="IDS_PAINT_PREVIEW_DEMO_CAPTURE_FAILURE" desc="Toast message displayed when paint preview capture fails. Used in paint preview demo mode." translateable="false">
+        Failed to capture Paint Preview.
+      </message>
+      <message name="IDS_PAINT_PREVIEW_DEMO_PLAYBACK_START" desc="Toast message displayed when paint preview starts displaying. Used in paint preview demo mode." translateable="false">
+        Displaying Paint Preview. Press back to exit the Paint Preview demo.
+      </message>
+      <message name="IDS_PAINT_PREVIEW_DEMO_PLAYBACK_END" desc="Toast message displayed when the user exits paint preview demo. Used in paint preview demo mode." translateable="false">
+        Exited Paint Preview demo.
+      </message>
+      <message name="IDS_PAINT_PREVIEW_DEMO_PLAYBACK_FAILURE" desc="Toast message displayed when there is a failure in playing back a paint preview for the demo. Used in paint preview demo mode." translateable="false">
+        Paint Preview playback failed.
       </message>
     </messages>
   </release>

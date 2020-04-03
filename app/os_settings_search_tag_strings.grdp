@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Search tags used for CrOS settings search (go/cros-settings-search). -->
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
+<grit-part>
+  <!-- Internet Page -->
+  <message name="IDS_SETTINGS_TAG_NETWORK_SETTINGS" desc="Search result item which, when clicked, navigates the user to network settings.">
+    Network settings
+  </message>
+  <message name="IDS_SETTINGS_TAG_NETWORK_SETTINGS_ALT1" desc="Search result item which, when clicked, navigates the user to network settings. Alternate phrase for 'Network settings'.">
+    Internet settings
+  </message>
+  <message name="IDS_SETTINGS_TAG_ETHERNET_SETTINGS" desc="Search result item which, when clicked, navigates the user to Ethernet settings.">
+    Ethernet settings
+  </message>
+  <message name="IDS_SETTINGS_TAG_ETHERNET_SETTINGS_ALT1" desc="Search result item which, when clicked, navigates the user to Ethernet settings. Alternate phrase for 'Ethernet settings'.">
+    Configure Ethernet
+  </message>
+  <message name="IDS_SETTINGS_TAG_WIFI_SETTINGS" desc="Search result item which, when clicked, navigates the user to Wi-Fi settings.">
+    Wi-Fi settings
+  </message>
+  <message name="IDS_SETTINGS_TAG_TURN_ON_WIFI" desc="Search result item which, when clicked, navigates the user to settings where they can turn on Wi-Fi.">
+    Turn on Wi-Fi
+  </message>
+  <message name="IDS_SETTINGS_TAG_TURN_ON_WIFI_ALT1" desc="Search result item which, when clicked, navigates the user to settings where they can turn on Wi-Fi. Alternate phrase for 'Turn on Wi-Fi'.">
+    Enable Wi-Fi
+  </message>
+  <message name="IDS_SETTINGS_TAG_TURN_OFF_WIFI" desc="Search result item which, when clicked, navigates the user to settings where they can turn off Wi-Fi.">
+    Turn off Wi-Fi
+  </message>
+  <message name="IDS_SETTINGS_TAG_TURN_OFF_WIFI_ALT1" desc="Search result item which, when clicked, navigates the user to settings where they can turn off Wi-Fi. Alternate phrase for 'Turn off Wi-Fi'.">
+    Disable Wi-Fi
+  </message>
+  <message name="IDS_SETTINGS_TAG_CONNECT_WIFI" desc="Search result item which, when clicked, navigates the user to settings where they can connect to a Wi-Fi network.">
+    Connect Wi-Fi
+  </message>
+  <message name="IDS_SETTINGS_TAG_DISCONNECT_WIFI" desc="Search result item which, when clicked, navigates the user to settings where they can disconnect from a Wi-Fi network.">
+    Disconnect Wi-Fi
+  </message>
+</grit-part>
