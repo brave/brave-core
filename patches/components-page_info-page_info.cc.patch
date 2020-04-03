@@ -1,0 +1,12 @@
+diff --git a/components/page_info/page_info.cc b/components/page_info/page_info.cc
+index 8c34cb80e20be2926d16dd1522c62ed48c3840ce..29637cef4a19b68a80a0548a7de0a0b813629404 100644
+--- a/components/page_info/page_info.cc
++++ b/components/page_info/page_info.cc
+@@ -948,6 +948,7 @@ void PageInfo::PresentSitePermissions() {
+ 
+     // TODO(crbug.com/1058597): Remove the call to |delegate_| once
+     // TabSpecificContentSettings has been componentized.
++    BRAVE_PAGE_INFO_SHOULD_SHOW_PERMISSION
+     if (ShouldShowPermission(permission_info, site_url_, content_settings,
+                              web_contents(),
+                              delegate_->HasContentSettingChangedViaPageInfo(
