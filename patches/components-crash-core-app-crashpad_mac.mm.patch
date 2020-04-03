@@ -1,7 +1,7 @@
-diff --git a/components/crash/content/app/crashpad_mac.mm b/components/crash/content/app/crashpad_mac.mm
-index c2de9fe867c5e9fc2cf75f12ee136ad529474243..ecbe76677e68be1fa1ec29e9ad5877b5b2d140f1 100644
---- a/components/crash/content/app/crashpad_mac.mm
-+++ b/components/crash/content/app/crashpad_mac.mm
+diff --git a/components/crash/core/app/crashpad_mac.mm b/components/crash/core/app/crashpad_mac.mm
+index b579521d55860823722df2ee849f6b1628b3c950..4ed7ba3c9f10be8a955f1efa70e8395d4f2826f2 100644
+--- a/components/crash/core/app/crashpad_mac.mm
++++ b/components/crash/core/app/crashpad_mac.mm
 @@ -137,6 +137,8 @@ base::FilePath PlatformCrashpadInitialization(
        // Only allow the possibility of report upload in official builds. This
        // crash server won't have symbols for any other build types.
