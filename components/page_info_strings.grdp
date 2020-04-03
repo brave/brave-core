@@ -32,6 +32,12 @@
   <message name="IDS_PAGE_INFO_DEVTOOLS_PAGE" desc="Message to display in the page info bubble when the page you are on is a devtools:// page.">
     You're viewing a developer tools page
   </message>
+  <message name="IDS_PAGE_INFO_READER_MODE_PAGE_SECURE" desc="Message to display in the page info bubble when the page you are viewing is the reader mode version of an article which was retrieved over a secure connection.">
+    Brave simplified this page to make it easier to read. Brave retrieved the original page over a secure connection.
+  </message>
+  <message name="IDS_PAGE_INFO_READER_MODE_PAGE" desc="Message to display in the page info bubble when the page you are viewing is the reader mode version of an article which was retrieved over an insecure connection.">
+    Brave simplified this page to make it easier to read. Brave retrieved the original page over an insecure connection.
+  </message>
 
   <!-- Safety Tip summary strings -->
   <message name="IDS_PAGE_INFO_SAFETY_TIP_BAD_REPUTATION_TITLE" desc="Message to display in the page info bubble when the page you are on triggered a safety tip.">
@@ -274,6 +280,9 @@
     <message name="IDS_PAGE_INFO_TYPE_SERIAL" desc="The label used for the serial port permission controls in the Page Info popup.">
       Serial ports
     </message>
+    <message name="IDS_PAGE_INFO_TYPE_BLUETOOTH" desc="The label used for the Bluetooth permission controls in the Page Info popup.">
+      Bluetooth devices
+    </message>
     <message name="IDS_PAGE_INFO_TYPE_NATIVE_FILE_SYSTEM_WRITE" desc="The label used for the native file system write permission controls in the Page Info popup. The write permission determines whether sites are allowed to save to the original file that was selected by the user through the Native File System API.">
       File editing
     </message>
@@ -283,12 +292,11 @@
     <message name="IDS_PAGE_INFO_TYPE_NFC" desc="The label used for the NFC permission controls in the Page Info popup.">
       NFC devices
     </message>
-      <!-- TODO(crbug.com/1041009): Finalize WebXr Permissions strings -->
     <message name="IDS_PAGE_INFO_TYPE_VR" desc="The label used for the VR permission controls in the Page Info popup.">
-      Virtual Reality
+      Virtual reality
     </message>
     <message name="IDS_PAGE_INFO_TYPE_AR" desc="The label used for the AR permission controls in the Page Info popup.">
-      Augmented Reality
+      Augmented reality
     </message>
     <!-- TODO(crbug.com/716303): A few permissions are missing here. -->
 
@@ -377,6 +385,12 @@
     <message name="IDS_PAGE_INFO_DELETE_SERIAL_PORT" desc="The tooltip displayed when hovering over the button that will remove permission to access a serial port that the user previously granted to the site.">
       Revoke access
     </message>
+    <message name="IDS_PAGE_INFO_BLUETOOTH_DEVICE_SECONDARY_LABEL" desc="The label displayed underneath the device name to inform the user that the item refers to a Bluetooth device.">
+      Bluetooth device
+    </message>
+    <message name="IDS_PAGE_INFO_DELETE_BLUETOOTH_DEVICE" desc="The tooltip displayed when hovering over the button that will remove permission to access a Bluetooth device that the user previously granted to the site.">
+      Revoke access
+    </message>
 
     <!-- Site settings link -->
     <message name="IDS_PAGE_INFO_SITE_SETTINGS_LINK" desc="This is the text of the link pointing to Brave's Site Settings page. This appears at the bottom of the Permissions pane of the Page Information Window.">
@@ -442,6 +456,15 @@
       <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SAVED_3_DOMAINS" desc="A short paragraph explaining to a Brave user that they have reused their saved password on the current website and to change their password on three domains.">
         You just entered your password on a deceptive site. Brave recommends going to <ph name="WEBSITE_1">$1<ex>www.google.com</ex></ph>, <ph name="WEBSITE_2">$2<ex>www.reddit.com</ex></ph>, <ph name="WEBSITE_3">$3<ex>www.amazon.com</ex></ph>, and other sites where you use this password and changing it now.
       </message>
+      <message name="IDS_PAGE_INFO_CHECK_PASSWORD_DETAILS_SAVED_1_DOMAIN" desc="A short paragraph explaining to a Brave user that they have reused their saved password on the current website and to check their password on one domain.">
+        You just entered your password on a deceptive site. Brave recommends checking your saved passwords for <ph name="WEBSITE_1">$1<ex>www.google.com</ex></ph> and other sites where you use this password now.
+      </message>
+      <message name="IDS_PAGE_INFO_CHECK_PASSWORD_DETAILS_SAVED_2_DOMAIN" desc="A short paragraph explaining to a Brave user that they have reused their saved password on the current website and to check their password on two domains.">
+        You just entered your password on a deceptive site. Brave recommends checking your saved passwords for <ph name="WEBSITE_1">$1<ex>www.google.com</ex></ph>, <ph name="WEBSITE_2">$2<ex>www.reddit.com</ex></ph>, and other sites where you use this password now.
+      </message>
+      <message name="IDS_PAGE_INFO_CHECK_PASSWORD_DETAILS_SAVED_3_DOMAIN" desc="A short paragraph explaining to a Brave user that they have reused their saved password on the current website and to check their password on three domains.">
+        You just entered your password on a deceptive site. Brave recommends checking your saved passwords for <ph name="WEBSITE_1">$1<ex>www.google.com</ex></ph>, <ph name="WEBSITE_2">$2<ex>www.reddit.com</ex></ph>, <ph name="WEBSITE_3">$3<ex>www.amazon.com</ex></ph>, and other sites where you use this password now.
+      </message>
       <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SYNC" desc="A short paragraph explaining to a Brave sync user that they have reused their Brave password on the current website.">
         Brave can help you protect your Brave Account and change your password.
       </message>
@@ -471,6 +494,15 @@
       <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SAVED_3_DOMAINS" desc="A short paragraph explaining to a Brave user that they have reused their saved password on the current website and to change their password on three domains.">
         You just entered your password on a deceptive site. Brave recommends going to <ph name="WEBSITE_1">$1<ex>www.google.com</ex></ph>, <ph name="WEBSITE_2">$2<ex>www.reddit.com</ex></ph>, <ph name="WEBSITE_3">$3<ex>www.amazon.com</ex></ph>, and other sites where you use this password and changing it now.
       </message>
+      <message name="IDS_PAGE_INFO_CHECK_PASSWORD_DETAILS_SAVED_1_DOMAIN" desc="A short paragraph explaining to a Brave user that they have reused their saved password on the current website and to check their password on one domain.">
+        You just entered your password on a deceptive site. Brave recommends checking your saved passwords for <ph name="WEBSITE_1">$1<ex>www.google.com</ex></ph> and other sites where you use this password now.
+      </message>
+      <message name="IDS_PAGE_INFO_CHECK_PASSWORD_DETAILS_SAVED_2_DOMAIN" desc="A short paragraph explaining to a Brave user that they have reused their saved password on the current website and to check their password on two domains.">
+        You just entered your password on a deceptive site. Brave recommends checking your saved passwords for <ph name="WEBSITE_1">$1<ex>www.google.com</ex></ph>, <ph name="WEBSITE_2">$2<ex>www.reddit.com</ex></ph>, and other sites where you use this password now.
+      </message>
+      <message name="IDS_PAGE_INFO_CHECK_PASSWORD_DETAILS_SAVED_3_DOMAIN" desc="A short paragraph explaining to a Brave user that they have reused their saved password on the current website and to check their password on three domains.">
+        You just entered your password on a deceptive site. Brave recommends checking your saved passwords for <ph name="WEBSITE_1">$1<ex>www.google.com</ex></ph>, <ph name="WEBSITE_2">$2<ex>www.reddit.com</ex></ph>, <ph name="WEBSITE_3">$3<ex>www.amazon.com</ex></ph>, and other sites where you use this password now.
+      </message>
       <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SYNC" desc="A short paragraph explaining to a Brave sync user that they have reused their Brave password on the current website.">
         Brave can help you protect your Brave Account and change your password.
       </message>
@@ -489,6 +521,9 @@
       <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_BUTTON" desc="In Title Case: The string used in the page info change password button.">
         Change Password
       </message>
+      <message name="IDS_PAGE_INFO_CHECK_PASSWORDS_BUTTON" desc="In Title Case: The string used in the page info check passwords button.">
+        Check Passwords
+      </message>
       <message name="IDS_PAGE_INFO_PROTECT_ACCOUNT_BUTTON" desc="In Title Case: The string used in the page info protect account button.">
         Protect Account
       </message>
@@ -499,6 +534,9 @@
     <if expr="not use_titlecase">
       <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_BUTTON" desc="The string used in the page info change password button.">
         Change password
+      </message>
+      <message name="IDS_PAGE_INFO_CHECK_PASSWORDS_BUTTON" desc="The string used in the page info check passwords button.">
+        Check passwords
       </message>
       <message name="IDS_PAGE_INFO_PROTECT_ACCOUNT_BUTTON" desc="The string used in the page info protect account button.">
         Protect account
@@ -526,5 +564,50 @@
   </message>
   <message name="IDS_PAGE_INFO_VR_TURN_OFF_BUTTON_TEXT" desc="Label on the button that's used to turn off the VR presentation.">
     End
+  </message>
+
+  <!-- Certificate viewer dialog strings that are shared across all the platforms -->
+  <message name="IDS_CERT_INFO_SUBJECT_GROUP" desc="The label of the Issued To group in the general page of the certificate info dialog">
+    Issued To
+  </message>
+  <message name="IDS_CERT_INFO_ISSUER_GROUP" desc="The label of the Issued By group in the general page of the certificate info dialog">
+    Issued By
+  </message>
+  <message name="IDS_CERT_INFO_COMMON_NAME_LABEL" desc="The label of the Common Name field in the general page of the certificate info dialog.  (CN) is the name of this field in the standard">
+    Common Name (CN)
+  </message>
+  <message name="IDS_CERT_INFO_ORGANIZATION_LABEL" desc="The label of the Organization field in the general page of the certificate info dialog.  (O) is the name of this field in the standard">
+    Organization (O)
+  </message>
+  <message name="IDS_CERT_INFO_ORGANIZATIONAL_UNIT_LABEL" desc="The label of the Organizational Unit field in the general page of the certificate info dialog.  (OU) is the name of this field in the standard">
+    Organizational Unit (OU)
+  </message>
+  <message name="IDS_CERT_INFO_SERIAL_NUMBER_LABEL" desc="The label of the Serial Number field in the general page of the certificate info dialog.">
+    Serial Number
+  </message>
+  <message name="IDS_CERT_INFO_VALIDITY_GROUP" desc="The label of the group showing the validity (issued and expired dates) in the general page of the certificate info dialog">
+    Validity Period
+  </message>
+  <message name="IDS_CERT_INFO_ISSUED_ON_LABEL" desc="The label of the Issued On field in the general page of the certificate info dialog">
+    Issued On
+  </message>
+  <message name="IDS_CERT_INFO_EXPIRES_ON_LABEL" desc="The label of the Issued On field in the general page of the certificate info dialog">
+    Expires On
+  </message>
+  <message name="IDS_CERT_INFO_FINGERPRINTS_GROUP" desc="The label of the group showing the certificate fingerprints in the general page of the certificate info dialog">
+    Fingerprints
+  </message>
+  <message name="IDS_CERT_INFO_SHA256_FINGERPRINT_LABEL" desc="The label of the SHA-256 Fingerprint field in the general page of the certificate info dialog">
+    SHA-256 Fingerprint
+  </message>
+  <message name="IDS_CERT_INFO_SHA1_FINGERPRINT_LABEL" desc="The label of the SHA-1 Fingerprint field in the general page of the certificate info dialog">
+    SHA-1 Fingerprint
+  </message>
+
+  <message name="IDS_CERT_DETAILS_EXTENSIONS" desc="The label of the Extensions element in the details page of the certificate info dialog.">
+    Extensions
+  </message>
+  <message name="IDS_CERT_X509_SUBJECT_ALT_NAME" desc="description of extension Certificate Subject Alternative Name">
+    Certificate Subject Alternative Name
   </message>
 </grit-part>
