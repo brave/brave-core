@@ -27,7 +27,6 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
     public static final String PREF_SHOW_BACKGROUND_IMAGES = "show_background_images";
     public static final String PREF_SHOW_SPONSORED_IMAGES = "show_sponsored_images";
     public static final String PREF_SHOW_NON_DISTRUPTIVE_BANNER = "show_non_distruptive_banner";
-    public static final String PREF_APP_OPEN_COUNT = "app_open_count";
 
     private ChromeSwitchPreference showBackgroundImagesPref;
     private ChromeSwitchPreference showSponsoredImagesPref;
@@ -96,5 +95,4 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
         sharedPreferencesEditor.putInt(preferenceName, newValue);
         sharedPreferencesEditor.apply();
     }
-
 }
