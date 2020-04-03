@@ -20,6 +20,7 @@
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/vector_icons/vector_icons.h"
 #include "ui/base/l10n/l10n_util.h"
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -88,7 +89,7 @@ void BraveIncognitoMenuView::BuildMenu() {
 void BraveIncognitoMenuView::AddTorButton() {
   if (ShouldShowTorProfileButton(browser()->profile())) {
     AddFeatureButton(
-        ImageForMenu(kLaunchIcon),
+        ImageForMenu(vector_icons::kLaunchIcon),
         l10n_util::GetStringUTF16(IDS_PROFILES_OPEN_TOR_PROFILE_BUTTON),
         base::BindRepeating(&BraveIncognitoMenuView::OnTorProfileButtonClicked,
                             base::Unretained(this)));
