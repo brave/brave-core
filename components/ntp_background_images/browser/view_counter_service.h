@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/values.h"
 #include "components/keyed_service/core/keyed_service.h"
