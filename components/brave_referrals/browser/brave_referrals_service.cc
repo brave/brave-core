@@ -53,8 +53,8 @@ const int kFetchReferralHeadersFrequency = 60 * 60 * 24;
 // Perform finalization checks once a day.
 const int kFinalizationChecksFrequency = 60 * 60 * 24;
 
-// Report installation once a day (after initial failure).
-const int kReportInstallationFrequency = 60 * 60 * 24;
+// Report initialization once a day (after initial failure).
+const int kReportInitializationFrequency = 60 * 60 * 24;
 
 // Maximum size of the referral server response in bytes.
 const int kMaxReferralServerResponseSizeBytes = 1024 * 1024;
@@ -256,12 +256,11 @@ void BraveReferralsService::OnReferralInitLoadComplete(
                << ", response code: " << response_code
                << ", payload: " << safe_response_body
                << ", url: " << referral_init_loader_->GetFinalURL().spec();
-    if (!initialization_timer_) {
-      initialization_timer_ = std::make_unique<base::RepeatingTimer>();
+    if (initialization_timer_) {
       initialization_timer_->Start(
                       FROM_HERE,
                       base::TimeDelta::FromSeconds(
-                              brave_base::random::Geometric(kReportInstallationFrequency)),
+                              brave_base::random::Geometric(kReportInitializationFrequency)),
                       this, &BraveReferralsService::InitReferral);
       DCHECK(initialization_timer_->IsRunning());
     }
@@ -291,12 +290,8 @@ void BraveReferralsService::OnReferralInitLoadComplete(
 
   // We have initialized with the promo server. We can kill the retry timer now.
   pref_service_->SetBoolean(kReferralReportedInstall, true);
-  if (initialization_timer_) {
-    DCHECK(initialization_timer_->IsRunning());
-    initialization_timer_->Stop();
-    DCHECK(!initialization_timer_->IsRunning());
+  if (initialization_timer_)
     initialization_timer_.reset();
-  }
 
   const base::Value* offer_page_url = root->FindKey("offer_page_url");
   if (offer_page_url) {
@@ -365,6 +360,7 @@ void BraveReferralsService::OnReadPromoCodeComplete() {
   if (!promo_code_.empty()) {
     pref_service_->SetString(kReferralPromoCode, promo_code_);
     DCHECK(!initialization_timer_);
+    initialization_timer_ = std::make_unique<base::OneShotTimer>();
     InitReferral();
   } else {
     // No referral code, no point of reporting it.
