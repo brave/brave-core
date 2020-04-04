@@ -1253,66 +1253,50 @@ class Binance extends React.PureComponent<Props, State> {
     )
   }
 
+  renderIndexView () {
+    const {
+      currentQRAsset,
+      insufficientFunds,
+      convertFailed,
+      convertSuccess,
+      showConvertPreview,
+      disconnectInProgress
+    } = this.state
+
+    if (currentQRAsset) {
+      return this.renderQRView()
+    } else if (insufficientFunds) {
+      return this.renderInsufficientFundsView()
+    } else if (convertFailed) {
+      return this.renderUnableToConvertView()
+    } else if (convertSuccess) {
+      return this.renderConvertSuccess()
+    } else if (showConvertPreview) {
+      return this.renderConvertConfirm()
+    } else if (disconnectInProgress) {
+      return this.renderDisconnectView()
+    } else {
+      return false
+    }
+  }
+
   render () {
-    const { disconnectInProgress, showConvertPreview, insufficientFunds, convertSuccess, currentQRAsset, convertFailed } = this.state
     const { showContent } = this.props
 
     if (!showContent) {
       return this.renderTitleTab()
     }
 
-    if (currentQRAsset) {
-      return (
-        <WidgetWrapper>
-          {this.renderQRView()}
-        </WidgetWrapper>
-      )
-    }
-
-    if (insufficientFunds) {
-      return (
-        <WidgetWrapper>
-          {this.renderInsufficientFundsView()}
-        </WidgetWrapper>
-      )
-    }
-
-    if (convertFailed) {
-      return (
-        <WidgetWrapper>
-          {this.renderUnableToConvertView()}
-        </WidgetWrapper>
-      )
-    }
-
-    if (convertSuccess) {
-      return (
-        <WidgetWrapper>
-          {this.renderConvertSuccess()}
-        </WidgetWrapper>
-      )
-    }
-
-    if (showConvertPreview) {
-      return (
-        <WidgetWrapper>
-          {this.renderConvertConfirm()}
-        </WidgetWrapper>
-      )
-    }
-
-    if (disconnectInProgress) {
-      return (
-        <WidgetWrapper>
-          {this.renderDisconnectView()}
-        </WidgetWrapper>
-      )
-    }
-
     return (
       <WidgetWrapper>
-        {this.renderTitle()}
-        {this.renderRoutes()}
+        {
+          this.renderIndexView()
+          ? this.renderIndexView()
+          : <>
+              {this.renderTitle()}
+              {this.renderRoutes()}
+            </>
+        }
       </WidgetWrapper>
     )
   }

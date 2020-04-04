@@ -258,6 +258,7 @@ export const ActionItem = styled<{}, 'div'>('div')`
 export const ConnectPrompt = styled<{}, 'div'>('div')`
   float: right;
   margin-top: -20px;
+  margin-right: 40px;
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
