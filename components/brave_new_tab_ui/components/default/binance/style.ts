@@ -574,7 +574,7 @@ export const ConvertValue = styled<{}, 'span'>('span')`
 `
 
 export const ConvertInfoWrapper = styled<StyleProps, 'div'>('div')`
-  margin: 10px 0;
+  margin: 20px 0;
   overflow-y: auto;
 `
 

@@ -106,6 +106,7 @@ interface State {
   insufficientFunds: boolean
   showConvertPreview: boolean
   convertSuccess: boolean
+  convertFailed: boolean
   isBuyView: boolean
   currentQRAsset: string
   convertFromShowing: boolean
@@ -168,6 +169,7 @@ class Binance extends React.PureComponent<Props, State> {
   private currencyNames: Record<string, string>
   private cryptoColors: Record<string, string>
   private convertTimer: any
+  private refreshInterval: any
 
   constructor (props: Props) {
     super(props)
@@ -191,6 +193,7 @@ class Binance extends React.PureComponent<Props, State> {
       insufficientFunds: false,
       showConvertPreview: false,
       convertSuccess: false,
+      convertFailed: false,
       isBuyView: true,
       currentQRAsset: '',
       convertFromShowing: false,
@@ -202,7 +205,7 @@ class Binance extends React.PureComponent<Props, State> {
     this.usCurrencies = currencyData.usCurrencies
     this.comCurrencies = currencyData.comCurrencies
     this.currencyNames = {
-      'BAT': 'Basic Attention Token',
+      'BAT': '(Basic Attent...)',
       'BTC': 'Bitcoin',
       'ETH': 'Ethereum',
       'XRP': 'Ripple',
@@ -217,6 +220,9 @@ class Binance extends React.PureComponent<Props, State> {
 
     if (this.props.userAuthed) {
       this.updateActions()
+      this.refreshInterval = setInterval(() => {
+        this.updateActions()
+      }, 30000)
     }
 
     if (this.props.authInProgress) {
@@ -233,6 +239,10 @@ class Binance extends React.PureComponent<Props, State> {
     chrome.binance.getClientUrl((clientUrl: string) => {
       this.props.onBinanceClientUrl(clientUrl)
     })
+  }
+
+  componentWillUnmount () {
+    clearInterval(this.refreshInterval)
   }
 
   componentDidUpdate (prevProps: Props) {
@@ -328,9 +338,25 @@ class Binance extends React.PureComponent<Props, State> {
     this.setState({
       insufficientFunds: false,
       showConvertPreview: false,
+      convertSuccess: false,
+      convertFailed: false,
       currentConvertAmount: '',
       currentConvertFrom: 'BTC',
       currentConvertTo: 'BNB',
+      currentConvertId: '',
+      currentConvertPrice: '',
+      currentConvertFee: '',
+      currentConvertTransAmount: '',
+      currentConvertExpiryTime: 60
+    })
+  }
+
+  retryConvert = () => {
+    this.setState({
+      insufficientFunds: false,
+      showConvertPreview: false,
+      convertSuccess: false,
+      convertFailed: false,
       currentConvertId: '',
       currentConvertPrice: '',
       currentConvertFee: '',
@@ -393,10 +419,15 @@ class Binance extends React.PureComponent<Props, State> {
   }
 
   processConvert = () => {
-     // Temporary
-    setTimeout(() => {
-      this.setState({ convertSuccess: true })
-    }, 1500)
+    const { currentConvertId } = this.state
+    chrome.binance.confirmConvert(currentConvertId, (success: boolean) => {
+      if (success) {
+        this.updateActions()
+        this.setState({ convertSuccess: true })
+      } else {
+        this.setState({ convertFailed: true })
+      }
+    })
   }
 
   setInitialAsset (asset: string) {
@@ -456,11 +487,8 @@ class Binance extends React.PureComponent<Props, State> {
   }
 
   finishConvert = () => {
-    this.setState({
-      convertSuccess: false,
-      showConvertPreview: false,
-      selectedView: 'deposit'
-    })
+    this.cancelConvert()
+    this.setState({ selectedView: 'summary' })
   }
 
   setCurrentDepositSearch = ({ target }: any) => {
@@ -640,7 +668,12 @@ class Binance extends React.PureComponent<Props, State> {
   }
 
   renderConvertSuccess = () => {
-    const { currentConvertAmount, currentConvertFrom, currentConvertTo } = this.state
+    const {
+      currentConvertAmount,
+      currentConvertFrom,
+      currentConvertTo,
+      currentConvertTransAmount
+    } = this.state
 
     return (
       <InvalidWrapper>
@@ -648,11 +681,27 @@ class Binance extends React.PureComponent<Props, State> {
           <img src={partyIcon} />
         </StyledEmoji>
         <InvalidTitle>
-          {`You converted ${currentConvertAmount} BTC ${currentConvertFrom} to ${currentConvertTo}!`}
+          {`You converted ${currentConvertAmount} ${currentConvertFrom} to ${currentConvertTransAmount} ${currentConvertTo}!`}
         </InvalidTitle>
         <ConnectButton isSmall={true} onClick={this.finishConvert}>
           {'Continue'}
         </ConnectButton>
+      </InvalidWrapper>
+    )
+  }
+
+  renderInsufficientFundsView = () => {
+    return (
+      <InvalidWrapper>
+        <InvalidTitle>
+          {'Unable to Convert'}
+        </InvalidTitle>
+        <InvalidCopy>
+          {'The amount you entered exceeds the amount you currently have available'}
+        </InvalidCopy>
+        <GenButton onClick={this.retryConvert}>
+          {'Retry'}
+        </GenButton>
       </InvalidWrapper>
     )
   }
@@ -664,9 +713,9 @@ class Binance extends React.PureComponent<Props, State> {
           {'Unable to Convert'}
         </InvalidTitle>
         <InvalidCopy>
-          {'The amount you entered exceeds the amount you currently have available'}
+          {'The conversion could not be processed. Please try again.'}
         </InvalidCopy>
-        <GenButton onClick={this.cancelConvert}>
+        <GenButton onClick={this.retryConvert}>
           {'Retry'}
         </GenButton>
       </InvalidWrapper>
@@ -1205,7 +1254,7 @@ class Binance extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { disconnectInProgress, showConvertPreview, insufficientFunds, convertSuccess, currentQRAsset } = this.state
+    const { disconnectInProgress, showConvertPreview, insufficientFunds, convertSuccess, currentQRAsset, convertFailed } = this.state
     const { showContent } = this.props
 
     if (!showContent) {
@@ -1221,6 +1270,14 @@ class Binance extends React.PureComponent<Props, State> {
     }
 
     if (insufficientFunds) {
+      return (
+        <WidgetWrapper>
+          {this.renderInsufficientFundsView()}
+        </WidgetWrapper>
+      )
+    }
+
+    if (convertFailed) {
       return (
         <WidgetWrapper>
           {this.renderUnableToConvertView()}
