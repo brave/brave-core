@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/mini_installer.cc b/chrome/installer/mini_installer/mini_installer.cc
-index 73e6240800f3c72bd96c91971c53a19516e1b0f1..bfac399db4fdaeeac98323805ce86a03ff8999bb 100644
+index 73e6240800f3c72bd96c91971c53a19516e1b0f1..43a42ee5395d2c026c942f5a68855fe6a2998d05 100644
 --- a/chrome/installer/mini_installer/mini_installer.cc
 +++ b/chrome/installer/mini_installer/mini_installer.cc
 @@ -63,7 +63,7 @@ struct Context {
@@ -11,41 +11,30 @@ index 73e6240800f3c72bd96c91971c53a19516e1b0f1..bfac399db4fdaeeac98323805ce86a03
  // Opens the Google Update ClientState key. If |binaries| is false, opens the
  // key for Google Chrome or Chrome SxS (canary). If |binaries| is true and an
  // existing multi-install Chrome is being updated, opens the key for the
-@@ -528,6 +528,21 @@ ProcessExitResult RunSetup(const Configuration& configuration,
+@@ -528,6 +528,10 @@ ProcessExitResult RunSetup(const Configuration& configuration,
    // on to setup.exe
    AppendCommandLineFlags(configuration.command_line(), &cmd_line);
- 
+
 +#if defined(BRAVE_CHROMIUM_BUILD)
-+  PathString installer_filename;
-+  if (GetStubInstallerFilename(installer_filename)) {
-+    ReferralCodeString referral_code;
-+    if (ParseReferralCode(installer_filename.get(), referral_code)) {
-+      if (!cmd_line.append(L" --") ||
-+          !cmd_line.append(L"brave-referral-code") ||
-+          !cmd_line.append(L"=\"") || !cmd_line.append(referral_code.get()) ||
-+          !cmd_line.append(L"\"")) {
-+        return ProcessExitResult(COMMAND_STRING_OVERFLOW);
-+      }
-+    }
-+  }
++  BRAVE_REFERRAL
 +#endif
 +
    return RunProcessAndWait(setup_exe.get(), cmd_line.get(),
                             RUN_SETUP_FAILED_FILE_NOT_FOUND,
                             RUN_SETUP_FAILED_PATH_NOT_FOUND,
-@@ -875,7 +890,7 @@ ProcessExitResult WMain(HMODULE module) {
+@@ -875,7 +879,7 @@ ProcessExitResult WMain(HMODULE module) {
    if (!GetWorkDir(module, &base_path, &exit_code))
      return exit_code;
- 
+
 -#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
 +#if BUILDFLAG(GOOGLE_CHROME_BRANDING) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
    // Set the magic suffix in registry to try full installer next time. We ignore
    // any errors here and we try to set the suffix for user level unless
    // GoogleUpdateIsMachine=1 is present in the environment or --system-level is
-@@ -900,7 +915,7 @@ ProcessExitResult WMain(HMODULE module) {
+@@ -900,7 +904,7 @@ ProcessExitResult WMain(HMODULE module) {
    if (ShouldDeleteExtractedFiles())
      DeleteExtractedFiles(base_path.get(), archive_path.get(), setup_path.get());
- 
+
 -#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
 +#if BUILDFLAG(GOOGLE_CHROME_BRANDING) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
    WriteInstallResults(configuration, exit_code);
