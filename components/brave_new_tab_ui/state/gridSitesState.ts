@@ -5,7 +5,7 @@
 
 import {
   generateGridSiteProperties,
-  generateGridSitePropertiesFromDefaultTopSite,
+  generateGridSitePropertiesFromDefaultSuperReferralTopSite,
   isExistingGridSite,
   getGridSitesWhitelist,
   isGridSitePinned,
@@ -35,13 +35,14 @@ export function gridSitesReducerSetFirstRenderDataFromLegacy (
   return state
 }
 
-export function gridSitesReducerSetDefaultTopSites (
+export function gridSitesReducerSetDefaultSuperReferralTopSites (
   state: NewTab.GridSitesState,
-  defaultTopSites: NewTab.DefaultTopSite[]
+  defaultSuperReferralTopSites: NewTab.DefaultSuperReferralTopSite[]
 ): NewTab.GridSitesState {
   const newGridSites: NewTab.Site[] = []
-  for (const defaultTopSite of defaultTopSites) {
-    newGridSites.push(generateGridSitePropertiesFromDefaultTopSite(defaultTopSite))
+  for (const defaultSuperReferralTopSite of defaultSuperReferralTopSites) {
+    newGridSites.push(generateGridSitePropertiesFromDefaultSuperReferralTopSite(
+                          defaultSuperReferralTopSite))
   }
 
   state = gridSitesReducerAddSiteOrSites(state, newGridSites)

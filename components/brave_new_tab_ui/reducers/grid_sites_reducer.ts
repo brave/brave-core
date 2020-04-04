@@ -47,10 +47,10 @@ export const gridSitesReducer: Reducer<NewTab.GridSitesState | undefined> = (
         .gridSitesReducerSetFirstRenderData(state, payload.topSites)
 
       // Handle default top sites data only once.
-      if (payload.defaultTopSites && !storage.isDefaultTopSitesAddedToPinnedSites()) {
+      if (payload.defaultSuperReferralTopSites && !storage.isDefaultSuperReferralTopSitesAddedToPinnedSites()) {
         state = gridSitesState
-          .gridSitesReducerSetDefaultTopSites(state, payload.defaultTopSites)
-        storage.setDefaultTopSitesAddedToPinnedSites()
+          .gridSitesReducerSetDefaultSuperReferralTopSites(state, payload.defaultSuperReferralTopSites)
+        storage.setDefaultSuperReferralTopSitesAddedToPinnedSites()
       }
       break
     }

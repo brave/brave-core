@@ -199,7 +199,8 @@ void NTPBackgroundImagesService::Init() {
     if (!forced_local_path.empty()) {
       test_data_used_ = true;
       DVLOG(2) << __func__ << ": NTP SR test data will be loaded"
-               << " from local path at: " << forced_local_path.LossyDisplayName();
+               << " from local path at: "
+               << forced_local_path.LossyDisplayName();
       OnComponentReady(false, forced_local_path);
     } else {
       CheckSuperReferralComponent();

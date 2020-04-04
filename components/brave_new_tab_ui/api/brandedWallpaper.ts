@@ -7,8 +7,8 @@ export function getBrandedWallpaper (): Promise<undefined | NewTab.BrandedWallpa
   return window.cr.sendWithPromise<undefined | NewTab.BrandedWallpaper>('getBrandedWallpaperData')
 }
 
-export function getDefaultTopSites (): Promise<undefined | NewTab.DefaultTopSite[]> {
-  return window.cr.sendWithPromise<undefined | NewTab.DefaultTopSite[]>('getDefaultTopSitesData')
+export function getDefaultSuperReferralTopSites (): Promise<undefined | NewTab.DefaultSuperReferralTopSite[]> {
+  return window.cr.sendWithPromise<undefined | NewTab.DefaultSuperReferralTopSite[]>('getDefaultSuperReferralTopSitesData')
 }
 
 export function registerViewCount (): Promise<void> {

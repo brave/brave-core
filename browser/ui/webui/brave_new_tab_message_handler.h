@@ -37,7 +37,7 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler {
       const base::ListValue* args);
   void HandleRegisterNewTabPageView(const base::ListValue* args);
   void HandleGetBrandedWallpaperData(const base::ListValue* args);
-  void HandleGetDefaultTopSitesData(const base::ListValue* args);
+  void HandleGetDefaultSuperReferralTopSitesData(const base::ListValue* args);
 
   void OnStatsChanged();
   void OnPreferencesChanged();
