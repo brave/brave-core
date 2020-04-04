@@ -3,6 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+const clipboardCopy = require('clipboard-copy')
+
 import createWidget from '../widget/index'
 import {
   WidgetWrapper,
@@ -68,7 +70,9 @@ import {
   SelectedView,
   TickerLabel,
   ConvertButton,
-  AssetIcon
+  AssetIcon,
+  QRImage,
+  CopyButton
 } from './style'
 import {
   DisconnectIcon,
@@ -83,7 +87,7 @@ import { getLocale } from '../../../../common/locale'
 import searchIcon from './assets/search-icon.png'
 import partyIcon from './assets/party.png'
 import qrIcon from './assets/qr.png'
-import { getUSDPrice } from '../../../binance-utils'
+import { getUSDPrice, generateQRData } from '../../../binance-utils'
 
 interface State {
   fiatShowing: boolean
@@ -102,6 +106,7 @@ interface State {
   showConvertPreview: boolean
   convertSuccess: boolean
   isBuyView: boolean
+  currentQRAsset: string
 }
 
 interface Props {
@@ -123,6 +128,7 @@ interface Props {
   btcVolume: string
   binanceClientUrl: string
   assetDepositInfo: Record<string, any>
+  assetDepoitQRCodeSrcs: Record<string, string>
   onShowContent: () => void
   onBuyCrypto: (coin: string, amount: string, fiat: string) => void
   onBinanceUserTLD: (userTLD: NewTab.BinanceTLD) => void
@@ -142,6 +148,7 @@ interface Props {
   onAssetUSDPrice: (ticker: string, price: string) => void
   onAssetBTCPrice: (ticker: string, price: string) => void
   onAssetDepositInfo: (symbol: string, address: string, url: string) => void
+  onAssetDepositQRCodeSrc: (asset: string, src: string) => void
 }
 
 class Binance extends React.PureComponent<Props, State> {
@@ -169,7 +176,8 @@ class Binance extends React.PureComponent<Props, State> {
       insufficientFunds: false,
       showConvertPreview: false,
       convertSuccess: false,
-      isBuyView: true
+      isBuyView: true,
+      currentQRAsset: ''
     }
     this.cryptoColors = currencyData.cryptoColors
     this.fiatList = currencyData.fiatList
@@ -256,6 +264,7 @@ class Binance extends React.PureComponent<Props, State> {
         }
         chrome.binance.getDepositInfo(ticker, (address: string, url: string) => {
           this.props.onAssetDepositInfo(ticker, address, url)
+          generateQRData(url, ticker, this.props.onAssetDepositQRCodeSrc)
         })
       }
 
@@ -452,6 +461,26 @@ class Binance extends React.PureComponent<Props, State> {
     })
   }
 
+  setQR = (asset: string) => {
+    this.setState({
+      currentQRAsset: asset
+    })
+  }
+
+  cancelQR = () => {
+    this.setState({
+      currentQRAsset: ''
+    })
+  }
+
+  copyToClipboard = async (address: string) => {
+    try {
+      await clipboardCopy(address)
+    } catch (e) {
+      console.log(`Could not copy address ${e.toString()}`)
+    }
+  }
+
   renderIconAsset = (key: string, isDetail: boolean = false) => {
     const iconColor = this.cryptoColors[key] || '#fff'
 
@@ -559,6 +588,20 @@ class Binance extends React.PureComponent<Props, State> {
     )
   }
 
+  renderQRView = () => {
+    const { assetDepoitQRCodeSrcs } = this.props
+    const imageSrc = assetDepoitQRCodeSrcs[this.state.currentQRAsset]
+
+    return (
+      <InvalidWrapper>
+        <QRImage src={imageSrc} />
+        <GenButton onClick={this.cancelQR}>
+          {'Done'}
+        </GenButton>
+      </InvalidWrapper>
+    )
+  }
+
   formatCryptoBalance = (balance: string) => {
     if (!balance) {
       return '0.00'
@@ -592,7 +635,7 @@ class Binance extends React.PureComponent<Props, State> {
           <AssetLabel>
             {cleanNameDisplay}
           </AssetLabel>
-          <AssetQR>
+          <AssetQR onClick={this.setQR.bind(this, currentDepositAsset)}>
             <img style={{ width: '25px', marginRight: '5px' }} src={qrIcon} />
           </AssetQR>
         </ListItem>
@@ -606,6 +649,9 @@ class Binance extends React.PureComponent<Props, State> {
                 {`${address}`}
               </DetailInfo>
             </MemoInfo>
+            <CopyButton onClick={this.copyToClipboard.bind(this, address)}>
+              {'Copy'}
+            </CopyButton>
           </MemoArea>
         </DetailArea>
       </>
@@ -1018,11 +1064,19 @@ class Binance extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { disconnectInProgress, showConvertPreview, insufficientFunds, convertSuccess } = this.state
+    const { disconnectInProgress, showConvertPreview, insufficientFunds, convertSuccess, currentQRAsset } = this.state
     const { showContent } = this.props
 
     if (!showContent) {
       return this.renderTitleTab()
+    }
+
+    if (currentQRAsset) {
+      return (
+        <WidgetWrapper>
+          {this.renderQRView()}
+        </WidgetWrapper>
+      )
     }
 
     if (insufficientFunds) {

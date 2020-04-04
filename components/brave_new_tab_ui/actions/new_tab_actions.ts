@@ -158,3 +158,8 @@ export const onAssetDepositInfo = (symbol: string, address: string, url: string)
   address,
   url
 })
+
+export const onDepositQRForAsset = (asset: string, imageSrc: string) => action(types.ON_DEPOSIT_QR_FOR_ASSET, {
+  asset,
+  imageSrc
+})

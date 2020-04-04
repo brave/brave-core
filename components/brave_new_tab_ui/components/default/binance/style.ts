@@ -317,6 +317,13 @@ export const ListImg = styled<{}, 'img'>('img')`
   margin-top: -6px;
 `
 
+export const QRImage = styled<{}, 'img'>('img')`
+  width: 150px;
+  height: 150px;
+  display: block;
+  margin: 0 auto 20px auto;
+`
+
 export const ListLabel = styled<{}, 'div'>('div')`
   color: #fff;
   cursor: pointer;
@@ -363,6 +370,7 @@ export const AssetLabel = styled<{}, 'span'>('span')`
 export const AssetQR = styled<{}, 'div'>('div')`
   float: right;
   margin-top: -3px;
+  cursor: pointer;
 `
 
 export const DetailArea = styled<{}, 'div'>('div')`

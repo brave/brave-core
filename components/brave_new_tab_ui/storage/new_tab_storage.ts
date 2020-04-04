@@ -69,7 +69,8 @@ export const defaultState: NewTab.State = {
     assetUSDValues: {},
     btcPrice: '0.00',
     btcVolume: '0',
-    assetDepositInfo: {}
+    assetDepositInfo: {},
+    assetDepoitQRCodeSrcs: {}
   }
 }
 

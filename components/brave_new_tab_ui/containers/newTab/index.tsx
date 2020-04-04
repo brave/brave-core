@@ -360,6 +360,10 @@ class NewTabPage extends React.Component<Props, State> {
     window.open('https://brave.com/binance/', '_blank')
   ]
 
+  setAssetDepositQRCodeSrc = (asset: string, src: string) => {
+    this.props.actions.onDepositQRForAsset(asset, src)
+  }
+
   getCryptoContent () {
     const { currentStackWidget } = this.props.newTabData
 
@@ -476,6 +480,7 @@ class NewTabPage extends React.Component<Props, State> {
         onAssetUSDPrice={this.setAssetUSDPrice}
         onAssetBTCVolume={this.setAssetBTCVolume}
         onAssetDepositInfo={this.setAssetDepositInfo}
+        onAssetDepositQRCodeSrc={this.setAssetDepositQRCodeSrc}
       />
     )
   }
