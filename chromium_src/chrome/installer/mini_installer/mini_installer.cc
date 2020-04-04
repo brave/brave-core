@@ -23,7 +23,14 @@
       }                                                                      \
     }                                                                        \
   }
+
+#if defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD)
+#undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
+#define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
+#endif
+
 #include "../../../../../chrome/installer/mini_installer/mini_installer.cc"
+
 #undef BRAVE_REFERRAL
 
 namespace mini_installer {
