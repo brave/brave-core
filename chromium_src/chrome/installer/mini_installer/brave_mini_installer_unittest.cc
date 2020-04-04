@@ -23,43 +23,54 @@ TEST_F(BraveMiniInstallerTest, HasNoReferralCode) {
 
 TEST_F(BraveMiniInstallerTest, HasStandardReferralCode) {
   ReferralCodeString referral_code;
-  EXPECT_TRUE(ParseReferralCode(L"BraveBrowserSetup-FOO123.exe", referral_code));
+  EXPECT_TRUE(ParseReferralCode(L"BraveBrowserSetup-FOO123.exe",
+                          referral_code));
   EXPECT_STREQ(referral_code.get(), L"FOO123");
 }
 
 TEST_F(BraveMiniInstallerTest, HasStandardReferralCode) {
   ReferralCodeString referral_code;
-  EXPECT_TRUE(ParseReferralCode(L"BraveBrowserSetup-foo123.exe", referral_code));
+  EXPECT_TRUE(ParseReferralCode(L"BraveBrowserSetup-foo123.exe",
+                          referral_code));
   EXPECT_STREQ(referral_code.get(), L"FOO123");
 }
 
 TEST_F(BraveMiniInstallerTest, HasStandardReferralCodeWithPath) {
   ReferralCodeString referral_code;
-  EXPECT_TRUE(ParseReferralCode(L"c:/foo/bar/BraveBrowserSetup-FOO123.exe", referral_code));
+  EXPECT_TRUE(ParseReferralCode(L"c:/foo/bar/BraveBrowserSetup-FOO123.exe",
+                          referral_code));
   EXPECT_STREQ(referral_code.get(), L"FOO123");
 }
 
-TEST_F(BraveMiniInstallerTest, HasStandardReferralCodeWithDeduplicatingSuffix) {
+TEST_F(BraveMiniInstallerTest,
+                HasStandardReferralCodeWithDeduplicatingSuffix) {
   ReferralCodeString referral_code;
-  EXPECT_TRUE(ParseReferralCode(L"c:/foo/bar/BraveBrowserSetup-FOO123 (1).exe", referral_code));
+  EXPECT_TRUE(ParseReferralCode(L"c:/foo/bar/BraveBrowserSetup-FOO123 (1).exe",
+                          referral_code));
   EXPECT_STREQ(referral_code.get(), L"FOO123");
 }
 
-TEST_F(BraveMiniInstallerTest, HasStandardReferralCodeWithDeduplicatingSuffixNoSpaces) {
+TEST_F(BraveMiniInstallerTest,
+                HasStandardReferralCodeWithDeduplicatingSuffixNoSpaces) {
   ReferralCodeString referral_code;
-  EXPECT_TRUE(ParseReferralCode(L"c:/foo/bar/BraveBrowserSetup-FOO123(1).exe", referral_code));
+  EXPECT_TRUE(ParseReferralCode(L"c:/foo/bar/BraveBrowserSetup-FOO123(1).exe",
+                          referral_code));
   EXPECT_STREQ(referral_code.get(), L"FOO123");
 }
 
-TEST_F(BraveMiniInstallerTest, HasStandardReferralCodeWithDeduplicatingSuffixExtraSpaces) {
+TEST_F(BraveMiniInstallerTest,
+                HasStandardReferralCodeWithDeduplicatingSuffixExtraSpaces) {
   ReferralCodeString referral_code;
-  EXPECT_TRUE(ParseReferralCode(L"c:/foo/bar/BraveBrowserSetup-FOO123   (1).exe", referral_code));
+  EXPECT_TRUE(ParseReferralCode(
+                          L"c:/foo/bar/BraveBrowserSetup-FOO123   (1).exe",
+                          referral_code));
   EXPECT_STREQ(referral_code.get(), L"FOO123");
 }
 
 TEST_F(BraveMiniInstallerTest, HasInvalidStandardReferralCodeReversed) {
   ReferralCodeString referral_code;
-  EXPECT_FALSE(ParseReferralCode(L"BraveBrowserSetup-123FOO.exe", referral_code));
+  EXPECT_FALSE(ParseReferralCode(L"BraveBrowserSetup-123FOO.exe",
+                          referral_code));
 }
 
 TEST_F(BraveMiniInstallerTest, HasInvalidStandardReferralCodeNoDigits) {
@@ -74,38 +85,47 @@ TEST_F(BraveMiniInstallerTest, HasInvalidStandardReferralCodeNoLetters) {
 
 TEST_F(BraveMiniInstallerTest, HasInvalidStandardReferralCodeTooManyDigits) {
   ReferralCodeString referral_code;
-  EXPECT_FALSE(ParseReferralCode(L"BraveBrowserSetup-FOO1234.exe", referral_code));
+  EXPECT_FALSE(ParseReferralCode(L"BraveBrowserSetup-FOO1234.exe",
+                          referral_code));
 }
 
 TEST_F(BraveMiniInstallerTest, HasInvalidStandardReferralCodeTooFewDigits) {
   ReferralCodeString referral_code;
-  EXPECT_FALSE(ParseReferralCode(L"BraveBrowserSetup-FOO12.exe", referral_code));
+  EXPECT_FALSE(ParseReferralCode(L"BraveBrowserSetup-FOO12.exe",
+                          referral_code));
 }
 
 TEST_F(BraveMiniInstallerTest, HasInvalidStandardReferralCodeTooManyLetters) {
   ReferralCodeString referral_code;
-  EXPECT_FALSE(ParseReferralCode(L"BraveBrowserSetup-FOOO123.exe", referral_code));
+  EXPECT_FALSE(ParseReferralCode(L"BraveBrowserSetup-FOOO123.exe",
+                          referral_code));
 }
 
 TEST_F(BraveMiniInstallerTest, HasInvalidStandardReferralCodeTooFewLetters) {
   ReferralCodeString referral_code;
-  EXPECT_FALSE(ParseReferralCode(L"BraveBrowserSetup-FO123.exe", referral_code));
+  EXPECT_FALSE(ParseReferralCode(L"BraveBrowserSetup-FO123.exe",
+                          referral_code));
 }
 
 TEST_F(BraveMiniInstallerTest, HasExtendedReferralCode) {
   ReferralCodeString referral_code;
-  EXPECT_TRUE(ParseReferralCode(L"BraveBrowserSetup-extended-code.exe", referral_code));
+  EXPECT_TRUE(ParseReferralCode(L"BraveBrowserSetup-extended-code.exe",
+                          referral_code));
   EXPECT_STREQ(referral_code.get(), L"extended-code");
 }
 
-TEST_F(BraveMiniInstallerTest, HasInvalidExtendedReferralCodeNonAlphabeticCharacters) {
+TEST_F(BraveMiniInstallerTest,
+                HasInvalidExtendedReferralCodeNonAlphabeticCharacters) {
   ReferralCodeString referral_code;
-  EXPECT_FALSE(ParseReferralCode(L"BraveBrowserSetup-invalid-extended-c0de.exe", referral_code));
+  EXPECT_FALSE(ParseReferralCode(
+                          L"BraveBrowserSetup-invalid-extended-c0de.exe",
+                          referral_code));
 }
 
 TEST_F(BraveMiniInstallerTest, HasInvalidExtendedReferralCodeTooFewWords) {
   ReferralCodeString referral_code;
-  EXPECT_FALSE(ParseReferralCode(L"BraveBrowserSetup-invalidextendedcode.exe", referral_code));
+  EXPECT_FALSE(ParseReferralCode(L"BraveBrowserSetup-invalidextendedcode.exe",
+                          referral_code));
 }
 
 }  // namespace mini_installer

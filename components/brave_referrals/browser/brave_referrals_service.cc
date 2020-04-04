@@ -148,10 +148,10 @@ void BraveReferralsService::Start() {
 
   // Read the promo code from user-data-dir and initialize the referral,
   // retrying if necessary.
-  bool reported_installation =
-      pref_service_->GetBoolean(kReferralReportedInstall);
+  bool has_initialized =
+      pref_service_->GetBoolean(kReferralInitialization);
   std::string download_id = pref_service_->GetString(kReferralDownloadID);
-  if (!reported_installation && download_id.empty())
+  if (!has_initialized && download_id.empty())
     task_runner_->PostTaskAndReply(
         FROM_HERE,
         base::Bind(&BraveReferralsService::ReadPromoCode,
@@ -256,14 +256,14 @@ void BraveReferralsService::OnReferralInitLoadComplete(
                << ", response code: " << response_code
                << ", payload: " << safe_response_body
                << ", url: " << referral_init_loader_->GetFinalURL().spec();
-    if (initialization_timer_) {
-      initialization_timer_->Start(
-                      FROM_HERE,
-                      base::TimeDelta::FromSeconds(
-                              brave_base::random::Geometric(kReportInitializationFrequency)),
-                      this, &BraveReferralsService::InitReferral);
-      DCHECK(initialization_timer_->IsRunning());
-    }
+    initialization_timer_ = std::make_unique<base::OneShotTimer>();
+    initialization_timer_->Start(
+                    FROM_HERE,
+                    base::TimeDelta::FromSeconds(
+                      brave_base::random::Geometric(
+                              kReportInitializationFrequency)),
+                    this, &BraveReferralsService::InitReferral);
+    DCHECK(initialization_timer_->IsRunning());
     return;
   }
 
@@ -289,7 +289,7 @@ void BraveReferralsService::OnReferralInitLoadComplete(
   pref_service_->SetString(kReferralDownloadID, download_id->GetString());
 
   // We have initialized with the promo server. We can kill the retry timer now.
-  pref_service_->SetBoolean(kReferralReportedInstall, true);
+  pref_service_->SetBoolean(kReferralInitialization, true);
   if (initialization_timer_)
     initialization_timer_.reset();
 
@@ -356,15 +356,13 @@ void BraveReferralsService::OnReferralFinalizationCheckLoadComplete(
 }
 
 void BraveReferralsService::OnReadPromoCodeComplete() {
-  pref_service_->SetBoolean(kReferralCheckedForPromoCodeFile, true);
   if (!promo_code_.empty()) {
     pref_service_->SetString(kReferralPromoCode, promo_code_);
     DCHECK(!initialization_timer_);
-    initialization_timer_ = std::make_unique<base::OneShotTimer>();
     InitReferral();
   } else {
     // No referral code, no point of reporting it.
-    pref_service_->SetBoolean(kReferralReportedInstall, true);
+    pref_service_->SetBoolean(kReferralInitialization, true);
   }
 }
 
@@ -692,8 +690,7 @@ std::unique_ptr<BraveReferralsService> BraveReferralsServiceFactory(
 }
 
 void RegisterPrefsForBraveReferralsService(PrefRegistrySimple* registry) {
-  registry->RegisterBooleanPref(kReferralCheckedForPromoCodeFile, false);
-  registry->RegisterBooleanPref(kReferralReportedInstall, false);
+  registry->RegisterBooleanPref(kReferralInitialization, false);
   registry->RegisterStringPref(kReferralPromoCode, std::string());
   registry->RegisterStringPref(kReferralDownloadID, std::string());
   registry->RegisterTimePref(kReferralTimestamp, base::Time());

@@ -57,7 +57,7 @@ class BraveStatsUpdater {
   void OnServerPingTimerFired();
 
   // Invoked when the specified referral preference changes.
-  void OnReferralCheckedForPromoCodeFileChanged();
+  void OnReferralInitialization();
 
   void StartServerPingStartupTimer();
   void SendServerPing();

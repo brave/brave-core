@@ -124,7 +124,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
                        StatsUpdaterStartupPingWithDefaultReferralCode) {
   // Ensure that checked for promo code file preference is false
-  ASSERT_FALSE(GetLocalState()->GetBoolean(kReferralCheckedForPromoCodeFile));
+  ASSERT_FALSE(GetLocalState()->GetBoolean(kReferralInitialization));
 
   // Start the referrals service, since the stats updater's startup
   // ping only occurs after the referrals service checks for the promo
@@ -145,7 +145,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   referrals_service.Stop();
 
   // Promo code file preference should now be true
-  EXPECT_TRUE(GetLocalState()->GetBoolean(kReferralCheckedForPromoCodeFile));
+  EXPECT_TRUE(GetLocalState()->GetBoolean(kReferralInitialization));
 
   // Verify that update url is valid
   const GURL update_url(GetUpdateURL());
@@ -166,7 +166,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
                        StatsUpdaterStartupPingWithReferralCode) {
   // Ensure that checked for promo code file preference is false
-  ASSERT_FALSE(GetLocalState()->GetBoolean(kReferralCheckedForPromoCodeFile));
+  ASSERT_FALSE(GetLocalState()->GetBoolean(kReferralInitialization));
 
   // Write the promo code file out to the user data directory
   const std::string referral_code = "FOO123";
@@ -192,7 +192,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   referrals_service.Stop();
 
   // Promo code file preference should now be true
-  EXPECT_TRUE(GetLocalState()->GetBoolean(kReferralCheckedForPromoCodeFile));
+  EXPECT_TRUE(GetLocalState()->GetBoolean(kReferralInitialization));
 
   // Verify that update url is valid
   const GURL update_url(GetUpdateURL());
