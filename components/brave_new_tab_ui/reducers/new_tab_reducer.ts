@@ -404,7 +404,8 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
     case types.DISCONNECT_BINANCE:
       state = { ...state }
       state.binanceState = {
-        ...storage.defaultState.binanceState
+        ...storage.defaultState.binanceState,
+        binanceSupported: true
       }
       break
 

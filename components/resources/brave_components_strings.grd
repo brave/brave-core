@@ -754,10 +754,35 @@
       <message name="IDS_BINANCE_WIDGET_INVALID_ENTRY" desc="">Invalid entry.</message>
       <message name="IDS_BINANCE_WIDGET_VALIDATING_CREDS" desc="">Validating your credentials...</message>
       <message name="IDS_BINANCE_WIDGET_DISCONNECT_TITLE" desc="">Are you sure you want to disconnect?</message>
-      <message name="IDS_BINANCE_WIDGET_DISCONNECT_TEXT" desc="">Disconnecting will erase your widget settings. You will need to generate a new api key to reconnect.</message>
+      <message name="IDS_BINANCE_WIDGET_DISCONNECT_TEXT" desc="">Disconnecting will erase your widget settings. You will need to re-authenticate to reconnect.</message>
       <message name="IDS_BINANCE_WIDGET_DISCONNECT_BUTTON" desc="">Disconnect</message>
       <message name="IDS_BINANCE_WIDGET_ACCOUNT_DISCONNECTED" desc="">Account Disconnected</message>
       <message name="IDS_BINANCE_WIDGET_CONFIGURE_BUTTON" desc="">Configure</message>
+
+      <message name="IDS_BINANCE_WIDGET_CONNECT" desc="">Connect</message>
+      <message name="IDS_BINANCE_WIDGET_CONVERTED" desc="">You converted</message>
+      <message name="IDS_BINANCE_WIDGET_CONTINUE" desc="">Continue</message>
+      <message name="IDS_BINANCE_WIDGET_UNABLE_TO_CONVERT" desc="">Unable to Convert</message>
+      <message name="IDS_BINANCE_WIDGET_CONVERSION_FAILED" desc="">The conversion could not be processed. Please try again.</message>
+      <message name="IDS_BINANCE_WIDGET_INSUFFICIENT_FUNDS" desc="">The amount you entered exceeds the amount you currently have available.</message>
+      <message name="IDS_BINANCE_WIDGET_RETRY" desc="">Retry</message>
+      <message name="IDS_BINANCE_WIDGET_DONE" desc="">Done</message>
+      <message name="IDS_BINANCE_WIDGET_COPY" desc="">Copy</message>
+      <message name="IDS_BINANCE_WIDGET_ADDRESS_UNAVAILABLE" desc="">Address Not Available</message>
+      <message name="IDS_BINANCE_WIDGET_DEPOSIT_ADDRESS" desc="">Deposit Address</message>
+      <message name="IDS_BINANCE_WIDGET_SEARCH" desc="">Search</message>
+
+      <message name="IDS_BINANCE_WIDGET_CONFIRM_CONVERSION" desc="">Confirm Conversion</message>
+      <message name="IDS_BINANCE_WIDGET_CONVERT" desc="">Convert</message>
+      <message name="IDS_BINANCE_WIDGET_RATE" desc="">Rate</message>
+      <message name="IDS_BINANCE_WIDGET_FEE" desc="">Fee</message>
+      <message name="IDS_BINANCE_WIDGET_WILL_RECEIVE" desc="">You will receive</message>
+      <message name="IDS_BINANCE_WIDGET_CONFIRM" desc="">Confirm</message>
+      <message name="IDS_BINANCE_WIDGET_CANCEL" desc="">Cancel</message>
+      <message name="IDS_BINANCE_WIDGET_AVAILABLE" desc="">Available</message>
+      <message name="IDS_BINANCE_WIDGET_CONVERT_INTENT" desc="">I want to convert...</message>
+      <message name="IDS_BINANCE_WIDGET_PREVIEW_CONVERT" desc="">Preview Conversion</message>
+      <message name="IDS_BINANCE_WIDGET_SUMMARY" desc="">Summary</message>
 
       <!-- WebUI brave sync resources -->
       <!-- WebUI brave sync resources: Shared Content -->

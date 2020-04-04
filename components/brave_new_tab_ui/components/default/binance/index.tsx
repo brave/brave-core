@@ -349,6 +349,7 @@ class Binance extends React.PureComponent<Props, State> {
       currentConvertTransAmount: '',
       currentConvertExpiryTime: 60
     })
+    clearInterval(this.convertTimer)
   }
 
   retryConvert = () => {
@@ -518,7 +519,8 @@ class Binance extends React.PureComponent<Props, State> {
     const { accountBalances } = this.props
 
     // As there are trading fees we shouldn't proceed even in equal amounts
-    if (parseFloat(currentConvertAmount) >= parseFloat(accountBalances[currentConvertFrom])) {
+    if (!accountBalances[currentConvertFrom] ||
+        parseFloat(currentConvertAmount) >= parseFloat(accountBalances[currentConvertFrom])) {
       this.setState({ insufficientFunds: true })
       return
     }
@@ -630,7 +632,7 @@ class Binance extends React.PureComponent<Props, State> {
             </ActionTray>
           : !userAuthed && !authInProgress && showContent && !isUS
             ? <ConnectPrompt onClick={this.connectBinance}>
-                {'Connect'}
+                {getLocale('binanceWidgetConnect')}
               </ConnectPrompt>
             : null
           }
@@ -681,10 +683,10 @@ class Binance extends React.PureComponent<Props, State> {
           <img src={partyIcon} />
         </StyledEmoji>
         <InvalidTitle>
-          {`You converted ${currentConvertAmount} ${currentConvertFrom} to ${currentConvertTransAmount} ${currentConvertTo}!`}
+          {`${getLocale('binanceWidgetConverted')} ${currentConvertAmount} ${currentConvertFrom} to ${currentConvertTransAmount} ${currentConvertTo}!`}
         </InvalidTitle>
         <ConnectButton isSmall={true} onClick={this.finishConvert}>
-          {'Continue'}
+          {getLocale('binanceWidgetContinue')}
         </ConnectButton>
       </InvalidWrapper>
     )
@@ -694,13 +696,13 @@ class Binance extends React.PureComponent<Props, State> {
     return (
       <InvalidWrapper>
         <InvalidTitle>
-          {'Unable to Convert'}
+          {getLocale('binanceWidgetUnableToConvert')}
         </InvalidTitle>
         <InvalidCopy>
-          {'The amount you entered exceeds the amount you currently have available'}
+          {getLocale('binanceWidgetInsufficientFunds')}
         </InvalidCopy>
         <GenButton onClick={this.retryConvert}>
-          {'Retry'}
+          {getLocale('binanceWidgetRetry')}
         </GenButton>
       </InvalidWrapper>
     )
@@ -710,13 +712,13 @@ class Binance extends React.PureComponent<Props, State> {
     return (
       <InvalidWrapper>
         <InvalidTitle>
-          {'Unable to Convert'}
+          {getLocale('binanceWidgetUnableToConvert')}
         </InvalidTitle>
         <InvalidCopy>
-          {'The conversion could not be processed. Please try again.'}
+          {getLocale('binanceWidgetConversionFailed')}
         </InvalidCopy>
         <GenButton onClick={this.retryConvert}>
-          {'Retry'}
+          {getLocale('binanceWidgetRetry')}
         </GenButton>
       </InvalidWrapper>
     )
@@ -730,7 +732,7 @@ class Binance extends React.PureComponent<Props, State> {
       <InvalidWrapper>
         <QRImage src={imageSrc} />
         <GenButton onClick={this.cancelQR}>
-          {'Done'}
+          {getLocale('binanceWidgetDone')}
         </GenButton>
       </InvalidWrapper>
     )
@@ -748,7 +750,7 @@ class Binance extends React.PureComponent<Props, State> {
     const { currentDepositAsset } = this.state
     const { assetDepositInfo } = this.props
     const addressInfo = assetDepositInfo[currentDepositAsset]
-    const address = addressInfo && addressInfo.address || 'Address Not Available'
+    const address = addressInfo && addressInfo.address || getLocale('binanceWidgetAddressUnavailable')
     const cleanName = this.currencyNames[currentDepositAsset]
     const cleanNameDisplay = cleanName ? `(${cleanName})` : ''
 
@@ -777,14 +779,14 @@ class Binance extends React.PureComponent<Props, State> {
           <MemoArea>
             <MemoInfo>
               <DetailLabel>
-                {`${currentDepositAsset} Deposit Address`}
+                {`${currentDepositAsset} ${getLocale('binanceWidgetDepositAddress')}`}
               </DetailLabel>
               <DetailInfo>
                 {`${address}`}
               </DetailInfo>
             </MemoInfo>
             <CopyButton onClick={this.copyToClipboard.bind(this, address)}>
-              {'Copy'}
+              {getLocale('binanceWidgetCopy')}
             </CopyButton>
           </MemoArea>
         </DetailArea>
@@ -810,7 +812,7 @@ class Binance extends React.PureComponent<Props, State> {
           </ListIcon>
           <SearchInput
             type={'text'}
-            placeholder={'Search'}
+            placeholder={getLocale('binanceWidgetSearch')}
             onChange={this.setCurrentDepositSearch}
           />
         </ListItem>
@@ -920,32 +922,32 @@ class Binance extends React.PureComponent<Props, State> {
     return (
       <InvalidWrapper>
         <InvalidTitle>
-          {'Confirm Conversion'}
+          {getLocale('binanceWidgetConfirmConversion')}
         </InvalidTitle>
         <ConvertInfoWrapper>
           <ConvertInfoItem>
-            <ConvertLabel>{'Convert'}</ConvertLabel>
+            <ConvertLabel>{getLocale('binanceWidgetConvert')}</ConvertLabel>
             <ConvertValue>{`${displayConvertAmount} ${currentConvertFrom}`}</ConvertValue>
           </ConvertInfoItem>
           <ConvertInfoItem>
-            <ConvertLabel>{'Rate'}</ConvertLabel>
+            <ConvertLabel>{getLocale('binanceWidgetRate')}</ConvertLabel>
             <ConvertValue>{`1 ${currentConvertFrom} = X ${currentConvertTo}`}</ConvertValue>
           </ConvertInfoItem>
           <ConvertInfoItem>
-            <ConvertLabel>{'Fee'}</ConvertLabel>
+            <ConvertLabel>{getLocale('binanceWidgetFee')}</ConvertLabel>
             <ConvertValue>{`${displayConvertFee} BNB`}</ConvertValue>
           </ConvertInfoItem>
           <ConvertInfoItem isLast={true}>
-            <ConvertLabel>{'You will receive'}</ConvertLabel>
+            <ConvertLabel>{getLocale('binanceWidgetWillReceive')}</ConvertLabel>
             <ConvertValue>{`${displayReceiveAmount} ${currentConvertTo}`}</ConvertValue>
           </ConvertInfoItem>
         </ConvertInfoWrapper>
         <ActionsWrapper>
           <ConnectButton isSmall={true} onClick={this.processConvert}>
-            {`Confirm (${currentConvertExpiryTime}s)`}
+            {`${getLocale('binanceWidgetConfirm')} (${currentConvertExpiryTime}s)`}
           </ConnectButton>
           <DismissAction onClick={this.cancelConvert}>
-            {'Cancel'}
+            {getLocale('binanceWidgetCancel')}
           </DismissAction>
         </ActionsWrapper>
       </InvalidWrapper>
@@ -968,16 +970,16 @@ class Binance extends React.PureComponent<Props, State> {
     return (
       <>
         <Copy>
-          {'Convert'}
+          {getLocale('binanceWidgetConvert')}
         </Copy>
         <AvailableLabel>
-          {`Available ${convertFromAmount} ${currentConvertFrom}`}
+          {`${getLocale('binanceWidgetAvailable')} ${convertFromAmount} ${currentConvertFrom}`}
         </AvailableLabel>
         <BuyPromptWrapper>
           <FiatInputWrapper>
             <FiatInputField
               type={'text'}
-              placeholder={'I want to convert...'}
+              placeholder={getLocale('binanceWidgetConvertIntent')}
               value={currentConvertAmount}
               onChange={this.setCurrentConvertAmount}
             />
@@ -1058,10 +1060,10 @@ class Binance extends React.PureComponent<Props, State> {
         </BuyPromptWrapper>
         <ActionsWrapper>
           <ConvertButton onClick={this.shouldShowConvertPreview}>
-            {`Preview Conversion`}
+            {getLocale('binanceWidgetPreviewConvert')}
           </ConvertButton>
           <DismissAction onClick={this.setSelectedView.bind(this, 'deposit')}>
-            {'Cancel'}
+            {getLocale('binanceWidgetCancel')}
           </DismissAction>
         </ActionsWrapper>
       </>
@@ -1091,27 +1093,27 @@ class Binance extends React.PureComponent<Props, State> {
             isActive={selectedView === 'deposit'}
             onClick={this.setSelectedView.bind(this, 'deposit')}
           >
-            {'Deposit'}
+            {getLocale('binanceWidgetDepositLabel')}
           </NavigationItem>
           <NavigationItem
             isActive={selectedView === 'convert'}
             onClick={this.setSelectedView.bind(this, 'convert')}
           >
-            {'Convert'}
+            {getLocale('binanceWidgetConvert')}
           </NavigationItem>
           <NavigationItem
             isSummary={true}
             isActive={selectedView === 'summary'}
             onClick={this.setSelectedView.bind(this, 'summary')}
           >
-            {'Summary'}
+            {getLocale('binanceWidgetSummary')}
           </NavigationItem>
           <NavigationItem
             isBuy={true}
             isActive={selectedView === 'buy'}
             onClick={this.setSelectedView.bind(this, 'buy')}
           >
-            {'Buy'}
+            {getLocale('binanceWidgetBuy')}
           </NavigationItem>
         </NavigationBar>
         <SelectedView>

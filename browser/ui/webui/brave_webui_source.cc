@@ -255,7 +255,30 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "binanceWidgetDisconnectButton" , IDS_BINANCE_WIDGET_DISCONNECT_BUTTON }, // NOLINT
         { "binanceWidgetCancelText" , IDS_BRAVE_UI_CANCEL },
         { "binanceWidgetAccountDisconnected" , IDS_BINANCE_WIDGET_ACCOUNT_DISCONNECTED }, // NOLINT
-        { "binanceWidgetConfigureButton" , IDS_BINANCE_WIDGET_CONFIGURE_BUTTON }          // NOLINT
+        { "binanceWidgetConfigureButton" , IDS_BINANCE_WIDGET_CONFIGURE_BUTTON },         // NOLINT
+        { "binanceWidgetConnect", IDS_BINANCE_WIDGET_CONNECT },
+        { "binanceWidgetConverted", IDS_BINANCE_WIDGET_CONVERTED },
+        { "binanceWidgetContinue", IDS_BINANCE_WIDGET_CONTINUE },
+        { "binanceWidgetUnableToConvert", IDS_BINANCE_WIDGET_UNABLE_TO_CONVERT },         // NOLINT
+        { "binanceWidgetRetry", IDS_BINANCE_WIDGET_RETRY },
+        { "binanceWidgetInsufficientFunds", IDS_BINANCE_WIDGET_INSUFFICIENT_FUNDS },      // NOLINT
+        { "binanceWidgetConversionFailed", IDS_BINANCE_WIDGET_CONVERSION_FAILED },        // NOLINT
+        { "binanceWidgetDone", IDS_BINANCE_WIDGET_DONE },
+        { "binanceWidgetCopy", IDS_BINANCE_WIDGET_COPY },
+        { "binanceWidgetSearch", IDS_BINANCE_WIDGET_SEARCH },
+        { "binanceWidgetAddressUnavailable", IDS_BINANCE_WIDGET_ADDRESS_UNAVAILABLE },    // NOLINT
+        { "binanceWidgetDepositAddress", IDS_BINANCE_WIDGET_DEPOSIT_ADDRESS },
+        { "binanceWidgetConfirmConversion", IDS_BINANCE_WIDGET_CONFIRM_CONVERSION },      // NOLINT
+        { "binanceWidgetConvert", IDS_BINANCE_WIDGET_CONVERT },
+        { "binanceWidgetRate", IDS_BINANCE_WIDGET_RATE },
+        { "binanceWidgetFee", IDS_BINANCE_WIDGET_FEE },
+        { "binanceWidgetWillReceive", IDS_BINANCE_WIDGET_WILL_RECEIVE },
+        { "binanceWidgetConfirm", IDS_BINANCE_WIDGET_CONFIRM },
+        { "binanceWidgetCancel", IDS_BINANCE_WIDGET_CANCEL },
+        { "binanceWidgetAvailable" , IDS_BINANCE_WIDGET_AVAILABLE },
+        { "binanceWidgetConvertIntent", IDS_BINANCE_WIDGET_CONVERT_INTENT },
+        { "binanceWidgetPreviewConvert", IDS_BINANCE_WIDGET_PREVIEW_CONVERT },
+        { "binanceWidgetSummary", IDS_BINANCE_WIDGET_SUMMARY }
       }
     }, {
       std::string("welcome"), {
