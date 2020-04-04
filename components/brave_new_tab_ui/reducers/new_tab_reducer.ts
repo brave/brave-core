@@ -500,6 +500,19 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       state.binanceState.assetDepoitQRCodeSrcs[asset] = imageSrc
       break
 
+    case types.ON_CONVERTABLE_ASSETS:
+      const { convertAsset, assets } = payload
+      if (!convertAsset || !assets) {
+        break
+      }
+
+      state = { ...state }
+      if (!state.binanceState.convertAssets) {
+        state.binanceState.convertAssets = {}
+      }
+      state.binanceState.convertAssets[convertAsset] = assets
+      break
+
     default:
       break
   }

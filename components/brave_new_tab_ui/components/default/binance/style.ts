@@ -580,7 +580,7 @@ export const ConvertInfoWrapper = styled<StyleProps, 'div'>('div')`
 
 export const ConvertInfoItem = styled<StyleProps, 'div'>('div')`
   margin: 5px 0;
-  overflow-y: auto;
+  overflow-y: hidden;
   margin-top: ${p => p.isLast ? '15' : '5'}px;
 `
 
@@ -655,4 +655,8 @@ export const BlurIcon = styled<{}, 'div'>('div')`
   margin-top: 25%;
   cursor: pointer;
   color: rgb(70, 70, 70);
+`
+
+export const DropdownIcon = styled<StyleProps, 'span'>('span')`
+  margin-right: 10px;
 `

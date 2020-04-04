@@ -364,6 +364,10 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.onDepositQRForAsset(asset, src)
   }
 
+  setConvertableAssets = (asset: string, assets: string[]) => {
+    this.props.actions.onConvertableAssets(asset, assets)
+  }
+
   getCryptoContent () {
     const { currentStackWidget } = this.props.newTabData
 
@@ -481,6 +485,7 @@ class NewTabPage extends React.Component<Props, State> {
         onAssetBTCVolume={this.setAssetBTCVolume}
         onAssetDepositInfo={this.setAssetDepositInfo}
         onAssetDepositQRCodeSrc={this.setAssetDepositQRCodeSrc}
+        onSetConvertableAssets={this.setConvertableAssets}
       />
     )
   }

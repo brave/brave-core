@@ -163,3 +163,8 @@ export const onDepositQRForAsset = (asset: string, imageSrc: string) => action(t
   asset,
   imageSrc
 })
+
+export const onConvertableAssets = (convertAsset: string, assets: string[]) => action(types.ON_CONVERTABLE_ASSETS, {
+  convertAsset,
+  assets
+})
