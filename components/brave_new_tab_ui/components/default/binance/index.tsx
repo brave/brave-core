@@ -63,12 +63,12 @@ import {
   ConvertValue,
   ConvertLabel,
   AvailableLabel,
-  BTCValueLabel,
-  OtherValueLabel,
   NavigationBar,
   NavigationItem,
   SelectedView,
-  TickerLabel
+  TickerLabel,
+  ConvertButton,
+  AssetIcon
 } from './style'
 import {
   DisconnectIcon,
@@ -81,13 +81,8 @@ import BinanceLogo from './assets/binance-logo'
 import { CaratLeftIcon, CaratDownIcon } from 'brave-ui/components/icons'
 import { getLocale } from '../../../../common/locale'
 import searchIcon from './assets/search-icon.png'
-import bchIcon from './assets/bch.png'
-import bnbIcon from './assets/bnb.png'
-import btcIcon from './assets/btc.png'
-import busdIcon from './assets/busd.png'
-import ethIcon from './assets/eth.png'
-import xrpIcon from './assets/xrp.png'
 import partyIcon from './assets/party.png'
+import qrIcon from './assets/qr.png'
 import { getUSDPrice } from '../../../binance-utils'
 
 interface State {
@@ -154,6 +149,7 @@ class Binance extends React.PureComponent<Props, State> {
   private usCurrencies: string[]
   private comCurrencies: string[]
   private currencyNames: Record<string, string>
+  private cryptoColors: Record<string, string>
 
   constructor (props: Props) {
     super(props)
@@ -175,6 +171,7 @@ class Binance extends React.PureComponent<Props, State> {
       convertSuccess: false,
       isBuyView: true
     }
+    this.cryptoColors = currencyData.cryptoColors
     this.fiatList = currencyData.fiatList
     this.usCurrencies = currencyData.usCurrencies
     this.comCurrencies = currencyData.comCurrencies
@@ -234,33 +231,35 @@ class Binance extends React.PureComponent<Props, State> {
 
   fetchBalance = () => {
     chrome.binance.getAccountBalances((balances: Record<string, string>, success: boolean) => {
-      if (success) {
-        chrome.binance.getTickerPrice('BTCUSDT', (price: string) => {
-          this.props.onBTCUSDPrice(price)
-        })
-        chrome.binance.getTickerVolume('BTCUSDT', (volume: string) => {
-          this.props.onBTCUSDVolume(volume)
-        })
+      if (!success) {
+        return
+      }
 
-        for (let ticker in balances) {
-          if (ticker !== 'BTC') {
-            chrome.binance.getTickerVolume(`${ticker}BTC`, (volume: string) => {
-              this.props.onAssetBTCVolume(ticker, volume)
-            })
-            chrome.binance.getTickerPrice(`${ticker}BTC`, (price: string) => {
-              this.props.onAssetBTCPrice(ticker, price)
-            })
-            chrome.binance.getTickerPrice(`${ticker}USDT`, (price: string) => {
-              this.props.onAssetUSDPrice(ticker, price)
-            })
-          }
-          chrome.binance.getDepositInfo(ticker, (address: string, url: string) => {
-            this.props.onAssetDepositInfo(ticker, address, url)
+      chrome.binance.getTickerPrice('BTCUSDT', (price: string) => {
+        this.props.onBTCUSDPrice(price)
+      })
+      chrome.binance.getTickerVolume('BTCUSDT', (volume: string) => {
+        this.props.onBTCUSDVolume(volume)
+      })
+
+      for (let ticker in balances) {
+        if (ticker !== 'BTC') {
+          chrome.binance.getTickerVolume(`${ticker}BTC`, (volume: string) => {
+            this.props.onAssetBTCVolume(ticker, volume)
+          })
+          chrome.binance.getTickerPrice(`${ticker}BTC`, (price: string) => {
+            this.props.onAssetBTCPrice(ticker, price)
+          })
+          chrome.binance.getTickerPrice(`${ticker}USDT`, (price: string) => {
+            this.props.onAssetUSDPrice(ticker, price)
           })
         }
-
-        this.props.onBinanceAccountBalances(balances)
+        chrome.binance.getDepositInfo(ticker, (address: string, url: string) => {
+          this.props.onAssetDepositInfo(ticker, address, url)
+        })
       }
+
+      this.props.onBinanceAccountBalances(balances)
     })
   }
 
@@ -339,25 +338,6 @@ class Binance extends React.PureComponent<Props, State> {
       currentConvertTo: asset,
       currenciesShowing: false
     })
-  }
-
-  getAssetIcon (asset: string) {
-    switch (asset) {
-      case 'BTC':
-        return btcIcon
-      case 'ETH':
-        return ethIcon
-      case 'BCH':
-        return bchIcon
-      case 'BNB':
-        return bnbIcon
-      case 'BUSD':
-        return busdIcon
-      case 'XRP':
-        return xrpIcon
-      default:
-        return null
-    }
   }
 
   setIsBuyView (isBuyView: boolean) {
@@ -472,6 +452,18 @@ class Binance extends React.PureComponent<Props, State> {
     })
   }
 
+  renderIconAsset = (key: string, isDetail: boolean = false) => {
+    const iconColor = this.cryptoColors[key] || '#fff'
+
+    return (
+      <AssetIcon
+        isDetail={isDetail}
+        style={{ color: iconColor }}
+        className={`crypto-icon icon-${key}`}
+      />
+    )
+  }
+
   renderTitle () {
     const { selectedView } = this.state
     const { showContent, userAuthed, authInProgress } = this.props
@@ -488,7 +480,7 @@ class Binance extends React.PureComponent<Props, State> {
           </StyledTitleText>
         </StyledTitle>
         {
-          userAuthed && selectedView !== 'buy' && selectedView !== 'convert'
+          userAuthed && selectedView !== 'buy' && selectedView !== 'convert' && showContent
           ? <ActionTray>
               <ActionItem onClick={this.disconnectBinance}>
                 <DisconnectIcon />
@@ -567,10 +559,21 @@ class Binance extends React.PureComponent<Props, State> {
     )
   }
 
+  formatCryptoBalance = (balance: string) => {
+    if (!balance) {
+      return '0.00'
+    }
+
+    return parseFloat(balance).toFixed(6)
+  }
+
   renderCurrentDepositAsset = () => {
     const { currentDepositAsset } = this.state
     const { assetDepositInfo } = this.props
-    const { address } = assetDepositInfo[currentDepositAsset]
+    const addressInfo = assetDepositInfo[currentDepositAsset]
+    const address = addressInfo && addressInfo.address || 'Address Not Available'
+    const cleanName = this.currencyNames[currentDepositAsset]
+    const cleanNameDisplay = cleanName ? `(${cleanName})` : ''
 
     return (
       <>
@@ -581,15 +584,17 @@ class Binance extends React.PureComponent<Props, State> {
                 onClick={this.setCurrentDepositAsset.bind(this, '')}
               />
             </BackArrow>
-            <ListImg src={this.getAssetIcon(currentDepositAsset)} />
+            {this.renderIconAsset(currentDepositAsset.toLowerCase(), true)}
           </DetailIcons>
           <AssetTicker>
             {currentDepositAsset}
           </AssetTicker>
           <AssetLabel>
-            {`(${this.currencyNames[currentDepositAsset]})`}
+            {cleanNameDisplay}
           </AssetLabel>
-          <AssetQR/>
+          <AssetQR>
+            <img style={{ width: '25px', marginRight: '5px' }} src={qrIcon} />
+          </AssetQR>
         </ListItem>
         <DetailArea>
           <MemoArea>
@@ -620,7 +625,9 @@ class Binance extends React.PureComponent<Props, State> {
     return (
       <>
         <ListItem>
-          <ListIcon/>
+          <ListIcon>
+            <ListImg src={searchIcon} />
+          </ListIcon>
           <SearchInput
             type={'text'}
             placeholder={'Search'}
@@ -632,6 +639,8 @@ class Binance extends React.PureComponent<Props, State> {
           const lowerAsset = asset.toLowerCase()
           const lowerName = cleanName.toLowerCase()
           const lowerSearch = currentDepositSearch.toLowerCase()
+          const currencyName = currencyNames[asset] || false
+          const nameString = currencyName ? `(${currencyName})` : ''
 
           if (lowerAsset.indexOf(lowerSearch) < 0 &&
               lowerName.indexOf(lowerSearch) < 0) {
@@ -644,10 +653,10 @@ class Binance extends React.PureComponent<Props, State> {
               onClick={this.setCurrentDepositAsset.bind(this, asset)}
             >
               <ListIcon>
-                <ListImg src={this.getAssetIcon(asset)} />
+                {this.renderIconAsset(asset.toLowerCase())}
               </ListIcon>
               <ListLabel>
-                {`${asset} (${currencyNames[asset]})`}
+                {`${asset} ${nameString}`}
               </ListLabel>
             </ListItem>
           )
@@ -657,7 +666,7 @@ class Binance extends React.PureComponent<Props, State> {
   }
 
   renderSummaryView = () => {
-    const { accountBalances, btcBalanceValue, hideBalance, userTLD, assetUSDValues } = this.props
+    const { accountBalances, btcBalanceValue, hideBalance, userTLD, assetUSDValues, btcPrice } = this.props
     const currencyList = userTLD === 'us' ? this.usCurrencies : this.comCurrencies
 
     return (
@@ -666,14 +675,14 @@ class Binance extends React.PureComponent<Props, State> {
           <ListInfo position={'left'}>
             <TradeLabel>
               <Balance isBTC={true} hideBalance={hideBalance}>
-                {accountBalances['BTC']} <TickerLabel>{getLocale('binanceWidgetBTCTickerText')}</TickerLabel>
+                {this.formatCryptoBalance(accountBalances['BTC'])} <TickerLabel>{getLocale('binanceWidgetBTCTickerText')}</TickerLabel>
               </Balance>
-              <Converted hideBalance={hideBalance}>
+              <Converted isBTC={true} hideBalance={hideBalance}>
                 {`= $${btcBalanceValue}`}
               </Converted>
             </TradeLabel>
           </ListInfo>
-          <ListInfo position={'right'}>
+          <ListInfo position={'right'} isBTC={true}>
             <TradeLabel>
               <BlurIcon onClick={this.onSetHideBalance}>
                 {
@@ -686,11 +695,15 @@ class Binance extends React.PureComponent<Props, State> {
           </ListInfo>
         </BTCSummary>
         {currencyList.map((asset: string) => {
+          const assetBalance = this.formatCryptoBalance(accountBalances[asset])
+          const priceProp = asset === 'BTC' ? btcPrice : assetUSDValues[asset]
+          const price = getUSDPrice(assetBalance, priceProp)
+
           return (
             <ListItem key={`list-${asset}`}>
               <ListInfo isAsset={true} position={'left'}>
                 <ListIcon>
-                  <ListImg src={this.getAssetIcon(asset)} />
+                  {this.renderIconAsset(asset.toLowerCase())}
                 </ListIcon>
                 <ListLabel>
                   {asset}
@@ -698,10 +711,10 @@ class Binance extends React.PureComponent<Props, State> {
               </ListInfo>
               <ListInfo position={'right'}>
                 <Balance isBTC={false} hideBalance={hideBalance}>
-                  {accountBalances[asset]}
+                  {assetBalance}
                 </Balance>
                 <Converted isBTC={false} hideBalance={hideBalance}>
-                  {`= $${assetUSDValues[asset]}`}
+                  {`= $${price}`}
                 </Converted>
               </ListInfo>
             </ListItem>
@@ -814,91 +827,13 @@ class Binance extends React.PureComponent<Props, State> {
           }
         </BuyPromptWrapper>
         <ActionsWrapper>
-          <ConnectButton onClick={this.showConvertPreview}>
+          <ConvertButton onClick={this.showConvertPreview}>
             {`Preview Conversion`}
-          </ConnectButton>
+          </ConvertButton>
           <DismissAction onClick={this.setSelectedView.bind(this, 'deposit')}>
             {'Cancel'}
           </DismissAction>
         </ActionsWrapper>
-      </>
-    )
-  }
-
-  renderTradeView = () => {
-    const { currencyNames } = this
-    const { currentTradeSearch } = this.state
-    const { accountBalances, btcPrice, btcVolume, btcBalanceValue, assetBTCValues, assetBTCVolumes } = this.props
-
-    return (
-      <>
-        <ListItem>
-          <ListIcon>
-            <ListImg src={searchIcon} />
-          </ListIcon>
-          <SearchInput
-            type={'text'}
-            placeholder={'Search trading pairs'}
-            onChange={this.setCurrentTradeSearch}
-          />
-        </ListItem>
-        <ListItem
-          onClick={this.setCurrentTradeAsset.bind(this, 'BTC / USDT')}
-        >
-          <ListInfo position={'left'}>
-            <TradeLabel>
-              <span style={{ color: '#fff' }}>{'BTC'}</span>
-              <span>{' / USDT'}</span>
-            </TradeLabel>
-            <TradeLabel>
-              {`Vol ${btcVolume}`}
-            </TradeLabel>
-          </ListInfo>
-          <ListInfo position={'right'}>
-            <BTCValueLabel>
-              {accountBalances['BTC']}
-            </BTCValueLabel>
-            <TradeLabel>
-              {`$${btcBalanceValue}`}
-            </TradeLabel>
-          </ListInfo>
-        </ListItem>
-        {Object.keys(assetBTCValues).map((pair: string) => {
-          const lowerPair = pair.toLowerCase()
-          const cleanName = currencyNames[pair].toLowerCase()
-          const lowerSearch = currentTradeSearch.toLowerCase()
-
-          if (lowerPair.indexOf(lowerSearch) < 0 &&
-              cleanName.indexOf(lowerSearch) < 0) {
-            return null
-          }
-
-          return (
-            <ListItem
-              key={`trade-${pair}`}
-              style={{ cursor: 'pointer' }}
-              onClick={this.setCurrentTradeAsset.bind(this, `${pair} / BTC`)}
-            >
-              <ListInfo position={'left'}>
-                <TradeLabel>
-                  <span style={{ color: '#fff' }}>{pair}</span>
-                  <span>{' / BTC'}</span>
-                </TradeLabel>
-                <TradeLabel>
-                  {`Vol ${assetBTCVolumes[pair]}`}
-                </TradeLabel>
-              </ListInfo>
-              <ListInfo position={'right'}>
-                <OtherValueLabel>
-                  {assetBTCValues[pair]}
-                </OtherValueLabel>
-                <TradeLabel>
-                  {`$${getUSDPrice(assetBTCValues[pair], btcPrice)}`}
-                </TradeLabel>
-              </ListInfo>
-            </ListItem>
-          )
-        })}
       </>
     )
   }
@@ -935,12 +870,14 @@ class Binance extends React.PureComponent<Props, State> {
             {'Convert'}
           </NavigationItem>
           <NavigationItem
+            isSummary={true}
             isActive={selectedView === 'summary'}
             onClick={this.setSelectedView.bind(this, 'summary')}
           >
             {'Summary'}
           </NavigationItem>
           <NavigationItem
+            isBuy={true}
             isActive={selectedView === 'buy'}
             onClick={this.setSelectedView.bind(this, 'buy')}
           >
@@ -960,7 +897,8 @@ class Binance extends React.PureComponent<Props, State> {
       userTLD,
       initialAsset,
       initialFiat,
-      initialAmount
+      initialAmount,
+      userAuthed
     } = this.props
     const {
       fiatShowing,
@@ -1067,6 +1005,13 @@ class Binance extends React.PureComponent<Props, State> {
           <ConnectButton onClick={onBuyCrypto.bind(this, initialAsset, initialAmount, initialFiat)}>
             {`${getLocale('binanceWidgetBuy')} ${initialAsset}`}
           </ConnectButton>
+          {
+            userAuthed
+            ? <DismissAction onClick={this.setSelectedView.bind(this, 'deposit')}>
+                {'Cancel'}
+              </DismissAction>
+            : null
+          }
         </ActionsWrapper>
       </>
     )

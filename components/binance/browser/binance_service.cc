@@ -369,7 +369,7 @@ bool BinanceService::GetTickerPrice(
       base::Unretained(this), std::move(callback));
   GURL url = GetURLWithPath(api_host, api_path_ticker_price);
   url = net::AppendQueryParameter(url, "symbol", symbol_pair);
-  return OAuthRequest(url, "POST", "", std::move(internal_callback));
+  return OAuthRequest(url, "GET", "", std::move(internal_callback));
 }
 
 bool BinanceService::GetTickerVolume(
@@ -379,7 +379,7 @@ bool BinanceService::GetTickerVolume(
       base::Unretained(this), std::move(callback));
   GURL url = GetURLWithPath(api_host, api_path_ticker_volume);
   url = net::AppendQueryParameter(url, "symbol", symbol_pair);
-  return OAuthRequest(url, "POST", "", std::move(internal_callback));
+  return OAuthRequest(url, "GET", "", std::move(internal_callback));
 }
 
 void BinanceService::OnGetTickerPrice(

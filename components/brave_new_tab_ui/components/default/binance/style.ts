@@ -17,6 +17,8 @@ interface StyleProps {
   isBTC?: boolean
   isAsset?: boolean
   isBuy?: boolean
+  isSummary?: boolean
+  isDetail?: boolean
   hideBalance?: boolean
   position?: 'left' | 'right'
 }
@@ -164,7 +166,7 @@ export const AssetItem = styled<StyleProps, 'div'>('div')`
 `
 
 export const ActionsWrapper = styled<{}, 'div'>('div')`
-  margin-bottom: 15px;
+  margin-bottom: 5px;
   text-align: center;
 `
 
@@ -184,6 +186,19 @@ export const ConnectButton = styled<StyleProps, 'a'>('a')`
   &:focus {
     outline: 0;
   }
+`
+
+export const ConvertButton = styled<{}, 'button'>('button')`
+  font-size: 13px;
+  font-weight: bold;
+  border-radius: 20px;
+  width: 100%;
+  background: #D9B227;
+  border: 0;
+  padding: 10px 65px;
+  cursor: pointer;
+  color: #000;
+  margin-bottom: -10px;
 `
 
 export const BinanceIcon = styled<{}, 'div'>('div')`
@@ -224,7 +239,8 @@ export const TLDSwitch = styled<StyleProps, 'div'>('div')`
 
 export const ActionTray = styled<{}, 'div'>('div')`
   float: right;
-  margin-top: 2px;
+  margin-top: -19px;
+  margin-right: 75px;
   display: inline-block;
 
   > *:nth-child(1) {
@@ -248,6 +264,7 @@ export const ConnectPrompt = styled<{}, 'div'>('div')`
 
 export const NavigationBar = styled<{}, 'div'>('div')`
   height: 30px;
+  margin-top: 10px;
 `
 
 export const NavigationItem = styled<StyleProps, 'div'>('div')`
@@ -258,30 +275,46 @@ export const NavigationItem = styled<StyleProps, 'div'>('div')`
   cursor: pointer;
   text-align: center;
   color: ${p => p.isActive ? '#F2C101' : '#9D7B01'};
+  margin-left: ${p => {
+    if (p.isBuy) {
+      return -6
+    } else if (p.isSummary) {
+      return 5
+    } else {
+      return 0
+    }
+  }}px;
 `
 
 export const SelectedView = styled<{}, 'div'>('div')`
   border: 1px solid rgb(70, 70, 70);
   overflow-y: scroll;
   height: 170px;
-  width: 235px;
+  width: 250px;
   margin-left: 4px;
 `
 
 export const ListItem = styled<{}, 'div'>('div')`
   border-bottom: 1px solid rgb(70, 70, 70);
   padding: 10px 5px;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 `
 
 export const ListIcon = styled<{}, 'div'>('div')`
+  margin-left: 5px;
+  width: 28px;
+  margin-top: 6px;
   float: left;
-  margin-top: -2px;
-  margin-right: 10px;
+`
+
+export const AssetIcon = styled<StyleProps, 'span'>('span')`
+  margin-top: ${p => p.isDetail ? 5 : 0}px;
 `
 
 export const ListImg = styled<{}, 'img'>('img')`
-  width: 28px;
+  width: 20px;
+  margin-top: -6px;
 `
 
 export const ListLabel = styled<{}, 'div'>('div')`
@@ -324,6 +357,7 @@ export const AssetLabel = styled<{}, 'span'>('span')`
   display: inline-block;
   font-weight: bold;
   font-size: 15px;
+  min-width: 80px;
 `
 
 export const AssetQR = styled<{}, 'div'>('div')`
@@ -376,14 +410,15 @@ export const BackArrow = styled<{}, 'div'>('div')`
 
 export const ListInfo = styled<StyleProps, 'div'>('div')`
   float: ${p => `${p.position}`};
-  min-width: 83px;
+  min-width: ${p => p.isBTC ? 70 : 83}px;
   font-size: ${p => p.isAsset ? '16px' : 'inherit'};
   margin-top: ${p => p.isAsset ? '4' : '0'}px;
 
   ${p => {
     if (p.position === 'right') {
+      const width = p.isBTC ? 33 : 40
       return `
-        width: 40%;
+        width: ${width}%;
         text-align: left;
       `
     } else {
@@ -583,7 +618,7 @@ export const DismissAction = styled<{}, 'span'>('span')`
   cursor: pointer;
   color: rgba(255, 255, 255, 0.7);
   font-size: 14px;
-  margin-top: 8px;
+  margin-top: 20px;
   font-weight: bold;
 `
 
@@ -594,7 +629,7 @@ export const Balance = styled<StyleProps, 'span'>('span')`
   margin: 5px 0;
   color: #fff;
   text-align: ${p => p.isBTC ? 'unset' : 'right'};
-  margin-right: ${p => p.isBTC ? '0' : '7'};
+  margin-right: ${p => p.isBTC ? '0' : '7px'};
   -webkit-filter: blur(${p => p.hideBalance ? 10 : 0}px);
 `
 
@@ -602,6 +637,7 @@ export const Converted = styled<StyleProps, 'span'>('span')`
   display: block;
   font-size: ${p => p.isBTC ? '16' : '14'}px;
   color: rgba(70, 70, 70);
+  margin-left: ${p => p.isBTC ? 0 : 10}px;
   -webkit-filter: blur(${p => p.hideBalance ? 10 : 0}px);
 `
 
