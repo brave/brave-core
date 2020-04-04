@@ -188,16 +188,6 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
-  toggleShowCrypto = () => {
-    const { currentStackWidget } = this.props.newTabData
-
-    if (currentStackWidget === 'rewards') {
-      this.toggleShowRewards()
-    } else {
-      this.toggleShowBinance()
-    }
-  }
-
   toggleShowRewards = () => {
     const {
       currentStackWidget,
