@@ -198,7 +198,7 @@ class Binance extends React.PureComponent<Props, State> {
     const { userTLDAutoSet } = this.props
 
     if (this.props.userAuthed) {
-      this.fetchBalance()
+      this.updateActions()
     }
 
     if (this.props.authInProgress) {
@@ -232,9 +232,21 @@ class Binance extends React.PureComponent<Props, State> {
       chrome.binance.getAccessToken(authCode, (success: boolean) => {
         if (success) {
           this.props.onValidAuthCode()
+          this.updateActions()
         }
       })
     }
+  }
+
+  updateActions = () => {
+    this.fetchBalance()
+    this.getConvertAssets()
+  }
+
+  getConvertAssets = () => {
+    chrome.binance.getConvertAssets((assets: any) => {
+      // this.props.onConvertAssets(assets)
+    })
   }
 
   fetchBalance = () => {
@@ -264,7 +276,7 @@ class Binance extends React.PureComponent<Props, State> {
         }
         chrome.binance.getDepositInfo(ticker, (address: string, url: string) => {
           this.props.onAssetDepositInfo(ticker, address, url)
-          generateQRData(url, ticker, this.props.onAssetDepositQRCodeSrc)
+          generateQRData(address, ticker, this.props.onAssetDepositQRCodeSrc)
         })
       }
 
@@ -604,7 +616,7 @@ class Binance extends React.PureComponent<Props, State> {
 
   formatCryptoBalance = (balance: string) => {
     if (!balance) {
-      return '0.00'
+      return '0.000000'
     }
 
     return parseFloat(balance).toFixed(6)
@@ -1047,7 +1059,7 @@ class Binance extends React.PureComponent<Props, State> {
             : null
           }
         </BuyPromptWrapper>
-        <ActionsWrapper>
+        <ActionsWrapper isFirstView={!userAuthed}>
           <ConnectButton onClick={onBuyCrypto.bind(this, initialAsset, initialAmount, initialFiat)}>
             {`${getLocale('binanceWidgetBuy')} ${initialAsset}`}
           </ConnectButton>

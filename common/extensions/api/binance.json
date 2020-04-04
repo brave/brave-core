@@ -249,7 +249,7 @@
               {
                 "name": "supportedAssets",
                 "type": "object",
-                "additionalProperties": { "type": "string" }
+                "additionalProperties": { "type": "any" }
               }
             ]
           }

@@ -20,6 +20,7 @@ interface StyleProps {
   isSummary?: boolean
   isDetail?: boolean
   hideBalance?: boolean
+  isFirstView?: boolean
   position?: 'left' | 'right'
 }
 
@@ -165,8 +166,8 @@ export const AssetItem = styled<StyleProps, 'div'>('div')`
   border-bottom: ${p => !p.isLast ? '1px solid rgb(70, 70, 70)' : ''};
 `
 
-export const ActionsWrapper = styled<{}, 'div'>('div')`
-  margin-bottom: 5px;
+export const ActionsWrapper = styled<StyleProps, 'div'>('div')`
+  margin-bottom: ${p => p.isFirstView ? 25 : 5}px;
   text-align: center;
 `
 
