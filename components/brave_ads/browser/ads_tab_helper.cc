@@ -59,16 +59,10 @@ AdsTabHelper::~AdsTabHelper() {
 
 void AdsTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
-  if (navigation_handle->IsInMainFrame() &&
-      navigation_handle->GetResponseHeaders()) {
-    if (navigation_handle->GetResponseHeaders()->HasHeaderValue(
-            "cache-control", "no-store")) {
-      run_distiller_ = false;
-    } else {
-      bool was_restored =
-          navigation_handle->GetRestoreType() != content::RestoreType::NONE;
-      run_distiller_ = !was_restored;
-    }
+  if (navigation_handle->IsInMainFrame()) {
+    bool was_restored =
+        navigation_handle->GetRestoreType() != content::RestoreType::NONE;
+    run_distiller_ = !was_restored;
   }
 }
 

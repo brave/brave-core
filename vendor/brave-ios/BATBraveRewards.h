@@ -94,8 +94,7 @@ NS_SWIFT_NAME(BraveRewards)
 /// Report that a page has loaded in the current browser tab, and the HTML is available for analysis
 ///
 /// @note Send nil for `adsInnerText` if the load happened due to tabs restoring
-///       after app launch or if response header for the page load contains
-///       "cache-control: no-store"
+///       after app launch
 - (void)reportLoadedPageWithURL:(NSURL *)url
                      faviconURL:(nullable NSURL *)faviconURL
                           tabId:(UInt32)tabId
