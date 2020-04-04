@@ -117,30 +117,6 @@ Result ClientState::FromJson(
     available = client["available"].GetBool();
   }
 
-  if (client.HasMember("lastSearchTime")) {
-    auto migrated_timestamp_in_seconds = Time::MigrateTimestampToDoubleT(
-        client["lastSearchTime"].GetUint64());
-    last_search_time = migrated_timestamp_in_seconds;
-  }
-
-  if (client.HasMember("lastShopTime")) {
-    auto migrated_timestamp_in_seconds = Time::MigrateTimestampToDoubleT(
-        client["lastShopTime"].GetUint64());
-    last_shop_time = migrated_timestamp_in_seconds;
-  }
-
-  if (client.HasMember("lastUserActivity")) {
-    auto migrated_timestamp_in_seconds = Time::MigrateTimestampToDoubleT(
-        client["lastUserActivity"].GetUint64());
-    last_user_activity = migrated_timestamp_in_seconds;
-  }
-
-  if (client.HasMember("lastUserIdleStopTime")) {
-    auto migrated_timestamp_in_seconds = Time::MigrateTimestampToDoubleT(
-        client["lastUserIdleStopTime"].GetUint64());
-    last_user_idle_stop_time = migrated_timestamp_in_seconds;
-  }
-
   if (client.HasMember("userModelLanguage")) {
     user_model_language = client["userModelLanguage"].GetString();
   }
@@ -149,10 +125,6 @@ Result ClientState::FromJson(
     for (const auto& language : client["userModelLanguages"].GetArray()) {
       user_model_languages.push_back(language.GetString());
     }
-  }
-
-  if (client.HasMember("lastPageClassification")) {
-    last_page_classification = client["lastPageClassification"].GetString();
   }
 
   if (client.HasMember("pageScoreHistory")) {
@@ -214,22 +186,6 @@ Result ClientState::FromJson(
     score = client["score"].GetDouble();
   }
 
-  if (client.HasMember("searchActivity")) {
-    search_activity = client["searchActivity"].GetBool();
-  }
-
-  if (client.HasMember("searchUrl")) {
-    search_url = client["searchUrl"].GetString();
-  }
-
-  if (client.HasMember("shopActivity")) {
-    shop_activity = client["shopActivity"].GetBool();
-  }
-
-  if (client.HasMember("shopUrl")) {
-    shop_url = client["shopUrl"].GetString();
-  }
-
   if (client.HasMember("version_code")) {
     version_code = client["version_code"].GetString();
   }
@@ -288,18 +244,6 @@ void SaveToJson(JsonWriter* writer, const ClientState& state) {
   writer->String("available");
   writer->Bool(state.available);
 
-  writer->String("lastSearchTime");
-  writer->Uint64(state.last_search_time);
-
-  writer->String("lastShopTime");
-  writer->Uint64(state.last_shop_time);
-
-  writer->String("lastUserActivity");
-  writer->Uint64(state.last_user_activity);
-
-  writer->String("lastUserIdleStopTime");
-  writer->Uint64(state.last_user_idle_stop_time);
-
   writer->String("userModelLanguage");
   writer->String(state.user_model_language.c_str());
 
@@ -309,9 +253,6 @@ void SaveToJson(JsonWriter* writer, const ClientState& state) {
     writer->String(language.c_str());
   }
   writer->EndArray();
-
-  writer->String("lastPageClassification");
-  writer->String(state.last_page_classification.c_str());
 
   writer->String("pageScoreHistory");
   writer->StartArray();
@@ -362,18 +303,6 @@ void SaveToJson(JsonWriter* writer, const ClientState& state) {
 
   writer->String("score");
   writer->Double(state.score);
-
-  writer->String("searchActivity");
-  writer->Bool(state.search_activity);
-
-  writer->String("searchUrl");
-  writer->String(state.search_url.c_str());
-
-  writer->String("shopActivity");
-  writer->Bool(state.shop_activity);
-
-  writer->String("shopUrl");
-  writer->String(state.shop_url.c_str());
 
   writer->String("version_code");
   writer->String(state.version_code.c_str());

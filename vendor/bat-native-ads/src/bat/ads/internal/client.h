@@ -87,28 +87,12 @@ class Client {
       const bool available);
 
   bool GetAvailable() const;
-  void FlagShoppingState(
-      const std::string& url,
-      const uint64_t score);
-  void UnflagShoppingState();
-  bool GetShoppingState();
-  void FlagSearchState(
-      const std::string& url,
-      const uint64_t score);
-  void UnflagSearchState(
-      const std::string& url);
-  bool GetSearchState();
-  void UpdateLastUserActivity();
-  uint64_t GetLastUserActivity();
-  void UpdateLastUserIdleStopTime();
   void SetUserModelLanguage(
       const std::string& language);
   std::string GetUserModelLanguage();
   void SetUserModelLanguages(
       const std::vector<std::string>& languages);
   std::vector<std::string> GetUserModelLanguages();
-  void SetLastPageClassification(
-      const std::string& classification);
   std::string GetLastPageClassification();
   void AppendPageScoreToPageScoreHistory(
       const std::vector<double>& page_score);

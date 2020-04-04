@@ -6,6 +6,7 @@
 #include "bat/ads/internal/reports.h"
 #include "bat/ads/internal/time.h"
 #include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/search_providers.h"
 #include "bat/ads/ad_notification_info.h"
 
 #include "rapidjson/document.h"
@@ -159,7 +160,7 @@ std::string Reports::GenerateLoadEventReport(
   writer.Int(info.tab_id);
 
   writer.String("tabType");
-  if (ads_->get_client()->GetSearchState()) {
+  if (SearchProviders::IsSearchEngine(info.tab_url)) {
     writer.String("search");
   } else {
     writer.String("click");

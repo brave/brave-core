@@ -453,70 +453,6 @@ bool Client::GetAvailable() const {
   return client_state_->available;
 }
 
-void Client::FlagShoppingState(
-    const std::string& url,
-    const uint64_t score) {
-  client_state_->shop_activity = true;
-  client_state_->shop_url = url;
-  client_state_->score = score;
-  client_state_->last_shop_time = Time::NowInSeconds();
-
-  SaveState();
-}
-
-void Client::UnflagShoppingState() {
-  client_state_->shop_activity = false;
-
-  SaveState();
-}
-
-bool Client::GetShoppingState() {
-  return client_state_->shop_activity;
-}
-
-void Client::FlagSearchState(
-    const std::string& url,
-    const uint64_t score) {
-  client_state_->search_activity = true;
-  client_state_->search_url = url;
-  client_state_->score = score;
-  client_state_->last_search_time = Time::NowInSeconds();
-
-  SaveState();
-}
-
-void Client::UnflagSearchState(
-    const std::string& url) {
-  if (client_state_->search_url == url) {
-    return;
-  }
-
-  client_state_->search_activity = false;
-  client_state_->last_search_time = Time::NowInSeconds();
-
-  SaveState();
-}
-
-bool Client::GetSearchState() {
-  return client_state_->search_activity;
-}
-
-void Client::UpdateLastUserActivity() {
-  client_state_->last_user_activity = Time::NowInSeconds();
-
-  SaveState();
-}
-
-uint64_t Client::GetLastUserActivity() {
-  return client_state_->last_user_activity;
-}
-
-void Client::UpdateLastUserIdleStopTime() {
-  client_state_->last_user_idle_stop_time = Time::NowInSeconds();
-
-  SaveState();
-}
-
 void Client::SetUserModelLanguage(
     const std::string& language) {
   client_state_->user_model_language = language;
@@ -537,17 +473,6 @@ void Client::SetUserModelLanguages(
 
 std::vector<std::string> Client::GetUserModelLanguages() {
   return client_state_->user_model_languages;
-}
-
-void Client::SetLastPageClassification(
-    const std::string& classification) {
-  client_state_->last_page_classification = classification;
-
-  SaveState();
-}
-
-std::string Client::GetLastPageClassification() {
-  return client_state_->last_page_classification;
 }
 
 void Client::AppendPageScoreToPageScoreHistory(
