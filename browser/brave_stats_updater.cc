@@ -5,7 +5,6 @@
 
 #include "brave/browser/brave_stats_updater.h"
 
-#include <string>
 #include <utility>
 
 #include "base/system/sys_info.h"
