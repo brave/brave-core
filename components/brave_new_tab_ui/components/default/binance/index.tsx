@@ -205,7 +205,7 @@ class Binance extends React.PureComponent<Props, State> {
     this.usCurrencies = currencyData.usCurrencies
     this.comCurrencies = currencyData.comCurrencies
     this.currencyNames = {
-      'BAT': '(Basic Attent...)',
+      'BAT': 'Basic Attent...',
       'BTC': 'Bitcoin',
       'ETH': 'Ethereum',
       'XRP': 'Ripple',
@@ -526,6 +526,11 @@ class Binance extends React.PureComponent<Props, State> {
     }
 
     chrome.binance.getConvertQuote(currentConvertFrom, currentConvertTo, currentConvertAmount, (quote: any) => {
+      if (!quote.id || !quote.price || !quote.fee || !quote.amount) {
+        this.setState({ convertFailed: true })
+        return
+      }
+
       this.setState({
         currentConvertId: quote.id,
         currentConvertPrice: quote.price,
@@ -533,6 +538,7 @@ class Binance extends React.PureComponent<Props, State> {
         currentConvertTransAmount: quote.amount,
         showConvertPreview: true
       })
+
       this.convertTimer = setInterval(() => {
         const { currentConvertExpiryTime } = this.state
 

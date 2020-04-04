@@ -141,27 +141,21 @@ bool BinanceJSONParser::GetQuoteInfoFromJSON(
   }
 
   std::string id;
-  double fee;
-  double price;
-  double amount;
+  std::string fee;
+  std::string price;
+  std::string amount;
 
-  data_dict->GetString("quoteId", &id);
-  data_dict->GetDouble("quotePrice", &price);
-  data_dict->GetDouble("totalFee", &fee);
-  data_dict->GetDouble("totalAmount", &amount);
-
-  if (id.empty() || !price || !fee || !amount) {
+  if (!data_dict->GetString("quoteId", &id) ||
+      !data_dict->GetString("quotePrice", &price) ||
+      !data_dict->GetString("totalFee", &fee) ||
+      !data_dict->GetString("totalAmount", &amount)) {
     return false;
   }
 
-  fee = static_cast<int>(fee);
-  price = static_cast<int>(price);
-  amount = static_cast<int>(amount);
-
   *quote_id = id;
-  *quote_price = std::to_string(price);
-  *total_fee = std::to_string(fee);
-  *total_amount = std::to_string(amount);
+  *quote_price = price;
+  *total_fee = fee;
+  *total_amount = amount;
   return true;
 }
 

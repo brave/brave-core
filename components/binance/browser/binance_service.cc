@@ -340,7 +340,7 @@ bool BinanceService::GetConvertQuote(
       base::Unretained(this), std::move(callback));
   GURL url = GetURLWithPath(oauth_host, oauth_path_convert_quote);
   url = net::AppendQueryParameter(url, "fromAsset", from);
-  url = net::AppendQueryParameter(url, "to", to);
+  url = net::AppendQueryParameter(url, "toAsset", to);
   url = net::AppendQueryParameter(url, "baseAsset", to);
   url = net::AppendQueryParameter(url, "amount", amount);
   url = net::AppendQueryParameter(url, "access_token", access_token_);
@@ -355,6 +355,7 @@ void BinanceService::OnGetConvertQuote(
   std::string quote_price;
   std::string total_fee;
   std::string total_amount;
+
   if (status >= 200 && status <= 299) {
     BinanceJSONParser::GetQuoteInfoFromJSON(
         body, &quote_id, &quote_price, &total_fee, &total_amount);
