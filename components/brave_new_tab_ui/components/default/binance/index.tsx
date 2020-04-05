@@ -983,7 +983,7 @@ class Binance extends React.PureComponent<Props, State> {
     } = this.state
     const convertFromAmount = this.formatCryptoBalance(accountBalances[currentConvertFrom])
     const compatibleCurrencies = convertAssets[currentConvertFrom]
-    const balanceAssets = Object.keys(accountBalances)
+    const convertAssetKeys = Object.keys(convertAssets)
 
     return (
       <>
@@ -1015,7 +1015,7 @@ class Binance extends React.PureComponent<Props, State> {
             {
               convertFromShowing
               ? <AssetItems isFiat={true}>
-                  {balanceAssets.map((asset: string, i: number) => {
+                  {convertAssetKeys.map((asset: string, i: number) => {
                     if (asset === currentConvertFrom) {
                       return null
                     }
@@ -1023,7 +1023,7 @@ class Binance extends React.PureComponent<Props, State> {
                     return (
                       <AssetItem
                         key={`choice-${asset}`}
-                        isLast={i === balanceAssets.length - 1}
+                        isLast={i === convertAssetKeys.length - 1}
                         onClick={this.setCurrentConvertFrom.bind(this, asset)}
                       >
                         <DropdownIcon>
