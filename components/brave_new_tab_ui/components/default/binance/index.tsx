@@ -198,7 +198,7 @@ class Binance extends React.PureComponent<Props, State> {
       currentQRAsset: '',
       convertFromShowing: false,
       convertToShowing: false,
-      currentConvertExpiryTime: 60
+      currentConvertExpiryTime: 30
     }
     this.cryptoColors = currencyData.cryptoColors
     this.fiatList = currencyData.fiatList
@@ -347,7 +347,7 @@ class Binance extends React.PureComponent<Props, State> {
       currentConvertPrice: '',
       currentConvertFee: '',
       currentConvertTransAmount: '',
-      currentConvertExpiryTime: 60
+      currentConvertExpiryTime: 30
     })
     clearInterval(this.convertTimer)
   }
@@ -362,7 +362,7 @@ class Binance extends React.PureComponent<Props, State> {
       currentConvertPrice: '',
       currentConvertFee: '',
       currentConvertTransAmount: '',
-      currentConvertExpiryTime: 60
+      currentConvertExpiryTime: 30
     })
   }
 
@@ -756,7 +756,7 @@ class Binance extends React.PureComponent<Props, State> {
     const { currentDepositAsset } = this.state
     const { assetDepositInfo } = this.props
     const addressInfo = assetDepositInfo[currentDepositAsset]
-    const address = addressInfo && addressInfo.address || getLocale('binanceWidgetAddressUnavailable')
+    const address = addressInfo && addressInfo.address
     const cleanName = this.currencyNames[currentDepositAsset]
     const cleanNameDisplay = cleanName ? `(${cleanName})` : ''
 
@@ -777,9 +777,13 @@ class Binance extends React.PureComponent<Props, State> {
           <AssetLabel>
             {cleanNameDisplay}
           </AssetLabel>
-          <AssetQR onClick={this.setQR.bind(this, currentDepositAsset)}>
-            <img style={{ width: '25px', marginRight: '5px' }} src={qrIcon} />
-          </AssetQR>
+          {
+            address
+            ? <AssetQR onClick={this.setQR.bind(this, currentDepositAsset)}>
+                <img style={{ width: '25px', marginRight: '5px' }} src={qrIcon} />
+              </AssetQR>
+            : null
+          }
         </ListItem>
         <DetailArea>
           <MemoArea>
@@ -788,12 +792,20 @@ class Binance extends React.PureComponent<Props, State> {
                 {`${currentDepositAsset} ${getLocale('binanceWidgetDepositAddress')}`}
               </DetailLabel>
               <DetailInfo>
-                {`${address}`}
+                {
+                  address
+                  ? address
+                  : getLocale('binanceWidgetAddressUnavailable')
+                }
               </DetailInfo>
             </MemoInfo>
-            <CopyButton onClick={this.copyToClipboard.bind(this, address)}>
-              {getLocale('binanceWidgetCopy')}
-            </CopyButton>
+            {
+              address
+              ? <CopyButton onClick={this.copyToClipboard.bind(this, address)}>
+                  {getLocale('binanceWidgetCopy')}
+                </CopyButton>
+              : null
+            }
           </MemoArea>
         </DetailArea>
       </>
