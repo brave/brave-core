@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.io.FileNotFoundException;
 import android.graphics.BitmapFactory;
 import android.support.design.widget.FloatingActionButton;
+import java.util.List;
 
 import org.chromium.base.TraceEvent;
 import org.chromium.chrome.R;
@@ -91,6 +92,7 @@ public class BraveNewTabPageView extends NewTabPageView {
         mProfile = Profile.getLastUsedProfile();
         mNewTabPageLayout = getNewTabPageLayout();
         mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
+        mNTPBackgroundImagesBridge.setNewTabPageListener(newTabPageListener);
     }
 
     @Override
@@ -375,6 +377,13 @@ public class BraveNewTabPageView extends NewTabPageView {
             if (sponsoredTab == null)
                 initilizeSponsoredTab();
             checkAndShowNTPImage();
+        }
+
+        @Override
+        public void updateTopSites(List<NTPBackgroundImagesBridge.TopSite> topSites) {
+            for (NTPBackgroundImagesBridge.TopSite topSite : topSites) {
+                Log.e("NTP", topSite.getName());
+            }
         }
     };
     private FetchWallpaperWorkerTask.WallpaperRetrievedCallback wallpaperRetrievedCallback= new FetchWallpaperWorkerTask.WallpaperRetrievedCallback() {

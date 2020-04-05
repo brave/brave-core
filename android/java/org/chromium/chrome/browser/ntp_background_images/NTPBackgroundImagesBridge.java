@@ -7,6 +7,8 @@ package org.chromium.chrome.browser.ntp_background_images;
 
 import android.graphics.Bitmap;
 import android.support.annotation.Nullable;
+import java.util.List;
+import java.util.ArrayList;
 
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.NativeMethods;
@@ -17,11 +19,14 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.ntp_background_images.NTPImage;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.ntp_background_images.NewTabPageListener;
 
 public class NTPBackgroundImagesBridge {
     private long mNativeNTPBackgroundImagesBridge;
     private final ObserverList<NTPBackgroundImageServiceObserver> mObservers =
             new ObserverList<NTPBackgroundImageServiceObserver>();
+    private static List<TopSite> mTopSites = new ArrayList<>();
+    private static NewTabPageListener mNewTabPageListener;
 
     public static class Wallpaper extends NTPImage {
         private String mImagePath;
@@ -65,6 +70,36 @@ public class NTPBackgroundImagesBridge {
 
         public Bitmap getLogoBitmap() {
             return null;
+        }
+    }
+
+    public static class TopSite {
+        private String mName;
+        private String mDestinationUrl;
+        private String mBackgroundColor;
+        private String mImagePath;
+
+        private TopSite(String name, String destinationUrl, String backgroundColor, String imagePath) {
+            mName = name;
+            mDestinationUrl = destinationUrl;
+            mBackgroundColor = backgroundColor;
+            mImagePath = imagePath;
+        }
+
+        public String getName() {
+            return mName;
+        }        
+
+        public String getDestinationUrl() {
+            return mDestinationUrl;
+        }
+
+        public String getBackgroundColor() {
+            return mBackgroundColor;
+        }
+
+        public String getImagePath() {
+            return mImagePath;
         }
     }
 
@@ -133,6 +168,20 @@ public class NTPBackgroundImagesBridge {
     public void getTopSites() {
         NTPBackgroundImagesBridgeJni.get().getTopSites(
                 mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this);
+    }
+
+    public void setNewTabPageListener(NewTabPageListener newTabPageListener) {
+        mNewTabPageListener = newTabPageListener;
+    }
+
+    @CalledByNative
+    public static void loadTopSitesData(String name, String destinationUrl, String backgroundColor, String imagePath) {
+        mTopSites.add(new TopSite(name, destinationUrl, backgroundColor, imagePath));
+    }
+
+    @CalledByNative
+    public static void topSitesLoaded() {
+        mNewTabPageListener.updateTopSites(mTopSites);
     }
 
     @CalledByNative
