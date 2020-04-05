@@ -5,7 +5,13 @@
 
 package org.chromium.chrome.browser.ntp_background_images;
 
+import java.util.List;
+
+import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
+
+
 public interface NewTabPageListener {
 	void updateInteractableFlag(boolean isFromBottomSheet);
 	void updateNTPImage();
+	void updateTopSites(List<NTPBackgroundImagesBridge.TopSite> topSites);
 }
