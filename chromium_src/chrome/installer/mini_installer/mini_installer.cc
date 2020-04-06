@@ -3,7 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#define BRAVE_REFERRAL                                                       \
+#if defined(BRAVE_CHROMIUM_BUILD) && BUILDFLAG(ENABLE_BRAVE_REFERRALS)
+#define BRAVE_RUN_SETUP                                                      \
   PathString installer_filename;                                             \
   wchar_t value[MAX_PATH] = {0, };                                           \
   const bool result =                                                        \
@@ -23,6 +24,9 @@
       }                                                                      \
     }                                                                        \
   }
+#else
+#define BRAVE_RUN_SETUP do {} while(0);
+#endif
 
 #if defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD)
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
@@ -31,7 +35,7 @@
 
 #include "../../../../../chrome/installer/mini_installer/mini_installer.cc"
 
-#undef BRAVE_REFERRAL
+#undef BRAVE_RUN_SETUP
 
 namespace mini_installer {
 

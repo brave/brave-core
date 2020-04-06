@@ -1,15 +1,12 @@
 diff --git a/chrome/installer/mini_installer/mini_installer.cc b/chrome/installer/mini_installer/mini_installer.cc
-index 73e6240800f3c72bd96c91971c53a19516e1b0f1..c653ddb49e6b8e6ead1b562cc3e6565977d8693e 100644
+index 73e6240800f3c72bd96c91971c53a19516e1b0f1..1bfc2d60e9e8c3076180a7df433ab725d77aaa6d 100644
 --- a/chrome/installer/mini_installer/mini_installer.cc
 +++ b/chrome/installer/mini_installer/mini_installer.cc
-@@ -528,6 +528,10 @@ ProcessExitResult RunSetup(const Configuration& configuration,
+@@ -528,6 +528,7 @@ ProcessExitResult RunSetup(const Configuration& configuration,
    // on to setup.exe
    AppendCommandLineFlags(configuration.command_line(), &cmd_line);
  
-+#if defined(BRAVE_CHROMIUM_BUILD) && BUILDFLAG(ENABLE_BRAVE_REFERRALS)
-+  BRAVE_REFERRAL
-+#endif
-+
++  BRAVE_RUN_SETUP
    return RunProcessAndWait(setup_exe.get(), cmd_line.get(),
                             RUN_SETUP_FAILED_FILE_NOT_FOUND,
                             RUN_SETUP_FAILED_PATH_NOT_FOUND,
