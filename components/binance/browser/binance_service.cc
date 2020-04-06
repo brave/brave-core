@@ -438,7 +438,7 @@ bool BinanceService::ConfirmConvert(const std::string& quote_id,
   GURL url = GetURLWithPath(oauth_host, oauth_path_convert_confirm);
   url = net::AppendQueryParameter(url, "quoteId", quote_id);
   url = net::AppendQueryParameter(url, "access_token", access_token_);
-  return OAuthRequest(url, "POST", url.query(), std::move(internal_callback));
+  return OAuthRequest(url, "POST", "", std::move(internal_callback));
 }
 
 void BinanceService::OnConfirmConvert(
