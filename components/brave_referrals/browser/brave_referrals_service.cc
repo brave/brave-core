@@ -154,8 +154,12 @@ void BraveReferralsService::Start() {
   // retrying if necessary.
   bool has_initialized =
       pref_service_->GetBoolean(kReferralInitialization);
+  // TODO(keur): This can be removed eventually. This prevents existing
+  // users without download_ids from initializing.
+  bool checked_for_promo_code_file =
+      pref_service_->GetBoolean(kReferralCheckedForPromoCodeFile);
   std::string download_id = pref_service_->GetString(kReferralDownloadID);
-  if (!has_initialized && download_id.empty())
+  if (!checked_for_promo_code_file && !has_initialized && download_id.empty())
     task_runner_->PostTaskAndReply(
         FROM_HERE,
         base::Bind(&BraveReferralsService::ReadPromoCode,
@@ -173,7 +177,7 @@ void BraveReferralsService::Stop() {
   initialized_ = false;
 }
 
-void BraveReferralsService::SetReferralInitializedCallback(
+void BraveReferralsService::SetReferralInitializedCallbackForTest(
     ReferralInitializedCallback referral_initialized_callback) {
   referral_initialized_callback_ = std::move(referral_initialized_callback);
 }
@@ -702,6 +706,7 @@ std::unique_ptr<BraveReferralsService> BraveReferralsServiceFactory(
 }
 
 void RegisterPrefsForBraveReferralsService(PrefRegistrySimple* registry) {
+  registry->RegisterBooleanPref(kReferralCheckedForPromoCodeFile, false);
   registry->RegisterBooleanPref(kReferralInitialization, false);
   registry->RegisterStringPref(kReferralPromoCode, std::string());
   registry->RegisterStringPref(kReferralDownloadID, std::string());

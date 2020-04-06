@@ -28,7 +28,7 @@ TEST_F(BraveMiniInstallerTest, HasStandardReferralCode) {
   EXPECT_STREQ(referral_code.get(), L"FOO123");
 }
 
-TEST_F(BraveMiniInstallerTest, HasStandardReferralCode) {
+TEST_F(BraveMiniInstallerTest, HasStandardReferralCodeWithLowercase) {
   ReferralCodeString referral_code;
   EXPECT_TRUE(ParseReferralCode(L"BraveBrowserSetup-foo123.exe",
                           referral_code));

@@ -39,7 +39,7 @@ class BraveReferralsService {
   using ReferralInitializedCallback =
       base::RepeatingCallback<void(const std::string& download_id)>;
 
-  void SetReferralInitializedCallback(
+  void SetReferralInitializedCallbackForTest(
                   ReferralInitializedCallback referral_initialized_callback);
 
   static bool GetMatchingReferralHeaders(

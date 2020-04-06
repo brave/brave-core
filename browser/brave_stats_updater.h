@@ -58,7 +58,7 @@ class BraveStatsUpdater {
   // Invoked when server ping timer fires.
   void OnServerPingTimerFired();
 
-  // Invoked when the specified referral preference changes.
+  // Invoked after browser has initialized with referral server.
   void OnReferralInitialization();
 
   void StartServerPingStartupTimer();

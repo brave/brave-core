@@ -39,6 +39,8 @@ const char kReferralAttemptTimestamp[] =
     "brave.referral.referral_attempt_timestamp";
 const char kReferralAttemptCount[] = "brave.referral.referral_attempt_count";
 const char kReferralHeaders[] = "brave.referral.headers";
+const char kReferralCheckedForPromoCodeFile[] =
+    "brave.referral.checked_for_promo_code_file";
 const char kReferralInitialization[] =
     "brave.referral.initialization";
 const char kReferralAndroidFirstRunTimestamp[] =

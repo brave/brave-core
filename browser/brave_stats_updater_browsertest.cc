@@ -129,7 +129,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   // ping only occurs after the referrals service checks for the promo
   // code file
   brave::BraveReferralsService referrals_service(GetLocalState());
-  referrals_service.SetReferralInitializedCallback(base::BindRepeating(
+  referrals_service.SetReferralInitializedCallbackForTest(base::BindRepeating(
       &BraveStatsUpdaterBrowserTest::OnReferralInitialized,
       base::Unretained(this)));
   referrals_service.Start();
@@ -162,7 +162,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   // ping only occurs after the referrals service checks for the promo
   // code file
   brave::BraveReferralsService referrals_service(GetLocalState());
-  referrals_service.SetReferralInitializedCallback(base::BindRepeating(
+  referrals_service.SetReferralInitializedCallbackForTest(base::BindRepeating(
       &BraveStatsUpdaterBrowserTest::OnReferralInitialized,
       base::Unretained(this)));
   referrals_service.Start();
@@ -213,7 +213,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   // ping only occurs after the referrals service checks for the promo
   // code file
   brave::BraveReferralsService referrals_service(GetLocalState());
-  referrals_service.SetReferralInitializedCallback(base::BindRepeating(
+  referrals_service.SetReferralInitializedCallbackForTest(base::BindRepeating(
       &BraveStatsUpdaterBrowserTest::OnReferralInitialized,
       base::Unretained(this)));
   referrals_service.Start();
