@@ -9,7 +9,8 @@ import {
   getGridSitesWhitelist,
   isGridSitePinned,
   isGridSiteBookmarked,
-  filterFromExcludedSites
+  filterFromExcludedSites,
+  filterDuplicatedSitesbyIndexOrUrl
 } from '../helpers/newTabUtils'
 
 export function gridSitesReducerSetFirstRenderDataFromLegacy (
@@ -224,7 +225,15 @@ export function gridSitesReducerAddSiteOrSites (
     ...sitesToAdd,
     ...state.gridSites
   ]
-  state = gridSitesReducerDataUpdated(state, currentGridSitesWithNewItems)
+
+  // We have reports of users having duplicated entries
+  // after updating to the new storage. This is a special
+  // case that breaks all top sites mechanism. Ensure all
+  // entries defined visually in the grid are not duplicated.
+  const updatedGridSites =
+    filterDuplicatedSitesbyIndexOrUrl(currentGridSitesWithNewItems)
+
+  state = gridSitesReducerDataUpdated(state, updatedGridSites)
   return state
 }
 
