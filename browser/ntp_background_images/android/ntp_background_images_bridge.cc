@@ -126,6 +126,8 @@ NTPBackgroundImagesBridge::CreateWallpaper() {
   auto focal_point_x = data.FindIntPath("wallpaperFocalPointX");
   auto focal_point_y = data.FindIntPath("wallpaperFocalPointY");
   auto* logo_destination_url = data.FindStringPath("logo.destinationUrl");
+  auto* theme_name = data.FindStringPath("themeName");
+  auto is_sponsored = data.FindBoolPath("isSponsored");
 
   return Java_NTPBackgroundImagesBridge_createWallpaper(
       env,
@@ -134,17 +136,13 @@ NTPBackgroundImagesBridge::CreateWallpaper() {
       focal_point_y ? *focal_point_y : 0,
       ConvertUTF8ToJavaString(env, *logo_image_path),
       ConvertUTF8ToJavaString(env, logo_destination_url ? *logo_destination_url
-                                                        : ""));
+                                                        : ""),
+      ConvertUTF8ToJavaString(env, *theme_name), 
+      is_sponsored ? *is_sponsored : 0);
 }
 
 void NTPBackgroundImagesBridge::GetTopSites(
   JNIEnv* env, const JavaParamRef<jobject>& obj) {
-
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
-
-  std::string url_prefix = view_counter_service_
-      ? view_counter_service_->GetURLPrefix()
-      : "";
 
   std::vector<ntp_background_images::TopSite> top_sites = view_counter_service_
       ? view_counter_service_->GetTopSitesVectorData()
@@ -156,7 +154,7 @@ void NTPBackgroundImagesBridge::GetTopSites(
       ConvertUTF8ToJavaString(env, top_site.name),
       ConvertUTF8ToJavaString(env, top_site.destination_url),
       ConvertUTF8ToJavaString(env, top_site.background_color),
-      ConvertUTF8ToJavaString(env, (url_prefix + top_site.image_path)));
+      ConvertUTF8ToJavaString(env, top_site.image_file.AsUTF8Unsafe()));
   }
 
   Java_NTPBackgroundImagesBridge_topSitesLoaded(env);  

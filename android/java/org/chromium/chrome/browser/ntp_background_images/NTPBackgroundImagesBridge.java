@@ -34,14 +34,19 @@ public class NTPBackgroundImagesBridge {
         private int mFocalPointY;
         private String mLogoPath;
         private String mLogoDestinationUrl;
+        private String mThemeName;
+        private boolean mIsSponsored;
 
         private Wallpaper(String imagePath, int focalPointX, int focalPointY,
-                          String logoPath, String logoDestinationUrl) {
+                          String logoPath, String logoDestinationUrl , String themeName, 
+                          boolean isSponsored) {
             mImagePath = imagePath;
             mFocalPointX = focalPointX;
             mFocalPointY = focalPointY;
             mLogoPath = logoPath;
             mLogoDestinationUrl = logoDestinationUrl;
+            mThemeName = themeName;
+            mIsSponsored = isSponsored;
         }
 
         public String getImagePath() {
@@ -64,12 +69,12 @@ public class NTPBackgroundImagesBridge {
             return mLogoDestinationUrl;
         }
 
-        public Bitmap getBitmap() {
-            return null;
+        public String getThemeName() {
+            return mThemeName;
         }
 
-        public Bitmap getLogoBitmap() {
-            return null;
+        public boolean isSponsored() {
+            return mIsSponsored;
         }
     }
 
@@ -187,9 +192,11 @@ public class NTPBackgroundImagesBridge {
     @CalledByNative
     public static Wallpaper createWallpaper(
             String imagePath, int focalPointX, int focalPointY,
-            String logoPath, String logoDestinationUrl) {
+            String logoPath, String logoDestinationUrl, 
+            String themeName, boolean isSponsored) {
         return new Wallpaper(imagePath, focalPointX, focalPointY,
-                             logoPath, logoDestinationUrl);
+                             logoPath, logoDestinationUrl, 
+                             themeName, isSponsored);
     }
 
     @CalledByNative
