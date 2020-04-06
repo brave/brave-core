@@ -9,6 +9,7 @@
 #include "base/android/jni_string.h"
 #include "brave/browser/android/preferences/brave_prefs.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_perf_predictor/browser/buildflags.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
@@ -20,6 +21,10 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
+#include "brave/components/brave_perf_predictor/common/pref_names.h"
+#endif
 
 using base::android::ConvertUTF8ToJavaString;
 using base::android::JavaParamRef;
@@ -132,11 +137,15 @@ jlong JNI_BravePrefServiceBridge_GetAdsBlockedCount(
   return profile->GetPrefs()->GetUint64(kAdsBlocked);
 }
 
-jlong JNI_BravePrefServiceBridge_GetHttpsUpgradesCount(
+jlong JNI_BravePrefServiceBridge_GetDataSaved(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile) {
+#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
   Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
-  return profile->GetPrefs()->GetUint64(kHttpsUpgrades);
+  return profile->GetPrefs()->GetUint64(
+      brave_perf_predictor::prefs::kBandwidthSavedBytes);
+#endif
+  return 0;
 }
 
 void JNI_BravePrefServiceBridge_SetOldTrackersBlockedCount(JNIEnv* env,

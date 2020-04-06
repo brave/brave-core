@@ -81,8 +81,8 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getAdsBlockedCount(profile);
     }
 
-    public long getHttpsUpgradesCount(Profile profile) {
-        return BravePrefServiceBridgeJni.get().getHttpsUpgradesCount(profile);
+    public long getDataSaved(Profile profile) {
+        return BravePrefServiceBridgeJni.get().getDataSaved(profile);
     }
 
     public String getSyncDeviceId() {
@@ -222,7 +222,7 @@ public class BravePrefServiceBridge {
 
         long getTrackersBlockedCount(Profile profile);
         long getAdsBlockedCount(Profile profile);
-        long getHttpsUpgradesCount(Profile profile);
+        long getDataSaved(Profile profile);
 
         // Used to pass total stat from upgrading old tabs based browser
         // to a new core based

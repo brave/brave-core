@@ -59,10 +59,10 @@ public class BraveNewTabPageView extends NewTabPageView {
     private static final int BOTTOM_TOOLBAR_HEIGHT = 56;
 
     private TextView mAdsBlockedCountTextView;
-    private TextView mHttpsUpgradesCountTextView;
+    private TextView mDataSavedValueTextView;
     private TextView mEstTimeSavedCountTextView;
     private TextView mAdsBlockedTextView;
-    private TextView mHttpsUpgradesTextView;
+    private TextView mDataSavedTextView;
     private TextView mEstTimeSavedTextView;
     private Profile mProfile;
 
@@ -135,11 +135,11 @@ public class BraveNewTabPageView extends NewTabPageView {
 
         ViewGroup braveStatsView = (ViewGroup) getNewTabPageLayout().findViewById(R.id.brave_stats);
         mAdsBlockedCountTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_ads_count);
-        mHttpsUpgradesCountTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_https_count);
+        mDataSavedValueTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_data_saved_value);
         mEstTimeSavedCountTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_time_count);
 
         mAdsBlockedTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_ads);
-        mHttpsUpgradesTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_https);
+        mDataSavedTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_data_saved_text);
         mEstTimeSavedTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_time);
     }
 
@@ -158,17 +158,17 @@ public class BraveNewTabPageView extends NewTabPageView {
         TraceEvent.begin(TAG + ".updateBraveStats()");
         long trackersBlockedCount = BravePrefServiceBridge.getInstance().getTrackersBlockedCount(mProfile);
         long adsBlockedCount = BravePrefServiceBridge.getInstance().getAdsBlockedCount(mProfile);
-        long httpsUpgradesCount = BravePrefServiceBridge.getInstance().getHttpsUpgradesCount(mProfile);
+        long dataSaved = BravePrefServiceBridge.getInstance().getDataSaved(mProfile);
         long estimatedMillisecondsSaved = (trackersBlockedCount + adsBlockedCount) * MILLISECONDS_PER_ITEM;
 
-        mAdsBlockedCountTextView.setText(getBraveStatsStringFormNumber(adsBlockedCount));
-        mHttpsUpgradesCountTextView.setText(getBraveStatsStringFormNumber(httpsUpgradesCount));
+        mAdsBlockedCountTextView.setText(getBraveStatsStringFormNumber(adsBlockedCount, false));
+        mDataSavedValueTextView.setText(getBraveStatsStringFormNumber(dataSaved, true));
         mEstTimeSavedCountTextView.setText(getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000));
 
         if(BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
             && sponsoredTab != null && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
             mAdsBlockedTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));
-            mHttpsUpgradesTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));
+            mDataSavedTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));
             mEstTimeSavedTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));
             mEstTimeSavedCountTextView.setTextColor(mNewTabPageLayout.getResources().getColor(android.R.color.white));
         }
@@ -179,36 +179,32 @@ public class BraveNewTabPageView extends NewTabPageView {
     /*
     * Gets string view of specific number for Brave stats
     */
-    private String getBraveStatsStringFormNumber(long number) {
+    private String getBraveStatsStringFormNumber(long number, boolean isBytes) {
         String result = "";
         String suffix = "";
-        if (number >= 1000 * 1000 * 1000) {
-            result = result + (number / (1000 * 1000 * 1000));
-            number = number % (1000 * 1000 * 1000);
-            result = result + "." + (number / (10 * 1000 * 1000));
-            suffix = "B";
-        }
-        else if (number >= (10 * 1000 * 1000) && number < (1000 * 1000 * 1000)) {
-            result = result + (number / (1000 * 1000));
-            suffix = "M";
-        }
-        else if (number >= (1000 * 1000) && number < (10 * 1000 * 1000)) {
-            result = result + (number / (1000 * 1000));
-            number = number % (1000 * 1000);
-            result = result + "." + (number / (100 * 1000));
-            suffix = "M";
-        }
-        else if (number >= (10 * 1000) && number < (1000 * 1000)) {
-            result = result + (number / 1000);
-            suffix = "K";
-        }
-        else if (number >= 1000 && number < (10* 1000)) {
-            result = result + (number / 1000);
-            number = number % 1000;
-            result = result + "." + (number / 100);
-            suffix = "K";
-        }
-        else {
+        long base = isBytes ? 1024L : 1000L;
+        if (number >= base * base * base) {
+            result = result + (number / (base * base * base));
+            number = number % (base * base * base);
+            result = result + "." + (number / (10L * base * base));
+            suffix = isBytes ? "Gb" : "B";
+        } else if (number >= (10L * base * base) && number < (base * base * base)) {
+            result = result + (number / (base * base));
+            suffix = isBytes ? "Mb" : "M";
+        } else if (number >= (base * base) && number < (10L * base * base)) {
+            result = result + (number / (base * base));
+            number = number % (base * base);
+            result = result + "." + (number / (100L * base));
+            suffix = isBytes ? "Mb" : "M";
+        } else if (number >= (10L * base) && number < (base * base)) {
+            result = result + (number / base);
+            suffix = isBytes ? "Kb" : "K";
+        } else if (number >= base && number < (10L * base)) {
+            result = result + (number / base);
+            number = number % base;
+            result = result + "." + (number / 100L);
+            suffix = isBytes ? "Kb" : "K";
+        } else {
             result = result + number;
         }
         result = result + suffix;
