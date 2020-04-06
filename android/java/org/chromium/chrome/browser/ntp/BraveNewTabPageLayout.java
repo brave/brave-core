@@ -9,8 +9,10 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import java.util.List;
 
 import org.chromium.chrome.R;
+import org.chromium.base.Log;
 import org.chromium.chrome.browser.ntp.NewTabPageLayout;
 import org.chromium.chrome.browser.suggestions.tile.SiteSection;
 import org.chromium.chrome.browser.explore_sites.ExploreSitesBridge;
@@ -21,6 +23,7 @@ import org.chromium.chrome.browser.ntp_background_images.SponsoredImageUtil;
 import org.chromium.chrome.browser.ntp_background_images.NTPUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 
 public class BraveNewTabPageLayout extends NewTabPageLayout {
     private ViewGroup mBraveStatsView;
@@ -79,6 +82,12 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             return 1;
         } else {
             return 2;
+        }
+    }
+
+    public void updateTopSites(List<NTPBackgroundImagesBridge.TopSite> topSites) {
+        for (NTPBackgroundImagesBridge.TopSite topSite : topSites) {
+            Log.e("NTP", topSite.getName());
         }
     }
 }
