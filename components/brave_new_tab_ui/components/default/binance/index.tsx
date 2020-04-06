@@ -602,6 +602,20 @@ class Binance extends React.PureComponent<Props, State> {
     }
   }
 
+  getCurrencyList = () => {
+    const { accountBalances, userTLD } = this.props
+    const balanceKeys = Object.keys(accountBalances)
+    const baseList = userTLD === 'us' ? this.usCurrencies : this.comCurrencies
+
+    balanceKeys.map((symbol: string) => {
+      if (!baseList.includes(symbol)) {
+        baseList.push(symbol)
+      }
+    })
+
+    return baseList
+  }
+
   renderIconAsset = (key: string, isDetail: boolean = false) => {
     const iconColor = this.cryptoColors[key] || '#fff'
 
@@ -814,9 +828,8 @@ class Binance extends React.PureComponent<Props, State> {
 
   renderDepositView = () => {
     const { currencyNames } = this
-    const { userTLD } = this.props
     const { currentDepositSearch, currentDepositAsset } = this.state
-    const currencyList = userTLD === 'us' ? this.usCurrencies : this.comCurrencies
+    const currencyList = this.getCurrencyList()
 
     if (currentDepositAsset) {
       return this.renderCurrentDepositAsset()
@@ -866,8 +879,8 @@ class Binance extends React.PureComponent<Props, State> {
   }
 
   renderSummaryView = () => {
-    const { accountBalances, btcBalanceValue, hideBalance, userTLD, assetUSDValues, btcPrice } = this.props
-    const currencyList = userTLD === 'us' ? this.usCurrencies : this.comCurrencies
+    const { accountBalances, btcBalanceValue, hideBalance, assetUSDValues, btcPrice } = this.props
+    const currencyList = this.getCurrencyList()
 
     return (
       <>
@@ -1155,7 +1168,7 @@ class Binance extends React.PureComponent<Props, State> {
       currenciesShowing
     } = this.state
     const isUS = userTLD === 'us'
-    const currencies = isUS ? this.usCurrencies : this.comCurrencies
+    const currencies = this.getCurrencyList()
 
     return (
       <>

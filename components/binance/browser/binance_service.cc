@@ -341,7 +341,7 @@ bool BinanceService::GetConvertQuote(
   GURL url = GetURLWithPath(oauth_host, oauth_path_convert_quote);
   url = net::AppendQueryParameter(url, "fromAsset", from);
   url = net::AppendQueryParameter(url, "toAsset", to);
-  url = net::AppendQueryParameter(url, "baseAsset", to);
+  url = net::AppendQueryParameter(url, "baseAsset", from);
   url = net::AppendQueryParameter(url, "amount", amount);
   url = net::AppendQueryParameter(url, "access_token", access_token_);
   return OAuthRequest(url, "POST", "", std::move(internal_callback));
