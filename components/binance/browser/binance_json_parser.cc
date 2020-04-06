@@ -289,11 +289,13 @@ bool BinanceJSONParser::GetDepositInfoFromJSON(
 //        "feeType": 1,
 //        "feeRate": 0.08000000,
 //        "fixFee": 13.00000000
-//    }
+//    },
+//    "success": true
 // }
 bool BinanceJSONParser::GetConfirmStatusFromJSON(
-    const std::string& json, std::string *success_status) {
-  if (!success_status) {
+    const std::string& json, std::string *error_message,
+    std::string *success_status) {
+  if (!error_message || !success_status) {
     return false;
   }
 
@@ -313,16 +315,16 @@ bool BinanceJSONParser::GetConfirmStatusFromJSON(
 
   const base::DictionaryValue* data_dict;
   if (!response_dict->GetDictionary("data", &data_dict)) {
-    return false;
+    std::string message;
+    if (!response_dict->GetString("message", &message)) {
+      return false;
+    }
+    *success_status = "false";
+    *error_message = message;
+    return true;
   }
 
-  std::string success;
-
-  if (!data_dict->GetString("status", &success)) {
-    return false;
-  }
-
-  *success_status = success;
+  *success_status = "true";
   return true;
 }
 

@@ -80,7 +80,8 @@ class BinanceService : public KeyedService {
                                                          bool success)>;
   bool GetDepositInfo(const std::string& symbol,
       GetDepositInfoCallback callback);
-  using ConfirmConvertCallback = base::OnceCallback<void(bool)>;
+  using ConfirmConvertCallback = base::OnceCallback<void(bool,
+                                                         const std::string&)>;
   bool ConfirmConvert(const std::string& quote_id,
       ConfirmConvertCallback callback);
   using GetConvertAssetsCallback = base::OnceCallback<

@@ -107,6 +107,7 @@ interface State {
   showConvertPreview: boolean
   convertSuccess: boolean
   convertFailed: boolean
+  convertError: string
   isBuyView: boolean
   currentQRAsset: string
   convertFromShowing: boolean
@@ -195,6 +196,7 @@ class Binance extends React.PureComponent<Props, State> {
       showConvertPreview: false,
       convertSuccess: false,
       convertFailed: false,
+      convertError: '',
       isBuyView: true,
       currentQRAsset: '',
       convertFromShowing: false,
@@ -370,6 +372,7 @@ class Binance extends React.PureComponent<Props, State> {
       showConvertPreview: false,
       convertSuccess: false,
       convertFailed: false,
+      convertError: '',
       currentConvertId: '',
       currentConvertPrice: '',
       currentConvertFee: '',
@@ -439,12 +442,15 @@ class Binance extends React.PureComponent<Props, State> {
 
   processConvert = () => {
     const { currentConvertId } = this.state
-    chrome.binance.confirmConvert(currentConvertId, (success: boolean) => {
+    chrome.binance.confirmConvert(currentConvertId, (success: boolean, message: string) => {
       if (success) {
         this.updateActions()
         this.setState({ convertSuccess: true })
       } else {
-        this.setState({ convertFailed: true })
+        this.setState({
+          convertFailed: true,
+          convertError: message
+        })
       }
     })
   }
@@ -763,13 +769,16 @@ class Binance extends React.PureComponent<Props, State> {
   }
 
   renderUnableToConvertView = () => {
+    const { convertError } = this.state
+    const errorMessage = convertError || getLocale('binanceWidgetConversionFailed')
+
     return (
       <InvalidWrapper>
         <InvalidTitle>
           {getLocale('binanceWidgetUnableToConvert')}
         </InvalidTitle>
         <InvalidCopy>
-          {getLocale('binanceWidgetConversionFailed')}
+          {errorMessage}
         </InvalidCopy>
         <GenButton onClick={this.retryConvert}>
           {getLocale('binanceWidgetRetry')}

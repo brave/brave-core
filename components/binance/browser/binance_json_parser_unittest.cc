@@ -132,21 +132,22 @@ TEST_F(BinanceJSONParserTest, GetQuoteInfoFromJSON) {
         "message": null,
         "data": {
           "quoteId": "b5481fb7f8314bb2baf55aa6d4fcf068",
-          "quotePrice": 1094.01086957,
-          "tradeFee": 8,
-          "railFee": 0,
-          "totalFee": 8,
-          "totalAmount": 100649,
-          "showPrice": 1094.01086957
+          "quotePrice": "1094.01086957",
+          "tradeFee": "8.000000",
+          "railFee": "0",
+          "totalFee": "8.000000",
+          "totalAmount": "100649.010000",
+          "showPrice": "1094.01086957"
         }
       })", &quote_id, &quote_price, &total_fee, &total_amount));
   ASSERT_EQ(quote_id, "b5481fb7f8314bb2baf55aa6d4fcf068");
-  ASSERT_EQ(quote_price, "1094.000000");
+  ASSERT_EQ(quote_price, "1094.01086957");
   ASSERT_EQ(total_fee, "8.000000");
-  ASSERT_EQ(total_amount, "100649.000000");
+  ASSERT_EQ(total_amount, "100649.010000");
 }
 
-TEST_F(BinanceJSONParserTest, GetConfirmStatusFromJSON) {
+TEST_F(BinanceJSONParserTest, GetConfirmStatusFromJSONSuccess) {
+  std::string error;
   std::string success;
   ASSERT_TRUE(BinanceJSONParser::GetConfirmStatusFromJSON(R"(
       {
@@ -154,7 +155,7 @@ TEST_F(BinanceJSONParserTest, GetConfirmStatusFromJSON) {
         "message": null,
         "data": {
             "quoteId": "b5481fb7f8314bb2baf55aa6d4fcf068",
-            "status": "FAIL",
+            "status": "WAIT_MARKET",
             "orderId": "ab0ab6cfd62240d79e10347fc5000bc4",
             "fromAsset": "BNB",
             "toAsset": "TRX",
@@ -165,9 +166,25 @@ TEST_F(BinanceJSONParserTest, GetConfirmStatusFromJSON) {
             "feeType": 1,
             "feeRate": 0.08000000,
             "fixFee": 13.00000000
-        }
-      })", &success));
-  ASSERT_EQ(success, "FAIL");
+        },
+        "success": true
+      })", &error, &success));
+  ASSERT_EQ(error, "");
+  ASSERT_EQ(success, "true");
+}
+
+TEST_F(BinanceJSONParserTest, GetConfirmStatusFromJSONFail) {
+  std::string error;
+  std::string success;
+  ASSERT_TRUE(BinanceJSONParser::GetConfirmStatusFromJSON(R"(
+      {
+        "code": "117041",
+        "message": "Quote expired. Please try again.",
+        "data": null,
+        "success": false
+      })", &error, &success));
+  ASSERT_EQ(error, "Quote expired. Please try again.");
+  ASSERT_EQ(success, "false");
 }
 
 }  // namespace

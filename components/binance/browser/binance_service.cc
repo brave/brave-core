@@ -445,14 +445,16 @@ void BinanceService::OnConfirmConvert(
     ConfirmConvertCallback callback,
     const int status, const std::string& body,
     const std::map<std::string, std::string>& headers) {
-  std::string success_status;
+  std::string error_message = "";
+  std::string success_status = "";
 
   if (status >= 200 && status <= 299) {
-    BinanceJSONParser::GetConfirmStatusFromJSON(body, &success_status);
+    BinanceJSONParser::GetConfirmStatusFromJSON(
+        body, &error_message, &success_status);
   }
 
-  bool success = success_status != "FAIL";
-  std::move(callback).Run(success);
+  bool success = success_status == "true";
+  std::move(callback).Run(success, error_message);
 }
 
 bool BinanceService::GetConvertAssets(GetConvertAssetsCallback callback) {

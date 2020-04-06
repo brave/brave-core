@@ -304,8 +304,11 @@ BinanceConfirmConvertFunction::Run() {
   return RespondLater();
 }
 
-void BinanceConfirmConvertFunction::OnConfirmConvert(bool success) {
-  Respond(OneArgument(std::make_unique<base::Value>(success)));
+void BinanceConfirmConvertFunction::OnConfirmConvert(
+    bool success, const std::string& message) {
+  Respond(TwoArguments(
+      std::make_unique<base::Value>(success),
+      std::make_unique<base::Value>(message)));
 }
 
 ExtensionFunction::ResponseAction

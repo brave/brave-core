@@ -132,7 +132,7 @@ class BinanceConfirmConvertFunction :
 
  protected:
   ~BinanceConfirmConvertFunction() override {}
-  void OnConfirmConvert(bool success);
+  void OnConfirmConvert(bool success, const std::string& message);
 
   ResponseAction Run() override;
 };

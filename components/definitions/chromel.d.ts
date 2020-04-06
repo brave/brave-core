@@ -163,7 +163,7 @@ declare namespace chrome.binance {
   const getTickerVolume: (symbolPair: string, callback: (symbolPairVolume: string) => void) => {}
   const getDepositInfo: (symbol: string, callback: (depositAddress: string, depositURL: string) => void) => {}
   const getConvertAssets: (callback: (supportedAssets: any) => void) => {}
-  const confirmConvert: (quoteId: string, callback: (success: boolean) => void) => {}
+  const confirmConvert: (quoteId: string, callback: (success: boolean, message: string) => void) => {}
 }
 
 declare namespace chrome.rewardsNotifications {

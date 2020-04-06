@@ -232,6 +232,10 @@
               {
                 "name": "success",
                 "type": "boolean"
+              },
+              {
+                "name": "message",
+                "type": "string"
               }
             ]
           }
