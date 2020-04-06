@@ -19,6 +19,8 @@
 #include "net/http/http_status_code.h"
 #include "url/gurl.h"
 
+#define TWITTER_BASE_URL "https://twitter.com/"
+
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
@@ -30,7 +32,7 @@ std::string GetUserIdFromUrl(const std::string& path) {
     return std::string();
   }
 
-  GURL url("https://twitter.com" + path);
+  GURL url(TWITTER_BASE_URL + path);
   if (!url.is_valid()) {
     return std::string();
   }
@@ -42,6 +44,82 @@ std::string GetUserIdFromUrl(const std::string& path) {
   }
 
   return std::string();
+}
+
+bool IsExcludedPathComponent(const std::string& path) {
+  const std::vector<std::string> paths({
+      "/",
+      "/settings",
+      "/explore",
+      "/notifications",
+      "/messages",
+      "/logout",
+      "/search",
+      "/about",
+      "/tos",
+      "/privacy",
+      "/home"
+    });
+
+  for (const std::string& str_path : paths) {
+    if (str_path == path || str_path + "/" == path) {
+      return true;
+    }
+  }
+
+  const std::vector<std::string> patterns({
+    "/i/",
+    "/account/",
+    "/compose/",
+    "/?login",
+    "/?logout",
+    "/who_to_follow/",
+    "/hashtag/",
+    "/settings/"
+  });
+
+  for (const std::string& str_path : patterns) {
+    if (base::StartsWith(path,
+                         str_path,
+                         base::CompareCase::INSENSITIVE_ASCII)) {
+      return true;
+    }
+  }
+
+
+  return false;
+}
+
+bool IsExcludedScreenName(const std::string& path) {
+  const std::vector<std::string> screen_names({
+      "settings",
+      "explore",
+      "notifications",
+      "messages",
+      "logout",
+      "search",
+      "about",
+      "tos",
+      "privacy",
+      "home",
+    });
+
+  GURL url(TWITTER_BASE_URL + path);
+  if (!url.is_valid()) {
+    return true;
+  }
+
+  for (net::QueryIterator it(url); !it.IsAtEnd(); it.Advance()) {
+    if (it.GetKey() == "screen_name") {
+      if (std::find(screen_names.begin(), screen_names.end(),
+                    it.GetUnescapedValue()) != screen_names.end()) {
+        return true;
+      }
+      break;
+    }
+  }
+
+  return false;
 }
 
 }  // namespace
@@ -105,7 +183,7 @@ std::string Twitter::GetUserNameFromUrl(const std::string& path) {
     return std::string();
   }
 
-  GURL url("https://twitter.com" + path);
+  GURL url(TWITTER_BASE_URL + path);
   if (!url.is_valid()) {
     return std::string();
   }
@@ -132,45 +210,12 @@ bool Twitter::IsExcludedPath(const std::string& path) {
     return true;
   }
 
-  const std::vector<std::string> paths({
-      "/",
-      "/settings",
-      "/explore",
-      "/notifications",
-      "/messages",
-      "/logout",
-      "/search",
-      "/about",
-      "/tos",
-      "/privacy",
-      "/home"
-    });
-
-  for (std::string str_path : paths) {
-    if (str_path == path || str_path + "/" == path) {
-      return true;
-    }
+  // Due to implementation differences on desktop and mobile
+  // platforms, we may receive the screen name as part of a
+  // query-string or as a path component
+  if (IsExcludedScreenName(path) || IsExcludedPathComponent(path)) {
+    return true;
   }
-
-  const std::vector<std::string> patterns({
-    "/i/",
-    "/account/",
-    "/compose/",
-    "/?login",
-    "/?logout",
-    "/who_to_follow/",
-    "/hashtag/",
-    "/settings/"
-  });
-
-  for (std::string str_path : patterns) {
-    if (base::StartsWith(path,
-                         str_path,
-                         base::CompareCase::INSENSITIVE_ASCII)) {
-      return true;
-    }
-  }
-
 
   return false;
 }
@@ -497,7 +542,11 @@ void Twitter::OnUserPage(
     return;
   }
 
-  const std::string user_id = GetUserId(response);
+  std::string user_id = GetUserIdFromUrl(visit_data.path);
+  if (user_id.empty()) {
+    user_id = GetUserId(response);
+  }
+
   const std::string user_name = GetUserNameFromUrl(visit_data.path);
   std::string publisher_name = GetPublisherName(response);
 

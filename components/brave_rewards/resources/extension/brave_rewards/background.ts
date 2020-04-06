@@ -8,6 +8,11 @@ import './background/store'
 import './background/twitterAuth'
 import './background/events/rewardsEvents'
 import './background/events/tabEvents'
+
+import { processPendingTabs } from './background/api/tabs_api'
+// tslint:disable-next-line:no-duplicate-imports
+import { setTwitterAuthCallback } from './background/twitterAuth'
+
 import batIconOn18Url from './img/rewards-on.png'
 import batIconOn36Url from './img/rewards-on@2x.png'
 import batIconOn54Url from './img/rewards-on@3x.png'
@@ -22,6 +27,8 @@ const iconOn = {
 
 chrome.browserAction.setBadgeBackgroundColor({ color: '#FB542B' })
 chrome.browserAction.setIcon(iconOn)
+
+setTwitterAuthCallback(processPendingTabs)
 
 // We need to set initial state for all active tabs in all windows
 chrome.tabs.query({

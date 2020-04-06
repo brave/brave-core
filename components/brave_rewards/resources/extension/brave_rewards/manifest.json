@@ -35,7 +35,8 @@
       ],
       "js": [
         "out/brave_rewards_panel_content_twitter.bundle.js"
-      ]
+      ],
+      "run_at": "document_start"
     },
     {
       "matches": [
