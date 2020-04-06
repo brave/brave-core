@@ -116,6 +116,7 @@ interface State {
   currentConvertFee: string
   currentConvertTransAmount: string
   currentConvertExpiryTime: number
+  authInvalid: boolean
 }
 
 interface Props {
@@ -198,7 +199,8 @@ class Binance extends React.PureComponent<Props, State> {
       currentQRAsset: '',
       convertFromShowing: false,
       convertToShowing: false,
-      currentConvertExpiryTime: 30
+      currentConvertExpiryTime: 30,
+      authInvalid: false
     }
     this.cryptoColors = currencyData.cryptoColors
     this.fiatList = currencyData.fiatList
@@ -271,6 +273,15 @@ class Binance extends React.PureComponent<Props, State> {
     this.getConvertAssets()
   }
 
+  setAuthInvalid = () => {
+    this.setState({ authInvalid: true })
+    this.props.onDisconnectBinance()
+  }
+
+  dismissAuthInvalid = () => {
+    this.setState({ authInvalid: false })
+  }
+
   getConvertAssets = () => {
     chrome.binance.getConvertAssets((assets: any) => {
       for (let asset in assets) {
@@ -284,6 +295,7 @@ class Binance extends React.PureComponent<Props, State> {
   fetchBalance = () => {
     chrome.binance.getAccountBalances((balances: Record<string, string>, success: boolean) => {
       if (!success) {
+        this.setAuthInvalid()
         return
       }
 
@@ -667,6 +679,22 @@ class Binance extends React.PureComponent<Props, State> {
       <StyledTitleTab onClick={onShowContent}>
         {this.renderTitle()}
       </StyledTitleTab>
+    )
+  }
+
+  renderAuthInvalid = () => {
+    return (
+      <InvalidWrapper>
+        <InvalidTitle>
+          {getLocale('binanceWidgetAuthInvalid')}
+        </InvalidTitle>
+        <InvalidCopy>
+          {getLocale('binanceWidgetAuthInvalidCopy')}
+        </InvalidCopy>
+        <GenButton onClick={this.dismissAuthInvalid}>
+          {getLocale('binanceWidgetDone')}
+        </GenButton>
+      </InvalidWrapper>
     )
   }
 
@@ -1288,6 +1316,7 @@ class Binance extends React.PureComponent<Props, State> {
 
   renderIndexView () {
     const {
+      authInvalid,
       currentQRAsset,
       insufficientFunds,
       convertFailed,
@@ -1296,7 +1325,9 @@ class Binance extends React.PureComponent<Props, State> {
       disconnectInProgress
     } = this.state
 
-    if (currentQRAsset) {
+    if (authInvalid) {
+      return this.renderAuthInvalid()
+    } else if (currentQRAsset) {
       return this.renderQRView()
     } else if (insufficientFunds) {
       return this.renderInsufficientFundsView()

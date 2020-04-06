@@ -783,6 +783,8 @@
       <message name="IDS_BINANCE_WIDGET_CONVERT_INTENT" desc="">I want to convert...</message>
       <message name="IDS_BINANCE_WIDGET_PREVIEW_CONVERT" desc="">Preview Conversion</message>
       <message name="IDS_BINANCE_WIDGET_SUMMARY" desc="">Summary</message>
+      <message name="IDS_BINANCE_WIDGET_AUTH_INVALID" desc="">Session Expired</message>
+      <message name="IDS_BINANCE_WIDGET_AUTH_INVALID_COPY" desc="">Your Binance access token has expired. Please reconnect to continue using the widget.</message>
 
       <!-- WebUI brave sync resources -->
       <!-- WebUI brave sync resources: Shared Content -->
