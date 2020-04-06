@@ -25,6 +25,15 @@ using ::testing::_;
 
 namespace ads {
 
+const std::vector<std::string> audi_segments = {
+  "automotive purchase intent by make-audi"
+};
+
+const std::vector<std::string> audi_a4_segments = {
+  "automotive purchase intent by make-audi",
+  "automotive purchase intent by category-entry luxury car"
+};
+
 const std::vector<std::string> audi_a6_segments = {
   "automotive purchase intent by make-audi",
   "automotive purchase intent by category-mid luxury car"
@@ -39,6 +48,8 @@ struct TestTriplets {
 };
 
 std::vector<TestTriplets> kTestSearchQueries = {
+  {"https://yandex.com/search/?text=audi&lr=104995",
+      audi_segments, 1},
   {"https://yandex.com/search/?text=audi%20a6%20review%202020&lr=109565",
       audi_a6_segments, 2},
   {"https://www.google.com/search?q=audi+a6+review+2020&gs_l=psy-ab.3..0j0i22i30l3.26031.26031..26262...0.0..0.82.82.1......0....2j1..gws-wiz.MZlXqcvydls&ved=0ahUKEwjAjpziu8fnAhVLzYUKHSriDZMQ4dUDCAg&uact=5",  // NOLINT
@@ -65,6 +76,10 @@ std::vector<TestTriplets> kTestSearchQueries = {
       no_segments, 0},
   {"https://creators.brave.com/",
       no_segments, 0},
+  {"https://www.google.com/search?ei=bY2CXvHBMK2tytMPqYq--A4&q=audi+a4",
+      audi_a4_segments, 1},
+  {"https://www.google.com/search?source=hp&ei=y2eDXsWuI6fIrgThwZuQDw&q=audi+a4",  // NOLINT
+      audi_a4_segments, 1},
 };
 
 class AdsPurchaseIntentClassifierTest : public ::testing::Test {
