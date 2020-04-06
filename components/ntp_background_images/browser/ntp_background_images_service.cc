@@ -318,7 +318,9 @@ void NTPBackgroundImagesService::DownloadSuperReferralMappingTable() {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = GURL(GetSuperReferralMappingTableURL());
   request->load_flags =
-      net::LOAD_DO_NOT_SEND_COOKIES | net::LOAD_DO_NOT_SAVE_COOKIES;
+      net::LOAD_DO_NOT_SEND_COOKIES | net::LOAD_DO_NOT_SAVE_COOKIES |
+      net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
+      net::LOAD_DO_NOT_SEND_AUTH_DATA;
   loader_ = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());
   loader_->DownloadToString(
