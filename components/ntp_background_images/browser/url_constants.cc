@@ -13,8 +13,8 @@ const char kWallpaperPathPrefix[] = "wallpaper-";
 const char kSuperReferralPath[] = "super-referral/";
 const char kSponsoredImagesPath[] = "sponsored-images/";
 const char kSuperReferralMappingTableURL[] =
-    "https://brave-ntp-crx-input.s3-us-west-2.amazonaws.com/superreferrer/map-table.json";  // NOLINT
+    "https://mobile-data.s3.brave.com/superreferrer/map-table.json";
 const char kSuperReferralMappingTableDevURL[] =
-    "https://brave-ntp-crx-input-dev.s3-us-west-2.amazonaws.com/superreferrer/map-table.json";  // NOLINT
+    "https://mobile-data-dev.s3.brave.software/superreferrer/map-table.json";
 
 }  // namespace ntp_background_images
