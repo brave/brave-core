@@ -25,8 +25,6 @@
 #include "extensions/common/url_pattern.h"
 #include "ui/base/resource/resource_bundle.h"
 
-using content::ResourceType;
-
 namespace brave {
 
 void ShouldBlockAdOnTaskRunner(std::shared_ptr<BraveRequestInfo> ctx) {

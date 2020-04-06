@@ -41,7 +41,7 @@ class RewardsTabHelper : public RewardsServiceObserver,
   void ResourceLoadComplete(
       content::RenderFrameHost* render_frame_host,
       const content::GlobalRequestID& request_id,
-      const content::mojom::ResourceLoadInfo& resource_load_info) override;
+      const blink::mojom::ResourceLoadInfo& resource_load_info) override;
   void DidAttachInterstitialPage() override;
   void OnVisibilityChanged(content::Visibility visibility) override;
   void WebContentsDestroyed() override;

@@ -55,8 +55,9 @@ void BaseBraveShieldsService::Stop() {
   initialized_ = false;
 }
 
-bool BaseBraveShieldsService::ShouldStartRequest(const GURL& url,
-    content::ResourceType resource_type,
+bool BaseBraveShieldsService::ShouldStartRequest(
+    const GURL& url,
+    blink::mojom::ResourceType resource_type,
     const std::string& tab_host,
     bool* did_match_exception,
     bool* cancel_request_explicitly,

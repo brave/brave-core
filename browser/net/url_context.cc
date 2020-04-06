@@ -60,7 +60,7 @@ void BraveRequestInfo::FillCTX(const network::ResourceRequest& request,
   ctx->referrer_policy = request.referrer_policy;
 
   ctx->resource_type =
-      static_cast<content::ResourceType>(request.resource_type);
+      static_cast<blink::mojom::ResourceType>(request.resource_type);
 
   ctx->is_webtorrent_disabled =
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
