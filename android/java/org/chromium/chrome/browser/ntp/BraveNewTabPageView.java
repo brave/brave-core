@@ -51,6 +51,7 @@ import org.chromium.chrome.browser.ntp_background_images.SponsoredTab;
 import org.chromium.chrome.browser.tab.TabAttributes;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.SuperReferralShareDialogFragment;
+import org.chromium.chrome.browser.ntp.BraveNewTabPageLayout;
 
 public class BraveNewTabPageView extends NewTabPageView {
     private static final String TAG = "BraveNewTabPageView";
@@ -403,9 +404,7 @@ public class BraveNewTabPageView extends NewTabPageView {
 
         @Override
         public void updateTopSites(List<NTPBackgroundImagesBridge.TopSite> topSites) {
-            for (NTPBackgroundImagesBridge.TopSite topSite : topSites) {
-                Log.e("NTP", topSite.getName());
-            }
+            ((BraveNewTabPageLayout)getNewTabPageLayout()).updateTopSites(topSites);
         }
     };
     private FetchWallpaperWorkerTask.WallpaperRetrievedCallback wallpaperRetrievedCallback= new FetchWallpaperWorkerTask.WallpaperRetrievedCallback() {
