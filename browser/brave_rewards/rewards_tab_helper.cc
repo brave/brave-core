@@ -19,10 +19,9 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_user_data.h"
-#include "content/public/common/resource_load_info.mojom.h"
-#include "content/public/common/resource_type.h"
+#include "third_party/blink/public/mojom/loader/resource_load_info.mojom.h"
 
-using content::ResourceType;
+using blink::mojom::ResourceType;
 
 // DEFINE_WEB_CONTENTS_USER_DATA_KEY(brave_rewards::RewardsTabHelper);
 
@@ -72,15 +71,15 @@ void RewardsTabHelper::DidFinishNavigation(content::NavigationHandle* handle) {
 void RewardsTabHelper::ResourceLoadComplete(
     content::RenderFrameHost* render_frame_host,
     const content::GlobalRequestID& request_id,
-    const content::mojom::ResourceLoadInfo& resource_load_info) {
+    const blink::mojom::ResourceLoadInfo& resource_load_info) {
   if (!rewards_service_ || !render_frame_host)
     return;
 
   // TODO(nejczdovc): do we need to get anyother type then XHR??
-  if (resource_load_info.resource_type == content::ResourceType::kMedia ||
-      resource_load_info.resource_type == content::ResourceType::kXhr ||
-      resource_load_info.resource_type == content::ResourceType::kImage ||
-      resource_load_info.resource_type == content::ResourceType::kScript) {
+  if (resource_load_info.resource_type == ResourceType::kMedia ||
+      resource_load_info.resource_type == ResourceType::kXhr ||
+      resource_load_info.resource_type == ResourceType::kImage ||
+      resource_load_info.resource_type == ResourceType::kScript) {
     rewards_service_->OnXHRLoad(tab_id_, GURL(resource_load_info.final_url),
                                 web_contents()->GetURL(),
                                 resource_load_info.referrer);

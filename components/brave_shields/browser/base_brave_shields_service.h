@@ -16,7 +16,7 @@
 #include "base/files/file_path.h"
 #include "base/sequenced_task_runner.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
-#include "content/public/common/resource_type.h"
+#include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
 
 using brave_component_updater::BraveComponent;
@@ -33,11 +33,11 @@ class BaseBraveShieldsService : public BraveComponent {
   void Stop();
   bool IsInitialized() const;
   virtual bool ShouldStartRequest(const GURL& url,
-      content::ResourceType resource_type,
-      const std::string& tab_host,
-      bool* did_match_exception,
-      bool* cancel_request_explicitly,
-      std::string* mock_data_url);
+                                  blink::mojom::ResourceType resource_type,
+                                  const std::string& tab_host,
+                                  bool* did_match_exception,
+                                  bool* cancel_request_explicitly,
+                                  std::string* mock_data_url);
 
  protected:
   virtual bool Init() = 0;

@@ -20,13 +20,13 @@ class PageLoadTiming;
 }  // namespace mojom
 }  // namespace page_load_metrics
 
-namespace content {
+namespace blink {
 namespace mojom {
 
 class ResourceLoadInfo;
 
 }  // namespace mojom
-}  // namespace content
+}  // namespace blink
 
 namespace brave_perf_predictor {
 
@@ -51,7 +51,7 @@ class BandwidthSavingsPredictor {
   void OnSubresourceBlocked(const std::string& resource_url);
   void OnResourceLoadComplete(
       const GURL& main_frame_url,
-      const content::mojom::ResourceLoadInfo& resource_load_info);
+      const blink::mojom::ResourceLoadInfo& resource_load_info);
   double PredictSavingsBytes() const;
   void Reset();
 

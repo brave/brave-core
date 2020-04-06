@@ -11,9 +11,8 @@
 #include "brave/components/brave_perf_predictor/browser/bandwidth_linreg.h"
 #include "brave/components/brave_perf_predictor/browser/named_third_party_registry.h"
 #include "components/page_load_metrics/common/page_load_metrics.mojom.h"
-#include "content/public/common/resource_load_info.mojom.h"
-#include "content/public/common/resource_type.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#include "third_party/blink/public/mojom/loader/resource_load_info.mojom.h"
 
 namespace brave_perf_predictor {
 
@@ -65,7 +64,7 @@ void BandwidthSavingsPredictor::OnSubresourceBlocked(
 
 void BandwidthSavingsPredictor::OnResourceLoadComplete(
     const GURL& main_frame_url,
-    const content::mojom::ResourceLoadInfo& resource_load_info) {
+    const blink::mojom::ResourceLoadInfo& resource_load_info) {
   // If the resource load info comes without a valid corresponding
   // main frame URL, ignore it
   if (main_frame_url.is_empty() || !main_frame_url.has_host() ||
@@ -91,25 +90,25 @@ void BandwidthSavingsPredictor::OnResourceLoadComplete(
       resource_load_info.total_received_bytes;
   std::string resource_type;
   switch (resource_load_info.resource_type) {
-    case content::ResourceType::kMainFrame:
+    case blink::mojom::ResourceType::kMainFrame:
       resource_type = "document";
       break;
-    case content::ResourceType::kSubFrame:
+    case blink::mojom::ResourceType::kSubFrame:
       resource_type = "document";
       break;
-    case content::ResourceType::kStylesheet:
+    case blink::mojom::ResourceType::kStylesheet:
       resource_type = "stylesheet";
       break;
-    case content::ResourceType::kScript:
+    case blink::mojom::ResourceType::kScript:
       resource_type = "script";
       break;
-    case content::ResourceType::kImage:
+    case blink::mojom::ResourceType::kImage:
       resource_type = "image";
       break;
-    case content::ResourceType::kFontResource:
+    case blink::mojom::ResourceType::kFontResource:
       resource_type = "font";
       break;
-    case content::ResourceType::kMedia:
+    case blink::mojom::ResourceType::kMedia:
       resource_type = "media";
       break;
     default:

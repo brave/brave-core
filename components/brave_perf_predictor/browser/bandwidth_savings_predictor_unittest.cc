@@ -10,8 +10,8 @@
 #include "chrome/browser/predictors/loading_test_util.h"
 #include "components/page_load_metrics/common/page_load_metrics.mojom.h"
 #include "components/page_load_metrics/common/page_load_timing.h"
-#include "content/public/common/resource_load_info.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/blink/public/mojom/loader/resource_load_info.mojom.h"
 #include "url/gurl.h"
 
 namespace brave_perf_predictor {
@@ -70,7 +70,7 @@ TEST(BandwidthSavingsPredictorTest, FeaturiseResourceLoading) {
   const GURL main_frame("https://brave.com/");
 
   auto fp_style = predictors::CreateResourceLoadInfo(
-      "https://brave.com/style.css", content::ResourceType::kStylesheet);
+      "https://brave.com/style.css", blink::mojom::ResourceType::kStylesheet);
   fp_style->raw_body_bytes = 1000;
   predictor.OnResourceLoadComplete(main_frame, *fp_style);
   EXPECT_EQ(predictor.feature_map_["resources.third-party.requestCount"], 0);
@@ -79,7 +79,7 @@ TEST(BandwidthSavingsPredictorTest, FeaturiseResourceLoading) {
 
   auto tp_style = predictors::CreateResourceLoadInfo(
       "https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.js",
-      content::ResourceType::kScript);
+      blink::mojom::ResourceType::kScript);
   tp_style->raw_body_bytes = 1001;
   predictor.OnResourceLoadComplete(main_frame, *tp_style);
 
@@ -113,7 +113,7 @@ TEST(BandwidthSavingsPredictorTest, PredictZeroBadFrame) {
 
   const GURL main_frame("");
   auto res = predictors::CreateResourceLoadInfo(
-      "https://brave.com/style.css", content::ResourceType::kStylesheet);
+      "https://brave.com/style.css", blink::mojom::ResourceType::kStylesheet);
   res->raw_body_bytes = 1000;
   predictor.OnResourceLoadComplete(main_frame, *res);
 
@@ -125,7 +125,7 @@ TEST(BandwidthSavingsPredictorTest, PredictZeroNoBlocks) {
 
   const GURL main_frame("https://brave.com");
   auto res = predictors::CreateResourceLoadInfo(
-      "https://brave.com/style.css", content::ResourceType::kStylesheet);
+      "https://brave.com/style.css", blink::mojom::ResourceType::kStylesheet);
   res->raw_body_bytes = 1000;
   predictor.OnResourceLoadComplete(main_frame, *res);
 
@@ -137,15 +137,15 @@ TEST(BandwidthSavingsPredictorTest, PredictNonZero) {
 
   const GURL main_frame("https://brave.com");
   auto res = predictors::CreateResourceLoadInfo(
-      "https://brave.com/style.css", content::ResourceType::kStylesheet);
+      "https://brave.com/style.css", blink::mojom::ResourceType::kStylesheet);
   res->raw_body_bytes = 200000;
   res->total_received_bytes = 200000;
   predictor.OnResourceLoadComplete(main_frame, *res);
 
   predictor.OnSubresourceBlocked("https://google-analytics.com/ga.js");
   // resource still seen as complete, but with 0 bytes
-  auto blocked = predictors::CreateResourceLoadInfo(
-      "https://google-analytics.com/ga.js", content::ResourceType::kScript);
+  auto blocked = predictors::CreateResourceLoadInfo("https://google-analytics.com/ga.js",
+                                         blink::mojom::ResourceType::kScript);
   blocked->raw_body_bytes = 0;
   predictor.OnResourceLoadComplete(main_frame, *blocked);
 
