@@ -68,23 +68,17 @@ std::string SearchProviders::ExtractSearchQueryKeywords(
       continue;
     }
 
-    size_t index = search_provider.search_template.find('{');
-    std::string substring = search_provider.search_template.substr(0, index);
-    size_t href_index = url.find(substring);
-
-    if (index != std::string::npos && href_index != std::string::npos) {
-      // Checking if search template in as defined in |search_providers.h|
-      // is defined, e.g. |https://searx.me/?q={searchTerms}&categories=general|
-      // matches |?q={|
-      std::string key;
-      if (!RE2::PartialMatch(
-          search_provider.search_template, "\\?(.*?)\\={", &key)) {
-        return search_query_keywords;
-      }
-
-      search_query_keywords = helper::Uri::GetValueForKeyInQuery(url, key);
-      break;
+    // Checking if search template in as defined in |search_providers.h|
+    // is defined, e.g. |https://searx.me/?q={searchTerms}&categories=general|
+    // matches |?q={|
+    std::string key;
+    if (!RE2::PartialMatch(
+        search_provider.search_template, "\\?(.*?)\\={", &key)) {
+      return search_query_keywords;
     }
+
+    search_query_keywords = helper::Uri::GetValueForKeyInQuery(url, key);
+    break;
   }
 
   return search_query_keywords;
