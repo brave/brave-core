@@ -246,11 +246,17 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
   if (local_pref_->FindPreference(
           prefs::kNewTabPageCachedSuperReferralComponentInfo)->
               IsDefaultValue()) {
-    const std::string code = GetReferralPromoCode();
-    if (code.empty())
-      MonitorReferralPromoCodeChange();
-    else
-      DownloadSuperReferralMappingTable();
+    // If this is checked at this time, this is not the first run.
+    // Mark this is not SR.
+    if (local_pref_->GetBoolean(kReferralCheckedForPromoCodeFile)) {
+      MarkThisInstallIsNotSuperReferralForever();
+      DVLOG(2) << __func__ << ": Cached SR Info is clean and Referral Service"
+                           << " is not in initial state."
+                           << " Mark this is not SR install.";
+      return;
+    }
+
+    MonitorReferralPromoCodeChange();
     return;
   }
 
@@ -391,23 +397,27 @@ bool NTPBackgroundImagesService::HasObserver(Observer* observer) {
   return observer_list_.HasObserver(observer);
 }
 
-bool NTPBackgroundImagesService::IsReferralServiceInitialized() const {
-  return local_pref_->GetBoolean(kReferralCheckedForPromoCodeFile);
-}
-
 NTPBackgroundImagesData*
 NTPBackgroundImagesService::GetBackgroundImagesData(bool super_referral) const {
-  if (super_referral) {
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
+  const bool is_sr_enabled =
+      base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper);
+  if (is_sr_enabled && super_referral) {
     if (sr_images_data_ && sr_images_data_->IsValid())
       return sr_images_data_.get();
     return nullptr;
   }
 
-  // Don't give SI data until referral service is initialized.
+  // Don't give SI data until we can confirm this is not SR.
   // W/o this check, NTP could show SI images before getting SR data at first
   // run.
-  if (!IsReferralServiceInitialized())
+if (is_sr_enabled && local_pref_->FindPreference(
+        prefs::kNewTabPageCachedSuperReferralComponentInfo)->
+            IsDefaultValue())
     return nullptr;
+#else
+  return nullptr;
+#endif
 
   if (si_images_data_ && si_images_data_->IsValid())
     return si_images_data_.get();
@@ -528,23 +538,29 @@ std::string NTPBackgroundImagesService::GetReferralPromoCode() const {
 void NTPBackgroundImagesService::InitializeWebUIDataSource(
     content::WebUIDataSource* html_source) {
   std::string theme_name;
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   // theme name from component manifest and company name from mapping table
   // are same string.
   const auto* value = local_pref_->Get(
-        prefs::kNewTabPageCachedSuperReferralComponentInfo);
+      prefs::kNewTabPageCachedSuperReferralComponentInfo);
   if (base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper) &&
       IsValidSuperReferralComponentInfo(*value)) {
     theme_name = *value->FindStringKey(kThemeName);
   }
+#endif
   html_source->AddString("superReferralThemeName", theme_name);
 }
 
 bool NTPBackgroundImagesService::IsSuperReferral() const {
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   const auto* value = local_pref_->Get(
-        prefs::kNewTabPageCachedSuperReferralComponentInfo);
+      prefs::kNewTabPageCachedSuperReferralComponentInfo);
   return
       base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper) &&
       IsValidSuperReferralComponentInfo(*value);
+#else
+  return false;
+#endif
 }
 
 }  // namespace ntp_background_images

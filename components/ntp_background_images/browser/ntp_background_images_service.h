@@ -116,7 +116,6 @@ class NTPBackgroundImagesService {
   void OnGetMappingTableData(std::unique_ptr<std::string> json_string);
 
   std::string GetReferralPromoCode() const;
-  bool IsReferralServiceInitialized() const;
 
   void CacheTopSitesFaviconList();
   void RestoreCachedTopSitesFaviconList();

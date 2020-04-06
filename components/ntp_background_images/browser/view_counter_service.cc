@@ -13,6 +13,7 @@
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
@@ -95,17 +96,22 @@ base::Value ViewCounterService::GetCurrentWallpaper() const {
 }
 
 base::Value ViewCounterService::GetTopSites(bool for_webui) const {
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   if (auto* data = GetCurrentBrandedWallpaperData()) {
     if (data->IsSuperReferral())
       return GetCurrentBrandedWallpaperData()->GetTopSites(for_webui);
   }
+#endif
 
   return base::Value();
 }
 
 std::vector<TopSite> ViewCounterService::GetTopSitesVectorData() const {
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   if (auto* data = GetCurrentBrandedWallpaperData())
     return data->top_sites;
+#endif
+
   return {};
 }
 

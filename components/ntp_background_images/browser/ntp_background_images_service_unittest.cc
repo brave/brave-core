@@ -25,7 +25,6 @@ constexpr char kTestEmptyComponent[] = R"(
         "schemaVersion": 1
     })";
 
-
 constexpr char kTestSponsoredImages[] = R"(
     {
         "schemaVersion": 1,
@@ -166,6 +165,8 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   observer.called_ = false;
   observer.data_ = nullptr;
   service_->OnGetComponentJsonData(false, kTestSponsoredImages);
+  // Mark this is not SR to get SI data.
+  service_->MarkThisInstallIsNotSuperReferralForever();
   data = service_->GetBackgroundImagesData(false);
   EXPECT_TRUE(data);
   EXPECT_TRUE(data->IsValid());
@@ -424,12 +425,12 @@ TEST_F(NTPBackgroundImagesServiceTest, CheckReferralServiceInitStatusTest) {
   // Simulate SI data is initialized first before referral service is
   // initialized.
   // Check SI data is not available before referrals service is initialized.
-  pref_service_.SetBoolean(kReferralCheckedForPromoCodeFile, false);
   service_->OnGetComponentJsonData(false, kTestSponsoredImages);
   data = service_->GetBackgroundImagesData(false);
   EXPECT_FALSE(data);
 
-  pref_service_.SetBoolean(kReferralCheckedForPromoCodeFile, true);
+  // Simulate that this install is not SR. Then, SI data is returned properly.
+  service_->MarkThisInstallIsNotSuperReferralForever();
   data = service_->GetBackgroundImagesData(false);
   EXPECT_TRUE(data);
 }
