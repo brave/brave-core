@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
+use std::io::prelude::*;
+use flate2::read::GzDecoder;
 
 use crate::speedreader::{AttributeRewrite, RewriteRules, SpeedReaderConfig, SpeedReaderError};
 
@@ -50,12 +52,26 @@ impl Whitelist {
 
     pub fn serialize(&self) -> Result<Vec<u8>, SpeedReaderError> {
         let mut out = Vec::new();
-        rmps::encode::write(&mut out, &self)?;
+        let j = serde_json::to_string(&self.map.values().collect::<Vec<&SpeedReaderConfig>>())?;
+        out.extend_from_slice(j.as_bytes());
         Ok(out)
     }
 
     pub fn deserialize(serialized: &[u8]) -> Result<Self, SpeedReaderError> {
-        Ok(rmps::decode::from_read(serialized)?)
+        let mut gz = GzDecoder::new(serialized);
+        let mut s = String::new();
+        let read = gz.read_to_string(&mut s);
+        if read.is_err() {
+            let decoded = std::str::from_utf8(serialized)?;
+            s.clear();
+            s.push_str(decoded);
+        }
+        let configurations: Vec<SpeedReaderConfig> = serde_json::from_str(&s)?;
+        let mut whitelist = Whitelist::default();
+        for config in configurations.into_iter() {
+            whitelist.add_configuration(config)
+        }
+        Ok(whitelist)
     }
 
     pub fn load_predefined(&mut self) {

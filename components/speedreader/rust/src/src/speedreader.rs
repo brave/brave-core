@@ -56,15 +56,15 @@ impl From<std::io::Error> for SpeedReaderError {
     }
 }
 
-impl From<rmps::decode::Error> for SpeedReaderError {
-    fn from(err: rmps::decode::Error) -> Self {
+impl From<serde_json::error::Error> for SpeedReaderError {
+    fn from(err: serde_json::error::Error) -> Self {
         SpeedReaderError::DeserializationError(err.to_string())
     }
 }
 
-impl From<rmps::encode::Error> for SpeedReaderError {
-    fn from(err: rmps::encode::Error) -> Self {
-        SpeedReaderError::SerializationError(err.to_string())
+impl From<std::str::Utf8Error> for SpeedReaderError {
+    fn from(err: std::str::Utf8Error) -> Self {
+        SpeedReaderError::DeserializationError(err.to_string())
     }
 }
 

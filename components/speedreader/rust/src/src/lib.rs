@@ -9,8 +9,6 @@ extern crate url;
 #[macro_use]
 extern crate matches;
 
-extern crate rmp_serde as rmps; // binary serialization/deserialization
-
 pub mod classifier;
 mod rewriter_config_builder;
 pub mod speedreader;
