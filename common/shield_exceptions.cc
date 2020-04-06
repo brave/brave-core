@@ -73,7 +73,7 @@ bool IsWhitelistedFingerprintingException(const GURL& firstPartyOrigin,
             "https://map.1passwordservices.com/*")})
     }
   };
-  for (const auto whitelist : whitelist_patterns) {
+  for (const auto& whitelist : whitelist_patterns) {
       if (whitelist.first.MatchesURL(firstPartyOrigin)) {
           return std::any_of(whitelist.second.begin(), whitelist.second.end(),
             [&subresourceUrl](const URLPattern& pattern) {
