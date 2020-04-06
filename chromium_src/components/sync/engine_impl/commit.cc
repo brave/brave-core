@@ -98,8 +98,8 @@ brave_sync::RecordsListPtr ConvertCommitsToBraveRecords(
 
       auto bookmark = std::make_unique<brave_sync::jslib::Bookmark>();
       bookmark->site.location = bm_specifics.url();
-      bookmark->site.title = bm_specifics.title();
-      bookmark->site.customTitle = bm_specifics.title();
+      bookmark->site.title = bm_specifics.legacy_canonicalized_title();
+      bookmark->site.customTitle = bm_specifics.legacy_canonicalized_title();
       // bookmark->site.lastAccessedTime - ignored
       bookmark->site.creationTime =
           ProtoTimeToTime(bm_specifics.creation_time_us());
