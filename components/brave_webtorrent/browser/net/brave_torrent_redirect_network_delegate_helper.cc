@@ -13,11 +13,11 @@
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/network_constants.h"
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
-#include "content/public/common/resource_type.h"
 #include "extensions/common/constants.h"
 #include "net/http/http_content_disposition.h"
 #include "net/http/http_response_headers.h"
 #include "net/url_request/url_request.h"
+#include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 
 namespace {
 
@@ -38,7 +38,7 @@ bool IsWebtorrentInitiated(std::shared_ptr<brave::BraveRequestInfo> ctx) {
 // subframe (i.e. a frame or iframe). For all other resource types (stylesheet,
 // script, XHR request, etc.), returns false.
 bool IsMainFrameResource(std::shared_ptr<brave::BraveRequestInfo> ctx) {
-  return ctx->resource_type == content::ResourceType::kMainFrame;
+  return ctx->resource_type == blink::mojom::ResourceType::kMainFrame;
 }
 
 }  // namespace

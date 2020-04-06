@@ -10,8 +10,8 @@
 #include <set>
 #include <string>
 
-#include "content/public/common/resource_type.h"
 #include "net/url_request/url_request.h"
+#include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
 
 class BraveRequestHandler;
@@ -96,9 +96,9 @@ struct BraveRequestInfo {
   // can properly detect that the info couldn't be obtained.
   // TODO(iefremov): Replace with something like |WebRequestResourceType| to
   // distinguish WebSockets.
-  static constexpr content::ResourceType kInvalidResourceType =
-      static_cast<content::ResourceType>(-1);
-  content::ResourceType resource_type = kInvalidResourceType;
+  static constexpr blink::mojom::ResourceType kInvalidResourceType =
+      static_cast<blink::mojom::ResourceType>(-1);
+  blink::mojom::ResourceType resource_type = kInvalidResourceType;
 
   std::string upload_data;
 

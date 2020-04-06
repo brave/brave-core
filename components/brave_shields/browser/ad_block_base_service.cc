@@ -34,66 +34,66 @@ using namespace net::registry_controlled_domains;  // NOLINT
 
 namespace {
 
-std::string ResourceTypeToString(content::ResourceType resource_type) {
+std::string ResourceTypeToString(blink::mojom::ResourceType resource_type) {
   std::string filter_option = "";
   switch (resource_type) {
     // top level page
-    case content::ResourceType::kMainFrame:
+    case blink::mojom::ResourceType::kMainFrame:
       filter_option = "main_frame";
       break;
     // frame or iframe
-    case content::ResourceType::kSubFrame:
+    case blink::mojom::ResourceType::kSubFrame:
       filter_option = "sub_frame";
       break;
     // a CSS stylesheet
-    case content::ResourceType::kStylesheet:
+    case blink::mojom::ResourceType::kStylesheet:
       filter_option = "stylesheet";
       break;
     // an external script
-    case content::ResourceType::kScript:
+    case blink::mojom::ResourceType::kScript:
       filter_option = "script";
       break;
     // an image (jpg/gif/png/etc)
-    case content::ResourceType::kFavicon:
-    case content::ResourceType::kImage:
+    case blink::mojom::ResourceType::kFavicon:
+    case blink::mojom::ResourceType::kImage:
       filter_option = "image";
       break;
     // a font
-    case content::ResourceType::kFontResource:
+    case blink::mojom::ResourceType::kFontResource:
       filter_option = "font";
       break;
     // an "other" subresource.
-    case content::ResourceType::kSubResource:
+    case blink::mojom::ResourceType::kSubResource:
       filter_option = "other";
       break;
     // an object (or embed) tag for a plugin.
-    case content::ResourceType::kObject:
+    case blink::mojom::ResourceType::kObject:
       filter_option = "object";
       break;
     // a media resource.
-    case content::ResourceType::kMedia:
+    case blink::mojom::ResourceType::kMedia:
       filter_option = "media";
       break;
     // a XMLHttpRequest
-    case content::ResourceType::kXhr:
+    case blink::mojom::ResourceType::kXhr:
       filter_option = "xhr";
       break;
     // a ping request for <a ping>/sendBeacon.
-    case content::ResourceType::kPing:
+    case blink::mojom::ResourceType::kPing:
       filter_option = "ping";
       break;
     // the main resource of a dedicated worker.
-    case content::ResourceType::kWorker:
+    case blink::mojom::ResourceType::kWorker:
     // the main resource of a shared worker.
-    case content::ResourceType::kSharedWorker:
+    case blink::mojom::ResourceType::kSharedWorker:
     // an explicitly requested prefetch
-    case content::ResourceType::kPrefetch:
+    case blink::mojom::ResourceType::kPrefetch:
     // the main resource of a service worker.
-    case content::ResourceType::kServiceWorker:
+    case blink::mojom::ResourceType::kServiceWorker:
     // a report of Content Security Policy violations.
-    case content::ResourceType::kCspReport:
+    case blink::mojom::ResourceType::kCspReport:
     // a resource that a plugin requested.
-    case content::ResourceType::kPluginResource:
+    case blink::mojom::ResourceType::kPluginResource:
     default:
       break;
   }
@@ -117,12 +117,13 @@ void AdBlockBaseService::Cleanup() {
   GetTaskRunner()->DeleteSoon(FROM_HERE, ad_block_client_.release());
 }
 
-bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
-                                            content::ResourceType resource_type,
-                                            const std::string& tab_host,
-                                            bool* did_match_exception,
-                                            bool* cancel_request_explicitly,
-                                            std::string* mock_data_url) {
+bool AdBlockBaseService::ShouldStartRequest(
+    const GURL& url,
+    blink::mojom::ResourceType resource_type,
+    const std::string& tab_host,
+    bool* did_match_exception,
+    bool* cancel_request_explicitly,
+    std::string* mock_data_url) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
 
   // Determine third-party here so the library doesn't need to figure it out.

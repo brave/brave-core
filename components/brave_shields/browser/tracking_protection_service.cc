@@ -197,7 +197,7 @@ bool TrackingProtectionService::ShouldStoreState(HostContentSettingsMap* map,
 
 bool TrackingProtectionService::ShouldStartRequest(
     const GURL& url,
-    content::ResourceType resource_type,
+    blink::mojom::ResourceType resource_type,
     const std::string& tab_host,
     bool* matching_exception_filter,
     bool* cancel_request_explicitly) {
