@@ -22,8 +22,6 @@ static const uint64_t timers[] = {
     24 * 60 * 60,  // 24h
     48 * 60 * 60};  // 48h
 
-//using ResponseCallback = std::function<void(const ledger::Result, const std::string&)>;
-
 class PrivateChannelOne {
   public:
     explicit PrivateChannelOne(bat_ledger::LedgerImpl* ledger);
