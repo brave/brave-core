@@ -126,6 +126,12 @@ source_set("public") {
 
 source_set("core") {
   sources = [
+    "access_token_consumer.cc",
+    "access_token_consumer.h",
+    "access_token_fetcher.cc",
+    "access_token_fetcher.h",
+    "access_token_fetcher_impl.cc",
+    "access_token_fetcher_impl.h",
     "bookmark_order_util.cc",
     "bookmark_order_util.h",
     "brave_sync_service.cc",
