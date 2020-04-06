@@ -27,6 +27,11 @@ interface Props {
 }
 
 export default class Notification extends React.Component<Props, {}> {
+  componentDidMount () {
+    // After 3s, auto-close this notification
+    window.setTimeout(() => this.onHideSiteRemovalNotification(), 3000)
+  }
+
   onUndoRemoveTopSite = () => {
     this.props.actions.undoRemoveGridSite()
     this.props.actions.showGridSiteRemovedNotification(false)
