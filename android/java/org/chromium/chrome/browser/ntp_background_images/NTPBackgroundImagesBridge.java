@@ -171,6 +171,7 @@ public class NTPBackgroundImagesBridge {
     }
 
     public void getTopSites() {
+        mTopSites.clear();
         NTPBackgroundImagesBridgeJni.get().getTopSites(
                 mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this);
     }
