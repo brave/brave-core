@@ -125,26 +125,6 @@
 
     <include layout="@layout/ntp_non_distruptive_banner"/>
 
-    <!-- <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom"
-        android:layout_marginBottom="16dp"
-        android:shape="ring"
-        card_view:cardElevation="6dp"
-        card_view:cardCornerRadius="50dp"
-        card_view:cardPreventCornerOverlap="false">
-
-        <ImageView
-            android:id="@+id/super_referral_logo"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:padding="8dp"
-            android:src="@drawable/qrcode_light"
-            android:contentDescription="@null"/>
-
-    </android.support.v7.widget.CardView> -->
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/super_referral_logo"
         android:layout_width="wrap_content"
@@ -152,6 +132,7 @@
         android:src="@drawable/qrcode_light"
         android:layout_gravity="bottom|center"
         android:layout_marginBottom="16dp"
+        android:visibility="gone"
         app:backgroundTint="@android:color/white"/>
 
 </org.chromium.chrome.browser.ntp.BraveNewTabPageLayout>
