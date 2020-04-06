@@ -24,6 +24,10 @@ PurchaseIntentSegmentList Keywords::GetSegments(
   for (const auto& keyword : _automotive_segment_keywords) {
     auto list_keyword_set = TransformIntoSetOfWords(keyword.keywords);
 
+    // Intended behaviour relies on early return from list traversal and
+    // implicitely on the ordering of `_automotive_segment_keywords` to ensure
+    // specific segments are matched over general segments, e.g. "audi a6"
+    // segments should be returned over "audi" segments if possible.
     if (Keywords::IsSubset(search_query_keyword_set, list_keyword_set)) {
       segment_list = keyword.segments;
       return segment_list;
