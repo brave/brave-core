@@ -1,6 +1,5 @@
 import("//build/config/features.gni")
 
 declare_args() {
-  # This feature is only allowed in Nightly for now
-  binance_enabled = !is_official_build || brave_channel == "nightly"
+  binance_enabled = is_mac || is_linux || is_win
 }

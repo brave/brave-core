@@ -349,6 +349,7 @@ class Binance extends React.PureComponent<Props, State> {
   }
 
   cancelConvert = () => {
+    clearInterval(this.convertTimer)
     this.setState({
       insufficientFunds: false,
       showConvertPreview: false,
@@ -363,10 +364,10 @@ class Binance extends React.PureComponent<Props, State> {
       currentConvertTransAmount: '',
       currentConvertExpiryTime: 30
     })
-    clearInterval(this.convertTimer)
   }
 
   retryConvert = () => {
+    clearInterval(this.convertTimer)
     this.setState({
       insufficientFunds: false,
       showConvertPreview: false,
@@ -654,7 +655,7 @@ class Binance extends React.PureComponent<Props, State> {
 
   renderTitle () {
     const { selectedView } = this.state
-    const { showContent, userAuthed, authInProgress } = this.props
+    const { showContent, userAuthed } = this.props
     const isUS = this.props.userTLD === 'us'
 
     return (
@@ -674,7 +675,7 @@ class Binance extends React.PureComponent<Props, State> {
                 <DisconnectIcon />
               </ActionItem>
             </ActionTray>
-          : !userAuthed && !authInProgress && showContent && !isUS
+          : !userAuthed && showContent && !isUS
             ? <ConnectPrompt onClick={this.connectBinance}>
                 {getLocale('binanceWidgetConnect')}
               </ConnectPrompt>
@@ -922,7 +923,7 @@ class Binance extends React.PureComponent<Props, State> {
   }
 
   renderSummaryView = () => {
-    const { accountBalances, btcBalanceValue, hideBalance, assetUSDValues, btcPrice } = this.props
+    const { accountBalances, btcBalanceValue, hideBalance, assetUSDValues } = this.props
     const currencyList = this.getCurrencyList()
 
     return (
@@ -952,8 +953,7 @@ class Binance extends React.PureComponent<Props, State> {
         </BTCSummary>
         {currencyList.map((asset: string) => {
           const assetBalance = this.formatCryptoBalance(accountBalances[asset])
-          const priceProp = asset === 'BTC' ? btcPrice : assetUSDValues[asset]
-          const price = getUSDPrice(assetBalance, priceProp)
+          const price = asset === 'BTC' ? btcBalanceValue : getUSDPrice(assetBalance, assetUSDValues[asset])
 
           return (
             <ListItem key={`list-${asset}`}>
