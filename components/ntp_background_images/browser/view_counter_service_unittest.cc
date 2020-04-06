@@ -68,6 +68,8 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
         base::MakeRefCounted<network::TestSharedURLLoaderFactory>());
     view_counter_ = std::make_unique<ViewCounterService>(
         service_.get(), prefs(), true);
+
+    local_pref_.SetBoolean(kReferralCheckedForPromoCodeFile, true);
   }
 
   void EnableSIPref(bool enable) {

@@ -94,6 +94,8 @@ class NTPBackgroundImagesService {
                            WithSuperReferralCodeTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
                            BasicSuperReferralTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
+                           CheckReferralServiceInitStatusTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            NotActiveInitially);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
@@ -114,6 +116,7 @@ class NTPBackgroundImagesService {
   void OnGetMappingTableData(std::unique_ptr<std::string> json_string);
 
   std::string GetReferralPromoCode() const;
+  bool IsReferralServiceInitialized() const;
 
   void CacheTopSitesFaviconList();
   void RestoreCachedTopSitesFaviconList();

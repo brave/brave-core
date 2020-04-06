@@ -236,17 +236,21 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
     return;
   }
 
-  if (local_pref_->FindPreference(
-          prefs::kNewTabPageCachedSuperReferralComponentInfo)->
-              IsDefaultValue()) {
-    MonitorReferralPromoCodeChange();
-    return;
-  }
-
   const auto* value = local_pref_->Get(
       prefs::kNewTabPageCachedSuperReferralComponentInfo);
   if (IsValidSuperReferralComponentInfo(*value)) {
     RegisterSuperReferralComponent();
+    return;
+  }
+
+  if (local_pref_->FindPreference(
+          prefs::kNewTabPageCachedSuperReferralComponentInfo)->
+              IsDefaultValue()) {
+    const std::string code = GetReferralPromoCode();
+    if (code.empty())
+      MonitorReferralPromoCodeChange();
+    else
+      DownloadSuperReferralMappingTable();
     return;
   }
 
@@ -270,8 +274,6 @@ void NTPBackgroundImagesService::OnPreferenceChanged(
   const std::string new_referral_code = GetReferralPromoCode();
   DVLOG(2) << __func__ << ": Got referral promo code: "
                        << new_referral_code;
-  // Referral promo code could be empty after 90 days from first run.
-  //
   DCHECK(!new_referral_code.empty());
   if (brave::BraveReferralsService::IsDefaultReferralCode(new_referral_code)) {
     DVLOG(2) << __func__ << ": This has default referral promo code.";
@@ -389,12 +391,25 @@ bool NTPBackgroundImagesService::HasObserver(Observer* observer) {
   return observer_list_.HasObserver(observer);
 }
 
+bool NTPBackgroundImagesService::IsReferralServiceInitialized() const {
+  return local_pref_->GetBoolean(kReferralCheckedForPromoCodeFile);
+}
+
 NTPBackgroundImagesData*
 NTPBackgroundImagesService::GetBackgroundImagesData(bool super_referral) const {
-  if (super_referral && sr_images_data_ && sr_images_data_->IsValid())
-    return sr_images_data_.get();
+  if (super_referral) {
+    if (sr_images_data_ && sr_images_data_->IsValid())
+      return sr_images_data_.get();
+    return nullptr;
+  }
 
-  if (!super_referral && si_images_data_ && si_images_data_->IsValid())
+  // Don't give SI data until referral service is initialized.
+  // W/o this check, NTP could show SI images before getting SR data at first
+  // run.
+  if (!IsReferralServiceInitialized())
+    return nullptr;
+
+  if (si_images_data_ && si_images_data_->IsValid())
     return si_images_data_.get();
 
   return nullptr;
@@ -407,7 +422,6 @@ void NTPBackgroundImagesService::OnComponentReady(
     sr_installed_dir_ = installed_dir;
   else
     si_installed_dir_ = installed_dir;
-
 
   DVLOG(2) << __func__ << (is_super_referral ? ": NPT SR Component is ready"
                                              : ": NTP SI Component is ready");

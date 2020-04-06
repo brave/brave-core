@@ -20,11 +20,35 @@
 
 namespace ntp_background_images {
 
-const char kTestEmptyComponent[] = R"(
+constexpr char kTestEmptyComponent[] = R"(
     {
         "schemaVersion": 1
     })";
 
+
+constexpr char kTestSponsoredImages[] = R"(
+    {
+        "schemaVersion": 1,
+        "logo": {
+          "imageUrl":  "logo.png",
+          "alt": "Technikke: For music lovers",
+          "destinationUrl": "https://www.brave.com/",
+          "companyName": "Technikke"
+        },
+        "wallpapers": [
+            {
+              "imageUrl": "background-1.jpg",
+              "focalPoint": { "x": 696, "y": 691 }
+            },
+            {
+              "imageUrl": "background-2.jpg"
+            },
+            {
+              "imageUrl": "background-3.jpg",
+              "focalPoint": {}
+            }
+        ]
+    })";
 
 class TestObserver : public NTPBackgroundImagesService::Observer {
  public:
@@ -121,6 +145,8 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   TestObserver observer;
   service_->AddObserver(&observer);
 
+  pref_service_.SetBoolean(kReferralCheckedForPromoCodeFile, true);
+
   // Check with json file w/o schema version with empty object.
   service_->si_images_data_.reset();
   service_->OnGetComponentJsonData(false, "{}");
@@ -136,33 +162,10 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   EXPECT_TRUE(observer.called_);
   EXPECT_TRUE(observer.data_->logo_alt_text.empty());
 
-  const std::string test_json_string = R"(
-      {
-          "schemaVersion": 1,
-          "logo": {
-            "imageUrl":  "logo.png",
-            "alt": "Technikke: For music lovers",
-            "destinationUrl": "https://www.brave.com/",
-            "companyName": "Technikke"
-          },
-          "wallpapers": [
-              {
-                "imageUrl": "background-1.jpg",
-                "focalPoint": { "x": 696, "y": 691 }
-              },
-              {
-                "imageUrl": "background-2.jpg"
-              },
-              {
-                "imageUrl": "background-3.jpg",
-                "focalPoint": {}
-              }
-          ]
-      })";
   service_->si_images_data_.reset();
   observer.called_ = false;
   observer.data_ = nullptr;
-  service_->OnGetComponentJsonData(false, test_json_string);
+  service_->OnGetComponentJsonData(false, kTestSponsoredImages);
   data = service_->GetBackgroundImagesData(false);
   EXPECT_TRUE(data);
   EXPECT_TRUE(data->IsValid());
@@ -407,6 +410,28 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
 
   EXPECT_TRUE(service_->marked_this_install_is_not_super_referral_forever_);
   EXPECT_TRUE(service_->unregistered_super_referral_component_);
+}
+
+TEST_F(NTPBackgroundImagesServiceTest, CheckReferralServiceInitStatusTest) {
+  Init();
+
+  // Initially, data is not available.
+  auto* data = service_->GetBackgroundImagesData(true);
+  EXPECT_FALSE(data);
+  data = service_->GetBackgroundImagesData(false);
+  EXPECT_FALSE(data);
+
+  // Simulate SI data is initialized first before referral service is
+  // initialized.
+  // Check SI data is not available before referrals service is initialized.
+  pref_service_.SetBoolean(kReferralCheckedForPromoCodeFile, false);
+  service_->OnGetComponentJsonData(false, kTestSponsoredImages);
+  data = service_->GetBackgroundImagesData(false);
+  EXPECT_FALSE(data);
+
+  pref_service_.SetBoolean(kReferralCheckedForPromoCodeFile, true);
+  data = service_->GetBackgroundImagesData(false);
+  EXPECT_TRUE(data);
 }
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
