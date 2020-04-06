@@ -1,7 +1,1 @@
-<svg width='20' height='22' xmlns='http://www.w3.org/2000/svg'>
-  <g fill='none' fillRule='evenodd'>
-    <path d='M0 0h20v22H0z' />
-    <path d='M5.5 19.5h2M10.5 19.5h2M15.5 19.5h2' stroke='#C5C5D3' strokeLinecap='square' />
-    <path d='M2.5 7.5v2M2.5 2.5v2M2.5 12.5v2M2.5 17.5v2' stroke='#C5C5D3' fill='#C5C5D3' strokeLinecap='square' />
-  </g>
-</svg>
+<svg height="22" width="20" xmlns="http://www.w3.org/2000/svg"><g fill="none"><path d="m0 0h20v22h-20z"/><g stroke="#c5c5d3"><path d="m5.5 19.5h2m3 0h2m3 0h2"/><path d="m2.5 7.5v2m0-7v2m0 8v2m0 3v2" fill="#c5c5d3"/></g></g></svg>
