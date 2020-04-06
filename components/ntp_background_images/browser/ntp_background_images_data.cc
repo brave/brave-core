@@ -159,9 +159,7 @@ base::Value NTPBackgroundImagesData::GetBackgroundAt(size_t index) {
   if (!IsValid())
     return data;
 
-  if (!theme_name.empty())
-    data.SetStringKey("themeName", theme_name);
-
+  data.SetStringKey("themeName", theme_name.empty() ? "": theme_name);
   data.SetBoolKey("isSponsored", !IsSuperReferral());
   data.SetStringKey("wallpaperImageUrl",
                     wallpaper_image_urls()[index]);
