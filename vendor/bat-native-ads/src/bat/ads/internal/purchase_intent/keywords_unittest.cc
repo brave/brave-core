@@ -20,6 +20,14 @@ using ::testing::_;
 
 namespace {
 
+const std::vector<std::string> kAudiSegments = {
+  "automotive purchase intent by make-audi"
+};
+
+const std::vector<std::string> kBmwSegments = {
+  "automotive purchase intent by make-bmw"
+};
+
 const std::vector<std::string> kAudiA4Segments = {
   "automotive purchase intent by make-audi",
   "automotive purchase intent by category-entry luxury car"
@@ -44,12 +52,14 @@ struct TestTriplet {
 };
 
 const std::vector<TestTriplet> kTestSearchqueries = {
+  {"BMW", kBmwSegments, 1},
   {"latest audi a6 review", kAudiA6Segments, 2},
   {"  \tlatest audi\na6 !?# @& review  \t  ", kAudiA6Segments, 2},
   {"latest audi a4 dealer reviews", kAudiA4Segments, 3},
   {"latest audi a6 ", kAudiA6Segments, 1},
   {"this is a test", kNoSegments, 1},
   {"audi a5 dealer opening times sell", kAudiA5Segments, 3},
+  {"audi", kAudiSegments, 1},
 };
 
 }  // namespace
