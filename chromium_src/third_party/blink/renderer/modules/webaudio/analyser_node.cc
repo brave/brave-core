@@ -7,9 +7,9 @@
 
 #include "third_party/blink/renderer/core/dom/document.h"
 
-#define BRAVE_ANALYSERHANDLER_CONSTRUCTOR                                  \
-  analyser_.fudge_factor_ = brave::BraveSessionCache::From(                \
-                                *To<Document>(node.GetExecutionContext())) \
+#define BRAVE_ANALYSERHANDLER_CONSTRUCTOR                                    \
+  analyser_.fudge_factor_ = brave::BraveSessionCache::From(                  \
+                                *Document::From(node.GetExecutionContext())) \
                                 .GetFudgeFactor();
 
 #include "../../../../../../third_party/blink/renderer/modules/webaudio/analyser_node.cc"
