@@ -6,7 +6,7 @@
 #include "third_party/blink/renderer/core/dom/document.h"
 
 #define BRAVE_CANVAS_ASYNC_BLOB_CREATOR                               \
-  Document* document = To<Document>(context);                         \
+  Document* document = Document::From(context);                       \
   if (document) {                                                     \
     image_ = brave::BraveSessionCache::From(*document).PerturbPixels( \
         document->GetFrame(), image_);                                \
