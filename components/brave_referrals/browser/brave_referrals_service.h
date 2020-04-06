@@ -36,6 +36,12 @@ class BraveReferralsService {
   void Start();
   void Stop();
 
+  using ReferralInitializedCallback =
+      base::RepeatingCallback<void(const std::string& download_id)>;
+
+  void SetReferralInitializedCallback(
+                  ReferralInitializedCallback referral_initialized_callback);
+
   static bool GetMatchingReferralHeaders(
       const base::ListValue& referral_headers_list,
       const base::DictionaryValue** request_headers_dict,
@@ -91,6 +97,7 @@ class BraveReferralsService {
   std::unique_ptr<base::OneShotTimer> initialization_timer_;
   std::unique_ptr<base::RepeatingTimer> fetch_referral_headers_timer_;
   std::unique_ptr<base::RepeatingTimer> finalization_checks_timer_;
+  ReferralInitializedCallback referral_initialized_callback_;
   PrefService* pref_service_;
   std::string promo_code_;
 

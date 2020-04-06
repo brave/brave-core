@@ -85,10 +85,14 @@ std::string GetPlatformIdentifier() {
 std::string BuildReferralEndpoint(const std::string& path) {
   std::unique_ptr<base::Environment> env(base::Environment::Create());
   std::string referral_server;
+  std::string proto = "https";
   env->GetVar("BRAVE_REFERRALS_SERVER", &referral_server);
   if (referral_server.empty())
     referral_server = kBraveReferralsServer;
-  return base::StringPrintf("https://%s%s", referral_server.c_str(),
+  if (env->HasVar("BRAVE_REFERRALS_LOCAL"))
+    proto = "http";
+  return base::StringPrintf("%s://%s%s", proto.c_str(),
+                            referral_server.c_str(),
                             path.c_str());
 }
 
@@ -169,6 +173,10 @@ void BraveReferralsService::Stop() {
   initialized_ = false;
 }
 
+void BraveReferralsService::SetReferralInitializedCallback(
+    ReferralInitializedCallback referral_initialized_callback) {
+  referral_initialized_callback_ = std::move(referral_initialized_callback);
+}
 // static
 bool BraveReferralsService::GetMatchingReferralHeaders(
     const base::ListValue& referral_headers_list,
@@ -292,6 +300,8 @@ void BraveReferralsService::OnReferralInitLoadComplete(
   pref_service_->SetBoolean(kReferralInitialization, true);
   if (initialization_timer_)
     initialization_timer_.reset();
+  if (!referral_initialized_callback_.is_null())
+    referral_initialized_callback_.Run(download_id->GetString());
 
   const base::Value* offer_page_url = root->FindKey("offer_page_url");
   if (offer_page_url) {
@@ -363,6 +373,8 @@ void BraveReferralsService::OnReadPromoCodeComplete() {
   } else {
     // No referral code, no point of reporting it.
     pref_service_->SetBoolean(kReferralInitialization, true);
+    if (!referral_initialized_callback_.is_null())
+      referral_initialized_callback_.Run(std::string());
   }
 }
 

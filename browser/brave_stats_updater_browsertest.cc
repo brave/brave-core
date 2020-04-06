@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/environment.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_stats_updater.h"
 #include "brave/common/pref_names.h"
@@ -13,21 +14,30 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/testing_pref_service.h"
 #include "net/base/url_util.h"
+#include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 
 namespace {
 
-// Request handler for stats updates. The response this returns doesn't
-// represent a valid update server response, but it's sufficient for
+// Request handler for stats and referral updates. The response this returns
+// doesn't represent a valid update server response, but it's sufficient for
 // testing purposes as we're not interested in the contents of the
 // response.
 std::unique_ptr<net::test_server::HttpResponse> HandleRequestForStats(
     const net::test_server::HttpRequest& request) {
+
   std::unique_ptr<net::test_server::BasicHttpResponse> http_response(
       new net::test_server::BasicHttpResponse());
-  http_response->set_code(net::HTTP_OK);
-  http_response->set_content_type("text/html");
-  http_response->set_content("<html><head></head></html>");
+  if (request.relative_url == "/promo/initialize/nonua") {
+    // We need a download id to make promo initialization happy
+    http_response->set_code(net::HTTP_OK);
+    http_response->set_content("{\"download_id\":\"keur123\"}");
+    http_response->set_content_type("application/json");
+  } else {
+    http_response->set_code(net::HTTP_OK);
+    http_response->set_content_type("text/html");
+    http_response->set_content("<html><head></head></html>");
+  }
   return std::move(http_response);
 }
 
@@ -51,8 +61,12 @@ class BraveStatsUpdaterBrowserTest : public InProcessBrowserTest {
   }
 
   void SetBaseUpdateURLForTest() {
+    std::unique_ptr<base::Environment> env(base::Environment::Create());
     brave::BraveStatsUpdater::SetBaseUpdateURLForTest(
         embedded_test_server()->GetURL("/1/usage/brave-core"));
+    env->SetVar("BRAVE_REFERRALS_SERVER",
+        embedded_test_server()->host_port_pair().ToString());
+    env->SetVar("BRAVE_REFERRALS_LOCAL", "1");  // use http for local testing
   }
 
   PrefService* GetLocalState() { return &testing_local_state_; }
@@ -71,14 +85,27 @@ class BraveStatsUpdaterBrowserTest : public InProcessBrowserTest {
                            referral_code.size());
   }
 
+  void OnReferralInitialized(const std::string& download_id) {
+    referral_was_initialized_ = true;
+    // TODO(keur): Maybe do something with the download id
+    wait_for_callback_loop_->Quit();
+  }
+
+  void WaitForReferralInitializeCallback() {
+    if (referral_was_initialized_)
+      return;
+    wait_for_callback_loop_.reset(new base::RunLoop);
+    wait_for_callback_loop_->Run();
+  }
+
   void OnStatsUpdated(const std::string& update_url) {
-    was_called_ = true;
+    stats_was_called_ = true;
     update_url_ = update_url;
     wait_for_callback_loop_->Quit();
   }
 
   void WaitForStatsUpdatedCallback() {
-    if (was_called_)
+    if (stats_was_called_)
       return;
     wait_for_callback_loop_.reset(new base::RunLoop);
     wait_for_callback_loop_->Run();
@@ -87,7 +114,8 @@ class BraveStatsUpdaterBrowserTest : public InProcessBrowserTest {
  private:
   TestingPrefServiceSimple testing_local_state_;
   std::unique_ptr<base::RunLoop> wait_for_callback_loop_;
-  bool was_called_ = false;
+  bool stats_was_called_ = false;
+  bool referral_was_initialized_ = false;
   std::string update_url_;
 };
 
@@ -101,7 +129,11 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   // ping only occurs after the referrals service checks for the promo
   // code file
   brave::BraveReferralsService referrals_service(GetLocalState());
+  referrals_service.SetReferralInitializedCallback(base::BindRepeating(
+      &BraveStatsUpdaterBrowserTest::OnReferralInitialized,
+      base::Unretained(this)));
   referrals_service.Start();
+  WaitForReferralInitializeCallback();
 
   // Start the stats updater, wait for it to perform its startup ping,
   // and then shut it down
@@ -130,7 +162,11 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   // ping only occurs after the referrals service checks for the promo
   // code file
   brave::BraveReferralsService referrals_service(GetLocalState());
+  referrals_service.SetReferralInitializedCallback(base::BindRepeating(
+      &BraveStatsUpdaterBrowserTest::OnReferralInitialized,
+      base::Unretained(this)));
   referrals_service.Start();
+  WaitForReferralInitializeCallback();
 
   // Start the stats updater, wait for it to perform its startup ping,
   // and then shut it down
@@ -177,7 +213,11 @@ IN_PROC_BROWSER_TEST_F(BraveStatsUpdaterBrowserTest,
   // ping only occurs after the referrals service checks for the promo
   // code file
   brave::BraveReferralsService referrals_service(GetLocalState());
+  referrals_service.SetReferralInitializedCallback(base::BindRepeating(
+      &BraveStatsUpdaterBrowserTest::OnReferralInitialized,
+      base::Unretained(this)));
   referrals_service.Start();
+  WaitForReferralInitializeCallback();
 
   // Start the stats updater, wait for it to perform its startup ping,
   // and then shut it down
