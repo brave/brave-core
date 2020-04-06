@@ -5,10 +5,13 @@
 
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 
-#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
-#include "brave/browser/ui/views/toolbar/speedreader_button.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/speedreader/speedreader_service_factory.h"
+#include "brave/components/speedreader/speedreader_service.h"
+#include "brave/components/speedreader/speedreader_test_whitelist.h"
+#include "brave/components/speedreader/speedreader_whitelist.h"
+#include "chrome/browser/profiles/profile.h"
+#include "content/public/browser/navigation_handle.h"
 
 namespace speedreader {
 
@@ -17,25 +20,42 @@ SpeedreaderTabHelper::~SpeedreaderTabHelper() = default;
 SpeedreaderTabHelper::SpeedreaderTabHelper(content::WebContents* web_contents)
     : content::WebContentsObserver(web_contents) {}
 
-void SpeedreaderTabHelper::SetActive() {
-  active_ = true;
-  UpdateButton();
+void SpeedreaderTabHelper::UpdateActiveState(
+    content::NavigationHandle* handle) {
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+  DCHECK(profile);
+  const bool enabled =
+      SpeedreaderServiceFactory::GetForProfile(profile)->IsEnabled();
+
+  if (!enabled) {
+    active_ = false;
+  }
+
+  // Work only with casual main frame navigations.
+  if (handle->GetURL().SchemeIsHTTPOrHTTPS() && handle->IsInMainFrame()) {
+    auto* whitelist = g_brave_browser_process->speedreader_whitelist();
+    if (speedreader::IsWhitelistedForTest(handle->GetURL()) ||
+        whitelist->IsWhitelisted(handle->GetURL())) {
+      active_ = true;
+      return;
+    }
+  }
+  active_ = false;
 }
 
-void SpeedreaderTabHelper::OnVisibilityChanged(content::Visibility visibility) {
-  if (visibility != content::Visibility::HIDDEN) {
-    UpdateButton();
+void SpeedreaderTabHelper::DidStartNavigation(
+    content::NavigationHandle* navigation_handle) {
+  if (navigation_handle->IsInMainFrame()) {
+    UpdateActiveState(navigation_handle);
+    LOG(ERROR) << "UPdated! for url " << navigation_handle->GetURL() << " " << active_;
   }
 }
 
-void SpeedreaderTabHelper::UpdateButton() {
-  // TODO(iefremov): We probably should do it with lesser amount of hacks.
-  Browser* browser = chrome::FindBrowserWithWebContents(web_contents());
-  BrowserView* view = static_cast<BrowserView*>(browser->window());
-  SpeedreaderButton* button =
-      static_cast<BraveToolbarView*>(view->toolbar())->speedreader_button();
-  if (button) {
-    button->SetActive(active_);
+void SpeedreaderTabHelper::DidRedirectNavigation(
+    content::NavigationHandle* navigation_handle) {
+  if (navigation_handle->IsInMainFrame()) {
+    UpdateActiveState(navigation_handle);
   }
 }
 

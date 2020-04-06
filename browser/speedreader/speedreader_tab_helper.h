@@ -10,12 +10,13 @@
 #include "content/public/browser/web_contents_user_data.h"
 
 namespace content {
+class NavigationHandle;
 class WebContents;
-}
+}  // namespace content
 
 namespace speedreader {
 
-// Updates the speedreader toolbar button state when a tab visibility changes.
+// Determines if speedreader should be active for a given top-level navigation.
 class SpeedreaderTabHelper
     : public content::WebContentsObserver,
       public content::WebContentsUserData<SpeedreaderTabHelper> {
@@ -25,16 +26,18 @@ class SpeedreaderTabHelper
   SpeedreaderTabHelper(const SpeedreaderTabHelper&) = delete;
   SpeedreaderTabHelper& operator=(SpeedreaderTabHelper&) = delete;
 
-  void SetActive();
+  void UpdateActiveState(content::NavigationHandle* handle);
+  bool IsActiveForMainFrame() const { return active_; }
 
  private:
   friend class content::WebContentsUserData<SpeedreaderTabHelper>;
   explicit SpeedreaderTabHelper(content::WebContents* web_contents);
 
   // content::WebContentsObserver
-  void OnVisibilityChanged(content::Visibility visibility) override;
-
-  void UpdateButton();
+  void DidStartNavigation(
+      content::NavigationHandle* navigation_handle) override;
+  void DidRedirectNavigation(
+      content::NavigationHandle* navigation_handle) override;
 
   bool active_ = false;
 

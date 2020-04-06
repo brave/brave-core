@@ -58,8 +58,10 @@ void SpeedreaderButton::Toggle() {
 }
 
 void SpeedreaderButton::SetActive(bool active) {
-  active_ = active;
-  UpdateImage();
+  if (active_ != active) {
+    active_ = active;
+    UpdateImage();
+  }
 }
 
 void SpeedreaderButton::UpdateImage() {

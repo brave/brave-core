@@ -98,12 +98,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
-#include "brave/components/speedreader/speedreader_service.h"
-#include "brave/components/speedreader/speedreader_switches.h"
 #include "brave/components/speedreader/speedreader_throttle.h"
-#include "brave/components/speedreader/speedreader_whitelist.h"
 #include "content/public/common/resource_type.h"
 #endif
 
@@ -287,36 +283,17 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
         request, browser_context, wc_getter, navigation_ui_data,
         frame_tree_node_id);
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  const auto* cmd_line = base::CommandLine::ForCurrentProcess();
-  if (cmd_line->HasSwitch(speedreader::kEnableSpeedreader)) {
-    Profile* profile = Profile::FromBrowserContext(browser_context);
-    DCHECK(profile);
-    const bool enabled = speedreader::SpeedreaderServiceFactory::
-        GetForProfile(profile)->IsEnabled();
-
-    if (!enabled) {
-      return result;
-    }
-    // Work only with casual main frame navigations.
-    if (request.url.SchemeIsHTTPOrHTTPS() &&
-        request.resource_type ==
-        static_cast<int>(content::ResourceType::kMainFrame)) {
-      // Note that we check the whitelist before any redirects, while distilling
-      // will be performed on a final document (the last in the redirect chain).
-      auto* whitelist = g_brave_browser_process->speedreader_whitelist();
-      if (speedreader::IsWhitelisted(request.url) ||
-          whitelist->IsWhitelisted(request.url)) {
-        result.push_back(std::make_unique<speedreader::SpeedReaderThrottle>(
-                         base::ThreadTaskRunnerHandle::Get()));
-
-        // Notify the tab helper. We assume that whitelist is accurate, i.e.
-        // the tab helper will assume that the page was distilled.
-        auto* web_contents = wc_getter.Run();
-        speedreader::SpeedreaderTabHelper* tab_helper =
-            speedreader::SpeedreaderTabHelper::FromWebContents(web_contents);
-        tab_helper->SetActive();
-      }
-    }
+  content::WebContents* contents = wc_getter.Run();
+  if (!contents) {
+    return result;
+  }
+  auto* tab_helper =
+      speedreader::SpeedreaderTabHelper::FromWebContents(contents);
+  if (tab_helper && tab_helper->IsActiveForMainFrame()
+      && request.resource_type
+          == static_cast<int>(content::ResourceType::kMainFrame)) {
+    result.push_back(std::make_unique<speedreader::SpeedReaderThrottle>(
+        base::ThreadTaskRunnerHandle::Get()));
   }
 #endif  // ENABLE_SPEEDREADER
   return result;

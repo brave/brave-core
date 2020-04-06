@@ -12,6 +12,7 @@
 #include "base/bind.h"
 #include "base/command_line.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/speedreader_button.h"
 #include "brave/common/pref_names.h"
@@ -23,8 +24,8 @@
 #include "chrome/browser/ui/bookmarks/bookmark_bubble_sign_in_delegate.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bubble_view.h"
-#include "components/prefs/pref_service.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
+#include "components/prefs/pref_service.h"
 
 namespace {
 constexpr int kLocationBarMaxWidth = 1080;
@@ -46,11 +47,11 @@ gfx::Insets CalcLocationBarMargin(int toolbar_width,
                                   int location_bar_x) {
   // Apply the target margin, adjusting for min and max width of LocationBar
   // Make sure any margin doesn't shrink the LocationBar beyond minimum width
-  int location_bar_max_margin_h = (
-      available_location_bar_width - location_bar_min_width) / 2;
+  int location_bar_max_margin_h =
+      (available_location_bar_width - location_bar_min_width) / 2;
   int location_bar_margin_h =
-      std::min(static_cast<int>(
-                   toolbar_width * GetLocationBarMarginHPercent(toolbar_width)),
+      std::min(static_cast<int>(toolbar_width *
+                                GetLocationBarMarginHPercent(toolbar_width)),
                location_bar_max_margin_h);
   int location_bar_width =
       available_location_bar_width - (location_bar_margin_h * 2);
@@ -69,7 +70,8 @@ gfx::Insets CalcLocationBarMargin(int toolbar_width,
   // Can't shim more than we have space for, so restrict to margin size
   // or in the case of moving-right, 25% of the space since we want to avoid
   // touching browser actions where possible
-  location_bar_center_offset = (location_bar_center_offset > 0)
+  location_bar_center_offset =
+      (location_bar_center_offset > 0)
           ? std::min(location_bar_margin_h, location_bar_center_offset)
           : std::max(static_cast<int>(-location_bar_margin_h * .25),
                      location_bar_center_offset);
@@ -84,22 +86,20 @@ gfx::Insets CalcLocationBarMargin(int toolbar_width,
 
 bool HasMultipleUserProfiles() {
   ProfileAttributesStorage* profile_storage =
-          &g_browser_process->profile_manager()->GetProfileAttributesStorage();
+      &g_browser_process->profile_manager()->GetProfileAttributesStorage();
   size_t profile_count = profile_storage->GetNumberOfProfiles();
   return (profile_count != 1);
 }
 
 bool IsAvatarButtonHideable(Profile* profile) {
-  return !brave::IsTorProfile(profile) &&
-      !profile->IsIncognitoProfile() &&
-      !profile->IsGuestSession();
+  return !brave::IsTorProfile(profile) && !profile->IsIncognitoProfile() &&
+         !profile->IsGuestSession();
 }
 
 }  // namespace
 
 BraveToolbarView::BraveToolbarView(Browser* browser, BrowserView* browser_view)
-    : ToolbarView(browser, browser_view),
-      profile_observer_(this) { }
+    : ToolbarView(browser, browser_view), profile_observer_(this) {}
 
 BraveToolbarView::~BraveToolbarView() {}
 
@@ -131,24 +131,25 @@ void BraveToolbarView::Init() {
                  base::Unretained(this)));
 
   bookmark_ = new BookmarkButton(this);
-  bookmark_->set_triggerable_event_flags(
-      ui::EF_LEFT_MOUSE_BUTTON | ui::EF_MIDDLE_MOUSE_BUTTON);
+  bookmark_->set_triggerable_event_flags(ui::EF_LEFT_MOUSE_BUTTON |
+                                         ui::EF_MIDDLE_MOUSE_BUTTON);
   bookmark_->Init();
 
   // Speedreader.
   base::CommandLine* cmdline = base::CommandLine::ForCurrentProcess();
   if (cmdline->HasSwitch(speedreader::kEnableSpeedreader)) {
-    const bool speedreader_on = profile->GetPrefs()->GetBoolean(
-        speedreader::kSpeedreaderEnabled);
+    const bool speedreader_on =
+        profile->GetPrefs()->GetBoolean(speedreader::kSpeedreaderEnabled);
     speedreader_ = new SpeedreaderButton(this, speedreader_on);
-    speedreader_->set_triggerable_event_flags(
-        ui::EF_LEFT_MOUSE_BUTTON | ui::EF_MIDDLE_MOUSE_BUTTON);
+    speedreader_->set_triggerable_event_flags(ui::EF_LEFT_MOUSE_BUTTON |
+                                              ui::EF_MIDDLE_MOUSE_BUTTON);
     speedreader_->Init();
   }
 
   DCHECK(location_bar_);
   AddChildViewAt(bookmark_, GetIndexOf(location_bar_));
   bookmark_->UpdateImage();
+
   if (speedreader_) {
     AddChildViewAt(speedreader_, GetIndexOf(location_bar_));
     speedreader_->UpdateImage();
@@ -185,9 +186,8 @@ void BraveToolbarView::OnProfileAdded(const base::FilePath& profile_path) {
   Update(nullptr);
 }
 
-void BraveToolbarView::OnProfileWasRemoved(
-    const base::FilePath& profile_path,
-    const base::string16& profile_name) {
+void BraveToolbarView::OnProfileWasRemoved(const base::FilePath& profile_path,
+                                           const base::string16& profile_name) {
   Update(nullptr);
 }
 
@@ -208,6 +208,15 @@ void BraveToolbarView::Update(content::WebContents* tab) {
   }
   if (speedreader_) {
     speedreader_->SetVisible(true);
+
+    auto* active_contents = GetWebContents();
+    if (active_contents) {
+      auto* tab_helper =
+          speedreader::SpeedreaderTabHelper::FromWebContents(active_contents);
+      if (tab_helper) {
+        speedreader_->SetActive(tab_helper->IsActiveForMainFrame());
+      }
+    }
   }
   // Remove avatar menu if only a single user profile exists.
   // Always show if private / tor / guest window, as an indicator.
@@ -215,8 +224,7 @@ void BraveToolbarView::Update(content::WebContents* tab) {
   if (avatar_button) {
     auto* profile = browser_->profile();
     const bool should_show_profile =
-      !IsAvatarButtonHideable(profile) ||
-      HasMultipleUserProfiles();
+        !IsAvatarButtonHideable(profile) || HasMultipleUserProfiles();
     avatar_button->SetVisible(should_show_profile);
   }
 }
@@ -235,9 +243,8 @@ void BraveToolbarView::ShowBookmarkBubble(
   std::unique_ptr<BubbleSyncPromoDelegate> delegate;
   delegate.reset(new BookmarkBubbleSignInDelegate(browser()));
   views::Widget* bubble_widget = BookmarkBubbleView::ShowBubble(
-      anchor_view, bookmark_, gfx::Rect(), nullptr,
-      observer, std::move(delegate), browser_->profile(),
-      url, already_bookmarked);
+      anchor_view, bookmark_, gfx::Rect(), nullptr, observer,
+      std::move(delegate), browser_->profile(), url, already_bookmarked);
 
   if (bubble_widget && bookmark_)
     bookmark_->OnBubbleWidgetCreated(bubble_widget);
@@ -265,16 +272,13 @@ void BraveToolbarView::ResetLocationBarBounds() {
   DCHECK_EQ(DisplayMode::NORMAL, display_mode_);
 
   // Calculate proper location bar's margin and set its bounds.
-  const gfx::Insets margin =
-      CalcLocationBarMargin(width(),
-                            location_bar_->width(),
-                            location_bar_->GetMinimumSize().width(),
+  const gfx::Insets margin = CalcLocationBarMargin(
+      width(), location_bar_->width(), location_bar_->GetMinimumSize().width(),
       location_bar_->x());
 
-  location_bar_->SetBounds(location_bar_->x() + margin.left(),
-                           location_bar_->y(),
-                           location_bar_->width() - margin.width(),
-                           location_bar_->height());
+  location_bar_->SetBounds(
+      location_bar_->x() + margin.left(), location_bar_->y(),
+      location_bar_->width() - margin.width(), location_bar_->height());
 }
 
 void BraveToolbarView::ResetButtonBounds() {
@@ -292,8 +296,7 @@ void BraveToolbarView::ResetButtonBounds() {
 
   if (speedreader_ && speedreader_->GetVisible()) {
     const int speedreader_width = speedreader_->GetPreferredSize().width();
-    const int speedreader_x =
-        button_right_margin - speedreader_width;
+    const int speedreader_x = button_right_margin - speedreader_width;
     speedreader_->SetX(speedreader_x);
   }
 }

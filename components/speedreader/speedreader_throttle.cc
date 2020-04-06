@@ -5,56 +5,13 @@
 
 #include "brave/components/speedreader/speedreader_throttle.h"
 
-#include <string>
 #include <utility>
-#include <vector>
-
-#include "base/no_destructor.h"
-#include "base/command_line.h"
-#include "base/strings/pattern.h"
-#include "base/strings/string_split.h"
 #include "brave/components/speedreader/speedreader_loader.h"
-#include "brave/components/speedreader/speedreader_switches.h"
-#include "brave/components/speedreader/speedreader_whitelist.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 
 namespace speedreader {
-
-namespace {
-std::vector<std::string> GetHardcodedWhitelist() {
-  static const base::NoDestructor<std::vector<std::string>> whitelist({
-    "https://medium.com/*/*",
-    "https://longreads.com/*/*",
-    "https://edition.cnn.com/*",
-  });
-  return *whitelist;
-}
-}  // namespace
-
-bool IsWhitelisted(const GURL& url) {
-  const auto* cmd_line = base::CommandLine::ForCurrentProcess();
-  if (!cmd_line->HasSwitch(speedreader::kSpeedreaderWhitelist)) {
-    // Everything whitelisted.
-    return true;
-  }
-  const std::string whitelist_str =
-      cmd_line->GetSwitchValueASCII(speedreader::kSpeedreaderWhitelist);
-  auto whitelist = base::SplitString(whitelist_str,
-                                     ";",
-                                     base::WhitespaceHandling::TRIM_WHITESPACE,
-                                     base::SplitResult::SPLIT_WANT_NONEMPTY);
-  const auto& hardcoded = GetHardcodedWhitelist();
-  whitelist.insert(whitelist.end(), hardcoded.begin(), hardcoded.end());
-
-  for (const auto& pattern : whitelist) {
-    if (base::MatchPattern(url.spec(), pattern)) {
-      return true;
-    }
-  }
-  return false;
-}
 
 SpeedReaderThrottle::SpeedReaderThrottle(
     scoped_refptr<base::SingleThreadTaskRunner> task_runner)
