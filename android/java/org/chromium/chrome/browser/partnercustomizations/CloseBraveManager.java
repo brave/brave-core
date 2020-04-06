@@ -13,14 +13,7 @@ import org.chromium.chrome.browser.ntp.NewTabPage;
 public class CloseBraveManager {
     private static final String CLOSING_ALL_TABS_CLOSES_BRAVE = "closing_all_tabs_closes_brave";
 
-    // When NTP is set as home page, we don't close brave always.
-    // Otherwise, follow option value.
     public static boolean shouldCloseAppWithZeroTabs() {
-        if (HomepageManager.isHomepageEnabled() &&
-                NewTabPage.isNTPUrl(HomepageManager.getHomepageUri())) {
-            return false;
-        }
-
         return getClosingAllTabsClosesBraveEnabled();
     }
 
