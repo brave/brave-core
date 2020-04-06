@@ -418,6 +418,12 @@ class Binance extends React.PureComponent<Props, State> {
     this.setState({
       currentDepositAsset: asset
     })
+
+    if (!asset) {
+      this.setState({
+        currentDepositSearch: ''
+      })
+    }
   }
 
   setCurrentConvertAsset (asset: string) {
@@ -884,7 +890,7 @@ class Binance extends React.PureComponent<Props, State> {
           const nameString = currencyName ? `(${currencyName})` : ''
 
           if (lowerAsset.indexOf(lowerSearch) < 0 &&
-              lowerName.indexOf(lowerSearch) < 0) {
+              lowerName.indexOf(lowerSearch) < 0 && currentDepositSearch) {
             return null
           }
 
@@ -989,12 +995,8 @@ class Binance extends React.PureComponent<Props, State> {
             <ConvertValue>{`${displayConvertAmount} ${currentConvertFrom}`}</ConvertValue>
           </ConvertInfoItem>
           <ConvertInfoItem>
-            <ConvertLabel>{getLocale('binanceWidgetRate')}</ConvertLabel>
-            <ConvertValue>{`1 ${currentConvertFrom} = X ${currentConvertTo}`}</ConvertValue>
-          </ConvertInfoItem>
-          <ConvertInfoItem>
             <ConvertLabel>{getLocale('binanceWidgetFee')}</ConvertLabel>
-            <ConvertValue>{`${displayConvertFee} BNB`}</ConvertValue>
+            <ConvertValue>{`${displayConvertFee} ${currentConvertFrom}`}</ConvertValue>
           </ConvertInfoItem>
           <ConvertInfoItem isLast={true}>
             <ConvertLabel>{getLocale('binanceWidgetWillReceive')}</ConvertLabel>
