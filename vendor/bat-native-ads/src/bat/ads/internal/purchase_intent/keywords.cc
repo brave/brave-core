@@ -37,15 +37,17 @@ uint16_t Keywords::GetFunnelWeight(
     const std::string& search_query) {
   auto search_query_keyword_set = TransformIntoSetOfWords(search_query);
 
+  uint16_t max_weight = _default_signal_weight;
   for (const auto& keyword : _automotive_funnel_keywords) {
     auto list_keyword_set = TransformIntoSetOfWords(keyword.keywords);
 
-    if (Keywords::IsSubset(search_query_keyword_set, list_keyword_set)) {
-      return keyword.weight;
+    if (Keywords::IsSubset(search_query_keyword_set, list_keyword_set) &&
+        keyword.weight > max_weight) {
+      max_weight = keyword.weight;
     }
   }
 
-  return _default_signal_weight;
+  return max_weight;
 }
 
 // TODO(Moritz Haller): Rename to make explicit that method checks set_a is
