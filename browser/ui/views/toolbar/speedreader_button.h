@@ -8,6 +8,10 @@
 
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 
+namespace content {
+class WebContents;
+}
+
 // Enables/disables speedreader in prefs. Also shows if the current page was
 // distilled.
 class SpeedreaderButton : public ToolbarButton {
@@ -19,7 +23,7 @@ class SpeedreaderButton : public ToolbarButton {
   SpeedreaderButton& operator=(const SpeedreaderButton&) = delete;
 
   void Toggle();
-  void SetActive(bool active);
+  void Update(content::WebContents* active_contents);
   void UpdateImage();
 
   // ToolbarButton:

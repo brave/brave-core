@@ -12,7 +12,6 @@
 #include "base/bind.h"
 #include "base/command_line.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/speedreader_button.h"
 #include "brave/common/pref_names.h"
@@ -207,16 +206,9 @@ void BraveToolbarView::Update(content::WebContents* tab) {
                           edit_bookmarks_enabled_.GetValue());
   }
   if (speedreader_) {
-    speedreader_->SetVisible(true);
-
-    auto* active_contents = GetWebContents();
-    if (active_contents) {
-      auto* tab_helper =
-          speedreader::SpeedreaderTabHelper::FromWebContents(active_contents);
-      if (tab_helper) {
-        speedreader_->SetActive(tab_helper->IsActiveForMainFrame());
-      }
-    }
+    // Note that we pass active web contents, not the |tab| which is something
+    // different.
+    speedreader_->Update(GetWebContents());
   }
   // Remove avatar menu if only a single user profile exists.
   // Always show if private / tor / guest window, as an indicator.

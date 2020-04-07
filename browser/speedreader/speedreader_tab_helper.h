@@ -26,12 +26,13 @@ class SpeedreaderTabHelper
   SpeedreaderTabHelper(const SpeedreaderTabHelper&) = delete;
   SpeedreaderTabHelper& operator=(SpeedreaderTabHelper&) = delete;
 
-  void UpdateActiveState(content::NavigationHandle* handle);
   bool IsActiveForMainFrame() const { return active_; }
 
  private:
   friend class content::WebContentsUserData<SpeedreaderTabHelper>;
   explicit SpeedreaderTabHelper(content::WebContents* web_contents);
+
+  void UpdateActiveState(content::NavigationHandle* handle);
 
   // content::WebContentsObserver
   void DidStartNavigation(

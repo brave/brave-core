@@ -8,6 +8,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/app/vector_icons/vector_icons.h"
+#include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/view_ids.h"
@@ -57,10 +58,17 @@ void SpeedreaderButton::Toggle() {
   UpdateImage();
 }
 
-void SpeedreaderButton::SetActive(bool active) {
-  if (active_ != active) {
-    active_ = active;
-    UpdateImage();
+void SpeedreaderButton::Update(content::WebContents* active_contents) {
+  if (active_contents) {
+    auto* tab_helper =
+        speedreader::SpeedreaderTabHelper::FromWebContents(active_contents);
+    if (tab_helper) {
+      const bool active = tab_helper->IsActiveForMainFrame();
+      if (active_ != active) {
+        active_ = active;
+        UpdateImage();
+      }
+    }
   }
 }
 

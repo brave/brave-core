@@ -30,6 +30,7 @@ void SpeedreaderTabHelper::UpdateActiveState(
 
   if (!enabled) {
     active_ = false;
+    return;
   }
 
   // Work only with casual main frame navigations.
@@ -48,7 +49,6 @@ void SpeedreaderTabHelper::DidStartNavigation(
     content::NavigationHandle* navigation_handle) {
   if (navigation_handle->IsInMainFrame()) {
     UpdateActiveState(navigation_handle);
-    LOG(ERROR) << "UPdated! for url " << navigation_handle->GetURL() << " " << active_;
   }
 }
 

@@ -51,7 +51,6 @@ bool IsWhitelistedForTest(const GURL& url) {
     }
   }
   return false;
-
 }
 
 }  // namespace speedreader
