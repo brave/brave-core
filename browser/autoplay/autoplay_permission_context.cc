@@ -14,9 +14,10 @@
 #include "components/permissions/permission_request_id.h"
 #include "third_party/blink/public/mojom/feature_policy/feature_policy.mojom.h"
 
-AutoplayPermissionContext::AutoplayPermissionContext(Profile* profile)
-    : PermissionContextBase(
-          profile,
+AutoplayPermissionContext::AutoplayPermissionContext(
+    content::BrowserContext* browser_context)
+    : permissions::PermissionContextBase(
+          browser_context,
           ContentSettingsType::AUTOPLAY,
           blink::mojom::FeaturePolicyFeature::kAutoplay) {}
 
@@ -41,10 +42,10 @@ void AutoplayPermissionContext::NotifyPermissionSet(
     const permissions::PermissionRequestID& id,
     const GURL& requesting_origin,
     const GURL& embedding_origin,
-    BrowserPermissionCallback callback,
+    permissions::BrowserPermissionCallback callback,
     bool persist,
     ContentSetting content_setting) {
-  PermissionContextBase::NotifyPermissionSet(
+  permissions::PermissionContextBase::NotifyPermissionSet(
       id, requesting_origin, embedding_origin, std::move(callback), persist,
       content_setting);
   // Ask -> Allow
