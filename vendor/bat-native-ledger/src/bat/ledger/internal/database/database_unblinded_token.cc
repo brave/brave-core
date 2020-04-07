@@ -424,16 +424,25 @@ void DatabaseUnblindedToken::GetRecordsByTriggerIds(
   auto transaction = ledger::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
-      "SELECT token_id, token_value, public_key, value, creds_id, "
-      "expires_at FROM %s as ut"
+      "SELECT ut.token_id, ut.token_value, ut.public_key, ut.value, "
+      "ut.creds_id, ut.expires_at FROM %s as ut"
       "INNER JOIN creds_batch as cb ON cb.creds_id = ut.creds_id "
       "WHERE cb.trigger_id IN (%s)",
       kTableName,
       GenerateStringInCase(trigger_ids).c_str());
 
   auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  command->type = ledger::DBCommand::Type::READ;
   command->command = query;
+
+  command->record_bindings = {
+      ledger::DBCommand::RecordBindingType::INT64_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::INT64_TYPE
+  };
 
   transaction->commands.push_back(std::move(command));
 
