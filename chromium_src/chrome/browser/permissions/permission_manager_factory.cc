@@ -8,8 +8,9 @@
 #include <memory>
 
 #include "brave/browser/autoplay/autoplay_permission_context.h"
-#include "brave/browser/geolocation/brave_geolocation_permission_context.h"
+#include "brave/browser/geolocation/brave_geolocation_permission_context_delegate.h"
 #include "components/content_settings/core/common/content_settings_types.h"
+#include "components/permissions/permission_manager.h"
 
 namespace {
 
@@ -29,9 +30,9 @@ BraveCreatePermissionContexts(Profile* profile) {
 }  // namespace
 
 #define BuildServiceInstanceFor BuildServiceInstanceFor_ChromiumImpl
-#define GeolocationPermissionContext BraveGeolocationPermissionContext
+#define GeolocationPermissionContextDelegate BraveGeolocationPermissionContextDelegate
 #include "../../../../../chrome/browser/permissions/permission_manager_factory.cc"
-#undef GeolocationPermissionContext
+#undef GeolocationPermissionContextDelegate
 #undef BuildServiceInstanceFor
 
 KeyedService* PermissionManagerFactory::BuildServiceInstanceFor(
