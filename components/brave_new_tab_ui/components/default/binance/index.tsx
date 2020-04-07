@@ -654,10 +654,13 @@ class Binance extends React.PureComponent<Props, State> {
 
   getCurrencyList = () => {
     const { accountBalances, userTLD } = this.props
-    const balanceKeys = Object.keys(accountBalances)
     const baseList = userTLD === 'us' ? this.usCurrencies : this.comCurrencies
 
-    balanceKeys.map((symbol: string) => {
+    if (!accountBalances) {
+      return baseList
+    }
+
+    Object.keys(accountBalances).map((symbol: string) => {
       if (!baseList.includes(symbol)) {
         baseList.push(symbol)
       }
