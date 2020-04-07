@@ -18,4 +18,11 @@ const int64_t kBraveDefaultPollIntervalSeconds = 60;
   account_info.account_id = CoreAccountId::FromString("dummy_account_id"); \
   return std::move(account_info);
 
+#define BRAVE_PROFILE_SYNC_SERVICE \
+  auth_manager_->CreateAccessTokenFetcher(url_loader_factory_);
+
 #include "../../../../../components/sync/driver/profile_sync_service.cc"
+#undef BRAVE_SET_POLL_INTERVAL
+#undef BRAVE_IS_SIGNED_IN
+#undef BRAVE_GET_AUTHENTICATED_ACCOUNT_INFO
+#undef BRAVE_PROFILE_SYNC_SERVICE
