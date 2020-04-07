@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
@@ -34,20 +35,24 @@ import org.chromium.chrome.R;
 import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 
-public class RateDialogFragment extends DialogFragment implements RatingBar.OnRatingBarChangeListener, View.OnClickListener {
-
-	private static final float RATE_THRESHOLD = 5.0f;
-
+public class RateDialogFragment extends DialogFragment implements View.OnClickListener {
 	private boolean mIsFeedbackShown;
+    private boolean mIsFromSettings;
 
 	private TextView mRateTitleTextView, mFeedbackTitleTextView;
-	private RatingBar mRateBar;
+    private ImageButton mHappyImageButton, mNeutralImageButton, mSadImageButton;
 	private EditText mRateFeedbackEditText;
-	private Button mPositiveButton, mNegativeButton;
+	private Button mPositiveButton, mNegativeButton, mRateButton, mLaterButton;
+
+    private LinearLayout mSmileyLayout, mRateSuccessActionLayout, mRateActionLayout;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            mIsFromSettings = bundle.getBoolean(RateUtils.FROM_SETTINGS, false);
+        }
 	}
 
     @Override
@@ -83,21 +88,37 @@ public class RateDialogFragment extends DialogFragment implements RatingBar.OnRa
     public void onViewCreated(View view, Bundle savedInstanceState) {
         mRateTitleTextView = view.findViewById(R.id.rate_title_tv);
         mFeedbackTitleTextView = view.findViewById(R.id.feedback_title_tv);
-        mRateBar = view.findViewById(R.id.brave_rb);
+        mHappyImageButton = view.findViewById(R.id.happy_ib);
+        mNeutralImageButton = view.findViewById(R.id.neutral_ib);
+        mSadImageButton = view.findViewById(R.id.sad_ib);
         mRateFeedbackEditText = view.findViewById(R.id.rate_feedback_et);
         mPositiveButton = view.findViewById(R.id.rate_positive_btn);
         mNegativeButton = view.findViewById(R.id.rate_negative_btn);
+        mRateButton = view.findViewById(R.id.rate_btn);
+        mLaterButton = view.findViewById(R.id.later_btn);
 
-        mRateBar.setOnRatingBarChangeListener(this);
+        mSmileyLayout = view.findViewById(R.id.smiley_layout);
+        mRateSuccessActionLayout = view.findViewById(R.id.brave_rate_success_action_layout);
+        mRateActionLayout = view.findViewById(R.id.brave_rate_action_layout);
+
+        mHappyImageButton.setOnClickListener(this);
+        mNeutralImageButton.setOnClickListener(this);
+        mSadImageButton.setOnClickListener(this);
         mPositiveButton.setOnClickListener(this);
         mNegativeButton.setOnClickListener(this);
+        mRateButton.setOnClickListener(this);
+        mLaterButton.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.rate_negative_btn) {
+            if(mIsFeedbackShown) {
+                laterAction();
+            } else {
+                showNever();
+            }
             dismiss();
-            showNever();
         } else if (view.getId() == R.id.rate_positive_btn) {
         	if(mIsFeedbackShown) {
         		String feedback = mRateFeedbackEditText.getText().toString().trim();
@@ -108,20 +129,21 @@ public class RateDialogFragment extends DialogFragment implements RatingBar.OnRa
 	            }
 	            dismiss();
 	            showNever();
-        	}
-        	dismiss();
-        }
-    }
-
-    @Override
-    public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-        if (ratingBar.getRating() == RATE_THRESHOLD) {
+        	} else {
+                laterAction();
+                dismiss();
+            }
+        } else if(view.getId() == R.id.neutral_ib || view.getId() == R.id.sad_ib) {
+            showFeedback();
+        } else if(view.getId() == R.id.happy_ib) {
+            showRateSuccess();
+        } else if(view.getId() == R.id.rate_btn) {
             openPlaystore();
             dismiss();
-        } else {
-            showFeedback();
+        } else if(view.getId() == R.id.later_btn) {
+            laterAction();
+            dismiss();
         }
-        showNever();
     }
 
     private void openPlaystore() {
@@ -134,10 +156,11 @@ public class RateDialogFragment extends DialogFragment implements RatingBar.OnRa
     }
 
     private void showNever() {
-        // sharedpreferences = context.getSharedPreferences(MyPrefs, Context.MODE_PRIVATE);
-        // SharedPreferences.Editor editor = sharedpreferences.edit();
-        // editor.putBoolean(SHOW_NEVER, true);
-        // editor.commit();
+        RateUtils.getInstance(getActivity()).setPrefRateEnabled(false);
+    }
+
+    private void laterAction() {
+        RateUtils.getInstance(getActivity()).setNextRateDateAndCount();
     }
 
     private void showFeedback() {
@@ -145,10 +168,18 @@ public class RateDialogFragment extends DialogFragment implements RatingBar.OnRa
         mFeedbackTitleTextView.setVisibility(View.VISIBLE);
         mRateFeedbackEditText.setVisibility(View.VISIBLE);
         mRateTitleTextView.setVisibility(View.GONE);
-        mRateBar.setVisibility(View.GONE);
+        mSmileyLayout.setVisibility(View.GONE);
 
         mPositiveButton.setText(getResources().getString(R.string.submit));
         mNegativeButton.setText(getResources().getString(android.R.string.cancel));
+    }
+
+    private void showRateSuccess() {
+        mSmileyLayout.setVisibility(View.GONE);
+        mRateActionLayout.setVisibility(View.GONE);
+        mRateSuccessActionLayout.setVisibility(View.VISIBLE);
+
+        mRateTitleTextView.setText(getResources().getString(R.string.would_you_mind_leaving_rating));
     }
 
     private void setDialogParams() {

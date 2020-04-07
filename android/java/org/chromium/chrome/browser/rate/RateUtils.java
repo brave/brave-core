@@ -9,14 +9,13 @@ package org.chromium.chrome.browser.rate;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
 
-import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
+
+import org.chromium.base.ContextUtils;
+import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
+import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 
 public class RateUtils {
 
@@ -24,15 +23,19 @@ public class RateUtils {
 
     private final SharedPreferences mSharedPreferences;
 
+    public static final String FROM_SETTINGS = "from_settings";
+
+    private static final int DAYS_60 = 60;
+    private static final int APP_OPEN_14 = 14;
+    private static final int APP_OPEN_41 = 41;
+    private static final int APP_OPEN_121 = 121;
+
     private static final String PREF_RATE = "rate";
     private static final String PREF_NEXT_RATE_DATE = "next_rate_date";
-    private static final String PREF_RATE_COUNT = "rate_count";
-    private static final String PREF_APP_OPEN_COUNT = "app_open_count";
-
-    private static final String MyPREFERENCES = "MyPrefs";
+    private static final String PREF_NEXT_APP_OPEN_COUNT = "next_app_open_count";
 
     private RateUtils(Context context) {
-        mSharedPreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        mSharedPreferences = ContextUtils.getAppSharedPreferences();
     }
 
     /**
@@ -65,56 +68,49 @@ public class RateUtils {
         return mSharedPreferences.getLong(PREF_NEXT_RATE_DATE, 0);
     }
 
-    public void setPrefNextRateDate(long nextDate) {
+    public void setPrefNextRateDate() {
+        Calendar calender = Calendar.getInstance();
+        calender.setTime(new Date());
+        calender.add(Calendar.DATE, DAYS_60);
+
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putLong(PREF_NEXT_RATE_DATE, nextDate);
+        sharedPreferencesEditor.putLong(PREF_NEXT_RATE_DATE, calender.getTimeInMillis());
         sharedPreferencesEditor.apply();
     }
 
-    public int getPrefRateCount() {
-        return mSharedPreferences.getInt(PREF_RATE_COUNT, -1);
+    public int getPrefNextAppOpenCount() {
+        return mSharedPreferences.getInt(PREF_NEXT_APP_OPEN_COUNT, 0);
     }
 
-    public void setPrefRateCount() {
-        if(RateDays.DAYS_365.count != getPrefRateCount()) {
-            SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-            sharedPreferencesEditor.putInt(PREF_RATE_COUNT, getPrefRateCount() + 1);
-            sharedPreferencesEditor.apply();
+    public void setPrefNextAppOpenCount() {
+        int currentAppOpenCount = getPrefNextAppOpenCount();
+        int nextAppOpenCount;
+
+        if (currentAppOpenCount == 0) {
+            nextAppOpenCount = APP_OPEN_14;
+        } else if (currentAppOpenCount == APP_OPEN_14) {
+            nextAppOpenCount = APP_OPEN_41;
+        } else if (currentAppOpenCount == APP_OPEN_41) {
+            nextAppOpenCount = APP_OPEN_121;
+        } else {
+            nextAppOpenCount = APP_OPEN_121;
         }
-    }
 
-    public int getPrefAppOpenCount() {
-        return mSharedPreferences.getInt(PREF_APP_OPEN_COUNT, 0);
-    }
-
-    public void setPrefAppOpenCount() {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
-        sharedPreferencesEditor.putInt(PREF_APP_OPEN_COUNT, getPrefAppOpenCount() + 1);
+        sharedPreferencesEditor.putInt(PREF_NEXT_APP_OPEN_COUNT, nextAppOpenCount);
         sharedPreferencesEditor.apply();
     }
 
-    public boolean shouldShowRate() {
+    public boolean shouldShowRateDialog() {
+        int appOpenCount = SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT);
 
-//        RateDays rateDays = RateDays.valueOfIndex(getPrefRateCount());
-//
-//        LocalTime morning10 = LocalTime.parse("10:00:00");
-//        LocalTime afternoon1 = LocalTime.parse("13:00:00");
-//
-//        LocalTime timeNow = LocalTime.now();
-//
-//        return System.currentTimeMillis() > getPrefNextRateDate() &&
-//                getPrefAppOpenCount() >= rateDays.count &&
-//                timeNow.isAfter(morning10) && timeNow.isBefore(afternoon1);
-        return true;
+        return (System.currentTimeMillis() > getPrefNextRateDate()
+            && appOpenCount >= getPrefNextAppOpenCount()
+            && getPrefRateEnabled());
     }
 
     public void setNextRateDateAndCount() {
-        setPrefRateCount();
-
-        Calendar calender = Calendar.getInstance();
-        calender.setTime(new Date());
-        calender.add(Calendar.DATE, RateDays.valueOfIndex(getPrefRateCount()).count);
-
-        setPrefNextRateDate(calender.getTimeInMillis());
+        setPrefNextAppOpenCount();
+        setPrefNextRateDate();
     }
 }

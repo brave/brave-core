@@ -34,6 +34,7 @@ import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBrid
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.chrome.browser.rate.RateDialogFragment;
+import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.BraveActivity;
 
 import java.util.HashMap;
@@ -226,8 +227,12 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
         findPreference(PREF_RATE_BRAVE).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(RateUtils.FROM_SETTINGS, true);
+
                 RateDialogFragment mRateDialogFragment = new RateDialogFragment();
                 mRateDialogFragment.setCancelable(false);
+                mRateDialogFragment.setArguments(bundle);
                 mRateDialogFragment.show(getActivity().getSupportFragmentManager(), "RateDialogFragment");
                 return true;
             }

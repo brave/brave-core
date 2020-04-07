@@ -55,6 +55,7 @@ import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.components.bookmarks.BookmarkType;
 import org.chromium.ui.widget.Toast;
 import org.chromium.chrome.browser.rate.RateDialogFragment;
+import org.chromium.chrome.browser.rate.RateUtils;
 import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 
 /**
@@ -211,7 +212,9 @@ public abstract class BraveActivity extends ChromeActivity {
             OnboardingPrefManager.getInstance().showOnboarding(this, false);
         }
 
-        showBraveRateDialog();
+        RateUtils.getInstance(this).setNextRateDateAndCount();
+        if (RateUtils.getInstance(this).shouldShowRateDialog())
+            showBraveRateDialog();
     }
 
     @Override

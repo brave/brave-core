@@ -24,15 +24,43 @@
         android:textColor="@color/standard_mode_tint"
         android:textStyle="bold" />
 
-    <RatingBar
-        android:id="@+id/brave_rb"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/smiley_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:numStars="5"
-        android:scaleX="0.85"
-        android:scaleY="0.85"
-        android:stepSize="1"
-        android:layout_gravity="center" />
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageButton 
+            android:id="@+id/sad_ib"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:background="@android:color/transparent"
+            android:foreground="?attr/selectableItemBackground"
+            android:tint="@color/standard_mode_tint"
+            android:src="@drawable/smiley_sad"/>
+
+        <ImageButton 
+            android:id="@+id/neutral_ib"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:background="@android:color/transparent"
+            android:foreground="?attr/selectableItemBackground"
+            android:tint="@color/standard_mode_tint"
+            android:src="@drawable/smiley_neutral"/>
+
+        <ImageButton 
+            android:id="@+id/happy_ib"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:foreground="?attr/selectableItemBackground"
+            android:tint="@color/standard_mode_tint"
+            android:src="@drawable/smiley_happy"/>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/feedback_title_tv"
@@ -64,8 +92,44 @@
         android:layout_marginEnd="16dp"
         android:scrollbars="vertical"
         android:textColorHint="@color/onboarding_gray"
-        android:hint="Suggest us what went wrong and we\'ll work on it!"
+        android:textColor="@android:color/black"
+        android:hint="@string/rate_feedback_hint"
         android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/brave_rate_success_action_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/later_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/rounded_holo"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="@string/later"
+            android:textAllCaps="false"
+            android:textColor="@color/onboarding_orange" />
+
+        <Button
+            android:id="@+id/rate_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_filled"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="@string/rate"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/brave_rate_action_layout"
@@ -74,58 +138,31 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
-        <!-- <Button
-            android:id="@+id/btn_never"
+        <Button
+            android:id="@+id/rate_negative_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:foregroundTint="@color/onboarding_radio_button_active"
-            android:clickable="true"
-            android:focusable="true"
             android:text="@string/never"
-            android:textColor="@color/onboarding_gray" />
+            android:clickable="true"
+            android:background="@android:color/transparent"
+            android:foreground="?attr/selectableItemBackground"
+            android:textColor="@color/onboarding_gray"
+            android:textAllCaps="false"
+            android:gravity="center"/>
 
         <Button
-            android:id="@+id/btn_maybe_later"
+            android:id="@+id/rate_positive_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:foregroundTint="@color/onboarding_radio_button_active"
-            android:clickable="true"
-            android:focusable="true"
             android:text="@string/maybe_later"
-            android:textColor="@color/onboarding_orange" /> -->
-
-
-            <Button
-                android:id="@+id/rate_negative_btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/never"
-                android:clickable="true"
-                android:background="@android:color/transparent"
-                android:foreground="?attr/selectableItemBackground"
-                android:textColor="@color/onboarding_gray"
-                android:textAllCaps="false"
-                android:gravity="center"/>
-
-            <Button
-                android:id="@+id/rate_positive_btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/maybe_later"
-                android:clickable="true"
-                android:background="@android:color/transparent"
-                android:foreground="?attr/selectableItemBackground"
-                android:textColor="@color/onboarding_orange"
-                android:textAllCaps="false"
-                android:gravity="center"/>
+            android:clickable="true"
+            android:background="@android:color/transparent"
+            android:foreground="?attr/selectableItemBackground"
+            android:textColor="@color/onboarding_orange"
+            android:textAllCaps="false"
+            android:gravity="center"/>
 
     </LinearLayout>
 
