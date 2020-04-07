@@ -75,7 +75,7 @@ PurchaseIntentClassifier::GetWinningCategories(
 
   std::multimap<uint16_t, std::string>::reverse_iterator rit;
   for (rit=scores.rbegin(); rit != scores.rend(); ++rit) {
-    if (rit->first > classification_threshold_) {
+    if (rit->first >= classification_threshold_) {
       winning_categories.push_back(rit->second);
     }
 
