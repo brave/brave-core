@@ -665,13 +665,12 @@ class Binance extends React.PureComponent<Props, State> {
       return baseList
     }
 
-    Object.keys(accountBalances).map((symbol: string) => {
-      if (!baseList.includes(symbol)) {
-        baseList.push(symbol)
-      }
+    const accounts = Object.keys(accountBalances)
+    const nonHoldingList = baseList.filter((symbol: string) => {
+      return !accounts.includes(symbol)
     })
 
-    return baseList
+    return accounts.concat(nonHoldingList)
   }
 
   renderIconAsset = (key: string, isDetail: boolean = false) => {
@@ -1306,7 +1305,7 @@ class Binance extends React.PureComponent<Props, State> {
                     return (
                       <AssetItem
                         key={`choice-${fiat}`}
-                        isLast={i === (currencies.length - 1)}
+                        isLast={i === (this.fiatList.length - 1)}
                         onClick={this.setInitialFiat.bind(this, fiat)}
                       >
                         {fiat}
