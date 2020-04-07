@@ -14,6 +14,8 @@
 #include "bat/ads/ads_client.h"
 
 #include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/timer.h"
+#include "bat/ads/internal/retry_timer.h"
 
 namespace ads {
 
@@ -23,15 +25,15 @@ class Bundle;
 class AdsServe {
  public:
   AdsServe(
-      AdsImpl* ads,
       AdsClient* ads_client,
       Bundle* bundle);
 
   ~AdsServe();
 
   void DownloadCatalog();
+  void DownloadCatalogAfterDelay();
+
   uint64_t CatalogLastUpdated() const;
-  void UpdateNextCatalogCheck();
 
   void Reset();
 
@@ -39,24 +41,26 @@ class AdsServe {
   std::string url_;
   void BuildUrl();
 
-  uint64_t next_catalog_check_timestamp_in_seconds;
-
+  Timer timer_;
   void OnCatalogDownloaded(
       const std::string& url,
       const int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
-  bool ProcessCatalog(const std::string& json);
-  void OnCatalogSaved(const Result result);
+  bool ProcessCatalog(
+      const std::string& json);
+  void OnCatalogSaved(
+      const Result result);
 
-  uint64_t next_retry_start_timer_in_;
+  RetryTimer retry_timer_;
   void RetryDownloadingCatalog();
+
   uint64_t catalog_last_updated_;
 
   void ResetCatalog();
-  void OnCatalogReset(const Result result);
+  void OnCatalogReset(
+      const Result result);
 
-  AdsImpl* ads_;  // NOT OWNED
   AdsClient* ads_client_;  // NOT OWNED
   Bundle* bundle_;  // NOT OWNED
 };

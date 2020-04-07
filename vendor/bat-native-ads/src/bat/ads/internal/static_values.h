@@ -31,7 +31,7 @@ const uint64_t kMaximumEntriesInAdsShownHistory = 7 * (20 * 4);
 
 const uint64_t kMaximumEntriesPerSegmentInPurchaseIntentSignalHistory = 100;
 
-const uint64_t kDebugOneHourInSeconds = 25;
+const uint64_t kDebugOneHourInSeconds = 10 * base::Time::kSecondsPerMinute;
 
 const char kEasterEggUrl[] = "https://iab.com";
 const uint64_t kNextEasterEggStartsInSeconds = 30;
@@ -60,6 +60,9 @@ const uint16_t kPurchaseIntentMaxSegments = 3;
 
 const int kDoNotDisturbFromHour = 21;  // 9pm
 const int kDoNotDisturbToHour = 6;     // 6am
+
+const uint64_t kRetryDownloadingCatalogAfterSeconds =
+    1 * base::Time::kSecondsPerMinute;
 
 const std::map<int, std::map<std::string, bool>> kSupportedRegionsSchemas = {
   // Append newly supported regions with a new schema version and update

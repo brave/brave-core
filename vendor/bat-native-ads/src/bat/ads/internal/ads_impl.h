@@ -24,6 +24,7 @@
 #include "bat/ads/internal/ad_conversions.h"
 #include "bat/ads/internal/ad_notification_result_type.h"
 #include "bat/ads/internal/ad_notifications.h"
+#include "bat/ads/internal/timer.h"
 #include "bat/usermodel/user_model.h"
 #include "bat/ads/internal/purchase_intent/purchase_intent_classifier.h"
 
@@ -241,28 +242,17 @@ class AdsImpl : public Ads {
       const CreativeAdNotificationInfo& info);
   bool IsAllowedToServeAdNotifications();
 
-  uint32_t collect_activity_timer_id_;
-  void StartCollectingActivity(
-      const uint64_t start_timer_in);
-  void CollectActivity();
-  void StopCollectingActivity();
-  bool IsCollectingActivity() const;
-
-  uint32_t delivering_ad_notifications_timer_id_;
+  Timer deliver_ad_notification_timer_;
   void StartDeliveringAdNotifications();
   void StartDeliveringAdNotificationsAfterSeconds(
       const uint64_t seconds);
   void DeliverAdNotification();
-  void StopDeliveringAdNotifications();
-  bool IsDeliveringAdNotifications() const;
   bool IsCatalogOlderThanOneDay();
 
   #if defined(OS_ANDROID)
   void RemoveAllAdNotificationsAfterReboot();
   void RemoveAllAdNotificationsAfterUpdate();
   #endif
-
-  void BundleUpdated();
 
   const AdNotificationInfo& get_last_shown_ad_notification() const;
   void set_last_shown_ad_notification(
@@ -307,13 +297,10 @@ class AdsImpl : public Ads {
 
   AdNotificationInfo last_shown_ad_notification_;
   CreativeAdNotificationInfo last_shown_creative_ad_notification_;
-  uint32_t sustained_ad_notification_interaction_timer_id_;
+  Timer sustain_ad_notification_interaction_timer_;
   std::string last_sustained_ad_notification_url_;
-  void StartSustainingAdNotificationInteraction(
-      const uint64_t start_timer_in);
+  void StartSustainingAdNotificationInteraction();
   void SustainAdNotificationInteractionIfNeeded();
-  void StopSustainingAdNotificationInteraction();
-  bool IsSustainingAdNotificationInteraction() const;
   bool IsStillViewingAdNotification() const;
 
   std::unique_ptr<AdNotifications> ad_notifications_;

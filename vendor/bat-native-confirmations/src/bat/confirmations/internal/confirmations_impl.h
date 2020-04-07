@@ -74,12 +74,12 @@ class ConfirmationsImpl : public Confirmations {
       const double estimated_redemption_value,
       const ConfirmationType confirmation_type);
 
-  // Scheduled events
-  bool OnTimer(const uint32_t timer_id) override;
-
   // Refill tokens
   void StartRetryingToGetRefillSignedTokens(const uint64_t start_timer_in);
   void RefillTokensIfNecessary() const;
+
+  // Payout tokens
+  uint64_t GetNextTokenRedemptionDateInSeconds() const;
 
   // Redeem unblinded tokens
   void ConfirmAd(
@@ -89,12 +89,6 @@ class ConfirmationsImpl : public Confirmations {
       const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const ConfirmationType confirmation_type) override;
-
-  // Payout redeemed tokens
-  void UpdateNextTokenRedemptionDate();
-  uint64_t CalculateTokenRedemptionTimeInSeconds();
-  uint64_t GetNextTokenRedemptionDateInSeconds();
-  void StartPayingOutRedeemedTokens(const uint64_t start_timer_in);
 
   // State
   void SaveState();
@@ -113,12 +107,9 @@ class ConfirmationsImpl : public Confirmations {
   std::map<std::string, std::string> catalog_issuers_;
 
   // Confirmations
-  uint32_t retry_failed_confirmations_timer_id_;
+  Timer failed_confirmations_timer_;
   void RemoveConfirmationFromQueue(const ConfirmationInfo& confirmation_info);
-  void StartRetryingFailedConfirmations(const uint64_t start_timer_in);
-  bool IsRetryingFailedConfirmations() const;
   void RetryFailedConfirmations();
-  void StopRetryingFailedConfirmations();
   ConfirmationList confirmations_;
 
   // Transaction history
@@ -135,23 +126,11 @@ class ConfirmationsImpl : public Confirmations {
   uint64_t next_payment_date_in_seconds_;
   std::unique_ptr<AdsRewards> ads_rewards_;
 
-  // Refill tokens
-  uint32_t retry_getting_signed_tokens_timer_id_;
-  void RetryGettingRefillSignedTokens() const;
-  void StopRetryingToGetRefillSignedTokens();
-  bool IsRetryingToGetRefillSignedTokens() const;
   std::unique_ptr<RefillTokens> refill_tokens_;
 
-  // Redeem unblinded tokens
   std::unique_ptr<RedeemToken> redeem_token_;
 
-  // Payout redeemed tokens
-  uint32_t payout_redeemed_tokens_timer_id_;
-  void PayoutRedeemedTokens() const;
-  void StopPayingOutRedeemedTokens();
-  bool IsPayingOutRedeemedTokens() const;
   std::unique_ptr<PayoutTokens> payout_tokens_;
-  uint64_t next_token_redemption_date_in_seconds_;
 
   // State
   void OnStateSaved(const Result result);

@@ -18,6 +18,7 @@
 #include "base/logging.h"
 #include "base/json/json_reader.h"
 #include "net/http/http_status_code.h"
+#include "brave_base/random.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -47,6 +48,10 @@ void RefillTokens::Refill(
   DCHECK(!wallet_info.private_key.empty());
   DCHECK(!public_key.empty());
 
+  if (retry_timer_.IsRunning()) {
+    return;
+  }
+
   BLOG(INFO) << "Refill";
 
   wallet_info_ = WalletInfo(wallet_info);
@@ -56,17 +61,6 @@ void RefillTokens::Refill(
   nonce_ = "";
 
   RequestSignedTokens();
-}
-
-void RefillTokens::RetryGettingSignedTokens() {
-  BLOG(INFO) << "Retry getting signed tokens";
-
-  if (nonce_.empty()) {
-    RequestSignedTokens();
-    return;
-  }
-
-  GetSignedTokens();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -311,18 +305,33 @@ void RefillTokens::OnRefill(
     BLOG(ERROR) << "Failed to refill tokens";
 
     if (should_retry) {
-      confirmations_->StartRetryingToGetRefillSignedTokens(
-          kRetryGettingRefillSignedTokensAfterSeconds);
+      const base::Time time = retry_timer_.StartWithBackoff(
+          kRetryRefillTokensAfterSeconds, base::BindOnce(&RefillTokens::OnRetry,
+              base::Unretained(this)));
+
+      BLOG(INFO) << "Retry refilling tokens at " << time;
     }
 
     return;
   }
+
+  retry_timer_.Stop();
 
   blinded_tokens_.clear();
   tokens_.clear();
   confirmations_->SaveState();
 
   BLOG(INFO) << "Successfully refilled tokens";
+}
+
+void RefillTokens::OnRetry() {
+  BLOG(INFO) << "Retrying";
+
+  if (nonce_.empty()) {
+    RequestSignedTokens();
+  } else {
+    GetSignedTokens();
+  }
 }
 
 bool RefillTokens::ShouldRefillTokens() const {

@@ -12,6 +12,8 @@
 
 #include "bat/confirmations/confirmations_client.h"
 #include "bat/confirmations/wallet_info.h"
+#include "bat/confirmations/internal/retry_timer.h"
+#include "bat/confirmations/internal/timer.h"
 
 namespace confirmations {
 
@@ -27,10 +29,17 @@ class PayoutTokens {
 
   ~PayoutTokens();
 
-  void Payout(const WalletInfo& wallet_info);
+  void PayoutAfterDelay(
+      const WalletInfo& wallet_info);
+
+  uint64_t get_token_redemption_timestamp_in_seconds() const;
+  void set_token_redemption_timestamp_in_seconds(
+      const uint64_t timestamp_in_seconds);
 
  private:
   WalletInfo wallet_info_;
+
+  Timer timer_;
 
   void RedeemPaymentTokens();
   void OnRedeemPaymentTokens(
@@ -41,9 +50,14 @@ class PayoutTokens {
 
   void OnPayout(const Result result);
 
-  void ScheduleNextPayout() const;
-  uint64_t next_retry_backoff_count_;
-  void RetryNextPayout();
+  void ScheduleNextPayout();
+  uint64_t token_redemption_timestamp_in_seconds_ = 0;
+
+  RetryTimer retry_timer_;
+  void OnRetry();
+
+  uint64_t CalculatePayoutDelay();
+  void UpdateNextTokenRedemptionDate();
 
   ConfirmationsImpl* confirmations_;  // NOT OWNED
   ConfirmationsClient* confirmations_client_;  // NOT OWNED

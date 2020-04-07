@@ -25,12 +25,18 @@ const int kNextPaymentDay = 5;
 const int kMinimumUnblindedTokens = 20;
 const int kMaximumUnblindedTokens = 50;
 
-const uint64_t kRetryGettingRefillSignedTokensAfterSeconds = 15;
-
 const uint64_t kNextTokenRedemptionAfterSeconds =
     24 * base::Time::kSecondsPerHour;
 const uint64_t kDebugNextTokenRedemptionAfterSeconds =
     25 * base::Time::kSecondsPerMinute;
+
+const uint64_t kRetryRefillTokensAfterSeconds = 15;
+
+const uint64_t kRetryPayoutTokensAfterSeconds =
+    1 * base::Time::kSecondsPerMinute;
+
+const uint64_t kRetryAdsRewardsAfterSeconds =
+    1 * base::Time::kSecondsPerMinute;
 
 const uint64_t kRetryFailedConfirmationsAfterSeconds =
     5 * base::Time::kSecondsPerMinute;

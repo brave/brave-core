@@ -89,12 +89,6 @@ class CONFIRMATIONS_EXPORT Confirmations {
   virtual void UpdateAdsRewards(
       const bool should_refresh) = 0;
 
-  // Should be called when the timer specified by |timer_id| should be
-  // triggered. Returns |true| if the timer was successfully triggered;
-  // otherwise, should return |false|
-  virtual bool OnTimer(
-      const uint32_t timer_id) = 0;
-
  private:
   // Not copyable, not assignable
   Confirmations(const Confirmations&) = delete;
