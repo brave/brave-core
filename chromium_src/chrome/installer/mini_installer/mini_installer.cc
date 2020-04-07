@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#if defined(BRAVE_CHROMIUM_BUILD) && BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 #define BRAVE_RUN_SETUP                                                      \
   PathString installer_filename;                                             \
   wchar_t value[MAX_PATH] = {0, };                                           \
@@ -16,19 +15,14 @@
        installer_filename.length() != 0) {                                   \
     ReferralCodeString referral_code;                                        \
     if (ParseReferralCode(installer_filename.get(), &referral_code)) {       \
-    if (!cmd_line.append(L" --") ||                                          \
-        !cmd_line.append(L"brave-referral-code") ||                          \
-        !cmd_line.append(L"=\"") || !cmd_line.append(referral_code.get()) || \
-        !cmd_line.append(L"\"")) {                                           \
-          return ProcessExitResult(COMMAND_STRING_OVERFLOW);                 \
-      }                                                                      \
+      cmd_line.append(L" --brave-referral-code=")                            \
+      cmd_line.append(L"=\"")                                                \
+      cmd_line.append(referral_code.get())                                   \
+      cmd_line.append(L"\"")                                                 \
     }                                                                        \
   }
-#else
-#define BRAVE_RUN_SETUP do {} while (0);
-#endif
 
-#if defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD)
+#if defined(OFFICIAL_BUILD)
 #undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
 #define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
 #endif
