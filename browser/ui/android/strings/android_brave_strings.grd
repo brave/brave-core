@@ -1029,6 +1029,18 @@ until they verify, or until 90 days have passed.
       <message name="IDS_PREFS_RATE_BRAVE" desc="Title for rate brave settings option.">
         Rate Brave
       </message>
+      <message name="IDS_HOW_WOULD_YOU_RATE" desc="Text for rate brave dialog.">
+        How would you rate your experience with Brave?
+      </message>
+      <message name="IDS_FEEDBACK" desc="Text for rate brave dialog button.">
+        Feedback
+      </message>
+      <message name="IDS_NEVER" desc="Text for rate brave dialog button.">
+        Never
+      </message>
+      <message name="IDS_MAYBE_LATER" desc="Text for rate brave dialog button.">
+        Maybe Later
+      </message>
     </messages>
   </release>
 </grit>

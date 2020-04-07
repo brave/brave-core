@@ -51,11 +51,11 @@ import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayout;
 import org.chromium.chrome.browser.util.BraveReferrer;
 import org.chromium.chrome.browser.util.UrlConstants;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
-import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.components.bookmarks.BookmarkType;
 import org.chromium.ui.widget.Toast;
 import org.chromium.chrome.browser.rate.RateDialogFragment;
+import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 
 /**
  * Brave's extension for ChromeActivity
@@ -189,8 +189,8 @@ public abstract class BraveActivity extends ChromeActivity {
         super.finishNativeInitialization();
 
 
-        int appOpenCount = BravePrefServiceBridge.getInteger(BravePreferenceKeys.PREF_BRAVE_APP_OPEN_COUNT);
-        BravePrefServiceBridge.setInteger(BravePreferenceKeys.PREF_BRAVE_APP_OPEN_COUNT, appOpenCount + 1);
+        int appOpenCount = SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT);
+        SharedPreferencesManager.getInstance().writeInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT, appOpenCount + 1);
 
         //set bg ads to off for existing and new installations
         setBgBraveAdsDefaultOff();

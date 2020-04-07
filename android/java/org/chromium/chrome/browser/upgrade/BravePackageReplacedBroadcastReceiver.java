@@ -10,7 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
-import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 
 /**
  * Triggered when Brave's package is replaced (e.g. when it is
@@ -23,6 +23,6 @@ public final class BravePackageReplacedBroadcastReceiver extends BroadcastReceiv
     public void onReceive(final Context context, Intent intent) {
         if (!Intent.ACTION_MY_PACKAGE_REPLACED.equals(intent.getAction())) return;
         BraveUpgradeJobIntentService.startMigrationIfNecessary(context);
-        BravePrefServiceBridge.setInteger(BravePreferenceKeys.PREF_BRAVE_APP_OPEN_COUNT, 0);
+        SharedPreferencesManager.getInstance().writeInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT, 0);
     }
 }
