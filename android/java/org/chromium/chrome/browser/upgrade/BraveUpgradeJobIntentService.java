@@ -369,12 +369,12 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
                                                      .dataDir;
                             File oldName = new File(dataDir, SHIELDS_CONFIG_FILENAME);
                             File firstMigratedName = new File(dataDir, SHIELDS_CONFIG_MIGRATED_FILENAME);
+                            File secondMigratedName = new File(dataDir, SHIELDS_CONFIG_MIGRATED2_FILENAME);
                             if (oldName.exists()) {
-                                if (!oldName.renameTo(firstMigratedName)) {
+                                if (!oldName.renameTo(secondMigratedName)) {
                                     Log.e(TAG, "Failed to rename migrated Brave shields config file");
                                 }
                             } else if (firstMigratedName.exists()) {
-                                File secondMigratedName = new File(dataDir, SHIELDS_CONFIG_MIGRATED2_FILENAME);
                                 if (!firstMigratedName.renameTo(secondMigratedName)) {
                                     Log.e(TAG, "Failed to rename first migrated Brave shields config file");
                                 }
