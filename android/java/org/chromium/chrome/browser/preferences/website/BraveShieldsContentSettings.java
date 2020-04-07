@@ -85,6 +85,10 @@ public class BraveShieldsContentSettings {
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES)) {
             BraveShieldsContentSettingsJni.get().setHTTPSEverywhereEnabled(value, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_COOKIES)) {
+            if (setting_string.equals(blockResource)) {
+                // On Android we block 3rd party cookies only
+                setting_string = blockThirdPartyResource;
+            }
             BraveShieldsContentSettingsJni.get().setCookieControlType(setting_string, host, profile);
         } else if (resourceIndentifier.equals(RESOURCE_IDENTIFIER_FINGERPRINTING)) {
             if (setting_string.equals(blockResource)) {
