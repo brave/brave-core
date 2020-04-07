@@ -1,9 +1,14 @@
-#include "../include/speedreader.hpp"
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "../include/speedreader.h"
 
 #include <iostream>
 #include "base/logging.h"
 
-#include "../include/speedreader_ffi.hpp"
+#include "../include/speedreader_ffi.h"
 
 #define UNUSED (void)
 
@@ -12,10 +17,10 @@ namespace speedreader {
 SpeedReader::SpeedReader() : raw(speedreader_new()) {}
 SpeedReader::SpeedReader(const char* whitelist_serialized,
                          size_t whitelist_size)
-    : raw(speedreader_with_whitelist(whitelist_serialized, whitelist_size)) {}
+    : raw(with_whitelist(whitelist_serialized, whitelist_size)) {}
 
 bool SpeedReader::deserialize(const char* data, size_t data_size) {
-  auto* new_raw = speedreader_with_whitelist(data, data_size);
+  auto* new_raw = with_whitelist(data, data_size);
   if (new_raw != nullptr) {
     speedreader_free(raw);
     raw = new_raw;
@@ -31,11 +36,11 @@ SpeedReader::~SpeedReader() {
 }
 
 bool SpeedReader::ReadableURL(const std::string& url) {
-  return speedreader_url_readable(raw, url.c_str(), url.length());
+  return url_readable(raw, url.c_str(), url.length());
 }
 
 RewriterType SpeedReader::RewriterTypeForURL(const std::string& url) {
-  return speedreader_find_type(raw, url.c_str(), url.length());
+  return find_type(raw, url.c_str(), url.length());
 }
 
 std::unique_ptr<Rewriter> SpeedReader::RewriterNew(const std::string& url) {
@@ -58,10 +63,10 @@ std::unique_ptr<Rewriter> SpeedReader::RewriterNew(
 
 // static
 std::string SpeedReader::TakeLastError() {
-  auto* error = speedreader_take_last_error();
+  auto* error = take_last_error();
   if (error) {
     std::string err(error->data, error->len);
-    speedreader_str_free(*error);
+    str_free(*error);
     return err;
   } else {
     return "";
@@ -74,10 +79,10 @@ Rewriter::Rewriter(C_SpeedReader* speedreader,
     : output_(""),
       ended_(false),
       poisoned_(false),
-      config_raw(speedreader_get_rewriter_opaque_config(speedreader,
+      config_raw(get_rewriter_opaque_config(speedreader,
                                                         url.c_str(),
                                                         url.length())),
-      raw(speedreader_rewriter_new(
+      raw(rewriter_new(
           speedreader,
           url.c_str(),
           url.length(),
@@ -97,10 +102,10 @@ Rewriter::Rewriter(C_SpeedReader* speedreader,
     : output_(""),
       ended_(false),
       poisoned_(false),
-      config_raw(speedreader_get_rewriter_opaque_config(speedreader,
+      config_raw(get_rewriter_opaque_config(speedreader,
                                                         url.c_str(),
                                                         url.length())),
-      raw(speedreader_rewriter_new(speedreader,
+      raw(rewriter_new(speedreader,
                                    url.c_str(),
                                    url.length(),
                                    output_sink,
@@ -110,14 +115,14 @@ Rewriter::Rewriter(C_SpeedReader* speedreader,
 
 Rewriter::~Rewriter() {
   if (!ended_) {
-    speedreader_rewriter_free(raw);
+    rewriter_free(raw);
   }
-  speedreader_free_rewriter_opaque_config(config_raw);
+  free_rewriter_opaque_config(config_raw);
 }
 
 int Rewriter::Write(const char* chunk, size_t chunk_len) {
   if (!ended_ && !poisoned_) {
-    int ret = speedreader_rewriter_write(raw, chunk, chunk_len);
+    int ret = rewriter_write(raw, chunk, chunk_len);
     if (ret != 0) {
       poisoned_ = true;
     }
@@ -129,7 +134,7 @@ int Rewriter::Write(const char* chunk, size_t chunk_len) {
 
 int Rewriter::End() {
   if (!ended_ && !poisoned_) {
-    int ret = speedreader_rewriter_end(raw);
+    int ret = rewriter_end(raw);
     ended_ = true;
     return ret;
   } else {

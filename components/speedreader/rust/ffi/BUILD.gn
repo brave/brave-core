@@ -18,8 +18,8 @@ source_set("speedreader_ffi") {
   public_configs = [ ":external_config" ]
 
   sources = [
-    "src/speedreader.cpp",
-    "include/speedreader.hpp"
+    "src/speedreader.cc",
+    "include/speedreader.h"
   ]
 
   deps = [
@@ -50,7 +50,7 @@ cargo_build("speedreader") {
     "build.rs",
     "Cargo.toml",
     "cbindgen.toml",
-    "include/speedreader_ffi.hpp",
+    "include/speedreader_ffi.h",
     "src/charbuf.rs",
     "src/errors.rs",
     "src/lib.rs",

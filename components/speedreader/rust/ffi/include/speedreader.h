@@ -1,10 +1,15 @@
-#ifndef SPEEDREADER_H
-#define SPEEDREADER_H
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_SPEEDREADER_RUST_FFI_INCLUDE_SPEEDREADER_H_
+#define BRAVE_COMPONENTS_SPEEDREADER_RUST_FFI_INCLUDE_SPEEDREADER_H_
 
 #include <memory>
 #include <string>
 
-#include "speedreader_ffi.hpp"
+#include "brave/components/speedreader/rust/ffi/include/speedreader_ffi.h"
 
 namespace speedreader {
 
@@ -50,8 +55,8 @@ class Rewriter {
   std::string output_;
   bool ended_;
   bool poisoned_;
-  C_CRewriterOpaqueConfig* config_raw;
-  C_CSpeedReaderRewriter* raw;
+  C_CRewriterConfig* config_raw;
+  C_CRewriter* raw;
 };
 
 class SpeedReader {
@@ -99,4 +104,4 @@ class SpeedReader {
 
 }  // namespace speedreader
 
-#endif  // SPEEDREADER_H
+#endif  // BRAVE_COMPONENTS_SPEEDREADER_RUST_FFI_INCLUDE_SPEEDREADER_H_

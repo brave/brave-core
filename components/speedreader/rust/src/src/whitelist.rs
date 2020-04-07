@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use std::io::prelude::*;
 use flate2::read::GzDecoder;
 
-use crate::speedreader::{AttributeRewrite, RewriteRules, SpeedReaderConfig, SpeedReaderError};
+use crate::speedreader::{SpeedReaderConfig, SpeedReaderError};
 
 const IMAGE_TARGET_WIDTH: u32 = 600;
 

@@ -6,7 +6,7 @@ thread_local! {
 }
 
 #[no_mangle]
-pub extern "C" fn speedreader_take_last_error() -> *const CharBuf {
+pub extern "C" fn take_last_error() -> *const CharBuf {
     let err = LAST_ERROR.with(|cell| cell.borrow_mut().take());
 
     CharBuf::opt_ptr(err.map(|e| e.to_string()))

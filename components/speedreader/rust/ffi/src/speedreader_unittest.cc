@@ -1,33 +1,34 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "testing/gtest/include/gtest/gtest.h"
 #include "brave/components/speedreader/rust/ffi/include/speedreader.hpp"
-#include "base/files/file_path.h"
-#include "base/files/file_util.h"
 
 #include <memory>
+
+#include "base/files/file_path.h"
+#include "base/files/file_util.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 namespace {
 
 std::string LoadFile(const std::string& domain, const std::string& sample) {
-  auto path =
-      base::FilePath(FILE_PATH_LITERAL("brave"))
-          .Append(FILE_PATH_LITERAL("components"))
-          .Append(FILE_PATH_LITERAL("speedreader"))
-          .Append(FILE_PATH_LITERAL("rust"))
-          .Append(FILE_PATH_LITERAL("src"))
-          .Append(FILE_PATH_LITERAL("data"))
-          .Append(FILE_PATH_LITERAL("lolhtml"))
-          .Append(FILE_PATH_LITERAL(domain))
-          .Append(FILE_PATH_LITERAL(sample))
-          .Append(FILE_PATH_LITERAL("init.html"));
+  auto path = base::FilePath(FILE_PATH_LITERAL("brave"))
+                  .Append(FILE_PATH_LITERAL("components"))
+                  .Append(FILE_PATH_LITERAL("speedreader"))
+                  .Append(FILE_PATH_LITERAL("rust"))
+                  .Append(FILE_PATH_LITERAL("src"))
+                  .Append(FILE_PATH_LITERAL("data"))
+                  .Append(FILE_PATH_LITERAL("lolhtml"))
+                  .Append(FILE_PATH_LITERAL(domain))
+                  .Append(FILE_PATH_LITERAL(sample))
+                  .Append(FILE_PATH_LITERAL("init.html"));
 
   std::string value;
   const bool ok = ReadFileToString(path, &value);
-  if (!ok) return {};
+  if (!ok)
+    return {};
   return value;
 }
 
@@ -79,7 +80,8 @@ TEST(SpeedreaderFFITest, RewriterCallback) {
     std::string* out = static_cast<std::string*>(user_data);
     out->append(chunk, chunk_len);
   };
-  auto rewriter = sr.RewriterNew(url_str, RewriterType::RewriterUnknown, callback, &output);
+  auto rewriter =
+      sr.RewriterNew(url_str, RewriterType::RewriterUnknown, callback, &output);
   const char* content1 = "<html><div class=\"pg-headline\">";
   ASSERT_EQ(rewriter->Write(content1, strlen(content1)), 0);
   const char* content2 = "hello world</div></html>";
@@ -98,7 +100,8 @@ TEST(SpeedreaderFFITest, RewriterBufering) {
   const char* content2 = "hello world</div></html>";
   ASSERT_EQ(rewriter->Write(content2, strlen(content2)), 0);
   ASSERT_EQ(rewriter->End(), 0);
-  EXPECT_EQ(*rewriter->GetOutput(), "<div class=\"pg-headline\">hello world</div>");
+  EXPECT_EQ(*rewriter->GetOutput(),
+            "<div class=\"pg-headline\">hello world</div>");
 }
 
 TEST(SpeedreaderFFITest, RewriterHeuristicsBufering) {
@@ -108,7 +111,8 @@ TEST(SpeedreaderFFITest, RewriterHeuristicsBufering) {
   std::string content1 = LoadFile("edition.cnn.com", "2256488769395184997");
   ASSERT_EQ(rewriter->Write(content1.c_str(), content1.length()), 0);
   EXPECT_EQ(rewriter->End(), 0);
-  EXPECT_NE(rewriter->GetOutput()->find("<article><header><span>"), std::string::npos);
+  EXPECT_NE(rewriter->GetOutput()->find("<article><header><span>"),
+            std::string::npos);
 }
 
 TEST(SpeedreaderFFITest, RewriterBadSequence) {
@@ -129,7 +133,8 @@ TEST(SpeedreaderFFITest, RewriterDoubleEnd) {
 }
 
 TEST(SpeedreaderFFITest, RewriterParsingAmbiguity) {
-  const char* ambiguity = "<select><div><style><div></div></style></div></select>";
+  const char* ambiguity =
+      "<select><div><style><div></div></style></div></select>";
   SpeedReader sr;
   std::string url_str = "https://cnn.com/news/article/topic/index.html";
   auto rewriter = sr.RewriterNew(url_str, RewriterType::RewriterUnknown);

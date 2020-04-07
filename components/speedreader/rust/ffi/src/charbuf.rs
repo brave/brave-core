@@ -34,6 +34,6 @@ impl Drop for CharBuf {
 }
 
 #[no_mangle]
-pub extern "C" fn speedreader_str_free(string: CharBuf) {
+pub extern "C" fn str_free(string: CharBuf) {
     drop(string);
 }

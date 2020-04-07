@@ -6,7 +6,6 @@ use url::Url;
 
 use super::rewriter_config_builder::{content_handlers, ContentFunction};
 use super::speedreader::*;
-use super::whitelist::Whitelist;
 
 pub struct SpeedReaderStreaming<'h, O>
 where
