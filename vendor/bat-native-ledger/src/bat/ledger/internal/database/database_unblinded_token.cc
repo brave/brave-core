@@ -354,38 +354,6 @@ void DatabaseUnblindedToken::InsertOrUpdateList(
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-void DatabaseUnblindedToken::GetAllRecords(
-    ledger::GetUnblindedTokenListCallback callback) {
-  auto transaction = ledger::DBTransaction::New();
-
-  const std::string query = base::StringPrintf(
-      "SELECT token_id, token_value, public_key, value, creds_id, "
-      "expires_at FROM %s",
-      kTableName);
-
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
-  command->command = query;
-
-  command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE
-  };
-
-  transaction->commands.push_back(std::move(command));
-
-  auto transaction_callback = std::bind(&DatabaseUnblindedToken::OnGetRecords,
-      this,
-      _1,
-      callback);
-
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
-}
-
 void DatabaseUnblindedToken::OnGetRecords(
     ledger::DBCommandResponsePtr response,
     ledger::GetUnblindedTokenListCallback callback) {
@@ -501,6 +469,53 @@ void DatabaseUnblindedToken::CheckRecordsExpiration(
   transaction->commands.push_back(std::move(command));
 
   auto transaction_callback = std::bind(&OnResultCallback,
+      _1,
+      callback);
+
+  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+}
+
+void DatabaseUnblindedToken::GetRecordsByBatchTypes(
+    const std::vector<ledger::CredsBatchType>& batch_types,
+    ledger::GetUnblindedTokenListCallback callback) {
+  if (batch_types.empty()) {
+    callback({});
+    return;
+  }
+
+  std::vector<std::string> in_case;
+
+  for (const auto& type : batch_types) {
+    in_case.push_back(std::to_string(static_cast<int>(type)));
+  }
+
+  auto transaction = ledger::DBTransaction::New();
+
+  const std::string query = base::StringPrintf(
+      "SELECT ut.token_id, ut.token_value, ut.public_key, ut.value, "
+      "ut.creds_id, ut.expires_at FROM %s as ut "
+      "INNER JOIN creds_batch as cb ON cb.creds_id = ut.creds_id "
+      "WHERE cb.trigger_type IN (%s)",
+      kTableName,
+      base::JoinString(in_case, ",").c_str());
+
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::READ;
+  command->command = query;
+
+  command->record_bindings = {
+      ledger::DBCommand::RecordBindingType::INT64_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      ledger::DBCommand::RecordBindingType::STRING_TYPE,
+      ledger::DBCommand::RecordBindingType::INT64_TYPE
+  };
+
+  transaction->commands.push_back(std::move(command));
+
+  auto transaction_callback = std::bind(&DatabaseUnblindedToken::OnGetRecords,
+      this,
       _1,
       callback);
 

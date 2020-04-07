@@ -94,10 +94,12 @@ class Contribution {
       ledger::ResultCallback callback);
 
   void StartUnblinded(
+      const std::vector<ledger::CredsBatchType> types,
       const std::string& contribution_id,
       ledger::ResultCallback callback);
 
   void RetryUnblinded(
+      const std::vector<ledger::CredsBatchType> types,
       const std::string& contribution_id,
       ledger::ResultCallback callback);
 
@@ -147,6 +149,7 @@ class Contribution {
 
   void RetryUnblindedContribution(
       ledger::ContributionInfoPtr contribution,
+      const std::vector<ledger::CredsBatchType> types,
       ledger::ResultCallback callback);
 
   void Result(

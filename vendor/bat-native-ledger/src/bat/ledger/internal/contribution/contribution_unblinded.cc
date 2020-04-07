@@ -101,6 +101,7 @@ Unblinded::Unblinded(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {
 Unblinded::~Unblinded() = default;
 
 void Unblinded::Start(
+    const std::vector<ledger::CredsBatchType> types,
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
   if (contribution_id.empty()) {
@@ -109,24 +110,26 @@ void Unblinded::Start(
     return;
   }
 
-  GetContributionInfoAndUnblindedTokens(
-      contribution_id,
-      std::bind(&Unblinded::PrepareTokens,
-          this,
-          _1,
-          _2,
-          callback));
+  auto get_callback = std::bind(&Unblinded::PrepareTokens,
+      this,
+      _1,
+      _2,
+      types,
+      callback);
+
+  GetContributionInfoAndUnblindedTokens(types, contribution_id, get_callback);
 }
 
 void Unblinded::GetContributionInfoAndUnblindedTokens(
+    const std::vector<ledger::CredsBatchType> types,
     const std::string& contribution_id,
     GetContributionInfoAndUnblindedTokensCallback callback) {
-  ledger_->GetAllUnblindedTokens(
-    std::bind(&Unblinded::OnUnblindedTokens,
-        this,
-        _1,
-        contribution_id,
-        callback));
+  auto get_callback = std::bind(&Unblinded::OnUnblindedTokens,
+      this,
+      _1,
+      contribution_id,
+      callback);
+  ledger_->GetUnblindedTokensByBatchTypes(types, get_callback);
 }
 
 void Unblinded::OnUnblindedTokens(
@@ -170,6 +173,7 @@ void Unblinded::OnGetContributionInfo(
 void Unblinded::PrepareTokens(
     ledger::ContributionInfoPtr contribution,
     const std::vector<ledger::UnblindedToken>& list,
+    const std::vector<ledger::CredsBatchType> types,
     ledger::ResultCallback callback) {
   if (!contribution) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution not found";
@@ -212,12 +216,13 @@ void Unblinded::PrepareTokens(
 
   // TODO(https://github.com/brave/brave-browser/issues/8887):
   // we should reserve this tokens and add step STEP_RESERVE
-  PreparePublishers(token_list, std::move(contribution), callback);
+  PreparePublishers(token_list, std::move(contribution), types, callback);
 }
 
 void Unblinded::PreparePublishers(
     const std::vector<ledger::UnblindedToken>& list,
     ledger::ContributionInfoPtr contribution,
+    const std::vector<ledger::CredsBatchType> types,
     ledger::ResultCallback callback) {
   if (!contribution) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution not found";
@@ -240,6 +245,7 @@ void Unblinded::PreparePublishers(
     auto save_callback = std::bind(&Unblinded::OnPrepareAutoContribution,
         this,
         _1,
+        types,
         contribution->contribution_id,
         callback);
 
@@ -252,6 +258,7 @@ void Unblinded::PreparePublishers(
   auto save_callback = std::bind(&Unblinded::PrepareStepSaved,
       this,
       _1,
+      types,
       contribution->contribution_id,
       callback);
 
@@ -297,6 +304,7 @@ ledger::ContributionPublisherList Unblinded::PrepareAutoContribution(
 
 void Unblinded::OnPrepareAutoContribution(
     const ledger::Result result,
+    const std::vector<ledger::CredsBatchType> types,
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
@@ -308,6 +316,7 @@ void Unblinded::OnPrepareAutoContribution(
   auto save_callback = std::bind(&Unblinded::PrepareStepSaved,
       this,
       _1,
+      types,
       contribution_id,
       callback);
 
@@ -319,6 +328,7 @@ void Unblinded::OnPrepareAutoContribution(
 
 void Unblinded::PrepareStepSaved(
     const ledger::Result result,
+    const std::vector<ledger::CredsBatchType> types,
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
@@ -327,22 +337,22 @@ void Unblinded::PrepareStepSaved(
     return;
   }
 
-  ProcessTokens(contribution_id, callback);
+  ProcessTokens(types, contribution_id, callback);
 }
 
 void Unblinded::ProcessTokens(
+    const std::vector<ledger::CredsBatchType> types,
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
   // TODO(https://github.com/brave/brave-browser/issues/8887):
   // here we should fetch reserved tokens so that in OnProcessTokens
   // no additional computing is needed
-  GetContributionInfoAndUnblindedTokens(
-      contribution_id,
-      std::bind(&Unblinded::OnProcessTokens,
-          this,
-          _1,
-          _2,
-          callback));
+  auto get_callback =  std::bind(&Unblinded::OnProcessTokens,
+      this,
+      _1,
+      _2,
+      callback);
+  GetContributionInfoAndUnblindedTokens(types, contribution_id, get_callback);
 }
 
 void Unblinded::OnProcessTokens(
@@ -435,6 +445,7 @@ void Unblinded::ContributionAmountSaved(
 }
 
 void Unblinded::Retry(
+    const std::vector<ledger::CredsBatchType> types,
     ledger::ContributionInfoPtr contribution,
     ledger::ResultCallback callback) {
   if (!contribution) {
@@ -453,12 +464,12 @@ void Unblinded::Retry(
   }
 
   if (contribution->step == ledger::ContributionStep::STEP_START) {
-    Start(contribution->contribution_id, callback);
+    Start(types, contribution->contribution_id, callback);
     return;
   }
 
   if (contribution->step == ledger::ContributionStep::STEP_PREPARE) {
-    ProcessTokens(contribution->contribution_id, callback);
+    ProcessTokens(types, contribution->contribution_id, callback);
     return;
   }
 

@@ -24,8 +24,6 @@ class DatabaseUnblindedToken: public DatabaseTable {
       ledger::UnblindedTokenList list,
       ledger::ResultCallback callback);
 
-  void GetAllRecords(ledger::GetUnblindedTokenListCallback callback);
-
   void GetRecordsByTriggerIds(
       const std::vector<std::string>& trigger_ids,
       ledger::GetUnblindedTokenListCallback callback);
@@ -35,6 +33,10 @@ class DatabaseUnblindedToken: public DatabaseTable {
       ledger::ResultCallback callback);
 
   void CheckRecordsExpiration(ledger::ResultCallback callback);
+
+  void GetRecordsByBatchTypes(
+      const std::vector<ledger::CredsBatchType>& batch_types,
+      ledger::GetUnblindedTokenListCallback callback);
 
  private:
   bool CreateTableV10(ledger::DBTransaction* transaction);

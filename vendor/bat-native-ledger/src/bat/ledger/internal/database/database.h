@@ -320,9 +320,6 @@ class Database {
       ledger::UnblindedTokenList list,
       ledger::ResultCallback callback);
 
-  void GetAllUnblindedTokens(
-      ledger::GetUnblindedTokenListCallback callback);
-
   void DeleteUnblindedTokens(
       const std::vector<std::string>& ids,
       ledger::ResultCallback callback);
@@ -332,6 +329,11 @@ class Database {
       ledger::GetUnblindedTokenListCallback callback);
 
   void CheckUnblindedTokensExpiration(ledger::ResultCallback callback);
+
+  void GetUnblindedTokensByBatchTypes(
+      const std::vector<ledger::CredsBatchType>& batch_types,
+      ledger::GetUnblindedTokenListCallback callback);
+
 
  private:
   std::unique_ptr<DatabaseInitialize> initialize_;

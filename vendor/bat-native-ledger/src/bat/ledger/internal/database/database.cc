@@ -472,11 +472,6 @@ void Database::SaveUnblindedTokenList(
   unblinded_token_->InsertOrUpdateList(std::move(list), callback);
 }
 
-void Database::GetAllUnblindedTokens(
-    ledger::GetUnblindedTokenListCallback callback) {
-  unblinded_token_->GetAllRecords(callback);
-}
-
 void Database::DeleteUnblindedTokens(
     const std::vector<std::string>& ids,
     ledger::ResultCallback callback) {
@@ -492,6 +487,12 @@ void Database::GetUnblindedTokensByTriggerIds(
 void Database::CheckUnblindedTokensExpiration(
     ledger::ResultCallback callback) {
   unblinded_token_->CheckRecordsExpiration(callback);
+}
+
+void Database::GetUnblindedTokensByBatchTypes(
+    const std::vector<ledger::CredsBatchType>& batch_types,
+    ledger::GetUnblindedTokenListCallback callback) {
+  unblinded_token_->GetRecordsByBatchTypes(batch_types, callback);
 }
 
 }  // namespace braveledger_database

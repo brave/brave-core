@@ -566,9 +566,6 @@ class LedgerImpl : public ledger::Ledger {
     ledger::UnblindedTokenList list,
     ledger::ResultCallback callback);
 
-  virtual void GetAllUnblindedTokens(
-      ledger::GetUnblindedTokenListCallback callback);
-
   virtual void DeleteUnblindedTokens(
       const std::vector<std::string>& id_list,
       ledger::ResultCallback callback);
@@ -737,6 +734,10 @@ class LedgerImpl : public ledger::Ledger {
   void GetSKUTransactionByOrderId(
       const std::string& order_id,
       ledger::GetSKUTransactionCallback callback);
+
+  virtual void GetUnblindedTokensByBatchTypes(
+      const std::vector<ledger::CredsBatchType>& batch_types,
+      ledger::GetUnblindedTokenListCallback callback);
 
  private:
   void InitializeConfirmations(

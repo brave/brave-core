@@ -433,7 +433,10 @@ void Contribution::OnEntrySaved(
       _1,
       contribution_id);
 
-    StartUnblinded(contribution_id, result_callback);
+    StartUnblinded(
+        {ledger::CredsBatchType::PROMOTION},
+        contribution_id,
+        result_callback);
   } else if (wallet_type == ledger::kWalletAnonymous) {
     auto wallet = ledger::ExternalWallet::New();
     wallet->type = wallet_type;
@@ -574,18 +577,21 @@ void Contribution::SKUAutoContribution(
 }
 
 void Contribution::StartUnblinded(
+    const std::vector<ledger::CredsBatchType> types,
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
-  unblinded_->Start(contribution_id, callback);
+  unblinded_->Start(types, contribution_id, callback);
 }
 
 void Contribution::RetryUnblinded(
+    const std::vector<ledger::CredsBatchType> types,
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
 
   auto get_callback = std::bind(&Contribution::RetryUnblindedContribution,
       this,
       _1,
+      types,
       callback);
 
   ledger_->GetContributionInfo(contribution_id, get_callback);
@@ -593,8 +599,9 @@ void Contribution::RetryUnblinded(
 
 void Contribution::RetryUnblindedContribution(
     ledger::ContributionInfoPtr contribution,
+    const std::vector<ledger::CredsBatchType> types,
     ledger::ResultCallback callback) {
-  unblinded_->Retry(std::move(contribution), callback);
+  unblinded_->Retry(types, std::move(contribution), callback);
 }
 
 void Contribution::Result(
@@ -713,7 +720,10 @@ void Contribution::Retry(
 
   switch (contribution->processor) {
     case ledger::ContributionProcessor::BRAVE_TOKENS: {
-      unblinded_->Retry(contribution->Clone(), result_callback);
+      RetryUnblindedContribution(
+          contribution->Clone(),
+          {ledger::CredsBatchType::PROMOTION},
+          result_callback);
       return;
     }
     case ledger::ContributionProcessor::UPHOLD: {

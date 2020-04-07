@@ -1458,11 +1458,6 @@ void LedgerImpl::SaveUnblindedTokenList(
   bat_database_->SaveUnblindedTokenList(std::move(list), callback);
 }
 
-void LedgerImpl::GetAllUnblindedTokens(
-    ledger::GetUnblindedTokenListCallback callback) {
-  bat_database_->GetAllUnblindedTokens(callback);
-}
-
 void LedgerImpl::DeleteUnblindedTokens(
     const std::vector<std::string>& id_list,
     ledger::ResultCallback callback) {
@@ -1727,6 +1722,12 @@ void LedgerImpl::GetSKUTransactionByOrderId(
     const std::string& order_id,
     ledger::GetSKUTransactionCallback callback) {
   bat_database_->GetSKUTransactionByOrderId(order_id, callback);
+}
+
+void LedgerImpl::GetUnblindedTokensByBatchTypes(
+    const std::vector<ledger::CredsBatchType>& batch_types,
+    ledger::GetUnblindedTokenListCallback callback) {
+  bat_database_->GetUnblindedTokensByBatchTypes(batch_types, callback);
 }
 
 }  // namespace bat_ledger

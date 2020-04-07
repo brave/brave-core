@@ -284,7 +284,10 @@ void ContributionSKU::CredsStepSaved(
     const ledger::Result result,
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
-  contribution_->StartUnblinded(contribution_id, callback);
+  contribution_->StartUnblinded(
+      {ledger::CredsBatchType::SKU},
+      contribution_id,
+      callback);
 }
 
 void ContributionSKU::Merchant(
@@ -295,7 +298,10 @@ void ContributionSKU::Merchant(
       _1,
       transaction,
       callback);
-  ledger_->GetAllUnblindedTokens(get_callback);
+
+  ledger_->GetUnblindedTokensByBatchTypes(
+      {ledger::CredsBatchType::PROMOTION},
+      get_callback);
 }
 
 void ContributionSKU::GetUnblindedTokens(
@@ -419,8 +425,10 @@ void ContributionSKU::OnOrder(
     case ledger::ContributionStep::STEP_PREPARE:
     case ledger::ContributionStep::STEP_RESERVE:
     case ledger::ContributionStep::STEP_CREDS: {
-      // TODO in RetryUnblinded we need to get tokens from SKU and not general ones
-      contribution_->RetryUnblinded(contribution->contribution_id, callback);
+      contribution_->RetryUnblinded(
+          {ledger::CredsBatchType::SKU},
+          contribution->contribution_id,
+          callback);
       return;
     }
     case ledger::ContributionStep::STEP_AC_TABLE_EMPTY:
