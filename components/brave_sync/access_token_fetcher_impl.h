@@ -28,7 +28,10 @@ class AccessTokenFetcherImpl : public AccessTokenFetcher {
 
   // Implementation of AccessTokenFetcher
   void Start(const std::string& client_id,
-             const std::string& client_secret) override;
+             const std::string& client_secret,
+             const std::string& timestamp) override;
+
+  void StartGetTimestamp() override;
 
   void CancelRequest() override;
 
@@ -41,6 +44,7 @@ class AccessTokenFetcherImpl : public AccessTokenFetcher {
   };
 
   void OnURLLoadComplete(std::unique_ptr<std::string> response_body);
+  void OnTimestampLoadComplete(std::unique_ptr<std::string> response_body);
 
   // Helper methods for the flow.
   void StartGetAccessToken();
@@ -56,6 +60,7 @@ class AccessTokenFetcherImpl : public AccessTokenFetcher {
   static std::string MakeGetAccessTokenBody(
       const std::string& client_id,
       const std::string& client_secret,
+      const std::string& timestamp,
       const std::string& refresh_token);
 
   static bool ParseGetAccessTokenSuccessResponse(
@@ -75,8 +80,10 @@ class AccessTokenFetcherImpl : public AccessTokenFetcher {
 
   // While a fetch is in progress.
   std::unique_ptr<network::SimpleURLLoader> url_loader_;
+  std::unique_ptr<network::SimpleURLLoader> ts_url_loader_;
   std::string client_id_;
   std::string client_secret_;
+  std::string timestamp_;
 
   DISALLOW_COPY_AND_ASSIGN(AccessTokenFetcherImpl);
 };
