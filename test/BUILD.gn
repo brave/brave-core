@@ -282,6 +282,7 @@ test("brave_unit_tests") {
       "//brave/components/brave_ads/browser/ads_service_impl_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/client_mock.h",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/client_mock.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/locale_helper_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/filters/ads_history_confirmation_filter_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/filters/ads_history_conversion_confirmation_type_filter_unittest.cc",
       "//brave/vendor/bat-native-ads/src/bat/ads/internal/filters/ads_history_date_range_filter_unittest.cc",

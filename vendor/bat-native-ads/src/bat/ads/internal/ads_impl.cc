@@ -621,27 +621,21 @@ bool AdsImpl::ToggleFlagAd(
 
 void AdsImpl::ChangeLocale(
     const std::string& locale) {
-  auto language = helper::Locale::GetLanguageCode(locale);
+  const std::string language_code = helper::Locale::GetLanguageCode(locale);
+  client_->SetUserModelLanguage(language_code);
 
-  if (!ShouldClassifyPagesIfTargeted()) {
-    client_->SetUserModelLanguage(language);
+  const std::vector<std::string> languages = client_->GetUserModelLanguages();
+  if (std::find(languages.begin(), languages.end(), language_code)
+      == languages.end()) {
+    BLOG(INFO) << language_code << " user model not supported for page "
+        "classification";
 
     InitializeStep5(SUCCESS);
     return;
   }
 
-  auto languages = client_->GetUserModelLanguages();
-  if (std::find(languages.begin(), languages.end(), language)
-      != languages.end()) {
-    BLOG(INFO) << "Changed to " << language << " user model";
-
-    client_->SetUserModelLanguage(language);
-  } else {
-    BLOG(INFO) << language << " user model not found, defaulting to "
-        << kDefaultUserModelLanguage << " user model";
-
-    client_->SetUserModelLanguage(kDefaultUserModelLanguage);
-  }
+  BLOG(INFO) << "Changed to " << language_code << " user model for page "
+      "classification";
 
   LoadUserModel();
 }
@@ -768,20 +762,15 @@ void AdsImpl::MaybeClassifyPage(
 
 bool AdsImpl::ShouldClassifyPagesIfTargeted() const {
   const std::string locale = ads_client_->GetLocale();
-  const std::string region = helper::Locale::GetRegionCode(locale);
+  const std::string language_code = helper::Locale::GetLanguageCode(locale);
 
-  auto targeted = false;
-
-  for (const auto& schema : kSupportedRegionsSchemas) {
-    const std::map<std::string, bool> regions = schema.second;
-    const auto it = regions.find(region);
-    if (it != regions.end()) {
-      targeted = it->second;
-      break;
-    }
+  const std::vector<std::string> languages = client_->GetUserModelLanguages();
+  if (std::find(languages.begin(), languages.end(), language_code)
+      == languages.end()) {
+    return false;
   }
 
-  return targeted;
+  return true;
 }
 
 std::string AdsImpl::ClassifyPage(

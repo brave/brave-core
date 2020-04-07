@@ -16,48 +16,50 @@ namespace helper {
 
 std::string Locale::GetLanguageCode(
     const std::string& locale) {
-  std::vector<std::string> locale_components = base::SplitString(locale, ".",
-      base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  const std::vector<std::string> locale_components = base::SplitString(locale,
+      ".", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
   if (locale_components.size() == 0) {
     return ads::kDefaultLanguage;
   }
 
-  auto normalized_locale = locale_components.front();
+  std::string normalized_locale = locale_components.front();
   std::replace(normalized_locale.begin(), normalized_locale.end(), '-', '_');
 
-  std::vector<std::string> components = base::SplitString(
+  const std::vector<std::string> components = base::SplitString(
       normalized_locale, "_", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
 
   if (components.size() == 0) {
     return ads::kDefaultLanguage;
   }
 
-  auto language_code = components.front();
-  return language_code;
+  const std::string language_code = components.front();
+
+  return base::ToLowerASCII(language_code);
 }
 
 std::string Locale::GetRegionCode(
     const std::string& locale) {
-  std::vector<std::string> locale_components = base::SplitString(locale, ".",
-      base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  const std::vector<std::string> locale_components = base::SplitString(locale,
+      ".", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
   if (locale_components.size() == 0) {
     return ads::kDefaultRegion;
   }
 
-  auto normalized_locale = locale_components.front();
+  std::string normalized_locale = locale_components.front();
   std::replace(normalized_locale.begin(), normalized_locale.end(), '-', '_');
 
-  std::vector<std::string> components = base::SplitString(
+  const std::vector<std::string> components = base::SplitString(
       normalized_locale, "_", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
 
-  if (components.size() != 2) {
+  if (components.size() <= 1) {
     return ads::kDefaultRegion;
   }
 
-  auto region_code = components.at(1);
-  return region_code;
+  const std::string region_code = components.back();
+
+  return base::ToUpperASCII(region_code);
 }
 
 }  // namespace helper
