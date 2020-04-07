@@ -1,0 +1,21 @@
+diff --git a/components/payments/content/payment_request.cc b/components/payments/content/payment_request.cc
+index d8eab2d1733891d9b3aa8546e52fd07179d21aa2..1eb2a5d851ce03a13daa0f2b4448a288795a8532 100644
+--- a/components/payments/content/payment_request.cc
++++ b/components/payments/content/payment_request.cc
+@@ -651,7 +651,7 @@ void PaymentRequest::OnPaymentResponseAvailable(
+ 
+   // Log the correct "selected instrument" metric according to its type and
+   // the method name in response.
+-  DCHECK(state_->selected_app());
++  //DCHECK(state_->selected_app());
+   JourneyLogger::Event selected_event =
+       JourneyLogger::Event::EVENT_SELECTED_OTHER;
+   switch (state_->selected_app()->type()) {
+@@ -760,6 +760,7 @@ void PaymentRequest::OnConnectionTerminated() {
+ 
+ void PaymentRequest::Pay() {
+   journey_logger_.SetEventOccurred(JourneyLogger::EVENT_PAY_CLICKED);
++  BRAVE_BAT_PAYMENT_UI_PAY;
+   DCHECK(state_->selected_app());
+   if (state_->selected_app()->type() == PaymentApp::Type::SERVICE_WORKER_APP) {
+     static_cast<ServiceWorkerPaymentApp*>(state_->selected_app())

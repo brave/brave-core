@@ -1,0 +1,13 @@
+diff --git a/components/payments/content/BUILD.gn b/components/payments/content/BUILD.gn
+index ae4e32dbac3471a248d1d16b4a50d04486089ad6..1765dedbf3d28331d640e64525e2b785f4e0325e 100644
+--- a/components/payments/content/BUILD.gn
++++ b/components/payments/content/BUILD.gn
+@@ -38,6 +38,8 @@ jumbo_static_library("content") {
+ 
+   if (!is_android) {
+     sources += [
++      "//brave/components/payments/bat_payment_app.cc",
++      "//brave/components/payments/bat_payment_app.h",
+       "autofill_payment_app_factory.cc",
+       "autofill_payment_app_factory.h",
+       "content_payment_request_delegate.h",

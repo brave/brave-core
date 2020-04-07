@@ -1,0 +1,12 @@
+diff --git a/components/payments/content/payment_request_state.cc b/components/payments/content/payment_request_state.cc
+index d961d5d17f4a804761ef447bbe8d603ea8929acd..08db47270de0e51b552633fddf006cd84d2e9559 100644
+--- a/components/payments/content/payment_request_state.cc
++++ b/components/payments/content/payment_request_state.cc
+@@ -153,6 +153,7 @@ void PaymentRequestState::OnPaymentAppCreated(std::unique_ptr<PaymentApp> app) {
+         JourneyLogger::EVENT_AVAILABLE_METHOD_OTHER);
+   }
+   available_apps_.emplace_back(std::move(app));
++  BRAVE_BAT_PAYMENT_UI_ON_PAYMENT_APP_CREATED
+ }
+ 
+ void PaymentRequestState::OnPaymentAppCreationError(

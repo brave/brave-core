@@ -98,7 +98,7 @@ export function createHost (): CheckoutHost {
     },
 
     closeDialog () {
-      chrome.send('dialogClose')
+      chrome.send('dialogClose', [JSON.stringify({'action': 'cancel'})])
     },
 
     payWithCreditCard (...args) {
@@ -108,6 +108,8 @@ export function createHost (): CheckoutHost {
 
     payWithWallet (...args) {
       console.log('payWithWallet', ...args)
+      chrome.send('paymentRequestComplete')
+      chrome.send('dialogClose')
       // TODO(zenparsing): Send update to service
     },
 

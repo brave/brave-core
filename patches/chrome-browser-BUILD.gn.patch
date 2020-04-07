@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 6f768f7848a3885d516e337bd413d91e02e6900a..90beb01f613d62dce221195cf1310592342288de 100644
+index 6f768f7848a3885d516e337bd413d91e02e6900a..ca9263c64b081e75f16633c04f30d3179221306b 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
 @@ -2261,6 +2261,7 @@ jumbo_static_library("browser") {
@@ -10,3 +10,13 @@ index 6f768f7848a3885d516e337bd413d91e02e6900a..90beb01f613d62dce221195cf1310592
    ]
  
    if (is_win) {
+@@ -4313,7 +4314,9 @@ jumbo_static_library("browser") {
+       "payments/payment_request_factory.cc",
+       "payments/payment_request_factory.h",
+     ]
++    
+     deps += [ "//components/payments/content" ]
++    deps += [ "//brave/browser:sku" ]
+   }
+ 
+   if (is_win || is_mac || (is_chromeos && use_dbus)) {

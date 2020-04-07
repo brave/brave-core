@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/payments/chrome_payment_request_delegate.cc b/chrome/browser/payments/chrome_payment_request_delegate.cc
+index e3c4938d8ccd29e8de9c8ea1a50312acbf07f804..4746c80e63f7ad741ec91c1db3842f00b016bddd 100644
+--- a/chrome/browser/payments/chrome_payment_request_delegate.cc
++++ b/chrome/browser/payments/chrome_payment_request_delegate.cc
+@@ -64,6 +64,7 @@ ChromePaymentRequestDelegate::~ChromePaymentRequestDelegate() {}
+ 
+ void ChromePaymentRequestDelegate::ShowDialog(PaymentRequest* request) {
+   DCHECK_EQ(nullptr, shown_dialog_);
++  BRAVE_SHOW_BAT_PAYMENT_UI
+   shown_dialog_ = new payments::PaymentRequestDialogView(request, nullptr);
+   shown_dialog_->ShowDialog();
+ }

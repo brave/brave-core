@@ -1178,7 +1178,7 @@ BraveRewardsShowCheckoutDialogFunction::Run() {
                             base::NumberToString(params->tab_id)));
   }
 
-  ::brave_rewards::ShowCheckoutDialog(contents);
+  // ::brave_rewards::ShowCheckoutDialog(contents);
 
   return RespondNow(NoArguments());
 }

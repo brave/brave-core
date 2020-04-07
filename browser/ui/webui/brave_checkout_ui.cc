@@ -6,15 +6,16 @@
 #include "brave/browser/ui/webui/brave_checkout_ui.h"
 
 #include <memory>
+#include <utility>
 
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
 #include "brave/browser/ui/webui/basic_ui.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-#include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_checkout_generated_map.h"
+#include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
@@ -41,9 +42,8 @@ class CheckoutMessageHandler : public content::WebUIMessageHandler {
   void OnGetRewardsEnabled(const base::ListValue* args);
 
   // Rewards service callbacks
-  void FetchBalanceCallback(
-      int32_t status,
-      std::unique_ptr<brave_rewards::Balance> balance);
+  void FetchBalanceCallback(int32_t status,
+                            std::unique_ptr<brave_rewards::Balance> balance);
 
   void GetExternalWalletCallback(
       int32_t status,
@@ -89,36 +89,31 @@ void CheckoutMessageHandler::RegisterMessages() {
                           base::Unretained(this)));
 }
 
-void CheckoutMessageHandler::OnGetWalletBalance(
-    const base::ListValue* args) {
+void CheckoutMessageHandler::OnGetWalletBalance(const base::ListValue* args) {
   if (auto* service = GetRewardsService()) {
     AllowJavascript();
-    service->FetchBalance(base::BindOnce(
-        &CheckoutMessageHandler::FetchBalanceCallback,
-        weak_factory_.GetWeakPtr()));
+    service->FetchBalance(
+        base::BindOnce(&CheckoutMessageHandler::FetchBalanceCallback,
+                       weak_factory_.GetWeakPtr()));
   }
 }
 
-void CheckoutMessageHandler::OnGetExternalWallet(
-    const base::ListValue* args) {
+void CheckoutMessageHandler::OnGetExternalWallet(const base::ListValue* args) {
   if (auto* service = GetRewardsService()) {
     AllowJavascript();
     service->GetExternalWallet(
-        "uphold", // TODO(zenparsing): Take from params?
-        base::BindOnce(
-            &CheckoutMessageHandler::GetExternalWalletCallback,
-            weak_factory_.GetWeakPtr()));
+        "uphold",  // TODO(zenparsing): Take from params?
+        base::BindOnce(&CheckoutMessageHandler::GetExternalWalletCallback,
+                       weak_factory_.GetWeakPtr()));
   }
 }
 
-void CheckoutMessageHandler::OnGetRewardsEnabled(
-    const base::ListValue* args) {
+void CheckoutMessageHandler::OnGetRewardsEnabled(const base::ListValue* args) {
   if (auto* service = GetRewardsService()) {
     AllowJavascript();
     service->GetRewardsMainEnabled(
-        base::Bind(
-            &CheckoutMessageHandler::GetRewardsMainEnabledCallback,
-            weak_factory_.GetWeakPtr()));
+        base::Bind(&CheckoutMessageHandler::GetRewardsMainEnabledCallback,
+                   weak_factory_.GetWeakPtr()));
   }
 }
 
@@ -185,22 +180,19 @@ void CheckoutMessageHandler::GetRewardsMainEnabledCallback(bool enabled) {
   FireWebUIListener("rewardsEnabledUpdated", response);
 }
 
-
 }  // namespace
 
-BraveCheckoutUI::BraveCheckoutUI(
-    content::WebUI* web_ui,
-    const std::string& name)
+BraveCheckoutUI::BraveCheckoutUI(content::WebUI* web_ui,
+                                 const std::string& name)
     : ConstrainedWebDialogUI(web_ui) {
   // TODO(zenparsing): Handle profile->IsOffTheRecord()?
   Profile* profile = Profile::FromWebUI(web_ui);
 
-  content::WebUIDataSource::Add(profile, CreateBasicUIHTMLSource(
+  content::WebUIDataSource::Add(
       profile,
-      name,
-      kBraveRewardsCheckoutGenerated,
-      kBraveRewardsCheckoutGeneratedSize,
-      IDR_BRAVE_REWARDS_CHECKOUT_HTML));
+      CreateBasicUIHTMLSource(profile, name, kBraveRewardsCheckoutGenerated,
+                              kBraveRewardsCheckoutGeneratedSize,
+                              IDR_BRAVE_REWARDS_CHECKOUT_HTML));
 
   web_ui->AddMessageHandler(std::make_unique<CheckoutMessageHandler>());
 }

@@ -89,6 +89,7 @@ export function App (props: AppProps) {
       {
         flowState === 'start' ?
           <PaymentMethodPanel
+            canUseCreditCard={false}
             rewardsEnabled={rewardsEnabled}
             orderDescription={orderInfo.description}
             orderTotal={formatTokenValue(orderInfo.total)}
