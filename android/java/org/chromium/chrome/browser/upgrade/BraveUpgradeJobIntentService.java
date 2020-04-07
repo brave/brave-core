@@ -39,6 +39,7 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
     private static final String TAG = "BraveUpgradeJobIntentService";
     private static final String SHIELDS_CONFIG_FILENAME = "shields_config.dat";
     private static final String SHIELDS_CONFIG_MIGRATED_FILENAME = "shields_config_migrated.dat";
+    private static final String SHIELDS_CONFIG_MIGRATED2_FILENAME = "shields_config_migrated2.dat";
     private static final int JOB_ID = 1;
 
     // For old Brave stats
@@ -152,9 +153,16 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
     private boolean migrateShieldsConfig() {
         Context context = ContextUtils.getApplicationContext();
         File path = new File(context.getApplicationInfo().dataDir, SHIELDS_CONFIG_FILENAME);
+        boolean secondMigration = false;
         if (!path.exists()) {
-            Log.e(TAG, "Can't locate Brave shields config file: " + path.getPath());
-            return false;
+            Log.w(TAG, "Can't locate Brave shields config file: " + path.getPath());
+            // Check if file after first migration left
+            path = new File(context.getApplicationInfo().dataDir, SHIELDS_CONFIG_MIGRATED_FILENAME);
+            if (!path.exists()) {
+                Log.e(TAG, "Can't locate first migrated Brave shields config file: " + path.getPath());
+                return false;
+            }
+            secondMigration = true;
         }
 
         byte buffer[] = null;
@@ -187,22 +195,22 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
 
             // The shields_config.dat file doesn't include the scheme,
             // but it's required when setting shields preferences
-            migrateShieldsSettingsForHost("http://" + host, settings);
-            migrateShieldsSettingsForHost("https://" + host, settings);
+            migrateShieldsSettingsForHost("http://" + host, settings, secondMigration);
+            migrateShieldsSettingsForHost("https://" + host, settings, secondMigration);
 
             // The shields_config.dat file strips "www." from
             // hostnames, so include it back (with scheme!) to avoid
             // missing sites
             if (!hasSubdomain(host)) {
-                migrateShieldsSettingsForHost("http://www." + host, settings);
-                migrateShieldsSettingsForHost("https://www." + host, settings);
+                migrateShieldsSettingsForHost("http://www." + host, settings, secondMigration);
+                migrateShieldsSettingsForHost("https://www." + host, settings, secondMigration);
             }
         }
 
         return true;
     }
 
-    private boolean migrateShieldsSettingsForHost(String host, String settings) {
+    private boolean migrateShieldsSettingsForHost(String host, String settings, boolean secondMigration) {
         String[] array = new String(settings).split(",");
         if (array.length < 6) {
             Log.e(TAG, "Brave shields host settings invalid for host " + host);
@@ -210,24 +218,27 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
         }
 
         Profile profile = Profile.getLastUsedProfile();
-        BraveShieldsContentSettings.setShields(profile, host,
+        // On second migration we fix cookies only
+        if (!secondMigration) {
+            BraveShieldsContentSettings.setShields(profile, host,
                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS, array[0].equals("1"),
                 false);
-        BraveShieldsContentSettings.setShields(profile, host,
-                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS_TRACKERS, array[1].equals("1"),
-                false);
-        BraveShieldsContentSettings.setShields(profile, host,
-                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES,
-                array[2].equals("1"), false);
-        BraveShieldsContentSettings.setShields(profile, host,
-                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS, array[3].equals("1"),
-                false);
+            BraveShieldsContentSettings.setShields(profile, host,
+                    BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS_TRACKERS, array[1].equals("1"),
+                    false);
+            BraveShieldsContentSettings.setShields(profile, host,
+                    BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES,
+                    array[2].equals("1"), false);
+            BraveShieldsContentSettings.setShields(profile, host,
+                    BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS, array[3].equals("1"),
+                    false);
+            BraveShieldsContentSettings.setShields(profile, host,
+                    BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING,
+                    array[5].equals("1"), false);
+        }
         BraveShieldsContentSettings.setShields(profile, host,
                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES, array[4].equals("1"),
                 false);
-        BraveShieldsContentSettings.setShields(profile, host,
-                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING,
-                array[5].equals("1"), false);
 
         return true;
     }
@@ -357,11 +368,16 @@ public class BraveUpgradeJobIntentService extends JobIntentService {
                                                      .getApplicationInfo()
                                                      .dataDir;
                             File oldName = new File(dataDir, SHIELDS_CONFIG_FILENAME);
-                            File migratedName = new File(dataDir, SHIELDS_CONFIG_MIGRATED_FILENAME);
-                            if (!oldName.renameTo(migratedName)) {
-                                Log.e(TAG, "Failed to rename migrated Brave shields config file");
-                                finalizeMigration(needToRestart);
-                                return;
+                            File firstMigratedName = new File(dataDir, SHIELDS_CONFIG_MIGRATED_FILENAME);
+                            if (oldName.exists()) {
+                                if (!oldName.renameTo(firstMigratedName)) {
+                                    Log.e(TAG, "Failed to rename migrated Brave shields config file");
+                                }
+                            } else if (firstMigratedName.exists()) {
+                                File secondMigratedName = new File(dataDir, SHIELDS_CONFIG_MIGRATED2_FILENAME);
+                                if (!firstMigratedName.renameTo(secondMigratedName)) {
+                                    Log.e(TAG, "Failed to rename first migrated Brave shields config file");
+                                }
                             }
                             finalizeMigration(needToRestart);
                         }
