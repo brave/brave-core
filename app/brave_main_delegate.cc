@@ -30,7 +30,6 @@
 #include "components/autofill/core/common/autofill_payments_features.h"
 #include "components/feed/feed_feature_list.h"
 #include "components/offline_pages/core/offline_page_feature.h"
-#include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/security_state/core/features.h"
 #include "components/sync/driver/sync_driver_switches.h"
@@ -163,7 +162,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     // Enable webui dark theme: @media (prefers-color-scheme: dark) is gated on
     // this feature.
       features::kWebUIDarkMode.name,
-      omnibox::kSimplifyHttpsIndicator.name,
   };
 
   if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
