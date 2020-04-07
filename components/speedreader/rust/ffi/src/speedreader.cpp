@@ -1,6 +1,7 @@
 #include "../include/speedreader.hpp"
 
 #include <iostream>
+#include "base/logging.h"
 
 #include "../include/speedreader_ffi.hpp"
 
@@ -20,6 +21,7 @@ bool SpeedReader::deserialize(const char* data, size_t data_size) {
     raw = new_raw;
     return true;
   } else {
+    VLOG(2) << __func__ << " deserialization failed: " << TakeLastError();
     return false;
   }
 }

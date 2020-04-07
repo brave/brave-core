@@ -155,7 +155,6 @@ pub struct SpeedReader {
 impl Default for SpeedReader {
     fn default() -> Self {
         let mut whitelist = Whitelist::default();
-        whitelist.load_predefined();
         let url_engine = adblock::engine::Engine::from_rules(&whitelist.get_url_rules());
         SpeedReader {
             whitelist,

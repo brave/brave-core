@@ -38,8 +38,6 @@ impl<'h, O: OutputSink> SpeedReaderStreaming<'h, O> {
         output_sink: O,
         config: &'h [(Selector, ContentFunction)],
     ) -> Result<Self, SpeedReaderError> {
-        let mut whitelist = Whitelist::default();
-        whitelist.load_predefined();
         let rewriter = HtmlRewriter::try_new(
             Settings {
                 element_content_handlers: content_handlers(config),
