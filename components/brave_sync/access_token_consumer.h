@@ -36,6 +36,10 @@ class AccessTokenConsumer {
   // TODO(darkdh): define error messages
   virtual void OnGetTokenFailure(const std::string& error);
 
+  virtual void OnGetTimestampSuccess(const std::string& ts);
+
+  virtual void OnGetTimestampFailure(const std::string& error);
+
   DISALLOW_COPY_AND_ASSIGN(AccessTokenConsumer);
 };
 
