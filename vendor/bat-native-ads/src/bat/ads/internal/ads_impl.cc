@@ -305,12 +305,12 @@ void AdsImpl::InitializeUserModel(
     const std::string& language) {
   // TODO(Terry Mancey): Refactor function to use callbacks
 
-  BLOG(INFO) << "Initializing user model for \"" << language << "\" language";
+  BLOG(INFO) << "Initializing user model for " << language << " language";
 
   user_model_.reset(usermodel::UserModel::CreateInstance());
   user_model_->InitializePageClassifier(json);
 
-  BLOG(INFO) << "Initialized user model for \"" << language << "\" language";
+  BLOG(INFO) << "Initialized user model for " << language << " language";
 }
 
 bool AdsImpl::IsMobile() const {
@@ -369,8 +369,6 @@ void AdsImpl::OnUnIdle() {
   }
 
   BLOG(INFO) << "Browser state changed to unidle";
-
-  client_->UpdateLastUserIdleStopTime();
 
   if (IsMobile()) {
     return;
@@ -470,18 +468,12 @@ void AdsImpl::OnTabUpdated(
     return;
   }
 
-  client_->UpdateLastUserActivity();
-
   if (is_active) {
-    BLOG(INFO) << "OnTabUpdated.IsFocused for tab id: " << tab_id
-        << " and url: " << url;
+    BLOG(INFO) << "OnTabUpdated.IsFocused for tab id: " << tab_id;
 
     active_tab_id_ = tab_id;
     previous_tab_url_ = active_tab_url_;
     active_tab_url_ = url;
-
-    TestShoppingData(url);
-    TestSearchState(url);
 
     const Reports reports(this);
     FocusInfo focus_info;
@@ -489,8 +481,7 @@ void AdsImpl::OnTabUpdated(
     const std::string report = reports.GenerateFocusEventReport(focus_info);
     ads_client_->EventLog(report);
   } else {
-    BLOG(INFO) << "OnTabUpdated.IsBlurred for tab id: " << tab_id
-        << " and url: " << url;
+    BLOG(INFO) << "OnTabUpdated.IsBlurred for tab id: " << tab_id;
 
     const Reports reports(this);
     BlurInfo blur_info;
@@ -651,7 +642,7 @@ void AdsImpl::OnPageLoaded(
   }
 
   if (url.empty()) {
-    BLOG(INFO) << "Site visited, empty URL";
+    BLOG(INFO) << "Empty URL is not supported";
     return;
   }
 
@@ -665,9 +656,7 @@ void AdsImpl::OnPageLoaded(
 
   if (helper::Uri::MatchesDomainOrHost(url,
       last_shown_ad_notification_.target_url)) {
-    BLOG(INFO) << "Site visited " << url
-        << ", domain matches the last shown ad notification for "
-            << last_shown_ad_notification_.target_url;
+    BLOG(INFO) << "Visited URL matches the last shown ad notification";
 
     if (!helper::Uri::MatchesDomainOrHost(url,
         last_sustained_ad_notification_url_)) {
@@ -677,36 +666,29 @@ void AdsImpl::OnPageLoaded(
           kSustainAdNotificationInteractionAfterSeconds);
     } else {
       BLOG(INFO) << "Already sustaining ad notification interaction for "
-          << url;
+          "visited URL";
     }
 
     return;
   }
 
   if (!last_shown_ad_notification_.target_url.empty()) {
-    BLOG(INFO) << "Site visited " << url
-      << ", domain does not match the last shown ad notification for "
-          << last_shown_ad_notification_.target_url;
+    BLOG(INFO) << "Visited URL does not match the last shown ad notification";
   }
 
   if (!is_supported_url) {
-    BLOG(INFO) << "Site visited " << url << ", unsupported URL";
+    BLOG(INFO) << "Visited URL is not supported";
     return;
   }
 
-  if (TestSearchState(url)) {
-    BLOG(INFO) << "Site visited " << url << ", URL is a search engine";
+  if (SearchProviders::IsSearchEngine(url)) {
+    BLOG(INFO) << "Visited URL is a search engine";
     return;
   }
-
-  TestShoppingData(url);
 
   MaybeClassifyPage(url, content);
 
   CheckEasterEgg(url);
-
-  BLOG(INFO) << "Site visited " << url << ", previous tab url was "
-      << previous_tab_url_;
 }
 
 void AdsImpl::ExtractPurchaseIntentSignal(
@@ -715,7 +697,7 @@ void AdsImpl::ExtractPurchaseIntentSignal(
     return;
   }
 
-  if (!TestSearchState(url) &&
+  if (!SearchProviders::IsSearchEngine(url) &&
       helper::Uri::MatchesDomainOrHost(url, previous_tab_url_)) {
     return;
   }
@@ -729,7 +711,7 @@ void AdsImpl::ExtractPurchaseIntentSignal(
   }
 
   GeneratePurchaseIntentSignalHistoryEntry(purchase_intent_signal);
-  BLOG(INFO) << "Purchase intent signal extracted for " << url;
+  BLOG(INFO) << "Extracting purchase intent signal from visited URL";
 }
 
 void AdsImpl::GeneratePurchaseIntentSignalHistoryEntry(
@@ -781,12 +763,9 @@ std::string AdsImpl::ClassifyPage(
 
   auto winning_category = GetWinningCategory(page_score);
   if (winning_category.empty()) {
-    BLOG(INFO) << "Failed to classify page at " << url
-        << " as not enough content";
+    BLOG(INFO) << "Failed to classify page as not enough content";
     return "";
   }
-
-  client_->SetLastPageClassification(winning_category);
 
   client_->AppendPageScoreToPageScoreHistory(page_score);
 
@@ -794,9 +773,8 @@ std::string AdsImpl::ClassifyPage(
 
   const auto winning_categories = GetWinningCategories();
 
-  BLOG(INFO) << "Successfully classified page at " << url << " as "
-      << winning_category << ". Winning category over time is "
-      << winning_categories.front();
+  BLOG(INFO) << "Successfully classified page as " << winning_category
+      << ". Winning category over time is " << winning_categories.front();
 
   return winning_category;
 }
@@ -826,8 +804,8 @@ WinningCategoryList AdsImpl::GetWinningCategories() {
     for (size_t i = 0; i < page_score.size(); i++) {
       auto taxonomy = user_model_->GetTaxonomyAtIndex(i);
       if (client_->IsFilteredCategory(taxonomy)) {
-        BLOG(INFO) << taxonomy
-                   << " taxonomy has been excluded from the winner over time";
+        BLOG(INFO) << taxonomy << " taxonomy has been excluded from the winner "
+            "over time";
 
         continue;
       }
@@ -906,37 +884,6 @@ AdsImpl::GetWinningPurchaseIntentCategories() {
       purchase_intent_signal_history, kPurchaseIntentMaxSegments);
 
   return winning_categories;
-}
-
-void AdsImpl::TestShoppingData(
-    const std::string& url) {
-  if (!IsInitialized()) {
-    BLOG(WARNING) << "TestShoppingData failed as not initialized";
-    return;
-  }
-
-  if (helper::Uri::MatchesDomainOrHost(url, kShoppingStateUrl)) {
-    client_->FlagShoppingState(url, 1.0);
-  } else {
-    client_->UnflagShoppingState();
-  }
-}
-
-bool AdsImpl::TestSearchState(
-    const std::string& url) {
-  if (!IsInitialized()) {
-    BLOG(WARNING) << "TestSearchState failed as not initialized";
-    return false;
-  }
-
-  auto is_search_engine = SearchProviders::IsSearchEngine(url);
-  if (is_search_engine) {
-    client_->FlagSearchState(url, 1.0);
-  } else {
-    client_->UnflagSearchState(url);
-  }
-
-  return is_search_engine;
 }
 
 void AdsImpl::ServeSampleAd() {
@@ -1278,15 +1225,15 @@ CreativeAdNotificationList AdsImpl::GetEligibleAds(
     }
 
     if (client_->IsFilteredAd(ad.creative_set_id)) {
-      BLOG(WARNING) << "creativeSetId " << ad.creative_set_id
-          << " appears in the filtered ads list";
+      BLOG(WARNING) << "creativeSetId " << ad.creative_set_id << " excluded "
+          "due to being marked to no longer receive ads";
 
       continue;
     }
 
     if (client_->IsFlaggedAd(ad.creative_set_id)) {
-      BLOG(WARNING) << "creativeSetId " << ad.creative_set_id
-          << " appears in the flagged ads list";
+      BLOG(WARNING) << "creativeSetId " << ad.creative_set_id << " excluded "
+          "due to being marked as inappropriate";
 
       continue;
     }
@@ -1576,14 +1523,14 @@ void AdsImpl::StartDeliveringAdNotifications() {
 
   delivering_ad_notifications_timer_id_ = ads_client_->SetTimer(start_timer_in);
   if (delivering_ad_notifications_timer_id_ == 0) {
-    BLOG(ERROR) <<
-        "Failed to start delivering ad notifications due to an invalid timer";
+    BLOG(ERROR) << "Failed to start delivering ad notifications due to an "
+        "invalid timer";
 
     return;
   }
 
-  BLOG(INFO) << "Start delivering ad notifications in "
-      << start_timer_in << " seconds";
+  BLOG(INFO) << "Start delivering ad notifications in " << start_timer_in
+      << " seconds";
 }
 
 void AdsImpl::StartDeliveringAdNotificationsAfterSeconds(
@@ -1691,9 +1638,8 @@ void AdsImpl::StartSustainingAdNotificationInteraction(
   sustained_ad_notification_interaction_timer_id_ =
       ads_client_->SetTimer(start_timer_in);
   if (sustained_ad_notification_interaction_timer_id_ == 0) {
-    BLOG(ERROR) <<
-        "Failed to start sustaining ad notification interaction due to an "
-            "invalid timer";
+    BLOG(ERROR) << "Failed to start sustaining ad notification interaction due "
+        "to an invalid timer";
 
     return;
   }
@@ -1706,8 +1652,8 @@ void AdsImpl::SustainAdNotificationInteractionIfNeeded() {
   last_sustained_ad_notification_url_ = "";
 
   if (!IsStillViewingAdNotification()) {
-    BLOG(INFO) << "Failed to sustain ad notification interaction, domain for "
-        "the focused tab does not match the last shown ad notification for "
+    BLOG(INFO) << "Failed to sustain ad notification interaction. The domain "
+        "for the focused tab does not match the last shown ad notification for "
             << last_shown_ad_notification_.target_url;
 
     return;

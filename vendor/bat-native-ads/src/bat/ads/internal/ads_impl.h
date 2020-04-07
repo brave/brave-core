@@ -182,11 +182,6 @@ class AdsImpl : public Ads {
       const std::vector<double>& page_score);
   const std::map<std::string, std::vector<double>>& GetPageScoreCache() const;
 
-  void TestShoppingData(
-      const std::string& url);
-  bool TestSearchState(
-      const std::string& url);
-
   void ServeSampleAd() override;
   void OnLoadSampleBundle(
       const Result result,

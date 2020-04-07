@@ -177,11 +177,6 @@ TEST_F(AdsTabsTest, Media_NotPlaying) {
 
 TEST_F(AdsTabsTest, TabUpdated_Incognito) {
   // Arrange
-  auto expected_last_user_activity = ads_->client_->GetLastUserActivity();
-
-  EXPECT_CALL(*mock_ads_client_, Save(_, _, _))
-      .Times(0);
-
   EXPECT_CALL(*mock_ads_client_, EventLog(_))
       .Times(0);
 
@@ -189,17 +184,10 @@ TEST_F(AdsTabsTest, TabUpdated_Incognito) {
   ads_->OnTabUpdated(1, "https://brave.com", true, true);
 
   // Assert
-  auto last_user_activity = ads_->client_->GetLastUserActivity();
-  EXPECT_EQ(expected_last_user_activity, last_user_activity);
 }
 
 TEST_F(AdsTabsTest, TabUpdated_InactiveIncognito) {
   // Arrange
-  auto expected_last_user_activity = ads_->client_->GetLastUserActivity();
-
-  EXPECT_CALL(*mock_ads_client_, Save(_, _, _))
-      .Times(0);
-
   EXPECT_CALL(*mock_ads_client_, EventLog(_))
       .Times(0);
 
@@ -207,17 +195,10 @@ TEST_F(AdsTabsTest, TabUpdated_InactiveIncognito) {
   ads_->OnTabUpdated(1, "https://brave.com", false, true);
 
   // Assert
-  auto last_user_activity = ads_->client_->GetLastUserActivity();
-  EXPECT_EQ(expected_last_user_activity, last_user_activity);
 }
 
 TEST_F(AdsTabsTest, TabUpdated_Active) {
   // Arrange
-  auto last_user_activity = ads_->client_->GetLastUserActivity();
-
-  EXPECT_CALL(*mock_ads_client_, Save(_, _, _))
-      .Times(3);
-
   EXPECT_CALL(*mock_ads_client_, EventLog(_))
       .Times(1);
 
@@ -225,17 +206,10 @@ TEST_F(AdsTabsTest, TabUpdated_Active) {
   ads_->OnTabUpdated(1, "https://brave.com", true, false);
 
   // Assert
-  auto updated_last_user_activity = ads_->client_->GetLastUserActivity();
-  EXPECT_NE(last_user_activity, updated_last_user_activity);
 }
 
 TEST_F(AdsTabsTest, TabUpdated_Inactive) {
   // Arrange
-  auto last_user_activity = ads_->client_->GetLastUserActivity();
-
-  EXPECT_CALL(*mock_ads_client_, Save(_, _, _))
-      .Times(1);
-
   EXPECT_CALL(*mock_ads_client_, EventLog(_))
       .Times(1);
 
@@ -243,8 +217,6 @@ TEST_F(AdsTabsTest, TabUpdated_Inactive) {
   ads_->OnTabUpdated(1, "https://brave.com", false, false);
 
   // Assert
-  auto updated_last_user_activity = ads_->client_->GetLastUserActivity();
-  EXPECT_NE(last_user_activity, updated_last_user_activity);
 }
 
 TEST_F(AdsTabsTest, TabClosed_WhileMediaIsPlaying) {

@@ -67,7 +67,7 @@ void AdConversions::Check(
     return;
   }
 
-  BLOG(INFO) << "Checking ad conversions for " << url;
+  BLOG(INFO) << "Checking ad conversions";
 
   auto callback =
       std::bind(&AdConversions::OnGetAdConversions, this, url, _1, _2);
@@ -116,7 +116,7 @@ void AdConversions::OnGetAdConversions(
     const Result result,
     const AdConversionList& ad_conversions) {
   if (result != SUCCESS) {
-    BLOG(ERROR) << "Failed to check ad conversions";
+    BLOG(INFO) << "No ad conversions found";
     return;
   }
 
@@ -150,9 +150,8 @@ void AdConversions::OnGetAdConversions(
         continue;
       }
 
-      BLOG(INFO) << "Ad conversion for " << url << " with "
-          << ad_conversion.creative_set_id << " creative set id for "
-              << std::string(ad_conversion.type);
+      BLOG(INFO) << "Ad conversion for " << ad_conversion.creative_set_id
+          << " creative set id for " << std::string(ad_conversion.type);
 
       AddItemToQueue(ad.ad_content.creative_instance_id,
           ad.ad_content.creative_set_id);
