@@ -10,6 +10,7 @@
 #include "bat/confirmations/internal/confirmations_impl.h"
 #include "bat/confirmations/internal/get_payment_balance_request.h"
 #include "bat/confirmations/internal/get_ad_grants_request.h"
+#include "bat/confirmations/internal/static_values.h"
 
 #include "net/http/http_status_code.h"
 #include "brave_base/random.h"
@@ -23,17 +24,13 @@ namespace confirmations {
 AdsRewards::AdsRewards(
     ConfirmationsImpl* confirmations,
     ConfirmationsClient* confirmations_client) :
-    next_retry_backoff_count_(0),
-    retry_timer_id_(0),
     payments_(std::make_unique<Payments>(confirmations, confirmations_client)),
     ad_grants_(std::make_unique<AdGrants>(confirmations, confirmations_client)),
     confirmations_(confirmations),
     confirmations_client_(confirmations_client) {
 }
 
-AdsRewards::~AdsRewards() {
-  CancelRetry();
-}
+AdsRewards::~AdsRewards() = default;
 
 void AdsRewards::Update(
     const WalletInfo& wallet_info,
@@ -49,7 +46,9 @@ void AdsRewards::Update(
     return;
   }
 
-  CancelRetry();
+  if (retry_timer_.IsRunning()) {
+    return;
+  }
 
   BLOG(INFO) << "Fetch ads rewards";
   GetPaymentBalance();
@@ -92,20 +91,6 @@ bool AdsRewards::SetFromDictionary(base::DictionaryValue* dictionary) {
   Update();
 
   return success;
-}
-
-bool AdsRewards::OnTimer(const uint32_t timer_id) {
-  BLOG(INFO) << "OnTimer: " << std::endl
-      << "  timer_id: " << std::to_string(timer_id) << std::endl
-      << "  retry_timer_id_: " << std::to_string(retry_timer_id_) << std::endl;
-
-  if (timer_id == retry_timer_id_) {
-    GetPaymentBalance();
-
-    return true;
-  }
-
-  return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -232,54 +217,27 @@ void AdsRewards::OnGetAdGrants(
 void AdsRewards::OnAdsRewards(const Result result) {
   if (result != SUCCESS) {
     BLOG(ERROR) << "Failed to retrieve ads rewards";
-    Retry();
+
+    const base::Time time = retry_timer_.StartWithBackoff(
+        kRetryAdsRewardsAfterSeconds, base::BindOnce(&AdsRewards::OnRetry,
+            base::Unretained(this)));
+
+    BLOG(INFO) << "Retry getting ad grants at " << time;
+
     return;
   }
 
   BLOG(INFO) << "Successfully retrieved ads rewards";
 
-  retry_timer_id_ = 0;
-  next_retry_backoff_count_ = 0;
+  retry_timer_.Stop();
 
   Update();
 }
 
-void AdsRewards::Retry() {
-  // Overflow happens only if we have already backed off so many times our
-  // expected waiting time is longer than the lifetime of the universe
-  auto start_timer_in = 1 * base::Time::kSecondsPerMinute;
-  start_timer_in <<= next_retry_backoff_count_++;
+void AdsRewards::OnRetry() {
+  BLOG(INFO) << "Retrying";
 
-  auto rand_delay = brave_base::random::Geometric(start_timer_in);
-
-  confirmations_client_->SetTimer(rand_delay, &retry_timer_id_);
-  if (retry_timer_id_ == 0) {
-    BLOG(ERROR) << "Failed to retry due to an invalid timer";
-    return;
-  }
-
-  BLOG(INFO) << "Start retrying in " << rand_delay << " seconds";
-}
-
-void AdsRewards::CancelRetry() {
-  if (!IsRetrying()) {
-    return;
-  }
-
-  BLOG(INFO) << "Cancelled retry";
-
-  confirmations_client_->KillTimer(retry_timer_id_);
-  retry_timer_id_ = 0;
-
-  next_retry_backoff_count_ = 0;
-}
-
-bool AdsRewards::IsRetrying() const {
-  if (retry_timer_id_ == 0) {
-    return false;
-  }
-
-  return true;
+  GetPaymentBalance();
 }
 
 void AdsRewards::Update() {

@@ -12,6 +12,7 @@
 
 #include "brave_base/random.h"
 #include "net/http/http_status_code.h"
+#include "base/time/time.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -22,24 +23,40 @@ namespace confirmations {
 PayoutTokens::PayoutTokens(
     ConfirmationsImpl* confirmations,
     ConfirmationsClient* confirmations_client,
-    UnblindedTokens* unblinded_payment_tokens) :
-    next_retry_backoff_count_(0),
-    confirmations_(confirmations),
-    confirmations_client_(confirmations_client),
-    unblinded_payment_tokens_(unblinded_payment_tokens) {
+    UnblindedTokens* unblinded_payment_tokens)
+    : confirmations_(confirmations),
+      confirmations_client_(confirmations_client),
+      unblinded_payment_tokens_(unblinded_payment_tokens) {
 }
 
 PayoutTokens::~PayoutTokens() = default;
 
-void PayoutTokens::Payout(const WalletInfo& wallet_info) {
+void PayoutTokens::PayoutAfterDelay(
+    const WalletInfo& wallet_info) {
   DCHECK(!wallet_info.payment_id.empty());
   DCHECK(!wallet_info.private_key.empty());
 
-  BLOG(INFO) << "Payout";
+  if (retry_timer_.IsRunning()) {
+    return;
+  }
 
   wallet_info_ = WalletInfo(wallet_info);
 
-  RedeemPaymentTokens();
+  const uint64_t delay = CalculatePayoutDelay();
+  const base::Time time = timer_.Start(delay,
+      base::BindOnce(&PayoutTokens::RedeemPaymentTokens,
+          base::Unretained(this)));
+
+  BLOG(INFO) << "Payout tokens at " << time;
+}
+
+uint64_t PayoutTokens::get_token_redemption_timestamp_in_seconds() const {
+  return token_redemption_timestamp_in_seconds_;
+}
+
+void PayoutTokens::set_token_redemption_timestamp_in_seconds(
+    const uint64_t timestamp_in_seconds) {
+  token_redemption_timestamp_in_seconds_ = timestamp_in_seconds;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -115,7 +132,12 @@ void PayoutTokens::OnPayout(const Result result) {
   if (result != SUCCESS) {
     BLOG(ERROR) << "Failed to payout tokens";
 
-    RetryNextPayout();
+    const base::Time time = retry_timer_.StartWithBackoff(
+        kRetryPayoutTokensAfterSeconds, base::BindOnce(&PayoutTokens::OnRetry,
+            base::Unretained(this)));
+
+    BLOG(INFO) << "Retry paying out tokens at " << time;
+
     return;
   }
 
@@ -126,29 +148,52 @@ void PayoutTokens::OnPayout(const Result result) {
 
   confirmations_->UpdateAdsRewards(true);
 
-  next_retry_backoff_count_ = 0;
+  retry_timer_.Stop();
 
   ScheduleNextPayout();
 }
 
-void PayoutTokens::ScheduleNextPayout() const {
-  confirmations_->UpdateNextTokenRedemptionDate();
-
-  auto start_timer_in = confirmations_->CalculateTokenRedemptionTimeInSeconds();
-  confirmations_->StartPayingOutRedeemedTokens(start_timer_in);
+void PayoutTokens::ScheduleNextPayout() {
+  UpdateNextTokenRedemptionDate();
+  PayoutAfterDelay(wallet_info_);
 }
 
-void PayoutTokens::RetryNextPayout() {
-  BLOG(INFO) << "Retry next payout";
+void PayoutTokens::OnRetry() {
+  BLOG(INFO) << "Retrying";
 
-  // Overflow happens only if we have already backed off so many times our
-  // expected waiting time is longer than the lifetime of the universe
-  auto start_timer_in = 1 * base::Time::kSecondsPerMinute;
-  start_timer_in <<= next_retry_backoff_count_++;
+  RedeemPaymentTokens();
+}
 
-  auto rand_delay = brave_base::random::Geometric(start_timer_in);
+uint64_t PayoutTokens::CalculatePayoutDelay() {
+  if (token_redemption_timestamp_in_seconds_ == 0) {
+    UpdateNextTokenRedemptionDate();
+  }
 
-  confirmations_->StartPayingOutRedeemedTokens(rand_delay);
+  const uint64_t now_in_seconds = base::Time::Now().ToDoubleT();
+
+  uint64_t delay;
+  if (now_in_seconds >= token_redemption_timestamp_in_seconds_) {
+    // Browser was launched after the token redemption date
+    delay = 1 * base::Time::kSecondsPerMinute;
+  } else {
+    delay = token_redemption_timestamp_in_seconds_ - now_in_seconds;
+  }
+
+  const uint64_t rand_delay = brave_base::random::Geometric(delay);
+  return rand_delay;
+}
+
+void PayoutTokens::UpdateNextTokenRedemptionDate() {
+  uint64_t timestamp_in_seconds = base::Time::Now().ToDoubleT();
+
+  if (!_is_debug) {
+    timestamp_in_seconds += kNextTokenRedemptionAfterSeconds;
+  } else {
+    timestamp_in_seconds += kDebugNextTokenRedemptionAfterSeconds;
+  }
+
+  token_redemption_timestamp_in_seconds_ = timestamp_in_seconds;
+  confirmations_->SaveState();
 }
 
 }  // namespace confirmations
