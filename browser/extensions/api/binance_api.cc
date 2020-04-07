@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -47,10 +47,10 @@ BinanceGetUserTLDFunction::Run() {
   }
 
   auto* service = GetBinanceService(browser_context());
-  const std::string userTLD = service->GetBinanceTLD();
+  const std::string user_tld = service->GetBinanceTLD();
 
   return RespondNow(OneArgument(
-      std::make_unique<base::Value>(userTLD)));
+      std::make_unique<base::Value>(user_tld)));
 }
 
 ExtensionFunction::ResponseAction
@@ -265,7 +265,7 @@ BinanceGetDepositInfoFunction::Run() {
 
   if (!info_request) {
     return RespondNow(
-        Error("Could not make request for Volume"));
+        Error("Could not make request for deposit information."));
   }
 
   return RespondLater();

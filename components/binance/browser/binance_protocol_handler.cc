@@ -1,4 +1,4 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -75,7 +75,7 @@ void HandleBinanceProtocol(const GURL& url,
                            content::WebContents::OnceGetter web_contents_getter,
                            ui::PageTransition page_transition,
                            bool has_user_gesture) {
-  DCHECK(url.SchemeIs(kBinanceScheme));
+  DCHECK(IsBinanceProtocol(url));
   base::PostTask(
       FROM_HERE, {content::BrowserThread::UI},
       base::BindOnce(&LoadNewTabURL, url, std::move(web_contents_getter),
