@@ -401,24 +401,22 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
 
       let totalBTC = 0.00
       let totalBTCUSDValue = 0.00
+
       const btcPrice = state.binanceState.btcPrice
+      const btcValues = state.binanceState.assetBTCValues
 
-      for (let symbol in balances) {
+      Object.keys(balances).map((symbol: string) => {
         const balance = balances[symbol]
-
         if (symbol === 'BTC') {
           totalBTC += parseFloat(balance)
           totalBTCUSDValue += parseFloat(getUSDPrice(balance, btcPrice))
-          continue
+        } else {
+          const totalInBTC = parseFloat(btcValues[symbol]) * parseFloat(balance)
+          const totalAssetValue = getUSDPrice(totalInBTC.toString(), btcPrice)
+          totalBTC += totalInBTC
+          totalBTCUSDValue += parseFloat(totalAssetValue)
         }
-
-        const btcValue = state.binanceState.assetBTCValues[symbol]
-        const totalInBTC = parseFloat(btcValue) * parseFloat(balance)
-        const totalAssetValue = getUSDPrice(totalInBTC.toString(), btcPrice)
-
-        totalBTC += totalInBTC
-        totalBTCUSDValue += parseFloat(totalAssetValue)
-      }
+      })
 
       state.binanceState = {
         ...state.binanceState,
@@ -458,7 +456,12 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
 
       state = { ...state }
-      const accountBTCBalance = state.binanceState.accountBalances['BTC'] || ''
+
+      if (!state.binanceState.accountBalances) {
+        state.binanceState.accountBalances = {}
+      }
+
+      const accountBTCBalance = state.binanceState.accountBalances['BTC'] || '0.00'
       state.binanceState.btcBalanceValue = getUSDPrice(accountBTCBalance, payload.price)
       state.binanceState.btcPrice = payload.price
       break
@@ -483,6 +486,9 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
 
       state = { ...state }
+      if (!state.binanceState.assetBTCValues) {
+        state.binanceState.assetBTCValues = {}
+      }
       state.binanceState.assetBTCValues[ticker] = price
       break
 
@@ -496,6 +502,9 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       ).toString()
 
       state = { ...state }
+      if (!state.binanceState.assetBTCVolumes) {
+        state.binanceState.assetBTCVolumes = {}
+      }
       state.binanceState.assetBTCVolumes[payload.ticker] = floatString
       break
 
@@ -505,6 +514,9 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
 
       state = { ...state }
+      if (!state.binanceState.assetUSDValues) {
+        state.binanceState.assetUSDValues = {}
+      }
       state.binanceState.assetUSDValues[payload.ticker] = payload.price
       break
 
@@ -515,6 +527,9 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
 
       state = { ...state }
+      if (!state.binanceState.assetDepositInfo) {
+        state.binanceState.assetDepositInfo = {}
+      }
       state.binanceState.assetDepositInfo[symbol] = {
         address,
         url

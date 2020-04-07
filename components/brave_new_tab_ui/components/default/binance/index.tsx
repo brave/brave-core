@@ -305,31 +305,36 @@ class Binance extends React.PureComponent<Props, State> {
 
       chrome.binance.getTickerPrice('BTCUSDT', (price: string) => {
         this.props.onBTCUSDPrice(price)
+        this.setBalanceInfo(balances)
       })
       chrome.binance.getTickerVolume('BTCUSDT', (volume: string) => {
         this.props.onBTCUSDVolume(volume)
       })
+    })
+  }
 
-      for (let ticker in balances) {
-        if (ticker !== 'BTC') {
-          chrome.binance.getTickerVolume(`${ticker}BTC`, (volume: string) => {
-            this.props.onAssetBTCVolume(ticker, volume)
-          })
-          chrome.binance.getTickerPrice(`${ticker}BTC`, (price: string) => {
-            this.props.onAssetBTCPrice(ticker, price)
-          })
-          chrome.binance.getTickerPrice(`${ticker}USDT`, (price: string) => {
-            this.props.onAssetUSDPrice(ticker, price)
-          })
-        }
-        chrome.binance.getDepositInfo(ticker, (address: string, url: string) => {
-          this.props.onAssetDepositInfo(ticker, address, url)
-          generateQRData(address, ticker, this.props.onAssetDepositQRCodeSrc)
+  setBalanceInfo = (balances: Record<string, string>) => {
+    for (let ticker in balances) {
+      if (ticker !== 'BTC') {
+        chrome.binance.getTickerVolume(`${ticker}BTC`, (volume: string) => {
+          this.props.onAssetBTCVolume(ticker, volume)
+        })
+        chrome.binance.getTickerPrice(`${ticker}BTC`, (price: string) => {
+          this.props.onAssetBTCPrice(ticker, price)
+        })
+        chrome.binance.getTickerPrice(`${ticker}USDT`, (price: string) => {
+          this.props.onAssetUSDPrice(ticker, price)
         })
       }
+      chrome.binance.getDepositInfo(ticker, (address: string, url: string) => {
+        this.props.onAssetDepositInfo(ticker, address, url)
+        generateQRData(address, ticker, this.props.onAssetDepositQRCodeSrc)
+      })
+    }
 
+    setTimeout(() => {
       this.props.onBinanceAccountBalances(balances)
-    })
+    }, 1500)
   }
 
   disconnectBinance = () => {
@@ -987,8 +992,11 @@ class Binance extends React.PureComponent<Props, State> {
           </ListInfo>
         </BTCSummary>
         {currencyList.map((asset: string) => {
-          const assetBalance = this.formatCryptoBalance(accountBalances[asset])
-          const price = asset === 'BTC' ? btcBalanceValue : getUSDPrice(assetBalance, assetUSDValues[asset])
+          // Initial migration display
+          const assetAccountBalance = accountBalances[asset] || '0.00'
+          const assetUSDValue = assetUSDValues[asset] || '0.00'
+          const assetBalance = this.formatCryptoBalance(assetAccountBalance)
+          const price = asset === 'BTC' ? btcBalanceValue : getUSDPrice(assetBalance, assetUSDValue)
 
           return (
             <ListItem key={`list-${asset}`}>
@@ -1192,6 +1200,7 @@ class Binance extends React.PureComponent<Props, State> {
 
   renderAccountView = () => {
     const { selectedView, currentDepositAsset } = this.state
+    const hideOverflow = currentDepositAsset && selectedView === 'deposit'
 
     return (
       <>
@@ -1223,7 +1232,7 @@ class Binance extends React.PureComponent<Props, State> {
             {getLocale('binanceWidgetBuy')}
           </NavigationItem>
         </NavigationBar>
-        <SelectedView hideOverflow={!!currentDepositAsset}>
+        <SelectedView hideOverflow={!!hideOverflow}>
           {this.renderSelectedView()}
         </SelectedView>
       </>
