@@ -1,0 +1,12 @@
+diff --git a/components/sync/driver/sync_auth_manager.cc b/components/sync/driver/sync_auth_manager.cc
+index 3287a32ed1ca6ed5aada26928592ad278f8046a6..5295f89e1ca16b63df3e67ba58d8195b5f0a10c2 100644
+--- a/components/sync/driver/sync_auth_manager.cc
++++ b/components/sync/driver/sync_auth_manager.cc
+@@ -481,6 +481,7 @@ void SyncAuthManager::RequestAccessToken() {
+   // Finally, kick off a new access token fetch.
+   partial_token_status_.token_request_time = base::Time::Now();
+   partial_token_status_.token_response_time = base::Time();
++  BRAVE_REQUEST_ACCESS_TOKEN
+   ongoing_access_token_fetch_ =
+       identity_manager_->CreateAccessTokenFetcherForAccount(
+           sync_account_.account_info.account_id, kSyncOAuthConsumerName,
