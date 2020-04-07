@@ -21,6 +21,7 @@ interface StyleProps {
   isDetail?: boolean
   hideBalance?: boolean
   isFirstView?: boolean
+  hideOverflow?: boolean
   position?: 'left' | 'right'
 }
 
@@ -288,9 +289,9 @@ export const NavigationItem = styled<StyleProps, 'div'>('div')`
   }}px;
 `
 
-export const SelectedView = styled<{}, 'div'>('div')`
+export const SelectedView = styled<StyleProps, 'div'>('div')`
   border: 1px solid rgb(70, 70, 70);
-  overflow-y: scroll;
+  overflow-y: ${p => p.hideOverflow ? 'hidden' : 'scroll'};
   height: 170px;
   width: 250px;
   margin-left: 4px;

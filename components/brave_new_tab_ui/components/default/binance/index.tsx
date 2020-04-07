@@ -141,6 +141,8 @@ interface Props {
   assetDepositInfo: Record<string, any>
   assetDepoitQRCodeSrcs: Record<string, string>
   convertAssets: Record<string, string[]>
+  accountBTCValue: string
+  accountBTCUSDValue: string
   onShowContent: () => void
   onBuyCrypto: (coin: string, amount: string, fiat: string) => void
   onBinanceUserTLD: (userTLD: NewTab.BinanceTLD) => void
@@ -923,7 +925,14 @@ class Binance extends React.PureComponent<Props, State> {
   }
 
   renderSummaryView = () => {
-    const { accountBalances, btcBalanceValue, hideBalance, assetUSDValues } = this.props
+    const {
+      accountBalances,
+      btcBalanceValue,
+      hideBalance,
+      accountBTCValue,
+      accountBTCUSDValue,
+      assetUSDValues
+    } = this.props
     const currencyList = this.getCurrencyList()
 
     return (
@@ -932,10 +941,10 @@ class Binance extends React.PureComponent<Props, State> {
           <ListInfo position={'left'}>
             <TradeLabel>
               <Balance isBTC={true} hideBalance={hideBalance}>
-                {this.formatCryptoBalance(accountBalances['BTC'])} <TickerLabel>{getLocale('binanceWidgetBTCTickerText')}</TickerLabel>
+                {this.formatCryptoBalance(accountBTCValue)} <TickerLabel>{getLocale('binanceWidgetBTCTickerText')}</TickerLabel>
               </Balance>
               <Converted isBTC={true} hideBalance={hideBalance}>
-                {`= $${btcBalanceValue}`}
+                {`= $${accountBTCUSDValue}`}
               </Converted>
             </TradeLabel>
           </ListInfo>
@@ -1154,7 +1163,7 @@ class Binance extends React.PureComponent<Props, State> {
   }
 
   renderAccountView = () => {
-    const { selectedView } = this.state
+    const { selectedView, currentDepositAsset } = this.state
 
     return (
       <>
@@ -1186,7 +1195,7 @@ class Binance extends React.PureComponent<Props, State> {
             {getLocale('binanceWidgetBuy')}
           </NavigationItem>
         </NavigationBar>
-        <SelectedView>
+        <SelectedView hideOverflow={!!currentDepositAsset}>
           {this.renderSelectedView()}
         </SelectedView>
       </>

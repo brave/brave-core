@@ -161,6 +161,8 @@ declare namespace NewTab {
     assetDepositInfo: Record<string, any>
     assetDepoitQRCodeSrcs: Record<string, string>
     convertAssets: Record<string, string[]>
+    accountBTCValue: string
+    accountBTCUSDValue: string
   }
 
   export type BinanceTLD = 'us' | 'com'

@@ -391,8 +391,41 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       break
 
     case types.ON_BINANCE_ACCOUNT_BALANCES:
+      const { balances } = payload
+      if (!balances) {
+        break
+      }
+
       state = { ...state }
-      state.binanceState.accountBalances = payload.balances
+      state.binanceState.accountBalances = balances
+
+      let totalBTC = 0.00
+      let totalBTCUSDValue = 0.00
+      const btcPrice = state.binanceState.btcPrice
+
+      for (let symbol in balances) {
+        const balance = balances[symbol]
+
+        if (symbol === 'BTC') {
+          totalBTC += parseFloat(balance)
+          totalBTCUSDValue += parseFloat(getUSDPrice(balance, btcPrice))
+          continue
+        }
+
+        const btcValue = state.binanceState.assetBTCValues[symbol]
+        const totalInBTC = parseFloat(btcValue) * parseFloat(balance)
+        const totalAssetValue = getUSDPrice(totalInBTC.toString(), btcPrice)
+
+        totalBTC += totalInBTC
+        totalBTCUSDValue += parseFloat(totalAssetValue)
+      }
+
+      state.binanceState = {
+        ...state.binanceState,
+        accountBTCValue: totalBTC.toString(),
+        accountBTCUSDValue: totalBTCUSDValue.toFixed(2).toString()
+      }
+
       break
 
     case types.ON_VALID_AUTH_CODE:
