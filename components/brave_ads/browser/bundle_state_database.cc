@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/browser/bundle_state_database.h"
 
 #include <stdint.h>
+#include <limits>
 #include <map>
 #include <string>
 #include <vector>
@@ -14,6 +15,7 @@
 #include "base/files/file_util.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
+#include "base/time/time.h"
 #include "build/build_config.h"
 #include "sql/meta_table.h"
 #include "sql/statement.h"
@@ -23,8 +25,8 @@ namespace brave_ads {
 
 namespace {
 
-const int kCurrentVersionNumber = 4;
-const int kCompatibleVersionNumber = 4;
+const int kCurrentVersionNumber = 5;
+const int kCompatibleVersionNumber = 5;
 
 }  // namespace
 
@@ -158,8 +160,8 @@ bool BundleStateDatabase::CreateCreativeAdNotificationsTable() {
           "advertiser LONGVARCHAR, "
           "notification_text TEXT, "
           "notification_url LONGVARCHAR, "
-          "start_timestamp DATETIME, "
-          "end_timestamp DATETIME, "
+          "start_timestamp TIMESTAMP, "
+          "end_timestamp TIMESTAMP, "
           "uuid LONGVARCHAR, "
           "region VARCHAR, "
           "campaign_id LONGVARCHAR, "
@@ -218,8 +220,23 @@ bool BundleStateDatabase::InsertOrUpdateCreativeAdNotification(
     statement.BindString(1, info.title);
     statement.BindString(2, info.body);
     statement.BindString(3, info.target_url);
-    statement.BindString(4, info.start_at_timestamp);
-    statement.BindString(5, info.end_at_timestamp);
+
+    base::Time start_at_time;
+    if (base::Time::FromUTCString(info.start_at_timestamp.c_str(),
+        &start_at_time)) {
+      statement.BindInt64(4, start_at_time.ToDoubleT());
+    } else {
+      statement.BindInt64(4, std::numeric_limits<uint64_t>::min());
+    }
+
+    base::Time end_at_time;
+    if (base::Time::FromUTCString(info.end_at_timestamp.c_str(),
+        &end_at_time)) {
+      statement.BindInt64(5, end_at_time.ToDoubleT());
+    } else {
+      statement.BindInt64(5, std::numeric_limits<uint64_t>::max());
+    }
+
     statement.BindString(6, info.creative_instance_id);
     statement.BindString(7, info.campaign_id);
     // Use BindInt64 for uint32_t types to avoid uint32_t to int32_t cast.
@@ -455,10 +472,8 @@ bool BundleStateDatabase::GetCreativeAdNotifications(
           "INNER JOIN ad_info_category AS aic "
               "ON aic.ad_info_uuid = ai.uuid "
       "WHERE aic.category_name IN (%s) "
-          "AND ai.start_timestamp <= strftime('%%Y-%%m-%%d %%H:%%M', "
-               "datetime('now','localtime')) "
-          "AND ai.end_timestamp >= strftime('%%Y-%%m-%%d %%H:%%M', "
-              "datetime('now','localtime'))",
+          "AND CAST(strftime('%%s', 'now') AS TIMESTAMP) "
+              "BETWEEN ai.start_timestamp AND ai.end_timestamp",
       CreateBindingParameterPlaceholders(categories.size()).c_str());
 
   sql::Statement statement(db_.GetUniqueStatement(sql.c_str()));
@@ -475,8 +490,8 @@ bool BundleStateDatabase::GetCreativeAdNotifications(
     info.title = statement.ColumnString(1);
     info.body = statement.ColumnString(2);
     info.target_url = statement.ColumnString(3);
-    info.start_at_timestamp = statement.ColumnString(4);
-    info.end_at_timestamp = statement.ColumnString(5);
+    info.start_at_timestamp = statement.ColumnInt64(4);
+    info.end_at_timestamp = statement.ColumnInt64(5);
     info.creative_instance_id = statement.ColumnString(6);
     info.geo_targets.push_back(statement.ColumnString(7));
     info.campaign_id = statement.ColumnString(8);
@@ -612,6 +627,11 @@ bool BundleStateDatabase::Migrate() {
         break;
       }
 
+      case 4: {
+        success = MigrateV4toV5();
+        break;
+      }
+
       default: {
         NOTREACHED();
         break;
@@ -694,6 +714,33 @@ bool BundleStateDatabase::MigrateV3toV4() {
       "ADD advertiser_id LONGVARCHAR";
 
   return GetDB().Execute(sql.c_str());
+}
+
+bool BundleStateDatabase::MigrateV4toV5() {
+  const std::string drop_ad_info_table_sql =
+      "DROP TABLE IF EXISTS ad_info";
+  if (!GetDB().Execute(drop_ad_info_table_sql.c_str())) {
+    return false;
+  }
+
+  const std::string create_ad_info_table_sql =
+      "CREATE TABLE ad_info "
+          "(creative_set_id LONGVARCHAR, "
+          "advertiser LONGVARCHAR, "
+          "notification_text TEXT, "
+          "notification_url LONGVARCHAR, "
+          "start_timestamp TIMESTAMP, "
+          "end_timestamp TIMESTAMP, "
+          "uuid LONGVARCHAR, "
+          "region VARCHAR, "
+          "campaign_id LONGVARCHAR, "
+          "daily_cap INTEGER DEFAULT 0 NOT NULL, "
+          "advertiser_id LONGVARCHAR, "
+          "per_day INTEGER DEFAULT 0 NOT NULL, "
+          "total_max INTEGER DEFAULT 0 NOT NULL, "
+          "PRIMARY KEY(region, uuid))";
+
+  return GetDB().Execute(create_ad_info_table_sql.c_str());
 }
 
 }  // namespace brave_ads
