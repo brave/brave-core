@@ -17,6 +17,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
       prefs::kNewTabPageCachedSuperReferralComponentInfo);
   registry->RegisterListPref(
       prefs::kNewTabPageCachedSuperReferralFaviconList);
+  registry->RegisterBooleanPref(
+      prefs::kNewTabPageCheckingMappingTableInProgress, false);
 }
 
 }  // namespace ntp_background_images

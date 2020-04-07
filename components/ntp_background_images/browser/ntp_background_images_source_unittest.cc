@@ -8,10 +8,12 @@
 
 #include "base/test/task_environment.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_utils.h"
+#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
 #include "services/network/test/test_shared_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -30,6 +32,8 @@ class NTPBackgroundImagesSourceTest : public testing::Test {
         nullptr, &local_pref_, base::FilePath(),
         base::MakeRefCounted<network::TestSharedURLLoaderFactory>()));
     source_.reset(new NTPBackgroundImagesSource(service_.get()));
+    local_pref_.Set(prefs::kNewTabPageCachedSuperReferralComponentInfo,
+                    base::Value(base::Value::Type::DICTIONARY));
   }
 
   base::test::SingleThreadTaskEnvironment task_environment;
@@ -39,6 +43,49 @@ class NTPBackgroundImagesSourceTest : public testing::Test {
 };
 
 TEST_F(NTPBackgroundImagesSourceTest, BasicTest) {
+  const std::string test_json_string_referral = R"(
+      {
+        "schemaVersion": 1,
+        "logo": {
+          "imageUrl": "logo.png",
+          "alt": "Technikke: For music lovers",
+          "companyName": "Technikke",
+          "destinationUrl": "https://www.brave.com/?from-super-referreer-demo"
+        },
+        "wallpapers": [
+          {
+            "imageUrl": "background-1.jpg",
+            "focalPoint": { "x": 3988, "y": 2049}
+          },
+          {
+            "imageUrl": "background-2.jpg",
+            "focalPoint": { "x": 5233, "y": 3464}
+          },
+          {
+            "imageUrl": "background-3.jpg"
+          }
+        ]
+      })";
+  service_->OnGetComponentJsonData(false, test_json_string_referral);
+  EXPECT_FALSE(source_->AllowCaching());
+  EXPECT_TRUE(source_->IsWallpaperPath("sponsored-images/wallpaper-1.jpg"));
+  EXPECT_FALSE(source_->IsValidPath("super-duper/brave.png"));
+  EXPECT_FALSE(source_->IsValidPath("sponsored-images/abcd.png"));
+  EXPECT_EQ("image/png", source_->GetMimeType("sponsored-images/logo.png"));
+  EXPECT_EQ(
+      "image/jpg", source_->GetMimeType("sponsored-images/wallpaper-2.jpg"));
+  EXPECT_EQ(
+      0,
+      source_->GetWallpaperIndexFromPath("sponsored-images/wallpaper-0.jpg"));
+  EXPECT_EQ(
+      -1,
+      source_->GetWallpaperIndexFromPath("sponsored-images/wallpaper-3.jpg"));
+}
+
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
+
+#if !defined(OS_LINUX)
+TEST_F(NTPBackgroundImagesSourceTest, BasicSuperReferralDataTest) {
   // Valid super referral component json data.
   const std::string test_json_string_referral = R"(
       {
@@ -97,5 +144,8 @@ TEST_F(NTPBackgroundImagesSourceTest, BasicTest) {
   EXPECT_EQ(
       -1, source_->GetWallpaperIndexFromPath("super-referral/wallpaper-3.jpg"));
 }
+#endif
+
+#endif  // ENABLE_BRAVE_REFERRALS
 
 }  // namespace ntp_background_images

@@ -96,6 +96,12 @@ class NTPBackgroundImagesService {
                            BasicSuperReferralTest);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesServiceTest,
                            CheckReferralServiceInitStatusTest);
+  FRIEND_TEST_ALL_PREFIXES(
+      NTPBackgroundImagesServiceTest,
+      CheckRecoverShutdownWhileMappingTableFetchingWithDefaultCode);
+  FRIEND_TEST_ALL_PREFIXES(
+      NTPBackgroundImagesServiceTest,
+      CheckRecoverShutdownWhileMappingTableFetchingWithNonDefaultCode);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            NotActiveInitially);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
@@ -107,6 +113,8 @@ class NTPBackgroundImagesService {
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            ActiveInitiallyOptedIn);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest, BasicTest);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesSourceTest,
+                           BasicSuperReferralDataTest);
 
   void OnComponentReady(bool is_super_referral,
                         const base::FilePath& installed_dir);

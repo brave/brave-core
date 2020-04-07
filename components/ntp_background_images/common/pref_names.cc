@@ -21,6 +21,8 @@ extern const char kNewTabPageCachedSuperReferralComponentInfo[] =
     "brave.new_tab_page.cached_super_referral_component_info";
 extern const char kNewTabPageCachedSuperReferralFaviconList[] =
     "brave.new_tab_page.cached_super_referral_favicon_list";
+extern const char kNewTabPageCheckingMappingTableInProgress[] =
+    "brave.new_tab_page.checking_mapping_table_in_progress";
 
 }  // namespace prefs
 }  // namespace ntp_background_images

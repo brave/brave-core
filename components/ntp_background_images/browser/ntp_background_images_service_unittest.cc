@@ -217,11 +217,13 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
   service_->RemoveObserver(&observer);
 }
 
-// Linux doesn't support referral service now.
-// So, always start NTP SI component.
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
+
 #if defined(OS_LINUX)
 
-TEST_F(NTPBackgroundImagesServiceTest, LinuxTest) {
+// Linux doesn't support referral service now.
+// So, always start NTP SI component.
+TEST_F(NTPBackgroundImagesServiceTest, TestOnNonReferralService) {
   Init();
 
   EXPECT_TRUE(service_->sponsored_images_component_started_);
@@ -232,7 +234,6 @@ TEST_F(NTPBackgroundImagesServiceTest, LinuxTest) {
 
 #else
 
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 const char kTestMappingTable[] = R"(
     {
         "schemaVersion": 1,
@@ -387,14 +388,22 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
   EXPECT_FALSE(service_->mapping_table_requested_);
   EXPECT_FALSE(service_->super_referral_component_started_);
 
+  EXPECT_FALSE(pref_service_.GetBoolean(
+      prefs::kNewTabPageCheckingMappingTableInProgress));
   pref_service_.SetString(kReferralPromoCode, "BRV003");
 
   // Mapping table is requested because it's not a default code.
   EXPECT_TRUE(service_->mapping_table_requested_);
   EXPECT_FALSE(service_->marked_this_install_is_not_super_referral_forever_);
 
+  EXPECT_TRUE(pref_service_.GetBoolean(
+      prefs::kNewTabPageCheckingMappingTableInProgress));
+
   service_->OnGetMappingTableData(
       std::make_unique<std::string>(kTestMappingTable));
+
+  EXPECT_FALSE(pref_service_.GetBoolean(
+      prefs::kNewTabPageCheckingMappingTableInProgress));
 
   // This is super referral code. So, start SR component.
   EXPECT_TRUE(service_->super_referral_component_started_);
@@ -435,8 +444,45 @@ TEST_F(NTPBackgroundImagesServiceTest, CheckReferralServiceInitStatusTest) {
   EXPECT_TRUE(data);
 }
 
-#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
+TEST_F(NTPBackgroundImagesServiceTest,
+       CheckRecoverShutdownWhileMappingTableFetchingWithDefaultCode) {
+  // Make this install has initialized super referral service.
+  pref_service_.SetBoolean(kReferralCheckedForPromoCodeFile, true);
+  pref_service_.SetBoolean(
+      prefs::kNewTabPageCheckingMappingTableInProgress, true);
+  pref_service_.SetString(kReferralPromoCode, "BRV001");
+
+  EXPECT_TRUE(pref_service_.FindPreference(
+      prefs::kNewTabPageCachedSuperReferralComponentInfo)->IsDefaultValue());
+
+  Init();
+
+  EXPECT_FALSE(pref_service_.FindPreference(
+      prefs::kNewTabPageCachedSuperReferralComponentInfo)->IsDefaultValue());
+  // In this case, directly request mapping table w/o monitoring promoCode pref
+  // changing.
+  EXPECT_FALSE(service_->mapping_table_requested_);
+  EXPECT_FALSE(service_->referral_promo_code_change_monitored_);
+}
+
+TEST_F(NTPBackgroundImagesServiceTest,
+       CheckRecoverShutdownWhileMappingTableFetchingWithNonDefaultCode) {
+  // Make this install has initialized super referral service.
+  pref_service_.SetBoolean(kReferralCheckedForPromoCodeFile, true);
+  pref_service_.SetBoolean(
+      prefs::kNewTabPageCheckingMappingTableInProgress, true);
+  pref_service_.SetString(kReferralPromoCode, "BRV003");
+
+  Init();
+
+  // In this case, directly request mapping table w/o monitoring promoCode pref
+  // changing.
+  EXPECT_TRUE(service_->mapping_table_requested_);
+  EXPECT_FALSE(service_->referral_promo_code_change_monitored_);
+}
 
 #endif  // OS_LINUX
+
+#endif  // BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 
 }  // namespace ntp_background_images

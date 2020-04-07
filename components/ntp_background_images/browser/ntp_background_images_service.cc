@@ -246,9 +246,23 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
   if (local_pref_->FindPreference(
           prefs::kNewTabPageCachedSuperReferralComponentInfo)->
               IsDefaultValue()) {
-    // If this is checked at this time, this is not the first run.
-    // Mark this is not SR.
-    if (local_pref_->GetBoolean(kReferralCheckedForPromoCodeFile)) {
+    // For existing users, we could set it as non SR because SR is only applied
+    // for fresh user.
+    // At first fresh launch, we could determine after this is SR or not after
+    // downloading mapping table. but browser could be shutdown between getting
+    // promocode and mapping table. If this happens, this install will be act
+    // as a non SR install forever. To resolve that situation,
+    // |kNewTabPageCheckingMappingTableInProgress| introduced.
+    // Even if |kReferralCheckedForPromoCodeFile| is true, we will try to check
+    // mapping table again if needed.
+    // |kNewTabPageCheckingMappingTableInProgress| is set to true when mapping
+    // table is requested and set to false when browser gets it.
+    // If both |kReferralCheckedForPromoCodeFile| and
+    // |kNewTabPageCheckingMappingTableInProgress|, browser had some trouble
+    // while getting mapping table at first fresh launch.
+    if (local_pref_->GetBoolean(kReferralCheckedForPromoCodeFile) &&
+        !local_pref_->GetBoolean(
+             prefs::kNewTabPageCheckingMappingTableInProgress)) {
       MarkThisInstallIsNotSuperReferralForever();
       DVLOG(2) << __func__ << ": Cached SR Info is clean and Referral Service"
                            << " is not in initial state."
@@ -256,7 +270,22 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
       return;
     }
 
-    MonitorReferralPromoCodeChange();
+    // If referral code is empty here, this is fresh launch.
+    const std::string code = GetReferralPromoCode();
+    if (code.empty()) {
+      MonitorReferralPromoCodeChange();
+      return;
+    }
+
+    // This below code is for recover above abnormal situation - Shutdown
+    // situation before getting map table.
+    if (brave::BraveReferralsService::IsDefaultReferralCode(code)) {
+      MarkThisInstallIsNotSuperReferralForever();
+    } else {
+      // If current code is not an default one, let's check it after fetching
+      // mapping table.
+      DownloadSuperReferralMappingTable();
+    }
     return;
   }
 
@@ -323,6 +352,9 @@ void NTPBackgroundImagesService::RegisterSuperReferralComponent() {
 }
 
 void NTPBackgroundImagesService::DownloadSuperReferralMappingTable() {
+  local_pref_->SetBoolean(prefs::kNewTabPageCheckingMappingTableInProgress,
+                          true);
+
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = GURL(GetSuperReferralMappingTableURL());
   request->load_flags =
@@ -356,6 +388,9 @@ void NTPBackgroundImagesService::OnGetMappingTableData(
     ScheduleMappingTabRetryTimer();
     return;
   }
+
+  local_pref_->SetBoolean(prefs::kNewTabPageCheckingMappingTableInProgress,
+                          false);
 
   base::Optional<base::Value> mapping_table_value =
       base::JSONReader::Read(*json_string);
@@ -399,7 +434,6 @@ bool NTPBackgroundImagesService::HasObserver(Observer* observer) {
 
 NTPBackgroundImagesData*
 NTPBackgroundImagesService::GetBackgroundImagesData(bool super_referral) const {
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   const bool is_sr_enabled =
       base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper);
   if (is_sr_enabled && super_referral) {
@@ -415,9 +449,6 @@ if (is_sr_enabled && local_pref_->FindPreference(
         prefs::kNewTabPageCachedSuperReferralComponentInfo)->
             IsDefaultValue())
     return nullptr;
-#else
-  return nullptr;
-#endif
 
   if (si_images_data_ && si_images_data_->IsValid())
     return si_images_data_.get();
@@ -538,7 +569,6 @@ std::string NTPBackgroundImagesService::GetReferralPromoCode() const {
 void NTPBackgroundImagesService::InitializeWebUIDataSource(
     content::WebUIDataSource* html_source) {
   std::string theme_name;
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   // theme name from component manifest and company name from mapping table
   // are same string.
   const auto* value = local_pref_->Get(
@@ -547,20 +577,15 @@ void NTPBackgroundImagesService::InitializeWebUIDataSource(
       IsValidSuperReferralComponentInfo(*value)) {
     theme_name = *value->FindStringKey(kThemeName);
   }
-#endif
   html_source->AddString("superReferralThemeName", theme_name);
 }
 
 bool NTPBackgroundImagesService::IsSuperReferral() const {
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   const auto* value = local_pref_->Get(
       prefs::kNewTabPageCachedSuperReferralComponentInfo);
   return
       base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper) &&
       IsValidSuperReferralComponentInfo(*value);
-#else
-  return false;
-#endif
 }
 
 }  // namespace ntp_background_images

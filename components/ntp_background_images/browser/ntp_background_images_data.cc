@@ -146,7 +146,7 @@ NTPBackgroundImagesData::NTPBackgroundImagesData(
 NTPBackgroundImagesData::~NTPBackgroundImagesData() = default;
 
 bool NTPBackgroundImagesData::IsValid() const {
-  return (!backgrounds.empty() && !logo_destination_url.empty());
+  return !backgrounds.empty();
 }
 
 bool NTPBackgroundImagesData::IsSuperReferral() const {

@@ -137,7 +137,11 @@ TEST_F(NTPBackgroundImagesViewCounterTest, IsActiveOptedIn) {
   // Active if SR is only opted in.
   EnableSIPref(false);
   EnableSRPref(true);
+#if defined(OS_LINUX)
+  EXPECT_FALSE(view_counter_->IsBrandedWallpaperActive());
+#else
   EXPECT_TRUE(view_counter_->IsBrandedWallpaperActive());
+#endif
 }
 
 TEST_F(NTPBackgroundImagesViewCounterTest, ActiveInitiallyOptedIn) {

@@ -20,6 +20,7 @@ extern const char kNewTabPageShowBackgroundImage[];
 // Local prefs
 extern const char kNewTabPageCachedSuperReferralComponentInfo[];
 extern const char kNewTabPageCachedSuperReferralFaviconList[];
+extern const char kNewTabPageCheckingMappingTableInProgress[];
 
 }  // namespace prefs
 }  // namespace ntp_background_images
