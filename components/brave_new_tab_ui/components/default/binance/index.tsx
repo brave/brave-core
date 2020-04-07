@@ -621,6 +621,29 @@ class Binance extends React.PureComponent<Props, State> {
     })
   }
 
+  unpersistDropdowns = (event: any) => {
+    const {
+      fiatShowing,
+      convertToShowing,
+      convertFromShowing,
+      currenciesShowing
+    } = this.state
+
+    if (!fiatShowing && !convertToShowing &&
+        !convertFromShowing && !currenciesShowing) {
+      return
+    }
+
+    if (!event.target.classList.contains('asset-dropdown')) {
+      this.setState({
+        fiatShowing: false,
+        convertToShowing: false,
+        convertFromShowing: false,
+        currenciesShowing: false
+      })
+    }
+  }
+
   copyToClipboard = async (address: string) => {
     try {
       await clipboardCopy(address)
@@ -1063,6 +1086,7 @@ class Binance extends React.PureComponent<Props, State> {
               onChange={this.setCurrentConvertAmount}
             />
             <FiatDropdown
+              className={'asset-dropdown'}
               itemsShowing={convertFromShowing}
               onClick={this.handleConvertFromChange}
             >
@@ -1099,6 +1123,7 @@ class Binance extends React.PureComponent<Props, State> {
             }
           </FiatInputWrapper>
           <AssetDropdown
+            className={'asset-dropdown'}
             itemsShowing={convertToShowing}
             onClick={this.handleConvertToChange}
           >
@@ -1248,6 +1273,7 @@ class Binance extends React.PureComponent<Props, State> {
             <FiatDropdown
               disabled={isUS}
               itemsShowing={fiatShowing}
+              className={'asset-dropdown'}
               onClick={this.handleFiatChange}
             >
               <span>
@@ -1280,6 +1306,7 @@ class Binance extends React.PureComponent<Props, State> {
             }
           </FiatInputWrapper>
           <AssetDropdown
+            className={'asset-dropdown'}
             itemsShowing={currenciesShowing}
             onClick={this.toggleCurrenciesShowing}
           >
@@ -1372,7 +1399,7 @@ class Binance extends React.PureComponent<Props, State> {
     }
 
     return (
-      <WidgetWrapper>
+      <WidgetWrapper onClick={this.unpersistDropdowns}>
         {
           this.renderIndexView()
           ? this.renderIndexView()
