@@ -18,4 +18,8 @@ void AccessTokenConsumer::OnGetTokenSuccess(
 void AccessTokenConsumer::OnGetTokenFailure(
     const std::string& error) {}
 
+void AccessTokenConsumer::OnGetTimestampSuccess(const std::string& ts) {}
+
+void AccessTokenConsumer::OnGetTimestampFailure(const std::string& error) {}
+
 }   // namespace brave_sync

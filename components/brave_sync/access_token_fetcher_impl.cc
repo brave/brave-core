@@ -27,12 +27,14 @@ namespace {
 constexpr char kGetAccessTokenBodyFormat[] =
     "client_id=%s&"
     "client_secret=%s&"
+    "timestamp=%s&"
     "refresh_token=%s";
 
 constexpr char kAccessTokenKey[] = "access_token";
 constexpr char kExpiresInKey[] = "expires_in";
 constexpr char kIdTokenKey[] = "id_token";
 constexpr char kErrorKey[] = "error";
+constexpr char kTimestamp[] = "timestamp";
 
 static std::string CreateAuthError(int net_error) {
   CHECK_NE(net_error, net::OK);
@@ -125,14 +127,29 @@ AccessTokenFetcherImpl::~AccessTokenFetcherImpl() {}
 
 void AccessTokenFetcherImpl::CancelRequest() {
   url_loader_.reset();
+  ts_url_loader_.reset();
 }
 
 void AccessTokenFetcherImpl::Start(
     const std::string& client_id,
-    const std::string& client_secret) {
+    const std::string& client_secret,
+    const std::string& timestamp) {
   client_id_ = client_id;
   client_secret_ = client_secret;
+  timestamp_ = timestamp;
   StartGetAccessToken();
+}
+
+void AccessTokenFetcherImpl::StartGetTimestamp() {
+  ts_url_loader_ =
+      CreateURLLoader(GURL("http://localhost:8295/v2/timestamp"),
+                      "");
+  // It's safe to use Unretained below as the |url_loader_| is owned by |this|.
+  ts_url_loader_->DownloadToString(
+      url_loader_factory_.get(),
+      base::BindOnce(&AccessTokenFetcherImpl::OnTimestampLoadComplete,
+                     base::Unretained(this)),
+      1024 * 1024);
 }
 
 void AccessTokenFetcherImpl::StartGetAccessToken() {
@@ -141,7 +158,7 @@ void AccessTokenFetcherImpl::StartGetAccessToken() {
   url_loader_ =
       CreateURLLoader(MakeGetAccessTokenUrl(),
                       MakeGetAccessTokenBody(client_id_, client_secret_,
-                                             refresh_token_));
+                                             timestamp_, refresh_token_));
   // It's safe to use Unretained below as the |url_loader_| is owned by |this|.
   url_loader_->DownloadToString(
       url_loader_factory_.get(),
@@ -258,6 +275,33 @@ void AccessTokenFetcherImpl::OnURLLoadComplete(
   EndGetAccessToken(std::move(response_body));
 }
 
+void AccessTokenFetcherImpl::OnTimestampLoadComplete(
+    std::unique_ptr<std::string> response_body) {
+  bool net_failure = false;
+  int histogram_value;
+  if (ts_url_loader_->NetError() == net::OK && ts_url_loader_->ResponseInfo() &&
+      ts_url_loader_->ResponseInfo()->headers) {
+    histogram_value = ts_url_loader_->ResponseInfo()->headers->response_code();
+  } else {
+    histogram_value = ts_url_loader_->NetError();
+    net_failure = true;
+  }
+  if (net_failure) {
+    FireOnGetTimestampFailure(CreateAuthError(histogram_value));
+    return;
+  }
+  std::unique_ptr<base::DictionaryValue> value =
+      ParseGetAccessTokenResponse(std::move(response_body));
+  if (!value)
+    return;
+  std::string timestamp;
+  if (!value->GetString(kTimestamp, &timestamp)) {
+    FireOnGetTimestampFailure("Unable to parse timestamp");
+    return;
+  }
+  FireOnGetTimestampSuccess(timestamp);
+}
+
 // static
 GURL AccessTokenFetcherImpl::MakeGetAccessTokenUrl() {
   return GURL("http://localhost:8295/v2/auth");
@@ -267,15 +311,19 @@ GURL AccessTokenFetcherImpl::MakeGetAccessTokenUrl() {
 std::string AccessTokenFetcherImpl::MakeGetAccessTokenBody(
     const std::string& client_id,
     const std::string& client_secret,
+    const std::string& timestamp,
     const std::string& refresh_token) {
   std::string enc_client_id = net::EscapeUrlEncodedData(client_id, true);
   std::string enc_client_secret =
       net::EscapeUrlEncodedData(client_secret, true);
+  std::string enc_timestamp =
+      net::EscapeUrlEncodedData(timestamp, true);
   std::string enc_refresh_token =
       net::EscapeUrlEncodedData(refresh_token, true);
   return base::StringPrintf(kGetAccessTokenBodyFormat,
                             enc_client_id.c_str(),
                             enc_client_secret.c_str(),
+                            enc_timestamp.c_str(),
                             enc_refresh_token.c_str());
 }
 

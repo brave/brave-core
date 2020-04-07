@@ -18,4 +18,12 @@ void AccessTokenFetcher::FireOnGetTokenFailure(
   consumer_->OnGetTokenFailure(error);
 }
 
+void AccessTokenFetcher::FireOnGetTimestampSuccess(const std::string& ts) {
+  consumer_->OnGetTimestampSuccess(ts);
+}
+
+void AccessTokenFetcher::FireOnGetTimestampFailure(const std::string& error) {
+  consumer_->OnGetTimestampFailure(error);
+}
+
 }   // namespace brave_sync
