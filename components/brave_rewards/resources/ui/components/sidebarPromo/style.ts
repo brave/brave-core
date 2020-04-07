@@ -76,3 +76,8 @@ export const StyledDisclaimer = styled<{}, 'span'>('span')`
   color: ${palette.grey500};
   font-family: Muli, sans-serif;
 `
+
+export const Linkp2p = styled(StyledLink)`
+  font-size: 15px;
+  margin: 10px 0;
+`

@@ -25,7 +25,7 @@ import MonthlyContributionBox from './monthlyContributionBox'
 import * as rewardsActions from '../actions/rewards_actions'
 import Promotion from './promotion'
 import { getLocale } from '../../../../common/locale'
-import { activePromos, getPromo, PromoType, Promo } from '../promos'
+import { getActivePromos, getPromo, PromoType, Promo } from '../promos'
 
 interface Props extends Rewards.ComponentProps {
 }
@@ -240,12 +240,12 @@ class SettingsPage extends React.Component<Props, State> {
 
     return (
       <>
-        {activePromos.map((key: PromoType) => {
+        {getActivePromos(this.props.rewardsData).map((key: PromoType) => {
           if (promosDismissed && promosDismissed[key]) {
             return null
           }
 
-          const promo = getPromo(key, getLocale) as Promo
+          const promo = getPromo(key, this.props.rewardsData) as Promo
           const { supportedLocales } = promo
 
           if (supportedLocales.length && !supportedLocales.includes(currentCountryCode)) {
