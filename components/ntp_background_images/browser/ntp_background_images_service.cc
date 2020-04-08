@@ -242,23 +242,31 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
   if (local_pref_->FindPreference(
           prefs::kNewTabPageCachedSuperReferralComponentInfo)->
               IsDefaultValue()) {
-    // For existing users, we could set it as non SR because SR is only applied
-    // for fresh user.
-    // At first fresh launch, we could determine after this is SR or not after
-    // downloading mapping table. but browser could be shutdown between getting
-    // promocode and mapping table. If this happens, this install will be act
-    // as a non SR install forever. To resolve that situation,
-    // |kNewTabPageCheckingMappingTableInProgress| introduced.
-    // Even if |kReferralCheckedForPromoCodeFile| is true, we will try to check
-    // mapping table again if needed.
-    // |kNewTabPageCheckingMappingTableInProgress| is set to true when mapping
-    // table is requested and set to false when browser gets it.
+    // At first fresh launch, we should finish initial component downloading to
+    // set initial state properly.
+    // But browser could be shutdown accidently before getting it anytime.
+    // If this happens, we have to handle this abnormal situation strictly.
+    // If not, this install will be act as a non SR install forever.
+    // To resolve that situation,
+    // |kNewTabPageGetInitialSRComponentInProgress| introduced.
+    // If |kReferralCheckedForPromoCodeFile| is true and
+    // |kNewTabPageCheckingMappingTableInProgress| is false, this means not
+    // first launch. So, we can mark this install as non-SR.
     // If both |kReferralCheckedForPromoCodeFile| and
-    // |kNewTabPageCheckingMappingTableInProgress|, browser had some trouble
-    // while getting mapping table at first fresh launch.
+    // |kNewTabPageCheckingMappingTableInProgress| are true, browser had some
+    // trouble at first launch.
+    // If |kNewTabPageGetInitialSRComponentInProgress| is true, we assume that
+    // initial component downloading is not finished properly.
+    // So, We will try initialization again.
+    // If referral code is non empty, that means browser is shutdown after
+    // getting referal code. In this case, we should start downloading mapping
+    // table.
+    // If both |kReferralCheckedForPromoCodeFile| and
+    // |kNewTabPageCheckingMappingTableInProgress| are true, browser had some
+    // troublewhile getting mapping table at first fresh launch.
     if (local_pref_->GetBoolean(kReferralCheckedForPromoCodeFile) &&
         !local_pref_->GetBoolean(
-             prefs::kNewTabPageCheckingMappingTableInProgress)) {
+             prefs::kNewTabPageGetInitialSRComponentInProgress)) {
       MarkThisInstallIsNotSuperReferralForever();
       DVLOG(2) << __func__ << ": Cached SR Info is clean and Referral Service"
                            << " is not in initial state."
@@ -267,14 +275,20 @@ void NTPBackgroundImagesService::CheckSuperReferralComponent() {
     }
 
     // If referral code is empty here, this is fresh launch.
+    // If browser is crashed before fetching this install's promo code at fiirst
+    // launch, it can be handled here also because code would be empty at this
+    // time.
     const std::string code = GetReferralPromoCode();
     if (code.empty()) {
+      local_pref_->SetBoolean(
+          prefs::kNewTabPageGetInitialSRComponentInProgress,
+          true);
       MonitorReferralPromoCodeChange();
       return;
     }
 
     // This below code is for recover above abnormal situation - Shutdown
-    // situation before getting map table.
+    // situation before getting map table or getting initial component.
     if (brave::BraveReferralsService::IsDefaultReferralCode(code)) {
       MarkThisInstallIsNotSuperReferralForever();
     } else {
@@ -358,7 +372,7 @@ void NTPBackgroundImagesService::RegisterSuperReferralComponent() {
 }
 
 void NTPBackgroundImagesService::DownloadSuperReferralMappingTable() {
-  local_pref_->SetBoolean(prefs::kNewTabPageCheckingMappingTableInProgress,
+  local_pref_->SetBoolean(prefs::kNewTabPageGetInitialSRComponentInProgress,
                           true);
 
   auto request = std::make_unique<network::ResourceRequest>();
@@ -394,9 +408,6 @@ void NTPBackgroundImagesService::OnGetMappingTableData(
     ScheduleMappingTabRetryTimer();
     return;
   }
-
-  local_pref_->SetBoolean(prefs::kNewTabPageCheckingMappingTableInProgress,
-                          false);
 
   base::Optional<base::Value> mapping_table_value =
       base::JSONReader::Read(*json_string);
@@ -487,6 +498,9 @@ void NTPBackgroundImagesService::OnGetComponentJsonData(
     bool is_super_referral,
     const std::string& json_string) {
   if (is_super_referral) {
+    local_pref_->SetBoolean(
+          prefs::kNewTabPageGetInitialSRComponentInProgress,
+          false);
     sr_images_data_.reset(
         new NTPBackgroundImagesData(json_string,
                                     super_referral_cache_dir_));

@@ -23,8 +23,8 @@ const char kNewTabPageCachedSuperReferralComponentData[] =
     "brave.new_tab_page.cached_super_referral_component_data";
 const char kNewTabPageCachedSuperReferralFaviconList[] =
     "brave.new_tab_page.cached_super_referral_favicon_list";
-const char kNewTabPageCheckingMappingTableInProgress[] =
-    "brave.new_tab_page.checking_mapping_table_in_progress";
+const char kNewTabPageGetInitialSRComponentInProgress[] =
+    "brave.new_tab_page.get_initial_sr_component_in_progress";
 
 }  // namespace prefs
 }  // namespace ntp_background_images

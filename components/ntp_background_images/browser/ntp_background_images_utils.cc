@@ -21,7 +21,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(
       prefs::kNewTabPageCachedSuperReferralFaviconList);
   registry->RegisterBooleanPref(
-      prefs::kNewTabPageCheckingMappingTableInProgress, false);
+      prefs::kNewTabPageGetInitialSRComponentInProgress, false);
 }
 
 bool IsValidSuperReferralComponentInfo(const base::Value& component_info) {

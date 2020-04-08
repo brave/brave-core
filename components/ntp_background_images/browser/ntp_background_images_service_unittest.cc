@@ -380,6 +380,9 @@ TEST_F(NTPBackgroundImagesServiceTest, WithNonSuperReferralCodeTest) {
 }
 
 TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
+  EXPECT_FALSE(pref_service_.GetBoolean(
+      prefs::kNewTabPageGetInitialSRComponentInProgress));
+
   Init();
 
   EXPECT_TRUE(service_->sponsored_images_component_started_);
@@ -388,22 +391,20 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
   EXPECT_FALSE(service_->mapping_table_requested_);
   EXPECT_FALSE(service_->super_referral_component_started_);
 
-  EXPECT_FALSE(pref_service_.GetBoolean(
-      prefs::kNewTabPageCheckingMappingTableInProgress));
+  EXPECT_TRUE(pref_service_.GetBoolean(
+      prefs::kNewTabPageGetInitialSRComponentInProgress));
   pref_service_.SetString(kReferralPromoCode, "BRV003");
 
   // Mapping table is requested because it's not a default code.
   EXPECT_TRUE(service_->mapping_table_requested_);
   EXPECT_FALSE(service_->marked_this_install_is_not_super_referral_forever_);
 
-  EXPECT_TRUE(pref_service_.GetBoolean(
-      prefs::kNewTabPageCheckingMappingTableInProgress));
   EXPECT_FALSE(IsValidSuperReferralComponentInfo(*pref_service_.Get(
       prefs::kNewTabPageCachedSuperReferralComponentInfo)));
   service_->OnGetMappingTableData(
       std::make_unique<std::string>(kTestMappingTable));
-  EXPECT_FALSE(pref_service_.GetBoolean(
-      prefs::kNewTabPageCheckingMappingTableInProgress));
+  EXPECT_TRUE(pref_service_.GetBoolean(
+      prefs::kNewTabPageGetInitialSRComponentInProgress));
 
   // This is super referral code. So, start SR component.
   EXPECT_TRUE(service_->super_referral_component_started_);
@@ -414,6 +415,8 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
 
   // Got super referral component
   service_->OnGetComponentJsonData(true, kTestSuperReferral);
+  EXPECT_FALSE(pref_service_.GetBoolean(
+      prefs::kNewTabPageGetInitialSRComponentInProgress));
   auto* data = service_->GetBackgroundImagesData(true);
   EXPECT_TRUE(IsValidSuperReferralComponentInfo(*pref_service_.Get(
       prefs::kNewTabPageCachedSuperReferralComponentInfo)));
@@ -458,7 +461,7 @@ TEST_F(NTPBackgroundImagesServiceTest,
   // Make this install has initialized super referral service.
   pref_service_.SetBoolean(kReferralCheckedForPromoCodeFile, true);
   pref_service_.SetBoolean(
-      prefs::kNewTabPageCheckingMappingTableInProgress, true);
+      prefs::kNewTabPageGetInitialSRComponentInProgress, true);
   pref_service_.SetString(kReferralPromoCode, "BRV001");
 
   EXPECT_TRUE(pref_service_.FindPreference(
@@ -479,7 +482,7 @@ TEST_F(NTPBackgroundImagesServiceTest,
   // Make this install has initialized super referral service.
   pref_service_.SetBoolean(kReferralCheckedForPromoCodeFile, true);
   pref_service_.SetBoolean(
-      prefs::kNewTabPageCheckingMappingTableInProgress, true);
+      prefs::kNewTabPageGetInitialSRComponentInProgress, true);
   pref_service_.SetString(kReferralPromoCode, "BRV003");
 
   Init();

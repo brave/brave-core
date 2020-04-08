@@ -21,7 +21,7 @@ extern const char kNewTabPageShowBackgroundImage[];
 extern const char kNewTabPageCachedSuperReferralComponentInfo[];
 extern const char kNewTabPageCachedSuperReferralComponentData[];
 extern const char kNewTabPageCachedSuperReferralFaviconList[];
-extern const char kNewTabPageCheckingMappingTableInProgress[];
+extern const char kNewTabPageGetInitialSRComponentInProgress[];
 
 }  // namespace prefs
 }  // namespace ntp_background_images
