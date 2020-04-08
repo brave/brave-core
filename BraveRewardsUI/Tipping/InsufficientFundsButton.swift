@@ -3,13 +3,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveUI
 
 /// Displayed when the user does not have enough tokens to complete a tip
 class InsufficientFundsButton: UIControl {
   
   private struct UX {
-    static let backgroundColor = Colors.blurple000
-    static let imageTintColor = Colors.grey300
+    static let backgroundColor = Colors.blurple900
+    static let imageTintColor = Colors.grey600
   }
   
   private let stackView = UIStackView().then {

@@ -3,15 +3,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveUI
 
 class SettingsViewDetailsButton: Button {
   
   override init(frame: CGRect) {
     super.init(frame: frame)
     
-    tintColor = Colors.purple300
+    tintColor = Colors.purple600
     setTitle(Strings.settingsViewDetails, for: .normal)
-    appearanceTextColor = Colors.purple300
+    appearanceTextColor = Colors.purple600
     setImage(UIImage(frameworkResourceNamed: "right-arrow").alwaysTemplate, for: .normal)
     titleLabel?.font = .systemFont(ofSize: 14.0, weight: .medium)
     titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 3)

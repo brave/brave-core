@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveUI
 
 extension WelcomeViewController {
   
@@ -15,7 +16,7 @@ extension WelcomeViewController {
     
     let termsOfServiceLabel = LinkLabel().then {
       $0.font = .systemFont(ofSize: 12.0)
-      $0.appearanceTextColor = Colors.grey900
+      $0.appearanceTextColor = Colors.grey000
       $0.textAlignment = .center
       $0.text = Strings.welcomeDisclaimerInformation
       $0.setURLInfo([Strings.termsOfServiceURL: "terms", Strings.privacyPolicyURL: "policy"])
@@ -57,7 +58,7 @@ extension WelcomeViewController {
           }()
         }),
         .view(UILabel().then {
-          $0.appearanceTextColor = Colors.blue500
+          $0.appearanceTextColor = Colors.blue400
           $0.font = .systemFont(ofSize: 22.0)
           $0.textAlignment = .center
           $0.numberOfLines = 0
@@ -154,7 +155,7 @@ extension WelcomeViewController {
       })
       stackView.addArrangedSubview(UILabel().then {
         $0.text = body
-        $0.appearanceTextColor = Colors.grey200
+        $0.appearanceTextColor = Colors.grey700
         $0.numberOfLines = 0
         $0.textAlignment = .center
         $0.font = .systemFont(ofSize: 16)
@@ -188,7 +189,7 @@ extension WelcomeViewController {
     
     let termsOfServiceLabel = LinkLabel().then {
       $0.font = .systemFont(ofSize: 12.0)
-      $0.appearanceTextColor = Colors.grey200
+      $0.appearanceTextColor = Colors.grey700
       $0.linkColor = .black
       $0.textAlignment = .center
       $0.text = Strings.welcomeDisclaimerInformation
@@ -246,7 +247,7 @@ extension WelcomeViewController {
         .view(UILabel().then {
           $0.text = Strings.learnMoreWhyBody
           $0.font = .systemFont(ofSize: 16.0)
-          $0.appearanceTextColor = Colors.grey200
+          $0.appearanceTextColor = Colors.grey700
           $0.numberOfLines = 0
         }),
         .customSpace(20.0),
@@ -270,7 +271,7 @@ extension WelcomeViewController {
           $0.text = Strings.learnMoreReady
           $0.font = .systemFont(ofSize: 20.0)
           $0.textAlignment = .center
-          $0.appearanceTextColor = Colors.blurple400
+          $0.appearanceTextColor = Colors.blurple500
           $0.numberOfLines = 0
         }),
         .customSpace(20.0),

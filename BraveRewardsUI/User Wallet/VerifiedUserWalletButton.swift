@@ -5,6 +5,7 @@
 import UIKit
 import BraveShared
 import pop
+import BraveUI
 
 class VerifiedUserWalletButton: UIControl {
   

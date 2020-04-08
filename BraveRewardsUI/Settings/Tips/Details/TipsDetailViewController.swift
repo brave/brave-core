@@ -50,11 +50,7 @@ class TipsDetailViewController: UIViewController {
   
   private func loadData() {
     _ = getTipsThisMonth().then {
-      
-      if let oneTimeTips = BATValue(probi: "\($0.oneTimeDonation)"),
-        let recurringTips = BATValue(probi: "\($0.recurringDonation)") {
-        totalBatTips = oneTimeTips.doubleValue + recurringTips.doubleValue
-      }
+      totalBatTips = $0.oneTimeDonation + $0.recurringDonation
     }
     
     state.ledger.listOneTimeTips {[weak self] infoList in
@@ -156,10 +152,9 @@ extension TipsDetailViewController: UITableViewDataSource, UITableViewDelegate {
       cell.siteImageView.image = UIImage(frameworkResourceNamed: "defaultFavicon")
       setFavicon(identifier: tip.id, pageURL: tip.url, faviconURL: tip.faviconUrl)
       cell.verifiedStatusImageView.isHidden = tip.status == .notVerified
-      let value = BATValue(probi: "\(tip.weight)")
       cell.typeNameLabel.text = Strings.oneTimeText + Date.stringFrom(reconcileStamp: tip.reconcileStamp)
-      cell.tokenView.batContainer.amountLabel.text = value?.displayString
-      cell.tokenView.usdContainer.amountLabel.text = state.ledger.dollarStringForBATAmount(value?.doubleValue ?? 0, includeCurrencyCode: false)
+      cell.tokenView.batContainer.amountLabel.text = "\(tip.weight)"
+      cell.tokenView.usdContainer.amountLabel.text = state.ledger.dollarStringForBATAmount(tip.weight, includeCurrencyCode: false)
       return cell
     }
   }

@@ -1,9 +1,15 @@
 /* Suffix for error strings */
-"tryAgain" = ". Prøv igjen.";
+"tryAgain" = ", prøv igjen.";
 
 /* Error handling U2F authentication. */
 "U2FAuthenticationError" = "Sikkerhetsnøkkelen din kunne ikke godkjennes";
 
 /* Error handling U2F registration. */
 "U2FRegistrationError" = "Sikkerhetsnøkkelen din kunne ikke registreres";
+
+/* Error message if list of Payment Instruments doesn't include BAT */
+"unsupportedInstrumentMessage" = "Ikke-støttede betalingsverktøy";
+
+/* Error message if the payment workflow is canceled by the user */
+"userCancelledMessage" = "Bruker kansellert";
 

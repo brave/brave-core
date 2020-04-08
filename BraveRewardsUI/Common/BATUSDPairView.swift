@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveUI
 
 /// A view which pairs a BAT amount and USD amount
 class BATUSDPairView: UIStackView {
@@ -25,7 +26,7 @@ class BATUSDPairView: UIStackView {
     
     // Defaults
     spacing = 5.0
-    alignment = .bottom
+    alignment = .lastBaseline
     
     batContainer.kindLabel.text = Strings.BAT
     batContainer.amountLabel.text = "0"
@@ -38,13 +39,13 @@ class BATUSDPairView: UIStackView {
                    usdFontSize: CGFloat = 13.0) {
     self.init(batAmountConfig: {
       $0.font = .systemFont(ofSize: amountFontSize, weight: .medium)
-      $0.appearanceTextColor = Colors.grey100
+      $0.appearanceTextColor = Colors.grey800
     }, batKindConfig: {
       $0.font = .systemFont(ofSize: kindFontSize)
-      $0.appearanceTextColor = Colors.grey100
+      $0.appearanceTextColor = Colors.grey800
     }, usdConfig: {
       $0.font = .systemFont(ofSize: usdFontSize)
-      $0.appearanceTextColor = Colors.grey200
+      $0.appearanceTextColor = Colors.grey700
     })
   }
   

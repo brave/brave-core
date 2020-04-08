@@ -437,7 +437,7 @@
 "FindInPageDoneButtonAccessibilityLabel" = "Klar";
 
 /* Find %@ text in page. */
-"FindInPageFormat" = "Sök på \"%@\"";
+"FindInPageFormat" = "Sök på ”%@”";
 
 /* Accessibility label for next result button in Find in Page Toolbar. */
 "FindInPageNextResultButtonAccessibilityLabel" = "Nästa resultat på sidan";
@@ -560,7 +560,7 @@
 "NewBookmarkTitle" = "Nytt bokmärke";
 
 /* Title for new folder popup */
-"NewFolder" = "Ny mapp ";
+"NewFolder" = "Ny mapp";
 
 /* Default name for creating a new folder. */
 "NewFolderDefaultName" = "Ny mapp";
@@ -595,9 +595,6 @@
 /* Sync Alert */
 "NotEnoughWordsTitle" = "För få ord";
 
-/* The placeholder says 'hide sponsored images'. So full sentence goes like: 'You can also choose to hide sponsored images.' */
-"ntp.chooseToHideSponsoredImages" = "Du kan även välja att %@.";
-
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "Hämta min belöning";
 
@@ -608,22 +605,28 @@
 "ntp.earnTokensByViewingAds" = "Tjäna in symboler genom att visa annonser som respekterar sekretess.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "Få betalt för att se denna bakgrundsbild. Slå på Brave Rewards för att kräva din andel.";
+"ntp.getPaidForThisImageTurnAds" = "Tjäna mynt för att se den här bilden. Aktivera Brave-annonser för att göra anspråk på din del.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "Få betalt för att se denna bakgrundsbild. Slå på Brave Rewards för att kräva din andel.";
+"ntp.getPaidForThisImageTurnRewards" = "Tjäna mynt för att se den här bilden. Aktivera Brave Rewards för att göra anspråk på din del.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidToSeeThisImage" = "Få betalt för att se denna bakgrundsbild.";
+"ntp.getPaidToSeeThisImage" = "Tjäna mynt för att se den här bilden.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Bra jobbat!";
 
-/* This sentence is not capitalized on purpose, it is a part of a bigger sentence which goes like this: 'You can also choose to hide sponsored images.' */
-"ntp.hideSponsoredImages" = "dölj sponsrade bilder";
+/* No comment provided by engineer. */
+"ntp.hideSponsoredImages" = "Dölj sponsrade bilder";
 
-/* The placeholder says 'Learn more'. So full sentence goes like: 'Learn more about sponsored images in Brave Rewards.' */
-"ntp.learnMoreAboutBrandedImages" = "%@ om sponsrade bilder i Brave Rewards";
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutBrandedImages" = "För varje sponsrad bild som du ser får du 70 % av intäkterna i mynt. Med Brave-annonser har du alltid kontroll över annonserna du ser.";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutRewards" = "Lär dig mer om Brave Rewards";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutSI" = "Lär dig mer om sponsrade bilder";
 
 /* No comment provided by engineer. */
 "ntp.supportWebCreatorsWithTokens" = "Du kan stödja webbskapare med symboler.";
@@ -632,13 +635,13 @@
 "ntp.turnOnBraveAds" = "Slå på Brave annonser";
 
 /* No comment provided by engineer. */
-"ntp.turnOnBraveRewards" = "Slå på belöningar";
+"ntp.turnOnBraveRewards" = "Aktivera Brave Rewards";
 
-/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turnin Rewards, you agree to the Terms of Service'. */
+/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Genom att aktivera Rewards godkänner du %@.";
 
 /* No comment provided by engineer. */
-"ntp.youArePaidToSeeThisImage" = "Du får betalt för att se den här bakgrundsbilden.";
+"ntp.youArePaidToSeeThisImage" = "Du tjänar mynt för att se den här bilden.";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Öppna alla (%i)";
@@ -650,7 +653,7 @@
 "OpenImageInNewTab" = "Öppna bild i ny flik";
 
 /* Context menu option for opening a link in a new private tab */
-"OpenNewPrivateTabButtonTitle" = "Öppna i ny privat flik ";
+"OpenNewPrivateTabButtonTitle" = "Öppna i ny privat flik";
 
 /* Context menu item for opening a link in a new tab */
 "OpenNewTabButtonTitle" = "Öppna i ny flik";
@@ -755,7 +758,7 @@
 "ReaderModeFontTypeButtonAccessibilityHint" = "Ändrar typsnitt.";
 
 /* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadingContentDisplayText" = "Laddar innehåll...";
+"ReaderModeLoadingContentDisplayText" = "Laddar innehåll ...";
 
 /* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
 "ReaderModeLoadOriginalLinkText" = "Ladda standardsida";
@@ -767,7 +770,7 @@
 "ReaderModeSmallerFontButtonAccessibilityLabel" = "Minska textstorleken";
 
 /* Button for smaller reader font size. Keep this extremely short! This is shown in the reader mode toolbar. */
-"ReaderModeSmallerFontButtonTitle" = "-";
+"ReaderModeSmallerFontButtonTitle" = "–";
 
 /* Accessibility hint for the color theme setting buttons in reader mode display settings */
 "ReaderModeThemeButtonAccessibilityHint" = "Ändrar färgtemat.";
@@ -965,7 +968,7 @@
 "SuppressAlertsActionTitle" = "Undertryck varningar";
 
 /* Sync settings section title */
-"Sync" = "Synkronisera ";
+"Sync" = "Synkronisera";
 
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "Lägg till fler enheter";
@@ -977,13 +980,13 @@
 "SyncAddDeviceScan" = "Synka kedje-QR-kod";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "På din andra mobila enhet, navigera till synkronisering i inställningspanelen och tryck på knappen \"Skanna synkroniseringskod\". Använd din kamera för att skanna QR-koden nedan.\n\n Behandla den här koden som ett lösenord. Om någon kommer över det kan de läsa och ändra dina synkroniserade data.";
+"SyncAddDeviceScanDescription" = "På din andra mobila enhet navigerar du till synkronisering på panelen för inställningar och trycker på knappen ”Skanna synkroniseringskod”. Använd din kamera för att skanna QR koden nedan.\n\n Behandla den här koden som ett lösenord. Om någon får tag i den kan de läsa och ändra dina synkroniserade data.";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Ange synkroniseringskoden";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Navigera via din enhet till synkronisera på inställningsmenyn och tryck på knappen \"%@\". Ange den synkroniseringskod som visas nedan.\n\n Behandla den här koden som ett lösenord. Om någon kommer över det kan de läsa och ändra dina synkroniserade data.";
+"SyncAddDeviceWordsDescription" = "Navigera på din enhet till synkronisera på inställningspanelen och tryck på knappen ”%@”. Ange den synkroniserade kedjekoden som visas nedan.\n\n Behandla den här koden som ett lösenord. Om någon får tag i den kan de läsa och ändra dina synkroniserade data.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Ande kodord";
@@ -1067,7 +1070,7 @@
 "SyncToDevice" = "Synkronisera med enhet";
 
 /* Sync to existing device description */
-"SyncToDeviceDescription" = "Använd en synkroniserad enhet för att gå till Inställningar > Synkronisering > Lägg till enhet och skanna koden som visas på skärmen.";
+"SyncToDeviceDescription" = "Använd en synkroniserad enhet för att gå till Inställningar -> Synkronisering. Lägg ”Add Device” och skanna koden som visas på skärmen.";
 
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "Det gick inte att skapa en ny synkroniseringsgrupp.";

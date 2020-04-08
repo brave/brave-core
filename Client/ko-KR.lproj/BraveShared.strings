@@ -7,3 +7,9 @@
 /* Error handling U2F registration. */
 "U2FRegistrationError" = "보안 키 등록 중 오류 -";
 
+/* Error message if list of Payment Instruments doesn't include BAT */
+"unsupportedInstrumentMessage" = "지원되지 않는 결제 수단";
+
+/* Error message if the payment workflow is canceled by the user */
+"userCancelledMessage" = "사용자가 취소함";
+

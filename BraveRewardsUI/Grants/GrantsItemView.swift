@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveUI
 
 class GrantsItemView: SettingsSectionView {
   
@@ -19,11 +20,11 @@ class GrantsItemView: SettingsSectionView {
       $0.spacing = 5.0
     }
     let amountView = CurrencyContainerView(amountLabelConfig: {
-      $0.appearanceTextColor = Colors.grey100
+      $0.appearanceTextColor = Colors.grey800
       $0.font = .systemFont(ofSize: 16.0, weight: .medium)
       $0.text = amount
     }, kindLabelConfig: {
-      $0.appearanceTextColor = Colors.grey200
+      $0.appearanceTextColor = Colors.grey700
       $0.font = .systemFont(ofSize: 13.0)
       $0.text = Strings.BAT
     })
@@ -33,7 +34,7 @@ class GrantsItemView: SettingsSectionView {
     
     if let date = expirationDate {
       let expirationLabel = UILabel().then {
-        $0.appearanceTextColor = Colors.grey300
+        $0.appearanceTextColor = Colors.grey600
         $0.font = .systemFont(ofSize: 14.0)
         $0.numberOfLines = 0
         $0.text = String(

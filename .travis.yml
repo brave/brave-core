@@ -1,7 +1,7 @@
 if: (type = push AND repo = "brave/brave-ios") OR (type = pull_request AND head_repo != "brave/brave-ios")
 
 language: swift
-osx_image: xcode11.3
+osx_image: xcode11.4
 cache:
   directories:
     - Carthage

@@ -3,6 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import UIKit
+import BraveUI
 
 class PublisherIconCircleImageView: UIView {
   
@@ -29,7 +30,7 @@ class PublisherIconCircleImageView: UIView {
     
     layer.do {
       $0.cornerRadius = size / 2.0
-      $0.borderColor = Colors.neutral800.cgColor
+      $0.borderColor = Colors.neutral100.cgColor
       $0.borderWidth = 1.0 / UIScreen.main.scale
     }
   }

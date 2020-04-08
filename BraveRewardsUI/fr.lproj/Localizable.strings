@@ -104,7 +104,7 @@
 "BraveRewardsAutoContributeSupportedSites" = "Sites pris en charge";
 
 /* No comment provided by engineer. */
-"BraveRewardsAutoContributeToUnverifiedSites" = "Autoriser le versement de contributions aux sites non vérifiés";
+"BraveRewardsAutoContributeToUnverifiedSites" = "Afficher les sites non vérifiés dans la liste";
 
 /* No comment provided by engineer. */
 "BraveRewardsAutoContributeToVideos" = "Autoriser le versement de contributions aux vidéos";
@@ -499,6 +499,12 @@
 /* Message that is displayed when user disables auto-contribute */
 "DisabledAutoContributeMessage" = "Récompensez vos créateurs de contenu favoris. Votre paiement mensuel est distribué aux sites que vous consultez.";
 
+/* Message that is displayed on monthly contribution section when user disables rewards */
+"DisabledMonthlyContributionMessage" = "Vos contributions mensuelles seront envoyées tous les 30 jours.";
+
+/* Message that is displayed on tips section when user disables rewards */
+"DisabledTipsMessage" = "Donnez des pourboires immédiatement lorsque vous tombez sur une pépite. Si vous appréciez le contenu, faites-le savoir avec un petit tweet.";
+
 /* No comment provided by engineer. */
 "DisclaimerInformation" = "En cliquant sur « Rejoindre Rewards », vous indiquez que vous avez lu et que vous acceptez les Conditions d'utilisation et la Politique de confidentialité.";
 
@@ -513,6 +519,12 @@
 
 /* The title of the screen that shows a list of excluded sites for Auto-Contribute */
 "ExclusionListTitle" = "Sites exclus";
+
+/* No comment provided by engineer. */
+"LedgerDatabaseMigrationFailedBody" = "Un problème est survenu lors du chargement de vos données Rewards. Les détails de votre activité relative aux récompenses vont être relancés.\n\nPour toute question ou tout problème, veuillez contacter support@brave.com.";
+
+/* No comment provided by engineer. */
+"LedgerInitializationFailedTitle" = "Une erreur est survenue…";
 
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "Appuyez ici pour en savoir plus.";
@@ -621,6 +633,51 @@
 
 /* No comment provided by engineer. */
 "RewardsOptInPrefix" = "Préparez-vous à découvrir l'Internet de demain.";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsBody" = "Pour acheter cet article, vous devez gagner des jetons. Pour ce faire, activez Brave Rewards.";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsButtonTitle" = "Autoriser Brave Rewards";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsDisclaimer" = "En appuyant sur Autoriser Brave Rewards, vous acceptez les conditions d’utilisation de Brave Rewards.";
+
+/* The hyperlinked portion of the copy: 'By tapping Enable Brave Rewards, you agree to Brave Reward’s Terms of Service.' */
+"SKUEnableRewardsDisclaimerLink" = "Conditions d'utilisation.";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsTitle" = "Autorisez Brave Rewards pour continuer.";
+
+/* '%@' becomes 'BAT' or 'BAP' based on region */
+"SKUPurchaseBuyWithBAT" = "Acheter avec %@";
+
+/* No comment provided by engineer. */
+"SKUPurchaseCompletedBody" = "Profitez de votre achat.";
+
+/* No comment provided by engineer. */
+"SKUPurchaseCompletedTitle" = "Vous avez terminé !";
+
+/* First '%@' becomes 'Buy with BAT' or 'Buy with BAP' based on region. Second '%@' becomes 'Brave’s Terms of Sale' */
+"SKUPurchaseDisclaimerInformation" = "En cliquant sur '%1$@', vous acceptez les %2$@.";
+
+/* Should be the same text as shown */
+"SKUPurchaseDisclaimerInformationLink" = "Conditions de vente de Brave";
+
+/* '%@' becomes 'BAT' or 'BAP' based on region' */
+"SKUPurchaseInsufficientFunds" = "Vous ne possédez pas suffisamment de %@ pour procéder à cet achat.";
+
+/* No comment provided by engineer. */
+"SKUPurchaseItemSelected" = "Article sélectionné";
+
+/* No comment provided by engineer. */
+"SKUPurchaseOrderTotal" = "Total de la commande";
+
+/* No comment provided by engineer. */
+"SKUPurchaseProcessing" = "Votre paiement est en cours de traitement…";
+
+/* No comment provided by engineer. */
+"SKUPurchaseTitle" = "Confirmer l’achat";
 
 /* No comment provided by engineer. */
 "TermsOfServiceURL" = "Conditions d'utilisation";

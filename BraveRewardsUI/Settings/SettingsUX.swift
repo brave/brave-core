@@ -3,13 +3,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveUI
 
 struct SettingsUX {
-  static let backgroundColor = Colors.neutral800
-  static let headerTextColor = Colors.grey100
-  static let subtitleTextColor = Colors.neutral200
-  static let bodyTextColor = Colors.grey300
-  static let disabledSectionTitleColor = Colors.grey300
+  static let backgroundColor = Colors.neutral100
+  static let headerTextColor = Colors.grey800
+  static let subtitleTextColor = Colors.neutral700
+  static let bodyTextColor = Colors.grey600
+  static let disabledSectionTitleColor = Colors.grey600
   
   static let titleFont = UIFont.systemFont(ofSize: 16.0, weight: .bold)
   static let bodyFont = UIFont.systemFont(ofSize: 14.0)

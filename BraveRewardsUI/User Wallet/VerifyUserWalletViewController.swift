@@ -5,6 +5,7 @@
 import UIKit
 import BraveShared
 import SnapKit
+import BraveUI
 
 class VerifyUserWalletViewController: UIViewController {
   

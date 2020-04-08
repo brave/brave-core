@@ -104,7 +104,7 @@
 "BraveRewardsAutoContributeSupportedSites" = "Webbplatser som stöds";
 
 /* No comment provided by engineer. */
-"BraveRewardsAutoContributeToUnverifiedSites" = "Tillåt donationer till obekräftade webbplatser";
+"BraveRewardsAutoContributeToUnverifiedSites" = "Visa icke verifierade webbplatser i listan";
 
 /* No comment provided by engineer. */
 "BraveRewardsAutoContributeToVideos" = "Tillåt donationer till videor";
@@ -200,7 +200,7 @@
 "BraveRewardsLearnMoreCreateWallet2" = "Ja, jag är redo!";
 
 /* No comment provided by engineer. */
-"BraveRewardsLearnMoreHowItWorks" = "Så här funkar det";
+"BraveRewardsLearnMoreHowItWorks" = "Så här funkar det ...";
 
 /* No comment provided by engineer. */
 "BraveRewardsLearnMoreReady" = "Är du redo att sätta igång?";
@@ -254,7 +254,7 @@
 "BraveRewardsMonthlyTips" = "Månatlig dricks";
 
 /* No comment provided by engineer. */
-"BraveRewardsNoActivitiesYet" = "Inga aktiviteter än…";
+"BraveRewardsNoActivitiesYet" = "Inga aktiviteter än …";
 
 /* No comment provided by engineer. */
 "BraveRewardsNotificationAdsTitle" = "Brave-annonser";
@@ -299,7 +299,7 @@
 "BraveRewardsPoweredByUphold" = "Din Brave-plånbok drivs av Uphold";
 
 /* No comment provided by engineer. */
-"BraveRewardsPublisherSendTip" = "Skicka dricks…";
+"BraveRewardsPublisherSendTip" = "Skicka dricks …";
 
 /* No comment provided by engineer. */
 "BraveRewardsRecurringTipTitle" = "Automatisk dricks";
@@ -499,8 +499,14 @@
 /* Message that is displayed when user disables auto-contribute */
 "DisabledAutoContributeMessage" = "Belöna skaparna för det innehåll som du älskar. Din månatliga betalning distribueras över webbplatserna som du besöker.";
 
+/* Message that is displayed on monthly contribution section when user disables rewards */
+"DisabledMonthlyContributionMessage" = "Ditt månatliga bidrag kommer att skickas var 30e dag.";
+
+/* Message that is displayed on tips section when user disables rewards */
+"DisabledTipsMessage" = "Tipsa direkt när du hittar pärlor. Låt folk veta med en snabb tweet om gillar.";
+
 /* No comment provided by engineer. */
-"DisclaimerInformation" = "Genom att klicka på \"Gå med i Rewards\" intygar du att du har läst och godkänner tjänstevillkoren och integritetspolicyn.";
+"DisclaimerInformation" = "Genom att klicka på ”Gå med i Rewards” intygar du att du har läst och godkänner tjänstevillkoren och integritetspolicyn.";
 
 /* The copy the user sees when they are viewing an empty Auto-Contribute exclusion list. */
 "EmptyExclusionList" = "Inga utgivare exkluderas";
@@ -513,6 +519,12 @@
 
 /* The title of the screen that shows a list of excluded sites for Auto-Contribute */
 "ExclusionListTitle" = "Exkludera sidor";
+
+/* No comment provided by engineer. */
+"LedgerDatabaseMigrationFailedBody" = "Det gick inte att hämta din Rewards-information. Informationen om din belöningsaktivitet kommer att startas om.\n\nKontakta support@brave.com vid problem eller frågor";
+
+/* No comment provided by engineer. */
+"LedgerInitializationFailedTitle" = "Ledsen, någonting gick fel ...";
 
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "Tryck här för att läsa mer.";
@@ -623,6 +635,51 @@
 "RewardsOptInPrefix" = "Gör dig redo att uppleva det nya internet.";
 
 /* No comment provided by engineer. */
+"SKUEnableRewardsBody" = "För att köpa denna artikel måste du tjäna mynt. Aktivera Brave Rewards för att tjäna.";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsButtonTitle" = "Aktivera Brave Rewards";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsDisclaimer" = "Genom att trycka på Aktivera Brave Rewards, godkänner du Brave Rewards tjänstevillkor.";
+
+/* The hyperlinked portion of the copy: 'By tapping Enable Brave Rewards, you agree to Brave Reward’s Terms of Service.' */
+"SKUEnableRewardsDisclaimerLink" = "Användarvillkor.";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsTitle" = "Aktivera Brave Rewards för att fortsätta.";
+
+/* '%@' becomes 'BAT' or 'BAP' based on region */
+"SKUPurchaseBuyWithBAT" = "Köp med %@";
+
+/* No comment provided by engineer. */
+"SKUPurchaseCompletedBody" = "Njut av ditt köp.";
+
+/* No comment provided by engineer. */
+"SKUPurchaseCompletedTitle" = "Du är klar!";
+
+/* First '%@' becomes 'Buy with BAT' or 'Buy with BAP' based on region. Second '%@' becomes 'Brave’s Terms of Sale' */
+"SKUPurchaseDisclaimerInformation" = "Genom att klicka på '%1$@’, samtycker du till %2$@.";
+
+/* Should be the same text as shown */
+"SKUPurchaseDisclaimerInformationLink" = "Braves försäljningsvillkor";
+
+/* '%@' becomes 'BAT' or 'BAP' based on region' */
+"SKUPurchaseInsufficientFunds" = "Du har inte tillräckligt %@ för att göra detta köp.";
+
+/* No comment provided by engineer. */
+"SKUPurchaseItemSelected" = "Vald artikel";
+
+/* No comment provided by engineer. */
+"SKUPurchaseOrderTotal" = "Ordersumma";
+
+/* No comment provided by engineer. */
+"SKUPurchaseProcessing" = "Din betalning bearbetas ...";
+
+/* No comment provided by engineer. */
+"SKUPurchaseTitle" = "Bekräfta köp";
+
+/* No comment provided by engineer. */
 "TermsOfServiceURL" = "Tjänstevillkor";
 
 /* No comment provided by engineer. */
@@ -668,7 +725,7 @@
 "UserWalletOnboardingBenefitsThree" = "Ta ut BAT som du tidigare har lagt till i din Brave Rewards plånbok";
 
 /* The title above the list of benefits after verifying */
-"UserWalletOnboardingBenefitsTitle" = "Men om du verifierar, kan du...";
+"UserWalletOnboardingBenefitsTitle" = "Men om du verifierar, kan du ...";
 
 /* The second benefit of verifying with Uphold */
 "UserWalletOnboardingBenefitsTwo" = "Köp ytterligare BAT med kreditkort och andra källor";
@@ -701,5 +758,5 @@
 "WalletCreationErrorTitle" = "Fel";
 
 /* No comment provided by engineer. */
-"WelcomeDisclaimerInformation" = "Genom att klicka på \"Ja, jag är med!\" intygar du att du har läst och godkänner tjänstevillkoren och integritetspolicyn.";
+"WelcomeDisclaimerInformation" = "Genom att klicka på ”Ja, jag är med!” intygar du att du har läst och godkänner tjänstevillkoren och integritetspolicyn.";
 

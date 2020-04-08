@@ -8,6 +8,7 @@ import BraveRewardsUI
 import Data
 import Shared
 import BraveShared
+import BraveUI
 
 private let log = Logger.rewardsLogger
 
@@ -37,16 +38,6 @@ struct RewardsHelper {
                 log.debug(logOutput)
             }
         }, withFlush: nil)
-    }
-}
-
-// Since BraveRewardsUI is a separate framework, we have to implement Popover conformance here.
-extension RewardsPanelController: PopoverContentComponent {
-    var extendEdgeIntoArrow: Bool {
-        return true
-    }
-    var isPanToDismissEnabled: Bool {
-        return self.visibleViewController === self.viewControllers.first
     }
 }
 
@@ -160,6 +151,44 @@ extension BrowserViewController {
     @objc func resetNTPNotification() {
         Preferences.NewTabPage.brandedImageShowed.value = false
         Preferences.NewTabPage.atleastOneNTPNotificationWasShowed.value = false
+    }
+    
+    // MARK: - SKUS
+    
+    func paymentRequested(_ request: PaymentRequest, _ completionHandler: @escaping (_ response: PaymentRequestResponse) -> Void) {
+        if UIDevice.current.userInterfaceIdiom != .pad && UIApplication.shared.statusBarOrientation.isLandscape {
+            let value = UIInterfaceOrientation.portrait.rawValue
+            UIDevice.current.setValue(value, forKey: "orientation")
+        }
+        
+        if !rewards.ledger.isEnabled {
+            let enableRewards = SKUEnableRewardsViewController(
+                rewards: rewards,
+                termsURLTapped: { [weak self] in
+                    if let url = URL(string: DisclaimerLinks.termsOfUseURL) {
+                        self?.loadNewTabWithURL(url)
+                    }
+                }
+            )
+            present(enableRewards, animated: true)
+            completionHandler(.cancelled)
+            return
+        }
+        
+        guard let publisher = publisher else { return }
+        let controller = SKUPurchaseViewController(
+            rewards: self.rewards,
+            publisher: publisher,
+            request: request,
+            responseHandler: completionHandler,
+            openBraveTermsOfSale: { [weak self] in
+                if let url = URL(string: DisclaimerLinks.termsOfSaleURL) {
+                    self?.loadNewTabWithURL(url)
+                }
+            }
+        )
+        present(controller, animated: true)
+        
     }
 }
 

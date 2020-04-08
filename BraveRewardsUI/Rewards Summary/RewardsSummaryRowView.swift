@@ -3,14 +3,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveUI
 
 //extension RewardsSummaryView {
 
   class RowView: UIView {
     private struct UX {
-      static let titleColor = Colors.grey000
-      static let cryptoCurrencyColor = Colors.grey200
-      static let dollarValueColor = Colors.grey200
+      static let titleColor = Colors.grey900
+      static let cryptoCurrencyColor = Colors.grey700
+      static let dollarValueColor = Colors.grey700
     }
     
     let stackView = UIStackView().then {

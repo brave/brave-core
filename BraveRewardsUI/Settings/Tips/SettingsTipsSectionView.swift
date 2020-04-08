@@ -7,25 +7,37 @@ import UIKit
 class SettingsTipsSectionView: SettingsSectionView {
   
   func setSectionEnabled(_ enabled: Bool, animated: Bool = false) {
-    if viewDetailsButton.isHidden != enabled {
-      // Nothing to do
-      return
-    }
-    
     if animated {
       if enabled {
         viewDetailsButton.alpha = 0.0
+      } else {
+        if disabledView.isHidden {
+          disabledView.alpha = 0.0
+        }
       }
       UIView.animate(withDuration: 0.15) {
-        self.viewDetailsButton.isHidden = !enabled
+        if self.viewDetailsButton.isHidden == enabled { // UIStackView bug, have to check first
+          self.viewDetailsButton.isHidden = !enabled
+        }
+        if self.disabledView.isHidden != enabled {
+          self.disabledView.isHidden = enabled
+        }
         self.viewDetailsButton.alpha = enabled ? 1.0 : 0.0
+        self.disabledView.alpha = enabled ? 0.0 : 1.0
       }
     } else {
       viewDetailsButton.isHidden = !enabled
+      disabledView.isHidden = enabled
     }
   }
   
   let viewDetailsButton = SettingsViewDetailsButton(type: .system)
+  private let disabledView = DisabledSettingGraphicView(
+    image: UIImage(frameworkResourceNamed: "tips-disabled-icon"),
+    text: Strings.disabledTipsMessage
+  ).then {
+    $0.isHidden = true
+  }
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -34,6 +46,7 @@ class SettingsTipsSectionView: SettingsSectionView {
     stackView.addArrangedSubview(titleLabel)
     stackView.addArrangedSubview(bodyLabel)
     stackView.addArrangedSubview(viewDetailsButton)
+    stackView.addArrangedSubview(disabledView)
     
     stackView.snp.makeConstraints {
       $0.edges.equalTo(self.layoutMarginsGuide)

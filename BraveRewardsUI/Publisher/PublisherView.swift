@@ -4,6 +4,7 @@
 
 import UIKit
 import BraveRewards
+import BraveUI
 
 class PublisherView: UIStackView {
   
@@ -81,8 +82,8 @@ class PublisherView: UIStackView {
   
   private struct UX {
     static let faviconSize: CGFloat = 48
-    static let publisherNameColor = Colors.grey000
-    static let verifiedStatusColor = Colors.grey200
+    static let publisherNameColor = Colors.grey900
+    static let verifiedStatusColor = Colors.grey700
   }
   
   // For containing the favicon and publisherStackView (Always visible)
@@ -120,7 +121,7 @@ class PublisherView: UIStackView {
   }
   
   let checkAgainButton = Button(type: .system).then {
-    $0.appearanceTextColor = Colors.blue500
+    $0.appearanceTextColor = Colors.blue400
     $0.titleLabel?.font = .systemFont(ofSize: 12.0)
     $0.setTitle(Strings.checkAgain, for: .normal)
     $0.setContentHuggingPriority(.required, for: .horizontal)
@@ -132,7 +133,7 @@ class PublisherView: UIStackView {
   
   // Only shown when unverified
   private let unverifiedDisclaimerView = LinkLabel().then {
-    $0.appearanceTextColor = Colors.grey200
+    $0.appearanceTextColor = Colors.grey700
     $0.font = UIFont.systemFont(ofSize: 12.0)
     $0.textContainerInset = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
     $0.text = "\(Strings.unverifiedPublisherDisclaimer) \(Strings.disclaimerLearnMore)"

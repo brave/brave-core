@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveUI
 
 class SendTipButton: UIControl {
   
@@ -19,7 +20,7 @@ class SendTipButton: UIControl {
   }
   
   private let imageView = UIImageView(image: UIImage(frameworkResourceNamed: "airplane-icn").alwaysTemplate).then {
-    $0.tintColor = Colors.blurple600
+    $0.tintColor = Colors.blurple300
   }
   
   private let textLabel = UILabel().then {
@@ -36,7 +37,7 @@ class SendTipButton: UIControl {
   override init(frame: CGRect) {
     super.init(frame: frame)
     
-    backgroundColor = Colors.blurple400
+    backgroundColor = Colors.blurple500
     
     addSubview(stackView)
     stackView.addArrangedSubview(imageView)

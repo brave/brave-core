@@ -104,7 +104,7 @@
 "BraveRewardsAutoContributeSupportedSites" = "支援中のサイト";
 
 /* No comment provided by engineer. */
-"BraveRewardsAutoContributeToUnverifiedSites" = "未認証サイトへの支援を許可";
+"BraveRewardsAutoContributeToUnverifiedSites" = "認証が完了していないサイトも表示";
 
 /* No comment provided by engineer. */
 "BraveRewardsAutoContributeToVideos" = "動画への支援を許可する";
@@ -499,6 +499,12 @@
 /* Message that is displayed when user disables auto-contribute */
 "DisabledAutoContributeMessage" = "お気に入りのコンテンツクリエイターを応援しましょう。毎月設定された金額が訪れたサイトに分配されます。";
 
+/* Message that is displayed on monthly contribution section when user disables rewards */
+"DisabledMonthlyContributionMessage" = "毎月の定額支援は30日ごとに実行されます。";
+
+/* Message that is displayed on tips section when user disables rewards */
+"DisabledTipsMessage" = "素晴らしいコンテンツにチップを送ってみましょう。ツイートして周りの人に教えてあげても良いかもしれません。";
+
 /* No comment provided by engineer. */
 "DisclaimerInformation" = "「Brave Rewardsに参加」をクリックすると、利用規約とプライバシーポリシーに同意したと見なされます。";
 
@@ -513,6 +519,12 @@
 
 /* The title of the screen that shows a list of excluded sites for Auto-Contribute */
 "ExclusionListTitle" = "除外サイト";
+
+/* No comment provided by engineer. */
+"LedgerDatabaseMigrationFailedBody" = "Brave Rewardの情報読み込み時にエラーが発生しました。Reward Activityが再起動されます。\n\nもしこの問題が繰り返し発生する場合は support@brave.com までご連絡ください。";
+
+/* No comment provided by engineer. */
+"LedgerInitializationFailedTitle" = "申し訳ございません。エラーが発生しました。";
 
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "詳しくはこちら";
@@ -621,6 +633,51 @@
 
 /* No comment provided by engineer. */
 "RewardsOptInPrefix" = "未来のインターネット体験をする準備はできましたか？";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsBody" = "こちらを購入するためにはポイントを獲得する必要があります。Brave Rewardsを有効にしてポイントを獲得しましょう。";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsButtonTitle" = "Brave Rewardsを有効にする";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsDisclaimer" = "「Brave Rewardsを有効にする」をクリックするとBrave Rewards 利用規約に同意したものとみなされます。";
+
+/* The hyperlinked portion of the copy: 'By tapping Enable Brave Rewards, you agree to Brave Reward’s Terms of Service.' */
+"SKUEnableRewardsDisclaimerLink" = "利用規約";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsTitle" = "Brave Rewardsを有効にして次に進む";
+
+/* '%@' becomes 'BAT' or 'BAP' based on region */
+"SKUPurchaseBuyWithBAT" = "%@で購入する";
+
+/* No comment provided by engineer. */
+"SKUPurchaseCompletedBody" = "　お楽しみください。";
+
+/* No comment provided by engineer. */
+"SKUPurchaseCompletedTitle" = "これで準備完了しました！";
+
+/* First '%@' becomes 'Buy with BAT' or 'Buy with BAP' based on region. Second '%@' becomes 'Brave’s Terms of Sale' */
+"SKUPurchaseDisclaimerInformation" = "'%1$@'をクリックすると  %2$@に同意したものとみなされます。";
+
+/* Should be the same text as shown */
+"SKUPurchaseDisclaimerInformationLink" = "Brave 販売取引条件";
+
+/* '%@' becomes 'BAT' or 'BAP' based on region' */
+"SKUPurchaseInsufficientFunds" = "購入に必要な%@がありません。";
+
+/* No comment provided by engineer. */
+"SKUPurchaseItemSelected" = "選択済みの商品";
+
+/* No comment provided by engineer. */
+"SKUPurchaseOrderTotal" = "オーダー合計";
+
+/* No comment provided by engineer. */
+"SKUPurchaseProcessing" = "支払い処理中です。";
+
+/* No comment provided by engineer. */
+"SKUPurchaseTitle" = "購入を確認する";
 
 /* No comment provided by engineer. */
 "TermsOfServiceURL" = "利用規約";

@@ -5,7 +5,6 @@
 import UIKit
 import CoreData
 import Shared
-import Eureka
 import Data
 import BraveShared
 

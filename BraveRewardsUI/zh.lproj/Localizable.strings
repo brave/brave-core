@@ -104,7 +104,7 @@
 "BraveRewardsAutoContributeSupportedSites" = "支持的网站";
 
 /* No comment provided by engineer. */
-"BraveRewardsAutoContributeToUnverifiedSites" = "允许捐款给未验证的网站";
+"BraveRewardsAutoContributeToUnverifiedSites" = "在列表中显示未经验证的站点";
 
 /* No comment provided by engineer. */
 "BraveRewardsAutoContributeToVideos" = "允许为视频捐款";
@@ -499,6 +499,12 @@
 /* Message that is displayed when user disables auto-contribute */
 "DisabledAutoContributeMessage" = "付款打赏您喜欢的内容创作者。您的每月付款会在您访问的网站上分配。";
 
+/* Message that is displayed on monthly contribution section when user disables rewards */
+"DisabledMonthlyContributionMessage" = "您的每月捐款每隔 30 天支付一次。";
+
+/* Message that is displayed on tips section when user disables rewards */
+"DisabledTipsMessage" = "当您找到宝石时，系统会在发现宝石的地点给您提供操作提示。如果您愿意，可以将这一消息即时发推。";
+
 /* No comment provided by engineer. */
 "DisclaimerInformation" = "点击“加入 Rewards”，即表示您已阅读并同意此服务条款和隐私政策。";
 
@@ -513,6 +519,12 @@
 
 /* The title of the screen that shows a list of excluded sites for Auto-Contribute */
 "ExclusionListTitle" = "已排除站点";
+
+/* No comment provided by engineer. */
+"LedgerDatabaseMigrationFailedBody" = "加载您的奖励信息时出现问题。您的奖励活动详细信息将重新启动。\n\n如有任何问题或疑虑，请联系 support@brave.com。";
+
+/* No comment provided by engineer. */
+"LedgerInitializationFailedTitle" = "抱歉，出错了……";
 
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "轻击这里了解更多信息。";
@@ -621,6 +633,51 @@
 
 /* No comment provided by engineer. */
 "RewardsOptInPrefix" = "准备体验下一代 Internet。";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsBody" = "要购买此物品，您需要赚取代币。 开启 Brave Rewards 即可赚取代币。";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsButtonTitle" = "启用 Brave Rewards";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsDisclaimer" = "启用 Brave Rewards，即意味着您同意 Brave Reward 的服务条款。";
+
+/* The hyperlinked portion of the copy: 'By tapping Enable Brave Rewards, you agree to Brave Reward’s Terms of Service.' */
+"SKUEnableRewardsDisclaimerLink" = "服务条款";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsTitle" = "启用 Brave Rewards 以继续。";
+
+/* '%@' becomes 'BAT' or 'BAP' based on region */
+"SKUPurchaseBuyWithBAT" = "用 %@ 购买";
+
+/* No comment provided by engineer. */
+"SKUPurchaseCompletedBody" = "购物愉快。";
+
+/* No comment provided by engineer. */
+"SKUPurchaseCompletedTitle" = "完成购买！";
+
+/* First '%@' becomes 'Buy with BAT' or 'Buy with BAP' based on region. Second '%@' becomes 'Brave’s Terms of Sale' */
+"SKUPurchaseDisclaimerInformation" = "点击 '%1$@' 即表示您同意 %2$@。";
+
+/* Should be the same text as shown */
+"SKUPurchaseDisclaimerInformationLink" = "Brave 的销售条款";
+
+/* '%@' becomes 'BAT' or 'BAP' based on region' */
+"SKUPurchaseInsufficientFunds" = "您没有足够的 %@ 进行购买。";
+
+/* No comment provided by engineer. */
+"SKUPurchaseItemSelected" = "所选项目";
+
+/* No comment provided by engineer. */
+"SKUPurchaseOrderTotal" = "订单总计";
+
+/* No comment provided by engineer. */
+"SKUPurchaseProcessing" = "您的付款正在处理中……";
+
+/* No comment provided by engineer. */
+"SKUPurchaseTitle" = "确认购买";
 
 /* No comment provided by engineer. */
 "TermsOfServiceURL" = "服务条款";

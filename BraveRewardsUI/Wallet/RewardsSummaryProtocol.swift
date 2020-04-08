@@ -5,6 +5,7 @@
 import Foundation
 import BraveRewards
 import BraveShared
+import BraveUI
 
 enum RewardsSummaryLink: String {
   case learnMore = "learn-more"
@@ -22,17 +23,18 @@ protocol RewardsSummaryProtocol {
   var summaryRows: [RowView] { get }
   
   /// A view informing users about contributing to unverified publishers.
-  var disclaimerLabels: [LinkLabel] { get }
+  func disclaimerLabels(for pendingContributionTotal: Double) -> [LinkLabel]
 }
 
 private struct Activity {
   let value: BATValue
   let title: String
   let color: UIColor
-  init?(_ valueString: String, title: String, color: UIColor) {
+  init?(_ value: Double, title: String, color: UIColor) {
     // Convert to double to avoid any issues with changing what the "0" string is (i.e. if it were
     // to change to "0.00")
-    guard let value = BATValue(probi: valueString), value.doubleValue != 0.0 else {
+    let value = BATValue(value)
+    guard value.doubleValue != 0.0 else {
       return nil
     }
     self.value = value
@@ -77,7 +79,7 @@ extension RewardsSummaryProtocol {
     }
   }
   
-  var disclaimerLabels: [LinkLabel] {
+  func disclaimerLabels(for pendingContributionTotal: Double) -> [LinkLabel] {
     var labels: [LinkLabel] = []
     
     if Preferences.Rewards.isUsingBAP.value == true {
@@ -89,25 +91,25 @@ extension RewardsSummaryProtocol {
           }
           return str
         }()
-        $0.appearanceTextColor = Colors.grey200
+        $0.appearanceTextColor = Colors.grey700
       })
     }
     
-    let reservedAmount = BATValue(state.ledger.reservedAmount)
+    let reservedAmount = BATValue(pendingContributionTotal)
     // Don't show the view if there's no pending contributions.
     if reservedAmount.doubleValue > 0 {
       let batAmountText = "\(reservedAmount.displayString) \(Strings.BAT)"
       let text = String(format: Strings.contributingToUnverifiedSites, batAmountText)
       
       labels.append(LinkLabel().then {
-        $0.appearanceTextColor = Colors.grey200
+        $0.appearanceTextColor = Colors.grey700
         $0.font = UIFont.systemFont(ofSize: 12.0)
         $0.text = "\(text) \(Strings.disclaimerLearnMore)"
         $0.setURLInfo([Strings.disclaimerLearnMore: RewardsSummaryLink.learnMore.rawValue])
       })
       
       labels.append(LinkLabel().then {
-        $0.appearanceTextColor = Colors.grey200
+        $0.appearanceTextColor = Colors.grey700
         $0.font = UIFont.systemFont(ofSize: 12.0)
         $0.text = Strings.showAllPendingContributions
         $0.setURLInfo([Strings.showAllPendingContributions: RewardsSummaryLink.showPendingContributions.rawValue])
