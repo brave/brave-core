@@ -4,8 +4,5 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
 # Version number and URL for pre-configured rust dependency package, e.g. rust_deps_mac_0.1.0.gz
-# TODO: set to value below after migrating the script to Python 3
-# it now breaks because of urllib2 and SSL/TLS incompatibility when using Fastly
-# RUST_DEPS_PACKAGES_URL = "https://rust-pkg-brave-core.s3.brave.com"
-RUST_DEPS_PACKAGES_URL = "https://rust-pkg-brave-core.s3.amazonaws.com"
-RUST_DEPS_PACKAGE_VERSION = "0.1.2"
+RUST_DEPS_PACKAGES_URL = "https://rust-pkg-brave-core.s3.brave.com"
+RUST_DEPS_PACKAGE_VERSION = "0.1.3"
