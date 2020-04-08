@@ -35,7 +35,7 @@ declare_args() {
 }
 
 if (base_sparkle_update_url == "") {
-  base_sparkle_update_url = "https://updates.bravesoftware.com/sparkle/Brave-Browser"
+  base_sparkle_update_url = "https://updates-dev.brave.software/sparkle/Brave-Browser"
 }
 _update_channel = brave_channel
 if (_update_channel == "") {
