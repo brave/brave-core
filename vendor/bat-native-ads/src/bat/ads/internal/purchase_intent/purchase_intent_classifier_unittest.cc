@@ -138,13 +138,13 @@ class AdsPurchaseIntentClassifierTest : public ::testing::Test {
       {"cat_1", {p3, p6, p8}},  // Score: 12
       {"cat_4", {p7}},  // Score: 1
       {"cat_3", {p8}},  // Score: 1
-      {"cat_6", {p6, p12}},  // Score: 10
+      {"cat_6", {p12}},  // Score: 8
       {"cat_7", {p6, p10, p12}}  // Score: 11
     };
 
     histories_short_ = {
-      {"cat_1", {p1, p4}},
-      {"cat_2", {p2, p3}}
+      {"cat_1", {p1}},  // Score: 9
+      {"cat_2", {p2, p3}}  // Score: 18
     };
   }
 
