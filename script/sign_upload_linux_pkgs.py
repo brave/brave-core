@@ -338,7 +338,8 @@ def parse_args():
     parser.add_argument('-d', '--debug', action='store_true',
                         help='Print debug output')
     parser.add_argument('-g', '--github_token',
-                        help='GitHub token to use for downloading releases(cannot be combined with --skip_github)', action='store_true')
+                        help='GitHub token to use for downloading releases(cannot be combined with --skip_github)',
+                        action='store_true')
     parser.add_argument('-k', '--gpg_full_key_id', help='GPG full key id to use for signing '
                         'packages', required=True)
     parser.add_argument('-n', '--skip_github', help='Skip downloading from GitHub, assume packages are '
