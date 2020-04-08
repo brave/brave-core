@@ -4,10 +4,8 @@
 
 import ShowIcon from './show-icon'
 import HideIcon from './hide-icon'
-import DisconnectIcon from './disconnect-icon'
 
 export {
   HideIcon,
-  ShowIcon,
-  DisconnectIcon
+  ShowIcon
 }

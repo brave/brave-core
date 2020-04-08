@@ -10,6 +10,7 @@ import { IconButton } from '../../default'
 import EllipsisIcon from './assets/ellipsis'
 import HideIcon from './assets/hide'
 import LearnMoreIcon from './assets/learn-more'
+import DisconnectIcon from './assets/disconnect'
 import { getLocale } from '../../../../common/locale'
 
 interface Props {
@@ -22,6 +23,7 @@ interface Props {
   widgetTitle?: string
   onLearnMore?: () => void
   onMouseEnter: () => void
+  onDisconnect?: () => void
 }
 
 interface State {
@@ -68,7 +70,15 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { menuPosition, textDirection, widgetMenuPersist, widgetTitle, onLearnMore, onMouseEnter } = this.props
+    const {
+      menuPosition,
+      textDirection,
+      widgetMenuPersist,
+      widgetTitle,
+      onLearnMore,
+      onMouseEnter,
+      onDisconnect
+    } = this.props
     const { showMenu } = this.state
     const hideString = widgetTitle ? `${getLocale('hide')} ${widgetTitle}` : getLocale('hide')
 
@@ -96,8 +106,20 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
                 onClick={onLearnMore}
             >
               <StyledWidgetIcon><LearnMoreIcon/></StyledWidgetIcon>
-              <StyledSpan>{`${getLocale('learnMore')}`}</StyledSpan>
+              <StyledSpan>{getLocale('learnMore')}</StyledSpan>
             </StyledWidgetLink>
+            : null
+          }
+          {
+            onDisconnect
+            ? <StyledWidgetButton onClick={onDisconnect}>
+                <StyledWidgetIcon isDisconnect={true}>
+                  <DisconnectIcon/>
+                </StyledWidgetIcon>
+                <StyledSpan>
+                  {getLocale('binanceWidgetDisconnectButton')}
+                </StyledSpan>
+              </StyledWidgetButton>
             : null
           }
         </StyledWidgetMenu>}

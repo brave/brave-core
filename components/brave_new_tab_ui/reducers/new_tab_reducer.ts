@@ -562,6 +562,15 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       state.binanceState.convertAssets[convertAsset] = assets
       break
 
+    case types.SET_DISCONNECT_IN_PROGRESS:
+      const { inProgress } = payload
+      state = { ...state }
+      state.binanceState = {
+        ...state.binanceState,
+        disconnectInProgress: inProgress
+      }
+      break
+
     default:
       break
   }

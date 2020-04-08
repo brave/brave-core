@@ -26,9 +26,6 @@ import {
   AssetItem,
   TLDSwitchWrapper,
   TLDSwitch,
-  ActionTray,
-  ActionItem,
-  ConnectPrompt,
   DisconnectWrapper,
   DisconnectTitle,
   DisconnectCopy,
@@ -73,10 +70,10 @@ import {
   AssetIcon,
   QRImage,
   CopyButton,
-  DropdownIcon
+  DropdownIcon,
+  ConnectAction
 } from './style'
 import {
-  DisconnectIcon,
   ShowIcon,
   HideIcon
 } from './assets/icons'
@@ -93,7 +90,6 @@ import { getUSDPrice, generateQRData } from '../../../binance-utils'
 interface State {
   fiatShowing: boolean
   currenciesShowing: boolean
-  disconnectInProgress: boolean
   selectedView: string
   currentDepositSearch: string
   currentDepositAsset: string
@@ -143,6 +139,7 @@ interface Props {
   convertAssets: Record<string, string[]>
   accountBTCValue: string
   accountBTCUSDValue: string
+  disconnectInProgress: boolean
   onShowContent: () => void
   onBuyCrypto: (coin: string, amount: string, fiat: string) => void
   onBinanceUserTLD: (userTLD: NewTab.BinanceTLD) => void
@@ -154,6 +151,7 @@ interface Props {
   onBinanceAccountBalances: (balances: Record<string, string>) => void
   onBinanceClientUrl: (clientUrl: string) => void
   onDisconnectBinance: () => void
+  onCancelDisconnect: () => void
   onConnectBinance: () => void
   onValidAuthCode: () => void
   onBTCUSDPrice: (value: string) => void
@@ -180,7 +178,6 @@ class Binance extends React.PureComponent<Props, State> {
     this.state = {
       fiatShowing: false,
       currenciesShowing: false,
-      disconnectInProgress: false,
       selectedView: 'deposit',
       currentDepositSearch: '',
       currentDepositAsset: '',
@@ -345,12 +342,6 @@ class Binance extends React.PureComponent<Props, State> {
     }, 1500)
   }
 
-  disconnectBinance = () => {
-    this.setState({
-      disconnectInProgress: true
-    })
-  }
-
   connectBinance = () => {
     const { binanceClientUrl } = this.props
     window.open(binanceClientUrl, '_blank')
@@ -358,9 +349,7 @@ class Binance extends React.PureComponent<Props, State> {
   }
 
   cancelDisconnect = () => {
-    this.setState({
-      disconnectInProgress: false
-    })
+    this.props.onCancelDisconnect()
   }
 
   cancelConvert = () => {
@@ -694,10 +683,6 @@ class Binance extends React.PureComponent<Props, State> {
   }
 
   renderTitle () {
-    const { selectedView } = this.state
-    const { showContent, userAuthed } = this.props
-    const isUS = this.props.userTLD === 'us'
-
     return (
       <Header>
         <StyledTitle>
@@ -708,19 +693,6 @@ class Binance extends React.PureComponent<Props, State> {
             {'Binance'}
           </StyledTitleText>
         </StyledTitle>
-        {
-          userAuthed && selectedView !== 'buy' && selectedView !== 'convert' && showContent
-          ? <ActionTray>
-              <ActionItem onClick={this.disconnectBinance}>
-                <DisconnectIcon />
-              </ActionItem>
-            </ActionTray>
-          : !userAuthed && showContent && !isUS
-            ? <ConnectPrompt onClick={this.connectBinance}>
-                {getLocale('binanceWidgetConnect')}
-              </ConnectPrompt>
-            : null
-          }
       </Header>
     )
   }
@@ -1375,6 +1347,13 @@ class Binance extends React.PureComponent<Props, State> {
               </DismissAction>
             : null
           }
+          {
+            !userAuthed && !isUS
+            ? <ConnectAction onClick={this.connectBinance}>
+                {getLocale('binanceWidgetConnect')}
+              </ConnectAction>
+            : null
+          }
         </ActionsWrapper>
       </>
     )
@@ -1387,8 +1366,7 @@ class Binance extends React.PureComponent<Props, State> {
       insufficientFunds,
       convertFailed,
       convertSuccess,
-      showConvertPreview,
-      disconnectInProgress
+      showConvertPreview
     } = this.state
 
     if (authInvalid) {
@@ -1403,7 +1381,7 @@ class Binance extends React.PureComponent<Props, State> {
       return this.renderConvertSuccess()
     } else if (showConvertPreview) {
       return this.renderConvertConfirm()
-    } else if (disconnectInProgress) {
+    } else if (this.props.disconnectInProgress) {
       return this.renderDisconnectView()
     } else {
       return false

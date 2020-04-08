@@ -239,32 +239,6 @@ export const TLDSwitch = styled<StyleProps, 'div'>('div')`
   color: ${p => p.isActive ? '#F2C101' : '#9D7B01'};
 `
 
-export const ActionTray = styled<{}, 'div'>('div')`
-  float: right;
-  margin-top: -19px;
-  margin-right: 75px;
-  display: inline-block;
-
-  > *:nth-child(1) {
-    margin-right: 20px;
-  }
-`
-
-export const ActionItem = styled<{}, 'div'>('div')`
-  cursor: pointer;
-  display: inline-block;
-  vertical-align: middle;
-`
-
-export const ConnectPrompt = styled<{}, 'div'>('div')`
-  float: right;
-  margin-top: -20px;
-  margin-right: 40px;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-`
-
 export const NavigationBar = styled<{}, 'div'>('div')`
   height: 30px;
   margin-top: 10px;
@@ -631,6 +605,11 @@ export const DismissAction = styled<{}, 'span'>('span')`
   font-size: 14px;
   margin-top: 20px;
   font-weight: bold;
+`
+
+export const ConnectAction = styled(DismissAction)`
+  color: #ffffff;
+  margin-bottom: -20px;
 `
 
 export const Balance = styled<StyleProps, 'span'>('span')`

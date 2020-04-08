@@ -17,6 +17,7 @@ export interface WidgetProps {
   isCryptoTab?: boolean
   widgetTitle?: string
   onLearnMore?: () => void
+  onDisconnect?: () => void
 }
 
 export interface WidgetState {
@@ -45,7 +46,17 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
     }
 
     render () {
-      const { menuPosition, hideWidget, textDirection, preventFocus, isCrypto, isCryptoTab, widgetTitle, onLearnMore } = this.props
+      const {
+        menuPosition,
+        hideWidget,
+        textDirection,
+        preventFocus,
+        isCrypto,
+        isCryptoTab,
+        widgetTitle,
+        onLearnMore,
+        onDisconnect
+      } = this.props
       const { widgetMenuPersist } = this.state
 
       return (
@@ -66,6 +77,7 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
           <WidgetMenu
             widgetTitle={widgetTitle}
             onLearnMore={onLearnMore}
+            onDisconnect={onDisconnect}
             widgetMenuPersist={widgetMenuPersist}
             toggleWidgetHover={this.toggleWidgetHover}
             textDirection={textDirection}

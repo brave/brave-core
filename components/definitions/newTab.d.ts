@@ -163,6 +163,7 @@ declare namespace NewTab {
     convertAssets: Record<string, string[]>
     accountBTCValue: string
     accountBTCUSDValue: string
+    disconnectInProgress: boolean
   }
 
   export type BinanceTLD = 'us' | 'com'

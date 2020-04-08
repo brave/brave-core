@@ -240,6 +240,14 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.disconnectBinance()
   }
 
+  setDisconnectInProgress = () => {
+    this.props.actions.setDisconnectInProgress(true)
+  }
+
+  cancelDisconnect = () => {
+    this.props.actions.setDisconnectInProgress(false)
+  }
+
   connectBinance = () => {
     this.props.actions.connectToBinance()
   }
@@ -438,19 +446,24 @@ class NewTabPage extends React.Component<Props, State> {
   renderBinanceWidget (showContent: boolean) {
     const { newTabData } = this.props
     const { binanceState, showBinance, textDirection } = newTabData
+    const menuActions = { onLearnMore: this.learnMoreBinance }
 
     if (!showBinance || !binanceState.binanceSupported) {
       return null
     }
 
+    if (binanceState.userAuthed) {
+      menuActions['onDisconnect'] = this.setDisconnectInProgress
+    }
+
     return (
       <Binance
+        {...menuActions}
         {...binanceState}
         isCrypto={true}
         isCryptoTab={!showContent}
         menuPosition={'left'}
         widgetTitle={'Binance'}
-        onLearnMore={this.learnMoreBinance}
         textDirection={textDirection}
         preventFocus={false}
         hideWidget={this.toggleShowBinance}
@@ -460,6 +473,7 @@ class NewTabPage extends React.Component<Props, State> {
         onBinanceClientUrl={this.onBinanceClientUrl}
         onConnectBinance={this.connectBinance}
         onDisconnectBinance={this.disconnectBinance}
+        onCancelDisconnect={this.cancelDisconnect}
         onValidAuthCode={this.onValidAuthCode}
         onBuyCrypto={this.buyCrypto}
         onBinanceUserTLD={this.onBinanceUserTLD}
