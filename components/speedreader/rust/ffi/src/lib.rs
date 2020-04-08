@@ -74,7 +74,7 @@ macro_rules! unwrap_or_ret {
         match $expr {
             Ok(v) => v,
             Err(err) => {
-                crate::errors::LAST_ERROR.with(|cell| *cell.borrow_mut() = Some(err.into()));
+                crate::errors::SPEEDREADER_LAST_ERROR.with(|cell| *cell.borrow_mut() = Some(err.into()));
                 return $ret_val;
             }
         }

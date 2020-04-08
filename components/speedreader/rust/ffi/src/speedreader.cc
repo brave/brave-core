@@ -63,10 +63,10 @@ std::unique_ptr<Rewriter> SpeedReader::RewriterNew(
 
 // static
 std::string SpeedReader::TakeLastError() {
-  auto* error = take_last_error();
+  auto* error = take_last_speedreader_error();
   if (error) {
     std::string err(error->data, error->len);
-    str_free(*error);
+    speedreader_str_free(*error);
     return err;
   } else {
     return "";

@@ -92,9 +92,9 @@ void speedreader_free(C_SpeedReader *speedreader);
 /// whitelists. Must be freed by calling `speedreader_free`.
 C_SpeedReader *speedreader_new();
 
-void str_free(C_CharBuf string);
+void speedreader_str_free(C_CharBuf string);
 
-const C_CharBuf *take_last_error();
+const C_CharBuf *take_last_speedreader_error();
 
 /// Checks if the provided URL matches whitelisted readable URLs.
 bool url_readable(const C_SpeedReader *speedreader,
