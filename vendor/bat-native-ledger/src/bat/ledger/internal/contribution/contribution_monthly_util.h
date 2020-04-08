@@ -6,9 +6,6 @@
 #ifndef BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_MONTHLY_UTIL_H_
 #define BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_MONTHLY_UTIL_H_
 
-#include <map>
-#include <string>
-
 #include "base/values.h"
 #include "bat/ledger/mojom_structs.h"
 

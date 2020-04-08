@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <string>
-
 #ifndef BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_TIP_H_
 #define BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_TIP_H_
+
+#include <string>
 
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/contribution/contribution.h"

@@ -27,7 +27,7 @@ std::string GetTransactionPayload(
     const double amount,
     const std::string& order_id,
     const std::string& destination,
-    const std::string payment_id,
+    const std::string& payment_id,
     const std::vector<uint8_t>& seed) {
   base::Value denomination(base::Value::Type::DICTIONARY);
   denomination.SetStringKey("amount", base::StringPrintf("%g", amount));
@@ -40,18 +40,17 @@ std::string GetTransactionPayload(
   std::string octets_json;
   base::JSONWriter::Write(octets, &octets_json);
 
-  const auto signature = braveledger_request_util::GetSignHeaders(
+  const auto sign_headers = braveledger_request_util::GetSignHeaders(
       order_id,
       octets_json,
       "primary",
       seed,
       true);
-  DCHECK_EQ(signature.size(), 2ul);
 
   base::Value headers(base::Value::Type::DICTIONARY);
-  headers.SetStringKey("digest", signature[0]);
+  headers.SetStringKey("digest", sign_headers.at("digest"));
   headers.SetStringKey("idempotency-key", order_id);
-  headers.SetStringKey("signature", signature[1]);
+  headers.SetStringKey("signature", sign_headers.at("signature"));
 
   base::Value transaction(base::Value::Type::DICTIONARY);
   transaction.SetKey("headers", std::move(headers));
@@ -92,7 +91,6 @@ void ContributionAnonCard::SendTransaction(
     const std::string& order_id,
     const std::string& destination,
     ledger::TransactionCallback callback) {
-
   ledger::WalletInfoProperties wallet_info = ledger_->GetWalletInfo();
   const std::string payload = GetTransactionPayload(
       amount,
@@ -128,6 +126,7 @@ void ContributionAnonCard::OnSendTransaction(
     ledger::TransactionCallback callback) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
   if (response_status_code != net::HTTP_CREATED) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Problem sending transaction";
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }

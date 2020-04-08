@@ -86,9 +86,8 @@ void SKUTransaction::OnTransactionSaved(
     const ledger::ExternalWallet& wallet,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Transaction was not saved";
-    callback(ledger::Result::LEDGER_ERROR);
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Transaction was not saved";
+    callback(result);
     return;
   }
 
@@ -113,8 +112,9 @@ void SKUTransaction::OnTransfer(
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Transaction for order failed " << transaction.order_id;
-    callback(ledger::Result::LEDGER_ERROR);
+        << "Transaction for order failed "
+        << transaction.order_id;
+    callback(result);
     return;
   }
 
@@ -146,7 +146,7 @@ void SKUTransaction::OnSaveSKUExternalTransaction(
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
         << "External transaction was not saved";
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(result);
     return;
   }
 
@@ -168,7 +168,7 @@ void SKUTransaction::SendExternalTransaction(
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Order status not updated";
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(ledger::Result::RETRY);
     return;
   }
 
@@ -222,7 +222,7 @@ void SKUTransaction::OnSendExternalTransaction(
   if (response_status_code != net::HTTP_CREATED) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
         << "External transaction not sent";
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(ledger::Result::RETRY);
     return;
   }
 

@@ -859,9 +859,9 @@ void DatabaseContributionInfo::OnGetListPublishers(
 }
 
 void DatabaseContributionInfo::UpdateStep(
-      const std::string& contribution_id,
-      const ledger::ContributionStep step,
-      ledger::ResultCallback callback) {
+    const std::string& contribution_id,
+    const ledger::ContributionStep step,
+    ledger::ResultCallback callback) {
   if (contribution_id.empty()) {
     callback(ledger::Result::LEDGER_ERROR);
     return;

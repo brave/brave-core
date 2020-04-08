@@ -705,13 +705,6 @@ class LedgerImpl : public ledger::Ledger {
       const std::string& order_id,
       ledger::GetSKUOrderCallback callback);
 
-  void BraveSKU(
-      const std::string& destination,
-      const std::vector<ledger::SKUOrderItem>& items,
-      const std::string& contribution_id,
-      ledger::ExternalWalletPtr wallet,
-      ledger::SKUOrderCallback callback);
-
   void ProcessSKU(
       const std::vector<ledger::SKUOrderItem>& items,
       ledger::ExternalWalletPtr wallet,

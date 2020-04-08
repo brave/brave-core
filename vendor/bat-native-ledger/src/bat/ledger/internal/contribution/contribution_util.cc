@@ -68,6 +68,7 @@ bool HaveEnoughFundsToContribute(
     const bool partial,
     const double balance) {
   DCHECK(amount);
+
   if (partial) {
     if (balance == 0) {
       return false;
@@ -95,6 +96,10 @@ void AdjustPublisherListAmounts(
   DCHECK(publishers_new && publishers_left);
 
   for (auto& item : publishers) {
+    if (!item) {
+      continue;
+    }
+
     if (reduce_fee_for == 0) {
       publishers_left->push_back(std::move(item));
       continue;
@@ -107,12 +112,12 @@ void AdjustPublisherListAmounts(
     }
 
     if (item->amount_percent > reduce_fee_for) {
-      // primary wallet
+      // current list
       const auto original_weight = item->amount_percent;
       item->amount_percent = reduce_fee_for;
       publishers_new->push_back(item->Clone());
 
-      // second wallet
+      // next list
       item->amount_percent = original_weight - reduce_fee_for;
       publishers_left->push_back(item->Clone());
 
@@ -122,6 +127,7 @@ void AdjustPublisherListAmounts(
 }
 
 int32_t GetVotesFromAmount(const double amount) {
+  DCHECK_GT(braveledger_ledger::_vote_price, 0);
   return std::floor(amount / braveledger_ledger::_vote_price);
 }
 

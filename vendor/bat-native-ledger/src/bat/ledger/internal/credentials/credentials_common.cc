@@ -9,6 +9,7 @@
 #include "base/values.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/strings/string_number_conversions.h"
 #include "bat/ledger/internal/credentials/credentials_common.h"
 #include "bat/ledger/internal/credentials/credentials_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -111,7 +112,13 @@ void CredentialsCommon::BlindedCredsSaved(
     const ledger::Result result,
     const std::string& blinded_creds_json,
     BlindedCredsCallback callback) {
-  callback(result, blinded_creds_json);
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Creds batch save failed";
+    callback(ledger::Result::RETRY, "");
+    return;
+  }
+
+  callback(ledger::Result::LEDGER_OK, blinded_creds_json);
 }
 
 void CredentialsCommon::GetSignedCredsFromResponse(
@@ -123,7 +130,7 @@ void CredentialsCommon::GetSignedCredsFromResponse(
 
   if (parsed_response.DictSize() != 3) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Parsing failed";
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(ledger::Result::RETRY);
     return;
   }
 
@@ -171,6 +178,12 @@ void CredentialsCommon::OnSaveUnblindedCreds(
     const ledger::Result result,
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Token list not saved";
+    callback(ledger::Result::RETRY);
+    return;
+  }
+
   ledger_->UpdateCredsBatchStatus(
       trigger.id,
       trigger.type,
@@ -183,12 +196,13 @@ void CredentialsCommon::RedeemTokens(
     ledger::ResultCallback callback) {
   if (redeem.publisher_key.empty() || redeem.token_list.empty()) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Pub key / token list empty";
-    return callback(ledger::Result::LEDGER_ERROR);
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
   }
 
   std::vector<std::string> token_id_list;
-  for (auto & item : redeem.token_list) {
-    token_id_list.push_back(std::to_string(item.id));
+  for (const auto & item : redeem.token_list) {
+    token_id_list.push_back(base::NumberToString(item.id));
   }
 
   auto url_callback = std::bind(&CredentialsCommon::OnRedeemTokens,
@@ -213,9 +227,7 @@ void CredentialsCommon::RedeemTokens(
         wallet_info.key_info_seed);
   } else {
     payload = GenerateRedeemTokensPayload(redeem);
-    url = braveledger_request_util::GetReedemTokensUrl(
-        redeem.type,
-        redeem.processor);
+    url = braveledger_request_util::GetReedemTokensUrl(redeem.processor);
   }
 
   ledger_->LoadURL(

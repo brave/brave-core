@@ -96,8 +96,7 @@ void SKUOrder::OnCreateSave(
     const std::string& order_id,
     ledger::SKUOrderCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Order couldn't be saved";
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Order couldn't be saved";
     callback(result, "");
     return;
   }

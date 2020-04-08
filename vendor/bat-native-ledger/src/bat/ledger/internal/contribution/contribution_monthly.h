@@ -30,8 +30,8 @@ class ContributionMonthly {
 
  private:
   void PrepareTipList(
-     ledger::PublisherInfoList list,
-     ledger::ResultCallback callback);
+      ledger::PublisherInfoList list,
+      ledger::ResultCallback callback);
 
   void GetVerifiedTipList(
       const ledger::PublisherInfoList& list,
@@ -45,9 +45,9 @@ class ContributionMonthly {
       ledger::HasSufficientBalanceToReconcileCallback callback);
 
   void OnHasSufficientBalance(
-    const ledger::PublisherInfoList& publisher_list,
-    const double balance,
-    ledger::HasSufficientBalanceToReconcileCallback callback);
+      const ledger::PublisherInfoList& publisher_list,
+      const double balance,
+      ledger::HasSufficientBalanceToReconcileCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   Contribution* contribution_;   // NOT OWNED

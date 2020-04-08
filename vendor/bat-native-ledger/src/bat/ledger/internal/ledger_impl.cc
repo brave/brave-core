@@ -1652,8 +1652,8 @@ void LedgerImpl::SaveSKUOrder(
 }
 
 void LedgerImpl::SaveSKUTransaction(
-      ledger::SKUTransactionPtr transaction,
-      ledger::ResultCallback callback) {
+    ledger::SKUTransactionPtr transaction,
+    ledger::ResultCallback callback) {
   bat_database_->SaveSKUTransaction(std::move(transaction), callback);
 }
 
@@ -1678,10 +1678,10 @@ void LedgerImpl::UpdateSKUOrderStatus(
 }
 
 void LedgerImpl::TransferFunds(
-      const ledger::SKUTransaction& transaction,
-      const std::string& destination,
-      ledger::ExternalWalletPtr wallet,
-      ledger::TransactionCallback callback) {
+    const ledger::SKUTransaction& transaction,
+    const std::string& destination,
+    ledger::ExternalWalletPtr wallet,
+    ledger::TransactionCallback callback) {
   bat_contribution_->TransferFunds(
       transaction,
       destination,

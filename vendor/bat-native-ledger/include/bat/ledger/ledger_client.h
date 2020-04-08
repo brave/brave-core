@@ -85,7 +85,7 @@ using SKUOrderCallback =
     std::function<void(const Result, const std::string&)>;
 
 using TransactionCallback =
-    std::function<void(const ledger::Result, const std::string&)>;
+    std::function<void(const Result, const std::string&)>;
 
 using GetSKUOrderCallback = std::function<void(SKUOrderPtr)>;
 using GetSKUTransactionCallback = std::function<void(SKUTransactionPtr)>;

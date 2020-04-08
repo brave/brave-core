@@ -29,6 +29,12 @@ void SKUMerchant::Process(
     ledger::ExternalWalletPtr wallet,
     ledger::SKUOrderCallback callback,
     const std::string& contribution_id) {
+  if (!wallet) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Wallet is null";
+    callback(ledger::Result::LEDGER_ERROR, "");
+    return;
+  }
+
   auto create_callback = std::bind(&SKUMerchant::OrderCreated,
       this,
       _1,
@@ -46,7 +52,7 @@ void SKUMerchant::OrderCreated(
     ledger::SKUOrderCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Order was not successful";
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(result, "");
     return;
   }
 
@@ -65,7 +71,7 @@ void SKUMerchant::OnOrder(
     ledger::SKUOrderCallback callback) {
   if (!order) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Order is null";
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -112,6 +118,7 @@ void SKUMerchant::Retry(
     ledger::SKUOrderCallback callback) {
   // We will implement retry logic when we will have more complex flows,
   // right now there is nothing to retry
+  NOTREACHED();
 }
 
 }  // namespace braveledger_sku

@@ -138,6 +138,11 @@ void DatabaseSKUOrderItems::InsertOrUpdateList(
 void DatabaseSKUOrderItems::GetRecordsByOrderId(
     const std::string& order_id,
     GetSKUOrderItemsCallback callback) {
+  if (order_id.empty()) {
+    callback({});
+    return;
+  }
+
   auto transaction = ledger::DBTransaction::New();
 
   const std::string query = base::StringPrintf(

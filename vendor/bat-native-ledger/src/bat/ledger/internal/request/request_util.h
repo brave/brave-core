@@ -6,6 +6,7 @@
 #ifndef BRAVELEDGER_COMMON_REQUEST_UTIL_H_
 #define BRAVELEDGER_COMMON_REQUEST_UTIL_H_
 
+#include <map>
 #include <string>
 #include <vector>
 
@@ -24,7 +25,7 @@ std::string BuildUrl(
     const std::string& prefix = "",
     const ServerTypes& server = ServerTypes::LEDGER);
 
-std::vector<std::string> GetSignHeaders(
+std::map<std::string, std::string> GetSignHeaders(
     const std::string& url,
     const std::string& body,
     const std::string& key_id,

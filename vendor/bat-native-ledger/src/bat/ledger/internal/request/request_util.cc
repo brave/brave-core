@@ -174,7 +174,7 @@ std::string SignatureHeaderValue(
       private_key);
 }
 
-std::vector<std::string> GetSignHeaders(
+std::map<std::string, std::string> GetSignHeaders(
     const std::string& data,
     const std::string& body,
     const std::string& key_id,
@@ -189,8 +189,8 @@ std::vector<std::string> GetSignHeaders(
       idempotency_key).c_str();
 
   return {
-    digest_header,
-    signature_header
+    { "digest", digest_header },
+    { "signature", signature_header}
   };
 }
 
@@ -204,10 +204,10 @@ std::vector<std::string> BuildSignHeaders(
 
   const std::string digest_header = base::StringPrintf(
       "digest: %s",
-      headers[0].c_str());
+      headers.at("digest").c_str());
   const std::string signature_header = base::StringPrintf(
       "signature: %s",
-      headers[1].c_str());
+      headers.at("signature").c_str());
 
   const std::string accept_header = "accept: application/json";
 

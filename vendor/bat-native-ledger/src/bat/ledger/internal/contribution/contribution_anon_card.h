@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <map>
-#include <string>
-
 #ifndef BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_ANON_FUNDS_H_
 #define BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_ANON_FUNDS_H_
+
+#include <map>
+#include <string>
 
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/ledger.h"
@@ -34,10 +34,10 @@ class ContributionAnonCard {
 
  private:
   void OnSendTransaction(
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
-    ledger::TransactionCallback callback);
+      const int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers,
+      ledger::TransactionCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   Contribution* contribution_;   // NOT OWNED

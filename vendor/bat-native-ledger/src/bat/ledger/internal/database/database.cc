@@ -429,9 +429,9 @@ void Database::GetSKUOrderByContributionId(
 }
 
 void Database::SaveContributionIdForSKUOrder(
-      const std::string& order_id,
-      const std::string& contribution_id,
-      ledger::ResultCallback callback) {
+    const std::string& order_id,
+    const std::string& contribution_id,
+    ledger::ResultCallback callback) {
   sku_order_->SaveContributionIdForSKUOrder(
       order_id,
       contribution_id,

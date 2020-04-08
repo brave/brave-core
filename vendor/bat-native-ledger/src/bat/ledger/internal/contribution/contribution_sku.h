@@ -8,7 +8,6 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/contribution/contribution.h"

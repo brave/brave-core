@@ -9,7 +9,6 @@
 #include <map>
 #include <memory>
 #include <string>
-#include <vector>
 
 #include "bat/ledger/internal/credentials/credentials_common.h"
 

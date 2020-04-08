@@ -138,6 +138,7 @@ namespace brave_test_resp {
   std::string promotions_;
   std::string promotion_claim_;
   std::string creds_tokens_;
+  std::string creds_tokens_prod_;
   std::string captcha_;
   std::string wallet_properties_;
   std::string wallet_properties_defaults_;
@@ -448,7 +449,12 @@ class BraveRewardsBrowserTest
         ServerTypes::kPromotion)) {
       if (url.find("credentials") != std::string::npos) {
         if (method == 0) {
-          *response = brave_test_resp::creds_tokens_;
+          #if defined(OFFICIAL_BUILD)
+            *response = brave_test_resp::creds_tokens_prod_;
+          #else
+            *response = brave_test_resp::creds_tokens_;
+          #endif
+
           return;
         }
         return;
@@ -676,6 +682,9 @@ class BraveRewardsBrowserTest
     ASSERT_TRUE(
         base::ReadFileToString(path.AppendASCII("creds_tokens_resp.json"),
                                &brave_test_resp::creds_tokens_));
+    ASSERT_TRUE(
+        base::ReadFileToString(path.AppendASCII("creds_tokens_prod_resp.json"),
+                               &brave_test_resp::creds_tokens_prod_));
     ASSERT_TRUE(
         base::ReadFileToString(path.AppendASCII("wallet_properties_resp.json"),
                                &brave_test_resp::wallet_properties_));

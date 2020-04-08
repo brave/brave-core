@@ -11,6 +11,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/gtest_prod_util.h"
 #include "bat/ledger/ledger.h"
@@ -94,12 +95,12 @@ class Contribution {
       ledger::ResultCallback callback);
 
   void StartUnblinded(
-      const std::vector<ledger::CredsBatchType> types,
+      const std::vector<ledger::CredsBatchType>& types,
       const std::string& contribution_id,
       ledger::ResultCallback callback);
 
   void RetryUnblinded(
-      const std::vector<ledger::CredsBatchType> types,
+      const std::vector<ledger::CredsBatchType>& types,
       const std::string& contribution_id,
       ledger::ResultCallback callback);
 
@@ -149,20 +150,20 @@ class Contribution {
 
   void RetryUnblindedContribution(
       ledger::ContributionInfoPtr contribution,
-      const std::vector<ledger::CredsBatchType> types,
+      const std::vector<ledger::CredsBatchType>& types,
       ledger::ResultCallback callback);
 
   void Result(
       const ledger::Result result,
       const std::string& contribution_id);
 
-  void FinishContribution(
+  void OnResult(
       ledger::ContributionInfoPtr contribution,
       const ledger::Result result);
 
   void SetRetryTimer(
       const std::string& contribution_id,
-      const uint64_t& start_timer_in = 0);
+      const uint64_t start_timer_in = 0);
 
   void SetRetryCounter(ledger::ContributionInfoPtr contribution);
 
@@ -184,10 +185,6 @@ class Contribution {
   std::map<std::string, uint32_t> retry_timers_;
   uint32_t queue_timer_id_;
   bool queue_in_progress_ = false;
-
-  // For testing purposes
-  friend class ContributionTest;
-  FRIEND_TEST_ALL_PREFIXES(ContributionTest, GetAmountFromVerifiedAuto);
 };
 
 }  // namespace braveledger_contribution

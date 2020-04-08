@@ -40,9 +40,9 @@ std::string GetCredsJSON(const std::vector<Token>& creds) {
     auto cred_value = base::Value(cred_base64);
     creds_list.Append(std::move(cred_value));
   }
+
   std::string json;
   base::JSONWriter::Write(creds_list, &json);
-
   return json;
 }
 
@@ -68,9 +68,9 @@ std::string GetBlindedCredsJSON(
     auto cred_value = base::Value(cred_base64);
     blinded_list.Append(std::move(cred_value));
   }
+
   std::string json;
   base::JSONWriter::Write(blinded_list, &json);
-
   return json;
 }
 
@@ -88,10 +88,7 @@ bool UnBlindCreds(
     const ledger::CredsBatch& creds_batch,
     std::vector<std::string>* unblinded_encoded_creds,
     std::string* error) {
-  DCHECK(error);
-  if (!unblinded_encoded_creds) {
-    return false;
-  }
+  DCHECK(error && unblinded_encoded_creds);
 
   auto batch_proof = BatchDLEQProof::decode_base64(creds_batch.batch_proof);
 
@@ -174,9 +171,7 @@ bool UnBlindCreds(
 bool UnBlindCredsMock(
     const ledger::CredsBatch& creds,
     std::vector<std::string>* unblinded_encoded_creds) {
-  if (!unblinded_encoded_creds) {
-    return false;
-  }
+  DCHECK(unblinded_encoded_creds);
 
   auto signed_creds_base64 = ParseStringToBaseList(creds.signed_creds);
 
@@ -198,11 +193,11 @@ std::string ConvertRewardTypeToString(const ledger::RewardsType type) {
     case ledger::RewardsType::RECURRING_TIP: {
       return "recurring-tip";
     }
-    case ledger::RewardsType::TRANSFER: {
-      return "";
-    }
     case ledger::RewardsType::PAYMENT: {
       return "payment";
+    }
+    case ledger::RewardsType::TRANSFER: {
+      return "";
     }
   }
 }
@@ -243,6 +238,7 @@ bool GenerateSuggestion(
     const std::string& public_key,
     const std::string& body,
     base::Value* result) {
+  DCHECK(result);
   if (token_value.empty() || public_key.empty() || body.empty()) {
     return false;
   }
@@ -269,6 +265,7 @@ bool GenerateSuggestionMock(
     const std::string& public_key,
     const std::string& body,
     base::Value* result) {
+  DCHECK(result);
   result->SetStringKey("t", token_value);
   result->SetStringKey("publicKey", public_key);
   result->SetStringKey("signature", token_value);

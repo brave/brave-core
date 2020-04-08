@@ -56,8 +56,7 @@ void ContributionExternalWallet::OnExternalWallets(
     return;
   }
 
-  ledger::ExternalWalletPtr wallet =
-      braveledger_uphold::GetWallet(std::move(wallets));
+  auto wallet = braveledger_uphold::GetWallet(std::move(wallets));
 
   if (!wallet) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "External wallet null";
@@ -133,6 +132,9 @@ void ContributionExternalWallet::ContributionInfo(
 
 void ContributionExternalWallet::OnSavePendingContribution(
     const ledger::Result result) {
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Problem saving pending";
+  }
   ledger_->PendingContributionSaved(result);
 }
 
@@ -151,7 +153,7 @@ void ContributionExternalWallet::OnServerPublisherInfo(
   }
 
   if (info->status != ledger::PublisherStatus::VERIFIED) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Publisher not verified";
+    BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "Publisher not verified";
 
     auto save_callback =
         std::bind(&ContributionExternalWallet::OnSavePendingContribution,

@@ -6,10 +6,11 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/sku/sku_util.h"
-#include "bat/ledger/internal/uphold/uphold_util.h"
+#include "bat/ledger/ledger.h"
 
 namespace braveledger_sku {
 
@@ -18,7 +19,14 @@ const char kAnonCardDestinationDev[] =
 const char kAnonCardDestinationStaging[] =
     "6654ecb0-6079-4f6c-ba58-791cc890a561";
 const char kAnonCardDestinationProduction[] =
-    "4cad865e-fea3-486c-a0d6-07c1f187e282";
+    "86f26f49-9d3b-4f97-9b56-d305ad7a856f";
+
+const char kUpholdDestinationDev[] =
+    "9094c3f2-b3ae-438f-bd59-92aaad92de5c";
+const char kUpholdDestinationStaging[] =
+    "6654ecb0-6079-4f6c-ba58-791cc890a561";
+const char kUpholdDestinationProduction[] =
+    "5d4be2ad-1c65-4802-bea1-e0f3a3a487cb";
 
 ledger::SKUOrderPtr ParseOrderCreateResponse(
     const std::string& response,
@@ -81,7 +89,10 @@ ledger::SKUOrderPtr ParseOrderCreateResponse(
 
       const auto* price = item.FindStringKey("price");
       if (price) {
-        order_item->price = std::stod(*price);
+        const bool success = base::StringToDouble(*price, &order_item->price);
+        if (!success) {
+          order_item->price = 0.0;
+        }
       }
 
       const auto* name = item.FindStringKey("name");
@@ -121,7 +132,7 @@ std::string ConvertTransactionTypeToString(
 
 std::string GetBraveDestination(const std::string& wallet_type) {
   if (wallet_type == ledger::kWalletUphold) {
-    return braveledger_uphold::GetACAddress();
+    return GetUpholdDestination();
   }
 
   if (wallet_type == ledger::kWalletAnonymous) {
@@ -147,6 +158,23 @@ std::string GetAnonCardDestination() {
 
   NOTREACHED();
   return kAnonCardDestinationDev;
+}
+
+std::string GetUpholdDestination() {
+  if (ledger::_environment == ledger::Environment::PRODUCTION) {
+    return kUpholdDestinationProduction;
+  }
+
+  if (ledger::_environment == ledger::Environment::STAGING) {
+    return kUpholdDestinationStaging;
+  }
+
+  if (ledger::_environment == ledger::Environment::DEVELOPMENT) {
+    return kUpholdDestinationDev;
+  }
+
+  NOTREACHED();
+  return kUpholdDestinationDev;
 }
 
 }  // namespace braveledger_sku

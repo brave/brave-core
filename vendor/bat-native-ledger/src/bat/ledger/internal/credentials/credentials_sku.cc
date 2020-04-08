@@ -5,10 +5,13 @@
 
 #include <stdint.h>
 
+#include <algorithm>
 #include <utility>
+#include <vector>
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/credentials/credentials_sku.h"
 #include "bat/ledger/internal/credentials/credentials_util.h"
@@ -24,32 +27,42 @@ using std::placeholders::_3;
 
 namespace {
 
-const char public_key_dev[] =
-    "rqQ1Tz26C4mv33ld7xpcLhuX1sWaD+s7VMnuX6cokT4=";
-const char public_key_staging[] =
-    "rqQ1Tz26C4mv33ld7xpcLhuX1sWaD+s7VMnuX6cokT4=";
-const char public_key_production[] =
-    "rqQ1Tz26C4mv33ld7xpcLhuX1sWaD+s7VMnuX6cokT4=";
+bool IsPublicKeyValid(const std::string& public_key) {
+  if (public_key.empty()) {
+    return false;
+  }
 
-bool VerifyPublicKey(const std::string& public_key) {
-  std::string order_key = "";
+  std::vector<std::string> keys;
   if (ledger::_environment == ledger::Environment::PRODUCTION) {
-    order_key = public_key_production;
+    keys = {
+        "yr4w9Y0XZQISBOToATNEl5ADspDUgm7cBSOhfYgPWx4=",  // AC
+        "PGLvfpIn8QXuQJEtv2ViQSWw2PppkhexKr1mlvwCpnM="  // User funds
+    };
   }
 
   if (ledger::_environment == ledger::Environment::STAGING) {
-    order_key = public_key_staging;
+    keys = {
+        "mMMWZrWPlO5b9IB8vF5kUJW4f7ULH1wuEop3NOYqNW0=",  // AC
+        "CMezK92X5wmYHVYpr22QhNsTTq6trA/N9Alw+4cKyUY="  // User funds
+    };
   }
 
   if (ledger::_environment == ledger::Environment::DEVELOPMENT) {
-    order_key = public_key_dev;
+    keys = {
+        "RhfxGp4pT0Kqe2zx4+q+L6lwC3G9v3fIj1L+PbINNzw=",  // AC
+        "nsSoWgGMJpIiCGVdYrne03ldQ4zqZOMERVD5eSPhhxc="  // User funds
+    };
   }
 
-  return order_key == public_key;
+  auto it = std::find(keys.begin(), keys.end(), public_key);
+
+  return it != keys.end();
 }
 
 std::string ConvertItemTypeToString(const std::string& type) {
-  switch (static_cast<ledger::SKUOrderItemType>(std::stoi(type))) {
+  int type_int;
+  base::StringToInt(type, &type_int);
+  switch (static_cast<ledger::SKUOrderItemType>(type_int)) {
     case ledger::SKUOrderItemType::SINGLE_USE: {
       return "single-use";
     }
@@ -82,10 +95,10 @@ void CredentialsSKU::Start(
   }
 
   auto get_callback = std::bind(&CredentialsSKU::OnStart,
-          this,
-          _1,
-          trigger,
-          callback);
+      this,
+      _1,
+      trigger,
+      callback);
 
   ledger_->GetCredsBatchByTrigger(trigger.id, trigger.type, get_callback);
 }
@@ -143,6 +156,7 @@ void CredentialsSKU::Claim(
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Claim failed";
     callback(result);
     return;
   }
@@ -152,10 +166,11 @@ void CredentialsSKU::Claim(
   if (!blinded_creds || blinded_creds->empty()) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
         << "Blinded creds are corrupted";
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(ledger::Result::RETRY);
     return;
   }
 
+  DCHECK_EQ(trigger.data.size(), 2ul);
   base::Value body(base::Value::Type::DICTIONARY);
   body.SetStringKey("itemId", trigger.data[0]);
   body.SetStringKey("type", ConvertItemTypeToString(trigger.data[1]));
@@ -164,17 +179,9 @@ void CredentialsSKU::Claim(
   std::string json;
   base::JSONWriter::Write(body, &json);
 
-  ledger::WalletInfoProperties wallet_info = ledger_->GetWalletInfo();
-
   const std::string sign_url = base::StringPrintf(
       "post /v1/orders/%s/credentials",
       trigger.id.c_str());
-
-  const auto headers = braveledger_request_util::BuildSignHeaders(
-      sign_url,
-      json,
-      ledger_->GetPaymentId(),
-      wallet_info.key_info_seed);
 
   const std::string url =
       braveledger_request_util::GetOrderCredentialsURL(trigger.id);
@@ -204,7 +211,7 @@ void CredentialsSKU::OnClaim(
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
   if (response_status_code != net::HTTP_OK) {
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(ledger::Result::RETRY);
     return;
   }
 
@@ -227,7 +234,7 @@ void CredentialsSKU::ClaimStatusSaved(
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Claim status not saved";
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(ledger::Result::RETRY);
     return;
   }
 
@@ -238,8 +245,8 @@ void CredentialsSKU::FetchSignedCreds(
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
   const std::string url = braveledger_request_util::GetOrderCredentialsURL(
-          trigger.id,
-          trigger.data[0]);
+      trigger.id,
+      trigger.data[0]);
   auto url_callback = std::bind(&CredentialsSKU::OnFetchSignedCreds,
       this,
       _1,
@@ -271,7 +278,7 @@ void CredentialsSKU::OnFetchSignedCreds(
   }
 
   if (response_status_code != net::HTTP_OK) {
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(ledger::Result::RETRY);
     return;
   }
 
@@ -289,7 +296,7 @@ void CredentialsSKU::SignedCredsSaved(
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Signed creds were not saved";
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(ledger::Result::RETRY);
     return;
   }
 
@@ -311,7 +318,7 @@ void CredentialsSKU::Unblind(
     return;
   }
 
-  if (VerifyPublicKey(creds->public_key)) {
+  if (!IsPublicKeyValid(creds->public_key)) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Public key is not valid";
     callback(ledger::Result::LEDGER_ERROR);
     return;

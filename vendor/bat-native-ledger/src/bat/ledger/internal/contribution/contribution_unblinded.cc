@@ -101,7 +101,7 @@ Unblinded::Unblinded(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {
 Unblinded::~Unblinded() = default;
 
 void Unblinded::Start(
-    const std::vector<ledger::CredsBatchType> types,
+    const std::vector<ledger::CredsBatchType>& types,
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
   if (contribution_id.empty()) {
@@ -121,7 +121,7 @@ void Unblinded::Start(
 }
 
 void Unblinded::GetContributionInfoAndUnblindedTokens(
-    const std::vector<ledger::CredsBatchType> types,
+    const std::vector<ledger::CredsBatchType>& types,
     const std::string& contribution_id,
     GetContributionInfoAndUnblindedTokensCallback callback) {
   auto get_callback = std::bind(&Unblinded::OnUnblindedTokens,
@@ -173,7 +173,7 @@ void Unblinded::OnGetContributionInfo(
 void Unblinded::PrepareTokens(
     ledger::ContributionInfoPtr contribution,
     const std::vector<ledger::UnblindedToken>& list,
-    const std::vector<ledger::CredsBatchType> types,
+    const std::vector<ledger::CredsBatchType>& types,
     ledger::ResultCallback callback) {
   if (!contribution) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution not found";
@@ -222,7 +222,7 @@ void Unblinded::PrepareTokens(
 void Unblinded::PreparePublishers(
     const std::vector<ledger::UnblindedToken>& list,
     ledger::ContributionInfoPtr contribution,
-    const std::vector<ledger::CredsBatchType> types,
+    const std::vector<ledger::CredsBatchType>& types,
     ledger::ResultCallback callback) {
   if (!contribution) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution not found";
@@ -304,7 +304,7 @@ ledger::ContributionPublisherList Unblinded::PrepareAutoContribution(
 
 void Unblinded::OnPrepareAutoContribution(
     const ledger::Result result,
-    const std::vector<ledger::CredsBatchType> types,
+    const std::vector<ledger::CredsBatchType>& types,
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
@@ -328,7 +328,7 @@ void Unblinded::OnPrepareAutoContribution(
 
 void Unblinded::PrepareStepSaved(
     const ledger::Result result,
-    const std::vector<ledger::CredsBatchType> types,
+    const std::vector<ledger::CredsBatchType>& types,
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
@@ -341,7 +341,7 @@ void Unblinded::PrepareStepSaved(
 }
 
 void Unblinded::ProcessTokens(
-    const std::vector<ledger::CredsBatchType> types,
+    const std::vector<ledger::CredsBatchType>& types,
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
   // TODO(https://github.com/brave/brave-browser/issues/8887):
@@ -411,24 +411,24 @@ void Unblinded::TokenProcessed(
     const std::string& publisher_key,
     const bool single_publisher,
     ledger::ResultCallback callback) {
-  if (result == ledger::Result::LEDGER_OK) {
-    auto save_callback = std::bind(&Unblinded::ContributionAmountSaved,
-        this,
-        _1,
-        contribution_id,
-        single_publisher,
-        callback);
-
-    ledger_->UpdateContributionInfoContributedAmount(
-        contribution_id,
-        publisher_key,
-        save_callback);
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+        << "Tokens were not processed correctly";
+    callback(ledger::Result::RETRY);
     return;
   }
 
-  BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-      << "Tokens were not processed correctly";
-  callback(ledger::Result::RETRY);
+  auto save_callback = std::bind(&Unblinded::ContributionAmountSaved,
+      this,
+      _1,
+      contribution_id,
+      single_publisher,
+      callback);
+
+  ledger_->UpdateContributionInfoContributedAmount(
+      contribution_id,
+      publisher_key,
+      save_callback);
 }
 
 void Unblinded::ContributionAmountSaved(
@@ -441,14 +441,16 @@ void Unblinded::ContributionAmountSaved(
     return;
   }
 
-  callback(ledger::Result::RETRY);
+  callback(ledger::Result::RETRY_LONG);
 }
 
 void Unblinded::Retry(
-    const std::vector<ledger::CredsBatchType> types,
+    const std::vector<ledger::CredsBatchType>& types,
     ledger::ContributionInfoPtr contribution,
     ledger::ResultCallback callback) {
   if (!contribution) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution is null";
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
@@ -460,6 +462,8 @@ void Unblinded::Retry(
       contribution->type != ledger::RewardsType::AUTO_CONTRIBUTE;
 
   if (is_not_tokens && is_not_uphold_ac) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Retry is not for this func";
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 

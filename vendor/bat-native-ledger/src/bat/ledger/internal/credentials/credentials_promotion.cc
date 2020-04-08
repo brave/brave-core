@@ -123,7 +123,7 @@ void CredentialsPromotion::Claim(
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    callback(result);
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 

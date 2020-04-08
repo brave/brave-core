@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/guid.h"
-#include "base/time/time.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/bat_util.h"
 #include "bat/ledger/internal/common/bind_util.h"
@@ -127,7 +126,7 @@ void Contribution::CheckNotCompletedContributions() {
 
 void Contribution::NotCompletedContributions(
     ledger::ContributionInfoList list) {
-  if (list.size() == 0) {
+  if (list.empty()) {
     return;
   }
 
@@ -166,7 +165,7 @@ void Contribution::StartMonthlyContribution() {
 
 void Contribution::StartAutoContribute(const ledger::Result result) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "Monthly contribution failed";
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Monthly contribution failed";
   }
 
   ac_->Process();
@@ -287,8 +286,9 @@ void Contribution::ContributionCompleted(
 
 void Contribution::ContributionCompletedSaved(const ledger::Result result) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(ledger_, ledger::LogLevel::LOG_INFO)
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
         << "Contribution step and count failed";
+    return;
   }
 }
 
@@ -324,7 +324,12 @@ void Contribution::CreateNewEntry(
     const std::string& wallet_type,
     ledger::BalancePtr balance,
     ledger::ContributionQueuePtr queue) {
-  if (!queue || queue->publishers.empty() || !balance || wallet_type.empty()) {
+  if (!queue) {
+    BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "Queue is null";
+    return;
+  }
+
+  if (queue->publishers.empty() || !balance || wallet_type.empty()) {
     DeleteContributionQueue(queue->id);
     return;
   }
@@ -344,7 +349,7 @@ void Contribution::CreateNewEntry(
   const std::string contribution_id = base::GenerateGUID();
 
   auto contribution = ledger::ContributionInfo::New();
-  const uint64_t now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+  const uint64_t now = braveledger_time_util::GetCurrentTimeStamp();
   contribution->contribution_id = contribution_id;
   contribution->amount = queue->amount;
   contribution->type = queue->type;
@@ -381,7 +386,7 @@ void Contribution::CreateNewEntry(
   }
 
   ledger::ContributionPublisherList publisher_list;
-  for (auto& item : publishers_new) {
+  for (const auto& item : publishers_new) {
     auto publisher = ledger::ContributionPublisher::New();
     publisher->contribution_id = contribution_id;
     publisher->publisher_key = item->publisher_key;
@@ -499,7 +504,7 @@ void Contribution::OnQueueSaved(
 void Contribution::Process(
     ledger::ContributionQueuePtr queue,
     ledger::BalancePtr balance) {
-  if (!queue) {
+  if (!queue || !balance) {
     return;
   }
 
@@ -577,14 +582,14 @@ void Contribution::SKUAutoContribution(
 }
 
 void Contribution::StartUnblinded(
-    const std::vector<ledger::CredsBatchType> types,
+    const std::vector<ledger::CredsBatchType>& types,
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
   unblinded_->Start(types, contribution_id, callback);
 }
 
 void Contribution::RetryUnblinded(
-    const std::vector<ledger::CredsBatchType> types,
+    const std::vector<ledger::CredsBatchType>& types,
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
 
@@ -599,7 +604,7 @@ void Contribution::RetryUnblinded(
 
 void Contribution::RetryUnblindedContribution(
     ledger::ContributionInfoPtr contribution,
-    const std::vector<ledger::CredsBatchType> types,
+    const std::vector<ledger::CredsBatchType>& types,
     ledger::ResultCallback callback) {
   unblinded_->Retry(types, std::move(contribution), callback);
 }
@@ -617,7 +622,7 @@ void Contribution::Result(
     return;
   }
 
-  auto get_callback = std::bind(&Contribution::FinishContribution,
+  auto get_callback = std::bind(&Contribution::OnResult,
       this,
       _1,
       result);
@@ -625,10 +630,24 @@ void Contribution::Result(
   ledger_->GetContributionInfo(contribution_id, get_callback);
 }
 
-void Contribution::FinishContribution(
+void Contribution::OnResult(
     ledger::ContributionInfoPtr contribution,
     const ledger::Result result) {
   if (!contribution) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution is null";
+    return;
+  }
+
+  if (result == ledger::Result::RETRY_LONG) {
+    if (contribution->processor ==
+        ledger::ContributionProcessor::BRAVE_TOKENS) {
+      SetRetryTimer(contribution->contribution_id);
+    } else {
+      SetRetryTimer(
+          contribution->contribution_id,
+          brave_base::random::Geometric(450));
+    }
+
     return;
   }
 
@@ -641,7 +660,7 @@ void Contribution::FinishContribution(
 
 void Contribution::SetRetryTimer(
     const std::string& contribution_id,
-    const uint64_t& start_timer_in) {
+    const uint64_t start_timer_in) {
   if (contribution_id.empty()) {
     return;
   }
@@ -667,6 +686,11 @@ void Contribution::SetRetryTimer(
 }
 
 void Contribution::SetRetryCounter(ledger::ContributionInfoPtr contribution) {
+  if (!contribution) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution is null";
+    return;
+  }
+
   if (contribution->retry_count == 3) {
     ledger_->ContributionCompleted(
         ledger::Result::LEDGER_ERROR,
@@ -692,6 +716,7 @@ void Contribution::Retry(
     const ledger::Result result,
     const std::string& contribution_string) {
   if (result != ledger::Result::LEDGER_OK) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Retry count update failed";
     return;
   }
 
@@ -699,6 +724,7 @@ void Contribution::Retry(
       contribution_string);
 
   if (!contribution) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution is null";
     return;
   }
 

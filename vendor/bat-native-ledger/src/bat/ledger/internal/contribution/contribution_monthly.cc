@@ -59,7 +59,7 @@ void ContributionMonthly::PrepareTipList(
   }
 
   // TODO(https://github.com/brave/brave-browser/issues/8804):
-  // we should change this logic and do bacth insert with callback
+  // we should change this logic and do batch insert with callback
   contribution_->CheckContributionQueue();
   callback(ledger::Result::LEDGER_OK);
 }
@@ -89,7 +89,7 @@ void ContributionMonthly::GetVerifiedTipList(
     non_verified.push_back(std::move(contribution));
   }
 
-  if (non_verified.size() > 0) {
+  if (!non_verified.empty()) {
     auto save_callback = std::bind(
         &ContributionMonthly::OnSavePendingContribution,
         this,
@@ -100,6 +100,10 @@ void ContributionMonthly::GetVerifiedTipList(
 
 void ContributionMonthly::OnSavePendingContribution(
     const ledger::Result result) {
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Problem saving pending";
+  }
+
   ledger_->PendingContributionSaved(result);
 }
 
@@ -120,6 +124,7 @@ void ContributionMonthly::OnSufficientBalanceWallet(
     ledger::BalancePtr info,
     ledger::HasSufficientBalanceToReconcileCallback callback) {
   if (result != ledger::Result::LEDGER_OK || !info) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Problem getting balance";
     return;
   }
 

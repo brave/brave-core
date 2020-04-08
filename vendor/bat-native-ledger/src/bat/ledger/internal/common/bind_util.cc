@@ -8,6 +8,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/strings/string_number_conversions.h"
 #include "bat/ledger/internal/common/bind_util.h"
 
 namespace braveledger_bind_util {
@@ -549,7 +550,7 @@ std::string FromSKUOrderToString(ledger::SKUOrderPtr info) {
   }
 
   base::Value items(base::Value::Type::LIST);
-  for (auto& item : info->items) {
+  for (const auto& item : info->items) {
     base::Value order_item(base::Value::Type::DICTIONARY);
     order_item.SetStringKey("order_item_id", item->order_item_id);
     order_item.SetStringKey("order_id", item->order_id);
@@ -631,7 +632,7 @@ ledger::SKUOrderPtr FromStringToSKUOrder(const std::string& data) {
   auto* items = dictionary->FindListKey("items");
   if (items) {
     ledger::SKUOrderItemPtr order_item = nullptr;
-    for (auto& item : items->GetList()) {
+    for (const auto& item : items->GetList()) {
       order_item = ledger::SKUOrderItem::New();
 
       const auto* order_item_id = item.FindStringKey("order_item_id");
@@ -673,7 +674,7 @@ ledger::SKUOrderPtr FromStringToSKUOrder(const std::string& data) {
 
       const auto* expires_at = item.FindStringKey("expires_at");
       if (expires_at) {
-        order_item->expires_at = std::stoull(*expires_at);
+        base::StringToUint64(*expires_at, &order_item->expires_at);
       }
 
       order->items.push_back(std::move(order_item));

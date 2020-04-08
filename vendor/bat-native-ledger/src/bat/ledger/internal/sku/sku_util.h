@@ -24,6 +24,8 @@ std::string GetBraveDestination(const std::string& wallet_type);
 
 std::string GetAnonCardDestination();
 
+std::string GetUpholdDestination();
+
 }  // namespace braveledger_sku
 
 #endif  // BRAVELEDGER_SKU_SKU_UTIL_H_

@@ -167,6 +167,10 @@ void DatabaseSKUTransaction::SaveExternalTransaction(
 void DatabaseSKUTransaction::GetRecordByOrderId(
     const std::string& order_id,
     ledger::GetSKUTransactionCallback callback) {
+  if (order_id.empty()) {
+    callback(nullptr);
+    return;
+  }
   auto transaction = ledger::DBTransaction::New();
 
   const std::string query = base::StringPrintf(

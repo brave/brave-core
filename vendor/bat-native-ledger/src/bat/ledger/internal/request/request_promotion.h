@@ -21,9 +21,7 @@ std::string FetchSignedCredsUrl(
     const std::string& promotion_id,
     const std::string& claim_id);
 
-std::string GetReedemTokensUrl(
-    const ledger::RewardsType type,
-    const ledger::ContributionProcessor processor);
+std::string GetReedemTokensUrl(const ledger::ContributionProcessor processor);
 
 std::string ReportClobberedClaimsUrl();
 

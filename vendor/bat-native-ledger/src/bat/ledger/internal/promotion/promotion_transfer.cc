@@ -112,7 +112,6 @@ void PromotionTransfer::OnGetEligibleTokens(
   }
 
   braveledger_credentials::CredentialsRedeem redeem;
-  redeem.publisher_key = "";
   redeem.type = ledger::RewardsType::TRANSFER;
   redeem.processor = ledger::ContributionProcessor::BRAVE_TOKENS;
   redeem.token_list = token_list;

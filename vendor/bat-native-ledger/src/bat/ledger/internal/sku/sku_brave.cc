@@ -54,7 +54,7 @@ void SKUBrave::OrderCreated(
     ledger::SKUOrderCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Order was not successful";
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(result, "");
     return;
   }
 
@@ -78,7 +78,7 @@ void SKUBrave::ContributionIdSaved(
     ledger::SKUOrderCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Contribution id not saved";
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(result, "");
     return;
   }
 
@@ -125,6 +125,7 @@ void SKUBrave::OnOrder(
     ledger::SKUOrderCallback callback) {
   if (!order) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "Order is null";
+    callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
 

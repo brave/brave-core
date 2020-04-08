@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <map>
 #include <utility>
 
 #include "base/strings/stringprintf.h"
@@ -156,6 +155,11 @@ void DatabaseSKUOrder::UpdateStatus(
 void DatabaseSKUOrder::GetRecord(
     const std::string& order_id,
     ledger::GetSKUOrderCallback callback) {
+  if (order_id.empty()) {
+    callback({});
+    return;
+  }
+
   auto transaction = ledger::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
@@ -236,6 +240,10 @@ void DatabaseSKUOrder::OnGetRecordItems(
 void DatabaseSKUOrder::GetRecordByContributionId(
     const std::string& contribution_id,
     ledger::GetSKUOrderCallback callback) {
+  if (contribution_id.empty()) {
+    callback({});
+    return;
+  }
   auto transaction = ledger::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
