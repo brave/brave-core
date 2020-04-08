@@ -25,6 +25,11 @@ const std::vector<std::string> kAudiA4Segments = {
   "automotive purchase intent by category-entry luxury car"
 };
 
+const std::vector<std::string> kAudiA5Segments = {
+  "automotive purchase intent by make-audi",
+  "automotive purchase intent by category-entry luxury car"
+};
+
 const std::vector<std::string> kAudiA6Segments = {
   "automotive purchase intent by make-audi",
   "automotive purchase intent by category-mid luxury car"
@@ -44,6 +49,7 @@ const std::vector<TestTriplet> kTestSearchqueries = {
   {"latest audi a4 dealer reviews", kAudiA4Segments, 3},
   {"latest audi a6 ", kAudiA6Segments, 1},
   {"this is a test", kNoSegments, 1},
+  {"audi a5 dealer opening times sell", kAudiA5Segments, 3},
 };
 
 }  // namespace
