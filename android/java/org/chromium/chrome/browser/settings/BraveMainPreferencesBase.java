@@ -49,6 +49,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
     private static final String PREF_BACKGROUND_IMAGES = "backgroud_images";
     private static final String PREF_BRAVE_REWARDS = "brave_rewards";
     private static final String PREF_HOMEPAGE = "homepage";
+    private static final String PREF_USE_CUSTOM_TABS = "use_custom_tabs";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
 
@@ -122,6 +123,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
         // and we deleted original 0 ~ 2 ordered preferences.
         // Advanced section will be located below our controls section.
         int order = findPreference(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE).getOrder();
+        findPreference(PREF_USE_CUSTOM_TABS).setOrder(++order);
         findPreference(PREF_ADVANCED_SECTION).setOrder(++order);
         findPreference(PREF_PRIVACY).setOrder(++order);
         findPreference(PREF_BRAVE_REWARDS).setOrder(++order);
@@ -168,6 +170,8 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
         p.setSummary(BackgroundVideoPlaybackPreference.getPreferenceSummary());
         p = findPreference(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE);
         p.setSummary(ClosingAllTabsClosesBravePreference.getPreferenceSummary());
+        p = findPreference(PREF_USE_CUSTOM_TABS);
+        p.setSummary(BraveCustomTabsPreference.getPreferenceSummary());
     }
 
     private void overrideChromiumPreferences() {
