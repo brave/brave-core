@@ -11,7 +11,6 @@ pipeline {
         choice(name: "BUILD_TYPE", choices: ["Release", "Debug"], description: "")
         choice(name: "CHANNEL", choices: ["nightly", "dev", "beta", "release", "development"], description: "")
         string(name: "SLACK_BUILDS_CHANNEL", defaultValue: "#build-downloads-bot", description: "The Slack channel to send the list of artifact download links to. Leave blank to skip sending the message.")
-        string(name: "CHROMIUM_SRC", defaultValue: "https://github.com/chromium/chromium", description: "or use https://chromium.googlesource.com/chromium/src.git")
         booleanParam(name: "SKIP_SIGNING", defaultValue: true, description: "")
         booleanParam(name: "WIPE_WORKSPACE", defaultValue: false, description: "")
         booleanParam(name: "SKIP_INIT", defaultValue: false, description: "")
