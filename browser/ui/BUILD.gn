@@ -210,6 +210,7 @@ source_set("ui") {
     "//brave/components/brave_wallet/browser/buildflags:buildflags",
     "//brave/components/brave_welcome_ui:generated_resources",
     "//brave/components/p3a:buildflags",
+    "//brave/components/speedreader",
     "//chrome/app:command_ids",
     "//chrome/app/vector_icons:vector_icons",
     "//chrome/common",

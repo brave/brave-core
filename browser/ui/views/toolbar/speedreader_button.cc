@@ -9,11 +9,13 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
+#include "brave/components/speedreader/speedreader_pref_names.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/view_ids.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/prefs/pref_service.h"
 #include "components/strings/grit/components_strings.h"
 #include "ui/accessibility/ax_enums.mojom.h"
 #include "ui/accessibility/ax_node_data.h"
@@ -21,11 +23,19 @@
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/paint_vector_icon.h"
 
-SpeedreaderButton::SpeedreaderButton(views::ButtonListener* listener, bool on)
-    : ToolbarButton(listener), on_(on) {
+SpeedreaderButton::SpeedreaderButton(views::ButtonListener* listener,
+                                     PrefService* prefs)
+    : ToolbarButton(listener), prefs_(prefs) {
   SetID(BRAVE_VIEW_ID_SPEEDREADER_BUTTON);
   set_tag(IDC_TOGGLE_SPEEDREADER);
   SetAccessibleName(l10n_util::GetStringUTF16(IDS_ACCNAME_FORWARD));
+
+  on_ = prefs_->GetBoolean(speedreader::kSpeedreaderEnabled);
+  pref_change_registrar_.Init(prefs_);
+  pref_change_registrar_.Add(
+      speedreader::kSpeedreaderEnabled,
+      base::BindRepeating(&SpeedreaderButton::OnPreferenceChanged,
+                          base::Unretained(this)));
 }
 
 SpeedreaderButton::~SpeedreaderButton() {}
@@ -53,8 +63,8 @@ void SpeedreaderButton::SetHighlighted(bool bubble_visible) {
                  nullptr);
 }
 
-void SpeedreaderButton::Toggle() {
-  on_ = !on_;
+void SpeedreaderButton::OnPreferenceChanged() {
+  on_ = prefs_->GetBoolean(speedreader::kSpeedreaderEnabled);
   UpdateImage();
 }
 

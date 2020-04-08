@@ -7,6 +7,9 @@
 #define BRAVE_BROWSER_UI_VIEWS_TOOLBAR_SPEEDREADER_BUTTON_H_
 
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
+#include "components/prefs/pref_change_registrar.h"
+
+class PrefService;
 
 namespace content {
 class WebContents;
@@ -16,13 +19,13 @@ class WebContents;
 // distilled.
 class SpeedreaderButton : public ToolbarButton {
  public:
-  explicit SpeedreaderButton(views::ButtonListener* listener, bool on);
+  explicit SpeedreaderButton(views::ButtonListener* listener,
+                             PrefService* prefs);
   ~SpeedreaderButton() override;
 
   SpeedreaderButton(const SpeedreaderButton&) = delete;
   SpeedreaderButton& operator=(const SpeedreaderButton&) = delete;
 
-  void Toggle();
   void Update(content::WebContents* active_contents);
   void UpdateImage();
 
@@ -36,7 +39,11 @@ class SpeedreaderButton : public ToolbarButton {
   // is visible.
   void SetHighlighted(bool bubble_visible);
 
+  void OnPreferenceChanged();
+
   bool on_ = false;
+  PrefService* prefs_ = nullptr;
+  PrefChangeRegistrar pref_change_registrar_;
 
   // Can be true even if |on_| is false, but it doesn't affect us.
   bool active_ = false;

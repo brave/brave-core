@@ -23,8 +23,6 @@
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/speedreader/speedreader_service_factory.h"
-#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
-#include "brave/browser/ui/views/toolbar/speedreader_button.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #endif
 
@@ -75,15 +73,8 @@ void ToggleSpeedreader(Browser* browser) {
   speedreader::SpeedreaderService* service =
       speedreader::SpeedreaderServiceFactory::GetForProfile(browser->profile());
   if (service) {
+    // This will trigger a button update via a pref change subscribition.
     service->ToggleSpeedreader();
-
-    // TODO(iefremov): We probably should do it with lesser amount of hacks.
-    BrowserView* view = static_cast<BrowserView*>(browser->window());
-    SpeedreaderButton* button =
-        static_cast<BraveToolbarView*>(view->toolbar())->speedreader_button();
-    if (button) {
-      button->Toggle();
-    }
 
     WebContents* contents = browser->tab_strip_model()->GetActiveWebContents();
     if (contents) {

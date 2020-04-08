@@ -137,9 +137,7 @@ void BraveToolbarView::Init() {
   // Speedreader.
   base::CommandLine* cmdline = base::CommandLine::ForCurrentProcess();
   if (cmdline->HasSwitch(speedreader::kEnableSpeedreader)) {
-    const bool speedreader_on =
-        profile->GetPrefs()->GetBoolean(speedreader::kSpeedreaderEnabled);
-    speedreader_ = new SpeedreaderButton(this, speedreader_on);
+    speedreader_ = new SpeedreaderButton(this, profile->GetPrefs());
     speedreader_->set_triggerable_event_flags(ui::EF_LEFT_MOUSE_BUTTON |
                                               ui::EF_MIDDLE_MOUSE_BUTTON);
     speedreader_->Init();
