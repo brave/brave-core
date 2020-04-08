@@ -58,7 +58,7 @@ export const defaultState: NewTab.State = {
     initialAsset: 'BTC',
     userTLDAutoSet: false,
     binanceSupported: false,
-    hideBalance: false,
+    hideBalance: true,
     binanceClientUrl: '',
     userAuthed: false,
     authInProgress: false,

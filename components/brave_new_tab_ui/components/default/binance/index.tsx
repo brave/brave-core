@@ -242,6 +242,10 @@ class Binance extends React.PureComponent<Props, State> {
       })
     }
 
+    this.getClientURL()
+  }
+
+  getClientURL = () => {
     chrome.binance.getClientUrl((clientUrl: string) => {
       this.props.onBinanceClientUrl(clientUrl)
     })
@@ -254,6 +258,10 @@ class Binance extends React.PureComponent<Props, State> {
   componentDidUpdate (prevProps: Props) {
     if (!prevProps.userAuthed && this.props.userAuthed) {
       this.fetchBalance()
+    }
+
+    if (prevProps.userAuthed && !this.props.userAuthed) {
+      this.getClientURL()
     }
   }
 
