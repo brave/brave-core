@@ -87,7 +87,7 @@ bool BinanceJSONParser::GetAccountBalancesFromJSON(
       if (asset && asset->is_string() &&
           free_amount && free_amount->is_string() &&
           locked_amount && locked_amount->is_string()) {
-        std::string asset_symbol = asset->GetString();
+        const std::string asset_symbol = asset->GetString();
         balances->insert({asset_symbol, free_amount->GetString()});
       }
     }
@@ -116,10 +116,10 @@ bool BinanceJSONParser::GetQuoteInfoFromJSON(
     const std::string& json, std::string *quote_id,
     std::string *quote_price, std::string *total_fee,
     std::string *total_amount) {
-  if (!quote_id || !quote_price ||
-      !total_fee || !total_amount) {
-    return false;
-  }
+  DCHECK(quote_id);
+  DCHECK(quote_price);
+  DCHECK(total_fee);
+  DCHECK(total_amount);
 
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
@@ -140,36 +140,28 @@ bool BinanceJSONParser::GetQuoteInfoFromJSON(
     return false;
   }
 
-  std::string id;
-  std::string fee;
-  std::string price;
-  std::string amount;
-
-  if (!data_dict->GetString("quoteId", &id) ||
-      !data_dict->GetString("quotePrice", &price) ||
-      !data_dict->GetString("totalFee", &fee) ||
-      !data_dict->GetString("totalAmount", &amount)) {
+  if (!data_dict->GetString("quoteId", quote_id) ||
+      !data_dict->GetString("quotePrice", quote_price) ||
+      !data_dict->GetString("totalFee", total_fee) ||
+      !data_dict->GetString("totalAmount", total_amount)) {
     return false;
   }
 
-  *quote_id = id;
-  *quote_price = price;
-  *total_fee = fee;
-  *total_amount = amount;
   return true;
 }
 
 // static
+//
+// Response format:
+// {
+//   "symbol": "BTCUSDT",
+//   "price": "7137.98000000"
+// }
+//
 bool BinanceJSONParser::GetTickerPriceFromJSON(
     const std::string& json, std::string* symbol_pair_price) {
-  if (!symbol_pair_price) {
-    return false;
-  }
-  // Response format:
-  // {
-  //   "symbol": "BTCUSDT",
-  //   "price": "7137.98000000"
-  // }
+  DCHECK(symbol_pair_price);
+
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           json, base::JSONParserOptions::JSON_PARSE_RFC);
@@ -191,9 +183,7 @@ bool BinanceJSONParser::GetTickerPriceFromJSON(
 // static
 bool BinanceJSONParser::GetTickerVolumeFromJSON(
     const std::string& json, std::string* symbol_pair_volume) {
-  if (!symbol_pair_volume) {
-    return false;
-  }
+  DCHECK(symbol_pair_volume);
 
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
@@ -232,9 +222,8 @@ bool BinanceJSONParser::GetTickerVolumeFromJSON(
 //
 bool BinanceJSONParser::GetDepositInfoFromJSON(
     const std::string& json, std::string *address, std::string *url) {
-  if (!address || !url) {
-    return false;
-  }
+  DCHECK(address);
+  DCHECK(url);
 
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
@@ -294,7 +283,7 @@ bool BinanceJSONParser::GetDepositInfoFromJSON(
 // }
 bool BinanceJSONParser::GetConfirmStatusFromJSON(
     const std::string& json, std::string *error_message,
-    std::string *success_status) {
+    bool* success_status) {
   if (!error_message || !success_status) {
     return false;
   }
@@ -319,12 +308,12 @@ bool BinanceJSONParser::GetConfirmStatusFromJSON(
     if (!response_dict->GetString("message", &message)) {
       return false;
     }
-    *success_status = "false";
+    *success_status = false;
     *error_message = message;
     return true;
   }
 
-  *success_status = "true";
+  *success_status = true;
   return true;
 }
 

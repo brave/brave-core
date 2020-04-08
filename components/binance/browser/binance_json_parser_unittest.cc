@@ -148,7 +148,7 @@ TEST_F(BinanceJSONParserTest, GetQuoteInfoFromJSON) {
 
 TEST_F(BinanceJSONParserTest, GetConfirmStatusFromJSONSuccess) {
   std::string error;
-  std::string success;
+  bool success;
   ASSERT_TRUE(BinanceJSONParser::GetConfirmStatusFromJSON(R"(
       {
         "code": "000000",
@@ -170,12 +170,12 @@ TEST_F(BinanceJSONParserTest, GetConfirmStatusFromJSONSuccess) {
         "success": true
       })", &error, &success));
   ASSERT_EQ(error, "");
-  ASSERT_EQ(success, "true");
+  ASSERT_TRUE(success);
 }
 
 TEST_F(BinanceJSONParserTest, GetConfirmStatusFromJSONFail) {
   std::string error;
-  std::string success;
+  bool success;
   ASSERT_TRUE(BinanceJSONParser::GetConfirmStatusFromJSON(R"(
       {
         "code": "117041",
@@ -184,7 +184,7 @@ TEST_F(BinanceJSONParserTest, GetConfirmStatusFromJSONFail) {
         "success": false
       })", &error, &success));
   ASSERT_EQ(error, "Quote expired. Please try again.");
-  ASSERT_EQ(success, "false");
+  ASSERT_FALSE(success);
 }
 
 }  // namespace

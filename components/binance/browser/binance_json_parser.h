@@ -32,7 +32,7 @@ class BinanceJSONParser {
                                    std::string* total_amount);
   static bool GetConfirmStatusFromJSON(const std::string& json,
                                        std::string *error_message,
-                                       std::string *success_status);
+                                       bool* success_status);
   static bool GetConvertAssetsFromJSON(const std::string& json,
     std::map<std::string, std::vector<std::string>>* assets);
 };
