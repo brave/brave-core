@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/strings/string16.h"
+#include "brave/common/brave_farbling_constants.h"
 #include "chrome/renderer/content_settings_agent_impl.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
@@ -34,6 +35,8 @@ class BraveContentSettingsAgentImpl
       const blink::WebURL& script_url) override;
 
   bool AllowFingerprinting(bool enabled_per_settings) override;
+
+  BraveFarblingLevel GetBraveFarblingLevel() override;
 
   bool AllowAutoplay(bool default_value) override;
 

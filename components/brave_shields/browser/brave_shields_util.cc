@@ -302,6 +302,35 @@ ControlType GetFingerprintingControlType(Profile* profile, const GURL& url) {
   }
 }
 
+void SetFarblingControlType(Profile* profile,
+                            ControlType type,
+                            const GURL& url) {
+  auto primary_pattern = GetPatternFromURL(url);
+
+  if (!primary_pattern.IsValid())
+    return;
+
+  HostContentSettingsMapFactory::GetForProfile(profile)
+      ->SetContentSettingCustomScope(
+          primary_pattern, ContentSettingsPattern::Wildcard(),
+          ContentSettingsType::PLUGINS, kFarbling,
+          GetDefaultAllowFromControlType(type));
+
+  RecordShieldsSettingChanged();
+}
+
+ControlType GetFarblingControlType(Profile* profile, const GURL& url) {
+  ContentSetting setting =
+      HostContentSettingsMapFactory::GetForProfile(profile)->GetContentSetting(
+          url, GURL(), ContentSettingsType::PLUGINS, kFarbling);
+  if (setting == CONTENT_SETTING_BLOCK) {
+    return ControlType::BLOCK;
+  } else if (setting == CONTENT_SETTING_ALLOW) {
+    return ControlType::ALLOW;
+  }
+  return ControlType::DEFAULT;
+}
+
 void SetHTTPSEverywhereEnabled(Profile* profile,
                                bool enable,
                                const GURL& url) {

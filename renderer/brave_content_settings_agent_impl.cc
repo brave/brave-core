@@ -240,6 +240,30 @@ bool BraveContentSettingsAgentImpl::AllowFingerprinting(
   return allow;
 }
 
+BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel() {
+  blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
+  const GURL& primary_url = GetOriginOrURL(frame);
+  const GURL& secondary_url =
+    url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL();
+  if (IsBraveShieldsDown(frame, secondary_url)) {
+    return BraveFarblingLevel::OFF;
+  }
+  for (const auto& rule : content_setting_rules_->farbling_rules) {
+    if (rule.primary_pattern == ContentSettingsPattern::Wildcard())
+      continue;
+    if (rule.primary_pattern.Matches(primary_url) &&
+        (rule.secondary_pattern == ContentSettingsPattern::Wildcard() ||
+         rule.secondary_pattern.Matches(secondary_url))) {
+      if (rule.GetContentSetting() == CONTENT_SETTING_BLOCK) {
+        return BraveFarblingLevel::MAXIMUM;
+      } else if (rule.GetContentSetting() == CONTENT_SETTING_ALLOW) {
+        return BraveFarblingLevel::OFF;
+      }
+    }
+  }
+  return BraveFarblingLevel::BALANCED;
+}
+
 bool BraveContentSettingsAgentImpl::AllowAutoplay(bool default_value) {
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
   auto origin = frame->GetDocument().GetSecurityOrigin();

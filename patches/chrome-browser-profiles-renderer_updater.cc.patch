@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/renderer_updater.cc b/chrome/browser/profiles/renderer_updater.cc
-index ce50c9ee3f9290b50b4a5704e8eec9dc91db3082..e6eed2042f34f13473ae4c71a44d31fec9d08dac 100644
+index ce50c9ee3f9290b50b4a5704e8eec9dc91db3082..f25cc28043eae41f88f8dc273e98ba6181fc589c 100644
 --- a/chrome/browser/profiles/renderer_updater.cc
 +++ b/chrome/browser/profiles/renderer_updater.cc
-@@ -55,6 +55,16 @@ void GetGuestViewDefaultContentSettingRules(
+@@ -55,6 +55,21 @@ void GetGuestViewDefaultContentSettingRules(
        base::Value::FromUniquePtrValue(
            content_settings::ContentSettingToValue(CONTENT_SETTING_BLOCK)),
        std::string(), incognito));
@@ -10,6 +10,11 @@ index ce50c9ee3f9290b50b4a5704e8eec9dc91db3082..e6eed2042f34f13473ae4c71a44d31fe
 +      ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
 +      base::Value::FromUniquePtrValue(
 +        content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW)),
++      std::string(), incognito));
++  rules->farbling_rules.push_back(ContentSettingPatternSource(
++      ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
++      base::Value::FromUniquePtrValue(
++          content_settings::ContentSettingToValue(CONTENT_SETTING_DEFAULT)),
 +      std::string(), incognito));
 +  rules->brave_shields_rules.push_back(ContentSettingPatternSource(
 +      ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),

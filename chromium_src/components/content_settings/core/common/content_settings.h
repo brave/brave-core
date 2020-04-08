@@ -9,6 +9,7 @@
 #define BRAVE_CONTENT_SETTINGS_H                  \
   ContentSettingsForOneType autoplay_rules;       \
   ContentSettingsForOneType fingerprinting_rules; \
+  ContentSettingsForOneType farbling_rules;       \
   ContentSettingsForOneType brave_shields_rules;
 
 #include "../../../../../../components/content_settings/core/common/content_settings.h"

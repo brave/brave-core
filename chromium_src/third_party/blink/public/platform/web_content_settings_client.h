@@ -6,8 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_PUBLIC_PLATFORM_WEB_CONTENT_SETTINGS_CLIENT_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_PUBLIC_PLATFORM_WEB_CONTENT_SETTINGS_CLIENT_H_
 
-#define BRAVE_WEB_CONTENT_SETTINGS_CLIENT_H \
-  virtual bool AllowAutoplay(bool default_value) { return default_value; }
+#include "brave/common/brave_farbling_constants.h"
+
+#define BRAVE_WEB_CONTENT_SETTINGS_CLIENT_H                                \
+  virtual bool AllowAutoplay(bool default_value) { return default_value; } \
+  virtual BraveFarblingLevel GetBraveFarblingLevel() {                     \
+    return BraveFarblingLevel::OFF;                                        \
+  }
 
 #include "../../../../../third_party/blink/public/platform/web_content_settings_client.h"  // NOLINT
 

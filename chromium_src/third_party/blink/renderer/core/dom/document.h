@@ -17,8 +17,9 @@ using blink::TraceDescriptor;
 using blink::TraceTrait;
 
 namespace blink {
+class LocalFrame;
 class StaticBitmapImage;
-}
+}  // namespace blink
 
 namespace brave {
 class CORE_EXPORT BraveSessionCache final
@@ -36,10 +37,16 @@ class CORE_EXPORT BraveSessionCache final
 
   double GetFudgeFactor();
   scoped_refptr<blink::StaticBitmapImage> PerturbPixels(
+      blink::LocalFrame* frame,
       scoped_refptr<blink::StaticBitmapImage> image_bitmap);
 
  private:
   uint8_t domain_key_[32];
+
+  scoped_refptr<blink::StaticBitmapImage> PerturbBalanced(
+      scoped_refptr<blink::StaticBitmapImage> image_bitmap);
+  scoped_refptr<blink::StaticBitmapImage> PerturbMax(
+      scoped_refptr<blink::StaticBitmapImage> image_bitmap);
 };
 }  // namespace brave
 

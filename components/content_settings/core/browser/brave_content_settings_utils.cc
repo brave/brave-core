@@ -19,6 +19,7 @@ const std::vector<std::string> kShieldsResourceIDs {
     brave_shields::kHTTPUpgradableResources,
     brave_shields::kJavaScript,
     brave_shields::kFingerprinting,
+    brave_shields::kFarbling,
     brave_shields::kBraveShields,
     brave_shields::kReferrers,
     brave_shields::kCookies };

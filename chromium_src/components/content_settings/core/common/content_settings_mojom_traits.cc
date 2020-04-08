@@ -6,7 +6,8 @@
 #define BRAVE_READ_RENDERER_CONTENT_SETTING_RULES_DATA_VIEW       \
   data.ReadAutoplayRules(&out->autoplay_rules) &&                 \
       data.ReadFingerprintingRules(&out->fingerprinting_rules) && \
-      data.ReadBraveShieldsRules(&out->brave_shields_rules)&&
+      data.ReadFarblingRules(&out->farbling_rules) &&             \
+      data.ReadBraveShieldsRules(&out->brave_shields_rules) &&
 
 #include "../../../../../components/content_settings/core/common/content_settings_mojom_traits.cc"  // NOLINT
 

@@ -8,6 +8,8 @@
                              ResourceIdentifier(), &(rules->autoplay_rules)); \
   map->GetSettingsForOneType(ContentSettingsType::PLUGINS, "fingerprinting",  \
                              &(rules->fingerprinting_rules));                 \
+  map->GetSettingsForOneType(ContentSettingsType::PLUGINS, "farbling",        \
+                             &(rules->farbling_rules));                       \
   map->GetSettingsForOneType(ContentSettingsType::PLUGINS, "braveShields",    \
                              &(rules->brave_shields_rules));
 

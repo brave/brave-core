@@ -14,6 +14,7 @@ const char kTrackers[] = "trackers";
 const char kHTTPUpgradableResources[] = "httpUpgradableResources";
 const char kJavaScript[] = "javascript";
 const char kFingerprinting[] = "fingerprinting";
+const char kFarbling[] = "farbling";
 const char kBraveShields[] = "braveShields";
 const char kReferrers[] = "referrers";
 const char kCookies[] = "cookies";

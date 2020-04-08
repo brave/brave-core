@@ -5,7 +5,7 @@
 
 #define BRAVE_TO_DATA_URL_INTERNAL                             \
   image_bitmap = brave::BraveSessionCache::From(GetDocument()) \
-                     .PerturbPixels(image_bitmap);
+                     .PerturbPixels(GetDocument().GetFrame(), image_bitmap);
 
 #include "../../../../../../../third_party/blink/renderer/core/html/canvas/html_canvas_element.cc"
 

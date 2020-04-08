@@ -44,7 +44,9 @@ const char kGetImageDataScript[] =
     "domAutomationController.send(ctx.getImageData(0, 0, canvas.width, "
     "canvas.height).data.reduce(adder));";
 
-const int kExpectedImageDataHash = 261040;
+const int kExpectedImageDataHashFarblingBalanced = 261040;
+const int kExpectedImageDataHashFarblingOff = 261120;
+const int kExpectedImageDataHashFarblingMaximum = 127574;
 
 const char kEmptyCookie[] = "";
 
@@ -223,10 +225,19 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
         browser()->profile(), ControlType::BLOCK, top_level_page_url());
   }
 
-  void Block3PFingerprinting() {
-    brave_shields::SetFingerprintingControlType(browser()->profile(),
-                                                ControlType::BLOCK_THIRD_PARTY,
-                                                top_level_page_url());
+  void SetFarblingBalanced() {
+    brave_shields::SetFarblingControlType(
+        browser()->profile(), ControlType::DEFAULT, top_level_page_url());
+  }
+
+  void SetFarblingOff() {
+    brave_shields::SetFarblingControlType(
+        browser()->profile(), ControlType::ALLOW, top_level_page_url());
+  }
+
+  void SetFarblingMaximum() {
+    brave_shields::SetFarblingControlType(
+        browser()->profile(), ControlType::BLOCK, top_level_page_url());
   }
 
   void BlockScripts() {
@@ -295,14 +306,21 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
 };
 
 // See https://github.com/brave/brave-browser/issues/8937
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
-                       DISABLED_FarbleGetImageData) {
-  NavigateToPageWithIframe();
+// Fails on Linux
+#if defined(OS_LINUX)
+#define MAYBE_FarbleGetImageData DISABLED_FarbleGetImageData
+#else
+#define MAYBE_FarbleGetImageData FarbleGetImageData
+#endif
 
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
+                       MAYBE_FarbleGetImageData) {
+  // Farbling should be balanced by default
+  NavigateToPageWithIframe();
   int hash = -1;
   EXPECT_TRUE(
       ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
-  EXPECT_EQ(kExpectedImageDataHash, hash);
+  EXPECT_EQ(kExpectedImageDataHashFarblingBalanced, hash);
 
   // The iframe should have the same result as the top frame because farbling is
   // based on the top frame's session token.
@@ -310,7 +328,33 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   NavigateIframe();
   EXPECT_TRUE(
       ExecuteScriptAndExtractInt(child_frame(), kGetImageDataScript, &hash));
-  EXPECT_EQ(kExpectedImageDataHash, hash);
+  EXPECT_EQ(kExpectedImageDataHashFarblingBalanced, hash);
+
+  // Farbling should be off if shields is down
+  ShieldsDown();
+  NavigateToPageWithIframe();
+  hash = -1;
+  EXPECT_TRUE(
+      ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
+  EXPECT_EQ(kExpectedImageDataHashFarblingOff, hash);
+
+  // Farbling should be off if shields is up but farbling is off via content
+  // settings
+  ShieldsUp();
+  SetFarblingOff();
+  NavigateToPageWithIframe();
+  hash = -1;
+  EXPECT_TRUE(
+      ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
+  EXPECT_EQ(kExpectedImageDataHashFarblingOff, hash);
+
+  // Farbling should be maximum if farbling is maximum via content settings
+  SetFarblingMaximum();
+  NavigateToPageWithIframe();
+  hash = -1;
+  EXPECT_TRUE(
+      ExecuteScriptAndExtractInt(contents(), kGetImageDataScript, &hash));
+  EXPECT_EQ(kExpectedImageDataHashFarblingMaximum, hash);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,

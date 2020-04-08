@@ -15,6 +15,10 @@
       const RendererContentSettingRules& r) {                                  \
     return r.fingerprinting_rules;                                             \
   }                                                                            \
+  static const std::vector<ContentSettingPatternSource>& farbling_rules(       \
+      const RendererContentSettingRules& r) {                                  \
+    return r.farbling_rules;                                                   \
+  }                                                                            \
   static const std::vector<ContentSettingPatternSource>& brave_shields_rules(  \
       const RendererContentSettingRules& r) {                                  \
     return r.brave_shields_rules;                                              \
