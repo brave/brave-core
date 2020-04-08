@@ -568,16 +568,7 @@ std::string NTPBackgroundImagesService::GetReferralPromoCode() const {
 
 void NTPBackgroundImagesService::InitializeWebUIDataSource(
     content::WebUIDataSource* html_source) {
-  std::string theme_name;
-  // theme name from component manifest and company name from mapping table
-  // are same string.
-  const auto* value = local_pref_->Get(
-      prefs::kNewTabPageCachedSuperReferralComponentInfo);
-  if (base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper) &&
-      IsValidSuperReferralComponentInfo(*value)) {
-    theme_name = *value->FindStringKey(kThemeName);
-  }
-  html_source->AddString("superReferralThemeName", theme_name);
+  html_source->AddString("superReferralThemeName", GetSuperReferralThemeName());
 }
 
 bool NTPBackgroundImagesService::IsSuperReferral() const {
@@ -586,6 +577,18 @@ bool NTPBackgroundImagesService::IsSuperReferral() const {
   return
       base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper) &&
       IsValidSuperReferralComponentInfo(*value);
+}
+
+std::string NTPBackgroundImagesService::GetSuperReferralThemeName() const {
+  std::string theme_name;
+  const auto* value = local_pref_->Get(
+      prefs::kNewTabPageCachedSuperReferralComponentInfo);
+  if (base::FeatureList::IsEnabled(features::kBraveNTPSuperReferralWallpaper) &&
+      IsValidSuperReferralComponentInfo(*value)) {
+    theme_name = *value->FindStringKey(kThemeName);
+  }
+
+  return theme_name;
 }
 
 }  // namespace ntp_background_images

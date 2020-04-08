@@ -200,4 +200,8 @@ bool ViewCounterService::IsSuperReferral() const {
   return service_->IsSuperReferral();
 }
 
+std::string ViewCounterService::GetSuperReferralThemeName() const {
+  return service_->GetSuperReferralThemeName();
+}
+
 }  // namespace ntp_background_images

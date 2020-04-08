@@ -78,6 +78,8 @@ class NTPBackgroundImagesService {
   // If this returns false, we don't know this install is SR or not for now.
   // So, don't assume this install is not SR if this returns false.
   bool IsSuperReferral() const;
+  std::string GetSuperReferralThemeName() const;
+
   std::vector<std::string> GetCachedTopSitesFaviconList() const;
 
  private:

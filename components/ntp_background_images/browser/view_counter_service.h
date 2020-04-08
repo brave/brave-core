@@ -56,6 +56,7 @@ class ViewCounterService : public KeyedService,
   // This returns true if we certainly know this install is SR.
   // If this returns false, we don't know this install is SR or not for now.
   bool IsSuperReferral() const;
+  std::string GetSuperReferralThemeName() const;
 
   // Gets the current data for branded wallpaper, if there
   // is a wallpaper active. Does not consider user opt-in
