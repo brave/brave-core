@@ -4,6 +4,7 @@
 
 import UIKit
 import BraveRewards
+import BraveUI
 
 class AutoContributeDetailViewController: UIViewController {
   private var ledgerObserver: LedgerObserver
@@ -83,7 +84,11 @@ class AutoContributeDetailViewController: UIViewController {
       self.publishersCount = UInt(pubs.count)
       self.contentView.tableView.reloadData()
     }
-    excludedPublishersCount = state.ledger.numberOfExcludedPublishers
+    let excludedFilter = state.ledger.excludedPublishersFilter
+    state.ledger.listActivityInfo(fromStart: 0, limit: 0, filter: excludedFilter) { pubs in
+      self.excludedPublishersCount = UInt(pubs.count)
+      self.contentView.tableView.reloadData()
+    }
     contentView.tableView.reloadData()
   }
   

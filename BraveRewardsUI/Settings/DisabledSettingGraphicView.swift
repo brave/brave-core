@@ -16,6 +16,7 @@ class DisabledSettingGraphicView: UIStackView {
     
     let imageView = UIImageView(image: image).then {
       $0.setContentHuggingPriority(.required, for: .horizontal)
+      $0.setContentHuggingPriority(.required, for: .vertical)
     }
     
     let label = UILabel().then {

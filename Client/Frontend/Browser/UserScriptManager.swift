@@ -37,11 +37,20 @@ class UserScriptManager {
         }
     }
     
-    init(tab: Tab, isFingerprintingProtectionEnabled: Bool, isCookieBlockingEnabled: Bool, isU2FEnabled: Bool) {
+    // Whether or not the PaymentRequest APIs should be exposed
+    var isPaymentRequestEnabled: Bool {
+        didSet {
+            if oldValue == isPaymentRequestEnabled { return }
+            reloadUserScripts()
+        }
+    }
+    
+    init(tab: Tab, isFingerprintingProtectionEnabled: Bool, isCookieBlockingEnabled: Bool, isU2FEnabled: Bool, isPaymentRequestEnabled: Bool) {
         self.tab = tab
         self.isFingerprintingProtectionEnabled = isFingerprintingProtectionEnabled
         self.isCookieBlockingEnabled = isCookieBlockingEnabled
         self.isU2FEnabled = isU2FEnabled
+        self.isPaymentRequestEnabled = isPaymentRequestEnabled
         reloadUserScripts()
     }
     
@@ -102,6 +111,24 @@ class UserScriptManager {
         alteredSource = alteredSource.replacingOccurrences(of: "$<attest>", with: "attest\(token)", options: .literal)
         alteredSource = alteredSource.replacingOccurrences(of: "$<u2fregister>", with: "u2fregister\(token)", options: .literal)
         alteredSource = alteredSource.replacingOccurrences(of: "$<u2fsign>", with: "u2fsign\(token)", options: .literal)
+        
+        return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+    }()
+    
+    // PaymentRequestUserScript is injected at document start to handle
+    // requests to payment APIs
+    private let PaymentRequestUserScript: WKUserScript? = {
+        guard let path = Bundle.main.path(forResource: "PaymentRequest", ofType: "js"), let source = try? String(contentsOfFile: path) else {
+            log.error("Failed to load PaymentRequest.js")
+            return nil
+        }
+        
+        var alteredSource = source
+        let token = UserScriptManager.securityToken.uuidString.replacingOccurrences(of: "-", with: "", options: .literal)
+        alteredSource = alteredSource.replacingOccurrences(of: "$<paymentreq>", with: "PaymentRequest\(token)", options: .literal)
+        alteredSource = alteredSource.replacingOccurrences(of: "$<paymentresponse>", with: "PaymentResponse\(token)", options: .literal)
+        alteredSource = alteredSource.replacingOccurrences(of: "$<paymentresponsedetails>", with: "PaymentResponseDetails\(token)", options: .literal)
+        alteredSource = alteredSource.replacingOccurrences(of: "$<paymentreqcallback>", with: "PaymentRequestCallback\(token)", options: .literal)
         
         return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false)
     }()
@@ -202,6 +229,12 @@ class UserScriptManager {
             if let script = FullscreenHelperScript {
                 $0.addUserScript(script)
             }
+            
+            #if !NO_SKUS
+            if isPaymentRequestEnabled, let script = PaymentRequestUserScript {
+                $0.addUserScript(script)
+            }
+            #endif
         }
     }
 }

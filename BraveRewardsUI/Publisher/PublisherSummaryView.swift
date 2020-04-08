@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveUI
 
 class PublisherSummaryView: UIView {
   
@@ -37,7 +38,7 @@ class PublisherSummaryView: UIView {
     $0.toggleSwitch.isOn = true
   }
   let tipButton = ActionButton(type: .system).then {
-    $0.tintColor = Colors.blurple400
+    $0.tintColor = Colors.blurple500
     $0.titleLabel?.font = .systemFont(ofSize: 14.0, weight: .bold)
     $0.setTitle(Strings.publisherSendTip.uppercased(), for: .normal)
   }

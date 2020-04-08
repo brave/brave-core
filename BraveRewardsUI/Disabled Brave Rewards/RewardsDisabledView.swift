@@ -2,7 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import Foundation
+import UIKit
+import BraveUI
 
 class RewardsDisabledView: UIView {
   
@@ -62,10 +63,10 @@ extension RewardsDisabledView: WalletContentView {
 extension RewardsDisabledView {
   fileprivate class ContentView: UIView {
     private struct UX {
-      static let titleColor = Colors.grey100
-      static let subtitleColor = Colors.blurple400
-      static let bodyColor = Colors.grey100
-      static let rewardsButtonTintColor = Colors.blurple400
+      static let titleColor = Colors.grey800
+      static let subtitleColor = Colors.blurple500
+      static let bodyColor = Colors.grey800
+      static let rewardsButtonTintColor = Colors.blurple500
       static let rewardsButtonHeight = 40.0
     }
     
@@ -108,7 +109,7 @@ extension RewardsDisabledView {
     
     let termsOfServiceLabel = LinkLabel().then {
       $0.font = .systemFont(ofSize: 12.0)
-      $0.appearanceTextColor = Colors.grey100
+      $0.appearanceTextColor = Colors.grey800
       $0.textAlignment = .center
       $0.text = Strings.disclaimerInformation
       $0.setURLInfo([Strings.termsOfServiceURL: "terms", Strings.privacyPolicyURL: "policy"])

@@ -4,6 +4,7 @@
 
 import UIKit
 import BraveRewards
+import BraveUI
 
 final class UserWalletDetailsViewController: UIViewController {
  
@@ -86,7 +87,7 @@ private extension UserWalletDetailsViewController {
   class View: UIView {
     fileprivate let summaryView = UserWalletSummarySectionView()
     fileprivate let disconnectFromRewardsButton = UserWalletButton(type: .system).then {
-      $0.appearanceTintColor = Colors.red300
+      $0.appearanceTintColor = Colors.red600
       $0.setTitle(Strings.userWalletDetailsDisconnectButtonTitle, for: .normal)
     }
     

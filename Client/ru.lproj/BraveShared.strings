@@ -7,3 +7,9 @@
 /* Error handling U2F registration. */
 "U2FRegistrationError" = "Во время регистрации электронного ключа произошла ошибка";
 
+/* Error message if list of Payment Instruments doesn't include BAT */
+"unsupportedInstrumentMessage" = "Выбранные способы оплаты не поддерживаются.";
+
+/* Error message if the payment workflow is canceled by the user */
+"userCancelledMessage" = "Отменено пользователем.";
+

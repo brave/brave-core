@@ -595,9 +595,6 @@
 /* Sync Alert */
 "NotEnoughWordsTitle" = "Não há palavras suficientes";
 
-/* The placeholder says 'hide sponsored images'. So full sentence goes like: 'You can also choose to hide sponsored images.' */
-"ntp.chooseToHideSponsoredImages" = "Você também pode optar por %@.";
-
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "Reivindicar minhas recompensas";
 
@@ -608,22 +605,28 @@
 "ntp.earnTokensByViewingAds" = "Ganhe tokens visualizando anúncios que respeitam a privacidade.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "Seja pago para visualizar esta imagem de plano de fundo. Ative o Brave Ads para reivindicar sua parte.";
+"ntp.getPaidForThisImageTurnAds" = "Receba tokens para visualizar esta imagem. Ative o Brave Ads para reivindicar sua parte.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "Seja pago para visualizar esta imagem de plano de fundo. Ative o Brave Rewards para reivindicar sua parte.";
+"ntp.getPaidForThisImageTurnRewards" = "Receba tokens para visualizar esta imagem. Ative o Brave Rewards para reivindicar sua parte.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidToSeeThisImage" = "Seja pago para visualizar esta imagem de plano de fundo.";
+"ntp.getPaidToSeeThisImage" = "Receba tokens para visualizar esta imagem.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Muito bem!";
 
-/* This sentence is not capitalized on purpose, it is a part of a bigger sentence which goes like this: 'You can also choose to hide sponsored images.' */
-"ntp.hideSponsoredImages" = "ocultar imagens patrocinadas";
+/* No comment provided by engineer. */
+"ntp.hideSponsoredImages" = "Ocultar imagens patrocinadas";
 
-/* The placeholder says 'Learn more'. So full sentence goes like: 'Learn more about sponsored images in Brave Rewards.' */
-"ntp.learnMoreAboutBrandedImages" = "%@ sobre imagens patrocinadas no Brave Rewards";
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutBrandedImages" = "Para cada imagem patrocinada que visualizar, você receberá 70% da receita em tokens. Com o Brave Ads, você controla os anúncios que visualiza.";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutRewards" = "Saiba mais sobre o Brave Rewards";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutSI" = "Saiba mais sobre imagens patrocinadas";
 
 /* No comment provided by engineer. */
 "ntp.supportWebCreatorsWithTokens" = "Você pode apoiar criadores de conteúdo da web com tokens.";
@@ -632,13 +635,13 @@
 "ntp.turnOnBraveAds" = "Ativar o Brave Ads";
 
 /* No comment provided by engineer. */
-"ntp.turnOnBraveRewards" = "Ativar o Rewards";
+"ntp.turnOnBraveRewards" = "Ativar Brave Rewards";
 
-/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turnin Rewards, you agree to the Terms of Service'. */
+/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Ao ativar o Rewards, você concorda com os %@.";
 
 /* No comment provided by engineer. */
-"ntp.youArePaidToSeeThisImage" = "Você está sendo pago para visualizar esta imagem de plano de fundo.";
+"ntp.youArePaidToSeeThisImage" = "Você está recebendo tokens para visualizar esta imagem.";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Abrir tudo (%i)";

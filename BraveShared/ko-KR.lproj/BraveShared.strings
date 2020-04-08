@@ -595,9 +595,6 @@
 /* Sync Alert */
 "NotEnoughWordsTitle" = "단어가 충분하지 않음";
 
-/* The placeholder says 'hide sponsored images'. So full sentence goes like: 'You can also choose to hide sponsored images.' */
-"ntp.chooseToHideSponsoredImages" = "선택 가능한 옵션: %@";
-
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "내 리워드 받기";
 
@@ -608,22 +605,28 @@
 "ntp.earnTokensByViewingAds" = "프라이버시 보호 광고를 보고 토큰을 받으세요.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "이 배경 이미지를 보고 수익을 얻으세요. 본인의 몫을 받으려면 Brave Ads를 켜세요.";
+"ntp.getPaidForThisImageTurnAds" = "이 이미지를 보고 토큰을 획득하세요. 본인의 몫을 받으려면 Brave Ads를 켜세요.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "이 배경 이미지를 보고 수익을 얻으세요. 본인의 몫을 받으려면 Brave Rewards를 켜세요.";
+"ntp.getPaidForThisImageTurnRewards" = "이 이미지를 보고 토큰을 획득하세요. 본인의 몫을 받으려면 Brave Rewards를 켜세요.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidToSeeThisImage" = "이 배경 이미지를 보고 수익을 얻으세요.";
+"ntp.getPaidToSeeThisImage" = "이 이미지를 보고 토큰을 획득하세요.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "축하합니다!";
 
-/* This sentence is not capitalized on purpose, it is a part of a bigger sentence which goes like this: 'You can also choose to hide sponsored images.' */
+/* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "스폰서 이미지 숨기기";
 
-/* The placeholder says 'Learn more'. So full sentence goes like: 'Learn more about sponsored images in Brave Rewards.' */
-"ntp.learnMoreAboutBrandedImages" = "Brave Rewards에서의 스폰서 이미지 %@";
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutBrandedImages" = "스폰서 이미지를 볼 때마다 얻게 되는 수익의 70%가 토큰으로 지급됩니다. Brave Ads를 사용하면 언제든지 표시되는 광고를 관리할 수 있습니다.";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutRewards" = "Brave Rewards 자세히 알아보기";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutSI" = "스폰서 이미지 자세히 알아보기";
 
 /* No comment provided by engineer. */
 "ntp.supportWebCreatorsWithTokens" = "토큰으로 웹 제작자를 지원할 수 있습니다.";
@@ -632,13 +635,13 @@
 "ntp.turnOnBraveAds" = "Brave Ads 켜기";
 
 /* No comment provided by engineer. */
-"ntp.turnOnBraveRewards" = "Rewards 켜기";
+"ntp.turnOnBraveRewards" = "Brave Rewards 켜기";
 
-/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turnin Rewards, you agree to the Terms of Service'. */
+/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Rewards를 켜면 %@에 동의하는 것으로 간주됩니다.";
 
 /* No comment provided by engineer. */
-"ntp.youArePaidToSeeThisImage" = "이 배경 이미지를 보고 수익을 얻고 있습니다.";
+"ntp.youArePaidToSeeThisImage" = "이 이미지를 보고 토큰을 획득하고 계십니다.";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "모두 열기(%i)";
@@ -977,7 +980,7 @@
 "SyncAddDeviceScan" = "체인 QR 코드 동기화";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "두 번째 기기에서 설정 패널에 있는 동기화로 이동한 다음 \"동기화 코드 스캔\" 버튼을 탭합니다. 카메라를 사용하여 아래 QR 코드를 스캔합니다.\n\n 이 코드는 일종의 비밀번호로 취급하십시오. 이 코드를 확보한 사람은 귀하의 동기화 데이터를 읽고 변조할 수 있습니다.";
+"SyncAddDeviceScanDescription" = "두 번째 모바일 기기에서 설정 패널에 있는 동기화로 이동한 다음 \"동기화 코드 스캔\" 버튼을 탭합니다. 카메라를 사용하여 아래 QR 코드를 스캔합니다.\n\n 이 코드는 일종의 비밀번호로 취급하십시오. 이 코드를 확보한 사람은 귀하의 동기화 데이터를 읽고 변조할 수 있습니다.";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "동기화 코드 입력";

@@ -3,13 +3,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveUI
 
 //extension RewardsSummaryView {
   class RewardsSummaryViewButton: UIControl {
     
     private struct UX {
-      static let backgroundColor = Colors.blurple800
-      static let titleTextColor = Colors.blurple600
+      static let backgroundColor = Colors.blurple100
+      static let titleTextColor = Colors.blurple300
     }
     
     let titleLabel = UILabel().then {

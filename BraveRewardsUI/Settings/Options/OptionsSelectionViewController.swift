@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveUI
 
 protocol DisplayableOption {
   var displayString: String { get }
@@ -80,7 +81,7 @@ class OptionsSelectionViewController<OptionType: DisplayableOption>: UIViewContr
     cell.textLabel?.appearanceTextColor = .black
     cell.textLabel?.text = options[indexPath.row].displayString
     cell.textLabel?.font = .systemFont(ofSize: 14.0)
-    cell.textLabel?.appearanceTextColor = Colors.grey100
+    cell.textLabel?.appearanceTextColor = Colors.grey800
     cell.textLabel?.numberOfLines = 0
     cell.accessoryType = selectedOptionIndex == indexPath.row ? .checkmark : .none
     return cell

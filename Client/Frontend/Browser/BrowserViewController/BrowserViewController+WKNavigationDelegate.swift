@@ -279,15 +279,8 @@ extension BrowserViewController: WKNavigationDelegate {
         let response = navigationResponse.response
         let responseURL = response.url
         
-        if let tab = tabManager[webView] {
-            if let httpResponse = response as? HTTPURLResponse,
-                let cacheControl = httpResponse.allHeaderFields["Cache-Control"] as? String,
-                cacheControl.contains("no-store") {
-                tab.shouldClassifyLoadsForAds = false
-            }
-            if responseURL?.isSessionRestoreURL == true {
-                tab.shouldClassifyLoadsForAds = false
-            }
+        if let tab = tabManager[webView], responseURL?.isSessionRestoreURL == true {
+            tab.shouldClassifyLoadsForAds = false
         }
         
         var request: URLRequest?

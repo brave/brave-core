@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveUI
 
 extension CreateWalletViewController {
   class View: UIView {
@@ -19,7 +20,7 @@ extension CreateWalletViewController {
       static let prefixTextColor = UIColor(white: 1.0, alpha: 0.75)
       static let titleTextColor = UIColor.white
       static let bodyTextColor = UIColor.white
-      static let learnMoreTextColor = Colors.blue500
+      static let learnMoreTextColor = Colors.blue400
       static let createWalletButtonHeight = 40.0
       static let learnMoreButtonHeight = 30.0
     }
@@ -67,7 +68,7 @@ extension CreateWalletViewController {
     
     let termsOfServiceLabel = LinkLabel().then {
       $0.font = .systemFont(ofSize: 12.0)
-      $0.appearanceTextColor = Colors.grey900
+      $0.appearanceTextColor = Colors.grey000
       $0.textAlignment = .center
       $0.text = Strings.disclaimerInformation
       $0.setURLInfo([Strings.termsOfServiceURL: "terms", Strings.privacyPolicyURL: "policy"])

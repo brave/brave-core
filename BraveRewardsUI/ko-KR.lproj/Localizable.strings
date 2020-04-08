@@ -104,7 +104,7 @@
 "BraveRewardsAutoContributeSupportedSites" = "지원되는 사이트";
 
 /* No comment provided by engineer. */
-"BraveRewardsAutoContributeToUnverifiedSites" = "확인되지 않은 사이트에 대한 후원 허용";
+"BraveRewardsAutoContributeToUnverifiedSites" = "확인되지 않은 사이트 목록으로 표시";
 
 /* No comment provided by engineer. */
 "BraveRewardsAutoContributeToVideos" = "동영상에 대한 후원 허용";
@@ -499,6 +499,12 @@
 /* Message that is displayed when user disables auto-contribute */
 "DisabledAutoContributeMessage" = "좋아하는 콘텐츠 제작자에게 합당한 보상을 주세요. 내가 방문한 사이트에 월간 결제 금액이 분배됩니다.";
 
+/* Message that is displayed on monthly contribution section when user disables rewards */
+"DisabledMonthlyContributionMessage" = "월정기 후원을 30일마다 보냅니다.";
+
+/* Message that is displayed on tips section when user disables rewards */
+"DisabledTipsMessage" = "보석을 찾으면 바로 팁을 줍니다. 마음에 들었다면 빠르게 트윗을 보내 다른 사람에게 알립니다.";
+
 /* No comment provided by engineer. */
 "DisclaimerInformation" = "'Rewards 가입'을 클릭하면 서비스 약관 및 개인정보 취급방침을 읽고 이에 동의한 것으로 간주됩니다.";
 
@@ -513,6 +519,12 @@
 
 /* The title of the screen that shows a list of excluded sites for Auto-Contribute */
 "ExclusionListTitle" = "제외된 사이트";
+
+/* No comment provided by engineer. */
+"LedgerDatabaseMigrationFailedBody" = "Rewards 정보를 로드하는 중 문제가 발생했습니다. 보상 활동 세부정보가 재시작됩니다.\n\n문제가 발생하거나 문의 사항이 있으면 support@brave.com으로 문의하세요.";
+
+/* No comment provided by engineer. */
+"LedgerInitializationFailedTitle" = "문제가 발생했습니다...";
 
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "자세히 알아보려면 여기를 탭하세요.";
@@ -621,6 +633,51 @@
 
 /* No comment provided by engineer. */
 "RewardsOptInPrefix" = "차세대 인터넷 세계를 경험하세요.";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsBody" = "이 아이템을 구매하려면 토큰이 있어야 합니다. 토큰을 얻으려면 Brave Rewards를 켜세요.";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsButtonTitle" = "Brave Rewards 활성화";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsDisclaimer" = "Brave Rewards 활성화를 탭하면 Brave Rewards 서비스 약관에 동의하는 것으로 간주됩니다.";
+
+/* The hyperlinked portion of the copy: 'By tapping Enable Brave Rewards, you agree to Brave Reward’s Terms of Service.' */
+"SKUEnableRewardsDisclaimerLink" = "서비스 약관";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsTitle" = "계속하려면 Brave Rewards를 활성화하세요.";
+
+/* '%@' becomes 'BAT' or 'BAP' based on region */
+"SKUPurchaseBuyWithBAT" = "%@로 구매";
+
+/* No comment provided by engineer. */
+"SKUPurchaseCompletedBody" = "구매해주셔서 감사합니다.";
+
+/* No comment provided by engineer. */
+"SKUPurchaseCompletedTitle" = "완료되었습니다!";
+
+/* First '%@' becomes 'Buy with BAT' or 'Buy with BAP' based on region. Second '%@' becomes 'Brave’s Terms of Sale' */
+"SKUPurchaseDisclaimerInformation" = "'%1$@'를 클릭하면 %2$@에 동의하는 것으로 간주됩니다.";
+
+/* Should be the same text as shown */
+"SKUPurchaseDisclaimerInformationLink" = "Brave 판매 약관";
+
+/* '%@' becomes 'BAT' or 'BAP' based on region' */
+"SKUPurchaseInsufficientFunds" = "%@가 부족하여 구매할 수 없습니다.";
+
+/* No comment provided by engineer. */
+"SKUPurchaseItemSelected" = "아이템 선택됨";
+
+/* No comment provided by engineer. */
+"SKUPurchaseOrderTotal" = "주문 총액";
+
+/* No comment provided by engineer. */
+"SKUPurchaseProcessing" = "결제가 처리되고 있습니다...";
+
+/* No comment provided by engineer. */
+"SKUPurchaseTitle" = "구매 확인";
 
 /* No comment provided by engineer. */
 "TermsOfServiceURL" = "서비스 약관";

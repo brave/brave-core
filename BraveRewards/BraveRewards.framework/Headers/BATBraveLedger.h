@@ -36,6 +36,24 @@ NS_SWIFT_NAME(BraveLedger)
 
 - (instancetype)init NS_UNAVAILABLE;
 
+#pragma mark - Initialization
+
+/// Whether or not the ledger service has been initialized already
+@property (nonatomic, readonly, getter=isInitialized) BOOL initialized;
+
+/// Whether or not the ledger service is currently initializing
+@property (nonatomic, readonly, getter=isInitializing) BOOL initializing;
+
+/// The result when initializing the ledger service. Should be
+/// `BATResultLedgerOk` if `initialized` is `true`
+///
+/// If this is not `BATResultLedgerOk`, rewards is not usable for the user
+@property (nonatomic, readonly) BATResult initializationResult;
+
+/// Whether or not data migration failed when initializing and the user should
+/// be notified.
+@property (nonatomic, readonly) BOOL dataMigrationFailed;
+
 #pragma mark - Observers
 
 /// Add an interface to the list of observers
@@ -96,7 +114,7 @@ NS_SWIFT_NAME(BraveLedger)
 - (void)hasSufficientBalanceToReconcile:(void (^)(BOOL sufficient))completion;
 
 /// Returns reserved amount of pending contributions to publishers.
-@property (nonatomic, readonly) double reservedAmount;
+- (void)pendingContributionsTotal:(void (^)(double amount))completion NS_SWIFT_NAME(pendingContributionsTotal(completion:));
 
 #pragma mark - User Wallets
 
@@ -126,7 +144,7 @@ NS_SWIFT_NAME(BraveLedger)
 - (void)listActivityInfoFromStart:(unsigned int)start
                             limit:(unsigned int)limit
                            filter:(BATActivityInfoFilter *)filter
-                       completion:(void (NS_NOESCAPE ^)(NSArray<BATPublisherInfo *> *))completion;
+                       completion:(void (^)(NSArray<BATPublisherInfo *> *))completion;
 
 /// Start a fetch to get a publishers activity information given a URL
 ///
@@ -136,9 +154,6 @@ NS_SWIFT_NAME(BraveLedger)
                         publisherBlob:(nullable NSString *)publisherBlob
                                 tabId:(uint64_t)tabId;
 
-/// Returns activity info for current reconcile stamp.
-- (nullable BATPublisherInfo *)currentActivityInfoWithPublisherId:(NSString *)publisherId;
-
 /// Update a publishers exclusion state
 - (void)updatePublisherExclusionState:(NSString *)publisherId
                                 state:(BATPublisherExclude)state
@@ -147,8 +162,6 @@ NS_SWIFT_NAME(BraveLedger)
 /// Restore all sites which had been previously excluded
 - (void)restoreAllExcludedPublishers;
 
-@property (nonatomic, readonly) NSUInteger numberOfExcludedPublishers;
-
 /// Get the publisher banner given some publisher key
 ///
 /// This key is _not_ always the URL's host. Use `publisherActivityFromURL`
@@ -156,7 +169,7 @@ NS_SWIFT_NAME(BraveLedger)
 ///
 /// @note `completion` callback is called synchronously
 - (void)publisherBannerForId:(NSString *)publisherId
-                  completion:(void (NS_NOESCAPE ^)(BATPublisherBanner * _Nullable banner))completion;
+                  completion:(void (^)(BATPublisherBanner * _Nullable banner))completion;
 
 /// Refresh a publishers verification status
 - (void)refreshPublisherWithId:(NSString *)publisherId
@@ -167,7 +180,7 @@ NS_SWIFT_NAME(BraveLedger)
 /// Get a list of publishers who the user has recurring tips on
 ///
 /// @note `completion` callback is called synchronously
-- (void)listRecurringTips:(void (NS_NOESCAPE ^)(NSArray<BATPublisherInfo *> *))completion;
+- (void)listRecurringTips:(void (^)(NSArray<BATPublisherInfo *> *))completion;
 
 - (void)addRecurringTipToPublisherWithId:(NSString *)publisherId
                                   amount:(double)amount
@@ -178,7 +191,7 @@ NS_SWIFT_NAME(BraveLedger)
 /// Get a list of publishers who the user has made direct tips too
 ///
 /// @note `completion` callback is called synchronously
-- (void)listOneTimeTips:(void (NS_NOESCAPE ^)(NSArray<BATPublisherInfo *> *))completion;
+- (void)listOneTimeTips:(void (^)(NSArray<BATPublisherInfo *> *))completion;
 
 - (void)tipPublisherDirectly:(BATPublisherInfo *)publisher
                       amount:(double)amount
@@ -211,7 +224,7 @@ NS_SWIFT_NAME(BraveLedger)
 - (void)removePendingContribution:(BATPendingContributionInfo *)info
                        completion:(void (^)(BATResult result))completion;
 
-- (void)deleteAllPendingContributions:(void (^)(BATResult result))completion;
+- (void)removeAllPendingContributions:(void (^)(BATResult result))completion;
 
 #pragma mark - History
 
@@ -275,10 +288,10 @@ NS_SWIFT_NAME(BraveLedger)
 #pragma mark - Ads & Confirmations
 
 /// Confirm an ad and update confirmations (called from the ads layer)
-- (void)confirmAd:(NSString *)info;
+- (void)confirmAd:(NSString *)json confirmationType:(NSString *)confirmationType;
 
 /// Confirm an action on an ad and update confirmations was sustained (called from ads layer)
-- (void)confirmAction:(NSString *)uuid creativeSetID:(NSString *)creativeSetID type:(NSString *)type;
+- (void)confirmAction:(NSString *)creativeInstanceId creativeSetID:(NSString *)creativeSetID confirmationType:(NSString *)confirmationType;
 
 /// Set catalog issuers ad and update confirmations (called from the ads layer)
 - (void)setCatalogIssuers:(NSString *)issuers;

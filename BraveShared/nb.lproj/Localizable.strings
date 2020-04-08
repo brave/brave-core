@@ -44,7 +44,7 @@
 "OBRewardsAgreementDetail" = "Ved å slå på Rewards, godtar du";
 
 /* Detail text for rewards agreement onboarding screen */
-"OBRewardsAgreementDetailLink" = "vilkårene for bruk";
+"OBRewardsAgreementDetailLink" = "Vilkår for bruk";
 
 /* Title for rewards agreement onboarding screen */
 "OBRewardsAgreementTitle" = "Brave Rewards";
@@ -87,6 +87,12 @@
 
 /* Skip button to skip onboarding and start using the app. */
 "OnboardingSkipButton" = "Hopp over";
+
+/* Description for closing a popover menu that is displayed. */
+"PopoverDefaultClose" = "Lukk kontekstmenyen";
+
+/* Description for closing the `Brave Shields` popover menu that is displayed. */
+"PopoverShieldsMenuClose" = "Lukk Skjold-menyen";
 
 /* Name of folder where restored bookmarks are retrieved */
 "RestoredBookmarksFolderName" = "Gjenopprettede bokmerker";

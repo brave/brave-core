@@ -104,7 +104,7 @@
 "BraveRewardsAutoContributeSupportedSites" = "Unterstützte Websites";
 
 /* No comment provided by engineer. */
-"BraveRewardsAutoContributeToUnverifiedSites" = "Beitrag für nicht geprüfte Standorte zulassen";
+"BraveRewardsAutoContributeToUnverifiedSites" = "Nicht verifizierte Websites in Liste anzeigen";
 
 /* No comment provided by engineer. */
 "BraveRewardsAutoContributeToVideos" = "Beitrag zu Videos erlauben";
@@ -499,6 +499,12 @@
 /* Message that is displayed when user disables auto-contribute */
 "DisabledAutoContributeMessage" = "Belohnen Sie Ersteller für Content, den Sie lieben. Ihre monatliche Zahlung wird auf die von Ihnen besuchten Websites verteilt.";
 
+/* Message that is displayed on monthly contribution section when user disables rewards */
+"DisabledMonthlyContributionMessage" = "Ihre monatlichen Beiträge werden alle 30 Tage gesendet.";
+
+/* Message that is displayed on tips section when user disables rewards */
+"DisabledTipsMessage" = "Tippen Sie sofort, wenn Sie Gems ​​finden. Wenn Sie möchten, lassen Sie es die anderen Leute mit einem kurzen Tweet wissen.";
+
 /* No comment provided by engineer. */
 "DisclaimerInformation" = "Indem Sie auf \"Rewards beitreten\" klicken, erklären Sie, dass Sie die Allgemeinen Geschäftsbedingungen und die Datenschutzerklärung gelesen haben und damit einverstanden sind.";
 
@@ -513,6 +519,12 @@
 
 /* The title of the screen that shows a list of excluded sites for Auto-Contribute */
 "ExclusionListTitle" = "Ausgeschlossene Websites";
+
+/* No comment provided by engineer. */
+"LedgerDatabaseMigrationFailedBody" = "Beim Laden Ihrer Prämieninformationen ist ein Problem aufgetreten. Ihre Aktivitätsdetails für Belohnungen werden neu gestartet.\n\nBei Problemen oder Bedenken wenden Sie sich bitte an support@brave.com";
+
+/* No comment provided by engineer. */
+"LedgerInitializationFailedTitle" = "Entschuldigen Sie, es ist ein Fehler aufgetreten …";
 
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "Tippen Sie hier, um mehr zu erfahren.";
@@ -621,6 +633,51 @@
 
 /* No comment provided by engineer. */
 "RewardsOptInPrefix" = "Machen Sie sich bereit für das nächste Internet.";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsBody" = "Um diesen Gegenstand zu kaufen, müssen Sie Token verdienen. Schalten Sie Brave Rewards ein, um zu verdienen.";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsButtonTitle" = "Brave Rewards aktivieren";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsDisclaimer" = "Durch Tippen auf „Brave Rewards aktivieren“ stimmen Sie den Nutzungsbedingungen von Brave Rewards zu.";
+
+/* The hyperlinked portion of the copy: 'By tapping Enable Brave Rewards, you agree to Brave Reward’s Terms of Service.' */
+"SKUEnableRewardsDisclaimerLink" = "Allgemeine Geschäftsbedingungen";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsTitle" = "Brave Rewards aktivieren, um fortzufahren.";
+
+/* '%@' becomes 'BAT' or 'BAP' based on region */
+"SKUPurchaseBuyWithBAT" = "Kaufen mit %@";
+
+/* No comment provided by engineer. */
+"SKUPurchaseCompletedBody" = "Viel Spaß beim Einkauf.";
+
+/* No comment provided by engineer. */
+"SKUPurchaseCompletedTitle" = "Sie sind fertig!";
+
+/* First '%@' becomes 'Buy with BAT' or 'Buy with BAP' based on region. Second '%@' becomes 'Brave’s Terms of Sale' */
+"SKUPurchaseDisclaimerInformation" = "Indem Sie auf '%1$@' klicken, erklären Sie sich einverstanden mit den %2$@.";
+
+/* Should be the same text as shown */
+"SKUPurchaseDisclaimerInformationLink" = "Nutzungsbedingungen von Brave";
+
+/* '%@' becomes 'BAT' or 'BAP' based on region' */
+"SKUPurchaseInsufficientFunds" = "Sie haben nicht genug %@, um diesen Kauf zu tätigen.";
+
+/* No comment provided by engineer. */
+"SKUPurchaseItemSelected" = "Ausgewählter Posten";
+
+/* No comment provided by engineer. */
+"SKUPurchaseOrderTotal" = "Bestellungssumme";
+
+/* No comment provided by engineer. */
+"SKUPurchaseProcessing" = "Ihre Zahlung wird verarbeitet …";
+
+/* No comment provided by engineer. */
+"SKUPurchaseTitle" = "Kauf bestätigen";
 
 /* No comment provided by engineer. */
 "TermsOfServiceURL" = "Allgemeine Geschäftsbedingungen";

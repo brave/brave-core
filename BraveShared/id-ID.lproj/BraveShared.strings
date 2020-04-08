@@ -595,9 +595,6 @@
 /* Sync Alert */
 "NotEnoughWordsTitle" = "Kata Tidak Cukup";
 
-/* The placeholder says 'hide sponsored images'. So full sentence goes like: 'You can also choose to hide sponsored images.' */
-"ntp.chooseToHideSponsoredImages" = "Anda juga dapat memilih untuk %@.";
-
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "Klaim penghargaan saya";
 
@@ -608,22 +605,28 @@
 "ntp.earnTokensByViewingAds" = "Dapatkan token dengan menonton iklan tentang menghormati kerahasiaan.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "Dapatkan bayaran dengan melihat gambar latar belakang ini. Putar Iklan Brave untuk mengklaim imbalan Anda.";
+"ntp.getPaidForThisImageTurnAds" = "Dapatkan token dengan melihat gambar ini. Putar Iklan Brave untuk mengklaim imbalan Anda.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "Dapatkan bayaran dengan melihat gambar latar belakang ini. Putar Iklan Brave untuk mengklaim imbalan Anda.";
+"ntp.getPaidForThisImageTurnRewards" = "Dapatkan token dengan melihat gambar ini. Putar Brave Rewards untuk mengklaim imbalan Anda.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidToSeeThisImage" = "Dapatkan bayaran dengan melihat gambar latar belakang ini.";
+"ntp.getPaidToSeeThisImage" = "Dapatkan token dengan melihat gambar ini.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Berhasil!";
 
-/* This sentence is not capitalized on purpose, it is a part of a bigger sentence which goes like this: 'You can also choose to hide sponsored images.' */
-"ntp.hideSponsoredImages" = "sembunyikan gambar bersponsor";
+/* No comment provided by engineer. */
+"ntp.hideSponsoredImages" = "Sembunyikan gambar bersponsor";
 
-/* The placeholder says 'Learn more'. So full sentence goes like: 'Learn more about sponsored images in Brave Rewards.' */
-"ntp.learnMoreAboutBrandedImages" = "%@ tentang gambar bersponsor di Brave Reward";
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutBrandedImages" = "Untuk setiap gambar bersponsor yang Anda lihat, Anda akan menerima 70% dari keuntungan dalam bentuk token. Dengan Iklan Brave, Anda selalu memegang kendali atas iklan yang dapat Anda lihat.";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutRewards" = "Pelajari lebih lanjut tentang Brave Rewards";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutSI" = "Pelajari lebih lanjut tentang gambar bersponsor";
 
 /* No comment provided by engineer. */
 "ntp.supportWebCreatorsWithTokens" = "Anda dapat memberi dukungan kepada para pembuat konten dengan menggunakan token.";
@@ -632,13 +635,13 @@
 "ntp.turnOnBraveAds" = "Putar Iklan Brave";
 
 /* No comment provided by engineer. */
-"ntp.turnOnBraveRewards" = "Hidupkan Penghargaan";
+"ntp.turnOnBraveRewards" = "Aktifkan Brave Rewards";
 
-/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turnin Rewards, you agree to the Terms of Service'. */
+/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Dengan mengaktifkan Rewards, berarti Anda setuju dengan %@.";
 
 /* No comment provided by engineer. */
-"ntp.youArePaidToSeeThisImage" = "Anda akan mendapatkan bayaran untuk melihat gambar latar belakang ini.";
+"ntp.youArePaidToSeeThisImage" = "Anda mendapatkan token karena melihat gambar ini.";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Buka Semua (%i)";
@@ -977,7 +980,7 @@
 "SyncAddDeviceScan" = "Sinkronisasikan Kode QR Kelompok";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "Pada perangkat seluler Anda yang kedua, navigasikan ke Sinkronisasi pada panel Pengaturan dan ketuk tombol \"Pindai Kode Sinkronisasi\". Gunakan kamera Anda untuk memindai kode QR di bawah ini.\n\nPerlakukan kode ini layaknya kata sandi. Jika seseorang mengetahuinya, mereka dapat membaca dan memodifikasi data Anda yang telah tersinkronisasi.";
+"SyncAddDeviceScanDescription" = "Pada perangkat seluler Anda yang kedua, navigasikan ke Sinkronisasi pada panel Pengaturan dan ketuk tombol \"Pindai Kode Sinkronisasi\". Gunakan kamera Anda untuk memindai kode QR di bawah ini.\n\nPerlakukan kode ini layaknya kata sandi. Jika seseorang mengetahuinya, mereka dapat membaca dan mengubah data Anda yang telah disinkronisasi.";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Masukkan kode sinkronisasi";

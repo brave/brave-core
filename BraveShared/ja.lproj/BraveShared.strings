@@ -595,9 +595,6 @@
 /* Sync Alert */
 "NotEnoughWordsTitle" = "ワードが足りません";
 
-/* The placeholder says 'hide sponsored images'. So full sentence goes like: 'You can also choose to hide sponsored images.' */
-"ntp.chooseToHideSponsoredImages" = "%@も選択可能です。";
-
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "報酬を受け取る";
 
@@ -619,11 +616,17 @@
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "おめでとうございます！";
 
-/* This sentence is not capitalized on purpose, it is a part of a bigger sentence which goes like this: 'You can also choose to hide sponsored images.' */
+/* No comment provided by engineer. */
 "ntp.hideSponsoredImages" = "スポンサードイメージを非表示にする";
 
-/* The placeholder says 'Learn more'. So full sentence goes like: 'Learn more about sponsored images in Brave Rewards.' */
-"ntp.learnMoreAboutBrandedImages" = "%@ : Brave Rewardsのスポンサードイメージについて";
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutBrandedImages" = "スポンサーイメージを表示するたびに、広告費用の70％を報酬として受け取ることができます。Brave Adsでは表示する広告をコントロールすることができます。";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutRewards" = "Brave Rewardsについて詳しく知る";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutSI" = "スポンサーイメージについて詳しく知る";
 
 /* No comment provided by engineer. */
 "ntp.supportWebCreatorsWithTokens" = "クリエイターにウェブ上で直接トークンを送ることができます";
@@ -632,9 +635,9 @@
 "ntp.turnOnBraveAds" = "Brave Adsを有効にする";
 
 /* No comment provided by engineer. */
-"ntp.turnOnBraveRewards" = "Rewardsを有効にする";
+"ntp.turnOnBraveRewards" = "Brave Rewardsを有効にする";
 
-/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turnin Rewards, you agree to the Terms of Service'. */
+/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Rewardsを有効にすると、以下に同意したものとみなされます: %@";
 
 /* No comment provided by engineer. */
@@ -977,13 +980,13 @@
 "SyncAddDeviceScan" = "同期チェーン追加用QRコード";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "2番目のモバイルデバイスで、「設定」メニューから「同期」に移動し、「同期コードのスキャンまたは入力」をタップしてください。その後、カメラで下のQRコードをスキャンします。\n\nこのコードはパスワードのように大切に保管してください。第三者が手に入れると同期中のデータを閲覧・修正することが可能になります。";
+"SyncAddDeviceScanDescription" = "2番目のモバイルデバイスで、「設定」から「同期」に移動し、「同期コードのスキャンまたは入力」をタップしてください。その後、カメラで下のQRコードをスキャンします。\n\nこのコードはパスワードのように大切に保管してください。第三者が手に入れると同期中のデータを閲覧・修正することが可能になります。";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "同期コードを入力";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "あなたのデバイスで、「設定」パネルの「同期」に移動し、「%@」ボタンをタップしてください。以下の同期チェーンコードワードを入力してください。\nこのコードはパスワードのように大事に保存してください。第三者が手に入れると、同期されたデータを閲覧したり修正したりすることが可能になります。";
+"SyncAddDeviceWordsDescription" = "あなたのデバイスで、「設定」パネルの「同期」に移動し、「%@」ボタンをタップしてください。以下の同期チェーンコードワードを入力してください。\n\nこのコードはパスワードのように大事に保存してください。第三者が手に入れると、同期されたデータを閲覧したり修正したりすることが可能になります。";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "コードを入力";

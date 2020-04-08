@@ -595,9 +595,6 @@
 /* Sync Alert */
 "NotEnoughWordsTitle" = "Вы ввели не все слова";
 
-/* The placeholder says 'hide sponsored images'. So full sentence goes like: 'You can also choose to hide sponsored images.' */
-"ntp.chooseToHideSponsoredImages" = "Вы также можете %@.";
-
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "Получите вознаграждение";
 
@@ -608,22 +605,28 @@
 "ntp.earnTokensByViewingAds" = "Зарабатывайте токены за просмотр рекламных объявлений, не нарушающих вашу конфиденциальность.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "Включите Brave Ads и получайте вознаграждение за просмотр фоновых изображений.";
+"ntp.getPaidForThisImageTurnAds" = "Посмотрите это изображение и заработайте токены. Чтобы получить вознаграждение, включите Brave Ads.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "Включите Brave Rewards и получайте вознаграждение за просмотр фоновых изображений.";
+"ntp.getPaidForThisImageTurnRewards" = "Посмотрите это изображение и заработайте токены. Чтобы получить вознаграждение, включите Brave Rewards.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidToSeeThisImage" = "Получайте вознаграждение за просмотр фоновых изображений.";
+"ntp.getPaidToSeeThisImage" = "Посмотрите это изображение и заработайте токены.";
 
 /* The context is to praise the user that they did a good job, to keep it up. It is used in full sentence like: 'Way to go! You earned 40 BAT last month.' */
 "ntp.goodJob" = "Так держать!";
 
-/* This sentence is not capitalized on purpose, it is a part of a bigger sentence which goes like this: 'You can also choose to hide sponsored images.' */
-"ntp.hideSponsoredImages" = "скрыть спонсорские изображения";
+/* No comment provided by engineer. */
+"ntp.hideSponsoredImages" = "Не показывать спонсорские изображения";
 
-/* The placeholder says 'Learn more'. So full sentence goes like: 'Learn more about sponsored images in Brave Rewards.' */
-"ntp.learnMoreAboutBrandedImages" = "%@ о спонсорских изображениях в Brave Rewards.";
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutBrandedImages" = "За каждый просмотр спонсорского изображения вы получите 70 % от дохода в токенах. Функция Brave Ads позволяет легко контролировать настройки рекламы.";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutRewards" = "Подробнее о Brave Rewards…";
+
+/* No comment provided by engineer. */
+"ntp.learnMoreAboutSI" = "Подробнее о спонсорских изображениях…";
 
 /* No comment provided by engineer. */
 "ntp.supportWebCreatorsWithTokens" = "Вы можете поддержать создателей контента с помощью токенов.";
@@ -634,11 +637,11 @@
 /* No comment provided by engineer. */
 "ntp.turnOnBraveRewards" = "Включить Brave Rewards";
 
-/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turnin Rewards, you agree to the Terms of Service'. */
+/* The placeholder says 'Terms of Service'. So full sentence goes like: 'By turning Rewards, you agree to the Terms of Service'. */
 "ntp.turnRewardsTos" = "Включая Brave Rewards, вы принимаете";
 
 /* No comment provided by engineer. */
-"ntp.youArePaidToSeeThisImage" = "Вы получаете вознаграждение за просмотр фоновых изображений.";
+"ntp.youArePaidToSeeThisImage" = "За просмотр этого изображения вы заработаете токены.";
 
 /* Context menu item for opening all folder bookmarks */
 "OpenAllBookmarks" = "Открыть все (%i)";
@@ -977,13 +980,13 @@
 "SyncAddDeviceScan" = "QR-код цепочки синхронизации";
 
 /* Sync add device description */
-"SyncAddDeviceScanDescription" = "Запустите Brave на втором мобильном устройстве и откройте настройки. Перейдите в раздел «Синхронизация» и нажмите «Сканировать код синхронизации». Сканируйте QR-код ниже с помощью камеры.\n\nОтноситесь к этому коду как к паролю. Не сообщайте его никому, иначе другие пользователи смогут просматривать и изменять ваши синхронизированные данные.";
+"SyncAddDeviceScanDescription" = "Запустите Brave на втором мобильном устройстве и откройте настройки. Перейдите в раздел «Синхронизация» и нажмите «Сканировать код синхронизации». Отсканируйте QR-код ниже с помощью камеры.\n\nОтноситесь к этому коду как к паролю. Не показывайте его никому, иначе другие пользователи смогут просматривать и изменять ваши синхронизированные данные.";
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Введите код синхронизации";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Запустите Brave на устройстве и откройте настройки. Перейдите в раздел «Синхронизация» и нажмите кнопку «%@». Введите указанные ниже кодовые слова для создания цепочки синхронизации.\n\nОтноситесь к кодовым словам как к паролю. Не сообщайте их никому, иначе другие пользователи смогут просматривать и изменять ваши синхронизированные данные.";
+"SyncAddDeviceWordsDescription" = "Запустите Brave на устройстве и откройте настройки. Перейдите в раздел «Синхронизация» и нажмите кнопку «%@». Введите указанные ниже кодовые слова.\n\nОтноситесь к кодовым словам как к паролю. Не сообщайте их никому, иначе другие пользователи смогут просматривать и изменять ваши синхронизированные данные.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Введите кодовые слова";

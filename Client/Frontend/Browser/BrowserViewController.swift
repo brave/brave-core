@@ -20,6 +20,7 @@ import BraveRewardsUI
 import BraveRewards
 import StoreKit
 import SafariServices
+import BraveUI
 
 private let log = Logger.browserLogger
 
@@ -258,7 +259,7 @@ class BrowserViewController: UIViewController {
         notificationsHandler?.actionOccured = { [weak self] notification, action in
             guard let self = self else { return }
             if action == .opened {
-                let request = URLRequest(url: notification.url)
+                let request = URLRequest(url: notification.targetURL)
                 self.tabManager.addTabAndSelect(request, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
             }
         }
@@ -561,6 +562,8 @@ class BrowserViewController: UIViewController {
         setupConstraints()
         
         updateRewardsButtonState()
+        
+        applyTheme(Theme.of(tabManager.selectedTab))
 
         // Setup UIDropInteraction to handle dragging and dropping
         // links into the view from other apps.
@@ -1245,6 +1248,7 @@ class BrowserViewController: UIViewController {
                 break
             }
             tab.userScriptManager?.isU2FEnabled = webView.hasOnlySecureContent
+            tab.userScriptManager?.isPaymentRequestEnabled = webView.hasOnlySecureContent
             if tab.contentIsSecure && !webView.hasOnlySecureContent {
                 tab.contentIsSecure = false
             }
@@ -1561,6 +1565,16 @@ class BrowserViewController: UIViewController {
         
         // Don't show duplicate popups
         if duckDuckGoPopup != nil { return }
+        
+        // Check to see if its been presented already
+        if !SearchEngines.shouldShowDuckDuckGoPromo || (Preferences.Popups.duckDuckGoPrivateSearch.value && !force) {
+            return
+        }
+
+        // Do not show ddg popup if user already chose it for private browsing.
+        if profile.searchEngines.defaultEngine(forType: .privateMode).shortName == OpenSearchEngine.EngineNames.duckDuckGo {
+            return
+        }
         
         topToolbar.leaveOverlayMode()
         
@@ -2094,6 +2108,8 @@ extension BrowserViewController: TabDelegate {
         
         tab.addContentScript(FingerprintingProtection(tab: tab), name: FingerprintingProtection.name())
         
+        tab.addContentScript(BraveGetUA(tab: tab), name: BraveGetUA.name())
+
         tab.addContentScript(U2FExtensions(tab: tab), name: U2FExtensions.name())
         
         tab.addContentScript(ResourceDownloadManager(tab: tab), name: ResourceDownloadManager.name())
@@ -2102,6 +2118,10 @@ extension BrowserViewController: TabDelegate {
         
         tab.addContentScript(RewardsReporting(rewards: rewards, tab: tab), name: RewardsReporting.name())
         tab.addContentScript(AdsMediaReporting(rewards: rewards, tab: tab), name: AdsMediaReporting.name())
+        
+        #if !NO_SKUS
+        tab.addContentScript(PaymentRequestExtension(rewards: rewards, tab: tab, paymentRequested: self.paymentRequested), name: PaymentRequestExtension.name())
+        #endif
     }
 
     func tab(_ tab: Tab, willDeleteWebView webView: WKWebView) {
@@ -3193,6 +3213,7 @@ extension BrowserViewController: Themeable {
         
         theme.applyAppearanceProperties()
 
+        view.backgroundColor = theme.colors.home
         statusBarOverlay.backgroundColor = topToolbar.backgroundColor
         setNeedsStatusBarAppearanceUpdate()
     }

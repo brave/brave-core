@@ -3,6 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import UIKit
+import BraveUI
 
 /// A small disclosure that appears in the SettingsAdsSectionView if ads are not supported
 /// on this device for some given reason
@@ -19,13 +20,13 @@ class AdsUnsupportedView: UIView {
     $0.numberOfLines = 0
     $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
     $0.font = .systemFont(ofSize: 13.0, weight: .medium)
-    $0.appearanceTextColor = Colors.neutral200
+    $0.appearanceTextColor = Colors.neutral700
   }
   
   override init(frame: CGRect) {
     super.init(frame: frame)
     
-    backgroundColor = Colors.blurple800
+    backgroundColor = Colors.blurple100
     
     let stackView = UIStackView().then {
       $0.spacing = 15.0

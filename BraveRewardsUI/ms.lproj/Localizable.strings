@@ -104,7 +104,7 @@
 "BraveRewardsAutoContributeSupportedSites" = "Tapak yang disokong";
 
 /* No comment provided by engineer. */
-"BraveRewardsAutoContributeToUnverifiedSites" = "Benarkan sumbangan kepada tapak yang tidak disahkan";
+"BraveRewardsAutoContributeToUnverifiedSites" = "Tunjukkan tapak-tapak yang tidak disahkan dalam senarai";
 
 /* No comment provided by engineer. */
 "BraveRewardsAutoContributeToVideos" = "Benarkan sumbangan kepada video";
@@ -499,6 +499,12 @@
 /* Message that is displayed when user disables auto-contribute */
 "DisabledAutoContributeMessage" = "Beri ganjaran kepada pencipta untuk kandungan yang anda suka. Pembayaran bulanan anda akan diedarkan di seluruh tapak yang anda lawati.";
 
+/* Message that is displayed on monthly contribution section when user disables rewards */
+"DisabledMonthlyContributionMessage" = "Sumbangan bulanan anda akan dihantar setiap 30 hari.";
+
+/* Message that is displayed on tips section when user disables rewards */
+"DisabledTipsMessage" = "Berikan tip terus apabila anda terjumpa permata. Jika anda suka, beritahu orang lain dengan tweet.";
+
 /* No comment provided by engineer. */
 "DisclaimerInformation" = "Dengan mengklik 'Sertai Ganjaran', anda menunjukkan bahawa anda telah membaca dan bersetuju dengan Syarat Perkhidmatan dan Dasar Privasi.";
 
@@ -513,6 +519,12 @@
 
 /* The title of the screen that shows a list of excluded sites for Auto-Contribute */
 "ExclusionListTitle" = "Tapak dikecualikan";
+
+/* No comment provided by engineer. */
+"LedgerDatabaseMigrationFailedBody" = "Terdapat sedikit masalah dalam memuat maklumat Rewards anda. Butiran aktiviti ganjaran anda akan dimulakan semula.\n\nSila hubungi support@brave.com untuk sebarang isu atau kemusykilan";
+
+/* No comment provided by engineer. */
+"LedgerInitializationFailedTitle" = "Harap maaf, terdapat sedikit masalah...";
 
 /* No comment provided by engineer. */
 "MyFirstAdBody" = "Ketik di sini untuk mengetahui lebih lanjut.";
@@ -621,6 +633,51 @@
 
 /* No comment provided by engineer. */
 "RewardsOptInPrefix" = "Bersedia untuk mengalami Internet seterusnya.";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsBody" = "Untuk membeli item ini, anda perlu memperoleh token. Hidupkan Brave Rewards untuk memperoleh token anda.";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsButtonTitle" = "Dayakan Brave Rewards";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsDisclaimer" = "Dengan mengetik Dayakan Brave Rewards, anda bersetuju dengan Terma Perkhidmatan Brave Rewards.";
+
+/* The hyperlinked portion of the copy: 'By tapping Enable Brave Rewards, you agree to Brave Reward’s Terms of Service.' */
+"SKUEnableRewardsDisclaimerLink" = "Terma Perkhidmatan";
+
+/* No comment provided by engineer. */
+"SKUEnableRewardsTitle" = "Dayakan Brave Rewards untuk Teruskan.";
+
+/* '%@' becomes 'BAT' or 'BAP' based on region */
+"SKUPurchaseBuyWithBAT" = "Beli dengan %@";
+
+/* No comment provided by engineer. */
+"SKUPurchaseCompletedBody" = "Nikmati pembelian anda.";
+
+/* No comment provided by engineer. */
+"SKUPurchaseCompletedTitle" = "Anda sudah bersedia!";
+
+/* First '%@' becomes 'Buy with BAT' or 'Buy with BAP' based on region. Second '%@' becomes 'Brave’s Terms of Sale' */
+"SKUPurchaseDisclaimerInformation" = "Dengan mengklik '%1$@', anda bersetuju dengan %2$@.";
+
+/* Should be the same text as shown */
+"SKUPurchaseDisclaimerInformationLink" = "Terma Jualan Brave";
+
+/* '%@' becomes 'BAT' or 'BAP' based on region' */
+"SKUPurchaseInsufficientFunds" = "Anda tidak mempunyai %@ yang mencukupi untuk membuat pembelian ini.";
+
+/* No comment provided by engineer. */
+"SKUPurchaseItemSelected" = "Item Terpilih";
+
+/* No comment provided by engineer. */
+"SKUPurchaseOrderTotal" = "Jumlah Pesanan";
+
+/* No comment provided by engineer. */
+"SKUPurchaseProcessing" = "Pembayaran anda sedang diproses…";
+
+/* No comment provided by engineer. */
+"SKUPurchaseTitle" = "Sahkan Pembelian";
 
 /* No comment provided by engineer. */
 "TermsOfServiceURL" = "Syarat Perkhidmatan";

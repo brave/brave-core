@@ -3,6 +3,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveUI
 
 struct WalletActionNotification {
   struct Category {
@@ -100,7 +101,7 @@ class WalletActionNotificationView: WalletNotificationView {
       string: notification.body,
       attributes: [
         .font: UIFont.systemFont(ofSize: 14.0),
-        .foregroundColor: Colors.grey100,
+        .foregroundColor: Colors.grey800,
       ]
     ))
     string.append(NSAttributedString(
@@ -114,7 +115,7 @@ class WalletActionNotificationView: WalletNotificationView {
       string: dateFormatter.string(from: notification.date),
       attributes: [
         .font: UIFont.systemFont(ofSize: 14.0),
-        .foregroundColor: Colors.grey200,
+        .foregroundColor: Colors.grey700,
       ]
     ))
     return string
