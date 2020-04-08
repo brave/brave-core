@@ -147,7 +147,7 @@ class NTPBackgroundImagesService {
   bool test_data_used_ = false;
   component_updater::ComponentUpdateService* component_update_service_;
   PrefService* local_pref_;
-  const base::FilePath top_sites_favicon_cache_dir_;
+  const base::FilePath super_referral_cache_dir_;
   base::FilePath si_installed_dir_;
   base::FilePath sr_installed_dir_;
   base::ObserverList<Observer>::Unchecked observer_list_;
@@ -157,6 +157,7 @@ class NTPBackgroundImagesService {
   std::unique_ptr<network::SimpleURLLoader> loader_;
   PrefChangeRegistrar pref_change_registrar_;
   std::unique_ptr<base::OneShotTimer> mapping_table_retry_timer_;
+  base::Value sr_component_info_;
   base::WeakPtrFactory<NTPBackgroundImagesService> weak_factory_;
 };
 

@@ -19,6 +19,7 @@ extern const char kNewTabPageShowBackgroundImage[];
 
 // Local prefs
 extern const char kNewTabPageCachedSuperReferralComponentInfo[];
+extern const char kNewTabPageCachedSuperReferralComponentData[];
 extern const char kNewTabPageCachedSuperReferralFaviconList[];
 extern const char kNewTabPageCheckingMappingTableInProgress[];
 

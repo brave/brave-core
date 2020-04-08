@@ -17,4 +17,8 @@ const char kSuperReferralMappingTableURL[] =
 const char kSuperReferralMappingTableDevURL[] =
     "https://mobile-data-dev.s3.brave.software/superreferrer/map-table.json";
 
+const char kPublicKey[] = "publicKey";
+const char kComponentID[] = "componentID";
+const char kThemeName[] = "themeName";
+
 }  // namespace ntp_background_images

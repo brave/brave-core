@@ -46,11 +46,6 @@ ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
       is_supported_locale_(is_supported_locale) {
   DCHECK(service_);
   service_->AddObserver(this);
-  if (service_->test_data_used()) {
-    // Explicitly trigger OnUpdated() because test data can be set before
-    // Observeris added to |service_|.
-    OnUpdated(GetCurrentBrandedWallpaperData());
-  }
 
   if (auto* data = GetCurrentBrandedWallpaperData())
     model_.set_total_image_count(data->backgrounds.size());
@@ -65,6 +60,8 @@ ViewCounterService::ViewCounterService(NTPBackgroundImagesService* service,
   pref_change_registrar_.Add(prefs::kNewTabPageSuperReferralThemesOption,
       base::BindRepeating(&ViewCounterService::OnPreferenceChanged,
       base::Unretained(this)));
+
+  OnUpdated(GetCurrentBrandedWallpaperData());
 }
 
 ViewCounterService::~ViewCounterService() = default;
@@ -124,6 +121,8 @@ void ViewCounterService::OnUpdated(NTPBackgroundImagesData* data) {
   // NTPBackgroundImagesService can manage SI and SR both.
   if (data != GetCurrentBrandedWallpaperData())
     return;
+
+  DVLOG(2) << __func__ << ": Active data is updated.";
 
   // Data is updated, so change our stored data and reset any indexes.
   // But keep view counter until branded content is seen.

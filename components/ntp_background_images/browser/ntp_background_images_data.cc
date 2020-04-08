@@ -61,8 +61,7 @@ NTPBackgroundImagesData::NTPBackgroundImagesData()
 
 NTPBackgroundImagesData::NTPBackgroundImagesData(
     const std::string& json_string,
-    const base::FilePath& installed_dir,
-    const base::FilePath& top_sites_favicon_cache_dir)
+    const base::FilePath& installed_dir)
     : NTPBackgroundImagesData() {
   base::Optional<base::Value> json_value = base::JSONReader::Read(json_string);
   if (!json_value) {
@@ -127,7 +126,7 @@ NTPBackgroundImagesData::NTPBackgroundImagesData(
 
       if (auto* url = top_site_value.FindStringPath(kTopSiteIconURLPath)) {
         site.image_path = *url;
-        site.image_file = top_sites_favicon_cache_dir.AppendASCII(*url);
+        site.image_file = installed_dir.AppendASCII(*url);
       }
 
       // TopSite should have all properties.

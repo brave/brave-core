@@ -16,6 +16,10 @@ extern const char kSuperReferralMappingTableDevURL[];
 extern const char kSuperReferralPath[];
 extern const char kSponsoredImagesPath[];
 
+extern const char kPublicKey[];
+extern const char kComponentID[];
+extern const char kThemeName[];
+
 }  // namespace ntp_background_images
 
 #endif  // BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_URL_CONSTANTS_H_

@@ -398,10 +398,10 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
 
   EXPECT_TRUE(pref_service_.GetBoolean(
       prefs::kNewTabPageCheckingMappingTableInProgress));
-
+  EXPECT_FALSE(IsValidSuperReferralComponentInfo(*pref_service_.Get(
+      prefs::kNewTabPageCachedSuperReferralComponentInfo)));
   service_->OnGetMappingTableData(
       std::make_unique<std::string>(kTestMappingTable));
-
   EXPECT_FALSE(pref_service_.GetBoolean(
       prefs::kNewTabPageCheckingMappingTableInProgress));
 
@@ -409,15 +409,24 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
   EXPECT_TRUE(service_->super_referral_component_started_);
   EXPECT_FALSE(service_->marked_this_install_is_not_super_referral_forever_);
 
+  EXPECT_TRUE(pref_service_.GetString(
+                  prefs::kNewTabPageCachedSuperReferralComponentData).empty());
+
   // Got super referral component
   service_->OnGetComponentJsonData(true, kTestSuperReferral);
   auto* data = service_->GetBackgroundImagesData(true);
+  EXPECT_TRUE(IsValidSuperReferralComponentInfo(*pref_service_.Get(
+      prefs::kNewTabPageCachedSuperReferralComponentInfo)));
   EXPECT_TRUE(data->IsSuperReferral());
+  EXPECT_FALSE(pref_service_.GetString(
+                   prefs::kNewTabPageCachedSuperReferralComponentData).empty());
 
-  EXPECT_FALSE(pref_service_.FindPreference(
-      prefs::kNewTabPageCachedSuperReferralComponentInfo)->IsDefaultValue());
+  // Simulate current SR campaign is ended.
   service_->OnGetComponentJsonData(true, kTestEmptyComponent);
-
+  EXPECT_FALSE(IsValidSuperReferralComponentInfo(*pref_service_.Get(
+      prefs::kNewTabPageCachedSuperReferralComponentInfo)));
+  EXPECT_TRUE(pref_service_.GetString(
+                  prefs::kNewTabPageCachedSuperReferralComponentData).empty());
   EXPECT_TRUE(service_->marked_this_install_is_not_super_referral_forever_);
   EXPECT_TRUE(service_->unregistered_super_referral_component_);
 }

@@ -8,11 +8,14 @@
 
 #include <memory>
 
+#include "base/values.h"
+
 class PrefRegistrySimple;
 
 namespace ntp_background_images {
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
+bool IsValidSuperReferralComponentInfo(const base::Value& component_info);
 
 }  // namespace ntp_background_images
 

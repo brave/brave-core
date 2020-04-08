@@ -17,11 +17,13 @@ const char kNewTabPageSuperReferralThemesOption[] =
 const char kNewTabPageShowBackgroundImage[] =
     "brave.new_tab_page.show_background_image";
 
-extern const char kNewTabPageCachedSuperReferralComponentInfo[] =
+const char kNewTabPageCachedSuperReferralComponentInfo[] =
     "brave.new_tab_page.cached_super_referral_component_info";
-extern const char kNewTabPageCachedSuperReferralFaviconList[] =
+const char kNewTabPageCachedSuperReferralComponentData[] =
+    "brave.new_tab_page.cached_super_referral_component_data";
+const char kNewTabPageCachedSuperReferralFaviconList[] =
     "brave.new_tab_page.cached_super_referral_favicon_list";
-extern const char kNewTabPageCheckingMappingTableInProgress[] =
+const char kNewTabPageCheckingMappingTableInProgress[] =
     "brave.new_tab_page.checking_mapping_table_in_progress";
 
 }  // namespace prefs

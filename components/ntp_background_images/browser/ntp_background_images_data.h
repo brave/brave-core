@@ -41,8 +41,7 @@ struct Background {
 struct NTPBackgroundImagesData {
   NTPBackgroundImagesData();
   NTPBackgroundImagesData(const std::string& json_string,
-                          const base::FilePath& installed_dir,
-                          const base::FilePath& top_sites_favicon_cache_dir);
+                          const base::FilePath& installed_dir);
   NTPBackgroundImagesData(const NTPBackgroundImagesData& data);
   NTPBackgroundImagesData& operator=(const NTPBackgroundImagesData& data);
   NTPBackgroundImagesData(NTPBackgroundImagesData&& data);
