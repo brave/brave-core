@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+#include "build/branding_buildflags.h"
+
 #define BRAVE_RUN_SETUP                                                      \
   PathString installer_filename;                                             \
   wchar_t value[MAX_PATH] = {0, };                                           \
@@ -15,10 +17,10 @@
        installer_filename.length() != 0) {                                   \
     ReferralCodeString referral_code;                                        \
     if (ParseReferralCode(installer_filename.get(), &referral_code)) {       \
-      cmd_line.append(L" --brave-referral-code=")                            \
-      cmd_line.append(L"=\"")                                                \
-      cmd_line.append(referral_code.get())                                   \
-      cmd_line.append(L"\"")                                                 \
+      cmd_line.append(L" --brave-referral-code=");                           \
+      cmd_line.append(L"=\"");                                               \
+      cmd_line.append(referral_code.get());                                  \
+      cmd_line.append(L"\"");                                                \
     }                                                                        \
   }
 
@@ -56,7 +58,7 @@ bool ParseStandardReferralCode(const wchar_t* filename,
   if (*scan++ != L'-')
     return false;
 
-  if (anchor - scan != StandardReferralCodeLen)
+  if (anchor - scan + 1 != StandardReferralCodeLen)
     return false;
 
   const wchar_t* ref_code = scan;
@@ -75,7 +77,7 @@ bool ParseStandardReferralCode(const wchar_t* filename,
       return false;
   }
 
-  if (!SafeStrCopy(ref_code_normalized, StandardReferralCodeLen, ref_code))
+  if (!SafeStrCopy(ref_code_normalized, StandardReferralCodeLen + 1, ref_code))
     return false;
 
   SafeStrASCIIUpper(ref_code_normalized, StandardReferralCodeLen);
@@ -109,7 +111,7 @@ bool ParseExtendedReferralCode(const wchar_t* filename,
   for (int i = 0; i < lstrlen(ref_code); ++i) {
     if ((ref_code[i] < L'a' || ref_code[i] > L'z') &&
         (ref_code[i] < L'A' || ref_code[i] > L'Z') && (ref_code[i] != L'-'))
-      return NULL;
+      return false;
     if (ref_code[i] == L'-')
       ++dashes;
   }
