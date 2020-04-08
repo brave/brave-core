@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index fe09f99a91e3b1d2abfb335ec2771d1ed8592d87..e2ddd668d9c9a30708a348b94f7d1bdde7baa50b 100644
+index fe09f99a91e3b1d2abfb335ec2771d1ed8592d87..9542f5ccdf4081c6061936df0683272160dfb9aa 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -184,6 +184,10 @@ if (!is_android && !is_mac) {
@@ -60,7 +60,7 @@ index fe09f99a91e3b1d2abfb335ec2771d1ed8592d87..e2ddd668d9c9a30708a348b94f7d1bdd
  
    compile_entitlements("entitlements") {
      entitlements_templates = [ "app/app-entitlements.plist" ]
-@@ -726,7 +734,7 @@ if (is_win) {
+@@ -725,7 +733,7 @@ if (is_win) {
  
        output_name = chrome_helper_name + invoker.helper_name_suffix
  
