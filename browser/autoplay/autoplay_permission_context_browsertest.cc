@@ -575,7 +575,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayWhitelistServiceTest, AllowIfExactHostMatch) {
   NavigateToURLUntilLoadStop(whitelist_autoplay_url(0));
   EXPECT_FALSE(popup_prompt_factory->is_visible());
   EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
-      PermissionRequestType::PERMISSION_AUTOPLAY));
+      permissions::PermissionRequestType::PERMISSION_AUTOPLAY));
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
   WaitForPlaying();
   EXPECT_TRUE(
@@ -595,7 +595,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayWhitelistServiceTest, AllowIfETLDPlusOneMatch) {
   NavigateToURLUntilLoadStop(whitelist_autoplay_url(1));
   EXPECT_FALSE(popup_prompt_factory->is_visible());
   EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
-      PermissionRequestType::PERMISSION_AUTOPLAY));
+      permissions::PermissionRequestType::PERMISSION_AUTOPLAY));
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
   WaitForPlaying();
   EXPECT_TRUE(
@@ -617,7 +617,7 @@ IN_PROC_BROWSER_TEST_F(AutoplayWhitelistServiceTest,
   NavigateToURLUntilLoadStop(whitelist_autoplay_url(2));
   EXPECT_FALSE(popup_prompt_factory->is_visible());
   EXPECT_FALSE(popup_prompt_factory->RequestTypeSeen(
-      PermissionRequestType::PERMISSION_AUTOPLAY));
+      permissions::PermissionRequestType::PERMISSION_AUTOPLAY));
   EXPECT_EQ(0, popup_prompt_factory->TotalRequestCount());
   WaitForPlaying();
   EXPECT_TRUE(
