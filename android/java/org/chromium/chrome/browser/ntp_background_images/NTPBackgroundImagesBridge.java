@@ -170,6 +170,21 @@ public class NTPBackgroundImagesBridge {
                 mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this);
     }
 
+    public boolean isSuperReferral() {
+        return NTPBackgroundImagesBridgeJni.get().isSuperReferral(
+                mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this);
+    }
+
+    public String getSuperReferralThemeName() {
+        return NTPBackgroundImagesBridgeJni.get().getSuperReferralThemeName(
+                mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this);
+    }
+
+    public String getSuperReferralCode() {
+        return NTPBackgroundImagesBridgeJni.get().getSuperReferralCode(
+                mNativeNTPBackgroundImagesBridge, NTPBackgroundImagesBridge.this);
+    }
+
     public void getTopSites() {
         mTopSites.clear();
         NTPBackgroundImagesBridgeJni.get().getTopSites(
@@ -215,6 +230,12 @@ public class NTPBackgroundImagesBridge {
         void registerPageView(long nativeNTPBackgroundImagesBridge,
                               NTPBackgroundImagesBridge caller);
         void getTopSites(long nativeNTPBackgroundImagesBridge,
+                              NTPBackgroundImagesBridge caller);
+        boolean isSuperReferral(long nativeNTPBackgroundImagesBridge,
+                              NTPBackgroundImagesBridge caller);
+        String getSuperReferralThemeName(long nativeNTPBackgroundImagesBridge,
+                              NTPBackgroundImagesBridge caller);
+        String getSuperReferralCode(long nativeNTPBackgroundImagesBridge,
                               NTPBackgroundImagesBridge caller);
     }
 }

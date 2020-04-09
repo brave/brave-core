@@ -266,13 +266,18 @@ public class BraveNewTabPageView extends NewTabPageView {
     private void showNTPImage(NTPImage ntpImage) {
         NTPUtil.updateOrientedUI(mTabImpl.getActivity(), mNewTabPageLayout);
 
+        Log.e("NTP", "FROM OBJ Theme name : "+ ((NTPBackgroundImagesBridge.Wallpaper)ntpImage).getThemeName());
+        Log.e("NTP", "FROM OBJ Is Sponsored : "+ ((NTPBackgroundImagesBridge.Wallpaper)ntpImage).isSponsored());
+
+        Log.e("NTP", "FROM Function Theme name : "+ mNTPBackgroundImagesBridge.getSuperReferralThemeName());
+        Log.e("NTP", "FROM Function Is Super Referral : "+ mNTPBackgroundImagesBridge.isSuperReferral());
+
         if(BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
             && sponsoredTab != null && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
             setBackgroundImage(ntpImage);
             if (ntpImage instanceof NTPBackgroundImagesBridge.Wallpaper 
-                && ((NTPBackgroundImagesBridge.Wallpaper)ntpImage).isSponsored()) {
+                && !mNTPBackgroundImagesBridge.isSuperReferral()) {
                 NTPBackgroundImagesBridge.Wallpaper mWallpaper = (NTPBackgroundImagesBridge.Wallpaper) ntpImage;
-                Log.e("NTP", "Is Sponsored : "+ mWallpaper.isSponsored());
                 if (mWallpaper.getLogoPath() != null ) {
                     try {
                         ImageView sponsoredLogo = (ImageView)mNewTabPageLayout.findViewById(R.id.sponsored_logo);
@@ -294,9 +299,9 @@ public class BraveNewTabPageView extends NewTabPageView {
                     }
                 }
             } else if (ntpImage instanceof NTPBackgroundImagesBridge.Wallpaper 
-                && !((NTPBackgroundImagesBridge.Wallpaper)ntpImage).isSponsored()) {
-                Log.e("NTP", "Theme name : "+ ((NTPBackgroundImagesBridge.Wallpaper)ntpImage).getThemeName());
-                Log.e("NTP", "Is Sponsored : "+ ((NTPBackgroundImagesBridge.Wallpaper)ntpImage).isSponsored());
+                && mNTPBackgroundImagesBridge.isSuperReferral()) {
+                Log.e("NTP", "Theme name : "+ mNTPBackgroundImagesBridge.getSuperReferralThemeName());
+                Log.e("NTP", "Is Super Referral : "+ mNTPBackgroundImagesBridge.isSuperReferral());
                 FloatingActionButton mSuperReferralLogo = (FloatingActionButton) mNewTabPageLayout.findViewById(R.id.super_referral_logo);
                 mSuperReferralLogo.setVisibility(View.VISIBLE);
                 mSuperReferralLogo.setOnClickListener(new View.OnClickListener() {
