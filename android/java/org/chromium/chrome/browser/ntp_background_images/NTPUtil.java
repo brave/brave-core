@@ -345,6 +345,18 @@ public class NTPUtil {
         return bitmapWithGradient;
     }
 
+    public static Bitmap getTopSiteBitmap(String iconPath) {
+        Context mContext = ContextUtils.getApplicationContext();
+        try {
+            Uri imageFileUri = Uri.parse("file://"+ iconPath);
+            InputStream inputStream = mContext.getContentResolver().openInputStream(imageFileUri);
+            return BitmapFactory.decodeStream(inputStream);
+        } catch(FileNotFoundException exc) {
+            Log.e("NTP", exc.getMessage());
+            return null;
+        }
+    }
+
     public static boolean shouldEnableNTPFeature(boolean isMoreTabs) {
     	if(Build.VERSION.SDK_INT > Build.VERSION_CODES.M
     		|| (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && !isMoreTabs)) {
