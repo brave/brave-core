@@ -349,10 +349,10 @@ void NTPBackgroundImagesService::RegisterSuperReferralComponent() {
   std::string public_key;
   std::string id;
   std::string theme_name;
-  if (sr_component_info_.is_dict()) {
-    public_key = *sr_component_info_.FindStringKey(kPublicKey);
-    id = *sr_component_info_.FindStringKey(kComponentID);
-    theme_name = *sr_component_info_.FindStringKey(kThemeName);
+  if (initial_sr_component_info_.is_dict()) {
+    public_key = *initial_sr_component_info_.FindStringKey(kPublicKey);
+    id = *initial_sr_component_info_.FindStringKey(kComponentID);
+    theme_name = *initial_sr_component_info_.FindStringKey(kThemeName);
   } else {
     const auto* value = local_pref_->Get(
         prefs::kNewTabPageCachedSuperReferralComponentInfo);
@@ -425,7 +425,7 @@ void NTPBackgroundImagesService::OnGetMappingTableData(
           mapping_table_value->FindDictKey(GetReferralPromoCode())) {
     DVLOG(2) << __func__
              << ": This is super referral. Cache SR's referral code";
-    sr_component_info_ = value->Clone();
+    initial_sr_component_info_ = value->Clone();
     RegisterSuperReferralComponent();
     local_pref_->SetString(prefs::kNewTabPageCachedSuperReferralCode,
                            GetReferralPromoCode());
@@ -504,10 +504,11 @@ void NTPBackgroundImagesService::OnGetComponentJsonData(
     sr_images_data_.reset(
         new NTPBackgroundImagesData(json_string,
                                     super_referral_cache_dir_));
-    // In test, |sr_component_info_| could be empty.
-    if (sr_component_info_.is_dict()) {
+    // |initial_sr_component_info_| has proper data only for initial component
+    // downloading. After that, it's empty. In test, it's also empty.
+    if (initial_sr_component_info_.is_dict()) {
       local_pref_->Set(prefs::kNewTabPageCachedSuperReferralComponentInfo,
-                       sr_component_info_);
+                       initial_sr_component_info_);
     }
     if (local_pref_->FindPreference(
             prefs::kNewTabPageCachedSuperReferralFaviconList)->
