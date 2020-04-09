@@ -126,8 +126,6 @@ class NTPBackgroundImagesService {
 
   void ScheduleMappingTabRetryTimer();
 
-  void RegisterDemoSuperReferralComponent();
-
   // virtual for test.
   virtual void CheckSuperReferralComponent();
   virtual void RegisterSponsoredImagesComponent();
