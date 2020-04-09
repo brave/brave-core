@@ -65,6 +65,7 @@ source_set("ui") {
       "brave_layout_constants.h",
       "brave_pages.cc",
       "brave_pages.h",
+      "brave_view_ids.h",
       "browser_commands.cc",
       "browser_commands.h",
       "content_settings/brave_autoplay_blocked_image_model.cc",
