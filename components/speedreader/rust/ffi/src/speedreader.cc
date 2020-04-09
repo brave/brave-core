@@ -3,14 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "../include/speedreader.h"
+#include "brave/components/speedreader/rust/ffi/include/speedreader.h"
 
 #include <iostream>
 #include "base/logging.h"
 
-#include "../include/speedreader_ffi.h"
-
-#define UNUSED (void)
+#include "brave/components/speedreader/rust/ffi/include/speedreader_ffi.h"
 
 namespace speedreader {
 
