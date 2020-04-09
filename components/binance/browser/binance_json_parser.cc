@@ -344,7 +344,7 @@ bool BinanceJSONParser::GetConfirmStatusFromJSON(
 //   }],
 //   "success":true
 // }
- bool BinanceJSONParser::GetConvertAssetsFromJSON(const std::string& json,
+bool BinanceJSONParser::GetConvertAssetsFromJSON(const std::string& json,
     std::map<std::string, std::vector<std::string>>* assets) {
   if (!assets) {
     return false;
@@ -380,6 +380,5 @@ bool BinanceJSONParser::GetConfirmStatusFromJSON(
       }
     }
   }
-
   return true;
 }
