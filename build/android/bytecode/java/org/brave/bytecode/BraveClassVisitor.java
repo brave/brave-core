@@ -46,6 +46,39 @@ class BraveClassVisitor extends ClassVisitor {
         }
     }
 
+    class BraveMethodVisitor extends MethodVisitor {
+
+        private Method mMethod;
+
+        public BraveMethodVisitor(Method method, MethodVisitor mv) {
+            super(ASM5, mv);
+            this.mMethod = method;
+        }
+
+        @Override
+        public void visitMethodInsn(int opcode,
+                                    java.lang.String owner,
+                                    java.lang.String name,
+                                    java.lang.String descriptor,
+                                    boolean isInterface) {
+            if (shouldMakePublicMethod(owner, name) &&
+                    opcode == INVOKESPECIAL) {
+                System.out.println("use invoke virtual for call to method " +
+                        owner + "." + name);
+                // use invoke virtual because other classes can override
+                // the method now
+                opcode = INVOKEVIRTUAL;
+            }
+            String newOwner = shouldChangeOwner(owner, name);
+            if (!newOwner.isEmpty()) {
+                System.out.println("changing owner for " + mName + "." + name +
+                        " - new owner " + newOwner);
+                owner = newOwner;
+            }
+            super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
+        }
+    }
+
     protected String mName = "";
     protected String mSuperName = "";
 
@@ -53,6 +86,10 @@ class BraveClassVisitor extends ClassVisitor {
     private Map<String, ArrayList<String>> mDeleteMethods =
             new HashMap<String, ArrayList<String>>();
     private Map<String, ArrayList<String>> mMakePublicMethods =
+            new HashMap<String, ArrayList<String>>();
+    private Map<String, Map<String, String>> mChangeOwnerMethods =
+            new HashMap<String, Map<String, String>>();
+    private Map<String, ArrayList<String>> mMakeProtectedFields =
             new HashMap<String, ArrayList<String>>();
     private Map<String, Map<String, ArrayList<String>>> mAddAnnotations =
             new HashMap<String, Map<String, ArrayList<String>>>();
@@ -106,6 +143,74 @@ class BraveClassVisitor extends ClassVisitor {
             mMakePublicMethods.put(className, methods);
         }
         methods.add(methodName);
+    }
+
+    private String shouldChangeOwner(String owner, String methodName) {
+        if (mChangeOwnerMethods.containsKey(owner)) {
+            Map<String, String> methods = mChangeOwnerMethods.get(owner);
+            if (methods.containsKey(methodName)) {
+                String newOwner = methods.get(methodName);
+                if (!newOwner.equals(mName)) {
+                    return newOwner;
+                }
+            }
+        }
+        return "";
+    }
+
+    protected void changeMethodOwner(String currentOwner, String methodName, String newOwner) {
+        Map methods = mChangeOwnerMethods.get(currentOwner);
+        if (methods == null) {
+            methods = new HashMap<String, String>();
+            mChangeOwnerMethods.put(currentOwner, methods);
+        }
+        methods.put(methodName, newOwner);
+    }
+
+    private boolean shouldDeleteField(String fieldName) {
+        for(Map.Entry<String, ArrayList<String>> entry :
+                mDeleteFields.entrySet()) {
+            String className = entry.getKey();
+            ArrayList<String> fieldNames = entry.getValue();
+            return mName.contains(className) &&
+                   fieldNames.contains(fieldName);
+        }
+
+        return false;
+    }
+
+    protected void deleteField(String className, String fieldName) {
+        ArrayList fields = mDeleteFields.get(className);
+        if (fields == null) {
+            fields = new ArrayList<String>();
+            mDeleteFields.put(className, fields);
+        }
+        fields.add(fieldName);
+    }
+
+    private boolean shouldMakeProtectedField(String className, String fieldName) {
+        for(Map.Entry<String, ArrayList<String>> entry :
+                mMakeProtectedFields.entrySet()) {
+            String entryClassName = entry.getKey();
+            ArrayList<String> fieldNames = entry.getValue();
+            return className.contains(entryClassName) &&
+                   fieldNames.contains(fieldName);
+        }
+
+        return false;
+    }
+
+    private boolean shouldMakeProtectedField(String fieldName) {
+        return shouldMakeProtectedField(mName, fieldName);
+    }
+
+    protected void makeProtectedField(String className, String fieldName) {
+        ArrayList fields = mMakeProtectedFields.get(className);
+        if (fields == null) {
+            fields = new ArrayList<String>();
+            mMakeProtectedFields.put(className, fields);
+        }
+        fields.add(fieldName);
     }
 
     protected void addMethodAnnotation(String className, String methodName, String annotationType) {
