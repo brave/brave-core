@@ -824,9 +824,14 @@ void BraveProfileSyncServiceImpl::SetPermanentNodesOrder(
 }
 
 // static
-void BraveProfileSyncServiceImpl::MigrateDuplicatedBookmarksObjectIds(
+bool BraveProfileSyncServiceImpl::MigrateDuplicatedBookmarksObjectIds(
+    bool sync_enabled,
     Profile* profile,
     BookmarkModel* model) {
+  if (!sync_enabled) {
+    return false;
+  }
+
   DCHECK(model);
   DCHECK(model->loaded());
 
@@ -834,7 +839,7 @@ void BraveProfileSyncServiceImpl::MigrateDuplicatedBookmarksObjectIds(
       prefs::kDuplicatedBookmarksMigrateVersion);
 
   if (migrated_version >= 2) {
-    return;
+    return true;
   }
 
   // Copying bookmarks through brave://bookmarks page could duplicate brave sync
@@ -845,6 +850,7 @@ void BraveProfileSyncServiceImpl::MigrateDuplicatedBookmarksObjectIds(
   ClearDuplicatedNodes(&object_id_nodes, model);
 
   profile->GetPrefs()->SetInteger(prefs::kDuplicatedBookmarksMigrateVersion, 2);
+  return true;
 }
 
 std::unique_ptr<SyncRecord>
