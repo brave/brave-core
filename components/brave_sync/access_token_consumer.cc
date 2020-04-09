@@ -16,10 +16,11 @@ void AccessTokenConsumer::OnGetTokenSuccess(
     const TokenResponse& token_response) {}
 
 void AccessTokenConsumer::OnGetTokenFailure(
-    const std::string& error) {}
+    const GoogleServiceAuthError& error) {}
 
 void AccessTokenConsumer::OnGetTimestampSuccess(const std::string& ts) {}
 
-void AccessTokenConsumer::OnGetTimestampFailure(const std::string& error) {}
+void AccessTokenConsumer::OnGetTimestampFailure(
+    const GoogleServiceAuthError& error) {}
 
-}   // namespace brave_sync
+}  // namespace brave_sync

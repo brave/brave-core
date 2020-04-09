@@ -3,6 +3,8 @@
 
 #include "base/time/time.h"
 
+class GoogleServiceAuthError;
+
 namespace brave_sync {
 
 class AccessTokenConsumer {
@@ -33,12 +35,11 @@ class AccessTokenConsumer {
   virtual void OnGetTokenSuccess(const TokenResponse& token_response);
 
   // Failure callback.
-  // TODO(darkdh): define error messages
-  virtual void OnGetTokenFailure(const std::string& error);
+  virtual void OnGetTokenFailure(const GoogleServiceAuthError& error);
 
   virtual void OnGetTimestampSuccess(const std::string& ts);
 
-  virtual void OnGetTimestampFailure(const std::string& error);
+  virtual void OnGetTimestampFailure(const GoogleServiceAuthError& error);
 
   DISALLOW_COPY_AND_ASSIGN(AccessTokenConsumer);
 };

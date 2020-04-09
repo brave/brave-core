@@ -13,14 +13,9 @@ const int64_t kBraveDefaultPollIntervalSeconds = 60;
   return sync_client_->GetPrefService()->GetBoolean( \
       brave_sync::prefs::kSyncEnabled);
 
-#define BRAVE_GET_AUTHENTICATED_ACCOUNT_INFO                               \
-  AccountInfo account_info;                                                \
-  account_info.account_id = CoreAccountId::FromString("dummy_account_id"); \
-  return std::move(account_info);
-
-#define BRAVE_PROFILE_SYNC_SERVICE          \
-  auth_manager_->CreateAccessTokenFetcher(  \
-      url_loader_factory_);
+#define BRAVE_PROFILE_SYNC_SERVICE            \
+  auth_manager_->CreateAccessTokenFetcher(    \
+      url_loader_factory_, sync_service_url_);
 
 #define BRAVE_START_UP_SLOW_ENGINE_COMPONENTS     \
     auth_manager_->DeriveSigningKeys(             \
@@ -33,10 +28,22 @@ const int64_t kBraveDefaultPollIntervalSeconds = 60;
         sync_client_->GetPrefService()->GetString(  \
           brave_sync::prefs::kSyncSeed));
 
+#define BRAVE_ON_ENGINE_INITIALIZED                                           \
+  std::string sync_code =                                                     \
+    sync_client_->GetPrefService()->GetString(brave_sync::prefs::kSyncSeed);  \
+  GetUserSettings()->EnableEncryptEverything();                               \
+  if (GetUserSettings()->IsPassphraseRequired()) {                            \
+    if (!GetUserSettings()->SetDecryptionPassphrase(sync_code))               \
+    LOG(ERROR) << "Set decryption passphrase failed";                         \
+  } else {                                                                    \
+    if (!GetUserSettings()->IsUsingSecondaryPassphrase())                     \
+    GetUserSettings()->SetEncryptionPassphrase(sync_code);                    \
+  }
+
 #include "../../../../../components/sync/driver/profile_sync_service.cc"
 #undef BRAVE_SET_POLL_INTERVAL
 #undef BRAVE_IS_SIGNED_IN
-#undef BRAVE_GET_AUTHENTICATED_ACCOUNT_INFO
 #undef BRAVE_PROFILE_SYNC_SERVICE
 #undef BRAVE_START_UP_SLOW_ENGINE_COMPONENTS
 #undef BRAVE_ON_FIRST_SETUP_COMPLETE_PREF_CHANGE
+#undef BRAVE_ON_ENGINE_INITIALIZED
