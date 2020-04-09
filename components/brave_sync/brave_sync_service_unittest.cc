@@ -15,6 +15,7 @@
 #include "brave/components/brave_sync/brave_sync_service_observer.h"
 #include "brave/components/brave_sync/client/brave_sync_client_impl.h"
 #include "brave/components/brave_sync/client/client_ext_impl_data.h"
+#include "brave/components/brave_sync/features.h"
 #include "brave/components/brave_sync/jslib_const.h"
 #include "brave/components/brave_sync/jslib_messages.h"
 #include "brave/components/brave_sync/settings.h"
@@ -1710,8 +1711,12 @@ TEST_F(BraveSyncServiceTest, MigrateDuplicatedBookmarksObjectIds) {
   sync_service()->AddNonClonedBookmarkKeys(model());
 
   // Do the migration
-  BraveProfileSyncServiceImpl::MigrateDuplicatedBookmarksObjectIds(profile(),
-                                                                   model());
+  bool result =
+      BraveProfileSyncServiceImpl::MigrateDuplicatedBookmarksObjectIds(
+          true,
+          profile(),
+          model());
+  EXPECT_TRUE(result);
 
   // All the bookmarks after migration must not have sync meta info
   all_nodes.clear();
@@ -1727,4 +1732,30 @@ TEST_F(BraveSyncServiceTest, MigrateDuplicatedBookmarksObjectIds) {
         bookmark->GetMetaInfo("sync_timestamp", &migrated_sync_timestamp));
     EXPECT_FALSE(bookmark->GetMetaInfo("version", &migrated_version));
   }
+}
+
+TEST_F(BraveSyncServiceTest, SyncDisabledMigrateDuplicatedBookmarksObjectIds) {
+  AsMutable(model()->other_node())->SetMetaInfo("order", kOtherNodeOrder);
+
+  const bookmarks::BookmarkNode* bookmark_a1 =
+      model()->AddURL(model()->other_node(), 0, base::ASCIIToUTF16("A1"),
+                      GURL("https://a1.com"));
+
+  SetBraveMeta(bookmark_a1, "object_id_value", "255.255.255.3",
+               "sync_timestamp_value", "version_value");
+
+  model()->Copy(bookmark_a1, model()->other_node(), 1);
+
+  model()->Copy(bookmark_a1, model()->other_node(), 2);
+
+  // Do the migration
+  bool result =
+      BraveProfileSyncServiceImpl::MigrateDuplicatedBookmarksObjectIds(
+          false,
+          profile(),
+          model());
+
+  // Should return false, because sync is disable
+  // Migration will be a no-op
+  EXPECT_FALSE(result);
 }
