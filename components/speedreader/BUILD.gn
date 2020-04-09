@@ -1,6 +1,5 @@
 import("//build/buildflag_header.gni")
 import("//brave/components/speedreader/buildflags.gni")
-import("//brave/components/speedreader/rust/ffi/config.gni")
 
 buildflag_header("buildflags") {
   header = "buildflags.h"
@@ -30,29 +29,10 @@ source_set("speedreader") {
     "//brave/components/resources",
     "//brave/components/speedreader:buildflags",
     "//brave/components/speedreader/rust/ffi:speedreader_ffi",
+    "//brave/components/speedreader/rust/ffi:speedreader_libs",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
     "//ui/base",  # For ResourceBundle, consider getting rid of this?
     "//url",
   ]
-
-  public_deps = [
-    ":speedreader_libs"
-  ]
-}
-
-if (is_mac) {
-  bundle_data("speedreader_libs") {
-    sources = [
-      speedreader_lib_path,
-    ]
-    outputs = [
-      "{{bundle_contents_dir}}/Libraries/{{source_file_part}}",
-    ]
-    public_deps = [
-      "//brave/components/speedreader/rust/ffi:speedreader",
-    ]
-  }
-} else {
-  group("speedreader_libs") {}
 }

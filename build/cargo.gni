@@ -13,8 +13,12 @@ template("cargo_build") {
 
     # make sure rebuilds when files change
     forward_variables_from(invoker, "*")
-
-    outputs = [output]
+    if (!defined(outputs)) {
+      outputs = []
+    }
+    if (defined(output)) {
+      outputs += [ output ]
+    }
 
     args = [
       "--rustup_path=" + rebase_path("//brave/build/rustup/", root_build_dir),

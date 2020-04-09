@@ -28,21 +28,6 @@ source_set("speedreader_ffi") {
   ]
 
   libs = [ speedreader_lib_path ]
-
-  if (is_mac || is_ios ) {
-    libs += [
-      "Security.framework"
-    ]
-  }
-}
-
-if (speedreader_shared_lib_install_name != "") {
-  fix_testing_install_name("test_speedreader_install_name") {
-    current_path = speedreader_shared_lib_install_name
-    new_path = "@executable_path/" + rebase_path(speedreader_lib_path, root_build_dir)
-  }
-} else {
-    group("test_speedreader_install_name") {}
 }
 
 cargo_build("speedreader") {
@@ -58,12 +43,35 @@ cargo_build("speedreader") {
     "../src/src/whitelist.rs",
   ]
 
-  rust_flags = speedreader_flags
-  output = speedreader_lib_path
+  outputs = [speedreader_lib_path]
 
   manifest_path = "Cargo.toml"
-
+  rust_flags = rustc_flags
   build_path = speedreader_build_path
+  target = rustc_target
+}
 
-  target = speedreader_target
+if (speedreader_shared_lib_install_name != "") {
+  fix_testing_install_name("test_speedreader_install_name") {
+    current_path = speedreader_shared_lib_install_name
+    new_path = "@executable_path/" + rebase_path(speedreader_lib_path, root_build_dir)
+  }
+} else {
+    group("test_speedreader_install_name") {}
+}
+
+if (is_mac) {
+  bundle_data("speedreader_libs") {
+    sources = [
+      speedreader_lib_path,
+    ]
+    outputs = [
+      "{{bundle_contents_dir}}/Libraries/{{source_file_part}}",
+    ]
+    public_deps = [
+      ":speedreader",
+    ]
+  }
+} else {
+  group("speedreader_libs") {}
 }

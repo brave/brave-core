@@ -6,8 +6,8 @@
 #include "brave/components/speedreader/rust/ffi/include/speedreader.h"
 
 #include <iostream>
-#include "base/logging.h"
 
+#include "base/logging.h"
 #include "brave/components/speedreader/rust/ffi/include/speedreader_ffi.h"
 
 namespace speedreader {
@@ -77,9 +77,8 @@ Rewriter::Rewriter(C_SpeedReader* speedreader,
     : output_(""),
       ended_(false),
       poisoned_(false),
-      config_raw(get_rewriter_opaque_config(speedreader,
-                                                        url.c_str(),
-                                                        url.length())),
+      config_raw(
+          get_rewriter_opaque_config(speedreader, url.c_str(), url.length())),
       raw(rewriter_new(
           speedreader,
           url.c_str(),
@@ -100,16 +99,15 @@ Rewriter::Rewriter(C_SpeedReader* speedreader,
     : output_(""),
       ended_(false),
       poisoned_(false),
-      config_raw(get_rewriter_opaque_config(speedreader,
-                                                        url.c_str(),
-                                                        url.length())),
+      config_raw(
+          get_rewriter_opaque_config(speedreader, url.c_str(), url.length())),
       raw(rewriter_new(speedreader,
-                                   url.c_str(),
-                                   url.length(),
-                                   output_sink,
-                                   output_sink_user_data,
-                                   config_raw,
-                                   rewriter_type)) {}
+                       url.c_str(),
+                       url.length(),
+                       output_sink,
+                       output_sink_user_data,
+                       config_raw,
+                       rewriter_type)) {}
 
 Rewriter::~Rewriter() {
   if (!ended_) {

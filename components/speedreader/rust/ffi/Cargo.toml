@@ -17,4 +17,4 @@ panic = "unwind"
 lto = true
 
 [lib]
-crate-type = ["staticlib", "cdylib"]
+crate-type = ["staticlib"]
