@@ -10,6 +10,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
 #include "base/values.h"
+#include "google_apis/gaia/google_service_auth_error.h"
 #include "net/base/escape.h"
 #include "net/base/load_flags.h"
 #include "net/base/net_errors.h"
@@ -36,11 +37,45 @@ constexpr char kIdTokenKey[] = "id_token";
 constexpr char kErrorKey[] = "error";
 constexpr char kTimestamp[] = "timestamp";
 
-static std::string CreateAuthError(int net_error) {
+constexpr char kAuthSuffix[] = "v2/auth";
+constexpr char kTimestampSuffix[] = "v2/timestamp";
+
+// Enumerated constants for logging server responses on 400 errors, matching
+// RFC 6749.
+enum OAuth2ErrorCodesForHistogram {
+  OAUTH2_ACCESS_ERROR_INVALID_REQUEST = 0,
+  OAUTH2_ACCESS_ERROR_INVALID_CLIENT,
+  OAUTH2_ACCESS_ERROR_INVALID_GRANT,
+  OAUTH2_ACCESS_ERROR_UNAUTHORIZED_CLIENT,
+  OAUTH2_ACCESS_ERROR_UNSUPPORTED_GRANT_TYPE,
+  OAUTH2_ACCESS_ERROR_INVALID_SCOPE,
+  OAUTH2_ACCESS_ERROR_UNKNOWN,
+  OAUTH2_ACCESS_ERROR_COUNT
+};
+
+OAuth2ErrorCodesForHistogram OAuth2ErrorToHistogramValue(
+    const std::string& error) {
+  if (error == "invalid_request")
+    return OAUTH2_ACCESS_ERROR_INVALID_REQUEST;
+  else if (error == "invalid_client")
+    return OAUTH2_ACCESS_ERROR_INVALID_CLIENT;
+  else if (error == "invalid_grant")
+    return OAUTH2_ACCESS_ERROR_INVALID_GRANT;
+  else if (error == "unauthorized_client")
+    return OAUTH2_ACCESS_ERROR_UNAUTHORIZED_CLIENT;
+  else if (error == "unsupported_grant_type")
+    return OAUTH2_ACCESS_ERROR_UNSUPPORTED_GRANT_TYPE;
+  else if (error == "invalid_scope")
+    return OAUTH2_ACCESS_ERROR_INVALID_SCOPE;
+
+  return OAUTH2_ACCESS_ERROR_UNKNOWN;
+}
+
+static GoogleServiceAuthError CreateAuthError(int net_error) {
   CHECK_NE(net_error, net::OK);
   DLOG(WARNING) << "Server error: errno "
                 << net_error;
-  return net::ErrorToString(net_error);
+  return GoogleServiceAuthError::FromConnectionError(net_error);
 }
 
 static std::unique_ptr<network::SimpleURLLoader> CreateURLLoader(
@@ -99,7 +134,7 @@ static std::unique_ptr<network::SimpleURLLoader> CreateURLLoader(
   return url_loader;
 }
 
-std::unique_ptr<base::DictionaryValue> ParseGetAccessTokenResponse(
+std::unique_ptr<base::DictionaryValue> ParseServerResponse(
     std::unique_ptr<std::string> data) {
   if (!data)
     return nullptr;
@@ -117,9 +152,11 @@ std::unique_ptr<base::DictionaryValue> ParseGetAccessTokenResponse(
 AccessTokenFetcherImpl::AccessTokenFetcherImpl(
     AccessTokenConsumer* consumer,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    const GURL& sync_service_url,
     const std::string& refresh_token)
     : AccessTokenFetcher(consumer),
       url_loader_factory_(url_loader_factory),
+      sync_service_url_(sync_service_url),
       refresh_token_(refresh_token),
       state_(INITIAL) {}
 
@@ -142,7 +179,7 @@ void AccessTokenFetcherImpl::Start(
 
 void AccessTokenFetcherImpl::StartGetTimestamp() {
   ts_url_loader_ =
-      CreateURLLoader(GURL("http://localhost:8295/v2/timestamp"),
+      CreateURLLoader(MakeGetTimestampUrl(),
                       "");
   // It's safe to use Unretained below as the |url_loader_| is owned by |this|.
   ts_url_loader_->DownloadToString(
@@ -194,12 +231,14 @@ void AccessTokenFetcherImpl::EndGetAccessToken(
       NOTREACHED() << "HTTP 407 should be treated as a network error.";
       // If this ever happens in production, we treat it as a temporary error as
       // it is similar to a network error.
-      OnGetTokenFailure(net::ErrorToString(response_code));
+      OnGetTokenFailure(
+          GoogleServiceAuthError(GoogleServiceAuthError::SERVICE_UNAVAILABLE));
       return;
     case net::HTTP_FORBIDDEN:
       // HTTP_FORBIDDEN (403) is treated as temporary error, because it may be
       // '403 Rate Limit Exeeded.'
-      OnGetTokenFailure(net::ErrorToString(response_code));
+      OnGetTokenFailure(
+          GoogleServiceAuthError(GoogleServiceAuthError::SERVICE_UNAVAILABLE));
       return;
     case net::HTTP_BAD_REQUEST: {
       // HTTP_BAD_REQUEST (400) usually contains error as per
@@ -207,33 +246,34 @@ void AccessTokenFetcherImpl::EndGetAccessToken(
       std::string gaia_error;
       if (!ParseGetAccessTokenFailureResponse(std::move(response_body),
                                               &gaia_error)) {
-        OnGetTokenFailure(net::ErrorToString(response_code));
+        OnGetTokenFailure(
+            GoogleServiceAuthError(GoogleServiceAuthError::SERVICE_ERROR));
         return;
       }
+      OAuth2ErrorCodesForHistogram access_error(
+          OAuth2ErrorToHistogramValue(gaia_error));
 
-      // ErrorCodesForHistogram access_error(
-      //     ErrorToHistogramValue(gaia_error));
-      // UMA_HISTOGRAM_ENUMERATION("Gaia.BadRequestTypeForAccessToken",
-      //                           access_error,
-      //                           OAUTH2_ACCESS_ERROR_COUNT);
-
-      // OnGetTokenFailure(
-      //     access_error == OAUTH2_ACCESS_ERROR_INVALID_GRANT
-      //         ? GoogleServiceAuthError::FromInvalidGaiaCredentialsReason(
-      //               GoogleServiceAuthError::InvalidGaiaCredentialsReason::
-      //                   CREDENTIALS_REJECTED_BY_SERVER)
-      //         : GoogleServiceAuthError(GoogleServiceAuthError::SERVICE_ERROR));
+      OnGetTokenFailure(
+          access_error == OAUTH2_ACCESS_ERROR_INVALID_GRANT
+              ? GoogleServiceAuthError::FromInvalidGaiaCredentialsReason(
+                    GoogleServiceAuthError::InvalidGaiaCredentialsReason::
+                        CREDENTIALS_REJECTED_BY_SERVER)
+              : GoogleServiceAuthError(GoogleServiceAuthError::SERVICE_ERROR));
       return;
     }
     default: {
       if (response_code >= net::HTTP_INTERNAL_SERVER_ERROR) {
         // 5xx is always treated as transient.
-        OnGetTokenFailure(net::ErrorToString(response_code));
+        OnGetTokenFailure(GoogleServiceAuthError(
+            GoogleServiceAuthError::SERVICE_UNAVAILABLE));
       } else {
         // The other errors are treated as permanent error.
         DLOG(ERROR) << "Unexpected persistent error: http_status="
                     << response_code;
-        OnGetTokenFailure(net::ErrorToString(response_code));
+        OnGetTokenFailure(
+            GoogleServiceAuthError::FromInvalidGaiaCredentialsReason(
+                GoogleServiceAuthError::InvalidGaiaCredentialsReason::
+                    CREDENTIALS_REJECTED_BY_SERVER));
       }
       return;
     }
@@ -247,7 +287,8 @@ void AccessTokenFetcherImpl::EndGetAccessToken(
   if (!ParseGetAccessTokenSuccessResponse(
           std::move(response_body), &access_token, &expires_in, &id_token)) {
     DLOG(WARNING) << "Response doesn't match expected format";
-    OnGetTokenFailure("Service Unavailable");
+    OnGetTokenFailure(
+        GoogleServiceAuthError(GoogleServiceAuthError::SERVICE_UNAVAILABLE));
     return;
   }
   // The token will expire in |expires_in| seconds. Take a 10% error margin to
@@ -264,7 +305,7 @@ void AccessTokenFetcherImpl::OnGetTokenSuccess(
 }
 
 void AccessTokenFetcherImpl::OnGetTokenFailure(
-    const std::string& error) {
+    const GoogleServiceAuthError& error) {
   state_ = ERROR_STATE;
   FireOnGetTokenFailure(error);
 }
@@ -277,6 +318,7 @@ void AccessTokenFetcherImpl::OnURLLoadComplete(
 
 void AccessTokenFetcherImpl::OnTimestampLoadComplete(
     std::unique_ptr<std::string> response_body) {
+  state_ = INITIAL;
   bool net_failure = false;
   int histogram_value;
   if (ts_url_loader_->NetError() == net::OK && ts_url_loader_->ResponseInfo() &&
@@ -288,23 +330,30 @@ void AccessTokenFetcherImpl::OnTimestampLoadComplete(
   }
   if (net_failure) {
     FireOnGetTimestampFailure(CreateAuthError(histogram_value));
+    state_ = ERROR_STATE;
     return;
   }
   std::unique_ptr<base::DictionaryValue> value =
-      ParseGetAccessTokenResponse(std::move(response_body));
+      ParseServerResponse(std::move(response_body));
   if (!value)
     return;
   std::string timestamp;
   if (!value->GetString(kTimestamp, &timestamp)) {
-    FireOnGetTimestampFailure("Unable to parse timestamp");
+    DLOG(WARNING) << "Response doesn't match expected format";
+    FireOnGetTimestampFailure(
+        GoogleServiceAuthError(GoogleServiceAuthError::SERVICE_UNAVAILABLE));
+    state_ = ERROR_STATE;
     return;
   }
   FireOnGetTimestampSuccess(timestamp);
 }
 
-// static
 GURL AccessTokenFetcherImpl::MakeGetAccessTokenUrl() {
-  return GURL("http://localhost:8295/v2/auth");
+  return sync_service_url_.Resolve(kAuthSuffix);
+}
+
+GURL AccessTokenFetcherImpl::MakeGetTimestampUrl() {
+  return sync_service_url_.Resolve(kTimestampSuffix);
 }
 
 // static
@@ -335,7 +384,7 @@ bool AccessTokenFetcherImpl::ParseGetAccessTokenSuccessResponse(
     std::string* id_token) {
   CHECK(access_token);
   std::unique_ptr<base::DictionaryValue> value =
-      ParseGetAccessTokenResponse(std::move(response_body));
+      ParseServerResponse(std::move(response_body));
   if (!value)
     return false;
   // ID token field is optional.
@@ -350,7 +399,7 @@ bool AccessTokenFetcherImpl::ParseGetAccessTokenFailureResponse(
     std::string* error) {
   CHECK(error);
   std::unique_ptr<base::DictionaryValue> value =
-      ParseGetAccessTokenResponse(std::move(response_body));
+      ParseServerResponse(std::move(response_body));
   return value ? value->GetString(kErrorKey, error) : false;
 }
 

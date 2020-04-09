@@ -23,6 +23,7 @@ class AccessTokenFetcherImpl : public AccessTokenFetcher {
   AccessTokenFetcherImpl(
       AccessTokenConsumer* consumer,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      const GURL& sync_service_url,
       const std::string& refresh_token);
   ~AccessTokenFetcherImpl() override;
 
@@ -53,10 +54,11 @@ class AccessTokenFetcherImpl : public AccessTokenFetcher {
   // Helper mehtods for reporting back results.
   void OnGetTokenSuccess(
       const AccessTokenConsumer::TokenResponse& token_response);
-  void OnGetTokenFailure(const std::string& error);
+  void OnGetTokenFailure(const GoogleServiceAuthError& error);
 
   // Other helpers.
-  static GURL MakeGetAccessTokenUrl();
+  GURL MakeGetAccessTokenUrl();
+  GURL MakeGetTimestampUrl();
   static std::string MakeGetAccessTokenBody(
       const std::string& client_id,
       const std::string& client_secret,
@@ -75,6 +77,7 @@ class AccessTokenFetcherImpl : public AccessTokenFetcher {
 
   // State that is set during construction.
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  GURL sync_service_url_;
   const std::string refresh_token_;
   State state_;
 

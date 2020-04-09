@@ -378,18 +378,7 @@ Polymer({
   onSyncSetupDone_: function(e) {
     if (e.detail) {
       this.didAbort_ = false;
-
-      this.syncPrefs.encryptAllData = true;
-      this.syncPrefs.setNewPassphrase = true;
-      this.syncPrefs.passphrase = this.passphrase_;
-
-      if (this.syncPrefs.passphraseRequired) {
-        this.syncPrefs.setNewPassphrase = false;
-      }
       this.browserProxy_.setSyncCode(this.passphrase_);
-
-      this.browserProxy_.setSyncEncryption(this.syncPrefs)
-        .then(this.handlePageStatusChanged_.bind(this));
     } else {
       this.setupCancelConfirmed_ = true;
     }
