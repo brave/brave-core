@@ -280,7 +280,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "binanceWidgetPreviewConvert", IDS_BINANCE_WIDGET_PREVIEW_CONVERT },
         { "binanceWidgetSummary", IDS_BINANCE_WIDGET_SUMMARY },
         { "binanceWidgetAuthInvalid", IDS_BINANCE_WIDGET_AUTH_INVALID },
-        { "binanceWidgetAuthInvalidCopy", IDS_BINANCE_WIDGET_AUTH_INVALID_COPY },
+        { "binanceWidgetAuthInvalidCopy", IDS_BINANCE_WIDGET_AUTH_INVALID_COPY },         // NOLINT
         { "binanceWidgetRefreshData", IDS_BINANCE_WIDGET_REFRESH_DATA }
       }
     }, {

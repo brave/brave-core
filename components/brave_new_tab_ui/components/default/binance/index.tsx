@@ -209,7 +209,7 @@ class Binance extends React.PureComponent<Props, State> {
     }
   }
 
-  async componentDidMount () {
+  componentDidMount () {
     const { userTLDAutoSet } = this.props
 
     if (this.props.userAuthed) {
