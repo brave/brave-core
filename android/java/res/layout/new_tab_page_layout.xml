@@ -37,6 +37,16 @@
             <!-- Brave stats -->
             <include layout="@layout/brave_stats_layout"/>
 
+            <LinearLayout
+                android:id="@+id/ntp_super_referral_sites_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:weightSum="1.0"
+                android:orientation="horizontal">
+
+            </LinearLayout>
+
             <!-- Explore offline card -->
             <ViewStub
                 android:id="@+id/explore_offline_card_stub"
