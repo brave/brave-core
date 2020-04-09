@@ -3,6 +3,7 @@ pipeline {
         node { label "master" }
     }
     options {
+        ansiColor("xterm")
         timeout(time: 6, unit: "HOURS")
         timestamps()
     }
