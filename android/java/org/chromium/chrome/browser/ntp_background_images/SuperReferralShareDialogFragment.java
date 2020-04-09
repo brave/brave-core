@@ -21,9 +21,13 @@ import com.google.zxing.common.BitMatrix;
 
 import org.chromium.chrome.R;
 import org.chromium.base.Log;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 
 public class SuperReferralShareDialogFragment extends DialogFragment implements View.OnClickListener{
 	private static final String TAG = "SUPER-REFERRAL";
+
+    private static final String BRAVE_REF_URL = "https://brave.com/?ref=";
 
 	// For QR code generation
 	private static final int WHITE = 0xFFFFFFFF;
@@ -32,6 +36,8 @@ public class SuperReferralShareDialogFragment extends DialogFragment implements 
 
 	private ImageView mQRImage;
 	private Button mShareButton;
+
+    private NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
 
 	public SuperReferralShareDialogFragment() {
 		// Empty constructor is required for DialogFragment
@@ -50,6 +56,8 @@ public class SuperReferralShareDialogFragment extends DialogFragment implements 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+        Profile mProfile = Profile.getLastUsedProfile();
+        mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
 		return inflater.inflate(R.layout.fragment_super_referral_share, container);
 	}
 
@@ -81,7 +89,7 @@ public class SuperReferralShareDialogFragment extends DialogFragment implements 
     }
 
     private void generateQRCode() {
-        final String qrDataFinal = "https://brave.com/?ref=TECHNIK";
+        final String qrDataFinal = BRAVE_REF_URL + mNTPBackgroundImagesBridge.getSuperReferralCode();
         new Thread(new Runnable() {
             @Override
             public void run() {

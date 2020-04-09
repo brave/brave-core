@@ -160,6 +160,29 @@ void NTPBackgroundImagesBridge::GetTopSites(
   Java_NTPBackgroundImagesBridge_topSitesLoaded(env);  
 }
 
+bool NTPBackgroundImagesBridge::IsSuperReferral(
+  JNIEnv* env, const JavaParamRef<jobject>& obj) {
+  if (view_counter_service_)
+    return view_counter_service_->IsSuperReferral();
+  return false;
+}
+
+base::android::ScopedJavaLocalRef<jstring>
+NTPBackgroundImagesBridge::GetSuperReferralThemeName(
+  JNIEnv* env, const JavaParamRef<jobject>& obj) {
+  if (view_counter_service_)
+    return ConvertUTF8ToJavaString(env, view_counter_service_->GetSuperReferralThemeName());
+  return ConvertUTF8ToJavaString(env, "");
+}
+
+base::android::ScopedJavaLocalRef<jstring>
+NTPBackgroundImagesBridge::GetSuperReferralCode(
+  JNIEnv* env, const JavaParamRef<jobject>& obj) {
+  if (view_counter_service_)
+    return ConvertUTF8ToJavaString(env,view_counter_service_->GetSuperReferralCode());
+  return ConvertUTF8ToJavaString(env, "");
+}
+
 base::android::ScopedJavaLocalRef<jobject>
 NTPBackgroundImagesBridge::GetCurrentWallpaper(
     JNIEnv* env, const JavaParamRef<jobject>& obj) {
