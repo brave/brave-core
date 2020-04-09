@@ -11,17 +11,18 @@
 #include <memory>
 #include <vector>
 
-#include "bat/ads/ads_client.h"
-
 #include "bat/ads/internal/catalog_campaign_info.h"
 
 namespace ads {
 
+class AdsImpl;
 struct CatalogState;
 
 class Catalog {
  public:
-  explicit Catalog(AdsClient* ads_client);
+  explicit Catalog(
+      AdsImpl* ads);
+
   ~Catalog();
 
   bool FromJson(const std::string& json);  // Deserialize
@@ -39,10 +40,14 @@ class Catalog {
   void Save(const std::string& json, ResultCallback callback);
   void Reset(ResultCallback callback);
 
+  const std::string& get_last_message() const;
+
  private:
-  AdsClient* ads_client_;  // NOT OWNED
+  AdsImpl* ads_;  // NOT OWNED
 
   std::shared_ptr<CatalogState> catalog_state_;
+
+  std::string last_message_;
 };
 
 }  // namespace ads

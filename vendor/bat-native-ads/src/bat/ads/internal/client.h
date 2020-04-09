@@ -16,6 +16,7 @@
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/client_state.h"
+#include "bat/ads/internal/page_classifier/page_classifier.h"
 
 namespace ads {
 
@@ -93,10 +94,9 @@ class Client {
   void SetUserModelLanguages(
       const std::vector<std::string>& languages);
   std::vector<std::string> GetUserModelLanguages();
-  std::string GetLastPageClassification();
-  void AppendPageScoreToPageScoreHistory(
-      const std::vector<double>& page_score);
-  std::deque<std::vector<double>> GetPageScoreHistory();
+  void AppendPageProbabilitiesToHistory(
+      const PageProbabilitiesMap& page_probabilities);
+  PageProbabilitiesList GetPageProbabilitiesHistory();
   void AppendTimestampToCreativeSetHistory(
       const std::string& creative_instance_id,
       const uint64_t timestamp_in_seconds);

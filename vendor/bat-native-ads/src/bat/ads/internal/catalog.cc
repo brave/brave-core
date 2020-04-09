@@ -5,6 +5,7 @@
 
 #include "bat/ads/ads.h"
 
+#include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/catalog.h"
 #include "bat/ads/internal/catalog_state.h"
 #include "bat/ads/internal/json_helper.h"
@@ -13,15 +14,17 @@
 
 namespace ads {
 
-Catalog::Catalog(AdsClient* ads_client) :
-    ads_client_(ads_client),
-    catalog_state_(nullptr) {}
+Catalog::Catalog(
+    AdsImpl* ads)
+    : ads_(ads),
+      catalog_state_(nullptr) {}
 
 Catalog::~Catalog() {}
 
 bool Catalog::FromJson(const std::string& json) {
   auto catalog_state = std::make_unique<CatalogState>();
-  auto json_schema = ads_client_->LoadJsonSchema(_catalog_schema_resource_name);
+  auto json_schema =
+      ads_->get_ads_client()->LoadJsonSchema(_catalog_schema_resource_name);
   std::string error_description;
   auto result = LoadFromJson(catalog_state.get(), json, json_schema,
       &error_description);
@@ -55,11 +58,15 @@ IssuersInfo Catalog::GetIssuers() const {
 }
 
 void Catalog::Save(const std::string& json, ResultCallback callback) {
-  ads_client_->Save(_catalog_resource_name, json, callback);
+  ads_->get_ads_client()->Save(_catalog_resource_name, json, callback);
 }
 
 void Catalog::Reset(ResultCallback callback) {
-  ads_client_->Reset(_catalog_resource_name, callback);
+  ads_->get_ads_client()->Reset(_catalog_resource_name, callback);
+}
+
+const std::string& Catalog::get_last_message() const {
+  return last_message_;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

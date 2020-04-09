@@ -23,8 +23,8 @@ namespace ads {
 
 const int kIdleThresholdInSeconds = 15;
 
-const uint64_t kMaximumEntriesInPageScoreHistory = 5;
-const int kWinningCategoryCountForServingAds = 3;
+const uint64_t kMaximumPageProbabilityHistoryEntries = 5;
+const int kTopWinningCategoryCountForServingAds = 3;
 
 // Maximum entries based upon 7 days of history, 20 ads per day and 4
 // confirmation types

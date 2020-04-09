@@ -18,8 +18,6 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/resource/resource_bundle.h"
-#include "third_party/re2/src/re2/re2.h"
-#include "base/strings/string_util.h"
 
 #if !defined(OS_ANDROID)
 #include "chrome/browser/ui/browser.h"
@@ -99,11 +97,6 @@ void AdsTabHelper::OnWebContentsDistillationDone(
   DCHECK(value.is_string());
   std::string content;
   value.GetAsString(&content);
-
-  RE2::GlobalReplace(&content, "[[:cntrl:]]|[[:space:]]|\\\\x[[:xdigit:]]"
-      "[[:xdigit:]]|\\\\(t|n|v|f|r)", " ");
-
-  content = base::CollapseWhitespaceASCII(content, false);
 
   ads_service_->OnPageLoaded(url.spec(), content);
 }

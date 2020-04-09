@@ -11,8 +11,6 @@
 #include <map>
 #include <memory>
 
-#include "bat/ads/ads_client.h"
-
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/timer.h"
 #include "bat/ads/internal/retry_timer.h"
@@ -20,11 +18,13 @@
 namespace ads {
 
 class AdsImpl;
+class AdsClient;
 class Bundle;
 
 class AdsServe {
  public:
   AdsServe(
+      AdsImpl* ads_,
       AdsClient* ads_client,
       Bundle* bundle);
 
@@ -61,6 +61,7 @@ class AdsServe {
   void OnCatalogReset(
       const Result result);
 
+  AdsImpl* ads_;  // NOT OWNED
   AdsClient* ads_client_;  // NOT OWNED
   Bundle* bundle_;  // NOT OWNED
 };

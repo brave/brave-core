@@ -10,6 +10,7 @@
 #include "bat/ads/internal/bundle.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/time_util.h"
+#include "bat/ads/ads_client.h"
 
 #include "base/time/time.h"
 
@@ -20,9 +21,11 @@ using std::placeholders::_3;
 namespace ads {
 
 AdsServe::AdsServe(
+    AdsImpl* ads,
     AdsClient* ads_client,
     Bundle* bundle)
     : catalog_last_updated_(0),
+      ads_(ads),
       ads_client_(ads_client),
       bundle_(bundle) {
   BuildUrl();
@@ -129,7 +132,7 @@ bool AdsServe::ProcessCatalog(const std::string& json) {
 
   BLOG(1, "Parsing catalog");
 
-  Catalog catalog(ads_client_);
+  Catalog catalog(ads_);
   if (!catalog.FromJson(json)) {
     BLOG(0, "Failed to load catalog");
 
@@ -188,7 +191,7 @@ void AdsServe::RetryDownloadingCatalog() {
 void AdsServe::ResetCatalog() {
   BLOG(3, "Resetting catalog");
 
-  Catalog catalog(ads_client_);
+  Catalog catalog(ads_);
   auto callback = std::bind(&AdsServe::OnCatalogReset, this, _1);
   catalog.Reset(callback);
 }

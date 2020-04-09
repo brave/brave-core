@@ -127,15 +127,20 @@ Result ClientState::FromJson(
     }
   }
 
-  if (client.HasMember("pageScoreHistory")) {
-    for (const auto& history : client["pageScoreHistory"].GetArray()) {
-      std::vector<double> page_scores;
+  if (client.HasMember("pageProbabilitiesHistory")) {
+    for (const auto& page_probabilities :
+        client["pageProbabilitiesHistory"].GetArray()) {
+      PageProbabilitiesMap new_page_probabilities;
 
-      for (const auto& page_score : history.GetArray()) {
-        page_scores.push_back(page_score.GetDouble());
+      for (const auto& page_probability :
+          page_probabilities["pageProbabilities"].GetArray()) {
+        const std::string category = page_probability["category"].GetString();
+        const double page_score = page_probability["pageScore"].GetDouble();
+
+        new_page_probabilities.insert({category, page_score});
       }
 
-      page_score_history.push_back(page_scores);
+      page_probabilities_history.push_back(new_page_probabilities);
     }
   }
 
@@ -254,14 +259,31 @@ void SaveToJson(JsonWriter* writer, const ClientState& state) {
   }
   writer->EndArray();
 
-  writer->String("pageScoreHistory");
+  writer->String("pageProbabilitiesHistory");
   writer->StartArray();
-  for (const auto& page_score : state.page_score_history) {
+  for (const auto& page_probabilities : state.page_probabilities_history) {
+    writer->StartObject();
+
+    writer->String("pageProbabilities");
     writer->StartArray();
-    for (const auto& score : page_score) {
-      writer->Double(score);
+
+    for (const auto& page_probability : page_probabilities) {
+      writer->StartObject();
+
+      writer->String("category");
+      const std::string category = page_probability.first;
+      writer->String(category.c_str());
+
+      writer->String("pageScore");
+      const double page_score = page_probability.second;
+      writer->Double(page_score);
+
+      writer->EndObject();
     }
+
     writer->EndArray();
+
+    writer->EndObject();
   }
   writer->EndArray();
 
