@@ -17,6 +17,7 @@ struct TransactionReportInfo {
 
   double amount;
   uint32_t type;
+  uint32_t processor;
   uint64_t created_at;
 };
 

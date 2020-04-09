@@ -410,6 +410,7 @@ struct RecurringTip {
 struct TransactionReportInfo {
   double amount;
   ReportType type;
+  ContributionProcessor processor;
   uint64 created_at;
 };
 
@@ -417,6 +418,7 @@ struct ContributionReportInfo {
   string contribution_id;
   double amount;
   ReportType type;
+  ContributionProcessor processor;
   array<PublisherInfo> publishers;
   uint64 created_at;
 };

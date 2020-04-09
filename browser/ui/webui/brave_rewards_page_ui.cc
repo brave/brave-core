@@ -1764,6 +1764,7 @@ void RewardsDOMHandler::OnGetMonthlyReport(
     base::Value transaction_report(base::Value::Type::DICTIONARY);
     transaction_report.SetDoubleKey("amount", item.amount);
     transaction_report.SetIntKey("type", item.type);
+    transaction_report.SetIntKey("processor", item.processor);
     transaction_report.SetIntKey("created_at", item.created_at);
 
     transactions.Append(std::move(transaction_report));
@@ -1789,6 +1790,7 @@ void RewardsDOMHandler::OnGetMonthlyReport(
     base::Value contribution_report(base::Value::Type::DICTIONARY);
     contribution_report.SetDoubleKey("amount", item.amount);
     contribution_report.SetIntKey("type", item.type);
+    contribution_report.SetIntKey("processor", item.processor);
     contribution_report.SetIntKey("created_at", item.created_at);
     contribution_report.SetKey("publishers", std::move(publishers));
     contributions.Append(std::move(contribution_report));

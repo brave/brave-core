@@ -3325,6 +3325,7 @@ void ConvertLedgerToServiceTransactionReportList(
   for (const auto& item : list) {
     info.amount = item->amount;
     info.type = static_cast<uint32_t>(item->type);
+    info.processor = static_cast<uint32_t>(item->processor);
     info.created_at = item->created_at;
 
     converted_list->push_back(info);
@@ -3340,6 +3341,7 @@ void ConvertLedgerToServiceContributionReportList(
   for (auto& item : list) {
     info.amount = item->amount;
     info.type = static_cast<uint32_t>(item->type);
+    info.processor = static_cast<uint32_t>(item->processor);
     info.created_at = item->created_at;
     info.publishers = {};
     for (auto& publisher : item->publishers) {

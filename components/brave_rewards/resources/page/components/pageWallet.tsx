@@ -602,9 +602,39 @@ class PageWallet extends React.Component<Props, State> {
     return ''
   }
 
+  getProcessorString = (processor: Rewards.Processor) => {
+    let text = ''
+    switch (processor) {
+      case 0: { // Rewards.Processor.NONE
+        text = ''
+        break
+      }
+      case 1: { // Rewards.Processor.BRAVE_TOKENS
+        text = getLocale('processorBraveTokens')
+        break
+      }
+      case 2: { // Rewards.Processor.UPHOLD
+        text = getLocale('processorUphold')
+        break
+      }
+      case 3: { // Rewards.Processor.BRAVE_USER_FUNDS
+        text = getLocale('processorBraveUserFunds')
+        break
+      }
+    }
+
+    if (text.length === 0) {
+      return ''
+    }
+
+    return `(${text})`
+  }
+
   getContributionDescription = (contribution: Rewards.ContributionReport) => {
     if (contribution.type === 1) { // Rewards.ReportType.AUTO_CONTRIBUTION
-      return getLocale('autoContribute')
+      return getLocale(
+        'autoContributeTransaction',
+        { processor: this.getProcessorString(contribution.processor) })
     }
 
     return ''
