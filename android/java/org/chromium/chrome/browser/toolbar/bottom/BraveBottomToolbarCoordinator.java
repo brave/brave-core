@@ -103,7 +103,7 @@ public class BraveBottomToolbarCoordinator
                 if (isHomepageEnabled) {
                     mOriginalHomeButtonListener.onClick(v);
                 } else {
-                    TabUtils.openNewTab();
+                    newTabClickListener.onClick(v);
                 }
             };
 
