@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.graphics.Color;
 import android.widget.LinearLayout;
 import android.view.LayoutInflater;
 import android.view.Gravity;
@@ -29,11 +30,13 @@ import java.io.FileNotFoundException;
 import android.graphics.BitmapFactory;
 import android.support.design.widget.FloatingActionButton;
 import java.util.List;
+import android.util.TypedValue;
 
 import org.chromium.base.TraceEvent;
 import org.chromium.chrome.R;
 import org.chromium.base.Log;
 import org.chromium.base.task.AsyncTask;
+import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.ntp.NewTabPageView;
 import org.chromium.chrome.browser.preferences.BravePref;
@@ -55,6 +58,9 @@ import org.chromium.chrome.browser.tab.TabAttributes;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.SuperReferralShareDialogFragment;
 import org.chromium.chrome.browser.ntp.BraveNewTabPageLayout;
+import org.chromium.chrome.browser.ChromeTabbedActivity;
+import org.chromium.chrome.browser.BraveRewardsHelper;
+import org.chromium.content_public.browser.LoadUrlParams;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
@@ -261,12 +267,6 @@ public class BraveNewTabPageView extends NewTabPageView {
     private void showNTPImage(NTPImage ntpImage) {
         NTPUtil.updateOrientedUI(mTabImpl.getActivity(), mNewTabPageLayout);
 
-        Log.e("NTP", "FROM OBJ Theme name : "+ ((NTPBackgroundImagesBridge.Wallpaper)ntpImage).getThemeName());
-        Log.e("NTP", "FROM OBJ Is Sponsored : "+ ((NTPBackgroundImagesBridge.Wallpaper)ntpImage).isSponsored());
-
-        Log.e("NTP", "FROM Function Theme name : "+ mNTPBackgroundImagesBridge.getSuperReferralThemeName());
-        Log.e("NTP", "FROM Function Is Super Referral : "+ mNTPBackgroundImagesBridge.isSuperReferral());
-
         if(BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
             && sponsoredTab != null && NTPUtil.shouldEnableNTPFeature(sponsoredTab.isMoreTabs())) {
             setBackgroundImage(ntpImage);
@@ -350,7 +350,8 @@ public class BraveNewTabPageView extends NewTabPageView {
 
     private void checkForNonDistruptiveBanner(NTPImage ntpImage) {
         int brOption = NTPUtil.checkForNonDistruptiveBanner(ntpImage, sponsoredTab);
-        if (SponsoredImageUtil.BR_INVALID_OPTION != brOption) {
+        if (SponsoredImageUtil.BR_INVALID_OPTION != brOption 
+            && !mNTPBackgroundImagesBridge.isSuperReferral()) {
             NTPUtil.showNonDistruptiveBanner(mTabImpl.getActivity(), mNewTabPageLayout, brOption, sponsoredTab, newTabPageListener);
         }
     }
@@ -449,6 +450,31 @@ public class BraveNewTabPageView extends NewTabPageView {
 
             TextView tileViewTitleTv = view.findViewById(R.id.tile_view_title);
             tileViewTitleTv.setText(topSite.getName());
+            tileViewTitleTv.setTextColor(getResources().getColor(android.R.color.white));
+
+            ImageView iconIv = view.findViewById(R.id.tile_view_icon);
+            iconIv.setImageBitmap(NTPUtil.getTopSiteBitmap(topSite.getImagePath()));
+
+            Context mContext = ContextUtils.getApplicationContext();
+
+            TypedValue outValue = new TypedValue();
+            mContext.getTheme().resolveAttribute( 
+                android.R.attr.selectableItemBackground, outValue, true);        
+            iconIv.setForeground(getResources().getDrawable(outValue.resourceId));
+
+            // iconIv.setBackgroundColor(Color.parseColor(topSite.getBackgroundColor()));
+            iconIv.setClickable(true);
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ChromeTabbedActivity chromeTabbedActivity = BraveRewardsHelper.getChromeTabbedActivity();
+                    if(chromeTabbedActivity != null) {
+                        LoadUrlParams loadUrlParams = new LoadUrlParams(topSite.getDestinationUrl());
+                        chromeTabbedActivity.getActivityTab().loadUrl(loadUrlParams);
+                    }
+                }
+            });
 
             int paddingTop = getResources().getDimensionPixelSize(R.dimen.tile_grid_layout_no_logo_padding_top);
             view.setPadding(
@@ -456,7 +482,6 @@ public class BraveNewTabPageView extends NewTabPageView {
 
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT);
             layoutParams.weight = 0.25f;
-            // layoutParams.setMargins(dpToPx(mTabImpl.getActivity(), 32), 0, 0, 0);
             layoutParams.gravity = Gravity.CENTER;
             view.setLayoutParams(layoutParams);
 
