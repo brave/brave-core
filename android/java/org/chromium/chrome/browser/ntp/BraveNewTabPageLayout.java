@@ -19,6 +19,7 @@ import org.chromium.chrome.browser.explore_sites.ExploreSitesBridge;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.tabmodel.TabModel;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.ntp_background_images.SponsoredImageUtil;
 import org.chromium.chrome.browser.ntp_background_images.NTPUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
@@ -27,9 +28,12 @@ import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBrid
 
 public class BraveNewTabPageLayout extends NewTabPageLayout {
     private ViewGroup mBraveStatsView;
+    private NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
 
     public BraveNewTabPageLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
+        Profile mProfile = Profile.getLastUsedProfile();
+        mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
     }
 
     @Override
@@ -65,7 +69,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
         ViewGroup mBraveStatsView = (ViewGroup) findViewById(R.id.brave_stats_layout);
         int insertionPoint = mainLayout.indexOfChild(mBraveStatsView) + 1;
-        mainLayout.addView(mSiteSectionView, insertionPoint);
+        // mainLayout.addView(mSiteSectionView, insertionPoint);
     }
 
     @Override
@@ -82,12 +86,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             return 1;
         } else {
             return 2;
-        }
-    }
-
-    public void updateTopSites(List<NTPBackgroundImagesBridge.TopSite> topSites) {
-        for (NTPBackgroundImagesBridge.TopSite topSite : topSites) {
-            Log.e("NTP", topSite.getName());
         }
     }
 }
