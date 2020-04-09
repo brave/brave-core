@@ -47,7 +47,8 @@ export const enum types {
   ON_ASSET_DEPOSIT_INFO = '@@newtab/ON_ASSET_DEPOSIT_INFO',
   ON_DEPOSIT_QR_FOR_ASSET = '@@newtab/ON_DEPOSIT_QR_FOR_ASSET',
   ON_CONVERTABLE_ASSETS = '@@newtab/ON_CONVERTABLE_ASSETS',
-  SET_DISCONNECT_IN_PROGRESS = '@@newtab/SET_DISCONNECT_IN_PROGRESS'
+  SET_DISCONNECT_IN_PROGRESS = '@@newtab/SET_DISCONNECT_IN_PROGRESS',
+  SET_AUTH_INVALID = '@@newtab/SET_AUTH_INVALID'
 }
 
 export type DismissBrandedWallpaperNotificationPayload = {

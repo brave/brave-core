@@ -571,6 +571,15 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
       break
 
+    case types.SET_AUTH_INVALID:
+      const { authInvalid } = payload
+      state = { ...state }
+      state.binanceState = {
+        ...state.binanceState,
+        authInvalid
+      }
+      break
+
     default:
       break
   }

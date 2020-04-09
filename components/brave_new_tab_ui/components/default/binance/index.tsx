@@ -85,7 +85,7 @@ import { getLocale } from '../../../../common/locale'
 import searchIcon from './assets/search-icon.png'
 import partyIcon from './assets/party.png'
 import qrIcon from './assets/qr.png'
-import { getUSDPrice, generateQRData } from '../../../binance-utils'
+import { getUSDPrice } from '../../../binance-utils'
 
 interface State {
   fiatShowing: boolean
@@ -113,7 +113,6 @@ interface State {
   currentConvertFee: string
   currentConvertTransAmount: string
   currentConvertExpiryTime: number
-  authInvalid: boolean
 }
 
 interface Props {
@@ -130,9 +129,7 @@ interface Props {
   accountBalances: Record<string, string>
   assetUSDValues: Record<string, string>
   assetBTCValues: Record<string, string>
-  assetBTCVolumes: Record<string, string>
   btcPrice: string
-  btcVolume: string
   binanceClientUrl: string
   assetDepositInfo: Record<string, any>
   assetDepoitQRCodeSrcs: Record<string, string>
@@ -140,6 +137,7 @@ interface Props {
   accountBTCValue: string
   accountBTCUSDValue: string
   disconnectInProgress: boolean
+  authInvalid: boolean
   onShowContent: () => void
   onBuyCrypto: (coin: string, amount: string, fiat: string) => void
   onBinanceUserTLD: (userTLD: NewTab.BinanceTLD) => void
@@ -154,14 +152,8 @@ interface Props {
   onCancelDisconnect: () => void
   onConnectBinance: () => void
   onValidAuthCode: () => void
-  onBTCUSDPrice: (value: string) => void
-  onBTCUSDVolume: (volume: string) => void
-  onAssetBTCVolume: (ticker: string, volume: string) => void
-  onAssetUSDPrice: (ticker: string, price: string) => void
-  onAssetBTCPrice: (ticker: string, price: string) => void
-  onAssetDepositInfo: (symbol: string, address: string, url: string) => void
-  onAssetDepositQRCodeSrc: (asset: string, src: string) => void
-  onSetConvertableAssets: (asset: string, assets: string[]) => void
+  onUpdateActions: () => void
+  onDismissAuthInvalid: () => void
 }
 
 class Binance extends React.PureComponent<Props, State> {
@@ -200,8 +192,7 @@ class Binance extends React.PureComponent<Props, State> {
       currentQRAsset: '',
       convertFromShowing: false,
       convertToShowing: false,
-      currentConvertExpiryTime: 30,
-      authInvalid: false
+      currentConvertExpiryTime: 30
     }
     this.cryptoColors = currencyData.cryptoColors
     this.fiatList = currencyData.fiatList
@@ -222,9 +213,9 @@ class Binance extends React.PureComponent<Props, State> {
     const { userTLDAutoSet } = this.props
 
     if (this.props.userAuthed) {
-      this.updateActions()
+      this.props.onUpdateActions()
       this.refreshInterval = setInterval(() => {
-        this.updateActions()
+        this.props.onUpdateActions()
       }, 30000)
     }
 
@@ -254,7 +245,7 @@ class Binance extends React.PureComponent<Props, State> {
 
   componentDidUpdate (prevProps: Props) {
     if (!prevProps.userAuthed && this.props.userAuthed) {
-      this.fetchBalance()
+      this.props.onUpdateActions()
     }
 
     if (prevProps.userAuthed && !this.props.userAuthed) {
@@ -271,75 +262,10 @@ class Binance extends React.PureComponent<Props, State> {
       chrome.binance.getAccessToken(authCode, (success: boolean) => {
         if (success) {
           this.props.onValidAuthCode()
-          this.updateActions()
+          this.props.onUpdateActions()
         }
       })
     }
-  }
-
-  updateActions = () => {
-    this.fetchBalance()
-    this.getConvertAssets()
-  }
-
-  setAuthInvalid = () => {
-    this.setState({ authInvalid: true })
-    this.props.onDisconnectBinance()
-  }
-
-  dismissAuthInvalid = () => {
-    this.setState({ authInvalid: false })
-  }
-
-  getConvertAssets = () => {
-    chrome.binance.getConvertAssets((assets: any) => {
-      for (let asset in assets) {
-        if (assets[asset]) {
-          this.props.onSetConvertableAssets(asset, assets[asset])
-        }
-      }
-    })
-  }
-
-  fetchBalance = () => {
-    chrome.binance.getAccountBalances((balances: Record<string, string>, success: boolean) => {
-      if (!success) {
-        this.setAuthInvalid()
-        return
-      }
-
-      chrome.binance.getTickerPrice('BTCUSDT', (price: string) => {
-        this.props.onBTCUSDPrice(price)
-        this.setBalanceInfo(balances)
-      })
-      chrome.binance.getTickerVolume('BTCUSDT', (volume: string) => {
-        this.props.onBTCUSDVolume(volume)
-      })
-    })
-  }
-
-  setBalanceInfo = (balances: Record<string, string>) => {
-    for (let ticker in balances) {
-      if (ticker !== 'BTC') {
-        chrome.binance.getTickerVolume(`${ticker}BTC`, (volume: string) => {
-          this.props.onAssetBTCVolume(ticker, volume)
-        })
-        chrome.binance.getTickerPrice(`${ticker}BTC`, (price: string) => {
-          this.props.onAssetBTCPrice(ticker, price)
-        })
-        chrome.binance.getTickerPrice(`${ticker}USDT`, (price: string) => {
-          this.props.onAssetUSDPrice(ticker, price)
-        })
-      }
-      chrome.binance.getDepositInfo(ticker, (address: string, url: string) => {
-        this.props.onAssetDepositInfo(ticker, address, url)
-        generateQRData(address, ticker, this.props.onAssetDepositQRCodeSrc)
-      })
-    }
-
-    setTimeout(() => {
-      this.props.onBinanceAccountBalances(balances)
-    }, 1500)
   }
 
   connectBinance = () => {
@@ -449,7 +375,7 @@ class Binance extends React.PureComponent<Props, State> {
     const { currentConvertId } = this.state
     chrome.binance.confirmConvert(currentConvertId, (success: boolean, message: string) => {
       if (success) {
-        this.updateActions()
+        this.props.onUpdateActions()
         this.setState({ convertSuccess: true })
       } else {
         this.setState({
@@ -708,6 +634,8 @@ class Binance extends React.PureComponent<Props, State> {
   }
 
   renderAuthInvalid = () => {
+    const { onDismissAuthInvalid } = this.props
+
     return (
       <InvalidWrapper>
         <InvalidTitle>
@@ -716,7 +644,7 @@ class Binance extends React.PureComponent<Props, State> {
         <InvalidCopy>
           {getLocale('binanceWidgetAuthInvalidCopy')}
         </InvalidCopy>
-        <GenButton onClick={this.dismissAuthInvalid}>
+        <GenButton onClick={onDismissAuthInvalid}>
           {getLocale('binanceWidgetDone')}
         </GenButton>
       </InvalidWrapper>
@@ -1361,13 +1289,16 @@ class Binance extends React.PureComponent<Props, State> {
 
   renderIndexView () {
     const {
-      authInvalid,
       currentQRAsset,
       insufficientFunds,
       convertFailed,
       convertSuccess,
       showConvertPreview
     } = this.state
+    const {
+      authInvalid,
+      disconnectInProgress
+    } = this.props
 
     if (authInvalid) {
       return this.renderAuthInvalid()
@@ -1381,7 +1312,7 @@ class Binance extends React.PureComponent<Props, State> {
       return this.renderConvertSuccess()
     } else if (showConvertPreview) {
       return this.renderConvertConfirm()
-    } else if (this.props.disconnectInProgress) {
+    } else if (disconnectInProgress) {
       return this.renderDisconnectView()
     } else {
       return false

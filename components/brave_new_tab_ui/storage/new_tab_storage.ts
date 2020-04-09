@@ -74,7 +74,8 @@ export const defaultState: NewTab.State = {
     convertAssets: {},
     accountBTCValue: '0.00',
     accountBTCUSDValue: '0.00',
-    disconnectInProgress: false
+    disconnectInProgress: false,
+    authInvalid: false
   }
 }
 

@@ -172,3 +172,7 @@ export const onConvertableAssets = (convertAsset: string, assets: string[]) => a
 export const setDisconnectInProgress = (inProgress: boolean) => action(types.SET_DISCONNECT_IN_PROGRESS, {
   inProgress
 })
+
+export const setAuthInvalid = (authInvalid: boolean) => action(types.SET_AUTH_INVALID, {
+  authInvalid
+})

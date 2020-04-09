@@ -18,6 +18,7 @@ export interface WidgetProps {
   widgetTitle?: string
   onLearnMore?: () => void
   onDisconnect?: () => void
+  onRefreshData?: () => void
 }
 
 export interface WidgetState {
@@ -55,7 +56,8 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
         isCryptoTab,
         widgetTitle,
         onLearnMore,
-        onDisconnect
+        onDisconnect,
+        onRefreshData
       } = this.props
       const { widgetMenuPersist } = this.state
 
@@ -78,6 +80,7 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
             widgetTitle={widgetTitle}
             onLearnMore={onLearnMore}
             onDisconnect={onDisconnect}
+            onRefreshData={onRefreshData}
             widgetMenuPersist={widgetMenuPersist}
             toggleWidgetHover={this.toggleWidgetHover}
             textDirection={textDirection}
