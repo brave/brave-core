@@ -50,13 +50,9 @@ class ViewCounterService : public KeyedService,
   base::Value GetTopSites(bool for_webui = false) const;
   std::vector<TopSite> GetTopSitesVectorData() const;
 
-  // This api can be used for fast checking before SR component registration.
-  // NOTE: SR Data could not be availble even if this returns true.
-  // Use this api just for checking whether this install is SR.
-  // This returns true if we certainly know this install is SR.
-  // If this returns false, we don't know this install is SR or not for now.
   bool IsSuperReferral() const;
   std::string GetSuperReferralThemeName() const;
+  std::string GetSuperReferralCode() const;
 
   // Gets the current data for branded wallpaper, if there
   // is a wallpaper active. Does not consider user opt-in

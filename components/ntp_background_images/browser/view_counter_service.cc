@@ -203,4 +203,8 @@ std::string ViewCounterService::GetSuperReferralThemeName() const {
   return service_->GetSuperReferralThemeName();
 }
 
+std::string ViewCounterService::GetSuperReferralCode() const {
+  return service_->GetSuperReferralCode();
+}
+
 }  // namespace ntp_background_images

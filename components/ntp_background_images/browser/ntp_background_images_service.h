@@ -70,15 +70,9 @@ class NTPBackgroundImagesService {
 
   void InitializeWebUIDataSource(content::WebUIDataSource* html_source);
 
-  // This api can be used for fast checking before SR component registration.
-  // NOTE: SR Data could not be availble even if this returns true because
-  // component data loading could not be finished yet.
-  // Use this api just for checking whether this install is SR.
-  // This returns true when we certainly know this install is SR.
-  // If this returns false, we don't know this install is SR or not for now.
-  // So, don't assume this install is not SR if this returns false.
   bool IsSuperReferral() const;
   std::string GetSuperReferralThemeName() const;
+  std::string GetSuperReferralCode() const;
 
   std::vector<std::string> GetCachedTopSitesFaviconList() const;
 

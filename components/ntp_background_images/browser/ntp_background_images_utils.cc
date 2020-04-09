@@ -18,6 +18,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
       prefs::kNewTabPageCachedSuperReferralComponentInfo);
   registry->RegisterStringPref(
       prefs::kNewTabPageCachedSuperReferralComponentData, std::string());
+  registry->RegisterStringPref(
+      prefs::kNewTabPageCachedSuperReferralCode, std::string());
   registry->RegisterListPref(
       prefs::kNewTabPageCachedSuperReferralFaviconList);
   registry->RegisterBooleanPref(

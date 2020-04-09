@@ -391,6 +391,8 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
   EXPECT_FALSE(service_->mapping_table_requested_);
   EXPECT_FALSE(service_->super_referral_component_started_);
 
+  EXPECT_TRUE(pref_service_.GetString(
+      prefs::kNewTabPageCachedSuperReferralCode).empty());
   EXPECT_TRUE(pref_service_.GetBoolean(
       prefs::kNewTabPageGetInitialSRComponentInProgress));
   pref_service_.SetString(kReferralPromoCode, "BRV003");
@@ -405,7 +407,8 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
       std::make_unique<std::string>(kTestMappingTable));
   EXPECT_TRUE(pref_service_.GetBoolean(
       prefs::kNewTabPageGetInitialSRComponentInProgress));
-
+  EXPECT_EQ("BRV003",
+            pref_service_.GetString(prefs::kNewTabPageCachedSuperReferralCode));
   // This is super referral code. So, start SR component.
   EXPECT_TRUE(service_->super_referral_component_started_);
   EXPECT_FALSE(service_->marked_this_install_is_not_super_referral_forever_);
@@ -426,6 +429,8 @@ TEST_F(NTPBackgroundImagesServiceTest, WithSuperReferralCodeTest) {
 
   // Simulate current SR campaign is ended.
   service_->OnGetComponentJsonData(true, kTestEmptyComponent);
+  EXPECT_TRUE(pref_service_.GetString(
+      prefs::kNewTabPageCachedSuperReferralCode).empty());
   EXPECT_FALSE(IsValidSuperReferralComponentInfo(*pref_service_.Get(
       prefs::kNewTabPageCachedSuperReferralComponentInfo)));
   EXPECT_TRUE(pref_service_.GetString(
