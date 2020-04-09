@@ -669,7 +669,7 @@ test("brave_browser_tests") {
 
   if (binance_enabled) {
     sources += [
-      "//brave/browser/extensions/api/binance_apitest.cc",
+      "//brave/components/binance/browser/binance_service_browsertest.cc",
     ]
   }
 

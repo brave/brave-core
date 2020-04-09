@@ -78,7 +78,8 @@
             "parameters": [
               {
                 "name": "success",
-                "type": "boolean"
+                "type": "boolean",
+                "description": "Indicates the access token was retrieved successfully"
               }
             ]
           }

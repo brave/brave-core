@@ -10,9 +10,7 @@
 #include "base/json/json_reader.h"
 
 // static
-//
 // Response Format
-//
 // {
 //   "access_token": "83f2bf51-a2c4-4c2e-b7c4-46cef6a8dba5",
 //   "refresh_token": "fb5587ee-d9cf-4cb5-a586-4aed72cc9bea",
@@ -46,7 +44,6 @@ bool BinanceJSONParser::GetTokensFromJSON(
 }
 
 // static
-//
 // Response Format:
 // {
 //    "code": "000000",
@@ -97,19 +94,18 @@ bool BinanceJSONParser::GetAccountBalancesFromJSON(
 }
 
 // static
-//
 // Response Format:
 // {
 //    "code": "000000",
 //    "message": null,
 //    "data": {
 //      "quoteId": "b5481fb7f8314bb2baf55aa6d4fcf068",
-//      "quotePrice": 1094.01086957,
-//      "tradeFee": 8,
-//      "railFee": 0,
-//      "totalFee": 8,
-//      "totalAmount": 100649,
-//      "showPrice": 1094.01086957
+//      "quotePrice": "1094.01086957",
+//      "tradeFee": "8",
+//      "railFee": "0",
+//      "totalFee": "8",
+//      "totalAmount": "100649",
+//      "showPrice": "1094.01086957"
 //    },
 // }
 bool BinanceJSONParser::GetQuoteInfoFromJSON(
@@ -151,17 +147,15 @@ bool BinanceJSONParser::GetQuoteInfoFromJSON(
 }
 
 // static
-//
 // Response format:
 // {
 //   "symbol": "BTCUSDT",
-//   "price": "7137.98000000"
+//   "price":"7265.82000000"
 // }
 //
 bool BinanceJSONParser::GetTickerPriceFromJSON(
     const std::string& json, std::string* symbol_pair_price) {
   DCHECK(symbol_pair_price);
-
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           json, base::JSONParserOptions::JSON_PARSE_RFC);
@@ -181,6 +175,11 @@ bool BinanceJSONParser::GetTickerPriceFromJSON(
 }
 
 // static
+// Response Format:
+// {
+//   "symbol":"BTCUSDT",
+//   "volume":"1337"
+// }
 bool BinanceJSONParser::GetTickerVolumeFromJSON(
     const std::string& json, std::string* symbol_pair_volume) {
   DCHECK(symbol_pair_volume);
@@ -204,9 +203,7 @@ bool BinanceJSONParser::GetTickerVolumeFromJSON(
 }
 
 // static
-//
 // Response Format:
-//
 // {
 //    "code": "000000",
 //    "message": null,
@@ -219,7 +216,6 @@ bool BinanceJSONParser::GetTickerVolumeFromJSON(
 //    },
 //    "success": true
 // }
-//
 bool BinanceJSONParser::GetDepositInfoFromJSON(
     const std::string& json, std::string *address, std::string *url) {
   DCHECK(address);
@@ -259,9 +255,7 @@ bool BinanceJSONParser::GetDepositInfoFromJSON(
 }
 
 // static
-//
 // Response Format:
-//
 // {
 //    "code": "000000",
 //    "message": null,
@@ -318,7 +312,39 @@ bool BinanceJSONParser::GetConfirmStatusFromJSON(
 }
 
 // static
-bool BinanceJSONParser::GetConvertAssetsFromJSON(const std::string& json,
+// Response Format:
+// {
+//   "code":"000000",
+//   "message":null,
+//   "data":[{
+//     "assetCode":"BTC",
+//     "assetName":"Bitcoin",
+//     "logoUrl":"https://bin.bnbstatic.com/images/20191211/fake.png",
+//     "size":"6",
+//     "order":0,
+//     "freeAsset":"0.00508311",
+//     "subSelector":[{
+//       "assetCode":"BNB",
+//       "assetName":"BNB",
+//       "logoUrl":"https://bin.bnbstatic.com/images/fake.png",
+//       "size":"2",
+//       "order":1,
+//       "perTimeMinLimit":"0.00200000",
+//       "perTimeMaxLimit":"1.00000000",
+//       "dailyMaxLimit":"10.00000000",
+//       "hadDailyLimit":"0",
+//       "needMarket":true,
+//       "feeType":1,
+//       "feeRate":"0.00050000",
+//       "fixFee":"1.00000000",
+//       "feeCoin":"BTC",
+//       "forexRate":"1.00000000",
+//       "expireTime":30
+//     }]
+//   }],
+//   "success":true
+// }
+ bool BinanceJSONParser::GetConvertAssetsFromJSON(const std::string& json,
     std::map<std::string, std::vector<std::string>>* assets) {
   if (!assets) {
     return false;

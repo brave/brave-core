@@ -34,6 +34,13 @@ BinanceService* GetBinanceService(content::BrowserContext* context) {
       ->GetForProfile(Profile::FromBrowserContext(context));
 }
 
+bool IsBinanceAPIAvailable(content::BrowserContext* context) {
+  Profile* profile = Profile::FromBrowserContext(context);
+  return !brave::IsTorProfile(profile) &&
+    !profile->IsIncognitoProfile() &&
+    !profile->IsGuestSession();
+}
+
 }  // namespace
 
 namespace extensions {
@@ -41,9 +48,8 @@ namespace api {
 
 ExtensionFunction::ResponseAction
 BinanceGetUserTLDFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  if (brave::IsTorProfile(profile)) {
-    return RespondNow(Error("Not available in Tor profile"));
+  if (!IsBinanceAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
   auto* service = GetBinanceService(browser_context());
@@ -55,9 +61,8 @@ BinanceGetUserTLDFunction::Run() {
 
 ExtensionFunction::ResponseAction
 BinanceGetClientUrlFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  if (brave::IsTorProfile(profile)) {
-    return RespondNow(Error("Not available in Tor profile"));
+  if (!IsBinanceAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
   auto* service = GetBinanceService(browser_context());
@@ -69,9 +74,8 @@ BinanceGetClientUrlFunction::Run() {
 
 ExtensionFunction::ResponseAction
 BinanceGetAccessTokenFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  if (brave::IsTorProfile(profile)) {
-    return RespondNow(Error("Not available in Tor profile"));
+  if (!IsBinanceAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
   std::unique_ptr<binance::GetAccessToken::Params> params(
@@ -97,9 +101,8 @@ void BinanceGetAccessTokenFunction::OnCodeResult(bool success) {
 
 ExtensionFunction::ResponseAction
 BinanceGetAccountBalancesFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  if (brave::IsTorProfile(profile)) {
-    return RespondNow(Error("Not available in Tor profile"));
+  if (!IsBinanceAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
   auto* service = GetBinanceService(browser_context());
@@ -130,9 +133,8 @@ void BinanceGetAccountBalancesFunction::OnGetAccountBalances(
 
 ExtensionFunction::ResponseAction
 BinanceGetConvertQuoteFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  if (brave::IsTorProfile(profile)) {
-    return RespondNow(Error("Not available in Tor profile"));
+  if (!IsBinanceAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
   std::unique_ptr<binance::GetConvertQuote::Params> params(
@@ -170,9 +172,8 @@ BinanceGetTickerPriceFunction::Run() {
       binance::GetTickerPrice::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  if (brave::IsTorProfile(profile)) {
-    return RespondNow(Error("Not available in Tor profile"));
+  if (!IsBinanceAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
   auto* service = GetBinanceService(browser_context());
@@ -199,9 +200,8 @@ BinanceGetTickerVolumeFunction::Run() {
       binance::GetTickerVolume::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  if (brave::IsTorProfile(profile)) {
-    return RespondNow(Error("Not available in Tor profile"));
+  if (!IsBinanceAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
   auto* service = GetBinanceService(browser_context());
@@ -224,12 +224,12 @@ void BinanceGetTickerVolumeFunction::OnGetTickerVolume(
 
 ExtensionFunction::ResponseAction
 BinanceIsSupportedRegionFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  if (brave::IsTorProfile(profile)) {
-    return RespondNow(Error("Not available in Tor profile"));
+  if (!IsBinanceAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
   bool is_blacklisted = false;
+  Profile* profile = Profile::FromBrowserContext(browser_context());
   const int32_t user_country_id =
       country_codes::GetCountryIDFromPrefs(profile->GetPrefs());
 
@@ -249,9 +249,8 @@ BinanceIsSupportedRegionFunction::Run() {
 
 ExtensionFunction::ResponseAction
 BinanceGetDepositInfoFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  if (brave::IsTorProfile(profile)) {
-    return RespondNow(Error("Not available in Tor profile"));
+  if (!IsBinanceAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
   std::unique_ptr<binance::GetDepositInfo::Params> params(
@@ -282,9 +281,8 @@ void BinanceGetDepositInfoFunction::OnGetDepositInfo(
 
 ExtensionFunction::ResponseAction
 BinanceConfirmConvertFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  if (brave::IsTorProfile(profile)) {
-    return RespondNow(Error("Not available in Tor profile"));
+  if (!IsBinanceAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
   std::unique_ptr<binance::ConfirmConvert::Params> params(
@@ -313,9 +311,8 @@ void BinanceConfirmConvertFunction::OnConfirmConvert(
 
 ExtensionFunction::ResponseAction
 BinanceGetConvertAssetsFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  if (brave::IsTorProfile(profile)) {
-    return RespondNow(Error("Not available in Tor profile"));
+  if (!IsBinanceAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
   }
 
   auto* service = GetBinanceService(browser_context());

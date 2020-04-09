@@ -55,9 +55,6 @@ const char kForbesExtraCookies[] =
     "dailyWelcomeCookie=true";
 const char kTwitterPattern[] = "https://*.twitter.com/*";
 const char kGoogleOAuthPattern[] = "https://accounts.google.com/*";
-const char kBinanceOauthURLPattern[] =
-    "https://brave.com/binance/oauth/callback?code=*";
-const char kBinanceOauthURLHandler[] = "binance://authorization/";
 
 const char kCookieHeader[] = "Cookie";
 // Intentional misspelling on referrer to match HTTP spec
