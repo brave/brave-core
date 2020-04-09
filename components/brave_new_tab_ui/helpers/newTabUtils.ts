@@ -97,6 +97,12 @@ export const generateGridSitesFromLegacyEntries = (
   }
 
   for (const topSite of legacyTopSites) {
+    // There are some cases where this is null, so we need to check it
+    /* tslint:disable */
+    if (topSite == null) {
+      continue
+    }
+
     newGridSites
       .push(generateGridSiteProperties(topSite.index, topSite, true))
   }
