@@ -27,10 +27,10 @@ class AccessTokenFetcher {
       const AccessTokenConsumer::TokenResponse& token_response);
 
   // Fires |OnGetTokenFailure| on |consumer_|.
-  void FireOnGetTokenFailure(const std::string& error);
+  void FireOnGetTokenFailure(const GoogleServiceAuthError& error);
 
   void FireOnGetTimestampSuccess(const std::string& ts);
-  void FireOnGetTimestampFailure(const std::string& error);
+  void FireOnGetTimestampFailure(const GoogleServiceAuthError& error);
  private:
 
   AccessTokenConsumer* const consumer_;

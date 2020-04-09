@@ -5,14 +5,15 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #define BRAVE_SYNC_AUTH_MANAGER_H_                                          \
   void CreateAccessTokenFetcher(                                            \
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);   \
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,    \
+      const GURL& sync_service_url);                                        \
   void DeriveSigningKeys(const std::string& seed);                          \
   void OnGetTokenSuccess(                                                   \
       const brave_sync::AccessTokenConsumer::TokenResponse& token_response) \
       override;                                                             \
-  void OnGetTokenFailure(const std::string& error) override;                \
+  void OnGetTokenFailure(const GoogleServiceAuthError& error) override;     \
   void OnGetTimestampSuccess(const std::string& ts) override;               \
-  void OnGetTimestampFailure(const std::string& error) override;            \
+  void OnGetTimestampFailure(const GoogleServiceAuthError& error) override; \
                                                                             \
  private:                                                                   \
   void GenerateClientIdAndSecret(                                           \

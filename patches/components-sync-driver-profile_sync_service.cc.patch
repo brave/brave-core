@@ -1,5 +1,5 @@
 diff --git a/components/sync/driver/profile_sync_service.cc b/components/sync/driver/profile_sync_service.cc
-index f3956a3fcd7cbcfe74d81be242b2877075a9b189..b94592f82c6853b5a1a72a411c7e67e3e79d9c4b 100644
+index f3956a3fcd7cbcfe74d81be242b2877075a9b189..a5bc7e9864f06f68d9ef71dd3aaa1def8c844c6b 100644
 --- a/components/sync/driver/profile_sync_service.cc
 +++ b/components/sync/driver/profile_sync_service.cc
 @@ -193,6 +193,8 @@ ProfileSyncService::ProfileSyncService(InitParams init_params)
@@ -27,7 +27,15 @@ index f3956a3fcd7cbcfe74d81be242b2877075a9b189..b94592f82c6853b5a1a72a411c7e67e3
      auth_manager_->ConnectionOpened();
    }
  
-@@ -1214,6 +1218,7 @@ void ProfileSyncService::TriggerRefresh(const ModelTypeSet& types) {
+@@ -940,6 +944,7 @@ void ProfileSyncService::OnEngineInitialized(
+     }
+   }
+ 
++  BRAVE_ON_ENGINE_INITIALIZED
+   NotifyObservers();
+ }
+ 
+@@ -1214,6 +1219,7 @@ void ProfileSyncService::TriggerRefresh(const ModelTypeSet& types) {
  }
  
  bool ProfileSyncService::IsSignedIn() const {
@@ -35,27 +43,11 @@ index f3956a3fcd7cbcfe74d81be242b2877075a9b189..b94592f82c6853b5a1a72a411c7e67e3
    // Sync is logged in if there is a non-empty account id.
    return !GetAuthenticatedAccountInfo().account_id.empty();
  }
-@@ -1519,6 +1524,7 @@ void ProfileSyncService::OnFirstSetupCompletePrefChange(
+@@ -1517,6 +1523,7 @@ void ProfileSyncService::OnSyncManagedPrefChange(bool is_sync_managed) {
+ 
+ void ProfileSyncService::OnFirstSetupCompletePrefChange(
      bool is_first_setup_complete) {
++  BRAVE_ON_FIRST_SETUP_COMPLETE_PREF_CHANGE
    if (engine_ && engine_->IsInitialized()) {
      ReconfigureDatatypeManager(/*bypass_setup_in_progress_check=*/false);
-+    BRAVE_ON_FIRST_SETUP_COMPLETE_PREF_CHANGE
    }
- }
- 
-@@ -1726,6 +1732,7 @@ void ProfileSyncService::GetAllNodesForDebugging(
- }
- 
- CoreAccountInfo ProfileSyncService::GetAuthenticatedAccountInfo() const {
-+  BRAVE_GET_AUTHENTICATED_ACCOUNT_INFO
-   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-   if (!auth_manager_) {
-     // Some crashes on iOS (crbug.com/962384) suggest that ProfileSyncService
-@@ -1738,6 +1745,7 @@ CoreAccountInfo ProfileSyncService::GetAuthenticatedAccountInfo() const {
- }
- 
- bool ProfileSyncService::IsAuthenticatedAccountPrimary() const {
-+  return true;
-   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-   if (!auth_manager_) {
-     // This is a precautionary check to be consistent with the check in

@@ -3,24 +3,36 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 
-#define BRAVE_REQUEST_ACCESS_TOKEN                   \
-  if (private_key_.empty() || public_key_.empty()) { \
-    ScheduleAccessTokenRequest();                    \
-    return;                                          \
-  }                                                  \
+#define BRAVE_REQUEST_ACCESS_TOKEN                        \
+  VLOG(1) << __func__;                                    \
+  if (private_key_.empty() || public_key_.empty()) {      \
+    request_access_token_backoff_.InformOfRequest(false); \
+    ScheduleAccessTokenRequest();                         \
+    return;                                               \
+  }                                                       \
   access_token_fetcher_->StartGetTimestamp();
+
+#define BRAVE_DETERMINE_ACCOUNT_TO_USE                                     \
+  AccountInfo account_info;                                                \
+  account_info.account_id = CoreAccountId::FromString("dummy_account_id"); \
+  account_info.email = "dummy@brave.com";                                  \
+  SyncAccountInfo account(account_info, true);                             \
+  return account;
 #include "../../../../../components/sync/driver/sync_auth_manager.cc"
 #undef BRAVE_REQUEST_ACCESS_TOKEN
+#undef BRAVE_DETERMINE_ACCOUNT_TO_USE
 
 namespace syncer {
 
 void SyncAuthManager::CreateAccessTokenFetcher(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    const GURL& sync_service_url) {
   access_token_fetcher_ = std::make_unique<brave_sync::AccessTokenFetcherImpl>(
-      this, url_loader_factory, "");
+      this, url_loader_factory, sync_service_url, "");
 }
 
 void SyncAuthManager::DeriveSigningKeys(const std::string& seed) {
+  VLOG(1) << __func__ << " seed=" << seed;
   if (seed.empty())
     return;
   const std::vector<uint8_t> HKDF_SALT = {
@@ -37,28 +49,29 @@ void SyncAuthManager::DeriveSigningKeys(const std::string& seed) {
 
 void SyncAuthManager::OnGetTokenSuccess(
     const brave_sync::AccessTokenConsumer::TokenResponse& token_response) {
-  access_token_ = token_response.access_token;
-  VLOG(1) << "Got Token: " << access_token_;
-  SetLastAuthError(GoogleServiceAuthError::AuthErrorNone());
+  AccessTokenFetched(GoogleServiceAuthError(GoogleServiceAuthError::NONE),
+                     signin::AccessTokenInfo(token_response.access_token,
+                                             token_response.expiration_time,
+                                             token_response.id_token));
+  VLOG(1) << __func__ << " Token: " << access_token_;
 }
-void SyncAuthManager::OnGetTokenFailure(const std::string& error) {
-  LOG(ERROR) << __func__ << ": " << error;
-  // TODO(darkdh): SetLastAuthError
-  request_access_token_backoff_.InformOfRequest(false);
-  ScheduleAccessTokenRequest();
+
+void SyncAuthManager::OnGetTokenFailure(const GoogleServiceAuthError& error) {
+  LOG(ERROR) << __func__ << ": " << error.error_message();
+  AccessTokenFetched(error, signin::AccessTokenInfo());
 }
 
 void SyncAuthManager::OnGetTimestampSuccess(const std::string& ts) {
+  VLOG(1) << __func__ << " Timestamp: " << ts;
   std::string client_id, client_secret, timestamp;
   GenerateClientIdAndSecret(&client_id, &client_secret, ts, &timestamp);
   access_token_fetcher_->Start(client_id, client_secret, timestamp);
 }
 
-void SyncAuthManager::OnGetTimestampFailure(const std::string& error) {
-  LOG(ERROR) << __func__ << ": " << error;
-  // TODO(darkdh): SetLastAuthError
-  request_access_token_backoff_.InformOfRequest(false);
-  ScheduleAccessTokenRequest();
+void SyncAuthManager::OnGetTimestampFailure(
+    const GoogleServiceAuthError& error) {
+  LOG(ERROR) << __func__ << ": " << error.error_message();
+  AccessTokenFetched(error, signin::AccessTokenInfo());
 }
 
 void SyncAuthManager::GenerateClientIdAndSecret(

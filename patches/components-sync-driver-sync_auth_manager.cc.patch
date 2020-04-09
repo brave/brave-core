@@ -1,8 +1,16 @@
 diff --git a/components/sync/driver/sync_auth_manager.cc b/components/sync/driver/sync_auth_manager.cc
-index 3287a32ed1ca6ed5aada26928592ad278f8046a6..5295f89e1ca16b63df3e67ba58d8195b5f0a10c2 100644
+index 3287a32ed1ca6ed5aada26928592ad278f8046a6..7e7f4d0a1dad502d5734e1cf6b1053714f3fe14b 100644
 --- a/components/sync/driver/sync_auth_manager.cc
 +++ b/components/sync/driver/sync_auth_manager.cc
-@@ -481,6 +481,7 @@ void SyncAuthManager::RequestAccessToken() {
+@@ -410,6 +410,7 @@ void SyncAuthManager::ResetRequestAccessTokenBackoffForTest() {
+ 
+ SyncAccountInfo SyncAuthManager::DetermineAccountToUse() const {
+   DCHECK(registered_for_auth_notifications_);
++  BRAVE_DETERMINE_ACCOUNT_TO_USE
+   return syncer::DetermineAccountToUse(identity_manager_);
+ }
+ 
+@@ -481,6 +482,7 @@ void SyncAuthManager::RequestAccessToken() {
    // Finally, kick off a new access token fetch.
    partial_token_status_.token_request_time = base::Time::Now();
    partial_token_status_.token_response_time = base::Time();
