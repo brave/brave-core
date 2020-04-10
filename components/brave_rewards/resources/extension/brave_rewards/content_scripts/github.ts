@@ -297,13 +297,14 @@ const getMemberListItemMetaData = (elem: Element): RewardsTip.MediaMetaData | nu
 
 const memberListItemInsertFunction = (parent: Element) => {
   if (parent.children.length > 1) {
+    const path = window.location.pathname
     const memberText = parent.children[1] as HTMLElement
     const tipElem = createBraveTipAction(memberText as Element, getMemberListItemMetaData)
-    if (!memberText) {
+    if (!memberText || path.startsWith('/orgs/')) {
       return
     }
     tipElem.style.paddingLeft = '5px'
-    if (window.location.pathname.split('/').includes('teams')) { // Special case, different styling for same element
+    if (path.split('/').includes('teams')) { // Special case, different styling for same element
       memberText.appendChild(tipElem)
     } else {
       memberText.style.width = '250px'
