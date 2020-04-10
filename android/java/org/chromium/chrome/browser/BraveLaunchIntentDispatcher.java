@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 
+// see org.brave.bytecode.BraveLaunchIntentDispatcherClassAdapter
 public class BraveLaunchIntentDispatcher {
     public static boolean isCustomTabIntent(Intent intent) {
         if (!useCustomTabs()) {
