@@ -225,7 +225,7 @@ export default class Donate extends React.PureComponent<Props, State> {
           {children}
         </StyledContent>
 
-        <StyledSend monthly={isMonthly}>
+        <StyledSend>
           <StyledButtonWrapper>
             <SendButton
               monthly={isMonthly}

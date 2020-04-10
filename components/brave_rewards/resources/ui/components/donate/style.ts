@@ -90,7 +90,7 @@ export const StyledSend = styled<StyleProps, 'div'>('div')`
   border: none;
   width: 100%;
   text-align: left;
-  padding-bottom: ${p => p.monthly ? 20 : 13}px;
+  padding-bottom: 13px;
 `
 
 export const StyledSendButton = styled<StyleProps, 'button'>('button')`
