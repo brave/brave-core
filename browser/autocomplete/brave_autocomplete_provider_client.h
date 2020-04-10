@@ -35,6 +35,12 @@ class BraveAutocompleteProviderClient
   const TemplateURLService* GetTemplateURLService() const override;
   std::vector<base::string16> GetBuiltinURLs() override;
 
+  // We should not hide the true nature of the profile when these methods in
+  // ChromeAutocompleteProviderClient are called as they control what is
+  // suitable for suggestions in regular vs incognito profiles.
+  bool IsOffTheRecord() const override;
+  void StartServiceWorker(const GURL& destination_url) override;
+
  private:
   Profile* profile_;
 

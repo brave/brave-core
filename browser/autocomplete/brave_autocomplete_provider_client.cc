@@ -39,3 +39,14 @@ std::vector<base::string16> BraveAutocompleteProviderClient::GetBuiltinURLs() {
   }
   return v;
 }
+
+bool BraveAutocompleteProviderClient::IsOffTheRecord() const {
+  return profile_->IsOffTheRecord();
+}
+
+void BraveAutocompleteProviderClient::StartServiceWorker(
+    const GURL& destination_url) {
+  if (profile_->IsOffTheRecord())
+    return;
+  ChromeAutocompleteProviderClient::StartServiceWorker(destination_url);
+}
