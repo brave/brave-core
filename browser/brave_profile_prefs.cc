@@ -8,6 +8,7 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/common/brave_wallet_constants.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/binance/browser/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/browser/buildflags.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
@@ -202,6 +203,12 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kBraveWalletEncryptedSeed, "");
   registry->RegisterIntegerPref(kBraveWalletWeb3Provider,
       static_cast<int>(BraveWalletWeb3ProviderTypes::ASK));
+
+  // Binance widget
+#if BUILDFLAG(BINANCE_ENABLED)
+  registry->RegisterStringPref(kBinanceAccessToken, "");
+  registry->RegisterStringPref(kBinanceRefreshToken, "");
+#endif
 
   // Autocomplete in address bar
   registry->RegisterBooleanPref(kAutocompleteEnabled, true);

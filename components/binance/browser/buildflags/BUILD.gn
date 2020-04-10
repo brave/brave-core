@@ -1,0 +1,9 @@
+import("//build/buildflag_header.gni")
+import("//brave/components/binance/browser/buildflags/buildflags.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "BINANCE_ENABLED=$binance_enabled",
+  ]
+}

@@ -45,6 +45,237 @@
             ]
           }
         ]
+      },
+      {
+        "name": "getClientUrl",
+        "type": "function",
+        "description": "Fetches the Oauth Url for Binance",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "clientUrl",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getAccessToken",
+        "type": "function",
+        "description": "Facilitates access token creation given a temporary code",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "code"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "success",
+                "type": "boolean",
+                "description": "Indicates the access token was retrieved successfully"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getAccountBalances",
+        "type": "function",
+        "description": "Retrieves user asset balances",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "balances",
+                "type": "object",
+                "additionalProperties": { "type": "string" }
+              }, {
+                "name": "success",
+                "type": "boolean",
+                "description": "Indicates whether the retrieval was successful"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getConvertQuote",
+        "type": "function",
+        "description": "Gets a quote for a given conversion",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "from"
+          },
+          {
+            "type": "string",
+            "name": "to"
+          },
+          {
+            "type": "string",
+            "name": "amount"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "quote",
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "quote id"
+                  },
+                  "price": {
+                    "type": "string",
+                    "description": "quote price"
+                  },
+                  "fee": {
+                    "type": "string",
+                    "description": "convert fee"
+                  },
+                  "amount": {
+                    "type": "string",
+                    "description": "total amount to be recieved"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getTickerPrice",
+        "type": "function",
+        "description": "Fetches latest symbol pair trading value",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "symbolPair"
+          }, {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "symbolPairValue",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getTickerVolume",
+        "type": "function",
+        "description": "Fetches latest symbol pair trading volume",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "symbolPair"
+          }, {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "symbolPairVolume",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getDepositInfo",
+        "type": "function",
+        "description": "Fetches user address/url given an asset",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "symbol"
+          }, {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "depositAddress",
+                "type": "string"
+              },
+              {
+                "name": "depositURL",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "confirmConvert",
+        "type": "function",
+        "description": "Confirms a conversion given a quote id",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "quoteId"
+          }, {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "success",
+                "type": "boolean"
+              },
+              {
+                "name": "message",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getConvertAssets",
+        "type": "function",
+        "description": "Gets a list of supported convert assets and their respective tradeables",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "supportedAssets",
+                "type": "object",
+                "additionalProperties": { "type": "any" }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "revokeToken",
+        "type": "function",
+        "description": "Revokes the token",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "success",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
       }
     ],
     "types": [

@@ -57,7 +57,25 @@ export const defaultState: NewTab.State = {
     initialAmount: '',
     initialAsset: 'BTC',
     userTLDAutoSet: false,
-    binanceSupported: false
+    binanceSupported: false,
+    hideBalance: true,
+    binanceClientUrl: '',
+    userAuthed: false,
+    authInProgress: false,
+    btcBalanceValue: '0.00',
+    accountBalances: {},
+    assetBTCValues: {},
+    assetBTCVolumes: {},
+    assetUSDValues: {},
+    btcPrice: '0.00',
+    btcVolume: '0',
+    assetDepositInfo: {},
+    assetDepoitQRCodeSrcs: {},
+    convertAssets: {},
+    accountBTCValue: '0.00',
+    accountBTCUSDValue: '0.00',
+    disconnectInProgress: false,
+    authInvalid: false
   }
 }
 
