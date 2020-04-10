@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_AUTOCOMPLETE_BRAVE_AUTOCOMPLETE_PROVIDER_CLIENT_FOR_CLASSIFIER_H_
 #define BRAVE_BROWSER_AUTOCOMPLETE_BRAVE_AUTOCOMPLETE_PROVIDER_CLIENT_FOR_CLASSIFIER_H_
 
-#include "brave/browser/autocomplete/brave_autocomplete_provider_client.h"
+#include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 
 // In brave, different AutocompleteClassifiers are created for normal and
 // incognito profile by changing
@@ -27,7 +27,7 @@
 // BraveAutocompleteSchemeClassifier also initialize
 // ChromeAutocompleteSchemeClassifier with original profile for same reason.
 class BraveAutocompleteProviderClientForClassifier
-    : public BraveAutocompleteProviderClient {
+    : public ChromeAutocompleteProviderClient {
  public:
   explicit BraveAutocompleteProviderClientForClassifier(Profile* profile);
   ~BraveAutocompleteProviderClientForClassifier() override;

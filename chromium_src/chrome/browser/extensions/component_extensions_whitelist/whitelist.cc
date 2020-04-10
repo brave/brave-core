@@ -12,7 +12,6 @@
 #include "brave/components/brave_extension/grit/brave_extension.h"
 #include "components/grit/brave_components_resources.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
-#include "brave/components/brave_sync/grit/brave_sync_resources.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 
 namespace extensions {
@@ -21,7 +20,6 @@ namespace extensions {
     const char* const kAllowed[] = {
       brave_extension_id,
       brave_rewards_extension_id,
-      brave_sync_extension_id,
       ethereum_remote_client_extension_id,
       brave_webtorrent_extension_id
     };
@@ -39,7 +37,6 @@ namespace extensions {
       // Please keep the list in alphabetical order.
       case IDR_BRAVE_EXTENSION:
       case IDR_BRAVE_REWARDS:
-      case IDR_BRAVE_SYNC_EXTENSION:
       case IDR_BRAVE_WEBTORRENT:
         return true;
     }

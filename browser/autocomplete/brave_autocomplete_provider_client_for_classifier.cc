@@ -11,7 +11,7 @@
 BraveAutocompleteProviderClientForClassifier::
 BraveAutocompleteProviderClientForClassifier(
     Profile* profile)
-    : BraveAutocompleteProviderClient(profile->GetOriginalProfile()),
+    : ChromeAutocompleteProviderClient(profile->GetOriginalProfile()),
       profile_(profile) {
 }
 

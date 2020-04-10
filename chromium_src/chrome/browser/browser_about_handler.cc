@@ -14,13 +14,6 @@ bool FixupBrowserAboutURL(GURL* url,
                           content::BrowserContext* browser_context) {
   bool result = FixupBrowserAboutURL_ChromiumImpl(url, browser_context);
 
-  // redirect sync-internals
-  if (url->host() == chrome::kChromeUISyncInternalsHost) {
-    GURL::Replacements replacements;
-    replacements.SetHostStr(chrome::kChromeUISyncHost);
-    *url = url->ReplaceComponents(replacements);
-  }
-
   if (url->SchemeIs(kBraveUIScheme)) {
     GURL::Replacements replacements;
     replacements.SetSchemeStr(content::kChromeUIScheme);

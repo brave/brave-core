@@ -76,13 +76,6 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
                              IDS_SHOW_BRAVE_WALLET);
   }
 
-  // Insert sync menu
-  if (IsCommandIdEnabled(IDC_SHOW_BRAVE_SYNC)) {
-    InsertItemWithStringIdAt(GetIndexOfBraveSyncItem(),
-                             IDC_SHOW_BRAVE_SYNC,
-                             IDS_SHOW_BRAVE_SYNC);
-  }
-
   // Insert adblock menu at last. Assumed this is always enabled.
   DCHECK(IsCommandIdEnabled(IDC_SHOW_BRAVE_ADBLOCK));
   InsertItemWithStringIdAt(GetIndexOfBraveAdBlockItem(),
@@ -110,10 +103,6 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
 int BraveAppMenuModel::GetIndexOfBraveAdBlockItem() const {
   // Insert as a last item in second section.
   int adblock_item_index = -1;
-  adblock_item_index = GetIndexOfCommandId(IDC_SHOW_BRAVE_SYNC);
-  if (adblock_item_index != -1)
-    return adblock_item_index + 1;
-
   adblock_item_index = GetIndexOfCommandId(IDC_MANAGE_EXTENSIONS);
   if (adblock_item_index != -1)
     return adblock_item_index + 1;
@@ -142,21 +131,4 @@ int BraveAppMenuModel::GetIndexOfBraveRewardsItem() const {
   rewards_index = GetIndexOfCommandId(IDC_SHOW_DOWNLOADS);
   DCHECK_NE(-1, rewards_index) << "No download item";
   return rewards_index;
-}
-
-int BraveAppMenuModel::GetIndexOfBraveSyncItem() const {
-  // Insert sync menu under extensions menu. If extensions menu is not
-  // available, check above items.
-  int sync_index = -1;
-  sync_index = GetIndexOfCommandId(IDC_MANAGE_EXTENSIONS);
-  if (sync_index != -1)
-    return sync_index + 1;
-
-  sync_index = GetIndexOfCommandId(IDC_SHOW_BRAVE_WALLET);
-  if (sync_index != -1)
-    return sync_index + 1;
-
-  sync_index = GetIndexOfCommandId(IDC_SHOW_DOWNLOADS);
-  DCHECK_NE(-1, sync_index) << "No download item";
-  return sync_index + 1;
 }

@@ -11,7 +11,6 @@ extern const char brave_rewards_extension_id[];
 extern const char brave_webtorrent_extension_id[];
 extern const char hangouts_extension_id[];
 extern const char widevine_extension_id[];
-extern const char brave_sync_extension_id[];
 extern const char crl_set_extension_id[];
 
 extern const char ethereum_remote_client_extension_id[];

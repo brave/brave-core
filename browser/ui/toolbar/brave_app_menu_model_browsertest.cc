@@ -13,7 +13,6 @@
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
-#include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/chrome_notification_types.h"
@@ -23,7 +22,6 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
-#include "components/sync/driver/sync_driver_switches.h"
 #include "content/public/browser/notification_service.h"
 #include "content/public/test/test_utils.h"
 
@@ -78,9 +76,6 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
     IDC_SHOW_BRAVE_WALLET,
 #endif
     IDC_MANAGE_EXTENSIONS,
-#if BUILDFLAG(ENABLE_BRAVE_SYNC)
-    IDC_SHOW_BRAVE_SYNC,
-#endif
     IDC_SHOW_BRAVE_ADBLOCK,
     IDC_ADD_NEW_PROFILE,
     IDC_OPEN_GUEST_PROFILE,
@@ -89,16 +84,6 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
   std::vector<int> commands_disabled_for_normal_profile = {
     IDC_NEW_TOR_CONNECTION_FOR_SITE,
   };
-#if BUILDFLAG(ENABLE_BRAVE_SYNC)
-  if (!switches::IsSyncAllowedByFlag()) {
-    commands_in_order_for_normal_profile.erase(
-        std::remove(commands_in_order_for_normal_profile.begin(),
-                    commands_in_order_for_normal_profile.end(),
-                    IDC_SHOW_BRAVE_SYNC),
-        commands_in_order_for_normal_profile.end());
-    commands_disabled_for_normal_profile.push_back(IDC_SHOW_BRAVE_SYNC);
-  }
-#endif
   CheckCommandsAreInOrderInMenuModel(browser(),
                                      commands_in_order_for_normal_profile);
   CheckCommandsAreDisabledInMenuModel(browser(),
@@ -121,9 +106,6 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
     IDC_SHOW_BRAVE_WALLET,
 #endif
     IDC_MANAGE_EXTENSIONS,
-#if BUILDFLAG(ENABLE_BRAVE_SYNC)
-    IDC_SHOW_BRAVE_SYNC,
-#endif
     IDC_SHOW_BRAVE_ADBLOCK,
     IDC_ADD_NEW_PROFILE,
     IDC_OPEN_GUEST_PROFILE,
@@ -133,16 +115,6 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
     IDC_NEW_TOR_CONNECTION_FOR_SITE,
     IDC_RECENT_TABS_MENU,
   };
-#if BUILDFLAG(ENABLE_BRAVE_SYNC)
-  if (!switches::IsSyncAllowedByFlag()) {
-    commands_in_order_for_private_profile.erase(
-        std::remove(commands_in_order_for_private_profile.begin(),
-                    commands_in_order_for_private_profile.end(),
-                    IDC_SHOW_BRAVE_SYNC),
-        commands_in_order_for_private_profile.end());
-    commands_disabled_for_private_profile.push_back(IDC_SHOW_BRAVE_SYNC);
-  }
-#endif
   CheckCommandsAreInOrderInMenuModel(private_browser,
                                      commands_in_order_for_private_profile);
   CheckCommandsAreDisabledInMenuModel(private_browser,
@@ -187,9 +159,6 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
     IDC_SHOW_BRAVE_WALLET,
 #endif
     IDC_MANAGE_EXTENSIONS,
-#if BUILDFLAG(ENABLE_BRAVE_SYNC)
-    IDC_SHOW_BRAVE_SYNC,
-#endif
     IDC_ADD_NEW_PROFILE,
     IDC_OPEN_GUEST_PROFILE,
   };
@@ -225,9 +194,6 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
     IDC_SHOW_BRAVE_WALLET,
 #endif
-#if BUILDFLAG(ENABLE_BRAVE_SYNC)
-    IDC_SHOW_BRAVE_SYNC,
-#endif
     IDC_SHOW_BRAVE_ADBLOCK,
     IDC_ADD_NEW_PROFILE,
     IDC_OPEN_GUEST_PROFILE,
@@ -236,16 +202,6 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
   std::vector<int> commands_disabled_for_tor_profile = {
     IDC_RECENT_TABS_MENU,
   };
-#if BUILDFLAG(ENABLE_BRAVE_SYNC)
-  if (!switches::IsSyncAllowedByFlag()) {
-    commands_in_order_for_tor_profile.erase(
-        std::remove(commands_in_order_for_tor_profile.begin(),
-                    commands_in_order_for_tor_profile.end(),
-                    IDC_SHOW_BRAVE_SYNC),
-        commands_in_order_for_tor_profile.end());
-    commands_disabled_for_tor_profile.push_back(IDC_SHOW_BRAVE_SYNC);
-  }
-#endif
   CheckCommandsAreInOrderInMenuModel(tor_browser,
                                      commands_in_order_for_tor_profile);
   CheckCommandsAreDisabledInMenuModel(tor_browser,
