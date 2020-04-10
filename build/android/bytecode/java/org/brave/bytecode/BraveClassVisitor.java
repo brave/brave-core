@@ -73,6 +73,7 @@ class BraveClassVisitor extends ClassVisitor {
                 // the method now
                 opcode = INVOKEVIRTUAL;
             }
+            owner = maybeChangeOwner(owner, name);
             super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
         }
     }
@@ -87,6 +88,8 @@ class BraveClassVisitor extends ClassVisitor {
             new HashMap<String, ArrayList<String>>();
     private Map<String, ArrayList<String>> mMakePublicMethods =
             new HashMap<String, ArrayList<String>>();
+    private Map<String, Map<String, String>> mChangeOwnerMethods =
+            new HashMap<String, Map<String, String>>();
     private Map<String, ArrayList<String>> mMakeProtectedFields =
             new HashMap<String, ArrayList<String>>();
     private Map<String, Map<String, ArrayList<String>>> mAddAnnotations =
@@ -145,6 +148,30 @@ class BraveClassVisitor extends ClassVisitor {
             mMakePublicMethods.put(className, methods);
         }
         methods.add(methodName);
+    }
+
+    private String maybeChangeOwner(String owner, String methodName) {
+        if (mChangeOwnerMethods.containsKey(owner)) {
+            Map<String, String> methods = mChangeOwnerMethods.get(owner);
+            if (methods.containsKey(methodName)) {
+                String newOwner = methods.get(methodName);
+                if (!newOwner.equals(mName)) {
+                    System.out.println("changing owner for " + mName + "." + methodName +
+                            " - new owner " + newOwner);
+                    return newOwner;
+                }
+            }
+        }
+        return owner;
+    }
+
+    protected void changeMethodOwner(String currentOwner, String methodName, String newOwner) {
+        Map methods = mChangeOwnerMethods.get(currentOwner);
+        if (methods == null) {
+            methods = new HashMap<String, String>();
+            mChangeOwnerMethods.put(currentOwner, methods);
+        }
+        methods.put(methodName, newOwner);
     }
 
     private boolean shouldDeleteField(String fieldName) {
