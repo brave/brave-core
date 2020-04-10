@@ -17,6 +17,7 @@ import { registerViewCount } from '../api/brandedWallpaper'
 import * as preferencesAPI from '../api/preferences'
 import * as storage from '../storage/new_tab_storage'
 import { getTotalContributions } from '../rewards-utils'
+import { getUSDPrice } from '../binance-utils'
 
 const initialState = storage.load()
 
@@ -381,6 +382,201 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
           ...state.binanceState,
           binanceSupported: payload.supported
         }
+      }
+      break
+
+    case types.SET_HIDE_BALANCE:
+      state = { ...state }
+      state.binanceState.hideBalance = payload.hide
+      break
+
+    case types.ON_BINANCE_ACCOUNT_BALANCES:
+      const { balances } = payload
+      if (!balances) {
+        break
+      }
+
+      state = { ...state }
+      state.binanceState.accountBalances = balances
+
+      let totalBTC = 0.00
+      let totalBTCUSDValue = 0.00
+
+      const btcPrice = state.binanceState.btcPrice
+      const btcValues = state.binanceState.assetBTCValues
+
+      Object.keys(balances).map((symbol: string) => {
+        const balance = balances[symbol]
+        if (symbol === 'BTC') {
+          totalBTC += parseFloat(balance)
+          totalBTCUSDValue += parseFloat(getUSDPrice(balance, btcPrice))
+        } else {
+          const totalInBTC = parseFloat(btcValues[symbol]) * parseFloat(balance)
+          const totalAssetValue = getUSDPrice(totalInBTC.toString(), btcPrice)
+          totalBTC += totalInBTC
+          totalBTCUSDValue += parseFloat(totalAssetValue)
+        }
+      })
+
+      state.binanceState = {
+        ...state.binanceState,
+        accountBTCValue: totalBTC.toString(),
+        accountBTCUSDValue: totalBTCUSDValue.toFixed(2).toString()
+      }
+
+      break
+
+    case types.ON_VALID_AUTH_CODE:
+      state = { ...state }
+      state.binanceState.userAuthed = true
+      state.binanceState.authInProgress = false
+      break
+
+    case types.DISCONNECT_BINANCE:
+      state = { ...state }
+      state.binanceState = {
+        ...storage.defaultState.binanceState,
+        binanceSupported: true
+      }
+      break
+
+    case types.CONNECT_TO_BINANCE:
+      state = { ...state }
+      state.binanceState.authInProgress = true
+      break
+
+    case types.ON_BINANCE_CLIENT_URL:
+      state = { ...state }
+      state.binanceState.binanceClientUrl = payload.clientUrl
+      break
+
+    case types.ON_BTC_USD_PRICE:
+      if (!payload.price) {
+        break
+      }
+
+      state = { ...state }
+
+      if (!state.binanceState.accountBalances) {
+        state.binanceState.accountBalances = {}
+      }
+
+      const accountBTCBalance = state.binanceState.accountBalances['BTC'] || '0.00'
+      state.binanceState.btcBalanceValue = getUSDPrice(accountBTCBalance, payload.price)
+      state.binanceState.btcPrice = payload.price
+      break
+
+    case types.ON_BTC_USD_VOLUME:
+      if (!payload.volume) {
+        break
+      }
+
+      const btcFloatString = Math.floor(
+        parseFloat(payload.volume)
+      ).toString()
+
+      state = { ...state }
+      state.binanceState.btcVolume = btcFloatString
+      break
+
+    case types.ON_ASSET_BTC_PRICE:
+      const { ticker, price } = payload
+      if (!price) {
+        break
+      }
+
+      state = { ...state }
+      if (!state.binanceState.assetBTCValues) {
+        state.binanceState.assetBTCValues = {}
+      }
+      state.binanceState.assetBTCValues[ticker] = price
+      break
+
+    case types.ON_ASSET_BTC_VOLUME:
+      if (!payload.volume) {
+        break
+      }
+
+      const floatString = Math.floor(
+        parseFloat(payload.volume)
+      ).toString()
+
+      state = { ...state }
+      if (!state.binanceState.assetBTCVolumes) {
+        state.binanceState.assetBTCVolumes = {}
+      }
+      state.binanceState.assetBTCVolumes[payload.ticker] = floatString
+      break
+
+    case types.ON_ASSET_USD_PRICE:
+      if (!payload.price) {
+        break
+      }
+
+      state = { ...state }
+      if (!state.binanceState.assetUSDValues) {
+        state.binanceState.assetUSDValues = {}
+      }
+      state.binanceState.assetUSDValues[payload.ticker] = payload.price
+      break
+
+    case types.ON_ASSET_DEPOSIT_INFO:
+      const { symbol, address, url } = payload
+      if (!symbol || !address || !url) {
+        break
+      }
+
+      state = { ...state }
+      if (!state.binanceState.assetDepositInfo) {
+        state.binanceState.assetDepositInfo = {}
+      }
+      state.binanceState.assetDepositInfo[symbol] = {
+        address,
+        url
+      }
+      break
+
+    case types.ON_DEPOSIT_QR_FOR_ASSET:
+      const { asset, imageSrc } = payload
+      if (!asset || !imageSrc) {
+        break
+      }
+
+      state = { ...state }
+      if (!state.binanceState.assetDepoitQRCodeSrcs) {
+        state.binanceState.assetDepoitQRCodeSrcs = {}
+      }
+      state.binanceState.assetDepoitQRCodeSrcs[asset] = imageSrc
+      break
+
+    case types.ON_CONVERTABLE_ASSETS:
+      const { convertAsset, assets } = payload
+      if (!convertAsset || !assets) {
+        break
+      }
+
+      state = { ...state }
+      if (!state.binanceState.convertAssets) {
+        state.binanceState.convertAssets = {}
+      }
+      state.binanceState.convertAssets[convertAsset] = assets
+      break
+
+    case types.SET_DISCONNECT_IN_PROGRESS:
+      const { inProgress } = payload
+      state = { ...state }
+      state.binanceState = {
+        ...state.binanceState,
+        disconnectInProgress: inProgress
+      }
+      break
+
+    case types.SET_AUTH_INVALID:
+      const { authInvalid } = payload
+      state = { ...state }
+      state.binanceState = {
+        ...state.binanceState,
+        authInvalid
       }
       break
 

@@ -147,6 +147,24 @@ declare namespace NewTab {
     initialAsset: string
     userTLDAutoSet: boolean
     binanceSupported: boolean
+    accountBalances: Record<string, string>
+    authInProgress: boolean
+    assetBTCValues: Record<string, string>
+    assetUSDValues: Record<string, string>
+    assetBTCVolumes: Record<string, string>
+    userAuthed: boolean
+    btcBalanceValue: string
+    hideBalance: boolean
+    btcPrice: string
+    btcVolume: string
+    binanceClientUrl: string
+    assetDepositInfo: Record<string, any>
+    assetDepoitQRCodeSrcs: Record<string, string>
+    convertAssets: Record<string, string[]>
+    accountBTCValue: string
+    accountBTCUSDValue: string
+    disconnectInProgress: boolean
+    authInvalid: boolean
   }
 
   export type BinanceTLD = 'us' | 'com'

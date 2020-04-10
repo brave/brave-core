@@ -155,6 +155,16 @@ declare namespace chrome.braveRewards {
 declare namespace chrome.binance {
   const getUserTLD: (callback: (userTLD: string) => void) => {}
   const isSupportedRegion: (callback: (supported: boolean) => void) => {}
+  const getClientUrl: (callback: (clientUrl: string) => void) => {}
+  const getAccessToken: (code: string, callback: (success: boolean) => void) => {}
+  const getAccountBalances: (callback: (balances: Record<string, string>, unauthorized: boolean) => void) => {}
+  const getConvertQuote: (from: string, to: string, amount: string, callback: (quote: any) => void) => {}
+  const getTickerPrice: (symbolPair: string, callback: (symbolPairValue: string) => void) => {}
+  const getTickerVolume: (symbolPair: string, callback: (symbolPairVolume: string) => void) => {}
+  const getDepositInfo: (symbol: string, callback: (depositAddress: string, depositURL: string) => void) => {}
+  const getConvertAssets: (callback: (supportedAssets: any) => void) => {}
+  const confirmConvert: (quoteId: string, callback: (success: boolean, message: string) => void) => {}
+  const revokeToken: (callback: (success: boolean) => void) => {}
 }
 
 declare namespace chrome.rewardsNotifications {

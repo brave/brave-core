@@ -111,3 +111,68 @@ export const setOnlyAnonWallet = (onlyAnonWallet: boolean) => action(types.SET_O
 export const setBinanceSupported = (supported: boolean) => action(types.SET_BINANCE_SUPPORTED, {
   supported
 })
+
+export const onBinanceClientUrl = (clientUrl: string) => action(types.ON_BINANCE_CLIENT_URL, {
+  clientUrl
+})
+
+export const onValidAuthCode = () => action(types.ON_VALID_AUTH_CODE)
+
+export const setHideBalance = (hide: boolean) => action(types.SET_HIDE_BALANCE, {
+  hide
+})
+
+export const connectToBinance = () => action(types.CONNECT_TO_BINANCE)
+
+export const disconnectBinance = () => action(types.DISCONNECT_BINANCE)
+
+export const onBinanceAccountBalances = (balances: Record<string, string>) => action(types.ON_BINANCE_ACCOUNT_BALANCES, {
+  balances
+})
+
+export const onBTCUSDPrice = (price: string) => action(types.ON_BTC_USD_PRICE, {
+  price
+})
+
+export const onBTCUSDVolume = (volume: string) => action(types.ON_BTC_USD_VOLUME, {
+  volume
+})
+
+export const onAssetBTCPrice = (ticker: string, price: string) => action(types.ON_ASSET_BTC_PRICE, {
+  ticker,
+  price
+})
+
+export const onAssetBTCVolume = (ticker: string, volume: string) => action(types.ON_ASSET_BTC_VOLUME, {
+  ticker,
+  volume
+})
+
+export const onAssetUSDPrice = (ticker: string, price: string) => action(types.ON_ASSET_USD_PRICE, {
+  ticker,
+  price
+})
+
+export const onAssetDepositInfo = (symbol: string, address: string, url: string) => action(types.ON_ASSET_DEPOSIT_INFO, {
+  symbol,
+  address,
+  url
+})
+
+export const onDepositQRForAsset = (asset: string, imageSrc: string) => action(types.ON_DEPOSIT_QR_FOR_ASSET, {
+  asset,
+  imageSrc
+})
+
+export const onConvertableAssets = (convertAsset: string, assets: string[]) => action(types.ON_CONVERTABLE_ASSETS, {
+  convertAsset,
+  assets
+})
+
+export const setDisconnectInProgress = (inProgress: boolean) => action(types.SET_DISCONNECT_IN_PROGRESS, {
+  inProgress
+})
+
+export const setAuthInvalid = (authInvalid: boolean) => action(types.SET_AUTH_INVALID, {
+  authInvalid
+})
