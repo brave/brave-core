@@ -34,12 +34,6 @@ void ShowWebcompatReporter(Browser* browser) {
   OpenWebcompatReporterDialog(web_contents);
 }
 
-void ShowBraveSync(Browser* browser) {
-  ShowSingletonTabOverwritingNTP(
-      browser,
-      GetSingletonTabNavigateParams(browser, GURL(kBraveUISyncURL)));
-}
-
 void ShowBraveWallet(Browser* browser) {
   ShowSingletonTabOverwritingNTP(
       browser,

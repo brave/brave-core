@@ -7,8 +7,6 @@
 
 #include <utility>
 
-#include "brave/components/brave_sync/settings.h"
-#include "brave/components/brave_sync/sync_devices.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -16,15 +14,35 @@
 void MigrateBraveSyncPrefs(PrefService* prefs) {
   prefs->ClearPref(brave_sync::prefs::kSyncPrevSeed);
   prefs->ClearPref(brave_sync::prefs::kDuplicatedBookmarksRecovered);
+  prefs->ClearPref(brave_sync::prefs::kSyncDeviceId);
+  prefs->ClearPref(brave_sync::prefs::kSyncDeviceIdV2);
+  prefs->ClearPref(brave_sync::prefs::kSyncDeviceObjectId);
+  prefs->ClearPref(brave_sync::prefs::kSyncDeviceName);
+  prefs->ClearPref(brave_sync::prefs::kSyncEnabled);
+  prefs->ClearPref(brave_sync::prefs::kSyncBookmarksEnabled);
+  prefs->ClearPref(brave_sync::prefs::kSyncBookmarksBaseOrder);
+  prefs->ClearPref(brave_sync::prefs::kSyncSiteSettingsEnabled);
+  prefs->ClearPref(brave_sync::prefs::kSyncHistoryEnabled);
+  prefs->ClearPref(brave_sync::prefs::kSyncLatestRecordTime);
+  prefs->ClearPref(brave_sync::prefs::kSyncLatestDeviceRecordTime);
+  prefs->ClearPref(brave_sync::prefs::kSyncLastFetchTime);
+  prefs->ClearPref(brave_sync::prefs::kSyncDeviceList);
+  prefs->ClearPref(brave_sync::prefs::kSyncApiVersion);
+  prefs->ClearPref(brave_sync::prefs::kSyncMigrateBookmarksVersion);
+  prefs->ClearPref(brave_sync::prefs::kSyncRecordsToResend);
+  prefs->ClearPref(brave_sync::prefs::kSyncRecordsToResendMeta);
 }
 
 namespace brave_sync {
 namespace prefs {
 
+const char kSyncSeed[] = "brave_sync.seed";
+
+// Deprecated
+// ============================================================================
 const char kSyncDeviceId[] = "brave_sync.device_id";
 const char kSyncDeviceIdV2[] = "brave_sync.device_id_v2";
 const char kSyncDeviceObjectId[] = "brave_sync.device_object_id";
-const char kSyncSeed[] = "brave_sync.seed";
 const char kSyncPrevSeed[] = "brave_sync.previous_seed";
 const char kSyncDeviceName[] = "brave_sync.device_name";
 const char kSyncBookmarksBaseOrder[] = "brave_sync.bookmarks_base_order";
@@ -48,14 +66,18 @@ const char kDuplicatedBookmarksRecovered[] =
     "brave_sync_duplicated_bookmarks_recovered";
 const char kDuplicatedBookmarksMigrateVersion[] =
     "brave_sync_duplicated_bookmarks_migrate_version";
+// ============================================================================
 
 Prefs::Prefs(PrefService* pref_service) : pref_service_(pref_service) {}
 
 void Prefs::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+  registry->RegisterStringPref(prefs::kSyncSeed, std::string());
+
+// Deprecated
+// ============================================================================
   registry->RegisterStringPref(prefs::kSyncDeviceId, std::string());
   registry->RegisterStringPref(prefs::kSyncDeviceIdV2, std::string());
   registry->RegisterStringPref(prefs::kSyncDeviceObjectId, std::string());
-  registry->RegisterStringPref(prefs::kSyncSeed, std::string());
   registry->RegisterStringPref(prefs::kSyncPrevSeed, std::string());
   registry->RegisterStringPref(prefs::kSyncDeviceName, std::string());
   registry->RegisterStringPref(prefs::kSyncBookmarksBaseOrder, std::string());
@@ -90,149 +112,6 @@ void Prefs::SetSeed(const std::string& seed) {
   pref_service_->SetString(kSyncSeed, seed);
 }
 
-std::string Prefs::GetThisDeviceId() const {
-  return pref_service_->GetString(kSyncDeviceId);
-}
-
-void Prefs::SetThisDeviceId(const std::string& device_id) {
-  DCHECK(!device_id.empty());
-  pref_service_->SetString(kSyncDeviceId, device_id);
-}
-
-std::string Prefs::GetThisDeviceIdV2() const {
-  return pref_service_->GetString(kSyncDeviceIdV2);
-}
-
-void Prefs::SetThisDeviceIdV2(const std::string& device_id_v2) {
-  if (!device_id_v2.empty())
-    pref_service_->SetString(kSyncDeviceIdV2, device_id_v2);
-}
-
-std::string Prefs::GetThisDeviceObjectId() const {
-  return pref_service_->GetString(kSyncDeviceObjectId);
-}
-
-void Prefs::SetThisDeviceObjectId(const std::string& device_object_id) {
-  DCHECK(!device_object_id.empty());
-  pref_service_->SetString(kSyncDeviceObjectId, device_object_id);
-}
-
-std::string Prefs::GetThisDeviceName() const {
-  return pref_service_->GetString(kSyncDeviceName);
-}
-
-void Prefs::SetThisDeviceName(const std::string& device_name) {
-  DCHECK(!device_name.empty());
-  pref_service_->SetString(kSyncDeviceName, device_name);
-}
-std::string Prefs::GetBookmarksBaseOrder() {
-  return pref_service_->GetString(kSyncBookmarksBaseOrder);
-}
-void Prefs::SetBookmarksBaseOrder(const std::string& order) {
-  pref_service_->SetString(kSyncBookmarksBaseOrder, order);
-}
-
-bool Prefs::GetSyncEnabled() const {
-  return pref_service_->GetBoolean(kSyncEnabled);
-}
-
-void Prefs::SetSyncEnabled(const bool sync_this_device) {
-  pref_service_->SetBoolean(kSyncEnabled, sync_this_device);
-}
-
-bool Prefs::GetSyncBookmarksEnabled() const {
-  return pref_service_->GetBoolean(kSyncBookmarksEnabled);
-}
-
-void Prefs::SetSyncBookmarksEnabled(const bool sync_bookmarks_enabled) {
-  pref_service_->SetBoolean(kSyncBookmarksEnabled, sync_bookmarks_enabled);
-}
-
-bool Prefs::GetSyncSiteSettingsEnabled() const {
-  return pref_service_->GetBoolean(kSyncSiteSettingsEnabled);
-}
-
-void Prefs::SetSyncSiteSettingsEnabled(const bool sync_site_settings_enabled) {
-  pref_service_->SetBoolean(
-      kSyncSiteSettingsEnabled, sync_site_settings_enabled);
-}
-
-bool Prefs::GetSyncHistoryEnabled() const {
-  return pref_service_->GetBoolean(kSyncHistoryEnabled);
-}
-
-void Prefs::SetSyncHistoryEnabled(const bool sync_history_enabled) {
-  pref_service_->SetBoolean(kSyncHistoryEnabled, sync_history_enabled);
-}
-
-std::unique_ptr<brave_sync::Settings> Prefs::GetBraveSyncSettings() const {
-  auto settings = std::make_unique<brave_sync::Settings>();
-
-  settings->this_device_name_ = GetThisDeviceName();
-  settings->this_device_id_ = GetThisDeviceId();
-  settings->this_device_id_v2_ = GetThisDeviceIdV2();
-  settings->sync_this_device_ = GetSyncEnabled();
-  settings->sync_bookmarks_ = GetSyncBookmarksEnabled();
-  settings->sync_settings_ = GetSyncSiteSettingsEnabled();
-  settings->sync_history_ = GetSyncHistoryEnabled();
-
-  settings->sync_configured_ =
-      !GetSeed().empty() && !GetThisDeviceName().empty();
-
-  return settings;
-}
-
-void Prefs::SetLatestRecordTime(const base::Time &time) {
-  pref_service_->SetTime(kSyncLatestRecordTime, time);
-}
-
-base::Time Prefs::GetLatestRecordTime() {
-  return pref_service_->GetTime(kSyncLatestRecordTime);
-}
-void Prefs::SetLatestDeviceRecordTime(const base::Time& time) {
-  pref_service_->SetTime(kSyncLatestDeviceRecordTime, time);
-}
-base::Time Prefs::GetLatestDeviceRecordTime() {
-  return pref_service_->GetTime(kSyncLatestDeviceRecordTime);
-}
-
-void Prefs::SetLastFetchTime(const base::Time &time) {
-  pref_service_->SetTime(kSyncLastFetchTime, time);
-}
-
-base::Time Prefs::GetLastFetchTime() {
-  return pref_service_->GetTime(kSyncLastFetchTime);
-}
-
-void Prefs::SetLastCompactTimeBookmarks(const base::Time &time) {
-  pref_service_->SetTime(kSyncLastCompactTimeBookmarks, time);
-}
-
-base::Time Prefs::GetLastCompactTimeBookmarks() {
-  return pref_service_->GetTime(kSyncLastCompactTimeBookmarks);
-}
-
-std::unique_ptr<SyncDevices> Prefs::GetSyncDevices() {
-  auto existing_sync_devices = std::make_unique<SyncDevices>();
-  std::string json_device_list = pref_service_->GetString(kSyncDeviceList);
-  if (!json_device_list.empty())
-    existing_sync_devices->FromJson(json_device_list);
-
-  return existing_sync_devices;
-}
-
-void Prefs::SetSyncDevices(const SyncDevices& devices) {
-  pref_service_->SetString(kSyncDeviceList, devices.ToJson());
-}
-
-std::string Prefs::GetApiVersion() {
-  return pref_service_->GetString(kSyncApiVersion);
-}
-
-void Prefs::SetApiVersion(const std::string& api_version) {
-  pref_service_->SetString(kSyncApiVersion, api_version);
-}
-
 int Prefs::GetMigratedBookmarksVersion() {
   return pref_service_->GetInteger(kSyncMigrateBookmarksVersion);
 }
@@ -241,66 +120,8 @@ void Prefs::SetMigratedBookmarksVersion(const int migrate_bookmarks) {
   pref_service_->SetInteger(kSyncMigrateBookmarksVersion, migrate_bookmarks);
 }
 
-std::vector<std::string> Prefs::GetRecordsToResend() const {
-  std::vector<std::string> result;
-  const base::Value* records = pref_service_->GetList(kSyncRecordsToResend);
-  for (const base::Value& record : records->GetList()) {
-    result.push_back(record.GetString());
-  }
-  return result;
-}
-
-void Prefs::AddToRecordsToResend(const std::string& object_id,
-                                 std::unique_ptr<base::DictionaryValue> meta) {
-  ListPrefUpdate list_update(pref_service_, kSyncRecordsToResend);
-  list_update->Append(base::Value(object_id));
-  SetRecordToResendMeta(object_id, std::move(meta));
-}
-
-void Prefs::RemoveFromRecordsToResend(const std::string& object_id) {
-  ListPrefUpdate list_update(pref_service_, kSyncRecordsToResend);
-  list_update->EraseListValue(base::Value(object_id));
-  DictionaryPrefUpdate dict_update(pref_service_, kSyncRecordsToResendMeta);
-  dict_update->RemoveKey(object_id);
-}
-
-const base::DictionaryValue* Prefs::GetRecordToResendMeta(
-    const std::string& object_id) const {
-  const base::DictionaryValue* dict =
-      pref_service_->GetDictionary(kSyncRecordsToResendMeta);
-  const base::DictionaryValue* meta = nullptr;
-  const base::Value* meta_value = dict->FindDictKey(object_id);
-  if (meta_value) {
-    meta_value->GetAsDictionary(&meta);
-  }
-  return meta;
-}
-
-void Prefs::SetRecordToResendMeta(const std::string& object_id,
-                                  std::unique_ptr<base::DictionaryValue> meta) {
-  DictionaryPrefUpdate dict_update(pref_service_, kSyncRecordsToResendMeta);
-  dict_update->SetDictionary(object_id, std::move(meta));
-}
-
 void Prefs::Clear() {
-  pref_service_->ClearPref(kSyncDeviceId);
-  pref_service_->ClearPref(kSyncDeviceIdV2);
-  pref_service_->ClearPref(kSyncDeviceObjectId);
   pref_service_->ClearPref(kSyncSeed);
-  pref_service_->ClearPref(kSyncDeviceName);
-  pref_service_->ClearPref(kSyncEnabled);
-  pref_service_->ClearPref(kSyncBookmarksEnabled);
-  pref_service_->ClearPref(kSyncBookmarksBaseOrder);
-  pref_service_->ClearPref(kSyncSiteSettingsEnabled);
-  pref_service_->ClearPref(kSyncHistoryEnabled);
-  pref_service_->ClearPref(kSyncLatestRecordTime);
-  pref_service_->ClearPref(kSyncLatestDeviceRecordTime);
-  pref_service_->ClearPref(kSyncLastFetchTime);
-  pref_service_->ClearPref(kSyncDeviceList);
-  pref_service_->ClearPref(kSyncApiVersion);
-  pref_service_->ClearPref(kSyncMigrateBookmarksVersion);
-  pref_service_->ClearPref(kSyncRecordsToResend);
-  pref_service_->ClearPref(kSyncRecordsToResendMeta);
 }
 
 }  // namespace prefs

@@ -4,12 +4,12 @@
 
 #include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
 
-#include "brave/browser/autocomplete/brave_autocomplete_provider_client.h"
 #include "brave/browser/autocomplete/brave_autocomplete_scheme_classifier.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
+#include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 #include "components/omnibox/browser/autocomplete_classifier.h"
 #include "components/omnibox/browser/autocomplete_controller.h"
 
@@ -28,7 +28,7 @@ GURL GetSelectionNavigationURL(Profile* profile, const base::string16& text) {
   AutocompleteMatch match;
   AutocompleteClassifier classifier(
       std::make_unique<AutocompleteController>(
-          std::make_unique<BraveAutocompleteProviderClient>(profile),
+          std::make_unique<ChromeAutocompleteProviderClient>(profile),
           AutocompleteClassifier::DefaultOmniboxProviders()),
       std::make_unique<BraveAutocompleteSchemeClassifier>(profile));
   classifier.Classify(text, false, false,

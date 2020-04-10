@@ -14,69 +14,10 @@ config("brave_sync_config") {
   ]
 }
 
-if (enable_brave_sync) {
-  source_set("js_sync_lib_impl") {
-    sources = [
-      "client/brave_sync_client.h",
-      "client/brave_sync_client_impl.cc",
-      "client/brave_sync_client_impl.h",
-      "client/client_data.cc",
-      "client/client_data.h",
-      "client/client_ext_impl_data.cc",
-      "client/client_ext_impl_data.h",
-    ]
-
-    configs += [ ":brave_sync_config" ]
-    deps = [
-      ":core",
-      ":crypto",
-      ":jslib_messages",
-      ":prefs",
-      ":public",
-      ":static_resources",
-      "//base",
-      "//brave/common:common",
-      "//chrome/common",
-      "//components/bookmarks/browser",
-      "//components/bookmarks/common",
-      "//components/keyed_service/content",
-      "//components/keyed_service/core",
-      "//components/pref_registry",
-      "//components/prefs",
-      "//components/signin/public/identity_manager",
-      "//components/sync:rest_of_sync",
-      "//components/sync/driver:driver",
-      "//content/public/browser",
-      "//extensions/browser",
-      "//net",
-      "//services/network/public/cpp",
-      "//ui/base",
-    ]
-  }
-}
-
-source_set("jslib_messages") {
-  sources = [
-    "jslib_const.cc",
-    "jslib_const.h",
-    "jslib_messages.cc",
-    "jslib_messages.h",
-    "jslib_messages_fwd.h",
-  ]
-
-  deps = [
-    "//base",
-  ]
-}
-
 source_set("prefs") {
   sources = [
     "brave_sync_prefs.cc",
     "brave_sync_prefs.h",
-    "settings.cc",
-    "settings.h",
-    "sync_devices.cc",
-    "sync_devices.h",
   ]
 
   deps = [
@@ -113,17 +54,6 @@ source_set("features") {
   ]
 }
 
-source_set("public") {
-  sources = [
-    "public/brave_profile_sync_service.h",
-  ]
-
-  deps = [
-    ":core",
-    "buildflags",
-  ]
-}
-
 source_set("core") {
   sources = [
     "access_token_consumer.cc",
@@ -132,33 +62,19 @@ source_set("core") {
     "access_token_fetcher.h",
     "access_token_fetcher_impl.cc",
     "access_token_fetcher_impl.h",
-    "bookmark_order_util.cc",
-    "bookmark_order_util.h",
-    "brave_sync_service.cc",
-    "brave_sync_service.h",
-    "syncer_helper.cc",
-    "syncer_helper.h",
-    "tools.cc",
-    "tools.h",
-    "values_conv.cc",
-    "values_conv.h",
   ]
 
   deps = [
     ":crypto",
     ":features",
-    ":jslib_messages",
     ":prefs",
     "//base",
-    "//components/bookmarks/browser",
     "//crypto",
-    "//extensions/buildflags",
   ]
 }
 
 source_set("brave_sync") {
   sources = [
-    "brave_sync_service_observer.h",
   ]
 
   deps = [
@@ -166,71 +82,4 @@ source_set("brave_sync") {
     "buildflags",
     "//base",
   ]
-
-  if (enable_brave_sync) {
-    deps += [ ":js_sync_lib_impl" ]
-  }
-}
-
-pack_web_resources("generated_resources") {
-  resource_name = "brave_sync"
-  output_dir = "$root_gen_dir/brave/components/brave_sync"
-  deps = [
-    "ui",
-  ]
-}
-
-grit("static_resources") {
-  source = "resources.grd"
-  outputs = [
-    "grit/brave_sync_resources_map.cc",
-    "grit/brave_sync_resources_map.h",
-    "grit/brave_sync_resources.h",
-    "brave_sync_static.pak",
-  ]
-
-  deps = []
-
-  grit_flags = [
-    "-E",
-    "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
-  ]
-
-  # fix paths so we don't have to do this
-  resource_ids = ""
-
-  output_dir = "$root_gen_dir/brave/components/brave_sync"
-}
-
-repack("resources") {
-  deps = [
-    ":generated_resources",
-    ":static_resources",
-  ]
-
-  sources = [
-    "$root_gen_dir/brave/components/brave_sync/brave_sync_generated.pak",
-    "$root_gen_dir/brave/components/brave_sync/brave_sync_static.pak",
-  ]
-
-  output = "$root_gen_dir/brave/components/brave_sync/brave_sync_resources.pak"
-}
-
-if (enable_brave_sync) {
-  source_set("testutil") {
-    testonly = true
-
-    deps = [
-      ":brave_sync",
-      "//base",
-      "//chrome/test:test_support",
-      "//content/public/browser",
-      "//testing/gtest",
-    ]
-
-    sources = [
-      "test_util.cc",
-      "test_util.h",
-    ]
-  }
 }

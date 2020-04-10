@@ -1,7 +1,6 @@
 import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
-import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
@@ -42,13 +41,6 @@ source_set("ui") {
     "webui/brave_webui_source.cc",
     "webui/brave_webui_source.h",
   ]
-
-  if (enable_brave_sync) {
-    sources += [
-      "webui/sync/sync_ui.cc",
-      "webui/sync/sync_ui.h",
-    ]
-  }
 
   if (!is_android) {
     sources += [
@@ -204,7 +196,6 @@ source_set("ui") {
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/resources",
     "//brave/components/brave_shields/browser",
-    "//brave/components/brave_sync/buildflags:buildflags",
     "//brave/components/brave_wallet/browser/buildflags:buildflags",
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/brave_welcome_ui:generated_resources",
@@ -236,15 +227,6 @@ source_set("ui") {
   if (is_android) {
     deps += [
       ":favicon_source",
-    ]
-  }
-
-  if (enable_brave_sync) {
-    deps += [
-      "//brave/components/brave_sync",
-      "//brave/components/brave_sync:generated_resources",
-      "//brave/components/brave_sync:static_resources",
-      "//components/sync/driver:driver",
     ]
   }
 
