@@ -21,7 +21,9 @@ source_set("prefs") {
   ]
 
   deps = [
+    "//base",
     "//components/prefs",
+    "//components/pref_registry",
   ]
 }
 
@@ -32,6 +34,7 @@ source_set("crypto") {
   ]
 
   deps = [
+    "//base",
     "//brave/vendor/bat-native-tweetnacl:tweetnacl",
     "//brave/vendor/bip39wally-core-native:bip39wally-core",
     "//crypto",
@@ -69,7 +72,13 @@ source_set("core") {
     ":features",
     ":prefs",
     "//base",
-    "//crypto",
+    # Only for google_service_auth_error.h
+    "//google_apis:google_apis",
+    "//net:net",
+    "//net/traffic_annotation",
+    "//services/network/public/cpp:cpp_base",
+    "//services/network/public/cpp:cpp",
+    "//url:url",
   ]
 }
 
