@@ -1,0 +1,12 @@
+diff --git a/components/sync/base/BUILD.gn b/components/sync/base/BUILD.gn
+index d35449062388b7155c584546ce4a8e98296c138f..7de39ee7b93ebd370cfc4d8d112aa827869b9dae 100644
+--- a/components/sync/base/BUILD.gn
++++ b/components/sync/base/BUILD.gn
+@@ -80,6 +80,7 @@ jumbo_static_library("base") {
+   ]
+   deps = [
+     "//base:i18n",
++    "//brave/components/brave_sync",
+     "//components/os_crypt",
+     "//components/pref_registry",
+     "//components/prefs",
