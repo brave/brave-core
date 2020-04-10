@@ -22,6 +22,9 @@
 #include "chrome/browser/media/router/media_router_feature.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/common/pref_names.h"
 #include "components/flags_ui/flags_ui_constants.h"
@@ -274,9 +277,15 @@ void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
   extensions::ExtensionSystem::Get(profile_)->extension_service();
   if (enabled) {
     if (!IsExtensionInstalled(ipfs_companion_extension_id)) {
+      // Using FindLastActiveWithProfile() here will be fine. Of course, it can
+      // return NULL but only return NULL when there was no activated window
+      // with |profile_| so far. But, it's impossible at here because user can't
+      // request ipfs install request w/o activating browser.
       scoped_refptr<extensions::WebstoreInstallWithPrompt> installer =
           new extensions::WebstoreInstallWithPrompt(
               ipfs_companion_extension_id, profile_,
+              chrome::FindLastActiveWithProfile(profile_)->window()->
+                  GetNativeWindow(),
               base::BindOnce(&BraveDefaultExtensionsHandler::OnInstallResult,
                              weak_ptr_factory_.GetWeakPtr(),
                              kIPFSCompanionEnabled));
