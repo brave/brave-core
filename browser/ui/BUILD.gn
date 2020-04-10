@@ -4,6 +4,7 @@ import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
+import("//brave/components/speedreader/buildflags.gni")
 import("//build/config/features.gni")
 import("//components/gcm_driver/config.gni")
 import("//chrome/common/features.gni")
@@ -137,8 +138,6 @@ source_set("ui") {
       "views/tabs/brave_tab_context_menu_contents.h",
       "views/toolbar/bookmark_button.cc",
       "views/toolbar/bookmark_button.h",
-      "views/toolbar/speedreader_button.cc",
-      "views/toolbar/speedreader_button.h",
     ]
 
     if (enable_sparkle) {
@@ -211,7 +210,6 @@ source_set("ui") {
     "//brave/components/brave_wallet/browser/buildflags:buildflags",
     "//brave/components/brave_welcome_ui:generated_resources",
     "//brave/components/p3a:buildflags",
-    "//brave/components/speedreader",
     "//chrome/app:command_ids",
     "//chrome/app/vector_icons:vector_icons",
     "//chrome/common",
@@ -360,6 +358,16 @@ source_set("ui") {
 
     if (enable_brave_translate_extension) {
       deps += [ "//components/translate/core/browser" ]
+    }
+
+    if (enable_speedreader) {
+      sources += [
+        "views/toolbar/speedreader_button.cc",
+        "views/toolbar/speedreader_button.h",
+      ]
+      deps += [
+        "//brave/components/speedreader",
+      ]
     }
   }
 }
