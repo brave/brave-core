@@ -104,15 +104,24 @@ declare namespace Rewards {
     TIP = 5
   }
 
+  export enum Processor {
+    NONE = 0,
+    BRAVE_TOKENS = 1,
+    UPHOLD = 2,
+    BRAVE_USER_FUNDS = 3
+  }
+
   export interface TransactionReport {
     amount: number
     type: ReportType
+    processor: Processor
     created_at: number
   }
 
   export interface ContributionReport {
     amount: number
     type: ReportType
+    processor: Processor
     created_at: number
     publishers: Publisher[]
   }

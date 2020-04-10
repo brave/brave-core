@@ -653,8 +653,8 @@ void DatabaseContributionInfo::GetContributionReport(
   auto transaction = ledger::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
-      "SELECT ci.contribution_id, ci.amount, ci.type, ci.created_at "
-      "FROM %s as ci "
+      "SELECT ci.contribution_id, ci.amount, ci.type, ci.created_at, "
+      "ci.processor FROM %s as ci "
       "WHERE strftime('%%m',  datetime(ci.created_at, 'unixepoch')) = ? AND "
       "strftime('%%Y', datetime(ci.created_at, 'unixepoch')) = ? AND step = ?",
       kTableName);
@@ -674,7 +674,8 @@ void DatabaseContributionInfo::GetContributionReport(
       ledger::DBCommand::RecordBindingType::STRING_TYPE,
       ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
       ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE
+      ledger::DBCommand::RecordBindingType::INT64_TYPE,
+      ledger::DBCommand::RecordBindingType::INT_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -708,6 +709,8 @@ void DatabaseContributionInfo::OnGetContributionReport(
     info->type = static_cast<ledger::RewardsType>(
         GetInt64Column(record_pointer, 2));
     info->created_at = GetInt64Column(record_pointer, 3);
+    info->processor = static_cast<ledger::ContributionProcessor>(
+        GetIntColumn(record_pointer, 4));
 
     contribution_ids.push_back(info->contribution_id);
     list.push_back(std::move(info));
@@ -740,6 +743,7 @@ void DatabaseContributionInfo::OnGetContributionReportPublishers(
     report->contribution_id = contribution->contribution_id;
     report->amount = contribution->amount;
     report->type = ConvertRewardsTypeToReportType(contribution->type);
+    report->processor = contribution->processor;
     report->created_at = contribution->created_at;
 
     report_list.push_back(std::move(report));

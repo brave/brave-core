@@ -403,6 +403,7 @@
       <message name="IDS_BRAVE_UI_BRAVE_ADS_TITLE" desc="">Ads</message>
       <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_DESC" desc="">Support your favorite sites just by browsing – or tip a site any time you like.</message>
       <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_TITLE" desc="">Auto-Contribute</message>
+      <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_TRANSACTION" desc="">Auto-Contribute {{processor}}</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS" desc="">Brave Rewards</message>
       <message name="IDS_BRAVE_UI_AND" desc="">and</message>
       <message name="IDS_BRAVE_UI_PRIVACY_POLICY" desc="">Privacy Policy</message>
@@ -517,6 +518,9 @@
       <message name="IDS_BRAVE_UI_PRINT" desc="">Print</message>
       <message name="IDS_BRAVE_UI_PROCESSING_REQUEST" desc="">Your request is still being processed, please wait.</message>
       <message name="IDS_BRAVE_UI_PROCESSING_REQUEST_BUTTON" desc="">Try again</message>
+      <message name="IDS_BRAVE_UI_PROCESSOR_BRAVE_TOKENS" desc="">Rewards BAT</message>
+      <message name="IDS_BRAVE_UI_PROCESSOR_UPHOLD" desc="">Uphold Wallet</message>
+      <message name="IDS_BRAVE_UI_PROCESSOR_BRAVE_USER_FUNDS" desc="">Deposited BAT</message>
       <message name="IDS_BRAVE_UI_READY_TO_TAKE_PART" desc="">Ready to get started?</message>
       <message name="IDS_BRAVE_UI_READY_TO_TAKE_PART_OPT_IN_TEXT" desc="">Yes I'm Ready</message>
       <message name="IDS_BRAVE_UI_READY_TO_TAKE_PART_START" desc="">You can start with the</message>
