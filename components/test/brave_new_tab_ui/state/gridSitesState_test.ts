@@ -200,7 +200,7 @@ describe('gridSitesState', () => {
   })
   describe('gridSitesReducerUndoRemoveSite', () => {
     it('push an item from the state.removedSites list back to state.gridSites list', () => {
-      const removedSite: NewTab.Site = { ...gridSites[1], url: 'https://example.com' }
+      const removedSite: NewTab.Site = { ...gridSites[1], id: 'topsite-000', url: 'https://example.com' }
       const newState: NewTab.State = {
         ...storage.initialGridSitesState,
         gridSites,
@@ -230,10 +230,12 @@ describe('gridSitesState', () => {
     it('push all items from state.removedSites list back to state.gridSites list', () => {
       const removedSites: NewTab.Site[] = [{
         ...gridSites[0],
-        url: 'https://example.com'
+        url: 'https://example.com',
+        id: 'topsite-000'
       }, {
         ...gridSites[1],
-        url: 'https://another-example.com'
+        url: 'https://another-example.com',
+        id: 'topsite-111'
       }]
 
       const newState: NewTab.State = {
@@ -300,13 +302,30 @@ describe('gridSitesState', () => {
   })
   describe('gridSitesReducerAddSiteOrSites', () => {
     it('add sites to state.gridSites list', () => {
-      const newSite: NewTab.Site = { ...gridSites[0], url: 'https://example.com' }
+      const newSite: NewTab.Site = { ...gridSites[0], id: 'topsite-111', url: 'https://example.com' }
       const newState: NewTab.State = { ...storage.initialGridSitesState, gridSites }
 
       const assertion = gridSitesState
         .gridSitesReducerAddSiteOrSites(newState, newSite)
 
       expect(assertion.gridSites).toHaveLength(3)
+    })
+    it('do not allow duplicated sites to be added in state.gridSites list', () => {
+      const duplicatedGridSites: NewTab.Site[] = [
+        ...gridSites,
+        ...gridSites
+      ]
+
+      expect(duplicatedGridSites).toHaveLength(4)
+
+      const assertion = gridSitesState
+      .gridSitesReducerAddSiteOrSites(
+        storage.initialGridSitesState,
+        duplicatedGridSites
+        )
+
+      // Array length should reduce since it should filter dupes
+      expect(assertion.gridSites).toHaveLength(2)
     })
   })
   describe('gridSitesReducerShowSiteRemovedNotification', () => {

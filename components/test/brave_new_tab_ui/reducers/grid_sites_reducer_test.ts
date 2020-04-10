@@ -10,7 +10,7 @@ import * as gridSitesState from '../../../brave_new_tab_ui/state/gridSitesState'
 
 const bookmarkInfo: chrome.bookmarks.BookmarkTreeNode = {
   dateAdded: 123123,
-  id: '',
+  id: 'topsite-0',
   index: 1337,
   parentId: '',
   title: 'brave',
@@ -78,6 +78,53 @@ describe('gridSitesReducer', () => {
         payload: { topSites }
       })
 
+      expect(assertion.gridSites).toHaveLength(2)
+    })
+    it('populate state.gridSites list without duplicates', () => {
+      const brandNewSite: NewTab.Site = {
+        id: 'topsite-000',
+        url: 'https://.com',
+        title: 'g. clooney free propaganda',
+        pinnedIndex: 0,
+        favicon: '',
+        letter: '',
+        bookmarkInfo: undefined
+      }
+      const veryRepetitiveSite: NewTab.Site = {
+        id: 'topsite-111',
+        url: 'https://serg-loves-pokemon-4ever.com',
+        title: 'pokemon fan page',
+        pinnedIndex: 0,
+        favicon: '',
+        letter: '',
+        bookmarkInfo: undefined
+      }
+
+      const veryRepetitiveSiteList: NewTab.Site[] = [
+        veryRepetitiveSite,
+        veryRepetitiveSite,
+        veryRepetitiveSite,
+        veryRepetitiveSite,
+        veryRepetitiveSite
+      ]
+
+      // Add repetitiveSiteList everywhere. Dupe party.
+      const veryRepetitiveInitialGridSitesState: NewTab.GridSitesState = {
+        gridSites: veryRepetitiveSiteList,
+        removedSites: veryRepetitiveSiteList,
+        shouldShowSiteRemovedNotification: false,
+        legacy: {
+          pinnedTopSites: veryRepetitiveSiteList,
+          ignoredTopSites: veryRepetitiveSiteList
+        }
+      }
+
+      const assertion = gridSitesReducer(veryRepetitiveInitialGridSitesState, {
+        type: types.GRID_SITES_SET_FIRST_RENDER_DATA,
+        payload: { topSites: [ brandNewSite ] }
+      })
+      // We should see just one repetitive site and the new
+      // one added on the payload above
       expect(assertion.gridSites).toHaveLength(2)
     })
   })
@@ -224,7 +271,8 @@ describe('gridSitesReducer', () => {
     it('push an item from state.removedSites list back to state.gridSites list', () => {
       const removedSite: NewTab.Site = {
         ...gridSites[1],
-        url: 'https://example.com'
+        url: 'https://example.com',
+        id: 'topsite-999999'
       }
       const newStateWithGridSites: NewTab.State = {
         ...storage.initialGridSitesState,
@@ -277,10 +325,12 @@ describe('gridSitesReducer', () => {
     it('push all items from state.removedSites list back to state.gridSites list', () => {
       const removedSites: NewTab.Site[] = [{
         ...gridSites[0],
-        url: 'https://example.com'
+        url: 'https://example.com',
+        id: 'topsite-999999'
       }, {
         ...gridSites[1],
-        url: 'https://another-example.com'
+        url: 'https://another-example.com',
+        id: 'topsite-999998'
       }]
       const newStateWithGridSites: NewTab.State = {
         ...storage.initialGridSitesState,
@@ -440,7 +490,8 @@ describe('gridSitesReducer', () => {
     it('add sites to state.gridSites list', () => {
       const newSite: NewTab.Site = {
         ...gridSites[0],
-        url: 'https://example.com'
+        url: 'https://example.com',
+        id: 'topsite-99999'
       }
       const newStateWithGridSites: NewTab.State = {
         ...storage.initialGridSitesState,
