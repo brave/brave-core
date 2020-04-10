@@ -150,6 +150,18 @@ class BinanceGetConvertAssetsFunction :
   ResponseAction Run() override;
 };
 
+class BinanceRevokeTokenFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("binance.revokeToken", UNKNOWN)
+
+ protected:
+  ~BinanceRevokeTokenFunction() override {}
+  void OnRevokeToken(bool success);
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

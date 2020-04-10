@@ -270,7 +270,7 @@ class Binance extends React.PureComponent<Props, State> {
 
   connectBinance = () => {
     const { binanceClientUrl } = this.props
-    window.open(binanceClientUrl, '_blank')
+    window.open(binanceClientUrl, '_self')
     this.props.onConnectBinance()
   }
 
@@ -313,8 +313,10 @@ class Binance extends React.PureComponent<Props, State> {
   }
 
   finishDisconnect = () => {
-    this.props.onDisconnectBinance()
-    this.cancelDisconnect()
+    chrome.binance.revokeToken(() => {
+      this.props.onDisconnectBinance()
+      this.cancelDisconnect()
+    })
   }
 
   renderRoutes = () => {

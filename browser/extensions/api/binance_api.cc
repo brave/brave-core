@@ -345,5 +345,27 @@ void BinanceGetConvertAssetsFunction::OnGetConvertAssets(
   Respond(OneArgument(std::move(asset_dict)));
 }
 
+ExtensionFunction::ResponseAction
+BinanceRevokeTokenFunction::Run() {
+  if (!IsBinanceAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
+  }
+
+  auto* service = GetBinanceService(browser_context());
+  bool request = service->RevokeToken(base::BindOnce(
+          &BinanceRevokeTokenFunction::OnRevokeToken, this));
+
+  if (!request) {
+    return RespondNow(
+        Error("Could not revoke token"));
+  }
+
+  return RespondLater();
+}
+
+void BinanceRevokeTokenFunction::OnRevokeToken(bool success) {
+  Respond(OneArgument(std::make_unique<base::Value>(success)));
+}
+
 }  // namespace api
 }  // namespace extensions

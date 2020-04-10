@@ -139,6 +139,13 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
       "symbol":"BTCUSDT",
       "volume":"1337"
     })");
+  } else if (request_path == oauth_path_revoke_token) {
+    http_response->set_content(R"({
+      "code": "000000",
+      "message": null,
+      "data": true,
+      "success": true
+    })");
   }
   return std::move(http_response);
 }
@@ -358,6 +365,22 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
       return;
     }
     expected_symbol_pair_volume_ = symbol_pair_volume;
+    wait_for_request_.reset(new base::RunLoop);
+    wait_for_request_->Run();
+  }
+
+  void OnRevokeToken(bool success) {
+    if (wait_for_request_) {
+      wait_for_request_->Quit();
+    }
+    ASSERT_EQ(expected_success_, success);
+  }
+
+  void WaitForRevokeToken(bool success) {
+    if (wait_for_request_) {
+      return;
+    }
+    expected_success_ = success;
     wait_for_request_.reset(new base::RunLoop);
     wait_for_request_->Run();
   }
@@ -707,6 +730,39 @@ IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetTickerVolumeServerError) {
           &BinanceAPIBrowserTest::OnGetTickerVolume,
           base::Unretained(this))));
   WaitForGetTickerVolume("0");
+}
+
+IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, RevokeToken) {
+  ResetHTTPSServer(base::BindRepeating(&HandleRequest));
+  EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
+  auto* service = GetBinanceService();
+  ASSERT_TRUE(service->RevokeToken(
+      base::BindOnce(
+          &BinanceAPIBrowserTest::OnRevokeToken,
+          base::Unretained(this))));
+  WaitForRevokeToken(true);
+}
+
+IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, RevokeTokenUnauthorized) {
+  ResetHTTPSServer(base::BindRepeating(&HandleRequestUnauthorized));
+  EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
+  auto* service = GetBinanceService();
+  ASSERT_TRUE(service->RevokeToken(
+      base::BindOnce(
+          &BinanceAPIBrowserTest::OnRevokeToken,
+          base::Unretained(this))));
+  WaitForRevokeToken(false);
+}
+
+IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, RevokeTokenServerError) {
+  ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
+  EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
+  auto* service = GetBinanceService();
+  ASSERT_TRUE(service->RevokeToken(
+      base::BindOnce(
+          &BinanceAPIBrowserTest::OnRevokeToken,
+          base::Unretained(this))));
+  WaitForRevokeToken(false);
 }
 
 IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetBinanceTLD) {

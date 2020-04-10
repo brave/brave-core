@@ -259,6 +259,23 @@
             ]
           }
         ]
+      },
+      {
+        "name": "revokeToken",
+        "type": "function",
+        "description": "Revokes the token",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "success",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
       }
     ],
     "types": [

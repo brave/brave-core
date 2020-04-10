@@ -382,3 +382,40 @@ bool BinanceJSONParser::GetConvertAssetsFromJSON(const std::string& json,
   }
   return true;
 }
+
+// static
+// Response Format:
+// {
+//    "code": "000000",
+//    "message": null,
+//    "data": true,// true means clear access_token success
+//    "success": true
+// }
+bool BinanceJSONParser::RevokeTokenFromJSON(
+    const std::string& json,
+    bool* success_status) {
+  DCHECK(success_status);
+  if (!success_status) {
+    return false;
+  }
+
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::DictionaryValue* response_dict;
+  if (!records_v->GetAsDictionary(&response_dict)) {
+    return false;
+  }
+
+  if (!response_dict->GetBoolean("success", success_status)) {
+    return false;
+  }
+
+  return true;
+}

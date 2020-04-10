@@ -253,7 +253,7 @@ void BinanceService::OnURLLoaderComplete(
 }
 
 bool BinanceService::SetAccessTokens(const std::string& access_token,
-                                        const std::string& refresh_token) {
+                                     const std::string& refresh_token) {
   access_token_ = access_token;
   refresh_token_ = refresh_token;
 
@@ -465,6 +465,29 @@ void BinanceService::OnGetConvertAssets(GetConvertAssetsCallback callback,
   }
 
   std::move(callback).Run(assets);
+}
+
+bool BinanceService::RevokeToken(RevokeTokenCallback callback) {
+  auto internal_callback = base::BindOnce(&BinanceService::OnRevokeToken,
+      base::Unretained(this), std::move(callback));
+  GURL url = GetURLWithPath(oauth_host_, oauth_path_revoke_token);
+  url = net::AppendQueryParameter(url, "access_token", access_token_);
+  return OAuthRequest(url, "POST", "", std::move(internal_callback));
+}
+
+void BinanceService::OnRevokeToken(RevokeTokenCallback callback,
+    const int status, const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  bool success = false;
+  if (status >= 200 && status <= 299) {
+    BinanceJSONParser::RevokeTokenFromJSON(body, &success);
+  }
+  if (success) {
+    code_challenge_ = "";
+    code_verifier_ = "";
+    SetAccessTokens("", "");
+  }
+  std::move(callback).Run(success);
 }
 
 base::SequencedTaskRunner* BinanceService::io_task_runner() {

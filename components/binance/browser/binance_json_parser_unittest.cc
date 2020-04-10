@@ -187,4 +187,28 @@ TEST_F(BinanceJSONParserTest, GetConfirmStatusFromJSONFail) {
   ASSERT_FALSE(success);
 }
 
+TEST_F(BinanceJSONParserTest, RevokeTokenFromJSONSuccess) {
+  bool success;
+  ASSERT_TRUE(BinanceJSONParser::RevokeTokenFromJSON(R"(
+      {
+        "code": "000000",
+        "message": null,
+        "data": true,// true means clear access_token success
+        "success": true
+      })", &success));
+  ASSERT_TRUE(success);
+}
+
+TEST_F(BinanceJSONParserTest, RevokeTokenFromJSONFail) {
+  bool success;
+  ASSERT_TRUE(BinanceJSONParser::RevokeTokenFromJSON(R"(
+      {
+        "code": "000000",
+        "message": null,
+        "data": false,// true means clear access_token success
+        "success": false
+      })", &success));
+  ASSERT_FALSE(success);
+}
+
 }  // namespace

@@ -44,6 +44,7 @@ const char oauth_path_convert_assets[] = "/oauth-api/v1/ocbs/support-coins";
 const char oauth_path_convert_quote[] = "/oauth-api/v1/ocbs/quote";
 const char oauth_path_convert_confirm[] = "/oauth-api/v1/ocbs/confirm";
 const char oauth_path_deposit_info[] = "/oauth-api/v1/get-charge-address";
+const char oauth_path_revoke_token[] = "/oauth-api/v1/revoke-token";
 
 const char api_path_ticker_price[] = "/api/v3/ticker/price";
 const char api_path_ticker_volume[] = "/api/v3/ticker/24hr";
@@ -69,6 +70,7 @@ class BinanceService : public KeyedService {
       void(const std::map<std::string, std::vector<std::string>>&)>;
   using GetTickerPriceCallback = base::OnceCallback<void(const std::string&)>;
   using GetTickerVolumeCallback = base::OnceCallback<void(const std::string&)>;
+  using RevokeTokenCallback = base::OnceCallback<void(bool)>;
 
   bool GetAccessToken(const std::string& code,
       GetAccessTokenCallback callback);
@@ -86,6 +88,7 @@ class BinanceService : public KeyedService {
       GetTickerPriceCallback callback);
   bool GetTickerVolume(const std::string& symbol_pair,
       GetTickerVolumeCallback callback);
+  bool RevokeToken(RevokeTokenCallback callback);
 
   std::string GetBinanceTLD();
   std::string GetOAuthClientUrl();
@@ -128,6 +131,9 @@ class BinanceService : public KeyedService {
   void OnGetConvertAssets(GetConvertAssetsCallback callback,
                           const int status, const std::string& body,
                           const std::map<std::string, std::string>& headers);
+  void OnRevokeToken(RevokeTokenCallback callback,
+                     const int status, const std::string& body,
+                     const std::map<std::string, std::string>& headers);
   bool OAuthRequest(const GURL& url, const std::string& method,
       const std::string& post_data, URLRequestCallback callback);
   bool LoadTokensFromPrefs();
