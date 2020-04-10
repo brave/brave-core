@@ -10,7 +10,6 @@ const char brave_rewards_extension_id[] = "jidkidbbcafjabdphckchenhfomhnfma";
 const char brave_webtorrent_extension_id[] = "lgjmpdmojkpocjcopdikifhejkkjglho";
 const char hangouts_extension_id[] = "nkeimhogjdpnpccoofpliimaahmaaome";
 const char widevine_extension_id[] = "oimompecagnajdejgnnjijobebaeigek";
-const char brave_sync_extension_id[] = "nomlkjnggnifocmealianaaiobmebgil";
 const char crl_set_extension_id[] = "hfnkpimlhhgieaddgfemjhofmfblmnib";
 
 const char ethereum_remote_client_extension_id[] =

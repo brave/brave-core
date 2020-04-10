@@ -1,7 +1,6 @@
 import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
-import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
@@ -110,20 +109,6 @@ source_set("extensions") {
       "//brave/components/brave_rewards/browser",
       "//brave/components/brave_rewards/resources/extension:extension_generated_resources",
       "//brave/components/brave_rewards/resources/extension:static_resources",
-    ]
-  }
-  if (enable_brave_sync) {
-    sources += [
-      "api/brave_sync_api.cc",
-      "api/brave_sync_api.h",
-      "api/brave_sync_event_router.cc",
-      "api/brave_sync_event_router.h",
-    ]
-
-    deps += [
-      "//brave/components/brave_sync",
-      "//brave/components/brave_sync:generated_resources",
-      "//brave/components/brave_sync:static_resources",
     ]
   }
   if (enable_brave_webtorrent) {

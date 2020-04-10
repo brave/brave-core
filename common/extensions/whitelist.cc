@@ -16,7 +16,6 @@
 const std::vector<std::string> kVettedExtensions{
     brave_extension_id,
     brave_rewards_extension_id,
-    brave_sync_extension_id,
     brave_webtorrent_extension_id,
     crl_set_extension_id,
     ethereum_remote_client_extension_id,
