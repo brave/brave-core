@@ -71,6 +71,11 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
     this.closeMenu()
   }
 
+  closeMenuBinance = (action: any) => {
+    action()
+    this.closeMenu()
+  }
+
   render () {
     const {
       menuPosition,
@@ -106,7 +111,7 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
           {
             onLearnMore
             ? <StyledWidgetLink
-                onClick={onLearnMore}
+                onClick={this.closeMenuBinance.bind(this, onLearnMore)}
             >
               <StyledWidgetIcon><LearnMoreIcon/></StyledWidgetIcon>
               <StyledSpan>{getLocale('learnMore')}</StyledSpan>
@@ -115,7 +120,7 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
           }
           {
             onRefreshData
-            ? <StyledWidgetButton onClick={onRefreshData}>
+            ? <StyledWidgetButton onClick={this.closeMenuBinance.bind(this, onRefreshData)}>
                 <StyledWidgetIcon isBinance={true} isRefresh={true}>
                   <RefreshIcon/>
                 </StyledWidgetIcon>
@@ -127,7 +132,7 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
           }
           {
             onDisconnect
-            ? <StyledWidgetButton onClick={onDisconnect}>
+            ? <StyledWidgetButton onClick={this.closeMenuBinance.bind(this, onDisconnect)}>
                 <StyledWidgetIcon isBinance={true}>
                   <DisconnectIcon/>
                 </StyledWidgetIcon>

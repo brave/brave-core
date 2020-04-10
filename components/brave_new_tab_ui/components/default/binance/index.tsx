@@ -170,7 +170,7 @@ class Binance extends React.PureComponent<Props, State> {
     this.state = {
       fiatShowing: false,
       currenciesShowing: false,
-      selectedView: 'deposit',
+      selectedView: 'summary',
       currentDepositSearch: '',
       currentDepositAsset: '',
       currentTradeSearch: '',
@@ -1113,6 +1113,14 @@ class Binance extends React.PureComponent<Props, State> {
       <>
         <NavigationBar>
           <NavigationItem
+            isLeading={true}
+            isActive={selectedView === 'summary'}
+            onClick={this.setSelectedView.bind(this, 'summary')}
+          >
+            {getLocale('binanceWidgetSummary')}
+          </NavigationItem>
+          <NavigationItem
+            isLeading={true}
             isActive={selectedView === 'deposit'}
             onClick={this.setSelectedView.bind(this, 'deposit')}
           >
@@ -1123,13 +1131,6 @@ class Binance extends React.PureComponent<Props, State> {
             onClick={this.setSelectedView.bind(this, 'convert')}
           >
             {getLocale('binanceWidgetConvert')}
-          </NavigationItem>
-          <NavigationItem
-            isSummary={true}
-            isActive={selectedView === 'summary'}
-            onClick={this.setSelectedView.bind(this, 'summary')}
-          >
-            {getLocale('binanceWidgetSummary')}
           </NavigationItem>
           <NavigationItem
             isBuy={true}

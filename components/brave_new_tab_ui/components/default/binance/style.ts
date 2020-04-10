@@ -17,7 +17,7 @@ interface StyleProps {
   isBTC?: boolean
   isAsset?: boolean
   isBuy?: boolean
-  isSummary?: boolean
+  isLeading?: boolean
   isDetail?: boolean
   hideBalance?: boolean
   isFirstView?: boolean
@@ -254,8 +254,8 @@ export const NavigationItem = styled<StyleProps, 'div'>('div')`
   color: ${p => p.isActive ? '#F2C101' : '#9D7B01'};
   margin-left: ${p => {
     if (p.isBuy) {
-      return -6
-    } else if (p.isSummary) {
+      return -13
+    } else if (p.isLeading) {
       return 5
     } else {
       return 0
