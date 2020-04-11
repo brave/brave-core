@@ -6,6 +6,7 @@
 #include "brave/browser/profiles/brave_bookmark_model_loaded_observer.h"
 
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_sync/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sync/profile_sync_service_factory.h"
 #include "components/bookmarks/browser/bookmark_model.h"
@@ -44,8 +45,10 @@ void BraveBookmarkModelLoadedObserver::BookmarkModelLoaded(
 
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
   BraveProfileSyncServiceImpl::AddNonClonedBookmarkKeys(model);
-  BraveProfileSyncServiceImpl::MigrateDuplicatedBookmarksObjectIds(profile_,
-                                                                   model);
+  BraveProfileSyncServiceImpl::MigrateDuplicatedBookmarksObjectIds(
+      base::FeatureList::IsEnabled(brave_sync::features::kBraveSync),
+      profile_,
+      model);
 #endif
 
   BookmarkModelLoadedObserver::BookmarkModelLoaded(model, ids_reassigned);

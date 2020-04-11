@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <map>
+#include <set>
 #include <utility>
 #include <vector>
 
@@ -167,19 +168,8 @@ SyncRecordPtr PrepareResolvedDevice(SyncDevice* device,
   return record;
 }
 
-struct BookmarkByDateAddedComparator {
-  bool operator()(const bookmarks::BookmarkNode* lhs,
-                  const bookmarks::BookmarkNode* rhs) const {
-    DCHECK(lhs);
-    DCHECK(rhs);
-    DCHECK(!tools::IsTimeEmpty(lhs->date_added()));
-    DCHECK(!tools::IsTimeEmpty(rhs->date_added()));
-    return lhs->date_added() < rhs->date_added();
-  }
-};
-using SortedNodes =
-    std::set<const bookmarks::BookmarkNode*, BookmarkByDateAddedComparator>;
-using ObjectIdToNodes = std::map<std::string, SortedNodes>;
+using NodesSet = std::set<const bookmarks::BookmarkNode*>;
+using ObjectIdToNodes = std::map<std::string, NodesSet>;
 
 void FillObjectsMap(const bookmarks::BookmarkNode* parent,
                     ObjectIdToNodes* object_id_nodes) {
@@ -196,27 +186,53 @@ void FillObjectsMap(const bookmarks::BookmarkNode* parent,
   }
 }
 
-void ClearDuplicatedNodes(ObjectIdToNodes* object_id_nodes,
-                          bookmarks::BookmarkModel* model) {
-  for (ObjectIdToNodes::iterator it_object_id = object_id_nodes->begin();
-       it_object_id != object_id_nodes->end(); ++it_object_id) {
-    const SortedNodes& nodes = it_object_id->second;
-    if (nodes.size() > 1) {
-      // Nodes are sorted from oldest to newest, go to the second by age
-      SortedNodes::iterator it_nodes = nodes.begin();
-      ++it_nodes;
-      for (; it_nodes != nodes.end(); ++it_nodes) {
-        const bookmarks::BookmarkNode* node = *it_nodes;
-        // Copy and delete node
-        const auto* parent = node->parent();
-        size_t original_index = parent->GetIndexOf(node);
-        model->Copy(node, parent, original_index);
-        model->Remove(node);
-        brave_sync::AddBraveMetaInfo(parent->children()[original_index].get());
-      }
+void AddDeletedChildren(const BookmarkNode* node, NodesSet* deleted_nodes) {
+  for (const auto& child : node->children()) {
+    deleted_nodes->insert(child.get());
+    if (node->is_folder()) {
+      AddDeletedChildren(child.get(), deleted_nodes);
     }
   }
 }
+
+void ClearDuplicatedNodes(ObjectIdToNodes* object_id_nodes,
+                          bookmarks::BookmarkModel* model) {
+  size_t nodes_recreated = 0;
+  NodesSet nodes_with_duplicates;
+  for (ObjectIdToNodes::iterator it_object_id = object_id_nodes->begin();
+       it_object_id != object_id_nodes->end(); ++it_object_id) {
+    const NodesSet& nodes = it_object_id->second;
+    if (nodes.size() > 1) {
+      nodes_with_duplicates.insert(nodes.begin(), nodes.end());
+    }
+  }
+
+  NodesSet deleted_nodes;
+  for (const bookmarks::BookmarkNode* node : nodes_with_duplicates) {
+    if (deleted_nodes.find(node) != deleted_nodes.end()) {
+      // Node already has been deleted
+      continue;
+    }
+
+    deleted_nodes.insert(node);
+    if (node->is_folder()) {
+      AddDeletedChildren(node, &deleted_nodes);
+    }
+
+    const auto* parent = node->parent();
+    size_t original_index = parent->GetIndexOf(node);
+    VLOG(1) << "[BraveSync] " << __func__
+            << " Copying node into index=" << original_index;
+    model->Copy(node, parent, original_index);
+    VLOG(1) << "[BraveSync] " << __func__ << " Removing original node";
+    model->Remove(node);
+    nodes_recreated++;
+  }
+
+  VLOG(1) << "[BraveSync] " << __func__
+          << " done nodes_recreated=" << nodes_recreated;
+}
+
 }  // namespace
 
 BraveProfileSyncServiceImpl::BraveProfileSyncServiceImpl(Profile* profile,
@@ -808,27 +824,33 @@ void BraveProfileSyncServiceImpl::SetPermanentNodesOrder(
 }
 
 // static
-void BraveProfileSyncServiceImpl::MigrateDuplicatedBookmarksObjectIds(
+bool BraveProfileSyncServiceImpl::MigrateDuplicatedBookmarksObjectIds(
+    bool sync_enabled,
     Profile* profile,
     BookmarkModel* model) {
+  if (!sync_enabled) {
+    return false;
+  }
+
   DCHECK(model);
   DCHECK(model->loaded());
 
-  bool duplicated_bookmarks_recovered =
-      profile->GetPrefs()->GetBoolean(prefs::kDuplicatedBookmarksRecovered);
-  if (duplicated_bookmarks_recovered) {
-    return;
+  int migrated_version = profile->GetPrefs()->GetInteger(
+      prefs::kDuplicatedBookmarksMigrateVersion);
+
+  if (migrated_version >= 2) {
+    return true;
   }
 
   // Copying bookmarks through brave://bookmarks page could duplicate brave sync
   // metadata, which caused crash during chromium sync run
-  // Go through nodes and re-create the oldest ones who have duplicated
-  // object_id
+  // Go through nodes and re-create those ones who have duplicated object_id
   ObjectIdToNodes object_id_nodes;
   FillObjectsMap(model->root_node(), &object_id_nodes);
   ClearDuplicatedNodes(&object_id_nodes, model);
 
-  profile->GetPrefs()->SetBoolean(prefs::kDuplicatedBookmarksRecovered, true);
+  profile->GetPrefs()->SetInteger(prefs::kDuplicatedBookmarksMigrateVersion, 2);
+  return true;
 }
 
 std::unique_ptr<SyncRecord>

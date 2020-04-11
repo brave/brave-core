@@ -187,7 +187,8 @@ class BraveProfileSyncServiceImpl
 
   BraveSyncService* GetSyncService() const override;
 
-  static void MigrateDuplicatedBookmarksObjectIds(Profile* profile,
+  static bool MigrateDuplicatedBookmarksObjectIds(bool sync_enabled,
+                                                  Profile* profile,
                                                   BookmarkModel* model);
 
  private:
