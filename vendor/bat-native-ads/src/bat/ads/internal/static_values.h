@@ -337,8 +337,30 @@ const std::map<int, std::vector<std::string>> kSupportedRegionsSchemas = {
   },
   {
     7, {
-      "101",  // World
-      "150"   // Europe
+      "150",  // Europe
+    }
+  },
+  {
+    8, {
+      "202",  // Sub-Saharan Africa
+      "014",  // Eastern Africa
+      "017",  // Middle Africa
+      "018",  // Southern Africa
+      "011",  // Western Africa
+      "013",  // Central America
+      "005",  // South America
+      "021",  // Northern America
+      "143",  // Central Asia
+      "035",  // South-eastern Asia
+      "151",  // Eastern Europe
+      "154",  // Northern Europe
+      "039",  // Southern Europe
+      "155",  // Western Europe
+      "009",  // Oceania
+      "053",  // Australia and New Zealand
+      "054",  // Melanesia
+      "057",  // Micronesia
+      "061"   // Polynesia
     }
   }
 
