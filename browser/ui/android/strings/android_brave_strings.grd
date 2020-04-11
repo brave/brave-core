@@ -1035,8 +1035,8 @@ until they verify, or until 90 days have passed.
       <message name="IDS_HOW_WOULD_YOU_RATE" desc="Text for rate brave dialog.">
         How would you rate your experience with Brave?
       </message>
-      <message name="IDS_FEEDBACK" desc="Text for rate brave dialog button.">
-        Feedback
+      <message name="IDS_SHARE_YOUR_THOUGHTS" desc="Text for rate brave dialog button.">
+        Share your thoughts
       </message>
       <message name="IDS_NEVER" desc="Text for rate brave dialog button.">
         Never
@@ -1051,7 +1051,7 @@ until they verify, or until 90 days have passed.
         Great! Would you mind leaving us a rating on the Play Store?
       </message>
       <message name="IDS_RATE_FEEDBACK_HINT" desc="Text for rate feedback hint.">
-        Suggest us what went wrong and we'll work on it!
+        Let us know know how we can improve
       </message>
     </messages>
   </release>

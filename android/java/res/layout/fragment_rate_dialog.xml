@@ -15,10 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
+        android:layout_margin="16dp"
         android:text="@string/how_would_you_rate"
         android:textSize="20sp"
         android:textColor="@color/standard_mode_tint"
@@ -38,7 +35,6 @@
             android:layout_marginEnd="8dp"
             android:background="@android:color/transparent"
             android:foreground="?attr/selectableItemBackground"
-            android:tint="@color/standard_mode_tint"
             android:src="@drawable/smiley_sad"/>
 
         <ImageButton 
@@ -48,7 +44,6 @@
             android:layout_marginEnd="8dp"
             android:background="@android:color/transparent"
             android:foreground="?attr/selectableItemBackground"
-            android:tint="@color/standard_mode_tint"
             android:src="@drawable/smiley_neutral"/>
 
         <ImageButton 
@@ -57,7 +52,6 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:foreground="?attr/selectableItemBackground"
-            android:tint="@color/standard_mode_tint"
             android:src="@drawable/smiley_happy"/>
 
     </LinearLayout>
@@ -66,11 +60,8 @@
         android:id="@+id/feedback_title_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/feedback"
+        android:layout_margin="16dp"
+        android:text="@string/share_your_thoughts"
         android:textColor="@color/standard_mode_tint"
         android:textStyle="bold"
         android:textSize="20sp"
@@ -97,45 +88,11 @@
         android:visibility="gone" />
 
     <LinearLayout
-        android:id="@+id/brave_rate_success_action_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <Button
-            android:id="@+id/later_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/rounded_holo"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:text="@string/later"
-            android:textAllCaps="false"
-            android:textColor="@color/onboarding_orange" />
-
-        <Button
-            android:id="@+id/rate_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_filled"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:text="@string/rate"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white" />
-    </LinearLayout>
-
-
-    <LinearLayout
         android:id="@+id/brave_rate_action_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal">
 
         <Button
@@ -149,6 +106,7 @@
             android:foreground="?attr/selectableItemBackground"
             android:textColor="@color/onboarding_gray"
             android:textAllCaps="false"
+            android:visibility="invisible"
             android:gravity="center"/>
 
         <Button

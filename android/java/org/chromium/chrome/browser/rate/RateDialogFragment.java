@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,9 +35,11 @@ import org.chromium.chrome.R;
 
 import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
+import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 
 public class RateDialogFragment extends DialogFragment implements View.OnClickListener {
 	private boolean mIsFeedbackShown;
+    private boolean mIsSuccessShown;
     private boolean mIsFromSettings;
 
 	private TextView mRateTitleTextView, mFeedbackTitleTextView;
@@ -94,20 +97,21 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
         mRateFeedbackEditText = view.findViewById(R.id.rate_feedback_et);
         mPositiveButton = view.findViewById(R.id.rate_positive_btn);
         mNegativeButton = view.findViewById(R.id.rate_negative_btn);
-        mRateButton = view.findViewById(R.id.rate_btn);
-        mLaterButton = view.findViewById(R.id.later_btn);
 
         mSmileyLayout = view.findViewById(R.id.smiley_layout);
-        mRateSuccessActionLayout = view.findViewById(R.id.brave_rate_success_action_layout);
         mRateActionLayout = view.findViewById(R.id.brave_rate_action_layout);
+
+        if(GlobalNightModeStateProviderHolder.getInstance().isInNightMode()) {
+            mHappyImageButton.setColorFilter(Color.argb(255, 255, 255, 255));
+            mNeutralImageButton.setColorFilter(Color.argb(255, 255, 255, 255));
+            mSadImageButton.setColorFilter(Color.argb(255, 255, 255, 255));
+        }
 
         mHappyImageButton.setOnClickListener(this);
         mNeutralImageButton.setOnClickListener(this);
         mSadImageButton.setOnClickListener(this);
         mPositiveButton.setOnClickListener(this);
         mNegativeButton.setOnClickListener(this);
-        mRateButton.setOnClickListener(this);
-        mLaterButton.setOnClickListener(this);
     }
 
     @Override
@@ -115,8 +119,8 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
         if (view.getId() == R.id.rate_negative_btn) {
             if(mIsFeedbackShown) {
                 laterAction();
-            } else {
-                showNever();
+            } else if(mIsSuccessShown) {
+                laterAction();
             }
             dismiss();
         } else if (view.getId() == R.id.rate_positive_btn) {
@@ -127,22 +131,17 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
 	                mRateFeedbackEditText.startAnimation(shake);
 	                return;
 	            }
-	            dismiss();
 	            showNever();
-        	} else {
+        	} else if (mIsSuccessShown) {
+                openPlaystore();
+            } else {
                 laterAction();
-                dismiss();
             }
+            dismiss();
         } else if(view.getId() == R.id.neutral_ib || view.getId() == R.id.sad_ib) {
             showFeedback();
         } else if(view.getId() == R.id.happy_ib) {
             showRateSuccess();
-        } else if(view.getId() == R.id.rate_btn) {
-            openPlaystore();
-            dismiss();
-        } else if(view.getId() == R.id.later_btn) {
-            laterAction();
-            dismiss();
         }
     }
 
@@ -167,6 +166,7 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
     	mIsFeedbackShown = true;
         mFeedbackTitleTextView.setVisibility(View.VISIBLE);
         mRateFeedbackEditText.setVisibility(View.VISIBLE);
+        mNegativeButton.setVisibility(View.VISIBLE);
         mRateTitleTextView.setVisibility(View.GONE);
         mSmileyLayout.setVisibility(View.GONE);
 
@@ -175,9 +175,11 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
     }
 
     private void showRateSuccess() {
+        mIsSuccessShown = true;
         mSmileyLayout.setVisibility(View.GONE);
-        mRateActionLayout.setVisibility(View.GONE);
-        mRateSuccessActionLayout.setVisibility(View.VISIBLE);
+        mNegativeButton.setVisibility(View.VISIBLE);
+        mPositiveButton.setText(getResources().getString(R.string.rate));
+        mNegativeButton.setText(getResources().getString(R.string.later));
 
         mRateTitleTextView.setText(getResources().getString(R.string.would_you_mind_leaving_rating));
     }
