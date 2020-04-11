@@ -6,12 +6,14 @@
 #ifndef BAT_CONFIRMATIONS_INTERNAL_REFILL_TOKENS_H_
 #define BAT_CONFIRMATIONS_INTERNAL_REFILL_TOKENS_H_
 
+#include <memory>
 #include <string>
 #include <vector>
 #include <map>
 
 #include "bat/confirmations/confirmations_client.h"
 #include "bat/confirmations/wallet_info.h"
+#include "bat/confirmations/internal/retry_timer.h"
 
 #include "wrapper.hpp"
 
@@ -33,8 +35,6 @@ class RefillTokens {
   ~RefillTokens();
 
   void Refill(const WalletInfo& wallet_info, const std::string& public_key);
-
-  void RetryGettingSignedTokens();
 
  private:
   WalletInfo wallet_info_;
@@ -63,6 +63,9 @@ class RefillTokens {
   void OnRefill(
       const Result result,
       const bool should_retry = true);
+
+  RetryTimer retry_timer_;
+  void OnRetry();
 
   bool ShouldRefillTokens() const;
   int CalculateAmountOfTokensToRefill() const;

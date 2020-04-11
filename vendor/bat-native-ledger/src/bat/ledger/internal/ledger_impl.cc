@@ -811,10 +811,6 @@ void LedgerImpl::OneTimeTip(
 }
 
 void LedgerImpl::OnTimer(uint32_t timer_id) {
-  if (bat_confirmations_->OnTimer(timer_id)) {
-    return;
-  }
-
   bat_contribution_->OnTimer(timer_id);
   bat_publisher_->OnTimer(timer_id);
   bat_promotion_->OnTimer(timer_id);

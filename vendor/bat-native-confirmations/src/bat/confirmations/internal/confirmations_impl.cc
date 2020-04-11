@@ -31,30 +31,22 @@ namespace confirmations {
 ConfirmationsImpl::ConfirmationsImpl(
     ConfirmationsClient* confirmations_client) :
     is_initialized_(false),
-    retry_failed_confirmations_timer_id_(0),
     unblinded_tokens_(std::make_unique<UnblindedTokens>(this)),
     unblinded_payment_tokens_(std::make_unique<UnblindedTokens>(this)),
     estimated_pending_rewards_(0.0),
     next_payment_date_in_seconds_(0),
     ads_rewards_(std::make_unique<AdsRewards>(this, confirmations_client)),
-    retry_getting_signed_tokens_timer_id_(0),
     refill_tokens_(std::make_unique<RefillTokens>(
         this, confirmations_client, unblinded_tokens_.get())),
     redeem_token_(std::make_unique<RedeemToken>(this, confirmations_client,
         unblinded_tokens_.get(), unblinded_payment_tokens_.get())),
-    payout_redeemed_tokens_timer_id_(0),
     payout_tokens_(std::make_unique<PayoutTokens>(this, confirmations_client,
         unblinded_payment_tokens_.get())),
-    next_token_redemption_date_in_seconds_(0),
     state_has_loaded_(false),
     confirmations_client_(confirmations_client) {
 }
 
-ConfirmationsImpl::~ConfirmationsImpl() {
-  StopRetryingToGetRefillSignedTokens();
-  StopRetryingFailedConfirmations();
-  StopPayingOutRedeemedTokens();
-}
+ConfirmationsImpl::~ConfirmationsImpl() = default;
 
 void ConfirmationsImpl::Initialize(
     OnInitializeCallback callback) {
@@ -84,8 +76,7 @@ void ConfirmationsImpl::MaybeStart() {
   is_initialized_ = true;
   BLOG(INFO) << "Successfully initialized confirmations";
 
-  auto start_timer_in = CalculateTokenRedemptionTimeInSeconds();
-  StartPayingOutRedeemedTokens(start_timer_in);
+  payout_tokens_->PayoutAfterDelay(wallet_info_);
 
   RefillTokensIfNecessary();
 
@@ -110,8 +101,10 @@ std::string ConfirmationsImpl::ToJSON() const {
   dictionary.SetKey("catalog_issuers", base::Value(std::move(catalog_issuers)));
 
   // Next token redemption date
+  auto token_redemption_timestamp_in_seconds =
+      GetNextTokenRedemptionDateInSeconds();
   dictionary.SetKey("next_token_redemption_date_in_seconds", base::Value(
-      std::to_string(next_token_redemption_date_in_seconds_)));
+      std::to_string(token_redemption_timestamp_in_seconds)));
 
   // Confirmations
   auto confirmations = GetConfirmationsAsDictionary(confirmations_);
@@ -397,8 +390,8 @@ bool ConfirmationsImpl::ParseNextTokenRedemptionDateInSecondsFromJSON(
   auto next_token_redemption_date_in_seconds =
       std::stoull(next_token_redemption_date_in_seconds_value->GetString());
 
-  next_token_redemption_date_in_seconds_ =
-      Time::MigrateTimestampToDoubleT(next_token_redemption_date_in_seconds);
+  payout_tokens_->set_token_redemption_timestamp_in_seconds(
+      Time::MigrateTimestampToDoubleT(next_token_redemption_date_in_seconds));
 
   return true;
 }
@@ -907,9 +900,7 @@ void ConfirmationsImpl::AppendConfirmationToQueue(
       << " creative instance id for " << std::string(confirmation_info.type)
       << " to the confirmations queue";
 
-  if (!IsRetryingFailedConfirmations()) {
-    StartRetryingFailedConfirmations();
-  }
+  StartRetryingFailedConfirmations();
 }
 
 void ConfirmationsImpl::RemoveConfirmationFromQueue(
@@ -1168,121 +1159,31 @@ void ConfirmationsImpl::ConfirmAction(
       confirmation_type);
 }
 
-bool ConfirmationsImpl::OnTimer(const uint32_t timer_id) {
-  DCHECK(state_has_loaded_);
-  if (!state_has_loaded_) {
-    BLOG(ERROR) <<
-        "Unable to trigger event as Confirmations state is not ready";
-    return false;
-  }
-
-  if (!is_initialized_) {
-    return false;
-  }
-
-  BLOG(INFO) << "OnTimer:" << std::endl
-      << "  timer_id: "
-      << timer_id << std::endl
-      << "  retry_getting_signed_tokens_timer_id_: "
-      << retry_getting_signed_tokens_timer_id_ << std::endl
-      << "  payout_redeemed_tokens_timer_id_: "
-      << payout_redeemed_tokens_timer_id_;
-
-  if (timer_id == retry_getting_signed_tokens_timer_id_) {
-    RetryGettingRefillSignedTokens();
-    return true;
-  } else if (timer_id == retry_failed_confirmations_timer_id_) {
-    RetryFailedConfirmations();
-    return true;
-  } else if (timer_id == payout_redeemed_tokens_timer_id_) {
-    PayoutRedeemedTokens();
-    return true;
-  }
-
-  return ads_rewards_->OnTimer(timer_id);
-}
-
 void ConfirmationsImpl::RefillTokensIfNecessary() const {
   DCHECK(wallet_info_.IsValid());
 
   refill_tokens_->Refill(wallet_info_, public_key_);
 }
 
-uint64_t ConfirmationsImpl::CalculateTokenRedemptionTimeInSeconds() {
-  DCHECK(state_has_loaded_);
-
-  if (next_token_redemption_date_in_seconds_ == 0) {
-    UpdateNextTokenRedemptionDate();
-  }
-
-  auto now_in_seconds = Time::NowInSeconds();
-
-  uint64_t start_timer_in;
-  if (now_in_seconds >= next_token_redemption_date_in_seconds_) {
-    // Browser was launched after the token redemption date
-    start_timer_in = 1 * base::Time::kSecondsPerMinute;
-  } else {
-    start_timer_in = next_token_redemption_date_in_seconds_ - now_in_seconds;
-  }
-
-  auto rand_delay = brave_base::random::Geometric(start_timer_in);
-  start_timer_in = rand_delay;
-
-  return start_timer_in;
-}
-
-uint64_t ConfirmationsImpl::GetNextTokenRedemptionDateInSeconds() {
-  DCHECK(state_has_loaded_);
-
-  return next_token_redemption_date_in_seconds_;
-}
-
-void ConfirmationsImpl::UpdateNextTokenRedemptionDate() {
-  DCHECK(state_has_loaded_);
-
-  next_token_redemption_date_in_seconds_ = Time::NowInSeconds();
-
-  if (!_is_debug) {
-    next_token_redemption_date_in_seconds_ +=
-        kNextTokenRedemptionAfterSeconds;
-  } else {
-    next_token_redemption_date_in_seconds_ +=
-        kDebugNextTokenRedemptionAfterSeconds;
-  }
-
-  SaveState();
+uint64_t ConfirmationsImpl::GetNextTokenRedemptionDateInSeconds() const {
+  return payout_tokens_->get_token_redemption_timestamp_in_seconds();
 }
 
 void ConfirmationsImpl::StartRetryingFailedConfirmations() {
-  auto start_timer_in =
-      brave_base::random::Geometric(kRetryFailedConfirmationsAfterSeconds);
-
-  StartRetryingFailedConfirmations(start_timer_in);
-}
-
-void ConfirmationsImpl::StartRetryingFailedConfirmations(
-    const uint64_t start_timer_in) {
-  StopRetryingFailedConfirmations();
-
-  confirmations_client_->SetTimer(start_timer_in,
-      &retry_failed_confirmations_timer_id_);
-  if (retry_failed_confirmations_timer_id_ == 0) {
-    BLOG(ERROR) << "Failed to start retrying failed confirmations "
-        << "due to an invalid timer";
-
+  if (failed_confirmations_timer_.IsRunning()) {
     return;
   }
 
-  BLOG(INFO) << "Start retrying failed confirmations in " << start_timer_in
-      << " seconds";
+  const base::Time time = failed_confirmations_timer_.StartWithPrivacy(
+      kRetryFailedConfirmationsAfterSeconds,
+          base::BindOnce(&ConfirmationsImpl::RetryFailedConfirmations,
+              base::Unretained(this)));
+
+  BLOG(INFO) << "Retry failed confirmations at " << time;
 }
 
 void ConfirmationsImpl::RetryFailedConfirmations() {
-  DCHECK(state_has_loaded_);
-
-  StopRetryingFailedConfirmations();
-
-  if (confirmations_.size() == 0) {
+  if (confirmations_.empty()) {
     BLOG(INFO) << "No failed confirmations to retry";
     return;
   }
@@ -1293,106 +1194,6 @@ void ConfirmationsImpl::RetryFailedConfirmations() {
   redeem_token_->Redeem(confirmation_info);
 
   StartRetryingFailedConfirmations();
-}
-
-void ConfirmationsImpl::StopRetryingFailedConfirmations() {
-  if (!IsRetryingFailedConfirmations()) {
-    return;
-  }
-
-  BLOG(INFO) << "Stopped retrying failed confirmations";
-
-  confirmations_client_->KillTimer(retry_failed_confirmations_timer_id_);
-  retry_failed_confirmations_timer_id_ = 0;
-}
-
-bool ConfirmationsImpl::IsRetryingFailedConfirmations() const {
-  if (retry_failed_confirmations_timer_id_ == 0) {
-    return false;
-  }
-
-  return true;
-}
-
-void ConfirmationsImpl::StartPayingOutRedeemedTokens(
-    const uint64_t start_timer_in) {
-  StopPayingOutRedeemedTokens();
-
-  confirmations_client_->SetTimer(start_timer_in,
-      &payout_redeemed_tokens_timer_id_);
-  if (payout_redeemed_tokens_timer_id_ == 0) {
-    BLOG(ERROR)
-        << "Failed to start paying out redeemed tokens due to an invalid timer";
-    return;
-  }
-
-  BLOG(INFO) << "Start paying out redeemed tokens in " << start_timer_in
-      << " seconds";
-}
-
-void ConfirmationsImpl::PayoutRedeemedTokens() const {
-  DCHECK(wallet_info_.IsValid());
-
-  payout_tokens_->Payout(wallet_info_);
-}
-
-void ConfirmationsImpl::StopPayingOutRedeemedTokens() {
-  if (!IsPayingOutRedeemedTokens()) {
-    return;
-  }
-
-  BLOG(INFO) << "Stopped paying out redeemed tokens";
-
-  confirmations_client_->KillTimer(payout_redeemed_tokens_timer_id_);
-  payout_redeemed_tokens_timer_id_ = 0;
-}
-
-bool ConfirmationsImpl::IsPayingOutRedeemedTokens() const {
-  if (payout_redeemed_tokens_timer_id_ == 0) {
-    return false;
-  }
-
-  return true;
-}
-
-void ConfirmationsImpl::StartRetryingToGetRefillSignedTokens(
-    const uint64_t start_timer_in) {
-  StopRetryingToGetRefillSignedTokens();
-
-  confirmations_client_->SetTimer(start_timer_in,
-      &retry_getting_signed_tokens_timer_id_);
-  if (retry_getting_signed_tokens_timer_id_ == 0) {
-    BLOG(ERROR)
-        << "Failed to start getting signed tokens due to an invalid timer";
-
-    return;
-  }
-
-  BLOG(INFO) << "Start getting signed tokens in " << start_timer_in
-      << " seconds";
-}
-
-void ConfirmationsImpl::RetryGettingRefillSignedTokens() const {
-  refill_tokens_->RetryGettingSignedTokens();
-}
-
-void ConfirmationsImpl::StopRetryingToGetRefillSignedTokens() {
-  if (!IsRetryingToGetRefillSignedTokens()) {
-    return;
-  }
-
-  BLOG(INFO) << "Stopped getting signed tokens";
-
-  confirmations_client_->KillTimer(retry_getting_signed_tokens_timer_id_);
-  retry_getting_signed_tokens_timer_id_ = 0;
-}
-
-bool ConfirmationsImpl::IsRetryingToGetRefillSignedTokens() const {
-  if (retry_getting_signed_tokens_timer_id_ == 0) {
-    return false;
-  }
-
-  return true;
 }
 
 }  // namespace confirmations

@@ -45,10 +45,15 @@ bool Bundle::UpdateFromCatalog(
     return false;
   }
 
+  catalog_id_ = bundle_state->catalog_id;
+  catalog_version_ = bundle_state->catalog_version;
+  catalog_ping_ = bundle_state->catalog_ping;
+  catalog_last_updated_timestamp_in_seconds_ =
+      bundle_state->catalog_last_updated_timestamp_in_seconds;
+
   auto callback = std::bind(&Bundle::OnStateSaved,
-      this, bundle_state->catalog_id, bundle_state->catalog_version,
-          bundle_state->catalog_ping,
-              bundle_state->catalog_last_updated_timestamp_in_seconds, _1);
+      this, catalog_id_, catalog_version_, catalog_ping_,
+          catalog_last_updated_timestamp_in_seconds_, _1);
   ads_client_->SaveBundleState(std::move(bundle_state), callback);
 
   BLOG(INFO) << "Generated bundle";
@@ -257,14 +262,6 @@ void Bundle::OnStateSaved(
     // downloaded from the Ads Serve
     return;
   }
-
-  catalog_id_ = catalog_id;
-  catalog_version_ = catalog_version;
-  catalog_ping_ = catalog_ping;
-  catalog_last_updated_timestamp_in_seconds_ =
-      catalog_last_updated_timestamp_in_seconds;
-
-  ads_->BundleUpdated();
 
   BLOG(INFO) << "Successfully saved bundle state";
 }

@@ -6,7 +6,6 @@
 #ifndef BAT_CONFIRMATIONS_INTERNAL_ADS_REWARDS_H_
 #define BAT_CONFIRMATIONS_INTERNAL_ADS_REWARDS_H_
 
-#include <stdint.h>
 #include <string>
 #include <map>
 #include <memory>
@@ -15,6 +14,7 @@
 #include "bat/confirmations/wallet_info.h"
 #include "bat/confirmations/internal/payments.h"
 #include "bat/confirmations/internal/ad_grants.h"
+#include "bat/confirmations/internal/retry_timer.h"
 
 #include "base/values.h"
 
@@ -34,8 +34,6 @@ class AdsRewards {
 
   base::Value GetAsDictionary();
   bool SetFromDictionary(base::DictionaryValue* dictionary);
-
-  bool OnTimer(const uint32_t timer_id);
 
  private:
   WalletInfo wallet_info_;
@@ -57,11 +55,8 @@ class AdsRewards {
   void OnAdsRewards(
       const Result result);
 
-  uint64_t next_retry_backoff_count_;
-  uint32_t retry_timer_id_;
-  void Retry();
-  void CancelRetry();
-  bool IsRetrying() const;
+  RetryTimer retry_timer_;
+  void OnRetry();
 
   void Update();
   double CalculateEstimatedPendingRewards() const;
