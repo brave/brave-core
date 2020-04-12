@@ -136,12 +136,6 @@ class ADS_EXPORT Ads {
   // Should be called when the user invokes "Show Sample Ad" on the Client
   virtual void ServeSampleAd() = 0;
 
-  // Should be called when the timer specified by |timer_id| should be
-  // triggered. Returns |true| if the timer was successfully triggered;
-  // otherwise, should return |false|
-  virtual void OnTimer(
-      const uint32_t timer_id) = 0;
-
   // Should be called when a user is no longer idle. This call is optional for
   // mobile devices
   virtual void OnUnIdle() = 0;

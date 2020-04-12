@@ -464,28 +464,6 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
   // Not needed on mobile
 }
 
-#pragma mark - Timers
-
-- (uint32_t)setTimer:(const uint64_t)time_offset
-{
-  auto __weak weakSelf = self;
-  return [self.commonOps createTimerWithOffset:time_offset timerFired:^(uint32_t timer_id) {
-    auto strongSelf = weakSelf;
-    // If this object dies, common will get nil'd out
-    if (strongSelf) {
-      if ([strongSelf isAdsServiceRunning]) {
-        strongSelf->ads->OnTimer(timer_id);
-      }
-      [strongSelf.commonOps removeTimerWithID:timer_id];
-    }
-  }];
-}
-
-- (void)killTimer:(uint32_t)timer_id
-{
-  [self.commonOps removeTimerWithID:timer_id];
-}
-
 #pragma mark - Network
 
 - (void)URLRequest:(const std::string &)url headers:(const std::vector<std::string> &)headers content:(const std::string &)content contentType:(const std::string &)content_type method:(const ads::URLRequestMethod)method callback:(ads::URLRequestCallback)callback {

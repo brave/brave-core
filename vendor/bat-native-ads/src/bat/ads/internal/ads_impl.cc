@@ -1608,12 +1608,6 @@ void AdsImpl::ConfirmAction(
       confirmation_type);
 }
 
-void AdsImpl::OnTimer(
-    const uint32_t timer_id) {
-  BLOG(INFO) << "OnTimer: " << std::endl
-      << "  timer_id: " << timer_id;
-}
-
 void AdsImpl::AppendAdNotificationToHistory(
     const AdNotificationInfo& info,
     const ConfirmationType& confirmation_type) {

@@ -68,11 +68,6 @@ class BatAdsClientMojoBridge
       const std::string& creative_set_id,
       const ads::ConfirmationType confirmation_type) override;
 
-  uint32_t SetTimer(
-      const uint64_t time_offset) override;
-  void KillTimer(
-      const uint32_t timer_id) override;
-
   void URLRequest(
       const std::string& url,
       const std::vector<std::string>& headers,

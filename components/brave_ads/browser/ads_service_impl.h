@@ -276,8 +276,6 @@ class AdsServiceImpl : public AdsService,
       const ads::ResultCallback& callback,
       const bool success);
 
-  void OnTimer(
-      const uint32_t timer_id);
   void OnResetTheWholeState(base::Callback<void(bool)> callback,
                                  bool success);
 
@@ -313,8 +311,6 @@ class AdsServiceImpl : public AdsService,
   void MaybeStartRemoveOnboardingTimer();
   bool ShouldRemoveOnboarding() const;
   void StartRemoveOnboardingTimer();
-  void OnRemoveOnboarding(
-      const uint32_t timer_id);
 
   void MaybeShowMyFirstAdNotification();
   bool ShouldShowMyFirstAdNotification() const;
@@ -355,6 +351,8 @@ class AdsServiceImpl : public AdsService,
       const std::string& pref);
 
   uint32_t next_timer_id();
+  void KillTimer(
+      const uint32_t timer_id);
 
   std::string LoadDataResourceAndDecompressIfNeeded(
       const int id) const;
@@ -396,11 +394,6 @@ class AdsServiceImpl : public AdsService,
       const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const ads::ConfirmationType confirmation_type) override;
-
-  uint32_t SetTimer(
-      const uint64_t time_offset) override;
-  void KillTimer(
-      const uint32_t timer_id) override;
 
   bool CanShowBackgroundNotifications() const override;
 
@@ -474,7 +467,7 @@ class AdsServiceImpl : public AdsService,
 
   std::string retry_viewing_ad_notification_with_uuid_;
 
-  uint32_t remove_onboarding_timer_id_;
+  base::OneShotTimer onboarding_timer_;
 
   ui::IdleState last_idle_state_;
 
