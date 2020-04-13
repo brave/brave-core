@@ -56,7 +56,7 @@ ImportLockDialogView::ImportLockDialogView(
     : source_profile_(source_profile), callback_(callback) {
   SetLayoutManager(std::make_unique<views::FillLayout>());
 
-  DialogDelegate::set_button_label(
+  DialogDelegate::SetButtonLabel(
       ui::DIALOG_BUTTON_OK, l10n_util::GetStringUTF16(IDS_IMPORTER_LOCK_OK));
 
   views::Label* description_label;
