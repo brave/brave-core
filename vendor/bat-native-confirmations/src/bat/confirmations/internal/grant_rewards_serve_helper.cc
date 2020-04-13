@@ -5,23 +5,23 @@
 
 #include "bat/confirmations/confirmations.h"
 
-#include "bat/confirmations/internal/ledger_serve_helper.h"
+#include "bat/confirmations/internal/grant_rewards_serve_helper.h"
 #include "bat/confirmations/internal/static_values.h"
 
 namespace helper {
 
-std::string LedgerServe::GetURL() {
+std::string GrantRewardsServe::GetURL() {
   switch (confirmations::_environment) {
     case ledger::Environment::PRODUCTION: {
-      return BAT_LEDGER_PRODUCTION_SERVER;
+      return PROMOTION_PRODUCTION_SERVER;
     }
 
     case ledger::Environment::STAGING: {
-      return BAT_LEDGER_STAGING_SERVER;
+      return PROMOTION_STAGING_SERVER;
     }
 
     case ledger::Environment::DEVELOPMENT: {
-      return BAT_LEDGER_DEVELOPMENT_SERVER;
+      return PROMOTION_DEVELOPMENT_SERVER;
     }
   }
 }

@@ -3,18 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_CONFIRMATIONS_INTERNAL_LEDGER_SERVE_HELPER_H_
-#define BAT_CONFIRMATIONS_INTERNAL_LEDGER_SERVE_HELPER_H_
+#ifndef BAT_CONFIRMATIONS_INTERNAL_GRANT_REWARDS_SERVE_HELPER_H_
+#define BAT_CONFIRMATIONS_INTERNAL_GRANT_REWARDS_SERVE_HELPER_H_
 
 #include <string>
 
 namespace helper {
 
-class LedgerServe {
+class GrantRewardsServe {
  public:
   static std::string GetURL();
 };
 
 }  // namespace helper
 
-#endif  // BAT_CONFIRMATIONS_INTERNAL_LEDGER_SERVE_HELPER_H_
+#endif  // BAT_CONFIRMATIONS_INTERNAL_GRANT_REWARDS_SERVE_HELPER_H_

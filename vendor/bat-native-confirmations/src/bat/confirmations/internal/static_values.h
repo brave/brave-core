@@ -16,9 +16,9 @@ namespace confirmations {
 #define BAT_ADS_STAGING_SERVER "https://ads-serve.bravesoftware.com"
 #define BAT_ADS_DEVELOPMENT_SERVER "https://ads-serve.brave.software"
 
-#define BAT_LEDGER_PRODUCTION_SERVER "https://ledger.mercury.basicattentiontoken.org"  // NOLINT
-#define BAT_LEDGER_STAGING_SERVER "https://ledger-staging.mercury.basicattentiontoken.org"  // NOLINT
-#define BAT_LEDGER_DEVELOPMENT_SERVER "https://ledger.rewards.brave.software"  // NOLINT
+#define PROMOTION_STAGING_SERVER "https://grant.rewards.bravesoftware.com"
+#define PROMOTION_PRODUCTION_SERVER "https://grant.rewards.brave.com"
+#define PROMOTION_DEVELOPMENT_SERVER "https://grant.rewards.brave.software"
 
 const int kNextPaymentDay = 5;
 
