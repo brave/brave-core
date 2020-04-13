@@ -91,6 +91,9 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
   pref_data.SetBoolean(
       "showBinance",
       prefs->GetBoolean(kNewTabPageShowBinance));
+  pref_data.SetBoolean(
+      "showContribute",
+      prefs->GetBoolean(kNewTabPageShowContribute));
   return pref_data;
 }
 
@@ -240,6 +243,9 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   pref_change_registrar_.Add(kNewTabPageShowBinance,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
+  pref_change_registrar_.Add(kNewTabPageShowContribute,
+    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
+    base::Unretained(this)));
 }
 
 void BraveNewTabMessageHandler::OnJavascriptDisallowed() {
@@ -309,6 +315,8 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kBrandedWallpaperNotificationDismissed;
   } else if (settingsKeyInput == "showBinance") {
     settingsKey = kNewTabPageShowBinance;
+  } else if (settingsKeyInput == "showContribute") {
+    settingsKey = kNewTabPageShowContribute;
   } else {
     LOG(ERROR) << "Invalid setting key";
     return;

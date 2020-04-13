@@ -87,8 +87,6 @@ export const FiatInputWrapper = styled<{}, 'div'>('div')`
 `
 
 export const FiatDropdown = styled<StyleProps, 'div'>('div')`
-  float: right;
-  width: 25%;
   padding: 7px 3px 0px 7px;
   cursor: ${p => p.disabled ? 'auto' : 'pointer'};
 `
@@ -223,20 +221,6 @@ export const StyledTitle = styled<{}, 'div'>('div')`
 
 export const StyledTitleText = styled<{}, 'div'>('div')`
   margin-top: 4px;
-`
-
-export const TLDSwitchWrapper = styled<StyleProps, 'div'>('div')`
-  float: right;
-  margin-top: -25px;
-`
-
-export const TLDSwitch = styled<StyleProps, 'div'>('div')`
-  font-size: 13px;
-  font-weight: bold;
-  display: inline-block;
-  margin-left: 10px;
-  cursor: pointer;
-  color: ${p => p.isActive ? '#F2C101' : '#9D7B01'};
 `
 
 export const NavigationBar = styled<{}, 'div'>('div')`

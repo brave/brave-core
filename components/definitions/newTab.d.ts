@@ -99,7 +99,7 @@ declare namespace NewTab {
     rewardsState: RewardsWidgetState
     currentStackWidget: StackWidget
     binanceState: BinanceWidgetState
-    contributeState: ContributeWidgeetState
+    contributeState: ContributeWidgetState
   }
 
   export interface EphemeralState {

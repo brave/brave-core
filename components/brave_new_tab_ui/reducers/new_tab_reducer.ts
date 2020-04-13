@@ -355,7 +355,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         },
         contributeState: {
           ...state.contributeState,
-          initialAmount: payload.initialAmount
+          initialAmount: payload.initialFiat
         }
       }
       break
@@ -370,7 +370,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         },
         contributeState: {
           ...state.contributeState,
-          initialAmount: payload.initialAmount
+          initialAsset: payload.initialAsset
         }
       }
       break
@@ -385,7 +385,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         },
         contributeState: {
           ...state.contributeState,
-          initialAmount: payload.initialAmount
+          userTLDAutoSet: true
         }
       }
       break

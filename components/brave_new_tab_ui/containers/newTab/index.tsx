@@ -484,8 +484,7 @@ class NewTabPage extends React.Component<Props, State> {
               {this.renderContributeWidget(false)}
               {this.renderRewardsWidget(true)}
             </>
-          : 
-          currentStackWidget === 'binance'
+          : currentStackWidget === 'binance'
           ? <>
               {this.renderBinanceWidget(true)}
               {this.renderContributeWidget(false)}
@@ -493,8 +492,8 @@ class NewTabPage extends React.Component<Props, State> {
             </>
           : <>
               {this.renderBinanceWidget(false)}
-              {this.renderContributeWidget(false)}
-              {this.renderRewardsWidget(true)}
+              {this.renderContributeWidget(true)}
+              {this.renderRewardsWidget(false)}
             </>
         }
       </>

@@ -11,7 +11,6 @@ import {
   Copy,
   BuyPromptWrapper,
   FiatInputWrapper,
-  FiatInputField,
   FiatDropdown,
   CaratDropdown,
   AssetDropdown,
@@ -24,8 +23,6 @@ import {
   StyledTitleText,
   AssetItems,
   AssetItem,
-  TLDSwitchWrapper,
-  TLDSwitch,
   DisconnectWrapper,
   DisconnectTitle,
   DisconnectCopy,
@@ -70,8 +67,7 @@ import {
   AssetIcon,
   QRImage,
   CopyButton,
-  DropdownIcon,
-  ConnectAction
+  DropdownIcon
 } from './style'
 import {
   ShowIcon,
@@ -177,7 +173,7 @@ class Contribute extends React.PureComponent<Props, State> {
       currentTradeAsset: '',
       currentTradeAmount: '',
       currentConvertAmount: '',
-      currentConvertFrom: 'BTC',
+      currentConvertFrom: 'BAT',
       currentConvertTo: 'BNB',
       currentConvertId: '',
       currentConvertPrice: '',
@@ -286,7 +282,7 @@ class Contribute extends React.PureComponent<Props, State> {
       convertSuccess: false,
       convertFailed: false,
       currentConvertAmount: '',
-      currentConvertFrom: 'BTC',
+      currentConvertFrom: 'BAT',
       currentConvertTo: 'BNB',
       currentConvertId: '',
       currentConvertPrice: '',
@@ -618,7 +614,7 @@ class Contribute extends React.PureComponent<Props, State> {
             <ContributeLogo />
           </ContributeIcon>
           <StyledTitleText>
-            {'Contribute'}
+            {'Brave Contribute'}
           </StyledTitleText>
         </StyledTitle>
       </Header>
@@ -979,7 +975,6 @@ class Contribute extends React.PureComponent<Props, State> {
   renderConvertView = () => {
     const { accountBalances, convertAssets } = this.props
     const {
-      currentConvertAmount,
       currentConvertTo,
       currentConvertFrom,
       convertFromShowing,
@@ -999,12 +994,6 @@ class Contribute extends React.PureComponent<Props, State> {
         </AvailableLabel>
         <BuyPromptWrapper>
           <FiatInputWrapper>
-            <FiatInputField
-              type={'text'}
-              placeholder={getLocale('contributeWidgetConvertIntent')}
-              value={currentConvertAmount}
-              onChange={this.setCurrentConvertAmount}
-            />
             <FiatDropdown
               className={'asset-dropdown'}
               itemsShowing={convertFromShowing}
@@ -1168,39 +1157,17 @@ class Contribute extends React.PureComponent<Props, State> {
     return (
       <>
         <Copy>
-          {getLocale('contributeWidgetBuyCrypto')}
+           {'Support non-profits with BAT'}
         </Copy>
-        <TLDSwitchWrapper>
-          <TLDSwitch
-            onClick={this.toggleTLD}
-            isActive={userTLD === 'com'}
-          >
-            {'.com'}
-          </TLDSwitch>
-          <TLDSwitch
-            onClick={this.toggleTLD}
-            isActive={userTLD === 'us'}
-          >
-            {'.us'}
-          </TLDSwitch>
-        </TLDSwitchWrapper>
         <BuyPromptWrapper>
           <FiatInputWrapper>
-            <FiatInputField
-              type={'text'}
-              placeholder={getLocale('contributeWidgetBuyDefault')}
-              value={initialAmount}
-              onChange={this.setInitialAmount}
-            />
             <FiatDropdown
               disabled={isUS}
               itemsShowing={fiatShowing}
               className={'asset-dropdown'}
               onClick={this.handleFiatChange}
             >
-              <span>
-                {initialFiat}
-              </span>
+                {'Select Non-Profit'}
               <CaratDropdown hide={isUS}>
                 <CaratDownIcon />
               </CaratDropdown>
@@ -1269,22 +1236,8 @@ class Contribute extends React.PureComponent<Props, State> {
         </BuyPromptWrapper>
         <ActionsWrapper isFirstView={!userAuthed}>
           <ConnectButton onClick={onBuyCrypto.bind(this, initialAsset, initialAmount, initialFiat)}>
-            {`${getLocale('contributeWidgetBuy')} ${initialAsset}`}
+            {'Donate'}
           </ConnectButton>
-          {
-            userAuthed
-            ? <DismissAction onClick={this.setSelectedView.bind(this, 'deposit')}>
-                {'Cancel'}
-              </DismissAction>
-            : null
-          }
-          {
-            !userAuthed && !isUS
-            ? <ConnectAction onClick={this.connectContribute}>
-                {getLocale('contributeWidgetConnect')}
-              </ConnectAction>
-            : null
-          }
         </ActionsWrapper>
       </>
     )
