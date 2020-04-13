@@ -11,7 +11,7 @@ group("create_dist_zips") {
 
 action("create_symbol_archive") {
   script = "//build/gn_run_binary.py"
-  shell_script = "//brave/build/android/makeArchive7z.sh"
+  shell_script = "//brave/build/android/pack_symbols.sh"
 
   deps = [ "//brave/build/android:brave" ]
   archive_name = "$root_out_dir/dist/Default$target_cpu$target_apk_base.tar"
