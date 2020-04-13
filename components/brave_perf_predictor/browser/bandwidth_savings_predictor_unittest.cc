@@ -64,7 +64,8 @@ TEST(BandwidthSavingsPredictorTest, FeaturiseResourceLoading) {
   const GURL main_frame("https://brave.com/");
 
   auto fp_style = predictors::CreateResourceLoadInfo(
-      "https://brave.com/style.css", blink::mojom::ResourceType::kStylesheet);
+      "https://brave.com/style.css",
+      network::mojom::RequestDestination::kStyle);
   fp_style->raw_body_bytes = 1000;
   predictor.OnResourceLoadComplete(main_frame, *fp_style);
   EXPECT_EQ(predictor.feature_map_["resources.third-party.requestCount"], 0);
@@ -73,7 +74,7 @@ TEST(BandwidthSavingsPredictorTest, FeaturiseResourceLoading) {
 
   auto tp_style = predictors::CreateResourceLoadInfo(
       "https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.js",
-      blink::mojom::ResourceType::kScript);
+      network::mojom::RequestDestination::kScript);
   tp_style->raw_body_bytes = 1001;
   predictor.OnResourceLoadComplete(main_frame, *tp_style);
 
@@ -107,7 +108,8 @@ TEST(BandwidthSavingsPredictorTest, PredictZeroBadFrame) {
 
   const GURL main_frame("");
   auto res = predictors::CreateResourceLoadInfo(
-      "https://brave.com/style.css", blink::mojom::ResourceType::kStylesheet);
+      "https://brave.com/style.css",
+      network::mojom::RequestDestination::kStyle);
   res->raw_body_bytes = 1000;
   predictor.OnResourceLoadComplete(main_frame, *res);
 
@@ -119,7 +121,8 @@ TEST(BandwidthSavingsPredictorTest, PredictZeroNoBlocks) {
 
   const GURL main_frame("https://brave.com");
   auto res = predictors::CreateResourceLoadInfo(
-      "https://brave.com/style.css", blink::mojom::ResourceType::kStylesheet);
+      "https://brave.com/style.css",
+      network::mojom::RequestDestination::kStyle);
   res->raw_body_bytes = 1000;
   predictor.OnResourceLoadComplete(main_frame, *res);
 
@@ -131,15 +134,17 @@ TEST(BandwidthSavingsPredictorTest, PredictNonZero) {
 
   const GURL main_frame("https://brave.com");
   auto res = predictors::CreateResourceLoadInfo(
-      "https://brave.com/style.css", blink::mojom::ResourceType::kStylesheet);
+      "https://brave.com/style.css",
+      network::mojom::RequestDestination::kStyle);
   res->raw_body_bytes = 200000;
   res->total_received_bytes = 200000;
   predictor.OnResourceLoadComplete(main_frame, *res);
 
   predictor.OnSubresourceBlocked("https://google-analytics.com/ga.js");
   // resource still seen as complete, but with 0 bytes
-  auto blocked = predictors::CreateResourceLoadInfo("https://google-analytics.com/ga.js",
-                                         blink::mojom::ResourceType::kScript);
+  auto blocked = predictors::CreateResourceLoadInfo(
+      "https://google-analytics.com/ga.js",
+      network::mojom::RequestDestination::kScript);
   blocked->raw_body_bytes = 0;
   predictor.OnResourceLoadComplete(main_frame, *blocked);
 

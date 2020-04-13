@@ -76,13 +76,22 @@ void RewardsTabHelper::ResourceLoadComplete(
     return;
 
   // TODO(nejczdovc): do we need to get anyother type then XHR??
-  if (resource_load_info.resource_type == ResourceType::kMedia ||
-      resource_load_info.resource_type == ResourceType::kXhr ||
-      resource_load_info.resource_type == ResourceType::kImage ||
-      resource_load_info.resource_type == ResourceType::kScript) {
-    rewards_service_->OnXHRLoad(tab_id_, GURL(resource_load_info.final_url),
-                                web_contents()->GetURL(),
-                                resource_load_info.referrer);
+  switch (resource_load_info.request_destination) {
+    // Formerly ResourceType::kMedia
+    case network::mojom::RequestDestination::kAudio:
+    case network::mojom::RequestDestination::kTrack:
+    case network::mojom::RequestDestination::kVideo:
+    // Best match for ResourceType::kXhr (though, not limited to kXhr)
+    case network::mojom::RequestDestination::kEmpty:
+    // Formerly ResourceType::kImage
+    case network::mojom::RequestDestination::kImage:
+    case network::mojom::RequestDestination::kScript:
+      rewards_service_->OnXHRLoad(tab_id_, GURL(resource_load_info.final_url),
+                                  web_contents()->GetURL(),
+                                  resource_load_info.referrer);
+      break;
+    default:
+      break;
   }
 }
 

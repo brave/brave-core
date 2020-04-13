@@ -84,26 +84,28 @@ void BandwidthSavingsPredictor::OnResourceLoadComplete(
   feature_map_["transfer.total.size"] +=
       resource_load_info.total_received_bytes;
   std::string resource_type;
-  switch (resource_load_info.resource_type) {
-    case blink::mojom::ResourceType::kMainFrame:
+  switch (resource_load_info.request_destination) {
+    case network::mojom::RequestDestination::kDocument:
       resource_type = "document";
       break;
-    case blink::mojom::ResourceType::kSubFrame:
+    case network::mojom::RequestDestination::kIframe:
       resource_type = "document";
       break;
-    case blink::mojom::ResourceType::kStylesheet:
+    case network::mojom::RequestDestination::kStyle:
       resource_type = "stylesheet";
       break;
-    case blink::mojom::ResourceType::kScript:
+    case network::mojom::RequestDestination::kScript:
       resource_type = "script";
       break;
-    case blink::mojom::ResourceType::kImage:
+    case network::mojom::RequestDestination::kImage:
       resource_type = "image";
       break;
-    case blink::mojom::ResourceType::kFontResource:
+    case network::mojom::RequestDestination::kFont:
       resource_type = "font";
       break;
-    case blink::mojom::ResourceType::kMedia:
+    case network::mojom::RequestDestination::kAudio:
+    case network::mojom::RequestDestination::kTrack:
+    case network::mojom::RequestDestination::kVideo:
       resource_type = "media";
       break;
     default:
