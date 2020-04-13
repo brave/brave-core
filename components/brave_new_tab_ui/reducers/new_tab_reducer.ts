@@ -319,12 +319,27 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
       break
 
+    case types.ON_CONTRIBUTE_USER_TLD:
+      state = { ...state }
+      state = {
+        ...state,
+        contributeState: {
+          ...state.contributeState,
+          userTLD: payload.userTLD
+        }
+      }
+      break
+
     case types.SET_INITIAL_AMOUNT:
       state = { ...state }
       state = {
         ...state,
         binanceState: {
           ...state.binanceState,
+          initialAmount: payload.initialAmount
+        },
+        contributeState: {
+          ...state.contributeState,
           initialAmount: payload.initialAmount
         }
       }
@@ -337,6 +352,10 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         binanceState: {
           ...state.binanceState,
           initialFiat: payload.initialFiat
+        },
+        contributeState: {
+          ...state.contributeState,
+          initialAmount: payload.initialAmount
         }
       }
       break
@@ -348,6 +367,10 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         binanceState: {
           ...state.binanceState,
           initialAsset: payload.initialAsset
+        },
+        contributeState: {
+          ...state.contributeState,
+          initialAmount: payload.initialAmount
         }
       }
       break
@@ -359,6 +382,10 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         binanceState: {
           ...state.binanceState,
           userTLDAutoSet: true
+        },
+        contributeState: {
+          ...state.contributeState,
+          initialAmount: payload.initialAmount
         }
       }
       break
@@ -385,19 +412,31 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
       break
 
+    case types.SET_CONTRIBUTE_SUPPORTED:
+      state = { ...state }
+      state = {
+        ...state,
+        contributeState: {
+          ...state.contributeState,
+          contributeSupported: payload.supported
+        }
+      }
+      break
+
     case types.SET_HIDE_BALANCE:
       state = { ...state }
       state.binanceState.hideBalance = payload.hide
+      state.contributeState.hideBalance = payload.hide
       break
 
     case types.ON_BINANCE_ACCOUNT_BALANCES:
-      const { balances } = payload
-      if (!balances) {
+      const { binanceBalances } = payload
+      if (!binanceBalances) {
         break
       }
 
       state = { ...state }
-      state.binanceState.accountBalances = balances
+      state.binanceState.accountBalances = binanceBalances
 
       let totalBTC = 0.00
       let totalBTCUSDValue = 0.00
@@ -405,8 +444,8 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       const btcPrice = state.binanceState.btcPrice
       const btcValues = state.binanceState.assetBTCValues
 
-      Object.keys(balances).map((symbol: string) => {
-        const balance = balances[symbol]
+      Object.keys(binanceBalances).map((symbol: string) => {
+        const balance = binanceBalances[symbol]
         if (symbol === 'BTC') {
           totalBTC += parseFloat(balance)
           totalBTCUSDValue += parseFloat(getUSDPrice(balance, btcPrice))
@@ -426,6 +465,42 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
 
       break
 
+    case types.ON_CONTRIBUTE_ACCOUNT_BALANCES:
+      const { contributeBalances } = payload
+      if (!contributeBalances) {
+        break
+      }
+
+      state = { ...state }
+      state.contributeState.accountBalances = contributeBalances
+
+      let contributeTotalBTC = 0.00
+      let contributeTotalBTCUSDValue = 0.00
+
+      const contributeBtcPrice = state.contributeState.btcPrice
+      const contributeBtcValues = state.contributeState.assetBTCValues
+
+      Object.keys(contributeBalances).map((symbol: string) => {
+        const balance = contributeBalances[symbol]
+        if (symbol === 'BTC') {
+          contributeTotalBTC += parseFloat(balance)
+          contributeTotalBTCUSDValue += parseFloat(getUSDPrice(balance, contributeBtcPrice))
+        } else {
+          const totalInBTC = parseFloat(contributeBtcValues[symbol]) * parseFloat(balance)
+          const totalAssetValue = getUSDPrice(totalInBTC.toString(), contributeBtcPrice)
+          contributeTotalBTC += totalInBTC
+          contributeTotalBTCUSDValue += parseFloat(totalAssetValue)
+        }
+      })
+
+      state.contributeState = {
+        ...state.contributeState,
+        accountBTCValue: contributeTotalBTC.toString(),
+        accountBTCUSDValue: contributeTotalBTCUSDValue.toFixed(2).toString()
+      }
+
+      break
+
     case types.ON_VALID_AUTH_CODE:
       state = { ...state }
       state.binanceState.userAuthed = true
@@ -440,14 +515,32 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
       break
 
+    case types.DISCONNECT_CONTRIBUTE:
+      state = { ...state }
+      state.contributeState = {
+        ...storage.defaultState.contributeState,
+        contributeSupported: true
+      }
+      break
+
     case types.CONNECT_TO_BINANCE:
       state = { ...state }
       state.binanceState.authInProgress = true
       break
 
+    case types.CONNECT_TO_CONTRIBUTE:
+      state = { ...state }
+      state.contributeState.authInProgress = true
+      break
+
     case types.ON_BINANCE_CLIENT_URL:
       state = { ...state }
       state.binanceState.binanceClientUrl = payload.clientUrl
+      break
+
+    case types.ON_CONTRIBUTE_CLIENT_URL:
+      state = { ...state }
+      state.contributeState.contributeClientUrl = payload.clientUrl
       break
 
     case types.ON_BTC_USD_PRICE:

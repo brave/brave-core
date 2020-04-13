@@ -71,7 +71,7 @@ declare namespace NewTab {
     url: string
   }
 
-  export type StackWidget = 'rewards' | 'binance'
+  export type StackWidget = 'rewards' | 'binance' | 'contribute'
 
   export interface LegacyState {
     pinnedTopSites: Site[]
@@ -99,6 +99,7 @@ declare namespace NewTab {
     rewardsState: RewardsWidgetState
     currentStackWidget: StackWidget
     binanceState: BinanceWidgetState
+    contributeState: ContributeWidgeetState
   }
 
   export interface EphemeralState {
@@ -118,6 +119,7 @@ declare namespace NewTab {
     showTopSites: boolean
     showRewards: boolean
     showBinance: boolean
+    showContribute: boolean
     brandedWallpaperOptIn: boolean
     isBrandedWallpaperNotificationDismissed: boolean
     stats: Stats,
@@ -167,7 +169,35 @@ declare namespace NewTab {
     authInvalid: boolean
   }
 
+  export interface ContributeWidgetState {
+    userTLD: ContributeTLD
+    initialFiat: string
+    initialAmount: string
+    initialAsset: string
+    userTLDAutoSet: boolean
+    contributeSupported: boolean
+    accountBalances: Record<string, string>
+    authInProgress: boolean
+    assetBTCValues: Record<string, string>
+    assetUSDValues: Record<string, string>
+    assetBTCVolumes: Record<string, string>
+    userAuthed: boolean
+    btcBalanceValue: string
+    hideBalance: boolean
+    btcPrice: string
+    btcVolume: string
+    contributeClientUrl: string
+    assetDepositInfo: Record<string, any>
+    assetDepoitQRCodeSrcs: Record<string, string>
+    convertAssets: Record<string, string[]>
+    accountBTCValue: string
+    accountBTCUSDValue: string
+    disconnectInProgress: boolean
+    authInvalid: boolean
+  }
+
   export type BinanceTLD = 'us' | 'com'
+  export type ContributeTLD = 'us' | 'com'
 
   export const enum RewardsResult {
     LEDGER_OK = 0,

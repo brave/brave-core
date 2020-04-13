@@ -63,6 +63,7 @@ const char kNewTabPageShowTopSites[] = "brave.new_tab_page.show_top_sites";
 const char kNewTabPageShowStats[] = "brave.new_tab_page.show_stats";
 const char kNewTabPageShowRewards[] = "brave.new_tab_page.show_rewards";
 const char kNewTabPageShowBinance[] = "brave.new_tab_page.show_binance";
+const char kNewTabPageShowContribute[] = "brave.new_tab_page.show_contribute";
 const char kBraveEnabledMediaRouter[] = "brave.enable_media_router";
 const char kBraveWalletAES256GCMSivNonce[] =
     "brave.wallet.aes_256_gcm_siv_nonce";
@@ -72,6 +73,8 @@ const char kBraveWalletPrefVersion[] = "brave.wallet.pref_version";
 const char kBraveWalletWeb3Provider[] = "brave.wallet.web3_provider";
 const char kBinanceAccessToken[] = "brave.binance.access_token";
 const char kBinanceRefreshToken[] = "brave.binance.refresh_token";
+const char kContributeAccessToken[] = "brave.contribute.access_token";
+const char kContributeRefreshToken[] = "brave.contribute.refresh_token";
 const char kAlwaysShowBookmarkBarOnNTP[] =
     "brave.always_show_bookmark_bar_on_ntp";
 const char kRemoteDebuggingEnabled[] = "brave.remote_debugging_enabled";

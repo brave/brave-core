@@ -1,0 +1,40 @@
+import("//brave/build/config.gni")
+import("//brave/components/contribute/browser/buildflags/buildflags.gni")
+
+assert(contribute_enabled)
+
+declare_args() {
+  contribute_client_id = ""
+}
+
+source_set("browser") {
+  public_deps = [
+    "buildflags"
+  ]
+  sources = [
+    "contribute_json_parser.cc",
+    "contribute_json_parser.h",
+    "contribute_protocol_handler.cc",
+    "contribute_protocol_handler.h",
+    "contribute_service.cc",
+    "contribute_service.h",
+    "static_values.h"
+  ]
+
+  deps = [
+    "//base",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//content/public/browser",
+    "//services/network/public/cpp",
+    "//url",
+  ]
+  configs += [ ":contribute_config" ]
+}
+
+
+config("contribute_config") {
+  defines = [
+    "CONTRIBUTE_CLIENT_ID=\"$contribute_client_id\""
+  ]
+}

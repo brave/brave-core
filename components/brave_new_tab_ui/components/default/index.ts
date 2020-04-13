@@ -10,6 +10,7 @@ import { SiteRemovalNotification, SiteRemovalText, SiteRemovalAction } from './n
 import { ClockWidget } from './clock'
 import { RewardsWidget } from './rewards'
 import { BinanceWidget } from './binance'
+import { ContributeWidget } from './contribute'
 import createWidget from './widget'
 
 export * from './page'
@@ -33,5 +34,6 @@ export {
   SettingsWrapper,
   RewardsWidget,
   BinanceWidget,
+  ContributeWidget,
   createWidget
 }

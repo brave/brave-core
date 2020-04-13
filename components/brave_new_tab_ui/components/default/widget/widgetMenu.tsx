@@ -76,6 +76,11 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
     this.closeMenu()
   }
 
+  closeMenuContribute = (action: any) => {
+    action()
+    this.closeMenu()
+  }
+
   render () {
     const {
       menuPosition,

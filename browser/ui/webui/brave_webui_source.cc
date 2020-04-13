@@ -169,6 +169,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "showTopSites", IDS_BRAVE_NEW_TAB_SHOW_TOP_SITES },
         { "showRewards", IDS_BRAVE_NEW_TAB_SHOW_REWARDS },
         { "showBinance", IDS_BRAVE_NEW_TAB_SHOW_BINANCE },
+        { "showContribute", IDS_BRAVE_NEW_TAB_SHOW_CONTRIBUTE },
         { "brandedWallpaperOptIn", IDS_BRAVE_NEW_TAB_BRANDED_WALLPAPER_OPT_IN },
         { "topSitesTitle", IDS_BRAVE_NEW_TAB_TOP_SITES },
         { "statsTitle", IDS_BRAVE_NEW_TAB_STATS },
@@ -282,7 +283,55 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "binanceWidgetSummary", IDS_BINANCE_WIDGET_SUMMARY },
         { "binanceWidgetAuthInvalid", IDS_BINANCE_WIDGET_AUTH_INVALID },
         { "binanceWidgetAuthInvalidCopy", IDS_BINANCE_WIDGET_AUTH_INVALID_COPY },         // NOLINT
-        { "binanceWidgetRefreshData", IDS_BINANCE_WIDGET_REFRESH_DATA }
+        { "binanceWidgetRefreshData", IDS_BINANCE_WIDGET_REFRESH_DATA },
+
+         // Contribute Widget
+        { "contributeWidgetBuy", IDS_CONTRIBUTE_WIDGET_BUY },
+        { "contributeWidgetBuyCrypto", IDS_CONTRIBUTE_WIDGET_BUY_CRYPTO },
+        { "contributeWidgetBuyDefault", IDS_CONTRIBUTE_WIDGET_BUY_DEFAULT },
+        { "contributeWidgetWelcomeTitle", IDS_CONTRIBUTE_WIDGET_WELCOME_TITLE },
+        { "contributeWidgetSubText", IDS_CONTRIBUTE_WIDGET_SUB_TEXT },
+        { "contributeWidgetConnectText", IDS_CONTRIBUTE_WIDGET_CONNECT_TEXT },
+        { "contributeWidgetDismissText", IDS_CONTRIBUTE_WIDGET_DISMISS_TEXT },
+        { "contributeWidgetValueText", IDS_CONTRIBUTE_WIDGET_VALUE_TEXT },
+        { "contributeWidgetBTCTickerText" , IDS_CONTRIBUTE_BTC_TICKER_TEXT },
+        { "contributeWidgetViewDetails", IDS_BRAVE_UI_VIEW_DETAILS },
+        { "contributeWidgetDepositLabel", IDS_CONTRIBUTE_WIDGET_DEPOSIT_LABEL },
+        { "contributeWidgetTradeLabel", IDS_CONTRIBUTE_WIDGET_TRADE_LABEL },
+        { "contributeWidgetInvalidEntry", IDS_CONTRIBUTE_WIDGET_INVALID_ENTRY },
+        { "contributeWidgetValidatingCreds", IDS_CONTRIBUTE_WIDGET_VALIDATING_CREDS },    // NOLINT
+        { "contributeWidgetDisconnectTitle", IDS_CONTRIBUTE_WIDGET_DISCONNECT_TITLE },    // NOLINT
+        { "contributeWidgetDisconnectText" , IDS_CONTRIBUTE_WIDGET_DISCONNECT_TEXT },     // NOLINT
+        { "contributeWidgetDisconnectButton" , IDS_CONTRIBUTE_WIDGET_DISCONNECT_BUTTON }, // NOLINT
+        { "contributeWidgetCancelText" , IDS_BRAVE_UI_CANCEL },
+        { "contributeWidgetAccountDisconnected" , IDS_CONTRIBUTE_WIDGET_ACCOUNT_DISCONNECTED }, // NOLINT
+        { "contributeWidgetConfigureButton" , IDS_CONTRIBUTE_WIDGET_CONFIGURE_BUTTON },         // NOLINT
+        { "contributeWidgetConnect", IDS_CONTRIBUTE_WIDGET_CONNECT },
+        { "contributeWidgetConverted", IDS_CONTRIBUTE_WIDGET_CONVERTED },
+        { "contributeWidgetContinue", IDS_CONTRIBUTE_WIDGET_CONTINUE },
+        { "contributeWidgetUnableToConvert", IDS_CONTRIBUTE_WIDGET_UNABLE_TO_CONVERT },         // NOLINT
+        { "contributeWidgetRetry", IDS_CONTRIBUTE_WIDGET_RETRY },
+        { "contributeWidgetInsufficientFunds", IDS_CONTRIBUTE_WIDGET_INSUFFICIENT_FUNDS },      // NOLINT
+        { "contributeWidgetConversionFailed", IDS_CONTRIBUTE_WIDGET_CONVERSION_FAILED },        // NOLINT
+        { "contributeWidgetDone", IDS_CONTRIBUTE_WIDGET_DONE },
+        { "contributeWidgetCopy", IDS_CONTRIBUTE_WIDGET_COPY },
+        { "contributeWidgetSearch", IDS_CONTRIBUTE_WIDGET_SEARCH },
+        { "contributeWidgetAddressUnavailable", IDS_CONTRIBUTE_WIDGET_ADDRESS_UNAVAILABLE },    // NOLINT
+        { "contributeWidgetDepositAddress", IDS_CONTRIBUTE_WIDGET_DEPOSIT_ADDRESS },
+        { "contributeWidgetConfirmConversion", IDS_CONTRIBUTE_WIDGET_CONFIRM_CONVERSION },      // NOLINT
+        { "contributeWidgetConvert", IDS_CONTRIBUTE_WIDGET_CONVERT },
+        { "contributeWidgetRate", IDS_CONTRIBUTE_WIDGET_RATE },
+        { "contributeWidgetFee", IDS_CONTRIBUTE_WIDGET_FEE },
+        { "contributeWidgetWillReceive", IDS_CONTRIBUTE_WIDGET_WILL_RECEIVE },
+        { "contributeWidgetConfirm", IDS_CONTRIBUTE_WIDGET_CONFIRM },
+        { "contributeWidgetCancel", IDS_CONTRIBUTE_WIDGET_CANCEL },
+        { "contributeWidgetAvailable" , IDS_CONTRIBUTE_WIDGET_AVAILABLE },
+        { "contributeWidgetConvertIntent", IDS_CONTRIBUTE_WIDGET_CONVERT_INTENT },
+        { "contributeWidgetPreviewConvert", IDS_CONTRIBUTE_WIDGET_PREVIEW_CONVERT },
+        { "contributeWidgetSummary", IDS_CONTRIBUTE_WIDGET_SUMMARY },
+        { "contributeWidgetAuthInvalid", IDS_CONTRIBUTE_WIDGET_AUTH_INVALID },
+        { "contributeWidgetAuthInvalidCopy", IDS_CONTRIBUTE_WIDGET_AUTH_INVALID_COPY },         // NOLINT
+        { "contributeWidgetRefreshData", IDS_CONTRIBUTE_WIDGET_REFRESH_DATA }
       }
     }, {
       std::string("welcome"), {

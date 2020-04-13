@@ -13,7 +13,8 @@ import SiteRemovalNotification from './notification'
 import {
   ClockWidget as Clock,
   RewardsWidget as Rewards,
-  BinanceWidget as Binance
+  BinanceWidget as Binance,
+  ContributeWidget as Contribute
 } from '../../components/default'
 import * as Page from '../../components/default/page'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
@@ -40,6 +41,7 @@ interface Props {
   saveShowStats: (value: boolean) => void
   saveShowRewards: (value: boolean) => void
   saveShowBinance: (value: boolean) => void
+  saveShowContribute: (value: boolean) => void
   saveBrandedWallpaperOptIn: (value: boolean) => void
 }
 
@@ -101,7 +103,7 @@ class NewTabPage extends React.Component<Props, State> {
     // when receiving the upgrade with the Binance widget.
     const { showRewards } = this.props.newTabData
     if (!showRewards) {
-      this.props.actions.setCurrentStackWidget('binance')
+      this.props.actions.setCurrentStackWidget('contribute')
     }
   }
 
@@ -211,12 +213,12 @@ class NewTabPage extends React.Component<Props, State> {
     const {
       currentStackWidget,
       showBinance,
-      showRewards
+      showContribute
     } = this.props.newTabData
 
     if (currentStackWidget === 'binance' && showBinance) {
-      this.props.actions.setCurrentStackWidget('rewards')
-    } else if (!showRewards) {
+      this.props.actions.setCurrentStackWidget('contribute')
+    } else if (!showContribute) {
       this.props.actions.setCurrentStackWidget('binance')
     } else if (!showBinance) {
       this.props.actions.setCurrentStackWidget('binance')
@@ -232,12 +234,36 @@ class NewTabPage extends React.Component<Props, State> {
     }
   }
 
+  toggleShowContribute = () => {
+    const {
+      currentStackWidget,
+      showContribute,
+      showRewards
+    } = this.props.newTabData
+
+    if (currentStackWidget === 'contribute' && showContribute) {
+      this.props.actions.setCurrentStackWidget('rewards')
+    } else if (!showRewards) {
+      this.props.actions.setCurrentStackWidget('contribute')
+    }
+
+    this.props.saveShowContribute(!showContribute)
+  }
+
   setBinanceBalances = (balances: Record<string, string>) => {
     this.props.actions.onBinanceAccountBalances(balances)
   }
 
+  setContributeBalances = (balances: Record<string, string>) => {
+    this.props.actions.onContributeAccountBalances(balances)
+  }
+
   onBinanceClientUrl = (clientUrl: string) => {
     this.props.actions.onBinanceClientUrl(clientUrl)
+  }
+
+  onContributeClientUrl = (clientUrl: string) => {
+    this.props.actions.onContributeClientUrl(clientUrl)
   }
 
   onValidAuthCode = () => {
@@ -252,6 +278,10 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.disconnectBinance()
   }
 
+  disconnectContribute = () => {
+    this.props.actions.disconnectContribute()
+  }
+
   setDisconnectInProgress = () => {
     this.props.actions.setDisconnectInProgress(true)
   }
@@ -262,6 +292,10 @@ class NewTabPage extends React.Component<Props, State> {
 
   connectBinance = () => {
     this.props.actions.connectToBinance()
+  }
+
+  connectContribute = () => {
+    this.props.actions.connectToContribute()
   }
 
   buyCrypto = (coin: string, amount: string, fiat: string) => {
@@ -278,6 +312,10 @@ class NewTabPage extends React.Component<Props, State> {
 
   onBinanceUserTLD = (userTLD: NewTab.BinanceTLD) => {
     this.props.actions.onBinanceUserTLD(userTLD)
+  }
+
+  onContributeUserTLD = (userTLD: NewTab.ContributeTLD) => {
+    this.props.actions.onContributeUserTLD(userTLD)
   }
 
   setBTCUSDPrice = (price: string) => {
@@ -362,6 +400,10 @@ class NewTabPage extends React.Component<Props, State> {
     window.open('https://brave.com/binance/', '_blank')
   ]
 
+  learnMoreContribute = () => [
+    window.open('https://brave.com/binance/', '_blank')
+  ]
+
   setAssetDepositQRCodeSrc = (asset: string, src: string) => {
     this.props.actions.onDepositQRForAsset(asset, src)
   }
@@ -439,11 +481,20 @@ class NewTabPage extends React.Component<Props, State> {
           currentStackWidget === 'rewards'
           ? <>
               {this.renderBinanceWidget(false)}
+              {this.renderContributeWidget(false)}
               {this.renderRewardsWidget(true)}
             </>
-          : <>
-              {this.renderRewardsWidget(false)}
+          : 
+          currentStackWidget === 'binance'
+          ? <>
               {this.renderBinanceWidget(true)}
+              {this.renderContributeWidget(false)}
+              {this.renderRewardsWidget(false)}
+            </>
+          : <>
+              {this.renderBinanceWidget(false)}
+              {this.renderContributeWidget(false)}
+              {this.renderRewardsWidget(true)}
             </>
         }
       </>
@@ -452,9 +503,9 @@ class NewTabPage extends React.Component<Props, State> {
 
   renderCryptoContent () {
     const { newTabData } = this.props
-    const { showRewards, showBinance } = newTabData
+    const { showRewards, showBinance, showContribute } = newTabData
 
-    if (!showRewards && !showBinance) {
+    if (!showRewards && !showBinance && !showContribute) {
       return null
     }
 
@@ -553,10 +604,56 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
+  renderContributeWidget (showContent: boolean) {
+    const { newTabData } = this.props
+    const { contributeState, showContribute, textDirection } = newTabData
+    const menuActions = { onLearnMore: this.learnMoreContribute }
+
+    if (!showContribute || !contributeState.contributeSupported) {
+      return null
+    }
+
+    if (contributeState.userAuthed) {
+      menuActions['onDisconnect'] = this.setDisconnectInProgress
+      menuActions['onRefreshData'] = this.updateActions
+    }
+
+    return (
+      <Contribute
+        {...menuActions}
+        {...contributeState}
+        isCrypto={true}
+        isCryptoTab={!showContent}
+        menuPosition={'left'}
+        widgetTitle={'Contribute'}
+        textDirection={textDirection}
+        preventFocus={false}
+        hideWidget={this.toggleShowContribute}
+        showContent={showContent}
+        onSetHideBalance={this.setHideBalance}
+        onContributeAccountBalances={this.setContributeBalances}
+        onContributeClientUrl={this.onContributeClientUrl}
+        onConnectContribute={this.connectContribute}
+        onDisconnectContribute={this.disconnectContribute}
+        onCancelDisconnect={this.cancelDisconnect}
+        onValidAuthCode={this.onValidAuthCode}
+        onBuyCrypto={this.buyCrypto}
+        onContributeUserTLD={this.onContributeUserTLD}
+        onShowContent={this.toggleStackWidget.bind(this, 'contribute')}
+        onSetInitialAmount={this.setInitialAmount}
+        onSetInitialAsset={this.setInitialAsset}
+        onSetInitialFiat={this.setInitialFiat}
+        onSetUserTLDAutoSet={this.setUserTLDAutoSet}
+        onUpdateActions={this.updateActions}
+        onDismissAuthInvalid={this.dismissAuthInvalid}
+      />
+    )
+  }
+
   render () {
     const { newTabData, gridSitesData, actions } = this.props
     const { showSettingsMenu } = this.state
-    const { binanceState } = newTabData
+    const { binanceState, contributeState } = newTabData
 
     if (!newTabData) {
       return null
@@ -587,6 +684,7 @@ class NewTabPage extends React.Component<Props, State> {
             showStats={newTabData.showStats}
             showRewards={!!cryptoContent}
             showBinance={newTabData.showBinance}
+            showContribute={newTabData.showContribute}
             showTopSites={showTopSites}
             showBrandedWallpaper={isShowingBrandedWallpaper}
         >
@@ -664,11 +762,14 @@ class NewTabPage extends React.Component<Props, State> {
               showTopSites={newTabData.showTopSites}
               showRewards={newTabData.showRewards}
               showBinance={newTabData.showBinance}
+              showContribute={newTabData.showContribute}
               brandedWallpaperOptIn={newTabData.brandedWallpaperOptIn}
               allowBrandedWallpaperUI={newTabData.featureFlagBraveNTPBrandedWallpaper}
               toggleShowRewards={this.toggleShowRewards}
               toggleShowBinance={this.toggleShowBinance}
+              toggleShowContribute={this.toggleShowContribute}
               binanceSupported={binanceState.binanceSupported}
+              contributeSupported={contributeState.contributeSupported}
             />
             </Page.FooterContent>
           </Page.Footer>

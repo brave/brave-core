@@ -90,6 +90,10 @@ export const onBinanceUserTLD = (userTLD: NewTab.BinanceTLD) => action(types.ON_
   userTLD
 })
 
+export const onContributeUserTLD = (userTLD: NewTab.ContributeTLD) => action(types.ON_CONTRIBUTE_USER_TLD, {
+  userTLD
+})
+
 export const setInitialFiat = (initialFiat: string) => action(types.SET_INITIAL_FIAT, {
   initialFiat
 })
@@ -112,7 +116,15 @@ export const setBinanceSupported = (supported: boolean) => action(types.SET_BINA
   supported
 })
 
+export const setContributeSupported = (supported: boolean) => action(types.SET_CONTRIBUTE_SUPPORTED, {
+  supported
+})
+
 export const onBinanceClientUrl = (clientUrl: string) => action(types.ON_BINANCE_CLIENT_URL, {
+  clientUrl
+})
+
+export const onContributeClientUrl = (clientUrl: string) => action(types.ON_CONTRIBUTE_CLIENT_URL, {
   clientUrl
 })
 
@@ -124,9 +136,17 @@ export const setHideBalance = (hide: boolean) => action(types.SET_HIDE_BALANCE, 
 
 export const connectToBinance = () => action(types.CONNECT_TO_BINANCE)
 
+export const connectToContribute = () => action(types.CONNECT_TO_CONTRIBUTE)
+
 export const disconnectBinance = () => action(types.DISCONNECT_BINANCE)
 
+export const disconnectContribute = () => action(types.DISCONNECT_CONTRIBUTE)
+
 export const onBinanceAccountBalances = (balances: Record<string, string>) => action(types.ON_BINANCE_ACCOUNT_BALANCES, {
+  balances
+})
+
+export const onContributeAccountBalances = (balances: Record<string, string>) => action(types.ON_CONTRIBUTE_ACCOUNT_BALANCES, {
   balances
 })
 

@@ -56,6 +56,7 @@ extern const char kNewTabPageShowTopSites[];
 extern const char kNewTabPageShowStats[];
 extern const char kNewTabPageShowRewards[];
 extern const char kNewTabPageShowBinance[];
+extern const char kNewTabPageShowContribute[];
 extern const char kBraveEnabledMediaRouter[];
 extern const char kBraveWalletAES256GCMSivNonce[];
 extern const char kBraveWalletEncryptedSeed[];
@@ -71,6 +72,8 @@ extern const char kOtherBookmarksMigrated[];
 extern const char kBraveShieldsSettingsVersion[];
 extern const char kBinanceAccessToken[];
 extern const char kBinanceRefreshToken[];
+extern const char kContributeAccessToken[];
+extern const char kContributeRefreshToken[];
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 extern const char kBraveGCMChannelStatus[];
 #endif
