@@ -10,7 +10,6 @@
 #include "brave/browser/widevine/widevine_utils.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
-#include "chrome/browser/permissions/permission_request_manager.h"
 #include "chrome/browser/ssl/cert_verifier_browser_test.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -19,6 +18,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "chrome/test/permissions/permission_request_manager_test_api.h"
+#include "components/permissions/permission_request_manager.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test_utils.h"
@@ -38,7 +38,7 @@
 #endif
 
 namespace {
-class TestObserver : public PermissionRequestManager::Observer {
+class TestObserver : public permissions::PermissionRequestManager::Observer {
  public:
   void OnBubbleAdded() override {
     added_count_++;
@@ -69,8 +69,9 @@ class WidevinePermissionRequestBrowserTest
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  PermissionRequestManager* GetPermissionRequestManager() {
-    return PermissionRequestManager::FromWebContents(GetActiveWebContents());
+  permissions::PermissionRequestManager* GetPermissionRequestManager() {
+    return permissions::PermissionRequestManager::FromWebContents(
+        GetActiveWebContents());
   }
 
   BraveDrmTabHelper* GetBraveDrmTabHelper() {
@@ -83,7 +84,7 @@ class WidevinePermissionRequestBrowserTest
 
 IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
   GetPermissionRequestManager()->set_auto_response_for_test(
-      PermissionRequestManager::DISMISS);
+      permissions::PermissionRequestManager::DISMISS);
   auto* drm_tab_helper = GetBraveDrmTabHelper();
 
   // Check permission bubble is visible.
@@ -157,7 +158,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
   EXPECT_FALSE(IsWidevineOptedIn());
 
   GetPermissionRequestManager()->set_auto_response_for_test(
-      PermissionRequestManager::ACCEPT_ALL);
+      permissions::PermissionRequestManager::ACCEPT_ALL);
   auto* drm_tab_helper = GetBraveDrmTabHelper();
   drm_tab_helper->OnWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
@@ -188,7 +189,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
   auto* permission_request_manager = GetPermissionRequestManager();
   permission_request_manager->AddObserver(&observer);
   permission_request_manager->set_auto_response_for_test(
-      PermissionRequestManager::ACCEPT_ALL);
+      permissions::PermissionRequestManager::ACCEPT_ALL);
 
   GetBraveDrmTabHelper()->OnWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
@@ -235,8 +236,9 @@ class ScriptTriggerWidevinePermissionRequestBrowserTest
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
-  PermissionRequestManager* GetPermissionRequestManager() {
-    return PermissionRequestManager::FromWebContents(active_contents());
+  permissions::PermissionRequestManager* GetPermissionRequestManager() {
+    return permissions::PermissionRequestManager::FromWebContents(
+        active_contents());
   }
 
   bool IsPermissionBubbleShown() {
