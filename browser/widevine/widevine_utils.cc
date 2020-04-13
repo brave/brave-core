@@ -9,8 +9,8 @@
 #include "brave/browser/widevine/widevine_permission_request.h"
 #include "brave/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/permissions/permission_request_manager.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/permissions/permission_request_manager.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/pref_registry/pref_registry_syncable.h"
@@ -137,8 +137,8 @@ int GetWidevinePermissionRequestTextFrangmentResourceId() {
 }
 
 void RequestWidevinePermission(content::WebContents* web_contents) {
-  PermissionRequestManager::FromWebContents(web_contents)->AddRequest(
-      new WidevinePermissionRequest(web_contents));
+  permissions::PermissionRequestManager::FromWebContents(web_contents)
+      ->AddRequest(new WidevinePermissionRequest(web_contents));
 }
 void DontAskWidevineInstall(content::WebContents* web_contents, bool dont_ask) {
   Profile* profile = static_cast<Profile*>(web_contents->GetBrowserContext());
