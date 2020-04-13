@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/hats/hats_survey_status_checker.cc b/chrome/browser/ui/hats/hats_survey_status_checker.cc
+index 328080d846c6df9400ee912489d98b973cf60940..9ff78c9c96254a7111738ba536f40ccb8e3b3e91 100644
+--- a/chrome/browser/ui/hats/hats_survey_status_checker.cc
++++ b/chrome/browser/ui/hats/hats_survey_status_checker.cc
+@@ -41,6 +41,7 @@ HatsSurveyStatusChecker::HatsSurveyStatusChecker(Profile* profile)
+   // To fetch the survey status directly, we need to set the cookie, but it is
+   // ok to use a non-conforming value.
+   auto survey_cookie = net::CanonicalCookie::Create(
++      BRAVE_HATS_SURVEY_STATUS_CHECKER
+       GURL("https://www.google.com"), "PAIDCONTENT=0", base::Time::Now(),
+       base::nullopt);
+   content::StoragePartition* partition =
