@@ -34,7 +34,6 @@ TEST(BandwidthSavingsPredictorTest, FeaturiseTiming) {
   EXPECT_EQ(predictor.feature_map_["metrics.observedDomContentLoaded"], 0);
   EXPECT_EQ(predictor.feature_map_["metrics.observedFirstVisualChange"], 0);
   EXPECT_EQ(predictor.feature_map_["metrics.observedLoad"], 0);
-  EXPECT_EQ(predictor.feature_map_["metrics.interactive"], 0);
 
   auto timing = page_load_metrics::CreatePageLoadTiming();
   timing->document_timing->dom_content_loaded_event_start =
@@ -56,11 +55,6 @@ TEST(BandwidthSavingsPredictorTest, FeaturiseTiming) {
       base::TimeDelta::FromMilliseconds(800);
   predictor.OnPageLoadTimingUpdated(*timing);
   EXPECT_EQ(predictor.feature_map_["metrics.observedFirstVisualChange"], 800);
-
-  timing->interactive_timing->interactive =
-      base::TimeDelta::FromMilliseconds(2500);
-  predictor.OnPageLoadTimingUpdated(*timing);
-  EXPECT_EQ(predictor.feature_map_["metrics.interactive"], 2500);
 }
 
 TEST(BandwidthSavingsPredictorTest, FeaturiseResourceLoading) {

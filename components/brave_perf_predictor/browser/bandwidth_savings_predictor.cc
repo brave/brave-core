@@ -42,11 +42,6 @@ void BandwidthSavingsPredictor::OnPageLoadTimingUpdated(
   if (timing.document_timing->load_event_start.has_value())
     feature_map_["metrics.observedLoad"] =
         timing.document_timing->load_event_start.value().InMillisecondsF();
-
-  // Interactive
-  if (timing.interactive_timing->interactive.has_value())
-    feature_map_["metrics.interactive"] =
-        timing.interactive_timing->interactive.value().InMillisecondsF();
 }
 
 void BandwidthSavingsPredictor::OnSubresourceBlocked(
