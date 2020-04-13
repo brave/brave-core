@@ -16,7 +16,6 @@
 #include "brave/common/brave_wallet_constants.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_delegate.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "crypto/aead.h"
@@ -30,18 +29,10 @@
 #include "extensions/browser/extension_system.h"
 #include "extensions/browser/shared_user_script_master.h"
 #include "extensions/browser/unloaded_extension_reason.h"
+#include "extensions/browser/extension_prefs.h"
 
-namespace {
-  bool ResetCryptoWalletsOnFileTaskRunner(
-      const base::FilePath& path) {
-    return base::DeleteFile(path, true);
-  }
-}
-
-BraveWalletService::BraveWalletService(content::BrowserContext* context,
-    std::unique_ptr<BraveWalletDelegate> brave_wallet_delegate)
+BraveWalletService::BraveWalletService(content::BrowserContext* context)
     : context_(context),
-      brave_wallet_delegate_(std::move(brave_wallet_delegate)),
       extension_registry_observer_(this),
       file_task_runner_(base::CreateSequencedTaskRunner(
           {base::ThreadPool(), base::MayBlock(),
@@ -173,26 +164,9 @@ void BraveWalletService::SaveToPrefs(
       base64_cipher_seed);
 }
 
-void BraveWalletService::ResetCryptoWallets(
-    const base::FilePath& profile_path) {
-  const base::FilePath wallet_data_path = profile_path
-      .AppendASCII("Local Extension Settings")
-      .AppendASCII(ethereum_remote_client_extension_id);
-
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&ResetCryptoWalletsOnFileTaskRunner, wallet_data_path),
-      base::BindOnce(&BraveWalletService::OnCryptoWalletsReset,
-                     weak_factory_.GetWeakPtr()));
-}
-
-void BraveWalletService::OnCryptoWalletsReset(bool success) {
-  if (success) {
-    CloseTabsAndRestart();
-  }
-}
-
-void BraveWalletService::CloseTabsAndRestart() {
-  brave_wallet_delegate_->CloseTabsAndRestart();
+void BraveWalletService::ResetCryptoWallets() {
+  extensions::ExtensionPrefs::Get(context_)->DeleteExtensionPrefs(
+      ethereum_remote_client_extension_id);
 }
 
 // Generates a random 32 byte root seed and stores it in prefs

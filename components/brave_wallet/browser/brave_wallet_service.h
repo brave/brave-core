@@ -26,7 +26,6 @@
 #include "extensions/browser/extension_registry_observer.h"
 #include "url/gurl.h"
 
-class BraveWalletDelegate;
 class PrefChangeRegistrar;
 class PrefService;
 
@@ -42,11 +41,10 @@ class BrowserContext;
 class BraveWalletService : public KeyedService,
     public extensions::ExtensionRegistryObserver {
  public:
-  explicit BraveWalletService(content::BrowserContext* context,
-      std::unique_ptr<BraveWalletDelegate> brave_wallet_delegate);
+  explicit BraveWalletService(content::BrowserContext* context);
   ~BraveWalletService() override;
 
-  void ResetCryptoWallets(const base::FilePath& profile_path);
+  void ResetCryptoWallets();
   std::string GetWalletSeed(std::vector<uint8_t> key);
   std::string GetBitGoSeed(std::vector<uint8_t> key);
 
@@ -69,17 +67,14 @@ class BraveWalletService : public KeyedService,
 
  private:
   bool LoadRootSeedInfo(std::vector<uint8_t> key, std::string* seed);
-  void CloseTabsAndRestart();
   void RemoveUnusedWeb3ProviderContentScripts();
   void OnPreferenceChanged();
   // ExtensionRegistryObserver implementation.
   void OnExtensionLoaded(content::BrowserContext* browser_context,
                          const extensions::Extension* extension) override;
-  void OnCryptoWalletsReset(bool success);
 
   content::BrowserContext* context_;
   std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
-  std::unique_ptr<BraveWalletDelegate> brave_wallet_delegate_;
   ScopedObserver<extensions::ExtensionRegistry,
       extensions::ExtensionRegistryObserver> extension_registry_observer_{this};
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
