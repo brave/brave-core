@@ -124,15 +124,16 @@ class LogStreamImpl : public ads::LogStream {
 
 namespace {
 
-static std::map<std::string, int> g_schema_resource_ids = {
+static std::map<std::string, int> g_resource_ids = {
   {ads::_catalog_schema_resource_name, IDR_ADS_CATALOG_SCHEMA},
   {ads::_bundle_schema_resource_name, IDR_ADS_BUNDLE_SCHEMA},
+  {ads::_sample_bundle_resource_name, IDR_ADS_SAMPLE_BUNDLE},
 };
 
-int GetSchemaResourceId(
+int GetResourceId(
     const std::string& name) {
-  if (g_schema_resource_ids.find(name) != g_schema_resource_ids.end()) {
-    return g_schema_resource_ids[name];
+  if (g_resource_ids.find(name) != g_resource_ids.end()) {
+    return g_resource_ids[name];
   }
 
   NOTREACHED();
@@ -2088,14 +2089,13 @@ void AdsServiceImpl::Reset(
 
 std::string AdsServiceImpl::LoadJsonSchema(
     const std::string& name) {
-  const auto resource_id = GetSchemaResourceId(name);
+  const auto resource_id = GetResourceId(name);
   return LoadDataResourceAndDecompressIfNeeded(resource_id);
 }
 
 void AdsServiceImpl::LoadSampleBundle(
     ads::LoadSampleBundleCallback callback) {
-  const auto resource_id =
-      GetSchemaResourceId(ads::_bundle_schema_resource_name);
+  const auto resource_id = GetResourceId(ads::_sample_bundle_resource_name);
 
   const auto sample_bundle =
       LoadDataResourceAndDecompressIfNeeded(resource_id);

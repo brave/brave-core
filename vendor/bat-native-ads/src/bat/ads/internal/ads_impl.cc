@@ -951,13 +951,13 @@ void AdsImpl::CheckEasterEgg(
       next_easter_egg_timestamp_in_seconds_ < now_in_seconds) {
     BLOG(INFO) << "Collect easter egg";
 
-    ServeAdNotificationIfReady(true);
+    ServeSampleAd();
 
     next_easter_egg_timestamp_in_seconds_ =
         now_in_seconds + kNextEasterEggStartsInSeconds;
 
     BLOG(INFO) << "Next easter egg available in "
-        << next_easter_egg_timestamp_in_seconds_ << " seconds";
+        << kNextEasterEggStartsInSeconds << " seconds";
   }
 }
 
