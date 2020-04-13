@@ -19,6 +19,9 @@
 
 namespace extensions {
 
+using ntp_background_images::prefs::kNewTabPageShowBrandedBackgroundImage;
+using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
+
 namespace settings_api = api::settings_private;
 
 const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
@@ -64,9 +67,9 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
   (*s_brave_whitelist)[kAskWidevineInstall] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // new tab prefs
-  (*s_brave_whitelist)[ntp_background_images::prefs::kNewTabPageShowBrandedBackgroundImage] =
+  (*s_brave_whitelist)[kNewTabPageShowBrandedBackgroundImage] =
         settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[ntp_background_images::prefs::kNewTabPageShowBackgroundImage] =
+  (*s_brave_whitelist)[kNewTabPageShowBackgroundImage] =
         settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kNewTabPageShowClock] =
         settings_api::PrefType::PREF_TYPE_BOOLEAN;
