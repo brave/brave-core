@@ -261,6 +261,34 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR" desc="The label for settings switch controlling the showing of autocomplete in address bar">
         Show autocomplete in address bar
       </message>
+      <!-- New Tab Page -->
+      <message name="IDS_SETTINGS_NEW_TAB" desc="The text label for the New Tab settings page">
+       New Tab Page
+      </message>
+      <message name="IDS_SETTINGS_NEW_TAB_CUSTOMIZE_BRAVE_DASHBOARD" desc="The description label for Dashboard Customization">
+        Customize your Brave Dashboard
+      </message>
+      <message name="IDS_SETTINGS_NEW_TAB_BACKGROUND_IMAGES" desc="The label for Background images show/hide feature toggle">
+        Background images
+      </message>
+      <message name="IDS_SETTINGS_NEW_TAB_SPONSORED_IMAGES" desc="The label for Sponsored images show/hide feature toggle">
+        Sponsored images
+      </message>
+      <message name="IDS_SETTINGS_NEW_TAB_STATS" desc="The label for Stats show/hide feature toggle">
+        Brave Stats
+      </message>
+      <message name="IDS_SETTINGS_NEW_TAB_BRAVE_REWARDS" desc="The label for Brave Rewards show/hide feature toggle">
+        Brave Rewards
+      </message>
+      <message name="IDS_SETTINGS_NEW_TAB_BINANCE" desc="The label for Binance show/hide feature toggle">
+        Binance
+      </message>
+      <message name="IDS_SETTINGS_NEW_TAB_TOP_SITES" desc="The label for Top Sites show/hide feature toggle">
+        Top Sites
+      </message>
+      <message name="IDS_SETTINGS_NEW_TAB_CLOCK" desc="The label for Clock show/hide feature toggle">
+        Clock
+      </message>
       <!-- Tor -->
       <message name="IDS_NEW_TOR_IDENTITY" desc="The text label of a menu item for requesting new Tor identity">
         New Tor Identity

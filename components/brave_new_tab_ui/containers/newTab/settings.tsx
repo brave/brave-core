@@ -120,7 +120,9 @@ export default class Settings extends React.PureComponent<Props, {}> {
               <SettingsText>{getLocale('brandedWallpaperOptIn')}</SettingsText>
               <Toggle
                 onChange={toggleBrandedWallpaperOptIn}
-                checked={brandedWallpaperOptIn}
+                // This option can only be enabled if
+                // users opt in for background images
+                checked={showBackgroundImage && brandedWallpaperOptIn}
                 disabled={!showBackgroundImage}
                 size='small'
               />
