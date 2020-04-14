@@ -1,10 +1,13 @@
+# Copyright 2020 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 declare_args() {
   rust_flags = ""
   rustc_target = ""
+  cargo_lib_prefix = ""
+  cargo_lib_suffix = ""
 }
 
 # See https://forge.rust-lang.org/platform-support.html for possible targets
@@ -39,4 +42,28 @@ if (is_win) {
   } else if (current_cpu == "x64") {
     rustc_target = "x86_64-apple-ios"
   }
+}
+
+cargo_lib_prefix = ""
+
+if (rustc_target != "") {
+  cargo_lib_prefix += rustc_target
+}
+
+if (is_debug) {
+  cargo_lib_prefix += "/debug"
+} else {
+  cargo_lib_prefix += "/release"
+}
+
+cargo_lib_suffix = ""
+if (is_win) {
+  cargo_lib_prefix += "/"
+  cargo_lib_suffix = ".lib"
+} else if (is_linux || is_android || is_ios) {
+  cargo_lib_prefix += "/lib"
+  cargo_lib_suffix = ".a"
+} else if (is_mac) {
+  cargo_lib_prefix += "/lib"
+  cargo_lib_suffix = ".a"
 }

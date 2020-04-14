@@ -17,5 +17,6 @@ panic = "unwind"
 lto = true
 
 [lib]
+name = "speedreader_ffi"
 path = "lib.rs"
 crate-type = ["staticlib"]

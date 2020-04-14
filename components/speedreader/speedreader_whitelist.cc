@@ -19,8 +19,7 @@ namespace speedreader {
 
 namespace {
 
-constexpr base::FilePath::CharType kDatFileVersion[] =
-    FILE_PATH_LITERAL("1");
+constexpr base::FilePath::CharType kDatFileVersion[] = FILE_PATH_LITERAL("1");
 
 constexpr base::FilePath::CharType kDatFileName[] =
     FILE_PATH_LITERAL("speedreader-updater.dat");
@@ -41,22 +40,22 @@ SpeedreaderWhitelist::SpeedreaderWhitelist(Delegate* delegate)
     : brave_component_updater::BraveComponent(delegate),
       speedreader_(new speedreader::SpeedReader) {
   const auto* cmd_line = base::CommandLine::ForCurrentProcess();
-  if (!cmd_line->HasSwitch(speedreader::kSpeedreaderWhitelist)) {
+  if (!cmd_line->HasSwitch(speedreader::kSpeedreaderWhitelistPath)) {
     // Register component
     Register(kComponentName, kComponentId, kComponentPublicKey);
   } else {
     const std::string whitelist_str =
-      cmd_line->GetSwitchValueASCII(speedreader::kSpeedreaderWhitelist);
+        cmd_line->GetSwitchValueASCII(speedreader::kSpeedreaderWhitelistPath);
     const base::FilePath whitelist_path(FILE_PATH_LITERAL(whitelist_str));
     VLOG(2) << "Speedreader whitelist from " << whitelist_path;
 
     base::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::ThreadPool(), base::MayBlock()},
-      base::BindOnce(
-          &brave_component_updater::LoadDATFileData<speedreader::SpeedReader>,
-          whitelist_path),
-      base::BindOnce(&SpeedreaderWhitelist::OnGetDATFileData,
-                     weak_factory_.GetWeakPtr()));
+        FROM_HERE, {base::ThreadPool(), base::MayBlock()},
+        base::BindOnce(
+            &brave_component_updater::LoadDATFileData<speedreader::SpeedReader>,
+            whitelist_path),
+        base::BindOnce(&SpeedreaderWhitelist::OnGetDATFileData,
+                       weak_factory_.GetWeakPtr()));
   }
 }
 

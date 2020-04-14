@@ -3,53 +3,56 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import("config.gni")
 import("//brave/build/cargo.gni")
+import("//brave/build/rust/config.gni")
 import("//brave/test/testing.gni")
 
 config("external_config") {
-  include_dirs = [ "include" ]
   defines = [
     "NO_CXXEXCEPTIONS=1"
   ]
 }
 
-source_set("speedreader_ffi") {
-  public_configs = [ ":external_config" ]
-
-  sources = [
-    "speedreader.cc",
-    "speedreader.h"
-  ]
-
-  deps = [
-    "//base",
-    ":speedreader",
-    ":ffi_bindings",
-  ]
-
-  libs = [ speedreader_lib_path ]
-}
-
-cargo_build("speedreader") {
+# Run Cargo build for the Rust project
+#
+cargo_build("rust_lib") {
   inputs = [
+    "../src/build.rs",
+    "../src/Cargo.lock",
+    "../src/Cargo.toml",
+    "../src/src/classifier/feature_extractor.rs",
+    "../src/src/classifier/mod.rs",
+    "../src/src/classifier/model.c",
+    "../src/src/classifier/model.rs",
+    "../src/src/classifier/model.rs",
+    "../src/src/lib.rs",
+    "../src/src/readability/Cargo.toml",
+    "../src/src/readability/src/dom.rs",
+    "../src/src/readability/src/error.rs",
+    "../src/src/readability/src/extractor.rs",
+    "../src/src/readability/src/lib.rs",
+    "../src/src/readability/src/scorer.rs",
+    "../src/src/rewriter_config_builder.rs",
+    "../src/src/speedreader_heuristics.rs",
+    "../src/src/speedreader_streaming.rs",
+    "../src/src/speedreader.rs",
     "../src/src/whitelist.rs",
-    "Cargo.toml",
     "Cargo.lock",
+    "Cargo.toml",
     "charbuf.rs",
     "errors.rs",
     "lib.rs",
     "speedreader.rs",
   ]
 
-  output = speedreader_lib_path
-
+  output = "${target_out_dir}/${cargo_lib_prefix}speedreader_ffi${cargo_lib_suffix}"
   manifest_path = "Cargo.toml"
-  build_path = speedreader_build_path
+  build_path = "$target_out_dir"
   target = rustc_target
 }
 
-cargo_cbindgen("ffi_bindings") {
+# Generate FFI header from Rust source
+cargo_cbindgen("ffi_header") {
   config = "cbindgen.toml"
   output = "speedreader_ffi.h"
 
@@ -65,27 +68,19 @@ cargo_cbindgen("ffi_bindings") {
   ]
 }
 
-if (speedreader_shared_lib_install_name != "") {
-  fix_testing_install_name("test_speedreader_install_name") {
-    current_path = speedreader_shared_lib_install_name
-    new_path = "@executable_path/" + rebase_path(speedreader_lib_path, root_build_dir)
-  }
-} else {
-    group("test_speedreader_install_name") {}
-}
+# Build the FFI wrapper as a static library
+static_library("speedreader_ffi") {
+  public_configs = [ ":external_config" ]
 
-if (is_mac) {
-  bundle_data("speedreader_libs") {
-    sources = [
-      speedreader_lib_path,
-    ]
-    outputs = [
-      "{{bundle_contents_dir}}/Libraries/{{source_file_part}}",
-    ]
-    public_deps = [
-      ":speedreader",
-    ]
-  }
-} else {
-  group("speedreader_libs") {}
+  sources = [
+    "speedreader.cc",
+    "speedreader.h"
+  ]
+
+  deps = [
+    "//base",
+    ":ffi_header",
+  ]
+
+  libs = get_target_outputs(":rust_lib")
 }

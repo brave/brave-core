@@ -29,7 +29,6 @@ source_set("speedreader") {
     "//brave/components/resources",
     "//brave/components/speedreader:buildflags",
     "//brave/components/speedreader/rust/ffi:speedreader_ffi",
-    "//brave/components/speedreader/rust/ffi:speedreader_libs",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
     "//ui/base",  # For ResourceBundle, consider getting rid of this?
