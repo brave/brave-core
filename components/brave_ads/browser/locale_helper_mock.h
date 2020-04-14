@@ -19,10 +19,10 @@ class LocaleHelperMock : public LocaleHelper {
   LocaleHelperMock();
   ~LocaleHelperMock() override;
 
-  MOCK_CONST_METHOD0(GetLocale, std::string());
+  LocaleHelperMock(const LocaleHelperMock&) = delete;
+  LocaleHelperMock& operator=(const LocaleHelperMock&) = delete;
 
- private:
-  DISALLOW_COPY_AND_ASSIGN(LocaleHelperMock);
+  MOCK_CONST_METHOD0(GetLocale, std::string());
 };
 
 }  // namespace brave_ads

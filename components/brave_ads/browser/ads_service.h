@@ -46,6 +46,9 @@ class AdsService : public KeyedService {
  public:
   AdsService() = default;
 
+  AdsService(const AdsService&) = delete;
+  AdsService& operator=(const AdsService&) = delete;
+
   virtual bool IsSupportedLocale() const = 0;
   virtual bool IsNewlySupportedLocale() = 0;
 
@@ -120,9 +123,6 @@ class AdsService : public KeyedService {
 
   virtual void ResetTheWholeState(
       const base::Callback<void(bool)>& callback) = 0;
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(AdsService);
 };
 
 }  // namespace brave_ads

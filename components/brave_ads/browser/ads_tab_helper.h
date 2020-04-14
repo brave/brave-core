@@ -43,6 +43,9 @@ class AdsTabHelper : public content::WebContentsObserver,
   AdsTabHelper(content::WebContents*);
   ~AdsTabHelper() override;
 
+  AdsTabHelper(const AdsTabHelper&) = delete;
+  AdsTabHelper& operator=(const AdsTabHelper&) = delete;
+
  private:
   friend class content::WebContentsUserData<AdsTabHelper>;
 
@@ -83,7 +86,6 @@ class AdsTabHelper : public content::WebContentsObserver,
 
   base::WeakPtrFactory<AdsTabHelper> weak_factory_;
   WEB_CONTENTS_USER_DATA_KEY_DECL();
-  DISALLOW_COPY_AND_ASSIGN(AdsTabHelper);
 };
 
 }  // namespace brave_ads

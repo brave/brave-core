@@ -27,6 +27,9 @@ class AdsClientMojoBridge
 
   ~AdsClientMojoBridge() override;
 
+  AdsClientMojoBridge(const AdsClientMojoBridge&) = delete;
+  AdsClientMojoBridge& operator=(const AdsClientMojoBridge&) = delete;
+
   // Overridden from BatAdsClient:
   bool IsEnabled(
       bool* out_is_enabled) override;
@@ -191,8 +194,6 @@ class AdsClientMojoBridge
       const ads::AdConversionList& ad_conversions);
 
   ads::AdsClient* ads_client_;  // NOT OWNED
-
-  DISALLOW_COPY_AND_ASSIGN(AdsClientMojoBridge);
 };
 
 }  // namespace bat_ads

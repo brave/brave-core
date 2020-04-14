@@ -37,6 +37,9 @@ class AdsNotificationHandler : public NotificationHandler {
   explicit AdsNotificationHandler(content::BrowserContext* browser_context);
   ~AdsNotificationHandler() override;
 
+  AdsNotificationHandler(const AdsNotificationHandler&) = delete;
+  AdsNotificationHandler& operator=(const AdsNotificationHandler&) = delete;
+
   // NotificationHandler implementation
   void OnShow(
       Profile* profile,
@@ -75,12 +78,13 @@ class AdsNotificationHandler : public NotificationHandler {
     explicit UnownedPointer(AdsNotificationHandler* pointer)
         : pointer_(pointer) {}
 
+    UnownedPointer(const UnownedPointer&) = delete;
+    UnownedPointer& operator=(const UnownedPointer&) = delete;
+
     AdsNotificationHandler* get() const { return pointer_; }
 
    private:
     AdsNotificationHandler* const pointer_;
-
-    DISALLOW_COPY_AND_ASSIGN(UnownedPointer);
   };
 
  private:
@@ -105,8 +109,6 @@ class AdsNotificationHandler : public NotificationHandler {
   content::BrowserContext* browser_context_;
   brave_ads::AdsServiceImpl* ads_service_;
   base::queue<base::OnceClosure> pending_notifications_;
-
-  DISALLOW_COPY_AND_ASSIGN(AdsNotificationHandler);
 };
 
 }  // namespace brave_ads

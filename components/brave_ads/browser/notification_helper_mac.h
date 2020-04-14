@@ -16,9 +16,14 @@ class NotificationHelperMac
     : public NotificationHelper,
       public base::SupportsWeakPtr<NotificationHelperMac> {
  public:
+  NotificationHelperMac(const NotificationHelperMac&) = delete;
+  NotificationHelperMac& operator=(const NotificationHelperMac&) = delete;
+
   static NotificationHelperMac* GetInstanceImpl();
 
  private:
+  friend struct base::DefaultSingletonTraits<NotificationHelperMac>;
+
   NotificationHelperMac();
   ~NotificationHelperMac() override;
 
@@ -31,9 +36,6 @@ class NotificationHelperMac
   bool ShowMyFirstAdNotification() override;
 
   bool CanShowBackgroundNotifications() const override;
-
-  friend struct base::DefaultSingletonTraits<NotificationHelperMac>;
-  DISALLOW_COPY_AND_ASSIGN(NotificationHelperMac);
 };
 
 }  // namespace brave_ads

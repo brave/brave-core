@@ -18,12 +18,17 @@ class NotificationHelperAndroid
     : public NotificationHelper,
       public base::SupportsWeakPtr<NotificationHelperAndroid> {
  public:
+  NotificationHelperAndroid(const NotificationHelperAndroid&) = delete;
+  NotificationHelperAndroid& operator=(
+      const NotificationHelperAndroid&) = delete;
+
   static NotificationHelperAndroid* GetInstanceImpl();
 
  private:
+  friend struct base::DefaultSingletonTraits<NotificationHelperAndroid>;
+
   NotificationHelperAndroid();
   ~NotificationHelperAndroid() override;
-
 
   // |foreground_channel|: foreground or background channel
   bool IsBraveAdsNotificationChannelEnabled(bool foreground_channel) const;
@@ -36,9 +41,6 @@ class NotificationHelperAndroid
   bool ShowMyFirstAdNotification() override;
 
   bool CanShowBackgroundNotifications() const override;
-
-  friend struct base::DefaultSingletonTraits<NotificationHelperAndroid>;
-  DISALLOW_COPY_AND_ASSIGN(NotificationHelperAndroid);
 };
 
 }  // namespace brave_ads

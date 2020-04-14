@@ -32,6 +32,9 @@ class BatAdsImpl :
       mojo::PendingAssociatedRemote<mojom::BatAdsClient> client_info);
   ~BatAdsImpl() override;
 
+  BatAdsImpl(const BatAdsImpl&) = delete;
+  BatAdsImpl& operator=(const BatAdsImpl&) = delete;
+
   // Overridden from mojom::BatAds:
   void Initialize(
       InitializeCallback callback) override;
@@ -150,8 +153,6 @@ class BatAdsImpl :
 
   std::unique_ptr<BatAdsClientMojoBridge> bat_ads_client_mojo_proxy_;
   std::unique_ptr<ads::Ads> ads_;
-
-  DISALLOW_COPY_AND_ASSIGN(BatAdsImpl);
 };
 
 }  // namespace bat_ads

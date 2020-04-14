@@ -20,12 +20,17 @@ class BackgroundHelperAndroid :
     public BackgroundHelper,
     public base::SupportsWeakPtr<BackgroundHelperAndroid> {
  public:
-  BackgroundHelperAndroid();
-  ~BackgroundHelperAndroid() override;
+  BackgroundHelperAndroid(const BackgroundHelperAndroid&) = delete;
+  BackgroundHelperAndroid& operator=(const BackgroundHelperAndroid&) = delete;
 
   static BackgroundHelperAndroid* GetInstance();
 
  private:
+  friend struct base::DefaultSingletonTraits<BackgroundHelperAndroid>;
+
+  BackgroundHelperAndroid();
+  ~BackgroundHelperAndroid() override;
+
   std::unique_ptr<base::android::ApplicationStatusListener>
     app_status_listener_;
 
@@ -35,9 +40,6 @@ class BackgroundHelperAndroid :
 
   // BackgroundHelper impl
   bool IsForeground() const override;
-
-  friend struct base::DefaultSingletonTraits<BackgroundHelperAndroid>;
-  DISALLOW_COPY_AND_ASSIGN(BackgroundHelperAndroid);
 };
 
 }  // namespace brave_ads

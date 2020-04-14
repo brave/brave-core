@@ -14,6 +14,9 @@ namespace brave_ads {
 
 class NotificationHelper {
  public:
+  NotificationHelper(const NotificationHelper&) = delete;
+  NotificationHelper& operator=(const NotificationHelper&) = delete;
+
   static NotificationHelper* GetInstance();
 
   void set_for_testing(
@@ -26,14 +29,12 @@ class NotificationHelper {
   virtual bool CanShowBackgroundNotifications() const;
 
  protected:
+  friend struct base::DefaultSingletonTraits<NotificationHelper>;
+
   NotificationHelper();
   virtual ~NotificationHelper();
 
   static NotificationHelper* GetInstanceImpl();
-
- private:
-  friend struct base::DefaultSingletonTraits<NotificationHelper>;
-  DISALLOW_COPY_AND_ASSIGN(NotificationHelper);
 };
 
 }  // namespace brave_ads

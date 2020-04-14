@@ -19,9 +19,14 @@ class NotificationHelperWin
     : public NotificationHelper,
       public base::SupportsWeakPtr<NotificationHelperWin> {
  public:
+  NotificationHelperWin(const NotificationHelperWin&) = delete;
+  NotificationHelperWin& operator=(const NotificationHelperWin&) = delete;
+
   static NotificationHelperWin* GetInstanceImpl();
 
  private:
+  friend struct base::DefaultSingletonTraits<NotificationHelperWin>;
+
   NotificationHelperWin();
   ~NotificationHelperWin() override;
 
@@ -47,9 +52,6 @@ class NotificationHelperWin
   bool ShowMyFirstAdNotification() override;
 
   bool CanShowBackgroundNotifications() const override;
-
-  friend struct base::DefaultSingletonTraits<NotificationHelperWin>;
-  DISALLOW_COPY_AND_ASSIGN(NotificationHelperWin);
 };
 
 }  // namespace brave_ads

@@ -15,17 +15,19 @@ namespace brave_ads {
 
 class LocaleHelperWin : public LocaleHelper {
  public:
+  LocaleHelperWin(const LocaleHelperWin&) = delete;
+  LocaleHelperWin& operator=(const LocaleHelperWin&) = delete;
+
   static LocaleHelperWin* GetInstanceImpl();
 
  private:
+  friend struct base::DefaultSingletonTraits<LocaleHelperWin>;
+
   LocaleHelperWin();
   ~LocaleHelperWin() override;
 
   // LocaleHelper impl
   std::string GetLocale() const override;
-
-  friend struct base::DefaultSingletonTraits<LocaleHelperWin>;
-  DISALLOW_COPY_AND_ASSIGN(LocaleHelperWin);
 };
 
 }  // namespace brave_ads

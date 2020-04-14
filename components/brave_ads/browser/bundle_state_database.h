@@ -32,6 +32,9 @@ class BundleStateDatabase {
       const base::FilePath& db_path);
   ~BundleStateDatabase();
 
+  BundleStateDatabase(const BundleStateDatabase&) = delete;
+  BundleStateDatabase& operator=(const BundleStateDatabase&) = delete;
+
   // Call before Init() to set the error callback to be used for the
   // underlying database connection
   void set_error_callback(
@@ -108,7 +111,6 @@ class BundleStateDatabase {
   std::unique_ptr<base::MemoryPressureListener> memory_pressure_listener_;
 
   SEQUENCE_CHECKER(sequence_checker_);
-  DISALLOW_COPY_AND_ASSIGN(BundleStateDatabase);
 };
 
 }  // namespace brave_ads

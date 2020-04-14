@@ -18,19 +18,21 @@ namespace brave_ads {
 
 class BackgroundHelperMac : public BackgroundHelper {
  public:
-  BackgroundHelperMac();
-  ~BackgroundHelperMac() override;
+  BackgroundHelperMac(const BackgroundHelperMac&) = delete;
+  BackgroundHelperMac& operator=(const BackgroundHelperMac&) = delete;
 
   static BackgroundHelperMac* GetInstance();
 
  private:
+  friend struct base::DefaultSingletonTraits<BackgroundHelperMac>;
+
+  BackgroundHelperMac();
+  ~BackgroundHelperMac() override;
+
   base::scoped_nsobject<BackgroundHelperDelegate> delegate_;
 
   // BackgroundHelper impl
   bool IsForeground() const override;
-
-  friend struct base::DefaultSingletonTraits<BackgroundHelperMac>;
-  DISALLOW_COPY_AND_ASSIGN(BackgroundHelperMac);
 };
 
 }  // namespace brave_ads

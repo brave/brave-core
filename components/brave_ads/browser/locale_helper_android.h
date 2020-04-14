@@ -14,17 +14,19 @@ namespace brave_ads {
 
 class LocaleHelperAndroid : public LocaleHelper {
  public:
+  LocaleHelperAndroid(const LocaleHelperAndroid&) = delete;
+  LocaleHelperAndroid& operator=(const LocaleHelperAndroid&) = delete;
+
   static LocaleHelperAndroid* GetInstanceImpl();
 
  private:
+  friend struct base::DefaultSingletonTraits<LocaleHelperAndroid>;
+
   LocaleHelperAndroid() = default;
   ~LocaleHelperAndroid() override = default;
 
   // LocaleHelper impl
   std::string GetLocale() const override;
-
-  friend struct base::DefaultSingletonTraits<LocaleHelperAndroid>;
-  DISALLOW_COPY_AND_ASSIGN(LocaleHelperAndroid);
 };
 
 }  // namespace brave_ads

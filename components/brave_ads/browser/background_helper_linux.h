@@ -19,21 +19,23 @@ class BackgroundHelperLinux :
     public base::SupportsWeakPtr<BackgroundHelperLinux>,
     public BrowserListObserver {
  public:
-  BackgroundHelperLinux();
-  ~BackgroundHelperLinux() override;
+  BackgroundHelperLinux(const BackgroundHelperLinux&) = delete;
+  BackgroundHelperLinux& operator=(const BackgroundHelperLinux&) = delete;
 
   static BackgroundHelperLinux* GetInstance();
 
  private:
+  friend struct base::DefaultSingletonTraits<BackgroundHelperLinux>;
+
+  BackgroundHelperLinux();
+  ~BackgroundHelperLinux() override;
+
   // BrowserListObserver overrides
   void OnBrowserSetLastActive(Browser* browser) override;
   void OnBrowserNoLongerActive(Browser* browser) override;
 
   // BackgroundHelper impl
   bool IsForeground() const override;
-
-  friend struct base::DefaultSingletonTraits<BackgroundHelperLinux>;
-  DISALLOW_COPY_AND_ASSIGN(BackgroundHelperLinux);
 };
 
 }  // namespace brave_ads
