@@ -237,7 +237,7 @@ void RewardsTipDOMHandler::OnTip(const base::ListValue* args) {
 void RewardsTipDOMHandler::GetRecurringTips(
     const base::ListValue *args) {
   if (rewards_service_) {
-    rewards_service_->GetRecurringTipsUI(base::BindOnce(
+    rewards_service_->GetRecurringTips(base::BindOnce(
           &RewardsTipDOMHandler::OnGetRecurringTips,
           weak_factory_.GetWeakPtr()));
   }

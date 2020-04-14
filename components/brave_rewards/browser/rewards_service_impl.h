@@ -155,7 +155,7 @@ class RewardsServiceImpl : public RewardsService,
       const GetPublisherAllowNonVerifiedCallback& callback) override;
   void GetPublisherAllowVideos(
       const GetPublisherAllowVideosCallback& callback) override;
-  void RestorePublishersUI() override;
+  void RestorePublishers() override;
   void GetBalanceReport(
       const uint32_t month,
       const uint32_t year,
@@ -172,11 +172,11 @@ class RewardsServiceImpl : public RewardsService,
                           GetPublisherBannerCallback callback) override;
   void OnPublisherBanner(GetPublisherBannerCallback callback,
                          ledger::PublisherBannerPtr banner);
-  void RemoveRecurringTipUI(const std::string& publisher_key) override;
-  void OnGetRecurringTipsUI(
+  void RemoveRecurringTip(const std::string& publisher_key) override;
+  void OnGetRecurringTips(
       GetRecurringTipsCallback callback,
       ledger::PublisherInfoList list);
-  void GetRecurringTipsUI(GetRecurringTipsCallback callback) override;
+  void GetRecurringTips(GetRecurringTipsCallback callback) override;
   void SetPublisherExclude(
       const std::string& publisher_key,
       bool exclude) override;
@@ -197,21 +197,21 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetAutoContributeProps(
       const GetAutoContributePropsCallback& callback) override;
-  void GetPendingContributionsTotalUI(
+  void GetPendingContributionsTotal(
       const GetPendingContributionsTotalCallback& callback) override;
   void GetRewardsMainEnabled(
       const GetRewardsMainEnabledCallback& callback) const override;
 
-  void GetOneTimeTipsUI(GetOneTimeTipsCallback callback) override;
+  void GetOneTimeTips(GetOneTimeTipsCallback callback) override;
   void RefreshPublisher(
       const std::string& publisher_key,
       RefreshPublisherCallback callback) override;
   void OnAdsEnabled(bool ads_enabled) override;
 
-  void OnSaveRecurringTipUI(
+  void OnSaveRecurringTip(
       SaveRecurringTipCallback callback,
       const ledger::Result result);
-  void SaveRecurringTipUI(
+  void SaveRecurringTip(
       const std::string& publisher_key,
       const double amount,
       SaveRecurringTipCallback callback) override;
@@ -238,12 +238,12 @@ class RewardsServiceImpl : public RewardsService,
       const std::map<std::string, std::string>& args,
       GetShareURLCallback callback) override;
 
-  void GetPendingContributionsUI(
+  void GetPendingContributions(
     GetPendingContributionsCallback callback) override;
 
-  void RemovePendingContributionUI(const uint64_t id) override;
+  void RemovePendingContribution(const uint64_t id) override;
 
-  void RemoveAllPendingContributionsUI() override;
+  void RemoveAllPendingContributions() override;
 
   void OnTip(
       const std::string& publisher_key,
@@ -336,7 +336,7 @@ class RewardsServiceImpl : public RewardsService,
       const ledger::Result result,
       ledger::PromotionPtr promotion);
   void TriggerOnRewardsMainEnabled(bool rewards_main_enabled);
-  void OnRestorePublishersUI(const ledger::Result result);
+  void OnRestorePublishers(const ledger::Result result);
   void OnPublisherInfoListLoaded(uint32_t start,
                                  uint32_t limit,
                                  ledger::PublisherInfoListCallback callback,
@@ -355,7 +355,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnResetTheWholeState(base::Callback<void(bool)> callback,
                                  bool success);
-  void OnRecurringTipUI(const ledger::Result result);
+  void OnRecurringTip(const ledger::Result result);
 
   void TriggerOnGetCurrentBalanceReport(
       ledger::BalanceReportInfoPtr report);
@@ -365,23 +365,16 @@ class RewardsServiceImpl : public RewardsService,
       const ledger::Result result,
       ledger::WalletPropertiesPtr properties) override;
 
-  void OnGetOneTimeTipsUI(GetRecurringTipsCallback callback,
-                          ledger::PublisherInfoList list);
+  void OnGetOneTimeTips(
+      GetRecurringTipsCallback callback,
+      ledger::PublisherInfoList list);
 
   void OnInlineTipSetting(GetInlineTipSettingCallback callback, bool enabled);
 
   void OnShareURL(GetShareURLCallback callback, const std::string& url);
 
-  void OnPendingContributionRemoved(
-    ledger::ResultCallback callback,
-    bool result);
-
-  void OnGetPendingContributionsUI(
-    GetPendingContributionsCallback callback,
-    ledger::PendingContributionInfoList list);
-
   void OnGetPendingContributions(
-    ledger::PendingContributionInfoListCallback callback,
+    GetPendingContributionsCallback callback,
     ledger::PendingContributionInfoList list);
 
   void OnURLLoaderComplete(network::SimpleURLLoader* loader,
@@ -403,9 +396,9 @@ class RewardsServiceImpl : public RewardsService,
   void MaybeShowNotificationTipsPaid();
   void ShowNotificationTipsPaid(bool ac_enabled);
 
-  void OnPendingContributionRemovedUI(const ledger::Result result);
+  void OnPendingContributionRemoved(const ledger::Result result);
 
-  void OnRemoveAllPendingContributionsUI(const ledger::Result result);
+  void OnRemoveAllPendingContributions(const ledger::Result result);
 
   void OnFetchBalance(FetchBalanceCallback callback,
                       const ledger::Result result,

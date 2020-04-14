@@ -423,7 +423,7 @@ base::android::ScopedJavaLocalRef<jobjectArray>
 void BraveRewardsNativeWorker::GetPendingContributionsTotal(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj) {
   if (brave_rewards_service_) {
-    brave_rewards_service_->GetPendingContributionsTotalUI(base::Bind(
+    brave_rewards_service_->GetPendingContributionsTotal(base::Bind(
           &BraveRewardsNativeWorker::OnGetPendingContributionsTotal,
           weak_factory_.GetWeakPtr()));
   }
@@ -432,7 +432,7 @@ void BraveRewardsNativeWorker::GetPendingContributionsTotal(JNIEnv* env,
 void BraveRewardsNativeWorker::GetRecurringDonations(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj) {
   if (brave_rewards_service_) {
-    brave_rewards_service_->GetRecurringTipsUI(base::Bind(
+    brave_rewards_service_->GetRecurringTips(base::Bind(
           &BraveRewardsNativeWorker::OnGetRecurringTips,
           weak_factory_.GetWeakPtr()));
   }
@@ -546,7 +546,7 @@ void BraveRewardsNativeWorker::RemoveRecurring(JNIEnv* env,
     const base::android::JavaParamRef<jobject>& obj,
     const base::android::JavaParamRef<jstring>& publisher) {
   if (brave_rewards_service_) {
-      brave_rewards_service_->RemoveRecurringTipUI(
+      brave_rewards_service_->RemoveRecurringTip(
         base::android::ConvertJavaStringToUTF8(env, publisher));
   }
 }
