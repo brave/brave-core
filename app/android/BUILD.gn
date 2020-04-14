@@ -11,10 +11,10 @@ group("create_dist_zips") {
 
 action("create_symbol_archive") {
   script = "//build/gn_run_binary.py"
-  shell_script = "//brave/build/android/makeArchive7z.sh"
+  shell_script = "//brave/build/android/pack_symbols.sh"
 
   deps = [ "//brave/build/android:brave" ]
-  target_obj_files_name = "$root_out_dir/dist/Default$target_cpu$target_apk_base"
+  archive_name = "$root_out_dir/dist/Default$target_cpu$target_apk_base.tar"
 
   inputs = [
     script,
@@ -22,10 +22,10 @@ action("create_symbol_archive") {
     brave_apk_output,
   ]
 
-  outputs = [ target_obj_files_name ]
+  outputs = [ archive_name ]
 
   args = [
     rebase_path(shell_script, root_build_dir),
-    rebase_path(target_obj_files_name, root_out_dir),
+    rebase_path(archive_name, root_out_dir),
   ]
 }
