@@ -78,20 +78,20 @@ void BraveIncognitoMenuView::BuildMenu() {
 
   AddTorButton();
 
-  AddFeatureButton(ImageForMenu(kCloseAllIcon),
-                   l10n_util::GetStringUTF16(
+  AddFeatureButton(l10n_util::GetStringUTF16(
                        GetProfileMenuCloseButtonTextId(browser()->profile())),
                    base::BindRepeating(&IncognitoMenuView::OnExitButtonClicked,
-                                       base::Unretained(this)));
+                                       base::Unretained(this)),
+                   kCloseAllIcon);
 }
 
 void BraveIncognitoMenuView::AddTorButton() {
   if (ShouldShowTorProfileButton(browser()->profile())) {
     AddFeatureButton(
-        ImageForMenu(vector_icons::kLaunchIcon),
         l10n_util::GetStringUTF16(IDS_PROFILES_OPEN_TOR_PROFILE_BUTTON),
         base::BindRepeating(&BraveIncognitoMenuView::OnTorProfileButtonClicked,
-                            base::Unretained(this)));
+                            base::Unretained(this)),
+        vector_icons::kLaunchIcon);
   }
 }
 
