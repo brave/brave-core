@@ -11,9 +11,11 @@
 
 BraveBrowserTabStripController::BraveBrowserTabStripController(
     TabStripModel* model,
-    BrowserView* browser_view)
-    : BrowserTabStripController(model, browser_view) {
-}
+    BrowserView* browser_view,
+    std::unique_ptr<TabMenuModelFactory> menu_model_factory_override)
+    : BrowserTabStripController(model,
+                                browser_view,
+                                std::move(menu_model_factory_override)) {}
 
 BraveBrowserTabStripController::~BraveBrowserTabStripController() {
   if (context_menu_contents_)
