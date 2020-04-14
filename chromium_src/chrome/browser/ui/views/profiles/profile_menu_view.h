@@ -12,10 +12,8 @@
 #define OnExitProfileButtonClicked virtual OnExitProfileButtonClicked
 #define BuildAutofillButtons virtual BuildAutofillButtons
 #define BuildIdentity virtual BuildIdentity
-#define GetSyncIcon virtual GetSyncIcon
 
 #include "../../../../../../../chrome/browser/ui/views/profiles/profile_menu_view.h"
-#undef GetSyncIcon
 #undef BuildIdentity
 #undef BuildAutofillButtons
 #undef OnExitProfileButtonClicked

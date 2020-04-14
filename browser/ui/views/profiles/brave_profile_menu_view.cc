@@ -24,14 +24,13 @@ void BraveProfileMenuView::BuildIdentity() {
   // Reset IdentityInfo to get rid of the subtitle string
   // IDS_PROFILES_LOCAL_PROFILE_STATE("Not signed in").
   SetIdentityInfo(profile_attributes->GetAvatarIcon().AsImageSkia(),
-                  GetSyncIcon(),
                   /*title=*/base::string16());
 }
 
 // We don't want autofill buttons in this menu.
 void BraveProfileMenuView::BuildAutofillButtons() {}
 
-gfx::ImageSkia BraveProfileMenuView::GetSyncIcon() {
+gfx::ImageSkia BraveProfileMenuView::GetSyncIcon() const {
   // We don't need sync overlay.
   return gfx::ImageSkia();
 }
