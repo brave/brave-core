@@ -262,6 +262,20 @@ void JNI_BravePrefServiceBridge_SetReferralAndroidFirstRunTimestamp(
       kReferralAndroidFirstRunTimestamp, base::Time::FromJavaTime(time));
 }
 
+void JNI_BravePrefServiceBridge_SetReferralCheckedForPromoCodeFile(
+    JNIEnv* env,
+    jboolean value) {
+  return g_browser_process->local_state()->SetBoolean(
+      kReferralCheckedForPromoCodeFile, value);
+}
+
+void JNI_BravePrefServiceBridge_SetReferralInitialization(
+    JNIEnv* env,
+    jboolean value) {
+  return g_browser_process->local_state()->SetBoolean(
+      kReferralInitialization, value);
+}
+
 void JNI_BravePrefServiceBridge_SetReferralPromoCode(
     JNIEnv* env,
     const JavaParamRef<jstring>& promoCode) {

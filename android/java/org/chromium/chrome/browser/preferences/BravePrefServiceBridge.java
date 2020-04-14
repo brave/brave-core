@@ -197,6 +197,10 @@ public class BravePrefServiceBridge {
         BravePrefServiceBridgeJni.get().setReferralCheckedForPromoCodeFile(value);
     }
 
+    public void setReferralInitialization(boolean value) {
+        BravePrefServiceBridgeJni.get().setReferralInitialization(value);
+    }
+
     public void setReferralPromoCode(String promoCode) {
         BravePrefServiceBridgeJni.get().setReferralPromoCode(promoCode);
     }
@@ -254,6 +258,7 @@ public class BravePrefServiceBridge {
 
         void setReferralAndroidFirstRunTimestamp(long time);
         void setReferralCheckedForPromoCodeFile(boolean value);
+        void setReferralInitialization(boolean value);
         void setReferralPromoCode(String promoCode);
         void setReferralDownloadId(String downloadId);
     }
