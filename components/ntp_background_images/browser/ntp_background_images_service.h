@@ -99,6 +99,8 @@ class NTPBackgroundImagesService {
       NTPBackgroundImagesServiceTest,
       CheckRecoverShutdownWhileMappingTableFetchingWithNonDefaultCode);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
+                           ActiveOptedInWithNTPBackgoundOption);
+  FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            NotActiveInitially);
   FRIEND_TEST_ALL_PREFIXES(NTPBackgroundImagesViewCounterTest,
                            NotActiveWithBadData);

@@ -170,16 +170,18 @@ bool ViewCounterService::ShouldShowBrandedWallpaper() const {
 }
 
 bool ViewCounterService::IsBrandedWallpaperActive() const {
-  // We don't show SI and SR both if user disables bg image.
-  if (!prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage))
-    return false;
-
   if (!GetCurrentBrandedWallpaperData())
     return false;
 
+  // We show SR regardless of ntp background images option because SR works
+  // like theme.
   if (GetCurrentBrandedWallpaperData()->IsSuperReferral() &&
       IsSuperReferralWallpaperOptedIn())
     return true;
+
+  // We don't show SI if user disables bg image.
+  if (!prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage))
+    return false;
 
   return IsSponsoredImagesWallpaperOptedIn();
 }

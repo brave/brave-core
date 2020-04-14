@@ -87,6 +87,10 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
                : ViewCounterService::DEFAULT);
   }
 
+  void EnableNTPBGImagesPref(bool enable) {
+   prefs()->SetBoolean(prefs::kNewTabPageShowBackgroundImage, enable);
+  }
+
   sync_preferences::TestingPrefServiceSyncable* prefs() { return &prefs_; }
 
  protected:
@@ -116,6 +120,23 @@ TEST_F(NTPBackgroundImagesViewCounterTest, NotActiveOptedOut) {
   EXPECT_FALSE(view_counter_->IsBrandedWallpaperActive());
 
   service_->sr_images_data_ = GetDemoWallpaper(true);
+  EnableSRPref(false);
+  EXPECT_FALSE(view_counter_->IsBrandedWallpaperActive());
+}
+
+TEST_F(NTPBackgroundImagesViewCounterTest,
+       ActiveOptedInWithNTPBackgoundOption) {
+  EnableNTPBGImagesPref(false);
+  service_->sr_images_data_ = GetDemoWallpaper(true);
+
+  // Even with bg images turned off, SR wallpaper should be active.
+  EnableSRPref(true);
+#if defined(OS_LINUX)
+  EXPECT_FALSE(view_counter_->IsBrandedWallpaperActive());
+#else
+  EXPECT_TRUE(view_counter_->IsBrandedWallpaperActive());
+#endif
+
   EnableSRPref(false);
   EXPECT_FALSE(view_counter_->IsBrandedWallpaperActive());
 }

@@ -449,6 +449,9 @@ NTPBackgroundImagesService::GetBackgroundImagesData(bool super_referral) const {
           prefs::kNewTabPageCachedSuperReferralComponentInfo)->
               IsDefaultValue())
       return nullptr;
+  } else {
+    if (super_referral)
+      return nullptr;
   }
 
   if (si_images_data_ && si_images_data_->IsValid())
