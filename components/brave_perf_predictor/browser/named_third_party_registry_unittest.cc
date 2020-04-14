@@ -8,7 +8,6 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/path_service.h"
-#include "brave/common/brave_paths.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_perf_predictor {
@@ -40,10 +39,14 @@ constexpr char test_mapping[] = R"(
 namespace {
 
 std::string LoadFile() {
-  base::FilePath test_dir;
-  base::PathService::Get(brave::DIR_TEST_DATA, &test_dir);
-  auto path = test_dir.AppendASCII("brave_perf_predictor")
-      .AppendASCII("entities-httparchive-nostats.json");
+  base::FilePath source_root;
+  base::PathService::Get(base::DIR_SOURCE_ROOT, &source_root);
+  auto path = source_root.Append(FILE_PATH_LITERAL("brave"))
+          .Append(FILE_PATH_LITERAL("components"))
+          .Append(FILE_PATH_LITERAL("brave_perf_predictor"))
+          .Append(FILE_PATH_LITERAL("resources"))
+          .Append(FILE_PATH_LITERAL("entities-httparchive-nostats.json"));
+
   std::string value;
   const bool ok = ReadFileToString(path, &value);
   if (!ok) return {};
