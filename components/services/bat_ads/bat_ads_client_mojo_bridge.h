@@ -25,6 +25,9 @@ class BatAdsClientMojoBridge
 
   ~BatAdsClientMojoBridge() override;
 
+  BatAdsClientMojoBridge(const BatAdsClientMojoBridge&) = delete;
+  BatAdsClientMojoBridge& operator=(const BatAdsClientMojoBridge&) = delete;
+
   // AdsClient implementation
   bool IsEnabled() const override;
 
@@ -116,8 +119,6 @@ class BatAdsClientMojoBridge
   bool connected() const;
 
   mojo::AssociatedRemote<mojom::BatAdsClient> bat_ads_client_;
-
-  DISALLOW_COPY_AND_ASSIGN(BatAdsClientMojoBridge);
 };
 
 }  // namespace bat_ads

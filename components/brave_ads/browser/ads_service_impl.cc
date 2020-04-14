@@ -112,14 +112,15 @@ class LogStreamImpl : public ads::LogStream {
     }
   }
 
+  LogStreamImpl(const LogStreamImpl&) = delete;
+  LogStreamImpl& operator=(const LogStreamImpl&) = delete;
+
   std::ostream& stream() override {
     return log_message_->stream();
   }
 
  private:
   std::unique_ptr<logging::LogMessage> log_message_;
-
-  DISALLOW_COPY_AND_ASSIGN(LogStreamImpl);
 };
 
 namespace {

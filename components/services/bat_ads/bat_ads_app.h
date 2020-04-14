@@ -23,6 +23,9 @@ class BatAdsApp : public service_manager::Service {
   explicit BatAdsApp(service_manager::mojom::ServiceRequest request);
   ~BatAdsApp() override;
 
+  BatAdsApp(const BatAdsApp&) = delete;
+  BatAdsApp& operator=(const BatAdsApp&) = delete;
+
  private:
   // |Service| override:
   void OnStart() override;
@@ -38,8 +41,6 @@ class BatAdsApp : public service_manager::Service {
   void BindBatAdsServiceReceiver(
       service_manager::ServiceKeepalive* keepalive,
       mojo::PendingReceiver<mojom::BatAdsService> receiver);
-
-  DISALLOW_COPY_AND_ASSIGN(BatAdsApp);
 };
 
 }  // namespace bat_ads

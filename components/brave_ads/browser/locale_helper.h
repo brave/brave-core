@@ -19,6 +19,9 @@ extern const char kDefaultLocale[];
 
 class LocaleHelper {
  public:
+  LocaleHelper(const LocaleHelper&) = delete;
+  LocaleHelper& operator=(const LocaleHelper&) = delete;
+
   static LocaleHelper* GetInstance();
 
   void set_for_testing(
@@ -31,14 +34,12 @@ class LocaleHelper {
       const std::string& locale);
 
  protected:
+  friend struct base::DefaultSingletonTraits<LocaleHelper>;
+
   LocaleHelper();
   virtual ~LocaleHelper();
 
   static LocaleHelper* GetInstanceImpl();
-
- private:
-  friend struct base::DefaultSingletonTraits<LocaleHelper>;
-  DISALLOW_COPY_AND_ASSIGN(LocaleHelper);
 };
 
 }  // namespace brave_ads

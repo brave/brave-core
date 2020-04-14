@@ -17,12 +17,12 @@ class NotificationHelperMock : public NotificationHelper {
   NotificationHelperMock();
   ~NotificationHelperMock() override;
 
+  NotificationHelperMock(const NotificationHelperMock&) = delete;
+  NotificationHelperMock& operator=(const NotificationHelperMock&) = delete;
+
   MOCK_METHOD0(ShouldShowNotifications, bool());
   MOCK_METHOD0(ShowMyFirstAdNotification, bool());
   MOCK_CONST_METHOD0(CanShowBackgroundNotifications, bool());
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(NotificationHelperMock);
 };
 
 }  // namespace brave_ads

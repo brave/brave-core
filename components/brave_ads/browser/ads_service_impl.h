@@ -66,6 +66,9 @@ class AdsServiceImpl : public AdsService,
   explicit AdsServiceImpl(Profile* profile);
   ~AdsServiceImpl() override;
 
+  AdsServiceImpl(const AdsServiceImpl&) = delete;
+  AdsServiceImpl& operator=(const AdsServiceImpl&) = delete;
+
   bool IsSupportedLocale() const override;
   bool IsNewlySupportedLocale() override;
 
@@ -486,8 +489,6 @@ class AdsServiceImpl : public AdsService,
       bat_ads_client_receiver_;
   mojo::AssociatedRemote<bat_ads::mojom::BatAds> bat_ads_;
   mojo::Remote<bat_ads::mojom::BatAdsService> bat_ads_service_;
-
-  DISALLOW_COPY_AND_ASSIGN(AdsServiceImpl);
 };
 
 }  // namespace brave_ads

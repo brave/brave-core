@@ -23,6 +23,9 @@ class BackgroundHelper {
     virtual void OnForeground() = 0;
   };
 
+  BackgroundHelper(const BackgroundHelper&) = delete;
+  BackgroundHelper& operator=(const BackgroundHelper&) = delete;
+
   static BackgroundHelper* GetInstance();
 
   void AddObserver(Observer* observer);
@@ -34,14 +37,13 @@ class BackgroundHelper {
   virtual bool IsForeground() const;
 
  protected:
+  friend struct base::DefaultSingletonTraits<BackgroundHelper>;
+
   BackgroundHelper();
   virtual ~BackgroundHelper();
 
  private:
   base::ObserverList<Observer>::Unchecked observers_;
-
-  friend struct base::DefaultSingletonTraits<BackgroundHelper>;
-  DISALLOW_COPY_AND_ASSIGN(BackgroundHelper);
 };
 
 }  // namespace brave_ads

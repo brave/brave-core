@@ -18,21 +18,23 @@ namespace brave_ads {
 
 class BackgroundHelperWin : public BackgroundHelper {
  public:
-  BackgroundHelperWin();
-  ~BackgroundHelperWin() override;
+  BackgroundHelperWin(const BackgroundHelperWin&) = delete;
+  BackgroundHelperWin& operator=(const BackgroundHelperWin&) = delete;
 
   static BackgroundHelperWin* GetInstance();
 
  private:
+  friend struct base::DefaultSingletonTraits<BackgroundHelperWin>;
+
+  BackgroundHelperWin();
+  ~BackgroundHelperWin() override;
+
   void OnWndProc(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam);
 
   std::unique_ptr<gfx::SingletonHwndObserver> singleton_hwnd_observer_;
 
   // BackgroundHelper impl
   bool IsForeground() const override;
-
-  friend struct base::DefaultSingletonTraits<BackgroundHelperWin>;
-  DISALLOW_COPY_AND_ASSIGN(BackgroundHelperWin);
 };
 
 }  // namespace brave_ads

@@ -26,6 +26,9 @@ class BatAdsServiceImpl : public mojom::BatAdsService {
 
   ~BatAdsServiceImpl() override;
 
+  BatAdsServiceImpl(const BatAdsServiceImpl&) = delete;
+  BatAdsServiceImpl& operator=(const BatAdsServiceImpl&) = delete;
+
   // Overridden from BatAdsService:
   void Create(
       mojo::PendingAssociatedRemote<mojom::BatAdsClient> client_info,
@@ -48,8 +51,6 @@ class BatAdsServiceImpl : public mojom::BatAdsService {
   const std::unique_ptr<service_manager::ServiceContextRef> service_ref_;
   bool is_initialized_;
   mojo::UniqueAssociatedReceiverSet<mojom::BatAds> receivers_;
-
-  DISALLOW_COPY_AND_ASSIGN(BatAdsServiceImpl);
 };
 
 }  // namespace bat_ads
