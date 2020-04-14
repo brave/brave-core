@@ -389,18 +389,16 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       const list: RewardsExtension.Notification[] = payload.list
 
       if (!list) {
+        state = {
+          ...state,
+          notifications: {},
+          currentNotification: undefined
+        }
         break
       }
 
-      let notifications: Record<number, RewardsExtension.Notification> = state.notifications
+      let notifications = {}
       let id = ''
-
-      // Array check for previous version of state types
-      // (https://github.com/brave/brave-browser/issues/4344)
-      if (!notifications || Array.isArray(notifications)) {
-        notifications = {}
-      }
-
       list.forEach((notification: RewardsExtension.Notification) => {
         id = notification.id
         notifications[notification.id] = {
