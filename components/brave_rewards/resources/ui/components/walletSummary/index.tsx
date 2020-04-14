@@ -48,8 +48,8 @@ export interface Props {
 
 export default class WalletSummary extends React.PureComponent<Props, {}> {
   generateList = () => {
-    const { onlyAnonWallet } = this.props
-    const tokenSize = this.props.compact ? 'small' : 'normal'
+    const { onlyAnonWallet, compact } = this.props
+    const tokenSize = compact ? 'small' : 'normal'
     const list = [
       {
         key: 'grant',
@@ -113,7 +113,7 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
 
     if (result.length === 0) {
       return (
-        <StyledNoActivityWrapper>
+        <StyledNoActivityWrapper compact={compact}>
           <StyledNoActivity>
             {getLocale('noActivity')}
           </StyledNoActivity>
