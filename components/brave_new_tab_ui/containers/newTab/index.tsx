@@ -382,6 +382,7 @@ class NewTabPage extends React.Component<Props, State> {
       }
 
       chrome.binance.getTickerPrice('BTCUSDT', (price: string) => {
+        this.setAssetUSDPrice('BTC', price)
         this.setBTCUSDPrice(price)
         this.setBalanceInfo(balances)
       })

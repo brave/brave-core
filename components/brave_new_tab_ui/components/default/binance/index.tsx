@@ -867,13 +867,14 @@ class Binance extends React.PureComponent<Props, State> {
   renderSummaryView = () => {
     const {
       accountBalances,
-      btcBalanceValue,
       hideBalance,
       accountBTCValue,
       accountBTCUSDValue,
       assetUSDValues
     } = this.props
     const currencyList = this.getCurrencyList()
+    const totalBTCUSDValue = accountBTCUSDValue || '0.00'
+    const totalBTCValue = accountBTCValue ? this.formatCryptoBalance(accountBTCValue) : '0.000000'
 
     return (
       <>
@@ -881,10 +882,10 @@ class Binance extends React.PureComponent<Props, State> {
           <ListInfo position={'left'}>
             <TradeLabel>
               <Balance isBTC={true} hideBalance={hideBalance}>
-                {this.formatCryptoBalance(accountBTCValue)} <TickerLabel>{getLocale('binanceWidgetBTCTickerText')}</TickerLabel>
+                {totalBTCValue} <TickerLabel>{getLocale('binanceWidgetBTCTickerText')}</TickerLabel>
               </Balance>
               <Converted isBTC={true} hideBalance={hideBalance}>
-                {`= $${accountBTCUSDValue}`}
+                {`= $${totalBTCUSDValue}`}
               </Converted>
             </TradeLabel>
           </ListInfo>
@@ -902,10 +903,10 @@ class Binance extends React.PureComponent<Props, State> {
         </BTCSummary>
         {currencyList.map((asset: string) => {
           // Initial migration display
-          const assetAccountBalance = accountBalances[asset] || '0.00'
-          const assetUSDValue = assetUSDValues[asset] || '0.00'
+          const assetAccountBalance = accountBalances ? accountBalances[asset] : '0.00'
+          const assetUSDValue = assetUSDValues ? assetUSDValues[asset] : '0.00'
           const assetBalance = this.formatCryptoBalance(assetAccountBalance)
-          const price = asset === 'BTC' ? btcBalanceValue : getUSDPrice(assetBalance, assetUSDValue)
+          const price = getUSDPrice(assetBalance, assetUSDValue)
 
           return (
             <ListItem key={`list-${asset}`}>
