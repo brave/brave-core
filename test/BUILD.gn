@@ -459,18 +459,12 @@ test("brave_unit_tests") {
 
   if (enable_brave_perf_predictor) {
     sources += [
+      "//brave/components/brave_perf_predictor/browser/named_third_party_registry_unittest.cc",
       "//brave/components/brave_perf_predictor/browser/bandwidth_linreg_unittest.cc",
       "//brave/components/brave_perf_predictor/browser/bandwidth_savings_predictor_unittest.cc",
       "//brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_permanent_state_unittest.cc",
       "//brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker_unittest.cc",
     ]
-
-    if (!is_android) {
-      sources += [
-        # Fails to load `brave/components/brave_perf_predictor/resources/entities-httparchive-nostats.json` file
-        "//brave/components/brave_perf_predictor/browser/named_third_party_registry_unittest.cc",
-      ]
-    }
 
     deps += [
       "//brave/components/brave_perf_predictor/browser",
