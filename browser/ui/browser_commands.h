@@ -14,6 +14,7 @@ void NewOffTheRecordWindowTor(Browser*);
 void NewTorConnectionForSite(Browser*);
 void AddNewProfile();
 void OpenGuestProfile();
+void ToggleSpeedreader(Browser* browser);
 
 }  // namespace brave
 

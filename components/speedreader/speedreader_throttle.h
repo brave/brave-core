@@ -12,10 +12,6 @@
 
 namespace speedreader {
 
-// TODO(iefremov): ad-hoc tool for initial testing. Combines the hardcoded
-// array and the ';'-separated list from command-line.
-bool IsWhitelisted(const GURL& url);
-
 // Launches the speedreader distillation pass over a reponce body, deferring
 // the load until distillation is done.
 // TODO(iefremov): Avoid distilling the same page twice (see comments in

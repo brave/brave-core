@@ -11,6 +11,9 @@ aggregate_vector_icons("brave_vector_icons") {
     "autoplay_status.icon",
     "download_unlock.icon",
     "sad_folder.icon",
+    "speedreader.icon",
+    "speedreader_on_active.icon",
+    "speedreader_on_inactive.icon",
     "tor_profile.icon",
   ]
 }

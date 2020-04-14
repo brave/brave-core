@@ -1,5 +1,5 @@
 import("//build/config/features.gni")
 
 declare_args() {
-  enable_speedreader = !is_ios
+  enable_speedreader = !is_android
 }

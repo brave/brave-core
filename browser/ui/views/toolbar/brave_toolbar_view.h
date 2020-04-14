@@ -12,6 +12,7 @@
 #include "components/prefs/pref_member.h"
 
 class BookmarkButton;
+class SpeedreaderButton;
 
 class BraveToolbarView : public ToolbarView,
                          public ProfileAttributesStorage::Observer {
@@ -20,6 +21,7 @@ class BraveToolbarView : public ToolbarView,
   ~BraveToolbarView() override;
 
   BookmarkButton* bookmark_button() const { return bookmark_; }
+  SpeedreaderButton* speedreader_button() const { return speedreader_; }
   void Init() override;
   void Layout() override;
   void Update(content::WebContents* tab) override;
@@ -33,7 +35,7 @@ class BraveToolbarView : public ToolbarView,
  private:
   void LoadImages() override;
   void ResetLocationBarBounds();
-  void ResetBookmarkButtonBounds();
+  void ResetButtonBounds();
 
   // ProfileAttributesStorage::Observer:
   void OnProfileAdded(const base::FilePath& profile_path) override;
@@ -43,6 +45,9 @@ class BraveToolbarView : public ToolbarView,
   BookmarkButton* bookmark_ = nullptr;
   // Tracks the preference to determine whether bookmark editing is allowed.
   BooleanPrefMember edit_bookmarks_enabled_;
+
+  SpeedreaderButton* speedreader_ = nullptr;
+
   BooleanPrefMember location_bar_is_wide_;
   // Whether this toolbar has been initialized.
   bool brave_initialized_ = false;

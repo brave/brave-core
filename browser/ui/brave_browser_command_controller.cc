@@ -125,6 +125,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #endif
   UpdateCommandEnabled(IDC_ADD_NEW_PROFILE, !is_guest_session);
   UpdateCommandEnabled(IDC_OPEN_GUEST_PROFILE, !is_guest_session);
+  UpdateCommandEnabled(IDC_TOGGLE_SPEEDREADER, true);
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -210,6 +211,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_OPEN_GUEST_PROFILE:
       brave::OpenGuestProfile();
+      break;
+    case IDC_TOGGLE_SPEEDREADER:
+      brave::ToggleSpeedreader(browser_);
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;

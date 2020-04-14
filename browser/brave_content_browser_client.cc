@@ -50,6 +50,7 @@
 #include "extensions/buildflags/buildflags.h"
 #include "net/cookies/site_for_cookies.h"
 #include "services/service_manager/public/cpp/manifest_builder.h"
+#include "third_party/blink/public/common/loader/url_loader_throttle.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using brave_shields::BraveShieldsWebContentsObserver;
@@ -97,9 +98,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/components/speedreader/speedreader_switches.h"
+#include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/components/speedreader/speedreader_throttle.h"
-#include "brave/components/speedreader/speedreader_whitelist.h"
 #include "content/public/common/resource_type.h"
 #endif
 
@@ -283,21 +283,17 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
         request, browser_context, wc_getter, navigation_ui_data,
         frame_tree_node_id);
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  const auto* cmd_line = base::CommandLine::ForCurrentProcess();
-  if (cmd_line->HasSwitch(speedreader::kEnableSpeedreader)) {
-    // Work only with casual main frame navigations.
-    if (request.url.SchemeIsHTTPOrHTTPS() &&
-        request.resource_type ==
-        static_cast<int>(content::ResourceType::kMainFrame)) {
-      // Note that we check the whitelist before any redirects, while distilling
-      // will be performed on a final document (the last in the redirect chain).
-      auto* whitelist = g_brave_browser_process->speedreader_whitelist();
-      if (speedreader::IsWhitelisted(request.url) ||
-          whitelist->IsWhitelisted(request.url)) {
-        result.push_back(std::make_unique<speedreader::SpeedReaderThrottle>(
-                         base::ThreadTaskRunnerHandle::Get()));
-      }
-    }
+  content::WebContents* contents = wc_getter.Run();
+  if (!contents) {
+    return result;
+  }
+  auto* tab_helper =
+      speedreader::SpeedreaderTabHelper::FromWebContents(contents);
+  if (tab_helper && tab_helper->IsActiveForMainFrame()
+      && request.resource_type
+          == static_cast<int>(content::ResourceType::kMainFrame)) {
+    result.push_back(std::make_unique<speedreader::SpeedReaderThrottle>(
+        base::ThreadTaskRunnerHandle::Get()));
   }
 #endif  // ENABLE_SPEEDREADER
   return result;
