@@ -57,9 +57,9 @@ class ContributeBox extends React.Component<Props, State> {
   getContributeRows = (list: Rewards.Publisher[]) => {
     return list.map((item: Rewards.Publisher) => {
       const verified = utils.isPublisherConnectedOrVerified(item.status)
-      let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
+      let faviconUrl = `chrome://favicon/size/64@1x/${item.url}`
       if (item.favIcon && verified) {
-        faviconUrl = `chrome://favicon/size/48@1x/${item.favIcon}`
+        faviconUrl = `chrome://favicon/size/64@1x/${item.favIcon}`
       }
 
       return {
@@ -83,9 +83,9 @@ class ContributeBox extends React.Component<Props, State> {
 
     return list.map((item: Rewards.ExcludedPublisher) => {
       const verified = utils.isPublisherConnectedOrVerified(item.status)
-      let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
+      let faviconUrl = `chrome://favicon/size/64@1x/${item.url}`
       if (item.favIcon && verified) {
-        faviconUrl = `chrome://favicon/size/48@1x/${item.favIcon}`
+        faviconUrl = `chrome://favicon/size/64@1x/${item.favIcon}`
       }
 
       return {

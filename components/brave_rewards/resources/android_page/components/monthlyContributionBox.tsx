@@ -53,11 +53,11 @@ class MonthlyContributionBox extends React.Component<Props, State> {
     }
 
     return recurringList.map((item: Rewards.Publisher) => {
-      let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
+      let faviconUrl = `chrome://favicon/size/64@1x/${item.url}`
       const verified = utils.isPublisherConnectedOrVerified(item.status)
 
       if (item.favIcon && verified) {
-        faviconUrl = `chrome://favicon/size/48@1x/${item.favIcon}`
+        faviconUrl = `chrome://favicon/size/64@1x/${item.favIcon}`
       }
 
       return {

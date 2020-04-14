@@ -312,9 +312,9 @@ class PageWallet extends React.Component<Props, State> {
     const { balance, pendingContributions } = this.props.rewardsData
     return pendingContributions.map((item: Rewards.PendingContribution) => {
       const verified = utils.isPublisherConnectedOrVerified(item.status)
-      let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
+      let faviconUrl = `chrome://favicon/size/64@1x/${item.url}`
       if (item.favIcon && verified) {
-        faviconUrl = `chrome://favicon/size/48@1x/${item.favIcon}`
+        faviconUrl = `chrome://favicon/size/64@1x/${item.favIcon}`
       }
 
       let type: PendingType = 'ac'
@@ -540,10 +540,10 @@ class PageWallet extends React.Component<Props, State> {
       .forEach((contribution: Rewards.ContributionReport) => {
         records = contribution.publishers
           .map((publisher: Rewards.Publisher): ExtendedActivityRow => {
-            let faviconUrl = `chrome://favicon/size/48@1x/${publisher.url}`
+            let faviconUrl = `chrome://favicon/size/64@1x/${publisher.url}`
             const verified = utils.isPublisherConnectedOrVerified(publisher.status)
             if (publisher.favIcon && verified) {
-              faviconUrl = `chrome://favicon/size/48@1x/${publisher.favIcon}`
+              faviconUrl = `chrome://favicon/size/64@1x/${publisher.favIcon}`
             }
             return {
               profile: {
