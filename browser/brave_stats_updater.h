@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -6,6 +7,7 @@
 #define BRAVE_BROWSER_BRAVE_STATS_UPDATER_H_
 
 #include <memory>
+#include <string>
 
 #include "base/callback.h"
 #include "base/macros.h"
@@ -36,7 +38,7 @@ class BraveStatsUpdaterParams;
 
 class BraveStatsUpdater {
  public:
-  BraveStatsUpdater(PrefService* pref_service);
+  explicit BraveStatsUpdater(PrefService* pref_service);
   ~BraveStatsUpdater();
 
   void Start();
@@ -56,8 +58,8 @@ class BraveStatsUpdater {
   // Invoked when server ping timer fires.
   void OnServerPingTimerFired();
 
-  // Invoked when the specified referral preference changes.
-  void OnReferralCheckedForPromoCodeFileChanged();
+  // Invoked after browser has initialized with referral server.
+  void OnReferralInitialization();
 
   void StartServerPingStartupTimer();
   void SendServerPing();
