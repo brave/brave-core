@@ -227,6 +227,10 @@ class BraveRewardsBrowserTest
     return GetPrefs()->GetBoolean(brave_rewards::prefs::kBraveRewardsEnabled);
   }
 
+  std::string GetPromotionId() {
+    return "6820f6a4-c6ef-481d-879c-d2c30c8928c3";
+  }
+
   std::string GetUpholdCard() {
     return
     "{"
@@ -777,6 +781,8 @@ class BraveRewardsBrowserTest
     return rewards_service_;
   }
 
+  // Use this function only if you are testing claim flow
+  // otherwise always use ClaimPromotionViaCode to seep things up
   void ClaimPromotion(bool use_panel) {
     // Wait for promotion to initialize
     WaitForPromotionInitialization();
@@ -810,9 +816,8 @@ class BraveRewardsBrowserTest
     WaitForPromotionFinished();
 
     // Ensure that promotion looks as expected
-    const std::string promotion_id = "6820f6a4-c6ef-481d-879c-d2c30c8928c3";
     EXPECT_STREQ(std::to_string(promotion_.amount).c_str(), "30.000000");
-    EXPECT_STREQ(promotion_.promotion_id.c_str(), promotion_id.c_str());
+    EXPECT_STREQ(promotion_.promotion_id.c_str(), GetPromotionId().c_str());
     EXPECT_EQ(promotion_.type, 0u);
     EXPECT_EQ(promotion_.expires_at, 1740816427ull);
     balance_ += 30;
@@ -835,6 +840,24 @@ class BraveRewardsBrowserTest
           contents, "#"
                     "grant-completed-ok");
     }
+  }
+
+  void ClaimPromotionViaCode() {
+    // Wait for promotion to initialize
+    WaitForPromotionInitialization();
+
+    const std::string solution = R"(
+    {
+      "captchaId": "a78e549f-904d-425e-9736-54f693117e01",
+      "x": 1,
+      "y": 1
+    })";
+    rewards_service_->AttestPromotion(
+        GetPromotionId(),
+        solution,
+        base::DoNothing());
+    WaitForPromotionFinished();
+    balance_ += 30;
   }
 
   void VisitPublisher(const std::string& publisher,
@@ -1750,9 +1773,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContribution) {
   // Enable Rewards
   EnableRewards();
 
-  // Claim promotion using panel
-  const bool use_panel = true;
-  ClaimPromotion(use_panel);
+  ClaimPromotionViaCode();
 
   // Visit verified publisher
   const bool verified = true;
@@ -1778,9 +1799,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContribution) {
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContributeWhenACOff) {
   EnableRewards();
 
-  // Claim promotion using panel
-  const bool use_panel = true;
-  ClaimPromotion(use_panel);
+  ClaimPromotionViaCode();
 
   // Visit verified publisher
   const bool verified = true;
@@ -1806,9 +1825,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipVerifiedPublisher) {
   // Enable Rewards
   EnableRewards();
 
-  // Claim promotion using settings page
-  const bool use_panel = true;
-  ClaimPromotion(use_panel);
+  ClaimPromotionViaCode();
 
   // Tip verified publisher
   TipPublisher("duckduckgo.com", ContributionType::OneTimeTip, true);
@@ -1819,9 +1836,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipUnverifiedPublisher) {
   // Enable Rewards
   EnableRewards();
 
-  // Claim promotion using settings page
-  const bool use_panel = true;
-  ClaimPromotion(use_panel);
+  ClaimPromotionViaCode();
 
   // Tip unverified publisher
   TipPublisher("brave.com", ContributionType::OneTimeTip);
@@ -1833,9 +1848,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   // Enable Rewards
   EnableRewards();
 
-  // Claim promotion using settings page
-  const bool use_panel = true;
-  ClaimPromotion(use_panel);
+  ClaimPromotionViaCode();
 
   // Tip verified publisher
   TipPublisher("duckduckgo.com", ContributionType::MonthlyTip, true);
@@ -1847,9 +1860,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   // Enable Rewards
   EnableRewards();
 
-  // Claim promotion using settings page
-  const bool use_panel = true;
-  ClaimPromotion(use_panel);
+  ClaimPromotionViaCode();
 
   // Tip verified publisher
   TipPublisher("brave.com", ContributionType::MonthlyTip, false);
@@ -2027,9 +2038,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   // Enable Rewards
   EnableRewards();
 
-  // Claim promotion using settings page
-  const bool use_panel = true;
-  ClaimPromotion(use_panel);
+  ClaimPromotionViaCode();
 
   // Tip unverified publisher
   TipPublisher(publisher, ContributionType::OneTimeTip);
@@ -2099,9 +2108,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
                        InsufficientNotificationForInsufficientAmount) {
   AddNotificationServiceObserver();
   EnableRewards();
-  // Claim promotion using panel
-  const bool use_panel = true;
-  ClaimPromotion(use_panel);
+  ClaimPromotionViaCode();
 
   TipViaCode(
       "duckduckgo.com",
@@ -2137,9 +2144,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
                        InsufficientNotificationForVerifiedInsufficientAmount) {
   AddNotificationServiceObserver();
   EnableRewards();
-  // Claim promotion using panel
-  const bool use_panel = true;
-  ClaimPromotion(use_panel);
+  ClaimPromotionViaCode();
 
   TipViaCode(
       "duckduckgo.com",
@@ -2201,8 +2206,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ProcessPendingContributions) {
   TipViaCode("3zsistemi.si", 10.0, ledger::PublisherStatus::NOT_VERIFIED);
   TipViaCode("3zsistemi.si", 10.0, ledger::PublisherStatus::NOT_VERIFIED);
 
-  // Claim promotion using panel
-  ClaimPromotion(true);
+  ClaimPromotionViaCode();
 
   alter_publisher_list_ = false;
   VerifyTip(41.0, false, false, true);
@@ -2263,8 +2267,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RewardsPanelDefaultTipChoices) {
   show_defaults_in_properties_ = true;
   EnableRewards();
 
-  bool use_panel = true;
-  ClaimPromotion(use_panel);
+  ClaimPromotionViaCode();
 
   GURL url = https_server()->GetURL("3zsistemi.si", "/index.html");
   ui_test_utils::NavigateToURLWithDisposition(
@@ -2416,9 +2419,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipConnectedPublisherAnon) {
   // Enable Rewards
   EnableRewards();
 
-  // Claim promotion using settings page
-  const bool use_panel = true;
-  ClaimPromotion(use_panel);
+  ClaimPromotionViaCode();
 
   // Tip verified publisher
   const double amount = 5.0;
@@ -2439,9 +2440,7 @@ IN_PROC_BROWSER_TEST_F(
   // Enable Rewards
   EnableRewards();
 
-  // Claim promotion using settings page
-  const bool use_panel = true;
-  ClaimPromotion(use_panel);
+  ClaimPromotionViaCode();
 
   // Tip verified publisher
   const double amount = 5.0;
@@ -2518,8 +2517,7 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipNonIntegralAmount) {
   EnableRewards();
 
-  const bool use_panel = true;
-  ClaimPromotion(use_panel);
+  ClaimPromotionViaCode();
 
   // TODO(jhoneycutt): Test that this works through the tipping UI.
   rewards_service()->OnTip("duckduckgo.com", 2.5, false);
@@ -2533,8 +2531,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipNonIntegralAmount) {
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RecurringTipNonIntegralAmount) {
   EnableRewards();
 
-  const bool use_panel = true;
-  ClaimPromotion(use_panel);
+  ClaimPromotionViaCode();
 
   const bool verified = true;
   VisitPublisher("duckduckgo.com", verified);
@@ -2552,9 +2549,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   // Enable Rewards
   EnableRewards();
 
-  // Claim promotion using panel (30 BAT)
-  const bool use_panel = true;
-  ClaimPromotion(use_panel);
+  ClaimPromotionViaCode();
 
   // Visit verified publisher
   const bool verified = true;
@@ -2624,9 +2619,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       false,
       true);
 
-  // Claim promotion using panel (30 BAT)
-  const bool use_panel = true;
-  ClaimPromotion(use_panel);
+  ClaimPromotionViaCode();
 
   // Visit verified publisher
   const bool verified = true;
@@ -2716,9 +2709,7 @@ IN_PROC_BROWSER_TEST_F(
 
   EnableRewards();
 
-  // Claim promotion using panel (30BAT)
-  const bool use_panel = true;
-  ClaimPromotion(use_panel);
+  ClaimPromotionViaCode();
 
   VisitPublisher("3zsistemi.si", true);
 
