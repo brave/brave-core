@@ -83,10 +83,6 @@ void BatAdsImpl::ServeSampleAd() {
   ads_->ServeSampleAd();
 }
 
-void BatAdsImpl::OnTimer(const uint32_t timer_id) {
-  ads_->OnTimer(timer_id);
-}
-
 void BatAdsImpl::OnUnIdle() {
   ads_->OnUnIdle();
 }

@@ -26,7 +26,6 @@
 - (bool)canShowBackgroundNotifications;
 - (bool)isNetworkConnectionAvailable;
 - (bool)shouldShowNotifications;
-- (void)killTimer:(uint32_t)timer_id;
 - (void)load:(const std::string &)name callback:(ads::LoadCallback)callback;
 - (std::string)loadJsonSchema:(const std::string &)name;
 - (void)loadSampleBundle:(ads::LoadSampleBundleCallback)callback;
@@ -37,7 +36,6 @@
 - (void)saveBundleState:(std::unique_ptr<ads::BundleState>)state callback:(ads::ResultCallback)callback;
 - (void)setCatalogIssuers:(std::unique_ptr<ads::IssuersInfo>)info;
 - (void)setIdleThreshold:(const int)threshold;
-- (uint32_t)setTimer:(const uint64_t)time_offset;
 - (void)showNotification:(std::unique_ptr<ads::AdNotificationInfo>)info;
 - (void)closeNotification:(const std::string&)id;
 - (void)URLRequest:(const std::string &)url headers:(const std::vector<std::string> &)headers content:(const std::string &)content contentType:(const std::string &)content_type method:(const ads::URLRequestMethod)method callback:(ads::URLRequestCallback)callback;

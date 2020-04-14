@@ -87,14 +87,6 @@ void NativeAdsClient::ConfirmAction(const std::string & uuid, const std::string 
   [bridge_ confirmAction:uuid creativeSetId:creative_set_id confirmationType:confirmation_type];
 }
 
-uint32_t NativeAdsClient::SetTimer(const uint64_t time_offset) {
-  return [bridge_ setTimer:time_offset];
-}
-
-void NativeAdsClient::KillTimer(uint32_t timer_id) {
-  [bridge_ killTimer:timer_id];
-}
-
 void NativeAdsClient::URLRequest(const std::string & url, const std::vector<std::string> & headers, const std::string & content, const std::string & content_type, const ads::URLRequestMethod method, ads::URLRequestCallback callback) {
   [bridge_ URLRequest:url headers:headers content:content contentType:content_type method:method callback:callback];
 }

@@ -50,9 +50,6 @@ class BatAdsImpl :
 
   void ServeSampleAd() override;
 
-  void OnTimer(
-      const uint32_t timer_id) override;
-
   void OnUnIdle() override;
   void OnIdle() override;
 

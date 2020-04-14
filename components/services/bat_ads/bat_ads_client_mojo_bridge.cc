@@ -277,26 +277,6 @@ void BatAdsClientMojoBridge::ConfirmAction(
       confirmation_type);
 }
 
-uint32_t BatAdsClientMojoBridge::SetTimer(
-    const uint64_t time_offset) {
-  if (!connected()) {
-    return 0;
-  }
-
-  uint32_t timer_id;
-  bat_ads_client_->SetTimer(time_offset, &timer_id);
-  return timer_id;
-}
-
-void BatAdsClientMojoBridge::KillTimer(
-    const uint32_t timer_id) {
-  if (!connected()) {
-    return;
-  }
-
-  bat_ads_client_->KillTimer(timer_id);
-}
-
 void OnURLRequest(
     const ads::URLRequestCallback& callback,
     const int32_t response_status_code,

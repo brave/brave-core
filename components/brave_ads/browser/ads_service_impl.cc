@@ -295,7 +295,6 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
             base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
     base_path_(profile_->GetPath().AppendASCII("ads_service")),
     next_timer_id_(0),
-    remove_onboarding_timer_id_(0),
     last_idle_state_(ui::IdleState::IDLE_STATE_ACTIVE),
     bundle_state_backend_(new BundleStateDatabase(
         base_path_.AppendASCII("bundle_state"))),
@@ -1146,17 +1145,6 @@ void AdsServiceImpl::OnReset(
   callback(success ? ads::Result::SUCCESS : ads::Result::FAILED);
 }
 
-void AdsServiceImpl::OnTimer(
-    const uint32_t timer_id) {
-  timers_.erase(timer_id);
-
-  if (!connected()) {
-    return;
-  }
-
-  bat_ads_->OnTimer(timer_id);
-}
-
 void AdsServiceImpl::MigratePrefs() {
   is_upgrading_from_pre_brave_ads_build_ = IsUpgradingFromPreBraveAdsBuild();
   if (is_upgrading_from_pre_brave_ads_build_) {
@@ -1583,7 +1571,7 @@ void AdsServiceImpl::RemoveOnboarding() {
     return;
   }
 
-  KillTimer(remove_onboarding_timer_id_);
+  onboarding_timer_.Stop();
 
   auto* notification_service = rewards_service_->GetNotificationService();
   notification_service->DeleteNotification(kRewardsNotificationAdsOnboarding);
@@ -1605,7 +1593,7 @@ bool AdsServiceImpl::ShouldRemoveOnboarding() const {
 }
 
 void AdsServiceImpl::StartRemoveOnboardingTimer() {
-  if (remove_onboarding_timer_id_ != 0) {
+  if (onboarding_timer_.IsRunning()) {
     return;
   }
 
@@ -1628,24 +1616,14 @@ void AdsServiceImpl::StartRemoveOnboardingTimer() {
     timer_offset_in_seconds = timestamp_in_seconds - now_in_seconds;
   }
 
-  remove_onboarding_timer_id_ = next_timer_id();
-
-  timers_[remove_onboarding_timer_id_] = std::make_unique<base::OneShotTimer>();
-  timers_[remove_onboarding_timer_id_]->Start(FROM_HERE,
+  onboarding_timer_.Start(FROM_HERE,
       base::TimeDelta::FromSeconds(timer_offset_in_seconds),
-      base::BindOnce(&AdsServiceImpl::OnRemoveOnboarding, AsWeakPtr(),
-          remove_onboarding_timer_id_));
+          base::BindOnce(&AdsServiceImpl::RemoveOnboarding, AsWeakPtr()));
 
   auto time = base::TimeFormatFriendlyDateAndTime(
       base::Time::FromDoubleT(timestamp_in_seconds));
 
   LOG(INFO) << "Start timer to remove onboarding on " << time;
-}
-
-void AdsServiceImpl::OnRemoveOnboarding(
-    const uint32_t timer_id) {
-  timers_.erase(timer_id);
-  RemoveOnboarding();
 }
 
 void AdsServiceImpl::MaybeShowMyFirstAdNotification() {
@@ -1987,28 +1965,6 @@ void AdsServiceImpl::ConfirmAction(
     const ads::ConfirmationType confirmation_type) {
   rewards_service_->ConfirmAction(creative_instance_id, creative_set_id,
       confirmation_type);
-}
-
-uint32_t AdsServiceImpl::SetTimer(
-    const uint64_t time_offset) {
-  uint32_t timer_id = next_timer_id();
-
-  timers_[timer_id] = std::make_unique<base::OneShotTimer>();
-  timers_[timer_id]->Start(FROM_HERE,
-      base::TimeDelta::FromSeconds(time_offset),
-      base::BindOnce(&AdsServiceImpl::OnTimer, AsWeakPtr(), timer_id));
-
-  return timer_id;
-}
-
-void AdsServiceImpl::KillTimer(
-    const uint32_t timer_id) {
-  if (timers_.find(timer_id) == timers_.end()) {
-    return;
-  }
-
-  timers_[timer_id]->Stop();
-  timers_.erase(timer_id);
 }
 
 void AdsServiceImpl::URLRequest(

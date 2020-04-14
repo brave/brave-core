@@ -86,12 +86,6 @@ class MockAdsClient : public AdsClient {
       const std::string& creative_set_id,
       const ConfirmationType confirmation_type));
 
-  MOCK_METHOD1(SetTimer, uint32_t(
-      const uint64_t time_offset));
-
-  MOCK_METHOD1(KillTimer, void(
-      uint32_t timer_id));
-
   MOCK_METHOD6(URLRequest, void(
       const std::string& url,
       const std::vector<std::string>& headers,

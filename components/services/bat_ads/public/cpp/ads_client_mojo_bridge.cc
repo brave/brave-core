@@ -161,20 +161,6 @@ void AdsClientMojoBridge::ShouldShowNotifications(
   std::move(callback).Run(ads_client_->ShouldShowNotifications());
 }
 
-bool AdsClientMojoBridge::SetTimer(
-    uint64_t time_offset,
-    uint32_t* out_timer_id) {
-  DCHECK(out_timer_id);
-  *out_timer_id = ads_client_->SetTimer(time_offset);
-  return true;
-}
-
-void AdsClientMojoBridge::SetTimer(
-    uint64_t time_offset,
-    SetTimerCallback callback) {
-  std::move(callback).Run(ads_client_->SetTimer(time_offset));
-}
-
 bool AdsClientMojoBridge::LoadJsonSchema(
     const std::string& name,
     std::string* out_json) {
@@ -204,11 +190,6 @@ void AdsClientMojoBridge::GetUserModelLanguages(
 void AdsClientMojoBridge::SetIdleThreshold(
     const int32_t threshold) {
   ads_client_->SetIdleThreshold(threshold);
-}
-
-void AdsClientMojoBridge::KillTimer(
-    const uint32_t timer_id) {
-  ads_client_->KillTimer(timer_id);
 }
 
 bool AdsClientMojoBridge::GetClientInfo(

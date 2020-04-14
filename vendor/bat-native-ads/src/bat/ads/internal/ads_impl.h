@@ -262,9 +262,6 @@ class AdsImpl : public Ads {
       const std::string& creative_set_id,
       const ConfirmationType confirmation_type);
 
-  void OnTimer(
-      const uint32_t timer_id) override;
-
   uint64_t next_easter_egg_timestamp_in_seconds_;
 
   void AppendAdNotificationToHistory(

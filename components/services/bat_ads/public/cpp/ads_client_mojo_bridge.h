@@ -68,12 +68,6 @@ class AdsClientMojoBridge
       bool* out_should_show) override;
   void ShouldShowNotifications(
       ShouldShowNotificationsCallback callback) override;
-  bool SetTimer(
-      const uint64_t time_offset,
-      uint32_t* out_timer_id) override;
-  void SetTimer(
-      uint64_t time_offset,
-      SetTimerCallback callback) override;
   bool LoadJsonSchema(
       const std::string& name,
       std::string* out_json) override;
@@ -90,8 +84,6 @@ class AdsClientMojoBridge
       const std::string& json) override;
   void SetIdleThreshold(
       const int32_t threshold) override;
-  void KillTimer(
-      const uint32_t timer_id) override;
   void Load(
       const std::string& name,
       LoadCallback callback) override;

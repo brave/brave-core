@@ -157,16 +157,6 @@ class ADS_EXPORT AdsClient {
       const std::string& creative_set_id,
       const ConfirmationType confirmation_type) = 0;
 
-  // Should create a timer to trigger after the time offset specified in
-  // seconds. If the timer was created successfully a unique identifier should
-  // be returned, otherwise returns |0|
-  virtual uint32_t SetTimer(
-      const uint64_t time_offset) = 0;
-
-  // Should destroy the timer associated with the specified timer identifier
-  virtual void KillTimer(
-      const uint32_t timer_id) = 0;
-
   // Should fetch and return data. Loading should be performed asynchronously,
   // so that the app remains responsive and should handle incoming data or
   // errors as they arrive. The callback takes 4 arguments — |url| should

@@ -35,8 +35,6 @@ class NativeAdsClient : public ads::AdsClient {
   void SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) override;
   void ConfirmAd(const ads::AdInfo& info, const ads::ConfirmationType confirmation_type) override;
   void ConfirmAction(const std::string& creative_instance_id, const std::string& creative_set_id, const ads::ConfirmationType confirmation_type) override;
-  uint32_t SetTimer(const uint64_t time_offset) override;
-  void KillTimer(const uint32_t timer_id) override;
   void URLRequest(const std::string & url, const std::vector<std::string> & headers, const std::string & content, const std::string & content_type, const ads::URLRequestMethod method, ads::URLRequestCallback callback) override;
   void Save(const std::string & name, const std::string & value, ads::ResultCallback callback) override;
   void Load(const std::string & name, ads::LoadCallback callback) override;
