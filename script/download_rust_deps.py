@@ -130,6 +130,27 @@ def parse_args():
     args = parser.parse_args()
     return args
 
+def cargo_install(tool):
+    # Set environment variables for rustup
+    env = os.environ.copy()
+    env['RUSTUP_HOME'] = RUSTUP_HOME
+    env['CARGO_HOME'] = RUSTUP_HOME
+
+    rustup_bin = os.path.abspath(os.path.join(RUSTUP_HOME, 'bin'))
+    cargo_bin = os.path.join(rustup_bin, "cargo" if sys.platform != "win32" else "cargo.exe")
+
+    # Install the tool
+    cargo_args = []
+    cargo_args.append(cargo_bin)
+    cargo_args.append("install")
+    cargo_args.append("--force")
+    cargo_args.append(tool)
+
+    try:
+        subprocess.check_call(cargo_args, env=env)
+    except subprocess.CalledProcessError as e:
+        print(e.output)
+        raise e
 
 def main():
     download_and_unpack_rust_deps(sys.platform)
@@ -137,6 +158,10 @@ def main():
     args = parse_args()
     if args.platform == 'android':
         make_standalone_toolchain_for_android()
+
+    tools = ["cbindgen"]
+    for tool in tools:
+        cargo_install(tool)
 
     return 0
 

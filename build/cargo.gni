@@ -2,6 +2,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/build/rust/config.gni")
+
 if (is_mac) {
   import("//build/config/mac/mac_sdk.gni")
 }
@@ -13,12 +15,8 @@ template("cargo_build") {
 
     # make sure rebuilds when files change
     forward_variables_from(invoker, "*")
-    if (!defined(outputs)) {
-      outputs = []
-    }
-    if (defined(output)) {
-      outputs += [ output ]
-    }
+
+    outputs = [output]
 
     args = [
       "--rustup_path=" + rebase_path("//brave/build/rustup/", root_build_dir),
@@ -37,5 +35,28 @@ template("cargo_build") {
       args += [ "--rust_flags=$rust_flags" ]
     }
 
+  }
+}
+
+# Runs a script to generate C bindings for rust library
+template("cargo_cbindgen") {
+  action(target_name) {
+    script = "//brave/script/cargo_cbindgen.py"
+
+    forward_variables_from(invoker, ["config", "sources", "output"])
+
+    sources += [
+      config,
+    ]
+    outputs = [ "$target_gen_dir/$output" ]
+
+    args = [
+      "--rustup_path=" + rebase_path("//brave/build/rustup/", root_build_dir),
+      "--cargo_path=" + rebase_path("//brave/build/rustup/", root_build_dir),
+      "--target=" + rustc_target,
+      "--config=" + rebase_path(config, root_build_dir),
+      "--path=" + rebase_path(get_path_info(config, "dir"), root_build_dir),
+      "--output=" + rebase_path("$target_gen_dir/$output", root_build_dir),
+    ]
   }
 }

@@ -18,13 +18,14 @@ source_set("speedreader_ffi") {
   public_configs = [ ":external_config" ]
 
   sources = [
-    "src/speedreader.cc",
-    "include/speedreader.h"
+    "speedreader.cc",
+    "speedreader.h"
   ]
 
   deps = [
     "//base",
-    ":speedreader"
+    ":speedreader",
+    ":ffi_bindings",
   ]
 
   libs = [ speedreader_lib_path ]
@@ -32,23 +33,36 @@ source_set("speedreader_ffi") {
 
 cargo_build("speedreader") {
   inputs = [
-    "build.rs",
-    "Cargo.toml",
-    "cbindgen.toml",
-    "include/speedreader_ffi.h",
-    "src/charbuf.rs",
-    "src/errors.rs",
-    "src/lib.rs",
-    "src/speedreader.rs",
     "../src/src/whitelist.rs",
+    "Cargo.toml",
+    "Cargo.lock",
+    "charbuf.rs",
+    "errors.rs",
+    "lib.rs",
+    "speedreader.rs",
   ]
 
-  outputs = [speedreader_lib_path]
+  output = speedreader_lib_path
 
   manifest_path = "Cargo.toml"
-  rust_flags = rustc_flags
   build_path = speedreader_build_path
   target = rustc_target
+}
+
+cargo_cbindgen("ffi_bindings") {
+  config = "cbindgen.toml"
+  output = "speedreader_ffi.h"
+
+  sources = [
+    "../src/src/whitelist.rs",
+    "Cargo.toml",
+    "Cargo.lock",
+    "cbindgen.toml",
+    "charbuf.rs",
+    "errors.rs",
+    "lib.rs",
+    "speedreader.rs",
+  ]
 }
 
 if (speedreader_shared_lib_install_name != "") {

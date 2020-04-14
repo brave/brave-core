@@ -9,7 +9,7 @@
 #include <memory>
 #include <string>
 
-#include "brave/components/speedreader/rust/ffi/include/speedreader_ffi.h"
+#include "brave/components/speedreader/rust/ffi/speedreader_ffi.h"
 
 namespace speedreader {
 

@@ -1,0 +1,42 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+declare_args() {
+  rust_flags = ""
+  rustc_target = ""
+}
+
+# See https://forge.rust-lang.org/platform-support.html for possible targets
+if (is_win) {
+  if (current_cpu == "x86") {
+    rust_flags += " --codegen target-feature=+crt-static "
+    rustc_target = "i686-pc-windows-msvc"
+  } else if (current_cpu == "x64") {
+    rustc_target = "x86_64-pc-windows-msvc"
+  }
+} else if (is_mac) {
+  if (current_cpu == "x64") {
+    rustc_target = "x86_64-apple-darwin"
+  }
+} else if (is_linux) {
+  if (current_cpu == "x64") {
+    rustc_target = "x86_64-unknown-linux-gnu"
+  }
+} else if (is_android) {
+  if (current_cpu == "arm") {
+    rustc_target = "arm-linux-androideabi"
+  } else if (current_cpu == "arm64") {
+    rustc_target = "aarch64-linux-android"
+  } else if (current_cpu == "x86") {
+    rustc_target = "i686-linux-android"
+  } else if (current_cpu == "x64") {
+    rustc_target = "x86_64-linux-android"
+  }
+} else if (is_ios) {
+  if (current_cpu == "arm64") {
+    rustc_target = "aarch64-apple-ios"
+  } else if (current_cpu == "x64") {
+    rustc_target = "x86_64-apple-ios"
+  }
+}

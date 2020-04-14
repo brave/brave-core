@@ -16,7 +16,7 @@
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "ui/base/resource/resource_bundle.h"
-#include "brave/components/speedreader/rust/ffi/include/speedreader.h"
+#include "brave/components/speedreader/rust/ffi/speedreader.h"
 
 namespace speedreader {
 

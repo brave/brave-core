@@ -11,7 +11,7 @@
 #include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "base/task/post_task.h"
-#include "brave/components/speedreader/rust/ffi/include/speedreader.h"
+#include "brave/components/speedreader/rust/ffi/speedreader.h"
 #include "brave/components/speedreader/speedreader_switches.h"
 #include "url/gurl.h"
 
