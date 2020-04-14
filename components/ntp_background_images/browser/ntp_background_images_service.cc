@@ -218,6 +218,8 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
 void NTPBackgroundImagesService::CheckSuperReferralComponent() {
   const auto* value = local_pref_->Get(
       prefs::kNewTabPageCachedSuperReferralComponentInfo);
+  // If we have valid cached SR component info, it means this install is valid
+  // SR.
   if (IsValidSuperReferralComponentInfo(*value)) {
     RegisterSuperReferralComponent();
     const std::string cached_data = local_pref_->GetString(
