@@ -11,10 +11,10 @@ export default {
     'Do Something'
   ],
   usCurrencies: [
-    'BAT',
+    'BAT'
   ],
   comCurrencies: [
-    'BAT',
+    'BAT'
   ],
   cryptoColors: {
     '1st': '#ff4946',
