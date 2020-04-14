@@ -15,7 +15,6 @@
 #include "components/prefs/pref_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "ui/native_theme/native_theme.h"
-#include "ui/native_theme/native_theme_dark_aura.h"
 #include "ui/native_theme/native_theme_observer.h"
 
 #if defined(OS_WIN)
