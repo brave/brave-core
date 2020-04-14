@@ -399,12 +399,6 @@ class Contribute extends React.PureComponent<Props, State> {
   }
 
   handleFiatChange = () => {
-    const { userTLD } = this.props
-
-    if (userTLD === 'us' || this.state.currenciesShowing) {
-      return
-    }
-
     this.setState({
       fiatShowing: !this.state.fiatShowing
     })
@@ -1141,7 +1135,6 @@ class Contribute extends React.PureComponent<Props, State> {
   renderBuyView = () => {
     const {
       onBuyCrypto,
-      userTLD,
       initialAsset,
       initialFiat,
       initialAmount,
@@ -1151,7 +1144,7 @@ class Contribute extends React.PureComponent<Props, State> {
       fiatShowing,
       currenciesShowing
     } = this.state
-    const isUS = userTLD === 'us'
+    const isUS = false
     const currencies = this.getCurrencyList()
 
     return (

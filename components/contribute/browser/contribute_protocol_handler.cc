@@ -27,26 +27,17 @@ GURL TranslateUrl(const GURL& url) {
   std::string query;
 
   if (url.has_query()) {
-    query = base::StrCat({
-      "?",
-      net::EscapeExternalHandlerValue(url.query())
-    });
+    query = base::StrCat({"?", net::EscapeExternalHandlerValue(url.query())});
   }
 
   base::ReplaceFirstSubstringAfterOffset(&path, 0, "/", "");
-  return GURL(
-      base::StrCat({
-        "chrome://newtab",
-        path,
-        query
-      }));
+  return GURL(base::StrCat({"chrome://newtab", path, query}));
 }
 
-void LoadNewTabURL(
-    const GURL& url,
-    content::WebContents::OnceGetter web_contents_getter,
-    ui::PageTransition page_transition,
-    bool has_user_gesture) {
+void LoadNewTabURL(const GURL& url,
+                   content::WebContents::OnceGetter web_contents_getter,
+                   ui::PageTransition page_transition,
+                   bool has_user_gesture) {
   content::WebContents* web_contents = std::move(web_contents_getter).Run();
   if (!web_contents) {
     return;
@@ -57,24 +48,26 @@ void LoadNewTabURL(
     return;
   }
 
-  // We should only allow contribute scheme to be used from accounts.contribute.com
+  // We should only allow contribute scheme to be used from
+  // accounts.contribute.com
   if (!web_contents->GetURL().DomainIs("accounts.binance.com")) {
     return;
   }
 
   const auto new_url = TranslateUrl(url);
   web_contents->GetController().LoadURL(new_url, content::Referrer(),
-      page_transition, std::string());
+                                        page_transition, std::string());
 }
 
 }  // namespace
 
 namespace contribute {
 
-void HandleContributeProtocol(const GURL& url,
-                           content::WebContents::OnceGetter web_contents_getter,
-                           ui::PageTransition page_transition,
-                           bool has_user_gesture) {
+void HandleContributeProtocol(
+    const GURL& url,
+    content::WebContents::OnceGetter web_contents_getter,
+    ui::PageTransition page_transition,
+    bool has_user_gesture) {
   DCHECK(IsContributeProtocol(url));
   base::PostTask(
       FROM_HERE, {content::BrowserThread::UI},

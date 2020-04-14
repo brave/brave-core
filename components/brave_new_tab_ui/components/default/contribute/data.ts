@@ -4,7 +4,6 @@
 
 export default {
   fiatList: [
-    'USD',
     'Khan Academy',
     'Smile Foundation',
     'Red Cross Foundation',
@@ -13,28 +12,9 @@ export default {
   ],
   usCurrencies: [
     'BAT',
-    'BTC',
-    'ETH',
-    'XRP',
-    'BNB',
-    'BCH',
-    'BUSD'
   ],
   comCurrencies: [
     'BAT',
-    'BTC',
-    'ETH',
-    'XRP',
-    'BNB',
-    'BCH',
-    'DASH',
-    'EOS',
-    'NANO',
-    'PAX',
-    'TRX',
-    'BUSD',
-    'TUSD',
-    'USDT'
   ],
   cryptoColors: {
     '1st': '#ff4946',

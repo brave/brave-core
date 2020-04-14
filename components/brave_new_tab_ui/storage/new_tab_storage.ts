@@ -82,7 +82,7 @@ export const defaultState: NewTab.State = {
     userTLD: 'com',
     initialFiat: 'USD',
     initialAmount: '',
-    initialAsset: 'BTC',
+    initialAsset: 'BAT',
     userTLDAutoSet: false,
     contributeSupported: false,
     hideBalance: true,

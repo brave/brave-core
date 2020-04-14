@@ -16,8 +16,7 @@ std::string GetBalanceFromAssets(
     const std::map<std::string, std::string>& balances,
     const std::string& asset) {
   std::string balance;
-  std::map<std::string, std::string>::const_iterator it =
-      balances.find(asset);
+  std::map<std::string, std::string>::const_iterator it = balances.find(asset);
   if (it != balances.end()) {
     balance = it->second;
   }
@@ -48,7 +47,8 @@ TEST_F(ContributeJSONParserTest, GetAccountBalancesFromJSON) {
             "withdrawing": "0.00000000"
           }
         ]
-      })", &balances));
+      })",
+                                                               &balances));
 
   std::string bnb_balance = GetBalanceFromAssets(balances, "BNB");
   std::string btc_balance = GetBalanceFromAssets(balances, "BTC");
@@ -68,7 +68,9 @@ TEST_F(ContributeJSONParserTest, GetTokensFromJSON) {
         "scope": "read",
         "token_type": "bearer",
         "expires_in": 30714
-      })", &access_token, "access_token"));
+      })",
+                                                      &access_token,
+                                                      "access_token"));
 
   ASSERT_TRUE(ContributeJSONParser::GetTokensFromJSON(R"(
       {
@@ -77,7 +79,9 @@ TEST_F(ContributeJSONParserTest, GetTokensFromJSON) {
         "scope": "read",
         "token_type": "bearer",
         "expires_in": 30714
-      })", &refresh_token, "refresh_token"));
+      })",
+                                                      &refresh_token,
+                                                      "refresh_token"));
 
   ASSERT_EQ(access_token, "83f2bf51-a2c4-4c2e-b7c4-46cef6a8dba5");
   ASSERT_EQ(refresh_token, "fb5587ee-d9cf-4cb5-a586-4aed72cc9bea");
@@ -89,7 +93,8 @@ TEST_F(ContributeJSONParserTest, GetTickerPriceFromJSON) {
       {
         "symbol": "BTCUSDT",
         "price": "7137.98000000"
-      })", &symbol_pair_price));
+      })",
+                                                           &symbol_pair_price));
   ASSERT_EQ(symbol_pair_price, "7137.98000000");
 }
 
@@ -99,7 +104,8 @@ TEST_F(ContributeJSONParserTest, GetTickerVolumeFromJSON) {
       {
         "symbol": "BTCUSDT",
         "volume": "99849.90399800"
-      })", &symbol_pair_volume));
+      })",
+                                                         &symbol_pair_volume));
   ASSERT_EQ(symbol_pair_volume, "99849.90399800");
 }
 
@@ -116,7 +122,9 @@ TEST_F(ContributeJSONParserTest, GetDepositInfoFromJSON) {
           "url": "https://btc.com/112tfsHDk6Yk8PbNnTVkv7yPox4aWYYDtW",
           "time": 1566366289000
         }
-      })", &deposit_address, &deposit_url));
+      })",
+                                                           &deposit_address,
+                                                           &deposit_url));
   ASSERT_EQ(deposit_address, "112tfsHDk6Yk8PbNnTVkv7yPox4aWYYDtW");
   ASSERT_EQ(deposit_url, "https://btc.com/112tfsHDk6Yk8PbNnTVkv7yPox4aWYYDtW");
 }
@@ -126,7 +134,8 @@ TEST_F(ContributeJSONParserTest, GetQuoteInfoFromJSON) {
   std::string quote_price;
   std::string total_fee;
   std::string total_amount;
-  ASSERT_TRUE(ContributeJSONParser::GetQuoteInfoFromJSON(R"(
+  ASSERT_TRUE(ContributeJSONParser::GetQuoteInfoFromJSON(
+      R"(
       {
         "code": "000000",
         "message": null,
@@ -139,7 +148,8 @@ TEST_F(ContributeJSONParserTest, GetQuoteInfoFromJSON) {
           "totalAmount": "100649.010000",
           "showPrice": "1094.01086957"
         }
-      })", &quote_id, &quote_price, &total_fee, &total_amount));
+      })",
+      &quote_id, &quote_price, &total_fee, &total_amount));
   ASSERT_EQ(quote_id, "b5481fb7f8314bb2baf55aa6d4fcf068");
   ASSERT_EQ(quote_price, "1094.01086957");
   ASSERT_EQ(total_fee, "8.000000");
@@ -168,7 +178,8 @@ TEST_F(BinanceJSONParserTest, GetConfirmStatusFromJSONSuccess) {
             "fixFee": 13.00000000
         },
         "success": true
-      })", &error, &success));
+      })",
+                                                          &error, &success));
   ASSERT_EQ(error, "");
   ASSERT_TRUE(success);
 }
@@ -182,7 +193,8 @@ TEST_F(BinanceJSONParserTest, GetConfirmStatusFromJSONFail) {
         "message": "Quote expired. Please try again.",
         "data": null,
         "success": false
-      })", &error, &success));
+      })",
+                                                          &error, &success));
   ASSERT_EQ(error, "Quote expired. Please try again.");
   ASSERT_FALSE(success);
 }
@@ -195,7 +207,8 @@ TEST_F(BinanceJSONParserTest, RevokeTokenFromJSONSuccess) {
         "message": null,
         "data": true,// true means clear access_token success
         "success": true
-      })", &success));
+      })",
+                                                     &success));
   ASSERT_TRUE(success);
 }
 
@@ -207,7 +220,8 @@ TEST_F(BinanceJSONParserTest, RevokeTokenFromJSONFail) {
         "message": null,
         "data": false,// true means clear access_token success
         "success": false
-      })", &success));
+      })",
+                                                     &success));
   ASSERT_FALSE(success);
 }
 

@@ -102,7 +102,7 @@ class NewTabPage extends React.Component<Props, State> {
     // Migratory check in the event that rewards is off
     // when receiving the upgrade with the Binance widget.
     const { showRewards } = this.props.newTabData
-    if (!showRewards) {
+    if (showRewards) {
       this.props.actions.setCurrentStackWidget('contribute')
     }
   }
