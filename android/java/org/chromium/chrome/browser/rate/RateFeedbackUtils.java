@@ -1,0 +1,127 @@
+ 
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+package org.chromium.chrome.browser.rate;
+
+import android.content.Context;
+import android.os.Build;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.OutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
+import org.chromium.base.Log;
+import org.chromium.base.ThreadUtils;
+import org.chromium.base.ContextUtils;
+import org.chromium.base.task.AsyncTask;
+import org.chromium.chrome.browser.settings.about.AboutChromeSettings;
+import org.chromium.chrome.browser.settings.about.AboutSettingsBridge;
+
+public class RateFeedbackUtils {
+	private static final String TAG = "Rate";
+
+	public interface RateFeedbackCallback {
+		void rateFeedbackSubmitted();
+	}
+
+	public static class RateFeedbackWorkerTask extends AsyncTask<Void> {
+		private String mUserSelection;
+	    private String mUserFeedback;
+	    private RateFeedbackCallback mCallback;
+
+	    public RateFeedbackWorkerTask(String userSelection, String userFeedback, RateFeedbackCallback callback) {
+	    	mUserSelection = userSelection;
+	    	mUserFeedback = userFeedback;
+	        mCallback = callback;
+	    }
+
+	    @Override
+	    protected Void doInBackground() {
+	        sendRateFeedback(mUserSelection, mUserFeedback);
+	        return null;
+	    }
+
+	    @Override
+	    protected void onPostExecute(Void result) {
+	        assert ThreadUtils.runningOnUiThread();
+
+	        if (isCancelled()) return;
+
+	        mCallback.rateFeedbackSubmitted();
+	    }
+	}
+
+	private static void sendRateFeedback(String userSelection, String userFeedback) {
+		Context context = ContextUtils.getApplicationContext();
+		String appVersion = AboutChromeSettings.getApplicationVersion(context, AboutSettingsBridge.getApplicationVersion());
+
+		StringBuilder sb = new StringBuilder(); 
+
+		//TODO update url for prod 
+		String http = "https://laptop-updates-pre.brave.com/1/feedback";  
+
+		HttpURLConnection urlConnection=null;  
+		try {  
+		    URL url = new URL(http);  
+		    urlConnection = (HttpURLConnection) url.openConnection();
+		    urlConnection.setDoOutput(true);   
+		    urlConnection.setRequestMethod("POST");  
+		    urlConnection.setUseCaches(false);  
+		    urlConnection.setRequestProperty("Content-Type","application/json");  
+		    urlConnection.connect();
+
+            JSONObject jsonParam = new JSONObject();
+            jsonParam.put("selection", userSelection);
+            jsonParam.put("platform", "Android");
+            jsonParam.put("os_version", String.valueOf(Build.VERSION.SDK_INT));
+            jsonParam.put("phone_make", Build.MANUFACTURER);
+            jsonParam.put("phone_model", Build.MODEL);
+            jsonParam.put("phone_arch", Build.CPU_ABI);
+            jsonParam.put("user_feedback", userFeedback);
+            jsonParam.put("app_version", appVersion);
+            jsonParam.put("api_key", "a"); //TODO update api key for prod
+
+            Log.e(TAG, jsonParam.toString());
+
+            OutputStream outputStream = urlConnection.getOutputStream();
+            byte[] input = jsonParam.toString().getBytes(StandardCharsets.UTF_8.toString());
+            outputStream.write(input, 0, input.length);
+            outputStream.flush();
+            outputStream.close();
+
+		    int HttpResult =urlConnection.getResponseCode();  
+		    if(HttpResult ==HttpURLConnection.HTTP_OK) {  
+		        BufferedReader br = new BufferedReader(new InputStreamReader(  
+		            urlConnection.getInputStream(), StandardCharsets.UTF_8.toString()));  
+		        String line = null;  
+		        while ((line = br.readLine()) != null) {  
+		            sb.append(line + "\n");  
+		        }  
+		        br.close();
+		        Log.e(TAG, sb.toString());
+		    } else {  
+		    	Log.e(TAG, urlConnection.getResponseMessage());
+		    }  
+		} catch (MalformedURLException e) {
+			Log.e(TAG, e.getMessage());
+		} catch (IOException e) {
+			Log.e(TAG, e.getMessage());
+		} catch (JSONException e) {
+		    Log.e(TAG, e.getMessage());
+		} finally {  
+		    if(urlConnection!=null)  
+		    urlConnection.disconnect();  
+		}  
+	}
+}

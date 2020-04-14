@@ -33,11 +33,17 @@ import android.content.res.Configuration;
 
 import org.chromium.chrome.R;
 
+import org.chromium.base.task.AsyncTask;
 import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
+import org.chromium.chrome.browser.rate.RateFeedbackUtils;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 
 public class RateDialogFragment extends DialogFragment implements View.OnClickListener {
+    private static final String SAD = "sad";
+    private static final String NEUTRAL = "neutral";
+
+    private String mUserSelection;
 	private boolean mIsFeedbackShown;
     private boolean mIsSuccessShown;
     private boolean mIsFromSettings;
@@ -47,7 +53,7 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
 	private EditText mRateFeedbackEditText;
 	private Button mPositiveButton, mNegativeButton, mRateButton, mLaterButton;
 
-    private LinearLayout mSmileyLayout, mRateSuccessActionLayout, mRateActionLayout;
+    private LinearLayout mSmileyLayout, mRateActionLayout;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -78,7 +84,6 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
 	        	else return false;
 	        }
 	    });
-
         setDialogParams();
 	}
  
@@ -122,7 +127,6 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
             } else if(mIsSuccessShown) {
                 laterAction();
             }
-            dismiss();
         } else if (view.getId() == R.id.rate_positive_btn) {
         	if(mIsFeedbackShown) {
         		String feedback = mRateFeedbackEditText.getText().toString().trim();
@@ -130,15 +134,20 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
 	                Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
 	                mRateFeedbackEditText.startAnimation(shake);
 	                return;
-	            }
-	            showNever();
+	            } else {
+                    RateFeedbackUtils.RateFeedbackWorkerTask mWorkerTask = new RateFeedbackUtils.RateFeedbackWorkerTask(mUserSelection, feedback, rateFeedbackCallback);
+                    mWorkerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                }
         	} else if (mIsSuccessShown) {
                 openPlaystore();
             } else {
                 laterAction();
             }
-            dismiss();
-        } else if(view.getId() == R.id.neutral_ib || view.getId() == R.id.sad_ib) {
+        } else if(view.getId() == R.id.neutral_ib) {
+            mUserSelection = NEUTRAL;
+            showFeedback();
+        } else if(view.getId() == R.id.sad_ib) {
+            mUserSelection = SAD;
             showFeedback();
         } else if(view.getId() == R.id.happy_ib) {
             showRateSuccess();
@@ -152,14 +161,13 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(getActivity(), "Couldn't find PlayStore on this device", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void showNever() {
-        RateUtils.getInstance(getActivity()).setPrefRateEnabled(false);
+        RateUtils.getInstance(getActivity()).setNextRateDateAndCount();
+        dismiss();
     }
 
     private void laterAction() {
         RateUtils.getInstance(getActivity()).setNextRateDateAndCount();
+        dismiss();
     }
 
     private void showFeedback() {
@@ -205,4 +213,12 @@ public class RateDialogFragment extends DialogFragment implements View.OnClickLi
         params.height = LinearLayout.LayoutParams.WRAP_CONTENT;
         getDialog().getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
     }
+
+    private RateFeedbackUtils.RateFeedbackCallback rateFeedbackCallback= new RateFeedbackUtils.RateFeedbackCallback() {
+        @Override
+        public void rateFeedbackSubmitted() {
+            RateUtils.getInstance(getActivity()).setNextRateDateAndCount();
+            dismiss();
+        }
+    };
 }

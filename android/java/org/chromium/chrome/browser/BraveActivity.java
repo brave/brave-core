@@ -212,7 +212,11 @@ public abstract class BraveActivity extends ChromeActivity {
             OnboardingPrefManager.getInstance().showOnboarding(this, false);
         }
 
-        RateUtils.getInstance(this).setNextRateDateAndCount();
+        if(!RateUtils.getInstance(this).getPrefRateEnabled()) {
+            RateUtils.getInstance(this).setPrefRateEnabled(true);
+            RateUtils.getInstance(this).setNextRateDateAndCount();
+        }
+
         if (RateUtils.getInstance(this).shouldShowRateDialog())
             showBraveRateDialog();
     }

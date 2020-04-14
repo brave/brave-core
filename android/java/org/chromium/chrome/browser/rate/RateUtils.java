@@ -52,7 +52,7 @@ public class RateUtils {
      * Returns the user preference for whether the rate is enabled.
      */
     public boolean getPrefRateEnabled() {
-        return mSharedPreferences.getBoolean(PREF_RATE, true);
+        return mSharedPreferences.getBoolean(PREF_RATE, false);
     }
 
     /**
