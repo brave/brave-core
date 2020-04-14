@@ -71,7 +71,6 @@ void BraveIncognitoMenuView::BuildMenu() {
   int window_count = GetWindowCount(browser()->profile());
   SetIdentityInfo(
       ColoredImageForMenu(kIncognitoProfileIcon, icon_color),
-      /*badge=*/gfx::ImageSkia(),
       l10n_util::GetStringUTF16(GetProfileMenuTitleId(browser()->profile())),
       window_count > 1 ? l10n_util::GetPluralStringFUTF16(
                              IDS_INCOGNITO_WINDOW_COUNT_MESSAGE, window_count)
