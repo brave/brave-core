@@ -676,7 +676,15 @@ class PageWallet extends React.Component<Props, State> {
         return
       }
 
-      const date = new Date(Date.UTC(parseInt(items[0], 10), parseInt(items[1], 10) - 1, 10))
+      const year = parseInt(items[0], 10)
+      const month = parseInt(items[1], 10) - 1
+
+      // we only want to show reports from version 1.3 (Feb 2020) up
+      if (year < 2020 || (year === 2020 && month === 0)) {
+        return
+      }
+
+      const date = new Date(Date.UTC(year, month, 10))
       result[id] = new Intl.DateTimeFormat('default', { month: 'long', year: 'numeric' }).format(date)
     })
 
