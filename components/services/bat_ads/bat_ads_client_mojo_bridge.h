@@ -93,9 +93,6 @@ class BatAdsClientMojoBridge
   std::string LoadJsonSchema(
       const std::string& name) override;
 
-  void LoadSampleBundle(
-      ads::LoadSampleBundleCallback callback) override;
-
   void SaveBundleState(
       std::unique_ptr<ads::BundleState> bundle_state,
       ads::ResultCallback callback) override;

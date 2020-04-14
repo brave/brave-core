@@ -185,7 +185,6 @@ bundle_data("resources") {
   sources = [
     "$ads_dir/resources/bundle-schema.json",
     "$ads_dir/resources/catalog-schema.json",
-    "$ads_dir/resources/sample_bundle.json",
     "$ads_dir/resources/user_models",
     "$ledger_dir/niceware/wordlist",
     "Ledger/Data/migrate.sql"

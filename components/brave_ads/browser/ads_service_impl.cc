@@ -620,7 +620,6 @@ bool AdsServiceImpl::StartService() {
 
   SetEnvironment();
   UpdateIsDebugFlag();
-  UpdateIsTestingFlag();
 
   return true;
 }
@@ -750,16 +749,6 @@ bool AdsServiceImpl::IsDebug() const {
   #else
     return true;
   #endif
-}
-
-void AdsServiceImpl::UpdateIsTestingFlag() {
-  auto is_testing = IsTesting();
-  bat_ads_service_->SetTesting(is_testing, base::NullCallback());
-}
-
-bool AdsServiceImpl::IsTesting() const {
-  const auto& command_line = *base::CommandLine::ForCurrentProcess();
-  return command_line.HasSwitch(switches::kTesting);
 }
 
 void AdsServiceImpl::StartCheckIdleStateTimer() {
@@ -2047,17 +2036,6 @@ std::string AdsServiceImpl::LoadJsonSchema(
     const std::string& name) {
   const auto resource_id = GetSchemaResourceId(name);
   return LoadDataResourceAndDecompressIfNeeded(resource_id);
-}
-
-void AdsServiceImpl::LoadSampleBundle(
-    ads::LoadSampleBundleCallback callback) {
-  const auto resource_id =
-      GetSchemaResourceId(ads::_bundle_schema_resource_name);
-
-  const auto sample_bundle =
-      LoadDataResourceAndDecompressIfNeeded(resource_id);
-
-  callback(ads::Result::SUCCESS, sample_bundle);
 }
 
 void AdsServiceImpl::SaveBundleState(

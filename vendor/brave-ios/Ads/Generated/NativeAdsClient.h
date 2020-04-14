@@ -40,7 +40,6 @@ class NativeAdsClient : public ads::AdsClient {
   void Load(const std::string & name, ads::LoadCallback callback) override;
   void Reset(const std::string & name, ads::ResultCallback callback) override;
   std::string LoadJsonSchema(const std::string & name) override;
-  void LoadSampleBundle(ads::LoadSampleBundleCallback callback) override;
   void SaveBundleState(std::unique_ptr<ads::BundleState> state, ads::ResultCallback callback) override;
   void GetCreativeAdNotifications(const std::vector<std::string> & categories, ads::GetCreativeAdNotificationsCallback callback) override;
   void GetAdConversions(ads::GetAdConversionsCallback callback) override;

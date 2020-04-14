@@ -107,10 +107,6 @@ std::string NativeAdsClient::LoadJsonSchema(const std::string & name) {
   return [bridge_ loadJsonSchema:name];
 }
 
-void NativeAdsClient::LoadSampleBundle(ads::LoadSampleBundleCallback callback) {
-  [bridge_ loadSampleBundle:callback];
-}
-
 void NativeAdsClient::SaveBundleState(std::unique_ptr<ads::BundleState> state, ads::ResultCallback callback) {
   [bridge_ saveBundleState:std::move(state) callback:callback];
 }

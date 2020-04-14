@@ -51,8 +51,6 @@ class BatAdsImpl :
       const std::string& url,
       const std::string& html) override;
 
-  void ServeSampleAd() override;
-
   void OnUnIdle() override;
   void OnIdle() override;
 

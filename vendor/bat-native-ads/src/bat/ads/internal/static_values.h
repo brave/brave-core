@@ -34,9 +34,6 @@ const uint64_t kMaximumEntriesPerSegmentInPurchaseIntentSignalHistory = 100;
 
 const uint64_t kDebugOneHourInSeconds = 10 * base::Time::kSecondsPerMinute;
 
-const char kEasterEggUrl[] = "https://iab.com";
-const uint64_t kNextEasterEggStartsInSeconds = 30;
-
 const char kShoppingStateUrl[] = "https://amazon.com";
 
 const uint64_t kSustainAdNotificationInteractionAfterSeconds = 10;

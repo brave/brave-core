@@ -39,14 +39,6 @@ void BatAdsServiceImpl::SetEnvironment(
   std::move(callback).Run();
 }
 
-void BatAdsServiceImpl::SetTesting(
-    const bool is_testing,
-    SetTestingCallback callback) {
-  DCHECK(!is_initialized_ || ads::_is_testing == is_testing);
-  ads::_is_testing = is_testing;
-  std::move(callback).Run();
-}
-
 void BatAdsServiceImpl::SetDebug(
     const bool is_debug,
     SetDebugCallback callback) {

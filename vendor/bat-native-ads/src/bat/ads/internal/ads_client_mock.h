@@ -110,9 +110,6 @@ class MockAdsClient : public AdsClient {
   MOCK_METHOD1(LoadJsonSchema, std::string(
       const std::string& name));
 
-  MOCK_METHOD1(LoadSampleBundle, void(
-      LoadSampleBundleCallback callback));
-
   MOCK_METHOD2(Reset, void(
       const std::string& name,
       ResultCallback callback));

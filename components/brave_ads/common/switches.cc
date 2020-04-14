@@ -13,7 +13,6 @@ const char kProduction[] = "brave-ads-production";
 const char kStaging[] = "brave-ads-staging";
 const char kDevelopment[] = "brave-ads-development";
 const char kDebug[] = "brave-ads-debug";
-const char kTesting[] = "brave-ads-testing";
 
 }  // namespace switches
 
