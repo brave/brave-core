@@ -160,7 +160,7 @@ void AdsRewards::OnGetPaymentBalance(
 void AdsRewards::GetAdGrants() {
   BLOG(INFO) << "GetAdGrants";
 
-  BLOG(INFO) << "GET /v2/wallet/{payment_id}/grants/ads";
+  BLOG(INFO) << "GET /v1/promotions/ads/grants/summary?paymentId={payment_id}";
   GetAdGrantsRequest request;
 
   BLOG(INFO) << "URL Request:";

@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/confirmations/internal/get_ad_grants_request.h"
-#include "bat/confirmations/internal/ledger_serve_helper.h"
+#include "bat/confirmations/internal/grant_rewards_serve_helper.h"
 #include "bat/confirmations/internal/string_helper.h"
 
 #include "base/logging.h"
@@ -15,18 +15,16 @@ GetAdGrantsRequest::GetAdGrantsRequest() = default;
 
 GetAdGrantsRequest::~GetAdGrantsRequest() = default;
 
-// GET /v2/wallet/{payment_id}/grants/ads
+// GET GET /v1/promotions/ads/grants/summary?paymentId={payment_id}
 
 std::string GetAdGrantsRequest::BuildUrl(
     const WalletInfo& wallet_info) const {
   DCHECK(!wallet_info.payment_id.empty());
 
-  std::string endpoint = "/v2/wallet/";
+  std::string endpoint = "/v1/promotions/ads/grants/summary?paymentId=";
   endpoint += wallet_info.payment_id;
-  endpoint += "/grants";
-  endpoint += "/ads";
 
-  return helper::LedgerServe::GetURL().append(endpoint);
+  return helper::GrantRewardsServe::GetURL().append(endpoint);
 }
 
 URLRequestMethod GetAdGrantsRequest::GetMethod() const {
