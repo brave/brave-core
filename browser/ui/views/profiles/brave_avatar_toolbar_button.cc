@@ -28,17 +28,17 @@ void BraveAvatarToolbarButton::SetHighlight(
 }
 
 gfx::ImageSkia BraveAvatarToolbarButton::GetAvatarIcon(
-    const gfx::Image& gaia_image) const {
+    ButtonState state,
+    const gfx::Image& gaia_account_image) const {
   if (brave::IsTorProfile(browser_->profile()) ||
       browser_->profile()->IsGuestSession()) {
     const int icon_size = ui::TouchUiController::Get()->touch_ui() ? 24 : 20;
-    const SkColor icon_color = GetThemeProvider()->GetColor(
-        ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON);
+    const SkColor icon_color = GetForegroundColor(state);
     return gfx::CreateVectorIcon(brave::IsTorProfile(browser_->profile())
                                      ? kTorProfileIcon
                                      : kUserMenuGuestIcon,
                                  icon_size, icon_color);
   }
-  return AvatarToolbarButton::GetAvatarIcon(gaia_image);
+  return AvatarToolbarButton::GetAvatarIcon(state, gaia_account_image);
 }
 
