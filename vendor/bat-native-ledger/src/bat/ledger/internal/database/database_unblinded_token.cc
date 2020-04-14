@@ -425,7 +425,7 @@ void DatabaseUnblindedToken::GetRecordsByTriggerIds(
 
   const std::string query = base::StringPrintf(
       "SELECT ut.token_id, ut.token_value, ut.public_key, ut.value, "
-      "ut.creds_id, ut.expires_at FROM %s as ut"
+      "ut.creds_id, ut.expires_at FROM %s as ut "
       "INNER JOIN creds_batch as cb ON cb.creds_id = ut.creds_id "
       "WHERE cb.trigger_id IN (%s)",
       kTableName,
