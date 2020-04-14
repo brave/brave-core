@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import tapBg from './assets/tap-bg.svg'
+import tapBg from './assets/tap_bg.svg'
 import { StyledLink, StyledInfo } from '../../ui/components/sidebarPromo/style'
 
 const openTapNetwork = () => {
