@@ -22,10 +22,6 @@ namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
 
-namespace content {
-class WebUIDataSource;
-}  // namespace content
-
 namespace network {
 class SharedURLLoaderFactory;
 class SimpleURLLoader;
@@ -67,8 +63,6 @@ class NTPBackgroundImagesService {
   NTPBackgroundImagesData* GetBackgroundImagesData(bool super_referral) const;
 
   bool test_data_used() const { return test_data_used_; }
-
-  void InitializeWebUIDataSource(content::WebUIDataSource* html_source);
 
   bool IsSuperReferral() const;
   std::string GetSuperReferralThemeName() const;

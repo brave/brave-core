@@ -20,6 +20,7 @@
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/web_ui_data_source.h"
 
 namespace ntp_background_images {
 
@@ -167,6 +168,16 @@ void ViewCounterService::RegisterPageView() {
 
 bool ViewCounterService::ShouldShowBrandedWallpaper() const {
   return IsBrandedWallpaperActive() && model_.ShouldShowBrandedWallpaper();
+}
+
+void ViewCounterService::InitializeWebUIDataSource(
+    content::WebUIDataSource* html_source) {
+  html_source->AddString("superReferralThemeName", GetSuperReferralThemeName());
+  // Set true if SR is active theme for this profile.
+  bool isSuperReferralActive = false;
+  if (auto* data = GetCurrentBrandedWallpaperData())
+    isSuperReferralActive = data->IsSuperReferral();
+  html_source->AddBoolean("isSuperReferralActive", isSuperReferralActive);
 }
 
 bool ViewCounterService::IsBrandedWallpaperActive() const {

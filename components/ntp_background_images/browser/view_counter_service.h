@@ -18,6 +18,10 @@
 
 class PrefService;
 
+namespace content {
+class WebUIDataSource;
+}  // namespace content
+
 namespace user_prefs {
 class PrefRegistrySyncable;
 }  // namespace user_prefs
@@ -58,6 +62,8 @@ class ViewCounterService : public KeyedService,
   // is a wallpaper active. Does not consider user opt-in
   // status, or consider whether the wallpaper should be shown.
   NTPBackgroundImagesData* GetCurrentBrandedWallpaperData() const;
+
+  void InitializeWebUIDataSource(content::WebUIDataSource* html_source);
 
  private:
   // Sync with themeValues in brave_appearance_page.js

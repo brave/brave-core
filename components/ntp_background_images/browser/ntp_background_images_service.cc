@@ -32,7 +32,6 @@
 #include "chrome/common/chrome_paths.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/browser/web_ui_data_source.h"
 #include "net/base/load_flags.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -581,11 +580,6 @@ void NTPBackgroundImagesService::UnRegisterSuperReferralComponent() {
 
 std::string NTPBackgroundImagesService::GetReferralPromoCode() const {
   return local_pref_->GetString(kReferralPromoCode);
-}
-
-void NTPBackgroundImagesService::InitializeWebUIDataSource(
-    content::WebUIDataSource* html_source) {
-  html_source->AddString("superReferralThemeName", GetSuperReferralThemeName());
 }
 
 bool NTPBackgroundImagesService::IsSuperReferral() const {

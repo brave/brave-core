@@ -107,6 +107,7 @@ export default class Settings extends React.PureComponent<Props, {}> {
         {showSettingsMenu &&
           <SettingsMenu textDirection={textDirection}>
             <SettingsTitle>{getLocale('dashboardSettingsTitle')}</SettingsTitle>
+            {allowSponsoredWallpaperUI &&
             <SettingsRow>
               <SettingsText>{getLocale('showBackgroundImage')}</SettingsText>
               <Toggle
@@ -115,6 +116,7 @@ export default class Settings extends React.PureComponent<Props, {}> {
                 size='small'
               />
             </SettingsRow>
+            }
             {allowSponsoredWallpaperUI &&
             <SettingsRow isChildSetting={true}>
               <SettingsText>{getLocale('brandedWallpaperOptIn')}</SettingsText>

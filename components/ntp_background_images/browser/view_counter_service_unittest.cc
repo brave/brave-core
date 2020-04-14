@@ -88,7 +88,7 @@ class NTPBackgroundImagesViewCounterTest : public testing::Test {
   }
 
   void EnableNTPBGImagesPref(bool enable) {
-   prefs()->SetBoolean(prefs::kNewTabPageShowBackgroundImage, enable);
+    prefs()->SetBoolean(prefs::kNewTabPageShowBackgroundImage, enable);
   }
 
   sync_preferences::TestingPrefServiceSyncable* prefs() { return &prefs_; }

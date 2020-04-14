@@ -50,7 +50,8 @@ interface State {
 }
 
 function GetBackgroundImageSrc (props: Props) {
-  if (!props.newTabData.showBackgroundImage) {
+  if (!props.newTabData.showBackgroundImage &&
+      (!props.newTabData.brandedWallpaperData || props.newTabData.brandedWallpaperData.isSponsored)) {
     return undefined
   }
   if (props.newTabData.brandedWallpaperData) {
