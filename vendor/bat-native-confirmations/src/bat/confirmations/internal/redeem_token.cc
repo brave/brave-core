@@ -52,7 +52,7 @@ RedeemToken::RedeemToken(
 RedeemToken::~RedeemToken() = default;
 
 void RedeemToken::Redeem(
-    const AdInfo& info,
+    const AdInfo& ad,
     const ConfirmationType confirmation_type) {
   BLOG(INFO) << "Redeem";
 
@@ -61,10 +61,12 @@ void RedeemToken::Redeem(
     return;
   }
 
-  auto token_info = unblinded_tokens_->GetToken();
-  unblinded_tokens_->RemoveToken(token_info);
+  const TokenInfo token = unblinded_tokens_->GetToken();
+  unblinded_tokens_->RemoveToken(token);
 
-  CreateConfirmation(info, confirmation_type, token_info);
+  const ConfirmationInfo confirmation =
+      CreateConfirmationInfo(ad, confirmation_type, token);
+  CreateConfirmation(confirmation);
 
   confirmations_->RefillTokensIfNecessary();
 }
@@ -79,10 +81,10 @@ void RedeemToken::Redeem(
   DCHECK(!creative_instance_id.empty());
   DCHECK(!creative_set_id.empty());
 
-  AdInfo info;
-  info.creative_instance_id = creative_instance_id;
-  info.creative_set_id = creative_set_id;
-  Redeem(info, confirmation_type);
+  AdInfo ad;
+  ad.creative_instance_id = creative_instance_id;
+  ad.creative_set_id = creative_set_id;
+  Redeem(ad, confirmation_type);
 }
 
 void RedeemToken::Redeem(
@@ -91,8 +93,6 @@ void RedeemToken::Redeem(
 
   if (!confirmation.created) {
     CreateConfirmation(confirmation);
-
-    confirmations_->RefillTokensIfNecessary();
 
     return;
   }
@@ -138,32 +138,32 @@ void RedeemToken::CreateConfirmation(
       method, callback);
 }
 
-void RedeemToken::CreateConfirmation(
-    const AdInfo& ad_info,
+ConfirmationInfo RedeemToken::CreateConfirmationInfo(
+    const AdInfo& ad,
     const ConfirmationType confirmation_type,
-    const TokenInfo& token_info) {
-  DCHECK(!ad_info.creative_instance_id.empty());
+    const TokenInfo& token) {
+  DCHECK(!ad.creative_instance_id.empty());
 
-  ConfirmationInfo confirmation_info;
+  ConfirmationInfo confirmation;
 
-  confirmation_info.id = base::GenerateGUID();
-  confirmation_info.creative_instance_id = ad_info.creative_instance_id;
-  confirmation_info.type = confirmation_type;
-  confirmation_info.token_info = token_info;
+  confirmation.id = base::GenerateGUID();
+  confirmation.creative_instance_id = ad.creative_instance_id;
+  confirmation.type = confirmation_type;
+  confirmation.token_info = token;
 
   auto payment_tokens = helper::Security::GenerateTokens(1);
-  confirmation_info.payment_token = payment_tokens.front();
+  confirmation.payment_token = payment_tokens.front();
 
   auto blinded_payment_tokens = helper::Security::BlindTokens(payment_tokens);
   auto blinded_payment_token = blinded_payment_tokens.front();
-  confirmation_info.blinded_payment_token = blinded_payment_token;
+  confirmation.blinded_payment_token = blinded_payment_token;
 
   CreateConfirmationRequest request;
-  auto payload = request.CreateConfirmationRequestDTO(confirmation_info);
-  confirmation_info.credential = request.CreateCredential(token_info, payload);
-  confirmation_info.timestamp_in_seconds = Time::NowInSeconds();
+  auto payload = request.CreateConfirmationRequestDTO(confirmation);
+  confirmation.credential = request.CreateCredential(token, payload);
+  confirmation.timestamp_in_seconds = Time::NowInSeconds();
 
-  CreateConfirmation(confirmation_info);
+  return confirmation;
 }
 
 void RedeemToken::OnCreateConfirmation(
@@ -185,15 +185,11 @@ void RedeemToken::OnCreateConfirmation(
     BLOG(INFO) << "    " << header.first << ": " << header.second;
   }
 
-  // FetchPaymentToken and OnFetchPaymentToken will handle all other HTTP
-  // response status codes
   if (response_status_code == net::HTTP_BAD_REQUEST) {
-    BLOG(WARNING) << "Duplicate confirmation";
-    OnRedeem(FAILED, confirmation, false);
-
-    // Duplicate confirmation so redeem a new token
-    Redeem(confirmation);
-    return;
+    // OnFetchPaymentToken handles HTTP response status codes for duplicate/bad
+    // confirmations as we cannot guarantee if the confirmation was created or
+    // not, i.e. after an internal server error 500
+    BLOG(WARNING) << "Duplicate/bad confirmation";
   }
 
   ConfirmationInfo new_confirmation = confirmation;
@@ -304,7 +300,7 @@ void RedeemToken::OnFetchPaymentToken(
     OnRedeem(FAILED, confirmation, false);
 
     // Token is in a bad state so redeem a new token
-    Redeem(confirmation);
+    OnRedeem(FAILED, confirmation);
     return;
   }
 
@@ -434,13 +430,43 @@ void RedeemToken::OnRedeem(
         << " creative instance id for " << std::string(confirmation.type);
 
     if (should_retry) {
-      confirmations_->AppendConfirmationToQueue(confirmation);
+      if (!confirmation.created) {
+        CreateAndAppendNewConfirmationToRetryQueue(confirmation);
+      } else {
+        AppendConfirmationToRetryQueue(confirmation);
+      }
     }
   } else {
     BLOG(INFO) << "Successfully redeemed " << confirmation.id
         << " confirmation id with " << confirmation.creative_instance_id
         << " creative instance id for " << std::string(confirmation.type);
   }
+}
+
+void RedeemToken::CreateAndAppendNewConfirmationToRetryQueue(
+    const ConfirmationInfo& confirmation) {
+  if (unblinded_tokens_->IsEmpty()) {
+    AppendConfirmationToRetryQueue(confirmation);
+    return;
+  }
+
+  AdInfo ad;
+  ad.creative_instance_id = confirmation.creative_instance_id;
+
+  const TokenInfo token = unblinded_tokens_->GetToken();
+  unblinded_tokens_->RemoveToken(token);
+
+  const ConfirmationInfo new_confirmation =
+      CreateConfirmationInfo(ad, confirmation.type, token);
+
+  AppendConfirmationToRetryQueue(new_confirmation);
+
+  confirmations_->RefillTokensIfNecessary();
+}
+
+void RedeemToken::AppendConfirmationToRetryQueue(
+    const ConfirmationInfo& confirmation) {
+  confirmations_->AppendConfirmationToQueue(confirmation);
 }
 
 bool RedeemToken::Verify(
