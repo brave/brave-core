@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index d0e312498d3e7cef40f3676d51edd22b8bc4aafe..8232e1dd1471b4c83f571aa8ad3b251fc76c1c91 100644
+index 8803c290bda481fc04cb03a4f07ddcc3dd92e551..1ad4ba14169b7051ec387b91d62d5ac8ec089837 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 @@ -92,7 +92,7 @@ import java.util.List;
@@ -37,7 +37,7 @@ index d0e312498d3e7cef40f3676d51edd22b8bc4aafe..8232e1dd1471b4c83f571aa8ad3b251f
      }
  
      /**
-@@ -549,6 +553,7 @@ public class ToolbarPhone extends ToolbarLayout implements Invalidator.Client, O
+@@ -550,6 +554,7 @@ public class ToolbarPhone extends ToolbarLayout implements Invalidator.Client, O
                          EventConstants.PARTNER_HOME_PAGE_BUTTON_PRESSED);
              }
          }
@@ -45,7 +45,7 @@ index d0e312498d3e7cef40f3676d51edd22b8bc4aafe..8232e1dd1471b4c83f571aa8ad3b251f
      }
  
      @Override
-@@ -715,7 +720,7 @@ public class ToolbarPhone extends ToolbarLayout implements Invalidator.Client, O
+@@ -716,7 +721,7 @@ public class ToolbarPhone extends ToolbarLayout implements Invalidator.Client, O
       * @return The right bounds of the location bar after accounting for any visible left buttons.
       */
      private int getBoundsAfterAccountingForRightButtons() {
@@ -54,7 +54,7 @@ index d0e312498d3e7cef40f3676d51edd22b8bc4aafe..8232e1dd1471b4c83f571aa8ad3b251f
      }
  
      private void updateToolbarBackground(int color) {
-@@ -2171,6 +2176,7 @@ public class ToolbarPhone extends ToolbarLayout implements Invalidator.Client, O
+@@ -2172,6 +2177,7 @@ public class ToolbarPhone extends ToolbarLayout implements Invalidator.Client, O
          } else {
              populateUrlClearFocusingAnimatorSet(animators);
          }
@@ -62,7 +62,7 @@ index d0e312498d3e7cef40f3676d51edd22b8bc4aafe..8232e1dd1471b4c83f571aa8ad3b251f
          mUrlFocusLayoutAnimator = new AnimatorSet();
          mUrlFocusLayoutAnimator.playTogether(animators);
  
-@@ -2849,6 +2855,7 @@ public class ToolbarPhone extends ToolbarLayout implements Invalidator.Client, O
+@@ -2850,6 +2856,7 @@ public class ToolbarPhone extends ToolbarLayout implements Invalidator.Client, O
  
      @Override
      public void onBottomToolbarVisibilityChanged(boolean isVisible) {

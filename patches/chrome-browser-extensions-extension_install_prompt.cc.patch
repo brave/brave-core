@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/extension_install_prompt.cc b/chrome/browser/extensions/extension_install_prompt.cc
-index 081b1dba7c13c599c934b90a6473b52afc5f5f5a..45ed600f4c05545ae66fcd0298b497e38bdcc163 100644
+index 194a12a82a1bc6a9af38ed5c9b7bba9a2a30d286..91ce280ee39f71b23c5b9c35a09138fe8d02cdfe 100644
 --- a/chrome/browser/extensions/extension_install_prompt.cc
 +++ b/chrome/browser/extensions/extension_install_prompt.cc
 @@ -13,6 +13,7 @@

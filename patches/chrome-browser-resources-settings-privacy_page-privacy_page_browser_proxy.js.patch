@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page_browser_proxy.js b/chrome/browser/resources/settings/privacy_page/privacy_page_browser_proxy.js
-index 658b4d6ab99050787352154dce3d00d1b39f5eda..c334612e66e1fb3f9c9562726de2aa624c830589 100644
+index f1a535aa22337b043f990f5e4e7f27e2da97e4c2..ee5d342797c6985f74498d68107c099c334221a9 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page_browser_proxy.js
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page_browser_proxy.js
 @@ -48,7 +48,7 @@ cr.define('settings', function() {
