@@ -6,6 +6,7 @@
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
 
 #include <memory>
+#include <cstring>
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -13,24 +14,35 @@
 
 namespace {
 
-std::string LoadFile(const std::string& domain, const std::string& sample) {
-  auto path = base::FilePath(FILE_PATH_LITERAL("brave"))
-                  .Append(FILE_PATH_LITERAL("components"))
-                  .Append(FILE_PATH_LITERAL("speedreader"))
-                  .Append(FILE_PATH_LITERAL("rust"))
-                  .Append(FILE_PATH_LITERAL("src"))
-                  .Append(FILE_PATH_LITERAL("data"))
-                  .Append(FILE_PATH_LITERAL("lolhtml"))
-                  .Append(FILE_PATH_LITERAL(domain))
-                  .Append(FILE_PATH_LITERAL(sample))
-                  .Append(FILE_PATH_LITERAL("init.html"));
-
-  std::string value;
-  const bool ok = ReadFileToString(path, &value);
-  if (!ok)
-    return {};
-  return value;
-}
+constexpr char test_config[] = R"(
+[
+    {
+        "domain": "example.com",
+        "url_rules": [
+            "||example.com/*/article/"
+        ],
+        "declarative_rewrite": {
+            "main_content": [
+                ".article-title",
+                ".article-body"
+            ],
+            "main_content_cleanup": [
+                ".hidden"
+            ],
+            "delazify": true,
+            "fix_embeds": false,
+            "content_script": null,
+            "preprocess": []
+        }
+    },
+    {
+        "domain": "anotherexample.com",
+        "url_rules": [
+            "||anotherexample.com/article/"
+        ]
+    }
+]
+)";
 
 }  // namespace
 
@@ -38,13 +50,15 @@ namespace speedreader {
 
 TEST(SpeedreaderFFITest, URLReadable) {
   SpeedReader sr;
-  std::string url_str = "https://cnn.com/news/article/topic/index.html";
+  ASSERT_TRUE(sr.deserialize(test_config, strlen(test_config)));
+  std::string url_str = "https://example.com/news/article/topic/index.html";
   EXPECT_TRUE(sr.ReadableURL(url_str));
 }
 
 TEST(SpeedreaderFFITest, URLNotReadable) {
   SpeedReader sr;
-  std::string url_str = "https://example.com/news/article/topic/index.html";
+  ASSERT_TRUE(sr.deserialize(test_config, strlen(test_config)));
+  std::string url_str = "https://unknown.com/news/article/topic/index.html";
   EXPECT_FALSE(sr.ReadableURL(url_str));
 }
 
@@ -62,19 +76,29 @@ TEST(SpeedreaderFFITest, URLEmpty) {
 
 TEST(SpeedreaderFFITest, FindRewriterType) {
   SpeedReader sr;
-  std::string url_str = "https://cnn.com/news/article/topic/index.html";
+  ASSERT_TRUE(sr.deserialize(test_config, strlen(test_config)));
+  std::string url_str = "https://example.com/news/article/topic/index.html";
   EXPECT_EQ(sr.RewriterTypeForURL(url_str), RewriterType::RewriterStreaming);
+}
+
+TEST(SpeedreaderFFITest, HeuristicsRewriterType) {
+  SpeedReader sr;
+  ASSERT_TRUE(sr.deserialize(test_config, strlen(test_config)));
+  std::string url_str = "https://anotherexample.com/news/article/topic/index.html";
+  EXPECT_EQ(sr.RewriterTypeForURL(url_str), RewriterType::RewriterHeuristics);
 }
 
 TEST(SpeedreaderFFITest, UnknownRewriterType) {
   SpeedReader sr;
-  std::string url_str = "https://example.com/news/article/topic/index.html";
+  ASSERT_TRUE(sr.deserialize(test_config, strlen(test_config)));
+  std::string url_str = "https://unknown.com/news/article/topic/index.html";
   EXPECT_EQ(sr.RewriterTypeForURL(url_str), RewriterType::RewriterUnknown);
 }
 
 TEST(SpeedreaderFFITest, RewriterCallback) {
   SpeedReader sr;
-  std::string url_str = "https://cnn.com/news/article/topic/index.html";
+  ASSERT_TRUE(sr.deserialize(test_config, strlen(test_config)));
+  std::string url_str = "https://example.com/news/article/topic/index.html";
   std::string output;
   auto callback = [](const char* chunk, size_t chunk_len, void* user_data) {
     std::string* out = static_cast<std::string*>(user_data);
@@ -82,42 +106,33 @@ TEST(SpeedreaderFFITest, RewriterCallback) {
   };
   auto rewriter =
       sr.RewriterNew(url_str, RewriterType::RewriterUnknown, callback, &output);
-  const char* content1 = "<html><div class=\"pg-headline\">";
+  const char* content1 = "<html><div class=\"article-body\">";
   ASSERT_EQ(rewriter->Write(content1, strlen(content1)), 0);
   const char* content2 = "hello world</div></html>";
   ASSERT_EQ(rewriter->Write(content2, strlen(content2)), 0);
   ASSERT_EQ(rewriter->End(), 0);
-  EXPECT_EQ(output, "<div class=\"pg-headline\">hello world</div>");
+  EXPECT_EQ(output, "<html><div class=\"article-body\">hello world</div></html>");
   EXPECT_EQ(*rewriter->GetOutput(), "");
 }
 
 TEST(SpeedreaderFFITest, RewriterBufering) {
   SpeedReader sr;
-  std::string url_str = "https://cnn.com/news/article/topic/index.html";
+  ASSERT_TRUE(sr.deserialize(test_config, strlen(test_config)));
+  std::string url_str = "https://example.com/news/article/topic/index.html";
   auto rewriter = sr.RewriterNew(url_str);
-  const char* content1 = "<html><div class=\"pg-headline\">";
+  const char* content1 = "<html><div class=\"article-body\">";
   ASSERT_EQ(rewriter->Write(content1, strlen(content1)), 0);
   const char* content2 = "hello world</div></html>";
   ASSERT_EQ(rewriter->Write(content2, strlen(content2)), 0);
   ASSERT_EQ(rewriter->End(), 0);
   EXPECT_EQ(*rewriter->GetOutput(),
-            "<div class=\"pg-headline\">hello world</div>");
-}
-
-TEST(SpeedreaderFFITest, RewriterHeuristicsBufering) {
-  SpeedReader sr;
-  std::string url_str = "http://url.com";
-  auto rewriter = sr.RewriterNew(url_str, RewriterType::RewriterHeuristics);
-  std::string content1 = LoadFile("edition.cnn.com", "2256488769395184997");
-  ASSERT_EQ(rewriter->Write(content1.c_str(), content1.length()), 0);
-  EXPECT_EQ(rewriter->End(), 0);
-  EXPECT_NE(rewriter->GetOutput()->find("<article><header><span>"),
-            std::string::npos);
+            "<html><div class=\"article-body\">hello world</div></html>");
 }
 
 TEST(SpeedreaderFFITest, RewriterBadSequence) {
   SpeedReader sr;
-  std::string url_str = "https://cnn.com/news/article/topic/index.html";
+  ASSERT_TRUE(sr.deserialize(test_config, strlen(test_config)));
+  std::string url_str = "https://example.com/news/article/topic/index.html";
   auto rewriter = sr.RewriterNew(url_str, RewriterType::RewriterUnknown);
   ASSERT_EQ(rewriter->End(), 0);
   const char* content = "hello";
@@ -126,7 +141,8 @@ TEST(SpeedreaderFFITest, RewriterBadSequence) {
 
 TEST(SpeedreaderFFITest, RewriterDoubleEnd) {
   SpeedReader sr;
-  std::string url_str = "https://cnn.com/news/article/topic/index.html";
+  ASSERT_TRUE(sr.deserialize(test_config, strlen(test_config)));
+  std::string url_str = "https://example.com/news/article/topic/index.html";
   auto rewriter = sr.RewriterNew(url_str, RewriterType::RewriterUnknown);
   ASSERT_EQ(rewriter->End(), 0);
   ASSERT_NE(rewriter->End(), 0);
@@ -136,7 +152,8 @@ TEST(SpeedreaderFFITest, RewriterParsingAmbiguity) {
   const char* ambiguity =
       "<select><div><style><div></div></style></div></select>";
   SpeedReader sr;
-  std::string url_str = "https://cnn.com/news/article/topic/index.html";
+  ASSERT_TRUE(sr.deserialize(test_config, strlen(test_config)));
+  std::string url_str = "https://example.com/news/article/topic/index.html";
   auto rewriter = sr.RewriterNew(url_str, RewriterType::RewriterUnknown);
   int write_ret = rewriter->Write(ambiguity, strlen(ambiguity));
   if (write_ret == 0) {
