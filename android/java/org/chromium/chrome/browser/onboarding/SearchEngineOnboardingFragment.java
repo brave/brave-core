@@ -32,7 +32,8 @@ import java.util.List;
 public class SearchEngineOnboardingFragment extends Fragment {
     private RadioGroup radioGroup;
 
-    private Button btnSkip, btnNext;
+    private Button btnSkip;
+    private Button btnNext;
 
     private OnViewPagerAction onViewPagerAction;
 

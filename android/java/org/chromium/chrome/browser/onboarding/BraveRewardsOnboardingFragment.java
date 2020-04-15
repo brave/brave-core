@@ -41,9 +41,12 @@ public class BraveRewardsOnboardingFragment extends Fragment {
 
     private ImageView bgImage;
 
-    private TextView tvTitle, tvText, tvAgree;
+    private TextView tvTitle;
+    private TextView tvText;
+    private TextView tvAgree;
 
-    private Button btnSkip, btnNext;
+    private Button btnSkip;
+    private Button btnNext;
 
     private static final String BRAVE_TERMS_PAGE =
             "https://basicattentiontoken.org/user-terms-of-service/";

@@ -29,10 +29,11 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
     public static final String PREF_SHOW_NON_DISTRUPTIVE_BANNER = "show_non_distruptive_banner";
     public static final String PREF_APP_OPEN_COUNT = "app_open_count";
 
-    ChromeSwitchPreference showBackgroundImagesPref, showSponsoredImagesPref;
+    private ChromeSwitchPreference showBackgroundImagesPref;
+    private ChromeSwitchPreference showSponsoredImagesPref;
 
-    SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-    SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+    private SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+    private SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
