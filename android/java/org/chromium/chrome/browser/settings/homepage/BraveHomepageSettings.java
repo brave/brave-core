@@ -7,7 +7,7 @@ package org.chromium.chrome.browser.settings.homepage;
 
 import android.os.Bundle;
 
-import org.chromium.chrome.browser.partnercustomizations.HomepageManager;
+import org.chromium.chrome.browser.homepage.HomepageManager;
 import org.chromium.chrome.browser.settings.ChromeSwitchPreference;
 import org.chromium.chrome.browser.settings.homepage.HomepageSettings;
 
