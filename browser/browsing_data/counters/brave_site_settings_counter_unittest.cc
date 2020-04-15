@@ -46,7 +46,7 @@ class BraveSiteSettingsCounterTest : public testing::Test {
     auto* zoom_map =
         content::HostZoomMap::GetDefaultForBrowserContext(profile());
 #else
-    auto* zoom_map = nullptr;
+    content::HostZoomMap* zoom_map = nullptr;
 #endif
     handler_registry_ = std::make_unique<ProtocolHandlerRegistry>(
         profile(), std::make_unique<TestProtocolHandlerRegistryDelegate>());

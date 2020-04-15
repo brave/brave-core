@@ -7,6 +7,7 @@
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/path_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_perf_predictor {
@@ -38,8 +39,9 @@ constexpr char test_mapping[] = R"(
 namespace {
 
 std::string LoadFile() {
-  auto path =
-      base::FilePath(FILE_PATH_LITERAL("brave"))
+  base::FilePath source_root;
+  base::PathService::Get(base::DIR_SOURCE_ROOT, &source_root);
+  auto path = source_root.Append(FILE_PATH_LITERAL("brave"))
           .Append(FILE_PATH_LITERAL("components"))
           .Append(FILE_PATH_LITERAL("brave_perf_predictor"))
           .Append(FILE_PATH_LITERAL("resources"))
