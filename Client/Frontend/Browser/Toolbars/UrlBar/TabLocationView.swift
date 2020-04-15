@@ -55,7 +55,7 @@ class TabLocationView: UIView {
         }
     }
 
-    var contentIsSecure = false {
+    var secureContentState: TabSecureContentState = .insecure {
         didSet {
             updateLockImageView()
         }
@@ -74,11 +74,15 @@ class TabLocationView: UIView {
     }
     
     private func updateLockImageView() {
-        let wasHidden = lockImageView.isHidden
-        lockImageView.isHidden = !contentIsSecure
-
-        if wasHidden != lockImageView.isHidden {
-            UIAccessibility.post(notification: .layoutChanged, argument: nil)
+        lockImageView.isHidden = false
+        
+        switch secureContentState {
+        case .localHost:
+            lockImageView.isHidden = true
+        case .insecure:
+            lockImageView.tintColor = .red
+        case .secure, .unknown:
+            lockImageView.tintColor = #colorLiteral(red: 0.3764705882, green: 0.3843137255, blue: 0.4, alpha: 1)
         }
     }
 
@@ -138,7 +142,7 @@ class TabLocationView: UIView {
 
     fileprivate lazy var lockImageView: UIImageView = {
         let lockImageView = UIImageView(image: #imageLiteral(resourceName: "lock_verified").template)
-        lockImageView.isHidden = true // Hidden by default
+        lockImageView.isHidden = true
         lockImageView.tintColor = #colorLiteral(red: 0.3764705882, green: 0.3843137255, blue: 0.4, alpha: 1)
         lockImageView.isAccessibilityElement = true
         lockImageView.contentMode = .center
@@ -401,7 +405,7 @@ extension TabLocationView: TabEventHandler {
 class DisplayTextField: UITextField {
     weak var accessibilityActionsSource: AccessibilityActionsSource?
     var hostString: String = ""
-    let pathPadding: CGFloat = 20.0
+    let pathPadding: CGFloat = 5.0
 
     override var accessibilityCustomActions: [UIAccessibilityCustomAction]? {
         get {
