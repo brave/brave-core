@@ -19,16 +19,10 @@
   <template>
     <style include="settings-shared md-select iron-flex">
     </style>
-    <div class="settings-box first">
-      <div class="start">
-        $i18n{braveSyncLabel} <a href="chrome://sync" target="_blank">brave://sync</a>
-      </div>
-    </div>
-
     <settings-animated-pages id="pages" section="braveSync">
     <div route-path="default">
       <cr-link-row id="brave-sync-setup"
-        label="Sync Setup"
+        label="$i18n{braveSyncSubpageLabel}"
         on-click="onSyncTap_"
         role-description="$i18n{subpageArrowRoleDescription}">
       </cr-link-row>
@@ -36,7 +30,7 @@
      <template is="dom-if" route-path="/braveSync/setup">
        <settings-subpage
          associated-control="[[$$('#brave-sync-setup')]]"
-         page-title="Sync Settings">
+         page-title="$i18n{braveSyncManagerTitle}">
          <settings-brave-sync-subpage
               sync-status="[[syncStatus]]" prefs="{{prefs}}"
               page-visibility="[[pageVisibility.privacy]]">
