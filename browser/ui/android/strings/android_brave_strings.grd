@@ -927,6 +927,99 @@ until they verify, or until 90 days have passed.
       <message name="IDS_PREFS_USE_CUSTOM_TABS" desc="Title for closing all tabs closes brave in controls section">
         Open tabs in Custom Tabs
       </message>
+      <message name="IDS_BRAVE_UI_WALLET_BUTTON_DISCONNECTED" desc="">
+        Disconnected
+      </message>
+      <message name="IDS_BRAVE_UI_WALLET_BUTTON_UNVERIFIED" desc="">
+        Verify Wallet
+      </message>
+      <message name="IDS_BRAVE_UI_WALLET_BUTTON_VERIFIED" desc="">
+        Wallet Verified
+      </message>
+      <message name="IDS_VERIFY_WALLET_HEADER">
+        Verifying your wallet is optional
+      </message>
+      <message name="IDS_VERIFY_WALLET_HEADER1">
+        But if you verify, you can...
+      </message>
+      <message name="IDS_VERIFY_WALLET_BENEFITS1">
+        Withdraw BAT that you earn from viewing privacy-respecting ads
+      </message>
+      <message name="IDS_VERIFY_WALLET_BENEFITS2">
+        Purchase additional BAT with credit cards and other sources
+      </message>
+      <message name="IDS_VERIFY_WALLET_BENEFITS3">
+        Withdraw BAT that you may have previously added to your Brave Rewards wallet
+      </message>
+      <message name="IDS_VERIFY_WALLET_BTN_TXT">
+        Verify Wallet
+      </message>
+      <message name="IDS_VERIFY_WALLET_SERVICE_NOTE">
+        Our wallet service is provided by
+      </message>
+      <message name="IDS_VERIFY_WALLET_UPHOLD">
+        Uphold
+      </message>
+      <message name="IDS_VERIFY_WALLET_UPHOLD_NOTE1">
+        Uphold may require you to verify your identity based on services requested.
+      </message>
+      <message name="IDS_VERIFY_WALLET_BRAVE_NOTE1">
+        Brave Software Inc. does not process, store, or access any of the personal information that you provide to Uphold when you establish an account with them.
+      </message>
+      <message name="IDS_USER_WALLET_COMPLETE_VERIFICATION">
+        Complete wallet verification
+      </message>
+      <message name="IDS_USER_WALLET_ACTIVITY_NAME">
+        User Wallet
+      </message>
+      <message name="IDS_USER_WALLET_GOTO_UPHOLD">
+        Go to my Uphold account
+      </message>
+      <message name="IDS_USER_WALLET_DISCONNECT_REWARDS">
+        Disconnect from Brave Rewards
+      </message>
+      <message name="IDS_USER_WALLET_WITHDRAW_FUNDS">
+        Withdraw Funds
+      </message>
+      <message name="IDS_USER_WALLET_STATUS_NOT_CONNECTED">
+        Not connected
+      </message>
+      <message name="IDS_USER_WALLET_STATUS_CONNECTED">
+        Connected
+      </message>
+      <message name="IDS_USER_WALLET_STATUS_VERIFIED">
+        Verified
+      </message>
+      <message name="IDS_USER_WALLET_STATUS_DISCONNECTED_NOT_VERIFIED">
+        Disconnected not verified
+      </message>
+      <message name="IDS_USER_WALLET_STATUS_DISCONNECTED_VERIFIED">
+        Disconnected verified
+      </message>
+      <message name="IDS_USER_WALLET_STATUS_PENDING">
+        Pending
+      </message>
+      <message name="IDS_BAT_NOT_ALLOWED_IN_REGION">
+        BAT is not currently supported in your region based on the location your account is opened. Check back later for availability.
+      </message>
+      <message name="IDS_BAT_NOT_ALLOWED_IN_REGION_TITLE">
+        Region not supported
+      </message>
+      <message name="IDS_WALLET_VERIFICATION_GENERIC_ERROR">
+        There was a problem verifying your wallet, please try again later.
+      </message>
+      <message name="IDS_WALLET_VERIFICATION_GENERIC_ERROR_TITLE">
+        Wallet verification error
+      </message>
+      <message name="IDS_BRAVE_UI_SITE_BANNER_CONNECTED_TEXT" desc="Text shown for connected publishers that are not fully verified on site banner">
+        NOTE: This Brave Verified Creator has not yet configured their account to receive contributions from Brave users. Your browser will keep trying to contribute until they verify, or until 90 days have passed.
+      </message>
+      <message name="IDS_BRAVE_UI_PANEL_CONNECTED_TEXT" desc="A message on tipping page when a creator is not verified yet">
+        This Brave Verified Creator has not yet configured their account to receive contributions from Brave users. Any tips you send will remain in your wallet until they complete this process.
+      </message>
+      <message name="IDS_BRAVE_DEFAULT" desc="Text for brave default settings option.">
+        Brave Default
+      </message>
     </messages>
   </release>
 </grit>
