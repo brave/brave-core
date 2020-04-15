@@ -20,10 +20,10 @@ import {
 } from './style'
 
 interface UseCreditCardPanelProps {
-  hasSufficientFunds?: boolean
-  rewardsEnabled?: boolean
-  walletVerified?: boolean
-  continueWithCard?: boolean
+  hasSufficientFunds: boolean
+  rewardsEnabled: boolean
+  walletVerified: boolean
+  continueWithCard: boolean
   setContinueWithCard: (value: boolean) => void
   onPayWithCreditCard: (cardDetails: CreditCardDetails) => void
 }

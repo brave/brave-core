@@ -8,7 +8,6 @@ import { BatColorIcon } from 'brave-ui/components/icons'
 import backgroundSrc from './assets/dialog_bg.svg'
 
 export const MainPanel = styled.div<{ showBackground?: boolean }>`
-  overflow: hidden;
   position: relative;
   top: 0;
   left: 0;
@@ -27,6 +26,7 @@ export const MainPanel = styled.div<{ showBackground?: boolean }>`
 
   a {
     color: ${p => p.theme.color.brandBat};
+    text-decoration: none;
   }
 `
 

@@ -55,12 +55,13 @@ function AddFundsButton (props: ActionButtonProps) {
 }
 
 interface UseWalletPanelProps {
+  canAddFunds: boolean
   balance: string
   balanceConverted: string
   lastUpdated: string
-  hasSufficientFunds?: boolean
-  rewardsEnabled?: boolean
-  walletVerified?: boolean
+  hasSufficientFunds: boolean
+  rewardsEnabled: boolean
+  walletVerified: boolean
   onShowAddFunds: () => void
   onPayWithWallet: () => void
 }
@@ -89,7 +90,7 @@ export function UseWalletPanel (props: UseWalletPanelProps) {
             {
               props.hasSufficientFunds
                 ? <PayWithWalletButton locale={locale} onClick={props.onPayWithWallet} />
-                : props.walletVerified
+                : props.walletVerified && props.canAddFunds
                   ? <AddFundsButton locale={locale} onClick={props.onShowAddFunds} />
                   : <NotEnoughFunds>{locale.get('notEnoughFunds')}</NotEnoughFunds>
             }

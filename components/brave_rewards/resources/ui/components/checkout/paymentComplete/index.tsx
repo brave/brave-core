@@ -8,7 +8,7 @@ import { LocaleContext } from '../localeContext'
 import { VectorImage } from './vectorImage'
 import { Container, ImageContainer, TextContainer, Header, Text } from './style'
 
-export function PaymentComplete (props: {}) {
+export function PaymentComplete () {
   const locale = React.useContext(LocaleContext)
   return (
     <Container>
