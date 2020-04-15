@@ -1,5 +1,5 @@
 diff --git a/tools/licenses.py b/tools/licenses.py
-index feeaf77aaec383c8708da10c39186dc3758ca9e1..c45d66caa60ac7033314dac79f486a6ba15b469f 100755
+index b61ee97f416f564f8324bbca90bd9d9c8a67f6fa..8752a6438ab7e84cdfe59b6c8b1b6a4f8c84ef55 100755
 --- a/tools/licenses.py
 +++ b/tools/licenses.py
 @@ -35,6 +35,7 @@ else:
@@ -18,13 +18,13 @@ index feeaf77aaec383c8708da10c39186dc3758ca9e1..c45d66caa60ac7033314dac79f486a6b
  
  # Special value for 'License File' field used to indicate that the license file
  # should not be used in about:credits.
-@@ -481,7 +483,8 @@ def FindThirdPartyDirs(prune_paths, root):
-       if skip in dirs:
-         dirs.remove(skip)
+@@ -479,7 +481,8 @@ def FindThirdPartyDirs(prune_paths, root):
+             if skip in dirs:
+                 dirs.remove(skip)
  
--    if os.path.basename(path) == 'third_party':
-+    if (os.path.basename(path) == 'third_party' or
-+        os.path.basename(path) in BRAVE_THIRD_PARTY_DIRS):
-       # Add all subdirectories that are not marked for skipping.
-       for dir in dirs:
-         dirpath = os.path.join(path, dir)
+-        if os.path.basename(path) == 'third_party':
++        if (os.path.basename(path) == 'third_party' or
++            os.path.basename(path) in BRAVE_THIRD_PARTY_DIRS):
+             # Add all subdirectories that are not marked for skipping.
+             for dir in dirs:
+                 dirpath = os.path.join(path, dir)
