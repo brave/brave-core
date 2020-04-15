@@ -30,6 +30,7 @@ namespace brave_sync {
 namespace prefs {
 // Stored as bip39 keywords
 extern const char kSyncSeed[];
+extern const char kSyncEnabled[];
 
 // Deprecated
 // ============================================================================
@@ -39,7 +40,6 @@ extern const char kSyncDeviceObjectId[];
 extern const char kSyncPrevSeed[];
 extern const char kSyncDeviceName[];
 extern const char kSyncBookmarksBaseOrder[];
-extern const char kSyncEnabled[];
 extern const char kSyncBookmarksEnabled[];
 extern const char kSyncSiteSettingsEnabled[];
 extern const char kSyncHistoryEnabled[];

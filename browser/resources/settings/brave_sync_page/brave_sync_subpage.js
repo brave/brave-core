@@ -1,6 +1,7 @@
-// Copyright 2015 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 (function() {
 
@@ -63,7 +64,7 @@ Polymer({
     },
 
     /**
-     * The passphrase input field value.
+     * The passphrase is seed encode as bip39 keywords.
      * @private
      */
     passphrase_: {
@@ -80,10 +81,6 @@ Polymer({
           'syncStatus.hasError, syncStatus.statusAction, ' +
           'syncPrefs.trustedVaultKeysRequired)',
     },
-
-    // <if expr="not chromeos">
-    diceEnabled: Boolean,
-    // </if>
 
     /** @private */
     showSetupCancelDialog_: {
@@ -117,13 +114,6 @@ Polymer({
    * @private {?Function}
    */
   unloadCallback_: null,
-
-  /**
-   * Whether the initial layout for collapsible sections has been computed. It
-   * is computed only once, the first time the sync status is updated.
-   * @private {boolean}
-   */
-  collapsibleSectionsInitialized_: false,
 
   /**
    * Whether the user decided to abort sync.
@@ -280,8 +270,6 @@ Polymer({
       return;
     }
 
-    this.collapsibleSectionsInitialized_ = false;
-
     // Display loading page until the settings have been retrieved.
     this.pageStatus_ = settings.PageStatus.SPINNER;
 
@@ -348,12 +336,13 @@ Polymer({
         return;
       case settings.PageStatus.DONE:
         if (settings.getCurrentRoute() == settings.routes.BRAVE_SYNC_SETUP) {
-          settings.navigateTo(settings.routes.PEOPLE);
+          settings.navigateTo(settings.routes.BRAVE_SYNC);
         }
         return;
       case settings.PageStatus.PASSPHRASE_FAILED:
         if (this.pageStatus_ == this.pages_.CONFIGURE && this.syncPrefs &&
             this.syncPrefs.passphraseRequired) {
+          // TODO(darkdh): Handle valid but wrong sync code
         }
         return;
     }
@@ -365,7 +354,7 @@ Polymer({
    * @return {boolean}
    * @private
    */
-  shouldShowSyncAccountControl_: function() {
+  shouldShowSyncControl_: function() {
     return this.syncStatus !== undefined &&
         !!this.syncStatus.syncSystemEnabled;
   },

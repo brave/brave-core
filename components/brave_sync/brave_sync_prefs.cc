@@ -18,7 +18,6 @@ void MigrateBraveSyncPrefs(PrefService* prefs) {
   prefs->ClearPref(brave_sync::prefs::kSyncDeviceIdV2);
   prefs->ClearPref(brave_sync::prefs::kSyncDeviceObjectId);
   prefs->ClearPref(brave_sync::prefs::kSyncDeviceName);
-  prefs->ClearPref(brave_sync::prefs::kSyncEnabled);
   prefs->ClearPref(brave_sync::prefs::kSyncBookmarksEnabled);
   prefs->ClearPref(brave_sync::prefs::kSyncBookmarksBaseOrder);
   prefs->ClearPref(brave_sync::prefs::kSyncSiteSettingsEnabled);
@@ -122,6 +121,7 @@ void Prefs::SetMigratedBookmarksVersion(const int migrate_bookmarks) {
 
 void Prefs::Clear() {
   pref_service_->ClearPref(kSyncSeed);
+  pref_service_->ClearPref(kSyncEnabled);
 }
 
 }  // namespace prefs

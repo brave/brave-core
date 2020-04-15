@@ -1,4 +1,3 @@
-// TODO(darkdh): add deps
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
 
@@ -12,11 +11,27 @@
       base::BindRepeating(&PeopleHandler::HandleGetSyncCode, \
                           base::Unretained(this)));
 
+// Used for override DisableReasons in ProfileSyncService
 #define BRAVE_HANDLE_SHOW_SETUP_UI \
   profile_->GetPrefs()->SetBoolean(brave_sync::prefs::kSyncEnabled, true);
 
+#define BRAVE_CLOSE_SYNC_SETUP                                                \
+  syncer::SyncService* sync_service = GetSyncService();                       \
+  if (sync_service &&                                                         \
+      !sync_service->GetUserSettings()->IsFirstSetupComplete()) {             \
+    DVLOG(1) << "Sync setup aborted by user action";                          \
+    sync_service->StopAndClear();                                             \
+    profile_->GetPrefs()->SetBoolean(brave_sync::prefs::kSyncEnabled, false); \
+  }
+
+#define BRAVE_IS_SYNC_SUBPAGE \
+  return (current_url == chrome::GetSettingsUrl("braveSync/setup"));
+
 #include "../../../../../../../chrome/browser/ui/webui/settings/people_handler.cc"
 #undef BRAVE_REGISTER_MESSAGES
+#undef BRAVE_HANDLE_SHOW_SETUP_UI
+#undef BRAVE_CLOSE_SYNC_SETUP
+#undef BRAVE_IS_SYNC_SUBPAGE
 
 namespace settings {
 
@@ -42,6 +57,11 @@ void PeopleHandler::HandleSetSyncCode(const base::ListValue* args) {
   const base::Value* sync_code;
   CHECK(args->Get(0, &sync_code));
 
+  std::vector<uint8_t> seed;
+  if (!brave_sync::crypto::PassphraseToBytes32(sync_code->GetString(), &seed)) {
+    LOG(ERROR) << "invalid sync code";
+    return;
+  }
   profile_->GetPrefs()->SetString(brave_sync::prefs::kSyncSeed,
                                   sync_code->GetString());
 }
