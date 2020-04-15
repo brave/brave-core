@@ -1,8 +1,8 @@
 diff --git a/components/page_info/page_info.cc b/components/page_info/page_info.cc
-index 8c34cb80e20be2926d16dd1522c62ed48c3840ce..29637cef4a19b68a80a0548a7de0a0b813629404 100644
+index 8c5b787f8b34fb38b8f48a4a061dc2adf9819a38..a71b9ac1dfbdab856fe74f891532edfc71815515 100644
 --- a/components/page_info/page_info.cc
 +++ b/components/page_info/page_info.cc
-@@ -948,6 +948,7 @@ void PageInfo::PresentSitePermissions() {
+@@ -926,6 +926,7 @@ void PageInfo::PresentSitePermissions() {
  
      // TODO(crbug.com/1058597): Remove the call to |delegate_| once
      // TabSpecificContentSettings has been componentized.

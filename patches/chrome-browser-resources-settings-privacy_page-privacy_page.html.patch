@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-index d848b6414df5999d22ec8c5cb49581b2df2d41ef..9ab0791fdc8d893a4868cfa8f248f6f79abc8d7b 100644
+index cde7a3097bebddbe4b68ebbb2960c65130b30392..c68104dde38cc9f1608739c5b1efdca0ec476394 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.html
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html
 @@ -29,6 +29,7 @@
@@ -60,7 +60,7 @@ index d848b6414df5999d22ec8c5cb49581b2df2d41ef..9ab0791fdc8d893a4868cfa8f248f6f7
          </template>
          <template is="dom-if" if="[[privacySettingsRedesignEnabled_]]" restamp>
            <cr-link-row id="clearBrowsingData"
-@@ -212,6 +220,7 @@
+@@ -213,6 +221,7 @@
            </category-setting-exceptions>
          </settings-subpage>
        </template>
@@ -68,7 +68,7 @@ index d848b6414df5999d22ec8c5cb49581b2df2d41ef..9ab0791fdc8d893a4868cfa8f248f6f7
        <template is="dom-if" route-path="/content/backgroundSync" no-search>
          <settings-subpage page-title="$i18n{siteSettingsBackgroundSync}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
-@@ -229,6 +238,7 @@
+@@ -230,6 +239,7 @@
            </category-setting-exceptions>
          </settings-subpage>
        </template>
@@ -76,7 +76,7 @@ index d848b6414df5999d22ec8c5cb49581b2df2d41ef..9ab0791fdc8d893a4868cfa8f248f6f7
        <template is="dom-if" route-path="/content/camera" no-search>
          <settings-subpage page-title="$i18n{siteSettingsCategoryCamera}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
-@@ -270,11 +280,13 @@
+@@ -272,11 +282,13 @@
                sub-option-label="$i18n{deleteDataPostSession}"
                sub-option-mode="cookies-session-only">
            </category-default-setting>
@@ -90,7 +90,7 @@ index d848b6414df5999d22ec8c5cb49581b2df2d41ef..9ab0791fdc8d893a4868cfa8f248f6f7
            <cr-link-row id="site-data-trigger" class="hr"
                on-click="onSiteDataTap_" label="$i18n{siteSettingsCookieLink}">
            </cr-link-row>
-@@ -364,11 +376,13 @@
+@@ -366,11 +378,13 @@
          <settings-subpage page-title="$i18n{siteSettingsCategoryJavascript}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
              search-term="{{searchFilter_}}">
@@ -104,7 +104,7 @@ index d848b6414df5999d22ec8c5cb49581b2df2d41ef..9ab0791fdc8d893a4868cfa8f248f6f7
            <category-setting-exceptions
                category="{{ContentSettingsTypes.JAVASCRIPT}}"
                block-header="$i18n{siteSettingsBlock}"
-@@ -467,6 +481,19 @@
+@@ -469,6 +483,19 @@
            </category-setting-exceptions>
          </settings-subpage>
        </template>

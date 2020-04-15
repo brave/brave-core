@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/extensions/extension_action_view_controller.cc b/chrome/browser/ui/extensions/extension_action_view_controller.cc
-index 4b1e239146b242649c652b2b99a96d81fd56dad6..cc36febdce3cf0ac7c6e0f2fd2ae8e9e126eaf93 100644
+index 41ca2bb913aaa2945d11e197554f2c2547f46f67..2f18a404abcea168b9dd5f23d3de9f383936c1f6 100644
 --- a/chrome/browser/ui/extensions/extension_action_view_controller.cc
 +++ b/chrome/browser/ui/extensions/extension_action_view_controller.cc
-@@ -59,7 +59,6 @@ ExtensionActionViewController::ExtensionActionViewController(
+@@ -58,7 +58,6 @@ ExtensionActionViewController::ExtensionActionViewController(
        icon_factory_(browser->profile(), extension, extension_action, this),
        extension_registry_(
            extensions::ExtensionRegistry::Get(browser_->profile())) {
